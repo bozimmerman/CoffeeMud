@@ -19,7 +19,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-
 public class MXP
 {
 	public final static boolean	tagDebug			= false;
@@ -46,7 +45,7 @@ public class MXP
 	private boolean				eatNextEOLN			= false;
 	private boolean				eatAllEOLN			= false;
 	private int					mode				= 0;
-	
+
 	private final StringBuffer					responses		= new StringBuffer("");
 	private final StringBuffer					jscriptBuffer	= new StringBuffer("");
 	private final Hashtable<String, MXPElement>	elements		= new Hashtable<String,MXPElement>();
@@ -141,7 +140,7 @@ public class MXP
 		entities.put("amp", new MXPEntity("amp", "&amp;"));
 	}
 
-	public void addElement(MXPElement E)
+	public void addElement(final MXPElement E)
 	{
 		elements.put(E.name(), E);
 	}
@@ -175,18 +174,18 @@ public class MXP
 		return mode;
 	}
 
-	private void setMode(int newMode)
+	private void setMode(final int newMode)
 	{
 		mode = newMode;
 	}
 
-	private int setModeAndExecute(int newMode, StringBuffer buf, int i)
+	private int setModeAndExecute(final int newMode, final StringBuffer buf, final int i)
 	{
 		setMode(newMode);
 		return executeMode(buf, i);
 	}
 
-	private int executeMode(StringBuffer buf, int i)
+	private int executeMode(final StringBuffer buf, final int i)
 	{
 		switch (mode())
 		{
@@ -203,7 +202,7 @@ public class MXP
 		return 0;
 	}
 
-	public int newlineDetected(StringBuffer buf, int i, boolean[] eatEOL)
+	public int newlineDetected(final StringBuffer buf, final int i, final boolean[] eatEOL)
 	{
 		if ((mode() == MXP.MODE_LINE_LOCKED) || (mode() == MXP.MODE_LOCK_LOCKED))
 		{
@@ -238,7 +237,7 @@ public class MXP
 	}
 
 	// does not close Secure tags -- they are never ever closed
-	private int closeAllTags(StringBuffer buf, int i)
+	private int closeAllTags(final StringBuffer buf, final int i)
 	{
 		MXPElement E = null;
 		for (int x = openElements.size() - 1; x >= 0; x--)
@@ -269,7 +268,7 @@ public class MXP
 		return false;
 	}
 
-	private String closeTag(MXPElement E)
+	private String closeTag(final MXPElement E)
 	{
 		final Vector<String> endTags = E.getCloseTags(E.getDefinition());
 		final StringBuffer newEnd = new StringBuffer("");
@@ -281,7 +280,7 @@ public class MXP
 		return newEnd.toString();
 	}
 
-	public int escapeTranslate(String escapeString, StringBuffer buf, int i)
+	public int escapeTranslate(final String escapeString, final StringBuffer buf, final int i)
 	{
 		if (escapeString.endsWith("z") || escapeString.endsWith("Z"))
 		{
@@ -292,7 +291,7 @@ public class MXP
 				setModeAndExecute(code, buf, i);
 				return -1;
 			}
-			else 
+			else
 			if (code < 100)
 			{
 				final MXPElement replace = tags.get(Integer.valueOf(code));
@@ -313,7 +312,7 @@ public class MXP
 		return eatTextUntilEOLN;
 	}
 
-	private void processAnyEntities(StringBuffer buf, MXPElement currentElement)
+	private void processAnyEntities(final StringBuffer buf, final MXPElement currentElement)
 	{
 		int i = 0;
 		while (i < buf.length())
@@ -333,12 +332,12 @@ public class MXP
 		}
 	}
 
-	private String substr(String buf, int start, int end)
+	private String substr(final String buf, final int start, final int end)
 	{
 		return substr(new StringBuffer(buf), start, end);
 	}
 
-	private String substr(StringBuffer buf, int start, int end)
+	private String substr(final StringBuffer buf, final int start, int end)
 	{
 		if (start < 0)
 			return "?";
@@ -352,7 +351,7 @@ public class MXP
 		return s;
 	}
 
-	public int processTag(StringBuffer buf, int i)
+	public int processTag(final StringBuffer buf, int i)
 	{
 		if ((mode() == MXP.MODE_LINE_LOCKED) || (mode() == MXP.MODE_LOCK_LOCKED))
 		{
@@ -431,7 +430,7 @@ public class MXP
 						return 3;
 					}
 				}
-				else 
+				else
 				if ((lastC == '=') || (quotes != '\0') || ((quotes == '\0') && ((lastC == ' ') || (lastC == '\t'))))
 				{
 					if ((quotes != '\0') && (quotes == buf.charAt(i)))
@@ -598,7 +597,7 @@ public class MXP
 					}
 				}
 			}
-			else 
+			else
 			if (E.isHTML())
 			{
 				if (E.isSpecialProcessor())
@@ -610,7 +609,7 @@ public class MXP
 				}
 				return close.length();
 			}
-			else 
+			else
 			if (close.equals("</" + E.name()))
 			{
 				if (tagDebug)
@@ -620,7 +619,7 @@ public class MXP
 				}
 				return close.length();
 			}
-			else 
+			else
 			if (E.getBufInsert() < oldI)
 			{
 				if (tagDebug)
@@ -742,7 +741,7 @@ public class MXP
 		return -1;
 	}
 
-	public String getFirstTag(String s)
+	public String getFirstTag(final String s)
 	{
 		if (!s.startsWith("<"))
 			return "";
@@ -754,7 +753,7 @@ public class MXP
 		return s.substring(1, x).toUpperCase().trim();
 	}
 
-	private void specialProcessorElements(MXPElement E, boolean endTag)
+	private void specialProcessorElements(MXPElement E, final boolean endTag)
 	{
 		if (E.name().equals("FONT"))
 		{
@@ -787,13 +786,13 @@ public class MXP
 						s = s.substring(0, y);
 						if (s.equalsIgnoreCase("color"))
 							E.setAttributeValue("COLOR", v);
-						else 
+						else
 						if (s.equalsIgnoreCase("background-color"))
 							E.setAttributeValue("BACK", v);
-						else 
+						else
 						if (s.equalsIgnoreCase("font-size"))
 							E.setAttributeValue("SIZE", v);
-						else 
+						else
 						if (s.equalsIgnoreCase("font-family"))
 							E.setAttributeValue("FACE", v);
 					}
@@ -801,10 +800,10 @@ public class MXP
 				E.setAttributeValue("STYLE", null);
 			}
 		}
-		else 
+		else
 		if (E.name().equals("NOBR"))
 			eatNextEOLN = true;
-		else 
+		else
 		if (E.name().equals("P"))
 		{
 			if (endTag)
@@ -818,7 +817,7 @@ public class MXP
 				eatNextEOLN = true;
 			}
 		}
-		else 
+		else
 		if (E.name().equals("SEND"))
 		{
 			String prompt = E.getAttributeValue("PROMPT");
@@ -850,7 +849,7 @@ public class MXP
 					hint = hintV.firstElement();
 				E.setAttributeValue("HINT", hint);
 			}
-			else 
+			else
 			if (hintV.size() > hrefV.size())
 			{
 				E.setAttributeValue("HINT", hintV.firstElement());
@@ -876,7 +875,7 @@ public class MXP
 				E.setAttributeValue("ONCLICK", "return dropdownmenu(this, event, getSendMenu(this,'" + href + "','" + hint + "','" + prompt + "'), '200px');");
 			}
 		}
-		else 
+		else
 		if (E.name().equals("ELEMENT") || E.name().equals("EL"))
 		{
 			final String name = E.getAttributeValue("NAME");
@@ -918,7 +917,7 @@ public class MXP
 			}
 			return;
 		}
-		else 
+		else
 		if (E.name().equals("ENTITY") || E.name().equals("EN"))
 		{
 			final String name = E.getAttributeValue("NAME");
@@ -941,7 +940,7 @@ public class MXP
 				// whatever a string list is (| separated things) this removes
 				// it
 			}
-			else 
+			else
 			if (ADD != null)
 			{
 				// whatever a string list is (| separated things) this removes
@@ -951,7 +950,7 @@ public class MXP
 				modifyEntity(name, value);
 			return;
 		}
-		else 
+		else
 		if ((E.name().equals("VAR") || E.name().equals("V")) && (endTag))
 		{
 			final String name = E.getAttributeValue("NAME");
@@ -975,7 +974,7 @@ public class MXP
 				// whatever a string list is (| separated things) this removes
 				// it
 			}
-			else 
+			else
 			if (ADD != null)
 			{
 				// whatever a string list is (| separated things) this removes
@@ -985,10 +984,10 @@ public class MXP
 				modifyEntity(name, VALUE);
 			return;
 		}
-		else 
+		else
 		if (E.name().equalsIgnoreCase("VERSION"))
 			responses.append("\033[1z<VERSION MXP=1.0 STYLE=1.0 CLIENT=Siplet VERSION=" + TelnetFilter.getSipletVersion() + " REGISTERED=NO>\n");
-		else 
+		else
 		if (E.name().equalsIgnoreCase("GAUGE"))
 		{
 			String ENTITY = E.getAttributeValue("ENTITY");
@@ -1024,7 +1023,7 @@ public class MXP
 				gauges.addElement(gauge);
 			}
 		}
-		else 
+		else
 		if (E.name().equalsIgnoreCase("DEST")||E.name().equalsIgnoreCase("DESTINATION"))
 		{
 			String NAME = E.getAttributeValue("NAME");
@@ -1036,7 +1035,7 @@ public class MXP
 			}
 			return;
 		}
-		else 
+		else
 		if (E.name().equalsIgnoreCase("ATTLIST") || E.name().equalsIgnoreCase("ATT"))
 		{
 			final String name = E.getAttributeValue("NAME");
@@ -1048,7 +1047,7 @@ public class MXP
 				return;
 			E2.setAttributes(value);
 		}
-		else 
+		else
 		if (E.name().equalsIgnoreCase("SUPPORT"))
 		{
 			final StringBuffer supportResponse = new StringBuffer("");
@@ -1127,7 +1126,7 @@ public class MXP
 				}
 			responses.append("\033[1z<SUPPORTS" + supportResponse.toString() + ">\n");
 		}
-		else 
+		else
 		if (E.name().equals("TAG"))
 		{
 			addElement(new MXPElement("TAG", "", "INDEX WINDOWNAME FORE BACK GAG ENABLE DISABLE", "", MXPElement.BIT_SPECIAL | MXPElement.BIT_COMMAND));
@@ -1163,10 +1162,10 @@ public class MXP
 			int newBitmap = L.getBitmap();
 			if (gag != null)
 				newBitmap |= MXPElement.BIT_EATTEXT;
-			else 
+			else
 			if (disable != null)
 				newBitmap |= MXPElement.BIT_DISABLED;
-			else 
+			else
 			if (L.isDisabled() && (enable != null))
 				newBitmap -= MXPElement.BIT_DISABLED;
 			L.setBitmap(newBitmap);
@@ -1179,7 +1178,7 @@ public class MXP
 		}
 	}
 
-	public String getEntityValue(String tag, MXPElement currentE)
+	public String getEntityValue(final String tag, final MXPElement currentE)
 	{
 		String val = null;
 		if (tag.equalsIgnoreCase("lcc"))
@@ -1233,7 +1232,7 @@ public class MXP
 		return val;
 	}
 
-	public void modifyEntity(String name, String value)
+	public void modifyEntity(String name, final String value)
 	{
 		name = name.toLowerCase();
 		MXPEntity X = entities.get(name);
@@ -1296,7 +1295,7 @@ public class MXP
 		tags.clear();
 	}
 
-	public int processEntity(StringBuffer buf, int i, MXPElement currentE, boolean convertIfNecessary)
+	public int processEntity(final StringBuffer buf, int i, final MXPElement currentE, final boolean convertIfNecessary)
 	{
 		if ((mode() == MXP.MODE_LINE_LOCKED) || (mode() == MXP.MODE_LOCK_LOCKED))
 			return 0;
@@ -1313,7 +1312,7 @@ public class MXP
 					convertIt = false;
 					break;
 				}
-				else 
+				else
 				if (!Character.isDigit(buf.charAt(i)))
 				{
 					convertIt = true;
@@ -1330,13 +1329,13 @@ public class MXP
 					convertIt = false;
 					break;
 				}
-				else 
+				else
 				if (!Character.isLetterOrDigit(buf.charAt(i)))
 				{
 					convertIt = true;
 					break;
 				}
-				else 
+				else
 				if ((!Character.isLetter(buf.charAt(i))) && (content.length() == 0))
 				{
 					convertIt = true;
@@ -1376,7 +1375,7 @@ public class MXP
 			{
 				if (tag.equalsIgnoreCase("COLOR"))
 					lastForeground = val;
-				else 
+				else
 				if (tag.equalsIgnoreCase("BACK"))
 					lastBackground = val;
 			}

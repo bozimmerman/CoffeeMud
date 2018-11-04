@@ -36,7 +36,6 @@ import java.util.*;
  * @author FR - Jeremy Vyska; CM - Bo Zimmerman
  * @version 1.0.0.0
  */
-
 public class Prop_ScrapExplode extends Property {
 
 	@Override

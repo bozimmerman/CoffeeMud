@@ -50,7 +50,7 @@ public class InvisibleInk extends StdLanguage
 
 
 	@Override
-	public String translate(String language, String word)
+	public String translate(final String language, final String word)
 	{
 		return "";
 	}

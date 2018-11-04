@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_CurtainCall extends BardSkill
 {
 	@Override
@@ -125,14 +124,14 @@ public class Skill_CurtainCall extends BardSkill
 
 			if(!mob.isMonster())
 				CMLib.commands().postStand(mob,true, false);
-			if(CMLib.flags().isStanding(mob) 
+			if(CMLib.flags().isStanding(mob)
 			&& CMLib.flags().isAliveAwakeMobileUnbound(mob, false)
 			&& ((mob.curState().getHitPoints() < mob.maxState().getHitPoints())||(mob.curState().getMana() < mob.maxState().getMana())))
 			{
 				mob.doCommand(new XVector<String>("Bow"), MUDCmdProcessor.METAFLAG_FORCED);
-				int hpGain = (int)Math.round(CMath.mul(mob.maxState().getHitPoints(), 0.10));
-				int manaGain = (int)Math.round(CMath.mul(mob.maxState().getMana(), 0.10));
-				int moveLoss = (int)Math.round(CMath.mul(mob.maxState().getMovement(), 0.06 - (super.getXLOWCOSTLevel(invoker()) * 0.005)));
+				final int hpGain = (int)Math.round(CMath.mul(mob.maxState().getHitPoints(), 0.10));
+				final int manaGain = (int)Math.round(CMath.mul(mob.maxState().getMana(), 0.10));
+				final int moveLoss = (int)Math.round(CMath.mul(mob.maxState().getMovement(), 0.06 - (super.getXLOWCOSTLevel(invoker()) * 0.005)));
 				if(mob.curState().getMovement() >= moveLoss)
 				{
 					mob.curState().adjMovement(-moveLoss, mob.maxState());
@@ -155,7 +154,7 @@ public class Skill_CurtainCall extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
@@ -163,7 +162,7 @@ public class Skill_CurtainCall extends BardSkill
 			mob.tell(L("There doesn't appear to be any other actors here."));
 			return false;
 		}
-		
+
 		if(mob.isInCombat())
 		{
 			mob.tell(L("Not while you are fighting!"));
@@ -185,7 +184,7 @@ public class Skill_CurtainCall extends BardSkill
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				for(MOB M : h)
+				for(final MOB M : h)
 				{
 					if(!M.isInCombat())
 					{

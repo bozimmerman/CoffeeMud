@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Grazing extends StdAbility
 {
 	@Override
@@ -194,7 +193,7 @@ public class Grazing extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=mob;
 		if(target==null)
@@ -211,19 +210,19 @@ public class Grazing extends StdAbility
 			mob.tell(L("This doesn't look like good grazing land."));
 			return false;
 		}
-		
+
 		if((!auto)&&(mob.isInCombat()))
 		{
 			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
-		
+
 		if((!auto)&&(isBusy(mob)))
 		{
 			mob.tell(L("You are too busy right now."));
 			return false;
 		}
-		
+
 		if((!auto)&&(!CMLib.flags().isAliveAwakeMobileUnbound(mob, false)))
 			return false;
 

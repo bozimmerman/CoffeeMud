@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class GravityFloat extends StdAbility
 {
 	@Override
@@ -52,7 +51,7 @@ public class GravityFloat extends StdAbility
 	}
 
 	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Floating)");
-	
+
 	private volatile boolean flyingAllowed = false;
 
 	@Override
@@ -72,7 +71,7 @@ public class GravityFloat extends StdAbility
 	{
 		return 0;
 	}
-	
+
 	private class PossiblyFloater implements Runnable
 	{
 		private final Physical P;
@@ -102,7 +101,7 @@ public class GravityFloat extends StdAbility
 			{
 				if(gravA==null)
 				{
-					Ability gravityA=(Ability)copyOf();
+					final Ability gravityA=(Ability)copyOf();
 					if(gravityA != null)
 					{
 						final Room R=CMLib.map().roomLocation(P);
@@ -123,7 +122,7 @@ public class GravityFloat extends StdAbility
 			}
 		}
 	}
-	
+
 	private final Runnable checkStopFloating()
 	{
 		return new Runnable()
@@ -144,7 +143,7 @@ public class GravityFloat extends StdAbility
 			}
 		};
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -153,14 +152,14 @@ public class GravityFloat extends StdAbility
 
 		if(affected == null)
 			return false;
-		
+
 		if(tickID!=Tickable.TICKID_MOB)
 			return true;
 
 		checkStopFloating().run();
 		return (affected != null);
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -170,7 +169,7 @@ public class GravityFloat extends StdAbility
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 		affectableStats.addAmbiance("-FLYING");
 	}
-	
+
 	public boolean showFailedToMove(final MOB mob)
 	{
 		if(mob != null)
@@ -198,8 +197,8 @@ public class GravityFloat extends StdAbility
 		}
 		return true;
 	}
-	
-	public void showFailedToTouch(final MOB mob, Physical P)
+
+	public void showFailedToTouch(final MOB mob, final Physical P)
 	{
 		if(mob != null)
 		{
@@ -227,7 +226,7 @@ public class GravityFloat extends StdAbility
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
@@ -269,7 +268,7 @@ public class GravityFloat extends StdAbility
 			case CMMsg.TYP_MOUNT:
 			case CMMsg.TYP_SIT:
 			{
-				if(msg.source().phyStats().isAmbiance(L("Floating")) 
+				if(msg.source().phyStats().isAmbiance(L("Floating"))
 				&& (!flyingAllowed)
 				&&(!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS))
 				&&(msg.target()!=null))
@@ -289,7 +288,7 @@ public class GravityFloat extends StdAbility
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
@@ -350,7 +349,7 @@ public class GravityFloat extends StdAbility
 					int floatDir = -1;
 					for(int i=words.size()-1;(i>=0) && (floatDir<0);i--)
 					{
-						for(int dir : Directions.DISPLAY_CODES())
+						for(final int dir : Directions.DISPLAY_CODES())
 						{
 							if(words.get(i).equals(CMLib.directions().getUpperDirectionName(dir, useShip)))
 							{
@@ -381,7 +380,7 @@ public class GravityFloat extends StdAbility
 			}
 		}
 	}
-	
+
 	protected boolean confirmGravity(final Physical P, boolean hasGravity)
 	{
 		if(P instanceof Item)
@@ -401,7 +400,7 @@ public class GravityFloat extends StdAbility
 		if(P instanceof MOB)
 		{
 			final MOB M=(MOB)P;
-			if((M.riding() != null) 
+			if((M.riding() != null)
 			|| (CMLib.flags().isBound(M)))
 			{
 				if(!hasGravity)
@@ -431,16 +430,16 @@ public class GravityFloat extends StdAbility
 		}
 		return hasGravity;
 	}
-	
+
 	@Override
-	public boolean invoke(final MOB mob, List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(givenTarget==null)
 			return false;
 		final Physical P = givenTarget;
-		
+
 		new PossiblyFloater(P, auto).run();
-		
+
 		return true;
 	}
 }

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_MassMobility extends Prayer
 {
 	@Override
@@ -113,7 +112,7 @@ public class Prayer_MassMobility extends Prayer
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
 		if(affectedStats.getStat(CharStats.STAT_SAVE_PARALYSIS)<(Short.MAX_VALUE/2))
@@ -135,7 +134,7 @@ public class Prayer_MassMobility extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

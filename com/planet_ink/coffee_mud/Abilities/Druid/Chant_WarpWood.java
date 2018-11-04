@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_WarpWood extends Chant
 {
 	@Override
@@ -73,7 +72,7 @@ public class Chant_WarpWood extends Chant
 		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
 	}
 
-	public Item getPossibility(MOB mobTarget)
+	public Item getPossibility(final MOB mobTarget)
 	{
 		if(mobTarget!=null)
 		{
@@ -102,7 +101,7 @@ public class Chant_WarpWood extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -117,7 +116,7 @@ public class Chant_WarpWood extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=getPossibility(mobTarget);

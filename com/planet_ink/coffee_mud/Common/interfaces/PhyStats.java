@@ -338,7 +338,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int STAT_HEIGHT=9;
 	/** the size of the internal stats integer array */
 	public final static int NUM_STATS=10;
-	
+
 	/** Descriptions for the above */
 	public final static String[] STAT_DESCS={
 		"LEVEL",
@@ -522,7 +522,7 @@ public interface PhyStats extends CMCommon, Modifiable
 	//public final static int SENSE_ROOMCIRCUITED=524288;
 	/** a bit setting, as from sensesMask(), flagging this mob as not respawning when being camped*/
 	public final static int SENSE_UNCAMPABLE=1048576;
-	
+
 	/** STAT codes list, indexed by the 2nd root of the various sensesMask() SENSE_ bitmasks */
 	public static final String[] SENSE_CODES={
 		"UNLOCATABLE",

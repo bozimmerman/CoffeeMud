@@ -110,7 +110,7 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	@Override
-	public void setID(String iD)
+	public void setID(final String iD)
 	{
 		ID = iD;
 	}
@@ -122,7 +122,7 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	@Override
-	public void setRoleID(int roleID)
+	public void setRoleID(final int roleID)
 	{
 		this.roleID = roleID;
 	}
@@ -134,7 +134,7 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	@Override
-	public void setRank(int rank)
+	public void setRank(final int rank)
 	{
 		this.rank = rank;
 	}
@@ -146,7 +146,7 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	@Override
-	public void setName(String name)
+	public void setName(final String name)
 	{
 		this.name = name;
 	}
@@ -158,7 +158,7 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	@Override
-	public void setPluralName(String pluralName)
+	public void setPluralName(final String pluralName)
 	{
 		this.pluralName = pluralName;
 	}
@@ -170,7 +170,7 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	@Override
-	public void setMax(int max)
+	public void setMax(final int max)
 	{
 		this.max = max;
 	}
@@ -182,7 +182,7 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	@Override
-	public void setInnerMaskStr(String innerMaskStr)
+	public void setInnerMaskStr(final String innerMaskStr)
 	{
 		this.innerMaskStr = innerMaskStr;
 	}
@@ -194,7 +194,7 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	@Override
-	public void setPublic(boolean isPublic)
+	public void setPublic(final boolean isPublic)
 	{
 		this.isPublic = isPublic;
 	}
@@ -206,7 +206,7 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	@Override
-	public void setFunctionChart(Clan.Authority[] functionChart)
+	public void setFunctionChart(final Clan.Authority[] functionChart)
 	{
 		this.functionChart = functionChart;
 	}
@@ -227,13 +227,13 @@ public class DefaultClanPosition implements ClanPosition
 		return POS_STAT_CODES.values().length;
 	}
 
-	private POS_STAT_CODES getStatIndex(String code)
+	private POS_STAT_CODES getStatIndex(final String code)
 	{
 		return (POS_STAT_CODES) CMath.s_valueOf(POS_STAT_CODES.values(), code);
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		final POS_STAT_CODES stat = getStatIndex(code);
 		if(stat==null)
@@ -284,7 +284,7 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		final POS_STAT_CODES stat = getStatIndex(code);
 		if(stat==null)

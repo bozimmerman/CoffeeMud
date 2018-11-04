@@ -16,17 +16,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class StatOutOfRangeException extends CoffeeMudException
 {
 	static final long serialVersionUID=0;
 
-	public StatOutOfRangeException(String s)
+	public StatOutOfRangeException(final String s)
 	{
 		super(s);
 	}
 
-	public StatOutOfRangeException(String s, Exception e)
+	public StatOutOfRangeException(final String s, final Exception e)
 	{
 		super(s,e);
 	}

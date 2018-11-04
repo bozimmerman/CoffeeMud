@@ -55,7 +55,7 @@ public class Play_Accompaniment extends Play
 	}
 
 	@Override
-	public void affectPhyStats(Physical E, PhyStats stats)
+	public void affectPhyStats(final Physical E, final PhyStats stats)
 	{
 		super.affectPhyStats(E,stats);
 		if((E instanceof MOB)&&(E!=invoker())&&(((MOB)E).charStats().getCurrentClass().baseClass().equals("Bard")))
@@ -68,7 +68,7 @@ public class Play_Accompaniment extends Play
 	}
 
 	@Override
-	public void affectCharStats(MOB E, CharStats stats)
+	public void affectCharStats(final MOB E, final CharStats stats)
 	{
 		super.affectCharStats(E,stats);
 		if((E != null)&&(E!=invoker())&&(stats.getCurrentClass().baseClass().equals("Bard")))
@@ -81,7 +81,7 @@ public class Play_Accompaniment extends Play
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{

@@ -29,7 +29,7 @@ import com.planet_ink.coffee_web.util.CWConfig;
 /**
  * This class manages servlet session objects
  * for servlets as well.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -37,23 +37,23 @@ public class SessionManager implements ServletSessionManager
 {
 	private final Map<String,SimpleServletSession>	sessions;		// map of ids to sessions
 	private final CWConfig						config;
-	
+
 	/**
 	 * Construct a session manager
 	 * @param config the web server config
 	 */
-	public SessionManager(CWConfig config)
+	public SessionManager(final CWConfig config)
 	{
-		sessions = new Hashtable<String, SimpleServletSession>();  
+		sessions = new Hashtable<String, SimpleServletSession>();
 		this.config=config;
 	}
-	
+
 	/**
 	 * Internal method to find an existing session based on the request data.
 	 * @param sessionID the id of the session
 	 */
 	@Override
-	public SimpleServletSession findSession(String sessionID)
+	public SimpleServletSession findSession(final String sessionID)
 	{
 		return sessions.get(sessionID);
 	}
@@ -64,7 +64,7 @@ public class SessionManager implements ServletSessionManager
 	 * @param sessionID the id of the session
 	 */
 	@Override
-	public SimpleServletSession findOrCreateSession(String sessionID)
+	public SimpleServletSession findOrCreateSession(final String sessionID)
 	{
 		SimpleServletSession session = sessions.get(sessionID);
 		if(session != null) return session;
@@ -75,7 +75,7 @@ public class SessionManager implements ServletSessionManager
 			return session;
 		}
 	}
-	
+
 	/**
 	 * A maintence method forcing the manager to examine all sessions
 	 * for any that have timed out and remove them, if so.
@@ -107,7 +107,7 @@ public class SessionManager implements ServletSessionManager
 	 * @return the new servlet session obj
 	 */
 	@Override
-	public SimpleServletSession createSession(HTTPRequest request)
+	public SimpleServletSession createSession(final HTTPRequest request)
 	{
 		String sessionID = request.getClientAddress().hashCode()+""+System.currentTimeMillis() + "" + System.nanoTime();
 		try

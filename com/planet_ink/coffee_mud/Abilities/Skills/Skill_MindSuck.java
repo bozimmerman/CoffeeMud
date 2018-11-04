@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_MindSuck extends StdSkill
 {
 	@Override
@@ -124,7 +123,7 @@ public class Skill_MindSuck extends StdSkill
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -147,7 +146,7 @@ public class Skill_MindSuck extends StdSkill
 			return;
 		final MOB mob=(MOB)affected;
 		final MOB invoker = this.invoker;
-		boolean suckableBrain = suckableBrain(invoker,mob);
+		final boolean suckableBrain = suckableBrain(invoker,mob);
 
 		super.unInvoke();
 
@@ -186,9 +185,9 @@ public class Skill_MindSuck extends StdSkill
 		super.affectPhyStats(affected, affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 	}
-	
+
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -201,7 +200,7 @@ public class Skill_MindSuck extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -235,7 +234,7 @@ public class Skill_MindSuck extends StdSkill
 		if(levelDiff > 0)
 			levelDiff = 0;
 
-		boolean success=proficiencyCheck(mob,levelDiff,auto);
+		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(success)
 		{

@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class AstroEngineering extends TechSkill
 {
 	@Override
@@ -104,13 +103,13 @@ public class AstroEngineering extends TechSkill
 		REPAIR("repairing"),
 		ENHANCE("enhancing");
 		public String verb="";
-		private Operation(String verb)
+		private Operation(final String verb)
 		{
 			this.verb=verb;
 		}
 	}
 
-	public int getBonus(MOB mob, Electronics item, int multiplyBy)
+	public int getBonus(final MOB mob, final Electronics item, final int multiplyBy)
 	{
 		if((mob==null)||(item==null))
 			return 0;
@@ -136,7 +135,7 @@ public class AstroEngineering extends TechSkill
 		return (int)Math.round(CMath.mul(multiplyBy, score));
 	}
 
-	public void giveBonus(MOB mob, Electronics item)
+	public void giveBonus(final MOB mob, final Electronics item)
 	{
 		if((mob==null)||(item==null))
 			return;
@@ -165,13 +164,13 @@ public class AstroEngineering extends TechSkill
 			else
 				return;
 		}
-		Pair<String,Integer> expertise=mob.fetchExpertise(experName+"%");
+		final Pair<String,Integer> expertise=mob.fetchExpertise(experName+"%");
 		final int currentExpertise=(expertise!=null)?expertise.second.intValue():0;
 		if(((int)Math.round(Math.sqrt((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)))*34.0*Math.random()))>=currentExpertise)
 		{
 			mob.addExpertise(experName+"%"+(currentExpertise+1));
 			lastCastHelp=System.currentTimeMillis();
-			AstroEngineering A=(AstroEngineering)mob.fetchAbility(ID());
+			final AstroEngineering A=(AstroEngineering)mob.fetchAbility(ID());
 			if(A!=null)
 				A.lastCastHelp=System.currentTimeMillis();
 			mob.tell(mob,null,null,L("You gain some new insights about @x1.",CMLib.english().makePlural(experName.toLowerCase())));
@@ -219,7 +218,7 @@ public class AstroEngineering extends TechSkill
 				}
 				else
 				{
-					String verb=altverb;
+					final String verb=altverb;
 					final CMMsg msg=CMClass.getMsg(mob,targetItem,this,CMMsg.MSG_ENHANCE,L("<S-NAME> <S-IS-ARE> done @x1 <T-NAME>.",verb));
 					msg.setValue((proficiency()/2)+getBonus(mob,(Electronics)targetItem,50));
 					if(room.okMessage(msg.source(), msg))
@@ -301,7 +300,7 @@ public class AstroEngineering extends TechSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<1)
 		{

@@ -52,20 +52,20 @@ public class PokerDealer extends StdBehavior
 	// the poker dealer operates as a state machine
 	// each state tells this behavior what to expect, and
 	// how to react to player actions.
-	private static final int STATE_MASK=15;
-	private static final int STATE_WAITING_FOR_ANTIS=0;
-	private static final int STATE_DEALING=1;
-	private static final int STATE_FIRST_BETTER=2;
-	private static final int STATE_NEXT_BETTER=3;
-	private static final int STATE_DONE_BETTING=4;
-	private static final int STATE_FIRST_DRAW=5;
-	private static final int STATE_NEXT_DRAW=6;
-	private static final int STATE_DONE_DRAWING=7;
+	private static final int	STATE_MASK				= 15;
+	private static final int	STATE_WAITING_FOR_ANTIS	= 0;
+	private static final int	STATE_DEALING			= 1;
+	private static final int	STATE_FIRST_BETTER		= 2;
+	private static final int	STATE_NEXT_BETTER		= 3;
+	private static final int	STATE_DONE_BETTING		= 4;
+	private static final int	STATE_FIRST_DRAW		= 5;
+	private static final int	STATE_NEXT_DRAW			= 6;
+	private static final int	STATE_DONE_DRAWING		= 7;
 
 	// this mask is added to the gameState when the state
 	// changes, and the dealer needs to notify the
 	// player or players of the change in state.
-	private static final int STATEMASK_NEED_ANOUNCEMENT=256;
+	private static final int STATEMASK_NEED_ANOUNCEMENT = 256;
 
 	// for draw or stud games, this lets us know our
 	// progress in the game.  The deal is round 0, after
@@ -77,10 +77,10 @@ public class PokerDealer extends StdBehavior
 	// a game once antis are dropped, or how long
 	// a player is allowed to bet.  Since timers are
 	// checked every tick (3-4 secs), these are approx.
-	private static final int TIME_SECONDSTOSTART=20;
-	private static final int TIME_SECONDSTOFIRSTBET=10;
-	private static final int TIME_SECONDSTOBET=30;
-	private static final int TIME_SECONDSTODRAW=30;
+	private static final int	TIME_SECONDSTOSTART		= 20;
+	private static final int	TIME_SECONDSTOFIRSTBET	= 10;
+	private static final int	TIME_SECONDSTOBET		= 30;
+	private static final int	TIME_SECONDSTODRAW		= 30;
 
 	// the count down to begin a game starts when the first
 	// player puts down an anti.  This holds the time, in
@@ -111,10 +111,10 @@ public class PokerDealer extends StdBehavior
 	}
 
 	// equates for the gameRules variable below
-	public static final int GAME_STRAIGHTPOKER=0;
-	public static final int GAME_5CARDSTUD=1;
-	public static final int GAME_7CARDSTUD=2;
-	public static final int GAME_DRAWPOKER=3;
+	public static final int			GAME_STRAIGHTPOKER	= 0;
+	public static final int			GAME_5CARDSTUD		= 1;
+	public static final int			GAME_7CARDSTUD		= 2;
+	public static final int			GAME_DRAWPOKER		= 3;
 	public static final String[] GAME_DESCS={
 		"Straight Poker",
 		"Five Card Stud",
@@ -132,7 +132,7 @@ public class PokerDealer extends StdBehavior
 	// to be set on the behavior.  It will handle
 	// external specification of the game
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		final String str=CMParms.getParmStr(newParms,"GAME","0");
@@ -202,7 +202,7 @@ public class PokerDealer extends StdBehavior
 
 	// this method just returns the amount of
 	// anti as a displayable string.
-	private String antiAmount(Environmental host)
+	private String antiAmount(final Environmental host)
 	{
 		final String currency=CMLib.beanCounter().getCurrency(host);
 		return CMLib.beanCounter().abbreviatedPrice(currency,anti);
@@ -212,7 +212,7 @@ public class PokerDealer extends StdBehavior
 	// behavior is a room or a mob, the way a message
 	// is constructed differs slightly.  This method will
 	// account for that.
-	private CMMsg makeMessage(Environmental host, MOB target, int code, String message)
+	private CMMsg makeMessage(final Environmental host, final MOB target, final int code, final String message)
 	{
 		if(host instanceof MOB)
 			return CMClass.getMsg((MOB)host,target,null,code,message);
@@ -223,7 +223,7 @@ public class PokerDealer extends StdBehavior
 	// player or players.  If the host of this
 	// behavior is a room or item, it will emote.  If
 	// the host of this behavior is a mob, it will speak.
-	private void communicate(Environmental host, MOB target, String message, CMMsg msg)
+	private void communicate(final Environmental host, final MOB target, final String message, final CMMsg msg)
 	{
 		if(msg!=null)
 		{
@@ -276,7 +276,7 @@ public class PokerDealer extends StdBehavior
 	// returns 0 if the player called a bet
 	// return 1 if the player raised the bet
 	// returns -1 if the player is below the bet
-	public int getCalled0Raised1OrFolded(MOB player)
+	public int getCalled0Raised1OrFolded(final MOB player)
 	{
 		if(!pot.contains(player))
 			return -1;
@@ -309,7 +309,7 @@ public class PokerDealer extends StdBehavior
 	// The "msg" will be the details of the event which has occurred.
 	// This method will return true if its ok to proceed, and false otherwise.
 	@Override
-	public boolean  okMessage(Environmental host, CMMsg msg)
+	public boolean  okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(!super.okMessage(host,msg))
 			return false;
@@ -483,7 +483,7 @@ public class PokerDealer extends StdBehavior
 	// this method will handle the betting and drawing rounds
 	// by changing whose turn it is and, if necessary,
 	// changing the game state.
-	private void nextPlayerNextState(Environmental host)
+	private void nextPlayerNextState(final Environmental host)
 	{
 		if(pot.size()<=0)
 		{
@@ -818,7 +818,7 @@ public class PokerDealer extends StdBehavior
 	// it returns a numeric score for the hand
 	// the better the hand, the higher the score
 	// It can handle poker of 1 or more cards.
-	private int determineHand(HandOfCards hand)
+	private int determineHand(final HandOfCards hand)
 	{
 		List<Item> cards=hand.getContents();
 		if(cards.size()==0)
@@ -1057,7 +1057,7 @@ public class PokerDealer extends StdBehavior
 	// since stud starts betting with high SHOWN cards,
 	// we need a way to specify that only the face up
 	// cards count for scoring purposes.
-	private DVector determineAllSortedScores(boolean faceUpOnly)
+	private DVector determineAllSortedScores(final boolean faceUpOnly)
 	{
 		final DVector unsortedScores=new DVector(2);
 		for(int p=0;p<pot.size();p++)
@@ -1248,7 +1248,7 @@ public class PokerDealer extends StdBehavior
 
 	// Resets all the internal variables so that
 	// a new game can be played, and new anties taken.
-	private void endTheGame(Environmental host)
+	private void endTheGame(final Environmental host)
 	{
 		timer=0;
 		theDeck().resetDeckBackTo52Cards();
@@ -1260,7 +1260,7 @@ public class PokerDealer extends StdBehavior
 	// announces the winner of the game, if any
 	// it forces the winner to get all the pot winnings.
 	// it also announces what everyone had in their hands.
-	private void announceWinners(Environmental host)
+	private void announceWinners(final Environmental host)
 	{
 		final DVector scores=determineAllSortedScores(false);
 		if(scores.size()>0)
@@ -1311,10 +1311,10 @@ public class PokerDealer extends StdBehavior
 	// of face down and/or face-up cards
 	// specified.  It will give an appropriate
 	// Message to the room.
-	private void dealToPlayer(Environmental host,
-							  MOB player,
-							  int numberOfCards,
-							  int numberFaceUp)
+	private void dealToPlayer(final Environmental host,
+							  final MOB player,
+							  final int numberOfCards,
+							  final int numberFaceUp)
 	{
 		if(player==null)
 			return;
@@ -1396,9 +1396,9 @@ public class PokerDealer extends StdBehavior
 	// of cards specified.  It will
 	// give an appropriate Message by
 	// called dealToPlayer repeatedly.
-	private void dealToAll(Environmental host,
-						   int numberOfCards,
-						   int numberFaceUp)
+	private void dealToAll(final Environmental host,
+						   final int numberOfCards,
+						   final int numberFaceUp)
 	{
 		for(int p=0;p<pot.size();p++)
 		{

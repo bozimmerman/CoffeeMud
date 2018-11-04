@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Autocaltrops extends ThiefSkill
 {
 	@Override
@@ -102,7 +101,7 @@ public class Thief_Autocaltrops extends ThiefSkill
 			dropem(msg.source(),(Room)msg.target());
 	}
 
-	public void dropem(MOB mob, Room R)
+	public void dropem(final MOB mob, final Room R)
 	{
 		Ability A=mob.fetchAbility("Thief_Caltrops");
 		if(A==null)
@@ -126,7 +125,7 @@ public class Thief_Autocaltrops extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
 		if(target.fetchEffect(ID())!=null)

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class DeferCmd extends StdCommand
 {
 	public DeferCmd()
@@ -47,9 +46,9 @@ public class DeferCmd extends StdCommand
 	}
 
 	private Command passThruC = null;
-	
+
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final PlayerStats pStats = mob.playerStats();
@@ -69,7 +68,7 @@ public class DeferCmd extends StdCommand
 				homageMessage = L(", ^H@x1^N^! point came from roleplaying",""+rp);
 			else
 				homageMessage = L(", ^H@x1^N^! points came from roleplaying",""+rp);
-			
+
 			if(amount>1)
 				mob.tell(L("^N^!You gain ^H@x1^N^! experience points@x2.^N",""+amount,homageMessage));
 			else
@@ -86,7 +85,7 @@ public class DeferCmd extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if((args.length>0)&&(args[0] instanceof Command))
 			passThruC=(Command)args[0];
@@ -94,7 +93,7 @@ public class DeferCmd extends StdCommand
 			return super.executeInternal(mob, metaFlags, args);
 		return Boolean.valueOf(true);
 	}
-	
+
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
@@ -112,9 +111,9 @@ public class DeferCmd extends StdCommand
 	{
 		return true;
 	}
-	
+
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return mob.isPlayer() && CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT) > 0;
 	}

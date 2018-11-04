@@ -30,7 +30,7 @@ public class Wealth extends Inventory
 	public Wealth()
 	{
 	}
-	
+
 	private final String[]	access	= I(new String[] { "WEALTH" });
 
 	@Override
@@ -42,7 +42,7 @@ public class Wealth extends Inventory
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{MOB.class}};
 
 	@Override
-	public StringBuilder getInventory(MOB seer, MOB mob, String mask, boolean longInv)
+	public StringBuilder getInventory(final MOB seer, final MOB mob, final String mask, final boolean longInv)
 	{
 		final StringBuilder msg=new StringBuilder("");
 		final InventoryList list = fetchInventory(seer,mob);
@@ -54,7 +54,7 @@ public class Wealth extends Inventory
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1),false);
@@ -65,16 +65,16 @@ public class Wealth extends Inventory
 			mob.session().wraplessPrintln(msg.toString());
 		return false;
 	}
-	
+
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return "";
 		final MOB M=(MOB)args[0];
 		return getInventory(M,mob,null,false).toString();
 	}
-	
+
 	public int ticksToExecute()
 	{
 		return 0;

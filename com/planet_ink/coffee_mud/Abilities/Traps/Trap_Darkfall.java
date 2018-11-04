@@ -73,7 +73,7 @@ public class Trap_Darkfall extends StdTrap
 	}
 
 	@Override
-	public int baseRejuvTime(int level)
+	public int baseRejuvTime(final int level)
 	{
 		return 20;
 	}
@@ -92,7 +92,7 @@ public class Trap_Darkfall extends StdTrap
 	}
 
 	@Override
-	public void spring(MOB target)
+	public void spring(final MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{

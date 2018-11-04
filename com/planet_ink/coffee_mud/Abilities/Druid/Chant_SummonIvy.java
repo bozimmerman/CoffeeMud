@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SummonIvy extends Chant_SummonPlants
 {
 	@Override
@@ -73,7 +72,7 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 		return 0;
 	}
 
-	public Item buildIvy(MOB mob, Room room)
+	public Item buildIvy(final MOB mob, final Room room)
 	{
 		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
@@ -122,7 +121,7 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 	}
 
 	@Override
-	protected Item buildMyPlant(MOB mob, Room room)
+	protected Item buildMyPlant(final MOB mob, final Room room)
 	{
 		return buildIvy(mob,room);
 	}

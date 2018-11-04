@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 {
 	@Override
@@ -71,7 +70,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		messages=new Vector<String>();
 		diseases=CMParms.parseSemicolons(newText.toUpperCase(),true);

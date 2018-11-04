@@ -44,7 +44,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-public interface ServerUser extends ServerObject {
+public interface ServerUser extends ServerObject
+{
 	/**
 	 * This method is triggered by the server when the
 	 * user first connects.

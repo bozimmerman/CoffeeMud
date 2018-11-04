@@ -75,7 +75,7 @@ public class MobileAggressive extends Mobile
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
@@ -90,7 +90,7 @@ public class MobileAggressive extends Mobile
 	}
 
 	@Override
-	public boolean grantsAggressivenessTo(MOB M)
+	public boolean grantsAggressivenessTo(final MOB M)
 	{
 		if(M==null)
 			return true;

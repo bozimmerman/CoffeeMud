@@ -64,7 +64,7 @@ public class Prop_ImproveGather extends Property
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		this.improvement=CMParms.getParmInt(newText, "AMT", improvement);

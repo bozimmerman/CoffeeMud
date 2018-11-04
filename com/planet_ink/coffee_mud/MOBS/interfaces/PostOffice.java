@@ -40,17 +40,17 @@ import java.util.Vector;
  * for players.  Post officers simulate delivery by transferring the
  * items given to them into the appropriate boxes.  Players must then
  * go to a post office in the same chain to retrieve items delivered
- * to them.  
+ * to them.
  * Post offices can serve an entire clan, or a single player.
  * They can handle several different types of charges, including COD.
- * 
+ *
  * @author Bo Zimmerman
  */
 public interface PostOffice extends ShopKeeper
 {
 	/**
-	 * When the given mob tries to send or withdraw a package, this method is 
-	 * called to get the proper FROM address, which is either the mob themselves 
+	 * When the given mob tries to send or withdraw a package, this method is
+	 * called to get the proper FROM address, which is either the mob themselves
 	 * or their clan, if they are (optionally) permitted by their rank.
 	 * If checked is true, and the mob does NOT have clan privileges, then an
 	 * error message is given to the mob and null is returned.
@@ -101,9 +101,9 @@ public interface PostOffice extends ShopKeeper
 	 * @return the item found, or null
 	 */
 	public Item findBoxContents(String boxName, String likeThis);
-	
+
 	/**
-	 * Returns a mapping of postal branches in this chain to forwarding 
+	 * Returns a mapping of postal branches in this chain to forwarding
 	 * addresses, for the given postal box.
 	 * @see PostOffice#deleteBoxHere(String)
 	 * @see PostOffice#createBoxHere(String, String)
@@ -134,7 +134,7 @@ public interface PostOffice extends ShopKeeper
 	/**
 	 * Parses an postal package entry, which is formatted
 	 * as item xml preceded by various semicolon-delimited
-	 * numbers and data. 
+	 * numbers and data.
 	 * @see PostOffice.MailPiece
 	 * @param data the postal package formatted string
 	 * @return the MailPiece object
@@ -142,7 +142,7 @@ public interface PostOffice extends ShopKeeper
 	public MailPiece parsePostalItemData(String data);
 
 	/**
-	 * Returns the postal chain, a string shared by all post 
+	 * Returns the postal chain, a string shared by all post
 	 * offices that deal with the same postal boxes and
 	 * customers, able to send mail to each other.
 	 * @see PostOffice#setPostalChain(String)
@@ -151,7 +151,7 @@ public interface PostOffice extends ShopKeeper
 	public String postalChain();
 
 	/**
-	 * Sets the postal chain, a string shared by all post 
+	 * Sets the postal chain, a string shared by all post
 	 * offices that deal with the same postal boxes and
 	 * customers, able to send mail to each other.
 	 * @see PostOffice#postalChain()
@@ -209,7 +209,7 @@ public interface PostOffice extends ShopKeeper
 	public void setPostagePerPound(double d);
 
 	/**
-	 * Gets the fee charged per pound per mud month to hold a 
+	 * Gets the fee charged per pound per mud month to hold a
 	 * package in a postal box at this branch.
 	 * @see PostOffice#setHoldFeePerPound(double)
 	 * @return the fee charged per pound per mud month
@@ -217,7 +217,7 @@ public interface PostOffice extends ShopKeeper
 	public double holdFeePerPound();
 
 	/**
-	 * Sets the fee charged per pound per mud month to hold a 
+	 * Sets the fee charged per pound per mud month to hold a
 	 * package in a postal box at this branch.
 	 * @see PostOffice#holdFeePerPound()
 	 * @param d the fee charged per pound per mud month

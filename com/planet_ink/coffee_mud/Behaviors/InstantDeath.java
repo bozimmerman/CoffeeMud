@@ -58,7 +58,7 @@ public class InstantDeath extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String parms)
+	public void setParms(final String parms)
 	{
 		super.setParms(parms);
 		final String maskStr=CMParms.getParmStr(parms,"mask","");
@@ -75,7 +75,7 @@ public class InstantDeath extends ActiveTicker
 		return "instant killing";
 	}
 
-	public void killEveryoneHere(MOB spareMe, Room R)
+	public void killEveryoneHere(final MOB spareMe, final Room R)
 	{
 		if(R==null)
 			return;

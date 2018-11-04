@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Merchant extends CommonSkill implements ShopKeeper
 {
 	@Override
@@ -108,7 +107,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	private MOB				staticMOB			= null;
 	private String[]		pricingAdjustments	= new String[0];
 	private String			itemZapperMask		= "";
-	
+
 	private Pair<Long,TimePeriod> budget		= new Pair<Long,TimePeriod>(Long.valueOf(100000), TimePeriod.DAY);
 
 	public Merchant()
@@ -118,7 +117,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		isAutoInvoked();
 	}
-	
+
 	@Override
 	public CoffeeShop getShop()
 	{
@@ -138,7 +137,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public void setBudget(String factors)
+	public void setBudget(final String factors)
 	{
 		budget = CMLib.coffeeShops().parseBudget(factors);
 	}
@@ -150,7 +149,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public void setDevalueRate(String factors)
+	public void setDevalueRate(final String factors)
 	{
 		devalueRate = CMLib.coffeeShops().parseDevalueRate(factors);
 	}
@@ -162,12 +161,12 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public void setInvResetRate(int ticks)
+	public void setInvResetRate(final int ticks)
 	{
 	}
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		synchronized(this)
 		{
@@ -176,14 +175,14 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public void affectPhyStats(Physical E, PhyStats affectableStats)
+	public void affectPhyStats(final Physical E, final PhyStats affectableStats)
 	{
 		if(E instanceof MOB)
 			affectableStats.setWeight(affectableStats.weight()+shop.totalStockWeight());
 	}
 
 	@Override
-	public boolean isSold(int mask)
+	public boolean isSold(final int mask)
 	{
 		if(mask==0)
 			return whatIsSoldMask==0;
@@ -193,7 +192,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public void addSoldType(int mask)
+	public void addSoldType(final int mask)
 	{
 		if(mask==0)
 			whatIsSoldMask=0;
@@ -231,7 +230,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public void setWhatIsSoldMask(long newSellCode)
+	public void setWhatIsSoldMask(final long newSellCode)
 	{
 		whatIsSoldMask = newSellCode;
 	}
@@ -243,7 +242,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public boolean doISellThis(Environmental thisThang)
+	public boolean doISellThis(final Environmental thisThang)
 	{
 		return CMLib.coffeeShops().doISellThis(thisThang, this);
 	}
@@ -255,7 +254,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public void setPrejudiceFactors(String factors)
+	public void setPrejudiceFactors(final String factors)
 	{
 		prejudice = factors;
 	}
@@ -267,7 +266,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public void setIgnoreMask(String factors)
+	public void setIgnoreMask(final String factors)
 	{
 		ignore = factors;
 	}
@@ -336,7 +335,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			return budget;
 		return getStartArea().finalBudget();
 	}
-	
+
 	@Override
 	public double[] finalDevalueRate()
 	{
@@ -353,7 +352,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return true;
 	}
 
-	public MOB deriveMerchant(MOB roomHelper)
+	public MOB deriveMerchant(final MOB roomHelper)
 	{
 		if(affected ==null)
 			return null;
@@ -466,7 +465,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return super.okMessage(myHost,msg);
 	}
 
-	public boolean putUpForSale(MOB source, MOB merchantM, Environmental tool)
+	public boolean putUpForSale(final MOB source, final MOB merchantM, final Environmental tool)
 	{
 		if((tool!=null)
 		&&(!tool.ID().endsWith("ClanApron"))
@@ -494,7 +493,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		return false;
 	}
 
-	public boolean canPossiblyVend(Environmental E, Environmental what)
+	public boolean canPossiblyVend(final Environmental E, final Environmental what)
 	{
 		if(!(what instanceof Item))
 			return false;
@@ -625,7 +624,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()==0)
 		{
@@ -769,16 +768,16 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob, boolean force)
+	public boolean autoInvocation(final MOB mob, final boolean force)
 	{
 		if(mob instanceof ShopKeeper)
 			return false;
 		return super.autoInvocation(mob, force);
 	}
-	
+
 
 	@Override
-	public void setWhatIsSoldZappermask(String newSellMask)
+	public void setWhatIsSoldZappermask(final String newSellMask)
 	{
 		itemZapperMask = newSellMask;
 	}

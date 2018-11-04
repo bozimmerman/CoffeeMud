@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -48,13 +49,13 @@ public class ProtectedCitizens extends ActiveTicker
 		return Behavior.CAN_MOBS|Behavior.CAN_AREAS|Behavior.CAN_ROOMS;
 	}
 
-	protected static MaskingLibrary.CompiledZMask citizenZapper=null;
-	protected static MaskingLibrary.CompiledZMask helperZapper=null;
-	protected static String[] defclaims={"Help! I'm being attacked!","Help me!!"};
-	protected String[] claims=null;
-	protected int radius=7;
-	protected int maxAssistance=1;
-	protected Map<MOB,List<MOB>> assisters=new Hashtable<MOB,List<MOB>>();
+	protected static CompiledZMask	citizenZapper	= null;
+	protected static CompiledZMask	helperZapper	= null;
+	protected static String[]		defclaims		= { "Help! I'm being attacked!", "Help me!!" };
+	protected String[]				claims			= null;
+	protected int					radius			= 7;
+	protected int					maxAssistance	= 1;
+	protected Map<MOB, List<MOB>>	assisters		= new Hashtable<MOB, List<MOB>>();
 
 	public ProtectedCitizens()
 	{
@@ -74,7 +75,7 @@ public class ProtectedCitizens extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String parms)
+	public void setParms(final String parms)
 	{
 		super.setParms(parms);
 		citizenZapper=null;
@@ -182,7 +183,7 @@ public class ProtectedCitizens extends ActiveTicker
 		return claims;
 	}
 
-	public boolean assistMOB(MOB mob)
+	public boolean assistMOB(final MOB mob)
 	{
 		if(mob==null)
 			return false;

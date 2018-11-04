@@ -25,7 +25,7 @@ import java.util.Map;
  * This class is a pojo that represents one part of a multi-part request submitted
  * to the web server.  Each part can consist of multiple parts itself, have its
  * own headers, content-type, and random variable definitions.
- * 
+ *
  * It is created and populated by HTTPRequest as part of its multi-part request
  * parsing.
  * @author Bo Zimmerman
@@ -60,7 +60,7 @@ public class MultiPartData
 		return variables;
 	}
 	/**
-	 * Returns any sub-multi-parts to this part, 
+	 * Returns any sub-multi-parts to this part,
 	 * if any are found.  Otherwise, an empty list.
 	 * @return sub-multi-parts
 	 */
@@ -90,11 +90,11 @@ public class MultiPartData
 	 * Set the content-type for this part's buffer
 	 * @param contentType the content-type
 	 */
-	public void setContentType(String contentType)
+	public void setContentType(final String contentType)
 	{
 		this.contentType = contentType;
 	}
-	
+
 	/**
 	 * Return the data buffer for this part
 	 * @return the data buffer
@@ -103,16 +103,16 @@ public class MultiPartData
 	{
 		return data;
 	}
-	
+
 	/**
-	 * Set a new data buffer for this "part" 
+	 * Set a new data buffer for this "part"
 	 * @param data the new data buffer
 	 */
-	public void setData(byte[] data)
+	public void setData(final byte[] data)
 	{
 		this.data = data;
 	}
-	
+
 	/**
 	 * The disposition is special in that it often contains other
 	 * informational key/value pairs that are vital to understanding
@@ -120,7 +120,7 @@ public class MultiPartData
 	 * disposition, and then each variable def key/pair in turn.
 	 * @param dispositionStr the unparsed dispositionString defintion
 	 */
-	public void setDisposition(String dispositionStr)
+	public void setDisposition(final String dispositionStr)
 	{
 		final String[] parts=dispositionStr.split(";");
 		if(parts.length>0)

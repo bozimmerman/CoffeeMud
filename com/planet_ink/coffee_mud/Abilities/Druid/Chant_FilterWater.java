@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_FilterWater extends Chant
 {
 	@Override
@@ -72,14 +71,14 @@ public class Chant_FilterWater extends Chant
 	{
 		return Ability.QUALITY_INDIFFERENT;
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		int x=super.miscText.indexOf(';');
+		final int x=super.miscText.indexOf(';');
 		if(x>0)
 		{
-			int y=super.miscText.indexOf('~',x);
+			final int y=super.miscText.indexOf('~',x);
 			if(y>x+1)
 				affectableStats.setName(super.miscText.substring(x+1,y));
 			else
@@ -99,7 +98,7 @@ public class Chant_FilterWater extends Chant
 		{
 			if((!(affected instanceof Item))||(((Item)affected).container()==null))
 			{
-				Room R=CMLib.map().roomLocation(affected);
+				final Room R=CMLib.map().roomLocation(affected);
 				if((R!=null)&&(invoker!=null))
 					R.show(invoker,affected,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> revert(s) to its previous state."));
 			}
@@ -131,16 +130,16 @@ public class Chant_FilterWater extends Chant
 				((Drink)affected).setLiquidType(oldLiquidType);
 		}
 	}
-	
-	public boolean finalizeFreshness(MOB mob, Physical target, Drink D, int asLevel)
+
+	public boolean finalizeFreshness(final MOB mob, final Physical target, final Drink D, final int asLevel)
 	{
-		StringBuilder parms=new StringBuilder("");
+		final StringBuilder parms=new StringBuilder("");
 		if(target instanceof Item)
 		{
-			Item I=(Item)target;
-			String rscName = RawMaterial.CODES.NAME(I.material()).toLowerCase();
+			final Item I=(Item)target;
+			final String rscName = RawMaterial.CODES.NAME(I.material()).toLowerCase();
 			parms.append(I.material()+"/"+((Drink)I).liquidType());
-			int x=I.Name().toLowerCase().indexOf(" "+rscName+" ");
+			final int x=I.Name().toLowerCase().indexOf(" "+rscName+" ");
 			parms.append(";");
 			if(x>0)
 				parms.append(I.Name().substring(0,x)+" fresh water "+I.Name().substring(x+rscName.length()+2));
@@ -157,7 +156,7 @@ public class Chant_FilterWater extends Chant
 		{
 			if(D instanceof Physical)
 				((Physical)D).delAllEffects(true);
-			Ability A=this.beneficialAffect(mob, target, asLevel, 0);
+			final Ability A=this.beneficialAffect(mob, target, asLevel, 0);
 			if(A!=null)
 			{
 				A.setMiscText(parms.toString());
@@ -169,9 +168,9 @@ public class Chant_FilterWater extends Chant
 		}
 		return false;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=this.getAnyTarget(mob, commands, givenTarget, Wearable.FILTER_ANY);
 		if(target==null)
@@ -181,8 +180,8 @@ public class Chant_FilterWater extends Chant
 			mob.tell(L("Your magic cannot filter @x1.",target.name(mob)));
 			return false;
 		}
-		
-		Drink D=(Drink)target;
+
+		final Drink D=(Drink)target;
 		if((D.liquidType() == RawMaterial.RESOURCE_FRESHWATER)
 		&&(!(D instanceof SpellHolder))
 		&&(target.numEffects()==0))
@@ -208,7 +207,7 @@ public class Chant_FilterWater extends Chant
 					final List<Item> V=((Container)D).getContents();
 					for(int v=0;v<V.size();v++)
 					{
-						Item I=V.get(v);
+						final Item I=V.get(v);
 						if((I instanceof Drink)
 						&&(I instanceof RawMaterial)
 						&&((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)

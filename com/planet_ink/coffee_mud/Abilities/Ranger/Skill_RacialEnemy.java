@@ -45,7 +45,7 @@ public class Skill_RacialEnemy extends Ranger_Enemy1
 	{
 		return localizedName;
 	}
-	
+
 	@Override
 	public int classificationCode()
 	{

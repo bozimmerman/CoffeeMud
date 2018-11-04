@@ -45,7 +45,7 @@ public interface WebMacro extends CMObject
 {
 	/**
 	 * The public name of this macro
-	 * 
+	 *
 	 * @return The public name of this macro
 	 */
 	@Override
@@ -53,7 +53,7 @@ public interface WebMacro extends CMObject
 
 	/**
 	 * Whether the runMacro or runBinaryMacro executor should be called.
-	 * 
+	 *
 	 * @see WebMacro#runBinaryMacro(HTTPRequest, String, HTTPResponse)
 	 * @see WebMacro#runMacro(HTTPRequest, String, HTTPResponse)
 	 * @return whether the runBinaryMacro executor should be called instead of
@@ -63,7 +63,7 @@ public interface WebMacro extends CMObject
 
 	/**
 	 * Whether this macro is restricted to the admin web server.
-	 * 
+	 *
 	 * @return true if the macro is restricted to the admin web server
 	 */
 	public boolean isAdminMacro();
@@ -73,7 +73,7 @@ public interface WebMacro extends CMObject
 	 * standard web macro. If true is returned, URLs such as:
 	 * http://mydomain.com/mymacroname?firstparm=value&amp;secondparm=value
 	 * might succeeed
-	 * 
+	 *
 	 * @return whether this is a wierd URL macro
 	 */
 	public boolean isAWebPath();
@@ -82,12 +82,12 @@ public interface WebMacro extends CMObject
 	 * This method is executed only if this macro returns true for
 	 * preferBinary(). It will execute the macro and return its results as a
 	 * binary byte array.
-	 * 
-	 * The response object is used to set cookies and headers only.  Any 
+	 *
+	 * The response object is used to set cookies and headers only.  Any
 	 * response body is in the return object.  Since 99% of macros are only
 	 * filling in an existing page, nothing will be done with that anyway,
 	 * and is only important when isAWebPath return true.
-	 * 
+	 *
 	 * @see WebMacro#preferBinary()
 	 * @see com.planet_ink.coffee_web.interfaces.HTTPRequest
 	 * @param httpReq the external requests object
@@ -103,12 +103,12 @@ public interface WebMacro extends CMObject
 	 * preferBinary(). It will execute the macro and return its results as a
 	 * string, which is then substituted for the macro reference in the web page
 	 * where the macro was found.
-	 * 
-	 * The response object is used to set cookies and headers only.  Any 
+	 *
+	 * The response object is used to set cookies and headers only.  Any
 	 * response body is in the return object.  Since 99% of macros are only
 	 * filling in an existing page, nothing will be done with that anyway,
 	 * and is only important when isAWebPath return true.
-	 * 
+	 *
 	 * @see WebMacro#preferBinary()
 	 * @see com.planet_ink.coffee_web.interfaces.HTTPRequest
 	 * @param httpReq the external requests object

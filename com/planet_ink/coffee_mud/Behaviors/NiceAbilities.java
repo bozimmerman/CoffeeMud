@@ -47,8 +47,8 @@ public class NiceAbilities extends ActiveTicker
 		return Behavior.CAN_MOBS;
 	}
 
-	private List<Ability> mySkills=null;
-	private int numAllSkills=-1;
+	private List<Ability>	mySkills		= null;
+	private int				numAllSkills	= -1;
 
 	public NiceAbilities()
 	{

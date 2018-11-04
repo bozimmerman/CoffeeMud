@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell extends StdAbility
 {
 
@@ -92,11 +91,11 @@ public class Spell extends StdAbility
 	protected static final int CHAIN_LENGTH=4;
 
 	@Override
-	public Ability maliciousAffect(MOB mob,
-								   Physical target,
-								   int asLevel,
-								   int tickAdjustmentFromStandard,
-								   int additionAffectCheckCode)
+	public Ability maliciousAffect(final MOB mob,
+								   final Physical target,
+								   final int asLevel,
+								   final int tickAdjustmentFromStandard,
+								   final int additionAffectCheckCode)
 	{
 		final Ability doneA=super.maliciousAffect(mob,target,asLevel,tickAdjustmentFromStandard,additionAffectCheckCode);
 		if((doneA!=null)
@@ -130,7 +129,7 @@ public class Spell extends StdAbility
 		return doneA;
 	}
 
-	protected static boolean spellArmorCheck(StdAbility A, MOB mob, boolean auto)
+	protected static boolean spellArmorCheck(final StdAbility A, final MOB mob, final boolean auto)
 	{
 		if((!auto)&&(mob.isMine(A))&&(mob.location()!=null))
 		{
@@ -150,9 +149,9 @@ public class Spell extends StdAbility
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

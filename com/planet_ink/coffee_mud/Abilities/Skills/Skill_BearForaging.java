@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_BearForaging extends StdAbility
 {
 	@Override
@@ -143,7 +142,7 @@ public class Skill_BearForaging extends StdAbility
 		else
 		if(E instanceof Item)
 		{
-			Item I=(Item)E;
+			final Item I=(Item)E;
 			final List<Item> containerSet=this.containerSet(mob, I);
 			if((containerSet != null)&&(containerSet.size()>0))
 			{
@@ -171,7 +170,7 @@ public class Skill_BearForaging extends StdAbility
 					{
 						eatC.execute(mob, new XVector<String>("EAT",I.Name()), 0);
 					}
-					catch (IOException e)
+					catch (final IOException e)
 					{
 						Log.errOut(e);
 					}
@@ -179,7 +178,7 @@ public class Skill_BearForaging extends StdAbility
 			}
 		}
 	}
-	
+
 	protected List<Item> containerSet(final MOB mob, Item I)
 	{
 		final List<Item> containers=new ArrayList<Item>();
@@ -205,7 +204,7 @@ public class Skill_BearForaging extends StdAbility
 		}
 		return containers;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -319,7 +318,7 @@ public class Skill_BearForaging extends StdAbility
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
@@ -375,12 +374,12 @@ public class Skill_BearForaging extends StdAbility
 		}
 		return null;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(final Ability A : V) 
+		for(final Ability A : V)
 			A.unInvoke();
 		if(V.size()>0)
 		{
@@ -407,7 +406,7 @@ public class Skill_BearForaging extends StdAbility
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR);
-		int range=3 + (adjustedLevel(mob,asLevel)/15) + (super.getXMAXRANGELevel(mob));
+		final int range=3 + (adjustedLevel(mob,asLevel)/15) + (super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room room : checkSet)
 		{

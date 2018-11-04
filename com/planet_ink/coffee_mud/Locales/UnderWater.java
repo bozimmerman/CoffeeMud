@@ -40,7 +40,7 @@ public class UnderWater extends StdRoom implements Drink
 	}
 
 	protected int liquidType = RawMaterial.RESOURCE_FRESHWATER;
-	
+
 	public UnderWater()
 	{
 		super();
@@ -71,7 +71,7 @@ public class UnderWater extends StdRoom implements Drink
 	}
 
 	@Override
-	public void setDecayTime(long time)
+	public void setDecayTime(final long time)
 	{
 	}
 
@@ -167,7 +167,7 @@ public class UnderWater extends StdRoom implements Drink
 			CMLib.tracking().makeSink(P,room,reversed);
 	}
 
-	public static int isOkUnderWaterAffect(Room room, CMMsg msg)
+	public static int isOkUnderWaterAffect(final Room room, final CMMsg msg)
 	{
 		if(CMLib.flags().isSleeping(room))
 			return 0;
@@ -220,7 +220,7 @@ public class UnderWater extends StdRoom implements Drink
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -253,24 +253,24 @@ public class UnderWater extends StdRoom implements Drink
 	}
 
 	@Override
-	public void setLiquidType(int newLiquidType)
+	public void setLiquidType(final int newLiquidType)
 	{
 		atmosphere=liquidType;
 		liquidType = newLiquidType;
 	}
 
 	@Override
-	public void setThirstQuenched(int amount)
+	public void setThirstQuenched(final int amount)
 	{
 	}
 
 	@Override
-	public void setLiquidHeld(int amount)
+	public void setLiquidHeld(final int amount)
 	{
 	}
 
 	@Override
-	public void setLiquidRemaining(int amount)
+	public void setLiquidRemaining(final int amount)
 	{
 	}
 
@@ -287,7 +287,7 @@ public class UnderWater extends StdRoom implements Drink
 	}
 
 	@Override
-	public int amountTakenToFillMe(Drink theSource)
+	public int amountTakenToFillMe(final Drink theSource)
 	{
 		return 0;
 	}

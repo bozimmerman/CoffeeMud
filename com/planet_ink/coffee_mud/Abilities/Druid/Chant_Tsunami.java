@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_Tsunami extends Chant
 {
 	@Override
@@ -101,7 +100,7 @@ public class Chant_Tsunami extends Chant
 						highestLevels[1] = M.phyStats().level();
 						highestLevelM[1] = M;
 					}
-					
+
 					if(M.isPlayer() && (M.phyStats().level() > highestLevels[0]))
 					{
 						highestLevels[0] = M.phyStats().level();
@@ -129,14 +128,14 @@ public class Chant_Tsunami extends Chant
 			return highestLevelM[0];
 		return highestLevelM[1];
 	}
-	
-	protected MOB getHighestLevel(MOB casterM, List<Room> targets)
+
+	protected MOB getHighestLevel(final MOB casterM, final List<Room> targets)
 	{
 		// pc=0, npc=1
 		final int[] highestLevels=new int[]{0,0};
 		final MOB[] highestLevelM=new MOB[]{null, null};
 		final Set<MOB> grp = casterM.getGroupMembers(new HashSet<MOB>());
-		for(Room R : targets)
+		for(final Room R : targets)
 		{
 			gatherHighestLevels(casterM,R,grp,highestLevels,highestLevelM);
 		}
@@ -144,8 +143,8 @@ public class Chant_Tsunami extends Chant
 			return highestLevelM[0];
 		return highestLevelM[1];
 	}
-	
-	public int getWaterRoomDir(Room mobR)
+
+	public int getWaterRoomDir(final Room mobR)
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
@@ -172,7 +171,7 @@ public class Chant_Tsunami extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -183,7 +182,7 @@ public class Chant_Tsunami extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room mobR=mob.location();
 		if(mobR==null)
@@ -193,20 +192,20 @@ public class Chant_Tsunami extends Chant
 			mob.tell(L("You must be on or near the shore for this chant to work."));
 			return false;
 		}
-		
-		List<Room> targetRooms = new ArrayList<Room>();
-		int waterDir = this.getWaterRoomDir(mobR);
+
+		final List<Room> targetRooms = new ArrayList<Room>();
+		final int waterDir = this.getWaterRoomDir(mobR);
 		if(waterDir < 0)
 		{
 			mob.tell(L("You must be on or near the shore for this chant to work."));
 			return false;
 		}
-		String fromDir = CMLib.directions().getFromCompassDirectionName(waterDir);
-		
+		final String fromDir = CMLib.directions().getFromCompassDirectionName(waterDir);
+
 		//targetRooms.add(mobR);
-		TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR).plus(TrackingFlag.OPENONLY).plus(TrackingFlag.NOWATER);
+		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR).plus(TrackingFlag.OPENONLY).plus(TrackingFlag.NOWATER);
 		targetRooms.addAll(CMLib.tracking().getRadiantRooms(mobR, flags, 2));
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -214,7 +213,7 @@ public class Chant_Tsunami extends Chant
 
 		if(success)
 		{
-			MOB M=this.getHighestLevel(mob, targetRooms);
+			final MOB M=this.getHighestLevel(mob, targetRooms);
 			if(M!=null)
 			{
 				int chanceToFail = M.charStats().getSave(CharStats.STAT_SAVE_JUSTICE);
@@ -228,7 +227,7 @@ public class Chant_Tsunami extends Chant
 					else
 					if (chanceToFail > 95)
 						chanceToFail = 95;
-		
+
 					if (CMLib.dice().rollPercentage() < chanceToFail)
 					{
 						success = false;
@@ -236,9 +235,9 @@ public class Chant_Tsunami extends Chant
 				}
 			}
 		}
-		
-		Physical target=mobR;
-		
+
+		final Physical target=mobR;
+
 		if(success)
 		{
 			int newAtmosphere = RawMaterial.RESOURCE_SALTWATER;
@@ -265,13 +264,13 @@ public class Chant_Tsunami extends Chant
 					}
 				}
 			}
-			
+
 			final Set<MOB> casterGroup=mob.getGroupMembers(new HashSet<MOB>());
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L(""):L("^S<S-NAME> chant(s), calling in a tsunami from @x1.^?",fromDir));
 			if(mobR.okMessage(mob,msg))
 			{
 				mobR.send(mob, msg);
-				
+
 				final CMMsg msg2=CMClass.getMsg(mob,null,this,verbalCastCode(mob,target,auto),null);
 				final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_ALWAYS:0),null);
 				int numEnemies = 0;
@@ -307,19 +306,19 @@ public class Chant_Tsunami extends Chant
 								if((msg2.value()<=0)&&(msg3.value()<=0))
 								{
 									final int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)/numEnemies,numEnemies);
-									String msgStr = L("^SA tsunami from @x1 pummels <T-NAME>.^?",fromDir);
+									final String msgStr = L("^SA tsunami from @x1 pummels <T-NAME>.^?",fromDir);
 									CMLib.combat().postDamage(mob,M,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BURSTING,msgStr);
 								}
 							}
 						}
 					}
-					Chant A=(Chant)CMClass.getAbility("Chant_Flood");
+					final Chant A=(Chant)CMClass.getAbility("Chant_Flood");
 					if(A!=null)
 					{
 						if(R2.fetchEffect(A.ID())==null)
 						{
-							int oldAtmo=R2.getAtmosphereCode();
-							Chant A1=(Chant)A.maliciousAffect(mob,R2,asLevel,0,-1);
+							final int oldAtmo=R2.getAtmosphereCode();
+							final Chant A1=(Chant)A.maliciousAffect(mob,R2,asLevel,0,-1);
 							if(A1!=null)
 							{
 								A1.setTickDownRemaining(A1.getTickDownRemaining()/2);

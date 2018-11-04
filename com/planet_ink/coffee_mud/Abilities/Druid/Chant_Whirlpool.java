@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_Whirlpool extends Chant
 {
 	@Override
@@ -84,7 +83,7 @@ public class Chant_Whirlpool extends Chant
 	{
 		return Ability.COST_ALL - 99;
 	}
-	
+
 	private volatile Room theWhirlpool = null;
 
 	@Override
@@ -105,25 +104,25 @@ public class Chant_Whirlpool extends Chant
 		}
 	}
 
-	public boolean canEnterTheWhirlpool(MOB M)
+	public boolean canEnterTheWhirlpool(final MOB M)
 	{
 		if(invoker()!=null)
 			return invoker().mayIFight(M);
 		return true;
 	}
-	
-	public boolean canEnterTheWhirlpool(Rideable R)
+
+	public boolean canEnterTheWhirlpool(final Rideable R)
 	{
 		for(final Enumeration<Rider> r2 = R.riders();r2.hasMoreElements();)
 		{
-			Rider R2=r2.nextElement();
+			final Rider R2=r2.nextElement();
 			if((R2 instanceof MOB)&&(!canEnterTheWhirlpool((MOB)R2)))
 				return false;
 		}
 		return true;
 	}
-	
-	public boolean canEnterTheWhirlpool(BoardableShip S)
+
+	public boolean canEnterTheWhirlpool(final BoardableShip S)
 	{
 		if(S instanceof PrivateProperty)
 		{
@@ -131,13 +130,13 @@ public class Chant_Whirlpool extends Chant
 			{
 				if(!CMLib.law().canAttackThisProperty(invoker(), (PrivateProperty)S))
 					return false;
-				
+
 			}
 		}
 		return true;
 	}
-	
-	public boolean canEverEnterThePool(MOB M)
+
+	public boolean canEverEnterThePool(final MOB M)
 	{
 		if((invoker!=null)
 		&&((invoker==M)||(!invoker.mayIFight(M))))
@@ -158,7 +157,7 @@ public class Chant_Whirlpool extends Chant
 		return enterThePool;
 	}
 
-	public boolean canEverEnterThePool(Item I)
+	public boolean canEverEnterThePool(final Item I)
 	{
 		if(I instanceof BoardableShip)
 			return canEnterTheWhirlpool((BoardableShip)I);
@@ -191,7 +190,7 @@ public class Chant_Whirlpool extends Chant
 						{
 							for(final Enumeration<Room> r2=A.getProperMap();r2.hasMoreElements();)
 							{
-								Room R2=r2.nextElement();
+								final Room R2=r2.nextElement();
 								if((R2!=null)&&((R2.domainType()&Room.INDOORS)==0))
 									R2.showHappens(CMMsg.MSG_OK_ACTION, L("@x1 is swept into a massive whirlpool!",I.Name()));
 							}
@@ -218,7 +217,7 @@ public class Chant_Whirlpool extends Chant
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -244,7 +243,7 @@ public class Chant_Whirlpool extends Chant
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -254,9 +253,9 @@ public class Chant_Whirlpool extends Chant
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,L("A MASSIVE WHIRLPOOL IS HERE!!!"),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room target=mob.location();
 		if(!CMLib.flags().isWaterySurfaceRoom(target))
@@ -265,19 +264,19 @@ public class Chant_Whirlpool extends Chant
 			return false;
 		}
 
-		Room waterBelow = target.getRoomInDir(Directions.DOWN);
+		final Room waterBelow = target.getRoomInDir(Directions.DOWN);
 		if(!CMLib.flags().isUnderWateryRoom(waterBelow))
 		{
 			mob.tell(L("This magic only works above the watery deeps."));
 			return false;
 		}
-		
+
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("There is already a whirlpool here! Geesh, how did you miss it?!"));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -290,7 +289,7 @@ public class Chant_Whirlpool extends Chant
 			{
 				target.send(mob,msg);
 				target.showHappens(CMMsg.MSG_OK_ACTION, L("A MASSIVE WHIRLPOOL FORMS HERE!"));
-				Chant_Whirlpool W=(Chant_Whirlpool)beneficialAffect(mob,target,asLevel,0);
+				final Chant_Whirlpool W=(Chant_Whirlpool)beneficialAffect(mob,target,asLevel,0);
 				if(W!=null)
 				{
 					W.theWhirlpool = CMClass.getLocale("Whirlpool");

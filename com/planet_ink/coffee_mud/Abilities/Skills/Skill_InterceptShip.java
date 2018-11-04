@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_InterceptShip extends StdSkill
 {
 	@Override
@@ -90,7 +89,7 @@ public class Skill_InterceptShip extends StdSkill
 	}
 
 	protected volatile Room targetRoom = null;
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -118,7 +117,7 @@ public class Skill_InterceptShip extends StdSkill
 					unInvoke();
 					return false;
 				}
-				
+
 			}
 			else
 			{
@@ -149,7 +148,7 @@ public class Skill_InterceptShip extends StdSkill
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
-		int bonus=super.getXLEVELLevel(invoker) / 3;
+		final int bonus=super.getXLEVELLevel(invoker) / 3;
 		if(this.affected instanceof Item)
 		{
 			affectableStats.setAbility(affectableStats.ability()+1+bonus);
@@ -166,9 +165,9 @@ public class Skill_InterceptShip extends StdSkill
 	{
 		super.unInvoke();
 	}
-	
+
 	@Override
-	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -178,7 +177,7 @@ public class Skill_InterceptShip extends StdSkill
 		if((R.getArea() instanceof BoardableShip)
 		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
 		{
-			SailingShip sailShip=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
+			final SailingShip sailShip=(SailingShip)((BoardableShip)R.getArea()).getShipItem();
 			myShip=sailShip;
 			currentR=CMLib.map().roomLocation(myShip);
 			if(currentR!=null)
@@ -188,7 +187,7 @@ public class Skill_InterceptShip extends StdSkill
 					mob.tell(L("Your ship must not be in combat to move to intercept speeds!"));
 					return false;
 				}
-				
+
 				if(sailShip.isAnchorDown())
 				{
 					mob.tell(L("You should probably raise anchor first."));
@@ -214,18 +213,18 @@ public class Skill_InterceptShip extends StdSkill
 			mob.tell(L("You can't seem to figure out how to get there from here."));
 			return false;
 		}
-		
+
 		final String parm=CMParms.combine(commands).trim();
-		
+
 		Room targetR = null;
 		List<Room> trail = null;
-		TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
+		final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
 														.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
 		final PhysicalAgent[] targetShipI=new PhysicalAgent[1];
-		TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
+		final TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 		{
 			@Override
-			public boolean isFilteredOut(Room hostR, Room R, Exit E, int dir)
+			public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 			{
 				if (R == null)
 					return false;
@@ -256,22 +255,22 @@ public class Skill_InterceptShip extends StdSkill
 		trail = CMLib.tracking().findTrailToAnyRoom(currentR, destFilter, flags, 100);
 		if((trail!=null)&&(trail.size()>0))
 			targetR=trail.get(0);
-		
+
 		if((targetR==null)||(trail==null)||(trail.size()==0))
 		{
 			mob.tell(L("Your contacts and charts tell you nothing about where '@x1' might be .",parm));
 			return false;
 		}
-		
+
 		if(!mob.mayIFight(targetShipI[0]))
 		{
 			mob.tell(L("You may only intercept a potential enemy ship, which '@x1' is not .",targetShipI[0].Name()));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
@@ -281,14 +280,14 @@ public class Skill_InterceptShip extends StdSkill
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				StringBuilder dirs=new StringBuilder("");
-				StringBuilder courseStr=new StringBuilder("");
+				final StringBuilder dirs=new StringBuilder("");
+				final StringBuilder courseStr=new StringBuilder("");
 				Room room=trail.get(trail.size()-1);
-				List<String> cmds=new XVector<String>("GO");
+				final List<String> cmds=new XVector<String>("GO");
 				for(int i=trail.size()-2;i>=0;i--)
 				{
-					Room nextRoom=trail.get(i);
-					int dir=CMLib.map().getRoomDir(room, nextRoom);
+					final Room nextRoom=trail.get(i);
+					final int dir=CMLib.map().getRoomDir(room, nextRoom);
 					if(dir >= 0)
 					{
 						dirs.append(CMLib.directions().getDirectionName(dir));
@@ -305,7 +304,7 @@ public class Skill_InterceptShip extends StdSkill
 				final String msgStr=L("Your charts say the way there is: @x1",dirs.toString());
 				if(myShip instanceof BoardableShip)
 				{
-					String courseMsgStr="COURSE "+courseStr.toString();
+					final String courseMsgStr="COURSE "+courseStr.toString();
 					final CMMsg huhMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,msgStr,courseMsgStr,null);
 					if(R.okMessage(mob,huhMsg))
 						R.send(mob,huhMsg);

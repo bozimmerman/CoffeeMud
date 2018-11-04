@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_SeaNavigation extends StdSkill
 {
 	@Override
@@ -90,7 +89,7 @@ public class Skill_SeaNavigation extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -112,8 +111,8 @@ public class Skill_SeaNavigation extends StdSkill
 			return false;
 		}
 
-		boolean fullNav = text().trim().toUpperCase().equals("FULL");
-		Ability seaChartA=mob.fetchAbility("Skill_SeaCharting");
+		final boolean fullNav = text().trim().toUpperCase().equals("FULL");
+		final Ability seaChartA=mob.fetchAbility("Skill_SeaCharting");
 		if(commands.size()==0)
 		{
 			if(fullNav)
@@ -130,7 +129,7 @@ public class Skill_SeaNavigation extends StdSkill
 				mob.tell(L("You must specify the number of a Sea Charted point.  Use SEACHART LIST for a list of valid numbers."));
 			return false;
 		}
-		
+
 		List<String> rooms;
 		if(seaChartA!=null)
 			rooms=CMParms.parseAny(seaChartA.text(),';',true);
@@ -138,13 +137,13 @@ public class Skill_SeaNavigation extends StdSkill
 			rooms=new Vector<String>(1);
 
 		final String parm=CMParms.combine(commands).trim();
-		
+
 		if(currentR==null)
 		{
 			mob.tell(L("You can't seem to figure out how to get there from here."));
 			return false;
 		}
-		
+
 		Room targetR = null;
 		List<Room> trail = null;
 		if(CMath.isInteger(parm))
@@ -166,7 +165,7 @@ public class Skill_SeaNavigation extends StdSkill
 				return false;
 			}
 			chartPointIndex--;
-			TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
+			final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
 															.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
 			targetR=CMLib.map().getRoom(rooms.get(chartPointIndex));
 			if(targetR!=null)
@@ -175,12 +174,12 @@ public class Skill_SeaNavigation extends StdSkill
 		else
 		if(fullNav)
 		{
-			TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
+			final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
 					.plus(TrackingFlag.NOHOMES);
-			TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
+			final TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 			{
 				@Override
-				public boolean isFilteredOut(Room hostR, Room R, Exit E, int dir)
+				public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 				{
 					if (R == null)
 						return false;
@@ -212,16 +211,16 @@ public class Skill_SeaNavigation extends StdSkill
 				mob.tell(L("'@x1' is not a valid chart point number to get the distance to. Try SEACHART LIST.",parm));
 			return false;
 		}
-		
+
 		if((targetR==null)||(trail==null)||(trail.size()==0))
 		{
 			mob.tell(L("You don't know how to get there from here."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
@@ -231,13 +230,13 @@ public class Skill_SeaNavigation extends StdSkill
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				StringBuilder dirs=new StringBuilder("");
-				StringBuilder courseStr=new StringBuilder("");
+				final StringBuilder dirs=new StringBuilder("");
+				final StringBuilder courseStr=new StringBuilder("");
 				Room room=trail.get(trail.size()-1);
 				for(int i=trail.size()-2;i>=0;i--)
 				{
-					Room nextRoom=trail.get(i);
-					int dir=CMLib.map().getRoomDir(room, nextRoom);
+					final Room nextRoom=trail.get(i);
+					final int dir=CMLib.map().getRoomDir(room, nextRoom);
 					if(dir >= 0)
 					{
 						dirs.append(CMLib.directions().getDirectionName(dir));
@@ -253,7 +252,7 @@ public class Skill_SeaNavigation extends StdSkill
 				final String msgStr=L("Your charts say the way there is: @x1",dirs.toString());
 				if(R.getArea() instanceof BoardableShip)
 				{
-					String courseMsgStr="COURSE "+courseStr.toString();
+					final String courseMsgStr="COURSE "+courseStr.toString();
 					final CMMsg huhMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,msgStr,courseMsgStr,null);
 					if(R.okMessage(mob,huhMsg))
 						R.send(mob,huhMsg);

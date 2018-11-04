@@ -46,7 +46,7 @@ public interface LandTitle extends PrivateProperty
 	 * @return the roomID or the Area  name of the property for sale
 	 */
 	public String landPropertyID();
-	
+
 	/**
 	 * Set the roomID or the Area name of the property for sale
 	 * @param landID the roomID or the Area  name of the property for sale
@@ -60,7 +60,7 @@ public interface LandTitle extends PrivateProperty
 	 * @see LandTitle#updateTitle()
 	 */
 	public void updateLot(Set<String> optPlayerList);
-	
+
 	/**
 	 * Simply resaves the rooms represented by this title to reflect change
 	 * in ownership or price.  The state of the rooms is not inspected or
@@ -75,7 +75,7 @@ public interface LandTitle extends PrivateProperty
 	 * @return a list of the complete set of Room objects represented by this title
 	 */
 	public List<Room> getAllTitledRooms();
-	
+
 	/**
 	 * The complete set of room objects that are tied together by one or more titles.
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
@@ -103,7 +103,7 @@ public interface LandTitle extends PrivateProperty
 	 * @param truefalse true if the property is rental, false if ownable outright
 	 */
 	public void setRentalProperty(boolean truefalse);
-	
+
 	/**
 	 * If back taxes is owned on this property, this is how the value is set.  The
 	 * value should be in base coffeemud currency
@@ -125,7 +125,7 @@ public interface LandTitle extends PrivateProperty
 	 * @return the new title to assigne to a new room.
 	 */
 	public LandTitle generateNextRoomTitle();
-	
+
 	/**
 	 * Returns whether this title allows property to be expanded through masonry or construction.
 	 * @see LandTitle#generateNextRoomTitle()

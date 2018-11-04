@@ -110,7 +110,7 @@ public class Chant_Drifting extends Chant
 				||(((Room)msg.target()).domainType()==Room.DOMAIN_OUTDOORS_AIR)
 				||(CMLib.flags().isInFlight((Room)msg.target()))))
 			{
-				
+
 				mob.tell(L("You can not seem to direct your flying that way."));
 				return false;
 			}
@@ -170,7 +170,7 @@ public class Chant_Drifting extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

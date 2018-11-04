@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_ReqLevels extends Property implements TriggeredAffect
 {
 	@Override
@@ -73,7 +72,7 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String txt)
+	public void setMiscText(final String txt)
 	{
 		noFollow=false;
 		noSneak=false;
@@ -147,14 +146,14 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 			{
 				lvls=new int[vals.size()];
 				int i=0;
-				for(Integer I : vals)
+				for(final Integer I : vals)
 					lvls[i++]=I.intValue();
 			}
 		}
 		super.setMiscText(txt);
 	}
 
-	public boolean passesMuster(MOB mob, Environmental R)
+	public boolean passesMuster(final MOB mob, final Environmental R)
 	{
 		if(mob==null)
 			return false;
@@ -191,7 +190,7 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 				break;
 			}
 		}
-		
+
 
 		return false;
 	}
@@ -211,13 +210,13 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 			else
 			{
 				msg.source().getGroupMembers(H);
-				final HashSet<MOB> H2=new XHashSet(H);
-				for(final Iterator e=H2.iterator();e.hasNext();)
-					((MOB)e.next()).getRideBuddies(H);
+				final HashSet<MOB> H2=new XHashSet<MOB>(H);
+				for(final Iterator<MOB> e=H2.iterator();e.hasNext();)
+					e.next().getRideBuddies(H);
 			}
-			for(final Iterator e=H.iterator();e.hasNext();)
+			for(final Iterator<MOB> e=H.iterator();e.hasNext();)
 			{
-				final Environmental E=(Environmental)e.next();
+				final Environmental E=e.next();
 				if((E instanceof MOB)
 				&&(passesMuster((MOB)E,msg.target())))
 					return super.okMessage(myHost,msg);

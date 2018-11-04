@@ -40,12 +40,12 @@ public class Wimpy extends StdBehavior
 		return "Wimpy";
 	}
 
-	protected int tickWait=0;
-	protected int tickDown=0;
-	protected boolean veryWimpy=false;
+	protected int		tickWait	= 0;
+	protected int		tickDown	= 0;
+	protected boolean	veryWimpy	= false;
 
 	@Override
-	public boolean grantsAggressivenessTo(MOB M)
+	public boolean grantsAggressivenessTo(final MOB M)
 	{
 		return false;
 	}
@@ -60,7 +60,7 @@ public class Wimpy extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		tickWait=CMParms.getParmInt(newParms,"delay",0);

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_DispelDivination extends Spell
 {
 
@@ -68,7 +67,7 @@ public class Spell_DispelDivination extends Spell
 		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
 	}
 
-	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
+	public List<Ability> returnOffensiveAffects(final MOB caster, final Physical fromMe)
 	{
 		final List<Ability> offenders=new Vector<Ability>();
 		final boolean admin=CMSecurity.isASysOp(caster);
@@ -88,7 +87,7 @@ public class Spell_DispelDivination extends Spell
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob.isMonster())&&(mob.isInCombat()))
 			return Ability.QUALITY_INDIFFERENT;
@@ -96,7 +95,7 @@ public class Spell_DispelDivination extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null)

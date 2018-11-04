@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Blessing extends StdAbility
 {
 	@Override
@@ -117,7 +116,7 @@ public class Blessing extends StdAbility
 		super.unInvoke();
 	}
 
-	public static void endLowerCurses(Physical target, int level)
+	public static void endLowerCurses(final Physical target, final int level)
 	{
 		final List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
 		for(int v=0;v<V.size();v++)
@@ -129,7 +128,7 @@ public class Blessing extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)

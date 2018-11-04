@@ -42,7 +42,7 @@ public class HelloWorldServlet implements SimpleServlet
 	public static final String helloResponseEnd="</h1></body></html>";
 	public static final String helloResponse=helloResponseStart+defaultResponseBody+helloResponseEnd;
 	@Override
-	public void doGet(SimpleServletRequest request, SimpleServletResponse response)
+	public void doGet(final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		try
 		{
@@ -57,7 +57,7 @@ public class HelloWorldServlet implements SimpleServlet
 		}
 	}
 
-	public void doDynamicPost(SimpleServletRequest request, SimpleServletResponse response)
+	public void doDynamicPost(final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		try
 		{
@@ -68,7 +68,7 @@ public class HelloWorldServlet implements SimpleServlet
 			int c;
 			while((c=in.read())>=0)
 				bout.write((byte)c);
-			String submitted=new String(bout.toByteArray(),Charset.forName("UTF-8"));
+			final String submitted=new String(bout.toByteArray(),Charset.forName("UTF-8"));
 			if(submitted.length()==0)
 				response.getOutputStream().write(defaultResponseBody.getBytes());
 			else
@@ -82,7 +82,7 @@ public class HelloWorldServlet implements SimpleServlet
 	}
 
 	@Override
-	public void doPost(SimpleServletRequest request, SimpleServletResponse response)
+	public void doPost(final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		if(request.getHeader("X-DynamicPost")!=null)
 			this.doDynamicPost(request, response);
@@ -102,7 +102,7 @@ public class HelloWorldServlet implements SimpleServlet
 	}
 
 	@Override
-	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response)
+	public void service(final HTTPMethod method, final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		if((method != HTTPMethod.POST) && (method!=HTTPMethod.GET))
 			response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());

@@ -66,7 +66,7 @@ public class Surveying extends CommonSkill
 	protected Item		catalogI	= null;
 	protected boolean	addLore		= false;
 	protected boolean	addAppraise	= false;
-	
+
 	@Override
 	protected boolean canBeDoneSittingDown()
 	{
@@ -100,13 +100,13 @@ public class Surveying extends CommonSkill
 					final String message;
 					if(found instanceof Area)
 					{
-						Area A=(Area)found;
+						final Area A=(Area)found;
 						subject=A.Name();
 						final StringBuilder msgBuilder=new StringBuilder("");
 						msgBuilder.append(L("^HArea Name  : ^N")).append(A.name()).append("\n\r");
 						msgBuilder.append(L("^HLinks to   : ^N"));
-						List<String> lAreasV=new ArrayList<String>();
-						Map<String,int[]> rTypesV=new TreeMap<String,int[]>();
+						final List<String> lAreasV=new ArrayList<String>();
+						final Map<String,int[]> rTypesV=new TreeMap<String,int[]>();
 						for(final Enumeration<Room> r= A.getFilledProperMap();r.hasMoreElements();)
 						{
 							final Room R=r.nextElement();
@@ -148,13 +148,13 @@ public class Surveying extends CommonSkill
 						}
 						if(expertise > 3)
 						{
-							Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+							final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
 							if(F!=null)
 								msgBuilder.append(L("^HMed Align. : ^N")).append(F.fetchRangeName(A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()])).append("\n\r");
 						}
 						if(expertise > 4)
 						{
-							Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+							final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
 							if(F!=null)
 							{
 								msgBuilder.append(L("^HAlign Range: ^N"))
@@ -166,7 +166,7 @@ public class Surveying extends CommonSkill
 						if(expertise > 5)
 						{
 							msgBuilder.append(L("^HClimate    : ^N"));
-							List<String> climateV=new ArrayList<String>();
+							final List<String> climateV=new ArrayList<String>();
 							for(int i=1;i<Places.NUM_CLIMATES;i++)
 							{
 								final String climstr=Places.CLIMATE_DESCS[i];
@@ -184,12 +184,12 @@ public class Surveying extends CommonSkill
 						}
 						if(expertise > 6)
 						{
-							for(String roomType : rTypesV.keySet())
+							for(final String roomType : rTypesV.keySet())
 							{
 								msgBuilder.append("^H"+L(CMStrings.padRight(roomType, 11))).append("^N: ").append(rTypesV.get(roomType)[0]).append("\n\r");
 							}
 						}
-						
+
 						message = msgBuilder.toString();
 					}
 					else
@@ -210,8 +210,8 @@ public class Surveying extends CommonSkill
 						msgBuilder.append("\n\r");
 						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 						{
-							Exit nextE=room.getExitInDir(d);
-							Room nextR=room.getRoomInDir(d);
+							final Exit nextE=room.getExitInDir(d);
+							final Room nextR=room.getRoomInDir(d);
 							if((nextE!=null)
 							&&(nextR!=null)
 							&&(CMLib.flags().canBeSeenBy(nextE, mob)))
@@ -225,7 +225,7 @@ public class Surveying extends CommonSkill
 									msgBuilder.append(" (").append(nextRoomNumber).append(")");
 								if(expertise > 6)
 								{
-									Trap theTrap=CMLib.utensils().fetchMyTrap(room);
+									final Trap theTrap=CMLib.utensils().fetchMyTrap(room);
 									if(theTrap!=null)
 										msgBuilder.append(L("^xTrapped!^N^."));
 								}
@@ -250,15 +250,15 @@ public class Surveying extends CommonSkill
 								msgBuilder.append("\n\r").append(itemStr);
 							else
 								msgBuilder.append(L("None")).append("\n\r");
-							
+
 						}
 						if(expertise > 3)
 						{
 							msgBuilder.append(L("^HRoom Rescs.: ^N"));
-							List<String> possResources = new ArrayList<String>();
+							final List<String> possResources = new ArrayList<String>();
 							if(room.resourceChoices()!=null)
 							{
-								for(Integer I : room.resourceChoices())
+								for(final Integer I : room.resourceChoices())
 									possResources.add(RawMaterial.CODES.NAME(I.intValue()).toLowerCase());
 							}
 							if(possResources.size()==0)
@@ -270,7 +270,7 @@ public class Surveying extends CommonSkill
 						if(expertise > 4)
 						{
 							msgBuilder.append(L("^HRoom Inhab.: ^N"));
-							List<String> roomMobs = new ArrayList<String>(room.numInhabitants()-1);
+							final List<String> roomMobs = new ArrayList<String>(room.numInhabitants()-1);
 							for(int i=0;i<room.numInhabitants();i++)
 							{
 								final MOB mob2=room.fetchInhabitant(i);
@@ -287,21 +287,21 @@ public class Surveying extends CommonSkill
 							else
 							{
 								msgBuilder.append("\n\r");
-								for(String roomMob : roomMobs)
+								for(final String roomMob : roomMobs)
 									msgBuilder.append("      ^M"+roomMob).append("^N\n\r");
 							}
 						}
 						if(expertise > 5)
 						{
 							msgBuilder.append(L("^HRoom Trap  : ^N"));
-							Trap theTrap=CMLib.utensils().fetchMyTrap(room);
+							final Trap theTrap=CMLib.utensils().fetchMyTrap(room);
 							if(theTrap!=null)
 								msgBuilder.append(theTrap.name());
 							else
 								msgBuilder.append(L("None"));
 							msgBuilder.append("\n\r");
 						}
-						
+
 						msgBuilder.append("\n\r");
 						message = msgBuilder.toString();
 					}
@@ -318,7 +318,7 @@ public class Surveying extends CommonSkill
 						{
 							for(int pg=1;pg<=((Book)catalogI).getUsedPages();pg++)
 							{
-								String content=((Book)catalogI).getRawContent(pg);
+								final String content=((Book)catalogI).getRawContent(pg);
 								if(content.startsWith("::"+subject+"::")
 								||(content.startsWith("::"+L("Chapter @x1: ",""+pg)+subject+"::"))
 								||(content.startsWith("::"+L("Chapter @x1 : ",""+pg)+subject+"::")))
@@ -349,7 +349,7 @@ public class Surveying extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean isPossibleCatalog(final MOB mob, final Item I, final Environmental fullyE, final boolean quiet)
 	{
 		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
@@ -378,7 +378,7 @@ public class Surveying extends CommonSkill
 			return false;
 		}
 		*/
-		
+
 		if(fullyE != null)
 		{
 			if(!Titling.getCatalogType(I).equals(Titling.getCatalogEntryType(fullyE)))
@@ -422,9 +422,9 @@ public class Surveying extends CommonSkill
 		}
 		return catalogI;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -446,7 +446,7 @@ public class Surveying extends CommonSkill
 			return false;
 		}
 		Item catalogI=null;
-		String itemName=CMParms.combine(commands,0);
+		final String itemName=CMParms.combine(commands,0);
 		if(commands.size()==1) // this always means the item is alone
 		{
 			catalogI=this.findCatalogBook(mob, physP);
@@ -458,14 +458,14 @@ public class Surveying extends CommonSkill
 		}
 		else
 		{
-			List<String> cmds2=new ArrayList<String>(commands);
+			final List<String> cmds2=new ArrayList<String>(commands);
 			cmds2.remove(0);
 			catalogI=this.getTarget(mob, null, givenTarget, cmds2, Wearable.FILTER_UNWORNONLY);
 			if(catalogI!=null)
 			{
 				if(!isPossibleCatalog(mob, catalogI, null, false))
 					return false;
-				String cat=Titling.getCatalogType(catalogI);
+				final String cat=Titling.getCatalogType(catalogI);
 				if((cat.length()>0)&&(!isPossibleCatalog(mob, catalogI, physP, false)))
 					return false;
 			}
@@ -480,7 +480,7 @@ public class Surveying extends CommonSkill
 			commonTell(mob,L("You don't seem to have a proper catalog."));
 			return false;
 		}
-		
+
 		final Ability writeA=mob.fetchAbility("Skill_Write");
 		if(writeA==null)
 		{

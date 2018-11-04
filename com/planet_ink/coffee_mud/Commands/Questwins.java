@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Questwins extends StdCommand
 {
 	public Questwins()
@@ -47,7 +46,7 @@ public class Questwins extends StdCommand
 		return access;
 	}
 
-	public String getQuestsWonList(MOB mob, String pronoun)
+	public String getQuestsWonList(final MOB mob, final String pronoun)
 	{
 		final ArrayList<Quest> qVec=new ArrayList<Quest>();
 		for(int q=0;q<CMLib.quests().numQuests();q++)
@@ -62,7 +61,7 @@ public class Questwins extends StdCommand
 		Collections.sort(qVec,new Comparator<Quest>()
 		{
 			@Override
-			public int compare(Quest o1, Quest o2)
+			public int compare(final Quest o1, final Quest o2)
 			{
 				if(o1 == null)
 					return (o2==null) ? 0 : -1;
@@ -76,10 +75,10 @@ public class Questwins extends StdCommand
 					return name1.compareTo(name2);
 				}
 			}
-			
+
 		});
 		final StringBuffer msg=new StringBuffer(L("^HQuests @x1 listed as having won:^?^N\n\r",pronoun));
-		for(Quest Q : qVec)
+		for(final Quest Q : qVec)
 		{
 			final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
 			final String time = CMLib.time().date2String(Q.whenLastWon(mob.Name()).longValue());
@@ -88,7 +87,7 @@ public class Questwins extends StdCommand
 		return msg.toString();
 	}
 
-	public String getQuestsDoingList(MOB mob, String pronoun)
+	public String getQuestsDoingList(final MOB mob, final String pronoun)
 	{
 		final List<Quest> qQVec=CMLib.quests().getPlayerPersistentQuests(mob);
 		final Vector<String> qVec = new Vector<String>();
@@ -105,7 +104,7 @@ public class Questwins extends StdCommand
 		return msg.toString();
 	}
 
-	public Quest findScriptedQuest(final MOB mob, String rest)
+	public Quest findScriptedQuest(final MOB mob, final String rest)
 	{
 		final List<Quest> quests = new ArrayList<Quest>(mob.numScripts());
 		for(final Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
@@ -116,7 +115,7 @@ public class Questwins extends StdCommand
 				if(SE.defaultQuestName().length()>0)
 				{
 					Quest Q=CMLib.quests().fetchQuest(SE.defaultQuestName());
-					if(Q==null) 
+					if(Q==null)
 						Q=CMLib.quests().findQuest(SE.defaultQuestName());
 					if(Q!=null)
 						quests.add(Q);
@@ -125,11 +124,11 @@ public class Questwins extends StdCommand
 		}
 		return findQuest(quests, rest);
 	}
-	
-	public Quest findQuest(List<Quest> fromList, String rest)
+
+	public Quest findQuest(final List<Quest> fromList, final String rest)
 	{
 		Quest Q=null;
-		String lowerRest = rest.toLowerCase();
+		final String lowerRest = rest.toLowerCase();
 		for(final Iterator<Quest> q=fromList.iterator();q.hasNext();)
 		{
 			final Quest Q2=q.next();
@@ -189,7 +188,7 @@ public class Questwins extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.get(0).toUpperCase().startsWith("QUESTW"))
@@ -300,9 +299,9 @@ public class Questwins extends StdCommand
 			{
 				if(admin)
 				{
-					Map<String,Long> winners = Q.getWinners();
+					final Map<String,Long> winners = Q.getWinners();
 					final StringBuffer msg=new StringBuffer(L("^HWinners of Quest '@x1':^?^N\n\r",Q.name()));
-					for(String name : winners.keySet())
+					for(final String name : winners.keySet())
 					{
 						final String time = CMLib.time().date2String(Q.whenLastWon(name).longValue());
 						msg.append(CMStrings.padRight(time,20)+name+"^N\n\r");

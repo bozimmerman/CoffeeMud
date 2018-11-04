@@ -73,7 +73,7 @@ public class Trap_RatPit extends Trap_SnakePit
 	}
 
 	@Override
-	protected Item getCagedAnimal(MOB mob)
+	protected Item getCagedAnimal(final MOB mob)
 	{
 		if(mob==null)
 			return null;

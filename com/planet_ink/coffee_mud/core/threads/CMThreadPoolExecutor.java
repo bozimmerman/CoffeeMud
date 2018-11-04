@@ -48,23 +48,23 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		private static final long serialVersionUID = -4557809818979881831L;
 		public CMThreadPoolExecutor executor = null;
 
-		public CMArrayBlockingQueue(int capacity)
+		public CMArrayBlockingQueue(final int capacity)
 		{
 			super(capacity);
 		}
 
-		@Override 
-		public boolean offer(E o)
+		@Override
+		public boolean offer(final E o)
 		{
 			final int allWorkingThreads = executor.getActiveCount() + super.size();
 			return (allWorkingThreads < executor.getPoolSize()) && super.offer(o);
 		}
 	}
 
-	public CMThreadPoolExecutor(String poolName,
-								int corePoolSize, int maximumPoolSize,
-								long keepAliveTime, TimeUnit unit,
-								long timeoutMins, int queueSize)
+	public CMThreadPoolExecutor(final String poolName,
+								final int corePoolSize, final int maximumPoolSize,
+								final long keepAliveTime, final TimeUnit unit,
+								final long timeoutMins, final int queueSize)
 	{
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, new CMArrayBlockingQueue<Runnable>(queueSize));
 		((CMArrayBlockingQueue<Runnable>)this.getQueue()).executor=this;
@@ -76,7 +76,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		setRejectedExecutionHandler(new RejectedExecutionHandler()
 		{
 			@Override
-			public void rejectedExecution(Runnable r, ThreadPoolExecutor executor)
+			public void rejectedExecution(final Runnable r, final ThreadPoolExecutor executor)
 			{
 				try
 				{
@@ -91,7 +91,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	}
 
 	@Override
-	protected void beforeExecute(Thread t, Runnable r)
+	protected void beforeExecute(final Thread t, final Runnable r)
 	{
 		synchronized(active)
 		{
@@ -102,7 +102,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	}
 
 	@Override
-	protected void afterExecute(Runnable r, Throwable t)
+	protected void afterExecute(final Runnable r, final Throwable t)
 	{
 		synchronized(active)
 		{
@@ -119,18 +119,18 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		return active.size();
 	}
 
-	public boolean isActive(Runnable r)
+	public boolean isActive(final Runnable r)
 	{
 		return active.containsKey(r);
 	}
 
-	public boolean isActiveOrQueued(Runnable r)
+	public boolean isActiveOrQueued(final Runnable r)
 	{
 		return active.containsKey(r) || getQueue().contains(r);
 	}
 
 	@Override
-	public void execute(Runnable r)
+	public void execute(final Runnable r)
 	{
 		try
 		{
@@ -177,7 +177,7 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		}
 	}
 
-	public Collection<CMRunnable> getTimeoutOutRuns(int maxToKill)
+	public Collection<CMRunnable> getTimeoutOutRuns(final int maxToKill)
 	{
 		final LinkedList<CMRunnable> timedOut=new LinkedList<CMRunnable>();
 		if(timeoutMillis<=0)

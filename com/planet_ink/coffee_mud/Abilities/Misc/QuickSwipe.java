@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class QuickSwipe extends StdAbility
 {
 	@Override
@@ -102,13 +101,13 @@ public class QuickSwipe extends StdAbility
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code=newCode;
 	}
 
 	private final PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
-	protected int timesPicked(MOB target)
+	protected int timesPicked(final MOB target)
 	{
 		int times=0;
 		for(int x=0;x<lastOnes.size();x++)
@@ -129,7 +128,7 @@ public class QuickSwipe extends StdAbility
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -146,7 +145,7 @@ public class QuickSwipe extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
@@ -188,7 +187,7 @@ public class QuickSwipe extends StdAbility
 		Item swipeItem=null;
 		if(CMLib.dice().rollPercentage() < 50)
 		{
-			long stealableLocations = Wearable.WORN_LEFT_FINGER 
+			final long stealableLocations = Wearable.WORN_LEFT_FINGER
 									| Wearable.WORN_RIGHT_FINGER
 									| Wearable.WORN_RIGHT_WRIST
 									| Wearable.WORN_LEFT_WRIST
@@ -212,7 +211,7 @@ public class QuickSwipe extends StdAbility
 				{
 					final Item I=i.nextElement();
 					if((I.amWearingAt(Item.IN_INVENTORY))
-					&&(I.phyStats().weight()<5) 
+					&&(I.phyStats().weight()<5)
 					&& (I.container()==null)
 					&&(I.phyStats().level()<=mob.phyStats().level()))
 						choices.add(I);
@@ -269,7 +268,7 @@ public class QuickSwipe extends StdAbility
 				}
 			}
 
-			String hisStr=str;
+			final String hisStr=str;
 			int hisCode=CMMsg.MSG_THIEF_ACT;
 			if(spotted)
 				hisCode=hisCode|(auto?0:CMMsg.MASK_MALICIOUS);
@@ -287,9 +286,9 @@ public class QuickSwipe extends StdAbility
 		else
 		{
 			final Item stolen=swipeItem;
-			String str=(auto)?null:L("<S-NAME> quickly swipe(s) @x1 from <T-NAMESELF>.",stolen.name());
-			int code=CMMsg.MSG_THIEF_ACT;
-			String hisStr=str;
+			final String str=(auto)?null:L("<S-NAME> quickly swipe(s) @x1 from <T-NAMESELF>.",stolen.name());
+			final int code=CMMsg.MSG_THIEF_ACT;
+			final String hisStr=str;
 			int hisCode=CMMsg.MSG_THIEF_ACT;
 			if(spotted)
 				hisCode=hisCode|(auto?0:CMMsg.MASK_MALICIOUS);

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_DetectGold extends Spell
 {
 
@@ -97,7 +96,7 @@ public class Spell_DetectGold extends Spell
 			mob.tell(L("Your senses are no longer as golden."));
 	}
 
-	public String metalCheck(MOB mob, Item I, Item container, StringBuffer msg)
+	public String metalCheck(final MOB mob, final Item I, final Item container, final StringBuffer msg)
 	{
 		if(I==null)
 			return "";
@@ -116,7 +115,7 @@ public class Spell_DetectGold extends Spell
 		return msg.toString();
 	}
 
-	public String metalHere(MOB mob, Environmental E, Item container)
+	public String metalHere(final MOB mob, final Environmental E, final Item container)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		if(E==null)
@@ -149,7 +148,7 @@ public class Spell_DetectGold extends Spell
 		return msg.toString();
 	}
 
-	public void messageTo(MOB mob)
+	public void messageTo(final MOB mob)
 	{
 		String last="";
 		String dirs="";
@@ -247,7 +246,7 @@ public class Spell_DetectGold extends Spell
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -261,7 +260,7 @@ public class Spell_DetectGold extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

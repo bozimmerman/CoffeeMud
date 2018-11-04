@@ -51,6 +51,7 @@ public interface StatsAffecting
 	 * @param affectableStats the particular PhyStats object being affected
 	 */
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats);
+
 	/**
 	 * This method is called by the recoverCharStats() method on other MOB objects.  It is used
 	 * to transform the MOB baseCharStats() object into a finished charStats() object,  both of
@@ -64,6 +65,7 @@ public interface StatsAffecting
 	 * @param affectableStats the particular CharStats object being affected
 	 */
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats);
+
 	/**
 	 * This method is called by the recoverCharState() method on other MOB objects.  It is used
 	 * to transform the MOB baseCharState() object into a finished charState() object,  both of

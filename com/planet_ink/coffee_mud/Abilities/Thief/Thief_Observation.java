@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Observation extends ThiefSkill
 {
 	@Override
@@ -77,7 +76,7 @@ public class Thief_Observation extends ThiefSkill
 
 	private static final String[] triggerStrings =I(new String[] {"OBSERVE"});
 	@Override
-	public boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(final MOB mob)
 	{
 		return true;
 	}
@@ -124,7 +123,7 @@ public class Thief_Observation extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

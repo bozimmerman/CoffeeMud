@@ -74,8 +74,8 @@ public class FishLore extends CommonSkill
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if ((affected != null) 
-		&& (affected instanceof MOB) 
+		if ((affected != null)
+		&& (affected instanceof MOB)
 		&& (tickID == Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
@@ -139,7 +139,7 @@ public class FishLore extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(super.checkStop(mob, commands) || (R == null))
@@ -147,7 +147,7 @@ public class FishLore extends CommonSkill
 		verb=L("finding fish");
 		success=false;
 		fishRoom=null;
-		
+
 		if((R.domainType()&Room.INDOORS)>0)
 		{
 			commonTell(mob,L("You can't do this indoors!"));
@@ -162,13 +162,13 @@ public class FishLore extends CommonSkill
 		if((R.getArea() instanceof BoardableShip)
 		&&((R.domainType()&Room.INDOORS)==0))
 			fishRoom=CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem());
-		
+
 		if(fishRoom==null)
 		{
 			this.commonTell(mob, L("You need to be on the water, or in a boat to use this skill."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if(proficiencyCheck(mob,0,auto))

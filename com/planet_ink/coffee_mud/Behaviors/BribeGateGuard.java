@@ -76,7 +76,7 @@ public class BribeGateGuard extends StdBehavior
 		return ID() + getVal(getParms(), "gates", "General");
 	}
 
-	protected int findGate(MOB mob)
+	protected int findGate(final MOB mob)
 	{
 		if (!CMLib.flags().isInTheGame(mob,false))
 			return -1;
@@ -96,7 +96,7 @@ public class BribeGateGuard extends StdBehavior
 		return -1;
 	}
 
-	protected DoorKey getMyKeyTo(MOB mob, Exit e)
+	protected DoorKey getMyKeyTo(final MOB mob, final Exit e)
 	{
 		DoorKey key = null;
 		final String keyCode = e.keyName();
@@ -118,7 +118,7 @@ public class BribeGateGuard extends StdBehavior
 		return key;
 	}
 
-	protected void payment(Coins given, MOB gateGuard, MOB mob)
+	protected void payment(final Coins given, final MOB gateGuard, final MOB mob)
 	{
 		// make a note in the journal
 		double newNum = given.getTotalValue();
@@ -129,7 +129,7 @@ public class BribeGateGuard extends StdBehavior
 			writeBalance(item, mob);
 	}
 
-	protected boolean checkBalance(double charge, MOB mob)
+	protected boolean checkBalance(final double charge, final MOB mob)
 	{
 		// Does this MOB have the cash for the charge?
 		if (getBalance(mob) > charge)
@@ -139,7 +139,7 @@ public class BribeGateGuard extends StdBehavior
 		return false;
 	}
 
-	protected double getBalance(MOB mob)
+	protected double getBalance(final MOB mob)
 	{
 		double balance = 0;
 		// return the balance in int form
@@ -191,7 +191,7 @@ public class BribeGateGuard extends StdBehavior
 		return balance;
 	}
 
-	protected void charge(double charge, MOB gateGuard, MOB mob)
+	protected void charge(final double charge, final MOB gateGuard, final MOB mob)
 	{
 		// update the balance in the journal
 		final Coins item = (Coins) CMClass.getItem("StdCoins");
@@ -211,7 +211,7 @@ public class BribeGateGuard extends StdBehavior
 		}
 	}
 
-	protected void delBalance(MOB mob)
+	protected void delBalance(final MOB mob)
 	{
 		// kill the journal entries for that mob
 		if(surviveReboot)
@@ -242,7 +242,7 @@ public class BribeGateGuard extends StdBehavior
 		}
 	}
 
-	protected void writeBalance(Coins balance, MOB mob)
+	protected void writeBalance(final Coins balance, final MOB mob)
 	{
 		// write an entry for that mob
 		if(surviveReboot)
@@ -265,7 +265,7 @@ public class BribeGateGuard extends StdBehavior
 		}
 	}
 
-	public static int getVal(String text, String key, int defaultValue)
+	public static int getVal(String text, String key, final int defaultValue)
 	{
 		text = text.toUpperCase();
 		key = key.toUpperCase();
@@ -305,7 +305,7 @@ public class BribeGateGuard extends StdBehavior
 		return defaultValue;
 	}
 
-	public static String getVal(String text, String key, String defaultValue)
+	public static String getVal(String text, String key, final String defaultValue)
 	{
 		text = text.toUpperCase();
 		key = key.toUpperCase();

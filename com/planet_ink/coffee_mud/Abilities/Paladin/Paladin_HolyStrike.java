@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Paladin_HolyStrike extends StdAbility
 {
 	@Override
@@ -120,7 +119,7 @@ public class Paladin_HolyStrike extends StdAbility
 		return super.okMessage(myHost,msg);
 	}
 
-	protected boolean prereqs(MOB mob, boolean quiet)
+	protected boolean prereqs(final MOB mob, final boolean quiet)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
@@ -145,7 +144,7 @@ public class Paladin_HolyStrike extends StdAbility
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -158,12 +157,12 @@ public class Paladin_HolyStrike extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!prereqs(mob,false))
 			return false;
 
-		MOB target=super.getTarget(mob, commands, givenTarget);
+		final MOB target=super.getTarget(mob, commands, givenTarget);
 		if(target == null)
 			return false;
 		if(target.fetchEffect(ID())!=null)
@@ -190,7 +189,7 @@ public class Paladin_HolyStrike extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				Ability A=maliciousAffect(mob,target,asLevel,2,-1);
+				final Ability A=maliciousAffect(mob,target,asLevel,2,-1);
 				target.recoverPhyStats();
 				CMLib.combat().postAttack(mob, target, mob.fetchWieldedItem());
 				if(A!=null)

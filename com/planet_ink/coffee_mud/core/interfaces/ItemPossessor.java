@@ -27,7 +27,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.Item;
  */
 public interface ItemPossessor extends PhysicalAgent, ItemCollection
 {
-
 	/**
 	 * Adds a new item to its possessor, with an expiration code.
 	 * Duplicates will not be permitted.

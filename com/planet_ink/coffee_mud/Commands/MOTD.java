@@ -38,7 +38,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class MOTD extends StdCommand
 {
 	public MOTD()
@@ -55,7 +54,7 @@ public class MOTD extends StdCommand
 	private static Vector<String> DEFAULT_CMD=new ReadOnlyVector<String>(new String[]{"MOTD","AGAIN"});
 
 	@Override
-	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		boolean pause=false;
@@ -84,7 +83,7 @@ public class MOTD extends StdCommand
 			commands.remove(commands.size()-1);
 		}
 		final String parm=CMParms.combine(commands,1).toUpperCase();
-		final boolean oldOk = "PREVIOUS".startsWith(parm) || parm.equals("OLD"); 
+		final boolean oldOk = "PREVIOUS".startsWith(parm) || parm.equals("OLD");
 		if((mob.playerStats()!=null)
 		&&(parm.equals("AGAIN")||parm.equals("NEW")||oldOk))
 		{
@@ -104,7 +103,7 @@ public class MOTD extends StdCommand
 				if(max>multiJournal.size())
 					multiJournal.addAll(CMLib.database().DBReadJournalMsgsByUpdateDate("CoffeeMud News", false, max-multiJournal.size())); // deprecated
 				final ReverseFakeIterator<JournalEntry> entries = new ReverseFakeIterator<JournalEntry>(multiJournal);
-				
+
 				//should read these descending, trim to the max, then iterate.
 				for(;entries.hasNext() && (max>=0); max--)
 				{
@@ -209,13 +208,13 @@ public class MOTD extends StdCommand
 				if(CJseparator)
 					buf.append("\n\r--------------------------------------\n\r");
 
-				final boolean canReceiveRealEmail = 
+				final boolean canReceiveRealEmail =
 						(mob.playerStats()!=null)
 					  &&(mob.playerStats().getEmail().length()>0)
 					  &&(mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
 					  &&((mob.playerStats().getAccount()==null)
 						||(!mob.playerStats().getAccount().isSet(AccountFlag.NOAUTOFORWARD)));
-				
+
 				if(canReceiveRealEmail
 				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 				{
@@ -266,7 +265,7 @@ public class MOTD extends StdCommand
 					else
 					if(parm.equals("AGAIN"))
 						mob.session().println(L("No @x1 to re-read.",what));
-					
+
 					// check for new commandjournal postings that require a reply-to-self...
 					for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 					{
@@ -341,7 +340,7 @@ public class MOTD extends StdCommand
 		return false;
 	}
 
-	private String report(String whom, PostOffice P, int[] ct)
+	private String report(final String whom, final PostOffice P, final int[] ct)
 	{
 		String branchName=P.postalBranch();
 		if((P instanceof MOB)&&(((MOB)P).getStartRoom()!=null))
@@ -357,7 +356,7 @@ public class MOTD extends StdCommand
 		return L("@x1 @x2 items still waiting at the @x3 branch of the @x4 post office.",whom,""+ct[1],branchName,P.postalChain());
 	}
 
-	private Map<PostOffice,int[]> getPostalResults(List<PlayerData> mailData, long newTimeDate)
+	private Map<PostOffice,int[]> getPostalResults(final List<PlayerData> mailData, final long newTimeDate)
 	{
 		final Hashtable<PostOffice,int[]> results=new Hashtable<PostOffice,int[]>();
 		PostOffice P=null;

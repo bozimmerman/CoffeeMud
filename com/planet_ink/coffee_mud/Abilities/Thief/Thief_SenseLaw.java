@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_SenseLaw extends ThiefSkill
 {
 	@Override
@@ -95,7 +94,7 @@ public class Thief_SenseLaw extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;
 	}
 
-	public Vector<MOB> getLawMen(Area legalObject, Room room, LegalBehavior B)
+	public Vector<MOB> getLawMen(final Area legalObject, final Room room, final LegalBehavior B)
 	{
 		if(room==null)
 			return empty;
@@ -113,7 +112,7 @@ public class Thief_SenseLaw extends ThiefSkill
 		return V;
 	}
 
-	public boolean findLaw(Room R, int depth, int maxDepth)
+	public boolean findLaw(final Room R, final int depth, final int maxDepth)
 	{
 		return true;
 	}
@@ -165,7 +164,7 @@ public class Thief_SenseLaw extends ThiefSkill
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob, boolean force)
+	public boolean autoInvocation(final MOB mob, final boolean force)
 	{
 		return super.autoInvocation(mob, force);
 	}

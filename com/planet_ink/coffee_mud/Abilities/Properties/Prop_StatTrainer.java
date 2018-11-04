@@ -59,7 +59,7 @@ public class Prop_StatTrainer extends Property
 		for (final int i : CharStats.CODES.BASECODES())
 			all25[i] = 25;
 	}
-	
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -107,9 +107,9 @@ public class Prop_StatTrainer extends Property
 			}
 		}
 	}
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if(newMiscText.length()>0)

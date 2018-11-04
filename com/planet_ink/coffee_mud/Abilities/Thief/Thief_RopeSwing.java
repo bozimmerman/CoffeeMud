@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_RopeSwing extends ThiefSkill
 {
 	@Override
@@ -106,7 +105,7 @@ public class Thief_RopeSwing extends ThiefSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code = newCode;
 	}
@@ -174,7 +173,7 @@ public class Thief_RopeSwing extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
@@ -184,11 +183,11 @@ public class Thief_RopeSwing extends ThiefSkill
 
 		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
-		
+
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		
+
 		if((R.getArea() instanceof BoardableShip)
 		&&(R.domainType()==Room.DOMAIN_OUTDOORS_CITY))
 		{
@@ -200,7 +199,7 @@ public class Thief_RopeSwing extends ThiefSkill
 			return false;
 		}
 
-		String parms=CMParms.combine(commands);
+		final String parms=CMParms.combine(commands);
 		if(parms.length()==0)
 		{
 			mob.tell(L("You need to either specify a new enemy target to swing over into melee range to, or a distance to swing away from your current target."));
@@ -209,7 +208,7 @@ public class Thief_RopeSwing extends ThiefSkill
 
 		newDistance	= 0;
 		newTarget	= null;
-		
+
 		if(CMath.isInteger(parms))
 		{
 			newDistance = CMath.s_int(parms);
@@ -250,7 +249,7 @@ public class Thief_RopeSwing extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Thief_RopeSwing swing = (Thief_RopeSwing)beneficialAffect(mob,mob,asLevel,1);
+				final Thief_RopeSwing swing = (Thief_RopeSwing)beneficialAffect(mob,mob,asLevel,1);
 				if(swing != null)
 				{
 					swing.newDistance = newDistance;
@@ -258,7 +257,7 @@ public class Thief_RopeSwing extends ThiefSkill
 				}
 				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 				{
-					MOB M=m.nextElement();
+					final MOB M=m.nextElement();
 					if((M!=null)
 					&&(M!=mob)
 					&&(M.getVictim()==mob))

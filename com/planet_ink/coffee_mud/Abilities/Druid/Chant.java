@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant extends StdAbility
 {
 	@Override
@@ -67,7 +66,7 @@ public class Chant extends StdAbility
 	public final static int WEATHERQUE_CALM=16;
 
 	@Override
-	protected int verbalCastCode(MOB mob, Physical target, boolean auto)
+	protected int verbalCastCode(final MOB mob, final Physical target, final boolean auto)
 	{
 		if(renderedMundane)
 		{
@@ -81,7 +80,7 @@ public class Chant extends StdAbility
 		}
 		return super.verbalCastCode(mob,target,auto);
 	}
-	
+
 	private static final String[]	triggerStrings	= I(new String[] { "CHANT", "CH" });
 
 	@Override
@@ -109,7 +108,7 @@ public class Chant extends StdAbility
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		if(newText.equalsIgnoreCase("render mundane"))
 			renderedMundane=true;
@@ -124,7 +123,7 @@ public class Chant extends StdAbility
 	}
 
 	// codes: -1=do nothing, 1=wind, 2=rain, 4=hot, 8=cold, 16=calm
-	public int weatherQue(Room R)
+	public int weatherQue(final Room R)
 	{
 		if(R==null)
 			return WEATHERQUE_NADA;
@@ -160,8 +159,8 @@ public class Chant extends StdAbility
 			return WEATHERQUE_CALM;
 		}
 	}
-	
-	protected static boolean chantAlignmentCheck(StdAbility A, MOB mob, boolean renderedMundane, boolean auto)
+
+	protected static boolean chantAlignmentCheck(final StdAbility A, final MOB mob, final boolean renderedMundane, final boolean auto)
 	{
 		if((!auto)
 		&&(!mob.isMonster())
@@ -186,7 +185,7 @@ public class Chant extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

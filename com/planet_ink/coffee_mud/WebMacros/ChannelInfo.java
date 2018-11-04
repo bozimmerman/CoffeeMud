@@ -48,7 +48,7 @@ public class ChannelInfo extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("CHANNEL");
@@ -93,7 +93,7 @@ public class ChannelInfo extends StdWebMacro
 				{
 					for(final ChannelsLibrary.ChannelFlag flag : ChannelsLibrary.ChannelFlag.values())
 					{
-						httpReq.addFakeUrlParameter("FLAG_"+flag.name(), 
+						httpReq.addFakeUrlParameter("FLAG_"+flag.name(),
 								C.flags().contains(flag)?(parms.containsKey("SELECTED")?"selected":parms.containsKey("CHECKED")?"checked":"on"):"");
 					}
 				}

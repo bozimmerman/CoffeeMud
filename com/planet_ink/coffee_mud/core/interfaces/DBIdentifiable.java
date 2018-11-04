@@ -22,7 +22,8 @@ package com.planet_ink.coffee_mud.core.interfaces;
  * @author Bo Zimmerman
  *
  */
-public interface DBIdentifiable {
+public interface DBIdentifiable
+{
 	/**
 	 * Retrieve the unique contextual database ID for this object.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.DBIdentifiable#canSaveDatabaseID()
@@ -30,6 +31,7 @@ public interface DBIdentifiable {
 	 * @return the unique contextual database ID for this object.
 	 */
 	public String databaseID();
+
 	/**
 	 * Set the unique contextual database ID for this object.
 	 * @param ID the unique contextual database ID for this object.

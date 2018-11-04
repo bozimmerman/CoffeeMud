@@ -26,13 +26,13 @@ public class FilteredListIterator<K> implements ListIterator<K>
 	private K 				prevElement = null;
 	private boolean 		initialized = false;
 
-	public FilteredListIterator(ListIterator<K> eset, Filterer<K> fil)
+	public FilteredListIterator(final ListIterator<K> eset, final Filterer<K> fil)
 	{
 		iter=eset;
 		filterer=fil;
 	}
 
-	public void setFilterer(Filterer<K> fil)
+	public void setFilterer(final Filterer<K> fil)
 	{
 		filterer=fil;
 	}
@@ -98,7 +98,7 @@ public class FilteredListIterator<K> implements ListIterator<K>
 	}
 
 	@Override
-	public void add(K e)
+	public void add(final K e)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -134,7 +134,7 @@ public class FilteredListIterator<K> implements ListIterator<K>
 	}
 
 	@Override
-	public void set(K e)
+	public void set(final K e)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}

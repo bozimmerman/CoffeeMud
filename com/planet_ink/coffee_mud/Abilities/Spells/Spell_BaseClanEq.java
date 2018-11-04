@@ -36,7 +36,6 @@ import java.util.*;
  * @author FR - Jeremy Vyska; CM - Bo Zimmerman
  * @version 1.0.0.0
  */
-
 public class Spell_BaseClanEq extends Spell
 {
 
@@ -87,13 +86,13 @@ public class Spell_BaseClanEq extends Spell
 	protected String type="";
 
 	@Override
-	public boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(final MOB mob)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
+	public boolean canBeLearnedBy(final MOB teacher, final MOB student)
 	{
 		if(student!=null)
 		{
@@ -114,7 +113,7 @@ public class Spell_BaseClanEq extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(type.length()==0)
 			return false;
@@ -171,7 +170,7 @@ public class Spell_BaseClanEq extends Spell
 			mob.tell(L("Your can not enchant above your clans level, which is @x1.",""+C.getClanLevel()));
 			return false;
 		}
-		
+
 		// Add clan power check end
 		if(target.fetchEffect("Prop_ClanEquipment")!=null)
 		{

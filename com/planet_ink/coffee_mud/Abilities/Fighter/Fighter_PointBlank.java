@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_PointBlank extends FighterSkill
 {
 	@Override
@@ -96,14 +95,14 @@ public class Fighter_PointBlank extends FighterSkill
 	protected List<Weapon> qualifiedWeapons=new Vector<Weapon>();
 
 	@Override
-	protected void cloneFix(Ability E)
+	protected void cloneFix(final Ability E)
 	{
 		super.cloneFix(E);
 		qualifiedWeapons=new XVector<Weapon>(((Fighter_PointBlank)E).qualifiedWeapons);
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		qualifiedWeapons=new Vector<Weapon>();

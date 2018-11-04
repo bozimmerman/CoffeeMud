@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Archon_MatrixPossess extends ArchonSkill
 {
 	@Override
@@ -92,7 +91,7 @@ public class Archon_MatrixPossess extends ArchonSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		
+
 		final Room R=CMLib.map().roomLocation(affected);
 		if(R==null)
 			return false;
@@ -119,27 +118,27 @@ public class Archon_MatrixPossess extends ArchonSkill
 				}
 			}
 		}
-			
+
 		return true;
 	}
 
 	protected MOB possessingM = null;
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		boolean emptyOK = false;
+		final boolean emptyOK = false;
 		final String name = (commands == null) ? "" : CMParms.combine(commands,0);
 		if((name.length()==0)&&(emptyOK))
 			return true;
-		
+
 		if(name.length()==0)
 		{
 			mob.tell(L("Matrix possess around whom?"));
 			return false;
 		}
-		
-		MOB target=CMLib.players().getLoadPlayer(name);
+
+		final MOB target=CMLib.players().getLoadPlayer(name);
 		if(target == null)
 		{
 			mob.tell(L("There is no one called @x1.",name));
@@ -155,7 +154,7 @@ public class Archon_MatrixPossess extends ArchonSkill
 			mob.tell(L("@x1 is already being matrix possessed.",target.Name()));
 			return false;
 		}
-		
+
 		if(!CMSecurity.isAllowed(mob,target.location(),CMSecurity.SecFlag.POSSESS))
 		{
 			mob.tell(L("You can not possess @x1.",target.Name()));

@@ -46,7 +46,7 @@ public class Centipede extends StdRace
 		super.naturalAbilImmunities.add("Disease_Gonorrhea");
 		super.naturalAbilImmunities.add("Disease_Malaria");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Centipede");
 
 	@Override
@@ -168,7 +168,7 @@ public class Centipede extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{

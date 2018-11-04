@@ -26,7 +26,7 @@ public class ReadOnlySortedMap<K, V> implements SortedMap<K, V>
 {
 	private final SortedMap<K, V>	map;
 
-	public ReadOnlySortedMap(SortedMap<K, V> s)
+	public ReadOnlySortedMap(final SortedMap<K, V> s)
 	{
 		map = s;
 	}
@@ -55,7 +55,7 @@ public class ReadOnlySortedMap<K, V> implements SortedMap<K, V>
 	}
 
 	@Override
-	public SortedMap<K, V> headMap(K toKey)
+	public SortedMap<K, V> headMap(final K toKey)
 	{
 		return new ReadOnlySortedMap<K, V>(map.headMap(toKey));
 	}
@@ -73,13 +73,13 @@ public class ReadOnlySortedMap<K, V> implements SortedMap<K, V>
 	}
 
 	@Override
-	public SortedMap<K, V> subMap(K fromKey, K toKey)
+	public SortedMap<K, V> subMap(final K fromKey, final K toKey)
 	{
 		return new ReadOnlySortedMap<K, V>(map.subMap(fromKey, toKey));
 	}
 
 	@Override
-	public SortedMap<K, V> tailMap(K fromKey)
+	public SortedMap<K, V> tailMap(final K fromKey)
 	{
 		return new ReadOnlySortedMap<K, V>(map.tailMap(fromKey));
 	}
@@ -97,19 +97,19 @@ public class ReadOnlySortedMap<K, V> implements SortedMap<K, V>
 	}
 
 	@Override
-	public boolean containsKey(Object key)
+	public boolean containsKey(final Object key)
 	{
 		return map.containsKey(key);
 	}
 
 	@Override
-	public boolean containsValue(Object value)
+	public boolean containsValue(final Object value)
 	{
 		return map.containsValue(value);
 	}
 
 	@Override
-	public V get(Object key)
+	public V get(final Object key)
 	{
 		return map.get(key);
 	}
@@ -121,19 +121,19 @@ public class ReadOnlySortedMap<K, V> implements SortedMap<K, V>
 	}
 
 	@Override
-	public V put(K key, V value)
+	public V put(final K key, final V value)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public void putAll(Map<? extends K, ? extends V> m)
+	public void putAll(final Map<? extends K, ? extends V> m)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public V remove(Object key)
+	public V remove(final Object key)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Paladin_AbidingAura extends PaladinSkill
 {
 	@Override
@@ -55,9 +54,9 @@ public class Paladin_AbidingAura extends PaladinSkill
 	{
 		return Ability.ACODE_SKILL|Ability.DOMAIN_HOLYPROTECTION;
 	}
-	
+
 	protected Map<MOB,Runnable> abiding=new SHashtable<MOB,Runnable>();
-	
+
 	public Paladin_AbidingAura()
 	{
 		super();

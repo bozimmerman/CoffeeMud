@@ -86,7 +86,7 @@ public class Chant_ChargeMetal extends Chant
 	protected List<Item>			affectedItems	= new Vector<Item>();
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		affectedItems=new Vector<Item>();
@@ -101,7 +101,7 @@ public class Chant_ChargeMetal extends Chant
 		return obj;
 	}
 
-	public Item wieldingMetal(MOB mob)
+	public Item wieldingMetal(final MOB mob)
 	{
 		for(int i=0;i<mob.numItems();i++)
 		{
@@ -186,7 +186,7 @@ public class Chant_ChargeMetal extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -201,7 +201,7 @@ public class Chant_ChargeMetal extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null)

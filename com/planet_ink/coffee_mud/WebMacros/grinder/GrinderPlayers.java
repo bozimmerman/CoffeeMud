@@ -39,10 +39,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class GrinderPlayers extends GrinderMobs
 {
-	public static String titleList(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String titleList(final MOB E, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		if(E.playerStats()==null)
 			return "";
@@ -61,18 +60,18 @@ public class GrinderPlayers extends GrinderMobs
 		return "";
 	}
 
-	public static String setBasics(HTTPRequest httpReq, MOB M)
+	public static String setBasics(final HTTPRequest httpReq, final MOB M)
 	{
 		for(int i=0;i<BASICS.values().length;i++)
 		{
-			String err = setBasic(httpReq, M, BASICS.values()[i]);
+			final String err = setBasic(httpReq, M, BASICS.values()[i]);
 			if((err != null) && (err.trim().length()>0))
 				return err;
 		}
 		return "";
 	}
-	
-	public static String setBasic(HTTPRequest httpReq, MOB M, BASICS basic)
+
+	public static String setBasic(final HTTPRequest httpReq, final MOB M, final BASICS basic)
 	{
 		if(httpReq.isUrlParameter(basic.name()))
 		{
@@ -384,7 +383,7 @@ public class GrinderPlayers extends GrinderMobs
 		return "";
 	}
 
-	public static String classList(MOB M, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String classList(final MOB M, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		if(httpReq.isUrlParameter("CHARCLASS1"))
 		{
@@ -417,7 +416,7 @@ public class GrinderPlayers extends GrinderMobs
 		return "";
 	}
 
-	public static String editPlayer(MOB whom, HTTPRequest httpReq, java.util.Map<String,String> parms, MOB M)
+	public static String editPlayer(final MOB whom, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final MOB M)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
@@ -430,7 +429,7 @@ public class GrinderPlayers extends GrinderMobs
 			M.delItem(I);
 		}
 
-		for(MOB.Attrib a : MOB.Attrib.values())
+		for(final MOB.Attrib a : MOB.Attrib.values())
 		{
 			if(httpReq.isUrlParameter(a.getName()))
 			{

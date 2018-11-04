@@ -34,7 +34,6 @@ import java.util.*;
 */
 public class Spell_ImprovedPolymorph extends Spell
 {
-
 	@Override
 	public String ID()
 	{
@@ -89,7 +88,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -138,7 +137,7 @@ public class Spell_ImprovedPolymorph extends Spell
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -152,7 +151,7 @@ public class Spell_ImprovedPolymorph extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()==0)
 		{
@@ -280,7 +279,7 @@ public class Spell_ImprovedPolymorph extends Spell
 				{
 					newRace=R;
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
-					Spell_ImprovedPolymorph morph = (Spell_ImprovedPolymorph) beneficialAffect(mob,target,asLevel,0); 
+					final Spell_ImprovedPolymorph morph = (Spell_ImprovedPolymorph) beneficialAffect(mob,target,asLevel,0);
 					if(morph != null)
 					{
 						success=true;

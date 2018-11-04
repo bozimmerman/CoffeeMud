@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_TapRoom extends ThiefSkill
 {
 	@Override
@@ -94,7 +93,7 @@ public class Thief_TapRoom extends ThiefSkill
 
 	public boolean norecurse=false;
 
-	public boolean isMyPair(List<String> myParsedTextV, Item I)
+	public boolean isMyPair(final List<String> myParsedTextV, final Item I)
 	{
 		Thief_TapRoom A=null;
 		if(I instanceof Drink)
@@ -306,7 +305,7 @@ public class Thief_TapRoom extends ThiefSkill
 		}
 	}
 
-	public Item[] getCups(MOB mob)
+	public Item[] getCups(final MOB mob)
 	{
 		Item I=null;
 		final Item[] returnI=new Item[2];
@@ -340,7 +339,7 @@ public class Thief_TapRoom extends ThiefSkill
 		return returnI;
 	}
 
-	public List<RawMaterial> getAvailableLine(MOB mob)
+	public List<RawMaterial> getAvailableLine(final MOB mob)
 	{
 		Item I=null;
 		final List<RawMaterial> available=new Vector<RawMaterial>();
@@ -373,7 +372,7 @@ public class Thief_TapRoom extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Room target=mob.location();
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof Room))

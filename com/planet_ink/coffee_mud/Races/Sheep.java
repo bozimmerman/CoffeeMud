@@ -177,7 +177,7 @@ public class Sheep extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{
@@ -282,7 +282,7 @@ public class Sheep extends StdRace
 	}
 
 	@Override
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body=super.getCorpseContainer(mob,room);
 		if((body!=null)&&(CMLib.dice().roll(1,1000,0)==1)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))

@@ -24,18 +24,18 @@ import java.util.*;
  * @author Tulath (a.k.a.) Jeremy Vyska
  */
 
-public class FieryRoom extends ActiveTicker 
+public class FieryRoom extends ActiveTicker
 {
 	@Override
 	public String ID()
 	{
-		return "FieryRoom"; 
+		return "FieryRoom";
 	}
 
 	@Override
 	protected int canImproveCode()
 	{
-		return Behavior.CAN_ROOMS; 
+		return Behavior.CAN_ROOMS;
 	}
 
 	private String		newDisplay		= "";
@@ -63,7 +63,7 @@ public class FieryRoom extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		newDisplay = CMParms.getParmStr(newParms, "Title", "A Charred Ruin");
@@ -172,7 +172,7 @@ public class FieryRoom extends ActiveTicker
 		return super.tick(ticking, tickID);
 	}
 
-	private void dealDamage(MOB mob)
+	private void dealDamage(final MOB mob)
 	{
 		final MOB M=CMLib.map().getFactoryMOB(mob.location());
 		M.setName(L("fire"));
@@ -181,7 +181,7 @@ public class FieryRoom extends ActiveTicker
 		M.destroy();
 	}
 
-	private void eqRoast(MOB mob)
+	private void eqRoast(final MOB mob)
 	{
 		final Item target = getSomething(mob);
 		if (target != null)
@@ -221,7 +221,7 @@ public class FieryRoom extends ActiveTicker
 		}
 	}
 
-	private static void roastRoom(Room which)
+	private static void roastRoom(final Room which)
 	{
 		final MOB mob=CMLib.map().getFactoryMOB(which);
 		mob.setName(CMLib.lang().L("fire"));
@@ -242,7 +242,7 @@ public class FieryRoom extends ActiveTicker
 		mob.destroy();
 	}
 
-	private static Item getSomething(MOB mob)
+	private static Item getSomething(final MOB mob)
 	{
 		final Vector<Item> good = new Vector<Item>();
 		final Vector<Item> great = new Vector<Item>();

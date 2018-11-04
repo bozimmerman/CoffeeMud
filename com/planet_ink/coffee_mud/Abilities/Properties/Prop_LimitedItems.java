@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_LimitedItems extends Property
 {
 	@Override
@@ -66,7 +65,7 @@ public class Prop_LimitedItems extends Property
 		return "Only "+CMath.s_int(text())+" may exist.";
 	}
 
-	protected void countIfNecessary(Item I)
+	protected void countIfNecessary(final Item I)
 	{
 		if(CMLib.flags().isInTheGame(I,false))
 		{
@@ -122,7 +121,7 @@ public class Prop_LimitedItems extends Property
 	}
 
 	@Override
-	public void affectPhyStats(Physical E, PhyStats affectableStats)
+	public void affectPhyStats(final Physical E, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(E,affectableStats);
 

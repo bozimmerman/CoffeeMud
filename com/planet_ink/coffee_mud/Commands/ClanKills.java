@@ -48,7 +48,7 @@ public class ClanKills extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
@@ -91,7 +91,7 @@ public class ClanKills extends StdCommand
 					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
 					{
 						@Override
-						public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
+						public int compare(final Pair<String, Integer> o1, final Pair<String, Integer> o2)
 						{
 							return o2.second.compareTo(o1.second);
 						}

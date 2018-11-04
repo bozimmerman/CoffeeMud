@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class BadEmailAddressException extends CoffeeMudException
 {
 	public static final long serialVersionUID=0;
-	public BadEmailAddressException(String s)
+	public BadEmailAddressException(final String s)
 	{
 		super(s);
 	}

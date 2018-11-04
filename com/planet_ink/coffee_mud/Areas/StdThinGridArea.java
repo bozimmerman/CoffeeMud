@@ -50,7 +50,7 @@ public class StdThinGridArea extends StdGridArea
 	public RoomnumberSet myRoomSet=null;
 
 	@Override
-	public void addProperRoom(Room R)
+	public void addProperRoom(final Room R)
 	{
 		if(R!=null)
 			R.setExpirationDate(System.currentTimeMillis() + WorldMap.ROOM_EXPIRATION_MILLIS);
@@ -81,7 +81,7 @@ public class StdThinGridArea extends StdGridArea
 		return R;
 	}
 
-	@Override 
+	@Override
 	public int getPercentRoomsCached()
 	{
 		final double totalRooms=getProperRoomnumbers().roomCountAllAreas();
@@ -91,7 +91,7 @@ public class StdThinGridArea extends StdGridArea
 		return (int)Math.round((currentRooms/totalRooms)*100.0);
 	}
 
-	@Override 
+	@Override
 	protected int[] buildAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -107,13 +107,13 @@ public class StdThinGridArea extends StdGridArea
 		return super.buildAreaIStats();
 	}
 
-	public boolean isRoom(String roomID)
+	public boolean isRoom(final String roomID)
 	{
 		return getProperRoomnumbers().contains(roomID);
 	}
 
 	@Override
-	public boolean isRoom(Room R)
+	public boolean isRoom(final Room R)
 	{
 		if(R==null)
 			return false;

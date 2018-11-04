@@ -43,7 +43,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author George Reese
  * @version 1.0
  */
-public class I3Server 
+public class I3Server
 {
 	static private ServerThread serverClient = null;
 	static private boolean started = false;
@@ -57,9 +57,9 @@ public class I3Server
 	 * @param port the port of the server
 	 * @param imud a library for interaction with base system
 	 */
-	static public void start(String mud,
-							 int port,
-							 ImudServices imud) throws ServerSecurityException
+	static public void start(final String mud,
+							 final int port,
+							 final ImudServices imud) throws ServerSecurityException
 	{
 		try
 		{
@@ -85,7 +85,7 @@ public class I3Server
 	 * @param file the name of the class being loaded
 	 * @return a distinct copy of the class identified
 	 */
-	static public ServerObject copyObject(String file) throws ObjectLoadException {
+	static public ServerObject copyObject(final String file) throws ObjectLoadException {
 		return serverClient.copyObject(file);
 	}
 
@@ -95,7 +95,7 @@ public class I3Server
 	 * @param file the name of the class being loaded
 	 * @return original of the class identified
 	 */
-	static public ServerObject findObject(String file) throws ObjectLoadException {
+	static public ServerObject findObject(final String file) throws ObjectLoadException {
 		return serverClient.findObject(file);
 	}
 
@@ -134,7 +134,7 @@ public class I3Server
 		}
 	}
 
-	static public void removeObject(ServerObject ob)
+	static public void removeObject(final ServerObject ob)
 	{
 		if( !ob.getDestructed() )
 		{

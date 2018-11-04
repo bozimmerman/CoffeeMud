@@ -88,7 +88,7 @@ public class Prop_TattooAdder extends Property
 		return tattooCode;
 	}
 
-	public void applyTattooCodes(MOB mob, boolean addOnly, boolean subOnly)
+	public void applyTattooCodes(final MOB mob, final boolean addOnly, final boolean subOnly)
 	{
 		String tattooName=text();
 		if(tattooName.length()==0)

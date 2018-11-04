@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Druid_AquaticPass extends StdAbility
 {
 	@Override
@@ -90,7 +89,7 @@ public class Druid_AquaticPass extends StdAbility
 		return Ability.ACODE_SKILL | Ability.DOMAIN_STEALTHY;
 	}
 
-	public boolean canPassHere(Physical affected)
+	public boolean canPassHere(final Physical affected)
 	{
 		if(affected instanceof MOB)
 		{
@@ -105,7 +104,7 @@ public class Druid_AquaticPass extends StdAbility
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -116,7 +115,7 @@ public class Druid_AquaticPass extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 
 		if(!canPassHere(mob))

@@ -116,9 +116,9 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 	/**
 	 * Returns the number of bonus characters online available to
 	 * this account.
-	 * 
+	 *
 	 * @see PlayerAccount#setBonusCharsOnlineLimit(int)
-	 * 
+	 *
 	 * @return the number of bonus chars online
 	 */
 	public int getBonusCharsOnlineLimit();
@@ -126,9 +126,9 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 	/**
 	 * Sets the number of bonus characters online available to
 	 * this account.
-	 * 
+	 *
 	 * @see PlayerAccount#getBonusCharsOnlineLimit()
-	 * 
+	 *
 	 * @param bonus the number of bonus chars online
 	 */
 	public void setBonusCharsOnlineLimit(int bonus);
@@ -136,9 +136,9 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 	/**
 	 * Returns the number of bonus characters available to
 	 * this account.
-	 * 
+	 *
 	 * @see PlayerAccount#setBonusCharsLimit(int)
-	 * 
+	 *
 	 * @return the number of bonus chars
 	 */
 	public int getBonusCharsLimit();
@@ -146,9 +146,9 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 	/**
 	 * Sets the number of bonus characters available to
 	 * this account.
-	 * 
+	 *
 	 * @see PlayerAccount#getBonusCharsLimit()
-	 * 
+	 *
 	 * @param bonus the number of bonus chars
 	 */
 	public void setBonusCharsLimit(int bonus);
@@ -160,7 +160,7 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 	 * @param otherAccount the data to copy from.
 	 */
 	public void copyInto(PlayerAccount otherAccount);
-	
+
 	/**
 	 * Various account-level flags
 	 * @author Bo Zimmerman

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Salvaging extends CommonSkill
 {
 	@Override
@@ -96,7 +95,7 @@ public class Salvaging extends CommonSkill
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	protected void finishSalvage(final MOB mob, final Item found, final int amount)
 	{
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
@@ -116,7 +115,7 @@ public class Salvaging extends CommonSkill
 			}
 		}
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -131,20 +130,20 @@ public class Salvaging extends CommonSkill
 						commonTell(mob,L("You've messed up salvaging @x1!",oldItemName));
 					else
 					{
-						Item baseShip=found;
-						int finalAmount=amount*(baseYield()+abilityCode());
+						final Item baseShip=found;
+						final int finalAmount=amount*(baseYield()+abilityCode());
 						finishSalvage(mob,baseShip, finalAmount);
 						if((baseShip.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
 						{
-							Item metalFound=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON);
-							int metalAmount = Math.round(CMath.sqrt(finalAmount));
+							final Item metalFound=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON);
+							final int metalAmount = Math.round(CMath.sqrt(finalAmount));
 							finishSalvage(mob,metalFound, metalAmount);
 						}
 						if((baseShip.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
 						{
-							Item clothFound=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COTTON);
-							int metalAmount = Math.round(CMath.sqrt(finalAmount));
-							int clothAmount = Math.round(CMath.sqrt(metalAmount));
+							final Item clothFound=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COTTON);
+							final int metalAmount = Math.round(CMath.sqrt(finalAmount));
+							final int clothAmount = Math.round(CMath.sqrt(metalAmount));
 							finishSalvage(mob,clothFound, clothAmount);
 						}
 					}
@@ -155,7 +154,7 @@ public class Salvaging extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -214,10 +213,10 @@ public class Salvaging extends CommonSkill
 			mob.tell(L("You can only salvage large sunk sailing ships, which @x1 is not.",I.Name()));
 			return false;
 		}
-		SailingShip ship=(SailingShip)I;
-		Area shipArea=ship.getShipArea();
-		
-		int totalWeight=I.phyStats().weight();
+		final SailingShip ship=(SailingShip)I;
+		final Area shipArea=ship.getShipArea();
+
+		final int totalWeight=I.phyStats().weight();
 		final Vector<Item> itemsToMove=new Vector<Item>();
 		for(final Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)
 		{
@@ -249,7 +248,7 @@ public class Salvaging extends CommonSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			for(Item I2 : itemsToMove)
+			for(final Item I2 : itemsToMove)
 				mob.location().moveItemTo(I2);
 			I.destroy();
 			mob.location().recoverPhyStats();

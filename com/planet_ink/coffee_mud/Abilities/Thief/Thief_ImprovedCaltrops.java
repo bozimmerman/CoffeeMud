@@ -62,7 +62,7 @@ public class Thief_ImprovedCaltrops extends Thief_Caltrops
 	}
 
 	@Override
-	public void spring(MOB mob)
+	public void spring(final MOB mob)
 	{
 		final MOB invoker=(invoker()!=null) ? invoker() : CMLib.map().deity();
 		if((!invoker.mayIFight(mob))

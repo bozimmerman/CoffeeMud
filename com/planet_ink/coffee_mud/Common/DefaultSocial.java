@@ -88,19 +88,19 @@ public class DefaultSocial implements Social
 	{
 		return isTargetable;
 	}
-	
+
 	@Override
 	public String targetName()
 	{
 		return socialTarget;
 	}
-	
+
 	@Override
 	public String argumentName()
 	{
 		return socialArg;
 	}
-	
+
 	@Override
 	public String L(final String str, final String... xs)
 	{
@@ -108,15 +108,15 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 		socialFullID = newName.toUpperCase().trim();
-		int x = newName.indexOf(' ');
+		final int x = newName.indexOf(' ');
 		if(x>0)
 		{
 			socialBaseName=newName.substring(0, x);
 			socialFullTail=newName.substring(x+1).trim();
-			int y=newName.indexOf(' ',x+1);
+			final int y=newName.indexOf(' ',x+1);
 			if(y>x)
 			{
 				socialTarget=newName.substring(x+1,y).trim();
@@ -182,43 +182,43 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public void setSourceMessage(String str)
+	public void setSourceMessage(final String str)
 	{
 		sourceMsg = str;
 	}
 
 	@Override
-	public void setOthersMessage(String str)
+	public void setOthersMessage(final String str)
 	{
 		othersSeeMsg = str;
 	}
 
 	@Override
-	public void setTargetMessage(String str)
+	public void setTargetMessage(final String str)
 	{
 		targetSeesMsg = str;
 	}
 
 	@Override
-	public void setFailedMessage(String str)
+	public void setFailedMessage(final String str)
 	{
 		failedTargetMsg = str;
 	}
 
 	@Override
-	public void setSourceCode(int code)
+	public void setSourceCode(final int code)
 	{
 		sourceCode = code;
 	}
 
 	@Override
-	public void setOthersCode(int code)
+	public void setOthersCode(final int code)
 	{
 		othersCode = code;
 	}
 
 	@Override
-	public void setTargetCode(int code)
+	public void setTargetCode(final int code)
 	{
 		targetCode = code;
 	}
@@ -236,7 +236,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public void setSoundFile(String newFile)
+	public void setSoundFile(final String newFile)
 	{
 		soundFile = newFile;
 	}
@@ -248,12 +248,12 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public void setExpirationDate(long time)
+	public void setExpirationDate(final long time)
 	{
 	}
 
 	@Override
-	public boolean targetable(Environmental E)
+	public boolean targetable(final Environmental E)
 	{
 		if (E == null)
 			return isTargetable;
@@ -294,20 +294,20 @@ public class DefaultSocial implements Social
 		}
 		return false;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical target, final boolean auto)
 	{
 		if(mob == null)
 			return false;
 		final Room R = mob.location();
 		if(R== null)
 			return false;
-		
+
 		String targetStr = "";
 		String restArg = "";
-		if ((commands.size() > 1) 
-		&& (!commands.get(1).equalsIgnoreCase("SELF")) 
+		if ((commands.size() > 1)
+		&& (!commands.get(1).equalsIgnoreCase("SELF"))
 		&& (!commands.get(1).equalsIgnoreCase("ALL")))
 		{
 			targetStr = commands.get(1);
@@ -321,7 +321,7 @@ public class DefaultSocial implements Social
 			targetE = R.fetchFromMOBRoomFavorsMOBs(mob, null, targetStr, Wearable.FILTER_ANY);
 			if ((targetE != null) && (!CMLib.flags().canBeSeenBy(targetE, mob)))
 				targetE = null;
-			else 
+			else
 			if ((targetE != null) && (!targetable(targetE)))
 			{
 				final Social S = CMLib.socials().fetchSocial(baseName(), targetE, restArg, true);
@@ -348,12 +348,12 @@ public class DefaultSocial implements Social
 		if ((failMsg != null) && (failMsg.trim().length() == 0))
 			failMsg = null;
 
-		if (((targetE == null) && (targetable(null))) 
+		if (((targetE == null) && (targetable(null)))
 		|| ((targetE != null) && (!targetable(targetE))))
 		{
-			final CMMsg msg = CMClass.getMsg(mob, null, this, 
-					(auto ? CMMsg.MASK_ALWAYS : 0) | getSourceCode(), failMsg, 
-					CMMsg.NO_EFFECT, null, 
+			final CMMsg msg = CMClass.getMsg(mob, null, this,
+					(auto ? CMMsg.MASK_ALWAYS : 0) | getSourceCode(), failMsg,
+					CMMsg.NO_EFFECT, null,
 					CMMsg.NO_EFFECT, null);
 			if (R.okMessage(mob, msg))
 			{
@@ -362,12 +362,12 @@ public class DefaultSocial implements Social
 					CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.SOCIALUSE, 1, this);
 			}
 		}
-		else 
+		else
 		if (targetE == null)
 		{
-			final CMMsg msg = CMClass.getMsg(mob, null, this, 
-					(auto ? CMMsg.MASK_ALWAYS : 0) | getSourceCode(), (srcMsg == null) ? null : srcMsg + mspFile, 
-					CMMsg.NO_EFFECT, null, 
+			final CMMsg msg = CMClass.getMsg(mob, null, this,
+					(auto ? CMMsg.MASK_ALWAYS : 0) | getSourceCode(), (srcMsg == null) ? null : srcMsg + mspFile,
+					CMMsg.NO_EFFECT, null,
 					getOthersCode(), (othMsg == null) ? null : othMsg + mspFile);
 			if (R.okMessage(mob, msg))
 			{
@@ -378,9 +378,9 @@ public class DefaultSocial implements Social
 		}
 		else
 		{
-			final CMMsg msg = CMClass.getMsg(mob, targetE, this, 
-					(auto ? CMMsg.MASK_ALWAYS : 0) | getSourceCode(), (srcMsg == null) ? null : srcMsg + mspFile, 
-					getTargetCode(), (tgtMsg == null) ? null : tgtMsg + mspFile, 
+			final CMMsg msg = CMClass.getMsg(mob, targetE, this,
+					(auto ? CMMsg.MASK_ALWAYS : 0) | getSourceCode(), (srcMsg == null) ? null : srcMsg + mspFile,
+					getTargetCode(), (tgtMsg == null) ? null : tgtMsg + mspFile,
 					getOthersCode(), (othMsg == null) ? null : othMsg + mspFile);
 			if (R.okMessage(mob, msg))
 			{
@@ -404,13 +404,13 @@ public class DefaultSocial implements Social
 						}
 					}
 
-					if ((name().toUpperCase().startsWith("SMILE")) 
+					if ((name().toUpperCase().startsWith("SMILE"))
 					&& (mob.charStats().getStat(CharStats.STAT_CHARISMA) >= 16)
 					&& (mob.charStats().getMyRace().ID().equals(tmob.charStats().getMyRace().ID()))
-					&& (CMLib.dice().rollPercentage() == 1) 
-					&& (mob.charStats().getStat(CharStats.STAT_GENDER) != ('N')) 
+					&& (CMLib.dice().rollPercentage() == 1)
+					&& (mob.charStats().getStat(CharStats.STAT_GENDER) != ('N'))
 					&& (tmob.charStats().getStat(CharStats.STAT_GENDER) != ('N'))
-					&& (mob.charStats().getStat(CharStats.STAT_GENDER) != tmob.charStats().getStat(CharStats.STAT_GENDER)) 
+					&& (mob.charStats().getStat(CharStats.STAT_GENDER) != tmob.charStats().getStat(CharStats.STAT_GENDER))
 					&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
 						final Ability A = CMClass.getAbility("Disease_Smiles");
@@ -429,7 +429,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public CMMsg makeChannelMsg(MOB mob, int channelInt, String channelName, List<String> commands, boolean makeTarget)
+	public CMMsg makeChannelMsg(final MOB mob, final int channelInt, final String channelName, final List<String> commands, final boolean makeTarget)
 	{
 		final String channelColor = "^Q";
 		final String str = makeTarget ? "" : (channelColor + "^<CHANNEL \"" + channelName + "\"^>[" + channelName + "] ");
@@ -438,11 +438,11 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public CMMsg makeMessage(MOB mob, String str, String end, int srcMask, int fullCode, List<String> commands, String I3channelName, boolean makeTarget)
+	public CMMsg makeMessage(final MOB mob, final String str, final String end, final int srcMask, final int fullCode, final List<String> commands, final String I3channelName, final boolean makeTarget)
 	{
 		String targetStr = "";
-		if ((commands.size() > 1) 
-		&& (!commands.get(1).equalsIgnoreCase("SELF")) 
+		if ((commands.size() > 1)
+		&& (!commands.get(1).equalsIgnoreCase("SELF"))
 		&& (!commands.get(1).equalsIgnoreCase("ALL")))
 			targetStr = commands.get(1);
 
@@ -466,23 +466,23 @@ public class DefaultSocial implements Social
 					}
 				}
 			}
-			if (((target == null) && (makeTarget)) 
+			if (((target == null) && (makeTarget))
 			|| ((targetMud.length() > 0)
 				&& (I3channelName != null)
-				&& (CMLib.intermud().i3online()) 
+				&& (CMLib.intermud().i3online())
 				&& (CMLib.intermud().isI3channel(I3channelName))))
 			{
 				target = CMClass.getFactoryMOB();
 				target.setName(targetStr);
 				((MOB) target).setLocation(CMLib.map().getRandomRoom());
 			}
-			else 
-			if ((target != null) 
+			else
+			if ((target != null)
 			&& (!CMLib.flags().isInTheGame(target, true)))
 				target = null;
 
-			if ((target != null) 
-			&& (target instanceof Physical) 
+			if ((target != null)
+			&& (target instanceof Physical)
 			&& (!CMLib.flags().isSeeable((Physical) target)))
 				target = null;
 		}
@@ -496,7 +496,7 @@ public class DefaultSocial implements Social
 		int srcCode = srcMask | getSourceCode();
 
 		String You_see = getSourceMessage();
-		if ((You_see != null) 
+		if ((You_see != null)
 		&& (You_see.trim().length() == 0))
 		{
 			You_see = null;
@@ -506,7 +506,7 @@ public class DefaultSocial implements Social
 			You_see = str + You_see + end + mspFile;
 
 		String Third_party_sees = getOthersMessage();
-		if ((Third_party_sees != null) 
+		if ((Third_party_sees != null)
 		&& (Third_party_sees.trim().length() == 0))
 		{
 			Third_party_sees = null;
@@ -516,7 +516,7 @@ public class DefaultSocial implements Social
 			Third_party_sees = str + Third_party_sees + end + mspFile;
 
 		String Target_sees = getTargetMessage();
-		if ((Target_sees != null) 
+		if ((Target_sees != null)
 		&& (Target_sees.trim().length() == 0))
 		{
 			Target_sees = null;
@@ -526,17 +526,17 @@ public class DefaultSocial implements Social
 			Target_sees = str + Target_sees + end + mspFile;
 
 		String See_when_no_target = getFailedTargetMessage();
-		if ((See_when_no_target != null) 
+		if ((See_when_no_target != null)
 		&& (See_when_no_target.trim().length() == 0))
 			See_when_no_target = null;
 		else
 			See_when_no_target = str + See_when_no_target + end;
 
 		CMMsg msg = null;
-		if (((target == null) && (targetable(null))) 
+		if (((target == null) && (targetable(null)))
 		|| ((target != null) && (!targetable(target))))
 			msg = CMClass.getMsg(mob, null, this, srcCode, See_when_no_target, CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null);
-		else 
+		else
 		if (target == null)
 			msg = CMClass.getMsg(mob, null, this, srcCode, You_see, CMMsg.NO_EFFECT, null, otherCode, Third_party_sees);
 		else
@@ -551,7 +551,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public void setDescription(String str)
+	public void setDescription(final String str)
 	{
 	}
 
@@ -562,7 +562,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public void setDisplayText(String str)
+	public void setDisplayText(final String str)
 	{
 	}
 
@@ -604,7 +604,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public void setSavable(boolean truefalse)
+	public void setSavable(final boolean truefalse)
 	{
 	}
 
@@ -639,7 +639,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch (getCodeNum(code))
 		{
@@ -652,7 +652,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch (getCodeNum(code))
 		{
@@ -696,7 +696,7 @@ public class DefaultSocial implements Social
 		return true;
 	}
 
-	protected void cloneFix(Social E)
+	protected void cloneFix(final Social E)
 	{
 	}
 
@@ -717,7 +717,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 	}
 
@@ -744,7 +744,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 	}
 
@@ -790,7 +790,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public void setImage(String newImage)
+	public void setImage(final String newImage)
 	{
 	}
 
@@ -807,7 +807,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public double combatActionsCost(MOB mob, List<String> cmds)
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getSocialCombatActionCost(baseName());
 	}

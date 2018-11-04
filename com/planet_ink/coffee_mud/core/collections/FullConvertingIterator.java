@@ -22,10 +22,10 @@ public class FullConvertingIterator<K, L> implements Iterator<L>
 {
 	private final Iterator<K> iterer;
 	private K currObj = null;
-	private FullConverter<K, L> converter;
+	private final FullConverter<K, L> converter;
 	private int index = 0;
 
-	public FullConvertingIterator(Iterator<K> eset, FullConverter<K, L> conv)
+	public FullConvertingIterator(final Iterator<K> eset, final FullConverter<K, L> conv)
 	{
 		iterer=eset;
 		converter=conv;

@@ -89,7 +89,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 		tickReset();
 	}
 
-	public boolean okRoomForMe(MOB mob, Room currentRoom, Room newRoom, boolean ignoreAtmosphere)
+	public boolean okRoomForMe(final MOB mob, final Room currentRoom, final Room newRoom, final boolean ignoreAtmosphere)
 	{
 		if(newRoom==null)
 			return false;
@@ -121,7 +121,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 				return false;
 		}
 		if((!ignoreAtmosphere)
-		&&(mob.charStats().getBreathables().length>0) 
+		&&(mob.charStats().getBreathables().length>0)
 		&& (Arrays.binarySearch(mob.charStats().getBreathables(), newRoom.getAtmosphere())<0))
 			return false;
 		if(restrictedLocales==null)
@@ -130,7 +130,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		wander=false;
@@ -205,7 +205,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 			restrictedLocales=null;
 	}
 
-	public boolean emergencyMove(MOB mob, Room room)
+	public boolean emergencyMove(final MOB mob, Room room)
 	{
 		int tries=30;
 		if((room == null)
@@ -227,7 +227,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 				final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
 															.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 															.plus(TrackingLibrary.TrackingFlag.OPENONLY);
-				List<Room> choices=CMLib.tracking().getRadiantRooms(room, flags, 5);
+				final List<Room> choices=CMLib.tracking().getRadiantRooms(room, flags, 5);
 				final Room oldRoom=room;
 				for(int i=0;i<choices.size();i++)
 				{
@@ -333,7 +333,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	}
 
 	@Override
-	public void suspendMobility(int numTicks)
+	public void suspendMobility(final int numTicks)
 	{
 		ticksSuspended = numTicks;
 	}

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Meld extends Spell
 {
 
@@ -68,7 +67,7 @@ public class Spell_Meld extends Spell
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	public boolean shinBone(Item one, Item two, long locationOne, long locationTwo)
+	public boolean shinBone(final Item one, final Item two, final long locationOne, final long locationTwo)
 	{
 		if((one.fitsOn(locationOne)&&two.fitsOn(locationTwo))
 		   &&(!one.fitsOn(locationTwo))
@@ -95,7 +94,7 @@ public class Spell_Meld extends Spell
 					RawMaterial.MATERIAL_GAS,
 					RawMaterial.MATERIAL_MITHRIL,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99};
 
-	protected int getHeiarchy(int material)
+	protected int getHeiarchy(final int material)
 	{
 		for(int i=0;i<heiarchy.length;i++)
 		{
@@ -106,7 +105,7 @@ public class Spell_Meld extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		// add something to disable traps
 		//
@@ -226,7 +225,7 @@ public class Spell_Meld extends Spell
 
 				if((msg.value()>0)||(msg2.value()>0))
 					return false;
-				
+
 				for(int i=itemOne.numEffects()-1;i>=0;i--)
 				{
 					final Ability A=itemOne.fetchEffect(i);
@@ -235,7 +234,7 @@ public class Spell_Meld extends Spell
 					&&(A.canBeUninvoked()))
 						A.unInvoke();
 				}
-				
+
 				for(int i=itemTwo.numEffects()-1;i>=0;i--)
 				{
 					final Ability A=itemTwo.fetchEffect(i);

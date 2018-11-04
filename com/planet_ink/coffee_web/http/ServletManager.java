@@ -26,9 +26,9 @@ import com.planet_ink.coffee_web.util.RequestStats;
 */
 
 /**
- * Manages a relatively static set of servlet classes 
+ * Manages a relatively static set of servlet classes
  * and the root contexts needed to access them.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -37,13 +37,13 @@ public class ServletManager implements SimpleServletManager
 	private final Map<String,Class<? extends SimpleServlet>> 		  servlets; 	// map of registered servlets by context
 	private final Map<Class<? extends SimpleServlet>, RequestStats> servletStats; // stats about each servlet
 	private final Map<Class<? extends SimpleServlet>, Boolean> 		  servletInit; // whether a servlets been initialized
-	
-	public ServletManager(CWConfig config)
+
+	public ServletManager(final CWConfig config)
 	{
 		servlets = new Hashtable<String,Class<? extends SimpleServlet>>();
 		servletStats = new Hashtable<Class<? extends SimpleServlet>, RequestStats>();
 		servletInit = new Hashtable<Class<? extends SimpleServlet>, Boolean>();
-		
+
 		for(final String context : config.getServlets().keySet())
 		{
 			String className=config.getServlets().get(context);
@@ -62,8 +62,8 @@ public class ServletManager implements SimpleServletManager
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Internal method to register a servlets existence, and its context.
 	 * This will go away when a config file is permitted
@@ -71,12 +71,12 @@ public class ServletManager implements SimpleServletManager
 	 * @param servletClass the class of the servlet
 	 */
 	@Override
-	public void registerServlet(String context, Class<? extends SimpleServlet> servletClass)
+	public void registerServlet(final String context, final Class<? extends SimpleServlet> servletClass)
 	{
 		servlets.put(context, servletClass);
 		servletStats.put(servletClass, new RequestStats());
 	}
-	
+
 	/**
 	 * For anyone externally interested, will return the list of servlet classes
 	 * that are registered
@@ -95,7 +95,7 @@ public class ServletManager implements SimpleServletManager
 	 * @return the servlet class, if any, or null
 	 */
 	@Override
-	public Class<? extends SimpleServlet> findServlet(String rootContext)
+	public Class<? extends SimpleServlet> findServlet(final String rootContext)
 	{
 		final Class<? extends SimpleServlet> c=servlets.get(rootContext);
 		if(c == null)
@@ -127,7 +127,7 @@ public class ServletManager implements SimpleServletManager
 	 * @return the servlet stats object
 	 */
 	@Override
-	public RequestStats getServletStats(Class<? extends SimpleServlet> servletClass)
+	public RequestStats getServletStats(final Class<? extends SimpleServlet> servletClass)
 	{
 		return servletStats.get(servletClass);
 	}

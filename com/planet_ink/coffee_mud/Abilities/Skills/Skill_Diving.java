@@ -89,7 +89,7 @@ public class Skill_Diving extends StdSkill
 	{
 		return false;
 	}
-	
+
 	protected volatile Boolean isDiving=null;
 
 	@Override
@@ -133,7 +133,7 @@ public class Skill_Diving extends StdSkill
 			isDiving=null;
 		return true;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

@@ -106,7 +106,7 @@ public class Thief_BuriedTreasure extends ThiefSkill
 				if((msg.target() instanceof Physical)
 				&&(((Physical)msg.target()).fetchEffect(ID())==null))
 				{
-					Ability A=(Ability)this.copyOf();
+					final Ability A=(Ability)this.copyOf();
 					A.setMiscText(msg.source().Name());
 					((Physical)msg.target()).addNonUninvokableEffect(A);
 				}
@@ -116,7 +116,7 @@ public class Thief_BuriedTreasure extends ThiefSkill
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -130,7 +130,7 @@ public class Thief_BuriedTreasure extends ThiefSkill
 				final MOB M=CMLib.players().getLoadPlayer(text());
 				if(M!=null)
 				{
-					Ability A=M.fetchAbility(ID());
+					final Ability A=M.fetchAbility(ID());
 					if((A==null)
 					||(CMLib.dice().rollPercentage()<(50 + A.adjustedLevel(M,0) + (5*this.getXLEVELLevel(M)))))
 					{

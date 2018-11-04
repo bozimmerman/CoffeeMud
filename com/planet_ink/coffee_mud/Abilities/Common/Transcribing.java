@@ -67,7 +67,7 @@ public class Transcribing extends CommonSkill
 	protected Item		foundI	= null;
 	protected Item		targetI	= null;
 	protected String	pageNum	= "";
-	
+
 	@Override
 	protected boolean canBeDoneSittingDown()
 	{
@@ -96,13 +96,13 @@ public class Transcribing extends CommonSkill
 					commonTell(mob,L("You mess up your transcribing."));
 				else
 				{
-					MOB factM=CMClass.getFactoryMOB(mob.Name(), mob.phyStats().level(), mob.location());
+					final MOB factM=CMClass.getFactoryMOB(mob.Name(), mob.phyStats().level(), mob.location());
 					try
 					{
 						String tmsg="";
 						final CMMsg rmsg=CMClass.getMsg(mob,foundI,this,CMMsg.TYP_READ,null,pageNum,null);
 						foundI.executeMsg(foundI, rmsg);
-						for(CMMsg m2 : rmsg.trailerMsgs())
+						for(final CMMsg m2 : rmsg.trailerMsgs())
 						{
 							if((m2.source()==mob)
 							&&(m2.target()==foundI)
@@ -114,7 +114,7 @@ public class Transcribing extends CommonSkill
 						&&(targetI instanceof Recipe)
 						&&(CMClass.getAbilityPrototype(((Recipe)targetI).getCommonSkillID())==null))
 							((Recipe)targetI).setCommonSkillID(((Recipe)foundI).getCommonSkillID());
-							
+
 						final CMMsg msg=CMClass.getMsg(mob,targetI,this,CMMsg.TYP_WRITE,
 								L("<S-NAME> transcribe(s) from @x1 into <T-NAME>.",foundI.name(mob)),
 								tmsg,
@@ -138,7 +138,7 @@ public class Transcribing extends CommonSkill
 		return false;
 	}
 
-	protected Item getBrandedItem(final MOB mob, final String itemName, boolean from)
+	protected Item getBrandedItem(final MOB mob, final String itemName, final boolean from)
 	{
 		Item I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
@@ -182,7 +182,7 @@ public class Transcribing extends CommonSkill
 			commonTell(mob,L("@x1 isn't even readable!",CMStrings.capitalizeAndLower(I.name(mob))));
 			return null;
 		}
-		
+
 		if(!I.isGeneric())
 		{
 			commonTell(mob,L("You aren't able to transcribe @x1.",I.name(mob)));
@@ -192,7 +192,7 @@ public class Transcribing extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -203,12 +203,12 @@ public class Transcribing extends CommonSkill
 		pageNum="";
 		if((commands.size()>2)&&(CMath.isInteger(commands.get(commands.size()-1))))
 			pageNum=commands.remove(commands.size()-1);
-		String copyFromName = commands.get(0);
-		String copyToName = CMParms.combine(commands,1);
-		Item copyFromI=this.getBrandedItem(mob, copyFromName, true);
+		final String copyFromName = commands.get(0);
+		final String copyToName = CMParms.combine(commands,1);
+		final Item copyFromI=this.getBrandedItem(mob, copyFromName, true);
 		if(copyFromI == null)
 			return false;
-		Item copyToI=this.getBrandedItem(mob, copyToName, false);
+		final Item copyToI=this.getBrandedItem(mob, copyToName, false);
 		if(copyToI == null)
 			return false;
 		if((copyToI instanceof Recipe)
@@ -237,7 +237,7 @@ public class Transcribing extends CommonSkill
 			commonTell(mob,L("You must know how to write."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		foundI=copyFromI;
@@ -256,7 +256,7 @@ public class Transcribing extends CommonSkill
 			mob.location().send(mob,msg);
 			if(duration==1)
 			{
-				Transcribing B=(Transcribing)beneficialAffect(mob,mob,asLevel,duration);
+				final Transcribing B=(Transcribing)beneficialAffect(mob,mob,asLevel,duration);
 				if(B!=null)
 				{
 					B.tickDown=0;

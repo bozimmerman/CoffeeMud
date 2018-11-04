@@ -73,7 +73,7 @@ public class Play_Harmony extends Play
 	}
 
 	@Override
-	protected void inpersistentAffect(MOB mob)
+	protected void inpersistentAffect(final MOB mob)
 	{
 		final MOB victim=mob.getVictim();
 		if(victim!=null)
@@ -82,7 +82,7 @@ public class Play_Harmony extends Play
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{

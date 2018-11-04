@@ -34,12 +34,12 @@ public class HTTPServerException extends CoffeeMudException
 {
 	public static final long serialVersionUID=0;
 
-	public HTTPServerException(String s)
+	public HTTPServerException(final String s)
 	{
 		super(s);
 	}
-	
-	public HTTPServerException(Exception e)
+
+	public HTTPServerException(final Exception e)
 	{
 		super(e);
 	}

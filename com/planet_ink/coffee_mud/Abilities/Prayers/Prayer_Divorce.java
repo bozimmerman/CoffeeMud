@@ -67,7 +67,7 @@ public class Prayer_Divorce extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -147,7 +147,7 @@ public class Prayer_Divorce extends Prayer
 											B.addDepositInventory(femaleName,coins,null);
 										}
 										else
-										for(Item oI : items)
+										for(final Item oI : items)
 											B.addDepositInventory(femaleName,oI,oI.container());
 									}
 								}

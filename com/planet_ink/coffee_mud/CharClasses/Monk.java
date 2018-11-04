@@ -236,14 +236,14 @@ public class Monk extends StdCharClass
 		return (mob.fetchWieldedItem()!=null) || (mob.fetchHeldItem()!=null);
 	}
 
-	@Override 
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
-	{ 
-		super.executeMsg(host,msg); 
+	{
+		super.executeMsg(host,msg);
 		Fighter.conquestExperience(this,host,msg);
 		Fighter.duelExperience(this, host, msg);
 	}
-	
+
 	@Override
 	public String getOtherBonusDesc()
 	{
@@ -287,7 +287,7 @@ public class Monk extends StdCharClass
 	}
 
 	@Override
-	public void level(MOB mob, List<String> newAbilityIDs)
+	public void level(final MOB mob, final List<String> newAbilityIDs)
 	{
 		super.level(mob, newAbilityIDs);
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
@@ -297,7 +297,7 @@ public class Monk extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
@@ -318,7 +318,7 @@ public class Monk extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		return null;
 	}

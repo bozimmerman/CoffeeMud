@@ -79,14 +79,14 @@ public class Dummy extends Doll
 	}
 
 	@Override
-	public void affectCharState(MOB mob, CharState affectableMaxState)
+	public void affectCharState(final MOB mob, final CharState affectableMaxState)
 	{
 		super.affectCharState(mob,affectableMaxState);
 		affectableMaxState.setHitPoints(99999);
 	}
 
 	@Override
-	public void affectPhyStats(Physical E, PhyStats affectableStats)
+	public void affectPhyStats(final Physical E, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(E,affectableStats);
 		affectableStats.setArmor(100);
@@ -131,8 +131,8 @@ public class Dummy extends Doll
 		return true;
 	}
 
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -141,7 +141,7 @@ public class Dummy extends Doll
 		}
 		return body;
 	}
-	
+
 	private static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	@Override

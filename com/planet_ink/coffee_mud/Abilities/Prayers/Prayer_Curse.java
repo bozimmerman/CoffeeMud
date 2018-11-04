@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Curse extends Prayer
 {
 	@Override
@@ -120,7 +119,7 @@ public class Prayer_Curse extends Prayer
 		super.unInvoke();
 	}
 
-	public static Item getSomething(MOB mob, boolean blessedOnly)
+	public static Item getSomething(final MOB mob, final boolean blessedOnly)
 	{
 		final Vector<Item> good=new Vector<Item>();
 		final Vector<Item> great=new Vector<Item>();
@@ -144,7 +143,7 @@ public class Prayer_Curse extends Prayer
 		return target;
 	}
 
-	public static void endLowerBlessings(Physical target, int level)
+	public static void endLowerBlessings(final Physical target, final int level)
 	{
 		final List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
@@ -155,12 +154,12 @@ public class Prayer_Curse extends Prayer
 		}
 	}
 
-	public static boolean isBlessed(Item item)
+	public static boolean isBlessed(final Item item)
 	{
 		return CMLib.flags().domainAffects(item,Ability.DOMAIN_BLESSING).size()>0;
 	}
 
-	public static void endLowerCurses(Physical target, int level)
+	public static void endLowerCurses(final Physical target, final int level)
 	{
 		final List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
 		for(int v=0;v<V.size();v++)
@@ -172,7 +171,7 @@ public class Prayer_Curse extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

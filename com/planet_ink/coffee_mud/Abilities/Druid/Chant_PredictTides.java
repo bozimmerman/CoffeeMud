@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_PredictTides extends Chant
 {
 	@Override
@@ -74,7 +73,7 @@ public class Chant_PredictTides extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -100,7 +99,7 @@ public class Chant_PredictTides extends Chant
 				}
 			}
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -108,7 +107,7 @@ public class Chant_PredictTides extends Chant
 
 		if(success)
 		{
-			final String msgStr = isWateryEnough ? 
+			final String msgStr = isWateryEnough ?
 					 L("^S<S-NAME> chant(s) and gaze(s) upon the waters.^?")
 					:L("^S<S-NAME> chant(s) and gaze(s) toward the distant waters.^?");
 			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":msgStr);
@@ -120,7 +119,7 @@ public class Chant_PredictTides extends Chant
 		}
 		else
 		{
-			final String msgStr = isWateryEnough ? 
+			final String msgStr = isWateryEnough ?
 					 L("^S<S-NAME> chant(s) and gaze(s) upon the waters, but the magic fizzles.^?")
 					:L("^S<S-NAME> chant(s) and gaze(s) toward the distant waters, but the magic fizzles.^?");
 			beneficialVisualFizzle(mob,null,msgStr);

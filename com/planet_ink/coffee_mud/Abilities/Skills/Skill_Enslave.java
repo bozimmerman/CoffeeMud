@@ -95,14 +95,14 @@ public class Skill_Enslave extends StdSkill
 	protected int		speedDown		= 0;
 	protected int		hungerTickDown	= HUNGERTICKMAX;
 	protected Room		lastRoom		= null;
-	
+
 	protected List<Pair<Clan, Integer>>	oldClans		= null;
 	protected SlaveryLibrary.GeasSteps	STEPS			= null;
 	protected final static int			HUNGERTICKMAX	= 4;
 	protected final static int			SPEEDMAX		= 2;
 
 	@Override
-	public void setMiscText(String txt)
+	public void setMiscText(final String txt)
 	{
 		masterMOB=null;
 		masterName=txt;
@@ -125,7 +125,7 @@ public class Skill_Enslave extends StdSkill
 		return masterMOB;
 	}
 
-	public void unMaster(MOB mob)
+	public void unMaster(final MOB mob)
 	{
 		if((masterMOB!=null) && (mob!=null))
 		{
@@ -408,7 +408,7 @@ public class Skill_Enslave extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isMonster())
 		{

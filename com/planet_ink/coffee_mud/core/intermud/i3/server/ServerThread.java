@@ -41,20 +41,20 @@ import java.util.Map;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class ServerThread implements Tickable
 {
-	private java.util.Date  boot_time=null;
-	private int 			count  = 1;
-	private final String  		mud_name;
-	private final int 			port;
-	private boolean 		running;
-	private final ImudServices	intermuds;
-	private ListenThread 	listen_thread=null;
-	private volatile int 	tickStatus=Tickable.STATUS_NOT;
-	private Map<String,ServerObject> objects;
-	private Map<String,ServerUser>   interactives;
+	private java.util.Date				boot_time		= null;
+	private int							count			= 1;
+	private final String				mud_name;
+	private final int					port;
+	private boolean						running;
+	private final ImudServices			intermuds;
+	private ListenThread				listen_thread	= null;
+	private volatile int				tickStatus		= Tickable.STATUS_NOT;
+	private Map<String, ServerObject>	objects;
+	private Map<String, ServerUser>		interactives;
 
-	protected ServerThread(String mname,
-						   int mport,
-						   ImudServices imud)
+	protected ServerThread(final String mname,
+						   final int mport,
+						   final ImudServices imud)
 						   {
 		mud_name = mname;
 		port = mport;
@@ -120,7 +120,7 @@ public class ServerThread implements Tickable
 		return ob;
 	}
 
-	protected synchronized ServerObject findObject(String str) throws ObjectLoadException {
+	protected synchronized ServerObject findObject(final String str) throws ObjectLoadException {
 		ServerObject ob;
 
 		if( objects.containsKey(str) )
@@ -151,7 +151,7 @@ public class ServerThread implements Tickable
 		return ob;
 	}
 
-	protected synchronized void removeObject(ServerObject ob)
+	protected synchronized void removeObject(final ServerObject ob)
 	{
 		final String id = ob.getObjectId();
 
@@ -169,12 +169,12 @@ public class ServerThread implements Tickable
 	/**
 	 * While the mud is running, this method repeats the following
 	 * steps over and over:
-	 * 
+	 *
 	 * Check for pending user input and trigger user commands
 	 * Check for pending object events and execute them
 	 * Check for incoming user connections and create an
 	 *  	interactive object for each.
-	 * 
+	 *
 	 */
 	public void start()
 	{
@@ -219,7 +219,7 @@ public class ServerThread implements Tickable
 		CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT, 250, 1);
 	}
 
-	@Override 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(CMSecurity.isDisabled(DisFlag.I3))

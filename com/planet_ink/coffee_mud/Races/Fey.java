@@ -92,7 +92,7 @@ public class Fey extends SmallElfKin
 	{
 		return 10;
 	}
-	
+
 	private final String[]	culturalAbilityNames			= { "Fey", "Foraging" };
 	private final int[]		culturalAbilityProficiencies	= { 100, 50 };
 

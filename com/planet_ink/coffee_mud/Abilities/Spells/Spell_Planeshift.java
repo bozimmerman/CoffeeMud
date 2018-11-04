@@ -35,7 +35,6 @@ import java.util.concurrent.atomic.AtomicInteger;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Planeshift extends PlanarAbility
 {
 
@@ -90,21 +89,21 @@ public class Spell_Planeshift extends PlanarAbility
 	{
 		return triggerStrings;
 	}
-	
+
 	@Override
-	protected String castingMessage(MOB mob, boolean auto)
+	protected String castingMessage(final MOB mob, final boolean auto)
 	{
 		return auto?L("<S-NAME> <S-IS-ARE> conjured to another plane!"):L("^S<S-NAME> conjur(s) a powerful planar connection!^?");
 	}
-	
+
 	@Override
-	protected String failMessage(MOB mob, boolean auto)
+	protected String failMessage(final MOB mob, final boolean auto)
 	{
 		return L("^S<S-NAME> attempt(s) to conjur a powerful planar connection, and fails.");
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!Spell.spellArmorCheck(this,mob,auto))
 			return false;

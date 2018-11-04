@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Beastmaster extends StdCharClass
 {
 	@Override
@@ -319,7 +318,7 @@ public class Beastmaster extends StdCharClass
 	}
 
 	@Override
-	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	public boolean isValidClassDivider(final MOB killer, final MOB killed, final MOB mob, final Set<MOB> followers)
 	{
 		if((mob!=null)
 		&&(mob!=killed)
@@ -333,7 +332,7 @@ public class Beastmaster extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -347,7 +346,7 @@ public class Beastmaster extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
@@ -368,9 +367,9 @@ public class Beastmaster extends StdCharClass
 	}
 
 	@Override
-	public int classDurationModifier(MOB myChar,
-									 Ability skill,
-									 int duration)
+	public int classDurationModifier(final MOB myChar,
+									 final Ability skill,
+									 final int duration)
 	{
 		if(myChar==null)
 			return duration;

@@ -137,7 +137,7 @@ public class Wizard extends Mage
 	}
 
 	@Override
-	public void affectCharState(MOB mob, CharState state)
+	public void affectCharState(final MOB mob, final CharState state)
 	{
 		super.affectCharState(mob,state);
 		if(mob.baseCharStats().getCurrentClass().ID().equals(ID()))

@@ -22,7 +22,7 @@ public class CMFactoryThread extends Thread
 {
 	private volatile Runnable runnable = null;
 
-	public CMFactoryThread(ThreadGroup group, Runnable runnable, String name)
+	public CMFactoryThread(final ThreadGroup group, final Runnable runnable, final String name)
 	{
 		super(group,runnable,name);
 		if(group==null)
@@ -35,7 +35,7 @@ public class CMFactoryThread extends Thread
 	 * if available
 	 * @param runnable the runnable running
 	 */
-	public void setRunnable(Runnable runnable)
+	public void setRunnable(final Runnable runnable)
 	{
 		this.runnable=runnable;
 	}

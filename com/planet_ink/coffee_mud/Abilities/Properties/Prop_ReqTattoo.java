@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_ReqTattoo extends Property implements TriggeredAffect
 {
 	@Override
@@ -80,7 +79,7 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		themsg="";
 		final int x=newText.indexOf(';');
@@ -99,7 +98,7 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 		}
 	}
 
-	public Vector<String> getMask(boolean[] flags)
+	public Vector<String> getMask(final boolean[] flags)
 	{
 		final Vector<String> V=CMParms.parse(miscText.toUpperCase());
 		String s=null;
@@ -127,7 +126,7 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 		return V;
 	}
 
-	public boolean passesMuster(Vector<String> mask, boolean[] flags, MOB mob)
+	public boolean passesMuster(final Vector<String> mask, final boolean[] flags, final MOB mob)
 	{
 		if(mob==null)
 			return false;
@@ -224,9 +223,9 @@ public class Prop_ReqTattoo extends Property implements TriggeredAffect
 				else
 				{
 					msg.source().getGroupMembers(H);
-					final HashSet<MOB> H2=new XHashSet(H);
-					for(final Iterator e=H2.iterator();e.hasNext();)
-						((MOB)e.next()).getRideBuddies(H);
+					final HashSet<MOB> H2=new XHashSet<MOB>(H);
+					for(final Iterator<MOB> e=H2.iterator();e.hasNext();)
+						e.next().getRideBuddies(H);
 				}
 				for(final Iterator<MOB> e=H.iterator();e.hasNext();)
 				{

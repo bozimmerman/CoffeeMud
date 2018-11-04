@@ -45,7 +45,7 @@ public class PolarBear extends StdRace
 		super();
 		super.naturalAbilImmunities.add("Disease_Cold");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Polar Bear");
 
 	@Override
@@ -184,7 +184,7 @@ public class PolarBear extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{

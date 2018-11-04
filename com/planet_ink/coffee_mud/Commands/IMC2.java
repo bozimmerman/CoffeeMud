@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class IMC2 extends StdCommand
 {
 	public IMC2()
@@ -46,7 +45,7 @@ public class IMC2 extends StdCommand
 		return access;
 	}
 
-	public void IMC2Error(MOB mob)
+	public void IMC2Error(final MOB mob)
 	{
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMC2))
 			mob.tell(L("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE, IMC2 RESTART, or IMC2 CHANNELS."));
@@ -55,7 +54,7 @@ public class IMC2 extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(!(CMLib.intermud().imc2online()))

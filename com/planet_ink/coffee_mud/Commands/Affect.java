@@ -119,7 +119,7 @@ public class Affect extends StdCommand
 		return msg.toString();
 	}
 
-	public String getAffects(Session S, Physical P, boolean xtra, boolean autosAlso)
+	public String getAffects(final Session S, final Physical P, final boolean xtra, final boolean autosAlso)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		final int NUM_COLS=2;
@@ -176,7 +176,7 @@ public class Affect extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final Session S=mob.session();
@@ -231,7 +231,7 @@ public class Affect extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		//if(!super.checkArguments(internalParameters, args)) return Boolean.FALSE.toString();
 

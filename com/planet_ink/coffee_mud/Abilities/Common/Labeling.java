@@ -65,11 +65,11 @@ public class Labeling extends CommonSkill
 
 	protected Item		found		  = null;
 	protected String	writing		  = "";
-	
+
 	protected static final Map<String,String>	tagPrefixes		= new TreeMap<String,String>();
 
 	protected final Map<String,AtomicInteger>	nextTagNumbers	= new TreeMap<String,AtomicInteger>();
-	
+
 	@Override
 	protected boolean canBeDoneSittingDown()
 	{
@@ -87,7 +87,7 @@ public class Labeling extends CommonSkill
 	{
 		return CMLib.lang().L(" Tag #");
 	}
-	
+
 	public static final String getCurrentTag(final Item I)
 	{
 		final String label="("+getTagLabel().trim();
@@ -100,26 +100,26 @@ public class Labeling extends CommonSkill
 		}
 		return "";
 	}
-	
+
 	@Override
 	public String text()
 	{
 		return CMParms.combineEQParms(nextTagNumbers, ' ');
 	}
-	
+
 	@Override
 	public void setMiscText(final String text)
 	{
 		nextTagNumbers.clear();
 		if(text.length()>0)
 		{
-			Map<String,String> map = CMParms.parseEQParms(text);
-			for(String key : map.keySet())
+			final Map<String,String> map = CMParms.parseEQParms(text);
+			for(final String key : map.keySet())
 				nextTagNumbers.put(key, new AtomicInteger(CMath.s_int(map.get(key))));
 		}
 	}
 
-	public String getNextTag(Item itemI)
+	public String getNextTag(final Item itemI)
 	{
 		final String type = CMClass.getObjectType(itemI).name();
 		final String itemKey = type+"/"+itemI.ID();
@@ -131,6 +131,7 @@ public class Labeling extends CommonSkill
 				{
 					tagPrefixes.clear();
 					@SuppressWarnings("unchecked")
+					final
 					MultiEnumeration<Item> i=new MultiEnumeration<Item>(new Enumeration[] {
 						CMClass.basicItems(),
 						CMClass.armor(),
@@ -169,7 +170,7 @@ public class Labeling extends CommonSkill
 			nextTagNumbers.put(itemKey, new AtomicInteger(0));
 		return tagPrefixes.get(itemKey)+String.format("%1$04d", Long.valueOf(nextTagNumbers.get(itemKey).addAndGet(1)));
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -213,7 +214,7 @@ public class Labeling extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -236,7 +237,7 @@ public class Labeling extends CommonSkill
 			commonTell(mob,L("You must specify what you want to label.  Start with the word remove to remove a tag label."));
 			return false;
 		}
-		String what=CMParms.combine(commands);
+		final String what=CMParms.combine(commands);
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,what);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{

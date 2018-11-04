@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class MasterDrilling extends Drilling
 {
 	@Override
@@ -58,7 +57,7 @@ public class MasterDrilling extends Drilling
 	}
 
 	@Override
-	protected int getDuration(MOB mob, int level)
+	protected int getDuration(final MOB mob, final int level)
 	{
 		return getDuration(90, mob, level, 25);
 	}

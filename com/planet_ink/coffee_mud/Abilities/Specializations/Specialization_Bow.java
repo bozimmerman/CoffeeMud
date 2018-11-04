@@ -56,7 +56,7 @@ public class Specialization_Bow extends Specialization_Weapon
 	}
 
 	@Override
-	protected boolean isWeaponMatch(Weapon W)
+	protected boolean isWeaponMatch(final Weapon W)
 	{
 		if(!super.isWeaponMatch(W))
 			return false;

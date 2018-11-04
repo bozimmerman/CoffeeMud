@@ -44,7 +44,7 @@ public class DefaultAuctionPolicy implements AuctionPolicy, Cloneable
 	private double	timeCutPct		= 0.0;
 	private int		maxDays			= Integer.MAX_VALUE;
 	private int		minDays			= 0;
-	
+
 	@Override
 	public String ID()
 	{
@@ -66,7 +66,7 @@ public class DefaultAuctionPolicy implements AuctionPolicy, Cloneable
 		if (minDays > maxDays)
 			minDays = maxDays;
 	}
-	
+
 	@Override
 	public String name()
 	{
@@ -92,7 +92,7 @@ public class DefaultAuctionPolicy implements AuctionPolicy, Cloneable
 		{
 			return (CMObject)this.clone();
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return newInstance();
 		}
@@ -104,7 +104,7 @@ public class DefaultAuctionPolicy implements AuctionPolicy, Cloneable
 	}
 
 	@Override
-	public void mergeAuctioneerPolicy(Auctioneer A)
+	public void mergeAuctioneerPolicy(final Auctioneer A)
 	{
 		if (A == null)
 			return;
@@ -119,7 +119,7 @@ public class DefaultAuctionPolicy implements AuctionPolicy, Cloneable
 		if (minDays > maxDays)
 			minDays = maxDays;
 	}
-	
+
 	@Override
 	public double timedListingPrice()
 	{
@@ -127,7 +127,7 @@ public class DefaultAuctionPolicy implements AuctionPolicy, Cloneable
 	}
 
 	@Override
-	public void setTimedListingPrice(double d)
+	public void setTimedListingPrice(final double d)
 	{
 		this.timeListPrice = d;
 	}
@@ -139,7 +139,7 @@ public class DefaultAuctionPolicy implements AuctionPolicy, Cloneable
 	}
 
 	@Override
-	public void setTimedListingPct(double d)
+	public void setTimedListingPct(final double d)
 	{
 		this.timeListPct = d;
 	}
@@ -151,7 +151,7 @@ public class DefaultAuctionPolicy implements AuctionPolicy, Cloneable
 	}
 
 	@Override
-	public void setTimedFinalCutPct(double d)
+	public void setTimedFinalCutPct(final double d)
 	{
 		this.timeCutPct = d;
 	}
@@ -163,7 +163,7 @@ public class DefaultAuctionPolicy implements AuctionPolicy, Cloneable
 	}
 
 	@Override
-	public void setMaxTimedAuctionDays(int d)
+	public void setMaxTimedAuctionDays(final int d)
 	{
 		this.maxDays = d;
 	}
@@ -175,7 +175,7 @@ public class DefaultAuctionPolicy implements AuctionPolicy, Cloneable
 	}
 
 	@Override
-	public void setMinTimedAuctionDays(int d)
+	public void setMinTimedAuctionDays(final int d)
 	{
 		this.minDays = d;
 	}
@@ -187,7 +187,7 @@ public class DefaultAuctionPolicy implements AuctionPolicy, Cloneable
 	}
 
 	@Override
-	public void setLiveListingPrice(double d)
+	public void setLiveListingPrice(final double d)
 	{
 		this.liveListPrice = d;
 	}
@@ -199,7 +199,7 @@ public class DefaultAuctionPolicy implements AuctionPolicy, Cloneable
 	}
 
 	@Override
-	public void setLiveFinalCutPct(double d)
+	public void setLiveFinalCutPct(final double d)
 	{
 		this.liveCutPct = d;
 	}

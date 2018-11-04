@@ -48,7 +48,7 @@ public class LogViewer extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		String s=Log.instance().getLog().toString();
 		s=s.replaceAll("\n\r", "\n");

@@ -59,14 +59,14 @@ public class Studying extends CommonSkill implements AbilityContainer
 	{
 		return triggerStrings;
 	}
-	
+
 	@Override
 	public long flags()
 	{
 		return super.flags() | Ability.FLAG_NOUNINVOKING;
 	}
-	
-	protected static enum perLevelLimits 
+
+	protected static enum perLevelLimits
 	{
 		COMMON(1, 6, 1, ACODE_COMMON_SKILL, ACODE_LANGUAGE),
 		SKILL(1, 6, 2, ACODE_SKILL, ACODE_THIEF_SKILL),
@@ -82,7 +82,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 		private int	perLevels	= 1;
 		private int	aboveLevel	= 1;
 
-		private perLevelLimits(int num, int perLevels, int aboveLevel, int type1, int type2)
+		private perLevelLimits(final int num, final int perLevels, final int aboveLevel, final int type1, final int type2)
 		{
 			this.num=num;
 			this.perLevels=perLevels;
@@ -93,7 +93,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 
 		public boolean doesRuleApplyTo(final Ability A)
 		{
-			return (A!=null) 
+			return (A!=null)
 				&& (((A.classificationCode()&Ability.ALL_ACODES)==type1)
 					||((A.classificationCode()&Ability.ALL_ACODES)==type2));
 		}
@@ -115,7 +115,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 	{
 		return null;
 	}
-	
+
 	@Override
 	public boolean isAutoInvoked()
 	{
@@ -129,11 +129,11 @@ public class Studying extends CommonSkill implements AbilityContainer
 	}
 
 	/*
-	We could also make this 6 different abilities, Common Skill Studying, Skills 
+	We could also make this 6 different abilities, Common Skill Studying, Skills
 	Studying, Songs Studying, Chants Studying, Spells Studying, and Prayers Studying if you would prefer
 	granting each ability at the lowest level above (1,2,3,4,5,6).
 	 */
-	
+
 	protected Physical			teacherP			= null;
 	protected Ability			teachingA			= null;
 	protected volatile boolean	distributed			= false;
@@ -146,10 +146,10 @@ public class Studying extends CommonSkill implements AbilityContainer
 		super.setMiscText(newMiscText);
 		distributed = false;
 	}
-	
+
 	@Override
 	public String displayText()
-	{	
+	{
 		if((teacherP == null)||(teachingA==null))
 			return L("(Scholarly)"); // prevents it from being uninvokeable through autoaffects
 		else
@@ -256,7 +256,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob, boolean force)
+	public boolean autoInvocation(final MOB mob, final boolean force)
 	{
 		if(isAutoInvoked())
 		{
@@ -291,7 +291,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 		{
 			forget(msg.source(),msg.targetMessage());
 		}
-			
+
 		return super.okMessage(myHost,msg);
 	}
 
@@ -376,7 +376,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 				teacherMA.setProficiency(100);
 				teacherM.addAbility(teacherMA);
 			}
-			String teachingAName=(teachingA!=null)?teachingA.name():L("something");
+			final String teachingAName=(teachingA!=null)?teachingA.name():L("something");
 			String doneMsgStr;
 			if(aborted)
 				doneMsgStr=L("<S-NAME> stop(s) learning @x1 from <T-NAME>.",teachingAName);
@@ -428,7 +428,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 	{
 		if(skillList.size() > 0)
 		{
-			for(Ability a : skillList)
+			for(final Ability a : skillList)
 			{
 				final Ability A=mob.fetchAbility(a.ID());
 				if((A!=null)&&(!A.isSavable()))
@@ -460,7 +460,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 			}
 		}
 	}
-	
+
 	public void confirmSkills(final MOB mob)
 	{
 		final Studying studyA=(Studying)mob.fetchEffect(ID());
@@ -477,9 +477,9 @@ public class Studying extends CommonSkill implements AbilityContainer
 				studyA.distributeSkills(mob);
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, final int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		boolean quiet=false;
 		if((commands.size()==1)&&(commands.get(0).equalsIgnoreCase("quiet")))
@@ -492,7 +492,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 			{
 				mob.tell(L("You've been taught: "));
 				final List<List<String>> taughts = CMParms.parseDoubleDelimited(text(), ';', ',');
-				StringBuilder str=new StringBuilder("");
+				final StringBuilder str=new StringBuilder("");
 				for(final List<String> l : taughts)
 				{
 					if(l.size()>1)
@@ -516,7 +516,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
 				{
 					perLevelLimits limitObj = null;
-					for(perLevelLimits l : perLevelLimits.values())
+					for(final perLevelLimits l : perLevelLimits.values())
 					{
 						if(l.doesRuleApplyTo(i))
 							limitObj = l;
@@ -526,7 +526,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 					if((getSupportedSkillType()!=null) && (getSupportedSkillType()!=limitObj))
 						continue;
 					final int classLevel = CMLib.ableMapper().qualifyingClassLevel(mob, this);
-					int numAllowed = limitObj.numAllowed(classLevel);
+					final int numAllowed = limitObj.numAllowed(classLevel);
 					int numHas = 0;
 					for(final List<String> l : taughts)
 					{
@@ -549,12 +549,12 @@ public class Studying extends CommonSkill implements AbilityContainer
 		}
 		if((commands.size()>0)&&(commands.size()<3))
 		{
-			String combStr=CMParms.combine(commands);
+			final String combStr=CMParms.combine(commands);
 			final List<List<String>> taughts = CMParms.parseDoubleDelimited(text(), ';', ',');
 			for(int i=0;i<Ability.ACODE_DESCS.length;i++)
 			{
 				perLevelLimits limitObj = null;
-				for(perLevelLimits l : perLevelLimits.values())
+				for(final perLevelLimits l : perLevelLimits.values())
 				{
 					if(l.doesRuleApplyTo(i))
 						limitObj = l;
@@ -567,7 +567,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 				||CMLib.english().makePlural(Ability.ACODE_DESCS[i].toLowerCase()).equalsIgnoreCase(combStr))
 				{
 					final int classLevel = CMLib.ableMapper().qualifyingClassLevel(mob, this);
-					int numAllowed = limitObj.numAllowed(classLevel);
+					final int numAllowed = limitObj.numAllowed(classLevel);
 					int numHas = 0;
 					for(final List<String> l : taughts)
 					{
@@ -578,10 +578,10 @@ public class Studying extends CommonSkill implements AbilityContainer
 								numHas++;
 						}
 					}
-					StringBuilder str=new StringBuilder("You may learn ");
+					final StringBuilder str=new StringBuilder("You may learn ");
 					str.append(numAllowed-numHas).append(" more ").append(CMLib.english().makePlural(Ability.ACODE_DESCS[i].toLowerCase())).append(". ");
 					str.append("\n\rAvailable ").append(CMLib.english().makePlural(Ability.ACODE_DESCS[i].toLowerCase())).append(" include: ");
-					List<String> all=new ArrayList<String>(100);
+					final List<String> all=new ArrayList<String>(100);
 					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
@@ -629,9 +629,9 @@ public class Studying extends CommonSkill implements AbilityContainer
 			mob.tell(L("Have who teach you what?"));
 			return false;
 		}
-		List<String> name = new XVector<String>(commands.remove(0));
+		final List<String> name = new XVector<String>(commands.remove(0));
 		final String skillName = CMParms.combine(commands);
-		Physical target = super.getAnyTarget(mob, new XVector<String>(name), givenTarget, Wearable.FILTER_UNWORNONLY,false,true);
+		final Physical target = super.getAnyTarget(mob, new XVector<String>(name), givenTarget, Wearable.FILTER_UNWORNONLY,false,true);
 		final Ability A;
 		final int teacherClassLevel;
 		final int teacherQualifyingLevel;
@@ -647,7 +647,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 				commonTell(mob,L("You don't know how to learn from @x1.",target.Name()));
 				return false;
 			}
-			SpellHolder aC=(SpellHolder)target;
+			final SpellHolder aC=(SpellHolder)target;
 			Ability possA=(Ability)CMLib.english().fetchEnvironmental(aC.getSpells(),skillName,true);
 			if(possA==null)
 				possA=(Ability)CMLib.english().fetchEnvironmental(aC.getSpells(),skillName,false);
@@ -657,7 +657,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 				return false;
 			}
 			A=possA;
-			int lowestQualifyingLevel = CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+			final int lowestQualifyingLevel = CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 			teacherClassLevel = (target.phyStats().level() > lowestQualifyingLevel) ? target.phyStats().level() : lowestQualifyingLevel;
 			teacherQualifyingLevel = lowestQualifyingLevel;
 		}
@@ -712,7 +712,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 			return false;
 		}
 		perLevelLimits limitObj = null;
-		for(perLevelLimits l : perLevelLimits.values())
+		for(final perLevelLimits l : perLevelLimits.values())
 		{
 			if(l.doesRuleApplyTo(A))
 				limitObj = l;
@@ -727,7 +727,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 			mob.tell(L("You can not study that sort of skill with this one."));
 			return false;
 		}
-		int numAllowed = limitObj.numAllowed(classLevel);
+		final int numAllowed = limitObj.numAllowed(classLevel);
 		int numHas = 0;
 		final List<List<String>> taughts = CMParms.parseDoubleDelimited(text(), ';', ',');
 		for(final List<String> l : taughts)
@@ -744,7 +744,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 			mob.tell(L("You may not study any more @x1 at this time.",CMLib.english().makePlural(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES])));
 			return false;
 		}
-		
+
 		final Studying thisOne=(Studying)mob.fetchEffect(ID());
 		if((thisOne.teacherP!=null)
 		&&(thisOne.teachingA!=null)
@@ -758,16 +758,16 @@ public class Studying extends CommonSkill implements AbilityContainer
 			return false;
 
 		final double quickPct = getXTIMELevel(mob) * 0.05;
-		final int teachTicks = (int)(((teacherQualifyingLevel * 60000L) 
-							- (10000L * (teacherClassLevel-teacherQualifyingLevel)) 
+		final int teachTicks = (int)(((teacherQualifyingLevel * 60000L)
+							- (10000L * (teacherClassLevel-teacherQualifyingLevel))
 							- (15000L * super.getXLEVELLevel(mob))) / CMProps.getTickMillis());
 		final int duration=teachTicks-(int)Math.round(CMath.mul(teachTicks, quickPct));
 		final long minutes = (duration * CMProps.getTickMillis() / 60000L);
 		final long seconds = (duration * CMProps.getTickMillis() / 1000L);
-		
+
 		/*
-			Training time should be (Skill's qualifying level by the teaching character in minutes 
-			minus 10 seconds per level the teacher has over that, minus 15 seconds per expertise the scholar has, with 
+			Training time should be (Skill's qualifying level by the teaching character in minutes
+			minus 10 seconds per level the teacher has over that, minus 15 seconds per expertise the scholar has, with
 			a minimum of 1 minute)
 		*/
 		successfullyTaught = super.proficiencyCheck(mob, 0, auto);
@@ -795,7 +795,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 				@Override
 				public void run()
 				{
-					String str=L("<S-NAME> start(s) learning @x1 from <T-NAME>.",tA.Name());
+					final String str=L("<S-NAME> start(s) learning @x1 from <T-NAME>.",tA.Name());
 					final CMMsg msg=CMClass.getMsg(M,tP,oA,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),str);
 					final Room R=M.location();
 					if(R!=null)
@@ -815,7 +815,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 						}
 					}
 				}
-				
+
 			};
 			if((!(target instanceof MOB)) || ((MOB)target).isMonster() || (sess==null))
 				R.run();
@@ -854,7 +854,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 							{
 								R.run();
 							}
-							catch (Exception e)
+							catch (final Exception e)
 							{
 							}
 						}
@@ -862,18 +862,18 @@ public class Studying extends CommonSkill implements AbilityContainer
 				});
 			}
 		}
-			
+
 		return true;
 	}
 
 	@Override
-	public void addAbility(Ability to)
+	public void addAbility(final Ability to)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public void delAbility(Ability to)
+	public void delAbility(final Ability to)
 	{
 		if(to==null)
 			return;
@@ -909,15 +909,15 @@ public class Studying extends CommonSkill implements AbilityContainer
 	}
 
 	@Override
-	public Ability fetchAbility(int index)
+	public Ability fetchAbility(final int index)
 	{
 		return skillList.get(index);
 	}
 
 	@Override
-	public Ability fetchAbility(String ID)
+	public Ability fetchAbility(final String ID)
 	{
-		for(Ability A : skillList)
+		for(final Ability A : skillList)
 		{
 			if(A.ID().equalsIgnoreCase(ID))
 				return A;
@@ -942,7 +942,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 	@Override
 	public void delAllAbilities()
 	{
-		XVector<Ability> all=new XVector<Ability>(skillList);
+		final XVector<Ability> all=new XVector<Ability>(skillList);
 		for(final Ability A : all)
 			delAbility(A);
 	}

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Ranger_SetSnare extends StdAbility
 {
 	@Override
@@ -93,7 +92,7 @@ public class Ranger_SetSnare extends StdAbility
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -104,10 +103,10 @@ public class Ranger_SetSnare extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Trap theTrap=(Trap)CMClass.getAbility("Trap_Snare");
-		
+
 		Room trapThis=null;
 		if(givenTarget instanceof Room)
 		{
@@ -137,16 +136,16 @@ public class Ranger_SetSnare extends StdAbility
 				else
 				if(!theTrap.canSetTrapOn(mob,trapThis))
 					return false;
-				
+
 			}
 		}
-		
+
 		if((theTrap==null)||(trapThis==null))
 		{
 			mob.tell(L("Something went wrong."));
 			return false;
 		}
-		
+
 		final Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
 		if((theOldTrap!=null)
 		&&(theOldTrap.ID().equals(theTrap.ID()))
@@ -155,7 +154,7 @@ public class Ranger_SetSnare extends StdAbility
 			mob.tell(L("A snare is already set here."));
 			return false;
 		}
-		
+
 		if(!CMLib.flags().isInWilderness(trapThis))
 		{
 			mob.tell(L("You can't set a snare here."));

@@ -46,7 +46,7 @@ public class Duergar extends Dwarf
 		super();
 		super.naturalAbilImmunities.add("Disease_Syphilis");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Duergar");
 
 	@Override
@@ -58,7 +58,7 @@ public class Duergar extends Dwarf
 	private final String[]	racialEffectNames			= {  };
 	private final int[]		racialEffectLevels			= {  };
 	private final String[]	racialEffectParms			= {  };
-	
+
 	@Override
 	protected String[] racialEffectNames()
 	{
@@ -105,7 +105,7 @@ public class Duergar extends Dwarf
 	{
 		return -10;
 	}
-	
+
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{

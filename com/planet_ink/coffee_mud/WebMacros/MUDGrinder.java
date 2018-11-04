@@ -37,7 +37,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class MUDGrinder extends StdWebMacro
 {
 	@Override
@@ -52,7 +51,7 @@ public class MUDGrinder extends StdWebMacro
 		return true;
 	}
 
-	public static Area getAreaObject(String ID)
+	public static Area getAreaObject(final String ID)
 	{
 		if(ID==null)
 			return null;
@@ -75,7 +74,7 @@ public class MUDGrinder extends StdWebMacro
 					x=xmlIsh.indexOf(">",x+1);
 				if(x>=0)
 				{
-					String thing=xmlIsh.substring(0,x);
+					final String thing=xmlIsh.substring(0,x);
 					if(thing.startsWith("P=")&&(x>2))
 						playerCode=thing.substring(2);
 					else
@@ -117,7 +116,7 @@ public class MUDGrinder extends StdWebMacro
 			{
 				if(R!=null)
 					R=CMLib.map().getRoom(R);
-				
+
 				if((playerM!=null)&&(R==null))
 				{
 					I=RoomData.getItemFromCode(playerM,itemCode);
@@ -169,8 +168,8 @@ public class MUDGrinder extends StdWebMacro
 		}
 		return null;
 	}
-	
-	public static Room getRoomObject(String AREA, String ID)
+
+	public static Room getRoomObject(final String AREA, final String ID)
 	{
 		if(ID==null)
 			return null;
@@ -190,8 +189,8 @@ public class MUDGrinder extends StdWebMacro
 			return A.getRoom(ID);
 		return null;
 	}
-	
-	public static Room getRoomObject(HTTPRequest req, String ID)
+
+	public static Room getRoomObject(final HTTPRequest req, final String ID)
 	{
 		if(ID==null)
 			return null;
@@ -199,7 +198,7 @@ public class MUDGrinder extends StdWebMacro
 			return null;
 		if(req != null)
 		{
-			String areaID=req.getUrlParameter("AREA");
+			final String areaID=req.getUrlParameter("AREA");
 			if((areaID!=null)&&(areaID.startsWith("ITEM#<"))&&(areaID.endsWith(">")))
 				return getRoomObject(areaID, ID);
 		}
@@ -208,9 +207,10 @@ public class MUDGrinder extends StdWebMacro
 			return R;
 		return (req==null) ? null : getRoomObject(req.getUrlParameter("AREA"), ID);
 	}
-	
+
+	@SuppressWarnings({"unchecked","rawtypes"})
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -666,7 +666,7 @@ public class MUDGrinder extends StdWebMacro
 		if(parms.containsKey("ADDAREA"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
-			String AREA=httpReq.getUrlParameter("AREA");
+			final String AREA=httpReq.getUrlParameter("AREA");
 			if(AREA==null)
 				return "false";
 			if(AREA.length()==0)
@@ -1295,7 +1295,7 @@ public class MUDGrinder extends StdWebMacro
 			final List<String> list = Resources.getFileLineVector(new StringBuffer(dataStr));
 			final StringBuffer response=new StringBuffer("");
 			int created=0;
-			int size=list.size();
+			final int size=list.size();
 			for(final String line : list)
 			{
 				final List<String> set=CMParms.parseSpaces(line,true);
@@ -1337,7 +1337,7 @@ public class MUDGrinder extends StdWebMacro
 							email="";
 							password=set.get(1);
 						}
-						
+
 					}
 					else
 					if(set.size()==1)
@@ -1355,8 +1355,8 @@ public class MUDGrinder extends StdWebMacro
 						response.append(L("Error: '@x1' for account '@x2' is not a valid address. Not created.\n\r<BR>",email,accountName));
 						continue;
 					}
-					
-					PlayerAccount thisAcct=(PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+
+					final PlayerAccount thisAcct=(PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
 					thisAcct.setAccountName(accountName);
 					thisAcct.setAccountExpiration(0);
 					thisAcct.setEmail(email);
@@ -1370,7 +1370,7 @@ public class MUDGrinder extends StdWebMacro
 					Log.sysOut("Create",mob.Name()+" mass created account "+thisAcct.getAccountName()+".");
 					if(email.length()>0)
 					{
-						CMLib.smtp().emailOrJournal(accountName, 
+						CMLib.smtp().emailOrJournal(accountName,
 								"noreply", email, L("Password for @x1",accountName),
 								L("Your password for @x1 at @x2 is '@x3'.",accountName,CMProps.getVar(CMProps.Str.MUDDOMAIN),password));
 						response.append(L("Created: '@x1'\n\r<BR>",accountName));
@@ -1511,7 +1511,7 @@ public class MUDGrinder extends StdWebMacro
 		return "";
 	}
 
-	protected String gridRoomID(Area A, int x, int y)
+	protected String gridRoomID(final Area A, final int x, final int y)
 	{
 		final String roomID=A.Name()+"#";
 		String xy=""+y;
@@ -1524,7 +1524,7 @@ public class MUDGrinder extends StdWebMacro
 		return roomID+xy;
 	}
 
-	protected int[] getAppropriateXY(Area A, String mapStyle)
+	protected int[] getAppropriateXY(final Area A, String mapStyle)
 	{
 		if((mapStyle==null)
 		||(mapStyle.length()==0)
@@ -1553,7 +1553,7 @@ public class MUDGrinder extends StdWebMacro
 		return null;
 	}
 
-	protected Area getLoggedArea(HTTPRequest httpReq, MOB mob)
+	protected Area getLoggedArea(final HTTPRequest httpReq, final MOB mob)
 	{
 		final String AREA=httpReq.getUrlParameter("AREA");
 		final Area A=getAreaObject(AREA);
@@ -1564,7 +1564,7 @@ public class MUDGrinder extends StdWebMacro
 		return null;
 	}
 
-	protected String quickfind(Area A, String find)
+	protected String quickfind(final Area A, final String find)
 	{
 		Room R=A.getRoom(find);
 		if((R!=null)&&(R.roomID().length()>0))

@@ -33,14 +33,14 @@ public class XHashtable<K, V> extends Hashtable<K, V>
 		super();
 	}
 
-	public XHashtable(Map<K, V> V)
+	public XHashtable(final Map<K, V> V)
 	{
 		super();
 		if (V != null)
 			putAll(V);
 	}
 
-	public synchronized void removeAll(Enumeration<K> E)
+	public synchronized void removeAll(final Enumeration<K> E)
 	{
 		if (E != null)
 		{
@@ -49,7 +49,7 @@ public class XHashtable<K, V> extends Hashtable<K, V>
 		}
 	}
 
-	public synchronized void removeAll(Iterator<K> E)
+	public synchronized void removeAll(final Iterator<K> E)
 	{
 		if (E != null)
 		{
@@ -58,7 +58,7 @@ public class XHashtable<K, V> extends Hashtable<K, V>
 		}
 	}
 
-	public synchronized void removeAll(List<K> E)
+	public synchronized void removeAll(final List<K> E)
 	{
 		if (E != null)
 		{

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_PlantMaze extends Chant
 {
 	@Override
@@ -131,7 +130,7 @@ public class Chant_PlantMaze extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -145,7 +144,7 @@ public class Chant_PlantMaze extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(thePlants==null)
@@ -177,7 +176,7 @@ public class Chant_PlantMaze extends Chant
 				final Room newRoom=CMClass.getLocale("WoodsMaze");
 				((GridLocale)newRoom).setXGridSize(10+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()));
 				((GridLocale)newRoom).setYGridSize(10+super.getX1Level(invoker())+super.getXLEVELLevel(invoker()));
-				String s=CMLib.english().makePlural(CMParms.parse(thePlants.name()).lastElement().toLowerCase());
+				final String s=CMLib.english().makePlural(CMParms.parse(thePlants.name()).lastElement().toLowerCase());
 				final String nos=s.substring(0,s.length()-1).toLowerCase();
 				newRoom.setDisplayText(L("@x1 Maze",CMStrings.capitalizeAndLower(nos)));
 				newRoom.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));

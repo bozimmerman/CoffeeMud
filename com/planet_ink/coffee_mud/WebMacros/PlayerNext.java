@@ -48,7 +48,7 @@ public class PlayerNext extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
@@ -68,7 +68,7 @@ public class PlayerNext extends StdWebMacro
 		final Enumeration<PlayerLibrary.ThinPlayer> pe=CMLib.players().thinPlayers(sort,httpReq.getRequestObjects());
 		for(;pe.hasMoreElements();)
 		{
-			final PlayerLibrary.ThinPlayer user=(PlayerLibrary.ThinPlayer)pe.nextElement();
+			final PlayerLibrary.ThinPlayer user=pe.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!user.name().equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("PLAYER",user.name());

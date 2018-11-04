@@ -64,14 +64,14 @@ public class Prop_EnlargeRoom extends Property
 		return Ability.FLAG_ADJUSTER;
 	}
 
-	protected double dval(String s)
+	protected double dval(final String s)
 	{
 		if(s.indexOf('.')>=0)
 			return CMath.s_double(s);
 		return CMath.s_int(s);
 	}
 
-	protected int ival(String s)
+	protected int ival(final String s)
 	{
 		return (int)Math.round(dval(s));
 	}

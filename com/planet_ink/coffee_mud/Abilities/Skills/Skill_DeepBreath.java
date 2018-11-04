@@ -94,9 +94,9 @@ public class Skill_DeepBreath extends StdSkill
 	{
 		return 3 + (super.adjustedLevel((MOB)affected,0)/5);
 	}
-	
+
 	protected int breatheTicks=-1;
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -121,7 +121,7 @@ public class Skill_DeepBreath extends StdSkill
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

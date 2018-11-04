@@ -4,6 +4,21 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 
+/*
+   Copyright 2012-2018 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
 public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements TriadList<T, K, L>
 {
 	private static final long	serialVersionUID	= -9175373358892311411L;
@@ -12,17 +27,17 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	{
 		super();
 	}
-	
-	public TriadVector(TriadList<T, K, L> list)
+
+	public TriadVector(final TriadList<T, K, L> list)
 	{
 		super();
 		if(list != null)
 		{
-			for(Triad<T, K, L> t : list)
+			for(final Triad<T, K, L> t : list)
 				add(t.first, t.second, t.third);
 		}
 	}
-	
+
 	@Override
 	public Triad.FirstConverter<T, K, L> getFirstConverter()
 	{
@@ -75,54 +90,54 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public synchronized int indexOfFirst(T t)
+	public synchronized int indexOfFirst(final T t)
 	{
 		return indexOfFirst(t, 0);
 	}
 
 	@Override
-	public synchronized int indexOfSecond(K k)
+	public synchronized int indexOfSecond(final K k)
 	{
 		return indexOfSecond(k, 0);
 	}
 
 	@Override
-	public synchronized int indexOfThird(L l)
+	public synchronized int indexOfThird(final L l)
 	{
 		return indexOfThird(l, 0);
 	}
 
 	@Override
-	public T getFirst(int index)
+	public T getFirst(final int index)
 	{
 		return get(index).first;
 	}
 
 	@Override
-	public K getSecond(int index)
+	public K getSecond(final int index)
 	{
 		return get(index).second;
 	}
 
 	@Override
-	public L getThird(int index)
+	public L getThird(final int index)
 	{
 		return get(index).third;
 	}
 
 	@Override
-	public void add(T t, K k, L l)
+	public void add(final T t, final K k, final L l)
 	{
 		add(new Triad<T, K, L>(t, k, l));
 	}
 
-	public void addElement(T t, K k, L l)
+	public void addElement(final T t, final K k, final L l)
 	{
 		add(new Triad<T, K, L>(t, k, l));
 	}
 
 	@Override
-	public boolean containsFirst(T t)
+	public boolean containsFirst(final T t)
 	{
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
 		{
@@ -133,7 +148,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public boolean containsSecond(K k)
+	public boolean containsSecond(final K k)
 	{
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
 		{
@@ -144,7 +159,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public boolean containsThird(L l)
+	public boolean containsThird(final L l)
 	{
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
 		{
@@ -155,19 +170,19 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public T elementAtFirst(int index)
+	public T elementAtFirst(final int index)
 	{
 		return get(index).first;
 	}
 
 	@Override
-	public K elementAtSecond(int index)
+	public K elementAtSecond(final int index)
 	{
 		return get(index).second;
 	}
 
 	@Override
-	public L elementAtThird(int index)
+	public L elementAtThird(final int index)
 	{
 		return get(index).third;
 	}
@@ -175,7 +190,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public boolean contains(Object o)
+	public boolean contains(final Object o)
 	{
 		if (o instanceof Triad)
 			return super.contains(o);
@@ -187,7 +202,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public int indexOf(Object o)
+	public int indexOf(final Object o)
 	{
 		if (o instanceof Triad)
 			return super.indexOf(o);
@@ -200,7 +215,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized int indexOf(Object o, int index)
+	public synchronized int indexOf(final Object o, final int index)
 	{
 		if (o instanceof Triad)
 			return super.indexOf(o, index);
@@ -209,9 +224,9 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 			return x;
 		return indexOfSecond((K) o, index);
 	}
-	
+
 	@Override
-	public int indexOfFirst(T t, int index)
+	public int indexOfFirst(final T t, final int index)
 	{
 		try
 		{
@@ -228,7 +243,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public int indexOfSecond(K k, int index)
+	public int indexOfSecond(final K k, final int index)
 	{
 		try
 		{
@@ -245,7 +260,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public int indexOfThird(L l, int index)
+	public int indexOfThird(final L l, final int index)
 	{
 		try
 		{
@@ -262,7 +277,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public int lastIndexOfFirst(T t, int index)
+	public int lastIndexOfFirst(final T t, final int index)
 	{
 		try
 		{
@@ -279,7 +294,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public int lastIndexOfSecond(K k, int index)
+	public int lastIndexOfSecond(final K k, final int index)
 	{
 		try
 		{
@@ -296,7 +311,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public int lastIndexOfThird(L l, int index)
+	public int lastIndexOfThird(final L l, final int index)
 	{
 		try
 		{
@@ -313,25 +328,25 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public synchronized int lastIndexOfFirst(T t)
+	public synchronized int lastIndexOfFirst(final T t)
 	{
 		return lastIndexOfFirst(t, size() - 1);
 	}
 
 	@Override
-	public synchronized int lastIndexOfSecond(K k)
+	public synchronized int lastIndexOfSecond(final K k)
 	{
 		return lastIndexOfSecond(k, size() - 1);
 	}
 
 	@Override
-	public synchronized int lastIndexOfThird(L l)
+	public synchronized int lastIndexOfThird(final L l)
 	{
 		return lastIndexOfThird(l, size() - 1);
 	}
 
 	@Override
-	public synchronized boolean removeFirst(T t)
+	public synchronized boolean removeFirst(final T t)
 	{
 		Triad<T, K, L> pair;
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
@@ -347,7 +362,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public synchronized boolean removeSecond(K k)
+	public synchronized boolean removeSecond(final K k)
 	{
 		Triad<T, K, L> pair;
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
@@ -363,7 +378,7 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public synchronized boolean removeThird(L l)
+	public synchronized boolean removeThird(final L l)
 	{
 		Triad<T, K, L> pair;
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
@@ -379,49 +394,49 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 	}
 
 	@Override
-	public boolean removeElementFirst(T t)
+	public boolean removeElementFirst(final T t)
 	{
 		return removeFirst(t);
 	}
 
 	@Override
-	public boolean removeElementSecond(K k)
+	public boolean removeElementSecond(final K k)
 	{
 		return removeSecond(k);
 	}
 
 	@Override
-	public boolean removeElementThird(L l)
+	public boolean removeElementThird(final L l)
 	{
 		return removeThird(l);
 	}
 
-	public T firstFirstElement(int index)
+	public T firstFirstElement(final int index)
 	{
 		return firstElement().first;
 	}
 
-	public K firstSecondElement(int index)
+	public K firstSecondElement(final int index)
 	{
 		return firstElement().second;
 	}
 
-	public L firstThirdElement(int index)
+	public L firstThirdElement(final int index)
 	{
 		return firstElement().third;
 	}
 
-	public T lastFirstElement(int index)
+	public T lastFirstElement(final int index)
 	{
 		return lastElement().first;
 	}
 
-	public K lastSecondElement(int index)
+	public K lastSecondElement(final int index)
 	{
 		return lastElement().second;
 	}
 
-	public L lastThirdElement(int index)
+	public L lastThirdElement(final int index)
 	{
 		return lastElement().third;
 	}

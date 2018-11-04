@@ -92,7 +92,7 @@ public class Thief_Trap extends ThiefSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -103,7 +103,7 @@ public class Thief_Trap extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Trap theTrap=null;
 		final List<Ability> traps=new ArrayList<Ability>();
@@ -214,7 +214,7 @@ public class Thief_Trap extends ThiefSkill
 				trapThis=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 			if(trapThis==null)
 				return false;
-			
+
 			if(!auto)
 			{
 				final Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
@@ -230,7 +230,7 @@ public class Thief_Trap extends ThiefSkill
 				if(!theTrap.canSetTrapOn(mob,trapThis))
 					return false;
 			}
-			
+
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -238,7 +238,7 @@ public class Thief_Trap extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,+((mob.phyStats().level()+(getXLEVELLevel(mob)*2)
 											 -trapThis.phyStats().level())*3),auto);
-		
+
 		// dealing with Old traps
 		final Trap theOldTrap=CMLib.utensils().fetchMyTrap(trapThis);
 		if(theOldTrap!=null)

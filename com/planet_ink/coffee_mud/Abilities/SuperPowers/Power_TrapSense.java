@@ -85,7 +85,7 @@ public class Power_TrapSense extends SuperPower
 	}
 	Room lastRoom=null;
 
-	public String trapCheck(Physical P)
+	public String trapCheck(final Physical P)
 	{
 		if(P!=null)
 		if(CMLib.utensils().fetchMyTrap(P)!=null)
@@ -93,7 +93,7 @@ public class Power_TrapSense extends SuperPower
 		return "";
 	}
 
-	public String trapHere(MOB mob, Physical P)
+	public String trapHere(final MOB mob, final Physical P)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		if(P==null)
@@ -164,7 +164,7 @@ public class Power_TrapSense extends SuperPower
 		return msg.toString();
 	}
 
-	public void messageTo(MOB mob)
+	public void messageTo(final MOB mob)
 	{
 		final String here=trapHere(mob,mob.location());
 		if(here.length()>0)

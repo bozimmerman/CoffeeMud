@@ -43,7 +43,7 @@ public class NumPlayers extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("ALL"))
@@ -54,7 +54,7 @@ public class NumPlayers extends StdWebMacro
 		{
 			final Enumeration<ThinPlayer> pe=CMLib.players().thinPlayers("",httpReq.getRequestObjects());
 			int x=0;
-			for(;pe.hasMoreElements();pe.nextElement()) 
+			for(;pe.hasMoreElements();pe.nextElement())
 				x++;
 			return ""+x;
 		}
@@ -62,7 +62,7 @@ public class NumPlayers extends StdWebMacro
 		{
 			final Enumeration<PlayerAccount> pe=CMLib.players().accounts("",httpReq.getRequestObjects());
 			int x=0;
-			for(;pe.hasMoreElements();pe.nextElement()) 
+			for(;pe.hasMoreElements();pe.nextElement())
 				x++;
 			return ""+x;
 		}

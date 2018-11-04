@@ -54,4 +54,4 @@ public class Skill_HonoraryDegreeBard extends Skill_HonoraryDegreeCommoner
 		return "Bard";
 	}
 }
-	
+

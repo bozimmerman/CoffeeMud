@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class HolidayData extends StdWebMacro
 {
 	@Override
@@ -44,8 +43,9 @@ public class HolidayData extends StdWebMacro
 		return "HolidayData";
 	}
 
+	@SuppressWarnings({"unchecked","rawtypes"})
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("HOLIDAY");
@@ -355,7 +355,7 @@ public class HolidayData extends StdWebMacro
 		return "";
 	}
 
-	public static StringBuffer behaviors(TriadList<String,String,Integer> behaviors, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer behaviors(final TriadList<String,String,Integer> behaviors, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BEHAVIORS"))
@@ -415,9 +415,9 @@ public class HolidayData extends StdWebMacro
 
 			Object[] sortedB=null;
 			final Vector<String> sortMeB=new Vector<String>();
-			for(final Enumeration b=CMClass.behaviors();b.hasMoreElements();)
+			for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 			{
-				final Behavior B=(Behavior)b.nextElement();
+				final Behavior B=b.nextElement();
 				sortMeB.addElement(CMClass.classID(B));
 			}
 			sortedB=(new TreeSet<String>(sortMeB)).toArray();
@@ -435,7 +435,7 @@ public class HolidayData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer properties(TriadList<String,String,Integer> properties, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer properties(final TriadList<String,String,Integer> properties, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("AFFECTS"))
@@ -505,7 +505,7 @@ public class HolidayData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer priceFactors(TriadList<String,String,Integer> stats, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer priceFactors(final TriadList<String,String,Integer> stats, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("PRICEFACTORS"))
@@ -589,7 +589,7 @@ public class HolidayData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer mudChat(TriadList<String,String,Integer> behaviors, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer mudChat(final TriadList<String,String,Integer> behaviors, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("MUDCHAT"))

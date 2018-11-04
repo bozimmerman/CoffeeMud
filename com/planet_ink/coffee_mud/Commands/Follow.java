@@ -32,13 +32,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Follow extends StdCommand
 {
 	public Follow()
 	{
 	}
-	
+
 	private final String[]	access	= I(new String[] { "FOLLOW", "FOL", "FO", "F" });
 
 	@Override
@@ -49,7 +48,7 @@ public class Follow extends StdCommand
 
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{MOB.class,Boolean.class}};
 
-	public boolean nofollow(MOB mob, boolean errorsOk, boolean quiet)
+	public boolean nofollow(final MOB mob, final boolean errorsOk, final boolean quiet)
 	{
 		if(mob==null)
 			return false;
@@ -71,7 +70,7 @@ public class Follow extends StdCommand
 		return true;
 	}
 
-	public void unfollow(MOB mob, boolean quiet)
+	public void unfollow(final MOB mob, final boolean quiet)
 	{
 		nofollow(mob,false,quiet);
 		final Vector<MOB> V=new Vector<MOB>();
@@ -88,7 +87,7 @@ public class Follow extends StdCommand
 		}
 	}
 
-	public boolean processFollow(MOB mob, MOB tofollow, boolean quiet)
+	public boolean processFollow(final MOB mob, final MOB tofollow, final boolean quiet)
 	{
 		if(mob==null)
 			return false;
@@ -124,13 +123,13 @@ public class Follow extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
 		if(mob==null)
 			return false;
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		final Room R=mob.location();
 		if(R==null)
 			return false;
@@ -141,7 +140,7 @@ public class Follow extends StdCommand
 			commands.remove(commands.size()-1);
 			quiet=true;
 		}
-		
+
 		if(commands.size()<2)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("Follow whom?"));
@@ -180,9 +179,9 @@ public class Follow extends StdCommand
 		processFollow(mob,target,quiet);
 		return false;
 	}
-	
+
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
@@ -190,7 +189,7 @@ public class Follow extends StdCommand
 		final Boolean quiet=(Boolean)args[1];
 		return Boolean.valueOf(processFollow(mob,target,quiet.booleanValue()));
 	}
-	
+
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{

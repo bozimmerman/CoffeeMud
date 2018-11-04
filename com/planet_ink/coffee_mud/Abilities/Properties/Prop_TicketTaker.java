@@ -72,7 +72,7 @@ public class Prop_TicketTaker extends Property
 		return amount;
 	}
 
-	protected boolean isMine(Environmental host, Rideable R)
+	protected boolean isMine(final Environmental host, final Rideable R)
 	{
 		if(host instanceof Rider)
 		{

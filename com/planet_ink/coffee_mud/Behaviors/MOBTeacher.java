@@ -49,8 +49,8 @@ public class MOBTeacher extends CombatAbilities
 	protected boolean	noCommon			= false;
 	protected boolean	noExpertises		= false;  // doubles as a "done ticking" flag
 	protected boolean	noHLExpertises		= false;
-	protected int		tickDownToKnowledge	= 4;	
-	
+	protected int		tickDownToKnowledge	= 4;
+
 	protected List<ExpertiseDefinition> trainableExpertises = null;
 
 	@Override
@@ -60,14 +60,14 @@ public class MOBTeacher extends CombatAbilities
 	}
 
 	@Override
-	public void startBehavior(PhysicalAgent forMe)
+	public void startBehavior(final PhysicalAgent forMe)
 	{
 		if(forMe instanceof MOB)
 			myMOB=(MOB)forMe;
 		setParms(parms);
 	}
 
-	protected void setTheCharClass(MOB mob, CharClass C)
+	protected void setTheCharClass(final MOB mob, final CharClass C)
 	{
 		if((mob.baseCharStats().numClasses()==1)
 		&&(mob.baseCharStats().getMyClass(0).ID().equals("StdCharClass"))
@@ -90,7 +90,7 @@ public class MOBTeacher extends CombatAbilities
 		mob.recoverCharStats();
 	}
 
-	protected void classAbles(MOB mob, Map<String,Ability> myAbles, int pct)
+	protected void classAbles(final MOB mob, final Map<String,Ability> myAbles, final int pct)
 	{
 		final boolean stdCharClass=mob.charStats().getCurrentClass().ID().equals("StdCharClass");
 		final String className=mob.charStats().getCurrentClass().ID();
@@ -170,7 +170,7 @@ public class MOBTeacher extends CombatAbilities
 		return super.tick(ticking,tickID);
 	}
 
-	public void addAbility(MOB mob, Ability A, int pct, Map<String,Ability> myAbles)
+	public void addAbility(final MOB mob, Ability A, final int pct, final Map<String,Ability> myAbles)
 	{
 		if(CMLib.dice().rollPercentage()<=pct)
 		{
@@ -249,7 +249,7 @@ public class MOBTeacher extends CombatAbilities
 					pct=CMath.s_int(s.substring(0,s.length()-1));
 					continue;
 				}
-	
+
 				A=CMClass.getAbility(s);
 				final CharClass C=CMClass.findCharClass(s);
 				if((C!=null)&&(C.availabilityCode()!=0))
@@ -293,7 +293,7 @@ public class MOBTeacher extends CombatAbilities
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		if(myMOB==null)
@@ -342,7 +342,7 @@ public class MOBTeacher extends CombatAbilities
 				if(start>0)
 				{
 					sayMsg=msg.sourceMessage().substring(start+1);
-					int x=sayMsg.lastIndexOf("\'");
+					final int x=sayMsg.lastIndexOf("\'");
 					if(x>0)
 						sayMsg=sayMsg.substring(0,x);
 				}

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class CowSpeak extends AnimalSpeak
 {
 	@Override
@@ -53,9 +52,9 @@ public class CowSpeak extends AnimalSpeak
 	{
 		"moo","moooo","moooooo","mooooooo","mooooo"
 	};
-	
+
 	@Override
-	protected String[] getSounds() 
+	protected String[] getSounds()
 	{
 		return animalSounds;
 	}

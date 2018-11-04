@@ -72,7 +72,7 @@ public class ClimbableExit extends StdExit
 		}
 		recoverPhyStats();
 	}
-	
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -82,7 +82,7 @@ public class ClimbableExit extends StdExit
 		R.climbA.makeNonUninvokable();
 		return R;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -90,7 +90,7 @@ public class ClimbableExit extends StdExit
 			return false;
 		return super.okMessage(myHost, msg);
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -98,7 +98,7 @@ public class ClimbableExit extends StdExit
 			climbA.executeMsg(myHost, msg);
 		super.executeMsg(myHost,msg);
 	}
-	
+
 	@Override
 	public void recoverPhyStats()
 	{

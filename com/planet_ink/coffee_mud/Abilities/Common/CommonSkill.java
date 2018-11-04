@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class CommonSkill extends StdAbility
 {
 	@Override
@@ -194,7 +193,7 @@ public class CommonSkill extends StdAbility
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		bonusYield = newCode;
 	}
@@ -270,7 +269,7 @@ public class CommonSkill extends StdAbility
 		return true;
 	}
 
-	protected List<List<String>> loadList(StringBuffer str)
+	protected List<List<String>> loadList(final StringBuffer str)
 	{
 		final List<List<String>> V=new Vector<List<String>>();
 		if(str==null)
@@ -331,7 +330,7 @@ public class CommonSkill extends StdAbility
 	}
 
 	@SuppressWarnings("unchecked")
-	protected List<List<String>> loadRecipes(String filename)
+	protected List<List<String>> loadRecipes(final String filename)
 	{
 		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
 		if(V==null)
@@ -428,7 +427,7 @@ public class CommonSkill extends StdAbility
 		super.unInvoke();
 	}
 
-	protected int getDuration(int baseTicks, MOB mob, int itemLevel, int minDuration)
+	protected int getDuration(final int baseTicks, final MOB mob, final int itemLevel, final int minDuration)
 	{
 		int ticks=baseTicks;
 		final int level=mob.phyStats().level() - itemLevel;
@@ -438,7 +437,7 @@ public class CommonSkill extends StdAbility
 		lastBaseDuration=ticks;
 		if(lastBaseDuration<minDuration)
 			lastBaseDuration=minDuration;
-		
+
 		final double quickPct = getXTIMELevel(mob) * 0.05;
 		ticks-=(int)Math.round(CMath.mul(ticks, quickPct));
 		if(ticks<minDuration)
@@ -447,7 +446,7 @@ public class CommonSkill extends StdAbility
 	}
 
 	@Override
-	protected int addedTickTime(MOB invokerMOB, int baseTickTime)
+	protected int addedTickTime(final MOB invokerMOB, final int baseTickTime)
 	{
 		// common skills tend to SUBTRACT time -- not add to it!
 		return 0;
@@ -465,13 +464,13 @@ public class CommonSkill extends StdAbility
 	{
 		if(buildingI != null)
 		{
-			Ability A=buildingI.fetchEffect("Copyright");
+			final Ability A=buildingI.fetchEffect("Copyright");
 			if((A!=null)&&(A.text().length()>0))
 				return A.text();
 			final int x=buildingI.secretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX);
 			if(x>=0)
 			{
-				int y=buildingI.secretIdentity().indexOf('.',x+ItemCraftor.CRAFTING_BRAND_STR_PREFIX.length());
+				final int y=buildingI.secretIdentity().indexOf('.',x+ItemCraftor.CRAFTING_BRAND_STR_PREFIX.length());
 				if(y>=0)
 				{
 					return buildingI.secretIdentity().substring(x,y);
@@ -489,7 +488,7 @@ public class CommonSkill extends StdAbility
 			return L(ItemCraftor.CRAFTING_BRAND_STR_NAME,mob.Name());
 	}
 
-	protected void commonTell(MOB mob, Environmental target, Environmental tool, String str)
+	protected void commonTell(final MOB mob, final Environmental target, final Environmental tool, String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 		{
@@ -505,7 +504,7 @@ public class CommonSkill extends StdAbility
 			mob.tell(mob,target,tool,str);
 	}
 
-	protected void commonTell(MOB mob, String str)
+	protected void commonTell(final MOB mob, String str)
 	{
 		if(mob==null)
 			return;
@@ -519,7 +518,7 @@ public class CommonSkill extends StdAbility
 			mob.tell(str);
 	}
 
-	protected void commonEmote(MOB mob, String str)
+	protected void commonEmote(final MOB mob, final String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 			mob.location().show(mob,null,getActivityMessageType()|CMMsg.MASK_ALWAYS,str);
@@ -527,7 +526,7 @@ public class CommonSkill extends StdAbility
 			mob.tell(mob,null,null,str);
 	}
 
-	protected boolean dropAWinner(MOB mob, Item buildingI)
+	protected boolean dropAWinner(final MOB mob, final Item buildingI)
 	{
 		return dropAWinner(mob,mob.location(),buildingI);
 	}
@@ -539,7 +538,7 @@ public class CommonSkill extends StdAbility
 	 * @param buildingI the item to drop
 	 * @return true if it dropped
 	 */
-	protected boolean dropAWinner(MOB mob, Room R, Item buildingI)
+	protected boolean dropAWinner(MOB mob, final Room R, final Item buildingI)
 	{
 		if(R==null)
 			commonTell(mob,L("You are NOWHERE?!"));
@@ -574,7 +573,7 @@ public class CommonSkill extends StdAbility
 				R.addItem(buildingI,ItemPossessor.Expire.Resource);
 				R.recoverRoomStats();
 				mob.location().send(mob,msg);
-			
+
 				if(!R.isContent(buildingI))
 				{
 					commonTell(mob,L("You have won the common-skill-failure LOTTERY! Congratulations!"));
@@ -586,8 +585,8 @@ public class CommonSkill extends StdAbility
 		}
 		return false;
 	}
-	
-	protected int lookingForMat(List<Integer> materials, Room fromHere)
+
+	protected int lookingForMat(final List<Integer> materials, final Room fromHere)
 	{
 		final List<Integer> possibilities=new ArrayList<Integer>();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -606,14 +605,14 @@ public class CommonSkill extends StdAbility
 		return (possibilities.get(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
 	}
 
-	protected int lookingForMat(int material, Room fromHere)
+	protected int lookingForMat(final int material, final Room fromHere)
 	{
 		final List<Integer> V=new ArrayList<Integer>(1);
 		V.add(Integer.valueOf(material));
 		return lookingForMat(V,fromHere);
 	}
 
-	protected int lookingForRsc(List<Integer> materials, Room fromHere)
+	protected int lookingForRsc(final List<Integer> materials, final Room fromHere)
 	{
 		final List<Integer> possibilities=new ArrayList<Integer>();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -632,14 +631,14 @@ public class CommonSkill extends StdAbility
 		return (possibilities.get(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
 	}
 
-	protected int lookingForRsc(int material, Room fromHere)
+	protected int lookingForRsc(final int material, final Room fromHere)
 	{
 		final List<Integer> V=new ArrayList<Integer>(1);
 		V.add(Integer.valueOf(material));
 		return lookingForRsc(V,fromHere);
 	}
 
-	public Item getRequiredFire(MOB mob,int autoGenerate)
+	public Item getRequiredFire(final MOB mob,final int autoGenerate)
 	{
 		if((autoGenerate>0)
 		||((this instanceof CraftingSkill)&&(!((CraftingSkill)this).fireRequired)))
@@ -671,7 +670,7 @@ public class CommonSkill extends StdAbility
 	}
 
 	@Override
-	public int[] usageCost(MOB mob, boolean ignoreClassOverride)
+	public int[] usageCost(final MOB mob, final boolean ignoreClassOverride)
 	{
 		if(mob==null)
 			return super.usageCost(null, ignoreClassOverride);
@@ -725,7 +724,7 @@ public class CommonSkill extends StdAbility
 			final int maxOverride=CMProps.getMaxManaException(ID());
 			if(maxOverride!=Short.MIN_VALUE)
 			{
-				if(maxOverride<0) 
+				if(maxOverride<0)
 					consumed=consumed+lowest;
 				else
 				if(consumed > maxOverride)
@@ -735,18 +734,18 @@ public class CommonSkill extends StdAbility
 			if(minOverride!=Short.MIN_VALUE)
 			{
 				if(minOverride<0)
-					consumed=(lowest<5)?5:lowest; 
+					consumed=(lowest<5)?5:lowest;
 				else
 				if(consumed<minOverride)
 					consumed=minOverride;
 			}
-			if(overrideMana()>=0) 
+			if(overrideMana()>=0)
 				consumed=overrideMana();
 			minimum=5;
 			if((costOverrides!=null)&&(costOverrides[AbilityMapper.Cost.MANA.ordinal()]!=null))
 			{
 				consumed=costOverrides[AbilityMapper.Cost.MANA.ordinal()].intValue();
-				if((consumed<minimum)&&(consumed>=0)) 
+				if((consumed<minimum)&&(consumed>=0))
 					minimum=consumed;
 			}
 		}
@@ -761,12 +760,12 @@ public class CommonSkill extends StdAbility
 		return usageCost;
 	}
 
-	public int xlevel(MOB mob)
+	public int xlevel(final MOB mob)
 	{
 		return mob.phyStats().level()+(2*getXLEVELLevel(mob));
 	}
 
-	public boolean confirmPossibleMaterialLocation(int resource, Room room)
+	public boolean confirmPossibleMaterialLocation(final int resource, final Room room)
 	{
 		if(room==null)
 			return false;
@@ -845,7 +844,7 @@ public class CommonSkill extends StdAbility
 		}
 	}
 
-	public boolean isMadeOfSupportedResource(Item I)
+	public boolean isMadeOfSupportedResource(final Item I)
 	{
 		if(I==null)
 			return false;
@@ -864,7 +863,7 @@ public class CommonSkill extends StdAbility
 	}
 
 	@Override
-	public boolean canBeLearnedBy(MOB teacherM, MOB studentM)
+	public boolean canBeLearnedBy(final MOB teacherM, final MOB studentM)
 	{
 		if(!super.canBeLearnedBy(teacherM,studentM))
 			return false;
@@ -903,7 +902,7 @@ public class CommonSkill extends StdAbility
 	}
 
 	@Override
-	public void teach(MOB teacher, MOB student)
+	public void teach(final MOB teacher, final MOB student)
 	{
 		super.teach(teacher, student);
 		if((student!=null)&&(student.fetchAbility(ID())!=null))
@@ -927,7 +926,7 @@ public class CommonSkill extends StdAbility
 		}
 	}
 
-	public void bumpTickDown(long byThisMuch)
+	public void bumpTickDown(final long byThisMuch)
 	{
 		tickDown+=byThisMuch;
 		if(byThisMuch > 0)
@@ -935,13 +934,13 @@ public class CommonSkill extends StdAbility
 	}
 
 	@Override
-	public void startTickDown(MOB invokerMOB, Physical affected, int tickTime)
+	public void startTickDown(final MOB invokerMOB, final Physical affected, final int tickTime)
 	{
 		super.startTickDown(invokerMOB, affected, tickTime);
 		tickUp=0;
 	}
 
-	public boolean checkStop(MOB mob, List<String> commands)
+	public boolean checkStop(final MOB mob, final List<String> commands)
 	{
 		if((commands!=null)
 		&&(commands.size()==1)
@@ -961,7 +960,7 @@ public class CommonSkill extends StdAbility
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		if("abort".equalsIgnoreCase(newMiscText))
 		{
@@ -974,7 +973,7 @@ public class CommonSkill extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		aborted=false;
 		if(mob.isInCombat())
@@ -1056,11 +1055,11 @@ public class CommonSkill extends StdAbility
 
 		return true;
 	}
-	
+
 	private final static String[] MYCODES={"TICKUP","PCTREMAIN"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(super.isStat(code))
 			return super.getStat(code);
@@ -1070,7 +1069,7 @@ public class CommonSkill extends StdAbility
 			return "" + tickUp;
 		case 1:
 		{
-			int tot= tickUp +tickDown;
+			final int tot= tickUp +tickDown;
 			if((tot > 0)
 			&&(affected != null))
 				return CMath.toPct(CMath.div(tickUp, tot));
@@ -1082,7 +1081,7 @@ public class CommonSkill extends StdAbility
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(super.isStat(code))
 			super.setStat(code,  val);

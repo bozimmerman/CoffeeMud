@@ -42,14 +42,14 @@ public class Prop_MOBEmoter extends Property
 
 	protected Behavior emoter=null;
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		final int x=newText.indexOf(' ');
 		if(x>0)
 		{
 			final String id=newText.substring(0, x).trim();
-			emoter = CMClass.getBehavior(id); 
+			emoter = CMClass.getBehavior(id);
 			if(emoter!=null)
 			{
 				final String behaviorArgs = newText.substring(x+1).trim();
@@ -57,7 +57,7 @@ public class Prop_MOBEmoter extends Property
 				return;
 			}
 		}
-		emoter = CMClass.getBehavior("Emoter"); 
+		emoter = CMClass.getBehavior("Emoter");
 		if(emoter!=null)
 			emoter.setParms(newText);
 	}

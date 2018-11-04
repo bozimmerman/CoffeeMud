@@ -24,13 +24,13 @@ public class FilteredIterator<K> implements Iterator<K>
 	private K 				nextElement = null;
 	private boolean 		initialized = false;
 
-	public FilteredIterator(Iterator<K> eset, Filterer<K> fil)
+	public FilteredIterator(final Iterator<K> eset, final Filterer<K> fil)
 	{
 		iter=eset;
 		filterer=fil;
 	}
 
-	public void setFilterer(Filterer<K> fil)
+	public void setFilterer(final Filterer<K> fil)
 	{
 		filterer=fil;
 	}

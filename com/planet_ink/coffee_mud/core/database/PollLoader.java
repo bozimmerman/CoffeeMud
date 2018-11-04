@@ -36,12 +36,12 @@ import java.util.*;
 public class PollLoader
 {
 	protected DBConnector DB=null;
-	public PollLoader(DBConnector newDB)
+	public PollLoader(final DBConnector newDB)
 	{
 		DB=newDB;
 	}
 
-	public DatabaseEngine.PollData DBRead(String name)
+	public DatabaseEngine.PollData DBRead(final String name)
 	{
 		DBConnection D=null;
 		try
@@ -59,7 +59,7 @@ public class PollLoader
 				final String qual=DBConnections.getRes(R,"CMQUAL");
 				final String results=DBConnections.getRes(R,"CMRESL");
 				final long expiration=DBConnections.getLongRes(R,"CMEXPI");
-				
+
 				final DatabaseEngine.PollData data = new DBInterface.PollData()
 				{
 
@@ -116,7 +116,7 @@ public class PollLoader
 					{
 						return expiration;
 					}
-					
+
 				};
 				return data;
 			}
@@ -147,7 +147,7 @@ public class PollLoader
 				final long flag=DBConnections.getLongRes(R,"CMFLAG");
 				final String qual=DBConnections.getRes(R,"CMQUAL");
 				final long expiration=DBConnections.getLongRes(R,"CMEXPI");
-				
+
 				final DatabaseEngine.PollData data = new DBInterface.PollData()
 				{
 
@@ -204,7 +204,7 @@ public class PollLoader
 					{
 						return expiration;
 					}
-					
+
 				};
 				rows.addElement(data);
 			}
@@ -221,16 +221,16 @@ public class PollLoader
 		return rows;
 	}
 
-	public void DBUpdate(String OldName,
-								String name,
-								String player,
-								String subject,
-								String description,
-								String optionXML,
-								int flag,
-								String qualZapper,
-								String results,
-								long expiration)
+	public void DBUpdate(final String OldName,
+								final String name,
+								final String player,
+								final String subject,
+								final String description,
+								final String optionXML,
+								final int flag,
+								final String qualZapper,
+								final String results,
+								final long expiration)
 	{
 		DB.updateWithClobs(
 				"UPDATE CMPOLL SET"
@@ -251,7 +251,7 @@ public class PollLoader
 
 	}
 
-	public void DBUpdate(String name,  String results)
+	public void DBUpdate(final String name,  final String results)
 	{
 		DB.updateWithClobs(
 		"UPDATE CMPOLL SET"
@@ -259,7 +259,7 @@ public class PollLoader
 		+" WHERE CMNAME='"+name+"'", results+" ");
 	}
 
-	public void DBDelete(String name)
+	public void DBDelete(final String name)
 	{
 		DB.update("DELETE FROM CMPOLL WHERE CMNAME='"+name+"'");
 		CMLib.s_sleep(500);
@@ -267,15 +267,15 @@ public class PollLoader
 			Log.errOut("Failed to delete data from poll "+name+".");
 	}
 
-	public void DBCreate(String name,
-								String player,
-								String subject,
-								String description,
-								String optionXML,
-								int flag,
-								String qualZapper,
-								String results,
-								long expiration)
+	public void DBCreate(final String name,
+								final String player,
+								final String subject,
+								final String description,
+								final String optionXML,
+								final int flag,
+								final String qualZapper,
+								final String results,
+								final long expiration)
 	{
 		DB.updateWithClobs(
 		 "INSERT INTO CMPOLL ("

@@ -134,7 +134,7 @@ public class Bull extends Buffalo
 	}
 
 	@Override
-	public boolean canBreedWith(Race R, boolean crossBreed)
+	public boolean canBreedWith(final Race R, final boolean crossBreed)
 	{
 		if((!super.sameAs(R))&&(R!=null))
 			return R.ID().equals("Cow");
@@ -165,7 +165,7 @@ public class Bull extends Buffalo
 	}
 
 	@Override
-	public Race mixRace(Race race, String newRaceID, String newRaceName)
+	public Race mixRace(final Race race, final String newRaceID, final String newRaceName)
 	{
 		if(ID().equalsIgnoreCase("Bull"))
 		{
@@ -178,7 +178,7 @@ public class Bull extends Buffalo
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{

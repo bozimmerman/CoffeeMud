@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_Drown extends Chant
 {
 	@Override
@@ -71,7 +70,7 @@ public class Chant_Drown extends Chant
 
 	protected int[] lastSet=null;
 	protected int[] newSet=null;
-	
+
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
@@ -86,7 +85,7 @@ public class Chant_Drown extends Chant
 				remove++;
 			if(CMParms.contains(breatheables, RawMaterial.RESOURCE_FRESHWATER))
 				remove++;
-			boolean addAir = (remove == breatheables.length);
+			final boolean addAir = (remove == breatheables.length);
 			if(remove > 0)
 			{
 				newSet=Arrays.copyOf(breatheables,breatheables.length-remove + (addAir?1:0));
@@ -134,13 +133,13 @@ public class Chant_Drown extends Chant
 			unInvoke();
 		return true;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		
+
 		if((msg.source()==affected)
 		&&(msg.sourceMajor(CMMsg.MASK_MOVE))
 		&&(msg.tool() instanceof Ability)
@@ -153,7 +152,7 @@ public class Chant_Drown extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -174,9 +173,9 @@ public class Chant_Drown extends Chant
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

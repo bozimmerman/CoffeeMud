@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Poison_Glowgell extends Poison
 {
 	@Override
@@ -94,7 +93,7 @@ public class Poison_Glowgell extends Poison
 	}
 
 	@Override
-	protected boolean catchIt(MOB mob, Physical target)
+	protected boolean catchIt(final MOB mob, final Physical target)
 	{
 		return false;
 	}

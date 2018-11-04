@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Cogniportive extends Spell
 {
 
@@ -80,7 +79,7 @@ public class Spell_Cogniportive extends Spell
 		return Ability.FLAG_TRANSPORTING;
 	}
 
-	public String establishHome(MOB mob, Item me, boolean beLoose)
+	public String establishHome(final MOB mob, final Item me, final boolean beLoose)
 	{
 		if(me instanceof LandTitle)
 			return ((LandTitle)me).getAllTitledRooms().get(0).roomID();
@@ -163,7 +162,7 @@ public class Spell_Cogniportive extends Spell
 		return "";
 	}
 
-	public void waveIfAble(MOB mob, Environmental afftarget, Item me)
+	public void waveIfAble(final MOB mob, final Environmental afftarget, final Item me)
 	{
 		if((mob!=null) && (mob.isMine(me)) && (mob.location()!=null) && (me!=null))
 		{
@@ -264,7 +263,7 @@ public class Spell_Cogniportive extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)

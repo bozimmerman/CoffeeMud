@@ -122,7 +122,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public void setReset(int Reset)
+	public void setReset(final int Reset)
 	{
 	}
 
@@ -133,19 +133,19 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public void resetTrap(MOB mob)
+	public void resetTrap(final MOB mob)
 	{
 
 	}
 
 	@Override
-	public boolean maySetTrap(MOB mob, int asLevel)
+	public boolean maySetTrap(final MOB mob, final int asLevel)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
 		return false;
 	}
@@ -157,7 +157,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public boolean canReSetTrap(MOB mob)
+	public boolean canReSetTrap(final MOB mob)
 	{
 		return false;
 	}
@@ -169,14 +169,14 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		beneficialAffect(mob, P, qualifyingClassLevel + trapBonus, 0);
 		return (Trap) P.fetchEffect(ID());
 	}
 
 	@Override
-	public void spring(MOB M)
+	public void spring(final MOB M)
 	{
 		sprung=true;
 	}
@@ -259,7 +259,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 							if(CMLib.tracking().autoTrack(M, room1))
 							{
 								mobsDone.add(M);
-								Ability A=CMClass.getAbility("WanderHomeLater");
+								final Ability A=CMClass.getAbility("WanderHomeLater");
 								if(A!=null)
 								{
 									final int ticks=trackLvl*2;
@@ -293,7 +293,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final String whatToalarm=CMParms.combine(commands,0);
 		Exit alarmThis=null;

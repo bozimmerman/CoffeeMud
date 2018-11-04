@@ -40,17 +40,17 @@ public class GRaceLoader
 {
 	protected DBConnector DB=null;
 
-	public GRaceLoader(DBConnector newDB)
+	public GRaceLoader(final DBConnector newDB)
 	{
 		DB=newDB;
 	}
 
-	public void DBDeleteRace(String raceID)
+	public void DBDeleteRace(final String raceID)
 	{
 		DB.update("DELETE FROM CMGRAC WHERE CMRCID='"+raceID+"'");
 	}
 
-	public void DBCreateRace(String raceID, String data)
+	public void DBCreateRace(final String raceID, final String data)
 	{
 		DB.updateWithClobs(
 		 "INSERT INTO CMGRAC ("
@@ -64,7 +64,7 @@ public class GRaceLoader
 		 +")",
 		 data+" ");
 	}
-	
+
 	public void DBPruneOldRaces()
 	{
 		final List<String> updates = new ArrayList<String>(1);
@@ -74,7 +74,7 @@ public class GRaceLoader
 		final long oldestDate = System.currentTimeMillis()- expireMs;
 		final long oldestHour = System.currentTimeMillis()- oneHour;
 		final List<DatabaseEngine.AckStats> ackStats = DBReadRaceStats();
-		for(DatabaseEngine.AckStats stat : ackStats)
+		for(final DatabaseEngine.AckStats stat : ackStats)
 		{
 			if(stat.creationDate() != 0)
 			{
@@ -148,7 +148,7 @@ public class GRaceLoader
 		// log comment
 		return rows;
 	}
-	
+
 	public List<DatabaseEngine.AckRecord> DBReadRaces()
 	{
 		DBConnection D=null;

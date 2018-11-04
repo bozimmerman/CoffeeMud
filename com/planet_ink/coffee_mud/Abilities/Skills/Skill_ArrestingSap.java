@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 {
 	@Override
@@ -91,7 +90,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		enhancement = newCode;
 	}
@@ -168,7 +167,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -208,7 +207,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 		}
 	}
 
-	public void makeMyPeace(MOB target)
+	public void makeMyPeace(final MOB target)
 	{
 		target.makePeace(true);
 		final Room R=target.location();
@@ -224,7 +223,7 @@ public class Skill_ArrestingSap extends StdSkill implements HealthCondition
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		boolean safety=false;
 		int ticks=3;

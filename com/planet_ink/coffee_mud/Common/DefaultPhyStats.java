@@ -53,7 +53,7 @@ public class DefaultPhyStats implements PhyStats
 	private final static Comparator<String> ambiComp= new Comparator<String>()
 	{
 		@Override
-		public int compare(String o1, String o2)
+		public int compare(final String o1, final String o2)
 		{
 			return o1.compareToIgnoreCase(o2);
 		}
@@ -69,7 +69,7 @@ public class DefaultPhyStats implements PhyStats
 	}
 
 	@Override
-	public void setAllValues(int def)
+	public void setAllValues(final int def)
 	{
 		for(int i=0;i<NUM_STATS;i++)
 			stats[i]=def;
@@ -165,73 +165,73 @@ public class DefaultPhyStats implements PhyStats
 	}
 
 	@Override
-	public void setRejuv(int newRejuv)
+	public void setRejuv(final int newRejuv)
 	{
 		stats[STAT_REJUV] = newRejuv;
 	}
 
 	@Override
-	public void setLevel(int newLevel)
+	public void setLevel(final int newLevel)
 	{
 		stats[STAT_LEVEL] = newLevel;
 	}
 
 	@Override
-	public void setArmor(int newArmor)
+	public void setArmor(final int newArmor)
 	{
 		stats[STAT_ARMOR] = newArmor;
 	}
 
 	@Override
-	public void setDamage(int newDamage)
+	public void setDamage(final int newDamage)
 	{
 		stats[STAT_DAMAGE] = newDamage;
 	}
 
 	@Override
-	public void setWeight(int newWeight)
+	public void setWeight(final int newWeight)
 	{
 		stats[STAT_WEIGHT] = newWeight;
 	}
 
 	@Override
-	public void setSpeed(double newSpeed)
+	public void setSpeed(final double newSpeed)
 	{
 		speed = newSpeed;
 	}
 
 	@Override
-	public void setAttackAdjustment(int newAdjustment)
+	public void setAttackAdjustment(final int newAdjustment)
 	{
 		stats[STAT_ATTACK] = newAdjustment;
 	}
 
 	@Override
-	public void setAbility(int newAdjustment)
+	public void setAbility(final int newAdjustment)
 	{
 		stats[STAT_ABILITY] = newAdjustment;
 	}
 
 	@Override
-	public void setDisposition(int newDisposition)
+	public void setDisposition(final int newDisposition)
 	{
 		stats[STAT_DISPOSITION] = newDisposition;
 	}
 
 	@Override
-	public void setSensesMask(int newMask)
+	public void setSensesMask(final int newMask)
 	{
 		stats[STAT_SENSES] = newMask;
 	}
 
 	@Override
-	public void setHeight(int newHeight)
+	public void setHeight(final int newHeight)
 	{
 		stats[STAT_HEIGHT] = newHeight;
 	}
 
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 		replacementName = newName;
 	}
@@ -255,7 +255,7 @@ public class DefaultPhyStats implements PhyStats
 		}
 		else
 		{
-			final String[] newAmbiances = Arrays.copyOf(ambiances, ambiances.length+1); 
+			final String[] newAmbiances = Arrays.copyOf(ambiances, ambiances.length+1);
 			newAmbiances[newAmbiances.length-1]=ambiance;
 			Arrays.sort(newAmbiances, ambiComp);
 			this.ambiances = newAmbiances;
@@ -263,7 +263,7 @@ public class DefaultPhyStats implements PhyStats
 	}
 
 	@Override
-	public void delAmbiance(String ambiance)
+	public void delAmbiance(final String ambiance)
 	{
 		if(ambiance==null)
 			return;
@@ -285,7 +285,7 @@ public class DefaultPhyStats implements PhyStats
 	}
 
 	@Override
-	public boolean isAmbiance(String ambiance)
+	public boolean isAmbiance(final String ambiance)
 	{
 		final String[] ambiances=this.ambiances;
 		if((ambiances==null)||(ambiance==null))
@@ -324,7 +324,7 @@ public class DefaultPhyStats implements PhyStats
 	}
 
 	@Override
-	public void copyInto(PhyStats intoStats)
+	public void copyInto(final PhyStats intoStats)
 	{
 		if(intoStats instanceof DefaultPhyStats)
 		{
@@ -390,7 +390,7 @@ public class DefaultPhyStats implements PhyStats
 	}
 
 	@Override
-	public boolean sameAs(PhyStats E)
+	public boolean sameAs(final PhyStats E)
 	{
 		for(int i=0;i<CODES.length;i++)
 		{
@@ -401,7 +401,7 @@ public class DefaultPhyStats implements PhyStats
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{
@@ -450,7 +450,7 @@ public class DefaultPhyStats implements PhyStats
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{

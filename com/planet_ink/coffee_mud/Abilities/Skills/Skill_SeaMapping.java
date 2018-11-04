@@ -55,7 +55,7 @@ public class Skill_SeaMapping extends Skill_Map
 	{
 		return localizedStaticDisplay;
 	}
-	
+
 	private static final String[]	triggerStrings	= I(new String[] { "SEAMAPPING","SEAMAP" });
 
 	@Override
@@ -69,11 +69,11 @@ public class Skill_SeaMapping extends Skill_Map
 	{
 		if((mob!=null)&&(srcM!=null))
 		{
-			if((mob.riding() !=null) 
+			if((mob.riding() !=null)
 			&& (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER)
 			&&(mob == srcM))
 				return true;
-			
+
 			if((srcM.riding() instanceof BoardableShip)
 			&&(mob.location()!=null)
 			&&(mob.location().getArea() == ((BoardableShip)srcM.riding()).getShipArea()))
@@ -87,13 +87,13 @@ public class Skill_SeaMapping extends Skill_Map
 	{
 		if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
 			return mob.location();
-		
+
 		final Room R=mob.location();
 		if(R!=null)
 		{
 			if(R.getArea() instanceof BoardableShip)
 			{
-				Item I = ((BoardableShip)R.getArea()).getShipItem();
+				final Item I = ((BoardableShip)R.getArea()).getShipItem();
 				if(I!=null)
 					return CMLib.map().roomLocation(I);
 			}
@@ -115,7 +115,7 @@ public class Skill_SeaMapping extends Skill_Map
 		{
 			if((mob.riding() !=null) && (mob.riding().rideBasis() == Rideable.RIDEABLE_WATER))
 				return true;
-			
+
 			if(R.getArea() instanceof BoardableShip)
 			{
 				return true;

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class AutoInvoke extends StdCommand
 {
 	public AutoInvoke()
@@ -46,15 +45,15 @@ public class AutoInvoke extends StdCommand
 	{
 		return access;
 	}
-	
+
 	protected enum AutoInvokeCommand
 	{
 		TOGGLE,
 		INVOKE,
 		UNINVOKE
 	}
-	
-	protected void autoInvoke(MOB mob, Ability foundA, String s, Set<String> effects, AutoInvokeCommand cmd)
+
+	protected void autoInvoke(final MOB mob, Ability foundA, final String s, final Set<String> effects, final AutoInvokeCommand cmd)
 	{
 		final PlayerStats pStats = mob.playerStats();
 		if(foundA==null)
@@ -129,7 +128,7 @@ public class AutoInvoke extends StdCommand
 				}
 			}
 		}
-		
+
 		final Set<String> effects=new TreeSet<String>();
 		for(int a=0;a<mob.numEffects();a++)
 		{
@@ -144,7 +143,7 @@ public class AutoInvoke extends StdCommand
 		Collections.sort(abilities, new Comparator<Ability>()
 		{
 			@Override
-			public int compare(Ability o1, Ability o2)
+			public int compare(final Ability o1, final Ability o2)
 			{
 				if(o1==null)
 				{
@@ -158,11 +157,11 @@ public class AutoInvoke extends StdCommand
 				else
 					return o1.name().compareToIgnoreCase(o2.name());
 			}
-			
+
 		});
 		final StringBuffer str=new StringBuffer(L("^xAuto-invoking abilities:^?^.\n\r^N"));
 		int col=0;
-		for(Ability A : abilities)
+		for(final Ability A : abilities)
 		{
 			if(A!=null)
 			{
@@ -218,18 +217,18 @@ public class AutoInvoke extends StdCommand
 						s=s.substring(9).trim();
 						cmd=AutoInvokeCommand.UNINVOKE;
 					}
-					boolean startsWith=s.endsWith("*");
+					final boolean startsWith=s.endsWith("*");
 					if(startsWith)
 						s=s.substring(0,s.length()-1).toLowerCase();
-					boolean endsWith=s.startsWith("*");
+					final boolean endsWith=s.startsWith("*");
 					if(endsWith)
 						s=s.substring(1).toLowerCase();
 					if(startsWith || endsWith)
 					{
-						for(Ability A : abilities)
+						for(final Ability A : abilities)
 						{
 							if((A!=null)
-							&&(A.name().equalsIgnoreCase(s) 
+							&&(A.name().equalsIgnoreCase(s)
 								|| (startsWith && A.name().toLowerCase().startsWith(s))
 								|| (endsWith && A.name().toLowerCase().endsWith(s))))
 							{
@@ -241,10 +240,10 @@ public class AutoInvoke extends StdCommand
 					if(s.length()>0)
 					{
 						Ability foundA=null;
-						for(Ability A : abilities)
+						for(final Ability A : abilities)
 						{
 							if((A!=null)
-							&&(A.name().equalsIgnoreCase(s) 
+							&&(A.name().equalsIgnoreCase(s)
 								|| (startsWith && A.name().toLowerCase().startsWith(s))
 								|| (endsWith && A.name().toLowerCase().endsWith(s))))
 							{
@@ -254,7 +253,7 @@ public class AutoInvoke extends StdCommand
 						}
 						if(foundA==null)
 						{
-							for(Ability A : abilities)
+							for(final Ability A : abilities)
 							{
 								if((A!=null)&&(CMLib.english().containsString(A.name(),s)))
 								{
@@ -298,7 +297,7 @@ public class AutoInvoke extends StdCommand
 									{
 										me.execute(mob, commands, metaFlags);
 									}
-									catch(Exception e)
+									catch(final Exception e)
 									{
 									}
 								}

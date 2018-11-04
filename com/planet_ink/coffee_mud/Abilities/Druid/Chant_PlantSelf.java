@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_PlantSelf extends Chant
 {
 	@Override
@@ -80,7 +79,7 @@ public class Chant_PlantSelf extends Chant
 	{
 		return 0;
 	}
-	
+
 	protected long[]	lastTime	= new long[] { 0 };
 
 	@Override
@@ -196,7 +195,7 @@ public class Chant_PlantSelf extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat())
 		{
@@ -239,7 +238,7 @@ public class Chant_PlantSelf extends Chant
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				Chant_PlantSelf A = (Chant_PlantSelf)beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
+				final Chant_PlantSelf A = (Chant_PlantSelf)beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
 				if(A!=null)
 					A.lastTime = this.lastTime;
 				helpProficiency(mob, 0);

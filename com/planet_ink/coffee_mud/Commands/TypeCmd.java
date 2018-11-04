@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class TypeCmd extends Go
 {
 	public TypeCmd()
@@ -47,10 +46,10 @@ public class TypeCmd extends Go
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		final Room R=mob.location();
 		final boolean consoleMode=(mob.riding() instanceof Computer);
 		if((commands.size()<=1)||(R==null))
@@ -96,7 +95,7 @@ public class TypeCmd extends Go
 				}
 			}
 		}
-		
+
 		final String enterWhat=CMParms.combine(commands,1);
 		if(typeIntoThis!=null)
 		{

@@ -103,7 +103,7 @@ public class Thief_HideShip extends ThiefSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code = newCode;
 	}
@@ -113,7 +113,7 @@ public class Thief_HideShip extends ThiefSkill
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		
+
 		final Physical affected=this.affected;
 		if(affected != null)
 		{
@@ -145,7 +145,7 @@ public class Thief_HideShip extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat())
 		{
@@ -160,11 +160,11 @@ public class Thief_HideShip extends ThiefSkill
 
 		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
-		
+
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		
+
 		final SailingShip ship;
 		if((R.getArea() instanceof BoardableShip)
 		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
@@ -176,26 +176,26 @@ public class Thief_HideShip extends ThiefSkill
 			mob.tell(L("You must be on a ship to hide it!"));
 			return false;
 		}
-		
+
 		if(ship.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("Your ship is already hidden!"));
 			return false;
 		}
-		
+
 		final Room shipR=CMLib.map().roomLocation(ship);
 		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!ship.subjectToWearAndTear()))
 		{
 			mob.tell(L("You must be on a sailing ship to hide it!"));
 			return false;
 		}
-		
+
 		if(ship.isInCombat())
 		{
 			mob.tell(L("Your ship must not be in combat to hide it!"));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

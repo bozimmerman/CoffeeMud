@@ -122,7 +122,7 @@ public class Composting extends GatheringSkill
 			{
 				if((compost!=null)&&(!isaborted))
 				{
-					int amount = compost.phyStats().weight();
+					final int amount = compost.phyStats().weight();
 					if(amount == 1)
 						room.showHappens(CMMsg.MSG_OK_VISUAL,L("A pound of compost is ready here.",""+amount));
 					else
@@ -150,9 +150,9 @@ public class Composting extends GatheringSkill
 	{
 		return ((I!=null) &&(I.rawSecretIdentity().equals("compost")));
 	}
-	
+
 	@Override
-	public boolean bundle(MOB mob, List<String> what)
+	public boolean bundle(final MOB mob, final List<String> what)
 	{
 		if((what.size()<3)
 		||((!CMath.isNumber(what.get(1)))&&(!what.get(1).equalsIgnoreCase("ALL"))))
@@ -177,7 +177,7 @@ public class Composting extends GatheringSkill
 		Item foundAnyway=null;
 		final Hashtable<String,Ability> foundAblesH=new Hashtable<String,Ability>();
 		Ability A=null;
-		List<Item> foundOnes = new ArrayList<Item>();
+		final List<Item> foundOnes = new ArrayList<Item>();
 		for(int i=0;i<R.numItems();i++)
 		{
 			final Item I=R.getItem(i);
@@ -214,12 +214,12 @@ public class Composting extends GatheringSkill
 		}
 		if(amount == 1)
 			return true;
-		Item I=CMClass.getItem("GenPackagedStack");
+		final Item I=CMClass.getItem("GenPackagedStack");
 		I.setMaterial(RawMaterial.RESOURCE_DIRT);
 		Item compostItem = null;
 		for(int i=0;i<foundOnes.size();i++)
 		{
-			Item I2=foundOnes.get(i);
+			final Item I2=foundOnes.get(i);
 			if(I2!=null)
 			{
 				if(I2 instanceof PackagedItems)
@@ -243,7 +243,7 @@ public class Composting extends GatheringSkill
 		return true;
 	}
 
-	protected int[][] fetchFoundResourceData(MOB mob, int req1Required, String req1Desc, int[] req1)
+	protected int[][] fetchFoundResourceData(final MOB mob, int req1Required, String req1Desc, final int[] req1)
 	{
 		final int[][] data=new int[2][2];
 		if((req1Desc!=null)&&(req1Desc.length()==0))
@@ -266,7 +266,7 @@ public class Composting extends GatheringSkill
 		else
 		if(req1Desc!=null)
 			firstWood=CMLib.materials().fetchFoundOtherEncoded(mob.location(),req1Desc);
-		
+
 		data[0][CraftingSkill.FOUND_AMT]=0;
 		if(firstWood!=null)
 		{
@@ -296,7 +296,7 @@ public class Composting extends GatheringSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -318,7 +318,7 @@ public class Composting extends GatheringSkill
 			amount=1;
 		else
 			commands.remove(0);
-		
+
 		verb=L("composting");
 		if(mob.isMonster()
 		&&(!auto)
@@ -362,14 +362,14 @@ public class Composting extends GatheringSkill
 			return false;
 		}
 		foundShortName = CMParms.combine(commands);
-		Item mine=super.getTarget(mob, mob.location(), givenTarget, commands, new Filterer<Environmental>()
+		final Item mine=super.getTarget(mob, mob.location(), givenTarget, commands, new Filterer<Environmental>()
 		{
 			@Override
-			public boolean passesFilter(Environmental obj)
+			public boolean passesFilter(final Environmental obj)
 			{
 				return (obj instanceof Item) && (((Item)obj).owner() instanceof Room);
 			}
-			
+
 		});
 		if(mine==null)
 		{
@@ -386,7 +386,7 @@ public class Composting extends GatheringSkill
 		final int[][] data=fetchFoundResourceData(mob,amount,"material",new int[]{mine.material()});
 		if(data==null)
 			return false;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -394,7 +394,7 @@ public class Composting extends GatheringSkill
 		this.compost=null;
 		if(proficiencyCheck(mob,0,auto))
 		{
-			Item compost = CMClass.getItem("GenItem");
+			final Item compost = CMClass.getItem("GenItem");
 			compost.setName("a pound of compost");
 			compost.setDisplayText("a pound of compost is lying here");
 			compost.setSecretIdentity("compost");

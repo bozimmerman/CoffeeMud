@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_Farsight extends Chant
 {
 	@Override
@@ -74,7 +73,7 @@ public class Chant_Farsight extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
@@ -132,7 +131,7 @@ public class Chant_Farsight extends Chant
 					final Room room;
 					if(dirCode < 0)
 					{
-						Item I=thatRoom.findItem(null, whatToOpen);
+						final Item I=thatRoom.findItem(null, whatToOpen);
 						if((I instanceof Exit)&&(CMLib.flags().canBeSeenBy(I, mob)))
 						{
 							exit=(Exit)I;

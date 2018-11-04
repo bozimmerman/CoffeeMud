@@ -42,7 +42,7 @@ import java.util.concurrent.atomic.*;
 public class CMFile extends File
 {
 	private static volatile AtomicLong OpenLocalFiles = new AtomicLong(0);
-	
+
 	private static final long serialVersionUID = -3965083655590304708L;
 
 	/** Flag for a CMVFSDir object, allowing you to open it */
@@ -69,7 +69,7 @@ public class CMFile extends File
 	private static final String		outCharSet			= Charset.defaultCharset().name();
 
 	private static CMVFSDir[]		vfs					= new CMVFSDir[256];
-	
+
 	private static CatalogLibrary	catalogPluginAdded	= null;
 	private static WorldMap			mapPluginAdded		= null;
 
@@ -107,12 +107,12 @@ public class CMFile extends File
 	 * @param user the user to check for permissions on
 	 * @param flagBitmap bitmap flag to turn on error logging or force allow
 	 */
-	public CMFile (String absolutePath, final MOB user, final int flagBitmap)
+	public CMFile (final String absolutePath, final MOB user, final int flagBitmap)
 	{
 		this(null, absolutePath,user,flagBitmap);
 	}
 
-	private CMFile (CMVFSFile info, final String absolutePath, final MOB user)
+	private CMFile (final CMVFSFile info, final String absolutePath, final MOB user)
 	{
 		this(info, absolutePath,user,0);
 	}
@@ -204,7 +204,7 @@ public class CMFile extends File
 		}
 
 		final boolean doesFilenameExistInVFS=(info!=null) && (info.path.equalsIgnoreCase(absolutePath) || info.path.equalsIgnoreCase(absolutePath+"/"));
-		final boolean doesExistAsPathInVFS= (info!=null) && doesFilenameExistInVFS 
+		final boolean doesExistAsPathInVFS= (info!=null) && doesFilenameExistInVFS
 										&& ((info instanceof CMVFSDir)||(CMath.bset(info.mask, CMFile.VFS_MASK_DIRECTORY)));
 		if((info!=null)&&(!doesFilenameExistInVFS))
 			Log.debugOut(new Exception("CMFile sent: '"+absolutePath+"' != vfs found:'"+info.path+"' fetch/create error."));
@@ -330,7 +330,7 @@ public class CMFile extends File
 		 * @param accessor the mob who wants to access this file.
 		 * @return bits associated with this file.
 		 */
-		public int getMaskBits(MOB accessor)
+		public int getMaskBits(final MOB accessor)
 		{
 			return mask;
 		}
@@ -357,7 +357,7 @@ public class CMFile extends File
 		 * @param author the author/owner of the file
 		 * @param O the string, stringbuffer, byte[], or null
 		 */
-		public void saveData(String filename, int vfsBits, String author, Object O)
+		public void saveData(final String filename, final int vfsBits, final String author, final Object O)
 		{
 			final CMVFSFile info = new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author);
 			getVFSDirectory().add(info);
@@ -369,7 +369,7 @@ public class CMFile extends File
 		 * typically during read.
 		 * @param o the string, stringbuffer, byte[] or null object
 		 */
-		public void setData(Object o)
+		public void setData(final Object o)
 		{
 			this.data=o;
 		}
@@ -699,23 +699,23 @@ public class CMFile extends File
 		return demandLocal;
 	}
 
-	@Override 
-	public final boolean isDirectory() 
-	{ 
-		return exists() && CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY); 
+	@Override
+	public final boolean isDirectory()
+	{
+		return exists() && CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY);
 	}
 
-	@Override 
-	public final boolean exists() 
-	{ 
+	@Override
+	public final boolean exists()
+	{
 		return !((demandLocal||CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS))
-					&& (demandVFS || CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL))); 
+					&& (demandVFS || CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL)));
 	}
 
-	@Override 
-	public final boolean isFile() 
-	{ 
-		return canRead()&&(!CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY)); 
+	@Override
+	public final boolean isFile()
+	{
+		return canRead()&&(!CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY));
 	}
 
 	@Override
@@ -723,7 +723,7 @@ public class CMFile extends File
 	{
 		return modifiedDateTime;
 	}
-	
+
 	/**
 	 * Returns the author of this file, if available.
 	 * @return the author of this file
@@ -771,22 +771,22 @@ public class CMFile extends File
 		return (!CMath.bset(vfsBits, CMFile.VFS_MASK_NOREADLOCAL));
 	}
 
-	@Override 
-	public final String getName() 
-	{ 
-		return name; 
+	@Override
+	public final String getName()
+	{
+		return name;
 	}
 
-	@Override 
-	public final String getAbsolutePath() 
-	{ 
-		return "/"+getVFSPathAndName(); 
+	@Override
+	public final String getAbsolutePath()
+	{
+		return "/"+getVFSPathAndName();
 	}
 
-	@Override 
-	public final String getCanonicalPath() 
-	{ 
-		return getVFSPathAndName(); 
+	@Override
+	public final String getCanonicalPath()
+	{
+		return getVFSPathAndName();
 	}
 
 	/**
@@ -844,7 +844,7 @@ public class CMFile extends File
 			if((!localFile.isDirectory())&&(localFile.isFile()))
 				return false;
 		}
-		CMVFSDir vfsDir=getVFSDirectory().fetchSubDir(getVFSPathAndName().toUpperCase(), false);
+		final CMVFSDir vfsDir=getVFSDirectory().fetchSubDir(getVFSPathAndName().toUpperCase(), false);
 		if(vfsDir!=null)
 		{
 			if((vfsDir.getFiles()!=null)&&(vfsDir.getFiles().length>0))
@@ -1005,7 +1005,7 @@ public class CMFile extends File
 			Log.errOut("CMFile",new Exception());
 			return buf;
 		}
-		
+
 		BufferedReader reader = null;
 		try
 		{
@@ -1109,7 +1109,7 @@ public class CMFile extends File
 			Log.errOut("CMFile",new Exception());
 			return buf;
 		}
-		
+
 		Reader F = null;
 		try
 		{
@@ -1206,7 +1206,7 @@ public class CMFile extends File
 			Log.errOut("CMFile",new Exception());
 			return buf;
 		}
-		
+
 		DataInputStream fileIn = null;
 		try
 		{
@@ -1246,7 +1246,7 @@ public class CMFile extends File
 	 * @param bytes the bytes to convert
 	 * @return stringbuffer if its text, or null otherwise
 	 */
-	public final StringBuffer textVersion(byte[] bytes)
+	public final StringBuffer textVersion(final byte[] bytes)
 	{
 		final StringBuffer text=new StringBuffer(CMStrings.bytesToStr(bytes));
 		for(int i=0;i<text.length();i++)
@@ -1263,7 +1263,7 @@ public class CMFile extends File
 	 * @param data string, stringbuffer, byte[], or string convertable
 	 * @return true if happened without errors, false otherwise
 	 */
-	public boolean saveRaw(Object data)
+	public boolean saveRaw(final Object data)
 	{
 		if(data==null)
 		{
@@ -1368,9 +1368,9 @@ public class CMFile extends File
 	 * @param data string, stringbuffer, byte[], or string convertable
 	 * @return true if happened without errors, false otherwise
 	 */
-	public boolean saveText(Object data)
-	{ 
-		return saveText(data,false); 
+	public boolean saveText(final Object data)
+	{
+		return saveText(data,false);
 	}
 
 	/**
@@ -1380,7 +1380,7 @@ public class CMFile extends File
 	 * @param append true to append, false to overwrite
 	 * @return true if happened without errors, false otherwise
 	 */
-	public boolean saveText(Object data, boolean append)
+	public boolean saveText(final Object data, final boolean append)
 	{
 		if(data==null)
 		{
@@ -1595,12 +1595,12 @@ public class CMFile extends File
 			return false;
 		if(isDirectory())
 			return false;
-		String dir=getVFSPathAndName().toLowerCase();
+		final String dir=getVFSPathAndName().toLowerCase();
 		if(dir.endsWith("/"))
 			return false;
 		if(demandVFS)
 			return true;
-		int x=dir.lastIndexOf('/');
+		final int x=dir.lastIndexOf('/');
 		if(x<0)
 			return false;
 		final CMVFSFile file=getVFSInfo(dir.substring(0,x+1));
@@ -1731,11 +1731,11 @@ public class CMFile extends File
 		return vvfs;
 	}
 
-	private static final String[] parsePathParts(CMVFSFile info, String absolutePath)
+	private static final String[] parsePathParts(final CMVFSFile info, String absolutePath)
 	{
 		absolutePath=vfsifyFilename(absolutePath);
 		if((info == null)
-		&& absolutePath.startsWith("resources/") 
+		&& absolutePath.startsWith("resources/")
 		&& CMProps.isPrivateToMe(absolutePath))
 		{
 			final String newPrefix = CMProps.getVar(CMProps.Str.PRIVATERESOURCEPATH);
@@ -1818,7 +1818,7 @@ public class CMFile extends File
 	 * @param skipDirs if recursing dirs, this will skip listed paths
 	 * @return list for a directory at a given path
 	 */
-	public static final CMFile[] getFileList(final String path, final MOB user, final boolean recurse, final boolean expandDirs, Set<String> skipDirs)
+	public static final CMFile[] getFileList(final String path, final MOB user, final boolean recurse, final boolean expandDirs, final Set<String> skipDirs)
 	{
 		final boolean demandLocal=path.trim().startsWith("//");
 		final boolean demandVFS=path.trim().startsWith("::");
@@ -1878,7 +1878,7 @@ public class CMFile extends File
 	}
 
 	@Override
-	public int	compareTo(File pathname)
+	public int	compareTo(final File pathname)
 	{
 		if(pathname instanceof CMFile)
 			return ((CMFile)pathname).getAbsolutePath().compareTo(getAbsolutePath());
@@ -1914,7 +1914,7 @@ public class CMFile extends File
 	}
 
 	@Override
-	public boolean	equals(Object obj)
+	public boolean	equals(final Object obj)
 	{
 		if(obj instanceof CMFile)
 			return ((CMFile)obj).getAbsolutePath().equalsIgnoreCase(getAbsolutePath());
@@ -1927,16 +1927,16 @@ public class CMFile extends File
 		return obj==this;
 	}
 
-	@Override 
-	public File	getAbsoluteFile() 
-	{ 
-		return this; 
+	@Override
+	public File	getAbsoluteFile()
+	{
+		return this;
 	}
 
-	@Override 
-	public File	getCanonicalFile() 
-	{ 
-		return this; 
+	@Override
+	public File	getCanonicalFile()
+	{
+		return this;
 	}
 
 	@Override
@@ -1953,10 +1953,10 @@ public class CMFile extends File
 		return this.getParentFile().getAbsolutePath();
 	}
 
-	@Override 
-	public String getPath() 
+	@Override
+	public String getPath()
 	{
-		return this.getAbsolutePath(); 
+		return this.getAbsolutePath();
 	}
 
 	@Override
@@ -1975,22 +1975,22 @@ public class CMFile extends File
 		return 65536;
 	}
 
-	@Override 
-	public int hashCode() 
-	{ 
-		return this.getAbsolutePath().hashCode(); 
+	@Override
+	public int hashCode()
+	{
+		return this.getAbsolutePath().hashCode();
 	}
 
-	@Override 
-	public boolean isAbsolute() 
-	{ 
-		return true; 
+	@Override
+	public boolean isAbsolute()
+	{
+		return true;
 	}
 
-	@Override 
-	public boolean isHidden() 
-	{ 
-		return false; 
+	@Override
+	public boolean isHidden()
+	{
+		return false;
 	}
 
 	@Override
@@ -2009,7 +2009,7 @@ public class CMFile extends File
 	}
 
 	@Override
-	public String[]	list(FilenameFilter filter)
+	public String[]	list(final FilenameFilter filter)
 	{
 		if(filter==null)
 			return this.list();
@@ -2023,7 +2023,7 @@ public class CMFile extends File
 	}
 
 	@Override
-	public File[] listFiles(FileFilter filter)
+	public File[] listFiles(final FileFilter filter)
 	{
 		if(filter==null)
 			return this.listFiles();
@@ -2037,7 +2037,7 @@ public class CMFile extends File
 	}
 
 	@Override
-	public File[] listFiles(FilenameFilter filter)
+	public File[] listFiles(final FilenameFilter filter)
 	{
 		if(filter==null)
 			return this.listFiles();
@@ -2059,7 +2059,7 @@ public class CMFile extends File
 	}
 
 	@Override
-	public boolean renameTo(File dest)
+	public boolean renameTo(final File dest)
 	{
 		if(dest.exists())
 			return false;
@@ -2092,58 +2092,58 @@ public class CMFile extends File
 		return false;
 	}
 
-	@Override 
-	public boolean setExecutable(boolean executable) 
-	{ 
-		return false; 
+	@Override
+	public boolean setExecutable(final boolean executable)
+	{
+		return false;
 	}
 
-	@Override 
-	public boolean setExecutable(boolean executable, boolean ownerOnly) 
-	{ 
-		return false; 
+	@Override
+	public boolean setExecutable(final boolean executable, final boolean ownerOnly)
+	{
+		return false;
 	}
 
-	@Override 
-	public boolean setLastModified(long time) 
-	{ 
-		return false; 
+	@Override
+	public boolean setLastModified(final long time)
+	{
+		return false;
 	}
 
-	@Override 
-	public boolean setReadable(boolean readable) 
-	{ 
-		return false; 
+	@Override
+	public boolean setReadable(final boolean readable)
+	{
+		return false;
 	}
 
-	@Override 
-	public boolean setReadable(boolean readable, boolean ownerOnly) 
-	{ 
-		return false; 
+	@Override
+	public boolean setReadable(final boolean readable, final boolean ownerOnly)
+	{
+		return false;
 	}
 
-	@Override 
-	public boolean setReadOnly() 
-	{ 
-		return false; 
+	@Override
+	public boolean setReadOnly()
+	{
+		return false;
 	}
 
-	@Override 
-	public boolean setWritable(boolean writable) 
-	{ 
-		return false; 
+	@Override
+	public boolean setWritable(final boolean writable)
+	{
+		return false;
 	}
 
-	@Override 
-	public boolean setWritable(boolean writable, boolean ownerOnly) 
-	{ 
-		return false; 
+	@Override
+	public boolean setWritable(final boolean writable, final boolean ownerOnly)
+	{
+		return false;
 	}
 
-	@Override 
-	public String toString() 
-	{ 
-		return this.getAbsolutePath(); 
+	@Override
+	public String toString()
+	{
+		return this.getAbsolutePath();
 	}
 
 	/**
@@ -2180,43 +2180,43 @@ public class CMFile extends File
 		}
 
 		@Override
-		public File createFileFromPath(String localPath)
+		public File createFileFromPath(final String localPath)
 		{
 			return new CMFile(localPath, null);
 		}
 
 		@Override
-		public File createFileFromPath(File parent, String localPath)
+		public File createFileFromPath(final File parent, final String localPath)
 		{
 			return createFileFromPath(parent.getAbsolutePath() + '/' + localPath);
 		}
 
-		@Override 
-		public byte[] readFile(File file) throws IOException, FileNotFoundException 
+		@Override
+		public byte[] readFile(final File file) throws IOException, FileNotFoundException
 		{
 			return getFinalFile((CMFile)file).raw();
 		}
 
-		@Override 
-		public InputStream getFileStream(File file) throws IOException, FileNotFoundException 
+		@Override
+		public InputStream getFileStream(final File file) throws IOException, FileNotFoundException
 		{
 			return getFinalFile((CMFile)file).getRawStream();
 		}
 
 		@Override
-		public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException 
+		public RandomAccessFile getRandomAccessFile(final File file) throws IOException, FileNotFoundException
 		{
 			return new RandomAccessFile(new File(getFinalFile((CMFile)file).getLocalPathAndName()),"r");
 		}
 
 		@Override
-		public boolean supportsRandomAccess(File file) 
+		public boolean supportsRandomAccess(final File file)
 		{
 			return getFinalFile((CMFile)file).isLocalFile();
 		}
-	
+
 		@Override
-		public boolean allowedToReadData(File file)
+		public boolean allowedToReadData(final File file)
 		{
 			final CMFile F=getFinalFile((CMFile)file);
 			return F.exists() && F.canRead();

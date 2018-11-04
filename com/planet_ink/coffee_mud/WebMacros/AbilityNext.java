@@ -43,7 +43,7 @@ public class AbilityNext extends StdWebMacro
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("ABILITY");
@@ -105,8 +105,8 @@ public class AbilityNext extends StdWebMacro
 			final Ability[] aaray=fullList.toArray(new Ability[0]);
 			Arrays.sort(aaray, new Comparator<Ability>()
 			{
-				@Override 
-				public int compare(Ability o1, Ability o2)
+				@Override
+				public int compare(final Ability o1, final Ability o2)
 				{
 					return o1.Name().compareToIgnoreCase(o2.Name());
 				}

@@ -56,7 +56,7 @@ public class ServerSecurityException extends Exception
 	 * specified error message,
 	 * @param err the error message
 	 */
-	public ServerSecurityException(String err)
+	public ServerSecurityException(final String err)
 	{
 		super(err);
 	}

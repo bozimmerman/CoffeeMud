@@ -32,7 +32,6 @@ import java.util.List;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_ColdWard extends Chant
 {
 	@Override
@@ -84,14 +83,14 @@ public class Chant_ColdWard extends Chant
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
 		affectedStats.setStat(CharStats.STAT_SAVE_COLD,affectedStats.getStat(CharStats.STAT_SAVE_COLD)+100);
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

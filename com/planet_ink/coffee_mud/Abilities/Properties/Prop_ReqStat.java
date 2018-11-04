@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_ReqStat extends Property implements TriggeredAffect
 {
 	@Override
@@ -78,7 +77,7 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String txt)
+	public void setMiscText(final String txt)
 	{
 		noSneak=false;
 		final Vector<String> parms=CMParms.parse(txt.toUpperCase());
@@ -98,7 +97,7 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 		return "Entry restricted as follows: "+CMLib.masking().maskDesc(miscText);
 	}
 
-	public boolean passesMuster(MOB mob, String msg)
+	public boolean passesMuster(final MOB mob, final String msg)
 	{
 		if(mob==null)
 			return false;
@@ -106,7 +105,7 @@ public class Prop_ReqStat extends Property implements TriggeredAffect
 			return true;
 		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
 			return true;
-		char[] comparator=new char[]{'\0'};
+		final char[] comparator=new char[]{'\0'};
 		for(final int c : CharStats.CODES.ALLCODES())
 		{
 			if(!CMParms.getParmCompare(text(),CharStats.CODES.NAME(c),mob.charStats().getStat(c),comparator))

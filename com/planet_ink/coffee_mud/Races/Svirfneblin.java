@@ -45,7 +45,7 @@ public class Svirfneblin extends StdRace
 		super();
 		super.naturalAbilImmunities.add("Disease_Syphilis");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Svirfneblin");
 
 	@Override
@@ -116,7 +116,7 @@ public class Svirfneblin extends StdRace
 	private final String[]	racialEffectNames			= { "Spell_Untraceable" };
 	private final int[]		racialEffectLevels			= { 1 };
 	private final String[]	racialEffectParms			= { "" };
-	
+
 	@Override
 	protected String[] racialEffectNames()
 	{
@@ -178,7 +178,7 @@ public class Svirfneblin extends StdRace
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

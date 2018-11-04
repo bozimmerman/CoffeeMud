@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class MasterHerbology extends Herbology
 {
 	@Override
@@ -68,7 +67,7 @@ public class MasterHerbology extends Herbology
 	{
 		return false;
 	}
-	
+
 	@Override
 	protected int duration(final MOB mob)
 	{

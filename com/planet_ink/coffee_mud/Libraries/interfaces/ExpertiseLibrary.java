@@ -47,31 +47,31 @@ public interface ExpertiseLibrary extends CMLibrary
 		XPCOST,
 		LOWFREECOST
 	}
-	
+
 	public interface ExpertiseDefinition extends CMObject
 	{
 		public String getBaseName();
-		
+
 		public void setBaseName(String baseName);
-		
+
 		public void setName(String name);
-		
+
 		public void setID(String ID);
-		
+
 		public void setData(String[] data);
-		
+
 		public ExpertiseDefinition getParent();
-		
+
 		public int getMinimumLevel();
-		
+
 		public String[] getData();
-		
+
 		public MaskingLibrary.CompiledZMask compiledListMask();
-		
+
 		public MaskingLibrary.CompiledZMask compiledFinalMask();
-		
+
 		public String allRequirements();
-		
+
 		public String listRequirements();
 
 		public String finalRequirements();
@@ -81,7 +81,7 @@ public interface ExpertiseLibrary extends CMLibrary
 		public void addFinalMask(String mask);
 
 		public void addCost(CostType type, Double value);
-		
+
 		public String costDescription();
 
 		public boolean meetsCostRequirements(MOB mob);
@@ -106,7 +106,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	public interface SkillCostDefinition
 	{
 		public CostType type();
-		
+
 		public String costDefinition();
 	}
 

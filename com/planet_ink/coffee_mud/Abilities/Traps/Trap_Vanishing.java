@@ -73,7 +73,7 @@ public class Trap_Vanishing extends StdTrap
 	}
 
 	@Override
-	public void spring(MOB target)
+	public void spring(final MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{

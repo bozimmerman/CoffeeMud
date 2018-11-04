@@ -67,7 +67,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public Faction getFactionByNumber(int index)
+	public Faction getFactionByNumber(final int index)
 	{
 		final Enumeration<Faction> fe=factions();
 		Faction F=null;
@@ -77,7 +77,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public void reloadFactions(String factionList)
+	public void reloadFactions(final String factionList)
 	{
 		final List<String> preLoadFactions=CMParms.parseSemicolons(factionList,true);
 		clearFactions();
@@ -91,13 +91,13 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public boolean isRangeCodeName(String key)
+	public boolean isRangeCodeName(final String key)
 	{
 		return rangeCodeNames().containsKey(key.toUpperCase());
 	}
 
 	@Override
-	public FRange getFactionRangeByCodeName(String rangeCodeName)
+	public FRange getFactionRangeByCodeName(final String rangeCodeName)
 	{
 		if(hashedFactionRanges.containsKey(rangeCodeName.toUpperCase()))
 			return hashedFactionRanges.get(rangeCodeName.toUpperCase());
@@ -105,7 +105,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public boolean isFactionedThisWay(MOB mob, Faction.FRange rangeCode)
+	public boolean isFactionedThisWay(final MOB mob, final Faction.FRange rangeCode)
 	{
 		final Faction.FRange FR=rangeCode;
 		if(FR==null)
@@ -118,7 +118,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public String rangeDescription(Faction.FRange FR, String andOr)
+	public String rangeDescription(final Faction.FRange FR, final String andOr)
 	{
 		if(FR==null)
 			return "";
@@ -141,7 +141,7 @@ public class Factions extends StdLibrary implements FactionManager
 		return buf.toString();
 	}
 
-	private Faction buildFactionFromXML(StringBuffer buf, String factionID)
+	private Faction buildFactionFromXML(final StringBuffer buf, final String factionID)
 	{
 		final Faction F=(Faction)CMClass.getCommon("DefaultFaction");
 		F.initializeFaction(buf,factionID);
@@ -165,7 +165,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public boolean addFaction(Faction F)
+	public boolean addFaction(final Faction F)
 	{
 		if(F!=null)
 		{
@@ -177,7 +177,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public String makeFactionFilename(String factionID)
+	public String makeFactionFilename(final String factionID)
 	{
 		String filename;
 		filename="factions/"+factionID+".ini";
@@ -200,7 +200,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public Faction getFaction(String factionID)
+	public Faction getFaction(final String factionID)
 	{
 		if(factionID==null)
 			return null;
@@ -231,7 +231,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public Faction getFactionByRangeCodeName(String rangeCodeName)
+	public Faction getFactionByRangeCodeName(final String rangeCodeName)
 	{
 		if(hashedFactionRanges.containsKey(rangeCodeName.toUpperCase()))
 		{
@@ -250,7 +250,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public Faction getFactionByName(String factionNamed)
+	public Faction getFactionByName(final String factionNamed)
 	{
 		Faction F;
 		for(final Enumeration<String> e=factionSet.keys();e.hasMoreElements();)
@@ -269,7 +269,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public boolean removeFaction(String factionID)
+	public boolean removeFaction(final String factionID)
 	{
 		Faction F;
 		if(factionID==null)
@@ -304,11 +304,11 @@ public class Factions extends StdLibrary implements FactionManager
 		Collections.sort(sorted,new Comparator<Faction>()
 		{
 			@Override
-			public int compare(Faction o1, Faction o2)
+			public int compare(final Faction o1, final Faction o2)
 			{
 				return o1.name().compareTo(o2.name());
 			}
-			
+
 		});
 		for(final Enumeration<Faction> e=sorted.elements();e.hasMoreElements();)
 		{
@@ -337,7 +337,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public String getName(String factionID)
+	public String getName(final String factionID)
 	{
 		final Faction f = getFaction(factionID);
 		if (f != null)
@@ -346,7 +346,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public int getMinimum(String factionID)
+	public int getMinimum(final String factionID)
 	{
 		final Faction f = getFaction(factionID);
 		if (f != null)
@@ -355,7 +355,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public int getMaximum(String factionID)
+	public int getMaximum(final String factionID)
 	{
 		final Faction f = getFaction(factionID);
 		if (f != null)
@@ -364,7 +364,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public int getPercent(String factionID, int faction)
+	public int getPercent(final String factionID, final int faction)
 	{
 		final Faction f = getFaction(factionID);
 		if (f != null)
@@ -373,7 +373,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public int getPercentFromAvg(String factionID, int faction)
+	public int getPercentFromAvg(final String factionID, final int faction)
 	{
 		final Faction f = getFaction(factionID);
 		if (f != null)
@@ -382,7 +382,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public Faction.FRange getRange(String factionID, int faction)
+	public Faction.FRange getRange(final String factionID, final int faction)
 	{
 		final Faction f = getFaction(factionID);
 		if (f != null)
@@ -391,7 +391,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public Enumeration<Faction.FRange> getRanges(String factionID) 
+	public Enumeration<Faction.FRange> getRanges(final String factionID)
 	{
 		final Faction f=getFaction(factionID);
 		if(f!=null)
@@ -400,7 +400,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public double getRangePercent(String factionID, int faction)
+	public double getRangePercent(final String factionID, final int faction)
 	{
 		final Faction F=getFaction(factionID);
 		if(F==null)
@@ -409,7 +409,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public int getTotal(String factionID)
+	public int getTotal(final String factionID)
 	{
 		final Faction f = getFaction(factionID);
 		if (f != null)
@@ -418,7 +418,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public int getRandom(String factionID)
+	public int getRandom(final String factionID)
 	{
 		final Faction f = getFaction(factionID);
 		if (f != null)
@@ -433,14 +433,14 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public void setAlignment(MOB mob, Faction.Align newAlignment)
+	public void setAlignment(final MOB mob, final Faction.Align newAlignment)
 	{
 		if(getFaction(AlignID())!=null)
 			mob.addFaction(AlignID(),getAlignMedianFacValue(newAlignment));
 	}
 
 	@Override
-	public void setAlignmentOldRange(MOB mob, int oldRange)
+	public void setAlignmentOldRange(final MOB mob, final int oldRange)
 	{
 		if(getFaction(AlignID())!=null)
 		{
@@ -457,7 +457,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public boolean postChangeAllFactions(MOB mob, MOB victim, int amount, boolean quiet)
+	public boolean postChangeAllFactions(final MOB mob, final MOB victim, final int amount, final boolean quiet)
 	{
 		if((mob==null))
 			return false;
@@ -474,7 +474,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public boolean postFactionChange(MOB mob,Environmental tool, String factionID, int amount)
+	public boolean postFactionChange(final MOB mob,final Environmental tool, final String factionID, final int amount)
 	{
 		if((mob==null))
 			return false;
@@ -490,7 +490,7 @@ public class Factions extends StdLibrary implements FactionManager
 		return true;
 	}
 
-	protected Faction makeReactionFaction(String prefix, String classID, String Name, String code, String baseTemplateFilename)
+	protected Faction makeReactionFaction(final String prefix, final String classID, final String Name, final String code, final String baseTemplateFilename)
 	{
 		final String codedName=Name.toUpperCase().trim().replace(' ','_');
 		final String factionID=prefix+codedName;
@@ -588,7 +588,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public void updatePlayerFactions(MOB mob, Room R, boolean forceAutoCheck)
+	public void updatePlayerFactions(final MOB mob, final Room R, final boolean forceAutoCheck)
 	{
 		if((mob==null)||(R==null))
 			return;
@@ -618,7 +618,7 @@ public class Factions extends StdLibrary implements FactionManager
 		}
 	}
 
-	protected void addOutsidersAndTimers(Faction F, Vector<Faction.FactionChangeEvent> outSiders, Vector<Faction.FactionChangeEvent> timers)
+	protected void addOutsidersAndTimers(final Faction F, final Vector<Faction.FactionChangeEvent> outSiders, final Vector<Faction.FactionChangeEvent> timers)
 	{
 		Faction.FactionChangeEvent[] CEs=null;
 		CEs=F.getChangeEvents("ADDOUTSIDER");
@@ -719,7 +719,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public int getAlignPurity(int faction, Faction.Align eq)
+	public int getAlignPurity(final int faction, final Faction.Align eq)
 	{
 		int bottom=Integer.MAX_VALUE;
 		int top=Integer.MIN_VALUE;
@@ -752,7 +752,7 @@ public class Factions extends StdLibrary implements FactionManager
 
 	// Please don't mock the name, I couldn't think of a better one.  Sadly.
 	@Override
-	public int getAlignMedianFacValue(Faction.Align eq)
+	public int getAlignMedianFacValue(final Faction.Align eq)
 	{
 		int bottom=Integer.MAX_VALUE;
 		int top=Integer.MIN_VALUE;
@@ -784,7 +784,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public int isFactionTag(String tag)
+	public int isFactionTag(final String tag)
 	{
 		for(int i=0;i<Faction.TAG_NAMES.length;i++)
 		{
@@ -798,7 +798,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public Faction.Align getAlignEnum(String str)
+	public Faction.Align getAlignEnum(final String str)
 	{
 		final Faction.Align A=(Faction.Align)CMath.s_valueOf(Faction.Align.class, str.toUpperCase().trim());
 		if(A!=null)
@@ -806,7 +806,7 @@ public class Factions extends StdLibrary implements FactionManager
 		return  Faction.Align.INDIFF;
 	}
 
-	private String getWordAffOrBehav(String ID)
+	private String getWordAffOrBehav(final String ID)
 	{
 		if(CMClass.getBehavior(ID)!=null)
 			return "behavior";
@@ -818,7 +818,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public void modifyFaction(MOB mob, Faction me) throws IOException
+	public void modifyFaction(final MOB mob, final Faction me) throws IOException
 	{
 		if(mob.isMonster())
 			return;
@@ -1720,7 +1720,7 @@ public class Factions extends StdLibrary implements FactionManager
 			mob.tell(errMsg);
 	}
 
-	private StringBuffer rebuildFactionProperties(Faction F)
+	private StringBuffer rebuildFactionProperties(final Faction F)
 	{
 		List<String> oldV=Resources.getFileLineVector(Resources.getFileResource(makeFactionFilename(F.factionID()),true));
 		if(oldV.size()<10)
@@ -1729,7 +1729,7 @@ public class Factions extends StdLibrary implements FactionManager
 			oldV=Resources.getFileLineVector(template);
 		}
 		final boolean[] defined=new boolean[Faction.TAG_NAMES.length];
-		for(int i=0;i<defined.length;i++) 
+		for(int i=0;i<defined.length;i++)
 			defined[i]=false;
 		for(int v=0;v<oldV.size();v++)
 		{
@@ -1798,7 +1798,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public String resaveFaction(Faction F)
+	public String resaveFaction(final Faction F)
 	{
 		if((F.factionID().length()>0)
 		&&(CMLib.factions().getFaction(F.factionID())!=null))
@@ -1807,7 +1807,7 @@ public class Factions extends StdLibrary implements FactionManager
 			{
 				final StringBuffer buf = rebuildFactionProperties(F);
 				String factionFilename = makeFactionFilename(F.factionID());
-				CMFile file = new CMFile(makeFactionFilename(F.factionID()),null);
+				final CMFile file = new CMFile(makeFactionFilename(F.factionID()),null);
 				if(!file.exists())
 					factionFilename = "::"+factionFilename;
 				if(!Resources.updateFileResource(factionFilename,buf))
@@ -1826,7 +1826,7 @@ public class Factions extends StdLibrary implements FactionManager
 			return "Can not save a blank faction";
 		return "";
 	}
-	
+
 	@Override
 	public int getAbilityFlagType(String strflag)
 	{

@@ -22,19 +22,19 @@ public class FilteredIterable<K> implements Iterable<K>
 	private final Iterable<K>  iter;
 	private Filterer<K>  filterer;
 
-	public FilteredIterable(Iterable<K> eset, Filterer<K> fil)
+	public FilteredIterable(final Iterable<K> eset, final Filterer<K> fil)
 	{
 		iter=eset;
 		filterer=fil;
 	}
 
-	public void setFilterer(Filterer<K> fil)
+	public void setFilterer(final Filterer<K> fil)
 	{
 		filterer=fil;
 	}
 
 	@Override
-	public Iterator<K> iterator() 
+	public Iterator<K> iterator()
 	{
 		return new FilteredIterator<K>(iter.iterator(),filterer);
 	}

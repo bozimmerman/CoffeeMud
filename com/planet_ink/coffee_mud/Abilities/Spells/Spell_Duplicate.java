@@ -34,7 +34,6 @@ import java.util.*;
 */
 public class Spell_Duplicate extends Spell
 {
-
 	@Override
 	public String ID()
 	{
@@ -74,7 +73,7 @@ public class Spell_Duplicate extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)

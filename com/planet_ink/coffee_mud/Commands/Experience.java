@@ -38,7 +38,7 @@ public class Experience extends StdCommand
 		return access;
 	}
 
-	public StringBuffer getScore(MOB mob)
+	public StringBuffer getScore(final MOB mob)
 	{
 		final StringBuffer msg=new StringBuffer("^N");
 
@@ -69,7 +69,7 @@ public class Experience extends StdCommand
 		return msg;
 	}
 
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final StringBuffer msg=getScore(mob);

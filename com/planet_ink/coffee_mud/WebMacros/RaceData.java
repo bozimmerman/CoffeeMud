@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class RaceData extends StdWebMacro
 {
 	@Override
@@ -47,15 +46,15 @@ public class RaceData extends StdWebMacro
 	// HEALTHTEXTS, NATURALWEAPON, PLAYABLE, DISPOSITIONS, STARTINGEQ,
 	// CLASSES, LANGS, EFFECTS
 
-	private String raceDropDown(HTTPRequest httpReq, String old)
+	private String raceDropDown(final HTTPRequest httpReq, final String old)
 	{
 		final StringBuffer str=new StringBuffer("");
 		str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
 		Race R2=null;
 		String R2ID=null;
-		for(final Enumeration e=MobData.sortedRaces(httpReq);e.hasMoreElements();)
+		for(final Enumeration<Race> e=MobData.sortedRaces(httpReq);e.hasMoreElements();)
 		{
-			R2=(Race)e.nextElement();
+			R2=e.nextElement();
 			R2ID="com.planet_ink.coffee_mud.Races."+R2.ID();
 			if(R2.isGeneric() && CMClass.checkForCMClass(CMObjectType.RACE,R2ID))
 			{
@@ -71,7 +70,7 @@ public class RaceData extends StdWebMacro
 		return str.toString();
 	}
 
-	public static StringBuffer estats(PhyStats E, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer estats(final PhyStats E, final char c, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		final PairVector<String,String> theclasses=new PairVector<String,String>();
@@ -137,7 +136,7 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer cstats(CharStats E, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer cstats(final CharStats E, final char c, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		final PairVector<String,String> theclasses=new PairVector<String,String>();
@@ -200,7 +199,7 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer cstate(CharState E, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer cstate(final CharState E, final char c, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		final PairVector<String,String> theclasses=new PairVector<String,String>();
@@ -266,7 +265,7 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer itemList(List<? extends Item> items, char c, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, boolean one)
+	public static StringBuffer itemList(List<? extends Item> items, final char c, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize, final boolean one)
 	{
 		if(items==null)
 			items=new Vector<Item>();
@@ -342,17 +341,17 @@ public class RaceData extends StdWebMacro
 		}
 		if(one)
 		{
-			final List<String> sortMe=new ArrayList();
+			final List<String> sortMe=new ArrayList<String>();
 			CMClass.addAllItemClassNames(sortMe,true,true,false,CMProps.getIntVar(CMProps.Int.MUDTHEME));
 			Collections.sort(sortMe);
-			Set<String> found=new TreeSet<String>();
+			final Set<String> found=new TreeSet<String>();
 			for (final Object element : sortMe)
 			{
 				boolean selected=false;
 				for(int x=0;x<classes.size();x++)
 				{
 					if(classes.elementAt(x).ID().equals(element))
-					{ 
+					{
 						selected=true;
 						found.add(classes.elementAt(x).ID());
 						break;
@@ -389,7 +388,7 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer dynAbilities(final MOB mob, List<Ability> ables, String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+	public static StringBuffer dynAbilities(final MOB mob, final List<Ability> ables, final String ID, final Modifiable obj, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
 		final DVector theclasses=new DVector(6);
@@ -417,7 +416,7 @@ public class RaceData extends StdWebMacro
 					String roles=null;
 					if(supportsRoles)
 						roles=httpReq.getUrlParameter("RABROL"+num);
-					if(roles==null) 
+					if(roles==null)
 						roles="";
 					theclasses.addElement(behav,prof,qual,levl,parm,roles);
 				}
@@ -436,7 +435,7 @@ public class RaceData extends StdWebMacro
 			{
 				if((A!=null)&&(!cables.containsFirst(A.ID())))
 				{
-					AbilityMapper.AbilityMapping ableMap=CMLib.ableMapper().getAbleMap(ID, A.ID());
+					final AbilityMapper.AbilityMapping ableMap=CMLib.ableMapper().getAbleMap(ID, A.ID());
 					final boolean defaultGain = ableMap.autoGain();
 					final int qualifyingLevel = ableMap.qualLevel();
 					final String defaultParm = ableMap.defaultParm();
@@ -444,16 +443,16 @@ public class RaceData extends StdWebMacro
 					if(supportsRoles && (obj instanceof ClanGovernment))
 					{
 						roles="";
-						for(String key : ableMap.extFields().keySet())
+						for(final String key : ableMap.extFields().keySet())
 						{
-							ClanPosition P=((ClanGovernment)obj).findPositionRole(key);
+							final ClanPosition P=((ClanGovernment)obj).findPositionRole(key);
 							if(P!=null)
 								roles+=", "+P.getID();
 						}
 						if(roles.length()>2)
 							roles=roles.substring(2);
 					}
-					if(roles==null) 
+					if(roles==null)
 						roles="";
 					theclasses.addElement(A.ID(),A.proficiency()+"",defaultGain?"":"on",qualifyingLevel+"",defaultParm,roles);
 				}
@@ -529,11 +528,11 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer dynEffects(String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+	public static StringBuffer dynEffects(final String ID, final Modifiable obj, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
 		final QuadVector<String,String,String,String> theclasses=new QuadVector<String,String,String,String>();
-		boolean supportsRoles=CMParms.contains(obj.getStatCodes(), "GETREFFROLE");
+		final boolean supportsRoles=CMParms.contains(obj.getStatCodes(), "GETREFFROLE");
 		if(httpReq.isUrlParameter("REFFS1"))
 		{
 			int num=1;
@@ -551,7 +550,7 @@ public class RaceData extends StdWebMacro
 					String roles=null;
 					if(supportsRoles)
 						roles=httpReq.getUrlParameter("REFROL"+num);
-					if(roles==null) 
+					if(roles==null)
 						roles="";
 					theclasses.addElement(behav,parm,levl,roles);
 				}
@@ -572,16 +571,16 @@ public class RaceData extends StdWebMacro
 				if(supportsRoles && (obj instanceof ClanGovernment)&&(roleList!=null)&&(roleList.length()>0))
 				{
 					roles="";
-					for(String key : CMParms.parseCommas(roleList,true))
+					for(final String key : CMParms.parseCommas(roleList,true))
 					{
-						ClanPosition P=((ClanGovernment)obj).findPositionRole(key);
+						final ClanPosition P=((ClanGovernment)obj).findPositionRole(key);
 						if(P!=null)
 							roles+=", "+P.getID();
 					}
 					if(roles.length()>2)
 						roles=roles.substring(2);
 				}
-				if(roles==null) 
+				if(roles==null)
 					roles="";
 				theclasses.addElement(ableID,ableParm,qualifyingLevel+"",roles);
 			}
@@ -641,7 +640,7 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer dynImmunities(String ID, Modifiable obj, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+	public static StringBuffer dynImmunities(final String ID, final Modifiable obj, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
 		final List<String> theclasses=new Vector<String>();
@@ -699,7 +698,7 @@ public class RaceData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer cabilities(Race E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+	public static StringBuffer cabilities(final Race E, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
 		final QuadVector<String,Integer,Integer,Boolean> theclasses=new QuadVector<String,Integer,Integer,Boolean>();
@@ -715,7 +714,7 @@ public class RaceData extends StdWebMacro
 					if(prof==null)
 						prof="0";
 					String qual=httpReq.getUrlParameter("CABQUA"+num);
-					if(qual==null) 
+					if(qual==null)
 						qual="";// null means unchecked
 					String levl=httpReq.getUrlParameter("CABLVL"+num);
 					if(levl==null)
@@ -729,7 +728,7 @@ public class RaceData extends StdWebMacro
 		else
 		{
 			theclasses.addAll(E.culturalAbilities());
-			for(Quad<String,Integer,Integer,Boolean> Q : theclasses)
+			for(final Quad<String,Integer,Integer,Boolean> Q : theclasses)
 				Q.fourth = Boolean.valueOf(!Q.fourth.booleanValue());
 		}
 		if(font==null)
@@ -765,7 +764,7 @@ public class RaceData extends StdWebMacro
 		}
 		str.append("</SELECT>");
 		str.append("</TD>");
-		int i=theclasses.size()+1;
+		final int i=theclasses.size()+1;
 		str.append("<TD WIDTH=20%>");
 		str.append(font+"Pct:</B></I></FONT> <INPUT TYPE=TEXT NAME=CABPOF"+i+" VALUE=\"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
 		str.append("</TD>");
@@ -782,7 +781,7 @@ public class RaceData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 
@@ -1038,7 +1037,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("IMMUNITIES"))
 				{
-					for(String ableID : R.abilityImmunities())
+					for(final String ableID : R.abilityImmunities())
 					{
 						final Ability A=CMClass.getAbilityPrototype(ableID);
 						if(A!=null)
@@ -1282,9 +1281,9 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("CLASSES"))
 				{
-					for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+					for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 					{
-						final CharClass C=(CharClass)c.nextElement();
+						final CharClass C=c.nextElement();
 						if((C!=null)
 						&&(CMProps.isTheme(C.availabilityCode()))
 						&&(!CMath.bset(C.availabilityCode(), Area.THEME_SKILLONLYMASK))

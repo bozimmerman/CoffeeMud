@@ -101,13 +101,13 @@ public class Thief_Belay extends ThiefSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code = newCode;
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats stats)
+	public void affectPhyStats(final Physical host, final PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);
 		if(host instanceof Item)
@@ -132,7 +132,7 @@ public class Thief_Belay extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
@@ -148,7 +148,7 @@ public class Thief_Belay extends ThiefSkill
 			mob.tell(L("You must be on the deck of a ship to belay an item."));
 			return false;
 		}
-		
+
 		final Item item=super.getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(item==null)
 			return false;
@@ -158,13 +158,13 @@ public class Thief_Belay extends ThiefSkill
 			mob.tell(L("You need to put that on the deck before you can belay it."));
 			return false;
 		}
-		
+
 		if(item.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("That is already secured."));
 			return false;
 		}
-		
+
 		if(((!CMLib.flags().isGettable(item))
 			||(CMath.bset(item.phyStats().sensesMask(), PhyStats.SENSE_UNDESTROYABLE)))
 		&&(!CMLib.law().doesHavePriviledgesHere(mob,mob.location())))

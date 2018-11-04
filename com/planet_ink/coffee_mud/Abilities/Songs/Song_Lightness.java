@@ -67,7 +67,7 @@ public class Song_Lightness extends Song
 		affectableStats.setWeight(0);
 	}
 
-	public int mobWeight(MOB mob)
+	public int mobWeight(final MOB mob)
 	{
 		int weight=mob.basePhyStats().weight();
 		for(int i=0;i<mob.numItems();i++)
@@ -114,7 +114,7 @@ public class Song_Lightness extends Song
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{

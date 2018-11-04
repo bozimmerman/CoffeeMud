@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_UseSpellCast extends Prop_SpellAdder
 {
 	@Override
@@ -53,7 +52,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 		return Ability.CAN_ITEMS;
 	}
 
-	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, int asLevel, short maxTicks)
+	public boolean addMeIfNeccessary(final PhysicalAgent source, final Physical target, final int asLevel, final short maxTicks)
 	{
 		final List<Ability> V=getMySpellsV();
 		if((target==null)
@@ -108,7 +107,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 	}
 

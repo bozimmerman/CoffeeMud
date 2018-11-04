@@ -51,7 +51,7 @@ public class Prop_ClosedDayNight extends Property
 	{
 		return Ability.CAN_ITEMS | Ability.CAN_MOBS | Ability.CAN_EXITS | Ability.CAN_ROOMS;
 	}
-	
+
 	protected boolean	doneToday	= false;
 	protected int		lastClosed	= -1;
 	protected boolean	dayFlag		= false;
@@ -77,7 +77,7 @@ public class Prop_ClosedDayNight extends Property
 	}
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		final Vector<String> V=CMParms.parse(text);
@@ -135,7 +135,7 @@ public class Prop_ClosedDayNight extends Property
 			exitRoom=msg.source().location();
 	}
 
-	protected boolean closed(Environmental E)
+	protected boolean closed(final Environmental E)
 	{
 		boolean closed=false;
 		Room R=CMLib.map().roomLocation(E);

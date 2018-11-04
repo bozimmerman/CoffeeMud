@@ -86,7 +86,7 @@ public class Thief_PetSpy extends ThiefSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		
+
 		if((tickID==Tickable.TICKID_MOB)
 		&&(affected instanceof MOB)
 		&&(affected != invoker))
@@ -99,7 +99,7 @@ public class Thief_PetSpy extends ThiefSkill
 				unInvoke();
 				return false;
 			}
-			int direction = path.remove(0).intValue();
+			final int direction = path.remove(0).intValue();
 			final Room nextR=R.getRoomInDir(direction);
 			if(nextR==null)
 			{
@@ -123,7 +123,7 @@ public class Thief_PetSpy extends ThiefSkill
 	{
 		if(canBeUninvoked())
 		{
-			Physical affected=this.affected;
+			final Physical affected=this.affected;
 			if(affected instanceof MOB)
 			{
 				if(path != null)
@@ -164,7 +164,7 @@ public class Thief_PetSpy extends ThiefSkill
 			final Room R=mob.location();
 			if(R==null)
 				return;
-			MOB target=(MOB)msg.target();
+			final MOB target=(MOB)msg.target();
 			if(commands.size()<1)
 			{
 				R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) at <T-NAME> expectantly."));
@@ -175,22 +175,22 @@ public class Thief_PetSpy extends ThiefSkill
 				mob.tell(L("@x1 is already on a spy mission!",target.name(mob)));
 				return;
 			}
-			
+
 			if(!super.proficiencyCheck(mob, 0, false))
 			{
 				R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> refuse(s)."));
 				return;
 			}
-			
+
 			int dirs=0;
-			for(String s : commands)
+			for(final String s : commands)
 			{
 				if(CMLib.directions().getProbableDirectionCode(s)>=0)
 					dirs++;
 			}
-			double pct=CMath.div(dirs, commands.size());
+			final double pct=CMath.div(dirs, commands.size());
 			final List<Integer> directions=new ArrayList<Integer>();
-			int range=30 + (10 * super.getXLEVELLevel(mob));
+			final int range=30 + (10 * super.getXLEVELLevel(mob));
 			if(pct < .75)
 			{
 				final String roomName=CMParms.combine(commands,0).trim();
@@ -204,13 +204,13 @@ public class Thief_PetSpy extends ThiefSkill
 					R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) at <T-NAME> confusedly."));
 					return;
 				}
-				List<Room> trail=CMLib.tracking().findTrailToRoom(R, R2, flags, range, rooms);
+				final List<Room> trail=CMLib.tracking().findTrailToRoom(R, R2, flags, range, rooms);
 				if((trail.size()==0)||(trail.get(trail.size()-1)==R))
 				{
 					R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) at <T-NAME> sadly."));
 					return;
 				}
-				Room R3=R;
+				final Room R3=R;
 				for(int r=trail.size()-2;r>=0;r--)
 				{
 					final int dir=CMLib.map().getRoomDir(R3, trail.get(r));
@@ -224,7 +224,7 @@ public class Thief_PetSpy extends ThiefSkill
 			}
 			else
 			{
-				for(String s : commands)
+				for(final String s : commands)
 				{
 					dirs = CMLib.directions().getProbableDirectionCode(s);
 					if(dirs < 0)
@@ -237,7 +237,7 @@ public class Thief_PetSpy extends ThiefSkill
 						break;
 				}
 			}
-			Thief_PetSpy affect = (Thief_PetSpy)beneficialAffect(mob,target,0,0);
+			final Thief_PetSpy affect = (Thief_PetSpy)beneficialAffect(mob,target,0,0);
 			if(affect != null)
 			{
 				affect.path=directions;

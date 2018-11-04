@@ -47,7 +47,7 @@ public class Spells  extends Skills
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final String qual=CMParms.combine(commands,1).toUpperCase();

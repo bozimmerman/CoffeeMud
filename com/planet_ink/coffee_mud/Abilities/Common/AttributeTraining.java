@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class AttributeTraining extends CommonSkill
 {
 	@Override
@@ -64,11 +63,11 @@ public class AttributeTraining extends CommonSkill
 
 	protected final static int costMultiplier=2;
 	protected final static int costAdder=0;
-	
+
 	protected Physical trained=null;
 	protected int attribute=-1;
 	protected boolean messedUp=false;
-	
+
 	public AttributeTraining()
 	{
 		super();
@@ -191,7 +190,7 @@ public class AttributeTraining extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -228,7 +227,7 @@ public class AttributeTraining extends CommonSkill
 		}
 
 		final String str=CMParms.combine(commands,0);
-		MOB M=super.getTarget(mob, commands, givenTarget);
+		final MOB M=super.getTarget(mob, commands, givenTarget);
 		trained=M;
 		if(M!=null)
 		{
@@ -257,7 +256,7 @@ public class AttributeTraining extends CommonSkill
 				commonTell(mob,L("@x1 doesn't seem willing to train with you.",M.name(mob)));
 				return false;
 			}
-			int curStat=M.baseCharStats().getRacialStat(M, attribute);
+			final int curStat=M.baseCharStats().getRacialStat(M, attribute);
 			int trainsRequired=CMLib.login().getTrainingCost(M, attribute, false)*costMultiplier;
 			if(trainsRequired>=0)
 				trainsRequired+=costAdder;
@@ -290,7 +289,7 @@ public class AttributeTraining extends CommonSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		messedUp=!proficiencyCheck(mob,-trained.phyStats().level()+(2*getXLEVELLevel(mob)),auto);
 		final int duration=getDuration(45,mob,trained.phyStats().level(),10);
 		verb=L("@x1 training with @x2",attribName,M.name());

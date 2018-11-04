@@ -29,7 +29,7 @@ public class ReadOnlyMultiList<K> implements List<K>
 {
 	private final List<List<K>>	lists	= new Vector<List<K>>();
 
-	public ReadOnlyMultiList(List<K>[] esets)
+	public ReadOnlyMultiList(final List<K>[] esets)
 	{
 		if ((esets == null) || (esets.length == 0))
 			return;
@@ -42,7 +42,7 @@ public class ReadOnlyMultiList<K> implements List<K>
 
 	}
 
-	public void addList(List<K> eset)
+	public void addList(final List<K> eset)
 	{
 		lists.add(eset);
 	}
@@ -63,7 +63,7 @@ public class ReadOnlyMultiList<K> implements List<K>
 	}
 
 	@Override
-	public boolean contains(Object o)
+	public boolean contains(final Object o)
 	{
 		for (final List<K> l : lists)
 		{
@@ -123,19 +123,19 @@ public class ReadOnlyMultiList<K> implements List<K>
 	}
 
 	@Override
-	public boolean add(K e)
+	public boolean add(final K e)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean remove(Object o)
+	public boolean remove(final Object o)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> c)
+	public boolean containsAll(final Collection<?> c)
 	{
 		for (final List<K> l : lists)
 		{
@@ -146,25 +146,25 @@ public class ReadOnlyMultiList<K> implements List<K>
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends K> c)
+	public boolean addAll(final Collection<? extends K> c)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean addAll(int index, Collection<? extends K> c)
+	public boolean addAll(final int index, final Collection<? extends K> c)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> c)
+	public boolean removeAll(final Collection<?> c)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> c)
+	public boolean retainAll(final Collection<?> c)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
@@ -188,25 +188,25 @@ public class ReadOnlyMultiList<K> implements List<K>
 	}
 
 	@Override
-	public K set(int index, K element)
+	public K set(final int index, final K element)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public void add(int index, K element)
+	public void add(final int index, final K element)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public K remove(int index)
+	public K remove(final int index)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public int indexOf(Object o)
+	public int indexOf(final Object o)
 	{
 		int ct = 0;
 		for (final List<K> l : lists)
@@ -220,7 +220,7 @@ public class ReadOnlyMultiList<K> implements List<K>
 	}
 
 	@Override
-	public int lastIndexOf(Object o)
+	public int lastIndexOf(final Object o)
 	{
 		int ct = size();
 		for (int i = lists.size() - 1; i >= 0; i--)
@@ -241,13 +241,13 @@ public class ReadOnlyMultiList<K> implements List<K>
 	}
 
 	@Override
-	public ListIterator<K> listIterator(int index)
+	public ListIterator<K> listIterator(final int index)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public List<K> subList(int fromIndex, int toIndex)
+	public List<K> subList(final int fromIndex, final int toIndex)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}

@@ -95,13 +95,13 @@ public class Thief_ConcealItem extends ThiefSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code = newCode;
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats stats)
+	public void affectPhyStats(final Physical host, final PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);
 		stats.setDisposition(stats.disposition()|PhyStats.IS_HIDDEN);
@@ -122,7 +122,7 @@ public class Thief_ConcealItem extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{

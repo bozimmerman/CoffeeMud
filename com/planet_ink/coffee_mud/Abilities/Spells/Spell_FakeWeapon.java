@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_FakeWeapon extends Spell
 {
 
@@ -137,7 +136,7 @@ public class Spell_FakeWeapon extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final String weaponName=CMParms.combine(commands,0);
 		final String[] choices={"sword","dagger","mace","staff","axe","hammer", "flail"};

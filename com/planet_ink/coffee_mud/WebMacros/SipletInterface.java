@@ -85,7 +85,7 @@ public class SipletInterface extends StdWebMacro
 		public String		 sipToken	= "";
 		public HTTPIOHandler parentIOHandler= null;
 
-		public SipletSession(Siplet sip, String token)
+		public SipletSession(final Siplet sip, final String token)
 		{
 			siplet = sip;
 			sipToken = token;
@@ -314,7 +314,7 @@ public class SipletInterface extends StdWebMacro
 							final boolean noTouch=httpReq.isUrlParameter("NOTOUCH");
 							if(!noTouch)
 								p.lastTouched=System.currentTimeMillis();
-							
+
 							p.siplet.readURLData();
 							final String data = p.siplet.getURLData();
 							final String jscript = p.siplet.getJScriptCommands();
@@ -332,9 +332,9 @@ public class SipletInterface extends StdWebMacro
 		}
 		return "false;";
 	}
-	
+
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return "false;";
@@ -342,7 +342,7 @@ public class SipletInterface extends StdWebMacro
 		{
 			initialize();
 		}
-		
+
 		if((httpReq.getHeader("upgrade")!=null)
 		&&("websocket".equalsIgnoreCase(httpReq.getHeader("upgrade")))
 		&&(httpReq.getHeader("connection")!=null)
@@ -376,14 +376,14 @@ public class SipletInterface extends StdWebMacro
 				exception.setNewProtocolHandler(newHandler);
 				httpReq.getRequestObjects().put("___SIPLETHANDLER", newHandler);
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				Log.errOut(e);
 				throw new HTTPServerException(e.getMessage());
 			}
 			throw new HTTPServerException(exception);
 		}
-		
+
 		return processRequest(httpReq, (SipletProtocolHander)httpReq.getRequestObjects().get("___SIPLETHANDLER"));
 	}
 
@@ -410,14 +410,14 @@ public class SipletInterface extends StdWebMacro
 		{
 		}
 
-		private byte[] encodeTextResponse(String resp)
+		private byte[] encodeTextResponse(final String resp)
 		{
 			return encodeResponse(resp.getBytes(Charset.forName("UTF8")),1);
 		}
 
-		private byte[] encodeResponse(byte[] resp, int type)
+		private byte[] encodeResponse(final byte[] resp, final int type)
 		{
-			ByteArrayOutputStream bout=new ByteArrayOutputStream();
+			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 			bout.write(0x80 + (byte)type); // output
 			if(resp.length < 126)
 			{
@@ -427,8 +427,8 @@ public class SipletInterface extends StdWebMacro
 			if(resp.length < 65535)
 			{
 				bout.write(126 & 0x7f);
-				int byte1=resp.length / 256;
-				int byte2 = resp.length - (byte1 * 256);
+				final int byte1=resp.length / 256;
+				final int byte2 = resp.length - (byte1 * 256);
 				bout.write(byte1);
 				bout.write(byte2);
 			}
@@ -436,11 +436,11 @@ public class SipletInterface extends StdWebMacro
 			{
 				bout.write(127 & 0x7f);
 				long len = resp.length;
-				int byte1=(int)(len / 16777216);
+				final int byte1=(int)(len / 16777216);
 				len = len - (byte1 * 16777216);
-				int byte2=(int)(len / 65536);
+				final int byte2=(int)(len / 65536);
 				len = len - (byte2 * 65536);
-				int byte3=(int)(len / 256);
+				final int byte3=(int)(len / 256);
 				len = len - (byte3 * 256);
 				bout.write(0 & 0xff);
 				bout.write(0 & 0xff);
@@ -455,7 +455,7 @@ public class SipletInterface extends StdWebMacro
 			{
 				bout.write(resp);
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 				e.printStackTrace();
 			}
@@ -470,7 +470,7 @@ public class SipletInterface extends StdWebMacro
 		 * @param parts the raw undecoded urlencoded line of data
 		 * @throws HTTPException
 		 */
-		private void parseUrlEncodedKeypairs(HTTPRequest httpReq, String parts) throws HTTPException
+		private void parseUrlEncodedKeypairs(final HTTPRequest httpReq, final String parts) throws HTTPException
 		{
 			try
 			{
@@ -502,8 +502,8 @@ public class SipletInterface extends StdWebMacro
 				throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
 			}
 		}
-		
-		private void reset(ByteBuffer buffer)
+
+		private void reset(final ByteBuffer buffer)
 		{
 			msg.reset();
 			payload.reset();
@@ -515,14 +515,14 @@ public class SipletInterface extends StdWebMacro
 			maskPos		= 0;
 		}
 
-		private DataBuffers getOutput(DataBuffers outBuffer)
+		private DataBuffers getOutput(final DataBuffers outBuffer)
 		{
 			if(outBuffer == null)
 				return new CWDataBuffers();
 			return outBuffer;
 		}
-		
-		private DataBuffers done(HTTPRequest request, ByteBuffer buffer, DataBuffers outBuffer) throws HTTPException
+
+		private DataBuffers done(final HTTPRequest request, final ByteBuffer buffer, DataBuffers outBuffer) throws HTTPException
 		{
 			switch(opCode)
 			{
@@ -562,16 +562,16 @@ public class SipletInterface extends StdWebMacro
 			}
 			return outBuffer;
 		}
-		
+
 		@Override
-		public DataBuffers processBuffer(HTTPIOHandler handler, HTTPRequest request, ByteBuffer buffer) throws HTTPException
+		public DataBuffers processBuffer(final HTTPIOHandler handler, final HTTPRequest request, final ByteBuffer buffer) throws HTTPException
 		{
 			DataBuffers outBuffers = null;
 			if((handler != null)
 			&&(session!=null)
 			&&(session.parentIOHandler!=handler))
 				session.parentIOHandler = handler;
-			
+
 			if((buffer.position()==0)
 			&&(payload.size()==0)
 			&&(session!=null)
@@ -583,7 +583,7 @@ public class SipletInterface extends StdWebMacro
 					opCode=1;
 					payload.write(("POLL&NOTOUCH&TOKEN="+session.sipToken).getBytes());
 				}
-				catch (IOException e)
+				catch (final IOException e)
 				{
 				}
 				outBuffers = done(request,buffer,outBuffers);
@@ -669,7 +669,7 @@ public class SipletInterface extends StdWebMacro
 				case S0:
 				{
 					opCode = (byte)(b & 0x0f);
-					finished = (b & 0x80) == 0x80; 
+					finished = (b & 0x80) == 0x80;
 					state = WSState.P1;
 					break;
 				}
@@ -720,5 +720,5 @@ public class SipletInterface extends StdWebMacro
 			}
 		}
 	}
-	
+
 }

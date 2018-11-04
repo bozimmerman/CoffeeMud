@@ -45,7 +45,7 @@ public class ErrorPacket extends Packet
 		type = Packet.ERROR_PACKET;
 	}
 
-	public ErrorPacket(String to_whom, String mud, String error_code, String error_message, String packetStr)
+	public ErrorPacket(final String to_whom, final String mud, final String error_code, final String error_message, final String packetStr)
 	{
 		super();
 		type = Packet.ERROR_PACKET;
@@ -56,7 +56,7 @@ public class ErrorPacket extends Packet
 		this.packetStr=packetStr;
 	}
 
-	public ErrorPacket(Vector<?> v) throws InvalidPacketException
+	public ErrorPacket(final Vector<?> v) throws InvalidPacketException
 	{
 		super(v);
 		try

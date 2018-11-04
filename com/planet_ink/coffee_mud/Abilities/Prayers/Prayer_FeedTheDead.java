@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_FeedTheDead extends Prayer
 {
 	@Override
@@ -80,7 +79,7 @@ public class Prayer_FeedTheDead extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		int amount=100;
 		if(!auto)
@@ -134,7 +133,7 @@ public class Prayer_FeedTheDead extends Prayer
 				CMLib.leveler().postExperience(mob,null,null,-amount,false);
 				if((mob.phyStats().level()>target.phyStats().level())&&(target.isMonster()))
 				{
-					int adjLevel = adjustedLevel(mob,asLevel);
+					final int adjLevel = adjustedLevel(mob,asLevel);
 					amount+=(adjustedLevel(mob,asLevel)-target.phyStats().level())
 						  *(adjLevel/3);
 				}
@@ -147,7 +146,7 @@ public class Prayer_FeedTheDead extends Prayer
 				&&(!mob.isMonster())
 				&&(target.fetchEffect("Prop_ModExperience")!=null))
 				{
-					Ability A=CMClass.getAbility("Loyalty");
+					final Ability A=CMClass.getAbility("Loyalty");
 					A.setMiscText("NAME="+mob.Name());
 					A.setSavable(true);
 					target.addNonUninvokableEffect(A);

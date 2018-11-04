@@ -17,12 +17,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public class Util
 {
 	public final static String	SPACES	= "                                                                     ";
 
-	public static String toSemicolonList(byte[] bytes)
+	public static String toSemicolonList(final byte[] bytes)
 	{
 		final StringBuffer str = new StringBuffer("");
 		for (int b = 0; b < bytes.length; b++)
@@ -30,7 +29,7 @@ public class Util
 		return str.toString();
 	}
 
-	public static String toSemicolonList(String[] bytes)
+	public static String toSemicolonList(final String[] bytes)
 	{
 		final StringBuffer str = new StringBuffer("");
 		for (int b = 0; b < bytes.length; b++)
@@ -38,7 +37,7 @@ public class Util
 		return str.toString();
 	}
 
-	public static String toSemicolonList(Vector<String> bytes)
+	public static String toSemicolonList(final Vector<String> bytes)
 	{
 		final StringBuffer str = new StringBuffer("");
 		for (int b = 0; b < bytes.size(); b++)
@@ -46,7 +45,7 @@ public class Util
 		return str.toString();
 	}
 
-	public static byte[] fromByteList(String str)
+	public static byte[] fromByteList(final String str)
 	{
 		final Vector<String> V = parseSemicolons(str, true);
 		if (V.size() > 0)
@@ -59,7 +58,7 @@ public class Util
 		return new byte[0];
 	}
 
-	public static long absDiff(long x, long y)
+	public static long absDiff(final long x, final long y)
 	{
 		final long d = x - y;
 		if (d < 0)
@@ -67,7 +66,7 @@ public class Util
 		return d;
 	}
 
-	public static String repeat(String str1, int times)
+	public static String repeat(final String str1, final int times)
 	{
 		if (times <= 0)
 			return "";
@@ -77,7 +76,7 @@ public class Util
 		return str.toString();
 	}
 
-	public static String endWithAPeriod(String str)
+	public static String endWithAPeriod(final String str)
 	{
 		if (str.length() == 0)
 			return str;
@@ -91,7 +90,7 @@ public class Util
 		return str.substring(0, x + 1) + ". " + str.substring(x + 1).trim();
 	}
 
-	public static String startWithAorAn(String str)
+	public static String startWithAorAn(final String str)
 	{
 		if (str.length() == 0)
 			return str;
@@ -104,7 +103,7 @@ public class Util
 		return str;
 	}
 
-	public static int getParmInt(String text, String key, int defaultValue)
+	public static int getParmInt(String text, final String key, final int defaultValue)
 	{
 		int x = text.toUpperCase().indexOf(key.toUpperCase());
 		while (x >= 0)
@@ -138,12 +137,12 @@ public class Util
 		return defaultValue;
 	}
 
-	public static boolean isVowel(char c)
+	public static boolean isVowel(final char c)
 	{
 		return (("aeiou").indexOf(Character.toLowerCase(c)) >= 0);
 	}
 
-	public static int getParmPlus(String text, String key)
+	public static int getParmPlus(String text, final String key)
 	{
 		int x = text.toUpperCase().indexOf(key.toUpperCase());
 		while (x >= 0)
@@ -180,7 +179,7 @@ public class Util
 		return 0;
 	}
 
-	public static double getParmDoublePlus(String text, String key)
+	public static double getParmDoublePlus(String text, final String key)
 	{
 		int x = text.toUpperCase().indexOf(key.toUpperCase());
 		while (x >= 0)
@@ -223,7 +222,7 @@ public class Util
 		return 0.0;
 	}
 
-	public static double getParmDouble(String text, String key, double defaultValue)
+	public static double getParmDouble(String text, final String key, final double defaultValue)
 	{
 		int x = text.toUpperCase().indexOf(key.toUpperCase());
 		while (x >= 0)
@@ -255,7 +254,7 @@ public class Util
 		return defaultValue;
 	}
 
-	public static String getParmStr(String text, String key, String defaultVal)
+	public static String getParmStr(String text, final String key, final String defaultVal)
 	{
 		int x = text.toUpperCase().indexOf(key.toUpperCase());
 		while (x >= 0)
@@ -299,7 +298,7 @@ public class Util
 		return defaultVal;
 	}
 
-	public static String[] toStringArray(Vector<String> V)
+	public static String[] toStringArray(final Vector<String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -312,7 +311,7 @@ public class Util
 		return s;
 	}
 
-	public static long[] toLongArray(Vector<String> V)
+	public static long[] toLongArray(final Vector<String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -325,7 +324,7 @@ public class Util
 		return s;
 	}
 
-	public static int[] toIntArray(Vector<String> V)
+	public static int[] toIntArray(final Vector<String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -338,7 +337,7 @@ public class Util
 		return s;
 	}
 
-	public static String[] toStringArray(HashSet<String> V)
+	public static String[] toStringArray(final HashSet<String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -347,12 +346,12 @@ public class Util
 		}
 		final String[] s = new String[V.size()];
 		int v = 0;
-		for (final Iterator i = V.iterator(); i.hasNext();)
+		for (final Iterator<String> i = V.iterator(); i.hasNext();)
 			s[v++] = (i.next()).toString();
 		return s;
 	}
 
-	public static String toStringList(String[] V)
+	public static String toStringList(final String[] V)
 	{
 		if ((V == null) || (V.length == 0))
 		{
@@ -366,7 +365,7 @@ public class Util
 		return s.toString().substring(2);
 	}
 
-	public static String toStringList(long[] V)
+	public static String toStringList(final long[] V)
 	{
 		if ((V == null) || (V.length == 0))
 		{
@@ -380,7 +379,7 @@ public class Util
 		return s.toString().substring(2);
 	}
 
-	public static String toStringList(int[] V)
+	public static String toStringList(final int[] V)
 	{
 		if ((V == null) || (V.length == 0))
 		{
@@ -394,7 +393,7 @@ public class Util
 		return s.toString().substring(2);
 	}
 
-	public static String toStringList(Vector<String> V)
+	public static String toStringList(final Vector<String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -408,21 +407,21 @@ public class Util
 		return s.toString().substring(2);
 	}
 
-	public static String toStringList(HashSet<String> V)
+	public static String toStringList(final HashSet<String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
 			return "";
 		}
 		final StringBuffer s = new StringBuffer("");
-		for (final Iterator i = V.iterator(); i.hasNext();)
+		for (final Iterator<String> i = V.iterator(); i.hasNext();)
 			s.append(", " + i.next().toString());
 		if (s.length() == 0)
 			return "";
 		return s.toString().substring(2);
 	}
 
-	public static Vector<String> makeVector(String[] O)
+	public static Vector<String> makeVector(final String[] O)
 	{
 		final Vector<String> V = new Vector<String>();
 		if (O != null)
@@ -436,14 +435,14 @@ public class Util
 		return new Vector<String>();
 	}
 
-	public static Vector<Object> makeVector(Object O)
+	public static Vector<Object> makeVector(final Object O)
 	{
 		final Vector<Object> V = new Vector<Object>();
 		V.addElement(O);
 		return V;
 	}
 
-	public static Vector<Object> makeVector(Object O, Object O2)
+	public static Vector<Object> makeVector(final Object O, final Object O2)
 	{
 		final Vector<Object> V = new Vector<Object>();
 		V.addElement(O);
@@ -451,7 +450,7 @@ public class Util
 		return V;
 	}
 
-	public static Vector<Object> makeVector(Object O, Object O2, Object O3)
+	public static Vector<Object> makeVector(final Object O, final Object O2, final Object O3)
 	{
 		final Vector<Object> V = new Vector<Object>();
 		V.addElement(O);
@@ -460,7 +459,7 @@ public class Util
 		return V;
 	}
 
-	public static Vector<Object> makeVector(Object O, Object O2, Object O3, Object O4)
+	public static Vector<Object> makeVector(final Object O, final Object O2, final Object O3, final Object O4)
 	{
 		final Vector<Object> V = new Vector<Object>();
 		V.addElement(O);
@@ -475,14 +474,14 @@ public class Util
 		return new HashSet<Object>();
 	}
 
-	public static HashSet<Object> makeHashSet(Object O)
+	public static HashSet<Object> makeHashSet(final Object O)
 	{
 		final HashSet<Object> H = new HashSet<Object>();
 		H.add(O);
 		return H;
 	}
 
-	public static HashSet<Object> makeHashSet(Object O, Object O2)
+	public static HashSet<Object> makeHashSet(final Object O, final Object O2)
 	{
 		final HashSet<Object> H = new HashSet<Object>();
 		H.add(O);
@@ -490,7 +489,7 @@ public class Util
 		return H;
 	}
 
-	public static HashSet<Object> makeHashSet(Object O, Object O2, Object O3)
+	public static HashSet<Object> makeHashSet(final Object O, final Object O2, final Object O3)
 	{
 		final HashSet<Object> H = new HashSet<Object>();
 		H.add(O);
@@ -499,7 +498,7 @@ public class Util
 		return H;
 	}
 
-	public static HashSet<Object> makeHashSet(Object O, Object O2, Object O3, Object O4)
+	public static HashSet<Object> makeHashSet(final Object O, final Object O2, final Object O3, final Object O4)
 	{
 		final HashSet<Object> H = new HashSet<Object>();
 		H.add(O);
@@ -509,7 +508,7 @@ public class Util
 		return H;
 	}
 
-	public static String[] toStringArray(Hashtable<String,String> V)
+	public static String[] toStringArray(final Hashtable<String,String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
@@ -518,16 +517,16 @@ public class Util
 		}
 		final String[] s = new String[V.size()];
 		int v = 0;
-		for (final Enumeration e = V.keys(); e.hasMoreElements();)
+		for (final Enumeration<String> e = V.keys(); e.hasMoreElements();)
 		{
-			final String KEY = (String) e.nextElement();
+			final String KEY = e.nextElement();
 			s[v] = V.get(KEY);
 			v++;
 		}
 		return s;
 	}
 
-	public static void addToVector(Vector<Object> from, Vector<Object> to)
+	public static void addToVector(final Vector<Object> from, final Vector<Object> to)
 	{
 		if (from != null)
 		{
@@ -536,22 +535,22 @@ public class Util
 		}
 	}
 
-	public static String toStringList(Hashtable<String,String> V)
+	public static String toStringList(final Hashtable<String,String> V)
 	{
 		if ((V == null) || (V.size() == 0))
 		{
 			return "";
 		}
 		final StringBuffer s = new StringBuffer("");
-		for (final Enumeration e = V.keys(); e.hasMoreElements();)
+		for (final Enumeration<String> e = V.keys(); e.hasMoreElements();)
 		{
-			final String KEY = (String) e.nextElement();
+			final String KEY = e.nextElement();
 			s.append(KEY + "=" + (V.get(KEY)) + "/");
 		}
 		return s.toString();
 	}
 
-	public static String replaceAll(String str, String thisStr, String withThisStr)
+	public static String replaceAll(String str, final String thisStr, final String withThisStr)
 	{
 		if ((str == null) || (thisStr == null) || (withThisStr == null) || (str.length() == 0) || (thisStr.length() == 0))
 			return str;
@@ -566,7 +565,7 @@ public class Util
 		return str;
 	}
 
-	public static String replaceAllIgnoreCase(String str, String thisStr, String withThisStr)
+	public static String replaceAllIgnoreCase(String str, final String thisStr, String withThisStr)
 	{
 		if ((str == null) || (thisStr == null) || (withThisStr == null) || (str.length() == 0) || (thisStr.length() == 0))
 			return str;
@@ -586,7 +585,7 @@ public class Util
 		return str;
 	}
 
-	public static String replaceFirst(String str, String thisStr, String withThisStr)
+	public static String replaceFirst(String str, final String thisStr, final String withThisStr)
 	{
 		if ((str == null) || (thisStr == null) || (withThisStr == null) || (str.length() == 0) || (thisStr.length() == 0))
 			return str;
@@ -642,44 +641,44 @@ public class Util
 		return alreadyDot;
 	}
 
-	public static String capitalizeAndLower(String name)
+	public static String capitalizeAndLower(final String name)
 	{
 		return (Character.toUpperCase(name.charAt(0)) + name.substring(1).toLowerCase()).trim();
 	}
 
-	public static String capitalizeFirstLetter(String name)
+	public static String capitalizeFirstLetter(final String name)
 	{
 		return (Character.toUpperCase(name.charAt(0)) + name.substring(1)).trim();
 	}
 
 	/**
 	 * Returns the boolean value of a string without crashing
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
 	 * Usage: int num=s_bool(CMD.substring(14));
-	 * 
+	 *
 	 * @param INT
 	 *            Boolean value of string
 	 * @return int Boolean value of the string
 	 */
-	public static boolean s_bool(String BOOL)
+	public static boolean s_bool(final String BOOL)
 	{
 		return Boolean.valueOf(BOOL).booleanValue();
 	}
 
 	/**
 	 * Returns the integer value of a string without crashing
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
 	 * Usage: int num=s_int(CMD.substring(14));
-	 * 
+	 *
 	 * @param INT
 	 *            Integer value of string
 	 * @return int Integer value of the string
 	 */
-	public static int s_int(String INT)
+	public static int s_int(final String INT)
 	{
 		int sint = 0;
 		try
@@ -695,11 +694,11 @@ public class Util
 
 	/**
 	 * Returns the integer value of a string without crashing
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
 	 * Usage: int num=s0_int(CMD.substring(14));
-	 * 
+	 *
 	 * @param INT
 	 *            Integer value of string
 	 * @return int Integer value of the string
@@ -720,7 +719,7 @@ public class Util
 		return sint;
 	}
 
-	public static String lastWordIn(String thisStr)
+	public static String lastWordIn(final String thisStr)
 	{
 		final int x = thisStr.lastIndexOf(' ');
 		if (x >= 0)
@@ -728,7 +727,7 @@ public class Util
 		return thisStr;
 	}
 
-	public static String removeColors(String s)
+	public static String removeColors(final String s)
 	{
 		final StringBuffer str = new StringBuffer(s);
 		int colorStart = -1;
@@ -795,7 +794,7 @@ public class Util
 		return str.toString();
 	}
 
-	public static String returnTime(long millis, long ticks)
+	public static String returnTime(long millis, final long ticks)
 	{
 		String avg = "";
 		if (ticks > 0)
@@ -820,7 +819,8 @@ public class Util
 
 	}
 
-	public static Vector<Object> copyVector(Vector<Object> V)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static Vector<Object> copyVector(final Vector<Object> V)
 	{
 		final Vector<Object> V2 = new Vector<Object>();
 		for (int v = 0; v < V.size(); v++)
@@ -857,7 +857,7 @@ public class Util
 				fc = (char) 0;
 				in = false;
 			}
-			else 
+			else
 			if (!white)
 			{
 				if (!in)
@@ -891,17 +891,17 @@ public class Util
 		return s;
 	}
 
-	public static String getCleanBit(String s, int which)
+	public static String getCleanBit(final String s, final int which)
 	{
 		return cleanBit(getBit(s, which));
 	}
 
-	public static String getPastBitClean(String s, int which)
+	public static String getPastBitClean(final String s, final int which)
 	{
 		return cleanBit(getPastBit(s, which));
 	}
 
-	public static String getPastBit(String s, int which)
+	public static String getPastBit(String s, final int which)
 	{
 		int i = 0;
 		int w = 0;
@@ -931,7 +931,7 @@ public class Util
 				lc = (char) 0;
 				fc = (char) 0;
 			}
-			else 
+			else
 			if (!white)
 			{
 				if (!in)
@@ -948,7 +948,7 @@ public class Util
 		return "";
 	}
 
-	public static String getBit(String s, int which)
+	public static String getBit(String s, final int which)
 	{
 		int i = 0;
 		int w = 0;
@@ -974,7 +974,7 @@ public class Util
 				lc = (char) 0;
 				fc = (char) 0;
 			}
-			else 
+			else
 			if (!white)
 			{
 				if (!in)
@@ -997,16 +997,16 @@ public class Util
 
 	/**
 	 * Returns the long value of a string without crashing
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
 	 * Usage: lSize =
 	 * WebIQBase.s_long(WebIQBase.getRes(AttStatsRes,"BlobSize"));
-	 * 
+	 *
 	 * @param long String to convert
 	 * @return long Long value of the string
 	 */
-	public static long s_long(String LONG)
+	public static long s_long(final String LONG)
 	{
 		long slong = 0;
 		try
@@ -1022,16 +1022,16 @@ public class Util
 
 	/**
 	 * Returns the double value of a string without crashing
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
 	 * Usage: dSize =
 	 * WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
-	 * 
+	 *
 	 * @param double String to convert
 	 * @return double Double value of the string
 	 */
-	public static double s_double(String DOUBLE)
+	public static double s_double(final String DOUBLE)
 	{
 		double sdouble = 0;
 		try
@@ -1045,7 +1045,7 @@ public class Util
 		return sdouble;
 	}
 
-	public static String combine(List<String> commands, int startAt, int endAt)
+	public static String combine(final List<String> commands, final int startAt, final int endAt)
 	{
 		final StringBuffer Combined = new StringBuffer("");
 		if (commands != null)
@@ -1054,7 +1054,7 @@ public class Util
 		return Combined.toString().trim();
 	}
 
-	public static String combineWithQuotes(List<String> commands, int startAt, int endAt)
+	public static String combineWithQuotes(final List<String> commands, final int startAt, final int endAt)
 	{
 		final StringBuffer Combined = new StringBuffer("");
 		if (commands != null)
@@ -1068,7 +1068,7 @@ public class Util
 		return Combined.toString().trim();
 	}
 
-	public static String combineAfterIndexWithQuotes(List<String> commands, String match)
+	public static String combineAfterIndexWithQuotes(final List<String> commands, final String match)
 	{
 		final StringBuffer Combined = new StringBuffer("");
 		if (commands != null)
@@ -1082,7 +1082,7 @@ public class Util
 		return Combined.toString().trim();
 	}
 
-	public static String combineWithQuotes(List<String> commands, int startAt)
+	public static String combineWithQuotes(final List<String> commands, final int startAt)
 	{
 		final StringBuffer Combined = new StringBuffer("");
 		if (commands != null)
@@ -1096,7 +1096,7 @@ public class Util
 		return Combined.toString().trim();
 	}
 
-	public static String combine(List<String> commands, int startAt)
+	public static String combine(final List<String> commands, final int startAt)
 	{
 		final StringBuffer Combined = new StringBuffer("");
 		if (commands != null)
@@ -1105,12 +1105,12 @@ public class Util
 		return Combined.toString().trim();
 	}
 
-	public static List<String> parse(String str)
+	public static List<String> parse(final String str)
 	{
 		return parse(str, -1);
 	}
 
-	public static List<String> paramParse(String str)
+	public static List<String> paramParse(final String str)
 	{
 		final List<String> commands = parse(str);
 		for (int i = 0; i < commands.size(); i++)
@@ -1123,14 +1123,14 @@ public class Util
 				commands.remove(i);
 				i--;
 			}
-			else 
+			else
 			if (s.endsWith("=") && (s.length() > 1) && (i < (commands.size() - 1)))
 			{
 				final String next = commands.get(i + 1);
 				commands.set(i, s + next);
 				commands.remove(i + 1);
 			}
-			else 
+			else
 			if (s.equals("=") && ((i > 0) && (i < (commands.size() - 1))))
 			{
 				final String prev = commands.get(i - 1);
@@ -1144,7 +1144,7 @@ public class Util
 		return commands;
 	}
 
-	public static List<String> parse(String str, int upTo)
+	public static List<String> parse(String str, final int upTo)
 	{
 		final List<String> commands = new Vector<String>();
 		if (str == null)
@@ -1169,7 +1169,7 @@ public class Util
 					str = "";
 				}
 			}
-			else 
+			else
 			if (spaceIndex >= 0)
 			{
 				CMD = str.substring(0, spaceIndex).trim();
@@ -1195,7 +1195,7 @@ public class Util
 		return commands;
 	}
 
-	public static String stripBadHTMLTags(String s)
+	public static String stripBadHTMLTags(final String s)
 	{
 		final StringBuffer buf = new StringBuffer(s);
 		final Vector<Character> quotes = new Vector<Character>();
@@ -1252,7 +1252,7 @@ public class Util
 		return buf.toString();
 	}
 
-	public static Vector<String> parseCommas(String s, boolean ignoreNulls)
+	public static Vector<String> parseCommas(String s, final boolean ignoreNulls)
 	{
 		final Vector<String> V = new Vector<String>();
 		if ((s == null) || (s.length() == 0))
@@ -1271,7 +1271,7 @@ public class Util
 		return V;
 	}
 
-	public static Vector<String> parsePipes(String s, boolean ignoreNulls)
+	public static Vector<String> parsePipes(String s, final boolean ignoreNulls)
 	{
 		final Vector<String> V = new Vector<String>();
 		if ((s == null) || (s.length() == 0))
@@ -1322,7 +1322,7 @@ public class Util
 		return V;
 	}
 
-	public static Vector<String> parseSquiggleDelimited(String s, boolean ignoreNulls)
+	public static Vector<String> parseSquiggleDelimited(String s, final boolean ignoreNulls)
 	{
 		final Vector<String> V = new Vector<String>();
 		if ((s == null) || (s.length() == 0))
@@ -1341,7 +1341,7 @@ public class Util
 		return V;
 	}
 
-	public static Vector<String> parseSemicolons(String s, boolean ignoreNulls)
+	public static Vector<String> parseSemicolons(String s, final boolean ignoreNulls)
 	{
 		final Vector<String> V = new Vector<String>();
 		if ((s == null) || (s.length() == 0))
@@ -1360,21 +1360,21 @@ public class Util
 		return V;
 	}
 
-	public static int abs(int val)
+	public static int abs(final int val)
 	{
 		if (val >= 0)
 			return val;
 		return val * -1;
 	}
 
-	public static long abs(long val)
+	public static long abs(final long val)
 	{
 		if (val >= 0)
 			return val;
 		return val * -1;
 	}
 
-	public static Vector<String> parseSpaces(String s, boolean ignoreNulls)
+	public static Vector<String> parseSpaces(String s, final boolean ignoreNulls)
 	{
 		final Vector<String> V = new Vector<String>();
 		if ((s == null) || (s.length() == 0))
@@ -1393,7 +1393,7 @@ public class Util
 		return V;
 	}
 
-	public static int lengthMinusColors(String thisStr)
+	public static int lengthMinusColors(final String thisStr)
 	{
 		int size = 0;
 		for (int i = 0; i < thisStr.length(); i++)
@@ -1435,14 +1435,14 @@ public class Util
 
 	/**
 	 * Convert an integer to its Roman Numeral equivalent
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
 	 * Usage: Return=MiscFunc.convertToRoman(Number)+".";
-	 * 
+	 *
 	 * @param i
 	 *            Integer to convert
-	 * 
+	 *
 	 * @return String Converted integer
 	 */
 	public static String convertToRoman(int i)
@@ -1477,7 +1477,7 @@ public class Util
 		return Roman;
 	}
 
-	public static String padLeft(String thisStr, int thisMuch)
+	public static String padLeft(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors = lengthMinusColors(thisStr);
 		if (lenMinusColors > thisMuch)
@@ -1485,7 +1485,7 @@ public class Util
 		return SPACES.substring(0, thisMuch - lenMinusColors) + thisStr;
 	}
 
-	public static String padLeft(String thisStr, String colorPrefix, int thisMuch)
+	public static String padLeft(final String thisStr, final String colorPrefix, final int thisMuch)
 	{
 		final int lenMinusColors = lengthMinusColors(thisStr);
 		if (lenMinusColors > thisMuch)
@@ -1493,7 +1493,7 @@ public class Util
 		return SPACES.substring(0, thisMuch - lenMinusColors) + colorPrefix + thisStr;
 	}
 
-	public static String padRight(String thisStr, int thisMuch)
+	public static String padRight(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors = lengthMinusColors(thisStr);
 		if (lenMinusColors > thisMuch)
@@ -1501,7 +1501,7 @@ public class Util
 		return thisStr + SPACES.substring(0, thisMuch - lenMinusColors);
 	}
 
-	public static String limit(String thisStr, int thisMuch)
+	public static String limit(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors = lengthMinusColors(thisStr);
 		if (lenMinusColors > thisMuch)
@@ -1509,7 +1509,7 @@ public class Util
 		return thisStr;
 	}
 
-	public static String padRight(String thisStr, String colorSuffix, int thisMuch)
+	public static String padRight(final String thisStr, final String colorSuffix, final int thisMuch)
 	{
 		final int lenMinusColors = lengthMinusColors(thisStr);
 		if (lenMinusColors > thisMuch)
@@ -1517,7 +1517,7 @@ public class Util
 		return thisStr + colorSuffix + SPACES.substring(0, thisMuch - lenMinusColors);
 	}
 
-	public static String padRightPreserve(String thisStr, int thisMuch)
+	public static String padRightPreserve(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors = lengthMinusColors(thisStr);
 		if (lenMinusColors > thisMuch)
@@ -1525,7 +1525,7 @@ public class Util
 		return thisStr + SPACES.substring(0, thisMuch - lenMinusColors);
 	}
 
-	public static String centerPreserve(String thisStr, int thisMuch)
+	public static String centerPreserve(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors = lengthMinusColors(thisStr);
 		if (lenMinusColors > thisMuch)
@@ -1535,7 +1535,7 @@ public class Util
 		return SPACES.substring(0, left) + thisStr + SPACES.substring(0, right);
 	}
 
-	public static String padLeftPreserve(String thisStr, int thisMuch)
+	public static String padLeftPreserve(final String thisStr, final int thisMuch)
 	{
 		final int lenMinusColors = lengthMinusColors(thisStr);
 		if (lenMinusColors > thisMuch)
@@ -1558,174 +1558,174 @@ public class Util
 		return true;
 	}
 
-	public static double div(double a, double b)
+	public static double div(final double a, final double b)
 	{
 		return a / b;
 	}
 
-	public static double div(double a, int b)
+	public static double div(final double a, final int b)
 	{
 		return a / b;
 	}
 
-	public static double div(int a, double b)
+	public static double div(final int a, final double b)
 	{
 		return (a) / b;
 	}
 
-	public static double div(double a, long b)
+	public static double div(final double a, final long b)
 	{
 		return a / b;
 	}
 
-	public static double div(long a, double b)
+	public static double div(final long a, final double b)
 	{
 		return (a) / b;
 	}
 
-	public static double mul(double a, double b)
+	public static double mul(final double a, final double b)
 	{
 		return a * b;
 	}
 
-	public static double mul(double a, int b)
+	public static double mul(final double a, final int b)
 	{
 		return a * (b);
 	}
 
-	public static double mul(int a, double b)
+	public static double mul(final int a, final double b)
 	{
 		return (a) * b;
 	}
 
-	public static double mul(double a, long b)
+	public static double mul(final double a, final long b)
 	{
 		return a * (b);
 	}
 
-	public static double mul(long a, double b)
+	public static double mul(final long a, final double b)
 	{
 		return (a) * b;
 	}
 
-	public static long mul(long a, long b)
+	public static long mul(final long a, final long b)
 	{
 		return a * b;
 	}
 
-	public static int mul(int a, int b)
+	public static int mul(final int a, final int b)
 	{
 		return a * b;
 	}
 
-	public static double div(long a, long b)
+	public static double div(final long a, final long b)
 	{
 		return ((double) a) / ((double) b);
 	}
 
-	public static double div(int a, int b)
+	public static double div(final int a, final int b)
 	{
 		return ((double) a) / ((double) b);
 	}
 
-	public static int pow(int x, int y)
+	public static int pow(final int x, final int y)
 	{
 		return (int) Math.round(Math.pow(x, y));
 	}
 
-	public static int squared(int x)
+	public static int squared(final int x)
 	{
 		return (int) Math.round(Math.pow(x, x));
 	}
 
-	public static boolean bset(int num, int bitmask)
+	public static boolean bset(final int num, final int bitmask)
 	{
 		return ((num & bitmask) == bitmask);
 	}
 
-	public static boolean bset(long num, long bitmask)
+	public static boolean bset(final long num, final long bitmask)
 	{
 		return ((num & bitmask) == bitmask);
 	}
 
-	public static boolean bset(long num, int bitmask)
+	public static boolean bset(final long num, final int bitmask)
 	{
 		return ((num & bitmask) == bitmask);
 	}
 
-	public static int setb(int num, int bitmask)
+	public static int setb(final int num, final int bitmask)
 	{
 		return num | bitmask;
 	}
 
-	public static boolean banyset(int num, int bitmask)
+	public static boolean banyset(final int num, final int bitmask)
 	{
 		return ((num & bitmask) > 0);
 	}
 
-	public static boolean banyset(long num, long bitmask)
+	public static boolean banyset(final long num, final long bitmask)
 	{
 		return ((num & bitmask) > 0);
 	}
 
-	public static boolean banyset(long num, int bitmask)
+	public static boolean banyset(final long num, final int bitmask)
 	{
 		return ((num & bitmask) > 0);
 	}
 
-	public static long setb(long num, int bitmask)
+	public static long setb(final long num, final int bitmask)
 	{
 		return num | bitmask;
 	}
 
-	public static long setb(long num, long bitmask)
+	public static long setb(final long num, final long bitmask)
 	{
 		return num | bitmask;
 	}
 
-	public static int unsetb(int num, int bitmask)
+	public static int unsetb(int num, final int bitmask)
 	{
 		if (bset(num, bitmask))
 			num -= bitmask;
 		return num;
 	}
 
-	public static long unsetb(long num, long bitmask)
+	public static long unsetb(long num, final long bitmask)
 	{
 		if (bset(num, bitmask))
 			num -= bitmask;
 		return num;
 	}
 
-	public static long unsetb(long num, int bitmask)
+	public static long unsetb(long num, final int bitmask)
 	{
 		if (bset(num, bitmask))
 			num -= bitmask;
 		return num;
 	}
 
-	public static boolean isSet(int number, int bitnumber)
+	public static boolean isSet(final int number, final int bitnumber)
 	{
 		if ((number & (pow(2, bitnumber))) == (pow(2, bitnumber)))
 			return true;
 		return false;
 	}
 
-	public static boolean isSet(long number, int bitnumber)
+	public static boolean isSet(final long number, final int bitnumber)
 	{
 		if ((number & (pow(2, bitnumber))) == (pow(2, bitnumber)))
 			return true;
 		return false;
 	}
 
-	public static String sameCase(String str, char c)
+	public static String sameCase(final String str, final char c)
 	{
 		if (Character.isUpperCase(c))
 			return str.toUpperCase();
 		return str.toLowerCase();
 	}
 
-	public static Vector<Object> denumerate(Enumeration<Object> e)
+	public static Vector<Object> denumerate(final Enumeration<Object> e)
 	{
 		final Vector<Object> V = new Vector<Object>();
 		for (; e.hasMoreElements();)

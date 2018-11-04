@@ -65,14 +65,14 @@ public class AntiVagrant extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String parms)
+	public void setParms(final String parms)
 	{
 		kickout=parms.toUpperCase().indexOf("KICK")>=0;
 		anywhere=parms.toUpperCase().indexOf("ANYWHERE")>=0;
 		super.setParms(parms);
 	}
 
-	public void wakeVagrants(MOB observer)
+	public void wakeVagrants(final MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer))
 			return;

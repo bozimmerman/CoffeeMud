@@ -153,7 +153,7 @@ public class GiantTurtle extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Monologue extends BardSkill
 {
 	@Override
@@ -113,7 +112,7 @@ public class Skill_Monologue extends BardSkill
 	{
 		super.executeMsg(myHost, msg);
 		if((invoker()!=null)
-		&&(msg.targetMinor()==CMMsg.TYP_ENTER) 
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target() == invoker().location())
 		&&(invoker().mayIFight(msg.source())))
 			addMonologue(invoker(),msg.source(),-1,false);
@@ -140,8 +139,8 @@ public class Skill_Monologue extends BardSkill
 			CMLib.threads().deleteTick(this, Tickable.TICKID_MOB);
 		}
 	}
-	
-	protected void addMonologue(MOB mob, MOB target, int asLevel, boolean auto)
+
+	protected void addMonologue(final MOB mob, final MOB target, final int asLevel, final boolean auto)
 	{
 		if(CMLib.flags().canBeHeardSpeakingBy(mob, target))
 		{
@@ -151,7 +150,7 @@ public class Skill_Monologue extends BardSkill
 				mob.location().send(mob,msg2);
 				if((msg2.value()<=0)&&(target.fetchEffect(ID())==null))
 				{
-					Skill_Monologue A=(Skill_Monologue)beneficialAffect(mob,target,asLevel,Ability.TICKS_FOREVER);
+					final Skill_Monologue A=(Skill_Monologue)beneficialAffect(mob,target,asLevel,Ability.TICKS_FOREVER);
 					CMLib.threads().startTickDown(A, Tickable.TICKID_MOB, 1);
 					A.lastTimeHeard=System.currentTimeMillis();
 					CMLib.threads().suspendTicking(target,-1);
@@ -181,7 +180,7 @@ public class Skill_Monologue extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!CMLib.flags().canSpeak(mob))
 		{

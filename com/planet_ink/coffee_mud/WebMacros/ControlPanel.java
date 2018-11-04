@@ -51,7 +51,7 @@ public class ControlPanel extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 
@@ -150,10 +150,10 @@ public class ControlPanel extends StdWebMacro
 				return "";
 			if(field.equalsIgnoreCase("MISC"))
 			{
-				StringBuilder str=new StringBuilder("");
+				final StringBuilder str=new StringBuilder("");
 				final MultiEnumeration<String> enums = new MultiEnumeration<String>(CMSecurity.getDisabledAbilitiesEnum(true));
-				enums.addEnumeration(CMSecurity.getDisabledCommandsEnum(true)); 
-				enums.addEnumeration(CMSecurity.getDisabledExpertisesEnum(true)); 
+				enums.addEnumeration(CMSecurity.getDisabledCommandsEnum(true));
+				enums.addEnumeration(CMSecurity.getDisabledExpertisesEnum(true));
 				enums.addEnumeration(CMSecurity.getDisabledFactionsEnum(true));
 				enums.addEnumeration(CMSecurity.getDisabledRacesEnum(true));
 				enums.addEnumeration(CMSecurity.getDisabledCharClassEnum(true));
@@ -176,7 +176,7 @@ public class ControlPanel extends StdWebMacro
 				return "";
 			if(field.equalsIgnoreCase("MISC"))
 			{
-				StringBuilder str=new StringBuilder("");
+				final StringBuilder str=new StringBuilder("");
 				str.append(CMParms.toListString(CMSecurity.getEnabledSpecialsEnum(true)));
 				return str.toString();
 			}
@@ -210,7 +210,7 @@ public class ControlPanel extends StdWebMacro
 			{
 				for(final Enumeration<String> s=CMSecurity.getDisabledSpecialsEnum(true);s.hasMoreElements();)
 					CMSecurity.removeAnyDisableVar(s.nextElement());
-				for(String s : CMParms.parseCommas(value,true))
+				for(final String s : CMParms.parseCommas(value,true))
 					CMSecurity.setAnyDisableVar(s);
 			}
 			else
@@ -233,7 +233,7 @@ public class ControlPanel extends StdWebMacro
 			{
 				for(final Enumeration<String> s=CMSecurity.getEnabledSpecialsEnum(true);s.hasMoreElements();)
 					CMSecurity.removeAnyEnableVar(s.nextElement());
-				for(String s : CMParms.parseCommas(value,true))
+				for(final String s : CMParms.parseCommas(value,true))
 					CMSecurity.setAnyEnableVar(s);
 			}
 			else
@@ -267,7 +267,7 @@ public class ControlPanel extends StdWebMacro
 					flag=(DbgFlag)CMath.s_valueOf(DbgFlag.class, field.toUpperCase().trim());
 				}
 			}
-			
+
 			if((Thread.currentThread() instanceof CWThread)
 			&&((flag==DbgFlag.HTTPACCESS)||(flag==DbgFlag.HTTPREQ)))
 			{

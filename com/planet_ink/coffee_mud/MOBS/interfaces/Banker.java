@@ -37,14 +37,14 @@ import java.util.Vector;
 /**
  * A Banker is a kind of shopkeeper that belongs to a "chain" which
  * shares access to a common store of player/clan accounts to hold money
- * and items.  Players must go to a banker in the same chain to retrieve 
+ * and items.  Players must go to a banker in the same chain to retrieve
  * money and items deposited with the chain.  Bankers respond to new
  * commands such as DEPOSIT and WITHDRAW that normal shopkeepers do not.
  * Bankers also respect marriage by giving both parters access to each
  * others accounts.
- * 
+ *
  * Bankers can serve an entire clan, or a single player.
- * 
+ *
  * @author Bo Zimmerman
  */
 public interface Banker extends ShopKeeper
@@ -62,7 +62,7 @@ public interface Banker extends ShopKeeper
 	 * @return the interest rate paid (or cost) on deposited money.
 	 */
 	public double getCoinInterest();
-	
+
 	/**
 	 * Sets the interest rate paid (or cost) on deposited money.
 	 * A positive value is a payment, a negative is a cost.
@@ -70,7 +70,7 @@ public interface Banker extends ShopKeeper
 	 * @param interest the interest rate paid (or cost) on deposited money.
 	 */
 	public void setCoinInterest(double interest);
-	
+
 	/**
 	 * Gets the interest rate paid (or cost) on the value of deposited
 	 * items.
@@ -79,7 +79,7 @@ public interface Banker extends ShopKeeper
 	 * @return the interest rate paid (or cost) on deposited items.
 	 */
 	public double getItemInterest();
-	
+
 	/**
 	 * Sets the interest rate paid (or cost) on the value of deposited
 	 * items.
@@ -88,7 +88,7 @@ public interface Banker extends ShopKeeper
 	 * @param interest the interest rate paid (or cost) on deposited items.
 	 */
 	public void setItemInterest(double interest);
-	
+
 	/**
 	 * Gets the interest rate paid (or cost) on loaned out funds as  debt.
 	 * A positive value is a cost, a negative is a bonus.
@@ -96,7 +96,7 @@ public interface Banker extends ShopKeeper
 	 * @return the interest rate paid (or cost) on loaned money debt.
 	 */
 	public double getLoanInterest();
-	
+
 	/**
 	 * Sets the interest rate paid (or cost) on loaned out funds as  debt.
 	 * A positive value is a cost, a negative is a bonus.
@@ -104,31 +104,31 @@ public interface Banker extends ShopKeeper
 	 * @param interest the interest rate paid (or cost) on loaned money debt.
 	 */
 	public void setLoanInterest(double interest);
-	
+
 	/**
 	 * Gets the name of the bank chain to which this banker belongs.
 	 * @see Banker#setBankChain(String)
 	 * @return the bank chain name
 	 */
 	public String bankChain();
-	
+
 	/**
 	 * Sets the name of the bank chain to which this banker belongs.
 	 * @see Banker#bankChain()
 	 * @param name the bank chain name
 	 */
 	public void setBankChain(String name);
-	
+
 	/**
 	 * Returns all the player and clan names who have open accounts
 	 * at this bank.
 	 * @return all the player and clan names who have open accounts
 	 */
 	public List<String> getAccountNames();
-	
+
 	/**
-	 * When the given mob tries to deposit or withdraw something, this method is 
-	 * called to get the proper account name, which is either the mob themselves 
+	 * When the given mob tries to deposit or withdraw something, this method is
+	 * called to get the proper account name, which is either the mob themselves
 	 * or their clan, if they are (optionally) permitted by their rank.
 	 * If checked is true, and the mob does NOT have clan privileges, then an
 	 * error message is given to the mob and null is returned.
@@ -154,7 +154,7 @@ public interface Banker extends ShopKeeper
 	 * @see Banker#delAllDeposits(String)
 	 * @see Banker#delDepositInventory(String, Item)
 	 * @see Banker#getBalance(String)
-	 * @param depositorName the account to deposit into, like mob or clan name 
+	 * @param depositorName the account to deposit into, like mob or clan name
 	 * @param item the item to deposit
 	 * @param container the container the item is in, which also needs depositing
 	 */
@@ -162,36 +162,36 @@ public interface Banker extends ShopKeeper
 
 	/**
 	 * Deletes item into the given account.  Coin items are, of course,
-	 * money.  The items are returned in a list to the caller.  If the 
+	 * money.  The items are returned in a list to the caller.  If the
 	 * item is a container, all contained items are also returned.
 	 * @see Banker#delAllDeposits(String)
 	 * @see Banker#addDepositInventory(String, Item, Item)
 	 * @see Banker#getBalance(String)
-	 * @param depositorName the account to delete from, like mob or clan name 
+	 * @param depositorName the account to delete from, like mob or clan name
 	 * @param likeItem the likeItem to delete
 	 * @return the collection of items deleted from the account
 	 */
 	public List<Item> delDepositInventory(String depositorName, Item likeItem);
-	
+
 	/**
 	 * Empties all the items and money from a given depositors box.
 	 * @see Banker#delDepositInventory(String, Item)
 	 * @see Banker#addDepositInventory(String, Item, Item)
 	 * @see Banker#getBalance(String)
-	 * @param depositorName the account to empty, like mob or clan name 
+	 * @param depositorName the account to empty, like mob or clan name
 	 */
 	public void delAllDeposits(String depositorName);
-	
+
 	/**
 	 * Returns the money balance in the account, in base value
 	 * @see Banker#delDepositInventory(String, Item)
 	 * @see Banker#addDepositInventory(String, Item, Item)
 	 * @see Banker#delAllDeposits(String)
-	 * @param depositorName the account to empty, like mob or clan name 
+	 * @param depositorName the account to empty, like mob or clan name
 	 * @return the money balance, in base value
 	 */
 	public double getBalance(String depositorName);
-	
+
 	/**
 	 * Returns the number of items deposited, including money items
 	 * @see Banker#getDepositedItems(String)
@@ -201,7 +201,7 @@ public interface Banker extends ShopKeeper
 	 * @return the number of items in the account
 	 */
 	public int numberDeposited(String depositorName);
-	
+
 	/**
 	 * Returns all of the items deposited in the account. Make sure
 	 * you destroy these when you are done looking at them!
@@ -212,7 +212,7 @@ public interface Banker extends ShopKeeper
 	 * @return the list of all items in the account
 	 */
 	public List<Item> getDepositedItems(String depositorName);
-	
+
 	/**
 	 * Searches the deposit inventory for an item with a substring name
 	 * like the one given, returning the first found.  If the search
@@ -226,7 +226,7 @@ public interface Banker extends ShopKeeper
 	 * @return the item found, or null.
 	 */
 	public Item findDepositInventory(String mob, String likeThis);
-	
+
 	/**
 	 * Returns the base money value of all items deposited in the given account.
 	 * @see Banker#getDepositedItems(String)

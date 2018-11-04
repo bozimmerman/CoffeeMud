@@ -56,7 +56,7 @@ public class RebuildReferenceDocs extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null)

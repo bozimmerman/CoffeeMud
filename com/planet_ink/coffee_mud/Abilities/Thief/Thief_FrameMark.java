@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_FrameMark extends ThiefSkill
 {
 	@Override
@@ -86,7 +85,7 @@ public class Thief_FrameMark extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;
 	}
 
-	public MOB getMark(MOB mob)
+	public MOB getMark(final MOB mob)
 	{
 		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if(A!=null)
@@ -94,7 +93,7 @@ public class Thief_FrameMark extends ThiefSkill
 		return null;
 	}
 
-	public int getMarkTicks(MOB mob)
+	public int getMarkTicks(final MOB mob)
 	{
 		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if((A!=null)&&(A.mark!=null))
@@ -103,7 +102,7 @@ public class Thief_FrameMark extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getMark(mob);
 		if(target==null)

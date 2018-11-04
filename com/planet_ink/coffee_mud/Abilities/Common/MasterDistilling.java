@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class MasterDistilling extends Distilling
 {
 	private String	cookingID	= "";
@@ -68,7 +67,7 @@ public class MasterDistilling extends Distilling
 	}
 
 	@Override
-	protected int getDuration(MOB mob, int level)
+	protected int getDuration(final MOB mob, final int level)
 	{
 		return getDuration(60,mob,1,8);
 	}
@@ -80,7 +79,7 @@ public class MasterDistilling extends Distilling
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		try
 		{

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SweetScent extends Chant
 {
 	@Override
@@ -88,7 +87,7 @@ public class Chant_SweetScent extends Chant
 				TrackingLibrary.TrackingFlags flags;
 				flags = CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.OPENONLY);
-				int range=10 + super.getXLEVELLevel(invoker())+(2*super.getXMAXRANGELevel(invoker()));
+				final int range=10 + super.getXLEVELLevel(invoker())+(2*super.getXMAXRANGELevel(invoker()));
 				CMLib.tracking().getRadiantRooms(room,rooms,flags,null,range,null);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
@@ -140,7 +139,7 @@ public class Chant_SweetScent extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(
 			(CMLib.flags().isWateryRoom(mob.location()))

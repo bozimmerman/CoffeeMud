@@ -36,7 +36,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Immunities extends StdAbility
 {
 	@Override
@@ -121,7 +120,7 @@ public class Immunities extends StdAbility
 	});
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		immunes.clear();
@@ -164,7 +163,7 @@ public class Immunities extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical target, final boolean auto, final int asLevel)
 	{
 		final StringBuilder immunes=new StringBuilder("");
 		int ticksOverride=0;

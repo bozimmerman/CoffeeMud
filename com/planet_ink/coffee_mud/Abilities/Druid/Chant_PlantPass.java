@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_PlantPass extends Chant
 {
 	@Override
@@ -84,13 +83,13 @@ public class Chant_PlantPass extends Chant
 		return "plants";
 	}
 
-	protected boolean isAcceptableTargetRoom(MOB mob, Room newRoom)
+	protected boolean isAcceptableTargetRoom(final MOB mob, final Room newRoom)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -110,7 +109,7 @@ public class Chant_PlantPass extends Chant
 		if(CMath.isInteger(areaName))
 		{
 			final List<Item> plants=Druid_MyPlants.getMyPlants(mob);
-			int i=CMath.s_int(areaName);
+			final int i=CMath.s_int(areaName);
 			if((i>0)&&(i<=plants.size()))
 				newRoom=CMLib.map().roomLocation(plants.get(i-1));
 		}
@@ -135,14 +134,14 @@ public class Chant_PlantPass extends Chant
 
 		if(!this.isAcceptableTargetRoom(mob, newRoom))
 			return false;
-		
+
 		final Item otherPlant = Druid_MyPlants.myPlant(newRoom, mob, 0);
 		if(otherPlant==null)
 		{
 			mob.tell(L("You can't seem to fixate on place called '@x1', perhaps your "+this.getPlantsWord()+" there are dead?",CMParms.combine(commands,0)));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

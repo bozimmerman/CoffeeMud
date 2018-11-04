@@ -68,7 +68,7 @@ public class GrinderMap extends GrinderFlatMap
 		}
 	}
 
-	public GrinderMap(Area A, int[] xyxy)
+	public GrinderMap(final Area A, final int[] xyxy)
 	{
 		super(A,xyxy);
 	}
@@ -109,9 +109,9 @@ public class GrinderMap extends GrinderFlatMap
 		xoffset = xoffset * -1;
 		yoffset = yoffset * -1;
 
-		if (debug) 
+		if (debug)
 			Log.sysOut("GR-REGRID", "xoffset set : " + xoffset);
-		if (debug) 
+		if (debug)
 			Log.sysOut("GR-REGRID", "Xbound  set : " + Xbound);
 
 		Xbound = 0;
@@ -124,10 +124,10 @@ public class GrinderMap extends GrinderFlatMap
 			room.xy[1] = room.xy[1] + yoffset;
 			if (room.xy[1] > Ybound) Ybound = room.xy[1];
 		}
-		if (debug) 
+		if (debug)
 			Log.sysOut("GR-REGRID", "Xbound  set2: " + Xbound);
 		grid = new GrinderRoom[Xbound + 1][Ybound + 1][maxZ + 1];
-		if (debug) 
+		if (debug)
 			Log.sysOut("GR-REGRID", "GrinderRoom Grid Created: (x,y,z) " +
 					  (Xbound + 1) + "," + (Ybound + 1) + "," + (maxZ + 1));
 		for (int y = 0; y < areaMap.size(); y++)
@@ -138,7 +138,7 @@ public class GrinderMap extends GrinderFlatMap
 			if(room.z<minZ)
 			{
 				grid[room.xy[0]][room.xy[1]][(room.z + zFix)] = room;
-				if (debug) 
+				if (debug)
 					Log.sysOut("GR-REGRID", "Room outside z range: " + room.z);
 			}
 			else
@@ -153,7 +153,7 @@ public class GrinderMap extends GrinderFlatMap
 		}
 	}
 
-	protected GrinderRoom getProcessedRoomAt(Hashtable<String,GrinderRoom> processed, int x, int y, int z)
+	protected GrinderRoom getProcessedRoomAt(final Hashtable<String,GrinderRoom> processed, final int x, final int y, final int z)
 	{
 		for (final Enumeration<GrinderRoom> e = processed.elements(); e.hasMoreElements(); )
 		{
@@ -165,7 +165,7 @@ public class GrinderMap extends GrinderFlatMap
 	}
 
 	@Override
-	public GrinderRoom getRoom(String ID)
+	public GrinderRoom getRoom(final String ID)
 	{
 		if ( (hashRooms != null) && (hashRooms.containsKey(ID)))
 			return hashRooms.get(ID);
@@ -182,7 +182,7 @@ public class GrinderMap extends GrinderFlatMap
 		return null;
 	}
 
-	protected boolean isEmptyCluster(Hashtable<String,GrinderRoom> processed, int x, int y, int z)
+	protected boolean isEmptyCluster(final Hashtable<String,GrinderRoom> processed, final int x, final int y, final int z)
 	{
 		for (final Enumeration<GrinderRoom> e = processed.elements(); e.hasMoreElements(); )
 		{
@@ -195,7 +195,7 @@ public class GrinderMap extends GrinderFlatMap
 		return true;
 	}
 
-	protected void findEmptyCluster(Hashtable<String,GrinderRoom> processed, Vector<Integer> XYZ)
+	protected void findEmptyCluster(final Hashtable<String,GrinderRoom> processed, final Vector<Integer> XYZ)
 	{
 		final int x = XYZ.elementAt(0).intValue();
 		final int y = XYZ.elementAt(1).intValue();
@@ -311,9 +311,9 @@ public class GrinderMap extends GrinderFlatMap
 		if ((zFix + minZ) > 0)
 			zFix -= (0 - (minZ + zFix)) * -1;
 
-		if (debug) 
+		if (debug)
 			Log.sysOut("GR-PLACERS", "zFix set    : " + zFix);
-		if (debug) 
+		if (debug)
 			Log.sysOut("GR-PLACERS", "areaMap size: " + areaMap.size());
 		int updatedCount = 0;
 		for (int x = 0; x < areaMap.size(); x++)
@@ -324,12 +324,12 @@ public class GrinderMap extends GrinderFlatMap
 			areaMap.set(x,GR);
 			if (GR.z!=oldZ) updatedCount++;
 		}
-		if (debug) 
+		if (debug)
 			Log.sysOut("GR-PLACERS", "maybe update: " + updatedCount);
-		if (debug) 
+		if (debug)
 			Log.sysOut("GR-PLACERS", "maxZ changed: " + maxZ + " to " + (maxZ + zFix));
 		maxZ += zFix;
-		if (debug) 
+		if (debug)
 			Log.sysOut("GR-PLACERS", "minZ changed: " + minZ + " to " + (minZ + zFix));
 		minZ += zFix;
 
@@ -342,7 +342,7 @@ public class GrinderMap extends GrinderFlatMap
 	}
 
 	@Override
-	public StringBuffer getHTMLTable(HTTPRequest httpReq)
+	public StringBuffer getHTMLTable(final HTTPRequest httpReq)
 	{
 		final StringBuffer buf = new StringBuffer("");
 		// For now, we will populate the SELECT element prior to the
@@ -479,14 +479,14 @@ public class GrinderMap extends GrinderFlatMap
 	}
 
 	@Override
-	public StringBuffer getHTMLMap(HTTPRequest httpReq)
+	public StringBuffer getHTMLMap(final HTTPRequest httpReq)
 	{
 		return getHTMLMap(httpReq, 4);
 	}
 
 	// this is much like getHTMLTable, but tiny rooms for world map viewing. No exits or ID's for now.
 	@Override
-	public StringBuffer getHTMLMap(HTTPRequest httpReq, int roomSize)
+	public StringBuffer getHTMLMap(final HTTPRequest httpReq, final int roomSize)
 	{
 		final StringBuffer buf = new StringBuffer("");
 		// For now, we will populate the SELECT element prior to the
@@ -554,7 +554,7 @@ public class GrinderMap extends GrinderFlatMap
 	}
 
 	@Override
-	protected GrinderRoom getRoomInDir(GrinderRoom room, int d)
+	protected GrinderRoom getRoomInDir(final GrinderRoom room, final int d)
 	{
 		switch (d)
 		{
@@ -602,14 +602,14 @@ public class GrinderMap extends GrinderFlatMap
 		return null;
 	}
 
-	public void placeRoom(GrinderRoom room,
-						  int favoredX,
-						  int favoredY,
-						  Hashtable<String,GrinderRoom> processed,
-						  boolean doNotDefer,
-						  boolean passTwo,
-						  int depth,
-						  int zLevel)
+	public void placeRoom(final GrinderRoom room,
+						  final int favoredX,
+						  final int favoredY,
+						  final Hashtable<String,GrinderRoom> processed,
+						  final boolean doNotDefer,
+						  final boolean passTwo,
+						  final int depth,
+						  final int zLevel)
 	{
 		if (room == null)
 			return;

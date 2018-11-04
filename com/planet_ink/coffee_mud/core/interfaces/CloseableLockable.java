@@ -127,7 +127,7 @@ public interface CloseableLockable extends Physical
 	 * @param keyName the new key code
 	 */
 	public void setKeyName(String keyName);
-	
+
 	/**
 	 * Returns the number of ticks that this remains open when a mob
 	 * or player changes it from a closed to an open state, and this thing

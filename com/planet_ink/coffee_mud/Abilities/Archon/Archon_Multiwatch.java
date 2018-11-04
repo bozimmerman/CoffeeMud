@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Archon_Multiwatch extends ArchonSkill
 {
 	@Override
@@ -110,7 +109,7 @@ public class Archon_Multiwatch extends ArchonSkill
 
 	public String lastCommand=null;
 
-	public boolean nonIPnonMonsterWithMe(MOB me)
+	public boolean nonIPnonMonsterWithMe(final MOB me)
 	{
 		if((me.location()!=null)&&(me.session()!=null))
 		{
@@ -230,7 +229,7 @@ public class Archon_Multiwatch extends ArchonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(CMParms.combine(commands,0).equalsIgnoreCase("auto"))
 		{

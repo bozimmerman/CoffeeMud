@@ -32,7 +32,6 @@ import java.util.List;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_ClearMoon extends Chant
 {
 	@Override
@@ -73,7 +72,7 @@ public class Chant_ClearMoon extends Chant
 		return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;
 	}
 
-	public void clearMoons(Physical P)
+	public void clearMoons(final Physical P)
 	{
 		if(P!=null)
 		for(int a=P.numEffects()-1;a>=0;a--) // personal and reverse enumeration
@@ -87,7 +86,7 @@ public class Chant_ClearMoon extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

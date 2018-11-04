@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SensePlants extends Chant
 {
 	@Override
@@ -109,7 +108,7 @@ public class Chant_SensePlants extends Chant
 			mob.tell(L("Your senses are no longer sensitive to @x1.",word()));
 	}
 
-	public String itsHere(MOB mob, Room R)
+	public String itsHere(final MOB mob, final Room R)
 	{
 		if(R==null)
 			return "";
@@ -132,7 +131,7 @@ public class Chant_SensePlants extends Chant
 		return "";
 	}
 
-	public void messageTo(MOB mob)
+	public void messageTo(final MOB mob)
 	{
 		final String here=itsHere(mob,mob.location());
 		if(here.length()>0)
@@ -177,7 +176,7 @@ public class Chant_SensePlants extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

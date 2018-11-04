@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class LockSmith extends CraftingSkill
 {
 	@Override
@@ -93,7 +92,7 @@ public class LockSmith extends CraftingSkill
 		super.unInvoke();
 	}
 
-	public Item getBuilding(Environmental target)
+	public Item getBuilding(final Environmental target)
 	{
 		final Item newbuilding=CMClass.getItem("GenKey");
 		if((workingOn instanceof Exit)
@@ -219,7 +218,7 @@ public class LockSmith extends CraftingSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -262,7 +261,7 @@ public class LockSmith extends CraftingSkill
 				return false;
 			}
 		}
-		
+
 		final String recipeName=CMParms.combine(commands,0);
 		final int dir=CMLib.directions().getGoodDirectionCode(recipeName);
 		if(dir<0)
@@ -363,7 +362,7 @@ public class LockSmith extends CraftingSkill
 				return false;
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
 			makeResource=data[0][FOUND_CODE];
-			String prefix = (label.length()>0) ? label : RawMaterial.CODES.NAME(makeResource);
+			final String prefix = (label.length()>0) ? label : RawMaterial.CODES.NAME(makeResource);
 			itemName=(prefix+" key").toLowerCase();
 			itemName=CMLib.english().startWithAorAn(itemName);
 		}

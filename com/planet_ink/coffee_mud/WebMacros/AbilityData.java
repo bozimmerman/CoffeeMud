@@ -44,7 +44,7 @@ public class AbilityData extends StdWebMacro
 	// valid parms include help, ranges, quality, target, alignment, domain,
 	// qualifyQ, auto
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final MOB mob=Authenticate.getAuthenticatedMob(httpReq);
@@ -138,13 +138,13 @@ public class AbilityData extends StdWebMacro
 
 				if(parms.containsKey("CHARCLASSLEVEL"))
 				{
-					String old=httpReq.getUrlParameter("CLASS");
+					final String old=httpReq.getUrlParameter("CLASS");
 					if(old != null)
 					{
 						str.append(CMLib.ableMapper().getQualifyingLevel(old, true, A.ID())).append(", ");
 					}
 				}
-				
+
 				if(parms.containsKey("CHARCLASSNEXT"))
 				{
 					if(parms.containsKey("RESET"))
@@ -153,9 +153,9 @@ public class AbilityData extends StdWebMacro
 						return "";
 					}
 					String lastID="";
-					String clast = httpReq.getUrlParameter("CLASS");
-					boolean showAll=parms.containsKey("ALL");
-					boolean includeSkillOnly=parms.containsKey("INCLUDESKILLONLY");
+					final String clast = httpReq.getUrlParameter("CLASS");
+					final boolean showAll=parms.containsKey("ALL");
+					final boolean includeSkillOnly=parms.containsKey("INCLUDESKILLONLY");
 					for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 					{
 						final CharClass C=c.nextElement();
@@ -821,7 +821,7 @@ public class AbilityData extends StdWebMacro
 						}
 					}
 				}
-				
+
 				if(parms.containsKey("TYPE"))
 					str.append(CMLib.flags().getAbilityType(A)).append(", ");
 

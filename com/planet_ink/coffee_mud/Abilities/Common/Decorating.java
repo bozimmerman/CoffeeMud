@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Decorating extends CommonSkill
 {
 	@Override
@@ -156,13 +155,13 @@ public class Decorating extends CommonSkill
 					else
 					{
 						final Room room=CMLib.map().roomLocation(I);
-						String ownerName=CMLib.law().getLandOwnerName(room);
+						final String ownerName=CMLib.law().getLandOwnerName(room);
 						if((messedUp)||(room==null)||(ownerName.length()==0))
 							commonTell(mob,L("You've messed up "+mountWord+"ing @x1!",I.name()));
 						else
 						{
 							I.delEffect(I.fetchEffect("Decorating"));
-							Decorating mount=(Decorating)this.copyOf();
+							final Decorating mount=(Decorating)this.copyOf();
 							mount.setMiscText(I.displayText());
 							mount.canBeUninvoked = false;
 							I.addNonUninvokableEffect(mount);
@@ -246,9 +245,9 @@ public class Decorating extends CommonSkill
 			affectableStats.setName(affected.name());
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -262,7 +261,7 @@ public class Decorating extends CommonSkill
 			mob.tell(L("Decorate what, how?  Try decorate HANG [item name], or decorate MOUNT [item name], or decorate STICK [item name]."));
 			return false;
 		}
-		String word = commands.remove(0).toLowerCase();
+		final String word = commands.remove(0).toLowerCase();
 		final Item I=super.getTarget(mob, null, givenTarget, commands, Wearable.FILTER_UNWORNONLY);
 		if(I==null)
 			return false;
@@ -275,13 +274,13 @@ public class Decorating extends CommonSkill
 			verb=L("mounting @x1",I.name());
 		else
 			verb=L("stickup @x1 up",I.name());
-		
+
 		if(!CMLib.law().doesHavePriviledgesHere(mob, mob.location()))
 		{
 			commonTell(mob,L("You can't decorate here."));
 			return false;
 		}
-		
+
 		switch(mob.location().domainType())
 		{
 		case Room.DOMAIN_INDOORS_CAVE:

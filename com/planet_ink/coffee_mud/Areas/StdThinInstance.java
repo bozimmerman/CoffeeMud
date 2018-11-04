@@ -57,7 +57,7 @@ public class StdThinInstance extends StdThinArea
 	protected long							childCheckDown		= CMProps.getMillisPerMudHour() / CMProps.getTickMillis();
 	protected WeakReference<Area>			parentArea			= null;
 
-	protected String getStrippedRoomID(String roomID)
+	protected String getStrippedRoomID(final String roomID)
 	{
 		final int x=roomID.indexOf('#');
 		if(x<0)
@@ -65,15 +65,15 @@ public class StdThinInstance extends StdThinArea
 		return roomID.substring(x);
 	}
 
-	protected String convertToMyArea(String roomID)
+	protected String convertToMyArea(final String roomID)
 	{
 		final String strippedID=getStrippedRoomID(roomID);
 		if(strippedID==null)
 			return null;
 		return Name()+strippedID;
 	}
-	
-	protected boolean qualifiesToBeParentArea(Area parentA)
+
+	protected boolean qualifiesToBeParentArea(final Area parentA)
 	{
 		return (CMath.bset(parentA.flags(),Area.FLAG_INSTANCE_PARENT))
 		&&(!CMath.bset(parentA.flags(),Area.FLAG_INSTANCE_CHILD));
@@ -174,7 +174,7 @@ public class StdThinInstance extends StdThinArea
 		}
 		return existingR;
 	}
-	
+
 	protected static boolean isInThisArea(final Area childA, final MOB mob)
 	{
 		if(mob != null)
@@ -271,19 +271,19 @@ public class StdThinInstance extends StdThinArea
 	protected static class EmptyFilters implements RFilters
 	{
 		@Override
-		public boolean isFilteredOut(Room hostR, Room R, Exit E, int dir)
+		public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 		{
 			return false;
 		}
 
 		@Override
-		public RFilters plus(RFilter filter)
+		public RFilters plus(final RFilter filter)
 		{
 			return this;
 		}
 
 		@Override
-		public RFilters minus(RFilter filter)
+		public RFilters minus(final RFilter filter)
 		{
 			return this;
 		}
@@ -298,29 +298,29 @@ public class StdThinInstance extends StdThinArea
 	protected static class AllWaterFilters extends EmptyFilters
 	{
 		@Override
-		public boolean isFilteredOut(Room hostR, Room R, Exit E, int dir)
+		public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 		{
 			return (!(CMLib.flags().isWateryRoom(hostR)||CMLib.flags().isWateryRoom(R)));
 		}
 	}
-	
+
 	protected static class OutOfAreaFilter implements RFilter
 	{
 		protected final Area A1;
-		
-		public OutOfAreaFilter(Area A1)
+
+		public OutOfAreaFilter(final Area A1)
 		{
 			this.A1=A1;
 		}
-		
+
 		@Override
-		public boolean isFilteredOut(Room hostR, Room R, Exit E, int dir)
+		public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 		{
 			return (R.getArea()==A1);
 		}
 	}
-	
-	protected void flushInstance(AreaInstanceChild child)
+
+	protected void flushInstance(final AreaInstanceChild child)
 	{
 		final Area childA=child.A;
 		final Set<Physical> protectedList = getProtectedSet(childA, child.mobs);
@@ -356,7 +356,7 @@ public class StdThinInstance extends StdThinArea
 					if((startRoom == null)
 					&&(I instanceof SailingShip))
 					{
-						Room R1=CMLib.tracking().getRadiantRoomTarget(R, new AllWaterFilters(), new OutOfAreaFilter(childA));
+						final Room R1=CMLib.tracking().getRadiantRoomTarget(R, new AllWaterFilters(), new OutOfAreaFilter(childA));
 						if(R1!=null)
 						{
 							returnBoatsToR=R1;
@@ -365,7 +365,7 @@ public class StdThinInstance extends StdThinArea
 					}
 					if(startRoom == null)
 					{
-						Room R1=CMLib.tracking().getRadiantRoomTarget(R, new EmptyFilters(), new OutOfAreaFilter(childA));
+						final Room R1=CMLib.tracking().getRadiantRoomTarget(R, new EmptyFilters(), new OutOfAreaFilter(childA));
 						if(R1!=null)
 							startRoom=R1;
 					}
@@ -402,18 +402,18 @@ public class StdThinInstance extends StdThinArea
 						{
 							CMLib.map().emptyRoom(R, null, true);
 						}
-						catch(Exception e)
+						catch(final Exception e)
 						{
 							Log.errOut(e);
 						}
 					}
-					catch(Exception e)
+					catch(final Exception e)
 					{
 						Log.errOut(e);
 					}
 					R.destroy(); // destroys the mobs and items.  the Deadly Thing.
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{
 					Log.errOut(e);
 				}
@@ -434,21 +434,21 @@ public class StdThinInstance extends StdThinArea
 		super.destroy();
 		if(this.doesManageChildAreas())
 		{
-			List<AreaInstanceChild> cs = new ArrayList<AreaInstanceChild>(instanceChildren.size());
+			final List<AreaInstanceChild> cs = new ArrayList<AreaInstanceChild>(instanceChildren.size());
 			synchronized(instanceChildren)
 			{
 				for(int i=instanceChildren.size()-1;i>=0;i--)
 					cs.add(instanceChildren.get(i));
 				instanceChildren.clear();
 			}
-			for(AreaInstanceChild I : cs)
+			for(final AreaInstanceChild I : cs)
 			{
 				final Area A=I.A;
 				try
 				{
 					flushInstance(I);
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{
 					Log.errOut(e);
 				}
@@ -464,7 +464,7 @@ public class StdThinInstance extends StdThinArea
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -572,7 +572,7 @@ public class StdThinInstance extends StdThinArea
 		}
 	}
 
-	@Override 
+	@Override
 	public int[] getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -626,7 +626,7 @@ public class StdThinInstance extends StdThinArea
 		return CMath.bset(flags(),Area.FLAG_INSTANCE_PARENT);
 	}
 
-	protected Area createRedirectArea(List<MOB> mobs)
+	protected Area createRedirectArea(final List<MOB> mobs)
 	{
 		final StdThinInstance newA=(StdThinInstance)this.copyOf();
 		newA.properRooms=new STreeMap<String, Room>(new Area.RoomIDComparator());
@@ -647,7 +647,7 @@ public class StdThinInstance extends StdThinArea
 		instanceChildren.add(child);
 		return newA;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -704,7 +704,7 @@ public class StdThinInstance extends StdThinArea
 					{
 						if(msg.source() == weakReference.get())
 						{
-							myDex=i; 
+							myDex=i;
 							break;
 						}
 					}

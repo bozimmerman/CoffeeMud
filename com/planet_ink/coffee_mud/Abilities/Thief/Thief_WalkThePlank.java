@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_WalkThePlank extends ThiefSkill
 {
 	@Override
@@ -94,7 +93,7 @@ public class Thief_WalkThePlank extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -118,43 +117,43 @@ public class Thief_WalkThePlank extends ThiefSkill
 			return false;
 		}
 		final Room splashR=(Room)myShipItem.owner();
-		
+
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		
+
 		boolean allowedToWalkThem=false;
-		LegalBehavior B=CMLib.law().getLegalBehavior(R);
+		final LegalBehavior B=CMLib.law().getLegalBehavior(R);
 		if(B!=null)
 		{
-			List<LegalWarrant> warrants=B.getWarrantsOf(CMLib.law().getLegalObject(R),target);
+			final List<LegalWarrant> warrants=B.getWarrantsOf(CMLib.law().getLegalObject(R),target);
 			if((warrants.size()>0)&&(!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.ABOVELAW)))
 			{
 				allowedToWalkThem=true;
 			}
 		}
-		
+
 		if(CMLib.flags().isBoundOrHeld(target))
 		{
 			allowedToWalkThem=true;
 		}
-		
+
 		if(!allowedToWalkThem)
 		{
-			Set<MOB> mobsConnectedToThisShip=new HashSet<MOB>();
+			final Set<MOB> mobsConnectedToThisShip=new HashSet<MOB>();
 			for(final Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
 			{
 				final Room R2=r.nextElement();
 				if(R2!=null)
 				{
-					String owner = CMLib.law().getPropertyOwnerName(R2);
-					Clan C=CMLib.clans().getClan(owner);
+					final String owner = CMLib.law().getPropertyOwnerName(R2);
+					final Clan C=CMLib.clans().getClan(owner);
 					for(final Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
 					{
 						final MOB M=m.nextElement();
 						if(M==null)
 							continue;
-						String startOwner=CMLib.law().getPropertyOwnerName(M.getStartRoom());
+						final String startOwner=CMLib.law().getPropertyOwnerName(M.getStartRoom());
 						if((CMLib.law().doesHavePriviledgesHere(mob, R2))
 						||(M.getStartRoom() == R2)
 						||(M.getStartRoom().getArea() == myShipArea))
@@ -179,7 +178,7 @@ public class Thief_WalkThePlank extends ThiefSkill
 						final MOB M=m.nextElement();
 						if(M==null)
 							continue;
-						for(MOB M2 : M.getGroupMembers(new HashSet<MOB>()))
+						for(final MOB M2 : M.getGroupMembers(new HashSet<MOB>()))
 						{
 							if((M2 != M)
 							&&(mobsConnectedToThisShip.contains(M2)))
@@ -194,7 +193,7 @@ public class Thief_WalkThePlank extends ThiefSkill
 					}
 				}
 			}
-			Set<MOB> mobsNotConnectedToThisShip=new HashSet<MOB>();
+			final Set<MOB> mobsNotConnectedToThisShip=new HashSet<MOB>();
 			for(final Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
 			{
 				final Room R2=r.nextElement();
@@ -205,7 +204,7 @@ public class Thief_WalkThePlank extends ThiefSkill
 						final MOB M=m.nextElement();
 						if(M==null)
 							continue;
-						for(MOB M2 : M.getGroupMembers(new HashSet<MOB>()))
+						for(final MOB M2 : M.getGroupMembers(new HashSet<MOB>()))
 						{
 							if((M2 != M)
 							&&(mobsConnectedToThisShip.contains(M2)))
@@ -218,7 +217,7 @@ public class Thief_WalkThePlank extends ThiefSkill
 					}
 				}
 			}
-			
+
 			if(mobsConnectedToThisShip.contains(mob)
 			&&(mobsNotConnectedToThisShip.contains(target))
 			&&(!mob.isInCombat())
@@ -235,7 +234,7 @@ public class Thief_WalkThePlank extends ThiefSkill
 			&&(mobsNotConnectedToThisShip.size()>1))
 				allowedToWalkThem=true;
 		}
-		
+
 		if(!allowedToWalkThem)
 		{
 			mob.tell(L("You can't make @x1 walk the plank.",target.name()));
@@ -246,10 +245,10 @@ public class Thief_WalkThePlank extends ThiefSkill
 			return false;
 
 		final int adjustment=target.phyStats().level()-((mob.phyStats().level()+super.getXLEVELLevel(mob))/2);
-		boolean success=proficiencyCheck(mob,-adjustment,auto);
+		final boolean success=proficiencyCheck(mob,-adjustment,auto);
 		if(success)
 		{
-			String str=auto?"":L("^S<S-NAME> make(s) <T-NAME> walk the plank..^?");
+			final String str=auto?"":L("^S<S-NAME> make(s) <T-NAME> walk the plank..^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.MSG_THIEF_ACT|(auto?CMMsg.MASK_ALWAYS:0),str,CMMsg.MSG_NOISYMOVEMENT,str);
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,null,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null,CMMsg.NO_EFFECT,null);
 			if(R.okMessage(mob,msg) && R.okMessage(mob,msg2))

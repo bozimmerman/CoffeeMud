@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Adoption extends Prayer
 {
 	@Override
@@ -69,7 +68,7 @@ public class Prayer_Adoption extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -81,14 +80,14 @@ public class Prayer_Adoption extends Prayer
 		}
 		final String name2=commands.get(commands.size()-1);
 		final String name1=CMParms.combine(commands,0,commands.size()-1);
-		MOB parent=R.fetchInhabitant(name1);
+		final MOB parent=R.fetchInhabitant(name1);
 		if((parent==null)||(!CMLib.flags().canBeSeenBy(mob,parent)))
 		{
 			mob.tell(L("You don't see @x1 here!",name1));
 			return false;
 		}
 		final MOB child=R.fetchInhabitant(name2);
-		
+
 		if((child==null)||(!CMLib.flags().canBeSeenBy(mob,child)))
 		{
 			mob.tell(L("You don't see @x1 here!",name2));
@@ -109,7 +108,7 @@ public class Prayer_Adoption extends Prayer
 			return false;
 		}
 
-		Tattoo tattChk=child.findTattoo("PARENT:");
+		final Tattoo tattChk=child.findTattoo("PARENT:");
 		if(tattChk!=null)
 		{
 			mob.tell(L("@x1 already has parents.",child.name()));
@@ -129,7 +128,7 @@ public class Prayer_Adoption extends Prayer
 				if(!parent.session().confirm(L("@x1 wants you to adopt @x2.  Is this OK (y/N)?",child.name(),child.charStats().himher()), "N", 5000))
 					success=false;
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 				success=false;
 			}

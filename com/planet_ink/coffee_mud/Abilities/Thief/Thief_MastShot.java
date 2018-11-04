@@ -91,9 +91,9 @@ public class Thief_MastShot extends ThiefSkill
 	{
 		return USAGE_MOVEMENT;
 	}
-	
+
 	protected int	code		= 0;
-	
+
 	@Override
 	public int abilityCode()
 	{
@@ -101,7 +101,7 @@ public class Thief_MastShot extends ThiefSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code = newCode;
 	}
@@ -117,13 +117,13 @@ public class Thief_MastShot extends ThiefSkill
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if(CMath.isInteger(newMiscText))
 			setAbilityCode(CMath.s_int(newMiscText));
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -132,7 +132,7 @@ public class Thief_MastShot extends ThiefSkill
 		final Physical affected=this.affected;
 		if(affected instanceof BoardableShip)
 		{
-			
+
 		}
 		else
 		if(affected instanceof AmmunitionWeapon)
@@ -162,7 +162,7 @@ public class Thief_MastShot extends ThiefSkill
 					&&(room.okMessage(msg.source(),msg2)))
 					{
 						room.send(msg.source(),msg2);
-						Ability oldA=((Physical)msg.target()).fetchEffect(ID());
+						final Ability oldA=((Physical)msg.target()).fetchEffect(ID());
 						if(oldA!=null)
 						{
 							oldA.setAbilityCode(oldA.abilityCode()+1);
@@ -170,7 +170,7 @@ public class Thief_MastShot extends ThiefSkill
 						else
 						{
 							final MOB mob=(invoker != null) ? invoker : msg.source();
-							Ability A=beneficialAffect(mob, (Physical)msg.target(), 0, 0);
+							final Ability A=beneficialAffect(mob, (Physical)msg.target(), 0, 0);
 							if(A!=null)
 								A.setAbilityCode(1);
 						}
@@ -190,9 +190,9 @@ public class Thief_MastShot extends ThiefSkill
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -214,13 +214,13 @@ public class Thief_MastShot extends ThiefSkill
 			return false;
 		}
 		SailingShip enemyShip=null;
-		PhysicalAgent combatant=myShipItem.getCombatant();
+		final PhysicalAgent combatant=myShipItem.getCombatant();
 		if(combatant != null)
 		{
 			if(combatant instanceof SailingShip)
 				enemyShip=(SailingShip)combatant;
 		}
-		
+
 		if(enemyShip == null)
 		{
 			mob.tell(L("Your ship must be in combat with another big ship to fire a mast shot."));
@@ -228,21 +228,21 @@ public class Thief_MastShot extends ThiefSkill
 		}
 
 		final Item enemyShipItem=enemyShip.getShipItem();
-		
+
 		if(commands.size()==0)
 		{
 			mob.tell(L("You must specify a siege weapon to make the mast shot with."));
 			return false;
 		}
-		
+
 		final String weaponName=CMParms.combine(commands);
-		
+
 		if(!CMLib.flags().isStanding(mob)&&(!auto))
 		{
 			mob.tell(L("You need to stand up!"));
 			return false;
 		}
-		
+
 		final Item siegeItem = R.findItem(null, weaponName);
 		if(((siegeItem)==null)
 		||(!CMLib.flags().canBeSeenBy(siegeItem, mob))
@@ -251,24 +251,24 @@ public class Thief_MastShot extends ThiefSkill
 			mob.tell(L("You don't see a siege weapon called '@x1' here.",weaponName));
 			return false;
 		}
-		
+
 		if(siegeItem.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("That weapon is already aimed at the masts."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,siegeItem,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,auto?"":L("<S-NAME> aim(s) <T-NAME> at @x1's masts!",enemyShipItem.Name()));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				Ability A=beneficialAffect(mob, siegeItem, asLevel, 0);
+				final Ability A=beneficialAffect(mob, siegeItem, asLevel, 0);
 				A.setAbilityCode(2 * super.getXLEVELLevel(mob));
 			}
 		}

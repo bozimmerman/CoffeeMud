@@ -40,7 +40,7 @@ public class GrinderAccounts
 		return "GrinderAccounts";
 	}
 
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(final HTTPRequest httpReq, final String parm)
 	{
 		final String last=httpReq.getUrlParameter("ACCOUNT");
 		if(last==null)
@@ -89,11 +89,11 @@ public class GrinderAccounts
 				str=httpReq.getUrlParameter("TATTOOS");
 				if(str!=null)
 				{
-					List<Tattoo> oldTatts = new XVector<Tattoo>(A.tattoos());
-					for(Tattoo t : oldTatts)
+					final List<Tattoo> oldTatts = new XVector<Tattoo>(A.tattoos());
+					for(final Tattoo t : oldTatts)
 						A.delTattoo(t);
-					List<String> tattNames = CMParms.parseCommas(str,true);
-					for(String tattName : tattNames)
+					final List<String> tattNames = CMParms.parseCommas(str,true);
+					for(final String tattName : tattNames)
 						A.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tattName));
 				}
 				str=httpReq.getUrlParameter("EXPIRATION");

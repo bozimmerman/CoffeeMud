@@ -43,19 +43,19 @@ import java.util.concurrent.atomic.*;
 */
 public class Monitor extends Listen
 {
-	@Override 
+	@Override
 	public String getCommandWord()
-	{ 
+	{
 		return "MONITOR";
 	}
 
-	public Monitor(RequestHandler req, String parameters)
+	public Monitor(final RequestHandler req, final String parameters)
 	{
 		super(req, parameters);
 	}
 
 	@Override
-	protected void sendMsg(Listener listener, String msg) throws IOException
+	protected void sendMsg(final Listener listener, final String msg) throws IOException
 	{
 		synchronized(listener)
 		{

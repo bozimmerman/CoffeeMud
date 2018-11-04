@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SummonMount extends Chant
 {
 	@Override
@@ -147,7 +146,7 @@ public class Chant_SummonMount extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
@@ -217,7 +216,7 @@ public class Chant_SummonMount extends Chant
 		return success;
 	}
 
-	public MOB determineMonster(MOB caster, int level)
+	public MOB determineMonster(final MOB caster, final int level)
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenRideable");

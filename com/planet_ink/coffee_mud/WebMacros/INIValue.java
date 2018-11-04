@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class INIValue extends StdWebMacro
 {
 	@Override
@@ -48,7 +47,7 @@ public class INIValue extends StdWebMacro
 		return false;
 	}
 
-	public String getHelpFor(String tag, String mask)
+	public String getHelpFor(final String tag, final String mask)
 	{
 		final Vector<String> help=new Vector<String>();
 		final List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.Str.INIPATH));
@@ -87,13 +86,13 @@ public class INIValue extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		if(parms==null)
 			return "";
 		String last=httpReq.getUrlParameter("INI");
-		boolean descZapperMask = parms.remove("DESCZAPPERMASK") != null;
+		final boolean descZapperMask = parms.remove("DESCZAPPERMASK") != null;
 		if(last == null)
 			last = parms.remove("INI");
 		if((parms.size()==0)&&(last!=null)&&(last.length()>0))

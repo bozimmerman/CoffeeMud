@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ChannelUserReply extends Packet 
+public class ChannelUserReply extends Packet
 {
 	public String userRequested=null;
 	public String userVisibleName=null;
@@ -45,7 +45,7 @@ public class ChannelUserReply extends Packet
 		type = Packet.CHAN_USER_REP;
 	}
 
-	public ChannelUserReply(Vector<?> v) throws InvalidPacketException 
+	public ChannelUserReply(final Vector<?> v) throws InvalidPacketException
 	{
 		super(v);
 		try
@@ -80,7 +80,7 @@ public class ChannelUserReply extends Packet
 	}
 
 	@Override
-	public void send() throws InvalidPacketException 
+	public void send() throws InvalidPacketException
 	{
 		if( userRequested == null || userVisibleName == null )
 		{

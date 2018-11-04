@@ -45,7 +45,7 @@ public class TreeGolem extends StdRace
 		super();
 		super.naturalAbilImmunities.add("Disease_PoisonIvy");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Tree Golem");
 
 	@Override
@@ -236,7 +236,7 @@ public class TreeGolem extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{
@@ -250,8 +250,8 @@ public class TreeGolem extends StdRace
 		}
 	}
 
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -260,7 +260,7 @@ public class TreeGolem extends StdRace
 		}
 		return body;
 	}
-	
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

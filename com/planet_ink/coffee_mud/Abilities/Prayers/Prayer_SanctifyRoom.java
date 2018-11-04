@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prayer_SanctifyRoom extends Prayer
 {
 	@Override
@@ -87,7 +86,7 @@ public class Prayer_SanctifyRoom extends Prayer
 		return Ability.FLAG_NEUTRAL;
 	}
 
-	public static final SHashSet MSG_CODESH=new SHashSet(new Integer[]
+	public static final SHashSet<Integer> MSG_CODESH=new SHashSet<Integer>(new Integer[]
 	{
 		Integer.valueOf(CMMsg.TYP_GET),
 		Integer.valueOf(CMMsg.TYP_PULL),
@@ -95,7 +94,7 @@ public class Prayer_SanctifyRoom extends Prayer
 		Integer.valueOf(CMMsg.TYP_CAST_SPELL)
 	});
 
-	protected boolean inRoom(MOB mob, Room R)
+	protected boolean inRoom(final MOB mob, final Room R)
 	{
 		if(!CMLib.law().doesAnyoneHavePrivilegesHere(mob, text(), R))
 		{
@@ -128,7 +127,7 @@ public class Prayer_SanctifyRoom extends Prayer
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -142,7 +141,7 @@ public class Prayer_SanctifyRoom extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=mob.location();
 		if(target==null)

@@ -48,24 +48,24 @@ public class Nanny extends StdBehavior
 		return Behavior.CAN_MOBS;
 	}
 
-	protected boolean watchesBabies=true;
-	protected boolean watchesChildren=true;
-	protected boolean watchesMounts=false;
-	protected boolean watchesWagons=false;
-	protected boolean watchesCars=false;
-	protected boolean watchesBoats=false;
-	protected boolean watchesAirCars=false;
-	protected boolean watchesMOBFollowers=false;
-	protected boolean changedSinceLastSave=false;
-	protected String place="Nursery";
-	protected double hourlyRate=1.0;
+	protected boolean	watchesBabies			= true;
+	protected boolean	watchesChildren			= true;
+	protected boolean	watchesMounts			= false;
+	protected boolean	watchesWagons			= false;
+	protected boolean	watchesCars				= false;
+	protected boolean	watchesBoats			= false;
+	protected boolean	watchesAirCars			= false;
+	protected boolean	watchesMOBFollowers		= false;
+	protected boolean	changedSinceLastSave	= false;
+	protected String	place					= "Nursery";
+	protected double	hourlyRate				= 1.0;
 
-	protected List<DropOff> dropOffs=null;
-	protected List<Payment> payments=new SVector<Payment>();
-	protected DVector sayLaters=new DVector(2);
+	protected List<DropOff>	dropOffs	= null;
+	protected List<Payment>	payments	= new SVector<Payment>();
+	protected DVector		sayLaters	= new DVector(2);
 	// dynamic list of who belongs to what, before they leave
 	// and get added to official drop-offs.
-	protected List<DropOff> associations=new SVector<DropOff>();
+	protected List<DropOff> associations= new SVector<DropOff>();
 
 	@Override
 	public String accountForYourself()
@@ -79,7 +79,7 @@ public class Nanny extends StdBehavior
 		public PhysicalAgent	baby;
 		public long				dropOffTime;
 
-		public DropOff(MOB momM, PhysicalAgent baby, long dropOff)
+		public DropOff(final MOB momM, final PhysicalAgent baby, final long dropOff)
 		{
 			mommyM = momM;
 			this.baby = baby;
@@ -92,14 +92,14 @@ public class Nanny extends StdBehavior
 		public MOB		mommyM;
 		public double	paid;
 
-		public Payment(MOB M, double d)
+		public Payment(final MOB M, final double d)
 		{
 			mommyM = M;
 			paid = d;
 		}
 	}
 
-	public double getPaidBy(MOB mob)
+	public double getPaidBy(final MOB mob)
 	{
 		if(mob==null)
 			return 0.0;
@@ -112,7 +112,7 @@ public class Nanny extends StdBehavior
 		return amt;
 	}
 
-	public boolean isDroppedOff(PhysicalAgent P)
+	public boolean isDroppedOff(final PhysicalAgent P)
 	{
 		if(P==null)
 			return false;
@@ -124,7 +124,7 @@ public class Nanny extends StdBehavior
 		return false;
 	}
 
-	public boolean isAssociated(PhysicalAgent P)
+	public boolean isAssociated(final PhysicalAgent P)
 	{
 		if(P==null)
 			return false;
@@ -136,7 +136,7 @@ public class Nanny extends StdBehavior
 		return false;
 	}
 
-	public void addPayment(MOB mob,double amt)
+	public void addPayment(final MOB mob,final double amt)
 	{
 		if(mob==null)
 			return;
@@ -151,7 +151,7 @@ public class Nanny extends StdBehavior
 		payments.add(new Payment(mob,amt));
 	}
 
-	public void clearTheSlate(MOB mob)
+	public void clearTheSlate(final MOB mob)
 	{
 		if(mob==null)
 			return;
@@ -178,7 +178,7 @@ public class Nanny extends StdBehavior
 		}
 	}
 
-	public double getAllOwedBy(MOB mob)
+	public double getAllOwedBy(final MOB mob)
 	{
 		if(mob==null)
 			return 0.0;
@@ -202,7 +202,7 @@ public class Nanny extends StdBehavior
 		return amt;
 	}
 
-	public List<PhysicalAgent> getAllOwedFor(MOB mob)
+	public List<PhysicalAgent> getAllOwedFor(final MOB mob)
 	{
 		final List<PhysicalAgent> V=new Vector<PhysicalAgent>();
 		if(mob!=null)
@@ -212,7 +212,7 @@ public class Nanny extends StdBehavior
 		return V;
 	}
 
-	public String getPronoun(List<PhysicalAgent> V)
+	public String getPronoun(final List<PhysicalAgent> V)
 	{
 		if(V.size()==0)
 			return "your stuff";
@@ -256,7 +256,7 @@ public class Nanny extends StdBehavior
 		return list.toString().trim();
 	}
 
-	public String getOwedFor(String currency, PhysicalAgent P)
+	public String getOwedFor(final String currency, final PhysicalAgent P)
 	{
 		for(final DropOff D : dropOffs)
 		{
@@ -271,7 +271,7 @@ public class Nanny extends StdBehavior
 		return "";
 	}
 
-	public String getAllOwedBy(String currency, MOB mob)
+	public String getAllOwedBy(final String currency, final MOB mob)
 	{
 		if(mob==null)
 			return "";
@@ -300,11 +300,11 @@ public class Nanny extends StdBehavior
 
 	public PhysicalAgent getDroppedOffObjIfAny(PhysicalAgent P)
 	{
-		if(P==null) 
+		if(P==null)
 			return null;
-		if(isDroppedOff(P)) 
+		if(isDroppedOff(P))
 			return P;
-		
+
 		if(P instanceof Container)
 		{
 			final List<Item> V=((Container)P).getDeepContents();
@@ -313,7 +313,7 @@ public class Nanny extends StdBehavior
 			{
 				I=V.get(v);
 				P=getDroppedOffObjIfAny(I);
-				if(P!=null) 
+				if(P!=null)
 					return P;
 			}
 		}
@@ -445,7 +445,7 @@ public class Nanny extends StdBehavior
 		return true;
 	}
 
-	public boolean isMount(Environmental E)
+	public boolean isMount(final Environmental E)
 	{
 		if((E instanceof MOB)
 		&&(E instanceof Rideable)
@@ -456,7 +456,7 @@ public class Nanny extends StdBehavior
 		return false;
 	}
 
-	public boolean isDropOffable(Environmental E)
+	public boolean isDropOffable(final Environmental E)
 	{
 		if(E==null)
 			return false;
@@ -492,7 +492,7 @@ public class Nanny extends StdBehavior
 		return false;
 	}
 
-	public MOB ultimateFollowing(Environmental E)
+	public MOB ultimateFollowing(final Environmental E)
 	{
 		MOB ultimateFollowing=null;
 		if(E instanceof MOB)
@@ -500,7 +500,7 @@ public class Nanny extends StdBehavior
 		return ultimateFollowing;
 	}
 
-	public MOB getMommyOf(Physical P)
+	public MOB getMommyOf(final Physical P)
 	{
 		if((P instanceof Item)
 		&&(((Item)P).owner() instanceof MOB)
@@ -532,7 +532,7 @@ public class Nanny extends StdBehavior
 		return null;
 	}
 
-	public void addAssociationsIfNecessary(Set<PhysicalAgent> H)
+	public void addAssociationsIfNecessary(final Set<PhysicalAgent> H)
 	{
 		PhysicalAgent P=null;
 		for(final Object o : H)
@@ -573,7 +573,7 @@ public class Nanny extends StdBehavior
 		}
 	}
 
-	public List<PhysicalAgent> myCurrentAssocs(MOB mob)
+	public List<PhysicalAgent> myCurrentAssocs(final MOB mob)
 	{
 		final Vector<PhysicalAgent> V=new Vector<PhysicalAgent>();
 		if(mob!=null)
@@ -718,7 +718,7 @@ public class Nanny extends StdBehavior
 			CMLib.beanCounter().giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).getTotalValue());
 	}
 
-	public int getNameCount(Vector<String> V, String name)
+	public int getNameCount(final Vector<String> V, final String name)
 	{
 		int index=0;
 		for(int v=0;v<V.size();v++)
@@ -777,7 +777,7 @@ public class Nanny extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String parms)
+	public void setParms(final String parms)
 	{
 		super.setParms(parms);
 		final int x=super.parms.indexOf("|~|");

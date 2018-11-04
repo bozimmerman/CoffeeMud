@@ -34,10 +34,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class GrinderRooms
 {
-	public static void happilyAddMob(MOB M, Room R)
+	public static void happilyAddMob(final MOB M, final Room R)
 	{
 		M.setStartRoom(R);
 		M.setLocation(R);
@@ -50,7 +49,7 @@ public class GrinderRooms
 		R.recoverRoomStats();
 	}
 
-	public static void happilyAddItem(Item I, Room R)
+	public static void happilyAddItem(final Item I, final Room R)
 	{
 		if(I.subjectToWearAndTear())
 			I.setUsesRemaining(100);
@@ -59,7 +58,7 @@ public class GrinderRooms
 		R.recoverRoomStats();
 	}
 
-	public static String editRoom(HTTPRequest httpReq, java.util.Map<String,String> parms, MOB whom, Room R)
+	public static String editRoom(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final MOB whom, Room R)
 	{
 		if(R==null)
 			return "Old Room not defined!";
@@ -382,13 +381,13 @@ public class GrinderRooms
 		return "";
 	}
 
-	public static String delRoom(Room R)
+	public static String delRoom(final Room R)
 	{
 		CMLib.map().obliterateMapRoom(R);
 		return "";
 	}
 
-	public static Room createLonelyRoom(Area A, Room linkTo, int dir, boolean copyThisOne)
+	public static Room createLonelyRoom(final Area A, final Room linkTo, final int dir, final boolean copyThisOne)
 	{
 		Room newRoom=null;
 		final String newRoomID=A.getNewRoomID(linkTo,dir);
@@ -427,7 +426,7 @@ public class GrinderRooms
 		return newRoom;
 	}
 
-	public static String createRoom(Room R, int dir, boolean copyThisOne)
+	public static String createRoom(final Room R, final int dir, final boolean copyThisOne)
 	{
 		R.clearSky();
 		if(R instanceof GridLocale)
@@ -441,7 +440,7 @@ public class GrinderRooms
 		return "";
 	}
 
-	public static Room createGridRoom(Area A, String roomID, Room copyThisOne, RoomnumberSet deferredExitSaves, boolean autoLink)
+	public static Room createGridRoom(final Area A, final String roomID, final Room copyThisOne, final RoomnumberSet deferredExitSaves, final boolean autoLink)
 	{
 		Room R=null;
 		if(copyThisOne!=null)

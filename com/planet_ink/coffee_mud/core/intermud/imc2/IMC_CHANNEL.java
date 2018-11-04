@@ -45,8 +45,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * Ported to Java by Istvan David (u_davis@users.sourceforge.net)
  *
  */
-public class IMC_CHANNEL {
-
+public class IMC_CHANNEL
+{
 	public int perm_level;
 	public String name = ""; /* name of channel */
 	public String owner = ""; /* owner (singular) of channel */

@@ -49,7 +49,7 @@ public class Who extends StdCommand
 
 	private final static Class[][]	filterParameters	= new Class[][] { { Boolean.class, Filterer.class } };
 
-	public int[] getShortColWidths(MOB seer)
+	public int[] getShortColWidths(final MOB seer)
 	{
 		return new int[]{
 			CMLib.lister().fixColWidth(12,seer.session()),
@@ -59,7 +59,7 @@ public class Who extends StdCommand
 		};
 	}
 
-	public String getHead(int[] colWidths)
+	public String getHead(final int[] colWidths)
 	{
 		final StringBuilder head=new StringBuilder("");
 		head.append("^x[");
@@ -73,7 +73,7 @@ public class Who extends StdCommand
 		return head.toString();
 	}
 
-	public StringBuffer showWhoShort(MOB who, int[] colWidths)
+	public StringBuffer showWhoShort(final MOB who, final int[] colWidths)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		msg.append("[");
@@ -103,13 +103,13 @@ public class Who extends StdCommand
 			else
 				msg.append(CMStrings.padRight(levelStr,colWidths[2]));
 		}
-		String name=getWhoName(who);
+		final String name=getWhoName(who);
 		msg.append("] "+CMStrings.padRight(name,colWidths[3]));
 		msg.append("\n\r");
 		return msg;
 	}
 
-	public String getWhoName(MOB seenM)
+	public String getWhoName(final MOB seenM)
 	{
 		String name;
 		if(CMLib.flags().isCloaked(seenM))
@@ -121,7 +121,7 @@ public class Who extends StdCommand
 		return name;
 	}
 
-	public String getPlainWhoName(MOB seenM)
+	public String getPlainWhoName(final MOB seenM)
 	{
 		String name;
 		if(CMLib.flags().isCloaked(seenM))
@@ -133,7 +133,7 @@ public class Who extends StdCommand
 		return name;
 	}
 
-	public boolean checkWho(MOB seerM, MOB seenM, Set<String> friends, Filterer<MOB> mobFilter)
+	public boolean checkWho(final MOB seerM, final MOB seenM, final Set<String> friends, final Filterer<MOB> mobFilter)
 	{
 		if((seenM!=null)
 		&&(((!CMLib.flags().isCloaked(seenM))
@@ -145,7 +145,7 @@ public class Who extends StdCommand
 		return false;
 	}
 
-	public String getWho(MOB mob, Set<String> friends, boolean emptyOnNone, Filterer<MOB> mobFilter)
+	public String getWho(final MOB mob, final Set<String> friends, final boolean emptyOnNone, final Filterer<MOB> mobFilter)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		final int[] colWidths=getShortColWidths(mob);
@@ -169,7 +169,7 @@ public class Who extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String mobName=CMParms.combine(commands,1);
@@ -208,7 +208,7 @@ public class Who extends StdCommand
 					friends.add(mob2.Name());
 			}
 		}
-		
+
 		if((mobName!=null)
 		&&(mob!=null)
 		&&(mobName.equalsIgnoreCase("acct")
@@ -217,7 +217,7 @@ public class Who extends StdCommand
 		&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))
 		&&(CMProps.isUsingAccountSystem()))
 		{
-			int[] colWidths = new int[]{
+			final int[] colWidths = new int[]{
 				CMLib.lister().fixColWidth(20,mob.session()),
 				CMLib.lister().fixColWidth(40,mob.session())
 			};
@@ -254,7 +254,7 @@ public class Who extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(args.length==0)
 			return getWho(mob,null,false,null);

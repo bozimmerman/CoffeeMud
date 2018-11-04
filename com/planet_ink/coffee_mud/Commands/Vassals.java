@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Vassals extends StdCommand
 {
 	public Vassals()
@@ -48,11 +47,11 @@ public class Vassals extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		mob.tell(L("The following players are in your service:"));
-		List<PlayerLibrary.ThinPlayer> players=CMLib.database().vassals(mob.Name());
+		final List<PlayerLibrary.ThinPlayer> players=CMLib.database().vassals(mob.Name());
 		final StringBuilder str=new StringBuilder("");
 		str.append("[");
 		str.append(CMStrings.padRight(L("Race"),8)+" ");
@@ -60,7 +59,7 @@ public class Vassals extends StdCommand
 		str.append(CMStrings.padRight(L("Lvl"),4)+" ");
 		str.append(CMStrings.padRight(L("Exp/Lvl"),17));
 		str.append(L("] Character name\n\r"));
-		for(PlayerLibrary.ThinPlayer tM : players)
+		for(final PlayerLibrary.ThinPlayer tM : players)
 		{
 			final MOB M=CMLib.players().getPlayerAllHosts(tM.name());
 			if(M==null)

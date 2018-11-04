@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_SnakeStaff extends Prayer
 {
 	@Override
@@ -88,9 +87,9 @@ public class Prayer_SnakeStaff extends Prayer
 	}
 
 	protected volatile Item theStaff = null;
-	
+
 	@Override
-	public void setAffectedOne(Physical affected)
+	public void setAffectedOne(final Physical affected)
 	{
 		super.setAffectedOne(affected);
 	}
@@ -100,7 +99,7 @@ public class Prayer_SnakeStaff extends Prayer
 	{
 		if(affected instanceof Item)
 		{
-			Physical affected=this.affected;
+			final Physical affected=this.affected;
 			super.unInvoke();
 			affected.delEffect(this);
 			return;
@@ -133,7 +132,7 @@ public class Prayer_SnakeStaff extends Prayer
 			mob.destroy();
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -171,7 +170,7 @@ public class Prayer_SnakeStaff extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Item target=mob.fetchWieldedItem();
 		if((auto)&&(givenTarget instanceof Item))
@@ -204,12 +203,12 @@ public class Prayer_SnakeStaff extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				
+
 				final MOB monster = determineMonster(mob, mob.phyStats().level()+((getXLEVELLevel(mob)+getX1Level(mob))/2),target.name());
 				final Prayer_SnakeStaff A=(Prayer_SnakeStaff)super.beneficialAffect(mob, monster, asLevel, 10);
 				if(A!=null)
 				{
-					if (monster.isInCombat()) 
+					if (monster.isInCombat())
 						monster.makePeace(true);
 					CMLib.commands().postFollow(monster,mob,true);
 					invoker=mob;
@@ -228,8 +227,8 @@ public class Prayer_SnakeStaff extends Prayer
 		// return whether it worked
 		return success;
 	}
-	
-	public MOB determineMonster(MOB caster, int level, String staffName)
+
+	public MOB determineMonster(final MOB caster, final int level, final String staffName)
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenMob");
@@ -251,7 +250,7 @@ public class Prayer_SnakeStaff extends Prayer
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.addBehavior(CMClass.getBehavior("CombatAbilities"));
-		Ability A=CMClass.getAbility("Poison");
+		final Ability A=CMClass.getAbility("Poison");
 		if(A!=null)
 		{
 			A.setProficiency(100);

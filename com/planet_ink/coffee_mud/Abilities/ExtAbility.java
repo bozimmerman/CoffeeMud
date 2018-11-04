@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class ExtAbility extends StdAbility implements ExtendableAbility
 {
 	private String ID="ExtAbility";
@@ -48,7 +47,7 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 	private StatsAffecting	statsAffector = null;
 	private MsgListener		msgListener = null;
 	private Tickable		tickable = null;
-	
+
 	@Override
 	public String displayText()
 	{
@@ -56,28 +55,28 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 	}
 
 	@Override
-	public ExtendableAbility setAbilityID(String ID) 
+	public ExtendableAbility setAbilityID(final String ID)
 	{
 		this.ID=ID;
 		return this;
 	}
-	
+
 	@Override
-	public ExtendableAbility setStatsAffector(StatsAffecting code) 
+	public ExtendableAbility setStatsAffector(final StatsAffecting code)
 	{
 		this.statsAffector=code;
 		return this;
 	}
-	
+
 	@Override
-	public ExtendableAbility setMsgListener(MsgListener code) 
+	public ExtendableAbility setMsgListener(final MsgListener code)
 	{
 		this.msgListener=code;
 		return this;
 	}
 
 	@Override
-	public ExtendableAbility setTickable(Tickable code) 
+	public ExtendableAbility setTickable(final Tickable code)
 	{
 		this.tickable = code;
 		return this;
@@ -90,7 +89,7 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 		if(this.statsAffector != null)
 			statsAffector.affectPhyStats(affected, affectableStats);
 	}
-	
+
 	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
@@ -98,15 +97,15 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 		if(this.statsAffector != null)
 			statsAffector.affectCharStats(affectedMob, affectableStats);
 	}
-	
+
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		super.affectCharState(affectedMob, affectableMaxState);
 		if(this.statsAffector != null)
 			statsAffector.affectCharState(affectedMob, affectableMaxState);
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -124,19 +123,19 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 			return msgListener.okMessage(myHost, msg);
 		return true;
 	}
-	
+
 	@Override
 	public String name()
 	{
 		return (tickable != null) ? tickable.name() : super.name();
 	}
-	
+
 	@Override
 	public int getTickStatus()
 	{
 		return (tickable != null) ? tickable.getTickStatus() : super.getTickStatus();
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

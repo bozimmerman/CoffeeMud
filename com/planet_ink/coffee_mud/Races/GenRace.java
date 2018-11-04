@@ -131,7 +131,7 @@ public class GenRace extends StdRace
 	{
 		return xpAdjustmentPct;
 	}
-	
+
 	@Override
 	public int shortestFemale()
 	{
@@ -408,7 +408,7 @@ public class GenRace extends StdRace
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		if(adjState!=null)
 		{
@@ -429,7 +429,7 @@ public class GenRace extends StdRace
 		return resourceChoices;
 	}
 
-	protected String getRaceLocatorID(Race R)
+	protected String getRaceLocatorID(final Race R)
 	{
 		if(R==null)
 			return "";
@@ -583,7 +583,7 @@ public class GenRace extends StdRace
 		else
 		{
 			str.append("<IABILITIES>");
-			for(String ableID : naturalAbilImmunities)
+			for(final String ableID : naturalAbilImmunities)
 			{
 				str.append("<IABILITY>");
 				str.append("<ICLASS>"+ableID+"</ICLASS>");
@@ -591,7 +591,7 @@ public class GenRace extends StdRace
 			}
 			str.append("</IABILITIES>");
 		}
-		
+
 		if(xtraValues==null)
 			xtraValues=CMProps.getExtraStatCodesHolder(this);
 		for(int i=this.getSaveStatIndex();i<getStatCodes().length;i++)
@@ -601,7 +601,7 @@ public class GenRace extends StdRace
 	}
 
 	@Override
-	public void setRacialParms(String parms)
+	public void setRacialParms(final String parms)
 	{
 		if(parms.trim().length()==0)
 		{
@@ -649,7 +649,7 @@ public class GenRace extends StdRace
 		shortestFemale=CMLib.xml().getIntFromPieces(raceData,"FHEIGHT");
 		shortestMale=CMLib.xml().getIntFromPieces(raceData,"MHEIGHT");
 		isRideable=CMLib.xml().getBoolFromPieces(raceData,"RIDE");
-		
+
 		helpEntry=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(raceData,"HELP"));
 		final String playerval=CMLib.xml().getValFromPieces(raceData,"PLAYER").trim().toUpperCase();
 		if(playerval.length()>0)
@@ -1064,7 +1064,7 @@ public class GenRace extends StdRace
 	}
 
 	@Override
-	public void startRacing(MOB mob, boolean verifyOnly)
+	public void startRacing(final MOB mob, final boolean verifyOnly)
 	{
 		super.startRacing(mob,verifyOnly);
 		if((!verifyOnly)&&(startAdjState!=null))
@@ -1078,18 +1078,18 @@ public class GenRace extends StdRace
 		}
 	}
 
-	private void setBaseStat(String val, Modifiable C)
+	private void setBaseStat(final String val, final Modifiable C)
 	{
-		for(String stat : C.getStatCodes())
+		for(final String stat : C.getStatCodes())
 		{
-			String statVal=CMParms.getParmStr(val, stat, "");
+			final String statVal=CMParms.getParmStr(val, stat, "");
 			if((statVal!=null)&&(statVal.length()>0))
 				C.setStat(stat, statVal);
 		}
 	}
-	
+
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(String code, final String val)
 	{
 		int num=0;
 		int numDex=code.length();
@@ -1121,7 +1121,7 @@ public class GenRace extends StdRace
 				forbiddenWornBits=0;
 				for(int i=1;i<Wearable.DEFAULT_WORN_DESCS.length;i++)
 				{
-					String s=CMParms.getParmStr(val, Wearable.DEFAULT_WORN_DESCS[i].toUpperCase().replace(' ','_'), "");
+					final String s=CMParms.getParmStr(val, Wearable.DEFAULT_WORN_DESCS[i].toUpperCase().replace(' ','_'), "");
 					if((s!=null)&&(s.length()>0)&&(CMath.isBool(s)))
 						if(CMath.s_bool(s))
 							forbiddenWornBits=CMath.setb(forbiddenWornBits, 2^(i-1));
@@ -1193,7 +1193,7 @@ public class GenRace extends StdRace
 			clrStatChgDesc();
 			if(val.length()>0)
 			{
-				adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); 
+				adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 				adjPStats.setAllValues(0);
 				if((val.indexOf('=')>0)&&(val.indexOf('|')<0))
 					setBaseStat(val, adjPStats);
@@ -1249,15 +1249,15 @@ public class GenRace extends StdRace
 		}
 		case 18:
 		{
-			if(CMath.s_int(val)==0) 
-				resourceChoices=null; 
-			else 
-				resourceChoices=new Vector<RawMaterial>(CMath.s_int(val)); 
+			if(CMath.s_int(val)==0)
+				resourceChoices=null;
+			else
+				resourceChoices=new Vector<RawMaterial>(CMath.s_int(val));
 			break;
 		}
-		case 19: 
+		case 19:
 		{
-			if(resourceChoices==null) 
+			if(resourceChoices==null)
 				resourceChoices=new Vector<RawMaterial>();
 			final Item I=CMClass.getItem(val);
 			if(I instanceof RawMaterial)
@@ -1282,7 +1282,7 @@ public class GenRace extends StdRace
 		case 21:
 		{
 			naturalWeapon=null;
-			if(val.length()>0) 
+			if(val.length()>0)
 				naturalWeapon=CMClass.getWeapon(val);
 			break;
 		}
@@ -1318,12 +1318,12 @@ public class GenRace extends StdRace
 		}
 		case 24:
 		{
-			if(racialAbilityNames==null) 
+			if(racialAbilityNames==null)
 				racialAbilityNames=new String[num+1];
 			racialAbilityNames[num]=val;
 			break;
 		}
-		case 25: 
+		case 25:
 		{
 			if(racialAbilityProfs==null)
 				racialAbilityProfs=new int[num+1];
@@ -1332,7 +1332,7 @@ public class GenRace extends StdRace
 		}
 		case 26:
 		{
-			if(racialAbilityQuals==null) 
+			if(racialAbilityQuals==null)
 				racialAbilityQuals=new boolean[num+1];
 			racialAbilityQuals[num]=CMath.s_bool(val);
 			break;
@@ -1404,10 +1404,10 @@ public class GenRace extends StdRace
 		}
 		case 34:
 		{
-			if(CMath.s_int(val)==0) 
-				outfitChoices=null; 
-			else 
-				outfitChoices=new Vector<Item>(CMath.s_int(val)); 
+			if(CMath.s_int(val)==0)
+				outfitChoices=null;
+			else
+				outfitChoices=new Vector<Item>(CMath.s_int(val));
 			break;
 		}
 		case 35:
@@ -1466,7 +1466,7 @@ public class GenRace extends StdRace
 		}
 		case 41:
 		{
-			if(racialEffectLevels==null) 
+			if(racialEffectLevels==null)
 				racialEffectLevels=new int[num+1];
 			racialEffectLevels[num]=CMath.s_int(val);
 			break;

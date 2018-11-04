@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_AuraHeal extends Prayer
 {
 	@Override
@@ -155,7 +154,7 @@ public class Prayer_AuraHeal extends Prayer
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -175,7 +174,7 @@ public class Prayer_AuraHeal extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room target=mob.location();
 		if(target==null)
@@ -185,7 +184,7 @@ public class Prayer_AuraHeal extends Prayer
 			mob.tell(L("The aura of healing is already here."));
 			return false;
 		}
-		
+
 		final Ability oldPrayerA=target.fetchEffect("Prayer_AuraHarm");
 		if(oldPrayerA!=null)
 		{

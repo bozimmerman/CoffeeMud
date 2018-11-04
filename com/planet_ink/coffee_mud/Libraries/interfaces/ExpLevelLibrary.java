@@ -36,7 +36,7 @@ public interface ExpLevelLibrary extends CMLibrary
 {
 	/**
 	 * Returns how much experience a player must have to be the given level.
-	 * 
+	 *
 	 * @param level the level to base the exp on
 	 * @return the amount of experiene required to be the given level
 	 */
@@ -45,7 +45,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns how much experience a player must gain at this level to advance
 	 * to the next.
-	 * 
+	 *
 	 * @param level the level to check at
 	 * @return the amount of experience
 	 */
@@ -81,12 +81,12 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * @return true if experience is posted, false otherwise
 	 */
 	public boolean postExperienceToAllAboard(Physical possibleShip, int amount);
-	
+
 	/**
 	 * This method fills in combat and rejuvenation related stats for the given
 	 * mob of their current base class at the given level. This method should
 	 * create a mob for the caller if mob==null.
-	 * 
+	 *
 	 * @param mob the mob to fill out, or null
 	 * @param level the level of the mob
 	 * @return the filled in mob
@@ -97,7 +97,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * This method fills in combat and rejuvenation related stats for the given
 	 * mob of the given class at the given level. This method should create a
 	 * mob for the caller.
-	 * 
+	 *
 	 * @param C the class to use.
 	 * @param level the level of the mob
 	 * @return the filled in mob
@@ -107,7 +107,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the amount of hp the given player would have being their current
 	 * base class.
-	 * 
+	 *
 	 * @param mob the mob who would be this class
 	 * @return the amount of hp a pc of this class should have
 	 */
@@ -116,7 +116,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the amount of mana the given mob would have being their current
 	 * base class.
-	 * 
+	 *
 	 * @param mob the mob who would be this class
 	 * @return the amount of mana an npc of this class should have
 	 */
@@ -125,7 +125,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the range of money the given mob would have being their current
 	 * base class. Since money is variable, this is a range low-high
-	 * 
+	 *
 	 * @param mob the mob who would be this class
 	 * @return the range of money an npc of this class should have
 	 */
@@ -134,7 +134,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the number of attacks the given mob would have being their
 	 * current base class.
-	 * 
+	 *
 	 * @param mob the mob who would be this class
 	 * @return the number of attacks an npc of this class should have
 	 */
@@ -143,7 +143,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the amount of movement the given mob would have being their
 	 * current base class.
-	 * 
+	 *
 	 * @param mob the mob who would be this class
 	 * @return the amount of movement an npc of this class should have
 	 */
@@ -152,7 +152,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the amount of combat prowess the given mob would have being their
 	 * current base class.
-	 * 
+	 *
 	 * @param mob the mob who would be this class
 	 * @return the amount of combat prowess an npc of this class should have
 	 */
@@ -161,7 +161,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the armor rating the given mob would have being their current
 	 * base class.
-	 * 
+	 *
 	 * @param mob the mob who would be this class
 	 * @return the armor rating an npc of this class should have
 	 */
@@ -170,7 +170,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns the amount of damage per hit the given mob would have being their
 	 * current base class.
-	 * 
+	 *
 	 * @param mob the mob who would be this class
 	 * @return the amount of damage per hit an npc of this class should have
 	 */
@@ -181,7 +181,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * the experience gain for the player as well as determining how much, if
 	 * any should be distributed to leiges or clans. Will automatically cause a
 	 * call to level if necessary.
-	 * 
+	 *
 	 * @see ExpLevelLibrary#level(MOB)
 	 * @param mob the mob to distribute experience to
 	 * @param victim the mob killed, if any, to cause the experience gain
@@ -197,7 +197,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * does the experience loss for the player as well as determining how much,
 	 * if any should be taken awa from leiges or clans. Will automatically cause
 	 * an unleveling if necessary.
-	 * 
+	 *
 	 * @see ExpLevelLibrary#unLevel(MOB)
 	 * @param mob the mob to take experience away from
 	 * @param amount the amount of experience to take away

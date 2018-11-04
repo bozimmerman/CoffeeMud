@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_FlyingKick extends FighterSkill
 {
 	@Override
@@ -99,7 +98,7 @@ public class Fighter_FlyingKick extends FighterSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -112,7 +111,7 @@ public class Fighter_FlyingKick extends FighterSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()==0))
 		{

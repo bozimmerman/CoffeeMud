@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Archon_Metacraft extends ArchonSkill
 {
 	@Override
@@ -59,7 +58,7 @@ public class Archon_Metacraft extends ArchonSkill
 
 	public static List<Ability> craftingSkills = new Vector<Ability>();
 
-	protected String replacePercent(String thisStr, String withThis)
+	protected String replacePercent(final String thisStr, final String withThis)
 	{
 		if(withThis.length()==0)
 		{
@@ -83,7 +82,7 @@ public class Archon_Metacraft extends ArchonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(craftingSkills.size()==0)
 		{
@@ -176,28 +175,28 @@ public class Archon_Metacraft extends ArchonSkill
 		if(material>0)
 		{
 			craftingSkills = new ArrayList<Ability>();
-			for(Ability A : Archon_Metacraft.craftingSkills)
+			for(final Ability A : Archon_Metacraft.craftingSkills)
 			{
-				ItemCraftor craft = (ItemCraftor)A;
+				final ItemCraftor craft = (ItemCraftor)A;
 				if(craft.myResources().contains(Integer.valueOf(material)))
 					craftingSkills.add(A);
 			}
 			if(craftingSkills.size()==0)
 				craftingSkills=Archon_Metacraft.craftingSkills;
 		}
-		
+
 		ItemCraftor skill=null;
 		List<Pair<Ability,String>> skillsToUse=new Vector<Pair<Ability,String>>();
 		if(commands.size()>1)
 		{
-			
+
 		}
 		String recipe=CMParms.combine(commands,0);
 		boolean everyFlag=false;
 		if(recipe.equalsIgnoreCase("everything"))
 		{
 			skillsToUse=new XVector<Pair<Ability,String>>();
-			for(Ability A : craftingSkills)
+			for(final Ability A : craftingSkills)
 				skillsToUse.add(new Pair<Ability,String>(A,"*"));
 			everyFlag=true;
 			recipe=null;
@@ -213,7 +212,7 @@ public class Archon_Metacraft extends ArchonSkill
 				final List<List<String>> V=skill.matchingRecipeNames(recipe,false);
 				if((V!=null)&&(V.size()>0))
 				{
-					for(List<String> V2 : V)
+					for(final List<String> V2 : V)
 						skillsToUse.add(new Pair<Ability,String>(skill,replacePercent(V2.get(0),"")));
 				}
 			}
@@ -225,7 +224,7 @@ public class Archon_Metacraft extends ArchonSkill
 					final List<List<String>> V=skill.matchingRecipeNames(recipe,true);
 					if((V!=null)&&(V.size()>0))
 					{
-						for(List<String> V2 : V)
+						for(final List<String> V2 : V)
 							skillsToUse.add(new Pair<Ability,String>(skill,replacePercent(V2.get(0),"")));
 					}
 				}
@@ -235,7 +234,7 @@ public class Archon_Metacraft extends ArchonSkill
 		if(recipe.toUpperCase().startsWith("ALL "))
 		{
 			everyFlag=true;
-			String skillName=recipe.toUpperCase().substring(4);
+			final String skillName=recipe.toUpperCase().substring(4);
 			skill = (ItemCraftor)CMLib.english().fetchEnvironmental(craftingSkills, skillName, true);
 			if(skill == null)
 				skill = (ItemCraftor)CMLib.english().fetchEnvironmental(craftingSkills, skillName, false);

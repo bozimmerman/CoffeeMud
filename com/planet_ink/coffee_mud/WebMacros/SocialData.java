@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class SocialData extends StdWebMacro
 {
 	@Override
@@ -49,7 +48,7 @@ public class SocialData extends StdWebMacro
 	static int[] CODES={CMMsg.MSG_SPEAK,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISE,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_HANDS};
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("SOCIAL");
@@ -411,7 +410,7 @@ public class SocialData extends StdWebMacro
 							}
 						}
 					}
-					
+
 					old=httpReq.getUrlParameter("DOADDXSOCIAL");
 					if((old!=null)
 					&&(old.equalsIgnoreCase("on"))
@@ -432,9 +431,9 @@ public class SocialData extends StdWebMacro
 					&&(CMath.s_int(parms.get("GETEXTRA"))<numxtras))
 						str.append(TYPES.get(BTYPES.length+CMath.s_int(parms.get("GETEXTRA")))+", ");
 
-					
+
 					old=httpReq.getUrlParameter("NUMXARGS");
-					List<String> xargs=new ArrayList<String>();
+					final List<String> xargs=new ArrayList<String>();
 					if(old!=null)
 					{
 						final int numXtras=CMath.s_int(httpReq.getUrlParameter("NUMXARGS"));
@@ -466,7 +465,7 @@ public class SocialData extends StdWebMacro
 							httpReq.addFakeUrlParameter("ISTARGETMOB_"+TYPE,"on");
 						}
 					}
-					
+
 					old=httpReq.getUrlParameter("DOADDXARG");
 					if((old!=null)
 					&&(old.equalsIgnoreCase("on"))

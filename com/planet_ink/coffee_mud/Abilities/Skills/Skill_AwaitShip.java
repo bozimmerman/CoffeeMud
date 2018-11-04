@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_AwaitShip extends StdSkill
 {
 	@Override
@@ -88,9 +87,9 @@ public class Skill_AwaitShip extends StdSkill
 	{
 		return Ability.ACODE_SKILL | Ability.DOMAIN_SEATRAVEL;
 	}
-	
+
 	@Override
-	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Room waterRoom=null;
 		final Room R=mob.location();
@@ -114,24 +113,24 @@ public class Skill_AwaitShip extends StdSkill
 			mob.tell(L("You can only wait for your ship at the shore."));
 			return false;
 		}
-		
+
 		// now see if it worked
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
-		
+
 		SailingShip targetShip=null;
 		boolean success=proficiencyCheck(mob,0,auto);
 		Room targetR = null;
 		List<Room> trail = null;
 		if(success)
 		{
-			TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
+			final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
 															.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
 			final SailingShip[] targetShipI=new SailingShip[1];
-			TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
+			final TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 			{
 				@Override
-				public boolean isFilteredOut(Room hostR, Room R, Exit E, int dir)
+				public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 				{
 					if (R == null)
 						return false;
@@ -161,7 +160,7 @@ public class Skill_AwaitShip extends StdSkill
 			trail = CMLib.tracking().findTrailToAnyRoom(R, destFilter, flags, 30+(5*super.getXLEVELLevel(mob)));
 			if((trail!=null)&&(trail.size()>0))
 				targetR=trail.get(0);
-			
+
 			if((targetR==null)||(trail==null)||(trail.size()==0))
 			{
 				success=false;
@@ -174,9 +173,9 @@ public class Skill_AwaitShip extends StdSkill
 					success=false;
 				}
 			}
-			
+
 		}
-		
+
 		if(success && (trail!=null) && (targetShip != null))
 		{
 			invoker=mob;
@@ -184,12 +183,12 @@ public class Skill_AwaitShip extends StdSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				List<Integer> newCourse=new ArrayList<Integer>();
+				final List<Integer> newCourse=new ArrayList<Integer>();
 				Room room=trail.get(trail.size()-1);
 				for(int i=0;i<trail.size();i++)
 				{
-					Room nextRoom=trail.get(i);
-					int dir=CMLib.map().getRoomDir(room, nextRoom);
+					final Room nextRoom=trail.get(i);
+					final int dir=CMLib.map().getRoomDir(room, nextRoom);
 					if(dir >= 0)
 						newCourse.add(Integer.valueOf(dir));
 					room=nextRoom;

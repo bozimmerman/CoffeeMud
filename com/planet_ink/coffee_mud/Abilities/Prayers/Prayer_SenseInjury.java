@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_SenseInjury extends Prayer
 {
 	@Override
@@ -112,7 +111,7 @@ public class Prayer_SenseInjury extends Prayer
 	}
 
 	private static final List<MOB> empty=new ReadOnlyVector<MOB>(1);
-	public List<MOB> getInjured(MOB mob, Room R)
+	public List<MOB> getInjured(final MOB mob, final Room R)
 	{
 		if(R==null)
 			return empty;
@@ -138,7 +137,7 @@ public class Prayer_SenseInjury extends Prayer
 		return empty;
 	}
 
-	public void messageTo(MOB mob)
+	public void messageTo(final MOB mob)
 	{
 		String last="";
 		String dirs="";
@@ -202,7 +201,7 @@ public class Prayer_SenseInjury extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Physical target=mob;
 		if((auto)&&(givenTarget!=null))

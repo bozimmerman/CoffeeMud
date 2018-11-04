@@ -24,7 +24,7 @@ public class ConvertingIterator<K, L> implements Iterator<L>
 	private K currObj = null;
 	Converter<K, L> converter;
 
-	public ConvertingIterator(Iterator<K> eset, Converter<K, L> conv)
+	public ConvertingIterator(final Iterator<K> eset, final Converter<K, L> conv)
 	{
 		iterer=eset;
 		converter=conv;

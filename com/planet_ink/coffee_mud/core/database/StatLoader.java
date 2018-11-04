@@ -36,12 +36,12 @@ import java.util.*;
 public class StatLoader
 {
 	protected DBConnector DB=null;
-	public StatLoader(DBConnector newDB)
+	public StatLoader(final DBConnector newDB)
 	{
 		DB=newDB;
 	}
 
-	public CoffeeTableRow DBRead(long startTime)
+	public CoffeeTableRow DBRead(final long startTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
 			Log.debugOut("StatLoader","Reading content of Stat  "+CMLib.time().date2String(startTime));
@@ -71,7 +71,7 @@ public class StatLoader
 		return T;
 	}
 
-	public List<CoffeeTableRow> DBReadAfter(long startTime, long endTime)
+	public List<CoffeeTableRow> DBReadAfter(final long startTime, final long endTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
 			Log.debugOut("StatLoader","Reading content of Stats since "+CMLib.time().date2String(startTime));
@@ -115,7 +115,7 @@ public class StatLoader
 		return rows;
 	}
 
-	public void DBDelete(long startTime)
+	public void DBDelete(final long startTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
 			Log.debugOut("StatLoader","Deleting Stat  "+CMLib.time().date2String(startTime));
@@ -129,7 +129,7 @@ public class StatLoader
 		}
 	}
 
-	public boolean DBUpdate(long startTime, String data)
+	public boolean DBUpdate(final long startTime, final String data)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
 			Log.debugOut("StatLoader","Updating Stat  "+CMLib.time().date2String(startTime));
@@ -145,7 +145,7 @@ public class StatLoader
 		return (result != -1);
 	}
 
-	public boolean DBCreate(long startTime, long endTime, String data)
+	public boolean DBCreate(final long startTime, final long endTime, final String data)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMSTAT)))
 			Log.debugOut("StatLoader","Creating Stat  "+CMLib.time().date2String(startTime));

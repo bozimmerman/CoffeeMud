@@ -99,7 +99,7 @@ public class Thief_CarefulStep extends ThiefSkill
 	}
 
 	@Override
-	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+	public boolean preInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
 	{
 		if(secondsElapsed==0)
 		{
@@ -133,7 +133,7 @@ public class Thief_CarefulStep extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0)

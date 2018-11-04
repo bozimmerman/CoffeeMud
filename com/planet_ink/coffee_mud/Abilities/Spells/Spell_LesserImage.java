@@ -53,12 +53,12 @@ public class Spell_LesserImage extends Spell_MinorImage
 	{
 		return 10 + (super.adjustedLevel(caster, asLevel)/5);
 	}
-	
+
 	protected boolean canSeeAppearance()
 	{
 		return true;
 	}
-	
+
 	protected boolean canTargetOthers()
 	{
 		return false;

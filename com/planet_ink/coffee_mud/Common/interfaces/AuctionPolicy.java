@@ -20,13 +20,13 @@ import java.util.List;
 import com.planet_ink.coffee_mud.MOBS.interfaces.Auctioneer;
 
 /**
- * Class for storing basic Auction House policies.  
+ * Class for storing basic Auction House policies.
  * @author Bo Zimmerman
  */
 public interface AuctionPolicy extends CMCommon
 {
 	/**
-	 * Gets the flat fee in base currency to list an 
+	 * Gets the flat fee in base currency to list an
 	 * item of any sort at the auction house for a timed
 	 * auction.
 	 * @see AuctionPolicy#setTimedListingPrice(double)
@@ -35,7 +35,7 @@ public interface AuctionPolicy extends CMCommon
 	public double timedListingPrice();
 
 	/**
-	 * Sets the flat fee in base currency to list an 
+	 * Sets the flat fee in base currency to list an
 	 * item of any sort at the auction house for a timed
 	 * auction.
 	 * @see AuctionPolicy#timedListingPrice()
@@ -51,7 +51,7 @@ public interface AuctionPolicy extends CMCommon
 	 * @return  the percent of an items value, per day
 	 */
 	public double timedListingPct();
-	
+
 	/**
 	 * Sets the percent of an items value, per day,
 	 * to charge to list an item. 0.0-1.0for a timed
@@ -65,30 +65,30 @@ public interface AuctionPolicy extends CMCommon
 	 * Gets the percent of an items final value
 	 * to take off the winning bid for the house
 	 * for a timed auction. 0.0-1.0
-	 * @see AuctionPolicy#setTimedFinalCutPct(double) 
+	 * @see AuctionPolicy#setTimedFinalCutPct(double)
 	 * @return the percent of an items final value
 	 */
 	public double timedFinalCutPct();
-	
+
 	/**
 	 * Gets the percent of an items final value
 	 * to take off the winning bid for the house.
 	 * for a timed auction. 0.0-1.0
-	 * @see AuctionPolicy#timedFinalCutPct() 
+	 * @see AuctionPolicy#timedFinalCutPct()
 	 * @param d the percent of an items final value
 	 */
 	public void setTimedFinalCutPct(double d);
 
 	/**
-	 * Gets the maximum number of game-days that 
+	 * Gets the maximum number of game-days that
 	 * an auction can continue.
 	 * @see AuctionPolicy#setMaxTimedAuctionDays(int)
 	 * @return the maximum number of game-days
 	 */
 	public int maxTimedAuctionDays();
-	
+
 	/**
-	 * Sets the maximum number of game-days that 
+	 * Sets the maximum number of game-days that
 	 * an auction can continue.
 	 * @see AuctionPolicy#maxTimedAuctionDays()
 	 * @param d the maximum number of game-days
@@ -96,15 +96,15 @@ public interface AuctionPolicy extends CMCommon
 	public void setMaxTimedAuctionDays(int d);
 
 	/**
-	 * Gets the minimum number of game-days that 
+	 * Gets the minimum number of game-days that
 	 * an auction can continue.
 	 * @see AuctionPolicy#setMinTimedAuctionDays(int)
 	 * @return the minimum number of game-days
 	 */
 	public int minTimedAuctionDays();
-	
+
 	/**
-	 * Sets the minimum number of game-days that 
+	 * Sets the minimum number of game-days that
 	 * an auction can continue.
 	 * @see AuctionPolicy#minTimedAuctionDays()
 	 * @param d the minimum number of game-days
@@ -112,7 +112,7 @@ public interface AuctionPolicy extends CMCommon
 	public void setMinTimedAuctionDays(int d);
 
 	/**
-	 * Gets the flat fee in base currency to list an 
+	 * Gets the flat fee in base currency to list an
 	 * item of any sort at the auction house for a live
 	 * auction.
 	 * @see AuctionPolicy#setLiveListingPrice(double)
@@ -121,7 +121,7 @@ public interface AuctionPolicy extends CMCommon
 	public double liveListingPrice();
 
 	/**
-	 * Sets the flat fee in base currency to list an 
+	 * Sets the flat fee in base currency to list an
 	 * item of any sort at the auction house for a live
 	 * auction.
 	 * @see AuctionPolicy#liveListingPrice()
@@ -133,24 +133,24 @@ public interface AuctionPolicy extends CMCommon
 	 * Gets the percent of an items final value
 	 * to take off the winning bid for the house
 	 * for a live auction. 0.0-1.0
-	 * @see AuctionPolicy#setLiveFinalCutPct(double) 
+	 * @see AuctionPolicy#setLiveFinalCutPct(double)
 	 * @return the percent of an items final value
 	 */
 	public double liveFinalCutPct();
-	
+
 	/**
 	 * Gets the percent of an items final value
 	 * to take off the winning bid for the house.
 	 * for a live auction. 0.0-1.0
-	 * @see AuctionPolicy#liveFinalCutPct() 
+	 * @see AuctionPolicy#liveFinalCutPct()
 	 * @param d the percent of an items final value
 	 */
 	public void setLiveFinalCutPct(double d);
-	
+
 	/**
 	 * Alters this policy to take account of the policies
 	 * of the policies of a full timed auctioneer.
-	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.Auctioneer 
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.Auctioneer
 	 * @param auction the auctioneer
 	 */
 	public void mergeAuctioneerPolicy(Auctioneer auction);

@@ -38,7 +38,7 @@ public class I3Exception extends Exception
 		this("Unidentified exception.");
 	}
 
-	public I3Exception(String str)
+	public I3Exception(final String str)
 	{
 		super(str);
 	}

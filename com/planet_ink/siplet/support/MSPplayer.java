@@ -35,13 +35,13 @@ public class MSPplayer extends Thread
 	public String		tag				= "soundplayer";
 	private Object		applet			= null;
 
-	public MSPplayer(Object theApplet)
+	public MSPplayer(final Object theApplet)
 	{
 		super();
 		applet = theApplet;
 	}
 
-	public String stopPlaying(String playerName, boolean useExternal)
+	public String stopPlaying(final String playerName, final boolean useExternal)
 	{
 		if (playing)
 		{
@@ -96,7 +96,7 @@ public class MSPplayer extends Thread
 		playing = false;
 	}
 
-	public String startPlaying(String playerName, boolean useExternal)
+	public String startPlaying(final String playerName, final boolean useExternal)
 	{
 		if (useExternal)
 		{

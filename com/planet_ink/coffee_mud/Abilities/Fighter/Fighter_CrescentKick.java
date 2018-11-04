@@ -104,7 +104,7 @@ public class Fighter_CrescentKick extends StdAbility
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
-			MOB mob=(MOB)affected;
+			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())
 			&&(CMLib.flags().isAliveAwakeMobile(mob,true))
 			&&(mob.rangeToTarget()==0)
@@ -112,7 +112,7 @@ public class Fighter_CrescentKick extends StdAbility
 			{
 				if(CMLib.dice().rollPercentage()>95)
 					super.helpProficiency(mob,0);
-				Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
+				final Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
 				naturalWeapon.setName(L("a crescent kick"));
 				naturalWeapon.setWeaponDamageType(Weapon.TYPE_BASHING);
 				naturalWeapon.recoverPhyStats();
@@ -123,11 +123,11 @@ public class Fighter_CrescentKick extends StdAbility
 		return true;
 	}
 
-	public boolean anyWeapons(MOB mob)
+	public boolean anyWeapons(final MOB mob)
 	{
 		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.getItem(i);
+			final Item I=mob.getItem(i);
 			if((I!=null)
 			&&((I.amWearingAt(Item.WORN_WIELD))
 				||(I.amWearingAt(Item.WORN_HELD))))

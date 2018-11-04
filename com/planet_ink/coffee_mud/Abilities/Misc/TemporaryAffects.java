@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class TemporaryAffects extends StdAbility
 {
 	@Override
@@ -151,7 +150,7 @@ public class TemporaryAffects extends StdAbility
 	}
 
 	@Override
-	public void affectCharState(MOB affected, CharState affectableStats)
+	public void affectCharState(final MOB affected, final CharState affectableStats)
 	{
 		super.affectCharState(affected, affectableStats);
 		if(affected==null)
@@ -163,7 +162,7 @@ public class TemporaryAffects extends StdAbility
 		}
 	}
 
-	public void unAffectAffected(Object[] Os)
+	public void unAffectAffected(final Object[] Os)
 	{
 		final CMObject O = (CMObject)Os[0];
 		final Physical P=affected;
@@ -270,7 +269,7 @@ public class TemporaryAffects extends StdAbility
 	}
 
 	@Override
-	public void setAffectedOne(Physical P)
+	public void setAffectedOne(final Physical P)
 	{
 		super.setAffectedOne(P);
 		if((affects!=null)&&(!initialized))
@@ -278,7 +277,7 @@ public class TemporaryAffects extends StdAbility
 				finishInit((CMObject)set[0]);
 	}
 
-	public void finishInit(CMObject A)
+	public void finishInit(final CMObject A)
 	{
 		if(affected == null)
 			return;
@@ -354,7 +353,7 @@ public class TemporaryAffects extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<3)
 		{

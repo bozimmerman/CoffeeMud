@@ -37,8 +37,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-@SuppressWarnings("unchecked")
 public class CraftingSkill extends GatheringSkill
 {
 	@Override
@@ -1324,6 +1322,7 @@ public class CraftingSkill extends GatheringSkill
 		final List<List<String>> recipes = this.loadRecipes();
 		if(nameV.size()==0)
 			return false;
+		@SuppressWarnings("unchecked")
 		TreeSet<String> allExpertiseWords=(TreeSet<String>)Resources.getResource("CRAFTING_SKILL_EXPERTISE_WORDS");
 		if(allExpertiseWords == null)
 		{

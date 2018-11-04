@@ -36,14 +36,14 @@ public class ServletSession implements SimpleServletSession
 	private final Date				startTime;
 	private final Map<String,Object>objects			= new Hashtable<String,Object>();
 	private volatile long			lastTouchTime;
-	
-	public ServletSession(String sessionID)
+
+	public ServletSession(final String sessionID)
 	{
 		this.sessionID=sessionID;
 		this.startTime=new Date(System.currentTimeMillis());
 		lastTouchTime=System.currentTimeMillis();
 	}
-	
+
 	/**
 	 * Returns special defined string "user".
 	 * By default, this string is empty ""
@@ -59,7 +59,7 @@ public class ServletSession implements SimpleServletSession
 	 * @param user the string called "user"
 	 */
 	@Override
-	public void setUser(String user)
+	public void setUser(final String user)
 	{
 		if(user != null)
 		{
@@ -87,7 +87,7 @@ public class ServletSession implements SimpleServletSession
 		return startTime;
 	}
 	/**
-	 * Returns the time, in milliseconds, when this session 
+	 * Returns the time, in milliseconds, when this session
 	 * was last "touched" by the client
 	 * @return time in millis
 	 */
@@ -103,7 +103,7 @@ public class ServletSession implements SimpleServletSession
 	 * @return the object stored, or null if not found
 	 */
 	@Override
-	public Object getSessionObject(String name)
+	public Object getSessionObject(final String name)
 	{
 		if(name == null)
 		{
@@ -118,7 +118,7 @@ public class ServletSession implements SimpleServletSession
 	 * @param obj the object to store under this name, or null to delete
 	 */
 	@Override
-	public void setSessionObject(String name, Object obj)
+	public void setSessionObject(final String name, final Object obj)
 	{
 		if(name == null)
 		{

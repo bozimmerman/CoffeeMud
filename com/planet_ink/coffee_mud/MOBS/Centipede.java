@@ -72,7 +72,7 @@ public class Centipede extends StdMOB
 			A.setProficiency(100);
 			addAbility(A);
 		}
-		
+
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();

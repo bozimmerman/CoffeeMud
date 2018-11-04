@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Disease_Leeches extends Disease
 {
 	@Override
@@ -126,7 +125,7 @@ public class Disease_Leeches extends Disease
 	protected int hp=Integer.MAX_VALUE;
 	protected String thename="";
 
-	public List<Ability> returnOffensiveAffects(Physical fromMe)
+	public List<Ability> returnOffensiveAffects(final Physical fromMe)
 	{
 		final Vector<Ability> offenders=new Vector<Ability>();
 

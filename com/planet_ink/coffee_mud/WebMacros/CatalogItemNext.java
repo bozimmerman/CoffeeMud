@@ -59,7 +59,7 @@ public class CatalogItemNext extends StdWebMacro
 								"CATALOG_ITEM_AREA",
 	};
 
-	public static String getCataStat(Item I, CatalogLibrary.CataData data, int x, String optionalColumn)
+	public static String getCataStat(final Item I, final CatalogLibrary.CataData data, final int x, final String optionalColumn)
 	{
 		if((I==null)||(data==null))
 			return "";
@@ -98,7 +98,7 @@ public class CatalogItemNext extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("ITEM");
@@ -156,7 +156,7 @@ public class CatalogItemNext extends StdWebMacro
 					Arrays.sort(sortifiable,new Comparator<Object>()
 					{
 						@Override
-						public int compare(Object o1, Object o2)
+						public int compare(final Object o1, final Object o2)
 						{
 							final Object[] O1=(Object[])o1;
 							final Object[] O2=(Object[])o2;

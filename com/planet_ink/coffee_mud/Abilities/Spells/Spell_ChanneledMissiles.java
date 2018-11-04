@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_ChanneledMissiles extends Spell
 {
 
@@ -138,7 +137,7 @@ public class Spell_ChanneledMissiles extends Spell
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_AUTO_ATTACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
@@ -226,7 +225,7 @@ public class Spell_ChanneledMissiles extends Spell
 									if(target[0].getVictim()==null)
 										target[0].setVictim(mob);
 								}
-	
+
 							}
 						};
 						thisSpellA.channelingClass.run();

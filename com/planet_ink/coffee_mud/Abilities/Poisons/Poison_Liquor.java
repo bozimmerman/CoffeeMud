@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Poison_Liquor extends Poison_Alcohol
 {
 	@Override
@@ -78,7 +77,7 @@ public class Poison_Liquor extends Poison_Alcohol
 	@Override
 	public void unInvoke()
 	{
-		int drunkness=this.drunkness;
+		final int drunkness=this.drunkness;
 		MOB mob=null;
 		if(affected instanceof MOB)
 		{

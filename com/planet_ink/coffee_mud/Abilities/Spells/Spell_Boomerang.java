@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Boomerang extends Spell
 {
 
@@ -91,7 +90,7 @@ public class Spell_Boomerang extends Spell
 		return true;
 	}
 
-	public MOB getOwner(Item I)
+	public MOB getOwner(final Item I)
 	{
 		if(owner==null)
 		{
@@ -163,7 +162,7 @@ public class Spell_Boomerang extends Spell
 	// this fixes a damn PUT bug
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats stats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats stats)
 	{
 		super.affectPhyStats(affectedEnv, stats);
 		if(affectedEnv instanceof Item)
@@ -179,7 +178,7 @@ public class Spell_Boomerang extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)

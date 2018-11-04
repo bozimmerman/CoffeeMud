@@ -40,7 +40,7 @@ public class GrinderComponent
 		return "GrinderComponent";
 	}
 
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(final HTTPRequest httpReq, final String parm)
 	{
 		final String last=httpReq.getUrlParameter("COMPONENT");
 		if(last==null)

@@ -35,7 +35,6 @@ import java.util.concurrent.atomic.AtomicInteger;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_PlanarTravel extends PlanarAbility
 {
 	@Override
@@ -89,8 +88,8 @@ public class Prayer_PlanarTravel extends PlanarAbility
 	{
 		return triggerStrings;
 	}
-	
-	protected String prayWord(MOB mob)
+
+	protected String prayWord(final MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
 			return "pray(s) to "+mob.getMyDeity().name();
@@ -98,19 +97,19 @@ public class Prayer_PlanarTravel extends PlanarAbility
 	}
 
 	@Override
-	protected String castingMessage(MOB mob, boolean auto)
+	protected String castingMessage(final MOB mob, final boolean auto)
 	{
 		return auto?L("<S-NAME> gain(s) access to other planes of existence!"):L("^S<S-NAME> @x1 for access to other planes of existence!^?",prayWord(mob));
 	}
-	
+
 	@Override
-	protected String failMessage(MOB mob, boolean auto)
+	protected String failMessage(final MOB mob, final boolean auto)
 	{
 		return L("<S-NAME> @x1 for planar travel, but nothing happens.",prayWord(mob));
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!Prayer.prayerAlignmentCheck(this,mob,auto))
 			return false;

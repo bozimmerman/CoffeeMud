@@ -47,7 +47,7 @@ public class Planet extends StdThinPlanet
 		super();
 
 		coordinates=new long[]{Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random())};
-		Random random=new Random(System.currentTimeMillis());
+		final Random random=new Random(System.currentTimeMillis());
 		radius=SpaceObject.Distance.PlanetRadius.dm + (random.nextLong() % Math.round(CMath.mul(SpaceObject.Distance.PlanetRadius.dm,0.30)));
 		//TODO: need a behavior or something that "fills it out" first time it's hit.
 	}

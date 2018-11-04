@@ -37,14 +37,13 @@ import com.planet_ink.coffee_web.interfaces.SimpleServletResponse;
  */
 public class MultipartFileWriter implements SimpleServlet
 {
-
 	@Override
-	public void doGet(SimpleServletRequest request, SimpleServletResponse response)
+	public void doGet(final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());
 	}
 
-	private void writeFilesFromParts(List<MultiPartData> parts, StringBuilder filesList) throws IOException
+	private void writeFilesFromParts(final List<MultiPartData> parts, final StringBuilder filesList) throws IOException
 	{
 		if(parts != null)
 		{
@@ -71,9 +70,9 @@ public class MultipartFileWriter implements SimpleServlet
 			}
 		}
 	}
-	
+
 	@Override
-	public void doPost(SimpleServletRequest request, SimpleServletResponse response)
+	public void doPost(final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		try
 		{
@@ -94,7 +93,7 @@ public class MultipartFileWriter implements SimpleServlet
 	}
 
 	@Override
-	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response)
+	public void service(final HTTPMethod method, final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		if(method != HTTPMethod.POST)
 			response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());

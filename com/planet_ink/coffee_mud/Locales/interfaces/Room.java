@@ -36,10 +36,10 @@ import java.util.*;
 /**
  * A Room, also known as a Locale, is the basic building blocks of a world
  * map.  They represent abstract places where players, mobs, or items can
- * be.  Rooms have titles, dynamic or static descriptions, automatic "skys", 
+ * be.  Rooms have titles, dynamic or static descriptions, automatic "skys",
  * domain codes to guide the engine on its physical makeup, gatherable resources,
  * exits to other Rooms, and can each have their own behaviors and properties.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -58,7 +58,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return room ID is the "address" of the primary room on the world map
 	 */
 	public String roomID();
-	
+
 	/**
 	 * Changes the room ID of this room.  This is not related to the ID()
 	 * method.
@@ -105,7 +105,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	public final static int DOMAIN_OUTDOORS_SPACEPORT=12;
 	/** Domain type mask denoting whether the room is outdoors, at a seaport @see {@link Room#domainType()} */
 	public final static int DOMAIN_OUTDOORS_SEAPORT=13;
-	
+
 	/** Domain description array indexed by the DOMAIN_OUTDOOR_* constants. @see {@link Room#DOMAIN_OUTDOORS_CITY} */
 	public final static String[] DOMAIN_OUTDOOR_DESCS=
 	{
@@ -129,7 +129,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * A map of outdoor domain descs strings to their ordinal integer
 	 */
 	public final static Map<Object,Integer> DOMAIN_OUTDOOR_MAP = CMStrings.makeNumericHash(DOMAIN_OUTDOOR_DESCS,0);
-	
+
 	/** Domain type mask denoting whether the room is indoors, and made of worked stone @see {@link Room#domainType()} */
 	public final static int DOMAIN_INDOORS_STONE=INDOORS+0;
 	/** Domain type mask denoting whether the room is indoors, and made of wood @see {@link Room#domainType()} */
@@ -146,7 +146,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	public final static int DOMAIN_INDOORS_WATERSURFACE=INDOORS+6;
 	/** Domain type mask denoting whether the room is indoors, and made of metal @see {@link Room#domainType()} */
 	public final static int DOMAIN_INDOORS_METAL=INDOORS+7;
-	
+
 	/** Domain description array indexed by the (DOMAIN_INDOORS_* - Room.INDOORS) constants. @see {@link Room#DOMAIN_INDOORS_STONE} */
 	public final static String[] DOMAIN_INDOORS_DESCS=
 	{
@@ -164,19 +164,19 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * A map of indoor domain descs strings to their ordinal integer
 	 */
 	public final static Map<Object,Integer> DOMAIN_INDOOR_MAP = CMStrings.makeNumericHash(DOMAIN_INDOORS_DESCS,INDOORS);
-			
+
 	/** a constant used in the Locale item search classes to filter on only items in rooms */
 	public static final Filterer<Environmental> FILTER_ROOMONLY=new Filterer<Environmental>()
 	{
 		@Override
-		public boolean passesFilter(Environmental obj)
+		public boolean passesFilter(final Environmental obj)
 		{
 			if(obj instanceof Item)
 				return (((Item)obj).owner() instanceof Room);
 			return false;
 		}
 	};
-	
+
 	/**
 	 * Returns the domain-code for this room, which tells you something about its physical makeup,
 	 * such as whether it is outdoor, if it's in the woods or surrounded by stone, that sort of thing.
@@ -188,7 +188,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the domain-code for this room
 	 */
 	public int domainType();
-	
+
 	/**
 	 * Returns the full resource code for the current gatherable resource in this room.
 	 * The value of this method may change from time to time.
@@ -199,7 +199,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the full resource code for the current gatherable resource in this room
 	 */
 	public int myResource();
-	
+
 	/**
 	 * Sets the full resource code for the current gatherable resource in this room.
 	 * The value set by this method may be changed automatically later on.
@@ -210,7 +210,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param resourceCode the full resource code for the current gatherable resource in this room
 	 */
 	public void setResource(int resourceCode);
-	
+
 	/**
 	 * Returns a list of all resource codes for potentially gatherable resources in this room.
 	 * This list is alterable for a given Room/Locale java class.  Changes to any instance will
@@ -222,14 +222,14 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the list of all possible resource codes for the current gatherable resources in this room
 	 */
 	public List<Integer> resourceChoices();
-	
+
 	/**
 	 * Sets or clears whether any mobs in this room may, in fact, leave it.  This applies
 	 * to player and npc mobs equally.
 	 * @param onoff true to allow mobility, false to disallow mobility
 	 */
 	public void toggleMobility(boolean onoff);
-	
+
 	/**
 	 * Gets whether any mobs in this room may, in fact, leave it.  This applies
 	 * to player and npc mobs equally.
@@ -289,7 +289,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		public final String openTag;
 		public final String closeTag;
 
-		private VariationCode(char c, int num)
+		private VariationCode(final char c, final int num)
 		{
 			this.c=c;
 			this.num=num;
@@ -297,7 +297,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 			closeTag="</"+toString()+">";
 		}
 	}
-	
+
 	/**
 	 * When a room is created, this method is called to inspect the item contents
 	 * for any rejuvinating items and, if found, causes them to start being tracked.
@@ -305,7 +305,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * after the rejuv-time clears.
 	 */
 	public void startItemRejuv();
-	
+
 	/**
 	 * Causes the room stat affects to be reevaluated, as well as the stat affects
 	 * of every inhabitant, exit, and item in the room.
@@ -322,7 +322,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @see Room#getSky()
 	 */
 	public void clearSky();
-	
+
 	/**
 	 * If this room requires attached temporary rooms, such as a sky in an outdoor
 	 * room, or underwater rooms in the ocean, this method will create those rooms
@@ -332,7 +332,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param depth the diameter of the sky or underwater to create
 	 */
 	public void giveASky(int depth);
-	
+
 	/**
 	 * If this room requires attached temporary rooms, such as a sky in an outdoor
 	 * room, or underwater rooms in the ocean, this method will return any existing
@@ -341,7 +341,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @see Room#getSky()
 	 */
 	public List<Room> getSky();
-	
+
 	/**
 	 * Returns the Area to which this room belongs.  Guaranteed to be non-null.
 	 * @see Room#setArea(Area)
@@ -349,7 +349,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the Area to which this room belongs
 	 */
 	public Area getArea();
-	
+
 	/**
 	 * Sets the Area to which this room should belong, which also notifies the Area
 	 * object that this room is a new member, and removing itself from any previous
@@ -359,7 +359,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param newArea the new area that this room belongs ro
 	 */
 	public void setArea(Area newArea);
-	
+
 	/**
 	 * If this room is a grid-child room, this method is called to notify this child
 	 * as to the identity of its parent gridlocale room.
@@ -368,7 +368,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param room the GridLocale parent room to this room
 	 */
 	public void setGridParent(GridLocale room);
-	
+
 	/**
 	 * If this room is a grid-child room, this method is called to return
 	 * the identity of its parent gridlocale room.
@@ -381,7 +381,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	/**
 	 * Returns array of the Raw room objects that this room connects to via
 	 * exits.  This array should only be used by low-level engine calls that
-	 * understand the implications of accessing rooms in this way.  This is 
+	 * understand the implications of accessing rooms in this way.  This is
 	 * because a Room returned by this method may be temporary, or even just
 	 * a stand-in for a real room that is instantiated later.
 	 * Always call {@link Room#getRoomInDir(int)} if you want a proper Room
@@ -393,7 +393,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return an array of Raw room objects that this room connects to
 	 */
 	public Room[] rawDoors();
-	
+
 	/**
 	 * Returns the room in the given direction from this room which, depending
 	 * on the exit, may be traveled to.  Returns null if there is no such room.
@@ -404,7 +404,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the room in the given direction, or null
 	 */
 	public Room getRoomInDir(int direction);
-	
+
 	/**
 	 * Returns the maximum range for ranged weapons in this room.
 	 * It also determines the size of a room in ship combat.
@@ -413,7 +413,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 */
 	@Override
 	public int maxRange();
-	
+
 	/**
 	 * This method is called by an adjoining room to resolve this room to its
 	 * final object.  There's no reason to call it from the "outside".
@@ -422,13 +422,13 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return will either return this, or a resolved Rom object.
 	 */
 	public Room prepareRoomInDir(Room fromRoom, int direction);
-	
+
 	/**
 	 * Returns the raw unresolved exit found in this room in the given
 	 * direction.  This method should only be called by internal engine
 	 * systems, as it may return a temporary object.  Instead, you should
 	 * always call {@link Room#getExitInDir(int)} if you want the final
-	 * Exit object in the given direction.  This method returns null if 
+	 * Exit object in the given direction.  This method returns null if
 	 * there is no exit in the given direction.
 	 * @see Room#setRawExit(int, Exit)
 	 * @see Room#getExitInDir(int)
@@ -441,9 +441,9 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the raw Exit object in that direction, or null
 	 */
 	public Exit getRawExit(int direction);
-	
+
 	/**
-	 * Sets the Exit object found in this room in the given direction.  
+	 * Sets the Exit object found in this room in the given direction.
 	 * @see Room#getRawExit(int)
 	 * @see Room#getExitInDir(int)
 	 * @see Room#getReverseExit(int)
@@ -455,7 +455,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param E the raw Exit object in that direction, or null
 	 */
 	public void setRawExit(int direction, Exit E);
-	
+
 	/**
 	 * Returns the Exit opposite this one, in the Room in the given direction.
 	 * For example, if the direction is east, this will return the west door
@@ -471,7 +471,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the reverse exit, or null if there is no room (or no reverse exit)
 	 */
 	public Exit getReverseExit(int direction);
-	
+
 	/**
 	 * Returns the Exit opposite this one, in the Room in the given direction,
 	 * but only if the two exits exist, and have the same Door status.
@@ -488,7 +488,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the reverse exit, or null if there is no room (or no reverse exit)
 	 */
 	public Exit getPairedExit(int direction);
-	
+
 	/**
 	 * Returns the Exit in this room, in the given direction.
 	 * @see Room#getRawExit(int)
@@ -506,7 +506,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * Returns the exit in this room with the given name or display text or in
 	 * the given direction.  If none is found, a substring search is also done
 	 * to find the exit.  This method also respects context numbers suffixes,
-	 * such as .1, .2, etc. 
+	 * such as .1, .2, etc.
 	 * @see Room#getRawExit(int)
 	 * @see Room#getPairedExit(int)
 	 * @see Room#setRawExit(int, Exit)
@@ -517,7 +517,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the first Exit object that matches the search string
 	 */
 	public Exit fetchExit(String itemID);
-	
+
 	/**
 	 * Returns the index number which represents which mob's "turn" it is in combat.
 	 * This only applies when turn-based combat systems are being used.
@@ -525,7 +525,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return  the index number which represents which mob's "turn" it is in combat
 	 */
 	public int getCombatTurnMobIndex();
-	
+
 	/**
 	 * Sets the index number which represents which mob's "turn" it is in combat.
 	 * This only applies when turn-based combat systems are being used.
@@ -560,7 +560,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param msg the message to send
 	 */
 	public void send(MOB source, CMMsg msg);
-	
+
 	/**
 	 * Sends the message to the room, skipping the given source, and then
 	 * handles any trailing messages.  This is called in rare cases when the source
@@ -572,7 +572,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param msg the message to send
 	 */
 	public void sendOthers(MOB source, CMMsg msg);
-	
+
 	/**
 	 * Constructs a message with the given allCode as the source, target, and others message
 	 * code, and the given allMessage as the source, target, and others message, and using
@@ -587,12 +587,12 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param allMessage source/target/others message description
 	 */
 	public void showHappens(int allCode, String allMessage);
-	
+
 	/**
 	 * Constructs a message with the given allCode as the source, target, and others message
 	 * code, and the given allMessage as the source, target, and others message, and using
 	 * a temporary fake agent/source for the message whose name is the same as the given
-	 * "like" Environmental, immediately sends the message without previewing it.  
+	 * "like" Environmental, immediately sends the message without previewing it.
 	 * This should be used very sparingly for acts-of-objects.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg
 	 * @see Room#show(MOB, Environmental, Environmental, int, String)
@@ -604,7 +604,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param allMessage source/target/others message description
 	 */
 	public void showHappens(int allCode, Environmental like, String allMessage);
-	
+
 	/**
 	 * Creates and configures a CMMsg object for use in the room, then, if the
 	 * message is not flagged for ALWAYS approval, this method submits
@@ -616,14 +616,14 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param allCode the source, target, and others code to use
 	 * @param allMessage the source, target, and others string msg to send
 	 * @return true if the message was approved and sent, false otherwise
 	 */
 	public boolean show(MOB source, Environmental target, int allCode, String allMessage);
-	
+
 	/**
 	 * Creates and configures a CMMsg object for use in the room, then, if the
 	 * message is not flagged for ALWAYS approval, this method submits
@@ -636,15 +636,15 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param tool the tool used by the source to do the action
 	 * @param allCode the source, target, and others code to use
 	 * @param allMessage the source, target, and others string msg to send
 	 * @return true if the message was approved and sent, false otherwise
 	 */
 	public boolean show(MOB source, Environmental target, Environmental tool, int allCode, String allMessage);
-	
+
 	/**
 	 * Creates and configures a CMMsg object for use in the room, then, if the
 	 * message is not flagged for ALWAYS approval, this method submits
@@ -659,8 +659,8 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param tool the tool used by the source to do the action
 	 * @param srcCode the source code for this action
 	 * @param tarCode the target code for this action
@@ -669,7 +669,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return true if the message was approved and sent, false otherwise
 	 */
 	public boolean show(MOB source, Environmental target, Environmental tool, int srcCode, int tarCode, int othCode, String allMessage);
-	
+
 	/**
 	 * Creates and configures a CMMsg object for use in the room, then, if the
 	 * message is not flagged for ALWAYS approval, this method submits
@@ -686,8 +686,8 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param tool the tool used by the source to do the action
 	 * @param srcCode the source code for this action
 	 * @param srcMessage the action/message as seen by the source
@@ -698,7 +698,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return true if the message was approved and sent, false otherwise
 	 */
 	public boolean show(MOB source, Environmental target, Environmental tool, int srcCode, String srcMessage, int tarCode, String tarMessage, int othCode, String othMessage);
-	
+
 	/**
 	 * Creates and configures a CMMsg object for use in the room, then, if the
 	 * message is not flagged for ALWAYS approval, this method submits
@@ -713,8 +713,8 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param tool the tool used by the source to do the action
 	 * @param allCode the source, target, and others code to use
 	 * @param srcMessage the action/message as seen by the source
@@ -723,7 +723,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return true if the message was approved and sent, false otherwise
 	 */
 	public boolean show(MOB source, Environmental target, Environmental tool, int allCode, String srcMessage, String tarMessage, String othMessage);
-	
+
 	/**
 	 * Creates and configures a CMMsg object for use in the room, then, if the
 	 * message is not flagged for ALWAYS approval, this method submits
@@ -735,14 +735,14 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param allCode the source, target, and others code to use
 	 * @param allMessage the source, target, and others string msg to send
 	 * @return true if the message was approved and sent, false otherwise
 	 */
 	public boolean showOthers(MOB source, Environmental target, int allCode, String allMessage);
-	
+
 	/**
 	 * Creates and configures a CMMsg object for use in the room, then, if the
 	 * message is not flagged for ALWAYS approval, this method submits
@@ -754,14 +754,14 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param allCode the source, target, and others code to use
 	 * @param allMessage the source, target, and others string msg to send
 	 * @return true if the message was approved and sent, false otherwise
 	 */
 	public boolean showSource(MOB source, Environmental target, int allCode, String allMessage);
-	
+
 	/**
 	 * Creates and configures a CMMsg object for use in the room, then, if the
 	 * message is not flagged for ALWAYS approval, this method submits
@@ -774,15 +774,15 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param tool the tool used by the source to do the action
 	 * @param allCode the source, target, and others code to use
 	 * @param allMessage the source, target, and others string msg to send
 	 * @return true if the message was approved and sent, false otherwise
 	 */
 	public boolean showOthers(MOB source, Environmental target, Environmental tool, int allCode, String allMessage);
-	
+
 	/**
 	 * Creates and configures a CMMsg object for use in the room, then, if the
 	 * message is not flagged for ALWAYS approval, this method submits
@@ -794,8 +794,8 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param tool the tool used by the source to do the action
 	 * @param allCode the source, target, and others code to use
 	 * @param allMessage the source, target, and others string msg to send
@@ -833,7 +833,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the first mob to match the search string
 	 */
 	public MOB fetchInhabitant(String inhabitantID);
-	
+
 	/**
 	 * Searches the inhabitants of this room for a mob with the given
 	 * ID(), name, or display name.  This method also respects index
@@ -855,11 +855,11 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the first mob to match the search string
 	 */
 	public MOB fetchInhabitantExact(String inhabitantID);
-	
+
 	/**
 	 * Searches the inhabitants of this room for mobs with the given
 	 * ID(), name, or display name.  If nothing is found, it does a
-	 * substring search as well.  
+	 * substring search as well.
 	 * @see Room#fetchInhabitant(String)
 	 * @see Room#fetchInhabitant(int)
 	 * @see Room#fetchRandomInhabitant()
@@ -876,7 +876,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return all the mobs that match the search string
 	 */
 	public List<MOB> fetchInhabitants(String inhabitantID);
-	
+
 	/**
 	 * Returns a random inhabitant mob in this room, or null
 	 * if there are none.
@@ -895,7 +895,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the random mob inhabitant
 	 */
 	public MOB fetchRandomInhabitant();
-	
+
 	/**
 	 * Returns the inhabitant mob in this room at the given
 	 * index, or null if there are none at that index. The
@@ -916,9 +916,9 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the mob inhabitant at that index
 	 */
 	public MOB fetchInhabitant(int i);
-	
+
 	/**
-	 * Returns an enumeration of all the inhabitants of 
+	 * Returns an enumeration of all the inhabitants of
 	 * this room.
 	 * @see Room#fetchInhabitant(String)
 	 * @see Room#fetchInhabitant(int)
@@ -935,7 +935,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return an enumeration of all the inhabitants
 	 */
 	public Enumeration<MOB> inhabitants();
-	
+
 	/**
 	 * Adds the given mob to this room as an inhabitant.
 	 * Does *not* register the new location with the mob,
@@ -956,7 +956,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param mob the mob to add to this room
 	 */
 	public void addInhabitant(MOB mob);
-	
+
 	/**
 	 * Removes the given mob from this room as an inhabitant.
 	 * Does *not* un-register the new location with the mob,
@@ -977,12 +977,12 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param mob the mob to remove from this room
 	 */
 	public void delInhabitant(MOB mob);
-	
+
 	/**
 	 * Removes all the mobs from this room as inhabitants and
 	 * optionally destroys the mob objects as well.
 	 * Does *not* un-register the new location with the mob,
-	 * so you would need to also call setLocation if you don't 
+	 * so you would need to also call setLocation if you don't
 	 * destroy them.
 	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#setLocation(Room)
 	 * @see Room#fetchInhabitant(String)
@@ -1000,9 +1000,9 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param destroy true to also destroy the mob objects, false otherwise
 	 */
 	public void delAllInhabitants(boolean destroy);
-	
+
 	/**
-	 * Returns the number of all the inhabitants of 
+	 * Returns the number of all the inhabitants of
 	 * this room.
 	 * @see Room#fetchInhabitant(String)
 	 * @see Room#fetchInhabitant(int)
@@ -1019,7 +1019,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the number of inhabitants
 	 */
 	public int numInhabitants();
-	
+
 	/**
 	 * Returns whether the given mob is an inhabitant of this room.
 	 * @see Room#fetchInhabitant(String)
@@ -1038,7 +1038,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return true if the mob is here, false otherwise
 	 */
 	public boolean isInhabitant(MOB mob);
-	
+
 	/**
 	 * Applies the given applier Java code to each mob in this room
 	 * @see Room#fetchInhabitant(String)
@@ -1056,9 +1056,9 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @param applier code to execute against each object
 	 */
 	public void eachInhabitant(final EachApplicable<MOB> applier);
-	
+
 	/**
-	 * Returns the number of player/PC inhabitants of 
+	 * Returns the number of player/PC inhabitants of
 	 * this room.
 	 * @see Room#fetchInhabitant(String)
 	 * @see Room#fetchInhabitant(int)
@@ -1075,10 +1075,10 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the number of player inhabitants
 	 */
 	public int numPCInhabitants();
-	
+
 	/**
 	 * A workhorse method that removes the given mob (and anything
-	 * they are riding or being ridden by, recursively, and 
+	 * they are riding or being ridden by, recursively, and
 	 * optionally any followers, and their riders, recursively)
 	 * and places them all in this room. It does not affect those
 	 * that the given mob are themselves following, however.
@@ -1149,14 +1149,14 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the exit, mob, or item found.
 	 */
 	public PhysicalAgent fetchFromRoomFavorMOBs(Item goodLocation, String thingName);
-	
+
 	/**
 	 * Searches the given mob and this room for a mob, item, or exit that
 	 * matches the given search string, favoring the mobs inventory over other
 	 * types of objects.  If nothing is found, this method also does
 	 * a substring search.  Context-number suffix strings are
 	 * also respected, such as .1, .2, etc.  Only items in
-	 * the given container (or null) are searched.  Item searches can also be 
+	 * the given container (or null) are searched.  Item searches can also be
 	 * bound by the given filterer, which is a required parameter.
 	 * @param mob the mob to search the inventory of first, or null to skip
 	 * @param goodLocation the container to look in for items, or null
@@ -1165,14 +1165,14 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the mob, item, or exit that matches the search string
 	 */
 	public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter);
-	
+
 	/**
 	 * Searches the given mob and this room for a mob, item, or exit that
 	 * matches the given search string, favoring the mobs inventory over other
-	 * types of objects and items generally.  If nothing is found, this method 
+	 * types of objects and items generally.  If nothing is found, this method
 	 * also does a substring search.  Context-number suffix strings are
 	 * also respected, such as .1, .2, etc.  Only items in
-	 * the given container (or null) are searched.  Item searches can also be 
+	 * the given container (or null) are searched.  Item searches can also be
 	 * bound by the given filterer, which is a required parameter.
 	 * @param mob the mob to search the inventory of first, or null to skip
 	 * @param goodLocation the container to look in for items, or null
@@ -1181,14 +1181,14 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the mob, item, or exit that matches the search string
 	 */
 	public PhysicalAgent fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter);
-	
+
 	/**
 	 * Searches the given mob and this room for a mob, item, or exit that
 	 * matches the given search string, favoring the room mobs over other
-	 * types of objects.  If nothing is found, this method also does a 
-	 * substring search.  Context-number suffix strings are also respected, 
-	 * such as .1, .2, etc.  Only items in the given container (or null) 
-	 * are searched.  Item searches can also be bound by the given filterer, 
+	 * types of objects.  If nothing is found, this method also does a
+	 * substring search.  Context-number suffix strings are also respected,
+	 * such as .1, .2, etc.  Only items in the given container (or null)
+	 * are searched.  Item searches can also be bound by the given filterer,
 	 * which is a required parameter.
 	 * @param mob the mob to search the inventory of first, or null to skip
 	 * @param goodLocation the container to look in for items, or null

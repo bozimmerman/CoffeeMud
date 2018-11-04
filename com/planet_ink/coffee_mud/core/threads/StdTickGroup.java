@@ -57,7 +57,7 @@ public class StdTickGroup implements TickableGroup, Cloneable
 
 	private final STreeSet<TickClient> tickers=new STreeSet<TickClient>();
 
-	public StdTickGroup(long sleep, String threadGroupName, boolean isSolitary)
+	public StdTickGroup(final long sleep, final String threadGroupName, final boolean isSolitary)
 	{
 		name = "Tick."+(tickObjReference+1);
 		tickObjectCounter=tickObjReference++;
@@ -68,7 +68,7 @@ public class StdTickGroup implements TickableGroup, Cloneable
 		this.threadGroupName=threadGroupName;
 	}
 
-	public StdTickGroup(String a_name, long sleep, String threadGroupName, boolean isSolitary)
+	public StdTickGroup(final String a_name, final long sleep, final String threadGroupName, final boolean isSolitary)
 	{
 		name = "Tick."+ a_name + "." +(tickObjReference+1);
 		tickObjectCounter=tickObjReference++;
@@ -79,7 +79,7 @@ public class StdTickGroup implements TickableGroup, Cloneable
 		this.threadGroupName=threadGroupName;
 	}
 
-	public StdTickGroup(ThreadEngine theEngine, long sleep, String threadGroupName, boolean isSolitary)
+	public StdTickGroup(final ThreadEngine theEngine, final long sleep, final String threadGroupName, final boolean isSolitary)
 	{
 		name = "Tick."+(tickObjReference+1);
 		tickObjectCounter=tickObjReference++;
@@ -105,20 +105,20 @@ public class StdTickGroup implements TickableGroup, Cloneable
 		return this;
 	}
 
-	@Override 
-	public long getStartTime()
-	{ 
-		return lastStart; 
-	}
-	
-	@Override 
-	public int getGroupID() 
-	{ 
-		return threadGroupName.charAt(0); 
-	}
-	
 	@Override
-	public TickClient fetchTickerByIndex(int i)
+	public long getStartTime()
+	{
+		return lastStart;
+	}
+
+	@Override
+	public int getGroupID()
+	{
+		return threadGroupName.charAt(0);
+	}
+
+	@Override
+	public TickClient fetchTickerByIndex(final int i)
 	{
 		int x=0;
 		for(final TickClient C : tickers)
@@ -201,10 +201,10 @@ public class StdTickGroup implements TickableGroup, Cloneable
 	}
 
 	@Override
-	public Iterator<TickClient> getLocalItems(int itemTypes, Room R)
+	public Iterator<TickClient> getLocalItems(final int itemTypes, final Room R)
 	{
 		LinkedList<TickClient> localItems=null;
-		for (TickClient C : tickers)
+		for (final TickClient C : tickers)
 		{
 			switch(itemTypes)
 			{
@@ -284,13 +284,13 @@ public class StdTickGroup implements TickableGroup, Cloneable
 	}
 
 	@Override
-	public boolean delTicker(TickClient C)
+	public boolean delTicker(final TickClient C)
 	{
 		return tickers.remove(C);
 	}
 
 	@Override
-	public void addTicker(TickClient C)
+	public void addTicker(final TickClient C)
 	{
 		if(!tickers.contains(C))
 			tickers.add(C);

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_ReqEntry extends Property implements TriggeredAffect
 {
 	@Override
@@ -71,7 +70,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String txt)
+	public void setMiscText(final String txt)
 	{
 		noFollow=false;
 		noSneak=false;
@@ -110,7 +109,7 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 		return "Entry restricted as follows: "+CMLib.masking().maskDesc(maskS);
 	}
 
-	public boolean passesMuster(MOB mob)
+	public boolean passesMuster(final MOB mob)
 	{
 		if(mob==null)
 			return false;
@@ -137,13 +136,14 @@ public class Prop_ReqEntry extends Property implements TriggeredAffect
 				else
 				{
 					msg.source().getGroupMembers(H);
-					final HashSet<MOB> H2=(HashSet)H.clone();
-					for(final Iterator e=H2.iterator();e.hasNext();)
-						((MOB)e.next()).getRideBuddies(H);
+					@SuppressWarnings("unchecked")
+					final HashSet<MOB> H2=(HashSet<MOB>)H.clone();
+					for(final Iterator<MOB> e=H2.iterator();e.hasNext();)
+						e.next().getRideBuddies(H);
 				}
-				for(final Iterator e=H.iterator();e.hasNext();)
+				for(final Iterator<MOB> e=H.iterator();e.hasNext();)
 				{
-					if(passesMuster((MOB)e.next()))
+					if(passesMuster(e.next()))
 						return super.okMessage(myHost,msg);
 				}
 				msg.source().tell((message.length()==0)?L("You can not go that way."):message);

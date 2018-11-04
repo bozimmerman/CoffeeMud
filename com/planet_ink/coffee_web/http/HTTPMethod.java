@@ -26,9 +26,9 @@ package com.planet_ink.coffee_web.http;
 public enum HTTPMethod
 {
 	GET, HEAD, POST, PUT, DELETE, OPTIONS;
-	
-	public static String getAllowedList() 
-	{ 
-		return "GET, HEAD, POST, PUT, DELETE, OPTIONS"; 
+
+	public static String getAllowedList()
+	{
+		return "GET, HEAD, POST, PUT, DELETE, OPTIONS";
 	}
 }

@@ -91,13 +91,13 @@ public class Skill_Map extends StdSkill
 	protected final Set<Room>	roomsMappedAlready	= new TreeSet<Room>(new Comparator<Room>()
 	{
 		@Override
-		public int compare(Room o1, Room o2)
+		public int compare(final Room o1, final Room o2)
 		{
 			final String s1=CMLib.map().getExtendedRoomID(o1);
 			final String s2=CMLib.map().getExtendedRoomID(o2);
 			return s1.compareTo(s2);
 		}
-		
+
 	});
 	protected Item	map				= null;
 
@@ -121,7 +121,7 @@ public class Skill_Map extends StdSkill
 			return (srcM == mob);
 		return false;
 	}
-	
+
 	protected Room getCurrentRoom(final MOB mob)
 	{
 		return mob.location();
@@ -136,7 +136,7 @@ public class Skill_Map extends StdSkill
 	{
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -176,7 +176,7 @@ public class Skill_Map extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Ability A=mob.fetchEffect(ID());
 		if(A!=null)

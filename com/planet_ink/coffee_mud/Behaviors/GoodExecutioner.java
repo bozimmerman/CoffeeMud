@@ -67,7 +67,7 @@ public class GoodExecutioner  extends StdBehavior
 	}
 
 	@Override
-	public boolean grantsAggressivenessTo(MOB M)
+	public boolean grantsAggressivenessTo(final MOB M)
 	{
 		if(norecurse)
 			return false;
@@ -85,7 +85,7 @@ public class GoodExecutioner  extends StdBehavior
 			&&((V.size()>1)
 				||((V.size()==1)&&(!V.get(0).ID().equals(ID())))))
 					return true;
-			
+
 			return ((CMLib.flags().isEvil(M))||(M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief")));
 		}
 		finally

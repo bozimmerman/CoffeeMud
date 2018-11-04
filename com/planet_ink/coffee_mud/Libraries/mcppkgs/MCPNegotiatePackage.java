@@ -24,7 +24,6 @@ import com.planet_ink.coffee_mud.core.Log;
 */
 public class MCPNegotiatePackage implements MCPPackage
 {
-
 	@Override
 	public String packageName()
 	{
@@ -44,7 +43,7 @@ public class MCPNegotiatePackage implements MCPPackage
 	}
 
 	@Override
-	public void executePackage(Session session, String command, Map<String, float[]> clientSupported, Map<String, String> variables)
+	public void executePackage(final Session session, final String command, final Map<String, float[]> clientSupported, final Map<String, String> variables)
 	{
 		if(command.equalsIgnoreCase("mcp-negotiate-end"))
 		{
@@ -54,9 +53,9 @@ public class MCPNegotiatePackage implements MCPPackage
 		else
 		if(command.equalsIgnoreCase("mcp-negotiate-can"))
 		{
-			String packageName = variables.get("package");
-			String minVersion = variables.get("min-version");
-			String maxVersion = variables.get("max-version");
+			final String packageName = variables.get("package");
+			final String minVersion = variables.get("min-version");
+			final String maxVersion = variables.get("max-version");
 			if(packageName != null)
 			{
 				clientSupported.put(packageName, new float[]{CMath.s_float(minVersion),CMath.s_float(maxVersion)});

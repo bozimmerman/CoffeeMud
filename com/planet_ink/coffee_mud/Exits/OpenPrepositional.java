@@ -37,7 +37,7 @@ public class OpenPrepositional extends StdOpenDoorway implements PrepositionExit
 	{
 		return "OpenPrepositional";
 	}
-	
+
 	private String entryPreposition="";
 	private String exitPreposition="";
 
@@ -60,7 +60,7 @@ public class OpenPrepositional extends StdOpenDoorway implements PrepositionExit
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if(newMiscText.length()>0)
@@ -69,7 +69,7 @@ public class OpenPrepositional extends StdOpenDoorway implements PrepositionExit
 			exitPreposition="through "+newMiscText;
 		}
 	}
-	
+
 	@Override
 	public String getEntryPreposition()
 	{
@@ -83,13 +83,13 @@ public class OpenPrepositional extends StdOpenDoorway implements PrepositionExit
 	}
 
 	@Override
-	public void setEntryPreposition(String phrase)
+	public void setEntryPreposition(final String phrase)
 	{
 		entryPreposition=phrase;
 	}
 
 	@Override
-	public void setExitPreposition(String phrase)
+	public void setExitPreposition(final String phrase)
 	{
 		exitPreposition=phrase;
 	}

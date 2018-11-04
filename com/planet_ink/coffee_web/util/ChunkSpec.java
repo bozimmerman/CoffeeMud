@@ -33,12 +33,12 @@ public class ChunkSpec
 	private final	long			minFileSize;
 
 	/**
-	 * Create a ChunkSpec object for a particular path/domain. 
+	 * Create a ChunkSpec object for a particular path/domain.
 	 * @param chunkSize the default size for each chunk, or smaller
 	 * @param mimeTypes null for all mimetypes, or a list of allowed types
 	 * @param minFileSize the minimum payload size to produce chunking, or 0 for all
 	 */
-	public ChunkSpec(int chunkSize, Set<MIMEType> mimeTypes, long minFileSize)
+	public ChunkSpec(final int chunkSize, final Set<MIMEType> mimeTypes, final long minFileSize)
 	{
 		this.chunkSize = chunkSize;
 		this.mimeTypes = new HashSet<MIMEType>();
@@ -46,17 +46,17 @@ public class ChunkSpec
 		this.minFileSize = minFileSize;
 	}
 
-	public int getChunkSize() 
+	public int getChunkSize()
 	{
 		return chunkSize;
 	}
 
-	public Set<MIMEType> getMimeTypes() 
+	public Set<MIMEType> getMimeTypes()
 	{
 		return mimeTypes;
 	}
 
-	public long getMinFileSize() 
+	public long getMinFileSize()
 	{
 		return minFileSize;
 	}

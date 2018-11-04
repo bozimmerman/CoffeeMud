@@ -29,7 +29,7 @@ public interface CMLibrary extends CMObject
 	 * @return true if activation was successful, false if you're screwed
 	 */
 	public boolean activate();
-	
+
 	/**
 	 * Shuts down the library.  Called at system shutdown time
 	 * obviously, but is sometimes called just to reset the library.
@@ -37,13 +37,13 @@ public interface CMLibrary extends CMObject
 	 * @return true if shutdown was successful, false if there's nothing you can do about it
 	 */
 	public boolean shutdown();
-	
+
 	/**
 	 * This method is called whenever system properties are altered by the user.  This
 	 * allows the library to react to any important properties they monitor.
 	 */
 	public void propertiesLoaded();
-	
+
 	/**
 	 * If this library has a service thread, this method returns the TickClient
 	 * object associated with that service.  Normally returns null, since most

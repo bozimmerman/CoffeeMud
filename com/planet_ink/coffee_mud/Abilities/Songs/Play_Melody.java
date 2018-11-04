@@ -61,7 +61,7 @@ public class Play_Melody extends Play
 	}
 
 	@Override
-	public void affectCharStats(MOB mob, CharStats stats)
+	public void affectCharStats(final MOB mob, final CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
 		if(mob==invoker)

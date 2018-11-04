@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 {
 	@Override
@@ -95,14 +94,14 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		int completion=16;
 		final Item fire=getRequiredFire(mob,0);
 		if(fire==null)
 			return false;
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
-		int recipeLevel = 1;
+		final int recipeLevel = 1;
 		buildingI=null;
 		messedUp=false;
 		int woodRequired=50;

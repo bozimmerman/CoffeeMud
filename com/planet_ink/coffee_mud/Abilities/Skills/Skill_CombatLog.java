@@ -33,7 +33,6 @@ import java.util.concurrent.TimeUnit;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_CombatLog extends StdSkill
 {
 	@Override
@@ -107,14 +106,14 @@ public class Skill_CombatLog extends StdSkill
 
 	protected Map<CombatStat, long[]>	stats				= new Hashtable<CombatStat, long[]>();
 	protected Map<Faction, long[]>		factionChanges		= new Hashtable<Faction, long[]>();
-	
+
 	protected MOB				loggingM		= null;
 	protected long				secondsPerTick	= (CMProps.getTickMillis() / 1000);
 	protected volatile boolean	wasInCombat		= false;
 	protected volatile int		numCombatants	= 0;
 	protected volatile int		numManaLastTick	= 0;
 	protected volatile int		numMovesLastTick= 0;
-	
+
 	protected enum CombatStat
 	{
 		NUM_COMBATS,
@@ -133,7 +132,7 @@ public class Skill_CombatLog extends StdSkill
 		NUM_DAMAGE_TAKEN,
 		NUM_HEALING_DONE,
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -142,10 +141,10 @@ public class Skill_CombatLog extends StdSkill
 
 		return true;
 	}
-	
+
 	protected String getReport(final Session session, final MOB mob, final int level)
 	{
-		StringBuilder rep = new StringBuilder("");
+		final StringBuilder rep = new StringBuilder("");
 		rep.append(L("\n\r^HCombat statistics for ^w@x1 \n\r",mob.name()));
 		if(stats.size() == CombatStat.values().length)
 		{
@@ -156,31 +155,31 @@ public class Skill_CombatLog extends StdSkill
 			rep.append(L("^HTotal Log Time: ^w@x1\n\r",totalLogTime));
 			final String totalCombatTime = clock.deriveEllapsedTimeString(stats.get(CombatStat.NUM_SECONDS_COMBAT)[0]*1000);
 			rep.append(L("^HTotal Combat Time: ^w@x1\n\r",totalCombatTime));
-			
-			int colWidth = CMLib.lister().fixColWidth(26, session);
-			int colWidth1 = colWidth - (int)Math.round(CMath.mul(colWidth, .20));
-			int colWidth2 = colWidth + (int)Math.round(CMath.mul(colWidth, .09));
+
+			final int colWidth = CMLib.lister().fixColWidth(26, session);
+			final int colWidth1 = colWidth - (int)Math.round(CMath.mul(colWidth, .20));
+			final int colWidth2 = colWidth + (int)Math.round(CMath.mul(colWidth, .09));
 			rep.append("\n\r");
-			
+
 			rep.append(CMStrings.padRight(L("^HEnemies defeated: ^w@x1",""+stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]),colWidth1));
 			if((level>=5)&&(stats.get(CombatStat.NUM_COMBATS)[0]>0))
 			{
-				double npc = Math.round(stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
+				final double npc = Math.round(stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 				rep.append(L("^HEnemies per Combat: ^w@x1",""+npc));
 				rep.append("\n\r");
 			}
 			rep.append("\n\r");
-			
+
 			if(level>=4)
 			{
 				rep.append(CMStrings.padRight(L("^HGold gained : ^w@x1",""+stats.get(CombatStat.NUM_GOLD_LOOTED)[0]),colWidth1));
 				if((level>=9)&&(stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]>0))
 				{
-					double age = Math.round(stats.get(CombatStat.NUM_GOLD_LOOTED)[0]/stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]);
+					final double age = Math.round(stats.get(CombatStat.NUM_GOLD_LOOTED)[0]/stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]);
 					rep.append(CMStrings.padRight(L("^HGold per enemy    : ^w@x1",""+age),colWidth2));
 					if((level>=10)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>(CMProps.getMillisPerMudHour()/1000)))
 					{
-						double agh = Math.round(stats.get(CombatStat.NUM_GOLD_LOOTED)[0]/((stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]*1000)/CMProps.getMillisPerMudHour()));
+						final double agh = Math.round(stats.get(CombatStat.NUM_GOLD_LOOTED)[0]/((stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]*1000)/CMProps.getMillisPerMudHour()));
 						rep.append(L("^HGold per game-hour: ^w@x1",""+agh));
 					}
 				}
@@ -191,88 +190,88 @@ public class Skill_CombatLog extends StdSkill
 				rep.append(CMStrings.padRight(L("^HExp. gained : ^w@x1",""+stats.get(CombatStat.NUM_XP_GAINED)[0]),colWidth1));
 				if((level>=9)&&(stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]>0))
 				{
-					double age = Math.round(stats.get(CombatStat.NUM_XP_GAINED)[0]/stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]);
+					final double age = Math.round(stats.get(CombatStat.NUM_XP_GAINED)[0]/stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]);
 					rep.append(CMStrings.padRight(L("^HExp. per enemy    : ^w@x1",""+age),colWidth2));
 					if((level>=10)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>(CMProps.getMillisPerMudHour()/1000)))
 					{
-						double agh = Math.round(stats.get(CombatStat.NUM_XP_GAINED)[0]/((stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]*1000)/CMProps.getMillisPerMudHour()));
+						final double agh = Math.round(stats.get(CombatStat.NUM_XP_GAINED)[0]/((stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]*1000)/CMProps.getMillisPerMudHour()));
 						rep.append(L("^HExp. per game-hour: ^w@x1",""+agh));
 					}
 				}
 				rep.append("\n\r");
 			}
-			
+
 			rep.append(CMStrings.padRight(L("^HDamage done : ^w@x1",""+stats.get(CombatStat.NUM_DAMAGE_DONE)[0]),colWidth1));
 			if((level >= 2)&&(stats.get(CombatStat.NUM_COMBATS)[0]>0))
 			{
-				double adc = Math.round(stats.get(CombatStat.NUM_DAMAGE_DONE)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
+				final double adc = Math.round(stats.get(CombatStat.NUM_DAMAGE_DONE)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 				rep.append(CMStrings.padRight(L("^HDamage per combat : ^w@x1",""+adc),colWidth2));
 				if((level>=6)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
 				{
-					double ads = Math.round(stats.get(CombatStat.NUM_DAMAGE_DONE)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
+					final double ads = Math.round(stats.get(CombatStat.NUM_DAMAGE_DONE)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
 					rep.append(L("^HDamage per second : ^w@x1",""+ads));
 				}
 			}
 			rep.append("\n\r");
-			
+
 			rep.append(CMStrings.padRight(L("^HHealing done: ^w@x1",""+stats.get(CombatStat.NUM_HEALING_DONE)[0]),colWidth1));
 			if((level >= 2)&&(stats.get(CombatStat.NUM_COMBATS)[0]>0))
 			{
-				double adc = Math.round(stats.get(CombatStat.NUM_HEALING_DONE)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
+				final double adc = Math.round(stats.get(CombatStat.NUM_HEALING_DONE)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 				rep.append(CMStrings.padRight(L("^HHealing per combat: ^w@x1",""+adc),colWidth2));
 				if((level>=6)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
 				{
-					double ads = Math.round(stats.get(CombatStat.NUM_HEALING_DONE)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
+					final double ads = Math.round(stats.get(CombatStat.NUM_HEALING_DONE)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
 					rep.append(L("^HHealing per second: ^w@x1",""+ads));
 				}
 			}
 			rep.append("\n\r");
-			
+
 			rep.append(CMStrings.padRight(L("^HDamage taken: ^w@x1",""+stats.get(CombatStat.NUM_DAMAGE_TAKEN)[0]),colWidth1));
 			if((level >= 2)&&(stats.get(CombatStat.NUM_COMBATS)[0]>0))
 			{
-				double adc = Math.round(stats.get(CombatStat.NUM_DAMAGE_TAKEN)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
+				final double adc = Math.round(stats.get(CombatStat.NUM_DAMAGE_TAKEN)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 				rep.append(CMStrings.padRight(L("^HDmg taken/combat  : ^w@x1",""+adc),colWidth2));
 				if((level>=6)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
 				{
-					double ads = Math.round(stats.get(CombatStat.NUM_DAMAGE_TAKEN)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
+					final double ads = Math.round(stats.get(CombatStat.NUM_DAMAGE_TAKEN)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
 					rep.append(L("^HDmg taken/second  : ^w@x1",""+ads));
 				}
 			}
 			rep.append("\n\r");
-			
+
 			if(level >= 1)
 			{
 				rep.append(CMStrings.padRight(L("^HMana used   : ^w@x1",""+stats.get(CombatStat.NUM_MANA_USED)[0]),colWidth1));
 				if((level >= 3)&&(stats.get(CombatStat.NUM_COMBATS)[0]>0))
 				{
-					double muc = Math.round(stats.get(CombatStat.NUM_MANA_USED_COMBAT)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
+					final double muc = Math.round(stats.get(CombatStat.NUM_MANA_USED_COMBAT)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 					rep.append(CMStrings.padRight(L("^HMana used/combat  : ^w@x1",""+muc),colWidth2));
 					if((level>=7)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
 					{
-						double mus = Math.round(stats.get(CombatStat.NUM_MANA_USED_COMBAT)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
+						final double mus = Math.round(stats.get(CombatStat.NUM_MANA_USED_COMBAT)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
 						rep.append(L("^HMana used/second  : ^w@x1",""+mus));
 					}
 				}
 				rep.append("\n\r");
 			}
-			
+
 			if(level >= 1)
 			{
 				rep.append(CMStrings.padRight(L("^HMoves used  : ^w@x1",""+stats.get(CombatStat.NUM_MOVEMENT_USED)[0]),colWidth1));
 				if((level >= 3)&&(stats.get(CombatStat.NUM_COMBATS)[0]>0))
 				{
-					double muc = Math.round(stats.get(CombatStat.NUM_MOVEMENT_USED_COMBAT)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
+					final double muc = Math.round(stats.get(CombatStat.NUM_MOVEMENT_USED_COMBAT)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 					rep.append(CMStrings.padRight(L("^HMoves used/combat : ^w@x1",""+muc),colWidth2));
 					if((level>=7)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
 					{
-						double mus = Math.round(stats.get(CombatStat.NUM_MOVEMENT_USED_COMBAT)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
+						final double mus = Math.round(stats.get(CombatStat.NUM_MOVEMENT_USED_COMBAT)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
 						rep.append(L("^HMoves used/second : ^w@x1",""+mus));
 					}
 				}
 				rep.append("\n\r");
 			}
-			
+
 			if(level>=5)
 			{
 				rep.append("\n\r");
@@ -364,11 +363,11 @@ public class Skill_CombatLog extends StdSkill
 	}
 
 	@Override
-	public boolean tick(final Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(stats.size()==0)
 		{
-			for(CombatStat stat : CombatStat.values())
+			for(final CombatStat stat : CombatStat.values())
 				stats.put(stat, new long[]{0});
 			secondsPerTick = (CMProps.getTickMillis()/1000);
 		}
@@ -383,16 +382,16 @@ public class Skill_CombatLog extends StdSkill
 			int moveChange=0;
 			if(mob.curState().getMovement()<this.numMovesLastTick)
 				moveChange=(this.numMovesLastTick-mob.curState().getMovement());
-			
+
 			stats.get(CombatStat.NUM_MANA_USED)[0]+=manaChange;
 			stats.get(CombatStat.NUM_MOVEMENT_USED)[0]+=moveChange;
 			if(mob.isInCombat())
 			{
 				stats.get(CombatStat.NUM_MANA_USED_COMBAT)[0]+=manaChange;
 				stats.get(CombatStat.NUM_MOVEMENT_USED_COMBAT)[0]+=moveChange;
-				
+
 				stats.get(CombatStat.NUM_SECONDS_COMBAT)[0]+=secondsPerTick;
-				
+
 				if(!this.wasInCombat)
 				{
 					this.wasInCombat=true;
@@ -428,7 +427,7 @@ public class Skill_CombatLog extends StdSkill
 		}
 		return super.tick(ticking, tickID);
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -436,10 +435,10 @@ public class Skill_CombatLog extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final boolean logging = (this.loggingM != null) && (this.loggingM.fetchEffect(ID()) != null);
-		
+
 		if(commands.size()==0)
 		{
 			if(!logging)
@@ -460,7 +459,7 @@ public class Skill_CombatLog extends StdSkill
 		}
 		else
 		{
-			String cmd=commands.get(0).toUpperCase().trim();
+			final String cmd=commands.get(0).toUpperCase().trim();
 			if("STOP".startsWith(cmd))
 			{
 				if(this.loggingM != null)
@@ -483,7 +482,7 @@ public class Skill_CombatLog extends StdSkill
 			else
 			if("WRITE".startsWith(cmd))
 			{
-				Skill_Write write=(Skill_Write)mob.fetchAbility("Skill_Write");
+				final Skill_Write write=(Skill_Write)mob.fetchAbility("Skill_Write");
 				if(write == null)
 				{
 					mob.tell(L("You don't know how to write!"));
@@ -494,8 +493,8 @@ public class Skill_CombatLog extends StdSkill
 					mob.tell(L("Write the report on what?"));
 					return false;
 				}
-				String onWhat=CMParms.combine(commands,1);
-				List<String> writeParms=new ArrayList<String>();
+				final String onWhat=CMParms.combine(commands,1);
+				final List<String> writeParms=new ArrayList<String>();
 				writeParms.add(onWhat);
 				writeParms.add(this.getReport(null, loggingM, super.getXLEVELLevel(mob)));
 				return write.invoke(mob, writeParms, null, auto, asLevel);

@@ -42,7 +42,7 @@ public interface SearchIDList<T> extends List<T>
 	 * @return the IDs iteration
 	 */
 	public Iterator<String> keyIterator();
-	
+
 	/**
 	 * Searches the sorted list of objects for one with the
 	 * same ID as the object given.
@@ -50,5 +50,5 @@ public interface SearchIDList<T> extends List<T>
 	 * @return the object or null if not found
 	 */
 	public T find(T arg0);
-	
+
 }

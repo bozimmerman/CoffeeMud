@@ -58,8 +58,8 @@ public class Skeleton extends Undead
 		affectableStats.setStat(CharStats.STAT_SAVE_SLASH, affectableStats.getStat(CharStats.STAT_SAVE_SLASH)+50);
 	}
 
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -68,7 +68,7 @@ public class Skeleton extends Undead
 		}
 		return body;
 	}
-	
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

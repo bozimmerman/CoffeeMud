@@ -51,7 +51,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	private long		postalWaitTime		= -1;
 
 	protected static Map<String,Long>	postalTimes	= new Hashtable<String,Long>();
-	
+
 	public StdPostman()
 	{
 		super();
@@ -84,7 +84,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	}
 
 	@Override
-	public void setMinimumPostage(double d)
+	public void setMinimumPostage(final double d)
 	{
 		minimumPostage = d;
 	}
@@ -96,7 +96,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	}
 
 	@Override
-	public void setPostagePerPound(double d)
+	public void setPostagePerPound(final double d)
 	{
 		postagePerPound = d;
 	}
@@ -108,7 +108,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	}
 
 	@Override
-	public void setHoldFeePerPound(double d)
+	public void setHoldFeePerPound(final double d)
 	{
 		holdFeePerPound = d;
 	}
@@ -120,7 +120,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	}
 
 	@Override
-	public void setFeeForNewBox(double d)
+	public void setFeeForNewBox(final double d)
 	{
 		feeForNewBox = d;
 	}
@@ -132,19 +132,19 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	}
 
 	@Override
-	public void setMaxMudMonthsHeld(int months)
+	public void setMaxMudMonthsHeld(final int months)
 	{
 		maxMudMonthsHeld = months;
 	}
 
 	@Override
-	public void addSoldType(int mask)
+	public void addSoldType(final int mask)
 	{
 		setWhatIsSoldMask(CMath.abs(mask));
 	}
 
 	@Override
-	public void setWhatIsSoldMask(long newSellCode)
+	public void setWhatIsSoldMask(final long newSellCode)
 	{
 		super.setWhatIsSoldMask(newSellCode);
 		if(!isSold(ShopKeeper.DEAL_CLANPOSTMAN))
@@ -160,7 +160,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	}
 
 	@Override
-	public void setPostalChain(String name)
+	public void setPostalChain(final String name)
 	{
 		setMiscText(name);
 	}
@@ -172,7 +172,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	}
 
 	@Override
-	public String getSenderName(MOB mob, Clan.Function func, boolean checked)
+	public String getSenderName(final MOB mob, final Clan.Function func, final boolean checked)
 	{
 		if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
 		{
@@ -198,7 +198,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	}
 
 	@Override
-	public void addToBox(String mob, Item thisThang, String from, String to, long holdTime, double COD)
+	public void addToBox(final String mob, final Item thisThang, final String from, final String to, final long holdTime, final double COD)
 	{
 		final String name=thisThang.ID();
 		CMLib.catalog().updateCatalogIntegrity(thisThang);
@@ -214,7 +214,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	}
 
 	@Override
-	public boolean delFromBox(String boxName, Item thisThang)
+	public boolean delFromBox(final String boxName, final Item thisThang)
 	{
 		final List<PlayerData> V=getBoxRowPDData(boxName);
 		boolean found=false;
@@ -239,13 +239,13 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	}
 
 	@Override
-	public void emptyBox(String boxName)
+	public void emptyBox(final String boxName)
 	{
 		CMLib.database().DBDeletePlayerData(boxName,postalChain());
 	}
 
 	@Override
-	public Map<String, String> getOurOpenBoxes(String boxName)
+	public Map<String, String> getOurOpenBoxes(final String boxName)
 	{
 		final Hashtable<String,String> branches=new Hashtable<String,String>();
 		final List<PlayerData> V=CMLib.database().DBReadPlayerData(boxName,postalChain());
@@ -266,7 +266,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	}
 
 	@Override
-	public void createBoxHere(String boxName, String forward)
+	public void createBoxHere(final String boxName, final String forward)
 	{
 		if(!getOurOpenBoxes(boxName).containsKey(postalBranch()))
 		{
@@ -278,7 +278,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	}
 
 	@Override
-	public void deleteBoxHere(String boxName)
+	public void deleteBoxHere(final String boxName)
 	{
 		final List<PlayerData> V=getBoxRowPDData(boxName);
 		if(V==null)
@@ -294,7 +294,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		}
 	}
 
-	public Vector<PlayerData> getAllLocalBoxPD(String boxName)
+	public Vector<PlayerData> getAllLocalBoxPD(final String boxName)
 	{
 		final List<PlayerData> V=getBoxRowPDData(boxName);
 		final Vector<PlayerData> mine=new Vector<PlayerData>();
@@ -310,13 +310,13 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		return mine;
 	}
 
-	public List<PlayerData> getBoxRowPDData(String mob)
+	public List<PlayerData> getBoxRowPDData(final String mob)
 	{
 		return CMLib.database().DBReadPlayerData(mob,postalChain());
 	}
 
 	@Override
-	public Item findBoxContents(String boxName, String likeThis)
+	public Item findBoxContents(final String boxName, final String likeThis)
 	{
 		final List<PlayerData> V=getBoxRowPDData(boxName);
 		for(int v=0;v<V.size();v++)
@@ -335,7 +335,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		return null;
 	}
 
-	public MailPiece findExactBoxData(String boxName, Item likeThis)
+	public MailPiece findExactBoxData(final String boxName, final Item likeThis)
 	{
 		final List<PlayerData> V=getBoxRowPDData(boxName);
 		for(int v=0;v<V.size();v++)
@@ -390,7 +390,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		return piece;
 	}
 
-	protected Item makeItem(MailPiece data)
+	protected Item makeItem(final MailPiece data)
 	{
 		if(data ==  null)
 			return null;
@@ -405,7 +405,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		return null;
 	}
 
-	protected int getChargeableWeight(Item I)
+	protected int getChargeableWeight(final Item I)
 	{
 		if(I==null)
 			return 0;
@@ -415,14 +415,14 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		return chargeableWeight;
 	}
 
-	protected double getSimplePostage(int chargeableWeight)
+	protected double getSimplePostage(final int chargeableWeight)
 	{
 		if(getStartRoom()==null)
 			return 0.0;
 		return minimumPostage()+CMath.mul(postagePerPound(),chargeableWeight);
 	}
 
-	protected double getHoldingCost(MailPiece data, int chargeableWeight)
+	protected double getHoldingCost(final MailPiece data, final int chargeableWeight)
 	{
 		if(data== null)
 			return 0.0;
@@ -438,7 +438,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		return amt;
 	}
 
-	protected double getCODChargeForPiece(MailPiece data)
+	protected double getCODChargeForPiece(final MailPiece data)
 	{
 		if(data==null)
 			return 0.0;
@@ -450,7 +450,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		return amt+getHoldingCost(data,chargeableWeight);
 	}
 
-	protected String getBranchPostableTo(String toWhom, String branch, Map<String, String> allBranchBoxes)
+	protected String getBranchPostableTo(final String toWhom, final String branch, final Map<String, String> allBranchBoxes)
 	{
 		String forward=allBranchBoxes.get(branch);
 		if(forward==null)
@@ -468,7 +468,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	}
 
 	@Override
-	public String findProperBranch(String toWhom)
+	public String findProperBranch(final String toWhom)
 	{
 		final MOB M=CMLib.players().getLoadPlayer(toWhom);
 		if(M!=null)
@@ -631,7 +631,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		return true;
 	}
 
-	public void autoGive(MOB src, MOB tgt, Item I)
+	public void autoGive(final MOB src, final MOB tgt, final Item I)
 	{
 		CMMsg msg2=CMClass.getMsg(src,I,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null);
 		location().send(this,msg2);
@@ -674,7 +674,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 									autoGive(me,msg.source(),(Item)msg.tool());
 								}
 
-								@Override 
+								@Override
 								public void callBack()
 								{
 									if((this.input!=null)&&(this.input.length()>0)
@@ -701,7 +701,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 												autoGive(me,msg.source(),(Item)msg.tool());
 											}
 
-											@Override 
+											@Override
 											public void callBack()
 											{
 												final String choice=this.input.trim().toUpperCase();
@@ -957,7 +957,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						}
 					}
 
-					TimeClock C=CMLib.time().localClock(getStartRoom());
+					final TimeClock C=CMLib.time().localClock(getStartRoom());
 					boolean codCharge=false;
 					if(V.size()==0)
 						mob.tell(L("\n\rYour postal box is presently empty."));
@@ -1045,7 +1045,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						mob.tell(this,msg.tool(),null,L("<S-HE-SHE> refuses to accept <T-NAME>.  You'll need to mail each item separately."));
 						return false;
 					}
-					if(CMLib.flags().isEnspelled((Item)msg.tool()) 
+					if(CMLib.flags().isEnspelled((Item)msg.tool())
 					|| CMLib.flags().isOnFire((Item)msg.tool())
 					||(msg.tool() instanceof CagedAnimal))
 					{

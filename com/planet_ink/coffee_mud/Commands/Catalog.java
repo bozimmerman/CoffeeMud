@@ -50,8 +50,8 @@ public class Catalog extends StdCommand
 	}
 
 	protected TreeMap<String,String> currentCats=new TreeMap<String,String>();
-	
-	public boolean catalog(Room R, MOB mob, Physical P)
+
+	public boolean catalog(final Room R, final MOB mob, final Physical P)
 		throws java.io.IOException
 	{
 		final Physical origP=P;
@@ -120,7 +120,7 @@ public class Catalog extends StdCommand
 		return true;
 	}
 
-	public Physical findCatalog(CatalogKind whatKind, String ID, boolean exactOnly)
+	public Physical findCatalog(final CatalogKind whatKind, final String ID, final boolean exactOnly)
 	{
 		final Object[] data=new Object[]{null,null};
 		if((data[0]==null)&&((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.MOB)))
@@ -218,7 +218,7 @@ public class Catalog extends StdCommand
 		return (Physical)data[0];
 	}
 
-	public Enumeration<String> getRoomSet(MOB mob, String which)
+	public Enumeration<String> getRoomSet(final MOB mob, final String which)
 	{
 		Enumeration<String> rooms=null;
 		if(which.equalsIgnoreCase("ROOM"))
@@ -232,7 +232,7 @@ public class Catalog extends StdCommand
 		return rooms;
 	}
 
-	public CatalogKind getObjectType(List<String> commands)
+	public CatalogKind getObjectType(final List<String> commands)
 	{
 		CatalogKind whatKind=CatalogKind.OBJECT;
 		if((commands.size()>0)&&("MOBS".startsWith(commands.get(0).toUpperCase().trim())))
@@ -248,7 +248,7 @@ public class Catalog extends StdCommand
 		return whatKind;
 	}
 
-	public boolean checkUserRoomSetEntry(List<String> commands)
+	public boolean checkUserRoomSetEntry(final List<String> commands)
 	{
 		if(commands.size()==0)
 			return false;
@@ -260,15 +260,15 @@ public class Catalog extends StdCommand
 
 	}
 
-	protected String listCatagories(CatalogKind whatKind)
+	protected String listCatagories(final CatalogKind whatKind)
 	{
-		StringBuilder list = new StringBuilder("");
-		List<CatalogKind> types = new ArrayList<CatalogKind>();
+		final StringBuilder list = new StringBuilder("");
+		final List<CatalogKind> types = new ArrayList<CatalogKind>();
 		if((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.MOB))
 			types.add(CatalogKind.MOB);
 		if((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.MOB))
 			types.add(CatalogKind.ITEM);
-		for(CatalogKind kind : types)
+		for(final CatalogKind kind : types)
 		{
 			list.append(L("\n\r^H"+CMStrings.capitalizeAndLower(kind.name()).trim()+" categories:"));
 			list.append("\n\r"+CMStrings.repeat('-',78)+"^?\n\r");
@@ -283,15 +283,15 @@ public class Catalog extends StdCommand
 				cats=Arrays.asList(CMLib.catalog().getItemCatalogCatagories());
 				break;
 			}
-			for(String c : cats)
+			for(final String c : cats)
 				list.append(c+"\n\r");
 			list.append("\n\r");
 		}
 		return list.toString();
 	}
-	
+
 	@Override
-	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		Room R=mob.location();
@@ -453,7 +453,7 @@ public class Catalog extends StdCommand
 				else
 				if((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.MOB))
 				{
-					String cat=currentCats.get(mob.Name());
+					final String cat=currentCats.get(mob.Name());
 					list.append("^HMobs ("+(cat)+")\n\r^N");
 					list.append(CMStrings.padRight(L("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3));
@@ -487,7 +487,7 @@ public class Catalog extends StdCommand
 				}
 				if((whatKind==CatalogKind.OBJECT)||(whatKind==CatalogKind.ITEM))
 				{
-					String cat=currentCats.get(mob.Name());
+					final String cat=currentCats.get(mob.Name());
 					list.append("^HItems ("+(cat)+")\n\r^N");
 					list.append(CMStrings.padRight(L("Name"),34)+" ");
 					list.append(CMStrings.padRight("#",3)+" ");
@@ -873,7 +873,7 @@ public class Catalog extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CATALOG);
 	}

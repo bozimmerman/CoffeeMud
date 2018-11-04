@@ -19,13 +19,13 @@ public class ReadOnlyListIterator<K> implements ListIterator<K>
 {
 	private final ListIterator<K> iter;
 
-	public ReadOnlyListIterator(ListIterator<K> i)
+	public ReadOnlyListIterator(final ListIterator<K> i)
 	{
 		iter=i;
 	}
 
 	@Override
-	public void add(K arg0)
+	public void add(final K arg0)
 	{
 		iter.add(arg0);
 	}
@@ -73,7 +73,7 @@ public class ReadOnlyListIterator<K> implements ListIterator<K>
 	}
 
 	@Override
-	public void set(K arg0)
+	public void set(final K arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}

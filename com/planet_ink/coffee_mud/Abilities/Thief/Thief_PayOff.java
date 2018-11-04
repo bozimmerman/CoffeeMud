@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_PayOff extends ThiefSkill
 {
 	@Override
@@ -76,7 +75,7 @@ public class Thief_PayOff extends ThiefSkill
 	}
 
 	@Override
-	public boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(final MOB mob)
 	{
 		return true;
 	}
@@ -93,7 +92,7 @@ public class Thief_PayOff extends ThiefSkill
 		if((warrants!=null)&&(warrants.size()>0))
 		{
 			boolean didSomething=false;
-			for(LegalWarrant W : warrants)
+			for(final LegalWarrant W : warrants)
 			{
 				if((W.arrestingOfficer()==officer)
 				&&(System.currentTimeMillis()>W.getIgnoreUntilTime()))
@@ -109,7 +108,7 @@ public class Thief_PayOff extends ThiefSkill
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -132,9 +131,9 @@ public class Thief_PayOff extends ThiefSkill
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -151,7 +150,7 @@ public class Thief_PayOff extends ThiefSkill
 			mob.tell(L("You can't pay off @x1.",target.name(mob)));
 			return false;
 		}
-		
+
 		final LegalBehavior B=CMLib.law().getLegalBehavior(mob.location());
 		final Area A=(B==null)?null:CMLib.law().getLegalObject(mob.location());
 		if((A==null)||(B==null))
@@ -159,8 +158,8 @@ public class Thief_PayOff extends ThiefSkill
 			mob.tell(L("There's no point in paying off @x1.",target.name(mob)));
 			return false;
 		}
-		
-		boolean isJudge=B.isJudge(A, target);
+
+		final boolean isJudge=B.isJudge(A, target);
 		if((!isJudge)&&(!B.isAnyOfficer(A, target)))
 		{
 			mob.tell(L("Paying off @x1 won't help you.",target.name(mob)));
@@ -173,13 +172,13 @@ public class Thief_PayOff extends ThiefSkill
 			mob.tell(L("Pay off @x1? Why? You aren't in any trouble.",target.name(mob)));
 			return false;
 		}
-		
+
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("@x1 is already paid off.",target.name(mob)));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -214,7 +213,7 @@ public class Thief_PayOff extends ThiefSkill
 				CMLib.beanCounter().addMoney(mob,currency,amountRequired);
 				if(isJudge)
 				{
-					for(LegalWarrant W : warrants)
+					for(final LegalWarrant W : warrants)
 					{
 						if(W.punishment()>0)
 							W.setPunishment(W.punishment()-1);

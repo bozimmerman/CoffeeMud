@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Possess extends StdCommand
 {
 	public Possess()
@@ -49,7 +48,7 @@ public class Possess extends StdCommand
 		return access;
 	}
 
-	public MOB getTarget(MOB mob, List<String> commands, boolean quiet)
+	public MOB getTarget(final MOB mob, final List<String> commands, final boolean quiet)
 	{
 		String targetName=CMParms.combine(commands,0);
 		MOB target=null;
@@ -87,7 +86,7 @@ public class Possess extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.soulMate()!=null)
@@ -100,11 +99,11 @@ public class Possess extends StdCommand
 		MOB target=getTarget(mob,commands,true);
 		if(target == null)
 		{
-			int x=MOBname.lastIndexOf('@');
+			final int x=MOBname.lastIndexOf('@');
 			Enumeration<Room> targetRooms = null;
 			if(x>0)
 			{
-				String place=MOBname.substring(x+1);
+				final String place=MOBname.substring(x+1);
 				MOBname=MOBname.substring(0,x);
 				final Room tR=CMLib.map().getRoom(place);
 				if(tR!=null)
@@ -202,7 +201,7 @@ public class Possess extends StdCommand
 		return false;
 	}
 
-	protected boolean possess(MOB mob, MOB target, boolean quiet)
+	protected boolean possess(final MOB mob, final MOB target, final boolean quiet)
 	{
 		final CMMsg msg=CMClass.getMsg(mob,target,null, CMMsg.MSG_POSSESS, quiet?null:L("<S-NAME> get(s) a far away look, then seem(s) to fall limp."));
 		final Room room=mob.location();
@@ -222,9 +221,9 @@ public class Possess extends StdCommand
 		}
 		return false;
 	}
-	
+
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
@@ -238,7 +237,7 @@ public class Possess extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.POSSESS);
 	}

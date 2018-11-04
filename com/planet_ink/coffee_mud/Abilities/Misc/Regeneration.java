@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Regeneration extends StdAbility implements HealthCondition
 {
 	private static final int	maxTickDown	= 3;
@@ -217,7 +216,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 	}
 
 	@Override
-	public void affectCharState(MOB mob, CharState state)
+	public void affectCharState(final MOB mob, final CharState state)
 	{
 		super.affectCharState(mob,state);
 		state.setHitPoints(state.getHitPoints()-permanentDamage);
@@ -236,7 +235,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

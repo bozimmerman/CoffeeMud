@@ -88,7 +88,7 @@ public class Skill_QuickChange extends BardSkill
 		public Item I;
 		public long wornLoc;
 		public Item containerI;
-		public PackedItem(Item I, Item containerI, long wornLocation)
+		public PackedItem(final Item I, final Item containerI, final long wornLocation)
 		{
 			this.I=I;
 			this.wornLoc=wornLocation;
@@ -96,7 +96,7 @@ public class Skill_QuickChange extends BardSkill
 		}
 	}
 
-	public List<PackedItem> getAllWornItems(MOB mob)
+	public List<PackedItem> getAllWornItems(final MOB mob)
 	{
 		final List<PackedItem> items=new LinkedList<PackedItem>();
 		for(final Enumeration<Item> i= mob.items(); i.hasMoreElements();)
@@ -109,7 +109,7 @@ public class Skill_QuickChange extends BardSkill
 		return items;
 	}
 
-	public List<PackedItem> getAllPackedItems(Session S)
+	public List<PackedItem> getAllPackedItems(final Session S)
 	{
 		final List<PackedItem> items=new LinkedList<PackedItem>();
 		if(super.miscText.trim().length()>0)
@@ -139,7 +139,7 @@ public class Skill_QuickChange extends BardSkill
 		return items;
 	}
 
-	public void wearThese(MOB mob, List<PackedItem> items)
+	public void wearThese(final MOB mob, final List<PackedItem> items)
 	{
 		for(final PackedItem I : items)
 		{
@@ -153,7 +153,7 @@ public class Skill_QuickChange extends BardSkill
 		mob.executeMsg(mob, msg);
 	}
 
-	public void packThese(List<PackedItem> items)
+	public void packThese(final List<PackedItem> items)
 	{
 		final List<Item> itemList=new Vector<Item>();
 		for(final PackedItem I : items)
@@ -173,7 +173,7 @@ public class Skill_QuickChange extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

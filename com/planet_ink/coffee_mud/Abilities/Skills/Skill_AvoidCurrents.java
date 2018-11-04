@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_AvoidCurrents extends StdSkill
 {
 	@Override
@@ -80,7 +79,7 @@ public class Skill_AvoidCurrents extends StdSkill
 	{
 		return USAGE_MOVEMENT|USAGE_MANA;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -112,7 +111,7 @@ public class Skill_AvoidCurrents extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
@@ -144,8 +143,8 @@ public class Skill_AvoidCurrents extends StdSkill
 			mob.tell(L("Your ship is already being steered around currents!"));
 			return false;
 		}
-		
-		Room shipR=CMLib.map().roomLocation(target);
+
+		final Room shipR=CMLib.map().roomLocation(target);
 		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!target.subjectToWearAndTear()))
 		{
 			mob.tell(L("You must be on a sailing ship to steer around currents!"));

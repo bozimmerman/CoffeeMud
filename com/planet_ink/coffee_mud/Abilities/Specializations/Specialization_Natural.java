@@ -82,7 +82,7 @@ public class Specialization_Natural extends Specialization_Weapon
 	}
 
 	@Override
-	protected boolean canDamage(MOB mob, Weapon W)
+	protected boolean canDamage(final MOB mob, final Weapon W)
 	{
 		return (W.weaponClassification()==Weapon.CLASS_NATURAL) || (W.amBeingWornProperly());
 	}

@@ -93,7 +93,7 @@ public class Skill_Resistance extends StdSkill
 	public int resistanceCode=0;
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		resistanceCode=0;

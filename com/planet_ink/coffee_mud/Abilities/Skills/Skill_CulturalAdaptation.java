@@ -89,7 +89,7 @@ public class Skill_CulturalAdaptation extends StdSkill
 	{
 		return false;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -98,9 +98,9 @@ public class Skill_CulturalAdaptation extends StdSkill
 
 	protected double amtPerExp = 0.05;
 	protected double baseAdjustment = 0.20;
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if(newMiscText.length()==0)
@@ -118,7 +118,7 @@ public class Skill_CulturalAdaptation extends StdSkill
 			}
 		}
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -129,7 +129,7 @@ public class Skill_CulturalAdaptation extends StdSkill
 		&&(msg.value()>0)
 		&&(msg.value()<Integer.MAX_VALUE))
 		{
-			double prof=super.getXLEVELLevel(invoker());
+			final double prof=super.getXLEVELLevel(invoker());
 			msg.setValue((int)Math.round(msg.value() * (1.0 + baseAdjustment + (prof*amtPerExp))));
 		}
 		super.executeMsg(myHost, msg);

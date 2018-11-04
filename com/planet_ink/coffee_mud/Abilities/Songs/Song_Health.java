@@ -55,7 +55,7 @@ public class Song_Health extends Song
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -69,14 +69,14 @@ public class Song_Health extends Song
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMOB, CharState affectedState)
+	public void affectCharState(final MOB affectedMOB, final CharState affectedState)
 	{
 		if(invoker!=null)
 			affectedState.setHitPoints(affectedState.getHitPoints()+(adjustedLevel(invoker(),0)*5));
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
 		affectedStats.setStat(CharStats.STAT_SAVE_POISON,affectedStats.getStat(CharStats.STAT_SAVE_POISON)+adjustedLevel(invoker(),0));

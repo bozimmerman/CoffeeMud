@@ -49,10 +49,10 @@ public class Prop_OpenCommand extends Property
 	private final List<String[]> commandPhrases = new SLinkedList<String[]>();
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		commandPhrases.clear();
-		for (String p : newMiscText.split(";"))
+		for (final String p : newMiscText.split(";"))
 		{
 			if(p.trim().length()>0)
 			{
@@ -91,7 +91,7 @@ public class Prop_OpenCommand extends Property
 				return true;
 			final String word=cmds.get(0).toUpperCase();
 			boolean match=false;
-			for(String[] cmd : commandPhrases)
+			for(final String[] cmd : commandPhrases)
 			{
 				if(cmd[0].equals(word))
 				{

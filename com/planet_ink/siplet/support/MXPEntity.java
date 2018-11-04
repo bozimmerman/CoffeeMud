@@ -20,7 +20,7 @@ public class MXPEntity implements Cloneable
 	private String	name		= "";
 	private String	definition	= "";
 
-	public MXPEntity(String theName, String theDefinition)
+	public MXPEntity(final String theName, final String theDefinition)
 	{
 		super();
 		name = theName;
@@ -37,7 +37,7 @@ public class MXPEntity implements Cloneable
 		return definition;
 	}
 
-	public void setDefinition(String newDefinition)
+	public void setDefinition(final String newDefinition)
 	{
 		definition = newDefinition;
 	}

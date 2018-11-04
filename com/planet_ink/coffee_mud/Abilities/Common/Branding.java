@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Branding extends CommonSkill implements PrivateProperty
 {
 	@Override
@@ -76,7 +75,7 @@ public class Branding extends CommonSkill implements PrivateProperty
 	protected String	owner		= "";
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if(newMiscText!=null)
@@ -85,7 +84,7 @@ public class Branding extends CommonSkill implements PrivateProperty
 			owner = CMParms.getParmStr(newMiscText, "OWNER", "");
 		}
 	}
-	
+
 	@Override
 	public int getPrice()
 	{
@@ -97,7 +96,7 @@ public class Branding extends CommonSkill implements PrivateProperty
 	}
 
 	@Override
-	public void setPrice(int price)
+	public void setPrice(final int price)
 	{
 		this.price=price;
 	}
@@ -109,7 +108,7 @@ public class Branding extends CommonSkill implements PrivateProperty
 	}
 
 	@Override
-	public void setOwnerName(String owner)
+	public void setOwnerName(final String owner)
 	{
 		if(owner==null)
 			this.owner="";
@@ -180,13 +179,13 @@ public class Branding extends CommonSkill implements PrivateProperty
 					else
 					{
 						final Room room=animal.location();
-						String ownerName=CMLib.law().getLandOwnerName(room);
+						final String ownerName=CMLib.law().getLandOwnerName(room);
 						if((messedUp)||(room==null)||(ownerName.length()==0))
 							commonTell(mob,L("You've messed up branding @x1!",branding.name()));
 						else
 						{
 							animal.delEffect(animal.fetchEffect("Branding"));
-							Branding bonding=(Branding)this.copyOf();
+							final Branding bonding=(Branding)this.copyOf();
 							bonding.setMiscText("OWNER=\""+ownerName+"\"");
 							bonding.canBeUninvoked = false;
 							animal.addNonUninvokableEffect(bonding);
@@ -231,7 +230,7 @@ public class Branding extends CommonSkill implements PrivateProperty
 					final MOB M=(MOB)affected;
 					if(M.amFollowing()==null)
 					{
-						List<String> ml=CMParms.parse(msg.targetMessage());
+						final List<String> ml=CMParms.parse(msg.targetMessage());
 						if((ml.size()>1)
 						&&("PULL".startsWith(ml.get(0))||"PUSH".startsWith(ml.get(0))))
 						{
@@ -287,16 +286,16 @@ public class Branding extends CommonSkill implements PrivateProperty
 			}
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 		verb=L("branding");
 		branding=null;
 		final String str=CMParms.combine(commands,0);
-		MOB M=super.getTarget(mob, commands, givenTarget, false, true);
+		final MOB M=super.getTarget(mob, commands, givenTarget, false, true);
 		if(M==null)
 			return false;
 		branding=null;

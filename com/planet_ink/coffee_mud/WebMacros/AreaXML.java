@@ -57,7 +57,7 @@ public class AreaXML extends StdWebMacro
 		return true;
 	}
 
-	public String getFilename(HTTPRequest httpReq, String filename)
+	public String getFilename(final HTTPRequest httpReq, final String filename)
 	{
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob==null)
@@ -75,7 +75,7 @@ public class AreaXML extends StdWebMacro
 		return fileName;
 	}
 
-	protected Area getLoggedArea(HTTPRequest httpReq, MOB mob)
+	protected Area getLoggedArea(final HTTPRequest httpReq, final MOB mob)
 	{
 		final String AREA=httpReq.getUrlParameter("AREA");
 		final Area A=MUDGrinder.getAreaObject(AREA);
@@ -87,11 +87,11 @@ public class AreaXML extends StdWebMacro
 	}
 
 	@Override
-	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public byte[] runBinaryMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		httpResp.setHeader("Content-Disposition", "attachment; filename="+getFilename(httpReq,""));
 		httpResp.setHeader("Content-Type", "application/cmare");
-		
+
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob==null)
 			return null;
@@ -116,7 +116,7 @@ public class AreaXML extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		return "[Unimplemented string method!]";
 	}

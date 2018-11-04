@@ -62,7 +62,7 @@ public class Faerie extends SmallElfKin
 	{
 		return localizedStaticRacialCat;
 	}
-	
+
 	private final String[]	racialAbilityNames			= { "WingFlying" };
 	private final int[]		racialAbilityLevels			= { 1 };
 	private final int[]		racialAbilityProficiencies	= { 100 };

@@ -36,7 +36,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_AbandonShip extends StdSkill
 {
 	@Override
@@ -90,7 +89,7 @@ public class Skill_AbandonShip extends StdSkill
 	{
 		return 100;
 	}
-	
+
 	@Override
 	public int usageType()
 	{
@@ -114,9 +113,9 @@ public class Skill_AbandonShip extends StdSkill
 		}
 		return -1;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Room R=mob.location();
 		if(R==null)
@@ -139,29 +138,29 @@ public class Skill_AbandonShip extends StdSkill
 			mob.tell(L("You must be on your sailing ship."));
 			return false;
 		}
-		
+
 		if((!CMLib.law().doesHavePriviledgesHere(mob, R))
 		&&(!CMSecurity.isAllowed(mob, R, CMSecurity.SecFlag.CMDMOBS)))
 		{
 			mob.tell(L("You must be on the deck of a ship that you have privileges on."));
 			return false;
 		}
-		
+
 		if(myShipItem.getCombatant()==null)
 		{
 			mob.tell(L("You must be in ship combat to use this skill."));
 			return false;
 		}
-		
+
 		if(CMLib.flags().isUnderWateryRoom(myShipRoom))
 		{
 			mob.tell(L("It's a little late to abandon ship .. it's already sunk."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
@@ -238,7 +237,7 @@ public class Skill_AbandonShip extends StdSkill
 					Collections.sort(crew, new Comparator<MOB>()
 					{
 						@Override
-						public int compare(MOB arg0, MOB arg1)
+						public int compare(final MOB arg0, final MOB arg1)
 						{
 							if(arg0.isPlayer())
 								return arg1.isPlayer()?0:-1;
@@ -248,7 +247,7 @@ public class Skill_AbandonShip extends StdSkill
 					Collections.sort(items, new Comparator<Item>()
 					{
 						@Override
-						public int compare(Item arg0, Item arg1)
+						public int compare(final Item arg0, final Item arg1)
 						{
 							return new Integer(arg0.phyStats().weight()).compareTo(new Integer(arg1.phyStats().weight()));
 						}
@@ -318,7 +317,7 @@ public class Skill_AbandonShip extends StdSkill
 							Rideable boatC = null;
 							for(int b=0;b<boats.size();b++)
 							{
-								Rideable bI=(Rideable)boats.get(b);
+								final Rideable bI=(Rideable)boats.get(b);
 								if((b==0) && (bI.riderCapacity() > bI.numRiders()+1))
 								{
 									boatC=bI;
@@ -358,7 +357,7 @@ public class Skill_AbandonShip extends StdSkill
 						Room curRoom = myShipRoom;
 						for(int i=0;i<maxPaddle;i++)
 						{
-							int dex=sailingRooms.indexOf(curRoom);
+							final int dex=sailingRooms.indexOf(curRoom);
 							if(dex < 0)
 								break;
 							int goDir = -1;
@@ -373,7 +372,7 @@ public class Skill_AbandonShip extends StdSkill
 								&&(E1!=null)
 								&&(E1.isOpen()))
 								{
-									int xx=sailingRooms.indexOf(R1);
+									final int xx=sailingRooms.indexOf(R1);
 									if(xx > dex)
 									{
 										goDir = d;

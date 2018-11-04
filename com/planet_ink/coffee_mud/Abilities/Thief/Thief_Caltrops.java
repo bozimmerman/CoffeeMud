@@ -115,7 +115,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public void setReset(int Reset)
+	public void setReset(final int Reset)
 	{
 	}
 
@@ -126,24 +126,24 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public void resetTrap(MOB mob)
+	public void resetTrap(final MOB mob)
 	{
 	}
 
 	@Override
-	public boolean maySetTrap(MOB mob, int asLevel)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean maySetTrap(final MOB mob, final int asLevel)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canReSetTrap(MOB mob)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canReSetTrap(final MOB mob)
 	{
 		return false;
 	}
@@ -161,7 +161,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		maliciousAffect(mob, P, qualifyingClassLevel + trapBonus, 0, -1);
 		return (Trap) P.fetchEffect(ID());
@@ -173,7 +173,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		return false;
 	}
 
-	public boolean isLocalExempt(MOB target)
+	public boolean isLocalExempt(final MOB target)
 	{
 		if(target==null)
 			return false;
@@ -202,9 +202,9 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 			return true;
 		return false;
 	}
-	
+
 	@Override
-	public void spring(MOB mob)
+	public void spring(final MOB mob)
 	{
 		final MOB invoker=(invoker()!=null) ? invoker() : CMLib.map().deity();
 		if((!invoker.mayIFight(mob))
@@ -218,7 +218,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, Physical target)
 	{
 		if(mob!=null)
 		{
@@ -253,7 +253,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=(givenTarget!=null)?givenTarget:mob.location();
 		if(target.fetchEffect(ID())!=null)

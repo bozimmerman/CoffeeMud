@@ -60,7 +60,7 @@ public class ClimbableSurface extends StdRoom
 	{
 		return Room.DOMAIN_OUTDOORS_ROCKS;
 	}
-	
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -70,7 +70,7 @@ public class ClimbableSurface extends StdRoom
 		R.climbA.makeNonUninvokable();
 		return R;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -78,7 +78,7 @@ public class ClimbableSurface extends StdRoom
 			return false;
 		return super.okMessage(myHost, msg);
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -86,7 +86,7 @@ public class ClimbableSurface extends StdRoom
 			climbA.executeMsg(myHost, msg);
 		super.executeMsg(myHost,msg);
 	}
-	
+
 	@Override
 	public void recoverPhyStats()
 	{

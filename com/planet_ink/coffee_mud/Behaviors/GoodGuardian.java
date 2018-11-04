@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Behaviors;
+ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -48,7 +48,7 @@ public class GoodGuardian extends StdBehavior
 		return "protective against aggression, evilness, or thieflyness";
 	}
 
-	public static MOB anyPeaceToMake(Room room, MOB observer)
+	public static MOB anyPeaceToMake(final Room room, final MOB observer)
 	{
 		if(room==null)
 			return null;
@@ -79,7 +79,7 @@ public class GoodGuardian extends StdBehavior
 		return victim;
 	}
 
-	public static void keepPeace(MOB observer, MOB victim)
+	public static void keepPeace(final MOB observer, final MOB victim)
 	{
 		if(!canFreelyBehaveNormal(observer))
 			return;

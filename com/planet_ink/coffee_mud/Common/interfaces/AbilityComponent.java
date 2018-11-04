@@ -118,7 +118,7 @@ public interface AbilityComponent extends CMCommon
 	 * @return a String type
 	 */
 	public String getSubType();
-	
+
 	/**
 	 * For resource and material type item component filters, this will
 	 * return the type comparison object as a long value.  This is typically

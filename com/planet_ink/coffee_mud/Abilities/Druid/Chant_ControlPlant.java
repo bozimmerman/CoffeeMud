@@ -33,7 +33,6 @@ import java.util.List;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_ControlPlant extends Chant
 {
 	@Override
@@ -74,7 +73,7 @@ public class Chant_ControlPlant extends Chant
 		return 0;
 	}
 
-	public static Ability isPlant(Item I)
+	public static Ability isPlant(final Item I)
 	{
 		if((I!=null)&&(I.rawSecretIdentity().length()>0))
 		{
@@ -91,7 +90,7 @@ public class Chant_ControlPlant extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item myPlant=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(myPlant==null)
@@ -110,9 +109,9 @@ public class Chant_ControlPlant extends Chant
 			if((A.text().length()>0)&&(CMLib.players().playerExists(A.text())))
 				oldController = A.text();
 		}
-		
+
 		final MOB oldM = (oldController.length() > 0) ? CMLib.players().getLoadPlayer(oldController) : null;
-		
+
 		if(oldController.equals(mob.Name()))
 		{
 			mob.tell(L("You already control @x1.",myPlant.name()));

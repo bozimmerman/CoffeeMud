@@ -33,23 +33,22 @@ import com.planet_ink.coffee_web.util.RequestStats;
  */
 public class ServletStatsServlet implements SimpleServlet
 {
-
-	private void appendStats(RequestStats stats, StringBuilder str)
+	private void appendStats(final RequestStats stats, final StringBuilder str)
 	{
 		str.append("Requests total: ").append(stats.getNumberOfRequests()).append("<br>");
 		str.append("Average time (ns): ").append(stats.getAverageEllapsedNanos()).append("<br>");
 		str.append("In progress: ").append(stats.getNumberOfRequestsInProcess()).append("<br>");
 	}
-	
+
 	@Override
-	public void doGet(SimpleServletRequest request, SimpleServletResponse response)
+	public void doGet(final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		try
 		{
 			response.setMimeType(MIMEType.All.html.getType());
 			final StringBuilder str = new StringBuilder("");
 			str.append("<html><body>");
-			
+
 			RequestStats stats;
 			for(final Class<? extends SimpleServlet> servletClass : request.getServletManager().getServlets())
 			{
@@ -67,7 +66,7 @@ public class ServletStatsServlet implements SimpleServlet
 	}
 
 	@Override
-	public void doPost(SimpleServletRequest request, SimpleServletResponse response)
+	public void doPost(final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());
 	}
@@ -78,7 +77,7 @@ public class ServletStatsServlet implements SimpleServlet
 	}
 
 	@Override
-	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response)
+	public void service(final HTTPMethod method, final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		if(method!=HTTPMethod.GET)
 			response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());

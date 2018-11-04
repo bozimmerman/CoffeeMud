@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Druid_KnowPlants extends StdAbility
 {
 	@Override
@@ -81,7 +80,7 @@ public class Druid_KnowPlants extends StdAbility
 		return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;
 	}
 
-	public static boolean isPlant(Item I)
+	public static boolean isPlant(final Item I)
 	{
 		if((I!=null)&&(I.rawSecretIdentity().length()>0))
 		{
@@ -96,7 +95,7 @@ public class Druid_KnowPlants extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item I=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(I==null)

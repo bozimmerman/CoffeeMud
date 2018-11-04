@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Unload extends StdCommand
 {
 	public Unload()
@@ -51,7 +50,7 @@ public class Unload extends StdCommand
 	final String[]	ARCHON_LIST	= { "CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "ACHIEVEMENTS", "[FILENAME]" };
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob==null)
@@ -100,7 +99,7 @@ public class Unload extends StdCommand
 			final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
 			baseItems.addAll(mob.location().findItems(null,CMParms.combine(commands,0)));
 			final List<AmmunitionWeapon> items=new XVector<AmmunitionWeapon>();
-			for (Item I : baseItems)
+			for (final Item I : baseItems)
 			{
 				if((I instanceof AmmunitionWeapon)&&((AmmunitionWeapon)I).requiresAmmunition())
 				{
@@ -142,10 +141,10 @@ public class Unload extends StdCommand
 						mob.tell(L("Unknown Area '@x1'.  Use AREAS.",which));
 					else
 					{
-						LinkedList<Room> rooms=new LinkedList<Room>();
+						final LinkedList<Room> rooms=new LinkedList<Room>();
 						for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 						{
-							try 
+							try
 							{
 								final Room R=r.nextElement();
 								if(R!=null)
@@ -153,14 +152,14 @@ public class Unload extends StdCommand
 									rooms.add(R);
 									CMLib.map().emptyRoom(R, null, true);
 								}
-							} 
-							catch(Exception e) 
+							}
+							catch(final Exception e)
 							{
 							}
 						}
 						for(final Iterator<Room> r=rooms.iterator();r.hasNext();)
 						{
-							try 
+							try
 							{
 								final Room R=r.next();
 								A.delProperRoom(R);
@@ -169,8 +168,8 @@ public class Unload extends StdCommand
 								R.destroy();
 								if(R instanceof GridLocale)
 									((GridLocale)R).clearGrid(null);
-							} 
-							catch(Exception e) 
+							}
+							catch(final Exception e)
 							{
 							}
 						}
@@ -230,7 +229,7 @@ public class Unload extends StdCommand
 				if((F.exists())&&(F.canRead())&&(F.canWrite())&&(F.isDirectory()))
 				{
 					CMLib.help().unloadHelpFile(mob);
-					for(ClanGovernment G : CMLib.clans().getStockGovernments())
+					for(final ClanGovernment G : CMLib.clans().getStockGovernments())
 						G.setLongDesc(G.getLongDesc());
 					return false;
 				}
@@ -335,7 +334,7 @@ public class Unload extends StdCommand
 						done++;
 						if(M.session()!=null)
 							M.session().stopSession(true,true,true);
-						PlayerStats pStats = M.playerStats();
+						final PlayerStats pStats = M.playerStats();
 						if(pStats != null)
 							pStats.getExtItems().delAllItems(true);
 						CMLib.players().delPlayer(M);
@@ -501,7 +500,7 @@ public class Unload extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return super.securityCheck(mob);
 	}

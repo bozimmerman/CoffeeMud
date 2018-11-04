@@ -86,9 +86,9 @@ public class Thief_PiecesOfEight extends ThiefSkill
 	{
 		return USAGE_MOVEMENT | USAGE_MANA;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -99,20 +99,20 @@ public class Thief_PiecesOfEight extends ThiefSkill
 			mob.tell(L("Fetch how much from your buried treasure?"));
 			return false;
 		}
-		
+
 		final String moneyCmd=CMParms.combine(commands);
 		final Triad<String,Double,Long> triad=CMLib.english().parseMoneyStringSDL(mob, moneyCmd, null);
-		final double totalAmount =CMath.mul(triad.second.doubleValue(), triad.third.doubleValue()); 
+		final double totalAmount =CMath.mul(triad.second.doubleValue(), triad.third.doubleValue());
 
 		if(totalAmount == 0)
 		{
 			mob.tell(L("'@x1' is invalid. Fetch how much from your buried treasure?",moneyCmd));
 			return false;
 		}
-		
+
 		if(mob.playerStats()==null)
 			return false;
-		
+
 		final ItemCollection coll=mob.playerStats().getExtItems();
 		if(coll==null)
 		{
@@ -120,9 +120,9 @@ public class Thief_PiecesOfEight extends ThiefSkill
 			return false;
 		}
 
-		List<Coins> coins = new LinkedList<Coins>();
+		final List<Coins> coins = new LinkedList<Coins>();
 		double totalCoinValue = 0.0;
-		HashSet<Double> otherDenoms=new HashSet<Double>();
+		final HashSet<Double> otherDenoms=new HashSet<Double>();
 		for(final Enumeration<Item> i=coll.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
@@ -160,7 +160,7 @@ public class Thief_PiecesOfEight extends ThiefSkill
 			mob.tell(L("You don't have any buried @x1.",CMLib.beanCounter().getDenominationName(triad.first, triad.second.doubleValue())));
 			return false;
 		}
-		
+
 		if(totalAmount > totalCoinValue)
 		{
 			mob.tell(L("You don't have enough buried @x1.",CMLib.beanCounter().getDenominationName(triad.first, triad.second.doubleValue())));
@@ -168,7 +168,7 @@ public class Thief_PiecesOfEight extends ThiefSkill
 		}
 
 		totalCoinValue = 0;
-		for(Coins C : coins)
+		for(final Coins C : coins)
 		{
 			if((totalCoinValue + C.getTotalValue()) < totalAmount)
 			{
@@ -178,7 +178,7 @@ public class Thief_PiecesOfEight extends ThiefSkill
 			}
 			else
 			{
-				double remainder = (totalCoinValue + C.getTotalValue()) - totalAmount;
+				final double remainder = (totalCoinValue + C.getTotalValue()) - totalAmount;
 				C.setNumberOfCoins((int)Math.round(remainder / C.getDenomination()));
 			}
 		}
@@ -195,7 +195,7 @@ public class Thief_PiecesOfEight extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Coins C=CMLib.beanCounter().makeCurrency(triad.first, triad.second.doubleValue(), triad.third.intValue());
+				final Coins C=CMLib.beanCounter().makeCurrency(triad.first, triad.second.doubleValue(), triad.third.intValue());
 				mob.addItem(C);
 				C.putCoinsBack();
 			}

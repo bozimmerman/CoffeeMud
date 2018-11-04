@@ -48,7 +48,7 @@ public class Open extends StdCommand
 
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Environmental.class,Boolean.class}};
 
-	public boolean open(MOB mob, Environmental openThis, String openableWord, int dirCode, boolean quietly)
+	public boolean open(final MOB mob, final Environmental openThis, final String openableWord, int dirCode, final boolean quietly)
 	{
 		final String openWord=(!(openThis instanceof Exit))?"open":((Exit)openThis).openWord();
 		final String openMsg=quietly?null:("<S-NAME> "+openWord+"(s) <T-NAMESELF>.")+CMLib.protocol().msp("dooropen.wav",10);
@@ -100,10 +100,10 @@ public class Open extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		final String whatToOpen=CMParms.combine(commands,1);
 		if(whatToOpen.length()==0)
 		{
@@ -127,7 +127,7 @@ public class Open extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;

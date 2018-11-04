@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CheckAuthCode extends StdWebMacro
 {
 	@Override
@@ -42,13 +41,14 @@ public class CheckAuthCode extends StdWebMacro
 		return "CheckAuthCode";
 	}
 
-	public Hashtable<String,String> getAuths(HTTPRequest httpReq)
+	public Hashtable<String,String> getAuths(final HTTPRequest httpReq)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return null;
 		final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob==null)
 			return null;
+		@SuppressWarnings("unchecked")
 		Hashtable<String,String> auths=(Hashtable)httpReq.getRequestObjects().get("AUTHS_"+mob.Name().toUpperCase().trim());
 		if(auths==null)
 		{
@@ -104,7 +104,7 @@ public class CheckAuthCode extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		boolean finalCondition=false;

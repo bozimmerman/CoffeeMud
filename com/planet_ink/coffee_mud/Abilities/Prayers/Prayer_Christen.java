@@ -73,7 +73,7 @@ public class Prayer_Christen extends Prayer
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -86,7 +86,7 @@ public class Prayer_Christen extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat())
 		{
@@ -145,8 +145,8 @@ public class Prayer_Christen extends Prayer
 				target.setName(name);
 				target.setDisplayText(L("@x1 is here.",name));
 				String txt=((CagedAnimal)target).cageText();
-				int startNameX=txt.indexOf("<NAME>");
-				int endNameX=(startNameX>=0)?txt.indexOf("</NAME>",startNameX):-1;
+				final int startNameX=txt.indexOf("<NAME>");
+				final int endNameX=(startNameX>=0)?txt.indexOf("</NAME>",startNameX):-1;
 				if(endNameX>startNameX)
 					oldName=txt.substring(startNameX+6,endNameX);
 				txt=CMStrings.replaceFirst(txt,"<NAME>"+oldName+"</NAME>","<NAME>"+name+"</NAME>");

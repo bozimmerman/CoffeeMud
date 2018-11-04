@@ -55,7 +55,7 @@ public class SpellCraftingSkill extends CraftingSkill
 		super();
 	}
 
-	protected String getCraftableSpellName(List<String> commands)
+	protected String getCraftableSpellName(final List<String> commands)
 	{
 		String spellName=null;
 		if((commands.size()>0))
@@ -69,7 +69,7 @@ public class SpellCraftingSkill extends CraftingSkill
 		return spellName;
 	}
 
-	protected List<String> getCraftableSpellRow(String spellName)
+	protected List<String> getCraftableSpellRow(final String spellName)
 	{
 		List<String> spellFound=null;
 		final List<List<String>> recipes=loadRecipes();
@@ -106,7 +106,7 @@ public class SpellCraftingSkill extends CraftingSkill
 		return spellFound;
 	}
 
-	protected Ability getCraftableSpellRecipeSpell(List<String> commands)
+	protected Ability getCraftableSpellRecipeSpell(final List<String> commands)
 	{
 		Ability theSpell=null;
 		final String spellName=getCraftableSpellName(commands);
@@ -123,7 +123,7 @@ public class SpellCraftingSkill extends CraftingSkill
 		return theSpell;
 	}
 
-	protected int getCraftableSpellLevel(List<String> commands)
+	protected int getCraftableSpellLevel(final List<String> commands)
 	{
 		Ability theSpell=null;
 		final String spellName=getCraftableSpellName(commands);

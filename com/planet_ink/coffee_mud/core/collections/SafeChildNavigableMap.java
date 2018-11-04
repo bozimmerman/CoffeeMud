@@ -28,7 +28,7 @@ public class SafeChildNavigableMap<K, V> implements NavigableMap<K, V>
 	private final NavigableMap<K, V>	map;
 	private final SafeCollectionHost	host;
 
-	public SafeChildNavigableMap(NavigableMap<K, V> s, SafeCollectionHost host)
+	public SafeChildNavigableMap(final NavigableMap<K, V> s, final SafeCollectionHost host)
 	{
 		this.map = s;
 		this.host=host;
@@ -53,7 +53,7 @@ public class SafeChildNavigableMap<K, V> implements NavigableMap<K, V>
 	}
 
 	@Override
-	public SortedMap<K, V> headMap(K toKey)
+	public SortedMap<K, V> headMap(final K toKey)
 	{
 		return new SafeChildSortedMap<K, V>(map.headMap(toKey), host);
 	}
@@ -71,13 +71,13 @@ public class SafeChildNavigableMap<K, V> implements NavigableMap<K, V>
 	}
 
 	@Override
-	public SortedMap<K, V> subMap(K fromKey, K toKey)
+	public SortedMap<K, V> subMap(final K fromKey, final K toKey)
 	{
 		return new SafeChildSortedMap<K, V>(map.subMap(fromKey, toKey), host);
 	}
 
 	@Override
-	public SortedMap<K, V> tailMap(K fromKey)
+	public SortedMap<K, V> tailMap(final K fromKey)
 	{
 		return new SafeChildSortedMap<K, V>(map.tailMap(fromKey), host);
 	}
@@ -95,19 +95,19 @@ public class SafeChildNavigableMap<K, V> implements NavigableMap<K, V>
 	}
 
 	@Override
-	public boolean containsKey(Object key)
+	public boolean containsKey(final Object key)
 	{
 		return map.containsKey(key);
 	}
 
 	@Override
-	public boolean containsValue(Object value)
+	public boolean containsValue(final Object value)
 	{
 		return map.containsValue(value);
 	}
 
 	@Override
-	public V get(Object key)
+	public V get(final Object key)
 	{
 		return map.get(key);
 	}
@@ -119,19 +119,19 @@ public class SafeChildNavigableMap<K, V> implements NavigableMap<K, V>
 	}
 
 	@Override
-	public V put(K key, V value)
+	public V put(final K key, final V value)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public void putAll(Map<? extends K, ? extends V> m)
+	public void putAll(final Map<? extends K, ? extends V> m)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public V remove(Object key)
+	public V remove(final Object key)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -143,13 +143,13 @@ public class SafeChildNavigableMap<K, V> implements NavigableMap<K, V>
 	}
 
 	@Override
-	public java.util.Map.Entry<K, V> ceilingEntry(K key)
+	public java.util.Map.Entry<K, V> ceilingEntry(final K key)
 	{
 		return map.ceilingEntry(key);
 	}
 
 	@Override
-	public K ceilingKey(K key)
+	public K ceilingKey(final K key)
 	{
 		return map.ceilingKey(key);
 	}
@@ -173,31 +173,31 @@ public class SafeChildNavigableMap<K, V> implements NavigableMap<K, V>
 	}
 
 	@Override
-	public java.util.Map.Entry<K, V> floorEntry(K key)
+	public java.util.Map.Entry<K, V> floorEntry(final K key)
 	{
 		return map.floorEntry(key);
 	}
 
 	@Override
-	public K floorKey(K key)
+	public K floorKey(final K key)
 	{
 		return map.floorKey(key);
 	}
 
 	@Override
-	public NavigableMap<K, V> headMap(K toKey, boolean inclusive)
+	public NavigableMap<K, V> headMap(final K toKey, final boolean inclusive)
 	{
 		return new SafeChildNavigableMap<K, V>(map.headMap(toKey, inclusive), host);
 	}
 
 	@Override
-	public java.util.Map.Entry<K, V> higherEntry(K key)
+	public java.util.Map.Entry<K, V> higherEntry(final K key)
 	{
 		return map.higherEntry(key);
 	}
 
 	@Override
-	public K higherKey(K key)
+	public K higherKey(final K key)
 	{
 		return map.higherKey(key);
 	}
@@ -209,13 +209,13 @@ public class SafeChildNavigableMap<K, V> implements NavigableMap<K, V>
 	}
 
 	@Override
-	public java.util.Map.Entry<K, V> lowerEntry(K key)
+	public java.util.Map.Entry<K, V> lowerEntry(final K key)
 	{
 		return map.lowerEntry(key);
 	}
 
 	@Override
-	public K lowerKey(K key)
+	public K lowerKey(final K key)
 	{
 		return map.lowerKey(key);
 	}
@@ -239,13 +239,13 @@ public class SafeChildNavigableMap<K, V> implements NavigableMap<K, V>
 	}
 
 	@Override
-	public NavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive)
+	public NavigableMap<K, V> subMap(final K fromKey, final boolean fromInclusive, final K toKey, final boolean toInclusive)
 	{
 		return new SafeChildNavigableMap<K, V>(map.subMap(fromKey, fromInclusive, toKey, toInclusive), host);
 	}
 
 	@Override
-	public NavigableMap<K, V> tailMap(K fromKey, boolean inclusive)
+	public NavigableMap<K, V> tailMap(final K fromKey, final boolean inclusive)
 	{
 		return new SafeChildNavigableMap<K, V>(map.tailMap(fromKey, inclusive), host);
 	}

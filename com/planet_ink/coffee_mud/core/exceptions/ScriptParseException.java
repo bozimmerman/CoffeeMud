@@ -19,7 +19,7 @@ public class ScriptParseException extends CoffeeMudException
 {
 	static final long serialVersionUID=0;
 
-	public ScriptParseException(String s)
+	public ScriptParseException(final String s)
 	{
 		super(s);
 	}

@@ -33,7 +33,6 @@ import com.planet_ink.coffee_web.util.CWConfig;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class CGIProcessor implements HTTPOutputConverter
 {
 	private final String executeablePath;
@@ -41,7 +40,7 @@ public class CGIProcessor implements HTTPOutputConverter
 	private final String cgiPathInfo;
 	private final String docRoot;
 
-	public CGIProcessor(String executeablePath, String docRoot, String cgiUrl, String cgiPathInfo)
+	public CGIProcessor(final String executeablePath, final String docRoot, final String cgiUrl, final String cgiPathInfo)
 	{
 		this.executeablePath=executeablePath;
 		this.cgiPathInfo = cgiPathInfo;
@@ -49,8 +48,8 @@ public class CGIProcessor implements HTTPOutputConverter
 		this.docRoot = docRoot;
 	}
 
-	private static enum EnvironmentVariables 
-	{ 
+	private static enum EnvironmentVariables
+	{
 		AUTH_TYPE,
 		CONTENT_LENGTH,
 		CONTENT_TYPE,
@@ -72,14 +71,14 @@ public class CGIProcessor implements HTTPOutputConverter
 		SERVER_NAME,
 		SERVER_PORT,
 		SERVER_PROTOCOL,
-		SERVER_SIGNATURE, 
-		SERVER_SOFTWARE, 
+		SERVER_SIGNATURE,
+		SERVER_SOFTWARE,
 		REDIRECT_STATUS
 	}
-	
-	
+
+
 	/**
-	 * Standard method for converting an input buffer for writing to 
+	 * Standard method for converting an input buffer for writing to
 	 * the client.   The position and limit of the bytebuffer must
 	 * already be set for reading the content.
 	 * Call generateOutput() to get the new output.
@@ -91,7 +90,7 @@ public class CGIProcessor implements HTTPOutputConverter
 	 * @throws HTTPException
 	 */
 	@Override
-	public ByteBuffer convertOutput(CWConfig config, HTTPRequest request, File pageFile, HTTPStatus status, ByteBuffer buffer) throws HTTPException
+	public ByteBuffer convertOutput(final CWConfig config, final HTTPRequest request, final File pageFile, final HTTPStatus status, final ByteBuffer buffer) throws HTTPException
 	{
 		// http://tools.ietf.org/html/draft-robinson-www-interface-00
 		if(request == null)
@@ -149,7 +148,7 @@ public class CGIProcessor implements HTTPOutputConverter
 		env.put(EnvironmentVariables.SERVER_SIGNATURE.name(),HTTPIOHandler.SERVER_HEADER+" Port "+request.getClientPort());
 		env.put(EnvironmentVariables.SERVER_SOFTWARE.name(),WebServer.NAME+" "+WebServer.VERSION);
 		env.put(EnvironmentVariables.REDIRECT_STATUS.name(),"200");
-		for(HTTPHeader header : HTTPHeader.Common.values())
+		for(final HTTPHeader header : HTTPHeader.Common.values())
 		{
 			final String value=request.getHeader(header.name());
 			if(value != null)
@@ -157,7 +156,7 @@ public class CGIProcessor implements HTTPOutputConverter
 				env.put("HTTP_"+header.name().replace('-','_'),value);
 			}
 		}
-		try 
+		try
 		{
 			builder.directory(config.getFileManager().createFileFromPath(docRoot));
 			final InputStream bodyIn = request.getBody();
@@ -169,34 +168,34 @@ public class CGIProcessor implements HTTPOutputConverter
 			int len;
 			if(bodyIn != null)
 			{
-				while ((len = bodyIn.read(bytes)) != -1) 
+				while ((len = bodyIn.read(bytes)) != -1)
 				{
 					out.write(bytes, 0, len);
 				}
 			}
 			out.close();
-			while ((len = in.read(bytes)) != -1) 
+			while ((len = in.read(bytes)) != -1)
 			{
 				bout.write(bytes, 0, len);
 			}
-			int retCode = process.waitFor();
+			final int retCode = process.waitFor();
 			if(retCode != 0)
 			{
 				final InputStream errin = process.getErrorStream();
-				StringBuilder errMsg = new StringBuilder("");
-				while ((len = errin.read(bytes)) != -1) 
+				final StringBuilder errMsg = new StringBuilder("");
+				while ((len = errin.read(bytes)) != -1)
 				{
 					errMsg.append(new String(bytes,0,len));
 				}
 				Log.errOut(errMsg.toString());
 			}
 			return ByteBuffer.wrap(bout.toByteArray());
-		} 
-		catch (IOException e) 
+		}
+		catch (final IOException e)
 		{
 			Log.errOut("CGIConverter", e);
-		} 
-		catch (InterruptedException e) 
+		}
+		catch (final InterruptedException e)
 		{
 			Log.errOut("CGIConverter", e);
 		}

@@ -34,9 +34,9 @@ import java.util.*;
  * The Flag Library is full of shortcut methods for checking the
  * state of objects in a high level way.  This allows the underlying
  * functionality of those states to change more easily in the future.
- * Most of these check PhyStats disposition and senses flags, but 
+ * Most of these check PhyStats disposition and senses flags, but
  * there are also methods for checking room states, sorting through
- * abilities by their flags, and similar methods.  
+ * abilities by their flags, and similar methods.
  * I guess it's really a state-checking-catch-all library.
  * @author Bo Zimmerman
  *
@@ -156,7 +156,7 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns whether the given mob or item is not allowed
-	 * to be camped, meaning they won't respawn while 
+	 * to be camped, meaning they won't respawn while
 	 * someone is just hanging around waiting in the
 	 * room for them to spawn.
 	 * @param P the item or mob to check
@@ -275,7 +275,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean canBeHeardMovingBy(Physical heard , MOB hearer);
 
 	/**
-	 * Returns whether the given hearer mob can hear the given mob or 
+	 * Returns whether the given hearer mob can hear the given mob or
 	 * object speaking.  Mostly just checks whether the hearer can hear.
 	 * @param heard the thing or mob speaking
 	 * @param hearer the mob who wants to hear it
@@ -328,12 +328,12 @@ public interface CMFlagLibrary extends CMLibrary
 	 * should be destroyed.  If a mob report return an
 	 * asterisk, then it probably means he just needs
 	 * killing, not destroying.
-	 * 
+	 *
 	 * @param P the room, mob, or item to check
 	 * @return null if all is well, and a reason otherwise
 	 */
 	public String validCheck(final Physical P);
-	
+
 	/**
 	 * Returns whether the given affecting (usually a mob) is alive,
 	 * awake, mobile, and officially in the game.  This is a lighter
@@ -354,7 +354,7 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns whether the given seen mob or item or room or whatever
-	 * can be seen by the given seer, given conditions, lighting, 
+	 * can be seen by the given seer, given conditions, lighting,
 	 * hidden, etc.
 	 * @param seen the thing to be seen.
 	 * @param seer the seer who wants to see it
@@ -487,10 +487,10 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @return true if the contents are accessible right now.
 	 */
 	public boolean isOpenAccessibleContainer(Item I);
-	
+
 	/**
 	 * Returns whether the given item, mob, room, whatever is
-	 * seeable at all.  This is beyond invisibility to the 
+	 * seeable at all.  This is beyond invisibility to the
 	 * metaphysically unseeable.
 	 * @param P the room, mob, or item to check
 	 * @return true if it is seeable
@@ -627,7 +627,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isLightSource(Physical P);
 
 	/**
-	 * Returns whether the given item has an item rejuv 
+	 * Returns whether the given item has an item rejuv
 	 * actively monitoring it.
 	 * @param I the item to check
 	 * @return true if the item is active rejuv tracked
@@ -635,7 +635,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isRejuvingItem(Item I);
 
 	/**
-	 * Returns whether the given item, mob, whatever is 
+	 * Returns whether the given item, mob, whatever is
 	 * glowing.
 	 * @param P the item, mob, whatever to check
 	 * @return true if it is glowing, false otherwise
@@ -643,7 +643,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isGlowing(Physical P);
 
 	/**
-	 * Returns whether the given item, mob, whatever is 
+	 * Returns whether the given item, mob, whatever is
 	 * marked as a golem.
 	 * @param P the item, mob, whatever to check
 	 * @return true if it is a golem, false otherwise
@@ -651,7 +651,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isGolem(Physical P);
 
 	/**
-	 * Returns whether the given item, mob, whatever is 
+	 * Returns whether the given item, mob, whatever is
 	 * sleeping.
 	 * @param P the item, mob, whatever to check
 	 * @return true if it is sleeping, false otherwise
@@ -659,7 +659,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isSleeping(Physical P);
 
 	/**
-	 * Returns whether the given item, mob, whatever is 
+	 * Returns whether the given item, mob, whatever is
 	 * sitting.
 	 * @param P the item, mob, whatever to check
 	 * @return true if it is sitting, false otherwise
@@ -667,7 +667,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isSitting(Physical P);
 
 	/**
-	 * Returns whether the given item, mob, whatever is 
+	 * Returns whether the given item, mob, whatever is
 	 * flying.
 	 * @param P the item, mob, whatever to check
 	 * @return true if it is flying, false otherwise
@@ -682,9 +682,9 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @return true if it is floating, false otherwise
 	 */
 	public boolean isFloatingFreely(Physical P);
-	
+
 	/**
-	 * Returns whether the given item, mob, whatever is 
+	 * Returns whether the given item, mob, whatever is
 	 * climbing.
 	 * @param P the item, mob, whatever to check
 	 * @return true if it is climbing, false otherwise
@@ -692,7 +692,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isClimbing(Physical P);
 
 	/**
-	 * Returns whether the given room, area, exit, whatever is 
+	 * Returns whether the given room, area, exit, whatever is
 	 * crawlable (not necc. crawling).
 	 * @param P the room, area, exit, whatever to check
 	 * @return true if it is crawlable, false otherwise
@@ -700,7 +700,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isCrawlable(Physical P);
 
 	/**
-	 * Returns whether the given mob, item, room, whatever is 
+	 * Returns whether the given mob, item, room, whatever is
 	 * in a outdoors non-city room.
 	 * @param P the mob, item, room, whatever to check
 	 * @return true if it is outdoors, false otherwise
@@ -708,7 +708,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isInWilderness(Physical P);
 
 	/**
-	 * Returns whether the given item, mob, whatever is 
+	 * Returns whether the given item, mob, whatever is
 	 * marked as swimming/floating.
 	 * @param P the item, mob, whatever to check
 	 * @return true if it is marked swimming, false otherwise
@@ -716,7 +716,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isSwimming(Physical P);
 
 	/**
-	 * Returns whether the given item, mob, whatever is 
+	 * Returns whether the given item, mob, whatever is
 	 * swimming/floating in a watery room.
 	 * @param P the item, mob, whatever to check
 	 * @return true if it is swimming in water, false otherwise
@@ -724,15 +724,15 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isSwimmingInWater(Physical P);
 
 	/**
-	 * Returns whether the given room, whatever is 
+	 * Returns whether the given room, whatever is
 	 * airy, such as an in the air, or an open space.
 	 * @param R the room to check
 	 * @return true if it is airy, false otherwise
 	 */
 	public boolean isAiryRoom(Room R);
-	
+
 	/**
-	 * Returns whether the given room, whatever is 
+	 * Returns whether the given room, whatever is
 	 * watery, such as a water surface, underwater, etc.
 	 * @param R the room to check
 	 * @return true if it is watery, false otherwise
@@ -740,7 +740,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isWateryRoom(Room R);
 
 	/**
-	 * Returns whether the given room, whatever is 
+	 * Returns whether the given room, whatever is
 	 * watery, such as a water surface, etc.
 	 * @param R the room to check
 	 * @return true if it is water surfacy, false otherwise
@@ -748,7 +748,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isWaterySurfaceRoom(Room R);
 
 	/**
-	 * Returns whether the given room, whatever is 
+	 * Returns whether the given room, whatever is
 	 * watery, such as an underwater, etc.
 	 * @param R the room to check
 	 * @return true if it is underwatery, false otherwise
@@ -756,25 +756,25 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isUnderWateryRoom(Room R);
 
 	/**
-	 * Returns whether the given room, whatever is 
+	 * Returns whether the given room, whatever is
 	 * the surface of deep water, such as a water surface, etc.
 	 * with an underwater room
 	 * @param R the room to check
 	 * @return true if it is water surfacy, false otherwise
 	 */
 	public boolean isDeepWaterySurfaceRoom(Room R);
-	
+
 	/**
-	 * Returns whether the given item, mob, whatever is 
+	 * Returns whether the given item, mob, whatever is
 	 * marked as falling.
 	 * @param P the item, mob, whatever to check
 	 * @return true if it is marked falling, false otherwise
 	 */
 	public boolean isFalling(Physical P);
-	
+
 	/**
 	 * Returns which direction, if any, the given object
-	 * is falling. 
+	 * is falling.
 	 * @see com.planet_ink.coffee_mud.core.Directions
 	 * @param P the item, mob, whatever to check
 	 * @return direction it is falling
@@ -782,7 +782,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public int getFallingDirection(Physical P);
 
 	/**
-	 * Returns whether the given player is 
+	 * Returns whether the given player is
 	 * executing a command taking longer than 30 seconds
 	 * @param M the mob to check
 	 * @return true if it is long running commanding, false otherwise
@@ -795,7 +795,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @return true if it is an undead type, false otherwise
 	 */
 	public boolean isUndead(MOB mob);
-	
+
 	/**
 	 * Returns whether the given race is of an egg-laying type
 	 * @param race the race to check
@@ -809,14 +809,14 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @return true if it is a fishy type, false otherwise
 	 */
 	public boolean isFish(MOB mob);
-	
+
 	/**
 	 * Returns whether the given mob is of a marine race type.
 	 * @param mob the mob to check
 	 * @return true if it is a marine type, false otherwise
 	 */
 	public boolean isMarine(MOB mob);
-	
+
 	/**
 	 * Returns whether the given mob is of an outsider race type.
 	 * @param mob the mob to check
@@ -860,7 +860,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isAPlant(Item I);
 
 	/**
-	 * Returns whether the given item, mob, whatever is 
+	 * Returns whether the given item, mob, whatever is
 	 * marked as unattackable.
 	 * @param P the item, mob, whatever to check
 	 * @return true if it is marked unattackable, false otherwise
@@ -888,7 +888,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isAliveAwakeMobile(MOB mob, boolean quiet);
 
 	/**
-	 * Returns whether the given mob is standing (not sitting 
+	 * Returns whether the given mob is standing (not sitting
 	 * or sleeping)
 	 * marked as swimming/floating.
 	 * @param mob the mob to check
@@ -897,7 +897,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isStanding(MOB mob);
 
 	/**
-	 * Returns whether the given item, mob, whatever is 
+	 * Returns whether the given item, mob, whatever is
 	 * marked as bound.
 	 * @see CMFlagLibrary#isBoundOrHeld(Physical)
 	 * @param P the item, mob, whatever to check
@@ -906,7 +906,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isBound(Physical P);
 
 	/**
-	 * Returns whether the given item, mob, whatever is 
+	 * Returns whether the given item, mob, whatever is
 	 * marked as bound or is paralyzed.
 	 * @see CMFlagLibrary#isBound(Physical)
 	 * @param P the item, mob, whatever to check
@@ -915,7 +915,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isBoundOrHeld(Physical P);
 
 	/**
-	 * Returns whether the given item, mob, whatever is 
+	 * Returns whether the given item, mob, whatever is
 	 * on fire.
 	 * @param seen the item, mob, whatever to check
 	 * @return true if it is on fire, false otherwise
@@ -951,7 +951,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isAnimalIntelligence(MOB M);
 
 	/**
-	 * Returns whether the given mob, item, whatever has a 
+	 * Returns whether the given mob, item, whatever has a
 	 * behavior making it move around.
 	 * @param P the mob, item, whatever to check
 	 * @return true if the object will move around, false otherwise
@@ -985,7 +985,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isChild(Environmental E);
 
 	/**
-	 * Returns whether the given mob (item usually) is a 
+	 * Returns whether the given mob (item usually) is a
 	 * baby waiting to grow up.
 	 * @param E the item to check
 	 * @return true if its a baby, false otherwise
@@ -1046,7 +1046,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isInTheGame(MOB E, boolean reqInhabitation);
 
 	/**
-	 * Returns whether the given mob, item, room, area, whatever is actually 
+	 * Returns whether the given mob, item, room, area, whatever is actually
 	 * in the game, and possibly in a room, or is just temporary or cached.
 	 * @param E the mob, item, whatever to check
 	 * @param reqInhabitation true if it must be a in room, false otherwise
@@ -1084,7 +1084,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean hasAControlledFollower(MOB invoker, Ability A);
 
 	/**
-	 * Returns the simple word that would describe the alignment 
+	 * Returns the simple word that would describe the alignment
 	 * of the given mob or item or whatever.
 	 * @param E the mob or item or whatever
 	 * @return the name of its alignment, e.g. good, evil, neutral
@@ -1148,7 +1148,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public List<Ability> flaggedAbilities(MOB M, long flag);
 
 	/**
-	 * Returns the list of effects that have are part of the 
+	 * Returns the list of effects that have are part of the
 	 * given ability domain.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_ABJURATION
 	 * @param P the mob, item, room, whatever
@@ -1158,7 +1158,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public List<Ability> domainAnyAffects(Physical P, int domain);
 
 	/**
-	 * Returns the list of effects that have are part of the 
+	 * Returns the list of effects that have are part of the
 	 * given ability domain.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_ABJURATION
 	 * @param P the mob, item, room, whatever
@@ -1168,7 +1168,7 @@ public interface CMFlagLibrary extends CMLibrary
 	public List<Ability> domainAffects(Physical P, int domain);
 
 	/**
-	 * Returns the list of abilities that have are part of the 
+	 * Returns the list of abilities that have are part of the
 	 * given ability domain.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_ABJURATION
 	 * @param M the mob to check
@@ -1189,10 +1189,10 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @param flag -1, or an Ability Flag
 	 * @param abilityCode -1, or an ability Code
 	 * @param domain -1, or an ability domain
-	 * @return the list of effects that match 
+	 * @return the list of effects that match
 	 */
 	public List<Ability> matchedAffects(final MOB invoker, final Physical P, final long flag, final int abilityCode, final int domain);
-	
+
 	/**
 	 * Returns the ability type/code name for the given Ability.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#ACODE_CHANT
@@ -1256,7 +1256,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * mob, item, room, whatever, as soon by the given seer mob.
 	 * These are friendly colored string
 	 * @param seen the mob, item, room, whatever
-	 * @param seer the one seeing 
+	 * @param seer the one seeing
 	 * @return the disposition blurbs list
 	 */
 	public String getDispositionBlurbs(Physical seen , MOB seer);
@@ -1348,7 +1348,7 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @return true if it is alcohol
 	 */
 	public boolean isAlcoholic(Physical thang);
-	
+
 	/**
 	 * A disposition enum for various flagg methods.
 	 * Helps determine the english phrasing of what's

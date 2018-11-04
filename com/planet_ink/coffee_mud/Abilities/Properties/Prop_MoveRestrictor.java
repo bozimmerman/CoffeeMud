@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 {
 	@Override
@@ -66,7 +65,7 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 	{
 		return Ability.CAN_MOBS | Ability.CAN_ITEMS;
 	}
-	
+
 	protected PairList<String, String>	castings = new PairVector<String, String>();
 
 	@Override
@@ -81,7 +80,7 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
-	protected void addCasting(StringBuilder id, StringBuilder parms)
+	protected void addCasting(final StringBuilder id, final StringBuilder parms)
 	{
 		if(id.length()>0)
 		{
@@ -90,9 +89,9 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 			parms.setLength(0);
 		}
 	}
-	
+
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		message = L("<S-NAME> can`t go that way.");
@@ -131,7 +130,7 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 		restrictItems = CMParms.getParmStr(newText, "ISEARCH", "");
 		List<String> lst2= CMParms.parseCommas(CMParms.getParmStr(newText, "NOLOCALES", ""), true);
 		noLocaleIDs.clear();
-		for(String s : lst2)
+		for(final String s : lst2)
 		{
 			final Room R=CMClass.getLocalePrototype(s);
 			if(s!=null)
@@ -139,7 +138,7 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 		}
 		lst2= CMParms.parseCommas(CMParms.getParmStr(newText, "ONLYLOCALES", ""), true);
 		onlyLocaleIDs.clear();
-		for(String s : lst2)
+		for(final String s : lst2)
 		{
 			final Room R=CMClass.getLocalePrototype(s);
 			if(s!=null)
@@ -150,8 +149,8 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 		if(cast.length()>0)
 		{
 			int state=0;
-			StringBuilder id=new StringBuilder("");
-			StringBuilder parms=new StringBuilder("");
+			final StringBuilder id=new StringBuilder("");
+			final StringBuilder parms=new StringBuilder("");
 			for(int i=0;i<cast.length();i++)
 			{
 				switch(Character.toLowerCase(cast.charAt(i)))
@@ -242,9 +241,9 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 					{
 						if(affected instanceof Rideable)
 						{
-							Rideable rI=(Rideable)affected;
-							List<Rider> riders=new XVector<Rider>(rI.riders());
-							for(Rider rR : riders)
+							final Rideable rI=(Rideable)affected;
+							final List<Rider> riders=new XVector<Rider>(rI.riders());
+							for(final Rider rR : riders)
 								rR.setRiding(null);
 						}
 						else
@@ -259,9 +258,9 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 							@Override
 							public void run()
 							{
-								Prop_SpellAdder adder=new Prop_SpellAdder(); 
+								final Prop_SpellAdder adder=new Prop_SpellAdder();
 								final MOB qualMOB=adder.getInvokerMOB(affected,mob);
-								for(Pair<String,String> cast : castings)
+								for(final Pair<String,String> cast : castings)
 								{
 									final Ability A=CMClass.getAbility(cast.first);
 									if(A != null)
@@ -269,10 +268,10 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 										final List<String> cmds=CMParms.parse(cast.second);
 										if(affected instanceof Rideable)
 										{
-											Rideable R=(Rideable)affected;
+											final Rideable R=(Rideable)affected;
 											for(int i=0;i<R.numRiders();i++)
 											{
-												Rider rM=R.fetchRider(i);
+												final Rider rM=R.fetchRider(i);
 												if(rM instanceof MOB)
 													A.invoke(qualMOB,cmds,rM,true,0);
 											}

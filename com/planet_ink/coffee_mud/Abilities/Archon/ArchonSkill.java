@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class ArchonSkill extends StdAbility implements ArchonOnly
 {
 	@Override
@@ -82,12 +81,12 @@ public class ArchonSkill extends StdAbility implements ArchonOnly
 		return Ability.ACODE_SKILL | Ability.DOMAIN_ARCHON;
 	}
 
-	public MOB getTargetAnywhere(MOB mob, List<String> commands, Environmental givenTarget, boolean playerOnly)
+	public MOB getTargetAnywhere(final MOB mob, final List<String> commands, final Environmental givenTarget, final boolean playerOnly)
 	{
 		return getTargetAnywhere(mob, commands, givenTarget, false, false, playerOnly);
 	}
 
-	public MOB getTargetAnywhere(MOB mob, List<String> commands, Environmental givenTarget, boolean quiet, boolean alreadyAffOk, boolean playerOnly)
+	public MOB getTargetAnywhere(final MOB mob, final List<String> commands, final Environmental givenTarget, final boolean quiet, final boolean alreadyAffOk, final boolean playerOnly)
 	{
 		MOB target=super.getTarget(mob,commands,givenTarget,true,alreadyAffOk);
 		if(target!=null)

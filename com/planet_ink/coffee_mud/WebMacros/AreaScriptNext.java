@@ -56,8 +56,8 @@ public class AreaScriptNext extends StdWebMacro
 		public String		key;
 		public String		customScript	= "";
 
-		public AreaScriptInstance(String instanceKey, List<String> path,
-								  String key, String fileName)
+		public AreaScriptInstance(final String instanceKey, final List<String> path,
+								  final String key, final String fileName)
 		{
 			this.path=path;
 			this.instanceKey=instanceKey;
@@ -66,8 +66,8 @@ public class AreaScriptNext extends StdWebMacro
 		}
 	}
 
-	public AreaScriptInstance addScript(TreeMap<String,ArrayList<AreaScriptInstance>> list,
-			ArrayList<String> prefix, String scriptKey, String immediateHost, String key, String file)
+	public AreaScriptInstance addScript(final TreeMap<String,ArrayList<AreaScriptInstance>> list,
+			final ArrayList<String> prefix, final String scriptKey, final String immediateHost, final String key, final String file)
 	{
 		final ArrayList<String> next=(ArrayList<String>)prefix.clone();
 		if(immediateHost!=null)
@@ -83,7 +83,7 @@ public class AreaScriptNext extends StdWebMacro
 		return inst;
 	}
 
-	public void addScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, PhysicalAgent E)
+	public void addScripts(final TreeMap<String,ArrayList<AreaScriptInstance>> list, final ArrayList<String> prefix, final PhysicalAgent E)
 	{
 		if(E==null)
 			return;
@@ -126,7 +126,7 @@ public class AreaScriptNext extends StdWebMacro
 		}
 	}
 
-	public void addShopScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, PhysicalAgent E)
+	public void addShopScripts(final TreeMap<String,ArrayList<AreaScriptInstance>> list, final ArrayList<String> prefix, final PhysicalAgent E)
 	{
 		if(E==null)
 			return;
@@ -145,7 +145,7 @@ public class AreaScriptNext extends StdWebMacro
 		}
 	}
 
-	public TreeMap<String,ArrayList<AreaScriptInstance>> getAreaScripts(HTTPRequest httpReq, String area)
+	public TreeMap<String,ArrayList<AreaScriptInstance>> getAreaScripts(final HTTPRequest httpReq, final String area)
 	{
 		TreeMap<String,ArrayList<AreaScriptInstance>> list;
 		list = (TreeMap<String,ArrayList<AreaScriptInstance>>)httpReq.getRequestObjects().get("AREA_"+area+" SCRIPTSLIST");
@@ -199,7 +199,7 @@ public class AreaScriptNext extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String area=httpReq.getUrlParameter("AREA");

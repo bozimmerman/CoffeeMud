@@ -32,7 +32,7 @@ public class BoxCitySquareLayout extends BoxCityLayout
 	}
 
 	@Override
-	protected void drawABox(LayoutSet lSet, int width, int height)
+	protected void drawABox(final LayoutSet lSet, final int width, final int height)
 	{
 		lSet.drawABox(width, height);
 		final int x = 0 + ((width - 0)/2);

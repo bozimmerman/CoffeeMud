@@ -46,7 +46,7 @@ public class Mageness extends CombatAbilities
 		return "magliness";
 	}
 
-	protected void getSomeMoreMageAbilities(MOB mob)
+	protected void getSomeMoreMageAbilities(final MOB mob)
 	{
 		for(int a=0;a<((mob.basePhyStats().level())+5);a++)
 		{
@@ -76,7 +76,7 @@ public class Mageness extends CombatAbilities
 	}
 
 	@Override
-	public void startBehavior(PhysicalAgent forMe)
+	public void startBehavior(final PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB))

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Draw extends Get
 {
 	public Draw()
@@ -46,7 +45,7 @@ public class Draw extends Get
 		return access;
 	}
 
-	public Vector<Container> getSheaths(MOB mob)
+	public Vector<Container> getSheaths(final MOB mob)
 	{
 		final Vector<Container> sheaths=new Vector<Container>();
 		if(mob!=null)
@@ -74,13 +73,13 @@ public class Draw extends Get
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
 		boolean noerrors=false;
 		boolean ifNecessary=false;
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("IFNECESSARY")))
 		{
 			quiet=true;

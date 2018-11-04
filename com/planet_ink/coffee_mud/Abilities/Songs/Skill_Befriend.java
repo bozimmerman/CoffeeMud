@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Befriend extends BardSkill
 {
 	@Override
@@ -87,7 +86,7 @@ public class Skill_Befriend extends BardSkill
 	{
 		return USAGE_MANA;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -101,7 +100,7 @@ public class Skill_Befriend extends BardSkill
 			case CMMsg.TYP_LIST:
 				if(affected instanceof MOB)
 				{
-					MOB M=(MOB)affected;
+					final MOB M=(MOB)affected;
 					final MOB srcM=msg.source();
 					if(srcM==M.amFollowing())
 					{
@@ -121,7 +120,7 @@ public class Skill_Befriend extends BardSkill
 					{
 						String name = text();
 						int amt=10;
-						int x=text().indexOf('=');
+						final int x=text().indexOf('=');
 						if(x>0)
 						{
 							name = text().substring(0,x).trim();
@@ -147,7 +146,7 @@ public class Skill_Befriend extends BardSkill
 								}
 
 								@Override
-								public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+								public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 								{
 								}
 							});
@@ -197,7 +196,7 @@ public class Skill_Befriend extends BardSkill
 			case CMMsg.TYP_NOFOLLOW:
 				if(affected instanceof MOB)
 				{
-					MOB M=(MOB)affected;
+					final MOB M=(MOB)affected;
 					final MOB srcM=msg.source();
 					if(srcM==M.amFollowing())
 						unInvoke();
@@ -209,8 +208,8 @@ public class Skill_Befriend extends BardSkill
 		}
 		return super.okMessage(myHost, msg);
 	}
-	
-	@Override 
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -235,7 +234,7 @@ public class Skill_Befriend extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -334,7 +333,7 @@ public class Skill_Befriend extends BardSkill
 					mob.tell(L("@x1 seems unwilling to be your friend.",target.name(mob)));
 				else
 				{
-					Ability A=super.beneficialAffect(mob, target, asLevel, Ability.TICKS_FOREVER);
+					final Ability A=super.beneficialAffect(mob, target, asLevel, Ability.TICKS_FOREVER);
 					if(A!=null)
 					{
 						A.makeNonUninvokable();

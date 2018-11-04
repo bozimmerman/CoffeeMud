@@ -27,7 +27,6 @@ import com.planet_ink.coffee_mud.core.Resources;
 */
 public class MCPMooSimpleEditPackage implements MCPPackage
 {
-
 	@Override
 	public String packageName()
 	{
@@ -47,14 +46,14 @@ public class MCPMooSimpleEditPackage implements MCPPackage
 	}
 
 	@Override
-	public void executePackage(Session session, String command, Map<String, float[]> clientSupported, Map<String, String> variables)
+	public void executePackage(final Session session, final String command, final Map<String, float[]> clientSupported, final Map<String, String> variables)
 	{
 		if(command.equalsIgnoreCase("dns-org-mud-moo-simpleedit-set"))
 		{
 			String content = variables.get("content");
 			if(content == null)
 				return;
-			List<String> strs = Resources.getFileLineVector(new StringBuffer(content));
+			final List<String> strs = Resources.getFileLineVector(new StringBuffer(content));
 			content = CMParms.combineWith(strs, "%0D");
 			if(session != null)
 				session.setFakeInput(content);

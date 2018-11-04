@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ExitData extends StdWebMacro
 {
 	@Override
@@ -50,10 +49,10 @@ public class ExitData extends StdWebMacro
 		"READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
 		"ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
 		"MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"};
-	public static String dispositions(Physical P,
-									  boolean firstTime,
-									  HTTPRequest httpReq,
-									  java.util.Map<String,String> parms)
+	public static String dispositions(final Physical P,
+									  final boolean firstTime,
+									  final HTTPRequest httpReq,
+									  final java.util.Map<String,String> parms)
 	{
 		final StringBuffer str=new StringBuffer("");
 		for(int d=0;d<PhyStats.IS_CODES.length;d++)
@@ -71,7 +70,7 @@ public class ExitData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 
@@ -133,9 +132,9 @@ public class ExitData extends StdWebMacro
 					if(sorted==null)
 					{
 						final Vector<String> sortMe=new Vector<String>();
-						for(final Enumeration e=CMClass.exits();e.hasMoreElements();)
+						for(final Enumeration<Exit> e=CMClass.exits();e.hasMoreElements();)
 							sortMe.addElement(CMClass.classID(e.nextElement()));
-						sorted=(new TreeSet(sortMe)).toArray();
+						sorted=(new TreeSet<String>(sortMe)).toArray();
 						Resources.submitResource("MUDGRINDER-EXITS",sorted);
 					}
 					for (final Object element : sorted)

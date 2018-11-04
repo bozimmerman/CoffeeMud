@@ -49,9 +49,9 @@ public class CommonSpeaker extends StdBehavior
 	int tickTocker=1;
 	int tickTock=0;
 	String language="Common";
-	
+
 	@Override
-	public void setParms(String parameters)
+	public void setParms(final String parameters)
 	{
 		super.setParms(parameters);
 		if(parameters.trim().length()>0)
@@ -61,7 +61,7 @@ public class CommonSpeaker extends StdBehavior
 		tickTocker=1;
 		tickTock=0;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

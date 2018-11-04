@@ -68,47 +68,47 @@ public final class TriadSVector<T, K, L> extends SVector<Triad<T, K, L>>
 		return new ConvertingIterator<Triad<T, K, L>, L>(iterator(), getThirdConverter());
 	}
 
-	public synchronized int indexOfFirst(T t)
+	public synchronized int indexOfFirst(final T t)
 	{
 		return indexOfFirst(t, 0);
 	}
 
-	public synchronized int indexOfSecond(K k)
+	public synchronized int indexOfSecond(final K k)
 	{
 		return indexOfSecond(k, 0);
 	}
 
-	public synchronized int indexOfThird(L l)
+	public synchronized int indexOfThird(final L l)
 	{
 		return indexOfThird(l, 0);
 	}
 
-	public T getFirst(int index)
+	public T getFirst(final int index)
 	{
 		return get(index).first;
 	}
 
-	public K getSecond(int index)
+	public K getSecond(final int index)
 	{
 		return get(index).second;
 	}
 
-	public L getThird(int index)
+	public L getThird(final int index)
 	{
 		return get(index).third;
 	}
 
-	public void add(T t, K k, L l)
+	public void add(final T t, final K k, final L l)
 	{
 		add(new Triad<T, K, L>(t, k, l));
 	}
 
-	public void addElement(T t, K k, L l)
+	public void addElement(final T t, final K k, final L l)
 	{
 		add(new Triad<T, K, L>(t, k, l));
 	}
 
-	public boolean containsFirst(T t)
+	public boolean containsFirst(final T t)
 	{
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
 		{
@@ -118,7 +118,7 @@ public final class TriadSVector<T, K, L> extends SVector<Triad<T, K, L>>
 		return false;
 	}
 
-	public boolean containsSecond(K k)
+	public boolean containsSecond(final K k)
 	{
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
 		{
@@ -128,7 +128,7 @@ public final class TriadSVector<T, K, L> extends SVector<Triad<T, K, L>>
 		return false;
 	}
 
-	public boolean containsThird(L l)
+	public boolean containsThird(final L l)
 	{
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
 		{
@@ -138,22 +138,22 @@ public final class TriadSVector<T, K, L> extends SVector<Triad<T, K, L>>
 		return false;
 	}
 
-	public T elementAtFirst(int index)
+	public T elementAtFirst(final int index)
 	{
 		return get(index).first;
 	}
 
-	public K elementAtSecond(int index)
+	public K elementAtSecond(final int index)
 	{
 		return get(index).second;
 	}
 
-	public L elementAtThird(int index)
+	public L elementAtThird(final int index)
 	{
 		return get(index).third;
 	}
 
-	public synchronized int indexOfFirst(T t, int index)
+	public synchronized int indexOfFirst(final T t, final int index)
 	{
 		try
 		{
@@ -169,7 +169,7 @@ public final class TriadSVector<T, K, L> extends SVector<Triad<T, K, L>>
 		return -1;
 	}
 
-	public synchronized int indexOfSecond(K k, int index)
+	public synchronized int indexOfSecond(final K k, final int index)
 	{
 		try
 		{
@@ -185,7 +185,7 @@ public final class TriadSVector<T, K, L> extends SVector<Triad<T, K, L>>
 		return -1;
 	}
 
-	public synchronized int indexOfThird(L l, int index)
+	public synchronized int indexOfThird(final L l, final int index)
 	{
 		try
 		{
@@ -201,7 +201,7 @@ public final class TriadSVector<T, K, L> extends SVector<Triad<T, K, L>>
 		return -1;
 	}
 
-	public synchronized int lastIndexOfFirst(T t, int index)
+	public synchronized int lastIndexOfFirst(final T t, final int index)
 	{
 		try
 		{
@@ -217,7 +217,7 @@ public final class TriadSVector<T, K, L> extends SVector<Triad<T, K, L>>
 		return -1;
 	}
 
-	public synchronized int lastIndexOfSecond(K k, int index)
+	public synchronized int lastIndexOfSecond(final K k, final int index)
 	{
 		try
 		{
@@ -233,7 +233,7 @@ public final class TriadSVector<T, K, L> extends SVector<Triad<T, K, L>>
 		return -1;
 	}
 
-	public synchronized int lastIndexOfThird(L l, int index)
+	public synchronized int lastIndexOfThird(final L l, final int index)
 	{
 		try
 		{
@@ -249,22 +249,22 @@ public final class TriadSVector<T, K, L> extends SVector<Triad<T, K, L>>
 		return -1;
 	}
 
-	public synchronized int lastIndexOfFirst(T t)
+	public synchronized int lastIndexOfFirst(final T t)
 	{
 		return lastIndexOfFirst(t, size() - 1);
 	}
 
-	public synchronized int lastIndexOfSecond(K k)
+	public synchronized int lastIndexOfSecond(final K k)
 	{
 		return lastIndexOfSecond(k, size() - 1);
 	}
 
-	public synchronized int lastIndexOfThird(L l)
+	public synchronized int lastIndexOfThird(final L l)
 	{
 		return lastIndexOfThird(l, size() - 1);
 	}
 
-	public boolean removeFirst(T t)
+	public boolean removeFirst(final T t)
 	{
 		Triad<T, K, L> triad;
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
@@ -276,7 +276,7 @@ public final class TriadSVector<T, K, L> extends SVector<Triad<T, K, L>>
 		return false;
 	}
 
-	public boolean removeSecond(K k)
+	public boolean removeSecond(final K k)
 	{
 		Triad<T, K, L> triad;
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
@@ -288,7 +288,7 @@ public final class TriadSVector<T, K, L> extends SVector<Triad<T, K, L>>
 		return false;
 	}
 
-	public boolean removeThird(L l)
+	public boolean removeThird(final L l)
 	{
 		Triad<T, K, L> triad;
 		for (final Iterator<Triad<T, K, L>> i = iterator(); i.hasNext();)
@@ -300,47 +300,47 @@ public final class TriadSVector<T, K, L> extends SVector<Triad<T, K, L>>
 		return false;
 	}
 
-	public boolean removeElementFirst(T t)
+	public boolean removeElementFirst(final T t)
 	{
 		return removeFirst(t);
 	}
 
-	public boolean removeElementSecond(K k)
+	public boolean removeElementSecond(final K k)
 	{
 		return removeSecond(k);
 	}
 
-	public boolean removeElementThird(L l)
+	public boolean removeElementThird(final L l)
 	{
 		return removeThird(l);
 	}
 
-	public T firstFirstElement(int index)
+	public T firstFirstElement(final int index)
 	{
 		return firstElement().first;
 	}
 
-	public K firstSecondElement(int index)
+	public K firstSecondElement(final int index)
 	{
 		return firstElement().second;
 	}
 
-	public L firstThirdElement(int index)
+	public L firstThirdElement(final int index)
 	{
 		return firstElement().third;
 	}
 
-	public T lastFirstElement(int index)
+	public T lastFirstElement(final int index)
 	{
 		return lastElement().first;
 	}
 
-	public K lastSecondElement(int index)
+	public K lastSecondElement(final int index)
 	{
 		return lastElement().second;
 	}
 
-	public L lastThirdElement(int index)
+	public L lastThirdElement(final int index)
 	{
 		return lastElement().third;
 	}

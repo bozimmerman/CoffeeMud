@@ -66,7 +66,7 @@ public class Follower extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		minTicks=0;
 		maxTicks=0;
@@ -97,7 +97,7 @@ public class Follower extends ActiveTicker
 			this.mob=mob;
 			this.affecting=affecting;
 		}
-		
+
 		@Override
 		public void run()
 		{
@@ -121,7 +121,7 @@ public class Follower extends ActiveTicker
 						else
 						if(affecting instanceof Item)
 							mobR.moveItemTo((Item)affecting);
-						
+
 					}
 				}
 				if(affecting instanceof MOB)
@@ -131,11 +131,11 @@ public class Follower extends ActiveTicker
 					followingItem((Item)affecting);
 			}
 		}
-		
+
 	}
-	
+
 	@Override
-	public void executeMsg(final Environmental affecting, CMMsg msg)
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
 
@@ -174,7 +174,7 @@ public class Follower extends ActiveTicker
 				}
 			}
 		}
-		
+
 		// handle instant moves
 		if((msg.target() instanceof Room)
 		&&(maxTicks<0)
@@ -191,7 +191,7 @@ public class Follower extends ActiveTicker
 		}
 	}
 
-	public MOB pickRandomMOBHere(Environmental ticking, Room room)
+	public MOB pickRandomMOBHere(final Environmental ticking, final Room room)
 	{
 		if(room==null)
 			return null;
@@ -230,7 +230,7 @@ public class Follower extends ActiveTicker
 		return true;
 	}
 
-	public void followingMOB(MOB mob)
+	public void followingMOB(final MOB mob)
 	{
 		if(!canFreelyBehaveNormal(mob))
 			return;
@@ -276,8 +276,8 @@ public class Follower extends ActiveTicker
 			direction=-1;
 		}
 	}
-	
-	public void followingItem(Item I)
+
+	public void followingItem(final Item I)
 	{
 		if(I.container()!=null)
 			I.setContainer(null);
@@ -299,7 +299,7 @@ public class Follower extends ActiveTicker
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

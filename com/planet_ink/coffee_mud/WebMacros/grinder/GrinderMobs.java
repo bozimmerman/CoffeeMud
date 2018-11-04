@@ -60,9 +60,9 @@ public class GrinderMobs
 		STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR,
 		ISDRINK, LIQUIDHELD, QUENCHED, LIQUIDTYPES
 		;
-		
+
 		public boolean isGenField;
-		private MOBDataField(boolean isGeneric)
+		private MOBDataField(final boolean isGeneric)
 		{
 			this.isGenField=isGeneric;
 		}
@@ -73,7 +73,7 @@ public class GrinderMobs
 		}
 	}
 
-	public static String senses(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String senses(final Physical P, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		P.basePhyStats().setSensesMask(0);
 		for(int d=0;d<PhyStats.CAN_SEE_CODES.length;d++)
@@ -85,7 +85,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static void happilyAddItem(Item I, MOB M)
+	public static void happilyAddItem(final Item I, final MOB M)
 	{
 		if(I.subjectToWearAndTear() && ((I.usesRemaining()<1)||(I.usesRemaining()>100)))
 			I.setUsesRemaining(100);
@@ -96,7 +96,7 @@ public class GrinderMobs
 		M.recoverMaxState();
 	}
 
-	public static String abilities(MOB M, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String abilities(final MOB M, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		final boolean player=M.playerStats()!=null;
 		final LinkedList<Ability> onesToDel=new LinkedList<Ability>();
@@ -149,7 +149,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String factions(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String factions(final MOB E, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		for(final Enumeration<String> e=E.factions();e.hasMoreElements();)
 		{
@@ -184,7 +184,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String blessings(Deity E, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String blessings(final Deity E, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		while(E.numBlessings()>0)
 		{
@@ -214,7 +214,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String clans(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String clans(final MOB E, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		final List<String> clans=new Vector<String>();
 		for(final Pair<Clan,Integer> p : E.clans())
@@ -243,7 +243,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String curses(Deity E, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String curses(final Deity E, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		while(E.numCurses()>0)
 		{
@@ -273,7 +273,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String expertiseList(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String expertiseList(final MOB E, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		E.delAllExpertises();
 		if(httpReq.isUrlParameter("EXPER1"))
@@ -297,7 +297,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String items(MOB M, Vector<Item> allitems, HTTPRequest httpReq)
+	public static String items(final MOB M, final Vector<Item> allitems, final HTTPRequest httpReq)
 	{
 		if(httpReq.isUrlParameter("ITEM1"))
 		{
@@ -360,7 +360,7 @@ public class GrinderMobs
 		return "No Item Data!";
 	}
 
-	public static String powers(Deity E, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String powers(final Deity E, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		while(E.numPowers()>0)
 		{
@@ -389,7 +389,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String editMob(HTTPRequest httpReq, java.util.Map<String,String> parms, MOB whom, Room R)
+	public static String editMob(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final MOB whom, Room R)
 	{
 		final String mobCode=httpReq.getUrlParameter("MOB");
 		if(mobCode==null)
@@ -443,10 +443,10 @@ public class GrinderMobs
 			if(R!=null)
 				R.delInhabitant(copyMOB);
 
-			for(MOBDataField o : MOBDataField.values())
+			for(final MOBDataField o : MOBDataField.values())
 			{
 				final String parmName=o.name();
-				boolean generic=o.isGenField;
+				final boolean generic=o.isGenField;
 				String old=httpReq.getUrlParameter(parmName);
 				if(old==null)
 					old="";
@@ -633,7 +633,7 @@ public class GrinderMobs
 						final List<String> V=CMParms.parseSemicolons(old,true);
 						for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
 							M.delTattoo(e.nextElement());
-						for(String tatt : V)
+						for(final String tatt : V)
 							M.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
 					}
 					break;
@@ -1057,7 +1057,7 @@ public class GrinderMobs
 				else
 				if(!M.Name().equals(copyMOB.Name()))
 				{
-			
+
 				}
 				R.recoverRoomStats();
 				CMLib.database().DBUpdateMOBs(R);

@@ -35,7 +35,7 @@ public class KeyPairWildSearchTree<V> extends KeyPairSearchTree<V>
 	 * @param index the index into the string to start with, and ends with
 	 * @return the value
 	 */
-	protected Pair<String,V> findLongestValueWithWildcards(final String fullStr, KeyPairNode<String,V> startNode, int[] index)
+	protected Pair<String,V> findLongestValueWithWildcards(final String fullStr, final KeyPairNode<String,V> startNode, final int[] index)
 	{
 		Pair<String,V> lastValue=null;
 		KeyPairNode<String,V> curr=startNode;
@@ -46,7 +46,7 @@ public class KeyPairWildSearchTree<V> extends KeyPairSearchTree<V>
 				lastValue=curr.value;
 				index[0] = i;
 			}
-			int c=fullStr.charAt(i) % 127;
+			final int c=fullStr.charAt(i) % 127;
 			if(curr.limbs[c]==null)
 			{
 				if(i<fullStr.length()-1)
@@ -87,7 +87,7 @@ public class KeyPairWildSearchTree<V> extends KeyPairSearchTree<V>
 		}
 		return lastValue;
 	}
-	
+
 	/**
 	 * Retrieve the value for the longest key that
 	 * the given string starts with

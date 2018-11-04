@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SummonHouseplant extends Chant_SummonPlants
 {
 	@Override
@@ -108,7 +107,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 	}
 
 	@Override
-	public boolean rightPlace(MOB mob,boolean auto)
+	public boolean rightPlace(final MOB mob,final boolean auto)
 	{
 		if((!auto)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE)
@@ -120,7 +119,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		return true;
 	}
 
-	public Item buildHouseplant(MOB mob, Room room)
+	public Item buildHouseplant(final MOB mob, final Room room)
 	{
 		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
@@ -186,7 +185,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 	}
 
 	@Override
-	protected Item buildMyPlant(MOB mob, Room room)
+	protected Item buildMyPlant(final MOB mob, final Room room)
 	{
 		return buildHouseplant(mob,room);
 	}

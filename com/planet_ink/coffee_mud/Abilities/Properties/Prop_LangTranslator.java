@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_LangTranslator extends Property implements Language
 {
 	@Override
@@ -74,7 +73,7 @@ public class Prop_LangTranslator extends Property implements Language
 	}
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		final Vector<String> V=CMParms.parse(text);
@@ -103,17 +102,17 @@ public class Prop_LangTranslator extends Property implements Language
 	}
 
 	@Override
-	public boolean translatesLanguage(String language)
+	public boolean translatesLanguage(final String language)
 	{
 		for(int i=0;i<langs.size();i++)
 		{
 			try
 			{
-				Pair<String,Integer> p = langs.get(i);
+				final Pair<String,Integer> p = langs.get(i);
 				if(p.first.equalsIgnoreCase(language))
 					return true;
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				return false;
 			}
@@ -122,7 +121,7 @@ public class Prop_LangTranslator extends Property implements Language
 	}
 
 	@Override
-	public int getProficiency(String language)
+	public int getProficiency(final String language)
 	{
 		for(int i=0;i<langs.size();i++)
 		{
@@ -133,30 +132,30 @@ public class Prop_LangTranslator extends Property implements Language
 	}
 
 	@Override
-	public boolean beingSpoken(String language)
+	public boolean beingSpoken(final String language)
 	{
 		return true;
 	}
 
 	@Override
-	public void setBeingSpoken(String language, boolean beingSpoken)
+	public void setBeingSpoken(final String language, final boolean beingSpoken)
 	{
 	}
 
 	@Override
-	public Map<String, String> translationHash(String language)
+	public Map<String, String> translationHash(final String language)
 	{
 		return new Hashtable<String, String>();
 	}
 
 	@Override
-	public List<String[]> translationLists(String language)
+	public List<String[]> translationLists(final String language)
 	{
 		return new Vector<String[]>();
 	}
 
 	@Override
-	public String translate(String language, String word)
+	public String translate(final String language, final String word)
 	{
 		return word;
 	}

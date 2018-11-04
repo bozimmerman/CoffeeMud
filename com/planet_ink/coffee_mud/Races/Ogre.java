@@ -110,7 +110,7 @@ public class Ogre extends Humanoid
 	private final String[]	racialEffectNames			= { "BadReputation" };
 	private final int[]		racialEffectLevels			= { 1 };
 	private final String[]	racialEffectParms			= { "45%" };
-	
+
 	@Override
 	protected String[] racialEffectNames()
 	{
@@ -179,7 +179,7 @@ public class Ogre extends Humanoid
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -204,7 +204,7 @@ public class Ogre extends Humanoid
 		}
 		return outfitChoices;
 	}
-	
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

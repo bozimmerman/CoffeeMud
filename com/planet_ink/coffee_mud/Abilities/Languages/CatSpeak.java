@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class CatSpeak extends AnimalSpeak
 {
 	@Override
@@ -53,9 +52,9 @@ public class CatSpeak extends AnimalSpeak
 	{
 		"mew","purr","meow","miaow","hiss","yowl","screech","caterwaul"
 	};
-	
+
 	@Override
-	protected String[] getSounds() 
+	protected String[] getSounds()
 	{
 		return animalSounds;
 	}

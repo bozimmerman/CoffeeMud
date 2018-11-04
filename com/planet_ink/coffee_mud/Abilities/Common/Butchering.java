@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Butchering extends GatheringSkill
 {
 	@Override
@@ -71,7 +70,7 @@ public class Butchering extends GatheringSkill
 
 	protected DeadBody	body	= null;
 	protected boolean	failed	= false;
-	
+
 	public Butchering()
 	{
 		super();
@@ -79,7 +78,7 @@ public class Butchering extends GatheringSkill
 		verb=L("skinning and butchering");
 	}
 
-	protected int getDuration(MOB mob, int weight)
+	protected int getDuration(final MOB mob, final int weight)
 	{
 		int duration=((weight/(10+getXLEVELLevel(mob))));
 		duration = super.getDuration(duration, mob, 1, 3);
@@ -154,7 +153,7 @@ public class Butchering extends GatheringSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -192,7 +191,7 @@ public class Butchering extends GatheringSkill
 		else
 			I=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 
-		if(I==null) 
+		if(I==null)
 			return false;
 		if((!(I instanceof DeadBody))
 		   ||(((DeadBody)I).charStats()==null)

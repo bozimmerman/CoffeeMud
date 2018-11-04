@@ -38,7 +38,7 @@ import java.util.*;
  * organize them, but that doesn't change the key requirements.  Individual
  * mobs and items are flagged as actually BEING an instance of a cataloged
  * prototype, and thus will change to reflect prototype changes when they
- * are able.  In addition to all this, certain statistics and information 
+ * are able.  In addition to all this, certain statistics and information
  * about catalog usage is maintained by the system.
  * @author Bo Zimmerman
  */
@@ -213,7 +213,7 @@ public interface CatalogLibrary extends CMLibrary
 	 * @param PA the item or mob to create in the catalog
 	 */
 	public void addCatalog(Physical PA);
-	
+
 	/**
 	 * If the given item or mob is not yet in the catalog prototype
 	 * library, this method will mark it as uncataloged (as is
@@ -226,19 +226,19 @@ public interface CatalogLibrary extends CMLibrary
 	 * @param P the item or mob to add to the catalog
 	 */
 	public void submitToCatalog(Physical P);
-	
+
 	/**
 	 * Updates the catagory assigned to the given prototype mob or
 	 * item to the given catagory.  Catagories do not affect the
 	 * requirement for a unique name/key for each mob or item. Unlike
-	 * setCatagory, this method is totally synchronized and also 
+	 * setCatagory, this method is totally synchronized and also
 	 * clears the VFSDir cache.
 	 * @see CatalogLibrary#setCategory(Physical, String)
 	 * @param modelP the prototype mob or item
 	 * @param newCat the catagory to change it into, or null
 	 */
 	public void updateCatalogCategory(Physical modelP, String newCat);
-	
+
 	/**
 	 * Changes the catagory of the catalog item with the given
 	 * physical objects name to the given catagory. Unlike
@@ -249,7 +249,7 @@ public interface CatalogLibrary extends CMLibrary
 	 * @param catagory the new catagory, such as null
 	 */
 	public void setCategory(Physical P, String catagory);
-	
+
 	/**
 	 * Completely removes the given item or mob from the catalog, deleting
 	 * it from the database, and unsetting the cataloged flag from every
@@ -259,7 +259,7 @@ public interface CatalogLibrary extends CMLibrary
 	 * @param P the item or mob whose name and prototype are removed
 	 */
 	public void delCatalog(Physical P);
-	
+
 	/**
 	 * When the properties of a cataloged item or mob change, this method
 	 * is called to propagate those changes into the catalog prototype,
@@ -268,7 +268,7 @@ public interface CatalogLibrary extends CMLibrary
 	 * @param modelP the updated changed item or mob
 	 */
 	public void updateCatalog(Physical modelP);
-	
+
 	/**
 	 * Given an item or mob that might be in the catalog, this method
 	 * confirms that fact.  It returns null if all is well, and if there
@@ -278,7 +278,7 @@ public interface CatalogLibrary extends CMLibrary
 	 * @return null or the list of bad stats
 	 */
 	public StringBuffer checkCatalogIntegrity(Physical P);
-	
+
 	/**
 	 * Confirms this mob or item instance against the catalog prototype.
 	 * If it matches, it does nothing.  If it doesn't, the given item
@@ -286,7 +286,7 @@ public interface CatalogLibrary extends CMLibrary
 	 * @param P the item or mob to confirm against the catalog prototype
 	 */
 	public void updateCatalogIntegrity(Physical P);
-	
+
 	/**
 	 * Adds or clears the catalog flag on the item or mob instance given
 	 * to this method, and adds (or removes) it as an instance from the
@@ -295,18 +295,18 @@ public interface CatalogLibrary extends CMLibrary
 	 * @param add true to flag it as cataloged, false to clear its flag.
 	 */
 	public void changeCatalogUsage(Physical P, boolean add);
-	
+
 	/**
 	 * The catalog has the ability to provide random items from the catalog
 	 * as either random equipment on a live mob, or a random drop from a
-	 * dead one.  This method is called to generate just such an item 
+	 * dead one.  This method is called to generate just such an item
 	 * from the available options.
 	 * @param M the mob to equip
 	 * @param live true if its for a live mob, false if its for a corpse
 	 * @return null or a random item
 	 */
 	public Item getDropItem(MOB M, boolean live);
-	
+
 	/**
 	 * Builds catalog metadata, optionally building it from an xml
 	 * doc of saved metadata.
@@ -326,35 +326,35 @@ public interface CatalogLibrary extends CMLibrary
 	 * @return the list of items and mobs in the room
 	 */
 	public List<RoomContent> roomContent(Room R);
-	
+
 	/**
 	 * Updates the database entries of the given room id and the
-	 * adjusted content objects.  
+	 * adjusted content objects.
 	 * @see CatalogLibrary#roomContent(Room)
 	 * @see CatalogLibrary.RoomContent
 	 * @param roomID the roomID of the room being updated
 	 * @param content the adjusted content of the room
 	 */
 	public void updateRoomContent(String roomID, List<RoomContent> content);
-	
+
 	/**
 	 * Registers the given cataloged item or mob as being an instance,
 	 * for metadata collection purposes only.
 	 * @param P the item or mob to register as being in the world
 	 */
 	public void newInstance(Physical P);
-	
+
 	/**
 	 * When a cataloged mob dies, or a cataloged item is picked up,
-	 * this method is called to bump the metadata stats on the object.  
+	 * this method is called to bump the metadata stats on the object.
 	 * @param P the item or mob to bump the stats on
 	 */
 	public void bumpDeathPickup(Physical P);
-	
+
 	/**
 	 * In order to make the catalog appear in the vfs directory paths,
 	 * this method is called to get the root directory of the catalog,
-	 * which automatically turns all the catalog entries into 
+	 * which automatically turns all the catalog entries into
 	 * directories and files.
 	 * @param resourcesRoot the vfs dir of the resources directory
 	 * @return the vfs dir of the catalog directory
@@ -388,25 +388,25 @@ public interface CatalogLibrary extends CMLibrary
 		 * @return item or mob in the room
 		 */
 		public Physical P();
-		
+
 		/**
 		 * The shopkeeper, or mob that owns the
 		 * item.
 		 * @return  mob, or shopkeeper
 		 */
 		public Environmental holder();
-		
+
 		/**
 		 * Returns whether the object needs re-saving.
 		 * @return whether the object needs re-saving.
 		 */
 		public boolean isDirty();
-		
+
 		/**
 		 * Sets the object as needing re-saving.
 		 */
 		public void flagDirty();
-		
+
 		/**
 		 * Returns whether the object was deleted.
 		 * @return whether the object was deleted.
@@ -436,7 +436,7 @@ public interface CatalogLibrary extends CMLibrary
 		 * @return a compiled zapper mask for dead mobs
 		 */
 		public MaskingLibrary.CompiledZMask getMaskV();
-		
+
 		/**
 		 * A zapper mask string that is applied to mobs to
 		 * determine if this particular item is potentially
@@ -448,9 +448,9 @@ public interface CatalogLibrary extends CMLibrary
 		 * @return a  zapper mask string for dead mobs
 		 */
 		public String getMaskStr();
-		
+
 		/**
-		 * If this item is a random drop, this flag will 
+		 * If this item is a random drop, this flag will
 		 * return true if it is random equipment for a live
 		 * mob, and false if it is random drop for a corpse.
 		 * @see CataData#getMaskV()
@@ -459,7 +459,7 @@ public interface CatalogLibrary extends CMLibrary
 		 * @return true for equipment, false for live mob
 		 */
 		public boolean getWhenLive();
-		
+
 		/**
 		 * If this item is a random drop, then this is the pct
 		 * chance that this item is a potential selection for
@@ -471,7 +471,7 @@ public interface CatalogLibrary extends CMLibrary
 		 * @return pct chance that the item is a potential selection
 		 */
 		public double getRate();
-		
+
 		/**
 		 * A zapper mask string that is applied to mobs to
 		 * determine if this particular item is potentially
@@ -483,9 +483,9 @@ public interface CatalogLibrary extends CMLibrary
 		 * @param s a  zapper mask string for dead mobs
 		 */
 		public void setMaskStr(String s);
-		
+
 		/**
-		 * If this item is a random drop, this flag will 
+		 * If this item is a random drop, this flag will
 		 * be true if it is random equipment for a live
 		 * mob, and false if it is random drop for a corpse.
 		 * @see CataData#getMaskV()
@@ -494,7 +494,7 @@ public interface CatalogLibrary extends CMLibrary
 		 * @param l true for equipment, false for live mob
 		 */
 		public void setWhenLive(boolean l);
-		
+
 		/**
 		 * If this item is a random drop, then this is the pct
 		 * chance that this item is a potential selection for
@@ -508,7 +508,7 @@ public interface CatalogLibrary extends CMLibrary
 		public void setRate(double r);
 
 		/**
-		 * Creates and returns an enumeration of all the instances of 
+		 * Creates and returns an enumeration of all the instances of
 		 * this cataloged item in the world.
 		 * @see CataData#addReference(Physical)
 		 * @see CataData#isReference(Physical)
@@ -517,7 +517,7 @@ public interface CatalogLibrary extends CMLibrary
 		 * @return an enumeration of all the instances
 		 */
 		public Enumeration<Physical> enumeration();
-		
+
 		/**
 		 * Adds the given object as a world instance of this
 		 * cataloged object
@@ -528,7 +528,7 @@ public interface CatalogLibrary extends CMLibrary
 		 * @param P the mob or item in the world
 		 */
 		public void addReference(Physical P);
-		
+
 		/**
 		 * Returns whether the given item is a registered world
 		 * instance of this cataloged object.
@@ -540,7 +540,7 @@ public interface CatalogLibrary extends CMLibrary
 		 * @return true if its registered, false otherwise
 		 */
 		public boolean isReference(Physical P);
-		
+
 		/**
 		 * Removes the given item from the list of registered
 		 * world instances of this cataloged object.
@@ -551,7 +551,7 @@ public interface CatalogLibrary extends CMLibrary
 		 * @param P the item or mob in the world
 		 */
 		public void delReference(Physical P);
-		
+
 		/**
 		 * Returns the number of world items that are instances
 		 * of this cataloged object.
@@ -562,7 +562,7 @@ public interface CatalogLibrary extends CMLibrary
 		 * @return  the number of world items
 		 */
 		public int numReferences();
-		
+
 		/**
 		 * Determines and returns the name of the most
 		 * popular area in which instances of this catalog
@@ -570,28 +570,28 @@ public interface CatalogLibrary extends CMLibrary
 		 * @return the name of the area
 		 */
 		public String mostPopularArea();
-		
+
 		/**
 		 * Returns one of the rooms in which an instance
 		 * of this cataloged item was registered.
 		 * @return a room with an instance
 		 */
 		public String randomRoom();
-		
+
 		/**
 		 * Goes through all the world instances of this
 		 * cataloged item and removes any that are destroyed.
 		 * Hopefully this method never does anything.
 		 */
 		public void cleanHouse();
-		
+
 		/**
 		 * Returns the first world instance of this
 		 * cataloged item or mob.
 		 * @return the first world instance
 		 */
 		public Physical getLiveReference();
-		
+
 		/**
 		 * Returns the number of times this mob has died,
 		 * if the cataloged object is a mob, or the number of
@@ -600,7 +600,7 @@ public interface CatalogLibrary extends CMLibrary
 		 * @return the number of times
 		 */
 		public int getDeathsPicksups();
-		
+
 		/**
 		 * Bumps the number of times this mob has died,
 		 * if the cataloged object is a mob, or the number of
@@ -608,15 +608,15 @@ public interface CatalogLibrary extends CMLibrary
 		 * @see CataData#bumpDeathPickup()
 		 */
 		public void bumpDeathPickup();
-		
+
 		/**
 		 * Returns the user-defined catagory to which this
-		 * cataloged object belongs.  null is uncatagorized  
+		 * cataloged object belongs.  null is uncatagorized
 		 * @see CataData#setCategory(String)
 		 * @return the catagory name
 		 */
 		public String category();
-		
+
 		/**
 		 * Sets the user-defined catagory to which this
 		 * cataloged object belongs.  null is uncatagorized

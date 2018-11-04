@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_CastBlocking extends BardSkill
 {
 	@Override
@@ -93,7 +92,7 @@ public class Skill_CastBlocking extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
@@ -105,7 +104,7 @@ public class Skill_CastBlocking extends BardSkill
 			mob.tell(L("Only while you are fighting!"));
 			return false;
 		}
-		
+
 		if(mob.location().numInhabitants()==1)
 		{
 			mob.tell(L("You are the only one here!"));
@@ -131,7 +130,7 @@ public class Skill_CastBlocking extends BardSkill
 					final MOB M=R.fetchInhabitant(i);
 					if(M.isInCombat() && (!twoSide.contains(M))&&(!oneSide.contains(M)))
 					{
-						MOB vicM=M.getVictim();
+						final MOB vicM=M.getVictim();
 						if(oneSide.contains(vicM))
 						{
 							twoSide.add(M);
@@ -148,7 +147,7 @@ public class Skill_CastBlocking extends BardSkill
 				}
 				if((oneSide.size()>0) && (twoSide.size()>0))
 				{
-					for(MOB M : oneSide)
+					for(final MOB M : oneSide)
 					{
 						final CMMsg msg2=CMClass.getMsg(mob,M,this,CMMsg.MASK_MAGIC|CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),null);
 						if(R.okMessage(mob,msg2))
@@ -161,7 +160,7 @@ public class Skill_CastBlocking extends BardSkill
 							}
 						}
 					}
-					for(MOB M : twoSide)
+					for(final MOB M : twoSide)
 					{
 						final CMMsg msg2=CMClass.getMsg(mob,M,this,CMMsg.MASK_MAGIC|CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),null);
 						if(R.okMessage(mob,msg2))

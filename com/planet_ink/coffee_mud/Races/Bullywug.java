@@ -46,7 +46,7 @@ public class Bullywug extends StdRace
 		super.naturalAbilImmunities.add("Disease_Gonorrhea");
 		super.naturalAbilImmunities.add("Disease_Malaria");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Bullywug");
 
 	@Override
@@ -199,7 +199,7 @@ public class Bullywug extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{
@@ -250,7 +250,7 @@ public class Bullywug extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
-	
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

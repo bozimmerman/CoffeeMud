@@ -31,7 +31,7 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 	private static final Iterator empty=EmptyIterator.INSTANCE;
 
 	@SuppressWarnings("unchecked")
-	@Override 
+	@Override
 	public Iterator<J> iterator()
 	{
 		if(size()==0)
@@ -40,8 +40,8 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override 
-	public synchronized J put(K key, J value)
+	@Override
+	public synchronized J put(final K key, final J value)
 	{
 		final ArrayList<J> newList;
 		if (list == null)
@@ -68,15 +68,15 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 		return super.put(key, value);
 	}
 
-	@Override 
-	public synchronized void putAll(Map<? extends K, ? extends J> t)
+	@Override
+	public synchronized void putAll(final Map<? extends K, ? extends J> t)
 	{
 		for(final Map.Entry<? extends K,? extends J> i : t.entrySet())
 			put(i.getKey(),i.getValue());
 	}
 
-	@Override 
-	public synchronized J remove(Object key)
+	@Override
+	public synchronized J remove(final Object key)
 	{
 		if(super.containsKey(key))
 		{
@@ -89,7 +89,7 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 		return super.remove(key);
 	}
 
-	@Override 
+	@Override
 	public synchronized void clear()
 	{
 		list=null;

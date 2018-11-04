@@ -36,7 +36,6 @@ import java.util.*;
  * @author FR - Jeremy Vyska; CM - Bo Zimmerman
  * @version 1.0.0.0
  */
-
 public class WillQualify  extends Skills
 {
 	public WillQualify()
@@ -50,13 +49,13 @@ public class WillQualify  extends Skills
 		return access;
 	}
 
-	public StringBuffer getQualifiedAbilities(MOB viewerM,
-											  MOB ableM,
-											  String classID,
-											  String raceID,
-											  int maxLevel,
-											  String prefix,
-											  HashSet<Object> types)
+	public StringBuffer getQualifiedAbilities(final MOB viewerM,
+											  final MOB ableM,
+											  final String classID,
+											  final String raceID,
+											  final int maxLevel,
+											  final String prefix,
+											  final HashSet<Object> types)
 	{
 		final int highestLevel = maxLevel;
 		final StringBuffer msg = new StringBuffer("");
@@ -144,7 +143,7 @@ public class WillQualify  extends Skills
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 					throws java.io.IOException
 	{
 		final StringBuffer msg=new StringBuffer("");
@@ -176,7 +175,7 @@ public class WillQualify  extends Skills
 		while(commands.size()>0)
 		{
 			final String str=commands.get(0).toUpperCase().trim();
-			final String bothStr=(commands.size()<2) ? str : 
+			final String bothStr=(commands.size()<2) ? str :
 				commands.get(0).toUpperCase().trim() + " " + commands.get(1).toUpperCase().trim();
 			int x=CMParms.indexOf(Ability.ACODE_DESCS,str);
 			if(x<0)
@@ -194,14 +193,14 @@ public class WillQualify  extends Skills
 					x=CMParms.indexOf(Ability.ACODE_DESCS,bothStr.replace(' ','_'));
 				if(x>=0)
 				{
-					
+
 					commands.remove(0);
 					commands.remove(0);
 					types.add(Integer.valueOf(x));
 					continue;
 				}
 			}
-			
+
 			x=CMParms.indexOf(Ability.DOMAIN_DESCS,str);
 			if(x<0)
 				x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.replace(' ','_'));
@@ -224,7 +223,7 @@ public class WillQualify  extends Skills
 					continue;
 				}
 			}
-				
+
 			if((CMLib.expertises().findDefinition(str,false)!=null)
 			||str.equalsIgnoreCase("EXPERTISE")
 			||str.equalsIgnoreCase("EXPERTISES"))

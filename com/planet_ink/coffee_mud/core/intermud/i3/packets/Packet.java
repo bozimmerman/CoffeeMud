@@ -38,7 +38,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class Packet 
+public class Packet
 {
 	/*
 		Transmissions are LPC arrays with a predefined set of six initial elements:
@@ -79,7 +79,7 @@ public class Packet
 		sender_mud = I3Server.getMudName();
 	}
 
-	public Packet(Vector<?> v)
+	public Packet(final Vector<?> v)
 	{
 		super();
 		{
@@ -108,7 +108,7 @@ public class Packet
 		}
 	}
 
-	public String convertString(String cmd)
+	public String convertString(final String cmd)
 	{
 		final StringBuffer b = new StringBuffer(cmd);
 		int i = 0;

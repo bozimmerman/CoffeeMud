@@ -42,7 +42,7 @@ public class RaceClassNext extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String race=httpReq.getUrlParameter("RACE");
@@ -57,8 +57,8 @@ public class RaceClassNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		boolean showAll=parms.containsKey("ALL");
-		boolean includeSkillOnly=parms.containsKey("INCLUDESKILLONLY");
+		final boolean showAll=parms.containsKey("ALL");
+		final boolean includeSkillOnly=parms.containsKey("INCLUDESKILLONLY");
 		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			final CharClass C=c.nextElement();

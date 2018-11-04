@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_RepelVermin extends Chant
 {
 	@Override
@@ -82,22 +81,22 @@ public class Chant_RepelVermin extends Chant
 	}
 
 	protected int pointsRemaining = 8;
-	
+
 	@Override
-	public void setAffectedOne(Physical affected)
+	public void setAffectedOne(final Physical affected)
 	{
 		if(super.affected != affected)
 			pointsRemaining = 8 + (adjustedLevel(invoker(),0)/5);
 		super.setAffectedOne(affected);
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
 
-		if((msg.target() == affected) 
+		if((msg.target() == affected)
 		&& msg.isTarget(CMMsg.MASK_MALICIOUS)
 		&& CMLib.flags().isVermin(msg.source())
 		&&(affected instanceof MOB)
@@ -187,7 +186,7 @@ public class Chant_RepelVermin extends Chant
 			}
 		}
 		else
-		if((msg.target() == affected) 
+		if((msg.target() == affected)
 		&& (msg.isTarget(CMMsg.MASK_MALICIOUS)||msg.isTarget(CMMsg.TYP_DAMAGE))
 		&&(affected instanceof MOB)
 		&&(pointsRemaining >= 0)
@@ -228,12 +227,12 @@ public class Chant_RepelVermin extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

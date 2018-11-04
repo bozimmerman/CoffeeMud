@@ -69,7 +69,7 @@ public class Dance_Cotillon extends Dance
 	protected MOB whichLast=null;
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{

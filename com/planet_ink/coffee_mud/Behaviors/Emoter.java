@@ -50,7 +50,7 @@ public class Emoter extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		expires=CMParms.getParmInt(parms,"expires",0);
@@ -69,7 +69,7 @@ public class Emoter extends ActiveTicker
 		public EMOTE_TYPE type;
 		public String msg;
 		public boolean broadcast;
-		public EmoteObj(EMOTE_TYPE type, String msg, boolean broadcast)
+		public EmoteObj(final EMOTE_TYPE type, final String msg, final boolean broadcast)
 		{
 			this.type=type;
 			this.msg=msg;
@@ -111,7 +111,7 @@ public class Emoter extends ActiveTicker
 		return true;
 	}
 
-	protected void setEmoteTypes(Vector<String> V, boolean respectOnlyBeginningAndEnd)
+	protected void setEmoteTypes(final Vector<String> V, final boolean respectOnlyBeginningAndEnd)
 	{
 		if(respectOnlyBeginningAndEnd)
 		{
@@ -244,11 +244,11 @@ public class Emoter extends ActiveTicker
 		return true;
 	}
 
-	protected void emoteHere(Room room,
-							 MOB emoter,
-							 EmoteObj emote,
-							 MOB emoteTo,
-							 boolean Wrapper)
+	protected void emoteHere(final Room room,
+							 final MOB emoter,
+							 final EmoteObj emote,
+							 final MOB emoteTo,
+							 final boolean Wrapper)
 	{
 		if(room==null)
 			return;

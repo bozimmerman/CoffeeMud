@@ -44,7 +44,7 @@ public class Millipede extends StdRace
 	{
 		super();
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Millipede");
 
 	@Override
@@ -202,7 +202,7 @@ public class Millipede extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_ControlUndead extends StdSkill
 {
 	@Override
@@ -239,7 +238,7 @@ public class Skill_ControlUndead extends StdSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -258,7 +257,7 @@ public class Skill_ControlUndead extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -284,10 +283,10 @@ public class Skill_ControlUndead extends StdSkill
 		final Room R=mob.location();
 		if((R!=null)&&(R.getArea()!=null))
 		{
-			String value=R.getArea().getBlurbFlag(ID());
+			final String value=R.getArea().getBlurbFlag(ID());
 			if((value != null)&&(value.length()>0))
 			{
-				for(String s : CMParms.parse(value))
+				for(final String s : CMParms.parse(value))
 				{
 					if(s.startsWith("+")&&(CMath.isNumber(value.substring(1))))
 						levelAdj=CMath.s_int(value.substring(1));
@@ -297,7 +296,7 @@ public class Skill_ControlUndead extends StdSkill
 				}
 			}
 		}
-		
+
 		final int adjustedCasterLevel = mob.phyStats().level()+levelAdj + (2*getXLEVELLevel(mob));
 		boolean success=proficiencyCheck(mob,(adjustedCasterLevel-target.phyStats().level())*30,auto);
 

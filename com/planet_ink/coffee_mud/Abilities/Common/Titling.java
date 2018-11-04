@@ -63,11 +63,11 @@ public class Titling extends CommonSkill
 	}
 
 	public static final String CATALOG_PREFIX = " This is a catalog of type `";
-	
+
 	protected Item		found	= null;
 	protected String	writing	= "";
 	protected String	catalog = "";
-	
+
 	public static enum CATALOGS {
 		Armor,
 		Jewelry,
@@ -111,7 +111,7 @@ public class Titling extends CommonSkill
 		verb=L("titling");
 	}
 
-	public String doTitle(String old, String newTitle)
+	public String doTitle(String old, final String newTitle)
 	{
 		final String titlePrefix=L(" entitled `");
 		final int x=old.indexOf(titlePrefix);
@@ -125,8 +125,8 @@ public class Titling extends CommonSkill
 			return old + titlePrefix+newTitle.replace('\'', '-').replace('`', '-')+"`";
 		return old;
 	}
-	
-	public String doCatalog(String old, String newCatalog)
+
+	public String doCatalog(String old, final String newCatalog)
 	{
 		final String catalogPrefix=L(CATALOG_PREFIX);
 		final int x=old.indexOf(catalogPrefix);
@@ -141,7 +141,7 @@ public class Titling extends CommonSkill
 		return old;
 	}
 
-	public static String getCatalogType(Item I)
+	public static String getCatalogType(final Item I)
 	{
 		final String desc=I.description();
 		final int x=desc.indexOf(CATALOG_PREFIX);
@@ -153,8 +153,8 @@ public class Titling extends CommonSkill
 		}
 		return "";
 	}
-	
-	public static String getCatalogEntryType(Environmental E)
+
+	public static String getCatalogEntryType(final Environmental E)
 	{
 		if(E instanceof Room)
 			return CATALOGS.Survey.name();
@@ -229,7 +229,7 @@ public class Titling extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -268,11 +268,11 @@ public class Titling extends CommonSkill
 			return false;
 		}
 		commands.remove(commands.get(0));
-		
+
 		String newCatalog = "";
 		if(commands.size()>1)
 		{
-			String potentialCatalog = CMStrings.capitalizeAndLower(commands.get(commands.size()-1));
+			final String potentialCatalog = CMStrings.capitalizeAndLower(commands.get(commands.size()-1));
 			if(CMParms.contains(CATALOGS.getNames(), potentialCatalog))
 			{
 				newCatalog=potentialCatalog;
@@ -286,7 +286,7 @@ public class Titling extends CommonSkill
 			commonTell(mob,L("You must know how to write to entitle."));
 			return false;
 		}
-		
+
 		if((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
 		{
 			commonTell(mob,L("You can't give a title to something like that."));
@@ -297,7 +297,7 @@ public class Titling extends CommonSkill
 			commonTell(mob,L("That's not even readable!"));
 			return false;
 		}
-		
+
 		/*
 		 *String brand = getBrand(target);
 		if((brand==null)||(brand.length()==0))
@@ -311,7 +311,7 @@ public class Titling extends CommonSkill
 			commonTell(mob,L("You aren't able to give that a title."));
 			return false;
 		}
-		
+
 		if(BookNaming.isAlreadyNamed(target.Name()))
 		{
 			commonTell(mob,L("That already has a name."));
@@ -322,7 +322,7 @@ public class Titling extends CommonSkill
 			commonTell(mob,L("This book is copyrighted, and can't be renamed."));
 			return false;
 		}
-		
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

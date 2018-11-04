@@ -55,14 +55,14 @@ public class Polls extends StdLibrary implements PollManager
 	}
 
 	@Override
-	public void addPoll(Poll P)
+	public void addPoll(final Poll P)
 	{
 		if (getCache() != null)
 			getCache().add(P);
 	}
 
 	@Override
-	public void removePoll(Poll P)
+	public void removePoll(final Poll P)
 	{
 		if (getCache() != null)
 			getCache().remove(P);
@@ -88,7 +88,7 @@ public class Polls extends StdLibrary implements PollManager
 	}
 
 	@Override
-	public Poll getPoll(String named)
+	public Poll getPoll(final String named)
 	{
 		final List<Poll> V=getCache();
 		if(V!=null)
@@ -106,7 +106,7 @@ public class Polls extends StdLibrary implements PollManager
 	}
 
 	@Override
-	public Poll getPoll(int x)
+	public Poll getPoll(final int x)
 	{
 		final Iterator<Poll> p=getPollList();
 		Poll P=null;
@@ -121,7 +121,7 @@ public class Polls extends StdLibrary implements PollManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Poll>[] getMyPollTypes(MOB mob, boolean login)
+	public List<Poll>[] getMyPollTypes(final MOB mob, final boolean login)
 	{
 		final Iterator<Poll> i=getPollList();
 		final List<Poll> list[]=new List[3];
@@ -167,7 +167,7 @@ public class Polls extends StdLibrary implements PollManager
 	}
 
 	@Override
-	public void processVote(Poll P, MOB mob)
+	public void processVote(final Poll P, final MOB mob)
 	{
 		if(!P.mayIVote(mob))
 			return;
@@ -221,7 +221,7 @@ public class Polls extends StdLibrary implements PollManager
 	}
 
 	@Override
-	public void modifyVote(Poll P, MOB mob) throws java.io.IOException
+	public void modifyVote(final Poll P, final MOB mob) throws java.io.IOException
 	{
 		if((mob.isMonster())||(!CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.POLLS)))
 			return;
@@ -316,7 +316,7 @@ public class Polls extends StdLibrary implements PollManager
 	}
 
 	@Override
-	public void processResults(Poll P, MOB mob)
+	public void processResults(final Poll P, final MOB mob)
 	{
 		if(!P.mayISeeResults(mob))
 			return;
@@ -367,7 +367,7 @@ public class Polls extends StdLibrary implements PollManager
 	}
 
 	@Override
-	public void createPoll(Poll P)
+	public void createPoll(final Poll P)
 	{
 		addPoll(P);
 		CMLib.database().DBCreatePoll(P.getName(),
@@ -382,13 +382,13 @@ public class Polls extends StdLibrary implements PollManager
 	}
 
 	@Override
-	public void updatePollResults(Poll P)
+	public void updatePollResults(final Poll P)
 	{
 		CMLib.database().DBUpdatePollResults(P.getName(),P.getResultsXML());
 	}
 
 	@Override
-	public void updatePoll(String oldName, Poll P)
+	public void updatePoll(final String oldName, final Poll P)
 	{
 		CMLib.database().DBUpdatePoll(oldName,
 									  P.getName(),
@@ -403,14 +403,14 @@ public class Polls extends StdLibrary implements PollManager
 	}
 
 	@Override
-	public void deletePoll(Poll P)
+	public void deletePoll(final Poll P)
 	{
 		removePoll(P);
 		CMLib.database().DBDeletePoll(P.getName());
 	}
 
 	@Override
-	public boolean loadPollIfNecessary(Poll P)
+	public boolean loadPollIfNecessary(final Poll P)
 	{
 		if(P.loaded())
 			return true;
@@ -462,7 +462,7 @@ public class Polls extends StdLibrary implements PollManager
 	}
 
 	@Override
-	public Poll loadPollByName(String name)
+	public Poll loadPollByName(final String name)
 	{
 		final Poll P=(Poll)CMClass.getCommon("DefaultPoll");
 		P.setLoaded(false);

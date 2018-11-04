@@ -20,14 +20,15 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 	private static final long serialVersionUID = 6687178785122561993L;
 	private volatile Map<K,F> H1;
 	private volatile Map<F,K> H2;
-	public DoubleMap(Map<K,F> map1, Map<F,K> map2)
+
+	public DoubleMap(final Map<K,F> map1, final Map<F,K> map2)
 	{
 		super();
 		H1=map1;
 		H2=map2;
 	}
 
-	public synchronized Vector<String> toStringVector(String divider)
+	public synchronized Vector<String> toStringVector(final String divider)
 	{
 		final Vector<String> V=new Vector<String>(size());
 		for(final Object S : keySet())
@@ -51,19 +52,19 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 		H2.clear();
 	}
 
-	public synchronized boolean contains(Object arg0)
+	public synchronized boolean contains(final Object arg0)
 	{
 		return H1.containsKey(arg0) || H2.containsKey(arg0);
 	}
 
 	@Override
-	public synchronized boolean containsKey(Object arg0)
+	public synchronized boolean containsKey(final Object arg0)
 	{
 		return H1.containsKey(arg0);
 	}
 
 	@Override
-	public synchronized boolean containsValue(Object arg0)
+	public synchronized boolean containsValue(final Object arg0)
 	{
 		return H2.containsKey(arg0);
 	}
@@ -80,13 +81,13 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 	}
 
 	@Override
-	public boolean equals(Object arg0)
+	public boolean equals(final Object arg0)
 	{
 		return this==arg0;
 	}
 
 	@Override
-	public synchronized F get(Object arg0)
+	public synchronized F get(final Object arg0)
 	{
 		return H1.get(arg0);
 	}
@@ -110,7 +111,7 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 	}
 
 	@Override
-	public synchronized F put(K arg0, F arg1)
+	public synchronized F put(final K arg0, final F arg1)
 	{
 		final F f=H1.put(arg0, arg1);
 		if(f!=null)
@@ -119,7 +120,7 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 	}
 
 	@Override
-	public synchronized F remove(Object arg0)
+	public synchronized F remove(final Object arg0)
 	{
 		final F f=H1.remove(arg0);
 		if(f!=null)
@@ -146,7 +147,7 @@ public class DoubleMap<K,F> implements java.util.Map<K,F>, java.io.Serializable
 	}
 
 	@Override
-	public synchronized void putAll(Map<? extends K, ? extends F> arg0)
+	public synchronized void putAll(final Map<? extends K, ? extends F> arg0)
 	{
 		if(arg0 != null)
 		{

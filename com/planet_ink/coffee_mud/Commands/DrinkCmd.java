@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class DrinkCmd extends StdCommand
 {
 	public DrinkCmd()
@@ -48,10 +47,10 @@ public class DrinkCmd extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("Drink what?"));
@@ -66,7 +65,7 @@ public class DrinkCmd extends StdCommand
 			thisThang=mob.location();
 		else
 		{
-			String drinkWhat = CMParms.combine(commands,0);
+			final String drinkWhat = CMParms.combine(commands,0);
 			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,drinkWhat,Wearable.FILTER_ANY);
 			if((thisThang == null)&&(drinkWhat.equalsIgnoreCase("here")||drinkWhat.equalsIgnoreCase("room")))
 				thisThang=mob.location();

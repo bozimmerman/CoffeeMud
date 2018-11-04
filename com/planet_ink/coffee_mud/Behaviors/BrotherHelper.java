@@ -51,7 +51,7 @@ public class BrotherHelper extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String parms)
+	public void setParms(final String parms)
 	{
 		super.setParms(parms);
 		num=0;
@@ -60,7 +60,7 @@ public class BrotherHelper extends StdBehavior
 		{
 			final List<String> V=CMParms.parse(parms.toUpperCase());
 			nameOnly=V.contains("NAMEONLY");
-			for(String s : V)
+			for(final String s : V)
 			{
 				if(CMath.isInteger(s))
 					num=CMath.s_int(s);
@@ -68,7 +68,7 @@ public class BrotherHelper extends StdBehavior
 		}
 	}
 
-	public static boolean isBrother(MOB target, MOB observer, boolean nameOnly)
+	public static boolean isBrother(final MOB target, final MOB observer, final boolean nameOnly)
 	{
 		if((observer==null)||(target==null))
 			return false;

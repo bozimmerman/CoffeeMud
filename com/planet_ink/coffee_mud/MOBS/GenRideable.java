@@ -72,7 +72,7 @@ public class GenRideable extends StdRideable
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
@@ -81,9 +81,9 @@ public class GenRideable extends StdRideable
 	private final static String[] MYCODES={"RIDEBASIS","MOBSHELD",
 		"PUTSTR","MOUNTSTR","DISMOUNTSTR","STATESTR","STATESUBJSTR","RIDERSTR"
 	};
-	
+
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
@@ -111,7 +111,7 @@ public class GenRideable extends StdRideable
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenMobStat(this,code,val);

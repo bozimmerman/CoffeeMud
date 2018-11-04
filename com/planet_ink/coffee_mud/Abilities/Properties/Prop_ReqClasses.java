@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_ReqClasses extends Property implements TriggeredAffect
 {
 	@Override
@@ -69,7 +68,7 @@ public class Prop_ReqClasses extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String txt)
+	public void setMiscText(final String txt)
 	{
 		noFollow=false;
 		noSneak=false;
@@ -87,7 +86,7 @@ public class Prop_ReqClasses extends Property implements TriggeredAffect
 		super.setMiscText(txt);
 	}
 
-	public boolean passesMuster(MOB mob)
+	public boolean passesMuster(final MOB mob)
 	{
 		if(mob==null)
 			return false;

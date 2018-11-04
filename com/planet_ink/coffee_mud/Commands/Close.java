@@ -99,12 +99,12 @@ public class Close extends StdCommand
 		}
 		return false;
 	}
-	
+
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		final String whatToClose=CMParms.combine(commands,1);
 		if(whatToClose.length()==0)
 		{
@@ -112,7 +112,7 @@ public class Close extends StdCommand
 			return false;
 		}
 		Environmental closeThis=null;
-		int dirCode=CMLib.directions().getGoodDirectionCode(whatToClose);
+		final int dirCode=CMLib.directions().getGoodDirectionCode(whatToClose);
 		if(dirCode>=0)
 			closeThis=mob.location().getExitInDir(dirCode);
 		if(closeThis==null)
@@ -125,9 +125,9 @@ public class Close extends StdCommand
 		}
 		return closeMe(mob,closeThis,whatToClose,dirCode);
 	}
-	
+
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;

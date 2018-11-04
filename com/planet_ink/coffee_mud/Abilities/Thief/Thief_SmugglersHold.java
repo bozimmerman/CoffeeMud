@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_SmugglersHold extends ThiefSkill
 {
 	@Override
@@ -86,13 +85,13 @@ public class Thief_SmugglersHold extends ThiefSkill
 	{
 		return USAGE_MOVEMENT|USAGE_MANA;
 	}
-	
+
 	protected Room fromRoom = null;
 	protected int direction = -1;
 	protected boolean messedUp = false;
 	protected boolean aborted = false;
 	protected boolean fullMode = false;
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -121,8 +120,8 @@ public class Thief_SmugglersHold extends ThiefSkill
 			}
 		}
 	}
-	
-	protected void commonTell(MOB mob, String str)
+
+	protected void commonTell(final MOB mob, String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 		{
@@ -134,14 +133,14 @@ public class Thief_SmugglersHold extends ThiefSkill
 			mob.tell(str);
 	}
 
-	protected void commonEmote(MOB mob, String str)
+	protected void commonEmote(final MOB mob, final String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_ALWAYS,str);
 		else
 			mob.tell(mob,null,null,str);
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -174,21 +173,21 @@ public class Thief_SmugglersHold extends ThiefSkill
 							else
 								R.setDisplayText(L(invoker.name()+"'s Smuggler's Hold"));
 							R.setDescription("");
-							
-							Exit newExit=CMClass.getExit("GenDoor");
+
+							final Exit newExit=CMClass.getExit("GenDoor");
 							newExit.setName(L("a false wall"));
 							newExit.setExitParams("wall","close","open","a false wall");
-							Thief_SmugglersHold holder=(Thief_SmugglersHold)this.copyOf();
+							final Thief_SmugglersHold holder=(Thief_SmugglersHold)this.copyOf();
 							holder.setMiscText(mob.Name());
 							holder.fullMode=false;
 							newExit.addNonUninvokableEffect(holder);
 							newExit.recoverPhyStats();
 							newExit.text();
-							
+
 							room.rawDoors()[direction]=R;
 							room.setRawExit(direction, newExit);
-							
-							Exit opExit=CMClass.getExit("Open");
+
+							final Exit opExit=CMClass.getExit("Open");
 							R.rawDoors()[Directions.getOpDirectionCode(direction)]=room;
 							R.setRawExit(Directions.getOpDirectionCode(direction), opExit);
 							commonEmote(mob,L("<S-NAME> finish(es) the smuggler's hold!"));
@@ -201,7 +200,7 @@ public class Thief_SmugglersHold extends ThiefSkill
 	}
 
 	private static final int totalTicks=20;
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -230,9 +229,9 @@ public class Thief_SmugglersHold extends ThiefSkill
 		}
 		return true;
 	}
-	
+
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		if(affectedEnv instanceof MOB)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
@@ -248,13 +247,13 @@ public class Thief_SmugglersHold extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		this.fromRoom = null;
 		this.direction = -1;
 		this.messedUp = false;
 		this.aborted = false;
-		
+
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
 			mob.tell(L("You are on the floor!"));
@@ -263,11 +262,11 @@ public class Thief_SmugglersHold extends ThiefSkill
 
 		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
-		
+
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		
+
 		final Item target;
 		if((R.getArea() instanceof BoardableShip)
 		&&(((BoardableShip)R.getArea()).getShipItem() instanceof BoardableShip))
@@ -279,7 +278,7 @@ public class Thief_SmugglersHold extends ThiefSkill
 			mob.tell(L("You must be on a ship to build a smuggler's hold!"));
 			return false;
 		}
-		
+
 		for(final Enumeration<Room> r=R.getArea().getProperMap();r.hasMoreElements();)
 		{
 			final Room R2=r.nextElement();
@@ -296,7 +295,7 @@ public class Thief_SmugglersHold extends ThiefSkill
 			mob.tell(L("You must specify which direction to build your hold in."));
 			return false;
 		}
-		
+
 		String dirStr=CMParms.combine(commands,0);
 		final int direction=CMLib.directions().getGoodShipDirectionCode(dirStr);
 		if(direction<0)
@@ -305,7 +304,7 @@ public class Thief_SmugglersHold extends ThiefSkill
 			return false;
 		}
 		dirStr=CMLib.directions().getShipInDirectionName(direction);
-		
+
 		final Room R2=R.getRoomInDir(direction);
 		final Exit E2=R.getExitInDir(direction);
 		if((R2!=null)||(E2!=null))
@@ -313,7 +312,7 @@ public class Thief_SmugglersHold extends ThiefSkill
 			mob.tell(L("You can not build in that direction."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -322,7 +321,7 @@ public class Thief_SmugglersHold extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			Thief_SmugglersHold A=(Thief_SmugglersHold)beneficialAffect(mob, mob, asLevel, totalTicks);
+			final Thief_SmugglersHold A=(Thief_SmugglersHold)beneficialAffect(mob, mob, asLevel, totalTicks);
 			if(A!=null)
 			{
 				A.fromRoom = mob.location();

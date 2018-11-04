@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Judgement extends Prayer
 {
 	@Override
@@ -86,24 +85,24 @@ public class Prayer_Judgement extends Prayer
 	{
 		return Ability.CAN_MOBS;
 	}
-	
+
 	@Override
 	protected int overrideMana()
 	{
 		return Ability.COST_ALL;
 	}
-	
+
 	private final String socialName="PRAY <T-NAME>";
 	private final int numToDo=10;
 	private final Set<MOB> doneMobs = new HashSet<MOB>();
 	private final Set<Room> botheredRooms = new HashSet<Room>();
-	
-	private static String[] FRIENDLY_SOCIALS = 
+
+	private static String[] FRIENDLY_SOCIALS =
 		{"ANGELIC","APOLOGIZE","AWE","BEAM","BEARHUG","BKISS","BLUSH","BOW","BSCRATCH","CHEER","CLAP",
 		"COMFORT","CRY","CUDDLE","DANCE","EMBRACE","GIRN","GREET","GRIN","GROVEL","HANDSHAKE","HIGHFIVE",
 		"HSHAKE","HUG","KISS","LOVE","MASSAGE","NOD","NUZZLE","PAT","PATPAT","PET","PRAY","PURR","SALUTE",
 		"SERENADE","SMILE","SMOOCH","SNUGGLE","SPOON","SSMILE","STROKE","SUPPORT","SWEET","THANK","TICKLE","TOAST"};
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -134,7 +133,7 @@ public class Prayer_Judgement extends Prayer
 			doneMobs.clear();
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -173,23 +172,23 @@ public class Prayer_Judgement extends Prayer
 				}
 				else
 				{
-					Social S=CMLib.socials().fetchSocial(socialName, true);
+					final Social S=CMLib.socials().fetchSocial(socialName, true);
 					if(S==null)
 						unInvoke();
 					else
 						S.invoke(mob, new XVector<String>(S.baseName(),R.getContextName(doMOB)), doMOB, false);
 				}
-					
+
 			}
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		if((msg.source()==affected) 
+		if((msg.source()==affected)
 		&& (msg.tool() instanceof Social)
 		&& (msg.target() instanceof MOB)
 		&& (msg.tool().Name().equals(socialName))
@@ -205,7 +204,7 @@ public class Prayer_Judgement extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -227,14 +226,14 @@ public class Prayer_Judgement extends Prayer
 					final Ability A=maliciousAffect(mob,target,asLevel,0,-1);
 					if(A!=null)
 					{
-						int num=10 + super.getX1Level(mob) + super.getXLEVELLevel(mob);
+						final int num=10 + super.getX1Level(mob) + super.getXLEVELLevel(mob);
 						String socialName=null;
 						String socialBaseName=null;
 						int tries=100;
 						while( ((--tries)>0) && (socialName==null))
 						{
-							String name=FRIENDLY_SOCIALS[CMLib.dice().roll(1, FRIENDLY_SOCIALS.length, -1)];
-							Social S=CMLib.socials().fetchSocial(name+" <T-NAME>", true);
+							final String name=FRIENDLY_SOCIALS[CMLib.dice().roll(1, FRIENDLY_SOCIALS.length, -1)];
+							final Social S=CMLib.socials().fetchSocial(name+" <T-NAME>", true);
 							if(S!=null)
 							{
 								socialName=S.Name();

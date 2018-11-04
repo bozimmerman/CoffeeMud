@@ -25,24 +25,24 @@ package com.planet_ink.coffee_web.util;
 public class CWThread extends Thread
 {
 	private final CWConfig config;
-	
-	public CWThread(CWConfig config, Runnable r, String name)
+
+	public CWThread(final CWConfig config, final Runnable r, final String name)
 	{
 		super(r, name);
 		this.config=config;
 	}
-	
-	public CWThread(CWConfig config, String name)
+
+	public CWThread(final CWConfig config, final String name)
 	{
 		super(name);
 		this.config=config;
 	}
-	
+
 	public CWConfig getConfig()
 	{
 		return config;
 	}
-	
+
 	public String toString()
 	{
 		final StringBuilder dump = new StringBuilder("");

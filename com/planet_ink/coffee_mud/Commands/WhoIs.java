@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class WhoIs extends Who
 {
 	public WhoIs()
@@ -48,7 +47,7 @@ public class WhoIs extends Who
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String mobName=CMParms.combine(commands,1);
@@ -67,13 +66,13 @@ public class WhoIs extends Who
 			else
 			if(x==0)
 			{
-				String mudName = mobName.substring(1);
-				if((mudName.toLowerCase().equals("coffeemuds")||mudName.toLowerCase().equals("all")) 
+				final String mudName = mobName.substring(1);
+				if((mudName.toLowerCase().equals("coffeemuds")||mudName.toLowerCase().equals("all"))
 				&& (CMSecurity.isAllowedAnywhere(mob, CMSecurity.SecFlag.I3)))
 				{
-					List<String> muds = CMLib.intermud().getI3MudList(mudName.toLowerCase().equals("coffeemuds"));
+					final List<String> muds = CMLib.intermud().getI3MudList(mudName.toLowerCase().equals("coffeemuds"));
 					long time=0;
-					for(String mud : muds)
+					for(final String mud : muds)
 					{
 						CMLib.s_sleep(time + 1000);
 						long lastTime=System.currentTimeMillis();

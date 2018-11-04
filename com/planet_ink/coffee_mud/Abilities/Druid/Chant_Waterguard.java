@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_Waterguard extends Chant
 {
 	@Override
@@ -82,7 +81,7 @@ public class Chant_Waterguard extends Chant
 	}
 
 	protected volatile int amountLeft = 0;
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -131,9 +130,9 @@ public class Chant_Waterguard extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		MOB target=super.getTarget(mob, commands, givenTarget, false, false);
+		final MOB target=super.getTarget(mob, commands, givenTarget, false, false);
 		if(target == null)
 			return false;
 
@@ -147,7 +146,7 @@ public class Chant_Waterguard extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Chant_Waterguard guard = (Chant_Waterguard)beneficialAffect(mob,target,asLevel,0);
+				final Chant_Waterguard guard = (Chant_Waterguard)beneficialAffect(mob,target,asLevel,0);
 				if(guard!=null)
 					guard.amountLeft = adjustedLevel(mob,asLevel)+(2*super.getXLEVELLevel(mob));
 			}

@@ -83,7 +83,7 @@ public class Seal extends GiantFish
 	{
 		return breatheAirWaterArray;
 	}
-	
+
 	@Override
 	public long forbiddenWornBits()
 	{

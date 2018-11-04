@@ -46,7 +46,7 @@ public class DefaultModifiable implements CMCommon, Modifiable
 	}
 
 	public final Map<String,String> fields = new Hashtable<String,String>();
-	
+
 	@Override
 	public String name()
 	{
@@ -120,12 +120,12 @@ public class DefaultModifiable implements CMCommon, Modifiable
 		if(code == null)
 			return false;
 		code=code.toUpperCase().trim();
-		
+
 		return fields.containsKey(code);
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(String code, final String val)
 	{
 		if((code == null)||(val==null))
 			return;

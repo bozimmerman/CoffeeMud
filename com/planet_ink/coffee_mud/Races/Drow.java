@@ -46,7 +46,7 @@ public class Drow extends Elf
 		super();
 		super.naturalAbilImmunities.add("Disease_Syphilis");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Drow");
 
 	@Override
@@ -175,7 +175,7 @@ public class Drow extends Elf
 	{
 		return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -189,7 +189,7 @@ public class Drow extends Elf
 			&&(mob.fetchEffect("Spell_DarknessGlobe")==null)
 			&&(CMLib.dice().roll(1, 10, -1)==1))
 			{
-				Ability A=mob.fetchAbility("Spell_DarknessGlobe");
+				final Ability A=mob.fetchAbility("Spell_DarknessGlobe");
 				if(A!=null)
 					mob.enqueCommands(new XVector<List<String>>(new XVector<String>("CAST","DARKNESS GLOBE")), 0);
 			}
@@ -240,7 +240,7 @@ public class Drow extends Elf
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

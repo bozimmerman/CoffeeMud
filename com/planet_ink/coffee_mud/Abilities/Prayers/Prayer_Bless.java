@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Bless extends Prayer implements MendingSkill
 {
 	@Override
@@ -121,7 +120,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		super.unInvoke();
 	}
 
-	public static Item getSomething(MOB mob, boolean cursedOnly)
+	public static Item getSomething(final MOB mob, final boolean cursedOnly)
 	{
 		final Vector<Item> good=new Vector<Item>();
 		final Vector<Item> great=new Vector<Item>();
@@ -143,7 +142,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		return target;
 	}
 
-	public static void endAllOtherBlessings(MOB from, Physical target, int level)
+	public static void endAllOtherBlessings(final MOB from, final Physical target, final int level)
 	{
 		final List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
@@ -157,7 +156,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		}
 	}
 
-	public static void endLowerBlessings(Physical target, int level)
+	public static void endLowerBlessings(final Physical target, final int level)
 	{
 		final List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
@@ -168,7 +167,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		}
 	}
 
-	public static void endLowerCurses(Physical target, int level)
+	public static void endLowerCurses(final Physical target, final int level)
 	{
 		final List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
 		for(int v=0;v<V.size();v++)
@@ -180,14 +179,14 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 	}
 
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
 		return (item instanceof MOB)
 				&&((Prayer_Bless.getSomething((MOB)item,true)!=null)
 					||(CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0));
 	}
 
-	public static boolean isCursed(Item item)
+	public static boolean isCursed(final Item item)
 	{
 		if(CMLib.flags().isSeeable(item))
 		{
@@ -200,7 +199,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)

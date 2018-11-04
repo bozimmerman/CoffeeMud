@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Arrest extends StdSkill
 {
 	@Override
@@ -92,7 +91,7 @@ public class Skill_Arrest extends StdSkill
 		return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL;
 	}
 
-	public static List<LegalWarrant> getWarrantsOf(MOB target, Area legalA)
+	public static List<LegalWarrant> getWarrantsOf(final MOB target, final Area legalA)
 	{
 		LegalBehavior B=null;
 		if(legalA!=null)
@@ -111,7 +110,7 @@ public class Skill_Arrest extends StdSkill
 		return warrants;
 	}
 
-	public void makePeace(Room R, MOB mob, MOB target)
+	public void makePeace(final Room R, final MOB mob, final MOB target)
 	{
 		if(R==null)
 			return;
@@ -129,7 +128,7 @@ public class Skill_Arrest extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

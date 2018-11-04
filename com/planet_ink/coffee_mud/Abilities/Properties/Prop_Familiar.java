@@ -78,19 +78,19 @@ public class Prop_Familiar extends Property
 		SEATURTLE("sea turtle")
 		;
 		public String name;
-		private Familiar(String name)
+		private Familiar(final String name)
 		{
 			this.name=name;
 		}
 	}
-	
+
 	protected MOB		familiarTo			= null;
 	protected MOB		familiarWith		= null;
 	protected boolean	imthedaddy			= false;
 	protected Familiar	familiarType		= Familiar.DOG;
 	protected int[]		lastBreathablesSet	= null;
 	protected int[]		newBreathablesSet	= null;
-	
+
 	protected Map<String, Language>			myLanguages	= new Hashtable<String, Language>();
 
 	@Override
@@ -271,7 +271,7 @@ public class Prop_Familiar extends Property
 				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 				&&(A instanceof Language))
 				{
-					Ability effectA=M.fetchEffect(A.ID());
+					final Ability effectA=M.fetchEffect(A.ID());
 					if(effectA==null)
 					{
 						A.autoInvocation(M, false);
@@ -320,8 +320,8 @@ public class Prop_Familiar extends Property
 		{
 			if(msg.amISource(familiarTo)
 			&&(msg.target() instanceof MOB)
-			&&((msg.tool()==null) 
-				|| (!(msg.tool() instanceof Language)) 
+			&&((msg.tool()==null)
+				|| (!(msg.tool() instanceof Language))
 				||(familiarWith.charStats().getMyRace().racialAbilities(familiarWith).find(msg.tool().ID())==null)))
 			{
 				Language lA=this.getAnimalSpeak(familiarWith);

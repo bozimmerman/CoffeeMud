@@ -63,14 +63,14 @@ public class StdTimeZone extends StdArea
 	}
 
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 		super.setName(newName);
 		myClock.setLoadName(newName);
 	}
 
 	@Override
-	public void addChild(Area area)
+	public void addChild(final Area area)
 	{
 		super.addChild(area);
 		area.setTimeObj(getTimeObj());

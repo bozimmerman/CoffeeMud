@@ -130,7 +130,7 @@ public class Mage extends StdCharClass
 	private final Set<Integer>	disallowedWeapons	= buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -431,13 +431,13 @@ public class Mage extends StdCharClass
 	};
 
 	@Override
-	public Pair<String,Integer>[] getMinimumStatRequirements() 
+	public Pair<String,Integer>[] getMinimumStatRequirements()
 	{
 		return minimumStatRequirements;
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(!grantSomeSpells())
@@ -494,7 +494,7 @@ public class Mage extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

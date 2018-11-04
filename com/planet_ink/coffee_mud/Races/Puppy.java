@@ -149,11 +149,11 @@ public class Puppy extends Dog
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		affectableMaxState.setMovement(affectableMaxState.getMovement()+50);
 	}
-	
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

@@ -43,21 +43,21 @@ public interface PrepositionExit extends Exit
 	 * @return the preposition phrase seen by entering this exit.
 	 */
 	public String getEntryPreposition();
-	
+
 	/**
 	 * Sets the preposition phrase seen by entering this exit.
 	 * @see PrepositionExit#getEntryPreposition()
 	 * @param phrase the preposition phrase seen by entering this exit.
 	 */
 	public void setEntryPreposition(String phrase);
-	
+
 	/**
 	 * Returns the preposition phrase seen by leaving this exit.
 	 * @see PrepositionExit#setExitPreposition(String)
 	 * @return the preposition phrase seen by leaving this exit.
 	 */
 	public String getExitPreposition();
-	
+
 	/**
 	 * Sets the preposition phrase seen by leaving this exit.
 	 * @see PrepositionExit#getExitPreposition()

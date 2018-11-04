@@ -46,7 +46,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * check if an object is destructed before using it in
  * code and it will remove references to destructed objects.
  * For example:
- * 
+ *
  * MudObject some_object;
  *
  * public void doSomething()
@@ -61,7 +61,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  *
  * For people used to LPC, the above code would be roughly
  * the same as doing:
- * 
+ *
  * object some_object;
  *
  * void do_something()
@@ -78,7 +78,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author George Reese
  * @version 1.0
  */
-public interface ServerObject {
+public interface ServerObject
+{
 	/**
 	 * This method should make it such that getDestructed()
 	 * returns true and the object is no longer valid for
@@ -119,7 +120,7 @@ public interface ServerObject {
 	  * object id which the object should be keeping track of.
 	  * Make sure that this can only get set once.  The proper
 	  * code for this method probably should be something like:
-	  * 
+	  *
 	  * public final void setObjectId(String id)
 	  {
 	  *   if( object_id != null )

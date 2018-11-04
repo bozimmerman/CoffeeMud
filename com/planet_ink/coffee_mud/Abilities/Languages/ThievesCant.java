@@ -39,7 +39,6 @@ import java.util.*;
 	Sancara.servegame.com Port 5555
 	Respect to all who work on Coffee, keep the tradition going!
 */
-
 public class ThievesCant extends StdLanguage
 {
 	@Override
@@ -69,7 +68,7 @@ public class ThievesCant extends StdLanguage
 	}
 
 	@Override
-	public List<String[]> translationLists(String language)
+	public List<String[]> translationLists(final String language)
 	{
 		if(wordLists==null)
 		{
@@ -93,7 +92,7 @@ public class ThievesCant extends StdLanguage
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
 
 	@Override
-	public Map<String, String> translationHash(String language)
+	public Map<String, String> translationHash(final String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))
 			return hashwords;

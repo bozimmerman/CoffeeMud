@@ -88,7 +88,7 @@ public class Spell_PassDoor extends Spell
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectedStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);
 		affectedStats.setDisposition(affectedStats.disposition()|PhyStats.IS_INVISIBLE);
@@ -142,7 +142,7 @@ public class Spell_PassDoor extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 
 		if((auto||mob.isMonster())&&((commands.size()<1)||((commands.get(0)).equals(mob.name()))))
@@ -188,7 +188,7 @@ public class Spell_PassDoor extends Spell
 				mob.tell(L("But it looks free and clear that way!"));
 				return false;
 			}
-			
+
 			int highestLevel = exit.phyStats().level();
 			highestLevel = highestLevelHere(mob,R,highestLevel);
 			highestLevel = highestLevelHere(mob,room,highestLevel);

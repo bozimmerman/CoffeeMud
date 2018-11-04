@@ -71,7 +71,7 @@ public class WebSock extends StdWebMacro
 	{
 		return true;
 	}
-	
+
 	protected boolean initialized = false;
 	public static final List<WebSockHandler>	handlers				= new LinkedList<WebSockHandler>();
 
@@ -100,9 +100,9 @@ public class WebSock extends StdWebMacro
 				tickStatus = Tickable.STATUS_ALIVE;
 				synchronized (handlers)
 				{
-					for (Iterator<WebSockHandler> h=handlers.iterator();h.hasNext();)
+					for (final Iterator<WebSockHandler> h=handlers.iterator();h.hasNext();)
 					{
-						WebSockHandler W=h.next();
+						final WebSockHandler W=h.next();
 						if (W == null)
 							continue;
 						final long idle = System.currentTimeMillis() - W.lastPing;
@@ -113,7 +113,7 @@ public class WebSock extends StdWebMacro
 								W.lsock.close();
 								W.rsock.close();
 							}
-							catch (IOException e)
+							catch (final IOException e)
 							{
 								Log.errOut(e);
 							}
@@ -127,7 +127,7 @@ public class WebSock extends StdWebMacro
 								if(W.in.available()>0)
 									W.ioHandler.scheduleProcessing();
 							}
-							catch (IOException e)
+							catch (final IOException e)
 							{
 								Log.errOut(e);
 							}
@@ -188,7 +188,7 @@ public class WebSock extends StdWebMacro
 		private final ByteArrayOutputStream payload = new ByteArrayOutputStream();
 		private final ByteArrayOutputStream msg		= new ByteArrayOutputStream();
 
-		public WebSockHandler(HTTPRequest httpReq) throws IOException
+		public WebSockHandler(final HTTPRequest httpReq) throws IOException
 		{
 			synchronized(this)
 			{
@@ -213,9 +213,9 @@ public class WebSock extends StdWebMacro
 			throw new IOException("No host found.");
 		}
 
-		private byte[] encodeResponse(byte[] resp, int type)
+		private byte[] encodeResponse(final byte[] resp, final int type)
 		{
-			ByteArrayOutputStream bout=new ByteArrayOutputStream();
+			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 			bout.write(0x80 + (byte)type); // output
 			if(resp.length < 126)
 			{
@@ -225,8 +225,8 @@ public class WebSock extends StdWebMacro
 			if(resp.length < 65535)
 			{
 				bout.write(126 & 0x7f);
-				int byte1=resp.length / 256;
-				int byte2 = resp.length - (byte1 * 256);
+				final int byte1=resp.length / 256;
+				final int byte2 = resp.length - (byte1 * 256);
 				bout.write(byte1);
 				bout.write(byte2);
 			}
@@ -234,11 +234,11 @@ public class WebSock extends StdWebMacro
 			{
 				bout.write(127 & 0x7f);
 				long len = resp.length;
-				int byte1=(int)(len / 16777216);
+				final int byte1=(int)(len / 16777216);
 				len = len - (byte1 * 16777216);
-				int byte2=(int)(len / 65536);
+				final int byte2=(int)(len / 65536);
 				len = len - (byte2 * 65536);
-				int byte3=(int)(len / 256);
+				final int byte3=(int)(len / 256);
 				len = len - (byte3 * 256);
 				bout.write(byte1 & 0xff);
 				bout.write(byte2 & 0xff);
@@ -249,14 +249,14 @@ public class WebSock extends StdWebMacro
 			{
 				bout.write(resp);
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 				e.printStackTrace();
 			}
 			return bout.toByteArray();
 		}
-		
-		private void reset(ByteBuffer buffer)
+
+		private void reset(final ByteBuffer buffer)
 		{
 			msg.reset();
 			payload.reset();
@@ -268,14 +268,14 @@ public class WebSock extends StdWebMacro
 			maskPos		= 0;
 		}
 
-		private DataBuffers getOutput(DataBuffers outBuffer)
+		private DataBuffers getOutput(final DataBuffers outBuffer)
 		{
 			if(outBuffer == null)
 				return new CWDataBuffers();
 			return outBuffer;
 		}
-		
-		private DataBuffers done(HTTPRequest request, ByteBuffer buffer, DataBuffers outBuffer) throws HTTPException
+
+		private DataBuffers done(final HTTPRequest request, final ByteBuffer buffer, DataBuffers outBuffer) throws HTTPException
 		{
 			switch(opCode)
 			{
@@ -289,7 +289,7 @@ public class WebSock extends StdWebMacro
 					{
 						out.write(newPayload);
 					}
-					catch (IOException e)
+					catch (final IOException e)
 					{
 						Log.errOut(e);
 					}
@@ -307,7 +307,7 @@ public class WebSock extends StdWebMacro
 						outBuffer.add(outBuf, System.currentTimeMillis(), true);
 					}
 				}
-				catch (IOException e)
+				catch (final IOException e)
 				{
 					Log.errOut(e);
 				}
@@ -332,9 +332,9 @@ public class WebSock extends StdWebMacro
 			}
 			return outBuffer;
 		}
-		
+
 		@Override
-		public DataBuffers processBuffer(HTTPIOHandler handler, HTTPRequest request, ByteBuffer buffer) throws HTTPException
+		public DataBuffers processBuffer(final HTTPIOHandler handler, final HTTPRequest request, final ByteBuffer buffer) throws HTTPException
 		{
 			if(ioHandler==null)
 				ioHandler = handler;
@@ -419,7 +419,7 @@ public class WebSock extends StdWebMacro
 				case S0:
 				{
 					opCode = (byte)(b & 0x0f);
-					finished = (b & 0x80) == 0x80; 
+					finished = (b & 0x80) == 0x80;
 					state = WSState.P1;
 					break;
 				}
@@ -449,7 +449,7 @@ public class WebSock extends StdWebMacro
 				lsock.close();
 				rsock.close();
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 				Log.errOut(e);
 			}
@@ -459,9 +459,9 @@ public class WebSock extends StdWebMacro
 			}
 		}
 	}
-	
+
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return "false;";
@@ -469,7 +469,7 @@ public class WebSock extends StdWebMacro
 		{
 			initialize();
 		}
-		
+
 		if((httpReq.getHeader("upgrade")!=null)
 		&&("websocket".equalsIgnoreCase(httpReq.getHeader("upgrade")))
 		&&(httpReq.getHeader("connection")!=null)
@@ -507,7 +507,7 @@ public class WebSock extends StdWebMacro
 				exception.setNewProtocolHandler(newHandler);
 				httpReq.getRequestObjects().put("___SIPLETHANDLER", newHandler);
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				Log.errOut(e);
 				throw new HTTPServerException(e.getMessage());

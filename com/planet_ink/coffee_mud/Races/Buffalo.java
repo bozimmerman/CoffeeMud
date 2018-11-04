@@ -157,7 +157,7 @@ public class Buffalo extends Cow
 	}
 
 	@Override
-	public Race mixRace(Race race, String newRaceID, String newRaceName)
+	public Race mixRace(final Race race, final String newRaceID, final String newRaceName)
 	{
 		if(ID().equalsIgnoreCase("Buffalo"))
 		{
@@ -174,7 +174,7 @@ public class Buffalo extends Cow
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{

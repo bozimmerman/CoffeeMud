@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_AreaForSale extends Property implements LandTitle
 {
 	@Override
@@ -98,7 +97,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 
 	@Override
-	public void setPrice(int price)
+	public void setPrice(final int price)
 	{
 		setMiscText(getOwnerName()+"/"
 			+(rentalProperty()?"RENTAL ":"")
@@ -135,7 +134,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 
 	@Override
-	public void setOwnerName(String owner)
+	public void setOwnerName(final String owner)
 	{
 		setMiscText(owner+"/"
 				+(rentalProperty()?"RENTAL ":"")
@@ -156,7 +155,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 
 	@Override
-	public void setBackTaxes(int tax)
+	public void setBackTaxes(final int tax)
 	{
 		setMiscText(getOwnerName()+"/"
 				+(rentalProperty()?"RENTAL ":"")
@@ -171,9 +170,9 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			return text().indexOf("RENTAL")>=0;
 		return text().indexOf("RENTAL",text().indexOf('/'))>0;
 	}
-	
+
 	@Override
-	public void setRentalProperty(boolean truefalse)
+	public void setRentalProperty(final boolean truefalse)
 	{
 		setMiscText(getOwnerName()+"/"
 				+(truefalse?"RENTAL ":"")
@@ -216,20 +215,20 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		newTitle.setBackTaxes(0);
 		return newTitle;
 	}
-	
+
 	@Override
 	public boolean gridLayout()
 	{
 		return false;
 	}
-	
+
 	@Override
-	public void setGridLayout(boolean gridLayout)
+	public void setGridLayout(final boolean gridLayout)
 	{
 	}
-	
+
 	@Override
-	public void setLandPropertyID(String landID)
+	public void setLandPropertyID(final String landID)
 	{
 	}
 
@@ -308,7 +307,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 
 	// update lot, since its called by the savethread, ONLY worries about itself
 	@Override
-	public void updateLot(Set<String> optPlayerList)
+	public void updateLot(final Set<String> optPlayerList)
 	{
 		if(((System.currentTimeMillis()-lastCall)>360000)
 		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))

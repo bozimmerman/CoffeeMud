@@ -68,7 +68,7 @@ public class PlayerClass extends StdCharClass
 		return abilitiesLoaded;
 	}
 
-	public void setLoaded(boolean truefalse)
+	public void setLoaded(final boolean truefalse)
 	{
 		abilitiesLoaded = truefalse;
 	}
@@ -93,14 +93,14 @@ public class PlayerClass extends StdCharClass
 	}
 
 	@Override
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
+	public boolean qualifiesForThisClass(final MOB mob, final boolean quiet)
 	{
 		if(!quiet)
 			mob.tell(L("This class cannot be learned."));
 		return false;
 	}
 
-	private boolean isSkill(int classCode)
+	private boolean isSkill(final int classCode)
 	{
 		switch(classCode&Ability.ALL_ACODES)
 		{
@@ -123,7 +123,7 @@ public class PlayerClass extends StdCharClass
 		return true;
 	}
 
-	private List<String> makeRequirements(LinkedList<List<String>> prevSets, Ability A)
+	private List<String> makeRequirements(final LinkedList<List<String>> prevSets, final Ability A)
 	{
 		for(final Iterator<List<String>> i=prevSets.descendingIterator();i.hasNext();)
 		{
@@ -161,7 +161,7 @@ public class PlayerClass extends StdCharClass
 	}
 
 	@Override
-	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
+	public void startCharacter(final MOB mob, final boolean isBorrowedClass, final boolean verifyOnly)
 	{
 		if(!loaded())
 		{
@@ -171,7 +171,7 @@ public class PlayerClass extends StdCharClass
 			for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 			{
 				final CharClass C=c.nextElement();
-				if(C.baseClass().equals(C.ID()) 
+				if(C.baseClass().equals(C.ID())
 				&& (!C.baseClass().equalsIgnoreCase("Archon"))
 				&& (!C.baseClass().equalsIgnoreCase("PlayerClass"))
 				&& (!C.baseClass().equalsIgnoreCase("Qualifier"))
@@ -211,7 +211,7 @@ public class PlayerClass extends StdCharClass
 								Log.errOut("Unknonwn class: "+ID);
 								continue;
 							}
-							List<String> reqSet=makeRequirements(prevSets,A);
+							final List<String> reqSet=makeRequirements(prevSets,A);
 							int level=0;
 							if(!this.leveless() && (!CMSecurity.isDisabled(DisFlag.LEVELS)))
 								level=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
@@ -229,7 +229,7 @@ public class PlayerClass extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)

@@ -37,18 +37,18 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    limitations under the License.
  */
 /**
- * Interface for a Room that virtually contains other rooms, which are 
- * called grid-child rooms. This is for producing substantially identical 
- * rooms in grid formations, or mazes, or other groupings where unique 
+ * Interface for a Room that virtually contains other rooms, which are
+ * called grid-child rooms. This is for producing substantially identical
+ * rooms in grid formations, or mazes, or other groupings where unique
  * control of exits and content is not desired.
  *
- * Grids have the following general features: They are rectangular with a 
+ * Grids have the following general features: They are rectangular with a
  * defineable width and length.  All rooms in the grid are of the same
  * locale type.  Grid children can only have exits to each other, or to
  * the GridLocale's exiting rooms, unless "outer exits" are defined.
  * @author Bo Zimmerman
  */
-public interface GridLocale extends Room, GridZones 
+public interface GridLocale extends Room, GridZones
 {
 	/**
 	 * Gets the Room ID() for the type of Java room class used to
@@ -58,13 +58,13 @@ public interface GridLocale extends Room, GridZones
 	public String getGridChildLocaleID();
 
 	/**
-	 * Returns the room found in the given direction from the from-room, 
+	 * Returns the room found in the given direction from the from-room,
 	 * where the stand-in room is the to-room.
-	 * 
+	 *
 	 * Grids are not required to actually fill themselves in at boot
 	 * time, nor are they required to remain filled in.  Therefore,
 	 * rooms can be constructed in real time.
-	 * 
+	 *
 	 * This method is called whenever a player wants to move into another
 	 * room from a room that is part of a grid to some other room.
 	 * @param fromRoom the room moving from, also the grid child
@@ -102,7 +102,7 @@ public interface GridLocale extends Room, GridZones
 	 * @return a read-only list of all rooms around here.
 	 */
 	public List<Room> getAllRoomsFilled();
-	
+
 	/**
 	 * Returns a read-only iterator over the existing grid-child rooms.
 	 * This iterator may be empty if the grid creates children as-needed.
@@ -113,7 +113,7 @@ public interface GridLocale extends Room, GridZones
 	/**
 	 * Normally the grid-child rooms can only exit to each other, or to
 	 * the same places as the gridlocale host.  Outer Exits are a way around
-	 * this by pre-defining exits from grid children to elsewhere on the 
+	 * this by pre-defining exits from grid children to elsewhere on the
 	 * map, including into other gridlocales.
 	 * @see GridLocale.CrossExit
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.GridLocale#addOuterExit(GridLocale.CrossExit)
@@ -125,7 +125,7 @@ public interface GridLocale extends Room, GridZones
 	/**
 	 * Normally the grid-child rooms can only exit to each other, or to
 	 * the same places as the gridlocale host.  Outer Exits are a way around
-	 * this by pre-defining exits from grid children to elsewhere on the 
+	 * this by pre-defining exits from grid children to elsewhere on the
 	 * map, including into other gridlocales.
 	 * This method will add a new one.
 	 * @see GridLocale.CrossExit
@@ -138,7 +138,7 @@ public interface GridLocale extends Room, GridZones
 	/**
 	 * Normally the grid-child rooms can only exit to each other, or to
 	 * the same places as the gridlocale host.  Outer Exits are a way around
-	 * this by pre-defining exits from grid children to elsewhere on the 
+	 * this by pre-defining exits from grid children to elsewhere on the
 	 * map, including into other gridlocales.
 	 * This method will remove an existing one
 	 * @see GridLocale.CrossExit
@@ -147,9 +147,9 @@ public interface GridLocale extends Room, GridZones
 	 * @param x the existing cross ("outer") exit to delete
 	 */
 	public void delOuterExit(CrossExit x);
-	
+
 	/**
-	 * class definition for an exit that goes from inside a grid locale child to a place 
+	 * class definition for an exit that goes from inside a grid locale child to a place
 	 * outside the parent gridlocale room
 	 * @author Bo Zimmerman
 	 */
@@ -160,8 +160,8 @@ public interface GridLocale extends Room, GridZones
 		public int dir;
 		public String destRoomID="";
 		public boolean out=false;
-	
-		public static CrossExit make(int xx, int xy, int xdir, String xdestRoomID, boolean xout)
+
+		public static CrossExit make(final int xx, final int xy, final int xdir, final String xdestRoomID, final boolean xout)
 		{
 			final CrossExit EX = new CrossExit();
 			EX.x = xx;

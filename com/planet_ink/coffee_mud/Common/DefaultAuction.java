@@ -50,7 +50,7 @@ public class DefaultAuction implements AuctionData
 	{
 		return ID();
 	}
-	
+
 	public Item		auctioningI		= null;
 	public MOB		auctioningM		= null;
 	public MOB		highBidderM		= null;
@@ -99,9 +99,9 @@ public class DefaultAuction implements AuctionData
 			return newInstance();
 		}
 	}
-	
+
 	@Override
-	public int daysRemaining(MOB mob, MOB mob2)
+	public int daysRemaining(final MOB mob, final MOB mob2)
 	{
 		if (System.currentTimeMillis() >= tickDown)
 			return 0;
@@ -114,7 +114,7 @@ public class DefaultAuction implements AuctionData
 	}
 
 	@Override
-	public int daysEllapsed(MOB mob, MOB mob2)
+	public int daysEllapsed(final MOB mob, final MOB mob2)
 	{
 		if (System.currentTimeMillis() < start)
 			return 0;
@@ -125,135 +125,135 @@ public class DefaultAuction implements AuctionData
 		daysRemain = Math.round(Math.floor(CMath.div(CMath.div(daysRemain, CMProps.getMillisPerMudHour()), A.getTimeObj().getHoursInDay())));
 		return (int) daysRemain;
 	}
-	
+
 	@Override
 	public Item getAuctionedItem()
 	{
 		return auctioningI;
 	}
-	
+
 	@Override
-	public void setAuctionedItem(Item auctioningI)
+	public void setAuctionedItem(final Item auctioningI)
 	{
 		this.auctioningI = auctioningI;
 	}
-	
+
 	@Override
 	public MOB getAuctioningMob()
 	{
 		return auctioningM;
 	}
-	
+
 	@Override
-	public void setAuctioningMob(MOB auctioningM)
+	public void setAuctioningMob(final MOB auctioningM)
 	{
 		this.auctioningM = auctioningM;
 	}
-	
+
 	@Override
 	public MOB getHighBidderMob()
 	{
 		return highBidderM;
 	}
-	
+
 	@Override
-	public void setHighBidderMob(MOB highBidderM)
+	public void setHighBidderMob(final MOB highBidderM)
 	{
 		this.highBidderM = highBidderM;
 	}
-	
+
 	@Override
 	public String getCurrency()
 	{
 		return currency;
 	}
-	
+
 	@Override
-	public void setCurrency(String currency)
+	public void setCurrency(final String currency)
 	{
 		this.currency = currency;
 	}
-	
+
 	@Override
 	public double getHighBid()
 	{
 		return highBid;
 	}
-	
+
 	@Override
-	public void setHighBid(double highBid)
+	public void setHighBid(final double highBid)
 	{
 		this.highBid = highBid;
 	}
-	
+
 	@Override
 	public double getBid()
 	{
 		return bid;
 	}
-	
+
 	@Override
-	public void setBid(double bid)
+	public void setBid(final double bid)
 	{
 		this.bid = bid;
 	}
-	
+
 	@Override
 	public double getBuyOutPrice()
 	{
 		return buyOutPrice;
 	}
-	
+
 	@Override
-	public void setBuyOutPrice(double buyOutPrice)
+	public void setBuyOutPrice(final double buyOutPrice)
 	{
 		this.buyOutPrice = buyOutPrice;
 	}
-	
+
 	@Override
 	public int getAuctionState()
 	{
 		return state;
 	}
-	
+
 	@Override
-	public void setAuctionState(int state)
+	public void setAuctionState(final int state)
 	{
 		this.state = state;
 	}
-	
+
 	@Override
 	public long getAuctionTickDown()
 	{
 		return tickDown;
 	}
-	
+
 	@Override
-	public void setAuctionTickDown(long tickDown)
+	public void setAuctionTickDown(final long tickDown)
 	{
 		this.tickDown = tickDown;
 	}
-	
+
 	@Override
 	public long getStartTime()
 	{
 		return start;
 	}
-	
+
 	@Override
-	public void setStartTime(long start)
+	public void setStartTime(final long start)
 	{
 		this.start = start;
 	}
-	
+
 	@Override
 	public String getAuctionDBKey()
 	{
 		return auctionDBKey;
 	}
-	
+
 	@Override
-	public void setAuctionDBKey(String auctionDBKey)
+	public void setAuctionDBKey(final String auctionDBKey)
 	{
 		this.auctionDBKey = auctionDBKey;
 	}

@@ -41,12 +41,12 @@ public class Hireling extends StdBehavior
 		return "Hireling";
 	}
 
-	protected Hashtable<String,Double> partials=new Hashtable<String,Double>();
-	protected String workingFor="";
-	protected long onTheJobUntil=0;
-	protected double price=100.0;
-	protected int minutes=30;
-	protected String zapperMask=null;
+	protected Map<String, Double>	partials		= new Hashtable<String, Double>();
+	protected String				workingFor		= "";
+	protected long					onTheJobUntil	= 0;
+	protected double				price			= 100.0;
+	protected int					minutes			= 30;
+	protected String				zapperMask		= null;
 
 	@Override
 	public String accountForYourself()
@@ -54,7 +54,7 @@ public class Hireling extends StdBehavior
 		return "availability for hiring";
 	}
 
-	public void setPrice(String s)
+	public void setPrice(final String s)
 	{
 		price=100.0;
 		if(CMath.isNumber(s))
@@ -66,7 +66,7 @@ public class Hireling extends StdBehavior
 		}
 	}
 
-	public void setMinutes(String s)
+	public void setMinutes(final String s)
 	{
 		minutes=30;
 		if(CMath.isNumber(s))
@@ -79,7 +79,7 @@ public class Hireling extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		final int dex=newParms.indexOf(';');
@@ -130,7 +130,7 @@ public class Hireling extends StdBehavior
 		return CMath.div(d2,10.0);
 	}
 
-	public void allDone(MOB observer)
+	public void allDone(final MOB observer)
 	{
 		workingFor="";
 		onTheJobUntil=0;

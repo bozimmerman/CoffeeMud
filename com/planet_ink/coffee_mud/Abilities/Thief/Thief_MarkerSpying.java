@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_MarkerSpying extends ThiefSkill
 {
 	@Override
@@ -98,7 +97,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code = newCode;
 	}
@@ -109,7 +108,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_STEALTHY;
 	}
 
-	public MOB getMark(MOB mob)
+	public MOB getMark(final MOB mob)
 	{
 		if(mob!=null)
 		{
@@ -167,7 +166,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getMark(mob);
 		if(target==null)

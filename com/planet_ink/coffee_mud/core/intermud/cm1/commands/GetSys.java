@@ -43,13 +43,13 @@ import java.util.concurrent.atomic.*;
 */
 public class GetSys extends CM1Command
 {
-	@Override 
+	@Override
 	public String getCommandWord()
-	{ 
+	{
 		return "GETSYS";
 	}
-	
-	public GetSys(RequestHandler req, String parameters)
+
+	public GetSys(final RequestHandler req, final String parameters)
 	{
 		super(req, parameters);
 	}
@@ -113,16 +113,16 @@ public class GetSys extends CM1Command
 	}
 
 	@Override
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	public boolean passesSecurityCheck(final MOB user, final PhysicalAgent target)
 	{
 		return ((user != null) && (CMSecurity.isASysOp(user)));
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	protected String getAllProps()
 	{
-		StringBuilder str= new StringBuilder("PROP [?], DEBUG [?], DISABLE [?], ENABLE [?] ");
-		for(Class<? extends Enum> c : CMProps.PROP_CLASSES)
+		final StringBuilder str= new StringBuilder("PROP [?], DEBUG [?], DISABLE [?], ENABLE [?] ");
+		for(final Class<? extends Enum> c : CMProps.PROP_CLASSES)
 		{
 			str.append(CMParms.toListString(c.getEnumConstants()));
 			str.append(", ");
@@ -133,9 +133,9 @@ public class GetSys extends CM1Command
 		str.append(", ");
 		return str.toString().substring(0,str.length()-2);
 	}
-	
+
 	@Override
-	public String getHelp(MOB user, PhysicalAgent target, String rest)
+	public String getHelp(final MOB user, final PhysicalAgent target, final String rest)
 	{
 		return "USAGE: "+getCommandWord()+" "+getAllProps();
 	}

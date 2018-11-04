@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Buffoonery extends BardSkill
 {
 	@Override
@@ -86,7 +85,7 @@ public class Skill_Buffoonery extends BardSkill
 		return USAGE_MOVEMENT;
 	}
 
-	protected Vector<Long> getFreeWearingPositions(MOB target)
+	protected Vector<Long> getFreeWearingPositions(final MOB target)
 	{
 		final Vector<Long> V=new Vector<Long>();
 		final Wearable.CODES codes = Wearable.CODES.instance();
@@ -106,12 +105,12 @@ public class Skill_Buffoonery extends BardSkill
 		return V;
 	}
 
-	protected boolean freePosition(MOB target)
+	protected boolean freePosition(final MOB target)
 	{
 		return getFreeWearingPositions(target).size()>0;
 	}
 
-	public String correctItem(MOB mob)
+	public String correctItem(final MOB mob)
 	{
 		for(int i=0;i<mob.numItems();i++)
 		{
@@ -126,7 +125,7 @@ public class Skill_Buffoonery extends BardSkill
 		return null;
 	}
 
-	public Item targetItem(MOB target)
+	public Item targetItem(final MOB target)
 	{
 		final Vector<Item> V=new Vector<Item>();
 		for(int i=0;i<target.numItems();i++)
@@ -144,7 +143,7 @@ public class Skill_Buffoonery extends BardSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -165,7 +164,7 @@ public class Skill_Buffoonery extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<2)
 		{

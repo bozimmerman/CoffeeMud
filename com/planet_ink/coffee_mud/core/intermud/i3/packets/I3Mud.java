@@ -54,7 +54,7 @@ public class I3Mud implements Serializable
 		super();
 	}
 
-	public I3Mud(I3Mud other)
+	public I3Mud(final I3Mud other)
 	{
 		super();
 		address = other.address;

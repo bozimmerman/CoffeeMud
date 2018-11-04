@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_ClanExperience extends Spell
 {
 
@@ -81,13 +80,13 @@ public class Spell_ClanExperience extends Spell
 	}
 
 	@Override
-	public boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(final MOB mob)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob==null)
 			return false;
@@ -114,7 +113,7 @@ public class Spell_ClanExperience extends Spell
 		{
 			if(!CMath.isInteger(commands.get(i)))
 			{
-				String clanID=commands.get(i);
+				final String clanID=commands.get(i);
 				C=CMLib.clans().getClan(clanID);
 				if(C==null)
 				{
@@ -161,7 +160,7 @@ public class Spell_ClanExperience extends Spell
 
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> invoke(s) an experience donation spell between <S-HIM-HERSELF> and @x1.^?",C.name()));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> invoke(s) an experience donation spell between <S-HIM-HERSELF> and @x1.^?",C.name()));
 			if(mob.location().okMessage(mob,msg))
 			{
 				CMLib.leveler().postExperience(mob, null, null, -amt, false);

@@ -23,7 +23,7 @@ public interface Filterer<K>
 	public static final Filterer ANYTHING=new Filterer()
 	{
 		@Override
-		public boolean passesFilter(Object obj)
+		public boolean passesFilter(final Object obj)
 		{
 			return true;
 		}

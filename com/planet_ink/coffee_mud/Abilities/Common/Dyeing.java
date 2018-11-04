@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Dyeing extends CommonSkill
 {
 	@Override
@@ -84,7 +83,7 @@ public class Dyeing extends CommonSkill
 		verb=L("dyeing");
 	}
 
-	protected String fixColor(String name, char colorChar, String colorWord)
+	protected String fixColor(String name, final char colorChar, final String colorWord)
 	{
 		final int end=name.indexOf("^?");
 		if((end>0)&&(end<=name.length()-3))
@@ -178,13 +177,13 @@ public class Dyeing extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 		final List<List<String>> recipes = addRecipes(mob,super.loadRecipes("dyeing.txt"));
 		writing=CMParms.combine(commands,0).toLowerCase();
-		List<String> finalRecipe = null; 
+		List<String> finalRecipe = null;
 		if(writing.equalsIgnoreCase("list"))
 		{
 			final StringBuilder colors=new StringBuilder(L("^NColors you can choose: "));
@@ -211,7 +210,7 @@ public class Dyeing extends CommonSkill
 		}
 		commands.remove(commands.get(0));
 		writing=CMParms.combine(commands,0).toLowerCase();
-		
+
 		if((((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)

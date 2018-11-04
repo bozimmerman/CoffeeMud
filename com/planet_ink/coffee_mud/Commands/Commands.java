@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Commands extends StdCommand
 {
 	public Commands()
@@ -47,13 +46,13 @@ public class Commands extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(!mob.isMonster())
 		{
-			if ((commands!=null) 
-			&& (commands.size()>1) 
+			if ((commands!=null)
+			&& (commands.size()>1)
 			&& ("CLEAR".startsWith(commands.get(1).toString().toUpperCase())))
 			{
 				mob.clearCommandQueue();

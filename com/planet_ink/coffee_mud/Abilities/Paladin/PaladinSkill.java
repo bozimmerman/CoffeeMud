@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class PaladinSkill extends StdAbility
 {
 	@Override
@@ -106,7 +105,7 @@ public class PaladinSkill extends StdAbility
 		P.paladinsGroup=new HashSet<MOB>(paladinsGroup);
 		return P;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -142,7 +141,7 @@ public class PaladinSkill extends StdAbility
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob, boolean force)
+	public boolean autoInvocation(final MOB mob, final boolean force)
 	{
 		return super.autoInvocation(mob, force);
 	}

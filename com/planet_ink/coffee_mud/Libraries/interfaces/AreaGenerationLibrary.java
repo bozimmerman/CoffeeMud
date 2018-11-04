@@ -37,7 +37,7 @@ import java.util.*;
  * The AreaGenerationLibrary is the random generator, which takes a special
  * flavor of xml as input to randomly generate anything from strings, to
  * mobs and items, whole populated rooms, or entire areas.  Most of the methods
- * in this library provide a finer control to the generation process. 
+ * in this library provide a finer control to the generation process.
  * @author Bo Zimmerman
  */
 public interface AreaGenerationLibrary extends CMLibrary
@@ -116,7 +116,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * @return a map of the undefined or mis-defined ids as keys, mapped to the data type name
 	 */
 	public Map<String,String> getUnfilledRequirements(Map<String,Object> defined, XMLTag piece);
-	
+
 	/**
 	 * Given a specific AREA generation tag, this method will return the area selected
 	 * by that tag piece, with the entrance to it being in the given direction
@@ -128,10 +128,10 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * @throws CMException any parsing or generation errors
 	 */
 	public Area findArea(XMLTag piece, Map<String,Object> defined, int directions) throws CMException;
-	
+
 	/**
-	 * Given a specific AREA generation tag, and an empty area, this method will 
-	 * populate the area with rooms from the given tag piece, with the entrance 
+	 * Given a specific AREA generation tag, and an empty area, this method will
+	 * populate the area with rooms from the given tag piece, with the entrance
 	 * to it being in the given direction.
 	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map)
 	 * @param piece the identified tag that can return a room
@@ -142,14 +142,14 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * @throws CMException any parsing or generation errors
 	 */
 	public boolean fillInArea(XMLTag piece, Map<String,Object> defined, Area A, int direction) throws CMException;
-	
+
 	/**
 	 * Returns the layout manager of the given name.
 	 * @param named the name of the layout manager
 	 * @return the layout manager of the given name.
 	 */
 	public LayoutManager getLayoutManager(String named);
-	
+
 	/**
 	 * Sometimes an object cannot be generated at a given time because some tag which
 	 * will be defined later has not yet been defined, and cannot be resolved at
@@ -161,9 +161,9 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * @throws CMException any parsing or generation errors
 	 */
 	public void postProcess(final Map<String,Object> defined) throws CMException;
-	
+
 	/**
-	 * If an xml tag is selected manually, by something outside the library, then 
+	 * If an xml tag is selected manually, by something outside the library, then
 	 * certain post-selection processes are not properly done, making generation
 	 * based on the tag potentially impossible.  In those cases, before generation
 	 * of the object from the selected xml tag piece, this method is called to handle
@@ -173,9 +173,9 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * @throws CMException any parsing or generation errors
 	 */
 	public void defineReward(XMLTag piece, Map<String,Object> defined) throws CMException;
-	
+
 	/**
-	 * If an xml tag is selected manually, by something outside the library, then 
+	 * If an xml tag is selected manually, by something outside the library, then
 	 * certain pre-selection processes are not properly done, making generation
 	 * based on the tag potentially impossible.  In those cases, before generation
 	 * of the object from the selected xml tag piece, this method is called to handle
@@ -185,7 +185,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * @throws CMException any parsing or generation errors
 	 */
 	public void preDefineReward(XMLTag piece, Map<String,Object> defined) throws CMException;
-	
+
 	/**
 	 * Given a root xml tag and a tag name, this method will return all matching xml tag pieces.
 	 * @param tagName the name of the tag to search for
@@ -197,23 +197,23 @@ public interface AreaGenerationLibrary extends CMLibrary
 	public List<XMLTag> getAllChoices(String tagName, XMLTag piece, Map<String,Object> defined) throws CMException;
 
 	/**
-	 * Adjusts the levels of all mobs, items, and mob-items in the room by adjusting 
+	 * Adjusts the levels of all mobs, items, and mob-items in the room by adjusting
 	 * them from their place in an existing range to a new range.Does not save -- that's up to you.
 	 * @param room the room to adjust
 	 * @param oldMin current minimum level range for the rooms area
 	 * @param oldMax current maximum level range for the rooms area
 	 * @param newMin new minimum level range for the rooms area
-	 * @param newMax new maximum level range for the rooms area 
+	 * @param newMax new maximum level range for the rooms area
 	 * @return true if the room was modified, false otherwise.
 	 */
 	public boolean relevelRoom(Room room, int oldMin, int oldMax, int newMin, int newMax);
-	
+
 	/**
 	 * Area generators work by first laying out a set of rooms into a
 	 * configuration called a Layout. Layouts are scalable configurations
-	 * that can handle any size, or originating direction of entry. 
+	 * that can handle any size, or originating direction of entry.
 	 * A Layout Manager then, is an algorithm for generating the room set
-	 * given a size and initial direction.  Each Layout Manager then 
+	 * given a size and initial direction.  Each Layout Manager then
 	 * generates a layout of rooms according to its kind.
 	 * @author Bo Zimmerman
 	 *
@@ -225,7 +225,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @return name of the layout manager
 		 */
 		public String name();
-		
+
 		/**
 		 * Generates a list of layout nodes, each
 		 * of which reprents a single room in the area.
@@ -256,7 +256,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	{
 		/**
 		 * Uses this nodes coordinates, as well as the coordinates
-		 * of the given connected node, this method will create a 
+		 * of the given connected node, this method will create a
 		 * link between them of the appropriate direction
 		 * see delLink(LayoutNode)
 		 * @see AreaGenerationLibrary.LayoutNode#getLink(int)
@@ -265,7 +265,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @param to the node to connect this one to.
 		 */
 		public void crossLink(LayoutNode to);
-		
+
 		/**
 		 * Removes all directional links between this node and the
 		 * given node.
@@ -276,10 +276,10 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @param linkNode the node to de-link from.
 		 */
 		public void delLink(LayoutNode linkNode);
-		
+
 		/**
-		 * Returns a link from this node in the given direction.  
-		 * crossLink must have already been called to establish the 
+		 * Returns a link from this node in the given direction.
+		 * crossLink must have already been called to establish the
 		 * link.
 		 * see crossLink(LayoutNode)
 		 * see delLink(LayoutNode)
@@ -289,7 +289,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @return the node in the given direction
 		 */
 		public LayoutNode getLink(int d);
-		
+
 		/**
 		 * Removes all links from other nodes to this one, and removes
 		 * all links from this node to others.  crossLink must have been
@@ -300,7 +300,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @see AreaGenerationLibrary.LayoutNode#getLink(int)
 		 */
 		public void deLink();
-		
+
 		/**
 		 * Returns a map of directions to other layoutnodes.  These
 		 * being the established links between nodes. crossLink must have been
@@ -312,7 +312,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @return the map of links
 		 */
 		public Map<Integer, LayoutNode> links();
-		
+
 		/**
 		 * Returns comma-delimited values of each LayoutTag type,
 		 * through a may of layouttag to string mapping.
@@ -320,14 +320,14 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @return the map of layouttags to strings
 		 */
 		public Map<LayoutTags, String> tags();
-		
+
 		/**
 		 * Returns x,y coordinates of this node.
 		 * These are generated by the layout manager.
 		 * @return x,y coordinates of this node
 		 */
 		public long[] coord();
-		
+
 		/**
 		 * Returns true if the first two linked nodes to this
 		 * node are in the same general direction, this making
@@ -335,7 +335,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @return true if this node is part of a street.
 		 */
 		public boolean isStreetLike();
-		
+
 		/**
 		 * Flags this node with one of the visual layout flags,
 		 * telling whether it is at an intersection, or on a
@@ -343,7 +343,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @param flag the flag to set.
 		 */
 		public void flag(LayoutFlags flag);
-		
+
 		/**
 		 * Returns whether this node is flagged with one of the
 		 * visual layout flags, telling whether it is an intersectino,
@@ -353,22 +353,22 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @return true if this node is flagged, false otherwise
 		 */
 		public boolean isFlagged(LayoutFlags flag);
-		
+
 		/**
 		 * Flags this node as being part of a street-like run.
 		 * @see AreaGenerationLibrary.LayoutRuns
 		 * @param dirs the direction of the run
 		 */
 		public void flagRun(LayoutRuns dirs);
-		
+
 		/**
-		 * Return whether this node is flagged as being part of a 
+		 * Return whether this node is flagged as being part of a
 		 * street-like run.
 		 * @see AreaGenerationLibrary.LayoutRuns
 		 * @return the direction of the run, or null
 		 */
 		public LayoutRuns getFlagRuns();
-		
+
 		/**
 		 * Returns the layout type flag that this node represents,
 		 * denoting whether it is a leaf, a street, or some other
@@ -377,7 +377,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @return the type of this node
 		 */
 		public LayoutTypes type();
-		
+
 		/**
 		 * Sets the layout type flag that this node represents,
 		 * denoting whether it is a leaf, a street, or some other
@@ -386,16 +386,16 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @param type the type of this node
 		 */
 		public void reType(LayoutTypes type);
-		
+
 		/**
 		 * Sets the exit available link directions, without setting
-		 * the nodes they are linked to -- what good is this? 
+		 * the nodes they are linked to -- what good is this?
 		 * Well, it sets the LayoutTags.NODEEXITS string, which
 		 * makes some sense I guess.
 		 * @param dirs the array of Direction codes to set.
 		 */
 		public void setExits(int[] dirs);
-		
+
 		/**
 		 * Returns one line of a 3x3 character representation. Each call
 		 * returns 3 characters, with the middle being the roomchar, and
@@ -406,14 +406,14 @@ public interface AreaGenerationLibrary extends CMLibrary
 		 * @return the 3 character string for this line.
 		 */
 		public String getColorRepresentation(char roomChar, int line);
-		
+
 		/**
 		 * Returns the room object assigned to this node.
 		 * @see AreaGenerationLibrary.LayoutNode#setRoom(Room)
 		 * @return the room object assigned to this node.
 		 */
 		public Room room();
-		
+
 		/**
 		 * Sets the room object assigned to this node.
 		 * @see AreaGenerationLibrary.LayoutNode#room()
@@ -482,5 +482,5 @@ public interface AreaGenerationLibrary extends CMLibrary
 		nesw,
 		nwse
 	}
-	
+
 }

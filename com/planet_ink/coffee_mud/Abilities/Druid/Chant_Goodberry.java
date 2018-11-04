@@ -72,7 +72,7 @@ public class Chant_Goodberry extends Chant
 		return CAN_ITEMS;
 	}
 
-	public boolean checkDo(Item newTarget, Item originaltarget, Environmental owner)
+	public boolean checkDo(final Item newTarget, final Item originaltarget, final Environmental owner)
 	{
 		if((newTarget!=null)
 		&&(newTarget instanceof Food)
@@ -104,13 +104,13 @@ public class Chant_Goodberry extends Chant
 		return false;
 	}
 
-	public boolean isBerry(Item I)
+	public boolean isBerry(final Item I)
 	{
 		return CMParms.contains(RawMaterial.CODES.BERRIES(), I.material());
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)

@@ -48,7 +48,7 @@ public class Account extends StdCommand
 		return access;
 	}
 
-	public static StringBuffer showCharLong(String bgColor, MOB seer, ThinPlayer who)
+	public static StringBuffer showCharLong(final String bgColor, final MOB seer, final ThinPlayer who)
 	{
 
 		final StringBuffer msg=new StringBuffer("");
@@ -71,7 +71,7 @@ public class Account extends StdCommand
 				return new StringBuffer("");
 			C=mob.charStats().getCurrentClass();
 		}
-		
+
 		Race R=(pM!=null)?pM.charStats().getMyRace():null;
 		if(R==null)
 			R=CMClass.getRace(who.race());
@@ -84,7 +84,7 @@ public class Account extends StdCommand
 				return new StringBuffer("");
 			R=mob.charStats().getMyRace();
 		}
-		
+
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
 			if(C.raceless())
@@ -92,7 +92,7 @@ public class Account extends StdCommand
 			else
 				msg.append(CMStrings.padRight(R.name(),cols[0])+" ");
 		}
-		
+
 		String levelStr=(pM!=null)?(""+pM.phyStats().level()):null;
 		if(levelStr == null)
 			levelStr=""+who.level();
@@ -119,14 +119,14 @@ public class Account extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuilder str=new StringBuilder();
+		final StringBuilder str=new StringBuilder();
 		final PlayerAccount account;
 		if(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS) && (commands.size()>1))
 		{
-			String name = CMStrings.capitalizeAndLower(CMParms.combine(commands,1));
+			final String name = CMStrings.capitalizeAndLower(CMParms.combine(commands,1));
 			if(CMLib.players().accountExists(name))
 				account = CMLib.players().getLoadAccount(name);
 			else
@@ -152,7 +152,7 @@ public class Account extends StdCommand
 			final PlayerStats pStats = mob.playerStats();
 			account = pStats == null ? null : pStats.getAccount();
 		}
-		
+
 		if(account != null)
 		{
 			str.append("^X"+CMStrings.padRight(L("Account"), 15)+"^N: ").append(account.getAccountName()).append("\n\r");
@@ -172,7 +172,7 @@ public class Account extends StdCommand
 			boolean toggle = false;
 			for (final Enumeration<ThinPlayer> p=account.getThinPlayers(); p.hasMoreElements();)
 			{
-				ThinPlayer player = p.nextElement();
+				final ThinPlayer player = p.nextElement();
 				str.append("^N");
 				str.append(showCharLong("",mob,player));
 				toggle = !toggle;
@@ -192,7 +192,7 @@ public class Account extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return (CMProps.isUsingAccountSystem()) && (mob != null) && (mob.playerStats()!=null) && (mob.playerStats().getAccount() != null);
 	}

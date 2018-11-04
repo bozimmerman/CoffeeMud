@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_WildernessLore extends StdSkill
 {
 	@Override
@@ -88,7 +87,7 @@ public class Skill_WildernessLore extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		boolean report=false;
 		if((commands.size()>1)&&(commands.get(commands.size()-1).equalsIgnoreCase("REPORT")))
@@ -267,38 +266,38 @@ public class Skill_WildernessLore extends StdSkill
 				else
 					mob.tell(str.toString());
 			}
-			int xlvl = super.getXLEVELLevel(mob);
+			final int xlvl = super.getXLEVELLevel(mob);
 			if((xlvl > 0)&&(room.resourceChoices()!=null)&&(room.resourceChoices().size()>0))
 			{
-				List<String> rscNames=new ArrayList<String>();
+				final List<String> rscNames=new ArrayList<String>();
 				int maxRscs=xlvl;
 				if(room.resourceChoices().size()<maxRscs)
 					maxRscs=room.resourceChoices().size();
-				int[] chances=new int[room.resourceChoices().size()];
-				String[] chancestr=new String[room.resourceChoices().size()];
+				final int[] chances=new int[room.resourceChoices().size()];
+				final String[] chancestr=new String[room.resourceChoices().size()];
 				if(xlvl >= 5)
 				{
 					long total=0;
 					for(int i=0;i<room.resourceChoices().size();i++)
 					{
-						int rscCode=room.resourceChoices().get(i).intValue();
+						final int rscCode=room.resourceChoices().get(i).intValue();
 						chances[i]=RawMaterial.CODES.FREQUENCY(rscCode);
 						total+=chances[i];
 					}
 					for(int i=0;i<room.resourceChoices().size();i++)
 					{
-						double chancePct = CMath.div(chances[i],(int)total)*100.0;
+						final double chancePct = CMath.div(chances[i],(int)total)*100.0;
 						if(chancePct < 1)
 							chancestr[i] = ""+CMath.div(Math.round(chancePct*100.0),100.0);
 						else
 							chancestr[i] = ""+(int)Math.round(chancePct);
 					}
 				}
-				List<Integer> unused=new XVector<Integer>(room.resourceChoices());
+				final List<Integer> unused=new XVector<Integer>(room.resourceChoices());
 				for(int i=0;i<xlvl && unused.size()>0;i++)
 				{
-					int rscIndex=CMLib.dice().roll(1, unused.size(), -1);
-					int rscChoice=unused.remove(rscIndex).intValue();
+					final int rscIndex=CMLib.dice().roll(1, unused.size(), -1);
+					final int rscChoice=unused.remove(rscIndex).intValue();
 					String resourceName = CMLib.materials().getResourceDesc(rscChoice).toLowerCase();
 					if(!resourceName.endsWith("s"))
 						resourceName = CMLib.english().makePlural(resourceName);
@@ -307,7 +306,7 @@ public class Skill_WildernessLore extends StdSkill
 					else
 						rscNames.add(resourceName);
 				}
-				String list=CMLib.english().toEnglishStringList(rscNames);
+				final String list=CMLib.english().toEnglishStringList(rscNames);
 				if(report)
 					CMLib.commands().postSay(mob, L("This is the sort of place that one might find @x1.",list));
 				else

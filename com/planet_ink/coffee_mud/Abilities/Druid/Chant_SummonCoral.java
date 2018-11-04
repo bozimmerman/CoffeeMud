@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SummonCoral extends Chant_SummonPlants
 {
 	@Override
@@ -80,36 +79,36 @@ public class Chant_SummonCoral extends Chant_SummonPlants
 
 	private final String[] coralTypes = new String[]
 	{
-		"staghorn coral", 
-		"coral", 
-		"pillar coral", 
-		"elkhorn coral", 
-		"sea fan", 
-		"antipathes", 
-		"leptopsammia", 
-		"brain coral", 
-		"cup coral", 
-		"soft brush coral", 
-		"wire coral", 
-		"bottle brush coral", 
-		"lace coral", 
-		"blade coral", 
-		"box fire coral", 
-		"fleshy coral", 
-		"plate coral", 
+		"staghorn coral",
+		"coral",
+		"pillar coral",
+		"elkhorn coral",
+		"sea fan",
+		"antipathes",
+		"leptopsammia",
+		"brain coral",
+		"cup coral",
+		"soft brush coral",
+		"wire coral",
+		"bottle brush coral",
+		"lace coral",
+		"blade coral",
+		"box fire coral",
+		"fleshy coral",
+		"plate coral",
 		"sheet coral"
 	};
-	
-	public Item buildCoral(MOB mob, Room room)
+
+	public Item buildCoral(final MOB mob, final Room room)
 	{
-		
+
 		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_SEAWEED);
-		String name = coralTypes[CMLib.dice().roll(1, coralTypes.length, -1)];
+		final String name = coralTypes[CMLib.dice().roll(1, coralTypes.length, -1)];
 		newItem.setName(L(name));
 		newItem.setDisplayText(L(CMLib.english().startWithAorAn(name)+" @x1 is here.",name));
 		newItem.setDescription("");
-		
+
 		final Chant_SummonCoral newChant=new Chant_SummonCoral();
 		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.basePhyStats().setWeight(1);
@@ -134,12 +133,12 @@ public class Chant_SummonCoral extends Chant_SummonPlants
 	}
 
 	@Override
-	protected Item buildMyPlant(MOB mob, Room room)
+	protected Item buildMyPlant(final MOB mob, final Room room)
 	{
 		return buildCoral(mob,room);
 	}
-	
-	public boolean isSaltWaterRoom(Room R)
+
+	public boolean isSaltWaterRoom(final Room R)
 	{
 		if((R==null)
 		||(!CMLib.flags().isUnderWateryRoom(R))
@@ -148,13 +147,13 @@ public class Chant_SummonCoral extends Chant_SummonPlants
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		Room R=CMLib.map().roomLocation(affected);
+		final Room R=CMLib.map().roomLocation(affected);
 		if(isSaltWaterRoom(R) && (R.expirationDate() != 0))
 		{
 			R.setExpirationDate(System.currentTimeMillis() + WorldMap.ROOM_EXPIRATION_MILLIS);
@@ -163,7 +162,7 @@ public class Chant_SummonCoral extends Chant_SummonPlants
 	}
 
 	@Override
-	public boolean rightPlace(MOB mob,boolean auto)
+	public boolean rightPlace(final MOB mob,final boolean auto)
 	{
 		final Room R=mob.location();
 		if(!isSaltWaterRoom(R))

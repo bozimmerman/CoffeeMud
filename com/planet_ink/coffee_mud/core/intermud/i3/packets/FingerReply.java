@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class FingerReply extends Packet 
+public class FingerReply extends Packet
 {
 	public String visible_name="";
 	public String title = "";
@@ -50,7 +50,7 @@ public class FingerReply extends Packet
 		type = Packet.FINGER_REPLY;
 	}
 
-	public FingerReply(String to_whom, String mud)
+	public FingerReply(final String to_whom, final String mud)
 	{
 		super();
 		type = Packet.FINGER_REPLY;
@@ -58,7 +58,7 @@ public class FingerReply extends Packet
 		target_name = to_whom;
 	}
 
-	public FingerReply(Vector<?> v) throws InvalidPacketException
+	public FingerReply(final Vector<?> v) throws InvalidPacketException
 	{
 		super(v);
 		try
@@ -86,7 +86,7 @@ public class FingerReply extends Packet
 	}
 
 	@Override
-	public void send() throws InvalidPacketException 
+	public void send() throws InvalidPacketException
 	{
 		super.send();
 	}

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Quit extends StdCommand
 {
 	public Quit()
@@ -47,7 +46,7 @@ public class Quit extends StdCommand
 		return access;
 	}
 
-	public static void dispossess(MOB mob, boolean force)
+	public static void dispossess(final MOB mob, final boolean force)
 	{
 		if(mob.soulMate()==null)
 		{
@@ -65,7 +64,7 @@ public class Quit extends StdCommand
 	}
 
 	@Override
-	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.soulMate()!=null)

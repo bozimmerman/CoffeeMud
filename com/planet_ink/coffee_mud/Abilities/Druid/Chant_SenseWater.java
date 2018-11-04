@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SenseWater extends Chant
 {
 	@Override
@@ -96,7 +95,7 @@ public class Chant_SenseWater extends Chant
 			mob.tell(L("Your senses are no longer sensitive to water."));
 	}
 
-	public String waterCheck(MOB mob, Item I, Item container, StringBuffer msg)
+	public String waterCheck(final MOB mob, final Item I, final Item container, final StringBuffer msg)
 	{
 		if(I==null)
 			return "";
@@ -118,7 +117,7 @@ public class Chant_SenseWater extends Chant
 		return msg.toString();
 	}
 
-	public String waterHere(MOB mob, Environmental E, Item container)
+	public String waterHere(final MOB mob, final Environmental E, final Item container)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		if(E==null)
@@ -189,8 +188,8 @@ public class Chant_SenseWater extends Chant
 		}
 		return msg.toString();
 	}
-	
-	public void messageTo(MOB mob)
+
+	public void messageTo(final MOB mob)
 	{
 		String last="";
 		String dirs="";
@@ -244,7 +243,7 @@ public class Chant_SenseWater extends Chant
 				mob.tell(L("Water smells are coming from @x1, and @x2.",dirs.substring(2),last));
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -262,7 +261,7 @@ public class Chant_SenseWater extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -303,7 +302,7 @@ public class Chant_SenseWater extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

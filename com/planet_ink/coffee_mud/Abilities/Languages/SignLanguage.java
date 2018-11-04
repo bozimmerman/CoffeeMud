@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class SignLanguage extends StdLanguage
 {
 	@Override
@@ -62,13 +61,13 @@ public class SignLanguage extends StdLanguage
 	}
 
 	@Override
-	public List<String[]> translationLists(String language)
+	public List<String[]> translationLists(final String language)
 	{
 		return wordLists;
 	}
 
 	@Override
-	protected boolean processSourceMessage(CMMsg msg, String str, int numToMess)
+	protected boolean processSourceMessage(final CMMsg msg, final String str, final int numToMess)
 	{
 		if(msg.sourceMessage()==null)
 			return true;
@@ -115,7 +114,7 @@ public class SignLanguage extends StdLanguage
 	}
 
 	@Override
-	protected boolean processNonSourceMessages(CMMsg msg, String str, int numToMess)
+	protected boolean processNonSourceMessages(final CMMsg msg, final String str, final int numToMess)
 	{
 		final String fullOtherMsgStr=(msg.othersMessage()==null)?msg.targetMessage():msg.othersMessage();
 		if(fullOtherMsgStr==null)
@@ -182,7 +181,7 @@ public class SignLanguage extends StdLanguage
 	}
 
 	@Override
-	protected boolean translateOthersMessage(CMMsg msg, String sourceWords)
+	protected boolean translateOthersMessage(final CMMsg msg, final String sourceWords)
 	{
 		if((msg.othersMessage()!=null)&&(sourceWords!=null))
 		{
@@ -198,7 +197,7 @@ public class SignLanguage extends StdLanguage
 	}
 
 	@Override
-	protected boolean translateTargetMessage(CMMsg msg, String sourceWords)
+	protected boolean translateTargetMessage(final CMMsg msg, final String sourceWords)
 	{
 		if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
 		{
@@ -214,7 +213,7 @@ public class SignLanguage extends StdLanguage
 	}
 
 	@Override
-	protected boolean translateChannelMessage(CMMsg msg, String sourceWords)
+	protected boolean translateChannelMessage(final CMMsg msg, final String sourceWords)
 	{
 		if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)&&(msg.othersMessage()!=null))
 		{

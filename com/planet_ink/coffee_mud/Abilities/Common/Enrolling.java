@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Enrolling extends CommonSkill
 {
 	@Override
@@ -145,7 +144,7 @@ public class Enrolling extends CommonSkill
 				final MOB mob=(MOB)affected;
 				if((enrollingM!=null)&&(!aborted))
 				{
-					MOB M=enrollingM;
+					final MOB M=enrollingM;
 					if((messedUp)||(M==null))
 					{
 						commonTell(mob,L("You've failed to enroll @x1!",enrollingM.name()));
@@ -193,9 +192,9 @@ public class Enrolling extends CommonSkill
 		return 500;
 	}
 
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -207,7 +206,7 @@ public class Enrolling extends CommonSkill
 			commonTell(mob,L("Enroll whom in what class?"));
 			return false;
 		}
-		String s1=commands.get(commands.size()-1);
+		final String s1=commands.get(commands.size()-1);
 		enrolledInC=CMClass.getCharClass(s1);
 		if(enrolledInC==null)
 			enrolledInC=CMClass.findCharClass(s1);
@@ -218,16 +217,16 @@ public class Enrolling extends CommonSkill
 		}
 		else
 			commands.remove(commands.size()-1);
-		
+
 		if((!(mob.charStats().getCharClasses().contains(enrolledInC)))
 		&&((mob.playerStats()==null)||(mob.playerStats().getActiveTitle().toLowerCase().indexOf(enrolledInC.name().toLowerCase())<0)))
 		{
 			commonTell(mob,L("You need to either be a @x1, or an honorary @x1 to enroll anyone in that.",enrolledInC.name()));
 			return false;
 		}
-		
+
 		final String str=CMParms.combine(commands,0);
-		MOB M=mob.location().fetchInhabitant(str);
+		final MOB M=mob.location().fetchInhabitant(str);
 		enrollingM=null;
 		if(M!=null)
 		{
@@ -263,14 +262,14 @@ public class Enrolling extends CommonSkill
 			commonTell(mob,L("@x1 does not qualify to become a @x2.",enrollingM.Name(),enrolledInC.name()));
 			return false;
 		}
-		
-		int cost=enrollCost(mob,enrollingM,asLevel);
+
+		final int cost=enrollCost(mob,enrollingM,asLevel);
 		if(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob) < cost)
 		{
 			commonTell(mob,L("You don't have the @x1 to pay the guild fees.",CMLib.beanCounter().abbreviatedPrice(mob, cost)));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		messedUp=!proficiencyCheck(mob,0,auto);
@@ -279,10 +278,10 @@ public class Enrolling extends CommonSkill
 		final Area areA=(R!=null)?R.getArea():null;
 		if(areA!=null)
 			baseDuration = CMProps.getTicksPerMudHour() * areA.getTimeObj().getHoursInDay();
-			
+
 		final int duration=getDuration((int)baseDuration,mob,enrollingM.phyStats().level(),10);
 		verb=L("enrolling @x1 into a @x2 career",M.name(),enrolledInC.name());
-		
+
 		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L("<S-NAME> start(s) enrolling @x1 into a @x2 career.",M.name(),enrolledInC.name()));
 		if(mob.location().okMessage(mob,msg))
 		{

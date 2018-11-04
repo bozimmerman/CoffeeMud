@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_JoyousRapture extends Prayer
 {
 	@Override
@@ -86,11 +85,11 @@ public class Prayer_JoyousRapture extends Prayer
 	{
 		return Ability.CAN_MOBS;
 	}
-	
+
 	private final static Map<String,String> moodMap = CMParms.parseEQParms(
 			"FORMAL=HAPPY POLITE=HAPPY HAPPY=HAPPY SAD=NORMAL ANGRY=NORMAL RUDE=NORMAL "
 			+ "MEAN=NORMAL GRUMPY=NORMAL EXCITED=HAPPY SCARED=HAPPY LONELY=HAPPY");
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -100,13 +99,13 @@ public class Prayer_JoyousRapture extends Prayer
 			mob.tell(L("Your joyous rapture is lifted."));
 		super.unInvoke();
 	}
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -143,7 +142,7 @@ public class Prayer_JoyousRapture extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -162,11 +161,11 @@ public class Prayer_JoyousRapture extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					Ability A=beneficialAffect(mob,target,asLevel,0);
+					final Ability A=beneficialAffect(mob,target,asLevel,0);
 					success=A!=null;
 					if(A!=null)
 					{
-						Ability moodA=target.fetchEffect("Mood");
+						final Ability moodA=target.fetchEffect("Mood");
 						if(moodA==null)
 							A.setMiscText("HAPPY");
 						else

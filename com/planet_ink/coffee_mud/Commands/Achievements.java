@@ -52,18 +52,18 @@ public class Achievements extends StdCommand
 	{
 		AWARDS, REMORT, FUTURE, RETIRE
 	}
-	
+
 	private enum ValidLists
 	{
 		WON, ALL, NOW
 	}
-	
+
 	private enum ValidParms
 	{
 		ANNOUNCE, ALL, WON, NOW, PLAYER, ACCOUNT, CHARACTER
 	}
-	
-	private Tattooable getTattooable(Agent agent, MOB mob)
+
+	private Tattooable getTattooable(final Agent agent, final MOB mob)
 	{
 		switch(agent)
 		{
@@ -76,8 +76,8 @@ public class Achievements extends StdCommand
 		}
 		return null;
 	}
-	
-	private AccountStats getStatter(Agent agent, MOB mob)
+
+	private AccountStats getStatter(final Agent agent, final MOB mob)
 	{
 		switch(agent)
 		{
@@ -90,11 +90,11 @@ public class Achievements extends StdCommand
 		}
 		return null;
 	}
-	
+
 	private List<Achievement> getLowestNumberedTattoos(final Agent agent, final Set<String> WonList)
 	{
-		List<Achievement> useList = new LinkedList<Achievement>();
-		HashSet<String> ignoredStarters = new HashSet<String>();
+		final List<Achievement> useList = new LinkedList<Achievement>();
+		final HashSet<String> ignoredStarters = new HashSet<String>();
 		for(final Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
@@ -120,12 +120,12 @@ public class Achievements extends StdCommand
 		}
 		return useList;
 	}
-	
+
 	public List<Achievement> getAccountAwards(final PlayerAccount account)
 	{
 		if(account != null)
 		{
-			List<Achievement> awards=new Vector<Achievement>(1);
+			final List<Achievement> awards=new Vector<Achievement>(1);
 			for(final Enumeration<Tattoo> t=account.tattoos();t.hasMoreElements();)
 			{
 				final Tattoo T = t.nextElement();
@@ -139,7 +139,7 @@ public class Achievements extends StdCommand
 		}
 		return new ArrayList<Achievement>(0);
 	}
-	
+
 	public List<Achievement> getAccountAwards(final MOB mob)
 	{
 		final PlayerStats pStats = (mob==null) ? null : mob.playerStats();
@@ -148,25 +148,25 @@ public class Achievements extends StdCommand
 			return getAccountAwards(account);
 		return new ArrayList<Achievement>(0);
 	}
-	
+
 	@Override
-	public boolean execute(final MOB mob, List<String> commands, int metaFlags) throws java.io.IOException
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags) throws java.io.IOException
 	{
-		String rest = CMParms.combine(commands,1);
+		final String rest = CMParms.combine(commands,1);
 		final PlayerStats pStats = mob.playerStats();
 		if (pStats == null)
 		{
 			mob.tell(L("You don't have any achievements."));
 			return false;
 		}
-		
+
 		if(CMLib.achievements().evaluateAchievements(mob))
 		{
-			CMLib.s_sleep(4000); 
+			CMLib.s_sleep(4000);
 			// yes, I know, but if I call tick down, or some other
 			// async method, I'll get a freaking prompt.
 		}
-		
+
 		MOB whoM=mob;
 		final List<String> parms = CMParms.parseSpaces(rest.toUpperCase(), true);
 		if(parms.size()>0)
@@ -187,9 +187,9 @@ public class Achievements extends StdCommand
 				}
 			}
 		}
-		
-		String cmd = CMParms.combine(parms);
-		NonAgentList noAgent = (NonAgentList)CMath.s_valueOf(NonAgentList.class, cmd.toUpperCase().trim());
+
+		final String cmd = CMParms.combine(parms);
+		final NonAgentList noAgent = (NonAgentList)CMath.s_valueOf(NonAgentList.class, cmd.toUpperCase().trim());
 		if(noAgent != null)
 		{
 			switch(noAgent)
@@ -198,9 +198,9 @@ public class Achievements extends StdCommand
 			case REMORT:
 			{
 				final Event E=(noAgent == NonAgentList.REMORT) ? Event.REMORT : Event.RETIRE;
-				List<Achievement> awards = CMLib.achievements().fakeBumpAchievement(whoM, E, 1);
+				final List<Achievement> awards = CMLib.achievements().fakeBumpAchievement(whoM, E, 1);
 				int numAwards=0;
-				for(Achievement A : awards)
+				for(final Achievement A : awards)
 					numAwards+=A.getRewards().length;
 				if(numAwards==0)
 				{
@@ -208,9 +208,9 @@ public class Achievements extends StdCommand
 				}
 				else
 				{
-					StringBuilder str=new StringBuilder(L("^H<S-YOUPOSS> next "+noAgent.toString().toLowerCase()+" will get the following awards:^?"));
+					final StringBuilder str=new StringBuilder(L("^H<S-YOUPOSS> next "+noAgent.toString().toLowerCase()+" will get the following awards:^?"));
 					int i=1;
-					for(Achievement A : awards)
+					for(final Achievement A : awards)
 					{
 						if(A.getRewards().length>0)
 							str.append(L("\n\rFrom the achievement '@x1':",A.getDisplayStr()));
@@ -224,7 +224,7 @@ public class Achievements extends StdCommand
 				{
 					return false;
 				}
-				List<Achievement> futureAwards = getAccountAwards(whoM);
+				final List<Achievement> futureAwards = getAccountAwards(whoM);
 				if(futureAwards.size()==0)
 				{
 					return false;
@@ -239,18 +239,18 @@ public class Achievements extends StdCommand
 					mob.tell(L("This system does not support new character achievement awards."));
 					return false;
 				}
-				List<Achievement> awards = this.getAccountAwards(whoM);
+				final List<Achievement> awards = this.getAccountAwards(whoM);
 				int numAwards=0;
-				for(Achievement A : awards)
+				for(final Achievement A : awards)
 					numAwards+=A.getRewards().length;
 				if(numAwards==0)
 				{
 					mob.tell(whoM,null,null,L("<S-NAME> <S-HAS-HAVE> not won any account awards for new/future characters or remorting."));
 					return false;
 				}
-				StringBuilder str=new StringBuilder(L("<S-YOUPOSS> next character will get the following awards:"));
+				final StringBuilder str=new StringBuilder(L("<S-YOUPOSS> next character will get the following awards:"));
 				int i=1;
-				for(Achievement A : awards)
+				for(final Achievement A : awards)
 				{
 					if(A.getRewards().length>0)
 						str.append(L("\n\rFrom the achievement '@x1':",A.getDisplayStr()));
@@ -289,13 +289,13 @@ public class Achievements extends StdCommand
 			}
 			}
 		}
-		
-		List<AccountStats.Agent> agents = new LinkedList<AccountStats.Agent>();
+
+		final List<AccountStats.Agent> agents = new LinkedList<AccountStats.Agent>();
 		boolean announce=false;
 		ValidLists list = ValidLists.WON;
 		for(int p=parms.size()-1;p>=0;p--)
 		{
-			ValidParms V = (ValidParms)CMath.s_valueOf(ValidParms.class,parms.get(p).toUpperCase().trim());
+			final ValidParms V = (ValidParms)CMath.s_valueOf(ValidParms.class,parms.get(p).toUpperCase().trim());
 			if(V!=null)
 			{
 				switch(V)
@@ -313,7 +313,7 @@ public class Achievements extends StdCommand
 					if(!agents.contains(AccountStats.Agent.PLAYER))
 						agents.add(AccountStats.Agent.PLAYER);
 					break;
-				case ACCOUNT: 
+				case ACCOUNT:
 					if(!agents.contains(AccountStats.Agent.ACCOUNT))
 						agents.add(AccountStats.Agent.ACCOUNT);
 					break;
@@ -325,15 +325,15 @@ public class Achievements extends StdCommand
 			agents.add(AccountStats.Agent.ACCOUNT);
 			agents.add(AccountStats.Agent.PLAYER);
 		}
-		
+
 		String prefix = "";
 		if(whoM != mob)
 		{
 			prefix=whoM.Name()+L("'s ");
 		}
 
-		Set<String> WonList = new HashSet<String>();
-		for(Agent agent : agents)
+		final Set<String> WonList = new HashSet<String>();
+		for(final Agent agent : agents)
 		{
 			final Tattooable T = getTattooable(agent, whoM);
 			if(T!=null)
@@ -347,7 +347,7 @@ public class Achievements extends StdCommand
 			}
 		}
 		final String done=L("DONE!");
-		
+
 		switch(list)
 		{
 		case ALL:
@@ -359,13 +359,13 @@ public class Achievements extends StdCommand
 		case WON:
 			break;
 		}
-		StringBuilder finalResponse = new StringBuilder();
-		for(Agent agent : agents)
+		final StringBuilder finalResponse = new StringBuilder();
+		for(final Agent agent : agents)
 		{
-			AccountStats stat = getStatter(agent,whoM);
+			final AccountStats stat = getStatter(agent,whoM);
 			if(stat != null)
 			{
-				List<String> AchievedList = new Vector<String>();
+				final List<String> AchievedList = new Vector<String>();
 				switch(list)
 				{
 				case ALL:
@@ -377,14 +377,14 @@ public class Achievements extends StdCommand
 						final Achievement A=a.next();
 						if(!WonList.contains(A.getTattoo()))
 						{
-							AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
+							final AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
 							final int score = (T==null) ? 0 : T.getCount(whoM);
 							int targetScore = A.getTargetCount();
 							if(A.getEvent()==Event.STATVALUE)
 								targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
 							if(targetScore != Integer.MIN_VALUE)
 							{
-								final int len = (""+score+"/"+targetScore).length(); 
+								final int len = (""+score+"/"+targetScore).length();
 								if(len >= padding)
 									padding = len+1;
 							}
@@ -397,8 +397,8 @@ public class Achievements extends StdCommand
 							AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
 						else
 						{
-							AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
-							int score = (T==null) ? 0 : T.getCount(whoM);
+							final AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
+							final int score = (T==null) ? 0 : T.getCount(whoM);
 							int targetScore = A.getTargetCount();
 							if(A.getEvent()==Event.STATVALUE)
 								targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
@@ -419,7 +419,7 @@ public class Achievements extends StdCommand
 						final Achievement A=a.next();
 						if(!WonList.contains(A.getTattoo()))
 						{
-							AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
+							final AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
 							final int score = (T==null) ? 0 : T.getCount(whoM);
 							if(score != 0)
 							{
@@ -428,7 +428,7 @@ public class Achievements extends StdCommand
 									targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
 								if(targetScore != Integer.MIN_VALUE)
 								{
-									final int len = (""+score+"/"+targetScore).length(); 
+									final int len = (""+score+"/"+targetScore).length();
 									if(len >= padding)
 										padding = len+1;
 								}
@@ -442,8 +442,8 @@ public class Achievements extends StdCommand
 							AchievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
 						else
 						{
-							AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
-							int score = (T==null) ? 0 : T.getCount(whoM);
+							final AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
+							final int score = (T==null) ? 0 : T.getCount(whoM);
 							if(score != 0)
 							{
 								int targetScore = A.getTargetCount();
@@ -486,7 +486,7 @@ public class Achievements extends StdCommand
 			CMLib.commands().postSay(mob, finalResponse.toString());
 		else
 			mob.tell(finalResponse.toString());
-		
+
 		return false;
 	}
 

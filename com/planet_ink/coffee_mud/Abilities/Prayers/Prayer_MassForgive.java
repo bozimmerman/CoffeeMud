@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_MassForgive extends Prayer
 {
 	@Override
@@ -86,7 +85,7 @@ public class Prayer_MassForgive extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		LegalBehavior B=null;
 		if(mob.location()!=null)
@@ -95,7 +94,7 @@ public class Prayer_MassForgive extends Prayer
 			return false;
 
 		List<LegalWarrant> warrants=new Vector<LegalWarrant>();
-		Area A=CMLib.law().getLegalObject(mob.location());
+		final Area A=CMLib.law().getLegalObject(mob.location());
 		warrants=B.getWarrantsOf(A,null);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -113,7 +112,7 @@ public class Prayer_MassForgive extends Prayer
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					List<String> names=new ArrayList<String>();
+					final List<String> names=new ArrayList<String>();
 					for(int i=0;i<warrants.size();i++)
 					{
 						final LegalWarrant W=warrants.get(i);

@@ -21,15 +21,15 @@ import java.util.*;
 public class CustSortListWrap<T extends Comparable<T>> extends SortedListWrap<T>
 {
 	private final Comparator<T> comparator;
-	public CustSortListWrap(List<T> list, Comparator<T> comparator)
+	public CustSortListWrap(final List<T> list, final Comparator<T> comparator)
 	{
 		super(list);
 		this.comparator=comparator;
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override 
-	protected int compareTo(T arg0, Object arg1)
+	@Override
+	protected int compareTo(final T arg0, final Object arg1)
 	{
 
 		if(arg0 == null)

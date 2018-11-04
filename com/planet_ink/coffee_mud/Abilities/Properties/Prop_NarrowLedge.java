@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_NarrowLedge extends Property
 {
 	@Override
@@ -64,7 +63,7 @@ public class Prop_NarrowLedge extends Property
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		mobsToKill=new Vector<MOB>();
 		super.setMiscText(newText);

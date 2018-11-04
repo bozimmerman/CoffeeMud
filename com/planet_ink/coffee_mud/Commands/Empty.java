@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Empty extends Drop
 {
 	public Empty()
@@ -47,7 +46,7 @@ public class Empty extends Drop
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String whatToDrop=null;
@@ -62,22 +61,22 @@ public class Empty extends Drop
 		if(commands.size()>1)
 		{
 			final String s=commands.get(commands.size()-1);
-			if(s.equalsIgnoreCase("here")) 
+			if(s.equalsIgnoreCase("here"))
 				target=mob.location();
 			else
-			if(s.equalsIgnoreCase("me")) 
+			if(s.equalsIgnoreCase("me"))
 				target=mob;
 			else
-			if(s.equalsIgnoreCase("self")) 
+			if(s.equalsIgnoreCase("self"))
 				target=mob;
 			else
-			if("INVENTORY".startsWith(s.toUpperCase())) 
+			if("INVENTORY".startsWith(s.toUpperCase()))
 				target=mob;
 			else
-			if(s.equalsIgnoreCase("floor")) 
+			if(s.equalsIgnoreCase("floor"))
 				target=mob.location();
 			else
-			if(s.equalsIgnoreCase("ground")) 
+			if(s.equalsIgnoreCase("ground"))
 				target=mob.location();
 			else
 			{
@@ -104,13 +103,13 @@ public class Empty extends Drop
 		whatToDrop=CMParms.combine(commands,0);
 		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
 		if(whatToDrop.toUpperCase().startsWith("ALL."))
-		{ 
-			allFlag=true; 
+		{
+			allFlag=true;
 			whatToDrop="ALL "+whatToDrop.substring(4);
 		}
 		if(whatToDrop.toUpperCase().endsWith(".ALL"))
-		{ 
-			allFlag=true; 
+		{
+			allFlag=true;
 			whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);
 		}
 		int addendum=1;
@@ -181,7 +180,7 @@ public class Empty extends Drop
 		for(int v=0;v<V.size();v++)
 		{
 			final Container C=(Container)V.get(v);
-			if(C==target) 
+			if(C==target)
 				continue;
 
 			boolean skipMessage=false;
@@ -204,13 +203,13 @@ public class Empty extends Drop
 			final Room R=mob.location();
 			if(skipMessage||(R.okMessage(mob,msg)))
 			{
-				if(!skipMessage) 
+				if(!skipMessage)
 					R.send(mob,msg);
 				final List<Item> V2=C.getContents();
 				for(int v2=0;v2<V2.size();v2++)
 				{
 					final Item I=V2.get(v2);
-					if(I instanceof Coins) 
+					if(I instanceof Coins)
 						((Coins)I).setContainer(null);
 
 					if(((I.container()==null)||(Get.get(mob,C,I,true,null,true)))

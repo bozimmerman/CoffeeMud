@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Pirate extends Thief
 {
 	@Override
@@ -58,7 +57,7 @@ public class Pirate extends Thief
 		maxStatAdj[CharStats.STAT_DEXTERITY]=4;
 		maxStatAdj[CharStats.STAT_CHARISMA]=4;
 	}
-	
+
 	@Override
 	public int availabilityCode()
 	{
@@ -74,10 +73,10 @@ public class Pirate extends Thief
 	}
 
 	@SuppressWarnings("unchecked")
-	private final Pair<String, Integer>[] minimumStatRequirements = new Pair[] 
-	{ 
-		new Pair<String, Integer>("Dexterity", Integer.valueOf(5)), 
-		new Pair<String, Integer>("Charisma", Integer.valueOf(5)) 
+	private final Pair<String, Integer>[] minimumStatRequirements = new Pair[]
+	{
+		new Pair<String, Integer>("Dexterity", Integer.valueOf(5)),
+		new Pair<String, Integer>("Charisma", Integer.valueOf(5))
 	};
 
 	@Override
@@ -110,93 +109,93 @@ public class Pirate extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",0,false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Superstition",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_RopeSwing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_ImprovedBoarding",false,new XVector<String>("Skill_Climb"));
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_LocateAlcohol",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Thief_HoldYourLiquor",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Belay",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Hide",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_RideTheRigging",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_SeaLegs",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Thief_BuriedTreasure",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Wenching",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_FindShip",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_TreasureMap",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Peek",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_WalkThePlank",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_SeaMapping",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_Plunder",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Parry",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_ShipLore",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_SeaCharting",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Thief_BackStab",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_DeadReckoning",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Steal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Trip",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_SeaNavigation",false,new XVector<String>("Skill_SeaCharting"));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_TwoWeaponFighting",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Thief_Listen",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Scuttle",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Bind",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_FenceLoot",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_Curse",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Song_PirateShanty",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_PiecesOfEight",false,new XVector<String>("Thief_BuriedTreasure"));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_PirateFamiliar",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_ConcealItem",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Thief_PubContacts",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_Stability",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_PetSpy",false,new XVector<String>("Thief_PirateFamiliar"));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_CombatRepairs",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_SilentLoot",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Thief_WarningShot",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_FoulWeatherSailing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Distract",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_PayOff",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Salvaging",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_PetSteal",false,new XVector<String>("Thief_PirateFamiliar"));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Alertness",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_MerchantFlag",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Articles",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_RammingSpeed",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_SmugglersHold",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_InterceptShip",false,new XVector<String>("Skill_SeaCharting"));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Thief_MastShot",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_HideShip",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_AttackHalf",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AwaitShip",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_SilentRunning",true);
 	}
 
@@ -241,7 +240,7 @@ public class Pirate extends Thief
 		&& (((MOB)myHost).getVictim()==msg.source()))
 		{
 			final double amt = ((Coins)msg.tool()).getTotalValue();
-			final double min = (50.0 * ((MOB)myHost).phyStats().level()); 
+			final double min = (50.0 * ((MOB)myHost).phyStats().level());
 			if(amt >= min)
 			{
 				final MOB pirate = (MOB)myHost;
@@ -251,7 +250,7 @@ public class Pirate extends Thief
 					public void run()
 					{
 						pirate.makePeace(true);
-						Room R=CMLib.map().roomLocation(msg.source());
+						final Room R=CMLib.map().roomLocation(msg.source());
 						Ability A=pirate.fetchEffect("Prop_PiratePaidOff");
 						if(A==null)
 						{
@@ -264,13 +263,13 @@ public class Pirate extends Thief
 								{
 									return "Prop_PiratePaidOff";
 								}
-								
+
 								@Override
-								public void setMiscText(String newMiscText)
+								public void setMiscText(final String newMiscText)
 								{
 									if(newMiscText.startsWith("+"))
 									{
-										Room R=CMLib.map().roomLocation(affected);
+										final Room R=CMLib.map().roomLocation(affected);
 										if(R!=null)
 										{
 											final MOB M=R.fetchInhabitant(newMiscText.substring(1));
@@ -289,7 +288,7 @@ public class Pirate extends Thief
 									final long now=System.currentTimeMillis();
 									synchronized(timeOuts)
 									{
-										for(MOB M : timeOuts.keySet())
+										for(final MOB M : timeOuts.keySet())
 										{
 											final Long L=timeOuts.get(M);
 											if((L!=null)&&(L.longValue() < now))
@@ -299,7 +298,7 @@ public class Pirate extends Thief
 										}
 									}
 								}
-								
+
 								@Override
 								public boolean isSavable()
 								{
@@ -408,7 +407,7 @@ public class Pirate extends Thief
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -424,13 +423,13 @@ public class Pirate extends Thief
 			else
 			if(msg.target() == null)
 			{
-				BoardableShip shipArea = (BoardableShip)CMLib.map().areaLocation(msg.source());
-				Room R=CMLib.map().roomLocation(shipArea.getShipItem());
+				final BoardableShip shipArea = (BoardableShip)CMLib.map().areaLocation(msg.source());
+				final Room R=CMLib.map().roomLocation(shipArea.getShipItem());
 				if(R!=null)
 				{
 					for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 					{
-						Item I=i.nextElement();
+						final Item I=i.nextElement();
 						if((I instanceof BoardableShip)
 						&&(I.fetchEffect("Sinking")!=null)
 						&&(I!=shipArea.getShipItem()))
@@ -447,10 +446,10 @@ public class Pirate extends Thief
 		&&(((MOB)msg.target()).charStats().getCurrentClass()==this)
 		&&(((MOB)msg.target()).location()!=null))
 		{
-			LegalBehavior behav = CMLib.law().getLegalBehavior(((MOB)msg.target()).location());
-			Area area = CMLib.law().getLegalObject(((MOB)msg.target()).location());
-			List<LegalWarrant> warrants = behav.getWarrantsOf(area, (MOB)msg.target());
-			for(LegalWarrant W : warrants)
+			final LegalBehavior behav = CMLib.law().getLegalBehavior(((MOB)msg.target()).location());
+			final Area area = CMLib.law().getLegalObject(((MOB)msg.target()).location());
+			final List<LegalWarrant> warrants = behav.getWarrantsOf(area, (MOB)msg.target());
+			for(final LegalWarrant W : warrants)
 			{
 				if((W.victim()==msg.tool())
 				&&(W.crime() == msg.targetMessage()))
@@ -458,7 +457,7 @@ public class Pirate extends Thief
 			}
 		}
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -483,6 +482,6 @@ public class Pirate extends Thief
 				affectableStats.setArmor(affectableStats.armor() - (5 * numLimbs));
 			}
 		}
-		
+
 	}
 }

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Put extends StdCommand
 {
 	public Put()
@@ -52,9 +51,9 @@ public class Put extends StdCommand
 		return access;
 	}
 
-	public void putout(MOB mob, List<String> commands, boolean quiet)
+	public void putout(final MOB mob, final List<String> commands, final boolean quiet)
 	{
-		List<String> origCmds=new XVector<String>(commands);
+		final List<String> origCmds=new XVector<String>(commands);
 		final Room R=mob.location();
 		if((commands.size()<3)||(R==null))
 		{
@@ -67,7 +66,7 @@ public class Put extends StdCommand
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,true);
 		if(items.size()==0)
 		{
-			Item I=R.findItem(null, CMParms.combine(commands,0));
+			final Item I=R.findItem(null, CMParms.combine(commands,0));
 			if(I!=null)
 				items.add(I);
 		}
@@ -86,7 +85,7 @@ public class Put extends StdCommand
 		}
 	}
 
-	public boolean put(MOB mob, Environmental container, Item putThis, boolean quiet)
+	public boolean put(final MOB mob, final Environmental container, final Item putThis, final boolean quiet)
 	{
 		final Room R=mob.location();
 		final String putWord=(container instanceof Rideable)?((Rideable)container).putString(mob):"in";
@@ -107,10 +106,10 @@ public class Put extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("Put what where?"));
@@ -167,8 +166,8 @@ public class Put extends StdCommand
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		
-		String containerName = commands.get(commands.size()-1);
+
+		final String containerName = commands.get(commands.size()-1);
 		Environmental container=CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_ANY);
 		if(container == null)
 		{
@@ -183,7 +182,7 @@ public class Put extends StdCommand
 				final Item I=R.getItem(i);
 				if(flagLib.isOpenAccessibleContainer(I))
 				{
-					Physical P=R.fetchFromRoomFavorItems(I, containerName);
+					final Physical P=R.fetchFromRoomFavorItems(I, containerName);
 					if(P instanceof Container)
 					{
 						container=P;
@@ -260,13 +259,13 @@ public class Put extends StdCommand
 		R.recoverRoomStats();
 		return false;
 	}
-	
+
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		
+
 		if(args[0] instanceof Item)
 		{
 			final Item item=(Item)args[0];
@@ -285,7 +284,7 @@ public class Put extends StdCommand
 		}
 		return Boolean.FALSE;
 	}
-	
+
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{

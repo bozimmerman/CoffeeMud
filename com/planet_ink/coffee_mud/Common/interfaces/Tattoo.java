@@ -26,7 +26,6 @@ import java.util.Vector;
  */
 public interface Tattoo extends Cloneable, CMObject, CMCommon
 {
-	
 	/**
 	 * Set the tattoo name
 	 * @param name the tattoo name
@@ -53,20 +52,20 @@ public interface Tattoo extends Cloneable, CMObject, CMCommon
 	 * @return the new tick down
 	 */
 	public int tickDown();
-	
+
 	/**
 	 * Returns the tattoo Name
 	 * @return the tattooName
 	 */
 	public String getTattooName();
-	
+
 	/**
 	 * Parse a new tattoo object from the
 	 * coded data, of the form:
 	 * TATOONAME
 	 * or
 	 * NUMBER TATTOONAME
-	 * 
+	 *
 	 * @param tattooCode coded data
 	 * @return this tattoo
 	 */

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_DampenAuras extends ThiefSkill
 {
 	@Override
@@ -98,7 +97,7 @@ public class Thief_DampenAuras extends ThiefSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats stats)
+	public void affectPhyStats(final Physical host, final PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);
 		if(unInvoked)
@@ -134,7 +133,7 @@ public class Thief_DampenAuras extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

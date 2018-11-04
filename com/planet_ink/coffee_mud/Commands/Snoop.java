@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Snoop extends StdCommand
 {
 	public Snoop()
@@ -46,7 +45,7 @@ public class Snoop extends StdCommand
 		return access;
 	}
 
-	protected List<Session> snoopingOn(Session S)
+	protected List<Session> snoopingOn(final Session S)
 	{
 		final List<Session> V=new Vector<Session>();
 		for(final Session S2 : CMLib.sessions().allIterable())
@@ -58,7 +57,7 @@ public class Snoop extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		commands.remove(0);
@@ -137,7 +136,7 @@ public class Snoop extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SNOOP);
 	}

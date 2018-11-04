@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_PolymorphObject extends Spell
 {
 
@@ -75,7 +74,7 @@ public class Spell_PolymorphObject extends Spell
 	{
 		return Ability.QUALITY_INDIFFERENT;
 	}
-	
+
 	protected static List<ItemCraftor> craftingSkills=new Vector<ItemCraftor>();
 	protected static List<ItemCraftor> getCraftingSkills()
 	{
@@ -115,7 +114,7 @@ public class Spell_PolymorphObject extends Spell
 		}
 		return craftingSkills;
 	}
-	
+
 	protected List<Item> previousItems=null;
 
 	@Override
@@ -149,9 +148,9 @@ public class Spell_PolymorphObject extends Spell
 			affected.destroy();
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		// add something to disable traps
 		//
@@ -160,7 +159,7 @@ public class Spell_PolymorphObject extends Spell
 			mob.tell(L("Polymorph what object into what?"));
 			return false;
 		}
-		String itemName=commands.get(0);
+		final String itemName=commands.get(0);
 		final Item targetI=super.getTarget(mob, mob.location(), givenTarget, new XVector<String>(itemName), Wearable.FILTER_UNWORNONLY);
 		if(targetI==null)
 		{
@@ -173,10 +172,10 @@ public class Spell_PolymorphObject extends Spell
 			mob.tell(L("You can't polymorph that."));
 			return false;
 		}
-		Vector<String> intoWhatV=new XVector<String>(commands);
+		final Vector<String> intoWhatV=new XVector<String>(commands);
 		intoWhatV.remove(0);
-		String intoWhat=CMParms.combineQuoted(commands, 1);
-		
+		final String intoWhat=CMParms.combineQuoted(commands, 1);
+
 		if(targetI.fetchEffect(ID())!=null)
 		{
 			mob.tell(mob,targetI,null,L("<T-NAME> is already polymorphed!"));
@@ -184,12 +183,12 @@ public class Spell_PolymorphObject extends Spell
 		}
 
 		Item intoI = null;
-		for(ItemCraftor A : getCraftingSkills())
+		for(final ItemCraftor A : getCraftingSkills())
 		{
-			List<List<String>> L = A.matchingRecipeNames(intoWhat, false);
+			final List<List<String>> L = A.matchingRecipeNames(intoWhat, false);
 			if((L!=null)&&(L.size()>0))
 			{
-				ItemKeyPair what=A.craftItem(L.get(0).get(0),targetI.material(),true, false);
+				final ItemKeyPair what=A.craftItem(L.get(0).get(0),targetI.material(),true, false);
 				if((what!=null)&&(what.item!=null))
 				{
 					intoI=what.item;
@@ -199,12 +198,12 @@ public class Spell_PolymorphObject extends Spell
 		}
 		if(intoI == null)
 		{
-			for(ItemCraftor A : getCraftingSkills())
+			for(final ItemCraftor A : getCraftingSkills())
 			{
-				List<List<String>> L = A.matchingRecipeNames(intoWhat, true);
+				final List<List<String>> L = A.matchingRecipeNames(intoWhat, true);
 				if((L!=null)&&(L.size()>0))
 				{
-					ItemKeyPair what=A.craftItem(L.get(0).get(0),targetI.material(),true, false);
+					final ItemKeyPair what=A.craftItem(L.get(0).get(0),targetI.material(),true, false);
 					if((what!=null)&&(what.item!=null))
 					{
 						intoI=what.item;
@@ -217,13 +216,13 @@ public class Spell_PolymorphObject extends Spell
 			intoI = mob.findItem(intoWhat);
 		if(intoI == null)
 			intoI = CMLib.map().findFirstRoomItem(mob.location().getArea().getCompleteMap(), mob, intoWhat, true, 5);
-		
+
 		if(intoI == null)
 		{
 			mob.tell(L("You have no idea what a '@x1' is.  Perhaps if you saw one again?",intoWhat));
 			return false;
 		}
-		
+
 		if((intoI instanceof ArchonOnly)
 		||(!CMLib.flags().isGettable(intoI))
 		||(intoI instanceof ClanItem)
@@ -233,15 +232,15 @@ public class Spell_PolymorphObject extends Spell
 			mob.tell(L("You can't polymorph anything into @x1?",intoI.Name()));
 			return false;
 		}
-		
+
 		if(intoI.basePhyStats().level()>this.adjustedLevel(mob, asLevel))
 		{
 			mob.tell(L("You aren't experienced enough to polymorph anything into @x1?",intoI.Name()));
 			return false;
 		}
-		
-		double pct= 0.3 + (0.2 * super.getXLEVELLevel(mob));
-		int weightDiff = (int)Math.round(CMath.mul(targetI.basePhyStats().weight(),pct));
+
+		final double pct= 0.3 + (0.2 * super.getXLEVELLevel(mob));
+		final int weightDiff = (int)Math.round(CMath.mul(targetI.basePhyStats().weight(),pct));
 		if(intoI.basePhyStats().weight() < (targetI.basePhyStats().weight() - weightDiff))
 		{
 			mob.tell(L("You can only polymorph an item into one no more than @x1 smaller.  @x2 is too small.",CMath.toPct(pct),intoI.Name()));
@@ -256,25 +255,25 @@ public class Spell_PolymorphObject extends Spell
 		if(intoI.material() != targetI.material())
 		{
 			intoI.setMaterial(targetI.material());
-			String oldMaterialName=RawMaterial.CODES.NAME(intoI.material());
-			String newMaterialName=RawMaterial.CODES.NAME(targetI.material()).toLowerCase();
+			final String oldMaterialName=RawMaterial.CODES.NAME(intoI.material());
+			final String newMaterialName=RawMaterial.CODES.NAME(targetI.material()).toLowerCase();
 			intoI.setName(CMStrings.replaceWord(intoI.Name(), oldMaterialName, newMaterialName));
 			intoI.setDisplayText(CMStrings.replaceWord(intoI.displayText(), oldMaterialName, newMaterialName));
 			intoI.setDescription(CMStrings.replaceWord(intoI.description(), oldMaterialName, newMaterialName));
 		}
-		
+
 		CMLib.utensils().disenchantItem(intoI);
 		while(intoI.numBehaviors()>0)
 		{
-			Behavior B=intoI.fetchBehavior(0);
+			final Behavior B=intoI.fetchBehavior(0);
 			if(B!=null)
 				intoI.delBehavior(B);
 		}
 		intoI.basePhyStats().setDisposition(intoI.basePhyStats().disposition() & (~PhyStats.IS_BONUS));
 		intoI.recoverPhyStats();
 		intoI.setBaseValue(0);
-		
-		// the reason this costs experience is to make it less valuable than Duplicate 
+
+		// the reason this costs experience is to make it less valuable than Duplicate
 		// but more valuable than Wish.
 		final int experienceToLose=getXPCOSTAdjustment(mob,5+intoI.basePhyStats().level());
 		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
@@ -295,7 +294,7 @@ public class Spell_PolymorphObject extends Spell
 
 				if(msg.value()>0)
 					return false;
-				Spell_PolymorphObject A=(Spell_PolymorphObject)super.beneficialAffect(mob, intoI, asLevel, 0);
+				final Spell_PolymorphObject A=(Spell_PolymorphObject)super.beneficialAffect(mob, intoI, asLevel, 0);
 				if(A!=null)
 				{
 					final List<Item> items = new XVector<Item>();
@@ -304,10 +303,10 @@ public class Spell_PolymorphObject extends Spell
 						items.addAll(((Container)targetI).getDeepContents());
 					A.setMiscText(CMLib.coffeeMaker().getItemsXML(items, new Hashtable<String,List<Item>>(),new HashSet<String>(),null).toString());
 					A.previousItems = items;
-					ItemPossessor possessor = targetI.owner();
+					final ItemPossessor possessor = targetI.owner();
 					if(possessor != null)
 					{
-						for(Item I : items)
+						for(final Item I : items)
 							possessor.delItem(I);
 						possessor.addItem(intoI);
 					}
@@ -321,7 +320,7 @@ public class Spell_PolymorphObject extends Spell
 		}
 		else
 		{
-			
+
 			return beneficialVisualFizzle(mob,targetI,L("<S-NAME> attempt(s) to polymorph <T-NAME> into @x1, but flub(s) it.",intoWhat));
 		}
 

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Prop_SpellAdder extends Property implements AbilityContainer, TriggeredAffect
 {
 	@Override
@@ -60,10 +59,10 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	protected short			maxTicks		= -1;
 	protected short			chanceToHappen	= -1;
 	protected List<Ability>	spellV			= null;
-	
+
 	protected MaskingLibrary.CompiledZMask compiledMask=null;
 	protected volatile boolean			   processing  = false;
-	
+
 	protected List<Ability> unrevocableSpells = null;
 
 	@Override
@@ -89,7 +88,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			invokerMOB.destroy();
 	}
 
-	public String getMaskString(String newText)
+	public String getMaskString(final String newText)
 	{
 		final int maskindex=newText.toUpperCase().indexOf("MASK=");
 		if(maskindex>0)
@@ -97,7 +96,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return "";
 	}
 
-	public String getParmString(String newText)
+	public String getParmString(final String newText)
 	{
 		final int maskindex=newText.toUpperCase().indexOf("MASK=");
 		if(maskindex>0)
@@ -106,7 +105,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		spellV=null;
@@ -200,7 +199,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return false;
 	}
 
-	public Map<String, String> makeMySpellsH(List<Ability> V)
+	public Map<String, String> makeMySpellsH(final List<Ability> V)
 	{
 		final Hashtable<String, String> spellH=new Hashtable<String, String>();
 		for(int v=0;v<V.size();v++)
@@ -208,7 +207,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return spellH;
 	}
 
-	public MOB getBestInvokerMOB(Environmental target)
+	public MOB getBestInvokerMOB(final Environmental target)
 	{
 		if(target instanceof MOB)
 			return (MOB)target;
@@ -217,7 +216,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return null;
 	}
 
-	public MOB getInvokerMOB(Environmental source, Environmental target)
+	public MOB getInvokerMOB(final Environmental source, final Environmental target)
 	{
 		MOB mob=getBestInvokerMOB(affected);
 		if(mob==null)
@@ -242,7 +241,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return invokerMOB;
 	}
 
-	public List<Object> convertToV2(List<Ability> spellsV, Physical target)
+	public List<Object> convertToV2(final List<Ability> spellsV, final Physical target)
 	{
 		final List<Object> VTOO=new Vector<Object>();
 		for(int v=0;v<spellsV.size();v++)
@@ -275,7 +274,8 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return VTOO;
 	}
 
-	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, boolean makeLongLasting, int asLevel, short maxTicks)
+	@SuppressWarnings("unchecked")
+	public boolean addMeIfNeccessary(final PhysicalAgent source, final Physical target, final boolean makeLongLasting, int asLevel, final short maxTicks)
 	{
 		final List<Ability> V=getMySpellsV();
 		if((target==null)
@@ -283,14 +283,14 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		||((compiledMask!=null)
 			&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
 				return false;
-		final List VTOO=convertToV2(V,target);
+		final List<Object> VTOO=convertToV2(V,target);
 		if(VTOO.size()==0)
 			return false;
 		final MOB qualMOB=getInvokerMOB(source,target);
 		for(int v=0;v<VTOO.size();v+=2)
 		{
 			final Ability A=(Ability)VTOO.get(v);
-			final Vector V2=(Vector)VTOO.get(v+1);
+			final List<String> V2=(Vector<String>)VTOO.get(v+1);
 			if(level >= 0)
 				asLevel = level;
 			else
@@ -335,7 +335,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	}
 
 	@Override
-	public void setAffectedOne(Physical P)
+	public void setAffectedOne(final Physical P)
 	{
 		super.setAffectedOne(P);
 		if(P == null)
@@ -345,7 +345,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		}
 	}
 
-	public void removeMyAffectsFrom(Physical P)
+	public void removeMyAffectsFrom(final Physical P)
 	{
 		if(P==null)
 			return;
@@ -403,7 +403,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 		if(processing)
 			return;
@@ -416,7 +416,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 				if((lastMOB!=null)
 				&&(host!=lastMOB))
 					removeMyAffectsFrom(lastMOB);
-	
+
 				if((lastMOB==null)&&(host instanceof PhysicalAgent))
 					addMeIfNeccessary((PhysicalAgent)host,host,true,0,maxTicks);
 			}
@@ -427,7 +427,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		}
 	}
 
-	public String spellAccountingsWithMask(String pre, String post)
+	public String spellAccountingsWithMask(final String pre, final String post)
 	{
 		final List<Ability> spellList=getMySpellsV();
 		String id="";
@@ -449,15 +449,15 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			id+="  Restrictions: "+CMLib.masking().maskDesc(maskString);
 		return id;
 	}
-	
+
 	@Override
-	public void addAbility(Ability to)
+	public void addAbility(final Ability to)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public void delAbility(Ability to)
+	public void delAbility(final Ability to)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
@@ -469,7 +469,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	}
 
 	@Override
-	public Ability fetchAbility(int index)
+	public Ability fetchAbility(final int index)
 	{
 		final List<Ability> spellsV = getMySpellsV();
 		if (spellsV.size() == 0)
@@ -487,7 +487,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	}
 
 	@Override
-	public Ability fetchAbility(String ID)
+	public Ability fetchAbility(final String ID)
 	{
 		for (final Enumeration<Ability> a = abilities(); a.hasMoreElements();)
 		{
@@ -515,7 +515,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return new FilteredEnumeration<Ability>(new IteratorEnumeration<Ability>(getMySpellsV().iterator()),new Filterer<Ability>()
 		{
 			@Override
-			public boolean passesFilter(Ability obj)
+			public boolean passesFilter(final Ability obj)
 			{
 				return didHappen();
 			}
@@ -541,7 +541,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final String s=CMParms.combine(commands,0);
 		if(s.length()>0)

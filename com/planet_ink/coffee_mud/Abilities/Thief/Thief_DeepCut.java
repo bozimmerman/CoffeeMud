@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_DeepCut extends ThiefSkill
 {
 	@Override
@@ -136,7 +135,7 @@ public class Thief_DeepCut extends ThiefSkill
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			int hurtAmount=msg.value();
-			
+
 			final int reqDivisor=hpReq-getXLEVELLevel(invoker());
 			if(hurtAmount>=(target.baseState().getHitPoints()/reqDivisor))
 			{
@@ -152,7 +151,7 @@ public class Thief_DeepCut extends ThiefSkill
 		return super.okMessage(myHost,msg);
 	}
 
-	protected boolean prereqs(MOB mob, boolean quiet)
+	protected boolean prereqs(final MOB mob, final boolean quiet)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
@@ -179,7 +178,7 @@ public class Thief_DeepCut extends ThiefSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -190,7 +189,7 @@ public class Thief_DeepCut extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!prereqs(mob,false))
 			return false;

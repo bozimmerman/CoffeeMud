@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Bloatbomb extends Prayer implements Trap
 {
 	@Override
@@ -86,19 +85,19 @@ public class Prayer_Bloatbomb extends Prayer implements Trap
 	{
 		return Ability.FLAG_UNHOLY;
 	}
-	
+
 	@Override
 	protected int overrideMana()
 	{
 		return Ability.COST_PCT+50;
 	}
-	
+
 	@Override
-	public void setAffectedOne(Physical affected)
+	public void setAffectedOne(final Physical affected)
 	{
 		super.setAffectedOne(affected);
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -142,7 +141,7 @@ public class Prayer_Bloatbomb extends Prayer implements Trap
 	}
 
 	@Override
-	public void setReset(int Reset)
+	public void setReset(final int Reset)
 	{
 	}
 
@@ -153,19 +152,19 @@ public class Prayer_Bloatbomb extends Prayer implements Trap
 	}
 
 	@Override
-	public boolean maySetTrap(MOB mob, int asLevel)
+	public boolean maySetTrap(final MOB mob, final int asLevel)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
 		return P instanceof DeadBody;
 	}
 
 	@Override
-	public boolean canReSetTrap(MOB mob)
+	public boolean canReSetTrap(final MOB mob)
 	{
 		return false;
 	}
@@ -183,12 +182,12 @@ public class Prayer_Bloatbomb extends Prayer implements Trap
 	}
 
 	@Override
-	public void resetTrap(MOB mob)
+	public void resetTrap(final MOB mob)
 	{
 	}
 
 	@Override
-	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		beneficialAffect(mob, P, qualifyingClassLevel + trapBonus, 0);
 		return (Trap) P.fetchEffect(ID());
@@ -213,7 +212,7 @@ public class Prayer_Bloatbomb extends Prayer implements Trap
 	}
 
 	@Override
-	public void spring(MOB mob)
+	public void spring(final MOB mob)
 	{
 		final Room room=mob.location();
 		if(room != null)
@@ -224,7 +223,7 @@ public class Prayer_Bloatbomb extends Prayer implements Trap
 			room.show(mob, affected, CMMsg.MSG_OK_ACTION, L("<T-NAME> explodes, spraying clumps of stomach acid everywhere!"));
 			for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 			{
-				MOB M=m.nextElement();
+				final MOB M=m.nextElement();
 				if((M!=null)&&(!friendlySet.contains(M)))
 				{
 					final MOB invoker=(invoker()!=null) ? invoker() : M;
@@ -234,15 +233,15 @@ public class Prayer_Bloatbomb extends Prayer implements Trap
 				}
 			}
 		}
-		Physical affected=this.affected;
+		final Physical affected=this.affected;
 		unInvoke();
 		if(affected instanceof Item)
 			((Item)affected).destroy();
-			
+
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

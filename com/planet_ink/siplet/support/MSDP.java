@@ -28,25 +28,24 @@ import com.planet_ink.siplet.support.MiniJSON.MJSONException;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public class MSDP
 {
-
 	public MSDP()
 	{
 		super();
 	}
 
-	public int process(StringBuffer buf, int i, Siplet applet, boolean useExternal)
+	public int process(final StringBuffer buf, final int i, final Siplet applet, final boolean useExternal)
 	{
 		return 0;
 	}
 
-	protected Object msdpStringify(Object o)
+	@SuppressWarnings("rawtypes")
+	protected Object msdpStringify(final Object o)
 	{
 		if (o instanceof StringBuilder)
 			return ((StringBuilder) o).toString();
-		else 
+		else
 		if (o instanceof Map)
 		{
 			final Map<String, Object> newO = new HashMap<String, Object>();
@@ -57,7 +56,7 @@ public class MSDP
 			}
 			return newO;
 		}
-		else 
+		else
 		if (o instanceof List)
 		{
 			final List<Object> newO = new LinkedList<Object>();
@@ -69,7 +68,8 @@ public class MSDP
 			return o;
 	}
 
-	protected Map<String, Object> buildMsdpMap(byte[] data, int dataSize)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected Map<String, Object> buildMsdpMap(final byte[] data, final int dataSize)
 	{
 		final Stack<Object> stack = new Stack<Object>();
 		stack.push(new HashMap<StringBuilder, Object>());
@@ -86,7 +86,7 @@ public class MSDP
 				var = str;
 				if (stack.peek() instanceof Map)
 					((Map) stack.peek()).put(str, "");
-				else 
+				else
 				if (stack.peek() instanceof List)
 					((List) stack.peek()).add(str);
 				break;
@@ -102,7 +102,7 @@ public class MSDP
 				final Map<StringBuilder, Object> M = new HashMap<StringBuilder, Object>();
 				if ((stack.peek() instanceof Map) && (valVar != null))
 					((Map) stack.peek()).put(valVar, M);
-				else 
+				else
 				if (stack.peek() instanceof List)
 					((List) stack.peek()).add(M);
 				valVar = null;
@@ -118,7 +118,7 @@ public class MSDP
 				final List<Object> M = new LinkedList<Object>();
 				if ((stack.peek() instanceof Map) && (valVar != null))
 					((Map) stack.peek()).put(valVar, M);
-				else 
+				else
 				if (stack.peek() instanceof List)
 					((List) stack.peek()).add(M);
 				valVar = null;
@@ -132,7 +132,7 @@ public class MSDP
 			default:
 				if ((stack.peek() instanceof Map) && (valVar != null))
 					((Map) stack.peek()).put(valVar, str);
-				else 
+				else
 				if ((stack.peek() instanceof List) && (!((List) stack.peek()).contains(str)))
 					((List) stack.peek()).add(str);
 				valVar = null;
@@ -144,12 +144,13 @@ public class MSDP
 		return (Map<String, Object>) msdpStringify(stack.firstElement());
 	}
 
-	public String msdpOutput(Object o, int indentions)
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String msdpOutput(final Object o, final int indentions)
 	{
 		final String spaces = new String(new char[indentions * 2]).replace('\0', ' ');
 		if (o instanceof String)
 			return "\"" + o.toString() + "\"";
-		else 
+		else
 		if (o instanceof List)
 		{
 			final StringBuilder json = new StringBuilder("[\n");
@@ -158,7 +159,7 @@ public class MSDP
 			json.append("\n").append(spaces).append("]");
 			return json.toString();
 		}
-		else 
+		else
 		if (o instanceof Map)
 		{
 			final StringBuilder json = new StringBuilder("{\n");
@@ -173,13 +174,13 @@ public class MSDP
 		return "";
 	}
 
-	public String msdpReceive(byte[] buffer)
+	public String msdpReceive(final byte[] buffer)
 	{
 		final Map<String, Object> map = buildMsdpMap(buffer, buffer.length);
 		return msdpOutput(map, 0);
 	}
 
-	private byte[] getMsdpFromJsonObject(JSONObject obj) throws IOException
+	private byte[] getMsdpFromJsonObject(final JSONObject obj) throws IOException
 	{
 		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		for (final String key : obj.keySet())
@@ -193,7 +194,7 @@ public class MSDP
 		return bout.toByteArray();
 	}
 
-	private byte[] getMsdpFromJsonArray(Object[] obj) throws IOException
+	private byte[] getMsdpFromJsonArray(final Object[] obj) throws IOException
 	{
 		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		for (final Object o : obj)
@@ -204,19 +205,19 @@ public class MSDP
 		return bout.toByteArray();
 	}
 
-	private byte[] getMsdpFromJsonSomething(Object obj) throws IOException
+	private byte[] getMsdpFromJsonSomething(final Object obj) throws IOException
 	{
 		final ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		if (obj instanceof String)
 			bout.write(((String) obj).getBytes(Charset.forName("US-ASCII")));
-		else 
+		else
 		if (obj instanceof JSONObject)
 		{
 			bout.write((byte) 3); // table open
 			bout.write(getMsdpFromJsonObject((JSONObject) obj));
 			bout.write((byte) 4); // table close
 		}
-		else 
+		else
 		if (obj instanceof Object[])
 		{
 			bout.write((byte) 5); // array open
@@ -226,7 +227,7 @@ public class MSDP
 		return bout.toByteArray();
 	}
 
-	public byte[] convertStringToMsdp(String data) throws MJSONException
+	public byte[] convertStringToMsdp(final String data) throws MJSONException
 	{
 		try
 		{

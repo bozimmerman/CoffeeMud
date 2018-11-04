@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_TrueResurrection extends Prayer_Resurrect
 {
 	@Override
@@ -74,23 +73,23 @@ public class Prayer_TrueResurrection extends Prayer_Resurrect
 		return 0;
 	}
 
-	public Item findCorpseRoom(List<Item> candidates)
+	public Item findCorpseRoom(final List<Item> candidates)
 	{
 		for(int m=0;m<candidates.size();m++)
 		{
 			final Item item = candidates.get(m);
 			if(item instanceof DeadBody)
 			{
-				Room newRoom=CMLib.map().roomLocation(item);
+				final Room newRoom=CMLib.map().roomLocation(item);
 				if(newRoom != null)
 					return item;
 			}
 		}
 		return null;
 	}
-	
+
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
 		if (item instanceof DeadBody)
 		{
@@ -103,13 +102,13 @@ public class Prayer_TrueResurrection extends Prayer_Resurrect
 	}
 
 	@Override
-	protected boolean canResurrectNormalMobs() 
-	{ 
-		return true; 
+	protected boolean canResurrectNormalMobs()
+	{
+		return true;
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(givenTarget == null)
 		{

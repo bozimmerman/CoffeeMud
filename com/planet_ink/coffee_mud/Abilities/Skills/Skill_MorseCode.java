@@ -121,7 +121,7 @@ public class Skill_MorseCode extends StdSkill
 		super.executeMsg(myHost,msg);
 	}
 
-	protected int getRoomDir(Set<Room> higherRooms, Room thisRoom)
+	protected int getRoomDir(final Set<Room> higherRooms, final Room thisRoom)
 	{
 		if(thisRoom != null)
 		{
@@ -134,9 +134,9 @@ public class Skill_MorseCode extends StdSkill
 		}
 		return -1;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((!auto)&&(mob.isInCombat()))
 		{
@@ -158,7 +158,7 @@ public class Skill_MorseCode extends StdSkill
 				return false;
 			}
 		}
-		
+
 		final Item outDoorsI;
 		if(((R.domainType()&Room.INDOORS)==0))
 		{
@@ -200,7 +200,7 @@ public class Skill_MorseCode extends StdSkill
 					flags.add(TrackingFlag.OUTDOORONLY);
 				else
 					flags.add(TrackingFlag.INDOORONLY);
-				int range=3 + (super.getXLEVELLevel(mob)/2)+(super.getXMAXRANGELevel(mob));
+				final int range=3 + (super.getXLEVELLevel(mob)/2)+(super.getXMAXRANGELevel(mob));
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(R,flags,range);
 				Area deckArea=null;
 				Room deckShipRoom=null;
@@ -244,7 +244,7 @@ public class Skill_MorseCode extends StdSkill
 										msg2.setOthersMessage(L("You see someone flashing morse code in lights on the deck of @x1.",(deckShip==null)?"":deckShip.name()));
 									else
 									{
-										int dir = getRoomDir(higherRooms,R2);
+										final int dir = getRoomDir(higherRooms,R2);
 										if(dir >= 0)
 											msg2.setOthersMessage(L("You see someone flashing morse code in lights somewhere on a ship @x1.",CMLib.directions().getInDirectionName(dir)));
 										else
@@ -254,7 +254,7 @@ public class Skill_MorseCode extends StdSkill
 							}
 							else
 							{
-								int dir = getRoomDir(higherRooms,R2);
+								final int dir = getRoomDir(higherRooms,R2);
 								if(dir >= 0)
 									msg2.setOthersMessage(L("You see someone flashing morse code in lights somewhere @x1.",CMLib.directions().getInDirectionName(dir)));
 								else

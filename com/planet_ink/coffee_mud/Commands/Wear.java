@@ -32,13 +32,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Wear extends StdCommand
 {
 	public Wear()
 	{
 	}
-	
+
 	private final String[]	access	= I(new String[] { "WEAR" });
 
 	@Override
@@ -57,7 +56,7 @@ public class Wear extends StdCommand
 		{Item.class,String.class,Boolean.class},
 	};
 
-	public boolean wear(MOB mob, Item item, int locationIndex, boolean quiet)
+	public boolean wear(final MOB mob, final Item item, final int locationIndex, final boolean quiet)
 	{
 		String str=L("<S-NAME> put(s) on <T-NAME>.");
 		int msgType=CMMsg.MSG_WEAR;
@@ -87,10 +86,10 @@ public class Wear extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("Wear what?"));
@@ -152,7 +151,7 @@ public class Wear extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
@@ -183,7 +182,7 @@ public class Wear extends StdCommand
 		}
 		return Boolean.valueOf(wear(mob,targetWearI,wearLocationIndex,quietly));
 	}
-	
+
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{

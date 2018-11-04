@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 public class GCClassLoader
 {
 	protected DBConnector DB=null;
-	public GCClassLoader(DBConnector newDB)
+	public GCClassLoader(final DBConnector newDB)
 	{
 		DB=newDB;
 	}
@@ -90,12 +90,12 @@ public class GCClassLoader
 		return rows;
 	}
 
-	public void DBDeleteClass(String classID)
+	public void DBDeleteClass(final String classID)
 	{
 		DB.update("DELETE FROM CMCCAC WHERE CMCCID='"+classID+"'");
 	}
 
-	public void DBCreateClass(String classID, String data)
+	public void DBCreateClass(final String classID, final String data)
 	{
 		DB.updateWithClobs(
 		 "INSERT INTO CMCCAC ("

@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_UnderwaterSounds extends ThiefSkill
 {
 	@Override
@@ -92,9 +91,9 @@ public class Thief_UnderwaterSounds extends ThiefSkill
 	{
 		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_WATERLORE;
 	}
-	
+
 	protected Thief_Listen myListen = null;
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -110,7 +109,7 @@ public class Thief_UnderwaterSounds extends ThiefSkill
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

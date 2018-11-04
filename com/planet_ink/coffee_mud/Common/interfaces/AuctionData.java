@@ -24,7 +24,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 /**
  * Class for storing basic data about a specific auction in progress.
  * Handles both Live and Timed auction data.
- * 
+ *
  * @author Bo Zimmerman
  */
 public interface AuctionData extends CMCommon
@@ -113,7 +113,7 @@ public interface AuctionData extends CMCommon
 	 * @return the current high bid in the auction
 	 */
 	public double getHighBid();
-	
+
 	/**
 	 * Set the current high bid in the auction
 	 * @see AuctionData#getHighBid()
@@ -136,14 +136,14 @@ public interface AuctionData extends CMCommon
 	public void setBid(double bid);
 
 	/**
-	 * Get the current buy-out price for this auction. 
+	 * Get the current buy-out price for this auction.
 	 * @see AuctionData#setBuyOutPrice(double)
 	 * @return the current buy-out price for this auction.
 	 */
 	public double getBuyOutPrice();
 
 	/**
-	 * Set the current buy-out price for this auction. 
+	 * Set the current buy-out price for this auction.
 	 * @see AuctionData#getBuyOutPrice()
 	 * @param buyOutPrice the current buy-out price for this auction.
 	 */

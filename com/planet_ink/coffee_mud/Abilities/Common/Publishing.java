@@ -88,18 +88,18 @@ public class Publishing extends CommonSkill
 		{
 			return new MiniJSON().parseObject(text());
 		}
-		catch (MJSONException e)
+		catch (final MJSONException e)
 		{
 			Log.errOut(e);
 			return new MiniJSON.JSONObject();
 		}
 	}
-	
-	public void setData(MiniJSON.JSONObject obj)
+
+	public void setData(final MiniJSON.JSONObject obj)
 	{
 		super.setMiscText(obj.toString());
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -163,10 +163,10 @@ public class Publishing extends CommonSkill
 								found.addNonUninvokableEffect(copyA);
 							}
 						}
-						Item shopItem = (Item)found.copyOf();
+						final Item shopItem = (Item)found.copyOf();
 						if(shopItem.fetchEffect(ID())==null)
 						{
-							Publishing pubA=(Publishing)this.copyOf();
+							final Publishing pubA=(Publishing)this.copyOf();
 							shopItem.addNonUninvokableEffect(pubA);
 						}
 						for(final Pair<ShopKeeper,Room> SKs : shops)
@@ -177,10 +177,10 @@ public class Publishing extends CommonSkill
 							if(ie.hasNext())
 							{
 								proceed = false;
-								Environmental E=ie.next();
+								final Environmental E=ie.next();
 								if(E instanceof Item)
 								{
-									Ability copyrightA=((Item) E).fetchEffect("Copyright");
+									final Ability copyrightA=((Item) E).fetchEffect("Copyright");
 									if(copyrightA != null)
 									{
 										if(!copyrightA.text().equals(mob.Name()))
@@ -207,14 +207,14 @@ public class Publishing extends CommonSkill
 									obj.put(shopItem.Name(), new MiniJSON.JSONObject());
 								try
 								{
-									MiniJSON.JSONObject bookObj=obj.getCheckedJSONObject(shopItem.Name());
+									final MiniJSON.JSONObject bookObj=obj.getCheckedJSONObject(shopItem.Name());
 									Object[] locs =new Object[0];
 									if(bookObj.containsKey("locs"))
 										locs=bookObj.getCheckedArray("locs");
 									boolean found=false;
-									for(Object o : locs)
+									for(final Object o : locs)
 									{
-										MiniJSON.JSONObject locObj = (MiniJSON.JSONObject)o;
+										final MiniJSON.JSONObject locObj = (MiniJSON.JSONObject)o;
 										if(locObj.getCheckedString("name").equals(SK.Name())
 										&&(CMLib.map().getExtendedRoomID(SKs.second)).equals(locObj.getCheckedString("room")))
 											found=true;
@@ -222,7 +222,7 @@ public class Publishing extends CommonSkill
 									if(!found)
 									{
 										locs=Arrays.copyOf(locs, locs.length+1);
-										MiniJSON.JSONObject locObj=new MiniJSON.JSONObject();
+										final MiniJSON.JSONObject locObj=new MiniJSON.JSONObject();
 										locObj.put("name", SK.Name());
 										locObj.put("room", CMLib.map().roomLocation(SKs.second));
 										locs[locs.length-1]=locObj;
@@ -230,13 +230,13 @@ public class Publishing extends CommonSkill
 										setData(obj);
 									}
 								}
-								catch (MJSONException e)
+								catch (final MJSONException e)
 								{
 									Log.errOut(e);
 								}
 							}
 						}
-						StringBuilder str=new StringBuilder(L("Publishing completed. "));
+						final StringBuilder str=new StringBuilder(L("Publishing completed. "));
 						if(pubbed == 0)
 							str.append(L("No copies were placed on local bookshelves.  Perhaps try another city?  "));
 						else
@@ -268,7 +268,7 @@ public class Publishing extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -294,12 +294,12 @@ public class Publishing extends CommonSkill
 								final MiniJSON.JSONObject obj=pubA.getData();
 								try
 								{
-									MiniJSON.JSONObject bookObj = obj.getCheckedJSONObject(I.Name());
-									Object[] locs=bookObj.getCheckedArray("locs");
+									final MiniJSON.JSONObject bookObj = obj.getCheckedJSONObject(I.Name());
+									final Object[] locs=bookObj.getCheckedArray("locs");
 									boolean found=false;
-									for(Object o : locs)
+									for(final Object o : locs)
 									{
-										MiniJSON.JSONObject locObj=(MiniJSON.JSONObject)o;
+										final MiniJSON.JSONObject locObj=(MiniJSON.JSONObject)o;
 										final String name=locObj.getCheckedString("name");
 										final String room=locObj.getCheckedString("room");
 										if(name.equalsIgnoreCase(SK.Name()))
@@ -322,11 +322,11 @@ public class Publishing extends CommonSkill
 										}
 										if(bookObj.containsKey("who") && msg.source().isPlayer())
 										{
-											Object[] whoms = bookObj.getCheckedArray("who");
+											final Object[] whoms = bookObj.getCheckedArray("who");
 											if(CMParms.containsAsString(whoms, msg.source().Name()))
 											{
-												List<Object> whomses = new XVector<Object>(Arrays.asList(whoms));
-												int x=CMParms.indexOfAsString(whoms, msg.source().Name());
+												final List<Object> whomses = new XVector<Object>(Arrays.asList(whoms));
+												final int x=CMParms.indexOfAsString(whoms, msg.source().Name());
 												if(x >=0)
 													whomses.remove(x);
 												bookObj.put("who", whomses.toArray(new Object[0]));
@@ -335,7 +335,7 @@ public class Publishing extends CommonSkill
 										pubA.setData(obj);
 									}
 								}
-								catch (MJSONException e)
+								catch (final MJSONException e)
 								{
 									Log.errOut(e);
 								}
@@ -372,12 +372,12 @@ public class Publishing extends CommonSkill
 								obj.put(I.Name(), new MiniJSON.JSONObject());
 							try
 							{
-								MiniJSON.JSONObject bookObj = obj.getCheckedJSONObject(I.Name());
+								final MiniJSON.JSONObject bookObj = obj.getCheckedJSONObject(I.Name());
 								if(!bookObj.containsKey("copies_sold"))
 									bookObj.put("copies_sold", Integer.valueOf(1));
 								else
 								{
-									Long oldVal = bookObj.getCheckedLong("copies_sold");
+									final Long oldVal = bookObj.getCheckedLong("copies_sold");
 									bookObj.put("copies_sold", Long.valueOf(oldVal.longValue() + 1));
 								}
 								if(royalties > 0)
@@ -386,7 +386,7 @@ public class Publishing extends CommonSkill
 										bookObj.put("paid", Integer.valueOf(royalties));
 									else
 									{
-										Long oldVal = bookObj.getCheckedLong("paid");
+										final Long oldVal = bookObj.getCheckedLong("paid");
 										bookObj.put("paid", Long.valueOf(oldVal.longValue() + royalties));
 									}
 								}
@@ -410,7 +410,7 @@ public class Publishing extends CommonSkill
 								}
 								pubA.setData(obj);
 							}
-							catch (MJSONException e)
+							catch (final MJSONException e)
 							{
 								Log.errOut(e);
 							}
@@ -424,7 +424,7 @@ public class Publishing extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -436,18 +436,18 @@ public class Publishing extends CommonSkill
 		}
 		if(commands.size()==1)
 		{
-			MiniJSON.JSONObject data=getData();
+			final MiniJSON.JSONObject data=getData();
 			if(data.keySet().size()==0)
 				commonTell(mob,L("You haven't been published yet."));
 			else
 			{
 				try
 				{
-					int index=1;
-					StringBuilder str=new StringBuilder("");
-					for(String bookName : data.keySet())
+					final int index=1;
+					final StringBuilder str=new StringBuilder("");
+					for(final String bookName : data.keySet())
 					{
-						MiniJSON.JSONObject bookObj = data.getCheckedJSONObject(bookName);
+						final MiniJSON.JSONObject bookObj = data.getCheckedJSONObject(bookName);
 						str.append(index+") ^H"+bookName+"^?:\n\r");
 						String purchased="0";
 						String royalties="0";
@@ -463,14 +463,14 @@ public class Publishing extends CommonSkill
 					}
 					commonTell(mob,str.toString());
 				}
-				catch(MiniJSON.MJSONException e)
+				catch(final MiniJSON.MJSONException e)
 				{
 					Log.errOut(e);
 				}
 			}
 			return false;
 		}
-		
+
 		final Room R=mob.location();
 		if(R==null)
 			return false;
@@ -483,8 +483,8 @@ public class Publishing extends CommonSkill
 		{
 			try
 			{
-				Long L=obj.getCheckedLong("lastpub");
-				TimeClock lastPubC=(TimeClock)CMClass.getCommon("DefaultTimeClock");
+				final Long L=obj.getCheckedLong("lastpub");
+				final TimeClock lastPubC=(TimeClock)CMClass.getCommon("DefaultTimeClock");
 				lastPubC.setFromHoursSinceEpoc(L.longValue());
 				if(C.getYear() == lastPubC.getYear())
 				{
@@ -501,7 +501,7 @@ public class Publishing extends CommonSkill
 					return false;
 				}
 			}
-			catch (MJSONException e)
+			catch (final MJSONException e)
 			{
 				Log.errOut(e);
 			}
@@ -521,20 +521,20 @@ public class Publishing extends CommonSkill
 			commonTell(mob,L("You haven't specified an asking price."));
 			return false;
 		}
-		List<String> remainV=new ArrayList<String>();
+		final List<String> remainV=new ArrayList<String>();
 		for(int i=0;i<startHere;i++)
 			remainV.add(commands.get(i));
 		price=CMath.s_int(commands.get(startHere));
-		double denom=CMLib.english().matchAnyDenomination(CMLib.beanCounter().getCurrency(mob), CMParms.combine(commands,startHere+1));
+		final double denom=CMLib.english().matchAnyDenomination(CMLib.beanCounter().getCurrency(mob), CMParms.combine(commands,startHere+1));
 		if(denom != 0)
 			price *= denom;
- 		Item target = super.getTarget(mob, mob.location(), givenTarget, remainV, Wearable.FILTER_UNWORNONLY);
+ 		final Item target = super.getTarget(mob, mob.location(), givenTarget, remainV, Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			commonTell(mob,L("You don't seem to have a '@x1'.",CMParms.combine(remainV)));
 			return false;
 		}
-		
+
 		if((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
 		{
 			commonTell(mob,L("You can't publish something like that."));
@@ -545,7 +545,7 @@ public class Publishing extends CommonSkill
 			commonTell(mob,L("That's not even readable!"));
 			return false;
 		}
-		
+
 		/*
 		String brand = getBrand(target);
 		if((brand==null)||(brand.length()==0))
@@ -559,7 +559,7 @@ public class Publishing extends CommonSkill
 			commonTell(mob,L("You aren't able to publish that."));
 			return false;
 		}
-		
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

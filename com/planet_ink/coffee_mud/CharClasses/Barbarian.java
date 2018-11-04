@@ -218,20 +218,20 @@ public class Barbarian extends StdCharClass
 		return Area.THEME_FANTASY;
 	}
 
-	@Override 
+	@Override
 	public String getOtherBonusDesc()
 	{
 		return L("Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.  Receives bonus conquest and duel experience.");
 	}
-	
-	@Override 
+
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
-	{ 
-		super.executeMsg(host,msg); 
+	{
+		super.executeMsg(host,msg);
 		Fighter.conquestExperience(this,host,msg);
 		Fighter.duelExperience(this, host, msg);
 	}
-	
+
 	private final String[] raceRequiredList = new String[] { "All" };
 
 	@Override
@@ -287,7 +287,7 @@ public class Barbarian extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
@@ -308,7 +308,7 @@ public class Barbarian extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -320,9 +320,9 @@ public class Barbarian extends StdCharClass
 		}
 		return outfitChoices;
 	}
-	
+
 	@Override
-	public int classDurationModifier(MOB myChar, Ability skill, int duration)
+	public int classDurationModifier(final MOB myChar, final Ability skill, final int duration)
 	{
 		if(myChar==null)
 			return duration;

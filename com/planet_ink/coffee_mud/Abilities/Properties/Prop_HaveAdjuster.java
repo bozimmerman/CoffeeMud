@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 {
 	@Override
@@ -81,7 +80,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		return TriggeredAffect.TRIGGER_GET;
 	}
 
-	public boolean addIfPlussed(String newText, String parm, int parmCode, ArrayList<Object> addTo)
+	public boolean addIfPlussed(final String newText, final String parm, final int parmCode, final ArrayList<Object> addTo)
 	{
 		final int val=CMParms.getParmPlus(newText,parm);
 		if(val==0)
@@ -91,7 +90,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		return true;
 	}
 
-	public Object[] makeObjectArray(ArrayList<? extends Object> V)
+	public Object[] makeObjectArray(final ArrayList<? extends Object> V)
 	{
 		if(V==null)
 			return null;
@@ -104,7 +103,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		this.charStateChanges=null;
@@ -117,10 +116,10 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			mask=CMLib.masking().createEmptyMask();
 		else
 			mask=CMLib.masking().getPreCompiledMask(parameters[1]);
-		
+
 		multiplyPhyStats = CMParms.getParmBool(parameters[0],"MULTIPLYPH",false);
 		multiplyCharStates = CMParms.getParmBool(parameters[0],"MULTIPLYCH",false);
-		
+
 		final ArrayList<Object> phyStatsV=new ArrayList<Object>();
 		addIfPlussed(parameters[0],"abi",PhyStats.STAT_ABILITY,phyStatsV);
 		addIfPlussed(parameters[0],"arm",PhyStats.STAT_ARMOR,phyStatsV);
@@ -188,8 +187,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		addIfPlussed(parameters[0],"man",CharState.STAT_MANA,charStateV);
 		addIfPlussed(parameters[0],"mov",CharState.STAT_MOVE,charStateV);
 		addIfPlussed(parameters[0],"thi",CharState.STAT_THIRST,charStateV);
-		
-		int allSavesPlus=CMParms.getParmPlus(newText,"ALLSAVES");
+
+		final int allSavesPlus=CMParms.getParmPlus(newText,"ALLSAVES");
 		if(allSavesPlus!=0)
 		{
 			for(final int c : CharStats.CODES.SAVING_THROWS())
@@ -206,7 +205,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		this.charStatsChanges=makeObjectArray(charStatsV);
 	}
 
-	public void phyStuff(Object[] changes, PhyStats phyStats)
+	public void phyStuff(final Object[] changes, final PhyStats phyStats)
 	{
 		if(changes==null)
 			return;
@@ -307,7 +306,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		}
 	}
 
-	public boolean canApply(MOB mob)
+	public boolean canApply(final MOB mob)
 	{
 		if((affected!=null)
 		&&(affected instanceof Item)
@@ -317,7 +316,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		return false;
 	}
 
-	public boolean canApply(Environmental E)
+	public boolean canApply(final Environmental E)
 	{
 		if(E instanceof MOB)
 			return canApply((MOB)E);
@@ -331,15 +330,15 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 		ensureStarted();
-		if(canApply(host)) 
+		if(canApply(host))
 			phyStuff(phyStatsChanges,affectableStats);
 		super.affectPhyStats(host,affectableStats);
 	}
 
-	public void adjCharStats(final MOB mob, Object[] changes, CharStats charStats)
+	public void adjCharStats(final MOB mob, final Object[] changes, final CharStats charStats)
 	{
 		if(changes==null)
 			return;
@@ -375,7 +374,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		}
 	}
 
-	public void adjCharState(final MOB mob, Object[] changes, CharState charState)
+	public void adjCharState(final MOB mob, final Object[] changes, final CharState charState)
 	{
 		if(changes==null)
 			return;
@@ -435,7 +434,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectedStats)
 	{
 		ensureStarted();
 		if(canApply(affectedMOB))
@@ -444,7 +443,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMOB, CharState affectedState)
+	public void affectCharState(final MOB affectedMOB, final CharState affectedState)
 	{
 		ensureStarted();
 		if(canApply(affectedMOB))
@@ -516,7 +515,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	{
 		return fixAccoutingsWithMask("Affects the owner: "+parameters[0],parameters[1]);
 	}
-	
+
 	public String getStrStatValue(final Object[] changes, final Integer statCode)
 	{
 		if(this.phyStatsChanges!=null)
@@ -529,7 +528,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		}
 		return "0";
 	}
-	
+
 	public int getIntStatValue(final Object[] changes, final Integer statCode)
 	{
 		if(this.phyStatsChanges!=null)
@@ -542,9 +541,9 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		}
 		return 0;
 	}
-	
+
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(code == null)
 			return "";
@@ -581,7 +580,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 						else
 						if(amt < 100)
 							amt = -(100-amt);
-						
+
 						switch(((Integer)changes[c]).intValue())
 						{
 						case CharState.STAT_HITPOINTS:
@@ -671,7 +670,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 							amt = (int)Math.round(((Double)changes[c+1]).doubleValue() * 100);
 						else
 							continue;
-							
+
 						if(amt >= 100)
 							amt -= 100;
 						else
@@ -758,13 +757,13 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(code!=null)
 		{
 			if(code.equalsIgnoreCase("LEVEL"))
 			{
-				
+
 			}
 			else
 			if(code.equalsIgnoreCase("TONEDOWN"))

@@ -14,13 +14,13 @@ import java.util.ListIterator;
 public class SortedListWrap<T extends Comparable<T>> implements List<T>
 {
 	private final List<T> list;
-	public SortedListWrap(List<T> list)
+	public SortedListWrap(final List<T> list)
 	{
 		this.list=list;
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	protected int compareTo(T arg0, Object arg1)
+	protected int compareTo(final T arg0, final Object arg1)
 	{
 		if(arg0 != null)
 			return ((Comparable)arg0).compareTo(arg1);
@@ -28,7 +28,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	}
 
 	@Override
-	public synchronized boolean add(T arg0)
+	public synchronized boolean add(final T arg0)
 	{
 		if(arg0==null)
 			return false;
@@ -78,13 +78,13 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	}
 
 	@Override
-	public void add(int arg0, T arg1)
+	public void add(final int arg0, final T arg1)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public synchronized boolean addAll(Collection<? extends T> arg0)
+	public synchronized boolean addAll(final Collection<? extends T> arg0)
 	{
 		boolean tf=true;
 		for(final T t : arg0)
@@ -93,7 +93,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	}
 
 	@Override
-	public boolean addAll(int arg0, Collection<? extends T> arg1)
+	public boolean addAll(final int arg0, final Collection<? extends T> arg1)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
@@ -105,13 +105,13 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	}
 
 	@Override
-	public boolean contains(Object arg0)
+	public boolean contains(final Object arg0)
 	{
 		return indexOf(arg0)>=0;
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0)
+	public boolean containsAll(final Collection<?> arg0)
 	{
 		for(final Object o : arg0)
 		{
@@ -122,13 +122,13 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	}
 
 	@Override
-	public T get(int arg0)
+	public T get(final int arg0)
 	{
 		return list.get(arg0);
 	}
 
 	@Override
-	public synchronized int indexOf(Object arg0)
+	public synchronized int indexOf(final Object arg0)
 	{
 		if(list.size()==0)
 			return -1;
@@ -162,7 +162,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	}
 
 	@Override
-	public synchronized int lastIndexOf(Object arg0)
+	public synchronized int lastIndexOf(final Object arg0)
 	{
 		int firstIndex=indexOf(arg0);
 		if(firstIndex<0)
@@ -179,13 +179,13 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	}
 
 	@Override
-	public ListIterator<T> listIterator(int arg0)
+	public ListIterator<T> listIterator(final int arg0)
 	{
 		return new ReadOnlyListIterator<T>(list.listIterator(arg0));
 	}
 
 	@Override
-	public synchronized boolean remove(Object arg0)
+	public synchronized boolean remove(final Object arg0)
 	{
 		final int index=indexOf(arg0);
 		if(index >= 0)
@@ -194,25 +194,25 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	}
 
 	@Override
-	public synchronized T remove(int arg0)
+	public synchronized T remove(final int arg0)
 	{
 		return list.remove(arg0);
 	}
 
 	@Override
-	public synchronized boolean removeAll(Collection<?> arg0)
+	public synchronized boolean removeAll(final Collection<?> arg0)
 	{
 		return list.removeAll(arg0);
 	}
 
 	@Override
-	public synchronized boolean retainAll(Collection<?> arg0)
+	public synchronized boolean retainAll(final Collection<?> arg0)
 	{
 		return list.retainAll(arg0);
 	}
 
 	@Override
-	public T set(int arg0, T arg1)
+	public T set(final int arg0, final T arg1)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
@@ -224,7 +224,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	}
 
 	@Override
-	public List<T> subList(int arg0, int arg1)
+	public List<T> subList(final int arg0, final int arg1)
 	{
 		return list.subList(arg0, arg1);
 	}
@@ -238,7 +238,7 @@ public class SortedListWrap<T extends Comparable<T>> implements List<T>
 	@SuppressWarnings("hiding")
 
 	@Override
-	public <T> T[] toArray(T[] arg0)
+	public <T> T[] toArray(final T[] arg0)
 	{
 		return list.toArray(arg0);
 	}

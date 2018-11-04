@@ -49,7 +49,7 @@ public class ClanTax extends StdCommand
 	}
 
 	@Override
-	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String taxStr=(commands.size()>1)?(String)commands.get(commands.size()-1):"";
@@ -127,7 +127,7 @@ public class ClanTax extends StdCommand
 		return false;
 	}
 
-	public void possiblySetClanTaxRate(MOB mob, Clan C, boolean skipChecks, String t)
+	public void possiblySetClanTaxRate(final MOB mob, final Clan C, final boolean skipChecks, final String t)
 	{
 		if(t.length()==0)
 			return;
@@ -144,7 +144,7 @@ public class ClanTax extends StdCommand
 		setClanTaxRate(mob, C, skipChecks,commands,CMath.div(CMath.s_int(t),100));
 	}
 
-	public void setClanTaxRate(MOB mob, Clan C, boolean skipChecks, List<String> commands, double newRate)
+	public void setClanTaxRate(final MOB mob, final Clan C, final boolean skipChecks, final List<String> commands, final double newRate)
 	{
 		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.TAX,true))
 		{

@@ -33,8 +33,8 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdGridArea extends StdArea implements Area, GridZones {
-
+public class StdGridArea extends StdArea implements Area, GridZones
+{
 	@Override
 	public String ID()
 	{
@@ -60,7 +60,7 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	}
 
 	@Override
-	public String getNewRoomID(Room startRoom, int direction)
+	public String getNewRoomID(final Room startRoom, final int direction)
 	{
 		final XYVector xy=posFromRoomID(startRoom);
 		int xChange=0;
@@ -128,7 +128,7 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		return "";
 	}
 
-	protected String roomIDFromPos(int x, int y)
+	protected String roomIDFromPos(final int x, final int y)
 	{
 		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize()))
 			return null;
@@ -139,7 +139,7 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	}
 
 	@Override
-	public Room getGridChild(int x, int y)
+	public Room getGridChild(final int x, final int y)
 	{
 		final String roomID=roomIDFromPos(x,y);
 		if(roomID==null)
@@ -180,12 +180,12 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	}
 
 	@Override
-	public XYVector getRoomXY(Room room)
+	public XYVector getRoomXY(final Room room)
 	{
 		return posFromRoomID(room);
 	}
 
-	protected XYVector posFromRoomID(Room loc)
+	protected XYVector posFromRoomID(final Room loc)
 	{
 		if(loc==null)
 			return null;
@@ -196,19 +196,19 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	}
 
 	@Override
-	public int getGridChildX(Room loc)
+	public int getGridChildX(final Room loc)
 	{
 		return posFromRoomID(loc).x;
 	}
 
 	@Override
-	public int getGridChildY(Room loc)
+	public int getGridChildY(final Room loc)
 	{
 		return posFromRoomID(loc).y;
 	}
 
 	@Override
-	public String getGridChildCode(Room loc)
+	public String getGridChildCode(final Room loc)
 	{
 		return CMLib.map().getExtendedRoomID(loc);
 	}
@@ -220,13 +220,13 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	}
 
 	@Override
-	public Room getGridChild(String childCode)
+	public Room getGridChild(final String childCode)
 	{
 		return CMLib.map().getRoom(childCode);
 	}
 
 	@Override
-	public boolean isMyGridChild(Room loc)
+	public boolean isMyGridChild(final Room loc)
 	{
 		return super.isRoom(loc);
 	}
@@ -244,20 +244,20 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	}
 
 	@Override
-	public void setXGridSize(int x)
+	public void setXGridSize(final int x)
 	{
 		xSize=x;
 	}
 
 	@Override
-	public void setYGridSize(int y)
+	public void setYGridSize(final int y)
 	{
 		ySize=y;
 		yLength=Integer.toString(ySize).length();
 	}
 
 	@Override
-	public Room getGridChild(XYVector xy)
+	public Room getGridChild(final XYVector xy)
 	{
 		if(xy==null)
 			return null;

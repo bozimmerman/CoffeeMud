@@ -34,7 +34,6 @@ import java.util.*;
 */
 public class Spell_GreaterImage extends Spell_MinorImage
 {
-
 	@Override
 	public String ID()
 	{
@@ -54,13 +53,13 @@ public class Spell_GreaterImage extends Spell_MinorImage
 	{
 		return 20 + (super.adjustedLevel(caster, asLevel)/2);
 	}
-	
+
 	@Override
 	protected boolean canSeeAppearance()
 	{
 		return true;
 	}
-	
+
 	@Override
 	protected int canTargetCode()
 	{

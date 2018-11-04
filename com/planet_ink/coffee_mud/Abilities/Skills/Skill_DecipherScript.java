@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_DecipherScript extends StdSkill
 {
 	@Override
@@ -94,7 +93,7 @@ public class Skill_DecipherScript extends StdSkill
 	{
 		return 0;
 	}
-	
+
 	protected Item decryptI=null;
 	protected ItemPossessor possessorI=null;
 	protected boolean success=false;
@@ -153,7 +152,7 @@ public class Skill_DecipherScript extends StdSkill
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -198,13 +197,13 @@ public class Skill_DecipherScript extends StdSkill
 							mob.delEffect(encryptA);
 					}
 				}
-				
+
 			}
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
@@ -219,7 +218,7 @@ public class Skill_DecipherScript extends StdSkill
 		String page="";
 		if((commands.size()>1)&&(CMath.isInteger(commands.get(commands.size()-1))))
 			page=commands.remove(commands.size()-1);
-		String name=CMParms.combine(commands);
+		final String name=CMParms.combine(commands);
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,name);
 		if(target==null)
 		{
@@ -237,20 +236,20 @@ public class Skill_DecipherScript extends StdSkill
 		}
 
 		final Item item=target;
-		
+
 		if((item instanceof Scroll)||(!CMLib.flags().isReadable(item)))
 		{
 			mob.tell(L("You can't decipher that."));
 			return false;
 		}
 
-		Ability encryptA=item.fetchEffect("Encrypto");
+		final Ability encryptA=item.fetchEffect("Encrypto");
 		if(encryptA==null)
 		{
 			Language L=null;
 			for(final Enumeration<Ability> a= item.effects();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				if(A instanceof Language)
 					L=(Language)A;
 			}
@@ -258,14 +257,14 @@ public class Skill_DecipherScript extends StdSkill
 				mob.tell(L("That doesn't appear to be encrypted."));
 			else
 				mob.tell(L("That doesn't appear to be encrypted, just written in another language."));
-			
+
 			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int level = encryptA.abilityCode();
+		final int level = encryptA.abilityCode();
 		int adjustment = 0;
 		if(level > 0)
 		{
@@ -275,14 +274,14 @@ public class Skill_DecipherScript extends StdSkill
 			else
 				adjustment = 0;
 		}
-		
+
 		final boolean success=proficiencyCheck(mob,adjustment,auto);
 
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("<S-NAME> begin(s) decrypting <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			Skill_DecipherScript A=(Skill_DecipherScript)this.beneficialAffect(mob, mob, asLevel, 20);
+			final Skill_DecipherScript A=(Skill_DecipherScript)this.beneficialAffect(mob, mob, asLevel, 20);
 			if(A != null)
 			{
 				A.success = success;

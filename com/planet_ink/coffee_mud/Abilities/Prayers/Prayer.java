@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer extends StdAbility
 {
 	@Override
@@ -88,56 +87,56 @@ public class Prayer extends StdAbility
 		return Ability.ACODE_PRAYER;
 	}
 
-	protected String prayWord(MOB mob)
+	protected String prayWord(final MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
 			return "pray(s) to "+mob.getMyDeity().name();
 		return "pray(s)";
 	}
 
-	protected String prayForWord(MOB mob)
+	protected String prayForWord(final MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
 			return "pray(s) for "+mob.getMyDeity().name();
 		return "pray(s)";
 	}
 
-	protected String inTheNameOf(MOB mob)
+	protected String inTheNameOf(final MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
 			return " in the name of "+mob.getMyDeity().name();
 		return "";
 	}
 
-	protected String againstTheGods(MOB mob)
+	protected String againstTheGods(final MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
 			return " against "+mob.getMyDeity().name();
 		return " against the gods";
 	}
 
-	protected String hisHerDiety(MOB mob)
+	protected String hisHerDiety(final MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
 			return mob.getMyDeity().name();
 		return "<S-HIS-HER> god";
 	}
 
-	protected String ofDiety(MOB mob)
+	protected String ofDiety(final MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
 			return " of "+mob.getMyDeity().name();
 		return "";
 	}
 
-	protected String prayingWord(MOB mob)
+	protected String prayingWord(final MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
 			return "praying to "+mob.getMyDeity().name();
 		return "praying";
 	}
 
-	protected static boolean prayerAlignmentCheck(StdAbility A, MOB mob, boolean auto)
+	protected static boolean prayerAlignmentCheck(final StdAbility A, final MOB mob, final boolean auto)
 	{
 		if((!auto)
 		&&(!mob.isMonster())
@@ -185,9 +184,9 @@ public class Prayer extends StdAbility
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical target, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,target,auto,asLevel))
 			return false;

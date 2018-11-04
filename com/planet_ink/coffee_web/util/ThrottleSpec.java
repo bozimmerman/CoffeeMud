@@ -34,15 +34,15 @@ public class ThrottleSpec
 	private final LinkedList<Pair<Long,Long>> rollingBucket = new LinkedList<Pair<Long,Long>>();
 
 	/**
-	 * Create a ThrottleSpec object for a particular path/domain. 
+	 * Create a ThrottleSpec object for a particular path/domain.
 	 * @param bytesAllowedEachSecond the maximum bytes per second at the domain/path
 	 */
-	public ThrottleSpec(long bytesAllowedEachSecond)
+	public ThrottleSpec(final long bytesAllowedEachSecond)
 	{
 		this.maxBytesEachSecond = new Long(bytesAllowedEachSecond);
 		this.bytesRemaining	= maxBytesEachSecond.longValue() - currentTotal;
 	}
-	
+
 	/**
 	 * Request permission to output up to the number of bytes requested.
 	 * This method responds with the number of bytes permitted.
@@ -58,20 +58,20 @@ public class ThrottleSpec
 			return bytesRemaining;
 		if((rollingBucket.size()>0) && (bytesRemaining <= 0))
 		{
-			try 
-			{ 
-				long remainingTime = (rollingBucket.getFirst().first.longValue() - System.currentTimeMillis());
-				Thread.sleep( remainingTime < 2 ? 1 : remainingTime ); 
-			} 
-			catch (Exception e)
+			try
+			{
+				final long remainingTime = (rollingBucket.getFirst().first.longValue() - System.currentTimeMillis());
+				Thread.sleep( remainingTime < 2 ? 1 : remainingTime );
+			}
+			catch (final Exception e)
 			{
 			}
 			return request(bytesRequested);
 		}
 		return 1;
 	}
-	
-	private void trimBucket(long now)
+
+	private void trimBucket(final long now)
 	{
 		while(rollingBucket.size()>0)
 		{
@@ -82,7 +82,7 @@ public class ThrottleSpec
 			this.bytesRemaining	= maxBytesEachSecond.longValue() - currentTotal;
 		}
 	}
-	
+
 	/**
 	 * Called to report to the throttle object how many bytes were
 	 * actually transmitted in a given instance.

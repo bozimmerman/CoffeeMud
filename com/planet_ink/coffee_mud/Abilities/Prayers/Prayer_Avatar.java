@@ -101,14 +101,14 @@ public class Prayer_Avatar extends Prayer
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMOB, CharState affectedState)
+	public void affectCharState(final MOB affectedMOB, final CharState affectedState)
 	{
 		super.affectCharState(affectedMOB,affectedState);
 		affectedState.setHitPoints(affectedState.getHitPoints()+200);
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectedStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);
 		final int xlvl=2+(int)Math.round(CMath.div(adjustedLevel(invoker(),0),1.5));
@@ -202,7 +202,7 @@ public class Prayer_Avatar extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

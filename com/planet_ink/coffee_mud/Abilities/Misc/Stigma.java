@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Stigma extends StdAbility
 {
 	@Override
@@ -93,7 +92,7 @@ public class Stigma extends StdAbility
 	{
 		return super.flags()|Ability.FLAG_NOUNINVOKING;
 	}
-	
+
 	@Override
 	public boolean isAutoInvoked()
 	{
@@ -107,7 +106,7 @@ public class Stigma extends StdAbility
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 	}
@@ -118,7 +117,7 @@ public class Stigma extends StdAbility
 	protected int playerFaction(final MOB mob, final Faction F)
 	{
 		final int playerNum=mob.fetchFaction(F.factionID());
-		int midway = F.middle();
+		final int midway = F.middle();
 		if(playerNum==midway)
 			return midway;
 		if(playerNum>midway)
@@ -175,7 +174,7 @@ public class Stigma extends StdAbility
 							final FRange oldFR=F.fetchRange(mob.fetchFaction(F.factionID()));
 							if(newFR != oldFR)
 							{
-								FData data = F.makeFactionData(mob);
+								final FData data = F.makeFactionData(mob);
 								factions.put(factionID, data);
 								data.setValue(pfac);
 							}

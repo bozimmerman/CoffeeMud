@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Satire extends BardSkill
 {
 	@Override
@@ -80,7 +79,7 @@ public class Skill_Satire extends BardSkill
 		return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;
 	}
 
-	public void criminalFail(LegalBehavior B, Area A2, MOB mob, MOB witness)
+	public void criminalFail(final LegalBehavior B, final Area A2, final MOB mob, final MOB witness)
 	{
 		final String crime="disrespect for the law";
 		final String desc="Everyone should respect the law.";
@@ -91,7 +90,7 @@ public class Skill_Satire extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)

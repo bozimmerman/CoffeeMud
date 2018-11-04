@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Goto extends At
 {
 	public Goto()
@@ -47,7 +46,7 @@ public class Goto extends At
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		Room room=null;
@@ -151,7 +150,7 @@ public class Goto extends At
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.GOTO);
 	}

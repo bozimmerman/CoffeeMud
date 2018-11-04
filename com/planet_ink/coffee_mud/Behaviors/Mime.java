@@ -34,8 +34,8 @@ import java.util.*;
 */
 public class Mime extends ActiveTicker
 {
-	protected volatile boolean disabled=false;
-	protected volatile CMMsg lastMsg=null;
+	protected volatile boolean	disabled	= false;
+	protected volatile CMMsg	lastMsg		= null;
 
 	@Override
 	public String ID()
@@ -65,9 +65,9 @@ public class Mime extends ActiveTicker
 	@Override
 	protected int canImproveCode()
 	{
-		return Behavior.CAN_MOBS | 
-				Behavior.CAN_EXITS | 
-				Behavior.CAN_ITEMS | 
+		return Behavior.CAN_MOBS |
+				Behavior.CAN_EXITS |
+				Behavior.CAN_ITEMS |
 				Behavior.CAN_ROOMS;
 	}
 
@@ -85,7 +85,7 @@ public class Mime extends ActiveTicker
 			lastMsg=msg;
 	}
 
-	public void fixSNameTo(CMMsg msg, MOB sMOB, Environmental ticking)
+	public void fixSNameTo(final CMMsg msg, final MOB sMOB, final Environmental ticking)
 	{
 		//String src=msg.sourceMessage();
 		String trg=msg.targetMessage();

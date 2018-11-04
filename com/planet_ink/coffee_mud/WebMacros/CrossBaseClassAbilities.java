@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class CrossBaseClassAbilities extends StdWebMacro
 {
 	@Override
@@ -43,7 +42,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final StringBuffer buf=new StringBuffer("");
 		final java.util.Map<String,String> parms=parseParms(parm);
@@ -65,11 +64,11 @@ public class CrossBaseClassAbilities extends StdWebMacro
 			int levelCap=C.getLevelCap();
 			if(levelCap < 0)
 				levelCap = CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
-			List<AbilityMapper.AbilityMapping> list = CMLib.ableMapper().getUpToLevelListings(C.ID(), levelCap, true, false);
+			final List<AbilityMapper.AbilityMapping> list = CMLib.ableMapper().getUpToLevelListings(C.ID(), levelCap, true, false);
 			int ct=0;
-			for(AbilityMapper.AbilityMapping mapping : list)
+			for(final AbilityMapper.AbilityMapping mapping : list)
 			{
-				Ability A=(Ability)CMClass.getPrototypeByID(CMClass.CMObjectType.ABILITY, mapping.abilityID());
+				final Ability A=(Ability)CMClass.getPrototypeByID(CMClass.CMObjectType.ABILITY, mapping.abilityID());
 				if(A==null)
 					Log.errOut("CrossBase!","Ability not found?! : "+mapping.abilityID());
 				else
@@ -92,7 +91,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 			int ct=0;
 			for(final Enumeration<Ability> a= CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=a.nextElement();
+				final Ability A=a.nextElement();
 				if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
 				&&(!CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
 				&&(!CMLib.ableMapper().getSecretSkill(A.ID())))
@@ -102,8 +101,8 @@ public class CrossBaseClassAbilities extends StdWebMacro
 		}
 		else
 		{
-			String baseClass=httpReq.getUrlParameter("BASECLASS");
-			if(baseClass==null) 
+			final String baseClass=httpReq.getUrlParameter("BASECLASS");
+			if(baseClass==null)
 				return " @break@";
 			if(baseClass.length()>0)
 			{

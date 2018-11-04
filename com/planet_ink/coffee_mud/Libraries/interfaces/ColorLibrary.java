@@ -33,7 +33,7 @@ import java.util.*;
  * The color library does just what it says, provides access to methods
  * to translate colors from words, to ansi codes, to html tags, and
  * combine them all in ways appropriate for their use.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -44,7 +44,7 @@ public interface ColorLibrary extends CMLibrary
 	 * such as blink adn so forth.  Includes back and foreground,
 	 * and lots of codes for each one, including ansi codes,
 	 * html tags, ^ codes, and so forth.
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 */
 	public enum Color
@@ -80,14 +80,14 @@ public interface ColorLibrary extends CMLibrary
 		BGBLACK("\033[40m"," style=\"background-color: black\""),
 		BGDEFAULT("\033[49m"," style=\"background-color: white\""),
 		;
-		
+
 		private final String	ansiCode;
 		private final String	htmlTag;
 		private final char		codeLetter;
 		private final boolean	isBasicColor;
 		private final boolean	isExtendedColor;
-		
-		private Color(String ansiCode, String htmlTag, char codeLetter)
+
+		private Color(final String ansiCode, final String htmlTag, final char codeLetter)
 		{
 			this.ansiCode = ansiCode;
 			this.codeLetter = codeLetter;
@@ -95,12 +95,12 @@ public interface ColorLibrary extends CMLibrary
 			isBasicColor = ((this.codeLetter != 'K') && (this.codeLetter != '\0'));
 			isExtendedColor = (this.codeLetter != '\0');
 		}
-		
-		private Color(String ansiCode, String htmlTag)
+
+		private Color(final String ansiCode, final String htmlTag)
 		{
 			this(ansiCode, htmlTag, '\0');
 		}
-		
+
 		/**
 		 * True if its a basic 16 color, but also non-black.
 		 * @return its a basic 16 color, but also non-black.
@@ -109,7 +109,7 @@ public interface ColorLibrary extends CMLibrary
 		{
 			return isBasicColor;
 		}
-		
+
 		/**
 		 * True if its a basic 16 color, including black.
 		 * @return its a basic 16 color, including black.
@@ -145,7 +145,7 @@ public interface ColorLibrary extends CMLibrary
 		{
 			return codeLetter;
 		}
-		
+
 		/**
 		 * Returns the name, but with - instead of _
 		 * @return the name, but with - instead of _
@@ -154,7 +154,7 @@ public interface ColorLibrary extends CMLibrary
 		{
 			return name();
 		}
-		
+
 	}
 
 	/**
@@ -173,9 +173,9 @@ public interface ColorLibrary extends CMLibrary
 		null,
 		null
 	};
-	
+
 	/**
-	 * A mapping of the escape codes for the basic 16 ansi 
+	 * A mapping of the escape codes for the basic 16 ansi
 	 * colors to the basic 16 background ansi color codes
 	 */
 	public static final Map<String,String> MAP_ANSICOLOR_TO_ANSIBGCOLOR=new SHashtable<String,String>(new Object[][]{
@@ -203,7 +203,7 @@ public interface ColorLibrary extends CMLibrary
 	/**
 	 * The special color codes are named color codes which are
 	 * usually renameable by the user to other basic colors.
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -236,18 +236,18 @@ public interface ColorLibrary extends CMLibrary
 		UNEXPDOORDESC('u'),
 		WEATHER('J')
 		;
-		
+
 		private final char		cchar;
 		private final String	underStr;
 		private final String	escapeCode;
-		
-		private SpecialColor(char escapeChar)
+
+		private SpecialColor(final char escapeChar)
 		{
 			this.cchar = escapeChar;
 			this.underStr = name().replace('_', '-');
 			this.escapeCode = "^"+cchar;
 		}
-		
+
 		/**
 		 * Returns the ^ color code
 		 * @return the ^ color code
@@ -256,7 +256,7 @@ public interface ColorLibrary extends CMLibrary
 		{
 			return cchar;
 		}
-		
+
 		/**
 		 * Returns the FULL ^ color code
 		 * @return the FULL ^ color code
@@ -265,7 +265,7 @@ public interface ColorLibrary extends CMLibrary
 		{
 			return escapeCode;
 		}
-		
+
 		/**
 		 * Returns the name with _ replaced by -
 		 * @return the name with _ replaced by -
@@ -280,12 +280,12 @@ public interface ColorLibrary extends CMLibrary
 	 * Color code prefix to designate background color (^ for foreground)
 	 */
 	public static final char COLORCODE_BACKGROUND='~';
-	
+
 	/**
 	 * Color code prefix to designate foreground ansi color
 	 */
 	public static final char COLORCODE_FANSI256='#';
-	
+
 	/**
 	 * Color code prefix to designate background ansi color
 	 */
@@ -305,7 +305,7 @@ public interface ColorLibrary extends CMLibrary
 		 * @return the foreground basic 16 color code
 		 */
 		public char foregroundCode();
-		
+
 		/**
 		 * Returns the background basic 16 color code
 		 * @return the background basic 16 color code
@@ -329,7 +329,7 @@ public interface ColorLibrary extends CMLibrary
 	public String translateCMCodeToANSI(String code);
 
 	/**
-	 * Translates an ansi escape sequence to a 
+	 * Translates an ansi escape sequence to a
 	 * basic 16 or special color code, anything
 	 * that starts with ^ to the .
 	 * @see ColorLibrary#translateCMCodeToANSI(String)
@@ -376,18 +376,18 @@ public interface ColorLibrary extends CMLibrary
 	 * @return the html tag lookup table
 	 */
 	public String[] standardHTMLlookups();
-	
+
 	/**
 	 * Returns the standard ansi escape color lookup table, which
-	 * maps an array indexed by the ^ color codes to an ansi escape 
+	 * maps an array indexed by the ^ color codes to an ansi escape
 	 * color
 	 * @see ColorLibrary#standardHTMLlookups()
 	 * @return the ansi escape color lookup table
 	 */
 	public String[] standardColorLookups();
-	
+
 	/**
-	 * Generates a new ColorState object from the given 
+	 * Generates a new ColorState object from the given
 	 * foreground and background basic 16 ^ color codes.
 	 * @see ColorLibrary.ColorState
 	 * @param fg the foreground color code char
@@ -395,7 +395,7 @@ public interface ColorLibrary extends CMLibrary
 	 * @return the new ColorState object
 	 */
 	public ColorState valueOf(final char fg, final char bg);
-	
+
 	/**
 	 * A ColorState object that represents the basic normal
 	 * color, typically grey with no background.

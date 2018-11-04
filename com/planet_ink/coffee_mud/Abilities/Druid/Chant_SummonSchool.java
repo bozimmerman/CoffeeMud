@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SummonSchool extends Chant
 {
 	@Override
@@ -97,7 +96,7 @@ public class Chant_SummonSchool extends Chant
 				unInvoke();
 				return true;
 			}
-			int intAdjustment = (msg.source().charStats().getMaxStat(CharStats.STAT_INTELLIGENCE) 
+			int intAdjustment = (msg.source().charStats().getMaxStat(CharStats.STAT_INTELLIGENCE)
 									- mob.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2;
 			if(intAdjustment < 1)
 				intAdjustment = 1;
@@ -127,14 +126,14 @@ public class Chant_SummonSchool extends Chant
 			return;
 
 		final MOB mob=(MOB)affected;
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null)
 			return;
 		if(!CMLib.flags().isUnderWateryRoom(R))
 		{
 			unInvoke();
 		}
-		
+
 		if(msg.amISource(mob))
 		{
 			if((
@@ -201,7 +200,7 @@ public class Chant_SummonSchool extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -217,8 +216,8 @@ public class Chant_SummonSchool extends Chant
 			mob.tell(L("You must be in your animal form to call a mate."));
 			return false;
 		}
-		
-		Room R=mob.location();
+
+		final Room R=mob.location();
 		if(R==null)
 			return false;
 		if(!CMLib.flags().isUnderWateryRoom(R))
@@ -226,9 +225,9 @@ public class Chant_SummonSchool extends Chant
 			mob.tell(L("You can only summon a school underwater."));
 			return false;
 		}
-		
-		String raceName = mob.charStats().getMyRace().name();
-		String raceCat = mob.charStats().getMyRace().racialCategory();
+
+		final String raceName = mob.charStats().getMyRace().name();
+		final String raceCat = mob.charStats().getMyRace().racialCategory();
 		if((raceCat.equalsIgnoreCase("Fish"))||(raceCat.equalsIgnoreCase("Sea Mammal")))
 		{
 			// yay

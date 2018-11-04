@@ -168,7 +168,7 @@ public class Socials extends StdLibrary implements SocialsList
 		return Resources.getResource("PARSED_SOCIALS: "+filename)!=null;
 	}
 
-	private String realName(String name)
+	private String realName(final String name)
 	{
 		String shortName=name.toUpperCase().trim();
 		final int spdex=shortName.indexOf(' ');
@@ -177,7 +177,7 @@ public class Socials extends StdLibrary implements SocialsList
 		return shortName;
 	}
 
-	private void put(Map<String,List<Social>> H, String name, Social S)
+	private void put(final Map<String,List<Social>> H, String name, final Social S)
 	{
 		name=realName(name);
 		List<Social> V2=H.get(name);
@@ -198,13 +198,13 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public void put(String name, Social S)
+	public void put(final String name, final Social S)
 	{
 		put(getSocialHash(),name,S);
 	}
 
 	@Override
-	public void remove(String name)
+	public void remove(final String name)
 	{
 		final String realName=realName(name);
 		final List<Social> V2=getSocialHash().get(realName);
@@ -226,7 +226,7 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public void addSocial(Social S)
+	public void addSocial(final Social S)
 	{
 		put(S.name(),S);
 		unloadDerivedResources();
@@ -260,7 +260,7 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public void modifySocialOthersCode(MOB mob, Social me, int showNumber, int showFlag)
+	public void modifySocialOthersCode(final MOB mob, final Social me, final int showNumber, final int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -301,7 +301,7 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public void modifySocialTargetCode(MOB mob, Social me, int showNumber, int showFlag)
+	public void modifySocialTargetCode(final MOB mob, final Social me, final int showNumber, final int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -337,7 +337,7 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public void modifySocialSourceCode(MOB mob, Social me, int showNumber, int showFlag)
+	public void modifySocialSourceCode(final MOB mob, final Social me, final int showNumber, final int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -372,7 +372,7 @@ public class Socials extends StdLibrary implements SocialsList
 
 	/**
 	 * Finds the first and only the first instance of the second parameter string in the first string,
-	 * and replaces it with the third string.  Returns the first string with or without changes. 
+	 * and replaces it with the third string.  Returns the first string with or without changes.
 	 * This method is case sensitive.
 	 * @param str the string to look inside of
 	 * @param thisStr the string to look for inside the first string
@@ -395,7 +395,7 @@ public class Socials extends StdLibrary implements SocialsList
 				return withThisStr+str.substring(thisStr.length());
 			if(thisStr.toUpperCase().startsWith(str.toUpperCase()))
 				return withThisStr;
-			int x=str.indexOf(' ');
+			final int x=str.indexOf(' ');
 			if(x>1)
 			{
 				if(thisStr.toUpperCase().startsWith(str.substring(0,x).toUpperCase()))
@@ -404,9 +404,9 @@ public class Socials extends StdLibrary implements SocialsList
 		}
 		return str;
 	}
-	
+
 	@Override
-	public boolean modifySocialInterface(MOB mob, String socialString)
+	public boolean modifySocialInterface(final MOB mob, final String socialString)
 		throws IOException
 	{
 		final Vector<String> socialsParse=CMParms.parse(socialString);
@@ -606,7 +606,7 @@ public class Socials extends StdLibrary implements SocialsList
 					if(soc.getOthersCode()==CMMsg.MSG_OK_ACTION)
 						soc.setOthersCode(CMMsg.MSG_HANDS);
 					modifySocialOthersCode(mob,soc,++showNumber,showFlag);
-					
+
 					if(soc.targetName().equals("<T-NAME>"))
 					{
 						soc.setTargetMessage(CMLib.genEd().prompt(mob,soc.getTargetMessage(),++showNumber,showFlag,L("Target-sees string"),false,true));
@@ -727,7 +727,7 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public Social fetchSocial(final String fullSocialID, boolean exactOnly)
+	public Social fetchSocial(final String fullSocialID, final boolean exactOnly)
 	{
 		final Map<String,List<Social>> soc = getSocialHash();
 		final int x=fullSocialID.indexOf(' ');
@@ -744,7 +744,7 @@ public class Socials extends StdLibrary implements SocialsList
 				{
 					listS=soc.get(key);
 					if(listS.size()>0)
-						baseID = listS.get(0).baseName(); 
+						baseID = listS.get(0).baseName();
 					break;
 				}
 			}
@@ -754,7 +754,7 @@ public class Socials extends StdLibrary implements SocialsList
 		return fetchSocial(listS, (baseID + " " + rest).trim(), exactOnly);
 	}
 
-	protected Social fetchSocial(final Map<String,List<Social>> soc, String baseName, String target, String arg, final boolean exactOnly)
+	protected Social fetchSocial(final Map<String,List<Social>> soc, String baseName, final String target, final String arg, final boolean exactOnly)
 	{
 		baseName=baseName.toUpperCase().trim();
 		List<Social> listS=soc.get(baseName);
@@ -790,7 +790,7 @@ public class Socials extends StdLibrary implements SocialsList
 		if(C.size()==0)
 			return null;
 
-		String socialName=C.get(0);
+		final String socialName=C.get(0);
 		final String target= (C.size()>1) ? C.get(1).toUpperCase().trim() : "";
 		final String arg = (C.size() > 2) ? C.get(2).toUpperCase().trim() : "";
 		if((target.equals("SELF"))||(target.equals("ALL")))
@@ -802,7 +802,7 @@ public class Socials extends StdLibrary implements SocialsList
 		{
 			for(final Social S : listS)
 			{
-				if(!S.isTargetable() 
+				if(!S.isTargetable()
 				&&(S.targetName().length() == 0))
 					return S;
 			}
@@ -836,7 +836,7 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public List<Social> enumSocialSet(int index)
+	public List<Social> enumSocialSet(final int index)
 	{
 		if((index<0)||(index>numSocialSets()))
 			return null;
@@ -852,7 +852,7 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public Social makeDefaultSocial(String name, String type)
+	public Social makeDefaultSocial(final String name, String type)
 	{
 		final Social soc=(Social)CMClass.getCommon("DefaultSocial");
 		if((type.length()>0)&&(!type.startsWith(" ")))
@@ -907,7 +907,7 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public void save(MOB whom)
+	public void save(final MOB whom)
 	{
 		if(!isLoaded())
 			return;
@@ -1023,12 +1023,12 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public String findSocialName(String named, boolean exactOnly)
+	public String findSocialName(final String named, final boolean exactOnly)
 	{
 		return findSocialName(getSocialHash(),named,exactOnly);
 	}
 
-	protected List<Social> getSocialsSet(String named, boolean exactOnly)
+	protected List<Social> getSocialsSet(String named, final boolean exactOnly)
 	{
 		if(named == null)
 			return null;
@@ -1064,19 +1064,19 @@ public class Socials extends StdLibrary implements SocialsList
 				{
 					listS=soc.get(key);
 					if(listS.size()>0)
-						return listS.get(0).baseName(); 
+						return listS.get(0).baseName();
 				}
 			}
 			return null;
 		}
-		
+
 		if(listS.size()>0)
-			return listS.get(0).baseName(); 
+			return listS.get(0).baseName();
 		return null;
 	}
 
 	@Override
-	public String getSocialsHelp(MOB mob, String named, boolean exact)
+	public String getSocialsHelp(final MOB mob, final String named, final boolean exact)
 	{
 		final String realName=findSocialName(named,exact);
 		if(realName==null)

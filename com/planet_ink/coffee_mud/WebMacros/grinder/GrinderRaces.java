@@ -41,7 +41,7 @@ public class GrinderRaces
 		return "GrinderRaces";
 	}
 
-	public static String getPStats(char c, HTTPRequest httpReq)
+	public static String getPStats(final char c, final HTTPRequest httpReq)
 	{
 		boolean changes = false;
 		final PhyStats adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
@@ -72,7 +72,7 @@ public class GrinderRaces
 		return CMLib.coffeeMaker().getPhyStatsStr(adjPStats);
 	}
 
-	public static String getCStats(char c, HTTPRequest httpReq)
+	public static String getCStats(final char c, final HTTPRequest httpReq)
 	{
 		boolean changes = false;
 		final CharStats adjCStats=(CharStats)CMClass.getCommon("DefaultCharStats");
@@ -101,7 +101,7 @@ public class GrinderRaces
 		return CMLib.coffeeMaker().getCharStatsStr(adjCStats);
 	}
 
-	public static String getCState(char c, HTTPRequest httpReq)
+	public static String getCState(final char c, final HTTPRequest httpReq)
 	{
 		boolean changes = false;
 		final CharState adjCState=(CharState)CMClass.getCommon("DefaultCharState");
@@ -132,7 +132,7 @@ public class GrinderRaces
 		return CMLib.coffeeMaker().getCharStateStr(adjCState);
 	}
 
-	public static List<Item> itemList(List<? extends Item> items, char c, HTTPRequest httpReq, boolean one)
+	public static List<Item> itemList(List<? extends Item> items, final char c, final HTTPRequest httpReq, final boolean one)
 	{
 		if(items==null)
 			items=new Vector<Item>();
@@ -162,7 +162,7 @@ public class GrinderRaces
 		return classes;
 	}
 
-	public static void setDynAbilities(Modifiable M, HTTPRequest httpReq)
+	public static void setDynAbilities(final Modifiable M, final HTTPRequest httpReq)
 	{
 		final boolean supportsRoles=CMParms.contains(M.getStatCodes(), "GETRABLEROLE");
 		final DVector theclasses=new DVector(6);
@@ -189,7 +189,7 @@ public class GrinderRaces
 					String roles=null;
 					if(supportsRoles)
 						roles=httpReq.getUrlParameter("RABROL"+num);
-					if(roles==null) 
+					if(roles==null)
 						roles="";
 					theclasses.addElement(behav,prof,qual,levl,parm,roles);
 				}
@@ -210,10 +210,10 @@ public class GrinderRaces
 		}
 	}
 
-	public static void setDynEffects(Modifiable M, HTTPRequest httpReq)
+	public static void setDynEffects(final Modifiable M, final HTTPRequest httpReq)
 	{
 		final QuadVector<String,String,String,String> theclasses=new QuadVector<String,String,String,String>();
-		boolean supportsRoles=CMParms.contains(M.getStatCodes(), "GETREFFROLE");
+		final boolean supportsRoles=CMParms.contains(M.getStatCodes(), "GETREFFROLE");
 		if(httpReq.isUrlParameter("REFFS1"))
 		{
 			int num=1;
@@ -231,7 +231,7 @@ public class GrinderRaces
 					String roles=null;
 					if(supportsRoles)
 						roles=httpReq.getUrlParameter("REFROL"+num);
-					if(roles==null) 
+					if(roles==null)
 						roles="";
 					theclasses.addElement(behav,parm,levl,roles);
 				}
@@ -250,7 +250,7 @@ public class GrinderRaces
 		}
 	}
 
-	public static void setDynImmunities(Modifiable M, HTTPRequest httpReq)
+	public static void setDynImmunities(final Modifiable M, final HTTPRequest httpReq)
 	{
 		final List<String> theclasses=new Vector<String>();
 		if(httpReq.isUrlParameter("IABLE1"))
@@ -272,7 +272,7 @@ public class GrinderRaces
 			M.setStat("GETIABLE"+i, theclasses.get(i));
 	}
 
-	public static QuadVector<String,Integer,Integer,Boolean> cabilities(HTTPRequest httpReq)
+	public static QuadVector<String,Integer,Integer,Boolean> cabilities(final HTTPRequest httpReq)
 	{
 		final QuadVector<String,Integer,Integer,Boolean> theclasses=new QuadVector<String,Integer,Integer,Boolean>();
 		if(httpReq.isUrlParameter("CABLES1"))
@@ -287,7 +287,7 @@ public class GrinderRaces
 					if(prof==null)
 						prof="0";
 					String qual=httpReq.getUrlParameter("CABQUA"+num);
-					if(qual==null) 
+					if(qual==null)
 						qual="";// null means unchecked
 					String levl=httpReq.getUrlParameter("CABLVL"+num);
 					if(levl==null)
@@ -301,7 +301,7 @@ public class GrinderRaces
 		return theclasses;
 	}
 
-	public static String modifyRace(HTTPRequest httpReq, java.util.Map<String,String> parms, Race oldR, Race R)
+	public static String modifyRace(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final Race oldR, final Race R)
 	{
 		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)
@@ -368,7 +368,7 @@ public class GrinderRaces
 		}
 		R.setStat("WEAR",""+mask);
 		R.setStat("AVAIL",""+CMath.s_long(httpReq.getUrlParameter("PLAYABLEID")));
-		String bodyKill=httpReq.getUrlParameter("BODYKILL");
+		final String bodyKill=httpReq.getUrlParameter("BODYKILL");
 		if(bodyKill != null)
 			R.setStat("BODYKILL",""+bodyKill.equalsIgnoreCase("on"));
 		R.setStat("DISFLAGS",""+CMath.s_long(httpReq.getUrlParameter("DISFLAGS")));
@@ -439,7 +439,7 @@ public class GrinderRaces
 		setDynEffects(R,httpReq);
 		setDynImmunities(R,httpReq);
 
-		QuadVector<String,Integer,Integer,Boolean> CV=cabilities(httpReq);
+		final QuadVector<String,Integer,Integer,Boolean> CV=cabilities(httpReq);
 		R.setStat("NUMCABLE", ""+CV.size());
 		for(int i=0;i<CV.size();i++)
 		{

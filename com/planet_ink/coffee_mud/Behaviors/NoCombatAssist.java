@@ -40,8 +40,8 @@ public class NoCombatAssist extends StdBehavior
 		return "NoCombatAssist";
 	}
 
-	int tickTocker=1;
-	int tickTock=0;
+	int	tickTocker	= 1;
+	int	tickTock	= 0;
 
 	@Override
 	public String accountForYourself()

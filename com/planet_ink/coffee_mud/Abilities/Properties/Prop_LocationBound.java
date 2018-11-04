@@ -51,7 +51,7 @@ public class Prop_LocationBound extends Property
 	{
 		return Ability.CAN_ITEMS|Ability.CAN_MOBS;
 	}
-	
+
 	protected enum BoundToType
 	{
 		CURRENT_ROOM,
@@ -77,7 +77,7 @@ public class Prop_LocationBound extends Property
 			if(text.length()>0)
 			{
 				boundTo=null;
-				for(String roomID : CMParms.parseSemicolons(text,true))
+				for(final String roomID : CMParms.parseSemicolons(text,true))
 				{
 					if(roomID.equalsIgnoreCase("ROOM"))
 						type=BoundToType.CURRENT_ROOM;
@@ -130,9 +130,9 @@ public class Prop_LocationBound extends Property
 		}
 		return type;
 	}
-	
+
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		boundTo=null;
@@ -154,7 +154,7 @@ public class Prop_LocationBound extends Property
 						return true;
 				}
 			}
-			
+
 			if(affected instanceof MOB)
 			{
 				final MOB M=(MOB)affected;
@@ -212,7 +212,7 @@ public class Prop_LocationBound extends Property
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -240,7 +240,7 @@ public class Prop_LocationBound extends Property
 			if((whereTo==null) || (R==null))
 				return true;
 
-			BoundToType type = this.getBoundToType();
+			final BoundToType type = this.getBoundToType();
 			if(type == null)
 			{
 				if(!this.doesFailExceptionApply())

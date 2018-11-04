@@ -69,7 +69,7 @@ public class Healer extends Cleric
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -178,7 +178,7 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_DivineResistance",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_DivineConstitution",false,CMParms.parseSemicolons("Prayer_HolyAura;Prayer_DeathsDoor;Prayer_Heal",true));
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_TrueResurrection",true);
 		// level 30 == healing aura
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_MassForgive",false,CMParms.parseSemicolons("Prayer_Forgive(100)",true));
@@ -191,7 +191,7 @@ public class Healer extends Cleric
 	}
 
 	@Override
-	public int classLevelModifier(MOB myChar, Ability skill, int level)
+	public int classLevelModifier(final MOB myChar, final Ability skill, final int level)
 	{
 		if((myChar.charStats().getCurrentClass()==this)
 		&&(skill.ID().equals("Prayer_CureDisease")||skill.ID().equals("Prayer_MassCureDisease")))
@@ -220,7 +220,7 @@ public class Healer extends Cleric
 		return super.tick(myChar,tickID);
 	}
 
-	public void affectHealingAura(MOB myChar)
+	public void affectHealingAura(final MOB myChar)
 	{
 		Ability A = myChar.fetchEffect("Prayer_HealingAura");
 		if((myChar.charStats().getClassLevel(this)>=30)&&(CMLib.flags().isGood(myChar)))
@@ -301,7 +301,7 @@ public class Healer extends Cleric
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

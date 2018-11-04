@@ -26,9 +26,9 @@ import com.planet_ink.coffee_web.util.RequestStats;
 */
 
 /**
- * Manages a relatively static set of converter classes 
+ * Manages a relatively static set of converter classes
  * and the root contexts needed to access them.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -36,12 +36,12 @@ public class MimeConverter implements MimeConverterManager
 {
 	private final Map<MIMEType,Class<? extends HTTPOutputConverter>> 	  converters; 	// map of registered converters by context
 	private final Map<Class<? extends HTTPOutputConverter>, RequestStats> requestStats; // stats about each converter
-	
+
 	/**
 	 * Construct a mime config manager, loading the converters from the config given
 	 * @param config the configuration for the web server
 	 */
-	public MimeConverter(CWConfig config)
+	public MimeConverter(final CWConfig config)
 	{
 		converters = new Hashtable<MIMEType,Class<? extends HTTPOutputConverter>>();
 		requestStats = new Hashtable<Class<? extends HTTPOutputConverter>, RequestStats>();
@@ -68,8 +68,8 @@ public class MimeConverter implements MimeConverterManager
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Internal method to register a servlets existence, and its context.
 	 * This will go away when a config file is permitted
@@ -77,12 +77,12 @@ public class MimeConverter implements MimeConverterManager
 	 * @param converterClass the class of the converter
 	 */
 	@Override
-	public void registerConverter(MIMEType mime, Class<? extends HTTPOutputConverter> converterClass)
+	public void registerConverter(final MIMEType mime, final Class<? extends HTTPOutputConverter> converterClass)
 	{
 		converters.put(mime, converterClass);
 		requestStats.put(converterClass, new RequestStats());
 	}
-	
+
 	/**
 	 * For anyone externally interested, will return the list of converter classes
 	 * that are registered
@@ -101,7 +101,7 @@ public class MimeConverter implements MimeConverterManager
 	 * @return the servlet class, if any, or null
 	 */
 	@Override
-	public Class<? extends HTTPOutputConverter> findConverter(MIMEType mime)
+	public Class<? extends HTTPOutputConverter> findConverter(final MIMEType mime)
 	{
 		return converters.get(mime);
 	}
@@ -113,7 +113,7 @@ public class MimeConverter implements MimeConverterManager
 	 * @return the converter stats object
 	 */
 	@Override
-	public RequestStats getConverterStats(Class<? extends HTTPOutputConverter> converterClass)
+	public RequestStats getConverterStats(final Class<? extends HTTPOutputConverter> converterClass)
 	{
 		return requestStats.get(converterClass);
 	}

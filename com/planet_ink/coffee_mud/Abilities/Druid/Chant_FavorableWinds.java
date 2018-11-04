@@ -33,7 +33,6 @@ import java.util.List;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_FavorableWinds extends Chant
 {
 	@Override
@@ -45,7 +44,7 @@ public class Chant_FavorableWinds extends Chant
 	private final static String	localizedName	= CMLib.lang().L("Favorable Winds");
 
 	private int abilityCode=1;
-	
+
 	@Override
 	public String name()
 	{
@@ -85,7 +84,7 @@ public class Chant_FavorableWinds extends Chant
 	}
 
 	@Override
-	public void setAbilityCode(int code)
+	public void setAbilityCode(final int code)
 	{
 		abilityCode = code;
 	}
@@ -97,7 +96,7 @@ public class Chant_FavorableWinds extends Chant
 	}
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		if(CMath.isInteger(text))
 			abilityCode = CMath.s_int(text);
@@ -117,7 +116,7 @@ public class Chant_FavorableWinds extends Chant
 		{
 			if(affected instanceof Item)
 			{
-				Room R=CMLib.map().roomLocation(affected);
+				final Room R=CMLib.map().roomLocation(affected);
 				if(R!=null)
 					R.showHappens(CMMsg.MSG_OK_VISUAL,L("The favorable winds die down."));
 			}
@@ -148,7 +147,7 @@ public class Chant_FavorableWinds extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -159,12 +158,12 @@ public class Chant_FavorableWinds extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R = mob.location();
 		Room shipR = null;
 		Item target=null;
-		
+
 		if((R!=null)&&(R.getArea() instanceof BoardableShip)&&(commands.size()==0))
 		{
 			target=((BoardableShip)R.getArea()).getShipItem();
@@ -177,7 +176,7 @@ public class Chant_FavorableWinds extends Chant
 			Room checkRoom = R;
 			if((R==null)||(R.findItem(CMParms.combine(commands,0))==null))
 				checkRoom=shipR;
-			Item I=super.getTarget(mob, checkRoom, givenTarget, commands, Room.FILTER_ROOMONLY);
+			final Item I=super.getTarget(mob, checkRoom, givenTarget, commands, Room.FILTER_ROOMONLY);
 			if(I instanceof BoardableShip)
 			{
 				target=I;
@@ -198,7 +197,7 @@ public class Chant_FavorableWinds extends Chant
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
@@ -210,7 +209,7 @@ public class Chant_FavorableWinds extends Chant
 				R.send(mob,msg);
 				if(shipR!=null)
 					shipR.send(mob, msg);
-				Ability A=beneficialAffect(mob,target,asLevel,0);
+				final Ability A=beneficialAffect(mob,target,asLevel,0);
 				if(A!=null)
 				{
 					int amt=1;

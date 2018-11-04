@@ -58,7 +58,7 @@ public class MultiListEnumeration<K> implements Enumeration<K>
 		}
 	}
 
-	public void addEnumeration(List<K> set)
+	public void addEnumeration(final List<K> set)
 	{
 		if(set != null)
 			lists.add(set);

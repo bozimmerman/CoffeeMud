@@ -86,7 +86,7 @@ public class Prop_StatAdjuster extends Property
 
 	protected boolean adjustMax=false;
 	protected boolean doAllCodes=false;
-	
+
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
@@ -121,7 +121,7 @@ public class Prop_StatAdjuster extends Property
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if(newMiscText.length()>0)
@@ -144,22 +144,22 @@ public class Prop_StatAdjuster extends Property
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if((code!=null)&&(code.equalsIgnoreCase("LEVEL")))
 		{
-			int level = 0;
+			final int level = 0;
 			return ""+level;
 		}
 		return super.getStat(code);
 	}
-	
+
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if((code!=null)&&(code.equalsIgnoreCase("LEVEL")))
 		{
-	
+
 		}
 		else
 			super.setStat(code, val);

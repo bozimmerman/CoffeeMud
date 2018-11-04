@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Disease_Lycanthropy extends Disease
 {
 	@Override
@@ -170,7 +169,7 @@ public class Disease_Lycanthropy extends Disease
 		}
 	}
 
-	public MOB victimHere(Room room, MOB mob)
+	public MOB victimHere(final Room room, final MOB mob)
 	{
 		if(room==null)
 			return null;
@@ -189,7 +188,7 @@ public class Disease_Lycanthropy extends Disease
 		return null;
 	}
 
-	protected boolean findVictim(MOB mob, Room room, List<Room> rooms, int depth)
+	protected boolean findVictim(final MOB mob, final Room room, final List<Room> rooms, final int depth)
 	{
 		if(depth>5)
 			return false;
@@ -214,7 +213,7 @@ public class Disease_Lycanthropy extends Disease
 		return false;
 	}
 
-	public void tickLycanthropically(MOB mob)
+	public void tickLycanthropically(final MOB mob)
 	{
 		if(mob==null)
 			return;

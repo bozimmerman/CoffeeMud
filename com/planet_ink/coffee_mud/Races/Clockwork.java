@@ -44,7 +44,7 @@ public class Clockwork extends MetalGolem
 	{
 		super();
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Clockwork");
 
 	@Override
@@ -52,7 +52,7 @@ public class Clockwork extends MetalGolem
 	{
 		return localizedStaticName;
 	}
-	
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_DoomAura extends Prayer_BladeBarrier
 {
 	@Override
@@ -76,7 +75,7 @@ public class Prayer_DoomAura extends Prayer_BladeBarrier
 	}
 
 	@Override
-	protected void doDamage(MOB srcM, MOB targetM, int damage)
+	protected void doDamage(final MOB srcM, final MOB targetM, final int damage)
 	{
 		CMLib.combat().postDamage(srcM, targetM,this,damage,CMMsg.TYP_UNDEAD|CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS,Weapon.TYPE_BURNING,L("The aura of doom around <S-NAME> <DAMAGE> <T-NAME>."));
 	}

@@ -69,7 +69,7 @@ public class TaxCollector extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		demanded=null;
@@ -78,7 +78,7 @@ public class TaxCollector extends StdBehavior
 		graceTime=CMParms.getParmInt(newParms,"GRACE",1000*60*60);
 	}
 
-	protected boolean belongsToAnOweingClan(MOB M)
+	protected boolean belongsToAnOweingClan(final MOB M)
 	{
 		for(final String clanID : peopleWhoOwe)
 		{
@@ -88,7 +88,7 @@ public class TaxCollector extends StdBehavior
 		return false;
 	}
 
-	public double[] totalMoneyOwed(MOB collector,MOB M)
+	public double[] totalMoneyOwed(final MOB collector,final MOB M)
 	{
 		final double[] owed=new double[4];
 		if((peopleWhoOwe.contains(M.Name()))

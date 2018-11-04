@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Play_Symphony extends Play
 {
 	@Override
@@ -640,7 +639,7 @@ public class Play_Symphony extends Play
 	}
 
 	@Override
-	public void affectCharStats(MOB mob, CharStats stats)
+	public void affectCharStats(final MOB mob, final CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
 		switch(toDoCode)
@@ -662,7 +661,7 @@ public class Play_Symphony extends Play
 	}
 
 	@Override
-	public void affectPhyStats(Physical mob, PhyStats stats)
+	public void affectPhyStats(final Physical mob, final PhyStats stats)
 	{
 		super.affectPhyStats(mob,stats);
 		if(((toDoCode==CODE_UPENVPER2)||(toDoCode==CODE_UPENVPER5))
@@ -687,7 +686,7 @@ public class Play_Symphony extends Play
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -788,7 +787,7 @@ public class Play_Symphony extends Play
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		instrument=null;
 		toDoCode=-1;

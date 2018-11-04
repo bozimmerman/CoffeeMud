@@ -110,7 +110,7 @@ public class Thief_Safehouse extends ThiefSkill
 		return true;
 	}
 
-	public boolean isLawHere(Room R)
+	public boolean isLawHere(final Room R)
 	{
 		if(R!=null)
 		{
@@ -130,7 +130,7 @@ public class Thief_Safehouse extends ThiefSkill
 		return false;
 	}
 
-	public boolean isLaw(MOB mob)
+	public boolean isLaw(final MOB mob)
 	{
 		if(mob==null)
 			return false;
@@ -155,7 +155,7 @@ public class Thief_Safehouse extends ThiefSkill
 			unInvoke();
 	}
 
-	public boolean isGoodSafehouse(Room target)
+	public boolean isGoodSafehouse(final Room target)
 	{
 		if(target==null)
 			return false;
@@ -172,7 +172,7 @@ public class Thief_Safehouse extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

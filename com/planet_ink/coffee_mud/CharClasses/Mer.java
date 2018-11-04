@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Mer extends StdCharClass
 {
 	@Override
@@ -155,93 +154,93 @@ public class Mer extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_AquaticPass",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_PredictTides",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_SenseWater",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chant_Darkvision",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_BestowName",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"AnimalBonding",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_FilterWater",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SummonChum",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SnuffFlame",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_EelShock",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_FindDriftwood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_LocateAnimals",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_SpeakWithAnimals",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_WaterWalking",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_CalmAnimal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_SummonCoral",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_AiryAura",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_FeelElectricity",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_BloodyWater",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_KnowPlants",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_NaturalBalance",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_WaterCover",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_UnderwaterAction",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_WaterHammer",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_AnimalCompanion",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_AnimalFriendship",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_CalmWind",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_SummonSchool",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Chant_CallCompanion",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_Drown",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Chant_Waterguard",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_ReefWalking",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_CallMate",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_VenomWard",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_CharmAnimal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_HighTide",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_WhisperWard",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_Capsize",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_BreatheAir",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_FeedingFrenzy",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Observation",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_MuddyGrounds",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_CalmSeas",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_WarningWinds",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_SummonJellyfish",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_Flippers",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Druid_ShapeShift2",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_Flood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_Hippieness",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_SiftWrecks",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Chant_RustCurse",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_FavorableWinds",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Chant_SenseFluids",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_TideMoon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Chant_AnimalSpy",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_AnimalGrowth",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Chant_NeutralizePoison",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_AttackHalf",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_TidalWave",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Chant_SenseGems",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_Waterspout",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Chant_CharmArea",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_Whirlpool",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_Crossbreed",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_Tsunami",true);
 	}
 
@@ -318,14 +317,14 @@ public class Mer extends StdCharClass
 	{
 		return L("May breathe and cast spells underwater. Attains Tidal Changes (tidal phase based bonuses/penalties) at level 5.");
 	}
-	
+
 	private final static int[] breathableStuff = new int[]{
 		RawMaterial.RESOURCE_SALTWATER,
 		RawMaterial.RESOURCE_FRESHWATER
 	};
-	
-	private final Map<int[],int[]> oldSets = new Hashtable<int[],int[]>(); 
-	
+
+	private final Map<int[],int[]> oldSets = new Hashtable<int[],int[]>();
+
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
@@ -335,23 +334,23 @@ public class Mer extends StdCharClass
 		affected.eachEffect(new EachApplicable<Ability>()
 		{
 			@Override
-			public void apply(Ability a)
+			public void apply(final Ability a)
 			{
 				if(a.ID().startsWith("Druid_ShapeShift"))
 					a.affectCharStats(affected, affectableStats);
 			}
 		});
-		
+
 		if(!CMParms.contains(affectableStats.getBreathables(),breathableStuff))
 		{
 			final int[] newSet = oldSets.get(affectableStats.getBreathables());
-			if(newSet != null) 
+			if(newSet != null)
 			{
 				affectableStats.setBreathables(newSet);
 			}
 			else
 			{
-				int[] newerSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+breathableStuff.length);
+				final int[] newerSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+breathableStuff.length);
 				for(int i=breathableStuff.length-1;i>=0;i--)
 					newerSet[newerSet.length-(i+1)]=breathableStuff[i];
 				if(oldSets.size()>100)
@@ -404,7 +403,7 @@ public class Mer extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
@@ -425,7 +424,7 @@ public class Mer extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -439,9 +438,9 @@ public class Mer extends StdCharClass
 	}
 
 	@Override
-	public int classDurationModifier(MOB myChar,
-									 Ability skill,
-									 int duration)
+	public int classDurationModifier(final MOB myChar,
+									 final Ability skill,
+									 final int duration)
 	{
 		if(myChar==null)
 			return duration;

@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_SeaCharting extends StdSkill
 {
 	@Override
@@ -90,7 +89,7 @@ public class Skill_SeaCharting extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -100,7 +99,7 @@ public class Skill_SeaCharting extends StdSkill
 			mob.tell(L("You did not specify whether you wanted to ADD your current location, LIST existing locations, DISTANCE [x] to a chart point, or REMOVE [X} an old chart point.  Try adding ADD, REMOVE X, or LIST."));
 			return false;
 		}
-		String cmd=commands.get(0).toString().toUpperCase().trim();
+		final String cmd=commands.get(0).toString().toUpperCase().trim();
 		if(!cmd.equals("LIST"))
 		{
 			if(R.getArea() instanceof BoardableShip)
@@ -125,8 +124,8 @@ public class Skill_SeaCharting extends StdSkill
 			mob.tell(L("'@x1' is not a valid argument.  Try ADD, LIST, DISTANCE X, or REMOVE X (where X is a number).",cmd));
 			return false;
 		}
-		
-		List<String> rooms=CMParms.parseAny(text(),';',true);
+
+		final List<String> rooms=CMParms.parseAny(text(),';',true);
 		int chartPointIndex=-1;
 		if(cmd.equals("REMOVE"))
 		{
@@ -165,7 +164,7 @@ public class Skill_SeaCharting extends StdSkill
 			if(CMLib.flags().isWaterySurfaceRoom(mob.location()))
 				currentR=mob.location();
 		}
-		
+
 		if(cmd.equals("DISTANCE"))
 		{
 			if(rooms.size()==0)
@@ -218,7 +217,7 @@ public class Skill_SeaCharting extends StdSkill
 			}
 			return true;
 		}
-		
+
 		final String addStr;
 		if(cmd.equalsIgnoreCase("ADD"))
 		{
@@ -236,7 +235,7 @@ public class Skill_SeaCharting extends StdSkill
 				mob.tell(L("This place cannot be charted."));
 				return false;
 			}
-			
+
 			if(addStr.length()==0)
 			{
 				mob.tell(L("This place cannot be charted."));
@@ -250,10 +249,10 @@ public class Skill_SeaCharting extends StdSkill
 		}
 		else
 			addStr="";
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
@@ -289,17 +288,17 @@ public class Skill_SeaCharting extends StdSkill
 				else
 				if(cmd.equalsIgnoreCase("DISTANCE"))
 				{
-					String roomID = rooms.get(chartPointIndex);
+					final String roomID = rooms.get(chartPointIndex);
 					final Room room=CMLib.map().getRoom(roomID);
 					if((room == null)||(currentR==null))
 					{
 						mob.tell(L("You can't get there from here."));
 						return false;
 					}
-					
-					List<Room> destRooms=new XVector<Room>(room);
-					TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.WATERSURFACEONLY);
-					List<Room> trail=CMLib.tracking().findTrailToAnyRoom(currentR, destRooms, flags, 100);
+
+					final List<Room> destRooms=new XVector<Room>(room);
+					final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.WATERSURFACEONLY);
+					final List<Room> trail=CMLib.tracking().findTrailToAnyRoom(currentR, destRooms, flags, 100);
 					if((trail.size()==0)
 					||(trail.get(trail.size()-1)!=currentR)
 					||(trail.get(0)!=room))

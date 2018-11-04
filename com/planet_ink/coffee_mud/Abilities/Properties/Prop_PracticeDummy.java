@@ -63,14 +63,14 @@ public class Prop_PracticeDummy extends Property
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		unkillable=newMiscText.toUpperCase().indexOf("KILL")<0;
 	}
 
 	@Override
-	public void affectCharState(MOB mob, CharState affectableMaxState)
+	public void affectCharState(final MOB mob, final CharState affectableMaxState)
 	{
 		super.affectCharState(mob,affectableMaxState);
 		if(unkillable)
@@ -78,7 +78,7 @@ public class Prop_PracticeDummy extends Property
 	}
 
 	@Override
-	public void affectPhyStats(Physical E, PhyStats affectableStats)
+	public void affectPhyStats(final Physical E, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(E,affectableStats);
 		if(unkillable)

@@ -53,5 +53,5 @@ public class Skill_LongBreath extends Skill_DeepBreath
 	{
 		return 5 + (super.adjustedLevel((MOB)affected,0)/3);
 	}
-	
+
 }

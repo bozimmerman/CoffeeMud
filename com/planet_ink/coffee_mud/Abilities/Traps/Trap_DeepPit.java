@@ -73,7 +73,7 @@ public class Trap_DeepPit extends Trap_RoomPit
 	}
 
 	@Override
-	public void finishSpringing(MOB target)
+	public void finishSpringing(final MOB target)
 	{
 		if((!canInvokeTrapOn(invoker(),target))||(target.phyStats().weight()<5))
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) gently into the pit!"));

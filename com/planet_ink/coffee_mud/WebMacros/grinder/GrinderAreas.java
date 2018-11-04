@@ -32,10 +32,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class GrinderAreas
 {
-	public static String getAreaList(Enumeration<Area> a, Area pickedA, MOB mob, boolean noInstances)
+	public static String getAreaList(final Enumeration<Area> a, final Area pickedA, final MOB mob, final boolean noInstances)
 	{
 		final StringBuffer AreaList=new StringBuffer("");
 		final boolean anywhere=(CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDAREAS));
@@ -55,7 +54,7 @@ public class GrinderAreas
 		return AreaList.toString();
 	}
 
-	public static String doBehavs(PhysicalAgent E, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String doBehavs(final PhysicalAgent E, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		E.delAllBehaviors();
 		if(httpReq.isUrlParameter("BEHAV1"))
@@ -82,7 +81,7 @@ public class GrinderAreas
 		return "";
 	}
 
-	public static String doAffects(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String doAffects(final Physical P, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		P.delAllEffects(false);
 		if(httpReq.isUrlParameter("AFFECT1"))
@@ -108,7 +107,7 @@ public class GrinderAreas
 		return "";
 	}
 
-	public static String modifyArea(HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String modifyArea(final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		final Vector<Area> areasNeedingUpdates=new Vector<Area>();
 		final String last=httpReq.getUrlParameter("AREA");
@@ -243,9 +242,9 @@ public class GrinderAreas
 		if(img==null)
 			img="";
 		A.setImage(CMLib.coffeeFilter().safetyFilter(img));
-		
+
 		// playerlevel
-		String plvl=httpReq.getUrlParameter("PLAYERLEVEL");
+		final String plvl=httpReq.getUrlParameter("PLAYERLEVEL");
 		if(plvl!=null)
 			A.setPlayerLevel(CMath.s_int(plvl));
 

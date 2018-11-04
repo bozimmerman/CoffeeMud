@@ -31,7 +31,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_RoomWatch extends Property
 {
 	@Override
@@ -62,7 +61,7 @@ public class Prop_RoomWatch extends Property
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		newRooms=null;

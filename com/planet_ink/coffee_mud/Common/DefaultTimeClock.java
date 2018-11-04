@@ -79,7 +79,7 @@ public class DefaultTimeClock implements TimeClock
 	protected volatile long	lastTicked	= 0;
 
 	@Override
-	public void setLoadName(String name)
+	public void setLoadName(final String name)
 	{
 		loadName = name;
 	}
@@ -89,7 +89,7 @@ public class DefaultTimeClock implements TimeClock
 	protected int		day				= 1;
 	protected int		time			= 0;
 	protected int		hoursInDay		= 6;
-	
+
 	protected String[] monthsInYear={
 		 "the 1st month","the 2nd month","the 3rd month","the 4th month",
 		 "the 5th month","the 6th month","the 7th month","the 8th month"
@@ -106,7 +106,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public void setHoursInDay(int h)
+	public void setHoursInDay(final int h)
 	{
 		hoursInDay = h;
 	}
@@ -118,7 +118,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public void setDaysInMonth(int d)
+	public void setDaysInMonth(final int d)
 	{
 		daysInMonth = d;
 	}
@@ -136,7 +136,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public void setMonthsInYear(String[] months)
+	public void setMonthsInYear(final String[] months)
 	{
 		monthsInYear = months;
 	}
@@ -154,13 +154,13 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public void setYearNames(String[] years)
+	public void setYearNames(final String[] years)
 	{
 		yearNames = years;
 	}
 
 	@Override
-	public void setDawnToDusk(int dawn, int day, int dusk, int night)
+	public void setDawnToDusk(final int dawn, final int day, final int dusk, final int night)
 	{
 		dawnToDusk[TimeOfDay.DAWN.ordinal()]=dawn;
 		dawnToDusk[TimeOfDay.DAY.ordinal()]=day;
@@ -181,7 +181,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public void setDaysInWeek(String[] days)
+	public void setDaysInWeek(final String[] days)
 	{
 		weekNames = days;
 	}
@@ -217,7 +217,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public void initializeINIClock(CMProps page)
+	public void initializeINIClock(final CMProps page)
 	{
 		if(CMath.s_int(page.getStr("HOURSINDAY"))>0)
 			setHoursInDay(CMath.s_int(page.getStr("HOURSINDAY")));
@@ -251,7 +251,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public String timeDescription(MOB mob, Room room)
+	public String timeDescription(final MOB mob, final Room room)
 	{
 		final StringBuffer timeDesc=new StringBuffer("");
 
@@ -305,7 +305,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public void setYear(int y)
+	public void setYear(final int y)
 	{
 		year=y;
 	}
@@ -330,13 +330,13 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public void setMonth(int m)
+	public void setMonth(final int m)
 	{
 		month=m;
 	}
 
 	@Override
-	public MoonPhase getMoonPhase(Room room)
+	public MoonPhase getMoonPhase(final Room room)
 	{
 		int moonDex = (int)Math.round(Math.floor(CMath.mul(CMath.div(getDayOfMonth(),getDaysInMonth()+1),8.0)));
 		if(room != null)
@@ -349,7 +349,7 @@ public class DefaultTimeClock implements TimeClock
 					moonEffects.addAll(CMLib.flags().domainAffects(room, Ability.DOMAIN_MOONALTERING));
 				if((area != null)&&(area.numEffects()>0))
 					moonEffects.addAll(CMLib.flags().domainAffects(area, Ability.DOMAIN_MOONALTERING));
-				for(Ability A : moonEffects)
+				for(final Ability A : moonEffects)
 					moonDex = (moonDex + A.abilityCode()) % 8;
 			}
 		}
@@ -357,13 +357,13 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public TidePhase getTidePhase(Room room)
+	public TidePhase getTidePhase(final Room room)
 	{
 		final MoonPhase moonPhase = getMoonPhase(room);
 		TidePhase tidePhase;
 		if(getHourOfDay() == dawnToDusk[1])
 			tidePhase = moonPhase.getLowTide();
-		else 
+		else
 		if(getHourOfDay() == dawnToDusk[2])
 			tidePhase = moonPhase.getHighTide();
 		else
@@ -381,7 +381,7 @@ public class DefaultTimeClock implements TimeClock
 				if(moonEffects.size()>0)
 				{
 					int tideDex = CMParms.indexOf(TidePhase.values(), tidePhase);
-					for(Ability A : moonEffects)
+					for(final Ability A : moonEffects)
 						tideDex = (tideDex + A.abilityCode()) % TidePhase.values().length;
 					tidePhase = TidePhase.values()[tideDex];
 				}
@@ -397,7 +397,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public void setDayOfMonth(int d)
+	public void setDayOfMonth(final int d)
 	{
 		day = d;
 	}
@@ -426,7 +426,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public boolean setHourOfDay(int t)
+	public boolean setHourOfDay(final int t)
 	{
 		final TimeOfDay oldCode=getTODCode();
 		time=t;
@@ -448,12 +448,12 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public TimeClock deriveClock(long millis)
+	public TimeClock deriveClock(final long millis)
 	{
 		try
 		{
 			final TimeClock C=(TimeClock)this.clone();
-			long diff=(millis - System.currentTimeMillis())/CMProps.getMillisPerMudHour();
+			final long diff=(millis - System.currentTimeMillis())/CMProps.getMillisPerMudHour();
 			C.tickTock((int)diff);
 			return C;
 		}
@@ -465,7 +465,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public String deriveEllapsedTimeString(long millis)
+	public String deriveEllapsedTimeString(final long millis)
 	{
 		int hours=(int)(millis/CMProps.getMillisPerMudHour());
 		int days=0;
@@ -513,13 +513,13 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public long deriveMillisAfter(TimeClock C)
+	public long deriveMillisAfter(final TimeClock C)
 	{
 		return deriveMudHoursAfter(C) *CMProps.getMillisPerMudHour();
 	}
 
 	@Override
-	public long deriveMudHoursAfter(TimeClock C)
+	public long deriveMudHoursAfter(final TimeClock C)
 	{
 		long numMudHours=0;
 		if(C.getYear()>getYear())
@@ -548,7 +548,7 @@ public class DefaultTimeClock implements TimeClock
 		numMudHours+=(getHourOfDay()-C.getHourOfDay());
 		return numMudHours;
 	}
-	
+
 	@Override
 	public void handleTimeChange()
 	{
@@ -597,7 +597,7 @@ public class DefaultTimeClock implements TimeClock
 		}
 	}
 
-	protected void tickTock(int howManyHours, boolean moveTheSky)
+	protected void tickTock(final int howManyHours, final boolean moveTheSky)
 	{
 		final TimeOfDay todCode=getTODCode();
 		if(howManyHours!=0)
@@ -638,39 +638,39 @@ public class DefaultTimeClock implements TimeClock
 		if((moveTheSky)&&(getTODCode()!=todCode))
 			handleTimeChange();
 	}
-	
+
 	@Override
-	public void tickTock(int howManyHours)
+	public void tickTock(final int howManyHours)
 	{
 		tickTock(howManyHours,true);
 	}
 
 	@Override
-	public void bumpHours(int num)
+	public void bumpHours(final int num)
 	{
 		tickTock(num,false);
 	}
 
 	@Override
-	public void bumpDays(int num)
+	public void bumpDays(final int num)
 	{
 		tickTock(this.getHoursInDay() * num,false);
 	}
 
 	@Override
-	public void bumpWeeks(int num)
+	public void bumpWeeks(final int num)
 	{
 		tickTock(this.getHoursInDay() * this.getDaysInWeek() * num,false);
 	}
 
 	@Override
-	public void bumpMonths(int num)
+	public void bumpMonths(final int num)
 	{
 		tickTock(this.getHoursInDay() * this.getDaysInMonth() * num,false);
 	}
 
 	@Override
-	public void bumpYears(int num)
+	public void bumpYears(final int num)
 	{
 		tickTock(this.getHoursInDay() * this.getDaysInMonth() * this.getMonthsInYear() * num,false);
 	}
@@ -681,9 +681,9 @@ public class DefaultTimeClock implements TimeClock
 		final long hoursInDay = this.getHoursInDay();
 		final long hoursInMonth = this.getDaysInMonth() * hoursInDay;
 		final long hoursInYear = this.getMonthsInYear() * hoursInMonth;
-		long total = this.getHourOfDay() + 
+		final long total = this.getHourOfDay() +
 				((day-1) * hoursInDay) +
-				((month-1) * hoursInMonth) + 
+				((month-1) * hoursInMonth) +
 				(year * hoursInYear);
 		return total;
 	}
@@ -714,7 +714,7 @@ public class DefaultTimeClock implements TimeClock
 		}
 		time = (int)num;
 	}
-	
+
 	@Override
 	public void save()
 	{
@@ -807,11 +807,11 @@ public class DefaultTimeClock implements TimeClock
 		if(o instanceof TimeClock)
 		{
 			final TimeClock c2=(TimeClock)o;
-			long myHrs = (getHourOfDay() 
+			final long myHrs = (getHourOfDay()
 						+ (getDayOfMonth() * getHoursInDay())
 						+ (getMonth() * getDaysInMonth() * getHoursInDay())
 						+ (getYear() * getMonthsInYear() * getDaysInMonth() * getHoursInDay()));
-			long hisHrs = (c2.getHourOfDay() 
+			final long hisHrs = (c2.getHourOfDay()
 					+ (c2.getDayOfMonth() * c2.getHoursInDay())
 					+ (c2.getMonth() * c2.getDaysInMonth() * c2.getHoursInDay())
 					+ (c2.getYear() * c2.getMonthsInYear() * c2.getDaysInMonth() * c2.getHoursInDay()));

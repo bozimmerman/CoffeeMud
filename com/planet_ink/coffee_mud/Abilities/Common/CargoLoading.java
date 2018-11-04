@@ -81,7 +81,7 @@ public class CargoLoading extends CommonSkill
 		verb=L("loading");
 	}
 
-	protected int getDuration(MOB mob, int level)
+	protected int getDuration(final MOB mob, final int level)
 	{
 		return getDuration(25,mob,level,5);
 	}
@@ -112,7 +112,7 @@ public class CargoLoading extends CommonSkill
 			final CMMsg msg=CMClass.getMsg(dropM, I, null, CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP, CMMsg.MSG_DROP, CMMsg.NO_EFFECT, null);
 			if( R.okMessage(dropM, msg) )
 			{
-				List<Room> radiusRooms=CMLib.tracking().getRadiantRooms(R, rflags, 5+super.getXLEVELLevel(mob));
+				final List<Room> radiusRooms=CMLib.tracking().getRadiantRooms(R, rflags, 5+super.getXLEVELLevel(mob));
 				return radiusRooms.contains(mob.location());
 			}
 			return false;
@@ -122,7 +122,7 @@ public class CargoLoading extends CommonSkill
 			dropM.destroy();
 		}
 	}
-	
+
 	public boolean canUnloadCargoFromHere(final MOB mob, final Item I, final Room R)
 	{
 		if((R.domainType()&Room.INDOORS)==0)
@@ -130,7 +130,7 @@ public class CargoLoading extends CommonSkill
 		final MOB dropM=CMClass.getFactoryMOB("cargo loader",I.phyStats().level(),R);
 		try
 		{
-			List<Room> radiusRooms=CMLib.tracking().getRadiantRooms(R, rflags, 5+super.getXLEVELLevel(mob));
+			final List<Room> radiusRooms=CMLib.tracking().getRadiantRooms(R, rflags, 5+super.getXLEVELLevel(mob));
 			return radiusRooms.contains(mob.location());
 		}
 		finally
@@ -138,7 +138,7 @@ public class CargoLoading extends CommonSkill
 			dropM.destroy();
 		}
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -181,12 +181,12 @@ public class CargoLoading extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(super.checkStop(mob, commands) || (R==null))
 			return true;
-		
+
 		verb=L("loading");
 		cargoR=null;
 		String shipName="the ship";
@@ -197,7 +197,7 @@ public class CargoLoading extends CommonSkill
 		}
 		this.fromR=R;
 		this.loading=true;
-		String typ=commands.remove(0).toUpperCase().trim();
+		final String typ=commands.remove(0).toUpperCase().trim();
 		if("LOAD".startsWith(typ))
 		{
 		}
@@ -211,7 +211,7 @@ public class CargoLoading extends CommonSkill
 			commonTell(mob,null,null,L("Load or Unload? What cargo into or from which ship? Try CARGO LOAD [ITEM] [SHIP NAME] to load cargo, or CARGO UNLOAD [ITEM] [SHIP NAME] to unload."));
 			return false;
 		}
-		
+
 		final List<String> cargoV=new XVector<String>(commands.remove(0));
 		if(loading)
 		{
@@ -305,13 +305,13 @@ public class CargoLoading extends CommonSkill
 				return false;
 			}
 		}
-		
+
 		if((this.loadingI != null)&&(this.loadingI.phyStats().weight() > (1000 + (1000*super.getXLEVELLevel(mob)))))
 		{
 			commonTell(mob,L("You just don't have the expertise to move that much weight"));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fishing extends GatheringSkill
 {
 	@Override
@@ -74,7 +73,7 @@ public class Fishing extends GatheringSkill
 	protected static final int	RCP_FREQ		= 1;
 	protected static final int	RCP_FINALNAME	= 2;
 	protected static final int	RCP_VALUE		= 3;
-	
+
 	protected Item		found			= null;
 	protected String	foundShortName	= "";
 
@@ -85,7 +84,7 @@ public class Fishing extends GatheringSkill
 		verb=L("fishing");
 	}
 
-	protected int getDuration(MOB mob, int level)
+	protected int getDuration(final MOB mob, final int level)
 	{
 		return getDuration(45,mob,level,15);
 	}
@@ -157,7 +156,7 @@ public class Fishing extends GatheringSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -171,7 +170,7 @@ public class Fishing extends GatheringSkill
 				return super.bundle(mob,commands);
 			return false;
 		}
-		
+
 		Room fishRoom = mob.location();
 		if((fishRoom != null)
 		&&(fishRoom.getArea() instanceof BoardableShip)
@@ -219,7 +218,7 @@ public class Fishing extends GatheringSkill
 				&&(recipes.size()>0))
 				{
 					int totalWeights = 0;
-					List<List<String>> subset=new ArrayList<List<String>>();
+					final List<List<String>> subset=new ArrayList<List<String>>();
 					for(final List<String> subl : recipes)
 					{
 						if(subl.size()<4)
@@ -233,7 +232,7 @@ public class Fishing extends GatheringSkill
 					List<String> winl = null;
 					if(totalWeights > 0)
 					{
-						int winner=CMLib.dice().roll(1, totalWeights, -1);
+						final int winner=CMLib.dice().roll(1, totalWeights, -1);
 						int current = 0;
 						for(final List<String> subl : subset)
 						{

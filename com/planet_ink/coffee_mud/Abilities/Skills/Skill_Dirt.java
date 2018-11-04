@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Dirt extends StdSkill
 {
 	@Override
@@ -138,7 +137,7 @@ public class Skill_Dirt extends StdSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -160,7 +159,7 @@ public class Skill_Dirt extends StdSkill
 		return super.castingQuality(mob,target);
 	}
 
-	public boolean hereOK(MOB mob)
+	public boolean hereOK(final MOB mob)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -183,7 +182,7 @@ public class Skill_Dirt extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		final MOB target=this.getTarget(mob,commands,givenTarget);

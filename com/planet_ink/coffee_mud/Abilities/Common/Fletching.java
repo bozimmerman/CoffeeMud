@@ -36,7 +36,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override
@@ -69,7 +68,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 	@Override
 	public String parametersFormat()
-	{ 
+	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tAMMO_TYPE\tAMMO_CAPACITY\tBASE_DAMAGE\tMAXIMUM_RANGE\t"
@@ -182,13 +181,13 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	}
 
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
 		return canMend(null, item, true);
 	}
 
 	@Override
-	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
@@ -209,25 +208,25 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
-	protected int getOtherRscAmtRequired(final MOB mob, String req)
+
+	protected int getOtherRscAmtRequired(final MOB mob, final String req)
 	{
 		if((req == null)||(req.trim().length()==0))
 			return 0;
 		return 1;
 	}
-	
-	protected String getOtherRscRequired(String req)
+
+	protected String getOtherRscRequired(final String req)
 	{
 		if((req == null)||(req.trim().length()==0))
 			return "";
 		return req;
 	}
-	
+
 	protected String commandWord()
 	{
 		return triggerStrings()[0].toLowerCase();
@@ -237,17 +236,17 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	{
 		return 2;
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -447,7 +446,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			buildingI.setMaterial(getBuildingMaterial(woodRequired,data,compData));
-			int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;
+			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;
 			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
 			itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);

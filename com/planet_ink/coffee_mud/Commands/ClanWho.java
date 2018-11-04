@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class ClanWho extends Who
 {
 	public ClanWho()
@@ -48,7 +47,7 @@ public class ClanWho extends Who
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final String clanName=CMParms.combine(commands,1).toUpperCase();

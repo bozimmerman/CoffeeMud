@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Dwarven extends StdLanguage
 {
 	@Override
@@ -56,7 +55,7 @@ public class Dwarven extends StdLanguage
 	}
 
 	@Override
-	public List<String[]> translationLists(String language)
+	public List<String[]> translationLists(final String language)
 	{
 		if(wordLists==null)
 		{

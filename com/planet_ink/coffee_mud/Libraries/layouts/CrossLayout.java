@@ -30,7 +30,7 @@ public class CrossLayout extends AbstractLayout
 		return "CROSS";
 	}
 
-	public void addRoom(LayoutSet lSet, LayoutNode n2, int dir)
+	public void addRoom(final LayoutSet lSet, final LayoutNode n2, final int dir)
 	{
 		if(lSet.spaceAvailable())
 		{
@@ -45,7 +45,7 @@ public class CrossLayout extends AbstractLayout
 	}
 
 	@Override
-	public List<LayoutNode> generate(int num, int dir)
+	public List<LayoutNode> generate(final int num, final int dir)
 	{
 		final Vector<LayoutNode> set = new Vector<LayoutNode>();
 		final int diameter = (num / 3 / 2) + 1;

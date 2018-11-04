@@ -71,15 +71,15 @@ public class Trap_AcidPit extends Trap_RoomPit
 	{
 		return L("some limes");
 	}
-	
+
 	@Override
-	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		if(P==null)
 			return null;
 		if(mob!=null)
 		{
-			Item I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
+			final Item I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),1);
 		}
@@ -95,13 +95,13 @@ public class Trap_AcidPit extends Trap_RoomPit
 	}
 
 	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P))
 			return false;
 		if(mob!=null)
 		{
-			RawMaterial I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
+			final RawMaterial I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
 			if((I==null)
 			||(super.findNumberOfResource(mob.location(),I)<1))
 			{
@@ -111,9 +111,9 @@ public class Trap_AcidPit extends Trap_RoomPit
 		}
 		return true;
 	}
-	
+
 	@Override
-	public int baseRejuvTime(int level)
+	public int baseRejuvTime(final int level)
 	{
 		int time=super.baseRejuvTime(level);
 		if(time<15)
@@ -122,7 +122,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 	}
 
 	@Override
-	public void finishSpringing(MOB target)
+	public void finishSpringing(final MOB target)
 	{
 		if((!canInvokeTrapOn(invoker(),target))||(target.phyStats().weight()<5))
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) gently into the pit!"));

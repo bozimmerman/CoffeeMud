@@ -1144,7 +1144,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void addBackLogEntry(final String channelName, long timeStamp, final String entry)
+	public void addBackLogEntry(final String channelName, final long timeStamp, final String entry)
 	{
 		BackLogLoader.addBackLogEntry(channelName, entry);
 	}

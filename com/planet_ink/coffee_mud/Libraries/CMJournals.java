@@ -74,7 +74,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public JournalMetaData getJournalStats(ForumJournal journal)
+	public JournalMetaData getJournalStats(final ForumJournal journal)
 	{
 		if(journal == null)
 			return null;
@@ -106,7 +106,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalMetaData name(String intro)
+						public JournalMetaData name(final String intro)
 						{
 							name = intro;
 							return this;
@@ -119,7 +119,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalMetaData threads(int num)
+						public JournalMetaData threads(final int num)
 						{
 							this.threads = num;
 							return this;
@@ -132,7 +132,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalMetaData posts(int num)
+						public JournalMetaData posts(final int num)
 						{
 							this.posts = num;
 							return this;
@@ -145,7 +145,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalMetaData imagePath(String intro)
+						public JournalMetaData imagePath(final String intro)
 						{
 							imagePath = intro;
 							return this;
@@ -158,7 +158,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalMetaData shortIntro(String intro)
+						public JournalMetaData shortIntro(final String intro)
 						{
 							shortIntro = intro;
 							return this;
@@ -171,7 +171,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalMetaData longIntro(String intro)
+						public JournalMetaData longIntro(final String intro)
 						{
 							longIntro = intro;
 							return this;
@@ -184,7 +184,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalMetaData introKey(String key)
+						public JournalMetaData introKey(final String key)
 						{
 							introKey = key;
 							return this;
@@ -197,7 +197,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalMetaData latestKey(String key)
+						public JournalMetaData latestKey(final String key)
 						{
 							latestKey = key;
 							return this;
@@ -210,7 +210,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						}
 
 						@Override
-						public JournalMetaData stuckyKeys(List<String> keys)
+						public JournalMetaData stuckyKeys(final List<String> keys)
 						{
 							stuckyKeys = keys;
 							return this;
@@ -225,7 +225,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public void clearJournalSummaryStats(ForumJournal journal)
+	public void clearJournalSummaryStats(final ForumJournal journal)
 	{
 		if(journal == null)
 			return;
@@ -287,16 +287,16 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			}
 			final String name=item.toUpperCase().trim();
 			CMSecurity.registerJournal(name);
-			String flagVal = flags.get(CommandJournalFlags.ASSIGN);
+			final String flagVal = flags.get(CommandJournalFlags.ASSIGN);
 			if(flagVal == null)
 				flags.put(CommandJournalFlags.ASSIGN, "ALL");
 			else
 			{
-				List<String> flagValL=CMParms.parseAny(flagVal.toUpperCase().trim(), ':', true);
+				final List<String> flagValL=CMParms.parseAny(flagVal.toUpperCase().trim(), ':', true);
 				if(!flagValL.contains("ALL"))
 					flagValL.add("ALL");
-				StringBuilder newFlags=new StringBuilder("");
-				for(String flag : flagValL)
+				final StringBuilder newFlags=new StringBuilder("");
+				for(final String flag : flagValL)
 					newFlags.append(flag).append(':');
 				flags.put(CommandJournalFlags.ASSIGN, newFlags.toString());
 			}
@@ -322,7 +322,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				}
 
 				@Override
-				public String getFlag(CommandJournalFlags flag)
+				public String getFlag(final CommandJournalFlags flag)
 				{
 					return flags.get(flag);
 				}
@@ -338,7 +338,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public boolean canReadMessage(JournalEntry entry, String srchMatch, MOB readerM, boolean ignorePrivileges)
+	public boolean canReadMessage(final JournalEntry entry, final String srchMatch, final MOB readerM, final boolean ignorePrivileges)
 	{
 		if(entry==null)
 			return false;
@@ -363,7 +363,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public int loadForumJournals(String list)
+	public int loadForumJournals(final String list)
 	{
 		clearForumJournals();
 		final List<ForumJournal> journals = parseForumJournals(list);
@@ -376,7 +376,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public List<ForumJournal> getClanForums(Clan clan)
+	public List<ForumJournal> getClanForums(final Clan clan)
 	{
 		if(clan == null)
 			return null;
@@ -384,7 +384,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public void registerClanForum(Clan clan, String allClanForumDefs)
+	public void registerClanForum(final Clan clan, final String allClanForumDefs)
 	{
 		if(clan==null)
 			return;
@@ -522,15 +522,15 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				{
 					return adminMask;
 				}
-				
+
 				@Override
-				public String getFlag(ForumJournalFlags flag)
+				public String getFlag(final ForumJournalFlags flag)
 				{
 					return flags.get(flag);
 				}
-				
+
 				@Override
-				public boolean maskCheck(MOB M, String mask)
+				public boolean maskCheck(final MOB M, final String mask)
 				{
 					if(mask.length()>0)
 					{
@@ -542,7 +542,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				}
 
 				@Override
-				public boolean authorizationCheck(MOB M, ForumJournalFlags fl)
+				public boolean authorizationCheck(final MOB M, final ForumJournalFlags fl)
 				{
 					if(!maskCheck(M,readMask))
 						return false;
@@ -585,7 +585,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public boolean isArchonJournalName(String journal)
+	public boolean isArchonJournalName(final String journal)
 	{
 		if(getArchonJournalNames().contains(journal.toUpperCase().trim()))
 			return true;
@@ -593,7 +593,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public String getScriptValue(MOB mob, String journal, String oldValue)
+	public String getScriptValue(final MOB mob, final String journal, final String oldValue)
 	{
 		final CommandJournal CMJ=getCommandJournal(journal);
 		if(CMJ==null)
@@ -629,7 +629,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public CommandJournal getCommandJournal(String named)
+	public CommandJournal getCommandJournal(final String named)
 	{
 		return commandJournals.get(named.toUpperCase().trim());
 	}
@@ -708,7 +708,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return true;
 	}
 
-	@Override 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		tickStatus=Tickable.STATUS_ALIVE;
@@ -748,13 +748,13 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public ForumJournal getForumJournal(String named)
+	public ForumJournal getForumJournal(final String named)
 	{
 		return forumJournals.get(named.toUpperCase().trim());
 	}
 
 	@Override
-	public ForumJournal getForumJournal(String named, Clan clan)
+	public ForumJournal getForumJournal(String named, final Clan clan)
 	{
 		if(named==null)
 			return null;
@@ -797,10 +797,10 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return true;
 	}
 
-	private String unsafePrompt(Session sess, String prompt, String defaultMsg) throws IOException
+	private String unsafePrompt(final Session sess, final String prompt, final String defaultMsg) throws IOException
 	{
 		sess.promptPrint(prompt);
-		String line=sess.blockingIn(-1, false);
+		final String line=sess.blockingIn(-1, false);
 		if(line == null)
 			return defaultMsg;
 		return line;
@@ -822,20 +822,20 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			"^XQ)^.^Wuit without saving");
 		return help;
 	}
-	
+
 	private enum MsgMkrState
-	{ 
-		INPUT, 
-		MENU, 
-		SAVECONFIRM, 
-		QUITCONFIRM, 
-		SRPROMPT, 
-		EDITPROMPT, 
-		DELPROMPT, 
-		GMCPWAIT, 
+	{
+		INPUT,
+		MENU,
+		SAVECONFIRM,
+		QUITCONFIRM,
+		SRPROMPT,
+		EDITPROMPT,
+		DELPROMPT,
+		GMCPWAIT,
 		INSPROMPT
 	}
-	
+
 	@Override
 	public void makeMessageASync(final MOB M, final String messageTitle, final List<String> vbuf, final boolean autoAdd, final MsgMkrCallback back)
 	{
@@ -859,7 +859,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			String paramAll=null;
 			String param1=null;
 			String param2=null;
-			
+
 			@Override
 			public void showPrompt()
 			{
@@ -892,8 +892,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					else
 					if(param2==null)
 					{
-						int ln=CMath.s_int(param1.trim());
-						StringBuilder str=new StringBuilder("");
+						final int ln=CMath.s_int(param1.trim());
+						final StringBuilder str=new StringBuilder("");
 						str.append(L("Current: \n\r@x1) @x2",CMStrings.padRight(""+ln,3),vbuf.get(ln)));
 						str.append(L("\n\rRewrite: \n\r"));
 						sess.promptPrint(str.toString());
@@ -914,15 +914,15 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					break;
 				}
 			}
-	
+
 			@Override
 			public void timedOut()
 			{
 				back.callBack(mob,sess,MsgMkrResolution.CANCELFILE);
 				waiting=false;
 			}
-	
-			@Override 
+
+			@Override
 			public void callBack()
 			{
 				if((mob.session()==null)||(sess.isStopped()))
@@ -1040,7 +1040,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				{
 					if(paramAll==null)
 					{
-						String line=paramAll;
+						final String line=paramAll;
 						if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
 						{
 							final int ln=CMath.s_int(line);
@@ -1193,7 +1193,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							{
 								if(paramAll!=null)
 								{
-									String line=paramAll;
+									final String line=paramAll;
 									if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
 									{
 										final int ln=CMath.s_int(line);
@@ -1217,7 +1217,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							break;
 						case 'W':
 						{
-							StringBuilder oldDoc=new StringBuilder();
+							final StringBuilder oldDoc=new StringBuilder();
 							for(final String s : vbuf)
 								oldDoc.append(s).append("\n");
 							sess.sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
@@ -1263,12 +1263,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, boolean autoAdd) throws IOException
+	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, final boolean autoAdd) throws IOException
 	{
 		final Session sess=mob.session();
 		if((sess == null )||(sess.isStopped()))
 			return MsgMkrResolution.CANCELFILE;
-		
+
 		final String addModeMessage=L("^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N");
 		mob.tell(L("^HCoffeeMud Message Maker^N"));
 		boolean menuMode=!autoAdd;
@@ -1439,7 +1439,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public boolean subscribeToJournal(String journalName, String userName, boolean saveMailingList)
+	public boolean subscribeToJournal(final String journalName, final String userName, final boolean saveMailingList)
 	{
 		boolean updateMailingLists=false;
 		if((CMProps.getVar(CMProps.Str.MAILBOX).length()>0)
@@ -1486,7 +1486,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
-	public boolean unsubscribeFromJournal(String journalName, String userName, boolean saveMailingList)
+	public boolean unsubscribeFromJournal(final String journalName, final String userName, final boolean saveMailingList)
 	{
 		boolean updateMailingLists = false;
 		if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)

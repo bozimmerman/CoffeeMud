@@ -85,8 +85,8 @@ public class Specialization_Armor extends StdAbility
 		return false;
 	}
 
-	protected final static long	WORN_ARMOR	= Item.WORN_ARMS | Item.WORN_FEET | Item.WORN_HANDS | Item.WORN_HEAD 
-											| Item.WORN_LEFT_WRIST | Item.WORN_LEGS | Item.WORN_RIGHT_WRIST | Item.WORN_TORSO 
+	protected final static long	WORN_ARMOR	= Item.WORN_ARMS | Item.WORN_FEET | Item.WORN_HANDS | Item.WORN_HEAD
+											| Item.WORN_LEFT_WRIST | Item.WORN_LEGS | Item.WORN_RIGHT_WRIST | Item.WORN_TORSO
 											| Item.WORN_WAIST;
 
 	protected double bonus=-1;
@@ -97,7 +97,7 @@ public class Specialization_Armor extends StdAbility
 		return Ability.ACODE_SKILL | Ability.DOMAIN_ARMORUSE;
 	}
 
-	private void recalculateBonus(MOB mob)
+	private void recalculateBonus(final MOB mob)
 	{
 		bonus=0;
 		if(mob!=null)

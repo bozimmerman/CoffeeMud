@@ -76,7 +76,7 @@ public class MOBHunter extends ActiveTicker
 		tickReset();
 	}
 
-	protected boolean isHunting(MOB mob)
+	protected boolean isHunting(final MOB mob)
 	{
 		final Ability A=mob.fetchEffect("Thief_Assasinate");
 		if(A!=null)
@@ -85,13 +85,13 @@ public class MOBHunter extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		radius=CMParms.getParmInt(newParms,"radius",radius);
 	}
 
-	protected MOB findPrey(MOB mob)
+	protected MOB findPrey(final MOB mob)
 	{
 		MOB prey=null;
 		final ArrayList<Room> rooms=new ArrayList<Room>();

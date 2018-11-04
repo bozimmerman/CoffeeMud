@@ -117,7 +117,7 @@ public class GiantWolf extends Wolf
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		affectableMaxState.setMovement(affectableMaxState.getMovement()+200);
 	}

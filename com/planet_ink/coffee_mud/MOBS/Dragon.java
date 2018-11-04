@@ -95,13 +95,13 @@ public class Dragon extends StdMOB
 	}
 
 	// ===== constructs a dragon of a specified color, but a random age
-	public Dragon(int colorValue)
+	public Dragon(final int colorValue)
 	{
 		this(colorValue,determineAge());
 	}
 
 	// ===== public constructor
-	public Dragon(int colorValue, int ageValue)
+	public Dragon(final int colorValue, final int ageValue)
 	{
 		super();
 		basePhyStats().setAbility(colorValue);
@@ -261,7 +261,7 @@ public class Dragon extends StdMOB
 		return SUBADULT;
 	}
 
-	protected StringBuffer getAgeDescription(int draconianAge)
+	protected StringBuffer getAgeDescription(final int draconianAge)
 	{
 		StringBuffer returnVal = null;
 
@@ -303,7 +303,7 @@ public class Dragon extends StdMOB
 		return returnVal;
 	}
 
-	protected StringBuffer getColorDescription(int colorVal)
+	protected StringBuffer getColorDescription(final int colorVal)
 	{
 		StringBuffer returnVal = null;
 
@@ -628,7 +628,7 @@ public class Dragon extends StdMOB
 	}
 
 	@Override
-	public DeadBody killMeDead(boolean createBody)
+	public DeadBody killMeDead(final boolean createBody)
 	{
 		// ===== move all inhabitants to the dragons location
 		// ===== loop through all inhabitants of the stomach

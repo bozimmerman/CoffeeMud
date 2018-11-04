@@ -55,7 +55,7 @@ public interface TelnetFilter extends CMLibrary
 		ACCOUNTNAME("-ACCOUNTNAME",null);
 		public final String suffix;
 		public final String emoteSuffix;
-		private Pronoun(String suffix, String emoteSuffix)
+		private Pronoun(final String suffix, final String emoteSuffix)
 		{
 			this.suffix=suffix;
 			this.emoteSuffix=emoteSuffix;

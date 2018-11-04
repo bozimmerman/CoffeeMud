@@ -49,8 +49,8 @@ public class NastyAbilities extends ActiveTicker
 
 	protected boolean fightok=false;
 
-	private List<Ability> mySkills=null;
-	private int numAllSkills=-1;
+	private List<Ability>	mySkills		= null;
+	private int				numAllSkills	= -1;
 
 	public NastyAbilities()
 	{
@@ -66,7 +66,7 @@ public class NastyAbilities extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		fightok=newParms.toUpperCase().indexOf("FIGHTOK")>=0;

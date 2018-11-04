@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_RideTheRigging extends ThiefSkill
 {
 	@Override
@@ -88,7 +87,7 @@ public class Thief_RideTheRigging extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -116,7 +115,7 @@ public class Thief_RideTheRigging extends ThiefSkill
 			mob.tell(L("Your ship must be targeting another ship to ride the rigging to it."));
 			return false;
 		}
-		int distance=myShipItem.rangeToTarget();
+		final int distance=myShipItem.rangeToTarget();
 		if((distance<0)&&(!auto))
 		{
 			mob.tell(L("Your ship needs to get closer to the target to ride the rigging."));
@@ -127,10 +126,10 @@ public class Thief_RideTheRigging extends ThiefSkill
 			mob.tell(L("You need to stand up!"));
 			return false;
 		}
-		Physical target=targetShipItem;
-		
-		Area targetArea=((BoardableShip)targetShipItem).getShipArea();
-		List<Room> choices=new ArrayList<Room>();
+		final Physical target=targetShipItem;
+
+		final Area targetArea=((BoardableShip)targetShipItem).getShipArea();
+		final List<Room> choices=new ArrayList<Room>();
 		for(final Enumeration<Room> r=targetArea.getProperMap();r.hasMoreElements();)
 		{
 			final Room R2=r.nextElement();
@@ -139,19 +138,19 @@ public class Thief_RideTheRigging extends ThiefSkill
 			&&(R2.domainType()!=Room.DOMAIN_OUTDOORS_AIR))
 				choices.add(R2);
 		}
-		
+
 		if(choices.size()==0)
 		{
 			mob.tell(L("You don't see any deck on that ship to land on!"));
 			return false;
 		}
-		
+
 		Room targetRoom=choices.get(CMLib.dice().roll(1, choices.size(), -1));
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,-((distance-1)*30),auto);
+		final boolean success=proficiencyCheck(mob,-((distance-1)*30),auto);
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,auto?"":L("<S-NAME> climb(s) onto the rigging and rides it over to <T-NAME>!"));

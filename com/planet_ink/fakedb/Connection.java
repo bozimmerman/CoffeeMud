@@ -22,16 +22,16 @@ import java.lang.ref.WeakReference;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public class Connection implements java.sql.Connection
 {
-	static private java.util.Map	databases	= new java.util.HashMap();
-	static private java.util.Map	references	= new java.util.HashMap();
-	private Backend					backend;
-	private boolean					closed		= false;
-	private String					oldPath		= "";
+	static private java.util.Map<String, WeakReference<Backend>>	databases	= new java.util.HashMap<String, WeakReference<Backend>>();
+	static private java.util.Map<String, Integer>					references	= new java.util.HashMap<String, Integer>();
 
-	static private void log(String x)
+	private Backend	backend;
+	private boolean	closed	= false;
+	private String	oldPath	= "";
+
+	static private void log(final String x)
 	{
 		System.err.println("Connection: " + x);
 	}
@@ -41,7 +41,7 @@ public class Connection implements java.sql.Connection
 		return backend;
 	}
 
-	public Connection(String path) throws java.sql.SQLException
+	public Connection(final String path) throws java.sql.SQLException
 	{
 		connect(path);
 	}
@@ -66,7 +66,7 @@ public class Connection implements java.sql.Connection
 		{
 			synchronized (references)
 			{
-				Integer conCount = (Integer) references.get(path);
+				Integer conCount = references.get(path);
 				if (conCount == null)
 					conCount = Integer.valueOf(0);
 				references.remove(path);
@@ -76,16 +76,16 @@ public class Connection implements java.sql.Connection
 
 		synchronized (databases)
 		{
-			final WeakReference ref = (WeakReference) databases.get(path);
+			final WeakReference<Backend> ref = databases.get(path);
 			Backend backend = null;
 			if (ref != null)
-				backend = (Backend) ref.get();
+				backend = ref.get();
 			if (backend == null)
 			{
 				backend = new Backend();
 				if (!backend.open(new java.io.File(path)))
 					throw new java.sql.SQLException("unable to open database");
-				databases.put(path, new WeakReference(backend));
+				databases.put(path, new WeakReference<Backend>(backend));
 			}
 			this.backend = backend;
 		}
@@ -98,19 +98,19 @@ public class Connection implements java.sql.Connection
 	}
 
 	@Override
-	public java.sql.Statement createStatement(int a, int b) throws java.sql.SQLException
+	public java.sql.Statement createStatement(final int a, final int b) throws java.sql.SQLException
 	{
 		return createStatement();
 	}
 
 	@Override
-	public java.sql.Statement createStatement(int a, int b, int c) throws java.sql.SQLException
+	public java.sql.Statement createStatement(final int a, final int b, final int c) throws java.sql.SQLException
 	{
 		return createStatement();
 	}
 
 	@Override
-	public java.sql.PreparedStatement prepareStatement(String sql) throws java.sql.SQLException
+	public java.sql.PreparedStatement prepareStatement(final String sql) throws java.sql.SQLException
 	{
 		final PreparedStatement p = new PreparedStatement(this);
 		p.prepare(sql);
@@ -118,55 +118,55 @@ public class Connection implements java.sql.Connection
 	}
 
 	@Override
-	public java.sql.PreparedStatement prepareStatement(String sql, int a) throws java.sql.SQLException
+	public java.sql.PreparedStatement prepareStatement(final String sql, final int a) throws java.sql.SQLException
 	{
 		return prepareStatement(sql);
 	}
 
 	@Override
-	public java.sql.PreparedStatement prepareStatement(String sql, int[] a) throws java.sql.SQLException
+	public java.sql.PreparedStatement prepareStatement(final String sql, final int[] a) throws java.sql.SQLException
 	{
 		return prepareStatement(sql);
 	}
 
 	@Override
-	public java.sql.PreparedStatement prepareStatement(String sql, String[] a) throws java.sql.SQLException
+	public java.sql.PreparedStatement prepareStatement(final String sql, final String[] a) throws java.sql.SQLException
 	{
 		return prepareStatement(sql);
 	}
 
 	@Override
-	public java.sql.PreparedStatement prepareStatement(String sql, int a, int b) throws java.sql.SQLException
+	public java.sql.PreparedStatement prepareStatement(final String sql, final int a, final int b) throws java.sql.SQLException
 	{
 		return prepareStatement(sql);
 	}
 
-	public java.sql.PreparedStatement prepareStatement(String sql, int a, int[] b) throws java.sql.SQLException
-	{
-		return prepareStatement(sql);
-	}
-
-	@Override
-	public java.sql.PreparedStatement prepareStatement(String sql, int a, int b, int c) throws java.sql.SQLException
+	public java.sql.PreparedStatement prepareStatement(final String sql, final int a, final int[] b) throws java.sql.SQLException
 	{
 		return prepareStatement(sql);
 	}
 
 	@Override
-	public java.sql.CallableStatement prepareCall(String sql) throws java.sql.SQLException
+	public java.sql.PreparedStatement prepareStatement(final String sql, final int a, final int b, final int c) throws java.sql.SQLException
+	{
+		return prepareStatement(sql);
+	}
+
+	@Override
+	public java.sql.CallableStatement prepareCall(final String sql) throws java.sql.SQLException
 	{
 		log("prepareCall");
 		throw new java.sql.SQLException("Callable statments not suppoted.", "S1C00");
 	}
 
 	@Override
-	public java.sql.CallableStatement prepareCall(String sql, int a, int b) throws java.sql.SQLException
+	public java.sql.CallableStatement prepareCall(final String sql, final int a, final int b) throws java.sql.SQLException
 	{
 		return prepareCall(sql);
 	}
 
 	@Override
-	public java.sql.CallableStatement prepareCall(String sql, int a, int b, int c) throws java.sql.SQLException
+	public java.sql.CallableStatement prepareCall(final String sql, final int a, final int b, final int c) throws java.sql.SQLException
 	{
 		return prepareCall(sql);
 	}
@@ -184,31 +184,31 @@ public class Connection implements java.sql.Connection
 	}
 
 	@Override
-	public java.sql.Savepoint setSavepoint(String S) throws java.sql.SQLException
+	public java.sql.Savepoint setSavepoint(final String S) throws java.sql.SQLException
 	{
 		throw new java.sql.SQLException("Savepoints not supported");
 	}
 
 	@Override
-	public void rollback(java.sql.Savepoint saved) throws java.sql.SQLException
+	public void rollback(final java.sql.Savepoint saved) throws java.sql.SQLException
 	{
 		throw new java.sql.SQLException("Savepoints not supported");
 	}
 
 	@Override
-	public void releaseSavepoint(java.sql.Savepoint saved) throws java.sql.SQLException
+	public void releaseSavepoint(final java.sql.Savepoint saved) throws java.sql.SQLException
 	{
 		throw new java.sql.SQLException("Savepoints not supported");
 	}
 
 	@Override
-	public String nativeSQL(String sql) throws java.sql.SQLException
+	public String nativeSQL(final String sql) throws java.sql.SQLException
 	{
 		return sql;
 	}
 
 	@Override
-	public void setAutoCommit(boolean autoCommit) throws java.sql.SQLException
+	public void setAutoCommit(final boolean autoCommit) throws java.sql.SQLException
 	{
 		log("setAutoCommit");
 		if (!autoCommit)
@@ -242,7 +242,7 @@ public class Connection implements java.sql.Connection
 			closed = true;
 			synchronized (references)
 			{
-				final Integer conCount = (Integer) references.get(oldPath);
+				final Integer conCount = references.get(oldPath);
 				if (conCount != null)
 				{
 					if (conCount.intValue() == 1)
@@ -277,7 +277,7 @@ public class Connection implements java.sql.Connection
 	}
 
 	@Override
-	public void setReadOnly(boolean readOnly) throws java.sql.SQLException
+	public void setReadOnly(final boolean readOnly) throws java.sql.SQLException
 	{
 		log("setReadOnly");
 	}
@@ -289,7 +289,7 @@ public class Connection implements java.sql.Connection
 	}
 
 	@Override
-	public void setCatalog(String Catalog) throws java.sql.SQLException
+	public void setCatalog(final String Catalog) throws java.sql.SQLException
 	{
 		log("setCatalog");
 	}
@@ -301,7 +301,7 @@ public class Connection implements java.sql.Connection
 	}
 
 	@Override
-	public void setTransactionIsolation(int level) throws java.sql.SQLException
+	public void setTransactionIsolation(final int level) throws java.sql.SQLException
 	{
 		log("setTransactionIsolation");
 		throw new java.sql.SQLException("Transaction Isolation Levels are not supported.", "S1C00");
@@ -327,10 +327,11 @@ public class Connection implements java.sql.Connection
 	}
 
 	@Override
-	public void setHoldability(int holdability) throws java.sql.SQLException
+	public void setHoldability(final int holdability) throws java.sql.SQLException
 	{
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public java.util.Map getTypeMap() throws java.sql.SQLException
 	{
@@ -338,7 +339,7 @@ public class Connection implements java.sql.Connection
 	}
 
 	@Override
-	public Array createArrayOf(String arg0, Object[] arg1) throws SQLException
+	public Array createArrayOf(final String arg0, final Object[] arg1) throws SQLException
 	{
 		return null;
 	}
@@ -368,7 +369,7 @@ public class Connection implements java.sql.Connection
 	}
 
 	@Override
-	public Struct createStruct(String arg0, Object[] arg1) throws SQLException
+	public Struct createStruct(final String arg0, final Object[] arg1) throws SQLException
 	{
 		return null;
 	}
@@ -380,46 +381,46 @@ public class Connection implements java.sql.Connection
 	}
 
 	@Override
-	public String getClientInfo(String arg0) throws SQLException
+	public String getClientInfo(final String arg0) throws SQLException
 	{
 		return null;
 	}
 
 	@Override
-	public boolean isValid(int arg0) throws SQLException
+	public boolean isValid(final int arg0) throws SQLException
 	{
 		return false;
 	}
 
 	@Override
-	public void setClientInfo(Properties arg0) throws SQLClientInfoException
+	public void setClientInfo(final Properties arg0) throws SQLClientInfoException
 	{
 	}
 
 	@Override
-	public void setClientInfo(String arg0, String arg1) throws SQLClientInfoException
+	public void setClientInfo(final String arg0, final String arg1) throws SQLClientInfoException
 	{
 	}
 
 	// public void setTypeMap(Map arg0) throws SQLException { }
 	@Override
-	public void setTypeMap(Map<String, Class<?>> arg0) throws SQLException
+	public void setTypeMap(final Map<String, Class<?>> arg0) throws SQLException
 	{
 	}
 
 	@Override
-	public boolean isWrapperFor(Class<?> iface) throws SQLException
+	public boolean isWrapperFor(final Class<?> iface) throws SQLException
 	{
 		return false;
 	}
 
 	@Override
-	public <T> T unwrap(Class<T> iface) throws SQLException
+	public <T> T unwrap(final Class<T> iface) throws SQLException
 	{
 		return null;
 	}
 
-	public void setSchema(String schema) throws SQLException
+	public void setSchema(final String schema) throws SQLException
 	{
 		connect(schema);
 	}
@@ -429,12 +430,12 @@ public class Connection implements java.sql.Connection
 		return oldPath;
 	}
 
-	public void abort(Executor executor) throws SQLException
+	public void abort(final Executor executor) throws SQLException
 	{
 		this.close();
 	}
 
-	public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException
+	public void setNetworkTimeout(final Executor executor, final int milliseconds) throws SQLException
 	{
 	}
 

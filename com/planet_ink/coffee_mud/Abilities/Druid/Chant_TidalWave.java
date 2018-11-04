@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_TidalWave extends Chant
 {
 	@Override
@@ -103,7 +102,7 @@ public class Chant_TidalWave extends Chant
 						highestLevels[1] = M.phyStats().level();
 						highestLevelM[1] = M;
 					}
-					
+
 					if(M.isPlayer() && (M.phyStats().level() > highestLevels[0]))
 					{
 						highestLevels[0] = M.phyStats().level();
@@ -131,7 +130,7 @@ public class Chant_TidalWave extends Chant
 			return highestLevelM[0];
 		return highestLevelM[1];
 	}
-	
+
 	protected MOB gatherHighestLevels(final MOB mob, final Rideable I, final Set<MOB> grp, final int[] highestLevels, final MOB[] highestLevelM) throws CMException
 	{
 		if(I!=null)
@@ -149,13 +148,13 @@ public class Chant_TidalWave extends Chant
 						highestLevels[1] = M.phyStats().level();
 						highestLevelM[1] = M;
 					}
-					
+
 					if(M.isPlayer() && (M.phyStats().level() > highestLevels[0]))
 					{
 						highestLevels[0] = M.phyStats().level();
 						highestLevelM[0] = M;
 					}
-						
+
 				}
 			}
 		}
@@ -163,8 +162,8 @@ public class Chant_TidalWave extends Chant
 			return highestLevelM[0];
 		return highestLevelM[1];
 	}
-	
-	protected MOB getHighestLevel(MOB casterM, Physical target) throws CMException
+
+	protected MOB getHighestLevel(final MOB casterM, final Physical target) throws CMException
 	{
 		// pc=0, npc=1
 		final int[] highestLevels=new int[]{0,0};
@@ -187,8 +186,8 @@ public class Chant_TidalWave extends Chant
 			return highestLevelM[0];
 		return highestLevelM[1];
 	}
-	
-	public int getWaterRoomDir(Room mobR)
+
+	public int getWaterRoomDir(final Room mobR)
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
@@ -215,7 +214,7 @@ public class Chant_TidalWave extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -225,18 +224,18 @@ public class Chant_TidalWave extends Chant
 		return super.castingQuality(mob,target);
 	}
 
-	protected Room getWashRoom(Physical target, int dir)
+	protected Room getWashRoom(final Physical target, final int dir)
 	{
 		if(target instanceof Room)
 		{
 			if(CMLib.flags().isWateryRoom((Room)target))
 				return (Room)target;
-			
+
 		}
-		
+
 		if(target instanceof BoardableShip)
 		{
-			Item I=((BoardableShip)target).getShipItem();
+			final Item I=((BoardableShip)target).getShipItem();
 			if(I != null)
 				return CMLib.map().roomLocation(target);
 		}
@@ -246,7 +245,7 @@ public class Chant_TidalWave extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -261,8 +260,8 @@ public class Chant_TidalWave extends Chant
 			mob.tell(L("This chant does not work here."));
 			return false;
 		}
-		
-		List<Room> targetRooms = new ArrayList<Room>();
+
+		final List<Room> targetRooms = new ArrayList<Room>();
 		Physical target = null;
 		Room washRoom = null;
 		String washDirection="somewhere";
@@ -272,7 +271,7 @@ public class Chant_TidalWave extends Chant
 			target=getTarget(mob,R,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 			if(target==null)
 				return false;
-			
+
 			if(target instanceof BoardableShip)
 			{ //ok
 				if(target instanceof PrivateProperty)
@@ -304,7 +303,7 @@ public class Chant_TidalWave extends Chant
 				mob.tell(L("That's not a boat!"));
 				return false;
 			}
-			
+
 			if(CMLib.flags().isFlying(target))
 			{
 				mob.tell(L("This chant would have no effect on @x1!",target.name()));
@@ -353,11 +352,11 @@ public class Chant_TidalWave extends Chant
 				}
 			}
 		}
-		
+
 		// above will give us a target, and target rooms
-		
+
 		// now below will discover where the wave comes from.
-		
+
 		String fromDir;
 		int waterDir = -1;
 		if(CMLib.flags().isWateryRoom(R))
@@ -368,10 +367,10 @@ public class Chant_TidalWave extends Chant
 			{
 				if((R.domainType()&Room.INDOORS)==0)
 				{
-					Item I=((BoardableShip)R.getArea()).getShipItem();
+					final Item I=((BoardableShip)R.getArea()).getShipItem();
 					if((I!=null)&&(I.owner() instanceof Room))
 					{
-						Room R2=(Room)I.owner();
+						final Room R2=(Room)I.owner();
 						if(CMLib.flags().isWateryRoom(R2))
 							waterDir = CMLib.dice().roll(1, 4, -1);
 						else
@@ -388,11 +387,11 @@ public class Chant_TidalWave extends Chant
 			}
 			fromDir=CMLib.directions().getFromCompassDirectionName(waterDir);
 		}
-		
+
 		if((waterDir >=0)&&(possibleWashDirs!=null))
 		{
 			possibleWashDirs.remove(Integer.valueOf(waterDir));
-			int opWaterDir=Directions.getOpDirectionCode(waterDir);
+			final int opWaterDir=Directions.getOpDirectionCode(waterDir);
 			if(possibleWashDirs.contains(Integer.valueOf(opWaterDir)))
 			{
 				washRoom = R.getRoomInDir(opWaterDir);
@@ -401,23 +400,23 @@ public class Chant_TidalWave extends Chant
 			else
 			if(possibleWashDirs.size()>0)
 			{
-				int washDirDir=possibleWashDirs.get(CMLib.dice().roll(1, possibleWashDirs.size(), -1)).intValue();
+				final int washDirDir=possibleWashDirs.get(CMLib.dice().roll(1, possibleWashDirs.size(), -1)).intValue();
 				washRoom = R.getRoomInDir(washDirDir);
 				washDirection=CMLib.directions().getDirectionName(washDirDir);
 			}
 		}
-		
+
 		MOB highM;
 		try
 		{
 			highM = this.getHighestLevel(mob, target);
 		}
-		catch (CMException e)
+		catch (final CMException e)
 		{
 			mob.tell(L("You are not permitted to target @x1!",target.name()));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -438,7 +437,7 @@ public class Chant_TidalWave extends Chant
 					else
 					if (chanceToFail > 95)
 						chanceToFail = 95;
-		
+
 					if (CMLib.dice().rollPercentage() < chanceToFail)
 					{
 						success = false;
@@ -446,7 +445,7 @@ public class Chant_TidalWave extends Chant
 				}
 			}
 		}
-		
+
 		if(success)
 		{
 			final Set<MOB> casterGroup=mob.getGroupMembers(new HashSet<MOB>());
@@ -500,7 +499,7 @@ public class Chant_TidalWave extends Chant
 										final int roll=CMLib.dice().rollPercentage();
 										if((roll!=1)&&(roll>chanceToStay))
 										{
-											int washDir = CMLib.map().getRoomDir(R2, washRoom);
+											final int washDir = CMLib.map().getRoomDir(R2, washRoom);
 											if(washDir >=0)
 												CMLib.tracking().walk(M,washDir,true,false);
 											if(!washRoom.isInhabitant(M))

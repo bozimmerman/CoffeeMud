@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class ClanResign extends StdCommand
 {
 	public ClanResign()
@@ -50,7 +49,7 @@ public class ClanResign extends StdCommand
 	}
 
 	@Override
-	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
@@ -87,7 +86,7 @@ public class ClanResign extends StdCommand
 				{
 				}
 
-				@Override 
+				@Override
 				public void callBack()
 				{
 					final String check=this.input;

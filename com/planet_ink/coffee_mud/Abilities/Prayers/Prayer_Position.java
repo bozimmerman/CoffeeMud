@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Position extends Prayer
 {
 	@Override
@@ -69,7 +68,7 @@ public class Prayer_Position extends Prayer
 
 	public Room lastPosition=null;
 
-	protected int getRoomDirection(Room R, Room toRoom, Vector<Room> ignore)
+	protected int getRoomDirection(final Room R, final Room toRoom, final Vector<Room> ignore)
 	{
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			if((R.getRoomInDir(d)==toRoom)
@@ -79,7 +78,7 @@ public class Prayer_Position extends Prayer
 		return -1;
 	}
 
-	public String trailTo(Room R1, Room R2)
+	public String trailTo(final Room R1, final Room R2)
 	{
 		final Vector<Room> set=new Vector<Room>();
 		TrackingLibrary.TrackingFlags flags;
@@ -162,7 +161,7 @@ public class Prayer_Position extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(lastPosition==null)
 			lastPosition=mob.getStartRoom();

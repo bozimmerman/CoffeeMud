@@ -5,13 +5,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
 	Copyright 2015-2018 Bo Zimmerman
-	
+
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
-	
+
 		   http://www.apache.org/licenses/LICENSE-2.0
-	
+
 	Unless required by applicable law or agreed to in writing, software
 	distributed under the License is distributed on an "AS IS" BASIS,
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,13 +19,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 	limitations under the License.
 */
 
-public class SafeFeedbackEnumeration<K> implements Enumeration<K> 
+public class SafeFeedbackEnumeration<K> implements Enumeration<K>
 {
 	private final Enumeration<K> iter;
 	private final SafeCollectionHost collection;
 	private final AtomicBoolean returned = new AtomicBoolean(false);
 
-	public SafeFeedbackEnumeration(Enumeration<K> iter, SafeCollectionHost collection) 
+	public SafeFeedbackEnumeration(final Enumeration<K> iter, final SafeCollectionHost collection)
 	{
 		this.iter = iter;
 		this.collection = collection;
@@ -42,11 +42,11 @@ public class SafeFeedbackEnumeration<K> implements Enumeration<K>
 		}
 		super.finalize();
 	}
-	
+
 	@Override
-	public boolean hasMoreElements() 
+	public boolean hasMoreElements()
 	{
-		boolean hasNext = iter.hasMoreElements();
+		final boolean hasNext = iter.hasMoreElements();
 		if((!hasNext)&&(!returned.get()))
 		{
 			collection.returnIterator(this);
@@ -56,7 +56,7 @@ public class SafeFeedbackEnumeration<K> implements Enumeration<K>
 	}
 
 	@Override
-	public K nextElement() 
+	public K nextElement()
 	{
 		return iter.nextElement();
 	}

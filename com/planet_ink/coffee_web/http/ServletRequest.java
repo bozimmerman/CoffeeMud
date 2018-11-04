@@ -34,7 +34,7 @@ import com.planet_ink.coffee_web.util.CWConfig;
  * This class is instantiated as an means for servlets to get input from the request.
  * It is generally a wrapper for the internal class HTTPRequest, but with more
  * guards against some idiosyncracies of that class.
- * 
+ *
  * See the interface for more comment
  * @author Bo Zimmerman
  *
@@ -44,13 +44,13 @@ public class ServletRequest implements SimpleServletRequest
 	private final HTTPRequest 			request;
 	private final CWConfig			config;
 	private final SimpleServletSession  session;
-	
+
 	/**
 	 * Construct a servlet request input object
 	 * @param session the session assigned to the request
 	 * @param request the request being processed
 	 */
-	public ServletRequest(SimpleServletSession session, HTTPRequest request)
+	public ServletRequest(final SimpleServletSession session, final HTTPRequest request)
 	{
 		this.request=request;
 		if(Thread.currentThread() instanceof CWThread)
@@ -59,7 +59,7 @@ public class ServletRequest implements SimpleServletRequest
 			this.config=null;
 		this.session=session;
 	}
-	
+
 	@Override
 	public String getHost()
 	{
@@ -79,7 +79,7 @@ public class ServletRequest implements SimpleServletRequest
 	}
 
 	@Override
-	public String getUrlParameter(String name)
+	public String getUrlParameter(final String name)
 	{
 		return request.getUrlParameter(name);
 	}
@@ -89,21 +89,21 @@ public class ServletRequest implements SimpleServletRequest
 	{
 		return request.getUrlParametersCopy();
 	}
-	
+
 	@Override
-	public boolean isUrlParameter(String name)
+	public boolean isUrlParameter(final String name)
 	{
 		return request.isUrlParameter(name);
 	}
 
 	@Override
-	public void addFakeUrlParameter(String name, String value)
+	public void addFakeUrlParameter(final String name, final String value)
 	{
 		request.addFakeUrlParameter(name, value);
 	}
-	
+
 	@Override
-	public String getHeader(String name)
+	public String getHeader(final String name)
 	{
 		return request.getHeader(name);
 	}
@@ -125,9 +125,9 @@ public class ServletRequest implements SimpleServletRequest
 	{
 		return (config!=null)?config.getServletMan():null;
 	}
-	
+
 	@Override
-	public String getCookie(String name)
+	public String getCookie(final String name)
 	{
 		return request.getCookie(name);
 	}
@@ -143,25 +143,25 @@ public class ServletRequest implements SimpleServletRequest
 	{
 		return request.getUrlParameters();
 	}
-	
+
 	@Override
 	public String getQueryString()
 	{
 		return request.getQueryString();
 	}
-	
-	@Override 
-	public void removeUrlParameter(String name)
+
+	@Override
+	public void removeUrlParameter(final String name)
 	{
 		request.removeUrlParameter(name);
 	}
-	
+
 	@Override
 	public Set<String> getCookieNames()
 	{
 		return request.getCookieNames();
 	}
-	
+
 	/**
 	 * Returns the session object associated with this servlet request
 	 * @return the session object
@@ -173,30 +173,30 @@ public class ServletRequest implements SimpleServletRequest
 	}
 
 	@Override
-	public double getSpecialEncodingAcceptability(String type)
+	public double getSpecialEncodingAcceptability(final String type)
 	{
 		return request.getSpecialEncodingAcceptability(type);
 	}
 
-	
+
 	@Override
 	public int getClientPort()
 	{
 		return request.getClientPort();
 	}
-	
+
 	@Override
 	public HTTPMethod getMethod()
 	{
 		return request.getMethod();
 	}
-	
+
 	@Override
 	public String getFullHost()
 	{
 		return request.getFullHost();
 	}
-	
+
 	@Override
 	public List<long[]> getRangeAZ()
 	{

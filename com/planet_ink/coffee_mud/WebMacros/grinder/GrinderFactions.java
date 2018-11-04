@@ -35,15 +35,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-public class GrinderFactions 
+public class GrinderFactions
 {
 	public String name()
 	{
 		return "GrinderFactions";
 	}
 
-	public static String modifyFaction(HTTPRequest httpReq, java.util.Map<String,String> parms, Faction F)
+	public static String modifyFaction(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final Faction F)
 	{
 		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)

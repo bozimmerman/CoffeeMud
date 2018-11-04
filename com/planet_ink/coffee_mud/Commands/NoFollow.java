@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class NoFollow extends Follow
 {
 	public NoFollow()
@@ -48,10 +47,10 @@ public class NoFollow extends Follow
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()>1)
 		{
 			if(commands.get(0).equalsIgnoreCase("UNFOLLOW"))
@@ -66,7 +65,7 @@ public class NoFollow extends Follow
 					CMLib.commands().postCommandFail(mob,origCmds,L("No one is following you!"));
 				else
 					unfollow(mob,((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("QUIETLY"))));
-				return false; 
+				return false;
 			}
 			MOB M=mob.fetchFollower(name);
 			if((M==null)&&(mob.location()!=null))

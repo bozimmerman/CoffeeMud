@@ -44,23 +44,23 @@ public interface MIMEType
 	 * @return the full fancy mime type name for this mime type
 	 */
 	public String getType();
-	
+
 	/**
 	 * Returns the simple name/extension for this mime type
 	 * @return the simple name/extension for this mime type
 	 */
 	public String name();
-	
+
 	/**
 	 * Returns true if the received content-type map matches this MIMEType.
 	 * @param mask a mime-type mask sent as part of a request
 	 * @return true if they match, false otherwise
 	 */
 	public boolean matches(String mask);
-	
+
 	/**
 	 * Static enum of the supported mime types and a mapping mechanism.
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -271,31 +271,31 @@ public interface MIMEType
 		private final String type;
 		private final String ext;
 		private final String[] parts;
-		
-		private All(String ext, String type)
+
+		private All(final String ext, final String type)
 		{
 			this.ext=ext;
 			this.type=type;
 			this.parts=type.split("/");
 		}
-	
+
 		public String[] getParts()
 		{
 			return parts;
 		}
-	
+
 		public String getExt()
 		{
 			return ext;
 		}
-	
+
 		public String getType()
 		{
 			return type;
 		}
-		
+
 		// below here are static mime-type utility functions
-		
+
 		private static final Hashtable<String,MIMEType> hashedTypes;
 		static
 		{
@@ -303,7 +303,7 @@ public interface MIMEType
 			for(final MIMEType type : All.values())
 				hashedTypes.put(type.getExt(), type);
 		}
-		
+
 		/**
 		 * Allows new MIMEType objects to be created and added for basic searching.
 		 * @param extStr the extension for files of this mime type
@@ -317,31 +317,31 @@ public interface MIMEType
 			final MIMEType type = new MIMEType()
 			{
 				@Override
-				public String[] getParts() 
+				public String[] getParts()
 				{
 					return parts;
 				}
 
 				@Override
-				public String getExt() 
+				public String getExt()
 				{
 					return ext;
 				}
 
 				@Override
-				public String getType() 
+				public String getType()
 				{
 					return typeStr;
 				}
 
 				@Override
-				public String name() 
+				public String name()
 				{
 					return ext;
 				}
 
 				@Override
-				public boolean matches(String mask) 
+				public boolean matches(final String mask)
 				{
 					return All.matches(this, mask);
 				}
@@ -349,7 +349,7 @@ public interface MIMEType
 			hashedTypes.put(type.getExt(), type);
 			return type;
 		}
-		
+
 		/**
 		 * Finds an appropriate mime type given the file path.
 		 * It will extract the extension, if any, to find it.
@@ -368,7 +368,7 @@ public interface MIMEType
 				return hashedTypes.get(extension);
 			return All.DEFAULT;
 		}
-		
+
 		/**
 		 * Finds an appropriate mime type given the extension.
 		 * @param extension the extention to the read file
@@ -380,7 +380,7 @@ public interface MIMEType
 				return hashedTypes.get(extension);
 			return All.DEFAULT;
 		}
-		
+
 		/**
 		 * Returns whether the given mime type object matches the given search mask
 		 * @param type the type to compare
@@ -405,7 +405,7 @@ public interface MIMEType
 				return true;
 			return false;
 		}
-		
+
 		@Override
 		public boolean matches(final String mask)
 		{
@@ -427,7 +427,7 @@ public interface MIMEType
 			}
 			return type;
 		}
-		
+
 		/**
 		 * A substitute for Enum.values(), this method also gives any ini file
 		 * defined mime types.
@@ -438,5 +438,5 @@ public interface MIMEType
 			return hashedTypes.values();
 		}
 	}
-	
+
 }

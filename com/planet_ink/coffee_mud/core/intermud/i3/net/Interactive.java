@@ -41,7 +41,8 @@ import java.util.Vector;
  * @version 1.0
  */
 @SuppressWarnings({"unchecked","rawtypes"})
-public abstract class Interactive implements ServerUser {
+public abstract class Interactive implements ServerUser
+{
 	/**
 	 * Given a user name, this method will build a unique
 	 * key.  This unique key has nothing to do with the

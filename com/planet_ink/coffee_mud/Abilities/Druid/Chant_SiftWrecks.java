@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SiftWrecks extends Chant
 {
 	@Override
@@ -74,33 +73,33 @@ public class Chant_SiftWrecks extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!auto && !CMLib.flags().isWateryRoom(mob.location()))
 		{
 			mob.tell(L("You should be in a watery locale to use this magic."));
 			return false;
 		}
-		
-		List<Room> myPlantRoomsInThisArea=Druid_MyPlants.myAreaPlantRooms(mob, mob.location().getArea());
-		List<Item> myPlants = Druid_MyPlants.getMyPlants(mob,myPlantRoomsInThisArea);
+
+		final List<Room> myPlantRoomsInThisArea=Druid_MyPlants.myAreaPlantRooms(mob, mob.location().getArea());
+		final List<Item> myPlants = Druid_MyPlants.getMyPlants(mob,myPlantRoomsInThisArea);
 		Item myCoral = null;
-		for(Item I : myPlants)
+		for(final Item I : myPlants)
 		{
-			Ability A=Druid_MyPlants.getMyPlantsSpell(I,mob);
+			final Ability A=Druid_MyPlants.getMyPlantsSpell(I,mob);
 			if((A!=null)&&(A.ID().equalsIgnoreCase("Chant_SummonCoral")))
 			{
 				myCoral=I;
 				break;
 			}
 		}
-		
+
 		if(myCoral==null)
 		{
 			mob.tell(L("You need a connection with a summoned coral in this area for this chant to reveal anything."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -112,13 +111,13 @@ public class Chant_SiftWrecks extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int radius = (adjustedLevel(mob,asLevel))+(10*super.getXMAXRANGELevel(mob))+super.getXLEVELLevel(mob);
+				final int radius = (adjustedLevel(mob,asLevel))+(10*super.getXMAXRANGELevel(mob))+super.getXLEVELLevel(mob);
 				final TrackingLibrary.TrackingFlags filters=CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 						.plus(TrackingLibrary.TrackingFlag.UNDERWATERONLY);
 				final List<Room> siftables = CMLib.tracking().getRadiantRooms(mob.location(), filters, radius);
-				StringBuilder msgStr=new StringBuilder("");
-				for(Room R : siftables)
+				final StringBuilder msgStr=new StringBuilder("");
+				for(final Room R : siftables)
 				{
 					if((R.numItems()>0)&&(R.getRoomInDir(Directions.DOWN)==null))
 					{
@@ -134,7 +133,7 @@ public class Chant_SiftWrecks extends Chant
 								if(trailToThisRoom==null)
 									msgStr.append(" here? ");
 								else
-								for(Integer dirI : trailToThisRoom)
+								for(final Integer dirI : trailToThisRoom)
 									msgStr.append(CMLib.directions().getDirectionChar(dirI.intValue())).append(" ");
 								msgStr.append("\n\r");
 							}

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Torture extends Spell
 {
 
@@ -98,7 +97,7 @@ public class Spell_Torture extends Spell
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> manage(s) to survive the torture."));
 	}
 
-	public void cryOut(MOB mob)
+	public void cryOut(final MOB mob)
 	{
 		if((text().length()>0)&&(!text().equalsIgnoreCase("HITONLY")))
 		{
@@ -277,7 +276,7 @@ public class Spell_Torture extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

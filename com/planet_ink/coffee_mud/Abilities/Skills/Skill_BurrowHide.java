@@ -89,7 +89,7 @@ public class Skill_BurrowHide extends StdSkill
 	{
 		return false;
 	}
-	
+
 	protected volatile boolean isBuried = false;
 
 	protected boolean isDiggableRoom(final Room R)
@@ -108,7 +108,7 @@ public class Skill_BurrowHide extends StdSkill
 			return false;
 		return true;
 	}
-	
+
 	protected boolean isRodentHere(final Room R, final MOB notM)
 	{
 		if(R==null)

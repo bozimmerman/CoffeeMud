@@ -65,7 +65,7 @@ public class Patroller extends ActiveTicker
 	protected volatile int	rideCheckCt	= 0;
 
 	protected WeakReference<Room> startRoom=new WeakReference<Room>(null);
-	
+
 	@Override
 	public String accountForYourself()
 	{
@@ -82,7 +82,7 @@ public class Patroller extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		final String rideokString=CMParms.getParmStr(newParms,"rideok","false");
@@ -185,13 +185,13 @@ public class Patroller extends ActiveTicker
 				}
 			}
 			if((ticking instanceof Physical)
-			&&(!CMLib.flags().canTrack((Physical)ticking)) 
+			&&(!CMLib.flags().canTrack((Physical)ticking))
 			&& (CMLib.dice().roll(1,100,0)>1))
 			{
 				tickStatus=Tickable.STATUS_NOT;
 				return true;
 			}
-			
+
 			if((ticking instanceof BoardableShip)
 			&&(((BoardableShip)ticking).getShipItem() instanceof SailingShip))
 			{
@@ -204,7 +204,7 @@ public class Patroller extends ActiveTicker
 					return true;
 				}
 			}
-			
+
 			tickStatus=Tickable.STATUS_MISC+1;
 			ArrayList<Rider> riders=null;
 			if((ticking instanceof Rideable)
@@ -496,7 +496,7 @@ public class Patroller extends ActiveTicker
 								&& (mob.location() != thisRoom)
 								&& CMLib.flags().isInTheGame(mob,true))
 									thisRoom.bringMobHere(mob,false);
-	
+
 								final CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 								final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
 								leaveMsg.setValue(direction+1);
@@ -535,7 +535,7 @@ public class Patroller extends ActiveTicker
 							}
 						}
 					}
-	
+
 					tickStatus=Tickable.STATUS_MISC+17;
 					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,L("<S-NAME> goes @x1.",CMLib.directions().getDirectionName(direction)));
 					tickStatus=Tickable.STATUS_MISC+18;

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SpeakWithAnimals extends Chant implements Language
 {
 	@Override
@@ -43,7 +42,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 
 	protected static CharStats				charStats		= null;
 	protected static Map<String, Boolean>	raceIDs			= new HashMap<String, Boolean>();
-	
+
 	private final static String	localizedName	= CMLib.lang().L("Speak With Animals");
 
 	@Override
@@ -74,13 +73,13 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 
 	protected WeakHashMap<MOB,Behavior> mudChatters=new WeakHashMap<MOB,Behavior>();
 	protected Map<String,Language> myLanguages=new Hashtable<String,Language>();
-	
-	protected void sayYouAreDone(MOB mob)
+
+	protected void sayYouAreDone(final MOB mob)
 	{
 		if((mob.location()!=null)&&(!mob.amDead()))
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> ability to speak to animals has faded."));
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -99,14 +98,14 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 		}
 	}
 
-	protected boolean canSpeakWithThis(MOB mob, Ability L)
+	protected boolean canSpeakWithThis(final MOB mob, final Ability L)
 	{
 		if(canSpeakWithThis(mob))
 			return true;
 		return false;
 	}
-	
-	protected boolean canSpeakWithThis(MOB mob)
+
+	protected boolean canSpeakWithThis(final MOB mob)
 	{
 		if(CMLib.flags().isAnimalIntelligence(mob))
 			return true;
@@ -174,7 +173,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 				&&(A instanceof Language))
 				{
-					Ability effectA=M.fetchEffect(A.ID());
+					final Ability effectA=M.fetchEffect(A.ID());
 					if(effectA==null)
 					{
 						A.autoInvocation(M, false);
@@ -211,8 +210,8 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 		}
 		return null;
 	}
-	
-	@Override 
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
@@ -339,8 +338,8 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 					if(msg.amISource(mob)
 					&&(msg.target() instanceof MOB)
 					&&(canSpeakWithThis((MOB)msg.target()))
-					&&((msg.tool()==null) 
-						|| (!(msg.tool() instanceof Language)) 
+					&&((msg.tool()==null)
+						|| (!(msg.tool() instanceof Language))
 						||(((MOB)msg.target()).charStats().getMyRace().racialAbilities((MOB)msg.target()).find(msg.tool().ID())==null)))
 					{
 						Language lA=this.getAnimalSpeak((MOB)msg.target());
@@ -378,7 +377,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -426,42 +425,42 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 	}
 
 	@Override
-	public boolean translatesLanguage(String language)
+	public boolean translatesLanguage(final String language)
 	{
 		return myLanguages.containsKey(language);
 	}
 
 	@Override
-	public int getProficiency(String language)
+	public int getProficiency(final String language)
 	{
 		return 100;
 	}
 
 	@Override
-	public boolean beingSpoken(String language)
+	public boolean beingSpoken(final String language)
 	{
 		return myLanguages.containsKey(language);
 	}
 
 	@Override
-	public void setBeingSpoken(String language, boolean beingSpoken)
+	public void setBeingSpoken(final String language, final boolean beingSpoken)
 	{
 	}
 
 	@Override
-	public Map<String, String> translationHash(String language)
-	{
-		return null;
-	}
-
-	@Override
-	public List<String[]> translationLists(String language)
+	public Map<String, String> translationHash(final String language)
 	{
 		return null;
 	}
 
 	@Override
-	public String translate(String language, String word)
+	public List<String[]> translationLists(final String language)
+	{
+		return null;
+	}
+
+	@Override
+	public String translate(final String language, final String word)
 	{
 		return null;
 	}

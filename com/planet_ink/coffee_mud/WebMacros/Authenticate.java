@@ -52,7 +52,7 @@ public class Authenticate extends StdWebMacro
 	private static final long ONE_REAL_DAY=(long)1000*60*60*24;
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		if((parms!=null)&&(parms.containsKey("AUTH")))
@@ -82,7 +82,7 @@ public class Authenticate extends StdWebMacro
 		return "false";
 	}
 
-	public static boolean authenticated(HTTPRequest httpReq, String login, String password)
+	public static boolean authenticated(final HTTPRequest httpReq, final String login, final String password)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return false;
@@ -114,7 +114,7 @@ public class Authenticate extends StdWebMacro
 		return false;
 	}
 
-	public static MOB getAuthenticatedMob(HTTPRequest httpReq)
+	public static MOB getAuthenticatedMob(final HTTPRequest httpReq)
 	{
 		if(httpReq.getRequestObjects().get("AUTHENTICATED_USER")!=null)
 		{
@@ -160,7 +160,7 @@ public class Authenticate extends StdWebMacro
 		return mob;
 	}
 
-	public static String getLogin(HTTPRequest httpReq)
+	public static String getLogin(final HTTPRequest httpReq)
 	{
 		String login=httpReq.getUrlParameter("LOGIN");
 		if((login!=null)&&(login.length()>0))
@@ -204,7 +204,7 @@ public class Authenticate extends StdWebMacro
 		return login;
 	}
 
-	public static String getPassword(HTTPRequest httpReq)
+	public static String getPassword(final HTTPRequest httpReq)
 	{
 		String password=httpReq.getUrlParameter("PASSWORD");
 		if((password!=null)&&(password.length()>0))

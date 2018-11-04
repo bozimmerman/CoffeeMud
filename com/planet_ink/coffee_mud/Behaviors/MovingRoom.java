@@ -92,7 +92,7 @@ public class MovingRoom extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		String myParms=newParms;
 		listOfRooms=new Vector<String>();
@@ -124,7 +124,7 @@ public class MovingRoom extends ActiveTicker
 	{
 		final StringBuffer str=new StringBuffer("");
 		final String resourceName = "movingroom.xml";
-		CMFile //F=new CMFile(Resources.makeFileResourceName("behavior/"+resourceName),null,0);
+		final CMFile //F=new CMFile(Resources.makeFileResourceName("behavior/"+resourceName),null,0);
 		//if((!F.exists()) || (!F.canRead()))
 			F=new CMFile(Resources.makeFileResourceName(resourceName),null,0);
 		if((F.exists()) && (F.canRead()))
@@ -142,7 +142,7 @@ public class MovingRoom extends ActiveTicker
 		}
 	}
 
-	protected void parseMovingXML(String roomToParse)
+	protected void parseMovingXML(final String roomToParse)
 	{
 		final Vector<String> V = new Vector<String>();
 		final String theFullBlock=CMLib.xml().returnXMLBlock(roomToParse, roomInfos.get(0).toString().toUpperCase());
@@ -191,7 +191,7 @@ public class MovingRoom extends ActiveTicker
 		mapInfo.addElement(CMLib.xml().returnXMLValue(theFullBlock, "DISPLOC"));
 	}
 
-	protected String fixOutputString(String incoming, Room busstopRoom)
+	protected String fixOutputString(String incoming, final Room busstopRoom)
 	{
 		String repWord="";
 		incoming = " " + incoming;
@@ -257,7 +257,7 @@ public class MovingRoom extends ActiveTicker
 		return repWord;
 	}
 
-	protected void removeStubs(Room busstopRoom1,Room busstopRoom2)
+	protected void removeStubs(final Room busstopRoom1,final Room busstopRoom2)
 	{
 		if (!stubs.isEmpty())
 		for(int s=0;s<stubs.size();s++)

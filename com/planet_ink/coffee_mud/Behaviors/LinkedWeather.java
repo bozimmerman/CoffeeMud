@@ -46,10 +46,10 @@ public class LinkedWeather extends StdBehavior
 		return Behavior.CAN_AREAS;
 	}
 
-	protected long lastWeather=-1;
-	protected long lastPending=-1;
-	protected String areaName=null;
-	protected boolean rolling=false;
+	protected long		lastWeather	= -1;
+	protected long		lastPending	= -1;
+	protected String	areaName	= null;
+	protected boolean	rolling		= false;
 
 	@Override
 	public String accountForYourself()

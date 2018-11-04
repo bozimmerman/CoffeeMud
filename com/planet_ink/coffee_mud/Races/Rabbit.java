@@ -196,7 +196,7 @@ public class Rabbit extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{
@@ -245,7 +245,7 @@ public class Rabbit extends StdRace
 				}
 		}
 	}
-	
+
 	@Override
 	public String healthText(final MOB viewer, final MOB mob)
 	{

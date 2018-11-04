@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_HelpingHand extends Spell
 {
 
@@ -86,9 +85,9 @@ public class Spell_HelpingHand extends Spell
 	protected int frustration = 0;
 	protected String targetName = "your target";
 	protected List<Room> trail = null;
-	
+
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		targetM=null;
@@ -97,14 +96,14 @@ public class Spell_HelpingHand extends Spell
 		if(text.length()>0)
 		{
 			targetName = text;
-			MOB M=CMLib.players().getPlayer(text);
+			final MOB M=CMLib.players().getPlayer(text);
 			if((M!=null)&&(CMLib.flags().isInTheGame(M, true)))
 				targetM=M;
 		}
 	}
-	
+
 	@Override
-	public void setAffectedOne(Physical P)
+	public void setAffectedOne(final Physical P)
 	{
 		if(!(P instanceof MOB))
 			super.setAffectedOne(P);
@@ -115,7 +114,7 @@ public class Spell_HelpingHand extends Spell
 				targetM=(MOB)P;
 		}
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -241,15 +240,15 @@ public class Spell_HelpingHand extends Spell
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<1)
 		{
 			if(mob.isMonster() && (mob.getGroupMembers(new HashSet<MOB>()).size()>1))
 			{
-				for(MOB M : mob.getGroupMembers(new HashSet<MOB>()))
+				for(final MOB M : mob.getGroupMembers(new HashSet<MOB>()))
 				{
 					if((M!=mob)&&(M.isPlayer()))
 					{
@@ -259,7 +258,7 @@ public class Spell_HelpingHand extends Spell
 				}
 				if(commands.size()<1)
 				{
-					for(MOB M : mob.getGroupMembers(new HashSet<MOB>()))
+					for(final MOB M : mob.getGroupMembers(new HashSet<MOB>()))
 					{
 						if(M!=mob)
 						{
@@ -275,14 +274,14 @@ public class Spell_HelpingHand extends Spell
 				return false;
 			}
 		}
-		
+
 		MOB target=null;
 		final String whomName=CMParms.combine(commands);
-		MOB M=CMLib.players().getPlayer(whomName);
+		final MOB M=CMLib.players().getPlayer(whomName);
 		if((M!=null)&&(CMLib.flags().isInTheGame(M,true)))
 			target=M;
 		else
-		for(MOB M2 : mob.getGroupMembers(new HashSet<MOB>()))
+		for(final MOB M2 : mob.getGroupMembers(new HashSet<MOB>()))
 		{
 			if((M2!=null)
 			&&(CMLib.flags().isInTheGame(M2,true))
@@ -309,7 +308,7 @@ public class Spell_HelpingHand extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item handI=CMClass.getItem("GenItem");
+				final Item handI=CMClass.getItem("GenItem");
 				handI.setName(L("a helping hand"));
 				handI.setDisplayText(L("a helping hand is here to show @x1 the way.",target.name()));
 				handI.setDescription(L("It seems to be here for @x1, and wants you to follow where it leads you.",target.name()));

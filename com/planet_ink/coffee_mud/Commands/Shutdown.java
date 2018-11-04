@@ -34,7 +34,6 @@ import java.util.concurrent.TimeUnit;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Shutdown extends StdCommand implements Tickable
 {
 	public Shutdown()
@@ -65,7 +64,7 @@ public class Shutdown extends StdCommand implements Tickable
 			tm=" in "+tm;
 		return L("\n\r\n\r^Z@x1 will be @x2@x3^.^?\n\r",CMProps.getVar(CMProps.Str.MUDNAME),(keepItDown?"shutting down":"restarting"),tm);
 	}
-	
+
 	protected void showDisplayableShutdownTimeRemaining()
 	{
 		final String str = getDisplayableShutdownTimeRemaining();
@@ -74,7 +73,7 @@ public class Shutdown extends StdCommand implements Tickable
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.isMonster())
@@ -87,7 +86,7 @@ public class Shutdown extends StdCommand implements Tickable
 			final String s=commands.get(i);
 			if(s.equalsIgnoreCase("CHECK"))
 			{
-				
+
 			}
 			else
 			if(s.equalsIgnoreCase("RESTART"))
@@ -162,7 +161,7 @@ public class Shutdown extends StdCommand implements Tickable
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.SHUTDOWN);
 	}
@@ -220,11 +219,11 @@ public class Shutdown extends StdCommand implements Tickable
 		}
 		return true;
 	}
-	
+
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{}, {Boolean.class}, {Long.class}};
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return "";
@@ -232,7 +231,7 @@ public class Shutdown extends StdCommand implements Tickable
 		{
 			if(args[0] instanceof Boolean)
 			{
-				Boolean upDn = (Boolean)args[0];
+				final Boolean upDn = (Boolean)args[0];
 				if(CMProps.getBoolVar(Bool.MUDSHUTTINGDOWN))
 					return Boolean.FALSE;
 				if(CMLib.threads().isTicking(this, Tickable.TICKID_AREA))
@@ -247,7 +246,7 @@ public class Shutdown extends StdCommand implements Tickable
 			else
 			if(args[0] instanceof Long)
 			{
-				Long millis = (Long)args[0];
+				final Long millis = (Long)args[0];
 				shuttingDownMob = mob;
 				shuttingDownCompletes = millis.longValue();
 				shuttingDownNextAnnounce = System.currentTimeMillis() + ((shuttingDownCompletes - System.currentTimeMillis())/2)-100;
@@ -256,7 +255,7 @@ public class Shutdown extends StdCommand implements Tickable
 				showDisplayableShutdownTimeRemaining();
 				return Boolean.TRUE;
 			}
-			
+
 		}
 		if((shuttingDownMob == null)
 		||(shuttingDownCompletes == 0)

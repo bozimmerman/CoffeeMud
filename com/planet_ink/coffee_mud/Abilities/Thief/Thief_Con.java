@@ -75,7 +75,7 @@ public class Thief_Con extends ThiefSkill
 	}
 
 	@Override
-	public boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(final MOB mob)
 	{
 		return true;
 	}
@@ -95,7 +95,7 @@ public class Thief_Con extends ThiefSkill
 	}
 
 	@Override
-	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+	public boolean preInvoke(final MOB mob, List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
 	{
 		if(commands!=null)
 			commands=new XVector<String>(commands);
@@ -121,7 +121,7 @@ public class Thief_Con extends ThiefSkill
 		return true;
 	}
 
-	public boolean conCheck(MOB mob, List<String> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean conCheck(final MOB mob, List<String> commands, final Environmental givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands!=null)
 			commands= new XVector<String>(commands);
@@ -196,7 +196,7 @@ public class Thief_Con extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands!=null)
 			commands=new XVector<String>(commands);

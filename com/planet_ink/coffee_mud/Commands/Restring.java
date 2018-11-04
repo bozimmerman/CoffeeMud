@@ -33,7 +33,6 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Restring extends StdCommand
 {
 	public Restring()
@@ -47,14 +46,14 @@ public class Restring extends StdCommand
 		return access;
 	}
 
-	public boolean errorOut(MOB mob)
+	public boolean errorOut(final MOB mob)
 	{
 		mob.tell(L("You are not allowed to do that here."));
 		return false;
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String allWord=CMParms.combine(commands,1);
@@ -149,7 +148,7 @@ public class Restring extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowedContainsAny(mob,mob.location(),CMSecurity.SECURITY_CMD_GROUP)
 			 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.RESTRING);

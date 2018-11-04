@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Top extends StdCommand
 {
 	private final String[] access=I(new String[]{"TOP"});
@@ -44,7 +43,7 @@ public class Top extends StdCommand
 	}
 
 	@Override
-	public boolean execute(final MOB mob, List<String> commands, int metaFlags) throws java.io.IOException
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags) throws java.io.IOException
 	{
 		boolean doPlayers=true;
 		if(commands.size()>1)

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Tell extends StdCommand
 {
 	public Tell()
@@ -48,10 +47,10 @@ public class Tell extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if((!mob.isMonster())&&mob.isAttributeSet(MOB.Attrib.QUIET))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("You have QUIET mode on.  You must turn it off first."));
@@ -112,7 +111,7 @@ public class Tell extends StdCommand
 			{
 				for(final Enumeration<String> p = P.getPlayers(); p.hasMoreElements(); )
 				{
-					String playerName=p.nextElement();
+					final String playerName=p.nextElement();
 					targetM=CMLib.sessions().findPlayerOnline(playerName,true);
 					if(targetM!=null)
 					{
@@ -135,8 +134,8 @@ public class Tell extends StdCommand
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);
-		if(mob.isPlayer() 
-		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED) 
+		if(mob.isPlayer()
+		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED)
 		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER))
 			combinedCommands=CMLib.coffeeFilter().secondaryUserInputFilter(combinedCommands);
 		if(targetM==null)

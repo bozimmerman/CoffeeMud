@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Wenching extends ThiefSkill
 {
 	@Override
@@ -109,7 +108,7 @@ public class Thief_Wenching extends ThiefSkill
 				affectableStats.setStat(c, affectableStats.getStat(c) + bonus);
 		}
 	}
-	
+
 	protected boolean isAWench(final char gender, final MOB M)
 	{
 		if(CMLib.flags().isAnimalIntelligence(M))
@@ -125,12 +124,12 @@ public class Thief_Wenching extends ThiefSkill
 		final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 		if(SK!=null)
 		{
-			CoffeeShop shop = SK.getShop();
+			final CoffeeShop shop = SK.getShop();
 			if(shop != null)
 			{
 				for(final Iterator<Environmental> e=shop.getStoreInventory();e.hasNext();)
 				{
-					Environmental E=e.next();
+					final Environmental E=e.next();
 					if((E instanceof Physical)
 					&&(CMLib.flags().isAlcoholic((Physical)E)))
 						return true;
@@ -139,14 +138,14 @@ public class Thief_Wenching extends ThiefSkill
 		}
 		return false;
 	}
-	
+
 	@Override
-	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, boolean auto, final int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		
+
 		char gender=(char)mob.charStats().getStat(CharStats.STAT_GENDER);
 		switch(gender)
 		{
@@ -162,7 +161,7 @@ public class Thief_Wenching extends ThiefSkill
 		}
 		if(commands.size()>0)
 		{
-			String genderStr=commands.get(commands.size()-1);
+			final String genderStr=commands.get(commands.size()-1);
 			if("male".startsWith(genderStr.toLowerCase()))
 			{
 				gender='M';
@@ -175,7 +174,7 @@ public class Thief_Wenching extends ThiefSkill
 				commands.remove(commands.size()-1);
 			}
 		}
-		
+
 		String genderName;
 		switch(gender)
 		{
@@ -189,10 +188,10 @@ public class Thief_Wenching extends ThiefSkill
 			genderName = CMLib.lang().L("neuter");
 			break;
 		}
-		MOB target=null; // 
+		MOB target=null; //
 		if(commands.size()>0)
 		{
-			MOB M=super.getTarget(mob, commands, givenTarget);
+			final MOB M=super.getTarget(mob, commands, givenTarget);
 			if(M==null)
 				return false;
 			if((M==mob)||(!this.isAWench(gender, M)))
@@ -230,15 +229,15 @@ public class Thief_Wenching extends ThiefSkill
 		int levelDiff = target.phyStats().level() - mob.phyStats().level();
 		if(levelDiff < 0)
 			levelDiff = 0;
-		
+
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":L("<S-NAME> wink(s) at <T-NAME> and makes <T-HIM-HER> an offer..."));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				int cost=100 - super.getXLOWCOSTLevel(mob) + ((10 - super.getXLOWCOSTLevel(mob)) * levelDiff);
-				
+				final int cost=100 - super.getXLOWCOSTLevel(mob) + ((10 - super.getXLOWCOSTLevel(mob)) * levelDiff);
+
 				if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(mob, target) < cost )
 				{
 					mob.tell(L("@x1 requires @x2, which you don't have.",target.name(),CMLib.beanCounter().abbreviatedPrice(target, cost)));
@@ -250,7 +249,7 @@ public class Thief_Wenching extends ThiefSkill
 					final Session sess=mob.session();
 					if(sess == null)
 					{
-						Ability A=mob.fetchEffect(ID());
+						final Ability A=mob.fetchEffect(ID());
 						if(A!=null)
 						{
 							A.unInvoke();
@@ -282,7 +281,7 @@ public class Thief_Wenching extends ThiefSkill
 								targetM.basePhyStats().setDisposition(oldWenchDisposition);
 								mob.recoverPhyStats();
 								targetM.recoverPhyStats();
-								Ability A=mob.fetchEffect(ID());
+								final Ability A=mob.fetchEffect(ID());
 								if(A!=null)
 								{
 									A.unInvoke();

@@ -33,13 +33,12 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Where extends StdCommand
 {
 	public Where()
 	{
 	}
-	
+
 	private final String[]	access	= I(new String[] { "WHERE" });
 
 	@Override
@@ -48,7 +47,7 @@ public class Where extends StdCommand
 		return access;
 	}
 
-	protected void whereAdd(DVector V, Area area, int i)
+	protected void whereAdd(final DVector V, final Area area, final int i)
 	{
 		if(V.contains(area))
 			return;
@@ -64,7 +63,7 @@ public class Where extends StdCommand
 		V.add(area,Integer.valueOf(i));
 	}
 
-	public boolean canShowTo(MOB showTo, MOB show)
+	public boolean canShowTo(final MOB showTo, final MOB show)
 	{
 		if((show!=null)
 		&&(show.session()!=null)
@@ -76,7 +75,7 @@ public class Where extends StdCommand
 		return false;
 	}
 
-	public String cataMark(Environmental E)
+	public String cataMark(final Environmental E)
 	{
 		if(E==null)
 			return "";
@@ -86,13 +85,13 @@ public class Where extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		boolean overrideSet = false;
 		if((commands.size()>1)&&(commands.get(1).equals("!")))
 			overrideSet=commands.remove(commands.get(1));
-		int firstColWidth = CMLib.lister().fixColWidth(25,mob);
+		final int firstColWidth = CMLib.lister().fixColWidth(25,mob);
 		if((CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.WHERE))
 		&&(!overrideSet))
 		{
@@ -553,7 +552,7 @@ public class Where extends StdCommand
 				Collections.sort(finalScoreList,new Comparator<Area>()
 				{
 					@Override
-					public int compare(Area o1, Area o2)
+					public int compare(final Area o1, final Area o2)
 					{
 						int median1=o1.getPlayerLevel();
 						if(median1==0)
@@ -565,15 +564,15 @@ public class Where extends StdCommand
 						final int lvlDiff2=Math.abs(mobLevel - median2);
 						return lvlDiff1==lvlDiff2?0:(lvlDiff1>lvlDiff2)?1:-1;
 					}
-					
+
 				});
-				for(Area A : finalScoreList)
+				for(final Area A : finalScoreList)
 				{
 					int lvl=A.getPlayerLevel();
 					if(lvl==0)
 						lvl=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 					final int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
-	
+
 					msg.append(CMStrings.padRight(A.name(),35))
 					   .append(CMStrings.padRight(Integer.toString(lvl),6))
 					   .append(CMStrings.padRight(CMLib.factions().getRange(CMLib.factions().AlignID(), align).name(),20))

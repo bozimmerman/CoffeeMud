@@ -45,7 +45,7 @@ public class GrinderExits
 	  " MISCTEXT","ISGENERIC","DOORNAME","IMAGE","OPENTICKS"
 	};
 
-	public static String dispositions(Physical P, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String dispositions(final Physical P, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		P.basePhyStats().setDisposition(0);
 		for(int d=0;d<PhyStats.IS_CODES.length;d++)
@@ -57,7 +57,7 @@ public class GrinderExits
 		return "";
 	}
 
-	public static String editExit(Room R, int dir,HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static String editExit(Room R, final int dir,final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
@@ -214,7 +214,7 @@ public class GrinderExits
 		return "";
 	}
 
-	public static String delExit(Room R, int dir)
+	public static String delExit(Room R, final int dir)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
@@ -228,7 +228,7 @@ public class GrinderExits
 		return "";
 	}
 
-	public static String linkRooms(Room R, Room R2, int dir, int dir2)
+	public static String linkRooms(Room R, Room R2, final int dir, final int dir2)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
@@ -262,8 +262,8 @@ public class GrinderExits
 		}
 		return "";
 	}
-	
-	public static String createExitForRoom(Room R, int dir)
+
+	public static String createExitForRoom(Room R, final int dir)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
 		{

@@ -69,7 +69,7 @@ public class Channel implements Serializable
 	 * Constructs a copy of an existing channel
 	 * @param other the other channel
 	 */
-	public Channel(Channel other)
+	public Channel(final Channel other)
 	{
 		super();
 		channel = other.channel;

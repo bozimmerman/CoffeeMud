@@ -52,47 +52,47 @@ public class CWConfig implements Cloneable
 	private static final String   DEFAULT_PAGE 					= "index.html"; // this would normally be configurable as a list
 	private static final String   DEFAULT_ERROR_PAGE 			= "root\\errorpage.cwhtml";
 	private static final String   DEFAULT_BROWSE_PAGE 			= "root\\browsepage.cwhtml";
-	
+
 	public  static final long  	  DEFAULT_THROTTLE_BYTES 		= Long.MAX_VALUE / 2;
-	
+
 	// configuration for the request thread pool
 	private static final int	  DEFAULT_CORE_THREAD_POOL_SIZE	= 1;
 	private static final int	  DEFAULT_MAX_THREAD_POOL_SIZE 	= 10;
 	private static final int	  DEFAULT_THREAD_KEEP_ALIVE_MS 	= 60 * 1000; // max age of idle threads
 	private static final int	  DEFAULT_THREAD_TIMEOUT_SECS	= 30; //Timeout for active request threads
 	private static final int	  DEFAULT_THREAD_QUEUE_SIZE		= 500;//Above this and they start getting rejected
-	
+
 	private static final long	  DEFAULT_FILECACHE_EXPIRE_MS	= 5 * 60 * 1000; 		// 5 minutes -- how long a cache entry lived
 	private static final long	  DEFAULT_FILECACHE_MAX_BYTES	= 10 * 1024 * 1024;	// the maximum number of bytes this cache will hold total
 	private static final long	  DEFAULT_FILECACHE_MAX_FBYTES	= 2 * 1024 * 1024;	// the maximum size of file the cache will hold
 
 	private static final long	  DEFAULT_FILECOMP_MAX_FBYTES	= 16 * 1024 * 1024;	// the maximum size of file the cache will hold
-	
+
 	private static final long	  DEFAULT_MAX_BODY_BYTES   		= 1024 * 1024 * 2; // maximum size of a request body
 	private static final long	  DEFAULT_MAX_IDLE_MILLIS  		= 30 * 1000;		// maximum time a request can be idle (between reads)
 	private static final int	  DEFAULT_LINE_BUFFER_SIZE		= 4096; // maximum length of a single line in the main request
 	private static final int	  DEFAULT_MAX_ALIVE_SECS 		= 15;	// maximum age, in seconds, of a request connection
 	private static final int	  DEFAULT_MAX_PIPELINED_REQUESTS= 10;	// maximum number of requests per connection
-	
+
 	private static final String   DEFAULT_SSL_KEYSTORE_TYPE		= "JKS";
 	private static final String   DEFAULT_SSL_KEYMANAGER_ENC	= "SunX509";
-	
+
 	private static final String   DEFAULT_DEBUG_FLAG			= "OFF";
-	
+
 	private static final String   DEFAULT_ACCESSLOG_FLAG		= "OFF";
 
 	private static final long	  DEFAULT_SESSION_IDLE_MILLIS 	= 30 * 60 * 1000;		// maximum time a session can be idle (between requests)
 	private static final long	  DEFAULT_SESSION_AGE_MILLIS  	= 24 *60 * 60 * 1000;	// maximum time a session can be in existence
-	
+
 	private static final Integer  ALL_PORTS						= Integer.valueOf(-1);
 	private static final String   ALL_HOSTS						= "";
-	
+
 	private Map<String,String>	 	 servlets					= new HashMap<String,String>();
 	private Map<String,String>	  	 fileConverts				= new HashMap<String,String>();
-	
+
 	private final Map<String,String> miscFlags					= new HashMap<String,String>();
 	private final Set<DisableFlag>	 disableFlags				= new HashSet<DisableFlag>();
-	
+
 	private SimpleServletManager  servletMan					= null;
 	private ServletSessionManager sessions						= null;
 	private MimeConverterManager  converters					= null;
@@ -101,58 +101,58 @@ public class CWConfig implements Cloneable
 	private HTTPFileGetter		  fileGetter					= null;
 	private WebServer			  coffeeWebServer				= null;
 	private FileManager			  fileManager					= new CWFileManager();
-	
+
 	private String  sslKeystorePath		 = null;
 	private String  sslKeystorePassword  = null;
 	private String	sslKeystoreType		 = DEFAULT_SSL_KEYSTORE_TYPE;
 	private String	sslKeyManagerEncoding= DEFAULT_SSL_KEYMANAGER_ENC;
-	
+
 	private int[]	httpListenPorts		 = new int[]{DEFAULT_HTP_LISTEN_PORT};
 	private int[]	httpsListenPorts	 = new int[]{DEFAULT_SSL_PORT};
 	private String 	bindAddress			 = null;
-	
+
 	private int		coreThreadPoolSize	 = DEFAULT_CORE_THREAD_POOL_SIZE;
 	private int		maxThreadPoolSize	 = DEFAULT_MAX_THREAD_POOL_SIZE;
 	private int		maxThreadIdleMs		 = DEFAULT_THREAD_KEEP_ALIVE_MS;
 	private int		maxThreadTimeoutSecs = DEFAULT_THREAD_TIMEOUT_SECS;
 	private int		maxThreadQueueSize	 = DEFAULT_THREAD_QUEUE_SIZE;
-	
+
 	private long	fileCacheExpireMs	 = DEFAULT_FILECACHE_EXPIRE_MS;
 	private long	fileCacheMaxBytes	 = DEFAULT_FILECACHE_MAX_BYTES;
 	private long	fileCacheMaxFileBytes= DEFAULT_FILECACHE_MAX_FBYTES;
 	private long	fileCompMaxFileBytes = DEFAULT_FILECOMP_MAX_FBYTES;
-	
+
 	private long	sessionMaxIdleMs	 = DEFAULT_SESSION_IDLE_MILLIS;
 	private long	sessionMaxAgeMs		 = DEFAULT_SESSION_AGE_MILLIS;
-	
+
 	private long	requestMaxBodyBytes	 = DEFAULT_MAX_BODY_BYTES;
 	private long	requestMaxIdleMs	 = DEFAULT_MAX_IDLE_MILLIS;
 	private long	requestLineBufBytes	 = DEFAULT_LINE_BUFFER_SIZE;
 	private int		requestMaxAliveSecs	 = DEFAULT_MAX_ALIVE_SECS;
 	private int		requestMaxPerConn	 = DEFAULT_MAX_PIPELINED_REQUESTS;
-	
+
 	private String	defaultPage			 = DEFAULT_PAGE;
 	private String	errorPage			 = DEFAULT_ERROR_PAGE;
 	private String	browsePage			 = DEFAULT_BROWSE_PAGE;
-	
+
 	private String  debugFlag			 = DEFAULT_DEBUG_FLAG;
 	private boolean isDebugging			 = false;
 
 	private String  accessLogFlag		 = DEFAULT_ACCESSLOG_FLAG;
-	
+
 	private Map<String,Map<Integer,KeyPairSearchTree<String>>> 		mounts	= new HashMap<String,Map<Integer,KeyPairSearchTree<String>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<WebAddress>>>  fwds	= new HashMap<String,Map<Integer,KeyPairSearchTree<WebAddress>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>>outs	= new HashMap<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<ChunkSpec>>>	chunks	= new HashMap<String,Map<Integer,KeyPairSearchTree<ChunkSpec>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<String>>> 		browse	= new HashMap<String,Map<Integer,KeyPairSearchTree<String>>>();
 	private Map<String,Map<Integer,KeyPairSearchTree<String>>> 		cgimnts	= new HashMap<String,Map<Integer,KeyPairSearchTree<String>>>();
-	
+
 	public enum DupPolicy { ENUMERATE, OVERWRITE }
-	
+
 	public enum DisableFlag { RANGED }
-	
+
 	private DupPolicy dupPolicy = DupPolicy.OVERWRITE;
-	
+
 	/**
 	 * @return the debugFlag
 	 */
@@ -163,7 +163,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param debugFlag the defaultDebugFlag to set
 	 */
-	public final void setDebugFlag(String debugFlag)
+	public final void setDebugFlag(final String debugFlag)
 	{
 		this.debugFlag = debugFlag;
 		isDebugging=!debugFlag.equalsIgnoreCase("OFF");
@@ -175,7 +175,7 @@ public class CWConfig implements Cloneable
 	{
 		return isDebugging;
 	}
-	
+
 	/**
 	 * @return the dupPolicy
 	 */
@@ -186,14 +186,14 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param dupPolicy the dupPolicy to set
 	 */
-	public final void setDupPolicy(DupPolicy dupPolicy)
+	public final void setDupPolicy(final DupPolicy dupPolicy)
 	{
 		this.dupPolicy = dupPolicy;
 	}
 	/**
 	 * @param dupPolicy the dupPolicy to set
 	 */
-	public final void setDupPolicy(String dupPolicy)
+	public final void setDupPolicy(final String dupPolicy)
 	{
 		try
 		{
@@ -204,7 +204,7 @@ public class CWConfig implements Cloneable
 			this.dupPolicy = DupPolicy.OVERWRITE;
 		}
 	}
-	
+
 	/**
 	 * @return the accessLogFlag
 	 */
@@ -215,11 +215,11 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param accessLogFlag the accessLogFlag to set
 	 */
-	public final void setAccessLogFlag(String accessLogFlag)
+	public final void setAccessLogFlag(final String accessLogFlag)
 	{
 		this.accessLogFlag = accessLogFlag;
 	}
-	
+
 	/**
 	 * @return the defaultPage
 	 */
@@ -227,7 +227,7 @@ public class CWConfig implements Cloneable
 	{
 		return defaultPage;
 	}
-	
+
 	/**
 	 * @return the errorPage
 	 */
@@ -235,7 +235,7 @@ public class CWConfig implements Cloneable
 	{
 		return errorPage;
 	}
-	
+
 	/**
 	 * @return the directory browsePage
 	 */
@@ -243,11 +243,11 @@ public class CWConfig implements Cloneable
 	{
 		return browsePage;
 	}
-	
+
 	/**
 	 * @param defaultPage the defaultPage to set
 	 */
-	public final void setDefaultPage(String defaultPage)
+	public final void setDefaultPage(final String defaultPage)
 	{
 		this.defaultPage = defaultPage;
 	}
@@ -261,7 +261,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param fileCacheExpireMs the fileCacheExpireMs to set
 	 */
-	public final void setFileCacheExpireMs(long fileCacheExpireMs)
+	public final void setFileCacheExpireMs(final long fileCacheExpireMs)
 	{
 		this.fileCacheExpireMs = fileCacheExpireMs;
 	}
@@ -276,7 +276,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param logger the logger to set
 	 */
-	public void setLogger(Logger logger)
+	public void setLogger(final Logger logger)
 	{
 		this.logger = logger;
 	}
@@ -290,7 +290,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param fileCache the fileCache to set
 	 */
-	public final void setFileCache(FileCacheManager fileCache)
+	public final void setFileCache(final FileCacheManager fileCache)
 	{
 		this.fileCache = fileCache;
 	}
@@ -304,39 +304,39 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param fileManager the fileManager to set
 	 */
-	public final void setFileManager(FileManager fileManager)
+	public final void setFileManager(final FileManager fileManager)
 	{
 		this.fileManager = fileManager;
 	}
-	
+
 	/**
 	 * @return the fileGetter
 	 */
-	public HTTPFileGetter getFileGetter() 
+	public HTTPFileGetter getFileGetter()
 	{
 		return fileGetter;
 	}
-	
+
 	/**
 	 * @param fileGetter the fileGetter to set
 	 */
-	public void setFileGetter(HTTPFileGetter fileGetter) 
+	public void setFileGetter(final HTTPFileGetter fileGetter)
 	{
 		this.fileGetter = fileGetter;
 	}
-	
+
 	/**
 	 * @return the coffeeWebServer
 	 */
-	public WebServer getCoffeeWebServer() 
+	public WebServer getCoffeeWebServer()
 	{
 		return coffeeWebServer;
 	}
-	
+
 	/**
 	 * @param coffeeWebServer the coffeeWebServer to set
 	 */
-	public void setCoffeeWebServer(WebServer coffeeWebServer) 
+	public void setCoffeeWebServer(final WebServer coffeeWebServer)
 	{
 		this.coffeeWebServer = coffeeWebServer;
 	}
@@ -350,7 +350,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param sessionMaxIdleMs the sessionMaxIdleMs to set
 	 */
-	public final void setSessionMaxIdleMs(long sessionMaxIdleMs)
+	public final void setSessionMaxIdleMs(final long sessionMaxIdleMs)
 	{
 		this.sessionMaxIdleMs = sessionMaxIdleMs;
 	}
@@ -364,7 +364,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param sessionMaxAgeMs the sessionMaxAgeMs to set
 	 */
-	public final void setSessionMaxAgeMs(long sessionMaxAgeMs)
+	public final void setSessionMaxAgeMs(final long sessionMaxAgeMs)
 	{
 		this.sessionMaxAgeMs = sessionMaxAgeMs;
 	}
@@ -378,7 +378,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param servletMan the servletMan to set
 	 */
-	public final void setServletMan(SimpleServletManager servletMan)
+	public final void setServletMan(final SimpleServletManager servletMan)
 	{
 		this.servletMan = servletMan;
 	}
@@ -392,7 +392,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param sessions the sessions to set
 	 */
-	public final void setSessions(ServletSessionManager sessions)
+	public final void setSessions(final ServletSessionManager sessions)
 	{
 		this.sessions = sessions;
 	}
@@ -406,11 +406,11 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param converters the converters to set
 	 */
-	public final void setConverters(MimeConverterManager converters)
+	public final void setConverters(final MimeConverterManager converters)
 	{
 		this.converters = converters;
 	}
-	
+
 	/**
 	 * @return the bindAddress
 	 */
@@ -418,11 +418,11 @@ public class CWConfig implements Cloneable
 	{
 		return bindAddress;
 	}
-	
+
 	/**
 	 * @param bindAddress the bindAddress to set
 	 */
-	public final void setBindAddress(String bindAddress)
+	public final void setBindAddress(final String bindAddress)
 	{
 		this.bindAddress = bindAddress;
 	}
@@ -435,7 +435,7 @@ public class CWConfig implements Cloneable
 	 * @param context the context to search for -- NOT OPTIONAL!
 	 * @return the proper pair for the given host and context and port
 	 */
-	private final Pair<String,String> getContextPair(final Map<String,Map<Integer,KeyPairSearchTree<String>>> map, 
+	private final Pair<String,String> getContextPair(final Map<String,Map<Integer,KeyPairSearchTree<String>>> map,
 													 final String host, final int port, final String context)
 	{
 		Map<Integer,KeyPairSearchTree<String>> portMap=map.get(host);
@@ -563,7 +563,7 @@ public class CWConfig implements Cloneable
 		}
 		return null;
 	}
-	
+
 	/**
 	 * return the chunked encoding for the given host and context and port
 	 * @param host the host name to search for, or "" for all hosts
@@ -611,7 +611,7 @@ public class CWConfig implements Cloneable
 		}
 		return null;
 	}
-	
+
 	/**
 	 * return the throttle bytes, in or out, for the given host and context and port
 	 * @param host the host name to search for, or "" for all hosts
@@ -620,7 +620,7 @@ public class CWConfig implements Cloneable
 	 * @return the throttle bytes, in or out
 	 */
 	private final ThrottleSpec getThrottleBytes(final String host, final int port, final String context,
-			Map<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>> spec)
+			final Map<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>> spec)
 	{
 		Map<Integer,KeyPairSearchTree<ThrottleSpec>> portMap=spec.get(host);
 		if(portMap != null)
@@ -660,7 +660,7 @@ public class CWConfig implements Cloneable
 		}
 		return null;
 	}
-	
+
 	/**
 	 * return the response (out) throttle bytes spec, for the given host and context and port
 	 * @param host the host name to search for, or "" for all hosts
@@ -672,7 +672,7 @@ public class CWConfig implements Cloneable
 	{
 		return getThrottleBytes(host,port,context,outs);
 	}
-	
+
 	/**
 	 * @return the sslKeystorePath
 	 */
@@ -683,7 +683,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param sslKeystorePath the sslKeystorePath to set
 	 */
-	public final void setSslKeystorePath(String sslKeystorePath)
+	public final void setSslKeystorePath(final String sslKeystorePath)
 	{
 		this.sslKeystorePath = sslKeystorePath;
 	}
@@ -697,7 +697,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param sslKeystorePassword the sslKeystorePassword to set
 	 */
-	public final void setSslKeystorePassword(String sslKeystorePassword)
+	public final void setSslKeystorePassword(final String sslKeystorePassword)
 	{
 		this.sslKeystorePassword = sslKeystorePassword;
 	}
@@ -711,7 +711,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param sslKeystoreType the sslKeystoreType to set
 	 */
-	public final void setSslKeystoreType(String sslKeystoreType)
+	public final void setSslKeystoreType(final String sslKeystoreType)
 	{
 		this.sslKeystoreType = sslKeystoreType;
 	}
@@ -725,7 +725,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param sslKeyManagerEncoding the sslKeyManagerEncoding to set
 	 */
-	public final void setSslKeyManagerEncoding(String sslKeyManagerEncoding)
+	public final void setSslKeyManagerEncoding(final String sslKeyManagerEncoding)
 	{
 		this.sslKeyManagerEncoding = sslKeyManagerEncoding;
 	}
@@ -739,7 +739,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param httpListenPorts the httpListenPorts to set
 	 */
-	public final void setHttpListenPorts(int[] httpListenPorts)
+	public final void setHttpListenPorts(final int[] httpListenPorts)
 	{
 		this.httpListenPorts = httpListenPorts;
 	}
@@ -753,7 +753,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param httpsListenPorts the httpsListenPorts to set
 	 */
-	public final void setHttpsListenPorts(int[] httpsListenPorts)
+	public final void setHttpsListenPorts(final int[] httpsListenPorts)
 	{
 		this.httpsListenPorts = httpsListenPorts;
 	}
@@ -767,7 +767,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param coreThreadPoolSize the coreThreadPoolSize to set
 	 */
-	public final void setCoreThreadPoolSize(int coreThreadPoolSize)
+	public final void setCoreThreadPoolSize(final int coreThreadPoolSize)
 	{
 		this.coreThreadPoolSize = coreThreadPoolSize;
 	}
@@ -781,7 +781,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param maxThreadPoolSize the maxThreadPoolSize to set
 	 */
-	public final void setMaxThreadPoolSize(int maxThreadPoolSize)
+	public final void setMaxThreadPoolSize(final int maxThreadPoolSize)
 	{
 		this.maxThreadPoolSize = maxThreadPoolSize;
 	}
@@ -795,7 +795,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param maxThreadIdleMs the maxThreadIdleMs to set
 	 */
-	public final void setMaxThreadIdleMs(int maxThreadIdleMs)
+	public final void setMaxThreadIdleMs(final int maxThreadIdleMs)
 	{
 		this.maxThreadIdleMs = maxThreadIdleMs;
 	}
@@ -809,7 +809,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param maxThreadTimeoutSecs the maxThreadTimeoutSecs to set
 	 */
-	public final void setMaxThreadTimeoutSecs(int maxThreadTimeoutSecs)
+	public final void setMaxThreadTimeoutSecs(final int maxThreadTimeoutSecs)
 	{
 		this.maxThreadTimeoutSecs = maxThreadTimeoutSecs;
 	}
@@ -823,20 +823,20 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param maxThreadQueueSize the maxThreadQueueSize to set
 	 */
-	public final void setMaxThreadQueueSize(int maxThreadQueueSize)
+	public final void setMaxThreadQueueSize(final int maxThreadQueueSize)
 	{
 		this.maxThreadQueueSize = maxThreadQueueSize;
 	}
-	
+
 	/**
 	 * @param flag the flag to check
 	 * @return true if its disabled, false otherwise
 	 */
-	public final boolean isDisabled(DisableFlag flag)
+	public final boolean isDisabled(final DisableFlag flag)
 	{
 		return (flag != null) && disableFlags.contains(flag);
 	}
-	
+
 	/**
 	 * @return the disable flags
 	 */
@@ -844,7 +844,7 @@ public class CWConfig implements Cloneable
 	{
 		return disableFlags;
 	}
-	
+
 	/**
 	 * @return the fileCacheMaxBytes
 	 */
@@ -855,7 +855,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param fileCacheMaxBytes the fileCacheMaxBytes to set
 	 */
-	public final void setFileCacheMaxBytes(long fileCacheMaxBytes)
+	public final void setFileCacheMaxBytes(final long fileCacheMaxBytes)
 	{
 		this.fileCacheMaxBytes = fileCacheMaxBytes;
 	}
@@ -876,7 +876,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param fileCacheMaxFileBytes the fileCacheMaxFileBytes to set
 	 */
-	public void setFileCacheMaxFileBytes(long fileCacheMaxFileBytes)
+	public void setFileCacheMaxFileBytes(final long fileCacheMaxFileBytes)
 	{
 		this.fileCacheMaxFileBytes = fileCacheMaxFileBytes;
 	}
@@ -890,14 +890,14 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param fileCompMaxFileBytes the fileCompMaxFileBytes to set
 	 */
-	public void setFileCompMaxFileBytes(long fileCompMaxFileBytes)
+	public void setFileCompMaxFileBytes(final long fileCompMaxFileBytes)
 	{
 		this.fileCompMaxFileBytes = fileCompMaxFileBytes;
 	}
 	/**
 	 * @param requestMaxBodyBytes the requestMaxBodyBytes to set
 	 */
-	public final void setRequestMaxBodyBytes(long requestMaxBodyBytes)
+	public final void setRequestMaxBodyBytes(final long requestMaxBodyBytes)
 	{
 		this.requestMaxBodyBytes = requestMaxBodyBytes;
 	}
@@ -911,7 +911,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param requestMaxIdleMs the requestMaxIdleMs to set
 	 */
-	public final void setRequestMaxIdleMs(long requestMaxIdleMs)
+	public final void setRequestMaxIdleMs(final long requestMaxIdleMs)
 	{
 		this.requestMaxIdleMs = requestMaxIdleMs;
 	}
@@ -925,7 +925,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param requestLineBufBytes the requestLineBufBytes to set
 	 */
-	public final void setRequestLineBufBytes(long requestLineBufBytes)
+	public final void setRequestLineBufBytes(final long requestLineBufBytes)
 	{
 		this.requestLineBufBytes = requestLineBufBytes;
 	}
@@ -939,7 +939,7 @@ public class CWConfig implements Cloneable
 	/**
 	 * @param requestMaxAliveSecs the requestMaxAliveSecs to set
 	 */
-	public final void setRequestMaxAliveSecs(int requestMaxAliveSecs)
+	public final void setRequestMaxAliveSecs(final int requestMaxAliveSecs)
 	{
 		this.requestMaxAliveSecs = requestMaxAliveSecs;
 	}
@@ -950,15 +950,15 @@ public class CWConfig implements Cloneable
 	{
 		return requestMaxPerConn;
 	}
-	
+
 	/**
 	 * @param requestMaxPerConn the requestMaxPerConn to set
 	 */
-	public final void setRequestMaxPerConn(int requestMaxPerConn)
+	public final void setRequestMaxPerConn(final int requestMaxPerConn)
 	{
 		this.requestMaxPerConn = requestMaxPerConn;
 	}
-	
+
 	/**
 	 * @return the servlets
 	 */
@@ -966,7 +966,7 @@ public class CWConfig implements Cloneable
 	{
 		return servlets;
 	}
-	
+
 	/**
 	 * @return the fileConverts
 	 */
@@ -980,7 +980,7 @@ public class CWConfig implements Cloneable
 	 * @param props the props to look in
 	 * @param propName the name of the prop
 	 * @param defaultVal what to return if its not there, or isn't an int
-	 * @return 
+	 * @return
 	 */
 	private int getInt(final Properties props, final String propName, final int defaultVal)
 	{
@@ -999,7 +999,7 @@ public class CWConfig implements Cloneable
 	 * @param props the props to look in
 	 * @param propName the name of the prop
 	 * @param defaultVal what to return if its not there, or isn't an long
-	 * @return 
+	 * @return
 	 */
 	private long getLong(final Properties props, final String propName, final long defaultVal)
 	{
@@ -1018,7 +1018,7 @@ public class CWConfig implements Cloneable
 	 * @param props the props to look in
 	 * @param propName the name of the prop
 	 * @param defaultVal what to return if its not there
-	 * @return 
+	 * @return
 	 */
 	private String getString(final Properties props, final String propName, final String defaultVal)
 	{
@@ -1028,7 +1028,7 @@ public class CWConfig implements Cloneable
 		}
 		return defaultVal;
 	}
-	
+
 	/**
 	 * Returns a copy of this configuration
 	 * @return a copy of this object
@@ -1052,7 +1052,7 @@ public class CWConfig implements Cloneable
 	 * @param defaultPorts the default to use when none found
 	 * @return the new ports
 	 */
-	private int[] getPorts(Properties props, String portListPropName, int[] defaultPorts)
+	private int[] getPorts(final Properties props, final String portListPropName, int[] defaultPorts)
 	{
 		if(props.containsKey(portListPropName))
 		{
@@ -1086,7 +1086,7 @@ public class CWConfig implements Cloneable
 	 * @param prefix the prefix that is shared amongst all entries
 	 * @return a map of all keypairs found
 	 */
-	private Map<String,String> getPrefixedPairs(Properties props, String prefix, char separatorChar)
+	private Map<String,String> getPrefixedPairs(final Properties props, final String prefix, final char separatorChar)
 	{
 		Map<String,String> newMounts=null;
 		for(final Object p : props.keySet())
@@ -1103,7 +1103,7 @@ public class CWConfig implements Cloneable
 		}
 		return newMounts;
 	}
-	
+
 	/**
 	 * Parses a url host:port/context into its constituent parts and returns them
 	 * @param value the url
@@ -1177,19 +1177,19 @@ public class CWConfig implements Cloneable
 	 * @param propName the name of the property
 	 * @return the value of the property, or null if not found
 	 */
-	public String getMiscProp(String propName)
+	public String getMiscProp(final String propName)
 	{
 		return miscFlags.get(propName.toUpperCase());
 	}
-	
+
 	/**
 	 * Parses a mime type list : file size entry
 	 * @param value the mime type list, file size entry
 	 * @return the pieces
 	 */
-	private Pair<Set<MIMEType>,Long> findMimesAndFileSizes(String value)
+	private Pair<Set<MIMEType>,Long> findMimesAndFileSizes(final String value)
 	{
-		int sizeDex=value.indexOf(':');
+		final int sizeDex=value.indexOf(':');
 		if(sizeDex<0)
 			return null;
 		final String mimesStr = value.substring(0,sizeDex).trim().toLowerCase();
@@ -1208,11 +1208,11 @@ public class CWConfig implements Cloneable
 		final Set<MIMEType> mimeTypes = new HashSet<MIMEType>();
 		if((mimesStr.length()>0)&&(!mimesStr.equals("*")))
 		{
-			String[] typesSet = mimesStr.split(",");
-			for(String type : typesSet)
+			final String[] typesSet = mimesStr.split(",");
+			for(final String type : typesSet)
 			{
 				MIMEType mtype = null;
-				for(MIMEType m : MIMEType.All.getValues())
+				for(final MIMEType m : MIMEType.All.getValues())
 					if((m.name().equals(type))
 					||(type.endsWith("*") && m.name().startsWith(type.substring(0,type.length()-1)))
 					||(type.startsWith("*") && m.name().endsWith(type.substring(1)))
@@ -1225,7 +1225,7 @@ public class CWConfig implements Cloneable
 					}
 				if(mtype == null)
 				{
-					for(MIMEType m : MIMEType.All.getValues())
+					for(final MIMEType m : MIMEType.All.getValues())
 						if((m.getExt().equals(type))
 						||(type.endsWith("*") && m.getExt().startsWith(type.substring(0,type.length()-1)))
 						||(type.startsWith("*") && m.getExt().endsWith(type.substring(1))))
@@ -1246,7 +1246,7 @@ public class CWConfig implements Cloneable
 		}
 		return new Pair<Set<MIMEType>,Long>(mimeTypes,maxFileSize);
 	}
-	
+
 	/**
 	 * Build throttle spec from given properties file prefix
 	 * @param specCache cache of throttle specs for a given host mask
@@ -1259,13 +1259,13 @@ public class CWConfig implements Cloneable
 		final Map<String,String> newThrottles=getPrefixedPairs(props,prefix,'/');
 		if(newThrottles != null)
 		{
-			HashMap<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>> throts=new HashMap<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>>();
+			final HashMap<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>> throts=new HashMap<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>>();
 			for(final Entry<String,String> p : newThrottles.entrySet())
 			{
-				String key=p.getKey();
-				Triad<String,Integer,String> from=findHostPortContext(key);
+				final String key=p.getKey();
+				final Triad<String,Integer,String> from=findHostPortContext(key);
 				if(from == null) continue;
-				String value=p.getValue();
+				final String value=p.getValue();
 				Map<Integer,KeyPairSearchTree<ThrottleSpec>> portMap=throts.get(from.first);
 				if(portMap == null)
 				{
@@ -1286,7 +1286,7 @@ public class CWConfig implements Cloneable
 					{
 						throttleBytes = Long.valueOf(value).longValue();
 					}
-					catch(Exception e)
+					catch(final Exception e)
 					{
 						throttleBytes = DEFAULT_THROTTLE_BYTES;
 					}
@@ -1296,7 +1296,7 @@ public class CWConfig implements Cloneable
 						specCache.put(key, spec);
 					}
 				}
-				
+
 				tree.addEntry(from.third,  spec);
 			}
 			return throts;
@@ -1326,12 +1326,12 @@ public class CWConfig implements Cloneable
 				KeyPairSearchTree<String> tree=portMap.get(from.second);
 				if(tree == null)
 				{
-					try 
+					try
 					{
 						tree=treeClass.newInstance();
 						portMap.put(from.second, tree);
-					} 
-					catch (Exception e) 
+					}
+					catch (final Exception e)
 					{
 						e.printStackTrace();
 					}
@@ -1344,13 +1344,13 @@ public class CWConfig implements Cloneable
 		}
 		return map;
 	}
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 * @param props
 	 */
-	public void load(Properties props)
+	public void load(final Properties props)
 	{
 		miscFlags.clear();
 		for(final Object propName : props.keySet())
@@ -1359,11 +1359,11 @@ public class CWConfig implements Cloneable
 		sslKeystorePassword=getString(props,"SSLKEYSTOREPASSWORD",sslKeystorePassword);
 		sslKeystoreType=getString(props,"SSLKEYSTORETYPE",sslKeystoreType);
 		sslKeyManagerEncoding=getString(props,"SSLKEYMANAGERENCODING",sslKeyManagerEncoding);
-		
+
 		httpListenPorts=getPorts(props,"PORT",httpListenPorts);
 		httpsListenPorts=getPorts(props,"SSLPORT",httpsListenPorts);
 		bindAddress=getString(props,"BIND",null);
-		
+
 		coreThreadPoolSize=getInt(props,"CORETHREADPOOLSIZE",coreThreadPoolSize);
 		maxThreadPoolSize=getInt(props,"MAXTHREADS",maxThreadPoolSize);
 		maxThreadIdleMs=getInt(props,"MAXTHREADIDLEMILLIS",maxThreadIdleMs);
@@ -1376,7 +1376,7 @@ public class CWConfig implements Cloneable
 		fileCacheMaxBytes=getLong(props,"FILECACHEMAXBYTES",fileCacheMaxBytes);
 		fileCacheMaxFileBytes=getLong(props,"FILECACHEMAXFILEBYTES",fileCacheMaxFileBytes);
 		fileCompMaxFileBytes=getLong(props,"FILECOMPMAXBYTES",fileCompMaxFileBytes);
-		
+
 		requestMaxBodyBytes=getLong(props,"REQUESTMAXBODYBYTES",requestMaxBodyBytes);
 		requestMaxIdleMs=getLong(props,"REQUESTMAXIDLEMS",requestMaxIdleMs);
 		requestLineBufBytes=getLong(props,"REQUESTLINEBUFBYTES",requestLineBufBytes);
@@ -1391,23 +1391,23 @@ public class CWConfig implements Cloneable
 		setDebugFlag(getString(props,"DEBUGFLAG",debugFlag));
 		setDupPolicy(getString(props,"DUPPOLICY",dupPolicy.toString()));
 		setAccessLogFlag(getString(props,"ACCESSLOGS",accessLogFlag));
-		
+
 		final String[] disableStrs=getString(props,"DISABLE","").split(",");
 		disableFlags.clear();
 		if((disableStrs.length>0)&&(disableStrs[0].trim().length()>0))
 		for(String disable : disableStrs)
 		{
 			disable=disable.toUpperCase().trim();
-			try 
+			try
 			{
 				disableFlags.add(DisableFlag.valueOf(disable));
-			} 
+			}
 			catch(final Exception e)
 			{
 				getLogger().severe("Unknown DISABLE flag in coffeeweb.ini: "+disable);
 			}
 		}
-		
+
 		final Map<String,String> newServlets=getPrefixedPairs(props,"SERVLET",'/');
 		if(newServlets != null)
 			servlets=newServlets;
@@ -1427,7 +1427,7 @@ public class CWConfig implements Cloneable
 
 		final Map<String,String> extraMimeTypes=getPrefixedPairs(props,"MIME",'.');
 		if(extraMimeTypes != null)
-			for(String key : extraMimeTypes.keySet())
+			for(final String key : extraMimeTypes.keySet())
 			{
 				final String type=extraMimeTypes.get(key);
 				if(type.indexOf('/')>0)
@@ -1440,11 +1440,11 @@ public class CWConfig implements Cloneable
 			fwds=new HashMap<String,Map<Integer,KeyPairSearchTree<WebAddress>>>();
 			for(final Entry<String,String> p : newForwards.entrySet())
 			{
-				String key=p.getKey();
-				Triad<String,Integer,String> from=findHostPortContext(key);
+				final String key=p.getKey();
+				final Triad<String,Integer,String> from=findHostPortContext(key);
 				if(from == null) continue;
-				String value=p.getValue();
-				Triad<String,Integer,String> to=findHostPortContext(value);
+				final String value=p.getValue();
+				final Triad<String,Integer,String> to=findHostPortContext(value);
 				if(to == null) continue;
 				if(to.second==ALL_PORTS)
 					to.second=Integer.valueOf(DEFAULT_HTP_LISTEN_PORT);
@@ -1464,21 +1464,21 @@ public class CWConfig implements Cloneable
 				{
 					tree.addEntry(from.third,  new WebAddress(to.first,to.second.intValue(),to.third));
 				}
-				catch(UnknownHostException ue)
+				catch(final UnknownHostException ue)
 				{
 					getLogger().severe("Unresolved host in forward address: "+value);
 					continue;
 				}
 			}
 		}
-		
+
 		final Map<String,ThrottleSpec> specCache = new HashMap<String, ThrottleSpec>();
 		final Map<String,Map<Integer,KeyPairSearchTree<ThrottleSpec>>> throttleOutSpec = this.getThrottleBytes(specCache, props, "THROTTLEOUTPUT");
 		if(throttleOutSpec != null)
 		{
 			outs = throttleOutSpec;
 		}
-		
+
 		final int chunkSize = getInt(props,"CHUNKSIZE",0);
 		final Map<String,String> newChunks=getPrefixedPairs(props,"CHUNKALLOW",'/');
 		if((newChunks != null) && (chunkSize > 0))
@@ -1486,11 +1486,11 @@ public class CWConfig implements Cloneable
 			chunks=new HashMap<String,Map<Integer,KeyPairSearchTree<ChunkSpec>>>();
 			for(final Entry<String,String> p : newChunks.entrySet())
 			{
-				String key=p.getKey();
-				Triad<String,Integer,String> from=findHostPortContext(key);
+				final String key=p.getKey();
+				final Triad<String,Integer,String> from=findHostPortContext(key);
 				if(from == null) continue;
-				String value=p.getValue();
-				Pair<Set<MIMEType>,Long> to=findMimesAndFileSizes(value);
+				final String value=p.getValue();
+				final Pair<Set<MIMEType>,Long> to=findMimesAndFileSizes(value);
 				if(to == null) continue;
 				Map<Integer,KeyPairSearchTree<ChunkSpec>> portMap=chunks.get(from.first);
 				if(portMap == null)
@@ -1507,6 +1507,6 @@ public class CWConfig implements Cloneable
 				tree.addEntry(from.third,  new ChunkSpec(chunkSize,to.first,to.second.longValue()));
 			}
 		}
-		
+
 	}
 }

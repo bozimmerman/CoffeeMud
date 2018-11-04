@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SummonPlants extends Chant
 {
 	@Override
@@ -115,7 +114,7 @@ public class Chant_SummonPlants extends Chant
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),littlePlantsI,null,CMMsg.MSG_OK_VISUAL,CMMsg.MASK_ALWAYS|CMMsg.MSG_DEATH,CMMsg.NO_EFFECT,null));
 	}
 
-	public Item buildPlant(MOB mob, Room room)
+	public Item buildPlant(final MOB mob, final Room room)
 	{
 		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
@@ -170,14 +169,14 @@ public class Chant_SummonPlants extends Chant
 		return newItem;
 	}
 
-	public Item buildMyThing(MOB mob, Room room)
+	public Item buildMyThing(final MOB mob, final Room room)
 	{
 		final Area A=room.getArea();
 		final boolean bonusWorthy=
 			  (Druid_MyPlants.myPlant(room,mob,0)==null)
 			&&((room.getGridParent()==null)
 				||(CMLib.flags().matchedAffects(mob,room.getGridParent(),-1,Ability.ACODE_CHANT,-1).size()==0));
-		
+
 		final List<Room> V=Druid_MyPlants.myAreaPlantRooms(mob,room.getArea());
 		int pct=0;
 		if(A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]>10)
@@ -224,23 +223,23 @@ public class Chant_SummonPlants extends Chant
 		return I;
 	}
 
-	protected Item buildMyPlant(MOB mob, Room room)
+	protected Item buildMyPlant(final MOB mob, final Room room)
 	{
 		return buildPlant(mob, room);
 	}
 
-	public boolean rightPlace(MOB mob,boolean auto)
+	public boolean rightPlace(final MOB mob,final boolean auto)
 	{
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		
+
 		if((!auto)&&(R.domainType()&Room.INDOORS)>0)
 		{
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		
+
 		if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
@@ -254,7 +253,7 @@ public class Chant_SummonPlants extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -268,7 +267,7 @@ public class Chant_SummonPlants extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!rightPlace(mob,auto))
 			return false;

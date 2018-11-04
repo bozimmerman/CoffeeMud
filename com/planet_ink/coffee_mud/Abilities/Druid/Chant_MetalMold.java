@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_MetalMold extends Chant
 {
 	@Override
@@ -67,7 +66,7 @@ public class Chant_MetalMold extends Chant
 		return Ability.QUALITY_MALICIOUS;
 	}
 
-	private Item findMobTargetItem(MOB mobTarget)
+	private Item findMobTargetItem(final MOB mobTarget)
 	{
 		final Vector<Item> goodPossibilities=new Vector<Item>();
 		final Vector<Item> possibilities=new Vector<Item>();
@@ -91,7 +90,7 @@ public class Chant_MetalMold extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -105,7 +104,7 @@ public class Chant_MetalMold extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;

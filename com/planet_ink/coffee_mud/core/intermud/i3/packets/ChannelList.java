@@ -34,7 +34,8 @@ import java.io.Serializable;
  *
  */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class ChannelList implements Serializable {
+public class ChannelList implements Serializable
+{
 	public static final long serialVersionUID=0;
 	private int id;
 	private final Hashtable list;
@@ -46,13 +47,13 @@ public class ChannelList implements Serializable {
 		list = new Hashtable(10, 5);
 	}
 
-	public ChannelList(int i)
+	public ChannelList(final int i)
 	{
 		this();
 		id = i;
 	}
 
-	public void addChannel(Channel c )
+	public void addChannel(final Channel c )
 	{
 		if( c.channel == null )
 		{
@@ -61,7 +62,7 @@ public class ChannelList implements Serializable {
 		list.put(c.channel, c);
 	}
 
-	public Channel getChannel(String channel)
+	public Channel getChannel(final String channel)
 	{
 		if( !list.containsKey(channel) )
 		{
@@ -70,7 +71,7 @@ public class ChannelList implements Serializable {
 		return (Channel)list.get(channel);
 	}
 
-	public void removeChannel(Channel c)
+	public void removeChannel(final Channel c)
 	{
 		if( c.channel == null )
 		{
@@ -84,7 +85,7 @@ public class ChannelList implements Serializable {
 		return id;
 	}
 
-	public void setChannelListId(int x)
+	public void setChannelListId(final int x)
 	{
 		id = x;
 	}

@@ -65,7 +65,7 @@ public class IndoorWaterSurfaceColumn extends WaterSurfaceColumn implements Drin
 	{
 		return Room.DOMAIN_INDOORS_UNDERWATER;
 	}
-	
+
 	@Override
 	public int maxRange()
 	{

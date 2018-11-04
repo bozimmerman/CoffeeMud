@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_ViciousBlow extends FighterSkill
 {
 	@Override
@@ -90,7 +89,7 @@ public class Fighter_ViciousBlow extends FighterSkill
 	{
 		return Ability.ACODE_SKILL | Ability.DOMAIN_ANATOMY;
 	}
-	
+
 	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{

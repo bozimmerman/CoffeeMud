@@ -58,7 +58,7 @@ public class SaltWaterSurface extends WaterSurface
 	}
 
 	@Override
-	protected boolean IsUnderWaterFatClass(Room thatSea)
+	protected boolean IsUnderWaterFatClass(final Room thatSea)
 	{
 		return (thatSea instanceof UnderSaltWaterGrid)
 			|| (thatSea instanceof UnderSaltWaterThinGrid)
@@ -71,7 +71,7 @@ public class SaltWaterSurface extends WaterSurface
 		roomResources.add(Integer.valueOf(RawMaterial.RESOURCE_SALMON));
 		roomResources.add(Integer.valueOf(RawMaterial.RESOURCE_FISH));
 	}
-	
+
 	@Override
 	public List<Integer> resourceChoices()
 	{

@@ -23,13 +23,12 @@ import com.planet_ink.fakedb.Backend.FakeTable;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public class Statement implements java.sql.Statement
 {
 	protected ResultSet	myResultSet						= null;
 	protected boolean	closeStatementOnResultSetClose	= false;
 
-	static protected void log(String x)
+	static protected void log(final String x)
 	{
 		System.err.println("Statement: " + x);
 	}
@@ -37,7 +36,7 @@ public class Statement implements java.sql.Statement
 	protected Connection	connection;
 	public String			lastSQL	= "null";
 
-	Statement(Connection c)
+	Statement(final Connection c)
 	{
 		connection = c;
 	}
@@ -53,7 +52,7 @@ public class Statement implements java.sql.Statement
 		return connection;
 	}
 
-	protected String split(String sql, String[] token)
+	protected String split(String sql, final String[] token)
 	{
 		while (true)
 		{
@@ -75,7 +74,7 @@ public class Statement implements java.sql.Statement
 				{
 					break;
 				}
-				else 
+				else
 				if (c == '\'')
 				{
 					for (++index; index < sql.length(); index++)
@@ -83,7 +82,7 @@ public class Statement implements java.sql.Statement
 						c = sql.charAt(index);
 						if (c == '\\')
 							index++;
-						else 
+						else
 						if (c == '\'')
 							break;
 					}
@@ -99,7 +98,7 @@ public class Statement implements java.sql.Statement
 		}
 	}
 
-	protected String splitColumns(String sql, List<String> cols)
+	protected String splitColumns(final String sql, final List<String> cols)
 	{
 		int s = 0;
 		while ((sql.length() > 0) && (s < sql.length()))
@@ -136,7 +135,7 @@ public class Statement implements java.sql.Statement
 	}
 
 	@Override
-	public void setPoolable(boolean isPoolable)
+	public void setPoolable(final boolean isPoolable)
 	{
 	}
 
@@ -147,18 +146,18 @@ public class Statement implements java.sql.Statement
 	}
 
 	@Override
-	public boolean isWrapperFor(Class<?> arg0) throws SQLException
+	public boolean isWrapperFor(final Class<?> arg0) throws SQLException
 	{
 		return false;
 	}
 
 	@Override
-	public <T> T unwrap(Class<T> arg0) throws SQLException
+	public <T> T unwrap(final Class<T> arg0) throws SQLException
 	{
 		return null;
 	}
 
-	public String parseWhereClause(String tableName, String sql, List<Backend.FakeCondition> conditions) throws java.sql.SQLException
+	public String parseWhereClause(final String tableName, final String sql, List<Backend.FakeCondition> conditions) throws java.sql.SQLException
 	{
 		int s = 0;
 		final String eow1 = " \t!=><";
@@ -180,7 +179,7 @@ public class Statement implements java.sql.Statement
 				s++;
 				continue;
 			}
-			else 
+			else
 			if (sql.charAt(s) == ')')
 			{
 				if (parenStack.size() == 0)
@@ -203,17 +202,17 @@ public class Statement implements java.sql.Statement
 					s++;
 				e = s;
 				String comparitor;
-				if ((e < sql.length() - 5) 
-				&& (Character.toLowerCase(sql.charAt(e)) == 'l') 
-				&& (Character.toLowerCase(sql.charAt(e + 1)) == 'i') 
+				if ((e < sql.length() - 5)
+				&& (Character.toLowerCase(sql.charAt(e)) == 'l')
+				&& (Character.toLowerCase(sql.charAt(e + 1)) == 'i')
 				&& (Character.toLowerCase(sql.charAt(e + 2)) == 'k')
-				&& (Character.toLowerCase(sql.charAt(e + 3)) == 'e') 
+				&& (Character.toLowerCase(sql.charAt(e + 3)) == 'e')
 				&& (Character.toLowerCase(sql.charAt(e + 4)) == ' '))
 				{
 					comparitor = "like";
 					e += 5;
 				}
-				else 
+				else
 				if ((e < sql.length()) && (eow1.indexOf(sql.charAt(e)) > 0))
 				{
 					while ((e < sql.length()) && (eow1.indexOf(sql.charAt(e)) > 0))
@@ -274,13 +273,13 @@ public class Statement implements java.sql.Statement
 			{
 
 			}
-			else 
+			else
 			if (peeker.equalsIgnoreCase("AND"))
 			{
 				s = e;
 				condition.connector = Backend.ConnectorType.AND;
 			}
-			else 
+			else
 			if (peeker.equalsIgnoreCase("OR"))
 			{
 				s = e;
@@ -297,7 +296,7 @@ public class Statement implements java.sql.Statement
 
 	}
 
-	public Backend.ImplSelectStatement parseSelect(String sql, String[] token) throws java.sql.SQLException
+	public Backend.ImplSelectStatement parseSelect(String sql, final String[] token) throws java.sql.SQLException
 	{
 		final List<String> cols = new ArrayList<String>();
 		sql = splitColumns(sql, cols);
@@ -365,7 +364,7 @@ public class Statement implements java.sql.Statement
 		}
 	}
 
-	protected static String skipWS(String sql)
+	protected static String skipWS(final String sql)
 	{
 		int index;
 		for (index = 0; index < sql.length(); index++)
@@ -388,7 +387,7 @@ public class Statement implements java.sql.Statement
 			result[0] = result[1] = "";
 			result[2] = null;
 		}
-		else 
+		else
 		if (sql.charAt(0) == '\'')
 		{
 			final StringBuffer buffer = new StringBuffer();
@@ -426,7 +425,7 @@ public class Statement implements java.sql.Statement
 		return result;
 	}
 
-	protected Backend.ImplInsertStatement parseInsert(String sql, String[] token) throws java.sql.SQLException
+	protected Backend.ImplInsertStatement parseInsert(String sql, final String[] token) throws java.sql.SQLException
 	{
 		sql = split(sql, token);
 		if (!token[0].equalsIgnoreCase("into"))
@@ -438,7 +437,7 @@ public class Statement implements java.sql.Statement
 			throw new java.sql.SQLException("no open paren");
 		sql = sql.substring(1);
 
-		final java.util.List<String> columnList = new java.util.LinkedList();
+		final java.util.List<String> columnList = new java.util.LinkedList<String>();
 		while (true)
 		{
 			sql = skipWS(sql);
@@ -464,7 +463,7 @@ public class Statement implements java.sql.Statement
 		sql = sql.substring(1);
 
 		final java.util.List<String> valuesList = new java.util.LinkedList<String>();
-		final java.util.List<Boolean> unPreparedValueList = new java.util.LinkedList();
+		final java.util.List<Boolean> unPreparedValueList = new java.util.LinkedList<Boolean>();
 		while (true)
 		{
 			sql = skipWS(sql);
@@ -491,7 +490,7 @@ public class Statement implements java.sql.Statement
 		return new Backend.ImplInsertStatement(tableName, columnList.toArray(new String[0]), valuesList.toArray(new String[0]), unPreparedValueList.toArray(new Boolean[0]));
 	}
 
-	protected Backend.ImplUpdateStatement parseUpdate(String sql, String[] token) throws java.sql.SQLException
+	protected Backend.ImplUpdateStatement parseUpdate(String sql, final String[] token) throws java.sql.SQLException
 	{
 		sql = split(sql, token);
 		final String tableName = token[0];
@@ -499,9 +498,9 @@ public class Statement implements java.sql.Statement
 		if (!token[0].equalsIgnoreCase("set"))
 			throw new java.sql.SQLException("no set");
 
-		final java.util.List<String> columnList = new java.util.LinkedList();
-		final java.util.List<String> valueList = new java.util.LinkedList();
-		final java.util.List<Boolean> unPreparedValueList = new java.util.LinkedList();
+		final java.util.List<String> columnList = new java.util.LinkedList<String>();
+		final java.util.List<String> valueList = new java.util.LinkedList<String>();
+		final java.util.List<Boolean> unPreparedValueList = new java.util.LinkedList<Boolean>();
 		final StringBuffer buffer = new StringBuffer();
 		while (true)
 		{
@@ -566,7 +565,7 @@ public class Statement implements java.sql.Statement
 
 	}
 
-	protected Backend.ImplDeleteStatement parseDelete(String sql, String[] token) throws java.sql.SQLException
+	protected Backend.ImplDeleteStatement parseDelete(String sql, final String[] token) throws java.sql.SQLException
 	{
 		sql = split(sql, token);
 		if (!token[0].equalsIgnoreCase("from"))
@@ -583,7 +582,7 @@ public class Statement implements java.sql.Statement
 			if (conditions.size() == 0)
 				throw new java.sql.SQLException("no more where clause!");
 		}
-		else 
+		else
 		if (token.length > 0)
 		{
 			conditions = new ArrayList<Backend.FakeCondition>();
@@ -614,13 +613,13 @@ public class Statement implements java.sql.Statement
 				connection.getBackend().dupKeyCheck(stmt.tableName, stmt.columns, stmt.sqlValues);
 				connection.getBackend().insertValues(stmt);
 			}
-			else 
+			else
 			if (token[0].equalsIgnoreCase("update"))
 			{
 				final Backend.ImplUpdateStatement stmt = parseUpdate(sql, token);
 				connection.getBackend().updateRecord(stmt);
 			}
-			else 
+			else
 			if (token[0].equalsIgnoreCase("delete"))
 			{
 				final Backend.ImplDeleteStatement stmt = parseDelete(sql, token);
@@ -639,19 +638,19 @@ public class Statement implements java.sql.Statement
 	}
 
 	@Override
-	public int executeUpdate(String sql, int a) throws java.sql.SQLException
+	public int executeUpdate(final String sql, final int a) throws java.sql.SQLException
 	{
 		return executeUpdate(sql);
 	}
 
 	@Override
-	public int executeUpdate(String sql, int[] a) throws java.sql.SQLException
+	public int executeUpdate(final String sql, final int[] a) throws java.sql.SQLException
 	{
 		return executeUpdate(sql);
 	}
 
 	@Override
-	public int executeUpdate(String sql, String[] a) throws java.sql.SQLException
+	public int executeUpdate(final String sql, final String[] a) throws java.sql.SQLException
 	{
 		return executeUpdate(sql);
 	}
@@ -669,7 +668,7 @@ public class Statement implements java.sql.Statement
 	}
 
 	@Override
-	public void setMaxFieldSize(int max) throws java.sql.SQLException
+	public void setMaxFieldSize(final int max) throws java.sql.SQLException
 	{
 	}
 
@@ -680,12 +679,12 @@ public class Statement implements java.sql.Statement
 	}
 
 	@Override
-	public void setMaxRows(int max) throws java.sql.SQLException
+	public void setMaxRows(final int max) throws java.sql.SQLException
 	{
 	}
 
 	@Override
-	public void setEscapeProcessing(boolean enable) throws java.sql.SQLException
+	public void setEscapeProcessing(final boolean enable) throws java.sql.SQLException
 	{
 	}
 
@@ -696,7 +695,7 @@ public class Statement implements java.sql.Statement
 	}
 
 	@Override
-	public void setQueryTimeout(int seconds) throws java.sql.SQLException
+	public void setQueryTimeout(final int seconds) throws java.sql.SQLException
 	{
 	}
 
@@ -717,7 +716,7 @@ public class Statement implements java.sql.Statement
 	}
 
 	@Override
-	public void setCursorName(String Name) throws java.sql.SQLException
+	public void setCursorName(final String Name) throws java.sql.SQLException
 	{
 	}
 
@@ -745,19 +744,19 @@ public class Statement implements java.sql.Statement
 	}
 
 	@Override
-	public boolean execute(String sql, int a) throws java.sql.SQLException
+	public boolean execute(final String sql, final int a) throws java.sql.SQLException
 	{
 		return execute(sql, 0);
 	}
 
 	@Override
-	public boolean execute(String sql, int[] a) throws java.sql.SQLException
+	public boolean execute(final String sql, final int[] a) throws java.sql.SQLException
 	{
 		return execute(sql, 0);
 	}
 
 	@Override
-	public boolean execute(String sql, String[] a) throws java.sql.SQLException
+	public boolean execute(final String sql, final String[] a) throws java.sql.SQLException
 	{
 		return execute(sql, 0);
 	}
@@ -788,7 +787,7 @@ public class Statement implements java.sql.Statement
 	}
 
 	@Override
-	public boolean getMoreResults(int a) throws java.sql.SQLException
+	public boolean getMoreResults(final int a) throws java.sql.SQLException
 	{
 		return false;
 	}
@@ -800,7 +799,7 @@ public class Statement implements java.sql.Statement
 	}
 
 	@Override
-	public void setFetchDirection(int i) throws java.sql.SQLException
+	public void setFetchDirection(final int i) throws java.sql.SQLException
 	{
 	}
 
@@ -811,7 +810,7 @@ public class Statement implements java.sql.Statement
 	}
 
 	@Override
-	public void addBatch(String a) throws java.sql.SQLException
+	public void addBatch(final String a) throws java.sql.SQLException
 	{
 	}
 
@@ -827,7 +826,7 @@ public class Statement implements java.sql.Statement
 	}
 
 	@Override
-	public void setFetchSize(int i) throws java.sql.SQLException
+	public void setFetchSize(final int i) throws java.sql.SQLException
 	{
 	}
 

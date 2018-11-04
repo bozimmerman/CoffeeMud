@@ -42,7 +42,7 @@ public class IsDisabled extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final CMSecurity.DisFlag flag=(CMSecurity.DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.class, parm.toUpperCase().trim());
 		if(flag==null)

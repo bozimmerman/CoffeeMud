@@ -150,7 +150,7 @@ public class CharGen extends StdCommand
 					A.setMaterial(RawMaterial.RESOURCE_OAK);
 					break;
 				}
-				String adj=RawMaterial.CODES.NAME(A.material()).toLowerCase();
+				final String adj=RawMaterial.CODES.NAME(A.material()).toLowerCase();
 				A.setName(CMLib.english().startWithAorAn(adj)+" "+Wearable.CODES.USUAL(wornCode).toLowerCase());
 				A.setDisplayText(A.name()+" sits here");
 				A.basePhyStats().setLevel(level);
@@ -281,7 +281,7 @@ public class CharGen extends StdCommand
 		return avgMob;
 	}
 
-	public MOB AverageAllClassMOB(MOB mob, int level, int numTriesClass, int numTriesMOB, boolean player)
+	public MOB AverageAllClassMOB(final MOB mob, final int level, final int numTriesClass, final int numTriesMOB, final boolean player)
 	{
 		MOB avgMob=null;
 		int tries=0;
@@ -325,7 +325,7 @@ public class CharGen extends StdCommand
 		Hashtable<String,int[]> failSkillCheck=null;
 	}
 
-	public void combatRun(MOB mob, List<String> commands)
+	public void combatRun(final MOB mob, final List<String> commands)
 	{
 		final CombatStats c=new CombatStats();
 		final Room room=mob.location();
@@ -397,7 +397,7 @@ public class CharGen extends StdCommand
 			else
 			if(s.toUpperCase().startsWith("MOB=") && (room!=null))
 			{
-				String mobName=s.substring("MOB=".length());
+				final String mobName=s.substring("MOB=".length());
 				MOB M=room.fetchInhabitant(mobName);
 				if(M==null)
 				{
@@ -474,7 +474,7 @@ public class CharGen extends StdCommand
 		}
 
 		final MOB badGuyM=tempBadGuyM;
-		
+
 		if(c.skipLevels<=0)
 		{
 			c.skipLevels=1;
@@ -527,7 +527,7 @@ public class CharGen extends StdCommand
 				boolean[]	aborted;
 				java.util.concurrent.CountDownLatch latch = null;
 
-				public void start(CombatStats c, int charClassDex, String fileExp, java.util.concurrent.CountDownLatch latch, boolean[] aborted)
+				public void start(final CombatStats c, final int charClassDex, final String fileExp, final java.util.concurrent.CountDownLatch latch, final boolean[] aborted)
 				{
 					this.c=c;
 					this.charClassDex=charClassDex;
@@ -682,7 +682,7 @@ public class CharGen extends StdCommand
 							if(badGuyM!=null)
 							{
 								M2=(MOB)badGuyM.copyOf();
-								Behavior B=M2.fetchBehavior("CombatAbilities");
+								final Behavior B=M2.fetchBehavior("CombatAbilities");
 								if(B!=null)
 									B2=B;
 								else
@@ -760,7 +760,7 @@ public class CharGen extends StdCommand
 
 							if((sess!=null)&&(sess.isStopped() || sess.hotkey(1)=='x'))
 								aborted[0]=true;
-							
+
 							//chargen combat charclasses export=test.tab iterations=100 skiplevels=20 1 91
 							while((M1.getVictim()==M2)
 								&&(M2.getVictim()==M1)
@@ -1050,16 +1050,16 @@ public class CharGen extends StdCommand
 		c.A.destroy();
 	}
 
-	
-	protected boolean setWeaponFields(final MOB mob, final List<String> commands, Map<String,String> baseItem, String fieldName, String suffix)
+
+	protected boolean setWeaponFields(final MOB mob, final List<String> commands, final Map<String,String> baseItem, final String fieldName, final String suffix)
 	{
 		boolean foundOne=false;
 		final String notValue="(*DY(*HHK#H(*H";
-		for(String cmd : commands)
+		for(final String cmd : commands)
 		{
 			if(cmd.toLowerCase().trim().startsWith(suffix+fieldName))
 			{
-				String val=CMParms.getParmStr(cmd, suffix+fieldName, notValue);
+				final String val=CMParms.getParmStr(cmd, suffix+fieldName, notValue);
 				if(!val.equals(notValue))
 				{
 					baseItem.put(fieldName, val);
@@ -1069,8 +1069,8 @@ public class CharGen extends StdCommand
 		}
 		return foundOne;
 	}
-	
-	protected boolean confirmField(final MOB mob, int fieldIndex, String val)
+
+	protected boolean confirmField(final MOB mob, final int fieldIndex, final String val)
 	{
 		switch(fieldIndex)
 		{
@@ -1095,7 +1095,7 @@ public class CharGen extends StdCommand
 				mob.tell(L("Not a level '@x1'.",val));
 				return false;
 			}
-			int v=CMath.s_int(val);
+			final int v=CMath.s_int(val);
 			if(v<0)
 			{
 				mob.tell(L("Not a valid level '@x1'.",val));
@@ -1110,7 +1110,7 @@ public class CharGen extends StdCommand
 				mob.tell(L("Not a number of hands '@x1'.",val));
 				return false;
 			}
-			int v=CMath.s_int(val);
+			final int v=CMath.s_int(val);
 			if((v<=0)||(v>2))
 			{
 				mob.tell(L("Not a valid number of hands '@x1'.",val));
@@ -1125,7 +1125,7 @@ public class CharGen extends StdCommand
 				mob.tell(L("Not a reach '@x1'.",val));
 				return false;
 			}
-			int v=CMath.s_int(val);
+			final int v=CMath.s_int(val);
 			if((v<0)||(v>10))
 			{
 				mob.tell(L("Not a valid reach '@x1'.",val));
@@ -1140,7 +1140,7 @@ public class CharGen extends StdCommand
 				mob.tell(L("Not a weight '@x1'.",val));
 				return false;
 			}
-			int v=CMath.s_int(val);
+			final int v=CMath.s_int(val);
 			if(v<=0)
 			{
 				mob.tell(L("Not a valid weight '@x1'.",val));
@@ -1158,12 +1158,12 @@ public class CharGen extends StdCommand
 		}
 		return true;
 	}
-	
-	protected void weaponRun(final MOB mob, List<String> commands)
+
+	protected void weaponRun(final MOB mob, final List<String> commands)
 	{
-		String[] fields=new String[]{"class","type","level","hands","reach","weight","material"};
-		String[] defaults=new String[]{"BLUNT","BASHING","1","1","0","6","IRON"};
-		StringBuilder str=new StringBuilder("\n\rInputs:\n\r");
+		final String[] fields=new String[]{"class","type","level","hands","reach","weight","material"};
+		final String[] defaults=new String[]{"BLUNT","BASHING","1","1","0","6","IRON"};
+		final StringBuilder str=new StringBuilder("\n\rInputs:\n\r");
 		str.append("\n\r");
 		for(int x=0;x<fields.length;x++)
 			str.append("\"").append(fields[x]).append("=").append(defaults[x]).append("\"\n\r");
@@ -1191,10 +1191,10 @@ public class CharGen extends StdCommand
 			for(int i=0;i<100;i++)
 			{
 				boolean setOne=false;
-				Hashtable<String,String> newItem=new XHashtable<String,String>(template);
+				final Hashtable<String,String> newItem=new XHashtable<String,String>(template);
 				for(int x=0;x<fields.length;x++)
 				{
-					boolean newSetOne=setWeaponFields(mob, commands, newItem, fields[x], ""+i);
+					final boolean newSetOne=setWeaponFields(mob, commands, newItem, fields[x], ""+i);
 					setOne = newSetOne || setOne;
 					if(newSetOne && (!confirmField(mob, x, newItem.get(fields[x]))))
 						return;
@@ -1208,7 +1208,7 @@ public class CharGen extends StdCommand
 		}
 
 		final Session viewerS=mob.session();
-		StringBuilder headStr=new StringBuilder("");
+		final StringBuilder headStr=new StringBuilder("");
 		final int[] cols=new int[]
 		{
 			CMLib.lister().fixColWidth(12.0,viewerS),
@@ -1231,20 +1231,20 @@ public class CharGen extends StdCommand
 		headStr.append(CMStrings.padRight(L("Att"), cols[7]));
 		headStr.append(CMStrings.padRight(L("Dmg"), cols[8]));
 		headStr.append("\n\r");
-		StringBuilder chart=new StringBuilder("");
+		final StringBuilder chart=new StringBuilder("");
 		chart.append(headStr.toString());
 		for(final Map<String,String> item : map)
 		{
-			Weapon W=CMClass.getWeapon("GenWeapon");
+			final Weapon W=CMClass.getWeapon("GenWeapon");
 			int level=1;
 			int material=RawMaterial.RESOURCE_IRON;
 			int hands=1;
 			int wclass=Weapon.CLASS_BLUNT;
 			int reach=0;
-			long wornData=Wearable.WORN_WIELD|Wearable.WORN_HELD;
+			final long wornData=Wearable.WORN_WIELD|Wearable.WORN_HELD;
 			for(int f=0;f<fields.length;f++)
 			{
-				String val=item.get(fields[f]);
+				final String val=item.get(fields[f]);
 				switch(f)
 				{
 				case 0:
@@ -1326,9 +1326,9 @@ public class CharGen extends StdCommand
 		}
 		mob.tell(chart.toString());
 	}
-	
+
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.isMonster())
@@ -1351,7 +1351,7 @@ public class CharGen extends StdCommand
 				weaponRun(mob,commands);
 				return true;
 			}
-			
+
 			if(commands.get(0).equalsIgnoreCase("NEW"))
 			{
 				commands.remove(0);
@@ -1363,7 +1363,7 @@ public class CharGen extends StdCommand
 				commands.remove(0);
 				createPlayer=true;
 			}
-			
+
 			if(commands.get(0).equalsIgnoreCase("EQUIP") && (commands.size()>1))
 			{
 				MOB M=mob.location().fetchInhabitant(CMParms.combine(commands,1));
@@ -1455,7 +1455,7 @@ public class CharGen extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CHARGEN);
 	}

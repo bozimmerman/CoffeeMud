@@ -54,12 +54,12 @@ public class Get extends StdCommand
 		return access;
 	}
 
-	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)
+	public static boolean get(final MOB mob, final Item container, final Item getThis, final boolean quiet)
 	{
 		return get(mob,container,getThis,quiet,"get",false);
 	}
 
-	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet, String getWord, boolean optimize)
+	public static boolean get(final MOB mob, final Item container, final Item getThis, final boolean quiet, final String getWord, final boolean optimize)
 	{
 		final Room R=mob.location();
 		String theWhat="<T-NAME>";
@@ -99,11 +99,11 @@ public class Get extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final Room R=mob.location();
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("Get what?"));
@@ -236,7 +236,7 @@ public class Get extends StdCommand
 		}
 		return false;
 	}
-	
+
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
@@ -256,11 +256,11 @@ public class Get extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		
+
 		if(args[0] instanceof Item)
 		{
 			final Item item=(Item)args[0];

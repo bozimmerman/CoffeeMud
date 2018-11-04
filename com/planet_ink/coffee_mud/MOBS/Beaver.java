@@ -67,7 +67,7 @@ public class Beaver extends StdMOB
 			A.setProficiency(100);
 			addAbility(A);
 		}
-		
+
 		baseCharStats().setMyRace(CMClass.getRace("GiantRat"));
 		baseCharStats().getMyRace().startRacing(this,false);
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));

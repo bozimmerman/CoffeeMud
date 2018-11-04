@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_KeenEdge extends Spell
 {
 
@@ -99,9 +98,9 @@ public class Spell_KeenEdge extends Spell
 				((MOB)item.owner()).tell(((MOB)item.owner()),item,null,L("<T-NAME> loses its keen edge."));
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
@@ -131,7 +130,7 @@ public class Spell_KeenEdge extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> take(s) on a keen and sharp edge!"));
-				Ability A=beneficialAffect(mob, target, asLevel, 0);
+				final Ability A=beneficialAffect(mob, target, asLevel, 0);
 				if(A!=null)
 					A.setMiscText(""+super.getXLEVELLevel(mob));
 				target.recoverPhyStats();

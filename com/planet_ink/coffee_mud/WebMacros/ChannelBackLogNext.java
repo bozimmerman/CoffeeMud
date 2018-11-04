@@ -42,12 +42,12 @@ public class ChannelBackLogNext extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getUrlParameter("CHANNELBACKLOG");
-		String pageNumStr=httpReq.getUrlParameter("CHANNELBACKLOGPAGE");
-		String pageSizeStr=httpReq.getUrlParameter("CHANNELBACKLOGPAGESIZE");
+		final String pageNumStr=httpReq.getUrlParameter("CHANNELBACKLOGPAGE");
+		final String pageSizeStr=httpReq.getUrlParameter("CHANNELBACKLOGPAGESIZE");
 		if(parms.containsKey("RESET"))
 		{
 			if(last!=null)
@@ -69,7 +69,7 @@ public class ChannelBackLogNext extends StdWebMacro
 				int pageSize = CMath.s_int(pageSizeStr);
 				if(pageSize <=0)
 					pageSize = 100;
-				int pageNum = CMath.s_int(pageNumStr); // page 0 is OK
+				final int pageNum = CMath.s_int(pageNumStr); // page 0 is OK
 				@SuppressWarnings("unchecked")
 				List<ChannelsLibrary.ChannelMsg> que=(List<ChannelsLibrary.ChannelMsg>)httpReq.getRequestObjects().get("CHANNELMSG_"+channelInt+" QUE "+pageSize+" "+pageNum);
 				if(que==null)

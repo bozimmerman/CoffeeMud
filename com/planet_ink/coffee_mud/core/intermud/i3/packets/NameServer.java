@@ -39,7 +39,7 @@ public class NameServer implements Serializable
 	protected String name;
 	protected int    port;
 
-	public NameServer(String addr, int p, String nom)
+	public NameServer(final String addr, final int p, final String nom)
 	{
 		super();
 		ip = addr;

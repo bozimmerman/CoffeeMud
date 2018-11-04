@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_SummonEnemy extends Spell
 {
 
@@ -125,7 +124,7 @@ public class Spell_SummonEnemy extends Spell
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -140,10 +139,10 @@ public class Spell_SummonEnemy extends Spell
 				final List<Item> addMe = new LinkedList<Item>();
 				for(final Enumeration<Item> i=msg.source().items();i.hasMoreElements();)
 				{
-					Item I=i.nextElement();
+					final Item I=i.nextElement();
 					if(I!=null)
 					{
-						Item newI = CMLib.utensils().ruinItem(I);
+						final Item newI = CMLib.utensils().ruinItem(I);
 						if(newI != I)
 						{
 							addMe.add(newI);
@@ -151,15 +150,15 @@ public class Spell_SummonEnemy extends Spell
 						}
 					}
 				}
-				for(Item I : destroyMe)
+				for(final Item I : destroyMe)
 					I.destroy();
-				for(Item I : addMe)
+				for(final Item I : addMe)
 					msg.source().addItem(I);
 			}
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -174,9 +173,9 @@ public class Spell_SummonEnemy extends Spell
 		}
 		return !this.unInvoked;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -214,7 +213,7 @@ public class Spell_SummonEnemy extends Spell
 		return success;
 	}
 
-	public MOB determineMonster(MOB caster, int level)
+	public MOB determineMonster(final MOB caster, final int level)
 	{
 		if(caster==null)
 			return null;

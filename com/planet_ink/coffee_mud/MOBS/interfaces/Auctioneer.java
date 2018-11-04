@@ -37,15 +37,15 @@ import java.util.*;
  * higher prices on items instead of simply buying them.  Other players
  * are also responsible for giving the auctioneer things to auction
  * off.  The winning bidder has the item delivered to them
- * automatically, even if they are offline, and the money is 
+ * automatically, even if they are offline, and the money is
  * also exchanged automatically by the Auctioneer.
  *
  * Auctioneers belong to a chain called an auction house, so that
  * players need only visit the auctioneer nearest them to see all the
  * items that are up for auction in a particular auction house.
- * 
+ *
  * @see com.planet_ink.coffee_mud.Common.interfaces.AuctionPolicy
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -58,7 +58,7 @@ public interface Auctioneer extends ShopKeeper, AuctionPolicy
 	 * @return name of the auction house
 	 */
 	public String auctionHouse();
-	
+
 	/**
 	 * Sets the name of the auction house to which this
 	 * auctioneer belongs.

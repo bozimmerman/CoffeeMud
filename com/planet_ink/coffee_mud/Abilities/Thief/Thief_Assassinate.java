@@ -221,7 +221,7 @@ public class Thief_Assassinate extends ThiefSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
@@ -259,7 +259,7 @@ public class Thief_Assassinate extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
@@ -323,7 +323,7 @@ public class Thief_Assassinate extends ThiefSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		int range=50 + super.getXLEVELLevel(mob)+(5*super.getXMAXRANGELevel(mob));
+		final int range=50 + super.getXLEVELLevel(mob)+(5*super.getXMAXRANGELevel(mob));
 		final ArrayList<Room> rooms=new ArrayList<Room>();
 		if(tracking!=null)
 		{

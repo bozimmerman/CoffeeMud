@@ -39,9 +39,9 @@ public class Swamp extends StdRoom implements Drink
 	{
 		return "Swamp";
 	}
-	
+
 	protected int liquidType = RawMaterial.RESOURCE_FRESHWATER;
-	
+
 	public Swamp()
 	{
 		super();
@@ -88,7 +88,7 @@ public class Swamp extends StdRoom implements Drink
 				mob.tell(L("You have drunk all you can."));
 			if(CMLib.dice().rollPercentage()<10)
 			{
-				Ability A=CMClass.getAbility("Disease_Malaria");
+				final Ability A=CMClass.getAbility("Disease_Malaria");
 				if((A!=null)&&(msg.source().fetchEffect(A.ID())==null))
 					A.invoke(msg.source(),msg.source(),true,0);
 			}
@@ -109,7 +109,7 @@ public class Swamp extends StdRoom implements Drink
 	}
 
 	@Override
-	public void setDecayTime(long time)
+	public void setDecayTime(final long time)
 	{
 	}
 
@@ -138,23 +138,23 @@ public class Swamp extends StdRoom implements Drink
 	}
 
 	@Override
-	public void setLiquidType(int newLiquidType)
+	public void setLiquidType(final int newLiquidType)
 	{
 		liquidType = newLiquidType;
 	}
 
 	@Override
-	public void setThirstQuenched(int amount)
+	public void setThirstQuenched(final int amount)
 	{
 	}
 
 	@Override
-	public void setLiquidHeld(int amount)
+	public void setLiquidHeld(final int amount)
 	{
 	}
 
 	@Override
-	public void setLiquidRemaining(int amount)
+	public void setLiquidRemaining(final int amount)
 	{
 	}
 
@@ -171,7 +171,7 @@ public class Swamp extends StdRoom implements Drink
 	}
 
 	@Override
-	public int amountTakenToFillMe(Drink theSource)
+	public int amountTakenToFillMe(final Drink theSource)
 	{
 		return 0;
 	}
@@ -192,7 +192,7 @@ public class Swamp extends StdRoom implements Drink
 		Integer.valueOf(RawMaterial.RESOURCE_TAR),
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 	};
-	
+
 	public static final List<Integer>	roomResources	= new Vector<Integer>(Arrays.asList(resourceList));
 
 	@Override

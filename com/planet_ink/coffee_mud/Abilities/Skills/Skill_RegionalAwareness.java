@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_RegionalAwareness extends StdSkill
 {
 	@Override
@@ -87,7 +86,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		return 0;
 	}
 
-	public char roomColor(Room room)
+	public char roomColor(final Room room)
 	{
 		if(room==null)
 			return ' ';
@@ -143,8 +142,8 @@ public class Skill_RegionalAwareness extends StdSkill
 			return 'k';
 		}
 	}
-	
-	public char roomChar(Room room, boolean amOutdoors)
+
+	public char roomChar(final Room room, final boolean amOutdoors)
 	{
 		if(room==null)
 			return ' ';
@@ -197,7 +196,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		}
 	}
 
-	public String[] getMiniMap(Room room, final int diameter, boolean openOnly)
+	public String[] getMiniMap(final Room room, final int diameter, final boolean openOnly)
 	{
 		final char[][] map=new char[diameter][diameter];
 		for(int i=0;i<diameter;i++)
@@ -286,7 +285,7 @@ public class Skill_RegionalAwareness extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Session sess = mob.session();
 		if(auto && (givenTarget instanceof Room) && (asLevel>0))

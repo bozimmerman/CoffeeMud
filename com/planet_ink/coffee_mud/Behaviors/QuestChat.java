@@ -34,7 +34,6 @@ import java.util.*;
 
 public class QuestChat extends MudChat
 {
-
 	@Override
 	public String ID()
 	{
@@ -45,13 +44,13 @@ public class QuestChat extends MudChat
 	private String							myQuestName	= null;
 
 	@Override
-	public void registerDefaultQuest(String questName)
+	public void registerDefaultQuest(final String questName)
 	{
 		myQuestName = questName;
 	}
 
 	@Override
-	protected boolean match(MOB speaker, String expression, String message, String[] rest)
+	protected boolean match(final MOB speaker, String expression, final String message, final String[] rest)
 	{
 		if(expression.indexOf("::")>=0)
 		{

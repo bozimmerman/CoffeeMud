@@ -78,7 +78,7 @@ public interface XMLLibrary extends CMLibrary
 	 * @return String Information corresponding to the tname
 	 */
 	public String returnXMLBlock(String Blob, String Tag);
-	
+
 	/**
 	 * Parses all xml inside the given string buffer and returns
 	 * the root tags as a container collection.
@@ -180,7 +180,7 @@ public interface XMLLibrary extends CMLibrary
 	 * @return the new tag object
 	 */
 	public XMLTag createNewTag(String key, String value);
-	
+
 	/**
 	 * Returns the contents of a container tag, searched for in
 	 * another container tags contents
@@ -346,14 +346,14 @@ public interface XMLLibrary extends CMLibrary
 	 * @return the tags value, or defValue
 	 */
 	public double getDoubleFromPieces(List<XMLTag> V, String tag, double defVal);
-	
+
 	/**
 	 * Converts a pojo object to a XML document.
 	 * @param o the object to convert
 	 * @return the XML document
 	 */
 	public String fromPOJOtoXML(Object o);
-	
+
 	/**
 	 * Converts a xml document to a XML object.
 	 * @param XML the XML document
@@ -373,14 +373,14 @@ public interface XMLLibrary extends CMLibrary
 	 * @return an xml document
 	 */
 	public String toXML(final Map<String,String> map);
-	
+
 
 	/**
 	 * Converts a map into an xml document
 	 * @return an xml document
 	 */
 	public Map<String,String> fromXML(final String str);
-	
+
 	public interface XMLTag
 	{
 		/* (non-Javadoc)
@@ -440,7 +440,7 @@ public interface XMLLibrary extends CMLibrary
 		 * @return the outerEnd
 		 */
 		public int outerEndIndex();
-		
+
 		/**
 		 * Return a parameter value within an XML tag
 		 * &lt;TAG Parameter="VALUE"&gt;
@@ -450,7 +450,7 @@ public interface XMLLibrary extends CMLibrary
 		 * @return String Parameter value
 		 */
 		public String getParmValue(String Tag);
-		
+
 		/**
 		 * Return the data value within a given XML block
 		 * &lt;TAG&gt;Data&lt;/TAG&gt;
@@ -461,7 +461,7 @@ public interface XMLLibrary extends CMLibrary
 		 * @return the tags value, or defValue
 		 */
 		public double getDoubleFromPieces(String tag, double defVal);
-		
+
 		/**
 		 * Returns the xml tag node for the given tag name, if found in the
 		 * given tag container contents
@@ -469,7 +469,7 @@ public interface XMLLibrary extends CMLibrary
 		 * @return the xml tag node for the given tag name
 		 */
 		public XMLTag getPieceFromPieces(String tag);
-		
+
 		/**
 		 * Return the data value within a given XML block
 		 * &lt;TAG&gt;Data&lt;/TAG&gt;
@@ -513,7 +513,7 @@ public interface XMLLibrary extends CMLibrary
 		 * @return the tags value, or defValue
 		 */
 		public long getLongFromPieces(String tag, long defVal);
-		
+
 		/**
 		 * Returns the value of the tag, if it exists in the given
 		 * tag collection
@@ -521,7 +521,7 @@ public interface XMLLibrary extends CMLibrary
 		 * @return its value, or null
 		 */
 		public String getValFromPieces(String tag);
-		
+
 		/**
 		 * Returns the value of the tag, if it exists in the given
 		 * tag collection
@@ -530,7 +530,7 @@ public interface XMLLibrary extends CMLibrary
 		 * @return the tags value, or defValue
 		 */
 		public String getValFromPieces(String tag, String defValue);
-		
+
 		/**
 		 * Returns the contents of a container tag, searched for in
 		 * another container tags contents

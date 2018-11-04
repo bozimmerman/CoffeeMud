@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Archon_Accuse extends ArchonSkill
 {
 	@Override
@@ -94,7 +93,7 @@ public class Archon_Accuse extends ArchonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		boolean announce=false;
 		if(commands.size()>0)
@@ -111,18 +110,18 @@ public class Archon_Accuse extends ArchonSkill
 			return false;
 		}
 
-		Vector<String> origCommands = new XVector<String>(commands);
-		Vector<String> nameVec=new XVector<String>(commands.get(0));
+		final Vector<String> origCommands = new XVector<String>(commands);
+		final Vector<String> nameVec=new XVector<String>(commands.get(0));
 		commands.remove(0);
-		
+
 		final MOB target=getTargetAnywhere(mob,nameVec,givenTarget,true);
 		if(target==null)
 			return false;
-		
+
 		int punishmentLevel = Law.PUNISHMENT_JAIL1;
 		if(CMath.isInteger(commands.get(commands.size()-1)))
 		{
-			int x=CMath.s_int(commands.get(commands.size()-1));
+			final int x=CMath.s_int(commands.get(commands.size()-1));
 			if((x<0)||(x>Law.PUNISHMENT_HIGHEST))
 			{
 				mob.tell(L("The punishment level given is invalid: @x1",""+x));
@@ -131,13 +130,13 @@ public class Archon_Accuse extends ArchonSkill
 			punishmentLevel = x;
 			commands.remove(commands.size()-1);
 		}
-		
+
 		if((commands.size()<2)||(commands.get(0).equals("?")))
 		{
 			mob.tell(L("Accuse who of what? Add a ! to the end to announce, or a number to the end to set punishment degree."));
 			return false;
 		}
-		
+
 		LegalBehavior B=null;
 		Area A2=null;
 		Room room=target.location();
@@ -166,11 +165,11 @@ public class Archon_Accuse extends ArchonSkill
 			mob.tell(mob,target,null,L("<T-NAME> is not currently connectable to a legal area."));
 			return false;
 		}
-		
+
 		String crimeDesc = CMParms.combine(commands);
 		if(crimeDesc.toLowerCase().startsWith("of "))
 			crimeDesc=crimeDesc.substring(3);
-		
+
 		if(!super.invoke(mob,origCommands,givenTarget,auto,asLevel))
 			return false;
 
@@ -178,7 +177,7 @@ public class Archon_Accuse extends ArchonSkill
 
 		if(success)
 		{
-			Map<MOB,MOB> oldFightState = super.saveCombatState(mob, true);
+			final Map<MOB,MOB> oldFightState = super.saveCombatState(mob, true);
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
 									(auto || (!announce))?L("<T-NAME> <T-IS-ARE> accused of @x1!",crimeDesc):
 										 L("^F**<S-NAME> accuse(s) <T-NAMESELF> of @x1!^?",crimeDesc));
@@ -191,9 +190,9 @@ public class Archon_Accuse extends ArchonSkill
 				final String crimeLocs="";
 				final String crimeFlags="!witness";
 				final String sentence=Law.PUNISHMENT_DESCS[punishmentLevel];
-				
+
 				B.addWarrant(A2,target,null,crimeLocs,crimeFlags,crime,sentence,desc);
-				
+
 				super.restoreCombatState(oldFightState);
 				if(announce)
 				{

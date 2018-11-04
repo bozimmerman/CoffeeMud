@@ -60,12 +60,12 @@ public class MiniJSON
 	public static class MJSONException extends Exception
 	{
 		private static final long serialVersionUID = -2651922052891126260L;
-		
+
 		/**
 		 * Constructs a new exception with the given parse error
 		 * @param string the parse error
 		 */
-		public MJSONException(String string)
+		public MJSONException(final String string)
 		{
 			super(string);
 		}
@@ -75,7 +75,7 @@ public class MiniJSON
 		 * @param string the parse error
 		 * @param e an underlying cause of the parse error
 		 */
-		public MJSONException(String string, Exception e)
+		public MJSONException(final String string, final Exception e)
 		{
 			super(string, e);
 		}
@@ -98,23 +98,23 @@ public class MiniJSON
 			case '\\':
 				strBldr.append('\\').append(c);
 				break;
-			case '\b': 
-				strBldr.append('\\').append('b'); 
+			case '\b':
+				strBldr.append('\\').append('b');
 				break;
-			case '\f': 
-				strBldr.append('\\').append('f'); 
+			case '\f':
+				strBldr.append('\\').append('f');
 				break;
-			case '\n': 
-				strBldr.append('\\').append('n'); 
+			case '\n':
+				strBldr.append('\\').append('n');
 				break;
-			case '\r': 
-				strBldr.append('\\').append('r'); 
+			case '\r':
+				strBldr.append('\\').append('r');
 				break;
-			case '\t': 
-				strBldr.append('\\').append('t'); 
+			case '\t':
+				strBldr.append('\\').append('t');
 				break;
-			default: 
-				strBldr.append(c); 
+			default:
+				strBldr.append(c);
 				break;
 			}
 		}
@@ -138,7 +138,7 @@ public class MiniJSON
 		 * @return the raw Object the key is mapped to
 		 * @throws MJSONException the key was not found
 		 */
-		private Object getCheckedObject(String key) throws MJSONException
+		private Object getCheckedObject(final String key) throws MJSONException
 		{
 			if(!containsKey(key))
 				throw new MJSONException("Key '"+key+"' not found");
@@ -152,7 +152,7 @@ public class MiniJSON
 		 * @return the JSON Object mapped to by that key
 		 * @throws MJSONException a missing key, or not a JSON Object
 		 */
-		public JSONObject getCheckedJSONObject(String key) throws MJSONException
+		public JSONObject getCheckedJSONObject(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
 			if(!(o instanceof JSONObject))
@@ -167,7 +167,7 @@ public class MiniJSON
 		 * @return the JSON Array mapped to by that key
 		 * @throws MJSONException a missing key, or not a JSON Array
 		 */
-		public Object[] getCheckedArray(String key) throws MJSONException
+		public Object[] getCheckedArray(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
 			if(!(o instanceof Object[]))
@@ -182,7 +182,7 @@ public class MiniJSON
 		 * @return the String mapped to by that key
 		 * @throws MJSONException a missing key, or not a String
 		 */
-		public String getCheckedString(String key) throws MJSONException
+		public String getCheckedString(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
 			if(!(o instanceof String))
@@ -197,7 +197,7 @@ public class MiniJSON
 		 * @return the Long mapped to by that key
 		 * @throws MJSONException a missing key, or not a Long
 		 */
-		public Long getCheckedLong(String key) throws MJSONException
+		public Long getCheckedLong(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
 			if(!(o instanceof Long))
@@ -212,7 +212,7 @@ public class MiniJSON
 		 * @return the Double mapped to by that key
 		 * @throws MJSONException a missing key, or not a Double
 		 */
-		public Double getCheckedDouble(String key) throws MJSONException
+		public Double getCheckedDouble(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
 			if(!(o instanceof Double))
@@ -227,7 +227,7 @@ public class MiniJSON
 		 * @return the Boolean mapped to by that key
 		 * @throws MJSONException a missing key, or not a Boolean
 		 */
-		public Boolean getCheckedBoolean(String key) throws MJSONException
+		public Boolean getCheckedBoolean(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
 			if(!(o instanceof Boolean))
@@ -242,7 +242,7 @@ public class MiniJSON
 		 * @return the double value of the number mapped to by that key
 		 * @throws MJSONException a missing key, or not a numeric value
 		 */
-		public double getCheckedNumber(String key) throws MJSONException
+		public double getCheckedNumber(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
 			if(o instanceof Double)
@@ -253,14 +253,14 @@ public class MiniJSON
 		}
 
 		/**
-		 * Checks this object for the given key, and checks if it 
+		 * Checks this object for the given key, and checks if it
 		 * is an official NULL or not.
 		 * Throws an exception if the key is missing.
 		 * @param key the key of the possible null
 		 * @return true if the key maps to NULL or false otherwise
 		 * @throws MJSONException the key was missing
 		 */
-		public boolean isCheckedNULL(String key) throws MJSONException
+		public boolean isCheckedNULL(final String key) throws MJSONException
 		{
 			final Object o = getCheckedObject(key);
 			return o == NULL;
@@ -273,7 +273,7 @@ public class MiniJSON
 		 * @param value the StringBuffer to append a value to
 		 * @param obj the value to append -- a string, null, array, or number
 		 */
-		public static void appendJSONValue(final StringBuilder value, Object obj)
+		public static void appendJSONValue(final StringBuilder value, final Object obj)
 		{
 			if(obj instanceof String)
 			{
@@ -327,7 +327,7 @@ public class MiniJSON
 			return value.toString();
 		}
 
-		public Object jsonDeepCopy(Object obj)
+		public Object jsonDeepCopy(final Object obj)
 		{
 			if(obj instanceof JSONObject)
 				return ((JSONObject)obj).copyOf();
@@ -346,7 +346,7 @@ public class MiniJSON
 		public JSONObject copyOf()
 		{
 			final JSONObject newObj = new JSONObject();
-			for(String key : this.keySet())
+			for(final String key : this.keySet())
 				newObj.put(key, jsonDeepCopy(this.get(key)));
 			return newObj;
 		}
@@ -359,7 +359,7 @@ public class MiniJSON
 	 * @return either an Long or a Double
 	 * @throws MJSONException any parsing errors
 	 */
-	private Object parseNumber(char[] doc, int[] index) throws MJSONException
+	private Object parseNumber(final char[] doc, final int[] index) throws MJSONException
 	{
 		final int numStart = index[0];
 		NumberParseState state = NumberParseState.INITIAL;
@@ -461,7 +461,7 @@ public class MiniJSON
 	 * @return the byte value of the 1 digit hex number
 	 * @throws MJSONException a parse error meaning it wasn't a hex number at all
 	 */
-	private byte getByteFromHex(char[] doc, int index) throws MJSONException
+	private byte getByteFromHex(final char[] doc, final int index) throws MJSONException
 	{
 		final char c = doc[index];
 		if((c >= '0') && (c <= '9'))
@@ -474,14 +474,14 @@ public class MiniJSON
 	}
 
 	/**
-	 * Given a json document char array, and an index into it, parses a string at 
+	 * Given a json document char array, and an index into it, parses a string at
 	 * the indexed point of the char array and returns its value.
 	 * @param doc the json doc containing the string
 	 * @param index the index into that json doc where the string begins
 	 * @return the value of the found string
 	 * @throws MJSONException a parse exception, meaning no string was there
 	 */
-	private String parseString(char[] doc, int[] index) throws MJSONException
+	private String parseString(final char[] doc, final int[] index) throws MJSONException
 	{
 		final StringBuilder value=new StringBuilder("");
 		if(doc[index[0]]!='\"')
@@ -507,20 +507,20 @@ public class MiniJSON
 				case '/':
 					value.append(doc[index[0]]);
 					break;
-				case 'b': 
-					value.append('\b'); 
+				case 'b':
+					value.append('\b');
 					break;
-				case 'f': 
+				case 'f':
 					value.append('\f');
 					break;
-				case 'n': 
-					value.append('\n'); 
+				case 'n':
+					value.append('\n');
 					break;
-				case 'r': 
-					value.append('\r'); 
+				case 'r':
+					value.append('\r');
 					break;
-				case 't': 
-					value.append('\t'); 
+				case 't':
+					value.append('\t');
 					break;
 				case 'u':
 				{
@@ -553,14 +553,14 @@ public class MiniJSON
 	}
 
 	/**
-	 * Given a json document char array, and an index into it, parses an array at 
+	 * Given a json document char array, and an index into it, parses an array at
 	 * the indexed point of the char array and returns its value object.
 	 * @param doc the json doc containing the array
 	 * @param index the index into that json doc where the array begins
 	 * @return the value object of the found array
 	 * @throws MJSONException a parse exception, meaning no array was there
 	 */
-	private Object[] parseArray(char[] doc, int[] index) throws MJSONException
+	private Object[] parseArray(final char[] doc, final int[] index) throws MJSONException
 	{
 		ArrayParseState state=ArrayParseState.INITIAL;
 		final List<Object> finalSet=new ArrayList<Object>();
@@ -607,15 +607,15 @@ public class MiniJSON
 	}
 
 	/**
-	 * Given a json document char array, and an index into it, parses a value object at 
+	 * Given a json document char array, and an index into it, parses a value object at
 	 * the indexed point of the char array and returns its value object.  A value object
 	 * may be anything from a string, array, a JSON object, boolean, null, or a number.
-	 * @param doc the json doc containing the value 
+	 * @param doc the json doc containing the value
 	 * @param index the index into that json doc where the value begins
 	 * @return the value object of the found value
 	 * @throws MJSONException a parse exception, meaning no recognized value was there
 	 */
-	private Object parseElement(char[] doc, int[] index) throws MJSONException
+	private Object parseElement(final char[] doc, final int[] index) throws MJSONException
 	{
 		switch(doc[index[0]])
 		{
@@ -664,14 +664,14 @@ public class MiniJSON
 	}
 
 	/**
-	 * Given a json document char array, and an index into it, parses a JSON object at 
+	 * Given a json document char array, and an index into it, parses a JSON object at
 	 * the indexed point of the char array and returns it as a mapped JSON object.
 	 * @param doc the json doc containing the JSON object
 	 * @param index the index into that json doc where the JSON object begins
 	 * @return the value object of the found JSON object
 	 * @throws MJSONException a parse exception, meaning no JSON object was there
 	 */
-	private JSONObject parseObject(char[] doc, int[] index) throws MJSONException
+	private JSONObject parseObject(final char[] doc, final int[] index) throws MJSONException
 	{
 		final JSONObject map = new JSONObject();
 		String key = null;
@@ -734,7 +734,7 @@ public class MiniJSON
 	 * @return the JSON object at the top level
 	 * @throws MJSONException the parse error
 	 */
-	public JSONObject parseObject(String doc) throws MJSONException
+	public JSONObject parseObject(final String doc) throws MJSONException
 	{
 		try
 		{
@@ -756,7 +756,7 @@ public class MiniJSON
 	 * @param val the value
 	 * @return the json value
 	 */
-	public String fromPOJOFieldtoJSON(Class<?> type, Object val)
+	public String fromPOJOFieldtoJSON(final Class<?> type, final Object val)
 	{
 		final StringBuilder str=new StringBuilder("");
 		if(val==null)
@@ -766,9 +766,9 @@ public class MiniJSON
 		{
 			str.append("[");
 			final int length = Array.getLength(val);
-			for (int i=0; i<length; i++) 
+			for (int i=0; i<length; i++)
 			{
-				Object e = Array.get(val, i);
+				final Object e = Array.get(val, i);
 				if(i>0)
 					str.append(",");
 				str.append(fromPOJOFieldtoJSON(type.getComponentType(),e));
@@ -789,15 +789,15 @@ public class MiniJSON
 			str.append(fromPOJOtoJSON(val));
 		return str.toString();
 	}
-	
+
 	/**
 	 * Converts a pojo object to a JSON document.
 	 * @param o the object to convert
 	 * @return the json document
 	 */
-	public String fromPOJOtoJSON(Object o)
+	public String fromPOJOtoJSON(final Object o)
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		str.append("{");
 		final Field[] fields = o.getClass().getDeclaredFields();
 		boolean firstField=true;
@@ -816,23 +816,23 @@ public class MiniJSON
 					str.append(fromPOJOFieldtoJSON(field.getType(),field.get(o)));
 				}
 			}
-			catch (IllegalArgumentException e)
+			catch (final IllegalArgumentException e)
 			{
 			}
-			catch (IllegalAccessException e)
+			catch (final IllegalAccessException e)
 			{
 			}
 		}
 		str.append("}");
 		return str.toString();
 	}
-	
+
 	/**
 	 * Converts a JSON document to a pojo object.
 	 * @param json the json document
 	 * @param o the object to convert
 	 */
-	public void fromJSONtoPOJO(String json, Object o) throws MJSONException
+	public void fromJSONtoPOJO(final String json, final Object o) throws MJSONException
 	{
 		fromJSONtoPOJO(parseObject(json),o);
 	}
@@ -841,7 +841,7 @@ public class MiniJSON
 	 * @param jsonObj the json object
 	 * @param o the object to convert
 	 */
-	public void fromJSONtoPOJO(MiniJSON.JSONObject jsonObj, Object o) throws MJSONException
+	public void fromJSONtoPOJO(final MiniJSON.JSONObject jsonObj, final Object o) throws MJSONException
 	{
 		final Field[] fields = o.getClass().getDeclaredFields();
 		for(final Field field : fields)
@@ -851,8 +851,8 @@ public class MiniJSON
 				field.setAccessible(true);
 				if(field.isAccessible() && jsonObj.containsKey(field.getName()))
 				{
-					
-					Object jo = jsonObj.get(field.getName());
+
+					final Object jo = jsonObj.get(field.getName());
 					if((jo == null) || (jo == MiniJSON.NULL))
 						field.set(o, null);
 					else
@@ -905,7 +905,7 @@ public class MiniJSON
 							else
 							if(objs[i] instanceof JSONObject)
 							{
-								Object newObj = cType.newInstance();
+								final Object newObj = cType.newInstance();
 								fromJSONtoPOJO((JSONObject)objs[i], newObj);
 								Array.set(tgt, i, newObj);
 							}
@@ -945,7 +945,7 @@ public class MiniJSON
 					else
 					if(jo instanceof JSONObject)
 					{
-						Object newObj = field.getType().newInstance();
+						final Object newObj = field.getType().newInstance();
 						fromJSONtoPOJO((JSONObject)jo, newObj);
 						field.set(o, newObj);
 					}
@@ -974,15 +974,15 @@ public class MiniJSON
 						field.set(o, jo);
 				}
 			}
-			catch (IllegalArgumentException e)
+			catch (final IllegalArgumentException e)
 			{
 				throw new MJSONException(e.getMessage(),e);
 			}
-			catch (IllegalAccessException e)
+			catch (final IllegalAccessException e)
 			{
 				throw new MJSONException(e.getMessage(),e);
 			}
-			catch (InstantiationException e)
+			catch (final InstantiationException e)
 			{
 				throw new MJSONException(e.getMessage(),e);
 			}

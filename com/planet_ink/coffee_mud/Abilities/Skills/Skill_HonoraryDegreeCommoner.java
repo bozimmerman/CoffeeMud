@@ -52,7 +52,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 	{
 		return "Commoner";
 	}
-	
+
 	@Override
 	public String displayText()
 	{
@@ -98,7 +98,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 	protected final static int DEG_CID = 0;
 	protected final static int DEG_CNAME = 1;
 	protected final static int DEG_TITLE = 2;
-	
+
 	private final String[][] getAllDegrees()
 	{
 		String[][] degrees = (String[][])Resources.getResource("SKILL_"+ID().toUpperCase());
@@ -114,7 +114,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 					classes.add(C);
 			}
 			final List<String[]> nearFinal = new ArrayList<String[]>();
-			for(CharClass c : classes)
+			for(final CharClass c : classes)
 				nearFinal.add(new String[]{c.ID(),c.name(),L("*, Honorary @x1",c.name())});
 			degrees = nearFinal.toArray(new String[][]{});
 			Resources.submitResource("SKILL_"+ID().toUpperCase(), degrees);
@@ -165,7 +165,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 								}
 							}
 						}
-						catch(java.util.ConcurrentModificationException e)
+						catch(final java.util.ConcurrentModificationException e)
 						{
 							for(int i=0;i<counts.length;i++)
 								counts[i]=0;
@@ -269,7 +269,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 			{
 				if(!super.proficiencyCheck(msg.source(), 0, false))
 					return;
-				
+
 				this.activatedC = this.elligibleC;
 				msg.source().recoverCharStats();
 			}

@@ -34,7 +34,6 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Pause extends StdCommand
 {
 	public Pause()
@@ -49,14 +48,14 @@ public class Pause extends StdCommand
 		return access;
 	}
 
-	public boolean errorOut(MOB mob)
+	public boolean errorOut(final MOB mob)
 	{
 		mob.tell(L("You are not allowed to do that here."));
 		return false;
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 
@@ -127,7 +126,7 @@ public class Pause extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.PAUSE);
 	}

@@ -54,15 +54,15 @@ public class Prop_Transporter extends Property implements TriggeredAffect
 
 	protected int transCode=-1;
 	protected String roomID = "START";
-	protected boolean sendEnter = false; 
+	protected boolean sendEnter = false;
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		roomID = "START";
 		sendEnter = false;
 		super.setMiscText(newMiscText);
-		int x=newMiscText.indexOf(';');
+		final int x=newMiscText.indexOf(';');
 		if(x<0)
 		{
 			roomID=newMiscText;
@@ -70,11 +70,11 @@ public class Prop_Transporter extends Property implements TriggeredAffect
 		else
 		{
 			roomID=newMiscText.substring(0,x);
-			String vars=newMiscText.substring(x+1);
+			final String vars=newMiscText.substring(x+1);
 			sendEnter = CMParms.getParmBool(vars, "SENDENTER", false);
 		}
 	}
-	
+
 	@Override
 	public String accountForYourself()
 	{
@@ -141,13 +141,13 @@ public class Prop_Transporter extends Property implements TriggeredAffect
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
-			Exit E2=R.getExitInDir(d);
+			final Exit E2=R.getExitInDir(d);
 			if(E2 != null)
 				return E2;
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

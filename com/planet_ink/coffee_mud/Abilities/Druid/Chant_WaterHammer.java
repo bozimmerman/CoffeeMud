@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_WaterHammer extends Chant
 {
 	@Override
@@ -78,8 +77,8 @@ public class Chant_WaterHammer extends Chant
 	{
 		return CAN_MOBS;
 	}
-	
-	public Environmental getWaterSource(MOB caster)
+
+	public Environmental getWaterSource(final MOB caster)
 	{
 		if(caster == null)
 			return null;
@@ -108,10 +107,10 @@ public class Chant_WaterHammer extends Chant
 			if((R.getArea() instanceof BoardableShip)
 			&&((R.domainType()&Room.INDOORS)==0))
 			{
-				Item I=((BoardableShip)R.getArea()).getShipItem();
+				final Item I=((BoardableShip)R.getArea()).getShipItem();
 				if(I.owner() instanceof Room)
 				{
-					Room outerR=((Room)I.owner());
+					final Room outerR=((Room)I.owner());
 					if(CMLib.flags().isWateryRoom(outerR))
 						return outerR;
 				}
@@ -121,7 +120,7 @@ public class Chant_WaterHammer extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -134,12 +133,12 @@ public class Chant_WaterHammer extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String waterName = L("the water");
 		if(!auto)
 		{
-			Environmental E=this.getWaterSource(mob);
+			final Environmental E=this.getWaterSource(mob);
 			if(E==null)
 			{
 				mob.tell(L("There is no large ready source of water here to use as a hammer."));

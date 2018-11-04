@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_VineMass extends Chant_SummonVine
 {
 	@Override
@@ -94,7 +93,7 @@ public class Chant_VineMass extends Chant_SummonVine
 	}
 
 	@Override
-	public MOB determineMonster(MOB caster, int material)
+	public MOB determineMonster(final MOB caster, final int material)
 	{
 		final MOB victim=caster.getVictim();
 		MOB newMOB=null;

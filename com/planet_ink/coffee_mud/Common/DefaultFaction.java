@@ -103,7 +103,7 @@ public class DefaultFaction implements Faction, MsgListener
 	protected boolean    showInEditor		= false;
 	protected boolean    showInFacCommand	= true;
 	protected boolean    destroyed			= false;
-	
+
 	protected CList<String>   					defaults		 = new SVector<String>();
 	protected CList<String>   					autoDefaults	 = new SVector<String>();
 	protected CMap<String,FRange> 				ranges			 = new SHashtable<String,FRange>();
@@ -126,14 +126,14 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public Enumeration<Faction.FReactionItem> reactions(String rangeName)
+	public Enumeration<Faction.FReactionItem> reactions(final String rangeName)
 	{
 		final CList<Faction.FReactionItem> V=reactionHash.get(rangeName.toUpperCase().trim());
 		if(V!=null)
 			return V.elements();
 		return new Vector<Faction.FReactionItem>().elements();
 	}
-	
+
 	protected Ability presenceReactionPrototype=null;
 
 	@Override
@@ -191,7 +191,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public void disable(boolean truefalse)
+	public void disable(final boolean truefalse)
 	{
 		isDisabled = truefalse;
 	}
@@ -297,7 +297,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public void setLightReactions(boolean truefalse)
+	public void setLightReactions(final boolean truefalse)
 	{
 		useLightReactions = truefalse;
 	}
@@ -309,79 +309,79 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public void setFactionID(String newStr)
+	public void setFactionID(final String newStr)
 	{
 		ID = newStr;
 	}
 
 	@Override
-	public void setName(String newStr)
+	public void setName(final String newStr)
 	{
 		name = newStr;
 	}
 
 	@Override
-	public void setInternalFlags(long bitmap)
+	public void setInternalFlags(final long bitmap)
 	{
 		internalFlagBitmap = bitmap;
 	}
 
 	@Override
-	public void setChoiceIntro(String newStr)
+	public void setChoiceIntro(final String newStr)
 	{
 		choiceIntro = newStr;
 	}
 
 	@Override
-	public void setExperienceFlag(String newStr)
+	public void setExperienceFlag(final String newStr)
 	{
 		experienceFlag = newStr;
 	}
 
 	@Override
-	public void setShowInScore(boolean truefalse)
+	public void setShowInScore(final boolean truefalse)
 	{
 		showInScore = truefalse;
 	}
 
 	@Override
-	public void setShowInSpecialReported(boolean truefalse)
+	public void setShowInSpecialReported(final boolean truefalse)
 	{
 		showInSpecialReport = truefalse;
 	}
 
 	@Override
-	public void setShowInEditor(boolean truefalse)
+	public void setShowInEditor(final boolean truefalse)
 	{
 		showInEditor = truefalse;
 	}
 
 	@Override
-	public void setShowInFactionsCommand(boolean truefalse)
+	public void setShowInFactionsCommand(final boolean truefalse)
 	{
 		showInFacCommand = truefalse;
 	}
 
 	@Override
-	public void setChoices(List<String> v)
+	public void setChoices(final List<String> v)
 	{
 		choices = new SVector<String>(v);
 	}
 
 	@Override
-	public void setAutoDefaults(List<String> v)
+	public void setAutoDefaults(final List<String> v)
 	{
 		autoDefaults = new SVector<String>(v);
 	}
 
 	@Override
-	public void setDefaults(List<String> v)
+	public void setDefaults(final List<String> v)
 	{
 		defaults = new SVector<String>(v);
 	}
 
 	@Override
-	public void setRateModifier(double d)
+	public void setRateModifier(final double d)
 	{
 		rateModifier = d;
 	}
@@ -393,7 +393,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public Faction.FAbilityUsage getAbilityUsage(int x)
+	public Faction.FAbilityUsage getAbilityUsage(final int x)
 	{
 		return ((x>=0)&&(x<abilityUsages.size()))
 				?(Faction.FAbilityUsage)abilityUsages.get(x)
@@ -401,22 +401,22 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public boolean delFactor(Faction.FZapFactor f)
+	public boolean delFactor(final Faction.FZapFactor f)
 	{
 		if(!factors.remove(f))
 			return false;
 		factors.trimToSize();
 		return true;
 	}
-	
+
 	@Override
-	public Faction.FZapFactor getFactor(int x)
+	public Faction.FZapFactor getFactor(final int x)
 	{
 		return ((x >= 0) && (x < factors.size())) ? factors.get(x) : null;
 	}
 
 	@Override
-	public Faction.FZapFactor addFactor(double gain, double loss, String mask)
+	public Faction.FZapFactor addFactor(final double gain, final double loss, final String mask)
 	{
 		final Faction.FZapFactor o=new DefaultFactionZapFactor(gain,loss,mask);
 		factors.add(o);
@@ -425,7 +425,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public boolean delRelation(String factionID)
+	public boolean delRelation(final String factionID)
 	{
 		if(relations.remove(factionID)==null)
 			return false;
@@ -433,7 +433,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public boolean addRelation(String factionID, double relation)
+	public boolean addRelation(final String factionID, final double relation)
 	{
 		if(relations.containsKey(factionID))
 			return false;
@@ -442,7 +442,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public double getRelation(String factionID)
+	public double getRelation(final String factionID)
 	{
 		if(relations.containsKey(factionID))
 			return relations.get(factionID).doubleValue();
@@ -455,7 +455,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public void initializeFaction(String aname)
+	public void initializeFaction(final String aname)
 	{
 		ID=aname;
 		name=aname;
@@ -471,7 +471,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public void initializeFaction(StringBuffer file, String fID)
+	public void initializeFaction(final StringBuffer file, final String fID)
 	{
 		final boolean debug = false;
 
@@ -592,7 +592,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public String getTagValue(String tag)
+	public String getTagValue(final String tag)
 	{
 		final int tagRef=CMLib.factions().isFactionTag(tag);
 		if(tagRef<0)
@@ -721,7 +721,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public String getINIDef(String tag, String delimeter)
+	public String getINIDef(final String tag, final String delimeter)
 	{
 		final int tagRef=CMLib.factions().isFactionTag(tag);
 		if(tagRef<0)
@@ -742,7 +742,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public void updateFactionData(MOB mob, FData data)
+	public void updateFactionData(final MOB mob, final FData data)
 	{
 		data.resetFactionData(this);
 		final List<Ability> aV=new ArrayList<Ability>();
@@ -777,7 +777,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public FData makeFactionData(MOB mob)
+	public FData makeFactionData(final MOB mob)
 	{
 		final FData data=new DefaultFactionData(this);
 		updateFactionData(mob,data);
@@ -785,7 +785,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public boolean delAffectBehav(String ID)
+	public boolean delAffectBehav(final String ID)
 	{
 		final boolean b=affBehavs.remove(ID.toUpperCase().trim())!=null;
 		if(b)
@@ -794,7 +794,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public boolean addAffectBehav(String ID, String parms, String gainMask)
+	public boolean addAffectBehav(final String ID, final String parms, final String gainMask)
 	{
 		if(affBehavs.containsKey(ID.toUpperCase().trim()))
 			return false;
@@ -806,7 +806,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public String[] getAffectBehav(String ID)
+	public String[] getAffectBehav(final String ID)
 	{
 		if(affBehavs.containsKey(ID.toUpperCase().trim()))
 			return CMParms.toStringArray(new XVector<String>(affBehavs.get(ID.toUpperCase().trim())));
@@ -814,7 +814,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public boolean delReaction(Faction.FReactionItem item)
+	public boolean delReaction(final Faction.FReactionItem item)
 	{
 		final CList<Faction.FReactionItem> V=reactionHash.get(item.rangeCodeName().toUpperCase().trim());
 		if(V!=null)
@@ -827,7 +827,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public boolean addReaction(String range, String mask, String abilityID, String parms)
+	public boolean addReaction(final String range, final String mask, final String abilityID, final String parms)
 	{
 		CList<Faction.FReactionItem> V=reactionHash.get(range.toUpperCase().trim());
 		final DefaultFactionReactionItem item = new DefaultFactionReactionItem();
@@ -847,13 +847,13 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public FactionChangeEvent[] getChangeEvents(String key)
+	public FactionChangeEvent[] getChangeEvents(final String key)
 	{
 		return changes.get(key);
 	}
 
 	@Override
-	public List<Integer> findChoices(MOB mob)
+	public List<Integer> findChoices(final MOB mob)
 	{
 		final Vector<Integer> mine=new Vector<Integer>();
 		String s;
@@ -877,7 +877,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public FactionChangeEvent[] findAbilityChangeEvents(Ability key)
+	public FactionChangeEvent[] findAbilityChangeEvents(final Ability key)
 	{
 		if(key==null)
 			return null;
@@ -913,13 +913,13 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public Faction.FRange fetchRange(String codeName)
+	public Faction.FRange fetchRange(final String codeName)
 	{
 		return ranges.get(codeName.toUpperCase().trim());
 	}
 
 	@Override
-	public FRange fetchRange(int faction)
+	public FRange fetchRange(final int faction)
 	{
 		final Integer I=Integer.valueOf(faction);
 		FRange R=rangeRangeMap.get(I);
@@ -938,7 +938,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public String fetchRangeName(int faction)
+	public String fetchRangeName(final int faction)
 	{
 		final FRange R= fetchRange(faction);
 		if(R!=null)
@@ -947,13 +947,13 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public int asPercent(int faction)
+	public int asPercent(final int faction)
 	{
 		return (int)Math.round(CMath.mul(CMath.div(faction-minimum,(maximum-minimum)),100));
 	}
 
 	@Override
-	public int asPercentFromAvg(int faction)
+	public int asPercentFromAvg(final int faction)
 	{
 		// =(( (B2+A2) / 2 ) - C2) / (B2-A2) * 100
 		// C = current, A = min, B = Max
@@ -968,7 +968,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public int findDefault(MOB mob)
+	public int findDefault(final MOB mob)
 	{
 		String s;
 		for(final Enumeration<String> e=defaults.elements();e.hasMoreElements();)
@@ -991,7 +991,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public int findAutoDefault(MOB mob)
+	public int findAutoDefault(final MOB mob)
 	{
 		String s;
 		for(final Enumeration<String> e=autoDefaults.elements();e.hasMoreElements();)
@@ -1014,13 +1014,13 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public boolean hasFaction(MOB mob)
+	public boolean hasFaction(final MOB mob)
 	{
 		return (mob.fetchFaction(ID)!=Integer.MAX_VALUE);
 	}
 
 	@Override
-	public boolean hasUsage(Ability A)
+	public boolean hasUsage(final Ability A)
 	{
 		for(final FAbilityUsage usage : abilityUsages)
 		{
@@ -1035,7 +1035,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public boolean canUse(MOB mob, Ability A)
+	public boolean canUse(final MOB mob, final Ability A)
 	{
 		for(final FAbilityUsage usage : abilityUsages)
 		{
@@ -1054,7 +1054,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public double findFactor(MOB mob, boolean gain)
+	public double findFactor(final MOB mob, final boolean gain)
 	{
 		for(final Faction.FZapFactor factor : factors)
 		{
@@ -1142,7 +1142,7 @@ public class DefaultFaction implements Faction, MsgListener
 							data = mob.fetchFactionData(factionID());
 						if(data != null)
 						{
-							long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
+							final long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
 							if(newTime != 0)
 								data.setNextChangeTimers(event, System.currentTimeMillis()+newTime);
 						}
@@ -1235,7 +1235,7 @@ public class DefaultFaction implements Faction, MsgListener
 									data = mob.fetchFactionData(factionID());
 								if(data != null)
 								{
-									long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
+									final long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
 									if(newTime != 0)
 										data.setNextChangeTimers(event, System.currentTimeMillis()+newTime);
 								}
@@ -1294,7 +1294,7 @@ public class DefaultFaction implements Faction, MsgListener
 											data = mob.fetchFactionData(factionID());
 										if(data != null)
 										{
-											long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
+											final long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
 											if(newTime != 0)
 												data.setNextChangeTimers(event, System.currentTimeMillis()+newTime);
 										}
@@ -1362,7 +1362,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public void executeChange(MOB source, MOB target, FactionChangeEvent event)
+	public void executeChange(final MOB source, MOB target, final FactionChangeEvent event)
 	{
 		final int sourceFaction= source.fetchFaction(ID);
 		int targetFaction = sourceFaction * -1;
@@ -1511,7 +1511,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public String usageFactorRangeDescription(Ability A)
+	public String usageFactorRangeDescription(final Ability A)
 	{
 		final StringBuffer rangeStr=new StringBuffer();
 		final HashSet<String> namesAdded=new HashSet<String>();
@@ -1562,7 +1562,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public Faction.FactionChangeEvent createChangeEvent(String key)
+	public Faction.FactionChangeEvent createChangeEvent(final String key)
 	{
 		Faction.FactionChangeEvent event;
 		if(key==null)
@@ -1585,7 +1585,7 @@ public class DefaultFaction implements Faction, MsgListener
 		return event;
 	}
 
-	private boolean replaceEvents(String key, Faction.FactionChangeEvent event, boolean strict)
+	private boolean replaceEvents(final String key, final Faction.FactionChangeEvent event, final boolean strict)
 	{
 		final Faction.FactionChangeEvent[] events=changes.get(key);
 		if(events==null)
@@ -1620,7 +1620,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public boolean delChangeEvent(Faction.FactionChangeEvent event)
+	public boolean delChangeEvent(final Faction.FactionChangeEvent event)
 	{
 		for(final Enumeration<String> e=changes.keys();e.hasMoreElements();)
 		{
@@ -1658,9 +1658,9 @@ public class DefaultFaction implements Faction, MsgListener
 		private int			bonusRPXP		= 0;
 		private Object[]	stateVariables	= new Object[0];
 		private String		triggerParms	= "";
-		
+
 		private final Faction	myFaction;
-		
+
 		private Map<String, String>				flags					= new Hashtable<String, String>();
 		private Map<String, String>				savedTriggerParms		= new Hashtable<String, String>();
 		private MaskingLibrary.CompiledZMask	compiledTargetZapper	= null;
@@ -1713,13 +1713,13 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			return bonusXP;
 		}
-		
+
 		@Override
 		public int getBonusRoleplayXP()
 		{
 			return bonusRPXP;
 		}
-		
+
 		@Override
 		public String targetZapper()
 		{
@@ -1745,19 +1745,19 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void setDirection(int newVal)
+		public void setDirection(final int newVal)
 		{
 			direction = newVal;
 		}
 
 		@Override
-		public void setFactor(double newVal)
+		public void setFactor(final double newVal)
 		{
 			factor = newVal;
 		}
 
 		@Override
-		public void setTargetZapper(String newVal)
+		public void setTargetZapper(final String newVal)
 		{
 			targetZapperStr = newVal;
 		}
@@ -1786,7 +1786,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public String getTriggerParm(String parmName)
+		public String getTriggerParm(final String parmName)
 		{
 			if((triggerParms==null)||(triggerParms.length()==0))
 				return "";
@@ -1805,12 +1805,12 @@ public class DefaultFaction implements Faction, MsgListener
 				return ID+";"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+targetZapperStr;
 		}
 
-		public DefaultFactionChangeEvent(Faction F)
+		public DefaultFactionChangeEvent(final Faction F)
 		{
 			myFaction = F;
 		}
 
-		public DefaultFactionChangeEvent(Faction F, String key)
+		public DefaultFactionChangeEvent(final Faction F, final String key)
 		{
 			myFaction=F;
 			final List<String> v = CMParms.parseSemicolons(key,false);
@@ -1839,7 +1839,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public boolean setEventID(String newID)
+		public boolean setEventID(final String newID)
 		{
 			IDclassFilter=-1;
 			IDflagFilter=-1;
@@ -1887,7 +1887,7 @@ public class DefaultFaction implements Faction, MsgListener
 			return false;
 		}
 
-		public boolean setDirection(String d)
+		public boolean setDirection(final String d)
 		{
 			if(CMath.isInteger(d))
 				direction=CMath.s_int(d);
@@ -1942,7 +1942,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void setFlags(String newFlagCache)
+		public void setFlags(final String newFlagCache)
 		{
 			flagCache=newFlagCache.toUpperCase().trim();
 			flags=CMParms.parseStrictEQParms(newFlagCache);
@@ -1959,9 +1959,9 @@ public class DefaultFaction implements Faction, MsgListener
 			key=key.toUpperCase().trim();
 			return flags.containsKey(key) ? flags.get(key) : "";
 		}
-		
+
 		@Override
-		public boolean applies(MOB source, MOB target)
+		public boolean applies(final MOB source, final MOB target)
 		{
 			if(!CMLib.masking().maskCheck(compiledTargetZapper(),target,false))
 				return false;
@@ -1977,7 +1977,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void setTriggerParameters(String newVal)
+		public void setTriggerParameters(final String newVal)
 		{
 			triggerParms=newVal;
 			savedTriggerParms=CMParms.parseEQParms(newVal);
@@ -1985,13 +1985,13 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public Object stateVariable(int x)
+		public Object stateVariable(final int x)
 		{
 			return ((x >= 0) && (x < stateVariables.length)) ? stateVariables[x] : null;
 		}
 
 		@Override
-		public void setStateVariable(int x, Object newVal)
+		public void setStateVariable(final int x, final Object newVal)
 		{
 			if(x<0)
 				return;
@@ -2008,7 +2008,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public Faction.FRange addRange(String key)
+	public Faction.FRange addRange(final String key)
 	{
 		final Faction.FRange FR=new DefaultFaction.DefaultFactionRange(this,key);
 		ranges.put(FR.codeName().toUpperCase().trim(),FR);
@@ -2017,7 +2017,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public boolean delRange(FRange FR)
+	public boolean delRange(final FRange FR)
 	{
 		if(!ranges.containsKey(FR.codeName().toUpperCase().trim()))
 			return false;
@@ -2072,30 +2072,30 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void setLow(int newVal)
+		public void setLow(final int newVal)
 		{
 			low = newVal;
 		}
 
 		@Override
-		public void setHigh(int newVal)
+		public void setHigh(final int newVal)
 		{
 			high = newVal;
 		}
 
 		@Override
-		public void setName(String newVal)
+		public void setName(final String newVal)
 		{
 			Name = newVal;
 		}
 
 		@Override
-		public void setAlignEquiv(Faction.Align newVal)
+		public void setAlignEquiv(final Faction.Align newVal)
 		{
 			AlignEquiv = newVal;
 		}
 
-		public DefaultFactionRange(Faction F, String key)
+		public DefaultFactionRange(final Faction F, final String key)
 		{
 			myFaction=F;
 			final List<String> v = CMParms.parseSemicolons(key,false);
@@ -2115,16 +2115,16 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			return low +";"+high+";"+Name+";"+CodeName+";"+AlignEquiv.toString();
 		}
-		
+
 		@Override
 		public int random()
 		{
 			final Random gen = new Random();
 			return high - gen.nextInt(high-low);
 		}
-		
+
 		@Override
-		public int compareTo(FRange o)
+		public int compareTo(final FRange o)
 		{
 			if(low < o.low())
 				return -1;
@@ -2135,7 +2135,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public Faction.FAbilityUsage addAbilityUsage(String key)
+	public Faction.FAbilityUsage addAbilityUsage(final String key)
 	{
 		final Faction.FAbilityUsage usage=
 			(key==null)?new DefaultFaction.DefaultFactionAbilityUsage()
@@ -2144,9 +2144,9 @@ public class DefaultFaction implements Faction, MsgListener
 		abilityUsages.trimToSize();
 		return usage;
 	}
-	
+
 	@Override
-	public boolean delAbilityUsage(Faction.FAbilityUsage usage)
+	public boolean delAbilityUsage(final Faction.FAbilityUsage usage)
 	{
 		if(!abilityUsages.remove(usage))
 			return false;
@@ -2169,16 +2169,16 @@ public class DefaultFaction implements Faction, MsgListener
 		private Faction			myFaction;
 		public boolean			isReset	= false;
 		private DVector			currentReactionSets;
-		
+
 		private Map<Faction.FactionChangeEvent, Long> nextChangeTime;
 
-		public DefaultFactionData(Faction F)
+		public DefaultFactionData(final Faction F)
 		{
 			resetFactionData(F);
 		}
 
 		@Override
-		public void resetFactionData(Faction F)
+		public void resetFactionData(final Faction F)
 		{
 			if(!isReset)
 			{
@@ -2220,14 +2220,14 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void setNextChangeTimers(final Faction.FactionChangeEvent event, long time)
+		public void setNextChangeTimers(final Faction.FactionChangeEvent event, final long time)
 		{
 			nextChangeTime.put(event, new Long(time));
 		}
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public void setValue(int newValue)
+		public void setValue(final int newValue)
 		{
 			this.value=newValue;
 			if((currentRange==null)||(this.value<currentRange.low())||(this.value>currentRange.high()))
@@ -2281,23 +2281,23 @@ public class DefaultFaction implements Faction, MsgListener
 			if(!noStatAffectors)
 				for(final Ability A : myEffects) A.affectPhyStats(affected, affectableStats);
 		}
-		
+
 		@Override
 		public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 		{
 			if(!noStatAffectors)
 				for(final Ability A : myEffects) A.affectCharStats(affectedMob, affectableStats);
 		}
-		
+
 		@Override
-		public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+		public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 		{
 			if(!noStatAffectors)
 				for(final Ability A : myEffects) A.affectCharState(affectedMob, affectableMaxState);
 		}
-		
+
 		@Override
-		public void addHandlers(List<Ability> listeners, List<Behavior> tickers)
+		public void addHandlers(final List<Ability> listeners, final List<Behavior> tickers)
 		{
 			this.myEffects=listeners.toArray(new Ability[0]);
 			this.myBehaviors=tickers.toArray(new Behavior[0]);
@@ -2314,7 +2314,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@SuppressWarnings("unchecked")
-		private Ability setPresenceReaction(MOB M, Physical myHost)
+		private Ability setPresenceReaction(final MOB M, final Physical myHost)
 		{
 			if((!CMLib.flags().canBeSeenBy(myHost, M))
 			&&(!CMLib.flags().canBeHeardMovingBy(myHost,M)))
@@ -2461,7 +2461,7 @@ public class DefaultFaction implements Faction, MsgListener
 			for(final Behavior B : myBehaviors)
 				B.executeMsg(myHost, msg);
 		}
-		
+
 		@Override
 		public boolean okMessage(final Environmental myHost, final CMMsg msg)
 		{
@@ -2484,7 +2484,7 @@ public class DefaultFaction implements Faction, MsgListener
 			}
 			return true;
 		}
-		
+
 		@Override
 		public boolean tick(final Tickable ticking, final int tickID)
 		{
@@ -2515,8 +2515,8 @@ public class DefaultFaction implements Faction, MsgListener
 		private double lossF= 1.0;
 		private String mask	= "";
 		private MaskingLibrary.CompiledZMask compiledMask=null;
-		
-		public DefaultFactionZapFactor(double gain, double loss, String mask)
+
+		public DefaultFactionZapFactor(final double gain, final double loss, final String mask)
 		{
 			setGainFactor(gain);
 			setLossFactor(loss);
@@ -2530,7 +2530,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void setGainFactor(double val)
+		public void setGainFactor(final double val)
 		{
 			gainF = val;
 		}
@@ -2542,7 +2542,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void setLossFactor(double val)
+		public void setLossFactor(final double val)
 		{
 			lossF = val;
 		}
@@ -2560,7 +2560,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void setMOBMask(String str)
+		public void setMOBMask(final String str)
 		{
 			mask=str;
 			compiledMask=CMLib.masking().maskCompile(str);
@@ -2579,9 +2579,9 @@ public class DefaultFaction implements Faction, MsgListener
 		private String mobMask			="";
 		private String rangeName		="";
 		private String parms			="";
-		
+
 		private MaskingLibrary.CompiledZMask compiledMobMask=null;
-		
+
 		@Override
 		public String reactionObjectID()
 		{
@@ -2589,7 +2589,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void setReactionObjectID(String str)
+		public void setReactionObjectID(final String str)
 		{
 			reactionObjectID = str;
 		}
@@ -2601,7 +2601,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void setPresentMOBMask(String str)
+		public void setPresentMOBMask(final String str)
 		{
 			mobMask=str;
 			if((str==null)||(str.trim().length()==0))
@@ -2609,7 +2609,7 @@ public class DefaultFaction implements Faction, MsgListener
 			else
 				compiledMobMask=CMLib.masking().maskCompile(str);
 		}
-		
+
 		@Override
 		public MaskingLibrary.CompiledZMask compiledPresentMOBMask()
 		{
@@ -2623,7 +2623,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void setRangeName(String str)
+		public void setRangeName(final String str)
 		{
 			rangeName = str.toUpperCase().trim();
 		}
@@ -2635,13 +2635,13 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public String parameters(String name)
+		public String parameters(final String name)
 		{
 			return CMStrings.replaceAll(parms, "<TARGET>", name);
 		}
 
 		@Override
-		public void setParameters(String str)
+		public void setParameters(final String str)
 		{
 			parms = str;
 		}
@@ -2656,7 +2656,7 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 		}
 
-		public DefaultFactionReactionItem(String key)
+		public DefaultFactionReactionItem(final String key)
 		{
 			int x=key.indexOf(';');
 			String str = key.substring(0,x).toUpperCase().trim();
@@ -2737,13 +2737,13 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void setLow(int newVal)
+		public void setLow(final int newVal)
 		{
 			low = newVal;
 		}
 
 		@Override
-		public void setHigh(int newVal)
+		public void setHigh(final int newVal)
 		{
 			high = newVal;
 		}
@@ -2752,7 +2752,7 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 		}
 
-		public DefaultFactionAbilityUsage(String key)
+		public DefaultFactionAbilityUsage(final String key)
 		{
 			final List<String> v = CMParms.parseSemicolons(key,false);
 			setAbilityFlag(v.get(0));
@@ -2767,7 +2767,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public List<String> setAbilityFlag(String str)
+		public List<String> setAbilityFlag(final String str)
 		{
 			ID=str;
 			final Vector<String> flags=CMParms.parse(ID);
@@ -2839,7 +2839,7 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
-	public void setSavable(boolean truefalse)
+	public void setSavable(final boolean truefalse)
 	{
 	}
 

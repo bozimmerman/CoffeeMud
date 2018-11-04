@@ -101,7 +101,7 @@ public class Demon extends Unique
 	private final String[]	racialEffectNames			= { "Prayer_TaintOfEvil" };
 	private final int[]		racialEffectLevels			= { 1 };
 	private final String[]	racialEffectParms			= { "" };
-	
+
 	@Override
 	protected String[] racialEffectNames()
 	{
@@ -173,7 +173,7 @@ public class Demon extends Unique
 		affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+5);
 		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+50);
 	}
-	
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

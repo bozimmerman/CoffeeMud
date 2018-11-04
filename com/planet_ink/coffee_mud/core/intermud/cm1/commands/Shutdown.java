@@ -41,13 +41,13 @@ import java.util.concurrent.atomic.*;
 */
 public class Shutdown extends CM1Command
 {
-	@Override 
+	@Override
 	public String getCommandWord()
-	{ 
+	{
 		return "SHUTDOWN";
 	}
-	
-	public Shutdown(RequestHandler req, String parameters)
+
+	public Shutdown(final RequestHandler req, final String parameters)
 	{
 		super(req, parameters);
 	}
@@ -68,14 +68,14 @@ public class Shutdown extends CM1Command
 		}
 	}
 
-	@Override 
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	@Override
+	public boolean passesSecurityCheck(final MOB user, final PhysicalAgent target)
 	{
 		return (user!=null)&&CMSecurity.isAllowed(user,user.location(),CMSecurity.SecFlag.SHUTDOWN);
 	}
 
 	@Override
-	public String getHelp(MOB user, PhysicalAgent target, String rest)
+	public String getHelp(final MOB user, final PhysicalAgent target, final String rest)
 	{
 		return "USAGE: SHUTDOWN: Shuts down the mud.";
 	}

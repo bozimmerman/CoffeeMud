@@ -7,12 +7,27 @@ import java.util.ListIterator;
 
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 
+/*
+   Copyright 2012-2018 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
 public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements SearchIDList<T>
 {
 	private static final long serialVersionUID = 6687178785122361992L;
 	private boolean readOnly = false;
 
-	public CMUniqSortSVec(int size)
+	public CMUniqSortSVec(final int size)
 	{
 		super(size);
 	}
@@ -21,25 +36,25 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	{
 	}
 
-	protected int compareTo(CMObject arg0, String arg1)
+	protected int compareTo(final CMObject arg0, final String arg1)
 	{
 		return arg0.ID().compareToIgnoreCase(arg1);
 	}
 
-	protected int compareToStarts(CMObject arg0, String arg1)
+	protected int compareToStarts(final CMObject arg0, final String arg1)
 	{
 		if(arg0.ID().toLowerCase().startsWith(arg1.toLowerCase()))
 			return 0;
 		return arg0.ID().compareToIgnoreCase(arg1);
 	}
 
-	protected int compareTo(CMObject arg0, CMObject arg1)
+	protected int compareTo(final CMObject arg0, final CMObject arg1)
 	{
 		return arg0.ID().compareToIgnoreCase(arg1.ID());
 	}
 
 	@Override
-	public synchronized boolean add(T arg0)
+	public synchronized boolean add(final T arg0)
 	{
 		if((arg0==null)||(readOnly))
 			return false;
@@ -89,25 +104,25 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	}
 
 	@Override
-	public void add(int arg0, T arg1)
+	public void add(final int arg0, final T arg1)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean addAll(int arg0, Collection<? extends T> arg1)
+	public boolean addAll(final int arg0, final Collection<? extends T> arg1)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean contains(Object arg0)
+	public boolean contains(final Object arg0)
 	{
 		return indexOf(arg0)>=0;
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0)
+	public boolean containsAll(final Collection<?> arg0)
 	{
 		for(final Object o : arg0)
 		{
@@ -123,23 +138,23 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		return new ConvertingIterator<T,String>(this.iterator(),new Converter<T,String>()
 		{
 			@Override
-			public String convert(T obj)
+			public String convert(final T obj)
 			{
 				if(obj!=null)
-					return obj.ID(); 
+					return obj.ID();
 				return null;
 			}
 		});
 	}
-	
+
 	@Override
-	public T get(int arg0)
+	public T get(final int arg0)
 	{
 		return super.get(arg0);
 	}
 
 	@Override
-	public synchronized int indexOf(Object arg0)
+	public synchronized int indexOf(final Object arg0)
 	{
 		if(arg0==null)
 			return -1;
@@ -184,7 +199,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	}
 
 	@Override
-	public synchronized T find(String arg0)
+	public synchronized T find(final String arg0)
 	{
 		if(arg0==null)
 			return null;
@@ -207,7 +222,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 		return null;
 	}
 
-	public synchronized T findStartsWith(String arg0)
+	public synchronized T findStartsWith(final String arg0)
 	{
 		if(arg0==null)
 			return null;
@@ -231,7 +246,7 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	}
 
 	@Override
-	public synchronized T find(CMObject arg0)
+	public synchronized T find(final CMObject arg0)
 	{
 		if(arg0==null)
 			return null;
@@ -256,13 +271,13 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	}
 
 	@Override
-	public synchronized int lastIndexOf(Object arg0)
+	public synchronized int lastIndexOf(final Object arg0)
 	{
 		return indexOf(arg0); // only holds one-of-a-kind, so all is well!
 	}
 
 	@Override
-	public synchronized boolean remove(Object arg0)
+	public synchronized boolean remove(final Object arg0)
 	{
 		final int index=indexOf(arg0);
 		if((index >= 0)&&(!readOnly))
@@ -271,12 +286,12 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	}
 
 	@Override
-	public T set(int arg0, T arg1)
+	public T set(final int arg0, final T arg1)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
-	
-	public void setReadOnly(boolean trueFalse)
+
+	public void setReadOnly(final boolean trueFalse)
 	{
 		readOnly = trueFalse;
 	}

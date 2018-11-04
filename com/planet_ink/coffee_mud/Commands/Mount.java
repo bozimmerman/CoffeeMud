@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Mount extends StdCommand
 {
 	public Mount()
@@ -48,16 +47,16 @@ public class Mount extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		List<String> origCmds=new XVector<String>(commands);
+		final List<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 what?",(commands.get(0))));
 			return false;
 		}
-		String cmd=commands.remove(0).toString();
+		final String cmd=commands.remove(0).toString();
 		Environmental recipient=null;
 		final Vector<Rideable> possRecipients=new Vector<Rideable>();
 		for(int m=0;m<mob.location().numInhabitants();m++)
@@ -116,7 +115,7 @@ public class Mount extends StdCommand
 		if((recipient instanceof BoardableShip)
 		&&(cmd.toUpperCase().startsWith("B")))
 		{
-			Command C=CMClass.getCommand("Enter");
+			final Command C=CMClass.getCommand("Enter");
 			if(C!=null)
 			{
 				commands=new XVector<String>(origCmds);
@@ -124,7 +123,7 @@ public class Mount extends StdCommand
 				return C.execute(mob, commands, metaFlags);
 			}
 		}
-		
+
 		String mountStr=null;
 		if(recipient instanceof Rideable)
 		{

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Fear extends Spell
 {
 
@@ -112,7 +111,7 @@ public class Spell_Fear extends Spell
 	}
 
 	@Override
-	public void affectPhyStats(Physical E, PhyStats stats)
+	public void affectPhyStats(final Physical E, final PhyStats stats)
 	{
 		if((affected instanceof MOB)&&(invoker!=null)&&(invoker!=affected)&&(((MOB)affected).getVictim()==invoker))
 		{
@@ -125,7 +124,7 @@ public class Spell_Fear extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)

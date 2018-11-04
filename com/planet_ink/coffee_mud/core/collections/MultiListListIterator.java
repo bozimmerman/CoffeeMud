@@ -30,7 +30,7 @@ public class MultiListListIterator<K> implements ListIterator<K>
 	private volatile int listIndex = 0;
 	private volatile int itemIndex = 0;
 
-	public MultiListListIterator(ListIterator<K>[] esets)
+	public MultiListListIterator(final ListIterator<K>[] esets)
 	{
 		if((esets==null)||(esets.length==0))
 			return;
@@ -38,7 +38,7 @@ public class MultiListListIterator<K> implements ListIterator<K>
 			iters.add(I);
 	}
 
-	public MultiListListIterator(Collection<ListIterator<K>> esets)
+	public MultiListListIterator(final Collection<ListIterator<K>> esets)
 	{
 		if((esets==null)||(esets.size()==0))
 			return;
@@ -47,7 +47,7 @@ public class MultiListListIterator<K> implements ListIterator<K>
 			iters.add(I);
 	}
 
-	public MultiListListIterator(List<K>[] esets)
+	public MultiListListIterator(final List<K>[] esets)
 	{
 		if((esets==null)||(esets.length==0))
 			return;
@@ -55,7 +55,7 @@ public class MultiListListIterator<K> implements ListIterator<K>
 			iters.add(I.listIterator());
 	}
 
-	public MultiListListIterator(List<? extends List<K>> esets)
+	public MultiListListIterator(final List<? extends List<K>> esets)
 	{
 		if(esets==null)
 			return;
@@ -68,7 +68,7 @@ public class MultiListListIterator<K> implements ListIterator<K>
 
 	}
 
-	public void add(ListIterator<K> eset)
+	public void add(final ListIterator<K> eset)
 	{
 		iters.add(eset);
 	}
@@ -149,7 +149,7 @@ public class MultiListListIterator<K> implements ListIterator<K>
 	}
 
 	@Override
-	public void set(K e)
+	public void set(final K e)
 	{
 		if(hasNext())
 			iter.set(e);
@@ -159,7 +159,7 @@ public class MultiListListIterator<K> implements ListIterator<K>
 	}
 
 	@Override
-	public void add(K e)
+	public void add(final K e)
 	{
 		if(hasNext())
 			iter.add(e);

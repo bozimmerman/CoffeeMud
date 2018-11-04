@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Upstage extends BardSkill
 {
 	@Override
@@ -97,24 +96,24 @@ public class Skill_Upstage extends BardSkill
 	{
 		return Ability.FLAG_MOVING;
 	}
-	
+
 	protected int previousRange = 0;
 	protected MOB previousVictim = null;
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
 		if((invoker()!=null)
 		&&(msg.source()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE) 
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&& (msg.target() == invoker())
 		&&(affected instanceof MOB))
 		{
 			unInvoke();
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -133,7 +132,7 @@ public class Skill_Upstage extends BardSkill
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -141,7 +140,7 @@ public class Skill_Upstage extends BardSkill
 		super.unInvoke();
 		if((affected instanceof MOB)&&(super.canBeUninvoked()))
 		{
-			MOB M=(MOB)affected;
+			final MOB M=(MOB)affected;
 			M.setVictim(previousVictim);
 			M.setRangeToTarget(previousRange);
 			((MOB)affected).tell(L("You are no longer upstaged."));
@@ -149,7 +148,7 @@ public class Skill_Upstage extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -179,7 +178,7 @@ public class Skill_Upstage extends BardSkill
 						{
 							if(target.isInCombat())
 							{
-								Skill_Upstage A = (Skill_Upstage)maliciousAffect(mob,target,asLevel,0,CMMsg.TYP_MIND);
+								final Skill_Upstage A = (Skill_Upstage)maliciousAffect(mob,target,asLevel,0,CMMsg.TYP_MIND);
 								if(A!=null)
 								{
 									A.previousRange=target.rangeToTarget();

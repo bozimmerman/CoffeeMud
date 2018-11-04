@@ -42,7 +42,7 @@ public class GrinderAllQualifys
 		return "GrinderAllQualifys";
 	}
 
-	public String editAllQualify(HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public String editAllQualify(final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		final String last=httpReq.getUrlParameter("ALLQUALID");
 		if((last==null)||(last.length()==0))

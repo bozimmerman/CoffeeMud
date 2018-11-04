@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class MasterButchering extends Butchering
 {
 	@Override
@@ -58,7 +57,7 @@ public class MasterButchering extends Butchering
 	}
 
 	@Override
-	protected int getDuration(MOB mob, int weight)
+	protected int getDuration(final MOB mob, final int weight)
 	{
 		int duration=(int)Math.round(((weight/(10+getXLEVELLevel(mob))))*2.5);
 		duration = super.getDuration(duration, mob, 1, 7);

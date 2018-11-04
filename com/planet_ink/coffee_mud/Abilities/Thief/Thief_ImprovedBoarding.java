@@ -121,7 +121,7 @@ public class Thief_ImprovedBoarding extends ThiefSkill
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		
+
 		if((affected instanceof MOB)
 		&&(CMLib.flags().isClimbing(affected))
 		&&(CMLib.flags().isWateryRoom(((MOB)affected).location())))

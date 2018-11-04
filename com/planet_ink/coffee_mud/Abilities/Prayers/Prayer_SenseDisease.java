@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_SenseDisease extends Prayer
 {
 	@Override
@@ -111,7 +110,7 @@ public class Prayer_SenseDisease extends Prayer
 		}
 	}
 
-	public Ability getDisease(Physical mob)
+	public Ability getDisease(final Physical mob)
 	{
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
@@ -123,7 +122,7 @@ public class Prayer_SenseDisease extends Prayer
 	}
 
 	private static final Vector<Physical> empty=new ReadOnlyVector<Physical>();
-	public Vector<Physical> diseased(MOB mob, Room R)
+	public Vector<Physical> diseased(final MOB mob, final Room R)
 	{
 		if(R==null)
 			return empty;
@@ -155,7 +154,7 @@ public class Prayer_SenseDisease extends Prayer
 		return empty;
 	}
 
-	public void messageTo(MOB mob)
+	public void messageTo(final MOB mob)
 	{
 		String last="";
 		String dirs="";
@@ -219,7 +218,7 @@ public class Prayer_SenseDisease extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Physical target=mob;
 		if((auto)&&(givenTarget!=null))

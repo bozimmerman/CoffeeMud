@@ -47,13 +47,13 @@ public class Deities extends StdCommand
 
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Deity.class}};
 
-	public String getDeityInformation(MOB mob, Deity D)
+	public String getDeityInformation(final MOB mob, final Deity D)
 	{
 		final StringBuffer msg = new StringBuffer("");
 		msg.append("\n\r^x"+D.name()+"^.^?");
 		if(D.hasFaction(CMLib.factions().AlignID()))
 		{
-			int faction=D.fetchFaction(CMLib.factions().AlignID());
+			final int faction=D.fetchFaction(CMLib.factions().AlignID());
 			msg.append("^N ("+CMLib.factions().getRange(CMLib.factions().AlignID(), faction)+")");
 		}
 		msg.append("\n\r");
@@ -112,7 +112,7 @@ public class Deities extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE.toString();
@@ -120,7 +120,7 @@ public class Deities extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final String str=CMParms.combine(commands,1).toUpperCase();

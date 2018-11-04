@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class GenAbility extends StdAbility
 {
 	// data should be stored in a common instance object .. something common to all genability of same id,
@@ -78,9 +77,9 @@ public class GenAbility extends StdAbility
 	private static final int V_TKOV=27;//I
 	private static final int V_TKAF=28;//B
 	private static final int V_CHAN=29;//B
-	
+
 	private static final int NUM_VS=30;//S
-	
+
 	private static final Object[] makeEmpty()
 	{
 		final Object[] O=new Object[NUM_VS];
@@ -117,7 +116,7 @@ public class GenAbility extends StdAbility
 		return O;
 	}
 
-	private static final Object V(String ID, int varNum)
+	private static final Object V(final String ID, final int varNum)
 	{
 		if(vars.containsKey(ID))
 			return vars.get(ID)[varNum];
@@ -126,7 +125,7 @@ public class GenAbility extends StdAbility
 		return O[varNum];
 	}
 
-	private static final void SV(String ID,int varNum,Object O)
+	private static final void SV(final String ID,final int varNum,final Object O)
 	{
 		if(vars.containsKey(ID))
 			vars.get(ID)[varNum]=O;
@@ -273,7 +272,7 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
-	protected void setTimeOfNextCast(long absoluteTime)
+	protected void setTimeOfNextCast(final long absoluteTime)
 	{
 		timeToNextCast = absoluteTime;
 	}
@@ -310,7 +309,7 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
-	protected void cloneFix(Ability E)
+	protected void cloneFix(final Ability E)
 	{
 		if(E instanceof GenAbility)
 		{
@@ -364,7 +363,7 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(final MOB mob, List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		oneTimeChecked = false;
 		postEffects.clear();
@@ -736,7 +735,7 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
-	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+	public boolean preInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
 	{
 		return true;
 	}
@@ -769,7 +768,7 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		final Ability A=(Ability)V(ID,V_HERE);
 		if(A!=null)
@@ -788,7 +787,7 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		final Ability A=(Ability)V(ID,V_HERE);
 		if(A!=null)
@@ -817,7 +816,7 @@ public class GenAbility extends StdAbility
 		{
 			final List<Ability> affs = new ArrayList<Ability>(postEffects);
 			postEffects.clear();
-			for(Ability A : affs)
+			for(final Ability A : affs)
 			{
 				if((A!=null) && (aff.fetchEffect(A.ID())==A))
 				{
@@ -838,7 +837,7 @@ public class GenAbility extends StdAbility
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -916,7 +915,7 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -993,7 +992,7 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(String code, final String val)
 	{
 		int num=0;
 		int numDex=code.length();
@@ -1125,7 +1124,7 @@ public class GenAbility extends StdAbility
 		}
 	}
 
-	private String convert(String[] options, int val, boolean mask)
+	private String convert(final String[] options, final int val, final boolean mask)
 	{
 		if(mask)
 		{
@@ -1202,7 +1201,7 @@ public class GenAbility extends StdAbility
 		return acod|dom;
 	}
 
-	private String convertClassAndDomain(int val)
+	private String convertClassAndDomain(final int val)
 	{
 		final int dom=(val&Ability.ALL_DOMAINS)>>5;
 		final int acod=val&Ability.ALL_ACODES;
@@ -1212,7 +1211,7 @@ public class GenAbility extends StdAbility
 		return ""+val;
 	}
 
-	private int convert(String[] options, String val, boolean mask)
+	private int convert(final String[] options, final String val, final boolean mask)
 	{
 		if(CMath.isInteger(val))
 			return CMath.s_int(val);
@@ -1252,7 +1251,7 @@ public class GenAbility extends StdAbility
 		return true;
 	}
 
-	private void parseAllXML(String xml)
+	private void parseAllXML(final String xml)
 	{
 		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
 		if((V==null)||(V.size()==0))

@@ -57,7 +57,7 @@ public class MudList implements Serializable
 		list = new Hashtable();
 	}
 
-	public MudList(int i)
+	public MudList(final int i)
 	{
 		this();
 		id = i;
@@ -68,12 +68,12 @@ public class MudList implements Serializable
 		return modified;
 	}
 
-	public void setModified(int x)
+	public void setModified(final int x)
 	{
 		modified = x;
 	}
 
-	public void addMud(I3Mud mud)
+	public void addMud(final I3Mud mud)
 	{
 		if(( mud.mud_name == null )||( mud.mud_name.length() == 0 ))
 		{
@@ -99,7 +99,7 @@ public class MudList implements Serializable
 		modified = Persistent.MODIFIED;
 	}
 
-	public I3Mud getMud(String mud)
+	public I3Mud getMud(final String mud)
 	{
 		if( !list.containsKey(mud) )
 		{
@@ -114,7 +114,7 @@ public class MudList implements Serializable
 		return tmp;
 	}
 
-	public void removeMud(I3Mud mud)
+	public void removeMud(final I3Mud mud)
 	{
 		if( mud.mud_name == null )
 		{
@@ -129,7 +129,7 @@ public class MudList implements Serializable
 		return id;
 	}
 
-	public void setMudListId(int x)
+	public void setMudListId(final int x)
 	{
 		id = x;
 	}

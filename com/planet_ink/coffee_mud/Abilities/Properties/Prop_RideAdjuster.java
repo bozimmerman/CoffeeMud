@@ -65,7 +65,7 @@ public class Prop_RideAdjuster extends Prop_HaveAdjuster
 	}
 
 	@Override
-	public boolean canApply(MOB mob)
+	public boolean canApply(final MOB mob)
 	{
 		if(!super.canApply(mob))
 			return false;

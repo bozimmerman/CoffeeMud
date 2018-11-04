@@ -21,7 +21,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public interface SessionsList extends CMLibrary
 {
 	public void stopSessionAtAllCosts(Session S);
@@ -37,7 +36,7 @@ public interface SessionsList extends CMLibrary
 	public void add(Session s);
 	public void remove(Session s);
 	public boolean isSession(Session s);
-	
+
 	/**
 	 * Determines the correct thread group for the given theme, and marks the
 	 * given session appropriately.

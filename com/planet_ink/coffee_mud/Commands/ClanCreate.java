@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class ClanCreate extends StdCommand
 {
 	public ClanCreate()
@@ -49,7 +48,7 @@ public class ClanCreate extends StdCommand
 	}
 
 	@Override
-	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		int numGovernmentsAvailable=0;
@@ -168,7 +167,7 @@ public class ClanCreate extends StdCommand
 										final InputCallback[] IC=new InputCallback[1];
 										IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0)
 										{
-											@Override 
+											@Override
 											public void showPrompt()
 											{
 												final StringBuilder promptmsg=new StringBuilder("\n\r^HNow enter a political style for this clan. Choices are:\n\r^N");

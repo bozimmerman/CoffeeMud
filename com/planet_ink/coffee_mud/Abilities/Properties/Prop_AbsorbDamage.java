@@ -77,12 +77,12 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 	protected Map<Integer, Object>	ableCodes	= null;
 	protected Map<String,  Object>	ableIDs		= null;
 	protected Map<Long, Object>		ableFlags	= null;
-	
+
 	@Override
 	public void setMiscText(String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		List<String> parms=CMParms.parse(newMiscText.toUpperCase());
+		final List<String> parms=CMParms.parse(newMiscText.toUpperCase());
 		enhFlag=false;
 		allAbsorb=null;
 		msgTypes=null;
@@ -95,10 +95,10 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 		ableCodes=null;
 		ableIDs=null;
 		ableFlags=null;
-		
-		boolean allFound=parms.contains("+ALL");
+
+		final boolean allFound=parms.contains("+ALL");
 		Object current=null;
-		for(String s : parms)
+		for(final String s : parms)
 		{
 			if(CMath.isPct(s))
 			{
@@ -222,9 +222,9 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 			}
 		}
 		newMiscText=newMiscText.toUpperCase();
-		
+
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -233,7 +233,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 		if((affected!=null)
 		&&(((msg.targetMinor()==CMMsg.TYP_DAMAGE)&&(msg.value()>0))
 			||((msg.targetMinor()==CMMsg.TYP_HEALING)&&(msg.value()>0))
-			||(enhFlag 
+			||(enhFlag
 				&& (msg.tool() instanceof Ability)
 				&& ((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)||(msg.sourceMinor()==CMMsg.TYP_DELICATE_HANDS_ACT)||(msg.sourceMinor()==CMMsg.TYP_JUSTICE))))
 		)
@@ -272,7 +272,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 						return true;
 					if(this.weapLvls!=null)
 					{
-						for(Integer I : this.weapLvls.keySet())
+						for(final Integer I : this.weapLvls.keySet())
 						{
 							if(W.phyStats().level()>I.intValue())
 								return true;
@@ -290,7 +290,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 						return true;
 					if(this.ableFlags!=null)
 					{
-						for(Long L : this.ableFlags.keySet())
+						for(final Long L : this.ableFlags.keySet())
 						{
 							if(CMath.bset(A.flags(),L.longValue()))
 								return true;
@@ -326,11 +326,11 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 						absorb=this.weapClass.get(Integer.valueOf(W.weaponClassification()));
 					if((this.weapMats!=null)&&(this.weapMats.containsKey(Integer.valueOf(W.material()))))
 						absorb=this.weapMats.get(Integer.valueOf(W.material()));
-					
+
 					if(this.weapLvls!=null)
 					{
 						int highestLvl=-1;
-						for(Integer I : this.weapLvls.keySet())
+						for(final Integer I : this.weapLvls.keySet())
 						{
 							if((W.phyStats().level()>I.intValue())&&(I.intValue()>highestLvl))
 							{
@@ -351,7 +351,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 						absorb=this.ableIDs.get(A.ID());
 					if(this.ableFlags!=null)
 					{
-						for(Long L : this.ableFlags.keySet())
+						for(final Long L : this.ableFlags.keySet())
 						{
 							if(CMath.bset(A.flags(),L.longValue()))
 								absorb=this.ableFlags.get(L);
@@ -402,12 +402,12 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 								@Override
 								public void run()
 								{
-									Ability eA=tgtM.fetchEffect(A.ID());
+									final Ability eA=tgtM.fetchEffect(A.ID());
 									if((eA!=null)
 									&&(eA.invoker()==srcM)
 									&&(eA.canBeUninvoked()))
 									{
-										int tickDown = CMath.s_int(eA.getStat("TICKDOWN"));
+										final int tickDown = CMath.s_int(eA.getStat("TICKDOWN"));
 										if(tickDown > 0)
 										{
 											eA.setStat("TICKDOWN", ""+(tickDown-(int)Math.round(CMath.mul(msg.value(),pct.doubleValue()))));
@@ -428,11 +428,11 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 		return true;
 	}
 
-	private String makeStatMsg(String type, Object current)
+	private String makeStatMsg(final String type, final Object current)
 	{
 		if(current instanceof Integer)
 		{
-			int x=((Integer)current).intValue();
+			final int x=((Integer)current).intValue();
 			String xs=""+x;
 			if(x < 0)
 				xs=""+(-x);
@@ -444,8 +444,8 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 		else
 		if(current instanceof Double)
 		{
-			double d=((Double)current).doubleValue();
-			String pct=(d<0)?CMath.toPct(-d):CMath.toPct(d);
+			final double d=((Double)current).doubleValue();
+			final String pct=(d<0)?CMath.toPct(-d):CMath.toPct(d);
 			if(d>0)
 				return L("Absorb @x1 of all @x2 damage.",pct,type);
 			else
@@ -453,7 +453,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 		}
 		return "";
 	}
-	
+
 	@Override
 	public String getStat(String statVar)
 	{
@@ -465,11 +465,11 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 				String parmText = text().toUpperCase();
 				if(statVar.startsWith("TIDBITS="))
 					parmText = statVar.substring(8).toUpperCase().trim();
-				StringBuilder str=new StringBuilder("");
-				List<String> parms = CMParms.parse(parmText);
-				boolean allFound=parms.contains("+ALL");
+				final StringBuilder str=new StringBuilder("");
+				final List<String> parms = CMParms.parse(parmText);
+				final boolean allFound=parms.contains("+ALL");
 				Object current=null;
-				for(String s : parms)
+				for(final String s : parms)
 				{
 					if(CMath.isPct(s))
 					{
@@ -524,7 +524,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 						code=CMParms.indexOf(Ability.FLAG_DESCS, s);
 						if(code>=0)
 							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
-						Ability A=CMClass.getAbility(s);
+						final Ability A=CMClass.getAbility(s);
 						if(A!=null)
 							str.append(this.makeStatMsg(A.Name()+" effects or ", current)+"\n\r");
 						code=RawMaterial.CODES.FIND_CaseSensitive(s);

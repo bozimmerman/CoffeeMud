@@ -32,6 +32,7 @@ public interface Contingent extends CMObject
 	 * objects listed as content, recursively.
 	 */
 	public void destroy();
+
 	/**
 	 * Whether, if this object is in a room, whether it is appropriate to save this object to
 	 * the database as a permanent feature of its container.  It always returns true except
@@ -39,11 +40,13 @@ public interface Contingent extends CMObject
 	 * @return true, usually.
 	 */
 	public boolean isSavable();
+
 	/**
 	 * Whether the destroy() method has been previousy called on this object.
 	 * @return whether the object is destroy()ed.
 	 */
 	public boolean amDestroyed();
+
 	/**
 	 * Sets whether this object can be saved as a permanent aspect of
 	 * its host.

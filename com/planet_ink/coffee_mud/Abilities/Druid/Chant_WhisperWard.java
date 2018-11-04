@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_WhisperWard extends Chant implements Trap
 {
 	@Override
@@ -97,7 +96,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	}
 
 	@Override
-	public void setReset(int Reset)
+	public void setReset(final int Reset)
 	{
 	}
 
@@ -108,24 +107,24 @@ public class Chant_WhisperWard extends Chant implements Trap
 	}
 
 	@Override
-	public void resetTrap(MOB mob)
+	public void resetTrap(final MOB mob)
 	{
 	}
 
 	@Override
-	public boolean maySetTrap(MOB mob, int asLevel)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean maySetTrap(final MOB mob, final int asLevel)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canReSetTrap(MOB mob)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canReSetTrap(final MOB mob)
 	{
 		return false;
 	}
@@ -143,7 +142,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	}
 
 	@Override
-	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		beneficialAffect(mob, P, qualifyingClassLevel + trapBonus, 0);
 		return (Trap) P.fetchEffect(ID());
@@ -168,12 +167,12 @@ public class Chant_WhisperWard extends Chant implements Trap
 	}
 
 	@Override
-	public void spring(MOB M)
+	public void spring(final MOB M)
 	{
 		doMyThing();
 	}
 
-	public boolean isLocalExempt(MOB target)
+	public boolean isLocalExempt(final MOB target)
 	{
 		if(target==null)
 			return false;
@@ -202,7 +201,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 			return true;
 		return false;
 	}
-	
+
 	public void doMyThing()
 	{
 		if(invoker!=null)
@@ -261,7 +260,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 
 		if(commands.size()<2)

@@ -45,7 +45,7 @@ public class Vine extends StdRace
 		super();
 		super.naturalAbilImmunities.add("Disease_PoisonIvy");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Vine");
 
 	@Override
@@ -212,7 +212,7 @@ public class Vine extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		return makeMobName('N',Race.AGE_MATURE);
 	}
@@ -254,9 +254,9 @@ public class Vine extends StdRace
 		else
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
-	
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -265,7 +265,7 @@ public class Vine extends StdRace
 		}
 		return body;
 	}
-	
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

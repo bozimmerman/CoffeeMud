@@ -37,7 +37,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Switch extends StdCommand
 {
 	public Switch()
@@ -53,7 +52,7 @@ public class Switch extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.soulMate()!=null)
@@ -96,7 +95,7 @@ public class Switch extends StdCommand
 			MudHost switchToHost = null;
 			for(int i=0;i<CMLib.hosts().size();i++)
 			{
-				MudHost host = CMLib.hosts().get(i);
+				final MudHost host = CMLib.hosts().get(i);
 				if(host.getPort()==port)
 				{
 					switchToHost=host;
@@ -174,7 +173,7 @@ public class Switch extends StdCommand
 			{
 				if(room!=null)
 					room.send(mob, msg);
-				
+
 				s1.setMob(target);
 				s2.setMob(mob);
 				target.setSession(s1);
@@ -199,7 +198,7 @@ public class Switch extends StdCommand
 				else
 				{
 					CMLib.login().showTheNews(target);
-					
+
 					Log.sysOut(mob.Name()+" switched login to: "+target.Name());
 				}
 			}
@@ -214,7 +213,7 @@ public class Switch extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMProps.isUsingAccountSystem();
 	}

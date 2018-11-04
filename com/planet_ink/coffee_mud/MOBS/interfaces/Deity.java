@@ -32,11 +32,11 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 /**
  * A Deity is a type of mob that provides benefits (and punishments) for
- * players that worship them, especially Clerics.  They also provide 
+ * players that worship them, especially Clerics.  They also provide
  * for mini-mini quests (called rituals or sins) for obtaining the benefits
  * or punishments, as well as mini-mini quests for clerics to do services.
- * 
- * This interface defines the language for specifying the rituals, 
+ *
+ * This interface defines the language for specifying the rituals,
  * as well as the methods for accessing them and their benefits and
  * detriments.
  * @author Bo Zimmerman
@@ -81,20 +81,20 @@ public interface Deity extends MOB
 		;
 		private final int msgCode;
 		private final String shortName;
-		
-		private RitualTrigger(int msgCode, String shortName)
+
+		private RitualTrigger(final int msgCode, final String shortName)
 		{
 			this.msgCode = msgCode;
 			this.shortName = shortName;
 		}
 
-		private RitualTrigger(int msgCode)
+		private RitualTrigger(final int msgCode)
 		{
 			this.msgCode = msgCode;
 			this.shortName = name();
 		}
 
-		private RitualTrigger(String shortName)
+		private RitualTrigger(final String shortName)
 		{
 			this.msgCode = -999;
 			this.shortName = name();
@@ -105,18 +105,18 @@ public interface Deity extends MOB
 			this.msgCode = -999;
 			this.shortName = name();
 		}
-		
+
 		public int getCMMsgCode()
 		{
 			return msgCode;
 		}
-		
+
 		public String getShortName()
 		{
 			return shortName;
 		}
 	}
-	
+
 	/**
 	 * Separator enum constants for ritual definitions.
 	 * @author Bo Zimmerman
@@ -137,7 +137,7 @@ public interface Deity extends MOB
 	 * @return the Zapper Mask string that defines the requirements
 	 */
 	public String getClericRequirements();
-	
+
 	/**
 	 * Sets the Zapper Mask string that defines the requirements
 	 * to be a Cleric of this Deity.  See help on ZAPPERMASK
@@ -147,7 +147,7 @@ public interface Deity extends MOB
 	 * @param reqs the Zapper Mask string that defines the requirements
 	 */
 	public void setClericRequirements(String reqs);
-	
+
 	/**
 	 * Returns a friendly readable description of the requirements
 	 * to be a Cleric of this Deity.
@@ -166,7 +166,7 @@ public interface Deity extends MOB
 	 * @return the Zapper Mask string that defines the requirements
 	 */
 	public String getWorshipRequirements();
-	
+
 	/**
 	 * Sets the Zapper Mask string that defines the requirements
 	 * to be a Worshipper of this Deity.  See help on ZAPPERMASK
@@ -176,7 +176,7 @@ public interface Deity extends MOB
 	 * @param reqs the Zapper Mask string that defines the requirements
 	 */
 	public void setWorshipRequirements(String reqs);
-	
+
 	/**
 	 * Returns a friendly readable description of the requirements
 	 * to be a Worshipper of this Deity.
@@ -187,7 +187,7 @@ public interface Deity extends MOB
 	public String getWorshipRequirementsDesc();
 
 	/* Manipulation of blessing objects, which includes spells, traits, skills, etc.*/
-	
+
 	/**
 	 * Adds a new blessing, which worshippers/clerics can get from performming
 	 * the appropriate deity ritual.  The blessing can also be designated as
@@ -203,7 +203,7 @@ public interface Deity extends MOB
 	 * @param clericOnly true if its only for clerics, false if for everyone
 	 */
 	public void addBlessing(Ability to, boolean clericOnly);
-	
+
 	/**
 	 * Deletes the given blessing, which worshippers/clerics can get from performming
 	 * the appropriate deity ritual.
@@ -217,10 +217,10 @@ public interface Deity extends MOB
 	 * @param to the blessing ability object
 	 */
 	public void delBlessing(Ability to);
-	
+
 	/**
 	 * Returns the total number of blessings, both cleric and worshipper.
-	 * Blessings are spells cast on worshippers or clerics by the deity for 
+	 * Blessings are spells cast on worshippers or clerics by the deity for
 	 * performing an appropriate ritual.
 	 * @see Deity#getClericRitual()
 	 * @see Deity#getWorshipRitual()
@@ -232,7 +232,7 @@ public interface Deity extends MOB
 	 * @return the total number of blessings, both cleric and worshipper.
 	 */
 	public int numBlessings();
-	
+
 	/**
 	 * Gets the blessing at the given index.  Blessings are spells
 	 * cast on worshippers or clerics by the deity for performing
@@ -248,7 +248,7 @@ public interface Deity extends MOB
 	 * @return the blessing ability object at the given index
 	 */
 	public Ability fetchBlessing(int index);
-	
+
 	/**
 	 * Returns the blessing the given Ability ID.  Blessings are spells
 	 * cast on worshippers or clerics by the deity for performing
@@ -264,10 +264,10 @@ public interface Deity extends MOB
 	 * @return the blessing ability object with the given ID
 	 */
 	public Ability fetchBlessing(String ID);
-	
+
 	/**
 	 * Returns whether the blessing at the given index is only for
-	 * clerics.  Blessings are spells cast on worshippers or clerics 
+	 * clerics.  Blessings are spells cast on worshippers or clerics
 	 * by the deity for performing an appropriate ritual.
 	 * @see Deity#getClericRitual()
 	 * @see Deity#getWorshipRitual()
@@ -281,10 +281,10 @@ public interface Deity extends MOB
 	 * @return true if the blessing at this index is only for clerics
 	 */
 	public boolean fetchBlessingCleric(int index);
-	
+
 	/**
 	 * Returns whether the blessing with the given Ability ID is only for
-	 * clerics.  Blessings are spells cast on worshippers or clerics 
+	 * clerics.  Blessings are spells cast on worshippers or clerics
 	 * by the deity for performing an appropriate ritual.
 	 * @see Deity#getClericRitual()
 	 * @see Deity#getWorshipRitual()
@@ -332,8 +332,8 @@ public interface Deity extends MOB
 	 * @param ritual the coded ritual command string
 	 */
 	public void setClericRitual(String ritual);
-	
-	/** 
+
+	/**
 	 * Returns the friendly description of the ritual that
 	 * cleric must do to receive the Blessings of this deity.
 	 * @see Deity
@@ -377,8 +377,8 @@ public interface Deity extends MOB
 	 * @param ritual the coded ritual command string
 	 */
 	public void setServiceRitual(String ritual);
-	
-	/** 
+
+	/**
 	 * Returns the friendly description of the ritual that
 	 * cleric must do to perform a service for this deity.
 	 * @see Deity
@@ -424,8 +424,8 @@ public interface Deity extends MOB
 	 * @param ritual the coded ritual command string
 	 */
 	public void setWorshipRitual(String ritual);
-	
-	/** 
+
+	/**
 	 * Returns the friendly description of the ritual that
 	 * worshipper must do to receive the Blessings of this deity.
 	 * @see Deity
@@ -439,7 +439,7 @@ public interface Deity extends MOB
 	public String getWorshipTriggerDesc();
 
 	/* Manipulation of curse objects, which includes spells, traits, skills, etc.*/
-	
+
 	/**
 	 * Adds a new curse, which worshippers/clerics can get from performming
 	 * the appropriate deity "Sin".  The curse can also be designated as
@@ -455,7 +455,7 @@ public interface Deity extends MOB
 	 * @param clericOnly true if its only for clerics, false if for everyone
 	 */
 	public void addCurse(Ability to, boolean clericOnly);
-	
+
 	/**
 	 * Deletes the given curse, which worshippers/clerics can get from performming
 	 * the appropriate deity "Sin".
@@ -469,10 +469,10 @@ public interface Deity extends MOB
 	 * @param to the curse ability object
 	 */
 	public void delCurse(Ability to);
-	
+
 	/**
 	 * Returns the total number of curses, both cleric and worshipper.
-	 * Curses are spells cast on worshippers or clerics by the deity for 
+	 * Curses are spells cast on worshippers or clerics by the deity for
 	 * performing an appropriate "Sin".
 	 * @see Deity#getClericSin()
 	 * @see Deity#getWorshipSin()
@@ -484,7 +484,7 @@ public interface Deity extends MOB
 	 * @return the total number of curses, both cleric and worshipper.
 	 */
 	public int numCurses();
-	
+
 	/**
 	 * Gets the curse at the given index.  Curses are spells
 	 * cast on worshippers or clerics by the deity for performing
@@ -500,7 +500,7 @@ public interface Deity extends MOB
 	 * @return the curse ability object at the given index
 	 */
 	public Ability fetchCurse(int index);
-	
+
 	/**
 	 * Returns the curse the given Ability ID.  Curses are spells
 	 * cast on worshippers or clerics by the deity for performing
@@ -516,10 +516,10 @@ public interface Deity extends MOB
 	 * @return the curse ability object with the given ID
 	 */
 	public Ability fetchCurse(String ID);
-	
+
 	/**
 	 * Returns whether the curse at the given index is only for
-	 * clerics.  Curses are spells cast on worshippers or clerics 
+	 * clerics.  Curses are spells cast on worshippers or clerics
 	 * by the deity for performing an appropriate "Sin".
 	 * @see Deity#getClericSin()
 	 * @see Deity#getWorshipSin()
@@ -533,10 +533,10 @@ public interface Deity extends MOB
 	 * @return true if the curse at this index is only for clerics
 	 */
 	public boolean fetchCurseCleric(int index);
-	
+
 	/**
 	 * Returns whether the curse with the given Ability ID is only for
-	 * clerics.  Curses are spells cast on worshippers or clerics 
+	 * clerics.  Curses are spells cast on worshippers or clerics
 	 * by the deity for performing an appropriate "Sin".
 	 * @see Deity#getClericSin()
 	 * @see Deity#getWorshipSin()
@@ -550,7 +550,7 @@ public interface Deity extends MOB
 	 * @return true if the curse with that ID is only for clerics
 	 */
 	public boolean fetchCurseCleric(String ID);
-	
+
 	/**
 	 * Gets the raw ritual command string that defines what a
 	 * cleric must do to receive the Curses of this deity.
@@ -567,7 +567,7 @@ public interface Deity extends MOB
 	 * @return the coded ritual command string
 	 */
 	public String getClericSin();
-	
+
 	/**
 	 * Sets the raw ritual command string that defines what a
 	 * cleric must do to receive the Curses of this deity.
@@ -584,8 +584,8 @@ public interface Deity extends MOB
 	 * @param ritual the coded ritual command string
 	 */
 	public void setClericSin(String ritual);
-	
-	/** 
+
+	/**
 	 * Returns the friendly description of the ritual that
 	 * cleric must do to receive the Curses of this deity.
 	 * @see Deity
@@ -614,7 +614,7 @@ public interface Deity extends MOB
 	 * @return the coded ritual command string
 	 */
 	public String getWorshipSin();
-	
+
 	/**
 	 * Sets the raw ritual command string that defines what a
 	 * worshipper must do to receive the Curses of this deity.
@@ -631,8 +631,8 @@ public interface Deity extends MOB
 	 * @param ritual the coded ritual command string
 	 */
 	public void setWorshipSin(String ritual);
-	
-	/** 
+
+	/**
 	 * Returns the friendly description of the ritual that
 	 * worshipper must do to receive the Curses of this deity.
 	 * @see Deity
@@ -647,7 +647,7 @@ public interface Deity extends MOB
 
 	/* Manipulation of granted clerical powers, which includes spells, traits, skills, etc.*/
 	/* Make sure that none of these can really be qualified for by the cleric!*/
-	
+
 	/**
 	 * Adds a new power up ability, which clerics can get from performming
 	 * the appropriate powerup ritual.
@@ -659,7 +659,7 @@ public interface Deity extends MOB
 	 * @param to the power up ability object
 	 */
 	public void addPower(Ability to);
-	
+
 	/**
 	 * Removes the power up ability, which clerics can get from performming
 	 * the appropriate powerup ritual.
@@ -671,7 +671,7 @@ public interface Deity extends MOB
 	 * @param to the power up ability object to remove
 	 */
 	public void delPower(Ability to);
-	
+
 	/**
 	 * Returns the number of power up abilities, which clerics get from
 	 * performing the appropriate powerup ritual.
@@ -683,7 +683,7 @@ public interface Deity extends MOB
 	 * @return the number of power up abilities
 	 */
 	public int numPowers();
-	
+
 	/**
 	 * Returns the power up abilities at the given index.
 	 * Power up abilities are Abilities which clerics get from
@@ -697,7 +697,7 @@ public interface Deity extends MOB
 	 * @return the power up Ability object at that index
 	 */
 	public Ability fetchPower(int index);
-	
+
 	/**
 	 * Returns the power up abilities with the given Ability ID.
 	 * Power up abilities are Abilities which clerics get from
@@ -745,8 +745,8 @@ public interface Deity extends MOB
 	 * @param ritual the coded ritual command string
 	 */
 	public void setClericPowerup(String ritual);
-	
-	/** 
+
+	/**
 	 * Returns the friendly description of the ritual that
 	 * cleric must do to receive the Power Up Abilities of this deity.
 	 * @see Deity

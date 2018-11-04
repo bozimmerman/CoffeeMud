@@ -43,7 +43,7 @@ public class AchievementNext extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("ACHIEVEMENT");
@@ -56,17 +56,17 @@ public class AchievementNext extends StdWebMacro
 		String agentStr = parms.get("AGENT");
 		if(agentStr == null)
 			agentStr=httpReq.getUrlParameter("AGENT");
-		final AccountStats.Agent agent = ((agentStr == null)||(agentStr.length()==0)||(!CMProps.isUsingAccountSystem())) ? 
+		final AccountStats.Agent agent = ((agentStr == null)||(agentStr.length()==0)||(!CMProps.isUsingAccountSystem())) ?
 				AccountStats.Agent.PLAYER : (AccountStats.Agent)CMath.s_valueOf(AccountStats.Agent.class, agentStr.toUpperCase().trim());
 		if(agent == null)
 		{
 			return " @break@";
 		}
-		
+
 		String lastID="";
 		for(final Enumeration<Achievement> r=CMLib.achievements().achievements(agent);r.hasMoreElements();)
 		{
-			Achievement A=r.nextElement();
+			final Achievement A=r.nextElement();
 			final String title=A.getTattoo();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!title.equals(lastID))))
 			{

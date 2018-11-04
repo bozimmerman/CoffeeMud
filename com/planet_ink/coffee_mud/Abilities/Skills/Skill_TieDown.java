@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_TieDown extends StdSkill
 {
 	@Override
@@ -111,7 +110,7 @@ public class Skill_TieDown extends StdSkill
 	{
 		return 20 + (8 * super.getXLEVELLevel(invoker()));
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -131,7 +130,7 @@ public class Skill_TieDown extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.isInCombat())&&(!auto))
 		{
@@ -150,7 +149,7 @@ public class Skill_TieDown extends StdSkill
 				if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,L("<S-NAME> attempt(s) to untie <T-NAMESELF>.")))
 				{
 					if((A.invoker()==null)
-					||(A.invoker()==mob) 
+					||(A.invoker()==mob)
 					|| (mob.phyStats().level() > (A.invoker().phyStats().level() + (6 * A.getXLEVELLevel(A.invoker())))))
 					{
 						A.unInvoke();

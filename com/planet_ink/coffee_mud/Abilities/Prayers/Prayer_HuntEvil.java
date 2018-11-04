@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_HuntEvil extends Prayer
 {
 	@Override
@@ -141,13 +140,13 @@ public class Prayer_HuntEvil extends Prayer
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
-	protected MOB gameHere(Room room)
+	protected MOB gameHere(final Room room)
 	{
 		if(room==null)
 			return null;
@@ -161,7 +160,7 @@ public class Prayer_HuntEvil extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{
@@ -187,7 +186,7 @@ public class Prayer_HuntEvil extends Prayer
 
 		final ArrayList<Room> rooms=new ArrayList<Room>();
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-		int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
+		final int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room R : checkSet)
 		{

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Autoclimb extends StdSkill
 {
 	@Override
@@ -67,7 +66,7 @@ public class Skill_Autoclimb extends StdSkill
 	{
 		return USAGE_MOVEMENT;
 	}
-	
+
 	@Override
 	protected int canTargetCode()
 	{
@@ -106,7 +105,7 @@ public class Skill_Autoclimb extends StdSkill
 		return halfPts;
 	}
 
-	protected boolean doAutoClimb(final MOB mob, final int dir, boolean flee)
+	protected boolean doAutoClimb(final MOB mob, final int dir, final boolean flee)
 	{
 		final Room R=mob.location();
 		if((dir >=0)
@@ -144,7 +143,7 @@ public class Skill_Autoclimb extends StdSkill
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -181,7 +180,7 @@ public class Skill_Autoclimb extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{

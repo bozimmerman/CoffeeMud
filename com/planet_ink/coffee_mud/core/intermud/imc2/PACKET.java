@@ -33,8 +33,8 @@ import java.lang.String;
  * Ported to Java by Istvan David (u_davis@users.sourceforge.net)
  *
  */
-public final class PACKET {
-
+public final class PACKET
+{
 	/* max number of data keys in a packet */
 	public final static int IMC_MAX_KEYS = 20;
 

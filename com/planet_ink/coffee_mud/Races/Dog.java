@@ -171,7 +171,7 @@ public class Dog extends StdRace
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		super.affectCharState(affectedMob,affectableMaxState);
 		affectableMaxState.setMovement(affectableMaxState.getMovement()+100);
@@ -192,7 +192,7 @@ public class Dog extends StdRace
 	}
 
 	@Override
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body=super.getCorpseContainer(mob,room);
 		if((body!=null)&&(CMLib.dice().rollPercentage()<5)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
@@ -205,7 +205,7 @@ public class Dog extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{

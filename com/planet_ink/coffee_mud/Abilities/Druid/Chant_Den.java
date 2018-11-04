@@ -33,7 +33,6 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_Den extends Chant
 {
 	@Override
@@ -81,7 +80,7 @@ public class Chant_Den extends Chant
 	{
 		return CAN_ROOMS;
 	}
-	
+
 	protected int denDirection = -1;
 
 	@Override
@@ -95,7 +94,7 @@ public class Chant_Den extends Chant
 		final Room room=(Room)affected;
 		if((canBeUninvoked())&&(denDirection >= 0))
 		{
-			int denDirection=this.denDirection;
+			final int denDirection=this.denDirection;
 			this.denDirection=-1;
 			final Room R=room.getRoomInDir(denDirection);
 			if((R!=null)&&(R.roomID().equalsIgnoreCase("")))
@@ -115,7 +114,7 @@ public class Chant_Den extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target = mob.location();
 		if(target.fetchEffect(ID())!=null)

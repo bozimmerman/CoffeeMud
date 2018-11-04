@@ -98,7 +98,7 @@ public class Ranger_HuntersEndurance extends StdAbility
 	}
 
 	public volatile CharState oldState = null;
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

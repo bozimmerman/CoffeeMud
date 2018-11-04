@@ -48,7 +48,7 @@ public class CMath
 	private static final int[]			INTEGER_BITMASKS= new int[31];
 	private static final long[]			LONG_BITMASKS	= new long[63];
 	private static Random 				rand			= new Random(System.currentTimeMillis());
-	
+
 	static
 	{
 		for(int l=0;l<63;l++)
@@ -76,7 +76,7 @@ public class CMath
 			llen = LONG_ABBR.length-1;
 		return Double.toString(Math.round((l/Math.pow(1000, llen)) * 100.0)/100.0) + LONG_ABBR[llen];
 	}
-	
+
 	/** Convert an integer to its Roman Numeral equivalent
 	 *
 	 * Usage: Return=convertToRoman(Number)+".";
@@ -234,7 +234,7 @@ public class CMath
 	 * @param s the string to look
 	 * @return the object or null
 	 */
-	public final static Object s_valueOf(Object[] o, String s)
+	public final static Object s_valueOf(final Object[] o, final String s)
 	{
 		if(s==null)
 			return null;
@@ -277,7 +277,7 @@ public class CMath
 	 * @return the enum or null
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public final static Enum<? extends Enum> s_valueOf(Class<? extends Enum> c, String s)
+	public final static Enum<? extends Enum> s_valueOf(final Class<? extends Enum> c, final String s)
 	{
 		if((c==null)||(s==null))
 			return null;
@@ -299,7 +299,7 @@ public class CMath
 	 * @return the enum
 	 */
 	@SuppressWarnings("rawtypes")
-	public final static Enum<? extends Enum> s_valueOf(Class<? extends Enum> c, String s, Enum<? extends Enum> def)
+	public final static Enum<? extends Enum> s_valueOf(final Class<? extends Enum> c, final String s, final Enum<? extends Enum> def)
 	{
 		final Enum<? extends Enum> obj = s_valueOf(c,s);
 		if(obj == null)
@@ -663,7 +663,7 @@ public class CMath
 	 * @param setOrUnSet true to set the bit, false otherwise
 	 * @return the number with or without the bitmasks bits turned on.
 	 */
-	public final static int dobit(final int num, final int bitmask, boolean setOrUnSet)
+	public final static int dobit(final int num, final int bitmask, final boolean setOrUnSet)
 	{
 		return setOrUnSet ? (num | bitmask) : (num & (~bitmask));
 	}
@@ -697,7 +697,7 @@ public class CMath
 	 * @param bits the bits to check
 	 * @return the first bit set, as an index (1=0, 2=1, 4=2, 8=3, etc..)
 	 */
-	public final static int firstBitSetIndex(int bits)
+	public final static int firstBitSetIndex(final int bits)
 	{
 		return ((bits & 0x80000000)!=0) ? 31 : firstBitSetIndex((bits << 1) | 1) - 1;
 	}
@@ -707,7 +707,7 @@ public class CMath
 	 * @param bits the bits to check
 	 * @return the first bit set, as an index (1=0, 2=1, 4=2, 8=3, etc..)
 	 */
-	public final static int[] getAllBitsSet(int bits)
+	public final static int[] getAllBitsSet(final int bits)
 	{
 		final List<Integer> bitsSet=new ArrayList<Integer>();
 		for(int i=0;i<32;i++)
@@ -728,7 +728,7 @@ public class CMath
 	 * @param mask the mask to seperate
 	 * @return an entry for every set bit
 	 */
-	public final static int[] getSeperateBitMasks(int mask)
+	public final static int[] getSeperateBitMasks(final int mask)
 	{
 		if(mask==0)
 			return new int[0];
@@ -747,7 +747,7 @@ public class CMath
 		}
 		return masks;
 	}
-	
+
 	/**
 	 * Given a bitmask, seperates the mask according to which
 	 * bits are set and returns those original values in an
@@ -755,7 +755,7 @@ public class CMath
 	 * @param mask the mask to seperate
 	 * @return an entry for every set bit
 	 */
-	public final static long[] getSeperateBitMasks(long mask)
+	public final static long[] getSeperateBitMasks(final long mask)
 	{
 		if(mask==0)
 			return new long[0];
@@ -774,7 +774,7 @@ public class CMath
 		}
 		return masks;
 	}
-	
+
 	/**
 	 * Returns true if the bitnumberth bit (0...) is set
 	 * in the given number
@@ -1062,7 +1062,7 @@ public class CMath
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
@@ -1084,7 +1084,7 @@ public class CMath
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
@@ -1233,79 +1233,79 @@ public class CMath
 	/**
 	 * A class that extends Random, only it always returns the highest possible
 	 * values for each method.
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
 	public static final Random NotRandomHigh = new Random(System.currentTimeMillis())
 	{
 		/**
-		 * 
+		 *
 		 */
 		private static final long	serialVersionUID	= 8563826975901541973L;
 
 		@Override
-		protected int next(int bits)
+		protected int next(final int bits)
 		{
 			return (int)(0xFFFFFFFFFFFFFFFFL >>> (48 - bits));
 		}
-		
+
 		@Override
 		public int nextInt()
 		{
 			return Integer.MAX_VALUE;
 		}
-		
+
 		@Override
-		public int nextInt(int bound)
+		public int nextInt(final int bound)
 		{
 			return bound-1;
 		}
-		
+
 		@Override
 		public double nextDouble()
 		{
 			return 1.0;
 		}
-		
+
 		@Override
 		public float nextFloat()
 		{
 			return 1.0f;
 		}
-		
+
 		@Override
 		public synchronized double nextGaussian()
 		{
 			return 1.0;
 		}
-		
+
 		@Override
 		public boolean nextBoolean()
 		{
 			return true;
 		}
-		
+
 		@Override
-		public void nextBytes(byte[] bytes)
+		public void nextBytes(final byte[] bytes)
 		{
 			for(int i=0;i<bytes.length;i++)
 				bytes[i]=(byte)255;
 		}
 	};
-	
+
 	/**
-	 * A class representing a a list of compiled operation in a complete formula.  
+	 * A class representing a a list of compiled operation in a complete formula.
 	 * Optomized for speed of execution rather than the obvious wastefulness of storage.
 	 */
 	public static final class CompiledFormula extends LinkedList<CompiledOperation> implements Cloneable
 	{
 		/**
-		 * 
+		 *
 		 */
 		private static final long	serialVersionUID	= -846934171010829515L;
 	}
-	
+
 	/**
 	 * A class representing a single piece of a compiled operation.  Optomized for
 	 * speed of execution rather than the obvious wastefulness of storage.
@@ -1317,33 +1317,33 @@ public class CMath
 		public static final int		OPERATION_OPERATION		= 2;
 		public static final int		OPERATION_LIST			= 3;
 		public static final int		OPERATION_PREVIOUSVALUE	= 4;
-		
+
 		public final int	type;
 		public int			variableIndex	= 0;
 		public double		value			= 0.0;
 		public char			operation		= ' ';
-		
+
 		public CompiledFormula	list	= null;
 
-		public CompiledOperation(int variableIndex)
+		public CompiledOperation(final int variableIndex)
 		{
 			type = OPERATION_VARIABLE;
 			this.variableIndex = variableIndex;
 		}
 
-		public CompiledOperation(double value)
+		public CompiledOperation(final double value)
 		{
 			type = OPERATION_VALUE;
 			this.value = value;
 		}
 
-		public CompiledOperation(CompiledFormula list)
+		public CompiledOperation(final CompiledFormula list)
 		{
 			type = OPERATION_LIST;
 			this.list = list;
 		}
 
-		public CompiledOperation(char operation)
+		public CompiledOperation(final char operation)
 		{
 			type = OPERATION_OPERATION;
 			this.operation = operation;
@@ -1484,7 +1484,7 @@ public class CMath
 	{
 		return parseMathExpression(list, rand, vars, previous);
 	}
-	
+
 	/**
 	 * Parse a pre-compiled expression.  Requires a vars variable of at least 10 entries
 	 * to ensure NO exceptions (other than /0).
@@ -1554,7 +1554,7 @@ public class CMath
 
 	/**
 	 * Performs the operation between the finalValue and the curValue.
-	 * 
+	 *
 	 * @param operation +, -, etc..
 	 * @param finalValue the left hand number
 	 * @param curValue the right hand number
@@ -1594,7 +1594,7 @@ public class CMath
 		}
 		return finalValue;
 	}
-	
+
 	/**
 	 * Returns the result of evaluating the given math
 	 * expression.  An expression can be a double or int
@@ -1673,7 +1673,7 @@ public class CMath
 	 * @return the result of the expression
 	 * @throws ArithmeticException a parsing error
 	 */
-	public final static double parseMathExpression(String formula) throws ArithmeticException
+	public final static double parseMathExpression(final String formula) throws ArithmeticException
 	{
 		return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))), rand, false, null, 0);
 	}
@@ -2163,7 +2163,7 @@ public class CMath
 			}
 
 			@Override
-			public String setValue(String value)
+			public String setValue(final String value)
 			{
 				return value;
 			}
@@ -2231,7 +2231,7 @@ public class CMath
 			}
 
 			@Override
-			public Integer setValue(Integer value)
+			public Integer setValue(final Integer value)
 			{
 				return value;
 			}
@@ -2361,25 +2361,25 @@ public class CMath
 	{
 		return a<b?b:a;
 	}
-	
+
 	/**
 	 * Generates a big integer from multiply two longs
 	 * @param l1 the first long
 	 * @param l2 the second long
 	 * @return the big big integer
 	 */
-	public final static BigInteger bigMultiply(long l1, long l2)
+	public final static BigInteger bigMultiply(final long l1, final long l2)
 	{
 		return BigInteger.valueOf(l1).multiply(BigInteger.valueOf(l2));
 	}
-	
+
 	/**
 	 * Generates a big integer from multiply two numbers, rounding when necessary
 	 * @param l1 the first number
 	 * @param l2 the second number
 	 * @return the big big integer
 	 */
-	public final static BigInteger bigMultiply(double l1, long l2)
+	public final static BigInteger bigMultiply(final double l1, final long l2)
 	{
 		return BigInteger.valueOf(Math.round(l1)).multiply(BigInteger.valueOf(l2));
 	}

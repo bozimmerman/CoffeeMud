@@ -31,8 +31,8 @@ package com.planet_ink.coffee_mud.core.intermud.imc2;
  * Ported to Java by Istvan David (u_davis@users.sourceforge.net)
  *
  */
-public final class imc_statistics {
-
+public final class imc_statistics
+{
 	long start; /* when statistics started  			 */
 
 	long rx_pkts; /* Received packets   				   */

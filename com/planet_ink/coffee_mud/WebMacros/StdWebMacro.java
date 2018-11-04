@@ -95,13 +95,13 @@ public class StdWebMacro implements WebMacro
 	}
 
 	@Override
-	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public byte[] runBinaryMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		return runMacro(httpReq,parm, null).getBytes();
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		return "[Unimplemented macro!]";
 	}
@@ -112,7 +112,7 @@ public class StdWebMacro implements WebMacro
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 
-	protected StringBuffer colorwebifyOnly(StringBuffer s)
+	protected StringBuffer colorwebifyOnly(final StringBuffer s)
 	{
 		if(s==null)
 			return null;
@@ -203,27 +203,27 @@ public class StdWebMacro implements WebMacro
 		return s;
 	}
 
-	protected String clearWebMacros(String s)
+	protected String clearWebMacros(final String s)
 	{
 		return CMLib.webMacroFilter().clearWebMacros(s);
 	}
 
-	protected String clearWebMacros(StringBuffer s)
+	protected String clearWebMacros(final StringBuffer s)
 	{
 		return CMLib.webMacroFilter().clearWebMacros(s);
 	}
 
-	protected StringBuilder helpHelp(StringBuilder s)
+	protected StringBuilder helpHelp(final StringBuilder s)
 	{
 		return helpHelp(s, 70);
 	}
 
-	protected StringBuilder helpHelp(String s)
+	protected StringBuilder helpHelp(final String s)
 	{
 		return helpHelp(new StringBuilder(s), 70);
 	}
 
-	protected StringBuilder helpHelp(StringBuilder s, int limit)
+	protected StringBuilder helpHelp(StringBuilder s, final int limit)
 	{
 		if(s!=null)
 		{
@@ -376,7 +376,7 @@ public class StdWebMacro implements WebMacro
 		return new StringBuilder("");
 	}
 
-	protected PairSVector<String,String> parseOrderedParms(String parm, boolean preserveCase)
+	protected PairSVector<String,String> parseOrderedParms(final String parm, final boolean preserveCase)
 	{
 		final PairSVector<String,String> requestParms=new PairSVector<String,String>();
 		if((parm!=null)&&(parm.length()>0))
@@ -448,13 +448,13 @@ public class StdWebMacro implements WebMacro
 			return "";
 		return CMLib.coffeeFilter().simpleInFilter(new StringBuilder(buf));
 	}
-	
-	protected String htmlIncomingFilter(String buf)
+
+	protected String htmlIncomingFilter(final String buf)
 	{
 		return htmlIncomingFilter(new StringBuffer(buf)).toString();
 	}
-	
-	protected StringBuffer htmlIncomingFilter(StringBuffer buf)
+
+	protected StringBuffer htmlIncomingFilter(final StringBuffer buf)
 	{
 		int loop=0;
 
@@ -499,12 +499,12 @@ public class StdWebMacro implements WebMacro
 		return buf;
 	}
 
-	protected String htmlOutgoingFilter(String buf)
+	protected String htmlOutgoingFilter(final String buf)
 	{
 		return htmlOutgoingFilter(new StringBuffer(buf)).toString();
 	}
 
-	protected StringBuffer htmlOutgoingFilter(StringBuffer buf)
+	protected StringBuffer htmlOutgoingFilter(final StringBuffer buf)
 	{
 		int loop=0;
 
@@ -576,7 +576,7 @@ public class StdWebMacro implements WebMacro
 				}
 
 				@Override
-				public String getUrlParameter(String name)
+				public String getUrlParameter(final String name)
 				{
 					return params.get(name.toLowerCase());
 				}
@@ -588,7 +588,7 @@ public class StdWebMacro implements WebMacro
 				}
 
 				@Override
-				public boolean isUrlParameter(String name)
+				public boolean isUrlParameter(final String name)
 				{
 					return params.containsKey(name.toLowerCase());
 				}
@@ -606,7 +606,7 @@ public class StdWebMacro implements WebMacro
 				}
 
 				@Override
-				public String getHeader(String name)
+				public String getHeader(final String name)
 				{
 					return httpReq.getHeader(name);
 				}
@@ -630,7 +630,7 @@ public class StdWebMacro implements WebMacro
 				}
 
 				@Override
-				public String getCookie(String name)
+				public String getCookie(final String name)
 				{
 					return httpReq.getCookie(name);
 				}
@@ -648,7 +648,7 @@ public class StdWebMacro implements WebMacro
 				}
 
 				@Override
-				public double getSpecialEncodingAcceptability(String type)
+				public double getSpecialEncodingAcceptability(final String type)
 				{
 					return httpReq.getSpecialEncodingAcceptability(type);
 				}
@@ -666,13 +666,13 @@ public class StdWebMacro implements WebMacro
 				}
 
 				@Override
-				public void addFakeUrlParameter(String name, String value)
+				public void addFakeUrlParameter(final String name, final String value)
 				{
 					params.put(name.toLowerCase(), value);
 				}
 
 				@Override
-				public void removeUrlParameter(String name)
+				public void removeUrlParameter(final String name)
 				{
 					params.remove(name.toLowerCase());
 				}
@@ -733,13 +733,13 @@ public class StdWebMacro implements WebMacro
 				}
 
 				@Override
-				public String getUrlParameter(String name)
+				public String getUrlParameter(final String name)
 				{
 					return params.get(name.toUpperCase());
 				}
 
 				@Override
-				public boolean isUrlParameter(String name)
+				public boolean isUrlParameter(final String name)
 				{
 					return params.containsKey(name.toUpperCase());
 				}
@@ -763,7 +763,7 @@ public class StdWebMacro implements WebMacro
 				}
 
 				@Override
-				public String getHeader(String name)
+				public String getHeader(final String name)
 				{
 					return httpReq.getHeader(name);
 				}
@@ -787,7 +787,7 @@ public class StdWebMacro implements WebMacro
 				}
 
 				@Override
-				public String getCookie(String name)
+				public String getCookie(final String name)
 				{
 					return httpReq.getCookie(name);
 				}
@@ -805,7 +805,7 @@ public class StdWebMacro implements WebMacro
 				}
 
 				@Override
-				public double getSpecialEncodingAcceptability(String type)
+				public double getSpecialEncodingAcceptability(final String type)
 				{
 					return httpReq.getSpecialEncodingAcceptability(type);
 				}
@@ -823,13 +823,13 @@ public class StdWebMacro implements WebMacro
 				}
 
 				@Override
-				public void addFakeUrlParameter(String name, String value)
+				public void addFakeUrlParameter(final String name, final String value)
 				{
 					params.put(name.toUpperCase(), value);
 				}
 
 				@Override
-				public void removeUrlParameter(String name)
+				public void removeUrlParameter(final String name)
 				{
 					params.remove(name.toUpperCase());
 				}
@@ -858,7 +858,7 @@ public class StdWebMacro implements WebMacro
 		return null;
 	}
 
-	protected java.util.Map<String,String> parseParms(String parm)
+	protected java.util.Map<String,String> parseParms(final String parm)
 	{
 		final Hashtable<String,String> requestParms=new Hashtable<String,String>();
 		final PairSVector<String,String> requestParsed = parseOrderedParms(parm,false);
@@ -867,7 +867,7 @@ public class StdWebMacro implements WebMacro
 		return requestParms;
 	}
 
-	protected java.util.Map<String,String> parseParms(String parm, boolean preserveCase)
+	protected java.util.Map<String,String> parseParms(final String parm, final boolean preserveCase)
 	{
 		final Hashtable<String,String> requestParms=new Hashtable<String,String>();
 		final PairSVector<String,String> requestParsed = parseOrderedParms(parm,preserveCase);
@@ -875,7 +875,7 @@ public class StdWebMacro implements WebMacro
 			requestParms.put(P.first,P.second);
 		return requestParms;
 	}
-	
+
 	public String L(final String str, final String ... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);

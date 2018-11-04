@@ -37,12 +37,12 @@ import java.util.Vector;
  *
  */
 
-public class ListenThread extends Thread 
+public class ListenThread extends Thread
 {
 	private final ServerSocket listen;
 	private final Vector<Socket> clients;
 
-	public ListenThread(int port) throws java.io.IOException 
+	public ListenThread(final int port) throws java.io.IOException
 	{
 		super("I3Listener@"+port);
 		clients = new Vector<Socket>(10, 2);

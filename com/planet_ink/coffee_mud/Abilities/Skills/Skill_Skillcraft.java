@@ -93,14 +93,14 @@ public class Skill_Skillcraft extends StdSkill
 	public String	lastID	= "";
 
 	private final int[] localTypes = new int[] { Ability.ACODE_SKILL };
-	
+
 	public int[] craftTypes()
 	{
 		return localTypes;
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob, boolean force)
+	public boolean autoInvocation(final MOB mob, final boolean force)
 	{
 		if(!super.autoInvocation(mob, force))
 			return false;

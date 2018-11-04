@@ -52,7 +52,7 @@ public class GapExit extends StdExit
 		return "Looks like you'll have to jump it.";
 	}
 
-	public int mobWeight(MOB mob)
+	public int mobWeight(final MOB mob)
 	{
 		int weight=mob.basePhyStats().weight();
 		for(int i=0;i<mob.numItems();i++)

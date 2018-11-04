@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CatalogMobNext extends StdWebMacro
 {
 	@Override
@@ -58,7 +57,7 @@ public class CatalogMobNext extends StdWebMacro
 							   ,"CATALOG_MOB_CLASS"
 	};
 
-	public static String getCataStat(MOB M, CatalogLibrary.CataData data, int x, String optionalColumn)
+	public static String getCataStat(final MOB M, final CatalogLibrary.CataData data, final int x, final String optionalColumn)
 	{
 		if((M==null)||(data==null))
 			return "";
@@ -96,7 +95,7 @@ public class CatalogMobNext extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("MOB");
@@ -153,10 +152,10 @@ public class CatalogMobNext extends StdWebMacro
 							CMLib.catalog().getCatalogMobData(names[s])
 						};
 					}
-					Arrays.sort(sortifiable,new Comparator()
+					Arrays.sort(sortifiable,new Comparator<Object>()
 					{
 						@Override
-						public int compare(Object o1, Object o2)
+						public int compare(final Object o1, final Object o2)
 						{
 							final Object[] O1=(Object[])o1;
 							final Object[] O2=(Object[])o2;

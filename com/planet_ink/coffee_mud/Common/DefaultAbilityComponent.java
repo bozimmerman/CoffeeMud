@@ -97,7 +97,7 @@ public class DefaultAbilityComponent implements AbilityComponent
 	}
 
 	@Override
-	public void setConnector(CompConnector connector)
+	public void setConnector(final CompConnector connector)
 	{
 		this.connector = connector;
 	}
@@ -109,7 +109,7 @@ public class DefaultAbilityComponent implements AbilityComponent
 	}
 
 	@Override
-	public void setLocation(CompLocation location)
+	public void setLocation(final CompLocation location)
 	{
 		this.location = location;
 	}
@@ -121,7 +121,7 @@ public class DefaultAbilityComponent implements AbilityComponent
 	}
 
 	@Override
-	public void setConsumed(boolean isConsumed)
+	public void setConsumed(final boolean isConsumed)
 	{
 		this.isConsumed = isConsumed;
 	}
@@ -133,7 +133,7 @@ public class DefaultAbilityComponent implements AbilityComponent
 	}
 
 	@Override
-	public void setAmount(int amount)
+	public void setAmount(final int amount)
 	{
 		this.amount = amount;
 	}
@@ -151,7 +151,7 @@ public class DefaultAbilityComponent implements AbilityComponent
 	}
 
 	@Override
-	public void setMask(String maskStr)
+	public void setMask(final String maskStr)
 	{
 
 		this.maskStr = maskStr.trim();
@@ -167,7 +167,7 @@ public class DefaultAbilityComponent implements AbilityComponent
 	}
 
 	@Override
-	public void setType(CompType type, Object typeObj, String subType)
+	public void setType(final CompType type, final Object typeObj, final String subType)
 	{
 		this.type = type;
 		compSubTypeStr = (subType == null)?"":subType.toUpperCase().trim();

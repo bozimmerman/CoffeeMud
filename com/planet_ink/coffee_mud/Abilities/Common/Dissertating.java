@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Dissertating extends CraftingSkill
 {
 	@Override
@@ -73,7 +72,7 @@ public class Dissertating extends CraftingSkill
 
 	protected Ability	theSpell		= null;
 	protected Scroll	fromTheScroll	= null;
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -115,7 +114,7 @@ public class Dissertating extends CraftingSkill
 						commonTell(mob,L("You got writer`s block! Your dissertation on @x1 fails!",buildingI.name()));
 					else
 					{
-						int theSpellLevel=spellLevel(mob,theSpell);
+						final int theSpellLevel=spellLevel(mob,theSpell);
 						if(fromTheScroll != null)
 							eraseFromScrollItem(fromTheScroll,theSpell,theSpellLevel);
 						final Item oldBuildingI=buildingI;
@@ -139,15 +138,15 @@ public class Dissertating extends CraftingSkill
 		super.unInvoke();
 	}
 
-	protected void eraseFromScrollItem(Scroll buildingI, Ability theSpell, int level)
+	protected void eraseFromScrollItem(final Scroll buildingI, final Ability theSpell, final int level)
 	{
 		if(buildingI == null)
 			return;
-		StringBuilder newList=new StringBuilder();
+		final StringBuilder newList=new StringBuilder();
 		buildingI.setBaseValue(buildingI.baseGoldValue() - (100*CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID())));
 		if(buildingI.baseGoldValue()<=0)
 			buildingI.setBaseValue(1);
-		for(Ability A : buildingI.getSpells())
+		for(final Ability A : buildingI.getSpells())
 		{
 			if(!A.ID().equalsIgnoreCase(theSpell.ID()))
 				newList.append(A.ID()).append(";");
@@ -158,8 +157,8 @@ public class Dissertating extends CraftingSkill
 			buildingI.setUsesRemaining(buildingI.usesRemaining()-1);
 		buildingI.text();
 	}
-	
-	protected int spellLevel(MOB mob, Ability A)
+
+	protected int spellLevel(final MOB mob, final Ability A)
 	{
 		int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
 		if(lvl<0)
@@ -192,14 +191,14 @@ public class Dissertating extends CraftingSkill
 	}
 
 	@Override
-	public ItemKeyPair craftItem(String recipe)
+	public ItemKeyPair craftItem(final String recipe)
 	{
 		return craftItem(recipe, 0, false, false);
 	}
 
-	protected void setName(Scroll buildingI)
+	protected void setName(final Scroll buildingI)
 	{
-		int x=buildingI.Name().indexOf(L("on the study of"));
+		final int x=buildingI.Name().indexOf(L("on the study of"));
 		if(x>0)
 		{
 			buildingI.setName(buildingI.Name().substring(0,x).trim());
@@ -208,7 +207,7 @@ public class Dissertating extends CraftingSkill
 		}
 		if(buildingI.getSpells().size()>0)
 		{
-			Ability theSpell=buildingI.getSpells().get(0);
+			final Ability theSpell=buildingI.getSpells().get(0);
 			buildingI.setName(L("@x1 on the study of @x2",buildingI.Name(),theSpell.Name()));
 			buildingI.setDisplayText(L("@x1 sits here.",buildingI.Name()));
 			String x1="";
@@ -246,11 +245,11 @@ public class Dissertating extends CraftingSkill
 			buildingI.setDescription(L("a @x1 thesis on the @x2 application of @x3",x1,x2,theSpell.Name()));
 		}
 	}
-	
-	protected Scroll buildScrollItem(Item oldBuildingI, Ability theSpell, int level)
+
+	protected Scroll buildScrollItem(final Item oldBuildingI, final Ability theSpell, final int level)
 	{
-		Scroll buildingI=(Scroll)CMClass.getItem("GenDissertation");
-		StringBuilder newList=new StringBuilder(theSpell.ID());
+		final Scroll buildingI=(Scroll)CMClass.getItem("GenDissertation");
+		final StringBuilder newList=new StringBuilder(theSpell.ID());
 		buildingI.setSpellList(newList.toString());
 		setName(buildingI);
 		if(buildingI.basePhyStats().level() < level)
@@ -267,14 +266,14 @@ public class Dissertating extends CraftingSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -282,7 +281,7 @@ public class Dissertating extends CraftingSkill
 		if(autoGenerate>0)
 		{
 			final Ability theSpell=mob.fetchRandomAbility();
-			if(theSpell==null) 
+			if(theSpell==null)
 				return false;
 			final int level=spellLevel(mob,theSpell);
 			buildingI=buildScrollItem(null, theSpell, level);
@@ -365,12 +364,12 @@ public class Dissertating extends CraftingSkill
 			int experienceToLose=0;
 			if(theSpell==null)
 			{
-				int x=CMParms.indexOfIgnoreCase(commands, "from");
+				final int x=CMParms.indexOfIgnoreCase(commands, "from");
 				if((x>0)&&(x<commands.size()-1))
 				{
 					recipeName=CMParms.combine(commands,0,x);
-					String otherScrollName=CMParms.combine(commands,x+1,commands.size());
-					Item scrollFromI=getTarget(mob,null,givenTarget,CMParms.parse(otherScrollName),Wearable.FILTER_UNWORNONLY);
+					final String otherScrollName=CMParms.combine(commands,x+1,commands.size());
+					final Item scrollFromI=getTarget(mob,null,givenTarget,CMParms.parse(otherScrollName),Wearable.FILTER_UNWORNONLY);
 					if(scrollFromI==null)
 						return false;
 					if(!mob.isMine(scrollFromI))
@@ -391,7 +390,7 @@ public class Dissertating extends CraftingSkill
 						return false;
 					}
 					ingredient="";
-					for(Ability A : ((Scroll)scrollFromI).getSpells())
+					for(final Ability A : ((Scroll)scrollFromI).getSpells())
 					{
 						if((A!=null)
 						&&(A.name().equalsIgnoreCase(recipeName)))
@@ -429,7 +428,7 @@ public class Dissertating extends CraftingSkill
 				if(experienceToLose < CMLib.ableMapper().qualifyingLevel(mob,theSpell))
 					experienceToLose = CMLib.ableMapper().qualifyingLevel(mob,theSpell);
 			}
-			
+
 			final int resourceType=(ingredient.length()==0) ? -1 : RawMaterial.CODES.FIND_IgnoreCase(ingredient);
 
 			int[][] data = null;
@@ -442,20 +441,20 @@ public class Dissertating extends CraftingSkill
 											bundling,
 											-1,
 											null);
-				if(data==null) 
+				if(data==null)
 					return false;
 			}
-			if(manaToLose<10) 
+			if(manaToLose<10)
 				manaToLose=10;
 
 			if(mob.curState().getMana()<manaToLose)
 			{
 				commonTell(mob,L("You need at least @x1 mana to accomplish that.",""+manaToLose));
 			}
-			
+
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			
+
 			mob.curState().adjMana(-manaToLose, mob.maxState());
 
 			if((resourceType>0)&&(data != null))
@@ -468,7 +467,7 @@ public class Dissertating extends CraftingSkill
 				CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 				commonTell(mob,L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			}
-			
+
 			int duration=getDuration(100+(CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10),mob,CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID()),10);
 			if(duration<10)
 				duration=10;

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Throw extends StdCommand
 {
 	public Throw()
@@ -48,10 +47,10 @@ public class Throw extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if((commands.size()==2)&&(mob.isInCombat()))
 			commands.add(mob.getVictim().location().getContextName(mob.getVictim()));
 		if(commands.size()<3)

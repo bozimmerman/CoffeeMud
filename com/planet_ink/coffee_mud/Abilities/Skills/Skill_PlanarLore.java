@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_PlanarLore extends StdSkill
 {
 	@Override
@@ -73,7 +72,7 @@ public class Skill_PlanarLore extends StdSkill
 	private static final String[]	triggerStrings	= I(new String[] { "PLANARLORE", "PLORE" });
 
 	protected long lastFail = 0;
-	
+
 	@Override
 	public String[] triggerStrings()
 	{
@@ -93,13 +92,13 @@ public class Skill_PlanarLore extends StdSkill
 	}
 
 	@Override
-	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+	public boolean preInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -120,13 +119,13 @@ public class Skill_PlanarLore extends StdSkill
 			currPlane="Prime Material";
 			mob.tell(L("\n\rYou are clearly on the Prime Material plane."));
 		}
-		
+
 		final Map<String,Map<String,String>> pmap = PlanarAbility.getPlaneMap();
 		if((commands.size()==0)
 		||((commands.size()==1)&&(commands.get(0).equalsIgnoreCase("LIST"))))
 		{
-			List<String> names=new ArrayList<String>();
-			for(String key : pmap.keySet())
+			final List<String> names=new ArrayList<String>();
+			for(final String key : pmap.keySet())
 				names.add(CMStrings.capitalizeAllFirstLettersAndLower(key));
 			mob.tell(L("Recall information about which plane of existence?  These include: @x1",CMLib.english().toEnglishStringList(names)));
 			return false;
@@ -137,13 +136,13 @@ public class Skill_PlanarLore extends StdSkill
 			commands.remove(commands.size()-1);
 			report=true;
 		}
-		
+
 		if((System.currentTimeMillis() - lastFail) < 10000)
 		{
 			mob.tell(L("You still can't recall.  Give yourself some more time to think first."));
 			return false;
 		}
-		
+
 		String possplanname = CMParms.combine(commands);
 		if(possplanname.startsWith("the "))
 			possplanname = possplanname.substring(4).trim();
@@ -151,7 +150,7 @@ public class Skill_PlanarLore extends StdSkill
 			possplanname = possplanname.substring(0,possplanname.length()-5).trim();
 		String planeName = null;
 		String planeKey = null;
-		for(String key : pmap.keySet())
+		for(final String key : pmap.keySet())
 		{
 			if(key.equalsIgnoreCase(possplanname))
 			{
@@ -162,7 +161,7 @@ public class Skill_PlanarLore extends StdSkill
 		}
 		if(planeName == null)
 		{
-			for(String key : pmap.keySet())
+			for(final String key : pmap.keySet())
 			{
 				if(key.startsWith(possplanname.toUpperCase()))
 				{
@@ -172,11 +171,11 @@ public class Skill_PlanarLore extends StdSkill
 				}
 			}
 		}
-		
+
 		if(planeName == null)
 		{
-			List<String> names=new ArrayList<String>();
-			for(String key : pmap.keySet())
+			final List<String> names=new ArrayList<String>();
+			for(final String key : pmap.keySet())
 				names.add(CMStrings.capitalizeAllFirstLettersAndLower(key));
 			mob.tell(L("You have never heard of a plane called @x1.  You might try one of these: @x2",
 					CMParms.combine(commands),CMLib.english().toEnglishStringList(names)));
@@ -185,7 +184,7 @@ public class Skill_PlanarLore extends StdSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		final boolean success=proficiencyCheck(mob,currPlane.equalsIgnoreCase(planeName)?25:0,auto);
 		if(!success)
 		{
@@ -198,32 +197,32 @@ public class Skill_PlanarLore extends StdSkill
 		if(room.okMessage(mob,msg))
 		{
 			room.send(mob,msg);
-			List<String> tidbits = new ArrayList<String>();
+			final List<String> tidbits = new ArrayList<String>();
 			final int expertise = super.getXLEVELLevel(mob);
-			Map<String,String> planeVars = pmap.get(planeKey);
+			final Map<String,String> planeVars = pmap.get(planeKey);
 			if(planeVars.containsKey(PlanarAbility.PlanarVar.MOBRESIST.toString()))
 			{
-				String arg=planeVars.get(PlanarAbility.PlanarVar.MOBRESIST.toString());
+				final String arg=planeVars.get(PlanarAbility.PlanarVar.MOBRESIST.toString());
 				final Ability A1=CMClass.getAbility("Prop_Resistance");
 				if(A1!=null)
 				{
 					final String listStr=A1.getStat("TIDBITS="+arg);
 					final List<String> list= CMParms.parseAny(listStr, "\n\r", true);
-					for(String l : list)
+					for(final String l : list)
 						tidbits.add(L("Creatures there are @x1.",l));
 				}
 			}
 			if(planeVars.containsKey(PlanarAbility.PlanarVar.PREFIX.toString()))
 			{
 				final List<String> prefixes = CMParms.parseCommas(planeVars.get(PlanarAbility.PlanarVar.PREFIX.toString()), true);
-				for(String prefix : prefixes)
+				for(final String prefix : prefixes)
 				{
 					tidbits.add(L("Everything there is very @x1.",prefix));
 				}
 			}
 			if(planeVars.containsKey(PlanarAbility.PlanarVar.WEAPONMAXRANGE.toString()))
 			{
-				int maxRange=CMath.s_int(planeVars.get(PlanarVar.WEAPONMAXRANGE.toString()));
+				final int maxRange=CMath.s_int(planeVars.get(PlanarVar.WEAPONMAXRANGE.toString()));
 				tidbits.add(L("Weapons there have a maximum range of @x1.",""+maxRange));
 			}
 			if(planeVars.containsKey(PlanarAbility.PlanarVar.ATMOSPHERE.toString()))
@@ -231,22 +230,22 @@ public class Skill_PlanarLore extends StdSkill
 				final String atmo = planeVars.get(PlanarVar.ATMOSPHERE.toString());
 				tidbits.add(L("That plane has an atmosphere of @x1.",atmo));
 			}
-			
+
 			if(expertise > 0)
 			{
 				if(planeVars.containsKey(PlanarAbility.PlanarVar.MIXRACE.toString()))
 				{
-					String mixRace = planeVars.get(PlanarVar.MIXRACE.toString());
-					Race firstR=CMClass.getRace(mixRace);
+					final String mixRace = planeVars.get(PlanarVar.MIXRACE.toString());
+					final Race firstR=CMClass.getRace(mixRace);
 					if(firstR!=null)
 						tidbits.add(L("Everyone there is some sort of @x1 hybrid.",firstR.name()));
 				}
-				String specflags = planeVars.get(PlanarVar.SPECFLAGS.toString());
+				final String specflags = planeVars.get(PlanarVar.SPECFLAGS.toString());
 				if(specflags != null)
 				{
-					for(String s : CMParms.parse(specflags))
+					for(final String s : CMParms.parse(specflags))
 					{
-						PlanarSpecFlag flag=(PlanarSpecFlag)CMath.s_valueOf(PlanarSpecFlag.class, s);
+						final PlanarSpecFlag flag=(PlanarSpecFlag)CMath.s_valueOf(PlanarSpecFlag.class, s);
 						if(flag != null)
 						{
 							switch(flag)
@@ -267,7 +266,7 @@ public class Skill_PlanarLore extends StdSkill
 			}
 			if(expertise > 1)
 			{
-				int mobCopy=CMath.s_int(planeVars.get(PlanarVar.MOBCOPY.toString()));
+				final int mobCopy=CMath.s_int(planeVars.get(PlanarVar.MOBCOPY.toString()));
 				if(mobCopy>0)
 				{
 					if(mobCopy == 1)
@@ -275,13 +274,13 @@ public class Skill_PlanarLore extends StdSkill
 					else
 						tidbits.add(L("There are @x1 times as many creatures there as normal.",""+(mobCopy)));
 				}
-				String aeffects = planeVars.get(PlanarVar.AEFFECT.toString());
+				final String aeffects = planeVars.get(PlanarVar.AEFFECT.toString());
 				if(aeffects!=null)
 				{
-					List<Pair<String,String>> affectList=CMParms.parseSpaceParenList(aeffects);
+					final List<Pair<String,String>> affectList=CMParms.parseSpaceParenList(aeffects);
 					if(affectList!=null)
 					{
-						for(Pair<String,String> p : affectList)
+						for(final Pair<String,String> p : affectList)
 						{
 							if(p.first.equalsIgnoreCase("ResourceOverride"))
 								tidbits.add(L("There is a super abundance of @x1 there.",p.second.toLowerCase()));
@@ -291,17 +290,17 @@ public class Skill_PlanarLore extends StdSkill
 			}
 			if(expertise > 2)
 			{
-				String aeffects = planeVars.get(PlanarVar.AEFFECT.toString());
+				final String aeffects = planeVars.get(PlanarVar.AEFFECT.toString());
 				if(aeffects!=null)
 				{
-					List<Pair<String,String>> affectList=CMParms.parseSpaceParenList(aeffects);
+					final List<Pair<String,String>> affectList=CMParms.parseSpaceParenList(aeffects);
 					if(affectList!=null)
 					{
-						for(Pair<String,String> p : affectList)
+						for(final Pair<String,String> p : affectList)
 						{
 							if(p.first.equalsIgnoreCase("Prop_Weather"))
 							{
-								List<String> parms=CMParms.parse(p.second);
+								final List<String> parms=CMParms.parse(p.second);
 								if(text().length()>0)
 								{
 									for(String parm : parms)
@@ -325,11 +324,11 @@ public class Skill_PlanarLore extends StdSkill
 						}
 					}
 				}
-				String adjSize = planeVars.get(PlanarVar.ADJSIZE.toString());
+				final String adjSize = planeVars.get(PlanarVar.ADJSIZE.toString());
 				if(adjSize != null)
 				{
-					int height = CMParms.getParmInt(adjSize, "HEIGHT", 0);
-					int weight = CMParms.getParmInt(adjSize, "WEIGHT", 0);
+					final int height = CMParms.getParmInt(adjSize, "HEIGHT", 0);
+					final int weight = CMParms.getParmInt(adjSize, "WEIGHT", 0);
 					if(height != 0)
 					{
 						if(height < 0)
@@ -348,7 +347,7 @@ public class Skill_PlanarLore extends StdSkill
 			}
 			if(expertise > 3)
 			{
-				String lvlSize = planeVars.get(PlanarVar.LEVELADJ.toString());
+				final String lvlSize = planeVars.get(PlanarVar.LEVELADJ.toString());
 				if(lvlSize != null)
 				{
 					if(CMath.s_int(lvlSize)<0)
@@ -359,20 +358,20 @@ public class Skill_PlanarLore extends StdSkill
 			}
 			if(expertise > 4)
 			{
-				String enables = planeVars.get(PlanarVar.ENABLE.toString());
+				final String enables = planeVars.get(PlanarVar.ENABLE.toString());
 				if(enables!=null)
 				{
-					List<Pair<String,String>> enableAs=CMParms.parseSpaceParenList(enables);
-					for(Pair<String,String> P : enableAs)
+					final List<Pair<String,String>> enableAs=CMParms.parseSpaceParenList(enables);
+					for(final Pair<String,String> P : enableAs)
 					{
-						Ability A1=CMClass.getAbility(P.first);
+						final Ability A1=CMClass.getAbility(P.first);
 						if(A1!=null)
 							tidbits.add(L("You'll need to worry about creatures using @x1 there.",A1.name()));
 						else
 							tidbits.add(L("You'll need to worry about creatures using their @x1 powers against you there.",P.first.toLowerCase()));
 					}
 				}
-				String bonusDamageStat = planeVars.get(PlanarVar.BONUSDAMAGESTAT.toString());
+				final String bonusDamageStat = planeVars.get(PlanarVar.BONUSDAMAGESTAT.toString());
 				if(bonusDamageStat!=null)
 				{
 					tidbits.add(L("Those with high @x1 are more deadly there.",bonusDamageStat.toLowerCase()));
@@ -388,37 +387,37 @@ public class Skill_PlanarLore extends StdSkill
 				else
 				if(eliteLevel > 1)
 					tidbits.add(L("Creatures there will be MUCH more powerful than you are."));
-				String reqWeapons = planeVars.get(PlanarVar.REQWEAPONS.toString());
+				final String reqWeapons = planeVars.get(PlanarVar.REQWEAPONS.toString());
 				if(reqWeapons != null)
 				{
-					for(String weap : CMParms.parseSpaces(reqWeapons, true))
+					for(final String weap : CMParms.parseSpaces(reqWeapons, true))
 						tidbits.add(L("Creatures there are almost unkillable, but @x1 weapons will hurt them.",weap.toLowerCase()));
 				}
 			}
 			if(expertise > 6)
 			{
-				String absorbStr = planeVars.get(PlanarVar.ABSORB.toString());
+				final String absorbStr = planeVars.get(PlanarVar.ABSORB.toString());
 				if(absorbStr != null)
 				{
-					Ability A1=CMClass.getAbility("Prop_AbsorbDamage");
-					String stats=A1.getStat("TIDBITS="+absorbStr);
-					List<String> statV=CMParms.parseAny(stats, "\n\r", true);
-					for(String stat : statV)
+					final Ability A1=CMClass.getAbility("Prop_AbsorbDamage");
+					final String stats=A1.getStat("TIDBITS="+absorbStr);
+					final List<String> statV=CMParms.parseAny(stats, "\n\r", true);
+					for(final String stat : statV)
 						tidbits.add(L("The creatures there @x1.",stat));
 				}
 			}
 			if(expertise > 7)
 			{
-				String hours = planeVars.get(PlanarVar.HOURS.toString());
+				final String hours = planeVars.get(PlanarVar.HOURS.toString());
 				if((hours != null)&&(CMath.isInteger(hours)))
 					tidbits.add(L("That plane has @x1 hour days.",hours));
-				String alignNumStr = planeVars.get(PlanarVar.ALIGNMENT.toString());
+				final String alignNumStr = planeVars.get(PlanarVar.ALIGNMENT.toString());
 				if((alignNumStr != null)&&(CMath.isInteger(alignNumStr)))
 				{
-					Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+					final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
 					if(F!=null)
 					{
-						String rangeName = F.fetchRangeName(CMath.s_int(alignNumStr));
+						final String rangeName = F.fetchRangeName(CMath.s_int(alignNumStr));
 						tidbits.add(L("The creatures there are @x1 aligned.",rangeName));
 					}
 				}
@@ -428,24 +427,24 @@ public class Skill_PlanarLore extends StdSkill
 				String numStr = planeVars.get(PlanarVar.RECOVERRATE.toString());
 				if((numStr != null)&&(CMath.isInteger(numStr)))
 				{
-					int num=CMath.s_int(numStr);
+					final int num=CMath.s_int(numStr);
 					tidbits.add(L("Everything there recovers @x1 times faster.",""+(num+1)));
 				}
 				numStr = planeVars.get(PlanarVar.FATIGUERATE.toString());
 				if((numStr != null)&&(CMath.isInteger(numStr)))
 				{
-					int num=CMath.s_int(numStr);
+					final int num=CMath.s_int(numStr);
 					tidbits.add(L("Everything there becomes fatigued @x1 times faster.",""+(num+1)));
 				}
-				
+
 			}
 			if(expertise > 9)
 			{
-				String areablurbs = planeVars.get(PlanarVar.AREABLURBS.toString());
+				final String areablurbs = planeVars.get(PlanarVar.AREABLURBS.toString());
 				if(areablurbs != null)
 				{
-					Map<String,String> blurbSets=CMParms.parseEQParms(areablurbs);
-					for(String key : blurbSets.keySet())
+					final Map<String,String> blurbSets=CMParms.parseEQParms(areablurbs);
+					for(final String key : blurbSets.keySet())
 						tidbits.add(blurbSets.get(key));
 				}
 			}

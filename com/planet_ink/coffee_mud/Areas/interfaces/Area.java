@@ -522,7 +522,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @return the player level, or 0
 	 */
 	public int getPlayerLevel();
-	
+
 	/**
 	 * Sets a fake player-level, to be used instead of median or average
 	 * actual mob level, for cases where you want an area to reflect its
@@ -532,8 +532,8 @@ public interface Area extends Economics, PhysicalAgent, Places
 	 * @param level the player level, or 0
 	 */
 	public void setPlayerLevel(int level);
-	
-	
+
+
 	/**
 	 * An enumerator list of Area objects representing the Children Areas of this
 	 * Area.
@@ -769,18 +769,18 @@ public interface Area extends Economics, PhysicalAgent, Places
 		private Enumeration<String> roomIDEnumerator=null;
 		private Area area=null;
 
-		public RoomIDEnumerator(Area myArea)
+		public RoomIDEnumerator(final Area myArea)
 		{
 			area=myArea;
 			roomIDEnumerator=area.getProperRoomnumbers().getRoomIDs();
 		}
-		
-		@Override 
+
+		@Override
 		public boolean hasMoreElements()
 		{
 			return roomIDEnumerator.hasMoreElements();
 		}
-		
+
 		@Override
 		public Room nextElement()
 		{
@@ -806,12 +806,12 @@ public interface Area extends Economics, PhysicalAgent, Places
 	{
 		private MultiEnumeration<Room> roomEnumerators=null;
 
-		public CompleteRoomEnumerator(MultiEnumeration<Room> enums)
+		public CompleteRoomEnumerator(final MultiEnumeration<Room> enums)
 		{
 			roomEnumerators=enums;
 		}
 
-		public CompleteRoomEnumerator(Enumeration<Room> enu)
+		public CompleteRoomEnumerator(final Enumeration<Room> enu)
 		{
 			roomEnumerators=new MultiEnumeration<Room>(enu);
 		}
@@ -841,7 +841,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public static class RoomIDComparator implements Comparator<String>
 	{
 		@Override
-		public int compare(String arg0, String arg1)
+		public int compare(final String arg0, final String arg1)
 		{
 			return arg0.compareToIgnoreCase(arg1);
 		}
@@ -854,7 +854,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public static class RoomComparator implements Comparator<Room>
 	{
 		@Override
-		public int compare(Room arg0, Room arg1)
+		public int compare(final Room arg0, final Room arg1)
 		{
 			return arg0.roomID().compareToIgnoreCase(arg1.roomID());
 		}

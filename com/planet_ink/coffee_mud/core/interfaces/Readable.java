@@ -30,7 +30,6 @@ import com.planet_ink.coffee_mud.Common.interfaces.PhyStats;
 */
 public interface Readable extends Physical
 {
-
 	/**
 	 * For things that are readable, this returns the readable string
 	 * for this thing.  That is to say, what the player sees when they

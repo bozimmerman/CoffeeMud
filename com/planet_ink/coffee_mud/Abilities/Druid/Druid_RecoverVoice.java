@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Druid_RecoverVoice extends StdAbility
 {
 	@Override
@@ -81,7 +80,7 @@ public class Druid_RecoverVoice extends StdAbility
 		return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS;
 	}
 
-	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
+	public List<Ability> returnOffensiveAffects(final MOB caster, final Physical fromMe)
 	{
 		final MOB newMOB=CMClass.getFactoryMOB();
 		final Vector<Ability> offenders=new Vector<Ability>(1);
@@ -105,7 +104,7 @@ public class Druid_RecoverVoice extends StdAbility
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -119,7 +118,7 @@ public class Druid_RecoverVoice extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

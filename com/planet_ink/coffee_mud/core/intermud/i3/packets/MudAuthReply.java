@@ -44,7 +44,7 @@ public class MudAuthReply extends Packet
 		target_mud=I3Server.getMudName();
 	}
 
-	public MudAuthReply(Vector<?> v)
+	public MudAuthReply(final Vector<?> v)
 	{
 		super(v);
 		type = Packet.MAUTH_REPLY;
@@ -52,7 +52,7 @@ public class MudAuthReply extends Packet
 		key=CMath.s_int(v.elementAt(6).toString());
 	}
 
-	public MudAuthReply(String mud, long key)
+	public MudAuthReply(final String mud, final long key)
 	{
 		super();
 		type = Packet.MAUTH_REPLY;

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Floristry extends CommonSkill
 {
 	@Override
@@ -109,13 +108,13 @@ public class Floristry extends CommonSkill
 						String flower=null;
 						while((flowerList.size()>2)&&((flower==null)||(flower.trim().length()==0)))
 							flower=flowerList.get(CMLib.dice().roll(1,flowerList.size(),-1)).trim().toLowerCase();
-	
+
 						if(found.rawSecretIdentity().length()>0)
 						{
 							flower=found.rawSecretIdentity();
 							found.setSecretIdentity("");
 						}
-	
+
 						commonTell(mob,L("@x1 appears to be @x2.",found.name(),flower));
 						String name=found.Name();
 						name=name.substring(0,name.length()-8).trim();
@@ -163,14 +162,14 @@ public class Floristry extends CommonSkill
 	{
 		return true;
 	}
-	
+
 	protected int duration(final MOB mob)
 	{
 		return getDuration(15,mob,1,2);
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -179,7 +178,7 @@ public class Floristry extends CommonSkill
 			commonTell(mob,L("You must specify what flower you want to identify."));
 			return false;
 		}
-		String finalName=CMParms.combine(commands,0);
+		final String finalName=CMParms.combine(commands,0);
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,finalName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{

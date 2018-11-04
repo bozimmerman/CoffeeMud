@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_InvisibilitySphere extends Spell
 {
 
@@ -76,7 +75,7 @@ public class Spell_InvisibilitySphere extends Spell
 	{
 		return Ability.QUALITY_INDIFFERENT;
 	}
-	
+
 	protected volatile WeakReference<Room> lastRoom = new WeakReference<Room>(null);
 	protected volatile long lastRoomHash=0;
 
@@ -135,7 +134,7 @@ public class Spell_InvisibilitySphere extends Spell
 			removeFromSphere(affected);
 	}
 
-	protected synchronized void removeFromSphere(Physical affected)
+	protected synchronized void removeFromSphere(final Physical affected)
 	{
 		if(affected != null)
 		{
@@ -149,8 +148,8 @@ public class Spell_InvisibilitySphere extends Spell
 			affected.recoverPhyStats();
 		}
 	}
-	
-	protected synchronized void addToSphere(Physical affected)
+
+	protected synchronized void addToSphere(final Physical affected)
 	{
 		if(affected != null)
 		{
@@ -167,9 +166,9 @@ public class Spell_InvisibilitySphere extends Spell
 			}
 		}
 	}
-	
+
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -197,7 +196,7 @@ public class Spell_InvisibilitySphere extends Spell
 					addToSphere(m.nextElement());
 				for(final Enumeration<Item> i=invokerRoom.items();i.hasMoreElements();)
 				{
-					Item I=i.nextElement();
+					final Item I=i.nextElement();
 					if((I!=null)&&(I.container()==null))
 						addToSphere(I);
 				}
@@ -216,7 +215,7 @@ public class Spell_InvisibilitySphere extends Spell
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -246,22 +245,22 @@ public class Spell_InvisibilitySphere extends Spell
 			addToSphere(m.nextElement());
 		for(final Enumeration<Item> i=invokerRoom.items();i.hasMoreElements();)
 		{
-			Item I=i.nextElement();
+			final Item I=i.nextElement();
 			if((I!=null)&&(I.container()==null))
 				addToSphere(I);
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.fetchEffect(ID())!=null)
 		{
 			mob.tell(mob,null,null,L("You are already inside an invisibility sphere!"));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

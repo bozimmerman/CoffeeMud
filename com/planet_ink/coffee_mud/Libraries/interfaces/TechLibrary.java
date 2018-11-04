@@ -33,7 +33,6 @@ import java.util.*;
 */
 public interface TechLibrary extends CMLibrary
 {
-	
 	/**
 	 * Returns the appropriate electronics key for this electronic item,
 	 * area, or room.  It represents the electronical currents that tie
@@ -188,13 +187,13 @@ public interface TechLibrary extends CMLibrary
 	 * @param newTechLevel the new tech level
 	 */
 	public void fixItemTechLevel(Electronics I, int newTechLevel);
-	
+
 	/**
 	 * If the two given objects are within an appropriate distance
 	 * from each other, this will return the correct amount of
-	 * acceleration g-force applied by the second object to the 
+	 * acceleration g-force applied by the second object to the
 	 * first. typically <= 1G
-	 * 
+	 *
 	 * @param S the object being pulled
 	 * @param cO the object pulling
 	 * @return the amount of gravity force, or 0

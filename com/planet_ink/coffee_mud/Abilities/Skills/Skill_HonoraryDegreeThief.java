@@ -54,4 +54,4 @@ public class Skill_HonoraryDegreeThief extends Skill_HonoraryDegreeCommoner
 		return "Thief";
 	}
 }
-	
+

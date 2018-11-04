@@ -62,7 +62,7 @@ public class Thief_DazzlingCaltrops extends Thief_Caltrops
 	}
 
 	@Override
-	public void spring(MOB mob)
+	public void spring(final MOB mob)
 	{
 		if((!invoker().mayIFight(mob))
 		||(invoker().getGroupMembers(new HashSet<MOB>()).contains(mob))

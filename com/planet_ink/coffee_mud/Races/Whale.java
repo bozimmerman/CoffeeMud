@@ -139,7 +139,7 @@ public class Whale extends GiantFish
 	private final String[]	racialEffectNames			= { "Spell_BigMouth"};
 	private final int[]		racialEffectLevels			= { 1};
 	private final String[]	racialEffectParms			= { "" };
-	
+
 	@Override
 	protected String[] racialEffectNames()
 	{

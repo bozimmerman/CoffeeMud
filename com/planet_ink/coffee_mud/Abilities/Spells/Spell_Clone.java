@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Clone extends Spell
 {
 
@@ -111,7 +110,7 @@ public class Spell_Clone extends Spell
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -140,7 +139,7 @@ public class Spell_Clone extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -208,7 +207,7 @@ public class Spell_Clone extends Spell
 		return success;
 	}
 
-	public MOB determineMonster(MOB caster)
+	public MOB determineMonster(final MOB caster)
 	{
 		final MOB newMOB=(MOB)caster.copyOf();
 		for(int i=0;i<newMOB.numItems();i++)

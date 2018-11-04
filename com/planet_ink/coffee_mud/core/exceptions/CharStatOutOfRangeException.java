@@ -18,15 +18,15 @@ package com.planet_ink.coffee_mud.core.exceptions;
 public class CharStatOutOfRangeException extends CMException
 {
 	/**
-	 * 
+	 *
 	 */
 	private static final long	serialVersionUID	= 2734734114685511904L;
-	public CharStatOutOfRangeException(String s)
+	public CharStatOutOfRangeException(final String s)
 	{
 		super(s);
 	}
 
-	public CharStatOutOfRangeException(String s, Exception e)
+	public CharStatOutOfRangeException(final String s, final Exception e)
 	{
 		super(s,e);
 	}

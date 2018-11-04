@@ -42,7 +42,7 @@ import java.util.*;
  * CMSecurity is the singleton that handles all security checks for all manner
  * of resource access by users.  It also handles certain flag systems, such
  * as debug flags, resource re-save flags, and system disabling flags.
- * 
+ *
  * Supported: (see SecFlag)
  * ORDER includes TAKE, GIVE, DRESS, mob passivity, all follow
  * ABOVELAW (also law books),
@@ -55,9 +55,9 @@ import java.util.*;
  * VFS:relative path from /coffeemud/ -- read/write access to virtual file sys
  * LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
  *   cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat)
- * 
+ *
  * Like many similar systems, this class is thread-group-sensitive on some
- * or all resources, allowing different security views to be presented to 
+ * or all resources, allowing different security views to be presented to
  * different "muds" according to the thread group the calling thread belongs to.
  * @author Bo Zimmerman
  */
@@ -67,9 +67,9 @@ public class CMSecurity
 	public static final int JSCRIPT__NO_APPROVAL = 0;
 	public static final int JSCRIPT_REQ_APPROVAL = 1;
 	public static final int JSCRIPT_ALL_APPROVAL = 2;
-	
+
 	protected static final String[] emptyStrArray= new String[0];
-	
+
 	protected final Set<DisFlag>	disVars		 = new HashSet<DisFlag>();
 	protected final Set<String>		cmdDisVars	 = new HashSet<String>();
 	protected final Set<String>		racDisVars	 = new HashSet<String>();
@@ -80,7 +80,7 @@ public class CMSecurity
 	protected final Set<DbgFlag>	dbgVars		 = new HashSet<DbgFlag>();
 	protected final Set<SaveFlag>	saveFlags 	 = new HashSet<SaveFlag>();
 	protected final Set<String>		journalFlags = new HashSet<String>(); // global, because of cross-library issues
-	
+
 	protected final Map<String,String[]>	racEnaVars	 = new Hashtable<String,String[]>();
 	protected final Map<String,String[]>	clsEnaVars	 = new Hashtable<String,String[]>();
 
@@ -92,7 +92,7 @@ public class CMSecurity
 
 	private final static CMSecurity[]		secs		 = new CMSecurity[256];
 	private final static Iterator<SecFlag>	EMPTYSECFLAGS= new EnumerationIterator<SecFlag>(new EmptyEnumeration<SecFlag>());
-	
+
 	private final static String				XABLE_PREFIX_ABILITY	= "ABILITY_";
 	private final static String				XABLE_PREFIX_EXPERTISE	= "EXPERTISE_";
 	private final static String				XABLE_PREFIX_COMMAND	= "COMMAND_";
@@ -128,8 +128,8 @@ public class CMSecurity
 	 * @param c the thread group to check
 	 * @return the CMSecurity instance tied to this particular thread group, or null if not yet created.
 	 */
-	public static final CMSecurity instance(char c)
-	{ 
+	public static final CMSecurity instance(final char c)
+	{
 		return secs[c];
 	}
 
@@ -190,7 +190,7 @@ public class CMSecurity
 
 	/**
 	 * Iterates through all the properties on the given property page, finding
-	 * any security group definitions and, when found, registering them with 
+	 * any security group definitions and, when found, registering them with
 	 * the security system.
 	 * @param page the properties page to go through.
 	 */
@@ -288,12 +288,12 @@ public class CMSecurity
 
 	/**
 	 * Create a new security group object with the given name, and the given
-	 * set of security flags/group names as a string list.  
+	 * set of security flags/group names as a string list.
 	 * @param name the new security group name
 	 * @param set the string list of flags/group names
 	 * @return the new security group object
 	 */
-	public final SecGroup createGroup(String name, final List<String> set)
+	public final SecGroup createGroup(final String name, final List<String> set)
 	{
 		final Set<SecFlag> 	 newFlags=new HashSet<SecFlag>();
 		final List<SecGroup> newGroups=new LinkedList<SecGroup>();
@@ -349,7 +349,7 @@ public class CMSecurity
 	 * @param name the new security group name
 	 * @param set the comma-delimited list of flags/group names
 	 */
-	private static final void addGroup(String name, final String set)
+	private static final void addGroup(final String name, final String set)
 	{
 		final SecGroup newGroup=instance().createGroup(name,CMParms.parseCommas(set,true));
 		final SecGroup group=i().groups.get(name);
@@ -584,7 +584,7 @@ public class CMSecurity
 	 * @param path the path of the file to check permissions on
 	 * @return true if the user/player has permission to see and CD into the given directory, false otherwise.
 	 */
-	public static final boolean canTraverseDir(MOB mob, Room room, String path)
+	public static final boolean canTraverseDir(final MOB mob, final Room room, String path)
 	{
 		if(isASysOp(mob))
 			return true;
@@ -616,7 +616,7 @@ public class CMSecurity
 
 	/**
 	 * Checks whether the given user/player mob, in the given room location, can access a file at the given
-	 * path, with the given VFS (database) status.  The room location allows subop (area) permissions to 
+	 * path, with the given VFS (database) status.  The room location allows subop (area) permissions to
 	 * kick in.
 	 * @param mob the user/player to check
 	 * @param room the room location of the above user/player
@@ -687,7 +687,7 @@ public class CMSecurity
 	 * @param journalFlagName the journal flag, almost always the journal ID
 	 * @return true if the mob is an admin, and false otherwise
 	 */
-	public static boolean isJournalAccessAllowed(MOB mob, String journalFlagName)
+	public static boolean isJournalAccessAllowed(final MOB mob, String journalFlagName)
 	{
 		journalFlagName=journalFlagName.trim().toUpperCase();
 		if(mob==null)
@@ -705,7 +705,7 @@ public class CMSecurity
 	}
 
 	/**
-	 * Checks whether the given mob, currently in the given room, has any of the security flags 
+	 * Checks whether the given mob, currently in the given room, has any of the security flags
 	 * denoted by the given security group.
 	 * @param mob the user/player to check security settings on
 	 * @param room the user/players current room location, for subop (area) permission checks
@@ -893,7 +893,7 @@ public class CMSecurity
 	}
 
 	/**
-	 * For muds using the JavaScript approval system, this method returns 
+	 * For muds using the JavaScript approval system, this method returns
 	 * the list of approval script approver names and their script hash value keys.
 	 * @return the list of approved scripts and their approvers, keyed by their script hash values
 	 */
@@ -1038,7 +1038,7 @@ public class CMSecurity
 
 	/**
 	 * Sets all DbgFlag debug flags given a comma-delimited list of debug
-	 * flag names.  
+	 * flag names.
 	 * @param varList the comma-delimited list of debug flags to set.
 	 */
 	public static final void setDebugVars(final String varList)
@@ -1079,7 +1079,7 @@ public class CMSecurity
 
 	/**
 	 * Since there are several different kinds of enable flags, this method
-	 * will check the prefix of the flag to determine which kind it is, 
+	 * will check the prefix of the flag to determine which kind it is,
 	 * returning the string set that corresponds to one of the special
 	 * ones, such as for abilities, expertises, commands, or factions.
 	 * A return of null means it's probably a random enable flag.
@@ -1122,14 +1122,14 @@ public class CMSecurity
 	 * meaning all the things returned are enabled, but normally disabled presently.
 	 * @return an enumeration of all enable flags that are currently set
 	 */
-	public static Enumeration<Object> getEnablesEnum() 
-	{ 
-		MultiEnumeration m = new MultiEnumeration(getEnabledSpecialsEnum(true));
+	public static Enumeration<Object> getEnablesEnum()
+	{
+		final MultiEnumeration m = new MultiEnumeration(getEnabledSpecialsEnum(true));
 		return m;
 	}
-	
+
 	/**
-	 * Returns an enumeration of the enabled race IDs, 
+	 * Returns an enumeration of the enabled race IDs,
 	 * complete with flag prefix, if requested.
 	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
 	 * @return an enumeration of the enabled race IDs
@@ -1140,7 +1140,7 @@ public class CMSecurity
 	}
 
 	/**
-	 * Returns an enumeration of the enabled IDs, with parms, and 
+	 * Returns an enumeration of the enabled IDs, with parms, and
 	 * complete with flag prefix, if requested.
 	 * @param map the enabled set to use
 	 * @param prefix the prefix to add, if any
@@ -1149,16 +1149,16 @@ public class CMSecurity
 	protected static Enumeration<String> getSafeEnumerableEnableParmSet(final Map<String,String[]> map, final String prefix)
 	{
 		final TreeSet<String> newSet = new TreeSet<String>();
-		for(String key : map.keySet())
+		for(final String key : map.keySet())
 		{
 			if(key != null)
 				newSet.add(prefix + key + ((map.get(key).length==0)?"":(" "+CMParms.combineWSpaces(map.get(key)))));
 		}
 		return new IteratorEnumeration<String>(newSet.iterator());
 	}
-	
+
 	/**
-	 * Returns an enumeration of the enabled character class IDs, 
+	 * Returns an enumeration of the enabled character class IDs,
 	 * complete with flag prefix, if requested.
 	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
 	 * @return an enumeration of the enabled character class IDs
@@ -1220,7 +1220,7 @@ public class CMSecurity
 		}
 		else
 		{
-			List<String> flagList = CMParms.parse(anyFlag.toUpperCase().trim());
+			final List<String> flagList = CMParms.parse(anyFlag.toUpperCase().trim());
 			if(flagList.size()>0)
 			{
 				final String flag = getFinalSpecialXableFlagName(flagList.get(0));
@@ -1286,13 +1286,13 @@ public class CMSecurity
 		}
 		return emptyStrArray;
 	}
-	
+
 	/**
 	 * Sets all enable flags of all types given a list of comma-delimited
 	 * flag names in a string.
 	 * Since there are several different kinds of enable flags, this method
 	 * will check the prefix of each flag to determine which kind it is. It
-	 * will log an error if any flag is unrecognized. 
+	 * will log an error if any flag is unrecognized.
 	 * @param commaDelimFlagList the list of flags, comma delimited
 	 */
 	public static final void setAnyEnableVars(final String commaDelimFlagList)
@@ -1308,14 +1308,14 @@ public class CMSecurity
 	}
 
 	/**
-	 * Returns an enumeration of the enabled ability IDs, command IDs, charclass IDs, and race IDs 
+	 * Returns an enumeration of the enabled ability IDs, command IDs, charclass IDs, and race IDs
 	 * complete with flag prefix, if requested.
 	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
 	 * @return an enumeration of the enabled ability, command, charclass, and race IDs
 	 */
 	public static final Enumeration<String> getEnabledSpecialsEnum(final boolean addINIPrefix)
 	{
-		MultiEnumeration<String> menums = new MultiEnumeration<String>(getEnabledCharClassEnum(addINIPrefix));
+		final MultiEnumeration<String> menums = new MultiEnumeration<String>(getEnabledCharClassEnum(addINIPrefix));
 		menums.addEnumeration(getEnabledRacesEnum(true));
 		return menums;
 	}
@@ -1325,8 +1325,8 @@ public class CMSecurity
 	 * meaning all the standard basic systems returned are disabled presently.
 	 * @return an enumeration of all basic DisFlags that are currently set
 	 */
-	public static Enumeration<DisFlag> getBasicDisablesEnum() 
-	{ 
+	public static Enumeration<DisFlag> getBasicDisablesEnum()
+	{
 		return new IteratorEnumeration<DisFlag>(instance().disVars.iterator());
 	}
 
@@ -1335,10 +1335,10 @@ public class CMSecurity
 	 * meaning all the things returned are disabled presently.
 	 * @return an enumeration of all flags that are currently set
 	 */
-	public static Enumeration<Object> getDisablesEnum() 
-	{ 
-		Enumeration<DisFlag> e=new IteratorEnumeration<DisFlag>(instance().disVars.iterator());
-		MultiEnumeration m = new MultiEnumeration(e);
+	public static Enumeration<Object> getDisablesEnum()
+	{
+		final Enumeration<DisFlag> e=new IteratorEnumeration<DisFlag>(instance().disVars.iterator());
+		final MultiEnumeration m = new MultiEnumeration(e);
 		return m.addEnumeration(getDisabledSpecialsEnum(true));
 	}
 
@@ -1425,7 +1425,7 @@ public class CMSecurity
 		final Set<String> set = getSpecialDisableSet(anyFlag);
 		if(set == null)
 		{
-			String flag = anyFlag.toUpperCase().trim();
+			final String flag = anyFlag.toUpperCase().trim();
 			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
 			if(disFlag!=null)
 			{
@@ -1447,7 +1447,7 @@ public class CMSecurity
 	 * flag names in a string.
 	 * Since there are several different kinds of disable flags, this method
 	 * will check the prefix of each flag to determine which kind it is. It
-	 * will log an error if any flag is unrecognized. 
+	 * will log an error if any flag is unrecognized.
 	 * @param commaDelimFlagList the list of flags, comma delimited
 	 */
 	public static final void setAnyDisableVars(final String commaDelimFlagList)
@@ -1466,20 +1466,20 @@ public class CMSecurity
 
 	/**
 	 * Since there are several different kinds of dis/enable flags, this method
-	 * will check the prefix of the flag to determine which kind it is, 
+	 * will check the prefix of the flag to determine which kind it is,
 	 * and return the remaining portion, which is the important definition
 	 * of the flag.
 	 * @param anyFlag the full undetermined flag name
-	 * @return null if its not a special flag, and the sub-portion otherwise 
+	 * @return null if its not a special flag, and the sub-portion otherwise
 	 */
 	private static final String getFinalSpecialXableFlagName(final String anyFlag)
 	{
 		final String flag = anyFlag.toUpperCase().trim();
-		if(flag.startsWith(XABLE_PREFIX_ABILITY) 
-		|| flag.startsWith(XABLE_PREFIX_EXPERTISE) 
-		|| flag.startsWith(XABLE_PREFIX_COMMAND) 
-		|| flag.startsWith(XABLE_PREFIX_RACE) 
-		|| flag.startsWith(XABLE_PREFIX_CHARCLASS) 
+		if(flag.startsWith(XABLE_PREFIX_ABILITY)
+		|| flag.startsWith(XABLE_PREFIX_EXPERTISE)
+		|| flag.startsWith(XABLE_PREFIX_COMMAND)
+		|| flag.startsWith(XABLE_PREFIX_RACE)
+		|| flag.startsWith(XABLE_PREFIX_CHARCLASS)
 		|| flag.startsWith(XABLE_PREFIX_FACTION))
 		{
 			final int underIndex=flag.indexOf('_')+1;
@@ -1487,10 +1487,10 @@ public class CMSecurity
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Since there are several different kinds of disable flags, this method
-	 * will check the prefix of the flag to determine which kind it is, 
+	 * will check the prefix of the flag to determine which kind it is,
 	 * returning the string set that corresponds to one of the special
 	 * ones, such as for abilities, expertises, commands, or factions.
 	 * A return of null means it's probably a normal disable flag.
@@ -1536,7 +1536,7 @@ public class CMSecurity
 	 * Since there are several different kinds of disable flags, this method
 	 * allows of the different kinds to be removed/un-set simply by sending the string.
 	 * The DisFlag objects are covered by this, but so are command disablings,
-	 * abilities, expertises, etc.. 
+	 * abilities, expertises, etc..
 	 * @param anyFlag the thing to re-enable
 	 * @return true if anyFlag was a valid thing to re-enable, and false otherwise
 	 */
@@ -1545,7 +1545,7 @@ public class CMSecurity
 		final Set<String> set = getSpecialDisableSet(anyFlag);
 		if(set == null)
 		{
-			String flag = anyFlag.toUpperCase().trim();
+			final String flag = anyFlag.toUpperCase().trim();
 			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
 			if(disFlag!=null)
 			{
@@ -1566,7 +1566,7 @@ public class CMSecurity
 	 * Since there are several different kinds of disable flags, this method
 	 * allows of the different kinds to be set simply by sending the string.
 	 * The DisFlag objects are covered by this, but so are command disablings,
-	 * abilities, expertises, etc.. 
+	 * abilities, expertises, etc..
 	 * @param anyFlag the thing to disable
 	 * @return true if anyFlag was a valid thing to disable, and false otherwise
 	 */
@@ -1575,7 +1575,7 @@ public class CMSecurity
 		final Set<String> set = getSpecialDisableSet(anyFlag);
 		if(set == null)
 		{
-			String flag = anyFlag.toUpperCase().trim();
+			final String flag = anyFlag.toUpperCase().trim();
 			final DisFlag disFlag = (DisFlag)CMath.s_valueOf(CMSecurity.DisFlag.values(), flag);
 			if(disFlag!=null)
 			{
@@ -1606,13 +1606,13 @@ public class CMSecurity
 		return new Enumeration<String>()
 		{
 			@Override
-			public boolean hasMoreElements() 
+			public boolean hasMoreElements()
 			{
 				return iter.hasNext();
 			}
 
 			@Override
-			public String nextElement() 
+			public String nextElement()
 			{
 				final String ID = iter.next();
 				if(ID != null)
@@ -1621,16 +1621,16 @@ public class CMSecurity
 			}
 		};
 	}
-	
+
 	/**
-	 * Returns an enumeration of the disabled ability IDs, command IDs, expertise IDs, and faction IDs 
+	 * Returns an enumeration of the disabled ability IDs, command IDs, expertise IDs, and faction IDs
 	 * complete with flag prefix, if requested.
 	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
 	 * @return an enumeration of the disabled ability, command, expertise, and faction IDs
 	 */
 	public static final Enumeration<String> getDisabledSpecialsEnum(final boolean addINIPrefix)
 	{
-		MultiEnumeration<String> menums = new MultiEnumeration<String>(getDisabledAbilitiesEnum(addINIPrefix));
+		final MultiEnumeration<String> menums = new MultiEnumeration<String>(getDisabledAbilitiesEnum(addINIPrefix));
 		menums.addEnumeration(getDisabledExpertisesEnum(true));
 		menums.addEnumeration(getDisabledCommandsEnum(true));
 		menums.addEnumeration(getDisabledFactionsEnum(true));
@@ -1638,9 +1638,9 @@ public class CMSecurity
 		menums.addEnumeration(getDisabledRacesEnum(true));
 		return menums;
 	}
-	
+
 	/**
-	 * Returns an enumeration of the disabled ability IDs, 
+	 * Returns an enumeration of the disabled ability IDs,
 	 * complete with flag prefix, if requested.
 	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
 	 * @return an enumeration of the disabled ability IDs
@@ -1651,7 +1651,7 @@ public class CMSecurity
 	}
 
 	/**
-	 * Returns an enumeration of the disabled expertise IDs, 
+	 * Returns an enumeration of the disabled expertise IDs,
 	 * complete with flag prefix, if requested.
 	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
 	 * @return an enumeration of the disabled expertise IDs
@@ -1662,7 +1662,7 @@ public class CMSecurity
 	}
 
 	/**
-	 * Returns an enumeration of the disabled command IDs, 
+	 * Returns an enumeration of the disabled command IDs,
 	 * complete with flag prefix, if requested.
 	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
 	 * @return an enumeration of the disabled command IDs
@@ -1673,7 +1673,7 @@ public class CMSecurity
 	}
 
 	/**
-	 * Returns an enumeration of the disabled race IDs, 
+	 * Returns an enumeration of the disabled race IDs,
 	 * complete with flag prefix, if requested.
 	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
 	 * @return an enumeration of the disabled race IDs
@@ -1684,7 +1684,7 @@ public class CMSecurity
 	}
 
 	/**
-	 * Returns an enumeration of the disabled character class IDs, 
+	 * Returns an enumeration of the disabled character class IDs,
 	 * complete with flag prefix, if requested.
 	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
 	 * @return an enumeration of the disabled character class IDs
@@ -1695,7 +1695,7 @@ public class CMSecurity
 	}
 
 	/**
-	 * Returns an enumeration of the disabled faction IDs, 
+	 * Returns an enumeration of the disabled faction IDs,
 	 * complete with flag prefix, if requested.
 	 * @param addINIPrefix true to add the prefix required in the ini file, false for a plain ID
 	 * @return an enumeration of the disabled faction IDs
@@ -1737,7 +1737,7 @@ public class CMSecurity
 	}
 
 	/**
-	 * Sets all the SaveFlags from a comma-delimited list, activating them.  
+	 * Sets all the SaveFlags from a comma-delimited list, activating them.
 	 * @param flagsListStr a comma-delimited list of SaveFlag names
 	 */
 	public static final void setSaveFlags(final String flagsListStr)
@@ -1747,7 +1747,7 @@ public class CMSecurity
 		inst.saveFlags.clear();
 		for(final String flag : flagsList)
 		{
-			SaveFlag flagObj = (SaveFlag)CMath.s_valueOf(CMSecurity.SaveFlag.class, flag);
+			final SaveFlag flagObj = (SaveFlag)CMath.s_valueOf(CMSecurity.SaveFlag.class, flag);
 			if(flagObj != null)
 			{
 				inst.saveFlags.add(flagObj);
@@ -1801,37 +1801,37 @@ public class CMSecurity
 	 * @param addr an InetAddress representing the address to convert
 	 * @return the ip address of the given as a long int
 	 */
-	private static long makeIPNumFromInetAddress(InetAddress addr)
+	private static long makeIPNumFromInetAddress(final InetAddress addr)
 	{
-		return ((long)(addr.getAddress()[0] & 0xFF) << 24) 
-			| ((long)(addr.getAddress()[1] & 0xFF) << 16) 
-			| ((long)(addr.getAddress()[2] & 0xFF) << 8) 
+		return ((long)(addr.getAddress()[0] & 0xFF) << 24)
+			| ((long)(addr.getAddress()[1] & 0xFF) << 16)
+			| ((long)(addr.getAddress()[2] & 0xFF) << 8)
 			| (addr.getAddress()[3] & 0xFF);
 	}
-	
+
 	/**
 	 * Converts the given string ipaddress or host name into a long int
 	 * @param s an ipaddress or host name
 	 * @return the ip address of the given as a long int
 	 */
-	private static long makeIPNumFromInetAddress(String s)
+	private static long makeIPNumFromInetAddress(final String s)
 	{
-		try 
+		try
 		{
 			return makeIPNumFromInetAddress(InetAddress.getByName(s.trim()));
-		} 
-		catch (UnknownHostException e) 
+		}
+		catch (final UnknownHostException e)
 		{
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * Returns true if the given IP4 address is blocked, and false otherwise
 	 * @param ipAddress the IP4 address to look for
 	 * @return true if the given IP4 address is blocked, and false otherwise
 	 */
-	public static boolean isIPBlocked(String ipAddress)
+	public static boolean isIPBlocked(final String ipAddress)
 	{
 		final LongSet group = CMSecurity.getIPBlocks();
 		final boolean chk = ((group != null) && (group.contains(makeIPNumFromInetAddress(ipAddress))));
@@ -1853,7 +1853,7 @@ public class CMSecurity
 		*/
 		return chk;
 	}
-	
+
 	/**
 	 * Returns all blocked IP4 addresses
 	 * @return all blocked IP4 addresses
@@ -1866,7 +1866,7 @@ public class CMSecurity
 			group = new LongSet();
 			final String filename = CMProps.getVar(CMProps.Str.BLACKLISTFILE);
 			final List<String> ipList = Resources.getFileLineVector(Resources.getFileResource(filename, false));
-			for(String ip : ipList)
+			for(final String ip : ipList)
 			{
 				if(ip.trim().startsWith("#")||(ip.trim().length()==0))
 				{
@@ -1896,7 +1896,7 @@ public class CMSecurity
 		}
 		return group;
 	}
-	
+
 	/**
 	 * Returns true if the given name or ip address or whatever is found in the official ::/resources/banned.ini
 	 * file, which is cached in a list for quick access.  The search is case insensitive, and any entry may
@@ -1935,7 +1935,7 @@ public class CMSecurity
 	}
 
 	/**
-	 * Removes the given player name, account name, or ip address  from the official ::/resources/banned.ini file. 
+	 * Removes the given player name, account name, or ip address  from the official ::/resources/banned.ini file.
 	 * It also removes it from the cached ban list.
 	 * @param unBanMe the player name, account name, or ip address to remove
 	 */
@@ -2022,47 +2022,47 @@ public class CMSecurity
 	 */
 	public static enum SecFlag
 	{
-		ABILITIES, ABOVELAW, AFTER, AHELP, ALLSKILLS, ANNOUNCE, AS, AT, BAN, 
+		ABILITIES, ABOVELAW, AFTER, AHELP, ALLSKILLS, ANNOUNCE, AS, AT, BAN,
 		BEACON, BOOT, CARRYALL, CATALOG, CHARGEN, CLOAK, CMD, CMDABILITIES,
-		CMDAREAS, CMDCLANS, CMDCLASSES, CMDEXITS, CMDFACTIONS, CMDITEMS, 
+		CMDAREAS, CMDCLANS, CMDCLASSES, CMDEXITS, CMDFACTIONS, CMDITEMS,
 		CMDMOBS, CMDPLAYERS, CMDQUESTS, CMDRACES, CMDRECIPES, CMDROOMS,
-		CMDSOCIALS, COMPONENTS, COPY, COPYITEMS, COPYMOBS, COPYROOMS, 
+		CMDSOCIALS, COMPONENTS, COPY, COPYITEMS, COPYMOBS, COPYROOMS,
 		DUMPFILE, EXPERTISE, EXPERTISES, EXPORT, EXPORTFILE, EXPORTPLAYERS,
-		GMODIFY, GOTO, I3, IDLEOK, IMC2, IMMORT, IMPORT, IMPORTITEMS, IMPORTMOBS, 
+		GMODIFY, GOTO, I3, IDLEOK, IMC2, IMMORT, IMPORT, IMPORTITEMS, IMPORTMOBS,
 		IMPORTPLAYERS, IMPORTROOMS, JOURNALS, JSCRIPTS, KILL, KILLDEAD,
-		LISTADMIN, LOADUNLOAD, MERGE, MXPTAGS, NEWS, NOEXPIRE, NOPURGE, ORDER, 
+		LISTADMIN, LOADUNLOAD, MERGE, MXPTAGS, NEWS, NOEXPIRE, NOPURGE, ORDER,
 		PAUSE, PKILL, POLLS, POSSESS, PURGE, RESET, RESETUTILS, RESTRING,
-		SESSIONS, SHUTDOWN, SNOOP, STAT, SUPERSKILL, SYSMSGS, TICKTOCK, TITLES, 
-		TRAILTO, TRANSFER, WHERE, WIZEMOTE, WIZINV, MISC, CMDDATABASE, EVERY, 
+		SESSIONS, SHUTDOWN, SNOOP, STAT, SUPERSKILL, SYSMSGS, TICKTOCK, TITLES,
+		TRAILTO, TRANSFER, WHERE, WIZEMOTE, WIZINV, MISC, CMDDATABASE, EVERY,
 		ACHIEVEMENTS,
 
-		AREA_ABILITIES, AREA_ABOVELAW, AREA_AFTER, AREA_AHELP, AREA_ALLSKILLS, 
+		AREA_ABILITIES, AREA_ABOVELAW, AREA_AFTER, AREA_AHELP, AREA_ALLSKILLS,
 		AREA_ANNOUNCE, AREA_AS, AREA_AT, AREA_BAN, AREA_BEACON, AREA_BOOT,
-		AREA_CARRYALL, AREA_CATALOG, AREA_CHARGEN, AREA_CLOAK, AREA_CMD, 
+		AREA_CARRYALL, AREA_CATALOG, AREA_CHARGEN, AREA_CLOAK, AREA_CMD,
 		AREA_CMDABILITIES, AREA_CMDAREAS, AREA_CMDCLANS, AREA_CMDCLASSES,
-		AREA_CMDEXITS, AREA_CMDFACTIONS, AREA_CMDITEMS, AREA_CMDMOBS, 
+		AREA_CMDEXITS, AREA_CMDFACTIONS, AREA_CMDITEMS, AREA_CMDMOBS,
 		AREA_CMDPLAYERS, AREA_CMDQUESTS, AREA_CMDRACES, AREA_CMDRECIPES,
-		AREA_CMDROOMS, AREA_CMDSOCIALS, AREA_COMPONENTS, AREA_COPY, AREA_COPYITEMS, 
+		AREA_CMDROOMS, AREA_CMDSOCIALS, AREA_COMPONENTS, AREA_COPY, AREA_COPYITEMS,
 		AREA_COPYMOBS, AREA_COPYROOMS, AREA_DUMPFILE, AREA_EXPERTISE,
-		AREA_EXPERTISES, AREA_EXPORT, AREA_EXPORTFILE, AREA_EXPORTPLAYERS, 
+		AREA_EXPERTISES, AREA_EXPORT, AREA_EXPORTFILE, AREA_EXPORTPLAYERS,
 		AREA_GMODIFY, AREA_GOTO, AREA_I3, AREA_IDLEOK, AREA_IMC2, AREA_IMMORT,
-		AREA_IMPORT, AREA_IMPORTITEMS, AREA_IMPORTMOBS, AREA_IMPORTPLAYERS, 
+		AREA_IMPORT, AREA_IMPORTITEMS, AREA_IMPORTMOBS, AREA_IMPORTPLAYERS,
 		AREA_IMPORTROOMS, AREA_JOURNALS, AREA_JSCRIPTS, AREA_KILL,
-		AREA_KILLDEAD, AREA_LISTADMIN, AREA_LOADUNLOAD, AREA_MERGE, 
+		AREA_KILLDEAD, AREA_LISTADMIN, AREA_LOADUNLOAD, AREA_MERGE,
 		AREA_MXPTAGS, AREA_NEWS, AREA_NOEXPIRE, AREA_NOPURGE, AREA_ORDER,
-		AREA_PAUSE, AREA_PKILL, AREA_POLLS, AREA_POSSESS, AREA_PURGE, 
+		AREA_PAUSE, AREA_PKILL, AREA_POLLS, AREA_POSSESS, AREA_PURGE,
 		AREA_RESET, AREA_RESETUTILS, AREA_RESTRING, AREA_SESSIONS,
-		AREA_SHUTDOWN, AREA_SNOOP, AREA_STAT, AREA_SUPERSKILL, AREA_SYSMSGS, 
+		AREA_SHUTDOWN, AREA_SNOOP, AREA_STAT, AREA_SUPERSKILL, AREA_SYSMSGS,
 		AREA_TICKTOCK, AREA_TITLES, AREA_TRAILTO, AREA_TRANSFER, AREA_WHERE,
 		AREA_WIZEMOTE, AREA_WIZINV, AREA_MISC, AREA_CMDDATABASE, AREA_EVERY
 		;
 		private SecFlag regularAlias=null;
 		private SecFlag areaAlias=null;
-		
+
 		private SecFlag()
 		{
 		}
-		
+
 		/**
 		 * Fixes all the flags to make sure there is a regular and area (subop) version
 		 */
@@ -2082,7 +2082,7 @@ public class CMSecurity
 				}
 			}
 		}
-		
+
 		/**
 		 * Returns the regular (non-subop) (non-area) version of this security flag
 		 * @return the regular (non-subop) (non-area) version of this security flag
@@ -2092,7 +2092,7 @@ public class CMSecurity
 			fixAliases();
 			return regularAlias;
 		}
-		
+
 		/**
 		 * Returns the subop (area) version of this security flag, if there is one
 		 * @return the subop (area) version of this security flag, if there is one
@@ -2117,14 +2117,14 @@ public class CMSecurity
 		private final String	slashPath;
 		private final boolean	isVfs;
 		private final boolean	isAreaOnly;
-		
+
 		/**
 		 * Constructs a path object
 		 * @param path the unix-like file path to give acesss to
 		 * @param isVfs true if the path is virtual (db) only
 		 * @param isAreaOnly true if the access is for subops only
 		 */
-		public SecPath(String path, boolean isVfs, boolean isAreaOnly)
+		public SecPath(final String path, final boolean isVfs, final boolean isAreaOnly)
 		{
 			this.path=path.trim();
 			if(!this.path.endsWith("/"))
@@ -2134,7 +2134,7 @@ public class CMSecurity
 			this.isVfs=isVfs;
 			this.isAreaOnly=isAreaOnly;
 		}
-		
+
 		/**
 		 * Converts this SecPath object back into the string path flag
 		 * @return  this SecPath object back into the string path flag
@@ -2168,33 +2168,33 @@ public class CMSecurity
 		 * @param paths filesystem paths that this group grants access to
 		 * @param jFlags names of journal that administrative rights are given to
 		 */
-		public SecGroup(String name, Set<SecFlag> flags, List<SecGroup> groups, List<SecPath> paths, Set<String> jFlags)
+		public SecGroup(final String name, final Set<SecFlag> flags, final List<SecGroup> groups, final List<SecPath> paths, final Set<String> jFlags)
 		{
 			this.name=name;
 			reset(flags, groups, paths, jFlags);
 		}
-		
+
 		/**
 		 * Constructor from existing security flag data.
 		 * @param name the name of the group
 		 * @param flags the basic security flags in this group
 		 */
-		public SecGroup(String name, Set<SecFlag> flags)
+		public SecGroup(final String name, final Set<SecFlag> flags)
 		{
 			this.name=name;
 			reset(flags,new ArrayList<SecGroup>(1),new ArrayList<SecPath>(1),new SHashSet<String>());
 		}
-		
+
 		/**
 		 * Constructor from existing security flag data.
 		 * @param flags the basic security flags in this group
 		 */
-		public SecGroup(SecFlag[] flags)
+		public SecGroup(final SecFlag[] flags)
 		{
 			this.name="";
 			reset(new SHashSet<SecFlag>(flags),new ArrayList<SecGroup>(1),new ArrayList<SecPath>(1),new SHashSet<String>());
 		}
-		
+
 		/**
 		 * Returns the name of this security group.
 		 * @return the name of this security group.
@@ -2203,7 +2203,7 @@ public class CMSecurity
 		{
 			return name;
 		}
-		
+
 		/**
 		 * Re-populates this group from new security flag data.
 		 * @param flags the basic security flags in this group
@@ -2211,7 +2211,7 @@ public class CMSecurity
 		 * @param paths filesystem paths that this group grants access to
 		 * @param jFlags names of journal that administrative rights are given to
 		 */
-		public void reset(Set<SecFlag> flags, List<SecGroup> groups, List<SecPath> paths, Set<String> jFlags)
+		public void reset(final Set<SecFlag> flags, final List<SecGroup> groups, final List<SecPath> paths, final Set<String> jFlags)
 		{
 			this.flags=flags;
 			this.numAllFlags=flags.size();
@@ -2219,18 +2219,18 @@ public class CMSecurity
 			this.paths=paths;
 			this.jFlags=jFlags;
 			numAllFlags+=paths.size();
-			for(final SecGroup g : groups) 
+			for(final SecGroup g : groups)
 				this.numAllFlags+= g.size();
 		}
-		
+
 		//public SecGroup copyOf() // NOT ALLOWED -- flags are ok, but groups MUST be unmutable for internal changes!!
-		
+
 		/**
 		 * Checks the given group and all subgroups for access to a journal of the given name
 		 * @param journalFlag the name of the journal
 		 * @return true if this group grants access, and false otherwise.
 		 */
-		public boolean containsJournal(String journalFlag)
+		public boolean containsJournal(final String journalFlag)
 		{
 			if(jFlags.contains(journalFlag))
 				return true;
@@ -2241,7 +2241,7 @@ public class CMSecurity
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Checks this group and all subgroups for access to the given security flag, also checking
 		 * for subop (area) access if the isSubOp flag is sent.
@@ -2249,7 +2249,7 @@ public class CMSecurity
 		 * @param isSubOp true if this should also check for equivalent subop (area) flags
 		 * @return true if this group contains the security, false otherwise
 		 */
-		public boolean contains(SecFlag flag, boolean isSubOp)
+		public boolean contains(final SecFlag flag, final boolean isSubOp)
 		{
 			if(flags.contains(flag.getRegularAlias()))
 				return true;
@@ -2262,7 +2262,7 @@ public class CMSecurity
 			}
 			return false;
 		}
-		
+
 		/**
 		 * Checks this group and all subgroups for access to any of the security flags or journal flags
 		 * in the given group.  It also checks for subop (area) access if the isSubOp flag is set.
@@ -2270,7 +2270,7 @@ public class CMSecurity
 		 * @param isSubOp true if this should also check for equivalent subop (area) flags
 		 * @return true if this group contains any of the security, false otherwise
 		 */
-		public boolean containsAny(SecGroup group, boolean isSubOp)
+		public boolean containsAny(final SecGroup group, final boolean isSubOp)
 		{
 			for(final SecFlag flag : group.flags)
 			{
@@ -2298,7 +2298,7 @@ public class CMSecurity
 		{
 			return numAllFlags;
 		}
-		
+
 		/**
 		 * Converts this object to a ; delimited string
 		 * @return a ; delimited representation of this object.
@@ -2308,7 +2308,7 @@ public class CMSecurity
 		{
 			return toString(';');
 		}
-		
+
 		/**
 		 * Returns an exact copy of this object.
 		 * @return an exact copy of this object.
@@ -2317,13 +2317,13 @@ public class CMSecurity
 		{
 			return new SecGroup(name,new SHashSet<SecFlag>(flags),new SVector<SecGroup>(groups),new SVector<SecPath>(paths),new SHashSet<String>(jFlags));
 		}
-		
+
 		/**
 		 * Converts this group object to a delimited string
 		 * @param separatorChar the delimiter
 		 * @return  this group object to a delimited string
 		 */
-		public String toString(char separatorChar)
+		public String toString(final char separatorChar)
 		{
 			final StringBuilder str=new StringBuilder("");
 			for(final SecFlag flag : flags)
@@ -2338,7 +2338,7 @@ public class CMSecurity
 				return str.toString().substring(0,str.length()-1);
 			return "";
 		}
-		
+
 		/**
 		 * Returns an iterator of all file paths that this group
 		 * has special access to, including those of subgroups.
@@ -2389,7 +2389,7 @@ public class CMSecurity
 				}
 			};
 		}
-		
+
 		/**
 		 * Returns an iterator through all the security flags that this group
 		 * has access to, including all subgroups.
@@ -2485,7 +2485,7 @@ public class CMSecurity
 	});
 
 	/**
-	 * Predefined security group set containing security flags related to the ability to export 
+	 * Predefined security group set containing security flags related to the ability to export
 	 * mobs, items, players, and rooms to a local file.
 	 */
 	public static final SecGroup SECURITY_EXPORT_GROUP=new SecGroup(new SecFlag[]{
@@ -2495,7 +2495,7 @@ public class CMSecurity
 	});
 
 	/**
-	 * Predefined security group set containing security flags related to the creation, 
+	 * Predefined security group set containing security flags related to the creation,
 	 * modification, and destruction of most subsystems, including basic map editing abilities.
 	 */
 	public static final SecGroup SECURITY_CMD_GROUP=new SecGroup(new SecFlag[]{
@@ -2508,7 +2508,7 @@ public class CMSecurity
 		SecFlag.AREA_CMDMOBS, SecFlag.AREA_CMDPLAYERS, SecFlag.AREA_CMDQUESTS, SecFlag.AREA_CMDRACES,
 		SecFlag.AREA_CMDRECIPES, SecFlag.AREA_CMDROOMS, SecFlag.AREA_CMDSOCIALS
 	});
-	
+
 	/**
 	 * Save flags enum, for either turning off things that are normally saved to the database periodically, or
 	 * turning on things that are not normally saved so that they do so.
@@ -2526,56 +2526,56 @@ public class CMSecurity
 	}
 
 	/**
-	 * This enum represents all permitted DEBUG flags.  Each flag represents a feature or 
+	 * This enum represents all permitted DEBUG flags.  Each flag represents a feature or
 	 * subsystem which can generate extra logging, typically on the DEBUG logging channel.
 	 * @author Bo Zimmerman
 	 */
 	public static enum DbgFlag
 	{
-		PROPERTY("room ownership"), 
-		ARREST("law enforcement"), 
-		CONQUEST("area conquering"), 
-		MUDPERCOLATOR("random area generation"), 
+		PROPERTY("room ownership"),
+		ARREST("law enforcement"),
+		CONQUEST("area conquering"),
+		MUDPERCOLATOR("random area generation"),
 		GMODIFY("global modify command"),
-		MERGE("global object merging"), 
-		BADSCRIPTS("bad mobprog practices"), 
-		TELNET("telnet code negotiation"), 
-		CLASSLOADER("java class loading"), 
+		MERGE("global object merging"),
+		BADSCRIPTS("bad mobprog practices"),
+		TELNET("telnet code negotiation"),
+		CLASSLOADER("java class loading"),
 		DBROOMPOP("room loading"),
-		DBROOMS("room db activity"), 
-		CMROIT("room item db activity"), 
-		CMROEX("room exit db activity"), 
-		CMROCH("room mob db activity"), 
+		DBROOMS("room db activity"),
+		CMROIT("room item db activity"),
+		CMROEX("room exit db activity"),
+		CMROCH("room mob db activity"),
 		CMAREA("area db activity"),
-		CMSTAT("stats db activity"), 
-		HTTPMACROS("web macro scripts"), 
-		I3("intermud3 communication"), 
-		HTTPACCESS("web access logging"), 
+		CMSTAT("stats db activity"),
+		HTTPMACROS("web macro scripts"),
+		I3("intermud3 communication"),
+		HTTPACCESS("web access logging"),
 		IMC2("intermud chat2 communication"),
-		SMTPSERVER("email reception"), 
-		UTILITHREAD("session and tech maint"), 
-		MISSINGKIDS("babies"), 
-		FLAGWATCHING("clan flags"), 
+		SMTPSERVER("email reception"),
+		UTILITHREAD("session and tech maint"),
+		MISSINGKIDS("babies"),
+		FLAGWATCHING("clan flags"),
 		CATALOGTHREAD("global obj catalog"),
-		JOURNALTHREAD("journal msg maint"), 
-		MAPTHREAD("room maint"), 
-		VACUUM("room/obj expiration"), 
-		AUTOPURGE("player/account purging"), 
+		JOURNALTHREAD("journal msg maint"),
+		MAPTHREAD("room maint"),
+		VACUUM("room/obj expiration"),
+		AUTOPURGE("player/account purging"),
 		PLAYERTHREAD("player maint"),
-		OUTPUT("all raw session output"), 
-		EXPORT("area exporting"), 
-		STATSTHREAD("stats maint"), 
-		GEAS("geas/slavery parsing"), 
+		OUTPUT("all raw session output"),
+		EXPORT("area exporting"),
+		STATSTHREAD("stats maint"),
+		GEAS("geas/slavery parsing"),
 		SMTPCLIENT("email sending"),
-		MESSAGES("internal core msgs"), 
-		EVERYTHING("everything"), 
-		CMROOM("room db creation"), 
-		HTTPREQ("web requests"), 
-		CMJRNL("journal db activity"), 
+		MESSAGES("internal core msgs"),
+		EVERYTHING("everything"),
+		CMROOM("room db creation"),
+		HTTPREQ("web requests"),
+		CMJRNL("journal db activity"),
 		IMPORT("area importing"),
-		PLAYERSTATS("player stat loading"), 
-		CLANS("clan maint"), 
-		BINOUT("binary telnet input"), 
+		PLAYERSTATS("player stat loading"),
+		CLANS("clan maint"),
+		BINOUT("binary telnet input"),
 		BININ("binary telnet output"),
 		BOOTSTRAPPER("Bootstrapper"),
 		CLANMEMBERS("Clan Membership"),
@@ -2600,89 +2600,89 @@ public class CMSecurity
 	}
 
 	/**
-	 * The enum that represents all the defined DISABLE flags.  These typically represents 
-	 * features or subsystems that are allowed to be "turned off" in configuration. 
+	 * The enum that represents all the defined DISABLE flags.  These typically represents
+	 * features or subsystems that are allowed to be "turned off" in configuration.
 	 * @author Bo Zimmerman
 	 *
 	 */
 	public static enum DisFlag
 	{
-		LEVELS("player leveling"), 
-		EXPERIENCE("player XP gains"), 
-		PROPERTYOWNERCHECKS("confirm property ownership"), 
+		LEVELS("player leveling"),
+		EXPERIENCE("player XP gains"),
+		PROPERTYOWNERCHECKS("confirm property ownership"),
 		AUTODISEASE("diseases from races, weather, age, etc.."),
-		DBERRORQUE("save SQL errors"), 
-		DBERRORQUESTART("retry SQL errors on boot"), 
-		CONNSPAMBLOCK("connection spam blocker"), 
+		DBERRORQUE("save SQL errors"),
+		DBERRORQUESTART("retry SQL errors on boot"),
+		CONNSPAMBLOCK("connection spam blocker"),
 		FATAREAS("standard non-thin cached areas"),
-		PASSIVEAREAS("inactive area sleeping"), 
-		DARKWEATHER("weather causing room darkness"), 
-		DARKNIGHTS("time causing room darkness"), 
+		PASSIVEAREAS("inactive area sleeping"),
+		DARKWEATHER("weather causing room darkness"),
+		DARKNIGHTS("time causing room darkness"),
 		ARREST("legal system"),
-		EMOTERS("emoter behaviors"), 
-		CONQUEST("area clan conquest"), 
-		RANDOMITEMS("random item behavior"), 
-		MOBILITY("mobile behaviors"), 
+		EMOTERS("emoter behaviors"),
+		CONQUEST("area clan conquest"),
+		RANDOMITEMS("random item behavior"),
+		MOBILITY("mobile behaviors"),
 		MUDCHAT("MOB chat behavior"),
-		RANDOMMONSTERS("random monster behaviors"), 
-		RACES("player races"), 
-		CLASSES("player classes"), 
-		MXP("MXP system"), 
-		MSP("MSP system"), 
+		RANDOMMONSTERS("random monster behaviors"),
+		RACES("player races"),
+		CLASSES("player classes"),
+		MXP("MXP system"),
+		MSP("MSP system"),
 		QUITREASON("early quitting prompt"),
-		CLASSTRAINING("class training"), 
-		ROOMVISITS("room visits"), 
-		THIRST("player thirst"), 
-		HUNGER("player hunger"), 
-		WEATHER("area weather"), 
+		CLASSTRAINING("class training"),
+		ROOMVISITS("room visits"),
+		THIRST("player thirst"),
+		HUNGER("player hunger"),
+		WEATHER("area weather"),
 		WEATHERCHANGES("weather changes"),
-		WEATHERNOTIFIES("notification of weather changes"), 
-		QUESTS("quest system"), 
-		SCRIPTABLEDELAY("script event delay"), 
+		WEATHERNOTIFIES("notification of weather changes"),
+		QUESTS("quest system"),
+		SCRIPTABLEDELAY("script event delay"),
 		SCRIPTING("MOBPROG scripting"),
-		SCRIPTABLE("MOBProg scripting"), 
-		MCCP("MCCP compression"), 
-		LOGOUTS("player logouts"), 
-		THINAREAS("thin uncached areas"), 
+		SCRIPTABLE("MOBProg scripting"),
+		MCCP("MCCP compression"),
+		LOGOUTS("player logouts"),
+		THINAREAS("thin uncached areas"),
 		UTILITHREAD("thread & session monitoring"),
-		THREADTHREAD("thread monitoring"), 
-		EQUIPSIZE("armor size fitting"), 
-		RETIREREASON("early char delete prompt"), 
+		THREADTHREAD("thread monitoring"),
+		EQUIPSIZE("armor size fitting"),
+		RETIREREASON("early char delete prompt"),
 		MAXCONNSPERACCOUNT("connections per account limit"),
-		ALLERGIES("auto player allergies"), 
-		LOGINS("non-archon player logins"), 
-		NEWPLAYERS("new player creation"), 
+		ALLERGIES("auto player allergies"),
+		LOGINS("non-archon player logins"),
+		NEWPLAYERS("new player creation"),
 		MAXNEWPERIP("new character per ip limit"),
-		MAXCONNSPERIP("connections per ip limit"), 
-		CLANTICKS("clan ticks/automation"), 
-		CATALOGTHREAD("catalog house-cleaning"), 
+		MAXCONNSPERIP("connections per ip limit"),
+		CLANTICKS("clan ticks/automation"),
+		CATALOGTHREAD("catalog house-cleaning"),
 		NEWCHARACTERS("new character creation"),
-		CATALOGCACHE("catalog instance caching"), 
-		SAVETHREAD("Player/Journal/Map/Table maintenance"), 
-		JOURNALTHREAD("journal house-cleaning"), 
+		CATALOGCACHE("catalog instance caching"),
+		SAVETHREAD("Player/Journal/Map/Table maintenance"),
+		JOURNALTHREAD("journal house-cleaning"),
 		MAPTHREAD("map house-cleaning"),
-		AUTOPURGE("player purging"), 
-		PURGEACCOUNTS("account purging"), 
-		PLAYERTHREAD("player maintenance/house cleaning"), 
+		AUTOPURGE("player purging"),
+		PURGEACCOUNTS("account purging"),
+		PLAYERTHREAD("player maintenance/house cleaning"),
 		MSSP("MSSP protocol support"),
-		STATS("statistics system"), 
-		STATSTHREAD("statistics auto-saving"), 
-		POLLCACHE("player poll caching"), 
-		SESSIONTHREAD("session monitoring"), 
+		STATS("statistics system"),
+		STATSTHREAD("statistics auto-saving"),
+		POLLCACHE("player poll caching"),
+		SESSIONTHREAD("session monitoring"),
 		SMTPCLIENT("email client"),
-		THINGRIDS("thin uncached grids"), 
-		FATGRIDS("standard cached grids"), 
-		STDRACES("standard player races"), 
+		THINGRIDS("thin uncached grids"),
+		FATGRIDS("standard cached grids"),
+		STDRACES("standard player races"),
 		STDCLASSES("standard player classes"),
-		CHANNELAUCTION("auction channel"), 
-		ELECTRICTHREAD("electric threads"), 
-		SPECOMBATTHREAD("special combat threads"), 
+		CHANNELAUCTION("auction channel"),
+		ELECTRICTHREAD("electric threads"),
+		SPECOMBATTHREAD("special combat threads"),
 		MOBTEACHER("mobteacher"),
 		MSDP("msdp variables"),
-		GMCP("gmcp variables"), 
+		GMCP("gmcp variables"),
 		ATTRIBS("char stats"),
 		TECHLEVEL("techleveling"),
-		AUTOLANGUAGE("auto language switching"), 
+		AUTOLANGUAGE("auto language switching"),
 		I3("intermud3"),
 		IMC2("intermud2"),
 		SLOW_AGEING("real ageing"),

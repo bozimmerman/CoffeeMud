@@ -65,7 +65,7 @@ public class GrinderItems
 		CATALIVE,CATAMASK,BITE,MAXUSES,ISELECTRONIC,
 		CATACAT,ISPORTAL,PUTSTR,MOUNTSTR,DISMOUNTSTR,
 		DEFAULTSCLOSED,DEFAULTSLOCKED,ISWEARANDTEAR,
-		ISBOARDABLEITEM, ISPRIVATEPROPERTY, OWNER, 
+		ISBOARDABLEITEM, ISPRIVATEPROPERTY, OWNER,
 		ISTECHCOMPONENT,ISSHIPENGINE,ISPANEL,ISFUELCONSUMER,ISPOWERGENERATION,
 		MANUFACTURER,POWCAPACITY,POWREMAINING,ACTIVATED,
 		MAXTHRUST,SPECIMPULSE,FUELEFFICIENCY,INSTALLFACTOR,
@@ -77,7 +77,7 @@ public class GrinderItems
 		ISLIMB,RACEID
 		;
 		public boolean isGenField;
-		private ItemDataField(boolean isGeneric)
+		private ItemDataField(final boolean isGeneric)
 		{
 			this.isGenField=isGeneric;
 		}
@@ -87,14 +87,14 @@ public class GrinderItems
 			isGenField = true;
 		}
 	}
-	
-	public static String editItem(HTTPRequest httpReq,
-								  java.util.Map<String,String> parms,
-								  MOB whom,
+
+	public static String editItem(final HTTPRequest httpReq,
+								  final java.util.Map<String,String> parms,
+								  final MOB whom,
 								  Room R,
-								  MOB playerM)
+								  final MOB playerM)
 	{
-		String itemCode=httpReq.getUrlParameter("ITEM");
+		final String itemCode=httpReq.getUrlParameter("ITEM");
 		if(itemCode==null)
 			return "@break@";
 
@@ -594,7 +594,7 @@ public class GrinderItems
 						{
 							try
 							{
-								for(String line : finalData)
+								for(final String line : finalData)
 								{
 									CMLib.ableParms().testRecipeParsing(new StringBuffer(line), rA.parametersFormat());
 								}
@@ -781,7 +781,7 @@ public class GrinderItems
 				case SWARMTYPES:
 					if(I instanceof ShipWarComponent)
 					{
-						final Set<Integer> msgTypes=new TreeSet<Integer>(); 
+						final Set<Integer> msgTypes=new TreeSet<Integer>();
 						if(httpReq.isUrlParameter("SWARMTYPES"))
 						{
 							msgTypes.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("SWARMTYPES"))));
@@ -835,7 +835,7 @@ public class GrinderItems
 				case PANELTYPE:
 					if(I instanceof ElecPanel)
 					{
-						TechType type=(TechType)CMath.s_valueOf(TechType.class,httpReq.getUrlParameter("PANELTYPE"));
+						final TechType type=(TechType)CMath.s_valueOf(TechType.class,httpReq.getUrlParameter("PANELTYPE"));
 						if(type != null)
 							((ElecPanel)I).setPanelType(type);
 					}
@@ -847,7 +847,7 @@ public class GrinderItems
 				case CONSUMEDMATS:
 					if(I instanceof FuelConsumer)
 					{
-						final Set<Integer> consumedFuel=new TreeSet<Integer>(); 
+						final Set<Integer> consumedFuel=new TreeSet<Integer>();
 						if(httpReq.isUrlParameter("CONSUMEDMATS"))
 						{
 							consumedFuel.add(Integer.valueOf(CMath.s_int(httpReq.getUrlParameter("CONSUMEDMATS"))));

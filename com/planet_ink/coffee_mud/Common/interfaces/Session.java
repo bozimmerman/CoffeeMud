@@ -43,7 +43,6 @@ import java.net.SocketException;
  */
 public interface Session extends CMCommon, Modifiable, CMRunnable
 {
-
 	/**
 	 * Negotiates various telnet options (or attempts to), and
 	 * prints the introTextStr to the user.
@@ -236,7 +235,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return true if the login succeeded
 	 */
 	public boolean autoLogin(String name, String password);
-	
+
 	/**
 	 * Medium-level text output method.  Does full
 	 * filtering of special characters and codes.
@@ -917,7 +916,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return true if there's support, false otherwise
 	 */
 	public boolean isAllowedMcp(String packageName, float version);
-	
+
 	/**
 	 * Sends a properly formatted MCP command to the session, if it or its package is supported.
 	 * @param packageCommand the fully formed command
@@ -925,7 +924,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return true if it was sent, false otherwise
 	 */
 	public boolean sendMcpCommand(String packageCommand, String parms);
-	
+
 	/**
 	 * Potentially sends the GMCP event of the given name with the given json
 	 * doc.
@@ -1077,7 +1076,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 * @param choicesStr list of one-character options (if CHOOSE Type)
 		 * @param timeoutMs time, in ms, before the user is kicked
 		 */
-		public InputCallback(Type type, String defaultInput, String choicesStr, long timeoutMs)
+		public InputCallback(final Type type, final String defaultInput, final String choicesStr, final long timeoutMs)
 		{
 			this.type=type;
 			if((choicesStr!=null)&&(choicesStr.trim().length()>0))
@@ -1111,7 +1110,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 * @param defaultInput default input value
 		 * @param timeoutMs time, in ms, before the user is kicked
 		 */
-		public InputCallback(Type type, String defaultInput, long timeoutMs)
+		public InputCallback(final Type type, final String defaultInput, final long timeoutMs)
 		{
 			this(type, defaultInput, "", timeoutMs);
 		}
@@ -1122,7 +1121,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 * @param type the type of processing
 		 * @param timeoutMs time, in ms, before the user is kicked
 		 */
-		public InputCallback(Type type, long timeoutMs)
+		public InputCallback(final Type type, final long timeoutMs)
 		{
 			this(type, "", timeoutMs);
 		}
@@ -1131,7 +1130,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 * Constructor.  Receives the Type of processing.
 		 * @param type the type of processing
 		 */
-		public InputCallback(Type type)
+		public InputCallback(final Type type)
 		{
 			this(type, 0);
 		}
@@ -1142,7 +1141,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 * @param type the type of processing
 		 * @param defaultInput default input value
 		 */
-		public InputCallback(Type type, String defaultInput)
+		public InputCallback(final Type type, final String defaultInput)
 		{
 			this(type, "", 0);
 		}
@@ -1277,7 +1276,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		 * Only constructor is the one to tell out often to call back.
 		 * @param tickerMs the time is ms between timeouts
 		 */
-		public TickingCallback(long tickerMs)
+		public TickingCallback(final long tickerMs)
 		{
 			super(Type.PROMPT,tickerMs);
 		}

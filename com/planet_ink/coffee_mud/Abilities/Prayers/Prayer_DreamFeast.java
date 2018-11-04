@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_DreamFeast extends Prayer
 {
 	@Override
@@ -90,12 +89,12 @@ public class Prayer_DreamFeast extends Prayer
 	protected int ticksSleeping=0;
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		ticksSleeping=0;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -113,7 +112,7 @@ public class Prayer_DreamFeast extends Prayer
 		else
 		if(ticksSleeping > 8)
 		{
-			
+
 			if(affected instanceof MOB)
 			{
 				((MOB)affected).tell(L("You wake up feeling full and content."));
@@ -124,9 +123,9 @@ public class Prayer_DreamFeast extends Prayer
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -138,11 +137,11 @@ public class Prayer_DreamFeast extends Prayer
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> @x1 for <T-NAMESELF> to have dreams of feasts!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> @x1 for <T-NAMESELF> to have dreams of feasts!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=beneficialAffect(mob,target,asLevel,0);
+				final Ability A=beneficialAffect(mob,target,asLevel,0);
 				if(A!=null)
 					A.setMiscText("");
 			}

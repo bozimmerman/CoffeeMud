@@ -40,7 +40,7 @@ import java.util.*;
  * implemented in CoffeeMud.  Generally it provides accessor methods for all the
  * java classes in com.planet_ink.coffee_mud.Libraries.  Like many other CoffeeMud
  * classes, it also supports the thread-group-code-character accessor method, so
- * that it can provide unique instances of some of the libraries based on the 
+ * that it can provide unique instances of some of the libraries based on the
  * first character of the name of the current thread group.  For completeness, you'll
  * also find accessors for other core singletons.  Lastly, CMLib is a container
  * class for all MudHost objects running in this process.
@@ -70,7 +70,7 @@ public class CMLib
 	 * @return the Log object, or null
 	 */
 	private static final CMLib l()
-	{ 
+	{
 		return libs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
 	}
 
@@ -81,7 +81,7 @@ public class CMLib
 	 * @return a CMLib object
 	 */
 	public static final CMLib initialize()
-	{ 
+	{
 		final CMLib l=l();
 		return (l==null)?new CMLib():l;
 	}
@@ -150,7 +150,7 @@ public class CMLib
 		;
 
 		public final Class<?> ancestor;
-		private Library(Class<?> ancestorC1)
+		private Library(final Class<?> ancestorC1)
 		{
 			this.ancestor=ancestorC1;
 		}
@@ -165,7 +165,7 @@ public class CMLib
 	{
 		return CMath.instance();
 	}
-	
+
 	/**
 	 * Returns reference to the string parameter utility class.
 	 * @see com.planet_ink.coffee_mud.core.CMParms
@@ -175,7 +175,7 @@ public class CMLib
 	{
 		return CMParms.instance();
 	}
-	
+
 	/**
 	 * Returns reference to the string utility class.
 	 * @see com.planet_ink.coffee_mud.core.CMStrings
@@ -185,7 +185,7 @@ public class CMLib
 	{
 		return CMStrings.instance();
 	}
-	
+
 	/**
 	 * Returns reference to the class loader.
 	 * @see com.planet_ink.coffee_mud.core.CMClass
@@ -195,7 +195,7 @@ public class CMLib
 	{
 		return CMClass.instance();
 	}
-	
+
 	/**
 	 * Returns reference to the security class.
 	 * @see com.planet_ink.coffee_mud.core.CMSecurity
@@ -205,7 +205,7 @@ public class CMLib
 	{
 		return CMSecurity.instance();
 	}
-	
+
 	/**
 	 * Returns reference to the directions class.
 	 * @see com.planet_ink.coffee_mud.core.Directions
@@ -215,7 +215,7 @@ public class CMLib
 	{
 		return Directions.instance();
 	}
-	
+
 	/**
 	 * Returns reference to the logger.
 	 * @see com.planet_ink.coffee_mud.core.Log
@@ -225,7 +225,7 @@ public class CMLib
 	{
 		return Log.instance();
 	}
-	
+
 	/**
 	 * Returns reference to the resources storage class.
 	 * @see com.planet_ink.coffee_mud.core.Resources
@@ -235,7 +235,7 @@ public class CMLib
 	{
 		return Resources.instance();
 	}
-	
+
 	/**
 	 * Returns reference to the properties ini file class.
 	 * @see com.planet_ink.coffee_mud.core.CMProps
@@ -276,7 +276,7 @@ public class CMLib
 		}
 		return mudThreads.get(0);
 	}
-	
+
 	/**
 	 * Returns the mud running on the given port, or null
 	 * if none is found.
@@ -284,7 +284,7 @@ public class CMLib
 	 * @param port port to search for
 	 * @return the mudhost running on that port
 	 */
-	public static final MudHost mud(int port)
+	public static final MudHost mud(final int port)
 	{
 		if(mudThreads.size()==0)
 			return null;
@@ -329,7 +329,7 @@ public class CMLib
 			return get(session.getGroupID());
 		return l();
 	}
-	
+
 	/**
 	 * Returns the CMLib instance associated with
 	 * the given thread id, or the current thread.
@@ -346,7 +346,7 @@ public class CMLib
 		}
 		return l();
 	}
-	
+
 	/**
 	 * Returns a reference to this threads database engine library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine
@@ -356,7 +356,7 @@ public class CMLib
 	{
 		return (DatabaseEngine)l().libraries[Library.DATABASE.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads Thread access library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ThreadEngine
@@ -366,7 +366,7 @@ public class CMLib
 	{
 		return (ThreadEngine)l().libraries[Library.THREADS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads Intermud3 access library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.I3Interface
@@ -376,7 +376,7 @@ public class CMLib
 	{
 		return (I3Interface)l().libraries[Library.INTERMUD.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads item balancing library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ItemBalanceLibrary
@@ -386,7 +386,7 @@ public class CMLib
 	{
 		return (ItemBalanceLibrary)l().libraries[Library.TIMS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads web macro filtering library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.WebMacroLibrary
@@ -396,7 +396,7 @@ public class CMLib
 	{
 		return (WebMacroLibrary)l().libraries[Library.WEBMACS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads string/item/object listing library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary
@@ -406,7 +406,7 @@ public class CMLib
 	{
 		return (ListingLibrary)l().libraries[Library.LISTER.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads money handling library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary
@@ -416,7 +416,7 @@ public class CMLib
 	{
 		return (MoneyLibrary)l().libraries[Library.MONEY.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads store front/shopping library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ShoppingLibrary
@@ -426,7 +426,7 @@ public class CMLib
 	{
 		return (ShoppingLibrary)l().libraries[Library.SHOPS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads raw resource/material item library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaterialLibrary
@@ -436,7 +436,7 @@ public class CMLib
 	{
 		return (MaterialLibrary)l().libraries[Library.MATERIALS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads combat library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CombatLibrary
@@ -446,7 +446,7 @@ public class CMLib
 	{
 		return (CombatLibrary)l().libraries[Library.COMBAT.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads help file library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.HelpLibrary
@@ -456,7 +456,7 @@ public class CMLib
 	{
 		return (HelpLibrary)l().libraries[Library.HELP.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads mob tracking/movement library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary
@@ -466,7 +466,7 @@ public class CMLib
 	{
 		return (TrackingLibrary)l().libraries[Library.TRACKING.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads legal and property library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.LegalLibrary
@@ -476,7 +476,7 @@ public class CMLib
 	{
 		return (LegalLibrary)l().libraries[Library.LEGAL.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads object masking/filtering library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
@@ -486,7 +486,7 @@ public class CMLib
 	{
 		return (MaskingLibrary)l().libraries[Library.MASKING.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads chat channel library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary
@@ -496,7 +496,7 @@ public class CMLib
 	{
 		return (ChannelsLibrary)l().libraries[Library.CHANNELS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads command shortcut and common event handler library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CommonCommands
@@ -506,7 +506,7 @@ public class CMLib
 	{
 		return (CommonCommands)l().libraries[Library.COMMANDS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads achievement system library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary
@@ -516,7 +516,7 @@ public class CMLib
 	{
 		return (AchievementLibrary)l().libraries[Library.ACHIEVEMENTS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads english grammar and input utility library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.EnglishParsing
@@ -526,7 +526,7 @@ public class CMLib
 	{
 		return (EnglishParsing)l().libraries[Library.ENGLISH.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads slavery and geas library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.SlaveryLibrary
@@ -536,7 +536,7 @@ public class CMLib
 	{
 		return (SlaveryLibrary)l().libraries[Library.SLAVERY.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads message board and journal library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary
@@ -546,7 +546,7 @@ public class CMLib
 	{
 		return (JournalsLibrary)l().libraries[Library.JOURNALS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads telnet input/output filtering library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TelnetFilter
@@ -556,7 +556,7 @@ public class CMLib
 	{
 		return (TelnetFilter)l().libraries[Library.TELNET.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads GenObject low level construction library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder
@@ -566,7 +566,7 @@ public class CMLib
 	{
 		return (GenericBuilder)l().libraries[Library.OBJBUILDERS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads telnet session management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.SessionsList
@@ -576,7 +576,7 @@ public class CMLib
 	{
 		return (SessionsList)l().libraries[Library.SESSIONS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads flag checking shortcut library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary
@@ -586,7 +586,7 @@ public class CMLib
 	{
 		return (CMFlagLibrary)l().libraries[Library.FLAGS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads xml parsing library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary
@@ -596,7 +596,7 @@ public class CMLib
 	{
 		return (XMLLibrary)l().libraries[Library.XML.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads social command collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.SocialsList
@@ -606,7 +606,7 @@ public class CMLib
 	{
 		return (SocialsList)l().libraries[Library.SOCIALS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads random world utilities library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMMiscUtils
@@ -616,7 +616,7 @@ public class CMLib
 	{
 		return (CMMiscUtils)l().libraries[Library.UTENSILS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads statistics library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.StatisticsLibrary
@@ -626,7 +626,7 @@ public class CMLib
 	{
 		return (StatisticsLibrary)l().libraries[Library.STATS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads leveling and experience gaining library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExpLevelLibrary
@@ -636,7 +636,7 @@ public class CMLib
 	{
 		return (ExpLevelLibrary)l().libraries[Library.LEVELS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads areas and rooms access/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap
@@ -646,7 +646,7 @@ public class CMLib
 	{
 		return (WorldMap)l().libraries[Library.MAP.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads quest collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.QuestManager
@@ -656,7 +656,7 @@ public class CMLib
 	{
 		return (QuestManager)l().libraries[Library.QUEST.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads random map/object generation library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary
@@ -666,7 +666,7 @@ public class CMLib
 	{
 		return (AreaGenerationLibrary)l().libraries[Library.AREAGEN.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads abilities collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper
@@ -676,7 +676,7 @@ public class CMLib
 	{
 		return (AbilityMapper)l().libraries[Library.ABLEMAP.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads abilities components management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents
@@ -686,7 +686,7 @@ public class CMLib
 	{
 		return (AbilityComponents)l().libraries[Library.ABLECOMP.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads string hashing and compression library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TextEncoders
@@ -696,7 +696,7 @@ public class CMLib
 	{
 		return (TextEncoders)l().libraries[Library.ENCODER.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads email sending library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.SMTPLibrary
@@ -706,7 +706,7 @@ public class CMLib
 	{
 		return (SMTPLibrary)l().libraries[Library.SMTP.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads localization library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary
@@ -716,7 +716,7 @@ public class CMLib
 	{
 		return (LanguageLibrary)l().libraries[Library.LANGUAGE.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads random dice roll library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.DiceLibrary
@@ -726,7 +726,7 @@ public class CMLib
 	{
 		return (DiceLibrary)l().libraries[Library.DICE.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads faction collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.FactionManager
@@ -736,7 +736,7 @@ public class CMLib
 	{
 		return (FactionManager)l().libraries[Library.FACTIONS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads clan collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager
@@ -746,7 +746,7 @@ public class CMLib
 	{
 		return (ClanManager)l().libraries[Library.CLANS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads player poll collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.PollManager
@@ -756,7 +756,7 @@ public class CMLib
 	{
 		return (PollManager)l().libraries[Library.POLLS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads real time utility library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager
@@ -766,7 +766,7 @@ public class CMLib
 	{
 		return (TimeManager)l().libraries[Library.TIME.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads ansi color library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary
@@ -776,7 +776,7 @@ public class CMLib
 	{
 		return (ColorLibrary)l().libraries[Library.COLOR.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads login and char creation library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary
@@ -786,7 +786,7 @@ public class CMLib
 	{
 		return (CharCreationLibrary)l().libraries[Library.LOGIN.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads expertise collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary
@@ -796,7 +796,7 @@ public class CMLib
 	{
 		return (ExpertiseLibrary)l().libraries[Library.EXPERTISES.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads player and account collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary
@@ -806,7 +806,7 @@ public class CMLib
 	{
 		return (PlayerLibrary)l().libraries[Library.PLAYERS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads cataloged mob/item collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary
@@ -816,7 +816,7 @@ public class CMLib
 	{
 		return (CatalogLibrary)l().libraries[Library.CATALOG.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads player titles collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AutoTitlesLibrary
@@ -826,7 +826,7 @@ public class CMLib
 	{
 		return (AutoTitlesLibrary)l().libraries[Library.TITLES.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads recipe maker and skill parameter library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters
@@ -836,7 +836,7 @@ public class CMLib
 	{
 		return (AbilityParameters)l().libraries[Library.ABLEPARMS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads generic object builder/editor and prompting library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor
@@ -846,7 +846,7 @@ public class CMLib
 	{
 		return (GenericEditor)l().libraries[Library.GENEDITOR.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads tech and electricity library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TechLibrary
@@ -856,7 +856,7 @@ public class CMLib
 	{
 		return (TechLibrary)l().libraries[Library.TECH.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this threads mud protocol mxp/msdp/etc library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary
@@ -867,7 +867,7 @@ public class CMLib
 		return (ProtocolLibrary)l().libraries[Library.PROTOCOL.ordinal()];
 	}
 
-	
+
 	/**
 	 * Returns a reference to this instances database engine library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine
@@ -877,7 +877,7 @@ public class CMLib
 	{
 		return (DatabaseEngine)libraries[Library.DATABASE.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances Thread access library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ThreadEngine
@@ -887,7 +887,7 @@ public class CMLib
 	{
 		return (ThreadEngine)libraries[Library.THREADS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances Intermud3 access library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.I3Interface
@@ -897,7 +897,7 @@ public class CMLib
 	{
 		return (I3Interface)libraries[Library.INTERMUD.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances item balancing library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ItemBalanceLibrary
@@ -907,7 +907,7 @@ public class CMLib
 	{
 		return (ItemBalanceLibrary)libraries[Library.TIMS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances web macro filtering library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.WebMacroLibrary
@@ -917,7 +917,7 @@ public class CMLib
 	{
 		return (WebMacroLibrary)libraries[Library.WEBMACS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances string/item/object listing library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary
@@ -927,7 +927,7 @@ public class CMLib
 	{
 		return (ListingLibrary)libraries[Library.LISTER.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances money handling library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary
@@ -937,7 +937,7 @@ public class CMLib
 	{
 		return (MoneyLibrary)libraries[Library.MONEY.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances store front/shopping library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ShoppingLibrary
@@ -947,7 +947,7 @@ public class CMLib
 	{
 		return (ShoppingLibrary)libraries[Library.SHOPS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances raw resource/material item library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaterialLibrary
@@ -957,7 +957,7 @@ public class CMLib
 	{
 		return (MaterialLibrary)libraries[Library.MATERIALS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances combat library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CombatLibrary
@@ -967,7 +967,7 @@ public class CMLib
 	{
 		return (CombatLibrary)libraries[Library.COMBAT.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances help file library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.HelpLibrary
@@ -977,7 +977,7 @@ public class CMLib
 	{
 		return (HelpLibrary)libraries[Library.HELP.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances mob tracking/movement library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary
@@ -987,7 +987,7 @@ public class CMLib
 	{
 		return (TrackingLibrary)libraries[Library.TRACKING.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances legal and property library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.LegalLibrary
@@ -997,7 +997,7 @@ public class CMLib
 	{
 		return (LegalLibrary)libraries[Library.LEGAL.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances object masking/filtering library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
@@ -1007,7 +1007,7 @@ public class CMLib
 	{
 		return (MaskingLibrary)libraries[Library.MASKING.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances chat channel library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary
@@ -1017,7 +1017,7 @@ public class CMLib
 	{
 		return (ChannelsLibrary)libraries[Library.CHANNELS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances command shortcut and common event handler library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CommonCommands
@@ -1027,7 +1027,7 @@ public class CMLib
 	{
 		return (CommonCommands)libraries[Library.COMMANDS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances achievement system library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary
@@ -1037,7 +1037,7 @@ public class CMLib
 	{
 		return (AchievementLibrary)libraries[Library.ACHIEVEMENTS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances english grammar and input utility library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.EnglishParsing
@@ -1047,7 +1047,7 @@ public class CMLib
 	{
 		return (EnglishParsing)libraries[Library.ENGLISH.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances slavery and geas library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.SlaveryLibrary
@@ -1057,7 +1057,7 @@ public class CMLib
 	{
 		return (SlaveryLibrary)libraries[Library.SLAVERY.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances message board and journal library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary
@@ -1067,7 +1067,7 @@ public class CMLib
 	{
 		return (JournalsLibrary)libraries[Library.JOURNALS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances telnet input/output filtering library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TelnetFilter
@@ -1077,7 +1077,7 @@ public class CMLib
 	{
 		return (TelnetFilter)libraries[Library.TELNET.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances GenObject low level construction library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder
@@ -1087,7 +1087,7 @@ public class CMLib
 	{
 		return (GenericBuilder)libraries[Library.OBJBUILDERS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances telnet session management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.SessionsList
@@ -1097,7 +1097,7 @@ public class CMLib
 	{
 		return (SessionsList)libraries[Library.SESSIONS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances flag checking shortcut library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary
@@ -1107,7 +1107,7 @@ public class CMLib
 	{
 		return (CMFlagLibrary)libraries[Library.FLAGS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances xml parsing library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary
@@ -1117,7 +1117,7 @@ public class CMLib
 	{
 		return (XMLLibrary)libraries[Library.XML.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances social command collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.SocialsList
@@ -1127,7 +1127,7 @@ public class CMLib
 	{
 		return (SocialsList)libraries[Library.SOCIALS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances random world utilities library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMMiscUtils
@@ -1137,7 +1137,7 @@ public class CMLib
 	{
 		return (CMMiscUtils)libraries[Library.UTENSILS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances statistics library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.StatisticsLibrary
@@ -1147,7 +1147,7 @@ public class CMLib
 	{
 		return (StatisticsLibrary)libraries[Library.STATS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances leveling and experience gaining library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExpLevelLibrary
@@ -1157,7 +1157,7 @@ public class CMLib
 	{
 		return (ExpLevelLibrary)libraries[Library.LEVELS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances areas and rooms access/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap
@@ -1167,7 +1167,7 @@ public class CMLib
 	{
 		return (WorldMap)libraries[Library.MAP.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances quest collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.QuestManager
@@ -1177,7 +1177,7 @@ public class CMLib
 	{
 		return (QuestManager)libraries[Library.QUEST.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances random map/object generation library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary
@@ -1187,7 +1187,7 @@ public class CMLib
 	{
 		return (AreaGenerationLibrary)libraries[Library.AREAGEN.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances abilities collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper
@@ -1197,7 +1197,7 @@ public class CMLib
 	{
 		return (AbilityMapper)libraries[Library.ABLEMAP.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances abilities components management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents
@@ -1207,7 +1207,7 @@ public class CMLib
 	{
 		return (AbilityComponents)libraries[Library.ABLECOMP.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances string hashing and compression library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TextEncoders
@@ -1217,7 +1217,7 @@ public class CMLib
 	{
 		return (TextEncoders)libraries[Library.ENCODER.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances email sending library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.SMTPLibrary
@@ -1227,7 +1227,7 @@ public class CMLib
 	{
 		return (SMTPLibrary)libraries[Library.SMTP.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances localization library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary
@@ -1237,7 +1237,7 @@ public class CMLib
 	{
 		return (LanguageLibrary)libraries[Library.LANGUAGE.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances random dice roll library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.DiceLibrary
@@ -1247,7 +1247,7 @@ public class CMLib
 	{
 		return (DiceLibrary)libraries[Library.DICE.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances faction collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.FactionManager
@@ -1257,7 +1257,7 @@ public class CMLib
 	{
 		return (FactionManager)libraries[Library.FACTIONS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances clan collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager
@@ -1267,7 +1267,7 @@ public class CMLib
 	{
 		return (ClanManager)libraries[Library.CLANS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances player poll collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.PollManager
@@ -1277,7 +1277,7 @@ public class CMLib
 	{
 		return (PollManager)libraries[Library.POLLS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances real time utility library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager
@@ -1287,7 +1287,7 @@ public class CMLib
 	{
 		return (TimeManager)libraries[Library.TIME.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances ansi color library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary
@@ -1297,7 +1297,7 @@ public class CMLib
 	{
 		return (ColorLibrary)libraries[Library.COLOR.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances login and char creation library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary
@@ -1307,7 +1307,7 @@ public class CMLib
 	{
 		return (CharCreationLibrary)libraries[Library.LOGIN.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances expertise collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary
@@ -1317,7 +1317,7 @@ public class CMLib
 	{
 		return (ExpertiseLibrary)libraries[Library.EXPERTISES.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances player and account collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary
@@ -1327,7 +1327,7 @@ public class CMLib
 	{
 		return (PlayerLibrary)libraries[Library.PLAYERS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances cataloged mob/item collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary
@@ -1337,7 +1337,7 @@ public class CMLib
 	{
 		return (CatalogLibrary)libraries[Library.CATALOG.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances player titles collection/management library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AutoTitlesLibrary
@@ -1347,7 +1347,7 @@ public class CMLib
 	{
 		return (AutoTitlesLibrary)libraries[Library.TITLES.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances recipe maker and skill parameter library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters
@@ -1357,7 +1357,7 @@ public class CMLib
 	{
 		return (AbilityParameters)libraries[Library.ABLEPARMS.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances generic object builder/editor and prompting library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor
@@ -1367,7 +1367,7 @@ public class CMLib
 	{
 		return (GenericEditor)libraries[Library.GENEDITOR.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances tech and electricity library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TechLibrary
@@ -1377,7 +1377,7 @@ public class CMLib
 	{
 		return (TechLibrary)libraries[Library.TECH.ordinal()];
 	}
-	
+
 	/**
 	 * Returns a reference to this instances mud protocol mxp/msdp/etc library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary
@@ -1408,7 +1408,7 @@ public class CMLib
 	}
 
 	/**
-	 * Register the given library object as belonging to the thread 
+	 * Register the given library object as belonging to the thread
 	 * group that called this method.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary
 	 * @param O the library to register
@@ -1473,14 +1473,14 @@ public class CMLib
 				{
 					try
 					{
-						 Thread.sleep(sleepTime); 
+						 Thread.sleep(sleepTime);
 					}
 					catch(final Exception e)
 					{
 					}
 					try
 					{
-						 t.interrupt(); 
+						 t.interrupt();
 					}
 					catch(final Exception e)
 					{
@@ -1512,14 +1512,14 @@ public class CMLib
 	/**
 	 * Sleep for the given ms without throwing an exception
 	 * @param millis the ms to sleep
-	 * @return true 
+	 * @return true
 	 */
 	public static final boolean s_sleep(final long millis)
 	{
 		try
 		{
 			Thread.sleep(millis);
-		} 
+		}
 		catch(final java.lang.InterruptedException ex)
 		{
 			return false;
@@ -1594,7 +1594,7 @@ public class CMLib
 	/**
 	 * Returns an enumeration of all library objects of the Library Enum type given
 	 * across all thread groups.
-	 * @see CMLib.Library 
+	 * @see CMLib.Library
 	 * @param code the Library Enum
 	 * @return an enumeration of all library objects in all threads of that type
 	 */
@@ -1610,7 +1610,7 @@ public class CMLib
 		}
 		return V.elements();
 	}
-	
+
 	/**
 	 * Return the private thread id that belongs to the given library
 	 * @param code the library code
@@ -1655,7 +1655,7 @@ public class CMLib
 		}
 		return x;
 	}
-	
+
 	/**
 	 * Returns a comma-delimited list of the ordinal numbers of those
 	 * libraries which have not been registered for this thread group.

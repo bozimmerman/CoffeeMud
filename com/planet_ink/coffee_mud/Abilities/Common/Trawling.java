@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Trawling extends GatheringSkill
 {
 	@Override
@@ -80,7 +79,7 @@ public class Trawling extends GatheringSkill
 		verb=L("trawling");
 	}
 
-	protected int getDuration(MOB mob, int level)
+	protected int getDuration(final MOB mob, final int level)
 	{
 		return getDuration(135,mob,level,45);
 	}
@@ -149,7 +148,7 @@ public class Trawling extends GatheringSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -176,7 +175,7 @@ public class Trawling extends GatheringSkill
 		if((R.getArea() instanceof BoardableShip)
 		&&((R.domainType()&Room.INDOORS)==0))
 			fishRoom=CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem());
-		
+
 		if(fishRoom==null)
 		{
 			this.commonTell(mob, L("You need to be on the deck of a ship to trawl."));

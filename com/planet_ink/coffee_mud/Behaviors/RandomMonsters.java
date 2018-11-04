@@ -47,13 +47,13 @@ public class RandomMonsters extends ActiveTicker
 		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;
 	}
 
-	protected Vector<MOB> maintained=new Vector<MOB>();
-	protected int tickStatus=0;
-	protected int minMonsters=1;
-	protected int maxMonsters=1;
-	protected int avgMonsters=1;
-	protected Vector<Integer> restrictedLocales=null;
-	protected boolean alreadyTriedLoad=false;
+	protected List<MOB>		maintained			= new Vector<MOB>();
+	protected int			tickStatus			= 0;
+	protected int			minMonsters			= 1;
+	protected int			maxMonsters			= 1;
+	protected int			avgMonsters			= 1;
+	protected List<Integer>	restrictedLocales	= null;
+	protected boolean		alreadyTriedLoad	= false;
 
 	@Override
 	public String accountForYourself()
@@ -117,9 +117,9 @@ public class RandomMonsters extends ActiveTicker
 					{
 						restrictedLocales.clear();
 						for(int i=0;i<Room.DOMAIN_INDOORS_DESCS.length;i++)
-							restrictedLocales.addElement(Integer.valueOf(Room.INDOORS+i));
+							restrictedLocales.add(Integer.valueOf(Room.INDOORS+i));
 						for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
-							restrictedLocales.addElement(Integer.valueOf(i));
+							restrictedLocales.add(Integer.valueOf(i));
 					}
 					else
 					{
@@ -134,10 +134,10 @@ public class RandomMonsters extends ActiveTicker
 						if(code>=0)
 						{
 							if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
-								restrictedLocales.removeElement(Integer.valueOf(code));
+								restrictedLocales.remove(Integer.valueOf(code));
 							else
 							if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
-								restrictedLocales.addElement(Integer.valueOf(code));
+								restrictedLocales.add(Integer.valueOf(code));
 						}
 						code=-1;
 						for(int i=0;i<Room.DOMAIN_OUTDOOR_DESCS.length;i++)
@@ -148,10 +148,10 @@ public class RandomMonsters extends ActiveTicker
 						if(code>=0)
 						{
 							if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
-								restrictedLocales.removeElement(Integer.valueOf(code));
+								restrictedLocales.remove(Integer.valueOf(code));
 							else
 							if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
-								restrictedLocales.addElement(Integer.valueOf(code));
+								restrictedLocales.add(Integer.valueOf(code));
 						}
 
 					}
@@ -323,9 +323,9 @@ public class RandomMonsters extends ActiveTicker
 		{
 			try
 			{
-				final MOB M=maintained.elementAt(i);
+				final MOB M=maintained.get(i);
 				if((M.amDead())||(M.amDestroyed())||(M.location()==null)||(!M.location().isInhabitant(M)))
-					maintained.removeElement(M);
+					maintained.remove(M);
 			}
 			catch (final Exception e)
 			{
@@ -362,7 +362,7 @@ public class RandomMonsters extends ActiveTicker
 				M.recoverPhyStats();
 				tickStatus=Tickable.STATUS_MISC+5;
 				M.text();
-				maintained.addElement(M);
+				maintained.add(M);
 				tickStatus=Tickable.STATUS_MISC+6;
 				if(ticking instanceof Room)
 				{
@@ -409,7 +409,7 @@ public class RandomMonsters extends ActiveTicker
 					if(room!=null)
 						M.bringToLife(room,true);
 					else
-						maintained.removeElement(M);
+						maintained.remove(M);
 					tickStatus=Tickable.STATUS_MISC+17;
 				}
 			}

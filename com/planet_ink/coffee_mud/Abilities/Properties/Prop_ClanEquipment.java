@@ -19,11 +19,11 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /**
- * 
+ *
  * Title: False Realities Flavored CoffeeMUD
  * Description: The False Realities Version of CoffeeMUD
  * Copyright: Copyright (c) 2003 Jeremy Vyska
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,7 +34,7 @@ import java.util.*;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * Company: http://www.falserealities.com
- * 
+ *
  *
  * @author FR - Jeremy Vyska; CM - Bo Zimmerman
  * @version 1.0.0.0
@@ -120,7 +120,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		final Vector<String> V=CMParms.parse(text);
@@ -225,7 +225,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		}
 	}
 
-	public boolean useAsWand(MOB mob, int level)
+	public boolean useAsWand(final MOB mob, final int level)
 	{
 		int manaRequired=50;
 		// For simplicity, there's no charges BUT use costs a flat 10% mana
@@ -243,7 +243,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		return true;
 	}
 
-	public static String getWandWord(String from)
+	public static String getWandWord(final String from)
 	{
 		int hash=from.hashCode();
 		if(hash<0)
@@ -253,7 +253,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		return CMProps.getListFileChoiceFromIndexedListByHash(CMProps.ListFile.MAGIC_WORDS,hash);
 	}
 
-	public boolean checkWave(MOB mob, String message, Wand me)
+	public boolean checkWave(final MOB mob, final String message, final Wand me)
 	{
 		if((mob.isMine(me))
 		&&(me.amBeingWornProperly()))
@@ -267,7 +267,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 	/*
 	 * ********************** Staff/Wand Clan Eq **********************
 	 */
-	public void waveIfAble(MOB mob, Environmental afftarget, String message, Wand me)
+	public void waveIfAble(final MOB mob, final Environmental afftarget, String message, final Wand me)
 	{
 		if((mob.isMine(me))&&(afftarget!=null)&&(afftarget instanceof MOB)&&(!me.amWearingAt(Wearable.IN_INVENTORY)))
 		{
@@ -308,7 +308,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		}
 	}
 
-	public static void initAdjustments(CharStats adjCharStats)
+	public static void initAdjustments(final CharStats adjCharStats)
 	{
 		// ensure we get no NULL errors
 		for(final int i : CharStats.CODES.SAVING_THROWS())
@@ -316,7 +316,7 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectedStats)
 	{
 		if(EQadjCharStats==null)
 		{

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Sinking extends StdAbility
 {
 	@Override
@@ -77,7 +76,7 @@ public class Sinking extends StdAbility
 		return proficiency() == 100;
 	}
 
-	protected boolean canSinkFrom(Room fromHere, int direction)
+	protected boolean canSinkFrom(final Room fromHere, final int direction)
 	{
 		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
 			return false;
@@ -92,7 +91,7 @@ public class Sinking extends StdAbility
 		return true;
 	}
 
-	protected boolean stopSinking(MOB mob)
+	protected boolean stopSinking(final MOB mob)
 	{
 		unInvoke();
 		mob.delEffect(this);
@@ -100,7 +99,7 @@ public class Sinking extends StdAbility
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if((newMiscText!=null) && (newMiscText.length()>0))
@@ -115,7 +114,7 @@ public class Sinking extends StdAbility
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -280,7 +279,7 @@ public class Sinking extends StdAbility
 					&&(mob.Name().equals(item.name())))
 						mob.destroy();
 				}
-				
+
 			}
 			if(reversed())
 				return true;
@@ -302,7 +301,7 @@ public class Sinking extends StdAbility
 	}
 
 	@Override
-	public void setAffectedOne(Physical P)
+	public void setAffectedOne(final Physical P)
 	{
 		if(P instanceof Room)
 			room=(Room)P;
@@ -311,7 +310,7 @@ public class Sinking extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!auto)
 			return false;
@@ -338,9 +337,9 @@ public class Sinking extends StdAbility
 		}
 		return true;
 	}
-	
+
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(code==null)
 			return;
@@ -352,9 +351,9 @@ public class Sinking extends StdAbility
 		else
 			super.setStat(code, val);
 	}
-	
+
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(code==null)
 			return "";

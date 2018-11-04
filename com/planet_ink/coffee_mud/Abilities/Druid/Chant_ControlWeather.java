@@ -32,7 +32,6 @@ import java.util.List;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_ControlWeather extends Chant
 {
 	@Override
@@ -76,7 +75,7 @@ public class Chant_ControlWeather extends Chant
 	}
 
 	@Override
-	public void setAbilityCode(int code)
+	public void setAbilityCode(final int code)
 	{
 		super.setAbilityCode(code);
 		controlCode=code;
@@ -119,7 +118,7 @@ public class Chant_ControlWeather extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{

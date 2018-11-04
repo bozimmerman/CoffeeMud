@@ -44,6 +44,7 @@ public interface Tickable extends CMObject
 	 */
 	@Override
 	public String name();
+
 	/**
 	 * A coded status for this object during the period where
 	 * its tick method is being called. The statis is defined,

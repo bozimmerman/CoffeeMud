@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Scuttle extends ThiefSkill
 {
 	@Override
@@ -94,7 +93,7 @@ public class Thief_Scuttle extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -119,20 +118,20 @@ public class Thief_Scuttle extends ThiefSkill
 			mob.tell(L("You must be on a ship or boat to scuttle it."));
 			return false;
 		}
-		
+
 		if(boat == null)
 		{
 			mob.tell(L("You want to scuttle what now?"));
 			return false;
 		}
-		
+
 		if(((!CMLib.combat().mayIAttackThisVessel(mob, boat))
 			&&(!CMLib.law().doesHavePriviledgesHere(mob, R))))
 		{
 			mob.tell(L("You are not permitted to scuttle this boat."));
 			return false;
 		}
-		
+
 		if((boatRoom==null)
 		||(!CMLib.flags().isWaterySurfaceRoom(boatRoom)))
 		{
@@ -160,16 +159,16 @@ public class Thief_Scuttle extends ThiefSkill
 			mob.tell(L("You must be the last person aboard to scuttle a ship"));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Physical target=boat;
+		final Physical target=boat;
 		final int adjustment=target.phyStats().level()-((mob.phyStats().level()+super.getXLEVELLevel(mob))/2);
-		boolean success=proficiencyCheck(mob,-adjustment,auto);
+		final boolean success=proficiencyCheck(mob,-adjustment,auto);
 		if(success)
 		{
-			String str=auto?"":L("^S<S-NAME> scuttle(s) <T-NAME>!^?");
+			final String str=auto?"":L("^S<S-NAME> scuttle(s) <T-NAME>!^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.MSG_THIEF_ACT|(auto?CMMsg.MASK_ALWAYS:0),str,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(boatRoom.okMessage(mob,msg))
 			{

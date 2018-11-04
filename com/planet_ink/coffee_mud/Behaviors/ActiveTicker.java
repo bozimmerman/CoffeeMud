@@ -58,7 +58,7 @@ public class ActiveTicker extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		parms=newParms;
 		minTicks=CMParms.getParmInt(parms,"min",minTicks);
@@ -99,7 +99,7 @@ public class ActiveTicker extends StdBehavior
 		return parms;
 	}
 
-	protected boolean canAct(Tickable ticking, int tickID)
+	protected boolean canAct(final Tickable ticking, final int tickID)
 	{
 		switch(tickID)
 		{

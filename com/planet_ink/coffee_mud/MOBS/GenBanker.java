@@ -41,9 +41,9 @@ public class GenBanker extends StdBanker
 		return "GenBanker";
 	}
 
-	protected String PrejudiceFactors="";
+	protected String prejudiceFactors="";
 	protected String bankChain="GenBank";
-	private String IgnoreMask="";
+	private String ignoreMask="";
 
 	public GenBanker()
 	{
@@ -73,25 +73,25 @@ public class GenBanker extends StdBanker
 	@Override
 	public String prejudiceFactors()
 	{
-		return PrejudiceFactors;
+		return prejudiceFactors;
 	}
 
 	@Override
 	public void setPrejudiceFactors(final String factors)
 	{
-		PrejudiceFactors=factors;
+		prejudiceFactors=factors;
 	}
 
 	@Override
 	public String ignoreMask()
 	{
-		return IgnoreMask;
+		return ignoreMask;
 	}
 
 	@Override
 	public void setIgnoreMask(final String factors)
 	{
-		IgnoreMask=factors;
+		ignoreMask=factors;
 	}
 
 	@Override

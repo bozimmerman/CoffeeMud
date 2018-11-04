@@ -86,9 +86,9 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 		try
 		{
 			processing=true;
-	
+
 			final Item myItem=(Item)affected;
-	
+
 			if((myItem!=null)
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&((msg.value())>0))
@@ -122,29 +122,29 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 				if(CMLib.combat().isAShipSiegeWeapon(myItem)
 				&&(msg.target() instanceof Item))
 				{
-					Item I=(Item)msg.target();
+					final Item I=(Item)msg.target();
 					if(I instanceof BoardableShip)
 					{
-						Area A=((BoardableShip)I).getShipArea();
+						final Area A=((BoardableShip)I).getShipArea();
 						if(A!=null)
 						{
-							List<Physical> stuff = new ArrayList<Physical>();
+							final List<Physical> stuff = new ArrayList<Physical>();
 							for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 							{
-								Room R=r.nextElement();
+								final Room R=r.nextElement();
 								if((R!=null)&&((R.domainType()&Room.INDOORS)==0))
 								{
-									Item I2=R.getRandomItem();
+									final Item I2=R.getRandomItem();
 									if(I2!=null)
 										stuff.add(I2);
-									MOB M=R.fetchRandomInhabitant();
+									final MOB M=R.fetchRandomInhabitant();
 									if(M!=null)
 										stuff.add(M);
 								}
 							}
 							if(stuff.size()>0)
 							{
-								Physical P=stuff.get(CMLib.dice().roll(1, stuff.size(), -1));
+								final Physical P=stuff.get(CMLib.dice().roll(1, stuff.size(), -1));
 								if(P!=null)
 									addMeIfNeccessary(msg.source(),P,true,0,maxTicks);
 							}

@@ -42,7 +42,7 @@ public class GrinderFlatMap
 	protected List<GrinderRoom>			areaMap		= null;
 	protected Map<String, GrinderRoom>	hashRooms	= null;
 	private GrinderRoom[][]				grid		= null;
-	
+
 	protected int		Xbound		= 0;
 	protected int		Ybound		= 0;
 	protected int		Ystart		= 0;
@@ -55,7 +55,7 @@ public class GrinderFlatMap
 	{
 	}
 
-	public GrinderFlatMap(Area A, int[] xyxy)
+	public GrinderFlatMap(final Area A, final int[] xyxy)
 	{
 		area=A;
 		areaMap=new Vector<GrinderRoom>();
@@ -161,7 +161,7 @@ public class GrinderFlatMap
 		//	((GrinderRoom)areaMap.elementAt(a)).score=scoreRoom((GrinderRoom)areaMap.elementAt(a), "X!X!X", new int[2], new HashSet<String>(), new HashSet<String>());
 	}
 
-	public double getDistanceFrom(int[] xy1,int[] xy2)
+	public double getDistanceFrom(final int[] xy1,final int[] xy2)
 	{
 		return Math.sqrt( ( ((double)(xy1[0]-xy2[0])) * ((double)(xy1[0]-xy2[0])) )
 						+ ( ((double)(xy1[1]-xy2[1])) * ((double)(xy1[1]-xy2[1])) ) );
@@ -353,7 +353,7 @@ public class GrinderFlatMap
 		clusterSet(sets);
 	}
 
-	public void clusterSet(List<List<GrinderRoom>> sets)
+	public void clusterSet(final List<List<GrinderRoom>> sets)
 	{
 		// figure out width height, and xy bounds
 		// store them in a vector parallel to each
@@ -483,7 +483,7 @@ public class GrinderFlatMap
 		hashRooms=null;
 	}
 
-	public GrinderRoom getRoom(String ID)
+	public GrinderRoom getRoom(final String ID)
 	{
 		if((hashRooms!=null)&&(hashRooms.containsKey(ID)))
 			return hashRooms.get(ID);
@@ -502,7 +502,7 @@ public class GrinderFlatMap
 
 	protected final static int CLUSTERSIZE=3;
 
-	public boolean anythingThatDirection(GrinderRoom room, int direction)
+	public boolean anythingThatDirection(final GrinderRoom room, final int direction)
 	{
 		final GrinderDir D=room.doors[direction];
 		if((D==null)||(D.room.length()==0))
@@ -510,7 +510,7 @@ public class GrinderFlatMap
 		return true;
 	}
 
-	public List<GrinderRoom> scoreRoomII(Map<String,GrinderRoom> H, GrinderRoom room, Set<String> roomsDone)
+	public List<GrinderRoom> scoreRoomII(final Map<String,GrinderRoom> H, final GrinderRoom room, final Set<String> roomsDone)
 	{
 		final HashSet<String> coordsDone=new HashSet<String>();
 		coordsDone.add(0+"/"+0);
@@ -600,7 +600,7 @@ public class GrinderFlatMap
 		return V;
 	}
 
-	public Vector<GrinderRoom> scoreRoom(Map<String,GrinderRoom> H, GrinderRoom room, HashSet<String> roomsDone, boolean finalPosition)
+	public Vector<GrinderRoom> scoreRoom(final Map<String,GrinderRoom> H, final GrinderRoom room, final HashSet<String> roomsDone, final boolean finalPosition)
 	{
 		final HashSet<String> coordsDone=new HashSet<String>();
 		coordsDone.add(0+"/"+0);
@@ -656,7 +656,7 @@ public class GrinderFlatMap
 		return V;
 	}
 
-	public StringBuffer getHTMLTable(HTTPRequest httpReq)
+	public StringBuffer getHTMLTable(final HTTPRequest httpReq)
 	{
 		final StringBuffer buf=new StringBuffer("");
 		buf.append("<TABLE WIDTH="+((Xbound+1)*130)+" BORDER=0 CELLSPACING=0 CELLPADDING=0>");
@@ -786,7 +786,7 @@ public class GrinderFlatMap
 		return buf;
 	}
 
-	protected String roomColorStyle(GrinderRoom GR)
+	protected String roomColorStyle(final GrinderRoom GR)
 	{
 		final Room R=GR.room();
 		switch (R.domainType())
@@ -826,7 +826,7 @@ public class GrinderFlatMap
 		case Room.DOMAIN_OUTDOORS_PLAINS:
 			if(R.ID().endsWith("Road"))
 			{
-				final int length=R.basePhyStats().weight(); 
+				final int length=R.basePhyStats().weight();
 				if(length < 5)
 					return ("BGCOLOR=\"#CCCCCC\"");
 				else
@@ -857,7 +857,7 @@ public class GrinderFlatMap
 		}
 	}
 
-	protected GrinderRoom getRoomInDir(GrinderRoom room, int d)
+	protected GrinderRoom getRoomInDir(final GrinderRoom room, final int d)
 	{
 		GrinderRoom GR=null;
 		int[] xy=newXY(room.xy,d);
@@ -872,7 +872,7 @@ public class GrinderFlatMap
 		return null;
 	}
 
-	protected int findRelGridDir(GrinderRoom room, String roomID)
+	protected int findRelGridDir(final GrinderRoom room, final String roomID)
 	{
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -883,13 +883,13 @@ public class GrinderFlatMap
 		return -1;
 	}
 
-	protected String getDoorLabelGif(int d, GrinderRoom room, HTTPRequest httpReq)
+	protected String getDoorLabelGif(final int d, final GrinderRoom room, final HTTPRequest httpReq)
 	{
 		if((room==null)
 		||(room.doors==null)
-		||(d>=room.doors.length)) 
+		||(d>=room.doors.length))
 			return "";
-		
+
 		String dirLetter=""+CMLib.directions().getDirectionChar(d);
 		final GrinderDir dir=room.doors[d];
 		GrinderRoom roomPointer=null;
@@ -925,7 +925,7 @@ public class GrinderFlatMap
 			return "<a href=\"javascript:CEX('"+dirName+"','"+room.roomID+"','"+dir.room+"');\"><IMG SRC=\"images/O"+dirLetter+theRest;
 	}
 
-	public int[] newXY(int[] xy, int dir)
+	public int[] newXY(int[] xy, final int dir)
 	{
 		xy=xy.clone();
 		switch(dir)
@@ -968,13 +968,13 @@ public class GrinderFlatMap
 		return xy;
 	}
 
-	public StringBuffer getHTMLMap(HTTPRequest httpReq)
+	public StringBuffer getHTMLMap(final HTTPRequest httpReq)
 	{
 		return getHTMLMap(httpReq, 4);
 	}
 
 	// this is much like getHTMLTable, but tiny rooms for world map viewing. No exits or ID's for now.
-	public StringBuffer getHTMLMap(HTTPRequest httpReq, int roomSize)
+	public StringBuffer getHTMLMap(final HTTPRequest httpReq, final int roomSize)
 	{
 		final StringBuffer buf = new StringBuffer("");
 		buf.append("<TABLE WIDTH=" + ( (Xbound + 1) * roomSize) +

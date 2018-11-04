@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class GrinderClans
 {
 	public String name()
@@ -43,7 +42,7 @@ public class GrinderClans
 		return "GrinderClans";
 	}
 
-	public static String membersList(Clan C, HTTPRequest httpReq)
+	public static String membersList(final Clan C, final HTTPRequest httpReq)
 	{
 		final Vector<String> newMembersNames=new Vector<String>();
 		final List<MemberRecord> DV=C.getMemberList();
@@ -80,7 +79,7 @@ public class GrinderClans
 		return "";
 	}
 
-	public static String relationsList(Clan C, HTTPRequest httpReq)
+	public static String relationsList(final Clan C, final HTTPRequest httpReq)
 	{
 		if(httpReq.isUrlParameter("RELATION1"))
 		{
@@ -105,7 +104,7 @@ public class GrinderClans
 		return "";
 	}
 
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(final HTTPRequest httpReq, final String parm)
 	{
 		final String last=httpReq.getUrlParameter("CLAN");
 		if(last==null)

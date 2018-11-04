@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_CrowsNest extends StdSkill
 {
 	@Override
@@ -96,7 +95,7 @@ public class Skill_CrowsNest extends StdSkill
 	}
 
 	protected int	code		= 0;
-	
+
 	@Override
 	public int abilityCode()
 	{
@@ -104,7 +103,7 @@ public class Skill_CrowsNest extends StdSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code = newCode;
 	}
@@ -119,7 +118,7 @@ public class Skill_CrowsNest extends StdSkill
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
@@ -151,7 +150,7 @@ public class Skill_CrowsNest extends StdSkill
 						{
 							try
 							{
-								int dir=CMLib.map().getExitDir(mobR, E);
+								final int dir=CMLib.map().getExitDir(mobR, E);
 								if((dir >=0)&&(shipR!=null)&&(shipR.getRoomInDir(dir)!=null))
 								{
 									Room R=shipR.getRoomInDir(dir);
@@ -163,11 +162,11 @@ public class Skill_CrowsNest extends StdSkill
 										R.executeMsg(mob,msg2);
 										if((targetMinor==CMMsg.TYP_EXAMINE)&&(R.getRoomInDir(dir)!=null))
 										{
-											for(int dir2 : Directions.CODES())
+											for(final int dir2 : Directions.CODES())
 											{
 												if(dir2!=Directions.getOpDirectionCode(dir))
 												{
-													Room R2=R.getRoomInDir(dir);
+													final Room R2=R.getRoomInDir(dir);
 													if((R2!=null)
 													&&((dir2==dir)
 														||(!CMLib.flags().isWateryRoom(R2))
@@ -183,7 +182,7 @@ public class Skill_CrowsNest extends StdSkill
 									}
 								}
 							}
-							catch(Throwable t)
+							catch(final Throwable t)
 							{
 								Log.errOut(t);
 							}
@@ -208,16 +207,16 @@ public class Skill_CrowsNest extends StdSkill
 							{
 								final CMMsg msg2=CMClass.getMsg(mob,shipR,CMMsg.MSG_LOOK,null);
 								shipR.executeMsg(mob,msg2);
-								
+
 								final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.WATERSURFACEONLY);
-								int maxRadius=1+(selfA.adjustedLevel(mob, 0)/20)+(selfA.getXLEVELLevel(mob)/2)+selfA.getXMAXRANGELevel(mob);
+								final int maxRadius=1+(selfA.adjustedLevel(mob, 0)/20)+(selfA.getXLEVELLevel(mob)/2)+selfA.getXMAXRANGELevel(mob);
 								final List<Room> Rs=CMLib.tracking().getRadiantRooms(shipR, flags, maxRadius);
-								for(Room R2 : Rs)
+								for(final Room R2 : Rs)
 								{
 									if(R2==null)
 										continue;
 									int landHo=-1;
-									for(int dir : Directions.CODES())
+									for(final int dir : Directions.CODES())
 									{
 										final Room R3=R2.getRoomInDir(dir);
 										if((R3!=null)&&(!CMLib.flags().isWateryRoom(R3)))
@@ -225,7 +224,7 @@ public class Skill_CrowsNest extends StdSkill
 									}
 									if((R2.numInhabitants()>0)||(R2.numItems()>0)||(landHo>=0))
 									{
-										List<String> listOfStuff=new ArrayList<String>(1);
+										final List<String> listOfStuff=new ArrayList<String>(1);
 										for(final Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
 										{
 											final MOB M=m.nextElement();
@@ -248,8 +247,8 @@ public class Skill_CrowsNest extends StdSkill
 										else
 										if((trail.size()>1)&&(trail.get(trail.size()-1)==shipR)&&(listOfStuff.size()>0))
 										{
-											StringBuilder str=new StringBuilder("");
-											int dir=CMLib.map().getRoomDir(shipR, trail.get(trail.size()-2));
+											final StringBuilder str=new StringBuilder("");
+											final int dir=CMLib.map().getRoomDir(shipR, trail.get(trail.size()-2));
 											if(trail.size()<3)
 												str.append(L("Directly @x1, you see @x2.",CMLib.directions().getInDirectionName(dir),CMLib.english().toEnglishStringList(listOfStuff)));
 											else
@@ -262,7 +261,7 @@ public class Skill_CrowsNest extends StdSkill
 									}
 								}
 							}
-							catch(Throwable t)
+							catch(final Throwable t)
 							{
 								Log.errOut(t);
 							}
@@ -273,7 +272,7 @@ public class Skill_CrowsNest extends StdSkill
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -290,7 +289,7 @@ public class Skill_CrowsNest extends StdSkill
 			{
 				R.showHappens(CMMsg.MSG_OK_VISUAL, L("You climb down from the Crow`s Nest."));
 				CMLib.map().emptyRoom(R, downR, true);
-				for(int dir : Directions.CODES())
+				for(final int dir : Directions.CODES())
 				{
 					final Room airRoom=R.getRoomInDir(dir);
 					if(airRoom!=null)
@@ -310,7 +309,7 @@ public class Skill_CrowsNest extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
@@ -320,11 +319,11 @@ public class Skill_CrowsNest extends StdSkill
 
 		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
-		
+
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		
+
 		final SailingShip ship;
 		if((R.getArea() instanceof BoardableShip)
 		&&((R.domainType()&Room.INDOORS)==0)
@@ -338,14 +337,14 @@ public class Skill_CrowsNest extends StdSkill
 			mob.tell(L("You must be on the deck of a big sailing ship to climb into the Crow's Nest!"));
 			return false;
 		}
-		
+
 		final Room oldUpR=R.getRoomInDir(Directions.UP);
 		if((oldUpR!=null)&&(oldUpR.roomID().length()>0))
 		{
 			mob.tell(L("You can not build a Crow's Nest here!"));
 			return false;
 		}
-		
+
 		for(final Enumeration<Room> r=R.getArea().getProperMap();r.hasMoreElements();)
 		{
 			final Room R2=r.nextElement();
@@ -358,7 +357,7 @@ public class Skill_CrowsNest extends StdSkill
 				}
 			}
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -372,7 +371,7 @@ public class Skill_CrowsNest extends StdSkill
 			crowsR.addNonUninvokableEffect(consA);
 			crowsR.setDisplayText(L("Up in the Crow`s Nest"));
 			crowsR.setDescription(L("You are atop the mast in the Crow`s Nest, from which you have a wide view of all of your surroundings."));
-			for(int dir : Directions.CODES())
+			for(final int dir : Directions.CODES())
 			{
 				final Room airRoom=CMClass.getLocale("InTheAir");
 				airRoom.setDisplayText("In mid-air above the deck");
@@ -382,7 +381,7 @@ public class Skill_CrowsNest extends StdSkill
 				crowsR.rawDoors()[dir]=airRoom;
 				crowsR.setRawExit(dir, CMClass.getExit("Open"));
 			}
-			
+
 			final CMMsg msg=CMClass.getMsg(mob,ship,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> start(s) climbing up into the Crow`s Nest!"));
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -397,7 +396,7 @@ public class Skill_CrowsNest extends StdSkill
 				crowsR.getRawExit(Directions.DOWN).addNonUninvokableEffect(CMClass.getAbility("Prop_Climbable"));
 				this.beneficialAffect(mob, crowsR, asLevel, 0);
 				crowsR.giveASky(0);
-				Ability climbA=mob.fetchAbility("Skill_Climb");
+				final Ability climbA=mob.fetchAbility("Skill_Climb");
 				if(climbA!=null)
 					climbA.invoke(mob, new XVector<String>("ABOVE"), null, auto, asLevel);
 			}

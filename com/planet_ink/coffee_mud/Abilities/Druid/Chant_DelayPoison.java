@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_DelayPoison extends Chant
 {
 	@Override
@@ -75,7 +74,7 @@ public class Chant_DelayPoison extends Chant
 
 	protected List<Ability> poisonAffects=null;
 
-	public List<Ability> returnOffensiveAffects(Physical fromMe)
+	public List<Ability> returnOffensiveAffects(final Physical fromMe)
 	{
 		final Vector<Ability> offenders=new Vector<Ability>();
 
@@ -101,7 +100,7 @@ public class Chant_DelayPoison extends Chant
 		if(canBeUninvoked() && (poisonAffects!=null))
 		{
 			mob.tell(L("The poisons in your system are reviving."));
-			for(Ability A : poisonAffects)
+			for(final Ability A : poisonAffects)
 			{
 				mob.addEffect(A);
 				A.setAffectedOne(mob);
@@ -111,7 +110,7 @@ public class Chant_DelayPoison extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -126,7 +125,7 @@ public class Chant_DelayPoison extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -144,11 +143,11 @@ public class Chant_DelayPoison extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Chant_DelayPoison pA = (Chant_DelayPoison)beneficialAffect(mob,target,asLevel,0);
+				final Chant_DelayPoison pA = (Chant_DelayPoison)beneficialAffect(mob,target,asLevel,0);
 				if(pA!=null)
 				{
 					pA.poisonAffects = offensiveAffects;
-					for(Ability A : offensiveAffects)
+					for(final Ability A : offensiveAffects)
 					{
 						target.delEffect(A);
 						A.setAffectedOne(target);

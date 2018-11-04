@@ -37,14 +37,14 @@ public interface HTTPHeader
 	 * @return lowercase name of this header
 	 */
 	public String lowerCaseName();
-	
+
 	/**
 	 * Return a header line with the given value
 	 * @param value the value to assign to the header
 	 * @return the name plus the value
 	 */
 	public String make(String value);
-	
+
 	/**
 	 * Return a header line with the given value
 	 * and an end-of-line character attached
@@ -52,21 +52,21 @@ public interface HTTPHeader
 	 * @return the name plus the value
 	 */
 	public String makeLine(String value);
-	
+
 	/**
 	 * Return a header line with the given value
 	 * @param value the value to assign to the header
 	 * @return the name plus the value
 	 */
 	public String make(int value);
-	
+
 	/**
 	 * Return a header line with the given value
 	 * @param value the value to assign to the header
 	 * @return the name plus the value
 	 */
 	public String make(long value);
-	
+
 	/**
 	 * Return a header line with the given value
 	 * and an end-of-line character attached
@@ -74,7 +74,7 @@ public interface HTTPHeader
 	 * @return the name plus the value
 	 */
 	public String makeLine(int value);
-	
+
 	/**
 	 * Return a header line with the given value
 	 * and an end-of-line character attached
@@ -85,11 +85,11 @@ public interface HTTPHeader
 
 	/**
 	 * Returns the key name of the header in all uppercase, but with
-	 * the - characters replaced with underscores. 
+	 * the - characters replaced with underscores.
 	 * @return the "enum" name of the header.
 	 */
 	public String name();
-	
+
 	/**
 	 * Enum of all the publicaly recognized headers.
 	 * @author Bo Zimmerman
@@ -135,25 +135,25 @@ public interface HTTPHeader
 		;
 		public static final String		 		KEEP_ALIVE_FMT	= "timeout=%d, max=%d";
 		private static String					keepAliveHeader =KEEP_ALIVE_FMT;
-		
+
 		private static final String EOLN = HTTPIOHandler.EOLN;
-		
+
 		private final String name;
 		private final String defaultValue;
 		private final String keyName;
 
-		private Common(String name, String defaultValue)
+		private Common(final String name, final String defaultValue)
 		{
 			this.name=name;
 			this.defaultValue=defaultValue;
 			this.keyName=name.toLowerCase();
 		}
 
-		private Common(String name)
+		private Common(final String name)
 		{
 			this(name,"");
 		}
-		
+
 		/**
 		 * Return the right and good outputtable name of this header
 		 * @return the disaplayable name
@@ -163,55 +163,55 @@ public interface HTTPHeader
 		{
 			return name;
 		}
-		
+
 		@Override
 		public String getDefaultValue()
 		{
 			return defaultValue;
 		}
-		
+
 		@Override
 		public String lowerCaseName()
 		{
 			return keyName;
 		}
-		
+
 		@Override
-		public String make(String value)
+		public String make(final String value)
 		{
 			return name + ": " + value;
 		}
-		
+
 		@Override
-		public String makeLine(String value)
+		public String makeLine(final String value)
 		{
 			return make(value) + EOLN;
 		}
-		
+
 		@Override
-		public String make(int value)
+		public String make(final int value)
 		{
 			return name + ": " + value;
 		}
-		
+
 		@Override
-		public String make(long value)
+		public String make(final long value)
 		{
 			return name + ": " + value;
 		}
-		
+
 		@Override
-		public String makeLine(int value)
+		public String makeLine(final int value)
 		{
 			return make(value) + EOLN;
 		}
-		
+
 		@Override
-		public String makeLine(long value)
+		public String makeLine(final long value)
 		{
 			return make(value) + EOLN;
 		}
-		
+
 		/**
 		 * Finds the appropriate HTTPHeader object for the given header
 		 * God help the ones that don't exist.
@@ -224,22 +224,22 @@ public interface HTTPHeader
 			{
 				return Common.valueOf(str.toUpperCase().replace('-','_'));
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
-			for(HTTPHeader head : Common.values())
+			for(final HTTPHeader head : Common.values())
 			{
 				if(head.lowerCaseName().equalsIgnoreCase(str))
 					return head;
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Set the static keep alive header from your configuration
 		 * @param header
 		 */
-		public static void setKeepAliveHeader(String header)
+		public static void setKeepAliveHeader(final String header)
 		{
 			Common.keepAliveHeader=header;
 		}
@@ -252,7 +252,7 @@ public interface HTTPHeader
 		{
 			return Common.keepAliveHeader;
 		}
-		
+
 		/**
 		 * If an HTTPHeader is something other than the official
 		 * ones encased in the CWHTTPHeader class, then this method
@@ -271,7 +271,7 @@ public interface HTTPHeader
 				{
 					return enumName;
 				}
-				
+
 				/**
 				 * Return the right and good outputtable name of this header
 				 * @return the disaplayable name
@@ -281,51 +281,51 @@ public interface HTTPHeader
 				{
 					return name;
 				}
-				
+
 				@Override
 				public String getDefaultValue()
 				{
 					return "";
 				}
-				
+
 				@Override
 				public String lowerCaseName()
 				{
 					return keyName;
 				}
-				
+
 				@Override
-				public String make(String value)
+				public String make(final String value)
 				{
 					return name + ": " + value;
 				}
-				
+
 				@Override
-				public String makeLine(String value)
+				public String makeLine(final String value)
 				{
 					return make(value) + EOLN;
 				}
-				
+
 				@Override
-				public String make(int value)
+				public String make(final int value)
 				{
 					return name + ": " + value;
 				}
-				
+
 				@Override
-				public String make(long value)
+				public String make(final long value)
 				{
 					return name + ": " + value;
 				}
-				
+
 				@Override
-				public String makeLine(int value)
+				public String makeLine(final int value)
 				{
 					return make(value) + EOLN;
 				}
-				
+
 				@Override
-				public String makeLine(long value)
+				public String makeLine(final long value)
 				{
 					return make(value) + EOLN;
 				}

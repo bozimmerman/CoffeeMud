@@ -32,7 +32,6 @@ import java.util.*;
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-
 public class Spell_KineticPulse extends Spell
 {
 	@Override
@@ -78,10 +77,10 @@ public class Spell_KineticPulse extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) 
+		final MOB target=this.getTarget(mob,commands,givenTarget);
+		if(target==null)
 			return false;
 
 		// the invoke method for spells receives as
@@ -92,7 +91,7 @@ public class Spell_KineticPulse extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=super.proficiencyCheck(mob,0,auto);
+		final boolean success=super.proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -100,9 +99,9 @@ public class Spell_KineticPulse extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			CMMsg msg=CMClass.getMsg(mob,target,this,super.somanticCastCode(mob,target,auto),
+			final CMMsg msg=CMClass.getMsg(mob,target,this,super.somanticCastCode(mob,target,auto),
 					L("<S-NAME> points at <T-NAMESELF> and sends an invisible wave of force towards <S_HIMHER>."));
-			CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
@@ -117,10 +116,10 @@ public class Spell_KineticPulse extends Spell
 
 				if(target.location()==mob.location())
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,L("The kinetic force wave <DAMAGES> <T-NAME>!"));
-				int percentage = CMLib.dice().roll(1, 100, 0);
+				final int percentage = CMLib.dice().roll(1, 100, 0);
 				if(percentage < 10)
 				{
-					CMMsg msg3=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L("<T-NAME> get(s) shoved backwards by an unseen force."));
+					final CMMsg msg3=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L("<T-NAME> get(s) shoved backwards by an unseen force."));
 					if(mob.location().okMessage(mob,msg3))
 					{
 						mob.location().send(mob, msg3);

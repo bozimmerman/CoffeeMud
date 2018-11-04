@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Drowish extends StdLanguage
 {
 	@Override
@@ -56,7 +55,7 @@ public class Drowish extends StdLanguage
 	}
 
 	@Override
-	public List<String[]> translationLists(String language)
+	public List<String[]> translationLists(final String language)
 	{
 		if(wordLists==null)
 		{
@@ -80,7 +79,7 @@ public class Drowish extends StdLanguage
 	private static final Hashtable<String,String> hashwords=new Hashtable<String,String>();
 
 	@Override
-	public Map<String, String> translationHash(String language)
+	public Map<String, String> translationHash(final String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))
 			return hashwords;

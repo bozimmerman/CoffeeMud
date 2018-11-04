@@ -46,7 +46,7 @@ public class Pixie extends SmallElfKin
 		super();
 		super.naturalAbilImmunities.add("Disease_PoisonIvy");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Pixie");
 
 	@Override
@@ -96,7 +96,7 @@ public class Pixie extends SmallElfKin
 	{
 		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
-	
+
 	private final static String localizedStaticRacialCat = CMLib.lang().L("Fairy-kin");
 
 	@Override
@@ -170,7 +170,7 @@ public class Pixie extends SmallElfKin
 	{
 		return -10;
 	}
-	
+
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
@@ -192,7 +192,7 @@ public class Pixie extends SmallElfKin
 	{
 		super.affectPhyStats(affected,affectableStats);
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -219,7 +219,7 @@ public class Pixie extends SmallElfKin
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

@@ -62,7 +62,7 @@ public interface QuestManager extends CMLibrary
 	public DVector getQuestTemplate(MOB mob, String fileToGet);
 	public Quest questMaker(MOB mob);
 	public List<Quest> getPlayerPersistentQuests(MOB player);
-	
+
 	public GenericEditor.CMEval getQuestCommandEval(QMCommand command);
 
 	public interface HolidayData
@@ -77,7 +77,7 @@ public interface QuestManager extends CMLibrary
 
 	public final static int QM_COMMAND_MASK=127;
 	public final static int QM_COMMAND_OPTIONAL=128;
-	
+
 	public enum QMCommand
 	{
 		$TITLE,

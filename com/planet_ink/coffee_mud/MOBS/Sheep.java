@@ -74,9 +74,9 @@ public class Sheep extends StdMOB
 			return L("The poor scrawny creature looks cold");
 		return super.description();
 	}
-	
+
 	@Override
-	public String displayText(MOB viewer)
+	public String displayText(final MOB viewer)
 	{
 		final Room R=location();
 		if(R!=null)
@@ -86,5 +86,5 @@ public class Sheep extends StdMOB
 		}
 		return super.displayText(viewer);
 	}
-	
+
 }

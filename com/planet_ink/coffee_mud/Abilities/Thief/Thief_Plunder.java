@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Plunder extends ThiefSkill
 {
 	@Override
@@ -88,13 +87,13 @@ public class Thief_Plunder extends ThiefSkill
 	}
 
 	@Override
-	public boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(final MOB mob)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
@@ -116,7 +115,7 @@ public class Thief_Plunder extends ThiefSkill
 			mob.tell(L("You can't plunder @x1.",target.name(mob)));
 			return false;
 		}
-		
+
 		if(!target.mayIFight(mob))
 		{
 			mob.tell(L("You cannot plunder @x1.",target.charStats().himher()));
@@ -124,7 +123,7 @@ public class Thief_Plunder extends ThiefSkill
 		}
 
 		double money=target.phyStats().level()+super.getXLEVELLevel(mob);
-		double total=CMLib.beanCounter().getTotalAbsoluteNativeValue(target);
+		final double total=CMLib.beanCounter().getTotalAbsoluteNativeValue(target);
 		if(total < money)
 			money=total;
 

@@ -73,7 +73,7 @@ public class Prayer_Disown extends Prayer
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -96,16 +96,16 @@ public class Prayer_Disown extends Prayer
 		}
 		return list;
 	}
-	
-	public void delEffect(final MOB M, String effectID)
+
+	public void delEffect(final MOB M, final String effectID)
 	{
 		final Ability A=M.fetchEffect(effectID);
 		if(A!=null)
 			M.delEffect(A);
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat())
 		{
@@ -120,7 +120,7 @@ public class Prayer_Disown extends Prayer
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
 			return false;
-		
+
 		if((target instanceof CagedAnimal)
 		&&(target.isGeneric())
 		&&((target.phyStats().ability()>0))
@@ -161,9 +161,9 @@ public class Prayer_Disown extends Prayer
 				if(target instanceof MOB)
 				{
 					final MOB M=(MOB)target;
-					char gender=(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
+					final char gender=(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
 					final Race R=M.baseCharStats().getMyRace();
-					String name = CMLib.english().startWithAorAn(R.makeMobName(gender, 2)).toLowerCase();
+					final String name = CMLib.english().startWithAorAn(R.makeMobName(gender, 2)).toLowerCase();
 					M.setName(name);
 					M.setDisplayText(L("@x1 is here",name));
 					delEffect(M,"Prop_SafePET");
@@ -181,7 +181,7 @@ public class Prayer_Disown extends Prayer
 					final List<Tattoo> parents=getParentTattoos(M);
 					for(final Tattoo T : parents)
 						M.delTattoo(T);
-					char gender=(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
+					final char gender=(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
 					final Race R=M.baseCharStats().getMyRace();
 					String name = CMLib.english().startWithAorAn(R.makeMobName(gender, 2)).toLowerCase();
 					M.setName(name);

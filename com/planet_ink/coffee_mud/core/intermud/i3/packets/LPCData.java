@@ -34,8 +34,10 @@ import java.util.Vector;
  *
  */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class LPCData {
-	static public Object getLPCData(final String cmd) throws I3Exception {
+public class LPCData
+{
+	static public Object getLPCData(final String cmd) throws I3Exception
+	{
 		return getLPCData(cmd, false);
 	}
 

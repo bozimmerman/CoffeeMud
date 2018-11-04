@@ -44,7 +44,7 @@ public class SteamMephit extends Mephit
 	{
 		super();
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Steam Mephit");
 
 	@Override
@@ -59,9 +59,9 @@ public class SteamMephit extends Mephit
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_SLASH, affectableStats.getStat(CharStats.STAT_SAVE_SLASH)+50);
 		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)+50);
-		
+
 		affectableStats.setStat(CharStats.STAT_SAVE_PIERCE,affectableStats.getStat(CharStats.STAT_SAVE_PIERCE)+100);
-		
+
 		affectableStats.setStat(CharStats.STAT_SAVE_GAS,affectableStats.getStat(CharStats.STAT_SAVE_GAS)-100);
 	}
 
@@ -150,9 +150,9 @@ public class SteamMephit extends Mephit
 		else
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
-	
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -161,7 +161,7 @@ public class SteamMephit extends Mephit
 		}
 		return body;
 	}
-	
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

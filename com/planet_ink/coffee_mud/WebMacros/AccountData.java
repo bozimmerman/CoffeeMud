@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class AccountData extends StdWebMacro
 {
 	@Override
@@ -48,7 +47,7 @@ public class AccountData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("ACCOUNT");
@@ -85,7 +84,7 @@ public class AccountData extends StdWebMacro
 				return ""+A.getNotes();
 			if(parms.containsKey("TATTOOS"))
 			{
-				StringBuilder str = new StringBuilder("");
+				final StringBuilder str = new StringBuilder("");
 				for(final Enumeration<Tattoo> e=A.tattoos();e.hasMoreElements();)
 					str.append(e.nextElement().toString()+", ");
 				return str.toString();

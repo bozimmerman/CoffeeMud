@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_BreakALeg extends BardSkill
 {
 	@Override
@@ -100,7 +99,7 @@ public class Skill_BreakALeg extends BardSkill
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
-			
+
 			if(mob.charStats().getBodyPart(Race.BODY_LEG)<=0)
 			{
 				unInvoke();
@@ -110,7 +109,7 @@ public class Skill_BreakALeg extends BardSkill
 			if(CMLib.dice().rollPercentage()<=(5+this.getXLEVELLevel(invoker())))
 			{
 				unInvoke();
-				LimbDamage dA=(LimbDamage)CMClass.getAbility("BrokenLimbs");
+				final LimbDamage dA=(LimbDamage)CMClass.getAbility("BrokenLimbs");
 				if(dA!=null)
 					dA.invoke(invoker(), new XVector<String>("LEG"), mob, true, -1);
 				return false;
@@ -121,7 +120,7 @@ public class Skill_BreakALeg extends BardSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -132,7 +131,7 @@ public class Skill_BreakALeg extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

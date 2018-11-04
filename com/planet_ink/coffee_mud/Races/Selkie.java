@@ -136,7 +136,7 @@ public class Selkie extends StdRace
 	{
 		return breatheAirWaterArray;
 	}
-	
+
 	@Override
 	public String[] culturalAbilityNames()
 	{
@@ -193,7 +193,7 @@ public class Selkie extends StdRace
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -216,7 +216,7 @@ public class Selkie extends StdRace
 			s1.setMaterial(RawMaterial.RESOURCE_LEATHER);
 			p1.text();
 			outfitChoices.add(p1);
-			
+
 			final Armor s3=CMClass.getArmor("GenBelt");
 			outfitChoices.add(s3);
 		}

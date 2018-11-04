@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class ItemRejuv extends StdAbility implements ItemTicker
 {
 	@Override
@@ -80,7 +79,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	protected Vector<Item>	contents			= new Vector<Item>();
 	protected Vector<Item>	ccontents			= new Vector<Item>();
 
-	public synchronized void loadContent(ItemTicker ticker, Item item, Room room)
+	public synchronized void loadContent(final ItemTicker ticker, final Item item, final Room room)
 	{
 		if(ticker instanceof ItemRejuv)
 		{
@@ -110,13 +109,13 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	// this was briefly synchronized to fix some problem
 	// but it caused a sync lock with service  engine.
 	@Override
-	public void setProperLocation(Room room)
+	public void setProperLocation(final Room room)
 	{
 		myProperLocation = room;
 	}
 
 	@Override
-	public void loadMeUp(Item item, Room room)
+	public void loadMeUp(final Item item, final Room room)
 	{
 		unloadIfNecessary(item);
 		contents=new Vector<Item>();
@@ -133,7 +132,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	}
 
 	@Override
-	public void unloadIfNecessary(Item item)
+	public void unloadIfNecessary(final Item item)
 	{
 		final ItemRejuv a=(ItemRejuv)item.fetchEffect(ID());
 		if(a!=null)
@@ -147,7 +146,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	}
 
 	@Override
-	public boolean isVerifiedContents(Item item)
+	public boolean isVerifiedContents(final Item item)
 	{
 		if(item==null)
 			return false;
@@ -186,7 +185,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 					}
 					newThisItem.setExpirationDate(0);
 					R.addItem(newThisItem);
-					
+
 					newThisItem.setContainer(thisContainer);
 				}
 				else
@@ -212,7 +211,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		if(tickID==Tickable.TICKID_ROOM_ITEM_REJUV)
 		{
 			if((CMLib.flags().canNotBeCamped(item)||CMLib.flags().canNotBeCamped(R))
-			&& (R.numPCInhabitants() > 0) 
+			&& (R.numPCInhabitants() > 0)
 			&& (!CMLib.tracking().isAnAdminHere(R,false)))
 			{
 				CMLib.threads().setTickPending(ticking,Tickable.TICKID_ROOM_ITEM_REJUV);

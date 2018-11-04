@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Ranger_TrackAnimal extends StdAbility
 {
 	@Override
@@ -174,7 +173,7 @@ public class Ranger_TrackAnimal extends StdAbility
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
-	public MOB animalHere(Room room)
+	public MOB animalHere(final Room room)
 	{
 		if(room==null)
 			return null;
@@ -189,14 +188,14 @@ public class Ranger_TrackAnimal extends StdAbility
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!CMLib.flags().isAliveAwakeMobile(mob,false))
 			return false;
@@ -238,7 +237,7 @@ public class Ranger_TrackAnimal extends StdAbility
 			.plus(TrackingLibrary.TrackingFlag.NOWATER);
 
 		final ArrayList<Room> rooms=new ArrayList<Room>();
-		int range=50 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
+		final int range=50 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room room : checkSet)
 		{

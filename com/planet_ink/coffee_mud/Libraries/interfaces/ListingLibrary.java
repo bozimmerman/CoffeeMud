@@ -32,7 +32,6 @@ import java.util.*;
 */
 public interface ListingLibrary extends CMLibrary
 {
-
 	public String itemSeenString(final MOB viewerM, final Environmental item, final boolean useName, final boolean longLook, final boolean sysMsgs, final boolean compress);
 	public int getReps(final MOB viewerM, final Environmental item, final List<? extends Environmental> theRest, final boolean useName, final boolean longLook);
 	public void appendReps(final int reps, final StringBuilder say, final boolean compress);
@@ -63,7 +62,7 @@ public interface ListingLibrary extends CMLibrary
 	public int fixColWidth(final double colWidth, final Session session);
 	public int fixColWidth(final double colWidth, final double totalWidth);
 	public void fixColWidths(final int[] colWidths, final Session session);
-	
+
 	public static interface ListStringer
 	{
 		public String stringify(Object o);

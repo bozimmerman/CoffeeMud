@@ -38,7 +38,6 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Destroy extends StdCommand
 {
 	public Destroy()
@@ -53,13 +52,13 @@ public class Destroy extends StdCommand
 		return access;
 	}
 
-	public boolean errorOut(MOB mob)
+	public boolean errorOut(final MOB mob)
 	{
 		mob.tell(L("You are not allowed to do that here."));
 		return false;
 	}
 
-	public boolean mobs(MOB mob, List<String> commands)
+	public boolean mobs(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -109,7 +108,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public void manufacturer(MOB mob, List<String> commands) throws IOException
+	public void manufacturer(final MOB mob, final List<String> commands) throws IOException
 	{
 		if(commands.size()<3)
 		{
@@ -138,7 +137,7 @@ public class Destroy extends StdCommand
 		}
 	}
 
-	public void accounts(MOB mob, List<String> commands)
+	public void accounts(final MOB mob, final List<String> commands)
 	throws IOException
 	{
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around the heavens."));
@@ -173,7 +172,7 @@ public class Destroy extends StdCommand
 		}
 	}
 
-	public boolean players(MOB mob, List<String> commands)
+	public boolean players(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -205,7 +204,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public Thread findThreadGroup(String threadName,ThreadGroup tGroup)
+	public Thread findThreadGroup(final String threadName,final ThreadGroup tGroup)
 	{
 		final int ac = tGroup.activeCount();
 		final int agc = tGroup.activeGroupCount();
@@ -248,7 +247,7 @@ public class Destroy extends StdCommand
 		return null;
 	}
 
-	public Thread findThread(String threadName)
+	public Thread findThread(final String threadName)
 	{
 		Thread t=null;
 		try
@@ -267,7 +266,7 @@ public class Destroy extends StdCommand
 
 	}
 
-	public void rooms(MOB mob, List<String> commands)
+	public void rooms(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		final String thecmd=commands.get(0).toLowerCase();
@@ -393,7 +392,7 @@ public class Destroy extends StdCommand
 		}
 	}
 
-	public void exits(MOB mob, List<String> commands)
+	public void exits(final MOB mob, final List<String> commands)
 	{
 		if(mob.location().roomID().equals(""))
 		{
@@ -433,7 +432,7 @@ public class Destroy extends StdCommand
 		Log.sysOut("Exits",mob.location().roomID()+" exits destroyed by "+mob.Name()+".");
 	}
 
-	private Item getItem(boolean allFlag, Room srchRoom, Item srchContainer, MOB srchMob, String itemID)
+	private Item getItem(final boolean allFlag, final Room srchRoom, final Item srchContainer, final MOB srchMob, final String itemID)
 	{
 		Item deadItem=null;
 		deadItem=(srchRoom==null)?null:srchRoom.findItem(srchContainer,itemID);
@@ -449,8 +448,8 @@ public class Destroy extends StdCommand
 		}
 		return deadItem;
 	}
-	
-	public boolean items(MOB mob, List<String> commands)
+
+	public boolean items(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -508,8 +507,8 @@ public class Destroy extends StdCommand
 		}
 		boolean doneSomething=false;
 		Item deadItem=getItem(allFlag,srchRoom,srchContainer,srchMob,itemID);
-		
-		int spaceDex=itemID.indexOf(' ');
+
+		final int spaceDex=itemID.indexOf(' ');
 		if((deadItem == null)&&(spaceDex>0)&&(CMath.isInteger(itemID.substring(0,spaceDex))))
 		{
 			max=CMath.s_int(itemID.substring(0,spaceDex));
@@ -578,7 +577,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public void areas(MOB mob, List<String> commands)
+	public void areas(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -660,7 +659,7 @@ public class Destroy extends StdCommand
 		}
 	}
 
-	public boolean races(MOB mob, List<String> commands)
+	public boolean races(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -698,7 +697,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public boolean components(MOB mob, List<String> commands)
+	public boolean components(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -720,7 +719,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public boolean expertises(MOB mob, List<String> commands)
+	public boolean expertises(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -741,7 +740,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public boolean titles(MOB mob, List<String> commands)
+	public boolean titles(final MOB mob, final List<String> commands)
 	{
 		mob.tell(L("Destroying a title will not remove the title from all players who may have it."));
 		mob.tell(L("If this is important, you should destroy and then re-add the exact same title with an unreachable mask "
@@ -760,8 +759,8 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
-		
-		String error = CMLib.titles().deleteTitleAndResave(classID);
+
+		final String error = CMLib.titles().deleteTitleAndResave(classID);
 		if(error == null)
 		{
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The prestige of players just decreased!"));
@@ -772,11 +771,11 @@ public class Destroy extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
-			
+
 		return true;
 	}
 
-	public boolean classes(MOB mob, List<String> commands)
+	public boolean classes(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -814,7 +813,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public boolean abilities(MOB mob, List<String> commands)
+	public boolean abilities(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -850,7 +849,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public boolean achievements(MOB mob, List<String> commands)
+	public boolean achievements(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -884,7 +883,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public void socials(MOB mob, List<String> commands)
+	public void socials(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -925,7 +924,7 @@ public class Destroy extends StdCommand
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The happiness of all mankind has just increased!"));
 	}
 
-	public boolean destroyItem(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
+	public boolean destroyItem(final MOB mob, final Environmental dropThis, final boolean quiet, final boolean optimize)
 	{
 		String msgstr=null;
 		final int material=(dropThis instanceof Item)?((Item)dropThis).material():-1;
@@ -957,7 +956,7 @@ public class Destroy extends StdCommand
 		return false;
 	}
 
-	public void allQualify(MOB mob, List<String> commands)
+	public void allQualify(final MOB mob, final List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<4)
@@ -1106,12 +1105,12 @@ public class Destroy extends StdCommand
 								{
 									sess.promptPrint(L("\n\rAre you sure you want to try to destroy '@x1'(y/N)? ", destroyM.name(mob)));
 								}
-		
+
 								@Override
 								public void timedOut()
 								{
 								}
-		
+
 								@Override
 								public void callBack()
 								{
@@ -1121,7 +1120,7 @@ public class Destroy extends StdCommand
 										{
 											C.execute(mob,killCmd,metaFlags);
 										}
-										catch (IOException e)
+										catch (final IOException e)
 										{
 										}
 									}
@@ -1158,7 +1157,7 @@ public class Destroy extends StdCommand
 				String to = null;
 				final String second=(commands.size()>2)?commands.get(2):"";
 				final String third=(commands.size()>3)?CMParms.combine(commands,3):"";
-				List<String> flagsV=CMParms.parseAny(CMJ.getFlag(CommandJournalFlags.ASSIGN), ':', true);
+				final List<String> flagsV=CMParms.parseAny(CMJ.getFlag(CommandJournalFlags.ASSIGN), ':', true);
 				if(second.length()>0)
 				{
 					String possTo=null;
@@ -1379,14 +1378,14 @@ public class Destroy extends StdCommand
 				mob.tell(L("'@x1' is no longer debugging",named));
 				if(flag == CMSecurity.DbgFlag.HTTPACCESS)
 				{
-					for(MudHost host : CMLib.hosts())
+					for(final MudHost host : CMLib.hosts())
 					{
 						try
 						{
 							host.executeCommand("WEBSERVER ADMIN ACCESS OFF");
 							host.executeCommand("WEBSERVER PUB ACCESS OFF");
 						}
-						catch (Exception e)
+						catch (final Exception e)
 						{
 							mob.tell(e.getMessage());
 						}
@@ -1395,14 +1394,14 @@ public class Destroy extends StdCommand
 				else
 				if(flag == CMSecurity.DbgFlag.HTTPREQ)
 				{
-					for(MudHost host : CMLib.hosts())
+					for(final MudHost host : CMLib.hosts())
 					{
 						try
 						{
 							host.executeCommand("WEBSERVER ADMIN DEBUG OFF");
 							host.executeCommand("WEBSERVER PUB DEBUG OFF");
 						}
-						catch (Exception e)
+						catch (final Exception e)
 						{
 							mob.tell(e.getMessage());
 						}
@@ -1501,7 +1500,7 @@ public class Destroy extends StdCommand
 				mob.tell(L("Please enter a valid ban number to delete.  Use List Banned for more information."));
 			else
 			{
-				String name = CMSecurity.unban(which);
+				final String name = CMSecurity.unban(which);
 				if(name.length()>0)
 					Log.sysOut("CreateEdit",mob.Name()+" Unbanned "+name+".");
 				mob.tell(L("Ok."));
@@ -1535,7 +1534,7 @@ public class Destroy extends StdCommand
 				which=CMath.s_int(commands.get(2));
 			Session S=null;
 			int x=0;
-			for(Session s : CMLib.sessions().allIterableAllHosts())
+			for(final Session s : CMLib.sessions().allIterableAllHosts())
 			{
 				if(x++ == which)
 				{
@@ -1665,7 +1664,7 @@ public class Destroy extends StdCommand
 				{
 					mob.tell(CMLib.hosts().get(0).executeCommand("STOP WEB "+commands.get(2)));
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
 					mob.tell(L("Failure: @x1",e.getMessage()));
 				}
@@ -1823,7 +1822,7 @@ public class Destroy extends StdCommand
 				{
 					try
 					{
-						 theRoom=CMLib.map().getRoom(allWord); 
+						 theRoom=CMLib.map().getRoom(allWord);
 					}
 					catch(final NoSuchElementException e)
 					{

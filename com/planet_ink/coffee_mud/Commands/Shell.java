@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Shell extends StdCommand
 {
 	public Shell()
@@ -50,7 +49,7 @@ public class Shell extends StdCommand
 	}
 
 	protected static DVector pwds=new DVector(2);
-	
+
 	protected enum SubCmds
 	{
 		DIRECTORY('$',"DIRECTORY","LS"),
@@ -67,13 +66,13 @@ public class Shell extends StdCommand
 		;
 		public String c;
 		public String[] rest;
-		private SubCmds(char shortName, String... longers)
+		private SubCmds(final char shortName, final String... longers)
 		{
 			c=""+shortName;
 			rest=longers;
 		}
 	}
-	
+
 	protected final static String[] badTextExtensions={
 		".ZIP",".JPE",".JPG",".GIF",".CLASS",".WAV",".BMP",".JPEG",".GZ",".TGZ",".JAR"
 	};
@@ -83,7 +82,7 @@ public class Shell extends StdCommand
 		boolean recurse=false;
 		boolean forceOverwrites=false;
 		boolean preservePaths=false;
-		public cp_options(List<String> cmds)
+		public cp_options(final List<String> cmds)
 		{
 			for(int c=cmds.size()-1;c>=0;c--)
 			{
@@ -112,7 +111,7 @@ public class Shell extends StdCommand
 		}
 	}
 
-	private java.util.List<CMFile> sortDirsUp(CMFile[] files)
+	private java.util.List<CMFile> sortDirsUp(final CMFile[] files)
 	{
 		final Vector<CMFile> dirs=new Vector<CMFile>();
 		CMFile CF=null;
@@ -148,7 +147,7 @@ public class Shell extends StdCommand
 		return finalList;
 	}
 
-	private java.util.List<CMFile>  sortDirsDown(CMFile[] files)
+	private java.util.List<CMFile>  sortDirsDown(final CMFile[] files)
 	{
 		final Vector<CMFile> dirs=new Vector<CMFile>();
 		final HashSet<CMFile> dirsH=new HashSet<CMFile>();
@@ -229,9 +228,9 @@ public class Shell extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
-		String pwd=(pwds.contains(mob))?(String)pwds.get(pwds.indexOf(mob),2):"";
+		final String pwd=(pwds.contains(mob))?(String)pwds.get(pwds.indexOf(mob),2):"";
 		if((args.length>0)&&(args[0].equals(".")))
 			return pwd;
 		return null;
@@ -277,7 +276,7 @@ public class Shell extends StdCommand
 				if(s==sub.rest[0])
 				{
 					allcmds.append(s+" (");
-					for(String s2 : sub.rest)
+					for(final String s2 : sub.rest)
 					{
 						if(s2 != s)
 						{
@@ -298,7 +297,7 @@ public class Shell extends StdCommand
 			return false;
 		}
 		final Set<String> skipHash = new XHashSet<String>(new String[]{"resources/map","resources/catalog","./.svn"});
-		final boolean killOnSession=((mob.session()!=null)&&(!mob.session().isStopped())); 
+		final boolean killOnSession=((mob.session()!=null)&&(!mob.session().isStopped()));
 		switch(cmd)
 		{
 		case DIRECTORY: // directory
@@ -386,13 +385,13 @@ public class Shell extends StdCommand
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
 			{
-				String ttarget1=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
+				final String ttarget1=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
 				final CMFile TD1=new CMFile(incorporateBaseDir(pwd,ttarget1),mob);
-				String ttargetd1=(dirs[0].isLocalFile())?"//"+TD1.getParent():"::"+TD1.getParent();
+				final String ttargetd1=(dirs[0].isLocalFile())?"//"+TD1.getParent():"::"+TD1.getParent();
 				final CMFile TDp1=new CMFile(incorporateBaseDir(pwd,ttargetd1),mob);
-				String ttarget2=(dirs[0].isLocalFile())?"::"+target.trim():"//"+target.trim();
+				final String ttarget2=(dirs[0].isLocalFile())?"::"+target.trim():"//"+target.trim();
 				final CMFile TD2=new CMFile(incorporateBaseDir(pwd,ttarget2),mob);
-				String ttargetd2=(dirs[0].isLocalFile())?"::"+TD2.getParent():"//"+TD2.getParent();
+				final String ttargetd2=(dirs[0].isLocalFile())?"::"+TD2.getParent():"//"+TD2.getParent();
 				final CMFile TDp2=new CMFile(incorporateBaseDir(pwd,ttargetd2),mob);
 				if(TD1.exists() && TD1.isDirectory())
 					target=ttarget1;
@@ -777,13 +776,13 @@ public class Shell extends StdCommand
 			}
 			if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
 			{
-				String ttarget1=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
+				final String ttarget1=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
 				final CMFile TD1=new CMFile(incorporateBaseDir(pwd,ttarget1),mob);
-				String ttargetd1=(dirs[0].isLocalFile())?"//"+TD1.getParent():"::"+TD1.getParent();
+				final String ttargetd1=(dirs[0].isLocalFile())?"//"+TD1.getParent():"::"+TD1.getParent();
 				final CMFile TDp1=new CMFile(incorporateBaseDir(pwd,ttargetd1),mob);
-				String ttarget2=(dirs[0].isLocalFile())?"::"+target.trim():"//"+target.trim();
+				final String ttarget2=(dirs[0].isLocalFile())?"::"+target.trim():"//"+target.trim();
 				final CMFile TD2=new CMFile(incorporateBaseDir(pwd,ttarget2),mob);
-				String ttargetd2=(dirs[0].isLocalFile())?"::"+TD2.getParent():"//"+TD2.getParent();
+				final String ttargetd2=(dirs[0].isLocalFile())?"::"+TD2.getParent():"//"+TD2.getParent();
 				final CMFile TDp2=new CMFile(incorporateBaseDir(pwd,ttargetd2),mob);
 				if(TD1.exists() && TD1.isDirectory())
 					target=ttarget1;
@@ -985,7 +984,7 @@ public class Shell extends StdCommand
 		return true;
 	}
 
-	public String desc(CMFile CF)
+	public String desc(final CMFile CF)
 	{
 		return (CF.isLocalFile() ? "Local file " : "VFS file ") + "'/" + CF.getVFSPathAndName() + "'";
 	}
@@ -997,7 +996,7 @@ public class Shell extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.hasAccessibleDir(mob, null);
 	}

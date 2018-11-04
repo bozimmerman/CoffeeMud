@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Expertises extends StdCommand
 {
 	public Expertises()
@@ -99,9 +98,9 @@ public class Expertises extends StdCommand
 			}
 		}
 	}
-	
+
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final StringBuffer msg=new StringBuffer("");
@@ -122,7 +121,7 @@ public class Expertises extends StdCommand
 
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		//if(!super.checkArguments(internalParameters, args)) return Boolean.FALSE.toString();
 
@@ -132,7 +131,7 @@ public class Expertises extends StdCommand
 			if(o instanceof MOB)
 				target=(MOB)o;
 		}
-		StringBuffer msg=new StringBuffer("");
+		final StringBuffer msg=new StringBuffer("");
 		this.appendExpertise(target, msg);
 		return msg;
 	}

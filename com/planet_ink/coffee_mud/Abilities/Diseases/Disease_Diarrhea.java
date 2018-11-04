@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Disease_Diarrhea extends Disease
 {
 	@Override
@@ -153,12 +152,12 @@ public class Disease_Diarrhea extends Disease
 	}
 
 	@Override
-	public void affectPhyStats(Physical E, PhyStats stats)
+	public void affectPhyStats(final Physical E, final PhyStats stats)
 	{
 		super.affectPhyStats(E,stats);
 	}
 
-	public void affectChatStats(MOB E, CharStats stats)
+	public void affectChatStats(final MOB E, final CharStats stats)
 	{
 		super.affectCharStats(E,stats);
 		stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)-50);
@@ -184,7 +183,7 @@ public class Disease_Diarrhea extends Disease
 				if(mob.fetchEffect("Soiled")!=null)
 					mob.location().show(mob, null, CMMsg.MSG_OK_VISUAL, L("<S-NAME> just soiled <S-HIM-HERSELF>!"));
 			}
-			
+
 		}
 		return true;
 	}

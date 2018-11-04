@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_Hardiness extends FighterSkill
 {
 	@Override
@@ -97,7 +96,7 @@ public class Fighter_Hardiness extends FighterSkill
 		super.affectCharState(affected,affectableState);
 		affectableState.setMovement(affectableState.getMovement() + 30 + (int)Math.round(2.0*adjustedLevel(invoker,0)*CMath.div(proficiency(), 100.0)));
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -109,7 +108,7 @@ public class Fighter_Hardiness extends FighterSkill
 		&&(((MOB)affected).location()!=null))
 		{
 			final MOB mob=(MOB)affected;
-			if((CMath.div(mob.curState().getMovement(), mob.maxState().getMovement())<.75) 
+			if((CMath.div(mob.curState().getMovement(), mob.maxState().getMovement())<.75)
 			&& (CMLib.dice().rollPercentage()<2))
 			{
 				super.helpProficiency((MOB)affected, 0);

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_LocateAlcohol extends ThiefSkill
 {
 	@Override
@@ -92,7 +91,7 @@ public class Thief_LocateAlcohol extends ThiefSkill
 	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
 
-	public String alcoholCheck(MOB mob, Item I, StringBuffer msg)
+	public String alcoholCheck(final MOB mob, final Item I, final StringBuffer msg)
 	{
 		if(I==null)
 			return "";
@@ -107,7 +106,7 @@ public class Thief_LocateAlcohol extends ThiefSkill
 		return msg.toString();
 	}
 
-	public String alcoholHere(MOB mob, Environmental E)
+	public String alcoholHere(final MOB mob, final Environmental E)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		if(E==null)
@@ -135,7 +134,7 @@ public class Thief_LocateAlcohol extends ThiefSkill
 		{
 			alcoholCheck(mob,(Item)E,msg);
 			if(E instanceof Container)
-			for(Item I : ((Container)E).getContents())
+			for(final Item I : ((Container)E).getContents())
 				alcoholCheck(mob,I,msg);
 		}
 		else
@@ -165,7 +164,7 @@ public class Thief_LocateAlcohol extends ThiefSkill
 		}
 		return msg.toString();
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -232,7 +231,7 @@ public class Thief_LocateAlcohol extends ThiefSkill
 		&&(CMLib.flags().canBeSeenBy(mob.location(),mob))
 		&&(msg.targetMinor()==CMMsg.TYP_LOOK))
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),false);
-		
+
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.target()!=null)
@@ -260,14 +259,14 @@ public class Thief_LocateAlcohol extends ThiefSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

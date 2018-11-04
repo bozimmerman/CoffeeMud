@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_Toughness extends FighterSkill
 {
 	@Override
@@ -97,7 +96,7 @@ public class Fighter_Toughness extends FighterSkill
 		super.affectCharState(affected,affectableState);
 		affectableState.setHitPoints(affectableState.getHitPoints() + 30 + (int)Math.round(2.0*adjustedLevel(invoker,0)*CMath.div(proficiency(), 100.0)));
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

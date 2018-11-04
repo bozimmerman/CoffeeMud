@@ -58,7 +58,7 @@ public class Drowness extends StdBehavior
 	public static final int CHECK_STATUS = 129;
 
 	@Override
-	public void startBehavior(PhysicalAgent forMe)
+	public void startBehavior(final PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB))
@@ -91,7 +91,7 @@ public class Drowness extends StdBehavior
 		mob.recoverCharStats();
 	}
 
-	public void addFemaleNaturalAbilities(MOB mob)
+	public void addFemaleNaturalAbilities(final MOB mob)
 	{
 		final Weapon mainWeapon = CMClass.getWeapon("Mace");
 		mainWeapon.wearAt(Wearable.WORN_WIELD);
@@ -174,7 +174,7 @@ public class Drowness extends StdBehavior
 
 	}
 
-	public void addMaleNaturalAbilities(MOB mob)
+	public void addMaleNaturalAbilities(final MOB mob)
 	{
 		final Armor chainMail = CMClass.getArmor("DrowChainMailArmor");
 		chainMail.wearAt(Wearable.WORN_TORSO);
@@ -311,7 +311,7 @@ public class Drowness extends StdBehavior
 
 	}
 
-	public boolean checkStatus(MOB mob)
+	public boolean checkStatus(final MOB mob)
 	{
 		if(CMLib.flags().isSitting(mob))
 			mob.phyStats().setDisposition(CMath.unsetb(mob.phyStats().disposition(),PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
@@ -320,7 +320,7 @@ public class Drowness extends StdBehavior
 		return true;
 	}
 
-	public boolean useSkill(MOB mob)
+	public boolean useSkill(final MOB mob)
 	{
 		Ability prayer = null;
 		if(CMLib.dice().rollPercentage() < 70)
@@ -413,7 +413,7 @@ public class Drowness extends StdBehavior
 		return true;
 	}
 
-	public boolean castFemaleSpell(MOB mob)
+	public boolean castFemaleSpell(final MOB mob)
 	{
 		Ability prayer = null;
 		if(CMLib.dice().rollPercentage() < 70)
@@ -433,7 +433,7 @@ public class Drowness extends StdBehavior
 		return false;
 	}
 
-	protected boolean castDarkness(MOB mob)
+	protected boolean castDarkness(final MOB mob)
 	{
 		if(mob.location()==null)
 			return true;

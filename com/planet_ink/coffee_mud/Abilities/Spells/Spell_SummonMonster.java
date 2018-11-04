@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_SummonMonster extends Spell
 {
 
@@ -113,7 +112,7 @@ public class Spell_SummonMonster extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -140,12 +139,12 @@ public class Spell_SummonMonster extends Spell
 		return success;
 	}
 
-	public void bringToLife(MOB M)
+	public void bringToLife(final MOB M)
 	{
 
 	}
 
-	public MOB determineMonster(MOB caster, int level)
+	public MOB determineMonster(final MOB caster, final int level)
 	{
 		final Room R=caster.location();
 		if(R==null)
@@ -251,7 +250,7 @@ public class Spell_SummonMonster extends Spell
 		else
 		if(victim!=null)
 		{
-			if(newMOB.getVictim()!=victim) 
+			if(newMOB.getVictim()!=victim)
 				newMOB.setVictim(victim);
 			R.showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> start(s) attacking <T-NAMESELF>!"));
 		}

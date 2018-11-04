@@ -109,7 +109,7 @@ public class PlantLore extends CommonSkill
 								.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 								.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 								.plus(TrackingLibrary.TrackingFlag.NOAIR);
-						int range=2+(getXLEVELLevel(mob)/2)+super.getXMAXRANGELevel(mob);
+						final int range=2+(getXLEVELLevel(mob)/2)+super.getXMAXRANGELevel(mob);
 						CMLib.tracking().getRadiantRooms(room,V,flags,null,range,null);
 						for(int v=0;v<V.size();v++)
 						{
@@ -161,7 +161,7 @@ public class PlantLore extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;

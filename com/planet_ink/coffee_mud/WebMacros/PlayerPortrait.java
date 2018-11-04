@@ -57,7 +57,7 @@ public class PlayerPortrait extends StdWebMacro
 		return true;
 	}
 
-	public String getFilename(HTTPRequest httpReq, String filename)
+	public String getFilename(final HTTPRequest httpReq, final String filename)
 	{
 		final String foundFilename=httpReq.getUrlParameter("FILENAME");
 		if((foundFilename!=null)&&(foundFilename.length()>0))
@@ -66,7 +66,7 @@ public class PlayerPortrait extends StdWebMacro
 	}
 
 	@Override
-	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public byte[] runBinaryMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		final MIMEType mimeType = MIMEType.All.getMIMEType(getFilename(httpReq,""));
 		if(mimeType != null)
@@ -93,7 +93,7 @@ public class PlayerPortrait extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		return "[Unimplemented string method!]";
 	}

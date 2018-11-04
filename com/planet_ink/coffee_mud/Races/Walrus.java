@@ -83,7 +83,7 @@ public class Walrus extends Seal
 	{
 		return breatheAirWaterArray;
 	}
-	
+
 	private final String[]					racialAbilityNames			= { "Aquan", "Skill_Swim", "Skill_AutoSwim", "Gore" };
 	private final int[]						racialAbilityLevels			= { 1,1,1,9 };
 	private final int[]						racialAbilityProficiencies	= { 100,100,100,100 };
@@ -161,9 +161,9 @@ public class Walrus extends Seal
 		}
 		return naturalWeapon;
 	}
-	
+
 	private static Vector<RawMaterial>	resources = new Vector<RawMaterial>();
-	
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

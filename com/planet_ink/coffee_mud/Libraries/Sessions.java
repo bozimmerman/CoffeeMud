@@ -43,7 +43,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	private final static Filterer<Session> localOnlineFilter=new Filterer<Session>()
 	{
 		@Override
-		public boolean passesFilter(Session obj) 
+		public boolean passesFilter(final Session obj)
 		{
 			if((obj!=null) && (!obj.isStopped()) && (((obj.getStatus())==Session.SessionStatus.MAINLOOP)))
 			{
@@ -98,14 +98,14 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 		return allIterable;
 	}
-	
+
 	@Override
 	public int numLocalOnline()
 	{
 		return getCount(localOnline());
 	}
 
-	protected int getCount(Iterator<Session> i)
+	protected int getCount(final Iterator<Session> i)
 	{
 		int xt=0;
 		for(;i.hasNext();)
@@ -116,7 +116,7 @@ public class Sessions extends StdLibrary implements SessionsList
 		return xt;
 	}
 
-	protected Session getAllSessionAt(Iterator<Session> i, int index)
+	protected Session getAllSessionAt(final Iterator<Session> i, final int index)
 	{
 		int xt=0;
 		Session S;
@@ -131,26 +131,26 @@ public class Sessions extends StdLibrary implements SessionsList
 	}
 
 	@Override
-	public synchronized void add(Session s)
+	public synchronized void add(final Session s)
 	{
 		if(!all.contains(s))
 			all.add(s);
 	}
 
 	@Override
-	public synchronized void remove(Session s)
+	public synchronized void remove(final Session s)
 	{
 		all.remove(s);
 	}
 
 	@Override
-	public synchronized boolean isSession(Session s)
+	public synchronized boolean isSession(final Session s)
 	{
 		return all.contains(s);
 	}
-	
+
 	@Override
-	public void stopSessionAtAllCosts(Session S)
+	public void stopSessionAtAllCosts(final Session S)
 	{
 		if(S==null)
 			return;
@@ -285,7 +285,7 @@ public class Sessions extends StdLibrary implements SessionsList
 		return true;
 	}
 
-	@Override 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		tickStatus=Tickable.STATUS_ALIVE;
@@ -333,7 +333,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	}
 
 	@Override
-	public MOB findPlayerOnline(String srchStr, boolean exactOnly)
+	public MOB findPlayerOnline(final String srchStr, final boolean exactOnly)
 	{
 		final Session S=findPlayerSessionOnline(srchStr, exactOnly);
 		if(S==null)
@@ -342,7 +342,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	}
 
 	@Override
-	public Session findPlayerSessionOnline(String srchStr, boolean exactOnly)
+	public Session findPlayerSessionOnline(final String srchStr, final boolean exactOnly)
 	{
 		// then look for players
 		for(final Session S : localOnlineIterable())
@@ -369,9 +369,9 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 		return null;
 	}
-	
+
 	@Override
-	public void moveSessionToCorrectThreadGroup(final Session session, int theme)
+	public void moveSessionToCorrectThreadGroup(final Session session, final int theme)
 	{
 		final int themeDex=CMath.firstBitSetIndex(theme);
 		if((themeDex>=0)&&(themeDex<Area.THEME_BIT_NAMES.length))

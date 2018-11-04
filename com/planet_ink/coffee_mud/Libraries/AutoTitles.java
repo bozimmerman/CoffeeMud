@@ -43,13 +43,13 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	private TriadSVector<String,String,MaskingLibrary.CompiledZMask> autoTitles=null;
 
 	private static final String titleFilename = "titles.ini";
-	
+
 	private String getTitleFilename()
 	{
 		CMFile F = new CMFile(Resources.makeFileResourceName(titleFilename),null);
 		if(F.exists() && (F.canRead()))
 			return titleFilename;
-		final String oldFilename = titleFilename.substring(0,titleFilename.length()-4)+".txt"; 
+		final String oldFilename = titleFilename.substring(0,titleFilename.length()-4)+".txt";
 		F = new CMFile(Resources.makeFileResourceName(oldFilename),null);
 		if(F.exists() && (F.canRead()))
 			return oldFilename;
@@ -57,7 +57,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	}
 
 	@Override
-	public String evaluateAutoTitle(String row, boolean addIfPossible)
+	public String evaluateAutoTitle(final String row, final boolean addIfPossible)
 	{
 		if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
 			return null;
@@ -110,7 +110,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	}
 
 	@Override
-	public String getAutoTitleMask(String title)
+	public String getAutoTitleMask(final String title)
 	{
 		if(autoTitles==null)
 			reloadAutoTitles();
@@ -123,7 +123,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	}
 
 	@Override
-	public boolean evaluateAutoTitles(MOB mob)
+	public boolean evaluateAutoTitles(final MOB mob)
 	{
 		if(mob==null)
 			return false;
@@ -186,7 +186,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		return somethingDone;
 	}
 
-	protected void dispossesTitle(String title)
+	protected void dispossesTitle(final String title)
 	{
 		final List<String> list=CMLib.database().getUserList();
 		final String fixedTitle = CMStrings.removeColors(title).replace('\'', '`');
@@ -227,9 +227,9 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 			}
 		}
 	}
-	
+
 	@Override
-	public void appendAutoTitle(String text)
+	public void appendAutoTitle(final String text)
 	{
 		Resources.removeResource(this.getTitleFilename());
 		final CMFile F=new CMFile(Resources.makeFileResourceName(titleFilename),null,CMFile.FLAG_LOGERRORS);
@@ -238,7 +238,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	}
 
 	@Override
-	public String deleteTitleAndResave(String title)
+	public String deleteTitleAndResave(final String title)
 	{
 		dispossesTitle(title);
 		final CMFile F=new CMFile(Resources.makeFileResourceName(titleFilename),null,CMFile.FLAG_LOGERRORS);
@@ -281,7 +281,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 			}
 		}
 	}
-	
+
 	@Override
 	public String getAutoTitleInstructions()
 	{

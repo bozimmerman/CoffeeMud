@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Mercy extends Prayer
 {
 	@Override
@@ -114,7 +113,7 @@ public class Prayer_Mercy extends Prayer
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -125,9 +124,9 @@ public class Prayer_Mercy extends Prayer
 			msg.setValue(0);
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room target=mob.location();
 		if(target==null)

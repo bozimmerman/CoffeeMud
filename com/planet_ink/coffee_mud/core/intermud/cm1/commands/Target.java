@@ -41,13 +41,13 @@ import java.util.concurrent.atomic.*;
 */
 public class Target extends CM1Command
 {
-	@Override 
+	@Override
 	public String getCommandWord()
-	{ 
+	{
 		return "TARGET";
 	}
-	
-	public Target(RequestHandler req, String parameters)
+
+	public Target(final RequestHandler req, final String parameters)
 	{
 		super(req, parameters);
 	}
@@ -73,14 +73,14 @@ public class Target extends CM1Command
 		}
 	}
 
-	@Override 
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	@Override
+	public boolean passesSecurityCheck(final MOB user, final PhysicalAgent target)
 	{
 		return true; // anybody can target, its harmless
 	}
 
 	@Override
-	public String getHelp(MOB user, PhysicalAgent target, String rest)
+	public String getHelp(final MOB user, final PhysicalAgent target, final String rest)
 	{
 		return "USAGE: TARGET USER, <NAME>, <NAME>@<LOCATION>, @<LOCATION>";
 	}

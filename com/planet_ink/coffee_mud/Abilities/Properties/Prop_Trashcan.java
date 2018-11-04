@@ -79,13 +79,13 @@ public class Prop_Trashcan extends Property
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		tickDelay=CMParms.getParmInt(newMiscText, "DELAY", 0);
 	}
 
-	protected void process(Item I)
+	protected void process(final Item I)
 	{
 		if(tickDelay<=0)
 			I.destroy();

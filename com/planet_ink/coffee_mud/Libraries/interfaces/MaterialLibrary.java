@@ -82,7 +82,7 @@ public interface MaterialLibrary extends CMLibrary
 	 * @return the number of ticks to burn, or 0
 	 */
 	public int getBurnDuration(Environmental E);
-	
+
 	/**
 	 * A record detailing information about
 	 * destoryed resources, used mostly for common

@@ -259,22 +259,22 @@ public class Ranger extends StdCharClass
 		return L("Must remain Neutral to avoid chant failure chances.");
 	}
 
-	@Override 
+	@Override
 	public String getOtherBonusDesc()
 	{
 		return L("When leading animals into battle, will not divide experience among animal followers.  Receives bonus conquest and duel experience.  "
 				+ "Benefits from animal followers leveling.");
 	}
-	
-	@Override 
+
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
-	{ 
-		super.executeMsg(host,msg); 
+	{
+		super.executeMsg(host,msg);
 		Fighter.conquestExperience(this,host,msg);
 		Fighter.duelExperience(this, host, msg);
 		Druid.doAnimalFollowerLevelingCheck(this,host,msg);
 	}
-	
+
 	private final String[] raceRequiredList=new String[]{
 		"Human","Humanoid","Giant-kin","Elf","Centaur","Gnoll",
 		"Githyanki","LizardMan","Aarakocran","Merfolk",
@@ -326,7 +326,7 @@ public class Ranger extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
@@ -347,7 +347,7 @@ public class Ranger extends StdCharClass
 	}
 
 	@Override
-	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	public boolean isValidClassDivider(final MOB killer, final MOB killed, final MOB mob, final Set<MOB> followers)
 	{
 		if((mob!=null)
 		&&(mob!=killed)
@@ -361,7 +361,7 @@ public class Ranger extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

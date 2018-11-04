@@ -52,13 +52,13 @@ public class Proficiency_Sling extends Proficiency_Weapon
 	{
 		super();
 	}
-	
+
 	@Override
 	protected String getSpecificWeaponType()
 	{
 		return "AmmunitionWeapon";
 	}
-	
+
 	@Override
 	protected String getWeaponMask()
 	{

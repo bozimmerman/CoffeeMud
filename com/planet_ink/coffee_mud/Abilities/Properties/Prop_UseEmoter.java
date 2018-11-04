@@ -65,7 +65,7 @@ public class Prop_UseEmoter extends Property
 		public EMOTE_TYPE type;
 		public String msg;
 		public boolean broadcast;
-		public EmoteObj(EMOTE_TYPE type, String msg, boolean broadcast)
+		public EmoteObj(final EMOTE_TYPE type, final String msg, final boolean broadcast)
 		{
 			this.type=type;
 			this.msg=msg;
@@ -84,7 +84,7 @@ public class Prop_UseEmoter extends Property
 
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 	}
 
@@ -133,9 +133,9 @@ public class Prop_UseEmoter extends Property
 						return;
 					final EmoteObj emote=emotes.get(CMLib.dice().roll(1, emotes.size(), -1));
 					final MOB emoteTo=(privateE)?mob:null;
-						
+
 					emoteHere(room,emoter,emote,emoteTo,true);
-			
+
 					if(emote.broadcast)
 					{
 						if(P instanceof MOB)
@@ -167,7 +167,7 @@ public class Prop_UseEmoter extends Property
 		});
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -183,11 +183,11 @@ public class Prop_UseEmoter extends Property
 				return;
 			if(!(myItem.owner() instanceof MOB))
 				return;
-			
+
 			parseEmotes();
 			if((emotes==null)||(emotes.size()==0))
 				return;
-			
+
 			if((msg.amITarget(affected))
 			&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
 			&&(CMLib.flags().canSmell(msg.source()))
@@ -257,9 +257,9 @@ public class Prop_UseEmoter extends Property
 			processing=false;
 		}
 	}
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		inroomIDs=CMParms.parseCommas(CMParms.getParmStr(newMiscText,"inroom","").toUpperCase().trim(),true);
@@ -299,7 +299,7 @@ public class Prop_UseEmoter extends Property
 		return true;
 	}
 
-	protected void setEmoteTypes(Vector<String> V, boolean respectOnlyBeginningAndEnd)
+	protected void setEmoteTypes(final Vector<String> V, final boolean respectOnlyBeginningAndEnd)
 	{
 		if(respectOnlyBeginningAndEnd)
 		{
@@ -392,11 +392,11 @@ public class Prop_UseEmoter extends Property
 		return true;
 	}
 
-	protected void emoteHere(Room room,
-							 MOB emoter,
-							 EmoteObj emote,
-							 MOB emoteTo,
-							 boolean Wrapper)
+	protected void emoteHere(final Room room,
+							 final MOB emoter,
+							 final EmoteObj emote,
+							 final MOB emoteTo,
+							 final boolean Wrapper)
 	{
 		if(room==null)
 			return;

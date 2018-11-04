@@ -55,7 +55,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 						new Converter<WeakReference<Item>,Item>()
 						{
 					@Override
-					public Item convert(WeakReference<Item> obj)
+					public Item convert(final WeakReference<Item> obj)
 					{
 						return obj.get();
 					}
@@ -127,7 +127,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	}
 
 	@Override
-	public Item findItem(String itemID)
+	public Item findItem(final String itemID)
 	{
 		Item item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,true);
 		if(item==null)
@@ -142,7 +142,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	}
 
 	@Override
-	public Item findItem(Item goodLocation, String itemID)
+	public Item findItem(final Item goodLocation, final String itemID)
 	{
 		Item item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
 		if(item==null)
@@ -151,7 +151,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	}
 
 	@Override
-	public List<Item> findItems(Item goodLocation, String itemID)
+	public List<Item> findItems(final Item goodLocation, final String itemID)
 	{
 		List<Item> items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
 		if(items.size()==0)
@@ -160,7 +160,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	}
 
 	@Override @SuppressWarnings({"unchecked","rawtypes"})
-	public List<Item> findItems(String itemID)
+	public List<Item> findItems(final String itemID)
 	{
 		List items=CMLib.english().fetchEnvironmentals(contents,itemID,true);
 		if(items.size()==0)
@@ -169,14 +169,14 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	}
 
 	@Override
-	public void addItem(Item item)
+	public void addItem(final Item item)
 	{
 		if((item!=null)&&(!item.amDestroyed()))
 			innerContents.addElement(new WeakReference<Item>(item));
 	}
 
 	@Override
-	public void delItem(Item item)
+	public void delItem(final Item item)
 	{
 		for(int i=contents.size()-1;i>=0;i--)
 		{
@@ -201,7 +201,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	}
 
 	@Override
-	public void delAllItems(boolean destroy)
+	public void delAllItems(final boolean destroy)
 	{
 		if(destroy)
 		{
@@ -222,7 +222,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	}
 
 	@Override
-	public boolean isContent(Item item)
+	public boolean isContent(final Item item)
 	{
 		for(int i=contents.size()-1;i>=0;i--)
 		{
@@ -233,7 +233,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 			{
 				try
 				{
-					 innerContents.remove(i); 
+					 innerContents.remove(i);
 				}
 				catch(final java.lang.ArrayIndexOutOfBoundsException x)
 				{
@@ -244,7 +244,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	}
 
 	@Override
-	public Item getItem(int i)
+	public Item getItem(final int i)
 	{
 		try
 		{
@@ -276,7 +276,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 				{
 					try
 					{
-						 innerContents.remove(a); 
+						 innerContents.remove(a);
 					}
 					catch(final java.lang.ArrayIndexOutOfBoundsException x)
 					{

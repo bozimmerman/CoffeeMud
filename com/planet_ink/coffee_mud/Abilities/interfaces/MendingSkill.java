@@ -41,7 +41,7 @@ public interface MendingSkill extends Ability
 {
 	/**
 	 * Returns whether this skill can mend the given thing.
-	 * @param item the item to check 
+	 * @param item the item to check
 	 * @return true or false, depending upon if this skill will do the trick.
 	 */
 	public boolean supportsMending(Physical item);

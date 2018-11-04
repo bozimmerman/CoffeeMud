@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_Burrowspeak extends Chant_SpeakWithAnimals
 {
 	@Override
@@ -56,9 +55,9 @@ public class Chant_Burrowspeak extends Chant_SpeakWithAnimals
 	{
 		return super.canBeUninvoked ? localizedStaticDisplay : "";
 	}
-	
+
 	@Override
-	protected boolean canSpeakWithThis(MOB mob)
+	protected boolean canSpeakWithThis(final MOB mob)
 	{
 		if(CMLib.flags().isAnimalIntelligence(mob))
 		{
@@ -84,7 +83,7 @@ public class Chant_Burrowspeak extends Chant_SpeakWithAnimals
 	}
 
 	@Override
-	protected void sayYouAreDone(MOB mob)
+	protected void sayYouAreDone(final MOB mob)
 	{
 		if((mob.location()!=null)&&(!mob.amDead()))
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> ability to speak with burrowing creatures has faded."));

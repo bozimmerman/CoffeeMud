@@ -58,7 +58,7 @@ public class Dance_Foxtrot extends Dance
 	protected int increment=1;
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{

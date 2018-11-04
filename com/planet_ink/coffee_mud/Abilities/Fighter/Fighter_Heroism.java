@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_Heroism extends FighterSkill
 {
 	@Override
@@ -93,7 +92,7 @@ public class Fighter_Heroism extends FighterSkill
 
 	private boolean activated=false;
 
-	public void setActivated(boolean activate)
+	public void setActivated(final boolean activate)
 	{
 		if(activate==activated)
 			return;

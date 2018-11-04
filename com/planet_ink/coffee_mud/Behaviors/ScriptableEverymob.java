@@ -56,7 +56,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 		return "complex triggered behaving";
 	}
 
-	private void giveUpTheScript(Area metroA, MOB M)
+	private void giveUpTheScript(final Area metroA, final MOB M)
 	{
 		if((M==null)
 		||(!M.isMonster())
@@ -73,7 +73,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 		sampleB=S;
 	}
 
-	private Area determineArea(Environmental forMe)
+	private Area determineArea(final Environmental forMe)
 	{
 		if(forMe instanceof Room)
 			return ((Room)forMe).getArea();
@@ -83,7 +83,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 		return null;
 	}
 
-	private Enumeration<Room> determineRooms(Environmental forMe)
+	private Enumeration<Room> determineRooms(final Environmental forMe)
 	{
 		if(forMe instanceof Room)
 			return new XVector<Room>((Room)forMe).elements();
@@ -93,7 +93,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 		return null;
 	}
 
-	private void giveEveryoneTheScript(Environmental forMe)
+	private void giveEveryoneTheScript(final Environmental forMe)
 	{
 		if((CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 		&&(!started))
@@ -123,7 +123,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public void startBehavior(PhysicalAgent forMe)
+	public void startBehavior(final PhysicalAgent forMe)
 	{
 		giveEveryoneTheScript(forMe);
 	}
@@ -157,24 +157,24 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest)
+	public boolean endQuest(final PhysicalAgent hostObj, final MOB mob, final String quest)
 	{
 		return (sampleB==null)?false:sampleB.endQuest(hostObj, mob, quest);
 	}
 
 	@Override
-	public boolean eval(PhysicalAgent scripted, MOB source,
-			Environmental target, MOB monster, Item primaryItem,
-			Item secondaryItem, String msg, Object[] tmp, String[][] eval,
-			int startEval)
+	public boolean eval(final PhysicalAgent scripted, final MOB source,
+			final Environmental target, final MOB monster, final Item primaryItem,
+			final Item secondaryItem, final String msg, final Object[] tmp, final String[][] eval,
+			final int startEval)
 			{
 		return (sampleB==null)?false:sampleB.eval(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, eval, startEval);
 	}
 
 	@Override
-	public String execute(PhysicalAgent scripted, MOB source,
-			Environmental target, MOB monster, Item primaryItem,
-			Item secondaryItem, DVector script, String msg, Object[] tmp)
+	public String execute(final PhysicalAgent scripted, final MOB source,
+			final Environmental target, final MOB monster, final Item primaryItem,
+			final Item secondaryItem, final DVector script, final String msg, final Object[] tmp)
 			{
 		return (sampleB==null)?"":sampleB.execute(scripted, source, target, monster, primaryItem, secondaryItem, script, msg, tmp);
 	}
@@ -186,7 +186,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public MOB getMakeMOB(Tickable ticking)
+	public MOB getMakeMOB(final Tickable ticking)
 	{
 		return (sampleB==null)?null:sampleB.getMakeMOB(ticking);
 	}
@@ -204,7 +204,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public String getVar(String context, String variable)
+	public String getVar(final String context, final String variable)
 	{
 		return (sampleB==null)?"":sampleB.getVar(context, variable);
 	}
@@ -216,55 +216,55 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public boolean isVar(String context, String variable)
+	public boolean isVar(final String context, final String variable)
 	{
 		return (sampleB==null)?false:sampleB.isVar(context, variable);
 	}
 
 	@Override
-	public String[] parseEval(String evaluable) throws ScriptParseException {
+	public String[] parseEval(final String evaluable) throws ScriptParseException {
 		return (sampleB==null)?new String[0]:sampleB.parseEval(evaluable);
 	}
 
 	@Override
-	public void setLocalVarXML(String xml)
+	public void setLocalVarXML(final String xml)
 	{
 		if(sampleB!=null)
 			sampleB.setLocalVarXML(xml);
 	}
 
 	@Override
-	public void setScript(String newParms)
+	public void setScript(final String newParms)
 	{
 		if(sampleB!=null)
 			sampleB.setScript(newParms);
 	}
 
 	@Override
-	public void setVar(String context, String variable, String value)
+	public void setVar(final String context, final String variable, final String value)
 	{
 		if(sampleB!=null)
 			sampleB.setVar(context, variable, value);
 	}
 
 	@Override
-	public void setVarScope(String scope)
+	public void setVarScope(final String scope)
 	{
 		if(sampleB!=null)
 			sampleB.setVarScope(scope);
 	}
 
 	@Override
-	public String varify(MOB source, Environmental target,
-		PhysicalAgent scripted, MOB monster, Item primaryItem,
-		Item secondaryItem, String msg, Object[] tmp, String varifyable)
+	public String varify(final MOB source, final Environmental target,
+		final PhysicalAgent scripted, final MOB monster, final Item primaryItem,
+		final Item secondaryItem, final String msg, final Object[] tmp, final String varifyable)
 	{
 		return (sampleB==null)?"":sampleB.varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, varifyable);
 	}
 
 	@Override
-	public String functify(PhysicalAgent scripted, MOB source, Environmental target, MOB monster, Item primaryItem,
-							Item secondaryItem, String msg, Object[] tmp, String evaluable)
+	public String functify(final PhysicalAgent scripted, final MOB source, final Environmental target, final MOB monster, final Item primaryItem,
+							final Item secondaryItem, final String msg, final Object[] tmp, final String evaluable)
 							{
 		return (sampleB==null)?"":sampleB.functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, evaluable);
 	}

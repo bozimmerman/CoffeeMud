@@ -44,7 +44,7 @@ public class OozeMephit extends Mephit
 	{
 		super();
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Ooze Mephit");
 
 	@Override
@@ -151,8 +151,8 @@ public class OozeMephit extends Mephit
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -161,7 +161,7 @@ public class OozeMephit extends Mephit
 		}
 		return body;
 	}
-	
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

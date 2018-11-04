@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_StrikeTheSet extends BardSkill
 {
 	@Override
@@ -85,7 +84,7 @@ public class Skill_StrikeTheSet extends BardSkill
 	{
 		return USAGE_MOVEMENT;
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -106,7 +105,7 @@ public class Skill_StrikeTheSet extends BardSkill
 	}
 
 	@Override
-	public boolean tick(final Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((invoker()==null)
 		||(invoker().location()!=CMLib.map().roomLocation(affected))
@@ -116,9 +115,9 @@ public class Skill_StrikeTheSet extends BardSkill
 		}
 		return super.tick(ticking, tickID);
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

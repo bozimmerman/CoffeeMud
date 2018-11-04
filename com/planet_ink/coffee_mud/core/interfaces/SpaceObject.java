@@ -154,8 +154,8 @@ public interface SpaceObject extends Environmental, BoundedObject
 		public final String abbr;
 		private static String abbrList="";
 		private static String fullList="";
-		
-		private Distance(String abbr, long distance)
+
+		private Distance(final String abbr, final long distance)
 		{
 			this.abbr=abbr;
 			this.dm=distance;
@@ -165,7 +165,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 		{
 			if(abbrList.length()==0)
 			{
-				for(Distance d : Distance.values())
+				for(final Distance d : Distance.values())
 					abbrList+=d.abbr+", ";
 				abbrList=abbrList.substring(0,abbrList.length()-2);
 			}
@@ -176,14 +176,14 @@ public interface SpaceObject extends Environmental, BoundedObject
 		{
 			if(fullList.length()==0)
 			{
-				for(Distance d : Distance.values())
+				for(final Distance d : Distance.values())
 					fullList+=d.name()+"("+d.abbr+"), ";
 				fullList=fullList.substring(0,fullList.length()-2);
 			}
 			return fullList;
 		}
 	}
-	
+
 	/**
 	 * Ordered array of distance enums appropriate for telling distances in space.
 	 */
@@ -214,7 +214,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public static final long MULTIPLIER_PLANET_MASS=933L;
 	/** multiplier by radius to get stars mass -- only off by 15 zeroes or so 19890000000000000000000000 is the actual number*/
 	public static final long MULTIPLIER_STAR_MASS=1989000L;
-	
+
 	/** normal total mass of a normal total moonlet of a normal total radius */
 	public static final long MOONLET_MASS = SpaceObject.MULTIPLIER_PLANET_MASS* SpaceObject.Distance.MoonRadius.dm / 10;
 	/** normal total mass of a normal total asteroid of a normal total radius */

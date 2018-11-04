@@ -35,7 +35,6 @@ import java.util.concurrent.TimeUnit;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class PlayerData extends StdWebMacro
 {
 	@Override
@@ -44,7 +43,7 @@ public class PlayerData extends StdWebMacro
 		return "PlayerData";
 	}
 
-	public static enum BASICS 
+	public static enum BASICS
 	{
 		NAME,
 		DESCRIPTION,
@@ -117,7 +116,7 @@ public class PlayerData extends StdWebMacro
 		BASEMOVEMENT
 	}
 
-	public static String getBasic(MOB M, BASICS basic)
+	public static String getBasic(final MOB M, final BASICS basic)
 	{
 		final StringBuffer str=new StringBuffer("");
 		switch(basic)
@@ -467,7 +466,7 @@ public class PlayerData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
@@ -491,12 +490,12 @@ public class PlayerData extends StdWebMacro
 			final boolean firstTime=(!httpReq.isUrlParameter("ACTION"))
 							||(httpReq.getUrlParameter("ACTION")).equals("FIRSTTIME");
 			final StringBuffer str=new StringBuffer("");
-			for(MOB.Attrib a : MOB.Attrib.values())
+			for(final MOB.Attrib a : MOB.Attrib.values())
 			{
 				if(parms.containsKey(a.getName()))
 				{
 					boolean set=M.isAttributeSet(a);
-					if(a.isAutoReversed()) 
+					if(a.isAutoReversed())
 						set=!set;
 					str.append((set?"ON":"OFF")+",");
 				}

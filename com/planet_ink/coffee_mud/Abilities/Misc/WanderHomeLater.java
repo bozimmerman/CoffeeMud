@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class WanderHomeLater extends StdAbility
 {
 	@Override
@@ -81,7 +80,7 @@ public class WanderHomeLater extends StdAbility
 	private int		maxTicks		= 0;
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		areaOk=CMParms.getParmBool(newMiscText,"areaok", areaOk);
@@ -94,7 +93,7 @@ public class WanderHomeLater extends StdAbility
 		maxTicks=CMParms.getParmInt(newMiscText, "maxticks", maxTicks);
 		currentWait = minTicks + ((maxTicks <= minTicks)?0:CMLib.dice().roll(1, maxTicks-minTicks, 0));
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -104,7 +103,7 @@ public class WanderHomeLater extends StdAbility
 		{
 			if((!P.amDestroyed())
 			&&(destroy)
-			&&(CMLib.flags().isInTheGame(P, true))) 
+			&&(CMLib.flags().isInTheGame(P, true)))
 			{
 				final Room R=CMLib.map().roomLocation(P);
 				if((R!=null)&&(!((MOB)P).amDead()))
@@ -144,13 +143,13 @@ public class WanderHomeLater extends StdAbility
 				{
 					final Room startRoom= M.getStartRoom();
 					final Room curRoom=M.location();
-					
+
 					if(areaOk && (startRoom != null) && (curRoom != null))
 					{
 						if(startRoom.getArea() == curRoom.getArea())
 							return super.tick(ticking, tickID);
 					}
-					
+
 					if(startRoom != curRoom)
 						CMLib.tracking().wanderAway(M, !ignorePCs, true);
 					if(once)

@@ -48,9 +48,9 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	protected int		maxTimedAuctionDays	= -1;
 	protected int		minTimedAuctionDays	= -1;
 	public AuctionData  lastMsgData=null;
-	
+
 	protected static final Map<String,Long> lastCheckTimes=new Hashtable<String,Long>();
-	
+
 	public StdAuctioneer()
 	{
 		super();
@@ -90,7 +90,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setAuctionHouse(String name)
+	public void setAuctionHouse(final String name)
 	{
 		setMiscText(name);
 	}
@@ -102,7 +102,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setTimedListingPrice(double d)
+	public void setTimedListingPrice(final double d)
 	{
 		timedListingPrice = d;
 	}
@@ -114,7 +114,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setTimedListingPct(double d)
+	public void setTimedListingPct(final double d)
 	{
 		timedListingPct = d;
 	}
@@ -126,7 +126,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setTimedFinalCutPct(double d)
+	public void setTimedFinalCutPct(final double d)
 	{
 		timedFinalCutPct = d;
 	}
@@ -138,7 +138,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setMaxTimedAuctionDays(int d)
+	public void setMaxTimedAuctionDays(final int d)
 	{
 		maxTimedAuctionDays = d;
 	}
@@ -150,7 +150,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setMinTimedAuctionDays(int d)
+	public void setMinTimedAuctionDays(final int d)
 	{
 		minTimedAuctionDays = d;
 	}
@@ -162,18 +162,18 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public boolean isSold(int mask)
+	public boolean isSold(final int mask)
 	{
 		return mask == ShopKeeper.DEAL_AUCTIONEER;
 	}
 
 	@Override
-	public void setWhatIsSoldMask(long newSellCode)
+	public void setWhatIsSoldMask(final long newSellCode)
 	{
 	}
 
 	@Override
-	public void addSoldType(int mask)
+	public void addSoldType(final int mask)
 	{
 	}
 
@@ -237,7 +237,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 		return true;
 	}
 
-	public void autoGive(MOB src, MOB tgt, Item I)
+	public void autoGive(final MOB src, final MOB tgt, final Item I)
 	{
 		CMMsg msg2=CMClass.getMsg(src,I,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null,CMMsg.MSG_DROP|CMMsg.MASK_INTERMSG,null);
 		location().send(this,msg2);
@@ -245,7 +245,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 		location().send(this,msg2);
 	}
 
-	protected String parseBidString(String targetMessage)
+	protected String parseBidString(final String targetMessage)
 	{
 		int x=-1;
 		if(targetMessage!=null)
@@ -759,7 +759,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public boolean doISellThis(Environmental thisThang)
+	public boolean doISellThis(final Environmental thisThang)
 	{
 		return CMLib.coffeeShops().doISellThis(thisThang, this);
 	}
@@ -789,7 +789,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setPrejudiceFactors(String factors)
+	public void setPrejudiceFactors(final String factors)
 	{
 		miscText = factors;
 	}
@@ -809,7 +809,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setIgnoreMask(String factors)
+	public void setIgnoreMask(final String factors)
 	{
 	}
 
@@ -828,7 +828,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setItemPricingAdjustments(String[] factors)
+	public void setItemPricingAdjustments(final String[] factors)
 	{
 	}
 
@@ -845,7 +845,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setBudget(String factors)
+	public void setBudget(final String factors)
 	{
 	}
 
@@ -862,13 +862,13 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setDevalueRate(String factors)
+	public void setDevalueRate(final String factors)
 	{
 	}
 
 
 	@Override
-	public void setWhatIsSoldZappermask(String newSellMask)
+	public void setWhatIsSoldZappermask(final String newSellMask)
 	{
 	}
 
@@ -877,7 +877,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	{
 		return "";
 	}
-	
+
 	@Override
 	public int finalInvResetRate()
 	{
@@ -893,7 +893,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setInvResetRate(int ticks)
+	public void setInvResetRate(final int ticks)
 	{
 	}
 
@@ -904,7 +904,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setLiveListingPrice(double d)
+	public void setLiveListingPrice(final double d)
 	{
 	}
 
@@ -915,14 +915,14 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	}
 
 	@Override
-	public void setLiveFinalCutPct(double d)
+	public void setLiveFinalCutPct(final double d)
 	{
-		
+
 	}
 
 	@Override
-	public void mergeAuctioneerPolicy(Auctioneer auction)
+	public void mergeAuctioneerPolicy(final Auctioneer auction)
 	{
 	}
-	
+
 }

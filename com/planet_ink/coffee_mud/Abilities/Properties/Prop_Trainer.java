@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_Trainer extends Prop_StatTrainer
 {
 	@Override
@@ -61,7 +60,7 @@ public class Prop_Trainer extends Prop_StatTrainer
 
 	private boolean built=false;
 
-	private void addCharClassIfNotFound(MOB mob, CharClass C)
+	private void addCharClassIfNotFound(final MOB mob, final CharClass C)
 	{
 		boolean found=false;
 		for(int n=0;n<mob.baseCharStats().numClasses();n++)

@@ -85,9 +85,9 @@ public class Chant_AnimalCompanion extends Chant
 	{
 		return Ability.COST_PCT + 10;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -108,19 +108,19 @@ public class Chant_AnimalCompanion extends Chant
 			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
-		
+
 		if(target.isInCombat())
 		{
 			mob.tell(target,null,null,L("Not while <S-NAME> <S-IS-ARE> fighting!"));
 			return false;
 		}
-		
+
 		if(CMLib.flags().isSleeping(target) || (!CMLib.flags().canBeHeardSpeakingBy(mob,target)) || (!target.isMonster()))
 		{
 			mob.tell(target,null,null,L("<S-NAME> cannot make the oath with you right now!"));
 			return false;
 		}
-		
+
 		int numLoyal = 0;
 		for(int f=0;f<mob.numFollowers();f++)
 		{
@@ -135,7 +135,7 @@ public class Chant_AnimalCompanion extends Chant
 			mob.tell(L("You lack the expertise to swear another oath."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -159,7 +159,7 @@ public class Chant_AnimalCompanion extends Chant
 					target.addEffect(A);
 				for(final Enumeration<Ability> a=target.personalEffects();a.hasMoreElements();)
 				{
-					Ability A=a.nextElement();
+					final Ability A=a.nextElement();
 					if((A!=null)&&((A.flags()&Ability.FLAG_CHARMING)!=0)&&(A.canBeUninvoked()))
 					{
 						affects.remove(A);
@@ -180,10 +180,10 @@ public class Chant_AnimalCompanion extends Chant
 						targetCopy.addEffect(A);
 					}
 				}
-				catch(Throwable t)
+				catch(final Throwable t)
 				{
 				}
-				
+
 				if(target.amDestroyed() || target.amDead())
 				{
 					target=targetCopy;

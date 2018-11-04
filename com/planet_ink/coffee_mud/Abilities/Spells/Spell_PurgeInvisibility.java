@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_PurgeInvisibility extends Spell
 {
 
@@ -81,7 +80,7 @@ public class Spell_PurgeInvisibility extends Spell
 	{
 		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -103,7 +102,7 @@ public class Spell_PurgeInvisibility extends Spell
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -115,7 +114,7 @@ public class Spell_PurgeInvisibility extends Spell
 		return super.castingQuality(mob,target);
 	}
 
-	public static List<Ability> returnOffensiveAffects(Physical fromMe)
+	public static List<Ability> returnOffensiveAffects(final Physical fromMe)
 	{
 		final MOB newMOB=CMClass.getFactoryMOB();
 		newMOB.setLocation(CMLib.map().roomLocation(fromMe));
@@ -142,7 +141,7 @@ public class Spell_PurgeInvisibility extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -162,8 +161,8 @@ public class Spell_PurgeInvisibility extends Spell
 					final MOB M=m.nextElement();
 					if(M!=null)
 					{
-						List<Ability> list=returnOffensiveAffects(M);
-						for(Ability A : list)
+						final List<Ability> list=returnOffensiveAffects(M);
+						for(final Ability A : list)
 						{
 							if(A.canBeUninvoked())
 								A.unInvoke();
@@ -175,8 +174,8 @@ public class Spell_PurgeInvisibility extends Spell
 							final Item I=i.nextElement();
 							if(I!=null)
 							{
-								List<Ability> list2=returnOffensiveAffects(I);
-								for(Ability A : list2)
+								final List<Ability> list2=returnOffensiveAffects(I);
+								for(final Ability A : list2)
 								{
 									if(A.canBeUninvoked()
 									&&((A.invoker()==null)||(mob.phyStats().level() >= A.adjustedLevel(invoker(), 0))))
@@ -193,8 +192,8 @@ public class Spell_PurgeInvisibility extends Spell
 					final Item I=i.nextElement();
 					if(I!=null)
 					{
-						List<Ability> list=returnOffensiveAffects(I);
-						for(Ability A : list)
+						final List<Ability> list=returnOffensiveAffects(I);
+						for(final Ability A : list)
 						{
 							if(A.canBeUninvoked()
 							&&((A.invoker()==null)||(mob.phyStats().level() >= A.adjustedLevel(invoker(), 0))))

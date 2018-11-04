@@ -98,7 +98,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		"shes",
 		"its",
 	};
-	
+
 	public static String[] universalRejections={
 		"dunno",
 		"nope",
@@ -144,7 +144,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		{"find and %s %m","mobfind %m;%s %m"},
 		{"%s %m","mobfind %m;%s %m"},
 		// below is item fetching
-//DROWN, DROWN YOURSELF, DROWN IN A LAKE, SWIM, SWIM AN OCEAN, CLIMB A MOUNTAIN, 
+//DROWN, DROWN YOURSELF, DROWN IN A LAKE, SWIM, SWIM AN OCEAN, CLIMB A MOUNTAIN,
 //CLIMB A TREE, CLIMB <X>, SWIM <x>, HANG YOURSELF, CRAWL <x>
 //BLOW YOUR NOSE, VOMIT, PUKE, THROW UP, KISS MY ASS, KISS <CHAR> <Body part>
 //TELL <CHAR> <WHAT>
@@ -243,9 +243,9 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		{"%k *","%k *"},
 		{"%k","%k"}
 	};
-	
+
 	@Override
-	public List<Map<String,String>> findMatch(MOB mob, List<String> prereq)
+	public List<Map<String,String>> findMatch(final MOB mob, final List<String> prereq)
 	{
 		final List<Map<String,String>> possibilities=new Vector<Map<String,String>>();
 		Map<String,String> map=new Hashtable<String,String>();
@@ -393,7 +393,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 	}
 
 	@Override
-	public GeasSteps processRequest(MOB you, MOB me, String req)
+	public GeasSteps processRequest(final MOB you, final MOB me, String req)
 	{
 		Vector<String> REQ=CMParms.parse(req.toLowerCase().trim());
 		for(int v=0;v<REQ.size();v++)
@@ -462,23 +462,23 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		}
 		return geasSteps;
 	}
-	
+
 	public static class GeasStepsImpl extends Vector<GeasStep> implements GeasSteps
 	{
 		public static final long	serialVersionUID	= Long.MAX_VALUE;
-		
+
 		public Set<Room>botheredPlaces	= new HashSet<Room>();
 		public Set<MOB>	botheredMOBs	= new HashSet<MOB>();
 		public boolean	done			= false;
 		public MOB		you				= null;
 		public MOB		me				= null;
 
-		public GeasStepsImpl(MOB you1, MOB me1)
+		public GeasStepsImpl(final MOB you1, final MOB me1)
 		{
 			you=you1;
 			me=me1;
 		}
-		
+
 		@Override
 		public Set<MOB> getBotheredMobs()
 		{
@@ -496,7 +496,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		{
 			return done;
 		}
-		
+
 		@Override
 		public void step()
 		{
@@ -562,7 +562,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		}
 
 		@Override
-		public void move(int moveCode)
+		public void move(final int moveCode)
 		{
 			if(!botheredPlaces.contains(me.location()))
 				botheredPlaces.add(me.location());
@@ -581,7 +581,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		}
 
 		@Override
-		public boolean sayResponse(MOB speaker, MOB target, String response)
+		public boolean sayResponse(final MOB speaker, final MOB target, final String response)
 		{
 			for(int s=0;s<size();s++)
 			{
@@ -601,7 +601,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		public GeasSteps			mySteps		= null;
 		public MOB					you			= null;
 
-		public GeasStepImpl(GeasSteps gs)
+		public GeasStepImpl(final GeasSteps gs)
 		{
 			mySteps=gs;
 		}
@@ -611,9 +611,9 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		{
 			return bothering;
 		}
-		
+
 		@Override
-		public boolean botherIfAble(String msgOrQ)
+		public boolean botherIfAble(final String msgOrQ)
 		{
 			final MOB me=mySteps.stepperM();
 			bothering=null;
@@ -643,13 +643,13 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 		}
 
 		@Override
-		public void setStep(Step step)
+		public void setStep(final Step step)
 		{
 			this.step = step;
 		}
-		
+
 		@Override
-		public boolean sayResponse(MOB speaker, MOB target, String response)
+		public boolean sayResponse(final MOB speaker, final MOB target, String response)
 		{
 			final MOB me=mySteps.stepperM();
 			if((speaker!=null)
@@ -839,9 +839,9 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					}
 				}
 				// if asked someone something, give them time to respond.
-				if ((bothering != null) 
-				&& (step.ordinal() > Step.EVAL.ordinal()) 
-				&& (step.ordinal() <= Step.INT4.ordinal()) 
+				if ((bothering != null)
+				&& (step.ordinal() > Step.EVAL.ordinal())
+				&& (step.ordinal() <= Step.INT4.ordinal())
 				&& (!bothering.isMonster()))
 				{
 					step = step.nextStep();
@@ -969,9 +969,9 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				}
 
 				// if asked someone something, give them time to respond.
-				if ((bothering != null) 
-				&& (step.ordinal() > Step.EVAL.ordinal()) 
-				&& (step.ordinal() <= Step.INT4.ordinal()) 
+				if ((bothering != null)
+				&& (step.ordinal() > Step.EVAL.ordinal())
+				&& (step.ordinal() <= Step.INT4.ordinal())
 				&& (!bothering.isMonster()))
 				{
 					step = step.nextStep();
@@ -988,9 +988,9 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.GEAS))
 					Log.debugOut("GEAS","WANDERQUERY: "+CMParms.combine(cur,1));
 				// if asked someone something, give them time to respond.
-				if ((bothering != null) 
-				&& (step.ordinal() > Step.EVAL.ordinal()) 
-				&& (step.ordinal() <= Step.INT4.ordinal()) 
+				if ((bothering != null)
+				&& (step.ordinal() > Step.EVAL.ordinal())
+				&& (step.ordinal() <= Step.INT4.ordinal())
 				&& (!bothering.isMonster()))
 				{
 					step = step.nextStep();

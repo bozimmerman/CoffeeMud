@@ -58,7 +58,7 @@ public class CWHTTPRequest implements HTTPRequest
 {
 	// internal enum for multi-part form parsing
 	private enum BoundaryState { BEFOREFIRST, HEADER, BODY }
-	
+
 	private static final String 		HTTP_VERSION_HEADER	= "HTTP/";  // prefix for http version headers in request lines
 	private static final String 		FUTURE_URL_HEADER 	= "http://"; // prefix for future url syntax
 	private static final String 		EOLN				= HTTPIOHandler.EOLN; // a copy of the official end of line
@@ -107,8 +107,8 @@ public class CWHTTPRequest implements HTTPRequest
 	 * @param disableFlags a set of config disable flags, if any
 	 * @param buffer a buffer to use instead of creating a new one
 	 */
-	public CWHTTPRequest(InetAddress address, boolean isHttps, int requestPort, boolean overwriteDups, 
-						 long requestLineSize, Logger debugLogger, Set<DisableFlag> disableFlags, ByteBuffer buffer)
+	public CWHTTPRequest(final InetAddress address, final boolean isHttps, final int requestPort, final boolean overwriteDups,
+						 final long requestLineSize, final Logger debugLogger, final Set<DisableFlag> disableFlags, final ByteBuffer buffer)
 	{
 		this.address=address;
 		this.requestLineSize=requestLineSize;
@@ -123,15 +123,15 @@ public class CWHTTPRequest implements HTTPRequest
 		this.disableFlags=disableFlags;
 		this.overwriteDups=overwriteDups;
 	}
-	
+
 	/**
 	 * a semi-copy constructor for pipelining
 	 * @param previousRequest the request to model this one after
 	 */
-	public CWHTTPRequest(CWHTTPRequest previousRequest)
+	public CWHTTPRequest(final CWHTTPRequest previousRequest)
 	{
-		this(previousRequest.getClientAddress(), 
-				previousRequest.isHttps, 
+		this(previousRequest.getClientAddress(),
+				previousRequest.isHttps,
 				previousRequest.getClientPort(),
 				previousRequest.overwriteDups,
 				previousRequest.requestLineSize,
@@ -139,7 +139,7 @@ public class CWHTTPRequest implements HTTPRequest
 				previousRequest.disableFlags,
 				previousRequest.overFlowBuf);
 	}
-	
+
 	/**
 	 * Get the address of the requestor
 	 * @return an inet address
@@ -150,7 +150,7 @@ public class CWHTTPRequest implements HTTPRequest
 		return address;
 	}
 
-	/** 
+	/**
 	 * Get the portion of the request without urlparameters.
 	 * Returns null if the request line has not yet been received
 	 * @return the portion of the request without urlparameters.
@@ -160,7 +160,7 @@ public class CWHTTPRequest implements HTTPRequest
 	{
 		return uriPage;
 	}
-	
+
 	/**
 	 * Get the entire request line, including method, path, etc
 	 * Returns null if the request line has not yet been received
@@ -171,9 +171,9 @@ public class CWHTTPRequest implements HTTPRequest
 	{
 		return requestString;
 	}
-	
+
 	/**
-	 * Returns the http version of this request.  Returns 0.0 if 
+	 * Returns the http version of this request.  Returns 0.0 if
 	 * a request line has not been received yet.
 	 * @return the http version
 	 */
@@ -182,7 +182,7 @@ public class CWHTTPRequest implements HTTPRequest
 	{
 		return httpVer;
 	}
-	
+
 	/**
 	 * The type of this request, or null if the request
 	 * line has not yet been received
@@ -195,7 +195,7 @@ public class CWHTTPRequest implements HTTPRequest
 	}
 
 	/**
-	 * If any url parameters, urlencoded body fields, or 
+	 * If any url parameters, urlencoded body fields, or
 	 * form-data body fields were received, they are all
 	 * mapped here.  The field names are normalized to
 	 * lowercase, and the values decoded.
@@ -212,7 +212,7 @@ public class CWHTTPRequest implements HTTPRequest
 	/**
 	 * Gets the key fields from the url/form parms
 	 * and their values as a copied map
-	 * 
+	 *
 	 * @return The parameter names and values
 	 */
 	@Override
@@ -224,7 +224,7 @@ public class CWHTTPRequest implements HTTPRequest
 		parms.putAll(urlParameters);
 		return parms;
 	}
-	
+
 	/**
 	 * Returns the simple host as the requestor asked for it
 	 * @return simple host name: blah.com
@@ -237,7 +237,7 @@ public class CWHTTPRequest implements HTTPRequest
 			String newSimpleHost = headers.get(HTTPHeader.Common.HOST.toString().toLowerCase());
 			if(newSimpleHost != null)
 			{
-				int x=newSimpleHost.indexOf(':');
+				final int x=newSimpleHost.indexOf(':');
 				if(x>=0)
 					newSimpleHost=newSimpleHost.substring(0,x);
 			}
@@ -247,10 +247,10 @@ public class CWHTTPRequest implements HTTPRequest
 		}
 		return simpleHost;
 	}
-	
+
 	/**
 	 * Gets the client's connected-to port
-	 * 
+	 *
 	 * @return The clients connected-to port
 	 */
 	@Override
@@ -258,7 +258,7 @@ public class CWHTTPRequest implements HTTPRequest
 	{
 		return requestPort;
 	}
-	
+
 	/**
 	 * Returns the FULL host as the requestor asked for it
 	 * This is like https://blahblah.com:8080
@@ -304,12 +304,12 @@ public class CWHTTPRequest implements HTTPRequest
 	/**
 	 * An important method! When the end of headers is received,
 	 * calling this method will switch the internal buffer to
-	 * receive the main body of the request according to the 
+	 * receive the main body of the request according to the
 	 * length given.  Any remaining bytes in the line buffer
 	 * are transferred to the new one.
 	 * @param contentLength the length of the body expected
 	 */
-	public void setToReceiveContentBody(int contentLength)
+	public void setToReceiveContentBody(final int contentLength)
 	{
 		final ByteBuffer previousBuffer = buffer;
 		if(previousBuffer.remaining() > contentLength)
@@ -327,7 +327,7 @@ public class CWHTTPRequest implements HTTPRequest
 			this.buffer=ByteBuffer.allocate(contentLength);
 			this.buffer.put(previousBuffer);
 		}
-		
+
 		this.bodyLength=contentLength;
 	}
 
@@ -335,10 +335,10 @@ public class CWHTTPRequest implements HTTPRequest
 	 * An important method! When the end of headers is received,
 	 * and the headers indicated chunked encoding is forthcoming,
 	 * calling this method will switch the internal buffer to
-	 * receive the main body of the request according to the 
+	 * receive the main body of the request according to the
 	 * length given.  Any remaining bytes in the line buffer
 	 * are transferred to the new one.
-	 * 
+	 *
 	 * @param chunkSize the size of the chunk to expect, or 0 for headers
 	 * @return the internal byte buffer ready to write to
 	 */
@@ -391,7 +391,7 @@ public class CWHTTPRequest implements HTTPRequest
 				buffer.get(newBuffer);
 				this.chunkBytes.write(newBuffer);
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				// eat it -- errors don't happen
 			}
@@ -399,7 +399,7 @@ public class CWHTTPRequest implements HTTPRequest
 		}
 		return setToReceiveContentChunkedBody(0); // make sure there's enough space for more stuff
 	}
-	
+
 	/**
 	 * Returns the current internal data parsing buffer.
 	 * This will be the request & header "line buffer" up
@@ -418,11 +418,11 @@ public class CWHTTPRequest implements HTTPRequest
 	 * @param msg the expect to look for, eg. 100-continue
 	 * @return true if its found, false otherwise
 	 */
-	public boolean isExpect(String msg)
+	public boolean isExpect(final String msg)
 	{
 		return expects.contains(msg.toLowerCase().trim());
 	}
-	
+
 	/**
 	 * If this was a multi-part request, this will return the
 	 * set of multi-parts found therein. Otherwise, this returns null.
@@ -435,7 +435,7 @@ public class CWHTTPRequest implements HTTPRequest
 			return new ArrayList<MultiPartData>(1);
 		return parts;
 	}
-	
+
 	/**
 	 * Returns whether finishRequest has been called, and important
 	 * state change denoting that the request is ready to be processed.
@@ -454,14 +454,14 @@ public class CWHTTPRequest implements HTTPRequest
 	 * @return the value of the coding that is acceptable
 	 */
 	@Override
-	public double getSpecialEncodingAcceptability(String type)
+	public double getSpecialEncodingAcceptability(final String type)
 	{
 		if(acceptEnc == null) return 0.0;
 		final Double val = acceptEnc.get(type.toLowerCase().trim());
 		if(val == null) return 0.0;
 		return val.doubleValue();
 	}
-	
+
 	/**
 	 * If an accept-encoding request is received, this method will parse it and
 	 * fill the acceptEnc list so that the HTTPRequestProcessor can render
@@ -470,7 +470,7 @@ public class CWHTTPRequest implements HTTPRequest
 	 * @return the list of 1 or 2 dimensional integer arrays
 	 * @throws HTTPException
 	 */
-	private Map<String,Double> parseAcceptEncodingRequest(String encDefStr) throws HTTPException
+	private Map<String,Double> parseAcceptEncodingRequest(final String encDefStr) throws HTTPException
 	{
 		final String[] allEncDefs = encDefStr.split(",");
 		final Map<String,Double> encs = new TreeMap<String,Double>();
@@ -501,9 +501,9 @@ public class CWHTTPRequest implements HTTPRequest
 			return encs;
 		return null;
 	}
-	
+
 	/**
-	 * If a range-request header is received, this will parse the request and generate a 
+	 * If a range-request header is received, this will parse the request and generate a
 	 * list of ranges requested  as integer arrays.  Each integer array
 	 * can be 1 or 2 dimensional, with the first dimension always
 	 * being "from" and the second (if available) the "to".
@@ -551,7 +551,7 @@ public class CWHTTPRequest implements HTTPRequest
 			return ranges;
 		return null;
 	}
-	
+
 	/**
 	 * Internal utility method whose only purpose is to return whether the given
 	 * buffer at the given index starts with the entire compare buffer sent.
@@ -574,26 +574,26 @@ public class CWHTTPRequest implements HTTPRequest
 	 * This method does the hard ugly work of parsing a data body as a multi-part request
 	 * and generating a list of those parts, potentially recursively! It is called as part
 	 * of the finishRequest process that finalizes a request for processing.
-	 * 
+	 *
 	 * Recursive multi-parts are parsed in-line on the existing un-copied buffer (uncopied is good, since
 	 * lots of multi-parts get turned into high level fields and otherwise dont get their own buffers).
 	 * Because of this, the current index into the main buffer has to be preserved between calls to parse,
-	 * which is why a read/write index array is used. 
-	 * 
+	 * which is why a read/write index array is used.
+	 *
 	 * While form-data and urlencoded parts get put into the main request urlParameters set, multi-Parts can
-	 * still have their own headers, and their unique variables as well.  However, as a longtime servlet 
+	 * still have their own headers, and their unique variables as well.  However, as a longtime servlet
 	 * writer, I like having the various ways key/pairs are sent to a web server abstracted into a single
 	 * list.
-	 * 
+	 *
 	 * The algorithm for parsing the multi-part from the main data is a simple state machine whose states
 	 * are defined in the BoundaryState enum.
-	 * 
+	 *
 	 * @param boundaryDefStr the raw multi-part request header value that contains the part boundary definition
-	 * @param index a read/write index into the raw whole data content buffer 
+	 * @param index a read/write index into the raw whole data content buffer
 	 * @return a list of multi-parts, if any (a zero size can be returned).
 	 * @throws HTTPException any parsing exceptions generated
 	 */
-	private List<MultiPartData> parseMultipartContent(String boundaryDefStr, final int[] index) throws HTTPException
+	private List<MultiPartData> parseMultipartContent(final String boundaryDefStr, final int[] index) throws HTTPException
 	{
 		final byte[] buf=buffer.array();
 		final String[] parts=boundaryDefStr.split(";");
@@ -721,7 +721,7 @@ public class CWHTTPRequest implements HTTPRequest
 						currentPart.setData(Arrays.copyOfRange(buf, startOfFinalBuffer, endOfFinalBuffer));
 						if (isDebugging) debugLogger.finest("Got "+currentPart.getContentType()+" "+currentPart.getDisposition()+" of "+currentPart.getData().length+" bytes");
 					}
-					
+
 					if(simpleBoundry)
 					{
 						currentPart=new MultiPartData();
@@ -746,18 +746,18 @@ public class CWHTTPRequest implements HTTPRequest
 			addUrlParameter(key,urlParmsFound.get(key));
 		return allParts;
 	}
-	
+
 	/**
 	 * An important method that denotes a final "end of stream" for the entire request, including the body.
 	 * When called, the request will give everything a final lookover to see if the body can be folded
 	 * back into other fields in the request, otherwise the final body content buffer reader is prepared
 	 * and isFinished is set to true, signaling that this request, for better or worse, can be processed.
-	 * 
+	 *
 	 * While form-data and urlencoded parts get put into the main request urlParameters set, multi-Parts can
-	 * still have their own headers, and their unique variables as well.  However, as a longtime servlet 
+	 * still have their own headers, and their unique variables as well.  However, as a longtime servlet
 	 * writer, I like having the various ways key/pairs are sent to a web server abstracted into a single
 	 * list.
-	 * 
+	 *
 	 * @throws HTTPException
 	 */
 	public void finishRequest() throws HTTPException
@@ -765,21 +765,21 @@ public class CWHTTPRequest implements HTTPRequest
 		// first, a final error if no host header found
 		if(!headers.containsKey(HTTPHeader.Common.HOST.lowerCaseName()))
 			throw new HTTPException(HTTPStatus.S400_BAD_REQUEST, "<html><body><h2>No Host: header received</h2>HTTP 1.1 requests must include the Host: header.</body></html>");
-		
+
 		// if this is a range request, get the byte ranges ready for the One Who Will Generate Output
 		if(headers.containsKey(HTTPHeader.Common.RANGE.lowerCaseName()) && (!disableFlags.contains(CWConfig.DisableFlag.RANGED)))
 		{
 			if (isDebugging) debugLogger.finest("Got range request!");
 			byteRanges=parseRangeRequest(headers.get(HTTPHeader.Common.RANGE.lowerCaseName()));
 		}
-		
+
 		if(chunkBytes != null)
 		{
 			this.bodyLength = chunkBytes.size();
 			this.buffer = ByteBuffer.wrap(chunkBytes.toByteArray());
 			chunkBytes = null;
 		}
-		
+
 		// if no body was sent, there is nothing left to do, at ALL
 		if(bodyLength == 0)
 		{
@@ -788,7 +788,7 @@ public class CWHTTPRequest implements HTTPRequest
 		else // if this entire body is one url-encoded string, parse it into the urlParameters and clear the body
 		{
 			bodyStream = new ByteArrayInputStream(buffer.array());
-			if(headers.containsKey(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()) 
+			if(headers.containsKey(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName())
 			&&(headers.get(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()).startsWith("application/x-www-form-urlencoded")))
 			{
 				final String byteStr=new String(buffer.array(),utf8);
@@ -797,7 +797,7 @@ public class CWHTTPRequest implements HTTPRequest
 				buffer=ByteBuffer.wrap(new byte[0]); // free some memory early, why don't ya
 			}
 			else // if this is some sort of multi-part thing, then the entire body is forfeit and MultiPartDatas are generated
-			if(headers.containsKey(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()) 
+			if(headers.containsKey(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName())
 			&&(headers.get(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()).startsWith("multipart/")))
 			{
 				if (isDebugging) debugLogger.finest("Got multipart request");
@@ -814,7 +814,7 @@ public class CWHTTPRequest implements HTTPRequest
 		}
 		isFinished = true; // by setting this flag, we signal our doneness.
 	}
-	
+
 	/**
 	 * When cookie data is received in a Cookie header, its a special parsing
 	 * case, since we maintain a nice list of cookies for servlets and such.
@@ -832,7 +832,7 @@ public class CWHTTPRequest implements HTTPRequest
 				cookies.put(pairStrs[0].trim(),"");
 		}
 	}
-	
+
 	/**
 	 * If it is determined that a request is being forwarded, previous request
 	 * builds need to be re-built, especially the headers.  This will return
@@ -840,8 +840,8 @@ public class CWHTTPRequest implements HTTPRequest
 	 * @param clearAfter set to true to clear the lines so no more are added.
 	 * @return the header data.
 	 */
-	public List<String> getAllHeaderReferences(boolean clearAfter) 
-	{ 
+	public List<String> getAllHeaderReferences(final boolean clearAfter)
+	{
 		if(this.headerRefs!=null)
 		{
 			final List<String> headerRefs=this.headerRefs;
@@ -850,7 +850,7 @@ public class CWHTTPRequest implements HTTPRequest
 		}
 		return new Vector<String>(0);
 	}
-	
+
 	/**
 	 * A simple static method for parsing a header line and adding it to the given map.
 	 * @param headerLine the unparsed raw line of headerness
@@ -875,7 +875,7 @@ public class CWHTTPRequest implements HTTPRequest
 		}
 		return null;
 	}
-	
+
 	/**
 	 * When a line of the header is received, we need to find out if its a cookie
 	 * and parse it elsewhere.  Otherwise, the header is put into our headers
@@ -920,7 +920,7 @@ public class CWHTTPRequest implements HTTPRequest
 	 * @param name the name of the field
 	 * @param value the decoded value of the field.
 	 */
-	private void addUrlParameter(String name, String value)
+	private void addUrlParameter(final String name, final String value)
 	{
 		if(urlParameters == null)
 		{
@@ -934,7 +934,7 @@ public class CWHTTPRequest implements HTTPRequest
 		}
 		urlParameters.put(name.toLowerCase().trim(), value);
 	}
-	
+
 	/**
 	 * When url-encoded data is received, this method is called to parse out
 	 * the key-pairs and put their decoded keys and values into the urlParameters
@@ -942,7 +942,7 @@ public class CWHTTPRequest implements HTTPRequest
 	 * @param parts the raw undecoded urlencoded line of data
 	 * @throws HTTPException
 	 */
-	private void parseUrlEncodedKeypairs(String parts) throws HTTPException
+	private void parseUrlEncodedKeypairs(final String parts) throws HTTPException
 	{
 		try
 		{
@@ -983,24 +983,24 @@ public class CWHTTPRequest implements HTTPRequest
 			throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
 		}
 	}
-	
+
 	/**
 	 * When a main request line is received, this method parses that request
 	 * and populates the appropriate fields in the pojo portion, throwing
-	 * an exception if anything is malformed about it. 
+	 * an exception if anything is malformed about it.
 	 * @param requestLine the raw request line (eq GET / HTTP/1.1)
 	 * @throws HTTPException
 	 */
-	public void parseRequest(String requestLine) throws HTTPException
+	public void parseRequest(final String requestLine) throws HTTPException
 	{
 		requestString=requestLine;
 		final String[] parts = requestLine.split(" ");
 		if(parts.length != 3)
 			throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
-		
+
 		if(isDebugging)
 			debugLogger.finest("Request: "+requestString);
-		
+
 		// first, parse the http version number from the last part
 		if(!parts[2].startsWith(HTTP_VERSION_HEADER))
 			throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
@@ -1012,7 +1012,7 @@ public class CWHTTPRequest implements HTTPRequest
 		{
 			throw HTTPException.standardException(HTTPStatus.S400_BAD_REQUEST);
 		}
-		
+
 		// now parse the first part of the request for a valid method
 		try
 		{
@@ -1029,8 +1029,8 @@ public class CWHTTPRequest implements HTTPRequest
 			exception.getErrorHeaders().put(HTTPHeader.Common.ALLOW, HTTPMethod.getAllowedList());
 			throw exception;
 		}
-		
-		// lastly, parse the url portion, which could get complicated due to the stupid 
+
+		// lastly, parse the url portion, which could get complicated due to the stupid
 		// future uri support caveat
 		try
 		{
@@ -1068,12 +1068,12 @@ public class CWHTTPRequest implements HTTPRequest
 
 	/**
 	 * Gets a specific parameter as parsed from request url
-	 * 
+	 *
 	 * @param name The parameter name
 	 * @return The parameter value
 	 */
 	@Override
-	public String getUrlParameter(String name)
+	public String getUrlParameter(final String name)
 	{
 		if(urlParameters==null) return null;
 		return urlParameters.get(name.toLowerCase());
@@ -1081,12 +1081,12 @@ public class CWHTTPRequest implements HTTPRequest
 
 	/**
 	 * Gets whether a specific parameter is from request url
-	 * 
+	 *
 	 * @param name The parameter name
 	 * @return true if the parameter exists, false otherwise
 	 */
 	@Override
-	public boolean isUrlParameter(String name)
+	public boolean isUrlParameter(final String name)
 	{
 		if(urlParameters==null) return false;
 		return urlParameters.containsKey(name.toLowerCase());
@@ -1094,12 +1094,12 @@ public class CWHTTPRequest implements HTTPRequest
 
 	/**
 	 * Gets a request header as supplied by the client
-	 * 
+	 *
 	 * @param name The header name
 	 * @return The header value
 	 */
 	@Override
-	public String getHeader(String name)
+	public String getHeader(final String name)
 	{
 		return headers.get(name.toLowerCase());
 	}
@@ -1109,7 +1109,7 @@ public class CWHTTPRequest implements HTTPRequest
 	 * @return the cookie value
 	 */
 	@Override
-	public String getCookie(String name)
+	public String getCookie(final String name)
 	{
 		return cookies.get(name);
 	}
@@ -1126,7 +1126,7 @@ public class CWHTTPRequest implements HTTPRequest
 
 	/**
 	 * Gets the key cookie names
-	 * 
+	 *
 	 * @return The cookie names
 	 */
 	@Override
@@ -1136,15 +1136,15 @@ public class CWHTTPRequest implements HTTPRequest
 	}
 
 	@Override
-	public void addFakeUrlParameter(String name, String value)
+	public void addFakeUrlParameter(final String name, final String value)
 	{
 		if(urlParameters==null)
 			urlParameters=new HashMap<String,String>();
 		urlParameters.put(name.toLowerCase(), value);
 	}
-	
+
 	@Override
-	public void removeUrlParameter(String name)
+	public void removeUrlParameter(final String name)
 	{
 		if(urlParameters!=null)
 			urlParameters.remove(name.toLowerCase());

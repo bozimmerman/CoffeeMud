@@ -91,7 +91,7 @@ public class Animal extends StdRace
 	{
 		return localizedStaticRacialCat;
 	}
-	
+
 	private final String[]	racialAbilityNames			= { "AnimalSpeak" };
 	private final int[]		racialAbilityLevels			= { 1 };
 	private final int[]		racialAbilityProficiencies	= { 100 };

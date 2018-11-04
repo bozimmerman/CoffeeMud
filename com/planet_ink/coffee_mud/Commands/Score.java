@@ -46,45 +46,45 @@ public class Score extends Affect
 		return access;
 	}
 
-	public StringBuilder getScore(MOB mob)
+	public StringBuilder getScore(final MOB mob)
 	{
 		return getScore(mob, "");
 	}
 
-	protected String getExtremeValue(int extreme)
+	protected String getExtremeValue(final int extreme)
 	{
 		final StringBuilder str=new StringBuilder("");
-		for(char c : CMath.convertToRoman(extreme).toCharArray())
+		for(final char c : CMath.convertToRoman(extreme).toCharArray())
 		{
 			switch(c)
 			{
-			case 'I': 
+			case 'I':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,0)).append(" ");
 				break;
-			case 'V': 
+			case 'V':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,1)).append(" ");
 				break;
-			case 'X': 
+			case 'X':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,2)).append(" ");
 				break;
-			case 'L': 
+			case 'L':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,3)).append(" ");
 				break;
-			case 'C': 
+			case 'C':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,4)).append(" ");
 				break;
-			case 'D': 
+			case 'D':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,5)).append(" ");
 				break;
-			case 'M': 
+			case 'M':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,6)).append(" ");
 				break;
 			}
 		}
 		return str.toString();
 	}
-	
-	public StringBuilder getScore(MOB mob, String parm)
+
+	public StringBuilder getScore(final MOB mob, final String parm)
 	{
 		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
 
@@ -148,10 +148,10 @@ public class Score extends Affect
 			msg.append(L("Your account is Registered and Active until: @x1!\n\r",CMLib.time().date2String(mob.playerStats().getAccountExpiration())));
 
 		String genderName=L("^!neuter");
-		if(mob.charStats().getStat(CharStats.STAT_GENDER)=='M') 
+		if(mob.charStats().getStat(CharStats.STAT_GENDER)=='M')
 			genderName=L("^!male");
 		else
-		if(mob.charStats().getStat(CharStats.STAT_GENDER)=='F') 
+		if(mob.charStats().getStat(CharStats.STAT_GENDER)=='F')
 			genderName=L("^!female");
 		msg.append(L("You are a "));
 		if((mob.baseCharStats().getStat(CharStats.STAT_AGE)>0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.ALL_AGEING)))
@@ -193,7 +193,7 @@ public class Score extends Affect
 			msg.append(CMLib.protocol().mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
 			msg.append("\n\r");
 			CharStats CT=mob.charStats();
-			if(parm.equalsIgnoreCase("BASE")) 
+			if(parm.equalsIgnoreCase("BASE"))
 				CT=mob.baseCharStats();
 			msg.append("^N^!");
 			final int longest=CharStats.CODES.LONNGEST_BASECODE_NAME();
@@ -289,7 +289,7 @@ public class Score extends Affect
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String parm="";

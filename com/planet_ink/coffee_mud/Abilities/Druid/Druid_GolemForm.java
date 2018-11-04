@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Druid_GolemForm extends StdAbility
 {
 	@Override
@@ -209,7 +208,7 @@ public class Druid_GolemForm extends StdAbility
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
 	}
 
-	public void setRaceName(MOB mob)
+	public void setRaceName(final MOB mob)
 	{
 		final int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
@@ -219,7 +218,7 @@ public class Druid_GolemForm extends StdAbility
 		newRace=getRace(classLevel);
 	}
 
-	public int getRaceLevel(int classLevel)
+	public int getRaceLevel(final int classLevel)
 	{
 		if(classLevel<5)
 			return 0;
@@ -236,17 +235,17 @@ public class Druid_GolemForm extends StdAbility
 			return 4;
 	}
 
-	public Race getRace(int classLevel)
+	public Race getRace(final int classLevel)
 	{
 		return CMClass.getRace(races[getRaceLevel(classLevel)]);
 	}
 
-	public String getRaceName(int classLevel)
+	public String getRaceName(final int classLevel)
 	{
 		return shapes[getRaceLevel(classLevel)];
 	}
 
-	public static boolean isShapeShifted(MOB mob)
+	public static boolean isShapeShifted(final MOB mob)
 	{
 		if(mob==null)
 			return false;
@@ -260,7 +259,7 @@ public class Druid_GolemForm extends StdAbility
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -275,7 +274,7 @@ public class Druid_GolemForm extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 		{

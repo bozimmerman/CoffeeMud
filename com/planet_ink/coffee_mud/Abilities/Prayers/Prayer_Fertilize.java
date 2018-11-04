@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Fertilize extends Prayer
 {
 	@Override
@@ -80,7 +79,7 @@ public class Prayer_Fertilize extends Prayer
 	}
 
 	private volatile int oldResource = -1;
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -129,7 +128,7 @@ public class Prayer_Fertilize extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 
 		final int type=mob.location().domainType();
@@ -163,7 +162,7 @@ public class Prayer_Fertilize extends Prayer
 											  (mob.location().getArea().getTimeObj().getHoursInDay()) ) /
 											  CMProps.getTickMillis() ) )!=null)
 				{
-					// the chant should be better than the prayer, so leave this part out -- 
+					// the chant should be better than the prayer, so leave this part out --
 					// but keep the functionality around just in case we want it.
 					//mob.location().setResource(RawMaterial.RESOURCE_DIRT);
 				}

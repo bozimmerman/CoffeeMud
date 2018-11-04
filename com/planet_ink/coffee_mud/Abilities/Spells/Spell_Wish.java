@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Wish extends Spell
 {
 
@@ -87,7 +86,7 @@ public class Spell_Wish extends Spell
 		return Ability.COST_ALL;
 	}
 
-	protected Physical maybeAdd(MOB mob, Physical E, List<Physical> foundAll, Physical foundThang)
+	protected Physical maybeAdd(final MOB mob, final Physical E, final List<Physical> foundAll, Physical foundThang)
 	{
 		final Room R=CMLib.map().roomLocation(E);
 		if((E!=null)
@@ -104,7 +103,7 @@ public class Spell_Wish extends Spell
 		return foundThang;
 	}
 
-	private void bringThangHere(MOB mob, Room here, Physical target)
+	private void bringThangHere(final MOB mob, final Room here, final Physical target)
 	{
 		if(target instanceof MOB)
 		{
@@ -126,7 +125,7 @@ public class Spell_Wish extends Spell
 		}
 	}
 
-	public void wishDrain(MOB mob, int expLoss, boolean conLoss)
+	public void wishDrain(final MOB mob, int expLoss, final boolean conLoss)
 	{
 		if(mob==null)
 			return;
@@ -147,7 +146,7 @@ public class Spell_Wish extends Spell
 			mob.tell(L("Your wish drains @x1 experience points.",""+(expLoss)));
 	}
 
-	public void age(MOB mob)
+	public void age(final MOB mob)
 	{
 		final Ability A=CMClass.getAbility("Chant_SpeedAging");
 		if (A != null)
@@ -158,7 +157,7 @@ public class Spell_Wish extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isMonster())
 		{
@@ -390,7 +389,7 @@ public class Spell_Wish extends Spell
 							if((title!=null)
 							&&(title.getOwnerName().length()==0))
 							{
-								LandTitle T=(LandTitle)CMClass.getItem("GenTitle");
+								final LandTitle T=(LandTitle)CMClass.getItem("GenTitle");
 								T.setLandPropertyID(title.landPropertyID());
 								T.text();
 								items.add(T);
@@ -462,7 +461,7 @@ public class Spell_Wish extends Spell
 							if(pA.ID().endsWith("Zapper"))
 								wearableProblemA=pA;
 						}
-						int levelProblem=(foundThang.phyStats().level()-mob.phyStats().level());
+						final int levelProblem=(foundThang.phyStats().level()-mob.phyStats().level());
 						if((wearableProblemA != null)||(levelProblem>0))
 						{
 							experienceRequired = 0;
@@ -557,7 +556,7 @@ public class Spell_Wish extends Spell
 				wishV.remove(0);
 				myWish=" "+CMParms.combine(wishV,0).toUpperCase().trim()+" ";
 			}
-			
+
 			if(target instanceof PackagedItems)
 				target = ((PackagedItems)target).peekFirstItem();
 
@@ -753,7 +752,7 @@ public class Spell_Wish extends Spell
 				||(myWish.indexOf(" ABORT PREGNANCY ")>=0)
 				||(myWish.indexOf(" ABORTION ")>=0)))
 			{
-				Ability A=target.fetchEffect("Pregnancy");
+				final Ability A=target.fetchEffect("Pregnancy");
 				if(A != null)
 				{
 					A.unInvoke();
@@ -772,14 +771,14 @@ public class Spell_Wish extends Spell
 				||(myWish.indexOf(" HAVE HER BABY ")>=0)
 				||(myWish.indexOf(" COME TO FULL TERM ")>=0)))
 			{
-				Ability A=target.fetchEffect("Pregnancy");
+				final Ability A=target.fetchEffect("Pregnancy");
 				if(A != null)
 				{
-					long pregStart = CMath.s_long(A.getStat("PREGSTART"));
-					long pregEnd = CMath.s_long(A.getStat("PREGEND"));
+					final long pregStart = CMath.s_long(A.getStat("PREGSTART"));
+					final long pregEnd = CMath.s_long(A.getStat("PREGEND"));
 					if((pregStart>=0)&&(pregEnd>=0))
 					{
-						long diff = pregEnd - System.currentTimeMillis() + 10000;
+						final long diff = pregEnd - System.currentTimeMillis() + 10000;
 						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 start(s) going into labor!",target.name()));
 						A.setStat("PREGSTART", ""+(pregStart - diff));
 						A.setStat("PREGEND", ""+(pregEnd - diff));
@@ -787,7 +786,7 @@ public class Spell_Wish extends Spell
 						return true;
 					}
 				}
-				
+
 			}
 
 			if(((target instanceof MOB)
@@ -803,7 +802,7 @@ public class Spell_Wish extends Spell
 				{
 					final MOB M=(MOB)target;
 					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> age(s) a bit."));
-					int ageCat = M.baseCharStats().ageCategory();
+					final int ageCat = M.baseCharStats().ageCategory();
 					if(ageCat < Race.AGE_ANCIENT)
 					{
 						while((M.baseCharStats().ageCategory() == ageCat)
@@ -828,10 +827,10 @@ public class Spell_Wish extends Spell
 						age=millisPerMudday;
 					final long millisPerMonth=CMLib.time().globalClock().getDaysInMonth() * millisPerMudday;
 					final long millisPerYear=CMLib.time().globalClock().getMonthsInYear() * millisPerMonth;
-					int ageYears = (int)(age / millisPerYear);
+					final int ageYears = (int)(age / millisPerYear);
 					final CharStats stats = (CharStats)CMClass.getCommon("DefaultCharStats");
 					stats.setStat(CharStats.STAT_AGE,ageYears);
-					int ageCat = stats.ageCategory();
+					final int ageCat = stats.ageCategory();
 					if(ageCat < Race.AGE_ANCIENT)
 					{
 						while((stats.ageCategory() == ageCat)
@@ -855,7 +854,7 @@ public class Spell_Wish extends Spell
 						return true;
 					}
 				}
-				
+
 			}
 
 			// temporary stat changes

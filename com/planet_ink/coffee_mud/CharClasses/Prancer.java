@@ -117,7 +117,7 @@ public class Prancer extends StdCharClass
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -258,7 +258,7 @@ public class Prancer extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -272,7 +272,7 @@ public class Prancer extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
@@ -308,7 +308,7 @@ public class Prancer extends StdCharClass
 	}
 
 	@Override
-	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount)
+	public int adjustExperienceGain(final MOB host, final MOB mob, final MOB victim, final int amount)
 	{
 		return Bard.bardAdjustExperienceGain(host, mob, victim, amount, 5.0);
 	}
@@ -321,7 +321,7 @@ public class Prancer extends StdCharClass
 	}
 
 	@Override
-	public void level(MOB mob, List<String> newAbilityIDs)
+	public void level(final MOB mob, final List<String> newAbilityIDs)
 	{
 		super.level(mob, newAbilityIDs);
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))

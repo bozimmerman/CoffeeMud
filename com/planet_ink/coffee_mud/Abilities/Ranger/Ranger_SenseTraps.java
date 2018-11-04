@@ -112,7 +112,7 @@ public class Ranger_SenseTraps extends StdAbility
 		return "";
 	}
 
-	public String trapHere(MOB mob, Physical P)
+	public String trapHere(final MOB mob, final Physical P)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		if(P==null)
@@ -126,7 +126,7 @@ public class Ranger_SenseTraps extends StdAbility
 			{
 				final Exit E=R.getExitInDir(d);
 				final Room R2=R.getRoomInDir(d);
-				if((E != null)&&(R2 != null) 
+				if((E != null)&&(R2 != null)
 				&&((CMLib.flags().isInWilderness(R)) || (CMLib.flags().isInWilderness(R2))))
 				{
 					final Exit E2=R.getReverseExit(d);
@@ -154,7 +154,7 @@ public class Ranger_SenseTraps extends StdAbility
 		return msg.toString();
 	}
 
-	public void messageTo(MOB mob)
+	public void messageTo(final MOB mob)
 	{
 		final String here=trapHere(mob,mob.location());
 		if(here.length()>0)

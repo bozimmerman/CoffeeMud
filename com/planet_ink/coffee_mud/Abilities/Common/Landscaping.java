@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Landscaping extends BuildingSkill
 {
 	@Override
@@ -98,7 +97,7 @@ public class Landscaping extends BuildingSkill
 	}
 
 	@Override
-	protected int[][] getBasicMaterials(final MOB mob, int woodRequired, String miscType)
+	protected int[][] getBasicMaterials(final MOB mob, final int woodRequired, String miscType)
 	{
 		if(miscType.length()==0)
 			miscType="rock";

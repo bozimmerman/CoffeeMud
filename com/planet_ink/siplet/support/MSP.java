@@ -21,10 +21,8 @@ import com.planet_ink.siplet.applet.Siplet;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-
 public class MSP
 {
-
 	public MSP()
 	{
 		super();

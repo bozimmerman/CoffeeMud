@@ -68,7 +68,7 @@ public class Trap_ExitRoom extends Trap_Trap
 		return true;
 	}
 
-	@Override 
+	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public CMObject copyOf()
 	{

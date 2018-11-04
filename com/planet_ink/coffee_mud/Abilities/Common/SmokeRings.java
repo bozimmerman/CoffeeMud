@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class SmokeRings extends CommonSkill
 {
 	@Override
@@ -112,7 +111,7 @@ public class SmokeRings extends CommonSkill
 		}
 		return str;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
@@ -132,7 +131,7 @@ public class SmokeRings extends CommonSkill
 		}
 		super.executeMsg(host,msg);
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

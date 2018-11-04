@@ -48,7 +48,7 @@ public class ItemIdentifier extends StdBehavior
 		return "item identifying for a price";
 	}
 
-	protected double cost(Item item)
+	protected double cost(final Item item)
 	{
 		if(costFormula != null)
 		{
@@ -60,7 +60,7 @@ public class ItemIdentifier extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String parms)
+	public void setParms(final String parms)
 	{
 		super.setParms(parms);
 		final String formulaString = CMParms.getParmStr(parms,"COST","500 + (@x1 * 20)");

@@ -85,7 +85,7 @@ public class Baiting extends GatheringSkill
 		verb=L("baiting");
 	}
 
-	protected int getDuration(MOB mob, int level)
+	protected int getDuration(final MOB mob, final int level)
 	{
 		return getDuration(45,mob,level,15);
 	}
@@ -135,7 +135,7 @@ public class Baiting extends GatheringSkill
 		}
 	}
 
-	public boolean isPotentialCrop(Room R, int code)
+	public boolean isPotentialCrop(final Room R, final int code)
 	{
 		if(R==null)
 			return false;
@@ -150,12 +150,12 @@ public class Baiting extends GatheringSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(super.checkStop(mob, commands) || (R==null))
 			return true;
-		
+
 		bundling=false;
 		if((!auto)
 		&&(commands.size()>0)
@@ -172,12 +172,12 @@ public class Baiting extends GatheringSkill
 		&&((commands.get(0)).equalsIgnoreCase("list")))
 		{
 			final StringBuilder str=new StringBuilder("Types of fishes:\n\r");
-			for(int fishCode : RawMaterial.CODES.FISHES())
+			for(final int fishCode : RawMaterial.CODES.FISHES())
 				str.append(RawMaterial.CODES.NAME(fishCode)).append("\n\r");
 			mob.tell(str.toString());
 			return false;
 		}
-		
+
 		verb=L("baiting");
 		fishRoom=null;
 		if(!auto)
@@ -188,7 +188,7 @@ public class Baiting extends GatheringSkill
 			if((R.getArea() instanceof BoardableShip)
 			&&((R.domainType()&Room.INDOORS)==0))
 				fishRoom=CMLib.map().roomLocation(((BoardableShip)R.getArea()).getShipItem());
-			
+
 			if((fishRoom==null)||(!CMLib.flags().isWateryRoom(fishRoom)))
 			{
 				this.commonTell(mob, L("You need to be on the water, or in a boat to use this skill."));
@@ -202,7 +202,7 @@ public class Baiting extends GatheringSkill
 			commonTell(mob,L("It looks like bait has already been dropped here."));
 			return false;
 		}
-		
+
 		Item mine=null;
 		for(int i=0;i<mob.numItems();i++)
 		{

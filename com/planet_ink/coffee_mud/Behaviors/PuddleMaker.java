@@ -54,7 +54,7 @@ public class PuddleMaker extends StdBehavior
 		return "puddle making";
 	}
 
-	public boolean coldWetWeather(int weather)
+	public boolean coldWetWeather(final int weather)
 	{
 		switch(weather)
 		{
@@ -67,7 +67,7 @@ public class PuddleMaker extends StdBehavior
 		return false;
 	}
 
-	public boolean coldWeather(int weather)
+	public boolean coldWeather(final int weather)
 	{
 		switch(weather)
 		{
@@ -81,7 +81,7 @@ public class PuddleMaker extends StdBehavior
 		return false;
 	}
 
-	public boolean dryWeather(int weather)
+	public boolean dryWeather(final int weather)
 	{
 		switch(weather)
 		{
@@ -93,7 +93,7 @@ public class PuddleMaker extends StdBehavior
 		return false;
 	}
 
-	public boolean justWetWeather(int weather)
+	public boolean justWetWeather(final int weather)
 	{
 		switch(weather)
 		{
@@ -104,7 +104,7 @@ public class PuddleMaker extends StdBehavior
 		return false;
 	}
 
-	public boolean anyWetWeather(int weather)
+	public boolean anyWetWeather(final int weather)
 	{
 		return coldWetWeather(weather)||justWetWeather(weather);
 	}
@@ -117,7 +117,7 @@ public class PuddleMaker extends StdBehavior
 		return pct;
 	}
 
-	public void makePuddle(Room R, int oldWeather, int newWeather)
+	public void makePuddle(final Room R, final int oldWeather, final int newWeather)
 	{
 		for(int i=0;i<R.numItems();i++)
 		{

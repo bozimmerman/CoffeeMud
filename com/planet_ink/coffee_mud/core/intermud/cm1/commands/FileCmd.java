@@ -42,13 +42,13 @@ import java.util.concurrent.atomic.*;
 */
 public class FileCmd extends CM1Command
 {
-	@Override 
+	@Override
 	public String getCommandWord()
-	{ 
+	{
 		return "FILE";
 	}
 
-	public FileCmd(RequestHandler req, String parameters)
+	public FileCmd(final RequestHandler req, final String parameters)
 	{
 		super(req, parameters);
 	}
@@ -247,7 +247,7 @@ public class FileCmd extends CM1Command
 	}
 
 	@Override
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	public boolean passesSecurityCheck(final MOB user, final PhysicalAgent target)
 	{
 		if(user == null)
 			return false;
@@ -255,7 +255,7 @@ public class FileCmd extends CM1Command
 	}
 
 	@Override
-	public String getHelp(MOB user, PhysicalAgent target, String rest)
+	public String getHelp(final MOB user, final PhysicalAgent target, final String rest)
 	{
 		final String word=CMLib.english().getFirstWord(rest==null?"":rest).toUpperCase().trim();
 		if (word.equals("READ"))

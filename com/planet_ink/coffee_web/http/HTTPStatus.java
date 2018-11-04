@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * All the recognized and official HTTP Status codes,
  * along with a utility method or two.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -30,7 +30,7 @@ public enum HTTPStatus
 {
 	S100_CONTINUE("Continue",100),
 	S101_SWITCHING_PROTOCOLS("Switching Protocols",101),
-	
+
 	S200_OK("OK",200),
 	S201_CREATED("Created",201),
 	S202_ACCEPTED("Accepted",202),
@@ -38,7 +38,7 @@ public enum HTTPStatus
 	S204_NO_CONTENT("No Content",204),
 	S205_RESET_CONTENT("Reset Content",205),
 	S206_PARTIAL_CONTENT("Partial Content",206),
-	
+
 	S300_MULTIPLE_CHOICES("Multiple Choices",300),
 	S301_MOVED_PERMANENTLY("Moved Permanently",301),
 	S302_FOUND("Found",302),
@@ -47,7 +47,7 @@ public enum HTTPStatus
 	S305_USE_PROXY("Use Proxy",305),
 	S306_UNUSED("UNUSED",306),
 	S307_TEMPORARY_REDIRECT("Temporary Redirect",307),
-	
+
 	S400_BAD_REQUEST("Bad Request",400),
 	S401_UNAUTHORIZED("Unauthorized",401),
 	S402_PAYMENT_REQUIRED("Payment Required",402),
@@ -66,7 +66,7 @@ public enum HTTPStatus
 	S415_UNSUPPORTED_MEDIA_TYPE("Unsupported Media Type",415),
 	S416_REQUEST_RANGE_NOT_SATISFIED("Requested Range Not Satisfiable",416),
 	S417_EXPECTATION_FAILED("Expectation Failed",417),
-	
+
 	S500_INTERNAL_ERROR("Internal Server Error",500),
 	S501_NOT_IMPLEMENTED("Not Implemented",501),
 	S502_BAD_GATEWAY("Bad Gateway",502),
@@ -80,18 +80,18 @@ public enum HTTPStatus
 		for(final HTTPStatus status : HTTPStatus.values())
 			codeMap.put(Integer.valueOf(status.statusCode), status);
 	}
-	
+
 	private String 	description;
 	private int 	statusCode;
 	private boolean isAnError;
-	
-	private HTTPStatus(String desc, int statusCode)
+
+	private HTTPStatus(final String desc, final int statusCode)
 	{
 		this.description = desc;
 		this.statusCode = statusCode;
 		this.isAnError = statusCode >=400;
 	}
-	
+
 	/**
 	 * Return whether this code is really an error
 	 * @return true if its an error, false otherwise
@@ -100,7 +100,7 @@ public enum HTTPStatus
 	{
 		return isAnError;
 	}
-	
+
 	/**
 	 * Return the numeric part of the status code, such as the 200 in "200 OK"
 	 * @return the numeric part of the status code
@@ -109,7 +109,7 @@ public enum HTTPStatus
 	{
 		return statusCode;
 	}
-	
+
 	/**
 	 * The HTTPStatus description is the block of text typically returned after the status
 	 * code number in a response, such as the "OK" part of 200 OK
@@ -124,7 +124,7 @@ public enum HTTPStatus
 	 * @param statusCode an http status code
 	 * @return the HTTPStatus object it maps to, or null
 	 */
-	public static HTTPStatus find(int statusCode)
+	public static HTTPStatus find(final int statusCode)
 	{
 		return codeMap.get(Integer.valueOf(statusCode));
 	}

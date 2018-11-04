@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_LotForSale extends Prop_LotsForSale
 {
 	@Override
@@ -46,13 +45,13 @@ public class Prop_LotForSale extends Prop_LotsForSale
 	{
 		return "Buy a room once, get all adjacent rooms free";
 	}
-	
+
 	@Override
 	public String getTitleID()
 	{
 		return super.getUniqueLotID();
 	}
-	
+
 	@Override
 	public LandTitle generateNextRoomTitle()
 	{
@@ -63,7 +62,7 @@ public class Prop_LotForSale extends Prop_LotsForSale
 	}
 
 	@Override
-	public boolean canGenerateAdjacentRooms(Room R)
+	public boolean canGenerateAdjacentRooms(final Room R)
 	{
 		return ((R.displayText().indexOf(L(LegalLibrary.INDOORSTR).trim())<0)
 			  &&(R.displayText().indexOf(L(LegalLibrary.OUTDOORSTR).trim())<0)

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class AnimalSpeak extends StdLanguage
 {
 	@Override
@@ -51,7 +50,7 @@ public class AnimalSpeak extends StdLanguage
 
 	public static List<String[]>	wordLists	= null;
 	private static boolean			mapped		= false;
-	
+
 	public AnimalSpeak()
 	{
 		super();
@@ -61,7 +60,7 @@ public class AnimalSpeak extends StdLanguage
 			CMLib.ableMapper().addCharAbilityMapping("Archon", 1, ID(), false);
 		}
 	}
-	
+
 	private final static String[] animalSounds={
 		"hiss","grunt","roar","quak","snort","growl","screech","growl","groan","moan","roar","hum","buzz","drone","click","chirrup","chirp",
 		"twitter","tweet","sing","whistle","boom","whistle","chirp","squeal","screech","shriek","squeak","hoot","bleat","grunt","chirp",
@@ -83,18 +82,18 @@ public class AnimalSpeak extends StdLanguage
 		"croak","gobble","chirp","chatter","grunt","bark","coo","sputter","scream","groan","sing","bark","howl","cry","yell","yelp","trill",
 		"warble","moan","whinny","whoop"
 	};
-	
-	protected String[] getSounds() 
+
+	protected String[] getSounds()
 	{
 		return animalSounds;
 	}
 
 	@Override
-	public List<String[]> translationLists(String language)
+	public List<String[]> translationLists(final String language)
 	{
 		return wordLists;
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats stats)
 	{
@@ -104,7 +103,7 @@ public class AnimalSpeak extends StdLanguage
 	}
 
 	@Override
-	public String translate(String language, String word)
+	public String translate(final String language, final String word)
 	{
 		final String newWord=getSounds()[CMLib.dice().roll(1, getSounds().length, -1)];
 		switch(CMLib.dice().roll(1, 5, -1))

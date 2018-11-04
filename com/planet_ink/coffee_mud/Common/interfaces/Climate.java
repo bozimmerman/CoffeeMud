@@ -189,7 +189,7 @@ public interface Climate extends Tickable, CMCommon
 	public static final int WEATHER_TICK_DOWN=150; // 150 = 10 minutes * 60 seconds / 4
 	/**  descriptive strings for the Climate.WEATHER_* constants, ordered by their value. @see Climate */
 	public final static String[] WEATHER_DESCS=
-	{ 
+	{
 		"CLEAR","CLOUDY","WINDY","RAIN","THUNDERSTORM","SNOW","HAIL","HEAT","SLEET","BLIZZARD","DUST","DROUGHT","COLD"
 	};
 

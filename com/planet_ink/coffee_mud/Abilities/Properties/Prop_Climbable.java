@@ -55,8 +55,8 @@ public class Prop_Climbable extends Property
 
 	@Override
 	public String accountForYourself()
-	{ 
-		return "Must be climbed through.";	
+	{
+		return "Must be climbed through.";
 	}
 
 	@Override
@@ -78,10 +78,10 @@ public class Prop_Climbable extends Property
 		if((affected instanceof Room)||(affected instanceof Exit))
 		{
 			final Room R=guessRoom(myHost);
-			
-			if(CMLib.flags().isSleeping(affected)||(R==null)||CMLib.flags().isSleeping(R)) 
+
+			if(CMLib.flags().isSleeping(affected)||(R==null)||CMLib.flags().isSleeping(R))
 				return super.okMessage(myHost, msg);
-			
+
 			if((msg.amITarget(affected)||(msg.tool()==affected))
 			&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))
 			&&(msg.sourceMinor()!=CMMsg.TYP_RECALL)
@@ -104,15 +104,15 @@ public class Prop_Climbable extends Property
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
 	protected final Room guessRoom(final Environmental myHost)
 	{
-		Room R=CMLib.map().roomLocation(affected);
+		final Room R=CMLib.map().roomLocation(affected);
 		if(R!=null)
 			return R;
 		return CMLib.map().roomLocation(myHost);
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -120,10 +120,10 @@ public class Prop_Climbable extends Property
 		if((affected instanceof Room)||(affected instanceof Exit))
 		{
 			final Room R=guessRoom(myHost);
-			
-			if(CMLib.flags().isSleeping(affected)||(R==null)||CMLib.flags().isSleeping(R)) 
+
+			if(CMLib.flags().isSleeping(affected)||(R==null)||CMLib.flags().isSleeping(R))
 				return;
-			
+
 			if((msg.sourceMinor()==CMMsg.TYP_THROW)
 			&&(CMLib.map().roomLocation(msg.target())==R)
 			&&(msg.tool() instanceof Item)

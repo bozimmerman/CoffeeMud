@@ -56,7 +56,7 @@ public class ResourceOverride extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newStr)
+	public void setParms(final String newStr)
 	{
 		super.setParms(newStr);
 		super.tickDown=1;

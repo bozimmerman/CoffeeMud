@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_RechargeWand extends Spell
 {
 
@@ -45,7 +44,7 @@ public class Spell_RechargeWand extends Spell
 	private final static String localizedName = CMLib.lang().L("Recharge Wand");
 
 	private static int RECHARGE_AMT = 5;
-	
+
 	@Override
 	public String name()
 	{
@@ -77,7 +76,7 @@ public class Spell_RechargeWand extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)

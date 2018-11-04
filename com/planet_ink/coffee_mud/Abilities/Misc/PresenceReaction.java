@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class PresenceReaction extends StdAbility
 {
 	@Override
@@ -70,7 +69,7 @@ public class PresenceReaction extends StdAbility
 	}
 
 	@Override
-	protected void cloneFix(Ability E)
+	protected void cloneFix(final Ability E)
 	{
 		reactToM=null;
 		previousMood=null;
@@ -82,7 +81,7 @@ public class PresenceReaction extends StdAbility
 		managed = new SLinkedList<CMObject>();
 	}
 
-	public void addAffectOrBehavior(String substr)
+	public void addAffectOrBehavior(final String substr)
 	{
 		final int x=substr.indexOf('=');
 		if(x>=0)
@@ -120,7 +119,7 @@ public class PresenceReaction extends StdAbility
 	}
 
 	@Override
-	public void setMiscText(String parms)
+	public void setMiscText(final String parms)
 	{
 		if(parms.startsWith("+"))
 			addAffectOrBehavior(parms.substring(1));
@@ -178,7 +177,7 @@ public class PresenceReaction extends StdAbility
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		for(final CMObject O : managed)
 		{
@@ -187,7 +186,7 @@ public class PresenceReaction extends StdAbility
 		}
 	}
 
-	protected synchronized boolean shutdownPresence(MOB affected)
+	protected synchronized boolean shutdownPresence(final MOB affected)
 	{
 		final Room R=affected.location();
 		final MOB M=(MOB)super.affected;
@@ -224,7 +223,7 @@ public class PresenceReaction extends StdAbility
 		return false;
 	}
 
-	protected boolean initializeManagedObjects(MOB affected)
+	protected boolean initializeManagedObjects(final MOB affected)
 	{
 		if(unmanagedYet.size()==0)
 			return false;
@@ -276,7 +275,7 @@ public class PresenceReaction extends StdAbility
 		return didAnything;
 	}
 
-	protected void initializeAllManaged(MOB affected)
+	protected void initializeAllManaged(final MOB affected)
 	{
 		if(unmanagedYet.size()==0)
 			return;
@@ -339,7 +338,7 @@ public class PresenceReaction extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical target, final boolean auto, final int asLevel)
 	{
 		if(target==null)
 		{

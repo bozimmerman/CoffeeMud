@@ -92,7 +92,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 
 	protected volatile boolean attackedSinceLastTick=false;
 
-	protected Weapon getFirstWeapon(MOB mob)
+	protected Weapon getFirstWeapon(final MOB mob)
 	{
 		final Item I=mob.fetchWieldedItem();
 		if(I instanceof Weapon)
@@ -100,7 +100,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		return null;
 	}
 
-	protected Weapon getSecondWeapon(MOB mob)
+	protected Weapon getSecondWeapon(final MOB mob)
 	{
 		final Item I=mob.fetchHeldItem();
 		if((I instanceof Weapon)&&(!I.amWearingAt(Wearable.WORN_WIELD)))
@@ -140,7 +140,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 	{
 		return 0;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

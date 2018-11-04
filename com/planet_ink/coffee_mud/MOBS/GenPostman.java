@@ -40,9 +40,9 @@ public class GenPostman extends StdPostman
 		return "GenPostman";
 	}
 
-	private String PrejudiceFactors="";
+	private String prejudiceFactors="";
 	private String postalChain="main";
-	private String IgnoreMask="";
+	private String ignoreMask="";
 
 	public GenPostman()
 	{
@@ -71,25 +71,25 @@ public class GenPostman extends StdPostman
 	@Override
 	public String prejudiceFactors()
 	{
-		return PrejudiceFactors;
+		return prejudiceFactors;
 	}
 
 	@Override
-	public void setPrejudiceFactors(String factors)
+	public void setPrejudiceFactors(final String factors)
 	{
-		PrejudiceFactors=factors;
+		prejudiceFactors=factors;
 	}
 
 	@Override
 	public String ignoreMask()
 	{
-		return IgnoreMask;
+		return ignoreMask;
 	}
 
 	@Override
-	public void setIgnoreMask(String factors)
+	public void setIgnoreMask(final String factors)
 	{
-		IgnoreMask=factors;
+		ignoreMask=factors;
 	}
 
 	@Override
@@ -99,13 +99,13 @@ public class GenPostman extends StdPostman
 	}
 
 	@Override
-	public void setPostalChain(String name)
+	public void setPostalChain(final String name)
 	{
 		postalChain=name;
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
@@ -118,7 +118,7 @@ public class GenPostman extends StdPostman
 									 "IGNOREMASK","PRICEMASKS","ITEMMASK"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
@@ -152,7 +152,7 @@ public class GenPostman extends StdPostman
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenMobStat(this,code,val);

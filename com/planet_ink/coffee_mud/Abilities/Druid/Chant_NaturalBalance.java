@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_NaturalBalance extends Chant
 {
 	@Override
@@ -205,7 +204,7 @@ public class Chant_NaturalBalance extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat())
 		{
@@ -233,7 +232,7 @@ public class Chant_NaturalBalance extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Chant_NaturalBalance B = (Chant_NaturalBalance)beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
+				final Chant_NaturalBalance B = (Chant_NaturalBalance)beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
 				if(B!=null)
 					B.lastTime = this.lastTime;
 				helpProficiency(mob, 0);

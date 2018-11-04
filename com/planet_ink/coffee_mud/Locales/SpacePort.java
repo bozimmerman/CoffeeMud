@@ -72,7 +72,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 	}
 
 	@Override
-	public void setDirectionFromCore(double[] dir)
+	public void setDirectionFromCore(final double[] dir)
 	{
 		if((dir!=null)&&(dir.length==2))
 			dirFromCore=dir;
@@ -80,7 +80,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 
 	private final static String[] MYCODES={"COREDIR"};
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getLocCodeNum(code))
 		{
@@ -92,7 +92,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getLocCodeNum(code))
 		{
@@ -105,7 +105,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 		}
 	}
 
-	protected int getLocCodeNum(String code)
+	protected int getLocCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
@@ -116,7 +116,7 @@ public class SpacePort extends StdRoom implements LocationRoom
 	}
 
 	private static String[] codes=null;
-	
+
 	@Override
 	public String[] getStatCodes()
 	{

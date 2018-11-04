@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Aquan extends AnimalSpeak
 {
 	@Override
@@ -49,27 +48,27 @@ public class Aquan extends AnimalSpeak
 		return localizedName;
 	}
 
-	private final static String[] soundBase = new String[] 
+	private final static String[] soundBase = new String[]
 	{
 		"gurgle","blub","eeeeeeeee","oioioi","glub",
 		"honk","glugglge","mrrr","wurrr","llllgl","gl","lb",
 		"llrrrwwwrrr","blip","flup","glglglll","wwwrrr","lllrr",
 		"glug","blubbablup","gurglflub","blubllll","splurt",
-		"oi","eeee","rrwwwll","onkglgl","bluggg","lrrr","lg" 
+		"oi","eeee","rrwwwll","onkglgl","bluggg","lrrr","lg"
 	};
 
 	private static String[] animalSounds = null;
-	
+
 	@Override
-	protected String[] getSounds() 
+	protected String[] getSounds()
 	{
 		if(animalSounds == null)
 		{
-			List<String> sounds=new XVector<String>(soundBase);
-			Random r=new Random(System.currentTimeMillis());
+			final List<String> sounds=new XVector<String>(soundBase);
+			final Random r=new Random(System.currentTimeMillis());
 			for(int i=0;i<soundBase.length * 2;i++)
 			{
-				String s=soundBase[r.nextInt(soundBase.length)]+soundBase[r.nextInt(soundBase.length)];
+				final String s=soundBase[r.nextInt(soundBase.length)]+soundBase[r.nextInt(soundBase.length)];
 				if(!sounds.contains(s))
 					sounds.add(s);
 				else

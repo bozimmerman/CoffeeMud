@@ -46,7 +46,7 @@ public class Aft extends Go
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		int direction=Directions.SOUTH;
@@ -75,7 +75,7 @@ public class Aft extends Go
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return (mob==null) || (mob.isMonster()) || (mob.location()==null)
 			|| (mob.location() instanceof BoardableShip) || (mob.location().getArea() instanceof BoardableShip);

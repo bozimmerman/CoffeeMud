@@ -20,17 +20,17 @@ public abstract class CoffeeMudException extends Exception
 {
 	private static final long serialVersionUID = 8932995125810826091L;
 
-	public CoffeeMudException(String s)
+	public CoffeeMudException(final String s)
 	{
 		super(s,new Exception());
 	}
-	
-	public CoffeeMudException(String s, Exception e)
+
+	public CoffeeMudException(final String s, final Exception e)
 	{
 		super(s,e);
 	}
-	
-	public CoffeeMudException(Exception e)
+
+	public CoffeeMudException(final Exception e)
 	{
 		super(e);
 	}

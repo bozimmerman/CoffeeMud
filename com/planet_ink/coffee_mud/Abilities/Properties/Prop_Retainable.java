@@ -95,7 +95,7 @@ public class Prop_Retainable extends Property
 		}
 	}
 
-	public void quit(MOB mob, String msg)
+	public void quit(final MOB mob, final String msg)
 	{
 	}
 
@@ -189,7 +189,7 @@ public class Prop_Retainable extends Property
 		return true;
 	}
 
-	public void tellSkills(MOB me, MOB toMe)
+	public void tellSkills(final MOB me, final MOB toMe)
 	{
 		final StringBuffer skills = new StringBuffer("");
 		if(me instanceof ShopKeeper)

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_WaterTactics extends Fighter_FieldTactics
 {
 	@Override
@@ -49,12 +48,12 @@ public class Fighter_WaterTactics extends Fighter_FieldTactics
 		return localizedName;
 	}
 
-	private static final Integer[]	landClasses	= 
-	{ 
-		Integer.valueOf(Room.DOMAIN_INDOORS_WATERSURFACE), 
-		Integer.valueOf(Room.DOMAIN_OUTDOORS_WATERSURFACE), 
-		Integer.valueOf(Room.DOMAIN_INDOORS_UNDERWATER), 
-		Integer.valueOf(Room.DOMAIN_OUTDOORS_UNDERWATER) 
+	private static final Integer[]	landClasses	=
+	{
+		Integer.valueOf(Room.DOMAIN_INDOORS_WATERSURFACE),
+		Integer.valueOf(Room.DOMAIN_OUTDOORS_WATERSURFACE),
+		Integer.valueOf(Room.DOMAIN_INDOORS_UNDERWATER),
+		Integer.valueOf(Room.DOMAIN_OUTDOORS_UNDERWATER)
 	};
 
 	@Override

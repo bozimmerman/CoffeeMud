@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_CombatRepairs extends StdSkill
 {
 	@Override
@@ -96,7 +95,7 @@ public class Skill_CombatRepairs extends StdSkill
 	}
 
 	protected int	code		= 0;
-	
+
 	@Override
 	public int abilityCode()
 	{
@@ -104,7 +103,7 @@ public class Skill_CombatRepairs extends StdSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code = newCode;
 	}
@@ -127,7 +126,7 @@ public class Skill_CombatRepairs extends StdSkill
 					else
 					{
 						I.setUsesRemaining(I.usesRemaining()-5);
-						Area A=I.getShipArea();
+						final Area A=I.getShipArea();
 						if(A!=null)
 						{
 							for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
@@ -147,7 +146,7 @@ public class Skill_CombatRepairs extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
@@ -157,11 +156,11 @@ public class Skill_CombatRepairs extends StdSkill
 
 		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
-		
+
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		
+
 		final SailingShip ship;
 		if((R.getArea() instanceof BoardableShip)
 		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
@@ -173,20 +172,20 @@ public class Skill_CombatRepairs extends StdSkill
 			mob.tell(L("You must be on a ship to do combat repairs!"));
 			return false;
 		}
-		
+
 		if(ship.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("Your ship has already undergone temporary combat repairs!"));
 			return false;
 		}
-		
-		Room shipR=CMLib.map().roomLocation(ship);
+
+		final Room shipR=CMLib.map().roomLocation(ship);
 		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!ship.subjectToWearAndTear()))
 		{
 			mob.tell(L("You must be on a sailing ship to do combat repairs!"));
 			return false;
 		}
-		
+
 		if((!ship.isInCombat())||(ship.usesRemaining()<=0))
 		{
 			mob.tell(L("Your ship must be in combat to do combat repairs!"));
@@ -207,7 +206,7 @@ public class Skill_CombatRepairs extends StdSkill
 				dmg += 20 + mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(7 * super.getXLEVELLevel(mob));
 				if(dmg > 100)
 					dmg = 100;
-				Ability A=beneficialAffect(mob, ship, asLevel, 0);
+				final Ability A=beneficialAffect(mob, ship, asLevel, 0);
 				if(A!=null)
 				{
 					A.setAbilityCode(ship.usesRemaining());

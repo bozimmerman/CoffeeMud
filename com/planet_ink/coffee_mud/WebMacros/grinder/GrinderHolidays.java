@@ -35,14 +35,14 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings({"unchecked","rawtypes"})
-public class GrinderHolidays 
+public class GrinderHolidays
 {
 	public String name()
 	{
 		return "GrinderHolidays";
 	}
 
-	protected static String setText(TriadList<String,String,Integer> sets, String var, String newVAL)
+	protected static String setText(final TriadList<String,String,Integer> sets, final String var, String newVAL)
 	{
 		if(newVAL==null)
 			newVAL="";
@@ -59,7 +59,7 @@ public class GrinderHolidays
 		return newVAL;
 	}
 
-	public static String createModifyHoliday(HTTPRequest httpReq, java.util.Map<String,String> parms, String holidayName)
+	public static String createModifyHoliday(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String holidayName)
 	{
 		int index=CMLib.quests().getHolidayIndex(holidayName);
 		if(index<=0)

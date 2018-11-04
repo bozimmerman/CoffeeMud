@@ -55,42 +55,42 @@ public class Prop_ItemSlot extends Property
 	{
 		return true;
 	}
-	
+
 	protected Item[] 	slots		= new Item[0];
 	protected Ability[] slotProps	= new Ability[0];
-	
+
 	protected String	slotType	= "";
 	protected boolean	removable	= true;
 	protected int		levelShift	= 0;
 	protected int		levelDiff	= 0;
-	
+
 	private boolean		setAffected = true;
 
 	protected int getNumberOfEmptySlots()
 	{
 		int num=0;
-		for(Item I : slots)
+		for(final Item I : slots)
 		{
 			if(I==null)
 				num++;
 		}
 		return num;
 	}
-	
+
 	@Override
 	public void setMiscText(String text)
 	{
 		super.setMiscText("");
 		slots = new Item[0];
 		slotProps	= new Ability[0];
-		String itemXml = ""; 
-		int x=text.indexOf(';');
+		String itemXml = "";
+		final int x=text.indexOf(';');
 		if(x >=0)
 		{
 			itemXml = text.substring(x+1).trim();
 			text = text.substring(0,x).trim();
 		}
-		int numSlots = CMParms.getParmInt(text, "NUM", 1);
+		final int numSlots = CMParms.getParmInt(text, "NUM", 1);
 		if(numSlots > 0)
 		{
 			slots = new Item[numSlots];
@@ -114,12 +114,12 @@ public class Prop_ItemSlot extends Property
 			CMLib.coffeeMaker().addItemsFromXML(itemXml, items, null);
 			int islot = 0;
 			int aslot = 0;
-			for(Item I : items)
+			for(final Item I : items)
 			{
 				final Ability A=I.fetchEffect("Prop_ItemSlotFiller");
 				if(A!=null)
 				{
-					int aSlotNumbs= CMParms.getParmInt(A.text(), "NUM", 1);
+					final int aSlotNumbs= CMParms.getParmInt(A.text(), "NUM", 1);
 					for(int a=0; (a<aSlotNumbs) && (islot<slots.length);a++)
 						slots[islot++]=I;
 					if(aslot < slotProps.length)
@@ -141,11 +141,11 @@ public class Prop_ItemSlot extends Property
 		}
 		setAffected = true;
 	}
-	
+
 	@Override
 	public String text()
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		str.append("NUM="+slots.length+" ");
 		str.append("REMOVABLE="+(""+removable).toUpperCase()+" ");
 		str.append("TYPE=\""+slotType+"\" ");
@@ -153,8 +153,8 @@ public class Prop_ItemSlot extends Property
 		if(levelShift != 0)
 			str.append("LEVEL=\""+levelShifts[levelShift]+"\" ");
 		str.append("; ");
-		List<Item> items=new ArrayList<Item>(slots.length);
-		for(Item I : slots)
+		final List<Item> items=new ArrayList<Item>(slots.length);
+		for(final Item I : slots)
 		{
 			if((I != null)&&(!items.contains(I)))
 				items.add(I);
@@ -162,7 +162,7 @@ public class Prop_ItemSlot extends Property
 		str.append("<ITEMS>"+CMLib.coffeeMaker().getItemsXML(items, new Hashtable<String,List<Item>>(),new HashSet<String>(),null)+"</ITEMS>");
 		return str.toString();
 	}
-	
+
 	@Override
 	public String accountForYourself()
 	{
@@ -176,7 +176,7 @@ public class Prop_ItemSlot extends Property
 				final Prop_ItemSlotFiller P=(Prop_ItemSlotFiller)A;
 				if(P.getAffects() != null)
 				{
-					for(Ability A2 : P.getAffects())
+					for(final Ability A2 : P.getAffects())
 						str.append(A2.accountForYourself());
 				}
 				str.append(".  ");
@@ -184,14 +184,14 @@ public class Prop_ItemSlot extends Property
 		}
 		return str.toString();
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((msg.target() == affected) 
-		&& (msg.targetMinor() == CMMsg.TYP_PUT) 
+		if((msg.target() == affected)
+		&& (msg.targetMinor() == CMMsg.TYP_PUT)
 		&& (msg.tool() instanceof Item))
 		{
 			final Item slotItem = (Item)msg.tool();
@@ -239,21 +239,21 @@ public class Prop_ItemSlot extends Property
 		&&("Rr".indexOf(msg.targetMessage().charAt(0))>=0)
 		&&(affected!=null))
 		{
-			Vector<String> V=CMParms.parse(msg.targetMessage().toUpperCase());
+			final Vector<String> V=CMParms.parse(msg.targetMessage().toUpperCase());
 			if((V.size()>2) // keep this block, even though the "Rr" above makes it unused
-			&&("PUT".startsWith(V.get(0).toUpperCase()))) 
+			&&("PUT".startsWith(V.get(0).toUpperCase())))
 			{
 				int x=V.lastIndexOf("INTO");
 				if((x>0)&&(x<V.size()-1))
 					V.remove(x);
 				else
 					x=V.size()-1;
-				String intoWhat = CMParms.combine(V,x);
-				String what=CMParms.combine(V,1,x);
+				final String intoWhat = CMParms.combine(V,x);
+				final String what=CMParms.combine(V,1,x);
 				if(CMLib.english().containsString(affected.name(), intoWhat)||CMLib.english().containsString(affected.displayText(), intoWhat))
 				{
 					final List<Item> items=new ArrayList<Item>(slots.length);
-					for(Enumeration<Item> i = msg.source().items();i.hasMoreElements();)
+					for(final Enumeration<Item> i = msg.source().items();i.hasMoreElements();)
 					{
 						final Item I = i.nextElement();
 						if((I!=null)
@@ -332,12 +332,12 @@ public class Prop_ItemSlot extends Property
 					V.remove(x);
 				else
 					x=V.size()-1;
-				String fromWhat = CMParms.combine(V,x);
-				String what=CMParms.combine(V,1,x);
+				final String fromWhat = CMParms.combine(V,x);
+				final String what=CMParms.combine(V,1,x);
 				if(CMLib.english().containsString(affected.name(), fromWhat)||CMLib.english().containsString(affected.displayText(), fromWhat))
 				{
-					List<Item> items=new ArrayList<Item>(slots.length);
-					for(Item I : slots)
+					final List<Item> items=new ArrayList<Item>(slots.length);
+					for(final Item I : slots)
 					{
 						if((I != null)&&(!items.contains(I)))
 							items.add(I);
@@ -349,8 +349,8 @@ public class Prop_ItemSlot extends Property
 						msg.setSourceMessage(L("You don't see '@x1' in any of the slots in @x2.",what,fromWhat));
 					else
 					{
-						Item gemI=(Item)E;
-						Ability A=gemI.fetchEffect("Prop_ItemSlotFiller");
+						final Item gemI=(Item)E;
+						final Ability A=gemI.fetchEffect("Prop_ItemSlotFiller");
 						msg.modify(msg.source(),affected,gemI,CMMsg.MSG_HANDS,CMLib.lang().L("<S-NAME> remove(s) <O-NAME> from <T-NAME>."));
 						for(int i=0;i<slots.length;i++)
 						{
@@ -384,7 +384,7 @@ public class Prop_ItemSlot extends Property
 				}
 			}
 		}
-		for(Ability A : slotProps)
+		for(final Ability A : slotProps)
 		{
 			if((A!=null)&&(!A.okMessage(myHost, msg)))
 				return false;
@@ -398,7 +398,7 @@ public class Prop_ItemSlot extends Property
 		final Item affected = (this.affected instanceof Item)? (Item)this.affected : null;
 		if(msg.target() == affected)
 		{
-			if((msg.targetMinor() == CMMsg.TYP_WAND_USE) 
+			if((msg.targetMinor() == CMMsg.TYP_WAND_USE)
 			&& (msg.tool() instanceof Item))
 			{
 				final Item slotItem = (Item)msg.tool();
@@ -444,7 +444,7 @@ public class Prop_ItemSlot extends Property
 			else
 			if((msg.targetMinor()==CMMsg.TYP_EXAMINE) || (msg.targetMinor()==CMMsg.TYP_LOOK))
 			{
-				StringBuilder str=new StringBuilder();
+				final StringBuilder str=new StringBuilder();
 				if(slotType.length()>0)
 					str.append(L("\n\rIt appears to have slots on it that '@x1' might fit in:\n\r",slotType));
 				else
@@ -461,8 +461,8 @@ public class Prop_ItemSlot extends Property
 				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,str.toString(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
 		}
-		
-		for(Ability A : slotProps)
+
+		for(final Ability A : slotProps)
 		{
 			if(A!=null)
 			{
@@ -475,9 +475,9 @@ public class Prop_ItemSlot extends Property
 		}
 		if(setAffected && (affected != null))
 		{
-			Item I=affected;
+			final Item I=affected;
 			I.recoverPhyStats();
-			Room R=CMLib.map().roomLocation(I);
+			final Room R=CMLib.map().roomLocation(I);
 			if(R!=null)
 				R.recoverRoomStats();
 			setAffected = false;
@@ -486,7 +486,7 @@ public class Prop_ItemSlot extends Property
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 		if(host == affected)
 		{
@@ -507,7 +507,7 @@ public class Prop_ItemSlot extends Property
 		}
 		else
 		{
-			for(Ability A : slotProps)
+			for(final Ability A : slotProps)
 			{
 				if(A!=null)
 				{
@@ -519,9 +519,9 @@ public class Prop_ItemSlot extends Property
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectedStats)
 	{
-		for(Ability A : slotProps)
+		for(final Ability A : slotProps)
 		{
 			if(A!=null)
 				A.affectCharStats(affectedMOB, affectedStats);
@@ -530,9 +530,9 @@ public class Prop_ItemSlot extends Property
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMOB, CharState affectedState)
+	public void affectCharState(final MOB affectedMOB, final CharState affectedState)
 	{
-		for(Ability A : slotProps)
+		for(final Ability A : slotProps)
 		{
 			if(A!=null)
 				A.affectCharState(affectedMOB, affectedState);

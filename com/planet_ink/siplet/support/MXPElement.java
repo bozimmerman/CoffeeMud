@@ -17,7 +17,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public class MXPElement implements Cloneable
 {
 	public static final int	BIT_OPEN				= 1;
@@ -69,6 +68,7 @@ public class MXPElement implements Cloneable
 		unsupportedParms = unsupported;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public MXPElement copyOf()
 	{
 		try

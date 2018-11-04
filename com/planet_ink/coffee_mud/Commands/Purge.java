@@ -46,13 +46,13 @@ public class Purge extends StdCommand
 		return access;
 	}
 
-	public boolean errorOut(MOB mob)
+	public boolean errorOut(final MOB mob)
 	{
 		mob.tell(L("You are not allowed to do that here."));
 		return false;
 	}
 
-	public boolean mobs(MOB mob, List<String> commands)
+	public boolean mobs(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -100,7 +100,7 @@ public class Purge extends StdCommand
 		return true;
 	}
 
-	public boolean items(MOB mob, List<String> commands)
+	public boolean items(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
 		{
@@ -185,7 +185,7 @@ public class Purge extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
@@ -242,7 +242,7 @@ public class Purge extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.PURGE);
 	}

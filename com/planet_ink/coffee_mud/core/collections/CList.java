@@ -18,8 +18,7 @@ import java.util.*;
 */
 public interface CList<K> extends List<K>
 {
-	
 	public Enumeration<K> elements();
-	
+
 	public void trimToSize();
 }

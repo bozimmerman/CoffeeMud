@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_TapGrapevine extends Chant
 {
 	@Override
@@ -120,7 +119,7 @@ public class Chant_TapGrapevine extends Chant
 		super.unInvoke();
 	}
 
-	public static Ability isPlant(Item I)
+	public static Ability isPlant(final Item I)
 	{
 		if((I!=null)&&(I.rawSecretIdentity().length()>0))
 		{
@@ -137,7 +136,7 @@ public class Chant_TapGrapevine extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.fetchEffect(ID())!=null)||(mob.fetchEffect("Chant_Grapevine")!=null))
 		{

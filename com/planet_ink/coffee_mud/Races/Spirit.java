@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spirit extends Undead
 {
 	@Override
@@ -86,7 +85,7 @@ public class Spirit extends Undead
 	{
 		if(naturalWeaponChoices==null)
 		{
-			Vector<Weapon> naturalWeaponChoices=new Vector<Weapon>();
+			final Vector<Weapon> naturalWeaponChoices=new Vector<Weapon>();
 			for(int i=1;i<11;i++)
 			{
 				naturalWeapon=CMClass.getWeapon("StdWeapon");
@@ -205,7 +204,7 @@ public class Spirit extends Undead
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
 	}
-	
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -213,7 +212,7 @@ public class Spirit extends Undead
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		return super.makeMobName('N', Race.AGE_MATURE);
 	}
@@ -256,8 +255,8 @@ public class Spirit extends Undead
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -266,7 +265,7 @@ public class Spirit extends Undead
 		}
 		return body;
 	}
-	
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

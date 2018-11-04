@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -45,10 +46,10 @@ public class Scavenger extends ActiveTicker
 	{
 		return Behavior.CAN_MOBS;
 	}
-	
-	protected int origItems=-1;
-	protected MaskingLibrary.CompiledZMask mask = null;
-	protected String trashRoomID="";
+
+	protected int			origItems	= -1;
+	protected CompiledZMask	mask		= null;
+	protected String		trashRoomID	= "";
 
 	public Scavenger()
 	{
@@ -65,12 +66,12 @@ public class Scavenger extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		String argParms="";
 		String maskStr="";
-		int x=newParms.indexOf(';');
+		final int x=newParms.indexOf(';');
 		if(x>=0)
 		{
 			argParms=newParms.substring(0,x);
@@ -79,7 +80,7 @@ public class Scavenger extends ActiveTicker
 		trashRoomID=CMParms.getParmStr(argParms,"TRASH","");
 		mask=(maskStr.length()==0)?null:CMLib.masking().getPreCompiledMask(maskStr);
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -92,7 +93,7 @@ public class Scavenger extends ActiveTicker
 			final Room thisRoom=mob.location();
 			if(thisRoom == null)
 				return true;
-				
+
 			if(origItems<0)
 				origItems=mob.numItems();
 			if((mob.phyStats().weight()>=(int)Math.round(CMath.mul(mob.maxCarry(),0.9)))

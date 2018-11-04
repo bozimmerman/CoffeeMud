@@ -24,7 +24,6 @@ import com.planet_ink.siplet.support.MiniJSON.MJSONException;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-
 public class TelnetFilter
 {
 	public final static boolean	debugChars				= false;
@@ -108,7 +107,7 @@ public class TelnetFilter
 	{
 	}
 
-	public TelnetFilter(Siplet codebase)
+	public TelnetFilter(final Siplet codebase)
 	{
 		this();
 		codeBase = codebase;
@@ -126,7 +125,7 @@ public class TelnetFilter
 
 	public String getEnquedJScript()
 	{
-		return ((mxpModule != null) ? mxpModule.getAnyJScript() : "") 
+		return ((mxpModule != null) ? mxpModule.getAnyJScript() : "")
 				+ ((mspModule != null) ? mspModule.getAnyJScript() : "")
 				+ ((gmcpModule != null) ? gmcpModule.getAnyJScript() : "");
 	}
@@ -136,7 +135,7 @@ public class TelnetFilter
 		return MSPsupport;
 	}
 
-	public void setMSPSupport(boolean truefalse)
+	public void setMSPSupport(final boolean truefalse)
 	{
 		MSPsupport = truefalse;
 	}
@@ -146,7 +145,7 @@ public class TelnetFilter
 		return MXPsupport;
 	}
 
-	public void setMXPSupport(boolean truefalse)
+	public void setMXPSupport(final boolean truefalse)
 	{
 		MXPsupport = truefalse;
 	}
@@ -156,7 +155,7 @@ public class TelnetFilter
 		return MCCPsupport;
 	}
 
-	public void setMCCPSupport(boolean truefalse)
+	public void setMCCPSupport(final boolean truefalse)
 	{
 		MCCPsupport = truefalse;
 	}
@@ -166,7 +165,7 @@ public class TelnetFilter
 		return MSDPsupport;
 	}
 
-	public void setMSDPSupport(boolean truefalse)
+	public void setMSDPSupport(final boolean truefalse)
 	{
 		MSDPsupport = truefalse;
 	}
@@ -176,32 +175,32 @@ public class TelnetFilter
 		return GMCPsupport;
 	}
 
-	public void setGMCPSupport(boolean truefalse)
+	public void setGMCPSupport(final boolean truefalse)
 	{
 		GMCPsupport = truefalse;
 	}
 
-	public void setNeverMXPSupport(boolean truefalse)
+	public void setNeverMXPSupport(final boolean truefalse)
 	{
 		neverSupportMXP = truefalse;
 	}
 
-	public void setNeverMSPSupport(MSPStatus status)
+	public void setNeverMSPSupport(final MSPStatus status)
 	{
 		neverSupportMSP = status;
 	}
 
-	public void setNeverMCCPSupport(boolean truefalse)
+	public void setNeverMCCPSupport(final boolean truefalse)
 	{
 		neverSupportMCCP = truefalse;
 	}
 
-	public void setNeverMSDPSupport(boolean truefalse)
+	public void setNeverMSDPSupport(final boolean truefalse)
 	{
 		neverSupportMSDP = truefalse;
 	}
 
-	public void setNeverGMCPSupport(boolean truefalse)
+	public void setNeverGMCPSupport(final boolean truefalse)
 	{
 		neverSupportGMCP = truefalse;
 	}
@@ -304,7 +303,7 @@ public class TelnetFilter
 		return 30;
 	}
 
-	public static int getRelativeColorCodeIndex(String word)
+	public static int getRelativeColorCodeIndex(final String word)
 	{
 		final int x = getColorCodeIndex(word);
 		if (x < 40)
@@ -314,7 +313,7 @@ public class TelnetFilter
 		return x - 40;
 	}
 
-	private void setLastBackground(String val)
+	private void setLastBackground(final String val)
 	{
 		if (MXPsupport())
 			mxpModule.lastBackground = val;
@@ -322,7 +321,7 @@ public class TelnetFilter
 			lastBackground = val;
 	}
 
-	private void setLastForeground(String val)
+	private void setLastForeground(final String val)
 	{
 		if (MXPsupport())
 			mxpModule.lastForeground = val;
@@ -340,7 +339,7 @@ public class TelnetFilter
 		return MXPsupport() ? mxpModule.lastForeground : lastForeground;
 	}
 
-	private String escapeTranslate(String escapeString)
+	private String escapeTranslate(final String escapeString)
 	{
 		if (escapeString.endsWith("m"))
 		{
@@ -477,7 +476,7 @@ public class TelnetFilter
 	public static final char[]	mccppattern	= { IAC_, IAC_SB, MCCP_COMPRESS2, IAC_, IAC_SE };
 	public int					patDex		= 0;
 
-	public void TelnetRead(StringBuffer buf, InputStream rawin, BufferedReader in[]) throws InterruptedIOException, IOException
+	public void TelnetRead(final StringBuffer buf, final InputStream rawin, final BufferedReader in[]) throws InterruptedIOException, IOException
 	{
 		final char c = (char) in[0].read();
 		if (mccppattern[patDex] == c)
@@ -495,7 +494,7 @@ public class TelnetFilter
 			}
 			return;
 		}
-		else 
+		else
 		if (patDex > 0)
 		{
 			for (int i = 0; i < patDex; i++)
@@ -507,7 +506,7 @@ public class TelnetFilter
 			throw new java.io.InterruptedIOException("ARGH!");
 	}
 
-	public int TelenetFilter(StringBuffer buf, DataOutputStream response, InputStream rawin, BufferedReader[] in) throws IOException
+	public int TelenetFilter(final StringBuffer buf, final DataOutputStream response, final InputStream rawin, final BufferedReader[] in) throws IOException
 	{
 		int i = 0;
 		while (i < buf.length())
@@ -547,7 +546,7 @@ public class TelnetFilter
 															// escape, dup type
 															// thing?
 							}
-							else 
+							else
 							if (last == IAC_SE)
 								break;
 						}
@@ -573,7 +572,7 @@ public class TelnetFilter
 						response.writeBytes("" + IAC_ + IAC_SE);
 						response.flush();
 					}
-					else 
+					else
 					if (subOptionCode == TELOPT_NAWS)
 					{
 						if (debugTelnetCodes)
@@ -591,7 +590,7 @@ public class TelnetFilter
 					{
 						// probably need to handle this earlier
 					}
-					else 
+					else
 					if (subOptionCode == IAC_MSDP)
 					{
 						final String received = this.msdpModule.msdpReceive(subOptionData.toByteArray());
@@ -602,7 +601,7 @@ public class TelnetFilter
 						if (debugTelnetCodes)
 							System.out.println("Got MSDP: " + received);
 					}
-					else 
+					else
 					if (subOptionCode == IAC_GMCP)
 					{
 						final String received = this.gmcpModule.gmcpReceive(subOptionData.toByteArray());
@@ -629,7 +628,7 @@ public class TelnetFilter
 						response.writeBytes("" + IAC_ + IAC_SE);
 						break;
 					}
-					else 
+					else
 					if (buf.charAt(i) == IAC_MSP)
 					{
 						if (debugTelnetCodes)
@@ -645,7 +644,7 @@ public class TelnetFilter
 								setMSPSupport(false);
 							}
 						}
-						else 
+						else
 						if (!MSPsupport())
 						{
 							if (debugTelnetCodes)
@@ -655,7 +654,7 @@ public class TelnetFilter
 							setMSPSupport(true);
 						}
 					}
-					else 
+					else
 					if (buf.charAt(i) == IAC_MSDP)
 					{
 						if (debugTelnetCodes)
@@ -671,7 +670,7 @@ public class TelnetFilter
 								setMSDPSupport(false);
 							}
 						}
-						else 
+						else
 						if (!MSDPsupport())
 						{
 							if (debugTelnetCodes)
@@ -681,7 +680,7 @@ public class TelnetFilter
 							setMSDPSupport(true);
 						}
 					}
-					else 
+					else
 					if (buf.charAt(i) == IAC_GMCP)
 					{
 						if (debugTelnetCodes)
@@ -697,7 +696,7 @@ public class TelnetFilter
 								setGMCPSupport(false);
 							}
 						}
-						else 
+						else
 						if (!GMCPsupport())
 						{
 							if (debugTelnetCodes)
@@ -710,7 +709,7 @@ public class TelnetFilter
 							response.writeBytes("" + IAC_ + IAC_SE);
 						}
 					}
-					else 
+					else
 					if (buf.charAt(i) == IAC_MXP)
 					{
 						if (debugTelnetCodes)
@@ -726,7 +725,7 @@ public class TelnetFilter
 								setMXPSupport(false);
 							}
 						}
-						else 
+						else
 						if (!MXPsupport())
 						{
 							if (debugTelnetCodes)
@@ -736,7 +735,7 @@ public class TelnetFilter
 							setMXPSupport(true);
 						}
 					}
-					else 
+					else
 					if (buf.charAt(i) == MCCP_COMPRESS2)
 					{
 						if (debugTelnetCodes)
@@ -752,7 +751,7 @@ public class TelnetFilter
 								setMXPSupport(false);
 							}
 						}
-						else 
+						else
 						if (!MCCPsupport())
 						{
 							if (debugTelnetCodes)
@@ -762,12 +761,12 @@ public class TelnetFilter
 							setMCCPSupport(true);
 						}
 					}
-					else 
+					else
 					if (buf.charAt(i) == TELOPT_LOGOUT)
 					{
 						// goot for you serverdude
 					}
-					else 
+					else
 					if (buf.charAt(i) != TELOPT_BINARY)
 					{
 						if (debugTelnetCodes)
@@ -791,7 +790,7 @@ public class TelnetFilter
 							setMSPSupport(false);
 						}
 					}
-					else 
+					else
 					if (buf.charAt(i) == IAC_MSDP)
 					{
 						if (debugTelnetCodes)
@@ -805,7 +804,7 @@ public class TelnetFilter
 							setMSDPSupport(false);
 						}
 					}
-					else 
+					else
 					if (buf.charAt(i) == IAC_GMCP)
 					{
 						if (debugTelnetCodes)
@@ -819,7 +818,7 @@ public class TelnetFilter
 							setGMCPSupport(false);
 						}
 					}
-					else 
+					else
 					if (buf.charAt(i) == IAC_MXP)
 					{
 						if (debugTelnetCodes)
@@ -853,7 +852,7 @@ public class TelnetFilter
 								setMSPSupport(false);
 							}
 						}
-						else 
+						else
 						if (!MSPsupport())
 						{
 							if (debugTelnetCodes)
@@ -863,7 +862,7 @@ public class TelnetFilter
 							setMSPSupport(true);
 						}
 					}
-					else 
+					else
 					if (buf.charAt(i) == IAC_GMCP)
 					{
 						if (debugTelnetCodes)
@@ -879,7 +878,7 @@ public class TelnetFilter
 								setGMCPSupport(false);
 							}
 						}
-						else 
+						else
 						if (!GMCPsupport())
 						{
 							if (debugTelnetCodes)
@@ -889,12 +888,12 @@ public class TelnetFilter
 							setGMCPSupport(true);
 						}
 					}
-					else 
+					else
 					if (buf.charAt(i) == TELOPT_LOGOUT)
 					{
 						// good for you serverdude
 					}
-					else 
+					else
 					if (buf.charAt(i) == IAC_MXP)
 					{
 						if (debugTelnetCodes)
@@ -910,7 +909,7 @@ public class TelnetFilter
 								setMXPSupport(false);
 							}
 						}
-						else 
+						else
 						if (!MXPsupport())
 						{
 							response.writeBytes("" + IAC_ + IAC_WILL + IAC_MXP);
@@ -920,7 +919,7 @@ public class TelnetFilter
 							setMXPSupport(true);
 						}
 					}
-					else 
+					else
 					if (buf.charAt(i) != TELOPT_BINARY)
 					{
 						if (debugTelnetCodes)
@@ -944,7 +943,7 @@ public class TelnetFilter
 							setMSPSupport(false);
 						}
 					}
-					else 
+					else
 					if (buf.charAt(i) == IAC_MXP)
 					{
 						if (MXPsupport())
@@ -979,7 +978,7 @@ public class TelnetFilter
 	// SPACES -> &nbsp;
 	// < -> &lt;
 	// TELNET codes -> response outputstream
-	public int HTMLFilter(StringBuffer buf)
+	public int HTMLFilter(final StringBuffer buf)
 	{
 		int i = 0;
 		final boolean[] eolEater = new boolean[1];
@@ -995,7 +994,7 @@ public class TelnetFilter
 					i += 3;
 				}
 			}
-			else 
+			else
 			if ((MXPsupport() && (mxpModule.eatTextUntilNextEOLN()) && (buf.charAt(i) != '\n') && (buf.charAt(i) != '\r')))
 			{
 				buf.deleteCharAt(i);
@@ -1012,7 +1011,7 @@ public class TelnetFilter
 							final int endl = mspModule.process(buf, i, codeBase, neverSupportMSP == MSPStatus.External);
 							if (endl == -1)
 								i--;
-							else 
+							else
 							if (endl > 0)
 								return endl;
 						}
@@ -1051,7 +1050,7 @@ public class TelnetFilter
 						buf.insert(i + 1, "lt;");
 						i += 3;
 					}
-					else 
+					else
 					if (((i + 4) < buf.length()) && (buf.substring(i + 1, i + 4).equals("!--")))
 						comment = true;
 					else
@@ -1121,7 +1120,7 @@ public class TelnetFilter
 								return i;
 							i = savedI + x;
 						}
-						else 
+						else
 						if (!translate.equals(oldStr))
 						{
 							buf.replace(savedI, i + 1, translate);
@@ -1164,7 +1163,7 @@ public class TelnetFilter
 					}
 					return null;
 				}
-				else 
+				else
 				if (cmd.equalsIgnoreCase("GMCP"))
 				{
 					try

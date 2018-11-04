@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Shearing extends CommonSkill
 {
 	@Override
@@ -73,7 +72,7 @@ public class Shearing extends CommonSkill
 		verb=L("shearing");
 	}
 
-	protected int getDuration(MOB mob, int weight)
+	protected int getDuration(final MOB mob, final int weight)
 	{
 		int duration=((weight/(10+getXLEVELLevel(mob))));
 		duration = super.getDuration(duration, mob, 1, 10);
@@ -99,7 +98,7 @@ public class Shearing extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	public Vector<RawMaterial> getMyWool(MOB M)
+	public Vector<RawMaterial> getMyWool(final MOB M)
 	{
 		final Vector<RawMaterial> wool=new Vector<RawMaterial>();
 		if((M!=null)
@@ -160,7 +159,7 @@ public class Shearing extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;

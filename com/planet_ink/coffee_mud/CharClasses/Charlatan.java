@@ -101,7 +101,7 @@ public class Charlatan extends StdCharClass
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -233,16 +233,16 @@ public class Charlatan extends StdCharClass
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9)),
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9))
 	};
-	
+
 	@Override
 	public Pair<String, Integer>[] getMinimumStatRequirements()
 	{
 		return minimumStatRequirements;
 	}
 
-	@Override 
-	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount)
-	{ 
+	@Override
+	public int adjustExperienceGain(final MOB host, final MOB mob, final MOB victim, final int amount)
+	{
 		return Bard.bardAdjustExperienceGain(host,mob,victim,amount,6.0);
 	}
 
@@ -252,7 +252,7 @@ public class Charlatan extends StdCharClass
 		return "";
 	}
 
-	@Override 
+	@Override
 	public String getOtherBonusDesc()
 	{
 		return L("Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  "
@@ -261,7 +261,7 @@ public class Charlatan extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -338,7 +338,7 @@ public class Charlatan extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 
@@ -346,9 +346,9 @@ public class Charlatan extends StdCharClass
 		if(mob.playerStats()!=null)
 		{
 			final int classLevel=mob.baseCharStats().getClassLevel(this);
-			if(classLevel<2) 
+			if(classLevel<2)
 				return;
-			if((classLevel%2)!=0) 
+			if((classLevel%2)!=0)
 				return;
 
 			int maxSkills=classLevel/2;
@@ -375,7 +375,7 @@ public class Charlatan extends StdCharClass
 						choices.add(A);
 				}
 			}
-			
+
 			// now count those you already have
 			for(int a=choices.size()-1;a>=0;a--)
 			{

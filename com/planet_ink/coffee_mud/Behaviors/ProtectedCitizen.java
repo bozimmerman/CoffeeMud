@@ -47,14 +47,14 @@ public class ProtectedCitizen extends ActiveTicker
 		return Behavior.CAN_MOBS;
 	}
 
-	protected static String zapper=null;
-	protected static String defcityguard="cityguard";
-	protected static String[] defclaims={"Help! I'm being attacked!","Help me!!"};
-	protected String cityguard=null;
-	protected String[] claims=null;
-	protected int radius=7;
-	protected int maxAssistance=1;
-	protected boolean wander=false;
+	protected static String		zapper			= null;
+	protected static String		defcityguard	= "cityguard";
+	protected static String[]	defclaims		= { "Help! I'm being attacked!", "Help me!!" };
+	protected String			cityguard		= null;
+	protected String[]			claims			= null;
+	protected int				radius			= 7;
+	protected int				maxAssistance	= 1;
+	protected boolean			wander			= false;
 
 	public ProtectedCitizen()
 	{
@@ -70,7 +70,7 @@ public class ProtectedCitizen extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String parms)
+	public void setParms(final String parms)
 	{
 		super.setParms(parms);
 		cityguard=null;
@@ -171,7 +171,7 @@ public class ProtectedCitizen extends ActiveTicker
 		return claims;
 	}
 
-	public boolean assistMOB(MOB mob)
+	public boolean assistMOB(final MOB mob)
 	{
 		int assistance=0;
 		for(int i=0;i<mob.location().numInhabitants();i++)

@@ -46,8 +46,8 @@ public class ResetWhole extends StdBehavior
 		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;
 	}
 
-	protected long lastAccess=-1;
-	long time=1800000;
+	protected long	lastAccess	= -1;
+	protected long	time		= 1800000;
 
 	@Override
 	public String accountForYourself()
@@ -56,7 +56,7 @@ public class ResetWhole extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String parameters)
+	public void setParms(final String parameters)
 	{
 		super.setParms(parameters);
 		try
@@ -68,7 +68,7 @@ public class ResetWhole extends StdBehavior
 		{
 		}
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
@@ -91,14 +91,14 @@ public class ResetWhole extends StdBehavior
 	private boolean isRoomBeingCamped(final Room R)
 	{
 		if(CMLib.flags().canNotBeCamped(R)
-		&& (R.numPCInhabitants() > 0) 
+		&& (R.numPCInhabitants() > 0)
 		&& (!CMLib.tracking().isAnAdminHere(R,false)))
 		{
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

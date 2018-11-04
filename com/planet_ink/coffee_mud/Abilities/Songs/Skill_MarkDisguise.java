@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_MarkDisguise extends Skill_Disguise
 {
 	@Override
@@ -56,10 +55,10 @@ public class Skill_MarkDisguise extends Skill_Disguise
 	{
 		return triggerStrings;
 	}
-	
+
 	private MOB mark=null;
-	
-	public MOB getMark(MOB mob)
+
+	public MOB getMark(final MOB mob)
 	{
 		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if(A!=null)
@@ -67,7 +66,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 		return null;
 	}
 
-	public int getMarkTicks(MOB mob)
+	public int getMarkTicks(final MOB mob)
 	{
 		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if((A!=null)&&(A.mark!=null))
@@ -76,7 +75,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Skill_Disguise A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
 		if(A==null)

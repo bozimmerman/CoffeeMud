@@ -46,20 +46,20 @@ public class RandomTraps extends ActiveTicker
 		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;
 	}
 
-	protected Vector<Physical> maintained=new Vector<Physical>();
-	protected int minTraps=1;
-	protected int maxTraps=1;
-	protected int avgTraps=1;
-	protected boolean doAnyItems=false;
-	protected boolean doAnyContainers=false;
-	protected boolean doDooredContainers=false;
-	protected boolean doLockedContainers=false;
-	protected boolean doAnyDoors=false;
-	protected boolean doAnyLockedDoors=false;
-	protected boolean doRooms=false;
+	protected List<Physical>	maintained			= new Vector<Physical>();
+	protected int				minTraps			= 1;
+	protected int				maxTraps			= 1;
+	protected int				avgTraps			= 1;
+	protected boolean			doAnyItems			= false;
+	protected boolean			doAnyContainers		= false;
+	protected boolean			doDooredContainers	= false;
+	protected boolean			doLockedContainers	= false;
+	protected boolean			doAnyDoors			= false;
+	protected boolean			doAnyLockedDoors	= false;
+	protected boolean			doRooms				= false;
 
-	protected Set<Integer> restrictedLocales=null;
-	private int tickStatus=Tickable.STATUS_NOT;
+	protected Set<Integer>	restrictedLocales	= null;
+	private int				tickStatus			= Tickable.STATUS_NOT;
 
 	@Override
 	public int getTickStatus()
@@ -80,7 +80,7 @@ public class RandomTraps extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		maintained=new Vector<Physical>();
 		doAnyItems=false;
@@ -226,7 +226,7 @@ public class RandomTraps extends ActiveTicker
 			restrictedLocales=null;
 	}
 
-	protected void makeRoomElligible(Room R, List<Physical> elligible)
+	protected void makeRoomElligible(final Room R, final List<Physical> elligible)
 	{
 		if(R==null)
 			return;

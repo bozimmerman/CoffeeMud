@@ -338,12 +338,12 @@ public interface LegalBehavior extends Behavior
 	 * @return whether one of the laws was found, and a warrant successfully filled out
 	 */
 	public boolean accuse(Area myArea, MOB accused, MOB victim, String[] accusableLaws);
-	
+
 	/**
 	 * If the warrant reflects someone in prison, it releases them.
 	 * If the warrant reflects someone being arrested, it releases
 	 * the arrest and temporarily ignores the warrant.
-	 * 
+	 *
 	 * @param myArea the legal area
 	 * @param warrant the warrant to excuse
 	 */

@@ -148,7 +148,7 @@ public class Human extends StdRace
 	private final String[]	racialEffectNames			= { "DiligentStudying" };
 	private final int[]		racialEffectLevels			= { 1 };
 	private final String[]	racialEffectParms			= { "" };
-	
+
 	@Override
 	protected String[] racialEffectNames()
 	{
@@ -168,7 +168,7 @@ public class Human extends StdRace
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

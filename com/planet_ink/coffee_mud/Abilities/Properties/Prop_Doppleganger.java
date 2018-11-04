@@ -75,7 +75,7 @@ public class Prop_Doppleganger extends Property
 	}
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		levelAdd=0;
@@ -119,7 +119,7 @@ public class Prop_Doppleganger extends Property
 				level=maxLevel;
 			I.basePhyStats().setLevel(level);
 			I.phyStats().setLevel(level);
-			int oldMaterial=I.material();
+			final int oldMaterial=I.material();
 			if(asMaterial != -1)
 				I.setMaterial(asMaterial);
 			CMLib.itemBuilder().balanceItemByLevel(I);
@@ -139,7 +139,7 @@ public class Prop_Doppleganger extends Property
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean qualifies(MOB mob, Room R)
+	public boolean qualifies(final MOB mob, final Room R)
 	{
 		if((mob==affected)||(mob==null))
 			return false;

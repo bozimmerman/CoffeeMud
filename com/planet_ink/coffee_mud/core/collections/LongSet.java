@@ -36,7 +36,7 @@ public class LongSet implements Set<Long>
 
 	public LongSet copyOf()
 	{
-		LongSet g=new LongSet();
+		final LongSet g=new LongSet();
 		synchronized(this)
 		{
 			g.intArray=intArray.clone();
@@ -44,8 +44,8 @@ public class LongSet implements Set<Long>
 		}
 		return g;
 	}
-	
-	public boolean contains(long x)
+
+	public boolean contains(final long x)
 	{
 		if(x==-1)
 			return true;
@@ -54,7 +54,7 @@ public class LongSet implements Set<Long>
 		return getLongIndex(x)>=0;
 	}
 
-	public int getIntIndex(int x)
+	public int getIntIndex(final int x)
 	{
 		int start=0;
 		int end=intArray.length-1;
@@ -86,7 +86,7 @@ public class LongSet implements Set<Long>
 		return (-start)-1;
 	}
 
-	public int getLongIndex(long y)
+	public int getLongIndex(final long y)
 	{
 		int start=0;
 		int end=longArray.length-1;
@@ -203,7 +203,7 @@ public class LongSet implements Set<Long>
 		return count;
 	}
 
-	private void growIntArray(int here, int amount)
+	private void growIntArray(final int here, final int amount)
 	{
 		final int[] newis=new int[intArray.length+amount];
 		for(int i=0;i<here;i++)
@@ -213,7 +213,7 @@ public class LongSet implements Set<Long>
 		intArray=newis;
 	}
 
-	private void growLongArray(int here, int amount)
+	private void growLongArray(final int here, final int amount)
 	{
 		final long[] newis=new long[longArray.length+amount];
 		for(int i=0;i<here;i++)
@@ -223,7 +223,7 @@ public class LongSet implements Set<Long>
 		longArray=newis;
 	}
 
-	public synchronized boolean remove(long x)
+	public synchronized boolean remove(final long x)
 	{
 		if(x==-1)
 			return false;
@@ -232,8 +232,8 @@ public class LongSet implements Set<Long>
 		else
 			return removeLong(x);
 	}
-	
-	public synchronized boolean remove(LongSet grp)
+
+	public synchronized boolean remove(final LongSet grp)
 	{
 		final long[] dely=grp.getAllNumbers();
 		boolean found=true;
@@ -246,8 +246,8 @@ public class LongSet implements Set<Long>
 		}
 		return found;
 	}
-	
-	private void shrinkIntArray(int here, int amount)
+
+	private void shrinkIntArray(final int here, final int amount)
 	{
 		final int[] newis=new int[intArray.length-amount];
 		for(int i=0;i<here;i++)
@@ -257,7 +257,7 @@ public class LongSet implements Set<Long>
 		intArray=newis;
 	}
 
-	private void shrinkLongArray(int here, int amount)
+	private void shrinkLongArray(final int here, final int amount)
 	{
 		final long[] newis=new long[longArray.length-amount];
 		for(int i=0;i<here;i++)
@@ -282,7 +282,7 @@ public class LongSet implements Set<Long>
 		}
 		return true;
 	}
-	
+
 	protected boolean checkLongArray()
 	{
 		for(int i=1;i<longArray.length;i++)
@@ -298,7 +298,7 @@ public class LongSet implements Set<Long>
 		}
 		return true;
 	}
-	
+
 	private void consolodateInts()
 	{
 		for(int i=0;i<intArray.length-1;i++)
@@ -359,7 +359,7 @@ public class LongSet implements Set<Long>
 		}
 	}
 
-	public LongSet add(LongSet grp)
+	public LongSet add(final LongSet grp)
 	{
 		if(grp==null)
 			return this;
@@ -369,7 +369,7 @@ public class LongSet implements Set<Long>
 		return this;
 	}
 
-	public synchronized LongSet add(long x)
+	public synchronized LongSet add(final long x)
 	{
 		if(x==-1)
 			return null;
@@ -380,7 +380,7 @@ public class LongSet implements Set<Long>
 		return this;
 	}
 
-	public synchronized LongSet add(long from, long to)
+	public synchronized LongSet add(final long from, final long to)
 	{
 		if((from==-1)||(to<from))
 			return null;
@@ -391,19 +391,19 @@ public class LongSet implements Set<Long>
 		return this;
 	}
 
-	private void addLongRange(long x1, long x2)
+	private void addLongRange(final long x1, final long x2)
 	{
 		if(x1 == x2)
 		{
 			addLong(x1);
 			return;
 		}
-		
+
 		if(x2 < x1)
 		{
 			throw new IllegalArgumentException("x2 < x1");
 		}
-		
+
 		int index1=getLongIndex(x1);
 		int index2=getLongIndex(x2);
 		if((index2>=0)&&(index2==index1))
@@ -460,7 +460,7 @@ public class LongSet implements Set<Long>
 				longArray[index1]=x1|NEXT_FLAGL;
 			}
 		}
-		
+
 		index2=index1+1;
 		while((index2<longArray.length-1)&&((longArray[index2+1]&LONG_BITS)<=x2))
 			index2++;
@@ -475,8 +475,8 @@ public class LongSet implements Set<Long>
 			longArray[index1+1]=x2;
 		consolodateLongs();
 	}
-	
-	private void addLong(long x)
+
+	private void addLong(final long x)
 	{
 		int index=getLongIndex(x);
 		if(index>=0)
@@ -548,8 +548,8 @@ public class LongSet implements Set<Long>
 		consolodateLongs();
 		return;
 	}
-	
-	private void addInt(int x)
+
+	private void addInt(final int x)
 	{
 		int index=getIntIndex(x);
 		if(index>=0)
@@ -622,7 +622,7 @@ public class LongSet implements Set<Long>
 		return;
 	}
 
-	private boolean removeLong(long x)
+	private boolean removeLong(final long x)
 	{
 		int index=getLongIndex(x);
 		if(index<0)
@@ -689,7 +689,7 @@ public class LongSet implements Set<Long>
 		return false;
 	}
 
-	private boolean removeInt(int x)
+	private boolean removeInt(final int x)
 	{
 		int index=getIntIndex(x);
 		if(index<0)
@@ -755,20 +755,20 @@ public class LongSet implements Set<Long>
 		}
 		return false;
 	}
-	
-	private void addIntRange(int x1, int x2)
+
+	private void addIntRange(final int x1, final int x2)
 	{
 		if(x1 == x2)
 		{
 			addInt(x1);
 			return;
 		}
-		
+
 		if(x2 < x1)
 		{
 			throw new IllegalArgumentException("x2 < x1");
 		}
-		
+
 		int index1=getIntIndex(x1);
 		int index2=getIntIndex(x2);
 		if((index2>=0)&&(index2==index1))
@@ -825,7 +825,7 @@ public class LongSet implements Set<Long>
 				intArray[index1]=x1|NEXT_FLAG;
 			}
 		}
-		
+
 		index2=index1+1;
 		while((index2<intArray.length-1)&&((intArray[index2+1]&INT_BITS)<=x2))
 			index2++;
@@ -840,14 +840,14 @@ public class LongSet implements Set<Long>
 			intArray[index1+1]=x2;
 		consolodateInts();
 	}
-	
-	private static boolean checkList(LongSet g, Set<Integer> used, int span)
+
+	private static boolean checkList(final LongSet g, final Set<Integer> used, final int span)
 	{
 		if(!g.checkIntArray())
 		{
 			return false;
 		}
-		for(Integer l1 : used)
+		for(final Integer l1 : used)
 		{
 			if(!g.contains(l1.intValue()))
 			{
@@ -865,22 +865,22 @@ public class LongSet implements Set<Long>
 		return true;
 	}
 
-	protected static void test(String[] args)
+	protected static void test(final String[] args)
 	{
-		Random r=new Random(System.currentTimeMillis());
-		int span=200;
+		final Random r=new Random(System.currentTimeMillis());
+		final int span=200;
 		int bigDiff=0;
 		for(int it=0;it<50000;it++)
 		{
-			Set<Integer> l=new TreeSet<Integer>();
-			LongSet g=new LongSet();
+			final Set<Integer> l=new TreeSet<Integer>();
+			final LongSet g=new LongSet();
 			for(int i=0;i<200;i++)
 			{
 				if(r.nextBoolean())
 				{
-					int n=r.nextInt(3)+1;
-					int x1=r.nextInt(span)+1;
-					LongSet gc=g.copyOf();
+					final int n=r.nextInt(3)+1;
+					final int x1=r.nextInt(span)+1;
+					final LongSet gc=g.copyOf();
 					g.addIntRange(x1, x1+n);
 					for(int x=x1;x<=x1+n;x++)
 						l.add(new Integer(x));
@@ -892,8 +892,8 @@ public class LongSet implements Set<Long>
 				}
 				else
 				{
-					int x1=r.nextInt(span)+1;
-					LongSet gc=g.copyOf();
+					final int x1=r.nextInt(span)+1;
+					final LongSet gc=g.copyOf();
 					g.addInt(x1);
 					l.add(new Integer(x1));
 					if(!checkList(g,l,span))
@@ -911,17 +911,17 @@ public class LongSet implements Set<Long>
 	}
 
 	@Override
-	public boolean add(Long e) 
+	public boolean add(final Long e)
 	{
 		return (e != null) && add(e.longValue()) != null;
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends Long> c) 
+	public boolean addAll(final Collection<? extends Long> c)
 	{
 		if(c != null)
 		{
-			for(Long L : c)
+			for(final Long L : c)
 			{
 				if(!add(L))
 					return false;
@@ -931,7 +931,7 @@ public class LongSet implements Set<Long>
 	}
 
 	@Override
-	public void clear() 
+	public void clear()
 	{
 		synchronized(this)
 		{
@@ -940,7 +940,7 @@ public class LongSet implements Set<Long>
 		}
 	}
 
-	private long valueOf(Object o)
+	private long valueOf(final Object o)
 	{
 		if(o instanceof Long)
 			return ((Long)o).longValue();
@@ -961,19 +961,19 @@ public class LongSet implements Set<Long>
 			return ((Byte)o).longValue();
 		throw new ClassCastException("Not a number: "+o.getClass().getCanonicalName());
 	}
-	
+
 	@Override
-	public boolean contains(Object o) 
+	public boolean contains(final Object o)
 	{
 		return this.contains(valueOf(o));
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> c) 
+	public boolean containsAll(final Collection<?> c)
 	{
 		if(c!=null)
 		{
-			for(Object o : c)
+			for(final Object o : c)
 			{
 				if(!contains(o))
 					return false;
@@ -983,7 +983,7 @@ public class LongSet implements Set<Long>
 	}
 
 	@Override
-	public Iterator<Long> iterator() 
+	public Iterator<Long> iterator()
 	{
 		final long[] all=this.getAllNumbers();
 		final LongSet me=this;
@@ -992,13 +992,13 @@ public class LongSet implements Set<Long>
 			private int index=0;
 
 			@Override
-			public boolean hasNext() 
+			public boolean hasNext()
 			{
 				return index < all.length;
 			}
 
 			@Override
-			public Long next() 
+			public Long next()
 			{
 				if(hasNext())
 				{
@@ -1008,7 +1008,7 @@ public class LongSet implements Set<Long>
 			}
 
 			@Override
-			public void remove() 
+			public void remove()
 			{
 				if(index<all.length)
 				{
@@ -1019,18 +1019,18 @@ public class LongSet implements Set<Long>
 	}
 
 	@Override
-	public boolean remove(Object o) 
+	public boolean remove(final Object o)
 	{
 		return this.remove(valueOf(o));
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> c) 
+	public boolean removeAll(final Collection<?> c)
 	{
 		boolean found = true;
 		if(c!=null)
 		{
-			for(Object o : c)
+			for(final Object o : c)
 			{
 				if(!remove(o))
 					found=false;
@@ -1040,11 +1040,11 @@ public class LongSet implements Set<Long>
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> c) 
+	public boolean retainAll(final Collection<?> c)
 	{
-		Object[] os=toArray();
+		final Object[] os=toArray();
 		boolean foundAny=false;
-		for(Object o : os)
+		for(final Object o : os)
 		{
 			if(!c.contains(o))
 			{
@@ -1055,7 +1055,7 @@ public class LongSet implements Set<Long>
 	}
 
 	@Override
-	public Object[] toArray() 
+	public Object[] toArray()
 	{
 		final Long[] all = new Long[size()];
 		int index=0;
@@ -1068,15 +1068,15 @@ public class LongSet implements Set<Long>
 
 	// from abstractcollection.java
 	@SuppressWarnings("unchecked")
-	private static <T> T[] finishToArray(T[] r, Iterator<?> it) 
+	private static <T> T[] finishToArray(T[] r, final Iterator<?> it)
 	{
 		int i = r.length;
-		while (it.hasNext()) 
+		while (it.hasNext())
 		{
-			int cap = r.length;
-			if (i == cap) 
+			final int cap = r.length;
+			if (i == cap)
 			{
-				int newCap = cap + (cap >> 1) + 1;
+				final int newCap = cap + (cap >> 1) + 1;
 				r = Arrays.copyOf(r, newCap);
 			}
 			r[i++] = (T)it.next();
@@ -1087,15 +1087,15 @@ public class LongSet implements Set<Long>
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public <T> T[] toArray(T[] a) 
+	public <T> T[] toArray(final T[] a)
 	{
-		int size = size();
-		T[] r = a.length >= size ? a : (T[]) Array.newInstance(a.getClass().getComponentType(), size);
-		Iterator<Long> it = iterator();
-		
-		for (int i = 0; i < r.length; i++) 
+		final int size = size();
+		final T[] r = a.length >= size ? a : (T[]) Array.newInstance(a.getClass().getComponentType(), size);
+		final Iterator<Long> it = iterator();
+
+		for (int i = 0; i < r.length; i++)
 		{
-			if (!it.hasNext()) 
+			if (!it.hasNext())
 			{
 				if (a != r)
 					return Arrays.copyOf(r, i);
@@ -1106,12 +1106,12 @@ public class LongSet implements Set<Long>
 		}
 		return it.hasNext() ? finishToArray(r, it) : r;
 	}
-	
+
 	@Override
 	public String toString()
 	{
-		StringBuilder str=new StringBuilder("{");
-		for(int x : intArray)
+		final StringBuilder str=new StringBuilder("{");
+		for(final int x : intArray)
 		{
 			str.append(x).append(",");
 		}
@@ -1124,7 +1124,7 @@ public class LongSet implements Set<Long>
 			str.append('}');
 		}
 		str.append(",{");
-		for(long x : longArray)
+		for(final long x : longArray)
 		{
 			str.append(x).append(",");
 		}
@@ -1171,7 +1171,7 @@ public class LongSet implements Set<Long>
 		}
 		return this;
 	}
-	
+
 	public long getRandom()
 	{
 		final Random r=new Random();

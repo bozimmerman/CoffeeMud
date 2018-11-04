@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class BaseCharClassNext extends StdWebMacro
 {
 	@Override
@@ -43,7 +42,7 @@ public class BaseCharClassNext extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("BASECLASS");
@@ -55,8 +54,8 @@ public class BaseCharClassNext extends StdWebMacro
 		}
 		String lastID="";
 		final Vector<String> baseClasses=new Vector<String>();
-		boolean showAll=parms.containsKey("ALL");
-		boolean includeSkillOnly=parms.containsKey("INCLUDESKILLONLY");
+		final boolean showAll=parms.containsKey("ALL");
+		final boolean includeSkillOnly=parms.containsKey("INCLUDESKILLONLY");
 		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			final CharClass C=c.nextElement();

@@ -56,7 +56,7 @@ public class Auction extends Channel implements Tickable
 	{
 		return CMLib.lang().fullSessionTranslation("There is not currently a live auction.  Use AUCTION UP syntax to add one, or visit an auctioneer for a long auction.");
 	}
-	
+
 	public String liveAuctionStatus()
 	{
 		if(getLiveData().getAuctionedItem()!=null)
@@ -68,9 +68,9 @@ public class Auction extends Channel implements Tickable
 		}
 		return "";
 	}
-	
+
 	protected AuctionData   liveAuctionData=null;
-	
+
 	protected AuctionData getLiveData()
 	{
 		if(liveAuctionData == null)
@@ -93,7 +93,7 @@ public class Auction extends Channel implements Tickable
 		return Tickable.STATUS_NOT;
 	}
 
-	public void setLiveAuctionState(int code)
+	public void setLiveAuctionState(final int code)
 	{
 		getLiveData().setAuctionState(code);
 		getLiveData().setAuctionTickDown(15000/CMProps.getTickMillis());
@@ -208,7 +208,7 @@ public class Auction extends Channel implements Tickable
 		return true;
 	}
 
-	public boolean doLiveAuction(MOB mob, List<String> commands, Environmental target)
+	public boolean doLiveAuction(final MOB mob, final List<String> commands, final Environmental target)
 	{
 		final Vector<String> V=new Vector<String>();
 		V.add("AUCTION");
@@ -264,7 +264,7 @@ public class Auction extends Channel implements Tickable
 		return true;
 	}
 
-	public void auctionNotify(MOB M, String resp, String regardingItem) throws java.io.IOException
+	public void auctionNotify(final MOB M, final String resp, final String regardingItem) throws java.io.IOException
 	{
 		if(CMLib.flags().isInTheGame(M,true))
 			M.tell(resp);
@@ -281,7 +281,7 @@ public class Auction extends Channel implements Tickable
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		//mob.tell(L("Auctions are currently closed for maintenance.  When it re-opens, this command will continue to remain available for live auctions, and new auctioneer mobs will be placed in the major cities for doing multi-day auctions, so keep your eyes open for that coming soon!"));
@@ -471,7 +471,7 @@ public class Auction extends Channel implements Tickable
 
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return !CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELAUCTION);
 	}

@@ -63,14 +63,14 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	protected void cloneFix(MOB E)
+	protected void cloneFix(final MOB E)
 	{
 		super.cloneFix(E);
 		riders=new SVector();
 	}
 
 	@Override
-	public DeadBody killMeDead(boolean createBody)
+	public DeadBody killMeDead(final boolean createBody)
 	{
 		while(riders.size()>0)
 		{
@@ -83,7 +83,7 @@ public class StdRideable extends StdMOB implements Rideable
 		}
 		return super.killMeDead(createBody);
 	}
-	
+
 	@Override
 	public void destroy()
 	{
@@ -135,7 +135,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public void setRideBasis(int basis)
+	public void setRideBasis(final int basis)
 	{
 		rideBasis = basis;
 	}
@@ -147,7 +147,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public void setRiderCapacity(int newCapacity)
+	public void setRiderCapacity(final int newCapacity)
 	{
 		riderCapacity = newCapacity;
 	}
@@ -165,7 +165,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public Rider fetchRider(int which)
+	public Rider fetchRider(final int which)
 	{
 		try
 		{
@@ -178,7 +178,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public String putString(Rider R)
+	public String putString(final Rider R)
 	{
 		if((R==null)||(putString.length()==0))
 			return "on";
@@ -192,7 +192,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public void setPutString(String str)
+	public void setPutString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			putString="";
@@ -206,14 +206,14 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public void addRider(Rider mob)
+	public void addRider(final Rider mob)
 	{
 		if((mob!=null)&&(!riders.contains(mob)))
 			riders.add(mob);
 	}
 
 	@Override
-	public void delRider(Rider mob)
+	public void delRider(final Rider mob)
 	{
 		if(mob!=null)
 			while(riders.remove(mob))
@@ -228,7 +228,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public String displayText(MOB mob)
+	public String displayText(final MOB mob)
 	{
 		return super.displayText(mob); // StdMOB handles rideables
 	}
@@ -260,7 +260,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public void affectCharState(MOB affected, CharState affectableStats)
+	public void affectCharState(final MOB affected, final CharState affectableStats)
 	{
 		super.affectCharState(affected,affectableStats);
 		if(amRiding(affected))
@@ -301,13 +301,13 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public boolean amRiding(Rider mob)
+	public boolean amRiding(final Rider mob)
 	{
 		return riders.contains(mob);
 	}
 
 	@Override
-	public String stateString(Rider R)
+	public String stateString(final Rider R)
 	{
 		if((R==null)||(stateString.length()==0))
 			return "riding on";
@@ -321,7 +321,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public void setStateString(String str)
+	public void setStateString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			stateString="";
@@ -335,7 +335,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public String mountString(int commandType, Rider R)
+	public String mountString(final int commandType, final Rider R)
 	{
 		if((R==null)||(mountString.length()==0))
 			return "mount(s)";
@@ -349,7 +349,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public void setMountString(String str)
+	public void setMountString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			mountString="";
@@ -363,7 +363,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public String dismountString(Rider R)
+	public String dismountString(final Rider R)
 	{
 		if((R==null)||(dismountString.length()==0))
 			return "dismount(s)";
@@ -375,9 +375,9 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		return dismountString;
 	}
-	
+
 	@Override
-	public void setDismountString(String str)
+	public void setDismountString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			dismountString="";
@@ -391,7 +391,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public String rideString(Rider R)
+	public String rideString(final Rider R)
 	{
 		if((R==null)||(rideString.length()==0))
 			return "ride(s)";
@@ -405,7 +405,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public void setRideString(String str)
+	public void setRideString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			rideString="";
@@ -419,7 +419,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public String stateStringSubject(Rider R)
+	public String stateStringSubject(final Rider R)
 	{
 		if((R==null)||(stateSubjectStr.length()==0))
 		{
@@ -437,7 +437,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public void setStateStringSubject(String str)
+	public void setStateStringSubject(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			this.stateSubjectStr="";
@@ -451,7 +451,7 @@ public class StdRideable extends StdMOB implements Rideable
 	}
 
 	@Override
-	public Set<MOB> getRideBuddies(Set<MOB> list)
+	public Set<MOB> getRideBuddies(final Set<MOB> list)
 	{
 		if(list==null)
 			return list;

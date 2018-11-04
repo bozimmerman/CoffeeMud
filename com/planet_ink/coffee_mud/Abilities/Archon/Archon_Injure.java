@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Archon_Injure extends ArchonSkill
 {
 	@Override
@@ -94,7 +93,7 @@ public class Archon_Injure extends ArchonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String part=null;
 		if((commands.size()<3)&&(mob.isInCombat()))

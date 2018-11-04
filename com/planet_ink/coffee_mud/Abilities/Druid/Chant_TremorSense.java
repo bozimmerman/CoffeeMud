@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_TremorSense extends Chant
 {
 	@Override
@@ -163,7 +162,7 @@ public class Chant_TremorSense extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -198,7 +197,7 @@ public class Chant_TremorSense extends Chant
 						.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 						.plus(TrackingLibrary.TrackingFlag.NOAIR)
 						.plus(TrackingLibrary.TrackingFlag.NOWATER);
-				int range=5 +(super.getXMAXRANGELevel(mob)/2);
+				final int range=5 +(super.getXMAXRANGELevel(mob)/2);
 				CMLib.tracking().getRadiantRooms(mob.location(),rooms,flags,null,range,null);
 				for(int r=0;r<rooms.size();r++)
 				{

@@ -170,7 +170,7 @@ public class Undead extends StdRace
 			msg.source().tell(L("@x1 stinks of grime and decay.",name()));
 	}
 
-	@Override 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(ticking instanceof MOB)
@@ -183,7 +183,7 @@ public class Undead extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{
@@ -267,9 +267,9 @@ public class Undead extends StdRace
 		CharStats.STAT_SAVE_PARALYSIS,
 		CharStats.STAT_SAVE_UNDEAD,
 		CharStats.STAT_SAVE_DISEASE
-		
+
 	};
-	
+
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
@@ -282,7 +282,7 @@ public class Undead extends StdRace
 	}
 
 	@Override
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body=super.getCorpseContainer(mob,room);
 		if((body!=null)&&(mob!=null))

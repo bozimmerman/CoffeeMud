@@ -73,7 +73,7 @@ public class StdBomb extends StdTrap
 	}
 
 	@Override
-	public int baseRejuvTime(int level)
+	public int baseRejuvTime(final int level)
 	{
 		return 5;
 	}

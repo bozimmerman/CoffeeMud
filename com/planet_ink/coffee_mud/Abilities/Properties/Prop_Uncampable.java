@@ -53,13 +53,13 @@ public class Prop_Uncampable extends Property
 			 |Ability.CAN_ITEMS
 			 |Ability.CAN_ROOMS;
 	}
-	
+
 	@Override
 	public long flags()
 	{
 		return Ability.FLAG_ADJUSTER;
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{

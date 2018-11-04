@@ -63,7 +63,7 @@ public class Prop_StayAboard extends Property
 	protected boolean noRepeat=false;
 
 	@Override
-	public void setAffectedOne(Physical P)
+	public void setAffectedOne(final Physical P)
 	{
 		super.setAffectedOne(P);
 		if(P instanceof Rider)
@@ -98,7 +98,7 @@ public class Prop_StayAboard extends Property
 		return true;
 	}
 
-	public void stayAboard(Rider R)
+	public void stayAboard(final Rider R)
 	{
 		final Room rideR=CMLib.map().roomLocation(rideable);
 		if((rideR!=null)
@@ -118,7 +118,7 @@ public class Prop_StayAboard extends Property
 	}
 
 	@Override
-	public void affectPhyStats(Physical E, PhyStats affectableStats)
+	public void affectPhyStats(final Physical E, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(E, affectableStats);
 		synchronized(this)

@@ -46,7 +46,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 	}
 
 	@Override
-	public synchronized String decompressString(byte[] b)
+	public synchronized String decompressString(final byte[] b)
 	{
 		try
 		{
@@ -70,7 +70,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 	}
 
 	@Override
-	public synchronized byte[] compressString(String s)
+	public synchronized byte[] compressString(final String s)
 	{
 		byte[] result = null;
 
@@ -137,11 +137,11 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		final int hashDex1=hashString1.indexOf('|',1);
 		final int salt1=ByteBuffer.wrap(B64Encoder.B64decode(hashString1.substring(1,hashDex1))).getInt();
 		final int hash1=ByteBuffer.wrap(B64Encoder.B64decode(hashString1.substring(hashDex1+1))).getInt();
-		
+
 		final int hashDex2=hashString2.indexOf('|',1);
 		final int salt2=ByteBuffer.wrap(B64Encoder.B64decode(hashString2.substring(1,hashDex2))).getInt();
 		final int hash2=ByteBuffer.wrap(B64Encoder.B64decode(hashString2.substring(hashDex2+1))).getInt();
-		
+
 		return (hash1==(hashString2+salt1).toLowerCase().hashCode()) || (hash2==(hashString1+salt2).toLowerCase().hashCode());
 	}
 
@@ -160,7 +160,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 	}
 
 	@Override
-	public boolean passwordCheck(String pass1, String pass2)
+	public boolean passwordCheck(final String pass1, final String pass2)
 	{
 		if(pass1 == null)
 		{
@@ -169,7 +169,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		else
 		if(pass2 == null)
 			return false;
-		
+
 		if(pass1.equalsIgnoreCase(pass2))
 			return true;
 		if(isARandomHashString(pass2))
@@ -238,12 +238,12 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		return encrFilter;
 	}
 
-	protected byte[] enDeCrypt(byte[] bytes)
+	protected byte[] enDeCrypt(final byte[] bytes)
 	{
 		final byte[] encrFilter=getFilter();
 		for ( int i = 0, j = 0; i < bytes.length; i++, j++ )
 		{
-			if ( j >= encrFilter.length ) 
+			if ( j >= encrFilter.length )
 				j = 0;
 			bytes[i]=(byte)((bytes[i] ^ encrFilter[j]) & 0xff);
 		}
@@ -251,7 +251,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 	}
 
 	@Override
-	public String filterEncrypt(String str)
+	public String filterEncrypt(final String str)
 	{
 		try
 		{
@@ -273,7 +273,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 	}
 
 	@Override
-	public String filterDecrypt(String str)
+	public String filterDecrypt(final String str)
 	{
 		try
 		{

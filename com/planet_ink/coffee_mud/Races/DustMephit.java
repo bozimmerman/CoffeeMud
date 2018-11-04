@@ -44,7 +44,7 @@ public class DustMephit extends Mephit
 	{
 		super();
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Dust Mephit");
 
 	@Override
@@ -124,7 +124,7 @@ public class DustMephit extends Mephit
 		}
 		return super.okMessage(myHost, msg);
 	}
-	
+
 	@Override
 	public String healthText(final MOB viewer, final MOB mob)
 	{
@@ -163,8 +163,8 @@ public class DustMephit extends Mephit
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -173,7 +173,7 @@ public class DustMephit extends Mephit
 		}
 		return body;
 	}
-	
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

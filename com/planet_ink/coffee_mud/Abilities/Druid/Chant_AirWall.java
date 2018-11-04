@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_AirWall extends Chant
 {
 	@Override
@@ -98,9 +97,9 @@ public class Chant_AirWall extends Chant
 	{
 		return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
@@ -131,7 +130,7 @@ public class Chant_AirWall extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=CMClass.getAbility("Spell_WallOfAir");
+				final Ability A=CMClass.getAbility("Spell_WallOfAir");
 				if(A!=null)
 				{
 					A.setMiscText("SHOOTBACK=FALSE");

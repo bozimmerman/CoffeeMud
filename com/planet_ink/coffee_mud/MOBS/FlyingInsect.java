@@ -75,7 +75,7 @@ public class FlyingInsect extends StdMOB
 			A.setProficiency(100);
 			addAbility(A);
 		}
-		
+
 		addBehavior(CMClass.getBehavior("Mobile"));
 		addBehavior(CMClass.getBehavior("CombatAbilities"));
 

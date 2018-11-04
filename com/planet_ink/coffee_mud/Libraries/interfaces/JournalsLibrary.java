@@ -69,7 +69,7 @@ public interface JournalsLibrary extends CMLibrary
 	{
 		public void callBack(final MOB mob, final Session sess, final MsgMkrResolution res);
 	}
-	
+
 	public interface JournalMetaData
 	{
 		public String name();

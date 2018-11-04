@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_DestroyObject extends Spell
 {
 
@@ -69,7 +68,7 @@ public class Spell_DestroyObject extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
@@ -92,11 +91,11 @@ public class Spell_DestroyObject extends Spell
 			mob.tell(L("You are not powerful enough to destroy @x1.",target.name(mob)));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,(((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*25),auto);
+		final boolean success=proficiencyCheck(mob,(((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*25),auto);
 
 		if(success)
 		{

@@ -19,15 +19,15 @@ public class SafeChildNavigableSet<K> implements NavigableSet<K>
 {
 	private final NavigableSet<K> set;
 	private final SafeCollectionHost host;
-	
-	public SafeChildNavigableSet(NavigableSet<K> s, SafeCollectionHost host)
+
+	public SafeChildNavigableSet(final NavigableSet<K> s, final SafeCollectionHost host)
 	{
 		this.set=s;
 		this.host=host;
 	}
 
 	@Override
-	public K ceiling(K arg0)
+	public K ceiling(final K arg0)
 	{
 		return set.ceiling(arg0);
 	}
@@ -45,25 +45,25 @@ public class SafeChildNavigableSet<K> implements NavigableSet<K>
 	}
 
 	@Override
-	public K floor(K arg0)
+	public K floor(final K arg0)
 	{
 		return set.floor(arg0);
 	}
 
 	@Override
-	public SortedSet<K> headSet(K arg0)
+	public SortedSet<K> headSet(final K arg0)
 	{
 		return new SafeChildSortedSet<K>(set.headSet(arg0), host);
 	}
 
 	@Override
-	public NavigableSet<K> headSet(K arg0, boolean arg1)
+	public NavigableSet<K> headSet(final K arg0, final boolean arg1)
 	{
 		return new SafeChildNavigableSet<K>(set.headSet(arg0, arg1), host);
 	}
 
 	@Override
-	public K higher(K arg0)
+	public K higher(final K arg0)
 	{
 		return set.higher(arg0);
 	}
@@ -75,7 +75,7 @@ public class SafeChildNavigableSet<K> implements NavigableSet<K>
 	}
 
 	@Override
-	public K lower(K arg0)
+	public K lower(final K arg0)
 	{
 		return set.lower(arg0);
 	}
@@ -93,25 +93,25 @@ public class SafeChildNavigableSet<K> implements NavigableSet<K>
 	}
 
 	@Override
-	public SortedSet<K> subSet(K arg0, K arg1)
+	public SortedSet<K> subSet(final K arg0, final K arg1)
 	{
 		return new SafeChildSortedSet<K>(set.subSet(arg0,arg1), host);
 	}
 
 	@Override
-	public NavigableSet<K> subSet(K arg0, boolean arg1, K arg2, boolean arg3)
+	public NavigableSet<K> subSet(final K arg0, final boolean arg1, final K arg2, final boolean arg3)
 	{
 		return new SafeChildNavigableSet<K>(set.subSet(arg0,arg1,arg2,arg3), host);
 	}
 
 	@Override
-	public SortedSet<K> tailSet(K arg0)
+	public SortedSet<K> tailSet(final K arg0)
 	{
 		return new SafeChildSortedSet<K>(set.tailSet(arg0), host);
 	}
 
 	@Override
-	public NavigableSet<K> tailSet(K arg0, boolean arg1)
+	public NavigableSet<K> tailSet(final K arg0, final boolean arg1)
 	{
 		return new SafeChildNavigableSet<K>(set.tailSet(arg0,arg1), host);
 	}
@@ -135,13 +135,13 @@ public class SafeChildNavigableSet<K> implements NavigableSet<K>
 	}
 
 	@Override
-	public boolean add(K arg0)
+	public boolean add(final K arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends K> arg0)
+	public boolean addAll(final Collection<? extends K> arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -153,13 +153,13 @@ public class SafeChildNavigableSet<K> implements NavigableSet<K>
 	}
 
 	@Override
-	public boolean contains(Object arg0)
+	public boolean contains(final Object arg0)
 	{
 		return set.contains(arg0);
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0)
+	public boolean containsAll(final Collection<?> arg0)
 	{
 		return set.containsAll(arg0);
 	}
@@ -171,19 +171,19 @@ public class SafeChildNavigableSet<K> implements NavigableSet<K>
 	}
 
 	@Override
-	public boolean remove(Object arg0)
+	public boolean remove(final Object arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> arg0)
+	public boolean removeAll(final Collection<?> arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> arg0)
+	public boolean retainAll(final Collection<?> arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -201,7 +201,7 @@ public class SafeChildNavigableSet<K> implements NavigableSet<K>
 	}
 
 	@Override
-	public <T> T[] toArray(T[] arg0)
+	public <T> T[] toArray(final T[] arg0)
 	{
 		return set.toArray(arg0);
 	}

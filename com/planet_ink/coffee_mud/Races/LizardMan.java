@@ -46,7 +46,7 @@ public class LizardMan extends StdRace
 		super.naturalAbilImmunities.add("Disease_Lepresy");
 		super.naturalAbilImmunities.add("Disease_Lycanthropy");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Lizard Man");
 
 	@Override
@@ -119,7 +119,7 @@ public class LizardMan extends StdRace
 	private final int[]		racialAbilityLevels			= { 1 };
 	private final int[]		racialAbilityProficiencies	= { 100 };
 	private final boolean[]	racialAbilityQuals			= { false };
-	
+
 	@Override
 	protected String[] racialAbilityNames()
 	{
@@ -153,7 +153,7 @@ public class LizardMan extends StdRace
 	private final String[]	racialEffectNames			= { "Skill_LongBreath" };
 	private final String[]	racialEffectParms			= { "" };
 	private final int[]		racialEffectLevels			= { 1 };
-	
+
 	@Override
 	protected String[] racialEffectNames()
 	{
@@ -220,7 +220,7 @@ public class LizardMan extends StdRace
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

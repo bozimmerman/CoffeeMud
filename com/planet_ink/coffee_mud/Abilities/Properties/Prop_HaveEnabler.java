@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_HaveEnabler extends Prop_SpellAdder
 {
 	@Override
@@ -78,13 +77,13 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		lastMOBeffects=new Vector<String>();
 	}
 
-	public boolean addMeIfNeccessary(Environmental source, Environmental target, short maxTicks)
+	public boolean addMeIfNeccessary(final Environmental source, final Environmental target, final short maxTicks)
 	{
 		if((!(target instanceof MOB))
 		||((compiledMask!=null)&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
@@ -141,7 +140,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 	}
 
 	@Override
-	public void removeMyAffectsFrom(Physical P)
+	public void removeMyAffectsFrom(final Physical P)
 	{
 		if(!(P instanceof MOB))
 			return;
@@ -191,7 +190,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 		if(processing)
 			return;
@@ -201,12 +200,12 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 			if(host instanceof Item)
 			{
 				myItem=(Item)host;
-	
+
 				if((lastMOB instanceof MOB)
 				&&((myItem.owner()!=lastMOB)||(myItem.amDestroyed()))
 				&&(((MOB)lastMOB).location()!=null))
 					removeMyAffectsFromLastMob();
-	
+
 				if((lastMOB==null)
 				&&(myItem.owner()!=null)
 				&&(myItem.owner() instanceof MOB)

@@ -66,7 +66,7 @@ public class EvilExecutioner  extends StdBehavior
 	}
 
 	@Override
-	public boolean grantsAggressivenessTo(MOB M)
+	public boolean grantsAggressivenessTo(final MOB M)
 	{
 		if(M==null)
 			return false;

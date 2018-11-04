@@ -150,7 +150,7 @@ public class Turtle extends StdRace
 	{
 		return breatheAirWaterArray;
 	}
-	
+
 	@Override
 	public int availabilityCode()
 	{
@@ -193,7 +193,7 @@ public class Turtle extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{

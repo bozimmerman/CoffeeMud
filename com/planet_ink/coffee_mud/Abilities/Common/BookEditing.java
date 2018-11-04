@@ -66,7 +66,7 @@ public class BookEditing extends CommonSkill
 
 	protected Item		found	= null;
 	protected String	pageNum	= "";
-	
+
 	@Override
 	protected boolean canBeDoneSittingDown()
 	{
@@ -106,9 +106,9 @@ public class BookEditing extends CommonSkill
 		commonTell(mob,L("You must specify what book to edit, and the optional page/chapter number to edit."));
 		return false;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -118,7 +118,7 @@ public class BookEditing extends CommonSkill
 		pageNum="";
 		if((commands.size()>1)&&(CMath.isInteger(commands.get(commands.size()-1))))
 			pageNum=commands.remove(commands.size()-1);
-		String itemName = CMParms.combine(commands);
+		final String itemName = CMParms.combine(commands);
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 			target=mob.location().findItem(null, itemName);
@@ -144,27 +144,27 @@ public class BookEditing extends CommonSkill
 			commonTell(mob,L("You don't seem to have a '@x1'.",itemName));
 			return false;
 		}
-		
-		
+
+
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
 			commonTell(mob,L("You must know how to write."));
 			return false;
 		}
-		
+
 		if((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
 		{
 			commonTell(mob,L("You can't edit something like that."));
 			return false;
 		}
-		
+
 		if(!CMLib.flags().isReadable(target))
 		{
 			commonTell(mob,L("That's not even readable!"));
 			return false;
 		}
-		
+
 		if(!target.isGeneric())
 		{
 			commonTell(mob,L("You aren't able to give that a name."));
@@ -185,7 +185,7 @@ public class BookEditing extends CommonSkill
 			mob.location().send(mob,msg);
 			if(duration==1)
 			{
-				BookEditing B=(BookEditing)beneficialAffect(mob,mob,asLevel,duration);
+				final BookEditing B=(BookEditing)beneficialAffect(mob,mob,asLevel,duration);
 				if(B!=null)
 				{
 					B.tickDown=0;

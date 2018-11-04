@@ -55,25 +55,25 @@ public class Specialization_Shield extends Specialization_Weapon
 	}
 
 	@Override
-	protected int getDamageBonus(MOB mob, int dmgType)
+	protected int getDamageBonus(final MOB mob, final int dmgType)
 	{
 		return getXLEVELLevel(mob);
 	}
 
 	@Override
-	protected boolean isWeaponMatch(Weapon W)
+	protected boolean isWeaponMatch(final Weapon W)
 	{
 		return W instanceof Shield;
 	}
 
 	@Override
-	protected boolean canDamage(MOB mob, Weapon W)
+	protected boolean canDamage(final MOB mob, final Weapon W)
 	{
 		return W instanceof Shield;
 	}
 
 	@Override
-	protected boolean isWearableItem(Item I)
+	protected boolean isWearableItem(final Item I)
 	{
 		return I instanceof Shield;
 	}

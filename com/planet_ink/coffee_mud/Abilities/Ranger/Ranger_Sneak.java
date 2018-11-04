@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Ranger_Sneak extends StdAbility
 {
 	@Override
@@ -87,14 +86,14 @@ public class Ranger_Sneak extends StdAbility
 		return USAGE_MOVEMENT;
 	}
 
-	public int getMOBLevel(MOB meMOB)
+	public int getMOBLevel(final MOB meMOB)
 	{
 		if(meMOB==null)
 			return 0;
 		return meMOB.phyStats().level();
 	}
 
-	public MOB getHighestLevelMOB(MOB meMOB, Vector<MOB> not)
+	public MOB getHighestLevelMOB(final MOB meMOB, final Vector<MOB> not)
 	{
 		if(meMOB==null)
 			return null;
@@ -122,7 +121,7 @@ public class Ranger_Sneak extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0)

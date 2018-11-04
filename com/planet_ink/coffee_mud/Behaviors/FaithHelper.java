@@ -52,7 +52,7 @@ public class FaithHelper extends StdBehavior
 	}
 
 	@Override
-	public void startBehavior(PhysicalAgent forMe)
+	public void startBehavior(final PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
 		if(forMe instanceof MOB)

@@ -91,7 +91,7 @@ public class DefaultClimate implements Climate
 	}
 
 	@Override
-	public int nextWeatherType(Room room)
+	public int nextWeatherType(final Room room)
 	{
 		if(room==null)
 			return nextWeather;
@@ -101,7 +101,7 @@ public class DefaultClimate implements Climate
 	}
 
 	@Override
-	public String nextWeatherDescription(Room room)
+	public String nextWeatherDescription(final Room room)
 	{
 		if(!CMLib.map().hasASky(room))
 			return CMLib.lang().fullSessionTranslation("You can't tell much about the weather from here.");
@@ -109,7 +109,7 @@ public class DefaultClimate implements Climate
 	}
 
 	@Override
-	public String getNextWeatherDescription(Area A)
+	public String getNextWeatherDescription(final Area A)
 	{
 		return theWeatherDescription(A,nextWeather);
 	}
@@ -182,19 +182,19 @@ public class DefaultClimate implements Climate
 	};
 
 	@Override
-	public void setNextWeatherType(int weatherCode)
+	public void setNextWeatherType(final int weatherCode)
 	{
 		nextWeather = weatherCode;
 	}
 
 	@Override
-	public void setCurrentWeatherType(int weatherCode)
+	public void setCurrentWeatherType(final int weatherCode)
 	{
 		currentWeather = weatherCode;
 	}
 
 	@Override
-	public int weatherType(Room room)
+	public int weatherType(final Room room)
 	{
 		if(room==null)
 			return currentWeather;
@@ -204,7 +204,7 @@ public class DefaultClimate implements Climate
 	}
 
 	@Override
-	public String weatherDescription(Room room)
+	public String weatherDescription(final Room room)
 	{
 		if(!CMLib.map().hasASky(room))
 			return CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEATHER_NONE, 0);
@@ -212,7 +212,7 @@ public class DefaultClimate implements Climate
 	}
 
 	@Override
-	public boolean canSeeTheMoon(Room room, Ability butNotA)
+	public boolean canSeeTheMoon(final Room room, final Ability butNotA)
 	{
 		if(canSeeTheStars(room))
 			return true;
@@ -226,7 +226,7 @@ public class DefaultClimate implements Climate
 	}
 
 	@Override
-	public boolean canSeeTheStars(Room room)
+	public boolean canSeeTheStars(final Room room)
 	{
 		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.NIGHT)
 				&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DUSK))
@@ -279,7 +279,7 @@ public class DefaultClimate implements Climate
 		}
 	}
 
-	protected String getWeatherStop(int weatherCode)
+	protected String getWeatherStop(final int weatherCode)
 	{
 		if((weatherCode>=0)&&(weatherCode<Climate.NUM_WEATHER))
 			return CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEATHER_ENDS, weatherCode);
@@ -287,13 +287,13 @@ public class DefaultClimate implements Climate
 	}
 
 	@Override
-	public void forceWeatherTick(Area A)
+	public void forceWeatherTick(final Area A)
 	{
 		weatherTicker=1;
 		weatherTick(A);
 	}
 
-	public int[] addMaskAndReturn(int[] one, int[] two)
+	public int[] addMaskAndReturn(final int[] one, final int[] two)
 	{
 		if(one.length!=two.length)
 			return one;
@@ -303,7 +303,7 @@ public class DefaultClimate implements Climate
 		return returnable;
 	}
 
-	protected void sayToEveryoneInArea(Area A, int oldWeather, String say)
+	protected void sayToEveryoneInArea(final Area A, final int oldWeather, final String say)
 	{
 		for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 		{
@@ -325,14 +325,14 @@ public class DefaultClimate implements Climate
 			final BoardableShip ship = s.nextElement();
 			if((ship != null) && (A == CMLib.map().areaLocation(ship.getShipItem())))
 			{
-				Area inA=ship.getShipArea();
+				final Area inA=ship.getShipArea();
 				if(inA!=null)
 					sayToEveryoneInArea(inA,oldWeather,say);
 			}
 		}
 	}
-	
-	public void weatherTick(Area A)
+
+	public void weatherTick(final Area A)
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.WEATHER))
 		{
@@ -481,7 +481,7 @@ public class DefaultClimate implements Climate
 		return true;
 	}
 
-	protected String theWeatherDescription(Area A, int weather)
+	protected String theWeatherDescription(final Area A, final int weather)
 	{
 		final StringBuffer desc=new StringBuffer("");
 		if((weather<0)||(weather>=Climate.NUM_WEATHER))
@@ -549,13 +549,13 @@ public class DefaultClimate implements Climate
 	}
 
 	@Override
-	public String getWeatherDescription(Area A)
+	public String getWeatherDescription(final Area A)
 	{
 		return theWeatherDescription(A,currentWeather);
 	}
 
 	@Override
-	public int adjustWaterConsumption(int base, Room room)
+	public int adjustWaterConsumption(final int base, final Room room)
 	{
 		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
 			return base;
@@ -582,7 +582,7 @@ public class DefaultClimate implements Climate
 	}
 
 	@Override
-	public int adjustMovement(int base, Room room)
+	public int adjustMovement(final int base, final Room room)
 	{
 		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
 			return base;

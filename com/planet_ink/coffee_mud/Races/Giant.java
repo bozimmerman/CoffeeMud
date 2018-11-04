@@ -145,7 +145,7 @@ public class Giant extends StdRace
 	{
 		return culturalAbilityGains;
 	}
-	
+
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{

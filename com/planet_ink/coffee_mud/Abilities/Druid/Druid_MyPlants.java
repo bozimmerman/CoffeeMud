@@ -83,20 +83,20 @@ public class Druid_MyPlants extends StdAbility
 
 	private static final Map<String,WeakArrayList<Item>> allPlants = new Hashtable<String,WeakArrayList<Item>>();
 
-	public static void addNewPlant(MOB mob, Item I)
+	public static void addNewPlant(final MOB mob, final Item I)
 	{
 		final List<Item> myPlants = getMyPlants(mob);
 		if(!myPlants.contains(I))
 			myPlants.add(I);
 	}
 
-	public static void removeLostPlant(MOB mob, Item I)
+	public static void removeLostPlant(final MOB mob, final Item I)
 	{
 		final List<Item> myPlants = getMyPlants(mob);
 		myPlants.remove(I);
 	}
 
-	public static boolean isMyPlant(Item I, MOB mob)
+	public static boolean isMyPlant(final Item I, final MOB mob)
 	{
 		if((I!=null)
 		&&(I.rawSecretIdentity().equals(mob.Name()))
@@ -115,7 +115,7 @@ public class Druid_MyPlants extends StdAbility
 		return false;
 	}
 
-	public static Ability getMyPlantsSpell(Item I, MOB mob)
+	public static Ability getMyPlantsSpell(final Item I, final MOB mob)
 	{
 		if((I!=null)
 		&&(I.rawSecretIdentity().equals(mob.Name()))
@@ -134,7 +134,7 @@ public class Druid_MyPlants extends StdAbility
 		return null;
 	}
 
-	public static Item myPlant(Room R, MOB mob, int which)
+	public static Item myPlant(final Room R, final MOB mob, final int which)
 	{
 		int plantNum=0;
 		if(R!=null)
@@ -153,7 +153,7 @@ public class Druid_MyPlants extends StdAbility
 		return null;
 	}
 
-	public static List<Room> myAreaPlantRooms(MOB mob, Area A)
+	public static List<Room> myAreaPlantRooms(final MOB mob, final Area A)
 	{
 		final List<Room> myPlantRooms = myPlantRooms(mob);
 		final Vector<Room> V=new Vector<Room>();
@@ -193,14 +193,14 @@ public class Druid_MyPlants extends StdAbility
 				else
 				if(I instanceof BoardableShip)
 				{
-					Area A=((BoardableShip)I).getShipArea();
+					final Area A=((BoardableShip)I).getShipArea();
 					if(A!=null)
 					{
 						for(final Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
 						{
 							try
 							{
-								Room R2=r.nextElement();
+								final Room R2=r.nextElement();
 								if(R2 != null)
 									tryRoom(mob, R2, hisPlants, alreadyDone);
 							}
@@ -214,7 +214,7 @@ public class Druid_MyPlants extends StdAbility
 		}
 	}
 
-	public static List<Item> getMyPlants(MOB mob)
+	public static List<Item> getMyPlants(final MOB mob)
 	{
 		List<Item> myPlants = allPlants.get(mob.Name());
 		if(myPlants == null)
@@ -239,7 +239,7 @@ public class Druid_MyPlants extends StdAbility
 		return myPlants;
 	}
 
-	public static List<Item> getMyPlants(final MOB mob, Collection<Room> rooms)
+	public static List<Item> getMyPlants(final MOB mob, final Collection<Room> rooms)
 	{
 		final List<Item> myPlants = getMyPlants(mob);
 		final Vector<Item> V=new Vector<Item>();
@@ -249,7 +249,7 @@ public class Druid_MyPlants extends StdAbility
 		{
 			try
 			{
-				Item I=myPlants.get(i);
+				final Item I=myPlants.get(i);
 				if(I!=null)
 				{
 					final Room R=CMLib.map().roomLocation(I);
@@ -257,14 +257,14 @@ public class Druid_MyPlants extends StdAbility
 						V.addElement(I);
 				}
 			}
-			catch(IndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 			}
 		}
 		return myPlants;
 	}
 
-	public static List<Room> myPlantRooms(MOB mob)
+	public static List<Room> myPlantRooms(final MOB mob)
 	{
 		final List<Item> myPlants = getMyPlants(mob);
 		final Vector<Room> V=new Vector<Room>();
@@ -272,7 +272,7 @@ public class Druid_MyPlants extends StdAbility
 		{
 			try
 			{
-				Item I=myPlants.get(i);
+				final Item I=myPlants.get(i);
 				if(I!=null)
 				{
 					final Room R=CMLib.map().roomLocation(I);
@@ -280,7 +280,7 @@ public class Druid_MyPlants extends StdAbility
 						V.addElement(R);
 				}
 			}
-			catch(IndexOutOfBoundsException e)
+			catch(final IndexOutOfBoundsException e)
 			{
 			}
 		}
@@ -288,7 +288,7 @@ public class Druid_MyPlants extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

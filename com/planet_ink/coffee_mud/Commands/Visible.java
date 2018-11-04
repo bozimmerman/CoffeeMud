@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Visible extends StdCommand
 {
 	public Visible()
@@ -46,7 +45,7 @@ public class Visible extends StdCommand
 		return access;
 	}
 
-	public static java.util.List<Ability> returnOffensiveAffects(Physical fromMe)
+	public static java.util.List<Ability> returnOffensiveAffects(final Physical fromMe)
 	{
 		final MOB newMOB=CMClass.getFactoryMOB();
 		newMOB.setLocation(CMLib.map().roomLocation(fromMe));
@@ -73,7 +72,7 @@ public class Visible extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final String str=L("Prop_WizInvis");
@@ -109,7 +108,7 @@ public class Visible extends StdCommand
 	}
 
 	@Override
-	public double combatActionsCost(MOB mob, List<String> cmds)
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
 		return 0.25;
 	}

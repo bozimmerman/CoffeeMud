@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_ExitStageLeft extends BardSkill
 {
 	@Override
@@ -134,7 +133,7 @@ public class Skill_ExitStageLeft extends BardSkill
 				unInvoke();
 				return false;
 			}
-			
+
 			if(!R.getExitInDir(Directions.WEST).isOpen())
 			{
 				unInvoke();
@@ -148,7 +147,7 @@ public class Skill_ExitStageLeft extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
@@ -167,13 +166,13 @@ public class Skill_ExitStageLeft extends BardSkill
 			mob.tell(L("There must be a west exit for this to work."));
 			return false;
 		}
-		
+
 		if(!R.getExitInDir(Directions.WEST).isOpen())
 		{
 			mob.tell(L("The west exit must be open first."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -185,7 +184,7 @@ public class Skill_ExitStageLeft extends BardSkill
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				for(MOB M : h)
+				for(final MOB M : h)
 				{
 					final CMMsg msg2=CMClass.getMsg(mob,M,this,CMMsg.MASK_MAGIC|CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),null);
 					if(mob.location().okMessage(mob,msg2))

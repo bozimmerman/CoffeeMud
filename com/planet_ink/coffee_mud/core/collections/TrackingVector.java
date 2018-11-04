@@ -23,11 +23,11 @@ import java.util.*;
  * the same type have been added to so that, if desired, items can be removed
  * from all vectors at once. The constructor requires a map to keep track of the
  * objects.
- * 
+ *
  * This class is required for RTree
- * 
+ *
  * @author Bo Zimmerman
- * 
+ *
  * @param <T> the type, or something?
  */
 public class TrackingVector<T> extends Vector<T>
@@ -43,35 +43,35 @@ public class TrackingVector<T> extends Vector<T>
 		public void removed(T o);
 	}
 
-	public TrackingVector(Map<T, List<WeakReference<TrackingVector<T>>>> tracker)
+	public TrackingVector(final Map<T, List<WeakReference<TrackingVector<T>>>> tracker)
 	{
 		super();
 		this.tracker = tracker;
 		trackBackRef = null;
 	}
 
-	public TrackingVector(Map<T, List<WeakReference<TrackingVector<T>>>> tracker, int sz)
+	public TrackingVector(final Map<T, List<WeakReference<TrackingVector<T>>>> tracker, final int sz)
 	{
 		super(sz);
 		this.tracker = tracker;
 		trackBackRef = null;
 	}
 
-	public TrackingVector(Map<T, List<WeakReference<TrackingVector<T>>>> tracker, TrackBack<T> obj)
+	public TrackingVector(final Map<T, List<WeakReference<TrackingVector<T>>>> tracker, final TrackBack<T> obj)
 	{
 		super();
 		this.tracker = tracker;
 		this.trackBackRef = new WeakReference<TrackBack<T>>(obj);
 	}
 
-	public TrackingVector(Map<T, List<WeakReference<TrackingVector<T>>>> tracker, int sz, TrackBack<T> obj)
+	public TrackingVector(final Map<T, List<WeakReference<TrackingVector<T>>>> tracker, final int sz, final TrackBack<T> obj)
 	{
 		super(sz);
 		this.tracker = tracker;
 		this.trackBackRef = new WeakReference<TrackBack<T>>(obj);
 	}
 
-	protected void addTrackedEntry(T e)
+	protected void addTrackedEntry(final T e)
 	{
 		synchronized (tracker)
 		{
@@ -90,7 +90,7 @@ public class TrackingVector<T> extends Vector<T>
 		}
 	}
 
-	protected void removeTrackedEntry(Object e)
+	protected void removeTrackedEntry(final Object e)
 	{
 		synchronized (tracker)
 		{
@@ -102,7 +102,7 @@ public class TrackingVector<T> extends Vector<T>
 		}
 	}
 
-	public void removeAllTrackedEntries(T e)
+	public void removeAllTrackedEntries(final T e)
 	{
 		synchronized (tracker)
 		{
@@ -120,7 +120,7 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@Override
-	public synchronized boolean add(T e)
+	public synchronized boolean add(final T e)
 	{
 		if (super.add(e))
 		{
@@ -131,21 +131,21 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@Override
-	public synchronized void addElement(T e)
+	public synchronized void addElement(final T e)
 	{
 		super.addElement(e);
 		addTrackedEntry(e);
 	}
 
 	@Override
-	public void add(int arg0, T arg1)
+	public void add(final int arg0, final T arg1)
 	{
 		super.add(arg0, arg1);
 		addTrackedEntry(arg1);
 	}
 
 	@Override
-	public synchronized boolean addAll(Collection<? extends T> arg0)
+	public synchronized boolean addAll(final Collection<? extends T> arg0)
 	{
 		for (final T o : arg0)
 			addTrackedEntry(o);
@@ -153,7 +153,7 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@Override
-	public synchronized boolean addAll(int arg0, Collection<? extends T> arg1)
+	public synchronized boolean addAll(final int arg0, final Collection<? extends T> arg1)
 	{
 		for (final T o : arg1)
 			addTrackedEntry(o);
@@ -169,7 +169,7 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@Override
-	public boolean remove(Object arg0)
+	public boolean remove(final Object arg0)
 	{
 		if (removeOnlyFromMe(arg0))
 		{
@@ -180,7 +180,7 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean removeOnlyFromMe(Object arg0)
+	public boolean removeOnlyFromMe(final Object arg0)
 	{
 		final boolean success = super.remove(arg0);
 		if ((trackBackRef != null) && (trackBackRef.get() != null))
@@ -189,7 +189,7 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@Override
-	public synchronized T remove(int arg0)
+	public synchronized T remove(final int arg0)
 	{
 		final T x = super.remove(arg0);
 		if (x != null)
@@ -202,7 +202,7 @@ public class TrackingVector<T> extends Vector<T>
 	}
 
 	@Override
-	public synchronized boolean removeAll(Collection<?> arg0)
+	public synchronized boolean removeAll(final Collection<?> arg0)
 	{
 		for (final Object e : arg0)
 			removeTrackedEntry(e);

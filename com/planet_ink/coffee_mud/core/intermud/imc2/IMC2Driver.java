@@ -49,8 +49,8 @@ import java.util.*;
  */
 
 @SuppressWarnings({"unchecked","rawtypes"})
-public final class IMC2Driver extends Thread {
-
+public final class IMC2Driver extends Thread
+{
 	Socket sa;
 
 	/* a player on IMC */

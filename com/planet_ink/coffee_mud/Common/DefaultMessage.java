@@ -95,13 +95,13 @@ public class DefaultMessage implements CMMsg
 			if(msg.trailMsgs!=null)
 			{
 				msg.trailMsgs = new SLinkedList<CMMsg>();
-				for(CMMsg msg2 : trailMsgs)
+				for(final CMMsg msg2 : trailMsgs)
 					msg.trailMsgs.add((CMMsg)msg2.copyOf());
 			}
 			if(msg.trailRunnables!=null)
 			{
 				msg.trailRunnables = new SLinkedList<Runnable>();
-				for(Runnable r : trailRunnables)
+				for(final Runnable r : trailRunnables)
 					msg.trailRunnables.add(r);
 			}
 			return msg;
@@ -248,7 +248,7 @@ public class DefaultMessage implements CMMsg
 		sourceMinorType=code&CMMsg.MINOR_MASK;
 		return this;
 	}
-	
+
 	@Override
 	public CMMsg setTargetCode(final int code)
 	{
@@ -256,7 +256,7 @@ public class DefaultMessage implements CMMsg
 		targetMinorType=code&CMMsg.MINOR_MASK;
 		return this;
 	}
-	
+
 	@Override
 	public CMMsg setOthersCode(final int code)
 	{
@@ -264,34 +264,34 @@ public class DefaultMessage implements CMMsg
 		othersMinorType=code&CMMsg.MINOR_MASK;
 		return this;
 	}
-	
-	@Override 
+
+	@Override
 	public CMMsg setSourceMessage(final String str)
 	{
 		sourceMsg=str;
 		return this;
 	}
-	
-	@Override 
+
+	@Override
 	public CMMsg setTargetMessage(final String str)
 	{
 		targetMsg=str;
 		return this;
 	}
-	
-	@Override 
+
+	@Override
 	public CMMsg setOthersMessage(final String str)
 	{
 		othersMsg=str;
 		return this;
 	}
 
-	@Override 
+	@Override
 	public int value()
 	{
 		return value;
 	}
-	
+
 	@Override
 	public CMMsg setValue(final int amount)
 	{
@@ -314,7 +314,7 @@ public class DefaultMessage implements CMMsg
 	@Override
 	public CMMsg addTrailerMsg(final CMMsg msg)
 	{
-		if(trailMsgs==null) 
+		if(trailMsgs==null)
 			trailMsgs=new SLinkedList<CMMsg>();
 		trailMsgs.add(msg);
 		return this;
@@ -323,12 +323,12 @@ public class DefaultMessage implements CMMsg
 	@Override
 	public CMMsg addTrailerRunnable(final Runnable r)
 	{
-		if(trailRunnables==null) 
+		if(trailRunnables==null)
 			trailRunnables=new SLinkedList<Runnable>();
 		trailRunnables.add(r);
 		return this;
 	}
-	
+
 	@Override
 	public CMMsg modify(final MOB source,
 						final Environmental target,
@@ -354,7 +354,7 @@ public class DefaultMessage implements CMMsg
 		othersMsg=othersMessage;
 		return this;
 	}
-	
+
 	@Override
 	public CMMsg modify(final MOB source,
 						final Environmental target,
@@ -378,9 +378,9 @@ public class DefaultMessage implements CMMsg
 		othersMsg=allMessage;
 		return this;
 	}
-	
+
 	@Override
-	public CMMsg modify(int newAllCode, String allMessage)
+	public CMMsg modify(final int newAllCode, final String allMessage)
 	{
 		targetMsg=allMessage;
 		sourceMsg=allMessage;
@@ -395,7 +395,7 @@ public class DefaultMessage implements CMMsg
 	}
 
 	@Override
-	public CMMsg modify(int newSourceCode, String sourceMessage, int newTargetCode, String targetMessage, int newOthersCode, String othersMessage)
+	public CMMsg modify(final int newSourceCode, final String sourceMessage, final int newTargetCode, final String targetMessage, final int newOthersCode, final String othersMessage)
 	{
 		sourceMsg=sourceMessage;
 		targetMsg=targetMessage;
@@ -409,232 +409,232 @@ public class DefaultMessage implements CMMsg
 		return this;
 	}
 
-	@Override 
+	@Override
 	public final MOB source()
-	{ 
-		return myAgent; 
+	{
+		return myAgent;
 	}
-	
-	@Override 
+
+	@Override
 	public final CMMsg setSource(final MOB mob)
 	{
 		myAgent=mob;
 		return this;
 	}
-	
-	@Override 
-	public final Environmental target() 
-	{ 
-		return myTarget; 
+
+	@Override
+	public final Environmental target()
+	{
+		return myTarget;
 	}
-	
-	@Override 
+
+	@Override
 	public final CMMsg setTarget(final Environmental E)
 	{
 		myTarget=E;
 		return this;
 	}
-	
-	@Override 
-	public final Environmental tool() 
-	{ 
-		return myTool; 
+
+	@Override
+	public final Environmental tool()
+	{
+		return myTool;
 	}
-	
-	@Override 
+
+	@Override
 	public final CMMsg setTool(final Environmental E)
 	{
 		myTool=E;
 		return this;
 	}
-	
-	@Override 
-	public final int targetMajor() 
-	{ 
-		return targetMajorMask; 
+
+	@Override
+	public final int targetMajor()
+	{
+		return targetMajorMask;
 	}
-	
-	@Override 
-	public final int sourceMajor() 
-	{ 
+
+	@Override
+	public final int sourceMajor()
+	{
 		return sourceMajorMask;
 	}
-	
-	@Override 
-	public final int othersMajor() 
-	{ 
-		return othersMajorMask; 
+
+	@Override
+	public final int othersMajor()
+	{
+		return othersMajorMask;
 	}
-	
-	@Override 
-	public final boolean targetMajor(final int bitMask) 
-	{ 
-		return (targetMajorMask&bitMask)==bitMask; 
+
+	@Override
+	public final boolean targetMajor(final int bitMask)
+	{
+		return (targetMajorMask&bitMask)==bitMask;
 	}
-	
-	@Override 
-	public final int targetMinor() 
-	{ 
-		return targetMinorType; 
+
+	@Override
+	public final int targetMinor()
+	{
+		return targetMinorType;
 	}
-	
-	@Override 
-	public final int targetCode() 
-	{ 
-		return targetMajorMask | targetMinorType; 
+
+	@Override
+	public final int targetCode()
+	{
+		return targetMajorMask | targetMinorType;
 	}
-	
-	@Override 
-	public final String targetMessage() 
-	{ 
+
+	@Override
+	public final String targetMessage()
+	{
 		return targetMsg;
 	}
-	
-	@Override 
-	public final int sourceCode() 
-	{ 
-		return sourceMajorMask | sourceMinorType; 
+
+	@Override
+	public final int sourceCode()
+	{
+		return sourceMajorMask | sourceMinorType;
 	}
-	
-	@Override 
-	public final boolean sourceMajor(final int bitMask) 
-	{ 
-		return (sourceMajorMask&bitMask)==bitMask; 
+
+	@Override
+	public final boolean sourceMajor(final int bitMask)
+	{
+		return (sourceMajorMask&bitMask)==bitMask;
 	}
-	
-	@Override 
-	public final int sourceMinor() 
-	{ 
+
+	@Override
+	public final int sourceMinor()
+	{
 		return sourceMinorType;
 	}
-	
-	@Override 
-	public final String sourceMessage() 
-	{ 
+
+	@Override
+	public final String sourceMessage()
+	{
 		return sourceMsg;
 	}
-	
-	@Override 
-	public final boolean othersMajor(final int bitMask) 
-	{ 
-		return (othersMajorMask&bitMask)==bitMask; 
+
+	@Override
+	public final boolean othersMajor(final int bitMask)
+	{
+		return (othersMajorMask&bitMask)==bitMask;
 	}
-	
-	@Override 
-	public final int othersMinor() 
-	{ 
-		return othersMinorType; 
+
+	@Override
+	public final int othersMinor()
+	{
+		return othersMinorType;
 	}
-	
-	@Override 
-	public final int othersCode() 
-	{  
-		return othersMajorMask | othersMinorType; 
+
+	@Override
+	public final int othersCode()
+	{
+		return othersMajorMask | othersMinorType;
 	}
-	
-	@Override 
-	public final String othersMessage() 
-	{ 
-		return othersMsg; 
+
+	@Override
+	public final String othersMessage()
+	{
+		return othersMsg;
 	}
-	
-	@Override  
+
+	@Override
 	public final boolean amITarget(final Environmental thisOne)
-	{ 
+	{
 		return ((thisOne!=null)&&(thisOne==target()));
 	}
 
-	@Override  
+	@Override
 	public final boolean amISource(final MOB thisOne)
 	{
 		return ((thisOne!=null)&&(thisOne==source()));
 	}
 
-	@Override  
+	@Override
 	public final boolean isTarget(final Environmental E)
 	{
 		return amITarget(E);
 	}
 
-	@Override  
+	@Override
 	public final boolean isTarget(final int codeOrMask)
 	{
 		return matches(targetMajorMask, targetMinorType,codeOrMask);
 	}
 
-	@Override  
+	@Override
 	public final boolean isTarget(final String codeOrMaskDesc)
 	{
 		return matches(targetMajorMask, targetMinorType,codeOrMaskDesc);
 	}
 
-	@Override  
+	@Override
 	public final boolean isTargetMajor(final String codeOrMaskDesc)
 	{
 		return matches(targetMajorMask, -1,codeOrMaskDesc);
 	}
 
-	@Override  
+	@Override
 	public final boolean isTargetMinor(final String codeOrMaskDesc)
 	{
 		return matches(0, targetMinorType,codeOrMaskDesc);
 	}
 
-	@Override  
+	@Override
 	public final boolean isSource(final Environmental E)
 	{
 		return (E instanceof MOB)?amISource((MOB)E):false;
 	}
 
-	@Override  
+	@Override
 	public final boolean isSource(final int codeOrMask)
 	{
 		return matches(sourceMajorMask, sourceMinorType, codeOrMask);
 	}
 
-	@Override  
+	@Override
 	public final boolean isSource(final String codeOrMaskDesc)
 	{
 		return matches(sourceMajorMask, sourceMinorType,codeOrMaskDesc);
 	}
 
-	@Override  
+	@Override
 	public final boolean isSourceMajor(final String codeOrMaskDesc)
 	{
 		return matches(sourceMajorMask, -1,codeOrMaskDesc);
 	}
 
-	@Override  
+	@Override
 	public final boolean isSourceMinor(final String codeOrMaskDesc)
 	{
 		return matches(0, sourceMinorType,codeOrMaskDesc);
 	}
 
-	@Override  
+	@Override
 	public final boolean isOthers(final Environmental E)
 	{
 		return (!isTarget(E))&&(!isSource(E));
 	}
 
-	@Override  
+	@Override
 	public final boolean isOthers(final int codeOrMask)
 	{
 		return matches(othersMajorMask, othersMinorType, codeOrMask);
 	}
 
-	@Override  
+	@Override
 	public final boolean isOthers(final String codeOrMaskDesc)
 	{
 		return matches(othersMajorMask, othersMinorType, codeOrMaskDesc);
 	}
 
-	@Override  
+	@Override
 	public final boolean isOthersMajor(final String codeOrMaskDesc)
 	{
 		return matches(othersMajorMask, -1, codeOrMaskDesc);
 	}
 
-	@Override  
+	@Override
 	public final boolean isOthersMinor(final String codeOrMaskDesc)
 	{
 		return matches(0, othersMinorType, codeOrMaskDesc);
@@ -644,19 +644,19 @@ public class DefaultMessage implements CMMsg
 	{
 		return ((major & code)==code) || (minor == code);
 	}
-	
+
 	protected static final boolean matches(final int major, final int minor, String code2)
 	{
 		Integer I;
 		if(major <= 0)
 		{
-			int i=CMParms.indexOf(TYPE_DESCS, code2.toUpperCase());
+			final int i=CMParms.indexOf(TYPE_DESCS, code2.toUpperCase());
 			I=(i<0)?null:Integer.valueOf(i);
 		}
 		else
 		if(minor < 0)
 		{
-			int i=CMParms.indexOf(MASK_DESCS, code2.toUpperCase());
+			final int i=CMParms.indexOf(MASK_DESCS, code2.toUpperCase());
 			I=(i<0)?null:Integer.valueOf((int)CMath.pow(2,11+i));
 		}
 		else
@@ -669,8 +669,8 @@ public class DefaultMessage implements CMMsg
 				for(int i=0;i<TYPE_DESCS.length;i++)
 				{
 					if(code2.startsWith(TYPE_DESCS[i]))
-					{ 
-						I=Integer.valueOf(i); 
+					{
+						I=Integer.valueOf(i);
 						break;
 					}
 				}
@@ -680,8 +680,8 @@ public class DefaultMessage implements CMMsg
 				for(int i=0;i<TYPE_DESCS.length;i++)
 				{
 					if(TYPE_DESCS[i].startsWith(code2))
-					{ 
-						I=Integer.valueOf(i); 
+					{
+						I=Integer.valueOf(i);
 						break;
 					}
 				}
@@ -691,8 +691,8 @@ public class DefaultMessage implements CMMsg
 				for(int i=0;i<MASK_DESCS.length;i++)
 				{
 					if(code2.startsWith(MASK_DESCS[i]))
-					{ 
-						I=Integer.valueOf((int)CMath.pow(2,11+i)); 
+					{
+						I=Integer.valueOf((int)CMath.pow(2,11+i));
 						break;
 					}
 				}
@@ -702,8 +702,8 @@ public class DefaultMessage implements CMMsg
 				for(int i=0;i<MASK_DESCS.length;i++)
 				{
 					if(MASK_DESCS[i].startsWith(code2))
-					{ 
-						I=Integer.valueOf((int)CMath.pow(2,11+i)); 
+					{
+						I=Integer.valueOf((int)CMath.pow(2,11+i));
 						break;
 					}
 				}
@@ -712,8 +712,8 @@ public class DefaultMessage implements CMMsg
 			{
 				for (final Object[] element : MISC_DESCS)
 					if(code2.startsWith((String)element[0]))
-					{ 
-						I=(Integer)element[1]; 
+					{
+						I=(Integer)element[1];
 						break;
 					}
 			}
@@ -721,8 +721,8 @@ public class DefaultMessage implements CMMsg
 			{
 				for (final Object[] element : MISC_DESCS)
 					if(((String)element[0]).startsWith(code2))
-					{ 
-						I=(Integer)element[1]; 
+					{
+						I=(Integer)element[1];
 						break;
 					}
 			}
@@ -733,7 +733,7 @@ public class DefaultMessage implements CMMsg
 	}
 
 	@Override
-	public boolean equals(Object o)
+	public boolean equals(final Object o)
 	{
 		if(o instanceof CMMsg)
 		{
@@ -812,7 +812,7 @@ public class DefaultMessage implements CMMsg
 		else
 		if((o instanceof Ability) && (myAgent != null))
 		{
-			Ability eA=myAgent.fetchEffect(subParts[1]);
+			final Ability eA=myAgent.fetchEffect(subParts[1]);
 			Ability A = null;
 			if((eA != null) && (eA.invoker() == myAgent))
 				o = eA;
@@ -833,7 +833,7 @@ public class DefaultMessage implements CMMsg
 			((MOB)o).setLocation(CMLib.map().getRandomRoom());
 		return o;
 	}
-	
+
 	@Override
 	public void parseFlatString(final String flat)
 	{
@@ -866,9 +866,9 @@ public class DefaultMessage implements CMMsg
 		targetMsg=parts[10].equals("&null;") ? null : CMStrings.replaceAll(parts[10],"&comma;",",");
 		othersMsg=parts[11].equals("&null;") ? null : CMStrings.replaceAll(parts[11],"&comma;",",");
 	}
-	
+
 	@Override
-	public boolean sameAs(CMMsg E)
+	public boolean sameAs(final CMMsg E)
 	{
 		if(E==null)
 			return false;

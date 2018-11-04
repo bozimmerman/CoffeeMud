@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_ForcefulHand extends Spell
 {
 
@@ -81,9 +80,9 @@ public class Spell_ForcefulHand extends Spell
 	{
 		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
 	}
-	
+
 	protected Item theHand=null;
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -92,8 +91,8 @@ public class Spell_ForcefulHand extends Spell
 
 		if((theHand == null) || (theHand.amDestroyed()))
 			unInvoke();
-		
-		if((msg.target() == affected) 
+
+		if((msg.target() == affected)
 		&& msg.isTarget(CMMsg.MASK_MALICIOUS)
 		&&(affected instanceof MOB))
 		{
@@ -191,7 +190,7 @@ public class Spell_ForcefulHand extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -201,13 +200,13 @@ public class Spell_ForcefulHand extends Spell
 			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> a forceful hand."));
 			return false;
 		}
-		
+
 		if(!target.isInCombat())
 		{
 			mob.tell(L("This only works while in combat."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -220,7 +219,7 @@ public class Spell_ForcefulHand extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Spell_ForcefulHand A = (Spell_ForcefulHand)beneficialAffect(mob,target,asLevel,3 + (int)Math.round(Math.sqrt(adjustedLevel(mob,asLevel))));
+				final Spell_ForcefulHand A = (Spell_ForcefulHand)beneficialAffect(mob,target,asLevel,3 + (int)Math.round(Math.sqrt(adjustedLevel(mob,asLevel))));
 				if(A!=null)
 				{
 					final Item theHand=CMClass.getBasicItem("GenItem");

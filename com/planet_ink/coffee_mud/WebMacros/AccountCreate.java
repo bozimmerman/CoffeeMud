@@ -57,7 +57,7 @@ public class AccountCreate extends StdWebMacro
 	}
 	// OK, NO_NEW_PLAYERS, NO_NEW_LOGINS, BAD_USED_NAME, CREATE_LIMIT_REACHED
 
-	public String checkImageVerification(HTTPRequest httpReq, String verify, String verifyKey)
+	public String checkImageVerification(final HTTPRequest httpReq, final String verify, final String verifyKey)
 	{
 		synchronized(ImageVerificationImage.sync)
 		{
@@ -80,9 +80,9 @@ public class AccountCreate extends StdWebMacro
 			return "";
 		}
 	}
-	
+
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final boolean emailPassword=((CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("PASS"))
 				 &&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0));
@@ -93,7 +93,7 @@ public class AccountCreate extends StdWebMacro
 			return Boolean.toString(!emailPassword);
 		if(parms.containsKey("SHOWEMAILADDRESS"))
 			return Boolean.toString(!emailDisabled);
-		
+
 		String address="unknown";
 		try
 		{
@@ -104,7 +104,7 @@ public class AccountCreate extends StdWebMacro
 		}
 		if(!CMLib.login().performSpamConnectionCheck(address))
 			return "GO_AWAY";
-		
+
 		if(parms.containsKey("FORGOT"))
 		{
 			if(!httpReq.isUrlParameter("EMAIL"))
@@ -121,7 +121,7 @@ public class AccountCreate extends StdWebMacro
 			final String verify=httpReq.getUrlParameter("VERIFY");
 			if((verify==null)||(verify.length()==0))
 				return AccountCreateErrors.NO_VERIFY.toString();
-			String verifyResult = checkImageVerification(httpReq,verify,verifykey);
+			final String verifyResult = checkImageVerification(httpReq,verify,verifykey);
 			if(verifyResult.length()>0)
 				return verifyResult;
 			String login=null;
@@ -189,12 +189,12 @@ public class AccountCreate extends StdWebMacro
 				if(acctStats instanceof PlayerStats)
 					CMLib.database().DBUpdatePassword(login,password);
 			}
-			CMLib.smtp().emailOrJournal(emailToName, "noreply", 
+			CMLib.smtp().emailOrJournal(emailToName, "noreply",
 					emailToName, L("Password for @x1",login),
 				L("Your password for @x1 at @x2 is '@x3'.",login,CMProps.getVar(CMProps.Str.MUDDOMAIN),password));
 			return "";
 		}
-		
+
 		if(!parms.containsKey("CREATE"))
 			return " @break@";
 
@@ -238,7 +238,7 @@ public class AccountCreate extends StdWebMacro
 					return AccountCreateErrors.BAD_EMAILADDRESS.toString();
 			}
 		}
-		String verifyResult = checkImageVerification(httpReq,verify,verifykey);
+		final String verifyResult = checkImageVerification(httpReq,verify,verifykey);
 		if(verifyResult.length()>0)
 			return verifyResult;
 		name = CMStrings.capitalizeAndLower(name);

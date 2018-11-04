@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_DeadReckoning extends StdSkill
 {
 	@Override
@@ -90,7 +89,7 @@ public class Skill_DeadReckoning extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -114,7 +113,7 @@ public class Skill_DeadReckoning extends StdSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
@@ -124,12 +123,12 @@ public class Skill_DeadReckoning extends StdSkill
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
+				final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.NOAIR)
 																.plus(TrackingFlag.WATERSURFACEORSHOREONLY);
-				TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
+				final TrackingLibrary.RFilter destFilter = new TrackingLibrary.RFilter()
 				{
 					@Override
-					public boolean isFilteredOut(Room hostR, Room R, Exit E, int dir)
+					public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 					{
 						if(R==null)
 							return false;
@@ -144,7 +143,7 @@ public class Skill_DeadReckoning extends StdSkill
 						return false;
 					}
 				};
-				List<Room> trail = CMLib.tracking().findTrailToAnyRoom(currentR, destFilter, flags, 100);
+				final List<Room> trail = CMLib.tracking().findTrailToAnyRoom(currentR, destFilter, flags, 100);
 				if(trail.size()==1)
 				{
 					mob.tell(L("You seem to already be there."));
@@ -155,7 +154,7 @@ public class Skill_DeadReckoning extends StdSkill
 					mob.tell(L("You can't seem to see any way to land from here."));
 					return false;
 				}
-				int dir = CMLib.map().getRoomDir(trail.get(trail.size()-1), trail.get(trail.size()-2));
+				final int dir = CMLib.map().getRoomDir(trail.get(trail.size()-1), trail.get(trail.size()-2));
 				if(dir < 0)
 				{
 					mob.tell(L("You can't seem to spot any way to land from here."));

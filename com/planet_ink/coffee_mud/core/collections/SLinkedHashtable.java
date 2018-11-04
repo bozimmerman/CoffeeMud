@@ -28,13 +28,13 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 		H = new LinkedHashMap<K, F>();
 	}
 
-	public SLinkedHashtable(int size)
+	public SLinkedHashtable(final int size)
 	{
 		super();
 		H = new LinkedHashMap<K, F>(size);
 	}
 
-	public SLinkedHashtable(Map<K, F> H)
+	public SLinkedHashtable(final Map<K, F> H)
 	{
 		super();
 		this.H = new LinkedHashMap<K, F>();
@@ -46,7 +46,7 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 	}
 
 	@SuppressWarnings("unchecked")
-	public SLinkedHashtable(Object[][] H)
+	public SLinkedHashtable(final Object[][] H)
 	{
 		super();
 		this.H = new LinkedHashMap<K, F>();
@@ -63,7 +63,7 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 		return (Hashtable<K, F>) H.clone();
 	}
 
-	public synchronized Vector<String> toStringVector(String divider)
+	public synchronized Vector<String> toStringVector(final String divider)
 	{
 		final Vector<String> V = new Vector<String>(size());
 		for (final Object S : keySet())
@@ -97,19 +97,19 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 		return SH;
 	}
 
-	public synchronized boolean contains(Object arg0)
+	public synchronized boolean contains(final Object arg0)
 	{
 		return H.containsKey(arg0);
 	}
 
 	@Override
-	public synchronized boolean containsKey(Object arg0)
+	public synchronized boolean containsKey(final Object arg0)
 	{
 		return H.containsKey(arg0);
 	}
 
 	@Override
-	public synchronized boolean containsValue(Object arg0)
+	public synchronized boolean containsValue(final Object arg0)
 	{
 		return H.containsValue(arg0);
 	}
@@ -131,13 +131,13 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 	}
 
 	@Override
-	public boolean equals(Object arg0)
+	public boolean equals(final Object arg0)
 	{
 		return this == arg0;
 	}
 
 	@Override
-	public synchronized F get(Object arg0)
+	public synchronized F get(final Object arg0)
 	{
 		return H.get(arg0);
 	}
@@ -168,7 +168,7 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized F put(K arg0, F arg1)
+	public synchronized F put(final K arg0, final F arg1)
 	{
 		H = (LinkedHashMap<K, F>) H.clone();
 		return H.put(arg0, arg1);
@@ -177,7 +177,7 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized F remove(Object arg0)
+	public synchronized F remove(final Object arg0)
 	{
 		H = (LinkedHashMap<K, F>) H.clone();
 		return H.remove(arg0);
@@ -204,7 +204,7 @@ public class SLinkedHashtable<K, F> implements java.util.Map<K, F>, java.io.Seri
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized void putAll(Map<? extends K, ? extends F> arg0)
+	public synchronized void putAll(final Map<? extends K, ? extends F> arg0)
 	{
 		H = (LinkedHashMap<K, F>) H.clone();
 		H.putAll(arg0);

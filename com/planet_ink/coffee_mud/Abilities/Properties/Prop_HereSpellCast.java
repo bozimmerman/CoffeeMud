@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_HereSpellCast extends Prop_HaveSpellCast
 {
 	@Override
@@ -75,13 +74,13 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		lastMOBs=new Vector<MOB>();
 	}
 
-	public void process(MOB mob, Room room, int code) // code=0 add/sub, 1=addon, 2=subon
+	public void process(final MOB mob, final Room room, final int code) // code=0 add/sub, 1=addon, 2=subon
 	{
 		if((code==2)||((code==0)&&(lastNum!=room.numInhabitants())))
 		{
@@ -122,7 +121,7 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 		if(processing)
 			return;

@@ -78,7 +78,7 @@ public class Chant_LandLegs extends Chant
 	protected String leaveStr = L("leaves");
 	protected int[] lastSet=null;
 	protected int[] newSet=null;
-	
+
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
@@ -101,7 +101,7 @@ public class Chant_LandLegs extends Chant
 				remove++;
 			if(CMParms.contains(breatheables, RawMaterial.RESOURCE_FRESHWATER))
 				remove++;
-			boolean addAir = !CMParms.contains(breatheables, RawMaterial.RESOURCE_AIR);
+			final boolean addAir = !CMParms.contains(breatheables, RawMaterial.RESOURCE_AIR);
 			if(remove > 0)
 			{
 				newSet=Arrays.copyOf(breatheables,breatheables.length-remove + (addAir?1:0));
@@ -140,7 +140,7 @@ public class Chant_LandLegs extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

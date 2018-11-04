@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Bleeding extends StdAbility implements HealthCondition
 {
 	@Override
@@ -82,7 +81,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 	protected int	lastDir		= -1;
 	protected Room	lastRoom	= null;
 
-	public double healthPct(MOB mob)
+	public double healthPct(final MOB mob)
 	{
 		return CMath.div(mob.curState().getHitPoints(), mob.maxState().getHitPoints());
 	}
@@ -105,7 +104,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 	}
 
 	@Override
-	public void  executeMsg(Environmental myHost, CMMsg msg)
+	public void  executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
 		if((affected!=null)&&(msg.amITarget(affected))&&(affected instanceof MOB))
@@ -180,7 +179,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, Physical target, final boolean auto, final int asLevel)
 	{
 		if(target==null)
 			target=mob;

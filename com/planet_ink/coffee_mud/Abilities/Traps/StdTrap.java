@@ -97,7 +97,7 @@ public class StdTrap extends StdAbility implements Trap
 	}
 
 	@Override
-	public void setAbilityCode(int code)
+	public void setAbilityCode(final int code)
 	{
 		ableCode = code;
 	}
@@ -135,7 +135,7 @@ public class StdTrap extends StdAbility implements Trap
 		return ticks;
 	}
 
-	public int baseDestructTime(int level)
+	public int baseDestructTime(final int level)
 	{
 		return level*30;
 	}
@@ -153,7 +153,7 @@ public class StdTrap extends StdAbility implements Trap
 			   ||(affected.fetchEffect(ID())==null);
 	}
 
-	public boolean doesSaveVsTraps(MOB target)
+	public boolean doesSaveVsTraps(final MOB target)
 	{
 		int save=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS);
 		if(invoker()!=null)
@@ -164,7 +164,7 @@ public class StdTrap extends StdAbility implements Trap
 		return (CMLib.dice().rollPercentage()<=save);
 	}
 
-	public boolean isLocalExempt(MOB target)
+	public boolean isLocalExempt(final MOB target)
 	{
 		if(target==null)
 			return false;
@@ -193,7 +193,7 @@ public class StdTrap extends StdAbility implements Trap
 			return true;
 		return false;
 	}
-	
+
 	@Override
 	public void disable()
 	{
@@ -209,7 +209,7 @@ public class StdTrap extends StdAbility implements Trap
 	}
 
 	@Override
-	public void setReset(int Reset)
+	public void setReset(final int Reset)
 	{
 		reset = Reset;
 	}
@@ -454,7 +454,7 @@ public class StdTrap extends StdAbility implements Trap
 	}
 
 	@Override
-	public boolean maySetTrap(MOB mob, int asLevel)
+	public boolean maySetTrap(final MOB mob, final int asLevel)
 	{
 		if(mob==null)
 			return false;
@@ -468,7 +468,7 @@ public class StdTrap extends StdAbility implements Trap
 	}
 
 	@Override
-	public boolean canReSetTrap(MOB mob)
+	public boolean canReSetTrap(final MOB mob)
 	{
 		final Physical P=affected;
 		if(P==null)
@@ -494,19 +494,19 @@ public class StdTrap extends StdAbility implements Trap
 				mob.tell(L("This trap is not presently set on @x1.",P.name()));
 			return false;
 		}
-		
+
 		if(T.invoker() != mob)
 		{
 			if(mob!=null)
 				mob.tell(L("The trap was not set by you."));
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
 		if(mob!=null)
 		{
@@ -561,7 +561,7 @@ public class StdTrap extends StdAbility implements Trap
 	}
 
 	@Override
-	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		if(P==null)
 			return null;
@@ -584,7 +584,7 @@ public class StdTrap extends StdAbility implements Trap
 	}
 
 	@Override
-	public void setInvoker(MOB mob)
+	public void setInvoker(final MOB mob)
 	{
 		if(mob!=null)
 			invokerName=mob.Name();
@@ -640,7 +640,7 @@ public class StdTrap extends StdAbility implements Trap
 	}
 
 	@Override
-	public void resetTrap(MOB mob)
+	public void resetTrap(final MOB mob)
 	{
 		if(sprung())
 		{
@@ -650,7 +650,7 @@ public class StdTrap extends StdAbility implements Trap
 				CMLib.threads().deleteTick(this, Tickable.TICKID_TRAP_RESET);
 		}
 	}
-	
+
 	@Override
 	public boolean sprung()
 	{
@@ -658,7 +658,7 @@ public class StdTrap extends StdAbility implements Trap
 	}
 
 	@Override
-	public void spring(MOB target)
+	public void spring(final MOB target)
 	{
 		sprung=true;
 		disabled=false;
@@ -667,28 +667,28 @@ public class StdTrap extends StdAbility implements Trap
 			CMLib.threads().startTickDown(this,Tickable.TICKID_TRAP_RESET,1);
 	}
 
-	protected RawMaterial findFirstResource(Room room, int resource)
+	protected RawMaterial findFirstResource(final Room room, final int resource)
 	{
 		return CMLib.materials().findFirstResource(room, resource);
 	}
 
-	protected RawMaterial findMostOfMaterial(Room room, int material)
+	protected RawMaterial findMostOfMaterial(final Room room, final int material)
 	{
 		return CMLib.materials().findMostOfMaterial(room, material);
 	}
 
-	protected void destroyResources(Room room, int resource, int number)
+	protected void destroyResources(final Room room, final int resource, final int number)
 	{
 		CMLib.materials().destroyResourcesValue(room,number,resource,-1,null);
 	}
 
-	protected int findNumberOfResource(Room room, RawMaterial resource)
+	protected int findNumberOfResource(final Room room, final RawMaterial resource)
 	{
 		return CMLib.materials().findNumberOfResource(room, resource);
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=super.getTarget(mob, commands, givenTarget);
 		if(target == null)
@@ -697,7 +697,7 @@ public class StdTrap extends StdAbility implements Trap
 			return true;
 		if(!super.invoke(mob, commands, target, auto, asLevel))
 			return false;
-		StdTrap T=(StdTrap)copyOf();
+		final StdTrap T=(StdTrap)copyOf();
 		T.setInvoker(mob);
 		T.setAffectedOne(mob);
 		T.spring(target);

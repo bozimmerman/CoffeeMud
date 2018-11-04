@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Superstition extends ThiefSkill
 {
 	@Override
@@ -97,7 +96,7 @@ public class Thief_Superstition extends ThiefSkill
 	protected String	itemname		= "";
 	protected String	language		= "";
 	protected boolean	activated		= false;
-	protected TimeClock	activatedUntil	= null;	
+	protected TimeClock	activatedUntil	= null;
 
 	protected void setupCheck()
 	{
@@ -118,7 +117,7 @@ public class Thief_Superstition extends ThiefSkill
 			}
 		}
 	}
-	
+
 	@Override
 	public String displayText()
 	{
@@ -157,7 +156,7 @@ public class Thief_Superstition extends ThiefSkill
 				&&(msg.tool() instanceof Language)
 				&&(language.equalsIgnoreCase(msg.tool().ID()))))
 			{
-				String say=CMStrings.getSayFromMessage(msg.sourceMessage());
+				final String say=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if((say!=null)&&(say.equalsIgnoreCase(sayMsg)))
 				{
 					final Room R=msg.source().location();
@@ -165,7 +164,7 @@ public class Thief_Superstition extends ThiefSkill
 					{
 						final List<Item> items=msg.source().findItems(itemname);
 						boolean found=false;
-						for(Item I : items)
+						for(final Item I : items)
 						{
 							if(CMLib.english().removeArticleLead(I.Name()).equalsIgnoreCase(itemname)
 							&&(!I.amWearingAt(Item.IN_INVENTORY)))
@@ -193,7 +192,7 @@ public class Thief_Superstition extends ThiefSkill
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -233,21 +232,21 @@ public class Thief_Superstition extends ThiefSkill
 		}
 		return true;
 	}
-	
+
 	@Override
-	public void setAffectedOne(Physical P)
+	public void setAffectedOne(final Physical P)
 	{
 		super.setAffectedOne(P);
 		setupCheck();
 	}
-	
+
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		setupCheck();
 	}
-	
+
 	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
@@ -260,7 +259,7 @@ public class Thief_Superstition extends ThiefSkill
 				affectableStats.adjustAbilityAdjustment("prof+*",affectableStats.getAbilityAdjustment("prof+*")-10);
 		}
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -283,9 +282,9 @@ public class Thief_Superstition extends ThiefSkill
 			}
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((text().length()>0)&&(text().indexOf('<')>=0))
 		{
@@ -310,7 +309,7 @@ public class Thief_Superstition extends ThiefSkill
 		else
 		if(!auto)
 		{
-			String newSay = CMParms.combine(commands);
+			final String newSay = CMParms.combine(commands);
 			if((newSay == null) || (newSay.trim().length()==0))
 			{
 				mob.tell(L("No superstition has been set yet.  To set one, give a thing to say that`s at least 5 words and at least 30 characters long."));
@@ -321,7 +320,7 @@ public class Thief_Superstition extends ThiefSkill
 				mob.tell(L("No superstition has been set yet, and your thing to say is too short.  Give one that`s at least 30 characters long consisting of at least 5 words."));
 				return false;
 			}
-			List<Item> choices = new ArrayList<Item>();
+			final List<Item> choices = new ArrayList<Item>();
 			for (final Enumeration<Item> i = mob.items(); i.hasMoreElements();)
 			{
 				final Item I = i.nextElement();
@@ -335,16 +334,16 @@ public class Thief_Superstition extends ThiefSkill
 				mob.tell(L("No superstition has been set yet, and your thing to say is fine.  However, you need to be wearing at least 3 things to set your superstition."));
 				return false;
 			}
-			Item I=choices.get(CMLib.dice().roll(1, choices.size(), -1));
-			String wearName=CMLib.english().removeArticleLead(I.Name());
-			Language langA = CMLib.utensils().getLanguageSpoken(mob);
-			String langID = ((langA==null)||(langA.ID().equals("Common"))) ? "" : langA.ID();
-			StringBuilder newXml=new StringBuilder("<SAY>").append(CMLib.xml().parseOutAngleBrackets(newSay)).append("</SAY>")
+			final Item I=choices.get(CMLib.dice().roll(1, choices.size(), -1));
+			final String wearName=CMLib.english().removeArticleLead(I.Name());
+			final Language langA = CMLib.utensils().getLanguageSpoken(mob);
+			final String langID = ((langA==null)||(langA.ID().equals("Common"))) ? "" : langA.ID();
+			final StringBuilder newXml=new StringBuilder("<SAY>").append(CMLib.xml().parseOutAngleBrackets(newSay)).append("</SAY>")
 											.append("<WEAR>").append(CMLib.xml().parseOutAngleBrackets(wearName)).append("</WEAR>")
 											.append("<LANG>").append(langID).append("</LANG>");
 			mob.tell(L("Your new superstition is to put on your lucky @x1 and say '@x2'.",wearName,newSay));
 			this.setMiscText(newXml.toString());
-			Ability A=mob.fetchEffect(ID());
+			final Ability A=mob.fetchEffect(ID());
 			if(A!=null)
 			{
 				A.setMiscText(newXml.toString());

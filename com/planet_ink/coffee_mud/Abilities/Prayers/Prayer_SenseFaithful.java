@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_SenseFaithful extends Prayer
 {
 	@Override
@@ -81,26 +80,26 @@ public class Prayer_SenseFaithful extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.getWorshipCharID()==null)||(mob.getWorshipCharID().length()==0))
 		{
 			mob.tell(L("You don't worship a deity, so this magic means nothing."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> @x1 for knowledge of the faithful^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),L("^S<S-NAME> @x1 for knowledge of the faithful^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				final String deityName=mob.getWorshipCharID();
-				Command C=CMClass.getCommand("Who");
+				final Command C=CMClass.getCommand("Who");
 				if(C!=null)
 				{
 					try
@@ -111,16 +110,16 @@ public class Prayer_SenseFaithful extends Prayer
 								C.executeInternal(mob, 0, Boolean.FALSE, new Filterer<MOB>()
 								{
 									@Override
-									public boolean passesFilter(MOB obj)
+									public boolean passesFilter(final MOB obj)
 									{
 										return (obj!=null) && (obj.getWorshipCharID().equals(deityName));
 									}
-									
+
 								}
 							).toString());
 						}
 					}
-					catch (IOException e)
+					catch (final IOException e)
 					{
 					}
 				}

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_CreateIdol extends Prayer
 {
 	@Override
@@ -86,7 +85,7 @@ public class Prayer_CreateIdol extends Prayer
 	}
 
 	@Override
-	public void affectPhyStats(Physical aff, PhyStats affectableStats)
+	public void affectPhyStats(final Physical aff, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(aff,affectableStats);
 		if((affected instanceof Item)&&(((Item)affected).container()==null))
@@ -98,7 +97,7 @@ public class Prayer_CreateIdol extends Prayer
 	}
 
 	@Override
-	public void affectCharStats(MOB aff, CharStats affectableStats)
+	public void affectCharStats(final MOB aff, final CharStats affectableStats)
 	{
 		super.affectCharStats(aff,affectableStats);
 		if((affected instanceof Item)&&(((Item)affected).container()==null))
@@ -113,7 +112,7 @@ public class Prayer_CreateIdol extends Prayer
 	}
 
 	@Override
-	public void affectCharState(MOB aff, CharState affectableState)
+	public void affectCharState(final MOB aff, final CharState affectableState)
 	{
 		super.affectCharState(aff,affectableState);
 		if((affected instanceof Item)&&(((Item)affected).container()==null))
@@ -140,7 +139,7 @@ public class Prayer_CreateIdol extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.getWorshipCharID().length()==0)||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
 		{

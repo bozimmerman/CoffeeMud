@@ -55,7 +55,7 @@ public class Angelfish extends Fish
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSpeed(affectableStats.speed() + 1.0);
 	}
-	
+
 	private final String[]	racialAbilityNames			= { "Aquan", "Skill_Swim", "Blessing" };
 	private final int[]		racialAbilityLevels			= { 1,1,9 };
 	private final int[]		racialAbilityProficiencies	= { 100,100,100 };

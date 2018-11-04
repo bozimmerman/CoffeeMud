@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_HardToStern extends StdSkill
 {
 	@Override
@@ -88,7 +87,7 @@ public class Skill_HardToStern extends StdSkill
 	{
 		return 100;
 	}
-	
+
 	@Override
 	public int usageType()
 	{
@@ -112,11 +111,11 @@ public class Skill_HardToStern extends StdSkill
 		}
 		return true;
 	}
-	
+
 	protected volatile long lastUse = 0;
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -139,13 +138,13 @@ public class Skill_HardToStern extends StdSkill
 			mob.tell(L("You must be on your sailing ship."));
 			return false;
 		}
-		
+
 		if((R.domainType()&Room.INDOORS)!=0)
 		{
 			mob.tell(L("You must be on the deck of a ship."));
 			return false;
 		}
-		
+
 		if((!CMLib.law().doesHavePriviledgesHere(mob, R))
 		&&(!CMSecurity.isAllowed(mob, R, CMSecurity.SecFlag.CMDMOBS)))
 		{
@@ -157,7 +156,7 @@ public class Skill_HardToStern extends StdSkill
 			mob.tell(L("You must be in ship combat to use this skill."));
 			return false;
 		}
-		
+
 		if(((System.currentTimeMillis()-lastUse)<(3 * 60 * 1000))
 		||(myShipItem.fetchEffect("Skill_HardToPort")!=null))
 		{
@@ -167,7 +166,7 @@ public class Skill_HardToStern extends StdSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)

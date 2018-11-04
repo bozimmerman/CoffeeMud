@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_ReefWalking extends Chant_PlantPass
 {
 	@Override
@@ -78,9 +77,9 @@ public class Chant_ReefWalking extends Chant_PlantPass
 	{
 		return "growths";
 	}
-	
+
 	@Override
-	protected boolean isAcceptableTargetRoom(MOB mob, Room newRoom)
+	protected boolean isAcceptableTargetRoom(final MOB mob, final Room newRoom)
 	{
 		if(!CMLib.flags().isWateryRoom(newRoom))
 		{
@@ -89,9 +88,9 @@ public class Chant_ReefWalking extends Chant_PlantPass
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob == null)
 			return false;

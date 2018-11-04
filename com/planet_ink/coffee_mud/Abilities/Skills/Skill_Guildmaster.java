@@ -91,7 +91,7 @@ public class Skill_Guildmaster extends StdSkill
 	}
 
 	protected static CharClass notAClass = null;
-	
+
 	protected boolean disabled=false;
 
 	@Override
@@ -124,7 +124,7 @@ public class Skill_Guildmaster extends StdSkill
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

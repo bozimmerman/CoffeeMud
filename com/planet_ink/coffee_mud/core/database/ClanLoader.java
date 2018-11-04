@@ -37,7 +37,7 @@ import java.util.*;
 public class ClanLoader
 {
 	protected DBConnector DB=null;
-	public ClanLoader(DBConnector newDB)
+	public ClanLoader(final DBConnector newDB)
 	{
 		DB=newDB;
 	}
@@ -45,18 +45,18 @@ public class ClanLoader
 	protected int currentRecordPos=1;
 	protected int recordCount=0;
 
-	public void updateBootStatus(String loading)
+	public void updateBootStatus(final String loading)
 	{
 		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading "+loading+" ("+currentRecordPos+" of "+recordCount+")");
 	}
-	
-	public void DBReadClanItems(Map<String,Clan> clans)
+
+	public void DBReadClanItems(final Map<String,Clan> clans)
 	{
 		DBConnection D=null;
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCLIT");
+			final ResultSet R=D.query("SELECT * FROM CMCLIT");
 			while(R.next())
 			{
 				final String clanID=DBConnections.getRes(R,"CMCLID");
@@ -129,12 +129,12 @@ public class ClanLoader
 
 	public List<Clan> DBRead()
 	{
-		List<Clan> clanList=new ArrayList<Clan>();
+		final List<Clan> clanList=new ArrayList<Clan>();
 		DBConnection D=null;
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCLAN");
+			final ResultSet R=D.query("SELECT * FROM CMCLAN");
 			recordCount=DB.getRecordCount(D,R);
 			final Map<String,Clan> clans=new Hashtable<String,Clan>();
 			while(R.next())
@@ -170,7 +170,7 @@ public class ClanLoader
 		return clanList;
 	}
 
-	public void DBUpdate(Clan C)
+	public void DBUpdate(final Clan C)
 	{
 		final String sql="UPDATE CMCLAN SET "
 				+"CMDESC='"+C.getPremise()+"',"
@@ -251,7 +251,7 @@ public class ClanLoader
 		DB.updateWithClobs(statements);
 	}
 
-	public void DBCreate(Clan C)
+	public void DBCreate(final Clan C)
 	{
 		if(C.clanID().length()==0)
 			return;
@@ -281,7 +281,7 @@ public class ClanLoader
 			DB.updateWithClobs(sql, C.getPolitics());
 	}
 
-	public void DBDelete(Clan C)
+	public void DBDelete(final Clan C)
 	{
 		DBConnection D=null;
 		try

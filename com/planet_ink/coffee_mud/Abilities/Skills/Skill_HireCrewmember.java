@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_HireCrewmember extends StdSkill
 {
 	@Override
@@ -99,27 +98,27 @@ public class Skill_HireCrewmember extends StdSkill
 	}
 
 	protected int abilityCode = 0;
-	
+
 	@Override
 	public int abilityCode()
 	{
 		return abilityCode;
 	}
-	
+
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		this.abilityCode = newCode;
 	}
-	
+
 	@Override
 	public CMObject copyOf()
 	{
-		Skill_HireCrewmember A=(Skill_HireCrewmember)super.copyOf();
+		final Skill_HireCrewmember A=(Skill_HireCrewmember)super.copyOf();
 		A.sailor=null;
 		return A;
 	}
-	
+
 	private enum CrewType
 	{
 		REPAIRER,
@@ -128,23 +127,23 @@ public class Skill_HireCrewmember extends StdSkill
 		DEFENDER,
 		TRAWLER
 	}
-	
+
 	protected String	shipName	= "";
 	protected CrewType	type		= null;
 	protected Behavior	sailor		= null;
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		int x=newMiscText.indexOf(';');
+		final int x=newMiscText.indexOf(';');
 		if(x>0)
 		{
 			shipName=newMiscText.substring(0,x);
 			type=(CrewType)CMath.s_valueOf(CrewType.class, newMiscText.substring(x+1));
 		}
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -171,12 +170,12 @@ public class Skill_HireCrewmember extends StdSkill
 			}
 		}
 	}
-	
+
 	public Behavior getSailor()
 	{
 		if(affected instanceof PhysicalAgent)
 		{
-			PhysicalAgent agent=(PhysicalAgent)affected;
+			final PhysicalAgent agent=(PhysicalAgent)affected;
 			if((sailor == null)||(agent.fetchBehavior("Sailor")!=sailor))
 			{
 				final Behavior B=agent.fetchBehavior("Sailor");
@@ -191,7 +190,7 @@ public class Skill_HireCrewmember extends StdSkill
 						final MOB mob=(MOB)agent;
 						if(mob.fetchAbility("Shipwright")==null)
 						{
-							Ability A=CMClass.getAbility("Shipwright");
+							final Ability A=CMClass.getAbility("Shipwright");
 							int prof=(mob.phyStats().level()+(5*super.getXLEVELLevel(invoker())))*2;
 							if(prof>=100)
 								prof=99;
@@ -217,7 +216,7 @@ public class Skill_HireCrewmember extends StdSkill
 						final MOB mob=(MOB)agent;
 						if(mob.fetchAbility("Trawling")==null)
 						{
-							Ability A=CMClass.getAbility("Trawling");
+							final Ability A=CMClass.getAbility("Trawling");
 							int prof=(mob.phyStats().level()+(5*super.getXLEVELLevel(invoker())))*2;
 							if(prof>=100)
 								prof=99;
@@ -235,14 +234,14 @@ public class Skill_HireCrewmember extends StdSkill
 		}
 		return sailor;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
-		Physical affected=this.affected;
+		final Physical affected=this.affected;
 		if(affected instanceof PhysicalAgent)
 		{
-			PhysicalAgent agent=(PhysicalAgent)affected;
+			final PhysicalAgent agent=(PhysicalAgent)affected;
 			final Behavior B=agent.fetchBehavior("Sailor");
 			if(B!=null)
 				agent.delBehavior(B);
@@ -256,7 +255,7 @@ public class Skill_HireCrewmember extends StdSkill
 		super.unInvoke();
 		affected.destroy();
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
@@ -264,19 +263,19 @@ public class Skill_HireCrewmember extends StdSkill
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting, msg);
 	}
-	
+
 	protected boolean isCrew(final MOB M, final String shipName)
 	{
-		Skill_HireCrewmember articlesA=(Skill_HireCrewmember)M.fetchEffect(ID());
+		final Skill_HireCrewmember articlesA=(Skill_HireCrewmember)M.fetchEffect(ID());
 		return ((articlesA!=null)&&(articlesA.shipName.equals(shipName)));
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -296,7 +295,7 @@ public class Skill_HireCrewmember extends StdSkill
 					this.unInvoke();
 					return false;
 				}
-				
+
 				if((R.getArea() instanceof BoardableShip)
 				&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
 				{
@@ -307,7 +306,7 @@ public class Skill_HireCrewmember extends StdSkill
 						int numRooms=0;
 						int numCrew=0;
 						int numDecks=0;
-						int[] numTypes=new int[CrewType.values().length];
+						final int[] numTypes=new int[CrewType.values().length];
 						for(final Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)
 						{
 							final Room R2=r.nextElement();
@@ -334,29 +333,29 @@ public class Skill_HireCrewmember extends StdSkill
 								}
 							}
 						}
-						
-						int bonus= ( adjustedLevel(mob,0) / 10);
+
+						final int bonus= ( adjustedLevel(mob,0) / 10);
 						if(bonus > 0)
 						{
-							int bonusDecks = bonus / 2;
+							final int bonusDecks = bonus / 2;
 							numRooms += bonus;
 							numDecks += bonusDecks;
 						}
-						
+
 						CrewType nextType = null;
 						final int maxCaptains = 1;
 						final int maxTacticians = 1;
 						final int maxDefenders = numDecks;
 						final int maxTrawlers = numDecks;
 						final int maxRepairers = (int)Math.round(Math.ceil(CMath.div((numRooms-numDecks),2.0)));
-						
+
 						if(numCrew >= (maxRepairers + maxTrawlers + maxDefenders + maxTacticians + maxCaptains))
 						{
 							CMLib.commands().postSay(mob, L("This ship already has the maximum crew."));
 							unInvoke();
 							return false;
 						}
-						
+
 						int attempts=10000;
 						while((nextType == null)&&(--attempts>0))
 						{
@@ -388,14 +387,14 @@ public class Skill_HireCrewmember extends StdSkill
 								}
 							}
 						}
-						
+
 						if(nextType == null)
 						{
 							CMLib.commands().postSay(mob, L("This ship already has enough crew."));
 							unInvoke();
 							return false;
 						}
-						
+
 						this.type=nextType;
 						mob.recoverPhyStats();
 						R.recoverRoomStats();
@@ -428,20 +427,20 @@ public class Skill_HireCrewmember extends StdSkill
 			getSailor();
 		return true;
 	}
-	
+
 	protected String getCrewShip(final MOB M)
 	{
-		Skill_HireCrewmember articlesA=(Skill_HireCrewmember)M.fetchEffect(ID());
+		final Skill_HireCrewmember articlesA=(Skill_HireCrewmember)M.fetchEffect(ID());
 		return (articlesA!=null) ? articlesA.shipName : "";
 	}
-	
+
 	protected CrewType getCrewType(final MOB M)
 	{
-		Skill_HireCrewmember articlesA=(Skill_HireCrewmember)M.fetchEffect(ID());
+		final Skill_HireCrewmember articlesA=(Skill_HireCrewmember)M.fetchEffect(ID());
 		return (articlesA!=null) ? articlesA.type : null;
 	}
-	
-	public boolean isPub(MOB mob, Room room)
+
+	public boolean isPub(final MOB mob, final Room room)
 	{
 		for(int m=0;m<room.numInhabitants();m++)
 		{
@@ -469,7 +468,7 @@ public class Skill_HireCrewmember extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -482,7 +481,7 @@ public class Skill_HireCrewmember extends StdSkill
 		int range=5;
 		if(minLevel + range > mob.phyStats().level())
 			range = 1;
-		int level = CMLib.dice().roll(1, range, minLevel);
+		final int level = CMLib.dice().roll(1, range, minLevel);
 		if(!auto)
 		{
 			if(!this.isPub(mob, R))
@@ -490,18 +489,18 @@ public class Skill_HireCrewmember extends StdSkill
 				mob.tell(L("You must in a pub to hire a sailor."));
 				return false;
 			}
-			TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-			int roomRange = baseWaterRange + super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob);
-			List<Room> nearby=CMLib.tracking().findTrailToAnyRoom(R, TrackingFlag.WATERSURFACEONLY.myFilter, flags, roomRange);
+			final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
+			final int roomRange = baseWaterRange + super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob);
+			final List<Room> nearby=CMLib.tracking().findTrailToAnyRoom(R, TrackingFlag.WATERSURFACEONLY.myFilter, flags, roomRange);
 			if((nearby==null)||(nearby.size()==0))
 			{
 				mob.tell(L("There's no sea or river nearby, so no one here would be a sailor."));
 				return false;
 			}
-			
-			int medLevel = minLevel + (int)Math.round(CMath.ceiling(CMath.div(range, 2.0)));
-			double amt = medLevel * 10.0;
-			String currency=R.getArea().getCurrency();
+
+			final int medLevel = minLevel + (int)Math.round(CMath.ceiling(CMath.div(range, 2.0)));
+			final double amt = medLevel * 10.0;
+			final String currency=R.getArea().getCurrency();
 			moneyStr = CMLib.beanCounter().abbreviatedPrice(currency, amt);
 			if(CMLib.beanCounter().getTotalAbsoluteValue(mob, currency) < amt)
 			{
@@ -510,7 +509,7 @@ public class Skill_HireCrewmember extends StdSkill
 			}
 			money=amt;
 		}
-		
+
 		if(mob.numFollowers() >= mob.maxFollowers())
 		{
 			mob.tell(L("You have too many followers to gather up another one right now."));
@@ -520,7 +519,7 @@ public class Skill_HireCrewmember extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			if(money > 0.0)
@@ -528,8 +527,8 @@ public class Skill_HireCrewmember extends StdSkill
 			final MOB targetM=CMClass.getMOB("GenMob");
 			final List<Race> races=CMLib.login().raceQualifies(Area.THEME_FANTASY);
 			final Race raceR=races.get(CMLib.dice().roll(1, races.size(), -1));
-			String name=CMLib.login().generateRandomName(1, 5);
-			String raceName=raceR.name();
+			final String name=CMLib.login().generateRandomName(1, 5);
+			final String raceName=raceR.name();
 			switch(CMLib.dice().roll(1, 5, -1))
 			{
 			case 0:
@@ -577,15 +576,15 @@ public class Skill_HireCrewmember extends StdSkill
 			//targetM.location().showOthers(targetM,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
 			R.recoverRoomStats();
 			targetM.setStartRoom(null);
-			
-			String str=auto?"":L("^S<S-NAME> offer(s) <T-NAME> @x1 to hire on as a crewmember..^?",moneyStr);
+
+			final String str=auto?"":L("^S<S-NAME> offer(s) <T-NAME> @x1 to hire on as a crewmember..^?",moneyStr);
 			final CMMsg msg=CMClass.getMsg(mob,targetM,this,CMMsg.MSG_NOISYMOVEMENT,str,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),str,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
 				R.show(targetM, null, CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> sign(s) up to be a member of your crew.",targetM.name()));
 				type=null;
-				Skill_HireCrewmember A=(Skill_HireCrewmember)this.beneficialAffect(mob, targetM, asLevel, 0);
+				final Skill_HireCrewmember A=(Skill_HireCrewmember)this.beneficialAffect(mob, targetM, asLevel, 0);
 				A.type=null;
 				CMLib.commands().postFollow(targetM, mob, false);
 			}

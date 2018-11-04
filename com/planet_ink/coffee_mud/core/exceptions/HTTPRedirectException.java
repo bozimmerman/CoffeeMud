@@ -34,7 +34,7 @@ public class HTTPRedirectException extends HTTPServerException
 {
 	public static final long serialVersionUID=0;
 
-	public HTTPRedirectException(String url)
+	public HTTPRedirectException(final String url)
 	{
 		super(url);
 	}

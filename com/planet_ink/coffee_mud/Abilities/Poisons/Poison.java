@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Poison extends StdAbility implements HealthCondition
 {
 	@Override
@@ -155,7 +154,7 @@ public class Poison extends StdAbility implements HealthCondition
 	{
 		return false;
 	}
-	
+
 	protected boolean	processing	= false;
 
 	protected int		poisonTick	= 3;
@@ -169,7 +168,7 @@ public class Poison extends StdAbility implements HealthCondition
 			return "Suffering from "+name()+" poisoning.";
 	}
 
-	protected boolean catchIt(MOB mob, Physical target)
+	protected boolean catchIt(final MOB mob, final Physical target)
 	{
 		MOB poisoner=invoker;
 		if(poisoner==null)
@@ -354,7 +353,7 @@ public class Poison extends StdAbility implements HealthCondition
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Environmental target=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null)

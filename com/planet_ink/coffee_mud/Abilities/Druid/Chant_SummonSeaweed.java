@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SummonSeaweed extends Chant_SummonPlants
 {
 	@Override
@@ -78,7 +77,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 		return true;
 	}
 
-	public Item buildSeaweed(MOB mob, Room room)
+	public Item buildSeaweed(final MOB mob, final Room room)
 	{
 		final Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(RawMaterial.RESOURCE_SEAWEED);
@@ -134,13 +133,13 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 	}
 
 	@Override
-	protected Item buildMyPlant(MOB mob, Room room)
+	protected Item buildMyPlant(final MOB mob, final Room room)
 	{
 		return buildSeaweed(mob,room);
 	}
 
 	@Override
-	public boolean rightPlace(MOB mob,boolean auto)
+	public boolean rightPlace(final MOB mob,final boolean auto)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
 		{

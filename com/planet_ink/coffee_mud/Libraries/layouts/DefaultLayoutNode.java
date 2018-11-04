@@ -41,12 +41,12 @@ public class DefaultLayoutNode implements LayoutNode
 	private final Map<LayoutTags, String>	tags			= new SHashtable<LayoutTags, String>();
 	private final Set<LayoutFlags>			flags			= new HashSet<LayoutFlags>();
 
-	public DefaultLayoutNode(long[] coord)
+	public DefaultLayoutNode(final long[] coord)
 	{
 		this.coord = coord;
 	}
 
-	public DefaultLayoutNode(long x, long y)
+	public DefaultLayoutNode(final long x, final long y)
 	{
 		this.coord = new long[]{x,y};
 	}
@@ -58,7 +58,7 @@ public class DefaultLayoutNode implements LayoutNode
 	}
 
 	@Override
-	public void setRoom(Room room)
+	public void setRoom(final Room room)
 	{
 		associatedRoom = room;
 	}
@@ -82,14 +82,14 @@ public class DefaultLayoutNode implements LayoutNode
 	}
 
 	@Override
-	public void crossLink(LayoutNode to)
+	public void crossLink(final LayoutNode to)
 	{
 		links.put(Integer.valueOf(AbstractLayout.getDirection(this, to)), to);
 		to.links().put(Integer.valueOf(AbstractLayout.getDirection(to, this)), this);
 	}
 
 	@Override
-	public boolean isFlagged(LayoutFlags flag)
+	public boolean isFlagged(final LayoutFlags flag)
 	{
 		return flags.contains(flag);
 	}
@@ -103,7 +103,7 @@ public class DefaultLayoutNode implements LayoutNode
 	}
 
 	@Override
-	public void delLink(LayoutNode linkNode)
+	public void delLink(final LayoutNode linkNode)
 	{
 		for (final Iterator<Integer> e = links.keySet().iterator(); e.hasNext();)
 		{
@@ -114,7 +114,7 @@ public class DefaultLayoutNode implements LayoutNode
 	}
 
 	@Override
-	public LayoutNode getLink(int d)
+	public LayoutNode getLink(final int d)
 	{
 		return links.get(Integer.valueOf(d));
 	}
@@ -165,19 +165,19 @@ public class DefaultLayoutNode implements LayoutNode
 	}
 
 	@Override
-	public void flag(LayoutFlags flag)
+	public void flag(final LayoutFlags flag)
 	{
 		final String s = tags.get(LayoutTags.NODEFLAGS);
 		flags.add(flag);
 		if (s == null)
 			tags.put(LayoutTags.NODEFLAGS, "," + flag.toString() + ",");
-		else 
+		else
 		if (s.indexOf("," + flag.toString() + ",") < 0)
 			tags.put(LayoutTags.NODEFLAGS, s + flag.toString() + ",");
 	}
 
 	@Override
-	public void flagRun(LayoutRuns run)
+	public void flagRun(final LayoutRuns run)
 	{
 		tags.put(LayoutTags.NODERUN, run.toString());
 	}
@@ -189,7 +189,7 @@ public class DefaultLayoutNode implements LayoutNode
 	}
 
 	@Override
-	public void setExits(int[] dirs)
+	public void setExits(final int[] dirs)
 	{
 		final StringBuffer buf = new StringBuffer(",");
 		for (int d = 0; d < Directions.NUM_DIRECTIONS(); d++)
@@ -206,13 +206,13 @@ public class DefaultLayoutNode implements LayoutNode
 	}
 
 	@Override
-	public void reType(LayoutTypes type)
+	public void reType(final LayoutTypes type)
 	{
 		tags.put(LayoutTags.NODETYPE, type.toString());
 	}
 
 	@Override
-	public String getColorRepresentation(char roomChar, int line)
+	public String getColorRepresentation(final char roomChar, final int line)
 	{
 
 		switch (line)
@@ -229,7 +229,7 @@ public class DefaultLayoutNode implements LayoutNode
 					return "<" + roomChar + ">";
 				return " " + roomChar + ">";
 			}
-			else 
+			else
 			if (links.containsKey(Integer.valueOf(Directions.WEST)))
 				return "<" + roomChar + " ";
 			return " " + roomChar + " ";

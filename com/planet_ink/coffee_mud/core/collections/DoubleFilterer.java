@@ -23,14 +23,14 @@ public interface DoubleFilterer<K>
 		REJECTED,
 		NOTAPPLICABLE
 	}
-	
+
 	public Result getFilterResult(K obj);
 
 	@SuppressWarnings("rawtypes")
 	public static final DoubleFilterer ANYTHING=new DoubleFilterer()
 	{
 		@Override
-		public Result getFilterResult(Object obj)
+		public Result getFilterResult(final Object obj)
 		{
 			return Result.NOTAPPLICABLE;
 		}

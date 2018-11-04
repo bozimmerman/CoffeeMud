@@ -73,16 +73,16 @@ public class FrostGiant extends StdMOB
 		A=CMClass.getAbility("Chant_FeelHeat");
 		if(A!=null)
 			addNonUninvokableEffect(A);
-		
+
 		addBehavior(CMClass.getBehavior("Aggressive"));
 
-		Weapon w=CMClass.getWeapon("BattleAxe");
+		final Weapon w=CMClass.getWeapon("BattleAxe");
 		if(w!=null)
 		{
 			w.wearAt(Wearable.WORN_WIELD);
 			this.addItem(w);
 		}
-		
+
 		recoverMaxState();
 		resetToMaxState();
 		recoverPhyStats();

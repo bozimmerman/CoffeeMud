@@ -67,7 +67,7 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		uses=newCode;
 	}
@@ -85,7 +85,7 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		minLevel=CMParms.getParmInt(newText,"min",minLevel);

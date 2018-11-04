@@ -59,17 +59,17 @@ public class Whirlpool extends StdGrid
 	{
 		return "WaterSurface";
 	}
-	
-	protected boolean linkRoomOpen(int[] curXY, int dir)
+
+	protected boolean linkRoomOpen(final int[] curXY, final int dir)
 	{
 		if((subMap != null)
 		&&(curXY[0] >=0)&&(curXY[0]<xsize)
 		&&(curXY[1] >=0)&&(curXY[1]<ysize)
 		&&(dir>=0))
 		{
-			Room fromRoom = subMap[curXY[0]][curXY[1]];
+			final Room fromRoom = subMap[curXY[0]][curXY[1]];
 			Room toRoom = null;
-			int[] testXY = Arrays.copyOf(curXY,curXY.length);
+			final int[] testXY = Arrays.copyOf(curXY,curXY.length);
 			switch(dir)
 			{
 			case Directions.NORTH:
@@ -108,7 +108,7 @@ public class Whirlpool extends StdGrid
 					if(toRoom.getRawExit(d)!=null)
 						return false;
 				}
-				Behavior currents=CMClass.getBehavior("WaterCurrents");
+				final Behavior currents=CMClass.getBehavior("WaterCurrents");
 				if(currents != null)
 				{
 					currents.setParms("minticks=1 maxticks=2 chance=75 "+CMLib.directions().getDirectionName(dir));
@@ -118,23 +118,23 @@ public class Whirlpool extends StdGrid
 				}
 				curXY[0]=testXY[0];
 				curXY[1]=testXY[1];
-				Exit o=CMClass.getExit("Open");
+				final Exit o=CMClass.getExit("Open");
 				this.linkRoom(fromRoom, toRoom, dir, o, o);
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	protected void buildWhirl()
 	{
-		int[] curXY=new int[]{xsize-1,0};
-		int dirs[]=new int[]{Directions.WEST,Directions.SOUTH,Directions.EAST,Directions.NORTH};
+		final int[] curXY=new int[]{xsize-1,0};
+		final int dirs[]=new int[]{Directions.WEST,Directions.SOUTH,Directions.EAST,Directions.NORTH};
 		int num=xsize-1;
 		Room lastRoom=null;
 		while(num>0)
 		{
-			for(int dir : dirs)
+			for(final int dir : dirs)
 			{
 				for(int i=0;i<num;i++)
 				{
@@ -150,14 +150,14 @@ public class Whirlpool extends StdGrid
 				}
 			}
 		}
-		int dir = Directions.DOWN;
+		final int dir = Directions.DOWN;
 		while(lastRoom != null)
 		{
 			lastRoom.giveASky(0);
-			Room downRoom = lastRoom.getRoomInDir(dir);
+			final Room downRoom = lastRoom.getRoomInDir(dir);
 			if(downRoom != null)
 			{
-				Behavior currents=CMClass.getBehavior("WaterCurrents");
+				final Behavior currents=CMClass.getBehavior("WaterCurrents");
 				if(currents != null)
 				{
 					currents.setParms("minticks=1 maxticks=2 chance=75 BOATS "+CMLib.directions().getDirectionName(dir));
@@ -169,7 +169,7 @@ public class Whirlpool extends StdGrid
 			lastRoom=downRoom;
 		}
 	}
-	
+
 	@Override
 	protected void buildFinalLinks()
 	{
@@ -211,7 +211,7 @@ public class Whirlpool extends StdGrid
 			}
 		}
 	}
-	
+
 	@Override
 	public void buildGrid()
 	{
@@ -230,7 +230,7 @@ public class Whirlpool extends StdGrid
 					}
 				}
 			}
-			
+
 			buildWhirl();
 			buildFinalLinks();
 		}

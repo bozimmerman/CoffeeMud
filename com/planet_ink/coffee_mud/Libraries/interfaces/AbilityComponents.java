@@ -33,14 +33,14 @@ import java.util.*;
 
 /**
  * Library for configureing and managing the rules for what resource
- * components (magic dust, tools, etc) are required every time a 
- * particular skill is used.  Normally this would be part of the 
- * skill itself, but since this feature was added so late, it's 
- * separate.  
- * 
+ * components (magic dust, tools, etc) are required every time a
+ * particular skill is used.  Normally this would be part of the
+ * skill itself, but since this feature was added so late, it's
+ * separate.
+ *
  *  Also here are common skill limit utilities, for determining
  *  how many common skills a player can learn.
- *  
+ *
  * @author Bo Zimmerman
  */
 public interface AbilityComponents extends CMLibrary
@@ -56,7 +56,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @return null if missing components, or the list of found components
 	 */
 	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req, boolean mithrilOK);
-	
+
 	/**
 	 * Returns a very dirty approximate of a sample of what components appear
 	 * to be required.  Named items are not required, but raw material components
@@ -68,7 +68,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @return a list of sample items
 	 */
 	public List<Item> componentsSample(List<AbilityComponent> req, boolean mithrilOK);
-	
+
 	/**
 	 * If the ability component recipe used to build the list of found
 	 * components needed to use a skill requires that any of the componenets
@@ -79,7 +79,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @return the record of the components destroyed
 	 */
 	public MaterialLibrary.DeadResourceRecord destroyAbilityComponents(List<Object> found);
-	
+
 	/**
 	 * Returns a friendly readable form of the component requirements
 	 * of the given Ability/Skill ID(), or null if that ability has
@@ -92,7 +92,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @return a friendly readable form of the component requirements
 	 */
 	public String getAbilityComponentDesc(MOB mob, String AID);
-	
+
 	/**
 	 * Returns a friendly readable form of the component requirements
 	 * of the given Ability/Skill Component List, or null if it has
@@ -105,11 +105,11 @@ public interface AbilityComponents extends CMLibrary
 	 * @return a friendly readable form of the component requirements
 	 */
 	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req);
-	
+
 	/**
-	 * Returns a friendly readable description of a specific component in 
-	 * the given decoded ability components definition list.  If the 
-	 * component does not refer to the given mob, "" is returned.  
+	 * Returns a friendly readable description of a specific component in
+	 * the given decoded ability components definition list.  If the
+	 * component does not refer to the given mob, "" is returned.
 	 * @see AbilityComponents#getAbilityComponentDesc(MOB, List)
 	 * @see AbilityComponents#getAbilityComponentDesc(MOB, String)
 	 * @param mob the mob to check this components applicability to.
@@ -118,22 +118,22 @@ public interface AbilityComponents extends CMLibrary
 	 * @return a friendly readable description of a specific component
 	 */
 	public String getAbilityComponentDesc(MOB mob, AbilityComponent comp, boolean useConnector);
-	
+
 	/**
 	 * Returns the master ability component map, keyed by the Ability ID.
 	 * @return the master ability component map, keyed by the Ability ID.
 	 */
 	public Map<String, List<AbilityComponent>> getAbilityComponentMap();
-	
+
 	/**
 	 * Adds a new coded ability component to the given component map.
 	 * The component is coded as found in components.txt, with ID=parms.
-	 * @param s the new coded ability component string 
+	 * @param s the new coded ability component string
 	 * @param H the map to add the new component to
 	 * @return an error string, or null if everything went well.
 	 */
 	public String addAbilityComponent(String s, Map<String, List<AbilityComponent>> H);
-	
+
 	/**
 	 * Gets the decoded ability component definition for a given Ability ID().
 	 * This is then used by other methods to determine whether a user has the
@@ -142,7 +142,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @return the decoded ability component definition for a given Ability ID()
 	 */
 	public List<AbilityComponent> getAbilityComponents(String AID);
-	
+
 	/**
 	 * Breaks an ability component decoded objects into a series of key/value pairs,
 	 * where the first is always the connector, and the keys are as follows:
@@ -153,19 +153,19 @@ public interface AbilityComponents extends CMLibrary
 	 * @return the key/value pairs of the ability component values.
 	 */
 	public PairList<String, String> getAbilityComponentCoded(AbilityComponent comp);
-	
+
 	/**
 	 * Copies the key/value pairs from a PairList of specific abilitycomponent fields
-	 * into the given AbilityComponent object.	 The first pairlist entry is always the 
-	 * connector, and the keys are as follows: ANDOR, DISPOSITION, FATE, AMOUNT, 
+	 * into the given AbilityComponent object.	 The first pairlist entry is always the
+	 * connector, and the keys are as follows: ANDOR, DISPOSITION, FATE, AMOUNT,
 	 * COMPONENTID, SUBTYPE, MASK. In that order.
 	 * This is primarily for simplifying editors.
 	 * @see AbilityComponents#getAbilityComponentCoded(AbilityComponent)
 	 * @param decodedDV  the key/value pairs of the ability component values.
-	 * @param comp the decoded ability component to copy field data into 
+	 * @param comp the decoded ability component to copy field data into
 	 */
 	public void setAbilityComponentCodedFromCodedPairs(PairList<String, String> decodedDV, AbilityComponent comp);
-	
+
 	/**
 	 * Reconstructs the coded ability component definition string (ID=parms)
 	 * from the internal cached structures, given a particular Ability ID.
@@ -174,7 +174,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @return the coded ability component definition string (ID=parms)
 	 */
 	public String getAbilityComponentCodedString(String AID);
-	
+
 	/**
 	 * Reconstructs the coded ability component definition string (ID=parms)
 	 * from the given cached decoded structures list.
@@ -183,21 +183,21 @@ public interface AbilityComponents extends CMLibrary
 	 * @return the coded ability component definition string (ID=parms)
 	 */
 	public String getAbilityComponentCodedString(List<AbilityComponent> comps);
-	
+
 	/**
 	 * Creates a new blank ability component object
 	 * @return a new blank ability component object
 	 */
 	public AbilityComponent createBlankAbilityComponent();
-	
+
 	/**
 	 * Alters and saved the ability components definition to on the
-	 * filesystem (components.txt).  
+	 * filesystem (components.txt).
 	 * @param compID the ID of the component being altered
 	 * @param delete true to delete, false to add or modify
 	 */
 	public void alterAbilityComponentFile(String compID, boolean delete);
-	
+
 	/**
 	 * Returns the character-class based common skill ability limits
 	 * object applicable to the given mob, or zeroes if there's
@@ -210,7 +210,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @return the character-class based common skill ability limits
 	 */
 	public AbilityLimits getSpecialSkillLimit(MOB studentM);
-	
+
 	/**
 	 * Returns the character-class based common skill ability limits
 	 * object applicable to the given mob and the given ability.
@@ -224,7 +224,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @return the character-class based common skill ability limits
 	 */
 	public AbilityLimits getSpecialSkillLimit(MOB studentM, Ability A);
-	
+
 	/**
 	 * Returns the character-class based common skill ability limits
 	 * object applicable to the given mob and the given ability, and
@@ -240,7 +240,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @return the character-class based common skill ability remainders
 	 */
 	public AbilityLimits getSpecialSkillRemainder(MOB studentM, Ability A);
-	
+
 	/**
 	 * Returns the character-class based common skill ability limits
 	 * object applicable to the given mob, and
@@ -254,7 +254,7 @@ public interface AbilityComponents extends CMLibrary
 	 * @return the character-class based common skill ability limits
 	 */
 	public AbilityLimits getSpecialSkillRemainders(MOB studentM);
-	
+
 	/**
 	 * Ability Limits object, denoting how many of different types
 	 * of common skills and langs that a player can learn, including an
@@ -274,7 +274,7 @@ public interface AbilityComponents extends CMLibrary
 		 * @return max number of common skills
 		 */
 		public int maxCommonSkills();
-		
+
 		/**
 		 * Sets number of common skills
 		 * @param newVal number of common skills
@@ -340,14 +340,14 @@ public interface AbilityComponents extends CMLibrary
 		public int languageSkills();
 
 		/**
-		 * Returns number of given specific ability type 
+		 * Returns number of given specific ability type
 		 * limit.
 		 * @return i don't know how to say it
 		 */
 		public int specificSkillLimit();
 
 		/**
-		 * Sets number of given specific ability type 
+		 * Sets number of given specific ability type
 		 * limit.
 		 * @param newVal a new number
 		 * @return this

@@ -32,15 +32,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Wield extends StdCommand
 {
 	public Wield()
 	{
 	}
-	
+
 	private final String[]	access	= I(new String[] { "WIELD" });
-	
+
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Item.class}};
 
 	@Override
@@ -49,7 +48,7 @@ public class Wield extends StdCommand
 		return access;
 	}
 
-	protected boolean wield(List<Item> items, MOB mob)
+	protected boolean wield(final List<Item> items, final MOB mob)
 	{
 		for(int i=0;i<items.size();i++)
 		{
@@ -66,35 +65,35 @@ public class Wield extends StdCommand
 		}
 		return false;
 	}
-	
+
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("Wield what?"));
 			return false;
 		}
 		commands.remove(0);
-		List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
+		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 			wield(items,mob);
 		return false;
 	}
-	
+
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
 		final List<Item> items=new XVector<Item>((Item)args[0]);
 		return Boolean.valueOf(wield(items, mob));
 	}
-	
+
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{

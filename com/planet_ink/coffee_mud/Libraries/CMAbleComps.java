@@ -68,8 +68,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		}
 		return false;
 	}
-	
-	protected Item makeItemComponent(AbilityComponent comp, final boolean mithrilOK)
+
+	protected Item makeItemComponent(final AbilityComponent comp, final boolean mithrilOK)
 	{
 		if(comp.getType()==AbilityComponent.CompType.STRING)
 			return null;
@@ -82,7 +82,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		return null;
 	}
 
-	protected boolean IsItemComponent(MOB mob, AbilityComponent comp, int[] amt, Item I, List<Object> thisSet, final boolean mithrilOK)
+	protected boolean IsItemComponent(final MOB mob, final AbilityComponent comp, final int[] amt, Item I, final List<Object> thisSet, final boolean mithrilOK)
 	{
 		if(I==null)
 			return false;
@@ -161,7 +161,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 
 	// returns list of components for the requirement list.
 	@Override
-	public List<Item> componentsSample(List<AbilityComponent> req, boolean mithrilOK)
+	public List<Item> componentsSample(final List<AbilityComponent> req, final boolean mithrilOK)
 	{
 		if((req==null)||(req.size()==0))
 			return new Vector<Item>(0);
@@ -170,7 +170,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		for(int i=0;i<req.size();i++)
 		{
 			comp=req.get(i);
-			Item I=this.makeItemComponent(comp,mithrilOK);
+			final Item I=this.makeItemComponent(comp,mithrilOK);
 			passes.add(I);
 		}
 		return passes;
@@ -178,7 +178,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 
 	// returns list of components found if all good, returns Integer of bad row if not.
 	@Override
-	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req, boolean mithrilOK)
+	public List<Object> componentCheck(final MOB mob, final List<AbilityComponent> req, final boolean mithrilOK)
 	{
 		if((mob==null)||(req==null)||(req.size()==0))
 			return new Vector<Object>(0);
@@ -238,18 +238,18 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public List<AbilityComponent> getAbilityComponents(String AID)
+	public List<AbilityComponent> getAbilityComponents(final String AID)
 	{
 		return getAbilityComponentMap().get(AID.toUpperCase().trim());
 	}
 
-	protected List<PairList<String,String>> getAbilityComponentCodedPairsList(String AID)
+	protected List<PairList<String,String>> getAbilityComponentCodedPairsList(final String AID)
 	{
 		return getAbilityComponentCodedListLists(getAbilityComponents(AID));
 	}
 
 	@Override
-	public PairList<String,String> getAbilityComponentCoded(AbilityComponent comp)
+	public PairList<String,String> getAbilityComponentCoded(final AbilityComponent comp)
 	{
 		final PairList<String,String> curr=new PairVector<String,String>();
 		String itemDesc=null;
@@ -289,7 +289,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public void setAbilityComponentCodedFromCodedPairs(PairList<String,String> decodedDV, AbilityComponent comp)
+	public void setAbilityComponentCodedFromCodedPairs(final PairList<String,String> decodedDV, final AbilityComponent comp)
 	{
 		final String[] s=new String[7];
 		for(int i=0;i<7;i++)
@@ -316,8 +316,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		else
 			comp.setConsumed(false);
 		comp.setAmount(CMath.s_int(s[3]));
-		String compType=s[4];
-		String subType=s[5];
+		final String compType=s[4];
+		final String subType=s[5];
 		int depth=CMLib.materials().getResourceCode(compType,false);
 		if(depth>=0)
 			comp.setType(AbilityComponent.CompType.RESOURCE, Integer.valueOf(depth), subType);
@@ -332,7 +332,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		comp.setMask(s[6]);
 	}
 
-	protected List<PairList<String,String>> getAbilityComponentCodedListLists(List<AbilityComponent> req)
+	protected List<PairList<String,String>> getAbilityComponentCodedListLists(final List<AbilityComponent> req)
 	{
 		if(req==null)
 			return null;
@@ -356,12 +356,12 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public String getAbilityComponentCodedString(List<AbilityComponent> comps)
+	public String getAbilityComponentCodedString(final List<AbilityComponent> comps)
 	{
 		return getAbilityComponentCodedStringFromCodedList(getAbilityComponentCodedListLists(comps));
 	}
 
-	protected String getAbilityComponentCodedStringFromCodedList(List<PairList<String,String>> comps)
+	protected String getAbilityComponentCodedStringFromCodedList(final List<PairList<String,String>> comps)
 	{
 		final StringBuilder buf=new StringBuilder("");
 		PairList<String,String> curr=null;
@@ -390,7 +390,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public String getAbilityComponentCodedString(String AID)
+	public String getAbilityComponentCodedString(final String AID)
 	{
 		final StringBuffer buf=new StringBuffer("");
 		final List<PairList<String,String>> comps=getAbilityComponentCodedPairsList(AID);
@@ -399,7 +399,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public String getAbilityComponentDesc(MOB mob, AbilityComponent comp, boolean useConnector)
+	public String getAbilityComponentDesc(final MOB mob, final AbilityComponent comp, final boolean useConnector)
 	{
 		int amt=0;
 		String itemDesc=null;
@@ -434,7 +434,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			if(comp.getType()==AbilityComponent.CompType.RESOURCE)
 			{
 				final String matName=RawMaterial.CODES.NAME((int)comp.getLongType()).toLowerCase();
-				if(subType.equals(matName) 
+				if(subType.equals(matName)
 				&& (((comp.getLongType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)
 					||((comp.getLongType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PAPER)))
 					itemDesc=amt+" "+subType+" bolt";
@@ -471,13 +471,13 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public String getAbilityComponentDesc(MOB mob, String AID)
+	public String getAbilityComponentDesc(final MOB mob, final String AID)
 	{
 		return getAbilityComponentDesc(mob,getAbilityComponents(AID));
 	}
 
 	@Override
-	public String getAbilityComponentDesc(MOB mob, List<AbilityComponent> req)
+	public String getAbilityComponentDesc(final MOB mob, final List<AbilityComponent> req)
 	{
 		if(req==null)
 			return null;
@@ -618,7 +618,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			String subType="";
 			if(rsc.endsWith(")"))
 			{
-				int y=rsc.lastIndexOf('(');
+				final int y=rsc.lastIndexOf('(');
 				if(y>0)
 				{
 					compType=rsc.substring(0, y);
@@ -686,7 +686,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	@Override
 	public MaterialLibrary.DeadResourceRecord destroyAbilityComponents(final List<Object> found)
 	{
-		MaterialLibrary.DeadResourceRecord record = new MaterialLibrary.DeadResourceRecord();
+		final MaterialLibrary.DeadResourceRecord record = new MaterialLibrary.DeadResourceRecord();
 		if((found==null)||(found.size()==0))
 		{
 			return record;
@@ -723,7 +723,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public void alterAbilityComponentFile(String compID, boolean delete)
+	public void alterAbilityComponentFile(final String compID, final boolean delete)
 	{
 		final CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,CMFile.FLAG_LOGERRORS);
 		if(delete)
@@ -785,7 +785,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public AbilityLimits getSpecialSkillLimit(MOB studentM)
+	public AbilityLimits getSpecialSkillLimit(final MOB studentM)
 	{
 		final AbilityLimits aL = new AbilityLimits()
 		{
@@ -798,9 +798,9 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			private int	specificSkillLimit	= 0;
 			private int maxLanguageSkills	= 0;
 			private int languageSkills		= 0;
-			
+
 			@Override
-			public AbilityLimits commonSkills(int newVal)
+			public AbilityLimits commonSkills(final int newVal)
 			{
 				commonSkills = newVal;
 				if(newVal > maxCommonSkills)
@@ -809,7 +809,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			}
 
 			@Override
-			public AbilityLimits craftingSkills(int newVal)
+			public AbilityLimits craftingSkills(final int newVal)
 			{
 				craftingSkills = newVal;
 				if(newVal > maxCraftingSkills)
@@ -818,7 +818,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			}
 
 			@Override
-			public AbilityLimits nonCraftingSkills(int newVal)
+			public AbilityLimits nonCraftingSkills(final int newVal)
 			{
 				nonCraftingSkills = newVal;
 				if(newVal > maxNonCraftingSkills)
@@ -827,7 +827,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			}
 
 			@Override
-			public AbilityLimits languageSkills(int newVal)
+			public AbilityLimits languageSkills(final int newVal)
 			{
 				languageSkills = newVal;
 				if(newVal > maxLanguageSkills)
@@ -836,7 +836,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			}
 
 			@Override
-			public AbilityLimits specificSkillLimit(int newVal)
+			public AbilityLimits specificSkillLimit(final int newVal)
 			{
 				specificSkillLimit = newVal;
 				return this;
@@ -859,7 +859,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			{
 				return languageSkills;
 			}
-			
+
 			@Override
 			public int nonCraftingSkills()
 			{
@@ -952,7 +952,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public AbilityLimits getSpecialSkillLimit(MOB studentM, Ability A)
+	public AbilityLimits getSpecialSkillLimit(final MOB studentM, final Ability A)
 	{
 		final AbilityLimits aL=getSpecialSkillLimit(studentM);
 		aL.specificSkillLimit(Integer.MAX_VALUE);
@@ -972,7 +972,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public AbilityLimits getSpecialSkillRemainder(MOB studentM, Ability A)
+	public AbilityLimits getSpecialSkillRemainder(final MOB studentM, final Ability A)
 	{
 		final AbilityLimits aL = getSpecialSkillRemainders(studentM);
 		aL.specificSkillLimit(Integer.MAX_VALUE);
@@ -992,7 +992,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public AbilityLimits getSpecialSkillRemainders(MOB student)
+	public AbilityLimits getSpecialSkillRemainders(final MOB student)
 	{
 		final AbilityLimits aL = getSpecialSkillLimit(student);
 		final CharStats CS=student.charStats();

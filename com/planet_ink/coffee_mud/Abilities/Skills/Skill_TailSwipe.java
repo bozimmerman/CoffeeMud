@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_TailSwipe extends StdSkill
 {
 	@Override
@@ -109,7 +108,7 @@ public class Skill_TailSwipe extends StdSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		enhancement = newCode;
 	}
@@ -164,7 +163,7 @@ public class Skill_TailSwipe extends StdSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -177,7 +176,7 @@ public class Skill_TailSwipe extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>1)&&(!auto))
 		{
@@ -214,7 +213,7 @@ public class Skill_TailSwipe extends StdSkill
 				CMLib.combat().postDamage(mob,target,this,damage,
 						CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,
 						L("^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAME> with a tail swipe!^</FIGHT^>^?@x1",CMLib.protocol().msp("bashed1.wav",30)));
-				int tripChance = (chance > 0) ? chance/2 : chance*2;
+				final int tripChance = (chance > 0) ? chance/2 : chance*2;
 				if((msg.value()<=0)
 				&&(CMLib.flags().isStanding(target))
 				&&(proficiencyCheck(mob,tripChance,auto)))

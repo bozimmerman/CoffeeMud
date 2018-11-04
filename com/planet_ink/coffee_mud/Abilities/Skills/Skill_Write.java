@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Write extends StdSkill
 {
 	@Override
@@ -88,7 +87,7 @@ public class Skill_Write extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
@@ -126,7 +125,7 @@ public class Skill_Write extends StdSkill
 			mob.tell(L("You can't write on that."));
 			return false;
 		}
-		
+
 		if(item instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
 		{
 			mob.tell(L("You can't write on a map."));

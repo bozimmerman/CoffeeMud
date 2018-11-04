@@ -46,7 +46,7 @@ public class CM1Client
 	private BufferedReader	br		= null;
 	private BufferedWriter 	bw		= null;
 
-	public CM1Client(String host, int port)
+	public CM1Client(final String host, final int port)
 	{
 		this.host=host;
 		this.port=port;
@@ -55,16 +55,16 @@ public class CM1Client
 	public final static int s_int(final String INT)
 	{
 		try
-		{ 
-			return Integer.parseInt(INT); 
+		{
+			return Integer.parseInt(INT);
 		}
 		catch(final Exception e)
-		{ 
+		{
 			return 0;
 		}
 	}
 
-	public synchronized List<String> transactMessages(String command)
+	public synchronized List<String> transactMessages(final String command)
 	{
 		final LinkedList<String> list=new LinkedList<String>();
 		if(command.trim().length()==0)
@@ -117,7 +117,7 @@ public class CM1Client
 		return list;
 	}
 
-	public synchronized String transact(String command)
+	public synchronized String transact(final String command)
 	{
 		final List<String> list=transactMessages(command);
 		if(list.size()==0)

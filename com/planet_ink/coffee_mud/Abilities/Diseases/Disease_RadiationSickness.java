@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Disease_RadiationSickness extends Disease
 {
 	@Override
@@ -126,7 +125,7 @@ public class Disease_RadiationSickness extends Disease
 	protected final long conTickBase = CMProps.getTicksPerMudHour() * 150;
 	protected volatile int conTickUp = 0;
 	protected volatile int conDown = 2;
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -138,7 +137,7 @@ public class Disease_RadiationSickness extends Disease
 		if(mob==null)
 			return false;
 		conTickUp++;
-		
+
 		if(!mob.amDead())
 		{
 			if(conTickUp > conTickBase)
@@ -188,7 +187,7 @@ public class Disease_RadiationSickness extends Disease
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((affected instanceof Item)
 		&&(givenTarget instanceof MOB))

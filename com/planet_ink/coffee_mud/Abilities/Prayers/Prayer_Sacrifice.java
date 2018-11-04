@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Sacrifice extends Prayer
 {
 	@Override
@@ -73,7 +72,7 @@ public class Prayer_Sacrifice extends Prayer
 		return Ability.CAN_ITEMS;
 	}
 
-	public static Item getBody(Room R)
+	public static Item getBody(final Room R)
 	{
 		if(R!=null)
 		for(int i=0;i<R.numItems();i++)
@@ -88,7 +87,7 @@ public class Prayer_Sacrifice extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Item target=null;
 		if((commands.size()==0)&&(!auto)&&(givenTarget==null))

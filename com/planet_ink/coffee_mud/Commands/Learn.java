@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Learn extends StdCommand
 {
 	public Learn()
@@ -49,10 +48,10 @@ public class Learn extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if(mob.location().numInhabitants()==1)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("You will need to find someone to teach you first."));

@@ -36,7 +36,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-public interface PersistentPeer {
+public interface PersistentPeer
+{
 	/**
 	 * Gets data about this peer from storage and gives it
 	 * back to the object for which this peer exists.

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_BloodBrother extends FighterSkill
 {
 	@Override
@@ -43,7 +42,7 @@ public class Fighter_BloodBrother extends FighterSkill
 	}
 
 	private final static String	localizedName	= CMLib.lang().L("Blood Brother");
-	
+
 	@Override
 	public String name()
 	{
@@ -89,14 +88,14 @@ public class Fighter_BloodBrother extends FighterSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat()&&(!auto))
 		{
 			mob.tell(L("Not while you're fighting!"));
 			return false;
 		}
-		
+
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
@@ -106,10 +105,10 @@ public class Fighter_BloodBrother extends FighterSkill
 			mob.tell(L("You can't become blood brother to @x1",target.name()));
 			return false;
 		}
-		Tattoo tattChk=target.findTattoo("BLOODBROTHER:");
+		final Tattoo tattChk=target.findTattoo("BLOODBROTHER:");
 		if(tattChk!=null)
 		{
-			String name=tattChk.ID().substring("BLOODBROTHER:".length());
+			final String name=tattChk.ID().substring("BLOODBROTHER:".length());
 			if(CMLib.players().playerExists(name))
 			{
 				mob.tell(L("@x1 already has a blood brother.",target.name()));
@@ -130,7 +129,7 @@ public class Fighter_BloodBrother extends FighterSkill
 				if(!target.session().confirm(L("@x1 wants to become your blood brother.  Is this OK (y/N)?",mob.Name()), "N", 5000))
 					success=false;
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 				success=false;
 			}

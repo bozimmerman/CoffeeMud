@@ -84,7 +84,7 @@ public class Prop_WizInvis extends Property
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		abilityCode = newCode;
 	}
@@ -107,13 +107,13 @@ public class Prop_WizInvis extends Property
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		List<String> ps=CMParms.parse(newMiscText.toUpperCase());
+		final List<String> ps=CMParms.parse(newMiscText.toUpperCase());
 		unInvokable = ps.contains("UNINVOKABLE");
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -215,7 +215,7 @@ public class Prop_WizInvis extends Property
 					&&(!CMSecurity.isAllowed(msg.source(),R,CMSecurity.SecFlag.WIZINV)))
 						unInvoke();
 				}
-				
+
 			}
 		}
 		return super.okMessage(myHost,msg);

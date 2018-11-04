@@ -375,15 +375,15 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		 * @param ticks how many ticks to wait before executing the script
 		 * @param msg a string associated with this event
 		 */
-		public ScriptableResponse(PhysicalAgent host,
-								  MOB source,
-								  Environmental target,
-								  MOB monster,
-								  Item primaryItem,
-								  Item secondaryItem,
-								  DVector script,
-								  int ticks,
-								  String msg)
+		public ScriptableResponse(final PhysicalAgent host,
+								  final MOB source,
+								  final Environmental target,
+								  final MOB monster,
+								  final Item primaryItem,
+								  final Item secondaryItem,
+								  final DVector script,
+								  final int ticks,
+								  final String msg)
 		{
 			h=host;
 			s=source;

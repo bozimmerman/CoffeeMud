@@ -134,7 +134,7 @@ public class IMudPeer implements PersistentPeer
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.Persistent
 	 */
 	@Override
-	public void setPersistent(Persistent ob)
+	public void setPersistent(final Persistent ob)
 	{
 		myobj=ob;
 		myID=ob.getClass().getName().substring(ob.getClass().getName().lastIndexOf('.')+1);

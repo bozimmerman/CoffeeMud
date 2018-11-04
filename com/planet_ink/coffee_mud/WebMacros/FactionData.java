@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class FactionData extends StdWebMacro
 {
 	@Override
@@ -45,7 +44,7 @@ public class FactionData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
@@ -860,7 +859,7 @@ public class FactionData extends StdWebMacro
 		return "";
 	}
 
-	public void addDoneAbilityUsage(HashSet<String> done, String val)
+	public void addDoneAbilityUsage(final HashSet<String> done, final String val)
 	{
 		switch(CMLib.factions().getAbilityFlagType(val))
 		{
@@ -884,7 +883,7 @@ public class FactionData extends StdWebMacro
 		}
 	}
 
-	public String getAbleBehavCmdName(String val, boolean includeCmd)
+	public String getAbleBehavCmdName(final String val, final boolean includeCmd)
 	{
 		final Behavior B=CMClass.getBehavior(val);
 		if(B!=null)
@@ -902,7 +901,7 @@ public class FactionData extends StdWebMacro
 		return C.ID();
 	}
 
-	public PairVector<String,String> getRangeCodesNames(Faction F, HTTPRequest httpReq)
+	public PairVector<String,String> getRangeCodesNames(final Faction F, final HTTPRequest httpReq)
 	{
 		String oldName=httpReq.getUrlParameter("RANGENAME0");
 		String code=null;

@@ -46,14 +46,14 @@ public class TrailTo extends StdCommand
 		return access;
 	}
 
-	public String trailTo(Room R1, List<String> commands)
+	public String trailTo(final Room R1, final List<String> commands)
 	{
 		int radius=Integer.MAX_VALUE;
 		HashSet<Room> ignoreRooms=null;
 		final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags();
 		int minSize = 0;
 		boolean fallback=false;
-		List<TrackingLibrary.TrackingFlag> removeOrder = new ArrayList<TrackingLibrary.TrackingFlag>();
+		final List<TrackingLibrary.TrackingFlag> removeOrder = new ArrayList<TrackingLibrary.TrackingFlag>();
 		for(int c=commands.size()-1;c>=1;c--)
 		{
 			String s=commands.get(c).toUpperCase();
@@ -102,7 +102,7 @@ public class TrailTo extends StdCommand
 			}
 			else
 			{
-				for(TrackingLibrary.TrackingFlag flag : TrackingLibrary.TrackingFlag.values())
+				for(final TrackingLibrary.TrackingFlag flag : TrackingLibrary.TrackingFlag.values())
 				{
 					if(s.equals(flag.toString()))
 					{
@@ -151,8 +151,8 @@ public class TrailTo extends StdCommand
 					String trail = CMLib.tracking().getTrailToDescription(R1,set,A.name(),areaNames,confirm,radius,ignoreRooms,5);
 					if(fallback && trail.startsWith("Unable to determine"))
 					{
-						TrackingLibrary.TrackingFlags workFlags = flags.copyOf();
-						Vector<TrackingLibrary.TrackingFlag> removables=new XVector<TrackingLibrary.TrackingFlag>(removeOrder); 
+						final TrackingLibrary.TrackingFlags workFlags = flags.copyOf();
+						final Vector<TrackingLibrary.TrackingFlag> removables=new XVector<TrackingLibrary.TrackingFlag>(removeOrder);
 						while(trail.startsWith("Unable to determine") && (removables.size()>0) && (workFlags.size()>0))
 						{
 							final Vector<Room> set2=new Vector<Room>(set.size());
@@ -182,8 +182,8 @@ public class TrailTo extends StdCommand
 						String trail = CMLib.tracking().getTrailToDescription(R1,set,R.roomID(),areaNames,confirm,radius,ignoreRooms,5);
 						if(fallback && trail.startsWith("Unable to determine"))
 						{
-							TrackingLibrary.TrackingFlags workFlags = flags.copyOf();
-							Vector<TrackingLibrary.TrackingFlag> removables=new XVector<TrackingLibrary.TrackingFlag>(removeOrder); 
+							final TrackingLibrary.TrackingFlags workFlags = flags.copyOf();
+							final Vector<TrackingLibrary.TrackingFlag> removables=new XVector<TrackingLibrary.TrackingFlag>(removeOrder);
 							while(trail.startsWith("Unable to determine") && (removables.size()>0) && (workFlags.size()>0))
 							{
 								final Vector<Room> set2=new Vector<Room>(set.size());
@@ -210,8 +210,8 @@ public class TrailTo extends StdCommand
 			{
 				if(fallback && str.startsWith("Unable to determine"))
 				{
-					TrackingLibrary.TrackingFlags workFlags = flags.copyOf();
-					Vector<TrackingLibrary.TrackingFlag> removables=new XVector<TrackingLibrary.TrackingFlag>(removeOrder); 
+					final TrackingLibrary.TrackingFlags workFlags = flags.copyOf();
+					final Vector<TrackingLibrary.TrackingFlag> removables=new XVector<TrackingLibrary.TrackingFlag>(removeOrder);
 					while(str.startsWith("Unable to determine") && (removables.size()>0) && (workFlags.size()>0))
 					{
 						final Vector<Room> set2=new Vector<Room>(set.size());
@@ -229,7 +229,7 @@ public class TrailTo extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("QUIETLY")))
@@ -250,7 +250,7 @@ public class TrailTo extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.TRAILTO);
 	}

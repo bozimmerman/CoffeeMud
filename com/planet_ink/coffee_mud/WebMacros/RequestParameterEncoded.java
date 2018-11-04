@@ -43,7 +43,7 @@ public class RequestParameterEncoded extends RequestParameter
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 
 		String str=super.runMacro(httpReq, parm, httpResp);

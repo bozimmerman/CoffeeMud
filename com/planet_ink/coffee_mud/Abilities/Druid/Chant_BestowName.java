@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_BestowName extends Chant
 {
 	@Override
@@ -80,7 +79,7 @@ public class Chant_BestowName extends Chant
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectedStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);
 		if((affected instanceof MOB)
@@ -96,7 +95,7 @@ public class Chant_BestowName extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<2)
 		{

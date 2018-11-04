@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_DevourCorpse extends StdSkill
 {
 	@Override
@@ -127,7 +126,7 @@ public class Skill_DevourCorpse extends StdSkill
 						mob.tell(L("You need to get all the equipment out of @x1 first.",((Item)msg.target()).name(mob)));
 						return false;
 					}
-	
+
 					msg.modify(msg.source(),msg.target(),msg.tool(),
 							   msg.sourceCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.sourceMessage(),
 							   CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,msg.targetMessage(),

@@ -35,26 +35,26 @@ public class Directions
 		if(dirs[c]==null)
 			dirs[c]=this;
 	}
-	
+
 	/**
 	 * Returns the Directions object for the current threadgroup, or null if unassigned.
 	 * @return the Directions object, or null
 	 */
 	private static Directions d()
-	{ 
+	{
 		return dirs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
 	}
-	
+
 	/**
 	 * Returns the Directions instance tied to the given thread group, or null if not yet created.
 	 * @param c the code for the thread group to return (0-255)
 	 * @return the Directions instance tied to the given thread group, or null if not yet created.
 	 */
-	public static Directions d(char c)
+	public static Directions d(final char c)
 	{
 		return dirs[c];
 	}
-	
+
 	/**
 	 * Returns the Directions object that applies to the callers thread group.
 	 * @return the Directions object that applies to the callers thread group.
@@ -103,7 +103,7 @@ public class Directions
 	private final static int[]	DIRECTIONS_DISP_ORDER	= { UP, -1, DOWN, GATE };
 	private final static int[]	DIRECTIONS_7_BASE		= { NORTH, SOUTH, EAST, WEST };
 	private final static int[]	DIRECTIONS_11_BASE		= { NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST };
-	
+
 	private String	 DIRECTION_7_LETTERS				= DEFAULT_DIRECTION_7_LETTERS;
 	private String	 DIRECTION_11_LETTERS				= DEFAULT_DIRECTION_11_LETTERS;
 	private String	 DIRECTION_7_NAMES					= DEFAULT_DIRECTION_7_NAMES;
@@ -126,7 +126,7 @@ public class Directions
 	private String	DIRECTION_LETTERS	= DIRECTION_7_LETTERS;
 	private String	DIRECTION_NAMES		= DIRECTION_7_NAMES;
 	private String	DIRECTION_SHIPNAMES	= DIRECTION_7_SHIPNAMES;
-	
+
 	private int NUM_DIRECTIONS=7;
 
 	private Object[][] DIRECTIONS_COMPASS_CHART=
@@ -175,7 +175,7 @@ public class Directions
 		{"VORTEX",Integer.valueOf(GATE)}
 	};
 
-	private static <T> T[] concat(T[] first, T[] second)
+	private static <T> T[] concat(final T[] first, final T[] second)
 	{
 		final T[] result = Arrays.copyOf(first, first.length + second.length);
 		System.arraycopy(second, 0, result, first.length, second.length);
@@ -257,7 +257,7 @@ public class Directions
 	{
 		public String translate(String string);
 	}
-	
+
 	/**
 	 * Reinitializes this direction object with a new number-of-directions.
 	 * @param dirs the number of directions, either 7 or 11
@@ -290,14 +290,14 @@ public class Directions
 			}
 			else
 			{
-				for(int dir : DIRECTIONS_CODES)
+				for(final int dir : DIRECTIONS_CODES)
 				{
 					DIRECTIONS_DISPLAY[index++]= dir;
 				}
 			}
 		}
 		DIRECTIONS_DISPLAY = Arrays.copyOf(DIRECTIONS_DISPLAY, index);
-		
+
 		try
 		{
 			DIRECTION_7_LETTERS=translator.translate(DEFAULT_DIRECTION_7_LETTERS);
@@ -316,7 +316,7 @@ public class Directions
 			DIRECTIONS_COMPASS_TO_INDEXED = translator.translate(DEFAULT_TO_DIR_LIST_COMPASS).split(",");
 			DIRECTIONS_SHIP_TO_INDEXED = translator.translate(DEFAULT_TO_DIR_LIST_SHIP).split(",");
 			DIRECTION_CHARS = translator.translate(DEFAULT_DIRECTION_CHARS).split(",");
-			List<Object[]> newChart = new ArrayList<Object[]>();
+			final List<Object[]> newChart = new ArrayList<Object[]>();
 			newChart.add(new Object[]{DIRECTIONS_COMPASS_UPPER_INDEXED[UP],Integer.valueOf(UP)});
 			newChart.add(new Object[]{DIRECTIONS_SHIP_UPPER_INDEXED[UP],Integer.valueOf(UP)});
 			newChart.add(new Object[]{DIRECTIONS_COMPASS_UPPER_INDEXED[NORTH],Integer.valueOf(NORTH)});
@@ -358,14 +358,14 @@ public class Directions
 			newChart.add(new Object[]{translator.translate("THERE"),Integer.valueOf(GATE)});
 			newChart.add(new Object[]{translator.translate("VORTEX"),Integer.valueOf(GATE)});
 			DIRECTIONS_SHIP_CHART = newChart.toArray(new Object[0][]);
-			
+
 			DIRECTIONS_FULL_CHART=concat(DIRECTIONS_COMPASS_CHART, DIRECTIONS_SHIP_CHART);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 		}
 	}
-	
+
 	/**
 	 * Given the direction code, returns the formal name of that direction, capitalized.
 	 * @param code the direction code
@@ -384,7 +384,7 @@ public class Directions
 	 * @param useShip true to use ship type directions, false for compass
 	 * @return the name of that direction, capitalized
 	 */
-	public String getUpperDirectionName(final int code, boolean useShip)
+	public String getUpperDirectionName(final int code, final boolean useShip)
 	{
 		if((code>=0)&&(code<NUM_DIRECTIONS()))
 		{
@@ -395,7 +395,7 @@ public class Directions
 		}
 		return "";
 	}
-	
+
 	/**
 	 * Given the direction code, returns the ship-talk name of that direction, capitalized.
 	 * @param code the direction code
@@ -540,7 +540,7 @@ public class Directions
 	 * requires complete actual direction names, such as north, aft, below, up,
 	 * or the words must BE a direction letter, or be a partial direction
 	 * word, e.g. NOR would be NORTH, but NAP would NOT.
-	 * 
+	 *
 	 * @param theDir the direction search string
 	 * @return the direction code it represents, or -1 if no match at ALL
 	 */
@@ -568,7 +568,7 @@ public class Directions
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Given a string which is supposed to be a compass direction name,
 	 * this method will make a case-insensitive check against the given
@@ -619,7 +619,7 @@ public class Directions
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Given a string which is technically supposed to be a ship-talk direction name,
 	 * this method will make a case-insensitive check against the given
@@ -770,8 +770,8 @@ public class Directions
 	}
 
 	/**
-	 * Returns the proper english compass direction name to follow the preposition 
-	 * "from" when talking about something or someone coming FROM the given direction 
+	 * Returns the proper english compass direction name to follow the preposition
+	 * "from" when talking about something or someone coming FROM the given direction
 	 * code.  Completes the following sentence: "Joe arrived from ..."
 	 * @param code the direction code
 	 * @return the name of the direction phrase
@@ -784,7 +784,7 @@ public class Directions
 	}
 
 	/**
-	 * Returns the proper english compass direction name to relative to somewhere else. 
+	 * Returns the proper english compass direction name to relative to somewhere else.
 	 * @param code the direction code
 	 * @return the name of the direction phrase
 	 */
@@ -795,8 +795,8 @@ public class Directions
 		return "";
 	}
 	/**
-	 * Returns the proper english ship direction name to follow the preposition 
-	 * "from" when talking about something or someone coming FROM the given direction 
+	 * Returns the proper english ship direction name to follow the preposition
+	 * "from" when talking about something or someone coming FROM the given direction
 	 * code on a ship.  Completes the following sentence: "Joe arrived from ..."
 	 * @param code the direction code
 	 * @return the name of the direction phrase
@@ -809,8 +809,8 @@ public class Directions
 	}
 
 	/**
-	 * Returns the proper english compass direction name to follow the preposition 
-	 * "happens" when talking about something happening in the given direction 
+	 * Returns the proper english compass direction name to follow the preposition
+	 * "happens" when talking about something happening in the given direction
 	 * code.  Completes the following sentence: "You hear something happen ..."
 	 * Usually begins with "to the", such as "to the north", "to the northeast", etc.
 	 * @param code the direction code the direction the thing is happening in
@@ -824,8 +824,8 @@ public class Directions
 	}
 
 	/**
-	 * Returns the proper english ship-talk direction name to follow the preposition 
-	 * "happens" when talking about something happening in the given direction 
+	 * Returns the proper english ship-talk direction name to follow the preposition
+	 * "happens" when talking about something happening in the given direction
 	 * code on a ship.  Completes the following sentence: "You hear something happen ..."
 	 * Usually begins with "to", such as "to foreward", "to portside", etc.
 	 * @param code the direction code the direction the thing is happening in
@@ -1103,11 +1103,11 @@ public class Directions
 	 * @param xyTo the target point
 	 * @return the direction from the start to target
 	 */
-	public static final int getRelativeDirection(int[] xyFrom, int[] xyTo)
+	public static final int getRelativeDirection(final int[] xyFrom, final int[] xyTo)
 	{
 		return getRelativeDirection(xyFrom,xyTo,Directions.NUM_DIRECTIONS()!=11);
 	}
-	
+
 	/**
 	 * Returns the cardinal direction from the FROM point on a graph to the
 	 * TO point, where the points are X, then Y, with the northwest corner
@@ -1116,11 +1116,11 @@ public class Directions
 	 * @param xyTo the target point
 	 * @return the direction from the start to target
 	 */
-	public static final int getRelative11Directions(int[] xyFrom, int[] xyTo)
+	public static final int getRelative11Directions(final int[] xyFrom, final int[] xyTo)
 	{
 		return getRelativeDirection(xyFrom,xyTo,false);
 	}
-	
+
 	/**
 	 * Returns the cardinal direction from the FROM point on a graph to the
 	 * TO point, where the points are X, then Y, with the northwest corner
@@ -1130,7 +1130,7 @@ public class Directions
 	 * @param useBase4 true to use NSEW, false to use NORTHEAST, etc.
 	 * @return the direction from the start to target
 	 */
-	public static final int getRelativeDirection(int[] xyFrom, int[] xyTo, boolean useBase4)
+	public static final int getRelativeDirection(final int[] xyFrom, final int[] xyTo, final boolean useBase4)
 	{
 		final double x =  xyTo[0] - xyFrom[0];
 		final double y =  xyTo[1] - xyFrom[1];

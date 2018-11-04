@@ -34,7 +34,6 @@ import java.util.*;
 */
 public class Spell_AweOther extends Spell
 {
-
 	@Override
 	public String ID()
 	{

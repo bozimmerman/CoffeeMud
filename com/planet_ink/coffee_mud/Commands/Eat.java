@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Eat extends StdCommand
 {
 	public Eat()
@@ -47,17 +46,17 @@ public class Eat extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("Eat what?"));
 			return false;
 		}
 		commands.remove(0);
-		
+
 		Item eatFromThis=null;
 		int fromDex=-1;
 		for(int i=commands.size()-2;i>=1;i--)
@@ -71,7 +70,7 @@ public class Eat extends StdCommand
 		if(fromDex>0)
 		{
 			final String thingToEatFrom=CMParms.combine(commands,fromDex);
-			Physical maybeEatFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToEatFrom,Wearable.FILTER_ANY);
+			final Physical maybeEatFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToEatFrom,Wearable.FILTER_ANY);
 			if((maybeEatFromThis==null)
 			||(!CMLib.flags().canBeSeenBy(maybeEatFromThis,mob)))
 			{
@@ -90,7 +89,7 @@ public class Eat extends StdCommand
 				}
 			}
 		}
-		
+
 		Environmental thisThang=null;
 		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,eatFromThis,CMParms.combine(commands,0),Wearable.FILTER_ANY);
 		if((thisThang==null)

@@ -70,7 +70,7 @@ public class Oracle extends Cleric
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -238,7 +238,7 @@ public class Oracle extends Cleric
 		return L("Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.");
 	}
 
-	protected int numNonQualified(MOB mob)
+	protected int numNonQualified(final MOB mob)
 	{
 		int numNonQualified=0;
 		for(int a=0;a<mob.numAbilities();a++)
@@ -259,7 +259,7 @@ public class Oracle extends Cleric
 		return numNonQualified;
 	}
 
-	protected int maxNonQualified(MOB mob)
+	protected int maxNonQualified(final MOB mob)
 	{
 		int level=mob.charStats().getClassLevel(this)-30;
 		level++;
@@ -267,7 +267,7 @@ public class Oracle extends Cleric
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 
@@ -320,7 +320,7 @@ public class Oracle extends Cleric
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -334,7 +334,7 @@ public class Oracle extends Cleric
 	}
 
 	@Override
-	public void level(MOB mob, List<String> newAbilityIDs)
+	public void level(final MOB mob, final List<String> newAbilityIDs)
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 			return;

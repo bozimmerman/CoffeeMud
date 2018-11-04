@@ -40,7 +40,7 @@ public class GrinderClanGovernments
 		return "GrinderClanGovernments";
 	}
 
-	public String runMacro(HTTPRequest httpReq, String parm)
+	public String runMacro(final HTTPRequest httpReq, final String parm)
 	{
 		final String last=httpReq.getUrlParameter("GOVERNMENT");
 		if(last==null)

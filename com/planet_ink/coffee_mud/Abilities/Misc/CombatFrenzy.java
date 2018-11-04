@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class CombatFrenzy extends StdAbility
 {
 
@@ -72,7 +71,7 @@ public class CombatFrenzy extends StdAbility
 	{
 		return triggerStrings;
 	}
-	
+
 	@Override
 	public int abstractQuality()
 	{
@@ -109,7 +108,7 @@ public class CombatFrenzy extends StdAbility
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMOB, CharState affectedMaxState)
+	public void affectCharState(final MOB affectedMOB, final CharState affectedMaxState)
 	{
 		super.affectCharState(affectedMOB,affectedMaxState);
 		if(affectedMOB!=null)
@@ -117,7 +116,7 @@ public class CombatFrenzy extends StdAbility
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		if(CMath.isInteger(newText))
@@ -144,7 +143,7 @@ public class CombatFrenzy extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
 		if(target==null)

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Unbinding extends CommonSkill
 {
 	@Override
@@ -73,7 +72,7 @@ public class Unbinding extends CommonSkill
 	{
 		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
 	}
-	
+
 	protected Physical	found		= null;
 	protected Ability	removing	= null;
 
@@ -152,7 +151,7 @@ public class Unbinding extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;

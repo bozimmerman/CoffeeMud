@@ -34,9 +34,9 @@ import java.util.*;
    limitations under the License.
 */
 /**
- * An LimbDamage is a kind of ability that denotes missing, broken, 
- * or damaged body parts.  Usually they are body parts from mobs, but 
- * they can technically be anything that can be damaged as parts from 
+ * An LimbDamage is a kind of ability that denotes missing, broken,
+ * or damaged body parts.  Usually they are body parts from mobs, but
+ * they can technically be anything that can be damaged as parts from
  * the hosted object.
  */
 public interface LimbDamage extends Ability

@@ -25,7 +25,7 @@ public class MultiIterator<K> implements Iterator<K>
 	private final LinkedList<Iterator<K>> iters=new LinkedList<Iterator<K>>();
 	private volatile Iterator<K> iter=null;
 
-	public MultiIterator(Iterator<K>[] esets)
+	public MultiIterator(final Iterator<K>[] esets)
 	{
 		if((esets==null)||(esets.length==0))
 			return;
@@ -33,7 +33,7 @@ public class MultiIterator<K> implements Iterator<K>
 			iters.add(I);
 	}
 
-	public MultiIterator(Collection<Iterator<K>> esets)
+	public MultiIterator(final Collection<Iterator<K>> esets)
 	{
 		if((esets==null)||(esets.size()==0))
 			return;
@@ -42,7 +42,7 @@ public class MultiIterator<K> implements Iterator<K>
 			iters.add(I);
 	}
 
-	public MultiIterator(Iterable<K>[] esets)
+	public MultiIterator(final Iterable<K>[] esets)
 	{
 		if((esets==null)||(esets.length==0))
 			return;
@@ -50,7 +50,7 @@ public class MultiIterator<K> implements Iterator<K>
 			iters.add(I.iterator());
 	}
 
-	public MultiIterator(Iterable<? extends Iterable<K>> esets)
+	public MultiIterator(final Iterable<? extends Iterable<K>> esets)
 	{
 		if(esets==null)
 			return;
@@ -63,7 +63,7 @@ public class MultiIterator<K> implements Iterator<K>
 
 	}
 
-	public void add(Iterator<K> eset)
+	public void add(final Iterator<K> eset)
 	{
 		iters.add(eset);
 	}

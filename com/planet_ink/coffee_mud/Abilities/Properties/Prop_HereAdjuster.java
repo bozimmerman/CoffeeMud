@@ -65,7 +65,7 @@ public class Prop_HereAdjuster extends Prop_HaveAdjuster
 	}
 
 	@Override
-	public boolean canApply(MOB mob)
+	public boolean canApply(final MOB mob)
 	{
 		if(affected==null)
 			return true;

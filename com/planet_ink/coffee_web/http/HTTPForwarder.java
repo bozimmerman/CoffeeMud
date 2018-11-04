@@ -38,7 +38,7 @@ import com.planet_ink.coffee_web.util.CWConfig;
 public class HTTPForwarder implements HTTPIOHandler, Runnable
 {
 	private static final AtomicLong 	idCounter		 = new AtomicLong(0);
-	
+
 	private final HTTPReader	clientReader;
 	private final SocketChannel	webServerChannel;
 	private volatile boolean	closeMe				=false;
@@ -50,10 +50,10 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 	private final String		name;					  	  // the name of this handler -- to denote a request ID
 	private final CWConfig		config;
 	private final WebServer		server;
-	
+
 	private final LinkedList<DataBuffers>writeables	= new LinkedList<DataBuffers>();
-	
-	public HTTPForwarder(HTTPReader clientReader, WebServer server, SocketChannel webServerChannel)
+
+	public HTTPForwarder(final HTTPReader clientReader, final WebServer server, final SocketChannel webServerChannel)
 	{
 		this.server=server;
 		this.config=server.getConfig();
@@ -74,7 +74,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 	{
 		return name;
 	}
-	
+
 	@Override
 	/**
 	 * Whenever bytes are received on the remote web channel, they are flushed out and
@@ -106,8 +106,8 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 				}
 				handleWrites();
 				if((!closeMe) // if eof is reached, close this channel and mark it for deletion by the web server
-				&& ((bytesRead < 0) 
-					|| (!webServerChannel.isConnected()) 
+				&& ((bytesRead < 0)
+					|| (!webServerChannel.isConnected())
 					|| (!webServerChannel.isOpen())))
 				{
 					closeChannels();
@@ -196,7 +196,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 				while(buffer.remaining()>0)
 				{
 					final int bytesOut=webServerChannel.write(buffer);
-					if(bytesOut>=0) 
+					if(bytesOut>=0)
 						bytesWritten+=bytesOut;
 					if(buffer.remaining()>0)
 					{
@@ -204,7 +204,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 						{
 							Thread.sleep(1);
 						}
-						catch(Exception e)
+						catch(final Exception e)
 						{
 						}
 					}
@@ -213,7 +213,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 			return bytesWritten;
 		}
 	}
-	
+
 	/**
 	 * Reads bytes from the given buffer into the forwarding channel.
 	 * This code is parsed out here so that it can be overridden by HTTPSReader
@@ -257,7 +257,7 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 			}
 		}
 	}
-	
+
 	@Override
 	/**
 	 * Returns true if this handler is either closed, or needs to be

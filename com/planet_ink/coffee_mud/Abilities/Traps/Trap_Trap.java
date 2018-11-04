@@ -111,7 +111,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	}
 
 	@Override
-	public void setReset(int Reset)
+	public void setReset(final int Reset)
 	{
 		reset = Reset;
 	}
@@ -124,19 +124,19 @@ public class Trap_Trap extends StdAbility implements Trap
 
 	// as these are not standard traps, we return this!
 	@Override
-	public boolean maySetTrap(MOB mob, int asLevel)
+	public boolean maySetTrap(final MOB mob, final int asLevel)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canReSetTrap(MOB mob)
+	public boolean canReSetTrap(final MOB mob)
 	{
 		return false;
 	}
@@ -154,7 +154,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	}
 
 	@Override
-	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		if(P==null)
 			return null;
@@ -183,7 +183,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		return T;
 	}
 
-	public void gas(MOB mob)
+	public void gas(final MOB mob)
 	{
 		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("<S-NAME> avoid(s) a gas trap set in <T-NAME>."));
@@ -226,7 +226,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		}
 	}
 
-	public void needle(MOB mob)
+	public void needle(final MOB mob)
 	{
 		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("<S-NAME> avoid(s) a needle trap set in <T-NAME>."));
@@ -250,7 +250,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		}
 	}
 
-	public void blade(MOB mob)
+	public void blade(final MOB mob)
 	{
 		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("<S-NAME> avoid(s) a blade trap set in <T-NAME>."));
@@ -273,7 +273,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		}
 	}
 
-	public void victimOfSpell(MOB mob)
+	public void victimOfSpell(final MOB mob)
 	{
 		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("<S-NAME> avoid(s) a magic trap set in <T-NAME>."));
@@ -300,7 +300,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		}
 	}
 
-	public void fallInPit(MOB mob)
+	public void fallInPit(final MOB mob)
 	{
 		if(CMLib.flags().isInFlight(mob))
 		{
@@ -374,7 +374,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	}
 
 	@Override
-	public void spring(MOB target)
+	public void spring(final MOB target)
 	{
 		sprung=true;
 		benefactor.setLocation(target.location());
@@ -410,7 +410,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	}
 
 	@Override
-	public void resetTrap(MOB mob)
+	public void resetTrap(final MOB mob)
 	{
 		if(sprung())
 		{
@@ -419,7 +419,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				CMLib.threads().deleteTick(this, Tickable.TICKID_TRAP_RESET);
 		}
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{

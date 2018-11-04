@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_GiveLife extends Chant
 {
 	@Override
@@ -80,7 +79,7 @@ public class Chant_GiveLife extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		int amount=100;
 		if(!auto)
@@ -140,7 +139,7 @@ public class Chant_GiveLife extends Chant
 				&&(!mob.isMonster())
 				&&(CMLib.flags().flaggedAnyAffects(target, Ability.FLAG_CHARMING).size()==0))
 				{
-					Ability A=CMClass.getAbility("Loyalty");
+					final Ability A=CMClass.getAbility("Loyalty");
 					A.setMiscText("NAME="+mob.Name());
 					A.setSavable(true);
 					target.addNonUninvokableEffect(A);

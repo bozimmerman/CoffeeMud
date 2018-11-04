@@ -23,7 +23,7 @@ public class SingleEnumeration<K> implements Enumeration<K>
 {
 	private K	k;
 
-	public SingleEnumeration(K k)
+	public SingleEnumeration(final K k)
 	{
 		this.k = k;
 	}

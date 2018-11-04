@@ -71,21 +71,21 @@ public class Spell_MinorImage extends Spell
 	{
 		return 10 + (super.adjustedLevel(caster, asLevel) /6);
 	}
-	
+
 	protected boolean canSeeAppearance()
 	{
 		return false;
 	}
-	
+
 	protected boolean canTargetOthers()
 	{
 		return false;
 	}
-	
+
 	protected volatile MOB parentM = null;
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if((newMiscText!=null)&&(newMiscText.length()>0))
@@ -94,7 +94,7 @@ public class Spell_MinorImage extends Spell
 				parentM=CMLib.players().getLoadPlayer(newMiscText);
 		}
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -185,9 +185,9 @@ public class Spell_MinorImage extends Spell
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target;
 		if(canTargetOthers())
@@ -201,7 +201,7 @@ public class Spell_MinorImage extends Spell
 			target=(MOB)givenTarget;
 		else
 			target=mob;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -213,8 +213,8 @@ public class Spell_MinorImage extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB M=determineMonster(target,target.location(),target.phyStats().level());
-				Spell_MinorImage A = (Spell_MinorImage)beneficialAffect(mob,M,asLevel,getDuration(mob,asLevel));
+				final MOB M=determineMonster(target,target.location(),target.phyStats().level());
+				final Spell_MinorImage A = (Spell_MinorImage)beneficialAffect(mob,M,asLevel,getDuration(mob,asLevel));
 				if(A!=null)
 				{
 					A.setMiscText(target.Name());
@@ -228,21 +228,21 @@ public class Spell_MinorImage extends Spell
 		// return whether it worked
 		return success;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		
+
 		final Physical affected=this.affected;
 		if(affected instanceof MOB)
 			((MOB)affected).makePeace(false);
-		
+
 		return true;
 	}
-	
-	public List<Tattoo> getSeenTattoos(MOB mob)
+
+	public List<Tattoo> getSeenTattoos(final MOB mob)
 	{
 		long wornCode=0;
 		final List<Tattoo> seenTatts = new ArrayList<Tattoo>();
@@ -346,7 +346,7 @@ public class Spell_MinorImage extends Spell
 			if(emptySlots>0)
 			{
 				double numTattoosTotal=0;
-				String wornName=codes.name(wornCode).toUpperCase();
+				final String wornName=codes.name(wornCode).toUpperCase();
 				for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
 				{
 					final Tattoo T = e.nextElement();
@@ -360,7 +360,7 @@ public class Spell_MinorImage extends Spell
 					if((T.getTattooName().startsWith(wornName+":"))
 					&&((--numTattoosToShow)>=0))
 					{
-						
+
 						seenTatts.add(T);
 					}
 				}
@@ -368,8 +368,8 @@ public class Spell_MinorImage extends Spell
 		}
 		return seenTatts;
 	}
-	
-	public MOB determineMonster(MOB target, Room R, int level)
+
+	public MOB determineMonster(final MOB target, final Room R, final int level)
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenMob");
@@ -405,7 +405,7 @@ public class Spell_MinorImage extends Spell
 			final PairList<Item, Long> eq = CMLib.utensils().getSeenEquipment(target, 0);
 			for(final Pair<Item, Long> e : eq)
 			{
-				Item eqI = CMClass.getItem("GenItem");
+				final Item eqI = CMClass.getItem("GenItem");
 				eqI.setName(e.first.Name());
 				eqI.setRawProperLocationBitmap(e.first.rawProperLocationBitmap());
 				eqI.setRawLogicalAnd(e.first.rawLogicalAnd());
@@ -421,7 +421,7 @@ public class Spell_MinorImage extends Spell
 				newMOB.addItem(eqI);
 				eqI.wearAt(e.second.longValue());
 			}
-			List<Tattoo> tatts = this.getSeenTattoos(target);
+			final List<Tattoo> tatts = this.getSeenTattoos(target);
 			for(Tattoo T : tatts)
 			{
 				T=(Tattoo)T.copyOf();

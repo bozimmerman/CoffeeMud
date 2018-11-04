@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Phantasm extends Spell
 {
 
@@ -169,7 +168,7 @@ public class Spell_Phantasm extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -237,7 +236,7 @@ public class Spell_Phantasm extends Spell
 		return success;
 	}
 
-	public MOB determineMonster(MOB caster, Race R, int level)
+	public MOB determineMonster(final MOB caster, final Race R, final int level)
 	{
 		final MOB newMOB=CMClass.getMOB("GenMob");
 		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());

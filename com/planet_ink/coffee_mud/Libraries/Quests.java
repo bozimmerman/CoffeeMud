@@ -49,7 +49,7 @@ public class Quests extends StdLibrary implements QuestManager
 	protected SVector<Quest> quests=new SVector<Quest>();
 
 	@Override
-	public Quest objectInUse(Environmental E)
+	public Quest objectInUse(final Environmental E)
 	{
 		if(E==null)
 			return null;
@@ -72,7 +72,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public Quest fetchQuest(int i)
+	public Quest fetchQuest(final int i)
 	{
 		try
 		{
@@ -85,7 +85,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public Quest fetchQuest(String qname)
+	public Quest fetchQuest(final String qname)
 	{
 		for(int i=0;i<numQuests();i++)
 		{
@@ -97,7 +97,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public Quest findQuest(String qname)
+	public Quest findQuest(final String qname)
 	{
 		Quest Q=fetchQuest(qname);
 		if(Q!=null)
@@ -120,7 +120,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public void addQuest(Quest Q)
+	public void addQuest(final Quest Q)
 	{
 		if(!quests.contains(Q))
 		{
@@ -142,7 +142,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public void delQuest(Quest Q)
+	public void delQuest(final Quest Q)
 	{
 		if(quests.contains(Q))
 		{
@@ -203,7 +203,7 @@ public class Quests extends StdLibrary implements QuestManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public String listHolidays(Area A, String otherParms)
+	public String listHolidays(final Area A, final String otherParms)
 	{
 		final Object resp=getHolidayFile();
 		if(resp instanceof String)
@@ -274,7 +274,7 @@ public class Quests extends StdLibrary implements QuestManager
 		return str.toString();
 	}
 
-	protected void promptText(MOB mob, TriadList<String,String,Integer> sets, String var, int showNumber, int showFlag, String prompt, String help, boolean emptyOK)
+	protected void promptText(final MOB mob, final TriadList<String,String,Integer> sets, final String var, final int showNumber, final int showFlag, final String prompt, final String help, final boolean emptyOK)
 	throws java.io.IOException
 	{
 		final int index=sets.indexOfFirst(var);
@@ -299,7 +299,7 @@ public class Quests extends StdLibrary implements QuestManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public String createHoliday(String named, String areaName, boolean save)
+	public String createHoliday(final String named, final String areaName, final boolean save)
 	{
 		final Object resp=getHolidayFile();
 		if(resp instanceof String)
@@ -349,7 +349,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public StringBuffer getDefaultHoliData(String named, String area)
+	public StringBuffer getDefaultHoliData(final String named, final String area)
 	{
 		final StringBuffer newHoliday=new StringBuffer("");
 		newHoliday.append("\n\rSET NAME "+named+"\n\r");
@@ -369,7 +369,7 @@ public class Quests extends StdLibrary implements QuestManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public String deleteHoliday(int holidayNumber)
+	public String deleteHoliday(final int holidayNumber)
 	{
 		final Object resp=getHolidayFile();
 		if(resp instanceof String)
@@ -401,7 +401,7 @@ public class Quests extends StdLibrary implements QuestManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public String getHolidayName(int index)
+	public String getHolidayName(final int index)
 	{
 		final Object resp=getHolidayFile();
 		if(resp instanceof String)
@@ -441,7 +441,7 @@ public class Quests extends StdLibrary implements QuestManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public int getHolidayIndex(String named)
+	public int getHolidayIndex(final String named)
 	{
 		final Object resp=getHolidayFile();
 		if(resp instanceof String)
@@ -483,7 +483,7 @@ public class Quests extends StdLibrary implements QuestManager
 		return -1;
 	}
 
-	public int startLineIndex(List<String> V, String start)
+	public int startLineIndex(final List<String> V, String start)
 	{
 		start=start.toUpperCase().trim();
 		for(int v=0;v<V.size();v++)
@@ -495,7 +495,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public HolidayData getEncodedHolidayData(String dataFromStepsFile)
+	public HolidayData getEncodedHolidayData(final String dataFromStepsFile)
 	{
 		final List<String> stepV=Resources.getFileLineVector(new StringBuffer(dataFromStepsFile));
 		for(int v=0;v<stepV.size();v++)
@@ -598,7 +598,7 @@ public class Quests extends StdLibrary implements QuestManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void modifyHoliday(MOB mob, int holidayNumber)
+	public void modifyHoliday(final MOB mob, final int holidayNumber)
 	{
 		final Object resp=getHolidayFile();
 		if(resp instanceof String)
@@ -686,7 +686,7 @@ public class Quests extends StdLibrary implements QuestManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public String alterHoliday(String oldName, HolidayData newData)
+	public String alterHoliday(final String oldName, final HolidayData newData)
 	{
 		final TriadList<String,String,Integer> settings=newData.settings();
 		final TriadList<String,String,Integer> behaviors=newData.behaviors();
@@ -897,7 +897,7 @@ public class Quests extends StdLibrary implements QuestManager
 		return "";
 	}
 
-	protected int promptDuration(MOB mob, TriadList<String,String,Integer> settings, int showNumber,int showFlag)
+	protected int promptDuration(final MOB mob, final TriadList<String,String,Integer> settings, int showNumber,final int showFlag)
 		throws IOException
 	{
 		int mudDayIndex=settings.indexOfFirst("MUDDAY");
@@ -969,7 +969,7 @@ public class Quests extends StdLibrary implements QuestManager
 		return showNumber;
 	}
 
-	protected int genBehaviors(MOB mob, TriadList<String,String,Integer> behaviors, int showNumber, int showFlag)
+	protected int genBehaviors(final MOB mob, final TriadList<String,String,Integer> behaviors, int showNumber, final int showFlag)
 	throws IOException
 	{
 		for(int b=0;b<=behaviors.size();b++)
@@ -980,7 +980,7 @@ public class Quests extends StdLibrary implements QuestManager
 				continue;
 			if((showFlag>0)&&(showFlag!=showNumber))
 			{
-				if(b<behaviors.size()) 
+				if(b<behaviors.size())
 					showNumber++;
 				continue;
 			}
@@ -1035,7 +1035,7 @@ public class Quests extends StdLibrary implements QuestManager
 		return showNumber;
 	}
 
-	protected int genProperties(MOB mob, TriadList<String,String,Integer> properties, int showNumber, int showFlag)
+	protected int genProperties(final MOB mob, final TriadList<String,String,Integer> properties, int showNumber, final int showFlag)
 	throws IOException
 	{
 		for(int p=0;p<=properties.size();p++)
@@ -1045,7 +1045,7 @@ public class Quests extends StdLibrary implements QuestManager
 				continue;
 			if((showFlag>0)&&(showFlag!=showNumber))
 			{
-				if(p<properties.size()) 
+				if(p<properties.size())
 					showNumber++;
 				continue;
 			}
@@ -1100,7 +1100,7 @@ public class Quests extends StdLibrary implements QuestManager
 		return showNumber;
 	}
 
-	public static String toStringList(Enumeration<?> e)
+	public static String toStringList(final Enumeration<?> e)
 	{
 		if(!e.hasMoreElements())
 			return "";
@@ -1119,7 +1119,7 @@ public class Quests extends StdLibrary implements QuestManager
 		return s.toString().substring(2);
 	}
 
-	protected int genPricing(MOB mob, TriadList<String,String,Integer> stats, int showNumber, int showFlag)
+	protected int genPricing(final MOB mob, final TriadList<String,String,Integer> stats, int showNumber, final int showFlag)
 	throws IOException
 	{
 		final int pndex=stats.indexOfFirst("PRICEMASKS");
@@ -1188,7 +1188,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public String breakOutMaskString(String s, List<String> p)
+	public String breakOutMaskString(final String s, final List<String> p)
 	{
 		String mask="";
 		int x=s.toUpperCase().lastIndexOf("MASK=");
@@ -1215,7 +1215,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public List<List<String>> breakOutMudChatVs(String MUDCHAT, TriadList<String,String,Integer> behaviors)
+	public List<List<String>> breakOutMudChatVs(final String MUDCHAT, final TriadList<String,String,Integer> behaviors)
 	{
 		final int mndex=behaviors.indexOfFirst(MUDCHAT);
 		String mudChatStr=(mndex<0)?"":(String)behaviors.get(mndex).second;
@@ -1245,7 +1245,7 @@ public class Quests extends StdLibrary implements QuestManager
 		return mudChatV;
 	}
 
-	protected int genMudChat(MOB mob, String var, TriadList<String,String,Integer> behaviors, int showNumber, int showFlag)
+	protected int genMudChat(final MOB mob, final String var, final TriadList<String,String,Integer> behaviors, int showNumber, final int showFlag)
 	throws IOException
 	{
 		final int mndex=behaviors.indexOfFirst(var);
@@ -1348,7 +1348,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public List<List<String>> parseQuestCommandLines(List<?> script, String cmdOnly, int startLine)
+	public List<List<String>> parseQuestCommandLines(final List<?> script, String cmdOnly, final int startLine)
 	{
 		Vector<String> line=null;
 		String cmd=null;
@@ -1381,7 +1381,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public List<String> parseQuestSteps(List<String> script, int startLine, boolean rawLineInput)
+	public List<String> parseQuestSteps(final List<String> script, final int startLine, final boolean rawLineInput)
 	{
 		Vector<String> line=null;
 		String cmd=null;
@@ -1432,7 +1432,7 @@ public class Quests extends StdLibrary implements QuestManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public DVector getQuestTemplate(MOB mob, String fileToGet)
+	public DVector getQuestTemplate(final MOB mob, String fileToGet)
 	{
 		// user security doesn't matter, because this is read-only & system files.
 		final int fileOpenFlag=CMFile.FLAG_LOGERRORS|(CMSecurity.isAllowedAnywhere(mob, CMSecurity.SecFlag.CMDQUESTS)?CMFile.FLAG_FORCEALLOW:0);
@@ -1590,15 +1590,15 @@ public class Quests extends StdLibrary implements QuestManager
 		return sortedTemplatesDV;
 	}
 
-	protected String addXMLQuestMob(MOB mob,
-									int showFlag,
-									DVector pageDV,
-									String showValue,
-									String parm1Fixed,
+	protected String addXMLQuestMob(final MOB mob,
+									final int showFlag,
+									final DVector pageDV,
+									final String showValue,
+									final String parm1Fixed,
 									String lastLabel,
-									boolean optionalEntry,
-									int step,
-									int showNumber)
+									final boolean optionalEntry,
+									final int step,
+									final int showNumber)
 	throws IOException
 	{
 		MOB M=null;
@@ -1661,15 +1661,15 @@ public class Quests extends StdLibrary implements QuestManager
 		return newValue==null?"":newValue.trim();
 	}
 
-	protected String addXMLQuestItem(MOB mob,
-									 int showFlag,
-									 DVector pageDV,
-									 String showValue,
-									 String parm1Fixed,
+	protected String addXMLQuestItem(final MOB mob,
+									 final int showFlag,
+									 final DVector pageDV,
+									 final String showValue,
+									 final String parm1Fixed,
 									 String lastLabel,
-									 boolean optionalEntry,
-									 int step,
-									 int showNumber)
+									 final boolean optionalEntry,
+									 final int step,
+									 final int showNumber)
 	throws IOException
 	{
 		Item I=null;
@@ -1734,7 +1734,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public List<Quest> getPlayerPersistentQuests(MOB player)
+	public List<Quest> getPlayerPersistentQuests(final MOB player)
 	{
 		final Vector<Quest> qVec=new Vector<Quest>();
 		for(int q=0;q<CMLib.quests().numQuests();q++)
@@ -1758,7 +1758,7 @@ public class Quests extends StdLibrary implements QuestManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Quest questMaker(MOB mob)
+	public Quest questMaker(final MOB mob)
 	{
 		if(mob.isMonster())
 			return null;
@@ -2079,9 +2079,9 @@ public class Quests extends StdLibrary implements QuestManager
 			return null;
 		}
 	}
-	
+
 	@Override
-	public GenericEditor.CMEval getQuestCommandEval(QMCommand command)
+	public GenericEditor.CMEval getQuestCommandEval(final QMCommand command)
 	{
 		switch(command)
 		{
@@ -2089,7 +2089,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // title
 					return str;
 				}
@@ -2098,7 +2098,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // label
 					return str;
 				}
@@ -2107,7 +2107,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // expression
 					if (!(str instanceof String))
 						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
@@ -2126,7 +2126,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // quest name
 					if (!(str instanceof String))
 						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
@@ -2151,7 +2151,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // choose
 					if ((choices == null) || (choices.length == 0))
 						throw new CMException("NO choices?!");
@@ -2173,7 +2173,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // itemxml
 					if ((choices == null) || (choices.length == 0))
 						throw new CMException("NO choices?!");
@@ -2203,7 +2203,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // string
 					if (!(str instanceof String))
 						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
@@ -2220,7 +2220,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // roomid
 					if (!(str instanceof String))
 						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
@@ -2266,7 +2266,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // area
 					if (!(str instanceof String))
 						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
@@ -2305,7 +2305,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // mobxml
 					if ((choices == null) || (choices.length == 0))
 						throw new CMException("NO choices?!");
@@ -2335,7 +2335,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // designame
 					if (!(str instanceof String))
 						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
@@ -2358,7 +2358,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // string
 					if (!(str instanceof String))
 						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
@@ -2379,7 +2379,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // mobxml_1ormore
 					final GenericEditor.CMEval evaler = getQuestCommandEval(QMCommand.$MOBXML);
 					return evaler.eval(str, choices, emptyOK);
@@ -2389,7 +2389,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // itemxml_1ormore
 					final GenericEditor.CMEval evaler = getQuestCommandEval(QMCommand.$ITEMXML);
 					return evaler.eval(str, choices, emptyOK);
@@ -2399,7 +2399,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // zappermask
 					if (!(str instanceof String))
 						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
@@ -2413,7 +2413,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // ability
 					if (!(str instanceof String))
 						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
@@ -2440,7 +2440,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // existing quest name
 					if (!(str instanceof String))
 						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
@@ -2460,7 +2460,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // hidden
 					return str;
 				}
@@ -2469,7 +2469,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // faction
 					if (!(str instanceof String))
 						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
@@ -2489,7 +2489,7 @@ public class Quests extends StdLibrary implements QuestManager
 			return new GenericEditor.CMEval()
 			{
 				@Override
-				public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
 				{ // timeexpression
 					if (!(str instanceof String))
 						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));

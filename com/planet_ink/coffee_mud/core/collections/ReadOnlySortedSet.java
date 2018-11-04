@@ -21,7 +21,7 @@ public class ReadOnlySortedSet<K> implements SortedSet<K>
 {
 	private final SortedSet<K>	set;
 
-	public ReadOnlySortedSet(SortedSet<K> s)
+	public ReadOnlySortedSet(final SortedSet<K> s)
 	{
 		set = s;
 	}
@@ -39,7 +39,7 @@ public class ReadOnlySortedSet<K> implements SortedSet<K>
 	}
 
 	@Override
-	public SortedSet<K> headSet(K arg0)
+	public SortedSet<K> headSet(final K arg0)
 	{
 		return new ReadOnlySortedSet<K>(set.headSet(arg0));
 	}
@@ -51,25 +51,25 @@ public class ReadOnlySortedSet<K> implements SortedSet<K>
 	}
 
 	@Override
-	public SortedSet<K> subSet(K arg0, K arg1)
+	public SortedSet<K> subSet(final K arg0, final K arg1)
 	{
 		return new ReadOnlySortedSet<K>(set.subSet(arg0, arg1));
 	}
 
 	@Override
-	public SortedSet<K> tailSet(K arg0)
+	public SortedSet<K> tailSet(final K arg0)
 	{
 		return new ReadOnlySortedSet<K>(set.tailSet(arg0));
 	}
 
 	@Override
-	public boolean add(K e)
+	public boolean add(final K e)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends K> c)
+	public boolean addAll(final Collection<? extends K> c)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -81,13 +81,13 @@ public class ReadOnlySortedSet<K> implements SortedSet<K>
 	}
 
 	@Override
-	public boolean contains(Object arg0)
+	public boolean contains(final Object arg0)
 	{
 		return set.contains(arg0);
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0)
+	public boolean containsAll(final Collection<?> arg0)
 	{
 		return set.containsAll(arg0);
 	}
@@ -105,19 +105,19 @@ public class ReadOnlySortedSet<K> implements SortedSet<K>
 	}
 
 	@Override
-	public boolean remove(Object o)
+	public boolean remove(final Object o)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> c)
+	public boolean removeAll(final Collection<?> c)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> c)
+	public boolean retainAll(final Collection<?> c)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -135,7 +135,7 @@ public class ReadOnlySortedSet<K> implements SortedSet<K>
 	}
 
 	@Override
-	public <T> T[] toArray(T[] arg0)
+	public <T> T[] toArray(final T[] arg0)
 	{
 		return set.toArray(arg0);
 	}

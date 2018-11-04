@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class GooseSpeak extends AnimalSpeak
 {
 	@Override
@@ -42,7 +41,7 @@ public class GooseSpeak extends AnimalSpeak
 	}
 
 	private final static String localizedName = CMLib.lang().L("Goose Speak");
-	
+
 	@Override
 	public String name()
 	{
@@ -53,9 +52,9 @@ public class GooseSpeak extends AnimalSpeak
 	{
 		"cackle","gobble","hiss","honk","quack"
 	};
-	
+
 	@Override
-	protected String[] getSounds() 
+	protected String[] getSounds()
 	{
 		return animalSounds;
 	}

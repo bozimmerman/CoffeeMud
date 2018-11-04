@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Taxidermy extends CraftingSkill
 {
 	@Override
@@ -70,7 +69,7 @@ public class Taxidermy extends CraftingSkill
 
 	protected final static String CRAFTING_RACE_STR_PREFIX="This statue was once ";
 	protected final static String CRAFTING_RACE_STR=CRAFTING_RACE_STR_PREFIX+"@x1.";
-	
+
 	protected String foundShortName="";
 
 	public Taxidermy()
@@ -110,7 +109,7 @@ public class Taxidermy extends CraftingSkill
 			final int x=buildingI.secretIdentity().indexOf(CRAFTING_RACE_STR_PREFIX);
 			if(x>=0)
 			{
-				int y=buildingI.secretIdentity().indexOf('.',x+CRAFTING_RACE_STR_PREFIX.length());
+				final int y=buildingI.secretIdentity().indexOf('.',x+CRAFTING_RACE_STR_PREFIX.length());
 				if(y>=0)
 				{
 					return buildingI.secretIdentity().substring(x,y);
@@ -161,7 +160,7 @@ public class Taxidermy extends CraftingSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;

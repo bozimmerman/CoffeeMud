@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Group extends StdCommand
 {
 	public Group()
@@ -46,7 +45,7 @@ public class Group extends StdCommand
 		return access;
 	}
 
-	public static StringBuffer showWhoLong(MOB seer, MOB who)
+	public static StringBuffer showWhoLong(final MOB seer, final MOB who)
 	{
 		final StringBuffer msg=new StringBuffer("^N");
 		msg.append("[^w");
@@ -100,7 +99,7 @@ public class Group extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		mob.tell(L("@x1's group:\n\r",mob.name()));

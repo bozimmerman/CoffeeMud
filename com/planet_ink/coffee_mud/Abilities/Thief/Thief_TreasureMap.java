@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_TreasureMap extends ThiefSkill
 {
 	@Override
@@ -87,20 +86,20 @@ public class Thief_TreasureMap extends ThiefSkill
 	{
 		return 0;
 	}
-	
-	protected void prefixAll(List<StringBuilder> theMap,int num)
+
+	protected void prefixAll(final List<StringBuilder> theMap,final int num)
 	{
-		for(StringBuilder str : theMap)
+		for(final StringBuilder str : theMap)
 			str.insert(0,CMStrings.SPACES.subSequence(0, num));
 	}
 
-	protected void postfixAll(List<StringBuilder> theMap,int num)
+	protected void postfixAll(final List<StringBuilder> theMap,final int num)
 	{
-		for(StringBuilder str : theMap)
+		for(final StringBuilder str : theMap)
 			str.append(CMStrings.SPACES.subSequence(0, num));
 	}
 
-	protected void insertLink(int[] coord, int lastWidth, int dir, String nextName, int trailCt, List<StringBuilder> theMap)
+	protected void insertLink(final int[] coord, final int lastWidth, int dir, String nextName, final int trailCt, final List<StringBuilder> theMap)
 	{
 		if(dir == Directions.UP)
 			dir=Directions.NORTH;
@@ -448,9 +447,9 @@ public class Thief_TreasureMap extends ThiefSkill
 			break;
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -465,7 +464,7 @@ public class Thief_TreasureMap extends ThiefSkill
 			mob.tell(L("What would you like to put your map on?"));
 			return false;
 		}
-		String rest = CMParms.combine(commands);
+		final String rest = CMParms.combine(commands);
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,rest);
 		if(target==null)
 		{
@@ -499,7 +498,7 @@ public class Thief_TreasureMap extends ThiefSkill
 			return false;
 		}
 
-		int range = 50 + (10*super.getXLEVELLevel(mob));
+		final int range = 50 + (10*super.getXLEVELLevel(mob));
 		final TrackingFlags flags=CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
@@ -510,7 +509,7 @@ public class Thief_TreasureMap extends ThiefSkill
 			final Item I=i.nextElement();
 			if(I!=null)
 			{
-				Ability A=I.fetchEffect(ID());
+				final Ability A=I.fetchEffect(ID());
 				if((A!=null)&&(A.text().length()>0))
 					mapsDone.add(A.text());
 			}
@@ -523,10 +522,10 @@ public class Thief_TreasureMap extends ThiefSkill
 			{
 				for(int i=0;i<room.numItems();i++)
 				{
-					Item I=room.getItem(i);
+					final Item I=room.getItem(i);
 					if((I!=null)&&(I.ID().equals("HoleInTheGround")))
 					{
-						Ability A=I.fetchEffect("Thief_BuriedTreasure");
+						final Ability A=I.fetchEffect("Thief_BuriedTreasure");
 						if((A!=null)&&(A.text().equals(mob.Name())))
 						{
 							nearestRoom = room;
@@ -544,18 +543,18 @@ public class Thief_TreasureMap extends ThiefSkill
 			mob.tell(L("You have no buried treasure in this area for which you do not already have a map handy."));
 			return false;
 		}
-		List<Room> dest=new XVector<Room>(targetRoom);
-		List<Room> track=CMLib.tracking().findTrailToAnyRoom(R, dest, flags, range);
-		
-		List<StringBuilder> theMap=new LinkedList<StringBuilder>();
-		String firstRoomStr="["+CMStrings.ellipse(CMStrings.removeColors(R.displayText(mob)),20)+"]";
+		final List<Room> dest=new XVector<Room>(targetRoom);
+		final List<Room> track=CMLib.tracking().findTrailToAnyRoom(R, dest, flags, range);
+
+		final List<StringBuilder> theMap=new LinkedList<StringBuilder>();
+		final String firstRoomStr="["+CMStrings.ellipse(CMStrings.removeColors(R.displayText(mob)),20)+"]";
 		int lastWidth=firstRoomStr.length();
 		theMap.add(new StringBuilder(CMStrings.SPACES.substring(0,lastWidth)));
 		theMap.add(new StringBuilder(firstRoomStr));
 		theMap.add(new StringBuilder(CMStrings.SPACES.substring(0,lastWidth)));
-		StringBuilder desc=new StringBuilder("");
+		final StringBuilder desc=new StringBuilder("");
 		desc.append(L("^HStart at @x1^N, then go ",R.displayText(mob)));
-		int[] coord=new int[]{lastWidth/2,1};
+		final int[] coord=new int[]{lastWidth/2,1};
 		int trailCt=0;
 		Room room=R;
 		for(int t=track.size()-2;t>=0;t--)
@@ -577,7 +576,7 @@ public class Thief_TreasureMap extends ThiefSkill
 				desc.append(L("@x1 @x2 times until you get to @x3, then ",CMLib.directions().getDirectionName(dir).toLowerCase(),""+trailCt,nextR.name()));
 			else
 				desc.append(L("@x1 to @x2, then ",CMLib.directions().getDirectionName(dir).toLowerCase(),nextR.name()));
-			
+
 			insertLink(coord,lastWidth,dir,nextR.name(),trailCt,theMap);
 			R.send(mob, CMClass.getMsg(mob, item, this, CMMsg.MSG_WROTE, null, CMMsg.MSG_WROTE, CMLib.map().getExtendedRoomID(nextR),-1,null));
 			lastWidth=nextR.name().length()+2;
@@ -585,7 +584,7 @@ public class Thief_TreasureMap extends ThiefSkill
 			trailCt=0;
 		}
 		desc.append(L("at @x1, X will mark the spot.",room.displayText(mob)));
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -593,9 +592,9 @@ public class Thief_TreasureMap extends ThiefSkill
 
 		if(success)
 		{
-			StringBuilder buf=new StringBuilder("");
+			final StringBuilder buf=new StringBuilder("");
 			buf.append(L("@x1's treasure map of @x2\n\r",mob.Name(),room.getArea().Name()));
-			for(StringBuilder str : theMap)
+			for(final StringBuilder str : theMap)
 				buf.append(CMStrings.rtrim(str.toString())).append("\n\r");
 			buf.append("\n\r");
 			buf.append(desc).append("\n\r");

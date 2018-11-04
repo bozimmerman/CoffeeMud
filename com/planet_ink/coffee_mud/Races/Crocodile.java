@@ -47,7 +47,7 @@ public class Crocodile extends GreatLizard
 		super.naturalAbilImmunities.add("Disease_Gonorrhea");
 		super.naturalAbilImmunities.add("Disease_Malaria");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Crocodile");
 
 	@Override
@@ -100,7 +100,7 @@ public class Crocodile extends GreatLizard
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{
@@ -113,7 +113,7 @@ public class Crocodile extends GreatLizard
 				return super.makeMobName(gender, age);
 		}
 	}
-	
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

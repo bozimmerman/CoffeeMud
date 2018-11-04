@@ -42,14 +42,14 @@ public class SubThinInstance extends StdThinInstance
 	{
 		return "SubThinInstance";
 	}
-	
+
 	public SubThinInstance()
 	{
 		super.flags = Area.FLAG_THIN | Area.FLAG_INSTANCE_CHILD;
 	}
 
 	@Override
-	protected boolean qualifiesToBeParentArea(Area parentA)
+	protected boolean qualifiesToBeParentArea(final Area parentA)
 	{
 		return (parentA != this);
 	}
@@ -59,19 +59,19 @@ public class SubThinInstance extends StdThinInstance
 	{
 		return true;
 	}
-	
+
 	@Override
 	protected boolean doesManageMobLists()
 	{
 		return true;
 	}
-	
-	@Override 
+
+	@Override
 	protected Area getParentArea()
 	{
 		if((parentArea!=null)&&(parentArea.get()!=null))
 			return parentArea.get();
-		Area A=super.getParentArea();
+		final Area A=super.getParentArea();
 		if(A!=null)
 			return A;
 		int x=Name().indexOf('_');
@@ -86,15 +86,15 @@ public class SubThinInstance extends StdThinInstance
 		parentArea=new WeakReference<Area>(parentA);
 		return parentA;
 	}
-	
-	@Override 
+
+	@Override
 	public int[] getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return emptyStats;
 		final Area parentArea=getParentArea();
 		final String areaName = (parentArea==null)?Name():parentArea.Name();
-		int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
+		final int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
 		if(statData!=null)
 			return statData;
 		if((parentArea!=null)&&(parentArea!=this))
@@ -129,5 +129,5 @@ public class SubThinInstance extends StdThinInstance
 				instanceChildren.get(0).mobs.add(new WeakReference<MOB>(mob));
 		}
 		return this;
-	}	
+	}
 }

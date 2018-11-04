@@ -25,30 +25,30 @@ public interface HTTPResponse
 {
 	/**
 	 * Set the response HTTP code
-	 * 
+	 *
 	 * @param httpStatusCode
 	 */
 	public void setStatusCode(int httpStatusCode);
-	
+
 	/**
-	 * Sets the response header to specified value 
-	 * 
+	 * Sets the response header to specified value
+	 *
 	 * @param name The parameter name
 	 * @param value The parameter value
 	 */
 	public void setHeader(String name, String value);
-	
+
 	/**
-	 * Sets the cookie to specified value 
-	 * 
+	 * Sets the cookie to specified value
+	 *
 	 * @param name The parameter name
 	 * @param value The parameter value
 	 */
 	public void setCookie(String name, String value);
-	
+
 	/**
 	 * Sets the mime type to be returned to the client
-	 * 
+	 *
 	 * @param mimeType The mime type to set
 	 */
 	public void setMimeType(String mimeType);

@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Archon_Record extends ArchonSkill
 {
 	@Override
@@ -138,7 +137,7 @@ public class Archon_Record extends ArchonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=CMLib.players().getLoadPlayer(CMParms.combine(commands,0));
 		if(target==null)

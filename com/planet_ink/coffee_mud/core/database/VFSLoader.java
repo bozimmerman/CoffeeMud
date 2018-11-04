@@ -37,7 +37,7 @@ import java.util.*;
 public class VFSLoader
 {
 	protected DBConnector DB=null;
-	public VFSLoader(DBConnector newDB)
+	public VFSLoader(final DBConnector newDB)
 	{
 		DB=newDB;
 	}
@@ -76,7 +76,7 @@ public class VFSLoader
 		return root;
 	}
 
-	public CMFile.CMVFSFile DBRead(String filename)
+	public CMFile.CMVFSFile DBRead(final String filename)
 	{
 		DBConnection D=null;
 		CMFile.CMVFSFile row = null;
@@ -110,7 +110,7 @@ public class VFSLoader
 		return row;
 	}
 
-	private String makeVBuf(Object data)
+	private String makeVBuf(final Object data)
 	{
 		String buf=null;
 		if(data==null)
@@ -127,7 +127,7 @@ public class VFSLoader
 		return buf;
 	}
 
-	public void DBCreate(String filename, int bits, String creator, long updateTime, Object data)
+	public void DBCreate(final String filename, final int bits, final String creator, final long updateTime, final Object data)
 	{
 		final String buf=makeVBuf(data);
 		if(buf==null)
@@ -151,7 +151,7 @@ public class VFSLoader
 		 +")", buf);
 	}
 
-	public void DBUpSert(String filename, int bits, String creator, long updateTime, Object data)
+	public void DBUpSert(final String filename, final int bits, final String creator, final long updateTime, final Object data)
 	{
 		DBConnection D=null;
 		try
@@ -192,7 +192,7 @@ public class VFSLoader
 		}
 	}
 
-	public void DBDelete(String filename)
+	public void DBDelete(final String filename)
 	{
 		DBConnection D=null;
 		try

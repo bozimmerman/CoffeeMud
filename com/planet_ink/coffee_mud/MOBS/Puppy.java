@@ -53,7 +53,7 @@ public class Puppy extends StdMOB
 		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);
 
-		Behavior B=CMClass.getBehavior("Follower");
+		final Behavior B=CMClass.getBehavior("Follower");
 		if(B!=null)
 		{
 			B.setParms("MINTICKS=-1 MAXTICKS=-1");

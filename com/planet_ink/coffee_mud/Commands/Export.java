@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Export extends StdCommand
 {
 	public Export()
@@ -53,7 +52,7 @@ public class Export extends StdCommand
 		}
 	};
 
-	public void reallyExport(MOB mob, Session S, String fileName, String xml)
+	public void reallyExport(final MOB mob, final Session S, String fileName, String xml)
 	{
 		if(fileName==null)
 			return;
@@ -118,7 +117,7 @@ public class Export extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
@@ -144,14 +143,14 @@ public class Export extends StdCommand
 			}
 			else
 			{
-				String clanName = commands.remove(0);
-				List<Room> rooms=new ArrayList<Room>();
+				final String clanName = commands.remove(0);
+				final List<Room> rooms=new ArrayList<Room>();
 				for(final Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
 				{
 					final Room R=CMLib.map().getRoom(r.nextElement());
 					if((R!=null)&&(R.roomID().length()>0))
 					{
-						LandTitle title=CMLib.law().getLandTitle(R);
+						final LandTitle title=CMLib.law().getLandTitle(R);
 						if((title != null)&&(title.getOwnerName().equalsIgnoreCase(clanName)))
 							rooms.add(R);
 					}
@@ -164,12 +163,12 @@ public class Export extends StdCommand
 				}
 				else
 				{
-					for(Room R : rooms)
+					for(final Room R : rooms)
 					{
 						R.bringMobHere(mob, false);
 						if(R.isInhabitant(mob))
 						{
-							List<String> cmds=new XVector<String>(commands);
+							final List<String> cmds=new XVector<String>(commands);
 							if(cmds.size()==0)
 								cmds.add("EXPORT");
 							else
@@ -192,7 +191,7 @@ public class Export extends StdCommand
 				}
 			}
 		}
-		
+
 		if((!commandType.equalsIgnoreCase("ROOM"))
 		&&(!commandType.equalsIgnoreCase("WORLD"))
 		&&(!commandType.equalsIgnoreCase("CATALOG"))
@@ -309,7 +308,7 @@ public class Export extends StdCommand
 		return true;
 	}
 
-	protected CMObjectType getItemSubType(String subType, int fileNameCode, String[] fileName)
+	protected CMObjectType getItemSubType(final String subType, final int fileNameCode, final String[] fileName)
 	{
 		CMObjectType type=CMObjectType.ITEM;
 		if(subType.equalsIgnoreCase("WEAPONS"))
@@ -368,22 +367,22 @@ public class Export extends StdCommand
 		return type;
 	}
 
-	protected String getCatalogData(Map<String,?> found)
+	protected String getCatalogData(final Map<String,?> found)
 	{
-		StringBuilder str = new StringBuilder("<CATADATAS>");
-		for(String key : found.keySet())
+		final StringBuilder str = new StringBuilder("<CATADATAS>");
+		for(final String key : found.keySet())
 		{
-			List<?> foundMs = (List<?>)found.get(key);
-			for(Object P : foundMs)
+			final List<?> foundMs = (List<?>)found.get(key);
+			for(final Object P : foundMs)
 			{
-				CatalogLibrary.CataData data = CMLib.catalog().getCatalogData((Physical)P);
+				final CatalogLibrary.CataData data = CMLib.catalog().getCatalogData((Physical)P);
 				str.append(data.data(((Physical)P).name()));
 			}
 		}
 		str.append("</CATADATAS>");
 		return str.toString();
 	}
-	
+
 	/**
 	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#executeInternal(MOB, int, Object...)
 	 * args[0] = commandType: AREA, PLAYER, ROOM
@@ -396,7 +395,7 @@ public class Export extends StdCommand
 	 * @return xml document, with filenameType=4, or null
 	 */
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return null;
@@ -465,13 +464,13 @@ public class Export extends StdCommand
 				if(S!=null)
 					S.rawPrint(L("Reading catalog items and mobs..."));
 				x.append("\r\n<MOBS>");
-				Map<String,List<MOB>> foundMobs=new TreeMap<String,List<MOB>>();
+				final Map<String,List<MOB>> foundMobs=new TreeMap<String,List<MOB>>();
 				x.append(CMLib.coffeeMaker().getMobsXML(Arrays.asList(CMLib.catalog().getCatalogMobs()), custom, files, foundMobs));
 				x.append("\r\n</MOBS>\r\n");
 				x.append("\r\n").append(getCatalogData(foundMobs));
 				foundMobs.clear();
 				x.append("\r\n<ITEMS>");
-				Map<String,List<Item>> foundItems=new TreeMap<String,List<Item>>();
+				final Map<String,List<Item>> foundItems=new TreeMap<String,List<Item>>();
 				x.append(CMLib.coffeeMaker().getItemsXML(Arrays.asList(CMLib.catalog().getCatalogItems()), foundItems, files, null));
 				x.append("\r\n</ITEMS>\r\n");
 				x.append("\r\n").append(getCatalogData(foundItems));
@@ -578,10 +577,10 @@ public class Export extends StdCommand
 		else
 		if(commandType.equalsIgnoreCase("CATALOG"))
 		{
-			String[] fileNameAdj = new String[]{fileName};
-			CMObjectType type = getItemSubType(subType, fileNameCode,fileNameAdj);
+			final String[] fileNameAdj = new String[]{fileName};
+			final CMObjectType type = getItemSubType(subType, fileNameCode,fileNameAdj);
 			fileName = fileNameAdj[0];
-			
+
 			final StringBuffer x=new StringBuffer("<CATALOG");
 			if(((type!=null)&&(type != CMObjectType.ITEM))||(subType.equalsIgnoreCase("ITEMS")))
 				x.append(" HASITEMS>");
@@ -600,7 +599,7 @@ public class Export extends StdCommand
 			}
 			if(!subType.equalsIgnoreCase("MOBS"))
 			{
-				Map<String,List<Item>> found=new TreeMap<String,List<Item>>();
+				final Map<String,List<Item>> found=new TreeMap<String,List<Item>>();
 				x.append("\r\n<ITEMS>");
 				x.append(CMLib.coffeeMaker().getItemsXML(Arrays.asList(CMLib.catalog().getCatalogItems()), found, files, type));
 				x.append("\r\n</ITEMS>\r\n");
@@ -664,10 +663,10 @@ public class Export extends StdCommand
 		||(subType.equalsIgnoreCase("ARMOR")))
 		{
 
-			String[] fileNameAdj = new String[]{fileName};
-			CMObjectType type = getItemSubType(subType, fileNameCode,fileNameAdj);
+			final String[] fileNameAdj = new String[]{fileName};
+			final CMObjectType type = getItemSubType(subType, fileNameCode,fileNameAdj);
 			fileName = fileNameAdj[0];
-			
+
 			final Hashtable<String,List<Item>> found=new Hashtable<String,List<Item>>();
 			if(commandType.equalsIgnoreCase("ROOM"))
 				xml="<ITEMS>"+CMLib.coffeeMaker().getRoomItems(room,found,files,type).toString()+"</ITEMS>";
@@ -761,7 +760,7 @@ public class Export extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowedContainsAny(mob, mob.location(), CMSecurity.SECURITY_EXPORT_GROUP);
 	}

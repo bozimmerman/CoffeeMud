@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.collections;
 import java.lang.ref.WeakReference;
 import java.util.*;
+
 /*
    Copyright 2011-2018 Bo Zimmerman
 
@@ -60,25 +61,25 @@ public class ChameleonList<K> implements List<K>, SizedIterable<K>
 	}
 
 	@Override
-	public boolean add(K arg0)
+	public boolean add(final K arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public void add(int arg0, K arg1)
+	public void add(final int arg0, final K arg1)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends K> arg0)
+	public boolean addAll(final Collection<? extends K> arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean addAll(int arg0, Collection<? extends K> arg1)
+	public boolean addAll(final int arg0, final Collection<? extends K> arg1)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -90,28 +91,28 @@ public class ChameleonList<K> implements List<K>, SizedIterable<K>
 	}
 
 	@Override
-	public boolean contains(Object arg0)
+	public boolean contains(final Object arg0)
 	{
 		signaler.possiblyChangeMe(this);
 		return list.contains(arg0);
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0)
+	public boolean containsAll(final Collection<?> arg0)
 	{
 		signaler.possiblyChangeMe(this);
 		return list.containsAll(arg0);
 	}
 
 	@Override
-	public K get(int arg0)
+	public K get(final int arg0)
 	{
 		signaler.possiblyChangeMe(this);
 		return list.get(arg0);
 	}
 
 	@Override
-	public int indexOf(Object arg0)
+	public int indexOf(final Object arg0)
 	{
 		signaler.possiblyChangeMe(this);
 		return list.indexOf(arg0);
@@ -132,7 +133,7 @@ public class ChameleonList<K> implements List<K>, SizedIterable<K>
 	}
 
 	@Override
-	public int lastIndexOf(Object arg0)
+	public int lastIndexOf(final Object arg0)
 	{
 		signaler.possiblyChangeMe(this);
 		return list.lastIndexOf(arg0);
@@ -146,38 +147,38 @@ public class ChameleonList<K> implements List<K>, SizedIterable<K>
 	}
 
 	@Override
-	public ListIterator<K> listIterator(int arg0)
+	public ListIterator<K> listIterator(final int arg0)
 	{
 		signaler.possiblyChangeMe(this);
 		return new ReadOnlyListIterator<K>(list.listIterator(arg0));
 	}
 
 	@Override
-	public boolean remove(Object arg0)
+	public boolean remove(final Object arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public K remove(int arg0)
+	public K remove(final int arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> arg0)
+	public boolean removeAll(final Collection<?> arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> arg0)
+	public boolean retainAll(final Collection<?> arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public K set(int arg0, K arg1)
+	public K set(final int arg0, final K arg1)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -190,7 +191,7 @@ public class ChameleonList<K> implements List<K>, SizedIterable<K>
 	}
 
 	@Override
-	public List<K> subList(int arg0, int arg1)
+	public List<K> subList(final int arg0, final int arg1)
 	{
 		signaler.possiblyChangeMe(this);
 		return new ReadOnlyList<K>(list.subList(arg0,arg1));
@@ -204,7 +205,7 @@ public class ChameleonList<K> implements List<K>, SizedIterable<K>
 	}
 
 	@Override
-	public <T> T[] toArray(T[] arg0)
+	public <T> T[] toArray(final T[] arg0)
 	{
 		signaler.possiblyChangeMe(this);
 		return list.toArray(arg0);

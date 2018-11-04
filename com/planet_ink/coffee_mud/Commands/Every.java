@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Every extends StdCommand
 {
 	public Every()
@@ -45,7 +44,7 @@ public class Every extends StdCommand
 	{
 		return access;
 	}
-	
+
 	private enum EveryWhat {
 		MOB,
 		ITEM,
@@ -53,19 +52,19 @@ public class Every extends StdCommand
 		EXIT
 	}
 
-	protected List<String> makeNewCommands(List<String> commands, String replace)
+	protected List<String> makeNewCommands(final List<String> commands, final String replace)
 	{
 		final XVector<String> newCommands=new XVector<String>(commands);
-		int x=newCommands.indexOf("*");
+		final int x=newCommands.indexOf("*");
 		if(x>=0)
 			newCommands.set(x,replace);
 		return newCommands;
 	}
-	
+
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, List<String> commands, final int metaFlags)
 		throws java.io.IOException
-	{	
+	{
 		final Room room=mob.location();
 		if(room == null)
 			return false;
@@ -89,19 +88,19 @@ public class Every extends StdCommand
 		final CMSecurity.SecFlag secFlag;
 		switch(what)
 		{
-		case ROOM: 
-			secFlag=CMSecurity.SecFlag.CMDROOMS; 
+		case ROOM:
+			secFlag=CMSecurity.SecFlag.CMDROOMS;
 			break;
-		case MOB: 
-			secFlag=CMSecurity.SecFlag.CMDMOBS; 
+		case MOB:
+			secFlag=CMSecurity.SecFlag.CMDMOBS;
 			break;
-		case ITEM: 
-			secFlag=CMSecurity.SecFlag.CMDITEMS; 
+		case ITEM:
+			secFlag=CMSecurity.SecFlag.CMDITEMS;
 			break;
-		case EXIT: 
-			secFlag=CMSecurity.SecFlag.CMDROOMS; 
+		case EXIT:
+			secFlag=CMSecurity.SecFlag.CMDROOMS;
 			break;
-		default: 
+		default:
 			return false;
 		}
 		commands.remove(0);
@@ -110,12 +109,12 @@ public class Every extends StdCommand
 			if(mskBunch != null)
 			{
 				String s=commands.get(0).toString();
-				int x=s.toUpperCase().indexOf("</MASK>");
+				final int x=s.toUpperCase().indexOf("</MASK>");
 				if(x<0)
 					mskBunch.add(s);
 				else
 				{
-					String rest=s.substring(x+7).trim();
+					final String rest=s.substring(x+7).trim();
 					if(rest.length()>0)
 					{
 						if(commands.size()==1)
@@ -183,7 +182,7 @@ public class Every extends StdCommand
 			else
 				break;
 		}
-		
+
 		final Session session=mob.session();
 		if(roomList == null)
 		{
@@ -195,7 +194,7 @@ public class Every extends StdCommand
 			mob.tell(L("Do what? How about a command?"));
 			return false;
 		}
-		
+
 		final Room oldLocR=mob.location();
 		while(roomList.hasMoreElements() && ((session==null)||(!session.isStopped())))
 		{
@@ -245,7 +244,7 @@ public class Every extends StdCommand
 				}
 			}
 		}
-		if(mob.location()!=oldLocR) 
+		if(mob.location()!=oldLocR)
 			oldLocR.bringMobHere(mob,false);
 		mob.tell(L("Done."));
 		return false;
@@ -258,7 +257,7 @@ public class Every extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.EVERY);
 	}

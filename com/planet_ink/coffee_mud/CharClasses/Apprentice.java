@@ -124,7 +124,7 @@ public class Apprentice extends StdCharClass
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -181,10 +181,10 @@ public class Apprentice extends StdCharClass
 	}
 
 	@SuppressWarnings("unchecked")
-	private final Pair<String, Integer>[]	minimumStatRequirements	= new Pair[] 
-	{ 
-		new Pair<String, Integer>("Wisdom", Integer.valueOf(5)), 
-		new Pair<String, Integer>("Intelligence", Integer.valueOf(5)) 
+	private final Pair<String, Integer>[]	minimumStatRequirements	= new Pair[]
+	{
+		new Pair<String, Integer>("Wisdom", Integer.valueOf(5)),
+		new Pair<String, Integer>("Intelligence", Integer.valueOf(5))
 	};
 
 	@Override
@@ -194,7 +194,7 @@ public class Apprentice extends StdCharClass
 	}
 
 	@Override
-	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
+	public void startCharacter(final MOB mob, final boolean isBorrowedClass, final boolean verifyOnly)
 	{
 		super.startCharacter(mob, isBorrowedClass, verifyOnly);
 		if(!verifyOnly)
@@ -209,7 +209,7 @@ public class Apprentice extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -223,7 +223,7 @@ public class Apprentice extends StdCharClass
 	}
 
 	@Override
-	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount)
+	public int adjustExperienceGain(final MOB host, final MOB mob, final MOB victim, int amount)
 	{
 		if((amount > 0)&&(!expless()))
 		{
@@ -237,7 +237,7 @@ public class Apprentice extends StdCharClass
 		}
 		return amount;
 	}
-	
+
 	@Override
 	public String getOtherBonusDesc()
 	{

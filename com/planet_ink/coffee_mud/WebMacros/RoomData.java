@@ -40,7 +40,6 @@ import java.util.concurrent.TimeUnit;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class RoomData extends StdWebMacro
 {
 	@Override
@@ -52,6 +51,7 @@ public class RoomData extends StdWebMacro
 
 	public static List<MOB> getMOBCache()
 	{
+		@SuppressWarnings("unchecked")
 		List<MOB> mobSet=(List<MOB>)Resources.getResource("SYSTEM_WEB_MOB_CACHE");
 		if(mobSet==null)
 		{
@@ -63,6 +63,7 @@ public class RoomData extends StdWebMacro
 
 	public static List<Item> getItemCache()
 	{
+		@SuppressWarnings("unchecked")
 		List<Item> itemSet=(List<Item>)Resources.getResource("SYSTEM_WEB_ITEM_CACHE");
 		if(itemSet==null)
 		{
@@ -72,7 +73,7 @@ public class RoomData extends StdWebMacro
 		return itemSet;
 	}
 
-	public static String getItemCode(Room R, Item I)
+	public static String getItemCode(final Room R, final Item I)
 	{
 		if(I==null)
 			return "";
@@ -84,7 +85,7 @@ public class RoomData extends StdWebMacro
 		return "";
 	}
 
-	public static String getItemCode(List<Item> allitems, Item I)
+	public static String getItemCode(final List<Item> allitems, final Item I)
 	{
 		if(I==null)
 			return "";
@@ -105,7 +106,7 @@ public class RoomData extends StdWebMacro
 		return "";
 	}
 
-	public static String getItemCode(MOB M, Item I)
+	public static String getItemCode(final MOB M, final Item I)
 	{
 		if(I==null)
 			return "";
@@ -120,7 +121,7 @@ public class RoomData extends StdWebMacro
 			final CoffeeShop shop=shopK.getShop();
 			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 			{
-				Environmental E=i.next();
+				final Environmental E=i.next();
 				if(E==I)
 					return Long.toString( ( I.ID() + "/" + I.Name() + "/" + I.displayText() ).hashCode() << 5 ) + i;
 			}
@@ -146,7 +147,7 @@ public class RoomData extends StdWebMacro
 		return "";
 	}
 
-	public static String getMOBCode(List<MOB> mobs, MOB M)
+	public static String getMOBCode(final List<MOB> mobs, final MOB M)
 	{
 		if(M==null)
 			return "";
@@ -160,11 +161,11 @@ public class RoomData extends StdWebMacro
 		return "";
 	}
 
-	public static Item getItemFromCode(MOB M, String code)
+	public static Item getItemFromCode(final MOB M, String code)
 	{
 		if(M==null)
 			return getItemFromCode(getItemCache(),code);
-		String origCode=code;
+		final String origCode=code;
 		for(int i=0;i<M.numItems();i++)
 		{
 			final Item I=M.getItem(i);
@@ -181,11 +182,11 @@ public class RoomData extends StdWebMacro
 		}
 		if(M instanceof ShopKeeper)
 		{
-			CoffeeShop shop=((ShopKeeper)M).getShop();
+			final CoffeeShop shop=((ShopKeeper)M).getShop();
 			code=origCode;
 			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 			{
-				Environmental E=i.next();
+				final Environmental E=i.next();
 				if(E instanceof Item)
 				{
 					if(getItemCode(M,(Item)E).equals(code))
@@ -196,7 +197,7 @@ public class RoomData extends StdWebMacro
 				code=code.substring(0,code.length()-2);
 			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 			{
-				Environmental E=i.next();
+				final Environmental E=i.next();
 				if(E instanceof Item)
 				{
 					if(getItemCode(M,(Item)E).startsWith(code))
@@ -207,7 +208,7 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-	public static Item getItemFromCode(Room R, String code)
+	public static Item getItemFromCode(final Room R, String code)
 	{
 		if(R==null)
 			return getItemFromCode(getItemCache(),code);
@@ -226,7 +227,7 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-	public static Item getItemFromCode(List<Item> allitems, String code)
+	public static Item getItemFromCode(final List<Item> allitems, String code)
 	{
 		if(code.startsWith("CATALOG-"))
 			return getItemFromCatalog(code);
@@ -245,7 +246,7 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-	public static MOB getMOBFromCode(Room R, String code)
+	public static MOB getMOBFromCode(final Room R, String code)
 	{
 		if(R==null)
 			return getMOBFromCode(getMOBCache(),code);
@@ -264,7 +265,7 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-	public static MOB getMOBFromCode(List<MOB> allmobs, String code)
+	public static MOB getMOBFromCode(final List<MOB> allmobs, String code)
 	{
 		if(code.startsWith("CATALOG-"))
 			return getMOBFromCatalog(code);
@@ -283,7 +284,7 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-	public static MOB getMOBFromCatalog(String MATCHING)
+	public static MOB getMOBFromCatalog(final String MATCHING)
 	{
 		if(!MATCHING.startsWith("CATALOG-"))
 			return null;
@@ -296,7 +297,7 @@ public class RoomData extends StdWebMacro
 		return M2;
 	}
 
-	public static Item getItemFromCatalog(String MATCHING)
+	public static Item getItemFromCatalog(final String MATCHING)
 	{
 		if(!MATCHING.startsWith("CATALOG-"))
 			return null;
@@ -309,7 +310,8 @@ public class RoomData extends StdWebMacro
 		return I;
 	}
 
-	public static String getAppropriateCode(Environmental E, Environmental RorM, List classes, List list)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static String getAppropriateCode(final Environmental E, final Environmental RorM, final List classes, final List list)
 	{
 		if(CMLib.flags().isCataloged(E))
 			return "CATALOG-"+E.Name();
@@ -323,7 +325,8 @@ public class RoomData extends StdWebMacro
 		return E.ID();
 	}
 
-	public static Item getItemFromAnywhere(Object allitems, String MATCHING)
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static Item getItemFromAnywhere(final Object allitems, final String MATCHING)
 	{
 		if(isAllNum(MATCHING))
 		{
@@ -358,7 +361,7 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-	public static MOB getReferenceMOB(MOB M)
+	public static MOB getReferenceMOB(final MOB M)
 	{
 		if(M==null)
 			return null;
@@ -370,7 +373,7 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-	public static Item getReferenceItem(Item I)
+	public static Item getReferenceItem(final Item I)
 	{
 		if(I==null)
 			return null;
@@ -382,7 +385,7 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-	public static List<MOB> contributeMOBs(List<MOB> inhabs)
+	public static List<MOB> contributeMOBs(final List<MOB> inhabs)
 	{
 		for (final MOB M : inhabs)
 		{
@@ -406,7 +409,7 @@ public class RoomData extends StdWebMacro
 		return getMOBCache();
 	}
 
-	public static boolean isAllNum(String str)
+	public static boolean isAllNum(final String str)
 	{
 		if(str.length()==0)
 			return false;
@@ -419,7 +422,7 @@ public class RoomData extends StdWebMacro
 		return true;
 	}
 
-	public static List<Item> contributeItems(List<Item> inhabs)
+	public static List<Item> contributeItems(final List<Item> inhabs)
 	{
 		for (final Item I : inhabs)
 		{
@@ -449,7 +452,7 @@ public class RoomData extends StdWebMacro
 		return getItemCache();
 	}
 
-	public static final String getObjIDSuffix(Environmental E)
+	public static final String getObjIDSuffix(final Environmental E)
 	{
 		if((E.expirationDate() > (System.currentTimeMillis() - TimeManager.MILI_DAY))
 		&&(E.expirationDate() < System.currentTimeMillis()))
@@ -474,7 +477,7 @@ public class RoomData extends StdWebMacro
 		{
 		}
 
-		public RoomStuff(Room R)
+		public RoomStuff(final Room R)
 		{
 			for(final Enumeration<MOB> a =R.inhabitants();a.hasMoreElements();)
 			{
@@ -566,7 +569,7 @@ public class RoomData extends StdWebMacro
 	{
 		final LinkedList<Pair<String,String>> pairList=new LinkedList<Pair<String,String>>();
 		for(final String key : map.keySet())
-			pairList.add(new Pair(key.trim(),map.get(key)));
+			pairList.add(new Pair<String,String>(key.trim(),map.get(key)));
 		return pairList;
 
 	}
@@ -624,6 +627,7 @@ public class RoomData extends StdWebMacro
 		return stuff;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Pair<String,String>[] makePairs(final RoomStuff stuff, final List<Pair<String,String>> fixtures)
 	{
 		contributeItems(stuff.items);
@@ -892,9 +896,9 @@ public class RoomData extends StdWebMacro
 						final Pair<String,String> editablePairHead=getPair(currentRoomPairsList,vars[0]+x);
 						if(editablePairHead==null)
 						{
-							currentRoomPairsList.add(new Pair(vars[0]+x,p.second));
+							currentRoomPairsList.add(new Pair<String,String>(vars[0]+x,p.second));
 							for(int i=1;i<vars.length;i++)
-								currentRoomPairsList.add(new Pair(vars[i]+x,getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first))));
+								currentRoomPairsList.add(new Pair<String,String>(vars[i]+x,getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first))));
 							break;
 						}
 						else
@@ -905,7 +909,7 @@ public class RoomData extends StdWebMacro
 							{
 								final Pair<String,String> editableField=getPair(currentRoomPairsList,vars[i]+x);
 								if(editableField==null)
-									currentRoomPairsList.add(new Pair(vars[i]+x,getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first))));
+									currentRoomPairsList.add(new Pair<String,String>(vars[i]+x,getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first))));
 								else
 									editableField.second=getPairValue(submittedRoomPairsList,vars[i]+getNumFromWordNum(p.first));
 							}
@@ -917,7 +921,7 @@ public class RoomData extends StdWebMacro
 		}
 	}
 
-	public static HTTPRequest mergeRoomFields(final HTTPRequest httpReq, Pair<String,String> setPairs[], Room R)
+	public static HTTPRequest mergeRoomFields(final HTTPRequest httpReq, final Pair<String,String> setPairs[], Room R)
 	{
 		final Hashtable<String,String> mergeParams=new XHashtable<String,String>(httpReq.getUrlParametersCopy());
 		final HTTPRequest mergeReq=new HTTPRequest()
@@ -949,13 +953,13 @@ public class RoomData extends StdWebMacro
 			}
 
 			@Override
-			public String getUrlParameter(String name)
+			public String getUrlParameter(final String name)
 			{
 				return params.get(name.toLowerCase());
 			}
 
 			@Override
-			public boolean isUrlParameter(String name)
+			public boolean isUrlParameter(final String name)
 			{
 				return params.containsKey(name.toLowerCase());
 			}
@@ -973,7 +977,7 @@ public class RoomData extends StdWebMacro
 			}
 
 			@Override
-			public String getHeader(String name)
+			public String getHeader(final String name)
 			{
 				return httpReq.getHeader(name);
 			}
@@ -997,7 +1001,7 @@ public class RoomData extends StdWebMacro
 			}
 
 			@Override
-			public String getCookie(String name)
+			public String getCookie(final String name)
 			{
 				return httpReq.getCookie(name);
 			}
@@ -1015,7 +1019,7 @@ public class RoomData extends StdWebMacro
 			}
 
 			@Override
-			public double getSpecialEncodingAcceptability(String type)
+			public double getSpecialEncodingAcceptability(final String type)
 			{
 				return httpReq.getSpecialEncodingAcceptability(type);
 			}
@@ -1033,13 +1037,13 @@ public class RoomData extends StdWebMacro
 			}
 
 			@Override
-			public void addFakeUrlParameter(String name, String value)
+			public void addFakeUrlParameter(final String name, final String value)
 			{
 				params.put(name.toLowerCase(), value);
 			}
 
 			@Override
-			public void removeUrlParameter(String name)
+			public void removeUrlParameter(final String name)
 			{
 				params.remove(name.toLowerCase());
 			}
@@ -1097,7 +1101,7 @@ public class RoomData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("ROOM");
@@ -1164,7 +1168,7 @@ public class RoomData extends StdWebMacro
 				if(sorted==null)
 				{
 					final Vector<String> sortMe=new Vector<String>();
-					for(final Enumeration l=CMClass.locales();l.hasMoreElements();)
+					for(final Enumeration<Room> l=CMClass.locales();l.hasMoreElements();)
 						sortMe.addElement(CMClass.classID(l.nextElement()));
 					sorted=(new TreeSet<String>(sortMe)).toArray();
 					Resources.submitResource("MUDGRINDER-LOCALES",sorted);
@@ -1274,7 +1278,7 @@ public class RoomData extends StdWebMacro
 			if(parms.containsKey("MOBLIST"))
 			{
 				final Vector<MOB> classes=new Vector<MOB>();
-				List moblist=null;
+				List<MOB> moblist=null;
 				if(httpReq.isUrlParameter("MOB1"))
 				{
 					moblist=getMOBCache();
@@ -1315,9 +1319,9 @@ public class RoomData extends StdWebMacro
 							}
 						}
 						else
-						for(final Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
+						for(final Enumeration<MOB> m=CMClass.mobTypes();m.hasMoreElements();)
 						{
-							final MOB M2=(MOB)m.nextElement();
+							final MOB M2=m.nextElement();
 							if(CMClass.classID(M2).equals(MATCHING)
 							&&(!M2.isGeneric()))
 							{
@@ -1370,9 +1374,9 @@ public class RoomData extends StdWebMacro
 				if(mlist==null)
 				{
 					mlist=new StringBuffer("");
-					for(final Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
+					for(final Enumeration<MOB> m=CMClass.mobTypes();m.hasMoreElements();)
 					{
-						final MOB M=(MOB)m.nextElement();
+						final MOB M=m.nextElement();
 						if(!M.isGeneric())
 							mlist.append("<OPTION VALUE=\""+M.ID()+"\">"+M.Name()+" ("+M.ID()+")");
 					}
@@ -1445,7 +1449,7 @@ public class RoomData extends StdWebMacro
 					final List<String> allContextNames=CMLib.english().getAllContextNames(classes, new Filterer<Environmental>()
 					{
 						@Override
-						public boolean passesFilter(Environmental obj)
+						public boolean passesFilter(final Environmental obj)
 						{
 							return obj instanceof Container;
 						}
@@ -1473,7 +1477,7 @@ public class RoomData extends StdWebMacro
 					str.append("Container: ");
 					str.append("<SELECT NAME=ITEMCONT"+(i+1)+">");
 					str.append("<OPTION VALUE=\"\" "+((C==null)?"SELECTED":"")+">On the ground");
-					for(Container C2 : classesContainers.keySet())
+					for(final Container C2 : classesContainers.keySet())
 					{
 						if(C2 != I)
 						{

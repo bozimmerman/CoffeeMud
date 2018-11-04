@@ -48,10 +48,10 @@ public interface BoundedObject
 			super();
 		}
 
-		public BoundedCube(long lx, long rx, long ty, long by, long iz, long oz)
+		public BoundedCube(final long lx, final long rx, final long ty, final long by, final long iz, final long oz)
 		{
 			super();
-			this.lx = lx; 
+			this.lx = lx;
 			this.rx = rx;
 			this.ty = ty;
 			this.by = by;
@@ -59,34 +59,34 @@ public interface BoundedObject
 			this.oz = oz;
 		}
 
-		public BoundedCube(long[] coords, long radius)
+		public BoundedCube(final long[] coords, final long radius)
 		{
 			super();
-			this.lx = coords[0] - radius; 
+			this.lx = coords[0] - radius;
 			this.rx = coords[0] + radius;
-			this.ty = coords[1] - radius; 
+			this.ty = coords[1] - radius;
 			this.by = coords[1] + radius;
-			this.iz = coords[2] - radius; 
+			this.iz = coords[2] - radius;
 			this.oz = coords[2] + radius;
 		}
 
-		public BoundedCube(BoundedCube l)
+		public BoundedCube(final BoundedCube l)
 		{
 			super();
 			set(l);
 		}
 
-		public void set(BoundedCube l)
+		public void set(final BoundedCube l)
 		{
-			this.lx = l.lx; 
+			this.lx = l.lx;
 			this.rx = l.rx;
-			this.ty = l.ty; 
+			this.ty = l.ty;
 			this.by = l.by;
-			this.iz = l.iz; 
+			this.iz = l.iz;
 			this.oz = l.oz;
 		}
-		
-		public void union(BoundedCube l)
+
+		public void union(final BoundedCube l)
 		{
 			if(l.lx < lx)
 				lx=l.lx;
@@ -109,7 +109,7 @@ public interface BoundedObject
 									   +((oz - iz) * (oz - iz))));
 		}
 
-		public BoundedCube expand(double[] direction, long distance)
+		public BoundedCube expand(final double[] direction, final long distance)
 		{
 			final BoundedCube cube=new BoundedCube(this);
 			final double x1=Math.cos(direction[0])*Math.sin(direction[1]);
@@ -135,18 +135,18 @@ public interface BoundedObject
 			return cube;
 		}
 
-		public boolean intersects(BoundedCube two)
+		public boolean intersects(final BoundedCube two)
 		{
 			if(two==null)
 				return false;
-			return ( 
+			return (
 				((lx <= two.lx && two.lx <= rx) || (two.lx <= lx && lx <= two.rx))
 			&&	((ty <= two.ty && two.ty <= by) || (two.ty <= ty && ty <= two.by))
-			&&	((iz <= two.iz && two.iz <= oz) || (two.iz <= iz && iz <= two.oz)) 
+			&&	((iz <= two.iz && two.iz <= oz) || (two.iz <= iz && iz <= two.oz))
 			);
 		}
 
-		public boolean contains(long x, long y, long z)
+		public boolean contains(final long x, final long y, final long z)
 		{
 			return ((x >= lx)
 				  &&(x <= rx)
@@ -172,7 +172,7 @@ public interface BoundedObject
 		}
 
 		@Override
-		public int compareTo(BoundedCube o)
+		public int compareTo(final BoundedCube o)
 		{
 			if(lx<o.lx)
 				return -1;

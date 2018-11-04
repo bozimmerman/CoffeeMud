@@ -24,8 +24,8 @@ import com.planet_ink.coffee_web.util.CWConfig;
 */
 
 /**
- * Interface for any class that can convert an HTML output buffer 
- * for the web server to send to clients.  Includes some helpful 
+ * Interface for any class that can convert an HTML output buffer
+ * for the web server to send to clients.  Includes some helpful
  * constants that are often used in common http requests.  Works
  * by calling convertOutput to convert the input and calling
  * generateOutput to get the new output.
@@ -34,9 +34,8 @@ import com.planet_ink.coffee_web.util.CWConfig;
  */
 public interface HTTPOutputConverter
 {
-
 	/**
-	 * Standard method for converting an intput buffer for writing to 
+	 * Standard method for converting an intput buffer for writing to
 	 * the client.   The position and limit of the bytebuffer must
 	 * already be set for reading the content.
 	 * Call generateOutput() to get the new output.

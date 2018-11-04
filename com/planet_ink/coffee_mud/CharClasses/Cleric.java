@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Cleric extends StdCharClass
 {
 	@Override
@@ -108,7 +107,7 @@ public class Cleric extends StdCharClass
 	private final Set<Integer>	disallowedWeaponsE	= buildDisallowedWeaponClasses(CharClass.WEAPONS_EVILCLERIC);
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		if(CMLib.flags().isEvil(mob))
 			return disallowedWeaponsE;
@@ -274,12 +273,12 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Restoration",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Deathfinger",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Contagion",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Prayer_PlanarTravel",true);
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 
@@ -361,7 +360,7 @@ public class Cleric extends StdCharClass
 		return L("Using prayers outside your alignment introduces failure chance.");
 	}
 
-	protected int holyQuality(Ability A)
+	protected int holyQuality(final Ability A)
 	{
 		if(CMath.bset(A.flags(),Ability.FLAG_HOLY))
 		{
@@ -462,7 +461,7 @@ public class Cleric extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		final Vector<Item> outfitChoices=new Vector<Item>();
 		if(CMLib.flags().isEvil(myChar))

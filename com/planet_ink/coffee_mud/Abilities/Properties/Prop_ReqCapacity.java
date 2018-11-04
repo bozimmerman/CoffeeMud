@@ -77,7 +77,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 	@Override
 	public String accountForYourself()
 	{
-		return 
+		return
 		   ((peopleCap==Integer.MAX_VALUE)?"":L("\n\rPerson limit: @x1",(""+peopleCap)))
 		  +((playerCap==Integer.MAX_VALUE)?"":L("\n\rPlayer limit: @x1",(""+playerCap)))
 		  +((mobCap==Integer.MAX_VALUE)?"":L("\n\rMOB limit   : @x1",(""+mobCap)))
@@ -87,7 +87,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String txt)
+	public void setMiscText(final String txt)
 	{
 		super.setMiscText(txt);
 		peopleCap=Integer.MAX_VALUE;
@@ -115,7 +115,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 		}
 	}
 
-	protected int getRoomWeight(Room R)
+	protected int getRoomWeight(final Room R)
 	{
 		if(R==null)
 			return Integer.MAX_VALUE/2;
@@ -129,7 +129,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 		return soFar;
 	}
 
-	protected int getRoomItemCount(Room R)
+	protected int getRoomItemCount(final Room R)
 	{
 		if(R==null)
 			return Integer.MAX_VALUE/2;
@@ -142,7 +142,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 		}
 		return soFar;
 	}
-	
+
 	protected void overflowCheck()
 	{
 		final Physical affected=this.affected;
@@ -181,7 +181,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 										if((R2!=null)&&(E2!=null)
 										&&(E2.isOpen())&&(!CMLib.flags().isAiryRoom(R2)))
 										{
-											int rct=this.getRoomItemCount(R2);
+											final int rct=this.getRoomItemCount(R2);
 											if(rct < smallestCount)
 											{
 												targetRoom=R2;
@@ -193,7 +193,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 									{
 										for(int ri=R.numItems()-1;ri>=0 && totOver>0;ri--,totOver--)
 										{
-											Item I=R.getItem(ri);
+											final Item I=R.getItem(ri);
 											if((I!=null)&&(I.container()==null))
 												targetRoom.moveItemTo(I);
 										}
@@ -215,7 +215,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 										if((R2!=null)&&(E2!=null)
 										&&(E2.isOpen())&&(!CMLib.flags().isAiryRoom(R2)))
 										{
-											int rct=this.getRoomWeight(R2);
+											final int rct=this.getRoomWeight(R2);
 											if(rct < smallestCount)
 											{
 												targetRoom=R2;
@@ -227,7 +227,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 									{
 										for(int ri=R.numItems()-1;ri>=0 && totOver>0;ri--,totOver--)
 										{
-											Item I=R.getItem(ri);
+											final Item I=R.getItem(ri);
 											if((I!=null)&&(I.container()==null))
 											{
 												targetRoom.moveItemTo(I);
@@ -240,14 +240,14 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 						}
 					}
 				}
-				catch(Exception e)
+				catch(final Exception e)
 				{
 					Log.errOut("Prop_ReqCapacity",e);
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -266,7 +266,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 					}
 				});
 			}
-			
+
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_ENTER:
@@ -359,7 +359,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 						}
 						if(maxWeight<Integer.MAX_VALUE)
 						{
-							int soFar=getRoomWeight(R);
+							final int soFar=getRoomWeight(R);
 							if((soFar+targetI.phyStats().weight())>=maxWeight)
 							{
 								msg.source().tell(L("There is no room in here to put @x1.",targetI.Name()));

@@ -105,7 +105,7 @@ public class Sailor extends StdCharClass
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -141,7 +141,7 @@ public class Sailor extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Carpentry",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Skill_SeaLegs",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Belay",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Stowaway",false);
@@ -200,7 +200,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_InterceptShip",0,"",true,false,CMParms.parseSemicolons("Skill_SeaCharting(50)", true),"");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"MasterTrawling",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AwaitShip",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_HireCrewmember",true);
@@ -287,7 +287,7 @@ public class Sailor extends StdCharClass
 		return super.tick(ticking,tickID);
 	}
 
-	protected void giveExploreXP(final MOB mob, final Room R, int amt)
+	protected void giveExploreXP(final MOB mob, final Room R, final int amt)
 	{
 		if(((R.roomID().length()>0)
 			||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
@@ -307,12 +307,12 @@ public class Sailor extends StdCharClass
 			}
 		}
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		
+
 		if((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 		{
 			if((msg.source()==myHost)
@@ -329,7 +329,7 @@ public class Sailor extends StdCharClass
 			&&(((MOB)myHost).location().getArea() == ((BoardableShip)msg.source().riding()).getShipArea()))
 				giveExploreXP((MOB)myHost, (Room)msg.target(), 10);
 		}
-		
+
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(msg.value()>0)
 		&&(msg.source().charStats().getCurrentClass() == this)
@@ -341,13 +341,13 @@ public class Sailor extends StdCharClass
 			else
 			if(msg.target() == null)
 			{
-				BoardableShip shipArea = (BoardableShip)CMLib.map().areaLocation(msg.source());
-				Room R=CMLib.map().roomLocation(shipArea.getShipItem());
+				final BoardableShip shipArea = (BoardableShip)CMLib.map().areaLocation(msg.source());
+				final Room R=CMLib.map().roomLocation(shipArea.getShipItem());
 				if(R!=null)
 				{
 					for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 					{
-						Item I=i.nextElement();
+						final Item I=i.nextElement();
 						if((I instanceof BoardableShip)
 						&&(I.fetchEffect("Sinking")!=null)
 						&&(I!=shipArea.getShipItem()))
@@ -360,7 +360,7 @@ public class Sailor extends StdCharClass
 			}
 		}
 	}
-	
+
 	private final String[] raceRequiredList=new String[]{"All","-Equine","-Svirfneblin","-Aarakocran","-Faerie"};
 
 	@Override
@@ -382,7 +382,7 @@ public class Sailor extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

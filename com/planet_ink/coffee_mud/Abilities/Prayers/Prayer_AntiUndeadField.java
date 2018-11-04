@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_AntiUndeadField extends Prayer
 {
 	@Override
@@ -88,22 +87,22 @@ public class Prayer_AntiUndeadField extends Prayer
 	}
 
 	protected int pointsRemaining = 5;
-	
+
 	@Override
-	public void setAffectedOne(Physical affected)
+	public void setAffectedOne(final Physical affected)
 	{
 		if(super.affected != affected)
 			pointsRemaining = 3 + (adjustedLevel(invoker(),0)/5);
 		super.setAffectedOne(affected);
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
 
-		if((msg.target() == affected) 
+		if((msg.target() == affected)
 		&& msg.isTarget(CMMsg.MASK_MALICIOUS)
 		&&(msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
 		&&(affected instanceof MOB)
@@ -213,7 +212,7 @@ public class Prayer_AntiUndeadField extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -221,7 +220,7 @@ public class Prayer_AntiUndeadField extends Prayer
 
 		if(target==null)
 			return false;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -239,7 +238,7 @@ public class Prayer_AntiUndeadField extends Prayer
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for an anti-undead field, but <S-HIS-HER> plea is not answered.",prayWord(mob)));
- 
+
 		// return whether it worked
 		return success;
 	}

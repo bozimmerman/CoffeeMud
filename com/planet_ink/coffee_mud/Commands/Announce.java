@@ -46,7 +46,7 @@ public class Announce extends StdCommand
 		return access;
 	}
 
-	public void sendAnnounce(MOB from, String announcement, Session S)
+	public void sendAnnounce(final MOB from, final String announcement, final Session S)
 	{
 	  	final StringBuffer Message=new StringBuffer("");
 		if((from!=null)&&(from.playerStats()!=null)&&(from.playerStats().getAnnounceMessage().length()>0))
@@ -76,7 +76,7 @@ public class Announce extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 
@@ -162,7 +162,7 @@ public class Announce extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ANNOUNCE);
 	}

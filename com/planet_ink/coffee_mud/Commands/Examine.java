@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Examine extends StdCommand
 {
 	public Examine()
@@ -48,11 +47,11 @@ public class Examine extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if((commands!=null)&&(commands.size()>1)&&(commands.get(commands.size()-1).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
 			commands.remove(commands.size()-1);
@@ -154,7 +153,7 @@ public class Examine extends StdCommand
 	}
 
 	@Override
-	public double actionsCost(MOB mob, List<String> cmds)
+	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
 		return 1.0;
 	}

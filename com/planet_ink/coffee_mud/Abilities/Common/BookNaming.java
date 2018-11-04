@@ -66,7 +66,7 @@ public class BookNaming extends CommonSkill
 
 	protected Item		found	= null;
 	protected String	writing	= "";
-	
+
 	protected static String[] PREFIXES = new String[] {
 		"The Book of @x1",
 		"The Tales of @x1",
@@ -87,9 +87,9 @@ public class BookNaming extends CommonSkill
 		"`@x1`: A Treatise by @x2",
 		"None"
 	};
-	protected static Pattern[] PATTERNS = new Pattern[0]; 
+	protected static Pattern[] PATTERNS = new Pattern[0];
 	protected static String prefixList = null;
-	
+
 	@Override
 	protected boolean canBeDoneSittingDown()
 	{
@@ -107,18 +107,18 @@ public class BookNaming extends CommonSkill
 	{
 		if(PATTERNS.length==0)
 		{
-			ArrayList<Pattern> Ps=new ArrayList<Pattern>();
+			final ArrayList<Pattern> Ps=new ArrayList<Pattern>();
 			for(String prefix : PREFIXES)
 			{
 				prefix = CMStrings.replaceAll(prefix, "@x1",".+");
 				prefix = CMStrings.replaceAll(prefix, "@x2",".+");
-				Pattern P=Pattern.compile(prefix);
+				final Pattern P=Pattern.compile(prefix);
 				Ps.add(P);
 			}
 			PATTERNS=Ps.toArray(PATTERNS);
 		}
-		CharSequence S = name.subSequence(0, name.length());
-		for(Pattern P : PATTERNS)
+		final CharSequence S = name.subSequence(0, name.length());
+		for(final Pattern P : PATTERNS)
 		{
 			if(P.matcher(S).matches())
 			{
@@ -156,9 +156,9 @@ public class BookNaming extends CommonSkill
 		commonTell(mob,L("You must specify what book to name, the name form-number, and the simple name to insert. Use BNAME LIST to see the list of name-forms."));
 		return false;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -168,13 +168,13 @@ public class BookNaming extends CommonSkill
 		{
 			if(BookNaming.prefixList==null)
 			{
-				StringBuilder prefixes = new StringBuilder("^HName Forms:^N\n\r");
+				final StringBuilder prefixes = new StringBuilder("^HName Forms:^N\n\r");
 				int index=1;
 				for(String P : PREFIXES)
 				{
 					P=CMStrings.replaceAll(P, "@x1", "NAME");
 					P=CMStrings.replaceAll(P, "@x2", "AUTHOR");
-					
+
 					prefixes.append(CMStrings.padRight(""+index,2)).append(") "+P+"\n\r");
 					index++;
 				}
@@ -185,7 +185,7 @@ public class BookNaming extends CommonSkill
 		}
 		if(commands.size()<2)
 			return error(mob);
-		String itemName = commands.get(0);
+		final String itemName = commands.get(0);
 		String nameType = commands.get(1);
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
@@ -217,26 +217,26 @@ public class BookNaming extends CommonSkill
 			commonTell(mob,L("This book is copyrighted, and can't be renamed."));
 			return false;
 		}
-		
+
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
 			commonTell(mob,L("You must know how to write to name a book."));
 			return false;
 		}
-		
+
 		if((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
 		{
 			commonTell(mob,L("You can't give a name to something like that."));
 			return false;
 		}
-		
+
 		if(!CMLib.flags().isReadable(target))
 		{
 			commonTell(mob,L("That's not even readable!"));
 			return false;
 		}
-		
+
 		if((!CMath.isInteger(nameType))
 		||(CMath.s_int(nameType)<1)
 		||(CMath.s_int(nameType)>PREFIXES.length))
@@ -245,13 +245,13 @@ public class BookNaming extends CommonSkill
 			return false;
 		}
 		nameType = PREFIXES[CMath.s_int(nameType)-1];
-		String nameWord = CMParms.combine(commands,2).trim();
+		final String nameWord = CMParms.combine(commands,2).trim();
 		if(nameWord.length()>20)
 		{
 			commonTell(mob,L("The name must be under 20 characters."));
 			return false;
 		}
-		
+
 		if(!target.isGeneric())
 		{
 			commonTell(mob,L("You aren't able to give that a name."));

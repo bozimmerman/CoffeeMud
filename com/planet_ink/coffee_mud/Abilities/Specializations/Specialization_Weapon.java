@@ -95,7 +95,7 @@ public class Specialization_Weapon extends StdAbility
 		return Ability.ACODE_SKILL | Ability.DOMAIN_WEAPON_USE;
 	}
 
-	protected int getDamageBonus(MOB mob, int dmgType)
+	protected int getDamageBonus(final MOB mob, final int dmgType)
 	{
 		switch(dmgType)
 		{
@@ -112,7 +112,7 @@ public class Specialization_Weapon extends StdAbility
 		}
 	}
 
-	protected boolean isWeaponMatch(Weapon W)
+	protected boolean isWeaponMatch(final Weapon W)
 	{
 		if((W.weaponClassification()==weaponClass)
 		||(weaponClass<0)
@@ -121,12 +121,12 @@ public class Specialization_Weapon extends StdAbility
 		return false;
 	}
 
-	protected boolean canDamage(MOB mob, Weapon W)
+	protected boolean canDamage(final MOB mob, final Weapon W)
 	{
 		return W.amBeingWornProperly();
 	}
 
-	protected boolean isWearableItem(Item I)
+	protected boolean isWearableItem(final Item I)
 	{
 		return (I instanceof Weapon) && isWeaponMatch((Weapon)I);
 	}

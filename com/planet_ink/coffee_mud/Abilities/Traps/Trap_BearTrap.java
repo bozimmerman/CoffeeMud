@@ -73,7 +73,7 @@ public class Trap_BearTrap extends StdTrap
 	}
 
 	@Override
-	public int baseRejuvTime(int level)
+	public int baseRejuvTime(final int level)
 	{
 		return 35;
 	}
@@ -82,7 +82,7 @@ public class Trap_BearTrap extends StdTrap
 	protected MOB trapped=null;
 
 	@Override
-	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		if(P==null)
 			return null;
@@ -105,9 +105,9 @@ public class Trap_BearTrap extends StdTrap
 			V.add(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
 		return V;
 	}
-	
+
 	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P))
 			return false;
@@ -160,7 +160,7 @@ public class Trap_BearTrap extends StdTrap
 	}
 
 	@Override
-	public void spring(MOB target)
+	public void spring(final MOB target)
 	{
 		trapped=null;
 		if((target!=invoker())&&(target.location()!=null))

@@ -62,7 +62,7 @@ public class Skill_Keenvision extends Skill_Stonecunning
 	}
 
 	@Override
-	protected boolean appliesToRoom(Room R)
+	protected boolean appliesToRoom(final Room R)
 	{
 		if((R.domainType()&Room.INDOORS)==Room.INDOORS)
 			return false;

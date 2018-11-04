@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Shrink extends Spell
 {
 
@@ -130,7 +129,7 @@ public class Spell_Shrink extends Spell
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectedStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectedStats)
 	{
 		super.affectPhyStats(host,affectedStats);
 		int height=(int)Math.round(affectedStats.height()*0.10);
@@ -140,7 +139,7 @@ public class Spell_Shrink extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null)

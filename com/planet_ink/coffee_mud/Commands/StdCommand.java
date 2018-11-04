@@ -37,17 +37,17 @@ public class StdCommand implements Command
 {
 	protected final String	ID;
 	private final String[]	access	= null;
-	
+
 	public StdCommand()
 	{
 		final String id=this.getClass().getName();
 		final int x=id.lastIndexOf('.');
-		if(x>=0) 
+		if(x>=0)
 			ID=id.substring(x+1);
 		else
 			ID=id;
 	}
-	
+
 	@Override
 	public String ID()
 	{
@@ -70,12 +70,12 @@ public class StdCommand implements Command
 	public void initializeClass()
 	{
 	}
-	
+
 	public String L(final String str, final String ... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
-	
+
 	public static String[] I(final String[] str)
 	{
 		for(int i=0;i<str.length;i++)
@@ -84,7 +84,7 @@ public class StdCommand implements Command
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		// accepts the mob executing, and a list of Strings as a parm.
@@ -93,14 +93,14 @@ public class StdCommand implements Command
 	}
 
 	@Override
-	public boolean preExecute(MOB mob, List<String> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+	public boolean preExecute(final MOB mob, final List<String> commands, final int metaFlags, final int secondsElapsed, final double actionsRemaining)
 		throws java.io.IOException
 	{
 		return true;
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		// fake it!
 		final Vector<String> commands = new Vector<String>();
@@ -110,7 +110,7 @@ public class StdCommand implements Command
 		return Boolean.valueOf(execute(mob,commands,metaFlags));
 	}
 
-	public boolean checkArguments(Class[][] fmt, Object... args)
+	public boolean checkArguments(final Class[][] fmt, final Object... args)
 	{
 		for (final Class[] element : fmt)
 		{
@@ -158,7 +158,7 @@ public class StdCommand implements Command
 	}
 
 	@Override
-	public double combatActionsCost(MOB mob, List<String> cmds)
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getCommandCombatActionCost(ID(), 0.0);
 	}
@@ -193,7 +193,7 @@ public class StdCommand implements Command
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return true;
 	}
@@ -221,7 +221,7 @@ public class StdCommand implements Command
 	protected final static Filterer<Environmental> noCoinFilter=new Filterer<Environmental>()
 	{
 		@Override
-		public boolean passesFilter(Environmental obj)
+		public boolean passesFilter(final Environmental obj)
 		{
 			return !(obj instanceof Coins);
 		}

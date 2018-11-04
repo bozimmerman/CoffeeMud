@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_Rallycry extends FighterSkill
 {
 	@Override
@@ -92,7 +91,7 @@ public class Fighter_Rallycry extends FighterSkill
 	protected int hpUp=0;
 
 	@Override
-	public void affectCharState(MOB affected, CharState affectableStats)
+	public void affectCharState(final MOB affected, final CharState affectableStats)
 	{
 		super.affectCharState(affected,affectableStats);
 		if(invoker==null)
@@ -132,7 +131,7 @@ public class Fighter_Rallycry extends FighterSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

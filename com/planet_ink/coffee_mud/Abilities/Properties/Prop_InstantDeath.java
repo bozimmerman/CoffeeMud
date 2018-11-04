@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_InstantDeath extends Property
 {
 	@Override
@@ -63,7 +62,7 @@ public class Prop_InstantDeath extends Property
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		final String maskStr=CMParms.getParmStr(newMiscText,"mask","");
@@ -78,7 +77,7 @@ public class Prop_InstantDeath extends Property
 		return "instant killing";
 	}
 
-	public Set<MOB> getEveryoneHere(MOB spareMe, Room R)
+	public Set<MOB> getEveryoneHere(final MOB spareMe, final Room R)
 	{
 		final Set<MOB> V=new HashSet<MOB>();
 		if(R==null)
@@ -97,7 +96,7 @@ public class Prop_InstantDeath extends Property
 		//CMLib.combat().postDeath(null,M,null);
 	}
 
-	protected MOB getTickersMOB(Tickable ticking)
+	protected MOB getTickersMOB(final Tickable ticking)
 	{
 		if(ticking==null)
 			return null;
@@ -117,7 +116,7 @@ public class Prop_InstantDeath extends Property
 		return null;
 	}
 
-	protected Room getTickersRoom(Tickable ticking)
+	protected Room getTickersRoom(final Tickable ticking)
 	{
 		if(ticking==null)
 			return null;
@@ -141,7 +140,7 @@ public class Prop_InstantDeath extends Property
 		return null;
 	}
 
-	public Set<MOB> getDeadMOBsFrom(Environmental whoE)
+	public Set<MOB> getDeadMOBsFrom(final Environmental whoE)
 	{
 		if(whoE instanceof MOB)
 		{

@@ -176,19 +176,19 @@ public class Scarab extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 	}
-	
+
 	@Override
 	public String arriveStr()
 	{
 		return "creeps in";
 	}
-	
+
 	@Override
 	public String leaveStr()
 	{
 		return "creeps";
 	}
-	
+
 	@Override
 	public Weapon myNaturalWeapon()
 	{
@@ -202,9 +202,9 @@ public class Scarab extends StdRace
 		}
 		return naturalWeapon;
 	}
-	
+
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{
@@ -216,7 +216,7 @@ public class Scarab extends StdRace
 				return super.makeMobName('N', age);
 		}
 	}
-	
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

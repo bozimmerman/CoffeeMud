@@ -60,7 +60,7 @@ public class Prop_ModFaction extends Property
 
 	protected CMath.CompiledFormula	operation			= null;
 	protected MaskingLibrary.CompiledZMask			mask				= null;
-	
+
 	@Override
 	public String accountForYourself()
 	{
@@ -80,7 +80,7 @@ public class Prop_ModFaction extends Property
 		return "Modifies "+gainOrLoss+"faction with "+factionName+": "+operationFormula;
 	}
 
-	public int translateAmount(int amount, String val)
+	public int translateAmount(int amount, final String val)
 	{
 		if(amount<0)
 			amount=-amount;
@@ -89,7 +89,7 @@ public class Prop_ModFaction extends Property
 		return CMath.s_int(val);
 	}
 
-	public String translateNumber(String val)
+	public String translateNumber(final String val)
 	{
 		if(val.endsWith("%"))
 			return "@x1 * (" + val.substring(0,val.length()-1) + " / 100)";
@@ -97,7 +97,7 @@ public class Prop_ModFaction extends Property
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		operation = null;

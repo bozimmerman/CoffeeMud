@@ -51,10 +51,10 @@ public class ROMGangMember extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
-		List<String> list=CMParms.parseSemicolons(newParms, true);
+		final List<String> list=CMParms.parseSemicolons(newParms, true);
 		messages=new String[0];
 		if(list.size()==0)
 			gangName=CMLib.dice().rollPercentage()>50?"Red":"Blue";
@@ -64,8 +64,8 @@ public class ROMGangMember extends StdBehavior
 			messages=list.toArray(messages);
 		}
 	}
-	
-	public void pickAFight(MOB observer)
+
+	public void pickAFight(final MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer))
 			return;

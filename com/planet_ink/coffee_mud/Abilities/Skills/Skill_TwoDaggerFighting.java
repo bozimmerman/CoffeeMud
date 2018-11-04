@@ -49,7 +49,7 @@ public class Skill_TwoDaggerFighting extends Skill_TwoWeaponFighting
 	}
 
 	private volatile boolean active = false;
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -89,7 +89,7 @@ public class Skill_TwoDaggerFighting extends Skill_TwoWeaponFighting
 	{
 		return active?1:0;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

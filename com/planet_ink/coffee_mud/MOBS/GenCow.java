@@ -47,7 +47,7 @@ public class GenCow extends GenRideable implements Drink
 	protected int		liquidType				= RawMaterial.RESOURCE_MILK;
 	protected volatile double refill			= 0;
 
-	
+
 	public GenCow()
 	{
 		super();
@@ -82,7 +82,7 @@ public class GenCow extends GenRideable implements Drink
 	}
 
 	@Override
-	public void setDecayTime(long time)
+	public void setDecayTime(final long time)
 	{
 	}
 
@@ -148,9 +148,9 @@ public class GenCow extends GenRideable implements Drink
 				{
 					final TimeClock clock=A.getTimeObj();
 					final int ticksPerMudday=(int)((clock.getHoursInDay() * CMProps.getMillisPerMudHour()) / CMProps.getTickMillis());
-					double amt=CMath.div(liquidHeld(),ticksPerMudday);
+					final double amt=CMath.div(liquidHeld(),ticksPerMudday);
 					refill += amt;
-					int amtNow=(int)CMath.round(Math.floor(refill));
+					final int amtNow=(int)CMath.round(Math.floor(refill));
 					if(amtNow > 0)
 					{
 						setLiquidRemaining(liquidRemaining() + amtNow);
@@ -163,7 +163,7 @@ public class GenCow extends GenRideable implements Drink
 		}
 		return true;
 	}
-	
+
 	@Override
 	public int thirstQuenched()
 	{
@@ -195,25 +195,25 @@ public class GenCow extends GenRideable implements Drink
 	}
 
 	@Override
-	public void setLiquidType(int newLiquidType)
+	public void setLiquidType(final int newLiquidType)
 	{
 		liquidType = newLiquidType;
 	}
 
 	@Override
-	public void setThirstQuenched(int amount)
+	public void setThirstQuenched(final int amount)
 	{
 		amountOfThirstQuenched = amount;
 	}
 
 	@Override
-	public void setLiquidHeld(int amount)
+	public void setLiquidHeld(final int amount)
 	{
 		amountOfLiquidHeld=amount;
 	}
 
 	@Override
-	public void setLiquidRemaining(int amount)
+	public void setLiquidRemaining(final int amount)
 	{
 		amountOfLiquidRemaining=amount;
 	}
@@ -225,15 +225,15 @@ public class GenCow extends GenRideable implements Drink
 	}
 
 	@Override
-	public int amountTakenToFillMe(Drink theSource)
+	public int amountTakenToFillMe(final Drink theSource)
 	{
 		return 0;
 	}
-	
+
 	private final static String[] MYCODES={"QUENCHED","LIQUIDHELD","LIQUIDTYPE"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(super.isStat(code))
 			return super.getStat(code);
@@ -252,7 +252,7 @@ public class GenCow extends GenRideable implements Drink
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(super.isStat(code))
 			super.setStat(code, val);

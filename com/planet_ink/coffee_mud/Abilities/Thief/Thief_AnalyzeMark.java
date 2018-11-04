@@ -85,7 +85,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 	}
 
 	@Override
-	public boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(final MOB mob)
 	{
 		return true;
 	}
@@ -96,7 +96,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_COMBATLORE;
 	}
 
-	public MOB getMark(MOB mob)
+	public MOB getMark(final MOB mob)
 	{
 		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if(A!=null)
@@ -104,7 +104,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 		return null;
 	}
 
-	public int getMarkTicks(MOB mob)
+	public int getMarkTicks(final MOB mob)
 	{
 		final Thief_Mark A=(Thief_Mark)mob.fetchEffect("Thief_Mark");
 		if((A!=null)&&(A.mark!=null))

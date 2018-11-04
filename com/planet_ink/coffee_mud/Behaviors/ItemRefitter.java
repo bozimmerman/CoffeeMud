@@ -48,7 +48,7 @@ public class ItemRefitter extends StdBehavior
 		return "item refitting for a price";
 	}
 
-	protected double cost(Item item)
+	protected double cost(final Item item)
 	{
 		if(costFormula != null)
 		{
@@ -65,7 +65,7 @@ public class ItemRefitter extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String parms)
+	public void setParms(final String parms)
 	{
 		super.setParms(parms);
 		final String formulaString = CMParms.getParmStr(parms,"COST","(@x1*100)+(@x4*@x1*100)");

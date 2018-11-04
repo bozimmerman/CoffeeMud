@@ -31,7 +31,7 @@ public class Siplet
 	public final static long serialVersionUID=7;
 	public static final float VERSION_MAJOR=(float)2.3;
 	public static final long  VERSION_MINOR=0;
-	
+
 	protected StringBuffer		buf			= new StringBuffer("");
 	protected String			lastURL		= "coffeemud.net";
 	protected int				lastPort	= 23;
@@ -52,7 +52,7 @@ public class Siplet
 		External
 	}
 
-	public void setFeatures(boolean mxp, MSPStatus msp, boolean mccp)
+	public void setFeatures(final boolean mxp, final MSPStatus msp, final boolean mccp)
 	{
 		Telnet.setNeverMCCPSupport(!mccp);
 		Telnet.setNeverMXPSupport(!mxp);
@@ -90,14 +90,14 @@ public class Siplet
 		return new Siplet();
 	}
 
-	public void addItem(String newWord)
+	public void addItem(final String newWord)
 	{
 		if(debugDataOut) System.out.println(newWord);
 		buffer.append(newWord);
 		//repaint();
 	}
 
-	public void paint(Graphics g)
+	public void paint(final Graphics g)
 	{
 		// uncomment if we go back to being an applet
 		//g.drawRect(0, 0, getSize().width - 1, getSize().height - 1);
@@ -109,7 +109,7 @@ public class Siplet
 		return connectToURL(lastURL, lastPort);
 	}
 
-	public boolean connectToURL(String url, int port)
+	public boolean connectToURL(final String url, final int port)
 	{
 		connected=false;
 		if(sock!=null)
@@ -138,21 +138,21 @@ public class Siplet
 		}
 		return true;
 	}
-	
+
 	public boolean hasWaitingData()
 	{
 		try
 		{
 			return this.in[0] != null && (this.in[0].ready() || this.rawin.available() > 0);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			this.disconnectFromURL();
 			return false;
 		}
 	}
-	
-	public boolean connectToURL(String url, int port, Socket sock)
+
+	public boolean connectToURL(final String url, final int port, final Socket sock)
 	{
 		connected=false;
 		if(this.sock!=null)
@@ -224,7 +224,7 @@ public class Siplet
 		sock=null;
 	}
 
-	public void sendData(String data)
+	public void sendData(final String data)
 	{
 		if(connected)
 		{
@@ -256,13 +256,13 @@ public class Siplet
 								out.flush();
 								success=true;
 							}
-							catch(IOException e)
+							catch(final IOException e)
 							{
 								try
 								{
 									Thread.sleep(1);
 								}
-								catch(Exception e2)
+								catch(final Exception e2)
 								{
 								}
 							}
@@ -332,7 +332,7 @@ public class Siplet
 			&&(sock.isConnected()))
 				return true;
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			connected=false;
 		}

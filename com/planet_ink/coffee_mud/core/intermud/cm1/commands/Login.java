@@ -41,13 +41,13 @@ import java.util.concurrent.atomic.*;
 */
 public class Login extends CM1Command
 {
-	@Override 
+	@Override
 	public String getCommandWord()
-	{ 
+	{
 		return "LOGIN";
 	}
-	
-	public Login(RequestHandler req, String parameters)
+
+	public Login(final RequestHandler req, final String parameters)
 	{
 		super(req, parameters);
 	}
@@ -84,14 +84,14 @@ public class Login extends CM1Command
 		}
 	}
 
-	@Override 
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	@Override
+	public boolean passesSecurityCheck(final MOB user, final PhysicalAgent target)
 	{
 		return true;
 	}
-	
+
 	@Override
-	public String getHelp(MOB user, PhysicalAgent target, String rest)
+	public String getHelp(final MOB user, final PhysicalAgent target, final String rest)
 	{
 		return "USAGE: LOGIN <CHARACTER NAME> <PASSWORD>: Logs in a new character to act as the authorizing user.";
 	}

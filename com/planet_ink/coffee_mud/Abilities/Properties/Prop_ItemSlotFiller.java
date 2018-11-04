@@ -62,7 +62,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	protected Physical		affected2	= null;
 	protected List<String>	skips		= new Vector<String>(0);
 	protected static Item 	fakeItem	= null;
-	
+
 	protected PairList<String, String>	adds		= new PairVector<String, String>(0);
 
 	@Override
@@ -71,7 +71,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		if(numAbilities()==0)
 			return "";
 		final StringBuilder str=new StringBuilder("Adds the following effects: ");
-		for(Enumeration<Ability> a=abilities();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=abilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if(A!=null)
@@ -82,9 +82,9 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		str.append(".  ");
 		return str.toString();
 	}
-	
+
 	@Override
-	public void setAffectedOne(Physical P)
+	public void setAffectedOne(final Physical P)
 	{
 		if((P==this.affected)||(affected==null))
 		{
@@ -93,14 +93,14 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		else
 		{
 			affected2 = P;
-			for(Ability A : getAffects())
+			for(final Ability A : getAffects())
 			{
 				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
 					A.setAffectedOne(P);
 			}
 		}
 	}
-	
+
 	protected Physical getAffected()
 	{
 		if(affected2 instanceof Item)
@@ -111,7 +111,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		}
 		return fakeItem;
 	}
-	
+
 	protected Ability[] getAffects()
 	{
 		if((affects==null)
@@ -122,7 +122,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 			{
 				for(final Enumeration<Ability> a=affecting().effects();a.hasMoreElements();)
 				{
-					Ability A=a.nextElement();
+					final Ability A=a.nextElement();
 					if((A!=this)
 					&&(!skips.contains(A.ID().toUpperCase())))
 					{
@@ -141,9 +141,9 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		}
 		return affects;
 	}
-	
+
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		slotCount = CMParms.getParmInt(text, "NUM", 1);
 		slotType= CMParms.getParmStr(text, "TYPE", "");
@@ -241,13 +241,13 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(isSlotted())
 		{
-			for(Ability A : getAffects())
+			for(final Ability A : getAffects())
 			{
 				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
 				{
@@ -257,13 +257,13 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		}
 		super.executeMsg(myHost, msg);
 	}
-	
+
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 		if(isSlotted())
 		{
-			for(Ability A : getAffects())
+			for(final Ability A : getAffects())
 			{
 				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
 				{
@@ -275,11 +275,11 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectedStats)
 	{
 		if(isSlotted())
 		{
-			for(Ability A : getAffects())
+			for(final Ability A : getAffects())
 			{
 				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
 				{
@@ -291,11 +291,11 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMOB, CharState affectedState)
+	public void affectCharState(final MOB affectedMOB, final CharState affectedState)
 	{
 		if(isSlotted())
 		{
-			for(Ability A : getAffects())
+			for(final Ability A : getAffects())
 			{
 				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
 				{
@@ -307,13 +307,13 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	}
 
 	@Override
-	public void addAbility(Ability to)
+	public void addAbility(final Ability to)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public void delAbility(Ability to)
+	public void delAbility(final Ability to)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
@@ -325,7 +325,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	}
 
 	@Override
-	public Ability fetchAbility(int index)
+	public Ability fetchAbility(final int index)
 	{
 		if((index<0)||(index>=adds.size()))
 			return null;
@@ -336,7 +336,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	}
 
 	@Override
-	public Ability fetchAbility(String ID)
+	public Ability fetchAbility(final String ID)
 	{
 		for(int i=0;i<adds.size();i++)
 		{
@@ -363,11 +363,11 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	public Enumeration<Ability> abilities()
 	{
 		return new ConvertingEnumeration<Pair<String,String>, Ability>(
-				new IteratorEnumeration<Pair<String,String>>(adds.iterator()), 
+				new IteratorEnumeration<Pair<String,String>>(adds.iterator()),
 				new Converter<Pair<String,String>, Ability>()
 		{
 			@Override
-			public Ability convert(Pair<String, String> obj)
+			public Ability convert(final Pair<String, String> obj)
 			{
 				if(obj==null)
 					return null;

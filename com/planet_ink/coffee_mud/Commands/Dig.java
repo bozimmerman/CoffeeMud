@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Dig extends StdCommand
 {
 	public Dig()
@@ -47,7 +46,7 @@ public class Dig extends StdCommand
 		return access;
 	}
 
-	public int getDiggingDepth(Item item)
+	public int getDiggingDepth(final Item item)
 	{
 		if(item==null)
 			return 1;
@@ -70,7 +69,7 @@ public class Dig extends StdCommand
 		}
 	}
 
-	public boolean isOccupiedWithOtherWork(MOB mob)
+	public boolean isOccupiedWithOtherWork(final MOB mob)
 	{
 		if(mob==null)
 			return false;
@@ -86,7 +85,7 @@ public class Dig extends StdCommand
 	}
 
 	@Override
-	public boolean preExecute(MOB mob, List<String> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+	public boolean preExecute(final MOB mob, final List<String> commands, final int metaFlags, final int secondsElapsed, final double actionsRemaining)
 	throws java.io.IOException
 	{
 		final Session sess=mob.session();
@@ -153,7 +152,7 @@ public class Dig extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> stop(s) digging."));

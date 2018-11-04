@@ -49,7 +49,7 @@ public class Skill_Thiefcraft extends Skill_Skillcraft
 	}
 
 	final int[] localTypes = new int[] { Ability.ACODE_THIEF_SKILL };
-	
+
 	@Override
 	public int[] craftTypes()
 	{

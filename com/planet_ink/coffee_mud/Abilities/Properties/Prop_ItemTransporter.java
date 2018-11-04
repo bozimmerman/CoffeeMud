@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_ItemTransporter extends Property
 {
 	@Override
@@ -65,7 +64,7 @@ public class Prop_ItemTransporter extends Property
 		return "Item Transporter";
 	}
 
-	public Item ultimateParent(Item item)
+	public Item ultimateParent(final Item item)
 	{
 		if(item==null)
 			return null;

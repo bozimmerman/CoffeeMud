@@ -111,7 +111,7 @@ public class Bard extends StdCharClass
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -191,12 +191,12 @@ public class Bard extends StdCharClass
 	}
 
 	@Override
-	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount)
+	public int adjustExperienceGain(final MOB host, final MOB mob, final MOB victim, final int amount)
 	{
 		return Bard.bardAdjustExperienceGain(host, mob, victim, amount, 5.0);
 	}
-	
-	public static int bardAdjustExperienceGain(MOB host, MOB mob, MOB victim, int amount, double rate)
+
+	public static int bardAdjustExperienceGain(final MOB host, final MOB mob, final MOB victim, final int amount, final double rate)
 	{
 		double theAmount=amount;
 		if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
@@ -240,8 +240,8 @@ public class Bard extends StdCharClass
 		super.executeMsg(host,msg);
 		Bard.visitationBonusMessage(host,msg);
 	}
-	
-	public static void visitationBonusMessage(Environmental host, CMMsg msg)
+
+	public static void visitationBonusMessage(final Environmental host, final CMMsg msg)
 	{
 		if((msg.target() instanceof Room)
 		&&(msg.source()==host)
@@ -346,7 +346,7 @@ public class Bard extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
@@ -367,7 +367,7 @@ public class Bard extends StdCharClass
 	}
 
 	@Override
-	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
+	protected boolean weaponCheck(final MOB mob, final int sourceCode, final Environmental E)
 	{
 		if(E instanceof MusicalInstrument)
 			return true;
@@ -410,7 +410,7 @@ public class Bard extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

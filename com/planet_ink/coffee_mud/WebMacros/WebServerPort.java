@@ -44,7 +44,7 @@ public class WebServerPort extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("CURRENT"))
@@ -56,16 +56,16 @@ public class WebServerPort extends StdWebMacro
 		}
 		if(httpReq.getClientPort()==0)
 		{
-			String serverType = parms.containsKey("ADMIN") ? "ADMIN" : "PUB";
-			for(MudHost host : CMLib.hosts())
+			final String serverType = parms.containsKey("ADMIN") ? "ADMIN" : "PUB";
+			for(final MudHost host : CMLib.hosts())
 			{
 				try
 				{
-					String var = host.executeCommand("WEBSERVER "+serverType+" PORT");
+					final String var = host.executeCommand("WEBSERVER "+serverType+" PORT");
 					if(var.length()>0)
 						return var;
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
 				}
 			}

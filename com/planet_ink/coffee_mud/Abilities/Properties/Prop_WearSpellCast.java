@@ -68,7 +68,7 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 		return TriggeredAffect.TRIGGER_WEAR_WIELD;
 	}
 
-	public void check(MOB mob, Armor A)
+	public void check(final MOB mob, final Armor A)
 	{
 		if(!layered)
 		{
@@ -109,7 +109,7 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		layered=CMParms.parseSemicolons(newText.toUpperCase(),true).indexOf("LAYERED")>=0;
@@ -137,7 +137,7 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 	}
 
 	@Override
-	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, boolean makeLongLasting, int asLevel, short maxTicks)
+	public boolean addMeIfNeccessary(final PhysicalAgent source, final Physical target, final boolean makeLongLasting, final int asLevel, final short maxTicks)
 	{
 		if(disabled&&checked)
 			return false;
@@ -145,7 +145,7 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 		if(processing)
 			return;
@@ -155,15 +155,15 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 			if((host!=null)&&(host instanceof Item))
 			{
 				myItem=(Item)host;
-	
+
 				final boolean worn=(!myItem.amWearingAt(Wearable.IN_INVENTORY))
 				&&((!myItem.amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(myItem.fitsOn(Wearable.WORN_FLOATING_NEARBY)));
-	
+
 				if((lastMOB instanceof MOB)
 				&&(((MOB)lastMOB).location()!=null)
 				&&((myItem.owner()!=lastMOB)||(!worn)))
 					removeMyAffectsFromLastMOB();
-	
+
 				if((lastMOB==null)
 				&&(worn)
 				&&(myItem.owner()!=null)

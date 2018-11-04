@@ -60,7 +60,7 @@ public class DoorwayGuardian extends StdBehavior
 	public void setParms(String parms)
 	{
 		super.setParms(parms);
-		String[] parts=parms.split("(?<!\\\\)" + Pattern.quote(";"),3);
+		final String[] parts=parms.split("(?<!\\\\)" + Pattern.quote(";"),3);
 		if(parts.length>1)
 		{
 			message=CMStrings.replaceAll(parts[1],"\\;",";");
@@ -106,7 +106,7 @@ public class DoorwayGuardian extends StdBehavior
 			mask=CMParms.combineQuoted(V,0);
 	}
 
-	public Exit[] getParmExits(MOB monster)
+	public Exit[] getParmExits(final MOB monster)
 	{
 		if(monster==null)
 			return null;
@@ -142,12 +142,12 @@ public class DoorwayGuardian extends StdBehavior
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(!super.okMessage(host,msg)) 
+		if(!super.okMessage(host,msg))
 			return false;
 		final MOB mob=msg.source();
 		if(always)
 		{
-			if(!canActAtAll(host)) 
+			if(!canActAtAll(host))
 				return true;
 		}
 		else

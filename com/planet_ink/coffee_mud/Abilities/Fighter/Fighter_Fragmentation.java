@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_Fragmentation extends FighterSkill
 {
 	@Override
@@ -106,7 +105,7 @@ public class Fighter_Fragmentation extends FighterSkill
 		RawMaterial.MATERIAL_ROCK,
 		RawMaterial.MATERIAL_WOODEN
 	};
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

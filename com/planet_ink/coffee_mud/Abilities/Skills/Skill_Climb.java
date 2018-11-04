@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Climb extends StdSkill
 {
 	@Override
@@ -95,7 +94,7 @@ public class Skill_Climb extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		int dirCode=-1;
 		Physical target=givenTarget;
@@ -113,7 +112,7 @@ public class Skill_Climb extends StdSkill
 				{
 					if(target instanceof Exit) // it's a portal .. so we just assume you can climb "in" it
 					{
-						
+
 					}
 					else
 					if(((Rideable)target).rideBasis()!=Rideable.RIDEABLE_LADDER)
@@ -138,7 +137,7 @@ public class Skill_Climb extends StdSkill
 				target = null; // it's an ordinary exit
 			}
 		}
-		
+
 		if((dirCode<0)&&(!(target instanceof Rideable)))
 		{
 			mob.tell(L("Climb where?"));
@@ -152,14 +151,14 @@ public class Skill_Climb extends StdSkill
 			mob.tell(L("You can't climb that way."));
 			return false;
 		}
-		
+
 		if(CMLib.flags().isSitting(mob) // might be more subtlelty here...riding a horse is out, but what about a ladder?
 		||CMLib.flags().isSleeping(mob))
 		{
 			mob.tell(L("You need to stand up first!"));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

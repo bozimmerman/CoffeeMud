@@ -52,7 +52,7 @@ public class Prop_Tattoo extends Property
 		return Ability.CAN_MOBS;
 	}
 
-	public static List<String> getTattoos(MOB mob)
+	public static List<String> getTattoos(final MOB mob)
 	{
 		List<String> tattos=new Vector<String>();
 		Ability A=mob.fetchAbility("Prop_Tattoo");
@@ -68,7 +68,7 @@ public class Prop_Tattoo extends Property
 	}
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		if(affected instanceof MOB)
 		{

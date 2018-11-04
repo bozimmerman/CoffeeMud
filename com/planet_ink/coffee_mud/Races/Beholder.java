@@ -92,7 +92,7 @@ public class Beholder extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "Spell_Sleep", "Spell_FloatingDisc", "Spell_Fear", "Spell_Slow", 
+	private final String[]	racialAbilityNames			= { "Spell_Sleep", "Spell_FloatingDisc", "Spell_Fear", "Spell_Slow",
 															"Spell_Charm", "Prayer_CauseCritical", "Spell_DispelMagic", "Spell_FleshStone",
 															"Prayer_DeathFinger", "Spell_Disintegrate"	};
 	private final int[]		racialAbilityLevels			= { 1, 1, 1, 5, 10, 10, 15, 20, 30, 30 };

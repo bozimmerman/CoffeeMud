@@ -105,7 +105,7 @@ public class Skill_MountedCombat extends StdSkill
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

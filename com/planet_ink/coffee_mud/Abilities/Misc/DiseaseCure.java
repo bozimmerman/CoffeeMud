@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class DiseaseCure extends StdAbility
 {
 	@Override
@@ -82,7 +81,7 @@ public class DiseaseCure extends StdAbility
 
 	protected boolean	processing	= false;
 
-	public List<Ability> returnOffensiveAffects(Physical fromMe)
+	public List<Ability> returnOffensiveAffects(final Physical fromMe)
 	{
 		final Vector<Ability> offenders=new Vector<Ability>();
 
@@ -150,7 +149,7 @@ public class DiseaseCure extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

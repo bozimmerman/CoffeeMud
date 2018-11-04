@@ -56,10 +56,10 @@ public class Prop_Weather extends Property
 	int climask=-1;
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		List<String> parms=CMParms.parse(newMiscText);
+		final List<String> parms=CMParms.parse(newMiscText);
 		code=-1;
 		climask=-1;
 		if(text().length()>0)
@@ -91,9 +91,9 @@ public class Prop_Weather extends Property
 			}
 		}
 	}
-	
+
 	@Override
-	public void affectPhyStats(Physical host, PhyStats stats)
+	public void affectPhyStats(final Physical host, final PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);
 		if(code>=0)

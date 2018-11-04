@@ -138,7 +138,7 @@ public class SeaHorse extends StdRace
 	private final String[]	racialEffectNames			= { "Aquan"};
 	private final int[]		racialEffectLevels			= { 1};
 	private final String[]	racialEffectParms			= { "SPOKEN=TRUE" };
-	
+
 	@Override
 	protected String[] racialEffectNames()
 	{

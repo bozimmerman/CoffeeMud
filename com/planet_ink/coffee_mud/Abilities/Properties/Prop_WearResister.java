@@ -62,7 +62,7 @@ public class Prop_WearResister extends Prop_HaveResister
 		return TriggeredAffect.TRIGGER_WEAR_WIELD;
 	}
 
-	public void check(MOB mob, Armor A)
+	public void check(final MOB mob, final Armor A)
 	{
 		if(!layered)
 		{
@@ -100,7 +100,7 @@ public class Prop_WearResister extends Prop_HaveResister
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		layered=CMParms.parseSemicolons(newText.toUpperCase(),true).indexOf("LAYERED")>=0;
@@ -128,7 +128,7 @@ public class Prop_WearResister extends Prop_HaveResister
 	}
 
 	@Override
-	public boolean canResist(Environmental E)
+	public boolean canResist(final Environmental E)
 	{
 		if(!super.canResist(E))
 			return false;

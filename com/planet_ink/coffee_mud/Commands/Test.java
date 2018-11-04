@@ -98,7 +98,7 @@ public class Test extends StdCommand
 		return maliciousSemiSpellList;
 	}
 
-	public boolean isAllAdjusted(MOB mob)
+	public boolean isAllAdjusted(final MOB mob)
 	{
 		if(mob.phyStats().ability()<10)
 			return false;
@@ -113,7 +113,7 @@ public class Test extends StdCommand
 		return true;
 	}
 
-	public boolean isAnyAdjusted(MOB mob)
+	public boolean isAnyAdjusted(final MOB mob)
 	{
 		if(mob.phyStats().ability()>=10)
 			return true;
@@ -128,14 +128,14 @@ public class Test extends StdCommand
 		return false;
 	}
 
-	public void giveAbility(Physical P, Ability A)
+	public void giveAbility(final Physical P, final Ability A)
 	{
 		final Ability A2=((Ability)A.copyOf());
 		A2.setMiscText(A.text());
 		P.addNonUninvokableEffect(A2);
 	}
 
-	public boolean testResistance(MOB mob)
+	public boolean testResistance(final MOB mob)
 	{
 		final Item I=CMClass.getWeapon("Dagger");
 		mob.curState().setHitPoints(mob.maxState().getHitPoints());
@@ -155,7 +155,7 @@ public class Test extends StdCommand
 		return true;
 	}
 
-	public Item[] giveTo(Item I, Ability A, MOB mob1, MOB mob2, int code)
+	public Item[] giveTo(final Item I, final Ability A, final MOB mob1, final MOB mob2, final int code)
 	{
 		final Item[] IS=new Item[2];
 		final Item I1=(Item)I.copyOf();
@@ -199,7 +199,7 @@ public class Test extends StdCommand
 		return IS;
 	}
 
-	public boolean spellCheck(String[] spells, MOB mob)
+	public boolean spellCheck(final String[] spells, final MOB mob)
 	{
 		for (final String spell : spells)
 		{
@@ -209,7 +209,7 @@ public class Test extends StdCommand
 		return true;
 	}
 
-	public boolean effectCheck(String[] spells, MOB mob)
+	public boolean effectCheck(final String[] spells, final MOB mob)
 	{
 		for (final String spell : spells)
 		{
@@ -219,7 +219,7 @@ public class Test extends StdCommand
 		return true;
 	}
 
-	public void reset(MOB[] mobs,MOB[] backups, Room R, Item[] IS,Room R2)
+	public void reset(final MOB[] mobs,final MOB[] backups, final Room R, final Item[] IS,final Room R2)
 	{
 		R2.delAllEffects(true);
 		if(IS!=null)
@@ -257,7 +257,7 @@ public class Test extends StdCommand
 		mobs[1].bringToLife(R,true);
 	}
 
-	public int[] recoverMath(int level, int con, int inte, int wis, int str, boolean isHungry, boolean isThirsty, boolean isFatigued, boolean isSleeping, boolean isSittingOrRiding,boolean isFlying,boolean isSwimming)
+	public int[] recoverMath(final int level, final int con, final int inte, final int wis, final int str, final boolean isHungry, final boolean isThirsty, final boolean isFatigued, final boolean isSleeping, final boolean isSittingOrRiding,final boolean isFlying,final boolean isSwimming)
 	{
 		/*	# @x1=stat(con/str/int-wis), @x2=level, @x3=hungry?1:0, @x4=thirsty?1:0, @x5=fatigued?0:1 # @x6=asleep?1:0, @x7=sitorride?1:0, @x8=flying?0:1, @x9=swimming?0:1 */
 		final CompiledFormula stateHitPointRecoverFormula = CMath.compileMathExpression("5+(((@x1 - (@xx*@x3/2.0) - (@xx*@x4/2.0))*@x2/9.0) + (@xx*@x6*.5) + (@xx/4.0*@x7) - (@xx/2.0*@x9))");
@@ -286,7 +286,7 @@ public class Test extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()>1)
@@ -327,30 +327,30 @@ public class Test extends StdCommand
 			else
 			if(what.equalsIgnoreCase("ratspercolator"))
 			{
-				Command C=CMClass.getCommand("Generate");
+				final Command C=CMClass.getCommand("Generate");
 				if((commands.size()<3)||(!CMath.isInteger(commands.get(2))))
 				{
 					mob.tell("You need an number of iterations first, I'm afraid");
 					return false;
 				}
-				int iterations=CMath.s_int(commands.remove(2));
+				final int iterations=CMath.s_int(commands.remove(2));
 				final String theRest=CMParms.combine(commands,2).toUpperCase();
 				commands.set(0, "GENERATE");
 				commands.remove(1);
-				String areaName = CMParms.getParmStr(theRest, "AREANAME", "");
+				final String areaName = CMParms.getParmStr(theRest, "AREANAME", "");
 				if(areaName.length()==0)
 				{
 					mob.tell("You need an area name, I'm afraid");
 					return false;
 				}
-				
+
 				for(int i=0;i<iterations;i++)
 				{
 					mob.tell(L("Generate #@x1: Working...",""+i));
 					final XVector<String> cmds2=new XVector<String>(commands);
 					C.execute(mob, cmds2, metaFlags);
-					
-					Area A=CMLib.map().getArea(areaName);
+
+					final Area A=CMLib.map().getArea(areaName);
 					if(A==null)
 					{
 						mob.tell("Fail!");
@@ -540,7 +540,7 @@ public class Test extends StdCommand
 			if(what.equalsIgnoreCase("randomnames"))
 			{
 				final int num=CMath.s_int(CMParms.combine(commands,2));
-				StringBuilder str=new StringBuilder("");
+				final StringBuilder str=new StringBuilder("");
 				for(int i=0;i<num;i++)
 					str.append(CMLib.login().generateRandomName(3, 8)).append(", ");
 				if(mob.session()!=null)
@@ -562,7 +562,7 @@ public class Test extends StdCommand
 							{
 								CMLib.ableParms().testRecipeParsing(iA.parametersFile(),iA.parametersFormat(),save);
 							}
-							catch(CMException e2)
+							catch(final CMException e2)
 							{
 								mob.tell(L("Recipe parse exception @x1",e2.getMessage()));
 							}
@@ -1650,20 +1650,20 @@ public class Test extends StdCommand
 					final Race R1=r.nextElement();
 					if(R1!=null)
 					{
-						StringBuffer buf=new StringBuffer("");
+						final StringBuffer buf=new StringBuffer("");
 						buf.append(CMStrings.padRight(R1.ID(), 13)).append(" : ");
-						for(Quad<String,Integer,Integer,Boolean> Q : R1.culturalAbilities())
+						for(final Quad<String,Integer,Integer,Boolean> Q : R1.culturalAbilities())
 						{
-							Ability A=CMClass.getAbilityPrototype(Q.first);
+							final Ability A=CMClass.getAbilityPrototype(Q.first);
 							if(A instanceof Language)
 								buf.append("C:").append(A.ID()).append(" ");
 						}
-						for(Ability A : R1.racialAbilities(null))
+						for(final Ability A : R1.racialAbilities(null))
 						{
 							if(A instanceof Language)
 								buf.append("R:").append(A.ID()).append(" ");
 						}
-						for(Ability A : R1.racialEffects(null))
+						for(final Ability A : R1.racialEffects(null))
 						{
 							if(A instanceof Language)
 								buf.append("E:").append(A.ID()).append(" ");
@@ -1672,7 +1672,7 @@ public class Test extends StdCommand
 					}
 				}
 			}
-			
+
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_HaveResister"))
 			||what.equalsIgnoreCase("all"))
@@ -2318,9 +2318,9 @@ public class Test extends StdCommand
 			||what.equalsIgnoreCase("all"))
 			{
 				reset(mobs,backups,R,IS,R2);
-				String mask1="-ANYCLASSLEVEL +Gaian +>=30 +Druid +<10";
-				String mask2="+ANYCLASSLEVEL -Gaian ->=30 -Druid -<10";
-				MaskingLibrary.CompiledZMask cmask1 = CMLib.masking().maskCompile(mask1);
+				final String mask1="-ANYCLASSLEVEL +Gaian +>=30 +Druid +<10";
+				final String mask2="+ANYCLASSLEVEL -Gaian ->=30 -Druid -<10";
+				final MaskingLibrary.CompiledZMask cmask1 = CMLib.masking().maskCompile(mask1);
 				mob.tell(L("Test#27-1: @x1",CMLib.masking().maskDesc(mask1)));
 				if (!CMLib.masking().maskCheck(mask1, mobs[0], true))
 				{
@@ -2342,7 +2342,7 @@ public class Test extends StdCommand
 					mob.tell(L("Error27-4"));
 					return false;
 				}
-				MaskingLibrary.CompiledZMask cmask2 = CMLib.masking().maskCompile(mask2);
+				final MaskingLibrary.CompiledZMask cmask2 = CMLib.masking().maskCompile(mask2);
 				mob.tell(L("Test#27-2: @x1", CMLib.masking().maskDesc(mask2)));
 				if (CMLib.masking().maskCheck(mask2, mobs[0], true))
 				{
@@ -2540,7 +2540,7 @@ public class Test extends StdCommand
 			||(what.equalsIgnoreCase("dumpMobBitmaps")))
 			{
 				mob.tell(CMStrings.padRight(L("Attribute"), 15)+CMStrings.padRight(L("Value"), 11)+CMStrings.padRight(L("Reversed"), 11));
-				for(MOB.Attrib A : MOB.Attrib.values())
+				for(final MOB.Attrib A : MOB.Attrib.values())
 					mob.tell(CMStrings.padRight(A.name(), 15)+CMStrings.padRight(A.getBitCode()+"", 11)+CMStrings.padRight(A.isAutoReversed()+"", 11));
 			}
 			if((what.equalsIgnoreCase("all"))
@@ -2614,12 +2614,12 @@ public class Test extends StdCommand
 			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("racemixing")))
 			{
-				String mixRace = "Troll";
-				Race firstR=CMClass.getRace(mixRace);
+				final String mixRace = "Troll";
+				final Race firstR=CMClass.getRace(mixRace);
 				if(firstR!=null)
 				{
 					final Race secondR=CMClass.getRace("Human");
-					Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID(), false);
+					final Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID(), false);
 					if(R1!=null)
 					{
 						// well, it didn't crash
@@ -2629,23 +2629,23 @@ public class Test extends StdCommand
 			}
 			if(what.equalsIgnoreCase("spacesectors"))
 			{
-				long[] coordinates = new long[3];
+				final long[] coordinates = new long[3];
 				for(long x = -SpaceObject.Distance.GalaxyRadius.dm; x<= SpaceObject.Distance.GalaxyRadius.dm; x+= (SpaceObject.Distance.GalaxyRadius.dm / 88))
 				{
 					coordinates[0] = x;
-					long [] in = CMLib.map().getInSectorCoords(coordinates);
+					final long [] in = CMLib.map().getInSectorCoords(coordinates);
 					mob.tell(CMLib.map().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
 				}
 				for(long x = -SpaceObject.Distance.GalaxyRadius.dm; x<= SpaceObject.Distance.GalaxyRadius.dm; x+= (SpaceObject.Distance.GalaxyRadius.dm / 88))
 				{
 					coordinates[1] = x;
-					long [] in = CMLib.map().getInSectorCoords(coordinates);
+					final long [] in = CMLib.map().getInSectorCoords(coordinates);
 					mob.tell(CMLib.map().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
 				}
 				for(long x = -SpaceObject.Distance.GalaxyRadius.dm; x<= SpaceObject.Distance.GalaxyRadius.dm; x+= (SpaceObject.Distance.GalaxyRadius.dm / 88))
 				{
 					coordinates[2] = x;
-					long [] in = CMLib.map().getInSectorCoords(coordinates);
+					final long [] in = CMLib.map().getInSectorCoords(coordinates);
 					mob.tell(CMLib.map().getSectorName(coordinates) + ": "+in[0]+","+in[1]+","+in[2]);
 				}
 			}
@@ -2665,12 +2665,12 @@ public class Test extends StdCommand
 									dir1=Math.PI;
 								if(adir1 > Math.PI)
 									adir1=Math.PI;
-								double[] curDir = new double[] {dir0, dir1};
-								double[] accelDir = new double[] {adir0, adir1};
+								final double[] curDir = new double[] {dir0, dir1};
+								final double[] accelDir = new double[] {adir0, adir1};
 								//double curSpeed = 1000;
 								//long newAcceleration = 200;
 								//int steps = 0;
-								double totDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
+								final double totDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
 								//System.out.print("Interesting: ");
 								Log.debugOut("Andgle diff between "+Math.round(Math.toDegrees(curDir[0]))+"mk"+Math.round(Math.toDegrees(curDir[1]))
 								+"   and   "+Math.round(Math.toDegrees(accelDir[0]))+"mk"+Math.round(Math.toDegrees(accelDir[1]))
@@ -2714,7 +2714,7 @@ public class Test extends StdCommand
 									steps++;
 								}
 								//TODO: Test Ideas
-								//TODO: test whether smaller angle diffs result in fewer steps. 
+								//TODO: test whether smaller angle diffs result in fewer steps.
 								System.out.println(Math.round(Math.toDegrees(totDirDiff))+", ="+steps+"                      fspeed="+curSpeed);
 								results.add(new double[]{Math.round(Math.toDegrees(totDirDiff)),steps});
 								*/
@@ -2782,7 +2782,7 @@ public class Test extends StdCommand
 				for(int y=0;y<100;y++)
 				for(int x=0;x<100;x++)
 				{
-					final java.util.concurrent.atomic.AtomicInteger counter=new java.util.concurrent.atomic.AtomicInteger(0); 
+					final java.util.concurrent.atomic.AtomicInteger counter=new java.util.concurrent.atomic.AtomicInteger(0);
 					final CMUniqSortSVec<Ability> vec = new CMUniqSortSVec<Ability>();
 					final int delayType = x/30;
 					for(int i=0;i<tests.length;i++)
@@ -2814,7 +2814,7 @@ public class Test extends StdCommand
 					}
 					while(counter.get() < tests.length)
 						CMLib.s_sleep(10);
-					Set<String> found=new TreeSet<String>();
+					final Set<String> found=new TreeSet<String>();
 					for(int i=0;i<vec.size();i++)
 						if(found.contains(vec.get(i).ID()))
 						{
@@ -2882,7 +2882,7 @@ public class Test extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isASysOp(mob);
 	}

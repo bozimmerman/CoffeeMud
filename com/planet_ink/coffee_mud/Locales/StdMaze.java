@@ -46,7 +46,7 @@ public class StdMaze extends StdGrid
 	}
 
 	@Override
-	protected Room getGridRoom(int x, int y)
+	protected Room getGridRoom(final int x, final int y)
 	{
 		final Room R=super.getGridRoom(x,y);
 		if((R!=null)&&(!CMath.bset(R.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNEXPLORABLE)))
@@ -58,7 +58,7 @@ public class StdMaze extends StdGrid
 	}
 
 	@Override
-	protected Room findCenterRoom(int dirCode)
+	protected Room findCenterRoom(final int dirCode)
 	{
 		final Room dirRoom=rawDoors()[dirCode];
 		if(dirRoom!=null)
@@ -74,7 +74,7 @@ public class StdMaze extends StdGrid
 		return null;
 	}
 
-	protected boolean goodDir(int x, int y, int dirCode)
+	protected boolean goodDir(final int x, final int y, final int dirCode)
 	{
 		if(dirCode==Directions.UP)
 			return false;
@@ -93,14 +93,14 @@ public class StdMaze extends StdGrid
 		return true;
 	}
 
-	protected Room roomDir(int x, int y, int dirCode)
+	protected Room roomDir(final int x, final int y, final int dirCode)
 	{
 		if(!goodDir(x,y,dirCode))
 			return null;
 		return subMap[getX(x,dirCode)][getY(y,dirCode)];
 	}
 
-	protected int getY(int y, int dirCode)
+	protected int getY(final int y, final int dirCode)
 	{
 		switch(dirCode)
 		{
@@ -112,7 +112,7 @@ public class StdMaze extends StdGrid
 		return y;
 	}
 
-	protected int getX(int x, int dirCode)
+	protected int getX(final int x, final int dirCode)
 	{
 		switch(dirCode)
 		{
@@ -124,7 +124,7 @@ public class StdMaze extends StdGrid
 		return x;
 	}
 
-	protected void mazify(Set<Room> visited, int x, int y)
+	protected void mazify(final Set<Room> visited, final int x, final int y)
 	{
 		if(visited.contains(subMap[x][y]))
 			return;

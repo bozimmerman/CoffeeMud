@@ -58,7 +58,7 @@ public class Encrypto extends StdLanguage
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		if(newCode != level)
 		{
@@ -70,7 +70,7 @@ public class Encrypto extends StdLanguage
 	}
 
 	@Override
-	public String translate(String language, String word)
+	public String translate(final String language, final String word)
 	{
 		final char[] w=word.toCharArray();
 		final char[] nw=Arrays.copyOf(w,w.length);
@@ -99,7 +99,7 @@ public class Encrypto extends StdLanguage
 		}
 		return new String(w);
 	}
-	
+
 	@Override
 	public void setMiscText(String newMiscText)
 	{

@@ -60,7 +60,7 @@ public class Prop_UseSpellCast2 extends Prop_UseSpellCast
 		try
 		{
 			processing=true;
-	
+
 			if(affected==null)
 				return;
 			final Item myItem=(Item)affected;

@@ -53,7 +53,7 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public String name(int classLevel)
+	public String name(final int classLevel)
 	{
 		return name();
 	}
@@ -152,7 +152,7 @@ public class StdCharClass implements CharClass
 		return CharClass.WEAPONS_ANY;
 	}
 
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return null;
 	}
@@ -229,7 +229,7 @@ public class StdCharClass implements CharClass
 	private static final CMSecurity.SecGroup	empty	= new CMSecurity.SecGroup(new CMSecurity.SecFlag[] {});
 
 	@Override
-	public CMSecurity.SecGroup getSecurityFlags(int classLevel)
+	public CMSecurity.SecGroup getSecurityFlags(final int classLevel)
 	{
 		return empty;
 	}
@@ -311,7 +311,7 @@ public class StdCharClass implements CharClass
 		return 0;
 	}
 
-	public void cloneFix(CharClass C)
+	public void cloneFix(final CharClass C)
 	{
 	}
 
@@ -332,13 +332,13 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public int classDurationModifier(MOB myChar, Ability skill, int duration)
+	public int classDurationModifier(final MOB myChar, final Ability skill, final int duration)
 	{
 		return duration;
 	}
 
 	@Override
-	public int classLevelModifier(MOB myChar, Ability skill, int level)
+	public int classLevelModifier(final MOB myChar, final Ability skill, final int level)
 	{
 		return level;
 	}
@@ -356,7 +356,7 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
+	public boolean qualifiesForThisClass(final MOB mob, final boolean quiet)
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.STDCLASSES) && (!isGeneric()))
 			return false;
@@ -592,7 +592,7 @@ public class StdCharClass implements CharClass
 		else
 		{
 			final XVector<Race> qualRaces = new XVector<Race>();
-			for(Race R : availRaces)
+			for(final Race R : availRaces)
 			{
 				if(isAllowedRace(R))
 					qualRaces.add(R);
@@ -604,10 +604,10 @@ public class StdCharClass implements CharClass
 			else
 			{
 				final StringBuilder str=new StringBuilder();
-				ArrayList<String> names = new ArrayList<String>(availRaces.size());
+				final ArrayList<String> names = new ArrayList<String>(availRaces.size());
 				//if(qualRaces.size()<=(availRaces.size()/2))
 				{
-					for(Race R : qualRaces)
+					for(final Race R : qualRaces)
 						names.add(R.name());
 					str.append(CMLib.english().toEnglishStringList(names.toArray(new String[0])));
 				}
@@ -749,7 +749,7 @@ public class StdCharClass implements CharClass
 		return buildDisallowedWeaponClasses(allowedWeaponLevel());
 	}
 
-	protected Set<Integer> buildDisallowedWeaponClasses(int lvl)
+	protected Set<Integer> buildDisallowedWeaponClasses(final int lvl)
 	{
 		if(lvl==CharClass.WEAPONS_ANY)
 			return null;
@@ -770,7 +770,7 @@ public class StdCharClass implements CharClass
 		}
 		return H;
 	}
-	
+
 	protected HashSet<Integer> buildRequiredWeaponMaterials()
 	{
 		if(allowedWeaponLevel()==CharClass.WEAPONS_ANY)
@@ -786,7 +786,7 @@ public class StdCharClass implements CharClass
 		return null;
 	}
 
-	protected boolean isQualifyingAuthority(MOB mob, Ability A)
+	protected boolean isQualifyingAuthority(final MOB mob, final Ability A)
 	{
 		CharClass C=null;
 		int ql=0;
@@ -804,7 +804,7 @@ public class StdCharClass implements CharClass
 		return false;
 	}
 
-	protected boolean armorCheck(MOB mob, int sourceCode, Environmental E)
+	protected boolean armorCheck(final MOB mob, final int sourceCode, final Environmental E)
 	{
 		if(!(E instanceof Ability))
 			return true;
@@ -821,13 +821,13 @@ public class StdCharClass implements CharClass
 		return true;
 	}
 
-	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
+	protected boolean weaponCheck(final MOB mob, final int sourceCode, final Environmental E)
 	{
 		if((((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_WEAPONATTACK)||((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_THROW))
 		&&(E instanceof Weapon)
 		&&(mob.charStats().getCurrentClass().ID().equals(ID())))
 		{
-			for(DoubleFilterer<Item> F : mob.charStats().getItemProficiencies())
+			for(final DoubleFilterer<Item> F : mob.charStats().getItemProficiencies())
 			{
 				final DoubleFilterer.Result filterResult = F.getFilterResult((Item)E);
 				if(filterResult != DoubleFilterer.Result.NOTAPPLICABLE)
@@ -847,12 +847,12 @@ public class StdCharClass implements CharClass
 		return true;
 	}
 
-	protected boolean giveMobAbility(MOB mob, Ability A, int proficiency, String defaultParm, boolean isBorrowedClass)
+	protected boolean giveMobAbility(final MOB mob, final Ability A, final int proficiency, final String defaultParm, final boolean isBorrowedClass)
 	{
 		return giveMobAbility(mob,A,proficiency,defaultParm,isBorrowedClass,true);
 	}
 
-	protected boolean giveMobAbility(MOB mob, Ability A, int proficiency, String defaultParm, boolean isBorrowedClass, boolean autoInvoke)
+	protected boolean giveMobAbility(final MOB mob, Ability A, final int proficiency, final String defaultParm, final boolean isBorrowedClass, final boolean autoInvoke)
 	{
 		if(mob.fetchAbility(A.ID())==null)
 		{
@@ -881,7 +881,7 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		if(CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS)
 		&&(mob.soulMate()==null))
@@ -967,9 +967,9 @@ public class StdCharClass implements CharClass
 			}
 		}
 	}
-	
+
 	@Override
-	public boolean isAllowedRace(Race R)
+	public boolean isAllowedRace(final Race R)
 	{
 		checkRaceQualifierChanges();
 		synchronized(finalAllowedRaceSet)
@@ -978,7 +978,7 @@ public class StdCharClass implements CharClass
 			if(finalCheck != null)
 				return finalCheck.booleanValue();
 		}
-		
+
 		final String[] requiredRaceList = getRequiredRaceList();
 		final boolean secondCheck;
 		final String[] overrideRequiredRaceListCheck = CMSecurity.getAnyFlagEnabledParms("CHARCLASS_"+ID());
@@ -993,7 +993,7 @@ public class StdCharClass implements CharClass
 		||CMStrings.containsIgnoreCase(overrideRequiredRaceListCheck,"-"+R.racialCategory()))
 			secondCheck=false;
 		else
-			secondCheck = 
+			secondCheck =
 				(CMStrings.containsIgnoreCase(requiredRaceList,"All")
 				||CMStrings.containsIgnoreCase(requiredRaceList,R.ID())
 				||CMStrings.containsIgnoreCase(requiredRaceList,R.name())
@@ -1229,12 +1229,12 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public void endCharacter(MOB mob)
+	public void endCharacter(final MOB mob)
 	{
 	}
-	
+
 	@Override
-	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
+	public void startCharacter(final MOB mob, final boolean isBorrowedClass, final boolean verifyOnly)
 	{
 		if(!verifyOnly)
 		{
@@ -1248,14 +1248,14 @@ public class StdCharClass implements CharClass
 			final PlayerStats pStats = mob.playerStats();
 			if((pStats != null)&&(!pStats.isOnAutoInvokeList("ANYTHING")))
 			{
-				for(String s : CMProps.getListFileVarSet(CMProps.ListFile.WIZ_NOAUTOINVOKE))
+				for(final String s : CMProps.getListFileVarSet(CMProps.ListFile.WIZ_NOAUTOINVOKE))
 					pStats.addAutoInvokeList(s);
 			}
 		}
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		return outfitChoices;
 	}
@@ -1275,7 +1275,7 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 	}
 
@@ -1343,21 +1343,21 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public void unLevel(MOB mob)
+	public void unLevel(final MOB mob)
 	{
 	}
 
 	@Override
-	public void level(MOB mob, List<String> gainedAbilityIDs)
+	public void level(final MOB mob, final List<String> gainedAbilityIDs)
 	{
 	}
 
 	@Override
-	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount)
+	public int adjustExperienceGain(final MOB host, final MOB mob, final MOB victim, final int amount)
 	{
 		return amount;
 	}
-	
+
 	/**
 	 * Localize an internal string -- shortcut. Same as calling:
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary#fullSessionTranslation(String, String...)
@@ -1373,19 +1373,19 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public boolean canBeADivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	public boolean canBeADivider(final MOB killer, final MOB killed, final MOB mob, final Set<MOB> followers)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean canBeABenificiary(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	public boolean canBeABenificiary(final MOB killer, final MOB killed, final MOB mob, final Set<MOB> followers)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean isValidClassDivider(MOB killer, MOB killed, final MOB mob, Set<MOB> followers)
+	public boolean isValidClassDivider(final MOB killer, final MOB killed, final MOB mob, final Set<MOB> followers)
 	{
 		if(mob != null)
 		{
@@ -1402,7 +1402,7 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	public boolean isValidClassBeneficiary(final MOB killer, final MOB killed, final MOB mob, final Set<MOB> followers)
 	{
 		if(mob != null)
 		{
@@ -1425,7 +1425,7 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public void setClassParms(String parms)
+	public void setClassParms(final String parms)
 	{
 	}
 
@@ -1438,7 +1438,7 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch (getCodeNum(code))
 		{
@@ -1451,7 +1451,7 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch (getCodeNum(code))
 		{
@@ -1485,7 +1485,7 @@ public class StdCharClass implements CharClass
 		return -1;
 	}
 
-	public boolean sameAs(CharClass E)
+	public boolean sameAs(final CharClass E)
 	{
 		if (!(E instanceof StdCharClass))
 			return false;

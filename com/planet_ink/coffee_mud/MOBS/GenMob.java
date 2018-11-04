@@ -73,14 +73,14 @@ public class GenMob extends StdMOB
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
@@ -88,7 +88,7 @@ public class GenMob extends StdMOB
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenMobStat(this,code,val);

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Poison_Alcohol extends Poison
 {
 	@Override
@@ -144,7 +143,7 @@ public class Poison_Alcohol extends Poison
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		drunkness=newCode;
 	}
@@ -155,7 +154,7 @@ public class Poison_Alcohol extends Poison
 		if((affected instanceof MOB)&&(drunkness>0))
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(drunkness+((MOB)affected).phyStats().level()));
 	}
-	
+
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
@@ -182,7 +181,7 @@ public class Poison_Alcohol extends Poison
 	}
 
 	@Override
-	protected boolean catchIt(MOB mob, Physical target)
+	protected boolean catchIt(final MOB mob, final Physical target)
 	{
 		final boolean caughtIt=super.catchIt(mob,target);
 		if(!(affected instanceof Drink))
@@ -382,7 +381,7 @@ public class Poison_Alcohol extends Poison
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		int largest=alchoholContribution();
 		if((givenTarget instanceof MOB)&&(auto))

@@ -48,7 +48,7 @@ public class QuestMgr extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		Quest Q=null;
@@ -154,7 +154,7 @@ public class QuestMgr extends StdWebMacro
 		return "";
 	}
 
-	public String populateQuest(HTTPRequest httpReq, Quest Q, boolean redirect)
+	public String populateQuest(final HTTPRequest httpReq, final Quest Q, boolean redirect)
 	{
 		Q.script();
 		String script=httpReq.getUrlParameter("RAWTEXT");

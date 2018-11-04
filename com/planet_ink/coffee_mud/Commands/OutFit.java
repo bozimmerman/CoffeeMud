@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class OutFit extends StdCommand
 {
 	public OutFit()
@@ -47,7 +46,7 @@ public class OutFit extends StdCommand
 	}
 
 	@Override
-	public boolean preExecute(MOB mob, List<String> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+	public boolean preExecute(final MOB mob, final List<String> commands, final int metaFlags, final int secondsElapsed, final double actionsRemaining)
 	throws java.io.IOException
 	{
 		if(secondsElapsed>8.0)
@@ -62,7 +61,7 @@ public class OutFit extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob==null)
@@ -93,7 +92,7 @@ public class OutFit extends StdCommand
 	}
 
 	@Override
-	public double actionsCost(MOB mob, List<String> cmds)
+	public double actionsCost(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getCommandActionCost(ID(),CMath.div(CMProps.getIntVar(CMProps.Int.DEFCMDTIME),25.0));
 	}

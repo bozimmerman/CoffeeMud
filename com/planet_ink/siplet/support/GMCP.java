@@ -27,17 +27,17 @@ import com.planet_ink.siplet.support.MiniJSON.MJSONException;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 public class GMCP
 {
 	private final StringBuffer					jscriptBuffer	= new StringBuffer("");
-	
+
 	public GMCP()
 	{
 		super();
 	}
 
-	public int process(StringBuffer buf, int i, Siplet applet, boolean useExternal)
+	public int process(final StringBuffer buf, final int i, final Siplet applet, final boolean useExternal)
 	{
 		return 0;
 	}
@@ -54,10 +54,10 @@ public class GMCP
 		}
 	}
 
-	public String gmcpReceive(byte[] buffer)
+	public String gmcpReceive(final byte[] buffer)
 	{
 		final String s=new String(buffer, Charset.forName("US-ASCII"));
-		int x=s.indexOf(' ');
+		final int x=s.indexOf(' ');
 		if(x<0)
 			return s;
 		final String cmd = s.substring(0,x);
@@ -66,16 +66,16 @@ public class GMCP
 		{
 			try
 			{
-				MiniJSON.JSONObject obj=new MiniJSON().parseObject(jsonStr);
-				String title = obj.getCheckedString("title");
-				String data = obj.getCheckedString("text");
+				final MiniJSON.JSONObject obj=new MiniJSON().parseObject(jsonStr);
+				final String title = obj.getCheckedString("title");
+				final String data = obj.getCheckedString("text");
 				synchronized (jscriptBuffer)
 				{
 					jscriptBuffer.append("retarget('" + MiniJSON.toJSONString(title) + "','"+MiniJSON.toJSONString(data)+"');");
 				}
 				return "";
 			}
-			catch (MJSONException e)
+			catch (final MJSONException e)
 			{
 			}
 		}

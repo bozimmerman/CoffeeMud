@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_KnowOrigin extends Spell
 {
 
@@ -74,7 +73,7 @@ public class Spell_KnowOrigin extends Spell
 		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
 	}
 
-	public Room origin(MOB mob, Environmental meThang)
+	public Room origin(final MOB mob, final Environmental meThang)
 	{
 		if(meThang instanceof LandTitle)
 			return ((LandTitle)meThang).getAllTitledRooms().get(0);
@@ -105,7 +104,7 @@ public class Spell_KnowOrigin extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null)

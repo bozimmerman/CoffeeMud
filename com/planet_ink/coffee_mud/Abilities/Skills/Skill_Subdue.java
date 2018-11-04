@@ -147,7 +147,7 @@ public class Skill_Subdue extends StdSkill
 			&&(whom.curState().getHitPoints() - whomDamage)<=0)
 			{
 				final Ability sap=CMClass.getAbility("Skill_ArrestingSap");
-				if(sap!=null) 
+				if(sap!=null)
 					sap.invoke(whom,new XVector<String>("SAFELY",Integer.toString(adjustedLevel(msg.source(),asLevel))),whom,true,0);
 				whom.makePeace(true);
 				msg.source().makePeace(true);
@@ -165,13 +165,13 @@ public class Skill_Subdue extends StdSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Ability A=mob.fetchEffect(ID());
 		if(A!=null)

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Bandaging extends CommonSkill implements MendingSkill
 {
 	@Override
@@ -84,7 +83,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 	}
 
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
 		if(!(item instanceof MOB))
 			return false;
@@ -156,13 +155,13 @@ public class Bandaging extends CommonSkill implements MendingSkill
 		super.unInvoke();
 	}
 
-	public double healthPct(MOB mob)
+	public double healthPct(final MOB mob)
 	{
 		return CMath.div(mob.curState().getHitPoints(), mob.maxState().getHitPoints());
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;

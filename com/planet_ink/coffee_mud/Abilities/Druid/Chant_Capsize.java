@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_Capsize extends Chant
 {
 	@Override
@@ -87,14 +86,14 @@ public class Chant_Capsize extends Chant
 		return Ability.CAN_ITEMS;
 	}
 
-	public List<Item> getAllTheStuff(Item I)
+	public List<Item> getAllTheStuff(final Item I)
 	{
 		final List<Item> items = new ArrayList<Item>();
 		if(I instanceof Container)
 			items.addAll(((Container)I).getContents());
 		if(I instanceof BoardableShip)
 		{
-			Area A=((BoardableShip)I).getShipArea();
+			final Area A=((BoardableShip)I).getShipArea();
 			if(A!=null)
 			{
 				for(final Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
@@ -104,7 +103,7 @@ public class Chant_Capsize extends Chant
 					{
 						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 						{
-							Item I2=i.nextElement();
+							final Item I2=i.nextElement();
 							if((I2!=null)
 							&&(I2.container()==null)
 							&&(CMLib.flags().isGettable(I2))
@@ -122,22 +121,22 @@ public class Chant_Capsize extends Chant
 		}
 		return items;
 	}
-	
-	protected MOB getHighestLevel(MOB casterM, Item I) throws CMException
+
+	protected MOB getHighestLevel(final MOB casterM, final Item I) throws CMException
 	{
 		int highestLevelPC=0;
 		int highestLevelNPC=0;
 		MOB highestLevelPCM=null;
 		MOB highestLevelNPCM=null;
-		Set<MOB> grp = casterM.getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> grp = casterM.getGroupMembers(new HashSet<MOB>());
 		if(I instanceof Rideable)
 		{
 			for(final Enumeration<Rider> r=((Rideable)I).riders();r.hasMoreElements();)
 			{
-				Rider R=r.nextElement();
+				final Rider R=r.nextElement();
 				if((R instanceof MOB)&&(!grp.contains(R)))
 				{
-					MOB M=(MOB)R;
+					final MOB M=(MOB)R;
 					if(!casterM.mayIFight(M))
 						throw new CMException("Not permitted.");
 					if(M.isMonster() && (M.phyStats().level() > highestLevelNPC))
@@ -145,19 +144,19 @@ public class Chant_Capsize extends Chant
 						highestLevelNPC = M.phyStats().level();
 						highestLevelNPCM = M;
 					}
-					
+
 					if(M.isPlayer() && (M.phyStats().level() > highestLevelPC))
 					{
 						highestLevelPC = M.phyStats().level();
 						highestLevelPCM = M;
 					}
-						
+
 				}
 			}
 		}
 		if(I instanceof BoardableShip)
 		{
-			Area A=((BoardableShip)I).getShipArea();
+			final Area A=((BoardableShip)I).getShipArea();
 			if(A!=null)
 			{
 				for(final Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
@@ -167,7 +166,7 @@ public class Chant_Capsize extends Chant
 					{
 						for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 						{
-							MOB M=m.nextElement();
+							final MOB M=m.nextElement();
 							if(!grp.contains(M))
 							{
 								if(!casterM.mayIFight(M))
@@ -177,7 +176,7 @@ public class Chant_Capsize extends Chant
 									highestLevelNPC = M.phyStats().level();
 									highestLevelNPCM = M;
 								}
-								
+
 								if(M.isPlayer() && (M.phyStats().level() > highestLevelPC))
 								{
 									highestLevelPC = M.phyStats().level();
@@ -193,9 +192,9 @@ public class Chant_Capsize extends Chant
 			return highestLevelPCM;
 		return highestLevelNPCM;
 	}
-	
+
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -206,7 +205,7 @@ public class Chant_Capsize extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -221,10 +220,10 @@ public class Chant_Capsize extends Chant
 			mob.tell(L("This chant does not work here."));
 			return false;
 		}
-		Item target=getTarget(mob,R,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		final Item target=getTarget(mob,R,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
 			return false;
-		
+
 		if(target instanceof PrivateProperty)
 		{
 			if(!CMLib.law().canAttackThisProperty(mob, (PrivateProperty)target))
@@ -246,7 +245,7 @@ public class Chant_Capsize extends Chant
 			mob.tell(L("That's not a boat!"));
 			return false;
 		}
-		
+
 		if(CMLib.flags().isFlying(target))
 		{
 			mob.tell(L("This chant would have no effect on @x1!",target.name()));
@@ -258,12 +257,12 @@ public class Chant_Capsize extends Chant
 		{
 			M = this.getHighestLevel(mob, target);
 		}
-		catch (CMException e)
+		catch (final CMException e)
 		{
 			mob.tell(L("You are not permitted to target @x1!",target.name()));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -284,7 +283,7 @@ public class Chant_Capsize extends Chant
 					else
 					if (chanceToFail > 95)
 						chanceToFail = 95;
-		
+
 					if (CMLib.dice().rollPercentage() < chanceToFail)
 					{
 						success = false;
@@ -292,16 +291,16 @@ public class Chant_Capsize extends Chant
 				}
 			}
 		}
-		
+
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L(""):L("^S<S-NAME> chant(s) to <T-NAMESELF>, pummeling it with a massive wave.^?"));
 			if(R.okMessage(mob,msg))
 			{
-				List<Item> items = this.getAllTheStuff(target);
+				final List<Item> items = this.getAllTheStuff(target);
 				R.send(mob,msg);
 				R.show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> momentarily capsizes!"));
-				for(Item I : items)
+				for(final Item I : items)
 				{
 					I.setContainer(null);
 					if(I.owner() != R)

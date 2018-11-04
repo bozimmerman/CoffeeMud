@@ -101,7 +101,7 @@ public class Devil extends Unique
 	private final String[]	racialEffectNames			= { "Prayer_TaintOfEvil" };
 	private final int[]		racialEffectLevels			= { 1 };
 	private final String[]	racialEffectParms			= { "" };
-	
+
 	@Override
 	protected String[] racialEffectNames()
 	{
@@ -210,7 +210,7 @@ public class Devil extends Unique
 		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+10);
 		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+10);
 	}
-	
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

@@ -42,7 +42,7 @@ public interface SlaveryLibrary extends CMLibrary
 		INT4,
 		INT5,
 		ALLDONE;//==-99
-		
+
 		public Step nextStep()
 		{
 			switch(this)
@@ -72,28 +72,28 @@ public interface SlaveryLibrary extends CMLibrary
 	public static interface GeasStep
 	{
 		public boolean botherIfAble(String msgOrQ);
-		
+
 		public boolean sayResponse(MOB speaker, MOB target, String response);
-		
+
 		public String step();
-		
+
 		public void setStep(Step step);
-		
+
 		public MOB getBotheredMob();
 	}
-	
+
 	public static interface GeasSteps extends List<GeasStep>
 	{
 		public void step();
-		
+
 		public void move(int moveCode);
-		
+
 		public boolean sayResponse(MOB speaker, MOB target, String response);
-		
+
 		public MOB stepperM();
-		
+
 		public Set<MOB> getBotheredMobs();
-		
+
 		public boolean isDone();
 	}
 }

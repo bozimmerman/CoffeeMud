@@ -47,23 +47,23 @@ public class WeatherAffects extends PuddleMaker
 		return Behavior.CAN_ROOMS | Behavior.CAN_AREAS;
 	}
 
-	protected int				puddlepct			= 0;
-	protected int				windsheer			= 0;
-	protected int				rustDown			= 0;
-	protected int				botherDown			= 0;
-	protected int				rumbleDown			= 0;
-	protected int				gustDown			= 0;
-	protected int				tornadoDown			= 0;
-	protected int				lightningDown		= 0;
-	protected int				hailDown			= 0;
-	protected int				boatSlipChance		= 0;
-	protected int				rainSlipChance		= 0;
-	protected int				snowSlipChance		= 0;
-	protected int				sleetSlipChance		= 0;
-	protected int				freezeOverChance	= 0;
-	protected int				dustDown			= 0;
-	protected int				diseaseDown			= 0;
-	protected int				droughtFireChance	= 0;
+	protected int	puddlepct			= 0;
+	protected int	windsheer			= 0;
+	protected int	rustDown			= 0;
+	protected int	botherDown			= 0;
+	protected int	rumbleDown			= 0;
+	protected int	gustDown			= 0;
+	protected int	tornadoDown			= 0;
+	protected int	lightningDown		= 0;
+	protected int	hailDown			= 0;
+	protected int	boatSlipChance		= 0;
+	protected int	rainSlipChance		= 0;
+	protected int	snowSlipChance		= 0;
+	protected int	sleetSlipChance		= 0;
+	protected int	freezeOverChance	= 0;
+	protected int	dustDown			= 0;
+	protected int	diseaseDown			= 0;
+	protected int	droughtFireChance	= 0;
 
 	private static final long[]	ALL_COVERED_SPOTS	= { Wearable.WORN_FEET, Wearable.WORN_TORSO, Wearable.WORN_LEGS };
 	private static long			ALL_COVERED_CODE	= 0;
@@ -90,7 +90,7 @@ public class WeatherAffects extends PuddleMaker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		parms=newParms;
 		puddlepct=CMParms.getParmInt(parms,"puddlepct",50);
@@ -157,13 +157,13 @@ public class WeatherAffects extends PuddleMaker
 		dustDown = CMParms.getParmInt(parms, "dustticks", 50);
 	}
 
-	public Area area(Environmental host)
+	public Area area(final Environmental host)
 	{
 		final Area A=(host instanceof Area)?(Area)host:CMLib.map().roomLocation(host).getArea();
 		return A;
 	}
 
-	public int weather(Environmental host, Room room)
+	public int weather(final Environmental host, final Room room)
 	{
 		if(room==null)
 			return 0;
@@ -172,7 +172,7 @@ public class WeatherAffects extends PuddleMaker
 			return A.getClimateObj().weatherType(room);
 		return 0;
 	}
-	
+
 	private boolean isInclement(final int weather)
 	{
 		switch(weather)
@@ -288,7 +288,7 @@ public class WeatherAffects extends PuddleMaker
 											sR.show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("^W<S-NAME> make(s) no progress in the "+what+".^?"));
 									}
 								}
-								
+
 							}
 							return false;
 						}
@@ -327,7 +327,7 @@ public class WeatherAffects extends PuddleMaker
 				{
 					if(R.show(msg.source(),null,CMMsg.MSG_WEATHER,L("^W<S-NAME> slip(s) on the "+what+" ground.^?")))
 					{
-						Ability A=CMClass.getAbility("Skill_Trip");
+						final Ability A=CMClass.getAbility("Skill_Trip");
 						A.startTickDown(msg.source(), msg.source(), 3);
 						msg.source().recoverPhyStats();
 						return false;
@@ -349,8 +349,8 @@ public class WeatherAffects extends PuddleMaker
 		}
 		return true;
 	}
-	
-	protected boolean isInArea(final Area A, MOB M)
+
+	protected boolean isInArea(final Area A, final MOB M)
 	{
 		if((M!=null)
 		&&(M.location()!=null)
@@ -361,7 +361,7 @@ public class WeatherAffects extends PuddleMaker
 				return true;
 			if(mA instanceof BoardableShip)
 			{
-				Area inA=CMLib.map().areaLocation(((BoardableShip)mA).getShipItem());
+				final Area inA=CMLib.map().areaLocation(((BoardableShip)mA).getShipItem());
 				return inA==A;
 			}
 		}

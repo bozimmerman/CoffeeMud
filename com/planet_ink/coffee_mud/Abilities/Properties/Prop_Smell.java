@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_Smell extends Property
 {
 	@Override
@@ -65,7 +64,7 @@ public class Prop_Smell extends Property
 	}
 
 	@Override
-	public void setMiscText(String newStr)
+	public void setMiscText(final String newStr)
 	{
 		if(newStr.startsWith("+"))
 		{
@@ -140,7 +139,7 @@ public class Prop_Smell extends Property
 		return smells;
 	}
 
-	public String selectSmell(boolean emoteOnly)
+	public String selectSmell(final boolean emoteOnly)
 	{
 		lastWasBroadcast=false;
 		getSmells();
@@ -183,7 +182,7 @@ public class Prop_Smell extends Property
 			msg.source().tell(msg.source(),affected,null,selectSmell(false));
 	}
 
-	public void emoteHere(Room room, MOB emoter, String str)
+	public void emoteHere(final Room room, final MOB emoter, final String str)
 	{
 		final CMMsg msg=CMClass.getMsg(emoter,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_AROMA,str);
 		if(room.okMessage(emoter,msg))

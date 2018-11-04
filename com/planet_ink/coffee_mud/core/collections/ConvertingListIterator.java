@@ -19,14 +19,14 @@ public class ConvertingListIterator<K,L> implements ListIterator<L>
 {
 	private final ListIterator<K> iter;
 	private final Converter<K,L> converter;
-	public ConvertingListIterator(ListIterator<K> i, Converter<K,L> conv)
+	public ConvertingListIterator(final ListIterator<K> i, final Converter<K,L> conv)
 	{
 		iter=i;
 		converter=conv;
 	}
 
 	@Override
-	public void add(L arg0)
+	public void add(final L arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -74,7 +74,7 @@ public class ConvertingListIterator<K,L> implements ListIterator<L>
 	}
 
 	@Override
-	public void set(L arg0)
+	public void set(final L arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}

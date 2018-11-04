@@ -41,7 +41,7 @@ public class WaterSurface extends StdRoom implements Drink
 	}
 
 	protected int liquidType = RawMaterial.RESOURCE_FRESHWATER;
-	
+
 	public WaterSurface()
 	{
 		super();
@@ -65,7 +65,7 @@ public class WaterSurface extends StdRoom implements Drink
 	}
 
 	@Override
-	public void setDecayTime(long time)
+	public void setDecayTime(final long time)
 	{
 	}
 
@@ -79,9 +79,9 @@ public class WaterSurface extends StdRoom implements Drink
 		return Room.DOMAIN_OUTDOORS_UNDERWATER;
 	}
 
-	protected boolean IsUnderWaterFatClass(Room thatSea)
+	protected boolean IsUnderWaterFatClass(final Room thatSea)
 	{
-		return (thatSea instanceof UnderWaterGrid) 
+		return (thatSea instanceof UnderWaterGrid)
 			|| (thatSea instanceof UnderWaterThinGrid)
 			|| (thatSea instanceof UnderWaterColumnGrid);
 	}
@@ -89,11 +89,11 @@ public class WaterSurface extends StdRoom implements Drink
 	@Override
 	public List<Room> getSky()
 	{
-		List<Room> skys = new Vector<Room>(1);
-		if(!skyedYet) 
+		final List<Room> skys = new Vector<Room>(1);
+		if(!skyedYet)
 			return skys;
 		skys.addAll(super.getSky());
-		
+
 		final Room room=rawDoors()[Directions.DOWN];
 		if(room!=null)
 		{
@@ -105,9 +105,9 @@ public class WaterSurface extends StdRoom implements Drink
 		}
 		return skys;
 	}
-	
+
 	@Override
-	public void giveASky(int depth)
+	public void giveASky(final int depth)
 	{
 		if(skyedYet)
 			return;
@@ -139,7 +139,7 @@ public class WaterSurface extends StdRoom implements Drink
 			setRawExit(Directions.DOWN,dnE);
 			sea.rawDoors()[Directions.UP]=this;
 			sea.setRawExit(Directions.UP,upE);
-			for(int dir : Directions.CODES())
+			for(final int dir : Directions.CODES())
 			{
 				Room thatRoom=rawDoors()[dir];
 				Room thatSea=null;
@@ -176,7 +176,7 @@ public class WaterSurface extends StdRoom implements Drink
 	@Override
 	public void clearSky()
 	{
-		if(!skyedYet) 
+		if(!skyedYet)
 			return;
 		super.clearSky();
 		final Room room=rawDoors()[Directions.DOWN];
@@ -209,7 +209,7 @@ public class WaterSurface extends StdRoom implements Drink
 			giveASky(0);
 		}
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -261,23 +261,23 @@ public class WaterSurface extends StdRoom implements Drink
 	}
 
 	@Override
-	public void setLiquidType(int newLiquidType)
+	public void setLiquidType(final int newLiquidType)
 	{
 		liquidType = newLiquidType;
 	}
 
 	@Override
-	public void setThirstQuenched(int amount)
+	public void setThirstQuenched(final int amount)
 	{
 	}
 
 	@Override
-	public void setLiquidHeld(int amount)
+	public void setLiquidHeld(final int amount)
 	{
 	}
 
 	@Override
-	public void setLiquidRemaining(int amount)
+	public void setLiquidRemaining(final int amount)
 	{
 	}
 
@@ -294,7 +294,7 @@ public class WaterSurface extends StdRoom implements Drink
 	}
 
 	@Override
-	public int amountTakenToFillMe(Drink theSource)
+	public int amountTakenToFillMe(final Drink theSource)
 	{
 		return 0;
 	}

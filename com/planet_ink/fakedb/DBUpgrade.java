@@ -21,26 +21,25 @@ import java.sql.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public class DBUpgrade
 {
 	static PrintStream		out		= System.out;
 	static boolean			debug	= false;
 	static BufferedReader	in		= new BufferedReader(new InputStreamReader(System.in));
 
-	private static void pl(String str)
+	private static void pl(final String str)
 	{
 		if (out != null)
 			out.println(str);
 	}
 
-	private static void p(String str)
+	private static void p(final String str)
 	{
 		if (out != null)
 			out.print(str);
 	}
 
-	public static String getStringFieldValue(final String field, int oldIndex, List<String> row)
+	public static String getStringFieldValue(final String field, final int oldIndex, final List<String> row)
 	{
 		if (field.startsWith("#"))
 		{
@@ -58,7 +57,7 @@ public class DBUpgrade
 		}
 	}
 
-	private static long s_long(String str)
+	private static long s_long(final String str)
 	{
 		try
 		{
@@ -70,7 +69,7 @@ public class DBUpgrade
 		}
 	}
 
-	public static Object getFieldValue(final String field, int oldIndex, List<String> row)
+	public static Object getFieldValue(final String field, final int oldIndex, final List<String> row)
 	{
 		if (field.startsWith("#"))
 		{
@@ -88,7 +87,7 @@ public class DBUpgrade
 		}
 	}
 
-	public static int[] getMatrix(List<String> ofields, List<String> nfields)
+	public static int[] getMatrix(final List<String> ofields, final List<String> nfields)
 	{
 		final int[] matrix = new int[nfields.size()];
 		for (int i = 0; i < nfields.size(); i++)
@@ -106,14 +105,14 @@ public class DBUpgrade
 		return matrix;
 	}
 
-	public static void main(String a[]) throws IOException
+	public static void main(final String a[]) throws IOException
 	{
 		pl("Welcome to the FakeDB Database Upgrade Tool!");
 		pl("(C) 2003-2018 Bo Zimmerman");
 		pl("Another product of ...Planet Ink!");
 		pl("");
 		pl("");
-		long totMemory = Runtime.getRuntime().totalMemory();
+		final long totMemory = Runtime.getRuntime().totalMemory();
 		if (totMemory < (6 * 1024 * 1024))
 		{
 			pl("* You aren't running this with much memory.  You might want to add  -Xms16m -Xmx256m to the command line arguments.");
@@ -121,7 +120,7 @@ public class DBUpgrade
 			pl("");
 		}
 		final Hashtable<String, List<String>> oldTables = new Hashtable<String, List<String>>();
-		Map<Object, Method> converters = new Hashtable<Object, Method>();
+		final Map<Object, Method> converters = new Hashtable<Object, Method>();
 		while (oldTables.size() == 0)
 		{
 			pl("Enter the path to the 'fakedb.schema' file");
@@ -156,7 +155,7 @@ public class DBUpgrade
 					{
 						if (line.length() == 0)
 							table = null;
-						else 
+						else
 						if (line.startsWith("#"))
 						{
 							// just continue;
@@ -241,16 +240,17 @@ public class DBUpgrade
 					{
 						if (line.trim().length() == 0)
 							table = null;
-						else 
+						else
 						if (line.startsWith("#"))
 						{
-							int x = line.indexOf('=');
+							final int x = line.indexOf('=');
 							if (x > 1)
 							{
-								String command = line.substring(1, x).toUpperCase().trim();
-								String value = line.substring(x + 1).trim();
+								final String command = line.substring(1, x).toUpperCase().trim();
+								final String value = line.substring(x + 1).trim();
 								if (command.equalsIgnoreCase("CONVERTER"))
 								{
+									@SuppressWarnings("rawtypes")
 									Class C;
 									Object O;
 									try
@@ -258,11 +258,12 @@ public class DBUpgrade
 										C = Class.forName(value);
 										O = C.newInstance();
 									}
-									catch (Throwable t)
+									catch (final Throwable t)
 									{
 										throw new Exception("Unable to load converter " + value + ", are you sure it's in the classpath?");
 									}
-									Method M = C.getMethod("DBUpgradeConversionV1", Map.class, Map.class, Map.class, PrintStream.class);
+									@SuppressWarnings("unchecked")
+									final Method M = C.getMethod("DBUpgradeConversionV1", Map.class, Map.class, Map.class, PrintStream.class);
 									if (M == null)
 										throw new Exception("Unable to load converter " + value + ", are you sure it's in the classpath?");
 									converters.put(O, M);
@@ -313,11 +314,11 @@ public class DBUpgrade
 			}
 		}
 		boolean same = true;
-		for (final Enumeration e = oldTables.keys(); e.hasMoreElements();)
+		for (final Enumeration<String> e = oldTables.keys(); e.hasMoreElements();)
 		{
-			final String s = (String) e.nextElement();
-			final List V1 = oldTables.get(s);
-			final List V2 = newTables.get(s);
+			final String s = e.nextElement();
+			final List<String> V1 = oldTables.get(s);
+			final List<String> V2 = newTables.get(s);
 			if ((V1 == null) || (V2 == null))
 			{
 				same = false;
@@ -330,7 +331,7 @@ public class DBUpgrade
 			}
 			for (int v = 0; v < V1.size(); v++)
 			{
-				if (!((String) V1.get(v)).equals(V2.get(v)))
+				if (!V1.get(v).equals(V2.get(v)))
 				{
 					same = false;
 					break;
@@ -339,11 +340,11 @@ public class DBUpgrade
 			if (!same)
 				break;
 		}
-		for (final Enumeration e = newTables.keys(); e.hasMoreElements();)
+		for (final Enumeration<String> e = newTables.keys(); e.hasMoreElements();)
 		{
-			final String s = (String) e.nextElement();
-			final List V1 = oldTables.get(s);
-			final List V2 = newTables.get(s);
+			final String s = e.nextElement();
+			final List<String> V1 = oldTables.get(s);
+			final List<String> V2 = newTables.get(s);
 			if ((V1 == null) || (V2 == null))
 			{
 				same = false;
@@ -356,7 +357,7 @@ public class DBUpgrade
 			}
 			for (int v = 0; v < V1.size(); v++)
 			{
-				if (!((String) V1.get(v)).equals(V2.get(v)))
+				if (!V1.get(v).equals(V2.get(v)))
 				{
 					same = false;
 					break;
@@ -441,7 +442,7 @@ public class DBUpgrade
 					while (dirPath.endsWith("" + File.separatorChar))
 						dirPath = dirPath.substring(0, dirPath.length() - 1);
 					boolean found = false;
-					for (File f : F.listFiles())
+					for (final File f : F.listFiles())
 						if ((f.getName().startsWith("fakedb.data.")) && (!f.isDirectory()))
 							found = true;
 					if (!found)
@@ -636,14 +637,14 @@ public class DBUpgrade
 			{
 				Class.forName(dclass);
 				final java.sql.Connection myConnection = DriverManager.getConnection(dservice, dlogin, dpassword);
-				for (final Enumeration e = newTables.keys(); e.hasMoreElements();)
+				for (final Enumeration<String> e = newTables.keys(); e.hasMoreElements();)
 				{
 					boolean doThisTable = true;
 					while (doThisTable)
 					{
 						doThisTable = false;
 						boolean deleteAllData = false;
-						final String table = (String) e.nextElement();
+						final String table = e.nextElement();
 						java.sql.Statement myStatement = myConnection.createStatement(java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, java.sql.ResultSet.CONCUR_READ_ONLY);
 						final java.sql.ResultSet R = myStatement.executeQuery("SELECT * FROM " + table);
 						if (R != null)
@@ -684,7 +685,7 @@ public class DBUpgrade
 			}
 		}
 
-		HashSet<String> oldTablesAlreadyDone = new HashSet<String>();
+		final HashSet<String> oldTablesAlreadyDone = new HashSet<String>();
 		int currentTableSkipRows = 0;
 
 		// ///////////////////////////////////////////////////////////////////////////
@@ -706,9 +707,9 @@ public class DBUpgrade
 				Class.forName(sclass);
 				final java.sql.Connection myConnection = DriverManager.getConnection(sservice, slogin, spassword);
 				boolean hasNextProbably = false;
-				for (final Enumeration e = oldTables.keys(); e.hasMoreElements();)
+				for (final Enumeration<String> e = oldTables.keys(); e.hasMoreElements();)
 				{
-					final String table = (String) e.nextElement();
+					final String table = e.nextElement();
 					data.remove(table);
 					if (!oldTablesAlreadyDone.contains(table))
 					{
@@ -740,7 +741,7 @@ public class DBUpgrade
 								{
 									Thread.sleep(1000);
 								}
-								catch (Exception e2)
+								catch (final Exception e2)
 								{
 								}
 								if (Runtime.getRuntime().freeMemory() < memoryAmount)
@@ -776,14 +777,14 @@ public class DBUpgrade
 				return;
 			}
 
-			for (Object o : converters.keySet())
+			for (final Object o : converters.keySet())
 			{
-				Method M = converters.get(o);
+				final Method M = converters.get(o);
 				try
 				{
 					M.invoke(o, oldTables, newTables, data, out);
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
 					e.printStackTrace();
 				}
@@ -797,12 +798,12 @@ public class DBUpgrade
 			{
 				Class.forName(dclass);
 				final java.sql.Connection myConnection = DriverManager.getConnection(dservice, dlogin, dpassword);
-				for (final Enumeration e = newTables.keys(); e.hasMoreElements();)
+				for (final Enumeration<String> e = newTables.keys(); e.hasMoreElements();)
 				{
-					final String table = (String) e.nextElement();
+					final String table = e.nextElement();
 					final List<String> ofields = oldTables.get(table);
 					final List<String> nfields = newTables.get(table);
-					final List rows = data.get(table);
+					final List<List<String>> rows = data.get(table);
 					if (rows != null)
 						p(table);
 					if ((rows == null) || (rows.size() == 0))
@@ -814,7 +815,7 @@ public class DBUpgrade
 
 					for (int r = 0; r < rows.size(); r++)
 					{
-						final List row = (List) rows.get(r);
+						final List<String> row = rows.get(r);
 						try
 						{
 							final StringBuffer str = new StringBuffer("INSERT INTO " + table + " (");
@@ -837,7 +838,7 @@ public class DBUpgrade
 								final Object value = getFieldValue(field, oldIndex, row);
 								if (value instanceof String)
 									myStatement.setString(i + 1, (String) value);
-								else 
+								else
 								if (value instanceof Long)
 									myStatement.setLong(i + 1, ((Long) value).longValue());
 							}

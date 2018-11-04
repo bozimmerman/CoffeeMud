@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Blah extends StdLanguage
 {
 	@Override
@@ -51,7 +50,7 @@ public class Blah extends StdLanguage
 
 	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
-	
+
 	public Blah()
 	{
 		super();
@@ -63,13 +62,13 @@ public class Blah extends StdLanguage
 	}
 
 	@Override
-	public List<String[]> translationLists(String language)
+	public List<String[]> translationLists(final String language)
 	{
 		return wordLists;
 	}
 
 	@Override
-	public String translate(String language, String word)
+	public String translate(final String language, final String word)
 	{
 		return fixCase(word,"blah");
 	}

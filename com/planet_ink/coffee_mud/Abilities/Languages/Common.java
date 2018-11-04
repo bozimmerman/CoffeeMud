@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Common extends StdLanguage
 {
 	@Override
@@ -42,7 +41,7 @@ public class Common extends StdLanguage
 	}
 
 	private final static String localizedName = CMLib.lang().L("Common");
-	
+
 	@Override
 	public String name()
 	{
@@ -74,7 +73,7 @@ public class Common extends StdLanguage
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		boolean anythingDone=false;
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)

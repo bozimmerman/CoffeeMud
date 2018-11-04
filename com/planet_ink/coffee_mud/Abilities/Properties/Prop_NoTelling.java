@@ -59,15 +59,15 @@ public class Prop_NoTelling extends Property
 	}
 
 	//protected boolean quiet=false;
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		//final List<String> parms=CMParms.parse(newMiscText.toUpperCase().trim());
 		//quiet = parms.contains("QUIET");
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

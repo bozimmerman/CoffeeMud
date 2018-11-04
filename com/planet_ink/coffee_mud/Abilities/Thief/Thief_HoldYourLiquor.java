@@ -111,7 +111,7 @@ public class Thief_HoldYourLiquor extends ThiefSkill
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -120,8 +120,8 @@ public class Thief_HoldYourLiquor extends ThiefSkill
 		if(((--checkAgain)<=0)&&(ticking instanceof Physical))
 		{
 			checkAgain=Integer.MAX_VALUE/2;
-			List<Ability> aList=CMLib.flags().flaggedAffects((Physical)ticking, Ability.FLAG_INTOXICATING);
-			for(Ability A : aList)
+			final List<Ability> aList=CMLib.flags().flaggedAffects((Physical)ticking, Ability.FLAG_INTOXICATING);
+			for(final Ability A : aList)
 			{
 				//int code=A.abilityCode();
 				A.setAbilityCode(0);

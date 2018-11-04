@@ -39,7 +39,7 @@ import com.planet_ink.coffee_web.util.CWThread;
  * at will by the servlet.
  * As an Output Generator, it must have its generateOutput method called later
  * to get the results of all the servlet did to it.
- * 
+ *
  * See the interface for more comment
  * @author Bo Zimmerman
  *
@@ -52,24 +52,24 @@ public class ServletResponse implements SimpleServletResponse
 	private final ByteArrayOutputStream	bout		= new ByteArrayOutputStream();
 	private final Map<String,String>	cookies		= new Hashtable<String,String>();
 	private static final String			EOLN		= HTTPIOHandler.EOLN;
-	
+
 	/**
 	 * Construct a response object for servlets
 	 */
 	public ServletResponse()
 	{
 	}
-	
+
 	public int getStatusCode()
 	{
 		return statusCode;
 	}
-	
+
 	@Override
-	public void setStatusCode(int httpStatusCode)
+	public void setStatusCode(final int httpStatusCode)
 	{
 		statusCode = httpStatusCode;
-		HTTPStatus status = HTTPStatus.find(httpStatusCode);
+		final HTTPStatus status = HTTPStatus.find(httpStatusCode);
 		if(status!=null)
 			statusString = status.description();
 		else
@@ -77,13 +77,13 @@ public class ServletResponse implements SimpleServletResponse
 	}
 
 	@Override
-	public void setHeader(String name, String value)
+	public void setHeader(final String name, final String value)
 	{
 		headers.put(name, value);
 	}
 
 	@Override
-	public void setMimeType(String mimeType)
+	public void setMimeType(final String mimeType)
 	{
 		headers.put(HTTPHeader.Common.CONTENT_TYPE.toString(), mimeType);
 	}
@@ -95,23 +95,23 @@ public class ServletResponse implements SimpleServletResponse
 	}
 
 	/**
-	 * Generates a bytebuffer representing the results of the request 
+	 * Generates a bytebuffer representing the results of the request
 	 * contained herein.  HTTP errors can still be generated, however,
 	 * so those are watched for.
-	 * 
+	 *
 	 * Requests can trigger file reads, servlet calls and other ways
 	 * of generating body and header data.
-	 * 
+	 *
 	 * @param request the request to generate output for
 	 * @throws HTTPException
 	 * @return the entire full output for this request
 	 */
-	public DataBuffers generateOutput(HTTPRequest request) throws HTTPException
+	public DataBuffers generateOutput(final HTTPRequest request) throws HTTPException
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		str.append("HTTP/").append(request.getHttpVer()).append(" ").append(statusCode).append(" ").append(statusString).append(EOLN);
-		HashSet<String> normalizedHeaders = new HashSet<String>();
-		for(String header : headers.keySet())
+		final HashSet<String> normalizedHeaders = new HashSet<String>();
+		for(final String header : headers.keySet())
 		{
 			normalizedHeaders.add(header.toLowerCase());
 			str.append(header).append(": ").append(headers.get(header)).append(EOLN);
@@ -136,10 +136,10 @@ public class ServletResponse implements SimpleServletResponse
 			str.append(HTTPHeader.Common.getKeepAliveHeader());
 		if(!normalizedHeaders.contains(HTTPHeader.Common.DATE.lowerCaseName()))
 			str.append(HTTPHeader.Common.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
-		for(String key : cookies.keySet())
+		for(final String key : cookies.keySet())
 			str.append(HTTPHeader.Common.SET_COOKIE.makeLine(key+"="+cookies.get(key)));
 		str.append(EOLN);
-		CWDataBuffers bufs=new CWDataBuffers(str.toString().getBytes(), System.currentTimeMillis(),false);
+		final CWDataBuffers bufs=new CWDataBuffers(str.toString().getBytes(), System.currentTimeMillis(),false);
 		if(bout.size()>0)
 		{
 			final byte[] output=bout.toByteArray();
@@ -158,7 +158,7 @@ public class ServletResponse implements SimpleServletResponse
 	}
 
 	@Override
-	public void setCookie(String name, String value)
+	public void setCookie(final String name, final String value)
 	{
 		cookies.put(name, value);
 	}

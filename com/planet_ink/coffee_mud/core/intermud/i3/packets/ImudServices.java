@@ -35,7 +35,7 @@ import java.util.Vector;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-public interface ImudServices 
+public interface ImudServices
 {
 	/**
 	 * Handles an incoming I3 packet asynchronously.
@@ -60,7 +60,7 @@ public interface ImudServices
 	 * Given a I3 channel name, this method should provide
 	 * the local name for that channel.
 	 * Example:
-	 * 
+	 *
 	 * if( cmd.equals("imud_code") ) return "intercre";
 	 *
 	 * @param cmd the remote name of the desired channel
@@ -122,7 +122,7 @@ public interface ImudServices
 	 * Given a local channel name, returns the remote
 	 * channel name.
 	 * Example:
-	 * 
+	 *
 	 * if( cmd.equals("intercre") ) return "imud_code";
 	 *
 	 * @param cmd the local name of the desired channel

@@ -19,7 +19,7 @@ public class TimeMs
 {
 	private long time;
 
-	public TimeMs(long t)
+	public TimeMs(final long t)
 	{
 		this.time=t;
 	}
@@ -34,12 +34,12 @@ public class TimeMs
 		this.time=System.currentTimeMillis();
 	}
 
-	public synchronized void setToLater(long amount)
+	public synchronized void setToLater(final long amount)
 	{
 		this.time=System.currentTimeMillis()+amount;
 	}
 
-	public synchronized void set(long t)
+	public synchronized void set(final long t)
 	{
 		this.time=t;
 	}

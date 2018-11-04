@@ -69,7 +69,7 @@ public class Prop_SafePet extends Property
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		final String newDisplayMsg=CMParms.getParmStr(newMiscText, "MSG", "");

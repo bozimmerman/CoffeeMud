@@ -70,7 +70,7 @@ public class Purist extends Cleric
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -193,7 +193,7 @@ public class Purist extends Cleric
 	}
 
 	@Override
-	public boolean tick(final Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
 		{
@@ -300,7 +300,7 @@ public class Purist extends Cleric
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

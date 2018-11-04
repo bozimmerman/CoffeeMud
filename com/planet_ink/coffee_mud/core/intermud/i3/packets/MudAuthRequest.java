@@ -42,14 +42,14 @@ public class MudAuthRequest extends Packet
 		target_mud=I3Server.getMudName();
 	}
 
-	public MudAuthRequest(Vector<?> v)
+	public MudAuthRequest(final Vector<?> v)
 	{
 		super(v);
 		type = Packet.MAUTH_REQUEST;
 		target_mud=(String)v.elementAt(4);
 	}
 
-	public MudAuthRequest(String target_mud)
+	public MudAuthRequest(final String target_mud)
 	{
 		super();
 		type = Packet.MAUTH_REQUEST;

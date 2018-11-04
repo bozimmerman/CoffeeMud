@@ -77,7 +77,7 @@ public class Prop_Resistance extends Prop_HaveResister
 	}
 
 	@Override
-	public boolean canResist(Environmental E)
+	public boolean canResist(final Environmental E)
 	{
 		return ((E instanceof MOB)
 				&&(E==affected));

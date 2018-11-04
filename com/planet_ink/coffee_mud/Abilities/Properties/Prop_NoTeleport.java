@@ -42,7 +42,7 @@ public class Prop_NoTeleport extends Property
 	}
 
 	protected List<String> exceptionRooms = new ArrayList<String>(1);
-	
+
 	@Override
 	public String name()
 	{
@@ -62,12 +62,12 @@ public class Prop_NoTeleport extends Property
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		exceptionRooms=CMParms.parseCommas(CMParms.getParmStr(newMiscText.toLowerCase(), "EXCEPTIONS", ""), true);
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -85,8 +85,8 @@ public class Prop_NoTeleport extends Property
 			final boolean shere=(R==affected)
 								||((affected instanceof Area)
 									&&(((Area)affected).inMyMetroArea(R.getArea())));
-			if(teleport 
-			&& (msg.target() instanceof Room) 
+			if(teleport
+			&& (msg.target() instanceof Room)
 			&& (affected instanceof Area)
 			&& (exceptionRooms.contains(CMLib.map().getExtendedRoomID((Room)msg.target()).toLowerCase())
 				||exceptionRooms.contains(((Room)msg.target()).getArea().Name().toLowerCase())))

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class GrinderClasses
 {
 	public String name()
@@ -41,7 +40,7 @@ public class GrinderClasses
 		return "GrinderClasses";
 	}
 
-	public static DVector cabilities(HTTPRequest httpReq)
+	public static DVector cabilities(final HTTPRequest httpReq)
 	{
 		final DVector theclasses=new DVector(9);
 		if(httpReq.isUrlParameter("CABLES1"))
@@ -56,13 +55,13 @@ public class GrinderClasses
 					if(prof==null)
 						prof="0";
 					String qual=httpReq.getUrlParameter("CABQUA"+num);
-					if(qual==null) 
+					if(qual==null)
 						qual="";// null means unchecked
 					String levl=httpReq.getUrlParameter("CABLVL"+num);
 					if(levl==null)
 						levl="0";
 					String secr=httpReq.getUrlParameter("CABSCR"+num);
-					if(secr==null) 
+					if(secr==null)
 						secr="";// null means unchecked
 					Object parm=httpReq.getUrlParameter("CABPRM"+num);
 					if(parm==null)
@@ -85,7 +84,7 @@ public class GrinderClasses
 		return theclasses;
 	}
 
-	public static String modifyCharClass(HTTPRequest httpReq, java.util.Map<String,String> parms, CharClass oldC, CharClass C)
+	public static String modifyCharClass(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final CharClass oldC, final CharClass C)
 	{
 		final String replaceCommand=httpReq.getUrlParameter("REPLACE");
 		if((replaceCommand != null)

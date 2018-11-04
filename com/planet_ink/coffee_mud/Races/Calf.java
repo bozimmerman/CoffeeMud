@@ -132,7 +132,7 @@ public class Calf extends Cow
 	}
 
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	
+
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
@@ -143,7 +143,7 @@ public class Calf extends Cow
 	}
 
 	@Override
-	public boolean canBreedWith(Race R, boolean crossBreed)
+	public boolean canBreedWith(final Race R, final boolean crossBreed)
 	{
 		return false; // too young
 	}

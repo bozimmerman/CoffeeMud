@@ -36,7 +36,6 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class QuestMaker extends StdWebMacro
 {
 	@Override
@@ -53,7 +52,7 @@ public class QuestMaker extends StdWebMacro
 
 	private static final Pattern keyPattern=Pattern.compile("^AT_(.+)");
 
-	public DVector getPage(MOB mob, HTTPRequest httpReq, String template, String page, String fileToGet)
+	public DVector getPage(final MOB mob, final HTTPRequest httpReq, final String template, final String page, final String fileToGet)
 	{
 		DVector pageList=(DVector)httpReq.getRequestObjects().get("QM_PAGE_LIST");
 		DVector filePages=(DVector)httpReq.getRequestObjects().get("QM_FILE_PAGES");
@@ -74,6 +73,7 @@ public class QuestMaker extends StdWebMacro
 			filePages=CMLib.quests().getQuestTemplate(mob, template);
 			httpReq.getRequestObjects().put("QM_FILE_PAGES",filePages);
 		}
+		@SuppressWarnings("unchecked")
 		final List<DVector> qPages=(List<DVector>)filePages.elementAt(0,4);
 		if(pageNumber<=0)
 			return qPages.get(0);
@@ -82,7 +82,7 @@ public class QuestMaker extends StdWebMacro
 		return qPages.get(pageNumber);
 	}
 
-	private String itemList(List<Item> itemList, Item oldItem, String oldValue)
+	private String itemList(final List<Item> itemList, Item oldItem, final String oldValue)
 	{
 		final StringBuffer list=new StringBuffer("");
 		if(oldItem==null)
@@ -109,7 +109,7 @@ public class QuestMaker extends StdWebMacro
 		return list.toString();
 	}
 
-	public List<MOB> getCatalogMobsForList(Physical[] fromList)
+	public List<MOB> getCatalogMobsForList(final Physical[] fromList)
 	{
 		final List<MOB> toList=new Vector<MOB>();
 		for(Physical P : fromList)
@@ -122,7 +122,7 @@ public class QuestMaker extends StdWebMacro
 		return toList;
 	}
 
-	public List<Item> getCatalogItemsForList(Physical[] fromList)
+	public List<Item> getCatalogItemsForList(final Physical[] fromList)
 	{
 		final List<Item> toList=new Vector<Item>();
 		for(Physical P : fromList)
@@ -135,7 +135,7 @@ public class QuestMaker extends StdWebMacro
 		return toList;
 	}
 
-	private String mobList(List<MOB> mobList, MOB oldMob, String oldValue)
+	private String mobList(final List<MOB> mobList, MOB oldMob, final String oldValue)
 	{
 		final StringBuffer list=new StringBuffer("");
 		if(oldMob==null)
@@ -163,7 +163,7 @@ public class QuestMaker extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0))
@@ -548,9 +548,9 @@ public class QuestMaker extends StdWebMacro
 					list.append("<TD><SELECT NAME="+httpKeyName+">");
 					if(optionalEntry)
 						list.append("<OPTION VALUE=\"\" "+((oldValue.length()==0)?"SELECTED":"")+">");
-					for(final Enumeration f=CMLib.factions().factions();f.hasMoreElements();)
+					for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
 					{
-						final Faction F=(Faction)f.nextElement();
+						final Faction F=f.nextElement();
 						final String fkey=F.factionID().toUpperCase().trim();
 						list.append("<OPTION VALUE=\""+fkey+"\" ");
 						if(oldValue.equals(fkey))
@@ -575,7 +575,9 @@ public class QuestMaker extends StdWebMacro
 			final DVector filePages=(DVector)httpReq.getRequestObjects().get("QM_FILE_PAGES");
 			if(filePages==null)
 				return "false";
-			return(((Vector)filePages.elementAt(0,4)).lastElement()==pageData)?"true":"false";
+			@SuppressWarnings("unchecked")
+			final Vector<DVector> Vdv = (Vector<DVector>)filePages.elementAt(0,4);
+			return (Vdv.lastElement()==pageData)?"true":"false";
 		}
 		else
 		if(parms.containsKey("QMPAGEERRORS"))
@@ -823,6 +825,7 @@ public class QuestMaker extends StdWebMacro
 				String script=((StringBuffer)filePages.elementAt(0,5)).toString();
 				String var=null;
 				String val=null;
+				@SuppressWarnings("unchecked")
 				final List<DVector> qPages=(List<DVector>)filePages.elementAt(0,4);
 				for(int page=0;page<qPages.size();page++)
 				{

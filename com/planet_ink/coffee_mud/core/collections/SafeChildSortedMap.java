@@ -26,7 +26,7 @@ public class SafeChildSortedMap<K, V> implements SortedMap<K, V>
 	private final SortedMap<K, V>	map;
 	private final SafeCollectionHost host;
 
-	public SafeChildSortedMap(SortedMap<K, V> s, SafeCollectionHost host)
+	public SafeChildSortedMap(final SortedMap<K, V> s, final SafeCollectionHost host)
 	{
 		this.map = s;
 		this.host = host;
@@ -51,7 +51,7 @@ public class SafeChildSortedMap<K, V> implements SortedMap<K, V>
 	}
 
 	@Override
-	public SortedMap<K, V> headMap(K toKey)
+	public SortedMap<K, V> headMap(final K toKey)
 	{
 		return new SafeChildSortedMap<K, V>(map.headMap(toKey), host);
 	}
@@ -69,13 +69,13 @@ public class SafeChildSortedMap<K, V> implements SortedMap<K, V>
 	}
 
 	@Override
-	public SortedMap<K, V> subMap(K fromKey, K toKey)
+	public SortedMap<K, V> subMap(final K fromKey, final K toKey)
 	{
 		return new SafeChildSortedMap<K, V>(map.subMap(fromKey, toKey), host);
 	}
 
 	@Override
-	public SortedMap<K, V> tailMap(K fromKey)
+	public SortedMap<K, V> tailMap(final K fromKey)
 	{
 		return new SafeChildSortedMap<K, V>(map.tailMap(fromKey), host);
 	}
@@ -93,19 +93,19 @@ public class SafeChildSortedMap<K, V> implements SortedMap<K, V>
 	}
 
 	@Override
-	public boolean containsKey(Object key)
+	public boolean containsKey(final Object key)
 	{
 		return map.containsKey(key);
 	}
 
 	@Override
-	public boolean containsValue(Object value)
+	public boolean containsValue(final Object value)
 	{
 		return map.containsValue(value);
 	}
 
 	@Override
-	public V get(Object key)
+	public V get(final Object key)
 	{
 		return map.get(key);
 	}
@@ -117,19 +117,19 @@ public class SafeChildSortedMap<K, V> implements SortedMap<K, V>
 	}
 
 	@Override
-	public V put(K key, V value)
+	public V put(final K key, final V value)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public void putAll(Map<? extends K, ? extends V> m)
+	public void putAll(final Map<? extends K, ? extends V> m)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public V remove(Object key)
+	public V remove(final Object key)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}

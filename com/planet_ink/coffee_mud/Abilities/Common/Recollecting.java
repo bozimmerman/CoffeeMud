@@ -73,7 +73,7 @@ public class Recollecting extends CommonSkill
 	protected String searchFor="";
 
 	protected final static int charLimit = 100000;
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -111,7 +111,7 @@ public class Recollecting extends CommonSkill
 			&&(!(I instanceof Scroll)))
 				list.add(I);
 		}
-		boolean isMyProperty = CMLib.law().doesHavePriviledgesHere(mob, R);
+		final boolean isMyProperty = CMLib.law().doesHavePriviledgesHere(mob, R);
 		for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
@@ -124,7 +124,7 @@ public class Recollecting extends CommonSkill
 		}
 		return list;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -145,7 +145,7 @@ public class Recollecting extends CommonSkill
 						final List<Item> items=this.getApplicableItems(mob);
 						long remain=charLimit;
 						CMLib.dice().scramble(items);
-						for(Item foundI : items)
+						for(final Item foundI : items)
 						{
 							if(remain < 0)
 								break;
@@ -156,9 +156,9 @@ public class Recollecting extends CommonSkill
 								for(int i=0;i<total;i++)
 									pages[i]=i;
 								CMLib.dice().scramble(pages);
-								for(int i : pages)
+								for(final int i : pages)
 								{
-									String pageContent=((Book)foundI).getRawContent(i+1);
+									final String pageContent=((Book)foundI).getRawContent(i+1);
 									remain -=pageContent.length();
 									if(CMLib.english().containsString(pageContent, this.searchFor))
 									{
@@ -176,7 +176,7 @@ public class Recollecting extends CommonSkill
 								String tmsg="";
 								if(rmsg.trailerMsgs()!=null)
 								{
-									for(CMMsg m2 : rmsg.trailerMsgs())
+									for(final CMMsg m2 : rmsg.trailerMsgs())
 									{
 										if((m2.source()==fakeMOB)
 										&&(m2.target()==foundI)
@@ -211,7 +211,7 @@ public class Recollecting extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -236,7 +236,7 @@ public class Recollecting extends CommonSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			Recollecting R=(Recollecting)beneficialAffect(mob,mob,asLevel,duration);
+			final Recollecting R=(Recollecting)beneficialAffect(mob,mob,asLevel,duration);
 			if(R!=null)
 				R.searchFor=CMParms.combine(commands);
 		}

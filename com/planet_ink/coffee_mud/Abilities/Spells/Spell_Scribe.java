@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Scribe extends Spell
 {
 
@@ -81,7 +80,7 @@ public class Spell_Scribe extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -127,7 +126,7 @@ public class Spell_Scribe extends Spell
 					scrollThis=(Spell)A;
 			}
 		}
-		
+
 		if(scrollThis==null)
 		{
 			mob.tell(L("You don't know how to scribe '@x1'.",spellName));
@@ -140,7 +139,7 @@ public class Spell_Scribe extends Spell
 		}
 
 		int numSpells=(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this));
-		if(numSpells<0) 
+		if(numSpells<0)
 			numSpells=1;
 		if(scroll.getSpells().size()>numSpells)
 		{
@@ -174,7 +173,7 @@ public class Spell_Scribe extends Spell
 			mob.tell(L("You can only scribe on blank scrolls, or scroll with less than 25 levels of spells on it."));
 			return false;
 		}
-		
+
 		int experienceToLose=5+CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
 		if((mob.getExperience()-experienceToLose)<0)
 		{

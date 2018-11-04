@@ -51,14 +51,14 @@ public class DefaultTattoo implements Tattoo
 	}
 
 	@Override
-	public Tattoo set(String name)
+	public Tattoo set(final String name)
 	{
 		tattooName = name.toUpperCase().trim();
 		return this;
 	}
 
 	@Override
-	public Tattoo set(String name, int down)
+	public Tattoo set(final String name, final int down)
 	{
 		tattooName = name.toUpperCase().trim();
 		tickDown = down;

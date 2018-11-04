@@ -65,7 +65,7 @@ public class Prop_Adjuster extends Prop_HaveAdjuster
 	}
 
 	@Override
-	public boolean canApply(MOB mob)
+	public boolean canApply(final MOB mob)
 	{
 		if((affected!=null)
 		&&((mask==null)||(CMLib.masking().maskCheck(mask,mob,true))))
@@ -74,7 +74,7 @@ public class Prop_Adjuster extends Prop_HaveAdjuster
 	}
 
 	@Override
-	public boolean canApply(Environmental E)
+	public boolean canApply(final Environmental E)
 	{
 		if((affected!=null)
 		&&((mask==null)||(CMLib.masking().maskCheck(mask,E,true))))

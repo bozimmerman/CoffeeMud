@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Appraise extends ThiefSkill
 {
 	@Override
@@ -75,7 +74,7 @@ public class Thief_Appraise extends ThiefSkill
 	}
 
 	@Override
-	public boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(final MOB mob)
 	{
 		return true;
 	}
@@ -95,12 +94,12 @@ public class Thief_Appraise extends ThiefSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code=newCode;
 	}
 
-	public String getAppraisal(final MOB mob, final Item target, boolean success)
+	public String getAppraisal(final MOB mob, final Item target, final boolean success)
 	{
 		double realValue=0.0;
 		if(target instanceof Coins)
@@ -131,8 +130,8 @@ public class Thief_Appraise extends ThiefSkill
 			str.append(L("\n\rIt weighs @x1 pounds.",""+weight));
 		return str.toString();
 	}
-	
-	public String getWorth(final MOB mob, final Item target, boolean success)
+
+	public String getWorth(final MOB mob, final Item target, final boolean success)
 	{
 		double realValue=0.0;
 		if(target instanceof Coins)
@@ -148,9 +147,9 @@ public class Thief_Appraise extends ThiefSkill
 		str.append(L("@x1 is worth about @x2.",target.name(),CMLib.beanCounter().nameCurrencyShort(mob,realValue)));
 		return str.toString();
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((givenTarget instanceof Item)&&(auto)&&(asLevel==-1))
 		{

@@ -22,7 +22,7 @@ public class EnumerationIterator<K> implements Iterator<K>
 	private final Enumeration<K> e;
 
 	@SuppressWarnings("unchecked")
-	public EnumerationIterator(Enumeration<K> e)
+	public EnumerationIterator(final Enumeration<K> e)
 	{
 		if(e==null)
 			this.e=EmptyEnumeration.INSTANCE;

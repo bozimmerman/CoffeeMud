@@ -35,7 +35,6 @@ import java.util.Map.Entry;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 {
 	@Override

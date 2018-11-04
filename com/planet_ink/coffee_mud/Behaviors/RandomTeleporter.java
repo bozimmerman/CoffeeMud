@@ -70,7 +70,7 @@ public class RandomTeleporter extends ActiveTicker
 		return "random teleporting";
 	}
 
-	public boolean okRoomForMe(Room currentRoom, Room newRoom)
+	public boolean okRoomForMe(final Room currentRoom, final Room newRoom)
 	{
 		if(currentRoom==null)
 			return false;
@@ -84,7 +84,7 @@ public class RandomTeleporter extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		nowander=false;

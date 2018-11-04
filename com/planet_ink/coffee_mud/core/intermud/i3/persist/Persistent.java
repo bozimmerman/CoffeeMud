@@ -31,7 +31,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-public interface Persistent 
+public interface Persistent
 {
 	/**
 	 * The Persistent has not yet been modified since last

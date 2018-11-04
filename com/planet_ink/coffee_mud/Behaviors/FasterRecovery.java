@@ -46,11 +46,11 @@ public class FasterRecovery extends StdBehavior
 		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS;
 	}
 
-	protected int burst=0;
-	protected int health=0;
-	protected int hits=0;
-	protected int mana=0;
-	protected int move=0;
+	protected int	burst	= 0;
+	protected int	health	= 0;
+	protected int	hits	= 0;
+	protected int	mana	= 0;
+	protected int	move	= 0;
 
 	@Override
 	public String accountForYourself()
@@ -59,7 +59,7 @@ public class FasterRecovery extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String parameters)
+	public void setParms(final String parameters)
 	{
 		super.setParms(parameters);
 		burst=getVal(parameters,"BURST",0)-1;
@@ -69,7 +69,7 @@ public class FasterRecovery extends StdBehavior
 		move=getVal(parameters,"MOVE",0)-1;
 	}
 
-	public static int getVal(String text, String key, int defaultValue)
+	public static int getVal(String text, String key, final int defaultValue)
 	{
 		text=text.toUpperCase();
 		key=key.toUpperCase();
@@ -101,7 +101,7 @@ public class FasterRecovery extends StdBehavior
 		return defaultValue;
 	}
 
-	public void doBe(MOB M, int burst, int health, int hits, int mana, int move)
+	public void doBe(final MOB M, final int burst, final int health, final int hits, final int mana, final int move)
 	{
 		if(M==null)
 			return;
@@ -138,7 +138,7 @@ public class FasterRecovery extends StdBehavior
 		}
 	}
 
-	public void doBe(Room room, int burst, int health, int hits, int mana, int move)
+	public void doBe(final Room room, final int burst, final int health, final int hits, final int mana, final int move)
 	{
 		if(room==null)
 			return;
@@ -150,13 +150,13 @@ public class FasterRecovery extends StdBehavior
 		}
 	}
 
-	public void doBe(Area area, int burst, int health, int hits, int mana, int move)
+	public void doBe(final Area area, final int burst, final int health, final int hits, final int mana, final int move)
 	{
 		if(area==null)
 			return;
 		for(final Enumeration<Room> r=area.getMetroMap();r.hasMoreElements();)
 		{
-			final Room R=(Room)r.nextElement();
+			final Room R=r.nextElement();
 			doBe(R,burst,health,hits,mana,move);
 		}
 	}

@@ -41,7 +41,7 @@ import java.util.*;
  * elsewhere just fine, but the elsewhere felt too crowded already
  * to receive it.  I'm sure this library will always exist, but the
  * interface is definitely subject to change.
- * 
+ *
  * @author Bo Zimmerman
  */
 public interface CMMiscUtils extends CMLibrary
@@ -66,7 +66,7 @@ public interface CMMiscUtils extends CMLibrary
 
 	/**
 	 * Returns a rediculous best guess on the amount of memory used
-	 * by the given environmental.  
+	 * by the given environmental.
 	 * @param E the object to check for a footprint of
 	 * @param number the accuracy -- higher is better
 	 * @return the amount of memory used, very approximately
@@ -76,7 +76,7 @@ public interface CMMiscUtils extends CMLibrary
 	/**
 	 * Nice english comma-delimited list, with oxford commas
 	 * and trailing "and" or "or" at the end.  If the list is
-	 * of environmental, it will use the name, otherwise, it 
+	 * of environmental, it will use the name, otherwise, it
 	 * casts everything as a string and lists it.
 	 * @param V the objects to list
 	 * @param andTOrF true for trailing and, false for trailing or
@@ -101,7 +101,7 @@ public interface CMMiscUtils extends CMLibrary
 
 	/**
 	 * Outfits the given mob with the list of given items.  If the mob
-	 * does not have an item with the same name as one on the list, it 
+	 * does not have an item with the same name as one on the list, it
 	 * is given to them magically.  If they can, they will then wear it.
 	 * @param mob the mob to outfit
 	 * @param items the items to outfit the mob with
@@ -110,7 +110,7 @@ public interface CMMiscUtils extends CMLibrary
 
 	/**
 	 * Returns the language being spoke by the given object (mob, usually).
-	 * A null return usually means Common. 
+	 * A null return usually means Common.
 	 * @param P the mob to check
 	 * @return the language being spoken.
 	 */
@@ -130,7 +130,7 @@ public interface CMMiscUtils extends CMLibrary
 	/**
 	 * Recursively extinguishes everything from the given target on down.
 	 * If a room is given, everything in the room, including the room,
-	 * is extinguished.   Ordinary fires and torches also go out.  
+	 * is extinguished.   Ordinary fires and torches also go out.
 	 * The mundane flag is to prevent extinguishing elementals and magic
 	 * flame spells.
 	 * @param source the mob doing the extinguishing
@@ -142,7 +142,7 @@ public interface CMMiscUtils extends CMLibrary
 	/**
 	 * Given the allowedArmorLevel code and the mob, this method returns
 	 * whether the given mob is only wearing permitted items on the
-	 * applicable armor slots.  
+	 * applicable armor slots.
 	 * @see CharClass#ARMOR_DESCS
 	 * @param mob the mob to check
 	 * @param allowedArmorLevel the allowed armor level
@@ -153,7 +153,7 @@ public interface CMMiscUtils extends CMLibrary
 	/**
 	 * Given the allowedArmorLevel code and the mob, this method returns
 	 * whether the given mob is permitted to wear the given item is
-	 * applicable armor slots given the armor level code.  
+	 * applicable armor slots given the armor level code.
 	 * @see CharClass#ARMOR_DESCS
 	 * @param mob the mob to check
 	 * @param I the item to check
@@ -197,7 +197,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * the "rejuv" stat is, for non-rivalrous items, a pct chance of it being
 	 * retained on this mob.  For rivalrous items (two wielded swords, for example),
 	 * it is a weighted chance of being selected.  Electronics items also have their
-	 * random stats determined at this time. 
+	 * random stats determined at this time.
 	 * @param mob the npc mob to process variable equipment on
 	 * @return 0 for success, -1 if an admin is in the room, so nothing could be done.
 	 */
@@ -210,7 +210,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return the trap to add to the physical thing, or null
 	 */
 	public Trap makeADeprecatedTrap(Physical unlockThis);
-	
+
 	/**
 	 * Creates and sets a deprecated trap on the given exit, room,
 	 * container, or whatever.
@@ -220,7 +220,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @param myThang the thing to set the trap on.
 	 */
 	public void setTrapped(Physical myThang);
-	
+
 	/**
 	 * Sets the given deprecated trap on the given exit, room,
 	 * container, or whatever.
@@ -230,7 +230,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @param theTrap the deprecated trap to set on it
 	 */
 	public void setTrapped(Physical myThang, Trap theTrap);
-	
+
 	/**
 	 * Returns any trap found on the given thing, or null.
 	 * @see CMMiscUtils#makeADeprecatedTrap(Physical)
@@ -249,7 +249,7 @@ public interface CMMiscUtils extends CMLibrary
 
 	/**
 	 * Normally just sends the message to the room by calling
-	 * Room.send.  However, if the target of the message is 
+	 * Room.send.  However, if the target of the message is
 	 * an exit, then the several exits involved would also
 	 * informed by having executeMsg called on them.
 	 * @param msg the message to send
@@ -267,7 +267,7 @@ public interface CMMiscUtils extends CMLibrary
 
 	/**
 	 * Resurrects the given body according to all system rules.
-	 * 
+	 *
 	 * @param tellMob if the corpse could not be resurrected, tell this mob.
 	 * @param corpseRoom room to bring the mob to after resurrection, probably same as body's location
 	 * @param body the corpse to resurrect
@@ -323,7 +323,7 @@ public interface CMMiscUtils extends CMLibrary
 	public boolean canBePlayerDestroyed(final MOB mob, final Item I, final boolean ignoreBodies, boolean ignoreWeight);
 
 	/**
-	 * Calls unInvoke on all effects on the given environmental.  
+	 * Calls unInvoke on all effects on the given environmental.
 	 * This may not cause the effects to disappear, depending on the
 	 * behavior of each effect.
 	 * @param E the object to diseffect
@@ -336,26 +336,26 @@ public interface CMMiscUtils extends CMLibrary
 	 * deletes any effects after attempting to uninvoke.  This method
 	 * probably needs more thought, since not all effects are
 	 * magic (though they usually are)
-	 * 
-	 * The return value is a very strange number: 0 if the item is 
-	 * destroyed, -999 if nothing done, or the item level minus the 
+	 *
+	 * The return value is a very strange number: 0 if the item is
+	 * destroyed, -999 if nothing done, or the item level minus the
 	 * magic value of what was done to it.
 	 * @param target the object to disenchant.
-	 * @return a bizarre number 
+	 * @return a bizarre number
 	 */
 	public int disenchantItem(Item target);
-	
+
 	/**
 	 * Absolutely returns the correct race when mixing races of the
 	 * two given IDs.  Applies system rules to the generation.
-	 * 
+	 *
 	 * @param race1 the mother race
 	 * @param race2 the father race
 	 * @param ignoreRules TODO
 	 * @return the mixed race
 	 */
 	public Race getMixedRace(String race1, String race2, boolean ignoreRules);
-	
+
 	/**
 	 * Breaks apart a given generic mixed race ID to figure
 	 * out which races were combined to make it up.
@@ -363,20 +363,20 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return a list of constituant races, or empty.
 	 */
 	public List<Race> getConstituantRaces(final String raceID);
-	
+
 	/**
 	 * Returns a list of worn equipment at the top layer, where it can be
 	 * seen.  An optional wornMask can narrow the locations allowed.
 	 * The require list is the item, plus the worn location.
-	 * 
+	 *
 	 * @param mob the mob to get equipment from
 	 * @param wornMask 0, or a bitmap of allowed wear locations
 	 * @return the list of items and wear locations
 	 */
 	public PairList<Item, Long> getSeenEquipment(final MOB mob, final long wornMask);
-	
+
 	/**
-	 * Does its best to come up with a specially encoded unsubscribe url for 
+	 * Does its best to come up with a specially encoded unsubscribe url for
 	 * a particular user.  The url will be unique to the user, but is man-in-the-
 	 * middle attackable, as it is a simple hash.
 	 * @param name the account or player name

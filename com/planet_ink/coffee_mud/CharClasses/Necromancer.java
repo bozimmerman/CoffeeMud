@@ -70,7 +70,7 @@ public class Necromancer extends Cleric
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -180,7 +180,7 @@ public class Necromancer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Regeneration",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_MassGrave",false);
-		
+
 		if(!registeredAsListener)
 		{
 			synchronized(this)
@@ -291,7 +291,7 @@ public class Necromancer extends Cleric
 	}
 
 	@Override
-	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	public boolean isValidClassDivider(final MOB killer, final MOB killed, final MOB mob, final Set<MOB> followers)
 	{
 		if((mob!=null)
 		&&(mob!=killed)
@@ -305,7 +305,7 @@ public class Necromancer extends Cleric
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

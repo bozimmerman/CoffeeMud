@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SpeedAging extends Chant
 {
 	@Override
@@ -74,7 +73,7 @@ public class Chant_SpeedAging extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY,true);
 		if(target==null)
@@ -83,7 +82,7 @@ public class Chant_SpeedAging extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Set<MOB> casterGrp = mob.getGroupMembers(new HashSet<MOB>());
+		final Set<MOB> casterGrp = mob.getGroupMembers(new HashSet<MOB>());
 		int type=verbalCastCode(mob,target,auto);
 		if((target instanceof MOB)
 		&&(CMath.bset(type,CMMsg.MASK_MALICIOUS))

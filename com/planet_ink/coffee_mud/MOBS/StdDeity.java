@@ -104,7 +104,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		public Ability power;
 		public boolean clericOnly;
-		public DeityPower(Ability A, boolean clericsOnly)
+		public DeityPower(final Ability A, final boolean clericsOnly)
 		{
 			power=A;
 			clericOnly=clericsOnly;
@@ -112,7 +112,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	protected void cloneFix(MOB E)
+	protected void cloneFix(final MOB E)
 	{
 		super.cloneFix(E);
 		if(E instanceof StdDeity)
@@ -143,7 +143,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public void setClericRequirements(String reqs)
+	public void setClericRequirements(final String reqs)
 	{
 		clericReqs=reqs;
 	}
@@ -155,7 +155,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public void setWorshipRequirements(String reqs)
+	public void setWorshipRequirements(final String reqs)
 	{
 		worshipReqs=reqs;
 	}
@@ -169,7 +169,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public void setClericRitual(String ritual)
+	public void setClericRitual(final String ritual)
 	{
 		clericRitual=ritual;
 		parseTriggers(clericTriggers,ritual);
@@ -184,7 +184,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public void setWorshipRitual(String ritual)
+	public void setWorshipRitual(final String ritual)
 	{
 		worshipRitual=ritual;
 		parseTriggers(worshipTriggers,ritual);
@@ -205,7 +205,7 @@ public class StdDeity extends StdMOB implements Deity
 		parseTriggers(serviceTriggers,ritual);
 	}
 
-	public String getTriggerDesc(List<DeityTrigger> V)
+	public String getTriggerDesc(final List<DeityTrigger> V)
 	{
 		if((V==null)||(V.size()==0))
 			return L("Never");
@@ -430,7 +430,7 @@ public class StdDeity extends StdMOB implements Deity
 		return true;
 	}
 
-	public synchronized void bestowBlessing(MOB mob, Ability Blessing)
+	public synchronized void bestowBlessing(final MOB mob, final Ability Blessing)
 	{
 		final Room prevRoom=location();
 		mob.location().bringMobHere(this,false);
@@ -474,7 +474,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
-	public synchronized void bestowPower(MOB mob, Ability Power)
+	public synchronized void bestowPower(final MOB mob, Ability Power)
 	{
 		if((mob.fetchAbility(Power.ID())==null)
 		&&(CMLib.ableMapper().qualifyingLevel(mob,Power)<=0))
@@ -486,7 +486,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
-	public synchronized void bestowCurse(MOB mob, Ability Curse)
+	public synchronized void bestowCurse(final MOB mob, final Ability Curse)
 	{
 		final Room prevRoom=location();
 		mob.location().bringMobHere(this,false);
@@ -530,7 +530,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
-	public synchronized void bestowBlessings(MOB mob)
+	public synchronized void bestowBlessings(final MOB mob)
 	{
 		norecurse=true;
 		try
@@ -564,7 +564,7 @@ public class StdDeity extends StdMOB implements Deity
 		norecurse=false;
 	}
 
-	public synchronized void bestowPowers(MOB mob)
+	public synchronized void bestowPowers(final MOB mob)
 	{
 		norecurse=true;
 		try
@@ -584,7 +584,7 @@ public class StdDeity extends StdMOB implements Deity
 		norecurse=false;
 	}
 
-	public synchronized void bestowCurses(MOB mob)
+	public synchronized void bestowCurses(final MOB mob)
 	{
 		norecurse=true;
 		try
@@ -618,7 +618,7 @@ public class StdDeity extends StdMOB implements Deity
 		norecurse=false;
 	}
 
-	public void removeBlessings(MOB mob)
+	public void removeBlessings(final MOB mob)
 	{
 		if((alreadyBlessed(mob))&&(mob.location()!=null))
 		{
@@ -635,7 +635,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
-	public void removePowers(MOB mob)
+	public void removePowers(final MOB mob)
 	{
 		if((alreadyPowered(mob))&&(mob.location()!=null))
 		{
@@ -657,7 +657,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
-	public boolean alreadyBlessed(MOB mob)
+	public boolean alreadyBlessed(final MOB mob)
 	{
 		for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 		{
@@ -668,7 +668,7 @@ public class StdDeity extends StdMOB implements Deity
 		return false;
 	}
 
-	public boolean alreadyPowered(MOB mob)
+	public boolean alreadyPowered(final MOB mob)
 	{
 		if(numPowers()>0)
 		for(int a=0;a<mob.numAbilities();a++)
@@ -680,7 +680,7 @@ public class StdDeity extends StdMOB implements Deity
 		return false;
 	}
 
-	public boolean triggerCheck(CMMsg msg, List<DeityTrigger> V, Map<String, boolean[]> trigParts, Map<String, Long> trigTimes)
+	public boolean triggerCheck(final CMMsg msg, final List<DeityTrigger> V, final Map<String, boolean[]> trigParts, final Map<String, Long> trigTimes)
 	{
 		boolean recheck=false;
 		for(int v=0;v<V.size();v++)
@@ -1080,7 +1080,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
-	protected void startServiceIfNecessary(MOB mob, Room room)
+	protected void startServiceIfNecessary(final MOB mob, final Room room)
 	{
 		if((mob==null)||(room==null))
 			return;
@@ -1135,7 +1135,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
-	protected void undoService(List<MOB> V)
+	protected void undoService(final List<MOB> V)
 	{
 		MOB M=null;
 		Ability A=null;
@@ -1152,7 +1152,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 	}
 
-	protected boolean alreadyServiced(MOB mob, Room room)
+	protected boolean alreadyServiced(final MOB mob, final Room room)
 	{
 		synchronized(services)
 		{
@@ -1177,7 +1177,7 @@ public class StdDeity extends StdMOB implements Deity
 		return false;
 	}
 
-	public boolean finishService(MOB mob, Room room)
+	public boolean finishService(final MOB mob, final Room room)
 	{
 		if((mob==null)||(room==null))
 			return false;
@@ -1228,7 +1228,7 @@ public class StdDeity extends StdMOB implements Deity
 		return true;
 	}
 
-	public boolean cancelService(WorshipService service)
+	public boolean cancelService(final WorshipService service)
 	{
 		if(service == null)
 			return false;
@@ -1409,7 +1409,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		if(waitingFor.size()>0)
 		{
-			final List<MOB> executeMOBList; 
+			final List<MOB> executeMOBList;
 			synchronized(waitingFor)
 			{
 				if(waitingFor.size()>0)
@@ -1438,7 +1438,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public void addBlessing(Ability to, boolean clericOnly)
+	public void addBlessing(final Ability to, final boolean clericOnly)
 	{
 		if(to==null)
 			return;
@@ -1452,7 +1452,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public void delBlessing(Ability to)
+	public void delBlessing(final Ability to)
 	{
 		if(blessings.size()==0)
 			return;
@@ -1470,7 +1470,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public Ability fetchBlessing(int index)
+	public Ability fetchBlessing(final int index)
 	{
 		try
 		{
@@ -1483,7 +1483,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public boolean fetchBlessingCleric(int index)
+	public boolean fetchBlessingCleric(final int index)
 	{
 		try
 		{
@@ -1496,7 +1496,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public boolean fetchBlessingCleric(String ID)
+	public boolean fetchBlessingCleric(final String ID)
 	{
 		for(int a=0;a<numBlessings();a++)
 		{
@@ -1509,7 +1509,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public Ability fetchBlessing(String ID)
+	public Ability fetchBlessing(final String ID)
 	{
 		for(int a=0;a<numBlessings();a++)
 		{
@@ -1521,21 +1521,21 @@ public class StdDeity extends StdMOB implements Deity
 		return (Ability)CMLib.english().fetchEnvironmental(new ConvertingList<DeityPower,Ability>(blessings,new Converter<DeityPower,Ability>()
 		{
 			@Override
-			public Ability convert(DeityPower obj)
+			public Ability convert(final DeityPower obj)
 			{
 				return obj.power;
 			}
 		}),ID,false);
 	}
 
-	protected void parseTriggers(List<DeityTrigger> putHere, String trigger)
+	protected void parseTriggers(final List<DeityTrigger> putHere, String trigger)
 	{
 		putHere.clear();
 		trigger=trigger.toUpperCase().trim();
 		RitualConnector previousConnector=RitualConnector.AND;
 		if(trigger.equals("-"))
 			return;
-		
+
 		while(trigger.length()>0)
 		{
 			final int div1=trigger.indexOf('&');
@@ -1565,7 +1565,7 @@ public class StdDeity extends StdMOB implements Deity
 					RitualTrigger T = (RitualTrigger)CMath.s_valueOf(RitualTrigger.class, cmd);
 					if(T==null)
 					{
-						for(RitualTrigger RT : RitualTrigger.values())
+						for(final RitualTrigger RT : RitualTrigger.values())
 						{
 							if(RT.getShortName().equals(cmd))
 							{
@@ -1576,7 +1576,7 @@ public class StdDeity extends StdMOB implements Deity
 					}
 					if(T==null)
 					{
-						for(RitualTrigger RT : RitualTrigger.values())
+						for(final RitualTrigger RT : RitualTrigger.values())
 						{
 							if(RT.name().startsWith(cmd))
 							{
@@ -1841,7 +1841,7 @@ public class StdDeity extends StdMOB implements Deity
 
 	/** Manipulation of curse objects, which includes spells, traits, skills, etc.*/
 	@Override
-	public void addCurse(Ability to, boolean clericOnly)
+	public void addCurse(final Ability to, final boolean clericOnly)
 	{
 		if(to==null)
 			return;
@@ -1855,7 +1855,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public void delCurse(Ability to)
+	public void delCurse(final Ability to)
 	{
 		if((curses.size()==0)||(to==null))
 			return;
@@ -1874,7 +1874,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public Ability fetchCurse(int index)
+	public Ability fetchCurse(final int index)
 	{
 		try
 		{
@@ -1887,7 +1887,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public Ability fetchCurse(String ID)
+	public Ability fetchCurse(final String ID)
 	{
 		for(int a=0;a<numCurses();a++)
 		{
@@ -1898,7 +1898,7 @@ public class StdDeity extends StdMOB implements Deity
 		return (Ability)CMLib.english().fetchEnvironmental(new ConvertingList<DeityPower,Ability>(curses,new Converter<DeityPower,Ability>()
 		{
 			@Override
-			public Ability convert(DeityPower obj)
+			public Ability convert(final DeityPower obj)
 			{
 				return obj.power;
 			}
@@ -1906,7 +1906,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public boolean fetchCurseCleric(int index)
+	public boolean fetchCurseCleric(final int index)
 	{
 		try
 		{
@@ -1919,7 +1919,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public boolean fetchCurseCleric(String ID)
+	public boolean fetchCurseCleric(final String ID)
 	{
 		for(int a=0;a<numCurses();a++)
 		{
@@ -1937,7 +1937,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public void setClericSin(String ritual)
+	public void setClericSin(final String ritual)
 	{
 		clericSin=ritual;
 		parseTriggers(clericCurseTriggers,ritual);
@@ -1958,7 +1958,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public void setWorshipSin(String ritual)
+	public void setWorshipSin(final String ritual)
 	{
 		worshipSin=ritual;
 		parseTriggers(worshipCurseTriggers,ritual);
@@ -1976,7 +1976,7 @@ public class StdDeity extends StdMOB implements Deity
 	/** Make sure that none of these can really be qualified for by the cleric!*/
 	/** Manipulation of curse objects, which includes spells, traits, skills, etc.*/
 	@Override
-	public void addPower(Ability to)
+	public void addPower(final Ability to)
 	{
 		if(to==null)
 			return;
@@ -1990,7 +1990,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public void delPower(Ability to)
+	public void delPower(final Ability to)
 	{
 		powers.remove(to);
 	}
@@ -2002,7 +2002,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public Ability fetchPower(int index)
+	public Ability fetchPower(final int index)
 	{
 		try
 		{
@@ -2015,7 +2015,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public Ability fetchPower(String ID)
+	public Ability fetchPower(final String ID)
 	{
 		for(int a=0;a<numPowers();a++)
 		{
@@ -2033,7 +2033,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	@Override
-	public void setClericPowerup(String ritual)
+	public void setClericPowerup(final String ritual)
 	{
 		clericPowerup=ritual;
 		parseTriggers(clericPowerTriggers,ritual);

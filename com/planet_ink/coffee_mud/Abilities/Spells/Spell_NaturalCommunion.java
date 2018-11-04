@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_NaturalCommunion extends Spell
 {
 
@@ -74,7 +73,7 @@ public class Spell_NaturalCommunion extends Spell
 		return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;
 	}
 
-	public void communeWithThisRoom(MOB mob, Room room, List<String> stuff)
+	public void communeWithThisRoom(final MOB mob, final Room room, final List<String> stuff)
 	{
 		if(!CMLib.flags().canAccess(mob, room))
 			return;
@@ -118,7 +117,7 @@ public class Spell_NaturalCommunion extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room targetR=mob.location();
 		if(targetR==null)

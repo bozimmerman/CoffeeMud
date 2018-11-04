@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_PirateFamiliar extends ThiefSkill
 {
 	@Override
@@ -52,7 +51,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Pirate Familiar)");
 
 	private static final String[]	triggerStrings	= I(new String[] { "CALLFAMILIAR", "PIRATEFAMILIAR", "CALLPIRATEFAMILIAR" });
-	
+
 	@Override
 	public String[] triggerStrings()
 	{
@@ -101,7 +100,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 		return Ability.COST_ALL;
 	}
 
-	public int castingQuality(MOB mob, MOB target)
+	public int castingQuality(final MOB mob, final MOB target)
 	{
 		if((target!=null)&&(mob!=target))
 			return Ability.QUALITY_INDIFFERENT;
@@ -122,16 +121,16 @@ public class Thief_PirateFamiliar extends ThiefSkill
 		SEATURTLE("sea turtle")
 		;
 		public String name;
-		private Familiar(String name)
+		private Familiar(final String name)
 		{
 			this.name=name;
 		}
 	}
-	
+
 	protected Familiar		familiarType			= Familiar.PARROT;
-	
+
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -143,7 +142,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -156,7 +155,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 				if(M.amFollowing()!=null)
 					invoker=M.amFollowing();
 			}
-			MOB invoker=this.invoker;
+			final MOB invoker=this.invoker;
 			if(invoker!=null)
 			{
 				if(affectableStats.level() < invoker.phyStats().level()-3)
@@ -181,7 +180,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.numFollowers()>0)||(mob.isMonster()))
 		{
@@ -217,7 +216,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 		return success;
 	}
 
-	public MOB determineMonster(MOB caster, int level)
+	public MOB determineMonster(final MOB caster, int level)
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenMOB");
@@ -227,7 +226,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
-		int choice=CMLib.dice().roll(1,6,-1);
+		final int choice=CMLib.dice().roll(1,6,-1);
 		String choiceStr;
 		switch(choice)
 		{

@@ -33,12 +33,12 @@ import java.util.*;
    limitations under the License.
 */
 /**
- * This library manages everything related to 
- * logging a player or account in, 
- * creating a character, 
- * the account menu, 
- * certain login procedures, 
- * the rules around player names, 
+ * This library manages everything related to
+ * logging a player or account in,
+ * creating a character,
+ * the account menu,
+ * certain login procedures,
+ * the rules around player names,
  * start rooms, death rooms, and morgue rooms.
  * @author Bo Zimmerman
  *
@@ -135,7 +135,7 @@ public interface CharCreationLibrary extends CMLibrary
 
 	/**
 	 * Returns the cost, in trains, for the given mob to gain a point in the
-	 * given ability code stat number.   
+	 * given ability code stat number.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
 	 * @param mob the mob who is trying to train
 	 * @param abilityCode the ability code the mob wants to train
@@ -202,16 +202,16 @@ public interface CharCreationLibrary extends CMLibrary
 	public List<Race> raceQualifies(int theme);
 
 	/**
-	 * Returns whether the given name is a valid,  legitimate, 
+	 * Returns whether the given name is a valid,  legitimate,
 	 * unused, unbanned, non-bad name to use in coffeemud, for accounts
-	 * or players. 
+	 * or players.
 	 * @see CharCreationLibrary#isBadName(String)
 	 * @see CharCreationLibrary#isOkName(String, boolean)
 	 * @see CharCreationLibrary#newCharNameCheck(String, String, boolean)
 	 * @see CharCreationLibrary#newAccountNameCheck(String, String)
 	 * @param login the name to test
 	 * @param spacesOk true if spaces in the name are ok, false otherwise
-	 * @return true if the name is ok, false otherwise 
+	 * @return true if the name is ok, false otherwise
 	 */
 	public boolean isOkName(String login, boolean spacesOk);
 
@@ -238,7 +238,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return the results of the new character name check.
 	 */
 	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean skipAccountNameCheck);
-	
+
 	/**
 	 * Checks whether an account with the given login name from the
 	 * given ipAddress may be created at this time.
@@ -250,12 +250,12 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return the results of the new account name check.
 	 */
 	public NewCharNameCheckResult newAccountNameCheck(String login, String ipAddress);
-	
+
 	/**
 	 * Resets the MXP, MSP and other session flags based on the mobs
 	 * attributes.  Typically done at sign-on only.
 	 * @see CharCreationLibrary#showTheNews(MOB)
-	 * @param mob the mob whose session needs to match his 
+	 * @param mob the mob whose session needs to match his
 	 */
 	public void reloadTerminal(MOB mob);
 
@@ -267,7 +267,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @param mob the mob to show these things to
 	 */
 	public void showTheNews(MOB mob);
-	
+
 	/**
 	 * If any of the given mobs friends are online, they are sent the
 	 * given message.
@@ -275,7 +275,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @param message the message to send to the mobs friends.
 	 */
 	public void notifyFriends(MOB mob, String message);
-	
+
 	/**
 	 * Attempts to send the given session through the character creation process,
 	 * at the end of which a character with the given login as name will be
@@ -287,9 +287,9 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @throws java.io.IOException an i/o error with the telnet session
 	 */
 	public LoginResult createCharacter(String login, Session session) throws java.io.IOException;
-	
+
 	/**
-	 * Initialize the rules for determining the new character start/recall room 
+	 * Initialize the rules for determining the new character start/recall room
 	 * given the characteristics of the player.
 	 * @see CharCreationLibrary#initDeathRooms(CMProps)
 	 * @see CharCreationLibrary#initBodyRooms(CMProps)
@@ -297,9 +297,9 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @param page the properties containing info about the start rooms
 	 */
 	public void initStartRooms(CMProps page);
-	
+
 	/**
-	 * Initialize the rules for determining the new character death room 
+	 * Initialize the rules for determining the new character death room
 	 * given the characteristics of the player.
 	 * @see CharCreationLibrary#initStartRooms(CMProps)
 	 * @see CharCreationLibrary#initBodyRooms(CMProps)
@@ -307,9 +307,9 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @param page the properties containing info about the death rooms
 	 */
 	public void initDeathRooms(CMProps page);
-	
+
 	/**
-	 * Initialize the rules for determining the new character morgue room 
+	 * Initialize the rules for determining the new character morgue room
 	 * given the characteristics of the player.
 	 * @see CharCreationLibrary#initStartRooms(CMProps)
 	 * @see CharCreationLibrary#initDeathRooms(CMProps)
@@ -317,7 +317,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @param page the properties containing info about the morgue rooms
 	 */
 	public void initBodyRooms(CMProps page);
-	
+
 	/**
 	 * Given the characteristics of the given mob, this method returns
 	 * the appropriate start/recall room for the given mob.
@@ -328,7 +328,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return the start room for the given mob
 	 */
 	public Room getDefaultStartRoom(MOB mob);
-	
+
 	/**
 	 * Given the characteristics of the given mob, this method returns
 	 * the appropriate death room for the given mob.
@@ -339,7 +339,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return the death room for the given mob
 	 */
 	public Room getDefaultDeathRoom(MOB mob);
-	
+
 	/**
 	 * Given the characteristics of the given mob, this method returns
 	 * the appropriate morgue room for the given mob.
@@ -350,7 +350,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return the morgue room for the given mob
 	 */
 	public Room getDefaultBodyRoom(MOB mob);
-	
+
 	/**
 	 * Based on the rules of the system, this method returns the number of
 	 * bonus stat points available to players to allocate, if the system
@@ -360,7 +360,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return the number of stat points available to allocate
 	 */
 	public int getTotalBonusStatPoints(PlayerStats playerStats, PlayerAccount account);
-	
+
 	/**
 	 * Returns a random fantasy name with the range of syllables given.
 	 * @param minSyllable the minimum number of syllables, at least 1
@@ -368,7 +368,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return a random fansty name
 	 */
 	public String generateRandomName(int minSyllable, int maxSyllable);
-	
+
 	/**
 	 * Completes the given session and mobs login by putting the mob into the given start room
 	 * in the world, checking their email, and seeing if they are allowed in.
@@ -400,7 +400,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @throws IOException any I/O errors during the process
 	 */
 	public LoginResult completePlayerLogin(final Session session, boolean wizi) throws IOException;
-	
+
 	/**
 	 * Creates a new Login Session for the given Session, which will start the login state machine process
 	 * that will end eventually with either a disconnect or a character logged in.
@@ -408,13 +408,13 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @return the new session object, giving all necessary access to the login state machine.
 	 */
 	public LoginSession createLoginSession(final Session session);
-	
+
 	/**
 	 * This is the main login state machine transaction object.  It allows the telnet session getting
 	 * thread and i/o time to repeatedly call into the LoginSession object it creates until the
-	 * object reports that it is completely done.  
+	 * object reports that it is completely done.
 	 * A login session includes initial telnet negotiation, login prompts, the account menu, and
-	 * all of character creation. 
+	 * all of character creation.
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -425,7 +425,7 @@ public interface CharCreationLibrary extends CMLibrary
 		 * @return the login name previously received.
 		 */
 		public String login();
-		
+
 		/**
 		 * Continues through the login state machine for the given session.
 		 * What the session should do next depends on the result object
@@ -436,13 +436,13 @@ public interface CharCreationLibrary extends CMLibrary
 		 * @throws java.io.IOException any I/O errors that occur
 		 */
 		public LoginResult loginSystem(Session session) throws java.io.IOException;
-		
+
 		/**
 		 * Puts the session into a "logged out" state, which means either back
 		 * to the initial prompt, or back to the account menu, depending.
 		 */
 		public void logoutLoginSession();
-		
+
 		/**
 		 * Set to true whenever the loginsystem needs the session to basically
 		 * start the whole state machine over by re-creating the LoginSession
@@ -460,7 +460,7 @@ public interface CharCreationLibrary extends CMLibrary
 		 * @return true to skip user input
 		 */
 		public boolean skipInputThisTime();
-		
+
 		/**
 		 * This strange method calls back into the given session for input from
 		 * the user, if any is available. In a stateless I/O system, usually there

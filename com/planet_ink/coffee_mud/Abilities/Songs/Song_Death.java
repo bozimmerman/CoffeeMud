@@ -55,7 +55,7 @@ public class Song_Death extends Song
 	}
 
 	@Override
-	protected int getXMAXRANGELevel(MOB mob)
+	protected int getXMAXRANGELevel(final MOB mob)
 	{
 		return 0;
 	} // people are complaining about multi-room death

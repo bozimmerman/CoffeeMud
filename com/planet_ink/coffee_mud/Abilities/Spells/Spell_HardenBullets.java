@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_HardenBullets extends Spell
 {
 
@@ -74,11 +73,11 @@ public class Spell_HardenBullets extends Spell
 	{
 		return Ability.QUALITY_INDIFFERENT;
 	}
-	
+
 	protected volatile boolean norecurse=false;
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 		//affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 	}
@@ -94,7 +93,7 @@ public class Spell_HardenBullets extends Spell
 		}
 		else
 			return;
-		
+
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.value()>0)
 		&&(msg.target() instanceof MOB)
@@ -130,7 +129,7 @@ public class Spell_HardenBullets extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=super.getTarget(mob, mob.location(), givenTarget, commands, Wearable.FILTER_UNWORNONLY);
 		if(target==null)
@@ -140,7 +139,7 @@ public class Spell_HardenBullets extends Spell
 			mob.tell(mob,target,null,L("You can only alter sling bullets with this spell, which <T-NAME> is not."));
 			return false;
 		}
-		
+
 		if(target.fetchEffect("Spell_HardenBullets")!=null)
 		{
 			mob.tell(mob,target,null,L("<T-NAME> is already altered."));
@@ -159,7 +158,7 @@ public class Spell_HardenBullets extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> become(s) denser and harder."));
-				Ability A=CMClass.getAbility(ID());
+				final Ability A=CMClass.getAbility(ID());
 				if(A!=null)
 				{
 					A.setMiscText(""+super.getXLEVELLevel(invoker()));

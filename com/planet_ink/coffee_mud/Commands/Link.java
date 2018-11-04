@@ -33,7 +33,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Link extends At
 {
 	public Link()
@@ -48,7 +47,7 @@ public class Link extends At
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
@@ -94,7 +93,7 @@ public class Link extends At
 		return false;
 	}
 
-	protected void exitifyNewPortal(MOB mob, Room room, int direction)
+	protected void exitifyNewPortal(final MOB mob, final Room room, final int direction)
 	{
 		Room opRoom=mob.location().rawDoors()[direction];
 		if((opRoom!=null)&&(opRoom.roomID().length()==0))
@@ -227,7 +226,7 @@ public class Link extends At
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDEXITS);
 	}

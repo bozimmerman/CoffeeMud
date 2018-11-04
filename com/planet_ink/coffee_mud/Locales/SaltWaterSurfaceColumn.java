@@ -52,10 +52,10 @@ public class SaltWaterSurfaceColumn extends WaterSurfaceColumn
 	}
 
 	@Override
-	protected boolean IsUnderWaterFatClass(Room thatSea)
+	protected boolean IsUnderWaterFatClass(final Room thatSea)
 	{
-		return (thatSea instanceof UnderSaltWaterGrid) 
-			|| (thatSea instanceof UnderSaltWaterColumnGrid) 
+		return (thatSea instanceof UnderSaltWaterGrid)
+			|| (thatSea instanceof UnderSaltWaterColumnGrid)
 			|| (thatSea instanceof UnderSaltWaterThinGrid);
 	}
 

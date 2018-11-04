@@ -128,7 +128,7 @@ public class Dance extends StdAbility
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		if(this.invoker()==affectedEnv)
 			affectableStats.addAmbiance("performing the "+danceOf().toLowerCase());
@@ -136,7 +136,7 @@ public class Dance extends StdAbility
 	}
 
 	@Override
-	public int adjustedLevel(MOB mob, int asLevel)
+	public int adjustedLevel(final MOB mob, final int asLevel)
 	{
 		final int level=super.adjustedLevel(mob,asLevel);
 		final int charisma=(invoker().charStats().getStat(CharStats.STAT_CHARISMA)-10);
@@ -218,7 +218,7 @@ public class Dance extends StdAbility
 		return true;
 	}
 
-	protected void undanceAll(MOB mob, MOB invoker)
+	protected void undanceAll(final MOB mob, final MOB invoker)
 	{
 		if(mob!=null)
 		{
@@ -232,7 +232,7 @@ public class Dance extends StdAbility
 		}
 	}
 
-	protected void undanceAllByThis(MOB mob, MOB invoker)
+	protected void undanceAllByThis(final MOB mob, final MOB invoker)
 	{
 		if(mob!=null)
 		{
@@ -247,7 +247,7 @@ public class Dance extends StdAbility
 		}
 	}
 
-	protected boolean undanceMe(MOB mob, MOB invoker)
+	protected boolean undanceMe(final MOB mob, final MOB invoker)
 	{
 		if(mob==null)
 			return false;
@@ -268,7 +268,7 @@ public class Dance extends StdAbility
 		return true;
 	}
 
-	protected Vector<Room> getInvokerScopeRoomSet(MOB backupMob)
+	protected Vector<Room> getInvokerScopeRoomSet(final MOB backupMob)
 	{
 		if((invoker()==null)
 		||(invoker().location()==null))
@@ -293,7 +293,7 @@ public class Dance extends StdAbility
 		return rooms;
 	}
 
-	protected int getCorrectDirToOriginRoom(Room R, int v)
+	protected int getCorrectDirToOriginRoom(final Room R, final int v)
 	{
 		if(v<0)
 			return -1;
@@ -318,7 +318,7 @@ public class Dance extends StdAbility
 		return dir;
 	}
 
-	protected String getCorrectMsgString(Room R, String str, int v)
+	protected String getCorrectMsgString(final Room R, final String str, final int v)
 	{
 		String msgStr=null;
 		if(R==originRoom)
@@ -334,7 +334,7 @@ public class Dance extends StdAbility
 		return msgStr;
 	}
 
-	public Set<MOB> sendMsgAndGetTargets(MOB mob, Room R, CMMsg msg, Environmental givenTarget, boolean auto)
+	public Set<MOB> sendMsgAndGetTargets(final MOB mob, final Room R, final CMMsg msg, final Environmental givenTarget, final boolean auto)
 	{
 		if(originRoom==R)
 			R.send(mob,msg);
@@ -378,7 +378,7 @@ public class Dance extends StdAbility
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -393,7 +393,7 @@ public class Dance extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

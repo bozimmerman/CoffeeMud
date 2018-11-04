@@ -55,7 +55,7 @@ public class Song_PirateShanty extends Song
 	}
 
 	public Set<MOB> singers=new HashSet<MOB>();
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -71,13 +71,13 @@ public class Song_PirateShanty extends Song
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((!super.tick(ticking,tickID))||(!(affected instanceof MOB)))
 			return false;
-		
+
 		final MOB M=(MOB)affected;
 		if(M==null)
 			return false;

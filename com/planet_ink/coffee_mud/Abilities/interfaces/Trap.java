@@ -109,7 +109,7 @@ public interface Trap extends Ability
 	 * @return true if the given trapper is allowed to reset this trap, false otherwise
 	 */
 	public boolean canReSetTrap(MOB mob);
-	
+
 	/**
 	 * Sets the number of ticks to wait after a trap has been sprung,
 	 * before it will automatically reset for another victim.  A reset

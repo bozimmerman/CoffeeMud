@@ -36,7 +36,6 @@ import java.util.concurrent.atomic.AtomicInteger;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class PlanarAbility extends StdAbility
 {
 	@Override
@@ -94,7 +93,7 @@ public class PlanarAbility extends StdAbility
 	protected Set<PlanarSpecFlag>		specFlags		= null;
 
 	protected Pair<Pair<Integer,Integer>,List<Pair<String,String>>> enableList=null;
-	
+
 	public static enum PlanarVar
 	{
 		ID,
@@ -129,14 +128,14 @@ public class PlanarAbility extends StdAbility
 		ROOMADJS,
 		AREAEMOTER
 	}
-	
+
 	public static enum PlanarSpecFlag
 	{
 		NOINFRAVISION,
 		BADMUNDANEARMOR,
 		ALLBREATHE
 	}
-	
+
 	protected static final AtomicInteger planeIDNum = new AtomicInteger(0);
 
 	public void clearVars()
@@ -157,7 +156,7 @@ public class PlanarAbility extends StdAbility
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		clearVars();
@@ -173,7 +172,7 @@ public class PlanarAbility extends StdAbility
 			this.recoverTick=1;
 			if((planarPrefix!=null)&&(planarPrefix.indexOf(',')>0))
 			{
-				List<String> choices=CMParms.parseCommas(planarPrefix, true);
+				final List<String> choices=CMParms.parseCommas(planarPrefix, true);
 				planarPrefix=choices.get(CMLib.dice().roll(1, choices.size(), -1));
 			}
 			if(affected instanceof Area)
@@ -184,12 +183,12 @@ public class PlanarAbility extends StdAbility
 					medianLevel=planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				planarLevel=medianLevel;
 			}
-			String specflags = planeVars.get(PlanarVar.SPECFLAGS.toString());
+			final String specflags = planeVars.get(PlanarVar.SPECFLAGS.toString());
 			if(specflags != null)
 			{
-				for(String s : CMParms.parse(specflags))
+				for(final String s : CMParms.parse(specflags))
 				{
-					PlanarSpecFlag flag=(PlanarSpecFlag)CMath.s_valueOf(PlanarSpecFlag.class, s);
+					final PlanarSpecFlag flag=(PlanarSpecFlag)CMath.s_valueOf(PlanarSpecFlag.class, s);
 					if(flag == null)
 						Log.errOut("Spell_Planeshift","Unknown spec flag "+s);
 					else
@@ -200,33 +199,33 @@ public class PlanarAbility extends StdAbility
 					}
 				}
 			}
-			String areablurbs = planeVars.get(PlanarVar.AREABLURBS.toString());
+			final String areablurbs = planeVars.get(PlanarVar.AREABLURBS.toString());
 			if((areablurbs!=null)&&(areablurbs.length()>0))
 			{
-				Map<String,String> blurbSets=CMParms.parseEQParms(areablurbs);
-				for(String key : blurbSets.keySet())
+				final Map<String,String> blurbSets=CMParms.parseEQParms(areablurbs);
+				for(final String key : blurbSets.keySet())
 					planeArea.addBlurbFlag(key.toUpperCase().trim().replace(' ', '_')+" "+blurbSets.get(key));
 			}
-			String behaves = planeVars.get(PlanarVar.BEHAVE.toString());
+			final String behaves = planeVars.get(PlanarVar.BEHAVE.toString());
 			if(behaves!=null)
 				this.behavList=CMParms.parseSpaceParenList(behaves);
-			String reffects = planeVars.get(PlanarVar.REFFECT.toString());
+			final String reffects = planeVars.get(PlanarVar.REFFECT.toString());
 			if(reffects!=null)
 				this.reffectList=CMParms.parseSpaceParenList(reffects);
-			String enables = planeVars.get(PlanarVar.ENABLE.toString());
+			final String enables = planeVars.get(PlanarVar.ENABLE.toString());
 			if(enables!=null)
 			{
-				List<Pair<String,String>> enableAs=CMParms.parseSpaceParenList(enables);
+				final List<Pair<String,String>> enableAs=CMParms.parseSpaceParenList(enables);
 				Integer perLevel=new Integer(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
 				Integer numSkills=Integer.valueOf(Integer.MAX_VALUE);
 				for(final Iterator<Pair<String,String>> p=enableAs.iterator();p.hasNext();)
 				{
-					Pair<String,String> P=p.next();
+					final Pair<String,String> P=p.next();
 					if(P.first.toLowerCase().equals("number"))
 					{
 						p.remove();
-						String parms=P.second;
-						int x=parms.indexOf('/');
+						final String parms=P.second;
+						final int x=parms.indexOf('/');
 						if(x<0)
 							numSkills=Integer.valueOf(CMath.s_int(parms.trim()));
 						else
@@ -238,10 +237,10 @@ public class PlanarAbility extends StdAbility
 				}
 				if(enableAs.size()>0)
 				{
-					PairList<String,String> addThese = new PairVector<String,String>();
+					final PairList<String,String> addThese = new PairVector<String,String>();
 					for(final Iterator<Pair<String,String>> p = enableAs.iterator();p.hasNext();)
 					{
-						Pair<String,String> P=p.next();
+						final Pair<String,String> P=p.next();
 						Ability A=CMClass.getAbility(P.first);
 						if(A==null)
 						{
@@ -253,7 +252,7 @@ public class PlanarAbility extends StdAbility
 							int domain=CMParms.indexOf(Ability.DOMAIN_DESCS, P.first);
 							if(domain > 0)
 								domain = domain << 5;
-							int acode=CMParms.indexOf(Ability.ACODE_DESCS, P.first);
+							final int acode=CMParms.indexOf(Ability.ACODE_DESCS, P.first);
 							for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 							{
 								A=a.nextElement();
@@ -279,40 +278,40 @@ public class PlanarAbility extends StdAbility
 						this.enableList=new Pair<Pair<Integer,Integer>,List<Pair<String,String>>>(new Pair<Integer,Integer>(numSkills,perLevel),enableAs);
 				}
 			}
-			String bonusDamageStat = planeVars.get(PlanarVar.BONUSDAMAGESTAT.toString());
+			final String bonusDamageStat = planeVars.get(PlanarVar.BONUSDAMAGESTAT.toString());
 			if(bonusDamageStat!=null)
 			{
 				this.bonusDmgStat=CMParms.indexOf(CharStats.CODES.BASENAMES(), bonusDamageStat.toUpperCase().trim());
 			}
-			String reqWeapons = planeVars.get(PlanarVar.REQWEAPONS.toString());
+			final String reqWeapons = planeVars.get(PlanarVar.REQWEAPONS.toString());
 			if(reqWeapons != null)
 				this.reqWeapons = new HashSet<String>(CMParms.parse(reqWeapons.toUpperCase().trim()));
-			String atmosphere = planeVars.get(PlanarVar.ATMOSPHERE.toString());
+			final String atmosphere = planeVars.get(PlanarVar.ATMOSPHERE.toString());
 			if(atmosphere!=null)
 			{
 				if(atmosphere.length()==0)
 					this.planeArea.setAtmosphere(Integer.MIN_VALUE);
 				else
 				{
-					int atmo=RawMaterial.CODES.FIND_IgnoreCase(atmosphere);
+					final int atmo=RawMaterial.CODES.FIND_IgnoreCase(atmosphere);
 					this.planeArea.setAtmosphere(atmo);
 				}
 			}
-			String absorb = planeVars.get(PlanarVar.ABSORB.toString());
+			final String absorb = planeVars.get(PlanarVar.ABSORB.toString());
 			if(absorb != null)
 				reEffect(planeArea,"Prop_AbsorbDamage",absorb);
-			TimeClock C=(TimeClock)CMLib.time().globalClock().copyOf();
+			final TimeClock C=(TimeClock)CMLib.time().globalClock().copyOf();
 			C.setDayOfMonth(1);
 			C.setYear(1);
 			C.setMonth(1);
 			C.setHourOfDay(0);
-			String hours = planeVars.get(PlanarVar.HOURS.toString());
+			final String hours = planeVars.get(PlanarVar.HOURS.toString());
 			if((hours != null)&&(CMath.isInteger(hours)))
 			{
-				double mul=CMath.div(CMath.s_int(hours),CMLib.time().globalClock().getHoursInDay());
+				final double mul=CMath.div(CMath.s_int(hours),CMLib.time().globalClock().getHoursInDay());
 				if(mul != 1.0)
 				{
-					int newHours = (int)Math.round(CMath.mul(C.getHoursInDay(),mul));
+					final int newHours = (int)Math.round(CMath.mul(C.getHoursInDay(),mul));
 					C.setHoursInDay(newHours);
 					C.setDawnToDusk((int)Math.round(CMath.mul(C.getDawnToDusk()[0],mul))
 									, (int)Math.round(CMath.mul(C.getDawnToDusk()[1],mul))
@@ -324,20 +323,20 @@ public class PlanarAbility extends StdAbility
 			planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
 			planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleport"));
 			planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
-			String aeffects = planeVars.get(PlanarVar.AEFFECT.toString());
+			final String aeffects = planeVars.get(PlanarVar.AEFFECT.toString());
 			if(aeffects!=null)
 			{
-				List<Pair<String,String>> affectList=CMParms.parseSpaceParenList(aeffects);
+				final List<Pair<String,String>> affectList=CMParms.parseSpaceParenList(aeffects);
 				if(affectList!=null)
 				{
-					for(Pair<String,String> p : affectList)
+					for(final Pair<String,String> p : affectList)
 					{
 						if(planeArea.fetchBehavior(p.first)==null)
 						{
-							Behavior B=CMClass.getBehavior(p.first);
+							final Behavior B=CMClass.getBehavior(p.first);
 							if(B==null)
 							{
-								Ability A=CMClass.getAbility(p.first);
+								final Ability A=CMClass.getAbility(p.first);
 								if(A==null)
 									Log.errOut("Spell_Planeshift","Unknown behavior : "+p.first);
 								else
@@ -357,8 +356,8 @@ public class PlanarAbility extends StdAbility
 			}
 		}
 	}
-	
-	protected void reEffect(final Physical M, String ID, String parms)
+
+	protected void reEffect(final Physical M, final String ID, final String parms)
 	{
 		if(M!=null)
 		{
@@ -375,7 +374,7 @@ public class PlanarAbility extends StdAbility
 		}
 	}
 
-	public synchronized void fixRoom(Room room)
+	public synchronized void fixRoom(final Room room)
 	{
 		try
 		{
@@ -383,7 +382,7 @@ public class PlanarAbility extends StdAbility
 			CMLib.threads().suspendResumeRecurse(room, false, true);
 			for(int i=0;i<Directions.NUM_DIRECTIONS();i++)
 			{
-				Room R=room.rawDoors()[i];
+				final Room R=room.rawDoors()[i];
 				if((R!=null)&&(R.getArea()!=planeArea))
 					room.rawDoors()[i]=null;
 			}
@@ -420,13 +419,13 @@ public class PlanarAbility extends StdAbility
 					desc=desc.toUpperCase();
 				}
 				int chance=30;
-				int x=wordStr.indexOf(' ');
+				final int x=wordStr.indexOf(' ');
 				if((x>0)&&(CMath.isInteger(wordStr.substring(0, x))))
 				{
 					chance=CMath.s_int(wordStr.substring(0, x));
 					wordStr=wordStr.substring(x+1).trim();
 				}
-				String[] words= wordStr.split(",");
+				final String[] words= wordStr.split(",");
 				if(desc.toUpperCase().startsWith("<VARIES>"))
 				{
 					prefix="<VARIES>";
@@ -436,14 +435,14 @@ public class PlanarAbility extends StdAbility
 			}
 			if(this.reffectList!=null)
 			{
-				for(Pair<String,String> p : this.reffectList)
+				for(final Pair<String,String> p : this.reffectList)
 				{
 					if(room.fetchBehavior(p.first)==null)
 					{
-						Behavior B=CMClass.getBehavior(p.first);
+						final Behavior B=CMClass.getBehavior(p.first);
 						if(B==null)
 						{
-							Ability A=CMClass.getAbility(p.first);
+							final Ability A=CMClass.getAbility(p.first);
 							if(A==null)
 								Log.errOut("Spell_Planeshift","Unknown behavior : "+p.first);
 							else
@@ -460,11 +459,11 @@ public class PlanarAbility extends StdAbility
 					}
 				}
 			}
-			
+
 			if(CMLib.law().getLandTitle(room)!=null)
 			{
-				List<Physical> destroyMe=new ArrayList<Physical>();
-				Set<Rider> protSet = new HashSet<Rider>();
+				final List<Physical> destroyMe=new ArrayList<Physical>();
+				final Set<Rider> protSet = new HashSet<Rider>();
 				for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 				{
 					final MOB M=m.nextElement();
@@ -486,11 +485,11 @@ public class PlanarAbility extends StdAbility
 					if((I!=null)&&(!protSet.contains(I)))
 						destroyMe.add(I);
 				}
-				for(Physical P : destroyMe)
+				for(final Physical P : destroyMe)
 					P.destroy();
 			}
-			int allLevelAdj=CMath.s_int(planeVars.get(PlanarVar.LEVELADJ.toString()));
-			List<Item> delItems=new ArrayList<Item>(0);
+			final int allLevelAdj=CMath.s_int(planeVars.get(PlanarVar.LEVELADJ.toString()));
+			final List<Item> delItems=new ArrayList<Item>(0);
 			for(final Enumeration<Item> i=room.items();i.hasMoreElements();)
 			{
 				final Item I=i.nextElement();
@@ -500,7 +499,7 @@ public class PlanarAbility extends StdAbility
 				{
 					for(int x=0;x<100;x++)
 					{
-						Room R2=((Exit)I).lastRoomUsedFrom(room);
+						final Room R2=((Exit)I).lastRoomUsedFrom(room);
 						if((R2!=null)&&(R2.getArea()!=planeArea))
 						{
 							delItems.add(I);
@@ -514,7 +513,7 @@ public class PlanarAbility extends StdAbility
 				else
 				if((invoker!=null)&&((I instanceof Weapon)||(I instanceof Armor)))
 				{
-					int newILevelAdj = (planarLevel - I.phyStats().level());
+					final int newILevelAdj = (planarLevel - I.phyStats().level());
 					int newILevel=invoker.phyStats().level() - newILevelAdj + allLevelAdj;
 					if(newILevel <= 0)
 						newILevel = 1;
@@ -532,7 +531,7 @@ public class PlanarAbility extends StdAbility
 					I.text();
 				}
 			}
-			for(Item I : delItems)
+			for(final Item I : delItems)
 				I.destroy();
 			for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 			{
@@ -545,14 +544,14 @@ public class PlanarAbility extends StdAbility
 				{
 					if(planeVars.containsKey(PlanarVar.MIXRACE.toString()))
 					{
-						String mixRace = planeVars.get(PlanarVar.MIXRACE.toString());
-						Race firstR=CMClass.getRace(mixRace);
+						final String mixRace = planeVars.get(PlanarVar.MIXRACE.toString());
+						final Race firstR=CMClass.getRace(mixRace);
 						if(firstR==null)
 							Log.errOut("PlanarAbility","Unknown mixrace: "+mixRace);
 						else
 						{
 							final Race secondR=M.charStats().getMyRace();
-							Race R=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID(), false);
+							final Race R=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID(), false);
 							if(R!=null)
 							{
 								M.baseCharStats().setMyRace(R);
@@ -561,22 +560,22 @@ public class PlanarAbility extends StdAbility
 							}
 						}
 					}
-					
+
 					if(planeVars.containsKey(PlanarVar.ATMOSPHERE.toString()))
 						M.baseCharStats().setBreathables(new int[]{room.getAtmosphere()});
-					int newLevelAdj = (planarLevel - M.phyStats().level());
+					final int newLevelAdj = (planarLevel - M.phyStats().level());
 					int newLevel = invoker.phyStats().level() - newLevelAdj + allLevelAdj;
 					if(newLevel <= 0)
 						newLevel = 1;
 					if((planarPrefix!=null)&&(planarPrefix.length()>0))
 					{
-						String oldName=M.Name();
+						final String oldName=M.Name();
 						int x;
 						if(oldName.toLowerCase().indexOf(planarPrefix.toLowerCase())<0)
 						{
 							if(CMLib.english().startsWithAnArticle(M.Name()))
 							{
-								String Name = M.Name().substring(M.Name().indexOf(' ')).trim();
+								final String Name = M.Name().substring(M.Name().indexOf(' ')).trim();
 								M.setName(CMLib.english().startWithAorAn(planarPrefix+" "+Name));
 							}
 							else
@@ -590,13 +589,13 @@ public class PlanarAbility extends StdAbility
 							else
 							if(CMLib.english().startsWithAnArticle(M.displayText()))
 							{
-								String Name = M.displayText().substring(M.displayText().indexOf(' ')).trim();
+								final String Name = M.displayText().substring(M.displayText().indexOf(' ')).trim();
 								M.setDisplayText(CMLib.english().startWithAorAn(planarPrefix+" "+Name));
 							}
 							else
 							if((x=M.displayText().toLowerCase().indexOf(M.charStats().getMyRace().name().toLowerCase()))>=0)
 							{
-								int len=M.charStats().getMyRace().name().toLowerCase().length();
+								final int len=M.charStats().getMyRace().name().toLowerCase().length();
 								M.setDisplayText(M.displayText().substring(0,x)+planarPrefix+M.Name()+M.displayText().substring(x+len));
 							}
 						}
@@ -604,7 +603,7 @@ public class PlanarAbility extends StdAbility
 					M.basePhyStats().setLevel(newLevel);
 					M.phyStats().setLevel(newLevel);
 					CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
-					String align=planeVars.get(PlanarVar.ALIGNMENT.toString());
+					final String align=planeVars.get(PlanarVar.ALIGNMENT.toString());
 					if(align!=null)
 					{
 						M.removeFaction(CMLib.factions().AlignID());
@@ -612,10 +611,10 @@ public class PlanarAbility extends StdAbility
 					}
 					for(final Enumeration<Item> mi=M.items();mi.hasMoreElements();)
 					{
-						Item mI=mi.nextElement();
+						final Item mI=mi.nextElement();
 						if((mI!=null)&&(invoker!=null))
 						{
-							int newILevelAdj = (planarLevel - mI.phyStats().level());
+							final int newILevelAdj = (planarLevel - mI.phyStats().level());
 							int newILevel=invoker.phyStats().level() + newILevelAdj + allLevelAdj;
 							if(newILevel <= 0)
 								newILevel = 1;
@@ -632,19 +631,19 @@ public class PlanarAbility extends StdAbility
 							mI.text();
 						}
 					}
-					String resistWeak = planeVars.get(PlanarVar.MOBRESIST.toString());
+					final String resistWeak = planeVars.get(PlanarVar.MOBRESIST.toString());
 					if(resistWeak != null)
 						reEffect(M,"Prop_Resistance",resistWeak);
-					String setStat = planeVars.get(PlanarVar.SETSTAT.toString());
+					final String setStat = planeVars.get(PlanarVar.SETSTAT.toString());
 					if(setStat != null)
 						reEffect(M,"Prop_StatTrainer",setStat);
-					String behavaffid=planeVars.get(PlanarVar.BEHAVAFFID.toString());
+					final String behavaffid=planeVars.get(PlanarVar.BEHAVAFFID.toString());
 					if(behavaffid!=null)
 					{
 						String changeToID;
 						for(final Enumeration<Behavior> b=M.behaviors();b.hasMoreElements();)
 						{
-							Behavior B=b.nextElement();
+							final Behavior B=b.nextElement();
 							if((B!=null)&&((changeToID=CMParms.getParmStr(behavaffid, B.ID(), "")).length()>0))
 							{
 								boolean copyParms=false;
@@ -654,7 +653,7 @@ public class PlanarAbility extends StdAbility
 									changeToID=changeToID.substring(1);
 								}
 								M.delBehavior(B);
-								Behavior B2=CMClass.getBehavior(changeToID);
+								final Behavior B2=CMClass.getBehavior(changeToID);
 								if(B2 != null)
 								{
 									if(copyParms)
@@ -664,7 +663,7 @@ public class PlanarAbility extends StdAbility
 							}
 						}
 					}
-					String adjStat = planeVars.get(PlanarVar.ADJSTAT.toString());
+					final String adjStat = planeVars.get(PlanarVar.ADJSTAT.toString());
 					if(adjStat != null)
 						reEffect(M,"Prop_StatAdjuster",adjStat);
 					if(eliteLevel > 0)
@@ -679,41 +678,41 @@ public class PlanarAbility extends StdAbility
 							break;
 						}
 						reEffect(M,"Prop_ModExperience","*2");
-						String adjSize = planeVars.get(PlanarVar.ADJSIZE.toString());
+						final String adjSize = planeVars.get(PlanarVar.ADJSIZE.toString());
 						if(adjSize != null)
 						{
-							double heightAdj = CMParms.getParmDouble(adjSize, "HEIGHT", Double.MIN_VALUE);
+							final double heightAdj = CMParms.getParmDouble(adjSize, "HEIGHT", Double.MIN_VALUE);
 							if(heightAdj > Double.MIN_VALUE)
 								reEffect(M,"Prop_Adjuster","height+"+(100+(heightAdj*100)));
 						}
 					}
 					else
 					{
-						String adjust = planeVars.get(PlanarVar.ADJUST.toString());
+						final String adjust = planeVars.get(PlanarVar.ADJUST.toString());
 						if(adjust != null)
 							reEffect(M,"Prop_Adjuster",adjust);
-						String adjSize = planeVars.get(PlanarVar.ADJSIZE.toString());
+						final String adjSize = planeVars.get(PlanarVar.ADJSIZE.toString());
 						if(adjSize != null)
 						{
-							double heightAdj = CMParms.getParmDouble(adjSize, "HEIGHT", Double.MIN_VALUE);
+							final double heightAdj = CMParms.getParmDouble(adjSize, "HEIGHT", Double.MIN_VALUE);
 							if(heightAdj > Double.MIN_VALUE)
 								reEffect(M,"Prop_Adjuster","height+"+(int)Math.round(CMath.mul(M.basePhyStats().height(),heightAdj)));
 						}
 					}
-					String adjSize = planeVars.get(PlanarVar.ADJSIZE.toString());
+					final String adjSize = planeVars.get(PlanarVar.ADJSIZE.toString());
 					if(adjSize != null)
 					{
-						double weightAdj = CMParms.getParmDouble(adjSize, "WEIGHT", Double.MIN_VALUE);
+						final double weightAdj = CMParms.getParmDouble(adjSize, "WEIGHT", Double.MIN_VALUE);
 						if(weightAdj > Double.MIN_VALUE)
 							reEffect(M,"Prop_StatAdjuster","weightadj="+(int)Math.round(CMath.mul(M.baseWeight(),weightAdj)));
 					}
 					if(this.behavList!=null)
 					{
-						for(Pair<String,String> p : this.behavList)
+						for(final Pair<String,String> p : this.behavList)
 						{
 							if(M.fetchBehavior(p.first)==null)
 							{
-								Behavior B=CMClass.getBehavior(p.first);
+								final Behavior B=CMClass.getBehavior(p.first);
 								if(B==null)
 									Log.errOut("Spell_Planeshift","Unknown behavior : "+p.first);
 								else
@@ -726,15 +725,15 @@ public class PlanarAbility extends StdAbility
 					}
 					if(this.enableList != null)
 					{
-						Pair<Integer,Integer> lv=this.enableList.first;
-						PairList<String,String> unused = new PairVector<String,String>(this.enableList.second);
+						final Pair<Integer,Integer> lv=this.enableList.first;
+						final PairList<String,String> unused = new PairVector<String,String>(this.enableList.second);
 						for(int l=0;l<M.phyStats().level() && (unused.size()>0);l+=lv.second.intValue())
 						{
 							for(int a=0;a<lv.first.intValue()  && (unused.size()>0);a++)
 							{
-								int aindex=CMLib.dice().roll(1, unused.size(), -1);
-								Pair<String,String> P=unused.remove(aindex);
-								Ability A=CMClass.getAbility(P.first);
+								final int aindex=CMLib.dice().roll(1, unused.size(), -1);
+								final Pair<String,String> P=unused.remove(aindex);
+								final Ability A=CMClass.getAbility(P.first);
 								if(M.fetchAbility(A.ID())==null)
 								{
 									A.setMiscText(P.second);
@@ -753,7 +752,7 @@ public class PlanarAbility extends StdAbility
 					M.resetToMaxState();
 				}
 			}
-			int mobCopy=CMath.s_int(planeVars.get(PlanarVar.MOBCOPY.toString()));
+			final int mobCopy=CMath.s_int(planeVars.get(PlanarVar.MOBCOPY.toString()));
 			if(mobCopy>0)
 			{
 				final List<MOB> list=new ArrayList<MOB>(room.numInhabitants());
@@ -772,7 +771,7 @@ public class PlanarAbility extends StdAbility
 				{
 					for(int i=0;i<mobCopy;i++)
 					{
-						MOB M2=(MOB)M.copyOf();
+						final MOB M2=(MOB)M.copyOf();
 						M2.text();
 						M2.setSavable(M.isSavable());
 						M2.bringToLife(room, true);
@@ -783,7 +782,7 @@ public class PlanarAbility extends StdAbility
 				}
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(e);
 		}
@@ -806,7 +805,7 @@ public class PlanarAbility extends StdAbility
 				affectableStats.setBreathables(new int[]{});
 		}
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -825,7 +824,7 @@ public class PlanarAbility extends StdAbility
 					int neg=0;
 					for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
 					{
-						Item I=i.nextElement();
+						final Item I=i.nextElement();
 						if((I instanceof Armor)
 						&&(!I.amWearingAt(Wearable.IN_INVENTORY))
 						&&((!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(I.fitsOn(Wearable.WORN_FLOATING_NEARBY)))
@@ -878,7 +877,7 @@ public class PlanarAbility extends StdAbility
 		}
 		return true;
 	}
-	
+
 	protected boolean roomDone(final Room R)
 	{
 		synchronized(roomsDone)
@@ -886,7 +885,7 @@ public class PlanarAbility extends StdAbility
 			return (this.roomsDone.contains(R));
 		}
 	}
-	
+
 	protected synchronized void doneRoom(final Room R)
 	{
 		synchronized(roomsDone)
@@ -894,7 +893,7 @@ public class PlanarAbility extends StdAbility
 			this.roomsDone.add(R);
 		}
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -920,7 +919,7 @@ public class PlanarAbility extends StdAbility
 			&&(planeVars.containsKey(PlanarVar.WEAPONMAXRANGE.toString()))
 			&&((msg.source().rangeToTarget()>0)||(((MOB)msg.target()).rangeToTarget()>0)))
 			{
-				int maxRange=CMath.s_int(planeVars.get(PlanarVar.WEAPONMAXRANGE.toString()));
+				final int maxRange=CMath.s_int(planeVars.get(PlanarVar.WEAPONMAXRANGE.toString()));
 				if(((msg.source().rangeToTarget()>maxRange)||(((MOB)msg.target()).rangeToTarget()>maxRange)))
 				{
 					final String ammo=((AmmunitionWeapon)msg.tool()).ammunitionType();
@@ -949,43 +948,43 @@ public class PlanarAbility extends StdAbility
 		}
 		return true;
 	}
-	
+
 	protected static List<String> getAllPlaneKeys()
 	{
-		Map<String,Map<String,String>> map = getPlaneMap();
-		List<String> transitions=new ArrayList<String>(map.size());
-		for(String key : map.keySet())
+		final Map<String,Map<String,String>> map = getPlaneMap();
+		final List<String> transitions=new ArrayList<String>(map.size());
+		for(final String key : map.keySet())
 			transitions.add(key);
 		return transitions;
 	}
-	
+
 	protected static List<String> getTransitionPlaneKeys()
 	{
-		Map<String,Map<String,String>> map = getPlaneMap();
-		List<String> transitions=new ArrayList<String>(2);
-		for(String key : map.keySet())
+		final Map<String,Map<String,String>> map = getPlaneMap();
+		final List<String> transitions=new ArrayList<String>(2);
+		for(final String key : map.keySet())
 		{
-			Map<String,String> entry=map.get(key);
+			final Map<String,String> entry=map.get(key);
 			if(CMath.s_bool(entry.get(PlanarVar.TRANSITIONAL.toString())))
 				transitions.add(key);
 		}
 		return transitions;
 	}
-	
+
 	protected static String listOfPlanes()
 	{
-		Map<String,Map<String,String>> map = getPlaneMap();
-		StringBuilder str=new StringBuilder();
-		for(String key : map.keySet())
+		final Map<String,Map<String,String>> map = getPlaneMap();
+		final StringBuilder str=new StringBuilder();
+		for(final String key : map.keySet())
 		{
-			Map<String,String> entry=map.get(key);
+			final Map<String,String> entry=map.get(key);
 			str.append(entry.get(PlanarVar.ID.toString())).append(", ");
 		}
 		if(str.length()<2)
 			return "";
 		return str.toString();
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static Map<String,Map<String,String>> getPlaneMap()
 	{
@@ -993,15 +992,15 @@ public class PlanarAbility extends StdAbility
 		if(map == null)
 		{
 			map = new TreeMap<String,Map<String,String>>();
-			CMFile F=new CMFile(Resources.makeFileResourceName("skills/planesofexistence.txt"),null);
-			List<String> lines = Resources.getFileLineVector(F.text());
+			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/planesofexistence.txt"),null);
+			final List<String> lines = Resources.getFileLineVector(F.text());
 			for(String line : lines)
 			{
 				line=line.trim();
 				String planename=null;
 				if(line.startsWith("\""))
 				{
-					int x=line.indexOf("\"",1);
+					final int x=line.indexOf("\"",1);
 					if(x>1)
 					{
 						planename=line.substring(1,x);
@@ -1010,8 +1009,8 @@ public class PlanarAbility extends StdAbility
 				}
 				if(planename != null)
 				{
-					Map<String,String> planeParms = CMParms.parseEQParms(line);
-					for(String key : planeParms.keySet())
+					final Map<String,String> planeParms = CMParms.parseEQParms(line);
+					for(final String key : planeParms.keySet())
 					{
 						if(CMath.s_valueOf(PlanarVar.class, key)==null)
 							Log.errOut("Spell_Planeshift","Unknown planar var: "+key);
@@ -1024,32 +1023,32 @@ public class PlanarAbility extends StdAbility
 		}
 		return map;
 	}
-	
+
 	protected static Map<String,String> getPlane(String name)
 	{
-		Map<String,Map<String,String>> map = getPlaneMap();
+		final Map<String,Map<String,String>> map = getPlaneMap();
 		name=name.trim().toUpperCase();
 		if(map.containsKey(name))
 			return map.get(name);
-		for(String key : map.keySet())
+		for(final String key : map.keySet())
 		{
 			if(key.startsWith(name))
 				return map.get(key);
 		}
-		for(String key : map.keySet())
+		for(final String key : map.keySet())
 		{
 			if(key.indexOf(name)>=0)
 				return map.get(key);
 		}
-		for(String key : map.keySet())
+		for(final String key : map.keySet())
 		{
 			if(key.endsWith(name))
 				return map.get(key);
 		}
 		return null;
 	}
-	
-	protected void destroyPlane(Area planeA)
+
+	protected void destroyPlane(final Area planeA)
 	{
 		if(planeA != null)
 		{
@@ -1097,7 +1096,7 @@ public class PlanarAbility extends StdAbility
 					{
 						CMLib.map().emptyRoom(R, null, true);
 					}
-					catch(Exception e)
+					catch(final Exception e)
 					{
 						Log.errOut(e);
 					}
@@ -1114,13 +1113,13 @@ public class PlanarAbility extends StdAbility
 							msg.setTarget(R);
 							R.executeMsg(mob,msg);
 						}
-						catch(Exception e)
+						catch(final Exception e)
 						{
 							Log.errOut(e);
 						}
 						R.destroy(); // destroys the mobs and items.  the Deadly Thing.
 					}
-					catch(Exception e)
+					catch(final Exception e)
 					{
 						Log.errOut(e);
 					}
@@ -1136,14 +1135,14 @@ public class PlanarAbility extends StdAbility
 			planeA.destroy();
 		}
 	}
-	
+
 	protected void destroyPlane()
 	{
 		destroyPlane(planeArea);
 		this.planeArea=null;
 	}
-	
-	protected String getStrippedRoomID(String roomID)
+
+	protected String getStrippedRoomID(final String roomID)
 	{
 		final int x=roomID.indexOf('#');
 		if(x<0)
@@ -1151,16 +1150,16 @@ public class PlanarAbility extends StdAbility
 		return roomID.substring(x);
 	}
 
-	protected String convertToMyArea(String Name, String roomID)
+	protected String convertToMyArea(final String Name, final String roomID)
 	{
 		final String strippedID=getStrippedRoomID(roomID);
 		if(strippedID==null)
 			return null;
 		return Name+strippedID;
 	}
-	
+
 	@Override
-	public void setAffectedOne(Physical P)
+	public void setAffectedOne(final Physical P)
 	{
 		super.setAffectedOne(P);
 		if(invoker != null)
@@ -1169,7 +1168,7 @@ public class PlanarAbility extends StdAbility
 			final Room R=mob.location();
 			if(R!=null)
 			{
-				PlanarAbility currentShift = getPlanarAbility(R.getArea());
+				final PlanarAbility currentShift = getPlanarAbility(R.getArea());
 				if((currentShift != null)&&(currentShift.oldRoom!=null)&&(currentShift.oldRoom.get()!=null))
 					oldRoom=currentShift.oldRoom;
 				else
@@ -1181,7 +1180,7 @@ public class PlanarAbility extends StdAbility
 		}
 	}
 
-	protected PlanarAbility getPlanarAbility(Physical P)
+	protected PlanarAbility getPlanarAbility(final Physical P)
 	{
 		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
@@ -1192,16 +1191,16 @@ public class PlanarAbility extends StdAbility
 		return null;
 	}
 
-	protected String castingMessage(MOB mob, boolean auto)
+	protected String castingMessage(final MOB mob, final boolean auto)
 	{
 		return auto?L(""):L("^S<S-NAME> conjur(s) a powerful planar connection!^?");
 	}
-	
-	protected String failMessage(MOB mob, boolean auto)
+
+	protected String failMessage(final MOB mob, final boolean auto)
 	{
 		return L("^S<S-NAME> attempt(s) to conjur a powerful planar connection, and fails.");
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -1213,17 +1212,17 @@ public class PlanarAbility extends StdAbility
 	}
 
 	protected boolean alwaysRandomArea=false;
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		oldRoom = null;
 		clearVars();
-		
+
 		if(commands.size()<1)
 		{
 			mob.tell(L("Go where?"));
-			mob.tell(L("Known planes: @x1",listOfPlanes()+L("Prime Material"))); 
+			mob.tell(L("Known planes: @x1",listOfPlanes()+L("Prime Material")));
 			return false;
 		}
 		String planeName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -1237,7 +1236,7 @@ public class PlanarAbility extends StdAbility
 		Area cloneArea = mob.location().getArea();
 		final Area mobArea = cloneArea;
 		String cloneRoomID=CMLib.map().getExtendedRoomID(mob.location());
-		PlanarAbility currentShift = getPlanarAbility(mobArea);
+		final PlanarAbility currentShift = getPlanarAbility(mobArea);
 		if(planeName.equalsIgnoreCase("Prime Material"))
 		{
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -1266,7 +1265,7 @@ public class PlanarAbility extends StdAbility
 		else
 		if(this.lastCasting > (System.currentTimeMillis() - (10 * TimeManager.MILI_MINUTE)))
 		{
-			Ability A=CMClass.getAbility("Disease_PlanarInstability");
+			final Ability A=CMClass.getAbility("Disease_PlanarInstability");
 			if((A!=null)
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE))
 			&&(!CMSecurity.isAbilityDisabled(A.ID())))
@@ -1276,7 +1275,7 @@ public class PlanarAbility extends StdAbility
 		if(planeFound == null)
 		{
 			mob.tell(L("There is no known plane '@x1'.",planeName));
-			mob.tell(L("Known planes: @x1",listOfPlanes()+L("Prime Material"))); 
+			mob.tell(L("Known planes: @x1",listOfPlanes()+L("Prime Material")));
 			return false;
 		}
 		planeName = planeFound.get(PlanarVar.ID.toString()).toUpperCase().trim();
@@ -1290,11 +1289,11 @@ public class PlanarAbility extends StdAbility
 			this.beneficialVisualFizzle(mob, null, failMessage(mob, auto));
 			return false;
 		}
-		
+
 		if(currentShift != null)
 		{
-			String areaName = cloneArea.Name();
-			int x=areaName.indexOf('_');
+			final String areaName = cloneArea.Name();
+			final int x=areaName.indexOf('_');
 			if((x>0)&&(CMath.isNumber(areaName.substring(0, x))))
 			{
 				final Area newCloneArea=CMLib.map().getArea(areaName.substring(x+1));
@@ -1310,7 +1309,7 @@ public class PlanarAbility extends StdAbility
 					{
 						for(int i=0;i<100;i++)
 						{
-							Room R=cloneArea.getRandomProperRoom();
+							final Room R=cloneArea.getRandomProperRoom();
 							if((R!=null)
 							&&(!CMLib.flags().isHidden(R))
 							&&(CMLib.map().getExtendedRoomID(R).length()>0))
@@ -1323,7 +1322,7 @@ public class PlanarAbility extends StdAbility
 				}
 			}
 		}
-		
+
 		boolean randomPlane=false;
 		boolean randomTransitionPlane=false;
 		boolean randomArea=alwaysRandomArea;
@@ -1394,7 +1393,7 @@ public class PlanarAbility extends StdAbility
 				randomTransitionPlane=true;
 		}
 
-		List<String> transitionalPlaneKeys = getTransitionPlaneKeys();
+		final List<String> transitionalPlaneKeys = getTransitionPlaneKeys();
 		if(currentShift!=null)
 		{
 			if(transitionalPlaneKeys.contains(currentShift.text().toUpperCase().trim()))
@@ -1410,7 +1409,7 @@ public class PlanarAbility extends StdAbility
 				}
 			}
 		}
-		
+
 		if(randomArea)
 		{
 			int tries=0;
@@ -1435,18 +1434,18 @@ public class PlanarAbility extends StdAbility
 		}
 		if(randomPlane)
 		{
-			List<String> allPlaneKeys = getAllPlaneKeys();
+			final List<String> allPlaneKeys = getAllPlaneKeys();
 			planeName = allPlaneKeys.get(CMLib.dice().roll(1, allPlaneKeys.size(), -1));
 			planeFound = getPlane(planeName);
 		}
-		
-		String newPlaneName = planeIDNum.addAndGet(1)+"_"+cloneArea.Name();
-		Area planeArea = CMClass.getAreaType("SubThinInstance");
+
+		final String newPlaneName = planeIDNum.addAndGet(1)+"_"+cloneArea.Name();
+		final Area planeArea = CMClass.getAreaType("SubThinInstance");
 		planeArea.setName(newPlaneName);
 		planeArea.addBlurbFlag("PLANEOFEXISTENCE {"+newPlaneName+"}");
 		CMLib.map().addArea(planeArea);
 		planeArea.setAreaState(Area.State.ACTIVE); // starts ticking
-		Room target=CMClass.getLocale("StdRoom");
+		final Room target=CMClass.getLocale("StdRoom");
 		String newRoomID=this.convertToMyArea(newPlaneName,cloneRoomID);
 		if(newRoomID==null)
 			newRoomID=cloneRoomID;
@@ -1454,9 +1453,9 @@ public class PlanarAbility extends StdAbility
 		target.setDisplayText("Between The Planes of Existence");
 		target.setDescription("You are a floating consciousness between the planes of existence...");
 		target.setArea(planeArea);
-		
+
 		//CMLib.map().delArea(this.planeArea);
-		
+
 		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|verbalCastCode(mob,target,auto),castingMessage(mob, auto));
 		if((mob.location().okMessage(mob,msg))&&(target.okMessage(mob,msg)))
 		{
@@ -1466,9 +1465,9 @@ public class PlanarAbility extends StdAbility
 				return false;
 
 			this.lastCasting=System.currentTimeMillis();
-			Ability A=this.beneficialAffect(mob, planeArea, asLevel, 0);
+			final Ability A=this.beneficialAffect(mob, planeArea, asLevel, 0);
 			A.setMiscText(planeName);
-			
+
 			final Room thisRoom=mob.location();
 			for (final MOB follower : h)
 			{

@@ -55,7 +55,7 @@ public class PersistenceException extends Exception
 	 * specified exception explanation.
 	 * @param reason the reason for the exception
 	 */
-	public PersistenceException(String reason)
+	public PersistenceException(final String reason)
 	{
 		this(reason, null);
 	}
@@ -66,7 +66,7 @@ public class PersistenceException extends Exception
 	 * persistence operation such as a save or restore.
 	 * @param e the exception causing this exception to be created
 	 */
-	public PersistenceException(Exception e)
+	public PersistenceException(final Exception e)
 	{
 		this("A persistence exception occurred: " + e.getMessage(), e);
 	}
@@ -78,7 +78,7 @@ public class PersistenceException extends Exception
 	 * @param reason the explanation for the exception
 	 * @param e the exception causing this exception to be created
 	 */
-	public PersistenceException(String reason, Exception e)
+	public PersistenceException(final String reason, final Exception e)
 	{
 		super(reason);
 		prior = e;
@@ -101,7 +101,7 @@ public class PersistenceException extends Exception
 	}
 }
 
-final class PersistenceExceptionEnumeration implements Enumeration<Exception> 
+final class PersistenceExceptionEnumeration implements Enumeration<Exception>
 {
 	private Exception exception;
 
@@ -110,7 +110,7 @@ final class PersistenceExceptionEnumeration implements Enumeration<Exception>
 		this(null);
 	}
 
-	public PersistenceExceptionEnumeration(Exception e)
+	public PersistenceExceptionEnumeration(final Exception e)
 	{
 		exception = e;
 	}

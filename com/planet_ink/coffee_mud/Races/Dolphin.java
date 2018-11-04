@@ -83,7 +83,7 @@ public class Dolphin extends Seal
 	{
 		return breatheAirWaterArray;
 	}
-	
+
 	private final String[]					racialAbilityNames			= { "Aquan", "Skill_Swim", "Skill_AutoSwim","Skill_HighJump" };
 	private final int[]						racialAbilityLevels			= { 1,1,1,15 };
 	private final int[]						racialAbilityProficiencies	= { 100,100,100,50 };
@@ -163,7 +163,7 @@ public class Dolphin extends Seal
 		}
 		return naturalWeapon;
 	}
-	
+
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	@Override

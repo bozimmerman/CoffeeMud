@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Gore extends StdAbility
 {
 	@Override
@@ -98,7 +97,7 @@ public class Gore extends StdAbility
 		return false;
 	}
 
-	protected boolean isWeaponMatch(Weapon W)
+	protected boolean isWeaponMatch(final Weapon W)
 	{
 		if((W.weaponDamageType()==Weapon.TYPE_PIERCING)
 		||(W.weaponClassification()==Weapon.CLASS_NATURAL))

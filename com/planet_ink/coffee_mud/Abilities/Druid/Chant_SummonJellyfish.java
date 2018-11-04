@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SummonJellyfish extends Chant
 {
 	@Override
@@ -89,7 +88,7 @@ public class Chant_SummonJellyfish extends Chant
 
 	protected MOB theJellyfish = null;
 	protected MOB[] stingList = new MOB[3];
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -105,10 +104,10 @@ public class Chant_SummonJellyfish extends Chant
 				unInvoke();
 			else
 			{
-				Set<MOB> followers = invoker.getGroupMembers(new HashSet<MOB>());
+				final Set<MOB> followers = invoker.getGroupMembers(new HashSet<MOB>());
 				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 				{
-					MOB M=m.nextElement();
+					final MOB M=m.nextElement();
 					if((!followers.contains(M))
 					&&(invoker.mayIFight(M))
 					&&(!CMParms.contains(stingList, M)))
@@ -144,12 +143,12 @@ public class Chant_SummonJellyfish extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		Room target=(givenTarget instanceof Room) ? (Room)givenTarget
+		final Room target=(givenTarget instanceof Room) ? (Room)givenTarget
 				: (givenTarget instanceof MOB) ? ((MOB)givenTarget).location()
 				: mob.location();
-				
+
 		if(target == null)
 			return false;
 
@@ -158,14 +157,14 @@ public class Chant_SummonJellyfish extends Chant
 			mob.tell(mob,null,null,L("<S-NAME> already <S-HAS-HAVE> a swarm of jellyfish here."));
 			return false;
 		}
-		
+
 		if(!mob.isInCombat())
 		{
 			mob.tell(L("Only the rage of combat can summon jellyfish!"));
 			return false;
 		}
 
-		Room R=mob.location();
+		final Room R=mob.location();
 		if(R==null)
 			return false;
 		if(!CMLib.flags().isUnderWateryRoom(R))
@@ -173,11 +172,11 @@ public class Chant_SummonJellyfish extends Chant
 			mob.tell(L("You can only summon jellyfish underwater."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -188,14 +187,14 @@ public class Chant_SummonJellyfish extends Chant
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				Chant_SummonJellyfish C=(Chant_SummonJellyfish)target.fetchEffect(ID());
+				final Chant_SummonJellyfish C=(Chant_SummonJellyfish)target.fetchEffect(ID());
 				if(C!=null)
 				{
 					C.theJellyfish = CMClass.getFactoryMOB();
 					C.theJellyfish.setName(L("a swarm of jellyfish"));
 					C.theJellyfish.setDisplayText(L("A swarm of jellyfish dart all around you!"));
 					C.theJellyfish.setDescription(L("They appear magically endowed.  Perhaps they are summoned?"));
-					Ability P=CMClass.getAbility("Prop_SafePet");
+					final Ability P=CMClass.getAbility("Prop_SafePet");
 					if(P!=null)
 					{
 						P.setMiscText("MSG=\""+L("Zoom! Nope, they are just too quick for you.")+"\"");

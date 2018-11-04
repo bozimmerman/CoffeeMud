@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_PietyCurse extends Prayer
 {
 	@Override
@@ -86,8 +85,8 @@ public class Prayer_PietyCurse extends Prayer
 	{
 		return Ability.CAN_MOBS;
 	}
-	
-	private static String[] UNPIOUS_SOCIALS = 
+
+	private static String[] UNPIOUS_SOCIALS =
 		{"AARGH","BITE","BLEED","BOAST","BONK","BOUNCE","BRICK","BURP","CAMEL","CHALLENGE","CHARGE",
 		"COLLAPSE","COUGH","CRITICIZE","CUDDLE","CURSE","DANCE","DISCODANCE","EGRIN","EMBRACE","EPOKE",
 		"EXPLODE","FART","FIST","FLASH","FLIRT","FLUTTER","FONDLE","FRENCH","FUME","GOOSE","GROPE","HOWL",
@@ -118,7 +117,7 @@ public class Prayer_PietyCurse extends Prayer
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -133,7 +132,7 @@ public class Prayer_PietyCurse extends Prayer
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -186,7 +185,7 @@ public class Prayer_PietyCurse extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

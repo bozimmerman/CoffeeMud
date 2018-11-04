@@ -92,12 +92,12 @@ public class Thief_WarningShot extends ThiefSkill
 		return USAGE_MOVEMENT;
 	}
 
-	protected List<Item> getSiegeWeapons(Physical P)
+	protected List<Item> getSiegeWeapons(final Physical P)
 	{
 		final List<Item> items=new ArrayList<Item>();
 		if(P instanceof BoardableShip)
 		{
-			BoardableShip myShip=(BoardableShip)P;
+			final BoardableShip myShip=(BoardableShip)P;
 			for(final Enumeration<Room> r=myShip.getShipArea().getProperMap();r.hasMoreElements();)
 			{
 				final Room R2=r.nextElement();
@@ -115,11 +115,11 @@ public class Thief_WarningShot extends ThiefSkill
 		}
 		return items;
 	}
-	
+
 	protected double getAvgDamagePerRound(final List<Item> items)
 	{
 		double maxDamage=0.0;
-		for(Item I : items)
+		for(final Item I : items)
 		{
 			if((I instanceof AmmunitionWeapon)
 			&&(((AmmunitionWeapon)I).ammunitionCapacity()==1))
@@ -129,7 +129,7 @@ public class Thief_WarningShot extends ThiefSkill
 		}
 		return maxDamage / 2.0;
 	}
-	
+
 	public static void tellTheDeck(final Item ship, final MOB M, final String msg)
 	{
 		if(ship instanceof BoardableShip)
@@ -165,9 +165,9 @@ public class Thief_WarningShot extends ThiefSkill
 		if(M!=null)
 			M.tell(msg);
 	}
-	
+
 	@Override
-	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -194,7 +194,7 @@ public class Thief_WarningShot extends ThiefSkill
 			targetName=CMParms.combine(commands);
 		else
 			targetName=fightR.getContextName(myShipItem.getCombatant());
-		Item I=(targetName.length()>0)?fightR.findItem(null, targetName):null;
+		final Item I=(targetName.length()>0)?fightR.findItem(null, targetName):null;
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I, mob)))
 		{
 			mob.tell(L("You can't see a ship called '@x1' here.",targetName));
@@ -205,34 +205,34 @@ public class Thief_WarningShot extends ThiefSkill
 			mob.tell(L("You can't target '@x1' with this skill.",targetName));
 			return false;
 		}
-		
+
 		if(!CMLib.flags().isStanding(mob)&&(!auto))
 		{
 			mob.tell(L("You need to stand up!"));
 			return false;
 		}
-		
+
 		final Physical target=I;
 		final List<Item> myItems=getSiegeWeapons(myShipItem);
 		final List<Item> hisItems=getSiegeWeapons(target);
-		
+
 		if(myItems.size()==0)
 		{
 			mob.tell(L("Your ship needs siege weapons on the deck to do this."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,auto?"":L("<S-NAME> load(s) and fire(s) @x1's weapons across <T-NAME>'s bow!",myShipItem.Name()));
 			if(fightR.okMessage(mob,msg))
 			{
 				fightR.send(mob,msg);
-				for(Item I2 : myItems)
+				for(final Item I2 : myItems)
 				{
 					fightR.showHappens(CMMsg.MSG_OK_ACTION, L("@x1 fires @x2 across @x3's bow.",myShipItem.Name(),I2.Name(),target.Name()));
 				}
@@ -250,25 +250,25 @@ public class Thief_WarningShot extends ThiefSkill
 					double hisSpeed = ((SailingShip)hisShipItem).getShipSpeed();
 					if(hisSpeed <=0)
 						hisSpeed = 1.0;
-					double myChancePerRoundToBeHit =  CMath.div(CMath.div(100.0, mySpeed + 1.0), 100.0);
-					double hisChancePerRoundToBeHit =  CMath.div(CMath.div(100.0, hisSpeed + 1.0), 100.0);
-					
+					final double myChancePerRoundToBeHit =  CMath.div(CMath.div(100.0, mySpeed + 1.0), 100.0);
+					final double hisChancePerRoundToBeHit =  CMath.div(CMath.div(100.0, hisSpeed + 1.0), 100.0);
+
 					double myHullPoints = CMLib.combat().getShipHullPoints(myShip);
 					if(myShipItem.subjectToWearAndTear())
 						myHullPoints = myHullPoints * CMath.div(myShipItem.usesRemaining(), 100.0);
 					double hisHullPoints = CMLib.combat().getShipHullPoints((BoardableShip)target);
 					if(hisShipItem.subjectToWearAndTear())
 						hisHullPoints = hisHullPoints * CMath.div(hisShipItem.usesRemaining(), 100.0);
-					
+
 					double avgDamagePerRound = this.getAvgDamagePerRound(myItems);
 					double hisDamagePerRound = this.getAvgDamagePerRound(hisItems);
-					
+
 					avgDamagePerRound *= hisChancePerRoundToBeHit;
 					hisDamagePerRound *= myChancePerRoundToBeHit;
-					
-					double roundsHeHasToSurviveMe=hisHullPoints / avgDamagePerRound;
-					double roundsIHaveToSurviveHim=myHullPoints / hisDamagePerRound;
-					
+
+					final double roundsHeHasToSurviveMe=hisHullPoints / avgDamagePerRound;
+					final double roundsIHaveToSurviveHim=myHullPoints / hisDamagePerRound;
+
 					if(roundsIHaveToSurviveHim > (roundsHeHasToSurviveMe * 1.05))
 					{
 						if(roundsIHaveToSurviveHim > (roundsHeHasToSurviveMe * 2))

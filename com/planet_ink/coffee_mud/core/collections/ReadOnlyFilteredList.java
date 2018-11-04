@@ -21,32 +21,32 @@ public class ReadOnlyFilteredList<K> implements List<K>
 	private final List<K> 	list;
 	private final Filterer<K> filterer;
 
-	public ReadOnlyFilteredList(List<K> l, Filterer<K> fill)
+	public ReadOnlyFilteredList(final List<K> l, final Filterer<K> fill)
 	{
 		list=l;
 		filterer=fill;
 	}
 
 	@Override
-	public boolean add(K arg0)
+	public boolean add(final K arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public void add(int arg0, K arg1)
+	public void add(final int arg0, final K arg1)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends K> arg0)
+	public boolean addAll(final Collection<? extends K> arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean addAll(int arg0, Collection<? extends K> arg1)
+	public boolean addAll(final int arg0, final Collection<? extends K> arg1)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -58,7 +58,7 @@ public class ReadOnlyFilteredList<K> implements List<K>
 	}
 
 	@Override
-	public boolean contains(Object arg0)
+	public boolean contains(final Object arg0)
 	{
 		for(int x=0;x<size();x++)
 		{
@@ -69,7 +69,7 @@ public class ReadOnlyFilteredList<K> implements List<K>
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0)
+	public boolean containsAll(final Collection<?> arg0)
 	{
 		for(final Object o : arg0)
 		{
@@ -80,13 +80,13 @@ public class ReadOnlyFilteredList<K> implements List<K>
 	}
 
 	@Override
-	public K get(int arg0)
+	public K get(final int arg0)
 	{
 		return list.get(arg0);
 	}
 
 	@Override
-	public int indexOf(Object arg0)
+	public int indexOf(final Object arg0)
 	{
 		for(int x=0;x<size();x++)
 		{
@@ -109,7 +109,7 @@ public class ReadOnlyFilteredList<K> implements List<K>
 	}
 
 	@Override
-	public int lastIndexOf(Object arg0)
+	public int lastIndexOf(final Object arg0)
 	{
 		for(int x=size()-1;x>=0;x--)
 		{
@@ -126,37 +126,37 @@ public class ReadOnlyFilteredList<K> implements List<K>
 	}
 
 	@Override
-	public ListIterator<K> listIterator(int arg0)
+	public ListIterator<K> listIterator(final int arg0)
 	{
 		return new FilteredListIterator<K>(list.listIterator(arg0), filterer);
 	}
 
 	@Override
-	public boolean remove(Object arg0)
+	public boolean remove(final Object arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public K remove(int arg0)
+	public K remove(final int arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> arg0)
+	public boolean removeAll(final Collection<?> arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> arg0)
+	public boolean retainAll(final Collection<?> arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public K set(int arg0, K arg1)
+	public K set(final int arg0, final K arg1)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -168,7 +168,7 @@ public class ReadOnlyFilteredList<K> implements List<K>
 	}
 
 	@Override
-	public List<K> subList(int arg0, int arg1)
+	public List<K> subList(final int arg0, final int arg1)
 	{
 		return new ReadOnlyFilteredList<K>(list.subList(arg0,arg1),filterer);
 	}
@@ -183,7 +183,7 @@ public class ReadOnlyFilteredList<K> implements List<K>
 	}
 
 	@Override
-	public <T> T[] toArray(T[] arg0)
+	public <T> T[] toArray(final T[] arg0)
 	{
 		final List<K> set=new ArrayList<K>(size());
 		for (final K k : this)

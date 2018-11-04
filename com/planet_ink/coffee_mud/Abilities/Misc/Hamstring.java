@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Hamstring extends StdAbility
 {
 	@Override
@@ -103,7 +102,7 @@ public class Hamstring extends StdAbility
 	}
 
 	protected int lostMovement=0;
-	
+
 	@Override
 	public void affectCharState(final MOB affected, final CharState affectableMaxState)
 	{
@@ -150,7 +149,7 @@ public class Hamstring extends StdAbility
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
@@ -167,18 +166,18 @@ public class Hamstring extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=super.getTarget(mob, commands, givenTarget);
 		if(target == null)
 			return false;
-		
+
 		if(target.charStats().getBodyPart(Race.BODY_LEG)<1)
 		{
 			mob.tell(L("@x1 has no legs to hamstring!",target.name(mob)));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -193,7 +192,7 @@ public class Hamstring extends StdAbility
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					int duration = (2*super.adjustedLevel(mob, asLevel)) + (10 * super.getXTIMELevel(mob));
+					final int duration = (2*super.adjustedLevel(mob, asLevel)) + (10 * super.getXTIMELevel(mob));
 					this.lostMovement=CMLib.dice().roll(adjustedLevel(mob,asLevel), 6, 0) + (5*super.getXLEVELLevel(mob));
 					if(this.lostMovement > target.maxState().getMovement())
 						this.lostMovement=target.maxState().getMovement();

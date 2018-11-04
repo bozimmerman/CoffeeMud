@@ -72,7 +72,7 @@ public class ItemGenerator extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		favorMobs=false;
 		maintained=new Vector<Item>();
@@ -155,7 +155,7 @@ public class ItemGenerator extends ActiveTicker
 		tickReset();
 	}
 
-	public boolean okRoomForMe(Room newRoom)
+	public boolean okRoomForMe(final Room newRoom)
 	{
 		if(newRoom==null)
 			return false;
@@ -164,7 +164,7 @@ public class ItemGenerator extends ActiveTicker
 		return !restrictedLocales.contains(Integer.valueOf(newRoom.domainType()));
 	}
 
-	public boolean isStillMaintained(Environmental thang, ShopKeeper SK, Item I)
+	public boolean isStillMaintained(final Environmental thang, final ShopKeeper SK, final Item I)
 	{
 		if((I==null)||(I.amDestroyed()))
 			return false;
@@ -267,7 +267,7 @@ public class ItemGenerator extends ActiveTicker
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized GeneratedItemSet getItems(Tickable thang, String theseparms)
+	public synchronized GeneratedItemSet getItems(final Tickable thang, final String theseparms)
 	{
 		String mask=parms;
 		if(mask.indexOf(';')>=0)

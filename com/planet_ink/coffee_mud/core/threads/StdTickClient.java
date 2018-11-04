@@ -32,7 +32,7 @@ public class StdTickClient implements TickClient
 	public volatile int		tickTotal	= 0;
 	public volatile String	status		= null;
 
-	public StdTickClient(Tickable newClientObject, int newTickDown, int newTickID)
+	public StdTickClient(final Tickable newClientObject, final int newTickDown, final int newTickID)
 	{
 		reTickDown=newTickDown;
 		tickDown=newTickDown;
@@ -88,13 +88,13 @@ public class StdTickClient implements TickClient
 	}
 
 	@Override
-	public void setStatus(String status)
+	public void setStatus(final String status)
 	{
 		this.status = status;
 	}
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(final Object obj)
 	{
 		if(obj instanceof StdTickClient)
 			return compareTo((StdTickClient)obj)==0;
@@ -108,7 +108,7 @@ public class StdTickClient implements TickClient
 	}
 
 	@Override
-	public int compareTo(TickClient arg0)
+	public int compareTo(final TickClient arg0)
 	{
 		if(clientObject != arg0.getClientObject())
 			return (clientObject.hashCode() > arg0.getClientObject().hashCode())?1:-1;
@@ -118,7 +118,7 @@ public class StdTickClient implements TickClient
 			return -1;
 		return 0;
 	}
-	
+
 	@Override
 	public void setCurrentTickDownPending()
 	{
@@ -135,9 +135,9 @@ public class StdTickClient implements TickClient
 			msToGo += (CMProps.getTickMillis() + tickDown);
 		return msToGo;
 	}
-	
+
 	@Override
-	public boolean tickTicker(boolean forceTickDown)
+	public boolean tickTicker(final boolean forceTickDown)
 	{
 		final long nanoStart=System.nanoTime();
 		try
@@ -175,7 +175,7 @@ public class StdTickClient implements TickClient
 				milliTotal+=Math.round(Math.floor(nanoTotal / 1000000L));
 				nanoTotal = nanoTotal % 1000000L;
 			}
-			
+
 		}
 		return false;
 	}
@@ -217,7 +217,7 @@ public class StdTickClient implements TickClient
 	}
 
 	@Override
-	public void setSuspended(boolean trueFalse)
+	public void setSuspended(final boolean trueFalse)
 	{
 		suspended = trueFalse;
 	}

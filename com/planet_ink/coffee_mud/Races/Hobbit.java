@@ -53,7 +53,7 @@ public class Hobbit extends StdRace
 	{
 		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
-	
+
 	@Override
 	public int shortestMale()
 	{
@@ -152,7 +152,7 @@ public class Hobbit extends StdRace
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

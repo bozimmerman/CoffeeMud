@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_SpeakWithDead extends Prayer
 {
 	@Override
@@ -88,7 +87,7 @@ public class Prayer_SpeakWithDead extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item target=super.getTarget(mob, mob.location(), givenTarget, commands, Wearable.FILTER_UNWORNONLY);
 		if(target==null)
@@ -105,13 +104,13 @@ public class Prayer_SpeakWithDead extends Prayer
 			mob.tell(L("You can't hear!"));
 			return false;
 		}
-		
+
 		if((((DeadBody)target).getSavedMOB()!=null)&&(CMLib.flags().isAnimalIntelligence(((DeadBody)target).getSavedMOB())))
 		{
 			mob.tell(L("That poor creature, @x1 was never able to speak.",target.name()));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -124,9 +123,9 @@ public class Prayer_SpeakWithDead extends Prayer
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				DeadBody body=(DeadBody)target;
+				final DeadBody body=(DeadBody)target;
 				mob.location().showOthers(mob, target, CMMsg.MSG_OK_ACTION, L("<T-NAME> whisper(s) to <S-NAME>."));
-				StringBuilder knowledge=new StringBuilder("");
+				final StringBuilder knowledge=new StringBuilder("");
 				knowledge.append(L("I was @x1, killed on @x2 by @x3 with @x4.",
 						body.getMobName(),
 						mob.location().getArea().getTimeObj().deriveClock(body.getTimeOfDeath()).getShortTimeDescription(),

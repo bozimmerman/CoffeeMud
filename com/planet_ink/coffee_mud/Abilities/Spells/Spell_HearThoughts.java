@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_HearThoughts extends Spell
 {
 
@@ -69,7 +68,7 @@ public class Spell_HearThoughts extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -82,7 +81,7 @@ public class Spell_HearThoughts extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
+				final int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
 				final List<Room> rooms=CMLib.tracking().getRadiantRooms(mob.location(), CMLib.tracking().newFlags(), range);
 				final List<MOB> mobs=new LinkedList<MOB>();
 				int numMobs= 8 + super.getXLEVELLevel(mob);

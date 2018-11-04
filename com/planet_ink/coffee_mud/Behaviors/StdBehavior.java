@@ -58,7 +58,7 @@ public class StdBehavior implements Behavior
 	}
 
 	@Override
-	public boolean grantsAggressivenessTo(MOB M)
+	public boolean grantsAggressivenessTo(final MOB M)
 	{
 		return false;
 	}
@@ -122,12 +122,12 @@ public class StdBehavior implements Behavior
 	}
 
 	@Override
-	public void registerDefaultQuest(String questName)
+	public void registerDefaultQuest(final String questName)
 	{
 	}
 
 	@Override
-	public void startBehavior(PhysicalAgent forMe)
+	public void startBehavior(final PhysicalAgent forMe)
 	{
 	}
 
@@ -139,7 +139,7 @@ public class StdBehavior implements Behavior
 	*/
 
 	@Override
-	public void setSavable(boolean truefalse)
+	public void setSavable(final boolean truefalse)
 	{
 		isSavableBehavior = truefalse;
 	}
@@ -162,7 +162,7 @@ public class StdBehavior implements Behavior
 		parms = "";
 	}
 
-	protected MOB getBehaversMOB(Tickable ticking)
+	protected MOB getBehaversMOB(final Tickable ticking)
 	{
 		if(ticking==null)
 			return null;
@@ -182,7 +182,7 @@ public class StdBehavior implements Behavior
 		return null;
 	}
 
-	protected Room getBehaversRoom(Tickable ticking)
+	protected Room getBehaversRoom(final Tickable ticking)
 	{
 		if(ticking==null)
 			return null;
@@ -212,7 +212,7 @@ public class StdBehavior implements Behavior
 	}
 
 	@Override
-	public void setParms(String parameters)
+	public void setParms(final String parameters)
 	{
 		parms = parameters;
 	}
@@ -248,13 +248,13 @@ public class StdBehavior implements Behavior
 	}
 
 	@Override
-	public boolean canImprove(int can_code)
+	public boolean canImprove(final int can_code)
 	{
 		return CMath.bset(canImproveCode(), can_code);
 	}
 
 	@Override
-	public boolean canImprove(PhysicalAgent E)
+	public boolean canImprove(final PhysicalAgent E)
 	{
 		if((E==null)&&(canImproveCode()==0))
 			return true;
@@ -273,12 +273,12 @@ public class StdBehavior implements Behavior
 		return false;
 	}
 
-	public static boolean canActAtAll(Tickable affecting)
+	public static boolean canActAtAll(final Tickable affecting)
 	{
 		return CMLib.flags().canActAtAll(affecting);
 	}
 
-	public static boolean canFreelyBehaveNormal(Tickable affecting)
+	public static boolean canFreelyBehaveNormal(final Tickable affecting)
 	{
 		return CMLib.flags().canFreelyBehaveNormal(affecting);
 	}
@@ -304,7 +304,7 @@ public class StdBehavior implements Behavior
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
-	
+
 	protected static final String[]	CODES	= { "CLASS", "TEXT" };
 
 	@Override
@@ -324,7 +324,7 @@ public class StdBehavior implements Behavior
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -337,7 +337,7 @@ public class StdBehavior implements Behavior
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{
@@ -361,7 +361,7 @@ public class StdBehavior implements Behavior
 		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
 	}
 
-	public boolean sameAs(Behavior E)
+	public boolean sameAs(final Behavior E)
 	{
 		if(!(E instanceof StdBehavior))
 			return false;

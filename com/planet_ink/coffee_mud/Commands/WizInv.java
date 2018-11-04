@@ -47,10 +47,10 @@ public class WizInv extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		String str=commands.get(0);
+		final String str=commands.get(0);
 		if(Character.toUpperCase(str.charAt(0))!='W')
 			commands.add(1,"OFF");
 		commands.remove(0);
@@ -106,7 +106,7 @@ public class WizInv extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.WIZINV);
 	}

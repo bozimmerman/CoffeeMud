@@ -92,7 +92,7 @@ public class Thief_ImprovedHiding extends ThiefSkill
 
 	public boolean active=false;
 
-	public void improve(MOB mob, boolean yesorno)
+	public void improve(final MOB mob, final boolean yesorno)
 	{
 		final Ability A=mob.fetchEffect("Thief_Hide");
 		if(A!=null)

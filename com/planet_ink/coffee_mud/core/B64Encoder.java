@@ -51,15 +51,16 @@ public class B64Encoder
 	/* Base 64 Encoding stuff */
 	private static byte[] ALPHABET;
 
-	public static final int NO_OPTIONS = 0;
-	public static final int ENCODE = 1;
-	public static final int DECODE = 0;
-	public static final int GZIP = 2;
-	public static final int DONT_BREAK_LINES = 8;
-	public static final int MAX_LINE_LENGTH = 76;
-	public static final byte EQUALS_SIGN = (byte)'=';
-	public static final byte NEW_LINE = (byte)'\n';
-	public static final String PREFERRED_ENCODING = "UTF-8";
+	public static final int		NO_OPTIONS			= 0;
+	public static final int		ENCODE				= 1;
+	public static final int		DECODE				= 0;
+	public static final int		GZIP				= 2;
+	public static final int		DONT_BREAK_LINES	= 8;
+	public static final int		MAX_LINE_LENGTH		= 76;
+	public static final byte	EQUALS_SIGN			= (byte) '=';
+	public static final byte	NEW_LINE			= (byte) '\n';
+	public static final String	PREFERRED_ENCODING	= "UTF-8";
+
 	public static final byte[] _NATIVE_ALPHABET = /* May be something funny like EBCDIC */
 	{
 		(byte)'A', (byte)'B', (byte)'C', (byte)'D', (byte)'E', (byte)'F', (byte)'G',

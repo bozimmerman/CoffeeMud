@@ -18,7 +18,6 @@ import java.util.*;
 */
 public interface CMap<K,F> extends Map<K,F>
 {
-	
 	public Enumeration<F> elements();
 
 	public Enumeration<K> keys();

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Herbology extends CommonSkill
 {
 	@Override
@@ -115,7 +114,7 @@ public class Herbology extends CommonSkill
 							herb=found.rawSecretIdentity();
 							found.setSecretIdentity("");
 						}
-	
+
 						commonTell(mob,L("@x1 appears to be @x2.",found.name(),herb));
 						String name=found.Name();
 						name=name.substring(0,name.length()-5).trim();
@@ -161,14 +160,14 @@ public class Herbology extends CommonSkill
 	{
 		return true;
 	}
-	
+
 	protected int duration(final MOB mob)
 	{
 		return getDuration(15,mob,1,2);
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -177,7 +176,7 @@ public class Herbology extends CommonSkill
 			commonTell(mob,L("You must specify what herb you want to identify."));
 			return false;
 		}
-		String finalName=CMParms.combine(commands,0);
+		final String finalName=CMParms.combine(commands,0);
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,finalName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{

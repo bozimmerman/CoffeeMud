@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_ChainStrike extends Prayer
 {
 	@Override
@@ -74,7 +73,7 @@ public class Prayer_ChainStrike extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, boolean auto, final int asLevel)
 	{
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)

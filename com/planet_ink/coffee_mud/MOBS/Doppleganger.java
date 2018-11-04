@@ -101,7 +101,7 @@ public class Doppleganger extends StdMOB
 	}
 
 	@Override
-	public DeadBody killMeDead(boolean createBody)
+	public DeadBody killMeDead(final boolean createBody)
 	{
 		revert();
 		return super.killMeDead(createBody);

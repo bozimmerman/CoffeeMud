@@ -38,7 +38,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Remort extends StdCommand
 {
 	public Remort()
@@ -52,14 +51,14 @@ public class Remort extends StdCommand
 	{
 		return access;
 	}
-	
+
 	private enum RemortRetain
 	{
-		HITPOINT, 
-		MANA, 
-		MOVE, 
-		LEVEL, 
-		ATTACK, 
+		HITPOINT,
+		MANA,
+		MOVE,
+		LEVEL,
+		ATTACK,
 		DEFENSE,
 		DAMAGE,
 		SKILL,
@@ -69,7 +68,7 @@ public class Remort extends StdCommand
 		BONUSSTATPOINT,
 		QUESTPOINT
 	}
-	
+
 	private static void recoverEverything(final MOB mob)
 	{
 		mob.recoverCharStats();
@@ -80,13 +79,13 @@ public class Remort extends StdCommand
 
 	protected void slowStop(final Session sess, final MOB mob, final PlayerAccount oldAcct) throws IOException
 	{
-		PlayerStats pStats = mob.playerStats();
+		final PlayerStats pStats = mob.playerStats();
 		if(pStats != null)
 		{
 			if(oldAcct != null)
 			{
 				// gets rid of any gains or changes from the remort process.
-				PlayerAccount realAcct = pStats.getAccount();
+				final PlayerAccount realAcct = pStats.getAccount();
 				if(realAcct != null)
 					oldAcct.copyInto(realAcct);
 			}
@@ -101,9 +100,9 @@ public class Remort extends StdCommand
 		CMLib.players().delPlayer(mob);
 		throw new IOException("Session stopped");
 	}
-	
+
 	@Override
-	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final Session session=mob.session();
@@ -119,7 +118,7 @@ public class Remort extends StdCommand
 			mob.tell(L("The requirements are: @x1",CMLib.masking().maskDesc(CMProps.getVar(CMProps.Str.REMORTMASK))));
 			return false;
 		}
-		
+
 		final int[] newLevel = new int[] { 1 };
 		final int[] newMana = new int[] { CMProps.getIntVar(CMProps.Int.STARTMANA) };
 		final int[] newDamage = new int[] { 0 };
@@ -153,7 +152,7 @@ public class Remort extends StdCommand
 			String rest="";
 			if(retainer == null)
 			{
-				for(RemortRetain r : RemortRetain.values())
+				for(final RemortRetain r : RemortRetain.values())
 				{
 					if(thing.endsWith(r.name()))
 					{
@@ -196,7 +195,7 @@ public class Remort extends StdCommand
 				else
 				if(CMath.isNumber(rest))
 				{
-					double d=CMath.s_double(rest);
+					final double d=CMath.s_double(rest);
 					if((d>0.0)&&(d<1.0))
 						pctAmount = d;
 					else
@@ -288,7 +287,7 @@ public class Remort extends StdCommand
 				{
 					for(final Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
 					{
-						Ability A=a.nextElement();
+						final Ability A=a.nextElement();
 						abilities.add(new Triad<String,String,Integer>(A.ID(),A.text(),new Integer(A.proficiency())));
 					}
 					int total = 0;
@@ -303,7 +302,7 @@ public class Remort extends StdCommand
 				{
 					for(final Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
 					{
-						Ability A=a.nextElement();
+						final Ability A=a.nextElement();
 						if(A.proficiency() >= 100)
 							abilities100.add(new Triad<String,String,Integer>(A.ID(),A.text(),new Integer(A.proficiency())));
 					}
@@ -319,7 +318,7 @@ public class Remort extends StdCommand
 				{
 					for(final Enumeration<String> f = mob.factions();f.hasMoreElements();)
 					{
-						String facID = f.nextElement();
+						final String facID = f.nextElement();
 						factions.add(new Pair<String,Integer>(facID,new Integer(mob.fetchFaction(facID))));
 					}
 					int total = 0;
@@ -334,7 +333,7 @@ public class Remort extends StdCommand
 				{
 					for(final Enumeration<String> f = mob.expertises();f.hasMoreElements();)
 					{
-						String expID = f.nextElement();
+						final String expID = f.nextElement();
 						expertises.add(expID);
 					}
 					int total = 0;
@@ -347,12 +346,12 @@ public class Remort extends StdCommand
 				}
 				case BONUSSTATPOINT:
 				{
-					
+
 					int total = 0;
 					int totalnow = 0;
-					for(int stat : CharStats.CODES.BASECODES())
+					for(final int stat : CharStats.CODES.BASECODES())
 						totalnow += mob.baseCharStats().getStat(stat);
-					int startStat=CMProps.getIntVar(CMProps.Int.STARTSTAT);
+					final int startStat=CMProps.getIntVar(CMProps.Int.STARTSTAT);
 					if((CMSecurity.isDisabled(CMSecurity.DisFlag.ATTRIBS)&&(startStat<=0)))
 						totalnow -= (10 * CharStats.CODES.BASECODES().length);
 					else
@@ -371,7 +370,7 @@ public class Remort extends StdCommand
 				}
 			}
 		}
-		
+
 		mob.tell(L("^HThis will drop your level back to @x1!",""+newLevel[0]));
 		session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",120000)
 		{
@@ -398,7 +397,7 @@ public class Remort extends StdCommand
 					Log.sysOut("Remort: "+mob.Name());
 					if(mob.numFollowers()>0)
 						CMLib.commands().forceStandardCommand(mob, "Nofollow",new XVector<String>("NOFOLLOW","ALL"));
-					
+
 					final PlayerStats pStats = mob.playerStats();
 					final PlayerAccount oldAccount;
 					if((pStats!=null)&&(pStats.getAccount()!=null))
@@ -422,18 +421,18 @@ public class Remort extends StdCommand
 						final int age=pStats.initializeBirthday(C,0,R);
 						mob.baseCharStats().setStat(CharStats.STAT_AGE,age);
 					}
-					for(int code : CharStats.CODES.SAVING_THROWS())
+					for(final int code : CharStats.CODES.SAVING_THROWS())
 						mob.baseCharStats().setStat(code, 0);
-					for(int code : CharStats.CODES.MAXCODES())
+					for(final int code : CharStats.CODES.MAXCODES())
 						mob.baseCharStats().setStat(code, 0);
 					mob.delAllAbilities();
 					mob.delAllBehaviors();
 					mob.delAllScripts();
 					mob.delAllExpertises();
 					mob.setExperience(0);
-					for(Triad<String,String,Integer> PA : abilities)
+					for(final Triad<String,String,Integer> PA : abilities)
 					{
-						Ability A=CMClass.getAbility(PA.first);
+						final Ability A=CMClass.getAbility(PA.first);
 						if(A!=null)
 						{
 							A.setMiscText(A.text());
@@ -441,9 +440,9 @@ public class Remort extends StdCommand
 							mob.addAbility(A);
 						}
 					}
-					for(Triad<String,String,Integer> PA : abilities100)
+					for(final Triad<String,String,Integer> PA : abilities100)
 					{
-						Ability A=CMClass.getAbility(PA.first);
+						final Ability A=CMClass.getAbility(PA.first);
 						if(A!=null)
 						{
 							A.setMiscText(A.text());
@@ -451,22 +450,22 @@ public class Remort extends StdCommand
 							mob.addAbility(A);
 						}
 					}
-					for(Pair<String,Integer> PA : factions)
+					for(final Pair<String,Integer> PA : factions)
 					{
 						mob.addFaction(PA.first, PA.second.intValue());
 					}
-					for(String PA : expertises)
+					for(final String PA : expertises)
 					{
 						mob.addExpertise(PA);
 					}
-					List<Achievement> reAwardTattoos = new LinkedList<Achievement>();
-					List<Tattoo> delTattoo =  new LinkedList<Tattoo>();
+					final List<Achievement> reAwardTattoos = new LinkedList<Achievement>();
+					final List<Tattoo> delTattoo =  new LinkedList<Tattoo>();
 					for(final Enumeration<Tattoo> t=mob.tattoos();t.hasMoreElements();)
 					{
-						Tattoo T=t.nextElement();
+						final Tattoo T=t.nextElement();
 						if(T != null)
 						{
-							Achievement A=CMLib.achievements().getAchievement(T.getTattooName());
+							final Achievement A=CMLib.achievements().getAchievement(T.getTattooName());
 							if((A != null) && (A.getAgent() == Agent.PLAYER))
 								reAwardTattoos.add(A);
 							else
@@ -480,10 +479,10 @@ public class Remort extends StdCommand
 					mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
 					mob.getStartRoom().bringMobHere(mob, true);
 					final String failsafeID = "RemoteFailSafe";
-					MsgListener finishRemoteListener = new MsgListener()
+					final MsgListener finishRemoteListener = new MsgListener()
 					{
 						final MsgListener me=this;
-						
+
 						@Override
 						public void executeMsg(final Environmental myHost, final CMMsg msg)
 						{
@@ -503,7 +502,7 @@ public class Remort extends StdCommand
 										tryTheme = Area.THEME_TECHNOLOGY;
 								}
 								final int theme=tryTheme;
-								Runnable remortRun = new Runnable()
+								final Runnable remortRun = new Runnable()
 								{
 									@Override
 									public void run()
@@ -531,13 +530,13 @@ public class Remort extends StdCommand
 														A.unInvoke();
 														mob.delEffect(A);
 													}
-													
+
 												}
 											}
-											Ability oldFailSafeA=mob.fetchEffect(failsafeID);
+											final Ability oldFailSafeA=mob.fetchEffect(failsafeID);
 											if(oldFailSafeA!=null)
 												mob.delEffect(oldFailSafeA);
-											ExtendableAbility failsafeA=(ExtendableAbility)CMClass.getAbility("ExtAbility");
+											final ExtendableAbility failsafeA=(ExtendableAbility)CMClass.getAbility("ExtAbility");
 											if(failsafeA!=null)
 											{
 												failsafeA.setAbilityID(failsafeID);
@@ -552,7 +551,7 @@ public class Remort extends StdCommand
 												{
 													mob.baseCharStats().setMyRace(CMLib.login().promptRace(theme, mob, mob.session()));
 												}
-												catch(Throwable x)
+												catch(final Throwable x)
 												{
 													sess.stopSession(true, true, false);
 												}
@@ -568,7 +567,7 @@ public class Remort extends StdCommand
 												{
 													mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.login().promptGender(theme, mob, mob.session()));
 												}
-												catch(Throwable x)
+												catch(final Throwable x)
 												{
 													sess.stopSession(true, true, false);
 												}
@@ -588,7 +587,7 @@ public class Remort extends StdCommand
 												{
 													CMLib.login().promptBaseCharStats(theme, mob, 300, mob.session(), bonusPointsPerStat[0]);
 												}
-												catch(Throwable x)
+												catch(final Throwable x)
 												{
 													sess.stopSession(true, true, false);
 												}
@@ -600,7 +599,7 @@ public class Remort extends StdCommand
 											}
 											else
 												CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_PRELOAD);
-											for(String prevCode : PCODE_RESTORE)
+											for(final String prevCode : PCODE_RESTORE)
 												pStats.setStat(prevCode, oldPStats.getStat(prevCode));
 											mob.basePhyStats().setSensesMask(0);
 											mob.baseCharStats().getMyRace().startRacing(mob,false);
@@ -613,7 +612,7 @@ public class Remort extends StdCommand
 												{
 													mob.baseCharStats().setCurrentClass(CMLib.login().promptCharClass(theme, mob, mob.session()));
 												}
-												catch(Throwable x)
+												catch(final Throwable x)
 												{
 													sess.stopSession(true, true, false);
 												}
@@ -653,15 +652,15 @@ public class Remort extends StdCommand
 											CMLib.utensils().confirmWearability(mob);
 											recoverEverything(mob);
 											mob.tell(L("You have remorted back to level @x1!",""+mob.phyStats().level()));
-											Ability A=mob.fetchEffect(failsafeID);
+											final Ability A=mob.fetchEffect(failsafeID);
 											if(A!=null)
 												mob.delEffect(A);
 											CMLib.database().DBUpdatePlayer(mob);
 										}
-										catch(IOException e)
+										catch(final IOException e)
 										{
 										}
-										catch(Exception e)
+										catch(final Exception e)
 										{
 											Log.errOut(e);
 										}
@@ -677,14 +676,14 @@ public class Remort extends StdCommand
 									CMLib.threads().scheduleRunnable(remortRun,500);
 							}
 						}
-							
+
 						@Override
 						public boolean okMessage(final Environmental myHost, final CMMsg msg)
 						{
 							return true;
 						}
 					};
-					ExtendableAbility failsafeA=(ExtendableAbility)CMClass.getAbility("ExtAbility");
+					final ExtendableAbility failsafeA=(ExtendableAbility)CMClass.getAbility("ExtAbility");
 					if(failsafeA!=null)
 					{
 						failsafeA.setAbilityID(failsafeID);
@@ -698,7 +697,7 @@ public class Remort extends StdCommand
 		});
 		return false;
 	}
-	
+
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{

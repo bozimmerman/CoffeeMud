@@ -231,7 +231,7 @@ public class Paladin extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
@@ -251,21 +251,21 @@ public class Paladin extends StdCharClass
 		}
 	}
 
-	@Override 
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
-	{ 
-		super.executeMsg(host,msg); 
+	{
+		super.executeMsg(host,msg);
 		Fighter.conquestExperience(this,host,msg);
 		Fighter.duelExperience(this, host, msg);
 	}
-	
+
 	@Override
 	public String getOtherLimitsDesc()
 	{
 		return L("Must remain good to avoid spell/skill failure chance.");
 	}
 
-	@Override 
+	@Override
 	public String getOtherBonusDesc()
 	{
 		return L("Receives bonus conquest and duel experience.");
@@ -311,7 +311,7 @@ public class Paladin extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

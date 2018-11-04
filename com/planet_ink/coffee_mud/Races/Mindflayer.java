@@ -44,14 +44,14 @@ public class Mindflayer extends Humanoid
 
 	final String brainStr;
 	final String brainStrs;
-	
+
 	public Mindflayer()
 	{
 		super();
 		brainStr = L("brain");
 		brainStrs = L("brains");
 	}
-	
+
 	@Override
 	public String name()
 	{
@@ -150,7 +150,7 @@ public class Mindflayer extends Humanoid
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -179,7 +179,7 @@ public class Mindflayer extends Humanoid
 	{
 		return -25;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

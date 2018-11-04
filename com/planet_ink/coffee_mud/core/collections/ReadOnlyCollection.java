@@ -24,13 +24,13 @@ public class ReadOnlyCollection<K> implements Collection<K>
 	}
 
 	@Override
-	public boolean add(K e)
+	public boolean add(final K e)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends K> c)
+	public boolean addAll(final Collection<? extends K> c)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -42,13 +42,13 @@ public class ReadOnlyCollection<K> implements Collection<K>
 	}
 
 	@Override
-	public boolean contains(Object o)
+	public boolean contains(final Object o)
 	{
 		return col.contains(o);
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> c)
+	public boolean containsAll(final Collection<?> c)
 	{
 		return col.containsAll(c);
 	}
@@ -66,19 +66,19 @@ public class ReadOnlyCollection<K> implements Collection<K>
 	}
 
 	@Override
-	public boolean remove(Object o)
+	public boolean remove(final Object o)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> c)
+	public boolean removeAll(final Collection<?> c)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> c)
+	public boolean retainAll(final Collection<?> c)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -96,7 +96,7 @@ public class ReadOnlyCollection<K> implements Collection<K>
 	}
 
 	@Override
-	public <T> T[] toArray(T[] a)
+	public <T> T[] toArray(final T[] a)
 	{
 		return col.toArray(a);
 	}

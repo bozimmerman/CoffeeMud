@@ -14,6 +14,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
+
 /*
    Copyright 2010-2018 Bo Zimmerman
 
@@ -38,12 +39,12 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 		T=new TreeMap<K,V>();
 	}
 
-	public STreeMap(Comparator<K> comp)
+	public STreeMap(final Comparator<K> comp)
 	{
 		T=new TreeMap<K,V>(comp);
 	}
 
-	public STreeMap(Map<K,V> E)
+	public STreeMap(final Map<K,V> E)
 	{
 		T=new TreeMap<K,V>();
 		if(E!=null)
@@ -57,7 +58,7 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 		return (TreeMap<K,V>)T.clone();
 	}
 
-	public synchronized Vector<String> toStringVector(String divider)
+	public synchronized Vector<String> toStringVector(final String divider)
 	{
 		final Vector<String> V=new Vector<String>(size());
 		for(final Object S : navigableKeySet())
@@ -75,13 +76,13 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> ceilingEntry(K key)
+	public synchronized java.util.Map.Entry<K, V> ceilingEntry(final K key)
 	{
 		return T.ceilingEntry(key);
 	}
 
 	@Override
-	public synchronized K ceilingKey(K key)
+	public synchronized K ceilingKey(final K key)
 	{
 		return T.ceilingKey(key);
 	}
@@ -110,13 +111,13 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	}
 
 	@Override
-	public synchronized boolean containsKey(Object key)
+	public synchronized boolean containsKey(final Object key)
 	{
 		return T.containsKey(key);
 	}
 
 	@Override
-	public synchronized boolean containsValue(Object value)
+	public synchronized boolean containsValue(final Object value)
 	{
 		return T.containsValue(value);
 	}
@@ -152,43 +153,43 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> floorEntry(K key)
+	public synchronized java.util.Map.Entry<K, V> floorEntry(final K key)
 	{
 		return T.floorEntry(key);
 	}
 
 	@Override
-	public synchronized K floorKey(K key)
+	public synchronized K floorKey(final K key)
 	{
 		return T.floorKey(key);
 	}
 
 	@Override
-	public synchronized V get(Object key)
+	public synchronized V get(final Object key)
 	{
 		return T.get(key);
 	}
 
 	@Override
-	public synchronized NavigableMap<K, V> headMap(K toKey, boolean inclusive)
+	public synchronized NavigableMap<K, V> headMap(final K toKey, final boolean inclusive)
 	{
 		return new ReadOnlyNavigableMap<K,V>(T.headMap(toKey, inclusive));
 	}
 
 	@Override
-	public synchronized SortedMap<K, V> headMap(K toKey)
+	public synchronized SortedMap<K, V> headMap(final K toKey)
 	{
 		return new ReadOnlySortedMap<K,V>(T.headMap(toKey));
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> higherEntry(K key)
+	public synchronized java.util.Map.Entry<K, V> higherEntry(final K key)
 	{
 		return T.higherEntry(key);
 	}
 
 	@Override
-	public synchronized K higherKey(K key)
+	public synchronized K higherKey(final K key)
 	{
 		return T.higherKey(key);
 	}
@@ -212,13 +213,13 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	}
 
 	@Override
-	public synchronized java.util.Map.Entry<K, V> lowerEntry(K key)
+	public synchronized java.util.Map.Entry<K, V> lowerEntry(final K key)
 	{
 		return T.lowerEntry(key);
 	}
 
 	@Override
-	public synchronized K lowerKey(K key)
+	public synchronized K lowerKey(final K key)
 	{
 		return T.lowerKey(key);
 	}
@@ -250,7 +251,7 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized V put(K key, V value)
+	public synchronized V put(final K key, final V value)
 	{
 		T=(TreeMap<K,V>)T.clone();
 		return T.put(key, value);
@@ -259,7 +260,7 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized void putAll(Map<? extends K, ? extends V> map)
+	public synchronized void putAll(final Map<? extends K, ? extends V> map)
 	{
 		T=(TreeMap<K,V>)T.clone();
 		T.putAll(map);
@@ -268,7 +269,7 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized V remove(Object key)
+	public synchronized V remove(final Object key)
 	{
 		T=(TreeMap<K,V>)T.clone();
 		return T.remove(key);
@@ -281,26 +282,26 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	}
 
 	@Override
-	public synchronized NavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey,
-			boolean toInclusive)
+	public synchronized NavigableMap<K, V> subMap(final K fromKey, final boolean fromInclusive, final K toKey,
+			final boolean toInclusive)
 			{
 		return new ReadOnlyNavigableMap<K,V>(T.subMap(fromKey, fromInclusive, toKey, toInclusive));
 	}
 
 	@Override
-	public synchronized SortedMap<K, V> subMap(K fromKey, K toKey)
+	public synchronized SortedMap<K, V> subMap(final K fromKey, final K toKey)
 	{
 		return new ReadOnlySortedMap<K,V>(T.subMap(fromKey, toKey));
 	}
 
 	@Override
-	public synchronized NavigableMap<K, V> tailMap(K fromKey, boolean inclusive)
+	public synchronized NavigableMap<K, V> tailMap(final K fromKey, final boolean inclusive)
 	{
 		return new ReadOnlyNavigableMap<K, V>(T.tailMap(fromKey, inclusive));
 	}
 
 	@Override
-	public synchronized SortedMap<K, V> tailMap(K fromKey)
+	public synchronized SortedMap<K, V> tailMap(final K fromKey)
 	{
 		return new ReadOnlySortedMap<K, V>(T.tailMap(fromKey));
 	}
@@ -312,7 +313,7 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	}
 
 	@Override
-	public boolean equals(Object o)
+	public boolean equals(final Object o)
 	{
 		return this==o;
 	}

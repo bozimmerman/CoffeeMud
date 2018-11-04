@@ -83,7 +83,7 @@ public class Thief_PetSteal extends ThiefSkill
 	protected boolean addLimbs = false;
 
 	@Override
-	public void affectCharStats(MOB affectedOne, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedOne, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedOne, affectableStats);
 		if((affected != invoker)&&(addLimbs))
@@ -92,13 +92,13 @@ public class Thief_PetSteal extends ThiefSkill
 			affectableStats.alterBodypart(Race.BODY_HAND,1);
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		
+
 		if((tickID==Tickable.TICKID_MOB)
 		&&(affected instanceof MOB)
 		&&(affected != invoker)
@@ -186,7 +186,7 @@ public class Thief_PetSteal extends ThiefSkill
 									M.recoverCharStats();
 									try
 									{
-										Ability A=CMClass.getAbility("Thief_Steal");
+										final Ability A=CMClass.getAbility("Thief_Steal");
 										if(A != null)
 										{
 											A.setProficiency(proficiency());
@@ -234,34 +234,34 @@ public class Thief_PetSteal extends ThiefSkill
 			final Room R=mob.location();
 			if(R==null)
 				return;
-			MOB target=(MOB)msg.target();
+			final MOB target=(MOB)msg.target();
 			if(commands.size()<1)
 			{
 				R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> look(s) at <T-NAME> expectantly."));
 				return;
 			}
-			
+
 			final Ability oldSteal = target.fetchEffect(ID());
 			if(oldSteal != null)
 			{
-				
+
 				target.delEffect(oldSteal);
 			}
-			
+
 			final String stealWhat = CMParms.combine(commands);
 			if(stealWhat.equalsIgnoreCase("NOTHING")||stealWhat.equalsIgnoreCase("STOP"))
 			{
 				R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> nod(s)."));
 				return;
 			}
-			
+
 			if(!super.proficiencyCheck(mob, 0, false))
 			{
 				R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> refuse(s)."));
 				return;
 			}
-			
-			Thief_PetSteal affect = (Thief_PetSteal)beneficialAffect(mob,target,0,0);
+
+			final Thief_PetSteal affect = (Thief_PetSteal)beneficialAffect(mob,target,0,0);
 			if(affect != null)
 			{
 				R.show(target,mob,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> nod(s)."));

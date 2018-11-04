@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_ShipLore extends StdSkill
 {
 	@Override
@@ -70,7 +69,7 @@ public class Skill_ShipLore extends StdSkill
 	private static final String[]	triggerStrings	= I(new String[] { "SHIPLORE", "SLORE" });
 
 	protected long lastFail = 0;
-	
+
 	@Override
 	public String[] triggerStrings()
 	{
@@ -90,13 +89,13 @@ public class Skill_ShipLore extends StdSkill
 	}
 
 	@Override
-	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+	public boolean preInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -110,13 +109,13 @@ public class Skill_ShipLore extends StdSkill
 			commands.remove(commands.size()-1);
 			report=true;
 		}
-		
+
 		if((System.currentTimeMillis() - lastFail) < 10000)
 		{
 			mob.tell(L("You still can't recall.  Give yourself some more time to think first."));
 			return false;
 		}
-		
+
 		final String shipName=CMParms.combine(commands);
 		Room shipChkR=R;
 		if(shipChkR.getArea() instanceof BoardableShip)
@@ -154,7 +153,7 @@ public class Skill_ShipLore extends StdSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
@@ -168,9 +167,9 @@ public class Skill_ShipLore extends StdSkill
 		{
 			room.send(mob,msg);
 			final int expertise = super.getXLEVELLevel(mob) / penalty;
-			List<String> tidbits = new ArrayList<String>();
-			PrivateProperty prop=CMLib.law().getPropertyRecord(targetI);
-			MOB ownerM=CMLib.law().getPropertyOwner(prop);
+			final List<String> tidbits = new ArrayList<String>();
+			final PrivateProperty prop=CMLib.law().getPropertyRecord(targetI);
+			final MOB ownerM=CMLib.law().getPropertyOwner(prop);
 			if((expertise > 0)||(penalty==1))
 			{
 				if(prop.getOwnerName().length()==0)
@@ -217,9 +216,9 @@ public class Skill_ShipLore extends StdSkill
 				else
 				{
 					final List<String> allNames=new ArrayList<String>(weaponNames.size());
-					for(String key : weaponNames.keySet())
+					for(final String key : weaponNames.keySet())
 					{
-						int[] num=weaponNames.get(key);
+						final int[] num=weaponNames.get(key);
 						if((num[0]==1)||(expertise<=2))
 							allNames.add(key);
 						else
@@ -229,9 +228,9 @@ public class Skill_ShipLore extends StdSkill
 					if(expertise >=8)
 					{
 						allNames.clear();
-						for(String key : loadedNames.keySet())
+						for(final String key : loadedNames.keySet())
 						{
-							int[] num=loadedNames.get(key);
+							final int[] num=loadedNames.get(key);
 							if((num[0]==1)||(expertise<=2))
 								allNames.add(key);
 							else
@@ -270,8 +269,8 @@ public class Skill_ShipLore extends StdSkill
 			{
 				if(A instanceof BoardableShip)
 				{
-					int itemLimit=0;
-					int weightLimit=0;
+					final int itemLimit=0;
+					final int weightLimit=0;
 					if((itemLimit == 0)&&(weightLimit == 0))
 						tidbits.add(L("this room can hold infinite items"));
 					else

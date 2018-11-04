@@ -64,21 +64,21 @@ public class WimpyAggressive extends Aggressive
 	}
 
 	@Override
-	public boolean grantsAggressivenessTo(MOB M)
+	public boolean grantsAggressivenessTo(final MOB M)
 	{
 		return ((M!=null)&&(CMLib.flags().isSleeping(M)))&&
 			CMLib.masking().maskCheck(getParms(),M,false);
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		tickDown=tickWait;
 	}
 
-	public static void pickAWimpyFight(MOB observer, boolean mobKiller, boolean misBehave, String attackMsg, String zapStr)
+	public static void pickAWimpyFight(final MOB observer, final boolean mobKiller, final boolean misBehave, final String attackMsg, final String zapStr)
 	{
 		if(!canFreelyBehaveNormal(observer))
 			return;
@@ -99,7 +99,7 @@ public class WimpyAggressive extends Aggressive
 		}
 	}
 
-	public static void tickWimpyAggressively(Tickable ticking, boolean mobKiller, boolean misBehave, int tickID, String attackMsg, String zapStr)
+	public static void tickWimpyAggressively(final Tickable ticking, final boolean mobKiller, final boolean misBehave, final int tickID, final String attackMsg, final String zapStr)
 	{
 		if(tickID!=Tickable.TICKID_MOB)
 			return;

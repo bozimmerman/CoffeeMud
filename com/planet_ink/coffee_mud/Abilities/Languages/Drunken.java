@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Drunken extends StdLanguage
 {
 	@Override
@@ -63,12 +62,12 @@ public class Drunken extends StdLanguage
 	}
 
 	@Override
-	public List<String[]> translationLists(String language)
+	public List<String[]> translationLists(final String language)
 	{
 		return wordLists;
 	}
 
-	protected Vector<Integer> getSChoices(StringBuffer word)
+	protected Vector<Integer> getSChoices(final StringBuffer word)
 	{
 		final Vector<Integer> V=new Vector<Integer>();
 		int x=word.toString().toUpperCase().indexOf('S');
@@ -81,7 +80,7 @@ public class Drunken extends StdLanguage
 		return V;
 	}
 
-	protected Vector<Integer> getVChoices(StringBuffer word)
+	protected Vector<Integer> getVChoices(final StringBuffer word)
 	{
 		final Vector<Integer> V=new Vector<Integer>();
 		for(int x=0;x<word.length();x++)
@@ -97,7 +96,7 @@ public class Drunken extends StdLanguage
 	}
 
 	@Override
-	public String translate(String language, String word)
+	public String translate(final String language, final String word)
 	{
 		final StringBuffer sbw=new StringBuffer(word);
 		Vector<Integer> V=getSChoices(sbw);

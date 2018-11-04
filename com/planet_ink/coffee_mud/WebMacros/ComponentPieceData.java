@@ -42,7 +42,7 @@ public class ComponentPieceData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String compID=httpReq.getUrlParameter("COMPONENT");
@@ -113,7 +113,7 @@ public class ComponentPieceData extends StdWebMacro
 						}
 					}
 					str.append("</SELECT>&nbsp;&nbsp;Sub-Type: ");
-					str.append("<INPUT TYPE=TEXT SIZE=2 NAME=\""+fixedCompID+"_PIECE_STYPE_"+last+"\" VALUE=\""+subType+"\">"); 
+					str.append("<INPUT TYPE=TEXT SIZE=2 NAME=\""+fixedCompID+"_PIECE_STYPE_"+last+"\" VALUE=\""+subType+"\">");
 				}
 			}
 			if(parms.containsKey("AMOUNT")||parms.containsKey("AMOUNTEDIT"))

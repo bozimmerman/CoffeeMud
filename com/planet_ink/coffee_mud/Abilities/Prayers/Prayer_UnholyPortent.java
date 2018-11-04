@@ -95,12 +95,12 @@ public class Prayer_UnholyPortent extends Prayer
 			mob.tell(L("The unholy portent curse is lifted."));
 		super.unInvoke();
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		if((msg.source()==affected) 
+		if((msg.source()==affected)
 		&& (msg.targetMinor() == CMMsg.TYP_WEAPONATTACK)
 		&& (msg.target() instanceof MOB)
 		&& (CMLib.flags().isEvil((MOB)msg.target())))
@@ -114,7 +114,7 @@ public class Prayer_UnholyPortent extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

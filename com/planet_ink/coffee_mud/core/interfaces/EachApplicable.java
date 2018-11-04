@@ -29,36 +29,36 @@ public interface EachApplicable<T>
 	 * @param a the object to work on
 	 */
 	public void apply(final T a);
-	
+
 	/**
 	 * Example class that affect phyStats
 	 */
 	public static class ApplyAffectPhyStats<T extends StatsAffecting> implements EachApplicable<T>
 	{
 		protected final Physical me;
-		
-		public ApplyAffectPhyStats(Physical me)
+
+		public ApplyAffectPhyStats(final Physical me)
 		{
 			this.me=me;
 		}
 
 		@Override
-		public void apply(T a) 
+		public void apply(final T a)
 		{
 			a.affectPhyStats(me, me.phyStats());
 		}
 	}
-	
+
 	/**
 	 * Example class that recovers phyStats
 	 */
 	public static class ApplyRecoverPhyStats<T extends Affectable> implements EachApplicable<T>
 	{
 		@Override
-		public void apply(T a) 
+		public void apply(final T a)
 		{
 			a.recoverPhyStats();
 		}
 	}
-	
+
 }

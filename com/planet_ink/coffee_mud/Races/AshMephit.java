@@ -44,7 +44,7 @@ public class AshMephit extends Mephit
 	{
 		super();
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Ash Mephit");
 
 	@Override
@@ -59,7 +59,7 @@ public class AshMephit extends Mephit
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_PIERCE, affectableStats.getStat(CharStats.STAT_SAVE_PIERCE)+50);
 		affectableStats.setStat(CharStats.STAT_SAVE_FIRE, affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+50);
-		
+
 		affectableStats.setStat(CharStats.STAT_SAVE_BLUNT, affectableStats.getStat(CharStats.STAT_SAVE_BLUNT)-100);
 	}
 
@@ -149,8 +149,8 @@ public class AshMephit extends Mephit
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -159,7 +159,7 @@ public class AshMephit extends Mephit
 		}
 		return body;
 	}
-	
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

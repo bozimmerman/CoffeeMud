@@ -28,7 +28,7 @@ public class CrossRefTreeMap<T, K>
 	final static Comparator<Object> comparator=new Comparator<Object>()
 	{
 		@Override
-		public int compare(Object o1, Object o2)
+		public int compare(final Object o1, final Object o2)
 		{
 			if(o1 == null)
 			{
@@ -60,18 +60,18 @@ public class CrossRefTreeMap<T, K>
 		maxTsInMap2=maxFirstForEachSecond;
 	}
 
-	public boolean containsFirst(T t)
+	public boolean containsFirst(final T t)
 	{
 		return map1.containsKey(t);
 	}
 
-	public boolean containsSecond(K k)
+	public boolean containsSecond(final K k)
 	{
 		return map2.containsKey(k);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Set<K> getFirst(T t)
+	public Set<K> getFirst(final T t)
 	{
 		final Set<K> kSet=map1.get(t);
 		if(kSet == null)
@@ -80,7 +80,7 @@ public class CrossRefTreeMap<T, K>
 	}
 
 	@SuppressWarnings("unchecked")
-	public Set<T> getSecond(K k)
+	public Set<T> getSecond(final K k)
 	{
 		final Set<T> tSet=map2.get(k);
 		if(tSet == null)
@@ -88,7 +88,7 @@ public class CrossRefTreeMap<T, K>
 		return tSet;
 	}
 
-	public synchronized void remove(T t, K k)
+	public synchronized void remove(final T t, final K k)
 	{
 		final TreeSet<K> tKs=map1.get(t);
 		if(tKs!=null)
@@ -120,7 +120,7 @@ public class CrossRefTreeMap<T, K>
 		}
 	}
 
-	public synchronized void removeFirst(T t)
+	public synchronized void removeFirst(final T t)
 	{
 		final TreeSet<K> tKs=map1.get(t);
 		if(tKs!=null)
@@ -143,7 +143,7 @@ public class CrossRefTreeMap<T, K>
 		}
 	}
 
-	public synchronized void removeSecond(K k)
+	public synchronized void removeSecond(final K k)
 	{
 		final TreeSet<T> kTs=map2.get(k);
 		if(kTs!=null)
@@ -166,7 +166,7 @@ public class CrossRefTreeMap<T, K>
 		}
 	}
 
-	public synchronized void change(T t, K k)
+	public synchronized void change(final T t, final K k)
 	{
 		TreeSet<K> tKs=map1.get(t);
 		while((tKs!=null)&&(tKs.size()>=maxKsInMap1))

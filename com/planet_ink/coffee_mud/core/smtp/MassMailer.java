@@ -51,7 +51,7 @@ public class MassMailer implements Runnable
 		public final String			overrideReplyTo;
 		public final boolean		usePrivateRules;
 
-		public MassMail(JournalEntry mail, String journalName, String overrideReplyTo, boolean usePrivateRules)
+		public MassMail(final JournalEntry mail, final String journalName, final String overrideReplyTo, final boolean usePrivateRules)
 		{
 			this.mail=mail;
 			this.journalName=journalName;
@@ -60,7 +60,7 @@ public class MassMailer implements Runnable
 		}
 	}
 
-	public MassMailer(CMProps page, String domain, Set<String> oldEmailComplaints)
+	public MassMailer(final CMProps page, final String domain, final Set<String> oldEmailComplaints)
 	{
 		this.page=page;
 		this.domain=domain;
@@ -94,7 +94,7 @@ public class MassMailer implements Runnable
 		return x;
 	}
 
-	public boolean deleteEmailIfOld(String journalName, String key, long date, int days)
+	public boolean deleteEmailIfOld(final String journalName, final String key, final long date, final int days)
 	{
 		final Calendar IQE=Calendar.getInstance();
 		IQE.setTimeInMillis(date);
@@ -108,12 +108,12 @@ public class MassMailer implements Runnable
 		return false;
 	}
 
-	public void addMail(JournalEntry mail, String journalName, String overrideReplyTo, boolean usePrivateRules)
+	public void addMail(final JournalEntry mail, final String journalName, final String overrideReplyTo, final boolean usePrivateRules)
 	{
 		entries.add(new MassMail(mail,journalName,overrideReplyTo,usePrivateRules));
 	}
 
-	protected boolean rightTimeToSendEmail(long email)
+	protected boolean rightTimeToSendEmail(final long email)
 	{
 		final long curr=System.currentTimeMillis();
 		final Calendar IQE=Calendar.getInstance();

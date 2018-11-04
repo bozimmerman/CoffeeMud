@@ -19,15 +19,15 @@ public class FullConvertingListIterator<K,L> implements ListIterator<L>
 {
 	private final ListIterator<K> iter;
 	private final FullConverter<K,L> converter;
-	
-	public FullConvertingListIterator(ListIterator<K> i, FullConverter<K,L> conv)
+
+	public FullConvertingListIterator(final ListIterator<K> i, final FullConverter<K,L> conv)
 	{
 		iter=i;
 		converter=conv;
 	}
 
 	@Override
-	public void add(L arg0)
+	public void add(final L arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -75,7 +75,7 @@ public class FullConvertingListIterator<K,L> implements ListIterator<L>
 	}
 
 	@Override
-	public void set(L arg0)
+	public void set(final L arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}

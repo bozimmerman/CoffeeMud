@@ -103,7 +103,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public void setLoaded(boolean truefalse)
+	public void setLoaded(final boolean truefalse)
 	{
 		loaded = truefalse;
 	}
@@ -115,7 +115,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public void setName(String newname)
+	public void setName(final String newname)
 	{
 		name = newname;
 	}
@@ -127,7 +127,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public void setSubject(String newsubject)
+	public void setSubject(final String newsubject)
 	{
 		subject = newsubject;
 	}
@@ -139,7 +139,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public void setDescription(String newdescription)
+	public void setDescription(final String newdescription)
 	{
 		description = newdescription;
 	}
@@ -151,7 +151,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public void setAuthor(String newname)
+	public void setAuthor(final String newname)
 	{
 		author = newname;
 	}
@@ -163,7 +163,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public void setFlags(long flag)
+	public void setFlags(final long flag)
 	{
 		bitmap = flag;
 	}
@@ -175,7 +175,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public void setQualZapper(String newZap)
+	public void setQualZapper(final String newZap)
 	{
 		qualZapper = newZap;
 	}
@@ -187,7 +187,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public void setExpiration(long time)
+	public void setExpiration(final long time)
 	{
 		expiration = time;
 	}
@@ -199,7 +199,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public void setOptions(List<PollOption> V)
+	public void setOptions(final List<PollOption> V)
 	{
 		options = V;
 	}
@@ -211,7 +211,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public void setResults(List<PollResult> V)
+	public void setResults(final List<PollResult> V)
 	{
 		results = V;
 	}
@@ -255,7 +255,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public PollResult getMyVote(MOB mob)
+	public PollResult getMyVote(final MOB mob)
 	{
 		if (mob == null)
 			return null;
@@ -284,7 +284,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public void addVoteResult(PollResult R)
+	public void addVoteResult(final PollResult R)
 	{
 		CMLib.polls().loadPollIfNecessary(this);
 		results.add(R);
@@ -292,7 +292,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public boolean mayIVote(MOB mob)
+	public boolean mayIVote(final MOB mob)
 	{
 		if (mob == null)
 			return false;
@@ -312,7 +312,7 @@ public class DefaultPoll implements Poll
 	}
 
 	@Override
-	public boolean mayISeeResults(MOB mob)
+	public boolean mayISeeResults(final MOB mob)
 	{
 		if (mob == null)
 			return false;

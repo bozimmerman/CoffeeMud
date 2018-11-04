@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_DesperateMoves extends FighterSkill
 {
 	@Override
@@ -49,7 +48,7 @@ public class Fighter_DesperateMoves extends FighterSkill
 		return localizedName;
 	}
 
-	@Override 
+	@Override
 	public String displayText()
 	{
 		if((affected==invoker)&&(invoker!=null)&&(invoker.curState().getHitPoints()<(int)Math.round(CMath.div(invoker.maxState().getHitPoints(),10.0))))

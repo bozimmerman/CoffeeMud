@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class MasterChopping extends Chopping
 {
 	@Override
@@ -58,7 +57,7 @@ public class MasterChopping extends Chopping
 	}
 
 	@Override
-	protected int getDuration(MOB mob, int level)
+	protected int getDuration(final MOB mob, final int level)
 	{
 		return getDuration(100, mob, level, 37);
 	}

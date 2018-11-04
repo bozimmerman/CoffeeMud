@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Shatter extends Spell
 {
 
@@ -68,7 +67,7 @@ public class Spell_Shatter extends Spell
 		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
 	}
 
-	public Item getItem(MOB mobTarget)
+	public Item getItem(final MOB mobTarget)
 	{
 		final Vector<Item> goodPossibilities=new Vector<Item>();
 		final Vector<Item> possibilities=new Vector<Item>();
@@ -93,7 +92,7 @@ public class Spell_Shatter extends Spell
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -108,7 +107,7 @@ public class Spell_Shatter extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;

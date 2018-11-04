@@ -72,7 +72,7 @@ public class Prop_AddDamage extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		final List<String> parms=CMParms.parse(newMiscText.toUpperCase());

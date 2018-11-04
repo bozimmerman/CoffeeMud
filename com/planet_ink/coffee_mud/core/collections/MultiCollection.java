@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.core.CMParms;
 public class MultiCollection<T> implements Collection<T>
 {
 	private final Vector<Collection<? extends T>> collections = new Vector<Collection<? extends T>>();
-	
+
 	public MultiCollection(final Collection<T>... colls)
 	{
 		super();
@@ -33,7 +33,7 @@ public class MultiCollection<T> implements Collection<T>
 	}
 
 	@Override
-	public boolean add(T arg0) 
+	public boolean add(final T arg0)
 	{
 		if(collections.size()>0)
 		{
@@ -42,7 +42,7 @@ public class MultiCollection<T> implements Collection<T>
 				final Collection<T> coll=(Collection<T>)collections.get(collections.size()-1);
 				return coll.add(arg0);
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 		}
@@ -50,7 +50,7 @@ public class MultiCollection<T> implements Collection<T>
 	}
 
 	@Override
-	public boolean addAll(final Collection<? extends T> arg0) 
+	public boolean addAll(final Collection<? extends T> arg0)
 	{
 		collections.add(arg0);
 		collections.trimToSize();
@@ -58,13 +58,13 @@ public class MultiCollection<T> implements Collection<T>
 	}
 
 	@Override
-	public void clear() 
+	public void clear()
 	{
 		collections.clear();
 	}
 
 	@Override
-	public boolean contains(Object arg0) 
+	public boolean contains(final Object arg0)
 	{
 		if(collections.size()>0)
 		{
@@ -76,7 +76,7 @@ public class MultiCollection<T> implements Collection<T>
 						return true;
 				}
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 		}
@@ -84,7 +84,7 @@ public class MultiCollection<T> implements Collection<T>
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0) 
+	public boolean containsAll(final Collection<?> arg0)
 	{
 		for(final Object arg : arg0)
 		{
@@ -95,7 +95,7 @@ public class MultiCollection<T> implements Collection<T>
 	}
 
 	@Override
-	public boolean isEmpty() 
+	public boolean isEmpty()
 	{
 		if(collections.size()>0)
 		{
@@ -107,7 +107,7 @@ public class MultiCollection<T> implements Collection<T>
 						return false;
 				}
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 		}
@@ -115,13 +115,13 @@ public class MultiCollection<T> implements Collection<T>
 	}
 
 	@Override
-	public Iterator<T> iterator() 
+	public Iterator<T> iterator()
 	{
 		return new MultiIterable<T>(collections,size()).iterator();
 	}
 
 	@Override
-	public boolean remove(Object arg0) 
+	public boolean remove(final Object arg0)
 	{
 		if(collections.size()>0)
 		{
@@ -133,7 +133,7 @@ public class MultiCollection<T> implements Collection<T>
 						return true;
 				}
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 		}
@@ -141,7 +141,7 @@ public class MultiCollection<T> implements Collection<T>
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> arg0) 
+	public boolean removeAll(final Collection<?> arg0)
 	{
 		if(collections.size()>0)
 		{
@@ -151,7 +151,7 @@ public class MultiCollection<T> implements Collection<T>
 				for(int c=0;c<collections.size();c++)
 					returnable = collections.get(c).removeAll(arg0) || returnable;
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 			return returnable;
@@ -160,7 +160,7 @@ public class MultiCollection<T> implements Collection<T>
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> arg0) 
+	public boolean retainAll(final Collection<?> arg0)
 	{
 		if(collections.size()>0)
 		{
@@ -170,7 +170,7 @@ public class MultiCollection<T> implements Collection<T>
 				for(int c=0;c<collections.size();c++)
 					returnable = collections.get(c).retainAll(arg0) || returnable;
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 			return returnable;
@@ -179,7 +179,7 @@ public class MultiCollection<T> implements Collection<T>
 	}
 
 	@Override
-	public int size() 
+	public int size()
 	{
 		int total=0;
 		if(collections.size()>0)
@@ -189,7 +189,7 @@ public class MultiCollection<T> implements Collection<T>
 				for(int c=0;c<collections.size();c++)
 					total += collections.get(c).size();
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 		}
@@ -197,7 +197,7 @@ public class MultiCollection<T> implements Collection<T>
 	}
 
 	@Override
-	public Object[] toArray() 
+	public Object[] toArray()
 	{
 		final Object[][] arrays=new Object[collections.size()][];
 		try
@@ -205,7 +205,7 @@ public class MultiCollection<T> implements Collection<T>
 			for(int c=0;c<collections.size();c++)
 				arrays[c]=collections.get(c).toArray();
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 		}
 		return CMParms.combine(arrays);
@@ -214,13 +214,13 @@ public class MultiCollection<T> implements Collection<T>
 	@SuppressWarnings("hiding")
 
 	@Override
-	public <T> T[] toArray(T[] arg0) 
+	public <T> T[] toArray(T[] arg0)
 	{
 		final Object[] objs=toArray();
 		if(arg0.length<objs.length)
 			arg0=Arrays.copyOf(arg0, objs.length);
 		int i=0;
-		for(Object o : objs)
+		for(final Object o : objs)
 			arg0[i++]=(T)o;
 		return arg0;
 	}

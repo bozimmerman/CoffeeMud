@@ -270,7 +270,7 @@ public interface Poll extends CMCommon
 		 * Creates a single choosable option for this poll
 		 * @param opt the text of the option, as shown to the user
 		 */
-		public PollOption(String opt)
+		public PollOption(final String opt)
 		{
 			text = opt;
 		}
@@ -298,7 +298,7 @@ public interface Poll extends CMCommon
 		 * @param ipaddr user name of the user who has voted
 		 * @param ans cardinal order number of the option chosen by this user in the poll
 		 */
-		public PollResult(String usr, String ipaddr, String ans)
+		public PollResult(final String usr, final String ipaddr, final String ans)
 		{
 			user=usr;
 			ip=ipaddr;

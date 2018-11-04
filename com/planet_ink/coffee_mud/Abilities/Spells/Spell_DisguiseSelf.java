@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_DisguiseSelf extends Spell
 {
 
@@ -86,9 +85,9 @@ public class Spell_DisguiseSelf extends Spell
 	private String newName="Bob";
 	private String className="Fighter";
 	private String genderName="M";
-	
+
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		raceName=CMParms.getParmStr(text,"RACE","");
@@ -96,7 +95,7 @@ public class Spell_DisguiseSelf extends Spell
 		className=CMParms.getParmStr(text,"CLASS","");
 		genderName=CMParms.getParmStr(text,"GENDER","");
 	}
-	
+
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
@@ -137,7 +136,7 @@ public class Spell_DisguiseSelf extends Spell
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -150,24 +149,24 @@ public class Spell_DisguiseSelf extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=(givenTarget instanceof MOB) ? (MOB)givenTarget : mob;
-		
+
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already in disguise!"));
 			return false;
 		}
-		
+
 		if(commands.size()<1)
 		{
 			mob.tell(mob,target,null,L("Disguise <T-NAMESELF> as whom?"));
 			return false;
 		}
-		
-		String whomName=CMParms.combine(commands);
-		
+
+		final String whomName=CMParms.combine(commands);
+
 		MOB targetM = CMLib.map().findFirstInhabitant(new XVector<Room>(mob.location()).elements(), mob, whomName, 5);
 		if(targetM == null)
 			targetM=CMLib.map().findFirstInhabitant(mob.location().getArea().getCompleteMap(), mob, whomName, 5);
@@ -183,13 +182,13 @@ public class Spell_DisguiseSelf extends Spell
 			mob.tell(mob,target,null,L("You can't disguise <T-NAMESELF> as  @x1?",targetM.name()));
 			return false;
 		}
-		
+
 		if((targetM.phyStats().level() > mob.phyStats().level()))
 		{
 			mob.tell(mob,target,null,L("You aren't powerful enough to disguise <T-NAMESELF> as @x1?",targetM.name()));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -201,7 +200,7 @@ public class Spell_DisguiseSelf extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=beneficialAffect(mob,target,asLevel,adjustedLevel(mob,asLevel));
+				final Ability A=beneficialAffect(mob,target,asLevel,adjustedLevel(mob,asLevel));
 				if(A!=null)
 					A.setMiscText("RACE=\""+targetM.charStats().raceName()+"\" CLASS=\""+targetM.charStats().displayClassName()+"\" NAME=\""+targetM.name()+"\" GENDER="+targetM.charStats().genderName());
 				target.recoverCharStats();

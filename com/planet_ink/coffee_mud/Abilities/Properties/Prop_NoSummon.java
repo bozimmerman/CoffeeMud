@@ -59,7 +59,7 @@ public class Prop_NoSummon extends Property
 	}
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		nonAggroOK=CMParms.parse(text.toUpperCase()).contains("ALLOWNONAGGR");
 

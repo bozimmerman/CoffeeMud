@@ -33,7 +33,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_Flippers extends Chant
 {
 	@Override
@@ -91,7 +90,7 @@ public class Chant_Flippers extends Chant
 	}
 
 	private final AtomicBoolean noRecurse = new AtomicBoolean(false);
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -117,8 +116,8 @@ public class Chant_Flippers extends Chant
 				Room finalRoom = targetRoom;
 				for(int i=0;i<numRooms;i++)
 				{
-					Room R=finalRoom.getRoomInDir(dir);
-					Exit E=finalRoom.getExitInDir(dir);
+					final Room R=finalRoom.getRoomInDir(dir);
+					final Exit E=finalRoom.getExitInDir(dir);
 					if((R!=null)
 					&&(E!=null)
 					&&(CMLib.flags().isWateryRoom(R))
@@ -151,7 +150,7 @@ public class Chant_Flippers extends Chant
 			{
 				noRecurse.set(false);
 			}
-			
+
 		}
 		return true;
 	}
@@ -163,7 +162,7 @@ public class Chant_Flippers extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=super.getTarget(mob, commands, givenTarget, false, false);
 		if(target == null)

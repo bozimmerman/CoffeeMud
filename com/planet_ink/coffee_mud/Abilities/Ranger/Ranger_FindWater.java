@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Ranger_FindWater extends StdAbility
 {
 	@Override
@@ -200,7 +199,7 @@ public class Ranger_FindWater extends StdAbility
 		}
 	}
 
-	public String waterCheck(MOB mob, Item I, Item container, StringBuffer msg)
+	public String waterCheck(final MOB mob, final Item I, final Item container, final StringBuffer msg)
 	{
 		if(I==null)
 			return "";
@@ -221,13 +220,13 @@ public class Ranger_FindWater extends StdAbility
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
-	public String waterHere(MOB mob, Environmental E, Item container)
+	public String waterHere(final MOB mob, final Environmental E, final Item container)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		if(E==null)
@@ -300,7 +299,7 @@ public class Ranger_FindWater extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(final Ability A : V) A.unInvoke();
@@ -328,7 +327,7 @@ public class Ranger_FindWater extends StdAbility
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR);
-		int range=60 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
+		final int range=60 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room room : checkSet)
 		{

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Practice extends StdCommand
 {
 	public Practice()
@@ -47,10 +46,10 @@ public class Practice extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("You have @x1 practice points.  Enter HELP PRACTICE for more information.",""+mob.getPractices()));
@@ -103,7 +102,7 @@ public class Practice extends StdCommand
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to know @x1.",abilityName));
 			return false;
 		}
-		
+
 		if((teacher==null)||(!CMLib.flags().canBeSeenBy(teacher,mob)))
 		{
 			if(triedTeacher)

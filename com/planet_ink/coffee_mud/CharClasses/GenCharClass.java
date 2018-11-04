@@ -87,7 +87,7 @@ public class GenCharClass extends StdCharClass
 	//protected Vector<Item> outfitChoices=null; from stdcharclass -- but don't forget them!
 	private Pair<String,Integer>[] 			   minimumStatRequirements	= new Pair[0];
 	protected Map<Integer,CMSecurity.SecGroup> securityGroupCache		= new Hashtable<Integer,CMSecurity.SecGroup>();
-	
+
 	@Override
 	public String getManaFormula()
 	{
@@ -169,7 +169,7 @@ public class GenCharClass extends StdCharClass
 	}
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeaponSet;
 	}
@@ -209,9 +209,9 @@ public class GenCharClass extends StdCharClass
 	{
 		return 0;
 	}
-	
+
 	@Override
-	public SecGroup getSecurityFlags(int classLevel)
+	public SecGroup getSecurityFlags(final int classLevel)
 	{
 		if(securityGroups.length==0)
 			return super.getSecurityFlags(classLevel);
@@ -248,7 +248,7 @@ public class GenCharClass extends StdCharClass
 	}
 
 	@Override
-	public String name(int classLevel)
+	public String name(final int classLevel)
 	{
 		for(int i=nameLevels.length-1;i>=0;i--)
 		{
@@ -369,7 +369,7 @@ public class GenCharClass extends StdCharClass
 	}
 
 	@Override
-	public void cloneFix(CharClass C)
+	public void cloneFix(final CharClass C)
 	{
 	}
 
@@ -399,12 +399,12 @@ public class GenCharClass extends StdCharClass
 		return true;
 	}
 
-	public void setLoaded(boolean truefalse)
+	public void setLoaded(final boolean truefalse)
 	{
 	}
 
 	@Override
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
+	public boolean qualifiesForThisClass(final MOB mob, final boolean quiet)
 	{
 		if(!super.qualifiesForThisClass(mob,quiet))
 			return false;
@@ -432,7 +432,7 @@ public class GenCharClass extends StdCharClass
 		return superQual;
 	}
 
-	protected String getCharClassLocatorID(CharClass C)
+	protected String getCharClassLocatorID(final CharClass C)
 	{
 		if(C==null)
 			return "";
@@ -513,7 +513,7 @@ public class GenCharClass extends StdCharClass
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		if(adjState!=null)
 		{
@@ -673,7 +673,7 @@ public class GenCharClass extends StdCharClass
 	}
 
 	@Override
-	public void setClassParms(String parms)
+	public void setClassParms(final String parms)
 	{
 		if(parms.trim().length()==0)
 			return;
@@ -1131,11 +1131,11 @@ public class GenCharClass extends StdCharClass
 		}
 		return "";
 	}
-	
+
 	protected String[] tempables=new String[9];
-	
+
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(String code, final String val)
 	{
 		int num=0;
 		int numDex=code.length();
@@ -1248,7 +1248,7 @@ public class GenCharClass extends StdCharClass
 		case 24:
 			CMLib.ableMapper().delCharMappings(ID());
 			break;
-		case 25: 
+		case 25:
 			CMLib.ableMapper().addCharAbilityMapping(ID(),
 													 CMath.s_int(tempables[1]),
 													 val,
@@ -1506,7 +1506,7 @@ public class GenCharClass extends StdCharClass
 	}
 
 	@Override
-	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
+	public void startCharacter(final MOB mob, final boolean isBorrowedClass, final boolean verifyOnly)
 	{
 		super.startCharacter(mob,isBorrowedClass,verifyOnly);
 		if((!verifyOnly)&&(startAdjState!=null))
@@ -1551,7 +1551,7 @@ public class GenCharClass extends StdCharClass
 	}
 
 	@Override
-	public boolean sameAs(CharClass E)
+	public boolean sameAs(final CharClass E)
 	{
 		if(!(E instanceof GenCharClass))
 			return false;

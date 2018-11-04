@@ -62,7 +62,7 @@ public class TaxiBehavior extends Concierge
 	}
 
 	@Override
-	protected String getGiveMoneyMessage(final MOB mob, Environmental observer, Environmental destination, String moneyName)
+	protected String getGiveMoneyMessage(final MOB mob, final Environmental observer, final Environmental destination, final String moneyName)
 	{
 		if(observer instanceof MOB)
 			return L("I can take you to @x1, but you'll need to give me @x2 first.",getDestinationName(mob,destination),moneyName);
@@ -72,11 +72,11 @@ public class TaxiBehavior extends Concierge
 		else
 			return L("I can take you to @x1, but you'll need to drop @x2 first.",getDestinationName(mob,destination),moneyName);
 	}
-	
+
 	@Override
-	protected void giveMerchandise(MOB whoM, Room destR, Environmental observer, Room room, TrackingFlags trackingFlags)
+	protected void giveMerchandise(final MOB whoM, final Room destR, final Environmental observer, final Room room, final TrackingFlags trackingFlags)
 	{
-		MOB fromM=getTalker(observer,room);
+		final MOB fromM=getTalker(observer,room);
 		final ArrayList<Room> set=new ArrayList<Room>();
 		CMLib.tracking().getRadiantRooms(fromM.location(),set,roomRadiusFlags,null,maxRange,null);
 		trailTo=CMLib.tracking().findTrailToRoom(fromM.location(), destR, trackingFlags, maxRange);
@@ -89,7 +89,7 @@ public class TaxiBehavior extends Concierge
 		if(observer instanceof Affectable)
 			((Affectable)observer).addNonUninvokableEffect(this.isEnRouter);
 	}
-	
+
 	@Override
 	protected boolean disableComingsAndGoings()
 	{
@@ -97,7 +97,7 @@ public class TaxiBehavior extends Concierge
 	}
 
 	@Override
-	protected final MOB getTalker(Environmental o, Room room)
+	protected final MOB getTalker(final Environmental o, final Room room)
 	{
 		if(o instanceof Rideable)
 		{
@@ -106,13 +106,13 @@ public class TaxiBehavior extends Concierge
 		}
 		return super.getTalker(o, room);
 	}
-	
-	private void endTheRide(Environmental observer)
+
+	private void endTheRide(final Environmental observer)
 	{
 		if(this.isEnRouter != null)
 		{
 			final Room room=CMLib.map().roomLocation(observer);
-			MOB conciergeM=this.getTalker(observer,room);
+			final MOB conciergeM=this.getTalker(observer,room);
 			if(room==this.destRoom)
 				CMLib.commands().postSay(conciergeM,null,L("We're here.  Best of luck!."),false,false);
 			else
@@ -125,7 +125,7 @@ public class TaxiBehavior extends Concierge
 				rideable=((Rider)observer).riding();
 			if((rideable!=null)&&(room!=null))
 			{
-				MOB mob=this.getTalker(observer, room);
+				final MOB mob=this.getTalker(observer, room);
 				for(final Enumeration<Rider> r = rideable.riders(); r.hasMoreElements(); )
 				{
 					final Rider rider=r.nextElement();
@@ -162,7 +162,7 @@ public class TaxiBehavior extends Concierge
 			riderM = null;
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -210,7 +210,7 @@ public class TaxiBehavior extends Concierge
 		}
 		return true;
 	}
-	
+
 	@Override
 	protected void resetDefaults()
 	{
@@ -225,15 +225,15 @@ public class TaxiBehavior extends Concierge
 		basePrice=10.0;
 		perRoomPrice=1.0;
 	}
-	
+
 	@Override
-	public void startBehavior(PhysicalAgent behaving)
+	public void startBehavior(final PhysicalAgent behaving)
 	{
 		super.startBehavior(behaving);
 		if((talkerName.length()==0) && (behaving instanceof Item))
 			talkerName="the driver";
 	}
-	
+
 	@Override
 	protected void resetFlags()
 	{
@@ -244,9 +244,9 @@ public class TaxiBehavior extends Concierge
 		roomRadiusFlags.plus(TrackingFlag.OPENONLY);
 		trackingFlags.plus(TrackingFlag.OUTDOORONLY);
 	}
-	
+
 	@Override
-	public void setParms(String newParm)
+	public void setParms(final String newParm)
 	{
 		super.setParms(newParm);
 		if(roomRadiusFlags.contains(TrackingFlag.AREAONLY))

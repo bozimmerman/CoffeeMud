@@ -96,7 +96,7 @@ public class MeatCuring extends CommonSkill
 			&&(found!=null))
 			{
 				final MOB mob=(MOB)affected;
-				Ability oldA=found.fetchEffect("Prayer_Purify");
+				final Ability oldA=found.fetchEffect("Prayer_Purify");
 				if((oldA==null)
 				||(oldA.canBeUninvoked() && success))
 				{
@@ -117,7 +117,7 @@ public class MeatCuring extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -126,8 +126,8 @@ public class MeatCuring extends CommonSkill
 			commonTell(mob,L("You must specify what meat you want to cure."));
 			return false;
 		}
-		String what=commands.get(0);
-		Item target = super.getTarget(mob, null, givenTarget, commands, Wearable.FILTER_UNWORNONLY);
+		final String what=commands.get(0);
+		final Item target = super.getTarget(mob, null, givenTarget, commands, Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			commonTell(mob,L("You don't seem to have a '@x1'.",what));
@@ -141,19 +141,19 @@ public class MeatCuring extends CommonSkill
 			commonTell(mob,L("You can't cure that."));
 			return false;
 		}
-		
+
 		if(target.fetchEffect("Poison_Rotten")!=null)
 		{
 			commonTell(mob,L("That's already rotten and can't be cured."));
 			return false;
 		}
-		
+
 		if(target.fetchEffect("Prayer_Purify")!=null)
 		{
 			commonTell(mob,L("That's already been cured."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		verb=L("curing @x1",target.name());

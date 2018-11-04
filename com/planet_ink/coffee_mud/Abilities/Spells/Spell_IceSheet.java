@@ -34,7 +34,6 @@ import java.util.*;
 */
 public class Spell_IceSheet extends Spell
 {
-
 	@Override
 	public String ID()
 	{
@@ -82,7 +81,7 @@ public class Spell_IceSheet extends Spell
 	}
 
 	private Item theSheet = null;
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -140,7 +139,7 @@ public class Spell_IceSheet extends Spell
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob != null)&&(target instanceof MOB))
 		{
@@ -156,7 +155,7 @@ public class Spell_IceSheet extends Spell
 		}
 		return super.castingQuality(mob, target);
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -182,7 +181,7 @@ public class Spell_IceSheet extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -209,7 +208,7 @@ public class Spell_IceSheet extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Spell_IceSheet sheet=(Spell_IceSheet)beneficialAffect(mob,mob.location(),asLevel,0);
+				final Spell_IceSheet sheet=(Spell_IceSheet)beneficialAffect(mob,mob.location(),asLevel,0);
 				if(sheet != null)
 				{
 					sheet.theSheet = CMClass.getBasicItem("StdItem");

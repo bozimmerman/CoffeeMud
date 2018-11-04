@@ -117,7 +117,7 @@ public class Skill_Stowaway extends StdSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		this.abilityCode = newCode;
 	}
@@ -173,13 +173,13 @@ public class Skill_Stowaway extends StdSkill
 		this.destR=null;
 		this.boxR=null;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		
+
 		if((affected instanceof MOB)
 		&&(((MOB)affected).location()==boxR)
 		&&(destR!=null))
@@ -221,9 +221,9 @@ public class Skill_Stowaway extends StdSkill
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -235,18 +235,18 @@ public class Skill_Stowaway extends StdSkill
 			mob.tell(L("You must be on a shore to stow-away."));
 			return false;
 		}
-		
+
 		final Ability seaChartA=mob.fetchAbility("Skill_SeaCharting");
 		Room destR=null;
 		if(commands.size()>0)
 		{
 			if(seaChartA!=null)
 			{
-				List<String> chartRooms=CMParms.parseAny(seaChartA.text(),';',true);
-				String name=CMParms.combine(commands,0);
+				final List<String> chartRooms=CMParms.parseAny(seaChartA.text(),';',true);
+				final String name=CMParms.combine(commands,0);
 				if(CMath.isInteger(name))
 				{
-					int x=CMath.s_int(name);
+					final int x=CMath.s_int(name);
 					if((x<1)||(x>chartRooms.size()))
 					{
 						mob.tell(L("@x1 is not a valid number.  Check your sea charts!"));
@@ -256,7 +256,7 @@ public class Skill_Stowaway extends StdSkill
 				}
 				else
 				{
-					for(String roomID : chartRooms)
+					for(final String roomID : chartRooms)
 					{
 						final Room R2=CMLib.map().getRoom(roomID);
 						if((R2!=null)&&(CMLib.english().containsString(R2.displayText(mob), name)))
@@ -267,7 +267,7 @@ public class Skill_Stowaway extends StdSkill
 					}
 					if(destR==null)
 					{
-						for(String roomID : chartRooms)
+						for(final String roomID : chartRooms)
 						{
 							final Room R2=CMLib.map().getRoom(roomID);
 							if((R2!=null)&&(CMLib.english().containsString(R2.description(mob), name)))
@@ -290,11 +290,11 @@ public class Skill_Stowaway extends StdSkill
 				return false;
 			}
 		}
-		
-		TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.WATERSURFACEORSHOREONLY);
-		int radius=50 + (10*(super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob)));
-		List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, radius);
-		boolean success=proficiencyCheck(mob,0,auto);
+
+		final TrackingFlags flags=CMLib.tracking().newFlags().plus(TrackingFlag.WATERSURFACEORSHOREONLY);
+		final int radius=50 + (10*(super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob)));
+		final List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, radius);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if((destR==null)||(!rooms.contains(destR))||(!success))
 		{
 			for(final Iterator<Room> i=rooms.iterator();i.hasNext();)
@@ -312,15 +312,15 @@ public class Skill_Stowaway extends StdSkill
 			}
 			destR=rooms.get(CMLib.dice().roll(1, rooms.size(), -1));
 		}
-		
+
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
-		
+
 		final CMMsg leaveMsg=CMClass.getMsg(mob,R,this,CMMsg.MSG_LEAVE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<S-NAME> stow(s) away!"):L("<S-NAME> slip(s) into a cargo box!"));
 		if(R.okMessage(mob,leaveMsg))
 		{
 			R.send(mob,leaveMsg);
-			Room boxR=CMClass.getLocale("WoodRoom");
+			final Room boxR=CMClass.getLocale("WoodRoom");
 			boxR.setDisplayText(L("You are squeezed into a dark cramped shipping box."));
 			boxR.addNonUninvokableEffect(CMClass.getAbility("Prop_Crawlspace"));
 			boxR.addNonUninvokableEffect(CMClass.getAbility("Prop_RoomDark"));
@@ -329,7 +329,7 @@ public class Skill_Stowaway extends StdSkill
 			boxR.addNonUninvokableEffect(consA);
 			boxR.bringMobHere(mob, false);
 			CMLib.commands().forceStandardCommand(mob, "Sit",new XVector<String>(""));
-			Skill_Stowaway stow=(Skill_Stowaway)super.beneficialAffect(mob, mob, asLevel, (int)((4 * 60 * 1000) / CMProps.getTickMillis())  / (1+super.getXTIMELevel(mob)));
+			final Skill_Stowaway stow=(Skill_Stowaway)super.beneficialAffect(mob, mob, asLevel, (int)((4 * 60 * 1000) / CMProps.getTickMillis())  / (1+super.getXTIMELevel(mob)));
 			stow.destR=destR;
 			stow.boxR=boxR;
 			stow.tickUp=0;

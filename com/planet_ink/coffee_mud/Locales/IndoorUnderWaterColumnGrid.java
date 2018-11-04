@@ -51,11 +51,11 @@ public class IndoorUnderWaterColumnGrid extends UnderWaterColumnGrid
 	{
 		return "IndoorUnderWater";
 	}
-	
+
 	@Override
 	public int maxRange()
 	{
 		return 5;
 	}
-	
+
 }

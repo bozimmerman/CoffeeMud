@@ -34,7 +34,6 @@ import java.util.*;
 */
 public class Prop_HereEnabler extends Prop_HaveEnabler
 {
-
 	@Override
 	public String ID()
 	{
@@ -46,7 +45,7 @@ public class Prop_HereEnabler extends Prop_HaveEnabler
 	{
 		return "Granting skills on arrival";
 	}
-	
+
 	@Override
 	protected int canAffectCode()
 	{
@@ -103,19 +102,19 @@ public class Prop_HereEnabler extends Prop_HaveEnabler
 								}
 							}
 						}
-						
+
 						@Override
 						public boolean canBeUninvoked()
 						{
 							return true;
 						}
-						
+
 						@Override
 						public boolean isSavable()
 						{
 							return false;
 						}
-						
+
 						@Override
 						public void unInvoke()
 						{
@@ -137,11 +136,11 @@ public class Prop_HereEnabler extends Prop_HaveEnabler
 				}
 			}
 		}
-		
+
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 		processing=false;
 	}

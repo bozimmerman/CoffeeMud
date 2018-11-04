@@ -26,7 +26,7 @@ import java.io.FileNotFoundException;
  * @author Bo Zimmerman
  *
  */
-public interface FileManager 
+public interface FileManager
 {
 	/**
 	 * Return the appropriate file separator for this fs
@@ -54,7 +54,7 @@ public interface FileManager
 	 * @throws FileNotFoundException the file was not found
 	 */
 	public byte[] readFile(File file) throws IOException, FileNotFoundException;
-	
+
 	/**
 	 * Return a readable input stream of the given files data
 	 * @param file the file to read
@@ -63,7 +63,7 @@ public interface FileManager
 	 * @throws FileNotFoundException the file was not found
 	 */
 	public InputStream getFileStream(File file) throws IOException, FileNotFoundException;
-	
+
 	/**
 	 * Returns whether the given file can be randomly accessed
 	 * @param file the filemanager file to check for random access support.
@@ -79,7 +79,7 @@ public interface FileManager
 	 * @throws FileNotFoundException the file was not found
 	 */
 	public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException;
-	
+
 	/**
 	 * Returns true if the file exists and is readable and meets any other
 	 * criteria the manager desires before deciding whether to allow reading.

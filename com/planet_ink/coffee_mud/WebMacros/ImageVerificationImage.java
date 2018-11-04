@@ -74,7 +74,7 @@ public class ImageVerificationImage extends StdWebMacro
 	{
 		return true;
 	}
-	
+
 	public ImageVerificationImage ()
 	{
 	}
@@ -114,7 +114,7 @@ public class ImageVerificationImage extends StdWebMacro
 		return verSet;
 	}
 
-	public String getFilename(HTTPRequest httpReq, String filename)
+	public String getFilename(final HTTPRequest httpReq, final String filename)
 	{
 		final String foundFilename=httpReq.getUrlParameter("FILENAME");
 		if((foundFilename!=null)&&(foundFilename.length()>0))
@@ -123,7 +123,7 @@ public class ImageVerificationImage extends StdWebMacro
 	}
 
 	@Override
-	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public byte[] runBinaryMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		final ByteArrayOutputStream bout=new ByteArrayOutputStream();
 		try
@@ -181,17 +181,17 @@ public class ImageVerificationImage extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		return "[Unimplemented string method!]";
 	}
 
-	public ImageVerificationImage (String oldValue, OutputStream out) throws IOException
+	public ImageVerificationImage (final String oldValue, final OutputStream out) throws IOException
 	{
 		this(34,120,oldValue,out);
 	}
 
-	public ImageVerificationImage (int height, int width, String oldValue, OutputStream out) throws IOException
+	public ImageVerificationImage (final int height, final int width, final String oldValue, final OutputStream out) throws IOException
 	{
 		final BufferedImage bimage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		final Random rand=new Random(System.currentTimeMillis());

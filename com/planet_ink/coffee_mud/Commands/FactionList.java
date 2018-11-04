@@ -31,7 +31,6 @@ import java.util.*;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 public class FactionList extends StdCommand
 {
 	public FactionList()
@@ -46,7 +45,7 @@ public class FactionList extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final StringBuffer msg=new StringBuffer(L("\n\r^HFaction Standings:^?^N\n\r"));
@@ -70,7 +69,7 @@ public class FactionList extends StdCommand
 		return false;
 	}
 
-	public String formatFactionLine(String name,int faction)
+	public String formatFactionLine(final String name,final int faction)
 	{
 		final StringBuffer line=new StringBuffer();
 		line.append("  "+CMStrings.padRight(CMStrings.capitalizeAndLower(CMLib.factions().getName(name).toLowerCase()),21)+" ");
@@ -85,7 +84,7 @@ public class FactionList extends StdCommand
 		return line.toString();
 	}
 
-	public String calcRangeBar(String factionID, int faction)
+	public String calcRangeBar(final String factionID, final int faction)
 	{
 		final StringBuffer bar=new StringBuffer();
 		final Faction F=CMLib.factions().getFaction(factionID);
@@ -96,7 +95,7 @@ public class FactionList extends StdCommand
 		double pctThisFaction = 0;
 		for(final Enumeration<Faction.FRange> r=F.ranges(); r.hasMoreElements();)
 		{
-			Faction.FRange range=r.nextElement();
+			final Faction.FRange range=r.nextElement();
 			if(range.low() > faction)
 				numLower+=1.0;
 			numTotal+=1.0;
@@ -105,7 +104,7 @@ public class FactionList extends StdCommand
 		if((FR!=null)&&(FR.high() > FR.low()))
 			pctThisFaction = (faction - FR.low()) / (FR.high() - FR.low());
 		final double fillBit=(25.0 / numTotal);
-		final double fill = (fillBit * (numTotal - numLower)) + (fillBit * pctThisFaction); 
+		final double fill = (fillBit * (numTotal - numLower)) + (fillBit * pctThisFaction);
 		for(int i=0;i<fill;i++)
 			bar.append("*");
 		return bar.toString();

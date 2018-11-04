@@ -50,9 +50,9 @@ public class Prop_OpenPassword extends Property
 	private String languageID = "";
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
-		int x=newMiscText.indexOf(';');
+		final int x=newMiscText.indexOf(';');
 		if(x>0)
 		{
 			password=newMiscText.substring(x+1).trim();

@@ -25,13 +25,13 @@ public class FilteredEnumeration<K> implements Enumeration<K>
 	private K 				nextElement = null;
 	private boolean 		initialized = false;
 
-	public FilteredEnumeration(Enumeration<K> eset, Filterer<K> fil)
+	public FilteredEnumeration(final Enumeration<K> eset, final Filterer<K> fil)
 	{
 		enumer=eset;
 		filterer=fil;
 	}
 
-	public void setFilterer(Filterer<K> fil)
+	public void setFilterer(final Filterer<K> fil)
 	{
 		filterer=fil;
 	}

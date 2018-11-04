@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Dance_Waltz extends Dance
 {
 	@Override
@@ -58,7 +57,7 @@ public class Dance_Waltz extends Dance
 	private int[] statadd=null;
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
 		if(statadd==null)
@@ -76,7 +75,7 @@ public class Dance_Waltz extends Dance
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		statadd=null;
 		return super.invoke(mob,commands,givenTarget,auto,asLevel);

@@ -74,7 +74,7 @@ public class Trap_MonsterCage extends StdTrap
 
 	protected MOB monster=null;
 
-	protected Item getCagedAnimal(MOB mob)
+	protected Item getCagedAnimal(final MOB mob)
 	{
 		if(mob==null)
 			return null;
@@ -94,7 +94,7 @@ public class Trap_MonsterCage extends StdTrap
 	}
 
 	@Override
-	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		if(P==null)
 			return null;
@@ -142,7 +142,7 @@ public class Trap_MonsterCage extends StdTrap
 	}
 
 	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P))
 			return false;
@@ -156,7 +156,7 @@ public class Trap_MonsterCage extends StdTrap
 	}
 
 	@Override
-	public void spring(MOB target)
+	public void spring(final MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null)&&(text().length()>0))
 		{

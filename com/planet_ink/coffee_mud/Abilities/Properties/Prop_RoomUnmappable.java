@@ -55,7 +55,7 @@ public class Prop_RoomUnmappable extends Property
 	private int bitStream=PhyStats.SENSE_ROOMUNMAPPABLE;
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		bitStream=0;

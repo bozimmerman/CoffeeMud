@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_FindDriftwood extends Chant_FindPlant
 {
 	@Override
@@ -78,7 +77,7 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 
 	private Item theDriftwood = null;
 	private Room theDriftroom = null;
-	
+
 	@Override
 	protected int[] okMaterials()
 	{
@@ -97,9 +96,9 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 
 		lookingFor = "driftwood";
 	}
-	
+
 	@Override
-	public String itsHere(MOB mob, Room R)
+	public String itsHere(final MOB mob, final Room R)
 	{
 		if(R==null)
 			return "";
@@ -127,11 +126,11 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 			});
 		}
 	}
-	
+
 	@Override
-	protected boolean findWhatImLookingFor(MOB mob, String s)
+	protected boolean findWhatImLookingFor(final MOB mob, final String s)
 	{
-		TrackingLibrary.TrackingFlags flags = getTrackingFlags();
+		final TrackingLibrary.TrackingFlags flags = getTrackingFlags();
 		int limit = 50 - (super.getXLEVELLevel(mob) + super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,limit);
 		if((checkSet == null) || (checkSet.size() < limit))
@@ -176,9 +175,9 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 		theTrail = null;
 		return true;
 	}
-	
+
 	@Override
-	protected List<Room> makeTheTrail(MOB mob, MOB target, Room mobRoom)
+	protected List<Room> makeTheTrail(final MOB mob, final MOB target, final Room mobRoom)
 	{
 		if(theDriftroom == null)
 		{
@@ -189,19 +188,19 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 			theDriftwood = null;
 			return null;
 		}
-				
-		TrackingLibrary.TrackingFlags flags = getTrackingFlags();
-		List<Room> rooms=new XVector<Room>(theDriftroom);
-		int limit = 50 - (super.getXLEVELLevel(mob));
+
+		final TrackingLibrary.TrackingFlags flags = getTrackingFlags();
+		final List<Room> rooms=new XVector<Room>(theDriftroom);
+		final int limit = 50 - (super.getXLEVELLevel(mob));
 		if(rooms.size()>0)
 			theTrail=CMLib.tracking().findTrailToAnyRoom(mobRoom,rooms,flags,limit);
 		return theTrail;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
-		Physical affected = this.affected;
+		final Physical affected = this.affected;
 		super.unInvoke();
 		if(theDriftwood != null)
 		{
@@ -223,9 +222,9 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 		flags = CMLib.tracking().newFlags().plus(TrackingLibrary.TrackingFlag.WATERSURFACEONLY);
 		return flags;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands==null)
 			commands=new ArrayList<String>(1);

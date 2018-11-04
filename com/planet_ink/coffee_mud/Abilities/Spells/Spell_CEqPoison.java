@@ -37,15 +37,16 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-public class Spell_CEqPoison extends Spell_BaseClanEq {
-
-@Override
-public String ID()
+public class Spell_CEqPoison extends Spell_BaseClanEq
 {
-	return "Spell_CEqPoison";
-}
 
-private final static String localizedName = CMLib.lang().L("ClanEnchant Poison");
+	@Override
+	public String ID()
+	{
+		return "Spell_CEqPoison";
+	}
+
+	private final static String localizedName = CMLib.lang().L("ClanEnchant Poison");
 
 	@Override
 	public String name()
@@ -53,19 +54,19 @@ private final static String localizedName = CMLib.lang().L("ClanEnchant Poison")
 		return localizedName;
 	}
 
-@Override
-public int abstractQuality()
-{
-	return Ability.QUALITY_INDIFFERENT;
-}
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
 
-  @Override
-public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
-  {
-	type="Poison";
-	// All the work is done by the base model
-	if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-		return false;
-	  return true;
-  }
+	@Override
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
+	{
+		type="Poison";
+		// All the work is done by the base model
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+		return true;
+	}
 }

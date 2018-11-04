@@ -70,19 +70,19 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public void registerDefaultQuest(String questName)
+	public void registerDefaultQuest(final String questName)
 	{
 		engine().registerDefaultQuest(questName);
 	}
 
 	@Override
-	public MOB getMakeMOB(Tickable ticking)
+	public MOB getMakeMOB(final Tickable ticking)
 	{
 		return engine().getMakeMOB(ticking);
 	}
 
 	@Override
-	public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest)
+	public boolean endQuest(final PhysicalAgent hostObj, final MOB mob, final String quest)
 	{
 		engine().endQuest(hostObj, mob, quest);
 		return false;
@@ -123,32 +123,32 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public String[] parseEval(String evaluable) throws ScriptParseException
+	public String[] parseEval(final String evaluable) throws ScriptParseException
 	{
 		return engine().parseEval(evaluable);
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		engine().setScript(newParms);
 		super.setParms("");
 	}
 
 	@Override
-	public String getVar(String context, String variable)
+	public String getVar(final String context, final String variable)
 	{
 		return engine().getVar(context, variable);
 	}
 
 	@Override
-	public boolean isVar(String context, String variable)
+	public boolean isVar(final String context, final String variable)
 	{
 		return engine().isVar(context, variable);
 	}
 
 	@Override
-	public void setVar(String context, String variable, String value)
+	public void setVar(final String context, final String variable, final String value)
 	{
 		engine().setVar(context, variable, value);
 	}
@@ -160,7 +160,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public void setVarScope(String scope)
+	public void setVarScope(final String scope)
 	{
 		engine().setVarScope(scope);
 	}
@@ -178,23 +178,23 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public void setLocalVarXML(String xml)
+	public void setLocalVarXML(final String xml)
 	{
 		if(engine().getVarScope().length()>0)
 			engine().setLocalVarXML(xml);
 	}
 
 	@Override
-	public boolean eval(PhysicalAgent scripted,
-						MOB source,
-						Environmental target,
-						MOB monster,
-						Item primaryItem,
-						Item secondaryItem,
-						String msg,
-						Object[] tmp,
-						String[][] eval,
-						int startEval)
+	public boolean eval(final PhysicalAgent scripted,
+						final MOB source,
+						final Environmental target,
+						final MOB monster,
+						final Item primaryItem,
+						final Item secondaryItem,
+						final String msg,
+						final Object[] tmp,
+						final String[][] eval,
+						final int startEval)
 	{
 		return engine().eval(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, eval, startEval);
 	}
@@ -206,21 +206,21 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public void setScript(String newParms)
+	public void setScript(final String newParms)
 	{
 		engine().setScript(newParms);
 	}
 
 	@Override
-	public String execute(PhysicalAgent scripted,
-						  MOB source,
-						  Environmental target,
-						  MOB monster,
-						  Item primaryItem,
-						  Item secondaryItem,
-						  DVector script,
-						  String msg,
-						  Object[] tmp)
+	public String execute(final PhysicalAgent scripted,
+						  final MOB source,
+						  final Environmental target,
+						  final MOB monster,
+						  final Item primaryItem,
+						  final Item secondaryItem,
+						  final DVector script,
+						  final String msg,
+						  final Object[] tmp)
 	{
 		return engine().execute(scripted, source, target, monster, primaryItem, secondaryItem, script, msg, tmp);
 	}
@@ -256,16 +256,16 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public String varify(MOB source, Environmental target,
-		PhysicalAgent scripted, MOB monster, Item primaryItem,
-		Item secondaryItem, String msg, Object[] tmp, String varifyable)
+	public String varify(final MOB source, final Environmental target,
+		final PhysicalAgent scripted, final MOB monster, final Item primaryItem,
+		final Item secondaryItem, final String msg, final Object[] tmp, final String varifyable)
 	{
 		return engine().varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, varifyable);
 	}
 
 	@Override
-	public String functify(PhysicalAgent scripted, MOB source, Environmental target, MOB monster, Item primaryItem,
-							Item secondaryItem, String msg, Object[] tmp, String evaluable)
+	public String functify(final PhysicalAgent scripted, final MOB source, final Environmental target, final MOB monster, final Item primaryItem,
+							final Item secondaryItem, final String msg, final Object[] tmp, final String evaluable)
 							{
 		return engine().functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, evaluable);
 	}

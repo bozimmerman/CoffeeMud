@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Swim extends StdSkill
 {
 	@Override
@@ -107,7 +106,7 @@ public class Skill_Swim extends StdSkill
 		return CMProps.getSkillCombatActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMABLETIME), 50.0), 1.0));
 	}
 
-	public boolean placeToSwim(Room r2)
+	public boolean placeToSwim(final Room r2)
 	{
 		if((r2==null)
 		||(!CMLib.flags().isWateryRoom(r2)))
@@ -115,7 +114,7 @@ public class Skill_Swim extends StdSkill
 		return true;
 	}
 
-	public boolean placeToSwim(Environmental E)
+	public boolean placeToSwim(final Environmental E)
 	{
 		return placeToSwim(CMLib.map().roomLocation(E));
 	}
@@ -128,16 +127,16 @@ public class Skill_Swim extends StdSkill
 	}
 
 	@Override
-	public int[] usageCost(MOB mob, boolean ignoreClassOverride)
+	public int[] usageCost(final MOB mob, final boolean ignoreClassOverride)
 	{
-		int[] cost = super.usageCost(mob, ignoreClassOverride);
+		final int[] cost = super.usageCost(mob, ignoreClassOverride);
 		if((mob != null)&&(mob.isRacialAbility(ID())))
 			return new int[cost.length];
 		return cost;
 	}
 
 	@Override
-	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+	public boolean preInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
 	{
 		if(secondsElapsed==0)
 		{
@@ -188,7 +187,7 @@ public class Skill_Swim extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final int dirCode=CMLib.directions().getDirectionCode(CMParms.combine(commands,0));
 		if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))

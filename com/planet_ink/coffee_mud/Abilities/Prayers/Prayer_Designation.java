@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Designation extends Prayer
 {
 	@Override
@@ -86,7 +85,7 @@ public class Prayer_Designation extends Prayer
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectedStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);
 		if((affected instanceof MOB)
@@ -102,7 +101,7 @@ public class Prayer_Designation extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -133,7 +132,7 @@ public class Prayer_Designation extends Prayer
 			return false;
 		}
 
-		String baseName = myName;
+		final String baseName = myName;
 		if((target.name().toUpperCase().startsWith("A "))
 		||(target.name().toUpperCase().startsWith("AN "))
 		||(target.name().toUpperCase().startsWith("SOME ")))

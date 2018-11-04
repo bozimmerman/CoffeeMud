@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_WordRecall extends Spell
 {
 
@@ -87,7 +86,7 @@ public class Spell_WordRecall extends Spell
 	}
 
 	@Override
-	protected int verbalCastCode(MOB mob, Physical target, boolean auto)
+	protected int verbalCastCode(final MOB mob, final Physical target, final boolean auto)
 	{
 		int affectType=CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_RECALL;
 		if(auto)
@@ -96,7 +95,7 @@ public class Spell_WordRecall extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

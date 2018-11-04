@@ -119,7 +119,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public void setReset(int Reset)
+	public void setReset(final int Reset)
 	{
 	}
 
@@ -130,24 +130,24 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public void resetTrap(MOB mob)
+	public void resetTrap(final MOB mob)
 	{
 	}
 
 	@Override
-	public boolean maySetTrap(MOB mob, int asLevel)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean maySetTrap(final MOB mob, final int asLevel)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canReSetTrap(MOB mob)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canReSetTrap(final MOB mob)
 	{
 		return false;
 	}
@@ -168,7 +168,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		if(P==null)
 			return null;
@@ -180,7 +180,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		return T;
 	}
 
-	public boolean isLocalExempt(MOB target)
+	public boolean isLocalExempt(final MOB target)
 	{
 		if(target==null)
 			return false;
@@ -209,9 +209,9 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			return true;
 		return false;
 	}
-	
+
 	@Override
-	public void spring(MOB M)
+	public void spring(final MOB M)
 	{
 		if((!sprung)
 		&&(CMLib.dice().rollPercentage()+(2*getXLEVELLevel(invoker()))>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
@@ -284,7 +284,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -295,7 +295,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room trapThis=mob.location();
 
@@ -327,7 +327,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			attempts =  (RawMaterial.CODES.HARDNESS(resource.material())+super.getXLEVELLevel(mob))*2; 
+			attempts =  (RawMaterial.CODES.HARDNESS(resource.material())+super.getXLEVELLevel(mob))*2;
 			if(success)
 			{
 				mob.tell(L("You have set the trap."));

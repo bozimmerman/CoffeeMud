@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_AdLib extends BardSkill
 {
 	@Override
@@ -91,7 +90,7 @@ public class Skill_AdLib extends BardSkill
 	{
 		return USAGE_MOVEMENT|USAGE_MANA;
 	}
-	
+
 	protected MOB adLibbingM = null;
 
 	@Override
@@ -157,14 +156,14 @@ public class Skill_AdLib extends BardSkill
 			}
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob, commands, givenTarget);
 		if((target==null)||(target==mob))
 			return false;
-		
+
 		final Room R=mob.location();
 		if(R==null)
 			return false;
@@ -180,7 +179,7 @@ public class Skill_AdLib extends BardSkill
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				Skill_AdLib A=(Skill_AdLib)beneficialAffect(mob,mob,asLevel,3);
+				final Skill_AdLib A=(Skill_AdLib)beneficialAffect(mob,mob,asLevel,3);
 				if(A!=null)
 					A.adLibbingM=target;
 			}

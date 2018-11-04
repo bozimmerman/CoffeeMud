@@ -37,7 +37,7 @@ public class Read extends StdCommand
 	public Read()
 	{
 	}
-	
+
 	private final String[]	access	= I(new String[] { "READ" });
 
 	@Override
@@ -48,7 +48,7 @@ public class Read extends StdCommand
 
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Environmental.class,String.class,Boolean.class}};
 
-	public boolean read(MOB mob, Environmental thisThang, String theRest, boolean quiet)
+	public boolean read(final MOB mob, final Environmental thisThang, final String theRest, final boolean quiet)
 	{
 		if((thisThang==null)||((!(thisThang instanceof Item)&&(!(thisThang instanceof Exit))))||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
@@ -79,7 +79,7 @@ public class Read extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
@@ -106,7 +106,7 @@ public class Read extends StdCommand
 		read(mob,thisThang, theRest, false);
 		return false;
 	}
-	
+
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
@@ -126,7 +126,7 @@ public class Read extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;

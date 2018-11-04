@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class FowlSpeak extends AnimalSpeak
 {
 	@Override
@@ -53,9 +52,9 @@ public class FowlSpeak extends AnimalSpeak
 	{
 		"cackle","gobble","hiss","honk","quack"
 	};
-	
+
 	@Override
-	protected String[] getSounds() 
+	protected String[] getSounds()
 	{
 		return animalSounds;
 	}

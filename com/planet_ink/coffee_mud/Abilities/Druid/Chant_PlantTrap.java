@@ -90,7 +90,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 	}
 
 	@Override
-	public void setReset(int Reset)
+	public void setReset(final int Reset)
 	{
 	}
 
@@ -101,12 +101,12 @@ public class Chant_PlantTrap extends Chant implements Trap
 	}
 
 	@Override
-	public void resetTrap(MOB mob)
+	public void resetTrap(final MOB mob)
 	{
 	}
 
 	@Override
-	public boolean maySetTrap(MOB mob, int asLevel)
+	public boolean maySetTrap(final MOB mob, final int asLevel)
 	{
 		return false;
 	}
@@ -118,13 +118,13 @@ public class Chant_PlantTrap extends Chant implements Trap
 	}
 
 	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canReSetTrap(MOB mob)
+	public boolean canReSetTrap(final MOB mob)
 	{
 		return false;
 	}
@@ -136,7 +136,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 	}
 
 	@Override
-	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean permanent)
+	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean permanent)
 	{
 		beneficialAffect(mob, P, qualifyingClassLevel + trapBonus, 0);
 		return (Trap) P.fetchEffect(ID());
@@ -161,12 +161,12 @@ public class Chant_PlantTrap extends Chant implements Trap
 	}
 
 	@Override
-	public void spring(MOB M)
+	public void spring(final MOB M)
 	{
 		doMyThing(M);
 	}
 
-	public boolean isLocalExempt(MOB target)
+	public boolean isLocalExempt(final MOB target)
 	{
 		if(target==null)
 			return false;
@@ -195,9 +195,9 @@ public class Chant_PlantTrap extends Chant implements Trap
 			return true;
 		return false;
 	}
-	
+
 	public static final String[] choices={"Chant_PlantChoke","Chant_PlantConstriction"};
-	public void doMyThing(MOB target)
+	public void doMyThing(final MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
@@ -225,7 +225,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 		}
 	}
 
-	public boolean helpfulAbilityFound(MOB mob)
+	public boolean helpfulAbilityFound(final MOB mob)
 	{
 		for (final String choice : choices)
 			if(mob.fetchAbility(choice)!=null)
@@ -244,7 +244,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -267,7 +267,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room target=mob.location();
 		if(target==null)

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_PubContacts extends ThiefSkill
 {
 	@Override
@@ -87,13 +86,13 @@ public class Thief_PubContacts extends ThiefSkill
 	{
 		return USAGE_MOVEMENT | USAGE_MANA;
 	}
-	
+
 	protected final static int baseWaterRange = 8;
 
 	protected Room pubRoom = null;
 	protected boolean success = false;
-	
-	public Triad<Item,Double,String> cheapestAlcoholHere(MOB mob, Room room)
+
+	public Triad<Item,Double,String> cheapestAlcoholHere(final MOB mob, final Room room)
 	{
 		double lowestPrice=Integer.MAX_VALUE;
 		Item lowestItem=null;
@@ -114,7 +113,7 @@ public class Thief_PubContacts extends ThiefSkill
 							if((E instanceof Item)&&(CMLib.flags().isAlcoholic((Item)E)))
 							{
 								double moneyPrice=0;
-								ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(M,mob,E,SK,SK.getShop(), true);
+								final ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(M,mob,E,SK,SK.getShop(), true);
 								if(price.experiencePrice>0)
 									moneyPrice=(100 * price.experiencePrice);
 								else
@@ -140,7 +139,7 @@ public class Thief_PubContacts extends ThiefSkill
 			return null;
 		return new Triad<Item,Double,String>(lowestItem,Double.valueOf(lowestPrice),currency);
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -196,7 +195,7 @@ public class Thief_PubContacts extends ThiefSkill
 						}
 					}
 					final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-					int range = baseWaterRange + super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob);
+					final int range = baseWaterRange + super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob);
 					final List<Room> nearby=CMLib.tracking().findTrailToAnyRoom(R, TrackingFlag.WATERSURFACEONLY.myFilter, flags, range);
 					Room shore=null;
 					Room notShore=null;
@@ -216,7 +215,7 @@ public class Thief_PubContacts extends ThiefSkill
 							{
 								for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 								{
-									Room R3=R2.getRoomInDir(d);
+									final Room R3=R2.getRoomInDir(d);
 									if(R3!=null)
 									{
 										switch(R3.domainType())
@@ -240,23 +239,23 @@ public class Thief_PubContacts extends ThiefSkill
 					}
 					if(shore==null)
 						shore=notShore;
-					
+
 					if((shore==null)||(notShore==null))
 					{
 						mob.tell(L("No one really knows anything."));
 						return;
 					}
 					flags.add(TrackingLibrary.TrackingFlag.WATERSURFACEONLY);
-					int radius=50 + (10*(super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob)));
+					final int radius=50 + (10*(super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob)));
 					final List<Room> ocean = CMLib.tracking().getRadiantRooms(notShore, flags, radius);
 					final Map<Room,List<Room>> trails=new Hashtable<Room,List<Room>>();
 					int farthest=0;
 					int totalShips=0;
-					for(Room R2 : ocean)
+					for(final Room R2 : ocean)
 					{
 						if(allShips.containsKey(R2))
 						{
-							List<Room> trail = CMLib.tracking().findTrailToRoom(notShore, R2, flags, radius, ocean);
+							final List<Room> trail = CMLib.tracking().findTrailToRoom(notShore, R2, flags, radius, ocean);
 							if((trail != null)&&(trail.size()>0))
 							{
 								trails.put(R2,trail);
@@ -269,14 +268,14 @@ public class Thief_PubContacts extends ThiefSkill
 					String roomName = notShore.displayText(mob);
 					if(shore != notShore)
 						roomName+=L(" (just off @x1)",shore.displayText(mob));
-					StringBuilder shipList=new StringBuilder(L("^NYour contacts tell you about @x1 ships within @x2 of ^W@x3^N: \n\r",
+					final StringBuilder shipList=new StringBuilder(L("^NYour contacts tell you about @x1 ships within @x2 of ^W@x3^N: \n\r",
 											""+totalShips,""+farthest,roomName));
-					for(Room R2 : trails.keySet())
+					for(final Room R2 : trails.keySet())
 					{
-						List<Room> trail = trails.get(R2);
-						int distance=trail.size();
-						List<Item> ships=allShips.get(R2);
-						for(Item I : ships)
+						final List<Room> trail = trails.get(R2);
+						final int distance=trail.size();
+						final List<Item> ships=allShips.get(R2);
+						for(final Item I : ships)
 						{
 							switch(level)
 							{
@@ -291,7 +290,7 @@ public class Thief_PubContacts extends ThiefSkill
 								Room lastRoom=notShore;
 								for(int r=trail.size()-2;r>=0;r--)
 								{
-									int dir=CMLib.map().getRoomDir(lastRoom, trail.get(r));
+									final int dir=CMLib.map().getRoomDir(lastRoom, trail.get(r));
 									lastRoom=trail.get(r);
 									shipList.append(CMLib.directions().getDirectionChar(dir)).append(" ");
 								}
@@ -311,7 +310,7 @@ public class Thief_PubContacts extends ThiefSkill
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		
+
 		final Physical affected=this.affected;
 		if(affected instanceof MOB)
 		{
@@ -325,7 +324,7 @@ public class Thief_PubContacts extends ThiefSkill
 			else
 			if((super.tickDown % 3)==0)
 			{
-				Room R=CMLib.map().roomLocation(M);
+				final Room R=CMLib.map().roomLocation(M);
 				if(R.isInhabitant(M))
 				{
 					switch(CMLib.dice().roll(1, 5, -1))
@@ -351,9 +350,9 @@ public class Thief_PubContacts extends ThiefSkill
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -368,15 +367,15 @@ public class Thief_PubContacts extends ThiefSkill
 				mob.tell(L("You can only establish contacts at a pub."));
 				return false;
 			}
-			TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-			int range = baseWaterRange + super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob);
-			List<Room> nearby=CMLib.tracking().findTrailToAnyRoom(R, TrackingFlag.WATERSURFACEONLY.myFilter, flags, range);
+			final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
+			final int range = baseWaterRange + super.getXLEVELLevel(mob)+super.getXMAXRANGELevel(mob);
+			final List<Room> nearby=CMLib.tracking().findTrailToAnyRoom(R, TrackingFlag.WATERSURFACEONLY.myFilter, flags, range);
 			if((nearby==null)||(nearby.size()==0))
 			{
 				mob.tell(L("There's no sea or river nearby, so no one here will know anything."));
 				return false;
 			}
-			double pct=0.5 + (CMath.mul(CMath.div(10-super.getXLOWCOSTLevel(mob),2.0), 0.1));
+			final double pct=0.5 + (CMath.mul(CMath.div(10-super.getXLOWCOSTLevel(mob),2.0), 0.1));
 			money = CMath.mul(pct,alco.second.doubleValue()*6.0);
 			moneyStr = CMLib.beanCounter().abbreviatedPrice(alco.third, money);
 			if(CMLib.beanCounter().getTotalAbsoluteValue(mob, alco.third) < money)
@@ -385,7 +384,7 @@ public class Thief_PubContacts extends ThiefSkill
 				return false;
 			}
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -393,7 +392,7 @@ public class Thief_PubContacts extends ThiefSkill
 
 		if(money > 0.0)
 			CMLib.beanCounter().subtractMoney(mob, money);
-		
+
 		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,L("<S-NAME> drop(s) @x1 on drinks and start(s) socializing.",moneyStr));
 		if(mob.location().okMessage(mob,msg))
 		{
@@ -403,13 +402,13 @@ public class Thief_PubContacts extends ThiefSkill
 				ticks /= 2;
 			if(ticks<1)
 				ticks=1;
-			Thief_PubContacts pub = (Thief_PubContacts)this.beneficialAffect(mob, mob, asLevel, ticks);
+			final Thief_PubContacts pub = (Thief_PubContacts)this.beneficialAffect(mob, mob, asLevel, ticks);
 			if(pub != null)
 			{
 				pub.pubRoom=R;
 				pub.success=success;
 			}
-			
+
 		}
 		return success;
 	}

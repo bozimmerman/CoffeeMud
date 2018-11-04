@@ -34,7 +34,6 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Create extends StdCommand
 {
 	public Create()
@@ -49,7 +48,7 @@ public class Create extends StdCommand
 		return access;
 	}
 
-	public void exits(MOB mob, List<String> commands)
+	public void exits(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(mob.location().roomID().equals(""))
@@ -131,17 +130,17 @@ public class Create extends StdCommand
 		Log.sysOut("Exits",mob.location().roomID()+" exits changed by "+mob.Name()+".");
 	}
 
-	private long[] makeSpaceLocation(MOB mob, SpaceObject newItem, String rest)
+	private long[] makeSpaceLocation(final MOB mob, final SpaceObject newItem, String rest)
 	{
-		List<String> utokens=CMParms.parseSpaces(rest.toUpperCase(),true);
+		final List<String> utokens=CMParms.parseSpaces(rest.toUpperCase(),true);
 		final String distErrorMsg=L("Valid distance units include: @x1.",SpaceObject.Distance.getFullList());
 		int x;
 		if(((x=utokens.indexOf("FROM"))>0)&&(x<utokens.size()-1))
 		{
-			double[] direction=new double[]{Math.toRadians(CMLib.dice().roll(1, 360, -1)),Math.toRadians(CMLib.dice().roll(1,180,-1))};
-			String distStr=CMParms.combine(utokens,0,x);
-			String objName=CMParms.combine(utokens,x+1);
-			Long dist=CMLib.english().parseSpaceDistance(distStr);
+			final double[] direction=new double[]{Math.toRadians(CMLib.dice().roll(1, 360, -1)),Math.toRadians(CMLib.dice().roll(1,180,-1))};
+			final String distStr=CMParms.combine(utokens,0,x);
+			final String objName=CMParms.combine(utokens,x+1);
+			final Long dist=CMLib.english().parseSpaceDistance(distStr);
 			if(dist==null)
 			{
 				mob.tell(L("Unknown distance for space object @x1:",newItem.ID())+" '"+distStr+"'. \n\r"+distErrorMsg);
@@ -163,7 +162,7 @@ public class Create extends StdCommand
 			}
 			rest=CMParms.toListString(CMLib.map().getLocation(O.coordinates(), direction, dist.longValue()));
 		}
-		List<String> valsL=CMParms.parseCommas(rest,true);
+		final List<String> valsL=CMParms.parseCommas(rest,true);
 		if(valsL.size()!=3)
 		{
 			mob.tell(L("Unknown location for space object @x1:",newItem.ID())+": '"+rest+"'. "
@@ -174,10 +173,10 @@ public class Create extends StdCommand
 		else
 		{
 			boolean fail=true;
-			Long[] valL=new Long[3];
+			final Long[] valL=new Long[3];
 			for(int i=0;i<3;i++)
 			{
-				Long newValue=CMLib.english().parseSpaceDistance(valsL.get(i));
+				final Long newValue=CMLib.english().parseSpaceDistance(valsL.get(i));
 				if(newValue==null)
 				{
 					mob.tell(L("Unknown coord: '@x2'. @x3 for space object @x1:",newItem.ID(),valsL.get(i),distErrorMsg));
@@ -201,8 +200,8 @@ public class Create extends StdCommand
 			}
 		}
 	}
-	
-	public void items(MOB mob, List<String> commands) throws IOException
+
+	public void items(final MOB mob, final List<String> commands) throws IOException
 	{
 		if(commands.size()<3)
 		{
@@ -222,14 +221,14 @@ public class Create extends StdCommand
 			CMLib.dice().getRandomizer().nextLong(),
 			CMLib.dice().getRandomizer().nextLong()
 		};
-		
-		int x=itemID.indexOf('@');
+
+		final int x=itemID.indexOf('@');
 		if(x>0)
 		{
 			rest=itemID.substring(x+1).trim();
 			itemID=itemID.substring(0,x).trim();
 		}
-		
+
 		Item newItem=CMClass.getItem(itemID);
 		if((newItem==null)&&(CMLib.english().numPossibleGold(null,itemID)>0))
 		{
@@ -253,14 +252,14 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		
+
 		if((newItem instanceof ArchonOnly)
 		&&(!CMSecurity.isASysOp(mob)))
 		{
 			mob.tell(L("NO!"));
 			return;
 		}
-		
+
 		if(x>0)
 		{
 			if(newItem instanceof SpaceObject)
@@ -305,7 +304,7 @@ public class Create extends StdCommand
 				};
 			}
 		}
-	
+
 		if(newItem.subjectToWearAndTear())
 			newItem.setUsesRemaining(100);
 		if(newItem instanceof SpaceObject)
@@ -338,7 +337,7 @@ public class Create extends StdCommand
 		Log.sysOut("Items",mob.Name()+" created item "+newItem.ID()+".");
 	}
 
-	public void manufacturer(MOB mob, List<String> commands) throws IOException
+	public void manufacturer(final MOB mob, final List<String> commands) throws IOException
 	{
 		if(commands.size()<3)
 		{
@@ -373,7 +372,7 @@ public class Create extends StdCommand
 		Log.sysOut(mob.Name()+" created manufacturer "+manufacturer.name()+".");
 	}
 
-	public void players(MOB mob, List<String> commands) throws IOException
+	public void players(final MOB mob, final List<String> commands) throws IOException
 	{
 		if(commands.size()<3)
 		{
@@ -406,7 +405,7 @@ public class Create extends StdCommand
 		}
 	}
 
-	public void rooms(MOB mob, List<String> commands)
+	public void rooms(final MOB mob, final List<String> commands)
 	{
 		if(mob.location().roomID().equals(""))
 		{
@@ -462,7 +461,7 @@ public class Create extends StdCommand
 		Log.sysOut("Rooms",mob.Name()+" created room "+thisRoom.roomID()+".");
 	}
 
-	public void accounts(MOB mob, List<String> commands)
+	public void accounts(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<4)
 		{
@@ -500,7 +499,7 @@ public class Create extends StdCommand
 		Log.sysOut("Create",mob.Name()+" created account "+thisAcct.getAccountName()+".");
 	}
 
-	public MOB getNewCatalogMob(String mobID)
+	public MOB getNewCatalogMob(final String mobID)
 	{
 		MOB newMOB=CMLib.catalog().getCatalogMob(mobID);
 		if(newMOB!=null)
@@ -518,7 +517,7 @@ public class Create extends StdCommand
 		return newMOB;
 	}
 
-	public Item getNewCatalogItem(String itemID)
+	public Item getNewCatalogItem(final String itemID)
 	{
 		Item newItem=CMLib.catalog().getCatalogItem(itemID);
 		if(newItem!=null)
@@ -536,7 +535,7 @@ public class Create extends StdCommand
 		return newItem;
 	}
 
-	public void mobs(MOB mob, List<String> commands)
+	public void mobs(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -555,7 +554,7 @@ public class Create extends StdCommand
 			newMOB=getNewCatalogMob(mobID);
 			doGenerica=newMOB==null;
 		}
-		
+
 		Race raceR=null;
 		Integer level=null;
 		CharClass classC = null;
@@ -634,7 +633,7 @@ public class Create extends StdCommand
 										classC=CMClass.getCharClass(restpart2);
 										if(CMath.isInteger(part2))
 											level=Integer.valueOf(CMath.s_int(part2));
-										
+
 									}
 								}
 								else
@@ -651,7 +650,7 @@ public class Create extends StdCommand
 										raceR=CMClass.getRace(restpart2);
 										if(CMath.isInteger(part2))
 											level=Integer.valueOf(CMath.s_int(part2));
-										
+
 									}
 								}
 								if(level!=null)
@@ -707,9 +706,9 @@ public class Create extends StdCommand
 			if(classC!=null)
 			{
 				final Ability A=CMClass.getAbility("Prop_Trainer");
-				String attack=CharStats.DEFAULT_STAT_DESCS[classC.getAttackAttribute()];
-				int highatt=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
-				StringBuilder txt=new StringBuilder("SKILLS "+classC.ID()+" NOTEACH BASEVALUE=10");
+				final String attack=CharStats.DEFAULT_STAT_DESCS[classC.getAttackAttribute()];
+				final int highatt=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+				final StringBuilder txt=new StringBuilder("SKILLS "+classC.ID()+" NOTEACH BASEVALUE=10");
 				for(int i=0;i<classC.maxStatAdjustments().length;i++)
 				{
 					if(classC.maxStatAdjustments()[i]!=0)
@@ -723,7 +722,7 @@ public class Create extends StdCommand
 			newMOB.recoverPhyStats();
 			newMOB.recoverCharStats();
 		}
-		
+
 		if(newMOB==null)
 		{
 			mob.tell(L("There's no such thing as a '@x1'.\n\r",mobID));
@@ -753,7 +752,7 @@ public class Create extends StdCommand
 		Log.sysOut("Mobs",mob.Name()+" created mob "+newMOB.Name()+".");
 	}
 
-	public void mixedrace(MOB mob, List<String> commands)
+	public void mixedrace(final MOB mob, final List<String> commands)
 			throws IOException
 	{
 		if(commands.size()<3)
@@ -762,8 +761,8 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		String raceID1=commands.get(2);
-		String raceID2=CMParms.combine(commands,3);
+		final String raceID1=commands.get(2);
+		final String raceID2=CMParms.combine(commands,3);
 		final Race R1=CMClass.getRace(raceID1);
 		if(R1==null)
 		{
@@ -778,13 +777,13 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		
+
 		final Race R=CMLib.utensils().getMixedRace(R1.ID(), R2.ID(), false);
 		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("Suddenly, @x1ness instantiates from the Java Plane.",R.name()));
 		Log.sysOut("Mobs",mob.Name()+" created race "+R.ID()+".");
 	}
-	
-	public void races(MOB mob, List<String> commands)
+
+	public void races(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -832,7 +831,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The diversity of the world just increased!"));
 	}
 
-	public void areas(MOB mob, List<String> commands)
+	public void areas(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -849,15 +848,15 @@ public class Create extends StdCommand
 			CMLib.dice().getRandomizer().nextLong(),
 			CMLib.dice().getRandomizer().nextLong()
 		};
-			
-		int x=areaName.indexOf('@');
+
+		final int x=areaName.indexOf('@');
 		String spaceCoords="";
 		if(x>0)
 		{
 			spaceCoords=areaName.substring(x+1).trim();
 			areaName=areaName.substring(0,x).trim();
 		}
-		
+
 		Area A=CMLib.map().getArea(areaName);
 		if((A!=null)||(CMLib.map().getShip(areaName)!=null))
 		{
@@ -865,10 +864,10 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		
+
 		String areaType="";
 		int tries=0;
-		String defaultArea=(spaceCoords.length()>0)?"Planet":"StdArea";
+		final String defaultArea=(spaceCoords.length()>0)?"Planet":"StdArea";
 		while((areaType.length()==0)&&((++tries)<10))
 		{
 			areaType=mob.session().prompt(L("Enter an area type to create (default=@x1): ",defaultArea),defaultArea);
@@ -879,7 +878,7 @@ public class Create extends StdCommand
 				areaType="";
 			}
 		}
-		if(areaType.length()==0) 
+		if(areaType.length()==0)
 			areaType=defaultArea;
 		A=CMClass.getAreaType(areaType);
 		if(A instanceof SpaceObject)
@@ -910,7 +909,7 @@ public class Create extends StdCommand
 		CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);
 	}
 
-	public void components(MOB mob, List<String> commands)
+	public void components(final MOB mob, final List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<3)
@@ -950,7 +949,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The complication of skill usage just increased!"));
 	}
 
-	public void expertises(MOB mob, List<String> commands)
+	public void expertises(final MOB mob, final List<String> commands)
 	{
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
@@ -1003,7 +1002,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The power of skill usage just increased!"));
 	}
 
-	public void titles(MOB mob, List<String> commands)
+	public void titles(final MOB mob, final List<String> commands)
 	{
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
 		{
@@ -1033,7 +1032,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The prestige of the players just increased!"));
 	}
 
-	public void abilities(MOB mob, List<String> commands)
+	public void abilities(final MOB mob, final List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<3)
@@ -1063,7 +1062,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
 
-	public void achievements(MOB mob, List<String> commands)
+	public void achievements(final MOB mob, final List<String> commands)
 	throws IOException
 	{
 		final boolean accountSys = CMProps.isUsingAccountSystem();
@@ -1077,7 +1076,7 @@ public class Create extends StdCommand
 			return;
 		}
 		final String agentStr=accountSys?commands.get(2).toString():"PLAYER";
-		AccountStats.Agent agent=(AccountStats.Agent)CMath.s_valueOf(AccountStats.Agent.class, agentStr.toUpperCase().trim());
+		final AccountStats.Agent agent=(AccountStats.Agent)CMath.s_valueOf(AccountStats.Agent.class, agentStr.toUpperCase().trim());
 		if(agent == null)
 		{
 			mob.tell(L("'@x1' is an unknown achievement type.  Try @x2!",agentStr,CMParms.toListString(AccountStats.Agent.values())));
@@ -1108,7 +1107,7 @@ public class Create extends StdCommand
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The vanity of the world just increased!"));
 	}
 
-	public void languages(MOB mob, List<String> commands)
+	public void languages(final MOB mob, final List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<3)
@@ -1138,7 +1137,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
 
-	public void craftSkills(MOB mob, List<String> commands)
+	public void craftSkills(final MOB mob, final List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<3)
@@ -1168,7 +1167,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
 
-	public void allQualify(MOB mob, List<String> commands)
+	public void allQualify(final MOB mob, final List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<4)
@@ -1208,7 +1207,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just increased!"));
 	}
 
-	public void classes(MOB mob, List<String> commands)
+	public void classes(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -1257,7 +1256,7 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The employment of the world just increased!"));
 	}
 
-	public void socials(MOB mob, List<String> commands)
+	public void socials(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -1279,14 +1278,14 @@ public class Create extends StdCommand
 		CMLib.socials().modifySocialInterface(mob,stuff);
 	}
 
-	public boolean errorOut(MOB mob)
+	public boolean errorOut(final MOB mob)
 	{
 		mob.tell(L("You are not allowed to do that here."));
 		return false;
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
@@ -1477,14 +1476,14 @@ public class Create extends StdCommand
 				mob.tell(L("'@x1' is now debugging",named));
 				if(flag == CMSecurity.DbgFlag.HTTPACCESS)
 				{
-					for(MudHost host : CMLib.hosts())
+					for(final MudHost host : CMLib.hosts())
 					{
 						try
 						{
 							host.executeCommand("WEBSERVER ADMIN ACCESS BOTH");
 							host.executeCommand("WEBSERVER PUB ACCESS BOTH");
 						}
-						catch (Exception e)
+						catch (final Exception e)
 						{
 							mob.tell(e.getMessage());
 						}
@@ -1493,14 +1492,14 @@ public class Create extends StdCommand
 				else
 				if(flag == CMSecurity.DbgFlag.HTTPREQ)
 				{
-					for(MudHost host : CMLib.hosts())
+					for(final MudHost host : CMLib.hosts())
 					{
 						try
 						{
 							host.executeCommand("WEBSERVER ADMIN DEBUG BOTH");
 							host.executeCommand("WEBSERVER PUB DEBUG BOTH");
 						}
-						catch (Exception e)
+						catch (final Exception e)
 						{
 							mob.tell(e.getMessage());
 						}
@@ -1734,7 +1733,7 @@ public class Create extends StdCommand
 				{
 					mob.tell(CMLib.hosts().get(0).executeCommand("START WEB "+commands.get(2)));
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
 					mob.tell(L("Failure: @x1",e.getMessage()));
 				}
@@ -1871,7 +1870,7 @@ public class Create extends StdCommand
 						}
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL, L("Suddenly @x1 @x2 fall from the sky.",""+num,RawMaterial.CODES.NAME(matCode)));
 					}
-					else 
+					else
 					if(CMLib.english().numPossibleGold(null,firstWord+" "+theRest)>0)
 					{
 						commands.add(1,"ITEM");
@@ -1922,7 +1921,7 @@ public class Create extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowedContainsAny(mob, mob.location(), CMSecurity.SECURITY_CMD_GROUP);
 	}

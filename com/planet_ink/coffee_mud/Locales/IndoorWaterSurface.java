@@ -73,7 +73,7 @@ public class IndoorWaterSurface extends WaterSurface implements Drink
 	}
 
 	@Override
-	protected boolean IsUnderWaterFatClass(Room thatSea)
+	protected boolean IsUnderWaterFatClass(final Room thatSea)
 	{
 		return (thatSea instanceof IndoorUnderWaterGrid)
 			 ||(thatSea instanceof IndoorUnderWaterThinGrid)

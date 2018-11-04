@@ -30,8 +30,8 @@ public class MultiEnumeration<K> implements Enumeration<K>
 	{
 		public MultiEnumeration<K> getList();
 	}
-	
-	public MultiEnumeration(Enumeration<K>[] esets)
+
+	public MultiEnumeration(final Enumeration<K>[] esets)
 	{
 		if((esets!=null)&&(esets.length>0))
 			for(final Enumeration<K> E : esets)
@@ -39,18 +39,18 @@ public class MultiEnumeration<K> implements Enumeration<K>
 					enums.add(E);
 	}
 
-	public MultiEnumeration(Collection<Enumeration<K>> esets)
+	public MultiEnumeration(final Collection<Enumeration<K>> esets)
 	{
 		if(esets!=null)
 			enums.addAll(esets);
 	}
 
-	public MultiEnumeration(Enumeration<K> eset)
+	public MultiEnumeration(final Enumeration<K> eset)
 	{
 		enums.add(eset);
 	}
 
-	public MultiEnumeration<K> addEnumeration(Enumeration<K> set)
+	public MultiEnumeration<K> addEnumeration(final Enumeration<K> set)
 	{
 		if(set != null)
 			enums.add(set);

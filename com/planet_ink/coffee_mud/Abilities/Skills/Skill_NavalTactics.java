@@ -97,8 +97,8 @@ public class Skill_NavalTactics extends StdSkill
 		RETREAT,
 		FLEE
 	}
-	
-	protected boolean isGoodShipDir(Room shipR, int dir)
+
+	protected boolean isGoodShipDir(final Room shipR, final int dir)
 	{
 		final Room R=shipR.getRoomInDir(dir);
 		final Exit E=shipR.getExitInDir(dir);
@@ -109,13 +109,13 @@ public class Skill_NavalTactics extends StdSkill
 			return true;
 		return false;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		
+
 		if((affected!=null)
 		&&(msg.source().riding()==affected)
 		&&(msg.source().Name().equals(affected.Name()))
@@ -128,13 +128,13 @@ public class Skill_NavalTactics extends StdSkill
 			wait=false;
 		return true;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		
+
 		{
 			final Physical affected=this.affected;
 			if(!(affected instanceof SailingShip))
@@ -186,7 +186,7 @@ public class Skill_NavalTactics extends StdSkill
 									final Item I=i.nextElement();
 									if(CMLib.combat().isAShipSiegeWeapon(I))
 									{
-										int range=I.maxRange();
+										final int range=I.maxRange();
 										if(range > highestRange)
 											highestRange=range;
 									}
@@ -201,9 +201,9 @@ public class Skill_NavalTactics extends StdSkill
 				}
 				if(shipItem.rangeToTarget() == setDistance)
 					return true;
-				int mySpeed = shipItem.getShipSpeed();
-				int directionToTarget=shipItem.getDirectionToTarget();
-				List<Integer> newCourse = new ArrayList<Integer>();
+				final int mySpeed = shipItem.getShipSpeed();
+				final int directionToTarget=shipItem.getDirectionToTarget();
+				final List<Integer> newCourse = new ArrayList<Integer>();
 				int myMoves=mySpeed;
 				int direction=directionToTarget;
 				switch(tactic)
@@ -219,7 +219,7 @@ public class Skill_NavalTactics extends StdSkill
 					break;
 				case FLEE:
 				{
-					Room shipR=CMLib.map().roomLocation(shipItem);
+					final Room shipR=CMLib.map().roomLocation(shipItem);
 					if(shipR!=null)
 					{
 						direction=Directions.getOpDirectionCode(directionToTarget);
@@ -228,7 +228,7 @@ public class Skill_NavalTactics extends StdSkill
 						if(!isGoodShipDir(shipR,direction))
 						{
 							final List<Integer> goodDirs = new ArrayList<Integer>();
-							for(int dir : Directions.CODES())
+							for(final int dir : Directions.CODES())
 							{
 								if(isGoodShipDir(shipR,dir))
 									goodDirs.add(Integer.valueOf(dir));
@@ -273,7 +273,7 @@ public class Skill_NavalTactics extends StdSkill
 				case RETREAT:
 					if(shipItem.rangeToTarget() >= setDistance)
 						return true;
-					int movesToGo=setDistance - shipItem.rangeToTarget();
+					final int movesToGo=setDistance - shipItem.rangeToTarget();
 					if(myMoves > movesToGo)
 						myMoves = movesToGo;
 					direction=Directions.getOpDirectionCode(direction);
@@ -285,13 +285,13 @@ public class Skill_NavalTactics extends StdSkill
 					break;
 				default:
 					break;
-				
+
 				}
 				if(newCourse.size()>0)
 				{
 					final List<String> courseCmd=new ArrayList<String>();
 					courseCmd.add("COURSE");
-					for(Integer I : newCourse)
+					for(final Integer I : newCourse)
 						courseCmd.add(CMLib.directions().getDirectionName(I.intValue()));
 					if(shipItem.isAnchorDown())
 						mob.enqueCommand(new XVector<String>("RAISE","ANCHOR"), 0, 0);
@@ -308,7 +308,7 @@ public class Skill_NavalTactics extends StdSkill
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -317,9 +317,9 @@ public class Skill_NavalTactics extends StdSkill
 		if((invoker!=null)&&(this.unInvoked))
 			invoker.tell(L("Your ship is no longer following naval tactics."));
 	}
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if(newMiscText.length()>0)
@@ -328,9 +328,9 @@ public class Skill_NavalTactics extends StdSkill
 			wait=false;
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -353,35 +353,35 @@ public class Skill_NavalTactics extends StdSkill
 			mob.tell(L("You must be on your sailing ship."));
 			return false;
 		}
-		
+
 		if((R.domainType()&Room.INDOORS)!=0)
 		{
 			mob.tell(L("You must be on the deck of a ship."));
 			return false;
 		}
-		
+
 		if((!CMLib.law().doesHavePriviledgesHere(mob, R))
 		&&(!CMSecurity.isAllowed(mob, R, CMSecurity.SecFlag.CMDMOBS)))
 		{
 			mob.tell(L("You must be on the deck of a ship that you have privileges on."));
 			return false;
 		}
-		
+
 		final Skill_NavalTactics A=(Skill_NavalTactics)myShipItem.fetchEffect(ID());
 		if((commands.size()==0)&&(A!=null))
 		{
 			A.unInvoke();
 			return false;
 		}
-		
+
 		if((commands.size()==0)
 		||(CMath.s_valueOf(Tactic.class, commands.get(0).toUpperCase())==null))
 		{
 			mob.tell(L("You need to specify a tactic, such as FOLLOW, APPROACH, RETREAT, or FLEE."));
 			return false;
 		}
-		Tactic tactic = (Tactic)CMath.s_valueOf(Tactic.class, commands.get(0).toUpperCase());
-		
+		final Tactic tactic = (Tactic)CMath.s_valueOf(Tactic.class, commands.get(0).toUpperCase());
+
 		final PhysicalAgent targetShip=myShipItem.getCombatant();
 		if((!myShipItem.isInCombat())
 		||(!(targetShip instanceof SailingShip))
@@ -390,14 +390,14 @@ public class Skill_NavalTactics extends StdSkill
 			mob.tell(L("You must be in combat with another large sailing ship to use that tactic."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			String str=auto?"":L("^S<S-NAME> adjust(s) <S-HIS-HER> naval tactics.^?");
+			final String str=auto?"":L("^S<S-NAME> adjust(s) <S-HIS-HER> naval tactics.^?");
 			final CMMsg msg=CMClass.getMsg(mob,myShipItem,this,CMMsg.MSG_QUIETMOVEMENT,str,CMMsg.MSG_QUIETMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),str,CMMsg.MSG_QUIETMOVEMENT,str);
 			if(R.okMessage(mob,msg))
 			{

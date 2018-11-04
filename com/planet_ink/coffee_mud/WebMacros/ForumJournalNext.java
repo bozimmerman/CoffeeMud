@@ -36,7 +36,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class ForumJournalNext extends StdWebMacro
 {
 	@Override
@@ -50,7 +49,7 @@ public class ForumJournalNext extends StdWebMacro
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("JOURNAL");

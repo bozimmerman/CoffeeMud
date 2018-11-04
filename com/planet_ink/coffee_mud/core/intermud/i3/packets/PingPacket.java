@@ -42,14 +42,14 @@ public class PingPacket extends Packet
 		target_mud=Intermud.getNameServer().name;
 	}
 
-	public PingPacket(Vector<?> v)
+	public PingPacket(final Vector<?> v)
 	{
 		super(v);
 		type = Packet.PING_PACKET;
 		target_mud=v.elementAt(4).toString();
 	}
 
-	public PingPacket(String mud)
+	public PingPacket(final String mud)
 	{
 		super();
 		type = Packet.PING_PACKET;

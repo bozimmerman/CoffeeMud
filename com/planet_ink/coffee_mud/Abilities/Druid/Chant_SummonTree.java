@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SummonTree extends Chant_SummonPlants
 {
 	@Override
@@ -77,7 +76,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 	protected int	oldMaterial	= -1;
 
 	@Override
-	protected Item buildMyPlant(MOB mob, Room room)
+	protected Item buildMyPlant(final MOB mob, final Room room)
 	{
 		final int code=material&RawMaterial.RESOURCE_MASK;
 		final Item newItem=CMClass.getBasicItem("GenItem");
@@ -144,7 +143,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 
 		material=RawMaterial.RESOURCE_OAK;

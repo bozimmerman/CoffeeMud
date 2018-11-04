@@ -38,7 +38,7 @@ public class AutoAffects extends StdCommand
 	public AutoAffects()
 	{
 	}
-	
+
 	private final String[]	access	= I(new String[] { "AUTOAFFECTS", "AUTOAFF", "AAF" });
 
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{MOB.class},{StringBuffer.class},{StringBuilder.class},{List.class},{}};
@@ -49,7 +49,7 @@ public class AutoAffects extends StdCommand
 		return access;
 	}
 
-	public String getAutoAffects(MOB viewerMOB, Physical P)
+	public String getAutoAffects(final MOB viewerMOB, final Physical P)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		final int NUM_COLS=2;
@@ -79,7 +79,7 @@ public class AutoAffects extends StdCommand
 		return msg.toString();
 	}
 
-	protected void readAutoAffects(MOB mob, Session S, String name)
+	protected void readAutoAffects(final MOB mob, final Session S, final String name)
 	{
 		if(S!=null)
 		{
@@ -113,19 +113,19 @@ public class AutoAffects extends StdCommand
 				S.colorOnlyPrintln(msg);
 		}
 	}
-	
+
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final String name=CMParms.combine(commands,1);
-		Session S=mob.session();
+		final Session S=mob.session();
 		readAutoAffects(mob,S,name);
 		return false;
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
@@ -157,7 +157,7 @@ public class AutoAffects extends StdCommand
 		}
 		return getAutoAffects(mob,mob);
 	}
-	
+
 	@Override
 	public boolean canBeOrdered()
 	{

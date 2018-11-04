@@ -55,7 +55,7 @@ public interface ExtendableAbility extends Ability
 	 * @return this
 	 */
 	public ExtendableAbility setStatsAffector(StatsAffecting code);
-	
+
 	/**
 	 * Set the msg listener for this ability.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.MsgListener
@@ -63,7 +63,7 @@ public interface ExtendableAbility extends Ability
 	 * @return this
 	 */
 	public ExtendableAbility setMsgListener(MsgListener code);
-	
+
 	/**
 	 * Set the ticker for this ability.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.Tickable

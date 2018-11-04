@@ -55,13 +55,13 @@ public class GrinderRoom
 
 	public GrinderDir[]	doors	= new GrinderDir[Directions.NUM_DIRECTIONS()];
 
-	public GrinderRoom(String newRoomID)
+	public GrinderRoom(final String newRoomID)
 	{
 		roomCache=null;
 		roomID=newRoomID;
 	}
 
-	public void fixExits(Room R)
+	public void fixExits(final Room R)
 	{
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -77,7 +77,7 @@ public class GrinderRoom
 		}
 	}
 
-	public GrinderRoom(Room R)
+	public GrinderRoom(final Room R)
 	{
 		roomCache=null;
 		if(!R.amDestroyed())

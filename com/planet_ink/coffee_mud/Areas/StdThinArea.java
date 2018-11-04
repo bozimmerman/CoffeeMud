@@ -49,14 +49,14 @@ public class StdThinArea extends StdArea
 	}
 
 	@Override
-	public void addProperRoom(Room R)
+	public void addProperRoom(final Room R)
 	{
 		if(R!=null)
 			R.setExpirationDate(System.currentTimeMillis() + WorldMap.ROOM_EXPIRATION_MILLIS);
 		super.addProperRoom(R);
 	}
 
-	public Room getProperRoom(String roomID)
+	public Room getProperRoom(final String roomID)
 	{
 		if(!isRoom(roomID))
 			return null;
@@ -66,7 +66,7 @@ public class StdThinArea extends StdArea
 		return R;
 	}
 
-	@Override 
+	@Override
 	public int getPercentRoomsCached()
 	{
 		final double totalRooms=getProperRoomnumbers().roomCountAllAreas();
@@ -76,7 +76,7 @@ public class StdThinArea extends StdArea
 		return (int)Math.round((currentRooms/totalRooms)*100.0);
 	}
 
-	@Override 
+	@Override
 	public int[] getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -122,13 +122,13 @@ public class StdThinArea extends StdArea
 		return new IteratorEnumeration<Room>(properRooms.values().iterator());
 	}
 
-	public boolean isRoom(String roomID)
+	public boolean isRoom(final String roomID)
 	{
 		return getProperRoomnumbers().contains(roomID);
 	}
 
 	@Override
-	public boolean isRoom(Room R)
+	public boolean isRoom(final Room R)
 	{
 		if(R==null)
 			return false;

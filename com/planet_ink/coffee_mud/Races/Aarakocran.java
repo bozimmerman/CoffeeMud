@@ -45,7 +45,7 @@ public class Aarakocran extends StdRace
 		super();
 		super.naturalAbilImmunities.add("Disease_Lycanthropy");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Aarakocran");
 
 	@Override
@@ -53,7 +53,7 @@ public class Aarakocran extends StdRace
 	{
 		return localizedStaticName;
 	}
-	
+
 	@Override
 	public int shortestMale()
 	{
@@ -195,7 +195,7 @@ public class Aarakocran extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{
@@ -252,7 +252,7 @@ public class Aarakocran extends StdRace
 	{
 		return super.getStatAdjDesc();
 	}
-	
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

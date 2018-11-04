@@ -63,7 +63,7 @@ public class Prop_NoChannel extends Property
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		channels=CMParms.parseSemicolons(newText.toUpperCase(),true);

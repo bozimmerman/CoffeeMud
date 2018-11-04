@@ -14,6 +14,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
+
 /*
    Copyright 2013-2018 Bo Zimmerman
 
@@ -37,7 +38,7 @@ public class CaselessTreeMap<K> extends TreeMap<String,K>
 		super(new Comparator<String>()
 		{
 			@Override
-			public int compare(String arg0, String arg1)
+			public int compare(final String arg0, final String arg1)
 			{
 				return arg0.compareToIgnoreCase(arg1);
 			}

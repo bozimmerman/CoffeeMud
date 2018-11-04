@@ -26,7 +26,6 @@ import com.planet_ink.coffee_web.interfaces.DataBuffers;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class CWDataBuffers implements DataBuffers
 {
 	private static final byte[] EOLNBYTES = "\r\n".getBytes();

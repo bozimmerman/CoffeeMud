@@ -75,7 +75,7 @@ public class GenAuctioneer extends StdAuctioneer
 	}
 
 	@Override
-	public void setPrejudiceFactors(String factors)
+	public void setPrejudiceFactors(final String factors)
 	{
 		PrejudiceFactors=factors;
 	}
@@ -87,7 +87,7 @@ public class GenAuctioneer extends StdAuctioneer
 	}
 
 	@Override
-	public void setIgnoreMask(String factors)
+	public void setIgnoreMask(final String factors)
 	{
 		IgnoreMask=factors;
 	}
@@ -99,13 +99,13 @@ public class GenAuctioneer extends StdAuctioneer
 	}
 
 	@Override
-	public void setAuctionHouse(String named)
+	public void setAuctionHouse(final String named)
 	{
 		auctionChain=named;
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
@@ -120,7 +120,7 @@ public class GenAuctioneer extends StdAuctioneer
 										   "ITEMMASK"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
@@ -154,7 +154,7 @@ public class GenAuctioneer extends StdAuctioneer
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenMobStat(this,code,val);

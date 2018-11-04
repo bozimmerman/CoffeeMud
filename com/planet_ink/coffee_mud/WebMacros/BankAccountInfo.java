@@ -53,7 +53,7 @@ public class BankAccountInfo extends StdWebMacro
 		{
 			if(items != null)
 			{
-				for(Item I : items)
+				for(final Item I : items)
 				{
 					I.destroy();
 				}
@@ -62,13 +62,13 @@ public class BankAccountInfo extends StdWebMacro
 		}
 	}
 
-	public static double getAccountInfoBalance(HTTPRequest httpReq, Banker B, MOB playerM)
+	public static double getAccountInfoBalance(final HTTPRequest httpReq, final Banker B, final MOB playerM)
 	{
 		final BankAccountStuff stuff = getMakeAccountInfo(httpReq, B, playerM);
 		return stuff.balance;
 	}
-	
-	public static synchronized BankAccountStuff getMakeAccountInfo(HTTPRequest httpReq, Banker B, MOB playerM)
+
+	public static synchronized BankAccountStuff getMakeAccountInfo(final HTTPRequest httpReq, final Banker B, final MOB playerM)
 	{
 		BankAccountStuff info=(BankAccountStuff)httpReq.getRequestObjects().get("BANKINFO: "+B.bankChain()+": "+playerM.Name());
 		if(info!=null)
@@ -89,7 +89,7 @@ public class BankAccountInfo extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		MOB playerM=null;
 		Area playerA=null;

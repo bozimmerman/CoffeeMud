@@ -33,8 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Injury extends StdAbility implements LimbDamage, HealthCondition
 {
 	@Override
@@ -208,6 +206,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 		return buf.toString();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setMiscText(String txt)
 	{
@@ -244,7 +243,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 					PairVector<String,Integer> bodyVec=injuries[chosenBodyLoc.intValue()];
 					if(bodyVec==null)
 					{
-						injuries[chosenBodyLoc.intValue()]=new PairVector();
+						injuries[chosenBodyLoc.intValue()]=new PairVector<String,Integer>();
 						bodyVec=injuries[chosenBodyLoc.intValue()];
 					}
 					int whichInjury=-1;
@@ -293,7 +292,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 						final String msg=V.get(1);
 						final int hurt=CMath.s_int(V.get(V.size()-1));
 						if(injuries[part]==null)
-							injuries[part] = new PairVector();
+							injuries[part] = new PairVector<String,Integer>();
 						injuries[part].add(new Pair<String,Integer>(msg,Integer.valueOf(hurt)));
 					}
 				}

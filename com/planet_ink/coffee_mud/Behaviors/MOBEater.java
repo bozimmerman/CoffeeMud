@@ -75,7 +75,7 @@ public class MOBEater extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String parms)
+	public void setParms(final String parms)
 	{
 		super.setParms(parms);
 		pctAcidHp=CMParms.getParmInt(parms,"acidpct",50);
@@ -102,7 +102,7 @@ public class MOBEater extends ActiveTicker
 			stomachR.addNonUninvokableEffect(A.setAbilityID("MOBEaterStomachWatcher").setMsgListener(new MsgListener()
 			{
 				@Override
-				public void executeMsg(final Environmental myHost, final CMMsg msg) 
+				public void executeMsg(final Environmental myHost, final CMMsg msg)
 				{
 					if(A.affecting() instanceof Room)
 					{
@@ -123,14 +123,14 @@ public class MOBEater extends ActiveTicker
 						final char c=Character.toUpperCase(msg.targetMessage().charAt(0));
 						if((c=='K')||(c=='A'))
 						{
-							List<String> parsedFail = CMParms.parse(msg.targetMessage());
-							String cmd=parsedFail.get(0).toUpperCase();
+							final List<String> parsedFail = CMParms.parse(msg.targetMessage());
+							final String cmd=parsedFail.get(0).toUpperCase();
 							if("ATTACK".startsWith(cmd)||"KILL".startsWith(cmd))
 							{
-								String rest = CMParms.combine(parsedFail,1).toUpperCase().trim();
+								final String rest = CMParms.combine(parsedFail,1).toUpperCase().trim();
 								if("HERE".equals(rest)||"STOMACH".startsWith(rest)||"WALLS".startsWith(rest))
 								{
-									Item I=msg.source().fetchWieldedItem();
+									final Item I=msg.source().fetchWieldedItem();
 									if((!(I instanceof Weapon))
 									||(I.minRange()>0))
 									{
@@ -144,7 +144,7 @@ public class MOBEater extends ActiveTicker
 									}
 									final Weapon weapon=(Weapon)I;
 									final int dmg = CMLib.combat().adjustedDamage(msg.source(), (Weapon)I, (MOB)forMe, 0, true, false)/10;
-									MOB M=CMClass.getFactoryMOB(L("Someone inside @x1",forMe.name()), msg.source().phyStats().level(), ((MOB)forMe).location());
+									final MOB M=CMClass.getFactoryMOB(L("Someone inside @x1",forMe.name()), msg.source().phyStats().level(), ((MOB)forMe).location());
 									try
 									{
 										if(stomachR.show(msg.source(), forMe, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> @x1 <T-YOUPOSS> stomach with @x2!",CMLib.combat().standardHitWord(weapon.weaponDamageType(),dmg),I.name(msg.source()))))
@@ -168,7 +168,7 @@ public class MOBEater extends ActiveTicker
 	public void kill()
 	{
 		if((lastKnownLocationR==null)
-		||(stomachR==null)) 
+		||(stomachR==null))
 			return;
 
 		// ===== move all inhabitants to the dragons location
@@ -181,7 +181,7 @@ public class MOBEater extends ActiveTicker
 			if(tastyMorselM!=null)
 				these.addElement(tastyMorselM);
 		}
-		
+
 		for(final Enumeration<MOB> p=CMLib.players().players();p.hasMoreElements();)
 		{
 			final MOB M=p.nextElement();
@@ -190,7 +190,7 @@ public class MOBEater extends ActiveTicker
 				M.setLocation(lastKnownLocationR);
 				for(int f=0;f<M.numFollowers();f++)
 				{
-					MOB F=M.fetchFollower(f);
+					final MOB F=M.fetchFollower(f);
 					if((F!=null)&&(F.location()==stomachR)&&(!CMLib.flags().isInTheGame(F,true))&&(!these.contains(F)))
 						F.setLocation(lastKnownLocationR);
 				}
@@ -223,7 +223,7 @@ public class MOBEater extends ActiveTicker
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(ticking==null) 
+		if(ticking==null)
 			return true;
 		if(!(ticking instanceof MOB))
 			return true;
@@ -259,16 +259,16 @@ public class MOBEater extends ActiveTicker
 		super.executeMsg(myHost,msg);
 	}
 
-	protected boolean trySwallowWhole(MOB mob)
+	protected boolean trySwallowWhole(final MOB mob)
 	{
-		if(stomachR==null) 
+		if(stomachR==null)
 			return true;
 		if (CMLib.flags().isAliveAwakeMobile(mob,true)
 			&&(mob.rangeToTarget()==0)
 			&&(CMLib.flags().canHear(mob)||CMLib.flags().canSee(mob)||CMLib.flags().canSmell(mob)))
 		{
 			final MOB tastyMorselM = mob.getVictim();
-			if(tastyMorselM==null) 
+			if(tastyMorselM==null)
 				return true;
 			if (tastyMorselM.baseWeight()<(mob.phyStats().weight()/2))
 			{
@@ -296,9 +296,9 @@ public class MOBEater extends ActiveTicker
 		return true;
 	}
 
-	protected boolean digestTastyMorsels(MOB mob)
+	protected boolean digestTastyMorsels(final MOB mob)
 	{
-		if(stomachR==null) 
+		if(stomachR==null)
 			return true;
 		// ===== loop through all inhabitants of the stomach
 		final int morselCount = stomachR.numInhabitants();
@@ -316,9 +316,9 @@ public class MOBEater extends ActiveTicker
 				// no OKaffectS, since the dragon is not in his own stomach.
 				stomachR.send(mob,DigestMsg);
 				int damage=(int)Math.round(tastyMorselM.maxState().getHitPoints() * CMath.div(pctAcidHp, 100));
-				if(damage<2) 
+				if(damage<2)
 					damage=2;
-				if(DigestMsg.value()!=0) 
+				if(DigestMsg.value()!=0)
 					damage=damage/2;
 				CMLib.combat().postDamage(mob,tastyMorselM,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,L("The stomach acid <DAMAGE> <T-NAME>!"));
 			}

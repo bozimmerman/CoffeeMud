@@ -47,7 +47,7 @@ public class ClownFish extends SmallFish
 	{
 		return localizedStaticName;
 	}
-	
+
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{

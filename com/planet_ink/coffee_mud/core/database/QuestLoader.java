@@ -36,14 +36,14 @@ import java.util.*;
 public class QuestLoader
 {
 	protected DBConnector DB=null;
-	public QuestLoader(DBConnector newDB)
+	public QuestLoader(final DBConnector newDB)
 	{
 		DB=newDB;
 	}
 
 	public List<Quest> DBRead()
 	{
-		List<Quest> quests=new LinkedList<Quest>();
+		final List<Quest> quests=new LinkedList<Quest>();
 		DBConnection D=null;
 		try
 		{
@@ -70,7 +70,7 @@ public class QuestLoader
 						Q.setSuspended(true);
 					}
 					boolean dup=false;
-					for(Quest Q2 : quests)
+					for(final Quest Q2 : quests)
 					{
 						if(Q2.name().equalsIgnoreCase(Q.name()))
 							dup=true;
@@ -102,7 +102,7 @@ public class QuestLoader
 		return quests;
 	}
 
-	public void DBUpdateQuest(Quest Q)
+	public void DBUpdateQuest(final Quest Q)
 	{
 		if(Q==null)
 			return;
@@ -130,7 +130,7 @@ public class QuestLoader
 		DBConnection D=null;
 		final List<Quest> addThese=new LinkedList<Quest>();
 		final Set<String> types=new HashSet<String>();
-		for(Quest Q : quests)
+		for(final Quest Q : quests)
 		{
 			if(!Q.isCopy())
 			{
@@ -153,7 +153,7 @@ public class QuestLoader
 					boolean found=false;
 					for(final Iterator<Quest> i=addThese.iterator();i.hasNext();)
 					{
-						Quest Q=i.next();
+						final Quest Q=i.next();
 						if((Q.name().equals(questName))
 						&&(questType.equals(CMClass.classID(Q))))
 						{

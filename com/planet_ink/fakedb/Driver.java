@@ -39,7 +39,7 @@ public class Driver implements java.sql.Driver
 	}
 
 	@Override
-	public synchronized java.sql.Connection connect(String url, Properties info) throws java.sql.SQLException
+	public synchronized java.sql.Connection connect(final String url, final Properties info) throws java.sql.SQLException
 	{
 		final Properties p = parseUrl(url, info);
 		if (p == null)
@@ -48,13 +48,13 @@ public class Driver implements java.sql.Driver
 	}
 
 	@Override
-	public synchronized boolean acceptsURL(String url) throws java.sql.SQLException
+	public synchronized boolean acceptsURL(final String url) throws java.sql.SQLException
 	{
 		return parseUrl(url, null) != null;
 	}
 
 	@Override
-	public java.sql.DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws java.sql.SQLException
+	public java.sql.DriverPropertyInfo[] getPropertyInfo(final String url, final Properties info) throws java.sql.SQLException
 	{
 		return new java.sql.DriverPropertyInfo[0];
 	}
@@ -77,7 +77,7 @@ public class Driver implements java.sql.Driver
 		return false;
 	}
 
-	private Properties parseUrl(String url, Properties defaults)
+	private Properties parseUrl(final String url, final Properties defaults)
 	{
 		if (!url.startsWith("jdbc:fakedb:"))
 			return null;

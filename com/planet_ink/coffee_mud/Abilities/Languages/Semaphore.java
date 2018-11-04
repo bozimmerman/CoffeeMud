@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Semaphore extends StdLanguage
 {
 	@Override
@@ -50,7 +49,7 @@ public class Semaphore extends StdLanguage
 	}
 
 	@Override
-	public String translate(String language, String word)
+	public String translate(final String language, final String word)
 	{
 		return fixCase(word,"flag");
 	}
@@ -66,7 +65,7 @@ public class Semaphore extends StdLanguage
 		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK))
 		{
 			final MOB mob=(MOB)affected;
-			Room R=CMLib.map().roomLocation(mob);
+			final Room R=CMLib.map().roomLocation(mob);
 			if(!super.okMessage(myHost, msg))
 				return false;
 			if((msg.tool()==this)&&(R!=null))
@@ -95,17 +94,17 @@ public class Semaphore extends StdLanguage
 		else
 			return super.okMessage(myHost, msg);
 	}
-	
+
 	public static List<String[]> wordLists=null;
 
 	@Override
-	public List<String[]> translationLists(String language)
+	public List<String[]> translationLists(final String language)
 	{
 		return wordLists;
 	}
 
 	@Override
-	protected boolean processSourceMessage(CMMsg msg, String str, int numToMess)
+	protected boolean processSourceMessage(final CMMsg msg, final String str, final int numToMess)
 	{
 		if(msg.sourceMessage()==null)
 			return true;
@@ -152,7 +151,7 @@ public class Semaphore extends StdLanguage
 	}
 
 	@Override
-	protected boolean processNonSourceMessages(CMMsg msg, String str, int numToMess)
+	protected boolean processNonSourceMessages(final CMMsg msg, final String str, final int numToMess)
 	{
 		final String fullOtherMsgStr=(msg.othersMessage()==null)?msg.targetMessage():msg.othersMessage();
 		if(fullOtherMsgStr==null)
@@ -160,7 +159,7 @@ public class Semaphore extends StdLanguage
 		final int wordStart=fullOtherMsgStr.indexOf('\'');
 		if(wordStart<0)
 			return true;
-		String wordsSaid=CMStrings.getSayFromMessage(fullOtherMsgStr);
+		final String wordsSaid=CMStrings.getSayFromMessage(fullOtherMsgStr);
 		if(wordsSaid == null)
 			return true;
 		int numWords=1;
@@ -171,7 +170,7 @@ public class Semaphore extends StdLanguage
 				numWords++;
 		}
 		String startFullMsg=fullOtherMsgStr.substring(0,wordStart);
-		StringBuilder verbs=new StringBuilder("flag(s) ");
+		final StringBuilder verbs=new StringBuilder("flag(s) ");
 		for(int i=0;i<numWords;i++)
 		{
 			String verb;
@@ -234,7 +233,7 @@ public class Semaphore extends StdLanguage
 	}
 
 	@Override
-	protected boolean translateOthersMessage(CMMsg msg, String sourceWords)
+	protected boolean translateOthersMessage(final CMMsg msg, final String sourceWords)
 	{
 		if((msg.othersMessage()!=null)&&(sourceWords!=null))
 		{
@@ -250,7 +249,7 @@ public class Semaphore extends StdLanguage
 	}
 
 	@Override
-	protected boolean translateTargetMessage(CMMsg msg, String sourceWords)
+	protected boolean translateTargetMessage(final CMMsg msg, final String sourceWords)
 	{
 		if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
 		{
@@ -266,7 +265,7 @@ public class Semaphore extends StdLanguage
 	}
 
 	@Override
-	protected boolean translateChannelMessage(CMMsg msg, String sourceWords)
+	protected boolean translateChannelMessage(final CMMsg msg, final String sourceWords)
 	{
 		if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL)&&(msg.othersMessage()!=null))
 		{
@@ -278,7 +277,7 @@ public class Semaphore extends StdLanguage
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -303,9 +302,9 @@ public class Semaphore extends StdLanguage
 		}
 		return super.tick(ticking, tickID);
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!auto)
 		{
@@ -335,9 +334,9 @@ public class Semaphore extends StdLanguage
 				}
 			}
 		}
-		
+
 		super.invoke(mob, commands, givenTarget, auto, asLevel);
-		
+
 		return true;
 	}
 

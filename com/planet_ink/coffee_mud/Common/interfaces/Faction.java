@@ -1050,7 +1050,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/**
 		 * Returns any bonus roleplay xp granted by this change event in addition to faction changes.
 		 * This roleplay XP is given to the source of the event.
-		 * 
+		 *
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#flagCache()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#outsiderTargetOK()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#selfTargetOK()
@@ -1060,7 +1060,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return the bonus roleplay xp
 		 */
 		public int getBonusRoleplayXP();
-		
+
 		/**
 		 * Returns one of the raw key=value pairs from the flag cache.
 		 * @param key the key to look up
@@ -1068,7 +1068,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 */
 		public String getFlagValue(String key);
 
-		
+
 		/**
 		 * Returns a code for a description of how an event, if applicable, will affect this
 		 * factions value.  The direction is an index into CHANGE_DIRECTION_DESCS, or one of the
@@ -1664,7 +1664,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return the parameters for the ability/behavior/command above
 		 */
 		public String parameters();
-		
+
 		/**
 		 * The parameters for the ability/behavior/command above returned in
 		 * runtime form so that parameters are adjusted with the given name
@@ -1673,7 +1673,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @return the parameters for the ability/behavior/command above
 		 */
 		public String parameters(String Name);
-		
+
 		/**
 		 * Set the parameters for the ability/behavior/command above.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FReactionItem#rangeCodeName()

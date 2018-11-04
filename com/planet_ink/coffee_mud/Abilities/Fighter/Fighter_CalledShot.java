@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_CalledShot extends Fighter_CalledStrike
 {
 	@Override
@@ -57,7 +56,7 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 	}
 
 	@Override
-	protected boolean prereqs(MOB mob, boolean quiet)
+	protected boolean prereqs(final MOB mob, final boolean quiet)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()==0))
 		{

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_LocateAnimals extends Chant
 {
 	@Override
@@ -135,7 +134,7 @@ public class Chant_LocateAnimals extends Chant
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
-	public MOB animalHere(Room room)
+	public MOB animalHere(final Room room)
 	{
 		if(room==null)
 			return null;
@@ -149,14 +148,14 @@ public class Chant_LocateAnimals extends Chant
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{
@@ -182,7 +181,7 @@ public class Chant_LocateAnimals extends Chant
 
 		final ArrayList<Room> rooms=new ArrayList<Room>();
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-		int range=20 + super.getXLEVELLevel(mob) + (2*super.getXMAXRANGELevel(mob));
+		final int range=20 + super.getXLEVELLevel(mob) + (2*super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room room : checkSet)
 		{

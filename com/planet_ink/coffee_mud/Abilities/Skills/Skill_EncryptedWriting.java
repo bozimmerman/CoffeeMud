@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_EncryptedWriting extends Skill_Write
 {
 	@Override
@@ -86,9 +85,9 @@ public class Skill_EncryptedWriting extends Skill_Write
 	{
 		return Ability.COST_NORMAL;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final String inkID = "Encrypto";
 		final boolean delEffect=mob.fetchEffect(inkID) == null;
@@ -111,7 +110,7 @@ public class Skill_EncryptedWriting extends Skill_Write
 			setSpeakingL = CMLib.utensils().getLanguageSpoken(mob);
 			if((setSpeakingL != null)&&(!setSpeakingL.ID().equals(inkID)))
 				setSpeakingL.setBeingSpoken(setSpeakingL.ID(), false);
-			
+
 			return super.invoke(mob, commands, givenTarget, auto, asLevel);
 		}
 		finally
@@ -120,7 +119,7 @@ public class Skill_EncryptedWriting extends Skill_Write
 				notSpeakingL.setBeingSpoken(notSpeakingL.ID(), false);
 			if(delEffect)
 			{
-				Ability A=mob.fetchEffect(inkID);
+				final Ability A=mob.fetchEffect(inkID);
 				if(A!=null)
 					mob.delEffect(A);
 			}

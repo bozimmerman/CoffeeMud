@@ -52,7 +52,7 @@ public class CM1Server extends Thread
 	private final SHashtable<SocketChannel,RequestHandler>
 						 handlers = new SHashtable<SocketChannel,RequestHandler>();
 
-	public CM1Server(String serverName, String iniFile)
+	public CM1Server(final String serverName, final String iniFile)
 	{
 		super(serverName);
 		if(!loadPropPage(iniFile))
@@ -65,12 +65,12 @@ public class CM1Server extends Thread
 		shutdownRequested = false;
 	}
 
-	public String getINIFilename() 
-	{ 
+	public String getINIFilename()
+	{
 		return iniFile;
 	}
 
-	protected boolean loadPropPage(String iniFile)
+	protected boolean loadPropPage(final String iniFile)
 	{
 		if (page==null || !page.isLoaded())
 		{
@@ -117,7 +117,7 @@ public class CM1Server extends Thread
 					try
 					{
 						final int n = servSelector.select();
-						if (n == 0) 
+						if (n == 0)
 							continue;
 
 						final Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
@@ -225,7 +225,7 @@ public class CM1Server extends Thread
 			CMLib.s_sleep(1000);
 			if(servSelector != null)
 			{
-				try 
+				try
 				{
 					servSelector.close();
 				}
@@ -236,7 +236,7 @@ public class CM1Server extends Thread
 			CMLib.s_sleep(1000);
 			if((servChan != null)&&(!isShutdown))
 			{
-				try 
+				try
 				{
 					servChan.close();
 				}

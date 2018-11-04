@@ -6,13 +6,13 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /*
 	Copyright 2016-2018 Bo Zimmerman
-	
+
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
-	
+
 		   http://www.apache.org/licenses/LICENSE-2.0
-	
+
 	Unless required by applicable law or agreed to in writing, software
 	distributed under the License is distributed on an "AS IS" BASIS,
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,23 +22,23 @@ import java.util.concurrent.atomic.AtomicLong;
 public class WeakArrayList<T> extends AbstractList<T>
 {
 	private final ArrayList<WeakReference<T>>	list;
-	private final AtomicBoolean				needsCleaning	= new AtomicBoolean(false);
+	private final AtomicBoolean					needsCleaning	= new AtomicBoolean(false);
 	private final AtomicLong					lastCleaning	= new AtomicLong(0);
-	private static final long			cleanIntervalMs	= 30000;
+	private static final long					cleanIntervalMs	= 30000;
 
 	public WeakArrayList()
 	{
 		list = new ArrayList<WeakReference<T>>();
 	}
 
-	public WeakArrayList(Collection<T> c)
+	public WeakArrayList(final Collection<T> c)
 	{
 		list = new ArrayList<WeakReference<T>>();
 		addAll(0, c);
 	}
 
 	@Override
-	public synchronized boolean add(T element)
+	public synchronized boolean add(final T element)
 	{
 		if(this.needsCleaning.get() && ((System.currentTimeMillis() - this.lastCleaning.get()) > cleanIntervalMs))
 			cleanReleased();
@@ -46,7 +46,7 @@ public class WeakArrayList<T> extends AbstractList<T>
 	}
 
 	@Override
-	public synchronized boolean remove(Object element)
+	public synchronized boolean remove(final Object element)
 	{
 		if(this.needsCleaning.get() && ((System.currentTimeMillis() - this.lastCleaning.get()) > cleanIntervalMs))
 			cleanReleased();
@@ -54,7 +54,7 @@ public class WeakArrayList<T> extends AbstractList<T>
 	}
 
 	@Override
-	public synchronized T remove(int index)
+	public synchronized T remove(final int index)
 	{
 		if(this.needsCleaning.get() && ((System.currentTimeMillis() - this.lastCleaning.get()) > cleanIntervalMs))
 			cleanReleased();
@@ -62,7 +62,7 @@ public class WeakArrayList<T> extends AbstractList<T>
 	}
 
 	@Override
-	public synchronized void add(int index, T element)
+	public synchronized void add(final int index, final T element)
 	{
 		if(this.needsCleaning.get() && ((System.currentTimeMillis() - this.lastCleaning.get()) > cleanIntervalMs))
 			cleanReleased();
@@ -86,7 +86,7 @@ public class WeakArrayList<T> extends AbstractList<T>
 	}
 
 	@Override
-	public synchronized T get(int index)
+	public synchronized T get(final int index)
 	{
 		if(this.needsCleaning.get() && ((System.currentTimeMillis() - this.lastCleaning.get()) > cleanIntervalMs))
 			cleanReleased();
@@ -95,29 +95,29 @@ public class WeakArrayList<T> extends AbstractList<T>
 
 	private synchronized void cleanReleased()
 	{
-		for (Iterator<WeakReference<T>> it = list.iterator(); it.hasNext();)
+		for (final Iterator<WeakReference<T>> it = list.iterator(); it.hasNext();)
 		{
-			WeakReference<T> ref =it.next();
+			final WeakReference<T> ref =it.next();
 			if (ref.get() == null)
 				it.remove();
 		}
 		this.needsCleaning.set(false);
 		this.lastCleaning.set(System.currentTimeMillis());
 	}
-	
+
 	private final Filterer<T> WeakFilterer = new Filterer<T>()
 	{
 		@Override
-		public boolean passesFilter(T obj)
+		public boolean passesFilter(final T obj)
 		{
 			return (obj != null);
 		}
 	};
-	
+
 	private final Converter<WeakReference<T>, T> WeakConverter = new Converter<WeakReference<T>, T>()
 	{
 		@Override
-		public T convert(WeakReference<T> obj)
+		public T convert(final WeakReference<T> obj)
 		{
 			if(obj == null)
 				return null;

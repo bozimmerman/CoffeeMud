@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_HighTide extends Chant
 {
 	@Override
@@ -154,7 +153,7 @@ public class Chant_HighTide extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -168,7 +167,7 @@ public class Chant_HighTide extends Chant
 		return super.castingQuality(mob,target);
 	}
 
-	public int getWaterRoomDir(Room mobR)
+	public int getWaterRoomDir(final Room mobR)
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
@@ -193,9 +192,9 @@ public class Chant_HighTide extends Chant
 		}
 		return -1;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room mobR=mob.location();
 		if(mobR==null)
@@ -210,10 +209,10 @@ public class Chant_HighTide extends Chant
 		{
 			if((mobR.domainType()&Room.INDOORS)==0)
 			{
-				Item I=((BoardableShip)mobR.getArea()).getShipItem();
+				final Item I=((BoardableShip)mobR.getArea()).getShipItem();
 				if((I!=null)&&(I.owner() instanceof Room))
 				{
-					Room R=(Room)I.owner();
+					final Room R=(Room)I.owner();
 					if(CMLib.flags().isWateryRoom(R))
 						waterDir = CMLib.dice().roll(1, 4, -1);
 					else
@@ -223,13 +222,13 @@ public class Chant_HighTide extends Chant
 		}
 		else
 			waterDir = getWaterRoomDir(mobR);
-		
+
 		if(waterDir < 0)
 		{
 			mob.tell(L("There is no shore nearby to call in the tide from."));
 			return false;
 		}
-		
+
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{

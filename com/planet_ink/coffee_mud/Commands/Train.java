@@ -51,7 +51,7 @@ public class Train extends StdCommand
 	private static final int	TRAIN_GAIN		= 104;
 	private static final int	TRAIN_PRACTICES	= 105;
 	private static final int	TRAIN_CCLASS	= 106;
-	
+
 	public static List<String> getAllPossibleThingsToTrainFor()
 	{
 		final List<String> V=new Vector<String>();
@@ -72,10 +72,10 @@ public class Train extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		List<String> origCmds=new StringXVector(commands);
+		final List<String> origCmds=new StringXVector(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("You have @x1 training sessions. Enter HELP TRAIN for more information.",""+mob.getTrains()));
@@ -398,7 +398,7 @@ public class Train extends StdCommand
 		}
 		return false;
 	}
-	
+
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{

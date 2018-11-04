@@ -122,7 +122,7 @@ public class Spell_FloatingDisc extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
@@ -181,7 +181,7 @@ public class Spell_FloatingDisc extends Spell
 				((Item)target).setRawLogicalAnd(properWornLogical);
 				((Item)target).setRawProperLocationBitmap(properWornCode);
 				((Item)target).recoverPhyStats();
-				
+
 				beneficialAffect(mob,target,asLevel,(mob.phyStats().level()+(2*getXLEVELLevel(mob)))*30);
 				((Item)target).recoverPhyStats();
 				mob.recoverPhyStats();

@@ -27,14 +27,14 @@ public class XHashSet<T> extends HashSet<T>
 {
 	private static final long serialVersionUID = 6687178785122563992L;
 
-	public XHashSet(List<T> V)
+	public XHashSet(final List<T> V)
 	{
 		super();
 		if(V!=null)
 			addAll(V);
 	}
 
-	public XHashSet(T[] E)
+	public XHashSet(final T[] E)
 	{
 		super();
 		if(E!=null)
@@ -42,7 +42,7 @@ public class XHashSet<T> extends HashSet<T>
 				add(o);
 	}
 
-	public XHashSet(T E)
+	public XHashSet(final T E)
 	{
 		super();
 		if(E!=null)
@@ -54,7 +54,7 @@ public class XHashSet<T> extends HashSet<T>
 		super();
 	}
 
-	public XHashSet(Set<T> E)
+	public XHashSet(final Set<T> E)
 	{
 		super();
 		if(E!=null)
@@ -64,7 +64,7 @@ public class XHashSet<T> extends HashSet<T>
 		}
 	}
 
-	public XHashSet(Enumeration<T> E)
+	public XHashSet(final Enumeration<T> E)
 	{
 		super();
 		if(E!=null)
@@ -74,7 +74,7 @@ public class XHashSet<T> extends HashSet<T>
 		}
 	}
 
-	public XHashSet(Iterator<T> E)
+	public XHashSet(final Iterator<T> E)
 	{
 		super();
 		if(E!=null)
@@ -84,7 +84,7 @@ public class XHashSet<T> extends HashSet<T>
 		}
 	}
 
-	public synchronized void addAll(Enumeration<T> E)
+	public synchronized void addAll(final Enumeration<T> E)
 	{
 		if(E!=null)
 		{
@@ -93,7 +93,7 @@ public class XHashSet<T> extends HashSet<T>
 		}
 	}
 
-	public synchronized void addAll(T[] E)
+	public synchronized void addAll(final T[] E)
 	{
 		if(E!=null)
 		{
@@ -102,7 +102,7 @@ public class XHashSet<T> extends HashSet<T>
 		}
 	}
 
-	public synchronized void addAll(Iterator<T> E)
+	public synchronized void addAll(final Iterator<T> E)
 	{
 		if(E!=null)
 		{
@@ -111,7 +111,7 @@ public class XHashSet<T> extends HashSet<T>
 		}
 	}
 
-	public synchronized void removeAll(Enumeration<T> E)
+	public synchronized void removeAll(final Enumeration<T> E)
 	{
 		if(E!=null)
 		{
@@ -120,7 +120,7 @@ public class XHashSet<T> extends HashSet<T>
 		}
 	}
 
-	public synchronized void removeAll(Iterator<T> E)
+	public synchronized void removeAll(final Iterator<T> E)
 	{
 		if(E!=null)
 		{
@@ -129,7 +129,7 @@ public class XHashSet<T> extends HashSet<T>
 		}
 	}
 
-	public synchronized void removeAll(List<T> E)
+	public synchronized void removeAll(final List<T> E)
 	{
 		if(E!=null)
 		{

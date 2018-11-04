@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_MirrorImage extends Spell
 {
 
@@ -97,7 +96,7 @@ public class Spell_MirrorImage extends Spell
 				unInvoke();
 				return true;
 			}
-			int intAdjustment = (msg.source().charStats().getMaxStat(CharStats.STAT_INTELLIGENCE) 
+			int intAdjustment = (msg.source().charStats().getMaxStat(CharStats.STAT_INTELLIGENCE)
 									- mob.charStats().getStat(CharStats.STAT_INTELLIGENCE))/2;
 			if(intAdjustment < 1)
 				intAdjustment = 1;
@@ -200,7 +199,7 @@ public class Spell_MirrorImage extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

@@ -60,7 +60,7 @@ public class Load extends StdCommand
 
 	public final String ARCHON_LIST[]=combine(new String[]{"RESOURCE","FACTION","CLASS"},CMClass.CMObjectType.values());
 
-	public final Ammunition getNextAmmunition(String type, List<Ammunition> ammos)
+	public final Ammunition getNextAmmunition(final String type, final List<Ammunition> ammos)
 	{
 		for(final Ammunition ammo : ammos)
 		{
@@ -71,7 +71,7 @@ public class Load extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob==null)
@@ -112,7 +112,7 @@ public class Load extends StdCommand
 			final XVector<String> ammoV=new XVector<String>(what);
 			final List<Item> baseAmmoItems=CMLib.english().fetchItemList(mob,mob,null,ammoV,Wearable.FILTER_UNWORNONLY,false);
 			final List<Ammunition> ammos=new XVector<Ammunition>();
-			for (Item I : baseAmmoItems)
+			for (final Item I : baseAmmoItems)
 			{
 				if(I instanceof Ammunition)
 				{
@@ -130,7 +130,7 @@ public class Load extends StdCommand
 				final List<Item> baseItems=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,false);
 				baseItems.addAll(mob.location().findItems(null,CMParms.combine(commands,0)));
 				final List<AmmunitionWeapon> items=new XVector<AmmunitionWeapon>();
-				for (Item I : baseItems)
+				for (final Item I : baseItems)
 				{
 					if((I instanceof AmmunitionWeapon)
 					&&((AmmunitionWeapon)I).requiresAmmunition())
@@ -338,7 +338,7 @@ public class Load extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return super.securityCheck(mob);
 	}

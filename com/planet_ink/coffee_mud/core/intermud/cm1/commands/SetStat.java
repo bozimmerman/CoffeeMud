@@ -42,13 +42,13 @@ import java.util.concurrent.atomic.*;
 */
 public class SetStat extends GetStat
 {
-	@Override 
+	@Override
 	public String getCommandWord()
-	{ 
+	{
 		return "SETSTAT";
 	}
 
-	public SetStat(RequestHandler req, String parameters)
+	public SetStat(final RequestHandler req, final String parameters)
 	{
 		super(req, parameters);
 	}
@@ -117,7 +117,7 @@ public class SetStat extends GetStat
 			{
 				switch(CMParms.indexOf(PHYSSTATS, stat))
 				{
-					case -1: 
+					case -1:
 						break;
 					case 0:
 					{
@@ -167,7 +167,7 @@ public class SetStat extends GetStat
 			{
 				switch(CMParms.indexOf(PHYASTATS, stat))
 				{
-					case -1: 
+					case -1:
 						break;
 					case 0:
 					{
@@ -201,7 +201,7 @@ public class SetStat extends GetStat
 			{
 				switch(CMParms.indexOf(MOBASTATS, stat))
 				{
-					case -1: 
+					case -1:
 						break;
 					case 0:
 					{
@@ -315,7 +315,7 @@ public class SetStat extends GetStat
 			{
 				switch(CMParms.indexOf(ITEMSTATS, stat))
 				{
-					case -1: 
+					case -1:
 						break;
 					case 0:
 					{
@@ -356,7 +356,7 @@ public class SetStat extends GetStat
 			{
 				switch(CMParms.indexOf(ROOMSTATS, stat))
 				{
-					case -1: 
+					case -1:
 						break;
 					case 0:
 					{

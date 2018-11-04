@@ -235,9 +235,9 @@ public class Flower extends Vine
 		else
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
-	
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -246,7 +246,7 @@ public class Flower extends Vine
 		}
 		return body;
 	}
-	
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

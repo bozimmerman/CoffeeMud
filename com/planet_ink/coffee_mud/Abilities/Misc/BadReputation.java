@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class BadReputation extends StdAbility
 {
 	@Override
@@ -93,9 +92,9 @@ public class BadReputation extends StdAbility
 	}
 
 	double changePct = 0.45;
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if((newMiscText.length()>0)&&(CMath.isPct(newMiscText)))
@@ -103,7 +102,7 @@ public class BadReputation extends StdAbility
 			changePct = CMath.s_pct(newMiscText);
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

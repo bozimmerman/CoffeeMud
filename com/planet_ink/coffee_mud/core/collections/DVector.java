@@ -39,7 +39,7 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 	private SVector<Object[]> 	stuff;
 	private final static int 	MAX_SIZE=9;
 
-	public DVector(int dim)
+	public DVector(final int dim)
 	{
 		if(dim<1)
 			throw new java.lang.IndexOutOfBoundsException();
@@ -49,7 +49,7 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		stuff=new SVector<Object[]>(1);
 	}
 
-	public DVector(int dim, int startingSize)
+	public DVector(final int dim, final int startingSize)
 	{
 		if(dim<1)
 			throw new java.lang.IndexOutOfBoundsException();
@@ -69,7 +69,7 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		stuff.trimToSize();
 	}
 
-	public synchronized int indexOf(Object O)
+	public synchronized int indexOf(final Object O)
 	{
 		int x=0;
 		if(O==null)
@@ -87,14 +87,14 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		return -1;
 	}
 
-	public synchronized Object[] elementsAt(int x)
+	public synchronized Object[] elementsAt(final int x)
 	{
 		if((x<0)||(x>=stuff.size()))
 			throw new java.lang.IndexOutOfBoundsException();
 		return stuff.elementAt(x);
 	}
 
-	public synchronized Object[] removeElementsAt(int x)
+	public synchronized Object[] removeElementsAt(final int x)
 	{
 		if((x<0)||(x>=stuff.size()))
 			throw new java.lang.IndexOutOfBoundsException();
@@ -143,43 +143,43 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		}
 	}
 
-	public static DVector toNVector(Map<? extends Object,? extends Object> h)
+	public static DVector toNVector(final Map<? extends Object,? extends Object> h)
 	{
 		final DVector DV=new DVector(2);
-		for(Object key : h.keySet())
+		for(final Object key : h.keySet())
 		{
 			DV.addElement(key,h.get(key));
 		}
 		return DV;
 	}
 
-	public synchronized void addSharedElements(Object[] O)
+	public synchronized void addSharedElements(final Object[] O)
 	{
 		if(dimensions!=O.length)
 			throw new java.lang.IndexOutOfBoundsException();
 		stuff.addElement(O);
 	}
 
-	public synchronized void addElement(Object... Os)
+	public synchronized void addElement(final Object... Os)
 	{
 		if(dimensions!=Os.length)
 			throw new java.lang.IndexOutOfBoundsException();
 		stuff.addElement(Os);
 	}
 
-	public synchronized void add(Object... Os)
+	public synchronized void add(final Object... Os)
 	{
 		if(dimensions!=Os.length)
 			throw new java.lang.IndexOutOfBoundsException();
 		stuff.addElement(Os);
 	}
 
-	public boolean contains(Object O)
+	public boolean contains(final Object O)
 	{
 		return indexOf(O)>=0;
 	}
 
-	public synchronized boolean containsIgnoreCase(String S)
+	public synchronized boolean containsIgnoreCase(final String S)
 	{
 		if(S==null)
 			return indexOf(null)>=0;
@@ -196,24 +196,24 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		return stuff.size();
 	}
 
-	public synchronized void removeElementAt(int i)
+	public synchronized void removeElementAt(final int i)
 	{
 		if(i>=0)
 			stuff.removeElementAt(i);
 	}
 
-	public synchronized void remove(int i)
+	public synchronized void remove(final int i)
 	{
 		if(i>=0)
 			stuff.removeElementAt(i);
 	}
 
-	public synchronized void removeElement(Object O)
+	public synchronized void removeElement(final Object O)
 	{
 		removeElementAt(indexOf(O));
 	}
 
-	public synchronized List<Object> getDimensionList(int dim)
+	public synchronized List<Object> getDimensionList(final int dim)
 	{
 		final Vector<Object> V=new Vector<Object>(stuff.size());
 		if(dimensions<dim)
@@ -223,7 +223,7 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		return V;
 	}
 
-	public synchronized List<Object> getRowList(int row)
+	public synchronized List<Object> getRowList(final int row)
 	{
 		final Vector<Object> V=new Vector<Object>(dimensions);
 		final Object[] O=elementsAt(row);
@@ -232,42 +232,42 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 		return V;
 	}
 
-	public synchronized Object elementAt(int i, int dim)
+	public synchronized Object elementAt(final int i, final int dim)
 	{
 		if(dimensions<dim)
 			throw new java.lang.IndexOutOfBoundsException();
 		return (stuff.elementAt(i))[dim-1];
 	}
 
-	public synchronized Object get(int i, int dim)
+	public synchronized Object get(final int i, final int dim)
 	{
 		if(dimensions<dim)
 			throw new java.lang.IndexOutOfBoundsException();
 		return (stuff.elementAt(i))[dim-1];
 	}
 
-	public synchronized void setElementAt(int index, int dim, Object O)
+	public synchronized void setElementAt(final int index, final int dim, final Object O)
 	{
 		if(dimensions<dim)
 			throw new java.lang.IndexOutOfBoundsException();
 		stuff.elementAt(index)[dim-1]=O;
 	}
 
-	public synchronized void set(int index, int dim, Object O)
+	public synchronized void set(final int index, final int dim, final Object O)
 	{
 		if(dimensions<dim)
 			throw new java.lang.IndexOutOfBoundsException();
 		stuff.elementAt(index)[dim-1]=O;
 	}
 
-	public synchronized void insertElementAt(int here, Object... Os)
+	public synchronized void insertElementAt(final int here, final Object... Os)
 	{
 		if(dimensions!=Os.length)
 			throw new java.lang.IndexOutOfBoundsException();
 		stuff.insertElementAt(Os,here);
 	}
-	
-	public synchronized void add(int here, Object... Os)
+
+	public synchronized void add(final int here, final Object... Os)
 	{
 		if(dimensions!=Os.length)
 			throw new java.lang.IndexOutOfBoundsException();

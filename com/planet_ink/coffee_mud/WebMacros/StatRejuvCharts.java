@@ -43,7 +43,7 @@ public class StatRejuvCharts extends StdWebMacro
 		return "StatRejuvCharts";
 	}
 
-	protected String getReq(HTTPRequest httpReq, String tag)
+	protected String getReq(final HTTPRequest httpReq, final String tag)
 	{
 		String s=httpReq.getUrlParameter(tag);
 		if(s==null)
@@ -66,9 +66,9 @@ public class StatRejuvCharts extends StdWebMacro
 			};
 		return add+(level*(int)Math.round(CMath.parseMathExpression(formula, variables, 0.0)));
 	}
-	
+
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final StringBuffer buf=new StringBuffer("");
 		final String which=httpReq.getUrlParameter("WHICH");
@@ -137,16 +137,16 @@ public class StatRejuvCharts extends StdWebMacro
 		final int MAX_LEVEL=90;
 		final int SKIP_STAT=2;
 		final int SKIP_LEVEL=5;
-		
+
 		final int[][] hitpointcharts=new int[MAX_LEVEL+1][MAX_STAT+1];
 		final int[][] manacharts=new int[MAX_LEVEL+1][MAX_STAT+1];
 		final int[][] movementcharts=new int[MAX_LEVEL+1][MAX_STAT+1];
 		final int sh=CMProps.getIntVar(CMProps.Int.STARTHP);
 		final int sm=CMProps.getIntVar(CMProps.Int.STARTMANA);
 		final int sv=CMProps.getIntVar(CMProps.Int.STARTMOVE);
-		final Map<CharClass,CompiledFormula> hpformulas=new Hashtable<CharClass,CompiledFormula>(); 
-		final Map<CharClass,CompiledFormula> mnformulas=new Hashtable<CharClass,CompiledFormula>(); 
-		final Map<CharClass,CompiledFormula> mvformulas=new Hashtable<CharClass,CompiledFormula>(); 
+		final Map<CharClass,CompiledFormula> hpformulas=new Hashtable<CharClass,CompiledFormula>();
+		final Map<CharClass,CompiledFormula> mnformulas=new Hashtable<CharClass,CompiledFormula>();
+		final Map<CharClass,CompiledFormula> mvformulas=new Hashtable<CharClass,CompiledFormula>();
 		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			final CharClass C1=c.nextElement();
@@ -154,7 +154,7 @@ public class StatRejuvCharts extends StdWebMacro
 			mnformulas.put(C1, CMath.compileMathExpression(C1.getManaFormula()));
 			mvformulas.put(C1, CMath.compileMathExpression(C1.getMovementFormula()));
 		}
-		
+
 		for(int l=1;l<=MAX_LEVEL;l+=SKIP_LEVEL)
 		{
 			for(int s=4;s<=MAX_STAT;s+=SKIP_STAT)
@@ -173,13 +173,13 @@ public class StatRejuvCharts extends StdWebMacro
 				movementcharts[l][s]/=num;
 			}
 		}
-		
+
 		buf.append("<P><TABLE WIDTH=100% BORDER=1>");
 		buf.append("<TR><TD><B><FONT COLOR=WHITE>STATS:</FONT></B></TD>");
 		for(int stats=4;stats<=MAX_STAT;stats+=SKIP_STAT)
 			buf.append("<TD><B><FONT COLOR=WHITE>"+stats+"</FONT></B></TD>");
 		buf.append("</TR>");
-		
+
 		CMath.CompiledFormula stateHitPointRecoverFormula = null;
 		CMath.CompiledFormula stateManaRecoverFormula = null;
 		CMath.CompiledFormula stateMovesRecoverFormula  = null;

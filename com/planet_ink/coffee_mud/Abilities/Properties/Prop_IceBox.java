@@ -47,7 +47,7 @@ public class Prop_IceBox extends Property
 	}
 
 	boolean started=false;
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -70,13 +70,13 @@ public class Prop_IceBox extends Property
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		
+
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_PUT:

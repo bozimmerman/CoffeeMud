@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Dueler extends StdAbility
 {
 	@Override
@@ -206,7 +205,7 @@ public class Dueler extends StdAbility
 		return true;
 	}
 
-	public void init(MOB mob)
+	public void init(final MOB mob)
 	{
 		oldPVPStatus=mob.isAttributeSet(MOB.Attrib.PLAYERKILL);
 		mob.setAttribute(MOB.Attrib.PLAYERKILL,true);
@@ -226,7 +225,7 @@ public class Dueler extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, Physical target, final boolean auto, final int asLevel)
 	{
 		if(target==null)
 			target=mob;

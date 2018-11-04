@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Sanctum extends Prayer
 {
 	@Override
@@ -81,7 +80,7 @@ public class Prayer_Sanctum extends Prayer
 		return Ability.FLAG_NEUTRAL;
 	}
 
-	protected boolean inRoom(MOB mob, Room R)
+	protected boolean inRoom(final MOB mob, final Room R)
 	{
 		if(!CMLib.law().doesAnyoneHavePrivilegesHere(mob, text(), R))
 		{
@@ -157,7 +156,7 @@ public class Prayer_Sanctum extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=mob.location();
 		if(target==null)

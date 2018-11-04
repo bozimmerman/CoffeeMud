@@ -47,7 +47,7 @@ public interface HelpLibrary extends CMLibrary
 	public void unloadHelpFile(MOB mob);
 	public boolean isPlayerSkill(String helpStr);
 	public void addHelpEntry(String ID, String text, boolean archon);
-	
+
 	/**
 	 * Returns a description of the amount of a particular cost is required
 	 * by the given mob to use the given ability.

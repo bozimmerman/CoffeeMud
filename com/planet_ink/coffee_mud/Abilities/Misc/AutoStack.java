@@ -78,7 +78,7 @@ public class AutoStack extends StdAbility
 	protected int				numberInGroupToTrigger	= 10;
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		numberOfItemsToTrigger = CMParms.getParmInt(newMiscText, "TRIGGERCOUNT", 1000);
@@ -88,7 +88,7 @@ public class AutoStack extends StdAbility
 		nextTriggeringTime = System.currentTimeMillis() + (CMProps.getTickMillis() * tickDown);
 	}
 
-	protected synchronized void packageAll(Room R)
+	protected synchronized void packageAll(final Room R)
 	{
 		if (R == null)
 			return;
@@ -98,12 +98,12 @@ public class AutoStack extends StdAbility
 
 		final Map<String, List<Item>> groupedByName = new TreeMap<String, List<Item>>();
 		final List<PackagedItems> oldPackages = new LinkedList<PackagedItems>();
-		for (Enumeration<Item> i = R.items(); i.hasMoreElements();)
+		for (final Enumeration<Item> i = R.items(); i.hasMoreElements();)
 		{
 			final Item I = i.nextElement();
 			if (I instanceof PackagedItems)
 				oldPackages.add((PackagedItems) I);
-			else 
+			else
 			if ((I != null) && (!(I instanceof RawMaterial)))
 			{
 				List<Item> itemList = groupedByName.get(I.name());
@@ -167,7 +167,7 @@ public class AutoStack extends StdAbility
 							else
 							{
 								boolean alreadyPacked = false;
-								for (Pair<Item, PackagedItems> oldPackPair : oldPackChecks)
+								for (final Pair<Item, PackagedItems> oldPackPair : oldPackChecks)
 								{
 									if((set.first.name().equals(oldPackPair.first.name()))
 									&&(set.first.container() == oldPackPair.second.container()))
@@ -193,7 +193,7 @@ public class AutoStack extends StdAbility
 												time = 0;
 												break;
 											}
-											else 
+											else
 											if (I.expirationDate() > time)
 												time = I.expirationDate();
 										}
@@ -247,7 +247,7 @@ public class AutoStack extends StdAbility
 		}
 		super.executeMsg(myHost, msg);
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -256,7 +256,7 @@ public class AutoStack extends StdAbility
 			final Room R=(Room)affected;
 			if((R==null)||(R.amDestroyed()))
 				return false;
-			
+
 			if (tickID == Tickable.TICKID_MOB)
 			{
 				if((--tickDown)<=0)
@@ -276,7 +276,7 @@ public class AutoStack extends StdAbility
 			final Area A=(Area)affected;
 			if((A==null)||(A.amDestroyed()))
 				return false;
-			
+
 			if (tickID == Tickable.TICKID_MOB)
 			{
 				if((--tickDown)<=0)

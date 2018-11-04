@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_FertileCavern extends Chant
 {
 	@Override
@@ -85,7 +84,7 @@ public class Chant_FertileCavern extends Chant
 			((Room)affected).setResource(previousResource);
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -99,10 +98,10 @@ public class Chant_FertileCavern extends Chant
 		}
 		return true;
 	}
-	
+
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room target=mob.location();
 		if(target==null)

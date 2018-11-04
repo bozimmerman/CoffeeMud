@@ -110,7 +110,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public void resetTrap(MOB mob)
+	public void resetTrap(final MOB mob)
 	{
 	}
 
@@ -121,18 +121,18 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public void setReset(int Reset)
+	public void setReset(final int Reset)
 	{
 	}
 
 	@Override
-	public boolean maySetTrap(MOB mob, int asLevel)
+	public boolean maySetTrap(final MOB mob, final int asLevel)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
 		return false;
 	}
@@ -144,7 +144,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public boolean canReSetTrap(MOB mob)
+	public boolean canReSetTrap(final MOB mob)
 	{
 		return false;
 	}
@@ -156,7 +156,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		maliciousAffect(mob, P, qualifyingClassLevel + trapBonus, 0, -1);
 		return (Trap) P.fetchEffect(ID());
@@ -171,7 +171,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public void spring(MOB mob)
+	public void spring(final MOB mob)
 	{
 		if((mob==null)||(invoker()==null))
 			return;
@@ -249,7 +249,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -265,7 +265,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=(givenTarget!=null)?givenTarget:mob.location();
 		if(target.fetchEffect(ID())!=null)

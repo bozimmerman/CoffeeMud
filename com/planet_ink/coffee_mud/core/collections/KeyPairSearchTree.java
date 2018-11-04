@@ -34,32 +34,32 @@ public class KeyPairSearchTree<V>
 		public KeyPairNode<K,T>[] limbs=new KeyPairNode[127];
 		public Pair<K,T> value=null;
 	}
-	
+
 	/**
 	 * Store a new key/value pair
 	 * @param key the key to add
 	 * @param value the value of the key
 	 */
-	public void addEntry(String key, V value)
+	public void addEntry(final String key, final V value)
 	{
 		KeyPairNode<String,V> curr=root;
 		for(int i=0;i<key.length();i++)
 		{
-			int c=key.charAt(i) % 127;
+			final int c=key.charAt(i) % 127;
 			if(curr.limbs[c]==null)
 				curr.limbs[c]=new KeyPairNode<String,V>();
 			curr=curr.limbs[c];
 		}
 		curr.value=new Pair<String,V>(key,value);
 	}
-	
+
 	/**
 	 * Retrieve teh value for the longest key that
 	 * the given string starts with
 	 * @param fullStr the string that might start with a key
 	 * @return the value
 	 */
-	public Pair<String,V> findLongestValue(String fullStr)
+	public Pair<String,V> findLongestValue(final String fullStr)
 	{
 		Pair<String,V> lastValue=null;
 		KeyPairNode<String,V> curr=root;
@@ -67,7 +67,7 @@ public class KeyPairSearchTree<V>
 		{
 			if(curr.value != null)
 				lastValue=curr.value;
-			int c=fullStr.charAt(i) % 127;
+			final int c=fullStr.charAt(i) % 127;
 			if(curr.limbs[c]==null)
 				return lastValue;
 			else

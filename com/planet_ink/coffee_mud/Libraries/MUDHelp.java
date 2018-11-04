@@ -44,8 +44,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return "MUDHelp";
 	}
 
-	protected Map<String,String>		genUsageCost				= new SHashtable<String, String>(); 
-	
+	protected Map<String,String>		genUsageCost				= new SHashtable<String, String>();
+
 	@Override
 	public boolean isPlayerSkill(String helpStr)
 	{
@@ -74,13 +74,13 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	@Override
-	public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp)
+	public StringBuilder getHelpText(final String helpStr, final MOB forMOB, final boolean favorAHelp)
 	{
 		return getHelpText(helpStr, forMOB, favorAHelp, false);
 	}
 
 	@Override
-	public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp, boolean noFix)
+	public StringBuilder getHelpText(final String helpStr, final MOB forMOB, final boolean favorAHelp, final boolean noFix)
 	{
 		if(helpStr.length()==0)
 			return null;
@@ -111,7 +111,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	@Override
-	public List<String> getTopics(boolean archonHelp, boolean standardHelp)
+	public List<String> getTopics(final boolean archonHelp, final boolean standardHelp)
 	{
 		final Vector<String> reverseList=new Vector<String>();
 		Properties rHelpFile=null;
@@ -156,12 +156,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return reverseList;
 	}
 
-	protected String getActualUsageInternal(Ability A, int whichUsageCode, MOB forMOB)
+	protected String getActualUsageInternal(Ability A, final int whichUsageCode, final MOB forMOB)
 	{
 		final Ability myA=forMOB.fetchAbility(A.ID());
 		if(myA!=null)
 			A=myA;
-		
+
 		final int[] consumption=A.usageCost(forMOB,true);
 		int whichConsumed=consumption[0];
 		switch(whichUsageCode)
@@ -182,9 +182,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	@Override
-	public String getAbilityQualityDesc(Ability A)
+	public String getAbilityQualityDesc(final Ability A)
 	{
-		StringBuilder prepend=new StringBuilder("");
+		final StringBuilder prepend=new StringBuilder("");
 		switch(A.abstractQuality())
 		{
 		case Ability.QUALITY_MALICIOUS:
@@ -204,11 +204,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		return prepend.toString();
 	}
-	
+
 	@Override
-	public String getAbilityCostDesc(Ability A, final MOB forMOB)
+	public String getAbilityCostDesc(final Ability A, final MOB forMOB)
 	{
-		StringBuilder costStr = new StringBuilder("");
+		final StringBuilder costStr = new StringBuilder("");
 		if(A.usageType()==Ability.USAGE_NADA)
 			costStr.append(L("None"));
 		if(CMath.bset(A.usageType(),Ability.USAGE_MANA))
@@ -219,11 +219,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			costStr.append(L("Hit Points (@x1) ",CMLib.help().getActualAbilityUsageDesc(A,Ability.USAGE_HITPOINTS,forMOB)));
 		return costStr.toString();
 	}
-	
+
 	@Override
-	public String getAbilityRangeDesc(Ability A)
+	public String getAbilityRangeDesc(final Ability A)
 	{
-		StringBuilder prepend=new StringBuilder("");
+		final StringBuilder prepend=new StringBuilder("");
 		final int min=A.minRange();
 		final int max=A.maxRange();
 		if(min+max==0)
@@ -241,9 +241,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	@Override
-	public String getAbilityTargetDesc(Ability A)
+	public String getAbilityTargetDesc(final Ability A)
 	{
-		StringBuilder prepend=new StringBuilder("");
+		final StringBuilder prepend=new StringBuilder("");
 		if((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF)
 		||(A.abstractQuality()==Ability.QUALITY_OK_SELF))
 			prepend.append(L("Caster only"));
@@ -274,17 +274,17 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			prepend.append(L("Caster, or others"));
 		return prepend.toString();
 	}
-	
+
 	@Override
-	public String getActualAbilityUsageDesc(Ability A, int whichUsageCode, MOB forMOB)
+	public String getActualAbilityUsageDesc(final Ability A, final int whichUsageCode, final MOB forMOB)
 	{
 		if(forMOB == null)
 			return getActualUsage(A,whichUsageCode);
 		else
 			return getActualUsageInternal(A,whichUsageCode,forMOB);
 	}
-	
-	protected String getActualUsage(Ability A, int whichUsageCode)
+
+	protected String getActualUsage(final Ability A, final int whichUsageCode)
 	{
 		String usageCost;
 		if(this.genUsageCost.containsKey(A.ID()+"/"+whichUsageCode))
@@ -308,7 +308,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	@Override
-	public void addHelpEntry(String ID, String text, boolean archon)
+	public void addHelpEntry(final String ID, final String text, final boolean archon)
 	{
 		if(archon)
 			getArcHelpFile().put(ID.toUpperCase(),text);
@@ -316,7 +316,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			getHelpFile().put(ID.toUpperCase(),text);
 	}
 
-	private void appendAllowed(final MOB mob, StringBuilder prepend, String ID)
+	private void appendAllowed(final MOB mob, final StringBuilder prepend, final String ID)
 	{
 		final Iterator<String> i=CMLib.expertises().filterUniqueExpertiseIDList(CMLib.ableMapper().getAbilityAllowsList(ID));
 		int lastLine=11;
@@ -358,7 +358,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 	}
 
-	protected String columnHelper(String word, String msg, int wrap)
+	protected String columnHelper(String word, final String msg, final int wrap)
 	{
 		final StringBuilder prepend = new StringBuilder("");
 		final String[] maxStats = CMLib.coffeeFilter().wrapOnlyFilter(msg,wrap-12);
@@ -371,7 +371,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	@Override
-	public String fixHelp(String tag, String str, MOB forMOB)
+	public String fixHelp(final String tag, String str, final MOB forMOB)
 	{
 		boolean worldCurrency=str.startsWith("<CURRENCIES>");
 		if(str.startsWith("<CURRENCY>")||worldCurrency)
@@ -516,7 +516,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if(R.getXPAdjustment() != 0)
 					prepend.append(columnHelper(L("^HXP Adjust.:^N"),R.getXPAdjustment()+"%",wrap));
 				s="";
-				for(String ableID : R.abilityImmunities())
+				for(final String ableID : R.abilityImmunities())
 				{
 					final Ability A=CMClass.getAbilityPrototype(ableID);
 					if(A!=null)
@@ -644,8 +644,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					{
 						if((c%4)==0)
 							prepend.append(L("\n\rAvailable: "));
-						CharClass C=CMClass.getCharClass(avail.getFirst(c));
-						Integer I=avail.getSecond(c);
+						final CharClass C=CMClass.getCharClass(avail.getFirst(c));
+						final Integer I=avail.getSecond(c);
 						prepend.append((C!=null)?C.name(I.intValue()):avail.getFirst(c)).append(" ");
 					}
 
@@ -726,19 +726,19 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	@Override
-	public StringBuilder getHelpText(String helpStr, Properties rHelpFile, MOB forMOB)
+	public StringBuilder getHelpText(final String helpStr, final Properties rHelpFile, final MOB forMOB)
 	{
 		return getHelpText(helpStr,rHelpFile,forMOB,false);
 	}
 
-	protected final static String[] SKILL_PREFIXES = 
+	protected final static String[] SKILL_PREFIXES =
 	{
 		"SPELL_", "PRAYER_", "SONG_", "DANCE_", "PLAY_",
 		"CHANT_","BEHAVIOR_","POWER_","SKILL_","PROP_"
 	};
-	
+
 	@Override
-	public StringBuilder getHelpText(String helpStr, Properties rHelpFile, MOB forMOB, boolean noFix)
+	public StringBuilder getHelpText(String helpStr, final Properties rHelpFile, final MOB forMOB, final boolean noFix)
 	{
 		final String unfixedHelpStr = helpStr;
 		helpStr=helpStr.toUpperCase().trim();
@@ -760,7 +760,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				thisTag="<RACE>"+L("No further information available");
 			else
 				thisTag="<RACE>"+R.getStat("HELP");
-		}	
+		}
 
 		if(helpStr.equals("!"))
 			helpStr="EXCLAMATION_POINT";
@@ -779,8 +779,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			for(int i=0;i<SKILL_PREFIXES.length;i++)
 			{
 				final String prefix = SKILL_PREFIXES[i];
-				thisTag=rHelpFile.getProperty(prefix+helpStr); 
-				if(thisTag!=null) 
+				thisTag=rHelpFile.getProperty(prefix+helpStr);
+				if(thisTag!=null)
 				{
 					helpStr=prefix+helpStr;
 					break;
@@ -1102,9 +1102,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 	@Override
 	public StringBuilder getHelpList(String helpStr,
-								   Properties rHelpFile1,
-								   Properties rHelpFile2,
-								   MOB forMOB)
+								   final Properties rHelpFile1,
+								   final Properties rHelpFile2,
+								   final MOB forMOB)
 	{
 		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(' ')>=0)
@@ -1266,7 +1266,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	}
 
 	@Override
-	public void unloadHelpFile(MOB mob)
+	public void unloadHelpFile(final MOB mob)
 	{
 		if(Resources.getResource("PLAYER TOPICS")!=null)
 			Resources.removeResource("PLAYER TOPICS");

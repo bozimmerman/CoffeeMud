@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Drop extends StdCommand
 {
 	public Drop()
@@ -56,7 +55,7 @@ public class Drop extends StdCommand
 		}
 	};
 
-	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize, boolean intermediate)
+	public boolean drop(final MOB mob, final Environmental dropThis, final boolean quiet, final boolean optimize, final boolean intermediate)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -106,7 +105,7 @@ public class Drop extends StdCommand
 	 * @throws java.io.IOException usually means the player has dropped carrier
 	 */
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String whatToDrop=null;
@@ -229,7 +228,7 @@ public class Drop extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;

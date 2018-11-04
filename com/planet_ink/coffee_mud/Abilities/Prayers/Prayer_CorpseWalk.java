@@ -84,14 +84,14 @@ public class Prayer_CorpseWalk extends Prayer
 		return Ability.COST_PCT + 50;
 	}
 
-	public Item findCorpseRoom(List<Item> candidates)
+	public Item findCorpseRoom(final List<Item> candidates)
 	{
 		for(int m=0;m<candidates.size();m++)
 		{
 			final Item item = candidates.get(m);
 			if((item instanceof DeadBody)&&(((DeadBody)item).isPlayerCorpse()))
 			{
-				Room newRoom=CMLib.map().roomLocation(item);
+				final Room newRoom=CMLib.map().roomLocation(item);
 				if(newRoom != null)
 					return item;
 			}
@@ -101,16 +101,16 @@ public class Prayer_CorpseWalk extends Prayer
 			final Item item = candidates.get(m);
 			if(item instanceof DeadBody)
 			{
-				Room newRoom=CMLib.map().roomLocation(item);
+				final Room newRoom=CMLib.map().roomLocation(item);
 				if(newRoom != null)
 					return item;
 			}
 		}
 		return null;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<1)
 		{

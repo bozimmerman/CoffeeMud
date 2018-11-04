@@ -28,7 +28,7 @@ public class XVector<T> extends Vector<T>
 {
 	private static final long	serialVersionUID	= 6687178785122563992L;
 
-	public XVector(List<? extends T> V)
+	public XVector(final List<? extends T> V)
 	{
 		super((V==null)?0:V.size());
 		if (V != null)
@@ -40,12 +40,12 @@ public class XVector<T> extends Vector<T>
 		super();
 	}
 
-	public XVector(int size, boolean boo)
+	public XVector(final int size, final boolean boo)
 	{
 		super(size);
 	}
 
-	public XVector(T[] E)
+	public XVector(final T[] E)
 	{
 		super((E==null)?0:E.length);
 		if (E != null)
@@ -53,42 +53,42 @@ public class XVector<T> extends Vector<T>
 				add(o);
 	}
 
-	public XVector(T E)
+	public XVector(final T E)
 	{
 		super();
 		if (E != null)
 			add(E);
 	}
 
-	public XVector(T E, T E2)
+	public XVector(final T E, final T E2)
 	{
 		this(E);
 		if (E2 != null)
 			add(E2);
 	}
 
-	public XVector(T E, T E2, T E3)
+	public XVector(final T E, final T E2, final T E3)
 	{
 		this(E, E2);
 		if (E3 != null)
 			add(E3);
 	}
 
-	public XVector(T E, T E2, T E3, T E4)
+	public XVector(final T E, final T E2, final T E3, final T E4)
 	{
 		this(E, E2, E3);
 		if (E4 != null)
 			add(E4);
 	}
 
-	public XVector(T E, T E2, T E3, T E4, T E5)
+	public XVector(final T E, final T E2, final T E3, final T E4, final T E5)
 	{
 		this(E, E2, E3, E4);
 		if (E5 != null)
 			add(E5);
 	}
 
-	public XVector(Set<T> E)
+	public XVector(final Set<T> E)
 	{
 		super((E==null)?0:E.size());
 		if (E != null)
@@ -98,7 +98,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public XVector(Enumeration<T> E)
+	public XVector(final Enumeration<T> E)
 	{
 		super();
 		if (E != null)
@@ -108,7 +108,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public XVector(Iterator<T> E)
+	public XVector(final Iterator<T> E)
 	{
 		super();
 		if (E != null)
@@ -118,7 +118,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public synchronized void addAll(Enumeration<? extends T> E)
+	public synchronized void addAll(final Enumeration<? extends T> E)
 	{
 		if (E != null)
 		{
@@ -127,7 +127,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public synchronized void addAll(T[] E)
+	public synchronized void addAll(final T[] E)
 	{
 		if (E != null)
 		{
@@ -136,7 +136,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public synchronized void addAll(Iterator<? extends T> E)
+	public synchronized void addAll(final Iterator<? extends T> E)
 	{
 		if (E != null)
 		{
@@ -145,7 +145,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public synchronized void removeAll(Enumeration<? extends T> E)
+	public synchronized void removeAll(final Enumeration<? extends T> E)
 	{
 		if (E != null)
 		{
@@ -154,7 +154,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public synchronized void removeAll(Iterator<? extends T> E)
+	public synchronized void removeAll(final Iterator<? extends T> E)
 	{
 		if (E != null)
 		{
@@ -163,7 +163,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public synchronized void removeAll(List<T> E)
+	public synchronized void removeAll(final List<T> E)
 	{
 		if (E != null)
 		{
@@ -174,11 +174,11 @@ public class XVector<T> extends Vector<T>
 
 	public synchronized void sort()
 	{
-		Collections.sort(this, new Comparator<T>() 
+		Collections.sort(this, new Comparator<T>()
 		{
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
-			public int compare(T arg0, T arg1)
+			public int compare(final T arg0, final T arg1)
 			{
 				if (arg0 == null)
 				{
@@ -186,12 +186,12 @@ public class XVector<T> extends Vector<T>
 						return 0;
 					return -1;
 				}
-				else 
+				else
 				if (arg1 == null)
 				{
 					return 1;
 				}
-				else 
+				else
 				if (arg0 instanceof Comparable)
 					return ((Comparable) arg0).compareTo(arg1);
 				else

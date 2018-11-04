@@ -25,31 +25,31 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Bo Zimmerman
  *
  */
-public class CWThreadFactory implements ThreadFactory  
+public class CWThreadFactory implements ThreadFactory
 {
 	private String 						serverName;
 	private final AtomicInteger 		counter		= new AtomicInteger();
 	private final LinkedList<Thread> 	active 		= new LinkedList<Thread>();
 	private final CWConfig			config;
-	
-	public CWThreadFactory(String serverName, CWConfig config)
+
+	public CWThreadFactory(final String serverName, final CWConfig config)
 	{
 		this.serverName=serverName;
 		this.config=config;
 	}
-	public void setServerName(String newName)
+	public void setServerName(final String newName)
 	{
 		this.serverName=newName;
 	}
 	@Override
-	public Thread newThread(Runnable r) 
+	public Thread newThread(final Runnable r)
 	{
 		final Thread t = new CWThread(config, r,"cweb-"+serverName+"#"+counter.addAndGet(1));
 		active.add(t);
 		return t;
 	}
-	public Collection<Thread> getThreads() 
-	{ 
+	public Collection<Thread> getThreads()
+	{
 		return active;
 	}
 }

@@ -34,7 +34,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_TrophyCount extends ThiefSkill
 {
 	@Override
@@ -89,7 +88,7 @@ public class Thief_TrophyCount extends ThiefSkill
 
 	private static final String[] triggerStrings =I(new String[] {"TROPHYCOUNT"});
 	@Override
-	public boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(final MOB mob)
 	{
 		return true;
 	}
@@ -154,7 +153,7 @@ public class Thief_TrophyCount extends ThiefSkill
 	}
 
 	@Override
-	public void setMiscText(String str)
+	public void setMiscText(final String str)
 	{
 		theList.clear();
 		if((str.trim().length()>0)&&(str.trim().startsWith("<MOBS>")))
@@ -177,7 +176,7 @@ public class Thief_TrophyCount extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

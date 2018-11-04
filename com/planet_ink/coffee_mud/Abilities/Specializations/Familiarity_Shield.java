@@ -92,7 +92,7 @@ public class Familiarity_Shield extends StdAbility
 			final int x=buildingI.secretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX);
 			if(x>=0)
 			{
-				int y=buildingI.secretIdentity().indexOf('.',x+ItemCraftor.CRAFTING_BRAND_STR_PREFIX.length());
+				final int y=buildingI.secretIdentity().indexOf('.',x+ItemCraftor.CRAFTING_BRAND_STR_PREFIX.length());
 				if(y>=0)
 				{
 					return buildingI.secretIdentity().substring(x,y);
@@ -110,12 +110,12 @@ public class Familiarity_Shield extends StdAbility
 		return Ability.ACODE_SKILL | Ability.DOMAIN_ARMORUSE;
 	}
 
-	private void recalculateBonus(MOB mob)
+	private void recalculateBonus(final MOB mob)
 	{
 		bonus=0;
 		if(mob!=null)
 		{
-			Item I=mob.fetchHeldItem();
+			final Item I=mob.fetchHeldItem();
 			if((I instanceof Shield)
 			&&(I.basePhyStats().armor()>0)
 			&&(I.amBeingWornProperly())

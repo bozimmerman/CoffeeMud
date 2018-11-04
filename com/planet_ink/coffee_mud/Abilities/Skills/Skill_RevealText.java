@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_RevealText extends StdSkill
 {
 	@Override
@@ -94,7 +93,7 @@ public class Skill_RevealText extends StdSkill
 	{
 		return 0;
 	}
-	
+
 	protected Item revealI=null;
 	protected ItemPossessor possessorI=null;
 	protected boolean success=false;
@@ -153,7 +152,7 @@ public class Skill_RevealText extends StdSkill
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -198,13 +197,13 @@ public class Skill_RevealText extends StdSkill
 							mob.delEffect(encryptA);
 					}
 				}
-				
+
 			}
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)
 		{
@@ -219,7 +218,7 @@ public class Skill_RevealText extends StdSkill
 		String page="";
 		if((commands.size()>1)&&(CMath.isInteger(commands.get(commands.size()-1))))
 			page=commands.remove(commands.size()-1);
-		String name=CMParms.combine(commands);
+		final String name=CMParms.combine(commands);
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,name);
 		if(target==null)
 		{
@@ -237,7 +236,7 @@ public class Skill_RevealText extends StdSkill
 		}
 
 		final Item item=target;
-		
+
 		if((item instanceof Scroll)||(!CMLib.flags().isReadable(item)))
 		{
 			mob.tell(L("You can't decipher that."));
@@ -245,7 +244,7 @@ public class Skill_RevealText extends StdSkill
 		}
 
 		boolean revealable=false;
-		Ability encryptA=item.fetchEffect("InvisibleInk");
+		final Ability encryptA=item.fetchEffect("InvisibleInk");
 		if(encryptA!=null)
 			revealable=true;
 
@@ -258,7 +257,7 @@ public class Skill_RevealText extends StdSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			Skill_RevealText A=(Skill_RevealText)this.beneficialAffect(mob, mob, asLevel, 20);
+			final Skill_RevealText A=(Skill_RevealText)this.beneficialAffect(mob, mob, asLevel, 20);
 			if(A != null)
 			{
 				A.success = success;

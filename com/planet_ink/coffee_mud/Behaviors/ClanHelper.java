@@ -52,7 +52,7 @@ public class ClanHelper extends StdBehavior
 	protected boolean mobKiller=false;
 
 	@Override
-	public void startBehavior(PhysicalAgent forMe)
+	public void startBehavior(final PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
 		if(forMe instanceof MOB)

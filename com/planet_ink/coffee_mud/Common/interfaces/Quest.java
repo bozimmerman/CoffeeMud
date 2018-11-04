@@ -515,7 +515,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return true if a player of the given name has won this quest
 	 */
 	public Long whenLastWon(String name);
-	
+
 	/**
 	 * Sets the list of player names that have won this quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#declareWinner(String)

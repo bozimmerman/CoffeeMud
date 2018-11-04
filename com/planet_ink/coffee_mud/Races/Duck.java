@@ -85,7 +85,7 @@ public class Duck extends WaterFowl
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{
@@ -128,7 +128,7 @@ public class Duck extends WaterFowl
 			}
 		}
 	}
-	
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

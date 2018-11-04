@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Simulacrum extends Spell
 {
 
@@ -83,7 +82,7 @@ public class Spell_Simulacrum extends Spell
 	}
 
 	protected volatile boolean norecurse=false;
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -105,7 +104,7 @@ public class Spell_Simulacrum extends Spell
 			}
 		}
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -177,7 +176,7 @@ public class Spell_Simulacrum extends Spell
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -233,7 +232,7 @@ public class Spell_Simulacrum extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=(givenTarget instanceof MOB) ? givenTarget : mob;
 		if(target==null)
@@ -262,10 +261,10 @@ public class Spell_Simulacrum extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Spell_Simulacrum A = (Spell_Simulacrum)beneficialAffect(mob,target,asLevel,0);
+				final Spell_Simulacrum A = (Spell_Simulacrum)beneficialAffect(mob,target,asLevel,0);
 				if(A!=null)
 				{
-					MOB M=determineMonster(mob,mob.phyStats().level(),A);
+					final MOB M=determineMonster(mob,mob.phyStats().level(),A);
 					M.setFollowing(mob);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("A simulacrum of <S-NAME> appears, while <S-NAME> open(s) <S-HIS-HER> transluscent eyes."));
 					mob.tell(L("^xYour simulacrum will now do anything you say, even if they are in another room."));
@@ -277,8 +276,8 @@ public class Spell_Simulacrum extends Spell
 		// return whether it worked
 		return success;
 	}
-	
-	public MOB determineMonster(MOB caster, int level, Spell_Simulacrum A)
+
+	public MOB determineMonster(final MOB caster, final int level, final Spell_Simulacrum A)
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenMob");

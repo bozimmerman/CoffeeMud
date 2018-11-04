@@ -45,11 +45,10 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * Ported to Java by Istvan David (u_davis@users.sourceforge.net)
  *
  */
-public class REMOTEINFO {
-
-   public String name;
-   public String version;
-   public String network;
-   public String hub;
-
+public class REMOTEINFO
+{
+	public String name;
+	public String version;
+	public String network;
+	public String hub;
 }

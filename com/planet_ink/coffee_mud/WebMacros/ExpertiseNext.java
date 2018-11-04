@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.QualifyingID;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -34,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ExpertiseNext extends StdWebMacro
 {
 	@Override
@@ -43,8 +43,9 @@ public class ExpertiseNext extends StdWebMacro
 		return "ExpertiseNext";
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("EXPERTISE");
@@ -63,9 +64,9 @@ public class ExpertiseNext extends StdWebMacro
 			String Ename=null;
 			String Vname=null;
 			int x=0;
-			for(final Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
+			for(final Enumeration<ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 			{
-				E=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
+				E=e.nextElement();
 				Ename=E.name();
 				x=Ename.lastIndexOf(' ');
 				if((x>0)&&(CMath.isRomanNumeral(Ename.substring(x).trim())))

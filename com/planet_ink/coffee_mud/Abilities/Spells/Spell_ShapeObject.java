@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_ShapeObject extends Spell
 {
 
@@ -69,11 +68,11 @@ public class Spell_ShapeObject extends Spell
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setName(L("@x1 shaped like @x2",affectedEnv.Name(),text()));
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -89,9 +88,9 @@ public class Spell_ShapeObject extends Spell
 				((MOB)item.owner()).tell(((MOB)item.owner()),item,null,L("<T-NAME> reverts to its previous shape."));
 		}
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		// add something to disable traps
 		//
@@ -100,7 +99,7 @@ public class Spell_ShapeObject extends Spell
 			mob.tell(L("Shape what like what?"));
 			return false;
 		}
-		String itemName=commands.get(0);
+		final String itemName=commands.get(0);
 		final Item targetI=super.getTarget(mob, null, givenTarget, new XVector<String>(itemName), Wearable.FILTER_UNWORNONLY);
 		if(targetI==null)
 		{
@@ -115,19 +114,19 @@ public class Spell_ShapeObject extends Spell
 		String likeWhat=CMParms.combineQuoted(commands, 1);
 		if(mob.isPlayer())
 			likeWhat=CMLib.coffeeFilter().secondaryUserInputFilter(likeWhat);
-		
+
 		if(CMLib.login().isBadName(likeWhat) || CMProps.isAnyINIFiltered(likeWhat))
 		{
 			mob.tell(L("You can't shape anything like '@x1'.",likeWhat));
 			return false;
 		}
-		
+
 		if((targetI.name().toLowerCase().indexOf("shaped like")>0)||(targetI.fetchEffect(ID())!=null))
 		{
 			mob.tell(mob,targetI,null,L("<T-NAME> is already shaped!"));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -143,7 +142,7 @@ public class Spell_ShapeObject extends Spell
 
 				if(msg.value()>0)
 					return false;
-				Ability A=super.beneficialAffect(mob, targetI, asLevel, 0);
+				final Ability A=super.beneficialAffect(mob, targetI, asLevel, 0);
 				if(A!=null)
 					A.setMiscText(likeWhat);
 				targetI.recoverPhyStats();
@@ -151,7 +150,7 @@ public class Spell_ShapeObject extends Spell
 		}
 		else
 		{
-			
+
 			return beneficialVisualFizzle(mob,targetI,L("<S-NAME> attempt(s) to shape <T-NAME> like @x1, but flub(s) it.",likeWhat));
 		}
 

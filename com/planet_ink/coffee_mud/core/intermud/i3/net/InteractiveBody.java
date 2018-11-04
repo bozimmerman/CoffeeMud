@@ -30,7 +30,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * limitations under the License.
  *
  */
-public interface InteractiveBody {
+public interface InteractiveBody
+{
 	public abstract void executeCommand(String cmd);
 	public abstract void loseLink();
 }

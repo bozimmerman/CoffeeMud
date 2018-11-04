@@ -35,7 +35,6 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class RandomAreaTemplates extends StdWebMacro
 {
 	@Override
@@ -51,7 +50,7 @@ public class RandomAreaTemplates extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
@@ -70,6 +69,7 @@ public class RandomAreaTemplates extends StdWebMacro
 				}
 				if(last==null)
 					return " @break@";
+				@SuppressWarnings("unchecked")
 				List<String> fileList=(List<String>)httpReq.getRequestObjects().get("RANDOMAREATEMPLATESLIST");
 				if(fileList==null)
 				{

@@ -50,7 +50,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	public volatile CMFile.CMVFSDir	catalogFileMobsRoot		= null;
 	public volatile CMFile.CMVFSDir	catalogFileItemsRoot	= null;
 
-	public void changeCatalogFlag(Physical P, boolean truefalse)
+	public void changeCatalogFlag(final Physical P, final boolean truefalse)
 	{
 		if(P==null)
 			return;
@@ -70,7 +70,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 	}
 
-	protected Object getCatalogObject(DVector list, String name, int dim)
+	protected Object getCatalogObject(final DVector list, final String name, final int dim)
 	{
 		synchronized(list)
 		{
@@ -101,7 +101,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 	}
 
-	protected void addCatalogReplace(DVector DV, String category, Physical P)
+	protected void addCatalogReplace(final DVector DV, final String category, final Physical P)
 	{
 		int start=0;
 		int end=DV.size()-1;
@@ -156,7 +156,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 	}
 
-	public String[] makeCatalogNames(String catName, DVector catalog)
+	public String[] makeCatalogNames(final String catName, final DVector catalog)
 	{
 		final List<String> nameList=new ArrayList<String>(catalog.size());
 		for(int x=0;x<catalog.size();x++)
@@ -167,7 +167,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		return nameList.toArray(new String[0]);
 	}
 
-	public String[] makeCatalogCatagories(DVector catalog)
+	public String[] makeCatalogCatagories(final DVector catalog)
 	{
 		final List<String> catalogList=new SortedListWrap<String>(new ArrayList<String>(2));
 		for(int x=0;x<catalog.size();x++)
@@ -185,7 +185,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public String[] getCatalogItemNames(String cataName)
+	public String[] getCatalogItemNames(final String cataName)
 	{
 		return makeCatalogNames(cataName, icatalog);
 	}
@@ -197,7 +197,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public String[] getCatalogMobNames(String cataName)
+	public String[] getCatalogMobNames(final String cataName)
 	{
 		return makeCatalogNames(cataName, mcatalog);
 	}
@@ -239,7 +239,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public boolean isCatalogObj(Environmental E)
+	public boolean isCatalogObj(final Environmental E)
 	{
 		if(E instanceof MOB)
 			return getCatalogMob(E.Name()) != null;
@@ -249,7 +249,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public boolean isCatalogObj(String name)
+	public boolean isCatalogObj(final String name)
 	{
 		Object o=getCatalogMob(name);
 		if(o==null)
@@ -258,31 +258,31 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public Item getCatalogItem(String called)
+	public Item getCatalogItem(final String called)
 	{
 		return (Item) getCatalogObject(icatalog, called, 1);
 	}
 
 	@Override
-	public MOB getCatalogMob(String called)
+	public MOB getCatalogMob(final String called)
 	{
 		return (MOB) getCatalogObject(mcatalog, called, 1);
 	}
 
 	@Override
-	public CataData getCatalogItemData(String called)
+	public CataData getCatalogItemData(final String called)
 	{
 		return (CataData) getCatalogObject(icatalog, called, 2);
 	}
 
 	@Override
-	public CataData getCatalogMobData(String called)
+	public CataData getCatalogMobData(final String called)
 	{
 		return (CataData) getCatalogObject(mcatalog, called, 2);
 	}
 
 	@Override
-	public Vector<RoomContent> roomContent(Room R)
+	public Vector<RoomContent> roomContent(final Room R)
 	{
 		Item I=null;
 		MOB M=null;
@@ -333,7 +333,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void updateRoomContent(String roomID, List<RoomContent> content)
+	public void updateRoomContent(final String roomID, final List<RoomContent> content)
 	{
 		final List<Environmental> updatables=new LinkedList<Environmental>();
 		final List<Environmental> deletables=new LinkedList<Environmental>();
@@ -416,13 +416,13 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void addCatalog(Physical PA)
+	public void addCatalog(final Physical PA)
 	{
 		addCatalog(null,PA);
 	}
 
 	@Override
-	public void addCatalog(String category, Physical PA)
+	public void addCatalog(final String category, Physical PA)
 	{
 		if((PA==null)
 		||(!(PA instanceof DBIdentifiable))
@@ -456,12 +456,12 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void submitToCatalog(Physical P)
+	public void submitToCatalog(final Physical P)
 	{
 		submitToCatalog(null,P);
 	}
 
-	public void submitToCatalog(String category, Physical P)
+	public void submitToCatalog(final String category, final Physical P)
 	{
 		if((P==null)
 		||(!(P instanceof DBIdentifiable))
@@ -569,7 +569,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void updateCatalogCategory(Physical modelP, String newCat)
+	public void updateCatalogCategory(final Physical modelP, final String newCat)
 	{
 		if((modelP==null)
 		||(!(modelP instanceof DBIdentifiable))
@@ -597,7 +597,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void updateCatalog(Physical modelP)
+	public void updateCatalog(final Physical modelP)
 	{
 		if((modelP==null)
 		||(!(modelP instanceof DBIdentifiable))
@@ -699,7 +699,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void newInstance(Physical P)
+	public void newInstance(final Physical P)
 	{
 		synchronized(getSync(P).intern())
 		{
@@ -714,7 +714,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void bumpDeathPickup(Physical P)
+	public void bumpDeathPickup(final Physical P)
 	{
 		synchronized(getSync(P).intern())
 		{
@@ -729,7 +729,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void changeCatalogUsage(Physical P, boolean toCataloged)
+	public void changeCatalogUsage(final Physical P, final boolean toCataloged)
 	{
 		synchronized(getSync(P).intern())
 		{
@@ -756,7 +756,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 	}
 
-	protected void propogateShopChange(ShopKeeper SK, Set<Physical> ignored, Physical cataP)
+	protected void propogateShopChange(final ShopKeeper SK, final Set<Physical> ignored, final Physical cataP)
 	{
 		final boolean isMob=(cataP instanceof MOB);
 		Environmental E=null;
@@ -792,7 +792,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public CataData getCatalogData(Physical P)
+	public CataData getCatalogData(final Physical P)
 	{
 		if(P==null)
 			return null;
@@ -800,7 +800,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public Physical getCatalogObj(Physical P)
+	public Physical getCatalogObj(final Physical P)
 	{
 		if(P==null)
 			return null;
@@ -808,7 +808,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void setCategory(Physical P, String category)
+	public void setCategory(final Physical P, final String category)
 	{
 		final CataData data=getCatalogData(P);
 		if((data!=null)&&(category!=null))
@@ -816,7 +816,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public void updateCatalogIntegrity(Physical P)
+	public void updateCatalogIntegrity(final Physical P)
 	{
 		synchronized(getSync(P).intern())
 		{
@@ -828,18 +828,18 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 	}
 
-	private final String getSync(String name, boolean mobType)
+	private final String getSync(final String name, final boolean mobType)
 	{
 		return ((mobType) ? "CATASYNC_MOB_" : "CATASYNC_ITEM_") + name.toUpperCase();
 	}
 
-	private final String getSync(Environmental E)
+	private final String getSync(final Environmental E)
 	{
 		return getSync(E.Name(), E instanceof MOB);
 	}
 
 	@Override
-	public StringBuffer checkCatalogIntegrity(Physical P)
+	public StringBuffer checkCatalogIntegrity(final Physical P)
 	{
 		if(P==null)
 			return null;
@@ -908,7 +908,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public Item getDropItem(MOB M, boolean live)
+	public Item getDropItem(final MOB M, final boolean live)
 	{
 		if(M==null)
 			return null;
@@ -946,7 +946,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override
-	public CataData sampleCataData(String xml)
+	public CataData sampleCataData(final String xml)
 	{
 		return new CataDataImpl(xml);
 	}
@@ -962,7 +962,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		return true;
 	}
 
-	@Override 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		try
@@ -1018,12 +1018,12 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		private boolean 		dirty=false;
 		private Environmental	holder=null;
 
-		public RoomContentImpl(Physical P)
+		public RoomContentImpl(final Physical P)
 		{
 			obj = P;
 		}
 
-		public RoomContentImpl(Physical P, Environmental E)
+		public RoomContentImpl(final Physical P, final Environmental E)
 		{
 			obj = P;
 			holder = E;
@@ -1071,10 +1071,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 							refs				= new SVector<WeakReference<Physical>>(1);
 		public boolean 		noRefs = CMProps.getBoolVar(CMProps.Bool.CATALOGNOCACHE)
 								  || CMSecurity.isDisabled(CMSecurity.DisFlag.CATALOGCACHE);
-		public MaskingLibrary.CompiledZMask 
+		public MaskingLibrary.CompiledZMask
 							lmaskV				= null;
 
-		public CataDataImpl(String catadata)
+		public CataDataImpl(final String catadata)
 		{
 			build(catadata);
 		}
@@ -1105,7 +1105,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 
 		@Override
-		public void setCategory(String cat)
+		public void setCategory(final String cat)
 		{
 			if(cat!=null)
 				category=cat;
@@ -1249,7 +1249,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 
 		@Override
-		public synchronized void addReference(Physical P)
+		public synchronized void addReference(final Physical P)
 		{
 			if(noRefs)
 				return;
@@ -1269,7 +1269,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 
 		@Override
-		public boolean isReference(Physical P)
+		public boolean isReference(final Physical P)
 		{
 			for(int r=0;r<refs.size();r++)
 			{
@@ -1280,7 +1280,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 
 		@Override
-		public synchronized void delReference(Physical P)
+		public synchronized void delReference(final Physical P)
 		{
 			if(!isReference(P))
 				return;
@@ -1296,12 +1296,12 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			}
 		}
 
-		protected CataDataImpl(String _lmask, String _rate, boolean _live)
+		protected CataDataImpl(final String _lmask, final String _rate, final boolean _live)
 		{
 			this(_lmask,CMath.s_pct(_rate),_live);
 		}
 
-		protected CataDataImpl(String _lmask, double _rate, boolean _live)
+		protected CataDataImpl(final String _lmask, final double _rate, final boolean _live)
 		{
 			live=_live;
 			lmaskStr=_lmask;
@@ -1336,7 +1336,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 
 		@Override
-		public void setMaskStr(String s)
+		public void setMaskStr(final String s)
 		{
 			lmaskStr=s;
 			if(s.trim().length()==0)
@@ -1346,19 +1346,19 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 
 		@Override
-		public void setWhenLive(boolean l)
+		public void setWhenLive(final boolean l)
 		{
 			live = l;
 		}
 
 		@Override
-		public void setRate(double r)
+		public void setRate(final double r)
 		{
 			rate = r;
 		}
 
 		@Override
-		public String data(String name)
+		public String data(final String name)
 		{
 			final StringBuffer buf=new StringBuffer("");
 			buf.append("<CATALOGDATA ");
@@ -1373,7 +1373,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 
 		@Override
-		public void build(String catadata)
+		public void build(final String catadata)
 		{
 			List<XMLLibrary.XMLTag> V=null;
 			if((catadata!=null)&&(catadata.length()>0))
@@ -1404,7 +1404,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 	}
 
-	protected CMFile.CMVFSDir getCatalogMobsRoot(CMFile.CMVFSDir rootRoot)
+	protected CMFile.CMVFSDir getCatalogMobsRoot(final CMFile.CMVFSDir rootRoot)
 	{
 		if(catalogFileMobsRoot == null)
 		{
@@ -1416,7 +1416,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		return catalogFileMobsRoot;
 	}
 
-	protected CMFile.CMVFSDir getCatalogItemsRoot(CMFile.CMVFSDir rootRoot)
+	protected CMFile.CMVFSDir getCatalogItemsRoot(final CMFile.CMVFSDir rootRoot)
 	{
 		if(catalogFileItemsRoot == null)
 		{
@@ -1436,7 +1436,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			private CMFile.CMVFSFile[]	myFiles		= null;
 			private CMFile.CMVFSFile[]	oldFiles	= null;
 
-			@Override 
+			@Override
 			protected CMFile.CMVFSFile[] getFiles()
 			{
 				if((myFiles==null)||(oldFiles!=super.files)||(catalogFileItemsRoot==null)||(catalogFileMobsRoot==null))
@@ -1467,7 +1467,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		};
 	}
 
-	protected CMFile.CMVFSDir getCatalogRoot(final DVector catalog, String rootName, CMFile.CMVFSDir rootRoot)
+	protected CMFile.CMVFSDir getCatalogRoot(final DVector catalog, final String rootName, final CMFile.CMVFSDir rootRoot)
 	{
 		if(catalog.size()==0)
 			return null;
@@ -1481,7 +1481,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 
 			catalogFileRoot.add(new CMFile.CMVFSFile(catalogFileRoot.getPath()+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
 			{
-				@Override 
+				@Override
 				public Object readData()
 				{
 					if(obj instanceof MOB)
@@ -1501,7 +1501,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 		catalogFileRoot.add(new CMFile.CMVFSFile(catalogFileRoot.getPath()+"all.cmare",48,System.currentTimeMillis(),"SYS")
 		{
-			@Override 
+			@Override
 			public Object readData()
 			{
 				final String tagName=(catalog.elementAt(0,1) instanceof MOB)?"MOBS":"ITEMS";
@@ -1539,7 +1539,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				{
 					catagoryRoot.add(new CMFile.CMVFSFile(catagoryRoot.getPath()+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
 					{
-						@Override 
+						@Override
 						public Object readData()
 						{
 							if(obj instanceof MOB)
@@ -1555,7 +1555,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			}
 			catagoryRoot.add(new CMFile.CMVFSFile(catagoryRoot.getPath()+"all.cmare",48,System.currentTimeMillis(),"SYS")
 			{
-				@Override 
+				@Override
 				public Object readData()
 				{
 					final String tagName=(objs.get(0) instanceof MOB)?"MOBS":"ITEMS";

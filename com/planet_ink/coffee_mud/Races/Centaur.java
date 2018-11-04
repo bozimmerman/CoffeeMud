@@ -101,7 +101,7 @@ public class Centaur extends StdRace
 	private final String[]	racialEffectNames			= { "Fighter_Hardiness"};
 	private final int[]		racialEffectLevels			= { 1};
 	private final String[]	racialEffectParms			= { "" };
-	
+
 	@Override
 	protected String[] racialEffectNames()
 	{
@@ -194,7 +194,7 @@ public class Centaur extends StdRace
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
-	
+
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
@@ -224,7 +224,7 @@ public class Centaur extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{

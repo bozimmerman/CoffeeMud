@@ -57,7 +57,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		private RFilterNode		next	= null;
 		private final RFilter	filter;
 
-		public RFilterNode(RFilter fil)
+		public RFilterNode(final RFilter fil)
 		{
 			this.filter = fil;
 		}
@@ -69,7 +69,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		private RFilterNode head=null;
 
 		@Override
-		public boolean isFilteredOut(Room hostR, final Room R, final Exit E, final int dir)
+		public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
 		{
 			RFilterNode me=head;
 			while(me!=null)
@@ -82,7 +82,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 
 		@Override
-		public RFilters plus(RFilter filter)
+		public RFilters plus(final RFilter filter)
 		{
 			RFilterNode me=head;
 			if(me==null)
@@ -97,7 +97,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 
 		@Override
-		public RFilters minus(RFilter filter)
+		public RFilters minus(final RFilter filter)
 		{
 			RFilterNode prev=null;
 			RFilterNode me=head;
@@ -119,7 +119,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		@Override
 		public RFilters copyOf()
 		{
-			DefaultRFilters newFilters = new DefaultRFilters();
+			final DefaultRFilters newFilters = new DefaultRFilters();
 			RFilterNode me=head;
 			while(me!=null)
 			{
@@ -129,15 +129,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return newFilters;
 		}
 	}
-	
+
 	protected static class DefaultTrackingFlags extends HashSet<TrackingFlag> implements TrackingFlags
 	{
 		private static final long serialVersionUID = -6914706649617909073L;
-		
+
 		private int hashCode=(int)serialVersionUID;
-		
+
 		@Override
-		public boolean add(TrackingFlag flag)
+		public boolean add(final TrackingFlag flag)
 		{
 			if(super.add(flag))
 			{
@@ -148,11 +148,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 
 		@Override
-		public boolean addAll(Collection<? extends TrackingFlag> flags)
+		public boolean addAll(final Collection<? extends TrackingFlag> flags)
 		{
 			if(super.addAll(flags))
 			{
-				for(TrackingFlag f : flags)
+				for(final TrackingFlag f : flags)
 					hashCode^=f.hashCode();
 				return true;
 			}
@@ -160,7 +160,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 
 		@Override
-		public TrackingFlags plus(TrackingFlag flag)
+		public TrackingFlags plus(final TrackingFlag flag)
 		{
 			add(flag);
 			return this;
@@ -169,26 +169,26 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		@Override
 		public TrackingFlags copyOf()
 		{
-			DefaultTrackingFlags newFlags = new DefaultTrackingFlags();
+			final DefaultTrackingFlags newFlags = new DefaultTrackingFlags();
 			newFlags.addAll(this);
 			newFlags.hashCode = hashCode;
 			return newFlags;
 		}
-		
+
 		@Override
-		public TrackingFlags minus(TrackingFlag flag)
+		public TrackingFlags minus(final TrackingFlag flag)
 		{
 			remove(flag);
 			return this;
 		}
 
 		@Override
-		public boolean remove(Object flag)
+		public boolean remove(final Object flag)
 		{
 			if(super.remove(flag))
 			{
 				hashCode=(int)serialVersionUID;
-				for(TrackingFlag f : this)
+				for(final TrackingFlag f : this)
 					hashCode^=f.hashCode();
 				return true;
 			}
@@ -202,7 +202,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 
 		@Override
-		public TrackingFlags plus(TrackingFlags flags)
+		public TrackingFlags plus(final TrackingFlags flags)
 		{
 			addAll(flags);
 			return this;
@@ -210,7 +210,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public boolean autoTrack(MOB mob, Room destR)
+	public boolean autoTrack(final MOB mob, final Room destR)
 	{
 		CMLib.tracking().stopTracking(mob);
 		final Ability A=CMClass.getAbility("Skill_Track");
@@ -222,7 +222,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return false;
 	}
 
-	protected List<String> getDirectionCommandSet(int direction)
+	protected List<String> getDirectionCommandSet(final int direction)
 	{
 		final Integer dir=Integer.valueOf(direction);
 		if(!directionCommandSets.containsKey(dir))
@@ -233,7 +233,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return directionCommandSets.get(dir);
 	}
 
-	protected List<String> getOpenCommandSet(int direction)
+	protected List<String> getOpenCommandSet(final int direction)
 	{
 		final Integer dir=Integer.valueOf(direction);
 		if(!directionCommandSets.containsKey(dir))
@@ -244,7 +244,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return directionCommandSets.get(dir);
 	}
 
-	protected List<String> getCloseCommandSet(int direction)
+	protected List<String> getCloseCommandSet(final int direction)
 	{
 		final Integer dir=Integer.valueOf(direction);
 		if(!directionCommandSets.containsKey(dir))
@@ -256,13 +256,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public List<Room> findTrailToRoom(Room location, Room destRoom, TrackingFlags flags, int maxRadius)
+	public List<Room> findTrailToRoom(final Room location, final Room destRoom, final TrackingFlags flags, final int maxRadius)
 	{
 		return findTrailToRoom(location,destRoom,flags,maxRadius,null);
 	}
 
 	@Override
-	public List<Room> findTrailToRoom(Room location, Room destRoom, TrackingFlags flags, int maxRadius, List<Room> radiant)
+	public List<Room> findTrailToRoom(final Room location, final Room destRoom, final TrackingFlags flags, final int maxRadius, List<Room> radiant)
 	{
 		if((radiant==null)||(radiant.size()==0))
 		{
@@ -342,7 +342,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void markToWanderHomeLater(MOB M)
+	public void markToWanderHomeLater(final MOB M)
 	{
 		final Ability A=CMClass.getAbility("WanderHomeLater");
 		if(A!=null)
@@ -395,22 +395,22 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public List<Room> findTrailToAnyRoom(Room location, RFilter destFilter, TrackingFlags flags, int maxRadius)
+	public List<Room> findTrailToAnyRoom(final Room location, final RFilter destFilter, final TrackingFlags flags, final int maxRadius)
 	{
-		List<Room> radiant=new ArrayList<Room>();
+		final List<Room> radiant=new ArrayList<Room>();
 		if(!getRadiantRoomsToTarget(location, radiant, flags, destFilter, maxRadius))
 			return new Vector<Room>(1);
 		if(radiant.size()==0)
 			return radiant;
-		
+
 		final Room destRoom=radiant.get(radiant.size()-1);
 		return findTrailToRoom(location,destRoom,flags,maxRadius);
 	}
-	
+
 	@Override
-	public int trackNextDirectionFromHere(List<Room> theTrail,
-										  Room location,
-										  boolean openOnly)
+	public int trackNextDirectionFromHere(final List<Room> theTrail,
+										  final Room location,
+										  final boolean openOnly)
 	{
 		if((theTrail==null)||(location==null))
 			return -1;
@@ -443,7 +443,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public int radiatesFromDir(Room room, List<Room> rooms)
+	public int radiatesFromDir(final Room room, final List<Room> rooms)
 	{
 		for(final Room R : rooms)
 		{
@@ -475,7 +475,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void getRadiantRooms(final Room room, List<Room> rooms, TrackingFlags flags, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms)
+	public void getRadiantRooms(final Room room, final List<Room> rooms, TrackingFlags flags, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms)
 	{
 		if(flags == null)
 			flags = EMPTY_FLAGS;
@@ -502,7 +502,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void getRadiantRooms(final Room room, List<Room> rooms, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms)
+	public void getRadiantRooms(final Room room, final List<Room> rooms, final RFilters filters, final Room radiateTo, final int maxDepth, final Set<Room> ignoreRooms)
 	{
 		int depth=0;
 		if(room==null)
@@ -557,7 +557,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 	}
 
-	protected boolean getRadiantRoomsToTarget(final Room room, List<Room> rooms, TrackingFlags flags, final RFilter radiateTo, final int maxDepth)
+	protected boolean getRadiantRoomsToTarget(final Room room, final List<Room> rooms, TrackingFlags flags, final RFilter radiateTo, final int maxDepth)
 	{
 		if(flags == null)
 			flags = EMPTY_FLAGS;
@@ -577,7 +577,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return getRadiantRoomsToTarget(room, rooms, filters, radiateTo, maxDepth);
 	}
 
-	protected boolean getRadiantRoomsToTarget(final Room room, List<Room> rooms, final RFilters filters, final RFilter radiateTo, final int maxDepth)
+	protected boolean getRadiantRoomsToTarget(final Room room, final List<Room> rooms, final RFilters filters, final RFilter radiateTo, final int maxDepth)
 	{
 		int depth=0;
 		if(room==null)
@@ -638,7 +638,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		Exit E=null;
 
 		int d=0;
-		LinkedList<Room> roomsToDo=new LinkedList<Room>();
+		final LinkedList<Room> roomsToDo=new LinkedList<Room>();
 		roomsToDo.add(room);
 		while(roomsToDo.size()>0)
 		{
@@ -663,7 +663,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void stopTracking(MOB mob)
+	public void stopTracking(final MOB mob)
 	{
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(final Ability A : V)
@@ -674,7 +674,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public boolean isAnAdminHere(Room R, boolean sysMsgsOnly)
+	public boolean isAnAdminHere(final Room R, final boolean sysMsgsOnly)
 	{
 		final Set<MOB> mobsThere=CMLib.players().getPlayersHere(R);
 		if(mobsThere.size()>0)
@@ -690,7 +690,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						return true;
 				}
 			}
-			catch(java.util.ConcurrentModificationException e)
+			catch(final java.util.ConcurrentModificationException e)
 			{
 				return isAnAdminHere(R,sysMsgsOnly);
 			}
@@ -753,7 +753,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			if((!mob.amDead())&&(!mob.amDestroyed()))
 			{
-				if(mob.isPlayer() 
+				if(mob.isPlayer()
 				&& (mob.getStartRoom()!=null))
 					mob.getStartRoom().bringMobHere(mob, true);
 				else
@@ -956,12 +956,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void wanderAway(MOB M, boolean mindPCs, boolean andGoHome)
+	public void wanderAway(final MOB M, final boolean mindPCs, final boolean andGoHome)
 	{
-		if(M==null) 
+		if(M==null)
 			return;
 		final Room R=M.location();
-		if(R==null) 
+		if(R==null)
 			return;
 		int tries=0;
 		while((M.location()==R)&&((++tries)<10)&&((!mindPCs)||(R.numPCInhabitants()>0)))
@@ -978,12 +978,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public boolean wanderCheckedAway(MOB M, boolean mindPCs, boolean andGoHome)
+	public boolean wanderCheckedAway(final MOB M, final boolean mindPCs, final boolean andGoHome)
 	{
-		if(M==null) 
+		if(M==null)
 			return false;
 		final Room R=M.location();
-		if(R==null) 
+		if(R==null)
 			return false;
 		int tries=0;
 		while((M.location()==R)&&((++tries)<10)&&((!mindPCs)||(R.numPCInhabitants()>0)))
@@ -1001,7 +1001,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void wanderFromTo(MOB M, Room toHere, boolean mindPCs)
+	public void wanderFromTo(final MOB M, final Room toHere, final boolean mindPCs)
 	{
 		if(M==null)
 			return;
@@ -1010,7 +1010,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			wanderAway(M,mindPCs,false);
 		wanderIn(M,toHere);
 	}
-	
+
 	protected int getCheckedDir(final MOB M, final Room toHere)
 	{
 		int dir=-1;
@@ -1041,11 +1041,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public boolean wanderCheckedFromTo(MOB M, Room toHere, boolean mindPCs)
+	public boolean wanderCheckedFromTo(final MOB M, final Room toHere, final boolean mindPCs)
 	{
-		if(M==null) 
+		if(M==null)
 			return false;
-		if(toHere==null) 
+		if(toHere==null)
 			return false;
 		final Room oldRoom=M.location();
 		if((oldRoom!=null)&&(oldRoom.isInhabitant(M)))
@@ -1053,7 +1053,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if(!wanderCheckedAway(M,mindPCs,false))
 				return false;
 		}
-		int dir = getCheckedDir(M,toHere);
+		final int dir = getCheckedDir(M,toHere);
 		final Exit exit = (dir < 0) ? null : toHere.getExitInDir(dir);
 		final CMMsg enterMsg=CMClass.getMsg(M,toHere,exit,CMMsg.MSG_ENTER,null);
 		if(toHere.okMessage(M, enterMsg))
@@ -1075,13 +1075,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void wanderIn(MOB M, Room toHere)
+	public void wanderIn(final MOB M, final Room toHere)
 	{
-		if(toHere==null) 
+		if(toHere==null)
 			return;
-		if(M==null) 
+		if(M==null)
 			return;
-		int dir = getCheckedDir(M,toHere);
+		final int dir = getCheckedDir(M,toHere);
 		if(dir<0)
 			toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in."));
 		else
@@ -1094,11 +1094,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void forceEntry(MOB M, Room toHere, boolean andFollowers, boolean forceLook, String msg)
+	public void forceEntry(final MOB M, final Room toHere, final boolean andFollowers, final boolean forceLook, final String msg)
 	{
-		if(toHere==null) 
+		if(toHere==null)
 			return;
-		if(M==null) 
+		if(M==null)
 			return;
 		toHere.show(M,toHere,null,CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS,msg);
 		toHere.bringMobHere(M,andFollowers);
@@ -1107,11 +1107,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void walkForced(MOB M, Room fromHere, Room toHere, boolean andFollowers, boolean forceLook, String msgStr)
+	public void walkForced(final MOB M, final Room fromHere, final Room toHere, final boolean andFollowers, final boolean forceLook, final String msgStr)
 	{
-		if(toHere==null) 
+		if(toHere==null)
 			return;
-		if(M==null) 
+		if(M==null)
 			return;
 		int dir=this.getRoomDirection(fromHere, toHere, null);
 		Exit enterExit=null;
@@ -1134,8 +1134,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if(dir<0)
 				dir = CMLib.dice().roll(1, Directions.NUM_DIRECTIONS(), -1);
 		}
-		CMMsg enterMsg = CMClass.getMsg(M, toHere, enterExit, CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS, msgStr);
-		CMMsg leaveMsg = CMClass.getMsg(M, fromHere, leaveExit, CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS, null);
+		final CMMsg enterMsg = CMClass.getMsg(M, toHere, enterExit, CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS, msgStr);
+		final CMMsg leaveMsg = CMClass.getMsg(M, fromHere, leaveExit, CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS, null);
 		leaveMsg.setValue(dir+1);
 		enterMsg.setValue(Directions.getOpDirectionCode(dir)+1);
 		if(enterExit!=null)
@@ -1151,7 +1151,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			CMLib.commands().postLook(M, true);
 	}
 
-	public void ridersBehind(List<Rider> riders, Room sourceRoom, Room destRoom, int directionCode, boolean flee, boolean running)
+	public void ridersBehind(final List<Rider> riders, final Room sourceRoom, final Room destRoom, final int directionCode, final boolean flee, final boolean running)
 	{
 		if(riders!=null)
 		for(final Rider rider : riders)
@@ -1197,7 +1197,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 	}
 
-	public static List<Rider> addRiders(Rider theRider, Rideable riding, List<Rider> riders)
+	public static List<Rider> addRiders(final Rider theRider, final Rideable riding, final List<Rider> riders)
 	{
 
 		if((riding!=null)&&(riding.mobileRideBasis()))
@@ -1218,7 +1218,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return riders;
 	}
 
-	public List<Rider> ridersAhead(Rider theRider, Room sourceRoom, Room destRoom, int directionCode, boolean flee, boolean running)
+	public List<Rider> ridersAhead(final Rider theRider, final Room sourceRoom, final Room destRoom, final int directionCode, final boolean flee, final boolean running)
 	{
 		final LinkedList<Rider> riders=new LinkedList<Rider>();
 		Rideable riding=theRider.riding();
@@ -1281,29 +1281,29 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders)
+	public boolean walk(final MOB mob, final int directionCode, final boolean flee, final boolean nolook, final boolean noriders)
 	{
 		return walk(mob,directionCode,flee,nolook,noriders,false);
 	}
 
 	@Override
-	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders)
+	public boolean run(final MOB mob, final int directionCode, final boolean flee, final boolean nolook, final boolean noriders)
 	{
 		return run(mob,directionCode,flee,nolook,noriders,false);
 	}
 
 	@Override
-	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always)
+	public boolean walk(final MOB mob, final int directionCode, final boolean flee, final boolean nolook, final boolean noriders, final boolean always)
 	{
 		return move(mob,directionCode,flee,nolook,noriders,always,false);
 	}
 
 	@Override
-	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always)
+	public boolean run(final MOB mob, final int directionCode, final boolean flee, final boolean nolook, final boolean noriders, final boolean always)
 	{
 		return move(mob,directionCode,flee,nolook,noriders,always,true);
 	}
-	
+
 	protected boolean move(final MOB mob, final int directionCode, final boolean flee, final boolean nolook, final boolean noriders, final boolean always, final boolean running)
 	{
 		final Room thisRoom=mob.location();
@@ -1547,13 +1547,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook)
+	public boolean walk(final MOB mob, final int directionCode, final boolean flee, final boolean nolook)
 	{
 		return walk(mob,directionCode,flee,nolook,false);
 	}
 
 	@Override
-	public boolean walk(Item I, int directionCode)
+	public boolean walk(final Item I, final int directionCode)
 	{
 		if(I==null)
 			return false;
@@ -1651,9 +1651,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		return false;
 	}
-	
+
 	@Override
-	public int findExitDir(MOB mob, Room R, String desc)
+	public int findExitDir(final MOB mob, final Room R, final String desc)
 	{
 		int dir=CMLib.directions().getGoodDirectionCode(desc);
 		if(dir<0)
@@ -1694,7 +1694,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public int findRoomDir(MOB mob, Room R)
+	public int findRoomDir(final MOB mob, final Room R)
 	{
 		if((mob==null)||(R==null))
 			return -1;
@@ -1775,7 +1775,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return finalSets;
 	}
 
-	protected int getRoomDirection(Room R, Room toRoom, List<Room> ignore)
+	protected int getRoomDirection(final Room R, final Room toRoom, final List<Room> ignore)
 	{
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -1787,7 +1787,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return -1;
 	}
 
-	protected Room getWhere(String where, List<Room> set)
+	protected Room getWhere(final String where, final List<Room> set)
 	{
 		Room R2=CMLib.map().getRoom(where);
 		if(R2==null)
@@ -1829,7 +1829,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return R2;
 	}
 
-	protected int getIndexEnsureSet(final Room R1, final Room R2, final List<Room> set, int radius, Set<Room> ignoreRooms)
+	protected int getIndexEnsureSet(final Room R1, final Room R2, final List<Room> set, final int radius, final Set<Room> ignoreRooms)
 	{
 		final TrackingLibrary.TrackingFlags flags = new DefaultTrackingFlags()
 		.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
@@ -1847,11 +1847,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		return foundAt;
 	}
-	
+
 	@Override
-	public boolean canValidTrail(Room R1, List<Room> set, String where, int radius, Set<Room> ignoreRooms, int maxMins)
+	public boolean canValidTrail(final Room R1, final List<Room> set, final String where, final int radius, final Set<Room> ignoreRooms, final int maxMins)
 	{
-		Room R2=getWhere(where,set);
+		final Room R2=getWhere(where,set);
 		if(R2==null)
 			return false;
 		int foundAt=getIndexEnsureSet(R1,R2,set,radius,ignoreRooms);
@@ -1888,11 +1888,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		return true;
 	}
-	
+
 	@Override
-	public String getTrailToDescription(Room R1, List<Room> set, String where, boolean areaNames, boolean confirm, int radius, Set<Room> ignoreRooms, int maxMins)
+	public String getTrailToDescription(final Room R1, final List<Room> set, final String where, final boolean areaNames, final boolean confirm, final int radius, final Set<Room> ignoreRooms, final int maxMins)
 	{
-		Room R2=getWhere(where,set);
+		final Room R2=getWhere(where,set);
 		if(R2==null)
 			return L("Unable to determine '@x1'.",where);
 		int foundAt=getIndexEnsureSet(R1,R2,set,radius,ignoreRooms);
@@ -1998,11 +1998,11 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public Rideable findALadder(MOB mob, Room room)
+	public Rideable findALadder(final MOB mob, final Room room)
 	{
-		if(room==null) 
+		if(room==null)
 			return null;
-		if(mob.riding()!=null) 
+		if(mob.riding()!=null)
 			return null;
 		for(int i=0;i<room.numItems();i++)
 		{
@@ -2015,14 +2015,14 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		return null;
 	}
-	
+
 	@Override
-	public void postMountLadder(MOB mob, Rideable ladder)
+	public void postMountLadder(final MOB mob, final Rideable ladder)
 	{
 		final String mountStr=ladder.mountString(CMMsg.TYP_MOUNT,mob);
 		final CMMsg msg=CMClass.getMsg(mob,ladder,null,CMMsg.MSG_MOUNT,L("<S-NAME> @x1 <T-NAMESELF>.",mountStr));
 		Room room=(Room)((Item)ladder).owner();
-		if(mob.location()==room) 
+		if(mob.location()==room)
 			room=null;
 		if((mob.location().okMessage(mob,msg))
 		&&((room==null)||(room.okMessage(mob,msg))))
@@ -2034,15 +2034,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public boolean makeFall(Physical P, Room room, boolean reverseFall)
+	public boolean makeFall(final Physical P, final Room room, final boolean reverseFall)
 	{
-		if((P==null)||(room==null)) 
+		if((P==null)||(room==null))
 			return false;
 
-		if((!reverseFall)&&(room.getRoomInDir(Directions.DOWN)==null)) 
+		if((!reverseFall)&&(room.getRoomInDir(Directions.DOWN)==null))
 			return false;
-		
-		if((reverseFall)&&(room.getRoomInDir(Directions.UP)==null)) 
+
+		if((reverseFall)&&(room.getRoomInDir(Directions.UP)==null))
 			return false;
 
 		if(((P instanceof MOB)&&(!CMLib.flags().isInFlight(P)))
@@ -2064,7 +2064,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		return false;
 	}
-	
+
 	@Override
 	public CheckedMsgResponse isOkWaterSurfaceAffect(final Room room, final CMMsg msg)
 	{
@@ -2088,7 +2088,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if((msg.tool() instanceof Exit)
 			&&(msg.targetMinor()==CMMsg.TYP_LEAVE))
 			{
-				int dir=CMLib.map().getExitDir(room, (Exit)msg.tool());
+				final int dir=CMLib.map().getExitDir(room, (Exit)msg.tool());
 				if(dir >=0)
 				{
 					final Room R=room.getRoomInDir(dir);
@@ -2097,7 +2097,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						hasBoat=true;
 				}
 			}
-			
+
 			for(int i=0;i<mob.numItems();i++)
 			{
 				final Item I=mob.getItem(i);
@@ -2150,7 +2150,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void makeSink(Physical P, Room room, boolean reverseSink)
+	public void makeSink(final Physical P, final Room room, final boolean reverseSink)
 	{
 		if((P==null)||(room==null))
 			return;
@@ -2185,7 +2185,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public void forceRecall(final MOB mob, boolean includeFollowers)
+	public void forceRecall(final MOB mob, final boolean includeFollowers)
 	{
 		if(mob == null)
 			return;
@@ -2237,12 +2237,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 		}
 	}
-	
+
 	@Override
-	public PairVector<Room,int[]> buildGridList(Room room, String ownerName, int maxDepth)
+	public PairVector<Room,int[]> buildGridList(final Room room, final String ownerName, final int maxDepth)
 	{
 		int depth=0;
-		PairVector<Room,int[]> rooms = new PairVector<Room,int[]>();
+		final PairVector<Room,int[]> rooms = new PairVector<Room,int[]>();
 		if(room==null)
 			return rooms;
 		if(rooms.containsFirst(room))
@@ -2287,9 +2287,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		return rooms;
 	}
-	
+
 	@Override
-	public Room getCalculatedAdjacentRoom(PairVector<Room,int[]> rooms, Room R, int dir)
+	public Room getCalculatedAdjacentRoom(final PairVector<Room,int[]> rooms, final Room R, final int dir)
 	{
 		final int[] lookForCoords = Directions.adjustXYZByDirections(0, 0, 0, dir);
 		for(int i=0;i<rooms.size();i++)

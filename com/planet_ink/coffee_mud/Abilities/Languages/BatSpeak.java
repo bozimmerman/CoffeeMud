@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class BatSpeak extends AnimalSpeak
 {
 	@Override
@@ -48,14 +47,14 @@ public class BatSpeak extends AnimalSpeak
 	{
 		return localizedName;
 	}
-	
+
 	private final static String[] animalSounds=
 	{
 		"screech","screeech","screeeeech"
 	};
-	
+
 	@Override
-	protected String[] getSounds() 
+	protected String[] getSounds()
 	{
 		return animalSounds;
 	}

@@ -243,7 +243,7 @@ public class Fighter extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
@@ -263,21 +263,21 @@ public class Fighter extends StdCharClass
 		}
 	}
 
-	@Override 
+	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
-	{ 
-		super.executeMsg(host,msg); 
+	{
+		super.executeMsg(host,msg);
 		Fighter.conquestExperience(this,host,msg);
 		Fighter.duelExperience(this, host, msg);
 	}
-	
-	@Override 
+
+	@Override
 	public String getOtherBonusDesc()
 	{
 		return L("Receives bonus conquest experience and bonus duel experience.");
 	}
-	
-	public static void duelExperience(CharClass C, Environmental host, CMMsg msg)
+
+	public static void duelExperience(final CharClass C, final Environmental host, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_DUELLOSS)
 		&&(msg.target()!=msg.tool())
@@ -315,7 +315,7 @@ public class Fighter extends StdCharClass
 		}
 	}
 
-	public static void conquestExperience(CharClass C, Environmental host, CMMsg msg)
+	public static void conquestExperience(final CharClass C, final Environmental host, final CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_AREAAFFECT)
 		&&(msg.target() instanceof Area)
@@ -340,7 +340,7 @@ public class Fighter extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

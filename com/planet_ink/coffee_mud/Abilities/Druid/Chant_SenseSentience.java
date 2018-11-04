@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_SenseSentience extends Chant
 {
 	@Override
@@ -74,7 +73,7 @@ public class Chant_SenseSentience extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -93,7 +92,7 @@ public class Chant_SenseSentience extends Chant
 				TrackingLibrary.TrackingFlags flags;
 				flags = CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
-				int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
+				final int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 				if(!checkSet.contains(mob.location()))
 					checkSet.add(mob.location());

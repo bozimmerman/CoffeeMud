@@ -118,10 +118,10 @@ public class Skill_SeaLegs extends StdSkill
 					roomS=msg.source().location();
 				if(msg.target() instanceof Room)
 					roomD=(Room)msg.target();
-	
+
 				if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))
 					roomD=null;
-	
+
 				if(roomS!=null)
 					roomS.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> keep(s) <S-HIS-HER> sea legs despite the <O-NAME>."));
 				if(roomD!=null)
@@ -129,7 +129,7 @@ public class Skill_SeaLegs extends StdSkill
 				helpProficiency((MOB)affected, 0);
 				return false;
 			}
-			
+
 		}
 		return true;
 	}

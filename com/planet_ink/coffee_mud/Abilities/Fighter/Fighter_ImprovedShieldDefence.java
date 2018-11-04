@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_ImprovedShieldDefence extends FighterSkill
 {
 	@Override
@@ -146,7 +145,7 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob, boolean force)
+	public boolean autoInvocation(final MOB mob, final boolean force)
 	{
 		amountOfShieldArmor=-1;
 		return super.autoInvocation(mob, force);

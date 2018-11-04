@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_ClosedSeason extends Property
 {
 	@Override
@@ -70,7 +69,7 @@ public class Prop_ClosedSeason extends Property
 	}
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		closedV=CMParms.parse(text.toUpperCase());
@@ -88,7 +87,7 @@ public class Prop_ClosedSeason extends Property
 			exitArea=msg.source().location().getArea();
 	}
 
-	protected boolean closed(Area A)
+	protected boolean closed(final Area A)
 	{
 		if(A==null)
 			return false;

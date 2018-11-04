@@ -24,33 +24,33 @@ import com.planet_ink.coffee_web.http.HTTPException;
  * @author Bo Zimmerman
  *
  */
-public interface HTTPFileGetter 
+public interface HTTPFileGetter
 {
 	/**
-	 * Generates a bytebuffer representing the results of the request 
+	 * Generates a bytebuffer representing the results of the request
 	 * contained herein.  HTTP errors can still be generated, however,
 	 * so those are watched for.
-	 * 
+	 *
 	 * Requests can trigger file reads, servlet calls and other ways
 	 * of generating body and header data.
-	 * 
+	 *
 	 * @param request the request to generate output for
 	 * @throws HTTPException
 	 * @return the entire full output for this request
 	 */
 	public DataBuffers generateOutput(HTTPRequest request) throws HTTPException;
-	
+
 	/**
-	 * Retrieves a buffer set containing the possibly cached contents of the file. 
+	 * Retrieves a buffer set containing the possibly cached contents of the file.
 	 * This can trigger file reads, servlet calls and other ways
 	 * of generating body data.
-	 * 
+	 *
 	 * @param request the request to generate output for
 	 * @throws HTTPException
 	 * @return the entire full output for this request
 	 */
 	public DataBuffers getFileData(HTTPRequest request) throws HTTPException;
-	
+
 	/**
 	 * After a uri has been broken apart and inspected, this method is called
 	 * to reassemble it into a valid File path using local file separators.
@@ -60,7 +60,7 @@ public interface HTTPFileGetter
 	 * @return the full assembled file path
 	 */
 	public String assembleFilePath(HTTPRequest request);
-	
+
 	/**
 	 * After a final file path is assembled, this method
 	 * returns a file object appropriate to accessing the

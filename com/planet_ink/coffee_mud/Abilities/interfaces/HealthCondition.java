@@ -38,7 +38,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface HealthCondition extends Ability
 {
-
 	/**
 	 * Returns a basic description of the health problem, as it would be
 	 * observed by others.

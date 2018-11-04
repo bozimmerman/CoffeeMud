@@ -124,8 +124,8 @@ public class Blob extends Unique
 		return naturalWeapon;
 	}
 
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -134,7 +134,7 @@ public class Blob extends Unique
 		}
 		return body;
 	}
-	
+
 	private static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	@Override

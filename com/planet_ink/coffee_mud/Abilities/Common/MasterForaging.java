@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class MasterForaging extends Foraging
 {
 	@Override
@@ -58,7 +57,7 @@ public class MasterForaging extends Foraging
 	}
 
 	@Override
-	protected int getDuration(MOB mob, int level)
+	protected int getDuration(final MOB mob, final int level)
 	{
 		return getDuration(113, mob, level, 25);
 	}

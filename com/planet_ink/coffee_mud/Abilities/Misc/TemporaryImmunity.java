@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class TemporaryImmunity extends StdAbility
 {
 	@Override
@@ -108,7 +107,7 @@ public class TemporaryImmunity extends StdAbility
 	{
 		super.unInvoke();
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -127,7 +126,7 @@ public class TemporaryImmunity extends StdAbility
 
 			if(set.size()==0)
 			{
-				unInvoke(); 
+				unInvoke();
 				return false;
 			}
 		}

@@ -65,7 +65,7 @@ public class Prop_RideResister extends Prop_HaveResister
 	}
 
 	@Override
-	public boolean canResist(Environmental E)
+	public boolean canResist(final Environmental E)
 	{
 		if((affected instanceof Rideable)
 		&&(E instanceof MOB)

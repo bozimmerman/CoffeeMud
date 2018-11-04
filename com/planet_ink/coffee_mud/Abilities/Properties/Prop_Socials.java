@@ -58,7 +58,7 @@ public class Prop_Socials extends Property
 	protected MaskingLibrary.CompiledZMask mask=null;
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		socials.clear();

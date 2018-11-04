@@ -125,8 +125,8 @@ public class Jelly extends Unique
 		return naturalWeapon;
 	}
 
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -135,7 +135,7 @@ public class Jelly extends Unique
 		}
 		return body;
 	}
-	
+
 	private static Vector<RawMaterial>	resources = new Vector<RawMaterial>();
 
 	@Override
@@ -153,7 +153,7 @@ public class Jelly extends Unique
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{
@@ -165,5 +165,5 @@ public class Jelly extends Unique
 				return super.makeMobName('N', age);
 		}
 	}
-	
+
 }

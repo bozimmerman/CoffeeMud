@@ -40,9 +40,9 @@ public class GenLibrarian extends StdLibrarian
 		return "GenLibrarian";
 	}
 
-	private String PrejudiceFactors="";
+	private String prejudiceFactors="";
 	private String libraryChain="main";
-	private String IgnoreMask="";
+	private String ignoreMask="";
 
 	public GenLibrarian()
 	{
@@ -71,25 +71,25 @@ public class GenLibrarian extends StdLibrarian
 	@Override
 	public String prejudiceFactors()
 	{
-		return PrejudiceFactors;
+		return prejudiceFactors;
 	}
 
 	@Override
-	public void setPrejudiceFactors(String factors)
+	public void setPrejudiceFactors(final String factors)
 	{
-		PrejudiceFactors=factors;
+		prejudiceFactors=factors;
 	}
 
 	@Override
 	public String ignoreMask()
 	{
-		return IgnoreMask;
+		return ignoreMask;
 	}
 
 	@Override
-	public void setIgnoreMask(String factors)
+	public void setIgnoreMask(final String factors)
 	{
-		IgnoreMask=factors;
+		ignoreMask=factors;
 	}
 
 	@Override
@@ -99,13 +99,13 @@ public class GenLibrarian extends StdLibrarian
 	}
 
 	@Override
-	public void setLibraryChain(String name)
+	public void setLibraryChain(final String name)
 	{
 		libraryChain=name;
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
@@ -119,7 +119,7 @@ public class GenLibrarian extends StdLibrarian
 									 "IGNOREMASK","PRICEMASKS","ITEMMASK"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
@@ -159,7 +159,7 @@ public class GenLibrarian extends StdLibrarian
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenMobStat(this,code,val);

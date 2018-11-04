@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_TurfWar extends ThiefSkill
 {
 	@Override
@@ -113,7 +112,7 @@ public class Thief_TurfWar extends ThiefSkill
 	}
 
 	@Override
-	protected void setTimeOfNextCast(long absoluteTime)
+	protected void setTimeOfNextCast(final long absoluteTime)
 	{
 		timeToNextCast=absoluteTime;
 	}
@@ -145,7 +144,7 @@ public class Thief_TurfWar extends ThiefSkill
 		return true;
 	}
 
-	public boolean isADefender(Room R, MOB M)
+	public boolean isADefender(final Room R, final MOB M)
 	{
 		if(R==null)
 			return false;
@@ -250,7 +249,7 @@ public class Thief_TurfWar extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

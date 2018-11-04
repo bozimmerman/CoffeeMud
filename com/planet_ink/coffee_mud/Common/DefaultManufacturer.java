@@ -104,7 +104,7 @@ public class DefaultManufacturer implements Manufacturer
 	}
 
 	@Override
-	public void setMaxTechLevelDiff(byte max)
+	public void setMaxTechLevelDiff(final byte max)
 	{
 		this.maxTechLevelDiff = max;
 	}
@@ -116,13 +116,13 @@ public class DefaultManufacturer implements Manufacturer
 	}
 
 	@Override
-	public void setMinTechLevelDiff(byte min)
+	public void setMinTechLevelDiff(final byte min)
 	{
 		this.minTechLevelDiff = min;
 	}
 
 	@Override
-	public void setName(String name)
+	public void setName(final String name)
 	{
 		this.name=name;
 	}
@@ -134,7 +134,7 @@ public class DefaultManufacturer implements Manufacturer
 	}
 
 	@Override
-	public void setEfficiencyPct(double pct)
+	public void setEfficiencyPct(final double pct)
 	{
 		efficiency=CMath.div(Math.round(pct*100),100.0);
 	}
@@ -146,7 +146,7 @@ public class DefaultManufacturer implements Manufacturer
 	}
 
 	@Override
-	public void setReliabilityPct(double pct)
+	public void setReliabilityPct(final double pct)
 	{
 		reliability=CMath.div(Math.round(pct*100),100.0);
 	}
@@ -174,7 +174,7 @@ public class DefaultManufacturer implements Manufacturer
 	}
 
 	@Override
-	public boolean isManufactureredType(Technical T)
+	public boolean isManufactureredType(final Technical T)
 	{
 		if(T==null)
 			return false;
@@ -195,7 +195,7 @@ public class DefaultManufacturer implements Manufacturer
 	}
 
 	@Override
-	public void setManufactureredTypesList(String list)
+	public void setManufactureredTypesList(final String list)
 	{
 		final Set<TechType> newTypes=new HashSet<TechType>();
 		for(final String s : CMParms.parseCommas(list,true))
@@ -228,7 +228,7 @@ public class DefaultManufacturer implements Manufacturer
 	}
 
 	@Override
-	public void setXml(String xml)
+	public void setXml(final String xml)
 	{
 		final List<XMLTag> xpc = CMLib.xml().parseAllXML(xml);
 		setName(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xpc,"NAME")));

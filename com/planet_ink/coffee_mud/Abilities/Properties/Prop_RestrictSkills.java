@@ -51,14 +51,14 @@ public class Prop_RestrictSkills extends Property
 	{
 		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS|Ability.CAN_ITEMS;
 	}
-	
+
 	protected Set<Integer>	onlyRoomDomains		= new TreeSet<Integer>();
 	protected Set<Integer>	neverRoomDomains	= new TreeSet<Integer>();
 	protected Set<String>	skills		= new TreeSet<String>();
 	protected String		message				= L("You can't do that here.");
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		onlyRoomDomains.clear();
 		neverRoomDomains.clear();
@@ -67,7 +67,7 @@ public class Prop_RestrictSkills extends Property
 		this.message=CMParms.getParmStr(newMiscText, "MESSAGE", "You can't do that here.");
 		String domains=CMParms.getParmStr(newMiscText, "ONLYROOMS", "");
 		List<String> domainList=CMParms.parseCommas(domains, true);
-		for(String domain : domainList)
+		for(final String domain : domainList)
 		{
 			int x=CMParms.indexOf(Room.DOMAIN_INDOORS_DESCS, domain.toUpperCase().trim());
 			if(x>=0)
@@ -81,7 +81,7 @@ public class Prop_RestrictSkills extends Property
 		}
 		domains=CMParms.getParmStr(newMiscText, "NEVERROOMS", "");
 		domainList=CMParms.parseCommas(domains, true);
-		for(String domain : domainList)
+		for(final String domain : domainList)
 		{
 			int x=CMParms.indexOf(Room.DOMAIN_INDOORS_DESCS, domain.toUpperCase().trim());
 			if(x>=0)
@@ -93,10 +93,10 @@ public class Prop_RestrictSkills extends Property
 					neverRoomDomains.add(Integer.valueOf(x));
 			}
 		}
-		
-		String skillStr=CMParms.getParmStr(newMiscText, "SKILLS", "");
-		List<String> skillList=CMParms.parseCommas(skillStr, true);
-		for(String skill : skillList)
+
+		final String skillStr=CMParms.getParmStr(newMiscText, "SKILLS", "");
+		final List<String> skillList=CMParms.parseCommas(skillStr, true);
+		for(final String skill : skillList)
 		{
 			final Ability A=CMClass.getAbility(skill);
 			if(A!=null)
@@ -104,9 +104,9 @@ public class Prop_RestrictSkills extends Property
 				skills.add(A.ID());
 			}
 		}
-		
+
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

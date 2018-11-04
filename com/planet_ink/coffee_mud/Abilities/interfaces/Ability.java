@@ -40,7 +40,6 @@ import java.util.*;
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addAbility(Ability)
  * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#addEffect(Ability)
  */
-
 public interface Ability extends Environmental
 {
 	/** Constant shortcut for setting the ticks remaining on the skill to basically be endless. */

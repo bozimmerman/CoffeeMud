@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class LocateQueryPacket extends Packet 
+public class LocateQueryPacket extends Packet
 {
 	public String user_name;
 
@@ -43,7 +43,7 @@ public class LocateQueryPacket extends Packet
 		type = Packet.LOCATE_QUERY;
 	}
 
-	public LocateQueryPacket(Vector<?> v) throws InvalidPacketException 
+	public LocateQueryPacket(final Vector<?> v) throws InvalidPacketException
 	{
 		super(v);
 		try
@@ -57,7 +57,7 @@ public class LocateQueryPacket extends Packet
 		}
 	}
 
-	public LocateQueryPacket(String nom, String who)
+	public LocateQueryPacket(final String nom, final String who)
 	{
 		super();
 		type = Packet.LOCATE_QUERY;
@@ -66,7 +66,7 @@ public class LocateQueryPacket extends Packet
 	}
 
 	@Override
-	public void send() throws InvalidPacketException 
+	public void send() throws InvalidPacketException
 	{
 		if( sender_name == null || user_name == null )
 		{

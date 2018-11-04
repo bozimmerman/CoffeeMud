@@ -31,19 +31,19 @@ public class CMThreadFactory implements ThreadFactory
 	private final SLinkedList<Thread> 	active 		= new SLinkedList<Thread>();
 	private final ThreadGroup			threadGroup;
 
-	public CMThreadFactory(String serverName)
+	public CMThreadFactory(final String serverName)
 	{
 		this.serverName=serverName;
 		this.threadGroup=Thread.currentThread().getThreadGroup();
 	}
 
-	public void setServerName(String newName)
+	public void setServerName(final String newName)
 	{
 		this.serverName=newName;
 	}
 
 	@Override
-	public Thread newThread(Runnable r)
+	public Thread newThread(final Runnable r)
 	{
 		final Thread t = new CMFactoryThread(threadGroup,r,serverName+"#"+counter.addAndGet(1));
 		active.add(t);

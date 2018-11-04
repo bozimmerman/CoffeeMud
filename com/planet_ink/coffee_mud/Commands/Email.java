@@ -49,7 +49,7 @@ public class Email extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.session()==null)
@@ -92,7 +92,7 @@ public class Email extends StdCommand
 					else
 						msgs.remove(num);
 				}
-				
+
 				final int[] cols={
 						CMLib.lister().fixColWidth(48,mob.session()),
 						CMLib.lister().fixColWidth(15,mob.session()),
@@ -216,7 +216,7 @@ public class Email extends StdCommand
 				}
 				if((!M.isAttributeSet(MOB.Attrib.AUTOFORWARD))
 				&&((M.playerStats()!=null)
-				&&(M.playerStats().getEmail().length()>0))		
+				&&(M.playerStats().getEmail().length()>0))
 				&&((M.playerStats().getAccount()==null)
 					||(!M.playerStats().getAccount().isSet(AccountFlag.NOAUTOFORWARD))))
 				{
@@ -247,7 +247,7 @@ public class Email extends StdCommand
 				}
 				if(mob.session()==null)
 					return false;
-				String message=mob.session().prompt(L("Enter your message\n\r: "),"").trim();
+				final String message=mob.session().prompt(L("Enter your message\n\r: "),"").trim();
 				if(message.trim().length()==0)
 				{
 					mob.tell(L("Aborted"));

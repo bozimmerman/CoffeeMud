@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class TimsItemTable extends StdWebMacro
 {
 	@Override
@@ -49,7 +48,7 @@ public class TimsItemTable extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		long endTime=System.currentTimeMillis()+(1000*60*10);
 		final int min=CMath.s_int((httpReq.getUrlParameter("MIN")));
@@ -222,7 +221,7 @@ public class TimsItemTable extends StdWebMacro
 		return clearWebMacros(str)+"</TABLE>";
 	}
 
-	public boolean doneBefore(Vector<Environmental> V, Item I)
+	public boolean doneBefore(final Vector<Environmental> V, final Item I)
 	{
 		if(I==null)
 			return true;
@@ -239,7 +238,7 @@ public class TimsItemTable extends StdWebMacro
 		return false;
 	}
 
-	public String addRow(Item I)
+	public String addRow(final Item I)
 	{
 		final StringBuffer row=new StringBuffer("");
 		final int lvl=I.phyStats().level();

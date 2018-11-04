@@ -73,7 +73,7 @@ public class Prop_HaveSpellCast extends Prop_SpellAdder
 	}
 
 	@Override
-	public void setAffectedOne(Physical P)
+	public void setAffectedOne(final Physical P)
 	{
 		if(P==null)
 		{
@@ -90,7 +90,7 @@ public class Prop_HaveSpellCast extends Prop_SpellAdder
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 		if(processing)
 			return;
@@ -100,12 +100,12 @@ public class Prop_HaveSpellCast extends Prop_SpellAdder
 			if(host instanceof Item)
 			{
 				myItem=(Item)host;
-	
+
 				if((lastMOB instanceof MOB)
 				&&((myItem.owner()!=lastMOB)||(myItem.amDestroyed()))
 				&&(((MOB)lastMOB).location()!=null))
 					removeMyAffectsFromLastMOB();
-	
+
 				if((lastMOB==null)
 				&&(myItem.owner() instanceof MOB)
 				&&(((MOB)myItem.owner()).location()!=null))

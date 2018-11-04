@@ -100,7 +100,7 @@ public class Ranger_FierceCompanions extends StdAbility
 	}
 
 	protected volatile boolean activated=false;
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -129,7 +129,7 @@ public class Ranger_FierceCompanions extends StdAbility
 		&&(((MOB)affected).isInCombat()))
 		{
 			final Set<MOB> companions=((MOB)affected).getGroupMembers(new HashSet<MOB>());
-			for(MOB M : companions)
+			for(final MOB M : companions)
 			{
 				if((M!=affected)&&(CMLib.flags().isAnimalIntelligence(M))&&(M.location()==((MOB)affected).location())&&(!M.amDead())&&(M.isInCombat()))
 				{

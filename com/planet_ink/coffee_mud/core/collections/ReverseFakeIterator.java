@@ -23,8 +23,8 @@ public class ReverseFakeIterator<K> implements Iterator<K>
 {
 	private final List<K> set;
 	private volatile int index;
-	
-	public ReverseFakeIterator(List<K> eset)
+
+	public ReverseFakeIterator(final List<K> eset)
 	{
 		this.set=eset;
 		index=eset.size()-1;

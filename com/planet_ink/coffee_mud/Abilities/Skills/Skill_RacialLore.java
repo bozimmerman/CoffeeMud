@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_RacialLore extends StdSkill
 {
 	@Override
@@ -70,7 +69,7 @@ public class Skill_RacialLore extends StdSkill
 	private static final String[]	triggerStrings	= I(new String[] { "RACIALLORE", "RLORE" });
 
 	protected long lastFail = 0;
-	
+
 	@Override
 	public String[] triggerStrings()
 	{
@@ -90,13 +89,13 @@ public class Skill_RacialLore extends StdSkill
 	}
 
 	@Override
-	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+	public boolean preInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -107,7 +106,7 @@ public class Skill_RacialLore extends StdSkill
 		if((commands.size()==0)
 		||((commands.size()==1)&&(commands.get(0).equalsIgnoreCase("LIST"))))
 		{
-			List<String> names=new ArrayList<String>();
+			final List<String> names=new ArrayList<String>();
 			for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 			{
 				final Race R1=r.nextElement();
@@ -123,17 +122,17 @@ public class Skill_RacialLore extends StdSkill
 			commands.remove(commands.size()-1);
 			report=true;
 		}
-		
+
 		if((System.currentTimeMillis() - lastFail) < 10000)
 		{
 			mob.tell(L("You still can't recall.  Give yourself some more time to think first."));
 			return false;
 		}
-		
-		Race targetR=CMClass.findRace(CMParms.combine(commands));
+
+		final Race targetR=CMClass.findRace(CMParms.combine(commands));
 		if(targetR == null)
 		{
-			List<String> names=new ArrayList<String>();
+			final List<String> names=new ArrayList<String>();
 			for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 			{
 				final Race R1=r.nextElement();
@@ -148,7 +147,7 @@ public class Skill_RacialLore extends StdSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)
 		{
@@ -165,7 +164,7 @@ public class Skill_RacialLore extends StdSkill
 			final int expertise = super.getXLEVELLevel(mob);
 			tidbits.add(L("they are part of the genus @x1",targetR.racialCategory()));
 			String s=targetR.getStatAdjDesc();
-			for(String str : CMParms.parseCommas(s,true))
+			for(final String str : CMParms.parseCommas(s,true))
 			{
 				if(str.indexOf('-')>0)
 					tidbits.add(L("they suffer from @x1",str));
@@ -173,14 +172,14 @@ public class Skill_RacialLore extends StdSkill
 					tidbits.add(L("they benefit from @x1",str));
 			}
 			s=targetR.getSensesChgDesc();
-			for(String str : CMParms.parseCommas(s,true))
+			for(final String str : CMParms.parseCommas(s,true))
 				tidbits.add(L("they have @x1",str));
 			s=targetR.getDispositionChgDesc();
-			for(String str : CMParms.parseCommas(s,true))
+			for(final String str : CMParms.parseCommas(s,true))
 				tidbits.add(L("they are always @x1",str));
 
-			Set<String> aDone = new HashSet<String>();
-			for(Ability A1 : targetR.racialAbilities(null))
+			final Set<String> aDone = new HashSet<String>();
+			for(final Ability A1 : targetR.racialAbilities(null))
 			{
 				if(A1 instanceof Language)
 					tidbits.add(L("they speak @x1",A1.name()));
@@ -188,7 +187,7 @@ public class Skill_RacialLore extends StdSkill
 					tidbits.add(L("they are born with the ability '@x1'",A1.name()));
 				aDone.add(A1.ID());
 			}
-			for(Quad<String,Integer,Integer,Boolean> q : targetR.culturalAbilities())
+			for(final Quad<String,Integer,Integer,Boolean> q : targetR.culturalAbilities())
 			{
 				final Ability A1=CMClass.getAbilityPrototype(q.first);
 				if(A1 instanceof Language)
@@ -197,7 +196,7 @@ public class Skill_RacialLore extends StdSkill
 					tidbits.add(L("they are often skilled at '@x1'",A1.name()));
 				aDone.add(A1.ID());
 			}
-			for(Ability A1 : targetR.racialEffects(null))
+			for(final Ability A1 : targetR.racialEffects(null))
 			{
 				if(!aDone.contains(A1.ID()))
 				{
@@ -206,7 +205,7 @@ public class Skill_RacialLore extends StdSkill
 			}
 			s=targetR.getAbilitiesDesc();
 			tidbits.add(L("their life expectancy is @x1 years",targetR.getAgingChart()[Race.AGE_ANCIENT]+""));
-			for(String ableID : targetR.abilityImmunities())
+			for(final String ableID : targetR.abilityImmunities())
 			{
 				final Ability A1=CMClass.getAbilityPrototype(ableID);
 				if(A1!=null)
@@ -224,24 +223,24 @@ public class Skill_RacialLore extends StdSkill
 					tidbits.add(L("they have @x1 @x2",""+targetR.bodyMask()[i],CMLib.english().makePlural(Race.BODYPARTSTR[i].toLowerCase())));
 			}
 			tidbits.add(L("they require @x1 years to reach maturity",""+targetR.getAgingChart()[Race.AGE_MATURE]));
-			for(long loc : Wearable.CODES.ALL())
+			for(final long loc : Wearable.CODES.ALL())
 			{
 				if(CMath.bset(targetR.forbiddenWornBits(),loc))
 					tidbits.add(L("due to their anatomy, they can't wear normal gear on their @x1",Wearable.CODES.NAME(loc).toLowerCase()));
 			}
-			for(int rsc : targetR.getBreathables())
+			for(final int rsc : targetR.getBreathables())
 			{
 				if(rsc != RawMaterial.RESOURCE_AIR)
 					tidbits.add(L("they can breathe @x1",RawMaterial.CODES.NAME(rsc).toLowerCase()));
 			}
-			int shortest = (targetR.shortestFemale()+targetR.shortestMale())/2;
+			final int shortest = (targetR.shortestFemale()+targetR.shortestMale())/2;
 			tidbits.add(L("at maturity they are between @x1 and @x2 inches tall",
 					""+shortest,""+(shortest+targetR.heightVariance())));
-			int lightest = targetR.lightestWeight();
+			final int lightest = targetR.lightestWeight();
 			tidbits.add(L("at maturity they are between @x1 and @x2 pounds",
 					""+lightest,""+(lightest+targetR.weightVariance())));
 			tidbits.add(L("they like to fight with @x1",targetR.myNaturalWeapon().name()));
-			for(RawMaterial M : targetR.myResources())
+			for(final RawMaterial M : targetR.myResources())
 			{
 				final String str=L("their bodies can be butchered for @x1",M.name().endsWith("s")?M.name():CMLib.english().makePlural(M.name()));
 				if(!tidbits.contains(str))

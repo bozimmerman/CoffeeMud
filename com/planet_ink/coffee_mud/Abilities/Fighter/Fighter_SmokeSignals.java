@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_SmokeSignals extends FighterSkill
 {
 	@Override
@@ -122,7 +121,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 		super.executeMsg(myHost,msg);
 	}
 
-	public Item getRequiredFire(MOB mob)
+	public Item getRequiredFire(final MOB mob)
 	{
 		Item fire=null;
 		for(int i=0;i<mob.location().numItems();i++)
@@ -143,7 +142,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((!auto)&&(mob.isInCombat()))
 		{
@@ -199,7 +198,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 				final String str=CMParms.combine(commands,0);
 				final CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,CMMsg.MSG_OK_VISUAL,L("You see some smoke signals in the distance."));
 				final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-				int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
+				final int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 				for(final Iterator<Room> r=checkSet.iterator();r.hasNext();)
 				{

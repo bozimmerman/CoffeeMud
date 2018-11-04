@@ -123,14 +123,14 @@ public class IMudClient implements I3Interface
 	public IMC2Driver imc2=null;
 
 	@Override
-	public void registerIMC2(Object O)
+	public void registerIMC2(final Object O)
 	{
 		if(O instanceof IMC2Driver)
 			imc2=(IMC2Driver)O;
 	}
 
 	@Override
-	public void i3who(MOB mob, String mudName)
+	public void i3who(final MOB mob, String mudName)
 	{
 		if(mob==null)
 			return;
@@ -188,7 +188,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void imc2mudInfo(MOB mob, String parms)
+	public void imc2mudInfo(final MOB mob, final String parms)
 	{
 		if((mob==null)||(!imc2online()))
 			return;
@@ -201,7 +201,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void i3chanwho(MOB mob, String channel, String mudName)
+	public void i3chanwho(final MOB mob, final String channel, String mudName)
 	{
 		if((mob==null)||(!i3online()))
 			return;
@@ -241,7 +241,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void i3channelAdd(MOB mob, String channel)
+	public void i3channelAdd(final MOB mob, final String channel)
 	{
 		if((mob==null)||(!i3online()))
 			return;
@@ -265,7 +265,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void i3channelListen(MOB mob, String channel)
+	public void i3channelListen(final MOB mob, final String channel)
 	{
 		if((mob==null)||(!i3online()))
 			return;
@@ -296,7 +296,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void i3channelSilence(MOB mob, String channel)
+	public void i3channelSilence(final MOB mob, final String channel)
 	{
 		if((mob==null)||(!i3online()))
 			return;
@@ -325,7 +325,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void i3channelRemove(MOB mob, String channel)
+	public void i3channelRemove(final MOB mob, final String channel)
 	{
 		if((mob==null)||(!i3online()))
 			return;
@@ -348,7 +348,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void i3tell(MOB mob, String tellName, String mudName, String message)
+	public void i3tell(final MOB mob, String tellName, String mudName, final String message)
 	{
 		if(mob==null)
 			return;
@@ -411,7 +411,7 @@ public class IMudClient implements I3Interface
 		}
 	}
 
-	public void destroymob(MOB mob)
+	public void destroymob(final MOB mob)
 	{
 		if(mob==null)
 			return;
@@ -422,7 +422,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void i3channel(MOB mob, String channelName, String message)
+	public void i3channel(final MOB mob, final String channelName, String message)
 	{
 		if(mob==null)
 			return;
@@ -587,7 +587,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void i3locate(MOB mob, String mobName)
+	public void i3locate(final MOB mob, final String mobName)
 	{
 		if(mob==null)
 			return;
@@ -619,7 +619,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void i3pingRouter(MOB mob)
+	public void i3pingRouter(final MOB mob)
 	{
 		if(mob==null)
 			return;
@@ -640,7 +640,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void i3finger(MOB mob, String mobName, String mudName)
+	public void i3finger(final MOB mob, final String mobName, final String mudName)
 	{
 		if(mob==null)
 			return;
@@ -672,7 +672,7 @@ public class IMudClient implements I3Interface
 			imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());
 	}
 
-	public String getMudInfo(I3Mud mudToShow)
+	public String getMudInfo(final I3Mud mudToShow)
 	{
 		final StringBuilder buf=new StringBuilder("");
 		buf.append(CMStrings.padRight(L("Name"),10)+": "+mudToShow.mud_name+"\n\r");
@@ -687,7 +687,7 @@ public class IMudClient implements I3Interface
 		return buf.toString();
 	}
 
-	public List<I3Mud> mudFinder(String parms)
+	public List<I3Mud> mudFinder(final String parms)
 	{
 		final MudList list=Intermud.getAllMudsList();
 		if(list==null)
@@ -743,7 +743,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void i3mudInfo(MOB mob, String parms)
+	public void i3mudInfo(final MOB mob, final String parms)
 	{
 		if((mob==null)||(!i3online()))
 			return;
@@ -770,7 +770,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void giveIMC2MudList(MOB mob)
+	public void giveIMC2MudList(final MOB mob)
 	{
 		if((mob==null)||(!imc2online()))
 			return;
@@ -806,7 +806,7 @@ public class IMudClient implements I3Interface
 
 	protected List<I3Mud> getSortedI3Muds()
 	{
-		Vector<I3Mud> list = new Vector<I3Mud>();
+		final Vector<I3Mud> list = new Vector<I3Mud>();
 		if(!i3online())
 			return list;
 		final MudList mudList=Intermud.getAllMudsList();
@@ -834,34 +834,34 @@ public class IMudClient implements I3Interface
 		}
 		return list;
 	}
-	
+
 	@Override
-	public List<String> getI3MudList(boolean coffeemudOnly)
+	public List<String> getI3MudList(final boolean coffeemudOnly)
 	{
-		List<String> list = new Vector<String>();
+		final List<String> list = new Vector<String>();
 		if(!i3online())
 			return list;
-		 List<I3Mud> muds = getSortedI3Muds();
-		 for(I3Mud mud : muds)
+		 final List<I3Mud> muds = getSortedI3Muds();
+		 for(final I3Mud mud : muds)
 		 {
 			 if((mud!=null) && ((!coffeemudOnly) || mud.base_mudlib.startsWith("CoffeeMud")))
 				 list.add(mud.mud_name);
 		 }
 		 return list;
 	}
-	
+
 	@Override
-	public void giveI3MudList(MOB mob)
+	public void giveI3MudList(final MOB mob)
 	{
 		if((mob==null)||(!i3online()))
 			return;
 		if(mob.isMonster())
 			return;
 		final StringBuffer buf=new StringBuffer("\n\rI3 Mud List:\n\r");
-		int col1Width=CMLib.lister().fixColWidth(25, mob);
-		int col2Width=CMLib.lister().fixColWidth(25, mob);
-		 List<I3Mud> muds = getSortedI3Muds();
-		for(I3Mud m : muds)
+		final int col1Width=CMLib.lister().fixColWidth(25, mob);
+		final int col2Width=CMLib.lister().fixColWidth(25, mob);
+		 final List<I3Mud> muds = getSortedI3Muds();
+		for(final I3Mud m : muds)
 		{
 			if((m!=null)&&(m.base_mudlib!=null))
 			{
@@ -873,7 +873,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void giveI3ChannelsList(MOB mob)
+	public void giveI3ChannelsList(final MOB mob)
 	{
 		if((mob==null)||(!i3online()))
 			return;
@@ -895,7 +895,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public void giveIMC2ChannelsList(MOB mob)
+	public void giveIMC2ChannelsList(final MOB mob)
 	{
 		if((mob==null)||(!imc2online()))
 			return;
@@ -930,7 +930,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public boolean isIMC2channel(String channelName)
+	public boolean isIMC2channel(final String channelName)
 	{
 		if(!imc2online())
 			return false;
@@ -941,7 +941,7 @@ public class IMudClient implements I3Interface
 	}
 
 	@Override
-	public boolean isI3channel(String channelName)
+	public boolean isI3channel(final String channelName)
 	{
 		if(!i3online())
 			return false;

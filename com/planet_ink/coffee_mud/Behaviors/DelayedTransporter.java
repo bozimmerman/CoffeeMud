@@ -64,7 +64,7 @@ public class DelayedTransporter extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		String myParms=newParms;
 		int x=myParms.indexOf(';');

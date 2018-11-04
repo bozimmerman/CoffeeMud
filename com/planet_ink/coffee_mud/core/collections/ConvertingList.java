@@ -21,32 +21,32 @@ public class ConvertingList<L,K> implements List<K>
 	private final List<L> list;
 	Converter<L, K> converter;
 
-	public ConvertingList(List<L> l, Converter<L, K> conv)
+	public ConvertingList(final List<L> l, final Converter<L, K> conv)
 	{
 		list=l;
 		converter=conv;
 	}
 
 	@Override
-	public boolean add(K arg0)
+	public boolean add(final K arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public void add(int arg0, K arg1)
+	public void add(final int arg0, final K arg1)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends K> arg0)
+	public boolean addAll(final Collection<? extends K> arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean addAll(int arg0, Collection<? extends K> arg1)
+	public boolean addAll(final int arg0, final Collection<? extends K> arg1)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -58,7 +58,7 @@ public class ConvertingList<L,K> implements List<K>
 	}
 
 	@Override
-	public boolean contains(Object arg0)
+	public boolean contains(final Object arg0)
 	{
 		for(int x=0;x<size();x++)
 		{
@@ -69,7 +69,7 @@ public class ConvertingList<L,K> implements List<K>
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0)
+	public boolean containsAll(final Collection<?> arg0)
 	{
 		for(final Object o : arg0)
 		{
@@ -80,13 +80,13 @@ public class ConvertingList<L,K> implements List<K>
 	}
 
 	@Override
-	public K get(int arg0)
+	public K get(final int arg0)
 	{
 		return converter.convert(list.get(arg0));
 	}
 
 	@Override
-	public int indexOf(Object arg0)
+	public int indexOf(final Object arg0)
 	{
 		for(int x=0;x<size();x++)
 		{
@@ -109,7 +109,7 @@ public class ConvertingList<L,K> implements List<K>
 	}
 
 	@Override
-	public int lastIndexOf(Object arg0)
+	public int lastIndexOf(final Object arg0)
 	{
 		for(int x=size()-1;x>=0;x--)
 		{
@@ -126,37 +126,37 @@ public class ConvertingList<L,K> implements List<K>
 	}
 
 	@Override
-	public ListIterator<K> listIterator(int arg0)
+	public ListIterator<K> listIterator(final int arg0)
 	{
 		return new ConvertingListIterator<L,K>(list.listIterator(arg0), converter);
 	}
 
 	@Override
-	public boolean remove(Object arg0)
+	public boolean remove(final Object arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public K remove(int arg0)
+	public K remove(final int arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> arg0)
+	public boolean removeAll(final Collection<?> arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> arg0)
+	public boolean retainAll(final Collection<?> arg0)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
 
 	@Override
-	public K set(int arg0, K arg1)
+	public K set(final int arg0, final K arg1)
 	{
 		throw new java.lang.IllegalArgumentException();
 	}
@@ -168,7 +168,7 @@ public class ConvertingList<L,K> implements List<K>
 	}
 
 	@Override
-	public List<K> subList(int arg0, int arg1)
+	public List<K> subList(final int arg0, final int arg1)
 	{
 		return new ConvertingList<L,K>(list.subList(arg0,arg1),converter);
 	}
@@ -185,7 +185,7 @@ public class ConvertingList<L,K> implements List<K>
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public <T> T[] toArray(T[] a) 
+	public <T> T[] toArray(final T[] a)
 	{
 		if (a.length < list.size())
 			return (T[]) Arrays.copyOf(toArray(), list.size(), a.getClass());

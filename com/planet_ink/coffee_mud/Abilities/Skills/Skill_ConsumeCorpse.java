@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_ConsumeCorpse extends StdSkill
 {
 	@Override
@@ -87,7 +86,7 @@ public class Skill_ConsumeCorpse extends StdSkill
 		return USAGE_MANA;
 	}
 
-	public static Item getBody(Room R)
+	public static Item getBody(final Room R)
 	{
 		if(R!=null)
 		for(int i=0;i<R.numItems();i++)
@@ -102,7 +101,7 @@ public class Skill_ConsumeCorpse extends StdSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -116,7 +115,7 @@ public class Skill_ConsumeCorpse extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Item target=null;
 		if((commands.size()==0)&&(!auto)&&(givenTarget==null))
@@ -154,10 +153,10 @@ public class Skill_ConsumeCorpse extends StdSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				double amtBack = CMath.div(target.phyStats().level(), adjustedLevel(mob,asLevel));
-				int hp=(int)Math.round(CMath.mul(mob.maxState().getHitPoints(),amtBack));
-				int mana=(int)Math.round(CMath.mul(mob.maxState().getMana(),amtBack));
-				int move=(int)Math.round(CMath.mul(mob.maxState().getMovement(),amtBack));
+				final double amtBack = CMath.div(target.phyStats().level(), adjustedLevel(mob,asLevel));
+				final int hp=(int)Math.round(CMath.mul(mob.maxState().getHitPoints(),amtBack));
+				final int mana=(int)Math.round(CMath.mul(mob.maxState().getMana(),amtBack));
+				final int move=(int)Math.round(CMath.mul(mob.maxState().getMovement(),amtBack));
 				CMLib.combat().postHealing(mob, mob, this, hp, CMMsg.MASK_ALWAYS|CMMsg.TYP_HANDS, L("<S-NAME> feel(s) better!"));
 				mob.curState().adjMana(mana, mob.maxState());
 				mob.curState().adjMovement(move, mob.maxState());

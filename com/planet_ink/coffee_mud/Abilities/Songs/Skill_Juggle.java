@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Skill_Juggle extends BardSkill
 {
 	@Override
@@ -91,10 +90,10 @@ public class Skill_Juggle extends BardSkill
 	protected boolean pause=false;
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
-		juggles=new SVector();
+		juggles=new SVector<Item>();
 	}
 
 	public int maxJuggles()
@@ -169,7 +168,7 @@ public class Skill_Juggle extends BardSkill
 		return true;
 	}
 
-	protected void unJuggle(Item I)
+	protected void unJuggle(final Item I)
 	{
 		if(I==null)
 			return;
@@ -179,7 +178,7 @@ public class Skill_Juggle extends BardSkill
 		juggles.removeElement(I);
 	}
 
-	public void juggleItem(Item I)
+	public void juggleItem(final Item I)
 	{
 		if(I==null)
 			return;
@@ -409,7 +408,7 @@ public class Skill_Juggle extends BardSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -420,7 +419,7 @@ public class Skill_Juggle extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String whatToJuggle=(mob.isMonster()&&(givenTarget instanceof MOB))?"all":CMParms.combine(commands,0);
 		Skill_Juggle A=(Skill_Juggle)mob.fetchEffect("Skill_Juggle");

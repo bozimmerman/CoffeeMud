@@ -42,7 +42,7 @@ public class ChkReqParmBreak extends CheckReqParm
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final String ans=super.runMacro(httpReq, parm, httpResp);
 		if(CMath.s_bool(ans))

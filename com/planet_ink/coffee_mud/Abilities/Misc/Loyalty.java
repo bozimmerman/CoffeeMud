@@ -85,13 +85,13 @@ public class Loyalty extends StdAbility
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		loyaltyName = CMParms.getParmStr(newMiscText, "NAME", "");
 		teleport = CMParms.getParmBool(newMiscText, "TELEPORT", false);
 	}
-	
+
 	protected MOB getPlayer()
 	{
 		if((loyaltyPlayer != null)
@@ -109,13 +109,13 @@ public class Loyalty extends StdAbility
 			loyaltyPlayer = new WeakReference<MOB>(player);
 		return player;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		
+
 		if((msg.source()==affected)
 		&&(msg.source().amFollowing()!=null)
 		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
@@ -125,7 +125,7 @@ public class Loyalty extends StdAbility
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{

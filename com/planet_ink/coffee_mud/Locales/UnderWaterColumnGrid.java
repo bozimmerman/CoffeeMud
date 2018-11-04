@@ -135,7 +135,7 @@ public class UnderWaterColumnGrid extends UnderWaterGrid
 	}
 
 	@Override
-	public Room getAltRoomFrom(Room loc, int direction)
+	public Room getAltRoomFrom(Room loc, final int direction)
 	{
 		if((loc==null)||(direction<0))
 			return null;

@@ -40,13 +40,13 @@ public class DataLoader
 {
 	protected DBConnector DB=null;
 	protected DatabaseEngine engine=null;
-	
-	public DataLoader(DatabaseEngine engine, DBConnector newDB)
+
+	public DataLoader(final DatabaseEngine engine, final DBConnector newDB)
 	{
 		this.DB=newDB;
 		this.engine=engine;
 	}
-	
+
 	public List<PlayerData> DBRead(String playerID, String section)
 	{
 		DBConnection D=null;
@@ -169,7 +169,7 @@ public class DataLoader
 	public List<String> DBReadAuthorsBySection(String section)
 	{
 		DBConnection D=null;
-		List<String> authors = new ArrayList<String>();
+		final List<String> authors = new ArrayList<String>();
 		try
 		{
 			D=DB.DBFetch();
@@ -195,7 +195,7 @@ public class DataLoader
 		return authors;
 	}
 
-	public List<PlayerData> DBReadByKeyMask(String section, String keyMask)
+	public List<PlayerData> DBReadByKeyMask(String section, final String keyMask)
 	{
 		DBConnection D=null;
 		final Vector<PlayerData> rows=new Vector<PlayerData>();
@@ -367,7 +367,7 @@ public class DataLoader
 		return rows;
 	}
 
-	public List<PlayerData> DBRead(String playerID, List<String> sections)
+	public List<PlayerData> DBRead(String playerID, final List<String> sections)
 	{
 		DBConnection D=null;
 		final Vector<PlayerData> rows=new Vector<PlayerData>();
@@ -407,7 +407,7 @@ public class DataLoader
 		return rows;
 	}
 
-	public PlayerData DBReCreate(String name, String section, String key, String xml)
+	public PlayerData DBReCreate(final String name, final String section, String key, final String xml)
 	{
 		synchronized(("RECREATE"+key).intern())
 		{
@@ -445,7 +445,7 @@ public class DataLoader
 		}
 	}
 
-	public void DBUpdate(String key, String xml)
+	public void DBUpdate(String key, final String xml)
 	{
 		key = DB.injectionClean(key);
 		DB.updateWithClobs("UPDATE CMPDAT SET CMPDAT=? WHERE CMPKEY='"+key+"'", xml);
@@ -474,7 +474,7 @@ public class DataLoader
 		}
 	}
 
-	public void DBDeletePlayer(String playerID)
+	public void DBDeletePlayer(final String playerID)
 	{
 		DBConnection D=null;
 		try
@@ -529,12 +529,12 @@ public class DataLoader
 			Log.errOut("Failed to delete data from section "+section+".");
 	}
 
-	public PlayerData DBCreate(String playerID, String section, String key, String data)
+	public PlayerData DBCreate(String playerID, String section, String key, final String data)
 	{
 		playerID = DB.injectionClean(playerID);
 		section = DB.injectionClean(section);
 		key = DB.injectionClean(key);
-		PlayerData pData = createPlayerData();
+		final PlayerData pData = createPlayerData();
 		pData.who(playerID);
 		pData.section(section);
 		pData.key(key);
@@ -570,7 +570,7 @@ public class DataLoader
 			}
 		}
 	}
-	
+
 	public PlayerData createPlayerData()
 	{
 		return new PlayerData()
@@ -587,7 +587,7 @@ public class DataLoader
 			}
 
 			@Override
-			public PlayerData who(String who)
+			public PlayerData who(final String who)
 			{
 				this.who = who;
 				return this;
@@ -600,7 +600,7 @@ public class DataLoader
 			}
 
 			@Override
-			public PlayerData section(String section)
+			public PlayerData section(final String section)
 			{
 				this.section = section;
 				return this;
@@ -613,7 +613,7 @@ public class DataLoader
 			}
 
 			@Override
-			public PlayerData key(String key)
+			public PlayerData key(final String key)
 			{
 				this.key = key;
 				return this;
@@ -626,7 +626,7 @@ public class DataLoader
 			}
 
 			@Override
-			public PlayerData xml(String xml)
+			public PlayerData xml(final String xml)
 			{
 				this.xml = xml;
 				return this;

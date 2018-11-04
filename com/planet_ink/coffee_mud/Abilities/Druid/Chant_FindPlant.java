@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_FindPlant extends Chant
 {
 	@Override
@@ -184,7 +183,7 @@ public class Chant_FindPlant extends Chant
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
-	public String itsHere(MOB mob, Room R)
+	public String itsHere(final MOB mob, final Room R)
 	{
 		if(R==null)
 			return "";
@@ -194,7 +193,7 @@ public class Chant_FindPlant extends Chant
 		return "";
 	}
 
-	protected boolean findWhatImLookingFor(MOB mob, String s)
+	protected boolean findWhatImLookingFor(final MOB mob, final String s)
 	{
 		whatImLookingFor=-1;
 		for(int i=0;i<allOkResources().size();i++)
@@ -225,19 +224,19 @@ public class Chant_FindPlant extends Chant
 				.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		return flags;
 	}
-	
+
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
-	protected List<Room> makeTheTrail(MOB mob, MOB target, Room mobRoom)
+	protected List<Room> makeTheTrail(final MOB mob, final MOB target, final Room mobRoom)
 	{
 		final ArrayList<Room> rooms=new ArrayList<Room>();
 		TrackingLibrary.TrackingFlags flags = getTrackingFlags();
-		int range = 50+(2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
+		final int range = 50+(2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mobRoom,flags,range);
 		for (final Room R : checkSet)
 		{
@@ -250,9 +249,9 @@ public class Chant_FindPlant extends Chant
 			theTrail=CMLib.tracking().findTrailToAnyRoom(mobRoom,rooms,flags,range);
 		return theTrail;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -264,7 +263,7 @@ public class Chant_FindPlant extends Chant
 			return false;
 		}
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(final Ability A : V) 
+		for(final Ability A : V)
 			A.unInvoke();
 
 		if((commands.size()==0)&&(text().length()>0))

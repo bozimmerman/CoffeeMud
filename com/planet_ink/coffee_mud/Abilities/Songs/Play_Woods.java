@@ -33,7 +33,7 @@ import java.util.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+*/
 public class Play_Woods extends Play_Instrument
 {
 	@Override
@@ -43,7 +43,7 @@ public class Play_Woods extends Play_Instrument
 	}
 
 	private final static String	localizedName	= CMLib.lang().L("Wood Clappers");
-	
+
 	private static Ability	theSpell	= null;
 
 	@Override

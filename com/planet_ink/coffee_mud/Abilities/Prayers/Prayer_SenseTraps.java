@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_SenseTraps extends Prayer
 {
 	@Override
@@ -101,7 +100,7 @@ public class Prayer_SenseTraps extends Prayer
 			mob.tell(L("Your senses are no longer sensitive to traps."));
 	}
 
-	public String trapCheck(Physical P)
+	public String trapCheck(final Physical P)
 	{
 		if(P!=null)
 		if(CMLib.utensils().fetchMyTrap(P)!=null)
@@ -109,7 +108,7 @@ public class Prayer_SenseTraps extends Prayer
 		return "";
 	}
 
-	public String trapHere(MOB mob, Physical P)
+	public String trapHere(final MOB mob, final Physical P)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		if(P==null)
@@ -181,7 +180,7 @@ public class Prayer_SenseTraps extends Prayer
 		return msg.toString();
 	}
 
-	public void messageTo(MOB mob)
+	public void messageTo(final MOB mob)
 	{
 		final String here=trapHere(mob,mob.location());
 		if(here.length()>0)
@@ -226,7 +225,7 @@ public class Prayer_SenseTraps extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

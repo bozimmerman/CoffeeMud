@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Sheath extends StdCommand
 {
 	public Sheath()
@@ -46,7 +45,7 @@ public class Sheath extends StdCommand
 		return access;
 	}
 
-	public static Vector<Container> getSheaths(MOB mob)
+	public static Vector<Container> getSheaths(final MOB mob)
 	{
 		final Vector<Container> sheaths=new Vector<Container>();
 		if(mob!=null)
@@ -65,12 +64,12 @@ public class Sheath extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
 		boolean noerrors=false;
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("QUIETLY")))
 		{
 			commands.remove(commands.size()-1);
@@ -245,7 +244,7 @@ public class Sheath extends StdCommand
 	}
 
 	@Override
-	public double combatActionsCost(MOB mob, List<String> cmds)
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getCommandCombatActionCost(ID(), CMath.div(CMProps.getIntVar(CMProps.Int.DEFCOMCMDTIME),200.0));
 	}

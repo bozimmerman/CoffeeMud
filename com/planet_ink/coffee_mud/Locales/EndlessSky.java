@@ -91,7 +91,7 @@ public class EndlessSky extends StdGrid
 	}
 
 	@Override
-	protected Room findCenterRoom(int dirCode)
+	protected Room findCenterRoom(final int dirCode)
 	{
 		if(dirCode!=Directions.DOWN)
 			return super.findCenterRoom(dirCode);

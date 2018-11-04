@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Falling extends StdAbility
 {
 	@Override
@@ -81,7 +80,7 @@ public class Falling extends StdAbility
 		return proficiency() == 100;
 	}
 
-	protected boolean isAirRoom(Room R)
+	protected boolean isAirRoom(final Room R)
 	{
 		if(R==null)
 			return false;
@@ -91,7 +90,7 @@ public class Falling extends StdAbility
 		return false;
 	}
 
-	protected boolean canFallFrom(Room fromHere, int direction)
+	protected boolean canFallFrom(final Room fromHere, final int direction)
 	{
 		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
 			return false;
@@ -107,7 +106,7 @@ public class Falling extends StdAbility
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if((newMiscText!=null) && (newMiscText.length()>0))
@@ -122,8 +121,8 @@ public class Falling extends StdAbility
 			}
 		}
 	}
-	
-	protected boolean stopFalling(MOB mob)
+
+	protected boolean stopFalling(final MOB mob)
 	{
 		final Room R=mob.location();
 		if(reversed())
@@ -157,7 +156,7 @@ public class Falling extends StdAbility
 						damage = (LimbDamage)CMClass.getAbility("BrokenLimbs");
 						damage.setAffectedOne(mob);
 					}
-					List<String> limbs = damage.unaffectedLimbSet();
+					final List<String> limbs = damage.unaffectedLimbSet();
 					if(limbs.size()>0)
 					{
 						if(mob.fetchEffect(damage.ID()) == null)
@@ -298,7 +297,7 @@ public class Falling extends StdAbility
 					unInvoke();
 					return true;
 				}
-				if(msg.targetMajor(CMMsg.MASK_MOVE) 
+				if(msg.targetMajor(CMMsg.MASK_MOVE)
 				&&(!hitTheCeiling)
 				&&(msg.sourceMinor()!=CMMsg.TYP_FLEE))
 				{
@@ -343,7 +342,7 @@ public class Falling extends StdAbility
 	}
 
 	@Override
-	public void setAffectedOne(Physical P)
+	public void setAffectedOne(final Physical P)
 	{
 		if(P instanceof Room)
 			room=(Room)P;
@@ -352,7 +351,7 @@ public class Falling extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical target, final boolean auto, final int asLevel)
 	{
 		if(!auto)
 			return false;
@@ -382,7 +381,7 @@ public class Falling extends StdAbility
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(code==null)
 			return;
@@ -397,9 +396,9 @@ public class Falling extends StdAbility
 		else
 			super.setStat(code, val);
 	}
-	
+
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(code==null)
 			return "";

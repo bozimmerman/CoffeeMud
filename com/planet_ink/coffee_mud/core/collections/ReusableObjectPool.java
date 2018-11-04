@@ -123,7 +123,7 @@ public class ReusableObjectPool<T extends CMObject>
 			super(V);
 		}
 
-		public NotifyingCMObjectVector(int size)
+		public NotifyingCMObjectVector(final int size)
 		{
 			super(size);
 		}

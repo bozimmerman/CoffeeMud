@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Autocrawl extends StdSkill
 {
 	@Override
@@ -67,7 +66,7 @@ public class Skill_Autocrawl extends StdSkill
 	{
 		return USAGE_MOVEMENT;
 	}
-	
+
 	@Override
 	protected int canTargetCode()
 	{
@@ -122,7 +121,7 @@ public class Skill_Autocrawl extends StdSkill
 						mob.curState().adjMovement(giveBack, mob.maxState());
 					}
 				}
-				catch (IOException e)
+				catch (final IOException e)
 				{
 				}
 				CMLib.commands().postStand(mob, true, true);
@@ -139,7 +138,7 @@ public class Skill_Autocrawl extends StdSkill
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -178,7 +177,7 @@ public class Skill_Autocrawl extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{

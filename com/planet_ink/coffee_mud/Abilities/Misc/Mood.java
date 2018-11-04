@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Mood extends StdAbility
 {
 	@Override
@@ -95,12 +94,12 @@ public class Mood extends StdAbility
 	protected int		moodCode	= -1;
 	protected Object	lastOne		= null;
 	protected CMMsg		lastMsg		= null;
-	
+
 	public static final String[] BOAST_CHANNELS=
 	{
 		"BOAST","GRATZ","ANNOUNCE","GOSSIP","OOC","CHAT"
 	};
-	
+
 	public static final String[][] MOODS={
 		/*0 */{"FORMAL","+ADJCHA 17","^Bformal","formally"},
 		/*1 */{"POLITE","+ADJCHA 13","^Bpolite","politely"},
@@ -197,7 +196,7 @@ public class Mood extends StdAbility
 			stats.addAmbiance(MOODS[moodCode][2].toLowerCase()+"^?");
 	}
 
-	private String changeSay(String msg, String to)
+	private String changeSay(final String msg, final String to)
 	{
 		if(msg==null)
 			return null;
@@ -209,15 +208,15 @@ public class Mood extends StdAbility
 			return msg.substring(0,y)+to+msg.substring(y+6);
 		return msg;
 	}
-	
-	private void changeAllSays(CMMsg msg, String to)
+
+	private void changeAllSays(final CMMsg msg, final String to)
 	{
 		msg.setSourceMessage(changeSay(msg.sourceMessage(),to));
 		msg.setTargetMessage(changeSay(msg.targetMessage(),to));
 		msg.setOthersMessage(changeSay(msg.othersMessage(),to));
 	}
 
-	public MOB target(MOB mob, Environmental target)
+	public MOB target(final MOB mob, final Environmental target)
 	{
 		if(target instanceof MOB)
 			return (MOB)target;
@@ -962,7 +961,7 @@ public class Mood extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String entered=CMParms.combine(commands,0);
 		final String origEntered=CMParms.combine(commands,0);

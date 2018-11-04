@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Articles extends ThiefSkill
 {
 	@Override
@@ -95,50 +94,50 @@ public class Thief_Articles extends ThiefSkill
 	}
 
 	protected int abilityCode = 0;
-	
+
 	@Override
 	public int abilityCode()
 	{
 		return abilityCode;
 	}
-	
+
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		this.abilityCode = newCode;
 	}
-	
+
 	@Override
 	public CMObject copyOf()
 	{
-		Thief_Articles A=(Thief_Articles)super.copyOf();
+		final Thief_Articles A=(Thief_Articles)super.copyOf();
 		A.sailor=null;
 		return A;
 	}
-	
+
 	private enum CrewType
 	{
 		GUNNER,
 		DEFENDER,
 		BOARDER
 	}
-	
+
 	protected String	shipName	= "";
 	protected CrewType	type		= CrewType.GUNNER;
 	protected Behavior	sailor		= null;
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		int x=newMiscText.indexOf(';');
+		final int x=newMiscText.indexOf(';');
 		if(x>0)
 		{
 			shipName=newMiscText.substring(0,x);
 			type=(CrewType)CMath.s_valueOf(CrewType.class, newMiscText.substring(x+1));
 		}
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -156,12 +155,12 @@ public class Thief_Articles extends ThiefSkill
 			break;
 		}
 	}
-	
+
 	public Behavior getSailor()
 	{
 		if(affected instanceof PhysicalAgent)
 		{
-			PhysicalAgent agent=(PhysicalAgent)affected;
+			final PhysicalAgent agent=(PhysicalAgent)affected;
 			if((sailor == null)||(agent.fetchBehavior("Sailor")!=sailor))
 			{
 				final Behavior B=agent.fetchBehavior("Sailor");
@@ -186,21 +185,21 @@ public class Thief_Articles extends ThiefSkill
 		}
 		return sailor;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
-		Physical affected=this.affected;
+		final Physical affected=this.affected;
 		if(affected instanceof PhysicalAgent)
 		{
-			PhysicalAgent agent=(PhysicalAgent)affected;
+			final PhysicalAgent agent=(PhysicalAgent)affected;
 			final Behavior B=agent.fetchBehavior("Sailor");
 			if(B!=null)
 				agent.delBehavior(B);
 		}
 		super.unInvoke();
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
@@ -208,13 +207,13 @@ public class Thief_Articles extends ThiefSkill
 			return false;
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting, msg);
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -223,27 +222,27 @@ public class Thief_Articles extends ThiefSkill
 		getSailor();
 		return true;
 	}
-	
+
 	protected boolean isCrew(final MOB M, final String shipName)
 	{
-		Thief_Articles articlesA=(Thief_Articles)M.fetchEffect(ID());
+		final Thief_Articles articlesA=(Thief_Articles)M.fetchEffect(ID());
 		return ((articlesA!=null)&&(articlesA.shipName.equals(shipName)));
 	}
-	
+
 	protected String getCrewShip(final MOB M)
 	{
-		Thief_Articles articlesA=(Thief_Articles)M.fetchEffect(ID());
+		final Thief_Articles articlesA=(Thief_Articles)M.fetchEffect(ID());
 		return (articlesA!=null) ? articlesA.shipName : "";
 	}
-	
+
 	protected CrewType getCrewType(final MOB M)
 	{
-		Thief_Articles articlesA=(Thief_Articles)M.fetchEffect(ID());
+		final Thief_Articles articlesA=(Thief_Articles)M.fetchEffect(ID());
 		return (articlesA!=null) ? articlesA.type : null;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -263,18 +262,18 @@ public class Thief_Articles extends ThiefSkill
 			mob.tell(L("You must be on your sailing ship."));
 			return false;
 		}
-		
+
 		if((!CMLib.law().doesHavePriviledgesHere(mob, R))
 		&&(!CMSecurity.isAllowed(mob, R, CMSecurity.SecFlag.CMDMOBS)))
 		{
 			mob.tell(L("You must be on the deck of a ship that you have privileges on."));
 			return false;
 		}
-		
+
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		
+
 		if((!target.isMonster())
 		||(CMLib.flags().isAnimalIntelligence(target))
 		||((target.getStartRoom()==null)&&(target.fetchEffect(ID())==null)))
@@ -282,13 +281,13 @@ public class Thief_Articles extends ThiefSkill
 			mob.tell(L("You can't offer the articles to @x1.",target.name(mob)));
 			return false;
 		}
-		
+
 		if(isCrew(target,myShipItem.Name()))
 		{
 			mob.tell(L("@x1 has already signed the articles.",target.name(mob)));
 			return false;
 		}
-		
+
 		boolean allowedToOfferToThem=false;
 		if(CMLib.flags().isBoundOrHeld(target))
 		{
@@ -305,11 +304,11 @@ public class Thief_Articles extends ThiefSkill
 			mob.tell(L("You can't offer @x1 the articles.",target.name()));
 			return false;
 		}
-		
+
 		int numRooms=0;
 		int numCrew=0;
 		int numDecks=0;
-		int[] numTypes=new int[CrewType.values().length];
+		final int[] numTypes=new int[CrewType.values().length];
 		for(final Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
 		{
 			final Room R2=r.nextElement();
@@ -336,15 +335,15 @@ public class Thief_Articles extends ThiefSkill
 				}
 			}
 		}
-		
-		int bonus= ( adjustedLevel(mob,asLevel) / 10);
+
+		final int bonus= ( adjustedLevel(mob,asLevel) / 10);
 		if(bonus > 0)
 		{
-			int bonusDecks = bonus / 2;
+			final int bonusDecks = bonus / 2;
 			numRooms += bonus;
 			numDecks += bonusDecks;
 		}
-		
+
 		CrewType nextType = null;
 		final int maxGunners = numDecks;
 		int maxBoarders = (numRooms-numDecks)/2;
@@ -353,13 +352,13 @@ public class Thief_Articles extends ThiefSkill
 		int maxDefenders = (numRooms-numDecks - maxBoarders);
 		if(maxDefenders<1)
 			maxDefenders=1;
-		
+
 		if(numCrew >= (maxGunners + maxBoarders + maxDefenders))
 		{
 			mob.tell(L("This ship already has the maximum crew."));
 			return false;
 		}
-		
+
 		int attempts=10000;
 		while((nextType == null)&&(--attempts>0))
 		{
@@ -383,21 +382,21 @@ public class Thief_Articles extends ThiefSkill
 				}
 			}
 		}
-		
+
 		if(nextType == null)
 		{
 			mob.tell(L("This ship already has enough crew."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final int adjustment=target.phyStats().level()-((mob.phyStats().level()+super.getXLEVELLevel(mob))/2);
-		boolean success=proficiencyCheck(mob,-adjustment,auto);
+		final boolean success=proficiencyCheck(mob,-adjustment,auto);
 		if(success)
 		{
-			String str=auto?"":L("^S<S-NAME> offer(s) <T-NAME> the articles of piracy..^?");
+			final String str=auto?"":L("^S<S-NAME> offer(s) <T-NAME> the articles of piracy..^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,CMMsg.MSG_THIEF_ACT|(auto?CMMsg.MASK_ALWAYS:0),str,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(R.okMessage(mob,msg))
 			{

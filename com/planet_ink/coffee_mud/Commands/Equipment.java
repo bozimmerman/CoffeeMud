@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Equipment extends StdCommand
 {
 	public Equipment()
@@ -49,7 +48,7 @@ public class Equipment extends StdCommand
 
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{MOB.class},{Boolean.class},{}};
 
-	public StringBuilder getEquipment(MOB seer, MOB mob, boolean allPlaces)
+	public StringBuilder getEquipment(final MOB seer, final MOB mob, final boolean allPlaces)
 	{
 		final StringBuilder msg=new StringBuilder("");
 		if(CMLib.flags().isSleeping(seer))
@@ -305,7 +304,7 @@ public class Equipment extends StdCommand
 		return msg;
 	}
 
-	private void viewEquipment(MOB mob, boolean longView)
+	private void viewEquipment(final MOB mob, final boolean longView)
 	{
 		final Session session=mob.session();
 		if(session!=null)
@@ -327,7 +326,7 @@ public class Equipment extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		viewEquipment(mob,(commands.size()>1)&&(CMParms.combine(commands,1).equalsIgnoreCase("long")));
@@ -341,7 +340,7 @@ public class Equipment extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return null;

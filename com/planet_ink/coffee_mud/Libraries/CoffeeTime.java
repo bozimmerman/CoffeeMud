@@ -47,7 +47,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	protected TimeClock	globalClock	= null;
 
 	@Override
-	public String month2MM(String monthName)
+	public String month2MM(final String monthName)
 	{
 		for(int m=0;m<MONTHS.length;m++)
 		{
@@ -63,7 +63,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String getMonthName(int number, boolean giveShort)
+	public String getMonthName(int number, final boolean giveShort)
 	{
 		if(number<=0)
 			number=1;
@@ -78,7 +78,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public long string2Millis(String dateTimeStr)
+	public long string2Millis(final String dateTimeStr)
 	{
 		final Calendar C=string2Date(dateTimeStr);
 		if(C!=null)
@@ -218,7 +218,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return true;
 	}
 
-	private void confirmDateAMPM(String TheDate, Calendar D)
+	private void confirmDateAMPM(final String TheDate, final Calendar D)
 	{
 		try
 		{
@@ -264,7 +264,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String getAMPM(String TheHour)
+	public String getAMPM(final String TheHour)
 	{
 		String Stamp;
 
@@ -277,7 +277,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String getTheIntZoneID(int theRawOffset)
+	public String getTheIntZoneID(final int theRawOffset)
 	{
 		if (theRawOffset == 0)  		// GMT 0
 			return "GMT";
@@ -341,7 +341,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String getTheTimeZone(String theID)
+	public String getTheTimeZone(final String theID)
 	{
 		if (theID.equalsIgnoreCase("CET"))
 			return "Europe/Paris";
@@ -360,21 +360,21 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String date2MonthString(long time, boolean shortName)
+	public String date2MonthString(final long time, final boolean shortName)
 	{
 		final Calendar C=makeCalendar(time);
 		return getMonthName(C.get(Calendar.MONTH)+1,shortName);
 	}
 
 	@Override
-	public String date2MonthDateString(long time, boolean shortName)
+	public String date2MonthDateString(final long time, final boolean shortName)
 	{
 		final Calendar C=makeCalendar(time);
 		return getMonthName(C.get(Calendar.MONTH)+1,shortName) + " " + C.get(Calendar.DAY_OF_MONTH);
 	}
 
 	@Override
-	public String date2DayOfMonthString(long time)
+	public String date2DayOfMonthString(final long time)
 	{
 		final Calendar C=makeCalendar(time);
 		String Day=Integer.toString(C.get(Calendar.DAY_OF_MONTH)).trim();
@@ -384,7 +384,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String twoDigits(long num)
+	public String twoDigits(final long num)
 	{
 		final String s=Long.toString(num);
 		if(s.length()==1)
@@ -393,7 +393,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String date2YYYYString(long time)
+	public String date2YYYYString(final long time)
 	{
 		final Calendar C=makeCalendar(time);
 		String Year=Integer.toString(C.get(Calendar.YEAR)).trim();
@@ -403,18 +403,18 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String date2HRString(long time)
+	public String date2HRString(final long time)
 	{
 		return date2HRString(makeCalendar(time));
 	}
 
 	@Override
-	public String date2MINString(long time)
+	public String date2MINString(final long time)
 	{
 		return date2MINString(makeCalendar(time));
 	}
 
-	public String date2HRString(Calendar C)
+	public String date2HRString(final Calendar C)
 	{
 		int IntHour = C.get(Calendar.HOUR);
 		if (IntHour==0)
@@ -426,7 +426,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return StrHour;
 	}
 
-	public String date2MINString(Calendar C)
+	public String date2MINString(final Calendar C)
 	{
 		int IntMin = C.get(Calendar.MINUTE);
 		final int remainder = IntMin % 5;
@@ -448,7 +448,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String date2ZoneString(long time)
+	public String date2ZoneString(final long time)
 	{
 		final Calendar C=makeCalendar(time);
 		TimeZone CurrentZone;
@@ -460,12 +460,12 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String date2AMPMString(long time)
+	public String date2AMPMString(final long time)
 	{
 		return date2AMPMString(makeCalendar(time));
 	}
 
-	public String date2AMPMString(Calendar C)
+	public String date2AMPMString(final Calendar C)
 	{
 		if (C.get(Calendar.AM_PM)==Calendar.PM)
 			return "PM";
@@ -474,14 +474,14 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String date2APTimeString(long time)
+	public String date2APTimeString(final long time)
 	{
 		final Calendar C=makeCalendar(time);
 		return date2HRString(C)+":"+date2MINString(C)+" "+date2AMPMString(C);
 	}
 
 	@Override
-	public String date2BriefString(long time)
+	public String date2BriefString(final long time)
 	{
 		final Calendar C=makeCalendar(time);
 		final Calendar nowC=Calendar.getInstance();
@@ -494,7 +494,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		return str.toString();
 	}
 
-	private Calendar makeCalendar(long time)
+	private Calendar makeCalendar(final long time)
 	{
 		final Calendar C=Calendar.getInstance();
 		C.setTimeInMillis(time);
@@ -502,7 +502,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String date2String(Calendar C)
+	public String date2String(final Calendar C)
 	{
 		String MINUTE=Integer.toString(C.get(Calendar.MINUTE)).trim();
 		if(MINUTE.length()==1)
@@ -529,14 +529,14 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String date2String(long time)
+	public String date2String(final long time)
 	{
 		final Calendar C=makeCalendar(time);
 		return date2String(C);
 	}
 
 	@Override
-	public String date2EllapsedTime(long time, TimeUnit minUnit, boolean shortest)
+	public String date2EllapsedTime(long time, final TimeUnit minUnit, final boolean shortest)
 	{
 		final StringBuilder str=new StringBuilder("");
 		if(time > (TimeManager.MILI_YEAR))
@@ -630,9 +630,9 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 		else
 			return t+"s";
 	}
-	
+
 	@Override
-	public String date2SmartEllapsedTime(long time, boolean shortest)
+	public String date2SmartEllapsedTime(final long time, final boolean shortest)
 	{
 		if(time > TimeManager.MILI_DAY*2)
 			return date2EllapsedTime(time,TimeUnit.DAYS,shortest);
@@ -646,7 +646,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String date2SecondsString(long time)
+	public String date2SecondsString(final long time)
 	{
 		final Calendar C=makeCalendar(time);
 		final String StrDate=date2String(C);
@@ -656,7 +656,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String date2DateString(long time)
+	public String date2DateString(final long time)
 	{
 		String T=date2String(time);
 		if(T.indexOf(' ')>0)
@@ -665,7 +665,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String date2Date2String(long time)
+	public String date2Date2String(final long time)
 	{
 		String T=date2DateString(time);
 		final int x=T.lastIndexOf('/');
@@ -674,7 +674,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public String smtpDateFormat(long time)
+	public String smtpDateFormat(final long time)
 	{
 		final Calendar senddate=makeCalendar(time);
 		String formatted = "hold";
@@ -810,7 +810,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 	}
 
 	@Override
-	public TimeClock localClock(Physical P)
+	public TimeClock localClock(final Physical P)
 	{
 		if(P instanceof Area)
 			return ((Area)P).getTimeObj();

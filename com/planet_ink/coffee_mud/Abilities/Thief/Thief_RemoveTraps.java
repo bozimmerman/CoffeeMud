@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_RemoveTraps extends ThiefSkill
 {
 	@Override
@@ -91,12 +90,12 @@ public class Thief_RemoveTraps extends ThiefSkill
 	public LinkedList<String> lastDone=new LinkedList<String>();
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return invoke(mob, commands, givenTarget, auto, asLevel, false, new Vector<Trap>(0));
 	}
-	
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, boolean quiet, List<Trap> saveTrapsHere)
+
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final boolean quiet, final List<Trap> saveTrapsHere)
 	{
 		final String whatTounlock=CMParms.combine(commands,0);
 		Physical unlockThis=null;

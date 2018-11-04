@@ -56,7 +56,7 @@ public class Prop_WearOverride extends Property
 	protected String maskDesc = "";
 	protected long	 locMaskAdj = Integer.MAX_VALUE;
 	protected volatile boolean activated = false;
-	
+
 	public String accountForYourself()
 	{
 		if(affected != null)
@@ -66,7 +66,7 @@ public class Prop_WearOverride extends Property
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		maskDesc="";
 		mask=null;
@@ -85,12 +85,12 @@ public class Prop_WearOverride extends Property
 	}
 
 	@Override
-	public void affectCharStats(MOB affectMOB, CharStats affectableStats)
+	public void affectCharStats(final MOB affectMOB, final CharStats affectableStats)
 	{
 		if(this.activated)
 			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap() & this.locMaskAdj);
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{

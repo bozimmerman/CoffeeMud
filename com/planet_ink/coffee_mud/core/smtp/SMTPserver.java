@@ -119,7 +119,7 @@ public class SMTPserver extends Thread implements Tickable
 		setDaemon(true);
 	}
 
-	public SMTPserver(MudHost a_mud)
+	public SMTPserver(final MudHost a_mud)
 	{
 		super("SMTP");
 		mud = a_mud;
@@ -225,7 +225,7 @@ public class SMTPserver extends Thread implements Tickable
 		return true;
 	}
 
-	public TreeMap<String, JournalsLibrary.SMTPJournal> parseJournalList(String journalStr)
+	public TreeMap<String, JournalsLibrary.SMTPJournal> parseJournalList(final String journalStr)
 	{
 		final TreeMap<String, JournalsLibrary.SMTPJournal> set=new TreeMap<String, JournalsLibrary.SMTPJournal>();
 		if((journalStr==null)||(journalStr.length()>0))
@@ -331,7 +331,7 @@ public class SMTPserver extends Thread implements Tickable
 		return set;
 	}
 
-	public JournalsLibrary.SMTPJournal getAJournal(String journal)
+	public JournalsLibrary.SMTPJournal getAJournal(final String journal)
 	{
 		final TreeMap<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
 		if(set==null)
@@ -339,25 +339,25 @@ public class SMTPserver extends Thread implements Tickable
 		return set.get(journal.toUpperCase().trim());
 	}
 
-	public boolean isAForwardingJournal(String journal)
+	public boolean isAForwardingJournal(final String journal)
 	{
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.forward() : false;
 	}
 
-	public boolean isASubscribeOnlyJournal(String journal)
+	public boolean isASubscribeOnlyJournal(final String journal)
 	{
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.subscribeOnly() : false;
 	}
 
-	public boolean isAKeepAllJournal(String journal)
+	public boolean isAKeepAllJournal(final String journal)
 	{
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.keepAll() : false;
 	}
 
-	public MaskingLibrary.CompiledZMask getJournalCriteria(String journal)
+	public MaskingLibrary.CompiledZMask getJournalCriteria(final String journal)
 	{
 		final JournalsLibrary.SMTPJournal jrnl=getAJournal(journal);
 		return jrnl != null ? jrnl.criteria() : null;
@@ -468,7 +468,7 @@ public class SMTPserver extends Thread implements Tickable
 
 	// sends shutdown message to both log and optional session
 	// then just calls interrupt
-	private void shutdown(Session S)
+	private void shutdown(final Session S)
 	{
 		Log.sysOut(getName(),"Shutting down.");
 		try

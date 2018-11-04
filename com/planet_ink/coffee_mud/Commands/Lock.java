@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Lock extends StdCommand
 {
 	public Lock()
@@ -47,10 +46,10 @@ public class Lock extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		final String whatTolock=CMParms.combine(commands,1);
 		if(whatTolock.length()==0)
 		{
@@ -74,7 +73,7 @@ public class Lock extends StdCommand
 			final CloseableLockable cLock=(CloseableLockable)lockThis;
 			if(cLock.hasADoor() && cLock.isOpen())
 			{
-				Command C=CMClass.getCommand("Close");
+				final Command C=CMClass.getCommand("Close");
 				if(!((Boolean)C.executeInternal(mob, metaFlags, lockThis, whatTolock, Integer.valueOf(dirCode))).booleanValue())
 					return false;
 			}
@@ -93,7 +92,7 @@ public class Lock extends StdCommand
 				{
 					if(mob.location().getExitInDir(d)==lockThis)
 					{
-						dirCode=d; 
+						dirCode=d;
 						break;
 					}
 

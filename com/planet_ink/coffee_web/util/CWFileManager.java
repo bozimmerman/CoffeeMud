@@ -24,7 +24,6 @@ import com.planet_ink.coffee_web.interfaces.FileManager;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class CWFileManager implements FileManager
 {
 
@@ -35,27 +34,27 @@ public class CWFileManager implements FileManager
 	}
 
 	@Override
-	public File createFileFromPath(String localPath)
+	public File createFileFromPath(final String localPath)
 	{
 		return new File(localPath);
 	}
 	@Override
-	public File createFileFromPath(File parent, String localPath)
+	public File createFileFromPath(final File parent, final String localPath)
 	{
 		return new File(parent, localPath);
 	}
 	@Override
-	public InputStream getFileStream(File file) throws IOException, FileNotFoundException
+	public InputStream getFileStream(final File file) throws IOException, FileNotFoundException
 	{
 		return new BufferedInputStream(new FileInputStream(file));
 	}
 	@Override
-	public RandomAccessFile getRandomAccessFile(File file) throws IOException, FileNotFoundException
+	public RandomAccessFile getRandomAccessFile(final File file) throws IOException, FileNotFoundException
 	{
 		return new RandomAccessFile(file,"r");
 	}
 	@Override
-	public byte[] readFile(File file) throws IOException, FileNotFoundException 
+	public byte[] readFile(final File file) throws IOException, FileNotFoundException
 	{
 		BufferedInputStream bs = null;
 		final byte[] fileBuf = new byte[(int)file.length()];
@@ -73,13 +72,13 @@ public class CWFileManager implements FileManager
 	}
 
 	@Override
-	public boolean supportsRandomAccess(File file)
+	public boolean supportsRandomAccess(final File file)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean allowedToReadData(File file)
+	public boolean allowedToReadData(final File file)
 	{
 		return file.exists() && file.canRead();
 	}

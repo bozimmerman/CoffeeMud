@@ -18,7 +18,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-
 public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Set<K>
 {
 	private static final long	serialVersionUID	= -6713012858869312626L;
@@ -29,12 +28,12 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		T = new HashSet<K>();
 	}
 
-	public SHashSet(int x)
+	public SHashSet(final int x)
 	{
 		T = new HashSet<K>(x);
 	}
 
-	public SHashSet(List<K> V)
+	public SHashSet(final List<K> V)
 	{
 		T = new HashSet<K>();
 		if (V != null)
@@ -44,7 +43,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		}
 	}
 
-	public SHashSet(K[] V)
+	public SHashSet(final K[] V)
 	{
 		T = new HashSet<K>();
 		if (V != null)
@@ -54,7 +53,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		}
 	}
 
-	public SHashSet(Enumeration<K> V)
+	public SHashSet(final Enumeration<K> V)
 	{
 		T = new HashSet<K>();
 		if (V != null)
@@ -64,7 +63,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		}
 	}
 
-	public SHashSet(Iterator<K> V)
+	public SHashSet(final Iterator<K> V)
 	{
 		T = new HashSet<K>();
 		if (V != null)
@@ -74,7 +73,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		}
 	}
 
-	public SHashSet(Set<K> E)
+	public SHashSet(final Set<K> E)
 	{
 		T = new HashSet<K>();
 		if (E != null)
@@ -84,7 +83,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		}
 	}
 
-	public synchronized void addAll(Enumeration<K> E)
+	public synchronized void addAll(final Enumeration<K> E)
 	{
 		if (E != null)
 		{
@@ -93,7 +92,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		}
 	}
 
-	public synchronized void addAll(Iterator<K> E)
+	public synchronized void addAll(final Iterator<K> E)
 	{
 		if (E != null)
 		{
@@ -102,7 +101,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		}
 	}
 
-	public synchronized void removeAll(Enumeration<K> E)
+	public synchronized void removeAll(final Enumeration<K> E)
 	{
 		if (E != null)
 		{
@@ -111,7 +110,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		}
 	}
 
-	public synchronized void removeAll(Iterator<K> E)
+	public synchronized void removeAll(final Iterator<K> E)
 	{
 		if (E != null)
 		{
@@ -120,7 +119,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 		}
 	}
 
-	public synchronized void removeAll(List<K> E)
+	public synchronized void removeAll(final List<K> E)
 	{
 		if (E != null)
 		{
@@ -146,13 +145,13 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized boolean add(K e)
+	public synchronized boolean add(final K e)
 	{
 		T = (HashSet<K>) T.clone();
 		return T.add(e);
 	}
 
-	public synchronized boolean addUnsafe(K e)
+	public synchronized boolean addUnsafe(final K e)
 	{
 		return T.add(e);
 	}
@@ -160,7 +159,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized boolean addAll(Collection<? extends K> c)
+	public synchronized boolean addAll(final Collection<? extends K> c)
 	{
 		T = (HashSet<K>) T.clone();
 		return T.addAll(c);
@@ -184,7 +183,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	}
 
 	@Override
-	public synchronized boolean contains(Object o)
+	public synchronized boolean contains(final Object o)
 	{
 		return T.contains(o);
 	}
@@ -204,7 +203,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized boolean remove(Object o)
+	public synchronized boolean remove(final Object o)
 	{
 		T = (HashSet<K>) T.clone();
 		return T.remove(o);
@@ -217,7 +216,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	}
 
 	@Override
-	public boolean equals(Object arg0)
+	public boolean equals(final Object arg0)
 	{
 		return this == arg0;
 	}
@@ -231,14 +230,14 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized boolean removeAll(Collection<?> arg0)
+	public synchronized boolean removeAll(final Collection<?> arg0)
 	{
 		T = (HashSet<K>) T.clone();
 		return T.removeAll(arg0);
 	}
 
 	@Override
-	public synchronized boolean containsAll(Collection<?> arg0)
+	public synchronized boolean containsAll(final Collection<?> arg0)
 	{
 		return T.containsAll(arg0);
 	}
@@ -246,7 +245,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized boolean retainAll(Collection<?> arg0)
+	public synchronized boolean retainAll(final Collection<?> arg0)
 	{
 		T = (HashSet<K>) T.clone();
 		return T.retainAll(arg0);
@@ -259,7 +258,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	}
 
 	@Override
-	public synchronized <T> T[] toArray(T[] arg0)
+	public synchronized <T> T[] toArray(final T[] arg0)
 	{
 		return T.toArray(arg0);
 	}

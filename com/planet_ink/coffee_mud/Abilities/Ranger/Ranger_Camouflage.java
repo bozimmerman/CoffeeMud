@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Ranger_Camouflage extends StdAbility
 {
 	@Override
@@ -104,7 +103,7 @@ public class Ranger_Camouflage extends StdAbility
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code=newCode;
 	}
@@ -188,12 +187,12 @@ public class Ranger_Camouflage extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final Physical target=super.getAnyTarget(mob, commands, givenTarget, new Filterer()
+		final Physical target=super.getAnyTarget(mob, commands, givenTarget, new Filterer<Environmental>()
 		{
 			@Override
-			public boolean passesFilter(Object obj) 
+			public boolean passesFilter(final Environmental obj)
 			{
 				if((obj instanceof MOB)
 				||(obj instanceof Exit))
@@ -202,7 +201,7 @@ public class Ranger_Camouflage extends StdAbility
 					return false;
 				return ((Item)obj).owner() instanceof Room;
 			}
-			
+
 		});
 		if(target==null)
 			return false;

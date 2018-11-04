@@ -33,7 +33,6 @@ import java.util.concurrent.TimeUnit;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Stat  extends Skills
 {
 	public Stat()
@@ -47,20 +46,20 @@ public class Stat  extends Skills
 		return access;
 	}
 
-	public static final int ABLETYPE_EQUIPMENT=-2;
-	public static final int ABLETYPE_INVENTORY=-3;
-	public static final int ABLETYPE_QUESTWINS=-4;
-	public static final int ABLETYPE_TATTOOS=-5;
-	public static final int ABLETYPE_COMBAT=-6;
-	public static final int ABLETYPE_SCRIPTS=-7;
-	public static final int ABLETYPE_TITLES=-8;
-	public static final int ABLETYPE_ROOMSEXPLORED=-9;
-	public static final int ABLETYPE_AREASEXPLORED=-10;
-	public static final int ABLETYPE_WORLDEXPLORED=-11;
-	public static final int ABLETYPE_FACTIONS=-12;
-	public static final int ABLETYPE_CHARSTATS=-13;
-	public static final int ABLETYPE_LEVELTIMES=-14;
-	public static final int ABLETYPE_AFFECTS=-15;
+	public static final int	ABLETYPE_EQUIPMENT		= -2;
+	public static final int	ABLETYPE_INVENTORY		= -3;
+	public static final int	ABLETYPE_QUESTWINS		= -4;
+	public static final int	ABLETYPE_TATTOOS		= -5;
+	public static final int	ABLETYPE_COMBAT			= -6;
+	public static final int	ABLETYPE_SCRIPTS		= -7;
+	public static final int	ABLETYPE_TITLES			= -8;
+	public static final int	ABLETYPE_ROOMSEXPLORED	= -9;
+	public static final int	ABLETYPE_AREASEXPLORED	= -10;
+	public static final int	ABLETYPE_WORLDEXPLORED	= -11;
+	public static final int	ABLETYPE_FACTIONS		= -12;
+	public static final int	ABLETYPE_CHARSTATS		= -13;
+	public static final int	ABLETYPE_LEVELTIMES		= -14;
+	public static final int	ABLETYPE_AFFECTS		= -15;
 
 	public static final String[][] ABLETYPE_DESCS={
 		{"EQUIPMENT","EQ","EQUIP"},
@@ -79,7 +78,7 @@ public class Stat  extends Skills
 		{"AFFECTS","EFFECTS","EFF"},
 	};
 
-	public MOB getTarget(MOB mob, String targetName, boolean quiet)
+	public MOB getTarget(final MOB mob, final String targetName, final boolean quiet)
 	{
 		MOB target=null;
 		if(targetName.length()>0)
@@ -99,9 +98,9 @@ public class Stat  extends Skills
 		return target;
 	}
 
-	public String doSenses(int senseMask)
+	public String doSenses(final int senseMask)
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		for(int i=0;i<PhyStats.CAN_SEE_DESCS.length;i++)
 		{
 			if(CMath.isSet(senseMask, i))
@@ -111,10 +110,10 @@ public class Stat  extends Skills
 			str.append("NONE");
 		return str.toString().trim();
 	}
-	
-	public String doDisposition(int dispositionMask)
+
+	public String doDisposition(final int dispositionMask)
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		for(int i=0;i<PhyStats.IS_DESCS.length;i++)
 		{
 			if(CMath.isSet(dispositionMask, i))
@@ -124,8 +123,8 @@ public class Stat  extends Skills
 			str.append("NONE");
 		return str.toString().trim();
 	}
-	
-	public boolean showTableStats(MOB mob, int days, int scale, String rest)
+
+	public boolean showTableStats(final MOB mob, final int days, final int scale, String rest)
 	{
 		final Calendar ENDQ=Calendar.getInstance();
 		ENDQ.add(Calendar.DATE,-days);
@@ -134,7 +133,7 @@ public class Stat  extends Skills
 		ENDQ.set(Calendar.SECOND,59);
 		ENDQ.set(Calendar.MILLISECOND,999);
 		CMLib.coffeeTables().update();
-		List<CoffeeTableRow> V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1,0);
+		final List<CoffeeTableRow> V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1,0);
 		if (V.size() == 0)
 		{
 			mob.tell(L("No Stats?!"));
@@ -150,7 +149,7 @@ public class Stat  extends Skills
 			final int x=rest.indexOf(' ');
 			if(x>0)
 				rest=rest.substring(x+1).trim();
-			else 
+			else
 				rest="";
 		}
 		if(rest.toUpperCase().trim().startsWith("QUEST"))
@@ -159,7 +158,7 @@ public class Stat  extends Skills
 			final int x=rest.indexOf(' ');
 			if(x>0)
 				rest=rest.substring(x+1).trim();
-			else 
+			else
 				rest="";
 		}
 		if(rest.toUpperCase().trim().startsWith("AREA"))
@@ -168,7 +167,7 @@ public class Stat  extends Skills
 			final int x=rest.indexOf(' ');
 			if(x>0)
 				rest=rest.substring(x+1).trim();
-			else 
+			else
 				rest="";
 		}
 		table.append("^xStatistics since "+CMLib.time().date2String(ENDQ.getTimeInMillis())+":^.^N\n\r\n\r");
@@ -304,7 +303,7 @@ public class Stat  extends Skills
 			Collections.sort(sortedQuests,new Comparator<Quest>()
 			{
 				@Override
-				public int compare(Quest o1, Quest o2)
+				public int compare(final Quest o1, final Quest o2)
 				{
 					return o1.name().toLowerCase().compareTo(o2.name().toLowerCase());
 				}
@@ -380,7 +379,7 @@ public class Stat  extends Skills
 			}
 			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=a.nextElement();
+				final Area A=a.nextElement();
 				if(CMLib.flags().canAccess(mob,A)&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))&&(!(A instanceof SpaceObject)))
 				{
 					code = "X"+A.Name().toUpperCase().replace(' ','_');
@@ -473,7 +472,7 @@ public class Stat  extends Skills
 		return false;
 	}
 
-	public int averageDamage(MOB M)
+	public int averageDamage(final MOB M)
 	{
 		double total=0;
 		final double num=5000;
@@ -484,7 +483,7 @@ public class Stat  extends Skills
 		return (int)Math.round(Math.floor(total / num));
 	}
 
-	protected void addCharStatsChars(CharStats cstats, int headerWidth, int numberWidth, int[] col, StringBuilder str)
+	protected void addCharStatsChars(final CharStats cstats, final int headerWidth, final int numberWidth, final int[] col, final StringBuilder str)
 	{
 		for(int i=0;i<cstats.getStatCodes().length;i++)
 		{
@@ -497,7 +496,7 @@ public class Stat  extends Skills
 		}
 	}
 
-	protected void addCharThing(int headerWidth, int numberWidth, int[] col, StringBuilder str, String title, String val)
+	protected void addCharThing(final int headerWidth, final int numberWidth, final int[] col, final StringBuilder str, final String title, final String val)
 	{
 		str.append("^y"+CMStrings.padRight(title+"^w", headerWidth));
 		str.append(" ");
@@ -506,8 +505,8 @@ public class Stat  extends Skills
 		if(col[0]==4)
 			str.append("\n\r");
 	}
-	
-	protected void addCharStatsState(CharState cstats, int headerWidth, int numberWidth, int[] col, StringBuilder str)
+
+	protected void addCharStatsState(final CharState cstats, final int headerWidth, final int numberWidth, final int[] col, final StringBuilder str)
 	{
 		for(int i=0;i<cstats.getStatCodes().length;i++)
 		{
@@ -520,7 +519,7 @@ public class Stat  extends Skills
 		}
 	}
 
-	protected MOB getMOBTarget(MOB mob, String MOBname)
+	protected MOB getMOBTarget(final MOB mob, final String MOBname)
 	{
 		MOB target=getTarget(mob,MOBname,true);
 		if(target==null)
@@ -548,8 +547,8 @@ public class Stat  extends Skills
 		}
 		return target;
 	}
-	
-	protected Item getItemTarget(MOB mob, String itemName)
+
+	protected Item getItemTarget(final MOB mob, final String itemName)
 	{
 		Item target=null;
 		//if(target == null)
@@ -600,8 +599,8 @@ public class Stat  extends Skills
 		}
 		return target;
 	}
-	
-	protected void addCharStatsPhys(PhyStats pstats, int headerWidth, int numberWidth, int[] col, StringBuilder str)
+
+	protected void addCharStatsPhys(final PhyStats pstats, final int headerWidth, final int numberWidth, final int[] col, final StringBuilder str)
 	{
 		for(int i=0;i<pstats.getStatCodes().length;i++)
 		{
@@ -631,9 +630,9 @@ public class Stat  extends Skills
 				str.append("\n\r");
 		}
 	}
-	
+
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		commands.remove(0);
@@ -641,13 +640,13 @@ public class Stat  extends Skills
 		||((commands.size()==0)&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT)))))
 		{
 			final StringBuilder msg = new StringBuilder("STAT allows the following options: \n\r");
-			for(String stat : mob.curState().getStatCodes())
+			for(final String stat : mob.curState().getStatCodes())
 				msg.append(stat).append(", ");
-			for(String stat : mob.curState().getStatCodes())
+			for(final String stat : mob.curState().getStatCodes())
 				msg.append("MAX"+stat).append(", ");
-			for(String stat : mob.charStats().getStatCodes())
+			for(final String stat : mob.charStats().getStatCodes())
 				msg.append(stat).append(", ");
-			for(String stat : mob.phyStats().getStatCodes())
+			for(final String stat : mob.phyStats().getStatCodes())
 				msg.append(stat).append(", ");
 			msg.append("STINK, XP, XPTNL, XPFNL, QUESTPOINTS, TRAINS, PRACTICES, HEALTH, RESISTS, ATTRIBUTES");
 			for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
@@ -707,7 +706,7 @@ public class Stat  extends Skills
 				if(s2.equals("YEARS")&&(CMath.isNumber(s1)))
 					return showTableStats(mob,(CMath.s_int(s1)*365),365,rest);
 			}
-	
+
 			int ableTypes=-1;
 			if(commands.size()>1)
 			{
@@ -879,9 +878,9 @@ public class Stat  extends Skills
 				if(ableTypes==ABLETYPE_CHARSTATS)
 				{
 					str.append(L("^XCurrent Character Statistics:^.^N\n\r"));
-					int[] col={0};
-					int headerWidth=CMLib.lister().fixColWidth(12, mob);
-					int numberWidth=CMLib.lister().fixColWidth(6, mob);
+					final int[] col={0};
+					final int headerWidth=CMLib.lister().fixColWidth(12, mob);
+					final int numberWidth=CMLib.lister().fixColWidth(6, mob);
 					addCharStatsChars(target.charStats(), headerWidth, numberWidth, col, str);
 					addCharStatsPhys(target.phyStats(), headerWidth, numberWidth, col, str);
 					addCharStatsState(target.curState(), headerWidth, numberWidth, col, str);
@@ -1136,8 +1135,8 @@ public class Stat  extends Skills
 			MOB M=mob;
 			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
 			{
-				String firstWord = (commands.size()> 1) ? commands.get(0) : "";
-				String restWords = (commands.size() > 1) ? CMParms.combine(commands,1) : "";
+				final String firstWord = (commands.size()> 1) ? commands.get(0) : "";
+				final String restWords = (commands.size() > 1) ? CMParms.combine(commands,1) : "";
 				MOBname = CMParms.combine(commands,0);
 				if(MOBname.equalsIgnoreCase("ROOM"))
 				{
@@ -1166,7 +1165,7 @@ public class Stat  extends Skills
 				else
 				if(firstWord.equalsIgnoreCase("ITEM"))
 				{
-					Environmental itarget=getItemTarget(mob, restWords);
+					final Environmental itarget=getItemTarget(mob, restWords);
 					if(itarget!=null)
 					{
 						for(final Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
@@ -1223,7 +1222,7 @@ public class Stat  extends Skills
 				else
 				if(firstWord.equalsIgnoreCase("AREA"))
 				{
-					Environmental itarget = CMLib.map().findArea(restWords);
+					final Environmental itarget = CMLib.map().findArea(restWords);
 					if(itarget != null)
 					{
 						final Set<Area> alsoUpdateAreas=new HashSet<Area>();
@@ -1236,7 +1235,7 @@ public class Stat  extends Skills
 				else
 				{
 					MOBname=commands.get(commands.size()-1).toString();
-					MOB target=this.getMOBTarget(mob, MOBname);
+					final MOB target=this.getMOBTarget(mob, MOBname);
 					if((target!=null)
 					&&(((target.isMonster())&&(CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDMOBS)))
 						||((target.isPlayer())&&(CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDPLAYERS)))))
@@ -1313,7 +1312,7 @@ public class Stat  extends Skills
 					}
 				}
 			}
-			
+
 			for(int i=0;i<commands.size()-1;i++)
 			{
 				if(commands.get(i).toString().toUpperCase().equals("MAX"))
@@ -1326,7 +1325,7 @@ public class Stat  extends Skills
 				commands.set(i,CMStrings.replaceAll(commands.get(i).toString()," ",""));
 			for(int i=0;i<commands.size();i++)
 			{
-				String thisStat=commands.get(i).toString().toUpperCase().trim();
+				final String thisStat=commands.get(i).toString().toUpperCase().trim();
 				boolean found=false;
 				if(thisStat.equals("XP"))
 				{
@@ -1336,7 +1335,7 @@ public class Stat  extends Skills
 				else
 				if(thisStat.equals("ATTRIBUTES"))
 				{
-					CharStats CT=mob.charStats();
+					final CharStats CT=mob.charStats();
 					for(final int stat : CharStats.CODES.BASECODES())
 						str.append(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(stat))+"("+CT.getStat(stat)).append(") ");
 					found=true;
@@ -1344,7 +1343,7 @@ public class Stat  extends Skills
 				else
 				if(thisStat.equals("RESISTS"))
 				{
-					CharStats CT=mob.charStats();
+					final CharStats CT=mob.charStats();
 					for(final int stat : CharStats.CODES.SAVING_THROWS())
 						str.append(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(stat))+"("+CT.getStat(stat)).append(") ");
 					found=true;
@@ -1352,7 +1351,7 @@ public class Stat  extends Skills
 				else
 				if(thisStat.equals("HEALTH"))
 				{
-					for(String stat : M.curState().getStatCodes())
+					for(final String stat : M.curState().getStatCodes())
 						str.append(CMStrings.capitalizeAndLower(stat)).append("(").append(M.curState().getStat(stat)).append(") ");
 					found=true;
 				}
@@ -1406,7 +1405,7 @@ public class Stat  extends Skills
 				}
 				if(!found)
 				{
-					for(String stat : M.curState().getStatCodes())
+					for(final String stat : M.curState().getStatCodes())
 					{
 						if(stat.equals(thisStat))
 						{
@@ -1423,7 +1422,7 @@ public class Stat  extends Skills
 				}
 				if((!found)&&(thisStat.startsWith("MAX")))
 				{
-					for(String stat : M.maxState().getStatCodes())
+					for(final String stat : M.maxState().getStatCodes())
 					{
 						if(stat.equals(thisStat.substring(3)))
 						{
@@ -1435,7 +1434,7 @@ public class Stat  extends Skills
 				}
 				if(!found)
 				{
-					for(String stat : M.charStats().getStatCodes())
+					for(final String stat : M.charStats().getStatCodes())
 					{
 						if(stat.equals(thisStat))
 						{
@@ -1450,7 +1449,7 @@ public class Stat  extends Skills
 				}
 				if(!found)
 				{
-					for(String stat : M.phyStats().getStatCodes())
+					for(final String stat : M.phyStats().getStatCodes())
 					{
 						if(stat.equals(thisStat))
 						{
@@ -1482,7 +1481,7 @@ public class Stat  extends Skills
 				}
 				if(!found)
 				{
-					for(String stat : M.curState().getStatCodes())
+					for(final String stat : M.curState().getStatCodes())
 					{
 						if(stat.startsWith(thisStat))
 						{
@@ -1494,7 +1493,7 @@ public class Stat  extends Skills
 				}
 				if((!found)&&(thisStat.startsWith("MAX")))
 				{
-					for(String stat : M.maxState().getStatCodes())
+					for(final String stat : M.maxState().getStatCodes())
 					{
 						if(stat.startsWith(thisStat.substring(3)))
 						{
@@ -1506,7 +1505,7 @@ public class Stat  extends Skills
 				}
 				if(!found)
 				{
-					for(String stat : M.charStats().getStatCodes())
+					for(final String stat : M.charStats().getStatCodes())
 					{
 						if(stat.startsWith(thisStat))
 						{
@@ -1521,7 +1520,7 @@ public class Stat  extends Skills
 				}
 				if(!found)
 				{
-					for(String stat : M.phyStats().getStatCodes())
+					for(final String stat : M.phyStats().getStatCodes())
 					{
 						if(stat.startsWith(thisStat))
 						{
@@ -1560,7 +1559,7 @@ public class Stat  extends Skills
 		return false;
 	}
 
-	public void recoverMOB(MOB M)
+	public void recoverMOB(final MOB M)
 	{
 		M.recoverCharStats();
 		M.recoverPhyStats();
@@ -1568,14 +1567,14 @@ public class Stat  extends Skills
 		M.resetToMaxState();
 	}
 
-	public void testMOB(MOB target,MOB M, Environmental test)
+	public void testMOB(final MOB target,final MOB M, final Environmental test)
 	{
 		test.affectCharStats(target,M.charStats());
 		test.affectPhyStats(target,M.phyStats());
 		test.affectCharState(target,M.maxState());
 	}
 
-	public void reportOnDiffMOB(String name, int diff, StringBuilder str)
+	public void reportOnDiffMOB(final String name, final int diff, final StringBuilder str)
 	{
 		if(diff>0)
 			str.append("^C"+CMStrings.padRight(name,40)+": ^W+"+diff+"\n\r");
@@ -1584,7 +1583,7 @@ public class Stat  extends Skills
 			str.append("^C"+CMStrings.padRight(name,40)+": ^W"+diff+"\n\r");
 	}
 
-	public void reportOnDiffMOB(Environmental test, int diff, StringBuilder str)
+	public void reportOnDiffMOB(final Environmental test, final int diff, final StringBuilder str)
 	{
 		reportOnDiffMOB(test.Name(),diff,str);
 	}
@@ -1596,7 +1595,7 @@ public class Stat  extends Skills
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return true;
 	}

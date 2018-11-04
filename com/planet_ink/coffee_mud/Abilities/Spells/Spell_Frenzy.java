@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Frenzy extends Spell
 {
 
@@ -94,7 +93,7 @@ public class Spell_Frenzy extends Spell
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMOB, CharState affectedMaxState)
+	public void affectCharState(final MOB affectedMOB, final CharState affectedMaxState)
 	{
 		super.affectCharState(affectedMOB,affectedMaxState);
 		if(affectedMOB!=null)
@@ -102,7 +101,7 @@ public class Spell_Frenzy extends Spell
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		if(CMath.isInteger(newText))
@@ -129,7 +128,7 @@ public class Spell_Frenzy extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

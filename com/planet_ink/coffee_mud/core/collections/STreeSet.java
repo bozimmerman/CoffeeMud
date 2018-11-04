@@ -18,7 +18,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-
 public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, NavigableSet<K>, Set<K>, SortedSet<K>
 {
 	private static final long	serialVersionUID	= -6713012858869312626L;
@@ -29,12 +28,12 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		T = new TreeSet<K>();
 	}
 
-	public STreeSet(Comparator<K> comp)
+	public STreeSet(final Comparator<K> comp)
 	{
 		T = new TreeSet<K>(comp);
 	}
 
-	public STreeSet(List<K> E)
+	public STreeSet(final List<K> E)
 	{
 		T = new TreeSet<K>();
 		if (E != null)
@@ -43,7 +42,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		}
 	}
 
-	public STreeSet(K[] E)
+	public STreeSet(final K[] E)
 	{
 		T = new TreeSet<K>();
 		if (E != null)
@@ -53,7 +52,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		}
 	}
 
-	public STreeSet(Enumeration<K> E)
+	public STreeSet(final Enumeration<K> E)
 	{
 		T = new TreeSet<K>();
 		if (E != null)
@@ -63,7 +62,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		}
 	}
 
-	public STreeSet(Iterator<K> E)
+	public STreeSet(final Iterator<K> E)
 	{
 		T = new TreeSet<K>();
 		if (E != null)
@@ -73,7 +72,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		}
 	}
 
-	public STreeSet(Set<K> E)
+	public STreeSet(final Set<K> E)
 	{
 		T = new TreeSet<K>();
 		if (E != null)
@@ -83,7 +82,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		}
 	}
 
-	public synchronized void addAll(Enumeration<K> E)
+	public synchronized void addAll(final Enumeration<K> E)
 	{
 		if (E != null)
 		{
@@ -92,7 +91,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		}
 	}
 
-	public synchronized void addAll(K[] E)
+	public synchronized void addAll(final K[] E)
 	{
 		if (E != null)
 		{
@@ -101,7 +100,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		}
 	}
 
-	public synchronized void addAll(Iterator<K> E)
+	public synchronized void addAll(final Iterator<K> E)
 	{
 		if (E != null)
 		{
@@ -110,7 +109,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		}
 	}
 
-	public synchronized void removeAll(Enumeration<K> E)
+	public synchronized void removeAll(final Enumeration<K> E)
 	{
 		if (E != null)
 		{
@@ -119,7 +118,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		}
 	}
 
-	public synchronized void removeAll(Iterator<K> E)
+	public synchronized void removeAll(final Iterator<K> E)
 	{
 		if (E != null)
 		{
@@ -128,7 +127,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		}
 	}
 
-	public synchronized void removeAll(List<K> E)
+	public synchronized void removeAll(final List<K> E)
 	{
 		if (E != null)
 		{
@@ -154,7 +153,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized boolean add(K e)
+	public synchronized boolean add(final K e)
 	{
 		T = (TreeSet<K>) T.clone();
 		return T.add(e);
@@ -163,14 +162,14 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized boolean addAll(Collection<? extends K> c)
+	public synchronized boolean addAll(final Collection<? extends K> c)
 	{
 		T = (TreeSet<K>) T.clone();
 		return T.addAll(c);
 	}
 
 	@Override
-	public synchronized K ceiling(K e)
+	public synchronized K ceiling(final K e)
 	{
 		return T.ceiling(e);
 	}
@@ -199,7 +198,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 
 	@Override
-	public synchronized boolean contains(Object o)
+	public synchronized boolean contains(final Object o)
 	{
 		return T.contains(o);
 	}
@@ -223,25 +222,25 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 
 	@Override
-	public synchronized K floor(K e)
+	public synchronized K floor(final K e)
 	{
 		return T.floor(e);
 	}
 
 	@Override
-	public synchronized NavigableSet<K> headSet(K toElement, boolean inclusive)
+	public synchronized NavigableSet<K> headSet(final K toElement, final boolean inclusive)
 	{
 		return T.headSet(toElement, inclusive);
 	}
 
 	@Override
-	public synchronized SortedSet<K> headSet(K toElement)
+	public synchronized SortedSet<K> headSet(final K toElement)
 	{
 		return T.headSet(toElement);
 	}
 
 	@Override
-	public synchronized K higher(K e)
+	public synchronized K higher(final K e)
 	{
 		return T.higher(e);
 	}
@@ -265,7 +264,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 
 	@Override
-	public synchronized K lower(K e)
+	public synchronized K lower(final K e)
 	{
 		return T.lower(e);
 	}
@@ -291,7 +290,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized boolean remove(Object o)
+	public synchronized boolean remove(final Object o)
 	{
 		T = (TreeSet<K>) T.clone();
 		return T.remove(o);
@@ -304,31 +303,31 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 
 	@Override
-	public synchronized NavigableSet<K> subSet(K fromElement, boolean fromInclusive, K toElement, boolean toInclusive)
+	public synchronized NavigableSet<K> subSet(final K fromElement, final boolean fromInclusive, final K toElement, final boolean toInclusive)
 	{
 		return T.subSet(fromElement, fromInclusive, toElement, toInclusive);
 	}
 
 	@Override
-	public synchronized SortedSet<K> subSet(K fromElement, K toElement)
+	public synchronized SortedSet<K> subSet(final K fromElement, final K toElement)
 	{
 		return T.subSet(fromElement, toElement);
 	}
 
 	@Override
-	public synchronized NavigableSet<K> tailSet(K fromElement, boolean inclusive)
+	public synchronized NavigableSet<K> tailSet(final K fromElement, final boolean inclusive)
 	{
 		return T.tailSet(fromElement, inclusive);
 	}
 
 	@Override
-	public synchronized SortedSet<K> tailSet(K fromElement)
+	public synchronized SortedSet<K> tailSet(final K fromElement)
 	{
 		return T.tailSet(fromElement);
 	}
 
 	@Override
-	public boolean equals(Object arg0)
+	public boolean equals(final Object arg0)
 	{
 		return this == arg0;
 	}
@@ -342,14 +341,14 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized boolean removeAll(Collection<?> arg0)
+	public synchronized boolean removeAll(final Collection<?> arg0)
 	{
 		T = (TreeSet<K>) T.clone();
 		return T.removeAll(arg0);
 	}
 
 	@Override
-	public synchronized boolean containsAll(Collection<?> arg0)
+	public synchronized boolean containsAll(final Collection<?> arg0)
 	{
 		return T.containsAll(arg0);
 	}
@@ -357,7 +356,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized boolean retainAll(Collection<?> arg0)
+	public synchronized boolean retainAll(final Collection<?> arg0)
 	{
 		T = (TreeSet<K>) T.clone();
 		return T.retainAll(arg0);
@@ -370,7 +369,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	}
 
 	@Override
-	public synchronized <T> T[] toArray(T[] arg0)
+	public synchronized <T> T[] toArray(final T[] arg0)
 	{
 		return T.toArray(arg0);
 	}

@@ -64,7 +64,7 @@ public class Prop_LanguageSpeaker extends Property
 	private CMClass.CMObjectType affectedType = CMClass.CMObjectType.AREA;
 
 	@Override
-	public void setMiscText(String txt)
+	public void setMiscText(final String txt)
 	{
 
 		doPlayers=CMParms.getParmBool(txt,"PLAYERS",false);
@@ -80,7 +80,7 @@ public class Prop_LanguageSpeaker extends Property
 	}
 
 	@Override
-	public void setAffectedOne(Physical P)
+	public void setAffectedOne(final Physical P)
 	{
 		affectedType = CMClass.getType(P);
 		super.setAffectedOne(P);
@@ -102,7 +102,7 @@ public class Prop_LanguageSpeaker extends Property
 		return "Forces speaking the language: "+((lang!=null)?lang.name():"?");
 	}
 
-	public void startSpeaking(MOB mob)
+	public void startSpeaking(final MOB mob)
 	{
 		final Room mobHomeRoom=mob.getStartRoom();
 		final Area mobHomeArea=((mobHomeRoom==null)?null:mobHomeRoom.getArea());

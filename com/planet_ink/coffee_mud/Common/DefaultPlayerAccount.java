@@ -132,13 +132,13 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void copyInto(PlayerAccount otherAccount)
+	public void copyInto(final PlayerAccount otherAccount)
 	{
-		for(String stat : this.getStatCodes())
+		for(final String stat : this.getStatCodes())
 			otherAccount.setStat(stat, this.getStat(stat));
 		if(otherAccount instanceof DefaultPlayerAccount)
 		{
-			DefaultPlayerAccount O = (DefaultPlayerAccount)otherAccount;
+			final DefaultPlayerAccount O = (DefaultPlayerAccount)otherAccount;
 			O.friends=friends.copyOf();
 			O.ignored=ignored.copyOf();
 			O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
@@ -164,7 +164,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 			O.bonusCharOnlineLimit= bonusCharOnlineLimit;
 		}
 	}
-	
+
 	@Override
 	public String getLastIP()
 	{
@@ -172,7 +172,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setLastIP(String ip)
+	public void setLastIP(final String ip)
 	{
 		lastIP=ip;
 	}
@@ -186,7 +186,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setEmail(String newAdd)
+	public void setEmail(final String newAdd)
 	{
 		email=newAdd;
 	}
@@ -198,7 +198,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setLastUpdated(long time)
+	public void setLastUpdated(final long time)
 	{
 		lastUpdated=time;
 	}
@@ -210,7 +210,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setLastDateTime(long C)
+	public void setLastDateTime(final long C)
 	{
 		lastDateTime=C;
 	}
@@ -222,7 +222,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setPassword(String newPassword)
+	public void setPassword(final String newPassword)
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS)
 		&&(!CMLib.encoder().isARandomHashString(newPassword)))
@@ -232,7 +232,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public boolean matchesPassword(String checkPass)
+	public boolean matchesPassword(final String checkPass)
 	{
 		return CMLib.encoder().passwordCheck(checkPass, password);
 	}
@@ -244,7 +244,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setNotes(String newnotes)
+	public void setNotes(final String newnotes)
 	{
 		notes=newnotes;
 	}
@@ -297,7 +297,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public boolean isIgnored(String name)
+	public boolean isIgnored(final String name)
 	{
 		if(name==null)
 			return false;
@@ -305,7 +305,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void bumpPrideStat(PrideStat stat, int amt)
+	public void bumpPrideStat(final PrideStat stat, final int amt)
 	{
 		final long now=System.currentTimeMillis();
 		if(stat!=null)
@@ -327,7 +327,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public int getPrideStat(TimePeriod period, PrideStat stat)
+	public int getPrideStat(final TimePeriod period, final PrideStat stat)
 	{
 		if((period==null)||(stat==null))
 			return 0;
@@ -354,7 +354,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 	}
 
-	protected String getPrivateList(Set<String> h)
+	protected String getPrivateList(final Set<String> h)
 	{
 		if((h==null)||(h.size()==0))
 			return "";
@@ -407,7 +407,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setXML(String str)
+	public void setXML(final String str)
 	{
 		final XMLLibrary xmlLib = CMLib.xml();
 		final List<XMLLibrary.XMLTag> xml = xmlLib.parseAllXML(str);
@@ -442,9 +442,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 		final String[] allTattoos=xmlLib.getValFromPieces(xml, "TATTOOS").split(",");
 		this.tattoos.clear();
-		for(String tattoo : allTattoos)
+		for(final String tattoo : allTattoos)
 			this.addTattoo(tattoo);
-		
+
 		final String[] allAccStats=xmlLib.getValFromPieces(xml, "ACCSTATS").split(";");
 		if(allAccStats.length>=7)
 		{
@@ -466,7 +466,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setAccountExpiration(long newVal)
+	public void setAccountExpiration(final long newVal)
 	{
 		accountExpiration=newVal;
 	}
@@ -478,13 +478,13 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setAccountName(String name)
+	public void setAccountName(final String name)
 	{
 		accountName = name;
 	}
 
 	@Override
-	public void addNewPlayer(MOB mob)
+	public void addNewPlayer(final MOB mob)
 	{
 		if(players.contains(mob.Name()))
 			return;
@@ -504,7 +504,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public String findPlayer(String name)
+	public String findPlayer(final String name)
 	{
 		if(name==null)
 			return null;
@@ -517,7 +517,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void delPlayer(String name)
+	public void delPlayer(final String name)
 	{
 		players.remove(name);
 		try
@@ -533,7 +533,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void delPlayer(MOB mob)
+	public void delPlayer(final MOB mob)
 	{
 		if(mob==fakePlayerM)
 			return;
@@ -653,7 +653,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setPlayerNames(List<String> names)
+	public void setPlayerNames(final List<String> names)
 	{
 		if(names != null)
 		{
@@ -674,13 +674,13 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public boolean isSet(AccountFlag flag)
+	public boolean isSet(final AccountFlag flag)
 	{
 		return acctFlags.contains(flag);
 	}
 
 	@Override
-	public void setFlag(AccountFlag flag, boolean setOrUnset)
+	public void setFlag(final AccountFlag flag, final boolean setOrUnset)
 	{
 		if(setOrUnset)
 			acctFlags.add(flag);
@@ -700,7 +700,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 			}
 		}
 	}
-	
+
 	@Override
 	public Tracker getAchievementTracker(final Achievement A, final MOB mob)
 	{
@@ -718,9 +718,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void rebuildAchievementTracker(final MOB mob, String achievementTattoo)
+	public void rebuildAchievementTracker(final MOB mob, final String achievementTattoo)
 	{
-		Achievement A=CMLib.achievements().getAchievement(achievementTattoo);
+		final Achievement A=CMLib.achievements().getAchievement(achievementTattoo);
 		if(A!=null)
 		{
 			if(achievementers.containsKey(A.getTattoo()))
@@ -731,32 +731,32 @@ public class DefaultPlayerAccount implements PlayerAccount
 		else
 			achievementers.remove(achievementTattoo);
 	}
-	
+
 	/** Manipulation of the tatoo list */
 	@Override
-	public void addTattoo(String of)
+	public void addTattoo(final String of)
 	{
 		final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
 		addTattoo(T.set(of));
 	}
 
 	@Override
-	public void addTattoo(String of, int tickDown)
+	public void addTattoo(final String of, final int tickDown)
 	{
 		final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
 		addTattoo(T.set(of,tickDown));
 	}
 
 	@Override
-	public void delTattoo(String of)
+	public void delTattoo(final String of)
 	{
 		final Tattoo T=findTattoo(of);
 		if(T!=null)
 			tattoos.remove(T);
 	}
-	
+
 	@Override
-	public void addTattoo(Tattoo of)
+	public void addTattoo(final Tattoo of)
 	{
 		if ((of == null) || (of.getTattooName() == null) || (of.getTattooName().length() == 0) || findTattoo(of.getTattooName()) != null)
 			return;
@@ -764,7 +764,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void delTattoo(Tattoo of)
+	public void delTattoo(final Tattoo of)
 	{
 		if ((of == null) || (of.getTattooName() == null) || (of.getTattooName().length() == 0))
 			return;
@@ -781,7 +781,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public Tattoo findTattoo(String of)
+	public Tattoo findTattoo(final String of)
 	{
 		if ((of == null) || (of.length() == 0))
 			return null;
@@ -789,7 +789,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public Tattoo findTattooStartsWith(String of)
+	public Tattoo findTattooStartsWith(final String of)
 	{
 		if ((of == null) || (of.length() == 0))
 			return null;
@@ -803,7 +803,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setBonusCharStatPoints(int bonus)
+	public void setBonusCharStatPoints(final int bonus)
 	{
 		this.bonusCharStatPt = bonus;
 	}
@@ -815,7 +815,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setBonusCommonSkillLimits(int bonus)
+	public void setBonusCommonSkillLimits(final int bonus)
 	{
 		this.bonusCommonSk = bonus;
 	}
@@ -827,7 +827,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setBonusCraftingSkillLimits(int bonus)
+	public void setBonusCraftingSkillLimits(final int bonus)
 	{
 		this.bonusCraftSk = bonus;
 	}
@@ -839,7 +839,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setBonusNonCraftingSkillLimits(int bonus)
+	public void setBonusNonCraftingSkillLimits(final int bonus)
 	{
 		this.bonusNonCraftSk = bonus;
 	}
@@ -851,7 +851,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setBonusLanguageLimits(int bonus)
+	public void setBonusLanguageLimits(final int bonus)
 	{
 		this.bonusLanguages = bonus;
 	}
@@ -863,7 +863,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setBonusCharsOnlineLimit(int bonus)
+	public void setBonusCharsOnlineLimit(final int bonus)
 	{
 		bonusCharOnlineLimit = bonus;
 	}
@@ -875,7 +875,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setBonusCharsLimit(int bonus)
+	public void setBonusCharsLimit(final int bonus)
 	{
 		bonusCharLimit = bonus;
 	}
@@ -886,7 +886,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 									 "BONUSCHARSTATS", "BONUSCHARLIMIT", "BONUSCHARONLINE"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -928,7 +928,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{
@@ -961,7 +961,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 7:
 		{
 			acctFlags = new SHashSet<AccountFlag>();
-			for(String s : CMParms.parseCommas(val.toUpperCase(),true))
+			for(final String s : CMParms.parseCommas(val.toUpperCase(),true))
 			{
 				final AccountFlag flag = (AccountFlag)CMath.s_valueOf(AccountFlag.class, s);
 				if(flag != null)
@@ -1031,7 +1031,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		return -1;
 	}
 
-	public boolean sameAs(PlayerAccount E)
+	public boolean sameAs(final PlayerAccount E)
 	{
 		if (!(E instanceof DefaultPlayerAccount))
 			return false;

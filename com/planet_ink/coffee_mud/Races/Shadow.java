@@ -76,8 +76,8 @@ public class Shadow extends Spirit
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
-	
-	
+
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

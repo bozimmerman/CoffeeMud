@@ -35,7 +35,6 @@ import java.util.concurrent.atomic.AtomicInteger;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_PlaneWalking extends PlanarAbility
 {
 	@Override
@@ -89,21 +88,21 @@ public class Chant_PlaneWalking extends PlanarAbility
 	{
 		return triggerStrings;
 	}
-	
+
 	@Override
-	protected String castingMessage(MOB mob, boolean auto)
+	protected String castingMessage(final MOB mob, final boolean auto)
 	{
 		return auto?L("<S-NAME> <S-IS-ARE> drawn to another plane of existence!"):L("^S<S-NAME> walks around chanting!^?");
 	}
-	
+
 	@Override
-	protected String failMessage(MOB mob, boolean auto)
+	protected String failMessage(final MOB mob, final boolean auto)
 	{
 		return L("^S<S-NAME> attempt(s) to chant, and fails.");
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!Chant.chantAlignmentCheck(this,mob,false,auto))
 			return false;

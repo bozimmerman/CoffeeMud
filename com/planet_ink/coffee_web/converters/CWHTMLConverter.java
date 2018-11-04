@@ -32,15 +32,14 @@ import com.planet_ink.coffee_web.util.CWConfig;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class CWHTMLConverter implements HTTPOutputConverter
 {
-	private static enum Macro 
-	{ 
-		HTTPSTATUS, 
-		HTTPSTATUSINFO, 
-		WEBSERVERVERSION, 
-		WEBSERVERNAME, 
+	private static enum Macro
+	{
+		HTTPSTATUS,
+		HTTPSTATUSINFO,
+		WEBSERVERVERSION,
+		WEBSERVERNAME,
 		WEBSERVERPORT,
 		STARTFILELOOP,
 		ENDFILELOOP,
@@ -57,10 +56,10 @@ public class CWHTMLConverter implements HTTPOutputConverter
 		for(final Macro m : Macro.values())
 			macros.put(m.toString().toLowerCase(), m);
 	}
-	
-	
+
+
 	/**
-	 * Standard method for converting an input buffer for writing to 
+	 * Standard method for converting an input buffer for writing to
 	 * the client.   The position and limit of the bytebuffer must
 	 * already be set for reading the content.
 	 * Call generateOutput() to get the new output.
@@ -72,7 +71,7 @@ public class CWHTMLConverter implements HTTPOutputConverter
 	 * @throws HTTPException
 	 */
 	@Override
-	public ByteBuffer convertOutput(CWConfig config, HTTPRequest request, File pageFile, HTTPStatus status, ByteBuffer buffer) throws HTTPException
+	public ByteBuffer convertOutput(final CWConfig config, final HTTPRequest request, final File pageFile, final HTTPStatus status, final ByteBuffer buffer) throws HTTPException
 	{
 		final int oldPosition=buffer.position();
 		final ByteArrayOutputStream out=new ByteArrayOutputStream();
@@ -85,7 +84,7 @@ public class CWHTMLConverter implements HTTPOutputConverter
 			Arrays.sort(files,new Comparator<File>()
 			{
 				@Override
-				public int compare(File arg0, File arg1) 
+				public int compare(final File arg0, final File arg1)
 				{
 					final boolean isDir0=arg0.isDirectory();
 					final boolean isDir1=arg1.isDirectory();
@@ -108,8 +107,8 @@ public class CWHTMLConverter implements HTTPOutputConverter
 				else
 				{
 					final Macro m = macros.get(macro.toString().toLowerCase());
-					try 
-					{ 
+					try
+					{
 						if(m != null)
 						{
 							switch(m)
@@ -134,7 +133,7 @@ public class CWHTMLConverter implements HTTPOutputConverter
 								break;
 							case WEBSERVERPORT:
 								if(request != null)
-									out.write((""+request.getClientPort()).getBytes()); 
+									out.write((""+request.getClientPort()).getBytes());
 								break;
 							case STARTFILELOOP:
 								fileLoopCounter = 0;
@@ -190,7 +189,7 @@ public class CWHTMLConverter implements HTTPOutputConverter
 							}
 						}
 						else
-							out.write(("@"+macro.toString()+"@").getBytes()); 
+							out.write(("@"+macro.toString()+"@").getBytes());
 					}
 					catch (final Exception e)
 					{

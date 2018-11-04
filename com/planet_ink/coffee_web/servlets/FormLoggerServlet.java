@@ -34,37 +34,36 @@ import com.planet_ink.coffee_web.interfaces.SimpleServletResponse;
  */
 public class FormLoggerServlet implements SimpleServlet
 {
-
 	@Override
-	public void doGet(SimpleServletRequest request, SimpleServletResponse response)
+	public void doGet(final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());
 	}
 
 	@Override
-	public void doPost(SimpleServletRequest request, SimpleServletResponse response)
+	public void doPost(final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		request.getLogger().info(" vvv-------------------- PayloadLogger ----------------------vvv");
 		request.getLogger().info("Request: "+request.getFullRequest());
-		for(String field : request.getUrlParameters())
+		for(final String field : request.getUrlParameters())
 			request.getLogger().info("Url Field \""+field+"\": "+request.getUrlParameter(field));
 		int contentLength = 0;
 		try
 		{
 			contentLength = Integer.parseInt(request.getHeader(HTTPHeader.Common.CONTENT_LENGTH.lowerCaseName()));
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 		}
 		if (contentLength > 0)
 		{
 			try {
-				Reader bodyReader = new InputStreamReader(request.getBody());
-				char[] buf = new char[contentLength];
+				final Reader bodyReader = new InputStreamReader(request.getBody());
+				final char[] buf = new char[contentLength];
 				bodyReader.read(buf);
 				request.getLogger().info("Body: "+new String(buf));
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 			}
 		}
@@ -77,7 +76,7 @@ public class FormLoggerServlet implements SimpleServlet
 	}
 
 	@Override
-	public void service(HTTPMethod method, SimpleServletRequest request, SimpleServletResponse response)
+	public void service(final HTTPMethod method, final SimpleServletRequest request, final SimpleServletResponse response)
 	{
 		if(method!=HTTPMethod.POST)
 			response.setStatusCode(HTTPStatus.S405_METHOD_NOT_ALLOWED.getStatusCode());

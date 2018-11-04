@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 /**
  * A physical object in the world that is capable of engaging in combat
  * with others.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -42,7 +42,7 @@ public interface Combatant extends PhysicalAgent
 	/**
 	 * Sets the distance between this combatant and the current combat
 	 * victim.  This method only matters if the combatant is in combat
-	 * and getCombatant() returns a non-null value.  
+	 * and getCombatant() returns a non-null value.
 	 * This method does not reciprocate by setting the range to
 	 * target of the combat target.
 	 * @see MOB#getVictim()
@@ -79,7 +79,7 @@ public interface Combatant extends PhysicalAgent
 	 * @return cardinal direction from this combatant to their target
 	 */
 	public int getDirectionToTarget();
-	
+
 	/**
 	 * Returns whether this combatant is permitted to attack the
 	 * given combatant, both this combatant and the potential target are alive,
@@ -124,7 +124,7 @@ public interface Combatant extends PhysicalAgent
 	 * @param includePlayerFollowers false to apply only to npc followers, true for npc and player
 	 */
 	public void makePeace(boolean includePlayerFollowers);
-	
+
 	/**
 	 * If this mob is in combat, this returns the mob that this mob is
 	 * targeting. If this method returns null, the mob is not in combat.
@@ -136,10 +136,10 @@ public interface Combatant extends PhysicalAgent
 	 * @return the combat target, or null for a peace state
 	 */
 	public PhysicalAgent getCombatant();
-	
+
 	/**
 	 * Sets the mob that this mob is targeting for combat, which
-	 * either puts them into, or clears their combat state. 
+	 * either puts them into, or clears their combat state.
 	 * If a null value, the mob is no longer fighting.
 	 * @see Combatant#isInCombat()
 	 * @see Combatant#getCombatant()

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_PortalOther extends Spell
 {
 
@@ -90,9 +89,9 @@ public class Spell_PortalOther extends Spell
 		}
 		super.unInvoke();
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		newRoom=null;
 
@@ -160,7 +159,7 @@ public class Spell_PortalOther extends Spell
 		int adjustment=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(target.isMonster())
 			adjustment=adjustment*3;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -191,7 +190,7 @@ public class Spell_PortalOther extends Spell
 				}
 				newRoom.rawDoors()[Directions.GATE]=mob.location();
 				newRoom.setRawExit(Directions.GATE,e2);
-				Spell_PortalOther A = (Spell_PortalOther)beneficialAffect(mob,e2,asLevel,15);
+				final Spell_PortalOther A = (Spell_PortalOther)beneficialAffect(mob,e2,asLevel,15);
 				if(A!=null)
 					A.newRoom=newRoom;
 			}

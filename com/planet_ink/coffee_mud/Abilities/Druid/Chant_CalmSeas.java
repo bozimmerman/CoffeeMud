@@ -32,7 +32,6 @@ import java.util.List;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_CalmSeas extends Chant
 {
 	@Override
@@ -74,7 +73,7 @@ public class Chant_CalmSeas extends Chant
 	}
 
 	@Override
-	public void setAbilityCode(int code)
+	public void setAbilityCode(final int code)
 	{
 		super.setAbilityCode(code);
 		eachDispelCost = code;
@@ -87,7 +86,7 @@ public class Chant_CalmSeas extends Chant
 	}
 
 	public int eachDispelCost=10;
-	
+
 	private void exactCost()
 	{
 		if(this.canBeUninvoked)
@@ -97,7 +96,7 @@ public class Chant_CalmSeas extends Chant
 				super.tickDown = 1;
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -157,7 +156,7 @@ public class Chant_CalmSeas extends Chant
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -181,7 +180,7 @@ public class Chant_CalmSeas extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((((mob.location().domainType()&Room.INDOORS)>0)||(!CMLib.flags().isWateryRoom(mob.location())))
 		&&(!auto))
@@ -214,7 +213,7 @@ public class Chant_CalmSeas extends Chant
 				A=(Chant_CalmSeas)mob.location().getArea().fetchEffect(ID());
 				if(A!=null)
 				{
-					int tickDown = A.tickDown;
+					final int tickDown = A.tickDown;
 					int numControls = adjustedLevel(mob,asLevel) / 6;
 					if(numControls < 1)
 						numControls = 1;

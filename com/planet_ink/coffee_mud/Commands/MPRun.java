@@ -49,7 +49,7 @@ public class MPRun extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.findTattoo("SYSTEM_MPRUNDOWN")!=null)
@@ -91,7 +91,7 @@ public class MPRun extends StdCommand
 		return false;
 	}
 
-	private void executeScript(MOB mob, String script)
+	private void executeScript(final MOB mob, final String script)
 	{
 		final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 		S.setSavable(false);
@@ -110,7 +110,7 @@ public class MPRun extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return true;
 	}

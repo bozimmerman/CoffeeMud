@@ -74,7 +74,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public void setAllValues(int def)
+	public void setAllValues(final int def)
 	{
 		for(int i=0;i<states.length;i++)
 			states[i]=def;
@@ -90,7 +90,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public void copyInto(CharState intoState)
+	public void copyInto(final CharState intoState)
 	{
 		if(intoState instanceof DefaultCharState)
 		{
@@ -110,13 +110,13 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public void setHitPoints(int newVal)
+	public void setHitPoints(final int newVal)
 	{
 		states[STAT_HITPOINTS]=newVal;
 	}
 
 	@Override
-	public boolean adjHitPoints(int byThisMuch, CharState max)
+	public boolean adjHitPoints(final int byThisMuch, final CharState max)
 	{
 		states[STAT_HITPOINTS]+=byThisMuch;
 		if(states[STAT_HITPOINTS]<1)
@@ -139,7 +139,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public void setFatigue(long newVal)
+	public void setFatigue(final long newVal)
 	{
 		fatigue=newVal;
 	}
@@ -163,7 +163,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public void setHunger(int newVal)
+	public void setHunger(final int newVal)
 	{
 		states[STAT_HUNGER]=newVal;
 		if(states[STAT_HUNGER]>0)
@@ -171,7 +171,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public int adjTicksHungry(boolean bumpUp)
+	public int adjTicksHungry(final boolean bumpUp)
 	{
 		if(bumpUp)
 			states[STAT_TICKSHUNGRY]++;
@@ -179,7 +179,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public boolean adjHunger(int byThisMuch, int max)
+	public boolean adjHunger(int byThisMuch, final int max)
 	{
 		if(byThisMuch>0)
 		{
@@ -189,7 +189,7 @@ public class DefaultCharState implements CharState
 		}
 		else
 			byThisMuch=(int)Math.round(CMProps.getIntVarAsPct(CMProps.Int.HUNGER_LOSS_PCT)*byThisMuch);
-			
+
 		states[STAT_HUNGER]+=byThisMuch;
 		if(states[STAT_HUNGER]<0)
 		{
@@ -207,7 +207,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public int maxHunger(int baseWeight)
+	public int maxHunger(final int baseWeight)
 	{
 		long factor=baseWeight/250;
 		if(factor==0)
@@ -225,7 +225,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public void setThirst(int newVal)
+	public void setThirst(final int newVal)
 	{
 		states[STAT_THIRST]=newVal;
 		if(states[STAT_THIRST]>0)
@@ -233,7 +233,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public int adjTicksThirsty(boolean bumpUp)
+	public int adjTicksThirsty(final boolean bumpUp)
 	{
 		if(bumpUp)
 			states[STAT_TICKSTHIRSTY]++;
@@ -241,7 +241,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public boolean adjThirst(int byThisMuch, int max)
+	public boolean adjThirst(int byThisMuch, final int max)
 	{
 		if(byThisMuch>0)
 		{
@@ -268,7 +268,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public int maxThirst(int baseWeight)
+	public int maxThirst(final int baseWeight)
 	{
 		long factor=baseWeight/250;
 		if(factor==0)
@@ -292,13 +292,13 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public void setMana(int newVal)
+	public void setMana(final int newVal)
 	{
 		states[STAT_MANA]=newVal;
 	}
 
 	@Override
-	public boolean adjMana(int byThisMuch, CharState max)
+	public boolean adjMana(final int byThisMuch, final CharState max)
 	{
 		states[STAT_MANA]+=byThisMuch;
 		if(states[STAT_MANA]<0)
@@ -321,13 +321,13 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public void setMovement(int newVal)
+	public void setMovement(final int newVal)
 	{
 		states[STAT_MOVE]=newVal;
 	}
 
 	@Override
-	public boolean adjMovement(int byThisMuch, CharState max)
+	public boolean adjMovement(final int byThisMuch, final CharState max)
 	{
 		states[STAT_MOVE]+=byThisMuch;
 		if(states[STAT_MOVE]<0)
@@ -376,7 +376,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public boolean sameAs(CharState E)
+	public boolean sameAs(final CharState E)
 	{
 		for(int i=0;i<CODES.length;i++)
 		{
@@ -387,7 +387,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{
@@ -413,7 +413,7 @@ public class DefaultCharState implements CharState
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{

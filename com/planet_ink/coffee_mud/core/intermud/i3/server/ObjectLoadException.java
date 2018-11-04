@@ -39,7 +39,7 @@ public class ObjectLoadException extends Exception
 		super();
 	}
 
-	public ObjectLoadException(String err)
+	public ObjectLoadException(final String err)
 	{
 		super(err);
 	}

@@ -29,7 +29,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Gasbreath extends Dragonbreath
 {
 	@Override
@@ -53,7 +52,7 @@ public class Gasbreath extends Dragonbreath
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(text());
 	}

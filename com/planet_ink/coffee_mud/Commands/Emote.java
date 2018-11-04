@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Emote extends StdCommand
 {
 	public Emote()
@@ -47,7 +46,7 @@ public class Emote extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final Room R=mob.location();
@@ -61,7 +60,7 @@ public class Emote extends StdCommand
 				CMLib.commands().postCommandFail(mob, commands, L(" EMOTE what?"));
 			return false;
 		}
-		
+
 		if(commands.get(0).equalsIgnoreCase(","))
 		{
 			commands.remove(0);
@@ -80,7 +79,7 @@ public class Emote extends StdCommand
 				return true;
 			}
 		}
-		
+
 		String combinedCommands=CMParms.combine(commands,1);
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.EMOTEFILTER);
 		if(combinedCommands.trim().startsWith("'")||combinedCommands.trim().startsWith("`"))
@@ -116,8 +115,8 @@ public class Emote extends StdCommand
 			}
 			x=combinedCommands.indexOf('/',x+1);
 		}
-		if(mob.isPlayer() 
-		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED) 
+		if(mob.isPlayer()
+		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED)
 		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER))
 			combinedCommands=CMLib.coffeeFilter().secondaryUserInputFilter(combinedCommands);
 		final String emote="^E<S-NAME>"+combinedCommands+" ^?";

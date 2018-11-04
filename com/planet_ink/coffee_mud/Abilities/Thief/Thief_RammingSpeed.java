@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_RammingSpeed extends ThiefSkill
 {
 	@Override
@@ -88,7 +87,7 @@ public class Thief_RammingSpeed extends ThiefSkill
 	}
 
 	protected int	code		= 0;
-	
+
 	@Override
 	public int abilityCode()
 	{
@@ -96,7 +95,7 @@ public class Thief_RammingSpeed extends ThiefSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code = newCode;
 	}
@@ -107,7 +106,7 @@ public class Thief_RammingSpeed extends ThiefSkill
 		super.affectPhyStats(affected, affectableStats);
 		affectableStats.setAbility(affectableStats.ability() + 1 + abilityCode());
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -126,7 +125,7 @@ public class Thief_RammingSpeed extends ThiefSkill
 			});
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -144,9 +143,9 @@ public class Thief_RammingSpeed extends ThiefSkill
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
 		{
@@ -156,11 +155,11 @@ public class Thief_RammingSpeed extends ThiefSkill
 
 		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
-		
+
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		
+
 		final SailingShip ship;
 		if((R.getArea() instanceof BoardableShip)
 		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
@@ -172,26 +171,26 @@ public class Thief_RammingSpeed extends ThiefSkill
 			mob.tell(L("You must be on a ship to move to ramming speed!"));
 			return false;
 		}
-		
+
 		if(ship.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("Your ship is already prepared for ramming speed!"));
 			return false;
 		}
-		
+
 		final Room shipR=CMLib.map().roomLocation(ship);
 		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!ship.subjectToWearAndTear()))
 		{
 			mob.tell(L("You must be on a sailing ship to move to ramming speed!"));
 			return false;
 		}
-		
+
 		if(!ship.isInCombat())
 		{
 			mob.tell(L("Your ship must be in combat to move to ramming speed!"));
 			return false;
 		}
-		
+
 		final int directionToTarget = ship.getDirectionToTarget();
 		final int directionFacing = ship.getDirectionFacing();
 		if(directionToTarget != directionFacing)
@@ -210,7 +209,7 @@ public class Thief_RammingSpeed extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=beneficialAffect(mob, ship, asLevel, 0);
+				final Ability A=beneficialAffect(mob, ship, asLevel, 0);
 				if(A!=null)
 					A.setAbilityCode((super.getXLEVELLevel(mob)+2) / 3);
 			}

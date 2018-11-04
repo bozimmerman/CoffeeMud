@@ -59,7 +59,7 @@ public class Unsubscribe extends StdWebMacro
 		if(unload)
 			CMLib.players().unloadOfflinePlayer(M);
 	}
-	
+
 	protected void unsubScribePlayer(final String playerName)
 	{
 		if(playerName != null)
@@ -79,9 +79,9 @@ public class Unsubscribe extends StdWebMacro
 			}
 		}
 	}
-	
+
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		final String last=httpReq.getUrlParameter("USER");
 		if(last==null)

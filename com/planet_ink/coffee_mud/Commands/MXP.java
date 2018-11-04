@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class MXP extends StdCommand
 {
 	public MXP()
@@ -47,7 +46,7 @@ public class MXP extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(!mob.isMonster())
@@ -69,7 +68,7 @@ public class MXP extends StdCommand
 					doCodeResend=false;
 				}
 			}
-			
+
 			if((!mob.isAttributeSet(MOB.Attrib.MXP))
 			||(!mob.session().getClientTelnetMode(Session.TELNET_MXP)))
 			{
@@ -113,7 +112,7 @@ public class MXP extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return super.securityCheck(mob)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP));
 	}

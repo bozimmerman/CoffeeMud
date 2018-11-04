@@ -28,7 +28,7 @@ import com.planet_ink.coffee_web.http.HTTPException;
 public interface FileCacheManager
 {
 	public static enum CompressionType {NONE, GZIP, DEFLATE}
-	
+
 	/**
 	 * The publically accessible method for getting data from a file (or
 	 * potentially from the cache.  You can also pass in a one dimensional
@@ -42,10 +42,10 @@ public interface FileCacheManager
 	 * @throws HTTPException either 304 or 404
 	 */
 	public DataBuffers getFileData(File pageFile, final String[] eTag) throws HTTPException;
-	
+
 	/**
 	 * The publically accessible method for either compressing file data, or
-	 * potentially from the cache. 
+	 * potentially from the cache.
 	 * @param pageFile the file that is being compressed
 	 * @param type the type of compression to look for
 	 * @param uncompressedBytes the uncompressed file bytes

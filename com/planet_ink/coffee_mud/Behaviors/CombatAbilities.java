@@ -85,7 +85,7 @@ public class CombatAbilities extends StdBehavior
 		return "skillful ability using";
 	}
 
-	protected void makeClass(MOB mob, String theParms, String defaultClassName)
+	protected void makeClass(final MOB mob, final String theParms, final String defaultClassName)
 	{
 		CharClass C=null;
 		if(theParms.trim().length()==0)
@@ -143,7 +143,7 @@ public class CombatAbilities extends StdBehavior
 		return CMParms.combine(V,0);
 	}
 
-	protected void newCharacter(MOB mob)
+	protected void newCharacter(final MOB mob)
 	{
 		final Set<Ability> oldAbilities=new HashSet<Ability>();
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
@@ -187,7 +187,7 @@ public class CombatAbilities extends StdBehavior
 		}
 	}
 
-	public void setCombatStats(MOB mob, int attack, int armor, int damage, int hp, int mana, int move, boolean pushDownSpeed)
+	public void setCombatStats(final MOB mob, final int attack, final int armor, final int damage, final int hp, final int mana, final int move, final boolean pushDownSpeed)
 	{
 		if(this.noCombatStat)
 			return;
@@ -198,19 +198,19 @@ public class CombatAbilities extends StdBehavior
 			if(A!=null)
 			{
 				String text="";
-				if(attack!=0) 
+				if(attack!=0)
 					text+=" ATTACK"+(attack>0?"+":"")+attack;
-				if(armor!=0) 
+				if(armor!=0)
 					text+=" ARMOR"+(armor>0?"+":"")+armor;
-				if(damage!=0) 
+				if(damage!=0)
 					text+=" DAMAGE"+(damage>0?"+":"")+damage;
-				if(hp!=0) 
+				if(hp!=0)
 					text+=" HP"+(hp>0?"+":"")+hp;
-				if(mana!=0) 
+				if(mana!=0)
 					text+=" MANA"+(mana>0?"+":"")+mana;
-				if(move!=0) 
+				if(move!=0)
 					text+=" MOVE"+(move>0?"+":"")+move;
-				if(pushDownSpeed) 
+				if(pushDownSpeed)
 					text+=" SPEED=1";
 				if(text.length()>0)
 				{
@@ -227,7 +227,7 @@ public class CombatAbilities extends StdBehavior
 		}
 	}
 
-	public void setCharStats(MOB mob)
+	public void setCharStats(final MOB mob)
 	{
 		if(this.noStat)
 			return;
@@ -270,9 +270,9 @@ public class CombatAbilities extends StdBehavior
 		}
 	}
 
-	public void adjustAggro(MOB hostM, MOB attackerM, int amt)
+	public void adjustAggro(final MOB hostM, final MOB attackerM, final int amt)
 	{
-		if(aggro==null) 
+		if(aggro==null)
 			aggro=new Hashtable<MOB,int[]>();
 		synchronized(aggro)
 		{
@@ -381,7 +381,7 @@ public class CombatAbilities extends StdBehavior
 	}
 
 	@Override
-	public void startBehavior(PhysicalAgent forMe)
+	public void startBehavior(final PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
 		skillsNever=null;
@@ -418,13 +418,13 @@ public class CombatAbilities extends StdBehavior
 				skillsAlways.add(A.ID());
 			}
 		}
-		if(skillsNever instanceof Vector) 
+		if(skillsNever instanceof Vector)
 			((Vector<?>)skillsNever).trimToSize();
-		if(skillsAlways instanceof Vector) 
+		if(skillsAlways instanceof Vector)
 			((Vector<?>)skillsAlways).trimToSize();
 	}
 
-	protected boolean isRightCombatAbilities(MOB mob)
+	protected boolean isRightCombatAbilities(final MOB mob)
 	{
 		// insures we only try this once!
 		Behavior B;
@@ -440,7 +440,7 @@ public class CombatAbilities extends StdBehavior
 		return true;
 	}
 
-	protected Ability useSkill(MOB mob, MOB victim, MOB leader) throws CMException
+	protected Ability useSkill(final MOB mob, final MOB victim, final MOB leader) throws CMException
 	{
 		int tries=0;
 		Ability tryA=null;
@@ -881,7 +881,7 @@ public class CombatAbilities extends StdBehavior
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		int x=getCodeNum(code);
 		if(x<super.getStatCodes().length)
@@ -910,7 +910,7 @@ public class CombatAbilities extends StdBehavior
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		int x=getCodeNum(code);
 		if(x<super.getStatCodes().length)

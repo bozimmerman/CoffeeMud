@@ -75,7 +75,7 @@ public class GenUndead extends GenMob
 		recoverCharStats();
 	}
 
-	public void recoverMaxState(MOB affectedMOB, CharState affectableState)
+	public void recoverMaxState(final MOB affectedMOB, final CharState affectableState)
 	{
 		super.recoverMaxState();
 		if((charStats().getMyRace()!=undeadRace)&&(undeadRace!=null))
@@ -117,7 +117,7 @@ public class GenUndead extends GenMob
 	}
 
 	@Override
-	public DeadBody killMeDead(boolean createBody)
+	public DeadBody killMeDead(final boolean createBody)
 	{
 		final DeadBody body=super.killMeDead(createBody);
 		if((createBody)&&(charStats().getMyRace()!=undeadRace)&&(body!=null)&&(undeadRace!=null))

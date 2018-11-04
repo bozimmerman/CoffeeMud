@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class SlaveTrading extends CommonSkill
 {
 	@Override
@@ -75,7 +74,7 @@ public class SlaveTrading extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		commands.add(0,"SELL");
 		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell whom to whom?");
@@ -106,7 +105,7 @@ public class SlaveTrading extends CommonSkill
 				commonTell(mob,M,null,L("You can't sell <T-NAME> as a slave.  Animals are not slaves."));
 				return false;
 			}
-			
+
 			final Ability oldEnslaveA=M.fetchEffect("Skill_Enslave");
 			if((oldEnslaveA==null)||(!oldEnslaveA.text().equals(mob.Name())))
 			{

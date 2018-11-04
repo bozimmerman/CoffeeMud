@@ -126,7 +126,7 @@ public class Trap_RoomPit extends StdTrap
 	}
 
 	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P))
 			return false;
@@ -157,7 +157,7 @@ public class Trap_RoomPit extends StdTrap
 		return super.tick(ticking,tickID);
 	}
 
-	protected synchronized void makePit(MOB target)
+	protected synchronized void makePit(final MOB target)
 	{
 		if((pit==null)||(pit.size()<2))
 		{
@@ -214,7 +214,7 @@ public class Trap_RoomPit extends StdTrap
 			sprung=false;
 	}
 
-	public void finishSpringing(MOB target)
+	public void finishSpringing(final MOB target)
 	{
 		if((!canInvokeTrapOn(invoker(),target))||(target.phyStats().weight()<5))
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) gently into the pit!"));
@@ -228,7 +228,7 @@ public class Trap_RoomPit extends StdTrap
 	}
 
 	@Override
-	public void spring(MOB target)
+	public void spring(final MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null)&&(!CMLib.flags().isInFlight(target)))
 		{

@@ -34,7 +34,6 @@ import java.util.*;
 */
 public class Spell_AstralStep extends Spell
 {
-
 	@Override
 	public String ID()
 	{
@@ -88,7 +87,7 @@ public class Spell_AstralStep extends Spell
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectedStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectedStats)
 	{
 		super.affectPhyStats(affected,affectedStats);
 		affectedStats.setDisposition(affectedStats.disposition()|PhyStats.IS_INVISIBLE);
@@ -142,9 +141,9 @@ public class Spell_AstralStep extends Spell
 		}
 		return highestLevel;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 
 		if((auto||mob.isMonster())&&((commands.size()<1)||((commands.get(0)).equals(mob.name()))))
@@ -169,8 +168,8 @@ public class Spell_AstralStep extends Spell
 			mob.tell(L("Pass which direction?!"));
 			return false;
 		}
-		List<Integer> dirs = new LinkedList<Integer>();
-		for(String dirName : commands)
+		final List<Integer> dirs = new LinkedList<Integer>();
+		for(final String dirName : commands)
 		{
 			final int dirCode=CMLib.directions().getGoodDirectionCode(dirName);
 			if(dirCode<0)
@@ -180,7 +179,7 @@ public class Spell_AstralStep extends Spell
 			}
 			dirs.add(Integer.valueOf(dirCode));
 		}
-		
+
 		final int maxDirs = 1 + super.getXLEVELLevel(mob);
 		if(dirs.size() > maxDirs)
 		{
@@ -193,15 +192,15 @@ public class Spell_AstralStep extends Spell
 			mob.tell(L("Pass which direction?!"));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		
+
 		boolean success=false;
 		for(int dirDex = 0; dirDex < dirs.size(); dirDex++)
 		{
 			final Room R=mob.location();
-			int dirCode = dirs.get(dirDex).intValue();
+			final int dirCode = dirs.get(dirDex).intValue();
 			final Exit exit=R.getExitInDir(dirCode);
 			final Room room=R.getRoomInDir(dirCode);
 
@@ -222,7 +221,7 @@ public class Spell_AstralStep extends Spell
 			}
 
 			success=proficiencyCheck(mob,adjustment,auto);
-	
+
 			if((!success)
 			||(mob.fetchEffect(ID())!=null))
 			{

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_AnimateVampire extends Prayer
 {
 	@Override
@@ -86,7 +85,7 @@ public class Prayer_AnimateVampire extends Prayer
 	{
 		return localizedDiplayText;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -110,7 +109,7 @@ public class Prayer_AnimateVampire extends Prayer
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		int tickSet = super.tickDown;
+		final int tickSet = super.tickDown;
 		if(!super.tick(ticking, tickID))
 			return false;
 		if(ticking instanceof MOB)
@@ -121,7 +120,7 @@ public class Prayer_AnimateVampire extends Prayer
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -139,7 +138,7 @@ public class Prayer_AnimateVampire extends Prayer
 		super.executeMsg(myHost,msg);
 	}
 
-	public int getUndeadLevel(final MOB mob, double baseLvl, double corpseLevel)
+	public int getUndeadLevel(final MOB mob, final double baseLvl, final double corpseLevel)
 	{
 		final ExpertiseLibrary exLib=CMLib.expertises();
 		final double deathLoreExpertiseLevel = super.getXLEVELLevel(mob);
@@ -156,9 +155,9 @@ public class Prayer_AnimateVampire extends Prayer
 			lvl = corpseLevel;
 		return (int)Math.round(lvl);
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
@@ -235,8 +234,8 @@ public class Prayer_AnimateVampire extends Prayer
 				newMOB.baseState().setMana(100);
 				Behavior B=CMClass.getBehavior("Aggressive");
 				if(B!=null)
-				{ 
-					B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>"+newMOB.basePhyStats().level()); 
+				{
+					B.setParms("+NAMES \"-"+mob.Name()+"\" -LEVEL +>"+newMOB.basePhyStats().level());
 					newMOB.addBehavior(B);
 				}
 				newMOB.recoverCharStats();

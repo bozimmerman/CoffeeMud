@@ -41,7 +41,7 @@ public class ShallowWater extends StdRoom implements Drink
 	}
 
 	protected int liquidType = RawMaterial.RESOURCE_FRESHWATER;
-	
+
 	public ShallowWater()
 	{
 		super();
@@ -70,7 +70,7 @@ public class ShallowWater extends StdRoom implements Drink
 	}
 
 	@Override
-	public void setDecayTime(long time)
+	public void setDecayTime(final long time)
 	{
 	}
 
@@ -134,23 +134,23 @@ public class ShallowWater extends StdRoom implements Drink
 	}
 
 	@Override
-	public void setLiquidType(int newLiquidType)
+	public void setLiquidType(final int newLiquidType)
 	{
 		liquidType = newLiquidType;
 	}
 
 	@Override
-	public void setThirstQuenched(int amount)
+	public void setThirstQuenched(final int amount)
 	{
 	}
 
 	@Override
-	public void setLiquidHeld(int amount)
+	public void setLiquidHeld(final int amount)
 	{
 	}
 
 	@Override
-	public void setLiquidRemaining(int amount)
+	public void setLiquidRemaining(final int amount)
 	{
 	}
 
@@ -167,7 +167,7 @@ public class ShallowWater extends StdRoom implements Drink
 	}
 
 	@Override
-	public int amountTakenToFillMe(Drink theSource)
+	public int amountTakenToFillMe(final Drink theSource)
 	{
 		return 0;
 	}

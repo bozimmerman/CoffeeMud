@@ -20,7 +20,6 @@ package com.planet_ink.fakedb;
 import java.io.*;
 import java.util.*;
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
 public class Backend
 {
 	public static enum StatementType
@@ -59,7 +58,7 @@ public class Backend
 		int					size;
 		ComparableValue[]	indexedData	= null;
 
-		RecordInfo(int o, int s)
+		RecordInfo(final int o, final int s)
 		{
 			offset = o;
 			size = s;
@@ -79,9 +78,9 @@ public class Backend
 	}
 
 	/**
-	 * 
+	 *
 	 * @author Bo Zimmerman
-	 * 
+	 *
 	 */
 	public static enum ConnectorType
 	{
@@ -89,9 +88,9 @@ public class Backend
 	}
 
 	/**
-	 * 
+	 *
 	 * @author Bo Zimmerman
-	 * 
+	 *
 	 */
 	public class FakeCondition
 	{
@@ -119,7 +118,7 @@ public class Backend
 				boolean chk = false;
 				if (lowStr.length() == 0)
 					chk = conditionValue.equals(subKey);
-				else 
+				else
 				if (subKey.equals(null) || (!(subKey.getValue() instanceof String)))
 					chk = false;
 				else
@@ -128,7 +127,7 @@ public class Backend
 					final int x = lowStr.indexOf('%');
 					if ((x < 0) || (lowStr.length() == 1))
 						chk = lowStr.equals(s);
-					else 
+					else
 					if (x == 0)
 					{
 						if (lowStr.charAt(lowStr.length() - 1) == '%')
@@ -136,7 +135,7 @@ public class Backend
 						else
 							chk = s.startsWith(lowStr.substring(1));
 					}
-					else 
+					else
 					if (lowStr.charAt(lowStr.length() - 1) == '%')
 						chk = s.endsWith(lowStr.substring(0, lowStr.length() - 1));
 					else
@@ -152,9 +151,9 @@ public class Backend
 	}
 
 	/**
-	 * 
+	 *
 	 * @author Bo Zimmerman
-	 * 
+	 *
 	 */
 	public interface FakeConditionResponder
 	{
@@ -162,15 +161,16 @@ public class Backend
 	}
 
 	/**
-	 * 
+	 *
 	 * @author Bo Zimmerman
-	 * 
+	 *
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static class ComparableValue implements Comparable
 	{
 		private Comparable	v;
 
-		public ComparableValue(Comparable v)
+		public ComparableValue(final Comparable v)
 		{
 			if (v instanceof ComparableValue)
 				this.v = ((ComparableValue) v).v;
@@ -192,7 +192,7 @@ public class Backend
 		}
 
 		@Override
-		public boolean equals(Object o)
+		public boolean equals(final Object o)
 		{
 			Object t = o;
 			if (o instanceof ComparableValue)
@@ -205,7 +205,7 @@ public class Backend
 		}
 
 		@Override
-		public int compareTo(Object o)
+		public int compareTo(final Object o)
 		{
 			Object to = o;
 			if (o instanceof ComparableValue)
@@ -221,7 +221,7 @@ public class Backend
 	}
 
 	/**
-	 * 
+	 *
 	 * @param fakeTable
 	 * @param columns
 	 * @param sqlValues
@@ -249,10 +249,10 @@ public class Backend
 		}
 		if (conditions.size() == 0)
 			return;
-		final FakeConditionResponder responder = new FakeConditionResponder() 
+		final FakeConditionResponder responder = new FakeConditionResponder()
 		{
 			@Override
-			public void callBack(ComparableValue[] values, RecordInfo info) throws Exception
+			public void callBack(final ComparableValue[] values, final RecordInfo info) throws Exception
 			{
 				throw new java.sql.SQLException("duplicate key error");
 			}
@@ -267,19 +267,20 @@ public class Backend
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	protected static class IndexedRowMapComparator implements Comparator
 	{
 		private final int		index;
 		private final boolean	descending;
 
-		public IndexedRowMapComparator(int index, boolean descending)
+		public IndexedRowMapComparator(final int index, final boolean descending)
 		{
 			this.index = index;
 			this.descending = descending;
 		}
 
 		@Override
-		public int compare(Object arg0, Object arg1)
+		public int compare(final Object arg0, final Object arg1)
 		{
 			final RecordInfo inf0 = (RecordInfo) arg0;
 			final RecordInfo inf1 = (RecordInfo) arg1;
@@ -291,9 +292,9 @@ public class Backend
 	}
 
 	/**
-	 * 
+	 *
 	 * @author Bo Zimmerman
-	 * 
+	 *
 	 */
 	protected static class IndexedRowMap
 	{
@@ -304,19 +305,20 @@ public class Backend
 		private IndexedRowMapComparator[]		reverseComparators	= null;
 		private static final List<RecordInfo>	empty				= new ArrayList<RecordInfo>(1);
 
-		public synchronized void add(RecordInfo record)
+		public synchronized void add(final RecordInfo record)
 		{
 			unsortedRecords.add(record);
 			clearSortCaches(record.indexedData.length);
 		}
 
-		public synchronized void remove(RecordInfo record)
+		public synchronized void remove(final RecordInfo record)
 		{
 			unsortedRecords.remove(record);
 			clearSortCaches(record.indexedData.length);
 		}
 
-		private void clearSortCaches(int size)
+		@SuppressWarnings("unchecked")
+		private void clearSortCaches(final int size)
 		{
 			forwardSorted = new List[size];
 			reverseSorted = new List[size];
@@ -334,7 +336,8 @@ public class Backend
 			}
 		}
 
-		public synchronized Iterator<RecordInfo> iterator(int sortIndex, boolean descending)
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public synchronized Iterator<RecordInfo> iterator(final int sortIndex, final boolean descending)
 		{
 			Iterator iter = null;
 			if (sortIndex < 0)
@@ -380,7 +383,7 @@ public class Backend
 		private int[]					columnIndexesOfIndexed;
 		private IndexedRowMap			rowRecords	= new IndexedRowMap();
 
-		FakeTable(String tableName, File name)
+		FakeTable(final String tableName, final File name)
 		{
 			this.name = tableName;
 			fileName = name;
@@ -392,11 +395,11 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @param name
 		 * @return
 		 */
-		protected int findColumn(String name)
+		protected int findColumn(final String name)
 		{
 			if ((name != null) && (columnHash.containsKey(name)))
 				return columnHash.get(name).intValue();
@@ -404,12 +407,12 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @param orderByIndexDex
 		 * @param orderByConditions
 		 * @return
 		 */
-		public Iterator<RecordInfo> indexIterator(int[] orderByIndexDex, String[] orderByConditions)
+		public Iterator<RecordInfo> indexIterator(final int[] orderByIndexDex, final String[] orderByConditions)
 		{
 			if ((orderByIndexDex == null) || (orderByIndexDex.length == 0))
 				return rowRecords.iterator(-1, false);
@@ -419,11 +422,11 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @param index
 		 * @return
 		 */
-		protected String getColumnName(int index)
+		protected String getColumnName(final int index)
 		{
 			if ((index < 0) || (index > columns.length))
 				return null;
@@ -431,11 +434,11 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @param index
 		 * @return
 		 */
-		public FakeColumn getColumnInfo(int index)
+		public FakeColumn getColumnInfo(final int index)
 		{
 			if ((index < 0) || (index > columns.length))
 				return null;
@@ -463,7 +466,7 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @throws IOException
 		 */
 		protected void open() throws IOException
@@ -489,7 +492,7 @@ public class Backend
 				{
 					skip = false;
 				}
-				else 
+				else
 				if (fileBuffer[ofs] == '*') // active
 				{
 					skip = true;
@@ -573,7 +576,7 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @throws IOException
 		 */
 		private void vacuum() throws IOException
@@ -603,12 +606,12 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @param values
 		 * @param info
 		 * @return
 		 */
-		protected synchronized boolean getRecord(ComparableValue[] values, RecordInfo info)
+		protected synchronized boolean getRecord(final ComparableValue[] values, final RecordInfo info)
 		{
 			try
 			{
@@ -633,13 +636,13 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @param colType
 		 * @param fileBuffer
 		 * @param dex
 		 * @return
 		 */
-		public ComparableValue getNextLine(int colType, byte[] fileBuffer, int[] dex)
+		public ComparableValue getNextLine(final int colType, final byte[] fileBuffer, final int[] dex)
 		{
 			if ((fileBuffer[dex[0]] == '\\') && (fileBuffer[dex[0] + 1] == '?'))
 				return new ComparableValue(null);
@@ -658,7 +661,7 @@ public class Backend
 							buffer.append('\\');
 							dex[0]++;
 						}
-						else 
+						else
 						if (fileBuffer[dex[0] + 1] == 'n')
 						{
 							buffer.append((char) 0x0A);
@@ -698,10 +701,10 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @param required
 		 */
-		private void increaseBuffer(int required)
+		private void increaseBuffer(final int required)
 		{
 			final int newSize = ((required + 4095) >>> 12) << 12;
 			final byte[] newBuffer = new byte[newSize];
@@ -710,13 +713,13 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @param prevRecord
 		 * @param indexData
 		 * @param values
 		 * @return
 		 */
-		protected synchronized boolean insertRecord(RecordInfo prevRecord, ComparableValue[] indexData, ComparableValue[] values)
+		protected synchronized boolean insertRecord(final RecordInfo prevRecord, final ComparableValue[] indexData, final ComparableValue[] values)
 		{
 			try
 			{
@@ -743,10 +746,10 @@ public class Backend
 							final char c = s.charAt(sub);
 							if (c == '\\')
 								size += 2;
-							else 
+							else
 							if (c == '\n')
 								size += 2;
-							else 
+							else
 							if (c > 255)
 								size += 5;
 							else
@@ -763,14 +766,14 @@ public class Backend
 								fileBuffer[ofs + 1] = (byte) '\\';
 								ofs += 2;
 							}
-							else 
+							else
 							if (c == '\n')
 							{
 								fileBuffer[ofs] = (byte) '\\';
 								fileBuffer[ofs + 1] = (byte) 'n';
 								ofs += 2;
 							}
-							else 
+							else
 							if (c > 255)
 							{
 								fileBuffer[ofs++] = (byte) '\\';
@@ -806,27 +809,27 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @param conditions
 		 * @return
 		 */
-		protected synchronized int deleteRecord(List<FakeCondition> conditions)
+		protected synchronized int deleteRecord(final List<FakeCondition> conditions)
 		{
 			final int[] count = { 0 };
 			try
 			{
-				final FakeConditionResponder responder = new FakeConditionResponder() 
+				final FakeConditionResponder responder = new FakeConditionResponder()
 				{
 					public int[]	count;
 
-					public FakeConditionResponder init(int[] c)
+					public FakeConditionResponder init(final int[] c)
 					{
 						count = c;
 						return this;
 					}
 
 					@Override
-					public void callBack(ComparableValue[] values, RecordInfo info) throws Exception
+					public void callBack(final ComparableValue[] values, final RecordInfo info) throws Exception
 					{
 						file.seek(info.offset);
 						file.write(new byte[] { (byte) '*' });
@@ -845,14 +848,14 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @param info
 		 * @param conditions
 		 * @param dataLoaded
 		 * @param values
 		 * @return
 		 */
-		public boolean recordCompare(RecordInfo info, List<FakeCondition> conditions, boolean[] dataLoaded, ComparableValue[] values)
+		public boolean recordCompare(final RecordInfo info, final List<FakeCondition> conditions, final boolean[] dataLoaded, final ComparableValue[] values)
 		{
 			boolean lastOne = true;
 			ConnectorType connector = ConnectorType.AND;
@@ -875,7 +878,7 @@ public class Backend
 						{
 							if (values[cond.conditionIndex] == null)
 								thisOne = false;
-							else 
+							else
 							if (cond.not)
 								thisOne = !cond.compareValue(values[cond.conditionIndex]);
 							else
@@ -893,11 +896,11 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @param conditions
 		 * @param callBack
 		 */
-		public void recordIterator(List<FakeCondition> conditions, FakeConditionResponder callBack) throws Exception
+		public void recordIterator(final List<FakeCondition> conditions, final FakeConditionResponder callBack) throws Exception
 		{
 			final boolean[] dataLoaded = new boolean[1];
 			final ComparableValue[] values = new ComparableValue[columns.length];
@@ -916,24 +919,24 @@ public class Backend
 		}
 
 		/**
-		 * 
+		 *
 		 * @param conditions
 		 * @param columns
 		 * @param values
 		 * @return
 		 */
-		protected synchronized int updateRecord(List<FakeCondition> conditions, int[] columns, ComparableValue[] values)
+		protected synchronized int updateRecord(final List<FakeCondition> conditions, final int[] columns, final ComparableValue[] values)
 		{
 			final int[] count = { 0 };
 			try
 			{
-				final FakeConditionResponder responder = new FakeConditionResponder() 
+				final FakeConditionResponder responder = new FakeConditionResponder()
 				{
 					public int[]				count;
 					public int[]				newCols;
 					public ComparableValue[]	updatedValues	= null;
 
-					public FakeConditionResponder init(int[] c, int[] a, ComparableValue[] n)
+					public FakeConditionResponder init(final int[] c, final int[] a, final ComparableValue[] n)
 					{
 						count = c;
 						newCols = a;
@@ -942,7 +945,7 @@ public class Backend
 					}
 
 					@Override
-					public void callBack(ComparableValue[] values, RecordInfo info) throws Exception
+					public void callBack(final ComparableValue[] values, final RecordInfo info) throws Exception
 					{
 						final ComparableValue[] rowIndexData = info.indexedData;
 						boolean somethingChanged = false;
@@ -979,12 +982,12 @@ public class Backend
 	}
 
 	/**
-	 * 
+	 *
 	 * @param basePath
 	 * @param schema
 	 * @throws IOException
 	 */
-	private void readSchema(File basePath, File schema) throws IOException
+	private void readSchema(final File basePath, final File schema) throws IOException
 	{
 		final BufferedReader in = new BufferedReader(new FileReader(schema));
 
@@ -1041,13 +1044,13 @@ public class Backend
 					info.name = columnName;
 					if (columnType.equals("string"))
 						info.type = FakeColumn.TYPE_STRING;
-					else 
+					else
 					if (columnType.equals("integer"))
 						info.type = FakeColumn.TYPE_INTEGER;
-					else 
+					else
 					if (columnType.equals("long"))
 						info.type = FakeColumn.TYPE_LONG;
-					else 
+					else
 					if (columnType.equals("datetime"))
 						info.type = FakeColumn.TYPE_LONG;
 					else
@@ -1056,10 +1059,10 @@ public class Backend
 					{
 						if (modifier.equals(""))
 							continue;
-						else 
+						else
 						if (modifier.equals("NULL"))
 							info.canNull = true;
-						else 
+						else
 						if (modifier.equals("KEY"))
 						{
 							info.keyNumber = keys.size();
@@ -1067,7 +1070,7 @@ public class Backend
 							info.indexNumber = indexes.size();
 							indexes.add(columnName);
 						}
-						else 
+						else
 						if (modifier.equals("INDEX"))
 						{
 							info.indexNumber = indexes.size();
@@ -1083,16 +1086,16 @@ public class Backend
 				fakeTable.columns = new FakeColumn[columns.size()];
 				fakeTable.columnHash = new Hashtable<String, Integer>();
 				int index = 0;
-				for (final Iterator iter = columns.iterator(); iter.hasNext(); ++index)
+				for (final Iterator<FakeColumn> iter = columns.iterator(); iter.hasNext(); ++index)
 				{
-					final FakeColumn current = (FakeColumn) iter.next();
+					final FakeColumn current = iter.next();
 					fakeTable.columns[index] = current;
 					fakeTable.columnHash.put(current.name, Integer.valueOf(index));
 				}
 				index = 0;
 				fakeTable.columnIndexesOfIndexed = new int[indexes.size()];
-				for (final Iterator iter = indexes.iterator(); iter.hasNext(); ++index)
-					fakeTable.columnIndexesOfIndexed[index] = fakeTable.findColumn((String) iter.next());
+				for (final Iterator<String> iter = indexes.iterator(); iter.hasNext(); ++index)
+					fakeTable.columnIndexesOfIndexed[index] = fakeTable.findColumn(iter.next());
 
 				fakeTable.open();
 				fakeTables.put(fakeTableName, fakeTable);
@@ -1105,11 +1108,11 @@ public class Backend
 	}
 
 	/**
-	 * 
+	 *
 	 * @param basePath
 	 * @return
 	 */
-	protected boolean open(File basePath)
+	protected boolean open(final File basePath)
 	{
 		try
 		{
@@ -1124,7 +1127,7 @@ public class Backend
 	}
 
 	/**
-	 * 
+	 *
 	 * @param s
 	 * @param tableName
 	 * @param cols
@@ -1205,7 +1208,7 @@ public class Backend
 
 	/**
 	 * For prepared statements, an abstract way into things
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 */
 	public static abstract class ImplAbstractStatement
@@ -1221,7 +1224,7 @@ public class Backend
 
 	/**
 	 * Parameters to execute an insert statement
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 */
 	public static class ImplInsertStatement extends ImplAbstractStatement
@@ -1266,7 +1269,7 @@ public class Backend
 
 	/**
 	 * Parameters to execute an update statement
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 */
 	public static class ImplUpdateStatement extends ImplAbstractStatement
@@ -1313,7 +1316,7 @@ public class Backend
 
 	/**
 	 * Parameters to execute an select statement
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 */
 	public static class ImplSelectStatement extends ImplAbstractStatement
@@ -1363,7 +1366,7 @@ public class Backend
 
 	/**
 	 * Parameters to execute an delete statement
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 */
 	public static class ImplDeleteStatement extends ImplAbstractStatement
@@ -1404,7 +1407,7 @@ public class Backend
 	}
 
 	/**
-	 * 
+	 *
 	 * @param tableName
 	 * @param columns
 	 * @param dataValues
@@ -1466,7 +1469,7 @@ public class Backend
 	}
 
 	/**
-	 * 
+	 *
 	 * @param tableName
 	 * @param conditionVar
 	 * @param conditionValue
@@ -1482,7 +1485,7 @@ public class Backend
 	}
 
 	/**
-	 * 
+	 *
 	 * @param tableName
 	 * @param conditionVar
 	 * @param conditionValue
@@ -1539,7 +1542,7 @@ public class Backend
 	}
 
 	/**
-	 * 
+	 *
 	 * @param tableName
 	 * @param columnName
 	 * @param comparitor
@@ -1547,7 +1550,7 @@ public class Backend
 	 * @return
 	 * @throws java.sql.SQLException
 	 */
-	public FakeCondition buildFakeCondition(String tableName, String columnName, String comparitor, String value, boolean unPrepared) throws java.sql.SQLException
+	public FakeCondition buildFakeCondition(final String tableName, final String columnName, final String comparitor, final String value, final boolean unPrepared) throws java.sql.SQLException
 	{
 		final FakeTable fakeTable = fakeTables.get(tableName);
 		if (fakeTable == null)

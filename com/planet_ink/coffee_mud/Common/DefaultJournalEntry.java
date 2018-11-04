@@ -53,7 +53,7 @@ public class DefaultJournalEntry implements JournalEntry
 	public int			views				= 0;
 	public boolean		isLastEntry			= false;
 	public StringBuffer	derivedBuildMessage	= null;
-	
+
 	@Override
 	public String ID()
 	{
@@ -99,7 +99,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry key(String key)
+	public JournalEntry key(final String key)
 	{
 		this.key = key;
 		return this;
@@ -112,7 +112,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry from(String from)
+	public JournalEntry from(final String from)
 	{
 		this.from = from;
 		return this;
@@ -125,7 +125,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry to(String to)
+	public JournalEntry to(final String to)
 	{
 		this.to = to;
 		return this;
@@ -138,7 +138,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry subj(String subj)
+	public JournalEntry subj(final String subj)
 	{
 		this.subj = subj;
 		return this;
@@ -151,7 +151,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry msg(String msg)
+	public JournalEntry msg(final String msg)
 	{
 		this.msg = msg;
 		return this;
@@ -164,7 +164,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry date(long date)
+	public JournalEntry date(final long date)
 	{
 		this.date = date;
 		return this;
@@ -177,7 +177,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry update(long update)
+	public JournalEntry update(final long update)
 	{
 		this.update = update;
 		return this;
@@ -190,7 +190,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry parent(String parent)
+	public JournalEntry parent(final String parent)
 	{
 		this.parent = parent;
 		return this;
@@ -203,7 +203,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry attributes(long attributes)
+	public JournalEntry attributes(final long attributes)
 	{
 		this.attributes = attributes;
 		return this;
@@ -216,7 +216,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry data(String data)
+	public JournalEntry data(final String data)
 	{
 		this.data = data;
 		return this;
@@ -229,7 +229,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry cardinal(int cardinal)
+	public JournalEntry cardinal(final int cardinal)
 	{
 		this.cardinal = cardinal;
 		return this;
@@ -242,7 +242,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry msgIcon(String msgIcon)
+	public JournalEntry msgIcon(final String msgIcon)
 	{
 		this.msgIcon = msgIcon;
 		return this;
@@ -255,7 +255,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry replies(int replies)
+	public JournalEntry replies(final int replies)
 	{
 		this.replies = replies;
 		return this;
@@ -268,7 +268,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry views(int views)
+	public JournalEntry views(final int views)
 	{
 		this.views = views;
 		return this;
@@ -281,7 +281,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry lastEntry(boolean lastEntry)
+	public JournalEntry lastEntry(final boolean lastEntry)
 	{
 		this.isLastEntry = lastEntry;
 		return this;
@@ -294,14 +294,14 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public JournalEntry derivedBuildMessage(StringBuffer msg)
+	public JournalEntry derivedBuildMessage(final StringBuffer msg)
 	{
 		this.derivedBuildMessage = msg;
 		return this;
 	}
-	
+
 	@Override
-	public int compareTo(JournalEntry o)
+	public int compareTo(final JournalEntry o)
 	{
 		if(date < o.date())
 			return -1;
@@ -309,7 +309,7 @@ public class DefaultJournalEntry implements JournalEntry
 			return 1;
 		return 0;
 	}
-	
+
 	@Override
 	public JournalEntry copyOf()
 	{

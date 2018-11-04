@@ -22,13 +22,13 @@ import com.planet_ink.coffee_mud.core.CMParms;
 public class MultiList<T> implements List<T>
 {
 	private final Vector<List<T>> collections = new Vector<List<T>>();
-	
+
 	public MultiList(final List<T>... colls)
 	{
 		super();
 		if(colls==null)
 			return;
-		for(List<T> list : colls)
+		for(final List<T> list : colls)
 			collections.add(list);
 		collections.trimToSize();
 	}
@@ -39,7 +39,7 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public boolean add(T arg0) 
+	public boolean add(final T arg0)
 	{
 		if(collections.size()>0)
 		{
@@ -48,14 +48,14 @@ public class MultiList<T> implements List<T>
 				final List<T> coll=collections.get(collections.size()-1);
 				return coll.add(arg0);
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 		}
 		return false;
 	}
 
-	public boolean addAll(final List<T> arg0) 
+	public boolean addAll(final List<T> arg0)
 	{
 		collections.add(arg0);
 		collections.trimToSize();
@@ -63,13 +63,13 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public void clear() 
+	public void clear()
 	{
 		collections.clear();
 	}
 
 	@Override
-	public boolean contains(Object arg0) 
+	public boolean contains(final Object arg0)
 	{
 		if(collections.size()>0)
 		{
@@ -81,7 +81,7 @@ public class MultiList<T> implements List<T>
 						return true;
 				}
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 		}
@@ -89,7 +89,7 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0) 
+	public boolean containsAll(final Collection<?> arg0)
 	{
 		for(final Object arg : arg0)
 		{
@@ -100,7 +100,7 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public boolean isEmpty() 
+	public boolean isEmpty()
 	{
 		if(collections.size()>0)
 		{
@@ -112,7 +112,7 @@ public class MultiList<T> implements List<T>
 						return false;
 				}
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 		}
@@ -120,13 +120,13 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public Iterator<T> iterator() 
+	public Iterator<T> iterator()
 	{
 		return new MultiIterable<T>(collections,size()).iterator();
 	}
 
 	@Override
-	public boolean remove(Object arg0) 
+	public boolean remove(final Object arg0)
 	{
 		if(collections.size()>0)
 		{
@@ -138,7 +138,7 @@ public class MultiList<T> implements List<T>
 						return true;
 				}
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 		}
@@ -146,7 +146,7 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> arg0) 
+	public boolean removeAll(final Collection<?> arg0)
 	{
 		if(collections.size()>0)
 		{
@@ -156,7 +156,7 @@ public class MultiList<T> implements List<T>
 				for(int c=0;c<collections.size();c++)
 					returnable = collections.get(c).removeAll(arg0) || returnable;
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 			return returnable;
@@ -165,18 +165,18 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public boolean addAll(int index, Collection<? extends T> arg0)
+	public boolean addAll(final int index, final Collection<? extends T> arg0)
 	{
 		if(collections.size()>0)
 		{
-			for(Object o : arg0)
+			for(final Object o : arg0)
 				this.add(index,(T)o);
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean retainAll(Collection<?> arg0) 
+	public boolean retainAll(final Collection<?> arg0)
 	{
 		if(collections.size()>0)
 		{
@@ -186,7 +186,7 @@ public class MultiList<T> implements List<T>
 				for(int c=0;c<collections.size();c++)
 					returnable = collections.get(c).retainAll(arg0) || returnable;
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 			return returnable;
@@ -195,7 +195,7 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public int size() 
+	public int size()
 	{
 		int total=0;
 		if(collections.size()>0)
@@ -205,7 +205,7 @@ public class MultiList<T> implements List<T>
 				for(int c=0;c<collections.size();c++)
 					total += collections.get(c).size();
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 		}
@@ -213,7 +213,7 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public Object[] toArray() 
+	public Object[] toArray()
 	{
 		final Object[][] arrays=new Object[collections.size()][];
 		try
@@ -221,7 +221,7 @@ public class MultiList<T> implements List<T>
 			for(int c=0;c<collections.size();c++)
 				arrays[c]=collections.get(c).toArray();
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 		}
 		return CMParms.combine(arrays);
@@ -230,19 +230,19 @@ public class MultiList<T> implements List<T>
 	@SuppressWarnings("hiding")
 
 	@Override
-	public <T> T[] toArray(T[] arg0) 
+	public <T> T[] toArray(T[] arg0)
 	{
 		final Object[] objs=toArray();
 		if(arg0.length<objs.length)
 			arg0=Arrays.copyOf(arg0, objs.length);
 		int i=0;
-		for(Object o : objs)
+		for(final Object o : objs)
 			arg0[i++]=(T)o;
 		return arg0;
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends T> c)
+	public boolean addAll(final Collection<? extends T> c)
 	{
 		if(c instanceof List)
 			collections.add((List<T>)c);
@@ -255,7 +255,7 @@ public class MultiList<T> implements List<T>
 	@Override
 	public T get(int index)
 	{
-		for(List<T> list : collections)
+		for(final List<T> list : collections)
 		{
 			if(index < list.size())
 				return list.get(index);
@@ -265,9 +265,9 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public T set(int index, T element)
+	public T set(int index, final T element)
 	{
-		for(List<T> list : collections)
+		for(final List<T> list : collections)
 		{
 			if(index < list.size())
 				return list.set(index,element);
@@ -277,7 +277,7 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public void add(int index, T element)
+	public void add(int index, final T element)
 	{
 		if(collections.size()==0)
 			collections.add(new Vector<T>());
@@ -296,7 +296,7 @@ public class MultiList<T> implements List<T>
 				list.add(element);
 				return;
 			}
-			
+
 			index -= list.size();
 		}
 	}
@@ -304,7 +304,7 @@ public class MultiList<T> implements List<T>
 	@Override
 	public T remove(int index)
 	{
-		for(List<T> list : collections)
+		for(final List<T> list : collections)
 		{
 			if(index < list.size())
 				return list.remove(index);
@@ -314,12 +314,12 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public int indexOf(Object o)
+	public int indexOf(final Object o)
 	{
 		int indexBase = 0;
-		for(List<T> list : collections)
+		for(final List<T> list : collections)
 		{
-			int x=list.indexOf(o);
+			final int x=list.indexOf(o);
 			if(x>=0)
 				return indexBase+x;
 			indexBase += list.size();
@@ -328,14 +328,14 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public int lastIndexOf(Object o)
+	public int lastIndexOf(final Object o)
 	{
 		int indexBase = size();
 		for(int x=collections.size()-1;x>=0;x--)
 		{
 			final List<T> list = collections.get(x);
 			indexBase -= list.size();
-			int y=list.lastIndexOf(o);
+			final int y=list.lastIndexOf(o);
 			if(y>=0)
 				return indexBase+y;
 		}
@@ -349,18 +349,18 @@ public class MultiList<T> implements List<T>
 	}
 
 	@Override
-	public ListIterator<T> listIterator(int index)
+	public ListIterator<T> listIterator(final int index)
 	{
-		ListIterator<T> iter=listIterator();
+		final ListIterator<T> iter=listIterator();
 		while(iter.nextIndex() < index)
 			iter.next();
 		return iter;
 	}
 
 	@Override
-	public List<T> subList(int fromIndex, int toIndex)
+	public List<T> subList(final int fromIndex, final int toIndex)
 	{
-		
+
 		// TODO Auto-generated method stub
 		return null;
 	}

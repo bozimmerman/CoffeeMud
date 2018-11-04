@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class AnimalBonding extends CommonSkill
 {
 	@Override
@@ -73,7 +72,7 @@ public class AnimalBonding extends CommonSkill
 		displayText=L("You are bonding...");
 		verb=L("bonding");
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -113,7 +112,7 @@ public class AnimalBonding extends CommonSkill
 				final MOB mob=(MOB)affected;
 				if((bonding!=null)&&(!aborted))
 				{
-					MOB animal=bonding;
+					final MOB animal=bonding;
 					if((messedUp)||(animal==null))
 						commonTell(mob,L("You've failed to bond with @x1!",bonding.name()));
 					else
@@ -122,7 +121,7 @@ public class AnimalBonding extends CommonSkill
 							commonTell(mob,L("@x1 is already bond.",bonding.name()));
 						else
 						{
-							AnimalBonding bonding=(AnimalBonding)this.copyOf();
+							final AnimalBonding bonding=(AnimalBonding)this.copyOf();
 							bonding.setMiscText(mob.Name());
 							bonding.canBeUninvoked = false;
 							animal.addNonUninvokableEffect(bonding);
@@ -134,7 +133,7 @@ public class AnimalBonding extends CommonSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -155,7 +154,7 @@ public class AnimalBonding extends CommonSkill
 			&&(msg.targetMinor()==CMMsg.TYP_ORDER)
 			&&(msg.source().Name().equals(text())))
 			{
-				Language L=CMLib.utensils().getLanguageSpoken(affected);
+				final Language L=CMLib.utensils().getLanguageSpoken(affected);
 				if((L!=null)&&(msg.tool()!=L))
 					msg.setTool(L);
 			}
@@ -164,14 +163,14 @@ public class AnimalBonding extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 		verb=L("bonding");
 		bonding=null;
 		final String str=CMParms.combine(commands,0);
-		MOB M=super.getTarget(mob, commands, givenTarget);
+		final MOB M=super.getTarget(mob, commands, givenTarget);
 		if(M==null)
 			return false;
 		bonding=null;

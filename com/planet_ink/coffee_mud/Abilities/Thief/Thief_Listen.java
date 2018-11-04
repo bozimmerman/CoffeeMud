@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Listen extends ThiefSkill
 {
 	@Override
@@ -85,18 +84,18 @@ public class Thief_Listen extends ThiefSkill
 	protected Room				room		= null;
 	protected String			lastSaid	= "";
 	protected Set<ListenFlag>	flags		= new TreeSet<ListenFlag>(Arrays.asList(new ListenFlag[] { ListenFlag.INDOORS }));
-	
+
 	@Override
 	public CMObject copyOf()
 	{
-		Thief_Listen A=(Thief_Listen)super.copyOf();
+		final Thief_Listen A=(Thief_Listen)super.copyOf();
 		A.sourceRoom=null;
 		A.room=null;
 		A.lastSaid="";
 		A.flags= new TreeSet<ListenFlag>(Arrays.asList(new ListenFlag[] { ListenFlag.INDOORS }));
 		return A;
 	}
-	
+
 	protected enum ListenFlag
 	{
 		INDOORS,
@@ -122,7 +121,7 @@ public class Thief_Listen extends ThiefSkill
 		return mrInvisible;
 	}
 
-	protected Environmental[] makeTalkers(MOB s, Environmental p, Environmental t)
+	protected Environmental[] makeTalkers(final MOB s, final Environmental p, final Environmental t)
 	{
 		final Environmental[] Ms=new Environmental[]{s,p,t};
 		Ms[0]=getInvisibleMOB();
@@ -156,7 +155,7 @@ public class Thief_Listen extends ThiefSkill
 		return Ms;
 	}
 
-	public void cleanTalkers(Environmental[] Ps)
+	public void cleanTalkers(final Environmental[] Ps)
 	{
 		for(final Environmental P : Ps)
 		{
@@ -226,7 +225,7 @@ public class Thief_Listen extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final String whom=CMParms.combine(commands,0);
 		final int dirCode=CMLib.directions().getGoodDirectionCode(whom);
@@ -259,7 +258,7 @@ public class Thief_Listen extends ThiefSkill
 			||(((room.domainType()&Room.INDOORS)==0)&&(!CMLib.flags().isUnderWateryRoom(room))&&(!flags.contains(ListenFlag.OUTDOORS))))
 			{
 				final List<String> lst=new ArrayList<String>();
-				for(ListenFlag flag : flags)
+				for(final ListenFlag flag : flags)
 					lst.add(flag.name().toLowerCase());
 				mob.tell(L("You can only listen "+CMLib.english().toEnglishStringList(lst) +".")); // no further L necc
 				return false;
@@ -294,7 +293,7 @@ public class Thief_Listen extends ThiefSkill
 					mob.tell(L("You definitely hear @x1 creature(s).",""+numberHeard));
 					if(proficiency()>((room==mob.location())?50:75))
 					{
-						Thief_Listen A=(Thief_Listen)beneficialAffect(mob,room,asLevel,0);
+						final Thief_Listen A=(Thief_Listen)beneficialAffect(mob,room,asLevel,0);
 						if(A!=null)
 						{
 							A.sourceRoom=mob.location();

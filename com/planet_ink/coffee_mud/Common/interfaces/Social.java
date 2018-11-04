@@ -39,7 +39,6 @@ import java.util.List;
 
 public interface Social extends Environmental, CMCommon
 {
-
 	/**
 	 * Base name is the name of the social's command word.  It is NOT unique to a social
 	 * object however, since a socials name usually includes its target extension.
@@ -49,8 +48,8 @@ public interface Social extends Environmental, CMCommon
 	public String baseName();
 
 	/**
-	 * Tail name is the full remainder of the social's target AND optional argument(s).  
-	 * It is NOT unique to a social object however, since a socials name usually 
+	 * Tail name is the full remainder of the social's target AND optional argument(s).
+	 * It is NOT unique to a social object however, since a socials name usually
 	 * includes its target extension.
 	 *
 	 * @return the full tail name
@@ -58,8 +57,8 @@ public interface Social extends Environmental, CMCommon
 	public String tailName();
 
 	/**
-	 * Target name is the social's target argument only, such as <T-NAME>.  
-	 * It is NOT unique to a social object however, since a socials name usually 
+	 * Target name is the social's target argument only, such as <T-NAME>.
+	 * It is NOT unique to a social object however, since a socials name usually
 	 * includes their target extension.
 	 *
 	 * @return the target name, if any
@@ -67,7 +66,7 @@ public interface Social extends Environmental, CMCommon
 	public String targetName();
 
 	/**
-	 * Returns whether targetName is an -NAME> code, meaning it is targettable 
+	 * Returns whether targetName is an -NAME> code, meaning it is targettable
 	 * at a person or mob or something.
 	 *
 	 * @return true if this social is targetable at someone other than the user
@@ -77,8 +76,8 @@ public interface Social extends Environmental, CMCommon
 	/**
 	 * Argument name is the social's optional remaining argument.  This requires
 	 * that the social be targetable, and further specifies something about the
-	 * target, or a qualifier.  
-	 * It is NOT unique to a social object however, since a socials name usually 
+	 * target, or a qualifier.
+	 * It is NOT unique to a social object however, since a socials name usually
 	 * includes their target extension and name and stuff.
 	 *
 	 * @return the socials optional remaining argument.

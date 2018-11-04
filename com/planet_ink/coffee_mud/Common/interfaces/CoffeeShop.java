@@ -308,7 +308,7 @@ public interface CoffeeShop extends CMCommon
 		public Environmental product;
 		public int number;
 		public int price;
-		public ShelfProduct(Environmental E, int number, int price)
+		public ShelfProduct(final Environmental E, final int number, final int price)
 		{
 			this.product=E;this.number=number;this.price=price;
 		}
@@ -318,7 +318,7 @@ public interface CoffeeShop extends CMCommon
 			return product.hashCode() ^ number ^ price;
 		}
 	}
-	
+
 	/**
 	 * Returns a hash of all the items currently in the
 	 * shop, for help in determining when things change.

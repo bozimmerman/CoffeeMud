@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Embezzle extends ThiefSkill
 {
 	@Override
@@ -87,7 +86,7 @@ public class Thief_Embezzle extends ThiefSkill
 	}
 
 	@Override
-	public boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(final MOB mob)
 	{
 		return true;
 	}
@@ -95,7 +94,7 @@ public class Thief_Embezzle extends ThiefSkill
 	public List<MOB> mobs=new Vector<MOB>();
 	private final LinkedList<Pair<MOB,Integer>> lastOnes=new LinkedList<Pair<MOB,Integer>>();
 
-	protected int timesPicked(MOB target)
+	protected int timesPicked(final MOB target)
 	{
 		int times=0;
 		for(final Iterator<Pair<MOB,Integer>> p=lastOnes.iterator();p.hasNext();)
@@ -137,7 +136,7 @@ public class Thief_Embezzle extends ThiefSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -148,7 +147,7 @@ public class Thief_Embezzle extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{

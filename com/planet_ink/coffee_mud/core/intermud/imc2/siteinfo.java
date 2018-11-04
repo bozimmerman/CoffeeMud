@@ -45,8 +45,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * Ported to Java by Istvan David (u_davis@users.sourceforge.net)
  *
  */
-public class siteinfo {
-
+public class siteinfo
+{
 	public String name = ""; /* FULL name of mud */
 	public String host = ""; /* host AND port */
 	public String email = ""; /* contact address (email) */

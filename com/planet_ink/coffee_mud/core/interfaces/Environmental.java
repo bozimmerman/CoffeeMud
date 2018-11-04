@@ -52,6 +52,7 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 	 * @return the raw base name of this object on the map.
 	 */
 	public String Name();
+
 	/**
 	 * Sets the raw unmodified name of this object as stored in the database.
 	 * This is the name set by builders and used as a basis for the name() method.
@@ -68,6 +69,7 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 	 * @return the string describing how this object looks in the room
 	 */
 	public String displayText();
+
 	/**
 	 * Sets the raw string used to show what this object looks like in the room.
 	 * May be used as a basis for other methods, such as the title of rooms, and
@@ -82,6 +84,7 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 	 * @return the basic detail description of this object
 	 */
 	public String description();
+
 	/**
 	 * Sets the basic description of this object, as shown when the item is directly LOOKed at.
 	 * @param newDescription the basic detail description of this object
@@ -95,12 +98,14 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 	 * @return the name of the mxp image to display for this object.
 	 */
 	public String image();
+
 	/**
 	 * Returns the raw name of the image file to display for this object when MXP is used.  This
 	 * is the value set by the builder, and may be returned by image() if it is non-empty.
 	 * @return the raw name of the mxp image file
 	 */
 	public String rawImage();
+
 	/**
 	 * Sets the raw name of the image file to display for this object when MXP is used.  This
 	 * is the value set by the builder, and may be returned by image() if it is non-empty.
@@ -126,6 +131,7 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 	 * @param newMiscText either an open internal text string, or XML
 	 */
 	public void setMiscText(String newMiscText);
+
 	/**
 	 * For objects which have false for their isGeneric method, this is used to set any internally
 	 * coded strings to change the nature or behavior of the object.  For objects which have true
@@ -164,6 +170,7 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 	 * @return the time stamp when this thing expires
 	 */
 	public long expirationDate();
+
 	/**
 	 * If this object expires, it should have a timestamp saying when it expires, in real time.
 	 * When it expires, a MSG_EXPIRE message will be sent to it.
@@ -171,12 +178,14 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 	 * @param dateTime the time stamp when this thing expires
 	 */
 	public void setExpirationDate(long dateTime);
+
 	/**
 	 * the maximum range of this object, if applicable.  Can refer to the size of a room,
 	 * the range of a weapon, or the calculated range of a mob in combat.
 	 * @return the maximum range
 	 */
 	public int maxRange();
+
 	/**
 	 * the minimum range of this object, if applicable.  Can refer to the size of a room,
 	 * the range of a weapon, or the calculated range of a mob in combat.  Usually 0.

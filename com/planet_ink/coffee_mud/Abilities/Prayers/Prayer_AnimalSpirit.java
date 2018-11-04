@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_AnimalSpirit extends Prayer
 {
 	@Override
@@ -100,23 +99,23 @@ public class Prayer_AnimalSpirit extends Prayer
 		return false;
 	}
 
-	private AnimalSpirit spirit = AnimalSpirit.None; 
-	
-	public static enum AnimalSpirit 
+	private AnimalSpirit spirit = AnimalSpirit.None;
+
+	public static enum AnimalSpirit
 	{
 		None,
-		Mouse, 
-		Rat, 
-		Cat, 
-		Lion, 
-		Dog, 
-		Wolf, 
-		Robin, 
-		Owl, 
-		Hawk, 
-		Eagle, 
-		GardenSnake("Garden Snake"), 
-		Snake, 
+		Mouse,
+		Rat,
+		Cat,
+		Lion,
+		Dog,
+		Wolf,
+		Robin,
+		Owl,
+		Hawk,
+		Eagle,
+		GardenSnake("Garden Snake"),
+		Snake,
 		Python,
 		Cobra,
 		Grasshopper,
@@ -132,13 +131,13 @@ public class Prayer_AnimalSpirit extends Prayer
 		;
 		private final String displayName;
 		private final String raceID;
-		private AnimalSpirit(String displayName, String raceID)
+		private AnimalSpirit(final String displayName, final String raceID)
 		{
 			this.displayName=displayName;
 			this.raceID=raceID;
 		}
 
-		private AnimalSpirit(String displayName)
+		private AnimalSpirit(final String displayName)
 		{
 			this.displayName=displayName;
 			this.raceID=null;
@@ -164,18 +163,18 @@ public class Prayer_AnimalSpirit extends Prayer
 				return this.name();
 			return this.displayName;
 		}
-		
+
 		public String getDisplayName()
 		{
 			return toString();
 		}
-		
+
 		public String getAffectText()
 		{
 			return CMLib.lang().L("(Spirit of the @x1)",getDisplayName());
 		}
 	}
-	
+
 	public AnimalSpirit getAnimalSpirit()
 	{
 		if((spirit == AnimalSpirit.None)||(spirit==null))
@@ -183,16 +182,16 @@ public class Prayer_AnimalSpirit extends Prayer
 			spirit = AnimalSpirit.values()[CMLib.dice().roll(1, AnimalSpirit.values().length, -1)];
 			if(invoker()!=null)
 			{
-				Ability A=invoker().fetchAbility(ID());
+				final Ability A=invoker().fetchAbility(ID());
 				if(A!=null)
 					A.setMiscText(spirit.name());
 			}
 		}
 		return spirit;
 	}
-	
+
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		if(newText.length()>0)
 		{
@@ -202,7 +201,7 @@ public class Prayer_AnimalSpirit extends Prayer
 		}
 		super.setMiscText(spirit.name());
 	}
-	
+
 	@Override
 	public String text()
 	{
@@ -210,13 +209,13 @@ public class Prayer_AnimalSpirit extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		boolean success = super.proficiencyCheck(mob, 0, auto);
+		final boolean success = super.proficiencyCheck(mob, 0, auto);
 
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
-		
+
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_OK_ACTION,null);

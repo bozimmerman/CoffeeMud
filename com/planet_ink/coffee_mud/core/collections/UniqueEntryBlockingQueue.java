@@ -46,23 +46,23 @@ public class UniqueEntryBlockingQueue<K> extends ArrayBlockingQueue<K>
 {
 	private static final long	serialVersionUID	= 3311623439390188911L;
 
-	public UniqueEntryBlockingQueue(int capacity)
+	public UniqueEntryBlockingQueue(final int capacity)
 	{
 		super(capacity);
 	}
 
-	public UniqueEntryBlockingQueue(int capacity, boolean fair)
+	public UniqueEntryBlockingQueue(final int capacity, final boolean fair)
 	{
 		super(capacity, fair);
 	}
 
-	public UniqueEntryBlockingQueue(int capacity, boolean fair, Collection<? extends K> c)
+	public UniqueEntryBlockingQueue(final int capacity, final boolean fair, final Collection<? extends K> c)
 	{
 		super(capacity, fair, c);
 	}
 
 	@Override
-	public synchronized boolean offer(K e)
+	public synchronized boolean offer(final K e)
 	{
 		if (!contains(e))
 			return super.offer(e);
@@ -70,7 +70,7 @@ public class UniqueEntryBlockingQueue<K> extends ArrayBlockingQueue<K>
 	}
 
 	@Override
-	public synchronized boolean offer(K e, long timeout, TimeUnit unit) throws InterruptedException
+	public synchronized boolean offer(final K e, final long timeout, final TimeUnit unit) throws InterruptedException
 	{
 		if (!contains(e))
 			return super.offer(e, timeout, unit);
@@ -78,14 +78,14 @@ public class UniqueEntryBlockingQueue<K> extends ArrayBlockingQueue<K>
 	}
 
 	@Override
-	public synchronized void put(K e) throws InterruptedException
+	public synchronized void put(final K e) throws InterruptedException
 	{
 		if (!contains(e))
 			super.put(e);
 	}
 
 	@Override
-	public synchronized boolean add(K e)
+	public synchronized boolean add(final K e)
 	{
 		if (!contains(e))
 			return super.add(e);
@@ -93,7 +93,7 @@ public class UniqueEntryBlockingQueue<K> extends ArrayBlockingQueue<K>
 	}
 
 	@Override
-	public synchronized boolean addAll(Collection<? extends K> c)
+	public synchronized boolean addAll(final Collection<? extends K> c)
 	{
 		if (c == null)
 			return true;

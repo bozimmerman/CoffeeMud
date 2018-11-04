@@ -34,7 +34,6 @@ import org.mozilla.javascript.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class JRun extends StdCommand
 {
 	public JRun()
@@ -49,7 +48,7 @@ public class JRun extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
@@ -106,7 +105,7 @@ public class JRun extends StdCommand
 			return (v == null) ? 0 : v.size();
 		}
 
-		public String getParm(int i)
+		public String getParm(final int i)
 		{
 			if(v==null)
 				return "";
@@ -122,13 +121,13 @@ public class JRun extends StdCommand
 			return (v == null) ? "" : CMParms.combineQuoted(v, 0);
 		}
 
-		public JScriptWindow(MOB executor, List<String> parms)
+		public JScriptWindow(final MOB executor, final List<String> parms)
 		{
 			s = executor;
 			v = parms;
 		}
 
-		public String toJavaString(Object O)
+		public String toJavaString(final Object O)
 		{
 			return Context.toString(O);
 		}
@@ -141,7 +140,7 @@ public class JRun extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS);
 	}

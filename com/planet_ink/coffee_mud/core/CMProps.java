@@ -37,7 +37,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * The source class for thread-group-based and global mud properties.
  * Acts as a singleton for the purposes of access to properties, parsed
- * into Str(ing), Int(eger), and Bool(ean).  The singleton maintains 
+ * into Str(ing), Int(eger), and Bool(ean).  The singleton maintains
  * instances of itself for thread-group access, and fills in any gaps
  * with the base-thread-group values.
  * @author Bo Zimmerman
@@ -65,7 +65,7 @@ public class CMProps extends Properties
 		if(props[c]==null)
 			props[c]=this;
 	}
-	
+
 	/**
 	 * Returns the property object that applies to the callers thread group.
 	 * @return the property object that applies to the callers thread group.
@@ -77,25 +77,25 @@ public class CMProps extends Properties
 			return new CMProps();
 		return p;
 	}
-	
+
 	/**
 	 * Returns the property object that applies to the given thread group.
 	 * @param c thread group code to return properties for. Base = '0'.
 	 * @return the property object that applies to the given thread group.
 	 */
-	public static final CMProps instance(char c)
+	public static final CMProps instance(final char c)
 	{
 		return props[c];
 	}
-	
+
 	/**
 	 * Enums for String entries in the coffeemud.ini file
 	 * @author Bo Zimmerman
 	 */
-	public static enum Str 
+	public static enum Str
 	{
 		/** BLAH BLAH BLAH */
-		PKILL, 
+		PKILL,
 		MULTICLASS,
 		PLAYERDEATH,
 		PLAYERFLEE,
@@ -217,7 +217,7 @@ public class CMProps extends Properties
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public static enum Int 
+	public static enum Int
 	{
 		EXPRATE,
 		SKYSIZE,
@@ -320,28 +320,28 @@ public class CMProps extends Properties
 		RP_SOCIAL_OTH,
 		RP_GOAFK
 		;
-		
+
 		public static final int	EXVIEW_DEFAULT		= 0;
 		public static final int	EXVIEW_PARAGRAPH	= 1;
 		public static final int	EXVIEW_MIXED		= 2;
 		public static final int	EXVIEW_BRIEF		= 3;
-		
+
 		public static final int	EQVIEW_DEFAULT		= 0;
 		public static final int	EQVIEW_MIXED		= 1;
 		public static final int	EQVIEW_PARAGRAPH	= 2;
-		
-		public static final int ANY_ARMOR_PROWESS =	Prowesses.ARMOR_ADV.value 
-													| Prowesses.ARMOR_ADJ.value 
-													| Prowesses.ARMOR_ABSOLUTE.value 
-													| Prowesses.ARMOR_NUMBER.value;  
-		public static final int ANY_COMBAT_PROWESS =Prowesses.COMBAT_ABSOLUTE.value 
-													| Prowesses.COMBAT_NUMBER.value 
-													| Prowesses.COMBAT_ADV.value 
+
+		public static final int ANY_ARMOR_PROWESS =	Prowesses.ARMOR_ADV.value
+													| Prowesses.ARMOR_ADJ.value
+													| Prowesses.ARMOR_ABSOLUTE.value
+													| Prowesses.ARMOR_NUMBER.value;
+		public static final int ANY_COMBAT_PROWESS =Prowesses.COMBAT_ABSOLUTE.value
+													| Prowesses.COMBAT_NUMBER.value
+													| Prowesses.COMBAT_ADV.value
 													| Prowesses.COMBAT_ADJ.value
 													| Prowesses.COMBAT_NOUN.value;
-		public static final int ANY_DAMAGE_PROWESS =Prowesses.DAMAGE_ABSOLUTE.value 
-													| Prowesses.DAMAGE_ADV.value 
-													| Prowesses.DAMAGE_ADJ.value 
+		public static final int ANY_DAMAGE_PROWESS =Prowesses.DAMAGE_ABSOLUTE.value
+													| Prowesses.DAMAGE_ADV.value
+													| Prowesses.DAMAGE_ADJ.value
 													| Prowesses.DAMAGE_NUMBER.value;
 		public enum Prowesses
 		{
@@ -364,12 +364,12 @@ public class CMProps extends Properties
 			FACTION_RANGE(32768)
 			;
 			public int value;
-			private Prowesses(int val)
+			private Prowesses(final int val)
 			{
 				value=val;
 			}
 
-			public boolean is(int val)
+			public boolean is(final int val)
 			{
 				if(value == 0)
 					return val==0;
@@ -384,7 +384,7 @@ public class CMProps extends Properties
 	 * @author Bo Zimmerman
 	 *
 	 */
-	public static enum Bool 
+	public static enum Bool
 	{
 		MOBCOMPRESS,
 		ITEMDCOMPRESS,
@@ -416,15 +416,15 @@ public class CMProps extends Properties
 		SUBSCRIPTION_STRS("SUBSCRIPTION_STRS")
 		;
 		private final String str;
-		private StrList(String toStr)
+		private StrList(final String toStr)
 		{
 			str=toStr;
 		}
-		
-		@Override 
-		public String toString() 
+
+		@Override
+		public String toString()
 		{
-			return str; 
+			return str;
 		}
 	}
 
@@ -432,7 +432,7 @@ public class CMProps extends Properties
 	 * Enums for localizeable string list entries in lists.ini
 	 * @author Bo Zimmerman
 	 */
-	public static enum ListFile 
+	public static enum ListFile
 	{
 		DAMAGE_WORDS_THRESHOLDS,
 		DAMAGE_WORDS,
@@ -500,20 +500,20 @@ public class CMProps extends Properties
 		WEATHER_NONE // try to always and forever keep these at the end...
 		;
 		private String key;
-		
-		private ListFile(String key)
+
+		private ListFile(final String key)
 		{
 			this.key=key;
 		}
-		
+
 		private ListFile()
 		{
 			this.key=this.toString();
 		}
-		
-		public String getKey() 
-		{ 
-			return key; 
+
+		public String getKey()
+		{
+			return key;
 		}
 	}
 
@@ -521,7 +521,7 @@ public class CMProps extends Properties
 	 * Enum for white lists for various purposes
 	 * @author Bo Zimmerman
 	 */
-	public static enum WhiteList 
+	public static enum WhiteList
 	{
 		CONNS,
 		LOGINS,
@@ -529,7 +529,7 @@ public class CMProps extends Properties
 	}
 
 	@SuppressWarnings("unchecked")
-	public static final Class<? extends Enum<?>>[] PROP_CLASSES = new Class[]  
+	public static final Class<? extends Enum<?>>[] PROP_CLASSES = new Class[]
 	{
 		CMProps.Bool.class,
 		CMProps.Str.class,
@@ -538,7 +538,7 @@ public class CMProps extends Properties
 		CMProps.StrList.class,
 		CMProps.WhiteList.class,
 	};
-	
+
 	@SuppressWarnings("unchecked")
 	protected final Set<String>[]sysLstFileSet		= new Set[ListFile.values().length];
 	protected final String[]	 sysVars			= new String[Str.values().length];
@@ -580,11 +580,11 @@ public class CMProps extends Properties
 	protected final Map<String,ExpertiseLibrary.SkillCostDefinition> languageCost=new HashMap<String,ExpertiseLibrary.SkillCostDefinition>();
 
 	/**
-	 * Creates a properties object for the callers thread group using the given input stream 
+	 * Creates a properties object for the callers thread group using the given input stream
 	 * as input for the properties.
 	 * @param in a stream from which to draw the properties.
 	 */
-	public CMProps(InputStream in)
+	public CMProps(final InputStream in)
 	{
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(props[c]==null)
@@ -601,11 +601,11 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Creates a properties object for the callers thread group using the given file path 
+	 * Creates a properties object for the callers thread group using the given file path
 	 * as input for the properties.
 	 * @param filename a file from which to draw the properties.
 	 */
-	public CMProps(String filename)
+	public CMProps(final String filename)
 	{
 		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(props[c]==null)
@@ -628,7 +628,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Creates a properties object for the callers thread group using the given file path 
+	 * Creates a properties object for the callers thread group using the given file path
 	 * as input for the properties and the given properties as a baseline.
 	 * @param p loads these properties into this object first
 	 * @param filename a file from which to draw the rest of the properties.
@@ -669,7 +669,7 @@ public class CMProps extends Properties
 	 * Returns an instance of CMProps appropriate to either
 	 * the given session, or otherwise the current thread,
 	 * as normal.
-	 * 
+	 *
 	 * @param session the session to get a thread id for, or null
 	 * @return the appropriate CMProps instance
 	 */
@@ -683,7 +683,7 @@ public class CMProps extends Properties
 		}
 		return p();
 	}
-	
+
 	/**
 	 * Returns true if this properties object has been loaded from
 	 * a stream or ini file, and false otherwise.
@@ -860,7 +860,7 @@ public class CMProps extends Properties
 			return 0;
 		}
 	}
-	
+
 	public static final boolean isUsingAccountSystem()
 	{
 		return getIntVar(Int.COMMONACCOUNTSYSTEM) > 1;
@@ -883,7 +883,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Return the action cost associated with a specific Command ID() during combat, or 
+	 * Return the action cost associated with a specific Command ID() during combat, or
 	 * the default value if no exception is found for that command.
 	 * @param ID the commands ID()
 	 * @param defaultValue the default action cost to use
@@ -910,7 +910,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Return the action cost associated with a specific Command ID() during combat, or 
+	 * Return the action cost associated with a specific Command ID() during combat, or
 	 * the default value if no exception is found for that command.
 	 * @param ID the commands ID()
 	 * @return the action cost
@@ -937,7 +937,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Return the action cost associated with a specific Ability ID() during combat, or 
+	 * Return the action cost associated with a specific Ability ID() during combat, or
 	 * the default value if no exception is found for that Ability.
 	 * @param ID the Ability ID()
 	 * @param defaultValue the default action cost to use
@@ -964,7 +964,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Return the action cost associated with a specific Ability ID() during combat, or 
+	 * Return the action cost associated with a specific Ability ID() during combat, or
 	 * the default value if no exception is found for that Ability.
 	 * @param ID the Ability ID()
 	 * @return the action cost
@@ -975,7 +975,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Return the action cost associated with a specific Social base name, or 
+	 * Return the action cost associated with a specific Social base name, or
 	 * the default value if no exception is found for that Social.
 	 * @param baseName the Social Base Name
 	 * @param defaultValue the default action cost to use
@@ -991,7 +991,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Return the action cost associated with a specific Social base name during combat, or 
+	 * Return the action cost associated with a specific Social base name during combat, or
 	 * the default value if no exception is found for that Social.
 	 * @param baseName the Social Base Name
 	 * @param defaultValue the default action cost to use
@@ -1007,7 +1007,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Return the action cost associated with a specific Social base name, or 
+	 * Return the action cost associated with a specific Social base name, or
 	 * the default value if no exception is found for that Social.
 	 * @param baseName the Social Base Name
 	 * @return the action cost
@@ -1018,7 +1018,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Return the action cost associated with a specific Social base name during combat, or 
+	 * Return the action cost associated with a specific Social base name during combat, or
 	 * the default value if no exception is found for that Social.
 	 * @param baseName the Social Base Name
 	 * @return the action cost
@@ -1045,11 +1045,11 @@ public class CMProps extends Properties
 	 */
 	public static final String getVar(final Str varNum)
 	{
-		try 
-		{ 
+		try
+		{
 			return p().sysVars[varNum.ordinal()];
 		}
-		catch(final Exception t) 
+		catch(final Exception t)
 		{
 			return "";
 		}
@@ -1067,7 +1067,7 @@ public class CMProps extends Properties
 		if(varName == null)
 			return false;
 		varName = varName.toUpperCase().trim();
-		for(Class<? extends Enum<?>> c : CMProps.PROP_CLASSES)
+		for(final Class<? extends Enum<?>> c : CMProps.PROP_CLASSES)
 		{
 			if(CMath.s_valueOf(c, varName) != null)
 				return true;
@@ -1088,7 +1088,7 @@ public class CMProps extends Properties
 		if(varName == null)
 			return "";
 		varName = varName.toUpperCase().trim();
-		for(Class<? extends Enum<?>> c : CMProps.PROP_CLASSES)
+		for(final Class<? extends Enum<?>> c : CMProps.PROP_CLASSES)
 		{
 			if(CMath.s_valueOf(c, varName) != null)
 			{
@@ -1113,7 +1113,7 @@ public class CMProps extends Properties
 		}
 		return p().getStr(varName,"");
 	}
-	
+
 	/**
 	 * Sets a property from a string representation of the given property, as best it can.
 	 * referring to the names of the various enums in the static
@@ -1124,12 +1124,12 @@ public class CMProps extends Properties
 	 * @return true if it tried to set the property, false if it failed
 	 */
 	@SuppressWarnings("rawtypes")
-	public static boolean setProp(String varName, String value)
+	public static boolean setProp(String varName, final String value)
 	{
 		if(varName == null)
 			return false;
 		varName = varName.toUpperCase().trim();
-		for(Class<? extends Enum> c : CMProps.PROP_CLASSES)
+		for(final Class<? extends Enum> c : CMProps.PROP_CLASSES)
 		{
 			if(CMath.s_valueOf(c, varName) != null)
 			{
@@ -1167,7 +1167,7 @@ public class CMProps extends Properties
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Retrieve one of the pre-processed coffeemud.ini entries for
 	 * this prop object
@@ -1176,11 +1176,11 @@ public class CMProps extends Properties
 	 */
 	public final String getStr(final Str varNum)
 	{
-		try 
-		{ 
+		try
+		{
 			return sysVars[varNum.ordinal()];
 		}
-		catch(final Exception t) 
+		catch(final Exception t)
 		{
 			return "";
 		}
@@ -1194,11 +1194,11 @@ public class CMProps extends Properties
 	 */
 	public static final int getIntVar(final Int varNum)
 	{
-		try 
-		{ 
-			return p().sysInts[varNum.ordinal()].intValue(); 
+		try
+		{
+			return p().sysInts[varNum.ordinal()].intValue();
 		}
-		catch(final Exception t) 
+		catch(final Exception t)
 		{
 			return -1;
 		}
@@ -1210,12 +1210,12 @@ public class CMProps extends Properties
 	 */
 	public static final int getMobHPBase()
 	{
-		try 
-		{ 
+		try
+		{
 			final int x=p().sysInts[Int.MOB_HP_BASE.ordinal()].intValue();
 			return (x<=0)?11:x;
 		}
-		catch(final Exception t) 
+		catch(final Exception t)
 		{
 			return 11;
 		}
@@ -1230,8 +1230,8 @@ public class CMProps extends Properties
 	 */
 	public static final double getIntVarAsDouble(final Int varNum)
 	{
-		try 
-		{ 
+		try
+		{
 			Double d=p().sysIntsAsFloat[varNum.ordinal()];
 			if(d==null)
 			{
@@ -1240,7 +1240,7 @@ public class CMProps extends Properties
 			}
 			return d.doubleValue();
 		}
-		catch(final Exception t) 
+		catch(final Exception t)
 		{
 			return -1;
 		}
@@ -1255,8 +1255,8 @@ public class CMProps extends Properties
 	 */
 	public static final double getIntVarAsPct(final Int varNum)
 	{
-		try 
-		{ 
+		try
+		{
 			Double d=p().sysIntsAsFloat[varNum.ordinal()];
 			if(d==null)
 			{
@@ -1265,7 +1265,7 @@ public class CMProps extends Properties
 			}
 			return d.doubleValue();
 		}
-		catch(final Exception t) 
+		catch(final Exception t)
 		{
 			return -1;
 		}
@@ -1279,16 +1279,16 @@ public class CMProps extends Properties
 	 */
 	public final int getInt(final Int varNum)
 	{
-		try 
-		{ 
-			return sysInts[varNum.ordinal()].intValue(); 
+		try
+		{
+			return sysInts[varNum.ordinal()].intValue();
 		}
-		catch(final Exception t) 
+		catch(final Exception t)
 		{
 			return -1;
 		}
 	}
-	
+
 	/**
 	 * Retrieve one of the pre-processed coffeemud.ini lists for
 	 * the callers thread group.
@@ -1297,11 +1297,11 @@ public class CMProps extends Properties
 	 */
 	public static final String[] getListVar(final StrList varType)
 	{
-		try 
+		try
 		{
-			return p().sysLists[varType.ordinal()]; 
+			return p().sysLists[varType.ordinal()];
 		}
-		catch(final Exception t) 
+		catch(final Exception t)
 		{
 			return new String[0];
 		}
@@ -1315,7 +1315,7 @@ public class CMProps extends Properties
 	 */
 	public static final Set<String> getListFileVarSet(final ListFile varType)
 	{
-		try 
+		try
 		{
 			final CMProps p=p();
 			if(p.sysLstFileSet[varType.ordinal()] == null)
@@ -1331,7 +1331,7 @@ public class CMProps extends Properties
 			}
 			return p.sysLstFileSet[varType.ordinal()];
 		}
-		catch(final Exception t) 
+		catch(final Exception t)
 		{
 			return new HashSet<String>();
 		}
@@ -1345,11 +1345,11 @@ public class CMProps extends Properties
 	 */
 	public static final boolean getBoolVar(final Bool varNum)
 	{
-		try 
-		{ 
-			return p().sysBools[varNum.ordinal()].booleanValue(); 
+		try
+		{
+			return p().sysBools[varNum.ordinal()].booleanValue();
 		}
-		catch(final Exception t) 
+		catch(final Exception t)
 		{
 			return false;
 		}
@@ -1363,11 +1363,11 @@ public class CMProps extends Properties
 	 */
 	public final boolean getBool(final Bool varNum)
 	{
-		try 
-		{ 
-			return sysBools[varNum.ordinal()].booleanValue(); 
+		try
+		{
+			return sysBools[varNum.ordinal()].booleanValue();
 		}
-		catch(final Exception t) 
+		catch(final Exception t)
 		{
 			return false;
 		}
@@ -1474,7 +1474,7 @@ public class CMProps extends Properties
 	 * @param varType the StrList enum of the entry to add to
 	 * @param var the value to add to the entry list
 	 */
-	public static final void addListVar(final StrList varType, String var)
+	public static final void addListVar(final StrList varType, final String var)
 	{
 		if(varType==null)
 			return ;
@@ -1514,7 +1514,7 @@ public class CMProps extends Properties
 			val="";
 		setUpLowVar(varNum,val.toUpperCase());
 	}
-	
+
 	/**
 	 * Sets one of the pre-processed coffeemud.ini entries for
 	 * the given properties object.
@@ -1568,7 +1568,7 @@ public class CMProps extends Properties
 	 * and compiling them into Patterns.
 	 * @param props the properties object to set the whitelist on
 	 * @param listType the WhiteList type to set
-	 * @param list the unparsed whitelist entries 
+	 * @param list the unparsed whitelist entries
 	 */
 	public static final void setWhitelist(final CMProps props, final WhiteList listType, final String list)
 	{
@@ -1591,7 +1591,7 @@ public class CMProps extends Properties
 	 * Parses and sets one of the properties whitelist entries by parsing the given string by commands,
 	 * and compiling them into Patterns, all for the callers thread group.
 	 * @param listType the WhiteList type to set
-	 * @param list the unparsed whitelist entries 
+	 * @param list the unparsed whitelist entries
 	 */
 	public static final void setWhitelist(final WhiteList listType, final String list)
 	{
@@ -1638,7 +1638,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Given the list of skill cost definitions, this method will parse 
+	 * Given the list of skill cost definitions, this method will parse
 	 * out the ID and the data, build a cost definition object
 	 * and store the cost definition in the given map.
 	 * @param fieldName the name of the field being parsed, for error messages
@@ -1711,7 +1711,7 @@ public class CMProps extends Properties
 			}
 		};
 	}
-	
+
 	/**
 	 * Returns the cost of gaining the given skill, by Ability id, for the callers
 	 * thread group.
@@ -1838,11 +1838,11 @@ public class CMProps extends Properties
 		set.clear();
 		final List<String> V=CMParms.parseCommas(val,true);
 		double endVal=0;
-		for(String s : V)
+		for(final String s : V)
 		{
 			if(CMath.isNumber(s))
-			{ 
-				endVal=CMath.s_double(s); 
+			{
+				endVal=CMath.s_double(s);
 			}
 			else
 			{
@@ -1866,7 +1866,7 @@ public class CMProps extends Properties
 				if(rawListData==null)
 				{
 					rawListData=new Properties();
-					CMProps p=p();
+					final CMProps p=p();
 					String listFileNameStr;
 					if(p.containsKey("LISTFILE"))
 						listFileNameStr=p.getProperty("LISTFILE");
@@ -1891,7 +1891,7 @@ public class CMProps extends Properties
 						}
 						else
 						{
-							int x=listFileName.indexOf('=');
+							final int x=listFileName.indexOf('=');
 							if(x>0)
 								rawListData.setProperty(listFileName.substring(0,x).toUpperCase().trim(), listFileName.substring(x+1).trim());
 						}
@@ -2073,7 +2073,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Given the specific lists.ini entry, grabs the indexed string list, returns a random 
+	 * Given the specific lists.ini entry, grabs the indexed string list, returns a random
 	 * string choice from a random index in the list.
 	 * @param varCode the lists.ini string list entry
 	 * @return the completely random choice
@@ -2199,7 +2199,7 @@ public class CMProps extends Properties
 		setVar(Str.INVRESETRATE,getStr("INVRESETRATE"));
 		setVar(Str.AUCTIONRATES,getStr("AUCTIONRATES","0,10,0.1%,10%,5%,1,168"));
 		setUpLowVar(Str.DEFAULTPROMPT,getStr("DEFAULTPROMPT"));
-		String promptBehavior = getStr("PROMPTBEHAVIOR","NORMAL");
+		final String promptBehavior = getStr("PROMPTBEHAVIOR","NORMAL");
 		promptSuffix = new byte[0];
 		if(!promptBehavior.equalsIgnoreCase("NORMAL") && promptBehavior.length()>0)
 		{
@@ -2234,7 +2234,7 @@ public class CMProps extends Properties
 						promptSuffix = Arrays.copyOf(promptSuffix, promptSuffix.length + bytes.length);
 						System.arraycopy(bytes, 0, promptSuffix, pos, bytes.length);
 					}
-					catch (UnsupportedEncodingException e)
+					catch (final UnsupportedEncodingException e)
 					{
 					}
 				}
@@ -2263,7 +2263,7 @@ public class CMProps extends Properties
 		while(ppath.startsWith("/"))
 			ppath = ppath.substring(1);
 		setVar(Str.PRIVATERESOURCEPATH,ppath);
-		
+
 		p().poseFilter.clear();
 		p().poseFilter.addAll(CMParms.parse((getStr("POSEFILTER")).toUpperCase()));
 		setVar(Str.SAYFILTER,getStr("SAYFILTER"));
@@ -2296,11 +2296,11 @@ public class CMProps extends Properties
 		setUpCosts("SKILLCOST",skillsCost,CMParms.parseCommas(getStr("SKILLCOST","1 TRAIN"),true));
 		setUpCosts("LANGCOST",languageCost,CMParms.parseCommas(getStr("LANGCOST","3 PRACTICE"),true));
 		setVar(Str.RACEMIXING,getStr("RACEMIXING"));
-		String[] hungerCodes=CMParms.parseCommas(getStr("HUNGER","500,100,100"),true).toArray(new String[3]);
+		final String[] hungerCodes=CMParms.parseCommas(getStr("HUNGER","500,100,100"),true).toArray(new String[3]);
 		setIntVar(Int.HUNGER_FULL,hungerCodes.length>0?CMath.s_int(hungerCodes[0]):500);
 		setIntVar(Int.HUNGER_GAIN_PCT,hungerCodes.length>1?CMath.s_int(CMStrings.deleteAllofChar(hungerCodes[1], '%')):100);
 		setIntVar(Int.HUNGER_LOSS_PCT,hungerCodes.length>2?CMath.s_int(CMStrings.deleteAllofChar(hungerCodes[2], '%')):100);
-		String[] thirstCodes=CMParms.parseCommas(getStr("THIRST","1000,100,100"),true).toArray(new String[3]);
+		final String[] thirstCodes=CMParms.parseCommas(getStr("THIRST","1000,100,100"),true).toArray(new String[3]);
 		setIntVar(Int.THIRST_FULL,thirstCodes.length>0?CMath.s_int(thirstCodes[0]):500);
 		setIntVar(Int.THIRST_GAIN_PCT,thirstCodes.length>1?CMath.s_int(CMStrings.deleteAllofChar(thirstCodes[1], '%')):100);
 		setIntVar(Int.THIRST_LOSS_PCT,thirstCodes.length>2?CMath.s_int(CMStrings.deleteAllofChar(thirstCodes[2], '%')):100);
@@ -2313,7 +2313,7 @@ public class CMProps extends Properties
 
 		if(p().sysBools[Bool.MUDSHUTTINGDOWN.ordinal()]==null)
 			p().sysBools[Bool.MUDSHUTTINGDOWN.ordinal()]=Boolean.FALSE;
-		
+
 		for(final StrList strListVar : StrList.values())
 		{
 			final String list=getStr(strListVar.toString().toUpperCase().trim());
@@ -2475,7 +2475,7 @@ public class CMProps extends Properties
 		setIntVar(Int.INJBLEEDPCTHP,	(V.size()>7) ? CMath.s_int(V.get(7)) : 20);
 		setIntVar(Int.INJBLEEDPCTCHANCE,(V.size()>8) ? CMath.s_int(V.get(8)) : 100);
 
-		List<String> prowesses = CMParms.parseCommas(getStr("PROWESSOPTIONS"), true);
+		final List<String> prowesses = CMParms.parseCommas(getStr("PROWESSOPTIONS"), true);
 		int prowValue = Int.Prowesses.ARMOR_ABSOLUTE.value|
 						Int.Prowesses.ARMOR_NUMBER.value|
 						Int.Prowesses.COMBAT_ABSOLUTE.value|
@@ -2483,7 +2483,7 @@ public class CMProps extends Properties
 		if(prowesses.size() > 0)
 		{
 			prowValue = 0;
-			for(String prow : prowesses)
+			for(final String prow : prowesses)
 			{
 				final Int.Prowesses P = (Int.Prowesses)CMath.s_valueOf(Int.Prowesses.class, prow.toUpperCase().replace('-','_').trim());
 				if(P == null)
@@ -2496,7 +2496,7 @@ public class CMProps extends Properties
 			}
 		}
 		setIntVar(Int.COMBATPROWESS, prowValue);
-		
+
 		String stateVar=getStr("STARTHP");
 		if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
 			setIntVar(Int.STARTHP,CMath.s_int(stateVar));
@@ -2506,7 +2506,7 @@ public class CMProps extends Properties
 		stateVar=getStr("STARTMOVE");
 		if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
 			setIntVar(Int.STARTMOVE,CMath.s_int(stateVar));
-		
+
 		setIntVar(Int.MAXITEMSHOWN,getStr("MAXITEMSHOWN"));
 		setIntVar(Int.MUDSTATE,getStr("MUDSTATE"));
 
@@ -2545,7 +2545,7 @@ public class CMProps extends Properties
 		Directions.instance().reInitialize(getInt("DIRECTIONS"), new Directions.DirectionWordTranslator()
 		{
 			@Override
-			public String translate(String string)
+			public String translate(final String string)
 			{
 				return lang.L(string);
 			}
@@ -2575,7 +2575,7 @@ public class CMProps extends Properties
 	{
 		return p().promptSuffix;
 	}
-	
+
 	/**
 	 * Returns the last time the properties for the callers thread group has
 	 * been loaded.
@@ -2607,17 +2607,17 @@ public class CMProps extends Properties
 	 * @param msg the message to apply the filter to
 	 * @return true if any filter would alter the string in any way
 	 */
-	public static boolean isAnyINIFiltered(String msg)
+	public static boolean isAnyINIFiltered(final String msg)
 	{
 		final Str[] filters = new Str[] {Str.EMOTEFILTER,Str.POSEFILTER,Str.SAYFILTER,Str.CHANNELFILTER};
-		for(Str filter : filters)
+		for(final Str filter : filters)
 		{
 			if(isINIFiltered(msg,filter))
 				return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Returns true if the given msg contains words which would be filtered out by the given filter for
 	 * the callers thread group.
@@ -2625,7 +2625,7 @@ public class CMProps extends Properties
 	 * @param whichFilter the filter to apply, such as EMOTEFILTER, POSEFILTER, SAYFILTER, or CHANNELFILTER
 	 * @return true if the filter would alter the string in any way
 	 */
-	public static boolean isINIFiltered(String msg, Str whichFilter)
+	public static boolean isINIFiltered(final String msg, final Str whichFilter)
 	{
 		List<String> filter=null;
 		switch(whichFilter)
@@ -2650,7 +2650,7 @@ public class CMProps extends Properties
 
 		int fdex=0;
 		int len=0;
-		String upp=msg.toUpperCase();
+		final String upp=msg.toUpperCase();
 		for(final String filterStr : filter)
 		{
 			if(filterStr.length()==0)
@@ -2682,10 +2682,10 @@ public class CMProps extends Properties
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Alters the given message according to the given filter, by replacing any words
-	 * found in the given filter with garbage characters.  
+	 * found in the given filter with garbage characters.
 	 * @param msg the message to apply the filter to
 	 * @param whichFilter the filter to apply, such as EMOTEFILTER, POSEFILTER, SAYFILTER, or CHANNELFILTER
 	 * @return the altered msg
@@ -2751,7 +2751,7 @@ public class CMProps extends Properties
 					fdex=-1;
 			}
 		}
-		if(newMsg!=null) 
+		if(newMsg!=null)
 			return newMsg.toString();
 		return msg;
 	}
@@ -2771,7 +2771,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Returns maximum  the maximum number of clans of this category a player 
+	 * Returns maximum  the maximum number of clans of this category a player
 	 * can belong to according to the callers properties.
 	 * @param clanCategory the category to check data for
 	 * @return the maximum number of clans of this category a player can belong to
@@ -2803,7 +2803,7 @@ public class CMProps extends Properties
 	{
 		return TIME_TICK;
 	}
-	
+
 	/**
 	 * Returns the amount of milliseconds per mud tick, as a double.
 	 * @return the amount of milliseconds per mud tick, as a double.
@@ -2870,7 +2870,7 @@ public class CMProps extends Properties
 	}
 
 	/**
-	 * Loads the given iniFile by mud path, combines any multi-line entries, and returns all the 
+	 * Loads the given iniFile by mud path, combines any multi-line entries, and returns all the
 	 * lines in the file in a list.
 	 * @param iniFile the file to load
 	 * @return the list of useful entries
@@ -2878,7 +2878,7 @@ public class CMProps extends Properties
 	public static final List<String> loadEnumerablePage(final String iniFile)
 	{
 		final StringBuffer str=new CMFile(iniFile,null,CMFile.FLAG_LOGERRORS).text();
-		if((str==null)||(str.length()==0)) 
+		if((str==null)||(str.length()==0))
 			return new Vector<String>();
 		final List<String> page=Resources.getFileLineVector(str);
 		for(int p=0;p<(page.size()-1);p++)
@@ -2945,7 +2945,7 @@ public class CMProps extends Properties
 	private static final List<String> getStatCodeExtensions(Class<?> C, final String ID)
 	{
 		final String[][] statCodeExtensions = p().statCodeExtensions;
-		if( statCodeExtensions == null) 
+		if( statCodeExtensions == null)
 			return null;
 		final List<String> V=new Vector<String>();
 		String myClassName=ID;
@@ -2988,7 +2988,7 @@ public class CMProps extends Properties
 		}
 		return getStatCodeExtensions(O.getClass(), name);
 	}
-	
+
 	private static void parseRPAwards(final String ln)
 	{
 		CMProps.setIntVar(Int.RP_AWARD_PCT, 0);
@@ -3054,7 +3054,7 @@ public class CMProps extends Properties
 			}
 		}
 	}
-	
+
 	private static void parseXPDeferDetails(String ln)
 	{
 		setVar(Str.EXPDEFER_ARGUMENT, "");
@@ -3126,7 +3126,7 @@ public class CMProps extends Properties
 			Log.errOut("Malformed defer definition (missing close ) in command arg ): "+ln);
 			return;
 		}
-		String deferXPArgument=ln.substring(1,x).trim();
+		final String deferXPArgument=ln.substring(1,x).trim();
 		CMProps.setVar(Str.EXPDEFER_ARGUMENT, deferXPArgument.toUpperCase());
 		ln=ln.substring(x+1).trim();
 		if(ln.length()>0)

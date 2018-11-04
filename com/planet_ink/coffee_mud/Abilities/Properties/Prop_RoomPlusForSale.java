@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_RoomPlusForSale extends Prop_RoomForSale implements LandTitle
 {
 	@Override
@@ -73,7 +72,7 @@ public class Prop_RoomPlusForSale extends Prop_RoomForSale implements LandTitle
 	{
 		return super.getUniqueLotID();
 	}
-	
+
 	@Override
 	public LandTitle generateNextRoomTitle()
 	{
@@ -90,7 +89,7 @@ public class Prop_RoomPlusForSale extends Prop_RoomForSale implements LandTitle
 		return uniqueLotID;
 	}
 
-	protected void fillCluster(Room R, List<Room> V)
+	protected void fillCluster(final Room R, final List<Room> V)
 	{
 		V.add(R);
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

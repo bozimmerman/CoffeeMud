@@ -22,7 +22,13 @@ public class Pair<T, K> implements Map.Entry<T, K>
 	public T	first;
 	public K	second;
 
-	public Pair(T frst, K scnd)
+	public Pair()
+	{
+		first = null;
+		second = null;
+	}
+
+	public Pair(final T frst, final K scnd)
 	{
 		first = frst;
 		second = scnd;
@@ -31,7 +37,7 @@ public class Pair<T, K> implements Map.Entry<T, K>
 	public static final class FirstConverter<T, K> implements Converter<Pair<T, K>, T>
 	{
 		@Override
-		public T convert(Pair<T, K> obj)
+		public T convert(final Pair<T, K> obj)
 		{
 			return obj.first;
 		}
@@ -40,7 +46,7 @@ public class Pair<T, K> implements Map.Entry<T, K>
 	public static final class SecondConverter<T, K> implements Converter<Pair<T, K>, K>
 	{
 		@Override
-		public K convert(Pair<T, K> obj)
+		public K convert(final Pair<T, K> obj)
 		{
 			return obj.second;
 		}
@@ -59,14 +65,14 @@ public class Pair<T, K> implements Map.Entry<T, K>
 	}
 
 	@Override
-	public K setValue(K value)
+	public K setValue(final K value)
 	{
 		second = value;
 		return value;
 	}
 
 	@Override
-	public boolean equals(Object o)
+	public boolean equals(final Object o)
 	{
 		if (o == this)
 			return true;

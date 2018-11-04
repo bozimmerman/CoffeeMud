@@ -85,7 +85,7 @@ public class Dance_Polka extends Dance
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-3-getXLEVELLevel(invoker()));
 	}
 
-	public void show(MOB mob, int code, String text)
+	public void show(final MOB mob, final int code, final String text)
 	{
 		final CMMsg msg=CMClass.getMsg(mob,null,this,code,code,code,text);
 		if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))

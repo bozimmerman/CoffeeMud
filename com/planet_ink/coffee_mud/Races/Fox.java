@@ -45,7 +45,7 @@ public class Fox extends StdRace
 		super();
 		super.naturalAbilImmunities.add("Disease_PoisonIvy");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Fox");
 
 	@Override
@@ -183,7 +183,7 @@ public class Fox extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{

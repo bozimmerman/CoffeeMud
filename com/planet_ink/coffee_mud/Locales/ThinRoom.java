@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class ThinRoom implements Room
 {
 	@Override
@@ -69,13 +68,13 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public String displayText(MOB mob)
+	public String displayText(final MOB mob)
 	{
 		return "";
 	}
 
 	@Override
-	public String description(MOB mob)
+	public String description(final MOB mob)
 	{
 		return "";
 	}
@@ -99,7 +98,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void setSavable(boolean truefalse)
+	public void setSavable(final boolean truefalse)
 	{
 	}
 
@@ -122,7 +121,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void setRoomID(String newRoomID)
+	public void setRoomID(final String newRoomID)
 	{
 		roomID = newRoomID;
 	}
@@ -133,7 +132,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public String getContextName(Environmental E)
+	public String getContextName(final Environmental E)
 	{
 		return E == null ? "nothing" : E.name();
 	}
@@ -151,7 +150,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void setAtmosphere(int resourceCode)
+	public void setAtmosphere(final int resourceCode)
 	{
 	}
 
@@ -174,7 +173,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void setClimateType(int climate)
+	public void setClimateType(final int climate)
 	{
 	}
 
@@ -185,7 +184,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void setResource(int resourceCode)
+	public void setResource(final int resourceCode)
 	{
 	}
 
@@ -196,7 +195,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void toggleMobility(boolean onoff)
+	public void toggleMobility(final boolean onoff)
 	{
 	}
 
@@ -209,13 +208,13 @@ public class ThinRoom implements Room
 	private boolean	recurse	= false;
 
 	@Override
-	public boolean isHere(Environmental E)
+	public boolean isHere(final Environmental E)
 	{
 		return false;
 	}
 
 	@Override
-	public void setRawExit(int direction, Exit E)
+	public void setRawExit(final int direction, final Exit E)
 	{
 		if(E != null)
 			exits[direction]=E;
@@ -224,7 +223,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public Room prepareRoomInDir(Room R, int direction)
+	public Room prepareRoomInDir(final Room R, final int direction)
 	{
 		if(R==null)
 			return null;
@@ -278,7 +277,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void setExpirationDate(long time)
+	public void setExpirationDate(final long time)
 	{
 	}
 
@@ -288,17 +287,17 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void giveASky(int depth)
+	public void giveASky(final int depth)
 	{
 	}
 
 	@Override
 	public List<Room> getSky()
 	{
-		List<Room> skys = new Vector<Room>(0);
+		final List<Room> skys = new Vector<Room>(0);
 		return skys;
 	}
-	
+
 	@Override
 	public Area getArea()
 	{
@@ -306,13 +305,13 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void setArea(Area newArea)
+	public void setArea(final Area newArea)
 	{
 		myArea = newArea;
 	}
 
 	@Override
-	public void setGridParent(GridLocale room)
+	public void setGridParent(final GridLocale room)
 	{
 	}
 
@@ -329,7 +328,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public Exit getRawExit(int dir)
+	public Exit getRawExit(final int dir)
 	{
 		if(dir<exits.length)
 			return exits[dir];
@@ -337,25 +336,25 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public Exit getReverseExit(int direction)
+	public Exit getReverseExit(final int direction)
 	{
 		return null;
 	}
 
 	@Override
-	public Exit getPairedExit(int direction)
+	public Exit getPairedExit(final int direction)
 	{
 		return null;
 	}
 
 	@Override
-	public Room getRoomInDir(int direction)
+	public Room getRoomInDir(final int direction)
 	{
 		return null;
 	}
 
 	@Override
-	public Exit getExitInDir(int direction)
+	public Exit getExitInDir(final int direction)
 	{
 		return null;
 	}
@@ -373,116 +372,116 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void send(MOB source, CMMsg msg)
+	public void send(final MOB source, final CMMsg msg)
 	{
 	}
 
 	@Override
-	public void sendOthers(MOB source, CMMsg msg)
+	public void sendOthers(final MOB source, final CMMsg msg)
 	{
 	}
 
 	@Override
-	public void showHappens(int allCode, String allMessage)
+	public void showHappens(final int allCode, final String allMessage)
 	{
 	}
 
 	@Override
-	public void showHappens(int allCode, Environmental like, String allMessage)
+	public void showHappens(final int allCode, final Environmental like, final String allMessage)
 	{
 	}
 
 	@Override
-	public boolean show(MOB source,
-						Environmental target,
-						int allCode,
-						String allMessage)
+	public boolean show(final MOB source,
+						final Environmental target,
+						final int allCode,
+						final String allMessage)
 	{
 		return true;
 	}
-	
+
 	@Override
-	public boolean show(MOB source,
-						Environmental target,
-						Environmental tool,
-						int allCode,
-						String allMessage)
+	public boolean show(final MOB source,
+						final Environmental target,
+						final Environmental tool,
+						final int allCode,
+						final String allMessage)
 	{
 		return true;
 	}
-	
+
 	@Override
-	public boolean show(MOB source,
-						Environmental target,
-						Environmental tool,
-						int srcCode,
-						int tarCode,
-						int othCode,
-						String allMessage)
+	public boolean show(final MOB source,
+						final Environmental target,
+						final Environmental tool,
+						final int srcCode,
+						final int tarCode,
+						final int othCode,
+						final String allMessage)
 	{
 		return true;
 	}
-	
+
 	@Override
-	public boolean show(MOB source,
-						Environmental target,
-						Environmental tool,
-						int srcCode,
-						String srcMessage,
-						int tarCode,
-						String tarMessage,
-						int othCode,
-						String othMessage)
+	public boolean show(final MOB source,
+						final Environmental target,
+						final Environmental tool,
+						final int srcCode,
+						final String srcMessage,
+						final int tarCode,
+						final String tarMessage,
+						final int othCode,
+						final String othMessage)
 	{
 		return true;
 	}
-	
+
 	@Override
-	public boolean show(MOB source,
-						Environmental target,
-						Environmental tool,
-						int allCode,
-						String srcMessage,
-						String tarMessage,
-						String othMessage)
+	public boolean show(final MOB source,
+						final Environmental target,
+						final Environmental tool,
+						final int allCode,
+						final String srcMessage,
+						final String tarMessage,
+						final String othMessage)
 	{
 		return true;
 	}
-	
+
 	@Override
-	public boolean showOthers(MOB source,
-							  Environmental target,
-							  int allCode,
-							  String allMessage)
+	public boolean showOthers(final MOB source,
+							  final Environmental target,
+							  final int allCode,
+							  final String allMessage)
 	{
 		return true;
 	}
-	
+
 	@Override
-	public boolean showSource(MOB source,
-							  Environmental target,
-							  int allCode,
-							  String allMessage)
+	public boolean showSource(final MOB source,
+							  final Environmental target,
+							  final int allCode,
+							  final String allMessage)
 	{
 		return true;
 	}
-	
+
 	@Override
-	public boolean showOthers(MOB source,
-							  Environmental target,
-							  Environmental tool,
-							  int allCode,
-							  String allMessage)
+	public boolean showOthers(final MOB source,
+							  final Environmental target,
+							  final Environmental tool,
+							  final int allCode,
+							  final String allMessage)
 	{
 		return true;
 	}
-	
+
 	@Override
-	public boolean showSource(MOB source,
-							  Environmental target,
-							  Environmental tool,
-							  int allCode,
-							  String allMessage)
+	public boolean showSource(final MOB source,
+							  final Environmental target,
+							  final Environmental tool,
+							  final int allCode,
+							  final String allMessage)
 	{
 		return true;
 	}
@@ -493,13 +492,13 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public MOB fetchInhabitant(String inhabitantID)
+	public MOB fetchInhabitant(final String inhabitantID)
 	{
 		return null;
 	}
 
 	@Override
-	public MOB fetchInhabitantExact(String inhabitantID)
+	public MOB fetchInhabitantExact(final String inhabitantID)
 	{
 		return null;
 	}
@@ -511,23 +510,23 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public List<MOB> fetchInhabitants(String inhabitantID)
+	public List<MOB> fetchInhabitants(final String inhabitantID)
 	{
 		return new Vector<MOB>(1);
 	}
 
 	@Override
-	public void addInhabitant(MOB mob)
+	public void addInhabitant(final MOB mob)
 	{
 	}
 
 	@Override
-	public void delInhabitant(MOB mob)
+	public void delInhabitant(final MOB mob)
 	{
 	}
 
 	@Override
-	public void delAllInhabitants(boolean destroy)
+	public void delAllInhabitants(final boolean destroy)
 	{
 	}
 
@@ -538,7 +537,7 @@ public class ThinRoom implements Room
 	}
 
 	private static final Enumeration<MOB> emptyMobs = new EmptyEnumeration<MOB>();
-	
+
 	@Override
 	public Enumeration<MOB> inhabitants()
 	{
@@ -546,13 +545,13 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public boolean isInhabitant(MOB mob)
+	public boolean isInhabitant(final MOB mob)
 	{
 		return false;
 	}
 
 	@Override
-	public MOB fetchInhabitant(int i)
+	public MOB fetchInhabitant(final int i)
 	{
 		return null;
 	}
@@ -563,28 +562,28 @@ public class ThinRoom implements Room
 		return 0;
 	}
 
-	public MOB fetchPCInhabitant(int i)
+	public MOB fetchPCInhabitant(final int i)
 	{
 		return null;
 	}
 
 	@Override
-	public void bringMobHere(MOB mob, boolean andFollowers)
+	public void bringMobHere(final MOB mob, final boolean andFollowers)
 	{
 	}
 
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 	}
 
 	@Override
-	public void setDescription(String newDescription)
+	public void setDescription(final String newDescription)
 	{
 	}
 
 	@Override
-	public void setDisplayText(String newDisplayText)
+	public void setDisplayText(final String newDisplayText)
 	{
 	}
 
@@ -601,33 +600,33 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void setImage(String newImage)
+	public void setImage(final String newImage)
 	{
 	}
 
 	@Override
-	public String name(MOB viewerMob)
+	public String name(final MOB viewerMob)
 	{
 		return name();
 	}
 
 	@Override
-	public void addItem(Item item)
+	public void addItem(final Item item)
 	{
 	}
 
 	@Override
-	public void addItem(Item item, Expire expire)
+	public void addItem(final Item item, final Expire expire)
 	{
 	}
 
 	@Override
-	public void delItem(Item item)
+	public void delItem(final Item item)
 	{
 	}
 
 	@Override
-	public void delAllItems(boolean destroy)
+	public void delAllItems(final boolean destroy)
 	{
 	}
 
@@ -638,19 +637,19 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public boolean isContent(Item item)
+	public boolean isContent(final Item item)
 	{
 		return false;
 	}
 
 	@Override
-	public Item findItem(Item goodLocation, String itemID)
+	public Item findItem(final Item goodLocation, final String itemID)
 	{
 		return null;
 	}
 
 	@Override
-	public Item getItem(int i)
+	public Item getItem(final int i)
 	{
 		return null;
 	}
@@ -667,110 +666,110 @@ public class ThinRoom implements Room
 	}
 
 	private static final Enumeration<Item> emptyItems = new EmptyEnumeration<Item>();
-	
+
 	@Override
 	public Enumeration<Item> items()
 	{
 		return emptyItems;
 	}
 
-	public Item getItem(String s)
+	public Item getItem(final String s)
 	{
 		return null;
 	}
 
-	public Item getItem(Item goodLocation, String s)
-	{
-		return null;
-	}
-
-	@Override
-	public Item findItem(String itemID)
+	public Item getItem(final Item goodLocation, final String s)
 	{
 		return null;
 	}
 
 	@Override
-	public void moveItemTo(Item item, Expire expire, Move... moveFlags)
+	public Item findItem(final String itemID)
+	{
+		return null;
+	}
+
+	@Override
+	public void moveItemTo(final Item item, final Expire expire, final Move... moveFlags)
 	{
 	}
 
 	@Override
-	public void moveItemTo(Item container)
+	public void moveItemTo(final Item container)
 	{
 	}
 
 	@Override
-	public List<Item> findItems(String itemID)
+	public List<Item> findItems(final String itemID)
 	{
 		return new Vector<Item>(1);
 	}
 
 	@Override
-	public List<Item> findItems(Item goodLocation, String itemID)
+	public List<Item> findItems(final Item goodLocation, final String itemID)
 	{
 		return new Vector<Item>(1);
 	}
 
 	@Override
-	public Exit fetchExit(String thingName)
+	public Exit fetchExit(final String thingName)
 	{
 		return null;
 	}
 
 	@Override
-	public PhysicalAgent fetchFromRoomFavorExits(String thingName)
+	public PhysicalAgent fetchFromRoomFavorExits(final String thingName)
 	{
 		return null;
 	}
 
 	@Override
-	public PhysicalAgent fetchFromRoomFavorItems(Item goodLocation, String thingName)
+	public PhysicalAgent fetchFromRoomFavorItems(final Item goodLocation, final String thingName)
 	{
 		return null;
 	}
 
 	@Override
-	public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter)
+	public PhysicalAgent fetchFromMOBRoomItemExit(final MOB mob, final Item goodLocation, final String thingName, final Filterer<Environmental> filter)
 	{
 		return null;
 	}
 
 	@Override
-	public PhysicalAgent fetchFromRoomFavorMOBs(Item goodLocation, String thingName)
+	public PhysicalAgent fetchFromRoomFavorMOBs(final Item goodLocation, final String thingName)
 	{
 		return null;
 	}
 
 	@Override
-	public PhysicalAgent fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter)
+	public PhysicalAgent fetchFromMOBRoomFavorsItems(final MOB mob, final Item goodLocation, final String thingName, final Filterer<Environmental> filter)
 	{
 		return null;
 	}
 
 	@Override
-	public PhysicalAgent fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, Filterer<Environmental> filter)
+	public PhysicalAgent fetchFromMOBRoomFavorsMOBs(final MOB mob, final Item goodLocation, final String thingName, final Filterer<Environmental> filter)
 	{
 		return null;
 	}
 
 	@Override
-	public void addEffect(Ability to)
+	public void addEffect(final Ability to)
 	{
 	}
 
 	@Override
-	public void addNonUninvokableEffect(Ability to)
+	public void addNonUninvokableEffect(final Ability to)
 	{
 	}
 
 	@Override
-	public void delEffect(Ability to)
+	public void delEffect(final Ability to)
 	{
 	}
 
 	@Override
-	public void delAllEffects(boolean unInvoke)
+	public void delAllEffects(final boolean unInvoke)
 	{
 	}
 
@@ -786,7 +785,7 @@ public class ThinRoom implements Room
 	}
 
 	private static final Enumeration<Ability> emptyEffects = new EmptyEnumeration<Ability>();
-	
+
 	@Override
 	public Enumeration<Ability> effects()
 	{
@@ -794,24 +793,24 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public Ability fetchEffect(int index)
+	public Ability fetchEffect(final int index)
 	{
 		return null;
 	}
 
 	@Override
-	public Ability fetchEffect(String ID)
+	public Ability fetchEffect(final String ID)
 	{
 		return null;
 	}
 
 	@Override
-	public void addBehavior(Behavior to)
+	public void addBehavior(final Behavior to)
 	{
 	}
 
 	@Override
-	public void delBehavior(Behavior to)
+	public void delBehavior(final Behavior to)
 	{
 	}
 
@@ -827,7 +826,7 @@ public class ThinRoom implements Room
 	}
 
 	private static final Enumeration<Behavior> emptyBehaviors = new EmptyEnumeration<Behavior>();
-	
+
 	@Override
 	public Enumeration<Behavior> behaviors()
 	{
@@ -835,7 +834,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public Behavior fetchBehavior(int index)
+	public Behavior fetchBehavior(final int index)
 	{
 		return null;
 	}
@@ -846,18 +845,18 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public Behavior fetchBehavior(String ID)
+	public Behavior fetchBehavior(final String ID)
 	{
 		return null;
 	}
 
 	@Override
-	public void addScript(ScriptingEngine S)
+	public void addScript(final ScriptingEngine S)
 	{
 	}
 
 	@Override
-	public void delScript(ScriptingEngine S)
+	public void delScript(final ScriptingEngine S)
 	{
 	}
 
@@ -873,7 +872,7 @@ public class ThinRoom implements Room
 	}
 
 	private static final Enumeration<ScriptingEngine> emptyScripts = new EmptyEnumeration<ScriptingEngine>();
-	
+
 	@Override
 	public Enumeration<ScriptingEngine> scripts()
 	{
@@ -881,7 +880,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public ScriptingEngine fetchScript(int x)
+	public ScriptingEngine fetchScript(final int x)
 	{
 		return null;
 	}
@@ -934,7 +933,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -945,7 +944,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{
@@ -1017,7 +1016,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void setBasePhyStats(PhyStats newStats)
+	public void setBasePhyStats(final PhyStats newStats)
 	{
 	}
 
@@ -1042,7 +1041,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 	}
 
@@ -1069,7 +1068,7 @@ public class ThinRoom implements Room
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 	}
 
@@ -1091,13 +1090,13 @@ public class ThinRoom implements Room
 		return true;
 	}
 
-	@Override 
+	@Override
 	public int getCombatTurnMobIndex()
 	{
 		return 0;
 	}
 
-	@Override 
+	@Override
 	public void setCombatTurnMobIndex(final int index)
 	{
 	}

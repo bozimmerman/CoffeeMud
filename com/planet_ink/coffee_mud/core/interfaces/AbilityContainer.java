@@ -80,7 +80,7 @@ public interface AbilityContainer
 	 * @return a random Ability
 	 */
 	public Ability fetchRandomAbility();
-	
+
 	/**
 	 * Returns an enumerator of the Ability objects in this container.
 	 * Any extraneous abilities bestowed from other sources will NOT

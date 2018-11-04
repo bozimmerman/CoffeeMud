@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_HighJump extends StdSkill
 {
 	@Override
@@ -101,7 +100,7 @@ public class Skill_HighJump extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Room R=mob.location();
 		if(R==null)
@@ -152,7 +151,7 @@ public class Skill_HighJump extends StdSkill
 		}
 		else
 			targetName = CMLib.directions().getDirectionName(dirCode);
-		
+
 		if(dirCode<0)
 		{
 			mob.tell(L("Jump where?"));
@@ -166,20 +165,20 @@ public class Skill_HighJump extends StdSkill
 			mob.tell(L("You can't jump that way."));
 			return false;
 		}
-		
+
 		if(CMLib.flags().isSitting(mob)
 		||CMLib.flags().isSleeping(mob))
 		{
 			mob.tell(L("You need to stand up first!"));
 			return false;
 		}
-		
+
 		if(mob.riding()!=null)
 		{
 			mob.tell(L("You need to get off @x1 first.",mob.riding().name(mob)));
 			return false;
 		}
-		
+
 		if((mob.charStats().getBodyPart(Race.BODY_LEG)==0)
 		||(mob.charStats().getBodyPart(Race.BODY_FOOT)==0)
 		||CMLib.flags().isFalling(mob))
@@ -187,7 +186,7 @@ public class Skill_HighJump extends StdSkill
 			mob.tell(L("You can't seem to jump right now."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -196,14 +195,14 @@ public class Skill_HighJump extends StdSkill
 		int jumps=1;
 		if((target==null)&&(dirCode>=0))
 			jumps+=(int)Math.round(super.getXLEVELLevel(mob)/2.5);
-		
+
 		for(int j=0;j<jumps;j++)
-		{ 
+		{
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
 				success=proficiencyCheck(mob,0,auto);
-	
+
 				if(mob.fetchEffect(ID())==null)
 				{
 					final Ability A=(Ability)this.copyOf();

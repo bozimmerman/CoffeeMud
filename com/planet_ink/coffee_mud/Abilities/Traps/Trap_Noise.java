@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Trap_Noise extends StdTrap
 {
 	@Override
@@ -74,7 +73,7 @@ public class Trap_Noise extends StdTrap
 	}
 
 	@Override
-	public void spring(MOB target)
+	public void spring(final MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{

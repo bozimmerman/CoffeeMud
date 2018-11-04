@@ -17,5 +17,4 @@ package com.planet_ink.coffee_mud.core.collections;
 public interface Converter<K, L>
 {
 	public L convert(K obj);
-
 }

@@ -21,7 +21,7 @@ import com.planet_ink.coffee_web.util.RequestStats;
 */
 
 /**
- * Interface for a manager of active sessions, which are mapped by 
+ * Interface for a manager of active sessions, which are mapped by
  * their root context.
  * @author Bo Zimmerman
  *
@@ -35,7 +35,7 @@ public interface SimpleServletManager
 	 * @param servletClass the class of the servlet
 	 */
 	public void registerServlet(String context, Class<? extends SimpleServlet> servletClass);
-	
+
 	/**
 	 * For anyone externally interested, will return the list of servlet classes
 	 * that are registered

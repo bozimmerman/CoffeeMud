@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Sneak extends ThiefSkill
 {
 	@Override
@@ -88,7 +87,7 @@ public class Thief_Sneak extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0)
@@ -107,7 +106,7 @@ public class Thief_Sneak extends ThiefSkill
 				{
 					if(target instanceof Exit) // it's a portal .. so we just assume you can climb "in" it
 					{
-						
+
 					}
 					else
 					if(((Rideable)target).rideBasis()!=Rideable.RIDEABLE_LADDER)
@@ -132,7 +131,7 @@ public class Thief_Sneak extends ThiefSkill
 				target = null; // it's an ordinary exit
 			}
 		}
-		
+
 		if((dirCode<0)&&(!(target instanceof Rideable)))
 		{
 			mob.tell(L("Sneak where?"));

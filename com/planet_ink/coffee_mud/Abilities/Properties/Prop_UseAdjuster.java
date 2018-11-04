@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_UseAdjuster extends Prop_Adjuster implements ArchonOnly
 {
 	@Override
@@ -60,18 +59,18 @@ public class Prop_UseAdjuster extends Prop_Adjuster implements ArchonOnly
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 		// super important that nothing is done here, to kill prop_haveadjuster
 	}
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectedStats)
 	{
 		// super important that nothing is done here, to kill prop_haveadjuster
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMOB, CharState affectedState)
+	public void affectCharState(final MOB affectedMOB, final CharState affectedState)
 	{
 		// super important that nothing is done here, to kill prop_haveadjuster
 	}
@@ -97,9 +96,9 @@ public class Prop_UseAdjuster extends Prop_Adjuster implements ArchonOnly
 
 	protected volatile boolean processing = false;
 	protected boolean reversed = false;
-	
+
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		if((parameters != null)
@@ -111,8 +110,8 @@ public class Prop_UseAdjuster extends Prop_Adjuster implements ArchonOnly
 		}
 		parameters=CMLib.masking().separateMaskStrs(text());
 	}
-	
-	public void adjCharState(final MOB mob, Object[] changes, CharState charState)
+
+	public void adjCharState(final MOB mob, final Object[] changes, final CharState charState)
 	{
 		if(changes==null)
 			return;

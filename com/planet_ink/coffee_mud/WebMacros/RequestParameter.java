@@ -62,7 +62,7 @@ public class RequestParameter extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		String str="";
 		final java.util.Map<String,String> parms=parseParms(parm);

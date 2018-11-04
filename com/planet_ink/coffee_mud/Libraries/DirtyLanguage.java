@@ -45,7 +45,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	protected String language="en";
 	protected String country="TX";
 	protected Locale currentLocale=null;
-	
+
 	private enum Command
 	{
 		REPLACE,
@@ -59,7 +59,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	}
 
 	@Override
-	public void setLocale(String lang, String state)
+	public void setLocale(final String lang, final String state)
 	{
 		if((lang!=null)&&(state!=null)&&(lang.length()>0)&&(state.length()>0))
 		{
@@ -76,7 +76,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		setLocale(CMLib.props().getStr("LANGUAGE"),CMLib.props().getStr("COUNTRY"));
 	}
 
-	public String replaceWithDefinitions(DVector global, DVector local, String str)
+	public String replaceWithDefinitions(final DVector global, final DVector local, String str)
 	{
 		for(int v=0;v<local.size();v++)
 			str=CMStrings.replaceAll(str,(String)local.elementAt(v,1),(String)local.elementAt(v,2));
@@ -85,7 +85,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return str;
 	}
 
-	protected String filterString(String str)
+	protected String filterString(final String str)
 	{
 		final StringBuffer buf=new StringBuffer(str);
 		for(int i=0;i<buf.length();i++)
@@ -118,7 +118,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return buf.toString();
 	}
 
-	protected String unFilterString(String str)
+	protected String unFilterString(final String str)
 	{
 		final StringBuffer buf=new StringBuffer(str);
 		for(int i=0;i<buf.length()-1;i++)
@@ -147,7 +147,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return buf.toString();
 	}
 
-	protected Hashtable<String,DVector> loadFileSections(String filename)
+	protected Hashtable<String,DVector> loadFileSections(final String filename)
 	{
 		final Hashtable<String,DVector> parserSections=new Hashtable<String,DVector>();
 		final CMFile F=new CMFile(filename,null,CMFile.FLAG_FORCEALLOW);
@@ -163,7 +163,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		final DVector globalDefinitions=new DVector(2);
 		final DVector localDefinitions=new DVector(2);
 		Hashtable<String,String> currentSectionReplaceStrs=new Hashtable<String,String>();
-		Hashtable<String,String> currentSectionReplaceExactStrs=new Hashtable<String,String>();
+		final Hashtable<String,String> currentSectionReplaceExactStrs=new Hashtable<String,String>();
 		HashSet<String> currentSectionIgnoreStrs=new HashSet<String>();
 		final DVector sectionIndexes=new DVector(2);
 		final DVector wholeFile=new DVector(2);
@@ -293,7 +293,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 					Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1));
 					continue;
 				}
-				String expression=unFilterString(s.substring(regstart+1,regend));
+				final String expression=unFilterString(s.substring(regstart+1,regend));
 				s=s.substring(regend+1).trim();
 				if(!s.toUpperCase().startsWith("WITH"))
 				{
@@ -450,7 +450,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public DVector getLanguageParser(String parser)
+	public DVector getLanguageParser(final String parser)
 	{
 		final String parserKey=getLanguageParserKey();
 		Hashtable<String,DVector> parserSections=(Hashtable<String,DVector>)Resources.getResource(parserKey);
@@ -466,7 +466,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public DVector getLanguageTranslator(String parser)
+	public DVector getLanguageTranslator(final String parser)
 	{
 		final String translatorKey=getLanguageTranslatorKey();
 		Hashtable<String,DVector> translationSections=(Hashtable<String,DVector>)Resources.getResource(translatorKey);
@@ -489,7 +489,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		Resources.removeResource(parserKey);
 	}
 
-	public boolean insertExpansion(List<String> MORE_CMDS, String str, int m, int strLen, boolean nothingDone)
+	public boolean insertExpansion(final List<String> MORE_CMDS, final String str, final int m, final int strLen, boolean nothingDone)
 	{
 		final List<String> expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),'\n',false);
 		MORE_CMDS.set(m,expansion.get(0));
@@ -512,7 +512,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<List<String>> preCommandParser(List<String> CMDS)
+	public List<List<String>> preCommandParser(final List<String> CMDS)
 	{
 		final List<String> MORE_CMDS=new Vector<String>();
 		final String combinedWithTabs=CMParms.combineWithTabs(CMDS,0);
@@ -651,7 +651,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	}
 
 	@SuppressWarnings("unchecked")
-	protected String basicParser(String str, String section, boolean nullIfLonger, boolean isParser)
+	protected String basicParser(String str, final String section, final boolean nullIfLonger, final boolean isParser)
 	{
 		if(str==null)
 			return null;
@@ -767,7 +767,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		return str.length()>=oldStr.length()?null:str;
 	}
 
-	public void addAutoIgnoredString(String str, DVector fileData, DVector fileIndexes, String sectionName)
+	public void addAutoIgnoredString(String str, final DVector fileData, final DVector fileIndexes, final String sectionName)
 	{
 		if((fileData==null)||(str==null)||(fileData.size()<1))
 			return;
@@ -798,38 +798,38 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	}
 
 	@Override
-	public String preItemParser(String item)
+	public String preItemParser(final String item)
 	{
 		return basicParser(item,"ITEM-PRE-PROCESSOR",true,true);
 	}
 
 	@Override
-	public String failedItemParser(String item)
+	public String failedItemParser(final String item)
 	{
 		return basicParser(item,"ITEM-FAIL-PROCESSOR",true,true);
 	}
 
 	@Override
-	public String rawInputParser(String words)
+	public String rawInputParser(final String words)
 	{
 		final String parsed = basicParser(words,"RAW-INPUT-PROCESSOR",true,true);
 		return (parsed==null)?words:parsed;
 	}
 
 	@Override
-	public String filterTranslation(String item)
+	public String filterTranslation(final String item)
 	{
 		return basicParser(item,"FILTER-TRANSLATION",false,false);
 	}
 
 	@Override
-	public String sessionTranslation(String item)
+	public String sessionTranslation(final String item)
 	{
 		return basicParser(item,"SESSION-TRANSLATION",false,false);
 	}
 
 	@Override
-	public String finalTranslation(String item)
+	public String finalTranslation(final String item)
 	{
 		return basicParser(item,"FINAL-TRANSLATION",false,false);
 	}
@@ -867,7 +867,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 		final String commandStr=basicParser(str,"COMMAND-WORD-PROCESSOR",false,true);
 		return (commandStr==null)?str:commandStr;
 	}
-	
+
 	@Override
 	public String L(final String str, final String ... xs)
 	{

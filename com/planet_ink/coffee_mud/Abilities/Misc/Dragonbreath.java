@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Dragonbreath extends StdAbility
 {
 	@Override
@@ -118,7 +117,7 @@ public class Dragonbreath extends StdAbility
 	private static final String[]	triggerStrings	= I(new String[] { "DRAGONBREATH" });
 
 	protected boolean lesser = false;
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -126,15 +125,15 @@ public class Dragonbreath extends StdAbility
 		if((affected instanceof MOB)&&(!CMLib.flags().canBreatheThis((MOB)affected, RawMaterial.RESOURCE_DUST)))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
 	}
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
-		List<String> parms = CMParms.parse(newMiscText.toUpperCase().trim());
+		final List<String> parms = CMParms.parse(newMiscText.toUpperCase().trim());
 		lesser = parms.contains("LESSER");
 		super.setMiscText(newMiscText);
 	}
-	
+
 	@Override
 	public String[] triggerStrings()
 	{
@@ -191,7 +190,7 @@ public class Dragonbreath extends StdAbility
 		}
 		return colorc;
 	}
-	
+
 	@Override
 	public long flags()
 	{
@@ -221,7 +220,7 @@ public class Dragonbreath extends StdAbility
 			return super.flags() | Ability.FLAG_FIREBASED;
 		}
 	}
-	
+
 	private final static String[][] DragonColors={
 		{"WHITE","c"},
 		{"BLACK","a"},
@@ -236,7 +235,7 @@ public class Dragonbreath extends StdAbility
 	};
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
@@ -255,7 +254,7 @@ public class Dragonbreath extends StdAbility
 			return false;
 		}
 		this.setInvoker(mob);
-		char colorc = getBreathColor(mob);
+		final char colorc = getBreathColor(mob);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -381,7 +380,7 @@ public class Dragonbreath extends StdAbility
 
 						if(colorc == 'd')
 						{
-							int ticks = 2 + ((getX1Level(mob)+getXLEVELLevel(mob))/4);
+							final int ticks = 2 + ((getX1Level(mob)+getXLEVELLevel(mob))/4);
 							if(msg.value()<=0)
 								maliciousAffect(mob, target, asLevel, ticks, strikeType);
 						}

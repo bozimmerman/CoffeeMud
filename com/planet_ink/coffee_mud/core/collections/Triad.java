@@ -21,7 +21,7 @@ public class Triad<T, K, L> extends Pair<T, K>
 {
 	public L	third;
 
-	public Triad(T frst, K scnd, L thrd)
+	public Triad(final T frst, final K scnd, final L thrd)
 	{
 		super(frst, scnd);
 		third = thrd;
@@ -30,7 +30,7 @@ public class Triad<T, K, L> extends Pair<T, K>
 	public static final class FirstConverter<T, K, L> implements Converter<Triad<T, K, L>, T>
 	{
 		@Override
-		public T convert(Triad<T, K, L> obj)
+		public T convert(final Triad<T, K, L> obj)
 		{
 			return obj.first;
 		}
@@ -39,7 +39,7 @@ public class Triad<T, K, L> extends Pair<T, K>
 	public static final class SecondConverter<T, K, L> implements Converter<Triad<T, K, L>, K>
 	{
 		@Override
-		public K convert(Triad<T, K, L> obj)
+		public K convert(final Triad<T, K, L> obj)
 		{
 			return obj.second;
 		}
@@ -48,14 +48,14 @@ public class Triad<T, K, L> extends Pair<T, K>
 	public static final class ThirdConverter<T, K, L> implements Converter<Triad<T, K, L>, L>
 	{
 		@Override
-		public L convert(Triad<T, K, L> obj)
+		public L convert(final Triad<T, K, L> obj)
 		{
 			return obj.third;
 		}
 	}
 
 	@Override
-	public boolean equals(Object o)
+	public boolean equals(final Object o)
 	{
 		if (o == this)
 			return true;

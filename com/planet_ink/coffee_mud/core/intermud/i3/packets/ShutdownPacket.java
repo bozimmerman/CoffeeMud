@@ -41,7 +41,7 @@ public class ShutdownPacket extends Packet
 		type = Packet.SHUTDOWN;
 	}
 
-	public ShutdownPacket(Vector<?> v)
+	public ShutdownPacket(final Vector<?> v)
 	{
 		super(v);
 		type = Packet.SHUTDOWN;

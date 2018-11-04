@@ -41,15 +41,15 @@ import java.util.concurrent.atomic.*;
 */
 public class Listen extends CM1Command
 {
-	@Override 
+	@Override
 	public String getCommandWord()
-	{ 
+	{
 		return "LISTEN";
 	}
-	
+
 	protected static SLinkedList<Listener> listeners=new SLinkedList<Listener>();
 
-	protected static enum STATTYPE 
+	protected static enum STATTYPE
 	{
 		CHANNEL,
 		LOGINS,
@@ -70,12 +70,12 @@ public class Listen extends CM1Command
 		OTHERSMASK
 	}
 
-	public Listen(RequestHandler req, String parameters)
+	public Listen(final RequestHandler req, final String parameters)
 	{
 		super(req, parameters);
 	}
 
-	protected void sendMsg(Listener listener, String msg) throws IOException
+	protected void sendMsg(final Listener listener, final String msg) throws IOException
 	{
 		req.sendMsg("[MESSAGE "+listener.channelName+": "+msg+"]");
 	}
@@ -86,7 +86,7 @@ public class Listen extends CM1Command
 		public final Environmental obj;
 		public final String parm;
 		public final int parmInt;
-		public ListenCriterium(STATTYPE statType, Environmental obj, String parm)
+		public ListenCriterium(final STATTYPE statType, final Environmental obj, final String parm)
 		{
 			this.statType=statType;
 			this.obj=obj;
@@ -131,7 +131,7 @@ public class Listen extends CM1Command
 		private final ListenCriterium crits[];
 		public final List<String> msgs=new LinkedList<String>();
 
-		public Listener(String channelName, ListenCriterium[] crits)
+		public Listener(final String channelName, final ListenCriterium[] crits)
 		{
 			this.channelName=channelName.toUpperCase().trim();
 			this.crits=crits;
@@ -144,37 +144,37 @@ public class Listen extends CM1Command
 			case CHANNEL:
 				return (msg.othersMajor(CMMsg.MASK_CHANNEL))
 					&& (crit.parmInt==(msg.othersMinor()-CMMsg.TYP_CHANNEL));
-			case LOGINS: 
+			case LOGINS:
 				return (msg.othersMinor()==CMMsg.TYP_LOGIN)||(msg.othersMinor()==CMMsg.TYP_QUIT);
-			case MOB: 
+			case MOB:
 				return msg.source()==crit.obj;
-			case ROOM: 
+			case ROOM:
 				return room==crit.obj;
-			case AREA: 
+			case AREA:
 				return room.getArea()==crit.obj;
-			case PLAYER: 
+			case PLAYER:
 				return ((MOB)crit.obj).location()==room;
-			case ABILITY: 
+			case ABILITY:
 				return msg.tool()==crit.obj;
-			case ITEM: 
+			case ITEM:
 				return (msg.target()==crit.obj);
-			case TARGET: 
+			case TARGET:
 				return (msg.target()==crit.obj);
-			case SOURCE: 
+			case SOURCE:
 				return (msg.source()==crit.obj);
-			case TOOL: 
+			case TOOL:
 				return (msg.tool()==crit.obj);
-			case SOURCECODE: 
+			case SOURCECODE:
 				return msg.sourceMinor()==crit.parmInt;
-			case TARGETCODE: 
+			case TARGETCODE:
 				return msg.targetMinor()==crit.parmInt;
-			case OTHERSCODE: 
+			case OTHERSCODE:
 				return msg.othersMinor()==crit.parmInt;
-			case SOURCEMASK: 
+			case SOURCEMASK:
 				return msg.sourceMajor(crit.parmInt);
-			case TARGETMASK: 
+			case TARGETMASK:
 				return msg.targetMajor(crit.parmInt);
-			case OTHERSMASK: 
+			case OTHERSMASK:
 				return msg.othersMajor(crit.parmInt);
 			}
 			return false;
@@ -190,7 +190,7 @@ public class Listen extends CM1Command
 			return true;
 		}
 
-		private String minorDesc(int code)
+		private String minorDesc(final int code)
 		{
 			String desc = CMMsg.Desc.getMSGDESC_TYPES().get(Integer.valueOf(code));
 			if(desc==null)
@@ -232,7 +232,7 @@ public class Listen extends CM1Command
 		}
 
 		@Override
-		public void monitorMsg(Room room, CMMsg msg)
+		public void monitorMsg(final Room room, final CMMsg msg)
 		{
 			try
 			{
@@ -248,7 +248,7 @@ public class Listen extends CM1Command
 		}
 	}
 
-	public boolean securityCheck(MOB user, ListenCriterium crit)
+	public boolean securityCheck(final MOB user, final ListenCriterium crit)
 	{
 		switch(crit.statType)
 		{
@@ -273,7 +273,7 @@ public class Listen extends CM1Command
 			if(crit.parmInt<0)
 				return false;
 			return true;
-		case PLAYER:  
+		case PLAYER:
 			return CMSecurity.isAllowedEverywhere(user, CMSecurity.SecFlag.CMDPLAYERS);
 		case MOB:
 		case ROOM:
@@ -288,7 +288,7 @@ public class Listen extends CM1Command
 		}
 	}
 
-	public boolean parameterCheck(MOB user, ListenCriterium crit)
+	public boolean parameterCheck(final MOB user, final ListenCriterium crit)
 	{
 		switch(crit.statType)
 		{
@@ -307,23 +307,23 @@ public class Listen extends CM1Command
 			if(crit.parmInt<0)
 				return false;
 			return true;
-		case MOB: 
+		case MOB:
 			return (crit.obj instanceof MOB)&&(!CMLib.players().playerExists(crit.obj.Name()));
-		case ROOM:  
+		case ROOM:
 			return crit.obj instanceof Room;
-		case AREA:  
+		case AREA:
 			return crit.obj instanceof Area;
-		case PLAYER:  
+		case PLAYER:
 			return (crit.obj instanceof MOB)&&(CMLib.players().playerExists(crit.obj.Name()));
-		case ABILITY: 
+		case ABILITY:
 			return crit.obj instanceof Ability;
-		case ITEM:  
+		case ITEM:
 			return crit.obj instanceof Item;
-		case TARGET: 
+		case TARGET:
 			return crit.obj != null;
-		case SOURCE:  
+		case SOURCE:
 			return (crit.obj instanceof MOB)&&(!CMLib.players().playerExists(crit.obj.Name()));
-		case TOOL:  
+		case TOOL:
 			return crit.obj != null;
 		default:
 			return true;
@@ -459,13 +459,13 @@ public class Listen extends CM1Command
 
 	// depends on what you want to listen to
 	@Override
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	public boolean passesSecurityCheck(final MOB user, final PhysicalAgent target)
 	{
 		return (user != null);
 	}
 
 	@Override
-	public String getHelp(MOB user, PhysicalAgent target, String rest)
+	public String getHelp(final MOB user, final PhysicalAgent target, final String rest)
 	{
 		return "USAGE: "+getCommandWord()+" <"+getCommandWord()+"ER NAME> "+CMParms.toListString(STATTYPE.values());
 	}

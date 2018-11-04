@@ -111,7 +111,7 @@ public class Minstrel extends StdCharClass
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -232,7 +232,7 @@ public class Minstrel extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
@@ -260,7 +260,7 @@ public class Minstrel extends StdCharClass
 	}
 
 	@Override
-	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
+	protected boolean weaponCheck(final MOB mob, final int sourceCode, final Environmental E)
 	{
 		if(E instanceof MusicalInstrument)
 			return true;
@@ -276,10 +276,10 @@ public class Minstrel extends StdCharClass
 	}
 
 	@SuppressWarnings("unchecked")
-	private final Pair<String, Integer>[] minimumStatRequirements = new Pair[] 
-	{ 
-			new Pair<String, Integer>("Charisma", Integer.valueOf(9)), 
-			new Pair<String, Integer>("Intelligence", Integer.valueOf(9)) 
+	private final Pair<String, Integer>[] minimumStatRequirements = new Pair[]
+	{
+			new Pair<String, Integer>("Charisma", Integer.valueOf(9)),
+			new Pair<String, Integer>("Intelligence", Integer.valueOf(9))
 	};
 
 	@Override
@@ -296,7 +296,7 @@ public class Minstrel extends StdCharClass
 	}
 
 	@Override
-	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount)
+	public int adjustExperienceGain(final MOB host, final MOB mob, final MOB victim, final int amount)
 	{
 		return Bard.bardAdjustExperienceGain(host, mob, victim, amount, 5.0);
 	}
@@ -316,7 +316,7 @@ public class Minstrel extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

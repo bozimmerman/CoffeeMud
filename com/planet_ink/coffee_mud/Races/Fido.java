@@ -163,7 +163,7 @@ public class Fido extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{
@@ -202,7 +202,7 @@ public class Fido extends StdRace
 	}
 
 	@Override
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body=super.getCorpseContainer(mob,room);
 		if((body!=null)&&(CMLib.dice().rollPercentage()<25)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))

@@ -36,7 +36,6 @@ import java.util.*;
  */
 public interface Manufacturer extends CMCommon
 {
-
 	/**
 	 * Returns whether the given item will be manufacturered by this manufacturer.
 	 * @param T the item type

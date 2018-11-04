@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 {
 	@Override
@@ -70,14 +69,14 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 	protected int abilityCode=0;
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		super.setAbilityCode(newCode);
 		this.abilityCode=newCode;
 	}
 
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
 		if(!(item instanceof MOB))
 			return false;
@@ -85,7 +84,7 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 		return canMend;
 	}
 
-	public List<Ability> returnOffensiveAffects(Physical fromMe)
+	public List<Ability> returnOffensiveAffects(final Physical fromMe)
 	{
 		final Vector<Ability> offenders=new Vector<Ability>();
 
@@ -99,7 +98,7 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -113,7 +112,7 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -128,7 +127,7 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 				mob.location().send(mob,msg);
 				boolean worked=false;
 				final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-				int range=100 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
+				final int range=100 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 				for (final Room room : checkSet)
 				{

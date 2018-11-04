@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Transfer extends At
 {
 	public Transfer()
@@ -48,7 +47,7 @@ public class Transfer extends At
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		Room room=null;
@@ -232,11 +231,11 @@ public class Transfer extends At
 		{
 			try
 			{
-				ConvertingEnumeration<SpaceObject,Item> spaceItems=new ConvertingEnumeration<SpaceObject,Item>(
+				final ConvertingEnumeration<SpaceObject,Item> spaceItems=new ConvertingEnumeration<SpaceObject,Item>(
 					new FilteredEnumeration<SpaceObject>(CMLib.map().getSpaceObjects(),new Filterer<SpaceObject>()
 					{
 						@Override
-						public boolean passesFilter(SpaceObject obj)
+						public boolean passesFilter(final SpaceObject obj)
 						{
 							return obj instanceof Item;
 						}
@@ -244,13 +243,13 @@ public class Transfer extends At
 					new Converter<SpaceObject,Item>()
 					{
 						@Override
-						public Item convert(SpaceObject obj)
+						public Item convert(final SpaceObject obj)
 						{
 							return (Item)obj;
 						}
 					}
 				);
-				Environmental E=CMLib.english().fetchEnvironmental(spaceItems, searchName, true);
+				final Environmental E=CMLib.english().fetchEnvironmental(spaceItems, searchName, true);
 				if(E instanceof Item)
 					V.add((Item)E);
 			}
@@ -262,11 +261,11 @@ public class Transfer extends At
 		{
 			try
 			{
-				ConvertingEnumeration<SpaceObject,Item> spaceItems=new ConvertingEnumeration<SpaceObject,Item>(
+				final ConvertingEnumeration<SpaceObject,Item> spaceItems=new ConvertingEnumeration<SpaceObject,Item>(
 					new FilteredEnumeration<SpaceObject>(CMLib.map().getSpaceObjects(),new Filterer<SpaceObject>()
 					{
 						@Override
-						public boolean passesFilter(SpaceObject obj)
+						public boolean passesFilter(final SpaceObject obj)
 						{
 							return obj instanceof Item;
 						}
@@ -274,13 +273,13 @@ public class Transfer extends At
 					new Converter<SpaceObject,Item>()
 					{
 						@Override
-						public Item convert(SpaceObject obj)
+						public Item convert(final SpaceObject obj)
 						{
 							return (Item)obj;
 						}
 					}
 				);
-				Environmental E=CMLib.english().fetchEnvironmental(spaceItems, searchName, false);
+				final Environmental E=CMLib.english().fetchEnvironmental(spaceItems, searchName, false);
 				if(E instanceof Item)
 					V.add((Item)E);
 			}
@@ -378,7 +377,7 @@ public class Transfer extends At
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.TRANSFER);
 	}

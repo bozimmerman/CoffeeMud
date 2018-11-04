@@ -87,7 +87,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Thief_RemoveTraps trapRemover=(Thief_RemoveTraps)mob.fetchAbility("Thief_RemoveTraps");
 		final Hashtable<String,Trap> traps=new Hashtable<String,Trap>();

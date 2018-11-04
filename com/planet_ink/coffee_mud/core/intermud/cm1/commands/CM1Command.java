@@ -61,7 +61,7 @@ public abstract class CM1Command implements Runnable, Cloneable
 		this.req = req;
 	}
 
-	public static CM1Command newInstance(Class<? extends CM1Command> cls, RequestHandler req, String parms)
+	public static CM1Command newInstance(final Class<? extends CM1Command> cls, final RequestHandler req, final String parms)
 	{
 		try
 		{
@@ -76,7 +76,7 @@ public abstract class CM1Command implements Runnable, Cloneable
 		}
 	}
 
-	public PhysicalAgent getTarget(String parameters)
+	public PhysicalAgent getTarget(final String parameters)
 	{
 		if (parameters.equalsIgnoreCase("USER"))
 			return req.getUser();

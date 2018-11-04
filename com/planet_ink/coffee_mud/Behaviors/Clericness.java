@@ -49,7 +49,7 @@ public class Clericness extends CombatAbilities
 	boolean confirmedSetup=false;
 
 	@Override
-	public void startBehavior(PhysicalAgent forMe)
+	public void startBehavior(final PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB))

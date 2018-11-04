@@ -56,7 +56,7 @@ public class FileData extends StdWebMacro
 		return true;
 	}
 
-	public String getFilename(HTTPRequest httpReq, String filename)
+	public String getFilename(final HTTPRequest httpReq, final String filename)
 	{
 		final String path=httpReq.getUrlParameter("PATH");
 		if(path==null)
@@ -68,7 +68,7 @@ public class FileData extends StdWebMacro
 	}
 
 	@Override
-	public byte[] runBinaryMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public byte[] runBinaryMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		String filename=getFilename(httpReq,"");
 		if(filename==null)
@@ -80,7 +80,7 @@ public class FileData extends StdWebMacro
 		if(mimeType != null)
 			httpResp.setHeader("Content-Type", mimeType.getType());
 		httpResp.setHeader("Content-Disposition", "attachment; filename="+filename);
-		
+
 		if(filename.length()==0)
 			return null;
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
@@ -93,7 +93,7 @@ public class FileData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp) throws HTTPServerException
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp) throws HTTPServerException
 	{
 		return "[Unimplemented string method!]";
 	}

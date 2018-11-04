@@ -44,7 +44,7 @@ public class SocialTbl extends StdWebMacro
 	protected static final int AT_MAX_COL = 6;
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final StringBuffer TBL=(StringBuffer)Resources.getResource("WEB SOCIALS TBL");
 		if(TBL!=null)

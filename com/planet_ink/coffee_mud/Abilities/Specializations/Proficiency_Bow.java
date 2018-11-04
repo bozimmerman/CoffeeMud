@@ -60,7 +60,7 @@ public class Proficiency_Bow extends Proficiency_Weapon
 	{
 		return "AmmunitionWeapon";
 	}
-	
+
 	@Override
 	protected String getWeaponMask()
 	{

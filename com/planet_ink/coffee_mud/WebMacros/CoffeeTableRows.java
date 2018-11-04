@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class CoffeeTableRows extends StdWebMacro
 {
 	@Override
@@ -44,7 +43,7 @@ public class CoffeeTableRows extends StdWebMacro
 
 	//HEADER, FOOTER, DATERANGE, DATESTART, DATEEND, LEVELSUP, DIVORCES, BIRTHS, MARRIAGES, PURGES, CLASSCHANGES, PKDEATHS, DEATHS, NEWPLAYERS, TOTALHOURS, AVERAGETICKS, AVERAGEONLINE, MOSTONLINE, LOGINS,
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, String parm, final HTTPResponse httpResp)
 	{
 		if(parm.length()==0)
 			parm="DATERANGE&LOGINS&MOSTONLINE&AVERAGEONLINE&TOTALHOURS&NEWPLAYERS&DEATHS&PKDEATHS&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES";
@@ -96,17 +95,17 @@ public class CoffeeTableRows extends StdWebMacro
 			final List<Ability> allSkills=new ArrayList<Ability>();
 			int onlyAbilityTypes=-1;
 			int onlyAbilityDomains=-1;
-			String typeName=parms.get("ABLETYPE");
+			final String typeName=parms.get("ABLETYPE");
 			if(typeName!=null)
 			{
 				onlyAbilityTypes=CMParms.indexOf(Ability.ACODE_DESCS, typeName.toUpperCase().trim());
 				if(onlyAbilityTypes<0)
 					onlyAbilityTypes=CMParms.indexOf(Ability.ACODE_DESCS_, typeName.toUpperCase().trim());
 			}
-			String domainName=parms.get("ABLEDOMAIN");
+			final String domainName=parms.get("ABLEDOMAIN");
 			if(domainName!=null)
 			{
-				int domainIndex=CMParms.indexOf(Ability.DOMAIN_DESCS, domainName.toUpperCase().trim());
+				final int domainIndex=CMParms.indexOf(Ability.DOMAIN_DESCS, domainName.toUpperCase().trim());
 				if(domainIndex>=0)
 					onlyAbilityDomains=domainIndex<<5;
 			}
@@ -195,7 +194,7 @@ public class CoffeeTableRows extends StdWebMacro
 			Collections.sort(sortedQuests,new Comparator<Quest>()
 			{
 				@Override
-				public int compare(Quest o1, Quest o2)
+				public int compare(final Quest o1, final Quest o2)
 				{
 					return o1.name().toLowerCase().compareTo(o2.name().toLowerCase());
 				}
@@ -252,44 +251,44 @@ public class CoffeeTableRows extends StdWebMacro
 					final String key=orderedParms.getFirst(i);
 					if(key.equals("COLSPAN"))
 						colspan=" COLSPAN="+orderedParms.getSecond(i);
-					else 
-					if(key.equalsIgnoreCase("QUESTNAME")) 
+					else
+					if(key.equalsIgnoreCase("QUESTNAME"))
 						table.append("<TD"+colspan+">"+header+Q.name()+footer+"</TD>");
-					else 
-					if(key.equalsIgnoreCase("DATERANGE")) 
+					else
+					if(key.equalsIgnoreCase("DATERANGE"))
 						table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1)+footer+"</TD>");
-					else 
-					if(key.equalsIgnoreCase("DATESTART")) 
+					else
+					if(key.equalsIgnoreCase("DATESTART"))
 						table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+footer+"</TD>");
-					else 
-					if(key.equalsIgnoreCase("DATEEND")) 
+					else
+					if(key.equalsIgnoreCase("DATEEND"))
 						table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(lastCur)+footer+"</TD>");
-					else 
-					if(key.equalsIgnoreCase("FAILEDSTART")) 
+					else
+					if(key.equalsIgnoreCase("FAILEDSTART"))
 						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTFAILEDSTART]+footer+"</TD>");
-					else 
-					if(key.equalsIgnoreCase("TIMESTART")) 
+					else
+					if(key.equalsIgnoreCase("TIMESTART"))
 						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTTIMESTART]+footer+"</TD>");
-					else 
-					if(key.equalsIgnoreCase("TIMESTOP")) 
+					else
+					if(key.equalsIgnoreCase("TIMESTOP"))
 						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTTIMESTOP]+footer+"</TD>");
-					else 
-					if(key.equalsIgnoreCase("STOP")) 
+					else
+					if(key.equalsIgnoreCase("STOP"))
 						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTSTOP]+footer+"</TD>");
-					else 
-					if(key.equalsIgnoreCase("ACCEPTED")) 
+					else
+					if(key.equalsIgnoreCase("ACCEPTED"))
 						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTACCEPTED]+footer+"</TD>");
-					else 
-					if(key.equalsIgnoreCase("FAILED")) 
+					else
+					if(key.equalsIgnoreCase("FAILED"))
 						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTFAILED]+footer+"</TD>");
-					else 
-					if(key.equalsIgnoreCase("SUCCESS")) 
+					else
+					if(key.equalsIgnoreCase("SUCCESS"))
 						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTSUCCESS]+footer+"</TD>");
-					else 
-					if(key.equalsIgnoreCase("DROPPED")) 
+					else
+					if(key.equalsIgnoreCase("DROPPED"))
 						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTDROPPED]+footer+"</TD>");
-					else 
-					if(key.equalsIgnoreCase("STARTATTEMPT")) 
+					else
+					if(key.equalsIgnoreCase("STARTATTEMPT"))
 						table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTSTARTATTEMPT]+footer+"</TD>");
 				}
 				table.append("</TR>");
@@ -310,7 +309,7 @@ public class CoffeeTableRows extends StdWebMacro
 			}
 			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
-				Area A=a.nextElement();
+				final Area A=a.nextElement();
 				if((!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))&&(!(A instanceof SpaceObject)))
 				{
 					code = "X"+A.Name().toUpperCase().replace(' ','_');
@@ -336,58 +335,58 @@ public class CoffeeTableRows extends StdWebMacro
 						final String key=orderedParms.getFirst(i);
 						if(key.equals("COLSPAN"))
 							colspan=" COLSPAN="+orderedParms.getSecond(i);
-						else 
+						else
 						if(key.equals("AREANAME"))
 							table.append("<TD" + colspan + ">" + header + A.Name() + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("DATERANGE"))
 							table.append("<TD" + colspan + ">" + header + CMLib.time().date2DateString(curTime + 1) + " - " + CMLib.time().date2DateString(lastCur - 1) + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("DATESTART"))
 							table.append("<TD" + colspan + ">" + header + CMLib.time().date2DateString(curTime + 1) + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("DATEEND"))
 							table.append("<TD" + colspan + ">" + header + CMLib.time().date2DateString(lastCur) + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("LOGINS"))
 							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_LOGINS] + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("MOSTONLINE"))
 							table.append("<TD" + colspan + ">" + header + highestOnline + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("AVERAGEONLINE"))
 							table.append("<TD" + colspan + ">" + header + avgOnline + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("AVERAGETICKS"))
 							table.append("<TD" + colspan + ">" + header + ((totals[CoffeeTableRow.STAT_LOGINS] > 0) ? (minsOnline / totals[CoffeeTableRow.STAT_LOGINS]) : 0) + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("TOTALHOURS"))
 							table.append("<TD" + colspan + ">" + header + minsOnline + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("NEWPLAYERS"))
 							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_NEWPLAYERS] + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("DEATHS"))
 							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_DEATHS] + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("PKDEATHS"))
 							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_PKDEATHS] + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("CLASSCHANGES"))
 							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_CLASSCHANGE] + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("PURGES"))
 							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_PURGES] + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("MARRIAGES"))
 							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_MARRIAGES] + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("BIRTHS"))
 							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_BIRTHS] + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("DIVORCES"))
 							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_DIVORCES] + footer + "</TD>");
-						else 
+						else
 						if (key.equalsIgnoreCase("LEVELSUP"))
 							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_LEVELSGAINED] + footer + "</TD>");
 					}
@@ -442,55 +441,55 @@ public class CoffeeTableRows extends StdWebMacro
 					final String key=orderedParms.getFirst(i);
 					if(key.equals("COLSPAN"))
 						colspan=" COLSPAN="+orderedParms.getSecond(i);
-					else 
+					else
 					if (key.equalsIgnoreCase("DATERANGE"))
 						table.append("<TD" + colspan + ">" + header + CMLib.time().date2DateString(curTime + 1) + " - " + CMLib.time().date2DateString(lastCur - 1) + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("DATESTART"))
 						table.append("<TD" + colspan + ">" + header + CMLib.time().date2DateString(curTime + 1) + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("DATEEND"))
 						table.append("<TD" + colspan + ">" + header + CMLib.time().date2DateString(lastCur) + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("LOGINS"))
 						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_LOGINS] + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("MOSTONLINE"))
 						table.append("<TD" + colspan + ">" + header + highestOnline + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("AVERAGEONLINE"))
 						table.append("<TD" + colspan + ">" + header + avgOnline + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("AVERAGETICKS"))
 						table.append("<TD" + colspan + ">" + header + ((totals[CoffeeTableRow.STAT_LOGINS] > 0) ? (minsOnline / totals[CoffeeTableRow.STAT_LOGINS]) : 0) + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("TOTALHOURS"))
 						table.append("<TD" + colspan + ">" + header + minsOnline + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("NEWPLAYERS"))
 						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_NEWPLAYERS] + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("DEATHS"))
 						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_DEATHS] + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("PKDEATHS"))
 						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_PKDEATHS] + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("CLASSCHANGES"))
 						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_CLASSCHANGE] + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("PURGES"))
 						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_PURGES] + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("MARRIAGES"))
 						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_MARRIAGES] + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("BIRTHS"))
 						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_BIRTHS] + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("DIVORCES"))
 						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_DIVORCES] + footer + "</TD>");
-					else 
+					else
 					if (key.equalsIgnoreCase("LEVELSUP"))
 						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_LEVELSGAINED] + footer + "</TD>");
 				}

@@ -45,7 +45,7 @@ public class Elf extends StdRace
 		super();
 		super.naturalAbilImmunities.add("Disease_PoisonIvy");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Elf");
 
 	@Override
@@ -159,7 +159,7 @@ public class Elf extends StdRace
 	private final String[]	racialEffectNames			= { "Skill_Keenvision" };
 	private final int[]		racialEffectLevels			= { 1 };
 	private final String[]	racialEffectParms			= { "" };
-	
+
 	@Override
 	protected String[] racialEffectNames()
 	{
@@ -177,9 +177,9 @@ public class Elf extends StdRace
 	{
 		return racialEffectParms;
 	}
-	
+
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

@@ -39,7 +39,7 @@ public interface Tattooable extends CMObject
 	 * @param of the tattoo object to add
 	 */
 	public void addTattoo(Tattoo of);
-	
+
 	/**
 	 * Add a new tattoo to this object
 	 * @see Tattooable
@@ -57,7 +57,7 @@ public interface Tattooable extends CMObject
 	 * @param tickDown the ticks of life for this tattoo
 	 */
 	public void addTattoo(String of, int tickDown);
-	
+
 	/**
 	 * Remove a specific tattoo from this object
 	 * @see Tattooable
@@ -65,7 +65,7 @@ public interface Tattooable extends CMObject
 	 * @param of the tattoo object to remove
 	 */
 	public void delTattoo(Tattoo of);
-	
+
 	/**
 	 * Remove a specific tattoo from this object
 	 * @see Tattooable
@@ -80,7 +80,7 @@ public interface Tattooable extends CMObject
 	 * @return an enumeration of all the tattoos on this object.
 	 */
 	public Enumeration<Tattoo> tattoos();
-	
+
 	/**
 	 * Returns the tattoo of the given marker name
 	 * @see Tattooable
@@ -89,7 +89,7 @@ public interface Tattooable extends CMObject
 	 * @return the tattoo of the given marker name
 	 */
 	public Tattoo findTattoo(String of);
-	
+
 	/**
 	 * Returns the tattoo that starts with the given marker name
 	 * @see Tattooable

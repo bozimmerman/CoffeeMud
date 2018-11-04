@@ -69,7 +69,7 @@ public class Bomb_Explosive extends StdBomb
 	}
 
 	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P))
 			return false;
@@ -84,7 +84,7 @@ public class Bomb_Explosive extends StdBomb
 	}
 
 	@Override
-	public void spring(MOB target)
+	public void spring(final MOB target)
 	{
 		if(target.location()!=null)
 		{

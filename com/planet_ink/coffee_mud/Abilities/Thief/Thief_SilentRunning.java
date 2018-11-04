@@ -101,7 +101,7 @@ public class Thief_SilentRunning extends ThiefSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code = newCode;
 	}
@@ -110,7 +110,7 @@ public class Thief_SilentRunning extends ThiefSkill
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		
+
 		final Physical affected=this.affected;
 		final MOB invoker = invoker();
 		if((msg.source().riding()==affected)
@@ -161,7 +161,7 @@ public class Thief_SilentRunning extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat())
 		{
@@ -176,11 +176,11 @@ public class Thief_SilentRunning extends ThiefSkill
 
 		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
-		
+
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		
+
 		final SailingShip ship;
 		if((R.getArea() instanceof BoardableShip)
 		&&(((BoardableShip)R.getArea()).getShipItem() instanceof SailingShip))
@@ -192,28 +192,28 @@ public class Thief_SilentRunning extends ThiefSkill
 			mob.tell(L("You must be on a big sailing ship to rig it for silent running!"));
 			return false;
 		}
-		
+
 		if(ship.fetchEffect(ID())!=null)
 		{
 			mob.tell(L("Your ship is already rigged for silent running!"));
 			return false;
 		}
-		
+
 		final Room shipR=CMLib.map().roomLocation(ship);
 		if((shipR==null)||(!CMLib.flags().isWaterySurfaceRoom(shipR))||(!ship.subjectToWearAndTear()))
 		{
 			mob.tell(L("You must be on a sailing ship to rig it for silent running!"));
 			return false;
 		}
-		
+
 		if(ship.isInCombat())
 		{
 			mob.tell(L("Your ship must not be in combat to rig for silent running!"));
 			return false;
 		}
-		
+
 		int direction=-1;
-		StringBuilder course=new StringBuilder("");
+		final StringBuilder course=new StringBuilder("");
 		if(commands.size()>0)
 		{
 			for(int i=0;i<commands.size();i++)
@@ -227,7 +227,7 @@ public class Thief_SilentRunning extends ThiefSkill
 				course.append(CMLib.directions().getDirectionName(direction)).append(" ");
 			}
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -247,7 +247,7 @@ public class Thief_SilentRunning extends ThiefSkill
 				ship.recoverPhyStats();
 				if(direction > 0)
 				{
-					String courseMsgStr="COURSE "+course.toString();
+					final String courseMsgStr="COURSE "+course.toString();
 					final CMMsg huhMsg=CMClass.getMsg(mob,null,null,CMMsg.MSG_HUH,null,courseMsgStr,null);
 					if(R.okMessage(mob,huhMsg))
 						R.send(mob,huhMsg);

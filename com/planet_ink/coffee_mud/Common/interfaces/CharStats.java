@@ -445,17 +445,17 @@ public interface CharStats extends CMCommon, Modifiable
 
 	/**
 	 * Returns the term seen when a character arrives into a room
-	 * By default, these come from the current 
+	 * By default, these come from the current
 	 * actual race, unless set to something new.
 	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race
 	 * @see #setArriveLeaveStr(String,String)
 	 * @return the arrive string
 	 */
 	public String getArriveStr();
-	
+
 	/**
 	 * Returns the term seen when a character leaves a room
-	 * By default, these come from the current 
+	 * By default, these come from the current
 	 * actual race, unless set to something new.
 	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race
 	 * @see #setArriveLeaveStr(String,String)
@@ -495,8 +495,8 @@ public interface CharStats extends CMCommon, Modifiable
 
 	/**
 	 * Changes the terms seen when a character arrives into a room
-	 * and leaves it.  By default, these come from the current 
-	 * actual race. 
+	 * and leaves it.  By default, these come from the current
+	 * actual race.
 	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race
 	 * @see #getArriveStr()
 	 * @see #getLeaveStr()
@@ -685,10 +685,10 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the name of the age category for this mob
 	 */
 	public String ageName();
-	
+
 	/**
 	 * Returns the adjustments to mob abilities, whether proficiency or
-	 * something else numeric.  
+	 * something else numeric.
 	 * Ability adjustments begin with "prof+" to adjust proficiency.
 	 * They begin with "level+" to adjust the adjusted level.
 	 * The are followed by the exact ID() of the ability, or * for All, or
@@ -698,10 +698,10 @@ public interface CharStats extends CMCommon, Modifiable
 	 * @return the numeric value associated with the adjustment.
 	 */
 	public int getAbilityAdjustment(String ableID);
-	
+
 	/**
 	 * Sets the adjustments to mob abilities, whether proficiency or
-	 * something else numeric.  
+	 * something else numeric.
 	 * Ability adjustments begin with "prof+" to adjust proficiency.
 	 * They begin with "level+" to adjust the adjusted level.
 	 * The are followed by the exact ID() of the ability, or * for All, or
@@ -713,7 +713,7 @@ public interface CharStats extends CMCommon, Modifiable
 	public void adjustAbilityAdjustment(String ableID, int newValue);
 
 	/**
-	 * Returns the list of special weapon or armor proficiencies, 
+	 * Returns the list of special weapon or armor proficiencies,
 	 * or special detriments, that this character has.
 	 * Each one is a filterer which, if passes, means the character
 	 * can always use the armor or weapon, even if class or race
@@ -724,7 +724,7 @@ public interface CharStats extends CMCommon, Modifiable
 	public DoubleFilterer<Item>[] getItemProficiencies();
 
 	/**
-	 * Sets the list of special weapon or armor proficiencies, 
+	 * Sets the list of special weapon or armor proficiencies,
 	 * or special detriments, that this character has.
 	 * Each one is a filterer which, if passes, means the character
 	 * can always use the armor or weapon, even if class or race
@@ -740,10 +740,10 @@ public interface CharStats extends CMCommon, Modifiable
 	 * Adds a new weapon or armor proficiency, compiling it into
 	 * the proficiency filter.  The argument is a zapper mask describing
 	 * the type of item that the player is newly proficient at.
-	 * 
+	 *
 	 * @see #getItemProficiencies()
 	 * @see #addItemDeficiency(String)
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @param zapperMask the zapper mask
 	 */
@@ -753,10 +753,10 @@ public interface CharStats extends CMCommon, Modifiable
 	 * Adds a new weapon or armor deficiency, compiling it into
 	 * the deficiency filter.  The argument is a zapper mask describing
 	 * the type of item that the player is newly deficient at.
-	 * 
+	 *
 	 * @see #getItemProficiencies()
 	 * @see #addItemProficiency(String)
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @param zapperMask the zapper mask
 	 */
@@ -959,7 +959,7 @@ public interface CharStats extends CMCommon, Modifiable
 	};
 
 	/** an appropriate CMMsg MSG type to correspond to the given saving throw, indexed as STAT_SAVE_ constant */
-	public static int[] DEFAULT_STAT_MSG_MAP= 
+	public static int[] DEFAULT_STAT_MSG_MAP=
 	{
 		-1, // strength
 		-1, // intelligence
@@ -1119,17 +1119,17 @@ public interface CharStats extends CMCommon, Modifiable
 					Log.errOut("CharStats","Bad coffeemud.ini charstat row, bad type: "+type);
 			}
 		}
-		
+
 		private static CODES c()
-		{ 
+		{
 			return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
 		}
-		
-		public static CODES c(byte c)
+
+		public static CODES c(final byte c)
 		{
 			return insts[c];
 		}
-		
+
 		public static CODES instance()
 		{
 			CODES c=insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
@@ -1137,8 +1137,8 @@ public interface CharStats extends CMCommon, Modifiable
 				c=new CODES();
 			return c;
 		}
-		
-		public static void reset() 
+
+		public static void reset()
 		{
 			insts[Thread.currentThread().getThreadGroup().getName().charAt(0)]=null;
 			instance();
@@ -1162,7 +1162,7 @@ public interface CharStats extends CMCommon, Modifiable
 			final CODES c=c();
 			if(c.longestBaseCodeName<0)
 			{
-				for(int code : c.baseStatCodes)
+				for(final int code : c.baseStatCodes)
 				{
 					if(c.statNames[code].length()>c.longestBaseCodeName)
 						c.longestBaseCodeName=c.statNames[code].length();
@@ -1182,7 +1182,7 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns an array of the numeric codes for all base stats
-		 * 
+		 *
 		 * @return an array of the numeric codes for all base stats
 		 */
 		public int[] base()
@@ -1192,22 +1192,22 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns whether the given code is a base stat
-		 * 
+		 *
 		 * @param code the STAT code to check
 		 * @return whether the given code is a base stat
 		 */
-		public static boolean isBASE(int code)
+		public static boolean isBASE(final int code)
 		{
 			return c().isBaseStatCode[code];
 		}
 
 		/**
 		 * Returns whether the given code is a base stat
-		 * 
+		 *
 		 * @param code the STAT code to check
 		 * @return whether the given code is a base stat
 		 */
-		public boolean isBase(int code)
+		public boolean isBase(final int code)
 		{
 			return isBaseStatCode[code];
 		}
@@ -1219,7 +1219,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @param max the MAX state adjustment code
 		 * @return the translated code
 		 */
-		public static int toMAXBASE(int max)
+		public static int toMAXBASE(final int max)
 		{
 			final CODES c = c();
 			if(max<c.MaxBaseCrossCodes.length)
@@ -1234,7 +1234,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @param max the MAX state adjustment code
 		 * @return the translated code
 		 */
-		public int toMaxBase(int max)
+		public int toMaxBase(final int max)
 		{
 			if(max<MaxBaseCrossCodes.length)
 				return MaxBaseCrossCodes[max];
@@ -1251,7 +1251,7 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns an array of the numeric codes for all max stats
-		 * 
+		 *
 		 * @return an array of the numeric codes for all max stats
 		 */
 		public int[] max()
@@ -1261,7 +1261,7 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns total number of stat codes 0 - this-1
-		 * 
+		 *
 		 * @return total number of stat codes 0 - this-1
 		 */
 		public static int TOTAL()
@@ -1271,7 +1271,7 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns total number of stat codes 0 - this-1
-		 * 
+		 *
 		 * @return total number of stat codes 0 - this-1
 		 */
 		public int total()
@@ -1281,7 +1281,7 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns an array of the numeric codes for all stats
-		 * 
+		 *
 		 * @return an array of the numeric codes for all stats
 		 */
 		public static int[] ALLCODES()
@@ -1291,7 +1291,7 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns an array of the numeric codes for all stats
-		 * 
+		 *
 		 * @return an array of the numeric codes for all stats
 		 */
 		public int[] all()
@@ -1301,7 +1301,7 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns an array of the numeric codes for all save stats
-		 * 
+		 *
 		 * @return an array of the numeric codes for all save stats
 		 */
 		public static int[] SAVING_THROWS()
@@ -1311,7 +1311,7 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns an array of the numeric codes for all save stats
-		 * 
+		 *
 		 * @return an array of the numeric codes for all save stats
 		 */
 		public int[] saving_throws()
@@ -1321,7 +1321,7 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns the names of the various stats
-		 * 
+		 *
 		 * @return the names of the various stats
 		 */
 		public static String[] NAMES()
@@ -1331,51 +1331,51 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns the name of the stat code
-		 * 
+		 *
 		 * @param code the stat code
 		 * @return the name of the stat code
 		 */
-		public static String NAME(int code)
+		public static String NAME(final int code)
 		{
 			return c().statNames[code];
 		}
 
 		/**
 		 * Returns the short name of the stat code
-		 * 
+		 *
 		 * @param code the stat code
 		 * @return the short name of the stat code
 		 */
-		public static String SHORTNAME(int code)
+		public static String SHORTNAME(final int code)
 		{
 			return c().shortNames[code];
 		}
 
 		/**
 		 * Returns the name of the stat code
-		 * 
+		 *
 		 * @param code the stat code
 		 * @return the name of the stat code
 		 */
-		public String name(int code)
+		public String name(final int code)
 		{
 			return statNames[code];
 		}
 
 		/**
 		 * Returns the name of the stat code
-		 * 
+		 *
 		 * @param code the stat code
 		 * @return the name of the stat code
 		 */
-		public String shortName(int code)
+		public String shortName(final int code)
 		{
 			return shortNames[code];
 		}
 
 		/**
 		 * Returns the descriptions of the various stats
-		 * 
+		 *
 		 * @return the descriptions of the various stats
 		 */
 		public static String[] DESCS()
@@ -1385,29 +1385,29 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns the description of the stat code
-		 * 
+		 *
 		 * @param code the stat code
 		 * @return the description of the stat code
 		 */
-		public static String DESC(int code)
+		public static String DESC(final int code)
 		{
 			return c().statDescriptions[code];
 		}
 
 		/**
 		 * Returns the description of the stat code
-		 * 
+		 *
 		 * @param code the stat code
 		 * @return the description of the stat code
 		 */
-		public String desc(int code)
+		public String desc(final int code)
 		{
 			return statDescriptions[code];
 		}
 
 		/**
 		 * Returns the abbreviations of the various stats
-		 * 
+		 *
 		 * @return the abbreviations of the various stats
 		 */
 		public static String[] ABBRS()
@@ -1417,29 +1417,29 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns the abbreviation of the stat code
-		 * 
+		 *
 		 * @param code the stat code
 		 * @return the abbreviation of the stat code
 		 */
-		public static String ABBR(int code)
+		public static String ABBR(final int code)
 		{
 			return c().statAbbreviations[code];
 		}
 
 		/**
 		 * Returns the abbreviation of the stat code
-		 * 
+		 *
 		 * @param code the stat code
 		 * @return the abbreviation of the stat code
 		 */
-		public String abbr(int code)
+		public String abbr(final int code)
 		{
 			return statAbbreviations[code];
 		}
 
 		/**
 		 * Returns the adjective descriptions of the various stats
-		 * 
+		 *
 		 * @return the adjective descriptions of the various stats
 		 */
 		public static String[] ATTDESCS()
@@ -1449,18 +1449,18 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns the adjective description of the stat code
-		 * 
+		 *
 		 * @param code the stat code
 		 * @return the adjective description of the stat code
 		 */
-		public static String ATTDESC(int code)
+		public static String ATTDESC(final int code)
 		{
 			return c().statAttributionDescriptions[code];
 		}
 
 		/**
 		 * Returns the CMMsg mappings of the various stats
-		 * 
+		 *
 		 * @return the CMMsg mappings of the various stats
 		 */
 		public static int[] CMMSGMAP()
@@ -1470,11 +1470,11 @@ public interface CharStats extends CMCommon, Modifiable
 
 		/**
 		 * Returns the CMMsg mapping of the stat
-		 * 
+		 *
 		 * @param code the CMMsg mapping for the given stat code
 		 * @return the CMMsg mapping of the stat
 		 */
-		public static int CMMSGMAP(int code)
+		public static int CMMSGMAP(final int code)
 		{
 			return c().statCMMsgMapping[code];
 		}
@@ -1484,7 +1484,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @param code the Stat mapping for the given CMMsg code or -1
 		 * @return the Stat mapping of the CMMsg
 		 */
-		public static int RVSCMMSGMAP(int code) 
+		public static int RVSCMMSGMAP(final int code)
 		{
 			final Integer statCode = c().rvsStatCMMsgMapping.get(Integer.valueOf(code));
 			if(statCode != null)
@@ -1498,7 +1498,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @param exactOnly true to only return exact matches, false to do otherwise
 		 * @return the stat code
 		 */
-		public int find(String name, boolean exactOnly)
+		public int find(final String name, final boolean exactOnly)
 		{
 			for(int i=0;i<total();i++)
 			{
@@ -1523,7 +1523,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @param exactOnly true to only return exact matches, false to do otherwise
 		 * @return the stat code
 		 */
-		public static int findWhole(String name, boolean exactOnly)
+		public static int findWhole(final String name, final boolean exactOnly)
 		{
 			return c().find(name, exactOnly);
 		}
@@ -1536,7 +1536,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @param attDesc description of someone with this stat in abundance
 		 * @param cmmsgMap a CMMsg messf code that saves with this stat
 		 */
-		public void addBaseStat(String abbr, String desc, String name, String attDesc, int cmmsgMap)
+		public void addBaseStat(final String abbr, final String desc, final String name, final String attDesc, final int cmmsgMap)
 		{
 			baseStatCodes=Arrays.copyOf(baseStatCodes, baseStatCodes.length+1);
 			baseStatCodes[baseStatCodes.length-1]=allStatCodes.length;
@@ -1554,7 +1554,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @param attDesc description of someone with this stat in abundance
 		 * @param cmmsgMap a CMMsg message code that saves with this stat
 		 */
-		public void addMaxStat(int baseCode, String abbr, String desc, String name, String attDesc, int cmmsgMap)
+		public void addMaxStat(final int baseCode, final String abbr, final String desc, final String name, final String attDesc, final int cmmsgMap)
 		{
 			maxStatCodes=Arrays.copyOf(maxStatCodes, maxStatCodes.length+1);
 			final int maxCode = allStatCodes.length;
@@ -1575,7 +1575,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @param attDesc description of someone with this stat in abundance
 		 * @param cmmsgMap a CMMsg message code that saves with this stat
 		 */
-		public void addSavingThrow(String abbr, String desc, String name, String attDesc, int cmmsgMap)
+		public void addSavingThrow(final String abbr, final String desc, final String name, final String attDesc, final int cmmsgMap)
 		{
 			savingThrowCodes=Arrays.copyOf(savingThrowCodes, savingThrowCodes.length+1);
 			savingThrowCodes[savingThrowCodes.length-1]=allStatCodes.length;
@@ -1591,7 +1591,7 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @param cmmsgMap a CMMsg message code that saves with this stat
 		 * @param base true if the code is a base stat, false if a save or something else
 		 */
-		public void addAllStat(String abbr, String desc, String name, String attDesc, int cmmsgMap, boolean base)
+		public void addAllStat(final String abbr, final String desc, final String name, final String attDesc, final int cmmsgMap, final boolean base)
 		{
 			allStatCodes=Arrays.copyOf(allStatCodes, allStatCodes.length+1);
 			allStatCodes[allStatCodes.length-1]=allStatCodes.length-1;

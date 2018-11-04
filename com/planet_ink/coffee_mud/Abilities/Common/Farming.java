@@ -86,7 +86,7 @@ public class Farming extends GatheringSkill
 		verb=L("planting");
 	}
 
-	protected int getDuration(MOB mob, int level)
+	protected int getDuration(final MOB mob, final int level)
 	{
 		return getDuration(45,mob,level,15);
 	}
@@ -136,7 +136,7 @@ public class Farming extends GatheringSkill
 	{
 		return ((I!=null) &&(I.rawSecretIdentity().equals("compost")));
 	}
-	
+
 	protected int deCompost(final Item I, int doubleRemain)
 	{
 		int amount=0;
@@ -157,7 +157,7 @@ public class Farming extends GatheringSkill
 		}
 		return amount;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -170,7 +170,7 @@ public class Farming extends GatheringSkill
 				if((found!=null)&&(!isaborted))
 				{
 					int amount=CMLib.dice().roll(1,7,0)*(baseYield()+abilityCode());
-					int origAmount = amount; 
+					final int origAmount = amount;
 					int doubleRemain = amount * 10;
 					for(final Enumeration<Item> i=room.items();i.hasMoreElements();)
 					{
@@ -181,7 +181,7 @@ public class Farming extends GatheringSkill
 							Item I2=((PackagedItems)I).peekFirstItem();
 							while(isCompost(I2))
 							{
-								int amt=deCompost(I2,doubleRemain);
+								final int amt=deCompost(I2,doubleRemain);
 								if(I2.amDestroyed())
 									((PackagedItems)I).setNumberOfItemsInPackage(((PackagedItems)I).numberOfItemsInPackage()-1);
 								if(amt != 0)
@@ -202,7 +202,7 @@ public class Farming extends GatheringSkill
 						else
 						if(isCompost(I))
 						{
-							int amt=deCompost(I,doubleRemain);
+							final int amt=deCompost(I,doubleRemain);
 							if(amt != 0)
 							{
 								amount += amt * origAmount;
@@ -241,7 +241,7 @@ public class Farming extends GatheringSkill
 		}
 	}
 
-	public boolean isPotentialCrop(Room R, int code)
+	public boolean isPotentialCrop(final Room R, final int code)
 	{
 		if(R==null)
 			return false;
@@ -257,7 +257,7 @@ public class Farming extends GatheringSkill
 		return false;
 	}
 
-	private boolean plantable(MOB mob, Item I2)
+	private boolean plantable(final MOB mob, final Item I2)
 	{
 		if((I2!=null)
 		&&(I2 instanceof RawMaterial)
@@ -273,7 +273,7 @@ public class Farming extends GatheringSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(R==null)

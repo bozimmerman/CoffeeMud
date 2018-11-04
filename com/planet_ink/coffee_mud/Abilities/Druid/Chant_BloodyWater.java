@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_BloodyWater extends Chant
 {
 	@Override
@@ -88,7 +87,7 @@ public class Chant_BloodyWater extends Chant
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		if(affectedEnv instanceof MOB)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
@@ -102,7 +101,7 @@ public class Chant_BloodyWater extends Chant
 	final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
 												.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 												.plus(TrackingLibrary.TrackingFlag.UNDERWATERONLY);
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -110,7 +109,7 @@ public class Chant_BloodyWater extends Chant
 		{
 			if(affected instanceof MOB)
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				if(mob.amFollowing()==null)
 				{
 					mob.tell(L("You are no longer sensing the bloody water."));
@@ -122,7 +121,7 @@ public class Chant_BloodyWater extends Chant
 			{
 				for(final MOB mob : bloodyMobs)
 				{
-					Ability A=mob.fetchEffect(ID());
+					final Ability A=mob.fetchEffect(ID());
 					if(A!=null)
 						A.unInvoke();
 				}
@@ -148,14 +147,14 @@ public class Chant_BloodyWater extends Chant
 				unInvoke();
 			else
 			{
-				MOB M=(MOB)affected;
+				final MOB M=(MOB)affected;
 				if(M.location() == theRoom)
 				{
 					unInvoke();
 				}
 				else
 				{
-					int dir=CMLib.tracking().trackNextDirectionFromHere(theTrail,M.location(),true);
+					final int dir=CMLib.tracking().trackNextDirectionFromHere(theTrail,M.location(),true);
 					if(dir < 0)
 						unInvoke();
 					else
@@ -191,7 +190,7 @@ public class Chant_BloodyWater extends Chant
 							&&(!bloodyMobs.contains(M)))
 							{
 								bloodyMobs.add(M);
-								Chant_BloodyWater w=(Chant_BloodyWater)this.copyOf();
+								final Chant_BloodyWater w=(Chant_BloodyWater)this.copyOf();
 								w.theRoom = room;
 								w.theTrail = CMLib.tracking().findTrailToAnyRoom(M.location(), destRooms, flags, limit);
 								if(w.theTrail != null)
@@ -205,7 +204,7 @@ public class Chant_BloodyWater extends Chant
 			{
 				for(final Iterator<MOB> m=bloodyMobs.iterator();m.hasNext();)
 				{
-					MOB M=m.next();
+					final MOB M=m.next();
 					if(M.location()==room)
 						m.remove();
 					else
@@ -220,7 +219,7 @@ public class Chant_BloodyWater extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room target=mob.location();
 		if(target==null)
@@ -230,7 +229,7 @@ public class Chant_BloodyWater extends Chant
 			mob.tell(L("The waters here are already bloody."));
 			return false;
 		}
-		
+
 		if(!CMLib.flags().isUnderWateryRoom(mob.location()))
 		{
 			mob.tell(L("You must be underwater for this chant to work."));

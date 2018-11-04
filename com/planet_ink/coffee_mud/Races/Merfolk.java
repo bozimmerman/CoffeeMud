@@ -55,7 +55,7 @@ public class Merfolk extends StdRace
 		super.naturalAbilImmunities.add("Disease_SeaSickness");
 		super.naturalAbilImmunities.add("Disease_Lycanthropy");
 	}
-	
+
 	@Override
 	public int shortestMale()
 	{
@@ -156,7 +156,7 @@ public class Merfolk extends StdRace
 	{
 		return breatheAirWaterArray;
 	}
-	
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,0 ,0 ,1 ,1 ,1 ,1 ,1 ,0 };
 
@@ -215,7 +215,7 @@ public class Merfolk extends StdRace
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -244,7 +244,7 @@ public class Merfolk extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{

@@ -38,19 +38,19 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		super();
 	}
 
-	public SVector(int size)
+	public SVector(final int size)
 	{
 		super();
 	}
 
-	public SVector(List<T> T)
+	public SVector(final List<T> T)
 	{
 		super();
 		if (T != null)
 			addAll(T);
 	}
 
-	public SVector(T[] T)
+	public SVector(final T[] T)
 	{
 		super();
 		if (T != null)
@@ -60,7 +60,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
-	public SVector(Enumeration<T> T)
+	public SVector(final Enumeration<T> T)
 	{
 		super();
 		if (T != null)
@@ -70,7 +70,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
-	public SVector(Iterator<T> T)
+	public SVector(final Iterator<T> T)
 	{
 		super();
 		if (T != null)
@@ -80,7 +80,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
-	public SVector(Set<T> T)
+	public SVector(final Set<T> T)
 	{
 		super();
 		if (T != null)
@@ -90,7 +90,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
-	public void addAll(Enumeration<T> T)
+	public void addAll(final Enumeration<T> T)
 	{
 		if (T != null)
 		{
@@ -99,7 +99,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
-	public void addAll(T[] T)
+	public void addAll(final T[] T)
 	{
 		if (T != null)
 		{
@@ -108,7 +108,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
-	public void addAll(Iterator<T> T)
+	public void addAll(final Iterator<T> T)
 	{
 		if (T != null)
 		{
@@ -117,7 +117,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
-	public void removeAll(Enumeration<T> T)
+	public void removeAll(final Enumeration<T> T)
 	{
 		if (T != null)
 		{
@@ -126,7 +126,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
-	public void removeAll(Iterator<T> T)
+	public void removeAll(final Iterator<T> T)
 	{
 		if (T != null)
 		{
@@ -135,7 +135,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
-	public void removeAll(List<T> T)
+	public void removeAll(final List<T> T)
 	{
 		if (T != null)
 		{
@@ -159,7 +159,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 	{
 		try
 		{
-			SVector<T> copy= (SVector<T>) clone();
+			final SVector<T> copy= (SVector<T>) clone();
 			copy.underList = (CopyOnWriteArrayList<T>)underList.clone();
 			copy.list = Collections.synchronizedList(copy.underList);
 			return copy;
@@ -170,19 +170,19 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		}
 	}
 
-	public void copyInto(Object[] anArray)
+	public void copyInto(final Object[] anArray)
 	{
 		toArray(anArray);
 	}
 
-	public T elementAt(int index)
+	public T elementAt(final int index)
 	{
 		return get(index);
 	}
 
 	public Enumeration<T> elements()
 	{
-		return new Enumeration<T>() 
+		return new Enumeration<T>()
 		{
 			final Iterator<T>	i	= iterator();
 
@@ -200,7 +200,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		};
 	}
 
-	public void ensureCapacity(int minCapacity)
+	public void ensureCapacity(final int minCapacity)
 	{
 		throw new IllegalArgumentException();
 	}
@@ -215,12 +215,12 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		return (size() == 0) ? null : get(size() - 1);
 	}
 
-	public void setElementAt(T obj, int index)
+	public void setElementAt(final T obj, final int index)
 	{
 		set(index, obj);
 	}
 
-	public void setSize(int newSize)
+	public void setSize(final int newSize)
 	{
 		if (newSize == 0)
 			clear();
@@ -232,12 +232,12 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 	{
 	}
 
-	public void addElement(T obj)
+	public void addElement(final T obj)
 	{
 		add(obj);
 	}
 
-	public void insertElementAt(T obj, int index)
+	public void insertElementAt(final T obj, final int index)
 	{
 		add(index, obj);
 	}
@@ -252,158 +252,158 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 	{
 		return list.size();
 	}
-	
+
 	@Override
 	public boolean isEmpty()
 	{
 		return list.isEmpty();
 	}
-	
+
 	@Override
-	public boolean contains(Object o)
+	public boolean contains(final Object o)
 	{
 		return list.contains(o);
 	}
-	
+
 	@Override
 	public Iterator<T> iterator()
 	{
 		return list.iterator();
 	}
-	
+
 	@Override
 	public Object[] toArray()
 	{
 		return list.toArray();
 	}
-	
+
 	@SuppressWarnings("hiding")
 	@Override
-	public <T> T[] toArray(T[] a)
+	public <T> T[] toArray(final T[] a)
 	{
 		return list.toArray(a);
 	}
-	
+
 	@Override
-	public boolean add(T e)
+	public boolean add(final T e)
 	{
 		return list.add(e);
 	}
-	
+
 	@Override
-	public boolean remove(Object o)
+	public boolean remove(final Object o)
 	{
 		return list.remove(o);
 	}
-	
+
 	@Override
-	public boolean containsAll(Collection<?> c)
+	public boolean containsAll(final Collection<?> c)
 	{
 		return list.containsAll(c);
 	}
-	
+
 	@Override
-	public boolean addAll(Collection<? extends T> c)
+	public boolean addAll(final Collection<? extends T> c)
 	{
 		return list.addAll(c);
 	}
-	
+
 	@Override
-	public boolean addAll(int index, Collection<? extends T> c)
+	public boolean addAll(final int index, final Collection<? extends T> c)
 	{
 		return list.addAll(c);
 	}
-	
+
 	@Override
-	public boolean removeAll(Collection<?> c)
+	public boolean removeAll(final Collection<?> c)
 	{
 		return list.removeAll(c);
 	}
-	
+
 	@Override
-	public boolean retainAll(Collection<?> c)
+	public boolean retainAll(final Collection<?> c)
 	{
 		return list.retainAll(c);
 	}
-	
+
 	@Override
 	public void clear()
 	{
 		list.clear();
 	}
-	
+
 	@Override
-	public boolean equals(Object o)
+	public boolean equals(final Object o)
 	{
 		return list.equals(o);
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
 		return list.hashCode();
 	}
-	
+
 	@Override
-	public T get(int index)
+	public T get(final int index)
 	{
 		return list.get(index);
 	}
-	
+
 	@Override
-	public T set(int index, T element)
+	public T set(final int index, final T element)
 	{
 		return list.set(index, element);
 	}
-	
+
 	@Override
-	public void add(int index, T element)
+	public void add(final int index, final T element)
 	{
 		list.add(index,element);
 	}
-	
+
 	@Override
-	public T remove(int index)
+	public T remove(final int index)
 	{
 		return list.remove(index);
 	}
-	
+
 	@Override
-	public int indexOf(Object o)
+	public int indexOf(final Object o)
 	{
 		return list.indexOf(o);
 	}
-	
+
 	@Override
-	public int lastIndexOf(Object o)
+	public int lastIndexOf(final Object o)
 	{
 		return list.lastIndexOf(o);
 	}
-	
+
 	@Override
 	public ListIterator<T> listIterator()
 	{
 		return list.listIterator();
 	}
-	
+
 	@Override
-	public ListIterator<T> listIterator(int index)
+	public ListIterator<T> listIterator(final int index)
 	{
 		return list.listIterator(index);
 	}
-	
+
 	@Override
-	public List<T> subList(int fromIndex, int toIndex)
+	public List<T> subList(final int fromIndex, final int toIndex)
 	{
 		return list.subList(fromIndex, toIndex);
 	}
-	
-	public boolean removeElement(Object obj)
+
+	public boolean removeElement(final Object obj)
 	{
 		return list.remove(obj);
 	}
 
-	public void removeElementAt(int index)
+	public void removeElementAt(final int index)
 	{
 		list.remove(index);
 	}

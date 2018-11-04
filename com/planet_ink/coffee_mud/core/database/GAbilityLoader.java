@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 public class GAbilityLoader
 {
 	protected DBConnector DB=null;
-	public GAbilityLoader(DBConnector newDB)
+	public GAbilityLoader(final DBConnector newDB)
 	{
 		DB=newDB;
 	}
@@ -55,7 +55,7 @@ public class GAbilityLoader
 			{
 				final String gaid = DBConnections.getRes(R,"CMGAID");
 				final String gaat = DBConnections.getRes(R,"CMGAAT");
-				String gaac = DBConnections.getRes(R,"CMGACL");
+				final String gaac = DBConnections.getRes(R,"CMGACL");
 				final String finalGaac = (gaac == null) || (gaac.length()==0) ? "GenAbility" : gaac;
 				rows.addElement(new DatabaseEngine.AckRecord()
 				{
@@ -91,7 +91,7 @@ public class GAbilityLoader
 		return rows;
 	}
 
-	public void DBCreateAbility(String classID, String typeClass, String data)
+	public void DBCreateAbility(final String classID, final String typeClass, final String data)
 	{
 		DB.updateWithClobs(
 		 "INSERT INTO CMGAAC ("
@@ -106,7 +106,7 @@ public class GAbilityLoader
 		 data+" ");
 	}
 
-	public void DBDeleteAbility(String classID)
+	public void DBDeleteAbility(final String classID)
 	{
 		DB.update("DELETE FROM CMGAAC WHERE CMGAID='"+classID+"'");
 	}

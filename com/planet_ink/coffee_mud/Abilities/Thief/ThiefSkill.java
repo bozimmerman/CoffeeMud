@@ -80,7 +80,7 @@ public class ThiefSkill extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -99,14 +99,14 @@ public class ThiefSkill extends StdAbility
 		return true;
 	}
 
-	public int getMOBLevel(MOB meMOB)
+	public int getMOBLevel(final MOB meMOB)
 	{
 		if(meMOB==null)
 			return 0;
 		return meMOB.phyStats().level();
 	}
 
-	public MOB getHighestLevelMOB(MOB meMOB, Vector<MOB> not)
+	public MOB getHighestLevelMOB(final MOB meMOB, final Vector<MOB> not)
 	{
 		if(meMOB==null)
 			return null;
@@ -135,7 +135,7 @@ public class ThiefSkill extends StdAbility
 		return highestMOB;
 	}
 
-	public Physical getOpenable(MOB mob, Room room, Physical givenTarget, List<String> commands, int[] dirCode, boolean failOnOpen)
+	public Physical getOpenable(final MOB mob, final Room room, final Physical givenTarget, final List<String> commands, final int[] dirCode, final boolean failOnOpen)
 	{
 		if((room==null)||(mob==null))
 			return null;

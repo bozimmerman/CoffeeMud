@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class CharClassData extends StdWebMacro
 {
 	@Override
@@ -43,7 +42,7 @@ public class CharClassData extends StdWebMacro
 		return "CharClassData";
 	}
 
-	private String classDropDown(String old)
+	private String classDropDown(final String old)
 	{
 		final StringBuffer str=new StringBuffer("");
 		str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
@@ -67,7 +66,7 @@ public class CharClassData extends StdWebMacro
 		return str.toString();
 	}
 
-	public static StringBuffer cabilities(MOB mob, CharClass E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize, String font)
+	public static StringBuffer cabilities(final MOB mob, final CharClass E, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize, String font)
 	{
 		final StringBuffer str=new StringBuffer("");
 		final DVector theclasses=new DVector(9);
@@ -258,7 +257,7 @@ public class CharClassData extends StdWebMacro
 	// mana, movement, attack, weapons, armorlimits, limits, bonuses,
 	// prime, quals, startingeq
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final MOB mob=Authenticate.getAuthenticatedMob(httpReq);
@@ -1218,7 +1217,7 @@ public class CharClassData extends StdWebMacro
 		return "";
 	}
 
-	public String balanceChart(CharClass C)
+	public String balanceChart(final CharClass C)
 	{
 		final MOB M=CMClass.getFactoryMOB();
 		M.basePhyStats().setLevel(1);
@@ -1394,7 +1393,7 @@ public class CharClassData extends StdWebMacro
 		return str.toString();
 	}
 
-	public int avgMath(int stat, int level, int add, String formula)
+	public int avgMath(final int stat, final int level, final int add, final String formula)
 	{
 		final double[] variables={
 			level,

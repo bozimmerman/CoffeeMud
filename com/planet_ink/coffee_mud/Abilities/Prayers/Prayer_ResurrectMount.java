@@ -95,16 +95,16 @@ public class Prayer_ResurrectMount extends Prayer_Resurrect
 	protected PairList<Integer,Rideable> ridden=new PairVector<Integer,Rideable>();
 
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
-		
+
 		if(item instanceof DeadBody)
 		{
-			DeadBody bodyI=(DeadBody)item;
+			final DeadBody bodyI=(DeadBody)item;
 			MOB M=bodyI.getSavedMOB();
 			if(M==null)
 			{
-				int x=ridden.indexOfFirst(Integer.valueOf(bodyI.getMobHash()));
+				final int x=ridden.indexOfFirst(Integer.valueOf(bodyI.getMobHash()));
 				if(x>=0)
 				{
 					M=(MOB)ridden.getSecond(x);
@@ -136,7 +136,7 @@ public class Prayer_ResurrectMount extends Prayer_Resurrect
 				if((R != null)
 				&&(CMLib.flags().flaggedAffects(lastRider,Ability.FLAG_SUMMONING).size()==0))
 				{
-					int x=ridden.indexOfFirst(Integer.valueOf(lastRider.hashCode()));
+					final int x=ridden.indexOfFirst(Integer.valueOf(lastRider.hashCode()));
 					final Pair<Integer,Rideable> addMe;
 					if(x>0)
 						addMe=ridden.remove(x);

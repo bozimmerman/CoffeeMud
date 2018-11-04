@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Disease_HeatExhaustion extends Disease
 {
 	@Override
@@ -126,7 +125,7 @@ public class Disease_HeatExhaustion extends Disease
 	protected Room	theRoom		= null;
 	protected int	changeDown	= 30;
 
-	public Room room(Room R)
+	public Room room(final Room R)
 	{
 		if((theRoom==null)
 		&&(R!=null)

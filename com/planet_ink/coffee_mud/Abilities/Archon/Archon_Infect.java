@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Archon_Infect extends ArchonSkill
 {
 	@Override
@@ -94,7 +93,7 @@ public class Archon_Infect extends ArchonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -114,7 +113,7 @@ public class Archon_Infect extends ArchonSkill
 			mob.tell(L("You don't know of any disease called @x1.",CMParms.combine(commands)));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

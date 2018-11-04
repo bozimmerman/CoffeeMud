@@ -52,7 +52,7 @@ public class GateGuard extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String parm)
+	public void setParms(final String parm)
 	{
 		super.setParms(parm);
 		keepLocked=false;
@@ -76,7 +76,7 @@ public class GateGuard extends StdBehavior
 		}
 	}
 
-	protected int findGate(MOB mob)
+	protected int findGate(final MOB mob)
 	{
 		if(!CMLib.flags().isInTheGame(mob,false))
 			return -1;
@@ -94,7 +94,7 @@ public class GateGuard extends StdBehavior
 		return -1;
 	}
 
-	protected DoorKey getMyKeyTo(MOB mob, Exit e)
+	protected DoorKey getMyKeyTo(final MOB mob, final Exit e)
 	{
 		DoorKey key=null;
 		final String keyCode=e.keyName();
@@ -116,7 +116,7 @@ public class GateGuard extends StdBehavior
 		return key;
 	}
 
-	protected int numValidPlayers(MOB mob, Room room)
+	protected int numValidPlayers(final MOB mob, final Room room)
 	{
 		if(room==null)
 			return 0;

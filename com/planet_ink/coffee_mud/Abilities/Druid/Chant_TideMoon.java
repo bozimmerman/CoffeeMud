@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_TideMoon extends Chant
 {
 	@Override
@@ -54,9 +53,9 @@ public class Chant_TideMoon extends Chant
 	{
 		return "";
 	}
-	
+
 	protected int abilityCode = 0;
-	
+
 	@Override
 	public int abilityCode()
 	{
@@ -64,7 +63,7 @@ public class Chant_TideMoon extends Chant
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		this.abilityCode = newCode;
 	}
@@ -86,7 +85,7 @@ public class Chant_TideMoon extends Chant
 	{
 		return Ability.FLAG_TIDEALTERING;
 	}
-	
+
 	@Override
 	protected int canAffectCode()
 	{
@@ -106,20 +105,20 @@ public class Chant_TideMoon extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.location().getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.NIGHT)
 		{
 			mob.tell(L("This chant can only be done at night."));
 			return false;
 		}
-		
+
 		if(!mob.location().getArea().getClimateObj().canSeeTheMoon(mob.location(), null))
 		{
 			mob.tell(L("You can't see the moon from here."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

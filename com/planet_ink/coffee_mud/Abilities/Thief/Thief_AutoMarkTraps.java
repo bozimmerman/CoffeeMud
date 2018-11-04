@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_AutoMarkTraps extends ThiefSkill
 {
 	@Override
@@ -123,7 +122,7 @@ public class Thief_AutoMarkTraps extends ThiefSkill
 		}
 	}
 
-	public void dropem(MOB mob, Physical P)
+	public void dropem(final MOB mob, final Physical P)
 	{
 		Ability A=mob.fetchAbility("Thief_DetectTraps");
 		if(A==null)
@@ -148,7 +147,7 @@ public class Thief_AutoMarkTraps extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
 		if(target.fetchEffect(ID())!=null)

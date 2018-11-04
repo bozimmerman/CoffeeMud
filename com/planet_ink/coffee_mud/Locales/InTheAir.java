@@ -62,7 +62,7 @@ public class InTheAir extends StdRoom
 		return isOkAirAffect(this,msg);
 	}
 
-	public static void airAffects(Room room, CMMsg msg)
+	public static void airAffects(final Room room, final CMMsg msg)
 	{
 		if(CMLib.flags().isSleeping(room))
 			return;
@@ -129,7 +129,7 @@ public class InTheAir extends StdRoom
 		InTheAir.airAffects(this,msg);
 	}
 
-	public static boolean isOkAirAffect(Room room, CMMsg msg)
+	public static boolean isOkAirAffect(final Room room, final CMMsg msg)
 	{
 		if(CMLib.flags().isSleeping(room))
 			return true;

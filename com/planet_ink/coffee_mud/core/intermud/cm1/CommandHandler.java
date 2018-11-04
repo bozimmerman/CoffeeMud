@@ -47,8 +47,8 @@ public class CommandHandler implements Runnable
 	private final RequestHandler req;
 
 	private static final Map<String,Class<? extends CM1Command>> commandList=new Hashtable<String,Class<? extends CM1Command>>();
-	
-	private static final void AddCommand(Class<? extends CM1Command> c) throws InstantiationException, IllegalAccessException
+
+	private static final void AddCommand(final Class<? extends CM1Command> c) throws InstantiationException, IllegalAccessException
 	{
 		final CM1Command c1 = CM1Command.newInstance(c,null,"");
 		commandList.put(c1.getCommandWord(),c);
@@ -103,7 +103,7 @@ public class CommandHandler implements Runnable
 		}
 	}
 
-	public CommandHandler(RequestHandler req, String command)
+	public CommandHandler(final RequestHandler req, final String command)
 	{
 		this.req=req;
 		final int x=command.indexOf(' ');

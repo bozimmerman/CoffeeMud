@@ -163,7 +163,7 @@ public class Skill_BoulderThrowing extends StdSkill
 	}
 
 	private AmmunitionWeapon boulderThrower=null;
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -185,7 +185,7 @@ public class Skill_BoulderThrowing extends StdSkill
 					final Area A=R.getArea();
 					final Item shipItem=(A instanceof BoardableShip) ? ((BoardableShip)A).getShipItem() : null;
 					final Room shipR=(shipItem != null)?CMLib.map().roomLocation(shipItem):null;
-					
+
 					final String str;
 					if(cmd.size()>2)
 					{
@@ -199,7 +199,7 @@ public class Skill_BoulderThrowing extends StdSkill
 						str=shipR.getContextName(((SailingShip)shipItem).getCombatant());
 					else
 						return true;
-					
+
 					final String what=CMParms.combine(cmd,1);
 					Item item=mob.fetchItem(null,Wearable.FILTER_WORNONLY,what);
 					if(item==null)
@@ -305,7 +305,7 @@ public class Skill_BoulderThrowing extends StdSkill
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

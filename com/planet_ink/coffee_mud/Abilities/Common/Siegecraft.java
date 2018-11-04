@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Siegecraft extends Fletching
 {
 	@Override
@@ -71,7 +70,7 @@ public class Siegecraft extends Fletching
 	{
 		return 1;
 	}
-	
+
 	@Override
 	public boolean mayICraft(final Item I)
 	{

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 {
 	@Override
@@ -136,7 +135,7 @@ public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 		// can get them out of it.
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -181,7 +180,7 @@ public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -194,7 +193,7 @@ public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.baseWeight()<(targetM.baseWeight()-250))
 				return Ability.QUALITY_INDIFFERENT;
-			Item I=mob.fetchWieldedItem();
+			final Item I=mob.fetchWieldedItem();
 			if((!(I instanceof Weapon))
 			||(((Weapon)I).weaponClassification()!=Weapon.CLASS_HAMMER))
 				return Ability.QUALITY_INDIFFERENT;
@@ -203,7 +202,7 @@ public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -222,8 +221,8 @@ public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 				mob.tell(L("@x1 is way too big!",target.name(mob)));
 				return false;
 			}
-			
-			Item I=mob.fetchWieldedItem();
+
+			final Item I=mob.fetchWieldedItem();
 			if((!(I instanceof Weapon))
 			||(((Weapon)I).weaponClassification()!=Weapon.CLASS_HAMMER))
 			{
@@ -243,7 +242,7 @@ public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 		// now see if it worked
 		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=proficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_CONSTITUTION)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto)&&(hit);
-		if(CMLib.flags().isUndead(target) 
+		if(CMLib.flags().isUndead(target)
 		|| CMLib.flags().isGolem(target)
 		|| (target.charStats().getBodyPart(Race.BODY_HEAD)==0))
 			success=false;

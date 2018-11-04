@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_ConjureAmmunition extends Spell
 {
 
@@ -75,20 +74,20 @@ public class Spell_ConjureAmmunition extends Spell
 	{
 		return Ability.QUALITY_INDIFFERENT;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=super.getAnyTarget(mob, commands, givenTarget, Wearable.FILTER_UNWORNONLY, false);
 		if(target==null)
 			return false;
-		
+
 		Ammunition ammoI = null;
 		Item adjustedTarget = (target instanceof Item)?(Item)target:null;
 		if(target instanceof MOB)
 		{
-			List<Item> choices=new ArrayList<Item>(1);
-			Item wieldI = ((MOB)target).fetchWieldedItem();
+			final List<Item> choices=new ArrayList<Item>(1);
+			final Item wieldI = ((MOB)target).fetchWieldedItem();
 			if((wieldI instanceof AmmunitionWeapon)
 			&&(((AmmunitionWeapon)wieldI).ammunitionType().length()>0)
 			&&(((AmmunitionWeapon)wieldI).ammunitionCapacity()>0))
@@ -96,7 +95,7 @@ public class Spell_ConjureAmmunition extends Spell
 			else
 			for(final Enumeration<Item> e=((MOB)target).items();e.hasMoreElements();)
 			{
-				Item I = e.nextElement();
+				final Item I = e.nextElement();
 				if((I instanceof AmmunitionWeapon)
 				&&(((AmmunitionWeapon)I).ammunitionType().length()>0)
 				&&(((AmmunitionWeapon)I).ammunitionCapacity()>0))
@@ -107,13 +106,13 @@ public class Spell_ConjureAmmunition extends Spell
 		}
 		if(adjustedTarget instanceof AmmunitionWeapon)
 		{
-			String ammoType = ((AmmunitionWeapon)adjustedTarget).ammunitionType();
+			final String ammoType = ((AmmunitionWeapon)adjustedTarget).ammunitionType();
 			if((ammoType.length()>0)&&(((AmmunitionWeapon)adjustedTarget).ammunitionCapacity()>0))
 			{
 				int ammoAmount = 1;
 				if(!(adjustedTarget instanceof Rideable))
 				{
-					int level=adjustedLevel(mob,asLevel);
+					final int level=adjustedLevel(mob,asLevel);
 					if(level < 6)
 						ammoAmount = 5;
 					else

@@ -23,12 +23,14 @@ public interface CMRunnable extends Runnable
 	 * @return the time in millis
 	 */
 	public long activeTimeMillis();
+
 	/**
 	 * Either the time this runnable did start running, or
 	 * will start running, depending on whether it's scheduled
 	 * @return the time in millis
 	 */
 	public long getStartTime();
+
 	/**
 	 * The group identifier for this runnable, which may be used
 	 * for executor selection

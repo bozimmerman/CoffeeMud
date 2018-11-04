@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_Steal extends ThiefSkill
 {
 	@Override
@@ -95,13 +94,13 @@ public class Thief_Steal extends ThiefSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code=newCode;
 	}
 
 	protected PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
-	protected int timesPicked(MOB target)
+	protected int timesPicked(final MOB target)
 	{
 		int times=0;
 		for(int x=0;x<lastOnes.size();x++)
@@ -122,7 +121,7 @@ public class Thief_Steal extends ThiefSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -139,7 +138,7 @@ public class Thief_Steal extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String itemToSteal="all";
 		if(!auto)

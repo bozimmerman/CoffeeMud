@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_WeakBridge extends Property implements TriggeredAffect
 {
 	@Override
@@ -72,7 +71,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		mobsToKill=new Vector<MOB>();
 		super.setMiscText(newText);
@@ -99,7 +98,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 		return true;
 	}
 
-	public int weight(MOB mob)
+	public int weight(final MOB mob)
 	{
 		int weight=0;
 		if(affected instanceof Room)

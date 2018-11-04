@@ -22,7 +22,7 @@ public class ReverseEnumeration<K> implements Enumeration<K>
 {
 	private int index;
 	private final List<K> set;
-	public ReverseEnumeration(List<K> eset)
+	public ReverseEnumeration(final List<K> eset)
 	{
 		set=eset;
 		index=set.size();

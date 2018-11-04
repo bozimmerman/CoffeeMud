@@ -47,7 +47,7 @@ public class ROMPatrolman extends StdBehavior
 		return "gang member passifying";
 	}
 
-	public void keepPeace(MOB observer)
+	public void keepPeace(final MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer))
 			return;

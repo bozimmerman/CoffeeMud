@@ -137,9 +137,9 @@ public interface TickClient extends Comparable<TickClient>
 	 * allowed to get thread time to 1.
 	 */
 	public void setCurrentTickDownPending();
-	
+
 	/**
-	 * Gets the number of total milliseconds before another tick 
+	 * Gets the number of total milliseconds before another tick
 	 * will occur., or -1.
 	 * @return the number of ms to go
 	 */

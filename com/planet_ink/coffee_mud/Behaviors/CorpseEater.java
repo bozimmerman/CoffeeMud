@@ -61,13 +61,13 @@ public class CorpseEater extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		EatItems=(newParms.toUpperCase().indexOf("EATITEMS") > 0);
 	}
 
-	public static MOB makeMOBfromCorpse(DeadBody corpse, String type)
+	public static MOB makeMOBfromCorpse(final DeadBody corpse, String type)
 	{
 		if((type==null)||(type.length()==0))
 			type="StdMOB";

@@ -173,9 +173,9 @@ public class SpecialistMage extends Mage
 	}
 
 	@Override
-	public int classDurationModifier(MOB myChar,
-									 Ability skill,
-									 int duration)
+	public int classDurationModifier(final MOB myChar,
+									 final Ability skill,
+									 final int duration)
 	{
 		if(myChar==null)
 			return duration;

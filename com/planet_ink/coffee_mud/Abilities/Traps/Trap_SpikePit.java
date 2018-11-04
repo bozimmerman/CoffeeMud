@@ -74,7 +74,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 
 	public List<Integer> daggerDamages=null;
 
-	protected Item getDagger(MOB mob)
+	protected Item getDagger(final MOB mob)
 	{
 		if(mob==null)
 			return null;
@@ -91,7 +91,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 	}
 
 	@Override
-	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		if(P==null)
 			return null;
@@ -126,7 +126,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 	}
 
 	@Override
-	public boolean canSetTrapOn(MOB mob, Physical P)
+	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P))
 			return false;
@@ -142,7 +142,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 	}
 
 	@Override
-	public void finishSpringing(MOB target)
+	public void finishSpringing(final MOB target)
 	{
 		if((!canInvokeTrapOn(invoker(),target))||(target.phyStats().weight()<5))
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) gently into the pit!"));

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_WallOfAir extends Spell
 {
 
@@ -102,9 +101,9 @@ public class Spell_WallOfAir extends Spell
 
 	protected boolean shootback=true;
 	protected Item theWall=null;
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		shootback = CMParms.getParmBool(newMiscText, "SHOOTBACK", true);
@@ -188,7 +187,7 @@ public class Spell_WallOfAir extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{

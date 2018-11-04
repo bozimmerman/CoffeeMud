@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Skill_Disguise extends BardSkill
 {
 	@Override
@@ -107,7 +106,7 @@ public class Skill_Disguise extends BardSkill
 	protected String[] values=new String[whats.length];
 
 	@Override
-	protected void cloneFix(Ability E)
+	protected void cloneFix(final Ability E)
 	{
 		values=new String[whats.length];
 		for(int i=0;i<values.length;i++)
@@ -125,7 +124,7 @@ public class Skill_Disguise extends BardSkill
 		}
 		return str.toString();
 	}
-	
+
 	@Override
 	public void setMiscText(final String txt)
 	{
@@ -133,9 +132,9 @@ public class Skill_Disguise extends BardSkill
 		for(int i=0;i<values.length;i++)
 			values[i] = CMParms.getParmStr(txt, whats[i], null);
 	}
-	
+
 	@Override
-	public void affectPhyStats(Physical myHost, PhyStats affectableStats)
+	public void affectPhyStats(final Physical myHost, final PhyStats affectableStats)
 	{
 		if(values[5]!=null)
 			affectableStats.setName(values[5]);
@@ -148,7 +147,7 @@ public class Skill_Disguise extends BardSkill
 	}
 
 	@Override
-	public void affectCharStats(MOB myHost, CharStats affectableStats)
+	public void affectCharStats(final MOB myHost, final CharStats affectableStats)
 	{
 		if(values[3]!=null)
 			affectableStats.setRaceName(values[3]);
@@ -223,7 +222,7 @@ public class Skill_Disguise extends BardSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!ID().equals("Skill_Disguise"))
 			return super.invoke(mob,commands,givenTarget,auto,asLevel);

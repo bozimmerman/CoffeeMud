@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class CrossClassAbilities extends StdWebMacro
 {
 	@Override
@@ -43,7 +42,7 @@ public class CrossClassAbilities extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final Vector<StringBuffer> rowsFavoring=new Vector<StringBuffer>();
 		final Vector<StringBuffer> allOtherRows=new Vector<StringBuffer>();

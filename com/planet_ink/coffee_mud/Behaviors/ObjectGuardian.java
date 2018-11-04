@@ -43,7 +43,7 @@ public class ObjectGuardian extends StdBehavior
 	protected boolean sentinal=false;
 
 	@Override
-	public void setParms(String parameters)
+	public void setParms(final String parameters)
 	{
 		super.setParms(parameters);
 		final List<String> parts=CMParms.parse(parameters.toUpperCase());

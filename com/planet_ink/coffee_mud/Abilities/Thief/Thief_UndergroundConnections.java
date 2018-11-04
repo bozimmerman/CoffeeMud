@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_UndergroundConnections extends ThiefSkill
 {
 	@Override
@@ -208,7 +207,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		super.unInvoke();
 	}
 
-	public void bringMOBSHere(Room newRoom, Vector<MOB> group, String enterStr, String leaveStr)
+	public void bringMOBSHere(final Room newRoom, final Vector<MOB> group, final String enterStr, final String leaveStr)
 	{
 		for(int g=group.size()-1;g>=0;g--)
 		{
@@ -218,7 +217,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		}
 	}
 
-	public void bringMOBSLikeHere(List<Room> rooms, Room newRoom, Vector<MOB> group, String enterStr, String leaveStr)
+	public void bringMOBSLikeHere(final List<Room> rooms, final Room newRoom, final Vector<MOB> group, final String enterStr, final String leaveStr)
 	{
 		for(int g=group.size()-1;g>=0;g--)
 		{
@@ -231,7 +230,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		}
 	}
 
-	public boolean bringMOBHere(Room newRoom, MOB follower, String leaveStr, String enterStr)
+	public boolean bringMOBHere(final Room newRoom, final MOB follower, final String leaveStr, final String enterStr)
 	{
 		final Room thisRoom=follower.location();
 		final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,enterStr,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("You are joined by <S-NAME>."));
@@ -256,7 +255,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		return false;
 	}
 
-	public Room makeNewRoom(Area area, String display, String description)
+	public Room makeNewRoom(final Area area, final String display, final String description)
 	{
 		final Room R=CMClass.getLocale("MagicShelter");
 		R.setDisplayText(display);
@@ -275,7 +274,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

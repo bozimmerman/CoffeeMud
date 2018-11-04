@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class ThrowFeces extends StdAbility
 {
 	@Override
@@ -90,8 +89,8 @@ public class ThrowFeces extends StdAbility
 		return triggerStrings;
 	}
 
-	protected volatile int maxRange = 10; 
-	
+	protected volatile int maxRange = 10;
+
 	@Override
 	public int maxRange()
 	{
@@ -120,9 +119,9 @@ public class ThrowFeces extends StdAbility
 			msg.setValue(CMLib.dice().roll(1, 2, 0));
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -131,7 +130,7 @@ public class ThrowFeces extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			this.maxRange=1+super.getXMAXRANGELevel(mob);
@@ -150,8 +149,8 @@ public class ThrowFeces extends StdAbility
 					fecesI.basePhyStats().setDamage(2);
 					fecesI.basePhyStats().setWeight(1);
 					fecesI.setRanges(0,this.maxRange);
-					Ability casterA=CMClass.getAbility("Prop_FightSpellCast");
-					int chance=5+super.getXLEVELLevel(msg.source());
+					final Ability casterA=CMClass.getAbility("Prop_FightSpellCast");
+					final int chance=5+super.getXLEVELLevel(msg.source());
 					final String[] diseases=new String[]{
 						"Disease_Tetnus", "Disease_Lyme", "Disease_Fever", "Disease_Infection"
 					};
@@ -164,7 +163,7 @@ public class ThrowFeces extends StdAbility
 						mob.addItem(fecesI);
 						mob.addEffect(this);
 						mob.recoverPhyStats();
-						if(CMLib.combat().postAttack(mob,target,fecesI) 
+						if(CMLib.combat().postAttack(mob,target,fecesI)
 						&& (target.fetchEffect("Soiled")==null))
 						{
 							final Ability soiledA=CMClass.getAbility("Soiled");

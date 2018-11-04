@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class WhoPacket extends Packet 
+public class WhoPacket extends Packet
 {
 	public Vector<?> who = null;
 
@@ -43,7 +43,7 @@ public class WhoPacket extends Packet
 		type = Packet.WHO_REQUEST;
 	}
 
-	public WhoPacket(Vector<?> v)
+	public WhoPacket(final Vector<?> v)
 	{
 		super(v);
 		if( v.size() == 6 )
@@ -58,7 +58,7 @@ public class WhoPacket extends Packet
 	}
 
 	@Override
-	public void send() throws InvalidPacketException 
+	public void send() throws InvalidPacketException
 	{
 		if( type == Packet.WHO_REPLY && who == null )
 		{

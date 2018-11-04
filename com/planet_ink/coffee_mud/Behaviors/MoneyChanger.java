@@ -40,12 +40,12 @@ public class MoneyChanger extends StdBehavior
 		return "MoneyChanger";
 	}
 
-	protected Map<String,Double> rates=new Hashtable<String,Double>();
-	protected double spaceMaxCut=0.0;
-	protected long spaceMaxDistance=SpaceObject.Distance.GalaxyRadius.dm;
-	protected double cut=0.05;
-	private boolean complainedAboutSpaceError=false;
-	
+	protected Map<String, Double>	rates						= new Hashtable<String, Double>();
+	protected double				spaceMaxCut					= 0.0;
+	protected long					spaceMaxDistance			= SpaceObject.Distance.GalaxyRadius.dm;
+	protected double				cut							= 0.05;
+	private boolean					complainedAboutSpaceError	= false;
+
 	@Override
 	public String accountForYourself()
 	{
@@ -53,7 +53,7 @@ public class MoneyChanger extends StdBehavior
 	}
 
 	@Override
-	public void startBehavior(PhysicalAgent forMe)
+	public void startBehavior(final PhysicalAgent forMe)
 	{
 		if(forMe==null)
 			return;
@@ -77,7 +77,7 @@ public class MoneyChanger extends StdBehavior
 			rates.put(currency, Double.valueOf(cut));
 			return rates;
 		}
-		SpaceObject homeO=CMLib.map().getSpaceObject(affecting, false);
+		final SpaceObject homeO=CMLib.map().getSpaceObject(affecting, false);
 		if(homeO!=null)
 		{
 			myCurrency=CMLib.beanCounter().getCurrency(homeO);
@@ -99,21 +99,21 @@ public class MoneyChanger extends StdBehavior
 		}
 		for(final Enumeration<Area> a=CMLib.map().spaceAreas();a.hasMoreElements();)
 		{
-			Area A=a.nextElement();
+			final Area A=a.nextElement();
 			if((A!=null)&&(A!=homeO))
 			{
 				myCurrency=CMLib.beanCounter().getCurrency(A);
 				if(myCurrency.equalsIgnoreCase(currency))
 				{
-					SpaceObject oA=(SpaceObject)A;
-					long distance=CMLib.map().getDistanceFrom(homeO, oA);
+					final SpaceObject oA=(SpaceObject)A;
+					final long distance=CMLib.map().getDistanceFrom(homeO, oA);
 					if((distance<0)||(distance>spaceMaxDistance))
 					{
 						rates.put(currency, Double.valueOf(spaceMaxCut));
 					}
 					else
 					{
-						double pct=CMath.div(distance, spaceMaxDistance);
+						final double pct=CMath.div(distance, spaceMaxDistance);
 						double amt=spaceMaxCut*pct;
 						if(amt < cut)
 							amt=cut;
@@ -123,16 +123,16 @@ public class MoneyChanger extends StdBehavior
 				}
 			}
 		}
-		
+
 		return rates;
 	}
-	
+
 	protected boolean doIExchangeThisCurrency(final Environmental affecting, final String currency)
 	{
 		final Map<String,Double> rates=getRatesFor(affecting, currency);
 		return ((rates.size()==0)||(rates.containsKey(currency.toUpperCase())));
 	}
-	
+
 	protected double getMyCut(final Environmental affecting, final String currency)
 	{
 		final Map<String,Double> rates=getRatesFor(affecting,currency);
@@ -140,7 +140,7 @@ public class MoneyChanger extends StdBehavior
 			return rates.get(currency.toUpperCase()).doubleValue();
 		return cut;
 	}
-	
+
 	@Override
 	public void setParms(String newParm)
 	{
@@ -228,7 +228,7 @@ public class MoneyChanger extends StdBehavior
 			}
 			double value=((Coins)msg.tool()).getTotalValue();
 			final String currency=((Coins)msg.tool()).getCurrency().toUpperCase();
-			double takeCut=getMyCut(host,currency);
+			final double takeCut=getMyCut(host,currency);
 			double amountToTake=CMLib.beanCounter().abbreviatedRePrice(observer,value*takeCut);
 			if((amountToTake>0.0)&&(amountToTake<CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer))))
 				amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));
@@ -263,7 +263,7 @@ public class MoneyChanger extends StdBehavior
 			{
 				double value=((Coins)msg.tool()).getTotalValue();
 				final String currency=((Coins)msg.tool()).getCurrency().toUpperCase();
-				double takeCut=getMyCut(affecting,currency);
+				final double takeCut=getMyCut(affecting,currency);
 				double amountToTake=CMLib.beanCounter().abbreviatedRePrice(observer,value*takeCut);
 				if((amountToTake>0.0)&&(amountToTake<CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer))))
 					amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));

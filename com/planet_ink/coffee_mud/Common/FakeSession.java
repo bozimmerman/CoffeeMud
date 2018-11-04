@@ -100,7 +100,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void initializeSession(Socket s, String groupName, String introTextStr)
+	public void initializeSession(final Socket s, final String groupName, final String introTextStr)
 	{
 		if (introTextStr.equalsIgnoreCase("MEMORY"))
 			bout = new ByteArrayOutputStream();
@@ -115,7 +115,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void setGroupName(String group)
+	public void setGroupName(final String group)
 	{
 	}
 
@@ -160,7 +160,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void logout(boolean b1)
+	public void logout(final boolean b1)
 	{
 	}
 
@@ -171,12 +171,12 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void negotiateTelnetMode(int code)
+	public void negotiateTelnetMode(final int code)
 	{
 	}
 
 	@Override
-	public boolean isAllowedMxp(String tag)
+	public boolean isAllowedMxp(final String tag)
 	{
 		return false;
 	}
@@ -199,7 +199,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void setFakeInput(String input)
+	public void setFakeInput(final String input)
 	{
 		inputV.add(input);
 	}
@@ -211,7 +211,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void onlyPrint(String msg, boolean noCache)
+	public void onlyPrint(final String msg, final boolean noCache)
 	{
 		if (theFile != null)
 		{
@@ -237,160 +237,160 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void onlyPrint(String msg)
+	public void onlyPrint(final String msg)
 	{
 		onlyPrint(msg, false);
 	}
 
 	@Override
-	public void rawOut(String msg)
+	public void rawOut(final String msg)
 	{
 		onlyPrint(msg, false);
 	}
 
 	@Override
-	public void rawPrintln(String msg)
+	public void rawPrintln(final String msg)
 	{
 		onlyPrint(msg + "\n", false);
 	}
 
 	@Override
-	public void safeRawPrintln(String msg)
+	public void safeRawPrintln(final String msg)
 	{
 		onlyPrint(msg + "\n", false);
 	}
 
-	public void rawPrintln(String msg, int pageBreak)
-	{
-		onlyPrint(msg + "\n", false);
-	}
-
-	@Override
-	public void rawPrint(String msg)
-	{
-		onlyPrint(msg, false);
-	}
-
-	@Override
-	public void safeRawPrint(String msg)
-	{
-		onlyPrint(msg, false);
-	}
-
-	public void rawPrint(String msg, int pageBreak)
-	{
-		onlyPrint(msg, false);
-	}
-
-	@Override
-	public void stdPrint(String msg)
-	{
-		onlyPrint(msg, false);
-	}
-
-	@Override
-	public void stdPrint(Physical Source, Environmental Target, Environmental Tool, String msg)
-	{
-		onlyPrint(msg, false);
-	}
-
-	@Override
-	public void stdPrintln(String msg)
+	public void rawPrintln(final String msg, final int pageBreak)
 	{
 		onlyPrint(msg + "\n", false);
 	}
 
 	@Override
-	public void stdPrintln(Physical Source, Environmental Target, Environmental Tool, String msg)
+	public void rawPrint(final String msg)
+	{
+		onlyPrint(msg, false);
+	}
+
+	@Override
+	public void safeRawPrint(final String msg)
+	{
+		onlyPrint(msg, false);
+	}
+
+	public void rawPrint(final String msg, final int pageBreak)
+	{
+		onlyPrint(msg, false);
+	}
+
+	@Override
+	public void stdPrint(final String msg)
+	{
+		onlyPrint(msg, false);
+	}
+
+	@Override
+	public void stdPrint(final Physical Source, final Environmental Target, final Environmental Tool, final String msg)
+	{
+		onlyPrint(msg, false);
+	}
+
+	@Override
+	public void stdPrintln(final String msg)
 	{
 		onlyPrint(msg + "\n", false);
 	}
 
 	@Override
-	public void rawCharsOut(char[] c)
+	public void stdPrintln(final Physical Source, final Environmental Target, final Environmental Tool, final String msg)
+	{
+		onlyPrint(msg + "\n", false);
+	}
+
+	@Override
+	public void rawCharsOut(final char[] c)
 	{
 		onlyPrint(new String(c), false);
 	}
 
 	@Override
-	public void print(String msg)
+	public void print(final String msg)
 	{
 		onlyPrint(msg, false);
 	}
 
 	@Override
-	public void promptPrint(String msg)
+	public void promptPrint(final String msg)
 	{
 		onlyPrint(msg, false);
 	}
 
 	@Override
-	public void print(Physical Source, Environmental Target, Environmental Tool, String msg)
+	public void print(final Physical Source, final Environmental Target, final Environmental Tool, final String msg)
 	{
 		onlyPrint(msg, false);
 	}
 
 	@Override
-	public void println(String msg)
+	public void println(final String msg)
 	{
 		onlyPrint(msg + "\n", false);
 	}
 
 	@Override
-	public void println(Physical Source, Environmental Target, Environmental Tool, String msg)
+	public void println(final Physical Source, final Environmental Target, final Environmental Tool, final String msg)
 	{
 		onlyPrint(msg + "\n", false);
 	}
 
 	@Override
-	public void wraplessPrintln(String msg)
+	public void wraplessPrintln(final String msg)
 	{
 		onlyPrint(msg + "\n", false);
 	}
 
 	@Override
-	public void wraplessPrint(String msg)
+	public void wraplessPrint(final String msg)
 	{
 		onlyPrint(msg, false);
 	}
 
 	@Override
-	public void colorOnlyPrintln(String msg, boolean noCache)
+	public void colorOnlyPrintln(final String msg, final boolean noCache)
 	{
 		onlyPrint(msg + "\n", false);
 	}
 
 	@Override
-	public void colorOnlyPrint(String msg, boolean noCache)
+	public void colorOnlyPrint(final String msg, final boolean noCache)
 	{
 		onlyPrint(msg, false);
 	}
 
 	@Override
-	public void colorOnlyPrintln(String msg)
+	public void colorOnlyPrintln(final String msg)
 	{
 		onlyPrint(msg + "\n", false);
 	}
 
 	@Override
-	public void colorOnlyPrint(String msg)
+	public void colorOnlyPrint(final String msg)
 	{
 		onlyPrint(msg, false);
 	}
 
 	@Override
-	public void setPromptFlag(boolean truefalse)
+	public void setPromptFlag(final boolean truefalse)
 	{
 	}
 
 	@Override
-	public char hotkey(long maxWait)
+	public char hotkey(final long maxWait)
 	{
 		return ' ';
 	}
 
 	@Override
-	public String prompt(String Message, String Default)
+	public String prompt(final String Message, final String Default)
 	{
 		onlyPrint(Message, false);
 		final String msg = readlineContinue();
@@ -400,7 +400,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void prompt(InputCallback callBack)
+	public void prompt(final InputCallback callBack)
 	{
 		callBack.showPrompt();
 		callBack.setInput(readlineContinue());
@@ -408,25 +408,25 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public String prompt(String Message, String Default, long maxTime)
+	public String prompt(final String Message, final String Default, final long maxTime)
 	{
 		return prompt(Message, Default);
 	}
 
 	@Override
-	public String prompt(String Message)
+	public String prompt(final String Message)
 	{
 		return prompt(Message, "");
 	}
 
 	@Override
-	public String prompt(String Message, long maxTime)
+	public String prompt(final String Message, final long maxTime)
 	{
 		return prompt(Message, "");
 	}
 
 	@Override
-	public boolean confirm(String Message, String Default)
+	public boolean confirm(final String Message, String Default)
 	{
 		if (Default.toUpperCase().startsWith("T"))
 			Default = "Y";
@@ -435,13 +435,13 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public boolean confirm(String Message, String Default, long maxTime)
+	public boolean confirm(final String Message, final String Default, final long maxTime)
 	{
 		return confirm(Message, Default, 0);
 	}
 
 	@Override
-	public String choose(String Message, String Choices, String Default)
+	public String choose(final String Message, final String Choices, final String Default)
 	{
 		onlyPrint(Message, false);
 		final String msg = readlineContinue();
@@ -453,19 +453,19 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut) throws IOException
+	public String choose(final String Message, final String Choices, final String Default, final long maxTime, final List<String> paramsOut) throws IOException
 	{
 		return choose(Message, Choices, Default);
 	}
 
 	@Override
-	public String choose(String Message, String Choices, String Default, long maxTime)
+	public String choose(final String Message, final String Choices, final String Default, final long maxTime)
 	{
 		return choose(Message, Choices, Default);
 	}
 
 	@Override
-	public String blockingIn(long timeoutMillis, boolean filter)
+	public String blockingIn(final long timeoutMillis, final boolean filter)
 	{
 		return readlineContinue();
 	}
@@ -484,28 +484,28 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void setBeingSnoopedBy(Session session, boolean onOff)
+	public void setBeingSnoopedBy(final Session session, final boolean onOff)
 	{
 	}
 
 	@Override
-	public boolean isBeingSnoopedBy(Session S)
+	public boolean isBeingSnoopedBy(final Session S)
 	{
 		return S == this;
 	}
 
 	@Override
-	public int snoopSuspension(int x)
+	public int snoopSuspension(final int x)
 	{
 		return 0;
 	}
 
-	public void cmdExit(MOB mob, List<String> commands) throws Exception
+	public void cmdExit(final MOB mob, final List<String> commands) throws Exception
 	{
 	}
 
 	@Override
-	public void stopSession(boolean t1, boolean t2, boolean t3)
+	public void stopSession(final boolean t1, final boolean t2, final boolean t3)
 	{
 	}
 
@@ -522,7 +522,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void setAfkFlag(boolean truefalse)
+	public void setAfkFlag(final boolean truefalse)
 	{
 	}
 
@@ -535,7 +535,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void setAFKMessage(String str)
+	public void setAFKMessage(final String str)
 	{
 	}
 
@@ -552,13 +552,13 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void setMob(MOB newmob)
+	public void setMob(final MOB newmob)
 	{
 		mob = newmob;
 	}
 
 	@Override
-	public void setAccount(PlayerAccount account)
+	public void setAccount(final PlayerAccount account)
 	{
 	}
 
@@ -568,12 +568,12 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void setCurrentColor(ColorState newcolor)
+	public void setCurrentColor(final ColorState newcolor)
 	{
 	}
 
 	@Override
-	public void setLastColor(ColorState newColor)
+	public void setLastColor(final ColorState newColor)
 	{
 	}
 
@@ -608,7 +608,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void setStatus(SessionStatus newStatus)
+	public void setStatus(final SessionStatus newStatus)
 	{
 	}
 
@@ -682,34 +682,34 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void setServerTelnetMode(int telnetCode, boolean onOff)
+	public void setServerTelnetMode(final int telnetCode, final boolean onOff)
 	{
 	}
 
 	@Override
-	public boolean getServerTelnetMode(int telnetCode)
-	{
-		return false;
-	}
-
-	@Override
-	public void setClientTelnetMode(int telnetCode, boolean onOff)
-	{
-	}
-
-	@Override
-	public boolean getClientTelnetMode(int telnetCode)
+	public boolean getServerTelnetMode(final int telnetCode)
 	{
 		return false;
 	}
 
 	@Override
-	public void changeTelnetMode(int telnetCode, boolean onOff)
+	public void setClientTelnetMode(final int telnetCode, final boolean onOff)
 	{
 	}
 
 	@Override
-	public void initTelnetMode(int mobbitmap)
+	public boolean getClientTelnetMode(final int telnetCode)
+	{
+		return false;
+	}
+
+	@Override
+	public void changeTelnetMode(final int telnetCode, final boolean onOff)
+	{
+	}
+
+	@Override
+	public void initTelnetMode(final int mobbitmap)
 	{
 	}
 
@@ -720,7 +720,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		return null;
 	}
@@ -738,7 +738,7 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 	}
 
@@ -749,19 +749,19 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public boolean isAllowedMcp(String packageName, float version)
+	public boolean isAllowedMcp(final String packageName, final float version)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean sendMcpCommand(String packageCommand, String parms)
+	public boolean sendMcpCommand(final String packageCommand, final String parms)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean autoLogin(String name, String password)
+	public boolean autoLogin(final String name, final String password)
 	{
 		return false;
 	}

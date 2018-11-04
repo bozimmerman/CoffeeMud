@@ -55,13 +55,13 @@ public class Spell_SuperiorImage extends Spell_MinorImage
 		final int ticksPerMudHr = (int)CMProps.getTicksPerMudHour();
 		return (CMLib.time().globalClock().getHoursInDay() + super.adjustedLevel(caster, asLevel)) * ticksPerMudHr;
 	}
-	
+
 	@Override
 	protected boolean canSeeAppearance()
 	{
 		return true;
 	}
-	
+
 	@Override
 	protected int canTargetCode()
 	{

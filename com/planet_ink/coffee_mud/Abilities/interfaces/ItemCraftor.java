@@ -109,7 +109,7 @@ public interface ItemCraftor extends CraftorAbility
 		public Item item;
 		public DoorKey key;
 
-		public ItemKeyPair(Item item, DoorKey key)
+		public ItemKeyPair(final Item item, final DoorKey key)
 		{
 			this.item = item;
 			this.key = key;

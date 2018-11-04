@@ -59,7 +59,7 @@ public class GenCurtain extends GenExit
 
 	protected Object	passSync	= new Object();
 	protected boolean	passThrough	= false;
-	
+
 	@Override
 	public boolean isOpen()
 	{

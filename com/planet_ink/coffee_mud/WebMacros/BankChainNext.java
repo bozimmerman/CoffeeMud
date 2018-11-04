@@ -43,7 +43,7 @@ public class BankChainNext extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		MOB playerM=null;
 		boolean destroyPlayer=false;
@@ -95,7 +95,7 @@ public class BankChainNext extends StdWebMacro
 			else
 			if(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.CMDPLAYERS))
 				return "";
-	
+
 			for(final Iterator<String> j=CMLib.map().bankChains(null);j.hasNext();)
 			{
 				final String bankChain=j.next();

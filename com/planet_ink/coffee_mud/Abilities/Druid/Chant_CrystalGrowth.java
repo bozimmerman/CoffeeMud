@@ -32,7 +32,6 @@ import java.util.List;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_CrystalGrowth extends Chant
 {
 	@Override
@@ -80,7 +79,7 @@ public class Chant_CrystalGrowth extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))

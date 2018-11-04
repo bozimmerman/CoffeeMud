@@ -34,7 +34,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_KillLog extends ThiefSkill
 {
 	@Override
@@ -89,7 +88,7 @@ public class Thief_KillLog extends ThiefSkill
 
 	private static final String[] triggerStrings =I(new String[] {"KILLLOG"});
 	@Override
-	public boolean disregardsArmorCheck(MOB mob)
+	public boolean disregardsArmorCheck(final MOB mob)
 	{
 		return true;
 	}
@@ -110,7 +109,7 @@ public class Thief_KillLog extends ThiefSkill
 	protected Thief_Mark lastMarker=null;
 	public MOB mark=null;
 
-	public MOB getMark(MOB mob)
+	public MOB getMark(final MOB mob)
 	{
 		Thief_Mark A=null;
 		if((lastMarker != null)&&(lastMarker.affecting()==mob)&&(!lastMarker.amDestroyed())&&(lastMarker.mark!=null))
@@ -188,7 +187,7 @@ public class Thief_KillLog extends ThiefSkill
 	}
 
 	@Override
-	public void setMiscText(String str)
+	public void setMiscText(final String str)
 	{
 		theList.clear();
 		if((str.trim().length()>0)&&(str.trim().startsWith("<MOBS>")))
@@ -247,7 +246,7 @@ public class Thief_KillLog extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

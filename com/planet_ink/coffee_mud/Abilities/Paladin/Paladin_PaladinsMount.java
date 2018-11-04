@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Paladin_PaladinsMount extends PaladinSkill
 {
 	@Override
@@ -55,9 +54,9 @@ public class Paladin_PaladinsMount extends PaladinSkill
 	{
 		return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;
 	}
-	
+
 	protected boolean pass=false;
-	
+
 	public Paladin_PaladinsMount()
 	{
 		super();
@@ -119,7 +118,7 @@ public class Paladin_PaladinsMount extends PaladinSkill
 				affectableStats.setStat(i,affectableStats.getStat(i)+amount);
 		}
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

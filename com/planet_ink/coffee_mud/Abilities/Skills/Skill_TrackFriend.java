@@ -165,7 +165,7 @@ public class Skill_TrackFriend extends StdAbility
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
@@ -188,7 +188,7 @@ public class Skill_TrackFriend extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!CMLib.flags().isAliveAwakeMobile(mob,false))
 			return false;
@@ -226,7 +226,7 @@ public class Skill_TrackFriend extends StdAbility
 			mob.tell(L("Try 'look'."));
 			return false;
 		}
-		
+
 		final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 		for(final Pair<Clan,Integer> p : mob.clans())
 		{
@@ -267,7 +267,7 @@ public class Skill_TrackFriend extends StdAbility
 			.plus(TrackingLibrary.TrackingFlag.NOAIR)
 			.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		final ArrayList<Room> rooms=new ArrayList<Room>();
-		int range=50 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
+		final int range=50 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room room : checkSet)
 		{

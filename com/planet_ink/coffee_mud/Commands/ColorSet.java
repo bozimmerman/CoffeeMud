@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class ColorSet extends StdCommand
 {
 	public ColorSet()
@@ -50,13 +49,13 @@ public class ColorSet extends StdCommand
 		return access;
 	}
 
-	public String colorDescription(String code)
+	public String colorDescription(final String code)
 	{
 		final StringBuffer buf=new StringBuffer("");
 		String what=CMLib.color().translateANSItoCMCode(code);
 		while((what!=null)&&(what.length()>1))
 		{
-			for(Color C : Color.values())
+			for(final Color C : Color.values())
 			{
 				if(what.charAt(1)==C.getCodeChar())
 				{
@@ -93,7 +92,7 @@ public class ColorSet extends StdCommand
 					callBack.timedOut();
 				}
 
-				@Override 
+				@Override
 				public void callBack()
 				{
 					callBack.setInput("-1");
@@ -139,7 +138,7 @@ public class ColorSet extends StdCommand
 	}
 
 	@Override
-	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final Session session=mob.session();
@@ -156,7 +155,7 @@ public class ColorSet extends StdCommand
 			mob.tell(L("Your colors have been changed back to default."));
 			return false;
 		}
-		
+
 		final List<String> allBackgroundColorsList = new ArrayList<String>();
 		final List<String> allBasicColorsList = new ArrayList<String>();
 		final List<String> allForegroundColorsList = new ArrayList<String>();
@@ -164,7 +163,7 @@ public class ColorSet extends StdCommand
 		// ansi code.  When stored in this way, there are limitations on the
 		// use of bold, which means only dark backgrounds and light foregrounds
 		// ever.  If you don't believe me, spend another few hours trying it.
-		for(Color C : Color.values())
+		for(final Color C : Color.values())
 		{
 			if((C.isBasicColor() && (Character.isUpperCase(C.getCodeChar())))
 			||(C.getCodeChar()=='K')) // black is ok for bg color
@@ -180,11 +179,11 @@ public class ColorSet extends StdCommand
 				allForegroundColorsList.add(Character.toString(C.getCodeChar()));
 			}
 		}
-		
+
 		final String[] COLOR_ALLBACKGROUNDCOLORCODELETTERS = allBackgroundColorsList.toArray(new String[allBackgroundColorsList.size()]);
 		final String[] COLOR_ALLBASICCOLORCODELETTERS = allBasicColorsList.toArray(new String[allBasicColorsList.size()]);
 		final String[] COLOR_ALLFOREGROUNDCOLORCODELETTERS = allForegroundColorsList.toArray(new String[allForegroundColorsList.size()]);
-		
+
 		if(clookup[0]==null)
 			return false;
 		final List<Pair<String,Integer>> theSet= new ArrayList<Pair<String,Integer>>();
@@ -207,7 +206,7 @@ public class ColorSet extends StdCommand
 		theSet.add(new Pair<String,Integer>("Channel Colors",Integer.valueOf('Q')));
 		for(int i=0;i<CMLib.channels().getNumChannels();i++)
 		{
-			CMChannel C = CMLib.channels().getChannel(i);
+			final CMChannel C = CMLib.channels().getChannel(i);
 			if((clookup[0][128+i]!=null)&&(clookup[0][128+i].length()>0))
 				theSet.add(new Pair<String,Integer>(C.name(),Integer.valueOf(128+i)));
 		}
@@ -215,7 +214,7 @@ public class ColorSet extends StdCommand
 		final InputCallback[] IC=new InputCallback[1];
 		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"")
 		{
-			@Override 
+			@Override
 			public void showPrompt()
 			{
 				final StringBuffer buf=new StringBuffer("");
@@ -242,10 +241,10 @@ public class ColorSet extends StdCommand
 					return;
 				if(!CMath.isInteger(input.trim()))
 				{
-					String potChannelName = CMLib.channels().findChannelName(input.trim());
-					if(potChannelName != null) 
+					final String potChannelName = CMLib.channels().findChannelName(input.trim());
+					if(potChannelName != null)
 					{
-						int code = CMLib.channels().getChannelIndex(potChannelName);
+						final int code = CMLib.channels().getChannelIndex(potChannelName);
 						if(code >=0)
 						{
 							Pair<String,Integer> newEntry = null;
@@ -285,7 +284,7 @@ public class ColorSet extends StdCommand
 						buf.append(L("^N\n\rAvailable Colors: "));
 						for(int ii=0;ii<Color.values().length;ii++)
 						{
-							Color C = Color.values()[ii];
+							final Color C = Color.values()[ii];
 							if(allBasicColorsList.contains(""+C.getCodeChar()))
 							{
 								if(ii>0)
@@ -326,7 +325,7 @@ public class ColorSet extends StdCommand
 					{
 						buf.append(L("^N\n\r\n\rAvailable Background Colors: "));
 						boolean first=true;
-						for(Color C : Color.values())
+						for(final Color C : Color.values())
 						{
 							if(allBackgroundColorsList.contains(Character.toString(C.getCodeChar())))
 							{
@@ -340,7 +339,7 @@ public class ColorSet extends StdCommand
 						}
 						buf.append(L("^N\n\rAvailable Foreground Colors: "));
 						first=true;
-						for(Color C : Color.values())
+						for(final Color C : Color.values())
 						{
 							if(allForegroundColorsList.contains(Character.toString(C.getCodeChar())))
 							{
@@ -387,7 +386,7 @@ public class ColorSet extends StdCommand
 										{
 										}
 
-										@Override 
+										@Override
 										public void callBack()
 										{
 											final int colorNum2=CMath.s_int(this.input);

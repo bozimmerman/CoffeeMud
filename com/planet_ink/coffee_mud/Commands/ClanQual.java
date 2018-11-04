@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class ClanQual extends StdCommand
 {
 	public ClanQual()
@@ -50,7 +49,7 @@ public class ClanQual extends StdCommand
 	}
 
 	@Override
-	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
@@ -112,7 +111,7 @@ public class ClanQual extends StdCommand
 			{
 			}
 
-			@Override 
+			@Override
 			public void callBack()
 			{
 				final String qualMask=this.input;
@@ -163,7 +162,7 @@ public class ClanQual extends StdCommand
 		return false;
 	}
 
-	public void setClanQualMask(MOB mob, Clan C, String qualMask)
+	public void setClanQualMask(final MOB mob, final Clan C, final String qualMask)
 	{
 		C.setAcceptanceSettings(qualMask);
 		C.update();

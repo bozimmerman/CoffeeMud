@@ -42,7 +42,7 @@ public class PlayerList extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final StringBuffer s = new StringBuffer("");
 		for(final Session S : CMLib.sessions().allIterable())
@@ -54,7 +54,7 @@ public class PlayerList extends StdWebMacro
 			if((m!=null)&&(m.soulMate()!=null))
 				m=m.soulMate();
 
-			if ((m!=null) 
+			if ((m!=null)
 			&& (m.name() != null)
 			&& (m.name().length() > 0)
 			&& (!S.getStatus().toString().startsWith("LOGOUT")))
@@ -67,7 +67,7 @@ public class PlayerList extends StdWebMacro
 				s.append("\">");
 				s.append(CMStrings.removeColors(m.Name().equals(m.name())?m.titledName():m.name()));
 				s.append(" ");
-				if (m.charStats().getMyRace()!= null 
+				if (m.charStats().getMyRace()!= null
 				&& m.charStats().raceName()!=null
 				&& m.charStats().raceName().length() > 0
 				&& !m.charStats().raceName().equals("MOB")

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_WatchfulHound extends Spell
 {
 
@@ -95,7 +94,7 @@ public class Spell_WatchfulHound extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			if(mob.amDead()) 
+			if(mob.amDead())
 				mob.setLocation(null);
 			else
 			if(mob.location()!=null)
@@ -135,7 +134,7 @@ public class Spell_WatchfulHound extends Spell
 						CMLib.threads().scheduleRunnable(new Runnable()
 						{
 							@Override
-							public void run() 
+							public void run()
 							{
 								if(R != null)
 									R.show(mob, msg.source(), CMMsg.MSG_NOISE, L("<S-NAME> start(s) barking angrily at <T-NAME>."));
@@ -146,7 +145,7 @@ public class Spell_WatchfulHound extends Spell
 					}
 				}
 				else
-				if(((!invoker.isInCombat()) || (!mob.isInCombat()) || (!msg.source().isInCombat())) 
+				if(((!invoker.isInCombat()) || (!mob.isInCombat()) || (!msg.source().isInCombat()))
 				&& msg.isTarget(CMMsg.MASK_MALICIOUS) && (msg.target() == invoker))
 				{
 					if((msg.source().getVictim() == invoker) || (msg.source().getVictim() == null))
@@ -183,14 +182,14 @@ public class Spell_WatchfulHound extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat())
 		{
 			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -212,8 +211,8 @@ public class Spell_WatchfulHound extends Spell
 		// return whether it worked
 		return success;
 	}
-	
-	public MOB determineMonster(MOB caster, int level)
+
+	public MOB determineMonster(final MOB caster, final int level)
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenMob");

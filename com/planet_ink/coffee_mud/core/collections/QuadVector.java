@@ -4,6 +4,21 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 
+/*
+   Copyright 2012-2018 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
 public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements List<Quad<T, K, L, M>>
 {
 	private static final long	serialVersionUID	= -9175373358892311411L;
@@ -71,7 +86,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public boolean contains(Object o)
+	public boolean contains(final Object o)
 	{
 		if (o instanceof Quad)
 			return super.contains(o);
@@ -83,7 +98,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public int indexOf(Object o)
+	public int indexOf(final Object o)
 	{
 		if (o instanceof Quad)
 			return super.indexOf(o);
@@ -96,7 +111,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized int indexOf(Object o, int index)
+	public synchronized int indexOf(final Object o, final int index)
 	{
 		if (o instanceof Quad)
 			return super.indexOf(o, index);
@@ -105,58 +120,58 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 			return x;
 		return indexOfSecond((K) o, index);
 	}
-	
-	public synchronized int indexOfFirst(T t)
+
+	public synchronized int indexOfFirst(final T t)
 	{
 		return indexOfFirst(t, 0);
 	}
 
-	public synchronized int indexOfSecond(K k)
+	public synchronized int indexOfSecond(final K k)
 	{
 		return indexOfSecond(k, 0);
 	}
 
-	public synchronized int indexOfThird(L l)
+	public synchronized int indexOfThird(final L l)
 	{
 		return indexOfThird(l, 0);
 	}
 
-	public synchronized int indexOfFourth(M m)
+	public synchronized int indexOfFourth(final M m)
 	{
 		return indexOfFourth(m, 0);
 	}
 
-	public T getFirst(int index)
+	public T getFirst(final int index)
 	{
 		return get(index).first;
 	}
 
-	public K getSecond(int index)
+	public K getSecond(final int index)
 	{
 		return get(index).second;
 	}
 
-	public L getThird(int index)
+	public L getThird(final int index)
 	{
 		return get(index).third;
 	}
 
-	public M getFourth(int index)
+	public M getFourth(final int index)
 	{
 		return get(index).fourth;
 	}
 
-	public void add(T t, K k, L l, M m)
+	public void add(final T t, final K k, final L l, final M m)
 	{
 		add(new Quad<T, K, L, M>(t, k, l, m));
 	}
 
-	public void addElement(T t, K k, L l, M m)
+	public void addElement(final T t, final K k, final L l, final M m)
 	{
 		add(new Quad<T, K, L, M>(t, k, l, m));
 	}
 
-	public boolean containsFirst(T t)
+	public boolean containsFirst(final T t)
 	{
 		for (final Iterator<Quad<T, K, L, M>> i = iterator(); i.hasNext();)
 		{
@@ -166,7 +181,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return false;
 	}
 
-	public boolean containsSecond(K k)
+	public boolean containsSecond(final K k)
 	{
 		for (final Iterator<Quad<T, K, L, M>> i = iterator(); i.hasNext();)
 		{
@@ -176,7 +191,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return false;
 	}
 
-	public boolean containsThird(L l)
+	public boolean containsThird(final L l)
 	{
 		for (final Iterator<Quad<T, K, L, M>> i = iterator(); i.hasNext();)
 		{
@@ -186,7 +201,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return false;
 	}
 
-	public boolean containsFourth(M m)
+	public boolean containsFourth(final M m)
 	{
 		for (final Iterator<Quad<T, K, L, M>> i = iterator(); i.hasNext();)
 		{
@@ -196,27 +211,27 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return false;
 	}
 
-	public T elementAtFirst(int index)
+	public T elementAtFirst(final int index)
 	{
 		return get(index).first;
 	}
 
-	public K elementAtSecond(int index)
+	public K elementAtSecond(final int index)
 	{
 		return get(index).second;
 	}
 
-	public L elementAtThird(int index)
+	public L elementAtThird(final int index)
 	{
 		return get(index).third;
 	}
 
-	public M elementAtFourth(int index)
+	public M elementAtFourth(final int index)
 	{
 		return get(index).fourth;
 	}
 
-	public int indexOfFirst(T t, int index)
+	public int indexOfFirst(final T t, final int index)
 	{
 		try
 		{
@@ -232,7 +247,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return -1;
 	}
 
-	public int indexOfSecond(K k, int index)
+	public int indexOfSecond(final K k, final int index)
 	{
 		try
 		{
@@ -248,7 +263,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return -1;
 	}
 
-	public int indexOfThird(L l, int index)
+	public int indexOfThird(final L l, final int index)
 	{
 		try
 		{
@@ -264,7 +279,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return -1;
 	}
 
-	public int indexOfFourth(M m, int index)
+	public int indexOfFourth(final M m, final int index)
 	{
 		try
 		{
@@ -280,7 +295,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return -1;
 	}
 
-	public int lastIndexOfFirst(T t, int index)
+	public int lastIndexOfFirst(final T t, final int index)
 	{
 		try
 		{
@@ -296,7 +311,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return -1;
 	}
 
-	public int lastIndexOfSecond(K k, int index)
+	public int lastIndexOfSecond(final K k, final int index)
 	{
 		try
 		{
@@ -312,7 +327,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return -1;
 	}
 
-	public int lastIndexOfThird(L l, int index)
+	public int lastIndexOfThird(final L l, final int index)
 	{
 		try
 		{
@@ -328,7 +343,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return -1;
 	}
 
-	public int lastIndexOfFourth(M m, int index)
+	public int lastIndexOfFourth(final M m, final int index)
 	{
 		try
 		{
@@ -344,27 +359,27 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return -1;
 	}
 
-	public synchronized int lastIndexOfFirst(T t)
+	public synchronized int lastIndexOfFirst(final T t)
 	{
 		return lastIndexOfFirst(t, size() - 1);
 	}
 
-	public synchronized int lastIndexOfSecond(K k)
+	public synchronized int lastIndexOfSecond(final K k)
 	{
 		return lastIndexOfSecond(k, size() - 1);
 	}
 
-	public synchronized int lastIndexOfThird(L l)
+	public synchronized int lastIndexOfThird(final L l)
 	{
 		return lastIndexOfThird(l, size() - 1);
 	}
 
-	public synchronized int lastIndexOfFourth(M m)
+	public synchronized int lastIndexOfFourth(final M m)
 	{
 		return lastIndexOfFourth(m, size() - 1);
 	}
 
-	public synchronized boolean removeFirst(T t)
+	public synchronized boolean removeFirst(final T t)
 	{
 		Quad<T, K, L, M> pair;
 		for (final Iterator<Quad<T, K, L, M>> i = iterator(); i.hasNext();)
@@ -379,7 +394,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return false;
 	}
 
-	public synchronized boolean removeSecond(K k)
+	public synchronized boolean removeSecond(final K k)
 	{
 		Quad<T, K, L, M> pair;
 		for (final Iterator<Quad<T, K, L, M>> i = iterator(); i.hasNext();)
@@ -394,7 +409,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return false;
 	}
 
-	public synchronized boolean removeThird(L l)
+	public synchronized boolean removeThird(final L l)
 	{
 		Quad<T, K, L, M> pair;
 		for (final Iterator<Quad<T, K, L, M>> i = iterator(); i.hasNext();)
@@ -409,7 +424,7 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return false;
 	}
 
-	public synchronized boolean removeFourth(M m)
+	public synchronized boolean removeFourth(final M m)
 	{
 		Quad<T, K, L, M> pair;
 		for (final Iterator<Quad<T, K, L, M>> i = iterator(); i.hasNext();)
@@ -424,62 +439,62 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 		return false;
 	}
 
-	public boolean removeElementFirst(T t)
+	public boolean removeElementFirst(final T t)
 	{
 		return removeFirst(t);
 	}
 
-	public boolean removeElementSecond(K k)
+	public boolean removeElementSecond(final K k)
 	{
 		return removeSecond(k);
 	}
 
-	public boolean removeElementThird(L l)
+	public boolean removeElementThird(final L l)
 	{
 		return removeThird(l);
 	}
 
-	public boolean removeElementFourth(M m)
+	public boolean removeElementFourth(final M m)
 	{
 		return removeFourth(m);
 	}
 
-	public T firstFirstElement(int index)
+	public T firstFirstElement(final int index)
 	{
 		return firstElement().first;
 	}
 
-	public K firstSecondElement(int index)
+	public K firstSecondElement(final int index)
 	{
 		return firstElement().second;
 	}
 
-	public L firstThirdElement(int index)
+	public L firstThirdElement(final int index)
 	{
 		return firstElement().third;
 	}
 
-	public M firstFourthElement(int index)
+	public M firstFourthElement(final int index)
 	{
 		return firstElement().fourth;
 	}
 
-	public T lastFirstElement(int index)
+	public T lastFirstElement(final int index)
 	{
 		return lastElement().first;
 	}
 
-	public K lastSecondElement(int index)
+	public K lastSecondElement(final int index)
 	{
 		return lastElement().second;
 	}
 
-	public L lastThirdElement(int index)
+	public L lastThirdElement(final int index)
 	{
 		return lastElement().third;
 	}
 
-	public M lastFourthElement(int index)
+	public M lastFourthElement(final int index)
 	{
 		return lastElement().fourth;
 	}

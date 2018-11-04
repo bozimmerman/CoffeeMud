@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_RoomsForSale extends Prop_RoomForSale
 {
 	@Override
@@ -49,7 +48,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 
 	protected String	uniqueLotID	= null;
 
-	protected void fillCluster(Room R, List<Room> V)
+	protected void fillCluster(final Room R, final List<Room> V)
 	{
 		V.add(R);
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -146,7 +145,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 
 	// update lot, since its called by the savethread, ONLY worries about itself
 	@Override
-	public void updateLot(Set<String> optPlayerList)
+	public void updateLot(final Set<String> optPlayerList)
 	{
 		if(affected instanceof Room)
 		{

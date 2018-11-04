@@ -34,7 +34,6 @@ import java.util.List;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Property implements Ability
 {
 	@Override
@@ -74,7 +73,7 @@ public class Property implements Ability
 	/**
 	 * Designates whether, when used as a property/effect, what sort of objects
 	 * this ability can affect. Uses the Ability.CAN_* constants.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @return a mask showing the type of objects this ability can affect
 	 */
@@ -86,7 +85,7 @@ public class Property implements Ability
 	/**
 	 * Designates whether, when invoked as a skill, what sort of objects this
 	 * ability can effectively target. Uses the Ability.CAN_* constants.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @return a mask showing the type of objects this ability can target
 	 */
@@ -96,13 +95,13 @@ public class Property implements Ability
 	}
 
 	@Override
-	public boolean canTarget(int can_code)
+	public boolean canTarget(final int can_code)
 	{
 		return CMath.bset(canTargetCode(), can_code);
 	}
 
 	@Override
-	public boolean canAffect(int can_code)
+	public boolean canAffect(final int can_code)
 	{
 		return CMath.bset(canAffectCode(), can_code);
 	}
@@ -132,12 +131,12 @@ public class Property implements Ability
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 	}
 
 	@Override
-	public int adjustedLevel(MOB mob, int asLevel)
+	public int adjustedLevel(final MOB mob, final int asLevel)
 	{
 		return -1;
 	}
@@ -172,7 +171,7 @@ public class Property implements Ability
 	}
 
 	@Override
-	public ExpertiseLibrary.SkillCost getTrainingCost(MOB mob)
+	public ExpertiseLibrary.SkillCost getTrainingCost(final MOB mob)
 	{
 		return CMLib.expertises().createNewSkillCost(ExpertiseLibrary.CostType.TRAIN, Double.valueOf(1.0));
 	}
@@ -184,17 +183,17 @@ public class Property implements Ability
 	}
 
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 	}
 
 	@Override
-	public void setDescription(String newDescription)
+	public void setDescription(final String newDescription)
 	{
 	}
 
 	@Override
-	public void setDisplayText(String newDisplayText)
+	public void setDisplayText(final String newDisplayText)
 	{
 	}
 
@@ -211,7 +210,7 @@ public class Property implements Ability
 	}
 
 	@Override
-	public void setImage(String newImage)
+	public void setImage(final String newImage)
 	{
 	}
 
@@ -222,7 +221,7 @@ public class Property implements Ability
 	}
 
 	@Override
-	public void setInvoker(MOB mob)
+	public void setInvoker(final MOB mob)
 	{
 	}
 
@@ -235,25 +234,25 @@ public class Property implements Ability
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical target, final boolean auto, final int asLevel)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final Physical target, final boolean auto, final int asLevel)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+	public boolean preInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int secondsElapsed, final double actionsRemaining)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob, boolean force)
+	public boolean autoInvocation(final MOB mob, final boolean force)
 	{
 		return false;
 	}
@@ -288,30 +287,30 @@ public class Property implements Ability
 	}
 
 	@Override
-	public boolean canBeTaughtBy(MOB teacher, MOB student)
+	public boolean canBeTaughtBy(final MOB teacher, final MOB student)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canBePracticedBy(MOB teacher, MOB student)
+	public boolean canBePracticedBy(final MOB teacher, final MOB student)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
+	public boolean canBeLearnedBy(final MOB teacher, final MOB student)
 	{
 		return false;
 	}
 
 	@Override
-	public void teach(MOB teacher, MOB student)
+	public void teach(final MOB teacher, final MOB student)
 	{
 	}
 
 	@Override
-	public void practice(MOB teacher, MOB student)
+	public void practice(final MOB teacher, final MOB student)
 	{
 	}
 
@@ -334,12 +333,12 @@ public class Property implements Ability
 	}
 
 	@Override
-	public void setExpirationDate(long time)
+	public void setExpirationDate(final long time)
 	{
 	}
 
 	@Override
-	public void startTickDown(MOB invokerMOB, Physical affected, int tickTime)
+	public void startTickDown(final MOB invokerMOB, final Physical affected, final int tickTime)
 	{
 		if(affected.fetchEffect(ID())==null)
 			affected.addEffect(this);
@@ -352,18 +351,18 @@ public class Property implements Ability
 	}
 
 	@Override
-	public void setProficiency(int newProficiency)
+	public void setProficiency(final int newProficiency)
 	{
 	}
 
 	@Override
-	public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto)
+	public boolean proficiencyCheck(final MOB mob, final int adjustment, final boolean auto)
 	{
 		return false;
 	}
 
 	@Override
-	public void helpProficiency(MOB mob, int adjustment)
+	public void helpProficiency(final MOB mob, final int adjustment)
 	{
 	}
 
@@ -374,7 +373,7 @@ public class Property implements Ability
 	}
 
 	@Override
-	public void setAffectedOne(Physical P)
+	public void setAffectedOne(final Physical P)
 	{
 		affected = P;
 	}
@@ -398,7 +397,7 @@ public class Property implements Ability
 	}
 
 	@Override
-	public int castingQuality(MOB invoker, Physical target)
+	public int castingQuality(final MOB invoker, final Physical target)
 	{
 		return Ability.QUALITY_INDIFFERENT;
 	}
@@ -416,7 +415,7 @@ public class Property implements Ability
 	}
 
 	@Override
-	public void setSavable(boolean truefalse)
+	public void setSavable(final boolean truefalse)
 	{
 		savable = truefalse;
 	}
@@ -494,9 +493,9 @@ public class Property implements Ability
 		}
 		return -1;
 	}
-	
+
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -509,7 +508,7 @@ public class Property implements Ability
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{
@@ -534,7 +533,7 @@ public class Property implements Ability
 		return true;
 	}
 
-	private void cloneFix(Ability E)
+	private void cloneFix(final Ability E)
 	{
 	}
 
@@ -562,7 +561,7 @@ public class Property implements Ability
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		miscText = newMiscText;
 	}
@@ -580,7 +579,7 @@ public class Property implements Ability
 	}
 
 	@Override
-	public boolean appropriateToMyFactions(MOB mob)
+	public boolean appropriateToMyFactions(final MOB mob)
 	{
 		return true;
 	}
@@ -592,13 +591,13 @@ public class Property implements Ability
 	}
 
 	@Override
-	public String requirements(MOB mob)
+	public String requirements(final MOB mob)
 	{
 		return "";
 	}
 
 	@Override
-	public boolean canAffect(Physical P)
+	public boolean canAffect(final Physical P)
 	{
 		if((P==null)&&(canAffectCode()==0))
 			return true;
@@ -618,7 +617,7 @@ public class Property implements Ability
 	}
 
 	@Override
-	public boolean canTarget(Physical P)
+	public boolean canTarget(final Physical P)
 	{
 		return false;
 	}
@@ -634,7 +633,7 @@ public class Property implements Ability
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 	}
 
@@ -669,7 +668,7 @@ public class Property implements Ability
 	private static final int[]	cost	= new int[3];
 
 	@Override
-	public int[] usageCost(MOB mob, boolean ignoreCostOverride)
+	public int[] usageCost(final MOB mob, final boolean ignoreCostOverride)
 	{
 		return cost;
 	}

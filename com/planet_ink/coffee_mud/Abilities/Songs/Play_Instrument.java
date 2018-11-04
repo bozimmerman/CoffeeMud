@@ -33,8 +33,7 @@ import java.util.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
-
+*/
 public class Play_Instrument extends Play
 {
 	@Override
@@ -63,10 +62,10 @@ public class Play_Instrument extends Play
 	}
 
 	@Override
-	protected void inpersistentAffect(MOB mob)
+	protected void inpersistentAffect(final MOB mob)
 	{
 		Ability A = getSpell();
-		if ((A != null) 
+		if ((A != null)
 		&& ((mob != invoker()) || (getSpell().abstractQuality() != Ability.QUALITY_MALICIOUS)))
 		{
 			final Vector<String> chcommands = new Vector<String>();

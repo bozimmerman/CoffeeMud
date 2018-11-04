@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_Lighthouse extends Spell
 {
 
@@ -79,7 +78,7 @@ public class Spell_Lighthouse extends Spell
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -102,7 +101,7 @@ public class Spell_Lighthouse extends Spell
 	protected volatile Room lastRoom=null;
 	protected volatile Room lastShipRoom=null;
 	protected volatile int lastDir = -1;
-	
+
 	public void addToRoom(final Room R, final Item fromShip, final int fromDir)
 	{
 		if(R==null)
@@ -141,7 +140,7 @@ public class Spell_Lighthouse extends Spell
 			}
 		}
 	}
-	
+
 	public void delFromRoom(final Room R, final Item fromShip, final int fromDir)
 	{
 		if(R==null)
@@ -185,12 +184,12 @@ public class Spell_Lighthouse extends Spell
 				}
 			}
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			Log.errOut(e);
 		}
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -210,13 +209,13 @@ public class Spell_Lighthouse extends Spell
 				rooms.addAll(roomSet);
 				roomSet.clear();
 			}
-			for(Room R : rooms)
+			for(final Room R : rooms)
 				this.delFromRoom(R, null, -1);
 		}
 		if(canBeUninvoked&&(room!=null))
 			room.recoverRoomStats();
 	}
-	
+
 	protected int nextDir(final Room R)
 	{
 		if(lastDir < 0)
@@ -267,9 +266,9 @@ public class Spell_Lighthouse extends Spell
 									.plus(TrackingFlag.OPENONLY)
 									.plus(TrackingFlag.OUTDOORONLY);
 			newRooms.add(currentRoom);
-			int range=10 + super.getXLEVELLevel(invoker())+(2*super.getXMAXRANGELevel(invoker()));
+			final int range=10 + super.getXLEVELLevel(invoker())+(2*super.getXMAXRANGELevel(invoker()));
 			newRooms.addAll(CMLib.tracking().getRadiantRooms(currentRoom, flags, range));
-			int prevDir=Directions.getOpDirectionCode(this.lastDir);
+			final int prevDir=Directions.getOpDirectionCode(this.lastDir);
 			this.lastDir = nextDir(shipRoom);
 			newRooms.add(shipRoom);
 			if((this.lastDir>=0)
@@ -282,12 +281,12 @@ public class Spell_Lighthouse extends Spell
 			{
 				oldRooms=new LinkedList<Room>(roomSet);
 			}
-			for(Room R : oldRooms)
+			for(final Room R : oldRooms)
 			{
 				if(!newRooms.contains(R))
 					this.delFromRoom(R, shipItem, prevDir);
 			}
-			for(Room R : newRooms)
+			for(final Room R : newRooms)
 			{
 				if(!oldRooms.contains(R))
 					this.addToRoom(R, shipItem, Directions.getOpDirectionCode(this.lastDir));
@@ -306,7 +305,7 @@ public class Spell_Lighthouse extends Spell
 			lastRoom=currentRoom;
 			final List<Room> newRooms = new LinkedList<Room>();
 			newRooms.add(currentRoom);
-			int prevDir=Directions.getOpDirectionCode(this.lastDir);
+			final int prevDir=Directions.getOpDirectionCode(this.lastDir);
 			this.lastDir = nextDir(currentRoom);
 			newRooms.add(currentRoom);
 			if((this.lastDir>=0)
@@ -319,12 +318,12 @@ public class Spell_Lighthouse extends Spell
 			{
 				oldRooms=new LinkedList<Room>(roomSet);
 			}
-			for(Room R : oldRooms)
+			for(final Room R : oldRooms)
 			{
 				if(!newRooms.contains(R))
 					this.delFromRoom(R, null, prevDir);
 			}
-			for(Room R : newRooms)
+			for(final Room R : newRooms)
 			{
 				if(!oldRooms.contains(R))
 					this.addToRoom(R, null, Directions.getOpDirectionCode(this.lastDir));
@@ -340,9 +339,9 @@ public class Spell_Lighthouse extends Spell
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

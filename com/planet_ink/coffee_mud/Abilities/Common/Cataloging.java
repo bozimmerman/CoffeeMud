@@ -66,7 +66,7 @@ public class Cataloging extends CommonSkill
 	protected Item		catalogI	= null;
 	protected boolean	addLore		= false;
 	protected boolean	addAppraise	= false;
-	
+
 	@Override
 	protected boolean canBeDoneSittingDown()
 	{
@@ -98,13 +98,13 @@ public class Cataloging extends CommonSkill
 				{
 					final Item item=(Item)found;
 					String tag=Labeling.getCurrentTag(item);
-					StringBuilder buf=new StringBuilder();
+					final StringBuilder buf=new StringBuilder();
 					buf.append(L("\n\rItem: @x1\n\r",item.displayText(mob)));
 					final Room R=CMLib.map().roomLocation(item);
 					if(R!=null)
 					{
 						buf.append(L("Location: @x1\n\r",R.displayText(mob)));
-						LandTitle T=CMLib.law().getLandTitle(R);
+						final LandTitle T=CMLib.law().getLandTitle(R);
 						if(T!=null)
 							buf.append(L("Property Title ID: @x1\n\r",T.getTitleID()));
 					}
@@ -178,24 +178,24 @@ public class Cataloging extends CommonSkill
 					final Ability appraiseA=mob.fetchAbility("Thief_Appraise");
 					if(appraiseA != null)
 					{
-						List<String> cmds=new XVector<String>("WORTH");
+						final List<String> cmds=new XVector<String>("WORTH");
 						if(appraiseA.invoke(mob, cmds, item, true, -1))
 							buf.append(cmds.get(0)+"\n\r");
 					}
 					final Ability loreA=mob.fetchAbility("Thief_Lore");
 					if(loreA != null)
 					{
-						List<String> cmds=new XVector<String>("MSG");
+						final List<String> cmds=new XVector<String>("MSG");
 						if(loreA.invoke(mob, cmds, item, true, -1))
 							buf.append(cmds.get(0)+"\n\r");
 					}
-					String raceName = Taxidermy.getStatueRace(item);
+					final String raceName = Taxidermy.getStatueRace(item);
 					if(raceName.length()>0)
 					{
 						final Race raceR=CMClass.findRace(raceName);
 						if(raceR!=null)
 						{
-							List<String> bodyParts=new ArrayList<String>();
+							final List<String> bodyParts=new ArrayList<String>();
 							for(int i=0;i<Race.BODYPARTSTR.length;i++)
 							{
 								if(raceR.bodyMask()[i] > 0)
@@ -206,10 +206,10 @@ public class Cataloging extends CommonSkill
 									raceR.name(),raceR.racialCategory(),""+raceR.lightestWeight(),""+raceR.shortestFemale(),parts));
 						}
 					}
-					
+
 					if(tag.length()>0)
 						tag=": "+tag;
-					
+
 					//item name as the title, and provides the item description, value, level, material, weight, (spell identify) properties and current location of the item.
 					final CMMsg msg=CMClass.getMsg(mob,catalogI,this,
 							CMMsg.MSG_WRITE,L("<S-NAME> write(s) on <T-NAMESELF>."),
@@ -217,13 +217,13 @@ public class Cataloging extends CommonSkill
 							CMMsg.MSG_WRITE,L("<S-NAME> write(s) on <T-NAMESELF>."));
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
-					
+
 				}
 			}
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean isPossibleCatalog(final MOB mob, final Item I, final Environmental fullyE, final boolean quiet)
 	{
 		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
@@ -252,7 +252,7 @@ public class Cataloging extends CommonSkill
 			return false;
 		}
 		*/
-		
+
 		if(fullyE != null)
 		{
 			if(!Titling.getCatalogType(I).equals(Titling.getCatalogEntryType(fullyE)))
@@ -296,9 +296,9 @@ public class Cataloging extends CommonSkill
 		}
 		return catalogI;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -348,14 +348,14 @@ public class Cataloging extends CommonSkill
 					physP=null;
 				if(physP!=null)
 				{
-					List<String> cmds2=new ArrayList<String>(commands);
+					final List<String> cmds2=new ArrayList<String>(commands);
 					cmds2.remove(0);
 					catalogI=this.getTarget(mob, null, givenTarget, cmds2, Wearable.FILTER_UNWORNONLY);
 					if(catalogI!=null)
 					{
 						if(!isPossibleCatalog(mob, catalogI, null, false))
 							return false;
-						String cat=Titling.getCatalogType(catalogI);
+						final String cat=Titling.getCatalogType(catalogI);
 						if((cat.length()>0)&&(!isPossibleCatalog(mob, catalogI, physP, false)))
 							return false;
 					}
@@ -377,7 +377,7 @@ public class Cataloging extends CommonSkill
 			commonTell(mob,L("You don't seem to have a proper catalog."));
 			return false;
 		}
-		
+
 		final Ability writeA=mob.fetchAbility("Skill_Write");
 		if(writeA==null)
 		{

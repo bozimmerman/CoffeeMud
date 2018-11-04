@@ -48,7 +48,7 @@ public class Elephant extends Pachyderm
 	{
 		return localizedStaticName;
 	}
-	
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

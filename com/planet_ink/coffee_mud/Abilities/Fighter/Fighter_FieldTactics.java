@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Fighter_FieldTactics extends FighterSkill
 {
 	@Override
@@ -129,14 +128,14 @@ public class Fighter_FieldTactics extends FighterSkill
 		return true;
 	}
 
-	public boolean hiding(Environmental mob)
+	public boolean hiding(final Environmental mob)
 	{
 		if(!(mob instanceof MOB))
 			return false;
 		return CMLib.flags().isSitting((MOB)mob)&&(((MOB)mob).riding()==null);
 	}
 
-	public boolean hiding(MOB mob)
+	public boolean hiding(final MOB mob)
 	{
 		return CMLib.flags().isSitting(mob)&&(mob.riding()==null);
 	}
@@ -183,7 +182,7 @@ public class Fighter_FieldTactics extends FighterSkill
 		return super.okMessage(myHost,msg);
 	}
 
-	public boolean oneOf(int dom)
+	public boolean oneOf(final int dom)
 	{
 		for(int i=0;i<landClasses().length;i++)
 		{

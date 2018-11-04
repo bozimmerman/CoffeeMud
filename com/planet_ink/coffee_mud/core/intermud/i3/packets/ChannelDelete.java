@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ChannelDelete extends Packet  
+public class ChannelDelete extends Packet
 {
 	public String channel = null;
 
@@ -43,7 +43,7 @@ public class ChannelDelete extends Packet
 		type = Packet.CHAN_REMOVE;
 	}
 
-	public ChannelDelete(Vector<?> v) throws InvalidPacketException 
+	public ChannelDelete(final Vector<?> v) throws InvalidPacketException
 	{
 		super(v);
 		try
@@ -58,7 +58,7 @@ public class ChannelDelete extends Packet
 		}
 	}
 
-	public ChannelDelete(int t, String chan, String who)
+	public ChannelDelete(final int t, final String chan, final String who)
 	{
 		super();
 		type = t;
@@ -67,7 +67,7 @@ public class ChannelDelete extends Packet
 	}
 
 	@Override
-	public void send() throws InvalidPacketException 
+	public void send() throws InvalidPacketException
 	{
 		if( channel == null )
 		{

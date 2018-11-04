@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_BladeBarrier extends Prayer
 {
 	@Override
@@ -94,7 +93,7 @@ public class Prayer_BladeBarrier extends Prayer
 		return "A barrier of blades begin to spin around <T-NAME>!^?";
 	}
 
-	protected void doDamage(MOB srcM, MOB targetM, int damage)
+	protected void doDamage(final MOB srcM, final MOB targetM, final int damage)
 	{
 		CMLib.combat().postDamage(srcM, targetM,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_SLASHING,L("The blade barrier around <S-NAME> slices and <DAMAGE> <T-NAME>."));
 	}
@@ -152,7 +151,7 @@ public class Prayer_BladeBarrier extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

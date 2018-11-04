@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Rot extends Prayer
 {
 	@Override
@@ -125,7 +124,7 @@ public class Prayer_Rot extends Prayer
 		}
 	}
 
-	public void setRot(Item I)
+	public void setRot(final Item I)
 	{
 		if(((I instanceof Decayable)&&(((Decayable)I).decayTime()==0))
 		&&(I.owner()!=null)
@@ -215,7 +214,7 @@ public class Prayer_Rot extends Prayer
 		{
 			if(I.fetchEffect("Poison_Rotten")==null)
 			{
-				
+
 				if((I.material()==RawMaterial.RESOURCE_POISON)
 				||((I instanceof Drink)&&(((Drink)I).liquidType()==RawMaterial.RESOURCE_POISON)))
 				{
@@ -262,7 +261,7 @@ public class Prayer_Rot extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)

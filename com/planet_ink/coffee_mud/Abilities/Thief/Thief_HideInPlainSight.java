@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_HideInPlainSight extends ThiefSkill
 {
 	@Override
@@ -103,14 +102,14 @@ public class Thief_HideInPlainSight extends ThiefSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code=newCode;
 	}
 
 	public Ability obscureAbility=null;
 
-	public Ability makeObscurinator(MOB mob)
+	public Ability makeObscurinator(final MOB mob)
 	{
 		if(obscureAbility!=null)
 			return obscureAbility;
@@ -222,7 +221,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class GConsider extends StdCommand
 {
 	public GConsider()
@@ -46,7 +45,7 @@ public class GConsider extends StdCommand
 		return access;
 	}
 
-	public int relativeLevelDiff(MOB mob1, Set<MOB> mobs)
+	public int relativeLevelDiff(final MOB mob1, final Set<MOB> mobs)
 	{
 		if((mob1==null)||(mobs==null))
 			return 0;
@@ -81,7 +80,7 @@ public class GConsider extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)

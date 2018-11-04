@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Chant_FeedingFrenzy extends Chant
 {
 	@Override
@@ -96,13 +95,13 @@ public class Chant_FeedingFrenzy extends Chant
 		{
 			if(affected instanceof MOB)
 			{
-				MOB mob=(MOB)affected;
+				final MOB mob=(MOB)affected;
 				mob.tell(L("You are no longer in a frenzy."));
 			}
 		}
 		super.unInvoke();
 	}
-	
+
 	public void ensureFrenzy()
 	{
 		if(this.aggro == null)
@@ -110,7 +109,7 @@ public class Chant_FeedingFrenzy extends Chant
 			this.aggro=CMClass.getBehavior("Aggressive");
 		}
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -119,7 +118,7 @@ public class Chant_FeedingFrenzy extends Chant
 		if(this.aggro !=null)
 			this.aggro.executeMsg(myHost, msg);
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -129,9 +128,9 @@ public class Chant_FeedingFrenzy extends Chant
 		if((this.aggro !=null)&&(!this.aggro.okMessage(myHost, msg)))
 			return false;
 		return true;
-				
+
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -146,9 +145,9 @@ public class Chant_FeedingFrenzy extends Chant
 	final TrackingLibrary.TrackingFlags flags = CMLib.tracking().newFlags()
 			.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 			.plus(TrackingLibrary.TrackingFlag.UNDERWATERONLY);
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room target=mob.location();
 		if(target==null)
@@ -170,9 +169,9 @@ public class Chant_FeedingFrenzy extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int radius = 10 + super.getXMAXRANGELevel(mob) + (super.getXLEVELLevel(mob)/2);
-				List<Room> rooms = CMLib.tracking().getRadiantRooms(mob.location(), flags, radius);
-				for(Room room : rooms)
+				final int radius = 10 + super.getXMAXRANGELevel(mob) + (super.getXLEVELLevel(mob)/2);
+				final List<Room> rooms = CMLib.tracking().getRadiantRooms(mob.location(), flags, radius);
+				for(final Room room : rooms)
 				{
 					if((room != null)&&(room.numInhabitants()>0))
 					{

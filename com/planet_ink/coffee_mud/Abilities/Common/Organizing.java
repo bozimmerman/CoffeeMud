@@ -65,15 +65,15 @@ public class Organizing extends CommonSkill
 
 	protected enum OrganizeBy
 	{
-		TAG, 
-		VALUE, 
-		CRAFTER, 
+		TAG,
+		VALUE,
+		CRAFTER,
 		LEVEL,
 		TYPE,
 		NAME,
 		WEIGHT
 	}
-	
+
 	protected boolean		descending	= false;
 	protected Physical		building	= null;
 	protected OrganizeBy	orgaType	= null;
@@ -95,7 +95,7 @@ public class Organizing extends CommonSkill
 	{
 		return super.getBrand(buildingI);
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -110,7 +110,7 @@ public class Organizing extends CommonSkill
 						commonTell(mob,L("<S-NAME> mess(es) up organizing @x1.",building.name()));
 					else
 					{
-						List<Item> items=new ArrayList<Item>();
+						final List<Item> items=new ArrayList<Item>();
 						if(building instanceof Container)
 						{
 							items.addAll(((Container)building).getContents());
@@ -140,7 +140,7 @@ public class Organizing extends CommonSkill
 						final Comparator<Item> compare=new Comparator<Item>()
 						{
 							@Override
-							public int compare(Item o1, Item o2)
+							public int compare(final Item o1, final Item o2)
 							{
 								int result=0;
 								switch(orgaT)
@@ -181,7 +181,7 @@ public class Organizing extends CommonSkill
 						Collections.sort(items, compare);
 						if(building instanceof Container)
 						{
-							for(Item I : items)
+							for(final Item I : items)
 							{
 								if(((Container) building).owner() instanceof Room)
 									((Room)((Container) building).owner()).addItem(I);
@@ -192,7 +192,7 @@ public class Organizing extends CommonSkill
 						}
 						else
 						{
-							for(Item I : items)
+							for(final Item I : items)
 							{
 								if(building instanceof ItemPossessor)
 									((ItemPossessor)building).addItem(I);
@@ -209,17 +209,17 @@ public class Organizing extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, final int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		if(super.checkStop(mob, commands)||(R==null))
 			return true;
-		
+
 		building=null;
 		orgaType=null;
 		messedUp=false;
 		this.descending=false;
-		
+
 		if(commands.size()>2)
 		{
 			if("ASCENDING".startsWith(commands.get(commands.size()-1).toUpperCase()))
@@ -233,7 +233,7 @@ public class Organizing extends CommonSkill
 				this.descending=true;
 			}
 		}
-		
+
 		if(commands.size()<2)
 		{
 			commonTell(mob,L("Organize what? Try ROOM or a container name, and also one of these: "
@@ -249,9 +249,9 @@ public class Organizing extends CommonSkill
 					+CMLib.english().toEnglishStringList(OrganizeBy.class,false),orgaTypeName));
 			return false;
 		}
-		
-		
-		
+
+
+
 		final String str=CMParms.combine(commands);
 		building=null;
 		if(str.equalsIgnoreCase("room"))
@@ -266,7 +266,7 @@ public class Organizing extends CommonSkill
 		}
 		else
 		{
-			Physical I=super.getAnyTarget(mob, commands, givenTarget, Wearable.FILTER_ANY, false);
+			final Physical I=super.getAnyTarget(mob, commands, givenTarget, Wearable.FILTER_ANY, false);
 			if((!(I instanceof ItemPossessor)) && (!(I instanceof Container)))
 			{
 				commonTell(mob,L("You cannot organize the contents of '@x1'.",str));

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Gait extends StdAbility
 {
 	@Override
@@ -97,16 +96,16 @@ public class Gait extends StdAbility
 	protected String arriveWord = null;
 	protected String leaveWord	= null;
 	protected String stateWord	= null;
-	
+
 	@Override
-	public void affectCharStats(MOB affectableMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectableMob, final CharStats affectableStats)
 	{
 		affectableStats.setArriveLeaveStr(arriveWord, leaveWord);
 		super.affectCharStats(affectableMob, affectableStats);
 	}
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		arriveWord = CMParms.getParmStr(newMiscText, "ARRIVE", "");
@@ -115,7 +114,7 @@ public class Gait extends StdAbility
 		leaveWord = CMParms.getParmStr(newMiscText, "LEAVE", "");
 		if((leaveWord != null)&&(leaveWord.trim().length()==0))
 			leaveWord=null;
-		
+
 		stateWord = CMParms.getParmStr(newMiscText, "STATE", "");
 		if((stateWord != null)&&(stateWord.trim().length()==0))
 			stateWord=null;
@@ -124,7 +123,7 @@ public class Gait extends StdAbility
 	public String[][] getGaits()
 	{
 		final Object[][][] set = CMProps.getListFileGrid(CMProps.ListFile.GAIT_LIST);
-		
+
 		final String[][] fset = new String[set.length][4];
 		for(int x=0;x<set.length;x++)
 		{
@@ -133,9 +132,9 @@ public class Gait extends StdAbility
 		}
 		return fset;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String entered=CMParms.combine(commands,0);
 		final String origEntered=CMParms.combine(commands,0);
@@ -149,7 +148,7 @@ public class Gait extends StdAbility
 			add=true;
 			gaitA=(Gait)copyOf();
 		}
-		
+
 		if(entered.trim().length()==0)
 		{
 			String gaitName=L("Normal");
@@ -206,7 +205,7 @@ public class Gait extends StdAbility
 				mob.tell(L("'@x1' is not a known gait. Choices include: @x2",entered,choices.substring(2)));
 			return false;
 		}
-		
+
 		if(((gaitA.stateWord!=null)&&(gaitA.stateWord.equalsIgnoreCase(choice[1])))
 		||((gaitA.stateWord==null)&&(choice[1]==null)))
 		{
@@ -240,7 +239,7 @@ public class Gait extends StdAbility
 					{
 						if(add)
 							target.addNonUninvokableEffect(gaitA);
-						
+
 						gaitA.setMiscText("ARRIVE=\""+choice[2]+"\" LEAVE=\""+choice[3]+"\" STATE=\""+choice[1]+"\"");
 					}
 					target.recoverPhyStats();

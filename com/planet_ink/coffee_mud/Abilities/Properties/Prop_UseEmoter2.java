@@ -60,7 +60,7 @@ public class Prop_UseEmoter2 extends Prop_UseEmoter
 		try
 		{
 			processing=true;
-	
+
 			if(affected==null)
 				return;
 			final Item myItem=(Item)affected;

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_RemovePoison extends Prayer implements MendingSkill
 {
 	@Override
@@ -68,7 +67,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 	}
 
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
 		if(!(item instanceof MOB))
 			return false;
@@ -76,7 +75,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 		return canMend;
 	}
 
-	public static List<Ability> returnOffensiveAffects(Physical fromMe)
+	public static List<Ability> returnOffensiveAffects(final Physical fromMe)
 	{
 		final Vector<Ability> offenders=new Vector<Ability>();
 
@@ -90,7 +89,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -104,7 +103,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null)

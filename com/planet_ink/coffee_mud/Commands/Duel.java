@@ -32,13 +32,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Duel extends StdCommand
 {
 	public Duel()
 	{
 	}
-	
+
 	private final String[]	access	= I(new String[] { "DUEL" });
 
 	@Override
@@ -48,7 +47,7 @@ public class Duel extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		MOB target=null;
@@ -137,7 +136,7 @@ public class Duel extends StdCommand
 		}
 		return false;
 	}
-	
+
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{

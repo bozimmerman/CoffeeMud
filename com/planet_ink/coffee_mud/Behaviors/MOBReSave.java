@@ -73,7 +73,7 @@ public class MOBReSave extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		startStats=(CharStats)CMClass.getCommon("DefaultCharStats");

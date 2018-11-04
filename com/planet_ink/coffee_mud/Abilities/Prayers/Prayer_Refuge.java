@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Refuge extends Prayer
 {
 	@Override
@@ -101,12 +100,12 @@ public class Prayer_Refuge extends Prayer
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats affectableStats)
+	public void affectPhyStats(final Physical host, final PhyStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 	}
 
-	public Room getRefuge(Item I)
+	public Room getRefuge(final Item I)
 	{
 		Room R=CMLib.map().getRoom(text());
 		if(R==null)
@@ -168,7 +167,7 @@ public class Prayer_Refuge extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
@@ -183,7 +182,7 @@ public class Prayer_Refuge extends Prayer
 			mob.tell(L("The magic in this place will not permit it to become a refuge."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

@@ -23,10 +23,9 @@ import com.planet_ink.coffee_mud.core.Directions;
 
 public class LayoutTester
 {
-	
 	private final static String[] DEFAULT_DIRECTIONS_LIST_COMPASS	= "North,South,East,West,Up,Down,There,Northeast,Northwest,Southeast,Southwest".split(",");
-	
-	public static void draw(LayoutManager layout, int size, int dir)
+
+	public static void draw(final LayoutManager layout, final int size, final int dir)
 	{
 		final List<LayoutNode> V=layout.generate(size, dir);
 		final LayoutNode firstNode = (V.size()==0) ? null : V.get(0);
@@ -58,7 +57,7 @@ public class LayoutTester
 			if(ys != null)
 			{
 				final Hashtable<Long,LayoutNode> H = new Hashtable<Long,LayoutNode>();
-				for(final LayoutNode xs : ys) 
+				for(final LayoutNode xs : ys)
 					H.put(Long.valueOf(xs.coord()[0]),xs);
 				for(int i=0;i<3;i++)
 				{
@@ -66,7 +65,7 @@ public class LayoutTester
 					{
 						if(H.containsKey(Long.valueOf(x)))
 						{
-							LayoutNode n = H.get(Long.valueOf(x));
+							final LayoutNode n = H.get(Long.valueOf(x));
 							System.out.print(n.getColorRepresentation((firstNode==n ? 'O':'*'),i));
 						}
 						else
@@ -78,7 +77,7 @@ public class LayoutTester
 		}
 	}
 
-	public static boolean continuityCheck(List<LayoutNode> set)
+	public static boolean continuityCheck(final List<LayoutNode> set)
 	{
 		for(int s=0;s<set.size();s++)
 		{
@@ -92,7 +91,7 @@ public class LayoutTester
 		return true;
 	}
 
-	public static void main(String[] args)
+	public static void main(final String[] args)
 	{
 		Directions.instance();
 		final int d=Directions.NORTH;

@@ -81,7 +81,7 @@ public class Arcanist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ScrollScribing",10,true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Alchemy",false,"+INT 12 +WIS 12");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ReadMagic",true);
 
@@ -180,7 +180,7 @@ public class Arcanist extends Thief
 	{
 		return raceRequiredList;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]
 	{
@@ -232,7 +232,7 @@ public class Arcanist extends Thief
 	}
 
 	@Override
-	public void endCharacter(MOB mob)
+	public void endCharacter(final MOB mob)
 	{
 		final Vector<Ability> otherChoices=new Vector<Ability>();
 		for(int a=0;a<mob.numAbilities();a++)
@@ -247,7 +247,7 @@ public class Arcanist extends Thief
 			mob.delAbility(otherChoices.elementAt(a));
 	}
 
-	private void addAbilityToSpellcraftList(MOB mob, Ability A)
+	private void addAbilityToSpellcraftList(final MOB mob, final Ability A)
 	{
 		final Ability enabledA=mob.fetchAbility("Skill_Spellcraft");
 		if(enabledA!=null)
@@ -267,7 +267,7 @@ public class Arcanist extends Thief
 		}
 	}
 
-	private void clearAbilityFromSpellcraftList(MOB mob, Ability A)
+	private void clearAbilityFromSpellcraftList(final MOB mob, final Ability A)
 	{
 		final Ability enabledA=mob.fetchAbility("Skill_Spellcraft");
 		if(enabledA!=null)

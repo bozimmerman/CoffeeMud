@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Purify extends Prayer
 {
 	@Override
@@ -86,7 +85,7 @@ public class Prayer_Purify extends Prayer
 	}
 
 	@Override
-	public void affectPhyStats(Physical affecting, PhyStats stats)
+	public void affectPhyStats(final Physical affecting, final PhyStats stats)
 	{
 		if((affecting instanceof Decayable)&&(((Decayable)affecting).decayTime()>0))
 			((Decayable)affecting).setDecayTime(0);
@@ -94,7 +93,7 @@ public class Prayer_Purify extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)

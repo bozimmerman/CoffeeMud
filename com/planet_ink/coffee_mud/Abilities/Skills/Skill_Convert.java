@@ -219,9 +219,9 @@ public class Skill_Convert extends StdSkill
 					final Deity tD=D;
 					final MOB t=target;
 					final Ability A=this;
-					tsess.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 30000L) 
+					tsess.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 30000L)
 					{
-						
+
 						final Session session = tsess;
 						final Deity D=tD;
 						final MOB target=t;
@@ -232,12 +232,12 @@ public class Skill_Convert extends StdSkill
 						{
 							session.promptPrint(L("\n\r@x1 is trying to convert you to the worship of @x2.  Is this what you want (N/y)?",mob.name(target),D.name()));
 						}
-	
+
 						@Override
 						public void timedOut()
 						{
 						}
-	
+
 						@Override
 						public void callBack()
 						{

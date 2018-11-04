@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Thief_FenceLoot extends ThiefSkill
 {
 	@Override
@@ -82,7 +81,7 @@ public class Thief_FenceLoot extends ThiefSkill
 	}
 
 	protected Map<Item,Ability> addBackMap=new HashMap<Item,Ability>();
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -90,7 +89,7 @@ public class Thief_FenceLoot extends ThiefSkill
 		&&(msg.targetMinor()==CMMsg.TYP_SELL)
 		&&(msg.tool() instanceof Item))
 		{
-			Ability A=((Item)msg.tool()).fetchEffect("Prop_PrivateProperty");
+			final Ability A=((Item)msg.tool()).fetchEffect("Prop_PrivateProperty");
 			if(A!=null)
 			{
 				((Item)msg.tool()).delEffect(A);
@@ -99,9 +98,9 @@ public class Thief_FenceLoot extends ThiefSkill
 		}
 		return super.okMessage(myHost, msg);
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -146,7 +145,7 @@ public class Thief_FenceLoot extends ThiefSkill
 					mob.delEffect(A);
 					mob.recoverCharStats();
 				}
-				for(Item I : addBackMap.keySet())
+				for(final Item I : addBackMap.keySet())
 				{
 					if(mob.isMine(I))
 					{

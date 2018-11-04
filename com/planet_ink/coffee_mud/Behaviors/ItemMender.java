@@ -48,7 +48,7 @@ public class ItemMender extends StdBehavior
 		return "item mending for a price";
 	}
 
-	protected double cost(Item item)
+	protected double cost(final Item item)
 	{
 		if(costFormula != null)
 		{
@@ -65,7 +65,7 @@ public class ItemMender extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String parms)
+	public void setParms(final String parms)
 	{
 		super.setParms(parms);
 		final String formulaString = CMParms.getParmStr(parms,"COST","(100-@x3)+@x1+(@x4*@x1)");

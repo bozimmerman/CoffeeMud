@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_HuntGood extends Prayer_HuntEvil
 {
 	@Override
@@ -82,7 +81,7 @@ public class Prayer_HuntGood extends Prayer_HuntEvil
 	}
 
 	@Override
-	protected MOB gameHere(Room room)
+	protected MOB gameHere(final Room room)
 	{
 		if(room==null)
 			return null;

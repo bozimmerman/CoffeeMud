@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Ranger_Hide extends StdAbility
 {
 	@Override
@@ -141,14 +140,14 @@ public class Ranger_Hide extends StdAbility
 		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,proficiency()+bonus+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
 	}
 
-	public static int getMOBLevel(MOB meMOB)
+	public static int getMOBLevel(final MOB meMOB)
 	{
 		if(meMOB==null)
 			return 0;
 		return meMOB.phyStats().level();
 	}
 
-	public static MOB getHighestLevelMOB(MOB meMOB, Collection<MOB> not)
+	public static MOB getHighestLevelMOB(final MOB meMOB, final Collection<MOB> not)
 	{
 		if(meMOB==null)
 			return null;
@@ -178,7 +177,7 @@ public class Ranger_Hide extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

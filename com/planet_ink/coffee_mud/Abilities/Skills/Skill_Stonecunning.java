@@ -94,7 +94,7 @@ public class Skill_Stonecunning extends StdSkill
 	protected volatile boolean doThisRoom	= false;
 	protected volatile Room thisRoom = null;
 
-	protected boolean appliesToRoom(Room R)
+	protected boolean appliesToRoom(final Room R)
 	{
 		return
 			(R.domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)
@@ -102,7 +102,7 @@ public class Skill_Stonecunning extends StdSkill
 			||(R.domainType()==Room.DOMAIN_INDOORS_CAVE);
 	}
 
-	public String trapCheck(Physical P)
+	public String trapCheck(final Physical P)
 	{
 		if(P!=null)
 		if(CMLib.utensils().fetchMyTrap(P)!=null)
@@ -110,7 +110,7 @@ public class Skill_Stonecunning extends StdSkill
 		return "";
 	}
 
-	public String trapHere(MOB mob, Room R)
+	public String trapHere(final MOB mob, final Room R)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		if(CMLib.flags().canBeSeenBy(R,mob))
@@ -176,7 +176,7 @@ public class Skill_Stonecunning extends StdSkill
 				synchronized(lastFiveRooms)
 				{
 					boolean found=false;
-					for(Pair<Room,Boolean> p : lastFiveRooms)
+					for(final Pair<Room,Boolean> p : lastFiveRooms)
 					{
 						if(p.first == msg.target())
 						{
@@ -199,7 +199,7 @@ public class Skill_Stonecunning extends StdSkill
 				{
 					final MOB mob=(MOB)affected;
 					final Room R=(Room)msg.target();
-					
+
 					@Override
 					public void run()
 					{

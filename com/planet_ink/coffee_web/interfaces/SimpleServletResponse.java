@@ -17,15 +17,15 @@ package com.planet_ink.coffee_web.interfaces;
 */
 
 /**
- * This interface encapsulates the HTTP response portion of the 
+ * This interface encapsulates the HTTP response portion of the
  * SimpleServlet specification.
- * 
+ *
  */
 public interface SimpleServletResponse extends HTTPResponse
 {
 	/**
-	 * Gets the OutputStream that when written to will transmit to the client. 
-	 * 
+	 * Gets the OutputStream that when written to will transmit to the client.
+	 *
 	 * @return The output stream
 	 */
 	public java.io.OutputStream getOutputStream();

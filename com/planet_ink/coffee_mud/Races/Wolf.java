@@ -45,7 +45,7 @@ public class Wolf extends StdRace
 		super();
 		super.naturalAbilImmunities.add("Disease_PoisonIvy");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Wolf");
 
 	@Override
@@ -176,7 +176,7 @@ public class Wolf extends StdRace
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		affectableMaxState.setMovement(affectableMaxState.getMovement()+150);
 	}
@@ -219,7 +219,7 @@ public class Wolf extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{

@@ -28,7 +28,7 @@ public class MultiIterable<K> implements Iterable<K>, SizedIterable<K>
 	private Iterable<K>[] iters=new Iterable[0];
 	private int size=0;
 
-	public MultiIterable(Iterable<K>[] esets, int newSize)
+	public MultiIterable(final Iterable<K>[] esets, final int newSize)
 	{
 		if((esets==null)||(esets.length==0))
 			return;
@@ -36,7 +36,7 @@ public class MultiIterable<K> implements Iterable<K>, SizedIterable<K>
 		size=newSize;
 	}
 
-	public MultiIterable(Collection<? extends Iterable<? extends K>> esets, int newSize)
+	public MultiIterable(final Collection<? extends Iterable<? extends K>> esets, final int newSize)
 	{
 		if((esets==null)||(esets.size()==0))
 			return;
@@ -48,7 +48,7 @@ public class MultiIterable<K> implements Iterable<K>, SizedIterable<K>
 	{
 	}
 
-	public synchronized void add(Iterable<K> eset, int sizeAdd)
+	public synchronized void add(final Iterable<K> eset, final int sizeAdd)
 	{
 		iters=Arrays.copyOf(iters, iters.length+1);
 		iters[iters.length-1]=eset;

@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class DeityData extends StdWebMacro
 {
 	@Override
@@ -46,7 +45,7 @@ public class DeityData extends StdWebMacro
 	// valid parms include description, worshipreq, clericreq,
 	// worshiptrig, clerictrig, worshipsintrig,clericsintrig,powertrig
 
-	private List<PlayerLibrary.ThinPlayer> getDeityData(HTTPRequest httpReq, String deityName)
+	private List<PlayerLibrary.ThinPlayer> getDeityData(final HTTPRequest httpReq, final String deityName)
 	{
 		List<PlayerLibrary.ThinPlayer> folData=(List<PlayerLibrary.ThinPlayer>)httpReq.getRequestObjects().get("DEITYDATAFOR-"+deityName.toUpperCase().trim());
 		if(folData!=null)
@@ -57,7 +56,7 @@ public class DeityData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("DEITY");
@@ -113,6 +112,7 @@ public class DeityData extends StdWebMacro
 				if(parms.containsKey("MOBCODE"))
 				{
 					final String roomID=D.getStartRoom().roomID();
+					@SuppressWarnings({ "unchecked", "rawtypes" })
 					List<MOB> classes=(List)httpReq.getRequestObjects().get("DEITYLIST-"+roomID);
 					if(classes==null)
 					{
@@ -139,9 +139,9 @@ public class DeityData extends StdWebMacro
 								if(CMLib.map().getDeity(D2.Name())!=null)
 									restoreDeities.removeElementAt(d);
 							}
-							for(final Enumeration e=restoreDeities.elements();e.hasMoreElements();)
+							for(final Enumeration<Deity> e=restoreDeities.elements();e.hasMoreElements();)
 							{
-								final Deity D2=(Deity)e.nextElement();
+								final Deity D2=e.nextElement();
 								for(int i=0;i<R.numInhabitants();i++)
 								{
 									final MOB M=R.fetchInhabitant(i);

@@ -98,7 +98,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public CoffeeShop build(ShopKeeper SK)
+	public CoffeeShop build(final ShopKeeper SK)
 	{
 		shopKeeper=new WeakReference(SK);
 		return this;
@@ -111,20 +111,20 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public boolean isSold(int code)
+	public boolean isSold(final int code)
 	{
 		final ShopKeeper SK=shopKeeper();
 		return (SK==null)?false:SK.isSold(code);
 	}
 
 	@Override
-	public boolean inEnumerableInventory(Environmental thisThang)
+	public boolean inEnumerableInventory(final Environmental thisThang)
 	{
 		return false;
 	}
 
 	@Override
-	public Environmental addStoreInventory(Environmental thisThang)
+	public Environmental addStoreInventory(final Environmental thisThang)
 	{
 		return addStoreInventory(thisThang,1,-1);
 	}
@@ -155,7 +155,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 
 
 	@Override
-	public boolean lowerStock(String name)
+	public boolean lowerStock(final String name)
 	{
 		return false;
 	}
@@ -165,9 +165,9 @@ public class AuctionCoffeeShop implements CoffeeShop
 	{
 		return this;
 	}
-	
+
 	@Override
-	public Iterator<Environmental> getStoreInventory(String srchStr)
+	public Iterator<Environmental> getStoreInventory(final String srchStr)
 	{
 		return emptyV.iterator();
 	}
@@ -179,9 +179,9 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public Environmental addStoreInventory(Environmental thisThang,
-										   int number,
-										   int price)
+	public Environmental addStoreInventory(final Environmental thisThang,
+										   final int number,
+										   final int price)
 	{
 		if(shopKeeper() instanceof Auctioneer)
 			auctionShop=((Auctioneer)shopKeeper()).auctionHouse();
@@ -201,35 +201,35 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public void delAllStoreInventory(Environmental thisThang)
+	public void delAllStoreInventory(final Environmental thisThang)
 	{
 	}
 
 	@Override
-	public boolean doIHaveThisInStock(String name, MOB mob)
+	public boolean doIHaveThisInStock(final String name, final MOB mob)
 	{
 		return getStock(name,mob)!=null;
 	}
 
 	@Override
-	public int stockPrice(Environmental likeThis)
+	public int stockPrice(final Environmental likeThis)
 	{
 		return -1;
 	}
 
 	@Override
-	public int numberInStock(Environmental likeThis)
+	public int numberInStock(final Environmental likeThis)
 	{
 		return 1;
 	}
 
 	@Override
-	public void resubmitInventory(List<Environmental> V)
+	public void resubmitInventory(final List<Environmental> V)
 	{
 	}
 
 	@Override
-	public Environmental getStock(String name, MOB mob)
+	public Environmental getStock(final String name, final MOB mob)
 	{
 		final List<AuctionData> auctions=CMLib.coffeeShops().getAuctions(null,auctionShop);
 		final Vector<Environmental> auctionItems=new Vector<Environmental>();
@@ -255,7 +255,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public Environmental removeStock(String name, MOB mob)
+	public Environmental removeStock(final String name, final MOB mob)
 	{
 		return null;
 	}
@@ -266,7 +266,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public List<Environmental> removeSellableProduct(String named, MOB mob)
+	public List<Environmental> removeSellableProduct(final String named, final MOB mob)
 	{
 		return emptyV;
 	}
@@ -278,10 +278,10 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public void buildShopFromXML(String text)
+	public void buildShopFromXML(final String text)
 	{
 	}
-	
+
 	@Override
 	public long contentHash()
 	{
@@ -289,7 +289,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public void deleteShelfProduct(ShelfProduct P)
+	public void deleteShelfProduct(final ShelfProduct P)
 	{
 	}
 }

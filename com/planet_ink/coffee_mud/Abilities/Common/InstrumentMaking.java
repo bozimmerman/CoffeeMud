@@ -37,7 +37,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 {
 	@Override

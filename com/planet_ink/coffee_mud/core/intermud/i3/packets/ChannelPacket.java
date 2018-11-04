@@ -33,7 +33,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-public class ChannelPacket extends Packet  
+public class ChannelPacket extends Packet
 {
 	public String channel = null;
 	public String sender_visible_name = null;
@@ -47,7 +47,7 @@ public class ChannelPacket extends Packet
 		type = Packet.CHAN_MESSAGE;
 	}
 
-	public ChannelPacket(Vector<?> v) throws InvalidPacketException 
+	public ChannelPacket(final Vector<?> v) throws InvalidPacketException
 	{
 		super(v);
 		try
@@ -86,7 +86,7 @@ public class ChannelPacket extends Packet
 		}
 	}
 
-	public ChannelPacket(int t, String chan, String who, String vis, String msg)
+	public ChannelPacket(final int t, final String chan, final String who, final String vis, final String msg)
 	{
 		super();
 		type = t;

@@ -53,7 +53,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 
 		myClock = (TimeClock)CMClass.getCommon("DefaultTimeClock");
 		coordinates=new long[]{Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random())};
-		Random random=new Random(System.currentTimeMillis());
+		final Random random=new Random(System.currentTimeMillis());
 		radius=SpaceObject.Distance.PlanetRadius.dm + (random.nextLong() % (SpaceObject.Distance.PlanetRadius.dm / 20));
 	}
 
@@ -63,8 +63,8 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 		return coordinates;
 	}
 
-	@Override 
-	public void setCoords(long[] coords)
+	@Override
+	public void setCoords(final long[] coords)
 	{
 		if((coords!=null)&&(coords.length==3))
 			CMLib.map().moveSpaceObject(this,coords);
@@ -77,7 +77,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	}
 
 	@Override
-	public void setDirection(double[] dir)
+	public void setDirection(final double[] dir)
 	{
 	}
 
@@ -88,7 +88,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	}
 
 	@Override
-	public void setSpeed(double v)
+	public void setSpeed(final double v)
 	{
 	}
 
@@ -99,13 +99,13 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	}
 
 	@Override
-	public void setRadius(long radius)
+	public void setRadius(final long radius)
 	{
 		this.radius = radius;
 	}
 
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 		super.setName(newName);
 		myClock.setLoadName(newName);
@@ -118,7 +118,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	}
 
 	@Override
-	public void setKnownTarget(SpaceObject O)
+	public void setKnownTarget(final SpaceObject O)
 	{
 	}
 
@@ -129,7 +129,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	}
 
 	@Override
-	public void setKnownSource(SpaceObject O)
+	public void setKnownSource(final SpaceObject O)
 	{
 	}
 
@@ -148,7 +148,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	private final static String[]	MYCODES	= { "COORDS", "RADIUS" };
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getLocCodeNum(code))
 		{
@@ -162,7 +162,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getLocCodeNum(code))
 		{
@@ -180,8 +180,8 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 			break;
 		}
 	}
-	
-	protected int getLocCodeNum(String code)
+
+	protected int getLocCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
@@ -192,7 +192,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	}
 
 	private static String[] codes=null;
-	
+
 	@Override
 	public String[] getStatCodes()
 	{

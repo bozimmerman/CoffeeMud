@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 {
 	@Override
@@ -75,7 +74,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String newValue)
+	public void setMiscText(final String newValue)
 	{
 		super.setMiscText(newValue);
 		flags=new Hashtable<String,Object>();
@@ -128,7 +127,7 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 
 			boolean immune=flags.containsKey("ALL")&&(((Character)flags.get("ALL")).charValue()=='+');
 			Character foundPlusMinus=null;
-			int statCode = CharStats.CODES.RVSCMMSGMAP(msg.sourceMinor());
+			final int statCode = CharStats.CODES.RVSCMMSGMAP(msg.sourceMinor());
 			if((statCode>=0)
 			&&(statCode!=CharStats.STAT_SAVE_MAGIC))
 			{

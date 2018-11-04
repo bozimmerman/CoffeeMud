@@ -74,7 +74,7 @@ public class Spell_Pocket extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -111,7 +111,7 @@ public class Spell_Pocket extends Spell
 				return false;
 			}
 		}
-		
+
 		if((target instanceof Item) && (!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,true, false)))
 		{
 			mob.tell(L("You can't pocket @x1.",target.name(mob)));
@@ -148,14 +148,14 @@ public class Spell_Pocket extends Spell
 				if(msg.value()<=0)
 				{
 					Item pocketItem;
-					int level=target.phyStats().level();
-					String realName=target.name();
-					String name=CMLib.english().removeArticleLead(target.name());
+					final int level=target.phyStats().level();
+					final String realName=target.name();
+					final String name=CMLib.english().removeArticleLead(target.name());
 					if(target instanceof Item)
 					{
 						final PackagedItems packageItem=(PackagedItems)CMClass.getItem("GenPackagedVariety");
 						final List<Item> items=CMLib.utensils().deepCopyOf((Item)target);
-						for(Item I : items)
+						for(final Item I : items)
 							packageItem.packageMe(I,1);
 						((Item)target).destroy();
 						pocketItem=packageItem;

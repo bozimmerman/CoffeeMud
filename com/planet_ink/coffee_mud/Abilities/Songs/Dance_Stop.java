@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Dance_Stop extends Dance
 {
 	@Override
@@ -68,13 +67,13 @@ public class Dance_Stop extends Dance
 	}
 
 	@Override
-	public void setProficiency(int newProficiency)
+	public void setProficiency(final int newProficiency)
 	{
 		super.setProficiency(100);
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		boolean foundOne=false;
 		for(int a=0;a<mob.numEffects();a++) // personal affects

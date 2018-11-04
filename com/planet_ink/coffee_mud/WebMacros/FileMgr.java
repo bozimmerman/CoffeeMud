@@ -35,7 +35,6 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class FileMgr extends StdWebMacro
 {
 	@Override
@@ -50,7 +49,7 @@ public class FileMgr extends StdWebMacro
 		return true;
 	}
 
-	public boolean matches(String s1, String s2)
+	public boolean matches(final String s1, final String s2)
 	{
 		if(s1.length()==0)
 			return true;
@@ -69,7 +68,7 @@ public class FileMgr extends StdWebMacro
 		return s1.equalsIgnoreCase(s2);
 	}
 
-	public void compileFilenamesList(CMFile F, String regex, Vector<String> V)
+	public void compileFilenamesList(final CMFile F, final String regex, final Vector<String> V)
 	{
 		if((!F.canRead())||(!F.isDirectory()))
 			return;
@@ -93,7 +92,7 @@ public class FileMgr extends StdWebMacro
 		}
 	}
 
-	public void compileTextListFromFiles(Vector<String> files, String regex, Vector<String> V)
+	public void compileTextListFromFiles(final Vector<String> files, final String regex, final Vector<String> V)
 	{
 		final Pattern P=Pattern.compile(regex,Pattern.CASE_INSENSITIVE|Pattern.DOTALL|Pattern.MULTILINE);
 		for(int f=0;f<files.size();f++)
@@ -105,7 +104,7 @@ public class FileMgr extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		String path=httpReq.getUrlParameter("PATH");

@@ -52,33 +52,33 @@ public class DefaultEnvironmental extends DefaultModifiable implements Environme
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		return false;
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 	}
 
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 	}
 
 	@Override
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		return true;
 	}
@@ -108,7 +108,7 @@ public class DefaultEnvironmental extends DefaultModifiable implements Environme
 	}
 
 	@Override
-	public void setSavable(boolean truefalse)
+	public void setSavable(final boolean truefalse)
 	{
 		setStat("IS_SAVABLE",""+truefalse);
 	}
@@ -120,7 +120,7 @@ public class DefaultEnvironmental extends DefaultModifiable implements Environme
 	}
 
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 		setStat(GenericBuilder.GenMOBCode.NAME.name(),newName);
 	}
@@ -132,7 +132,7 @@ public class DefaultEnvironmental extends DefaultModifiable implements Environme
 	}
 
 	@Override
-	public void setDisplayText(String newDisplayText)
+	public void setDisplayText(final String newDisplayText)
 	{
 		setStat(GenericBuilder.GenMOBCode.DISPLAY.name(),newDisplayText);
 	}
@@ -144,7 +144,7 @@ public class DefaultEnvironmental extends DefaultModifiable implements Environme
 	}
 
 	@Override
-	public void setDescription(String newDescription)
+	public void setDescription(final String newDescription)
 	{
 		setStat(GenericBuilder.GenMOBCode.DESCRIPTION.name(), newDescription);
 	}
@@ -162,7 +162,7 @@ public class DefaultEnvironmental extends DefaultModifiable implements Environme
 	}
 
 	@Override
-	public void setImage(String newImage)
+	public void setImage(final String newImage)
 	{
 		setStat(GenericBuilder.GenMOBCode.IMG.name(), newImage);
 	}
@@ -174,7 +174,7 @@ public class DefaultEnvironmental extends DefaultModifiable implements Environme
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		if((newMiscText!=null)
 		&&(newMiscText.startsWith("<")))
@@ -225,7 +225,7 @@ public class DefaultEnvironmental extends DefaultModifiable implements Environme
 	}
 
 	@Override
-	public void setExpirationDate(long dateTime)
+	public void setExpirationDate(final long dateTime)
 	{
 		setStat("EXPIRATION_DATE",""+dateTime);
 	}
@@ -243,7 +243,7 @@ public class DefaultEnvironmental extends DefaultModifiable implements Environme
 	}
 
 	@Override
-	public String L(String str, String... xs)
+	public String L(final String str, final String... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}

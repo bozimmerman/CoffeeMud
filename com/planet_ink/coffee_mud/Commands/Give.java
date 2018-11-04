@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Give extends StdCommand
 {
 	public Give()
@@ -55,10 +54,10 @@ public class Give extends StdCommand
 	};
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("Give what to whom?"));
@@ -100,7 +99,7 @@ public class Give extends StdCommand
 			allFlag = true;
 			thingToGive = "ALL " + thingToGive.substring(0, thingToGive.length() - 4);
 		}
-		
+
 		final boolean onlyGoldFlag = mob.hasOnlyGoldInInventory();
 		Item giveThis=CMLib.english().bestPossibleGold(mob,null,thingToGive);
 		if(giveThis!=null)
@@ -181,7 +180,7 @@ public class Give extends StdCommand
 		return false;
 	}
 
-	protected boolean give(final MOB mob, final MOB recipient, final Item giveThis, boolean quiet)
+	protected boolean give(final MOB mob, final MOB recipient, final Item giveThis, final boolean quiet)
 	{
 		final CMMsg newMsg=CMClass.getMsg(mob,recipient,giveThis,CMMsg.MSG_GIVE,quiet?"":L("<S-NAME> give(s) <O-NAME> to <T-NAMESELF>."));
 		boolean success=false;
@@ -196,7 +195,7 @@ public class Give extends StdCommand
 			((RawMaterial)giveThis).rebundle();
 		return success;
 	}
-	
+
 	@Override
 	public double combatActionsCost(final MOB mob, final List<String> cmds)
 	{
@@ -216,7 +215,7 @@ public class Give extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;

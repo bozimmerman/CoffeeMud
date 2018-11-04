@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_Resurrect extends Prayer implements MendingSkill
 {
 	@Override
@@ -74,14 +73,14 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 	{
 		return Ability.CAN_ITEMS;
 	}
-	
-	protected boolean canResurrectNormalMobs() 
-	{ 
-		return false; 
+
+	protected boolean canResurrectNormalMobs()
+	{
+		return false;
 	}
 
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
 		if (item instanceof DeadBody)
 		{
@@ -97,7 +96,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Physical body=null;
 		body=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
@@ -243,8 +242,8 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 					mob.location().recoverRoomStats();
 				}
 				else
-				if(this.canResurrectNormalMobs() 
-				&& (body instanceof DeadBody) 
+				if(this.canResurrectNormalMobs()
+				&& (body instanceof DeadBody)
 				&& (((DeadBody)body).getSavedMOB()!=null))
 				{
 					final MOB rejuvedMOB=((DeadBody)body).getSavedMOB();

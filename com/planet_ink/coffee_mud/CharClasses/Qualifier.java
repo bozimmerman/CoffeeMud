@@ -61,7 +61,7 @@ public class Qualifier extends StdCharClass
 		return abilitiesLoaded;
 	}
 
-	public void setLoaded(boolean truefalse)
+	public void setLoaded(final boolean truefalse)
 	{
 		abilitiesLoaded = truefalse;
 	}
@@ -86,7 +86,7 @@ public class Qualifier extends StdCharClass
 	}
 
 	@Override
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
+	public boolean qualifiesForThisClass(final MOB mob, final boolean quiet)
 	{
 		if(!quiet)
 			mob.tell(L("This class cannot be learned."));
@@ -94,7 +94,7 @@ public class Qualifier extends StdCharClass
 	}
 
 	@Override
-	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
+	public void startCharacter(final MOB mob, final boolean isBorrowedClass, final boolean verifyOnly)
 	{
 		if(!loaded())
 		{
@@ -111,7 +111,7 @@ public class Qualifier extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)

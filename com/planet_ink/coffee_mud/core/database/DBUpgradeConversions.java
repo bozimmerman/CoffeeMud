@@ -22,24 +22,23 @@ import java.util.Vector;
 */
 public class DBUpgradeConversions
 {
-
-	private static void pl(PrintStream out, String str)
+	private static void pl(final PrintStream out, final String str)
 	{
-		if(out!=null) 
+		if(out!=null)
 			out.println(str);
 	}
 
-	private static void p(PrintStream out, String str)
+	private static void p(final PrintStream out, final String str)
 	{
-		if(out!=null) 
+		if(out!=null)
 			out.print(str);
 	}
-	
+
 	public static void DBUpgradeConversionV1(
-											Map<String,List<String>> oldTables,
-											Map<String,List<String>> newTables,
-											Map<String,List<List<String>>> data,
-											PrintStream out)
+											final Map<String,List<String>> oldTables,
+											final Map<String,List<String>> newTables,
+											final Map<String,List<List<String>>> data,
+											final PrintStream out)
 	{
 		// first, look for the CLAN conversion
 		if(newTables.containsKey("CMCHCL") && (!oldTables.containsKey("CMCHCL")))
@@ -83,7 +82,7 @@ public class DBUpgradeConversions
 					oldTables.put("CMCHCL", newTables.get("CMCHCL"));
 			}
 		}
-		
+
 		// now look for cmchid insertion
 		if(newTables.containsKey("CMCHAR") && (oldTables.containsKey("CMCHAR")))
 		{
@@ -106,6 +105,6 @@ public class DBUpgradeConversions
 				}
 			}
 		}
-		
+
 	}
 }

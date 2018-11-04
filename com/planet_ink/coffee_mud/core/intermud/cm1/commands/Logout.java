@@ -48,7 +48,7 @@ public class Logout extends CM1Command
 		return "LOGOUT";
 	}
 
-	public Logout(RequestHandler req, String parameters)
+	public Logout(final RequestHandler req, final String parameters)
 	{
 		super(req, parameters);
 	}
@@ -74,13 +74,13 @@ public class Logout extends CM1Command
 	}
 
 	@Override
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	public boolean passesSecurityCheck(final MOB user, final PhysicalAgent target)
 	{
 		return true;
 	}
 
 	@Override
-	public String getHelp(MOB user, PhysicalAgent target, String rest)
+	public String getHelp(final MOB user, final PhysicalAgent target, final String rest)
 	{
 		return "USAGE: LOGOUT: Logs out the current user, but does not disconnect.";
 	}

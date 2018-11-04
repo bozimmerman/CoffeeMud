@@ -29,16 +29,15 @@ import java.util.List;
  */
 public interface DataBuffers extends Iterator<ByteBuffer>
 {
-
 	/**
 	 * Close out and clear all internal data buffers
 	 * This is a required operation, which is done automatically
 	 * if all data is iterated through, but should be done
-	 * manually otherwise. 
+	 * manually otherwise.
 	 */
 	public void close();
-	
-	
+
+
 	/**
 	 * Flushes all internet bytebuffers to a single one.
 	 * This can be an expensive operation, but will call
@@ -46,7 +45,7 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	 * @return these buffers flushed to one
 	 */
 	public ByteBuffer flushToBuffer();
-	
+
 	/**
 	 * Return the length of all bytes buffers here
 	 * @return an overall size
@@ -82,7 +81,7 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	 * @return the new top bytebuffer
 	 */
 	public ByteBuffer splitTopBuffer(final int sizeOfTopBuffer);
-	
+
 	/**
 	 * Add a new ByteBuffer to the top of this set.
 	 * @param buf the buffer to add
@@ -90,7 +89,7 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	 * @param isChunkable true if this is a body buffer, and can be chunked
 	 */
 	public void insertTop(final ByteBuffer buf, final long lastModifiedTime, final boolean isChunkable);
-	
+
 	/**
 	 * Add a new random access file to this beginning of this set.
 	 * @param file the input stream to add
@@ -98,7 +97,7 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	 * @param isChunkable true if this is a body buffer, and can be chunked
 	 */
 	public void insertTop(final RandomAccessFile file, final long lastModifiedTime, final boolean isChunkable);
-	
+
 	/**
 	 * Add a new random access file to this set.
 	 * @param file the input stream to add
@@ -114,14 +113,14 @@ public interface DataBuffers extends Iterator<ByteBuffer>
 	 * @param isChunkable true if this is a body buffer, and can be chunked
 	 */
 	public void insertTop(final byte[] buf, final long lastModifiedTime, final boolean isChunkable);
-	
+
 	/**
 	 * Reconfigure this databuffer to return the given ranges
 	 * Each range is 2 dimentional int array, startpos, endpos.
 	 * @param ranges the list of ranges
 	 */
 	public void setRanges(final List<long[]> ranges);
-	
+
 	/**
 	 * Reconfigure this databuffer to return chunks of the given
 	 * size (or smaller) from the body, but only from buffers marked

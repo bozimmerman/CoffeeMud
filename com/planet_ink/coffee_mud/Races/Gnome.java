@@ -45,7 +45,7 @@ public class Gnome extends StdRace
 		super();
 		super.naturalAbilImmunities.add("Disease_Syphilis");
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Gnome");
 
 	@Override
@@ -122,7 +122,7 @@ public class Gnome extends StdRace
 	private final String[]	racialEffectNames			= { "Chant_Burrowspeak" };
 	private final int[]		racialEffectLevels			= { 1 };
 	private final String[]	racialEffectParms			= { "" };
-	
+
 	@Override
 	protected String[] racialEffectNames()
 	{
@@ -140,7 +140,7 @@ public class Gnome extends StdRace
 	{
 		return racialEffectParms;
 	}
-	
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 
@@ -186,7 +186,7 @@ public class Gnome extends StdRace
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

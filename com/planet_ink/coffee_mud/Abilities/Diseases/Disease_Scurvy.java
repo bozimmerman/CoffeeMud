@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Disease_Scurvy extends Disease
 {
 	@Override
@@ -142,7 +141,7 @@ public class Disease_Scurvy extends Disease
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{

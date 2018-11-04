@@ -39,7 +39,7 @@ public class Githyanki extends Humanoid
 		super();
 		super.naturalAbilImmunities.add("Disease_PlanarInstability");
 	}
-	
+
 	@Override
 	public String ID()
 	{
@@ -105,9 +105,9 @@ public class Githyanki extends Humanoid
 	{
 		return -20;
 	}
-	
+
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -144,7 +144,7 @@ public class Githyanki extends Humanoid
 		affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM)+1);
 		affectableStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,affectableStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)+1);
 	}
-	
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

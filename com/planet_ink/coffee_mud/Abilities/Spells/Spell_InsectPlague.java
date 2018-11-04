@@ -32,10 +32,8 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Spell_InsectPlague extends Spell
 {
-
 	@Override
 	public String ID()
 	{
@@ -155,9 +153,9 @@ public class Spell_InsectPlague extends Spell
 		}
 		return true;
 	}
-	
+
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -168,7 +166,7 @@ public class Spell_InsectPlague extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -190,7 +188,7 @@ public class Spell_InsectPlague extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability A=beneficialAffect(mob,mob.location(),asLevel,0);
+				final Ability A=beneficialAffect(mob,mob.location(),asLevel,0);
 				if(A!=null)
 					A.setMiscText(""+super.getXLEVELLevel(mob));
 				mob.location().recoverRoomStats();

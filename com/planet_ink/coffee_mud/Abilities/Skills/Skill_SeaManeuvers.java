@@ -83,7 +83,7 @@ public class Skill_SeaManeuvers extends StdSkill
 	{
 		return Ability.ACODE_SKILL | Ability.DOMAIN_SEATRAVEL;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

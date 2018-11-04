@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class FireBuilding extends CommonSkill
 {
 	@Override
@@ -112,7 +111,7 @@ public class FireBuilding extends CommonSkill
 		super.unInvoke();
 	}
 
-	public boolean fireHere(Room R)
+	public boolean fireHere(final Room R)
 	{
 		for(int i=0;i<R.numItems();i++)
 		{
@@ -123,7 +122,7 @@ public class FireBuilding extends CommonSkill
 		return false;
 	}
 
-	public Vector<Item> resourceHere(Room R, int material)
+	public Vector<Item> resourceHere(final Room R, final int material)
 	{
 		final Vector<Item> here=new Vector<Item>();
 		for(int i=0;i<R.numItems();i++)
@@ -141,7 +140,7 @@ public class FireBuilding extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -166,7 +165,7 @@ public class FireBuilding extends CommonSkill
 				return false;
 			}
 		}
-		
+
 		final String name=CMParms.combine(commands,0);
 		int proficiencyAdjustment=0;
 		int duration=6;
@@ -225,13 +224,13 @@ public class FireBuilding extends CommonSkill
 				}
 				return false;
 			}
-			
+
 			if(CMLib.flags().isOnFire(lighting))
 			{
 				commonTell(mob,L("@x1 is already on fire!",lighting.name()));
 				return false;
 			}
-			
+
 			if(!(lighting instanceof RawMaterial))
 			{
 				final LandTitle t=CMLib.law().getLandTitle(mob.location());

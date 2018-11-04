@@ -39,7 +39,6 @@ import java.util.*;
  */
 public interface AutoTitlesLibrary extends CMLibrary
 {
-
 	/**
 	 * Returns an enumerator of the auto-title strings themselves.
 	 * The strings will substitute a * character for the players
@@ -93,25 +92,25 @@ public interface AutoTitlesLibrary extends CMLibrary
 
 	/**
 	 * Appends to the list of titles from the given text and
-	 * refreshes the cache.  This will also save the file. 
+	 * refreshes the cache.  This will also save the file.
 	 * @param text the text of the new title definition
 	 */
 	public void appendAutoTitle(String text);
-	
+
 	/**
-	 * Removes the given title from all affected players, 
+	 * Removes the given title from all affected players,
 	 * removes the given title from the titles properties file,
 	 * and refreshes the titles cache.
 	 * @param title the title to remove
 	 * @return an error message, or null for success
 	 */
 	public String deleteTitleAndResave(String title);
-	
+
 	/**
-	 * Reads the titles.ini file and returns the 
+	 * Reads the titles.ini file and returns the
 	 * instructions therein.
 	 * @return the instructions for entering a title
 	 */
 	public String getAutoTitleInstructions();
-	
+
 }

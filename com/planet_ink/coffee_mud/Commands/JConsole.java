@@ -38,7 +38,6 @@ import org.mozilla.javascript.ScriptableObject;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class JConsole extends StdCommand
 {
 	public JConsole()
@@ -56,7 +55,7 @@ public class JConsole extends StdCommand
 	public static final Set<String> funcH=new SHashSet<String>(ScriptingEngine.funcs);
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String rest="";
@@ -117,7 +116,7 @@ public class JConsole extends StdCommand
 				{
 				}
 
-				@Override 
+				@Override
 				public void callBack()
 				{
 					if(this.input.equalsIgnoreCase("exit"))
@@ -177,29 +176,29 @@ public class JConsole extends StdCommand
 		final MOB mob;
 		final public ScriptingEngine c;
 		final Object[] objs=new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
-		
+
 		public MOB mob()
 		{
 			return mob;
 		}
-		
-		public void setVar(String host, String var, String value)
+
+		public void setVar(final String host, final String var, final String value)
 		{
 			c.setVar(host,var.toUpperCase(),value);
 		}
 
-		public String getVar(String host, String var)
-		{ 
+		public String getVar(final String host, final String var)
+		{
 			return c.getVar(host,var);
 		}
-		
-		public String toJavaString(Object O)
+
+		public String toJavaString(final Object O)
 		{
 			return Context.toString(O);
 		}
-		
+
 		@Override
-		public Object get(final String name, Scriptable start)
+		public Object get(final String name, final Scriptable start)
 		{
 			if (super.has(name, start))
 				return super.get(name, start);
@@ -209,7 +208,7 @@ public class JConsole extends StdCommand
 				return new Function()
 				{
 					@Override
-					public Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args)
+					public Object call(final Context cx, final Scriptable scope, final Scriptable thisObj, final Object[] args)
 					{
 						if(methH.contains(name))
 						{
@@ -252,23 +251,23 @@ public class JConsole extends StdCommand
 					}
 
 					@Override
-					public void delete(String arg0)
+					public void delete(final String arg0)
 					{
 					}
 
 					@Override
-					public void delete(int arg0)
+					public void delete(final int arg0)
 					{
 					}
 
 					@Override
-					public Object get(String arg0, Scriptable arg1)
+					public Object get(final String arg0, final Scriptable arg1)
 					{
 						return null;
 					}
 
 					@Override
-					public Object get(int arg0, Scriptable arg1)
+					public Object get(final int arg0, final Scriptable arg1)
 					{
 						return null;
 					}
@@ -280,7 +279,7 @@ public class JConsole extends StdCommand
 					}
 
 					@Override
-					public Object getDefaultValue(Class<?> arg0)
+					public Object getDefaultValue(final Class<?> arg0)
 					{
 						return null;
 					}
@@ -304,45 +303,45 @@ public class JConsole extends StdCommand
 					}
 
 					@Override
-					public boolean has(String arg0, Scriptable arg1)
+					public boolean has(final String arg0, final Scriptable arg1)
 					{
 						return false;
 					}
 
 					@Override
-					public boolean has(int arg0, Scriptable arg1)
+					public boolean has(final int arg0, final Scriptable arg1)
 					{
 						return false;
 					}
 
 					@Override
-					public boolean hasInstance(Scriptable arg0)
+					public boolean hasInstance(final Scriptable arg0)
 					{
 						return false;
 					}
 
 					@Override
-					public void put(String arg0, Scriptable arg1, Object arg2)
+					public void put(final String arg0, final Scriptable arg1, final Object arg2)
 					{
 					}
 
 					@Override
-					public void put(int arg0, Scriptable arg1, Object arg2)
+					public void put(final int arg0, final Scriptable arg1, final Object arg2)
 					{
 					}
 
 					@Override
-					public void setParentScope(Scriptable arg0)
+					public void setParentScope(final Scriptable arg0)
 					{
 					}
 
 					@Override
-					public void setPrototype(Scriptable arg0)
+					public void setPrototype(final Scriptable arg0)
 					{
 					}
 
 					@Override
-					public Scriptable construct(Context arg0, Scriptable arg1, Object[] arg2)
+					public Scriptable construct(final Context arg0, final Scriptable arg1, final Object[] arg2)
 					{
 						return null;
 					}
@@ -351,7 +350,7 @@ public class JConsole extends StdCommand
 			return super.get(name, start);
 		}
 
-		public JScriptEvent(MOB mob)
+		public JScriptEvent(final MOB mob)
 		{
 			c=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 			c.setScript("");
@@ -379,7 +378,7 @@ public class JConsole extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JSCRIPTS);
 	}

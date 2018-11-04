@@ -17,7 +17,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-
 public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, K>
 {
 	/**
@@ -25,22 +24,22 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	 */
 	private static final long	serialVersionUID	= 1672867955945287259L;
 
-	public PairVector(List<Pair<T,K>> initial)
+	public PairVector(final List<Pair<T,K>> initial)
 	{
 		super(initial.size());
 		addAll(initial);
 	}
-	
+
 	public PairVector()
 	{
 		super();
 	}
-	
-	public PairVector(int x)
+
+	public PairVector(final int x)
 	{
 		super(x);
 	}
-	
+
 	@Override
 	public Pair.FirstConverter<T, K> getFirstConverter()
 	{
@@ -76,36 +75,36 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@Override
-	public synchronized int indexOfFirst(T t)
+	public synchronized int indexOfFirst(final T t)
 	{
 		return indexOfFirst(t, 0);
 	}
 
 	@Override
-	public synchronized int indexOfSecond(K k)
+	public synchronized int indexOfSecond(final K k)
 	{
 		return indexOfSecond(k, 0);
 	}
 
 	@Override
-	public T getFirst(int index)
+	public T getFirst(final int index)
 	{
 		return get(index).first;
 	}
 
 	@Override
-	public K getSecond(int index)
+	public K getSecond(final int index)
 	{
 		return get(index).second;
 	}
 
 	@Override
-	public void add(T t, K k)
+	public void add(final T t, final K k)
 	{
 		add(new Pair<T, K>(t, k));
 	}
 
-	public void addElement(T t, K k)
+	public void addElement(final T t, final K k)
 	{
 		add(new Pair<T, K>(t, k));
 	}
@@ -113,7 +112,7 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public boolean contains(Object o)
+	public boolean contains(final Object o)
 	{
 		if (o instanceof Pair)
 			return super.contains(o);
@@ -125,7 +124,7 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public int indexOf(Object o)
+	public int indexOf(final Object o)
 	{
 		if (o instanceof Pair)
 			return super.indexOf(o);
@@ -138,7 +137,7 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized int indexOf(Object o, int index)
+	public synchronized int indexOf(final Object o, final int index)
 	{
 		if (o instanceof Pair)
 			return super.indexOf(o, index);
@@ -149,7 +148,7 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@Override
-	public boolean containsFirst(T t)
+	public boolean containsFirst(final T t)
 	{
 		for (final Iterator<Pair<T, K>> i = iterator(); i.hasNext();)
 		{
@@ -160,7 +159,7 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@Override
-	public boolean containsSecond(K k)
+	public boolean containsSecond(final K k)
 	{
 		for (final Iterator<Pair<T, K>> i = iterator(); i.hasNext();)
 		{
@@ -171,19 +170,19 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@Override
-	public T elementAtFirst(int index)
+	public T elementAtFirst(final int index)
 	{
 		return get(index).first;
 	}
 
 	@Override
-	public K elementAtSecond(int index)
+	public K elementAtSecond(final int index)
 	{
 		return get(index).second;
 	}
 
 	@Override
-	public int indexOfFirst(T t, int index)
+	public int indexOfFirst(final T t, final int index)
 	{
 		try
 		{
@@ -200,7 +199,7 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@Override
-	public int indexOfSecond(K k, int index)
+	public int indexOfSecond(final K k, final int index)
 	{
 		try
 		{
@@ -217,7 +216,7 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@Override
-	public int lastIndexOfFirst(T t, int index)
+	public int lastIndexOfFirst(final T t, final int index)
 	{
 		try
 		{
@@ -234,7 +233,7 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@Override
-	public int lastIndexOfSecond(K k, int index)
+	public int lastIndexOfSecond(final K k, final int index)
 	{
 		try
 		{
@@ -251,19 +250,19 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@Override
-	public int lastIndexOfFirst(T t)
+	public int lastIndexOfFirst(final T t)
 	{
 		return lastIndexOfFirst(t, size() - 1);
 	}
 
 	@Override
-	public int lastIndexOfSecond(K k)
+	public int lastIndexOfSecond(final K k)
 	{
 		return lastIndexOfSecond(k, size() - 1);
 	}
 
 	@Override
-	public boolean removeFirst(T t)
+	public boolean removeFirst(final T t)
 	{
 		Pair<T, K> pair;
 		for (final Iterator<Pair<T, K>> i = iterator(); i.hasNext();)
@@ -279,7 +278,7 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@Override
-	public boolean removeSecond(K k)
+	public boolean removeSecond(final K k)
 	{
 		Pair<T, K> pair;
 		for (final Iterator<Pair<T, K>> i = iterator(); i.hasNext();)
@@ -295,33 +294,33 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 	}
 
 	@Override
-	public boolean removeElementFirst(T t)
+	public boolean removeElementFirst(final T t)
 	{
 		return removeFirst(t);
 	}
 
 	@Override
-	public boolean removeElementSecond(K k)
+	public boolean removeElementSecond(final K k)
 	{
 		return removeSecond(k);
 	}
 
-	public T firstFirstElement(int index)
+	public T firstFirstElement(final int index)
 	{
 		return firstElement().first;
 	}
 
-	public K firstSecondElement(int index)
+	public K firstSecondElement(final int index)
 	{
 		return firstElement().second;
 	}
 
-	public T lastFirstElement(int index)
+	public T lastFirstElement(final int index)
 	{
 		return lastElement().first;
 	}
 
-	public K lastSecondElement(int index)
+	public K lastSecondElement(final int index)
 	{
 		return lastElement().second;
 	}

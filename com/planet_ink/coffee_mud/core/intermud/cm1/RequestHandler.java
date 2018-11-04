@@ -69,7 +69,7 @@ public class RequestHandler implements CMRunnable
 		return (startTime > 0) ? System.currentTimeMillis() - startTime : 0;
 	}
 
-	public RequestHandler(SocketChannel chan, int maxIdleMillis) throws IOException
+	public RequestHandler(final SocketChannel chan, final int maxIdleMillis) throws IOException
 	{
 		super();
 		runnableName = "CM1ReqHndler#" + counter.incrementAndGet();
@@ -118,13 +118,13 @@ public class RequestHandler implements CMRunnable
 		}
 	}
 
-	public void login(MOB M)
+	public void login(final MOB M)
 	{
 		user = M.Name();
 		target = M;
 	}
 
-	public void setTarget(PhysicalAgent A)
+	public void setTarget(final PhysicalAgent A)
 	{
 		target = A;
 	}
@@ -145,12 +145,12 @@ public class RequestHandler implements CMRunnable
 		user = null;
 	}
 
-	public void addDependent(String s, Object O)
+	public void addDependent(final String s, final Object O)
 	{
 		dependents.put(s, O);
 	}
 
-	public void delDependent(String s)
+	public void delDependent(final String s)
 	{
 		dependents.remove(s);
 	}
@@ -291,7 +291,7 @@ public class RequestHandler implements CMRunnable
 		}
 	}
 
-	public void setEndOfLine(String... msgs)
+	public void setEndOfLine(final String... msgs)
 	{
 		synchronized (this)
 		{
@@ -303,7 +303,7 @@ public class RequestHandler implements CMRunnable
 		}
 	}
 
-	public void execute(String line)
+	public void execute(final String line)
 	{
 		new CommandHandler(this, line).run();
 	}

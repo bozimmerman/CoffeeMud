@@ -92,7 +92,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;
 	}
 
-	public String trapCheck(Physical P)
+	public String trapCheck(final Physical P)
 	{
 		if(P!=null)
 		{
@@ -110,7 +110,7 @@ public class Thief_IdentifyBombs extends ThiefSkill
 		return "";
 	}
 
-	public String trapHere(MOB mob, Physical P)
+	public String trapHere(final MOB mob, final Physical P)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		if(P==null)

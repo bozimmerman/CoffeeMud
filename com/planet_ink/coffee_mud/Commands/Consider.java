@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Consider extends StdCommand
 {
 	public Consider()
@@ -48,7 +47,7 @@ public class Consider extends StdCommand
 
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{MOB.class}};
 
-	public int relativeLevelDiff(MOB mob1, MOB mob2)
+	public int relativeLevelDiff(final MOB mob1, final MOB mob2)
 	{
 		if((mob1==null)||(mob2==null))
 			return 0;
@@ -73,7 +72,7 @@ public class Consider extends StdCommand
 		return levelDiffed*(levelDiff<0.0?-1:1);
 	}
 
-	public int doConsider(MOB mob, Physical target)
+	public int doConsider(final MOB mob, final Physical target)
 	{
 		final Room R=mob.location();
 		if(R==null)
@@ -99,7 +98,7 @@ public class Consider extends StdCommand
 			if(mob.phyStats().level()>80)
 				theDiff=6;
 
-			StringBuilder levelMsg=new StringBuilder("");
+			final StringBuilder levelMsg=new StringBuilder("");
 			if(lvlDiff==0)
 				levelMsg.append(L(targetMOB.charStats().HeShe()+" is your equal"));
 			else
@@ -197,10 +196,10 @@ public class Consider extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		Physical target=null;
 		if(commands.size()<2)
 		{
@@ -223,7 +222,7 @@ public class Consider extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Integer.valueOf(0);

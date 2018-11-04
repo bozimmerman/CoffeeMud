@@ -56,7 +56,7 @@ public class Inventory extends StdCommand
 		public Hashtable<String,Vector<Coins>> moneyItems=new Hashtable<String,Vector<Coins>>();
 	}
 
-	public static InventoryList fetchInventory(MOB seer, MOB mob)
+	public static InventoryList fetchInventory(final MOB seer, final MOB mob)
 	{
 		final InventoryList lst = new InventoryList();
 		Vector<Coins> coinsV=null;
@@ -99,7 +99,7 @@ public class Inventory extends StdCommand
 		return lst;
 	}
 
-	protected String getShowableMoney(InventoryList list)
+	protected String getShowableMoney(final InventoryList list)
 	{
 		final StringBuilder msg=new StringBuilder("");
 		if(list.moneyItems.size()>0)
@@ -131,7 +131,7 @@ public class Inventory extends StdCommand
 		return msg.toString();
 	}
 
-	public StringBuilder getInventory(MOB seer, MOB mob, String mask, boolean longInv)
+	public StringBuilder getInventory(final MOB seer, final MOB mob, String mask, final boolean longInv)
 	{
 		final StringBuilder msg=new StringBuilder("");
 		final InventoryList list = fetchInventory(seer,mob);
@@ -181,7 +181,7 @@ public class Inventory extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		boolean longInv=false;
@@ -202,7 +202,7 @@ public class Inventory extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		boolean longInv=false;
 		if(!super.checkArguments(internalParameters, args))
@@ -211,7 +211,7 @@ public class Inventory extends StdCommand
 			longInv=((Boolean)args[1]).booleanValue();
 		return getInventory((MOB)args[0],mob,null,longInv);
 	}
-	
+
 	@Override
 	public boolean canBeOrdered()
 	{

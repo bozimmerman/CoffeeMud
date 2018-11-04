@@ -154,7 +154,7 @@ public class Chant_FurCoat extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -170,7 +170,7 @@ public class Chant_FurCoat extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -223,13 +223,13 @@ public class Chant_FurCoat extends Chant
 				theArmor.setDescription(L("The coat is made of thick black fur."));
 				theArmor.setMaterial(RawMaterial.RESOURCE_FUR);
 				theArmor.basePhyStats().setArmor(2*CMLib.ableMapper().qualifyingClassLevel(mob,this));
-				final long[] wearCodes = new long[] 
+				final long[] wearCodes = new long[]
 				{
-					Wearable.WORN_TORSO, 
+					Wearable.WORN_TORSO,
 					Wearable.WORN_ARMS,
 					Wearable.WORN_FEET,
 					Wearable.WORN_WAIST,
-					Wearable.WORN_LEGS 
+					Wearable.WORN_LEGS
 				};
 				long wornCode = 0;
 				for(final long code : wearCodes)

@@ -32,7 +32,6 @@ import java.util.List;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Disease_Obesity extends Disease
 {
 	@Override
@@ -153,13 +152,13 @@ public class Disease_Obesity extends Disease
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		fatAmount=-1;
 	}
 
-	private void setFatAmountChange(int change)
+	private void setFatAmountChange(final int change)
 	{
 		setMiscText(""+(amountOfFat()+change));
 	}
@@ -268,7 +267,7 @@ public class Disease_Obesity extends Disease
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

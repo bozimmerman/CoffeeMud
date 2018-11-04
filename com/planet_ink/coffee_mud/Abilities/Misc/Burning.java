@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Burning extends StdAbility
 {
 	@Override
@@ -84,24 +83,24 @@ public class Burning extends StdAbility
 	protected static final int	FIREFLAG_NOSPREAD			= 4096;
 
 	protected int abilityCode = 0;
-	
+
 	@Override
 	public int abilityCode()
 	{
 		return abilityCode;
 	}
-	
+
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		this.abilityCode = newCode;
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		List<String> flags=CMParms.parse(newMiscText.toUpperCase().trim());
+		final List<String> flags=CMParms.parse(newMiscText.toUpperCase().trim());
 		if(flags.contains("PERMANENT")||flags.contains("UNEXTINGUISHABLE"))
 			this.setAbilityCode(this.abilityCode|Burning.FIREFLAG_UNEXTINGUISHABLE);
 		if(flags.contains("PERSISTFLAGS"))
@@ -124,15 +123,15 @@ public class Burning extends StdAbility
 				affected.destroy();
 		}
 	}
-	
-	public boolean isFlagSet(int flag)
+
+	public boolean isFlagSet(final int flag)
 	{
 		if(abilityCode()<0)
 			return CMath.bset(-abilityCode(), flag);
 		else
 			return CMath.bset(abilityCode(), flag);
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -176,7 +175,7 @@ public class Burning extends StdAbility
 				if(R.numInhabitants()>0)
 					R.showHappens(CMMsg.MSG_OK_ACTION,L("The @x1 puts out @x2.",what,affected.name()));
 				unInvoke();
-				
+
 				return false;
 			}
 		}
@@ -207,7 +206,7 @@ public class Burning extends StdAbility
 							&&(I.material()==((Item)affected).material()))
 							{
 								int durationOfBurn=CMLib.materials().getBurnDuration(I);
-								if(durationOfBurn<=0) 
+								if(durationOfBurn<=0)
 									durationOfBurn=5;
 								final Burning B=new Burning();
 								if(isFlagSet(FIREFLAG_PERSISTFLAGS))
@@ -337,12 +336,12 @@ public class Burning extends StdAbility
 				}
 			}
 		}
-		
+
 		// might want to add the ability for it to spread
 		return true;
 	}
 
-	public boolean ouch(MOB mob)
+	public boolean ouch(final MOB mob)
 	{
 		if(CMLib.dice().rollPercentage()>(mob.charStats().getSave(CharStats.STAT_SAVE_FIRE)-50))
 		{
@@ -437,7 +436,7 @@ public class Burning extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, Physical target, final boolean auto, int asLevel)
 	{
 		if(!auto)
 			return false;
@@ -448,7 +447,7 @@ public class Burning extends StdAbility
 			final MOB targM=(MOB)target;
 			for(int i=0;i<10;i++)
 			{
-				Item I=targM.getRandomItem();
+				final Item I=targM.getRandomItem();
 				if((I.container()==null)&&(CMLib.materials().getBurnDuration(I)>0))
 				{
 					target=I;
@@ -458,12 +457,12 @@ public class Burning extends StdAbility
 			// mobs don't burn, only their stuff
 			if(target instanceof MOB)
 			{
-				int dmg=CMLib.dice().roll(1, targM.baseState().getHitPoints() / 10, 0);
+				final int dmg=CMLib.dice().roll(1, targM.baseState().getHitPoints() / 10, 0);
 				CMLib.combat().postDamage(mob, targM, this, dmg, CMMsg.MASK_ALWAYS | CMMsg.MASK_MALICIOUS | CMMsg.TYP_FIRE, Weapon.TYPE_BURNING, L("A fire <DAMAGE> <T-NAME>!"));
 				return true;
 			}
 		}
-		
+
 		if(target.fetchEffect("Burning")==null)
 		{
 			if(((target instanceof Item)&&(((Item)target).material()==RawMaterial.RESOURCE_NOTHING))

@@ -33,7 +33,6 @@ import java.util.List;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Disease_PlanarInstability extends Disease
 {
 	@Override
@@ -131,7 +130,7 @@ public class Disease_PlanarInstability extends Disease
 	protected int level=1;
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		level=1;
 		if(CMath.isInteger(newText))
@@ -139,7 +138,7 @@ public class Disease_PlanarInstability extends Disease
 		super.setMiscText(newText);
 	}
 
-	protected final static int[] MISC_SAVES=new int[] 
+	protected final static int[] MISC_SAVES=new int[]
 	{
 		CharStats.STAT_SAVE_BLUNT,
 		CharStats.STAT_SAVE_PIERCE,
@@ -153,12 +152,12 @@ public class Disease_PlanarInstability extends Disease
 		CharStats.STAT_CRIT_DAMAGE_PCT_WEAPON,
 		CharStats.STAT_CRIT_DAMAGE_PCT_MAGIC
 	};
-	
+
 	@Override
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob, affectableStats);
-		for(int code : CharStats.CODES.SAVING_THROWS())
+		for(final int code : CharStats.CODES.SAVING_THROWS())
 		{
 			final int oldStat=affectableStats.getStat(code);
 			if(oldStat > 0)
@@ -192,7 +191,7 @@ public class Disease_PlanarInstability extends Disease
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -214,7 +213,7 @@ public class Disease_PlanarInstability extends Disease
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

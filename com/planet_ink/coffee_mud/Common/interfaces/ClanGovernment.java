@@ -426,7 +426,7 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	 * @return the clan position the pos goes to
 	 */
 	public ClanPosition findPositionRole(String pos);
-	
+
 	/**
 	 * Return the list of abilities owned by someone
 	 * who is part of a clan of the given level.

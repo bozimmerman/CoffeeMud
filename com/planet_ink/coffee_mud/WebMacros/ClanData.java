@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ClanData extends StdWebMacro
 {
 	@Override
@@ -48,8 +47,9 @@ public class ClanData extends StdWebMacro
 	// ACCEPTANCE, TYPE, POINTS, CLANIDRELATIONS, MEMBERSTART, MEMBERNEXT,
 	// MEMBERNAME, MEMBERPOS
 
-	public static List<MemberRecord> getMembers(Clan C, HTTPRequest httpReq)
+	public static List<MemberRecord> getMembers(final Clan C, final HTTPRequest httpReq)
 	{
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		List<MemberRecord> members=(List)httpReq.getRequestObjects().get("MEMBERS"+C.clanID());
 		if(members==null)
 		{
@@ -59,7 +59,7 @@ public class ClanData extends StdWebMacro
 		return members;
 	}
 
-	public static MemberRecord getMember(Clan C, HTTPRequest httpReq, String cmember)
+	public static MemberRecord getMember(final Clan C, final HTTPRequest httpReq, final String cmember)
 	{
 		final List<MemberRecord> members=getMembers(C,httpReq);
 		for(final MemberRecord member : members)
@@ -73,7 +73,7 @@ public class ClanData extends StdWebMacro
 		return null;
 	}
 
-	public static StringBuffer members(Clan C, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer members(final Clan C, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("MEMBERSLIST"))
@@ -163,7 +163,7 @@ public class ClanData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer relations(Clan C, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer relations(final Clan C, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("RELATIONS"))
@@ -184,9 +184,9 @@ public class ClanData extends StdWebMacro
 			}
 			else
 			{
-				for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+				for(final Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 				{
-					CC=(Clan)e.nextElement();
+					CC=e.nextElement();
 					if(CC==C)
 						continue;
 					therelations.addElement(Integer.valueOf(C.getClanRelations(CC.clanID())));
@@ -194,9 +194,9 @@ public class ClanData extends StdWebMacro
 			}
 			str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
 			int relat=-1;
-			for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+			for(final Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 			{
-				CC=(Clan)e.nextElement();
+				CC=e.nextElement();
 				if(CC==C)
 					continue;
 				relat++;
@@ -221,7 +221,7 @@ public class ClanData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("CLAN");
@@ -370,7 +370,7 @@ public class ClanData extends StdWebMacro
 					final Room R=CMLib.map().getRoom(C.getDonation());
 					if(R!=null)
 						str.append(R.displayText()+", ");
-					else 
+					else
 						str.append("None, ");
 				}
 				if(parms.containsKey("TAX"))
@@ -389,9 +389,9 @@ public class ClanData extends StdWebMacro
 						old=C.getClanClass();
 					str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
 					CharClass CC=null;
-					for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+					for(final Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
 					{
-						CC=(CharClass)e.nextElement();
+						CC=e.nextElement();
 						str.append("<OPTION VALUE=\""+CC.ID()+"\" "+((old.equalsIgnoreCase(CC.ID()))?"SELECTED":"")+">"+CC.name());
 					}
 				}
@@ -463,8 +463,8 @@ public class ClanData extends StdWebMacro
 						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
-								@Override 
-								public int compare(MemberRecord o1, MemberRecord o2)
+								@Override
+								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
 									return o1.name.compareTo(o2.name);
 								}
@@ -475,8 +475,8 @@ public class ClanData extends StdWebMacro
 						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
-								@Override 
-								public int compare(MemberRecord o1, MemberRecord o2)
+								@Override
+								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
 									return new Integer(o1.role).compareTo(new Integer(o2.role));
 								}
@@ -487,8 +487,8 @@ public class ClanData extends StdWebMacro
 						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
-								@Override 
-								public int compare(MemberRecord o1, MemberRecord o2)
+								@Override
+								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
 									return new Integer(o2.mobpvps+o2.playerpvps).compareTo(new Integer(o1.mobpvps+o1.playerpvps));
 								}
@@ -499,8 +499,8 @@ public class ClanData extends StdWebMacro
 						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
-								@Override 
-								public int compare(MemberRecord o1, MemberRecord o2)
+								@Override
+								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
 									return new Integer(o2.mobpvps).compareTo(new Integer(o1.mobpvps));
 								}
@@ -511,8 +511,8 @@ public class ClanData extends StdWebMacro
 						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
-								@Override 
-								public int compare(MemberRecord o1, MemberRecord o2)
+								@Override
+								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
 									return new Integer(o2.playerpvps).compareTo(new Integer(o1.playerpvps));
 								}
@@ -523,8 +523,8 @@ public class ClanData extends StdWebMacro
 						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
-								@Override 
-								public int compare(MemberRecord o1, MemberRecord o2)
+								@Override
+								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
 									return new Double(o2.donatedGold).compareTo(new Double(o1.donatedXP));
 								}
@@ -535,8 +535,8 @@ public class ClanData extends StdWebMacro
 						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
-								@Override 
-								public int compare(MemberRecord o1, MemberRecord o2)
+								@Override
+								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
 									return new Long(o2.donatedXP).compareTo(new Long(o1.donatedXP));
 								}

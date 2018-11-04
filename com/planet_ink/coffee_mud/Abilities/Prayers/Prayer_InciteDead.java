@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Prayer_InciteDead extends Prayer
 {
 	@Override
@@ -68,7 +67,7 @@ public class Prayer_InciteDead extends Prayer
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -82,12 +81,12 @@ public class Prayer_InciteDead extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Set<MOB> possibleTargets=properTargets(mob,givenTarget,auto);
 		if(possibleTargets==null)
 			return false;
-		
+
 		final Set<MOB> h = new HashSet<MOB>();
 		for(final Iterator<MOB> i=possibleTargets.iterator();i.hasNext();)
 		{
@@ -95,18 +94,18 @@ public class Prayer_InciteDead extends Prayer
 			if(CMLib.flags().isUndead(M))
 				h.add(M);
 		}
-		
+
 		if(h.size()==0)
 		{
 			mob.tell(L("None of your targets are undead."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final Set<MOB> friends = mob.getGroupMembers(new HashSet<MOB>());
-		boolean success=proficiencyCheck(mob,0,auto);
+		final boolean success=proficiencyCheck(mob,0,auto);
 		boolean nothingDone=true;
 		final Room R=mob.location();
 		if(success && (R!=null))

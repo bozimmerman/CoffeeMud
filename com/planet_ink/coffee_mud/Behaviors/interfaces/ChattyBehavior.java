@@ -61,8 +61,8 @@ public interface ChattyBehavior extends Behavior
 	{
 		public int			delay;
 		public List<String>	parsedCommand;
-		
-		public ChattyResponse(List<String> cmd, int responseDelay)
+
+		public ChattyResponse(final List<String> cmd, final int responseDelay)
 		{
 			parsedCommand = cmd;
 			delay = responseDelay;
@@ -79,7 +79,7 @@ public interface ChattyBehavior extends Behavior
 	{
 		public String[] responses;
 		public int weight;
-		public ChattyTestResponse(String resp)
+		public ChattyTestResponse(final String resp)
 		{
 			weight=CMath.s_int(""+resp.charAt(0));
 			responses=CMParms.parseSquiggleDelimited(resp.substring(1),true).toArray(new String[0]);
@@ -121,7 +121,7 @@ public interface ChattyBehavior extends Behavior
 		public ChattyEntry[]						entries	= null;
 		public ChattyEntry[]						tickies	= null;
 
-		public ChattyGroup(String[] names, MaskingLibrary.CompiledZMask[] masks)
+		public ChattyGroup(final String[] names, final MaskingLibrary.CompiledZMask[] masks)
 		{
 			groupNames = names;
 			groupMasks = masks;

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Take extends StdCommand
 {
 	public Take()
@@ -47,10 +46,10 @@ public class Take extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER)
 		||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDMOBS)
 		||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS))

@@ -28,13 +28,13 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 		H = new Hashtable<K, F>();
 	}
 
-	public SHashtable(int size)
+	public SHashtable(final int size)
 	{
 		super();
 		H = new Hashtable<K, F>(size);
 	}
 
-	public SHashtable(Enumeration<Pair<K, F>> e)
+	public SHashtable(final Enumeration<Pair<K, F>> e)
 	{
 		super();
 		this.H = new Hashtable<K, F>();
@@ -48,7 +48,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 		}
 	}
 
-	public SHashtable(Map<K, F> H)
+	public SHashtable(final Map<K, F> H)
 	{
 		super();
 		this.H = new Hashtable<K, F>();
@@ -60,7 +60,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	}
 
 	@SuppressWarnings("unchecked")
-	public SHashtable(Object[][] H)
+	public SHashtable(final Object[][] H)
 	{
 		super();
 		this.H = new Hashtable<K, F>();
@@ -77,7 +77,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 		return (Hashtable<K, F>) H.clone();
 	}
 
-	public synchronized Vector<String> toStringVector(String divider)
+	public synchronized Vector<String> toStringVector(final String divider)
 	{
 		final Vector<String> V = new Vector<String>(size());
 		for (final Object S : keySet())
@@ -111,19 +111,19 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 		return SH;
 	}
 
-	public synchronized boolean contains(Object arg0)
+	public synchronized boolean contains(final Object arg0)
 	{
 		return H.contains(arg0);
 	}
 
 	@Override
-	public synchronized boolean containsKey(Object arg0)
+	public synchronized boolean containsKey(final Object arg0)
 	{
 		return H.containsKey(arg0);
 	}
 
 	@Override
-	public synchronized boolean containsValue(Object arg0)
+	public synchronized boolean containsValue(final Object arg0)
 	{
 		return H.containsValue(arg0);
 	}
@@ -140,13 +140,13 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	}
 
 	@Override
-	public boolean equals(Object arg0)
+	public boolean equals(final Object arg0)
 	{
 		return this == arg0;
 	}
 
 	@Override
-	public synchronized F get(Object arg0)
+	public synchronized F get(final Object arg0)
 	{
 		return H.get(arg0);
 	}
@@ -177,7 +177,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized F put(K arg0, F arg1)
+	public synchronized F put(final K arg0, final F arg1)
 	{
 		H = (Hashtable<K, F>) H.clone();
 		return H.put(arg0, arg1);
@@ -186,7 +186,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized F remove(Object arg0)
+	public synchronized F remove(final Object arg0)
 	{
 		H = (Hashtable<K, F>) H.clone();
 		return H.remove(arg0);
@@ -213,7 +213,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized void putAll(Map<? extends K, ? extends F> arg0)
+	public synchronized void putAll(final Map<? extends K, ? extends F> arg0)
 	{
 		H = (Hashtable<K, F>) H.clone();
 		H.putAll(arg0);

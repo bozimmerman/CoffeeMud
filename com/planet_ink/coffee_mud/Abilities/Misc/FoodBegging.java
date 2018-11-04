@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class FoodBegging extends StdAbility
 {
 	@Override
@@ -97,7 +96,7 @@ public class FoodBegging extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -108,13 +107,13 @@ public class FoodBegging extends StdAbility
 			mob.tell(L("Not while you are fighting!"));
 			return false;
 		}
-		
+
 		if(target.isInCombat())
 		{
 			mob.tell(L("Not during combat!"));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -133,8 +132,8 @@ public class FoodBegging extends StdAbility
 				"<S-NAME> watch(es) <T-NAME> with sad hungry eyes.",
 				"<S-YOUPOSS> tummy rumble(s) as <S-HE-SHE> spot(s) <T-NAME>.",
 			};
-			String emote = emotes[CMLib.dice().roll(1, emotes.length, -1)];
-			
+			final String emote = emotes[CMLib.dice().roll(1, emotes.length, -1)];
+
 			final CMMsg msg=CMClass.getMsg(mob,target,this,(auto?0:CMMsg.MASK_MALICIOUS)|CMMsg.MASK_HANDS|CMMsg.TYP_MIND,L(auto?"":emote));
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -166,7 +165,7 @@ public class FoodBegging extends StdAbility
 					if(tempF != null)
 					{
 						final Item finalF=tempF;
-						CMLib.threads().scheduleRunnable(new Runnable() 
+						CMLib.threads().scheduleRunnable(new Runnable()
 						{
 							final MOB M=mob;
 							final Room R=mob.location();
@@ -188,7 +187,7 @@ public class FoodBegging extends StdAbility
 												feedC.execute(tM, new XVector<String>(
 													"FEED",mob.Name(),finalF.name()), 0);
 											}
-											catch (IOException e)
+											catch (final IOException e)
 											{
 												Log.errOut(e);
 											}
@@ -200,7 +199,7 @@ public class FoodBegging extends StdAbility
 					}
 					else
 						target.tell(L("You feel lousy for not having anything to offer @x1",mob.name(target)));
-					
+
 				}
 			}
 		}

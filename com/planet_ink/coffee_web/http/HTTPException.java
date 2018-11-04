@@ -37,7 +37,7 @@ import com.planet_ink.coffee_web.util.CWConfig;
  * They are constructed from HTTPStatus and then tossed up the chain where,
  * as an OutputGenerator, they can be used to generate their own full buffer
  * output for transmission to the client.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -53,13 +53,13 @@ public class HTTPException extends Exception
 	private final CWConfig				config;
 	private final static String			EOLN		 = HTTPIOHandler.EOLN;
 	private volatile ProtocolHandler 	protoHandler = null;
-	
+
 	/**
 	 * Construct with body -- a strange case for now
-	 * @param status HTTPStatus object 
+	 * @param status HTTPStatus object
 	 * @param body the html body
 	 */
-	public HTTPException(HTTPStatus status, String body)
+	public HTTPException(final HTTPStatus status, final String body)
 	{
 		super(status.description());
 		this.body=body;
@@ -82,7 +82,7 @@ public class HTTPException extends Exception
 	 * Construct new exception w/o a body
 	 * @param status the HTTPStatus to return
 	 */
-	public HTTPException(HTTPStatus status)
+	public HTTPException(final HTTPStatus status)
 	{
 		super(status.description());
 		this.status = status;
@@ -119,7 +119,7 @@ public class HTTPException extends Exception
 	{
 		return errorHeaders;
 	}
-	
+
 	/**
 	 * When an exception is of type 101-switching protocols,
 	 * this method allows the switcher to specify what the
@@ -127,11 +127,11 @@ public class HTTPException extends Exception
 	 * @see HTTPException#getNewProtocolHandler()
 	 * @param handler the new protocol handler
 	 */
-	public void setNewProtocolHandler(ProtocolHandler handler)
+	public void setNewProtocolHandler(final ProtocolHandler handler)
 	{
 		this.protoHandler = handler;
 	}
-	
+
 	/**
 	 * When an exception is of type 101-switching protocols,
 	 * this method allows the switcher to specify what the
@@ -143,14 +143,14 @@ public class HTTPException extends Exception
 	{
 		return this.protoHandler;
 	}
-	
+
 	/**
 	 * Like all HTTPIOHandlers, this class generates its own output buffer.
 	 * The buffer generated here is typically sent straight to the socket.
 	 * @param request the request to generate output for
 	 * @return the client-writable, fully formed output buffer, ready to go
 	 */
-	public DataBuffers generateOutput(HTTPRequest request) throws HTTPException
+	public DataBuffers generateOutput(final HTTPRequest request) throws HTTPException
 	{
 		final StringBuilder str = new StringBuilder("");
 		str.append("HTTP/").append(request.getHttpVer()).append(" ").append(getStatus().getStatusCode()).append(" ").append(getMessage());
@@ -168,24 +168,24 @@ public class HTTPException extends Exception
 		{
 			str.append(HTTPHeader.Common.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(date)));
 		}
-		catch(java.lang.ArrayIndexOutOfBoundsException e)
+		catch(final java.lang.ArrayIndexOutOfBoundsException e)
 		{
 			try
 			{
 				str.append(HTTPHeader.Common.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
 			}
-			catch(java.lang.ArrayIndexOutOfBoundsException e2)
+			catch(final java.lang.ArrayIndexOutOfBoundsException e2)
 			{
 			}
 		}
 		if(isDebugging)
 		{
-			final StringBuilder dbgBuilder=new StringBuilder(str.toString().replace('\r', ',').replace('\n', ' ')); 
-			for(HTTPHeader h : headers.keySet())
+			final StringBuilder dbgBuilder=new StringBuilder(str.toString().replace('\r', ',').replace('\n', ' '));
+			for(final HTTPHeader h : headers.keySet())
 				dbgBuilder.append(h.toString()+": "+headers.get(h)+", ");
 			debugLogger.finer("Response Exception: "+dbgBuilder.toString());
 		}
-		
+
 		DataBuffers finalBody=null;
 		if((body.length()==0)
 		&&(status.isAnError())
@@ -239,7 +239,7 @@ public class HTTPException extends Exception
 		finalBody.insertTop(str.toString().getBytes(), 0, false);
 		return finalBody;
 	}
-	
+
 	/**
 	 * Simple cache to save memory and garbage collection time
 	 */

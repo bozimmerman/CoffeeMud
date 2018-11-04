@@ -54,4 +54,4 @@ public class Skill_HonoraryDegreeFighter extends Skill_HonoraryDegreeCommoner
 		return "Fighter";
 	}
 }
-	
+
