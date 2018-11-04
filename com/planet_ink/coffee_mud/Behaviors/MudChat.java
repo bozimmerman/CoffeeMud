@@ -226,6 +226,9 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				case '"':
 					Log.sysOut("MudChat",str.substring(1));
 					break;
+				case '#':
+					// nothing happened, move along
+					break;
 				case '*':
 					if((str.length()==1)||("([{<".indexOf(str.charAt(1))<0))
 						break;
@@ -235,6 +238,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				case '[':
 				case '{':
 				case '<':
+System.out.println("::"+str);
 					if(currentChatEntry!=null)
 						currentChatEntry.responses = currentChatEntryResponses.toArray(new ChattyTestResponse[0]);
 					currentChatEntryResponses.clear();
@@ -332,31 +336,35 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	public static String nextLine(final StringBuffer tsc)
 	{
 		String ret=null;
+		int sr=-1;
+		int se=-1;
 		if((tsc!=null)&&(tsc.length()>0))
 		{
-			int y=tsc.toString().indexOf("\n\r");
-			if(y<0)
-				y=tsc.toString().indexOf("\r\n");
-			if(y<0)
+			sr=-1;
+			se=-1;
+			for(int i=0;i<tsc.length()-1;i++)
 			{
-				y=tsc.toString().indexOf("\n");
-				if(y<0)
-					y=tsc.toString().indexOf("\r");
-				if(y<0)
+				if((tsc.charAt(i)=='\n')||(tsc.charAt(i)=='\r'))
 				{
-					tsc.setLength(0);
-					ret="";
+					sr=i;
+					while((i<tsc.length())
+					&&((tsc.charAt(i)=='\n')||(tsc.charAt(i)=='\r')))
+					{
+						i++;
+						se=i;
+					}
+					break;
 				}
-				else
-				{
-					ret=tsc.substring(0,y).trim();
-					tsc.delete(0,y+1);
-				}
+			}
+			if(sr<0)
+			{
+				tsc.setLength(0);
+				ret="";
 			}
 			else
 			{
-				ret=tsc.substring(0,y).trim();
-				tsc.delete(0,y+2);
+				ret=tsc.substring(0,sr).trim();
+				tsc.delete(0,se);
 			}
 		}
 		return ret;
