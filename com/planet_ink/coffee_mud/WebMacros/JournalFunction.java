@@ -455,6 +455,12 @@ public class JournalFunction extends StdWebMacro
 								messages.append("Message #"+cardinalNumber+" transferred<BR>");
 							}
 							else
+							if(journal.equals("MAILBOX"))
+							{
+								entry.to(entry.from());
+								realName=CMProps.getVar(CMProps.Str.MAILBOX);
+							}
+							else
 							{
 								for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 								{

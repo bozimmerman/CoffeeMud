@@ -1505,11 +1505,16 @@ public class MUD extends Thread implements MudHost
 				}
 			}
 
+			smtpServerThread = new SMTPserver(CMLib.mud(0)); // initializes variables, even if it's not used
 			if(page.getPrivateStr("RUNSMTPSERVER").equalsIgnoreCase("true"))
 			{
-				smtpServerThread = new SMTPserver(CMLib.mud(0));
 				smtpServerThread.start();
 				serviceEngine.startTickDown(Thread.currentThread().getThreadGroup(),smtpServerThread,Tickable.TICKID_EMAIL,CMProps.getTickMillis(),(int)CMProps.getTicksPerMinute() * 5);
+			}
+			else
+			{
+				smtpServerThread = null;
+				CMProps.setBoolAllVar(CMProps.Bool.EMAILFORWARDING,false);
 			}
 
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading base classes");

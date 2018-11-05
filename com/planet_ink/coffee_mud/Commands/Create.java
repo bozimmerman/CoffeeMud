@@ -545,7 +545,7 @@ public class Create extends StdCommand
 			return;
 		}
 
-		final String mobID=CMParms.combine(commands,2);
+		String mobID=CMParms.combine(commands,2);
 		MOB newMOB=CMClass.getMOB(mobID);
 
 		boolean doGenerica=true;
@@ -560,6 +560,8 @@ public class Create extends StdCommand
 		CharClass classC = null;
 		if(newMOB == null)
 		{
+			if(mobID.toLowerCase().startsWith("a ")||mobID.toLowerCase().startsWith("an "))
+				mobID=mobID.substring(2).trim();
 			raceR=CMClass.getRace(mobID);
 			if(raceR==null)
 			{
@@ -684,43 +686,46 @@ public class Create extends StdCommand
 			}
 		}
 
-		if((raceR!=null)||(classC!=null)||(level!=null))
+		if(newMOB==null)
 		{
-			newMOB = CMClass.getMOB("GenMob");
-			if((raceR!=null)&&(classC!=null))
-				newMOB.setName(CMLib.english().startWithAorAn(raceR.name())+" "+classC.name());
-			else
-			if(raceR!=null)
-				newMOB.setName(CMLib.english().startWithAorAn(raceR.name()));
-			else
-			if(classC!=null)
-				newMOB.setName(CMLib.english().startWithAorAn(classC.name()));
-			else
-			if(level!=null)
-				newMOB.setName("a level "+level.intValue()+"er");
-			newMOB.setDisplayText(L("@x1 is here.",newMOB.Name()));
-			if(raceR!=null)
-				newMOB.baseCharStats().setMyRace(raceR);
-			if(level!=null)
-				newMOB.basePhyStats().setLevel(level.intValue());
-			if(classC!=null)
+			if((raceR!=null)||(classC!=null)||(level!=null))
 			{
-				final Ability A=CMClass.getAbility("Prop_Trainer");
-				final String attack=CharStats.DEFAULT_STAT_DESCS[classC.getAttackAttribute()];
-				final int highatt=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
-				final StringBuilder txt=new StringBuilder("SKILLS "+classC.ID()+" NOTEACH BASEVALUE=10");
-				for(int i=0;i<classC.maxStatAdjustments().length;i++)
+				newMOB = CMClass.getMOB("GenMob");
+				if((raceR!=null)&&(classC!=null))
+					newMOB.setName(CMLib.english().startWithAorAn(raceR.name())+" "+classC.name());
+				else
+				if(raceR!=null)
+					newMOB.setName(CMLib.english().startWithAorAn(raceR.name()));
+				else
+				if(classC!=null)
+					newMOB.setName(CMLib.english().startWithAorAn(classC.name()));
+				else
+				if(level!=null)
+					newMOB.setName("a level "+level.intValue()+"er");
+				newMOB.setDisplayText(L("@x1 is here.",newMOB.Name()));
+				if(raceR!=null)
+					newMOB.baseCharStats().setMyRace(raceR);
+				if(level!=null)
+					newMOB.basePhyStats().setLevel(level.intValue());
+				if(classC!=null)
 				{
-					if(classC.maxStatAdjustments()[i]!=0)
-						txt.append(" "+CharStats.DEFAULT_STAT_DESCS[i]+"="+(highatt+classC.maxStatAdjustments()[i]));
+					final Ability A=CMClass.getAbility("Prop_Trainer");
+					final String attack=CharStats.DEFAULT_STAT_DESCS[classC.getAttackAttribute()];
+					final int highatt=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+					final StringBuilder txt=new StringBuilder("SKILLS "+classC.ID()+" NOTEACH BASEVALUE=10");
+					for(int i=0;i<classC.maxStatAdjustments().length;i++)
+					{
+						if(classC.maxStatAdjustments()[i]!=0)
+							txt.append(" "+CharStats.DEFAULT_STAT_DESCS[i]+"="+(highatt+classC.maxStatAdjustments()[i]));
+					}
+					if(classC.maxStatAdjustments()[classC.getAttackAttribute()]==0)
+						txt.append(" "+attack+"="+highatt);
+					A.setMiscText(txt.toString());
+					newMOB.addNonUninvokableEffect(A);
 				}
-				if(classC.maxStatAdjustments()[classC.getAttackAttribute()]==0)
-					txt.append(" "+attack+"="+highatt);
-				A.setMiscText(txt.toString());
-				newMOB.addNonUninvokableEffect(A);
+				newMOB.recoverPhyStats();
+				newMOB.recoverCharStats();
 			}
-			newMOB.recoverPhyStats();
-			newMOB.recoverCharStats();
 		}
 
 		if(newMOB==null)
@@ -1890,6 +1895,18 @@ public class Create extends StdCommand
 				}
 				else
 				if(CMClass.getRace(allWord)!=null)
+				{
+					commands.add(1,"MOB");
+					execute(mob,commands,metaFlags);
+				}
+				else
+				if(allWord.startsWith("an ") && CMClass.getRace(allWord.substring(2).trim())!=null)
+				{
+					commands.add(1,"MOB");
+					execute(mob,commands,metaFlags);
+				}
+				else
+				if(allWord.startsWith("a ") && CMClass.getRace(allWord.substring(1).trim())!=null)
 				{
 					commands.add(1,"MOB");
 					execute(mob,commands,metaFlags);

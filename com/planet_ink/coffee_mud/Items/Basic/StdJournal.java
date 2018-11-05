@@ -200,6 +200,12 @@ public class StdJournal extends StdItem implements Book
 					realName=entry2.from();
 			}
 			else
+			if(journal.equalsIgnoreCase("MAILBOX"))
+			{
+				entry2.to(entry2.from());
+				realName=CMProps.getVar(CMProps.Str.MAILBOX);
+			}
+			else
 			if(CMLib.players().playerExists(CMStrings.capitalizeAndLower(journal)))
 				realName=CMStrings.capitalizeAndLower(journal);
 			else

@@ -223,6 +223,8 @@ public class JournalInfo extends StdWebMacro
 				assigns.add("ALL");
 			if(!assigns.contains("FROM"))
 				assigns.add("FROM");
+			if(!assigns.contains("MAILBOX"))
+				assigns.add("MAILBOX");
 
 			if(parms.containsKey("NEXT")||parms.containsKey("RESET"))
 			{

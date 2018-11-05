@@ -61,7 +61,6 @@ public class Email extends StdCommand
 		if((commands!=null)
 		&&(commands.size()>1))
 		{
-
 			if(CMProps.getVar(CMProps.Str.MAILBOX).length()==0)
 			{
 				mob.tell(L("A mailbox has not been defined by this muds administrators, so mail can be neither sent, or received."));
@@ -126,6 +125,7 @@ public class Email extends StdCommand
 						if((!mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
 						&&(mob.playerStats()!=null)
 						&&(mob.playerStats().getEmail().length()>0)
+						&&(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
 						&&((mob.playerStats().getAccount()==null)
 							||(!mob.playerStats().getAccount().isSet(AccountFlag.NOAUTOFORWARD))))
 							mob.tell(L("You have no email waiting, but then, it's probably been forwarded to you already."));
