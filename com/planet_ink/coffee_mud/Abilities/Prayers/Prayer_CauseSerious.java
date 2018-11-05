@@ -86,7 +86,6 @@ public class Prayer_CauseSerious extends Prayer
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		final boolean undead=CMLib.flags().isUndead(target);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -95,8 +94,9 @@ public class Prayer_CauseSerious extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),L(auto?"A seriously painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a serious burst of pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
-			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final int malicious = CMLib.flags().isUndead(target) ? 0 : CMMsg.MASK_MALICIOUS;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,malicious|verbalCastCode(mob,target,auto),L(auto?"A seriously painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a serious burst of pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam1.wav",40));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|malicious|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R!=null)&&(R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{

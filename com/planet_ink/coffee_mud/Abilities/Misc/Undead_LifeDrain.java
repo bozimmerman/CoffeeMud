@@ -94,6 +94,20 @@ public class Undead_LifeDrain extends StdAbility
 	}
 
 	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(CMLib.flags().isUndead((MOB)target))
+					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -108,7 +122,8 @@ public class Undead_LifeDrain extends StdAbility
 		if(success)
 		{
 			int much=mob.phyStats().level();
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> clutch(es) <T-NAMESELF>, and drain(s) <T-HIS-HER> life!^?"));
+			final int malicious = CMLib.flags().isUndead(target) ? 0 : CMMsg.MASK_MALICIOUS;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|malicious|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> clutch(es) <T-NAMESELF>, and drain(s) <T-HIS-HER> life!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

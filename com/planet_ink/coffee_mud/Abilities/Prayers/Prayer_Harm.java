@@ -86,7 +86,6 @@ public class Prayer_Harm extends Prayer
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
-		final boolean undead=CMLib.flags().isUndead(target);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -96,13 +95,16 @@ public class Prayer_Harm extends Prayer
 		if(success)
 		{
 			final Room R=target.location();
-			final CMMsg msg=CMClass.getMsg(mob,target,this,(undead?0:CMMsg.MASK_MALICIOUS)|verbalCastCode(mob,target,auto),L(auto?"<T-NAME> cringe(s) in pain.":"^S<S-NAME> "+prayWord(mob)+" to deliver tremendous pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
-			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
-			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
+			final int malicious = CMLib.flags().isUndead(target) ? 0 : CMMsg.MASK_MALICIOUS;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,malicious|verbalCastCode(mob,target,auto),L(auto?"<T-NAME> cringe(s) in pain.":"^S<S-NAME> "+prayWord(mob)+" to deliver tremendous pain at <T-NAMESELF>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|malicious|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
+			if((R.okMessage(mob,msg))
+			&&((R.okMessage(mob,msg2))))
 			{
 				R.send(mob,msg);
 				R.send(mob,msg2);
-				if((msg.value()<=0)&&(msg2.value()<=0))
+				if((msg.value()<=0)
+				&&(msg2.value()<=0))
 				{
 					final int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)+24,8);
 					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The unholy spell <DAMAGE> <T-NAME>!"));

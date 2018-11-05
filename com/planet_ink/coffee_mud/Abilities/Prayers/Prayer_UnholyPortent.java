@@ -97,6 +97,20 @@ public class Prayer_UnholyPortent extends Prayer
 	}
 
 	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(CMLib.flags().isUndead((MOB)target))
+					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
@@ -108,8 +122,10 @@ public class Prayer_UnholyPortent extends Prayer
 			final MOB M=(MOB)msg.target();
 			final MOB invoker=(invoker()!=null) ? invoker() : M;
 			final int damage=CMLib.dice().roll(1,3+(invoker.phyStats().level()/10),0);
-			CMLib.combat().postDamage(invoker,M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_STRIKING,L("The unholy portent curse <DAMAGE> <T-NAME>!"));
-			CMLib.combat().postRevengeAttack(M, invoker);
+			final int malicious = CMLib.flags().isUndead(M) ? 0 : CMMsg.MASK_MALICIOUS;
+			CMLib.combat().postDamage(invoker,M,this,damage,malicious|CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_STRIKING,L("The unholy portent curse <DAMAGE> <T-NAME>!"));
+			if(malicious > 0)
+				CMLib.combat().postRevengeAttack(M, invoker);
 		}
 	}
 

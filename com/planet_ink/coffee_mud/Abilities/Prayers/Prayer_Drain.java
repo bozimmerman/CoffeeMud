@@ -75,6 +75,20 @@ public class Prayer_Drain extends Prayer
 	}
 
 	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(CMLib.flags().isUndead((MOB)target))
+					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -88,7 +102,8 @@ public class Prayer_Drain extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final int malicious = CMLib.flags().isUndead(target) ? 0 : CMMsg.MASK_MALICIOUS;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|malicious|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> reach(es) at <T-NAMESELF>, @x1!^?",prayingWord(mob)));
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{

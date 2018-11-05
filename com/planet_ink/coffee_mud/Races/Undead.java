@@ -204,7 +204,8 @@ public class Undead extends StdRace
 		if((myHost!=null)&&(myHost instanceof MOB))
 		{
 			final MOB mob=(MOB)myHost;
-			if(msg.amITarget(mob)&&(msg.targetMinor()==CMMsg.TYP_HEALING))
+			if(msg.amITarget(mob)
+			&&(msg.targetMinor()==CMMsg.TYP_HEALING))
 			{
 				final int amount=msg.value();
 				if((amount>0)
@@ -228,7 +229,26 @@ public class Undead extends StdRace
 			{
 				final int amount=msg.value();
 				if(amount>0)
+				{
 					msg.modify(msg.source(),mob,msg.tool(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,CMMsg.MSG_HEALING,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,L("The harming magic heals <T-NAMESELF>."));
+					msg.addTrailerRunnable(new Runnable()
+					{
+						private final MOB me = mob;
+						private final MOB src = msg.source();
+						private final MOB follower=mob.amFollowing();
+						@Override
+						public void run()
+						{
+							if((me.getVictim()==src)
+							&&(src.getVictim()==null))
+							{
+								me.setVictim(null);
+								System.out.println("Setting "+mob.name()+" follower to "+follower);
+								me.setFollowing(follower);
+							}
+						}
+					});
+				}
 			}
 			else
 			if((msg.amITarget(mob))

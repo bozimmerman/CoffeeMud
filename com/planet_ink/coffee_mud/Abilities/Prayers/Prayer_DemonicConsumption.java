@@ -73,6 +73,20 @@ public class Prayer_DemonicConsumption extends Prayer
 	}
 
 	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(CMLib.flags().isUndead((MOB)target))
+					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
@@ -93,10 +107,11 @@ public class Prayer_DemonicConsumption extends Prayer
 
 		boolean success=false;
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
+		final int malicious = ((target instanceof MOB) && CMLib.flags().isUndead((MOB)target)) ? 0 : CMMsg.MASK_MALICIOUS;
 		if(!(target instanceof Item))
 		{
 			if(!auto)
-				affectType=affectType|CMMsg.MASK_MALICIOUS;
+				affectType=affectType|malicious;
 		}
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)/2));
 		if(target instanceof MOB)

@@ -73,6 +73,20 @@ public class Prayer_Deathfinger extends Prayer
 	}
 
 	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if(mob!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(CMLib.flags().isUndead((MOB)target))
+					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
@@ -86,8 +100,9 @@ public class Prayer_Deathfinger extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?L("A finger of death rages at <T-NAME>."):L("^S<S-NAME> point(s) in rage at <T-NAMESELF> and @x1!^?",prayWord(mob)));
-			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final int malicious = CMLib.flags().isUndead(target) ? 0 : CMMsg.MASK_MALICIOUS;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|malicious,auto?L("A finger of death rages at <T-NAME>."):L("^S<S-NAME> point(s) in rage at <T-NAMESELF> and @x1!^?",prayWord(mob)));
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|malicious|CMMsg.TYP_UNDEAD|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final Room R=target.location();
 			if((R.okMessage(mob,msg))&&((R.okMessage(mob,msg2))))
 			{
