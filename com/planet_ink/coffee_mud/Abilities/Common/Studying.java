@@ -611,7 +611,11 @@ public class Studying extends CommonSkill implements AbilityContainer
 				mob.tell(L("Forget what?",name));
 			else
 			{
-				final Ability A=CMClass.findAbility(name);
+				Ability A=(Ability)CMLib.english().fetchEnvironmental(skillList, name, true);
+				if(A==null)
+					A=(Ability)CMLib.english().fetchEnvironmental(skillList, name, false);
+				if(A==null)
+					A=CMClass.findAbility(name);
 				if(A!=null)
 				{
 					if(forget(mob,A.ID()))
@@ -620,7 +624,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 						mob.tell(L("You haven't studied @x1.",A.name()));
 				}
 				else
-					mob.tell(L("You haven't studied @x1.",name));
+					mob.tell(L("You never studied @x1.",name));
 			}
 			return true;
 		}
