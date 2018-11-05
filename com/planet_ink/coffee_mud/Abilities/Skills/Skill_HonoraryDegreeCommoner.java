@@ -146,6 +146,13 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 					final String[][] allDegrees = this.getAllDegrees();
 					final Ability studyingA=mob.fetchAbility("Studying");
 					final AbilityContainer collection=(studyingA==null)?mob:(AbilityContainer)studyingA;
+					if(collection instanceof Ability)
+					{
+						final Ability effectA=mob.fetchEffect(((Ability)collection).ID());
+						((Ability)collection).tick(ticking, tickID);
+						if(effectA!=null)
+							effectA.tick(ticking, tickID);
+					}
 					final int[] counts=new int[allDegrees.length];
 					boolean fail=true;
 					while(fail)
