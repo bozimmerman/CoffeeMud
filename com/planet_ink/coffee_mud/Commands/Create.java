@@ -561,7 +561,10 @@ public class Create extends StdCommand
 		if(newMOB == null)
 		{
 			if(mobID.toLowerCase().startsWith("a ")||mobID.toLowerCase().startsWith("an "))
+			{
+				commands.remove(2);
 				mobID=mobID.substring(2).trim();
+			}
 			raceR=CMClass.getRace(mobID);
 			if(raceR==null)
 			{
