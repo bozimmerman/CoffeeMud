@@ -205,7 +205,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 							{
 								if(!this.myClasses.contains(degree))
 								{
-									while(CMParms.numContains(pStats.getTitles(), degree[DEG_TITLE]) > 1)
+									while(CMParms.numContains(pStats.getTitles(), degree[DEG_TITLE]) >= 1)
 										pStats.getTitles().remove(degree[DEG_TITLE]);
 								}
 							}
