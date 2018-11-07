@@ -2839,8 +2839,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			loginObj.baseStats.copyInto(mob.baseCharStats());
 			mob.baseCharStats().setWearableRestrictionsBitmap(0);
+			reRollStats(mob.baseCharStats(),loginObj.statPoints);
+			mob.recoverCharStats();
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 			{
+				qualifyingClassListV=classQualifies(mob,loginObj.theme);
 				for(int i=0;i<50 && qualifyingClassListV.size()==0;i++)
 				{
 					reRollStats(mob.baseCharStats(),loginObj.statPoints);
@@ -2852,7 +2855,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		mob.recoverCharStats();
 		qualifyingClassListV=classQualifies(mob,loginObj.theme);
 
-		if(!randomRoll || (qualifyingClassListV.size()>0) ||CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
+		if(!randomRoll || (qualifyingClassListV.size()>0) || CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		{
 			final int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 			final StringBuffer statstr=new StringBuffer(L("Your current stats are: \n\r"));
