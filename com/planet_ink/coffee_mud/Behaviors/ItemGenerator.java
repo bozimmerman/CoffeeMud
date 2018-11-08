@@ -331,6 +331,10 @@ public class ItemGenerator extends ActiveTicker
 		||(!(ticking instanceof Environmental))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.RANDOMITEMS)))
 			return true;
+		if(!canAct(ticking,tickID))
+		{
+			return true;
+		}
 		Item I=null;
 		final Environmental E=(Environmental)ticking;
 		final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
@@ -346,141 +350,143 @@ public class ItemGenerator extends ActiveTicker
 			{
 			}
 		}
-		if(maintained.size()>=maxItems)
-			return true;
-		if((canAct(ticking,tickID))||(maintained.size()<minItems))
+		if(maintained.size()>=avgItems)
 		{
-			final GeneratedItemSet items=getItems(ticking,getParms());
-			if(items==null)
-				return true;
-			if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
-				return false;
+			tickDown = maxTicks;
+			return true;
+		}
+		int attempts=10000;
+		final GeneratedItemSet items=getItems(ticking,getParms());
+		if((items==null)||(items.size()<2))
+			return true;
+		if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
+			return false;
 
-			if((maintained.size()<avgItems)
-			&&(items.size()>1))
+		while((maintained.size()<avgItems)
+		&&(((--attempts)>0))
+		&&(items.size()>1))
+		{
+			final double totalValue=items.totalValue;
+			final int maxValue=items.maxValue;
+			double pickedTotal=Math.random()*totalValue;
+			double value=-1;
+			for(int i=2;i<items.size();i++)
 			{
-				final double totalValue=items.totalValue;
-				final int maxValue=items.maxValue;
-				double pickedTotal=Math.random()*totalValue;
-				double value=-1;
-				for(int i=2;i<items.size();i++)
+				I=items.elementAt(i);
+				value=CMath.div(maxValue,I.value()+1.0);
+				if(pickedTotal<=value)
 				{
-					I=items.elementAt(i);
-					value=CMath.div(maxValue,I.value()+1.0);
-					if(pickedTotal<=value)
-					{
-						break;
-					}
-					pickedTotal-=value;
+					break;
 				}
-				if(I!=null)
+				pickedTotal-=value;
+			}
+			if(I!=null)
+			{
+
+				if((maxDups<Integer.MAX_VALUE)&&(maxDups>0))
 				{
+					int numDups=0;
+					for(int m=0;m<maintained.size();m++)
+					{
+						if(I.sameAs(maintained.elementAt(m)))
+							numDups++;
+					}
+					if((maxDups>0)&&(numDups>=maxDups))
+						return true;
+				}
 
-					if((maxDups<Integer.MAX_VALUE)&&(maxDups>0))
+				I=(Item)I.copyOf();
+				I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+				I.recoverPhyStats();
+				I.text();
+				if(SK!=null)
+				{
+					if(SK.doISellThis(I))
 					{
-						int numDups=0;
-						for(int m=0;m<maintained.size();m++)
-						{
-							if(I.sameAs(maintained.elementAt(m)))
-								numDups++;
-						}
-						if((maxDups>0)&&(numDups>=maxDups))
-							return true;
-					}
-
-					I=(Item)I.copyOf();
-					I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-					I.recoverPhyStats();
-					I.text();
-					if(SK!=null)
-					{
-						if(SK.doISellThis(I))
-						{
-							maintained.addElement(I);
-							final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
-							shop.addStoreInventory(CMLib.itemBuilder().enchant(I,enchantPct),1,-1);
-						}
-					}
-					else
-					if(ticking instanceof Container)
-					{
-						if(((Container)ticking).owner() instanceof Room)
-							((Room)((Container)ticking).owner()).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
-						else
-						if(((Container)ticking).owner() instanceof MOB)
-							((MOB)((Container)ticking).owner()).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
-						else
-							return true;
 						maintained.addElement(I);
-						I.setContainer((Container)ticking);
+						final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
+						shop.addStoreInventory(CMLib.itemBuilder().enchant(I,enchantPct),1,-1);
 					}
+				}
+				else
+				if(ticking instanceof Container)
+				{
+					if(((Container)ticking).owner() instanceof Room)
+						((Room)((Container)ticking).owner()).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 					else
-					if(ticking instanceof MOB)
-					{
-						((MOB)ticking).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
-						I.wearIfPossible((MOB)ticking);
-						maintained.addElement(I);
-					}
+					if(((Container)ticking).owner() instanceof MOB)
+						((MOB)((Container)ticking).owner()).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 					else
+						return true;
+					maintained.addElement(I);
+					I.setContainer((Container)ticking);
+				}
+				else
+				if(ticking instanceof MOB)
+				{
+					((MOB)ticking).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
+					I.wearIfPossible((MOB)ticking);
+					maintained.addElement(I);
+				}
+				else
+				{
+					Room room=null;
+					if(ticking instanceof Room)
+						room=(Room)ticking;
+					else
+					if(ticking instanceof Area)
 					{
-						Room room=null;
-						if(ticking instanceof Room)
-							room=(Room)ticking;
-						else
-						if(ticking instanceof Area)
+						if(((Area)ticking).metroSize()>0)
 						{
-							if(((Area)ticking).metroSize()>0)
+							Resources.removeResource("HELP_"+ticking.name().toUpperCase());
+							if(restrictedLocales==null)
 							{
-								Resources.removeResource("HELP_"+ticking.name().toUpperCase());
-								if(restrictedLocales==null)
-								{
-									int tries=0;
-									while((room==null)&&((++tries)<100))
-										room=((Area)ticking).getRandomMetroRoom();
-								}
-								else
-								{
-									int tries=0;
-									while(((room==null)||(!okRoomForMe(room)))
-									&&((++tries)<100))
-										room=((Area)ticking).getRandomMetroRoom();
-								}
+								int tries=0;
+								while((room==null)&&((++tries)<100))
+									room=((Area)ticking).getRandomMetroRoom();
 							}
 							else
-								return true;
+							{
+								int tries=0;
+								while(((room==null)||(!okRoomForMe(room)))
+								&&((++tries)<100))
+									room=((Area)ticking).getRandomMetroRoom();
+							}
 						}
 						else
-						if(ticking instanceof Environmental)
-							room=CMLib.map().roomLocation((Environmental)ticking);
-						else
 							return true;
+					}
+					else
+					if(ticking instanceof Environmental)
+						room=CMLib.map().roomLocation((Environmental)ticking);
+					else
+						return true;
 
-						if(room instanceof GridLocale)
-							room=((GridLocale)room).getRandomGridChild();
-						if(room!=null)
+					if(room instanceof GridLocale)
+						room=((GridLocale)room).getRandomGridChild();
+					if(room!=null)
+					{
+						if(CMLib.flags().isGettable(I)&&(!(I instanceof Rideable)))
 						{
-							if(CMLib.flags().isGettable(I)&&(!(I instanceof Rideable)))
+							final Vector<MOB> inhabs=new Vector<MOB>();
+							for(int m=0;m<room.numInhabitants();m++)
 							{
-								final Vector<MOB> inhabs=new Vector<MOB>();
-								for(int m=0;m<room.numInhabitants();m++)
-								{
-									final MOB M=room.fetchInhabitant(m);
-									if((M.isSavable())&&(M.getStartRoom().getArea().inMyMetroArea(room.getArea())))
-										inhabs.addElement(M);
-								}
-								if(inhabs.size()>0)
-								{
-									final MOB M=inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
-									M.addItem(CMLib.itemBuilder().enchant(I,enchantPct));
-									I.wearIfPossible(M);
-									maintained.addElement(I);
-								}
+								final MOB M=room.fetchInhabitant(m);
+								if((M.isSavable())&&(M.getStartRoom().getArea().inMyMetroArea(room.getArea())))
+									inhabs.addElement(M);
 							}
-							if(!favorMobs)
+							if(inhabs.size()>0)
 							{
+								final MOB M=inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
+								M.addItem(CMLib.itemBuilder().enchant(I,enchantPct));
+								I.wearIfPossible(M);
 								maintained.addElement(I);
-								room.addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 							}
+						}
+						if(!favorMobs)
+						{
+							maintained.addElement(I);
+							room.addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 						}
 					}
 				}
