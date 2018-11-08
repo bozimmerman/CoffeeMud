@@ -2431,7 +2431,7 @@ public class ListCmd extends StdCommand
 			final String parm=(p.size()>1)?p.get(1):"";
 			final int lastNum=CMath.isInteger(parm) ? CMath.s_int(parm) : -1;
 			String probType = "tickerProblems" + (lastNum>0?("-"+lastNum):"");
-			if(x<0)
+			if((x<0)||(finalCol.equalsIgnoreCase("tickercodeword")))
 			{
 				finalCol="tickermilliavg";
 				finalColName="Msavg";
