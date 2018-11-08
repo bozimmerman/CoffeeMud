@@ -255,7 +255,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 		case 2:
 		{
 			choiceStr="spidermonkey";
-			newMOB.setName(L("a spidermoney"));
+			newMOB.setName(L("a spidermonkey"));
 			newMOB.setDisplayText(L("a mischievous monkey is watching you"));
 			newMOB.setDescription(L("Don`t blink, or she may swipe your stuff."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
