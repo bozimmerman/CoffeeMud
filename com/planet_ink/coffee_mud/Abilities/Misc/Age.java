@@ -233,14 +233,23 @@ public class Age extends StdAbility
 		if(text().length()==0)
 			return;
 		final long l=CMath.s_long(text());
-		if(l==0)
+		if(l<Short.MAX_VALUE)
 			return;
 		if(norecurse)
 			return;
-		if(l<Short.MAX_VALUE)
-			return;
-		norecurse=true;
+		try
+		{
+			norecurse=true;
+			doUnprotectedThang(affected,l);
+		}
+		finally
+		{
+			norecurse=false;
+		}
+	}
 
+	protected void doUnprotectedThang(final Physical affected, final long l)
+	{
 		if(divisor==0.0)
 		{
 			final TimeClock C=CMLib.time().localClock(affected);
@@ -263,10 +272,7 @@ public class Age extends StdAbility
 					final Item I=(Item)affected;
 					MOB following=getFollowing(I);
 					if(following==null)
-					{
-						norecurse=false;
 						return;
-					}
 
 					final CagedAnimal C=(CagedAnimal)affected;
 					final MOB babe=C.unCageMe();
@@ -715,8 +721,7 @@ public class Age extends StdAbility
 					final Behavior B=CMClass.getBehavior("MudChat");
 					if(B!=null)
 						babe.addBehavior(B);
-					else
-						babe.delEffect(this);
+					babe.delEffect(this);
 					babe.recoverCharStats();
 					babe.recoverPhyStats();
 					babe.recoverMaxState();
@@ -773,7 +778,6 @@ public class Age extends StdAbility
 				babe.text();
 			}
 		}
-		norecurse=false;
 	}
 
 	@Override
