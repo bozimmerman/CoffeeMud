@@ -148,6 +148,7 @@ public class Proficiency_Weapon extends StdAbility
 				lastFilter = affectableStats.getItemProficiencies();
 				newFilter = Arrays.copyOf(lastFilter, lastFilter.length+1);
 				newFilter[newFilter.length-1] = myFilter;
+				affectableStats.setItemProficiencies(newFilter);
 			}
 		}
 	}
