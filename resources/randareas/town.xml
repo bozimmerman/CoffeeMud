@@ -1419,16 +1419,16 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING condition="$__numshoptypes_general &lt;1 or $__numshoptypes_all &gt; 17" define="__numshoptypes_general+=1,__numshoptypes_all+=1,pshoptypes=all kinds of things,wshoptype=general">general</STRING>
 	<STRING condition="$__numshoptypes_wood &lt;1 or $__numshoptypes_all &gt; 17" define="__numshoptypes_wood+=1,__numshoptypes_all+=1,pshoptypes=wooden items,wshoptype=inventory only">wood</STRING>
 	<STRING condition="($NOFANTASY != 'true') and ($__numshoptypes_magic &lt;1 or $__numshoptypes_all &gt; 17)" define="__numshoptypes_magic+=1,__numshoptypes_all+=1,pshoptypes=magical items,wshoptype=magic">magic</STRING>
-	<STRING condition="$__numshoptypes_potion &lt;1 or $__numshoptypes_all &gt; 17" define="__numshoptypes_potion+=1,__numshoptypes_all+=1,pshoptypes=potions,wshoptype=potions">potion</STRING>
+	<STRING condition="($NOFANTASY != 'true') and ($__numshoptypes_potion &lt;1 or $__numshoptypes_all &gt; 17)" define="__numshoptypes_potion+=1,__numshoptypes_all+=1,pshoptypes=potions,wshoptype=potions">potion</STRING>
 	<STRING condition="$__numshoptypes_jewelry &lt;1 or $__numshoptypes_all &gt; 17" define="__numshoptypes_jewelry+=1,__numshoptypes_all+=1,pshoptypes=jewels,wshoptype=jewelry">jewelry</STRING>
 	<STRING condition="$__numshoptypes_pet &lt;1 or $__numshoptypes_all &gt; 17" define="__numshoptypes_pet+=1,__numshoptypes_all+=1,pshoptypes=boxes of animals,wshoptype=pets">pet</STRING>
-	<STRING condition="$__numshoptypes_butcher &lt;1 or $__numshoptypes_all &gt; 17" define="__numshoptypes_butcher+=1,__numshoptypes_all+=1,pshoptypes=cuts of meat,wshoptype=meats">butcher</STRING>
-	<STRING condition="$__numshoptypes_farmer &lt;1 or $__numshoptypes_all &gt; 17" define="__numshoptypes_farmer+=1,__numshoptypes_all+=1,pshoptypes=baskets of produce,wshoptype=veggies">farmer</STRING>
-	<STRING condition="$__numshoptypes_lumber &lt;1 or $__numshoptypes_all &gt; 17" define="__numshoptypes_lumber+=1,__numshoptypes_all+=1,pshoptypes=stacks of lumber,wshoptype=lumber">lumber</STRING>
-	<STRING condition="$__numshoptypes_quarry &lt;1 or $__numshoptypes_all &gt; 17" define="__numshoptypes_quarry+=1,__numshoptypes_all+=1,pshoptypes=piles of stone,wshoptype=rocks">quarry</STRING>
-	<STRING condition="$__numshoptypes_foundry &lt;1 or $__numshoptypes_all &gt; 17" define="__numshoptypes_foundry+=1,__numshoptypes_all+=1,pshoptypes=bars of metal,wshoptype=metals">foundry</STRING>
-	<STRING condition="$__numshoptypes_pelts &lt;1 or $__numshoptypes_all &gt; 17" define="__numshoptypes_pelts+=1,__numshoptypes_all+=1,pshoptypes=animal pelts,wshoptype=hides">pelts</STRING>
-	<STRING condition="$__numshoptypes_fabric &lt;1 or $__numshoptypes_all &gt; 17" define="__numshoptypes_fabric+=1,__numshoptypes_all+=1,pshoptypes=bolts of fabric,wshoptype=cloths">fabric</STRING>
+	<STRING condition="($__numshoptypes_all &gt; 10) and ($__numshoptypes_butcher &lt;1 or $__numshoptypes_all &gt; 17)" define="__numshoptypes_butcher+=1,__numshoptypes_all+=1,pshoptypes=cuts of meat,wshoptype=meats">butcher</STRING>
+	<STRING condition="($__numshoptypes_all &gt; 10) and ($__numshoptypes_farmer &lt;1 or $__numshoptypes_all &gt; 17)" define="__numshoptypes_farmer+=1,__numshoptypes_all+=1,pshoptypes=baskets of produce,wshoptype=veggies">farmer</STRING>
+	<STRING condition="($__numshoptypes_all &gt; 10) and ($__numshoptypes_lumber &lt;1 or $__numshoptypes_all &gt; 17)" define="__numshoptypes_lumber+=1,__numshoptypes_all+=1,pshoptypes=stacks of lumber,wshoptype=lumber">lumber</STRING>
+	<STRING condition="($__numshoptypes_all &gt; 10) and ($__numshoptypes_quarry &lt;1 or $__numshoptypes_all &gt; 17)" define="__numshoptypes_quarry+=1,__numshoptypes_all+=1,pshoptypes=piles of stone,wshoptype=rocks">quarry</STRING>
+	<STRING condition="($__numshoptypes_all &gt; 10) and ($__numshoptypes_foundry &lt;1 or $__numshoptypes_all &gt; 17)" define="__numshoptypes_foundry+=1,__numshoptypes_all+=1,pshoptypes=bars of metal,wshoptype=metals">foundry</STRING>
+	<STRING condition="($__numshoptypes_all &gt; 10) and ($__numshoptypes_pelts &lt;1 or $__numshoptypes_all &gt; 17)" define="__numshoptypes_pelts+=1,__numshoptypes_all+=1,pshoptypes=animal pelts,wshoptype=hides">pelts</STRING>
+	<STRING condition="($__numshoptypes_all &gt; 10) and ($__numshoptypes_fabric &lt;1 or $__numshoptypes_all &gt; 17)" define="__numshoptypes_fabric+=1,__numshoptypes_all+=1,pshoptypes=bolts of fabric,wshoptype=cloths">fabric</STRING>
 </STRING>
 
 <STRING id="__citygovttype" select="any-1" define="__citygovttype">
