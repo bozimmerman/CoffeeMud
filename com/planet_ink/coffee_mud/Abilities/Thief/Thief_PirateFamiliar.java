@@ -259,7 +259,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 			newMOB.setDisplayText(L("a mischievous monkey is watching you"));
 			newMOB.setDescription(L("Don`t blink, or she may swipe your stuff."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'F');
-			newMOB.baseCharStats().setMyRace(CMClass.getRace("Rabbit"));
+			newMOB.baseCharStats().setMyRace(CMClass.getRace("Monkey"));
 			familiarType = Familiar.SPIDERMONKEY;
 			break;
 		}
