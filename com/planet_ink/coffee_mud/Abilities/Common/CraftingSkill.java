@@ -898,6 +898,8 @@ public class CraftingSkill extends GatheringSkill
 				{
 					final String viewDesc = CMLib.coffeeShops().getViewDescription(mob, pair.item);
 					commonTell(mob,viewDesc);
+					if(viewDesc.length()>0)
+						commonTell(mob,L("* The material type is an example only."));
 					pair.item.destroy();
 					if(pair.key!=null)
 						pair.key.destroy();
