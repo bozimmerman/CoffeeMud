@@ -139,6 +139,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 			if(!(myItem.owner() instanceof MOB))
 				return;
 			if(msg.amISource((MOB)myItem.owner()))
+			{
 				switch(msg.sourceMinor())
 				{
 				case CMMsg.TYP_FILL:
@@ -148,9 +149,13 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 						addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
 					break;
 				case CMMsg.TYP_WEAR:
-					if((myItem instanceof Armor)
-					  &&(msg.amITarget(myItem)))
-						addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
+					if(((myItem instanceof Armor)
+						&&(msg.amITarget(myItem)))
+					||((msg.amITarget(myItem.container()))
+						&&(myItem.container() instanceof Container)
+						&&(myItem.container() instanceof Light)
+						&&(myItem.container().fitsOn(Item.WORN_MOUTH))))
+							addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
 					break;
 				case CMMsg.TYP_PUT:
 				case CMMsg.TYP_INSTALL:
@@ -167,6 +172,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 						addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
 					break;
 				}
+			}
 		}
 		finally
 		{

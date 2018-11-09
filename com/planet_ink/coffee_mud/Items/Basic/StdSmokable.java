@@ -257,6 +257,7 @@ public class StdSmokable extends StdContainer implements Light
 		}
 
 		if(msg.amITarget(this))
+		{
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_EXTINGUISH:
@@ -280,6 +281,7 @@ public class StdSmokable extends StdContainer implements Light
 							I=V.get(v);
 							if(CMLib.dice().roll(1,100,0)==1)
 								getAddictedTo(msg.source(),I);
+							I.executeMsg(myHost, msg);
 							I.destroy();
 						}
 					}
@@ -294,6 +296,7 @@ public class StdSmokable extends StdContainer implements Light
 				}
 				break;
 			}
+		}
 		super.executeMsg(myHost,msg);
 		if((msg.tool()==this)
 		&&(msg.sourceMinor()==CMMsg.TYP_THROW))
