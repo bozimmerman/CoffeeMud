@@ -772,7 +772,7 @@
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
-        <POSITION ID="MISTRESS" ROLEID=4 RANK=1 NAME="MISTRESS" PLURAL="MISTRESSES" MAX=1 INNERMASK="-MALE -NEUTER" PUBLIC="true">
+        <POSITION ID="MISTRESS" ROLEID=4 RANK=1 NAME="MISTRESS" PLURAL="MISTRESSES" MAX=999999 INNERMASK="-MALE -NEUTER" PUBLIC="true">
             <POWER>ACCEPT</POWER>
             <POWER>ASSIGN</POWER>
             <POWER>WITHDRAW</POWER>
@@ -973,15 +973,20 @@
     <SHORTDESC>a clan for professions that should also grant a class to members</SHORTDESC>
     <LONGDESC>
 
-    A simple, permanent membership clan that decides most things with votes. Use for system-based clans, and grant a class on entry.
 
-    Players must be an Apprentice to join a profession, and once in a profession, players can not gain experience outside of one.
+    A simple, permanent membership clan that decides most things with votes. Use for system-based clans, and grant a class on entry.
 
-    When the Archon creates clans from this government, they should designate the clans auto-class, and make sure players only
 
-    qualify for Apprentice when creating characters.
+    Players must be an Apprentice to join a profession, and once in a profession, players can not gain experience outside of one.
 
-    </LONGDESC>
+
+    When the Archon creates clans from this government, they should designate the clans auto-class, and make sure players only
+
+
+    qualify for Apprentice when creating characters.
+
+
+    </LONGDESC>
     <POSITIONS>
         <POSITION ID="OFFICER" ROLEID=2 RANK=2 NAME="OFFICER" PLURAL="OFFICERS" MAX=2147483647 INNERMASK="" PUBLIC="true">
             <POWER>ACCEPT</POWER>
