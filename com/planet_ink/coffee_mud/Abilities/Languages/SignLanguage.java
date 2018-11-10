@@ -104,7 +104,7 @@ public class SignLanguage extends StdLanguage
 		msg.modify(msg.source(),
 				   msg.target(),
 				   this,
-				   CMath.unsetb(msg.sourceCode(), CMMsg.MASK_SOUND|CMMsg.MASK_MOUTH) | CMMsg.MASK_MOVE,
+				   CMath.unsetb(msg.sourceCode(), CMMsg.MASK_SOUND|CMMsg.MASK_MOUTH) | CMMsg.MASK_HANDS,
 				   startFullMsg + fullMsgStr.substring(wordStart),
 				   msg.targetCode(),
 				   msg.targetMessage(),
@@ -173,9 +173,9 @@ public class SignLanguage extends StdLanguage
 				   this,
 				   msg.sourceCode(),
 				   msg.sourceMessage(),
-				   CMath.unsetb(msg.targetCode(), CMMsg.MASK_SOUND) | CMMsg.MASK_MOVE,
+				   CMath.unsetb(msg.targetCode(), CMMsg.MASK_SOUND) | CMMsg.MASK_HANDS,
 				   startFullMsg.trim() + ".",
-				   CMath.unsetb(msg.othersCode(), CMMsg.MASK_SOUND) | CMMsg.MASK_MOVE,
+				   CMath.unsetb(msg.othersCode(), CMMsg.MASK_SOUND) | CMMsg.MASK_HANDS,
 				   startFullMsg.trim() + ".");
 		return true;
 	}
