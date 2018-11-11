@@ -3370,8 +3370,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final Vector<String> V=CMParms.parse(arg1.toUpperCase());
+				final String arg2;
+				if(tt[t+1].equals("$$r"))
+					arg2=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(monster));
+				else
+					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+				final List<String> V=CMParms.parse(arg1.toUpperCase());
 				returnable=V.contains(arg2.toUpperCase());
 				break;
 			}
