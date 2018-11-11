@@ -119,6 +119,9 @@ public class Prayer_Deathfinger extends Prayer
 			}
 		}
 		else
+		if(CMLib.flags().isUndead(target))
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> point(s) in rage at <T-NAMESELF> and @x1, but @x2 does nothing.",prayWord(mob),hisHerDiety(mob)));
+		else
 			return maliciousFizzle(mob,target,L("<S-NAME> point(s) in rage at <T-NAMESELF> and @x1, but @x2 does nothing.",prayWord(mob),hisHerDiety(mob)));
 
 		// return whether it worked

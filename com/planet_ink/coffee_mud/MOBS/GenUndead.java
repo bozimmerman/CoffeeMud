@@ -103,7 +103,7 @@ public class GenUndead extends GenMob
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		if((charStats().getMyRace()!=undeadRace)&&(undeadRace!=null))
+		if((!CMLib.flags().isUndead(this))&&(undeadRace!=null))
 			return undeadRace.okMessage(this, msg);
 		return true;
 	}

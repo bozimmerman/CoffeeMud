@@ -115,6 +115,9 @@ public class Prayer_MassHarm extends Prayer
 					}
 				}
 				else
+				if(CMLib.flags().isUndead(target))
+					return beneficialWordsFizzle(mob,target,L("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, @x1, but @x2 does not heed.",prayingWord(mob),hisHerDiety(mob)));
+				else
 					maliciousFizzle(mob,target,L("<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, @x1, but @x2 does not heed.",prayingWord(mob),hisHerDiety(mob)));
 			}
 		}

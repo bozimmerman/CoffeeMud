@@ -119,6 +119,9 @@ public class Prayer_Drain extends Prayer
 			}
 		}
 		else
+		if(CMLib.flags().isUndead(target))
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> reach(es) for <T-NAMESELF>, @x1, but the spell fades.",prayingWord(mob)));
+		else
 			return maliciousFizzle(mob,target,L("<S-NAME> reach(es) for <T-NAMESELF>, @x1, but the spell fades.",prayingWord(mob)));
 
 		// return whether it worked

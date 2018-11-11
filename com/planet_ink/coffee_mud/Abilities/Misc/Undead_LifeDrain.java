@@ -134,6 +134,9 @@ public class Undead_LifeDrain extends StdAbility
 			}
 		}
 		else
+		if(CMLib.flags().isUndead(target))
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to drain life from <T-NAMESELF>, but fail(s)."));
+		else
 			maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to drain life from <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked

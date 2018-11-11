@@ -112,6 +112,9 @@ public class Prayer_Harm extends Prayer
 			}
 		}
 		else
+		if(CMLib.flags().isUndead(target))
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
+		else
 			return maliciousFizzle(mob,target,L("<S-NAME> point(s) at <T-NAMESELF> and @x1, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
