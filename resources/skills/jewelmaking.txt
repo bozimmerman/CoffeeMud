@@ -25,7 +25,7 @@ eye glasses	11	50	2	20	GenArmor	S4:EYES		0	GLASS
 % armlet	12	30	5	20	GenArmor	S0:ARMS		0		
 % earring	13	20	1	20	GenEarring	MS-2:EARS		0	PRECIOUS	
 % wristband	13	25	3	75	GenArmor	MS0:LEFT WRIST||RIGHT WRIST		0		
-% Tiara	13	80	10	200	GenArmor	S1:HEAD		0		
+% Tiara	13	80	10	200	GenArmor	S1:HEAD		0		*Prop_ItemSlot;NUM=1 REMOVABLE=TRUE TYPE="gemsetting" ; <ITEMS></ITEMS>
 small cabochon cut %	14	10	0	10	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
 solitaire % ring	14	20	1	50	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0		Prop_ItemSlot;num=1 type=gemsetting removable=true
 simple % charm	15	35	1	20	GenItem	STATUE		0		Prop_ItemSlotFiller;num=1 type=jewelcharm removeable=true
@@ -76,7 +76,7 @@ small briolette cut %	35	130	0	70	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1
 medium marquis cut %	36	140	0	75	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
 % bust	36	160	150	500	GenItem	STATUE		0	PRECIOUS	
 % cocktail ring	37	40	1	100	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0	PRECIOUS	
-% charm necklace	38	50	4	150	GenArmor	MS0:NECK		0		Prop_ItemSlot;num=20 type=jewelcharm removable=true
+% charm necklace	38	50	4	150	GenArmor	MS0:NECK		0		*Prop_ItemSlot;NUM=4 REMOVABLE=TRUE TYPE="jewelcharm" ; <ITEMS></ITEMS>
 small pear cut %	38	150	0	80	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
 hoop earring	39	25	1	30	GenEarring	MS-2:EARS		0		
 medium baguette cut %	39	160	0	85	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
