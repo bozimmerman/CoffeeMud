@@ -550,10 +550,13 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
-			if(itemName.endsWith("s"))
-				itemName="some "+itemName;
-			else
-				itemName=CMLib.english().startWithAorAn(itemName);
+			if(!CMLib.english().startsWithAnArticle(itemName))
+			{
+				if(itemName.endsWith("s"))
+					itemName="some "+itemName;
+				else
+					itemName=CMLib.english().startWithAorAn(itemName);
+			}
 			buildingI.setName(itemName);
 			startStr=L("<S-NAME> start(s) making @x1.",buildingI.name());
 			displayText=L("You are making @x1",buildingI.name());
