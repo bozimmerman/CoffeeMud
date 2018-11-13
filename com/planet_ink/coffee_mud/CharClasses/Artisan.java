@@ -281,6 +281,7 @@ public class Artisan extends StdCharClass
 		&&(msg.target() != null)
 		&&(msg.tool() instanceof Ability)
 		&&(msg.value() > 0)
+		&&((!(msg.target() instanceof DoorKey))||(msg.tool().ID().equals("LockSmith")))
 		&&(((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_CRAFTINGSKILL)
 			||((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_EPICUREAN)
 			||((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_BUILDINGSKILL)))
