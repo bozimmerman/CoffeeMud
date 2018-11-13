@@ -154,6 +154,7 @@ public class Song extends StdAbility
 		{
 			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 				||((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)&&(CMath.bset(msg.sourceCode(), CMMsg.MASK_SOUND))))
+			&&(!msg.sourceMajor(CMMsg.MASK_HANDS))
 			&&(!(msg.tool() instanceof Song))
 			&&(!(msg.tool() instanceof Play))
 			&&(!(msg.tool() instanceof Dance))
