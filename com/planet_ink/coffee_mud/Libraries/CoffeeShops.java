@@ -1451,7 +1451,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			teacher.recoverCharStats();
 			final Ability teachableA=getTrainableAbility(teacher,A);
 			if(teachableA!=null)
-				CMLib.expertises().postTeach(teacher,mobFor,A);
+				CMLib.expertises().postTeach(teacher,mobFor,teachableA);
 			teacher.destroy();
 		}
 		else
