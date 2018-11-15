@@ -7,6 +7,18 @@
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
 	<title>CoffeeMud Channel Backlogs</title>
+	<script language="JavaScript">
+	<!--
+		function Trash(ch,tm)
+		{
+			if(window.confirm('Delete message?'))
+			{
+				var strFeatures="top=0,left=0,resizeable=no,scrollbars=no,height=0,width=0,alwaysRaised=yes,dependent=yes";
+				w=window.open("channeldo.cmvp?AUTH=@Authenticate?AUTH@&CHANNEL="+ch+"&TIME="+tm,"Ability",strFeatures, false);
+			}
+		}
+	//-->
+	</script>
 </head>
 
 <body>

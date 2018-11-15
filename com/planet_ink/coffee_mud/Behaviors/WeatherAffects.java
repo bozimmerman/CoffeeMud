@@ -696,6 +696,7 @@ public class WeatherAffects extends PuddleMaker
 					||(C.weatherType(S.mob().location())!=Climate.WEATHER_THUNDERSTORM))
 						continue;
 					playerAround=true;
+					break;
 				}
 				if(playerAround)
 				{
@@ -719,7 +720,10 @@ public class WeatherAffects extends PuddleMaker
 						if(A2!=null)
 						{
 							A2.setMiscText("RENDER MUNDANE");
-							A2.invoke(M,M,true,M.phyStats().level());
+							int level = M.phyStats().level()/2;
+							if(level < 1)
+								level = 1;
+							A2.invoke(M,M,true,level);
 						}
 						Room R2=null;
 						final Enumeration<Room> e=(ticking instanceof Room)?new SingleEnumeration<Room>((Room)ticking):A.getProperMap();

@@ -398,16 +398,18 @@ public class Play extends StdAbility
 
 	protected Vector<Room> getInvokerScopeRoomSet(final MOB backupMob)
 	{
-		if((invoker()==null)
-		||(invoker().location()==null))
+		final MOB invoker = invoker();
+		final Room invokerRoom = (invoker != null) ? invoker.location() : null;
+		if((invoker==null)
+		||(invokerRoom==null))
 		{
 			if((backupMob!=null)&&(backupMob.location()!=null))
 				 return new XVector<Room>(backupMob.location());
 			return new Vector<Room>();
 		}
-		final int depth=super.getXMAXRANGELevel(invoker()) / 2; // decreased because fireball
+		final int depth=super.getXMAXRANGELevel(invoker) / 2; // decreased because fireball
 		if(depth==0)
-			return new XVector<Room>(invoker().location());
+			return new XVector<Room>(invokerRoom);
 		final Vector<Room> rooms=new Vector<Room>();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
@@ -415,9 +417,9 @@ public class Play extends StdAbility
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR);
-		CMLib.tracking().getRadiantRooms(invoker().location(), rooms,flags, null, depth, null);
-		if(!rooms.contains(invoker().location()))
-			rooms.addElement(invoker().location());
+		CMLib.tracking().getRadiantRooms(invokerRoom, rooms,flags, null, depth, null);
+		if(!rooms.contains(invokerRoom))
+			rooms.addElement(invokerRoom);
 		return rooms;
 	}
 
