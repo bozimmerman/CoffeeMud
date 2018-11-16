@@ -2106,8 +2106,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					partsList.add(L("no arms"));
 				if(parts[Race.BODY_GILL] > 0)
 					partsList.add(L("gills"));
-				if(parts[Race.BODY_ANTENEA] > 0)
-					partsList.add(L("@x1 antenea",""+parts[Race.BODY_ANTENEA]));
+				if(parts[Race.BODY_ANTENNEA] > 0)
+					partsList.add(L("@x1 antennea",""+parts[Race.BODY_ANTENNEA]));
 				if(parts[Race.BODY_HEAD]==0)
 					partsList.add(L("no head"));
 				else

@@ -126,7 +126,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 	private static final long[]		LEFT_LOCS			= { Wearable.WORN_LEFT_FINGER, Wearable.WORN_LEFT_WRIST };
 	private static final long[]		RIGHT_LOCS			= { Wearable.WORN_RIGHT_FINGER, Wearable.WORN_RIGHT_WRIST };
 
-	public final static boolean[] validamputees={true,//antenea
+	public final static boolean[] validamputees={true,//antennea
 												 true,//eye
 												 true,//ear
 												 false,//head
@@ -144,11 +144,11 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 												 true//wing
 												 };
 
-	public final static int[][] extraamuputees={{-1},//antenea
+	public final static int[][] extraamuputees={{-1},//antennea
 												{-1},//eye
 												{-1},//ear
-												{Race.BODY_EAR,Race.BODY_EYE,Race.BODY_MOUTH,Race.BODY_NOSE,Race.BODY_ANTENEA,Race.BODY_GILL},//head
-												{Race.BODY_EAR,Race.BODY_EYE,Race.BODY_MOUTH,Race.BODY_NOSE,Race.BODY_ANTENEA,Race.BODY_GILL,Race.BODY_HEAD},//nect
+												{Race.BODY_EAR,Race.BODY_EYE,Race.BODY_MOUTH,Race.BODY_NOSE,Race.BODY_ANTENNEA,Race.BODY_GILL},//head
+												{Race.BODY_EAR,Race.BODY_EYE,Race.BODY_MOUTH,Race.BODY_NOSE,Race.BODY_ANTENNEA,Race.BODY_GILL,Race.BODY_HEAD},//nect
 												{Race.BODY_HAND},//arm
 												{-1},//hand
 												{-1},//torso
