@@ -497,6 +497,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	{
 		if(!(what instanceof Item))
 			return false;
+		if((what instanceof Container)
+		&&(((Container)what).getContents().size()>0))
+			return false;
 		final Item whatI=(Item)what;
 		if((E instanceof Container)
 		&&(!(((Container)E).owner() instanceof MOB))
@@ -717,6 +720,12 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			final Item I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName+addendumStr);
 			if(I==null)
 				break;
+			if((I instanceof Container)
+			&&(((Container)I).getContents().size()>0))
+			{
+				commonTell(mob,I,null,L("You may not put <T-NAME> up for sale."));
+				return false;
+			}
 			if(target==null)
 				target=I;
 			else
