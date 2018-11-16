@@ -5216,7 +5216,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								if(o instanceof String)
 								{
 									if((clanID.equalsIgnoreCase((String)o))
-									||(((String)o).equals("*")))
+									||(((String)o).equals("*") && (clanID.length()>0)))
 									{
 										found=true;
 										break;
@@ -5226,7 +5226,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								if(o instanceof Pair)
 								{
 									if(clanID.equalsIgnoreCase(((Pair<String,String>)o).first)
-									||((((Pair<String,String>)o).first).equals("*")))
+									||((((Pair<String,String>)o).first).equals("*") && (clanID.length()>0)))
 									{
 										found=true;
 										break;
@@ -5239,12 +5239,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{
 							for(final Pair<Clan,Integer> c : ((MOB)E).clans())
 							{
+								final String clanID = c.first.clanID();
 								for(final Object o : entry.parms())
 								{
 									if(o instanceof String)
 									{
 										if(c.first.clanID().equalsIgnoreCase((String)o)
-										||(((String)o).equals("*")))
+										||(((String)o).equals("*") && (clanID.length()>0)))
 										{
 											found=true;
 											break;
@@ -5254,7 +5255,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 									if(o instanceof Pair)
 									{
 										if(c.first.clanID().equalsIgnoreCase(((Pair<String,String>)o).first)
-										||((((Pair<String,String>)o).first).equals("*")))
+										||((((Pair<String,String>)o).first).equals("*") && (clanID.length()>0)))
 										{
 											if((((Pair<String,String>)o).second).equals("*"))
 											{
@@ -5288,14 +5289,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(o instanceof String)
 							{
 								if((clanID.equalsIgnoreCase((String)o))
-								||(((String)o).equals("*")))
+								||(((String)o).equals("*") && (clanID.length()>0)))
 									return false;
 							}
 							else
 							if(o instanceof Pair)
 							{
 								if(clanID.equalsIgnoreCase(((Pair<String,String>)o).first)
-								||((((Pair<String,String>)o).first).equals("*")))
+								||((((Pair<String,String>)o).first).equals("*") && (clanID.length()>0)))
 									return false;
 							}
 						}
@@ -5305,19 +5306,20 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						for(final Pair<Clan,Integer> c : ((MOB)E).clans())
 						{
+							final String clanID = c.first.clanID();
 							for(final Object o : entry.parms())
 							{
 								if(o instanceof String)
 								{
-									if(c.first.clanID().equalsIgnoreCase((String)o)
-									||(((String)o).equals("*")))
+									if(clanID.equalsIgnoreCase((String)o)
+									||(((String)o).equals("*") && (clanID.length()>0)))
 										return false;
 								}
 								else
 								if(o instanceof Pair)
 								{
-									if(c.first.clanID().equalsIgnoreCase(((Pair<String,String>)o).first)
-									||((((Pair<String,String>)o).first).equals("*")))
+									if(clanID.equalsIgnoreCase(((Pair<String,String>)o).first)
+									||((((Pair<String,String>)o).first).equals("*") && (clanID.length()>0)))
 									{
 										if((((Pair<String,String>)o).second).equals("*"))
 											return false;
