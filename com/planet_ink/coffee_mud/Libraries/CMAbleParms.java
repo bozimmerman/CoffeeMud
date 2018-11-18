@@ -1301,6 +1301,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 
 				@Override
+				public int appliesToClass(final Object o)
+				{
+					if(o instanceof RawMaterial)
+						return 5;
+					return -1;
+				}
+
+				@Override
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
 					if(I instanceof RawMaterial)
@@ -4187,6 +4195,43 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			},
 			new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/ Mat",ParmType.CHOICES)
 			{
+				@Override
+				public void createChoices()
+				{
+					final XVector<String> V=new XVector<String>(RawMaterial.CODES.NAMES());
+					Collections.sort(V);
+					final XVector<String> V2=new XVector<String>(RawMaterial.Material.names());
+					Collections.sort(V2);
+					V.addAll(V2);
+					createChoices(V);
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(CMStrings.containsWordIgnoreCase(I.Name(),"rice"))
+						return "RICE";
+					if(I.material() == RawMaterial.RESOURCE_PAPER)
+						return "WOOD";
+					return RawMaterial.CODES.NAME(I.material());
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "IRON";
+				}
+			},
+			new AbilityParmEditorImpl("REQ_RESOURCE_OR_MATERIAL","Rsc/ Mat",ParmType.CHOICES)
+			{
+				@Override
+				public int appliesToClass(final Object o)
+				{
+					if(o instanceof RawMaterial)
+						return 1;
+					return -1;
+				}
+
 				@Override
 				public void createChoices()
 				{

@@ -75,7 +75,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
 		+"LID_LOCK||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG||STATUE\t"
 		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION||MAX_WAND_USES||DICE_SIDES\t"
-		+"BASE_ARMOR_AMOUNT||BASE_DAMAGE\tCONTAINER_TYPE||ATTACK_MODIFICATION\tCODED_SPELL_LIST";
+		+"BASE_ARMOR_AMOUNT||BASE_DAMAGE||REQ_RESOURCE_OR_MATERIAL\tCONTAINER_TYPE||ATTACK_MODIFICATION||RES_SUBTYPE\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -558,8 +558,11 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				buildingI.basePhyStats().setLevel(1);
 			setBrand(mob, buildingI);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
-			final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
-			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
+			final String containMask = foundRecipe.get(RCP_CONTAINMASK);
+			final long canContain=(containMask.length()>0) ? getContainerType(containMask) : 0;
+			final int resourceType=(containMask.length()>0) ? RawMaterial.CODES.FIND_IgnoreCase(containMask) : -1;
+			final String armorDmgStr = foundRecipe.get(RCP_ARMORDMG);
+			final int armordmg=CMath.s_int(armorDmgStr);
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
@@ -642,6 +645,14 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			if(buildingI instanceof Weapon)
 			{
 				((Weapon)buildingI).setRawLogicalAnd((capacity>1));
+			}
+			else
+			if((!(buildingI instanceof Container))
+			&&(resourceType > 0))
+			{
+				buildingI.setMaterial(resourceType);
+				if(buildingI instanceof RawMaterial)
+					((RawMaterial)buildingI).setSubType(armorDmgStr);
 			}
 
 			if(buildingI instanceof Weapon)
