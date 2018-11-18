@@ -532,7 +532,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							for(int r=0;r<V.size();r++)
 							{
 								final Item I=V.get(r);
-								if(CMLib.dice().rollPercentage()<I.basePhyStats().rejuv())
+								if((CMLib.dice().rollPercentage()<I.basePhyStats().rejuv())
+								||((I.basePhyStats().rejuv()<0)&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))))
 								{
 									mob.delItem(I);
 									I.destroy();

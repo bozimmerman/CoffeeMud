@@ -337,7 +337,7 @@
 		<FONT COLOR="#66FFFF"><B>@if?ItemData?ISMOBITEM@Available:
 		@else@Rejuv. Ticks:@endif@</B></FONT></TD>
 		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=REJUV SIZE=5 VALUE="@ItemData?REJUV@">
-		<I>@if?ItemData?ISMOBITEM@(1-100% chance, 0 = 100%)@else@(0=Never Rejuv,# ticks)@endif@
+		<I>@if?ItemData?ISMOBITEM@(1-100% chance, 0 = 100%, -1 = one time only)@else@(0=Never Rejuv,# ticks)@endif@
 		</TD>
 	</TR>
 	<TR>
