@@ -2442,7 +2442,7 @@ Rejuvenating Items and Mobs" or "How to Save a Room".<br>
 If this item is located in a mobs inventory, this value represents the
 % chance of it appearing in the mobs inventory after reset. In this
 case, the value should be between 1-100, or 0 to also represent 100
-(always available). See the section on "Equipping Mobs" for more
+(always available), or -1 to make an item only appear at boot time. See the section on "Equipping Mobs" for more
 information on this feature.</p>
       </td>
     </tr>
@@ -5676,9 +5676,14 @@ inventory, and the dress command to make the mob wear it.</p>
 variable items. Variable items are
 items which may or may not appear in its inventory on any particular
 rejuvenation of the mob. Variable items are created by modifying the
-Rejuv/Pct field on the item in the mobs inventory. If the value of this
-field is less than 1 or greater than 99, then the item will always
-appear in the inventory. If the value of the field is between 1 and
+Rejuv/Pct field on the item in the mobs inventory. You can do this with
+the command MODIFY ITEMNAME@MOBNAME and then selecting the Rejuv/Pct
+field. &nbsp;If the value of this
+field is -1, then the item will only appear in the the MOBs inventory
+at boot or creation time. &nbsp;If it is otherwise less than 1 or
+greater than 99, then the item will always
+appear in the MOBs inventory. If the value of the field is between 1
+and
 100, then it represents the percent chance that the item will remain in
 the inventory. A special case is created when more than one variable
 item is actually being worn in the same wear location on a mob. In this

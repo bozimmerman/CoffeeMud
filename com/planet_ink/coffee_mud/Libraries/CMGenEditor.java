@@ -2749,13 +2749,30 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		if(P instanceof Item)
-			mob.tell(L("@x1. Rejuv/Pct: '@x2' (0=special).",""+showNumber,""+P.basePhyStats().rejuv()));
+		{
+			if((((Item)P).owner() instanceof MOB)&&(((MOB)((Item)P).owner()).isMonster()))
+				mob.tell(L("@x1. Rejuv/Pct: '@x2' (0=special, -1=one time only).",""+showNumber,""+P.basePhyStats().rejuv()));
+			else
+				mob.tell(L("@x1. Rejuv/Pct: '@x2' (0=special).",""+showNumber,""+P.basePhyStats().rejuv()));
+		}
 		else
 			mob.tell(L("@x1. Rejuv Ticks: '@x2' (0=never).",""+showNumber,""+P.basePhyStats().rejuv()));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		final String rlevel=mob.session().prompt(L("Enter new amount\n\r:"),"");
 		final int newLevel=CMath.s_int(rlevel);
+		if((newLevel<0)
+		&&((((Item)P).owner() instanceof MOB)&&(((MOB)((Item)P).owner()).isMonster())))
+		{
+			P.basePhyStats().setRejuv(PhyStats.ONE_JUV);
+			mob.tell(L("@x1 will now exist only at boot.",P.Name()));
+		}
+		else
+		if((newLevel<0)&&(rlevel.trim().startsWith("-")))
+		{
+			mob.tell(L("@x1 can only be set to exist at boot while in an npcs inventory.",P.Name()));
+		}
+		else
 		if((newLevel>0)||(rlevel.trim().equals("0")))
 		{
 			P.basePhyStats().setRejuv(newLevel);

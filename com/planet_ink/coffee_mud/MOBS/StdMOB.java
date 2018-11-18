@@ -3648,7 +3648,7 @@ public class StdMOB implements MOB
 									&& room.getMobility()
 									&& (A.getAreaState() != Area.State.FROZEN)
 									&& (A.getAreaState() != Area.State.STOPPED))
-										lastTickedTime = CMLib.utensils().processVariableEquipment(this);
+										lastTickedTime = CMLib.utensils().processVariableEquipment(this, true);
 									room.showOthers(this, null, CMMsg.MSG_OK_ACTION, L("<S-NAME> appears!"));
 								}
 							}
@@ -3679,7 +3679,7 @@ public class StdMOB implements MOB
 					&& (A.getAreaState() != Area.State.STOPPED))
 					{
 						if (lastTickedTime == -1)
-							lastTickedTime = CMLib.utensils().processVariableEquipment(this);
+							lastTickedTime = CMLib.utensils().processVariableEquipment(this, false);
 						else
 							lastTickedTime++;
 					}

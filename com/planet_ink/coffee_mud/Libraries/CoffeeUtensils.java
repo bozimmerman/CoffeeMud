@@ -476,9 +476,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public int processVariableEquipment(final MOB mob)
+	public int processVariableEquipment(final MOB mob, final boolean isRejuv)
 	{
 		int newLastTickedDateTime=0;
+
 		if(mob!=null)
 		{
 			final Room R=mob.location();
@@ -502,7 +503,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						if(I!=null)
 						{
 							this.fixElectronicalItem(I);
-							if((I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
+							final int rejuv = I.basePhyStats().rejuv();
+							if(((rejuv>0)&&(rejuv!=PhyStats.NO_REJUV))
+							||(rejuv == PhyStats.ONE_JUV))
 							{
 								List<Item> V=null;
 								for(int r=0;r<rivals.size();r++)
@@ -517,7 +520,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 								}
 								if(V==null)
 								{
-									V=new Vector<Item>();
+									V=new ArrayList<Item>(1);
 									rivals.add(V);
 								}
 								V.add(I);
@@ -532,8 +535,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							for(int r=0;r<V.size();r++)
 							{
 								final Item I=V.get(r);
-								if((CMLib.dice().rollPercentage()<I.basePhyStats().rejuv())
-								||((I.basePhyStats().rejuv()<0)&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))))
+								final int rejuv=I.basePhyStats().rejuv();
+								if((CMLib.dice().rollPercentage()<rejuv)
+								||((rejuv<0)&&(isRejuv)))
 								{
 									mob.delItem(I);
 									I.destroy();
@@ -551,7 +555,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							for(int r=0;r<V.size();r++)
 							{
 								final Item I=V.get(r);
-								totalChance+=I.basePhyStats().rejuv();
+								if(I.basePhyStats().rejuv()>0)
+									totalChance+=I.basePhyStats().rejuv();
 							}
 							final int chosenChance=CMLib.dice().roll(1,totalChance,0);
 							totalChance=0;
@@ -559,17 +564,22 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							for(int r=0;r<V.size();r++)
 							{
 								final Item I=V.get(r);
-								if(chosenChance<=(totalChance+I.basePhyStats().rejuv()))
+								final int rejuv=I.basePhyStats().rejuv();
+								if(rejuv>0)
 								{
-									chosenI=I;
-									break;
+									if(chosenChance<=(totalChance+rejuv))
+									{
+										chosenI=I;
+										break;
+									}
+									totalChance+=rejuv;
 								}
-								totalChance+=I.basePhyStats().rejuv();
 							}
 							for(int r=0;r<V.size();r++)
 							{
 								final Item I=V.get(r);
-								if(chosenI!=I)
+								if((chosenI!=I)
+								||((I.basePhyStats().rejuv()==PhyStats.ONE_JUV)&&(isRejuv)))
 								{
 									mob.delItem(I);
 									I.destroy();
@@ -593,13 +603,16 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							{
 								final Item I=(Item)E;
 								fixElectronicalItem(I);
-								if((I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
+								final int rejuv=I.basePhyStats().rejuv();
+								if(((rejuv>0)&&(rejuv!=PhyStats.NO_REJUV))
+								||(rejuv == PhyStats.ONE_JUV))
 									rivalItems.add((Item)E);
 							}
 						}
 						for(final Item I : rivalItems)
 						{
-							if(CMLib.dice().rollPercentage()>I.basePhyStats().rejuv())
+							final int rejuv=I.basePhyStats().rejuv();
+							if(CMLib.dice().rollPercentage()>rejuv)
 							{
 								shop.delAllStoreInventory(I);
 								I.destroy();

@@ -46,6 +46,8 @@ public interface PhyStats extends CMCommon, Modifiable
 {
 	/** Constant shortcut for setting the rejuvenation rate on a mob so that it will NOT rejuv. */
 	public static final int NO_REJUV=Integer.MAX_VALUE;
+	/** Constant shortcut for setting the rejuvenation rate on a mob so that it will exist only at boot. */
+	public static final int ONE_JUV=-1;
 
 	/**
 	 * Returns a bitmask for sense related flags of mobs (CAN_ constants), or

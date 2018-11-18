@@ -2699,10 +2699,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if((newOne instanceof Container)
 			&&(((Container)newOne).capacity()>0))
 				IIDmap.put(CMLib.xml().getValFromPieces(idat,"IID"),(Container)newOne);
+			final int rejuv = newOne.basePhyStats().rejuv();
 			if(newOne instanceof Electronics)
 				variableEq=true;
 			else
-			if(newOne.basePhyStats().rejuv()>0&&newOne.basePhyStats().rejuv()!=PhyStats.NO_REJUV)
+			if((rejuv>0 && rejuv!=PhyStats.NO_REJUV)
+			||(rejuv == PhyStats.ONE_JUV))
 				variableEq=true;
 			newOne.wearAt(wornCode);
 		}

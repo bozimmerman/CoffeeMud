@@ -199,9 +199,10 @@ public interface CMMiscUtils extends CMLibrary
 	 * it is a weighted chance of being selected.  Electronics items also have their
 	 * random stats determined at this time.
 	 * @param mob the npc mob to process variable equipment on
+	 * @param isRejuv true if the mob is rejuving after death
 	 * @return 0 for success, -1 if an admin is in the room, so nothing could be done.
 	 */
-	public int processVariableEquipment(MOB mob);
+	public int processVariableEquipment(MOB mob, boolean isRejuv);
 
 	/**
 	 * Creates one of the deprecated traps depending on what sort of object is passed
