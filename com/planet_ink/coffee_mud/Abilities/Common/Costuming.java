@@ -535,7 +535,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 			if((componentsFoundList.size() > 0)||(autoGenerate>0))
 				deadMats = new MaterialLibrary.DeadResourceRecord();
 			else
-				deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,null);
+				deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
 			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
@@ -556,7 +556,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 			verb=L("making @x1",buildingI.name());
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
-			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],data[1][FOUND_CODE], bundling));
 			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-1;
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+deadMats.lostValue+deadComps.lostValue);
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));

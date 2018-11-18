@@ -431,7 +431,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		verb=L("making @x1",buildingI.name());
 		buildingI.setDisplayText(L("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
-		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
+		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],data[1][FOUND_CODE], bundling));
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 		if(buildingI.name().toUpperCase().indexOf("CHINA ")>=0)
 			buildingI.setMaterial(RawMaterial.RESOURCE_CHINA);

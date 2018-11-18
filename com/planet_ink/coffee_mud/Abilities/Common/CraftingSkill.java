@@ -150,9 +150,11 @@ public class CraftingSkill extends GatheringSkill
 		return 1.0;
 	}
 
-	public int getStandardWeight(final int baseWoodRequired, final boolean bundling)
+	public int getStandardWeight(final int baseWoodRequired, final int otherResourceCd, final boolean bundling)
 	{
-		final int newWeight=(int)Math.round( baseWoodRequired * this.getItemWeightMultiplier( bundling ));
+		int newWeight=(int)Math.round( baseWoodRequired * this.getItemWeightMultiplier( bundling ));
+		if(otherResourceCd > 0)
+			newWeight += 1;
 		if((baseWoodRequired>0) && (newWeight<=0))
 			return 1;
 		return newWeight;

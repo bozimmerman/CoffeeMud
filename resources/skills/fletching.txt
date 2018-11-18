@@ -51,3 +51,4 @@ Pack of 100 Javelins	15	70	20	250	GenAmmunition	javelins	100
 Pack of 10 AP Javelins	31	30	5	250	GenAmmunition	javelins	10			ADAMANTITE	PROP_ADDDAMAGE;50% PIERCING
 Pack of 50 AP Javelins	40	50	10	500	GenAmmunition	javelins	50			ADAMANTITE	PROP_ADDDAMAGE;50% PIERCING
 Pack of 100 AP Javelins	45	70	20	1250	GenAmmunition	javelins	100			ADAMANTITE	PROP_ADDDAMAGE;50% PIERCING
+Thingy Thing	1	7	0	1250	GenAmmunition	javelins	1			ADAMANTITE	
