@@ -428,8 +428,8 @@ public class Publishing extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		if((commands.size()<2)
-		||((commands.size()==1)&&(commands.get(0).equalsIgnoreCase("LIST"))))
+		if((commands.size()<1)
+		||((commands.size()==1)&&(!commands.get(0).equalsIgnoreCase("LIST"))))
 		{
 			commonTell(mob,L("Publish what, at what asking price? If you already published, try LIST."));
 			return false;
@@ -437,7 +437,8 @@ public class Publishing extends CommonSkill
 		if(commands.size()==1)
 		{
 			final MiniJSON.JSONObject data=getData();
-			if(data.keySet().size()==0)
+			if((data.keySet().size()==0)
+			||((data.size()==1)&&(data.containsKey("lastpub"))))
 				commonTell(mob,L("You haven't been published yet."));
 			else
 			{
@@ -447,6 +448,8 @@ public class Publishing extends CommonSkill
 					final StringBuilder str=new StringBuilder("");
 					for(final String bookName : data.keySet())
 					{
+						if(bookName.equalsIgnoreCase("lastpub"))
+							continue;
 						final MiniJSON.JSONObject bookObj = data.getCheckedJSONObject(bookName);
 						str.append(index+") ^H"+bookName+"^?:\n\r");
 						String purchased="0";
