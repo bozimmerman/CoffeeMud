@@ -89,7 +89,7 @@ public class Spell_MagicMissile extends Spell
 
 		if(success)
 		{
-			final int numMissiles=Math.min((int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,asLevel),5))+1),8);
+			final int numMissiles=Math.min((int)Math.round(Math.floor(CMath.div(adjustedLevel(mob,asLevel),5))+1),5);
 			final Room R=target.location();
 			for(int i=0;(i<numMissiles) && (target.location()==R);i++)
 			{
@@ -99,7 +99,7 @@ public class Spell_MagicMissile extends Spell
 					mob.location().send(mob,msg);
 					if(msg.value()<=0)
 					{
-						final int damage = CMLib.dice().roll(1,7+super.getXLEVELLevel(mob),7+super.getXLEVELLevel(mob)/numMissiles);
+						final int damage = CMLib.dice().roll(1,4,(4+super.getXLEVELLevel(mob))/numMissiles);
 						if(target.location()==mob.location())
 							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,((i==0)?"^SThe missile ":"^SAnother missile ")+"<DAMAGE> <T-NAME>!^?");
 					}
