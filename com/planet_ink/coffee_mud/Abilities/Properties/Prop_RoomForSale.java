@@ -53,8 +53,9 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return Ability.CAN_ROOMS;
 	}
 
-	protected int		lastItemNums	= -1;
-	protected int		lastDayDone		= -1;
+	protected int	lastItemNums	= -1;
+	protected int	lastDayDone		= -1;
+	protected int	daysWithNoChange= 0;
 	protected boolean	scheduleReset	= false;
 
 	@Override
@@ -313,12 +314,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return V;
 	}
 
-	public static int updateLotWithThisData(Room R,
-											final LandTitle T,
-											final boolean resetRoomName,
-											final boolean clearAllItems,
-											final Set<String> optPlayerList,
-											int lastNumItems)
+	public static int[] updateLotWithThisData(Room R,
+											  final LandTitle T,
+											  final boolean resetRoomName,
+											  final boolean clearAllItems,
+											  final Set<String> optPlayerList,
+											  final int lastNumItems,
+											  int daysSinceItemsSaved)
 	{
 		boolean updateItems=false;
 		boolean updateExits=false;
@@ -402,7 +404,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				if(updateRoom)
 					CMLib.database().DBUpdateRoom(R);
 				CMLib.law().colorRoomForSale(R,T,resetRoomName);
-				return -1;
+				return new int[] {-1, 0};
 			}
 
 			if((lastNumItems<0)
@@ -425,7 +427,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					Log.warnOut("Property owned by "+T.getOwnerName()+" is now lost: "+T.getUniqueLotID());
 					T.setOwnerName("");
 					T.updateLot(null);
-					return -1;
+					return new int[] {-1, 0};
 				}
 			}
 
@@ -442,11 +444,12 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				CMLib.database().DBUpdateRoom(R);
 			}
 
-			// this works on the priciple that
+			// this works on the principle that
 			// 1. if an item has ONLY been removed, the lastNumItems will be != current # items
 			// 2. if an item has ONLY been added, the dispossessiontime will be != null
 			// 3. if an item has been added AND removed, the dispossession time will be != null on the added
-			if((lastNumItems>=0)&&(R.numItems()!=lastNumItems))
+			if((lastNumItems>=0)
+			&&(R.numItems()!=lastNumItems))
 				updateItems=true;
 
 			for(int i=0;i<R.numItems();i++)
@@ -468,12 +471,47 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					updateItems=true;
 				}
 			}
-			lastNumItems=R.numItems();
+			if(!updateItems)
+			{
+				if(daysSinceItemsSaved>1)
+				{
+					final TimeClock C=R.getArea().getTimeObj();
+					if(C!=null)
+					{
+						final long t0 = C.getDaysInMonth() * C.getHoursInDay();
+						final long t = 2 * t0 * CMProps.getMillisPerMudHour() / MudHost.TIME_SAVETHREAD_SLEEP;
+
+						final CMFlagLibrary flags=CMLib.flags();
+						if(daysSinceItemsSaved > t)
+						{
+							daysSinceItemsSaved=-1;
+							for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+							{
+								final Item I=i.nextElement();
+								if((I!=null)
+								&&(I.container()==null)
+								&&(flags.isGettable(I))
+								&&((I.numEffects()==0)||(I.fetchEffect("Dusty")==null))
+								&&(flags.isSavable(I)))
+								{
+									final Ability A=CMClass.getAbility("Dusty");
+									if(A!=null)
+									{
+										A.setMiscText("LEVEL=0 INTERVAL="+t0);
+										I.addNonUninvokableEffect(A);
+										updateItems=true;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 			if((!CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPROPERTYITEMS))
 			&&(updateItems))
 				CMLib.database().DBUpdateItems(R);
 		}
-		return lastNumItems;
+		return new int[] {R.numItems(), updateItems?0:(daysSinceItemsSaved+1)};
 	}
 
 	@SuppressWarnings("unchecked")
@@ -588,18 +626,26 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=CMLib.map().getRoom(R);
-				lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,optPlayerList,lastItemNums);
+				int[] data=updateLotWithThisData(R,this,false,scheduleReset,optPlayerList,lastItemNums,daysWithNoChange);
+				lastItemNums=data[0];
+				daysWithNoChange=data[1];
+
+				// rentals are below
 				if((lastDayDone!=R.getArea().getTimeObj().getDayOfMonth())
 				&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 				{
 					lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
-					if((getOwnerName().length()>0)&&rentalProperty()&&(R.roomID().length()>0))
+					if((getOwnerName().length()>0)
+					&&rentalProperty()
+					&&(R.roomID().length()>0))
 					{
 						if(doRentalProperty(R.getArea(),R.roomID(),getOwnerName(),getPrice()))
 						{
 							setOwnerName("");
 							CMLib.database().DBUpdateRoom(R);
-							lastItemNums=updateLotWithThisData(R,this,false,scheduleReset,optPlayerList,lastItemNums);
+							data=updateLotWithThisData(R,this,false,scheduleReset,optPlayerList,lastItemNums,daysWithNoChange);
+							lastItemNums=data[0];
+							daysWithNoChange=data[1];
 						}
 					}
 				}

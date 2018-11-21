@@ -3807,13 +3807,18 @@ public class CMMap extends StdLibrary implements WorldMap
 		final Set<String> playerList=new TreeSet<String>();
 		try
 		{
+			final Set<LandTitle> titlesDone = new HashSet<LandTitle>();
 			for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				// roomid > 0? these are unfilled...
 				final LandTitle T=law.getLandTitle(R);
-				if(T!=null)
+				if((T!=null)
+				&&(!titlesDone.contains(T)))
+				{
 					T.updateLot(playerList);
+					titlesDone.add(T);
+				}
 			}
 		}
 		catch(final NoSuchElementException nse)

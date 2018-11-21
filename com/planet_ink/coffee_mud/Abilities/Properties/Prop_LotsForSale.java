@@ -383,8 +383,9 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=CMLib.map().getRoom(R);
-				lastItemNums=updateLotWithThisData(R,this,true,scheduleReset,optPlayerList,lastItemNums);
-
+				final int[] data=updateLotWithThisData(R,this,true,scheduleReset,optPlayerList,lastItemNums,daysWithNoChange);
+				lastItemNums=data[0];
+				daysWithNoChange=data[1];
 				if(getOwnerName().length()==0)
 				{
 					didAnything = retractRooms(R,postWork) || didAnything;

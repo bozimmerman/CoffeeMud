@@ -52,7 +52,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		return Ability.CAN_AREAS;
 	}
 
-	protected Hashtable<Room, Integer>	lastItemNums	= new Hashtable<Room, Integer>();
+	// room -> int[0] (last # items), int[1] (days since last item change)
+	protected Map<Room, int[]> lastItemNums = new Hashtable<Room, int[]>();
 
 	@Override
 	public String accountForYourself()
@@ -317,8 +318,11 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			{
 				final Room R=V.get(v);
 				lastCall=System.currentTimeMillis();
-				final Integer lastItemNum=lastItemNums.get(R);
-				lastItemNums.put(R,Integer.valueOf(Prop_RoomForSale.updateLotWithThisData(R,this,false,false,optPlayerList,(lastItemNum==null)?-1:lastItemNum.intValue())));
+				int[] pair=lastItemNums.get(R);
+				if(pair == null)
+					pair=new int[] {-1,0};
+				pair = Prop_RoomForSale.updateLotWithThisData(R,this,false,false,optPlayerList,pair[0],pair[1]);
+				lastItemNums.put(R,pair);
 			}
 			lastCall=System.currentTimeMillis();
 			Area A=null;
