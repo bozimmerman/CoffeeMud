@@ -2099,6 +2099,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&(!CMLib.flags().isGolem(testMOB))
 		&&(!CMLib.flags().isInsect(testMOB))
 		&&(!CMLib.flags().isAPlant(testMOB))
+		&&((testMOB.charStats().getWearableRestrictionsBitmap()&(Wearable.WORN_LEGS|Wearable.WORN_WAIST|Wearable.WORN_ABOUT_BODY))==0)
 		&&(testMOB.fetchFirstWornItem(Wearable.WORN_LEGS)==null)
 		&&(testMOB.getWearPositions(Wearable.WORN_LEGS)>0)
 		&&(testMOB.fetchFirstWornItem(Wearable.WORN_WAIST)==null)
