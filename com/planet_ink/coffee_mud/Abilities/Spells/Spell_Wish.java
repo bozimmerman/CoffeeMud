@@ -570,7 +570,7 @@ public class Spell_Wish extends Spell
 			&&(!((MOB)target).isMonster())
 			&&(!mob.mayIFight((MOB)target)))
 			{
-				mob.tell(L("You cannot cast wish on @x1 until @x2 permits you. You must both toggle your playerkill flags on.",target.name(mob),mob.charStats().heshe()));
+				mob.tell(L("You cannot cast wish on @x1 until @x2 permits you. You must both toggle your playerkill flags on.",target.name(mob),((MOB)target).charStats().heshe()));
 				return false;
 			}
 
@@ -644,7 +644,7 @@ public class Spell_Wish extends Spell
 			// a wish for movement
 			String locationWish=myWish;
 			final String[] redundantStarts2={
-					"TO GO TO",
+				  "TO GO TO",
 				  "TO TELEPORT TO",
 				  "TO TRANSPORT TO",
 				  "TO TRANSFER TO",
@@ -1307,7 +1307,7 @@ public class Spell_Wish extends Spell
 					Ability A=CMClass.findAbility(myWish.substring(code).trim());
 					if((A!=null)
 					&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)
-					&&(!CMath.bset(A.classificationCode(),Ability.DOMAIN_ARCHON)))
+					&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
 					{
 						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
 						{
@@ -1525,6 +1525,10 @@ public class Spell_Wish extends Spell
 					foundAttribute=CharStats.STAT_SAVE_UNDEAD;
 				if(myWish.indexOf(" EVIL")>=0)
 					foundAttribute=CharStats.STAT_SAVE_UNDEAD;
+				if(myWish.indexOf(" TRAIN")>=0)
+					foundAttribute=1001;
+				if(myWish.indexOf(" PRACTICE")>=0)
+					foundAttribute=1002;
 			}
 			if((foundAttribute>=0)
 			&&(target instanceof MOB)
@@ -1536,19 +1540,41 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" NO IMMUN")>=0)
 			||(myWish.indexOf(" LOSE ")>=0)))
 			{
-				if(CharStats.CODES.isBASE(foundAttribute))
+				if(foundAttribute>1000)
+				{
 					baseLoss-=1000;
+					wishDrain(mob,baseLoss,true);
+					switch(foundAttribute)
+					{
+					case 1001:
+						((MOB)target).setTrains(((MOB)target).getTrains()-1);
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has lost a training point.",target.name()));
+						break;
+					case 1002:
+						((MOB)target).setPractices(((MOB)target).getPractices()-1);
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has lost a practice point.",target.name()));
+						break;
+					}
+					((MOB)target).recoverCharStats();
+					mob.recoverCharStats();
+					return true;
+				}
 				else
-					baseLoss-=10;
-				wishDrain(mob,baseLoss,true);
-				if(foundAttribute<=6)
-					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)-1);
-				else
-					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)-33);
-				((MOB)target).recoverCharStats();
-				mob.recoverCharStats();
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has lost @x2.",target.name(),CharStats.CODES.DESC(foundAttribute).toLowerCase()));
-				return true;
+				{
+					if(CharStats.CODES.isBASE(foundAttribute))
+						baseLoss-=1000;
+					else
+						baseLoss-=10;
+					wishDrain(mob,baseLoss,true);
+					if(foundAttribute<=6)
+						((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)-1);
+					else
+						((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)-33);
+					((MOB)target).recoverCharStats();
+					mob.recoverCharStats();
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has lost @x2.",target.name(),CharStats.CODES.DESC(foundAttribute).toLowerCase()));
+					return true;
+				}
 			}
 
 			if((foundAttribute>=0)
@@ -1563,41 +1589,72 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WAS ")>=0)
 			||(myWish.indexOf(" TO BE ")>=0)))
 			{
-				switch(foundAttribute)
+				if(foundAttribute>1000)
 				{
-				case CharStats.STAT_CHARISMA:
-				case CharStats.STAT_CONSTITUTION:
-				case CharStats.STAT_DEXTERITY:
-				case CharStats.STAT_INTELLIGENCE:
-				case CharStats.STAT_STRENGTH:
-				case CharStats.STAT_WISDOM:
-				{
-					int trainsRequired=CMLib.login().getTrainingCost(mob, foundAttribute, true);
-					if(trainsRequired<0)
-						trainsRequired=-trainsRequired;
-					if(trainsRequired>100)
-						trainsRequired=100;
-					baseLoss+=((CMLib.leveler().getLevelExperienceJustThisLevel(mob.basePhyStats().level())/5)*(1+trainsRequired));
-					break;
+
+					switch(foundAttribute)
+					{
+					case 1001:
+						baseLoss+=((CMLib.leveler().getLevelExperienceJustThisLevel(mob.basePhyStats().level())/5));
+						wishDrain(mob,baseLoss,true);
+						if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
+						{
+							msg.source().tell(L("Your wish causes you lose a level."));
+							CMLib.leveler().unLevel(mob);
+							mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
+						}
+						((MOB)target).setTrains(((MOB)target).getTrains()+1);
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has gained a training point.",target.name()));
+						break;
+					case 1002:
+						baseLoss+=((CMLib.leveler().getLevelExperienceJustThisLevel(mob.basePhyStats().level())/3));
+						wishDrain(mob,baseLoss,true);
+						((MOB)target).setPractices(((MOB)target).getPractices()+1);
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has gained a practice point.",target.name()));
+						break;
+					}
+					((MOB)target).recoverCharStats();
+					mob.recoverCharStats();
+					return true;
 				}
-				default:
-					baseLoss+=10;
-					break;
-				}
-				wishDrain(mob,baseLoss,true);
-				if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
-				{
-					msg.source().tell(L("Your wish causes you lose a level."));
-					CMLib.leveler().unLevel(mob);
-					mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
-				}
-				if(foundAttribute<=6)
-					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+1);
 				else
-					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+10);
+				{
+					switch(foundAttribute)
+					{
+					case CharStats.STAT_CHARISMA:
+					case CharStats.STAT_CONSTITUTION:
+					case CharStats.STAT_DEXTERITY:
+					case CharStats.STAT_INTELLIGENCE:
+					case CharStats.STAT_STRENGTH:
+					case CharStats.STAT_WISDOM:
+					{
+						int trainsRequired=CMLib.login().getTrainingCost(mob, foundAttribute, true);
+						if(trainsRequired<0)
+							trainsRequired=-trainsRequired;
+						if(trainsRequired>100)
+							trainsRequired=100;
+						baseLoss+=((CMLib.leveler().getLevelExperienceJustThisLevel(mob.basePhyStats().level())/5)*(1+trainsRequired));
+						break;
+					}
+					default:
+						baseLoss+=10;
+						break;
+					}
+					wishDrain(mob,baseLoss,true);
+					if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
+					{
+						msg.source().tell(L("Your wish causes you lose a level."));
+						CMLib.leveler().unLevel(mob);
+						mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
+					}
+					if(foundAttribute<=6)
+						((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+1);
+					else
+						((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+10);
+					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has gained @x2.",target.name(),CharStats.CODES.DESC(foundAttribute).toLowerCase()));
+				}
 				mob.recoverCharStats();
 				((MOB)target).recoverCharStats();
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has gained @x2.",target.name(),CharStats.CODES.DESC(foundAttribute).toLowerCase()));
 				return true;
 			}
 
