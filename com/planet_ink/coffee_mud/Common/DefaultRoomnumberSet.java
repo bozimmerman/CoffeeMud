@@ -411,6 +411,12 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			if(CMath.isInteger(theRest))
 				roomNum=Integer.parseInt(theRest.substring(x+1).trim());
 		}
+		else
+		if(!str.equals("START"))
+		{
+			Log.debugOut("Attempt to add non-numbered room "+str+" to "+areaName);
+			Log.debugOut(new Exception());
+		}
 		LongSet CI = root.get(areaName);
 		if(CI==null)
 		{
