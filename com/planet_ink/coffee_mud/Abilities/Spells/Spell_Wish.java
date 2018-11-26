@@ -1601,7 +1601,7 @@ public class Spell_Wish extends Spell
 						{
 							msg.source().tell(L("Your wish causes you lose a level."));
 							CMLib.leveler().unLevel(mob);
-							mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
+							mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()+1));
 						}
 						((MOB)target).setTrains(((MOB)target).getTrains()+1);
 						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has gained a training point.",target.name()));

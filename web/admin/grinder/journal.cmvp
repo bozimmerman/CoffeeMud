@@ -4,6 +4,11 @@
 @if?!CheckAuthCode?AUTH_JOURNALS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 @AddRequestParameter?JOURNALPAGELIMIT=0@
 <html>
+<!--
+@RequestParametersEncoded@
+@RequestParametersEncoded@
+@RequestParametersEncoded@
+ -->
 <head>
 	<title>Journal Browser</title>
  	<link rel="grinder icon" href="/images/grinder.ico" >
@@ -43,6 +48,15 @@
 		{
 			var journal='@RequestParameter?JOURNAL@';
 			Clicked("journal.cmvp#"+journal,'',journal,'','0','');
+		}
+		function Trash(ch,tm)
+		{
+			if(window.confirm('Delete message?'))
+			{
+				document.JOURNAL.CHANNEL.value=ch;
+				document.JOURNAL.CHANNELMESSAGE.value=tm;
+				Clicked("journal.cmvp#"+ch,'','','','0','DELETE');
+			}
 		}
 		var allpages = @if?CheckReqParm?JOURNAL=@'';@else@'@JournalMessageNext?LASTPAGE@';@endif@
 		var currjournal='@RequestParameter?JOURNAL@';
@@ -107,12 +121,22 @@
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=JOURNAL TARGET=_top METHOD=POST ACTION="journal.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
+<INPUT TYPE=HIDDEN NAME=CHANNEL VALUE="">
+<INPUT TYPE=HIDDEN NAME=CHANNELMESSAGE VALUE="">
+<INPUT TYPE=HIDDEN NAME=CHANNELBACKLOGPAGE VALUE="0">
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
 <INPUT TYPE=HIDDEN NAME=JOURNALCARDINAL VALUE="@RequestParameter?JOURNALCARDINAL@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Journal Browser<a href="javascript:sfideas();"><FONT COLOR=WHITE>.</FONT></a></H2></FONT></TD></TR>
+	@if!?CheckReqParm?CHANNEL=@
+		@if?CheckReqParm?FUNCTION=DELETE@
+			<CENTER><FONT COLOR=RED><B>@ChannelFunction?DELETE@</B></FONT></CENTER>
+			@AddRequestParameter?FUNCTION=@
+			@AddRequestParameter?CHANNELMESSAGE=@
+		@endif@
+	@endif@
+	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Journal/Message Browser<a href="javascript:sfideas();"><FONT COLOR=WHITE>.</FONT></a></H2></FONT></TD></TR>
 		@AddRequestParameter?OLDJOURNAL=@@RequestParameter?JOURNAL@@ @
 		@if?CheckReqParm?JOURNAL=@
 			<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGESEARCH VALUE="@RequestParameter?JOURNALMESSAGESEARCH@">
@@ -445,6 +469,52 @@
 			<TD><BR></TR>
 			@endif@
 		@back@
+		@AddRequestParameter?CHANNELBACK=@@RequestParameter?CHANNEL@@ @
+		@ChannelNext?RESET@
+		@loop@
+			@ChannelNext@
+			<TR>
+			<TD> @if?!CheckReqParm?CHANNEL=@<a href="journal.cmvp?@RequestParametersEncoded@&CHANNEL=@RequestParameter?CHANNEL@&CHANNELBACKLOGPAGE=0"><FONT COLOR=YELLOW>@RequestParameter?CHANNEL@</FONT></a>@endif@<BR></TD>
+			<TD>
+				@if?!CheckReqParm?CHANNELBACK=@
+				@if?CheckReqParm?CHANNELBACK=@@RequestParameter?CHANNEL@@ @
+					@AddRequestParameter?CHANNEL=@@RequestParameter?CHANNELBACK@@ @
+					@AddRequestParameter?CHANNELBACKLOGPAGESIZE=10@
+					<INPUT TYPE=HIDDEN NAME=CHANNELBACKLOGPAGE VALUE="@RequestParameter?CHANNELBACKLOGPAGE@">
+					<P>
+					<B>Back logs for @RequestParameter?CHANNEL@</B><BR>
+					@ChannelBackLogNext?RESET@
+					@loop@
+						<FONT COLOR=WHITE>
+						@ChannelBackLogNext?DELETABLE@<P>
+						</FONT>
+					@back@
+					<TABLE WIDTH=100% BORDER=0>
+					<TR>
+						<TD WIDTH=20%>
+							@if?!CheckReqParm?CHANNELBACKLOGPAGE=&||CHANNELBACKLOGPAGE=0@
+								@AddRequestParameter?CHANNELBACKLOGPAGE=--@
+								<a href="journal.cmvp?CHANNELBACKLOGPAGE=@RequestParameter?CHANNELBACKLOGPAGE@&@RequestParametersEncoded@"><FONT COLOR=YELLOW>Prev Page</FONT></a>
+								@AddRequestParameter?CHANNELBACKLOGPAGE=++@
+							@endif@
+						</TD>
+						<TD>
+							@if?CheckReqParm?CHANNELBACKLOGNEXTPAGE=true@
+								@AddRequestParameter?CHANNELBACKLOGPAGE=++@
+								<a href="journal.cmvp?CHANNELBACKLOGPAGE=@RequestParameter?CHANNELBACKLOGPAGE@&@RequestParametersEncoded@"><FONT COLOR=YELLOW>Next Page</FONT></a>
+							@endif@
+						</TD>
+					</TR>
+					</TABLE>
+				@endif@
+				@endif@
+			</TD>
+			</TR>
+		@back@
+
+
+
+
 </TABLE>
 	<P>
 	<TABLE WIDTH=100% BORDER=0>

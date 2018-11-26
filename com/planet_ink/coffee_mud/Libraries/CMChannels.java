@@ -144,7 +144,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	@Override
 	public List<ChannelMsg> getChannelQue(final int channelNumber, final int numNewToSkip, final int numToReturn)
 	{
-		if((channelNumber>=0)&&(channelNumber<channelList.size()))
+		if((channelNumber>=0)
+		&&(channelNumber<channelList.size()))
 		{
 			final CMChannel channel = channelList.get(channelNumber);
 			final LinkedList<ChannelMsg> msgs=new LinkedList<ChannelMsg>();

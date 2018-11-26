@@ -10,7 +10,7 @@
   9. Can now use CREATE A CAT to quickly generate a GenMOB of a particular race.
   10. Items in npc mob inventory can now be set to populate only at boot time.
   11. Private property left untampered for mud-months will get increasingly "Dusty". Use CLEAN.
-
+  12. Channel backlogs can now be managed from the Journal Browser in the MUDGrinder
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

@@ -120,12 +120,10 @@ public class ChannelBackLogNext extends StdWebMacro
 						elapsedTime=0;
 					}
 					str += " ("+CMLib.time().date2SmartEllapsedTime(elapsedTime,false)+" ago)";
-					/*
 					if((mob!=null)
+					&&(parms.containsKey("DELETABLE"))
 					&&(CMSecurity.isJournalAccessAllowed(mob,channel)))
-						str += " <a href=\"javascript:Trash("+cmsg.sentTimeMillis()+");\"><img src=\"images/delete.jpg\"></a>";
-					*/
-
+						str += " <a href=\"javascript:Trash('"+channel+"','"+cmsg.sentTimeMillis()+"');\"><img src=\"images/delete.jpg\"></a>";
 					if(CMLib.channels().mayReadThisChannel(msg.source(),areareq,mob,channelInt,true))
 						return clearWebMacros(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,msg.source(),msg.target(),msg.tool(),CMStrings.removeColors(str),false));
 				}

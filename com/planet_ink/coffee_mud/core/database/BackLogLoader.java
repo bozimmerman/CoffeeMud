@@ -144,6 +144,7 @@ public class BackLogLoader
 			return;
 		channelName = channelName.toUpperCase().trim();
 		DBConnection D=DB.DBFetch();
+		String[] updates = new String[0];
 		try
 		{
 			try
@@ -158,6 +159,31 @@ public class BackLogLoader
 				D=DB.DBFetch();
 				D.update("DELETE FROM CMBKLG WHERE CMNAME='"+channelName+"' AND CMDATE="+timeStamp,0);
 			}
+			{
+				final List<String> updateV = new ArrayList<String>();
+				ResultSet R = D.query("SELECT CMDATE, CMINDX FROM CMBKLG WHERE CMNAME='"+channelName+"' AND CMDATE > "+timeStamp+" AND CMINDX>0");
+				if(R!=null)
+				{
+					while(R.next())
+					{
+						final long ts = R.getLong("CMDATE");
+						final int index = R.getInt("CMINDX");
+						updateV.add("UPDATE CMBKLG SET CMINDX="+(index-1)+" WHERE CMNAME='"+channelName+"' AND CMINDX="+index+" AND CMDATE="+ts+";");
+					}
+					R.close();
+				}
+				R = D.query("SELECT CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"' AND CMINDX=0");
+				if(R!=null)
+				{
+					if(R.next())
+					{
+						final long ts = R.getLong("CMDATE");
+						updateV.add("UPDATE CMBKLG SET CMDATE="+(ts-1)+" WHERE CMNAME='"+channelName+"' AND CMINDX=0;");
+					}
+					R.close();
+				}
+				updates = updateV.toArray(updates);
+			}
 		}
 		catch(final Exception sqle)
 		{
@@ -166,6 +192,21 @@ public class BackLogLoader
 		finally
 		{
 			DB.DBDone(D);
+		}
+		if((updates != null) && (updates.length>0))
+		{
+			try
+			{
+				DB.update(updates);
+				synchronized(("BACKLOG_"+channelName).intern())
+				{
+					counters.remove(channelName);
+				}
+			}
+			catch(final Exception sqle)
+			{
+				Log.errOut("Journal",sqle);
+			}
 		}
 	}
 
@@ -188,7 +229,7 @@ public class BackLogLoader
 			sql.append(" AND CMINDX <="+newest);
 			sql.append(" ORDER BY CMINDX");
 			final ResultSet R = D.query(sql.toString());
-			while(R.next())
+			while((R.next())&&(list.size()<numToReturn))
 				list.add(new Pair<String,Long>(DB.getRes(R, "CMDATA"),Long.valueOf(DB.getLongRes(R, "CMDATE"))));
 			R.close();
 		}
