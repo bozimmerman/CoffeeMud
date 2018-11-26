@@ -244,7 +244,7 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 		case 0:
 			return "^pspades^?";
 		case 16:
-			return "^pclubs^p";
+			return "^pclubs^?";
 		case 32:
 			return "^rhearts^?";
 		case 48:
