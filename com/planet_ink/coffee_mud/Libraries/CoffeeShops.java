@@ -1545,17 +1545,19 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if((shop.isSold(ShopKeeper.DEAL_LANDSELLER)||(buyerClanPair!=null))
 		&&(myArea!=null))
 		{
-			final HashSet<Environmental> roomsHandling=new HashSet<Environmental>();
-			final Map<Environmental,LandTitle> titles=new Hashtable<Environmental,LandTitle>();
+			final HashSet<Room> roomsHandling=new HashSet<Room>();
+			final Map<Room,LandTitle> titles=new HashMap<Room,LandTitle>();
+			final String buyerName=(buyer==null) ? "" : buyer.Name();
 			for(final Enumeration<Room> r=myArea.getProperMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				final LandTitle A=CMLib.law().getLandTitle(R);
-				if((A!=null)&&(R.roomID().length()>0))
+				if((A!=null)
+				&&(R.roomID().length()>0))
 					titles.put(R,A);
 			}
 
-			for(final Environmental R : titles.keySet())
+			for(final Room R : titles.keySet())
 			{
 				final LandTitle A=titles.get(R);
 				if(!roomsHandling.contains(R))
@@ -1574,9 +1576,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					boolean skipThisOne=false;
 					if(R instanceof Room)
 					{
-						for(int d=0;d<4;d++)
+						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 						{
-							final Room R2=((Room)R).getRoomInDir(d);
+							final Room R2=R.getRoomInDir(d);
 							LandTitle L2=null;
 							if(R2!=null)
 							{
@@ -1603,7 +1605,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						continue;
 					final Item I=CMClass.getItem("GenTitle");
 					if(R instanceof Room)
-						((LandTitle)I).setLandPropertyID(CMLib.map().getExtendedRoomID((Room)R));
+						((LandTitle)I).setLandPropertyID(CMLib.map().getExtendedRoomID(R));
 					else
 						((LandTitle)I).setLandPropertyID(R.Name());
 					if((((LandTitle)I).getOwnerName().length()>0)
