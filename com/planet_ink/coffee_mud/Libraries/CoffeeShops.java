@@ -1547,7 +1547,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			final HashSet<Room> roomsHandling=new HashSet<Room>();
 			final Map<Room,LandTitle> titles=new HashMap<Room,LandTitle>();
-			final String buyerName=(buyer==null) ? "" : buyer.Name();
 			for(final Enumeration<Room> r=myArea.getProperMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
