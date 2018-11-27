@@ -405,6 +405,17 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 
 	@Override
+	public CMChannel getChannel(final String channelName)
+	{
+		for(int c=0;c<channelList.size();c++)
+		{
+			if((channelList.get(c)).name().equals(channelName))
+				return channelList.get(c);
+		}
+		return null;
+	}
+
+	@Override
 	public List<String> getFlaggedChannelNames(final ChannelFlag flag)
 	{
 		final List<String> channels=new Vector<String>();
@@ -814,7 +825,15 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 			channelQueUp(channelInt,msg);
 			for(final Session S : CMLib.sessions().localOnlineIterable())
-				sendChannelCMMsgTo(S,areareq,channelInt,msg,mob);
+			{
+				final ChannelsLibrary myChanLib=CMLib.get(S)._channels();
+				final int chanNum = (myChanLib == this) ? channelInt : myChanLib.getChannelIndex(channelName);
+				if(chanNum >= 0)
+				{
+					msg.setOthersCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+chanNum));
+					myChanLib.sendChannelCMMsgTo(S,areareq,chanNum,msg,mob);
+				}
+			}
 		}
 		if((CMLib.intermud().i3online()&&(CMLib.intermud().isI3channel(channelName)))
 		||(CMLib.intermud().imc2online()&&(CMLib.intermud().isIMC2channel(channelName))))

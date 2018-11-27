@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -265,7 +266,8 @@ public class IMudInterface implements ImudServices, Serializable
 				if((ck.channel==null)||(ck.channel.length()==0))
 					return;
 				final String channelColor="^Q";
-				final int channelInt=CMLib.channels().getChannelIndex(channelName);
+				final ChannelsLibrary channels = CMLib.channels();
+				final int channelInt=channels.getChannelIndex(channelName);
 				int channelCode=channelInt;
 				if(channelInt < 0)
 				{
@@ -313,14 +315,20 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 				CMLib.commands().monitorGlobalMessage(mob.location(), msg);
 				if(channelInt>=0)
-					CMLib.channels().channelQueUp(channelInt,msg);
+					channels.channelQueUp(channelInt,msg);
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					final MOB M=S.mob();
-					if(((channelInt<0)||CMLib.channels().mayReadThisChannel(mob,false,S,channelInt))
-					&&(M.location()!=null)
-					&&(M.location().okMessage(M,msg)))
-						M.executeMsg(M,msg);
+					final ChannelsLibrary myChanLib=CMLib.get(S)._channels();
+					final int chanNum = (myChanLib == channels) ? channelInt : myChanLib.getChannelIndex(channelName);
+					if((chanNum >= 0)
+					&&(myChanLib.mayReadThisChannel(mob,false,S,chanNum))
+					&&(M.location()!=null))
+					{
+						msg.setOthersCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+chanNum));
+						if(M.location().okMessage(M,msg))
+							M.executeMsg(M,msg);
+					}
 				}
 				mob.destroy();
 				if((targetMOB!=null)&&(killtargetmob))

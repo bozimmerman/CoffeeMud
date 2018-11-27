@@ -57,16 +57,17 @@ public class ChanWho extends StdCommand
 		}
 		final int x=channel.indexOf('@');
 		String mud=null;
+		final ChannelsLibrary channels = CMLib.channels();
 		if(x>0)
 		{
 			mud=channel.substring(x+1);
-			final int channelInt=CMLib.channels().getChannelIndex(channel.substring(0,x).toUpperCase());
+			final int channelInt=channels.getChannelIndex(channel.substring(0,x).toUpperCase());
 			if(channelInt<0)
 			{
 				mob.tell(L("You must specify a valid channel name. Try CHANNELS for a list."));
 				return false;
 			}
-			channel=CMLib.channels().getChannel(channelInt).name().toUpperCase();
+			channel=channels.getChannel(channelInt).name().toUpperCase();
 			if((channel.length()==0)||(channelInt<0))
 			{
 				mob.tell(L("You must specify a valid channel name. Try CHANNELS for a list."));
@@ -75,8 +76,8 @@ public class ChanWho extends StdCommand
 			CMLib.intermud().i3chanwho(mob,channel,mud);
 			return false;
 		}
-		final int channelInt=CMLib.channels().getChannelIndex(channel.toUpperCase());
-		channel=CMLib.channels().getChannel(channelInt).name();
+		final int channelInt=channels.getChannelIndex(channel.toUpperCase());
+		channel=channels.getChannel(channelInt).name();
 		if(channelInt<0)
 		{
 			mob.tell(L("You must specify a valid channel name. Try CHANNELS for a list."));
@@ -90,7 +91,10 @@ public class ChanWho extends StdCommand
 			MOB mob2=S.mob();
 			if((mob2!=null)&&(mob2.soulMate()!=null))
 				mob2=mob2.soulMate();
-			if((CMLib.channels().mayReadThisChannel(mob,areareq,S,channelInt))
+			final ChannelsLibrary myChanLib=CMLib.get(S)._channels();
+			final int chanNum = (myChanLib == channels) ? channelInt : myChanLib.getChannelIndex(channel);
+			if((chanNum>=0)
+			&&(myChanLib.mayReadThisChannel(mob,areareq,S,chanNum))
 			&&(mob2!=null)
 			&&(CMLib.flags().isInTheGame(mob2,true))
 			&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)

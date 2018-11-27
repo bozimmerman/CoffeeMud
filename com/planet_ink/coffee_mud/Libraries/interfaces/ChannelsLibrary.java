@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -214,6 +215,15 @@ public interface ChannelsLibrary extends CMLibrary
 	 * @return the official channel name of the channel
 	 */
 	public String findChannelName(String channelName);
+
+	/**
+	 * Returns the official channel object of the channel with the
+	 * given name. It is case insensitive search.
+	 * @see ChannelsLibrary#getNumChannels()
+	 * @param channelName the channel string to search for
+	 * @return the official channel
+	 */
+	public CMChannel getChannel(final String channelName);
 
 	/**
 	 * Searches all users online for any sessions that are snooping on the

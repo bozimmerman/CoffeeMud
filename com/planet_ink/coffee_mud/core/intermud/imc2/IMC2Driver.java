@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.Command;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
@@ -1191,7 +1192,8 @@ public final class IMC2Driver extends Thread
 		channelName=read_channel_name(channelName);
 		if(channelName.length()==0)
 			return;
-		final int channelInt=CMLib.channels().getChannelIndex(channelName);
+		final ChannelsLibrary channels = CMLib.channels();
+		final int channelInt=channels.getChannelIndex(channelName);
 		if(channelInt<0)
 			return;
 		final String channelColor="^Q";
@@ -1209,12 +1211,20 @@ public final class IMC2Driver extends Thread
 
 		msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 
-		CMLib.channels().channelQueUp(channelInt,(CMMsg)msg.copyOf());
+		channels.channelQueUp(channelInt,(CMMsg)msg.copyOf());
 		for(final Session S : CMLib.sessions().localOnlineIterable())
-			if((CMLib.channels().mayReadThisChannel(mob,false,S,channelInt))
-			&&(S.mob().location()!=null)
-			&&(S.mob().location().okMessage(S.mob(),msg)))
-				S.mob().executeMsg(S.mob(),msg);
+		{
+			final ChannelsLibrary myChanLib=CMLib.get(S)._channels();
+			final int chanNum = (myChanLib == channels) ? channelInt : myChanLib.getChannelIndex(channel);
+			if((chanNum >= 0)
+			&&(myChanLib.mayReadThisChannel(mob,false,S,chanNum))
+			&&(S.mob().location()!=null))
+			{
+				msg.setOthersCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+chanNum));
+				if(S.mob().location().okMessage(S.mob(),msg))
+					S.mob().executeMsg(S.mob(),msg);
+			}
+		}
 
 		LinkedList l = (LinkedList) chanhist.get(channel);
 		if(l == null)
