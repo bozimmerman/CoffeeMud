@@ -235,7 +235,10 @@ public class Ranger_Track extends StdAbility
 		for (final Room room : checkSet)
 		{
 			final Room R=CMLib.map().getRoom(room);
-			if(R.fetchInhabitant(mobName)!=null)
+			final MOB M=R.fetchInhabitant(mobName);
+			if((M!=null)
+			&&(CMLib.flags().canAccess(mob, R))
+			&&(CMLib.flags().isSeeable(M)))
 				rooms.add(R);
 		}
 

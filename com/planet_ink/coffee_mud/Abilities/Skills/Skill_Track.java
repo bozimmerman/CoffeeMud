@@ -405,7 +405,10 @@ public class Skill_Track extends StdSkill
 					final Room R=CMLib.map().getRoom(room);
 					if(R!=null)
 					{
-						if(R.fetchInhabitant(mobName)!=null)
+						final MOB M=R.fetchInhabitant(mobName);
+						if((M!=null)
+						&&(CMLib.flags().canAccess(mob, R))
+						&&(CMLib.flags().isSeeable(M)))
 							rooms.add(R);
 					}
 				}

@@ -111,7 +111,8 @@ public class Thief_LocateAlcohol extends ThiefSkill
 		final StringBuffer msg=new StringBuffer("");
 		if(E==null)
 			return msg.toString();
-		if((E instanceof Room)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if((E instanceof Room)
+		&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			final Room room=(Room)E;
 			{
@@ -130,7 +131,8 @@ public class Thief_LocateAlcohol extends ThiefSkill
 			}
 		}
 		else
-		if((E instanceof Item)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if((E instanceof Item)
+		&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			alcoholCheck(mob,(Item)E,msg);
 			if(E instanceof Container)
@@ -138,7 +140,8 @@ public class Thief_LocateAlcohol extends ThiefSkill
 				alcoholCheck(mob,I,msg);
 		}
 		else
-		if((E instanceof MOB)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if((E instanceof MOB)
+		&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			for(int i=0;i<((MOB)E).numItems();i++)
 			{

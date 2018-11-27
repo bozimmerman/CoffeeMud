@@ -242,7 +242,8 @@ public class Skill_TrackFriend extends StdAbility
 				if(s.equalsIgnoreCase(mobName))
 				{
 					final MOB M=CMLib.players().getPlayer(mobName);
-					if((M!=null)&&(CMLib.flags().isInTheGame(M, true)))
+					if((M!=null)
+					&&(CMLib.flags().isInTheGame(M, true)))
 						H.add(M);
 				}
 			}
@@ -273,7 +274,10 @@ public class Skill_TrackFriend extends StdAbility
 		{
 			final Room R=CMLib.map().getRoom(room);
 			final MOB M=R.fetchInhabitant(mobName);
-			if((M!=null)&&(H.contains(M)))
+			if((M!=null)
+			&&(H.contains(M))
+			&&(CMLib.flags().canAccess(mob, room))
+			&&(CMLib.flags().isSeeable(M)))
 				rooms.add(R);
 		}
 

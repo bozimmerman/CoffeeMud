@@ -181,7 +181,8 @@ public class Ranger_TrackAnimal extends StdAbility
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			final MOB mob=room.fetchInhabitant(i);
-			if(CMLib.flags().isAnimalIntelligence(mob))
+			if(CMLib.flags().isAnimalIntelligence(mob)
+			&&(CMLib.flags().isSeeable(mob)))
 				return mob;
 		}
 		return null;
