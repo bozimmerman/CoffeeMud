@@ -245,7 +245,8 @@ public interface AchievementLibrary extends CMLibrary
 		TITLE,
 		ABILITY,
 		EXPERTISE,
-		STAT
+		STAT,
+		NOPURGE
 		;
 	}
 

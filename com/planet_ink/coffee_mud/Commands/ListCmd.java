@@ -3513,6 +3513,9 @@ public class ListCmd extends StdCommand
 					case QP:
 						rewardDisplay.append(((AmountAward)award).getAmount()+"QP ");
 						break;
+					case NOPURGE:
+						rewardDisplay.append("NOPURGE ");
+						break;
 					case TITLE:
 						titleAward=(TitleAward)award;
 						break;

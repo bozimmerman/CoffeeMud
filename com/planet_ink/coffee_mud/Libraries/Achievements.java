@@ -224,6 +224,42 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						});
 					}
 					else
+					if(thing.equals("NOPURGE"))
+					{
+						awardsList.add(new AmountAward()
+						{
+							@Override
+							public AwardType getType()
+							{
+								return AwardType.NOPURGE;
+							}
+
+							@Override
+							public int getAmount()
+							{
+								return number;
+							}
+
+							@Override
+							public boolean isPreAwarded()
+							{
+								return false;
+							}
+
+							@Override
+							public String getDescription()
+							{
+								return L("Protection from auto-purge");
+							}
+
+							@Override
+							public boolean isNotAwardedOnRemort()
+							{
+								return false;
+							}
+						});
+					}
+					else
 					{
 						final int y=thing.indexOf('(');
 						String parms="";
@@ -4020,6 +4056,23 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				mob.setQuestPoint(mob.getQuestPoint() + aaward.getAmount());
 				break;
 			}
+			case NOPURGE:
+			{
+				final Command C=CMClass.getCommand("NoPurge");
+				if(C!=null)
+				{
+					try
+					{
+						if(C.executeInternal(mob, 0, mob) == Boolean.TRUE)
+							awardMessage.append(L("^HYou are now protected from auto-purge!\n\r^?\n\r"));
+					}
+					catch (final IOException e)
+					{
+						Log.errOut(e);
+					}
+				}
+				break;
+			}
 			case TITLE:
 			{
 				final TitleAward aaward=(TitleAward)award;
@@ -4155,6 +4208,23 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					awardMessage.append(L("^HYou have lost @x1 quest points!\n\r^?\n\r",""+aaward.getAmount()));
 					mob.setQuestPoint(mob.getQuestPoint() - aaward.getAmount());
+				}
+				break;
+			}
+			case NOPURGE:
+			{
+				final Command C=CMClass.getCommand("NoPurge");
+				if(C!=null)
+				{
+					try
+					{
+						if(C.executeInternal(mob, MUDCmdProcessor.METAFLAG_REVERSED, mob) == Boolean.TRUE)
+							awardMessage.append(L("^HYou are no longer protected from auto-purge!\n\r^?\n\r"));
+					}
+					catch (final IOException e)
+					{
+						Log.errOut(e);
+					}
 				}
 				break;
 			}
@@ -4404,6 +4474,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case XP:
 				awardStr.append(" ").append(((AmountAward)award).getAmount())
 						.append(" ").append("XP");
+				break;
+			case NOPURGE:
+				awardStr.append(" 1 NOPURGE");
 				break;
 			default:
 				break;
