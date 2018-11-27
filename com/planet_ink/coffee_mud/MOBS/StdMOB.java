@@ -1148,13 +1148,14 @@ public class StdMOB implements MOB
 	public void removeFromGame(final boolean preserveFollowers, final boolean killSession)
 	{
 		removeFromGame = true;
+		final PlayerStats pStats = playerStats;
 		if ((location != null) && (location.isInhabitant(this)))
 		{
 			location().delInhabitant(this);
 			if ((session() != null) && (!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
 				location().showOthers(this, null, CMMsg.MSG_OK_ACTION, L("<S-NAME> vanish(es) in a puff of smoke."));
 		}
-		if(playerStats!=null)
+		if(pStats!=null)
 			CMLib.players().changePlayersLocation(this,null);
 		setFollowing(null);
 		final PairVector<MOB,Integer> oldFollowers = new PairVector<MOB,Integer>();
@@ -1183,6 +1184,18 @@ public class StdMOB implements MOB
 					newFol.text();
 					follower.killMeDead(false);
 					addFollower(newFol, oldFollowers.getSecond(f).intValue());
+				}
+			}
+			if(pStats!=null)
+			{
+				pStats.setLastDateTime(System.currentTimeMillis());
+				CMLib.database().DBUpdateFollowers(this);
+				if(CMSecurity.isASysOp(this)
+				||((!CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS)))
+					&&(CMLib.masking().maskCheck(CMProps.getVar(CMProps.Str.LOGOUTMASK), this, true)))
+				{
+					if(pStats!=null) // cant do this when logouts are suspended -- folks might get killed!
+						CMLib.threads().suspendResumeRecurse(this, false, true);
 				}
 			}
 			if (killSession && (session() != null))

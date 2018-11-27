@@ -2379,9 +2379,10 @@ public class DefaultSession implements Session
 		{
 			preLogout(mob);
 		}
-		if(removeMOB)
+		if(removeMOB
+		&&(mob()!=null))
 		{
-			removeMOBFromGame(false);
+			mob().removeFromGame(true, dropSession);
 		}
 		if(dropSession)
 			logoutFinal();
@@ -2567,28 +2568,6 @@ public class DefaultSession implements Session
 		}
 	}
 
-	private void removeMOBFromGame(final boolean killSession)
-	{
-		final MOB M=mob;
-		if(M!=null)
-		{
-			final PlayerStats pStats=M.playerStats();
-			final boolean inTheGame=CMLib.flags().isInTheGame(M,true);
-			if(pStats!=null)
-				pStats.setLastDateTime(System.currentTimeMillis());
-			if(inTheGame)
-				CMLib.database().DBUpdateFollowers(M);
-			if(CMSecurity.isASysOp(M)
-			||((!CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS)))
-				&&(CMLib.masking().maskCheck(CMProps.getVar(CMProps.Str.LOGOUTMASK), M, true)))
-			{
-				if(pStats!=null) // cant do this when logouts are suspended -- folks might get killed!
-					CMLib.threads().suspendResumeRecurse(M, false, true);
-				M.removeFromGame(true,killSession);
-			}
-		}
-	}
-
 	@Override
 	public SessionStatus getStatus()
 	{
@@ -2611,7 +2590,7 @@ public class DefaultSession implements Session
 		{
 			preLogout(M);
 			if(removeMOB)
-				removeMOBFromGame(false);
+				M.removeFromGame(true, false);
 			M.setSession(null);
 			this.mob=null;
 		}

@@ -1938,7 +1938,8 @@ public class StdArea implements Area
 	@Override
 	public void addProperRoomnumber(final String roomID)
 	{
-		if((roomID!=null)&&(roomID.length()>0))
+		if((roomID!=null)
+		&&(roomID.length()>0))
 		{
 			getProperRoomnumbers().add(roomID);
 			addMetroRoomnumber(roomID);

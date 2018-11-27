@@ -12822,7 +12822,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final int prcnt=CMath.s_int(t[1]);
 						if(CMLib.dice().rollPercentage()<prcnt)
+						{
 							execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
+						}
 					}
 				}
 				break;
