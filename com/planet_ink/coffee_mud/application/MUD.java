@@ -66,7 +66,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	private static final float	  HOST_VERSION_MAJOR	= (float)5.9;
-	private static final int	  HOST_VERSION_MINOR	= 7;//(float)7.1;
+	private static final float	  HOST_VERSION_MINOR	= (float)7.2;
 
 	private static enum MudState
 	{
