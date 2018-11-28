@@ -74,12 +74,29 @@ public class Prayer_Cleanliness extends Prayer
 		return super.castingQuality(mob,target);
 	}
 
-   @Override
-public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
+	@Override
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final MOB target=this.getTarget(mob,commands,givenTarget);
+		final Physical target=super.getAnyTarget(mob, commands, givenTarget, Wearable.FILTER_ANY);
 		if(target==null)
 			return false;
+		
+		if(target instanceof Room)
+		{
+		}
+		else
+		if(target instanceof Item)
+		{
+		}
+		else
+		if(target instanceof MOB)
+		{
+		}
+		else
+		{
+			mob.tell(L("@x1 doesn't look very dirty.",target.name(mob)));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -92,9 +109,67 @@ public boolean invoke(final MOB mob, final List<String> commands, final Physical
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if((target.playerStats()!=null)&&(target.playerStats().getHygiene()>0))
-					target.playerStats().setHygiene(0);
-				target.tell(L("You feel clean!"));
+				if(target instanceof Room)
+				{
+					Ability A=target.fetchEffect("Soiled");
+					if(A!=null)
+					{
+						A.unInvoke();
+						target.delEffect(A);
+					}
+					A=target.fetchEffect("Dusty");
+					if(A!=null)
+					{
+						A.unInvoke();
+						target.delEffect(A);
+					}
+					for(final Enumeration<Item> i=((Room)target).items();i.hasMoreElements();)
+					{
+						final Item I=i.nextElement();
+						if((I!=null)
+						&&(I.container()==null))
+						{
+							A=I.fetchEffect("Soiled");
+							if(A!=null)
+							{
+								A.unInvoke();
+								I.delEffect(A);
+							}
+							A=I.fetchEffect("Dusty");
+							if(A!=null)
+							{
+								A.unInvoke();
+								I.delEffect(A);
+							}
+						}
+					}
+					mob.tell(L("@x1 seems cleaner!",target.name(mob)));
+				}
+				else
+				if(target instanceof Item)
+				{
+					Ability A=target.fetchEffect("Soiled");
+					if(A!=null)
+					{
+						A.unInvoke();
+						target.delEffect(A);
+					}
+					A=target.fetchEffect("Dusty");
+					if(A!=null)
+					{
+						A.unInvoke();
+						target.delEffect(A);
+					}
+					mob.tell(L("@x1 seems cleaner!",target.name(mob)));
+				}
+				else
+				if(target instanceof MOB)
+				{
+					final MOB targetM=(MOB)target;
+					if((targetM.playerStats()!=null)&&(targetM.playerStats().getHygiene()>0))
+						targetM.playerStats().setHygiene(0);
+					targetM.tell(L("You feel clean!"));
+				}
 			}
 		}
 		else
