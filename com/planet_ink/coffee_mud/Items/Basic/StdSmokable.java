@@ -201,16 +201,30 @@ public class StdSmokable extends StdContainer implements Light
 			{
 				tickStatus=Tickable.STATUS_DEAD;
 				final MOB M=(MOB)owner();
-				M.tell(M,null,this,L("<O-NAME> burns out."));
-				durationTicks=0;
-				if(destroyedWhenBurnedOut())
-					destroy();
-				M.recoverPhyStats();
-				M.recoverCharStats();
-				M.recoverMaxState();
-				M.recoverPhyStats();
-				if(M.location()!=null)
-					M.location().recoverRoomStats();
+				final List<Item> V=getContents();
+				if(V.size()>0)
+				{
+					final Item I=V.get(0);
+					if(CMLib.dice().roll(1,100,0)==1)
+						getAddictedTo(M,I);
+					final CMMsg msg=CMClass.getMsg(M, I, null, CMMsg.MASK_ALWAYS|CMMsg.MSG_WEAR, null);
+					I.executeMsg(M, msg);
+					I.destroy();
+					durationTicks=baseDuration;
+				}
+				else
+				{
+					M.tell(M,null,this,L("<O-NAME> burns out."));
+					durationTicks=0;
+					if(destroyedWhenBurnedOut())
+						destroy();
+					M.recoverPhyStats();
+					M.recoverCharStats();
+					M.recoverMaxState();
+					M.recoverPhyStats();
+					if(M.location()!=null)
+						M.location().recoverRoomStats();
+				}
 			}
 			light(false);
 			durationTicks=0;
@@ -275,10 +289,9 @@ public class StdSmokable extends StdContainer implements Light
 					if(capacity>0)
 					{
 						final List<Item> V=getContents();
-						Item I=null;
-						for(int v=0;v<V.size();v++)
+						if(V.size()>0)
 						{
-							I=V.get(v);
+							final Item I=V.get(0);
 							if(CMLib.dice().roll(1,100,0)==1)
 								getAddictedTo(msg.source(),I);
 							I.executeMsg(myHost, msg);
