@@ -118,8 +118,8 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
-		if((affected instanceof Rideable)
-		&&(((Rideable)affected).riding()==this))
+		if((affected instanceof Rider)
+		&&(((Rider)affected).riding()==this))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_UNHELPFUL);
 	}
 
