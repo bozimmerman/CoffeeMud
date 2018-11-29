@@ -43,27 +43,10 @@ import java.util.*;
  */
 public interface CommonCommands extends CMLibrary
 {
-	/**
-	 * Adjusts the mobs age based on ellapsed time,
-	 * and checks for age related diseases and
-	 * wish someone a happy birthday.
-	 *
-	 * @param mob the mob to tick
-	 * @param millisSinceLast the ellapsed time
-	 */
-	public void tickAging(MOB mob, long millisSinceLast);
-
-	/**
-	 * An optional system that consumes mana based on
-	 * effects cast by the player.
-	 * @param mob the mob to consume mana of.
-	 * @param manaConsumeCounter internally manipulated counter
-	 * @return remaining manaConsumeCounter
-	 */
-	public int tickManaConsumption(MOB mob, int manaConsumeCounter);
+	public void addGlobalMonitor(MsgMonitor M);
 	public void delGlobalMonitor(MsgMonitor M);
 	public void monitorGlobalMessage(Room room, CMMsg msg);
-	public void addGlobalMonitor(MsgMonitor M);
+	
 	public boolean forceStandardCommand(MOB mob, String command, List<String> parms);
 	public Object forceInternalCommand(MOB mob, String command, Object... parms);
 	public Object unforcedInternalCommand(MOB mob, String command, Object... parms);
@@ -98,24 +81,187 @@ public interface CommonCommands extends CMLibrary
 	public void postSay(MOB mob, String text);
 	public void lookAtExits(Room room, MOB mob);
 	public void lookAtExitsShort(Room room, MOB mob);
+
+	/**
+	 * Handler function for when a mob looks at something, or
+	 * examines it closely.  Things like items, mobs, rooms, etc.
+	 * 
+	 * @param msg the looking or examining message
+	 */
 	public void handleBeingLookedAt(CMMsg msg);
+
+	/**
+	 * Handler function for when a mob reads something
+	 * 
+	 * @param msg the reading message
+	 */
 	public void handleBeingRead(CMMsg msg);
+
+	/**
+	 * Handler function for when a mob recalls back to their beacon room
+	 * 
+	 * @param msg the recall message
+	 */
 	public void handleRecall(CMMsg msg);
+
+	/**
+	 * Handler function for when a mob sits down
+	 * 
+	 * @param msg the sitting message
+	 */
 	public void handleSit(CMMsg msg);
+
+	/**
+	 * Handler function for when a mob stands up
+	 * 
+	 * @param msg the standing message
+	 */
 	public void handleStand(CMMsg msg);
+
+	/**
+	 * Handler function for when a mob goes to sleep
+	 * 
+	 * @param msg the sleeping message
+	 */
 	public void handleSleep(CMMsg msg);
+
+	/**
+	 * Handler function for when a mob sniffs an item or 
+	 * mob or room or something.
+	 * 
+	 * @param msg the item sniffing message
+	 */
 	public void handleBeingSniffed(CMMsg msg);
+
+	/**
+	 * Handler function for when a mob is given an item
+	 * by another mob.
+	 * 
+	 * @param msg the item giving message
+	 */
 	public void handleBeingGivenTo(CMMsg msg);
+
+	/**
+	 * Handler function for when a mob gets an item
+	 * 
+	 * @param msg the item getting message
+	 */
 	public void handleBeingGetted(CMMsg msg);
+
+	/**
+	 * Handler function for when a mob drops an item
+	 * 
+	 * @param msg the item removing message
+	 */
 	public void handleBeingDropped(CMMsg msg);
+
+	/**
+	 * Handler function for when a mob removes an item
+	 * 
+	 * @param msg the item removing message
+	 */
 	public void handleBeingRemoved(CMMsg msg);
+	
+	/**
+	 * Handler function for when a mob wears an item
+	 * 
+	 * @param msg the item wearing message
+	 */
 	public void handleBeingWorn(CMMsg msg);
+
+	/**
+	 * Handler function for when a mob wields a weapon.
+	 * 
+	 * @param msg the item wielding message
+	 */
 	public void handleBeingWielded(CMMsg msg);
+
+	/**
+	 * Handler function for when a mob holds an item.
+	 * 
+	 * @param msg the item holding message
+	 */
 	public void handleBeingHeld(CMMsg msg);
+	
+	/**
+	 * Handler function called when a mob does something that might affect their
+	 * hygiene, typically in a cleanly way.  The observer that calls this is
+	 * typically something that can recognize that the event affect hygiene.
+	 * 
+	 * @param msg the message that triggered the hygiene efect
+	 * @param minHygiene the smallest hygiene amount to consider the mob clean
+	 * @param adjHygiene the amount by which to adjust hygiene, usually +
+	 */
 	public void handleHygienicMessage(final CMMsg msg, final int minHygiene, final long adjHygiene);
+
+	/**
+	 * Handler function called when a mob is spoken to by another mob in
+	 * the same room, and the introduction system is enabled.  This is to
+	 * check to see if the speaker is introducing themselves.
+	 * 
+	 * @param speaker the mob speaking
+	 * @param me the mob being spoken to
+	 * @param said what the speaker said
+	 */
 	public void handleIntroductions(MOB speaker, MOB me, String said);
+
+	/**
+	 * Handler function called when a mob is spoken to by another mob
+	 * with targeted speech.
+	 * 
+	 * @param speaker the speaker mob
+	 * @param me the mob being spoken to
+	 * @param msg the message
+	 */
 	public void handleBeingSpokenTo(MOB speaker, MOB me, String msg);
+	
+	/**
+	 * Handler function that is called when a mob enters the
+	 * game, either by logging in, or respawning, or remorting.
+	 * 
+	 * @param mob the player or npc coming to life
+	 * @param msg the "come to life" message
+	 */
 	public void handleComeToLife(MOB mob, CMMsg msg);
+	
+	/**
+	 * Handler function that is called when a mob observes another mob enter the
+	 * game, either by logging in, or respawning, or remorting.
+	 * 
+	 * @param observer the player or npc observing the life happening
+	 * @param lifer the player or npc coming to life
+	 * @param msg the "come to life" message
+	 */
 	public void handleObserveComesToLife(MOB observer, MOB lifer, CMMsg msg);
+	
+	/**
+	 * Handler-like function that is called whenever the given mob
+	 * enters a command that cannot be resolved to an actual mud
+	 * command, social, or skill.
+	 * 
+	 * @param mob the player who entered the bad command
+	 * @param command the parsed command as entered.
+	 * @return true if the command remained unknown, false if rejected
+	 */
 	public boolean handleUnknownCommand(MOB mob, List<String> command);
+	
+	/**
+	 * Adjusts the mobs age based on ellapsed time,
+	 * and checks for age related diseases and
+	 * wish someone a happy birthday.
+	 *
+	 * @param mob the mob to tick
+	 * @param millisSinceLast the ellapsed time
+	 */
+	public void tickAging(MOB mob, long millisSinceLast);
+
+	/**
+	 * An optional system that consumes mana based on
+	 * effects cast by the player.
+	 * 
+	 * @param mob the mob to consume mana of.
+	 * @param manaConsumeCounter internally manipulated counter
+	 * @return remaining manaConsumeCounter
+	 */
+	public int tickManaConsumption(MOB mob, int manaConsumeCounter);	
 }
