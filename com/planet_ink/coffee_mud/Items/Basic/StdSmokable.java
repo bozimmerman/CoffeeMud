@@ -205,8 +205,6 @@ public class StdSmokable extends StdContainer implements Light
 				if((V.size()>0)&&(!destroyedWhenBurnedOut()))
 				{
 					final Item I=V.get(0);
-					if(CMLib.dice().roll(1,100,0)==1)
-						getAddictedTo(M,I);
 					final CMMsg msg=CMClass.getMsg(M, I, null, CMMsg.MASK_ALWAYS|CMMsg.MSG_WEAR, null);
 					I.executeMsg(M, msg);
 					I.destroy();
