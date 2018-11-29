@@ -51,7 +51,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * their playerstats and generates a fully formed prompt, complete
 	 * with all variables filled in.
 	 * @param mob the mob to build a prompt for
-	 * @param prompt TODO
+	 * @param prompt the players prompt template string
 	 * @return the fully filled in customized prompt string
 	 */
 	public String builtPrompt(MOB mob, String prompt);
@@ -318,7 +318,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @param mob the mob who wants to destroy the item
 	 * @param I the item to destroy
 	 * @param ignoreBodies true to ignore corpse checks, false otherwise
-	 * @param ignoreWeight TODO
+	 * @param ignoreWeight true to ignore weight of the item
 	 * @return true if the item can be destroyed, false otherwise
 	 */
 	public boolean canBePlayerDestroyed(final MOB mob, final Item I, final boolean ignoreBodies, boolean ignoreWeight);
@@ -352,7 +352,7 @@ public interface CMMiscUtils extends CMLibrary
 	 *
 	 * @param race1 the mother race
 	 * @param race2 the father race
-	 * @param ignoreRules TODO
+	 * @param ignoreRules ignore the ini file override rules
 	 * @return the mixed race
 	 */
 	public Race getMixedRace(String race1, String race2, boolean ignoreRules);
