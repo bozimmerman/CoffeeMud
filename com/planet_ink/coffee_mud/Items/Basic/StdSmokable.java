@@ -202,7 +202,7 @@ public class StdSmokable extends StdContainer implements Light
 				tickStatus=Tickable.STATUS_DEAD;
 				final MOB M=(MOB)owner();
 				final List<Item> V=getContents();
-				if(V.size()>0)
+				if((V.size()>0)&&(!destroyedWhenBurnedOut()))
 				{
 					final Item I=V.get(0);
 					if(CMLib.dice().roll(1,100,0)==1)
@@ -211,6 +211,8 @@ public class StdSmokable extends StdContainer implements Light
 					I.executeMsg(M, msg);
 					I.destroy();
 					durationTicks=baseDuration;
+					tickStatus=Tickable.STATUS_NOT;
+					return true;
 				}
 				else
 				{
