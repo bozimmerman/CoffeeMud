@@ -1638,6 +1638,138 @@ public class CMStrings
 		return str.toString();
 	}
 
+
+	/**
+	 * Returns a boolean array of the chars marking where
+	 * colors (ansi and cm), and other markups chars are
+	 * located in the string
+	 * @param s the string to strip
+	 * @return the markup char locations as true
+	 */
+	public final static boolean[] markMarkups(final String s)
+	{
+		if(s==null)
+			return new boolean[0];
+		final String HEX_DIGITS="0123456789ABCDEFabcdef";
+		final StringBuilder str=new StringBuilder(s);
+		final boolean[] nos=new boolean[s.length()];
+		boolean colorStart=false;
+		for(int i=0;i<str.length();i++)
+		{
+			switch(str.charAt(i))
+			{
+			case 'm':
+				if(colorStart)
+				{
+					nos[i]=true;
+					colorStart=false;
+				}
+				break;
+			case (char) 27:
+				nos[i]=true;
+				colorStart=true;
+				break;
+			case '%':
+				if(((i+2)<str.length())
+				&&(HEX_DIGITS.indexOf(str.charAt(i+1))>=0)
+				&&(HEX_DIGITS.indexOf(str.charAt(i+2))>=0))
+				{
+					nos[i]=true;
+					nos[++i]=true;
+					nos[++i]=true;
+				}
+				break;
+			case '^':
+				if((i+1)<str.length())
+				{
+					nos[i]=true;
+					final char c=str.charAt(i+1);
+					switch(c)
+					{
+					case ColorLibrary.COLORCODE_BACKGROUND:
+						if(i+3<=str.length())
+						{
+							nos[++i]=true;
+							nos[++i]=true;
+						}
+						break;
+					case ColorLibrary.COLORCODE_FANSI256:
+					case ColorLibrary.COLORCODE_BANSI256:
+						if(i+5<=str.length())
+						{
+							nos[++i]=true;
+							nos[++i]=true;
+							nos[++i]=true;
+							nos[++i]=true;
+						}
+						break;
+					case '<':
+					{
+						nos[i]=true;
+						nos[i+1]=true;
+						i+=2;
+						while(i<(str.length()-1))
+						{
+							nos[i]=true;
+							if((str.charAt(i)!='^')||(str.charAt(i+1)!='>'))
+							{
+								i++;
+								if(i>=(str.length()-1))
+									break;
+							}
+							else
+							{
+								nos[++i]=true;
+								break;
+							}
+						}
+						break;
+					}
+					case '&':
+					{
+						nos[i]=true;
+						nos[i+1]=true;
+						i+=2;
+						while(i<(str.length()-1))
+						{
+							if(str.charAt(i)!=';')
+							{
+								nos[i++]=true;
+								if(i>=(str.length()-1))
+								{
+									nos[i]=true;
+									break;
+								}
+							}
+							else
+							{
+								nos[i]=true;
+								break;
+							}
+						}
+						break;
+					}
+					default:
+					{
+						nos[++i]=true;
+					}
+					break;
+					}
+				}
+				else
+				{
+					nos[i]=true;
+				}
+				break;
+			default:
+				if(colorStart)
+					nos[i]=true;
+				break;
+			}
+		}
+		return nos;
+	}
+	
 	/**
 	 * Returns the length of the string as if it has neither
 	 * ansi nor cm color codes.

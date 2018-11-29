@@ -226,9 +226,11 @@ public class StdLanguage extends StdAbility implements Language
 	protected int numChars(final String words)
 	{
 		int num=0;
+		final boolean[] nos=CMStrings.markMarkups(words);
 		for(int i=0;i<words.length();i++)
 		{
-			if(Character.isLetter(words.charAt(i)))
+			if((!nos[i]) 
+			&& Character.isLetter(words.charAt(i)))
 				num++;
 		}
 		return num;
@@ -240,17 +242,23 @@ public class StdLanguage extends StdAbility implements Language
 		if(numToMess==0)
 			return words;
 		final StringBuffer w=new StringBuffer(words);
-		while(numToMess>0)
+		final boolean[] nos=CMStrings.markMarkups(words);
+		int attempts=words.length() * 100;
+		while((numToMess>0) && (--attempts>0))
 		{
 			final int x=CMLib.dice().roll(1,words.length(),-1);
-			final char c=words.charAt(x);
-			if(Character.isLetter(c))
+			if(!nos[x])
 			{
-				if(vowels.indexOf(c)>=0)
-					w.setCharAt(x,fixCase(c,vowels.charAt(CMLib.dice().roll(1,vowels.length(),-1))));
-				else
-					w.setCharAt(x,fixCase(c,consonants.charAt(CMLib.dice().roll(1,consonants.length(),-1))));
-				numToMess--;
+				final char c=words.charAt(x);
+				if(Character.isLetter(c))
+				{
+					if(vowels.indexOf(c)>=0)
+						w.setCharAt(x,fixCase(c,vowels.charAt(CMLib.dice().roll(1,vowels.length(),-1))));
+					else
+						w.setCharAt(x,fixCase(c,consonants.charAt(CMLib.dice().roll(1,consonants.length(),-1))));
+					numToMess--;
+					nos[x]=true; // prevent the same letter change twice
+				}
 			}
 		}
 		return w.toString();
@@ -259,19 +267,28 @@ public class StdLanguage extends StdAbility implements Language
 	public String scrambleAll(final String language, final String str, final int numToMess)
 	{
 		final StringBuffer newStr=new StringBuffer("");
+		final boolean[] nos=CMStrings.markMarkups(str);
+		final StringBuilder cs=new StringBuilder(str);
 		int start=0;
 		int end=0;
 		int state=-1;
-		while(start<=str.length())
+		while(start<=cs.length())
 		{
 			char c='\0';
-			if(end>=str.length())
+			if(end>=cs.length())
 				c=' ';
 			else
-				c=str.charAt(end);
+				c=cs.charAt(end);
 			switch(state)
 			{
 			case -1:
+				if((end < cs.length()) && nos[end])
+				{
+					newStr.append(c);
+					end++;
+					start = end;
+				}
+				else
 				if(Character.isLetter(c))
 				{
 					state = 0;
@@ -285,6 +302,15 @@ public class StdLanguage extends StdAbility implements Language
 				}
 				break;
 			case 0:
+				if((end < cs.length()) && nos[end])
+				{
+					newStr.append(translate(language, cs.substring(start, end)));
+					newStr.append(c);
+					end++;
+					start = end;
+					state = -1;
+				}
+				else
 				if(Character.isLetter(c))
 					end++;
 				else
@@ -297,13 +323,21 @@ public class StdLanguage extends StdAbility implements Language
 				}
 				else
 				{
-					newStr.append(translate(language, str.substring(start, end)) + c);
+					newStr.append(translate(language, cs.substring(start, end)) + c);
 					end++;
 					start = end;
 					state = -1;
 				}
 				break;
 			case 1:
+				if((end < cs.length()) && nos[end])
+				{
+					newStr.append(c);
+					end++;
+					start = end;
+					state = -1;
+				}
+				else
 				if(Character.isLetterOrDigit(c))
 				{
 					newStr.append(c);

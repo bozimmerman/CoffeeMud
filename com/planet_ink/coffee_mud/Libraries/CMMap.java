@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.collections.MultiEnumeration.MultiEnumeratorBuilder;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
+import com.planet_ink.coffee_mud.core.interfaces.LandTitle;
 import com.planet_ink.coffee_mud.core.interfaces.MsgListener;
 import com.planet_ink.coffee_mud.core.interfaces.PhysicalAgent;
 import com.planet_ink.coffee_mud.core.interfaces.PrivateProperty;
@@ -3808,16 +3809,36 @@ public class CMMap extends StdLibrary implements WorldMap
 		try
 		{
 			final Set<LandTitle> titlesDone = new HashSet<LandTitle>();
+			for(final Enumeration<Area> a=areas();a.hasMoreElements();)
+			{
+				final Area A=a.nextElement();
+				if(A.numEffects()>0)
+				{
+					final LandTitle T=law.getLandTitle(A);
+					if((T!=null)
+					&&(!titlesDone.contains(T)))
+					{
+						T.updateLot(playerList);
+						titlesDone.add(T);
+					}
+				}
+			}
 			for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				// roomid > 0? these are unfilled...
-				final LandTitle T=law.getLandTitle(R);
-				if((T!=null)
-				&&(!titlesDone.contains(T)))
+				if(R.numEffects()>0)
 				{
-					T.updateLot(playerList);
-					titlesDone.add(T);
+					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
+					{
+						final Ability A=a.nextElement();
+						if((A instanceof LandTitle)
+						&&(!titlesDone.contains(A)))
+						{
+							((LandTitle)A).updateLot(playerList);
+							titlesDone.add((LandTitle)A);
+						}
+					}
 				}
 			}
 		}
