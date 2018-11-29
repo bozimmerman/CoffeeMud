@@ -2531,9 +2531,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			return;
 		if((defenderM==observerM)||(attackerM==observerM))
 			return;
-		if((defenderM.location()!=observerM.location())||(defenderM.location()!=attackerM.location()))
+		if((defenderM.location()!=observerM.location())
+		||(defenderM.location()!=attackerM.location()))
 			return;
-		if((observerM.isAttributeSet(MOB.Attrib.AUTOASSIST)))
+		if((observerM.isAttributeSet(MOB.Attrib.AUTOASSIST))
+		||(CMath.bset(observerM.phyStats().disposition(), PhyStats.IS_UNHELPFUL)))
 			return;
 		if(observerM.isInCombat())
 			return;

@@ -598,8 +598,10 @@ public interface PhyStats extends CMCommon, Modifiable
 	public final static int IS_CATALOGED=1048576;
 	/** a bit setting, as from disposition(), flagging this object as being unattackable */
 	public final static int IS_UNATTACKABLE=2097152;
-	/** a bit setting, as from disposition(), flagging this object as a custom word for the above*/
+	/** a bit setting, as from disposition(), flagging this object as a custom word for the above */
 	public final static int IS_CUSTOM=4194304;
+	/** a bit setting, as from disposition(), flagging this object as a non-helping follower */
+	public final static int IS_UNHELPFUL=4194304;
 
 	/** STAT codes, indexed by the 2nd root of the various IS_ disposition() bitmasks */
 	public static final String[] IS_CODES={
@@ -625,7 +627,8 @@ public interface PhyStats extends CMCommon, Modifiable
 		"ISUNSAVABLE",
 		"ISCATALOGED",
 		"ISUNATTACKABLE",
-		"ISCUSTOM"
+		"ISCUSTOM",
+		"ISUNHELPFUL"
 	};
 
 	/** Descriptions, indexed by the 2nd root of the various IS_ disposition() bitmasks */
@@ -652,7 +655,8 @@ public interface PhyStats extends CMCommon, Modifiable
 		"Is never saved",
 		"Is cataloged",
 		"Is unattackable",
-		"Is something"
+		"Is something",
+		"Is Unhelpful"
 	};
 
 	/** Descriptive verbs, indexed by the 2nd root of the various IS_ disposition() bitmasks */
@@ -680,6 +684,7 @@ public interface PhyStats extends CMCommon, Modifiable
 		"Causes unsavability",
 		"Created from a template",
 		"Prevents attackability",
-		"Causes something..."
+		"Causes something...",
+		"Prevents helpful attacks",
 	};
 }

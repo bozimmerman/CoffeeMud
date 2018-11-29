@@ -113,6 +113,15 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 		}
 		readableText = ("" + type.ordinal());
 	}
+	
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		if((affected instanceof Rideable)
+		&&(((Rideable)affected).riding()==this))
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_UNHELPFUL);
+	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
