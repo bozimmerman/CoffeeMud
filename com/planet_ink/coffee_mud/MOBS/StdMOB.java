@@ -1773,11 +1773,11 @@ public class StdMOB implements MOB
 			&& CMLib.flags().isWithSeenContents(this))
 		|| (isInCombat()))
 		{
-			StringBuffer sendBack = null;
+			final StringBuilder sendBack;
 			if (!name(viewerMob).equals(Name()))
-				sendBack = new StringBuffer(name(viewerMob));
+				sendBack = new StringBuilder(name(viewerMob));
 			else
-				sendBack = new StringBuffer(titledName());
+				sendBack = new StringBuilder(titledName());
 			sendBack.append(" ");
 			sendBack.append(L(CMLib.flags().getPresentDispositionVerb(this, CMFlagLibrary.ComingOrGoing.IS)+" here"));
 			if (riding() != null)
