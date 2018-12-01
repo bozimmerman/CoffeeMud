@@ -164,7 +164,8 @@ public class Spell_Fabricate extends Spell
 				if((L!=null)&&(L.size()>0))
 				{
 					final ItemKeyPair what=A.craftItem(L.get(0).get(0),-1,true, false);
-					if((what!=null)&&(what.item!=null))
+					if((what!=null)
+					&&(what.item!=null))
 					{
 						intoI=what.item;
 						break;
@@ -194,6 +195,8 @@ public class Spell_Fabricate extends Spell
 
 		intoI=(Item)intoI.copyOf();
 		CMLib.utensils().disenchantItem(intoI);
+		if(intoI instanceof SpellHolder)
+			((SpellHolder)intoI).setSpellList("");
 		while(intoI.numBehaviors()>0)
 		{
 			final Behavior B=intoI.fetchBehavior(0);
