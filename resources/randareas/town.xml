@@ -514,7 +514,7 @@ See guides/RandomAreas.html for information about documents of this type.
 						<DESCRIPTION>A $adj_burning forge can be seen in the back.</DESCRIPTION>
 					</DESCRIPTION>
 					<DESCRIPTION select="any-1" condition="$shoptype='food'">
-						<DESCRIPTION>Sweat and spicy spells from the ovens float around the room.</DESCRIPTION>
+						<DESCRIPTION>Sweet and spicy spells from the ovens float around the room.</DESCRIPTION>
 						<DESCRIPTION>A thin layer of flour coats the floor.</DESCRIPTION>
 						<DESCRIPTION>Delicious smells can be detected from the cooking area.</DESCRIPTION>
 						<DESCRIPTION>Your mouth begins to water just being here.</DESCRIPTION>
