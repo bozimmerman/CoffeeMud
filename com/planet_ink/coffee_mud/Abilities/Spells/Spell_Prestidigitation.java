@@ -80,6 +80,7 @@ public class Spell_Prestidigitation extends Spell
 		if(str.length()==0)
 		{
 			mob.tell(L("Prestidigitize what?"));
+			return false;
 		}
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
