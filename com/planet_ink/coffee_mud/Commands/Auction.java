@@ -221,7 +221,7 @@ public class Auction extends Channel implements Tickable
 			getLiveData().setAuctionedItem((Item)target);
 			final String sb=CMParms.combine(commands,0);
 			getLiveData().setCurrency(CMLib.english().numPossibleGoldCurrency(mob,sb));
-			if(getLiveData().getCurrency().length()==0)
+			if((getLiveData().getCurrency().length()==0)&&(CMath.isInteger(sb)))
 				getLiveData().setCurrency(CMLib.beanCounter().getCurrency(mob));
 			final double denomination=CMLib.english().numPossibleGoldDenomination(null,getLiveData().getCurrency(),sb);
 			final long num=CMLib.english().numPossibleGold(null,sb);
