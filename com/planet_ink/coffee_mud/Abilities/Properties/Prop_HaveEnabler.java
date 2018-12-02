@@ -89,7 +89,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		||((compiledMask!=null)&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
 			return false;
 		final MOB newMOB=(MOB)target;
-		final List<Ability> allAbles=getMySpellsV();
+		final PairList<Ability, Integer> allAbles=getMySpellsV();
 		int proff=100;
 		int x=text().indexOf('%');
 		if(x>0)
@@ -108,7 +108,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		}
 		for(int v=0;v<allAbles.size();v++)
 		{
-			final Ability A=allAbles.get(v);
+			final Ability A=allAbles.get(v).first;
 			if(newMOB.fetchAbility(A.ID())==null)
 			{
 				final String t=A.text();
@@ -144,12 +144,13 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 	{
 		if(!(P instanceof MOB))
 			return;
-		final List<Ability> V=getMySpellsV();
+		final PairList<Ability, Integer> V=getMySpellsV();
 		final Set<String> removedAbles = new HashSet<String>();
 		for(int v=0;v<V.size();v++)
 		{
-			final Ability A=V.get(v);
-			if((!A.isSavable())&&(((MOB)P).isMine(A)))
+			final Ability A=V.get(v).first;
+			if((!A.isSavable())
+			&&(((MOB)P).isMine(A)))
 			{
 				removedAbles.add(A.ID());
 				((MOB)P).delAbility(A);

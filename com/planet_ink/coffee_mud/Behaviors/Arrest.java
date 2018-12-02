@@ -1689,6 +1689,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				C=CMLib.time().localClock(criminal);
 			if((ticks > 0)
 			&&(judge!=null)
+			&&(criminal != null)
 			&&(criminal.fetchEffect("Banishment")==null))
 			{
 				Ability bA=CMClass.getAbility("Banishment");
@@ -1724,6 +1725,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				C=CMLib.time().localClock(criminal);
 			if((ticks > 0)
 			&&(judge!=null)
+			&&(criminal != null)
 			&&(criminal.fetchEffect("Shaming")==null))
 			{
 				Ability bA=CMClass.getAbility("Shaming");

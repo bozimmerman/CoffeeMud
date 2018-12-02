@@ -13,6 +13,7 @@
   12. Channel backlogs can now be managed from the Journal Browser in the MUDGrinder
   13. New Achievement Award: NOPURGE -- for protecting players from auto-purge.
   14. New Spell: Prestidigitation
+  15. New parameter to the Prop_*SpellCast properties for setting ticks on some spells only.
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

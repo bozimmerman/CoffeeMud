@@ -58,10 +58,10 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	protected short			level			= -1;
 	protected short			maxTicks		= -1;
 	protected short			chanceToHappen	= -1;
-	protected List<Ability>	spellV			= null;
 
-	protected MaskingLibrary.CompiledZMask compiledMask=null;
-	protected volatile boolean			   processing  = false;
+	protected PairList<Ability, Integer>	spellV		= null;
+	protected MaskingLibrary.CompiledZMask	compiledMask= null;
+	protected volatile boolean				processing  = false;
 
 	protected List<Ability> unrevocableSpells = null;
 
@@ -118,14 +118,15 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			compiledMask=CMLib.masking().getPreCompiledMask(maskString);
 	}
 
-	public List<Ability> getMySpellsV()
+	protected final PairList<Ability, Integer> getMySpellsV()
 	{
 		if(spellV!=null)
 			return spellV;
-		spellV=new Vector<Ability>();
+		spellV=new PairVector<Ability, Integer>();
 		final String names=getParmString(text());
 		final List<String> set=CMParms.parseSemicolons(names,true);
 		String thisOne=null;
+		Integer ticks = Integer.valueOf(-1);
 		for(int s=0;s<set.size();s++)
 		{
 			thisOne=set.get(s);
@@ -146,6 +147,11 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 				if(maxTicks!=-1)
 					continue;
 			}
+			if(thisOne.toUpperCase().startsWith("TICKS"))
+			{
+				ticks = Integer.valueOf(CMParms.getParmInt(thisOne,"TICKS",-1));
+				continue;
+			}
 			final int pctDex=thisOne.indexOf("% ");
 			if((pctDex>0) && (thisOne.substring(pctDex+1).trim().length()>0))
 				thisOne=thisOne.substring(pctDex+1).trim();
@@ -165,7 +171,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			{
 				A=(Ability)A.copyOf();
 				A.setMiscText(parm);
-				spellV.add(A);
+				spellV.add(A, ticks);
 			}
 		}
 		return spellV;
@@ -199,11 +205,14 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return false;
 	}
 
-	public Map<String, String> makeMySpellsH(final List<Ability> V)
+	public Map<String, String> makeMySpellsH(final Iterator<Ability> v)
 	{
 		final Hashtable<String, String> spellH=new Hashtable<String, String>();
-		for(int v=0;v<V.size();v++)
-			spellH.put(V.get(v).ID(),V.get(v).ID());
+		for(;v.hasNext();)
+		{
+			final Ability A=v.next();
+			spellH.put(A.ID(),A.ID());
+		}
 		return spellH;
 	}
 
@@ -241,18 +250,19 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		return invokerMOB;
 	}
 
-	public List<Object> convertToV2(final List<Ability> spellsV, final Physical target)
+	public List<Triad<Ability, List<String>, Integer>> convertToV2(final PairList<Ability, Integer> spellsV, final Physical target)
 	{
-		final List<Object> VTOO=new Vector<Object>();
+		final List<Triad<Ability, List<String>, Integer>> VTOO=new ArrayList<Triad<Ability, List<String>, Integer>>();
 		for(int v=0;v<spellsV.size();v++)
 		{
-			Ability A=spellsV.get(v);
+			Ability A=spellsV.getFirst(v);
+			final Integer ticksA=spellsV.getSecond(v);
 			final Ability EA=(target!=null)?target.fetchEffect(A.ID()):null;
 			if((EA==null)&&(didHappen()))
 			{
 				final String t=A.text();
 				A=(Ability)A.copyOf();
-				Vector<String> V2=new Vector<String>();
+				List<String> V2=new ArrayList<String>();
 				if(t.length()>0)
 				{
 					final int x=t.indexOf('/');
@@ -267,30 +277,30 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				VTOO.add(A);
-				VTOO.add(V2);
+				VTOO.add(new Triad<Ability, List<String>, Integer>(A, V2, ticksA));
 			}
 		}
 		return VTOO;
 	}
 
-	@SuppressWarnings("unchecked")
 	public boolean addMeIfNeccessary(final PhysicalAgent source, final Physical target, final boolean makeLongLasting, int asLevel, final short maxTicks)
 	{
-		final List<Ability> V=getMySpellsV();
+		final PairList<Ability, Integer> V=getMySpellsV();
 		if((target==null)
 		||(V.size()==0)
 		||((compiledMask!=null)
 			&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
 				return false;
-		final List<Object> VTOO=convertToV2(V,target);
+		final List<Triad<Ability, List<String>, Integer>> VTOO=convertToV2(V,target);
 		if(VTOO.size()==0)
 			return false;
 		final MOB qualMOB=getInvokerMOB(source,target);
-		for(int v=0;v<VTOO.size();v+=2)
+		for(int v=0;v<VTOO.size();v++)
 		{
-			final Ability A=(Ability)VTOO.get(v);
-			final List<String> V2=(Vector<String>)VTOO.get(v+1);
+			final Triad<Ability, List<String>, Integer> triad = VTOO.get(v);
+			final Ability A=triad.first;
+			final List<String> V2=triad.second;
+			final int ticksA=triad.third.intValue();
 			if(level >= 0)
 				asLevel = level;
 			else
@@ -303,8 +313,15 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 			// which means they dont go away when item is removed.
 			if(EA!=null)
 			{
-				if((maxTicks>0)&&(maxTicks<Short.MAX_VALUE)&&(CMath.s_int(EA.getStat("TICKDOWN"))>maxTicks))
+				if((maxTicks>0)
+				&&(maxTicks<Short.MAX_VALUE)
+				&&(CMath.s_int(EA.getStat("TICKDOWN"))>maxTicks))
 					EA.setStat("TICKDOWN", Short.toString(maxTicks));
+				else
+				if((ticksA>0)
+				&&(ticksA<Short.MAX_VALUE)
+				&&(CMath.s_int(EA.getStat("TICKDOWN"))>ticksA))
+					EA.setStat("TICKDOWN", Integer.toString(ticksA));
 				else
 				if(makeLongLasting)
 				{
@@ -361,7 +378,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 		}
 		if(eff.size()>0)
 		{
-			final Map<String,String> h=makeMySpellsH(getMySpellsV());
+			final Map<String,String> h=makeMySpellsH(getMySpellsV().firstIterator());
 			if(unrevocableSpells != null)
 			{
 				for(int v=unrevocableSpells.size()-1;v>=0;v--)
@@ -429,11 +446,11 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 
 	public String spellAccountingsWithMask(final String pre, final String post)
 	{
-		final List<Ability> spellList=getMySpellsV();
+		final PairList<Ability, Integer> spellList = getMySpellsV();
 		String id="";
 		for(int v=0;v<spellList.size();v++)
 		{
-			final Ability A=spellList.get(v);
+			final Ability A=spellList.get(v).first;
 			if(spellList.size()==1)
 				id+=A.name();
 			else
@@ -471,14 +488,14 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	@Override
 	public Ability fetchAbility(final int index)
 	{
-		final List<Ability> spellsV = getMySpellsV();
+		final PairList<Ability, Integer> spellsV = getMySpellsV();
 		if (spellsV.size() == 0)
 			return null;
 		if ((index < 0) || (index >= spellsV.size()))
 			return null;
 		try
 		{
-			return spellsV.get(index);
+			return spellsV.get(index).first;
 		}
 		catch (final Exception e)
 		{
@@ -503,16 +520,16 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	@Override
 	public Ability fetchRandomAbility()
 	{
-		final List<Ability> spellsV = getMySpellsV();
+		final PairList<Ability, Integer> spellsV = getMySpellsV();
 		if (spellsV.size() == 0)
 			return null;
-		return spellsV.get(CMLib.dice().roll(1, spellsV.size(), -1));
+		return spellsV.get(CMLib.dice().roll(1, spellsV.size(), -1)).first;
 	}
 
 	@Override
 	public Enumeration<Ability> abilities()
 	{
-		return new FilteredEnumeration<Ability>(new IteratorEnumeration<Ability>(getMySpellsV().iterator()),new Filterer<Ability>()
+		return new FilteredEnumeration<Ability>(new IteratorEnumeration<Ability>(getMySpellsV().firstIterator()),new Filterer<Ability>()
 		{
 			@Override
 			public boolean passesFilter(final Ability obj)
@@ -537,7 +554,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	@Override
 	public Enumeration<Ability> allAbilities()
 	{
-		return new IteratorEnumeration<Ability>(getMySpellsV().iterator());
+		return new IteratorEnumeration<Ability>(getMySpellsV().firstIterator());
 	}
 
 	@Override

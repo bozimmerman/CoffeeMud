@@ -149,7 +149,8 @@ public class Banishment extends StdAbility
 					mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
 					recallRoom=CMLib.map().getStartRoom(mob);
 				}
-				if((recallRoom.getArea() != mob.location().getArea()))
+				if((recallRoom != null)
+				&&(recallRoom.getArea() != mob.location().getArea()))
 				{
 					if(this.badDestination(mob, recallRoom))
 					{

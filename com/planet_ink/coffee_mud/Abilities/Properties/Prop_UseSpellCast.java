@@ -54,7 +54,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 
 	public boolean addMeIfNeccessary(final PhysicalAgent source, final Physical target, final int asLevel, final short maxTicks)
 	{
-		final List<Ability> V=getMySpellsV();
+		final PairList<Ability, Integer> V=getMySpellsV();
 		if((target==null)
 		||(V.size()==0)
 		||((compiledMask!=null)&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
@@ -64,7 +64,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=V.get(v);
+			Ability A=V.get(v).first;
 			Ability EA=target.fetchEffect(A.ID());
 			if((EA==null)&&(didHappen()))
 			{

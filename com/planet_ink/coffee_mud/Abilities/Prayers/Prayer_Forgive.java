@@ -155,7 +155,8 @@ public class Prayer_Forgive extends Prayer
 					for(final Ability A : badAs)
 					{
 						A.unInvoke();
-						criminalM.delEffect(A);
+						if(criminalM != null)
+							criminalM.delEffect(A);
 					}
 				}
 			}

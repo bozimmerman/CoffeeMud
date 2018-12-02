@@ -632,7 +632,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				final Room R=r.nextElement();
 				if((!outdoorOnly)||((R.domainType()&Room.INDOORS)==0))
 				{
-					if(!R.okMessage(msg.source(), msg))
+					if((msg != null) 
+					&& (!R.okMessage(msg.source(), msg)))
 						return false;
 				}
 			}

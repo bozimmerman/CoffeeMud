@@ -2654,18 +2654,23 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				try
 				{
-					final boolean missingMobVarCondition =
-								  (defPrefix!=null)
-								&&(defined!=null)
-								&&(id.var.toUpperCase().startsWith(defPrefix))
-								&&(!defined.containsKey(id.var.toUpperCase()));
-					if(missingMobVarCondition)
+					final boolean missingMobVarCondition;
+					if(defPrefix != null)
 					{
-						XMLTag newPiece=piece;
-						while((newPiece.parent()!=null)&&(newPiece.tag().equals(piece.tag())))
-							newPiece=newPiece.parent();
-						fillOutStatCode(E, ignoreStats, defPrefix, id.var.substring(defPrefix.length()), newPiece, defined, false);
+						missingMobVarCondition =
+						  (defined!=null)
+						&&(id.var.toUpperCase().startsWith(defPrefix))
+						&&(!defined.containsKey(id.var.toUpperCase()));
+						if(missingMobVarCondition)
+						{
+							XMLTag newPiece=piece;
+							while((newPiece.parent()!=null)&&(newPiece.tag().equals(piece.tag())))
+								newPiece=newPiece.parent();
+							fillOutStatCode(E, ignoreStats, defPrefix, id.var.substring(defPrefix.length()), newPiece, defined, false);
+						}
 					}
+					else
+						missingMobVarCondition = false;
 					String value=findString(E,ignoreStats,defPrefix,id.var, piece, defined);
 					if(CMath.isMathExpression(value))
 					{
@@ -2676,7 +2681,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						else
 							value=""+val;
 						if((origValue.indexOf('?')>0) // random levels need to be chosen ONCE, esp when name is involved.
-						&&(missingMobVarCondition))
+						&&(missingMobVarCondition)
+						&&(defined != null))
 							defined.put(id.var.toUpperCase(),value);
 					}
 					fixed.put(id.var.toUpperCase(),value);
