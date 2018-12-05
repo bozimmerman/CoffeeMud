@@ -4,11 +4,6 @@
 @if?!CheckAuthCode?AUTH_JOURNALS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 @AddRequestParameter?JOURNALPAGELIMIT=0@
 <html>
-<!--
-@RequestParametersEncoded@
-@RequestParametersEncoded@
-@RequestParametersEncoded@
- -->
 <head>
 	<title>Journal Browser</title>
  	<link rel="grinder icon" href="/images/grinder.ico" >
@@ -129,7 +124,7 @@
 <INPUT TYPE=HIDDEN NAME=JOURNALCARDINAL VALUE="@RequestParameter?JOURNALCARDINAL@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <TABLE WIDTH=100% BORDER=1>
-	@if!?CheckReqParm?CHANNEL=@
+	@if?!CheckReqParm?CHANNEL=@
 		@if?CheckReqParm?FUNCTION=DELETE@
 			<CENTER><FONT COLOR=RED><B>@ChannelFunction?DELETE@</B></FONT></CENTER>
 			@AddRequestParameter?FUNCTION=@
