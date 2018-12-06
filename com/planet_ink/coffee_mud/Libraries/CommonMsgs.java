@@ -479,7 +479,6 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 								CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^>@x2 tell(s) you '@x3'^</TELL^>^?^.",CMStrings.removeColors(mob.name(target)),mob.Name(),text),
 								CMMsg.NO_EFFECT,null);
 					}
-					final CMMsg origMsg = (CMMsg)msg.copyOf();
 					if((mob.location().okMessage(mob,msg))
 					&&((ignore)||((target.location()!=null)&&(target.location().okMessage(target,msg)))))
 					{
