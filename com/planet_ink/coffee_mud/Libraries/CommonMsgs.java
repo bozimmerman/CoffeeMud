@@ -479,6 +479,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 								CMMsg.MSG_TELL,L("^t^<TELL \"@x1\"^>@x2 tell(s) you '@x3'^</TELL^>^?^.",CMStrings.removeColors(mob.name(target)),mob.Name(),text),
 								CMMsg.NO_EFFECT,null);
 					}
+					final CMMsg origMsg = (CMMsg)msg.copyOf();
 					if((mob.location().okMessage(mob,msg))
 					&&((ignore)||((target.location()!=null)&&(target.location().okMessage(target,msg)))))
 					{
@@ -498,12 +499,20 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 										+"\",\"player\":\""+mob.name(target)+"\"}");
 							}
 							target.executeMsg(target,msg);
+							String targetMessage=msg.targetMessage();
 							if(msg.trailerMsgs()!=null)
 							{
 								for(final CMMsg msg2 : msg.trailerMsgs())
 								{
-									if((msg!=msg2)&&(target.okMessage(target,msg2)))
+									if((msg!=msg2)
+									&&(target.okMessage(target,msg2)))
+									{
 										target.executeMsg(target,msg2);
+										if((msg.targetMinor()==msg2.targetMinor())
+										&&(msg.targetMessage()!=null)
+										&&(msg.targetMessage().length()>0))
+											targetMessage=msg2.targetMessage();
+									}
 								}
 								msg.trailerMsgs().clear();
 								if(msg.trailerRunnables()!=null)
@@ -523,7 +532,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 								if(target.playerStats()!=null)
 								{
 									target.playerStats().setReplyTo(mob,PlayerStats.REPLY_TELL);
-									String str=msg.targetMessage();
+									String str=targetMessage;
 									if((msg.tool() instanceof Ability)
 									&&((((Ability)msg.tool()).classificationCode() & Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 									&&(target.fetchEffect(msg.tool().ID()) != null)
