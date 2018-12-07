@@ -497,7 +497,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 									final Ability A=CMClass.getAbility("Dusty");
 									if(A!=null)
 									{
-										A.setMiscText("LEVEL=1 INTERVAL="+t0);
+										A.setMiscText("LEVEL=0 INTERVAL="+t0);
 										I.addNonUninvokableEffect(A);
 										updateItems=true;
 									}
