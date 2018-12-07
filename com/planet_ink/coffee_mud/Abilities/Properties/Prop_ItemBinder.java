@@ -255,11 +255,16 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 			case CMMsg.TYP_GET:
 				if((this.boundToName.length()==0)
 				&&(on == BoundOn.PICKUP)
-				&&((!(msg.source() instanceof ShopKeeper))))
+				&&((!(msg.source() instanceof ShopKeeper)))
+				&&((!msg.source().isMonster())||(msg.source().amFollowing()!=null)))
 				{
 					this.boundToName = getBindyName(msg.source());
 					if(this.boundToName.length()>0)
-						super.miscText = text()+" BOUND=\""+CMStrings.escape(this.boundToName)+"\"";
+					{
+						final String boundStr=" BOUND=\""+CMStrings.escape(this.boundToName)+"\"";
+						if(text().indexOf(boundStr)<0)
+							super.miscText = text()+boundStr;
+					}
 				}
 				break;
 			default:
