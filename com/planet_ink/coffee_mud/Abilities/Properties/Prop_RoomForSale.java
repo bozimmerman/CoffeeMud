@@ -478,8 +478,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					final TimeClock C=R.getArea().getTimeObj();
 					if(C!=null)
 					{
-						final long t0 = C.getDaysInMonth() * C.getHoursInDay();
-						final long t = 2 * t0 * CMProps.getMillisPerMudHour() / MudHost.TIME_SAVETHREAD_SLEEP;
+						final long t0 = C.getMonthsInYear() * C.getDaysInMonth() * C.getHoursInDay();
+						final long t = 2 * t0 * (CMProps.getMillisPerMudHour() / MudHost.TIME_SAVETHREAD_SLEEP);
 
 						final CMFlagLibrary flags=CMLib.flags();
 						if(daysSinceItemsSaved > t)
@@ -497,7 +497,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 									final Ability A=CMClass.getAbility("Dusty");
 									if(A!=null)
 									{
-										A.setMiscText("LEVEL=0 INTERVAL="+t0);
+										A.setMiscText("LEVEL=1 INTERVAL="+t0);
 										I.addNonUninvokableEffect(A);
 										updateItems=true;
 									}
