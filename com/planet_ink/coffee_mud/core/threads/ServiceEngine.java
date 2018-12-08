@@ -320,12 +320,12 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 	@Override
-	public TickClient startTickDown(final Tickable E, final int tickID, final long TICK_TIME, final int numTicks)
+	public TickClient startTickDown(final Tickable E, final int tickID, final long tickTimeMs, final int numTicks)
 	{
-		return startTickDown(CMLib.map().getOwnedThreadGroup(E),E,tickID,TICK_TIME,numTicks);
+		return startTickDown(CMLib.map().getOwnedThreadGroup(E),E,tickID,tickTimeMs,numTicks);
 	}
 
-	public synchronized TickClient startTickDown(ThreadGroup group, final Tickable E, final int tickID, final long tickTime, final int numTicks)
+	public synchronized TickClient startTickDown(ThreadGroup group, final Tickable E, final int tickID, final long tickTimeMs, final int numTicks)
 	{
 		TickableGroup tock=null;
 		if(group==null)
@@ -340,7 +340,7 @@ public class ServiceEngine implements ThreadEngine
 				return null;
 			}
 			if((tock==null)
-			&&(almostTock.getTickInterval()==tickTime)
+			&&(almostTock.getTickInterval()==tickTimeMs)
 			&&(!almostTock.isSolitaryTicker())
 			&&(almostTock.numTickers()<getMaxObjectsPerThread()))
 			{
@@ -353,7 +353,7 @@ public class ServiceEngine implements ThreadEngine
 		final boolean isSolitary = ((tickID&Tickable.TICKID_SOLITARYMASK)==Tickable.TICKID_SOLITARYMASK);
 		if((tock==null)||isSolitary)
 		{
-			tock=new StdTickGroup(this, tickTime, Thread.currentThread().getThreadGroup().getName(), isSolitary);
+			tock=new StdTickGroup(this, tickTimeMs, group.getName(), isSolitary);
 			addTickGroup(tock);
 		}
 
