@@ -805,12 +805,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		mob.tell(theNews.toString());
 		curClass=mob.baseCharStats().getCurrentClass();
-		final Set<String> oldAbilities=new HashSet<String>();
+		final Set<String> oldAbilityIDs=new HashSet<String>();
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if(A!=null)
-				oldAbilities.add(A.ID());
+				oldAbilityIDs.add(A.ID());
 		}
 		final Map<String,Integer> oldExpertises=new TreeMap<String,Integer>();
 		for(final Enumeration<String> e=mob.expertises();e.hasMoreElements();)
@@ -846,15 +846,15 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&(!oldAbilities.contains(A.ID())))
+			if((A!=null)&&(!oldAbilityIDs.contains(A.ID())))
 				newAbilityIDs.add(A.ID());
 		}
 
-		for(int a=0;a<newAbilityIDs.size();a++)
+		for(final String newAbilityID : newAbilityIDs)
 		{
-			if(!oldAbilities.contains(newAbilityIDs.get(a)))
+			if(!oldAbilityIDs.contains(newAbilityID))
 			{
-				final Ability A=mob.fetchAbility(newAbilityIDs.get(a));
+				final Ability A=mob.fetchAbility(newAbilityID);
 				if(A!=null)
 				{
 					final String type=Ability.ACODE_DESCS[(A.classificationCode()&Ability.ALL_ACODES)].toLowerCase();

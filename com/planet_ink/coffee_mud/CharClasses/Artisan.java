@@ -286,7 +286,7 @@ public class Artisan extends StdCharClass
 			||((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_EPICUREAN)
 			||((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_BUILDINGSKILL)))
 		{
-				CMLib.leveler().postExperience(msg.source(),null,null,msg.value(),false);
+			CMLib.leveler().postExperience(msg.source(),null,null,msg.value(),false);
 		}
 		else
 		if((msg.source() == myHost)
