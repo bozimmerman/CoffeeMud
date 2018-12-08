@@ -178,7 +178,7 @@ public class Worm extends StdRace
 	@Override
 	public String makeMobName(final char gender, final int age)
 	{
-		return makeMobName('N',age);
+		return super.makeMobName('N',age);
 	}
 
 	@Override
