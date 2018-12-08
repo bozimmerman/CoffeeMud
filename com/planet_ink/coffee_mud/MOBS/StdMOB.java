@@ -1058,7 +1058,8 @@ public class StdMOB implements MOB
 		final MOB mate = soulMate();
 		if (mate == null)
 			return;
-		if (mate.soulMate() != null)
+		if ((mate.soulMate() != null)
+		&& (mate != this))
 			mate.dispossess(forceLook);
 		final Session s = session();
 		if (s != null)
