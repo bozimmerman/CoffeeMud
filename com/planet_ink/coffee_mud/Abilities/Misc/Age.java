@@ -770,7 +770,10 @@ public class Age extends StdAbility
 				babe.baseState().setHitPoints(20);
 				babe.baseState().setMana(25);
 				babe.baseState().setMovement(100);
-				final Ability A=babe.fetchEffect(ID());
+				Ability A=babe.fetchEffect("Prop_SafePet");
+				if(A!=null)
+					babe.delEffect(A);
+				A=babe.fetchEffect(ID());
 				babe.delEffect(A);
 				babe.recoverCharStats();
 				babe.recoverPhyStats();
