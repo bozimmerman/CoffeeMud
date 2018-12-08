@@ -3832,11 +3832,14 @@ public class CMMap extends StdLibrary implements WorldMap
 					for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
-						if((A instanceof LandTitle)
-						&&(!titlesDone.contains(A)))
+						if(A instanceof LandTitle)
 						{
-							((LandTitle)A).updateLot(playerList);
-							titlesDone.add((LandTitle)A);
+							final LandTitle T=(LandTitle)A;
+							if(!titlesDone.contains(T))
+							{
+								T.updateLot(playerList);
+								titlesDone.add(T);
+							}
 						}
 					}
 				}
