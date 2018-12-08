@@ -146,8 +146,13 @@ public class Prayer_AnimateVampire extends Prayer
 		final double charLevel = mob.phyStats().level();
 		final double maxDeathLoreExpertiseLevel = exLib.getHighestListableStageBySkill(mob,ID(),ExpertiseLibrary.Flag.LEVEL);
 		final double maxApproLoreExpertiseLevel = exLib.getHighestListableStageBySkill(mob,ID(),ExpertiseLibrary.Flag.X1);
-		double lvl = (charLevel * appropriateLoreExpertiseLevel / maxApproLoreExpertiseLevel)
+		double lvl = 0;
+		if ((maxApproLoreExpertiseLevel > 0)
+		&& (maxDeathLoreExpertiseLevel > 0))
+		{
+			lvl = (charLevel * appropriateLoreExpertiseLevel / maxApproLoreExpertiseLevel)
 					-(baseLvl+4+(2*maxDeathLoreExpertiseLevel));
+		}
 		if(lvl < 0.0)
 			lvl = 0.0;
 		lvl += baseLvl + (2*deathLoreExpertiseLevel);
