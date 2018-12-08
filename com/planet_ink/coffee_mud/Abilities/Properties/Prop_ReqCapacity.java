@@ -58,9 +58,10 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 	public int		itemCap			= Integer.MAX_VALUE;
 	public int		maxWeight		= Integer.MAX_VALUE;
 	public int		roomLimit		= Integer.MAX_VALUE;
-	protected long	lastCheck		= 0;
 	public boolean	indoorOnly		= false;
 	public boolean	containersOk	= false;
+
+	protected volatile long	lastCheck		= 0;
 
 	@Override
 	public long flags()
