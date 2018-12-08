@@ -49,6 +49,12 @@ public class Archon_MatrixPossess extends ArchonSkill
 	}
 
 	@Override
+	public String displayText()
+	{
+		return "";
+	}
+	
+	@Override
 	protected int canAffectCode()
 	{
 		return CAN_MOBS;
