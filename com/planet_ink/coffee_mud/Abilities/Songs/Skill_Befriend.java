@@ -226,7 +226,10 @@ public class Skill_Befriend extends BardSkill
 					mob.destroy();
 				else
 				if(mob.getStartRoom() != mob.location())
+				{
 					CMLib.tracking().wanderAway(mob, false, true);
+					unInvoke();
+				}
 				return false;
 			}
 		}
