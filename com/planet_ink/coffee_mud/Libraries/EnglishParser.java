@@ -1383,7 +1383,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					}
 				}
 			}
-			if((shopkeeper!=null)&&(CMLib.coffeeShops().getShopKeeper(shopkeeper)!=null)&&(CMLib.flags().canBeSeenBy(shopkeeper,mob)))
+			if((shopkeeper!=null)
+			&&(CMLib.coffeeShops().getShopKeeper(shopkeeper)!=null)
+			&&(CMLib.flags().canBeSeenBy(shopkeeper,mob)))
 				commands.remove(commands.size()-1);
 			else
 			{

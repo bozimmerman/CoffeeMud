@@ -115,13 +115,14 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public int timsLevelCalculator(Item I, final Ability ADJ, final Ability RES, final Ability CAST, final int castMul)
+	public int timsLevelCalculator(final Item itemI, final Ability ADJ, final Ability RES, final Ability CAST, final int castMul)
 	{
 		int level=0;
-		final Item savedI=(Item)I.copyOf();
+		final Item savedI=itemI;
 		savedI.recoverPhyStats();
-		I=(Item)I.copyOf();
-		I.recoverPhyStats();
+		//IworkI=(Item)IworkI.copyOf();
+		//IworkI.recoverPhyStats();
+		// the item is only ever read, so why copy it?
 		int otherDam=0;
 		int otherAtt=0;
 		int otherArm=0;
@@ -135,7 +136,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		final double curAttack=savedI.basePhyStats().attackAdjustment()+otherAtt;
 		final double curDamage=savedI.basePhyStats().damage()+otherDam;
 		final Wearable.CODES codes = Wearable.CODES.instance();
-		if(I instanceof Weapon)
+		if(itemI instanceof Weapon)
 		{
 			double weight=8;
 			if(weight<1.0)
@@ -143,7 +144,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			final double range=savedI.maxRange();
 			final int wclass=((Weapon)savedI).weaponClassification();
 			final double dmgMod = this.timsDmgModifier(wclass);
-			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
+			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(itemI.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
 			final double baseAttack = (curAttack - timsBaseAttackModifier(wclass));
 			double attackLevel;
 			if(baseAttack < 0)
@@ -164,7 +165,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				if(CMath.isSet(worndata,i))
 				{
 					weightpts+=codes.location_strength_points()[i+1];
-					if(!I.rawLogicalAnd())
+					if(!itemI.rawLogicalAnd())
 						break;
 				}
 			}
@@ -200,7 +201,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				which=useArray.length-1;
 			level=useArray[which];
 		}
-		level+=I.basePhyStats().ability()*5;
+		level+=itemI.basePhyStats().ability()*5;
 		if(CAST!=null)
 		{
 			final String ID=CAST.ID().toUpperCase();
@@ -233,8 +234,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		}
 		if(ADJ!=null)
 			level += CMath.s_int(ADJ.getStat("LEVEL"));
-		savedI.destroy();
-		I.destroy(); // this was a copy
+		//savedI.destroy();
+		//IworkI.destroy(); // this was a copy
 		return level;
 	}
 

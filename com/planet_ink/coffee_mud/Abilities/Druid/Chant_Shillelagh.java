@@ -88,7 +88,7 @@ public class Chant_Shillelagh extends Chant
 			return;
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 		if(affected instanceof Item)
-			affectableStats.setAbility(affectableStats.ability()+4);
+			affectableStats.setAbility(affectableStats.ability()+4+(super.getXLEVELLevel(invoker)/2));
 	}
 
 	@Override

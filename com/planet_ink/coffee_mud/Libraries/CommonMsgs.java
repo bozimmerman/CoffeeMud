@@ -1277,6 +1277,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
 		{
 			String decayTime="";
+			String addendum = "";
 			if(item instanceof Decayable)
 			{
 				if(((Decayable)item).decayTime()==Long.MAX_VALUE)
@@ -1291,6 +1292,27 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if((!A.isSavable())||(A.canBeUninvoked()))
 					spells.append(A.ID()).append(" ");
 			}
+			if(item instanceof Weapon)
+			{
+				addendum += L(""
+				+ "Attack: @x1\n\r"
+				+ "Damage: @x2\n\r",
+					""+item.phyStats().attackAdjustment(),
+					""+item.phyStats().damage());
+			}
+			if(item instanceof Container)
+			{
+				addendum += L(""
+				+ "Capac.: @x1\n\r",
+					""+((Container)item).capacity());
+			}
+			if(item instanceof Armor)
+			{
+				addendum += L(""
+				+ "Armor : @x1\n\r",
+					""+item.phyStats().armor());
+			}
+
 			buf.append(L("\n\r"
 			+ "Type  : @x1\n\r"
 			+ "Rejuv : @x2\n\r"
@@ -1300,9 +1322,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			+ "Abilty: @x6\n\r"
 			+ "Level : @x7\n\r"
 			+ "Expire: @x8\n\r"
-			+ "Capaci: @x9\n\r"
-			+ "Affect: @x10\n\r"
-			+ "Misc  : @x11\n\r"
+			+ addendum
+			+ "Affect: @x9\n\r"
+			+ "Misc  : @x10\n\r"
 			+ "@x12",
 			item.ID(),
 			""+item.basePhyStats().rejuv(),
@@ -1312,7 +1334,6 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			""+item.basePhyStats().ability(),
 			""+item.basePhyStats().level(),
 			dispossessionTimeLeftString(item)+decayTime,
-			((item instanceof Container)?(L("\n\rCapac.: ")+((Container)item).capacity()):""),
 			spells.toString(),
 			""+item.text().length(),
 			item.text()
