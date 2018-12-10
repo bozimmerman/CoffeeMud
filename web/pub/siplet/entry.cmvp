@@ -74,6 +74,7 @@
 	{
 		var textEl = document.getElementById("TEXT");
 		sendText(textEl.value);
+		textEl.value = '';
 	}
 	function sendText(val) 
 	{
