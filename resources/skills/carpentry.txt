@@ -199,5 +199,4 @@ the ultimate % stake	88	65	5	1034	GenWeapon	DAGGER	1	16	114
 ornate % couch	89	180	240	39000	GenChair	CHAIR	4		0	
 giant % crate	90	75	100	6750	GenContainer	LID	50000		0	
 extremely long burning torch	91	30	2	54	GenLightSource		1000			
-the mighty % shiv	91	70	4	1056	GenWeapon	DAGGER	1	16	118	
-wood wood wood	1	20	(onground:consumed:1:OAK:)&&(onground:consumed:1:PINE:)	5	GenResource			WOOD		
+the mighty % shiv	91	70	4	1056	GenWeapon	DAGGER	1	16	118			
