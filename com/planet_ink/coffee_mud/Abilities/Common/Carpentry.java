@@ -560,8 +560,8 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			final String containMask = foundRecipe.get(RCP_CONTAINMASK);
 			final long canContain=(containMask.length()>0) ? getContainerType(containMask) : 0;
-			final int resourceType=(containMask.length()>0) ? RawMaterial.CODES.FIND_IgnoreCase(containMask) : -1;
 			final String armorDmgStr = foundRecipe.get(RCP_ARMORDMG);
+			final int resourceType=(containMask.length()>0) ? RawMaterial.CODES.FIND_IgnoreCase(armorDmgStr) : -1;
 			final int armordmg=CMath.s_int(armorDmgStr);
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
@@ -652,7 +652,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			{
 				buildingI.setMaterial(resourceType);
 				if(buildingI instanceof RawMaterial)
-					((RawMaterial)buildingI).setSubType(armorDmgStr);
+					((RawMaterial)buildingI).setSubType(containMask);
 			}
 
 			if(buildingI instanceof Weapon)
