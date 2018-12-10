@@ -37,7 +37,7 @@ small oval cut %	17	20	0	15	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=
 % Diadem	18	50	8	400	GenArmor	S-1:HEAD		0	PRECIOUS	Prop_ItemSlot;num=1 type=jewelcharm removable=true
 % bejewelled flower	18	100	5	100	GenItem			0	PRECIOUS	
 % post	19	20	1	20	GenEarring	MS-10:HEAD||EYES||TORSO||EARS||MOUTH		0		
-carved % bead necklace	19	30	4	50	GenArmor	S2:NECK		0	STONE	
+carved % bead necklace	19	30	4	50	GenArmor	S2:NECK		0	ROCK	
 % bangle bracelet	19	50	3	250	GenArmor	MS1:LEFT WRIST||RIGHT WRIST		0	PRECIOUS	
 small round cut %	20	30	0	20	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
 % Crown	20	100	10	150	GenArmor	S1:HEAD		1		
@@ -49,7 +49,7 @@ small cushion cut %	23	50	0	30	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 ty
 % bejewelled rose	23	120	5	500	GenItem			0	PRECIOUS	
 % cufflinks	24	50	2	500	GenArmor	S2:LEFT WRIST||RIGHT WRIST		0	PRECIOUS	*Prop_WearAdjuster;CHA+1
 medium oval cut %	24	60	0	35	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
-sculpted % charm	25	40	0	30	GenItem	STATUE		0	STONE	Prop_ItemSlotFiller;num=1 type=jewelcharm removeable=true
+sculpted % charm	25	40	0	30	GenItem	STATUE		0	ROCK	Prop_ItemSlotFiller;num=1 type=jewelcharm removeable=true
 % bindi	25	40	1	500	GenArmor	S-3:EYES		0	PRECIOUS	
 % gauge	26	25	1	20	GenEarring	MS-10:HEAD||EYES||TORSO||EARS||MOUTH		0		
 small emerald cut %	26	70	0	40	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
