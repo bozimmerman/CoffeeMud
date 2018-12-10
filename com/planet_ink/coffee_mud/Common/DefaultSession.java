@@ -369,10 +369,11 @@ public class DefaultSession implements Session
 			charWriter=new SesInputStream(inMaxBytesPerChar);
 			in=new BufferedReader(new InputStreamReader(charWriter,charSet));
 			out=new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.Str.CHARSETOUTPUT)));
-
+			//final DefaultSession me = this;
 			prompt(new TickingCallback(250)
 			{
 				private final long firstIACIn=lastIACIn;
+				//final DefaultSession sess = me;
 
 				@Override
 				public boolean tick(final int counter)
@@ -438,7 +439,7 @@ public class DefaultSession implements Session
 						}
 						case HANDSHAKE_MXPPAUSE:
 						{
-							if(((System.currentTimeMillis()-lastStateChangeMs)>2000)
+							if(((System.currentTimeMillis()-lastStateChangeMs)>3000)
 							||(mxpSupportSet.contains("+IMAGE.URL")||mxpSupportSet.contains("+IMAGE")||mxpSupportSet.contains("-IMAGE.URL")))
 								setStatus(SessionStatus.HANDSHAKE_DONE);
 							break;
