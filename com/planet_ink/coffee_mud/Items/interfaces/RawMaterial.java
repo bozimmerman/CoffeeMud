@@ -231,7 +231,7 @@ public interface RawMaterial extends Item
 		PAPER("Paper"),
 		ROCK("Rock"),
 		LIQUID("Liquid"),
-		PRECIOUS("Stone"),
+		PRECIOUS("Gemstone"),
 		ENERGY("Energy"),
 		SYNTHETIC("Plastic"),
 		GAS("Gas");

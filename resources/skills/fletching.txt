@@ -32,9 +32,9 @@ Pack of 500 Fire Bolts	50	60	20	500	GenAmmunition	bolts	500			LAMP OIL	PROP_ADDD
 Sling	1	30	0	15	GenSling	bullets	50	2	2	LEATHER	
 Staff-Sling	9	40	10	275	GenSling	bullets	10	4	4	LEATHER	
 Arm Sling	50	90	1	707	GenSling	bullets	50	16	3		
-Pack of 50 Bullets	1	20	0	5	GenAmmunition	bullets	50			STONE	
-Pack of 100 Bullets	5	40	0	10	GenAmmunition	bullets	100			STONE	
-Pack of 500 Bullets	10	60	0	50	GenAmmunition	bullets	500			STONE	
+Pack of 50 Bullets	1	20	0	5	GenAmmunition	bullets	50			ROCK	
+Pack of 100 Bullets	5	40	0	10	GenAmmunition	bullets	100			ROCK	
+Pack of 500 Bullets	10	60	0	50	GenAmmunition	bullets	500			ROCK	
 Blowgun	5	20	5	99	GenSling	darts	1	2	2		
 Pack of 5 Blow-Darts	1	30	2	25	GenAmmunition	darts	5			METAL	
 Pack of 20 Blow-Darts	10	60	4	50	GenAmmunition	darts	20			METAL	

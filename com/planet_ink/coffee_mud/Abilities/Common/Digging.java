@@ -71,7 +71,7 @@ public class Digging extends GatheringSkill
 	@Override
 	public String supportedResourceString()
 	{
-		return "GLASS|PRECIOUS|SAND|STONE";
+		return "GLASS|PRECIOUS|SAND|GEMSTONE";
 	}
 
 	protected Item		found			= null;
