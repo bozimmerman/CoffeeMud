@@ -78,13 +78,13 @@ Small % Shield	10	54	15	120	GenShield	HELD	0	12	0
 % Platemail Shirt	13	124	30	960	GenArmor	2:TORSO	0	24	0	
 % Banded Vambrace	13	40	3	74	GenArmor	2:LEFT WRIST||RIGHT WRIST	25	4	8	
 % Platemail Handguards	14	46	5	160	GenArmor	2:HANDS	0	4	0	
-% banded chanfron	14	62	40	980	GenArmor	2:HEAD	0	7	0	prop_wearoverride;-racecat +equine
+% banded chanfron	14	62	40	980	GenArmor	2:HEAD	0	7	0	*prop_wearoverride;-racecat +equine
 % Platemail Leggings	14	92	15	480	GenArmor	2:LEGS	0	16	0	
 % roundel	14	78	15	270	GenShield	HELD	0	18	0	
 % Banded Girdle	14	44	5	123	GenArmor	2:WAIST	100	4	32	
 % Banded Lowerarm Cannon	14	44	3	74	GenArmor	3:LEFT WRIST||RIGHT WRIST	0	5	0	
 % Banded Upperarm Cannons	15	62	15	368	GenArmor	3:ARMS	0	8	0	
-% Banded Locking Gauntlets	15	48	5	123	GenArmor	2:HANDS	0	5	0	Prop_WearSpellCast;Spell_IronGrip
+% Banded Locking Gauntlets	15	48	5	123	GenArmor	2:HANDS	0	5	0	*Prop_WearSpellCast;Spell_IronGrip
 % Banded Hauberk	15	144	45	1103	GenArmor	3:TORSO&&ARMS	0	28	0	
 % Banded Leg Cannons	15	88	15	368	GenArmor	3:LEGS	0	15	0	
 % Platemail Collar	15	48	5	160	GenArmor	S2:NECK	0	4	0	
@@ -103,7 +103,7 @@ Heavy % Gorget	16	46	5	123	GenArmor	3:NECK	0	4	0
 % Platemail Vest	17	130	30	960	GenArmor	S2:TORSO	0	24	0	
 % Platemail Vambrace	17	50	3	96	GenArmor	2:LEFT WRIST||RIGHT WRIST	25	4	8	
 % Platemail Pauldrons	18	70	15	480	GenArmor	S4:ARMS	0	8	0	
-% banded barding	18	152	180	4410	GenArmor	2:BODY	0	28	0	prop_wearoverride;-racecat +equine
+% banded barding	18	152	180	4410	GenArmor	2:BODY	0	28	0	*prop_wearoverride;-racecat +equine
 % Banded Sabotons	18	52	10	245	GenArmor	3:FEET	0	4	0	
 % Platemail Skirt	18	100	15	480	GenArmor	S3:LEGS	0	16	0	
 % Fieldplate Mantle	18	52	5	203	GenArmor	2:NECK	0	5	0	
@@ -123,8 +123,8 @@ Heavy % Gorget	16	46	5	123	GenArmor	3:NECK	0	4	0
 % Fieldplate Bracer	20	58	3	122	GenArmor	S2:LEFT WRIST||RIGHT WRIST	0	5	0	
 % Fieldplate Rearbraces	21	80	15	608	GenArmor	3:ARMS	0	9	0	
 % Platemail Coat	21	168	45	1440	GenArmor	2:BODY	0	32	0	
-% Platemail Locking Gauntlets	21	58	5	160	GenArmor	2:HANDS	0	5	0	Prop_WearSpellCast;Spell_IronGrip
-% platemail chanfron	21	74	40	1280	GenArmor	2:HEAD	0	8	0	prop_wearoverride;-racecat +equine
+% Platemail Locking Gauntlets	21	58	5	160	GenArmor	2:HANDS	0	5	0	*Prop_WearSpellCast;spell_irongrip
+% platemail chanfron	21	74	40	1280	GenArmor	2:HEAD	0	8	0	*prop_wearoverride;-racecat +equine
 % Fieldplate Greaves	21	114	10	405	GenArmor	2:LEGS	0	18	0	
 % Fieldplate Collar	21	60	5	203	GenArmor	S2:NECK	0	5	0	
 % Fieldplate Pauldrons	22	84	15	608	GenArmor	S4:ARMS	0	9	0	
@@ -134,7 +134,7 @@ Heavy % Gorget	16	46	5	123	GenArmor	3:NECK	0	4	0
 % Fieldplate Vest	22	152	30	1215	GenArmor	S2:TORSO	0	27	0	
 % Fieldplate Vambrace	22	62	3	122	GenArmor	2:LEFT WRIST||RIGHT WRIST	25	5	8	
 % Fullplate Armbands	23	88	15	750	GenArmor	S1:ARMS	0	10	0	
-% platemail barding	23	176	180	5760	GenArmor	2:BODY	0	32	0	prop_wearoverride;-racecat +equine
+% platemail barding	23	176	180	5760	GenArmor	2:BODY	0	32	0	*prop_wearoverride;-racecat +equine
 % Fieldplate Boots	23	64	10	405	GenArmor	2:FEET	25	5	8	
 % Basinette	23	80	10	405	GenArmor	2:HEAD	0	9	0	
 % Fieldplate Skirt	23	118	15	608	GenArmor	S3:LEGS	0	18	0	
@@ -148,8 +148,8 @@ Large % Shield	23	108	15	480	GenShield	HELD	0	24	0
 % Fieldplate Lowerarm Cannon	24	66	3	122	GenArmor	3:LEFT WRIST||RIGHT WRIST	0	6	0	
 % Fullplate Sleeves	25	92	15	750	GenArmor	2:ARMS	0	10	0	
 % Fieldplate Coat	25	194	45	1823	GenArmor	2:BODY	0	36	0	
-% Fieldplate Locking Gauntlets	25	70	5	203	GenArmor	2:HANDS	0	6	0	Prop_WearSpellCast;Spell_IronGrip
-% fieldplate chanfron	25	88	40	1620	GenArmor	2:HEAD	0	9	0	prop_wearoverride;-racecat +equine
+% Fieldplate Locking Gauntlets	25	70	5	203	GenArmor	2:HANDS	0	6	0	*Prop_WearSpellCast;Spell_IronGrip
+% fieldplate chanfron	25	88	40	1620	GenArmor	2:HEAD	0	9	0	*prop_wearoverride;-racecat +equine
 % Fullplate Leggings	25	130	15	750	GenArmor	2:LEGS	0	20	0	
 % Fieldplate Jerkin	25	158	30	1215	GenArmor	3:TORSO	0	27	0	
 % Fullplate Handguards	26	72	5	250	GenArmor	2:HANDS	0	5	0	
@@ -165,7 +165,7 @@ Large % Shield	23	108	15	480	GenShield	HELD	0	24	0
 % Fullplate Jacket	27	216	45	2250	GenArmor	2:TORSO&&ARMS	0	40	0	
 % Fullplate Vest	27	176	30	1500	GenArmor	S2:TORSO	0	30	0	
 % Fullplate Pauldrons	28	100	15	750	GenArmor	S4:ARMS	0	10	0	
-%fieldplate barding	28	202	180	7290	GenArmor	2:BODY	0	36	0	prop_wearoverride;-racecat +equine
+%fieldplate barding	28	202	180	7290	GenArmor	2:BODY	0	36	0	*prop_wearoverride;-racecat +equine
 % Fullplate Boots	28	78	10	500	GenArmor	2:FEET	25	5	8	
 % Fullplate Gauntlets	28	80	5	250	GenArmor	2:HANDS	0	6	0	
 % Fullplate Skirt	28	138	15	750	GenArmor	S3:LEGS	0	20	0	
@@ -177,9 +177,9 @@ Embossed % Gorget	29	82	5	250	GenArmor	3:NECK	0	5	0
 % Fullplate Girdle	29	80	5	250	GenArmor	2:WAIST	100	5	32	
 % Fullplate Lowerarm Cannon	29	80	3	150	GenArmor	3:LEFT WRIST||RIGHT WRIST	0	6	0	
 % Fullplate Upperarm Cannons	30	104	15	750	GenArmor	3:ARMS	0	11	0	
-% fullplate barding	30	230	180	9000	GenArmor	2:BODY	0	40	0	prop_wearoverride;-racecat +equine
+% fullplate barding	30	230	180	9000	GenArmor	2:BODY	0	40	0	*prop_wearoverride;-racecat +equine
 % Fullplate Sabotons	30	88	10	500	GenArmor	3:FEET	0	5	0	
-% Fullplate Locking Gauntlets	30	84	5	250	GenArmor	2:HANDS	0	6	0	Prop_WearSpellCast;Spell_IronGrip
-% fullplate chanfron	30	104	40	2000	GenArmor	2:HEAD	0	10	0	prop_wearoverride;-racecat +equine
+% Fullplate Locking Gauntlets	30	84	5	250	GenArmor	2:HANDS	0	6	0	*Prop_WearSpellCast;Spell_IronGrip
+% fullplate chanfron	30	104	40	2000	GenArmor	2:HEAD	0	10	0	*prop_wearoverride;-racecat +equine
 % tower shield	30	146	15	750	GenShield	HELD	0	30	0	
 % Fullplate Jerkin	30	182	30	1500	GenArmor	3:TORSO	0	30	0	

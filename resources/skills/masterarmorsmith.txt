@@ -33,13 +33,13 @@ Embossed % Fullplate Leggings	30	152	15	908	GenArmor	2:LEGS	0	22	0
 embossed % plate cuirass	30	196	30	1815	GenArmor	2:TORSO	0	33	0	
 % Morion	32	114	10	605	GenArmor	3:HEAD	0	11	0	
 % Casque	31	114	10	605	GenArmor	2:HEAD	0	11	0	
-% lantern shield	31	114	8	484	GenShield	HANDS	0	17	0	prop_wearspellcast;spell_light
+% lantern shield	31	114	8	484	GenShield	HANDS	0	17	0	*prop_wearspellcast;spell_light
 Embossed % Fullplate Jacket	31	246	45	2723	GenArmor	2:TORSO&&ARMS	0	44	0	
 Embossed % Fullplate Vambrace	32	92	3	182	GenArmor	2:LEFT WRIST||RIGHT WRIST	25	6	8	
 Embossed % Fullplate Gauntlets	31	96	5	303	GenArmor	2:HANDS	0	6	0	
 Embossed % Fullplate Pauldrons	32	118	15	908	GenArmor	S4:ARMS	0	11	0	
 Embossed % Fullplate Girdle	33	96	5	303	GenArmor	2:WAIST	100	6	32	
-Embossed % Fullplate Locking Gauntlets	33	100	5	303	GenArmor	2:HANDS	0	6	0	Prop_WearSpellCast;Spell_IronGrip
+Embossed % Fullplate Locking Gauntlets	33	100	5	303	GenArmor	2:HANDS	0	6	0	*Prop_WearSpellCast;Spell_IronGrip
 Embossed % Fullplate Coat	33	252	45	2723	GenArmor	2:BODY	0	44	0	
 embossed % chanfron	34	122	40	2420	GenArmor	2:HEAD	0	11	0	prop_wearoverride;-racecat +equine
 % Dwarven Plate Armbands	34	126	15	1080	GenArmor	S2:ARMS	0	12	0	
@@ -158,16 +158,16 @@ featherweight % chainmail barding	50	326	180	15210	GenArmor	2:BODY	0	52	0	prop_w
 % Doublemail Coat	68	390	45	5063	GenArmor	1:BODY	0	60	0	
 % Battleplate Hauberk	69	390	45	5063	GenArmor	3:TORSO&&ARMS	0	60	0	
 % Doublemail Hauberk	66	390	45	5063	GenArmor	2:TORSO&&ARMS	0	60	0	
-% Battleplate Locking Gauntlets	70	182	5	563	GenArmor	2:HANDS	0	8	0	Prop_WearSpellCast;Spell_IronGrip
+% Battleplate Locking Gauntlets	70	182	5	563	GenArmor	2:HANDS	0	8	0	*Prop_WearSpellCast;Spell_IronGrip
 % Battleplate Upperarm Cannons	70	212	15	1688	GenArmor	3:ARMS	0	15	0	
 % battleplate chanfron	70	212	40	4500	GenArmor	2:HEAD	0	15	0	prop_wearoverride;-racecat +equine
 % jousting shield	71	274	15	1688	GenShield	HELD	0	45	0	
 Ancient % Mantle	71	186	5	640	GenArmor	2:NECK	0	8	0	
-% Hallowed Vestments	71	730	95	12160	GenArmor	2:HEAD&&NECK&&TORSO&&ARMS&&FEET&&HANDS&&LEGS&&EYES	0	160	0	Prop_WearSpellCast;prayer_protectionevil
+% Hallowed Vestments	71	730	95	12160	GenArmor	2:HEAD&&NECK&&TORSO&&ARMS&&FEET&&HANDS&&LEGS&&EYES	0	160	0	*Prop_WearSpellCast;prayer_protectionevil
 % Battleplate Sabotons	72	186	10	1125	GenArmor	3:FEET	0	8	0	
 % battleplate barding	72	398	180	20250	GenArmor	2:BODY	0	60	0	prop_wearoverride;-racecat +equine
 Ancient % Armbands	72	220	15	1920	GenArmor	S2:ARMS	0	16	0	
-% Demon Armor	72	730	95	12160	GenArmor	2:HEAD&&NECK&&TORSO&&ARMS&&FEET&&HANDS&&LEGS&&EYES	0	160	0	Prop_WearSpellCast;prayer_protectiongood
+% Demon Armor	72	730	95	12160	GenArmor	2:HEAD&&NECK&&TORSO&&ARMS&&FEET&&HANDS&&LEGS&&EYES	0	160	0	*Prop_WearSpellCast;prayer_protectiongood
 Ancient % Handguards	73	192	5	640	GenArmor	S2:HANDS	0	8	0	
 Ancient % Sleeves	73	224	15	1920	GenArmor	2:ARMS	0	16	0	
 Ancient % Leggings	73	286	15	1920	GenArmor	2:LEGS	0	32	0	
@@ -194,7 +194,7 @@ Ancient % Upperarm Cannons	80	236	15	1920	GenArmor	3:ARMS	0	17	0
 Ancient % Leg Cannons	80	298	15	1920	GenArmor	3:LEGS	0	33	0	
 Ancient % Jerkin	80	362	30	3840	GenArmor	3:TORSO	0	48	0	
 Ancient % Hauberk	80	426	45	5760	GenArmor	3:TORSO&&ARMS	0	64	0	
-Ancient % Locking Gauntlets	81	204	5	640	GenArmor	2:HANDS	0	8	0	Prop_WearSpellCast;Spell_IronGrip;
+Ancient % Locking Gauntlets	81	204	5	640	GenArmor	2:HANDS	0	8	0	*Prop_WearSpellCast;Spell_IronGrip;
 ancient % chanfron	81	236	40	5120	GenArmor	2:HEAD	0	16	0	prop_wearoverride;-racecat +equine
 % war-door	81	302	15	1920	GenShield	HELD	0	48	0	
 Ancient % Sabotons	82	208	10	1280	GenArmor	3:FEET	0	8	0	
@@ -216,10 +216,10 @@ Sacred % Crown	86	252	10	1445	GenArmor	3:HEAD	0	17	0
 Demonic % Boots	87	220	10	1445	GenArmor	2:FEET	25	9	8	
 Sacred % Skirt	87	322	15	2168	GenArmor	3:LEGS	0	34	0	
 Sacred % Boots	88	220	10	1445	GenArmor	2:FEET	25	9	8	
-Demonic % Locking Gauntlets	88	226	5	723	GenArmor	2:HANDS	0	9	0	Prop_WearSpellCast;Spell_IronGrip
+Demonic % Locking Gauntlets	88	226	5	723	GenArmor	2:HANDS	0	9	0	*Prop_WearSpellCast;Spell_IronGrip
 Sacred % Jacket	88	456	45	6503	GenArmor	2:TORSO&&ARMS	0	68	0	
 Demonic % Girdle	89	222	5	723	GenArmor	2:WAIST	100	9	32	
-Sacred % Locking Gauntlets	89	226	5	723	GenArmor	2:HANDS	0	9	0	Prop_WearSpellCast;Spell_IronGrip
+Sacred % Locking Gauntlets	89	226	5	723	GenArmor	2:HANDS	0	9	0	*Prop_WearSpellCast;Spell_IronGrip
 Demonic % Jerkin	89	394	30	4335	GenArmor	3:TORSO	0	51	0	
 Sacred % Girdle	90	222	5	723	GenArmor	2:WAIST	100	9	32	
 Sacred % Pauldrons	90	256	15	2168	GenArmor	S4:ARMS	0	17	0	
