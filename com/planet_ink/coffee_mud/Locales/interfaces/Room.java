@@ -280,9 +280,10 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		CLIMBING('M',PhyStats.IS_CLIMBING),
 		INVISIBLE('M',PhyStats.IS_INVISIBLE),
 		HIDDEN('M',PhyStats.IS_HIDDEN),
+		MASK('X',-1),
 		VISITED('V',-1),
 		ELSE('\n',-1),
-		VARIES('\r',-1)
+		VARIES('\r',-1),
 		;
 		public final char c;
 		public final int num;
@@ -293,8 +294,11 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		{
 			this.c=c;
 			this.num=num;
-			openTag="<"+toString()+">";
-			closeTag="</"+toString()+">";
+			if(c=='X')
+				openTag="<"+toString();
+			else
+				openTag="<"+toString()+">";
+			closeTag="</"+openTag.substring(1);
 		}
 	}
 

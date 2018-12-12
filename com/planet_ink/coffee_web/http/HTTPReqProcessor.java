@@ -235,7 +235,16 @@ public class HTTPReqProcessor implements HTTPFileGetter
 				str.append(HTTPHeader.Common.CONTENT_LENGTH.makeLine(0));
 		}
 		if(response != null)
-			str.append(HTTPHeader.Common.LAST_MODIFIED.makeLine(HTTPIOHandler.DATE_FORMAT.format(response.getLastModified())));
+		{
+			try
+			{
+				str.append(HTTPHeader.Common.LAST_MODIFIED.makeLine(HTTPIOHandler.DATE_FORMAT.format(response.getLastModified())));
+			}
+			catch(Exception e)
+			{
+				str.append(HTTPHeader.Common.LAST_MODIFIED.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
+			}
+		}
 		if(config.isDebugging())
 			config.getLogger().finer("Response: "+str.toString().replace('\r', ' ').replace('\n', ' '));
 		str.append(HTTPIOHandler.SERVER_HEADER);

@@ -14,7 +14,8 @@
   13. New Achievement Award: NOPURGE -- for protecting players from auto-purge.
   14. New Spell: Prestidigitation
   15. New parameter to the Prop_*SpellCast properties for setting ticks on some spells only.
-  16. Material type for Precious Stones (Diamonds, Gems, etc) given new friendly name of GEMSTONE
+  16. Material type for Precious Stones (Diamonds, Gems, etc) given new friendly name of "Gemstone"
+  17. <VARIES> tags in room descriptions now includes a Zappermask option -- see the Archon's Guide.
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

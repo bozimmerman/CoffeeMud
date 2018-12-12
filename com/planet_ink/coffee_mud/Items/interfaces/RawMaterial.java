@@ -239,12 +239,14 @@ public interface RawMaterial extends Item
 		private final static String[]	descs	= CMParms.toStringArray(values());
 		private final int				mask;
 		private final String			desc;
+		private final String			unoun;
 		private final String			noun;
 
 		private Material(final String noun)
 		{
 			this.mask = (ordinal() == 0) ? 0 : (ordinal() << 8);
 			this.desc = this.toString();
+			this.unoun = noun.toUpperCase(); 
 			this.noun = noun;
 		}
 
@@ -319,6 +321,11 @@ public interface RawMaterial extends Item
 			}
 			catch (final Exception e)
 			{
+				for(final Material M : Material.values())
+				{
+					if(M.unoun.equals(name))
+						return M;
+				}
 				return null;
 			}
 		}
