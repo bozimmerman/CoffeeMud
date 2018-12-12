@@ -1361,40 +1361,64 @@ public class StdRoom implements Room
 				if(text.startsWith(code.openTag, aligatorDex))
 				{
 					buf.append(text.substring(curDex, aligatorDex));
-					int y=text.indexOf(code.closeTag,aligatorDex+code.openTag.length());
-					if(y<0)
+					final int openLen;
+					int y;
+					if(code == VariationCode.MASK)
 					{
-						curDex = text.length();
-						y=text.length();
+						int x=text.indexOf('>',aligatorDex+1);
+						int z=text.indexOf(' ',aligatorDex+1);
+						if((z<0)||(x<0)||(z>x))
+							break;
+						String openTag="<"+text.substring(aligatorDex+1,z)+">";
+						y=text.indexOf("</"+openTag.substring(1),x);
+						if(y<0)
+						{
+							curDex = text.length();
+							y=text.length();
+						}
+						else
+							curDex = y+openTag.length()+1;
+						openLen=x-aligatorDex+1;
+						addMe = CMLib.masking().maskCheck(CMLib.xml().restoreAngleBrackets(text.substring(z,x)), mob, true);
 					}
 					else
-						curDex = y+code.closeTag.length();
-					switch(code.c)
 					{
-					case '\n':
-						addMe = !addMe;
-						break;
-					case '\r':
-						addMe = true;
-						break;
-					case 'W':
-						addMe = A.getClimateObj().weatherType(null) == code.num;
-						break;
-					case 'C':
-						addMe = A.getTimeObj().getTODCode().ordinal() == code.num;
-						break;
-					case 'S':
-						addMe = A.getTimeObj().getSeasonCode().ordinal() == code.num;
-						break;
-					case 'M':
-						addMe = ((mob != null) && (CMath.bset(mob.phyStats().disposition(), code.num)));
-						break;
-					case 'V':
-						addMe = ((mob != null) && (mob.playerStats() != null) && (mob.playerStats().hasVisited(this)));
-						break;
+						openLen=code.openTag.length();
+						y=text.indexOf(code.closeTag,aligatorDex+openLen);
+						if(y<0)
+						{
+							curDex = text.length();
+							y=text.length();
+						}
+						else
+							curDex = y+code.closeTag.length();
+						switch(code.c)
+						{
+						case '\n':
+							addMe = !addMe;
+							break;
+						case '\r':
+							addMe = true;
+							break;
+						case 'W':
+							addMe = A.getClimateObj().weatherType(null) == code.num;
+							break;
+						case 'C':
+							addMe = A.getTimeObj().getTODCode().ordinal() == code.num;
+							break;
+						case 'S':
+							addMe = A.getTimeObj().getSeasonCode().ordinal() == code.num;
+							break;
+						case 'M':
+							addMe = ((mob != null) && (CMath.bset(mob.phyStats().disposition(), code.num)));
+							break;
+						case 'V':
+							addMe = ((mob != null) && (mob.playerStats() != null) && (mob.playerStats().hasVisited(this)));
+							break;
+						}
 					}
 					if(addMe)
-						buf.append(parseVariesCodes(mob,A,text.substring(aligatorDex+code.openTag.length(),y)));
+						buf.append(parseVariesCodes(mob,A,text.substring(aligatorDex+openLen,y)));
 					aligatorDex=curDex-1;
 					break;
 				}
