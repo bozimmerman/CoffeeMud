@@ -489,6 +489,13 @@ public class StdCharClass implements CharClass
 					if(!quiet)
 						mob.tell(L("You must be a @x1 type to become a @x2.",changeToBaseClassID,name()));
 				}
+				if(multiClassSecondRule.equals("SUBONLY"))
+				{
+					if(!changeToBaseClassID.equals(changeToClassID))
+						return true;
+					if(!quiet)
+						mob.tell(L("@x1 is not an option..",name()));
+				}
 				return false;
 			}
 			else
