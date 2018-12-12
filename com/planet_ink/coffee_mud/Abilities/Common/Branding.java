@@ -57,6 +57,18 @@ public class Branding extends CommonSkill implements PrivateProperty
 	}
 
 	@Override
+	public String displayText()
+	{
+		if(!this.canBeUninvoked())
+		{
+			if(owner.length()>0)
+				return L("Branded by @x1",owner);
+			return "";
+		}
+		return displayText;
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
