@@ -146,9 +146,9 @@ public class Prop_OutfitContainer extends Property
 		&& (msg.othersMessage().length()>0))
 		{
 			this.fixContentsFromText();
-			final Item item = (Item)msg.tool();
 			if (msg.tool() instanceof Item)
 			{
+				final Item item = (Item)msg.tool();
 				if (msg.targetMinor() == CMMsg.TYP_PUT)
 				{
 					if(!outfitContents.contains(item))
