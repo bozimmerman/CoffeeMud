@@ -387,6 +387,10 @@ public class StdCharClass implements CharClass
 				multiClassSecondRule="NO";
 			}
 			else
+			if((!multiClassFirstRule.equals("APP"))
+			&&(!multiClassSecondRule.equals("SUB"))
+			&&(!multiClassSecondRule.equals("MULTI"))
+			&&(!multiClassSecondRule.equals("SUBONLY")))
 			{
 				final CharClass possibleClass=CMClass.findCharClass(multiClassSecondRule);
 				if(possibleClass != null)
