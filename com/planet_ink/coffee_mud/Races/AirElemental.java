@@ -185,13 +185,13 @@ public class AirElemental extends StdRace
 			return L("^r@x1^r is almost blown away!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return L("^r@x1^r is swirling alot and is massively dissipated.^N",mob.name(viewer));
+			return L("^r@x1^r is swirling a lot and is massively dissipated.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return L("^r@x1^r is swirling alot and is heavily dissipated.^N",mob.name(viewer));
+			return L("^r@x1^r is swirling a lot and is heavily dissipated.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return L("^y@x1^y is swirling alot and dissipating more and more.^N",mob.name(viewer));
+			return L("^y@x1^y is swirling a lot and dissipating more and more.^N",mob.name(viewer));
 		else
 		if(pct<.50)
 			return L("^y@x1^y is swirling and starting to dissipate.^N",mob.name(viewer));

@@ -188,13 +188,13 @@ public class FireElemental extends StdRace
 			return L("^r@x1^r is almost put out!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return L("^r@x1^r is flickering alot and is almost smoked out.^N",mob.name(viewer));
+			return L("^r@x1^r is flickering a lot and is almost smoked out.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return L("^r@x1^r is flickering alot and smoking massively.^N",mob.name(viewer));
+			return L("^r@x1^r is flickering a lot and smoking massively.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return L("^y@x1^y is flickering alot and smoking a lot.^N",mob.name(viewer));
+			return L("^y@x1^y is flickering a lot and smoking a lot.^N",mob.name(viewer));
 		else
 		if(pct<.50)
 			return L("^y@x1^y is flickering and smoking.^N",mob.name(viewer));

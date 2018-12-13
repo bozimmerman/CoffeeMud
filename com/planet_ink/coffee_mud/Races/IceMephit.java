@@ -114,13 +114,13 @@ public class IceMephit extends Mephit
 			return L("^r@x1^r is almost destroyed!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return L("^r@x1^r is cracking alot and is almost melted.^N",mob.name(viewer));
+			return L("^r@x1^r is cracking a lot and is almost melted.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return L("^r@x1^r is cracking alot and dripping massively.^N",mob.name(viewer));
+			return L("^r@x1^r is cracking a lot and dripping massively.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return L("^y@x1^y is cracking alot and dripping a lot.^N",mob.name(viewer));
+			return L("^y@x1^y is cracking a lot and dripping a lot.^N",mob.name(viewer));
 		else
 		if(pct<.50)
 			return L("^y@x1^y is cracking and dripping.^N",mob.name(viewer));
