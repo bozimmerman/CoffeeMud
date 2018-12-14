@@ -497,6 +497,7 @@ public class MUD extends Thread implements MudHost
 		CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
 		final AtomicLong shutdownStateTime = new AtomicLong(System.currentTimeMillis());
 		final long shutdownTimeout = 5 * 60 * 1000;
+		final Thread currentShutdownThread=Thread.currentThread();
 		final Thread shutdownWatchThread = new Thread(new Runnable()
 		{
 			@Override
@@ -510,6 +511,12 @@ public class MUD extends Thread implements MudHost
 						if((externalCommand!=null)&&(externalCommand.equalsIgnoreCase("hard")))
 							MUD.execExternalRestart();
 						Log.errOut("** Shutdown timeout. **");
+						StringBuilder lines=new StringBuilder("");
+						lines.append("\n\r^HThread: ^N"+currentShutdownThread.getName()+"\n\r");
+						final java.lang.StackTraceElement[] s=currentShutdownThread.getStackTrace();
+						for (final StackTraceElement element : s)
+							lines.append("\n   "+element.getClassName()+": "+element.getMethodName()+"("+element.getFileName()+": "+element.getLineNumber()+")");
+						Log.errOut(lines.toString());
 						break;
 					}
 					CMLib.s_sleep(10 * 1000);
