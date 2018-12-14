@@ -383,6 +383,13 @@ public class JournalFunction extends StdWebMacro
 					||((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 					||CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS))
 					{
+						String subj=entry.subj();
+						if(httpReq.isUrlParameter("NEWSUBJ"+fieldSuffix))
+						{
+							final String s=httpReq.getUrlParameter("NEWSUBJ"+fieldSuffix);
+							if((s!=null)&&(s.length()>0))
+								subj=clearWebMacros(s);
+						}
 						final String text=httpReq.getUrlParameter("NEWTEXT"+fieldSuffix);
 						if((text==null)||(text.length()==0))
 							messages.append("Edit to #"+cardinalNumber+" not submitted -- No text!<BR>");
@@ -400,7 +407,7 @@ public class JournalFunction extends StdWebMacro
 								if((ISPROTECTED!=null)&&(ISPROTECTED.equalsIgnoreCase("on")))
 									attributes|=JournalEntry.ATTRIBUTE_PROTECTED;
 							}
-							CMLib.database().DBUpdateJournal(entry.key(), entry.subj(), clearWebMacros(text), attributes);
+							CMLib.database().DBUpdateJournal(entry.key(), subj, clearWebMacros(text), attributes);
 							if(cardinalNumber==0)
 								cardinalNumber=entry.cardinal();
 							if(cardinalNumber==0)

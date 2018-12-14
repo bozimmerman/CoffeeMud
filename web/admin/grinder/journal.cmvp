@@ -285,6 +285,46 @@
 						</TR>
 						</TABLE>
 					@else@
+					@if?CheckReqParm?FUNCTION=POSTEDIT@
+						<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+						<TR>
+							<TD WIDTH=20%><FONT COLOR=YELLOW>Message: </FONT>
+							</TD>
+							<TD WIDTH=80%><FONT COLOR=WHITE>#@JournalInfo?CARDINAL@</FONT></TD>
+						</TR>
+						<TR>
+							<TD><FONT COLOR=YELLOW>From: </FONT></TD>
+							<TD><FONT COLOR=WHITE>@JournalInfo?FROM@</FONT></TD>
+						</TR>
+						<TR>
+							<TD><FONT COLOR=YELLOW>To: </FONT></TD>
+							<TD><FONT COLOR=WHITE>@JournalInfo?TO@</FONT></TD>
+						</TR>
+						<TR>
+							<TD><FONT COLOR=YELLOW>Date: </FONT></TD>
+							<TD><FONT COLOR=WHITE>@JournalInfo?DATE@</FONT></TD>
+						</TR>
+						<TR>
+							<TD><FONT COLOR=YELLOW>Subject: </FONT></TD>
+							<TD><INPUT TYPE=TEXT SIZE=60 NAME=NEWSUBJ VALUE="@JournalInfo?SUBJECT@"></TD>
+						</TR>
+						</TABLE>
+						<HR>
+						<TEXTAREA NAME=NEWTEXT ROWS=10 COLS=60 WRAP=VIRTUAL>@JournalInfo?MESSAGE@</TEXTAREA>
+						<TABLE WIDTH=100% BORDER=0>
+						<TR>
+						<TD WIDTH=33% ALIGN=LEFT>
+							<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Submit" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','EDIT','@RequestParameter?JOURNALCARDINAL@');">
+						</TD>
+						<TD WIDTH=33% ALIGN=LEFT>
+						</TD>
+						<TD WIDTH=33% ALIGN=LEFT>
+							<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Cancel" ONCLICK="Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@','@RequestParameter?JOURNALCARDINAL@');">
+						</TD>
+						</TR>
+						</TABLE>
+						<HR>
+					@else@
 					@if?CheckReqParm?FUNCTION=POSTEMAIL@
 						<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 						<TR>
@@ -317,6 +357,9 @@
 						@if?!CheckReqParm?JOURNALMESSAGE=@
 							@if?CheckReqParm?FUNCTION=REPLY@
 							<CENTER><FONT COLOR=RED><B>@JournalFunction?REPLY@</B></FONT></CENTER>
+							@endif@
+							@if?CheckReqParm?FUNCTION=EDIT@
+							<CENTER><FONT COLOR=RED><B>@JournalFunction?EDIT@</B></FONT></CENTER>
 							@endif@
 							<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 							<TR>
@@ -365,15 +408,18 @@
 								</SELECT>
 								@endif@
 							</TD>
-							<TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>
+							<TD WIDTH=14% ALIGN=CENTER VALIGN=TOP>
 								<INPUT TYPE=BUTTON NAME=REPLY VALUE="Reply" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTREPLY','@RequestParameter?JOURNALCARDINAL@');">
 							</TD>
-							<TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>
+							<TD WIDTH=14% ALIGN=CENTER VALIGN=TOP>
 							@if?JournalInfo?EMAILALLOWED@
 								<INPUT TYPE=BUTTON NAME=EMAIL VALUE="Email" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTEMAIL','@RequestParameter?JOURNALCARDINAL@');">
 							@endif@
 							</TD>
-							<TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>
+							<TD WIDTH=14% ALIGN=CENTER VALIGN=TOP>
+								<INPUT TYPE=BUTTON NAME=EDITJ VALUE="Edit" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTEDIT','@RequestParameter?JOURNALCARDINAL@');">
+							</TD>
+							<TD WIDTH=14% ALIGN=CENTER VALIGN=TOP>
 								<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="if(confirm('Delete this message?'))Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','DELETE','@RequestParameter?JOURNALCARDINAL@');">
 							</TD>
 							</TR>
@@ -455,6 +501,7 @@
                                 </CENTER>
                             @endif@
 						@endif@
+					@endif@
 					@endif@
 					@endif@
 					@endif@
