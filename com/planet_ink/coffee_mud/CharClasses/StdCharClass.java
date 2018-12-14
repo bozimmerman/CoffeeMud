@@ -390,6 +390,7 @@ public class StdCharClass implements CharClass
 			if((!multiClassFirstRule.equals("APP"))
 			&&(!multiClassSecondRule.equals("SUB"))
 			&&(!multiClassSecondRule.equals("MULTI"))
+			&&(!multiClassSecondRule.equals("MULTIAPP"))
 			&&(!multiClassSecondRule.equals("SUBONLY")))
 			{
 				final CharClass possibleClass=CMClass.findCharClass(multiClassSecondRule);
@@ -478,16 +479,15 @@ public class StdCharClass implements CharClass
 			if(curClass.getSubClassRule()==SubClassRule.ANY) // if you are an apprentice
 			{
 				if(multiClassFirstRule.equals("NO")
-				||multiClassSecondRule.equals("NO")
-				||multiClassFirstRule.equals("MULTI")
-				||multiClassSecondRule.equals("MULTI"))
+				||multiClassSecondRule.equals("NO")) // no one wants to REMAIN an apprentice.
 					return true;
-				if(multiClassFirstRule.equals("SUB")||multiClassSecondRule.equals("SUB"))
+				if(multiClassSecondRule.equals("SUB"))
 				{
 					if((changeToBaseClassID.equals(changeToClassID))||(changeToBaseClassID.equals(currentBaseClassID)))
 						return true;
 					if(!quiet)
 						mob.tell(L("You must be a @x1 type to become a @x2.",changeToBaseClassID,name()));
+					return false;
 				}
 				if(multiClassSecondRule.equals("SUBONLY"))
 				{
@@ -495,8 +495,9 @@ public class StdCharClass implements CharClass
 						return true;
 					if(!quiet)
 						mob.tell(L("@x1 is not an option..",name()));
+					return false;
 				}
-				return false;
+				return true;
 			}
 			else
 			{
