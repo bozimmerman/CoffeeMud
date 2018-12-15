@@ -728,9 +728,12 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				if(size > 1)
 					txt.append(CMLib.lang().L("There are @x1 rooms in this lot.  ",""+size));
 				if(!title.allowsExpansionConstruction())
-					txt.append(L("The size of this lot is not expandable."));
+					txt.append(L("The size of this lot is not expandable"));
 				else
-					txt.append(L("The size of this lot is expandable."));
+					txt.append(L("The size of this lot is expandable"));
+				if(title.gridLayout())
+					txt.append(L(", and rooms are connected in a grid"));
+				txt.append(".");
 				I.setReadableText(txt.toString());
 				I.setDescription(txt.toString());
 				R.addItem(I);
