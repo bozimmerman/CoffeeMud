@@ -125,7 +125,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 			}
 			if((this.tickDown % 2)==0)
 			{
-				mob.location().show(mob, weapon, CMMsg.MSG_HANDS, L("<S-NAME> continue(s) sharpening <T-NAME> (@x1).",CMath.toPct(CMath.div((TICKS_TO_SHARPEN-tickDown+1),TICKS_TO_SHARPEN))));
+				mob.location().show(mob, weapon, CMMsg.MSG_HANDS, L("<S-NAME> continue(s) sharpening <T-NAME> (@x1).",CMath.toWholePct(CMath.div((TICKS_TO_SHARPEN-tickDown+1),TICKS_TO_SHARPEN))));
 			}
 		}
 		else

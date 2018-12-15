@@ -44,6 +44,7 @@ public class CMath
 	private static final String[]		ROMAN_ONES		= {"I","II","III","IV","V","VI","VII","VIII","IX","X"};
 	private static final String			ROMAN_ALL		= "CDMPXLIV";
 	private static final String[]		LONG_ABBR		= {"","k", "M", "G", "T", "P","E"};
+	private static final DecimalFormat	NO_PLACES		= new DecimalFormat("0%");
 	private static final DecimalFormat	TWO_PLACES		= new DecimalFormat("0.#####%");
 	private static final int[]			INTEGER_BITMASKS= new int[31];
 	private static final long[]			LONG_BITMASKS	= new long[63];
@@ -894,6 +895,20 @@ public class CMath
 	public final static String toPct(final double d)
 	{
 		final String s=TWO_PLACES.format(d);
+		if(s.endsWith("%%"))
+			return s.substring(0,s.length()-1);
+		return s;
+	}
+	
+	/**
+	 * Converts a percentage 1&gt;d&gt;0 to a string.
+	 * With NO decimal places!
+	 * @param d the number to convert
+	 * @return the percentage string.
+	 */
+	public final static String toWholePct(final double d)
+	{
+		final String s=NO_PLACES.format(d);
 		if(s.endsWith("%%"))
 			return s.substring(0,s.length()-1);
 		return s;
