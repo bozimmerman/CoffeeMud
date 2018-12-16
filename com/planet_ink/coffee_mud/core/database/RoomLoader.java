@@ -1527,12 +1527,12 @@ public class RoomLoader
 	{
 		if((!room.isSavable())||(room.amDestroyed()))
 			return;
-		final Vector<MOB> mobs=new Vector<MOB>();
+		final List<MOB> mobs=new ArrayList<MOB>();
 		for(int m=0;m<room.numInhabitants();m++)
 		{
 			final MOB thisMOB=room.fetchInhabitant(m);
 			if((thisMOB!=null)&&(thisMOB.isSavable()))
-				mobs.addElement(thisMOB);
+				mobs.add(thisMOB);
 		}
 		DBUpdateTheseMOBs(room,mobs);
 	}

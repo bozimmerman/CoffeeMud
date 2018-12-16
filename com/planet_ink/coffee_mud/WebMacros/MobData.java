@@ -921,9 +921,12 @@ public class MobData extends StdWebMacro
 				str.append("</TD><TD WIDTH=10%>");
 				if(!CMLib.flags().isCataloged(O))
 				{
-					//if(O instanceof MOB)
-						//str.append("<INPUT TYPE=BUTTON NAME=EDITSHOPMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditShopMob('"+RoomData.getMOBCode(RoomData.getMOBCache(),(MOB)O)+"');\">");
-					//else
+					if(O instanceof MOB)
+					{
+						final String s=RoomData.getMOBCode(RoomData.getMOBCache(),(MOB)O);
+						str.append("<INPUT TYPE=BUTTON NAME=EDITSHOPMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditShopMob('"+s+"');\">");
+					}
+					else
 					if(O instanceof Item)
 						str.append("<INPUT TYPE=BUTTON NAME=EDITSHOPITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditShopItem('"+RoomData.getItemCode(RoomData.getItemCache(),(Item)O)+"');\">");
 				}
@@ -977,7 +980,7 @@ public class MobData extends StdWebMacro
 			str.append("Price: <INPUT TYPE=TEXT SIZE=5 NAME=SPRIC"+(theclasses.size()+1)+" VALUE=\"-1\">");
 			str.append("</TD><TD WIDTH=10%>");
 			str.append("<INPUT TYPE=BUTTON NAME=ADDSHOPITEM VALUE=\"+Item\" ONCLICK=\"AddNewShopItem();\">");
-			//str.append("<INPUT TYPE=BUTTON NAME=ADDSHOPMOB VALUE=\"+MOB\" ONCLICK=\"AddNewShopMOB();\">");
+			str.append("<INPUT TYPE=BUTTON NAME=ADDSHOPMOB VALUE=\"+MOB\" ONCLICK=\"AddNewShopMOB();\">");
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}
@@ -1136,6 +1139,11 @@ public class MobData extends StdWebMacro
 				httpReq.getRequestObjects().put(last,R);
 			}
 		}
+		
+		String shopMobCode=httpReq.getUrlParameter("SHOPMOB");
+		if(shopMobCode==null)
+			shopMobCode="";
+
 		MOB M=null;
 		synchronized(("SYNC"+((R!=null)?R.roomID():"null")).intern())
 		{
@@ -1168,10 +1176,31 @@ public class MobData extends StdWebMacro
 					}
 				}
 				else
-				if(R!=null)
-					M=RoomData.getMOBFromCode(R,mobCode);
-				else
-					M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobCode);
+				{
+					if(R!=null)
+						M=RoomData.getMOBFromCode(R,mobCode);
+					else
+						M=RoomData.getMOBFromCode(RoomData.getMOBCache(),mobCode);
+					if((shopMobCode != null)
+					&&(shopMobCode.length()>0)
+					&&(M instanceof ShopKeeper))
+					{
+						if(shopMobCode.startsWith("CATALOG-")||shopMobCode.startsWith("NEWCATA-"))
+						{
+							M=CMLib.catalog().getCatalogMob(mobCode.substring(8));
+							if(M==null)
+								M=CMClass.getMOB("GenMob");
+							else
+								M=(MOB)M.copyOf();
+						}
+						else
+						if(shopMobCode.equals("NEW"))
+							M=CMClass.getMOB("GenMob");
+						else
+							M=RoomData.getMOBFromCode(RoomData.getMOBCache(),shopMobCode);
+					}
+				}
+
 				if((M==null)
 				||((!M.isSavable())&&((R==null)||(R.isSavable()))))
 				{

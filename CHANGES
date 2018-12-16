@@ -17,6 +17,7 @@
   16. Material type for Precious Stones (Diamonds, Gems, etc) given new friendly name of "Gemstone"
   17. <VARIES> tags in room descriptions now includes a Zappermask option -- see the Archon's Guide.
   18. Journal entries, including those with embedded replies, can be edited from the MUDGrinder.
+  19. MUDGRinder: Mobs can now be added and edited directly in ShopKeeper inventory
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

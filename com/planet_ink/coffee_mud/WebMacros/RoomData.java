@@ -158,6 +158,13 @@ public class RoomData extends StdWebMacro
 				return Long.toString( ( M.ID() + "/" + M.Name() + "/" + M.displayText() ).hashCode() << 5 ) + i;
 			i++;
 		}
+		i=0;
+		for (final MOB M2 : mobs)
+		{
+			if(M2.sameAs(M))
+				return Long.toString( ( M.ID() + "/" + M.Name() + "/" + M.displayText() ).hashCode() << 5 ) + i;
+			i++;
+		}
 		return "";
 	}
 

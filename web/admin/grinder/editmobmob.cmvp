@@ -7,6 +7,7 @@
 @if?!CheckReqParm?ERRMSG=@ 
 	@AddFile?/grinder/editmob.cmvp@ 
 @else@ 
+@AddRequestParameter?SHOPMOB=@@RequestParameter?SETSHOPMOB@@ @
 <HTML>
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >

@@ -31,6 +31,7 @@
 		{
 			document.AREAEDIT.action='/grinder/addmobmob.cmvp';
 			document.AREAEDIT.target='_top';
+			document.AREAEDIT.SETSHOPMOB.value='NEW';
 			document.AREAEDIT.submit();
 		}
 		function AddItem(ME)
@@ -64,9 +65,8 @@
 			document.AREAEDIT.ITEM.value=ME;
 			document.AREAEDIT.action='/grinder/editmobmob.cmvp';
 			document.AREAEDIT.target='_top';
-			document.AREAEDIT.SHOPMOB.value=document.AREAEDIT.MOB.value;
+			document.AREAEDIT.SETSHOPMOB.value=ME;
 			document.AREAEDIT.submit();
-			document.AREAEDIT.SHOPMOB.value='';
 		}
 		function EditBehavior(ME)
 		{
@@ -137,7 +137,11 @@
 @if?CheckReqParm?ROOM=ANY@
 	<h3>Modify MOB</H3>
 @else@
-	<h3>Modify MOB from '@RoomID@'.</H3>
+	@if?CheckReqParm?SHOPMOB=@
+		<h3>Modify MOB from '@RoomID@'.</H3>
+	@else@
+		<h3>Modify Shop Inventory MOB from room '@RoomID@'</H3>
+	@endif@
 @endif@
 <P><FONT COLOR=RED><H1>@RequestParameter?ERRMSG@</H1></FONT>
 <BR>
@@ -150,7 +154,11 @@
 	//-->
 	</SCRIPT>
 @else@
-	<FORM  ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editmobdone.cmvp">
+	@if?CheckReqParm?SHOPMOB=@
+		<FORM  ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editmobdone.cmvp">
+	@else@
+		<FORM  ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editshopmobdone.cmvp">
+	@endif@
 	<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RoomID@">
 	<INPUT TYPE=HIDDEN NAME=LINK VALUE="@RequestParameter?LINK@">
 	<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaID@">
@@ -161,6 +169,7 @@
 <INPUT TYPE=HIDDEN NAME=CHANGEDCLASS VALUE="">
 <INPUT TYPE=HIDDEN NAME=CHANGEDLEVEL VALUE="">
 <INPUT TYPE=HIDDEN NAME=MOB VALUE="@RequestParameter?MOB@">
+<INPUT TYPE=HIDDEN NAME=SETSHOPMOB VALUE="">
 <INPUT TYPE=HIDDEN NAME=SHOPMOB VALUE="@RequestParameter?SHOPMOB@">
 <INPUT TYPE=HIDDEN NAME=SHOPITEM VALUE="">
 <INPUT TYPE=HIDDEN NAME=ITEM VALUE="">

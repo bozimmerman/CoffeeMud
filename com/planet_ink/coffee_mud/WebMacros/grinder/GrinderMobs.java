@@ -297,12 +297,12 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String items(final MOB M, final Vector<Item> allitems, final HTTPRequest httpReq)
+	public static String items(final MOB M, final List<Item> allitems, final HTTPRequest httpReq)
 	{
 		if(httpReq.isUrlParameter("ITEM1"))
 		{
-			final Vector<Item> items=new Vector<Item>();
-			final Vector<String> cstrings=new Vector<String>();
+			final List<Item> items=new ArrayList<Item>();
+			final List<String> cstrings=new ArrayList<String>();
 			for(int i=1;;i++)
 			{
 				final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
@@ -323,26 +323,26 @@ public class GrinderMobs
 						if(worn)
 							I2.wearEvenIfImpossible(M);
 						happilyAddItem(I2,M);
-						items.addElement(I2);
+						items.add(I2);
 						I2.setContainer(null);
 						final String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
-						cstrings.addElement((CONTAINER==null)?"":CONTAINER);
+						cstrings.add((CONTAINER==null)?"":CONTAINER);
 					}
 				}
 			}
 			for(int i=0;i<cstrings.size();i++)
 			{
-				final String CONTAINER=cstrings.elementAt(i);
+				final String CONTAINER=cstrings.get(i);
 				if(CONTAINER.length()==0)
 					continue;
-				final Item I2=items.elementAt(i);
+				final Item I2=items.get(i);
 				final Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
 				if(C2 instanceof Container)
 					I2.setContainer((Container)C2);
 			}
 			for(int i=0;i<allitems.size();i++)
 			{
-				final Item I=allitems.elementAt(i);
+				final Item I=allitems.get(i);
 				if(!M.isMine(I))
 				{
 					I.setOwner(M);
@@ -396,6 +396,11 @@ public class GrinderMobs
 			return "@break@";
 
 		final String newClassID=httpReq.getUrlParameter("CLASSES");
+
+		String shopMobCode=httpReq.getUrlParameter("SHOPMOB");
+		if(shopMobCode==null)
+			shopMobCode="";
+
 		CatalogLibrary.CataData cataData=null;
 		synchronized(("SYNC"+((R!=null)?R.roomID():"null")).intern())
 		{
@@ -410,6 +415,23 @@ public class GrinderMobs
 				M=CMClass.getMOB(newClassID);
 			else
 				M=RoomData.getMOBFromCode(R,mobCode);
+			
+			MOB shopM=null;
+			
+			if((shopMobCode != null)
+			&&(shopMobCode.length()>0)
+			&&(M instanceof ShopKeeper))
+			{
+				shopM=M;
+				if(shopMobCode.equals("NEW")||shopMobCode.equals("NEWDEITY")||shopMobCode.startsWith("NEWCATA-"))
+					M=CMClass.getMOB(newClassID);
+				else
+				{
+					final MOB chkM=RoomData.getMOBFromCode((Room)null,shopMobCode);
+					if(chkM != null)
+						M=(MOB)((ShopKeeper)M).getShop().getStock(chkM.Name(), null);
+				}
+			}
 
 			if(M==null)
 			{
@@ -430,13 +452,14 @@ public class GrinderMobs
 			final MOB oldM=M;
 			if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(M))))
 				M=CMClass.getMOB(newClassID);
-			M.setStartRoom(R);
+			if((shopMobCode == null)||(shopMobCode.length()==0))
+				M.setStartRoom(R);
 
-			final Vector<Item> allitems=new Vector<Item>();
+			final List<Item> allitems=new ArrayList<Item>();
 			while(oldM.numItems()>0)
 			{
 				final Item I=oldM.getItem(0);
-				allitems.addElement(I);
+				allitems.add(I);
 				oldM.delItem(I);
 			}
 			MOB copyMOB=(MOB)M.copyOf();
@@ -1006,6 +1029,7 @@ public class GrinderMobs
 			M.resetToMaxState();
 			M.text();
 			String newMobCode=null;
+			String newShopMobCode=null;
 			if(R==null)
 			{
 				if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
@@ -1042,6 +1066,19 @@ public class GrinderMobs
 				}
 			}
 			else
+			if((shopMobCode!=null)
+			&&(shopMobCode.length()>0)
+			&&(shopM instanceof ShopKeeper))
+			{
+				if(shopMobCode.equals("NEW")||shopMobCode.equals("NEWDEITY"))
+					((ShopKeeper)shopM).getShop().addStoreInventory(M);
+				RoomData.contributeMOBs(new XVector<MOB>(M));
+				final MOB M2=RoomData.getReferenceMOB(M);
+				newShopMobCode=RoomData.getMOBCode(RoomData.getMOBCache(),M2);
+				CMLib.database().DBUpdateMOBs(R);
+				newMobCode=RoomData.getMOBCode(R,shopM);
+			}
+			else
 			{
 				if(mobCode.equals("NEW")||mobCode.equals("NEWDEITY"))
 				{
@@ -1063,10 +1100,12 @@ public class GrinderMobs
 				CMLib.database().DBUpdateMOBs(R);
 				newMobCode=RoomData.getMOBCode(R,M);
 			}
-			final String shopItem=httpReq.getUrlParameter("SHOPITEM");
-			if((shopItem!=null)&&(shopItem.equalsIgnoreCase(mobCode))&&(newMobCode!=null))
-				httpReq.addFakeUrlParameter("SHOPITEM", newMobCode);
-			httpReq.addFakeUrlParameter("MOB",newMobCode);
+			if((newShopMobCode!=null)&&(newShopMobCode.length()>0))
+			{
+				httpReq.addFakeUrlParameter("SHOPMOB", newShopMobCode);
+			}
+			if(newMobCode!=null)
+				httpReq.addFakeUrlParameter("MOB",newMobCode);
 			if(!copyMOB.sameAs(M))
 				Log.sysOut("Grinder",whom.Name()+" modified mob "+copyMOB.Name()+((R!=null)?" in room "+R.roomID():"")+".");
 		}
