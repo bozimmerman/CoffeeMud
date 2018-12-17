@@ -86,21 +86,26 @@ public class ClanList extends StdCommand
 			{
 				final Clan C=e2.nextElement();
 				if((C!=thisClan)
-				&&((thisClan.getClanRelations(C.clanID())==Clan.REL_WAR)
-					||(C.getClanRelations(thisClan.clanID())==Clan.REL_WAR)))
+				&&(thisClan.getClanRelations(C.clanID())==Clan.REL_WAR))
 				{
-					war=true;
-					break;
+					if(C.getClanRelations(thisClan.clanID())==Clan.REL_WAR)
+					{
+						war=true;
+						break;
+					}
+					else
+					{
+					}
 				}
 			}
-			String status=(war)?"At War":"Active";
+			String status=L((war)?"At War":"Active");
 			switch(thisClan.getStatus())
 			{
 			case Clan.CLANSTATUS_FADING:
-				status="Inactive";
+				status=L("Inactive");
 				break;
 			case Clan.CLANSTATUS_PENDING:
-				status="Pending";
+				status=L("Pending");
 				break;
 			}
 			msg.append(CMStrings.padRight(status,7)+"  ");
