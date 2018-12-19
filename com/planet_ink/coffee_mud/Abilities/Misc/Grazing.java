@@ -163,7 +163,7 @@ public class Grazing extends StdAbility
 						if(R.show(mob, null, CMMsg.MSG_QUIETMOVEMENT, msgStr))
 						{
 							cuds--;
-							mob.curState().setHunger(CMProps.getIntVar(CMProps.Int.HUNGER_FULL));
+							mob.curState().setHunger(mob.maxState().maxHunger(mob.baseWeight()));
 							mob.tell(L("You are no longer hungry."));
 						}
 					}
