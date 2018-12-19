@@ -151,12 +151,12 @@ public class Thief_Peek extends ThiefSkill
 		{
 			String str=null;
 			if(CMLib.dice().rollPercentage()<discoverChance)
-				str=auto?"":L("<S-NAME> peek(s) at your inventory.");
+				str=auto?"":L("<S-NAME> peek(s) at <T-YOUPOSS> inventory.");
 
-			CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT|CMMsg.MASK_EYES),auto?"":L("<S-NAME> peek(s) at <T-NAME>s inventory."),CMMsg.MSG_LOOK,str,CMMsg.NO_EFFECT,null);
+			CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT|CMMsg.MASK_EYES),auto?"":L("<S-NAME> peek(s) at <T-YOUPOSS> inventory."),CMMsg.MSG_LOOK,str,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
-				msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":L("<S-NAME> peek(s) at <T-NAME>s inventory."),CMMsg.MSG_OK_VISUAL,str,(str==null)?CMMsg.NO_EFFECT:CMMsg.MSG_OK_VISUAL,str);
+				msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":L("<S-NAME> peek(s) at <T-YOUPOSS> inventory."),CMMsg.MSG_OK_VISUAL,str,(str==null)?CMMsg.NO_EFFECT:CMMsg.MSG_OK_VISUAL,str);
 				mob.location().send(mob,msg);
 				final StringBuilder msg2=CMLib.commands().getInventory(mob,target);
 				if(msg2.length()==0)
