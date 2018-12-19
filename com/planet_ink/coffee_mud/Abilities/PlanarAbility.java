@@ -1198,7 +1198,7 @@ public class PlanarAbility extends StdAbility
 
 	protected String failMessage(final MOB mob, final boolean auto)
 	{
-		return L("^S<S-NAME> attempt(s) to conjur a powerful planar connection, and fails.");
+		return L("^S<S-NAME> attempt(s) to conjure a powerful planar connection, and fails.");
 	}
 
 	@Override

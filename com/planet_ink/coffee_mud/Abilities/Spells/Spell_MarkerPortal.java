@@ -204,7 +204,7 @@ public class Spell_MarkerPortal extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to conjur a portal, but fizzle(s) the spell."));
+			beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to conjure a portal, but fizzle(s) the spell."));
 
 		// return whether it worked
 		return success;
