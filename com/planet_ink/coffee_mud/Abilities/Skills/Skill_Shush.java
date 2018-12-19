@@ -195,6 +195,12 @@ public class Skill_Shush extends StdSkill
 		final int twis = target.charStats().getStat(CharStats.STAT_WISDOM);
 		final int scha = mob.charStats().getStat(CharStats.STAT_CHARISMA);
 		final boolean success=(!target.isInCombat()) && proficiencyCheck(mob,-((twis-scha)*2)+getXLEVELLevel(mob),auto);
+		final Map<MOB,MOB> vics=new HashMap<MOB,MOB>();
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			vics.put(M, M.getVictim());
+		}
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MASK_HANDS|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("<S-NAME> shush(es) <T-NAMESELF>."));
@@ -208,6 +214,13 @@ public class Skill_Shush extends StdSkill
 		}
 		else
 			return maliciousFizzle(mob,target,L("<S-NAME> shush(es) <T-NAMESELF>, but <T-NAME> just seem(s) annoyed."));
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			final MOB vicM=vics.get(M);
+			if((vicM != null) && (M.getVictim() != vicM))
+				M.setVictim(vicM);
+		}
 		return success;
 	}
 }
