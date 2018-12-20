@@ -257,7 +257,7 @@ public class Gaoler extends StdCharClass
 
 	public boolean isRightOutsideACell(final Room R, final LegalBehavior legalBehavior, final Area legalArea)
 	{
-		if(R==null)
+		if((R==null)||(legalBehavior==null))
 			return false;
 		final List<Room> rooms=new ArrayList<Room>(3);
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
@@ -273,7 +273,7 @@ public class Gaoler extends StdCharClass
 
 	public boolean isRightOutsideAnOccupiedCell(final Room R, final LegalBehavior legalBehavior, final Area legalArea)
 	{
-		if(R==null)
+		if((R==null)||(legalBehavior==null))
 			return false;
 		final List<Room> rooms=new ArrayList<Room>(3);
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
@@ -292,7 +292,7 @@ public class Gaoler extends StdCharClass
 
 	protected boolean isAnOfficerOfTheCourt(final MOB mob, final LegalBehavior legalBehavior, final Area legalArea)
 	{
-		if(mob.isMonster())
+		if(mob.isMonster() && (legalBehavior!=null))
 		{
 			if(legalBehavior.isAnyOfficer(legalArea, mob)
 			||legalBehavior.isJudge(legalArea, mob))
