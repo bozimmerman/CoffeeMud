@@ -16,7 +16,7 @@ brandy	DRINK	Poison_Liquor	10	GRAPES	1	wine	1	SUGAR	1	WOOD	-1
 calvados	DRINK	Poison_Alcohol	10	APPLES	1	WATER	1	SUGAR	1								
 cachaca	DRINK	Poison_Liquor	12	SUGAR	1	WATER	1	YEAST	1								
 sake	DRINK	Poison_Alcohol	12	RICE	1	WATER	1	SUGAR	1								
-grain alcohol	DRINK	Poison_Liquor	13	BARLEY	1	WATER	1	IRON	1								
+grain alcohol	DRINK	Poison_Liquor	13	BARLEY	1	WATER	1	COPPER	1								
 moonshine	DRINK	Poison_Liquor	14	CORN	1	WATER	1	SUGAR	1	YEAST	1	BARLEY	-1	COPPER	-1		
 himbeergeist	DRINK	Poison_Liquor	15	RASPBERRIES	1	grain alcohol	1										
 peach schnaps	DRINK	Poison_Liquor	16	PEACHES	1	grain alcohol	1										

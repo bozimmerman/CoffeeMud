@@ -6,7 +6,7 @@
 % bracelet	3	20	2	50	GenArmor	MS0:LEFT WRIST||RIGHT WRIST		0	PRECIOUS	
 % anklet	4	20	2	60	GenArmor	S-3:FEET		0		
 % loop	4	23	1	20	GenEarring	MS-10:HEAD||EYES||TORSO||EARS||MOUTH		0		
-carved % charm	5	30	0	10	GenItem	STATUE		0	WOODEN	Prop_ItemSlotFiller;num=1 type=jewelcharm removeable=true
+carved % charm	5	30	0	10	GenItem	STATUE		0	WOODEN	Prop_ItemSlotFiller;num=1 type=jewelcharm removable=true
 % Engagement Ring	5	50	1	150	GenArmor	S0:LEFT FINGER||RIGHT FINGER		0	PRECIOUS	
 % toering	6	20	1	30	GenArmor	MS-5:FEET		0		
 % necklace	6	30	2	200	GenArmor	MS-2:NECK		0	PRECIOUS	
@@ -26,149 +26,149 @@ eye glasses	11	50	2	20	GenArmor	S4:EYES		0	GLASS
 % earring	13	20	1	20	GenEarring	MS-2:EARS		0	PRECIOUS	
 % wristband	13	25	3	75	GenArmor	MS0:LEFT WRIST||RIGHT WRIST		0		
 % Tiara	13	80	10	200	GenArmor	S1:HEAD		0		*Prop_ItemSlot;NUM=1 REMOVABLE=TRUE TYPE="gemsetting" ; <ITEMS></ITEMS>
-small cabochon cut %	14	10	0	10	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+small cabochon cut %	14	10	0	10	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 solitaire % ring	14	20	1	50	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0		Prop_ItemSlot;num=1 type=gemsetting removable=true
-simple % charm	15	35	1	20	GenItem	STATUE		0		Prop_ItemSlotFiller;num=1 type=jewelcharm removeable=true
+simple % charm	15	35	1	20	GenItem	STATUE		0		Prop_ItemSlotFiller;num=1 type=jewelcharm removable=true
 % Belly Chain	15	40	4	200	GenArmor	S-3:WAIST		0		
 monocle	16	30	1	20	GenArmor	S3:EYES		0	GLASS	
 % pendant	16	30	2	500	GenArmor	MS0:NECK		0	PRECIOUS	Prop_ItemSlot;num=1 type=gemsetting removable=true
-small oval cut %	17	20	0	15	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+small oval cut %	17	20	0	15	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % signet ring	17	40	2	100	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0		
 % Diadem	18	50	8	400	GenArmor	S-1:HEAD		0	PRECIOUS	Prop_ItemSlot;num=1 type=jewelcharm removable=true
 % bejewelled flower	18	100	5	100	GenItem			0	PRECIOUS	
 % post	19	20	1	20	GenEarring	MS-10:HEAD||EYES||TORSO||EARS||MOUTH		0		
 carved % bead necklace	19	30	4	50	GenArmor	S2:NECK		0	ROCK	
 % bangle bracelet	19	50	3	250	GenArmor	MS1:LEFT WRIST||RIGHT WRIST		0	PRECIOUS	
-small round cut %	20	30	0	20	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+small round cut %	20	30	0	20	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % Crown	20	100	10	150	GenArmor	S1:HEAD		1		
-medium cabochon cut %	21	40	0	25	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+medium cabochon cut %	21	40	0	25	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % claddagh ring	21	60	1	75	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0		
 % body hoop	22	20	1	20	GenEarring	S-5:WAIST		0		
 % Badge	22	60	4	150	GenArmor	MS0:TORSO		0		
-small cushion cut %	23	50	0	30	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+small cushion cut %	23	50	0	30	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % bejewelled rose	23	120	5	500	GenItem			0	PRECIOUS	
 % cufflinks	24	50	2	500	GenArmor	S2:LEFT WRIST||RIGHT WRIST		0	PRECIOUS	*Prop_WearAdjuster;CHA+1
-medium oval cut %	24	60	0	35	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
-sculpted % charm	25	40	0	30	GenItem	STATUE		0	ROCK	Prop_ItemSlotFiller;num=1 type=jewelcharm removeable=true
+medium oval cut %	24	60	0	35	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
+sculpted % charm	25	40	0	30	GenItem	STATUE		0	ROCK	Prop_ItemSlotFiller;num=1 type=jewelcharm removable=true
 % bindi	25	40	1	500	GenArmor	S-3:EYES		0	PRECIOUS	
 % gauge	26	25	1	20	GenEarring	MS-10:HEAD||EYES||TORSO||EARS||MOUTH		0		
-small emerald cut %	26	70	0	40	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+small emerald cut %	26	70	0	40	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % body chain	27	28	1	20	GenEarring	S-3:WAIST		0		
 % tassel arm cuff	27	35	5	40	GenArmor	S0:ARMS		0	PRECIOUS	
-medium round cut %	27	80	0	45	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+medium round cut %	27	80	0	45	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % dinner ring	28	30	1	60	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0	PRECIOUS	
 % amulet	28	60	4	400	GenArmor	S2:NECK		0	PRECIOUS	Prop_ItemSlot;num=1 type=jewelcharm removable=true
 % earcuff	29	40	1	50	GenArmor	MS-2:EARS		0		
-small marquis cut %	29	90	0	50	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+small marquis cut %	29	90	0	50	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % bejewelled egg	29	150	2	1000	GenItem			0	PRECIOUS	
 sunglasses	30	60	2	50	GenArmor	4:EYES		0	GLASS	
-medium cushion cut %	30	100	0	55	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+medium cushion cut %	30	100	0	55	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 long % chain necklace	31	30	3	100	GenArmor	S4:NECK		0		
 jewelled % wedding band	31	50	1	350	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0	PRECIOUS	*Prop_WearSpellCast;Prayer_Fidelity
 % dangle earring	32	40	1	30	GenEarring	MS-2:EARS		0	PRECIOUS	
-small baguette cut %	32	110	0	60	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+small baguette cut %	32	110	0	60	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % Medal	33	80	1	100	GenArmor	MS0:TORSO		0		
-medium emerald cut %	33	120	0	65	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+medium emerald cut %	33	120	0	65	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % bar necklace	34	35	4	125	GenArmor	S2:NECK		0		
 small % idol	34	80	30	250	GenItem	STATUE		0	PRECIOUS	
-scrim % charm	35	50	0	40	GenItem	STATUE		0	BONE	Prop_ItemSlotFiller;num=1 type=jewelcharm removeable=true
-small briolette cut %	35	130	0	70	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
-medium marquis cut %	36	140	0	75	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+scrim % charm	35	50	0	40	GenItem	STATUE		0	BONE	Prop_ItemSlotFiller;num=1 type=jewelcharm removable=true
+small briolette cut %	35	130	0	70	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
+medium marquis cut %	36	140	0	75	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % bust	36	160	150	500	GenItem	STATUE		0	PRECIOUS	
 % cocktail ring	37	40	1	100	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0	PRECIOUS	
 % charm necklace	38	50	4	150	GenArmor	MS0:NECK		0		*Prop_ItemSlot;NUM=4 REMOVABLE=TRUE TYPE="jewelcharm" ; <ITEMS></ITEMS>
-small pear cut %	38	150	0	80	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+small pear cut %	38	150	0	80	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 hoop earring	39	25	1	30	GenEarring	MS-2:EARS		0		
-medium baguette cut %	39	160	0	85	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+medium baguette cut %	39	160	0	85	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % medallion	40	60	5	200	GenArmor	S2:NECK		0		Prop_ItemSlot;num=1 type=jewelcharm removable=true
 two-stone % ring	40	75	1	250	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0		Prop_ItemSlot;num=2 type=gemsetting removable=true
 % coin bracelet	41	50	3	100	GenArmor	MS2:LEFT WRIST||RIGHT WRIST		0		
-small barion cut %	41	170	0	90	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+small barion cut %	41	170	0	90	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % coin armband	42	40	2	50	GenArmor	S0:ARMS		0		
-medium briolette cut %	42	180	0	95	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+medium briolette cut %	42	180	0	95	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % statue	42	240	450	1000	GenItem	STATUE		0	PRECIOUS	
 % coin anklet	43	30	1	75	GenArmor	S-3:FEET		0		
 % six-sided die	43	40	1	50	GenDice			6	PRECIOUS	
 % coin headpiece	44	60	4	100	GenArmor	S1:HEAD		0		
 % Hero`s Medal	44	80	1	500	GenArmor	MS0:TORSO		0	PRECIOUS	
-small princess cut %	44	190	0	100	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+small princess cut %	44	190	0	100	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % coin earrings	45	30	1	25	GenEarring	MS-2:EARS		0		
 % four-sided die	45	50	1	60	GenDice			4	PRECIOUS	
-fancy % charm	45	60	0	50	GenItem	STATUE		0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=jewelcharm removeable=true
-medium pear cut %	45	200	0	110	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+fancy % charm	45	60	0	50	GenItem	STATUE		0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=jewelcharm removable=true
+medium pear cut %	45	200	0	110	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % coin chain necklace	46	40	4	100	GenArmor	S2:NECK		0		
 % three-band rolling ring	46	60	1	300	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0		
 % coin belly dance belt	46	60	5	250	GenArmor	S3:WAIST		0		
 % coin full face veil	47	30	4	100	GenArmor	1:EYES		0		
 % eight-sided die	47	50	1	70	GenDice			8	PRECIOUS	
-small rose cut %	47	210	0	120	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+small rose cut %	47	210	0	120	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % strand necklace	48	50	3	250	GenArmor	S4:NECK		0		
-medium barion cut %	48	220	0	130	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+medium barion cut %	48	220	0	130	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % charm bracelet	49	30	2	150	GenArmor	MS1:LEFT WRIST||RIGHT WRIST		0		Prop_ItemSlot;num=6 type=jewelcharm removable=true
 % ten-sided die	49	60	1	80	GenDice			10	PRECIOUS	
 % chain anklet	50	30	1	100	GenArmor	S-3:FEET		0		
-large cabochon cut %	50	230	0	140	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+large cabochon cut %	50	230	0	140	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % charm earring	51	30	1	40	GenEarring	MS-2:EARS		0		Prop_ItemSlot;num=1 type=jewelcharm removable=true
 % twelve-sided die	51	70	1	90	GenDice			12	PRECIOUS	
 % slave bracelet	51	75	3	300	GenArmor	MS2:LEFT WRIST||RIGHT WRIST		0		
-medium princess cut %	51	240	0	150	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+medium princess cut %	51	240	0	150	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 jewelled % claddagh ring	52	85	1	200	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0	PRECIOUS	
-large oval cut %	53	250	0	160	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+large oval cut %	53	250	0	160	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % nose chain	54	60	1	100	GenEarring	MS-10:EARS&&HEAD		0		
-medium rose cut %	54	260	0	170	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
-large round cut %	56	270	0	180	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+medium rose cut %	54	260	0	170	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
+large round cut %	56	270	0	180	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % double cuff slave bracelets and armband	57	50	4	100	GenArmor	S0:LEFTWRIST&&RIGHTWRIST&&ARMS		0		
 % twenty-sided die	57	80	1	100	GenDice			20	PRECIOUS	
-huge cabochon cut %	57	280	0	190	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+huge cabochon cut %	57	280	0	190	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % chevron necklace	58	40	2	300	GenArmor	MS-2:NECK		0	PRECIOUS	
 bezel-set % ring	58	40	1	150	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0	PRECIOUS	
 % chain headpiece	59	80	5	150	GenArmor	S1:HEAD		0		
-large cushion cut %	59	290	0	200	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
-huge oval cut %	60	300	0	225	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+large cushion cut %	59	290	0	200	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
+huge oval cut %	60	300	0	225	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 jewelled % signet ring	61	70	1	500	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0	PRECIOUS	
 % charm loop	62	30	1	50	GenEarring	MS-10:HEAD||EYES||TORSO||EARS||MOUTH		0		Prop_ItemSlot;num=1 type=jewelcharm removable=true
-large emerald cut %	62	310	0	250	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+large emerald cut %	62	310	0	250	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 large % six-sided die	63	50	2	100	GenDice			6	PRECIOUS	
-huge round cut %	63	320	0	275	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+huge round cut %	63	320	0	275	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 three-stone % ring	64	90	1	600	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0		Prop_ItemSlot;num=3 type=gemsetting removable=true
 large % four-sided die	65	60	2	110	GenDice			4	PRECIOUS	
-large marquis cut %	65	330	0	300	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
-huge cushion cut %	66	340	0	325	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+large marquis cut %	65	330	0	300	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
+huge cushion cut %	66	340	0	325	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 large % eight-sided die	67	60	2	120	GenDice			8	PRECIOUS	
 glass beaded necklace	68	50	3	100	GenArmor	S2:NECK		0	GLASS	
-large baguette cut %	68	350	0	350	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+large baguette cut %	68	350	0	350	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 large % ten-sided die	69	70	2	130	GenDice			10	PRECIOUS	
-huge emerald cut %	69	360	0	375	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+huge emerald cut %	69	360	0	375	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 large % twelve-sided die	71	80	2	140	GenDice			12	PRECIOUS	
-large briolette cut %	71	370	0	400	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+large briolette cut %	71	370	0	400	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % arm-torc	72	50	6	75	GenArmor	S0:ARMS		0		
 % five-band rolling ring	72	80	1	750	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0		
-huge marquis cut %	72	380	0	425	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+huge marquis cut %	72	380	0	425	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % nipple spikes	73	30	1	30	GenEarring	S-10:TORSO		0	BONE	
 % figurine	73	100	5	1500	GenItem	STATUE		0	PRECIOUS	
 floral % crown	74	40	4	120	GenArmor	S1:HEAD		0	FLOWERS	
-large pear cut %	74	390	0	450	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
-huge baguette cut %	75	400	0	475	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+large pear cut %	74	390	0	450	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
+huge baguette cut %	75	400	0	475	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 channel-set % ring	76	90	1	750	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0	PRECIOUS	
 floral % headdress	77	60	6	250	GenArmor	S1:HEAD		1	FLOWERS	
-large barion cut %	77	410	0	500	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+large barion cut %	77	410	0	500	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 floral % necklace	78	30	3	200	GenArmor	S2:NECK		0	FLOWERS	
-huge briolette cut %	78	420	0	600	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+huge briolette cut %	78	420	0	600	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % torc	79	70	5	750	GenArmor	S0:NECK		0		
 large % twenty-sided die	79	90	2	150	GenDice			20	PRECIOUS	
-large princess cut %	80	430	0	700	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
-huge pear cut %	81	440	0	800	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+large princess cut %	80	430	0	700	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
+huge pear cut %	81	440	0	800	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % thirty-sided die	82	90	1	200	GenDice			30	PRECIOUS	
-large rose cut %	83	450	0	900	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
-huge barion cut %	84	460	0	1000	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+large rose cut %	83	450	0	900	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
+huge barion cut %	84	460	0	1000	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % hundred-sided die	85	100	1	500	GenDice			100	PRECIOUS	
 % nose	86	100	1	500	GenLimb			0	PRECIOUS	
 % spiral snake arm band	87	60	4	125	GenArmor	S0:ARMS		0		
-huge princess cut %	87	470	0	1250	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+huge princess cut %	87	470	0	1250	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 opera length pearl beads	88	50	5	1000	GenArmor	S4:NECK		0	PEARL	
 % eternity band	88	100	1	1000	GenArmor	MS0:LEFT FINGER||RIGHT FINGER		0	PRECIOUS	
 % eye	89	150	1	1000	GenLimb			0	PRECIOUS	
-huge rose cut %	90	480	0	1500	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removeable=true
+huge rose cut %	90	480	0	1500	GenItem			0	PRECIOUS	Prop_ItemSlotFiller;num=1 type=gemsetting removable=true
 % barefoot sandal	31	40	1	120	GenArmor	S-3:FEET		0		
 % jewelled barefoot sandal	73	60	1	200	GenArmor	S-3:FEET		0	PRECIOUS	
 beaded anklet	14	30	1	35	GenArmor	S-3:FEET		0	WOOD	
