@@ -594,9 +594,18 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			buildingI=CMClass.getItem("GenFood");
 			final Food food=(Food)buildingI;
-			buildingI.setName(((messedUp)?"burnt ":"")+finalDishName);
-			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?"burnt ":""),finalDishName));
-			buildingI.setDescription(L("It looks @x1",((messedUp)?"burnt!":rotten?"rotten!":"good!")));
+			if(requireFire())
+			{
+				buildingI.setName(((messedUp)?"burnt ":"")+finalDishName);
+				buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?"burnt ":""),finalDishName));
+				buildingI.setDescription(L("It looks @x1",((messedUp)?"burnt!":rotten?"rotten!":"good!")));
+			}
+			else
+			{
+				buildingI.setName(((messedUp)?"ruined ":"")+finalDishName);
+				buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?"ruined ":""),finalDishName));
+				buildingI.setDescription(L("It looks @x1",((messedUp)?"ruined!":rotten?"rotten!":"good!")));
+			}
 			buildingI.basePhyStats().setLevel(CMath.s_int(finalRecipe.get(RCP_LEVEL)));
 			buildingI.phyStats().setLevel(buildingI.basePhyStats().level());
 			food.setNourishment(0);
@@ -832,7 +841,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		if(CMClass.getItem(foodType)!=null)
 		{
 			buildingI=CMClass.getItem(foodType);
-			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":"burnt ";
+			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":(requireFire()?"burnt ":"ruined ");
 			buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
 			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
 			if(buildingI instanceof Drink)
@@ -877,7 +886,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				if(code>=0)
 					buildingI.setMaterial(code);
 			}
-			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":"burnt ";
+			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":(requireFire()?"burnt ":"ruined ");
 			buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
 			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
 			buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()/finalAmount);
@@ -913,7 +922,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	{
 		super.applyName(item, word, hide);
 		if(!buildingI.description().contains(L("rotten")))
-			buildingI.setDescription(L("It looks @x1",((messedUp)?"burnt!":(word+"!"))));
+		{
+			buildingI.setDescription(L("It looks @x1",((messedUp)?(requireFire()?"burnt!":"ruined!"):(word+"!"))));
+		}
 	}
 
 	@Override
