@@ -182,7 +182,7 @@ public class Farming extends GatheringSkill
 							while(isCompost(I2))
 							{
 								final int amt=deCompost(I2,doubleRemain);
-								if(I2.amDestroyed())
+								if(!I2.amDestroyed())
 									((PackagedItems)I).setNumberOfItemsInPackage(((PackagedItems)I).numberOfItemsInPackage()-1);
 								if(amt != 0)
 								{
