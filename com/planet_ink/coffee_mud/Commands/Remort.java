@@ -519,18 +519,20 @@ public class Remort extends StdCommand
 											mob.baseCharStats().setMyClasses("StdCharClass");
 											mob.baseCharStats().setMyLevels("1");
 											mob.basePhyStats().setLevel(1);
-											for (final Enumeration<Ability> a = mob.personalEffects(); a.hasMoreElements();)
+											for(int i=0;i<3;i++)
 											{
-												final Ability A = a.nextElement();
-												if(A!=null)
+												for (final Enumeration<Ability> a = mob.personalEffects(); a.hasMoreElements();)
 												{
-													if (A.canBeUninvoked()
-													||(A.isNowAnAutoEffect()))
+													final Ability A = a.nextElement();
+													if(A!=null)
 													{
-														A.unInvoke();
-														mob.delEffect(A);
+														if (A.canBeUninvoked()
+														||(A.isNowAnAutoEffect()))
+														{
+															A.unInvoke();
+															mob.delEffect(A);
+														}
 													}
-
 												}
 											}
 											final Ability oldFailSafeA=mob.fetchEffect(failsafeID);
