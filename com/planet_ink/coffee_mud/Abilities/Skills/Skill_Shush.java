@@ -201,13 +201,31 @@ public class Skill_Shush extends StdSkill
 			final MOB M=m.nextElement();
 			vics.put(M, M.getVictim());
 		}
+		boolean bookDealer=false;
+		for(int m=0;m<R.numInhabitants();m++)
+		{
+			final MOB M=R.fetchInhabitant(m);
+			if((M instanceof ShopKeeper)
+			&&(M.getStartRoom()==R))
+			{
+				if((((ShopKeeper)M).isSold(ShopKeeper.DEAL_BOOKS))
+				||(((ShopKeeper)M).isSold(ShopKeeper.DEAL_READABLES)))
+				{
+					bookDealer=true;
+				}
+			}
+		}
+		final int malicious=bookDealer?0:CMMsg.MASK_MALICIOUS;
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MASK_HANDS|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("<S-NAME> shush(es) <T-NAMESELF>."));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,malicious|CMMsg.MASK_HANDS|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("<S-NAME> shush(es) <T-NAMESELF>."));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)/10)+1+((2*getXLEVELLevel(mob))/3),CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
+				if(bookDealer)
+					beneficialAffect(mob, target, asLevel, (adjustedLevel(mob,asLevel)/5)+1+((3*getXLEVELLevel(mob))/3));
+				else
+					maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)/10)+1+((2*getXLEVELLevel(mob))/3),CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0));
 				if(target.fetchEffect(ID())!=null)
 					R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> shushed!"));
 			}
