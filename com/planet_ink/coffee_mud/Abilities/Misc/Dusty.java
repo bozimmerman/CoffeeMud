@@ -121,7 +121,7 @@ public class Dusty extends StdAbility
 				{
 				case 0:
 				{
-					affectableStats.addAmbiance(L("a bit dusty"));
+					//affectableStats.addAmbiance(L("a bit dusty"));
 					break;
 				}
 				case 1:
@@ -163,6 +163,38 @@ public class Dusty extends StdAbility
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		final Room R=msg.source().location();
+		if(R!=null)
+		{
+			final Area A=R.getArea();
+			if(A!=null)
+			{
+				final int weather = A.getClimateObj().weatherType(R);
+				switch(weather)
+				{
+				case Climate.WEATHER_BLIZZARD:
+				case Climate.WEATHER_RAIN:
+				case Climate.WEATHER_THUNDERSTORM:
+				case Climate.WEATHER_SNOW:
+				case Climate.WEATHER_HAIL:
+				case Climate.WEATHER_SLEET:
+					unInvoke();
+					break;
+				case Climate.WEATHER_DUSTSTORM:
+					// let puddle maker leave dust behind
+					unInvoke();
+					break;
+				case Climate.WEATHER_CLEAR:
+				case Climate.WEATHER_CLOUDY:
+				case Climate.WEATHER_WINDY:
+				case Climate.WEATHER_HEAT_WAVE:
+				case Climate.WEATHER_DROUGHT:
+				case Climate.WEATHER_WINTER_COLD:
+					break;
+				}
+			}
+		}
+
 		if((msg.sourceMinor()==CMMsg.TYP_HUH)
 		&&(msg.targetMessage()!=null))
 		{
@@ -174,7 +206,6 @@ public class Dusty extends StdAbility
 			if("DUST".startsWith(word)
 			||"CLEAN".startsWith(word))
 			{
-				final Room R=mob.location();
 				if(R != null)
 				{
 					cmds.remove(0);
@@ -197,7 +228,7 @@ public class Dusty extends StdAbility
 									if(D!=null)
 									{
 										D.dustLevel--;
-										if(D.dustLevel < 0)
+										if(D.dustLevel < 1)
 											I.delEffect(D);
 										I.recoverPhyStats();
 									}

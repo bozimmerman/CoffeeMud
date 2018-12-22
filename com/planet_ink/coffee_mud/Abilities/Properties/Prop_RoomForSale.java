@@ -485,21 +485,24 @@ public class Prop_RoomForSale extends Property implements LandTitle
 						if(daysSinceItemsSaved > t)
 						{
 							daysSinceItemsSaved=-1;
-							for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+							if(!CMLib.flags().isWateryRoom(R))
 							{
-								final Item I=i.nextElement();
-								if((I!=null)
-								&&(I.container()==null)
-								&&(flags.isGettable(I))
-								&&((I.numEffects()==0)||(I.fetchEffect("Dusty")==null))
-								&&(flags.isSavable(I)))
+								for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 								{
-									final Ability A=CMClass.getAbility("Dusty");
-									if(A!=null)
+									final Item I=i.nextElement();
+									if((I!=null)
+									&&(I.container()==null)
+									&&(flags.isGettable(I))
+									&&((I.numEffects()==0)||(I.fetchEffect("Dusty")==null))
+									&&(flags.isSavable(I)))
 									{
-										A.setMiscText("LEVEL=0 INTERVAL="+t0);
-										I.addNonUninvokableEffect(A);
-										updateItems=true;
+										final Ability A=CMClass.getAbility("Dusty");
+										if(A!=null)
+										{
+											A.setMiscText("LEVEL=0 INTERVAL="+t0);
+											I.addNonUninvokableEffect(A);
+											updateItems=true;
+										}
 									}
 								}
 							}

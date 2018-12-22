@@ -153,6 +153,28 @@ public class PuddleMaker extends StdBehavior
 		R.recoverRoomStats();
 	}
 
+	public void makeDusty(final Room R)
+	{
+		final CMFlagLibrary flags = CMLib.flags();
+		for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+		{
+			final Item I=i.nextElement();
+			if((I!=null)
+			&&(I.container()==null)
+			&&(flags.isGettable(I))
+			&&((I.numEffects()==0)||(I.fetchEffect("Dusty")==null))
+			&&(flags.isSavable(I)))
+			{
+				final Ability A=CMClass.getAbility("Dusty");
+				if(A!=null)
+				{
+					A.setMiscText("LEVEL=1 INTERVAL="+(Integer.MAX_VALUE/4));
+					I.addNonUninvokableEffect(A);
+				}
+			}
+		}
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -184,6 +206,34 @@ public class PuddleMaker extends StdBehavior
 						&&(!CMLib.flags().isWateryRoom(R))
 						&&(CMLib.dice().rollPercentage()<pct()))
 							makePuddle(R,lastWeather,A.getClimateObj().weatherType(null));
+					}
+				}
+			}
+		}
+		else
+		if(lastWeather == Climate.WEATHER_DUSTSTORM)
+		{
+			if(ticking instanceof Room)
+			{
+				final Room R=(Room)ticking;
+				final Area A=R.getArea();
+				if(!anyWetWeather(A.getClimateObj().weatherType(R)))
+					makeDusty(R);
+			}
+			else
+			if(ticking instanceof Area)
+			{
+				final Area A=(Area)ticking;
+				if(!anyWetWeather(A.getClimateObj().weatherType(null)))
+				{
+					for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+					{
+						final Room R=e.nextElement();
+						if(((R.domainType()&Room.INDOORS)==0)
+						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+						&&(!CMLib.flags().isWateryRoom(R))
+						&&(CMLib.dice().rollPercentage()<pct()))
+							makeDusty(R);
 					}
 				}
 			}
