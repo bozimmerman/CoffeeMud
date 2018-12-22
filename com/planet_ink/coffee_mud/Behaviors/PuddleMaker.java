@@ -170,6 +170,7 @@ public class PuddleMaker extends StdBehavior
 				{
 					A.setMiscText("LEVEL=1 INTERVAL="+(Integer.MAX_VALUE/4));
 					I.addNonUninvokableEffect(A);
+					A.setSavable(false);
 				}
 			}
 		}
