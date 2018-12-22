@@ -479,7 +479,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					if(C!=null)
 					{
 						final long t0 = C.getMonthsInYear() * C.getDaysInMonth() * C.getHoursInDay();
-						final long t = 2 * t0 * (CMProps.getMillisPerMudHour() / MudHost.TIME_SAVETHREAD_SLEEP);
+						final long t = t0 * CMProps.getMillisPerMudHour() / MudHost.TIME_SAVETHREAD_SLEEP;
 
 						final CMFlagLibrary flags=CMLib.flags();
 						if(daysSinceItemsSaved > t)
