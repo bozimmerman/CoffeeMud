@@ -69,6 +69,7 @@ public class Dusty extends StdAbility
 		return 0;
 	}
 
+	@Override
 	public boolean putInCommandlist()
 	{
 		return false;
@@ -178,11 +179,19 @@ public class Dusty extends StdAbility
 				case Climate.WEATHER_SNOW:
 				case Climate.WEATHER_HAIL:
 				case Climate.WEATHER_SLEET:
-					unInvoke();
+					if(affected != null)
+					{
+						affected.delEffect(this);
+						affected=null;
+					}
 					break;
 				case Climate.WEATHER_DUSTSTORM:
 					// let puddle maker leave dust behind
-					unInvoke();
+					if(affected != null)
+					{
+						affected.delEffect(this);
+						affected=null;
+					}
 					break;
 				case Climate.WEATHER_CLEAR:
 				case Climate.WEATHER_CLOUDY:
