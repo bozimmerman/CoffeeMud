@@ -125,7 +125,7 @@ public class CraftingSkill extends GatheringSkill
 		LTHLCRAFT("LTHL",ExpertiseLibrary.Flag.X4),
 		CNTRCRAFT("CNTR",ExpertiseLibrary.Flag.X5),
 		FORTCRAFT("FORT",ExpertiseLibrary.Flag.X4),
-		IMBUCRAFT("IMBU",ExpertiseLibrary.Flag.X5),
+		IMBUCRAFT("IMBU",ExpertiseLibrary.Flag.X4),
 		VIGOCRAFT("VIGO",ExpertiseLibrary.Flag.X4),
 		;
 
