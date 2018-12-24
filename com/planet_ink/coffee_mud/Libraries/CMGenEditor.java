@@ -734,6 +734,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			E.setName(newName);
 			if(E.displayText().equalsIgnoreCase(oldName+" stands here."))
 				E.setDisplayText(L("@x1 stands here.",newName));
+			else
+			if(E.displayText().equalsIgnoreCase(oldName+" sits here."))
+				E.setDisplayText(L("@x1 sits here.",newName));
 			return;
 		}
 		if((E instanceof Physical)&&(CMLib.flags().isCataloged(E)))

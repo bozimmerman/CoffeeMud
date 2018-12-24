@@ -45,9 +45,9 @@ public class GenArmor extends StdArmor
 	{
 		super();
 
-		setName("a generic armor piece");
+		setName("some generic armor");
 		basePhyStats.setWeight(25);
-		setDisplayText("a generic piece of armor sits here.");
+		setDisplayText("some generic armor sits here.");
 		setDescription("");
 		baseGoldValue=5;
 		properWornBitmap=Wearable.IN_INVENTORY;

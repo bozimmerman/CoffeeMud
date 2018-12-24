@@ -64,7 +64,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override
 	public String supportedResourceString()
 	{
-		return "BONE";
+		return "BONE|IVORY";
 	}
 
 	@Override
@@ -176,7 +176,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
-		if(I.material()!=RawMaterial.RESOURCE_BONE)
+		if((I.material()!=RawMaterial.RESOURCE_BONE)
+		&&(I.material()!=RawMaterial.RESOURCE_IVORY))
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
@@ -409,7 +410,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			woodRequired=adjustWoodRequired(woodRequired,mob);
 
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
-			final int[] pm={RawMaterial.RESOURCE_BONE};
+			final int[] pm={RawMaterial.RESOURCE_BONE,RawMaterial.RESOURCE_IVORY};
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"bone",pm,
