@@ -109,6 +109,11 @@ public class Dusty extends StdAbility
 		if(affected instanceof Item)
 		{
 			final Item I=(Item)affected;
+			if(I.owner() instanceof MOB)
+			{
+				I.delEffect(this);
+				return;
+			}
 			if(System.currentTimeMillis() > nextChange)
 			{
 				dustTime = System.currentTimeMillis();

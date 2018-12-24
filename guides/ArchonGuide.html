@@ -1313,11 +1313,14 @@ in uppercase. Valid codes include: SUMMER, SPRING, WINTER, FALL, DAY,
 NIGHT, DUSK, DAWN, RAIN, SLEET, SNOW, CLEAR, HEATWAVE, THUNDERSTORM,
 BLIZZARD, WINDY, DROUGHT, DUSTSTORM, COLD, HAIL, CLOUDY,&nbsp;
 SWIMMING, FLYING, CRAWLING, SITTING, CLIMBING, FALLING, INVISIBLE,
-HIDDEN, VISITED, and MASKx. &nbsp;That last tag consists of the word
+HIDDEN, VISITED, and MASKx. &nbsp;That last tag consists of the
+word
 MASK and a unique number, followed by a space and an argument
 representing a ZAPPERMASK, such as, for example<span
- style="font-family: monospace;"> &lt;MASK22 -RACE +DWARF&gt;This is
-only seen by dwarves&lt;/MASK22&gt;</span>. &nbsp; You can also use
+ style="font-family: monospace;"> &lt;MASK22 -RACE
++DWARF&gt;This is
+only seen by dwarves&lt;/MASK22&gt;</span>.
+&nbsp; You can also use
 &lt;ELSE&gt; to
 catch
 exceptions to your last VARIES tag.</p>
@@ -2203,13 +2206,15 @@ properties include:</p>
       <td width="75%"><strong>Description</strong></td>
     </tr>
     <tr>
-      <td><em>Name</em> </td>
+      <td><em>Name</em>
+      </td>
       <td>the general name of this
 exit. Such as "the grand portal", or
 "the wooden gate".</td>
     </tr>
     <tr>
-      <td><em>Description</em> </td>
+      <td><em>Description</em>
+      </td>
       <td>what one sees when this
 exit is LOOKed at with the LOOK
 command</td>
@@ -2983,7 +2988,8 @@ own weight in addition to anything put in it!<br>
 <br>
 <p><strong><a name="geniboe"><font style="background-color: lime;">The
 "GenBagOfEndlessness"</font></a></strong></p>
-<p>A GenBagOfEndlessness is magical container that always
+<p>A GenBagOfEndlessness is
+magical container that always
 instantly
 replaces whatever is removed from it.</p>
 Whenever a GenBagOfEndlessness is created,
@@ -2995,7 +3001,14 @@ under GenContainer. &nbsp;<br>
 The safest way to use these bags for players is to put whatever item
 you want to be in endless supply into it, and then set the Capacity to
 0 so that nothing else can ever be put into it for duplication.
-&nbsp;
+&nbsp;<br>
+<p><strong><a name="geni28"><font style="background-color: lime;">The
+"GenScale"</font></a></strong></p>
+<p>A GenScale is a container that can hold 2 things, or have two mobs
+ride upon as per a chair-type GenRideable. &nbsp;Looking at the scale
+will then reveal which is the heavier between the combination of things
+"on" it.&nbsp;&nbsp;
+</p>
 <p><strong><a name="geni6"><font style="background-color: lime;">The
 "GenAmmunition"</font></a></strong></p>
 <p>The GenAmmunition is a very
@@ -3270,49 +3283,56 @@ sitting on, sleeping on, or climbing into.</td>
     <tr>
       <td><em>MOBs
 Held</em></td>
-      <td>the&nbsp;maximum number of
+      <td>the&nbsp;maximum
+number of
 mobs which may occupy this piece of
 furniture at once.</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Mount
 Stiring</span></td>
-      <td>the present-tense verb or verb phrase, shown when
+      <td>the present-tense verb
+or verb phrase, shown when
 entering or
 mounting this</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Dismount
 String</span></td>
-      <td>the present-tense verb or verb phrase, shown when
+      <td>the present-tense verb
+or verb phrase, shown when
 leaving or
 dismounting this</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Put
 String</span></td>
-      <td>the preposition shown when putting something in, into,
+      <td>the preposition shown
+when putting something in, into,
 or on
 this</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">State
 String</span></td>
-      <td>the predicate phrase when the subject is mounted to
+      <td>the predicate phrase
+when the subject is mounted to
 this
 thing, seen in the room</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">State
 Subject String</span></td>
-      <td>the predicate phrase when the subject is this thing,
+      <td>the predicate phrase
+when the subject is this thing,
 which
 ends with the list of those mounted</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Ride
 Verb String</span></td>
-      <td>the present-tense verb, or verb phrase, shown when
+      <td>the present-tense verb,
+or verb phrase, shown when
 driving
 the thing from place-to-place</td>
     </tr>
@@ -4197,7 +4217,8 @@ replaces X missing limbs).</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Race ID</span></td>
-      <td>The race of the creature this limb came from, if it is a real
+      <td>The race of the creature
+this limb came from, if it is a real
 limb, or empty otherwise.</td>
     </tr>
   </tbody>
@@ -4530,11 +4551,13 @@ take effect after changing it, see below under Rejuvenating Items and
 Mobs" or "How to Save a Room".</td>
     </tr>
     <tr>
-      <td><em>Gender</em> </td>
+      <td><em>Gender</em>
+      </td>
       <td>M, N or F please!</td>
     </tr>
     <tr>
-      <td><em>Level</em> </td>
+      <td><em>Level</em>
+      </td>
       <td>this represents the
 experience level of the MOB. This
 number determines (along with alignment) how much experience a player
@@ -4565,7 +4588,8 @@ striking its opponents. At first level, 4-8 is plenty. At 25th level,
 default.</td>
     </tr>
     <tr>
-      <td><em>Armor</em> </td>
+      <td><em>Armor</em>
+      </td>
       <td>the amount of protection
 the beast has against being
 hit. Lower numbers are always better here. At first level, 50 is a
@@ -4582,7 +4606,8 @@ points. The number 11 is a typical, it is the default, and unless the
 creature is really nasty (12-20 range), it should be kept at default.</td>
     </tr>
     <tr>
-      <td><em>Alignment</em> </td>
+      <td><em>Alignment</em>
+      </td>
       <td>this is one the default
 "Factions" (see below) used
 by most muds, and refers to the mobs ethical disposition. By the
@@ -4616,18 +4641,21 @@ random amount from 0 to 2.5 will be added to the Money field above, for
 instance.</td>
     </tr>
     <tr>
-      <td><em>Weight</em> </td>
+      <td><em>Weight</em>
+      </td>
       <td>You should make this
 number reflect the monsters true weight.</td>
     </tr>
     <tr>
-      <td><em>Height</em> </td>
+      <td><em>Height</em>
+      </td>
       <td>You should make this
 number reflect the monsters true
 height/size.</td>
     </tr>
     <tr>
-      <td><em>Abilities</em> </td>
+      <td><em>Abilities</em>
+      </td>
       <td>grants the opportunity
 to give your new MOB spells,
 prayers, skills, and other abilities. Enter 'list' to see a list of the
@@ -4641,7 +4669,8 @@ here is absolutely useless, even though they are classified as
 abilities; they belong under effects below.</td>
     </tr>
     <tr>
-      <td><em>Behaviors</em> </td>
+      <td><em>Behaviors</em>
+      </td>
       <td>the list of standard
 behaviors that can be attached
 to MOBs is growing daily. Enter 'list' to see a list of them. You may
@@ -4992,7 +5021,8 @@ players.</td>
 </table>
 <p><strong><a name="gencow"><font style="background-color: lime;">The
 "GenCow"</font></a></strong></p>
-<p>A Cow is a special type of rideable mob that provides a liquid
+<p>A Cow is a special type of
+rideable mob that provides a liquid
 accessible with the FILL command, and will re-fill itself.&nbsp;</p>
 <p>Whenever a GenCow is
 created, much like the GenRideable,
@@ -5024,7 +5054,8 @@ subtracted from this.&nbsp;</td>
     <tr>
       <td><em>Liquid
 Type</em></td>
-      <td>this denotes what kind of
+      <td>this denotes what kind
+of
 liquid it is, whether fresh water, salt water, or even BLOOD!</td>
     </tr>
   </tbody>
@@ -8656,10 +8687,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>1</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="86">
@@ -8763,10 +8798,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>20</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="86">
@@ -8854,10 +8893,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>20</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9053,10 +9096,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>120</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9068,10 +9115,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>80</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
   </tbody>
 </table>
@@ -9122,7 +9173,8 @@ then skip this step.</p>
       <td valign="top" width="83">
       <p>3</p>
       </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="89">
@@ -9187,10 +9239,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>2</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9202,10 +9258,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>4</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9240,10 +9300,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>5</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9255,10 +9319,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>10</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9270,10 +9338,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>20</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9285,10 +9357,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>5</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9353,8 +9429,10 @@ then skip this step.</p>
       <td valign="top" width="83">
       <p>10</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
       <td valign="top" width="84">
       <p>+2</p>
       </td>
@@ -9372,10 +9450,14 @@ then skip this step.</p>
       <td valign="top" width="83">
       <p>10</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
   </tbody>
 </table>
@@ -9417,8 +9499,10 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>20</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
       <td valign="top" width="84">
       <p>+1</p>
       </td>
@@ -9436,10 +9520,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>10</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9451,10 +9539,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>10</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9466,10 +9558,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>5</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9481,10 +9577,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>4</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9496,10 +9596,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>200</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9511,10 +9615,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>4</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
   </tbody>
 </table>
@@ -9556,10 +9664,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>10</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9594,10 +9706,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>30</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9609,10 +9725,14 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>10</p>
       </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="85"> </td>
-      <td valign="top" width="84"> </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="85">
+      </td>
+      <td valign="top" width="84">
+      </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="84">
@@ -9668,7 +9788,8 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>10</p>
       </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
   </tbody>
 </table>
@@ -9701,7 +9822,8 @@ then skip this step.</p>
       <td valign="top" width="53">
       <p>4</p>
       </td>
-      <td valign="top" width="78"> </td>
+      <td valign="top" width="78">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="103">
@@ -9713,7 +9835,8 @@ then skip this step.</p>
       <td valign="top" width="53">
       <p>6</p>
       </td>
-      <td valign="top" width="78"> </td>
+      <td valign="top" width="78">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="103">
@@ -9725,7 +9848,8 @@ then skip this step.</p>
       <td valign="top" width="53">
       <p>8</p>
       </td>
-      <td valign="top" width="78"> </td>
+      <td valign="top" width="78">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="103">
@@ -9737,7 +9861,8 @@ then skip this step.</p>
       <td valign="top" width="53">
       <p>3</p>
       </td>
-      <td valign="top" width="78"> </td>
+      <td valign="top" width="78">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="103">
@@ -9749,7 +9874,8 @@ then skip this step.</p>
       <td valign="top" width="53">
       <p>4</p>
       </td>
-      <td valign="top" width="78"> </td>
+      <td valign="top" width="78">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="103">
@@ -9761,7 +9887,8 @@ then skip this step.</p>
       <td valign="top" width="53">
       <p>5</p>
       </td>
-      <td valign="top" width="78"> </td>
+      <td valign="top" width="78">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="103">
@@ -9808,7 +9935,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>1</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9820,7 +9948,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>1</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9832,7 +9961,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>1</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9844,7 +9974,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>1</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9856,7 +9987,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>1</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9868,7 +10000,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>1</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9880,7 +10013,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>1</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9892,7 +10026,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>2</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9904,7 +10039,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>2</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9916,7 +10052,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>2</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9928,7 +10065,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>2</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9940,7 +10078,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>2</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9952,7 +10091,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>3</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9964,7 +10104,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>2</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9976,7 +10117,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>1</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -9988,7 +10130,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>2</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10000,7 +10143,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>2</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10012,7 +10156,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>1</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10024,7 +10169,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>4</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10036,7 +10182,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>1</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10048,7 +10195,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>1</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10060,7 +10208,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>1</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10072,7 +10221,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>1</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10084,7 +10234,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>2</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10096,7 +10247,8 @@ then skip this step.</p>
       <td valign="top" width="78">
       <p>2</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
   </tbody>
 </table>
@@ -10129,7 +10281,8 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>0</p>
       </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="86">
@@ -10141,7 +10294,8 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>0</p>
       </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="86">
@@ -10153,7 +10307,8 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>0</p>
       </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="86">
@@ -10165,7 +10320,8 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>2</p>
       </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="86">
@@ -10177,7 +10333,8 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>1</p>
       </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="86">
@@ -10245,7 +10402,8 @@ then skip this step.</p>
       <td valign="top" width="84">
       <p>0</p>
       </td>
-      <td valign="top" width="84"> </td>
+      <td valign="top" width="84">
+      </td>
     </tr>
   </tbody>
 </table>
@@ -10278,7 +10436,8 @@ then skip this step.</p>
       <td valign="top" width="74">
       <p>50</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10332,7 +10491,8 @@ then skip this step.</p>
       <td valign="top" width="74">
       <p>80</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10344,7 +10504,8 @@ then skip this step.</p>
       <td valign="top" width="74">
       <p>300</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10356,7 +10517,8 @@ then skip this step.</p>
       <td valign="top" width="74">
       <p>70</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10368,7 +10530,8 @@ then skip this step.</p>
       <td valign="top" width="74">
       <p>50</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10380,7 +10543,8 @@ then skip this step.</p>
       <td valign="top" width="74">
       <p>200</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10392,7 +10556,8 @@ then skip this step.</p>
       <td valign="top" width="74">
       <p>80</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
     <tr>
       <td valign="top" width="94">
@@ -10404,7 +10569,8 @@ then skip this step.</p>
       <td valign="top" width="74">
       <p>50</p>
       </td>
-      <td valign="top" width="83"> </td>
+      <td valign="top" width="83">
+      </td>
     </tr>
   </tbody>
 </table>
@@ -10449,8 +10615,10 @@ underneath.<br>
 <table bgcolor="#ffff00" border="1" cellpadding="1" cellspacing="1">
   <tbody>
     <tr>
-      <td valign="top" width="79"><b>Layer</b> </td>
-      <td valign="top" width="480"><b>Examples</b> </td>
+      <td valign="top" width="79"><b>Layer</b>
+      </td>
+      <td valign="top" width="480"><b>Examples</b>
+      </td>
     </tr>
     <tr>
       <td valign="top" width="79">-5</td>
@@ -10567,19 +10735,24 @@ Tools</font></a></td>
  color="black">Races</font></font></a></td>
       <td bgcolor="lightyellow"><a href="#"><font
  style="background-color: rgb(255, 255, 255);" color="black"><br>
-      </font></a> </td>
+      </font></a>
+      </td>
       <td bgcolor="lightgrey"><a href="#areas"><font color="black">Areas</font></a></td>
     </tr>
     <tr>
       <td bgcolor="lightpink"><a href="#saving"><font color="black">Saving</font></a></td>
       <td bgcolor="lightgreen"><a href="#"><font color="black"><br>
-      </font></a> </td>
+      </font></a>
+      </td>
       <td bgcolor="lightblue"><a href="#racecreate"><font color="black"><br>
-      </font></a> </td>
+      </font></a>
+      </td>
       <td bgcolor="lightyellow"><a href="#"><font color="black"><br>
-      </font></a> </td>
+      </font></a>
+      </td>
       <td bgcolor="lightgrey"><a href="#catalog"><font color="black">Catalog<br>
-      </font></a> </td>
+      </font></a>
+      </td>
     </tr>
   </tbody>
 </table>
@@ -10590,132 +10763,188 @@ Item Types
  width="100%">
   <tbody>
     <tr>
-      <td width="20%"> <a href="#geni6"><font color="black">GenAmmunition</font></a>
+      <td width="20%">
+      <a href="#geni6"><font color="black">GenAmmunition</font></a>
       </td>
       <td width="20%"> <a href="#geni7"><font color="black">GenArmor</font></a>
       </td>
+      <td> <a href="#geniboe"><font color="black">
+GenBagOfEndlessness</font></a></td>
+      <td width="20%"></td>
+    </tr>
+    <tr>
       <td width="20%"> <a href="#geni8"><font color="black">GenBed</font></a>
       </td>
       <td width="20%"> <a href="#geni8"><font color="black">GenBoat</font></a>
       </td>
       <td width="20%"> <a href="#geni4"><font color="black">GenBoffWeapon</font></a>
       </td>
+      <td width="20%"></td>
     </tr>
     <tr>
-      <td> <a href="#geni4"><font color="black">GenBow</font></a> </td>
-      <td> <a href="#geni5"><font color="black">GenCage</font></a> </td>
+      <td> <a href="#geni4"><font color="black">GenBow</font></a>
+      </td>
+      <td> <a href="#geni5"><font color="black">GenCage</font></a>
+      </td>
       <td> <a href="#geni8"><font color="black">GenCageRideable</font></a>
       </td>
-      <td> <a href="#geni8"><font color="black">GenChair</font></a> </td>
-      <td> <a href="#geni2"><font color="black">GenCigar</font></a> </td>
+      <td> <a href="#geni8"><font color="black">GenChair</font></a>
+      </td>
     </tr>
     <tr>
+      <td> <a href="#geni2"><font color="black">GenCigar</font></a>
+      </td>
       <td> <a href="#geni21"><font color="black">GenClanCommonContainer</font></a>
       </td>
       <td> <a href="#geni21"><font color="black">GenClanCommonItem</font></a>
       </td>
       <td> <a href="#geni21"><font color="black">GenClanContainer</font></a>
       </td>
+    </tr>
+    <tr>
       <td> <a href="#geni21"><font color="black">GenClanFlag</font></a>
       </td>
       <td> <a href="#geni21"><font color="black">GenClanItem</font></a>
       </td>
-    </tr>
-    <tr>
       <td> <a href="#geni21"><font color="black">GenClanPamphlet</font></a>
       </td>
       <td> <a href="#geni21"><font color="black">GenClanSpecialItem</font></a>
       </td>
-      <td> <a href="#geni0"><font color="black">GenCoins</font></a> </td>
-      <td> <a href="#geni5"><font color="black">GenContainer</font></a>
-      </td>
-      <td> <a href="#geni5"><font color="black">GenCorpse</font></a> </td>
     </tr>
     <tr>
-      <td> <a href="#geni9"><font color="black">GenDrink</font></a> </td>
+      <td> <a href="#geni26"><font color="black">
+GenCloak</font></a></td>
+      <td> <a href="#geni0"><font color="black">GenCoins</font></a>
+      </td>
+      <td> <a href="#geni5"><font color="black">GenContainer</font></a>
+      </td>
+      <td> <a href="#geni5"><font color="black">GenCorpse</font></a>
+      </td>
+    </tr>
+    <tr>
+      <td> <a href="#geni27"><font color="black">
+GenDice</font></a>
+      </td>
+      <td> <a href="#geni9"><font color="black">GenDrink</font></a>
+      </td>
       <td> <a href="#geni7-2"><font color="black">GenEarrings<br>
-      </font></a> </td>
-      <td> <a href="#geni9"><font color="black">GenFood</font></a> </td>
+      </font></a>
+      </td>
+      <td> <a href="#geni9"><font color="black">GenFood</font></a>
+      </td>
+    </tr>
+    <tr>
       <td> <a href="#geni9"><font color="black">GenFoodResource</font></a>
       </td>
       <td> <a href="#geni9"><font color="black">GenFountain</font></a>
       </td>
-    </tr>
-    <tr>
       <td> <a href="#geni23"><font color="black">GenInstrument</font></a>
       </td>
-      <td> <a href="#geni1"><font color="black">GenItem</font></a> </td>
-      <td> <a href="#geni3"><font color="black">GenJournal</font></a> </td>
-      <td> <a href="#geni12"><font color="black">GenKey</font></a> </td>
-      <td> <a href="#geni2"><font color="black">GenLantern</font></a> </td>
+      <td> <a href="#geni1"><font color="black">GenItem</font></a>
+      </td>
     </tr>
     <tr>
-      <td> <a href="#geni4"><font color="black">GenLasso</font></a> </td>
+      <td> <a href="#geni3"><font color="black">GenJournal</font></a>
+      </td>
+      <td> <a href="#geni12"><font color="black">GenKey</font></a>
+      </td>
+      <td> <a href="#geni2"><font color="black">GenLantern</font></a>
+      </td>
+      <td> <a href="#geni4"><font color="black">GenLasso</font></a>
+      </td>
+    </tr>
+    <tr>
       <td> <a href="#geni19"><font color="black">GenLawBook</font></a>
       </td>
       <td> <a href="#geni2"><font color="black">GenLightSource</font></a>
       </td>
-      <td> <a href="#geni24"><font color="black">GenLimb</font></a> </td>
+      <td> <a href="#geni24"><font color="black">GenLimb</font></a>
+      </td>
       <td> <a href="#geni9"><font color="black">GenLiquidResource</font></a>
       </td>
     </tr>
     <tr>
-      <td> <a href="#geni11"><font color="black">GenMap</font></a> </td>
-      <td> <a href="#geni1"><font color="black">GenMirror</font></a> </td>
+      <td> <a href="#geni11"><font color="black">GenMap</font></a>
+      </td>
+      <td> <a href="#geni1"><font color="black">GenMirror</font></a>
+      </td>
       <td> <a href="#geni15"><font color="black">GenMultiPotion</font></a>
       </td>
-      <td> <a href="#geni4"><font color="black">GenNet</font></a> </td>
+      <td> <a href="#geni4"><font color="black">GenNet</font></a>
+      </td>
+    </tr>
+    <tr>
       <td> <a href="#geni10"><font color="black">GenPerfume</font></a>
       </td>
+      <td> <a href="#geni23"><font color="black">GenPiano</font></a>
+      </td>
+      <td> <a href="#geni15"><font color="black">GenPill</font></a>
+      </td>
+      <td> <a href="#geni2"><font color="black">GenPipe</font></a>
+      </td>
     </tr>
     <tr>
-      <td> <a href="#geni23"><font color="black">GenPiano</font></a> </td>
-      <td> <a href="#geni15"><font color="black">GenPill</font></a> </td>
-      <td> <a href="#geni2"><font color="black">GenPipe</font></a> </td>
-      <td> <a href="#geni20"><font color="black">GenPortal</font></a> </td>
-      <td> <a href="#geni15"><font color="black">GenPotion</font></a> </td>
-    </tr>
-    <tr>
-      <td> <a href="#geni15"><font color="black">GenPowder</font></a> </td>
+      <td> <a href="#geni20"><font color="black">GenPortal</font></a>
+      </td>
+      <td> <a href="#geni15"><font color="black">GenPotion</font></a>
+      </td>
+      <td> <a href="#geni15"><font color="black">GenPowder</font></a>
+      </td>
       <td> <a href="#geni1"><font color="black">GenReadable</font></a>
       </td>
-      <td> <a href="#geni25"><font color="black">GenRecipe</font></a> </td>
+    </tr>
+    <tr>
+      <td> <a href="#geni25"><font color="black">GenRecipe</font></a>
+      </td>
       <td> <a href="#geni1"><font color="black">GenResource</font></a>
       </td>
       <td> <a href="#geni8"><font color="black">GenRideable</font></a>
       </td>
-    </tr>
-    <tr>
       <td> <a href="#geni7-3"><font color="black">GenSailingShip<br>
-      </font></a> </td>
-      <td> <a href="#geni17"><font color="black">GenScroll</font></a> </td>
-      <td> <a href="#geni7"><font color="black">GenShield</font></a> </td>
-      <td> <a href="#geni4"><font color="black">GenSling</font></a> </td>
-      <td> <a href="#geni4"><font color="black">GenSpear</font></a> </td>
+      </font></a>
+      </td>
     </tr>
     <tr>
-      <td> <a href="#geni13"><font color="black">GenStaff</font></a> </td>
+      <td> <a href="#geni28"><font color="black">GenScale<br>
+      </font></a>
+      </td>
+      <td> <a href="#geni17"><font color="black">GenScroll</font></a>
+      </td>
+      <td> <a href="#geni7"><font color="black">GenShield</font></a>
+      </td>
+      <td> <a href="#geni4"><font color="black">GenSling</font></a>
+      </td>
+    </tr>
+    <tr>
+      <td> <a href="#geni4"><font color="black">GenSpear</font></a>
+      </td>
+      <td> <a href="#geni13"><font color="black">GenStaff</font></a>
+      </td>
       <td> <a href="#geni16"><font color="black">GenSuperPill</font></a>
       </td>
-      <td> <a href="#geni8"><font color="black">GenTable</font></a> </td>
-      <td> <a href="#geni7-2"><font color="black">GenThinArmor<br>
-      </font></a> </td>
-      <td> <a href="#geni18"><font color="black">GenTitle</font></a> </td>
+      <td> <a href="#geni8"><font color="black">GenTable</font></a>
+      </td>
     </tr>
     <tr>
-      <td> <a href="#geni8"><font color="black">GenTub</font></a> </td>
-      <td> <a href="#geni9"><font color="black">GenTub</font></a> </td>
+      <td> <a href="#geni7-2"><font color="black">GenThinArmor<br>
+      </font></a>
+      </td>
+      <td> <a href="#geni18"><font color="black">GenTitle</font></a>
+      </td>
+      <td> <a href="#geni8"><font color="black">GenTub</font></a>
+      </td>
+      <td> <a href="#geni9"><font color="black">GenTub</font></a>
+      </td>
+    </tr>
+    <tr>
       <td> <a href="#geni22"><font color="black">GenWallpaper</font></a>
       </td>
-      <td> <a href="#geni14"><font color="black">GenWand</font></a> </td>
-      <td> <a href="#geni9"><font color="black">GenWater</font></a> </td>
-    </tr>
-    <tr>
-      <td> <a href="#geni4"><font color="black">GenWeapon</font></a> </td>
-      <td> <a href="#geni26">GenCloak</a></td>
-      <td> <a href="#geni27">GenDice</a> </td>
-      <td> <a href="#geniboe">GenBagOfEndlessness</a></td>
-      <td> </td>
+      <td> <a href="#geni14"><font color="black">GenWand</font></a>
+      </td>
+      <td> <a href="#geni9"><font color="black">GenWater</font></a>
+      </td>
+      <td> <a href="#geni4"><font color="black">GenWeapon</font></a>
+      </td>
     </tr>
   </tbody>
 </table>
@@ -10736,11 +10965,14 @@ MOB Types
       <td width="20%"><a href="#genm5"><font color="black">GenDeity</font></a></td>
       <td width="20%"><a href="#genm6"><font color="black">GenPostman</font></a></td>
       <td width="20%"><a href="#genma"><font color="black">GenAuctioneer<br>
-      </font></a> </td>
+      </font></a>
+      </td>
       <td width="20%"><a href="#genm7"><font color="black">GenLibrarian<br>
-      </font></a> </td>
+      </font></a>
+      </td>
       <td width="20%"><a href="#gencow"><font color="black">GenCow<br>
-      </font></a> </td>
+      </font></a>
+      </td>
     </tr>
   </tbody>
 </table>
