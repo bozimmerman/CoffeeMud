@@ -139,7 +139,28 @@ public class Prayer_Adoption extends Prayer
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
+				String sondat;
+				switch(child.charStats().getStat(CharStats.STAT_GENDER))
+				{
+				case 'M':
+					sondat="son";
+					break;
+				case 'F':
+					sondat="daughter";
+					break;
+				default:
+					sondat="child";
+					break;
+				}
+				String descAddOn = "@x1 is the adopted "+sondat+" of @x2";
 				child.addTattoo("PARENT:"+parent.Name());
+				if(parent.isMarriedToLiege() && (parent.getLiegeID().length()>0))
+				{
+					child.addTattoo("PARENT:"+parent.getLiegeID());
+					descAddOn +=" and @x3";
+				}
+				descAddOn += ".";
+				child.setDescription(child.description()+"  "+L(descAddOn,child.Name(),parent.Name(),parent.getLiegeID()));
 			 }
 		}
 		else
