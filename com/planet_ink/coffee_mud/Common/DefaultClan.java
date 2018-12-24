@@ -661,6 +661,8 @@ public class DefaultClan implements Clan
 			}
 		}
 		M.delAbility(M.fetchAbility("Spell_ClanHome"));
+		M.delAbility(M.fetchAbility("Spell_ClanClanWard"));
+		M.delAbility(M.fetchAbility("Spell_ImprovedClanClanWard"));
 		M.delAbility(M.fetchAbility("Spell_ClanDonate"));
 		M.delAbility(M.fetchAbility("Spell_Flagportation"));
 
