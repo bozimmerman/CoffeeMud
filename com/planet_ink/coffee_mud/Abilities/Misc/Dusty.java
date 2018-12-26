@@ -127,7 +127,7 @@ public class Dusty extends StdAbility
 				{
 				case 0:
 				{
-					//affectableStats.addAmbiance(L("a bit dusty"));
+					affectableStats.addAmbiance(L("a bit dusty"));
 					break;
 				}
 				case 1:
