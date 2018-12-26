@@ -98,7 +98,7 @@ public class Spell_Delirium extends Spell
 		{
 			int tries=0;
 			while(((++tries)<1000)
-			&&(invoker.location().getArea().numberOfProperIDedRooms()>0))
+			&&(!invoker.location().getArea().isProperlyEmpty()))
 			{
 				
 				final Room R=invoker.location().getArea().getRandomProperRoom();
@@ -111,7 +111,7 @@ public class Spell_Delirium extends Spell
 		{
 			int tries=0;
 			while(((++tries)<1000)
-			&&(invoker.location().getArea().numberOfProperIDedRooms()>0))
+			&&(!invoker.location().getArea().isProperlyEmpty()))
 			{
 				final Room R=invoker.location().getArea().getRandomProperRoom();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -127,7 +127,7 @@ public class Spell_Delirium extends Spell
 		{
 			int tries=0;
 			while(((++tries)<1000)
-			&&(invoker.location().getArea().numberOfProperIDedRooms()>0))
+			&&(!invoker.location().getArea().isProperlyEmpty()))
 			{
 				final Room R=invoker.location().getArea().getRandomProperRoom();
 				if((R!=null)&&(R.numInhabitants()>0))
@@ -143,7 +143,7 @@ public class Spell_Delirium extends Spell
 		{
 			int tries=0;
 			while(((++tries)<1000)
-			&&(invoker.location().getArea().numberOfProperIDedRooms()>0))
+			&&(!invoker.location().getArea().isProperlyEmpty()))
 			{
 				final Room R=invoker.location().getArea().getRandomProperRoom();
 				if(R.numItems()>0)
