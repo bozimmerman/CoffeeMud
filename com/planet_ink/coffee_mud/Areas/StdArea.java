@@ -2094,6 +2094,8 @@ public class StdArea implements Area
 	@Override
 	public Room getRandomProperRoom()
 	{
+		if(numberOfProperIDedRooms()==0)
+			return null;
 		String roomID=getProperRoomnumbers().random();
 		if((roomID!=null)
 		&&(!roomID.startsWith(Name()))
