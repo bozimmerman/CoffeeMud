@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /*
    Copyright 2004-2018 Bo Zimmerman
@@ -53,6 +54,7 @@ public class Ver extends StdCommand
 		mob.tell(L("(C) 2000-2018 Bo Zimmerman"));
 		mob.tell(L("^<A HREF=\"mailto:bo@zimmers.net\"^>bo@zimmers.net^</A^>"));
 		mob.tell(L("^<A HREF=\"http://www.coffeemud.org\"^>http://www.coffeemud.org^</A^>"));
+		mob.tell(L("System up time: @x1",CMLib.time().date2EllapsedTime(CMLib.host().getUptimeSecs()*1000, TimeUnit.SECONDS, false)));
 		return false;
 	}
 

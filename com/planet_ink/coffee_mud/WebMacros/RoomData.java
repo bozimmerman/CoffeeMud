@@ -396,7 +396,7 @@ public class RoomData extends StdWebMacro
 	{
 		for (final MOB M : inhabs)
 		{
-			if(M.isGeneric())
+			if(M.isGeneric() || true)
 			{
 				if((getReferenceMOB(M)==null)
 				&&((M.isSavable())||((M.location()!=null)&&(!M.location().isSavable()))))

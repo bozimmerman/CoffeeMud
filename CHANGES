@@ -19,6 +19,7 @@
   18. Journal entries, including those with embedded replies, can be edited from the MUDGrinder.
   19. MUDGRinder: Mobs can now be added and edited directly in ShopKeeper inventory
   20. Clans can restrict their lower ranks from certain rooms with clan ward and improved clan ward spells.
+  21. Version command now shows system up time.
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.
