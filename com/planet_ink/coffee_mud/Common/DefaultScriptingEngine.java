@@ -3667,16 +3667,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
+				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
 				final String arg2=tt[t+1];
-				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
 				int num=0;
 				MaskingLibrary.CompiledZMask MASK=null;
-				if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
+				if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
 				{
-					arg3=arg3.substring(4).trim();
-					arg3=arg3.substring(1).trim();
-					MASK=CMLib.masking().maskCompile(arg3);
+					arg1=arg1.substring(4).trim();
+					arg1=arg1.substring(1).trim();
+					MASK=CMLib.masking().maskCompile(arg1);
 				}
 				for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
