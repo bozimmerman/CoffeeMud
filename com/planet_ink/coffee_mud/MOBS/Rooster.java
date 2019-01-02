@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2018 Bo Zimmerman
+   Copyright 2018-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,30 +32,30 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Chicken extends StdMOB
+public class Rooster extends StdMOB
 {
 	@Override
 	public String ID()
 	{
-		return "Chicken";
+		return "Rooster";
 	}
 
-	public Chicken()
+	public Rooster()
 	{
 		super();
-		username="a chicken";
-		setDescription("a fat, short winged bird");
-		setDisplayText("A chicken is here, not flying.");
+		username="a rooster";
+		setDescription("a short winged bird");
+		setDisplayText("A rooster is here, not flying.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
 
 		basePhyStats().setDamage(1);
-		basePhyStats().setSpeed(1.0);
+		basePhyStats().setSpeed(2.0);
 		basePhyStats().setAbility(0);
 		basePhyStats().setLevel(1);
 		basePhyStats().setArmor(90);
-		baseCharStats().setStat(CharStats.STAT_GENDER, 'F');
+		baseCharStats().setStat(CharStats.STAT_GENDER, 'M');
 		baseCharStats().setMyRace(CMClass.getRace("Chicken"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
