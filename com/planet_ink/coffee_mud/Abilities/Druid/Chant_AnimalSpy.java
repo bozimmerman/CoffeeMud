@@ -203,6 +203,7 @@ public class Chant_AnimalSpy extends Chant
 				if(newRoom!=mob.location())
 					newRoom.send(target,msg2);
 				spy=target;
+				spy.setAttribute(MOB.Attrib.AUTOEXITS, true);
 				beneficialAffect(mob,spy,asLevel,0);
 				final Ability A=spy.fetchEffect(ID());
 				if(A!=null)
