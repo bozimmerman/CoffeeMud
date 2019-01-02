@@ -723,7 +723,7 @@ See guides/RandomAreas.html for information about documents of this type.
 						<ITEM pickweight="5" class="GenResource" LEVEL="1" number=20><NAME>a 10# leather bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just leather.</DESCRIPTION><MATERIAL>LEATHER</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
 						<ITEM pickweight="1" class="GenResource" LEVEL="1" number=20><NAME>a 10# feathers bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just feathers.</DESCRIPTION><MATERIAL>FEATHERS</MATERIAL><BASEGOLD>10</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
 					</ITEM>
-					<ITEM select="pick-1?4" condition="$shoptype='fabrics'">
+					<ITEM select="pick-1?4" condition="$shoptype='fabric'">
 						<ITEM pickweight="9" class="GenResource" LEVEL="1" number=20><NAME>a 10# cotton bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just cotton.</DESCRIPTION><MATERIAL>COTTON</MATERIAL><BASEGOLD>5</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
 						<ITEM pickweight="3" class="GenResource" LEVEL="1" number=20><NAME>a 10# hemp bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just hemp.</DESCRIPTION><MATERIAL>HEMP</MATERIAL><BASEGOLD>4</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>
 						<ITEM pickweight="2" class="GenResource" LEVEL="1" number=20><NAME>a 10# silk bundle</NAME><DISPLAY>$item_name is here.</DISPLAY><DESCRIPTION>It's just silk.</DESCRIPTION><MATERIAL>SILK</MATERIAL><BASEGOLD>200</BASEGOLD><WEIGHT>10</WEIGHT></ITEM>						
