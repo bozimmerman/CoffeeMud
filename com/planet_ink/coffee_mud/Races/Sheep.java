@@ -270,7 +270,7 @@ public class Sheep extends StdRace
 				for(int i=0;i<3;i++)
 				{
 					resources.addElement(makeResource
-					(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MUTTON));
+					(L("a pound of @x1 mutton",name().toLowerCase()),RawMaterial.RESOURCE_MUTTON));
 				}
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
