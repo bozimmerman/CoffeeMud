@@ -157,7 +157,7 @@ public class Spell_MagicMouth extends Spell
 		}
 		if(target instanceof MOB)
 		{
-			mob.tell(L("You can't can't cast this on @x1.",target.name(mob)));
+			mob.tell(L("You can't cast this on @x1.",target.name(mob)));
 			return false;
 		}
 
