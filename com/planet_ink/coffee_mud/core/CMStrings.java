@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 
 /*
-   Mostly Copyright 2000-2018 Bo Zimmerman
+   Mostly Copyright 2000-2019 Bo Zimmerman
 
    Functions for diff (C) 2006 Google
    Author: fraser@google.com (Neil Fraser)
