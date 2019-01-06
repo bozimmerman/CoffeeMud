@@ -146,9 +146,16 @@ public class Spell_Grow extends Spell
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
+		final boolean maliciousFlag = 
+				mob.isMonster() 
+				&& (!mob.getGroupMembers(new HashSet<MOB>()).contains(target)) 
+				&& (target.fetchEffect("Spell_Shrink")==null)
+				&& (target.fetchWornItems(Long.MIN_VALUE, (short)-2048, (short)0).size()>0);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
+			final int malicious = maliciousFlag ? CMMsg.MASK_MALICIOUS : 0;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto)|malicious,
+					auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -176,6 +183,9 @@ public class Spell_Grow extends Spell
 				}
 			}
 		}
+		else
+		if(maliciousFlag)
+			maliciousFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
 		else
 			beneficialVisualFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting but nothing happens."));
 
