@@ -5394,11 +5394,12 @@ public class StdMOB implements MOB
 	{
 		final Vector<Item> V = new Vector<Item>();
 		final boolean equalOk = (layerAttributes & Armor.LAYERMASK_MULTIWEAR) > 0;
+		final boolean allWorn = wornCode == Long.MIN_VALUE;
 		int lay = 0;
 		for (final Enumeration<Item> i = items(); i.hasMoreElements();)
 		{
 			final Item thisItem = i.nextElement();
-			if (thisItem.amWearingAt(wornCode))
+			if (allWorn || thisItem.amWearingAt(wornCode))
 			{
 				if (thisItem instanceof Armor)
 				{
