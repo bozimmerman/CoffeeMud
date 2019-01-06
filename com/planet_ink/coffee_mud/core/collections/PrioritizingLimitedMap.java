@@ -118,7 +118,10 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		final LinkedEntry<T, K> p = map.get(key);
 		if (p != null)
 		{
-			markFoundAgain(p);
+			synchronized(this)
+			{
+				markFoundAgain(p);
+			}
 			if(!trimming.get())
 			{
 				trimming.set(true);
