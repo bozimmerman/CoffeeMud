@@ -5399,7 +5399,8 @@ public class StdMOB implements MOB
 		for (final Enumeration<Item> i = items(); i.hasMoreElements();)
 		{
 			final Item thisItem = i.nextElement();
-			if (allWorn || thisItem.amWearingAt(wornCode))
+			if ((allWorn && (!thisItem.amWearingAt(Item.IN_INVENTORY)))
+			|| thisItem.amWearingAt(wornCode))
 			{
 				if (thisItem instanceof Armor)
 				{
