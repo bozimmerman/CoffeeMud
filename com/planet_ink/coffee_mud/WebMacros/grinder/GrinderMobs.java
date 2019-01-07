@@ -4,6 +4,7 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -120,9 +121,15 @@ public class GrinderMobs
 			{
 				if(aff.length()>0)
 				{
-					final Ability B=CMClass.getAbility(aff);
-					if(B==null)
-						return "Unknown Ability '"+aff+"'.";
+					final Ability A=CMClass.getAbility(aff);
+					if(A==null)
+					{
+						if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+						||(!CMClass.isLanguage(aff)))
+							return "Unknown Ability '"+aff+"'.";
+						else
+							break;
+					}
 					else
 					{
 						if(player)
@@ -133,13 +140,13 @@ public class GrinderMobs
 							String txt=httpReq.getUrlParameter("ABTXT"+num);
 							if(txt==null)
 								txt="";
-							B.setProficiency(CMath.s_int(prof));
-							B.setMiscText(txt);
+							A.setProficiency(CMath.s_int(prof));
+							A.setMiscText(txt);
 						}
 						else
-							B.setProficiency(75);
-						M.addAbility(B);
-						B.autoInvocation(M, false);
+							A.setProficiency(75);
+						M.addAbility(A);
+						A.autoInvocation(M, false);
 					}
 				}
 				num++;
@@ -415,9 +422,9 @@ public class GrinderMobs
 				M=CMClass.getMOB(newClassID);
 			else
 				M=RoomData.getMOBFromCode(R,mobCode);
-			
+
 			MOB shopM=null;
-			
+
 			if((shopMobCode != null)
 			&&(shopMobCode.length()>0)
 			&&(M instanceof ShopKeeper))

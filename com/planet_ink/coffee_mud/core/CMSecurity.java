@@ -2692,7 +2692,8 @@ public class CMSecurity
 		HYGIENE("hygiene system"),
 		ANSIPROMPT("ANSI Y/N Prompt"),
 		FOODROT("food/milk rot"),
-		SHOWXP("show experience")
+		SHOWXP("show experience"),
+		LANGUAGES("language system")
 		;
 		private final String desc;
 

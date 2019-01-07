@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -1879,7 +1880,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								A=CMClass.getAbility(abilityID);
 								if(A==null)
-									return "Error: Unknown ABILITYID: "+abilityID+"!";
+								{
+									if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+									||(!CMClass.isLanguage(abilityID)))
+										return "Error: Unknown ABILITYID: "+abilityID+"!";
+									else
+										return "";
+								}
 							}
 							if(A!=null)
 								this.abilityIDs.add(A.ID());

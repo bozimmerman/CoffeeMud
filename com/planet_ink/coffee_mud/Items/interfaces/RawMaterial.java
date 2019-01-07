@@ -13,6 +13,7 @@ import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -246,7 +247,7 @@ public interface RawMaterial extends Item
 		{
 			this.mask = (ordinal() == 0) ? 0 : (ordinal() << 8);
 			this.desc = this.toString();
-			this.unoun = noun.toUpperCase(); 
+			this.unoun = noun.toUpperCase();
 			this.noun = noun;
 		}
 
@@ -1487,7 +1488,13 @@ public interface RawMaterial extends Item
 						}
 						final Ability A = CMClass.getAbility(abilityID);
 						if (A == null)
-							Log.errOut("RawMaterial", "Unknown ability " + abilityID + " in " + c.effect(code));
+						{
+							if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+							||(!CMClass.isLanguage(abilityID)))
+								Log.errOut("RawMaterial", "Unknown ability " + abilityID + " in " + c.effect(code));
+							else
+								continue;
+						}
 						else
 						{
 							A.setMiscText(parms);

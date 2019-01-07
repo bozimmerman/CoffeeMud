@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.database.DBConnector.DBPreparedBatchEntry;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
@@ -2589,10 +2590,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				Log.errOut("CoffeeMaker","Error parsing 'ABLTY' of "+identifier(M,null)+".  Load aborted");
 				return;
 			}
-			final Ability newOne=CMClass.getAbility(ablk.getValFromPieces("ACLASS"));
+			final String abilityID=ablk.getValFromPieces("ACLASS");
+			final Ability newOne=CMClass.getAbility(abilityID);
 			if(newOne==null)
 			{
-				Log.errOut("CoffeeMaker","Unknown ability "+ablk.getValFromPieces("ACLASS")+" on "+identifier(M,null)+", skipping.");
+				if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+				||(!CMClass.isLanguage(abilityID)))
+					Log.errOut("CoffeeMaker","Unknown ability "+ablk.getValFromPieces("ACLASS")+" on "+identifier(M,null)+", skipping.");
 				continue;
 			}
 			final List<XMLLibrary.XMLTag> adat=ablk.getContentsFromPieces("ADATA");
@@ -4371,11 +4375,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					Log.errOut("CoffeeMaker","Error parsing 'AFF' of "+identifier(E,null)+".  Load aborted");
 					return;
 				}
-				final Ability newOne=CMClass.getAbility(ablk.getValFromPieces("ACLASS"));
+				final String newID=ablk.getValFromPieces("ACLASS");
+				final Ability newOne=CMClass.getAbility(newID);
 				final String aparms=ablk.getValFromPieces("ATEXT");
 				if(newOne==null)
 				{
-					Log.errOut("CoffeeMaker","Unknown affect "+ablk.getValFromPieces("ACLASS")+" on "+identifier(E,null)+", skipping.");
+					if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+					||(!CMClass.isLanguage(newID)))
+						Log.errOut("CoffeeMaker","Unknown affect "+ablk.getValFromPieces("ACLASS")+" on "+identifier(E,null)+", skipping.");
 					continue;
 				}
 				newOne.setMiscText(CMLib.xml().restoreAngleBrackets(aparms));

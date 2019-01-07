@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -76,8 +77,13 @@ public class CommonSpeaker extends StdBehavior
 
 		final Ability L=CMClass.getAbilityPrototype(language);
 		if(L==null)
-			Log.errOut("CommonSpeaker on "+ticking.name()+" in "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation((Environmental)ticking))
-					+" has unknown language '"+language+"'");
+		{
+			if(!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+			{
+				Log.errOut("CommonSpeaker on "+ticking.name()+" in "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation((Environmental)ticking))
+						+" has unknown language '"+language+"'");
+			}
+		}
 		else
 		{
 			final Ability A=((MOB)ticking).fetchAbility(L.ID());

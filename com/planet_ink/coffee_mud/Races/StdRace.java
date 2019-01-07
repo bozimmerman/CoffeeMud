@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -746,7 +747,11 @@ public class StdRace implements Race
 					}
 					else
 					if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-						Log.errOut("Race "+ID()+" has unknown cultural ability "+mapping.abilityID());
+					{
+						if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+						||(!CMClass.isLanguage(mapping.abilityID())))
+							Log.errOut("Race "+ID()+" has unknown cultural ability "+mapping.abilityID());
+					}
 				}
 			}
 		}
@@ -1215,7 +1220,11 @@ public class StdRace implements Race
 					}
 					else
 					if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
-						Log.errOut("Race "+ID()+" has unknown affect "+racialEffectNames()[v]);
+					{
+						if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+						||(!CMClass.isLanguage(racialEffectNames()[v])))
+							Log.errOut("Race "+ID()+" has unknown affect "+racialEffectNames()[v]);
+					}
 				}
 			}
 		}
@@ -1913,7 +1922,11 @@ public class StdRace implements Race
 			}
 			else
 			if((A==null)&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
-				Log.errOut("Race "+ID()+" has unknown racial ability "+able.abilityID());
+			{
+				if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+				||(!CMClass.isLanguage(able.abilityID())))
+					Log.errOut("Race "+ID()+" has unknown racial ability "+able.abilityID());
+			}
 		}
 		finalV.trimToSize();
 		finalV.setReadOnly(true);

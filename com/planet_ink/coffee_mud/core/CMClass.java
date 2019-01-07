@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core;
 import com.planet_ink.coffee_mud.WebMacros.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -2747,6 +2748,25 @@ public class CMClass extends ClassLoader
 	}
 
 	/**
+	 * Returns whether the given string is a language ID
+	 * from the official classes load.
+	 * @param langID
+	 * @return
+	 */
+	public static final boolean isLanguage(final String ID)
+	{
+		final String langID = (ID.indexOf('.')>0)?ID:"com.planet_ink.coffee_mud.Abilities.Languages."+ID;
+		if(!classes.containsKey(langID))
+			return false;
+		final Class<?> C=classes.get(langID);
+		if(C==null)
+			return false;
+		if(com.planet_ink.coffee_mud.Abilities.interfaces.Language.class.isAssignableFrom(C))
+			return true;
+		return false;
+	}
+
+	/**
 	 * Causes the map of command words associated with command objects
 	 * to be re-mapped, so that users can use them.
 	 */
@@ -2923,9 +2943,12 @@ public class CMClass extends ClassLoader
 					c.abilities.addAll(tempV);
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Languages/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
-					if(tempV.size()>0)
-						Log.sysOut(Thread.currentThread().getName(),"Languages loaded  : "+tempV.size());
-					c.abilities.addAll(tempV);
+					if(!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+					{
+						if(tempV.size()>0)
+							Log.sysOut(Thread.currentThread().getName(),"Languages loaded  : "+tempV.size());
+						c.abilities.addAll(tempV);
+					}
 
 					tempV=loadVectorListToObj(prefix+"Abilities/Properties/","%DEFAULT%",CMObjectType.ABILITY.ancestorName);
 					size=tempV.size();

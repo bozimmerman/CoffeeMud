@@ -4,6 +4,7 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -351,12 +352,18 @@ public class GrinderItems
 							{
 								if(aff.length()>0)
 								{
-									final Ability B=CMClass.getAbility(aff);
-									if(B==null)
-										return "Unknown Ability '"+aff+"'.";
+									final Ability A=CMClass.getAbility(aff);
+									if(A==null)
+									{
+										if((!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+										||(!CMClass.isLanguage(aff)))
+											return "Unknown Ability '"+aff+"'.";
+										else
+											break;
+									}
 									if(sp.length()>0)
 										sp.append(";");
-									sp.append(B.ID());
+									sp.append(A.ID());
 									if(theparm.trim().length()>0)
 										sp.append("(").append(theparm).append(")");
 								}

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -118,8 +119,11 @@ public class Prop_LanguageSpeaker extends Property
 				lang = getLanguage();
 			if(lang == null)
 			{
-				lang=(Language)CMClass.getAbility("Common");
-				Log.errOut("Prop_LanguageSpeaker","Unknown language "+langStr);
+				if(!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+				{
+					lang=(Language)CMClass.getAbility("Common");
+					Log.errOut("Prop_LanguageSpeaker","Unknown language "+langStr);
+				}
 			}
 			if(lang != null)
 			{
@@ -139,9 +143,12 @@ public class Prop_LanguageSpeaker extends Property
 				default: // item
 					break;
 				}
-				mob.addNonUninvokableEffect(lang);
-				lang.setSavable(false);
-				lang.invoke(mob,mob,false,0);
+				if(lang != null)
+				{
+					mob.addNonUninvokableEffect(lang);
+					lang.setSavable(false);
+					lang.invoke(mob,mob,false,0);
+				}
 			}
 		}
 	}

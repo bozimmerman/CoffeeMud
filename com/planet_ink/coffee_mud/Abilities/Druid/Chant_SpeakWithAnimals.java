@@ -152,11 +152,14 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 				if(lA!=null)
 					return lA;
 				lA=(Language)CMClass.getAbility(ID);
-				lA.setProficiency(100);
-				lA.setAffectedOne(M);
-				lA.setBeingSpoken(lA.ID(), true);
-				myLanguages.put(ID, lA);
-				return lA;
+				if(lA != null)
+				{
+					lA.setProficiency(100);
+					lA.setAffectedOne(M);
+					lA.setBeingSpoken(lA.ID(), true);
+					myLanguages.put(ID, lA);
+					return lA;
+				}
 			}
 		}
 		return null;
