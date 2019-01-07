@@ -37,7 +37,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	protected final long touchAgeLimitMillis;
 	protected final long maxAgeLimitMillis;
 	protected final int	 threshHoldToExpand;
-	
+
 	protected final AtomicBoolean trimming	= new AtomicBoolean(false);
 
 	private class LinkedEntry<V, W> extends Pair<V, W>
@@ -50,7 +50,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		public volatile long				lastTouch	= System.currentTimeMillis();
 		public final long					birthDate	= System.currentTimeMillis();
 
-		public LinkedEntry(V frst, W scnd)
+		public LinkedEntry(final V frst, final W scnd)
 		{
 			super(frst, scnd);
 		}
@@ -68,7 +68,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	 * newer entries in order to at least approach the itemLimit standards.
 	 * itemLimit, is therefore, a long-run ideal. The threshold to expand is the
 	 * only hard limit.
-	 * 
+	 *
 	 * @param itemLimit
 	 *            the number of items to try to limit this map to
 	 * @param touchAgeLimitMillis
@@ -80,7 +80,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	 *            the number of touches on any given item before the limit
 	 *            expands to accommodate
 	 */
-	public PrioritizingLimitedMap(int itemLimit, long touchAgeLimitMillis, long maxAgeLimitMillis, int threshHoldToExpand)
+	public PrioritizingLimitedMap(int itemLimit, final long touchAgeLimitMillis, final long maxAgeLimitMillis, final int threshHoldToExpand)
 	{
 		if (itemLimit <= 0)
 			itemLimit = 1;
@@ -98,7 +98,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	 * age, then those ages will be similarly divided to clean out newer and
 	 * newer entries in order to at least approach the itemLimit standards.
 	 * itemLimit, is therefore, a long-run ideal.
-	 * 
+	 *
 	 * @param itemLimit
 	 *            the number of items to try to limit this map to
 	 * @param touchAgeLimitMillis
@@ -107,13 +107,13 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	 *            the longest amount of time any entry is allowed to live,
 	 *            regardless of touching
 	 */
-	public PrioritizingLimitedMap(int itemLimit, long touchAgeLimitMillis, long maxAgeLimitMillis)
+	public PrioritizingLimitedMap(final int itemLimit, final long touchAgeLimitMillis, final long maxAgeLimitMillis)
 	{
 		this(itemLimit, touchAgeLimitMillis, maxAgeLimitMillis, Integer.MAX_VALUE);
 	}
 
 	@Override
-	public K get(Object key)
+	public K get(final Object key)
 	{
 		final LinkedEntry<T, K> p = map.get(key);
 		if (p != null)
@@ -148,14 +148,14 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	}
 
 	@Override
-	public boolean containsKey(Object arg0)
+	public boolean containsKey(final Object arg0)
 	{
 		return map.containsKey(arg0);
 	}
 
 	public Enumeration<T> prioritizedKeys()
 	{
-		return new Enumeration<T>() 
+		return new Enumeration<T>()
 		{
 			private LinkedEntry<T, K>	ptr	= head;
 
@@ -180,7 +180,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	}
 
 	@Override
-	public synchronized boolean containsValue(Object arg0)
+	public synchronized boolean containsValue(final Object arg0)
 	{
 		for (final LinkedEntry<T, K> p : map.values())
 		{
@@ -211,16 +211,22 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		return map.keySet();
 	}
 
-	private void markFoundAgain(LinkedEntry<T, K> p)
+	private void markFoundAgain(final LinkedEntry<T, K> p)
 	{
-		p.priority++;
-		p.lastTouch = System.currentTimeMillis();
+		synchronized(p)
+		{
+			p.priority++;
+			p.lastTouch = System.currentTimeMillis();
+		}
 		LinkedEntry<T, K> pp = p.prev;
 		while ((pp != null) && (p.priority > pp.priority))
 		{
 			final LinkedEntry<T, K> pn = p.next;
 			final int ppIndex = pp.index;
-			pp.index = p.index;
+			synchronized(pp)
+			{
+				pp.index = p.index;
+			}
 			p.index = ppIndex;
 			p.prev = pp.prev;
 			p.next = pp;
@@ -238,7 +244,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		}
 	}
 
-	private void trimDeadwood(int multiplier)
+	private void trimDeadwood(final int multiplier)
 	{
 		if (map.size() > itemLimit)
 		{
@@ -254,7 +260,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 				final LinkedEntry<T, K> pprev = prev.prev;
 				if ((prev.lastTouch < touchTimeout) || (prev.birthDate < maxAgeTimeout))
 					remove(prev.first);
-				else 
+				else
 				if ((prev.priority > threshHoldToExpand) && (!prev.causedExpand))
 				{
 					prev.causedExpand = true;
@@ -270,7 +276,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	}
 
 	@Override
-	public synchronized K put(T arg0, K arg1)
+	public synchronized K put(final T arg0, final K arg1)
 	{
 		LinkedEntry<T, K> p = map.get(arg0);
 		if (p == null)
@@ -313,14 +319,14 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	}
 
 	@Override
-	public synchronized void putAll(Map<? extends T, ? extends K> arg0)
+	public synchronized void putAll(final Map<? extends T, ? extends K> arg0)
 	{
 		for (final T t : arg0.keySet())
 			put(t, arg0.get(t));
 	}
 
 	@Override
-	public synchronized K remove(Object arg0)
+	public synchronized K remove(final Object arg0)
 	{
 		if (!map.containsKey(arg0))
 			return null;
