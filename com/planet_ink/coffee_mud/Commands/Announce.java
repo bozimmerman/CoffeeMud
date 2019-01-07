@@ -53,26 +53,26 @@ public class Announce extends StdCommand
 			Message.append(from.playerStats().getAnnounceMessage()+" '"+announcement+"'.^.^N");
 		else
 		{
-		  	int alignType=2;
-			if (CMLib.flags().isEvil(S.mob()))
+			int alignType=2;
+			if (CMLib.flags().isEvil(from))
 				alignType = 0;
 			else
-			if (CMLib.flags().isGood(S.mob()))
+			if (CMLib.flags().isGood(from))
 				alignType = 1;
-		  	switch(alignType)
-		  	{
-		  	  case 0:
-		  		Message.append("^rA terrifying voice bellows out of Hell '"+announcement+"'.^N");
-		  		break;
-		  	  case 1:
-		  		Message.append("^wAn awe-inspiring voice thunders down from Heaven '"+announcement+"'.^N");
-		  		break;
-		  	  case 2:
-		  		Message.append("^pA powerful voice rings out '"+announcement+"'.^N");
-		  		break;
-		  	}
+			switch(alignType)
+			{
+			case 0:
+				Message.append("^rA terrifying voice bellows out of Hell '"+announcement+"'.^N");
+				break;
+			case 1:
+				Message.append("^wAn awe-inspiring voice thunders down from Heaven '"+announcement+"'.^N");
+				break;
+			case 2:
+				Message.append("^pA powerful voice rings out '"+announcement+"'.^N");
+				break;
+			}
 		}
-	  	S.stdPrintln(Message.toString());
+		S.stdPrintln(Message.toString());
 	}
 
 	@Override
