@@ -4350,6 +4350,8 @@ public class StdMOB implements MOB
 	@Override
 	public void setFollowing(final MOB mob)
 	{
+		if(mob == this)
+			return;
 		if ((amFollowing != null) && (amFollowing != mob))
 		{
 			if (amFollowing.isFollowedBy(this))
