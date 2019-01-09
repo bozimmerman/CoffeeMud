@@ -2101,27 +2101,37 @@ public class StdArea implements Area
 		&&(!roomID.startsWith(Name()))
 		&&(roomID.startsWith(Name().toUpperCase())))
 			roomID=Name()+roomID.substring(Name().length());
-		Room R=CMLib.map().getRoom(roomID);
+		// looping back through CMMap is unnecc because the roomID comes directly from getProperRoomnumbers()
+		// which means it will never be a grid sub-room.
+		Room R=getRoom(roomID);
 		if(R==null)
 		{
-			R=this.getRoom(roomID);
-			if((R==null)
-			&&(this.properRooms.size()>0))
+			R=CMLib.map().getRoom(roomID); // BUT... it's ok to hit CMLib.map() if you fail.
+			if(R==null)
 			{
-				try
+				if(this.properRooms.size()>0)
 				{
-					R=this.properRooms.firstEntry().getValue();
+					try
+					{
+						R=this.properRooms.firstEntry().getValue();
+					}
+					catch(final Exception e)
+					{
+					}
+					if(R!=null)
+					{
+						if(StdArea.lastComplainer != this)
+						{
+							StdArea.lastComplainer=this;
+							Log.errOut("StdArea","Last Resort random-find due to failure on "+roomID+", so I just picked room: "+R.roomID()+" ("+this.amDestroyed+")");
+						}
+					}
+					else
+						Log.errOut("StdArea","Wow, proper room size = "+this.properRooms.size()+", but no room! ("+this.amDestroyed+")");
 				}
-				catch(final Exception e)
-				{
-				}
-				if(R!=null)
-					Log.errOut("StdArea","Last Resort random-find due to failure on "+roomID+", got room: "+R.roomID()+" ("+this.amDestroyed+")");
 				else
-					Log.errOut("StdArea","Wow, proper room size = "+this.properRooms.size()+", but no room! ("+this.amDestroyed+")");
+					Log.errOut("StdArea","Wow, proper room size = 0, but numrooms="+this.numberOfProperIDedRooms()+"! ("+this.amDestroyed+")");
 			}
-			else
-				Log.errOut("StdArea","Wow, proper room size = 0, but numrooms="+this.numberOfProperIDedRooms()+"! ("+this.amDestroyed+")");
 		}
 		if(R instanceof GridLocale)
 			return ((GridLocale)R).getRandomGridChild();
