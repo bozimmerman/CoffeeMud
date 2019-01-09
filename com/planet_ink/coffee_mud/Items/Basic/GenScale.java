@@ -44,7 +44,7 @@ public class GenScale extends GenRideable
 	{
 		this.name="a scale";
 		this.displayText="a scale sits here";
-		this.description="It has a fulcrum and an arm under which lang two large plates, upon which things may be placed, or upon which people may sit.";
+		this.description="It has a fulcrum and an arm under which hang two large plates, upon which things may be placed, or upon which people may sit.";
 		super.containType = Container.CONTAIN_ANYTHING;
 		super.capacity = 10000;
 		super.rideBasis = Rideable.RIDEABLE_SIT;
@@ -54,15 +54,10 @@ public class GenScale extends GenRideable
 	@Override
 	public int riderCapacity()
 	{
-		final int riders = numRiders();
-		if(riders == 0)
-		{
-			final int contents = this.getContents().size();
-			if(contents >= 2)
-				return 0;
+		final int contents = this.getContents().size();
+		if(contents > 0)
 			return 2-contents;
-		}
-		return riders;
+		return 2;
 	}
 
 	@Override
@@ -70,7 +65,7 @@ public class GenScale extends GenRideable
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		
+
 		if((msg.target()==this)
 		&&(msg.targetMinor() ==  CMMsg.TYP_PUT)
 		&&(msg.tool() instanceof Item))
@@ -94,7 +89,7 @@ public class GenScale extends GenRideable
 								return true;
 						}
 					}
-					
+
 				}
 				//TOOD: check if they are trying to pile more of a rawmaterial that will end up stacking.
 				msg.source().tell(L("Nothing more can fit on @x1.",name(msg.source())));
@@ -103,7 +98,7 @@ public class GenScale extends GenRideable
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
