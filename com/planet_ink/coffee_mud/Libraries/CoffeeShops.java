@@ -1545,74 +1545,63 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if((shop.isSold(ShopKeeper.DEAL_LANDSELLER)||(buyerClanPair!=null))
 		&&(myArea!=null))
 		{
-			final HashSet<Room> roomsHandling=new HashSet<Room>();
-			final Map<Room,LandTitle> titles=new HashMap<Room,LandTitle>();
+			final Set<LandTitle> titles=new HashSet<LandTitle>();
+			final Map<Room,LandTitle> roomTitleMap = new HashMap<Room, LandTitle>();
+			final LegalLibrary law = CMLib.law();
 			for(final Enumeration<Room> r=myArea.getProperMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
-				final LandTitle A=CMLib.law().getLandTitle(R);
-				if((A!=null)
-				&&(R.roomID().length()>0))
-					titles.put(R,A);
+				final LandTitle T=law.getLandTitle(R);
+				if(T!=null)
+				{
+					if(!titles.contains(T))
+						titles.add(T);
+					roomTitleMap.put(R, T);
+				}
 			}
 
-			for(final Room R : titles.keySet())
+			for(final LandTitle T : titles)
 			{
-				final LandTitle A=titles.get(R);
-				if(!roomsHandling.contains(R))
+				if((T.getOwnerName().length()>0) // someone elses title, so never ever list it
+				&&(!T.getOwnerName().equals(name))
+				&&((!T.getOwnerName().equals(buyer.getLiegeID()))||(!buyer.isMarriedToLiege())))
+					continue;
+
+				boolean skipThisOne=false;
+				final WorldMap map=CMLib.map();
+				for(final Room R : T.getAllTitledRooms())
 				{
-					if(R instanceof Area)
-						roomsHandling.add(R);
-					else
+					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{
-						final List<Room> V2=A.getAllTitledRooms();
-						roomsHandling.addAll(V2);
-					}
-					if((A.getOwnerName().length()>0)
-					&&(!A.getOwnerName().equals(name))
-					&&((!A.getOwnerName().equals(buyer.getLiegeID()))||(!buyer.isMarriedToLiege())))
-						continue;
-					boolean skipThisOne=false;
-					if(R instanceof Room)
-					{
-						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+						final Room R2=R.getRoomInDir(d);
+						if((R2 == null)||(map.getExtendedRoomID(R2).length()==0))
+							continue;
+						final LandTitle r2T=roomTitleMap.get(R2);
+						if(r2T==null)
 						{
-							final Room R2=R.getRoomInDir(d);
-							LandTitle L2=null;
-							if(R2!=null)
-							{
-								L2=titles.get(R2);
-								if(L2==null)
-								{
-									skipThisOne = false;
-									break;
-								}
-							}
-							else
-								continue;
-							if((L2.getOwnerName().equals(name))
-							||(L2.getOwnerName().equals(buyer.getLiegeID())&&(buyer.isMarriedToLiege())))
-							{
-								skipThisOne = false;
-								break;
-							}
-							if(L2.getOwnerName().length()>0)
-								skipThisOne=true;
+							skipThisOne = false; // we are connected to unowned room (or another area) -- WIN!
+							break;
 						}
+						if((r2T.getOwnerName().equals(name))
+						||(r2T.getOwnerName().equals(buyer.getLiegeID())&&(buyer.isMarriedToLiege())))
+						{
+							skipThisOne = false; // we are connected to one of OUR rooms -- WIN!
+							break;
+						}
+						if(r2T.getOwnerName().length()>0) // we are connected to someone else .. possibly boo
+							skipThisOne=true;
 					}
-					if(skipThisOne)
-						continue;
+				}
+				if(!skipThisOne)
+				{
 					final Item I=CMClass.getItem("GenTitle");
-					if(R instanceof Room)
-						((LandTitle)I).setLandPropertyID(CMLib.map().getExtendedRoomID(R));
-					else
-						((LandTitle)I).setLandPropertyID(R.Name());
+					((LandTitle)I).setLandPropertyID(T.landPropertyID());
 					if((((LandTitle)I).getOwnerName().length()>0)
 					&&(!I.Name().endsWith(" (Copy)")))
 						I.setName(L("@x1 (Copy)",I.Name()));
 					I.text();
 					I.recoverPhyStats();
-					if((A.getOwnerName().length()==0)
+					if((T.getOwnerName().length()==0)
 					&&(I.Name().endsWith(" (Copy)")))
 						I.setName(I.Name().substring(0,I.Name().length()-7));
 					V.add(I);
