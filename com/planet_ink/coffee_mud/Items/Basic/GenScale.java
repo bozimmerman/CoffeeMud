@@ -56,7 +56,7 @@ public class GenScale extends GenRideable
 	{
 		final int contents = this.getContents().size();
 		if(contents > 0)
-			return 2-contents;
+			return (contents > 2) ? 0 : 2-contents;
 		return 2;
 	}
 
