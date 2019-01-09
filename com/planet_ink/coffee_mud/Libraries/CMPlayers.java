@@ -697,7 +697,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		deadMOB.delAllItems(false);
 		CMLib.database().DBUpdatePlayerItems(deadMOB);
-		for(int f=0;f<deadMOB.numFollowers();f++)
+		final int numFollowers=deadMOB.numFollowers();
+		for(int f=0;f<numFollowers;f++)
 		{
 			final MOB follower=deadMOB.fetchFollower(0);
 			if(follower!=null)
