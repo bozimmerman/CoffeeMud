@@ -146,9 +146,9 @@ public class Spell_Grow extends Spell
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final boolean maliciousFlag = 
-				mob.isMonster() 
-				&& (!mob.getGroupMembers(new HashSet<MOB>()).contains(target)) 
+		final boolean maliciousFlag =
+				target.isMonster()
+				&& (!mob.getGroupMembers(new HashSet<MOB>()).contains(target))
 				&& (target.fetchEffect("Spell_Shrink")==null)
 				&& (target.fetchWornItems(Long.MIN_VALUE, (short)-2048, (short)0).size()>0);
 		if(success)
