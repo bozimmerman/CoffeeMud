@@ -58,45 +58,12 @@ public class Clans extends StdLibrary implements ClanManager
 		return "Clans";
 	}
 
-	public boolean isCommonClanRelations(final Clan C1, final Clan C2, final int relation)
-	{
-		if((C1==null)||(C2==null))
-			return relation==Clan.REL_NEUTRAL;
-		int i1=C1.getClanRelations(C2.clanID());
-		int i2=C2.getClanRelations(C1.clanID());
-		if((i1==i2)
-		&&((i1==Clan.REL_WAR)
-		   ||(i1==Clan.REL_ALLY)))
-		   return i1==relation;
-		for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
-		{
-			final Clan C=e.nextElement();
-			if((C!=C1)&&(C!=C2))
-			{
-				if((i1!=Clan.REL_WAR)
-				&&(C1.getClanRelations(C.clanID())==Clan.REL_ALLY)
-				&&(C.getClanRelations(C2.clanID())==Clan.REL_WAR))
-					i1=Clan.REL_WAR;
-				if((i2!=Clan.REL_WAR)
-				&&(C2.getClanRelations(C.clanID())==Clan.REL_ALLY)
-				&&(C.getClanRelations(C1.clanID())==Clan.REL_WAR))
-					i2=Clan.REL_WAR;
-			}
-		}
-		if(i1==i2)
-			return relation==i1;
-
-		if(Clan.REL_NEUTRALITYGAUGE[i1]<Clan.REL_NEUTRALITYGAUGE[i2])
-			return relation==i1;
-		return relation==i2;
-	}
-
 	@Override
 	public boolean isCommonClanRelations(final String clanID1, final String clanID2, final int relation)
 	{
 		if((clanID1==null)||(clanID2==null)||(clanID1.length()==0)||(clanID2.length()==0))
 			return Clan.REL_NEUTRAL==relation;
-		return isCommonClanRelations(getClan(clanID1),getClan(clanID1), relation);
+		return getClanRelations(getClan(clanID1),getClan(clanID1)) == relation;
 	}
 
 	@Override
@@ -105,7 +72,7 @@ public class Clans extends StdLibrary implements ClanManager
 		final List<Pair<Clan,Clan>> pairs=findUncommonRivalrousClans(M1, M2);
 		for(final Pair<Clan,Clan> p : pairs)
 		{
-			if(isCommonClanRelations(p.first,p.second, Clan.REL_WAR))
+			if(getClanRelations(p.first,p.second) == Clan.REL_WAR)
 				return true;
 		}
 		return false;
@@ -227,7 +194,7 @@ public class Clans extends StdLibrary implements ClanManager
 		return list;
 	}
 
-	public List<Pair<Clan,Clan>> findUncommonRivalrousClans(final MOB M1, final MOB M2)
+	protected List<Pair<Clan,Clan>> findUncommonRivalrousClans(final MOB M1, final MOB M2)
 	{
 		final List<Pair<Clan,Clan>> list=new XVector<Pair<Clan,Clan>>(1,true);
 		if((M1==null)||(M2==null))
@@ -254,7 +221,7 @@ public class Clans extends StdLibrary implements ClanManager
 		return finalList;
 	}
 
-	public List<Pair<Clan,Clan>> getAllClanPairs(final MOB M1, final MOB M2)
+	protected List<Pair<Clan,Clan>> getAllClanPairs(final MOB M1, final MOB M2)
 	{
 		final List<Pair<Clan,Clan>> list=new XVector<Pair<Clan,Clan>>(1,true);
 		if((M1==null)||(M2==null))
@@ -264,13 +231,17 @@ public class Clans extends StdLibrary implements ClanManager
 			list.add(new Pair<Clan,Clan>(c.first,null));
 		final List<Pair<Clan,Clan>> finalList=new XVector<Pair<Clan,Clan>>(1,true);
 		for(final Pair<Clan,Clan> p : list)
+		{
 			for(final Pair<Clan,Integer> c : M2.clans())
+			{
 				if(p.first!=c.first)
 					finalList.add(new Pair<Clan,Clan>(p.first,c.first));
+			}
+		}
 		return finalList;
 	}
 
-	public int getClanRelations(final Clan C1, final Clan C2)
+	protected int getClanRelations(final Clan C1, final Clan C2)
 	{
 		if((C1==null)||(C2==null))
 			return Clan.REL_NEUTRAL;

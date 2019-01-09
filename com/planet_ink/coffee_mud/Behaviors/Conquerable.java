@@ -1130,7 +1130,7 @@ public class Conquerable extends Arrest
 			if((holdingClan.length()>0)
 			&&(!clanID.equals(holdingClan))
 			&&(CMLib.clans().getClanRelations(clanID,holdingClan)!=Clan.REL_WAR)
-			&&(CMLib.clans().getClanRelations(holdingClan,clanID)!=Clan.REL_WAR))
+			&&(CMLib.clans().getClanRelations(clanID,holdingClan)!=Clan.REL_HOSTILE))
 				return false;
 			announceToArea(myArea,clanID,amount);
 			if(index<0)

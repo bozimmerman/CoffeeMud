@@ -951,11 +951,11 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public static final int[] REL_NEUTRALITYGAUGE={/*REL_NEUTRAL*/0,/*REL_WAR*/4, /*REL_HOSTILE*/1,/*REL_FRIENDLY*/1,/*REL_ALLY*/4};
 	/** table used to determine how two clans are related when their declared relations differ.  both axis are REL_* constants. @see Clan */
 	public static final int[][] RELATIONSHIP_VECTOR={
-	{REL_NEUTRAL,	REL_WAR,		REL_HOSTILE,	REL_FRIENDLY,	REL_FRIENDLY},
-	{REL_WAR,		REL_WAR,		REL_WAR,		REL_WAR,		REL_WAR},
-	{REL_HOSTILE,	REL_WAR,		REL_HOSTILE,	REL_HOSTILE,	REL_HOSTILE},
-	{REL_FRIENDLY,	REL_WAR,		REL_HOSTILE,	REL_FRIENDLY,	REL_FRIENDLY},
-	{REL_FRIENDLY,	REL_WAR,		REL_HOSTILE,	REL_FRIENDLY,	REL_ALLY},
+	{REL_NEUTRAL,	REL_NEUTRAL,	REL_NEUTRAL,	REL_NEUTRAL,	REL_NEUTRAL},
+	{REL_NEUTRAL,	REL_WAR,		REL_HOSTILE,	REL_NEUTRAL,	REL_NEUTRAL},
+	{REL_NEUTRAL,	REL_HOSTILE,	REL_HOSTILE,	REL_NEUTRAL,	REL_NEUTRAL},
+	{REL_NEUTRAL,	REL_NEUTRAL,	REL_NEUTRAL,	REL_FRIENDLY,	REL_FRIENDLY},
+	{REL_NEUTRAL,	REL_NEUTRAL,	REL_NEUTRAL,	REL_FRIENDLY,	REL_ALLY},
 	};
 	/** descriptor strings for the REL_* constants, ordered by their value.  @see Clan */
 	public static final String[] REL_DESCS={
