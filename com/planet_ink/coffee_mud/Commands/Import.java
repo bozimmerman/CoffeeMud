@@ -6249,13 +6249,20 @@ public class Import extends StdCommand
 						R.setExpirationDate(R.expirationDate()+(360000));
 
 					final String codeLine=eatNextLine(roomV);
-					if((!R.roomID().startsWith("#"))
-					||(R.displayText().length()==0)
-					||(CMParms.numBits(codeLine)<2)
+					if(!R.roomID().startsWith("#"))
+					{
+						returnAnError(session,"Malformed room: roomID does not start with #. Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+CMParms.numBits(codeLine)+", area="+areaName,compileErrors,commands);
+						continue;
+					}
+					if(R.displayText().length()==0)
+					{
+						returnAnError(session,"Malformed room: room has no name. Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+CMParms.numBits(codeLine)+", area="+areaName,compileErrors,commands);
+						continue;
+					}
+					if((CMParms.numBits(codeLine)<2)
 					||((CMParms.numBits(codeLine)>6)&&(!zonFormat)))
 					{
-						returnAnError(session,"Malformed room! Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+CMParms.numBits(codeLine)+", area="+areaName,compileErrors,commands);
-						continue;
+						returnAnError(session,"Malformed room: bad numbits in codeline. Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+CMParms.numBits(codeLine)+", area="+areaName,compileErrors,commands);						continue;
 					}
 
 					R.setRoomID(areaName+R.roomID());
