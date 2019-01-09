@@ -127,7 +127,7 @@ public class Chant_VolcanicChasm extends Chant
 			if(R!=null)
 			{
 				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
-				&&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+				&&((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 					return Ability.QUALITY_INDIFFERENT;
 			}
 		}

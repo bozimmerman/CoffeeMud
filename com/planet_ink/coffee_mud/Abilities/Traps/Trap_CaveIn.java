@@ -120,7 +120,7 @@ public class Trap_CaveIn extends StdTrap
 		{
 			final Room R=(Room)P;
 			if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
-			&&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+			&&((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 			{
 				if(mob!=null)
 					mob.tell(L("You can only set this trap in caves."));

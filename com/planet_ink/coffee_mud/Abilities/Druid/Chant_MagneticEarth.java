@@ -150,7 +150,7 @@ public class Chant_MagneticEarth extends Chant
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
-				&&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+				&&((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
@@ -168,7 +168,7 @@ public class Chant_MagneticEarth extends Chant
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
-		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 		{
 			mob.tell(L("This chant only works in caves, mountains, or rocky areas."));
 			return false;

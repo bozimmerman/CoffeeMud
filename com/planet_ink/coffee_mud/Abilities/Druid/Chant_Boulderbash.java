@@ -91,7 +91,7 @@ public class Chant_Boulderbash extends Chant
 				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
-				&&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+				&&((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 					return Ability.QUALITY_INDIFFERENT;
 			}
 		}
@@ -105,7 +105,7 @@ public class Chant_Boulderbash extends Chant
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
-		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 		{
 			mob.tell(L("This magic only works in caves, mountainous, or rocky regions, where the rocks will answer to your chant."));
 			return false;

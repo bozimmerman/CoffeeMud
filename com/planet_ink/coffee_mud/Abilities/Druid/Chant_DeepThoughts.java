@@ -132,7 +132,7 @@ public class Chant_DeepThoughts extends Chant
 		if(!mob.isInCombat())
 		{
 			if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
-			&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+			&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 			{
 				unInvoke();
 				return false;
@@ -204,7 +204,7 @@ public class Chant_DeepThoughts extends Chant
 			return false;
 		}
 		if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
-		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 		{
 			mob.tell(L("You must be in a cave for this chant to work."));
 			return false;

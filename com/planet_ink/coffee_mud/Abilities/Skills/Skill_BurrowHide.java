@@ -98,7 +98,7 @@ public class Skill_BurrowHide extends StdSkill
 			return false;
 		if(((R.domainType()&Room.INDOORS)>0)
 		&&(R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
-		&&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+		&&((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 			return false;
 		if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		   ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)

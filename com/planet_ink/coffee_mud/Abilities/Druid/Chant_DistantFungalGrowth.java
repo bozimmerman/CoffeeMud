@@ -92,7 +92,7 @@ public class Chant_DistantFungalGrowth extends Chant
 			{
 				anyRoom=R;
 				if((R.domainType()==Room.DOMAIN_INDOORS_CAVE)
-				||((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)!=0))
+				||((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK))
 				{
 					newRoom=R;
 					break;

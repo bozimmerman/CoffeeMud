@@ -95,7 +95,7 @@ public class Chant_Bury extends Chant
 			return false;
 		if(((R.domainType()&Room.INDOORS)>0)
 		&&(R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
-		&&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+		&&((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 		{
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;

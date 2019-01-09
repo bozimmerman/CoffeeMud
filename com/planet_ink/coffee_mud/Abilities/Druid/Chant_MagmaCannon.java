@@ -91,7 +91,7 @@ public class Chant_MagmaCannon extends Chant
 		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
 		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_DESERT)
-		&&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+		&&((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 		{
 			mob.tell(L("This magic will only work in a cave, or in a dry, rocky area."));
 			return false;

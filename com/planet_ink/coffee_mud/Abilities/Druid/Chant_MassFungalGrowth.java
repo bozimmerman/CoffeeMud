@@ -78,7 +78,8 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			final Room R=V.elementAt(v);
-			if(((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)&&((R.getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+			if(((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
+				&&((R.getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 			||(R==mob.location()))
 				V.removeElementAt(v);
 		}

@@ -82,7 +82,7 @@ public class Chant_CrystalGrowth extends Chant
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
-		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+		&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 		{
 			mob.tell(L("This magic will not work here."));
 			return false;

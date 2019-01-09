@@ -1583,7 +1583,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		if(flags.contains(Flag.CAVEONLY))
 		{
 			if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
-			&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_ROCK)==0))
+			&&((mob.location().getAtmosphere()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ROCK))
 			{
 				commonTell(mob,L("This can only be done underground."));
 				return false;
