@@ -82,7 +82,7 @@ public class Publishing extends CommonSkill
 
 	public MiniJSON.JSONObject getData()
 	{
-		if(text().length()==0)
+		if(text().trim().length()==0)
 			super.setMiscText("{\"lastpub\":0}");
 		try
 		{
@@ -91,6 +91,7 @@ public class Publishing extends CommonSkill
 		catch (final MJSONException e)
 		{
 			Log.errOut(e);
+			Log.errOut("Data = '"+text()+"'");
 			return new MiniJSON.JSONObject();
 		}
 	}
