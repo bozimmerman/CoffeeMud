@@ -79,6 +79,53 @@ public class Clans extends StdLibrary implements ClanManager
 	}
 
 	@Override
+	public boolean isClanFriendly(final MOB M1, final MOB M2)
+	{
+		if((M1==null)||(M2==null))
+			return false;
+		for(final Pair<Clan,Integer> C1 : M1.clans())
+		{
+			for(final Pair<Clan,Integer> C2 : M2.clans())
+			{
+				if((C1.first == C2.first)
+				&&(C1.first.isRivalrous()))
+					return true;
+			}
+		}
+		final List<Pair<Clan,Clan>> pairs=findUncommonRivalrousClans(M1, M2);
+		for(final Pair<Clan,Clan> p : pairs)
+		{
+			final int rel = getClanRelations(p.first,p.second);
+			if((rel == Clan.REL_FRIENDLY) || (rel == Clan.REL_ALLY))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isClanFriendly(final MOB mob, final Clan C)
+	{
+		if((mob==null)||(C==null))
+			return false;
+		final Clan mC = this.findRivalrousClan(mob);
+		if(mC == null)
+			return false;
+		if(mC==C)
+			return true;
+
+		final int rel = getClanRelations(mC, C);
+		if((rel == Clan.REL_FRIENDLY) || (rel == Clan.REL_ALLY))
+			return true;
+		return false;
+	}
+
+	@Override
+	public boolean isClanFriendly(final MOB M1, final String clanID)
+	{
+		return isClanFriendly(M1, getClan(clanID));
+	}
+
+	@Override
 	public boolean checkClanPrivilege(final MOB mob, final Clan.Function func)
 	{
 		return findPrivilegedClan(mob,func)!=null;

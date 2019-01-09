@@ -87,6 +87,43 @@ public interface ClanManager extends CMLibrary
 	public boolean isAtClanWar(MOB M1, MOB M2);
 
 	/**
+	 * Returns whether the given mob is in a friendly state with with given clan.
+	 * Obviously so if he is a member, and also if they are in different
+	 * rivalrous clans that are friendly or allied with each other.
+	 * @see ClanManager#isClanFriendly(MOB, String)
+	 * @see ClanManager#isClanFriendly(MOB, MOB)
+	 * @param mob the mob to check
+	 * @param C the clan to check
+	 * @return true if the mob is friendly with the clan
+	 */
+	public boolean isClanFriendly(final MOB mob, final Clan C);
+
+	/**
+	 * Returns whether the given mob is in a friendly state with with given clan.
+	 * Obviously so if he is a member, and also if they are in different
+	 * rivalrous clans that are friendly or allied with each other.
+	 * @see ClanManager#isClanFriendly(MOB, Clan)
+	 * @see ClanManager#isClanFriendly(MOB, MOB)
+	 * @param mob the mob to check
+	 * @param clanID the clan id to check
+	 * @return true if the mob is friendly with the clan
+	 */
+	public boolean isClanFriendly(final MOB mob, final String clanID);
+
+	/**
+	 * Returns whether the two given mobs are in a clan friendly state
+	 * with each other.  If they are in the same clan, then it is obviously
+	 * true.  If they are in rivalrous clans that are in a friendly or allied
+	 * state with each other, then yes also.
+	 * @see ClanManager#isClanFriendly(MOB, Clan)
+	 * @see ClanManager#isClanFriendly(MOB, String)
+	 * @param M1 the first mob to check
+	 * @param M2 the second mob to check
+	 * @return true if they are friendly to each other
+	 */
+	public boolean isClanFriendly(final MOB M1, final MOB M2);
+
+	/**
 	 * Returns whether the two mobs share ANY common clans, even
 	 * non-rivalrous ones.
 	 * @param M1 first mob
