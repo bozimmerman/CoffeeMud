@@ -21,6 +21,7 @@
   20. Clans can restrict their lower ranks from certain rooms with clan ward and improved clan ward spells.
   21. Version command now shows system up time.
   22. New DISABLE flag: languages
+  23. Clans hostile to each other can attack each others controlled areas.
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.
