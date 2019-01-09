@@ -147,47 +147,51 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		if((tickID==Tickable.TICKID_MOB)&&(affected instanceof MOB))
 		{
 			final MOB mob=(MOB)affected;
-			if((mob!=null)&&(mob.isInCombat()))
+			if(mob != null)
 			{
-				if(mob.isAttributeSet(MOB.Attrib.AUTODRAW))
-					CMLib.commands().postDraw(mob,true,true);
-
-				final Item primaryWeapon=getFirstWeapon(mob);
-				final Item weapon=getSecondWeapon(mob);
-				if((weapon!=null) // try to wield anything!
-				&&(primaryWeapon!=null)
-				&&attackedSinceLastTick
-				&&(mob.rangeToTarget()>=0)
-				&&(mob.rangeToTarget()>=weapon.minRange())
-				&&(mob.rangeToTarget()<=weapon.maxRange())
-				&&(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
-				&&(!mob.amDead())
-				&&(mob.curState().getHitPoints()>0)
-				&&(CMLib.flags().isStanding(mob))
-				&&(!mob.getVictim().amDead()))
+				final MOB victiM=mob.getVictim();
+				if(victiM != null)
 				{
-					Ability usedA=this;
-					for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+					if(mob.isAttributeSet(MOB.Attrib.AUTODRAW))
+						CMLib.commands().postDraw(mob,true,true);
+
+					final Item primaryWeapon=getFirstWeapon(mob);
+					final Item weapon=getSecondWeapon(mob);
+					if((weapon!=null) // try to wield anything!
+					&&(primaryWeapon!=null)
+					&&attackedSinceLastTick
+					&&(mob.rangeToTarget()>=0)
+					&&(mob.rangeToTarget()>=weapon.minRange())
+					&&(mob.rangeToTarget()<=weapon.maxRange())
+					&&(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
+					&&(!mob.amDead())
+					&&(mob.curState().getHitPoints()>0)
+					&&(CMLib.flags().isStanding(mob))
+					&&(!victiM.amDead()))
 					{
-						final Ability A=a.nextElement();
-						if((A instanceof Skill_TwoWeaponFighting)
-						&&(A.abilityCode()==1))
-							usedA=A;
-					}
-					if(usedA.proficiencyCheck(mob,0,false)
-					||((usedA!=this)&&(proficiencyCheck(mob,0,false))))
-					{
-						primaryWeapon.setRawWornCode(Wearable.WORN_HELD);
-						weapon.setRawWornCode(Wearable.WORN_WIELD);
-						mob.recoverPhyStats();
-						CMLib.combat().postAttack(mob,mob.getVictim(),weapon);
-						weapon.setRawWornCode(Wearable.WORN_HELD);
-						primaryWeapon.setRawWornCode(Wearable.WORN_WIELD);
-						mob.recoverPhyStats();
-						if(CMLib.dice().rollPercentage()==1)
-							usedA.helpProficiency(mob, 0);
-						if((usedA!=this)&&(CMLib.dice().rollPercentage()==1))
-							helpProficiency(mob, 0);
+						Ability usedA=this;
+						for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+						{
+							final Ability A=a.nextElement();
+							if((A instanceof Skill_TwoWeaponFighting)
+							&&(A.abilityCode()==1))
+								usedA=A;
+						}
+						if(usedA.proficiencyCheck(mob,0,false)
+						||((usedA!=this)&&(proficiencyCheck(mob,0,false))))
+						{
+							primaryWeapon.setRawWornCode(Wearable.WORN_HELD);
+							weapon.setRawWornCode(Wearable.WORN_WIELD);
+							mob.recoverPhyStats();
+							CMLib.combat().postAttack(mob,victiM,weapon);
+							weapon.setRawWornCode(Wearable.WORN_HELD);
+							primaryWeapon.setRawWornCode(Wearable.WORN_WIELD);
+							mob.recoverPhyStats();
+							if(CMLib.dice().rollPercentage()==1)
+								usedA.helpProficiency(mob, 0);
+							if((usedA!=this)&&(CMLib.dice().rollPercentage()==1))
+								helpProficiency(mob, 0);
+						}
 					}
 				}
 			}
