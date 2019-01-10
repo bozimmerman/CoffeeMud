@@ -180,7 +180,7 @@ public class Dance_Swords extends Dance
 				{
 					final int bonusDamage=(affected.phyStats().damage()+5+getXLEVELLevel(M))-M.phyStats().damage();
 					final int damage=CMLib.combat().adjustedDamage(M, (Weapon)affected, victiM, bonusDamage,false, false);
-					CMLib.combat().postDamage(M,victiM,affected,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
+					CMLib.combat().postDamage(M,victiM,affected,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)affected).weaponDamageType(),L("@x1 attacks and <DAMAGE> <T-NAME>!",affected.name()));
 				}
 			}
