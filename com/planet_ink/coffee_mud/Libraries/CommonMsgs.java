@@ -259,7 +259,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		forceInternalCommand(mob,"Channel",Boolean.valueOf(systemMsg),channelName,message);
 	}
 
-	public MOB nonClanTalker = null;
+	protected MOB nonClanTalkerM = null;
+	protected Room talkLocationR = null;
 
 	@Override
 	public void postChannel(final String channelName, final Iterable<Pair<Clan,Integer>> clanList, final String message, final boolean systemMsg)
@@ -267,35 +268,41 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		MOB talker = null;
 		try
 		{
+			if((talkLocationR == null)
+			||(talkLocationR.amDestroyed()))
+			{
+				talkLocationR = CMLib.map().getRandomRoom();
+			}
+
 			if(clanList != null)
 			{
 				talker=CMClass.getFactoryMOB();
 				talker.setName("^</B^>");
-				talker.setLocation(CMLib.map().getRandomRoom());
+				talker.setLocation(talkLocationR);
 				talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
 				talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
 				for(final Pair<Clan,Integer> c : clanList)
 					talker.setClan(c.first.clanID(),c.second.intValue());
 			}
 			else
-			if(nonClanTalker!=null)
+			if(nonClanTalkerM!=null)
 			{
-				talker=nonClanTalker;
+				talker=nonClanTalkerM;
 			}
 			else
 			{
 				talker=CMClass.getMOB("StdMOB"); // not factory because he lasts forever
 				talker.setName("^</B^>");
-				talker.setLocation(CMLib.map().getRandomRoom());
+				talker.setLocation(talkLocationR);
 				talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
 				talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
-				nonClanTalker=talker;
+				nonClanTalkerM=talker;
 			}
 			postChannel(talker,channelName,message,systemMsg);
 		}
 		finally
 		{
-			if ((talker != null) && (talker != nonClanTalker))
+			if ((talker != null) && (talker != nonClanTalkerM))
 				talker.destroy();
 		}
 	}
@@ -1896,9 +1903,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.HYGIENE))
 			return false;
 		if((msg.sourceMajor(CMMsg.MASK_MOVE)
-		&&((msg.tool()==null)
-			||(!(msg.tool() instanceof Ability))
-			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)))
+			&&((msg.tool()==null)
+				||(!(msg.tool() instanceof Ability))
+				||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)))
 		||((msg.tool() instanceof Social)
 			&&((msg.tool().Name().toUpperCase().startsWith("BATHE"))
 				||(msg.tool().Name().toUpperCase().startsWith("WASH")))))
