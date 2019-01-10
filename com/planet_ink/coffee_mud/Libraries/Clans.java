@@ -380,6 +380,31 @@ public class Clans extends StdLibrary implements ClanManager
 	}
 
 	@Override
+	public Clan fetchClan(final String id)
+	{
+		if((id==null)||(id.length()==0))
+			return null;
+		final Clan C=all.get(id.toUpperCase());
+		if(C!=null)
+			return C;
+		return null;
+	}
+
+	@Override
+	public Clan fetchClanAnyHost(final String id)
+	{
+		if((id==null)||(id.length()==0))
+			return null;
+		for(final ClanManager cLib : getOtherClanLibAllHosts())
+		{
+			final Clan C=cLib.fetchClan(id);
+			if(C!=null)
+				return C;
+		}
+		return null;
+	}
+
+	@Override
 	public Clan getClanAnyHost(final String id)
 	{
 		if((id==null)||(id.length()==0))

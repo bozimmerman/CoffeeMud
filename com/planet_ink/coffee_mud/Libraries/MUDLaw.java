@@ -375,8 +375,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return false;
 		if(doesHaveWeakPrivilegesWith(mob,record))
 			return true;
-		final Pair<Clan,Integer> clanRole=mob.getClanRole(record.getOwnerName());
-		if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+		if(doesHaveClanFriendlyPrivilegesHere(mob, record.getOwnerName()))
 			return true;
 		return false;
 	}
@@ -426,6 +425,28 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return false;
 	}
 
+	protected boolean doesHaveClanFriendlyPrivilegesHere(final MOB mob, final String clanID)
+	{
+		final Clan C=CMLib.clans().fetchClan(clanID);
+		if(C!=null)
+		{
+			final Pair<Clan,Integer> clanRole=mob.getClanRole(C.clanID());
+			if((clanRole!=null)&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+				return true;
+			final Clan myC = CMLib.clans().findRivalrousClan(mob);
+			if(myC != null)
+			{
+				final Pair<Clan,Integer> myCRole=mob.getClanRole(myC.clanID());
+				if((myCRole!=null)
+				&&(myCRole.first.getAuthority(myCRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO)
+				&&(CMLib.clans().isClanFriendly(mob, C)))
+					return true;
+			}
+		}
+		return false;
+	}
+
+
 	@Override
 	public boolean doesAnyoneHavePrivilegesHere(final MOB mob, final String overrideID, final Room R)
 	{
@@ -435,8 +456,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return true;
 		if(overrideID.length()>0)
 		{
-			final Pair<Clan,Integer> clanPair=mob.getClanRole(overrideID);
-			if((clanPair!=null)&&(clanPair.first.getAuthority(clanPair.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+			if(doesHaveClanFriendlyPrivilegesHere(mob, overrideID))
 				return true;
 		}
 		for(int i=0;i<R.numInhabitants();i++)

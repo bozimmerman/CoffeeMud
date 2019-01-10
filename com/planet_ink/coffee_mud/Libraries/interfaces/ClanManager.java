@@ -252,6 +252,7 @@ public interface ClanManager extends CMLibrary
 
 	/**
 	 * Returns the Clan object associated with the given clan name
+	 * or which is a substring of a clan name
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @param id the clan name
 	 * @return the Clan object associated with the given clan name
@@ -267,6 +268,26 @@ public interface ClanManager extends CMLibrary
 	 * @return the Clan object associated with the given clan name
 	 */
 	public Clan getClanAnyHost(String id);
+
+	/**
+	 * Returns the Clan object associated with the given clan name
+	 * strictly matching, case insensitive
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+	 * @param id the clan name
+	 * @return the Clan object associated with the given clan name
+	 */
+	public Clan fetchClan(final String id);
+
+	/**
+	 * Returns the Clan object associated with the given clan name
+	 * from any host sharing the same map as the caller,
+	 * strictly matching, case insensitive
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+	 * @param id the clan name
+	 * @return the Clan object associated with the given clan name
+	 */
+	public Clan fetchClanAnyHost(final String id);
 
 	/**
 	 * Returns the Clan object associated with the given clan name, or
