@@ -1733,7 +1733,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		Room R=null;
 		int numRooms=-1;
-		while((R==null)&&((numRooms=numRooms())>0))
+		for(int i=0;i<1000 && ((R==null)&&((numRooms=numRooms())>0));i++)
 		{
 			try
 			{
@@ -1752,6 +1752,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			catch (final NoSuchElementException e)
 			{
+				if(i > 998)
+					Log.errOut(e);
 			}
 		}
 		return R;
