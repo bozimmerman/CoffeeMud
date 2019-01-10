@@ -1035,7 +1035,7 @@ public class RoomLoader
 
 				final MOB newMOB=CMClass.getMOB(MOBID);
 				if(newMOB==null)
-					Log.errOut("Room","Couldn't find MOB '"+MOBID+"'");
+					Log.errOut("Room","Couldn't find MOB '"+MOBID+"' in room " + roomID);
 				else
 				{
 					final Room room=(rooms!=null)?rooms.get(roomID):thisRoom;
