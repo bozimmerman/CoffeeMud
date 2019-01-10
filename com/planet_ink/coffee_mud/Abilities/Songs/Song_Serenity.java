@@ -79,6 +79,12 @@ public class Song_Serenity extends Song
 		{
 			msg.source().makePeace(true);
 			msg.source().tell(L("You feel too peaceful to fight."));
+			if(msg.target() instanceof MOB)
+			{
+				final MOB targetM=(MOB)msg.target();
+				if(targetM.getVictim()==msg.source())
+					targetM.setVictim(null);
+			}
 			return false;
 		}
 		return super.okMessage(myHost,msg);
