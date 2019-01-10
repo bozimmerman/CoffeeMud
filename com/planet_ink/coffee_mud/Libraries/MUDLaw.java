@@ -468,6 +468,10 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			{
 				if(M.Name().equals(overrideID))
 					return true;
+
+				if(M.isMarriedToLiege() && M.getLiegeID().equalsIgnoreCase(overrideID))
+					return true;
+
 				final Pair<Clan,Integer> clanPair=M.getClanRole(overrideID);
 				if((clanPair!=null)&&(clanPair.first.getAuthority(clanPair.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
 					return true;
