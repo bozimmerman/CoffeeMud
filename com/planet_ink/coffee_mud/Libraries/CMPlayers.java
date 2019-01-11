@@ -267,7 +267,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		{
 			final PlayerLibrary pLib2 = (PlayerLibrary)pl.nextElement();
 			if((pLib2 != null)
-			&&(this!=pLib2)
+			&&(!list.contains(pLib2))
 			&&(map == CMLib.library(CMLib.getLibraryThreadID(Library.PLAYERS, pLib2), Library.MAP)))
 				list.add(pLib2);
 		}
