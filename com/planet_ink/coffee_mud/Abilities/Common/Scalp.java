@@ -108,6 +108,7 @@ public class Scalp extends CommonSkill
 				final MOB mob=(MOB)affected;
 				if((body!=null)&&(!aborted)&&(mob.location()!=null))
 				{
+					super.unInvoke();
 					body.addNonUninvokableEffect(this);
 					if((failed)||(!mob.location().isContent(body)))
 						commonTell(mob,L("You messed up your scalping completely."));
