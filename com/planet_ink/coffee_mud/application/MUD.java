@@ -66,7 +66,7 @@ import java.sql.*;
 public class MUD extends Thread implements MudHost
 {
 	private static final float	  HOST_VERSION_MAJOR	= (float)5.9;
-	private static final float	  HOST_VERSION_MINOR	= (float)7.2;
+	private static final float	  HOST_VERSION_MINOR	= (float)7.3;
 
 	private static enum MudState
 	{
@@ -511,7 +511,7 @@ public class MUD extends Thread implements MudHost
 						if((externalCommand!=null)&&(externalCommand.equalsIgnoreCase("hard")))
 							MUD.execExternalRestart();
 						Log.errOut("** Shutdown timeout. **");
-						StringBuilder lines=new StringBuilder("");
+						final StringBuilder lines=new StringBuilder("");
 						lines.append("\n\r^HThread: ^N"+currentShutdownThread.getName()+"\n\r");
 						final java.lang.StackTraceElement[] s=currentShutdownThread.getStackTrace();
 						for (final StackTraceElement element : s)
