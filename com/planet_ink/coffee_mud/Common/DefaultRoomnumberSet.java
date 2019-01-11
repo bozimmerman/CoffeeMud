@@ -187,7 +187,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		{
 			for(final LongSet CMI : root.values())
 			{
-				if((CMI!=null)&&(!CMI.isEmpty()))
+				if((CMI==null)
+				||(!CMI.isEmpty()))
 					return false;
 			}
 		}
