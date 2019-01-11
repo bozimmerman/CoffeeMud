@@ -9735,6 +9735,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				tickStatus=Tickable.STATUS_END;
 				return varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
+			case 87: // mea
 			case 7: // mpechoat
 			{
 				if(tt==null)
@@ -9790,6 +9791,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			case 88: // mer
 			case 8: // mpechoaround
 			{
 				if(tt==null)

@@ -662,6 +662,8 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"MPOLOADSHOP", //84
 		"MPMLOADSHOP", //85
 		"MPRPEXP", //86
+		"MEA", //87
+		"MER", //88
 	};
 
 	/** a list of some some extra stat codes for mobs*/
