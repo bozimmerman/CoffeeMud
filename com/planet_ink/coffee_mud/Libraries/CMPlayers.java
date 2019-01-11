@@ -412,14 +412,27 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public boolean playerExistsAllHosts(final String name)
+	public boolean playerExistsAllHosts(String name)
 	{
 		if(name==null)
 			return false;
+		name=CMStrings.capitalizeAndLower(name);
+		if(playerExists(name))
+			return true;
 		for(final PlayerLibrary pLib : getOtherPlayerLibAllHosts())
 		{
-			if(pLib.playerExists(name))
-				return true;
+			if(pLib != this)
+			{
+				for(final Enumeration<MOB> m=pLib.players();m.hasMoreElements();)
+				{
+					final MOB M=m.nextElement();
+					if(M.Name().equals(name))
+						return true;
+				}
+				final DatabaseEngine db = (DatabaseEngine)CMLib.library(CMLib.getLibraryThreadID(Library.PLAYERS, pLib), Library.DATABASE);
+				if((db != CMLib.database()) && (db.DBUserSearch(name)!=null))
+					return true;
+			}
 		}
 		return false;
 	}
