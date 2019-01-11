@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achieve
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -225,7 +226,7 @@ public class Age extends StdAbility
 		return following;
 	}
 
-	protected void doThang()
+	protected void doAgeChangeCheck()
 	{
 		final Physical affected=this.affected;
 		if(affected==null)
@@ -240,7 +241,7 @@ public class Age extends StdAbility
 		try
 		{
 			norecurse=true;
-			doUnprotectedThang(affected,l);
+			doUnprotectedAgeChangeCheck(affected,l);
 		}
 		finally
 		{
@@ -248,7 +249,7 @@ public class Age extends StdAbility
 		}
 	}
 
-	protected void doUnprotectedThang(final Physical affected, final long l)
+	protected void doUnprotectedAgeChangeCheck(final Physical affected, final long l)
 	{
 		if(divisor==0.0)
 		{
@@ -291,8 +292,14 @@ public class Age extends StdAbility
 							if(T.name().startsWith("PARENT:"))
 							{
 								final String parentName=T.name().substring(7).trim();
-								if(CMLib.players().playerExists(parentName))
-									parents.add(CMLib.players().getLoadPlayer(parentName));
+								if(CMLib.players().playerExistsAllHosts(parentName))
+								{
+									MOB M = CMLib.players().getPlayerAllHosts(parentName);
+									if(M==null)
+										M=CMLib.players().getLoadPlayer(parentName);
+									if(M!=null)
+										parents.add(M);
+								}
 								else
 								{
 									final MOB M=R.fetchInhabitant("$"+parentName+"$");
@@ -437,224 +444,57 @@ public class Age extends StdAbility
 					babe.delEffect(A);
 				CMLib.database().DBDeletePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 
-				final Room R=CMLib.map().roomLocation(affected);
-				if((R!=null)
-				&&(affected.Name().indexOf(' ')<0)
-				&&(!CMLib.players().playerExists(affected.Name())))
+				final List<MOB> parents=new ArrayList<MOB>(2);
+				PlayerLibrary players = CMLib.players();
+				DatabaseEngine database = CMLib.database();
+				ClanManager clans = CMLib.clans();
+				PlayerAccount account = null;
+				for(final Enumeration<Tattoo> e=babe.tattoos();e.hasMoreElements();)
 				{
-					MOB liege=null;
-					if(babe.getLiegeID().length()>0)
-						liege=CMLib.players().getLoadPlayer(babe.getLiegeID());
-					if(liege==null)
-						liege=babe.amFollowing();
-					final MOB newMan=CMClass.getMOB("StdMOB");
-					newMan.setAgeMinutes(babe.getAgeMinutes());
-					newMan.setBaseCharStats(babe.baseCharStats());
-					newMan.setBasePhyStats(babe.basePhyStats());
-					newMan.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
-					if(liege!=null)
-						newMan.copyFactions(liege);
-					newMan.basePhyStats().setLevel(1);
-					newMan.setAttributesBitmap(babe.getAttributesBitmap());
-					for(final Enumeration<Tattoo> e=babe.tattoos();e.hasMoreElements();)
-						newMan.addTattoo(e.nextElement());
-					String highestBaseClass="Orphan";
-					final int highestBaseLevel=0;
-					int highestParentLevel=0;
-					for(final Pair<Clan,Integer> p : babe.clans())
-						newMan.setClan(p.first.clanID(),p.second.intValue());
-					int theme=Area.THEME_FANTASY;
-					int highestLegacyLevel=0;
-					final List<MOB> parents=new ArrayList<MOB>(2);
-					for(final Enumeration<Tattoo> e=newMan.tattoos();e.hasMoreElements();)
+					final Tattoo T=e.nextElement();
+					if(T.getTattooName().startsWith("PARENT:"))
 					{
-						final Tattoo T=e.nextElement();
-						if(T.getTattooName().startsWith("PARENT:"))
+						final String parentName = T.getTattooName().substring(7);
+						if(CMLib.players().playerExistsAllHosts(parentName))
 						{
-							final MOB M=CMLib.players().getLoadPlayer(T.getTattooName().substring(7));
-							if(M!=null)
+							MOB M=CMLib.players().getLoadPlayer(parentName);
+							if(M==null)
 							{
-								parents.add(M);
-								if(M.basePhyStats().level()>highestParentLevel)
-									highestParentLevel=M.basePhyStats().level();
-								for(int i=0;i<M.baseCharStats().numClasses();i++)
+								for(final Enumeration<CMLibrary> p=CMLib.libraries(Library.PLAYERS); p.hasMoreElements();)
 								{
-									if(M.baseCharStats().getClassLevel(M.baseCharStats().getMyClass(i))>highestBaseLevel)
-										highestBaseClass=M.baseCharStats().getMyClass(i).baseClass();
-								}
-								if(!newMan.clans().iterator().hasNext())
-								{
-									for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(M))
+									final PlayerLibrary playerLib=(PlayerLibrary)p.nextElement();
+									if((playerLib != CMLib.players())
+									&&((CMLib.map() == CMLib.library(CMLib.getLibraryThreadID(Library.PLAYERS, playerLib), Library.MAP)))
+									&&(playerLib.playerExists(parentName)))
 									{
-										final Pair<Clan,Integer> clanRole=M.getClanRole(p.first.clanID());
-										if((clanRole!=null)
-										&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
-											newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
+										M=playerLib.getLoadPlayer(parentName);
+										if(M!=null)
+										{
+											players=playerLib;
+											final char threadId = CMLib.getLibraryThreadID(Library.PLAYERS, playerLib);
+											database=(DatabaseEngine)CMLib.library(threadId, Library.DATABASE);
+											clans=(ClanManager)CMLib.library(threadId, Library.CLANS);
+											break;
+										}
 									}
 								}
-								if((M.getWorshipCharID().length()>0)&&(newMan.getWorshipCharID().length()==0))
-									newMan.setWorshipCharID(M.getWorshipCharID());
-								for(final Enumeration<Ability> a=M.abilities();a.hasMoreElements();)
-								{
-									final Ability L=a.nextElement();
-									if((L instanceof Language)&&(newMan.fetchAbility(L.ID())==null))
-										newMan.addAbility((Ability)L.copyOf());
-								}
-								theme=M.playerStats().getTheme();
 							}
-						}
-					}
-					for(final Enumeration<Tattoo> e=newMan.tattoos();e.hasMoreElements();)
-					{
-						final Tattoo T=e.nextElement();
-						if(T.getTattooName().startsWith("PARENT:"))
-						{
-							final MOB M=CMLib.players().getLoadPlayer(T.getTattooName().substring(7));
-							if((M!=null)&&(M.playerStats()!=null))
+							if(M!=null)
 							{
-								final int legacyLevel=M.playerStats().getLegacyLevel(highestBaseClass);
-								if(legacyLevel>highestLegacyLevel)
-									highestLegacyLevel=legacyLevel;
-								newMan.setAttributesBitmap(M.getAttributesBitmap());
+								if(M.playerStats().getAccount()!=null)
+									account=M.playerStats().getAccount();
+								parents.add(M);
 							}
 						}
 					}
-					if((!newMan.clans().iterator().hasNext())&&(liege!=null))
-					{
-						for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(liege))
-						{
-							final Pair<Clan,Integer> clanRole=liege.getClanRole(p.first.clanID());
-							if((clanRole!=null)
-							&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
-								newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
-						}
-					}
-					if(CMLib.clans().findRivalrousClan(newMan)!=null)
-					{
-						final Clan C = CMLib.clans().findRivalrousClan(newMan);
-						if(C!=null)
-							C.addMember(newMan, C.getGovernment().getAcceptPos());
-					}
-					newMan.setDescription(babe.description());
-					newMan.setDisplayText(babe.displayText());
-					newMan.setExperience(babe.getExperience());
-					newMan.setFollowing(null);
-					newMan.setLiegeID(babe.getLiegeID());
-					newMan.setLocation(babe.location());
-					CMLib.beanCounter().setMoney(newMan,CMLib.beanCounter().getMoney(babe));
-					newMan.setName(babe.Name());
-					newMan.setPractices(babe.getPractices());
-					newMan.setQuestPoint(babe.getQuestPoint());
-					newMan.setStartRoom(babe.getStartRoom());
-					newMan.setTrains(babe.getTrains());
-					newMan.setWimpHitPoint(babe.getWimpHitPoint());
-					newMan.setWorshipCharID(babe.getWorshipCharID());
-					if(liege!=null)
-					{
-						newMan.playerStats().setPassword(liege.playerStats().getPasswordStr());
-						newMan.playerStats().setEmail(liege.playerStats().getEmail());
-						newMan.playerStats().setAccount(liege.playerStats().getAccount());
-					}
-					else
-						newMan.playerStats().setPassword(babe.Name());
-					newMan.playerStats().setLastUpdated(System.currentTimeMillis());
-					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
-					if(newMan.playerStats().getBirthday()==null)
-					{
-						int newAge=newMan.playerStats().initializeBirthday(CMLib.time().localClock(R),ellapsed*15,newMan.baseCharStats().getMyRace());
-						if((newAge<0)||(newAge>newMan.baseCharStats().getMyRace().getAgingChart()[Race.AGE_MIDDLEAGED]))
-							newAge=newMan.baseCharStats().getMyRace().getAgingChart()[Race.AGE_MIDDLEAGED];
-						newMan.baseCharStats().setStat(CharStats.STAT_AGE,newAge);
-					}
-					newMan.baseCharStats().setStat(CharStats.STAT_AGE,ellapsed);
-					newMan.baseState().setHitPoints(CMProps.getIntVar(CMProps.Int.STARTHP));
-					newMan.baseState().setMana(CMProps.getIntVar(CMProps.Int.STARTMANA));
-					newMan.baseState().setMovement(CMProps.getIntVar(CMProps.Int.STARTMOVE));
-					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.basePhyStats(),(char)newMan.baseCharStats().getStat(CharStats.STAT_GENDER));
-					final int baseStat=(CMProps.getIntVar(CMProps.Int.BASEMINSTAT)+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT))/2;
-					for(final int  i : CharStats.CODES.BASECODES())
-						newMan.baseCharStats().setStat(i,baseStat);
-					if(highestParentLevel>=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
-					{
-						for(int i=0;i<highestLegacyLevel+1;i++)
-							newMan.playerStats().addLegacyLevel(highestBaseClass);
-					}
-					//final int bonusPoints=newMan.playerStats().getTotalLegacyLevels()+1;
-					final Ability reRollA=CMClass.getAbility("Prop_ReRollStats");
-					if(reRollA!=null)
-					{
-						reRollA.setMiscText("PICKCLASS=TRUE");
-						newMan.setSavable(true);
-						newMan.addNonUninvokableEffect(reRollA);
-					}
-					newMan.recoverCharStats();
-					newMan.baseCharStats().getMyRace().startRacing(newMan,false);
-					newMan.playerStats().setTheme(theme);
-					try
-					{
-						newMan.baseCharStats().setMyClasses(";" + CMLib.login().promptCharClass(theme, newMan, null).name());
-					}
-					catch (final IOException e)
-					{
-					}
-					newMan.baseCharStats().setMyLevels(";1");
-					newMan.baseCharStats().getCurrentClass().startCharacter(newMan,false,false);
-					for(int i=0;i<babe.numItems();i++)
-						newMan.moveItemTo(babe.getItem(i));
-					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getMyRace().outfit(newMan));
-					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit(newMan));
-					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
-					newMan.playerStats().setLastUpdated(System.currentTimeMillis());
-					newMan.recoverCharStats();
-					newMan.recoverPhyStats();
-					newMan.recoverMaxState();
-					newMan.resetToMaxState();
-					if(CMLib.flags().isAnimalIntelligence(newMan))
-					{
-						newMan.baseCharStats().setMyClasses(";StdCharClass");
-						newMan.recoverCharStats();
-						newMan.recoverPhyStats();
-						newMan.recoverMaxState();
-						newMan.resetToMaxState();
-					}
-					//CMLib.achievements().loadAccountAchievements(newMan,AchievementLoadFlag.CHARCR_PRELOAD);
-					CMLib.database().DBCreateCharacter(newMan);
-					CMLib.players().addPlayer(newMan);
-
-					newMan.setSession((Session)CMClass.getCommon("DefaultSession"));
-					CMLib.achievements().possiblyBumpAchievement(newMan, AchievementLibrary.Event.PLAYERBORN, 1);
-					newMan.setSession(null);
-					for(final MOB parentM : parents)
-					{
-						if(parentM.isPlayer())
-							CMLib.achievements().possiblyBumpAchievement(parentM, AchievementLibrary.Event.PLAYERBORNPARENT, 1, newMan);
-					}
-
-					if((liege != null) && (liege.session() != null))
-						newMan.playerStats().setLastIP(liege.session().getAddress());
-					Log.sysOut("Age","Created user: "+newMan.Name());
-					CMLib.login().notifyFriends(newMan,L("^X@x1 has just been created.^.^?",newMan.Name()));
-
-					final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
-					for(int i=0;i<channels.size();i++)
-						CMLib.commands().postChannel(channels.get(i),newMan.clans(),L("@x1 has just been created.",newMan.Name()),true);
-
-					if(liege != null)
-					{
-						if(liege!=babe.amFollowing())
-							babe.amFollowing().tell(L("@x1 has just grown up! @x2 password is the same as @x3's.",newMan.Name(),CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher()),liege.Name()));
-						liege.tell(L("@x1 has just grown up! @x2 password is the same as @x3's.",newMan.Name(),CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher()),liege.Name()));
-					}
-					CMLib.database().DBUpdatePlayer(newMan);
-					newMan.removeFromGame(false,true);
-					babe.setFollowing(null);
-					babe.destroy();
-					final MOB fol=newMan.amFollowing();
-					newMan.setFollowing(null);
-					CMLib.database().DBUpdateFollowers(liege);
-					newMan.setFollowing(fol);
 				}
-				else
+
+				final Room R=CMLib.map().roomLocation(affected);
+				// check if player elligible, 
+				// and if not, grow up to be nothing but a mob
+				if((R==null)
+				||(affected.Name().indexOf(' ')>0)
+				||players.playerExists(affected.Name()))
 				{
 					MOB liege=null;
 					if(babe.getLiegeID().length()>0)
@@ -680,7 +520,218 @@ public class Age extends StdAbility
 					babe.recoverPhyStats();
 					babe.recoverMaxState();
 					babe.text();
+					return;
 				}
+				
+				MOB liege=null;
+				if(babe.getLiegeID().length()>0)
+					liege=CMLib.players().getLoadPlayer(babe.getLiegeID());
+				if(liege==null)
+					liege=babe.amFollowing();
+				final MOB newMan=CMClass.getMOB("StdMOB");
+				newMan.setAgeMinutes(babe.getAgeMinutes());
+				newMan.setBaseCharStats(babe.baseCharStats());
+				newMan.setBasePhyStats(babe.basePhyStats());
+				newMan.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
+				if(liege!=null)
+					newMan.copyFactions(liege);
+				newMan.basePhyStats().setLevel(1);
+				newMan.setAttributesBitmap(babe.getAttributesBitmap());
+				for(final Enumeration<Tattoo> e=babe.tattoos();e.hasMoreElements();)
+					newMan.addTattoo(e.nextElement());
+				String highestBaseClass="Orphan";
+				final int highestBaseLevel=0;
+				int highestParentLevel=0;
+				for(final Pair<Clan,Integer> p : babe.clans())
+					newMan.setClan(p.first.clanID(),p.second.intValue());
+				int theme=Area.THEME_FANTASY;
+				int highestLegacyLevel=0;
+				for(final MOB M : parents)
+				{
+					if(M.basePhyStats().level()>highestParentLevel)
+						highestParentLevel=M.basePhyStats().level();
+					for(int i=0;i<M.baseCharStats().numClasses();i++)
+					{
+						if(M.baseCharStats().getClassLevel(M.baseCharStats().getMyClass(i))>highestBaseLevel)
+							highestBaseClass=M.baseCharStats().getMyClass(i).baseClass();
+					}
+					if(!newMan.clans().iterator().hasNext())
+					{
+						for(final Pair<Clan,Integer> p : clans.findRivalrousClans(M))
+						{
+							final Pair<Clan,Integer> clanRole=M.getClanRole(p.first.clanID());
+							if((clanRole!=null)
+							&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+								newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
+						}
+					}
+					if((M.getWorshipCharID().length()>0)&&(newMan.getWorshipCharID().length()==0))
+						newMan.setWorshipCharID(M.getWorshipCharID());
+					for(final Enumeration<Ability> a=M.abilities();a.hasMoreElements();)
+					{
+						final Ability L=a.nextElement();
+						if((L instanceof Language)&&(newMan.fetchAbility(L.ID())==null))
+							newMan.addAbility((Ability)L.copyOf());
+					}
+					theme=M.playerStats().getTheme();
+					
+					final int legacyLevel=M.playerStats().getLegacyLevel(highestBaseClass);
+					if(legacyLevel>highestLegacyLevel)
+						highestLegacyLevel=legacyLevel;
+					newMan.setAttributesBitmap(M.getAttributesBitmap());
+				}
+				if((!newMan.clans().iterator().hasNext())&&(liege!=null))
+				{
+					for(final Pair<Clan,Integer> p : clans.findRivalrousClans(liege))
+					{
+						final Pair<Clan,Integer> clanRole=liege.getClanRole(p.first.clanID());
+						if((clanRole!=null)
+						&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+							newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
+					}
+				}
+				if(clans.findRivalrousClan(newMan)!=null)
+				{
+					final Clan C = clans.findRivalrousClan(newMan);
+					if(C!=null)
+						C.addMember(newMan, C.getGovernment().getAcceptPos());
+				}
+				newMan.setDescription(babe.description());
+				newMan.setDisplayText(babe.displayText());
+				newMan.setExperience(babe.getExperience());
+				newMan.setFollowing(null);
+				newMan.setLiegeID(babe.getLiegeID());
+				newMan.setLocation(babe.location());
+				CMLib.beanCounter().setMoney(newMan,CMLib.beanCounter().getMoney(babe));
+				newMan.setName(babe.Name());
+				newMan.setPractices(babe.getPractices());
+				newMan.setQuestPoint(babe.getQuestPoint());
+				newMan.setStartRoom(babe.getStartRoom());
+				newMan.setTrains(babe.getTrains());
+				newMan.setWimpHitPoint(babe.getWimpHitPoint());
+				newMan.setWorshipCharID(babe.getWorshipCharID());
+				if(liege!=null)
+				{
+					newMan.playerStats().setPassword(liege.playerStats().getPasswordStr());
+					newMan.playerStats().setEmail(liege.playerStats().getEmail());
+					if(account == null)
+						account=liege.playerStats().getAccount();
+				}
+				else
+					newMan.playerStats().setPassword(babe.Name());
+				newMan.playerStats().setAccount(account);
+				newMan.playerStats().setLastUpdated(System.currentTimeMillis());
+				newMan.playerStats().setLastDateTime(System.currentTimeMillis());
+				if(newMan.playerStats().getBirthday()==null)
+				{
+					int newAge=newMan.playerStats().initializeBirthday(CMLib.time().localClock(R),ellapsed*15,newMan.baseCharStats().getMyRace());
+					if((newAge<0)||(newAge>newMan.baseCharStats().getMyRace().getAgingChart()[Race.AGE_MIDDLEAGED]))
+						newAge=newMan.baseCharStats().getMyRace().getAgingChart()[Race.AGE_MIDDLEAGED];
+					newMan.baseCharStats().setStat(CharStats.STAT_AGE,newAge);
+				}
+				newMan.baseCharStats().setStat(CharStats.STAT_AGE,ellapsed);
+				newMan.baseState().setHitPoints(CMProps.getIntVar(CMProps.Int.STARTHP));
+				newMan.baseState().setMana(CMProps.getIntVar(CMProps.Int.STARTMANA));
+				newMan.baseState().setMovement(CMProps.getIntVar(CMProps.Int.STARTMOVE));
+				newMan.baseCharStats().getMyRace().setHeightWeight(newMan.basePhyStats(),(char)newMan.baseCharStats().getStat(CharStats.STAT_GENDER));
+				final int baseStat=(CMProps.getIntVar(CMProps.Int.BASEMINSTAT)+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT))/2;
+				for(final int  i : CharStats.CODES.BASECODES())
+					newMan.baseCharStats().setStat(i,baseStat);
+				if(highestParentLevel>=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
+				{
+					for(int i=0;i<highestLegacyLevel+1;i++)
+						newMan.playerStats().addLegacyLevel(highestBaseClass);
+				}
+				//final int bonusPoints=newMan.playerStats().getTotalLegacyLevels()+1;
+				final Ability reRollA=CMClass.getAbility("Prop_ReRollStats");
+				if(reRollA!=null)
+				{
+					reRollA.setMiscText("PICKCLASS=TRUE");
+					newMan.setSavable(true);
+					newMan.addNonUninvokableEffect(reRollA);
+				}
+				newMan.recoverCharStats();
+				newMan.baseCharStats().getMyRace().startRacing(newMan,false);
+				newMan.playerStats().setTheme(theme);
+				try
+				{
+					newMan.baseCharStats().setMyClasses(";" + CMLib.login().promptCharClass(theme, newMan, null).name());
+				}
+				catch (final IOException e)
+				{
+				}
+				newMan.baseCharStats().setMyLevels(";1");
+				newMan.baseCharStats().getCurrentClass().startCharacter(newMan,false,false);
+				for(int i=0;i<babe.numItems();i++)
+					newMan.moveItemTo(babe.getItem(i));
+				CMLib.utensils().outfit(newMan,newMan.baseCharStats().getMyRace().outfit(newMan));
+				CMLib.utensils().outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit(newMan));
+				newMan.playerStats().setLastDateTime(System.currentTimeMillis());
+				newMan.playerStats().setLastUpdated(System.currentTimeMillis());
+				newMan.recoverCharStats();
+				newMan.recoverPhyStats();
+				newMan.recoverMaxState();
+				newMan.resetToMaxState();
+				if(CMLib.flags().isAnimalIntelligence(newMan))
+				{
+					newMan.baseCharStats().setMyClasses(";StdCharClass");
+					newMan.recoverCharStats();
+					newMan.recoverPhyStats();
+					newMan.recoverMaxState();
+					newMan.resetToMaxState();
+				}
+				//CMLib.achievements().loadAccountAchievements(newMan,AchievementLoadFlag.CHARCR_PRELOAD);
+				
+				database.DBCreateCharacter(newMan);
+				players.addPlayer(newMan);
+
+				newMan.setSession((Session)CMClass.getCommon("DefaultSession"));
+				CMLib.achievements().possiblyBumpAchievement(newMan, AchievementLibrary.Event.PLAYERBORN, 1);
+				newMan.setSession(null);
+				for(final MOB parentM : parents)
+				{
+					if(parentM.isPlayer())
+						CMLib.achievements().possiblyBumpAchievement(parentM, AchievementLibrary.Event.PLAYERBORNPARENT, 1, newMan);
+				}
+
+				if((liege != null) && (liege.session() != null))
+					newMan.playerStats().setLastIP(liege.session().getAddress());
+				Log.sysOut("Age","Created user: "+newMan.Name());
+				CMLib.login().notifyFriends(newMan,L("^X@x1 has just been created.^.^?",newMan.Name()));
+
+				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
+				for(int i=0;i<channels.size();i++)
+					CMLib.commands().postChannel(channels.get(i),newMan.clans(),L("@x1 has just been created.",newMan.Name()),true);
+
+				if(liege != null)
+				{
+					String name = liege.Name();
+					if(account != null)
+						name = account.getAccountName();
+					if(liege!=babe.amFollowing())
+						babe.amFollowing().tell(L("@x1 has just grown up! @x2 password is the same as @x3's.",newMan.Name(),CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher()),name));
+					liege.tell(L("@x1 has just grown up! @x2 password is the same as @x3's.",newMan.Name(),CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher()),name));
+				}
+				database.DBUpdatePlayer(newMan);
+				newMan.removeFromGame(false,true);
+				babe.setFollowing(null);
+				babe.destroy();
+				final MOB fol=newMan.amFollowing();
+				newMan.setFollowing(null);
+				if(liege != null)
+				{
+					for(final Enumeration<CMLibrary> p=CMLib.libraries(Library.PLAYERS); p.hasMoreElements();)
+					{
+						final PlayerLibrary playerLib=(PlayerLibrary)p.nextElement();
+						if(playerLib.getPlayer(liege.Name())==liege)
+						{
+							final char threadId = CMLib.getLibraryThreadID(Library.PLAYERS, playerLib);
+							((DatabaseEngine)CMLib.library(threadId, Library.DATABASE)).DBUpdateFollowers(liege);
+							break;
+						}
+					}
+				}
+				newMan.setFollowing(fol);
 			}
 		}
 		else
@@ -903,7 +954,7 @@ public class Age extends StdAbility
 					}
 				}
 			}
-			doThang();
+			doAgeChangeCheck();
 		}
 	}
 
@@ -911,7 +962,7 @@ public class Age extends StdAbility
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		doThang();
+		doAgeChangeCheck();
 	}
 
 	@Override
@@ -964,7 +1015,7 @@ public class Age extends StdAbility
 			mob.tell(L("@x1 is not yet aging.",target.Name()));
 		else
 		{
-			A.doThang();
+			A.doAgeChangeCheck();
 			final long l=CMath.s_long(A.text());
 			if(l==0)
 			{
