@@ -225,7 +225,7 @@ public class Publishing extends CommonSkill
 										locs=Arrays.copyOf(locs, locs.length+1);
 										final MiniJSON.JSONObject locObj=new MiniJSON.JSONObject();
 										locObj.put("name", SK.Name());
-										locObj.put("room", CMLib.map().roomLocation(SKs.second));
+										locObj.put("room", CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(SKs.second)));
 										locs[locs.length-1]=locObj;
 										bookObj.put("locs", locs);
 										setData(obj);
