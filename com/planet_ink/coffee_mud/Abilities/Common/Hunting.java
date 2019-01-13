@@ -339,6 +339,8 @@ public class Hunting extends GatheringSkill
 					genM.recoverMaxState();
 					genM.resetToMaxState();
 					CMLib.leveler().fillOutMOB(genM,genM.basePhyStats().level());
+					genM.basePhyStats().setRejuv(0);
+					genM.recoverPhyStats();
 
 					found=genM;
 					foundShortName=found.name();
