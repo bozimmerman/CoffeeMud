@@ -350,6 +350,18 @@ public class Skill_Disguise extends BardSkill
 				return false;
 			}
 			else
+			if(CMStrings.lengthMinusColors(how)==0)
+			{
+				mob.tell(L("Your disguise name must have visible characters."));
+				return false;
+			}
+			else
+			if(!Character.isLetter(how.trim().charAt(0)))
+			{
+				mob.tell(L("Your disguise name must start with a letter."));
+				return false;
+			}
+			else
 			{
 				if(CMLib.players().playerExistsAllHosts(CMStrings.removePunctuation(CMStrings.removeColors(how))))
 				{
