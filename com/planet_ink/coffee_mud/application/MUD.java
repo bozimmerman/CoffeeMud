@@ -1128,7 +1128,24 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 
-	private static void startCM1()
+	private static boolean stopCM1()
+	{
+		try
+		{
+			for(final CM1Server s : cm1Servers)
+			{
+				s.shutdown();
+				cm1Servers.remove(s);
+			}
+			return true;
+		}
+		catch(final Exception e)
+		{
+			return false;
+		}
+	}
+
+	private static boolean startCM1()
 	{
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		final CMProps page=CMProps.instance();
@@ -1151,6 +1168,7 @@ public class MUD extends Thread implements MudHost
 				cm1server.start();
 				cm1Servers.add(cm1server);
 			}
+			return true;
 		}
 		catch(final Exception e)
 		{
@@ -1159,6 +1177,7 @@ public class MUD extends Thread implements MudHost
 				cm1server.shutdown();
 				cm1Servers.remove(cm1server);
 			}
+			return false;
 		}
 	}
 
@@ -2213,6 +2232,16 @@ public class MUD extends Thread implements MudHost
 				else
 					return "Failure";
 			}
+			else
+			if(what.equalsIgnoreCase("CM1"))
+			{
+				if(V.size()<3)
+					return "Need Server Name";
+				if(startCM1())
+					return "Done";
+				else
+					return "Failure";
+			}
 		}
 		else
 		if(word.equalsIgnoreCase("STOP")&&(V.size()>1))
@@ -2223,6 +2252,29 @@ public class MUD extends Thread implements MudHost
 				if(V.size()<3)
 					return "Need Server Name";
 				if(stopWebServer(V.get(2)))
+					return "Done";
+				else
+					return "Failure";
+			}
+			else
+			if(what.equalsIgnoreCase("I3"))
+			{
+				if(i3server!=null)
+					I3Server.shutdown();
+				i3server=null;
+				return "Done";
+			}
+			else
+			if(what.equalsIgnoreCase("IMC2"))
+			{
+				if(imc2server!=null)
+					imc2server.shutdown();
+				return "Done";
+			}
+			else
+			if(what.equalsIgnoreCase("CM1"))
+			{
+				if(stopCM1())
 					return "Done";
 				else
 					return "Failure";
