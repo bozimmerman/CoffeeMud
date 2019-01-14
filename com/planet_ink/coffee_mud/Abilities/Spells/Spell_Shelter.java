@@ -205,6 +205,8 @@ public class Spell_Shelter extends Spell
 				previousLocation=thisRoom;
 				shelter=CMClass.getLocale("MagicShelter");
 				final Room newRoom=shelter;
+				shelter.setSavable(false);
+				shelter.setRoomID("");
 				shelter.setArea(mob.location().getArea());
 				miscText=CMLib.map().getExtendedRoomID(mob.location());
 				for (final Object element : h)

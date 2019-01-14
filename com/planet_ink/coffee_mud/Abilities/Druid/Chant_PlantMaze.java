@@ -200,7 +200,10 @@ public class Chant_PlantMaze extends Chant
 				desc.append(L("The @x1 here seem to tower endlessly into the sky.  Their leaves are blocking out all but the smallest glimpses of the sky.",s));
 				desc.append("<P>");
 				desc.append(L("A forest of @x1 seems to have grown up tall all around you.  The strange magical nature of the @x2 makes you think you've entered a druidic grove.",s,s));
-				newRoom.setArea(mob.location().getArea());
+				newRoom.setSavable(false);
+				newRoom.setRoomID("");
+				final Area A=mob.location().getArea();
+				newRoom.setArea(A);
 				oldRoom=mob.location();
 				newRoom.setDescription(desc.toString());
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

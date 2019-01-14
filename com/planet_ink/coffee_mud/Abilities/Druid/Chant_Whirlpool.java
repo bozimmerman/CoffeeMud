@@ -297,6 +297,8 @@ public class Chant_Whirlpool extends Chant
 					W.theWhirlpool.setDescription(L("The only way out appear to be to fight against the currents."));
 					final Area tempArea=CMClass.getAreaType("StdArea");
 					tempArea.setName("A Whirlpool");
+					W.theWhirlpool.setSavable(false);
+					W.theWhirlpool.setRoomID("");
 					W.theWhirlpool.setArea(tempArea);
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{

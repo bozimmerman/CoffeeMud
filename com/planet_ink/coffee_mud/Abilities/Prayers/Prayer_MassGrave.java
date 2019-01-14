@@ -226,6 +226,8 @@ public class Prayer_MassGrave extends Prayer
 				shelter = newRoom;
 				newRoom.setDisplayText(L("An underground grave"));
 				newRoom.setDescription(L("You are in a dark dirty place!"));
+				newRoom.setSavable(false);
+				newRoom.setRoomID("");
 				newRoom.setArea(mob.location().getArea());
 				newRoom.setAtmosphere(RawMaterial.RESOURCE_NOTHING);
 				Ability A=CMClass.getAbility("Prop_PeaceMaker");

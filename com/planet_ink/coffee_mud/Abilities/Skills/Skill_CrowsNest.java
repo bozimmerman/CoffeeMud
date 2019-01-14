@@ -367,6 +367,8 @@ public class Skill_CrowsNest extends StdSkill
 			final Ability consA=CMClass.getAbility("Prop_ReqCapacity");
 			consA.setMiscText("people=1");
 			final Room crowsR=CMClass.getLocale("WoodenDeck");
+			crowsR.setSavable(false);
+			crowsR.setRoomID("");
 			crowsR.setArea(R.getArea());
 			crowsR.addNonUninvokableEffect(consA);
 			crowsR.setDisplayText(L("Up in the Crow`s Nest"));
@@ -375,6 +377,8 @@ public class Skill_CrowsNest extends StdSkill
 			{
 				final Room airRoom=CMClass.getLocale("InTheAir");
 				airRoom.setDisplayText("In mid-air above the deck");
+				airRoom.setSavable(false);
+				airRoom.setRoomID("");
 				airRoom.setArea(R.getArea());
 				airRoom.setRawExit(Directions.DOWN, CMClass.getExit("Open"));
 				airRoom.rawDoors()[Directions.DOWN]=R;

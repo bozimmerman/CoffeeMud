@@ -189,7 +189,7 @@ public class Spell_BigMouth extends Spell
 		super.executeMsg(myHost,msg);
 	}
 
-	protected Room myStomach = null;
+	protected Room myStomachR = null;
 	protected Room lastKnownRoom=null;
 	protected Room lastKnownLocation()
 	{
@@ -207,14 +207,16 @@ public class Spell_BigMouth extends Spell
 
 	protected Room Stomach()
 	{
-		if((myStomach==null)&&(affected!=null))
+		if((myStomachR==null)&&(affected!=null))
 		{
-			myStomach = CMClass.getLocale("StdRoom");
-			myStomach.setArea(CMLib.map().getRandomArea());
-			myStomach.setName(L("The Stomach of @x1",affected.name()));
-			myStomach.setDescription(L("You are in the stomach of @x1.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been swallowed whole and are being digested.",affected.name()));
+			myStomachR = CMClass.getLocale("StdRoom");
+			myStomachR.setSavable(false);
+			myStomachR.setRoomID("");
+			myStomachR.setArea(CMLib.map().getRandomArea());
+			myStomachR.setName(L("The Stomach of @x1",affected.name()));
+			myStomachR.setDescription(L("You are in the stomach of @x1.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been swallowed whole and are being digested.",affected.name()));
 		}
-		return myStomach;
+		return myStomachR;
 	}
 
 	protected int digestDown=4;

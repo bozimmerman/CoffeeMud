@@ -224,6 +224,8 @@ public class Thief_Hideout extends ThiefSkill
 			shelter.setRawExit(dir, E);
 			shelter.rawDoors()[dir]=thisRoom;
 			final Room newRoom=shelter;
+			newRoom.setSavable(false);
+			newRoom.setRoomID("");
 			shelter.setArea(mob.location().getArea());
 			miscText=CMLib.map().getExtendedRoomID(thisRoom);
 

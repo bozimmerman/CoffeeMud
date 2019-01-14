@@ -85,7 +85,7 @@ public class Dragon extends StdMOB
 		return basePhyStats().level() / 10;
 	}
 
-	protected Room Stomach = null;
+	protected Room myStomachR = null;
 
 	// ===== random constructor
 	public Dragon()
@@ -226,7 +226,7 @@ public class Dragon extends StdMOB
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		// ===== if the dragon is an adult or larger add the swallow whole
-		Stomach=null;
+		myStomachR=null;
 		// ===== Recover from birth.
 		recoverMaxState();
 		resetToMaxState();
@@ -356,17 +356,19 @@ public class Dragon extends StdMOB
 		setupDragonIfNecessary();
 		if(!amDead())
 		{
-			if((Stomach==null)
+			if((myStomachR==null)
 			&&(location()!=null)
 			&&(DragonAge()>=ADULT))
 			{
-				Stomach = CMClass.getLocale("StoneRoom");
-				if(Stomach!=null)
+				myStomachR = CMClass.getLocale("StoneRoom");
+				if(myStomachR!=null)
 				{
-					Stomach.setName(L("Dragon Stomach"));
-					Stomach.setDisplayText(L("Dragon Stomach"));
-					Stomach.setArea(location().getArea());
-					Stomach.setDescription(L("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested."));
+					myStomachR.setSavable(false);
+					myStomachR.setRoomID("");
+					myStomachR.setName(L("Dragon Stomach"));
+					myStomachR.setDisplayText(L("Dragon Stomach"));
+					myStomachR.setArea(location().getArea());
+					myStomachR.setDescription(L("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested."));
 				}
 			}
 			if((--digestDown)<=0)
@@ -513,7 +515,7 @@ public class Dragon extends StdMOB
 
 	protected boolean trySwallowWhole()
 	{
-		if(Stomach==null)
+		if(myStomachR==null)
 			return true;
 		if (CMLib.flags().isAliveAwakeMobileUnbound(this,true)
 			&&(rangeToTarget()==0)
@@ -544,9 +546,9 @@ public class Dragon extends StdMOB
 						location().send(TastyMorsel,EatMsg);
 						if(EatMsg.value()==0)
 						{
-							Stomach.bringMobHere(TastyMorsel,false);
-							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach,null,CMMsg.MSG_ENTER,Stomach.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
-							Stomach.send(TastyMorsel,enterMsg);
+							myStomachR.bringMobHere(TastyMorsel,false);
+							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,myStomachR,null,CMMsg.MSG_ENTER,myStomachR.description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
+							myStomachR.send(TastyMorsel,enterMsg);
 						}
 					}
 				}
@@ -600,14 +602,14 @@ public class Dragon extends StdMOB
 
 	protected boolean digestTastyMorsels()
 	{
-		if(Stomach==null)
+		if(myStomachR==null)
 			return true;
 		// ===== loop through all inhabitants of the stomach
-		final int morselCount = Stomach.numInhabitants();
+		final int morselCount = myStomachR.numInhabitants();
 		for (int x=0;x<morselCount;x++)
 		{
 			// ===== get a tasty morsel
-			final MOB TastyMorsel = Stomach.fetchInhabitant(x);
+			final MOB TastyMorsel = myStomachR.fetchInhabitant(x);
 			if (TastyMorsel != null)
 			{
 				final CMMsg DigestMsg=CMClass.getMsg(this,
@@ -615,7 +617,7 @@ public class Dragon extends StdMOB
 										   null,
 										   CMMsg.MSG_OK_ACTION,
 										   L("<S-NAME> digest(s) <T-NAMESELF>!!"));
-				Stomach.send(this,DigestMsg);
+				myStomachR.send(this,DigestMsg);
 				int damage=((int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),5)));
 				if(damage<(TastyMorsel.phyStats().level()+6))
 					damage=TastyMorsel.curState().getHitPoints()+1;
@@ -635,26 +637,26 @@ public class Dragon extends StdMOB
 		Room room = location();
 		if(room == null)
 			room = CMLib.map().getRandomRoom();
-		if((Stomach!=null)&&(room != null))
+		if((myStomachR!=null)&&(room != null))
 		{
-			final int morselCount = Stomach.numInhabitants();
+			final int morselCount = myStomachR.numInhabitants();
 			for (int x=morselCount-1;x>=0;x--)
 			{
 				// ===== get the tasty morsels
-				final MOB TastyMorsel = Stomach.fetchInhabitant(x);
+				final MOB TastyMorsel = myStomachR.fetchInhabitant(x);
 				if(TastyMorsel!=null)
 					room.bringMobHere(TastyMorsel,false);
 			}
 
 			// =====move the inventory of the stomach to the room
-			final int itemCount = Stomach.numItems();
+			final int itemCount = myStomachR.numItems();
 			for (int y=itemCount-1;y>=0;y--)
 			{
-				final Item PartiallyDigestedItem = Stomach.getItem(y);
+				final Item PartiallyDigestedItem = myStomachR.getItem(y);
 				if(PartiallyDigestedItem!=null)
 				{
 					room.addItem(PartiallyDigestedItem,ItemPossessor.Expire.Player_Drop);
-					Stomach.delItem(PartiallyDigestedItem);
+					myStomachR.delItem(PartiallyDigestedItem);
 				}
 			}
 			room.recoverRoomStats();

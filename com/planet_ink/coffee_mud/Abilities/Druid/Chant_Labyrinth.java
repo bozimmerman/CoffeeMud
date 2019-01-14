@@ -157,6 +157,8 @@ public class Chant_Labyrinth extends Chant
 				newRoom.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
 				final StringBuffer desc=new StringBuffer("");
 				desc.append(L("You are lost in dark twisting caverns.  The darkness covers you like a blanket. Every turn looks the same."));
+				newRoom.setSavable(false);
+				newRoom.setRoomID("");
 				newRoom.setArea(mob.location().getArea());
 				oldRoom=mob.location();
 				newRoom.setDescription(desc.toString());

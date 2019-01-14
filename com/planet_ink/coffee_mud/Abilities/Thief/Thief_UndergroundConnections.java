@@ -261,6 +261,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		R.setDisplayText(display);
 		R.setDescription(description);
 		R.setRoomID("");
+		R.setSavable(false);
 		R.setArea(area);
 		final Ability A=CMClass.getAbility("Thief_Bind");
 		if(A!=null)

@@ -127,6 +127,8 @@ public class Archon_Banish extends ArchonSkill
 		{
 			prisonRoom=CMClass.getLocale("StoneRoom");
 			prisonRoom.addNonUninvokableEffect((Ability)copyOf());
+			prisonRoom.setRoomID("");
+			prisonRoom.setSavable(false);
 			prisonRoom.setArea(CMLib.map().getFirstArea());
 			prisonRoom.setDescription(L("You are standing on an immense, grey stone floor that stretches as far as you can see in all directions.  Rough winds plunging from the dark, starless sky tear savagely at your fragile body."));
 			prisonRoom.setDisplayText(L("The Hall of Lost Souls"));

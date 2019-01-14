@@ -87,7 +87,11 @@ public class MOBEater extends ActiveTicker
 		if((forMe!=null)&&(forMe instanceof MOB))
 		{
 			if(stomachR==null)
+			{
 				stomachR = CMClass.getLocale("StoneRoom");
+				stomachR.setSavable(false);
+				stomachR.setRoomID("");
+			}
 			lastKnownEaterM=(MOB)forMe;
 			lastKnownLocationR=((MOB)forMe).location();
 			if(lastKnownLocationR!=null)
