@@ -1671,6 +1671,20 @@ public class Destroy extends StdCommand
 			}
 		}
 		else
+		if(commandType.equals("CM1") || commandType.equals("IMC2") || commandType.equals("I3"))
+		{
+			if(!CMSecurity.isASysOp(mob))
+				return errorOut(mob);
+			try
+			{
+				mob.tell(CMLib.hosts().get(0).executeCommand("STOP "+commandType));
+			}
+			catch (final Exception e)
+			{
+				mob.tell(L("Failure: @x1",e.getMessage()));
+			}
+		}
+		else
 		if(commandType.equals("POLL"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.POLLS))

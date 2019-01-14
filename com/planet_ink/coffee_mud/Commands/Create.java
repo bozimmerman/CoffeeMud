@@ -1748,6 +1748,20 @@ public class Create extends StdCommand
 			}
 		}
 		else
+		if(commandType.equals("CM1") || commandType.equals("IMC2") || commandType.equals("I3"))
+		{
+			if(!CMSecurity.isASysOp(mob))
+				return errorOut(mob);
+			try
+			{
+				mob.tell(CMLib.hosts().get(0).executeCommand("START "+commandType));
+			}
+			catch (final Exception e)
+			{
+				mob.tell(L("Failure: @x1",e.getMessage()));
+			}
+		}
+		else
 		if(commandType.equals("GOVERNMENT"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDCLANS))
