@@ -23,6 +23,7 @@
   22. New DISABLE flag: languages
   23. Clans hostile to each other can attack each others controlled areas.
   24. Clans friendly/ally with each other gain certain home privileges in each others clan halls.
+  25. Faithhelper, Racehelper, Alignhelper, and Playerhelper all now support max combatants argument.
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

@@ -46,6 +46,29 @@ public class AlignHelper extends StdBehavior
 		return "same-aligned protecting";
 	}
 
+	protected int		num			= 999;
+
+	@Override
+	public void startBehavior(final PhysicalAgent forMe)
+	{
+		super.startBehavior(forMe);
+		if(forMe instanceof MOB)
+		{
+			if(parms.length()>0)
+			{
+				final List<String> V=CMParms.parse(parms.toUpperCase());
+				for(int i=V.size()-1;i>=0;i--)
+				{
+					if(CMath.isInteger(V.get(i)))
+					{
+						num=CMath.s_int(V.get(i));
+						V.remove(i);
+					}
+				}
+			}
+		}
+	}
+
 	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
@@ -69,7 +92,22 @@ public class AlignHelper extends StdBehavior
 			||(CMLib.flags().isNeutral(target)&&CMLib.flags().isNeutral(observer))
 			||(CMLib.flags().isGood(target)&&CMLib.flags().isGood(observer))))
 		{
-			Aggressive.startFight(observer,source,true,false,CMLib.flags().getAlignmentName(observer)+" PEOPLE UNITE! CHARGE!");
+			final Room R=source.location();
+			if(R!=null)
+			{
+				int numInFray=0;
+				if((num > 0) && (num < 999))
+				{
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						final MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(M.getVictim()==source))
+							numInFray++;
+					}
+				}
+				if(((num==0)||(numInFray<num)))
+					Aggressive.startFight(observer,source,true,false,CMLib.flags().getAlignmentName(observer)+" PEOPLE UNITE! CHARGE!");
+			}
 		}
 	}
 }

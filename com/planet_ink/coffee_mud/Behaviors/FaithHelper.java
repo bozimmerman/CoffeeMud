@@ -40,13 +40,19 @@ public class FaithHelper extends StdBehavior
 		return "FaithHelper";
 	}
 
-	protected boolean mobKiller=false;
+	protected boolean	mobKiller	= false;
+	protected int		num			= 999;
 
 	@Override
 	public String accountForYourself()
 	{
 		if(parms.length()>0)
-			return "worshippers of "+parms+" protecting";
+		{
+			if(num > 0)
+				return "worshippers of "+parms+" protecting";
+			else
+				return "worshipper of "+parms;
+		}
 		else
 			return "worshipper protecting";
 	}
@@ -58,7 +64,23 @@ public class FaithHelper extends StdBehavior
 		if(forMe instanceof MOB)
 		{
 			if(parms.length()>0)
-				((MOB)forMe).setWorshipCharID(parms.trim());
+			{
+				if(parms.indexOf(' ')>0)
+				{
+					final List<String> V=CMParms.parse(parms.toUpperCase());
+					for(int i=V.size()-1;i>=0;i--)
+					{
+						if(CMath.isInteger(V.get(i)))
+						{
+							num=CMath.s_int(V.get(i));
+							V.remove(i);
+						}
+					}
+					((MOB)forMe).setWorshipCharID(CMParms.combine(V));
+				}
+				else
+					((MOB)forMe).setWorshipCharID(parms);
+			}
 		}
 	}
 
@@ -85,13 +107,28 @@ public class FaithHelper extends StdBehavior
 		&&((!(msg.tool() instanceof DiseaseAffect))||(((DiseaseAffect)msg.tool()).isMalicious()))
 		&&(!BrotherHelper.isBrother(source,observer,false)))
 		{
-			if(observer.getWorshipCharID().equalsIgnoreCase(target.getWorshipCharID()))
+			final Room R=source.location();
+			if(observer.getWorshipCharID().equalsIgnoreCase(target.getWorshipCharID())
+			&&(R!=null))
 			{
-				String reason="THAT`S MY FRIEND!! CHARGE!!";
-				if((observer.getWorshipCharID().equals(target.getWorshipCharID()))
-				&&(!observer.getWorshipCharID().equals(source.getWorshipCharID())))
-					reason="BELIEVERS OF "+observer.getWorshipCharID().toUpperCase()+" UNITE! CHARGE!";
-				Aggressive.startFight(observer,source,true,false,reason);
+				int numInFray=0;
+				if((num > 0) && (num < 999))
+				{
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						final MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(M.getVictim()==source))
+							numInFray++;
+					}
+				}
+				if(((num==0)||(numInFray<num)))
+				{
+					String reason="THAT`S MY FRIEND!! CHARGE!!";
+					if((observer.getWorshipCharID().equals(target.getWorshipCharID()))
+					&&(!observer.getWorshipCharID().equals(source.getWorshipCharID())))
+						reason="BELIEVERS OF "+observer.getWorshipCharID().toUpperCase()+" UNITE! CHARGE!";
+					Aggressive.startFight(observer,source,true,false,reason);
+				}
 			}
 		}
 	}
