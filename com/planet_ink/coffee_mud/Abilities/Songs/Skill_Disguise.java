@@ -382,15 +382,9 @@ public class Skill_Disguise extends BardSkill
 		case 6: // class
 			{
 				final CharClass C=CMClass.findCharClass(how);
-				if(how.equalsIgnoreCase("Archon"))
-				{
-					mob.tell(L("You cannot disguise yourself as an Archon."));
-					return false;
-				}
 				if((C==null)
-				||C.ID().startsWith("Std")
-				||C.ID().startsWith("Gen")
-				||C.ID().startsWith("Player"))
+				||(C.availabilityCode()==0)
+				||(!CMProps.isTheme(C.availabilityCode())))
 				{
 					mob.tell(L("'@x1' is an unknown character class!",how));
 					return false;
