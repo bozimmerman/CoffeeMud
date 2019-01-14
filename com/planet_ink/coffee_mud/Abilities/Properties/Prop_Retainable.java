@@ -234,19 +234,28 @@ public class Prop_Retainable extends Property
 				if(mob.amFollowing()!=null)
 				{
 					final Room room=mob.location();
-					if((room!=lastRoom)
-					&&(CMLib.law().doesHavePriviledgesHere(mob.amFollowing(),room))
-					&&(room.isInhabitant(mob)))
+					if(room!=lastRoom)
 					{
 						lastRoom=room;
-						mob.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-						mob.setStartRoom(room);
-						lastMoveIn=System.currentTimeMillis();
+						if((CMLib.law().doesHavePriviledgesHere(mob.amFollowing(),room))
+						&&(room.isInhabitant(mob)))
+						{
+							mob.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+							mob.setStartRoom(room);
+							lastMoveIn=System.currentTimeMillis();
+						}
 					}
+					/*
+					 * If a retainer is in your group when you log out:
+					 *  -- On your property: they are removed from the game, and thus can't be saved on p.p.
+					 *  -- Somewhere else: they aren't on the property any more, and won't be saved.
+					 *
+					/*
 					if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 					||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&((msg.target()==room)||(msg.target()==mob)||(msg.target()==mob.amFollowing())))
 					||((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.amISource(mob.amFollowing()))))
 						mob.setFollowing(null);
+					*/
 				}
 			}
 		}
