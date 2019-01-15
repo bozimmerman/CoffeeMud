@@ -181,8 +181,10 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	public void spring(final MOB M)
 	{
 		sprung=true;
-		if(!canBeUninvoked() && (!CMLib.threads().isTicking(this, -1)))
+		if((!canBeUninvoked())
+		&& (!CMLib.threads().isTicking(this, -1)))
 		{
+			CMLib.threads().startTickDown(this, Tickable.TICKID_SPELL_AFFECT, 1);
 			CMLib.threads().startTickDown(this, Tickable.TICKID_TRAP_RESET, 100);
 		}
 	}
@@ -241,7 +243,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		}
 		super.executeMsg(myHost,msg);
 
-		if((msg.amITarget(affected))&&(msg.targetMinor()==CMMsg.TYP_OPEN))
+		if((msg.amITarget(affected))
+		&&(msg.targetMinor()==CMMsg.TYP_OPEN))
 		{
 			if((!msg.amISource(invoker())
 			&&(canInvokeTrapOn(invoker(),msg.source()))
@@ -254,6 +257,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	public void setMiscText(final String miscText)
 	{
 		super.setMiscText(miscText);
+		sprung=false;
 		if(miscText.length()>0)
 		{
 			levels=CMParms.getParmInt(miscText, "LEVELS", 1000);
