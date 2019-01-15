@@ -84,6 +84,15 @@ public class DefaultClan implements Clan
 	protected int					government				= 0;
 	protected long					lastGovernmentLoadTime	= -1;
 	protected ClanGovernment		govt					= null;
+	protected long					totalOnlineMins			= 0;
+	protected long					totalLevelsGained		= 0;
+	protected int					monthOnlineMins			= 0;
+	protected int					monthPlayerXP			= 0;
+	protected int					monthClanXP				= 0;
+	protected int					monthConquered			= 0;
+	protected int					monthClanLevels			= 0;
+	protected int					monthControlPoints		= 0;
+	protected int					monthNewMembers			= 0;
 
 	protected final static List<Ability> empty=new XVector<Ability>(1,true);
 
@@ -1184,7 +1193,7 @@ public class DefaultClan implements Clan
 	}
 
 	@Override
-	public String getPolitics()
+	public String getDataXML()
 	{
 		final StringBuffer str=new StringBuffer("");
 		str.append("<POLITICS>");
@@ -1222,7 +1231,7 @@ public class DefaultClan implements Clan
 	}
 
 	@Override
-	public void setPolitics(final String politics)
+	public void setDataXML(final String politics)
 	{
 		XMLTag piece;
 		relations.clear();
@@ -2173,7 +2182,7 @@ public class DefaultClan implements Clan
 		case 5:
 			return getMorgue();
 		case 6:
-			return getPolitics();
+			return getDataXML();
 		case 7:
 			return getPremise();
 		case 8:
@@ -2253,7 +2262,7 @@ public class DefaultClan implements Clan
 			setMorgue(val);
 			break;
 		case 6:
-			setPolitics(val);
+			setDataXML(val);
 			break;
 		case 7:
 			setPremise(val);

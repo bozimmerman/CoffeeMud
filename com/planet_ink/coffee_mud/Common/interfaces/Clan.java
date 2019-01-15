@@ -274,19 +274,19 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 
 	/**
 	 * Returns an XML string used to identify the political relations
-	 * between this clan and others.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setPolitics(String)
+	 * between this clan and others, and other misc data
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setDataXML(String)
 	 * @return xml document describing the politics of this clan
 	 */
-	public String getPolitics();
+	public String getDataXML();
 
 	/**
 	 * Sets an XML string used to identify the political relations
-	 * between this clan and others.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getPolitics()
-	 * @param politics xml document describing the politics of this clan
+	 * between this clan and others, as well as other misc data
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getDataXML()
+	 * @param xml xml document describing the politics and other data of this clan
 	 */
-	public void setPolitics(String politics);
+	public void setDataXML(String xml);
 
 	/**
 	 * Returns whether membership is automatically approved to this

@@ -146,7 +146,7 @@ public class ClanLoader
 				C.setPremise(DBConnections.getRes(R,"CMDESC"));
 				C.setAcceptanceSettings(DBConnections.getRes(R,"CMACPT"));
 				C.setStatus(CMath.s_int(DBConnections.getRes(R, "CMSTAT"))); // this will mangle laststatuschangetime, so must be before politics
-				C.setPolitics(DBConnections.getRes(R,"CMPOLI"));
+				C.setDataXML(DBConnections.getRes(R,"CMPOLI"));
 				C.setRecall(DBConnections.getRes(R,"CMRCLL"));
 				C.setDonation(DBConnections.getRes(R,"CMDNAT"));
 				C.setMorgue(DBConnections.getRes(R,"CMMORG"));
@@ -182,7 +182,7 @@ public class ClanLoader
 				+"CMMORG='"+C.getMorgue()+"',"
 				+"CMTROP="+C.getTrophies()+""
 				+" WHERE CMCLID='"+C.clanID()+"'";
-		DB.updateWithClobs(sql, C.getPolitics());
+		DB.updateWithClobs(sql, C.getDataXML());
 	}
 
 	protected String getDBItemUpdateString(final Clan C, final Item thisItem)
@@ -278,7 +278,7 @@ public class ClanLoader
 			+"'"+C.getMorgue()+"',"
 			+""+C.getTrophies()
 			+")";
-			DB.updateWithClobs(sql, C.getPolitics());
+			DB.updateWithClobs(sql, C.getDataXML());
 	}
 
 	public void DBDelete(final Clan C)
