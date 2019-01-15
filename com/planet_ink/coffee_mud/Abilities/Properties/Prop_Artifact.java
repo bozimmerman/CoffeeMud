@@ -292,7 +292,10 @@ public class Prop_Artifact extends Property
 				data.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(I.text())));
 				data.append("</ARTITEM>");
 				I.destroy();
-				CMLib.database().DBReCreatePlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID(),data.toString());
+				synchronized("SYSTEM_ARTIFACT_SAVER".intern())
+				{
+					CMLib.database().DBReCreatePlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID(),data.toString());
+				}
 			}
 		}
 	}

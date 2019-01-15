@@ -934,9 +934,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBUpdatePlayerData(final String key, final String xml)
+	public void DBUpdatePlayerData(final String name, final String section, final String key, final String xml)
 	{
-		DataLoader.DBUpdate(key, xml);
+		DataLoader.DBUpdate(name, section, key, xml);
 	}
 
 	@Override

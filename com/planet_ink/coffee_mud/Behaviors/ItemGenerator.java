@@ -258,8 +258,12 @@ public class ItemGenerator extends ActiveTicker
 			{
 				skillSet=skill.craftAllItemSets(false);
 				if(skillSet!=null)
-				for(final ItemCraftor.ItemKeyPair materialSet: skillSet)
-					allItems.add(materialSet.item);
+				{
+					for(final ItemCraftor.ItemKeyPair materialSet: skillSet)
+						allItems.add(materialSet.item);
+					if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+						return false;
+				}
 			}
 			Resources.submitResource("ITEMGENERATOR-ALLITEMS",allItems);
 			return false;

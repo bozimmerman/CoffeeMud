@@ -407,7 +407,7 @@ public class DataLoader
 		return rows;
 	}
 
-	public PlayerData DBReCreate(final String name, final String section, String key, final String xml)
+	public PlayerData DBReCreate(String name, String section, String key, final String xml)
 	{
 		synchronized(("RECREATE"+key).intern())
 		{
@@ -415,8 +415,10 @@ public class DataLoader
 			try
 			{
 				D=DB.DBFetch();
+				name = DB.injectionClean(name);
+				section = DB.injectionClean(section);
 				key = DB.injectionClean(key);
-				final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
+				final ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+name+"' AND CMSECT='"+section+"' AND CMPKEY='"+key+"'");
 				final boolean exists=R.next();
 				DB.DBDone(D);
 				D=null;
@@ -427,7 +429,7 @@ public class DataLoader
 					d.section(section);
 					d.key(key);
 					d.xml(xml);
-					DBUpdate(key,xml);
+					DBUpdate(name,section,key,xml);
 					return d;
 				}
 				else
@@ -445,10 +447,12 @@ public class DataLoader
 		}
 	}
 
-	public void DBUpdate(String key, final String xml)
+	public void DBUpdate(String name, String sect, String key, final String xml)
 	{
+		name = DB.injectionClean(name);
+		sect = DB.injectionClean(sect);
 		key = DB.injectionClean(key);
-		DB.updateWithClobs("UPDATE CMPDAT SET CMPDAT=? WHERE CMPKEY='"+key+"'", xml);
+		DB.updateWithClobs("UPDATE CMPDAT SET CMPDAT=? WHERE CMPLID='"+name+"' AND CMSECT='"+sect+"' AND CMPKEY='"+key+"'", xml);
 	}
 
 	public void DBDelete(String playerID, String section)

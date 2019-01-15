@@ -174,7 +174,16 @@ public class StdPlayerBook extends StdBook
 	@Override
 	protected void editOldChapter(final String from, final String to, final String key, final String subject, final String message)
 	{
-		CMLib.database().DBUpdatePlayerData(key, "::"+subject+"::"+message);
+		final String cat;
+		final String subkey=super.getParm("KEY");
+		if(subkey == null)
+		{
+			Log.errOut("Editing book without subkey: "+from+"/"+to+"/"+key);
+			return;
+		}
+		else
+			cat=subkey;
+		CMLib.database().DBUpdatePlayerData(from, cat, key, "::"+subject+"::"+message);
 	}
 
 	@Override

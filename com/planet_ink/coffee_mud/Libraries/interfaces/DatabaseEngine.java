@@ -1612,10 +1612,12 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine.PlayerData
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String, String)
 	 * @see DatabaseEngine#DBReCreatePlayerData(String, String, String, String)
+	 * @param playerID the name/userid of the player to delete data for
+	 * @param section the section/type of data to delete
 	 * @param key the key of the specific entry(s) to update
 	 * @param xml the new data to save for this entry.
 	 */
-	public void DBUpdatePlayerData(String key, String xml);
+	public void DBUpdatePlayerData(String playerID, String section, String key, String xml);
 
 	/**
 	 * Table category: DBPLAYERDATA

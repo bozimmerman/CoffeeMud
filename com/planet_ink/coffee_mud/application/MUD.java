@@ -618,13 +618,9 @@ public class MUD extends Thread implements MudHost
 		if(S!=null)
 			S.print(CMLib.lang().L("Notifying all objects of shutdown..."));
 		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...Notifying Objects");
-		MOB mob=null;
-		if(S!=null)
-			mob=S.mob();
-		if(mob==null)
-			mob=CMClass.getMOB("StdMOB");
+		final MOB mob=(S!=null)?S.mob():CMClass.getFactoryMOB();
 		final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_SHUTDOWN,null);
-		final Vector<Room> roomSet=new Vector<Room>();
+		final List<Room> roomSet=new ArrayList<Room>();
 		try
 		{
 			shutdownStateTime.set(System.currentTimeMillis());
@@ -640,6 +636,7 @@ public class MUD extends Thread implements MudHost
 				final WorldMap map=((WorldMap)e.nextElement());
 				for(final Enumeration<Room> r=map.rooms();r.hasMoreElements();)
 				{
+					// single threadding is important here.
 					final Room R=r.nextElement();
 					try
 					{
@@ -649,7 +646,7 @@ public class MUD extends Thread implements MudHost
 					{
 						Log.errOut(ex);
 					}
-					roomSet.addElement(R);
+					roomSet.add(R);
 					shutdownStateTime.set(System.currentTimeMillis());
 				}
 			}
@@ -712,7 +709,7 @@ public class MUD extends Thread implements MudHost
 			shutdownStateTime.set(System.currentTimeMillis());
 			int roomCounter=0;
 			Room R=null;
-			for(final Enumeration<Room> e=roomSet.elements();e.hasMoreElements();)
+			for(final Iterator<Room> e=roomSet.iterator();e.hasNext();)
 			{
 				if(((++roomCounter)%200)==0)
 				{
@@ -720,7 +717,7 @@ public class MUD extends Thread implements MudHost
 						S.print(".");
 					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...Map Update ("+roomCounter+")");
 				}
-				R=e.nextElement();
+				R=e.next();
 				try
 				{
 					if(R.roomID().length()>0)
