@@ -410,6 +410,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 				{
 					A=(Thief_SetAlarm)this.copyOf();
 					alarmThis.addNonUninvokableEffect(A);
+					CMLib.database().DBUpdateExits(room1);
 				}
 				else
 					A = (Thief_SetAlarm)beneficialAffect(mob,alarmThis,asLevel,trackLevel);
