@@ -187,10 +187,13 @@ public class StdTrap extends StdAbility implements Trap
 
 	protected boolean canInvokeTrapOn(final MOB invoker, final MOB target)
 	{
-		if(invoker.mayIFight(target))
-			return true;
-		if(isLocalExempt(invoker))
-			return true;
+		if((invoker==null)
+		||(invoker.mayIFight(target)
+			&&(!invoker.getGroupMembers(new HashSet<MOB>()).contains(target))))
+		{
+			if(!isLocalExempt(target))
+				return true;
+		}
 		return false;
 	}
 

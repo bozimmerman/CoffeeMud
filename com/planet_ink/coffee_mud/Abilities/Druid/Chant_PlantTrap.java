@@ -189,20 +189,23 @@ public class Chant_PlantTrap extends Chant implements Trap
 
 	protected boolean canInvokeTrapOn(final MOB invoker, final MOB target)
 	{
-		if(invoker.mayIFight(target))
-			return true;
-		if(isLocalExempt(invoker))
-			return true;
+		if((invoker==null)
+		||(invoker.mayIFight(target)
+			&&(!invoker.getGroupMembers(new HashSet<MOB>()).contains(target))))
+		{
+			if(!isLocalExempt(target))
+				return true;
+		}
 		return false;
 	}
 
 	public static final String[] choices={"Chant_PlantChoke","Chant_PlantConstriction"};
 	public void doMyThing(final MOB target)
 	{
-		if((target!=invoker())&&(target.location()!=null))
+		if((target!=invoker())
+		&&(target.location()!=null))
 		{
-			if((!invoker().mayIFight(target))
-			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
+			if((!canInvokeTrapOn(invoker(), target))
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,L("<S-NAME> avoid(s) some aggressive plants!"));
 			else
@@ -212,8 +215,10 @@ public class Chant_PlantTrap extends Chant implements Trap
 				if(invoker()!=null)
 				{
 					for (final String choice : choices)
+					{
 						if(invoker().fetchAbility(choice)==null)
 							them.remove(choice);
+					}
 				}
 				if(them.size()>0)
 				{
@@ -309,7 +314,13 @@ public class Chant_PlantTrap extends Chant implements Trap
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,0);
+				if(CMLib.law().doesOwnThisLand(mob,target))
+				{
+					target.addNonUninvokableEffect((Ability)copyOf());
+					CMLib.database().DBUpdateRoom(target);
+				}
+				else
+					beneficialAffect(mob,target,asLevel,0);
 			}
 		}
 		else

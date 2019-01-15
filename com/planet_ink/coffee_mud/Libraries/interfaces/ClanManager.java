@@ -155,7 +155,20 @@ public interface ClanManager extends CMLibrary
 	 * @param clanID2 the second clan to evaluate
 	 * @return the relation code integer
 	 */
-	public int getClanRelations(String clanID1, String clanID2);
+	public int getCommonClanRelations(String clanID1, String clanID2);
+
+
+	/**
+	 * This method is used to determine the basic relationship between two clans.  The
+	 * two clans are evaluated, based on their declared relationship to each other, and
+	 * the relations they inherit from allys.  This relationship is then returned as
+	 * a relation constant number.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#REL_DESCS
+	 * @param clan1 the first clan to evaluate
+	 * @param clan2 the second clan to evaluate
+	 * @return the relation code integer
+	 */
+	public int getCommonClanRelations(Clan clan1, Clan clan2);
 
 	/**
 	 * Get last time governments were loaded/updated

@@ -88,10 +88,37 @@ public class Chant_MuddyGrounds extends Chant
 	}
 
 	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
+	{
+		if(!canBeUninvoked()
+		&&(!hasTicked))
+		{
+			if((msg.source() != null)
+			&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+			&&(msg.target() == affected)
+			&&(affected instanceof Room))
+			{
+				final Room R=(Room)affected;
+				if((R!=null)
+				&&(!hasTicked))
+				{
+					if((!CMLib.threads().isTicking(this, -1))
+					&&(!CMLib.threads().isTicking(R, -1)))
+						CMLib.threads().startTickDown(this, Tickable.TICKID_SPELL_AFFECT, 3);
+				}
+			}
+		}
+	}
+
+	protected boolean hasTicked = false;
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected!=null)&&(affected instanceof Room))
+		if((affected!=null)
+		&&(affected instanceof Room))
 		{
+			hasTicked=true;
 			final Room R=(Room)affected;
 			for(int m=0;m<R.numInhabitants();m++)
 			{
@@ -140,6 +167,13 @@ public class Chant_MuddyGrounds extends Chant
 			mob.tell(L("That magic won't work here."));
 			return false;
 		}
+
+		if(mob.location().fetchEffect(ID())!=null)
+		{
+			mob.tell(L("This place is already muddy."));
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

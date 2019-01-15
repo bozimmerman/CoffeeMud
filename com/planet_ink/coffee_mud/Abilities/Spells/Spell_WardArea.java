@@ -225,10 +225,13 @@ public class Spell_WardArea extends Spell implements Trap
 
 	protected boolean canInvokeTrapOn(final MOB invoker, final MOB target)
 	{
-		if(invoker.mayIFight(target))
-			return true;
-		if(isLocalExempt(invoker))
-			return true;
+		if((invoker==null)
+		||(invoker.mayIFight(target)
+			&&(!invoker.getGroupMembers(new HashSet<MOB>()).contains(target))))
+		{
+			if(!isLocalExempt(target))
+				return true;
+		}
 		return false;
 	}
 
@@ -243,7 +246,8 @@ public class Spell_WardArea extends Spell implements Trap
 			return;
 		if((invoker()!=null)&&(mob!=null)&&(!invoker().mayIFight(mob)))
 			return;
-		if(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
+		if((!canInvokeTrapOn(invoker(),mob))
+		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("<S-NAME> avoid(s) a magical ward trap."));
 		else
 		{

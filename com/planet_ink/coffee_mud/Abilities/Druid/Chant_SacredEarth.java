@@ -192,7 +192,15 @@ public class Chant_SacredEarth extends Chant
 						&&((R.domainType()&Room.INDOORS)==0)
 						&&(!CMLib.flags().isWateryRoom(R))
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_AIR))
-							beneficialAffect(mob,R,asLevel,0);
+						{
+							if(CMLib.law().doesOwnThisLand(mob,R))
+							{
+								R.addNonUninvokableEffect((Ability)copyOf());
+								CMLib.database().DBUpdateRoom(R);
+							}
+							else
+								beneficialAffect(mob,R,asLevel,0);
+						}
 					}
 				}
 			}

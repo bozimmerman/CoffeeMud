@@ -89,6 +89,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	protected boolean	sprung	= false;
 	public Room			room1	= null;
 	public Room			room2	= null;
+	protected String	roomID	= null;
+	protected int		roomDir	= 0;
 	protected int		trackLvl= 10;
 	protected int		levels	= 1000;
 
@@ -179,6 +181,55 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	public void spring(final MOB M)
 	{
 		sprung=true;
+		if(!canBeUninvoked() && (!CMLib.threads().isTicking(this, -1)))
+		{
+			CMLib.threads().startTickDown(this, Tickable.TICKID_TRAP_RESET, 100);
+		}
+	}
+
+	public void ensureRooms()
+	{
+		if((room1==null)||(room2==null))
+		{
+			if((this.roomID!=null)
+			&&(this.roomID.length()>0))
+			{
+				room1=CMLib.map().getRoom(this.roomID);
+				if(room1 != null)
+				{
+					room2=room1.getRoomInDir(this.roomDir);
+				}
+			}
+		}
+	}
+
+	public boolean isLocalExempt(final MOB target)
+	{
+		if(target==null)
+			return false;
+		ensureRooms();
+		final Room R=room1;
+		if((!canBeUninvoked())
+		&&(!isABomb())
+		&&(R!=null))
+		{
+			if((CMLib.law().getLandTitle(R)!=null)
+			&&(CMLib.law().doesHavePriviledgesHere(target,R)))
+				return true;
+
+			if((target.isMonster())
+			&&(target.getStartRoom()!=null)
+			&&(target.getStartRoom().getArea()==R.getArea()))
+				return true;
+		}
+		return false;
+	}
+
+	protected boolean canInvokeTrapOn(final MOB invoker, final MOB target)
+	{
+		if(!isLocalExempt(target))
+			return true;
+		return false;
 	}
 
 	@Override
@@ -193,8 +244,22 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		if((msg.amITarget(affected))&&(msg.targetMinor()==CMMsg.TYP_OPEN))
 		{
 			if((!msg.amISource(invoker())
+			&&(canInvokeTrapOn(invoker(),msg.source()))
 			&&(CMLib.dice().rollPercentage()>msg.source().charStats().getSave(CharStats.STAT_SAVE_TRAPS))))
 				spring(msg.source());
+		}
+	}
+
+	@Override
+	public void setMiscText(final String miscText)
+	{
+		super.setMiscText(miscText);
+		if(miscText.length()>0)
+		{
+			levels=CMParms.getParmInt(miscText, "LEVELS", 1000);
+			trackLvl=CMParms.getParmInt(miscText, "TRACKLVL", 10);
+			roomDir=CMParms.getParmInt(miscText, "DIR", 0);
+			roomID=CMParms.getParmStr(miscText, "ROOM", "");
 		}
 	}
 
@@ -203,8 +268,24 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected==null)||(!(affected instanceof Exit))||(room1==null)||(room2==null))
+		ensureRooms();
+		if((affected==null)
+		||(!(affected instanceof Exit))
+		||(room1==null)
+		||(room2==null))
 			return false;
+		if((tickID == Tickable.TICKID_TRAP_RESET)
+		||(tickID == Tickable.TICKID_TRAP_DESTRUCTION))
+		{
+			if(!canBeUninvoked())
+			{
+				sprung=false;
+				return false;
+			}
+			else
+				unInvoke();
+		}
+		else
 		if(sprung && (levels>0))
 		{
 			final List<Room> rooms=new ArrayList<Room>();
@@ -318,17 +399,25 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			mob.location().send(mob,msg);
 			final int levelsLeftToDo = (mob.phyStats().level() * 2) + (2 * super.getXLEVELLevel(mob));
 			final int trackLevel = 5 + (super.adjustedLevel(mob, asLevel)/10) + super.getXLEVELLevel(mob);
+			room1=mob.location();
+			room2=mob.location().getRoomInDir(dirCode);
 			if(success)
 			{
 				sprung=false;
-				room1=mob.location();
-				room2=mob.location().getRoomInDir(dirCode);
 				mob.tell(L("You have set the alarm."));
-				final Thief_SetAlarm A = (Thief_SetAlarm)beneficialAffect(mob,alarmThis,asLevel,trackLevel);
+				final Thief_SetAlarm A;
+				if(CMLib.law().doesOwnThisLand(mob,room1))
+				{
+					A=(Thief_SetAlarm)this.copyOf();
+					alarmThis.addNonUninvokableEffect(A);
+				}
+				else
+					A = (Thief_SetAlarm)beneficialAffect(mob,alarmThis,asLevel,trackLevel);
 				if(A!=null)
 				{
 					A.levels = levelsLeftToDo;
 					A.trackLvl= trackLevel;
+					A.setMiscText("LEVELS="+levelsLeftToDo+" TRACKLVL="+trackLevel+" ROOM=\""+CMLib.map().getExtendedRoomID(room1)+"\" DIR="+dirCode);
 				}
 			}
 			else

@@ -196,10 +196,13 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 
 	protected boolean canInvokeTrapOn(final MOB invoker, final MOB target)
 	{
-		if(invoker.mayIFight(target))
-			return true;
-		if(isLocalExempt(invoker))
-			return true;
+		if((invoker==null)
+		||(invoker.mayIFight(target)
+			&&(!invoker.getGroupMembers(new HashSet<MOB>()).contains(target))))
+		{
+			if(!isLocalExempt(target))
+				return true;
+		}
 		return false;
 	}
 
@@ -207,8 +210,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	public void spring(final MOB mob)
 	{
 		final MOB invoker=(invoker()!=null) ? invoker() : CMLib.map().deity();
-		if((!invoker.mayIFight(mob))
-		||(invoker.getGroupMembers(new HashSet<MOB>()).contains(mob))
+		if((!canInvokeTrapOn(invoker,mob))
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,L("<S-NAME> avoid(s) some @x1caltrops on the floor.",caltropTypeName()));
 		else
@@ -268,7 +270,13 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		if(success)
 		{
 			if(mob.location().show(mob,null,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,L("<S-NAME> throw(s) down @x1caltrops!",caltropTypeName())))
-				maliciousAffect(mob,target,asLevel,0,-1);
+			{
+				if((target instanceof Room)
+				&&(CMLib.law().doesOwnThisLand(mob,(Room)target)))
+					target.addNonUninvokableEffect((Ability)this.copyOf());
+				else
+					maliciousAffect(mob,target,asLevel,0,-1);
+			}
 			else
 				success=false;
 		}

@@ -63,7 +63,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		if((clanID1==null)||(clanID2==null)||(clanID1.length()==0)||(clanID2.length()==0))
 			return Clan.REL_NEUTRAL==relation;
-		return getClanRelations(getClan(clanID1),getClan(clanID1)) == relation;
+		return getCommonClanRelations(getClan(clanID1),getClan(clanID1)) == relation;
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class Clans extends StdLibrary implements ClanManager
 		final List<Pair<Clan,Clan>> pairs=findUncommonRivalrousClans(M1, M2);
 		for(final Pair<Clan,Clan> p : pairs)
 		{
-			if(getClanRelations(p.first,p.second) == Clan.REL_WAR)
+			if(getCommonClanRelations(p.first,p.second) == Clan.REL_WAR)
 				return true;
 		}
 		return false;
@@ -95,7 +95,7 @@ public class Clans extends StdLibrary implements ClanManager
 		final List<Pair<Clan,Clan>> pairs=findUncommonRivalrousClans(M1, M2);
 		for(final Pair<Clan,Clan> p : pairs)
 		{
-			final int rel = getClanRelations(p.first,p.second);
+			final int rel = getCommonClanRelations(p.first,p.second);
 			if((rel == Clan.REL_FRIENDLY) || (rel == Clan.REL_ALLY))
 				return true;
 		}
@@ -113,7 +113,7 @@ public class Clans extends StdLibrary implements ClanManager
 		if(mC==C)
 			return true;
 
-		final int rel = getClanRelations(mC, C);
+		final int rel = getCommonClanRelations(mC, C);
 		if((rel == Clan.REL_FRIENDLY) || (rel == Clan.REL_ALLY))
 			return true;
 		return false;
@@ -288,7 +288,8 @@ public class Clans extends StdLibrary implements ClanManager
 		return finalList;
 	}
 
-	protected int getClanRelations(final Clan C1, final Clan C2)
+	@Override
+	public int getCommonClanRelations(final Clan C1, final Clan C2)
 	{
 		if((C1==null)||(C2==null))
 			return Clan.REL_NEUTRAL;
@@ -312,11 +313,11 @@ public class Clans extends StdLibrary implements ClanManager
 	}
 
 	@Override
-	public int getClanRelations(final String clanID1, final String clanID2)
+	public int getCommonClanRelations(final String clanID1, final String clanID2)
 	{
 		if((clanID1==null)||(clanID2==null)||(clanID1.length()==0)||(clanID2.length()==0))
 			return Clan.REL_NEUTRAL;
-		return getClanRelations(getClan(clanID1),getClan(clanID2));
+		return getCommonClanRelations(getClan(clanID1),getClan(clanID2));
 	}
 
 	@Override
@@ -324,7 +325,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		for(final Pair<Clan,Clan> c : getAllClanPairs(M1, M2))
 		{
-			if(getClanRelations(c.first, c.second)==relation)
+			if(getCommonClanRelations(c.first, c.second)==relation)
 				return true;
 		}
 		return false;

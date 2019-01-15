@@ -77,11 +77,14 @@ public class Chant_VolcanicChasm extends Chant
 	{
 		if((affected!=null)&&(affected instanceof Room))
 		{
+			hasTicked=true;
 			final Room R=(Room)affected;
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				final MOB M=R.fetchInhabitant(i);
-				if((M!=null)&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
+				if((M!=null)
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE))
+				&&((invoker==null)||(invoker.mayIFight(M))))
 				{
 					final MOB invoker=(invoker()!=null) ? invoker() : M;
 					CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*getXLEVELLevel(invoker())),1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_MELTING,L("The extreme heat <DAMAGES> <T-NAME>!"));
@@ -102,20 +105,29 @@ public class Chant_VolcanicChasm extends Chant
 		return super.tick(ticking, tickID);
 	}
 
-	protected boolean checked=false;
+	protected boolean hasTicked=false;
 
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		if((!checked)
-		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
-		&&(affected instanceof Room))
+		if(!canBeUninvoked()
+		&&(!hasTicked))
 		{
-			checked=true;
-			if(!CMLib.threads().isTicking(this,-1))
-				CMLib.threads().startTickDown(this,Tickable.TICKID_SPELL_AFFECT,1);
+			if((msg.source() != null)
+			&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+			&&(msg.target() == affected)
+			&&(affected instanceof Room))
+			{
+				final Room R=(Room)affected;
+				if((R!=null)
+				&&(!hasTicked))
+				{
+					if((!CMLib.threads().isTicking(this, -1))
+					&&(!CMLib.threads().isTicking(R, -1)))
+						CMLib.threads().startTickDown(this, Tickable.TICKID_SPELL_AFFECT, 3);
+				}
+			}
 		}
-		super.executeMsg(host,msg);
 	}
 
 	@Override
@@ -164,7 +176,9 @@ public class Chant_VolcanicChasm extends Chant
 					for(int i=0;i<target.numInhabitants();i++)
 					{
 						final MOB M=target.fetchInhabitant(i);
-						if((M!=null)&&(mob!=M))
+						if((M!=null)
+						&&(mob!=M)
+						&&(mob.mayIFight(M)))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Flames and sulfurous steam leap from cracks opening around you!"));

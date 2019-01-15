@@ -87,7 +87,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	}
 
 	protected boolean	sprung	= false;
-	protected int		attempts = 0;
+	protected int		attempts = 1;
 
 	@Override
 	public boolean disabled()
@@ -98,13 +98,18 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	@Override
 	public void disable()
 	{
-		unInvoke();
+		if(this.canBeUninvoked)
+			unInvoke();
+		else
+		{
+			sprung=true;
+		}
 	}
 
 	@Override
 	public boolean sprung()
 	{
-		return false;
+		return sprung;
 	}
 
 	@Override
@@ -132,6 +137,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	@Override
 	public void resetTrap(final MOB mob)
 	{
+		CMLib.threads().startTickDown(this,Tickable.TICKID_TRAP_RESET,getReset());
 	}
 
 	@Override
@@ -143,13 +149,13 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	@Override
 	public boolean canSetTrapOn(final MOB mob, final Physical P)
 	{
-		return false;
+		return (P instanceof Room);
 	}
 
 	@Override
 	public boolean canReSetTrap(final MOB mob)
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -176,7 +182,11 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		T.setInvoker(mob);
 		P.addEffect(T);
 		final int duration = CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)+(2*getXLEVELLevel(mob));
-		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,duration);
+		if((P instanceof Room)
+		&&(perm || CMLib.law().doesOwnThisLand(mob,(Room)P)))
+			P.addNonUninvokableEffect((Ability)this.copyOf());
+		else
+			CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,duration);
 		return T;
 	}
 
@@ -203,32 +213,37 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 
 	protected boolean canInvokeTrapOn(final MOB invoker, final MOB target)
 	{
-		if(invoker.mayIFight(target))
-			return true;
-		if(isLocalExempt(invoker))
-			return true;
+		if((invoker==null)
+		||(invoker.mayIFight(target)
+			&&(!invoker.getGroupMembers(new HashSet<MOB>()).contains(target))))
+		{
+			if(!isLocalExempt(target))
+				return true;
+		}
 		return false;
 	}
 
 	@Override
 	public void spring(final MOB M)
 	{
-		if((!sprung)
-		&&(CMLib.dice().rollPercentage()+(2*getXLEVELLevel(invoker()))>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
+		if((!sprung) // redundant check, but all good
+		&&(canInvokeTrapOn(invoker(), M)))
 		{
-			CMLib.combat().postDeath(invoker(),M,null);
-			if(M.amDead())
+			if(CMLib.dice().rollPercentage()+(2*getXLEVELLevel(invoker()))>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
+			{
+				CMLib.combat().postDeath(invoker(),M,null);
+			}
+			if((--attempts)<0)
 			{
 				sprung=true;
-				//tickDown=getReset();
-				//CMLib.threads().startTickDown(this,Tickable.TICKID_TRAP_RESET,1);
+				if(affected != null)
+				{
+					if(canBeUninvoked)
+						unInvoke();
+					else
+						CMLib.threads().startTickDown(this,Tickable.TICKID_TRAP_RESET,getReset());
+				}
 			}
-		}
-		if((--attempts)<0)
-		{
-			sprung=true;
-			if(affected != null)
-				unInvoke();
 		}
 	}
 
@@ -272,12 +287,16 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if(tickID==Tickable.TICKID_TRAP_RESET)
 		{
 			sprung=false;
+			attempts=1;
 			return false;
 		}
 		else
 		if(tickID==Tickable.TICKID_TRAP_DESTRUCTION)
 		{
-			unInvoke();
+			if(this.canBeUninvoked)
+				unInvoke();
+			sprung=false;
+			attempts=1;
 			return false;
 		}
 		return true;

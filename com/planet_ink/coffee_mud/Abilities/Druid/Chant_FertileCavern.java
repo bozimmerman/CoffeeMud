@@ -85,6 +85,8 @@ public class Chant_FertileCavern extends Chant
 		}
 	}
 
+	protected boolean hasTicked = false;
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -92,6 +94,7 @@ public class Chant_FertileCavern extends Chant
 			return false;
 		if(affected instanceof Room)
 		{
+			hasTicked = true;
 			final Room R=(Room)affected;
 			if(R!=null)
 				R.setResource(RawMaterial.RESOURCE_DIRT);
@@ -99,15 +102,58 @@ public class Chant_FertileCavern extends Chant
 		return true;
 	}
 
+	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
+	{
+		if(!canBeUninvoked()
+		&&(!hasTicked))
+		{
+			if((msg.source() != null)
+			&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+			&&(msg.target() == affected)
+			&&(affected instanceof Room))
+			{
+				final Room R=(Room)affected;
+				if((R!=null)
+				&&(!hasTicked))
+				{
+					if((!CMLib.threads().isTicking(this, -1))
+					&&(!CMLib.threads().isTicking(R, -1)))
+						CMLib.threads().startTickDown(this, Tickable.TICKID_SPELL_AFFECT, 3);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		if(!canBeUninvoked())
+		{
+			if(affected instanceof Room)
+			{
+				final Room R=(Room)affected;
+				if(R!=null)
+					R.setResource(RawMaterial.RESOURCE_DIRT);
+			}
+		}
+	}
 
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final Room target=mob.location();
-		if(target==null)
+		final Room R=mob.location();
+		if(R==null)
 			return false;
 
-		if(target.domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		if(R.fetchEffect(ID())!=null)
+		{
+			mob.tell(L("This place is already fertile."));
+			return false;
+		}
+
+		if(R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		{
 			mob.tell(L("This chant cannot be used here."));
 			return false;
@@ -120,25 +166,32 @@ public class Chant_FertileCavern extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAME>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,R,this,verbalCastCode(mob,R,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					beneficialAffect(mob, target, asLevel,0);
-					final Chant_FertileCavern A=(Chant_FertileCavern)target.fetchEffect(ID());
+					if((R instanceof Room)
+					&&(CMLib.law().doesOwnThisProperty(mob,(R))))
+					{
+						R.addNonUninvokableEffect((Ability)this.copyOf());
+						CMLib.database().DBUpdateRoom(R);
+					}
+					else
+						beneficialAffect(mob, R, asLevel,0);
+					final Chant_FertileCavern A=(Chant_FertileCavern)R.fetchEffect(ID());
 					if(A!=null)
 					{
-						target.showHappens(CMMsg.MSG_OK_VISUAL,L("The rock and stone of @x1 begins to soften and grow dark and rich!",target.name()));
-						A.previousResource=target.myResource();
-						target.setResource(RawMaterial.RESOURCE_DIRT);
+						R.showHappens(CMMsg.MSG_OK_VISUAL,L("The rock and stone of @x1 begins to soften and grow dark and rich!",R.name()));
+						A.previousResource=R.myResource();
+						R.setResource(RawMaterial.RESOURCE_DIRT);
 					}
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAME>, but the magic fades."));
+			return maliciousFizzle(mob,R,L("<S-NAME> chant(s) to <T-NAME>, but the magic fades."));
 		// return whether it worked
 		return success;
 	}

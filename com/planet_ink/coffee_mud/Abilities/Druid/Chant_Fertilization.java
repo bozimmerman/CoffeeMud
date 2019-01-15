@@ -73,6 +73,7 @@ public class Chant_Fertilization extends Chant
 	}
 
 	private volatile int oldResource = -1;
+	private boolean hasTicked = false;
 
 	@Override
 	public void unInvoke()
@@ -89,9 +90,11 @@ public class Chant_Fertilization extends Chant
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected!=null)&&(affected instanceof Room))
+		if((affected!=null)
+		&&(affected instanceof Room))
 		{
 			final Room R=(Room)affected;
+			hasTicked=true;
 			if((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			{
 				oldResource=R.myResource();
@@ -122,10 +125,43 @@ public class Chant_Fertilization extends Chant
 	}
 
 	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
+	{
+		if(!canBeUninvoked()
+		&&(!hasTicked))
+		{
+			if((msg.source() != null)
+			&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+			&&(msg.target() == affected)
+			&&(affected instanceof Room))
+			{
+				final Room R=(Room)affected;
+				if((R!=null)
+				&&(!hasTicked))
+				{
+					if((!CMLib.threads().isTicking(this, -1))
+					&&(!CMLib.threads().isTicking(R, -1)))
+						CMLib.threads().startTickDown(this, Tickable.TICKID_SPELL_AFFECT, 3);
+				}
+			}
+		}
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 
-		final int type=mob.location().domainType();
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+
+		if(R.fetchEffect(ID())!=null)
+		{
+			mob.tell(L("This place is already fertile."));
+			return false;
+		}
+
+		final int type=R.domainType();
 		if(((type&Room.INDOORS)>0)
 			||(type==Room.DOMAIN_OUTDOORS_AIR)
 			||(type==Room.DOMAIN_OUTDOORS_CITY)
@@ -143,18 +179,24 @@ public class Chant_Fertilization extends Chant
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":L("^S<S-NAME> chant(s) to make the land fruitful.^?"));
-			if(mob.location().okMessage(mob,msg))
+			final CMMsg msg=CMClass.getMsg(mob,R,this,verbalCastCode(mob,R,auto),auto?"":L("^S<S-NAME> chant(s) to make the land fruitful.^?"));
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				this.oldResource=mob.location().myResource();
-				if(beneficialAffect( mob,
-								  mob.location(),
-								  asLevel,
-								  (int)( CMLib.ableMapper().qualifyingClassLevel( mob, this ) *
-									  ( ( ( CMProps.getMillisPerMudHour() * mob.location().getArea().getTimeObj().getHoursInDay() ) / CMProps.getTickMillis() ) ) ) )!=null)
+				R.send(mob,msg);
+				this.oldResource=R.myResource();
+				final long ticksPerMudday = (CMProps.getMillisPerMudHour() * R.getArea().getTimeObj().getHoursInDay() ) / CMProps.getTickMillis();
+				final int qualClassLevel = CMLib.ableMapper().qualifyingClassLevel( mob, this );
+				if((R instanceof Room)
+				&&(CMLib.law().doesOwnThisProperty(mob,R)))
 				{
-					mob.location().setResource(RawMaterial.RESOURCE_DIRT);
+					R.addNonUninvokableEffect((Ability)this.copyOf());
+					CMLib.database().DBUpdateRoom(R);
+					R.setResource(RawMaterial.RESOURCE_DIRT);
+				}
+				else
+				if(beneficialAffect(mob, R, asLevel, (int)(qualClassLevel * ticksPerMudday) ) != null )
+				{
+					R.setResource(RawMaterial.RESOURCE_DIRT);
 				}
 			}
 

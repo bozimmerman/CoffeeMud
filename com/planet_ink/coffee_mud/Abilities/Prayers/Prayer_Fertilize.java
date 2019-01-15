@@ -92,11 +92,37 @@ public class Prayer_Fertilize extends Prayer
 		super.unInvoke();
 	}
 
+	private boolean hasTicked = false;
+
+	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
+	{
+		if(!canBeUninvoked()
+		&&(!hasTicked))
+		{
+			if((msg.source() != null)
+			&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+			&&(msg.target() == affected)
+			&&(affected instanceof Room))
+			{
+				final Room R=(Room)affected;
+				if((R!=null)
+				&&(!hasTicked))
+				{
+					if((!CMLib.threads().isTicking(this, -1))
+					&&(!CMLib.threads().isTicking(R, -1)))
+						CMLib.threads().startTickDown(this, Tickable.TICKID_SPELL_AFFECT, 3);
+				}
+			}
+		}
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected!=null)&&(affected instanceof Room))
 		{
+			hasTicked=true;
 			final Room R=(Room)affected;
 			if((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			{
@@ -131,7 +157,18 @@ public class Prayer_Fertilize extends Prayer
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 
-		final int type=mob.location().domainType();
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+
+
+		if(R.fetchEffect(ID())!=null)
+		{
+			mob.tell(L("This place is already fertile."));
+			return false;
+		}
+
+		final int type=R.domainType();
 		if(((type&Room.INDOORS)>0)
 			||(type==Room.DOMAIN_OUTDOORS_AIR)
 			||(type==Room.DOMAIN_OUTDOORS_CITY)
@@ -149,22 +186,27 @@ public class Prayer_Fertilize extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":L("^S<S-NAME> @x1 to make the land fruitful.^?",prayForWord(mob)));
-			if(mob.location().okMessage(mob,msg))
+			final CMMsg msg=CMClass.getMsg(mob,R,this,verbalCastCode(mob,R,auto),auto?"":L("^S<S-NAME> @x1 to make the land fruitful.^?",prayForWord(mob)));
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				this.oldResource=mob.location().myResource();
-				if(beneficialAffect( mob,
-								  mob.location(),
-								  asLevel,
-								  CMLib.ableMapper().qualifyingClassLevel( mob, this ) *
-									  (int)( ( CMProps.getMillisPerMudHour() *
-											  (mob.location().getArea().getTimeObj().getHoursInDay()) ) /
-											  CMProps.getTickMillis() ) )!=null)
+				R.send(mob,msg);
+				this.oldResource=R.myResource();
+				final long ticksPerMudday = (CMProps.getMillisPerMudHour() * R.getArea().getTimeObj().getHoursInDay() ) / CMProps.getTickMillis();
+				final int qualClassLevel = CMLib.ableMapper().qualifyingClassLevel( mob, this );
+				if(CMLib.law().doesOwnThisProperty(mob,R))
+				{
+					final String landOwnerName=CMLib.law().getPropertyOwnerName(R);
+					if(CMLib.clans().getClanAnyHost(landOwnerName)!=null)
+						setMiscText(landOwnerName);
+					R.addNonUninvokableEffect((Ability)this.copyOf());
+					CMLib.database().DBUpdateRoom(R);
+				}
+				else
+				if(beneficialAffect(mob, R, asLevel, (int)(qualClassLevel * ticksPerMudday) ) != null )
 				{
 					// the chant should be better than the prayer, so leave this part out --
 					// but keep the functionality around just in case we want it.
-					//mob.location().setResource(RawMaterial.RESOURCE_DIRT);
+					//R.setResource(RawMaterial.RESOURCE_DIRT);
 				}
 			}
 

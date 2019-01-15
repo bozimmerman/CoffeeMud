@@ -98,6 +98,21 @@ public class Prayer_SanctifyRoom extends Prayer
 	{
 		if(!CMLib.law().doesAnyoneHavePrivilegesHere(mob, text(), R))
 		{
+			final LandTitle T=CMLib.law().getLandTitle(R);
+			if(T!=null)
+			{
+				final Clan roomC=CMLib.clans().fetchClan(T.getOwnerName());
+				if(roomC!=null)
+				{
+					for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(mob))
+					{
+						if(p.first==roomC)
+							break;
+						if(CMLib.clans().getCommonClanRelations(roomC, p.first) == Clan.REL_WAR)
+							return true;
+					}
+				}
+			}
 			mob.tell(L("You feel your muscles unwilling to cooperate."));
 			return false;
 		}
@@ -169,17 +184,10 @@ public class Prayer_SanctifyRoom extends Prayer
 				{
 					final String landOwnerName=CMLib.law().getPropertyOwnerName((Room)target);
 					final Clan C=CMLib.clans().getClanAnyHost(landOwnerName);
-					if((C!=null)
-					&&(!C.getMorgue().equals(CMLib.map().getExtendedRoomID((Room)target))))
-					{
+					if(C!=null)
 						setMiscText(landOwnerName);
-						beneficialAffect(mob,target,asLevel,0);
-					}
-					else
-					{
-						target.addNonUninvokableEffect((Ability)this.copyOf());
-						CMLib.database().DBUpdateRoom((Room)target);
-					}
+					target.addNonUninvokableEffect((Ability)this.copyOf());
+					CMLib.database().DBUpdateRoom((Room)target);
 				}
 				else
 					beneficialAffect(mob,target,asLevel,0);

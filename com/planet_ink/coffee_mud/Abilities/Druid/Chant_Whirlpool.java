@@ -139,8 +139,16 @@ public class Chant_Whirlpool extends Chant
 	public boolean canEverEnterThePool(final MOB M)
 	{
 		if((invoker!=null)
-		&&((invoker==M)||(!invoker.mayIFight(M))))
+		&&((invoker==M)
+			||(!invoker.mayIFight(M))
+			||(invoker.getGroupMembers(new HashSet<MOB>()).contains(M))))
 			return false;
+		if((!this.canBeUninvoked())
+		&&(affected instanceof Room))
+		{
+			if(CMLib.law().doesHavePriviledgesHere(M, (Room)affected))
+				return false;
+		}
 		boolean enterThePool = false;
 		if((M.riding()!=null)&&(!CMLib.flags().isFlying(M.riding())))
 		{
