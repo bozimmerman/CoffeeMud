@@ -2284,7 +2284,10 @@ public class Modify extends StdCommand
 						return errorOut(mob);
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
 					final Exit copyExit=(Exit)thang.copyOf();
-					CMLib.genEd().genMiscText(mob,thang,1,1);
+					int showFlag=-1;
+					if(CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0)
+						showFlag=-999;
+					CMLib.genEd().genMiscText(mob,thang,0,showFlag);
 					updateChangedExit(mob, mob.location(), (Exit)thang, copyExit);
 				}
 				else
