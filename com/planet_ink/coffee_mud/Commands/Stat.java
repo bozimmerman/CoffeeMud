@@ -1131,32 +1131,48 @@ public class Stat  extends Skills
 		}
 		if((commands.size()>0)&&(str.length()==0))
 		{
-			String MOBname=commands.get(commands.size()-1).toString();
+			String mobName=commands.get(commands.size()-1).toString();
 			MOB M=mob;
 			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
 			{
 				final String firstWord = (commands.size()> 1) ? commands.get(0) : "";
 				final String restWords = (commands.size() > 1) ? CMParms.combine(commands,1) : "";
-				MOBname = CMParms.combine(commands,0);
-				if(MOBname.equalsIgnoreCase("ROOM"))
+				mobName = CMParms.combine(commands,0);
+				if(mobName.equalsIgnoreCase("ROOM"))
 				{
 					CMLib.genEd().modifyRoom(mob, mob.location(), -950);
 					return true;
 				}
 				else
-				if(MOBname.equalsIgnoreCase("AREA"))
+				if(mobName.equalsIgnoreCase("AREA"))
 				{
 					final Set<Area> alsoUpdateAreas=new HashSet<Area>();
 					CMLib.genEd().modifyArea(mob, mob.location().getArea(), alsoUpdateAreas, -950);
 					return true;
 				}
 				else
+				if(firstWord.equalsIgnoreCase("CLAN"))
+				{
+					final Clan C=CMLib.clans().findClan(restWords);
+					if(C!=null)
+					{
+						str.setLength(0);
+						str.append(CMStrings.padRight(""+C.getClanLevel(),5)).append(": ").append(L("Clan Level")).append("\n\r");
+						for(final Clan.Trophy t : Clan.Trophy.values())
+							str.append(CMStrings.padRight(""+C.getTrophyData(t),5)).append(": ").append(L(t.codeString)).append("\n\r");
+						mob.tell(str.toString());
+						return true;
+					}
+					mob.tell(L("You can't stat clan '@x1'!",restWords));
+					return false;
+				}
+				else
 				if(firstWord.equalsIgnoreCase("EXIT"))
 				{
-					Environmental itarget=getItemTarget(mob, MOBname);
+					Environmental itarget=getItemTarget(mob, mobName);
 					if(itarget==null)
 					{
-						itarget=mob.location().fetchExit(MOBname);
+						itarget=mob.location().fetchExit(mobName);
 						return true;
 					}
 					mob.tell(L("You can't stat exit '@x1'!",restWords));
@@ -1234,8 +1250,8 @@ public class Stat  extends Skills
 				}
 				else
 				{
-					MOBname=commands.get(commands.size()-1).toString();
-					final MOB target=this.getMOBTarget(mob, MOBname);
+					mobName=commands.get(commands.size()-1).toString();
+					final MOB target=this.getMOBTarget(mob, mobName);
 					if((target!=null)
 					&&(((target.isMonster())&&(CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDMOBS)))
 						||((target.isPlayer())&&(CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDPLAYERS)))))
@@ -1245,12 +1261,12 @@ public class Stat  extends Skills
 					}
 					else
 					{
-						MOBname = CMParms.combine(commands,0);
+						mobName = CMParms.combine(commands,0);
 						Environmental itarget=null;
 						//if(itarget==null)
-							itarget=this.getItemTarget(mob, MOBname);
+							itarget=this.getItemTarget(mob, mobName);
 						if(itarget==null)
-							itarget=mob.location().fetchExit(MOBname);
+							itarget=mob.location().fetchExit(mobName);
 						if(itarget!=null)
 						{
 							for(final Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
@@ -1266,7 +1282,7 @@ public class Stat  extends Skills
 						}
 						else
 						{
-							itarget = CMLib.map().findArea(MOBname);
+							itarget = CMLib.map().findArea(mobName);
 							if(itarget != null)
 							{
 								final Set<Area> alsoUpdateAreas=new HashSet<Area>();
@@ -1277,13 +1293,13 @@ public class Stat  extends Skills
 							{
 								try
 								{
-									final List<Room> rooms=CMLib.map().findRooms(mob.location().getArea().getProperMap(), mob,MOBname,true,100);
+									final List<Room> rooms=CMLib.map().findRooms(mob.location().getArea().getProperMap(), mob,mobName,true,100);
 									if(rooms.size()==0)
-										rooms.addAll(CMLib.map().findRooms(mob.location().getArea().getProperMap(), mob,MOBname,false,100));
+										rooms.addAll(CMLib.map().findRooms(mob.location().getArea().getProperMap(), mob,mobName,false,100));
 									if(rooms.size()==0)
-										rooms.addAll(CMLib.map().findRooms(CMLib.map().rooms(), mob,MOBname,true,100));
+										rooms.addAll(CMLib.map().findRooms(CMLib.map().rooms(), mob,mobName,true,100));
 									if(rooms.size()==0)
-										rooms.addAll(CMLib.map().findRooms(CMLib.map().rooms(), mob,MOBname,false,100));
+										rooms.addAll(CMLib.map().findRooms(CMLib.map().rooms(), mob,mobName,false,100));
 									for(final Room room : rooms)
 									{
 										final Room R=CMLib.map().roomLocation(room);
@@ -1304,7 +1320,7 @@ public class Stat  extends Skills
 								}
 								else
 								{
-									mob.tell(L("You can't stat mob/player/item/exit/whatever '@x1'!",MOBname));
+									mob.tell(L("You can't stat mob/player/item/exit/clan/room/whatever '@x1'!",mobName));
 									return false;
 								}
 							}

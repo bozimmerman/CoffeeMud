@@ -1032,15 +1032,15 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		PlayerKills("Most rival player-kills", "PlayerKills", CMProps.Str.CLANTROPPK, 'K'),
 		Members("Most members", "Most Members", CMProps.Str.CLANTROPMB, 'M'),
 		MemberLevel("Highest median level", "Highest Levels", CMProps.Str.CLANTROPLVL, 'H'),
-		PlayerMinutes("Most player time", "Most Playing", CMProps.Str.CLANTROPPTIME, 'T'),
+		PlayerMinutes("Most player time", "Most Player Time", CMProps.Str.CLANTROPPTIME, 'T'),
 		PlayerLevelsGained("Most player Levels", "Most Levels", CMProps.Str.CLANTROPPLVL, 'L'),
-		MonthlyPlayerMinutes("Most player time last month", "Player Time", CMProps.Str.CLANTROPMONTHLYPTIME, 't'),
+		MonthlyPlayerMinutes("Most player time last month", "Monthly Player Time", CMProps.Str.CLANTROPMONTHLYPTIME, 't'),
 		MonthlyPlayerXP("Most player xp last month", "Monthly Player XP", CMProps.Str.CLANTROPMONTHLYPXP, 'e'),
 		MonthlyClanXP("Most clan xp last month", "Monthly Clan XP", CMProps.Str.CLANTROPMONTHLYEXP, 'x'),
 		MonthlyConquests("Most conquests last month", "Monthly Conquests", CMProps.Str.CLANTROPMONTHLYAREA, 'a'),
 		MonthlyClanLevels("Most clan levels last month", "Monthly Clan Levels", CMProps.Str.CLANTROPMONTHLYLVLS, 'l'),
 		MonthlyControlPoints("Most control points last month", "Monthly Control Points", CMProps.Str.CLANTROPMONTHLYCP, 'c'),
-		MonthlyNewMembers("Most new members last month", "Most New Members",CMProps.Str.CLANTROPMONTHLYMB, 'm'),
+		MonthlyNewMembers("Most new members last month", "Monthly New Members",CMProps.Str.CLANTROPMONTHLYMB, 'm'),
 		;
 		public final String description;
 		public final String codeString;
