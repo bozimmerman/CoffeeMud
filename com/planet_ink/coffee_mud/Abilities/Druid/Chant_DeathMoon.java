@@ -125,7 +125,8 @@ public class Chant_DeathMoon extends Chant
 					final MOB M=room.fetchInhabitant(i);
 					if((M!=null)
 					&&(M!=invoker)
-					&&((invoker == null) || (invoker.mayIFight(M))))
+					&&((invoker == null)
+						|| (invoker.mayIFight(M) && (M.amFollowing() != invoker))))
 					{
 						final MOB agent;
 						if(invoker == null)
@@ -138,7 +139,8 @@ public class Chant_DeathMoon extends Chant
 							if(grp.contains(M))
 								continue;
 						}
-						CMLib.combat().postDamage(agent,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*getXLEVELLevel(invoker)),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The gaze of the death moon <DAMAGE> <T-NAME>!"));
+						final int dmg=CMLib.dice().roll(1,M.phyStats().level()+(2*getXLEVELLevel(invoker)),0);
+						CMLib.combat().postDamage(agent,M,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The gaze of the death moon <DAMAGE> <T-NAME>!"));
 						CMLib.combat().postRevengeAttack(M, agent);
 					}
 				}
@@ -209,10 +211,13 @@ public class Chant_DeathMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
+					final Set<MOB> grp=mob.getGroupMembers(new HashSet<MOB>());
 					for(int i=0;i<target.numInhabitants();i++)
 					{
 						final MOB M=target.fetchInhabitant(i);
-						if((M!=null)&&(mob!=M))
+						if((M!=null)
+						&&(mob!=M)
+						&&(!grp.contains(M)))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The Death Moon Rises!"));
