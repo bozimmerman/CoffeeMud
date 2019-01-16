@@ -1023,30 +1023,32 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public static enum Trophy
 	{
-		Points("Most control points", "Control Points", CMProps.Str.CLANTROPCP),
-		Experience("Most clan experience", "Experience", CMProps.Str.CLANTROPEXP),
-		Areas("Most controlled areas", "Areas Controlled", CMProps.Str.CLANTROPAREA),
-		PlayerKills("Most rival player-kills", "PlayerKills", CMProps.Str.CLANTROPPK),
-		Members("Most members", "Most Members", CMProps.Str.CLANTROPMB),
-		MemberLevel("Highest median level", "Highest Levels", CMProps.Str.CLANTROPLVL),
-		PlayerMinutes("Most player time", "Most Playing", CMProps.Str.CLANTROPPTIME),
-		PlayerLevelsGained("Most player Levels", "Most Levels", CMProps.Str.CLANTROPPLVL),
-		MonthlyPlayerMinutes("Most player time last month", "Player Time", CMProps.Str.CLANTROPMONTHLYPTIME),
-		MonthlyPlayerXP("Most player xp last month", "Monthly Player XP", CMProps.Str.CLANTROPMONTHLYPXP),
-		MonthlyClanXP("Most clan xp last month", "Monthly Clan XP", CMProps.Str.CLANTROPMONTHLYEXP),
-		MonthlyConquests("Most conquests last month", "Monthly Conquests", CMProps.Str.CLANTROPMONTHLYAREA),
-		MonthlyClanLevels("Most clan levels last month", "Monthly Clan Levels", CMProps.Str.CLANTROPMONTHLYLVLS),
-		MonthlyControlPoints("Most control points last month", "Monthly Control Points", CMProps.Str.CLANTROPMONTHLYCP),
-		MonthlyNewMembers("Most new members last month", "Most New Members",CMProps.Str.CLANTROPMONTHLYMB),
+		Points("Most control points", "Control Points", CMProps.Str.CLANTROPCP, 'C'),
+		Experience("Most clan experience", "Experience", CMProps.Str.CLANTROPEXP, 'E'),
+		Areas("Most controlled areas", "Areas Controlled", CMProps.Str.CLANTROPAREA, 'A'),
+		PlayerKills("Most rival player-kills", "PlayerKills", CMProps.Str.CLANTROPPK, 'K'),
+		Members("Most members", "Most Members", CMProps.Str.CLANTROPMB, 'M'),
+		MemberLevel("Highest median level", "Highest Levels", CMProps.Str.CLANTROPLVL, 'H'),
+		PlayerMinutes("Most player time", "Most Playing", CMProps.Str.CLANTROPPTIME, 'T'),
+		PlayerLevelsGained("Most player Levels", "Most Levels", CMProps.Str.CLANTROPPLVL, 'L'),
+		MonthlyPlayerMinutes("Most player time last month", "Player Time", CMProps.Str.CLANTROPMONTHLYPTIME, 't'),
+		MonthlyPlayerXP("Most player xp last month", "Monthly Player XP", CMProps.Str.CLANTROPMONTHLYPXP, 'e'),
+		MonthlyClanXP("Most clan xp last month", "Monthly Clan XP", CMProps.Str.CLANTROPMONTHLYEXP, 'x'),
+		MonthlyConquests("Most conquests last month", "Monthly Conquests", CMProps.Str.CLANTROPMONTHLYAREA, 'a'),
+		MonthlyClanLevels("Most clan levels last month", "Monthly Clan Levels", CMProps.Str.CLANTROPMONTHLYLVLS, 'l'),
+		MonthlyControlPoints("Most control points last month", "Monthly Control Points", CMProps.Str.CLANTROPMONTHLYCP, 'c'),
+		MonthlyNewMembers("Most new members last month", "Most New Members",CMProps.Str.CLANTROPMONTHLYMB, 'm'),
 		;
 		public final String description;
 		public final String codeString;
 		public final CMProps.Str propertyCode;
-		private Trophy(final String desc, final String codeName, final CMProps.Str cd)
+		public final char shortChar;
+		private Trophy(final String desc, final String codeName, final CMProps.Str cd, final char shortChar)
 		{
 			this.description=desc;
 			this.codeString=codeName;
 			this.propertyCode = cd;
+			this.shortChar = shortChar;
 		}
 
 		public boolean isEnabled()

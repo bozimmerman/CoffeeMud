@@ -74,7 +74,7 @@ public class ClanList extends StdCommand
 				for(final Trophy t : Trophy.values())
 				{
 					if(CMath.bset(thisClan.getTrophies(),t.flagNum()))
-						trophySet.append(t.codeString.charAt(0));
+						trophySet.append(t.shortChar);
 				}
 			}
 
