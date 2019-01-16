@@ -225,8 +225,9 @@ public class RequestHandler implements CMRunnable
 								buffer.position(i + containIndexLength);
 							if (buffer.remaining() > 0)
 							{
-								buffer = ByteBuffer.allocate(BUFFER_SIZE);
-								buffer.put(buffer);
+								final ByteBuffer newBuffer = ByteBuffer.allocate(BUFFER_SIZE);
+								newBuffer.put(buffer);
+								buffer = newBuffer;
 								i = -1;
 							}
 							else
