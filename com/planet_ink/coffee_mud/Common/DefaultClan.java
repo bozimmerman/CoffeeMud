@@ -1056,7 +1056,10 @@ public class DefaultClan implements Clan
 				if(CMath.bset(getTrophies(),t.flagNum()))
 				{
 					msg.append(t.codeString+" ");
-					msg.append("(").append(this.getTrophyData(t)).append(") ");
+					if(t.name().toUpperCase().indexOf("MONTHLY")<0)
+						msg.append("(").append(this.getTrophyData(t)).append(") ");
+					else
+						msg.append(":");
 					msg.append(L(" Prize: @x1\n\r",CMLib.clans().translatePrize(t)));
 				}
 			}
