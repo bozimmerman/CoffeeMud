@@ -102,6 +102,7 @@ public class ClanList extends StdCommand
 			switch(thisClan.getStatus())
 			{
 			case Clan.CLANSTATUS_FADING:
+			case Clan.CLANSTATUS_STAGNANT:
 				status=L("Inactive");
 				break;
 			case Clan.CLANSTATUS_PENDING:

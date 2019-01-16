@@ -1811,6 +1811,8 @@ public class Clans extends StdLibrary implements ClanManager
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
+					if(C.getTrophyData(Trophy.MonthlyPlayerMinutes)==0)
+						C.setStatus(Clan.CLANSTATUS_STAGNANT);
 					C.resetMonthlyTrophyData();
 				}
 			}

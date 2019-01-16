@@ -3749,6 +3749,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return LoginResult.NO_LOGIN;
 		mob.bringToLife(startRoom,resetStats);
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
+		for(final Pair<Clan,Integer> p : mob.clans())
+		{
+			final Clan C=p.first;
+			if(C.getStatus() == Clan.CLANSTATUS_STAGNANT)
+				C.setStatus(Clan.CLANSTATUS_ACTIVE);
+		}
 		mob.location().showOthers(mob,startRoom,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<S-NAME> appears!"));
 		for(int f=0;f<mob.numFollowers();f++)
 		{

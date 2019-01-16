@@ -973,11 +973,14 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public static final int CLANSTATUS_PENDING=1;
 	/** constant for the getStatus() method, denoting fading status. @see Clan#getStatus() .*/
 	public static final int CLANSTATUS_FADING=2;
+	/** constant for the getStatus() method, denoting stagnant status. @see Clan#getStatus() .*/
+	public static final int CLANSTATUS_STAGNANT=3;
 	/** constant descriptor strings for the CLANSTATUS_* constants, ordered by their value. @see Clan .*/
 	public static final String[] CLANSTATUS_DESC={
 		"ACTIVE",
 		"PENDING",
-		"FADING"
+		"FADING",
+		"STAGNANT"
 	};
 
 	/** constant for getClanRelations method, denoting neutral status towards. @see Clan#getClanRelations(String) */

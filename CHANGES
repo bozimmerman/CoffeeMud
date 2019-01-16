@@ -25,6 +25,7 @@
   24. Clans friendly/ally with each other gain certain home privileges in each others clan halls.
   25. Faithhelper, Racehelper, Alignhelper, and Playerhelper all now support max combatants argument.
   26. Eight new Clan Trophies added, including several Monthly awards. Check the INI file changes!
+  27. Clans with no activity in the previous month will go into an informative Stagnant/Inactive status.
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

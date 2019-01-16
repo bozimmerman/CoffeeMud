@@ -10007,6 +10007,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			C.setStatus(Clan.CLANSTATUS_ACTIVE);
 			mob.tell(L("Clan '@x1' has been changed from fading to active!",C.name()));
 			break;
+		case Clan.CLANSTATUS_STAGNANT:
+			C.setStatus(Clan.CLANSTATUS_ACTIVE);
+			mob.tell(L("Clan '@x1' has been changed from stagnant to active!",C.name()));
+			break;
 		default:
 			mob.tell(L("Clan '@x1' has not been changed!",C.name()));
 			break;
