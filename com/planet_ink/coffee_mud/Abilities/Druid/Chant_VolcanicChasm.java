@@ -79,12 +79,15 @@ public class Chant_VolcanicChasm extends Chant
 		{
 			hasTicked=true;
 			final Room R=(Room)affected;
+			final Set<MOB> grp=(invoker()!=null) ? invoker().getGroupMembers(new HashSet<MOB>()) : new TreeSet<MOB>();
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				final MOB M=R.fetchInhabitant(i);
 				if((M!=null)
-				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE))
-				&&((invoker==null)||(invoker.mayIFight(M))))
+				&&(invoker()!=M)
+				&&((invoker()==null)||(invoker().mayIFight(M)))
+				&&(!grp.contains(M))
+				&&(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
 				{
 					final MOB invoker=(invoker()!=null) ? invoker() : M;
 					CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*getXLEVELLevel(invoker())),1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_MELTING,L("The extreme heat <DAMAGES> <T-NAME>!"));
@@ -173,12 +176,14 @@ public class Chant_VolcanicChasm extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
+					final Set<MOB> grp=mob.getGroupMembers(new HashSet<MOB>());
 					for(int i=0;i<target.numInhabitants();i++)
 					{
 						final MOB M=target.fetchInhabitant(i);
 						if((M!=null)
 						&&(mob!=M)
-						&&(mob.mayIFight(M)))
+						&&(mob.mayIFight(M))
+						&&(!grp.contains(M)))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Flames and sulfurous steam leap from cracks opening around you!"));

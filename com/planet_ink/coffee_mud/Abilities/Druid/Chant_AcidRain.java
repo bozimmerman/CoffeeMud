@@ -96,15 +96,21 @@ public class Chant_AcidRain extends Chant
 		{
 			final Room R=(Room)affected;
 			if(isRaining(R))
-			for(int i=0;i<R.numInhabitants();i++)
 			{
-				final MOB M=R.fetchInhabitant(i);
-				if(M!=null)
+				final Set<MOB> grp=(invoker()!=null) ? invoker().getGroupMembers(new HashSet<MOB>()) : new TreeSet<MOB>();
+				for(int i=0;i<R.numInhabitants();i++)
 				{
-					final MOB invoker=(invoker()!=null) ? invoker() : M;
-					if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_ACID))
-						CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*getXLEVELLevel(invoker())),1),CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,L("The acid rain <DAMAGE> <T-NAME>!"));
-					CMLib.combat().postRevengeAttack(M, invoker);
+					final MOB M=R.fetchInhabitant(i);
+					if((M!=null)
+					&&(invoker()!=M)
+					&&((invoker()==null)||(invoker().mayIFight(M)))
+					&&(!grp.contains(M)))
+					{
+						final MOB invoker=(invoker()!=null) ? invoker() : M;
+						if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_ACID))
+							CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*getXLEVELLevel(invoker())),1),CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,L("The acid rain <DAMAGE> <T-NAME>!"));
+						CMLib.combat().postRevengeAttack(M, invoker);
+					}
 				}
 			}
 		}
@@ -147,10 +153,14 @@ public class Chant_AcidRain extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
+					final Set<MOB> grp=mob.getGroupMembers(new HashSet<MOB>());
 					for(int i=0;i<target.numInhabitants();i++)
 					{
 						final MOB M=target.fetchInhabitant(i);
-						if((M!=null)&&(mob!=M))
+						if((M!=null)
+						&&(mob!=M)
+						&&(mob.mayIFight(M))
+						&&(!grp.contains(M)))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Acid rain starts pouring from the sky!"));

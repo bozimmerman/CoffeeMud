@@ -80,12 +80,16 @@ public class Chant_MagneticEarth extends Chant
 		if((affected!=null)&&(affected instanceof Room))
 		{
 			final Room R=(Room)affected;
-			final Vector<Item> toGo=new Vector<Item>();
+			final List<Item> toGo=new ArrayList<Item>(1);
 			boolean didSomething=false;
+			final Set<MOB> grp=(invoker()!=null) ? invoker().getGroupMembers(new HashSet<MOB>()) : new TreeSet<MOB>();
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				final MOB M=R.fetchInhabitant(m);
-				if((M!=null)&&(M!=invoker))
+				if((M!=null)
+				&&(invoker()!=M)
+				&&((invoker()==null)||(invoker().mayIFight(M)))
+				&&(!grp.contains(M)))
 				{
 					toGo.clear();
 					for(int i=0;i<M.numItems();i++)
@@ -100,11 +104,11 @@ public class Chant_MagneticEarth extends Chant
 						   ||I.amWearingAt(Wearable.WORN_WIELD)
 						   ||I.amWearingAt(Wearable.WORN_EYES)
 						   ||I.amWearingAt(Wearable.WORN_MOUTH)))
-							toGo.addElement(I);
+							toGo.add(I);
 					}
 					for(int i=0;i<toGo.size();i++)
 					{
-						final Item I=toGo.elementAt(i);
+						final Item I=toGo.get(i);
 						if(CMLib.commands().postDrop(M,I,true,true,false))
 						{
 							didSomething=true;
@@ -187,10 +191,14 @@ public class Chant_MagneticEarth extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
+					final Set<MOB> grp=mob.getGroupMembers(new HashSet<MOB>());
 					for(int i=0;i<target.numInhabitants();i++)
 					{
 						final MOB M=target.fetchInhabitant(i);
-						if((M!=null)&&(mob!=M))
+						if((M!=null)
+						&&(mob!=M)
+						&&(mob.mayIFight(M))
+						&&(!grp.contains(M)))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The ground gains a powerful magnetic field!"));

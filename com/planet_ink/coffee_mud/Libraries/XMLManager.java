@@ -419,16 +419,30 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public String parseOutAngleBrackets(String s)
 	{
 		int x=s.indexOf('<');
-		while(x>=0)
+		if(x>=0)
 		{
-			s=s.substring(0,x)+"&lt;"+s.substring(x+1);
-			x=s.indexOf('<');
+			final StringBuilder str=new StringBuilder("");
+			for(int i=0;i<s.length();i++)
+			{
+				if(s.charAt(i)=='<')
+					str.append("&lt;");
+				else
+					str.append(s.charAt(i));
+			}
+			s=str.toString();
 		}
 		x=s.indexOf('>');
-		while(x>=0)
+		if(x>=0)
 		{
-			s=s.substring(0,x)+"&gt;"+s.substring(x+1);
-			x=s.indexOf('>');
+			final StringBuilder str=new StringBuilder("");
+			for(int i=0;i<s.length();i++)
+			{
+				if(s.charAt(i)=='>')
+					str.append("&gt;");
+				else
+					str.append(s.charAt(i));
+			}
+			s=str.toString();
 		}
 		return s;
 	}
@@ -437,22 +451,43 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public String parseOutAngleBracketsAndQuotes(String s)
 	{
 		int x=s.indexOf('<');
-		while(x>=0)
+		if(x>=0)
 		{
-			s=s.substring(0,x)+"&lt;"+s.substring(x+1);
-			x=s.indexOf('<');
+			final StringBuilder str=new StringBuilder("");
+			for(int i=0;i<s.length();i++)
+			{
+				if(s.charAt(i)=='<')
+					str.append("&lt;");
+				else
+					str.append(s.charAt(i));
+			}
+			s=str.toString();
 		}
 		x=s.indexOf('>');
-		while(x>=0)
+		if(x>=0)
 		{
-			s=s.substring(0,x)+"&gt;"+s.substring(x+1);
-			x=s.indexOf('>');
+			final StringBuilder str=new StringBuilder("");
+			for(int i=0;i<s.length();i++)
+			{
+				if(s.charAt(i)=='>')
+					str.append("&gt;");
+				else
+					str.append(s.charAt(i));
+			}
+			s=str.toString();
 		}
 		x=s.indexOf('\"');
-		while(x>=0)
+		if(x>=0)
 		{
-			s=s.substring(0,x)+"&quot;"+s.substring(x+1);
-			x=s.indexOf('\"');
+			final StringBuilder str=new StringBuilder("");
+			for(int i=0;i<s.length();i++)
+			{
+				if(s.charAt(i)=='\"')
+					str.append("&quot;");
+				else
+					str.append(s.charAt(i));
+			}
+			s=str.toString();
 		}
 		return s;
 	}

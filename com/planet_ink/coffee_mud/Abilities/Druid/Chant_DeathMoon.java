@@ -217,6 +217,7 @@ public class Chant_DeathMoon extends Chant
 						final MOB M=target.fetchInhabitant(i);
 						if((M!=null)
 						&&(mob!=M)
+						&&(mob.mayIFight(M))
 						&&(!grp.contains(M)))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
