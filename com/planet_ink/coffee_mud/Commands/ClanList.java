@@ -56,8 +56,8 @@ public class ClanList extends StdCommand
 		head.append("^x[");
 		head.append(CMStrings.padRight(L("Clan Name"),30)+"| ");
 		head.append(CMStrings.padRight(L("Type"),10)+"| ");
-		head.append(CMStrings.padRight(L("Status"),7)+"| ");
-		head.append(CMStrings.padRight(L("Members"),7));
+		head.append(CMStrings.padRight(L("#"),4)+"| ");
+		head.append(CMStrings.padRight(L("Status"),14));
 		if(trophySystemActive)
 			head.append(" | "+CMStrings.padRight(L("Trophies"),8));
 		head.append("]^.^? \n\r");
@@ -74,7 +74,15 @@ public class ClanList extends StdCommand
 				for(final Trophy t : Trophy.values())
 				{
 					if(CMath.bset(thisClan.getTrophies(),t.flagNum()))
+					{
+						if(trophySet.length()>6)
+						{
+							trophySet.append('+');
+							break;
+						}
+						else
 						trophySet.append(t.shortChar);
+					}
 				}
 			}
 
@@ -98,19 +106,24 @@ public class ClanList extends StdCommand
 					}
 				}
 			}
-			String status=L((war)?"At War":"Active");
+			String status = war?"^r":"^g";
 			switch(thisClan.getStatus())
 			{
 			case Clan.CLANSTATUS_FADING:
 			case Clan.CLANSTATUS_STAGNANT:
-				status=L("Inactive");
+				status+=L("Inactive");
 				break;
 			case Clan.CLANSTATUS_PENDING:
-				status=L("Pending");
+				status+=L("Pending");
 				break;
+			default:
+				status+=L("Active");
 			}
-			msg.append(CMStrings.padRight(status,7)+"  ");
-			msg.append(CMStrings.padRight(Integer.toString(thisClan.getSize()),7)+"   ");
+			if(war)
+				status += " (War)";
+			status += "^N";
+			msg.append(CMStrings.padRight(Integer.toString(thisClan.getSize()),4)+"  ");
+			msg.append(CMStrings.padRight(status,14)+"  ");
 			msg.append(trophySet);
 			msg.append("\n\r");
 		}
