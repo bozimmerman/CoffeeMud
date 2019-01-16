@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
@@ -387,17 +388,59 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * The bitmap is made up of TROPHY_* constants.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setTrophies(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#bumpTrophyData(Trophy, int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getTrophyData(Trophy)
+	 *
 	 * @return a bitmap of the trophies
 	 */
 	public int getTrophies();
 	/**
 	 * Sets a bitmap representing the trophies won by this
 	 * The bitmap is made up of TROPHY_* constants.
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getTrophies()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#bumpTrophyData(Trophy, int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getTrophyData(Trophy)
+	 *
 	 * @param trophyFlag a bitmap of the trophies
 	 */
 	public void setTrophies(int trophyFlag);
+
+	/**
+	 * Resets the monthly trophy counters for this clan.  This should
+	 * be done once per month.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getTrophies()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setTrophies(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#bumpTrophyData(Trophy, int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getTrophyData(Trophy)
+	 */
+	public void resetMonthlyTrophyData();
+
+	/**
+	 * Returns the trophy counter for the given Trophy constant.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getTrophies()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setTrophies(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#bumpTrophyData(Trophy, int)
+	 *
+	 * @param trophy the trophy to get counter data for
+	 * @return the counter for the trophy
+	 */
+	public long getTrophyData(final Trophy trophy);
+
+	/**
+	 * Bumps the given trophy counter the given amount.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getTrophies()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setTrophies(int)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#bumpTrophyData(Trophy, int)
+	 *
+	 * @param trophy the trophy to bump counter data for
+	 * @param amt the amount, positive or negative, to bump it by
+	 */
+	public void bumpTrophyData(final Trophy trophy, final int amt);
 
 	/**
 	 * Returns the roomID of this clans donation room
@@ -980,19 +1023,35 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public static enum Trophy
 	{
-		Points("Most control points","Control Points"),
-		Experience("Most clan experience","Experience"),
-		Areas("Most controlled areas","Areas Controlled"),
-		PlayerKills("Most rival player-kills","PlayerKills"),
-		Members("Most members","Most Members"),
-		MemberLevel("Highest median level","Highest Levels")
+		Points("Most control points", "Control Points", CMProps.Str.CLANTROPCP),
+		Experience("Most clan experience", "Experience", CMProps.Str.CLANTROPEXP),
+		Areas("Most controlled areas", "Areas Controlled", CMProps.Str.CLANTROPAREA),
+		PlayerKills("Most rival player-kills", "PlayerKills", CMProps.Str.CLANTROPPK),
+		Members("Most members", "Most Members", CMProps.Str.CLANTROPMB),
+		MemberLevel("Highest median level", "Highest Levels", CMProps.Str.CLANTROPLVL),
+		PlayerMinutes("Most player time", "Most Playing", CMProps.Str.CLANTROPPTIME),
+		PlayerLevelsGained("Most player Levels", "Most Levels", CMProps.Str.CLANTROPPLVL),
+		MonthlyPlayerMinutes("Most player time last month", "Player Time", CMProps.Str.CLANTROPMONTHLYPTIME),
+		MonthlyPlayerXP("Most player xp last month", "Monthly Player XP", CMProps.Str.CLANTROPMONTHLYPXP),
+		MonthlyClanXP("Most clan xp last month", "Monthly Clan XP", CMProps.Str.CLANTROPMONTHLYEXP),
+		MonthlyConquests("Most conquests last month", "Monthly Conquests", CMProps.Str.CLANTROPMONTHLYAREA),
+		MonthlyClanLevels("Most clan levels last month", "Monthly Clan Levels", CMProps.Str.CLANTROPMONTHLYLVLS),
+		MonthlyControlPoints("Most control points last month", "Monthly Control Points", CMProps.Str.CLANTROPMONTHLYCP),
+		MonthlyNewMembers("Most new members last month", "Most New Members",CMProps.Str.CLANTROPMONTHLYMB),
 		;
 		public final String description;
 		public final String codeString;
-		private Trophy(final String desc, final String codeName)
+		public final CMProps.Str propertyCode;
+		private Trophy(final String desc, final String codeName, final CMProps.Str cd)
 		{
 			this.description=desc;
 			this.codeString=codeName;
+			this.propertyCode = cd;
+		}
+
+		public boolean isEnabled()
+		{
+			return CMProps.getVar(propertyCode).length()>0;
 		}
 
 		public int flagNum()

@@ -1365,11 +1365,11 @@ public class StdRoom implements Room
 					int y;
 					if(code == VariationCode.MASK)
 					{
-						int x=text.indexOf('>',aligatorDex+1);
-						int z=text.indexOf(' ',aligatorDex+1);
+						final int x=text.indexOf('>',aligatorDex+1);
+						final int z=text.indexOf(' ',aligatorDex+1);
 						if((z<0)||(x<0)||(z>x))
 							break;
-						String openTag="<"+text.substring(aligatorDex+1,z)+">";
+						final String openTag="<"+text.substring(aligatorDex+1,z)+">";
 						y=text.indexOf("</"+openTag.substring(1),x);
 						if(y<0)
 						{

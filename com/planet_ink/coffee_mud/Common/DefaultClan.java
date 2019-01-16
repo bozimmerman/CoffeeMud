@@ -74,6 +74,7 @@ public class DefaultClan implements Clan
 	protected String				lastClanKillRecord		= null;
 	protected double				taxRate					= 0.0;
 	protected volatile long			exp						= 0;
+	protected volatile long			lastClanTickMs			= System.currentTimeMillis();
 	protected Object				expSync					= new Object();
 	protected List<ClanVote>		voteList				= null;
 	protected List<Long>			clanKills				= new Vector<Long>();
@@ -200,25 +201,131 @@ public class DefaultClan implements Clan
 	}
 
 	@Override
+	public void resetMonthlyTrophyData()
+	{
+		monthOnlineMins = 0;
+		monthPlayerXP = 0;
+		monthClanXP = 0;
+		monthConquered = 0;
+		monthClanLevels = 0;
+		monthControlPoints = 0;
+		monthNewMembers = 0;
+	}
+
+	@Override
+	public long getTrophyData(final Trophy trophy)
+	{
+		switch(trophy)
+		{
+		case MonthlyPlayerMinutes:
+			return monthOnlineMins;
+		case MonthlyPlayerXP:
+			return monthPlayerXP;
+		case MonthlyClanXP:
+			return monthClanXP;
+		case MonthlyConquests:
+			return monthConquered;
+		case MonthlyClanLevels:
+			return monthClanLevels;
+		case MonthlyControlPoints:
+			return monthControlPoints;
+		case MonthlyNewMembers:
+			return monthNewMembers;
+		case Points:
+			return calculateMapPoints();
+		case Experience:
+			return exp;
+		case  Areas:
+			return getControlledAreas().size();
+		case PlayerKills:
+			return getCurrentClanKills(null);
+		case Members:
+			return getSize();
+		case MemberLevel:
+			return filterMedianLevel(getFullMemberList());
+		case PlayerMinutes:
+			return totalOnlineMins;
+		case PlayerLevelsGained:
+			return totalLevelsGained;
+		default:
+			return 0;
+		}
+	}
+
+	@Override
+	public void bumpTrophyData(final Trophy trophy, final int amt)
+	{
+		switch(trophy)
+		{
+		case MonthlyPlayerMinutes:
+			monthOnlineMins += amt;
+			break;
+		case MonthlyPlayerXP:
+			monthPlayerXP += amt;
+			break;
+		case MonthlyClanXP:
+			monthClanXP += amt;
+			break;
+		case MonthlyConquests:
+			monthConquered += amt;
+			break;
+		case MonthlyClanLevels:
+			monthClanLevels += amt;
+			break;
+		case MonthlyControlPoints:
+			monthControlPoints += amt;
+			break;
+		case MonthlyNewMembers:
+			monthNewMembers += amt;
+			break;
+		case Points:
+			// derived
+			break;
+		case Experience:
+			this.exp += amt;
+			break;
+		case  Areas:
+			// derived
+			break;
+		case PlayerKills:
+			// derived from member records
+			break;
+		case Members:
+			// derived from member records
+			break;
+		case  MemberLevel:
+			// derived from mob records of member records
+			break;
+		case PlayerMinutes:
+			totalOnlineMins += amt;
+			break;
+		case PlayerLevelsGained:
+			totalLevelsGained += amt;
+			break;
+		}
+	}
+
+	@Override
 	public void updateVotes()
 	{
-		final StringBuffer str=new StringBuffer("");
+		final XMLLibrary xml=CMLib.xml();
+		final StringBuilder str=new StringBuilder("");
 		for(final Enumeration<ClanVote> e=votes();e.hasMoreElements();)
 		{
 			final ClanVote CV=e.nextElement();
-			str.append(CMLib.xml().convertXMLtoTag("BY",CV.voteStarter));
-			str.append(CMLib.xml().convertXMLtoTag("FUNC",CV.function));
-			str.append(CMLib.xml().convertXMLtoTag("ON",""+CV.voteStarted));
-			str.append(CMLib.xml().convertXMLtoTag("STATUS",""+CV.voteStatus));
-			str.append(CMLib.xml().convertXMLtoTag("CMD",CV.matter));
+			str.append(xml.convertXMLtoTag("BY",CV.voteStarter));
+			str.append(xml.convertXMLtoTag("FUNC",CV.function));
+			str.append(xml.convertXMLtoTag("ON",""+CV.voteStarted));
+			str.append(xml.convertXMLtoTag("STATUS",""+CV.voteStatus));
+			str.append(xml.convertXMLtoTag("CMD",CV.matter));
 			if((CV.votes!=null)&&(CV.votes.size()>0))
 			{
 				str.append("<VOTES>");
 				for(int v=0;v<CV.votes.size();v++)
 				{
 					str.append("<VOTE>");
-					str.append(CMLib.xml().convertXMLtoTag("BY",CV.votes.getFirst(v)));
-					str.append(CMLib.xml().convertXMLtoTag("YN",CV.votes.getSecond(v).toString()));
+					str.append(xml.convertXMLtoTag("BY",CV.votes.getFirst(v)));
+					str.append(xml.convertXMLtoTag("YN",CV.votes.getSecond(v).toString()));
 					str.append("</VOTE>");
 				}
 				str.append("</VOTES>");
@@ -373,6 +480,7 @@ public class DefaultClan implements Clan
 		if(voteList==null)
 		{
 			final List<PlayerData> V=CMLib.database().DBReadPlayerData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
+			final XMLLibrary xmlLib=CMLib.xml();
 			voteList=new Vector<ClanVote>();
 			for(int v=0;v<V.size();v++)
 			{
@@ -380,25 +488,25 @@ public class DefaultClan implements Clan
 				final String rawxml=V.get(v).xml();
 				if(rawxml.trim().length()==0)
 					return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
-				final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(rawxml);
+				final List<XMLLibrary.XMLTag> xml=xmlLib.parseAllXML(rawxml);
 				if(xml==null)
 				{
 					Log.errOut("Clans","Unable to parse: "+rawxml);
 					return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
 				}
-				final List<XMLLibrary.XMLTag> voteData=CMLib.xml().getContentsFromPieces(xml,"BALLOTS");
+				final List<XMLLibrary.XMLTag> voteData=xmlLib.getContentsFromPieces(xml,"BALLOTS");
 				if(voteData==null)
 				{
 					Log.errOut("Clans","Unable to get BALLOTS data.");
 					return new IteratorEnumeration<Clan.ClanVote>(voteList.iterator());
 				}
-				CV.voteStarter=CMLib.xml().getValFromPieces(voteData,"BY");
-				CV.voteStarted=CMLib.xml().getLongFromPieces(voteData,"ON");
-				CV.function=CMLib.xml().getIntFromPieces(voteData,"FUNC");
-				CV.voteStatus=CMLib.xml().getIntFromPieces(voteData,"STATUS");
-				CV.matter=CMLib.xml().getValFromPieces(voteData,"CMD");
+				CV.voteStarter=xmlLib.getValFromPieces(voteData,"BY");
+				CV.voteStarted=xmlLib.getLongFromPieces(voteData,"ON");
+				CV.function=xmlLib.getIntFromPieces(voteData,"FUNC");
+				CV.voteStatus=xmlLib.getIntFromPieces(voteData,"STATUS");
+				CV.matter=xmlLib.getValFromPieces(voteData,"CMD");
 				CV.votes=new PairVector<String,Boolean>();
-				final List<XMLLibrary.XMLTag> xV=CMLib.xml().getContentsFromPieces(voteData,"VOTES");
+				final List<XMLLibrary.XMLTag> xV=xmlLib.getContentsFromPieces(voteData,"VOTES");
 				if((xV!=null)&&(xV.size()>0))
 				{
 					for(int x=0;x<xV.size();x++)
@@ -448,6 +556,7 @@ public class DefaultClan implements Clan
 				while(exp > nextLevelXP)
 				{
 					setClanLevel(getClanLevel()+1);
+					bumpTrophyData(Trophy.MonthlyClanLevels, 1);
 					clanAnnounce(""+getGovernmentName()+" "+name()+" has attained clan level "+getClanLevel()+"!");
 					update();
 					nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
@@ -474,6 +583,8 @@ public class DefaultClan implements Clan
 		if (howMuch != 0)
 		{
 			setExp(getExp() + howMuch);
+			if(howMuch > 0)
+				bumpTrophyData(Trophy.MonthlyClanXP, howMuch);
 			if(memberM != null)
 				CMLib.database().DBUpdateClanDonates(this.clanID(), memberM.Name(), 0, howMuch);
 		}
@@ -639,6 +750,7 @@ public class DefaultClan implements Clan
 		M.setClan(clanID(),role);
 		CMLib.database().DBUpdateClanMembership(M.Name(), clanID(), role);
 		updateClanPrivileges(M);
+		bumpTrophyData(Trophy.MonthlyNewMembers, 1);
 	}
 
 	@Override
@@ -785,7 +897,7 @@ public class DefaultClan implements Clan
 	public String getDetail(final MOB mob)
 	{
 		final int COLBL_WIDTH=CMLib.lister().fixColWidth(16.0,mob);
-		final StringBuffer msg=new StringBuffer("");
+		final StringBuilder msg=new StringBuilder("");
 		final Pair<Clan,Integer> mobClanRole=(mob!=null)?(mob.getClanRole(clanID())):null;
 		final boolean member=(mob!=null)
 							&&(mobClanRole!=null)
@@ -904,11 +1016,10 @@ public class DefaultClan implements Clan
 						  +":^.^N "+crewList(members, pos.getRoleID())+"\n\r");
 			}
 		}
-		final Vector<String> control=new Vector<String>();
+		final List<String> control=new ArrayList<String>();
 		final List<Area> controlledAreas=getControlledAreas();
-		final long controlPoints=calculateMapPoints(controlledAreas);
 		for(final Area A : controlledAreas)
-			control.addElement(A.name());
+			control.add(A.name());
 		if(control.size()>0)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
@@ -923,7 +1034,7 @@ public class DefaultClan implements Clan
 					msg.append("\n\r");
 					col=1;
 				}
-				final Area A=CMLib.map().getArea(control.elementAt(i));
+				final Area A=CMLib.map().getArea(control.get(i));
 				if(A!=null)
 				{
 					final LegalBehavior B=CMLib.law().getLegalBehavior(A);
@@ -945,29 +1056,7 @@ public class DefaultClan implements Clan
 				if(CMath.bset(getTrophies(),t.flagNum()))
 				{
 					msg.append(t.codeString+" ");
-					switch(t)
-					{
-					case Areas:
-						msg.append("(" + control.size() + ") ");
-						break;
-					case Points:
-						msg.append("(" + controlPoints + ") ");
-						break;
-					case Experience:
-						msg.append("(" + getExp() + ") ");
-						break;
-					case Members:
-						msg.append("(" + members.size() + ") ");
-						break;
-					case PlayerKills:
-						msg.append("(" + getCurrentClanKills(null) + ") ");
-						break;
-					case MemberLevel:
-					{
-						msg.append("(" + filterMedianLevel(getFullMemberList()) + ") ");
-						break;
-					}
-					}
+					msg.append("(").append(this.getTrophyData(t)).append(") ");
 					msg.append(L(" Prize: @x1\n\r",CMLib.clans().translatePrize(t)));
 				}
 			}
@@ -1052,7 +1141,7 @@ public class DefaultClan implements Clan
 	{
 		if((oldMask==null)||(oldMask.trim().length()==0))
 			return "";
-		final StringBuffer mask=new StringBuffer(oldMask.trim());
+		final StringBuilder mask=new StringBuilder(oldMask.trim());
 		if(mask.length()==0)
 			return "";
 		final MOB M=getResponsibleMember();
@@ -1195,21 +1284,24 @@ public class DefaultClan implements Clan
 	@Override
 	public String getDataXML()
 	{
-		final StringBuffer str=new StringBuffer("");
+		final StringBuilder str=new StringBuilder("");
+		final XMLLibrary xmlLib=CMLib.xml();
 		str.append("<POLITICS>");
-		str.append(CMLib.xml().convertXMLtoTag("GOVERNMENT",""+getGovernmentID()));
-		str.append(CMLib.xml().convertXMLtoTag("TAXRATE",""+getTaxes()));
-		str.append(CMLib.xml().convertXMLtoTag("EXP",""+getExp()));
-		str.append(CMLib.xml().convertXMLtoTag("LEVEL",""+getClanLevel()));
-		str.append(CMLib.xml().convertXMLtoTag("CCLASS",""+getClanClass()));
-		str.append(CMLib.xml().convertXMLtoTag("AUTOPOS",""+getAutoPosition()));
-		str.append(CMLib.xml().convertXMLtoTag("LASTSTATUSCHANGE",""+this.lastStatusChange));
+		str.append(xmlLib.convertXMLtoTag("GOVERNMENT",""+getGovernmentID()));
+		str.append(xmlLib.convertXMLtoTag("TAXRATE",""+getTaxes()));
+		str.append(xmlLib.convertXMLtoTag("EXP",""+getExp()));
+		str.append(xmlLib.convertXMLtoTag("ONLINEMINS",""+totalOnlineMins));
+		str.append(xmlLib.convertXMLtoTag("LVLSGAINED",""+totalLevelsGained));
+		str.append(xmlLib.convertXMLtoTag("LEVEL",""+getClanLevel()));
+		str.append(xmlLib.convertXMLtoTag("CCLASS",""+getClanClass()));
+		str.append(xmlLib.convertXMLtoTag("AUTOPOS",""+getAutoPosition()));
+		str.append(xmlLib.convertXMLtoTag("LASTSTATUSCHANGE",""+this.lastStatusChange));
 		if(clanCategory!=null)
-			str.append(CMLib.xml().convertXMLtoTag("CATE",clanCategory));
+			str.append(xmlLib.convertXMLtoTag("CATE",clanCategory));
 		if(overrideMinClanMembers!=null)
-			str.append(CMLib.xml().convertXMLtoTag("MINM",overrideMinClanMembers.toString()));
+			str.append(xmlLib.convertXMLtoTag("MINM",overrideMinClanMembers.toString()));
 		if(isRivalrous!=null)
-			str.append(CMLib.xml().convertXMLtoTag("RIVAL",isRivalrous.toString()));
+			str.append(xmlLib.convertXMLtoTag("RIVAL",isRivalrous.toString()));
 		if(relations.size()==0)
 			str.append("<RELATIONS/>");
 		else
@@ -1219,61 +1311,91 @@ public class DefaultClan implements Clan
 			{
 				final String key=e.next();
 				str.append("<RELATION>");
-				str.append(CMLib.xml().convertXMLtoTag("CLAN",key));
+				str.append(xmlLib.convertXMLtoTag("CLAN",key));
 				final long[] i=relations.get(key);
-				str.append(CMLib.xml().convertXMLtoTag("STATUS",""+i[0]));
+				str.append(xmlLib.convertXMLtoTag("STATUS",""+i[0]));
 				str.append("</RELATION>");
 			}
 			str.append("</RELATIONS>");
 		}
 		str.append("</POLITICS>");
+		str.append(xmlLib.convertXMLtoTag("ONLINEMINS",""+totalOnlineMins));
+		str.append(xmlLib.convertXMLtoTag("LVLSGAINED",""+totalLevelsGained));
+		final StringBuilder monthlies = new StringBuilder();
+		monthlies.append(monthOnlineMins).append(",");
+		monthlies.append(monthPlayerXP).append(",");
+		monthlies.append(monthClanXP).append(",");
+		monthlies.append(monthConquered).append(",");
+		monthlies.append(monthClanLevels).append(",");
+		monthlies.append(monthControlPoints).append(",");
+		monthlies.append(monthNewMembers);
+		str.append(xmlLib.convertXMLtoTag("MONTHLYSTATS",monthlies.toString()));
+
 		return str.toString();
 	}
 
 	@Override
 	public void setDataXML(final String politics)
 	{
+		final XMLLibrary xmlLib=CMLib.xml();
 		XMLTag piece;
 		relations.clear();
 		government=0;
 		if(politics.trim().length()==0)
 			return;
-		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(politics);
+		final List<XMLLibrary.XMLTag> xml=xmlLib.parseAllXML(politics);
 		if(xml==null)
 		{
 			Log.errOut("Clans","Unable to parse: "+politics);
 			return;
 		}
-		final List<XMLLibrary.XMLTag> poliData=CMLib.xml().getContentsFromPieces(xml,"POLITICS");
+		final String monthlyData = xmlLib.getValFromPieces(xml, "MONTHLYSTATS");
+		final int[] data=CMParms.parseIntList(monthlyData, ',');
+		if((data != null)&&(data.length>6))
+		{
+			monthOnlineMins = data[0];
+			monthPlayerXP = data[1];
+			monthClanXP = data[2];
+			monthConquered = data[3];
+			monthClanLevels = data[4];
+			monthControlPoints = data[5];
+			monthNewMembers = data[6];
+		}
+		totalOnlineMins=xmlLib.getIntFromPieces(xml,"ONLINEMINS");
+		totalLevelsGained=xmlLib.getIntFromPieces(xml,"LVLSGAINED");
+
+
+
+		final List<XMLLibrary.XMLTag> poliData=xmlLib.getContentsFromPieces(xml,"POLITICS");
 		if(poliData==null)
 		{
 			Log.errOut("Clans","Unable to get POLITICS data.");
 			return;
 		}
-		government=CMLib.xml().getIntFromPieces(poliData,"GOVERNMENT");
-		exp=CMLib.xml().getLongFromPieces(poliData,"EXP");
-		setClanLevel(CMLib.xml().getIntFromPieces(poliData,"LEVEL"));
+		government=xmlLib.getIntFromPieces(poliData,"GOVERNMENT");
+		exp=xmlLib.getLongFromPieces(poliData,"EXP");
+		setClanLevel(xmlLib.getIntFromPieces(poliData,"LEVEL"));
 		setExp(exp); // may change the level
-		taxRate=CMLib.xml().getDoubleFromPieces(poliData,"TAXRATE");
-		clanClass=CMLib.xml().getValFromPieces(poliData,"CCLASS");
-		lastStatusChange=CMLib.xml().getLongFromPieces(poliData,"LASTSTATUSCHANGE");
+		taxRate=xmlLib.getDoubleFromPieces(poliData,"TAXRATE");
+		clanClass=xmlLib.getValFromPieces(poliData,"CCLASS");
+		lastStatusChange=xmlLib.getLongFromPieces(poliData,"LASTSTATUSCHANGE");
 
-		autoPosition=CMLib.xml().getIntFromPieces(poliData,"AUTOPOS");
+		autoPosition=xmlLib.getIntFromPieces(poliData,"AUTOPOS");
 		clanCategory=null;
-		piece=CMLib.xml().getPieceFromPieces(poliData, "CATE");
+		piece=xmlLib.getPieceFromPieces(poliData, "CATE");
 		if(piece!=null)
 			setCategory(piece.value());
 		overrideMinClanMembers=null;
-		piece=CMLib.xml().getPieceFromPieces(poliData, "MINM");
+		piece=xmlLib.getPieceFromPieces(poliData, "MINM");
 		if(piece!=null)
 			this.setMinClanMembers(CMath.s_int(piece.value()));
 		isRivalrous=null;
-		piece=CMLib.xml().getPieceFromPieces(poliData, "RIVAL");
+		piece=xmlLib.getPieceFromPieces(poliData, "RIVAL");
 		if(piece!=null)
 			setRivalrous(CMath.s_bool(piece.value()));
 
 		// now RESOURCES!
-		final List<XMLLibrary.XMLTag> xV=CMLib.xml().getContentsFromPieces(poliData,"RELATIONS");
+		final List<XMLLibrary.XMLTag> xV=xmlLib.getContentsFromPieces(poliData,"RELATIONS");
 		if((xV!=null)&&(xV.size()>0))
 		{
 			for(int x=0;x<xV.size();x++)
@@ -1622,6 +1744,7 @@ public class DefaultClan implements Clan
 		{
 			List<FullMemberRecord> members=getFullMemberList();
 			int activeMembers=0;
+			int onlineMembers=0;
 			final long deathMilis=CMProps.getIntVar(CMProps.Int.DAYSCLANDEATH)*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
 			final long overthrowMilis=CMProps.getIntVar(CMProps.Int.DAYSCLANOVERTHROW)*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
 			for(final FullMemberRecord member : members)
@@ -1629,7 +1752,15 @@ public class DefaultClan implements Clan
 				final long lastLogin=member.timestamp;
 				if(((System.currentTimeMillis()-lastLogin)<deathMilis)||(deathMilis==0))
 					activeMembers++;
+				final MOB M=CMLib.players().findPlayerOnline(member.name, true);
+				if(M!=null)
+					onlineMembers++;
 			}
+
+			final long ellapsedMs = System.currentTimeMillis() - this.lastClanTickMs;
+			final int playerMinutes = (int)((onlineMembers * ellapsedMs) / (1000 * 60));
+			bumpTrophyData(Trophy.MonthlyPlayerMinutes, playerMinutes);
+			bumpTrophyData(Trophy.PlayerMinutes, playerMinutes);
 
 			final int minimumMembers = getMinClanMembers();
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
@@ -2052,51 +2183,37 @@ public class DefaultClan implements Clan
 				changed=true;
 			}
 		}
-		for(final Trophy t : Trophy.values())
+		if(getTrophies() != 0)
 		{
-			if(CMath.bset(getTrophies(),t.flagNum()))
+			for(final Trophy t : Trophy.values())
 			{
-				String awardStr=null;
-				switch(t)
+				if(CMath.bset(getTrophies(),t.flagNum()))
 				{
-				case Areas:
-					awardStr = CMProps.getVar(CMProps.Str.CLANTROPAREA);
-					break;
-				case Points:
-					awardStr = CMProps.getVar(CMProps.Str.CLANTROPCP);
-					break;
-				case Experience:
-					awardStr = CMProps.getVar(CMProps.Str.CLANTROPEXP);
-					break;
-				case PlayerKills:
-					awardStr = CMProps.getVar(CMProps.Str.CLANTROPPK);
-					break;
-				case Members:
-					awardStr = CMProps.getVar(CMProps.Str.CLANTROPMB);
-					break;
-				case MemberLevel:
-					awardStr = CMProps.getVar(CMProps.Str.CLANTROPLVL);
-					break;
-				}
-				if(awardStr!=null)
-				{
-					int amount=0;
-					double pct=0.0;
-					final Vector<String> V=CMParms.parse(awardStr);
-					if(V.size()>=2)
+					final String awardStr=CMProps.getVar(t.propertyCode);
+					if((awardStr!=null)
+					&&(awardStr.length()>0))
 					{
-						final String type=V.lastElement().toUpperCase();
-						final String amt=V.firstElement();
-						if(amt.endsWith("%"))
-							pct=CMath.div(CMath.s_int(amt.substring(0,amt.length()-1)),100.0);
-						else
-							amount=CMath.s_int(amt);
-						if("EXPERIENCE".startsWith(type))
-							exp+=((int)Math.round(CMath.mul(exp,pct)))+amount;
+						int amount=0;
+						double pct=0.0;
+						final Vector<String> V=CMParms.parse(awardStr);
+						if(V.size()>=2)
+						{
+							final String type=V.lastElement().toUpperCase();
+							final String amt=V.firstElement();
+							if(amt.endsWith("%"))
+								pct=CMath.div(CMath.s_int(amt.substring(0,amt.length()-1)),100.0);
+							else
+								amount=CMath.s_int(amt);
+							if("EXPERIENCE".startsWith(type))
+								exp+=((int)Math.round(CMath.mul(exp,pct)))+amount;
+						}
 					}
 				}
 			}
 		}
+
+		bumpTrophyData(Trophy.MonthlyPlayerXP, exp);
+
 		if(changed)
 			update();
 		return exp;

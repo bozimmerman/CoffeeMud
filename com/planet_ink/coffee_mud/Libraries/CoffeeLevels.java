@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -783,6 +784,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				CMLib.commands().postChannel(channels2.get(i),mob.clans(),L("@x1 has just gained a level.",mob.Name()),true);
 			if(mob.soulMate()==null)
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LEVELSGAINED);
+			for(final Pair<Clan,Integer> p : mob.clans())
+				p.first.bumpTrophyData(Trophy.PlayerLevelsGained, 1);
 		}
 
 		int prac2Stat=mob.charStats().getStat(CharStats.STAT_WISDOM);

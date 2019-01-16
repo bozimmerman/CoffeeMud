@@ -138,7 +138,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 						commonEmote(mob,L("<S-NAME> mess(es) up crafting @x1.",buildingI.name()));
 						if(myClan!=null)
 						{
-							myClan.setExp(myClan.getExp()+expRequired);
+							myClan.adjExp(mob, expRequired);
 							myClan.update();
 						}
 					}
@@ -502,7 +502,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			final ClanCrafting CC=(ClanCrafting)mob.fetchEffect(ID());
 			if((CC!=null)&&(clanC!=null))
 			{
-				clanC.setExp(clanC.getExp()-expRequired);
+				clanC.adjExp(mob,-expRequired);
 				clanC.update();
 
 				CC.expRequired=expRequired;

@@ -423,7 +423,13 @@ public class Conquerable extends Arrest
 			if((S.mob()!=null)
 			&&(S.mob().location()!=null)
 			&&(area.inMyMetroArea(S.mob().location().getArea())))
-				S.println(L("@x1 @x2 control points.",clanID,(amount<0?"loses "+(-amount):"gains "+amount)));
+			{
+				if(amount > 0)
+					S.println(L("@x1 gains @x2 control points.",clanID,""+amount));
+				else
+				if(amount < 0)
+					S.println(L("@x1 Loses @x2 control points.",clanID,""+(-amount)));
+			}
 		}
 	}
 
@@ -1000,6 +1006,9 @@ public class Conquerable extends Arrest
 					}
 				}
 			}
+			if(C!=null)
+				C.bumpTrophyData(Clan.Trophy.MonthlyConquests, 1);
+
 			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 			for(int i=0;i<channels.size();i++)
 				CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("@x1 gains control of @x2.",holdingClan,myArea.name()),false);
@@ -1133,6 +1142,12 @@ public class Conquerable extends Arrest
 				final int rel=CMLib.clans().getCommonClanRelations(clanID,holdingClan);
 				if((rel!=Clan.REL_WAR) && (rel!=Clan.REL_HOSTILE))
 					return false;
+			}
+			if(amount > 0)
+			{
+				final Clan C = CMLib.clans().fetchClan(clanID);
+				if(C!=null)
+					C.bumpTrophyData(Clan.Trophy.MonthlyControlPoints, amount);
 			}
 			announceToArea(myArea,clanID,amount);
 			if(index<0)

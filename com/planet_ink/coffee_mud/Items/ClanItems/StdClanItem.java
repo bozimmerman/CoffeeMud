@@ -451,7 +451,7 @@ public class StdClanItem extends StdItem implements ClanItem
 							final int exp = CMath.s_int(V.get(6)) / 2;
 							if (exp > 0)
 							{
-								C.setExp(C.getExp() + exp);
+								C.adjExp(msg.source(), exp);
 								M.tell(CMLib.lang().L("@x1 gains @x2 experience points for this capture.", CMStrings.capitalizeFirstLetter(C.getName()), "" + exp));
 							}
 							break;

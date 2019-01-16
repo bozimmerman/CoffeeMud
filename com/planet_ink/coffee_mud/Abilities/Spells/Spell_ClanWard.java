@@ -89,7 +89,7 @@ public class Spell_ClanWard extends Spell
 	protected int		rank		= 0;
 	protected boolean	noSneak		= false;
 	private boolean		noFollow	= false;
-	
+
 	@Override
 	public void setMiscText(final String txt)
 	{
@@ -99,7 +99,7 @@ public class Spell_ClanWard extends Spell
 		noSneak=CMParms.getParmBool(txt, "NOSNEAK",false);
 		noFollow=CMParms.getParmBool(txt, "NOFOLLOW",false);
 	}
-	
+
 	public boolean passesMuster(final MOB mob)
 	{
 		if(mob==null)
@@ -158,7 +158,7 @@ public class Spell_ClanWard extends Spell
 				case CMMsg.TYP_SLEEP:
 				case CMMsg.TYP_MOUNT:
 					{
-						HashSet<MOB> H=new HashSet<MOB>();
+						final HashSet<MOB> H=new HashSet<MOB>();
 						H.add(msg.source());
 						if(!noFollow)
 						{
@@ -182,7 +182,7 @@ public class Spell_ClanWard extends Spell
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
 
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
@@ -214,13 +214,13 @@ public class Spell_ClanWard extends Spell
 		}
 
 		Ability wardA=null;
-		for(Enumeration<Ability> a=R.effects();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=R.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if(A instanceof Spell_ClanWard)
 				wardA=A;
 		}
-		
+
 		final Room target=R;
 		final String rank=CMParms.combine(commands).toUpperCase().trim();
 		if(rank.equals("UNINVOKE")||rank.equals("REVOKE"))
@@ -244,14 +244,14 @@ public class Spell_ClanWard extends Spell
 		final int points=C.getRoleFromName(rank);
 		if(points < 0)
 		{
-			StringBuilder str=new StringBuilder("'"+CMParms.combine(commands)+"' is not a proper rank in your clan.  Try one of the following: ");
-			for(ClanPosition pos : C.getGovernment().getPositions())
+			final StringBuilder str=new StringBuilder("'"+CMParms.combine(commands)+"' is not a proper rank in your clan.  Try one of the following: ");
+			for(final ClanPosition pos : C.getGovernment().getPositions())
 				str.append(pos.getName()).append(", ");
 			str.append(", or REVOKE to remove a ward.");
 			mob.tell(L(str.toString()));
 			return true;
 		}
-		
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -282,12 +282,12 @@ public class Spell_ClanWard extends Spell
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		C.setExp(C.getExp()-exp);
+		C.adjExp(mob,(int)-exp);
 		C.update();
 
 		wardA=CMClass.getAbility(ID());
 		wardA.setMiscText("CLAN=\""+C.clanID()+"\" RANK="+points);
-		
+
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,R,this,CMMsg.MASK_MOVE|verbalCastCode(mob,mob,auto),L("^S<S-NAME> invoke(s) a warding spell here.^?"));

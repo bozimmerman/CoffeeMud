@@ -184,7 +184,7 @@ public class Spell_BaseClanEq extends Spell
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		C.setExp(C.getExp()-exp);
+		C.adjExp(mob,(int)-exp);
 		C.update();
 
 		if(success)

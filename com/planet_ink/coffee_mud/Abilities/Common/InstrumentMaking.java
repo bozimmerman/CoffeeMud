@@ -198,7 +198,6 @@ public class InstrumentMaking extends EnhancedCraftingSkill implements ItemCraft
 
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 
-		@SuppressWarnings("unused")
 		int recipeLevel=1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)

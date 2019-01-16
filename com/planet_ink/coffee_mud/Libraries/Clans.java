@@ -578,28 +578,7 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public String translatePrize(final Trophy trophy)
 	{
-		String prizeStr="";
-		switch(trophy)
-		{
-		case Areas:
-			prizeStr = CMProps.getVar(CMProps.Str.CLANTROPAREA);
-			break;
-		case Points:
-			prizeStr = CMProps.getVar(CMProps.Str.CLANTROPCP);
-			break;
-		case Experience:
-			prizeStr = CMProps.getVar(CMProps.Str.CLANTROPEXP);
-			break;
-		case PlayerKills:
-			prizeStr = CMProps.getVar(CMProps.Str.CLANTROPPK);
-			break;
-		case Members:
-			prizeStr = CMProps.getVar(CMProps.Str.CLANTROPMB);
-			break;
-		case MemberLevel:
-			prizeStr = CMProps.getVar(CMProps.Str.CLANTROPLVL);
-			break;
-		}
+		final String prizeStr=CMProps.getVar(trophy.propertyCode);
 		if(prizeStr.length()==0)
 			return "None";
 		if(prizeStr.length()>0)
@@ -619,13 +598,12 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public boolean trophySystemActive()
 	{
-		return (CMProps.getVar(CMProps.Str.CLANTROPAREA).length()>0)
-			|| (CMProps.getVar(CMProps.Str.CLANTROPCP).length()>0)
-			|| (CMProps.getVar(CMProps.Str.CLANTROPEXP).length()>0)
-			|| (CMProps.getVar(CMProps.Str.CLANTROPMB).length()>0)
-			|| (CMProps.getVar(CMProps.Str.CLANTROPLVL).length()>0)
-			|| (CMProps.getVar(CMProps.Str.CLANTROPPK).length()>0);
-
+		for(final Trophy T : Trophy.values())
+		{
+			if(T.isEnabled())
+				return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -1522,7 +1500,7 @@ public class Clans extends StdLibrary implements ClanManager
 		if(trophySystemActive())
 		{
 			// calculate winner of the members count contest
-			if(CMProps.getVar(CMProps.Str.CLANTROPMB).length()>0)
+			if(CMProps.getVar(Trophy.Members.propertyCode).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.Members);
 				int winnerMembers=(winnerC==null)?0:winnerC.getSize();
@@ -1541,7 +1519,7 @@ public class Clans extends StdLibrary implements ClanManager
 				if((winnerC!=null)&&(!CMath.bset(winnerC.getTrophies(),Trophy.Members.flagNum()))&&(winnerC.getExp()>0))
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.Members.flagNum());
-					clanAnnounceAll("The "+winnerC.getGovernmentName()+" "+winnerC.name()+" has been awarded the trophy for "+Trophy.Members.description+".");
+					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.Members.description));
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
@@ -1555,7 +1533,7 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 
 			// calculate winner of the member level contest
-			if(CMProps.getVar(CMProps.Str.CLANTROPLVL).length()>0)
+			if(CMProps.getVar(Trophy.MemberLevel.propertyCode).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.MemberLevel);
 				int winnerLevel=(winnerC==null)?0:filterMedianLevel(winnerC.getFullMemberList());
@@ -1574,7 +1552,7 @@ public class Clans extends StdLibrary implements ClanManager
 				if((winnerC!=null)&&(!CMath.bset(winnerC.getTrophies(),Trophy.MemberLevel.flagNum()))&&(winnerC.getExp()>0))
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.MemberLevel.flagNum());
-					clanAnnounceAll("The "+winnerC.getGovernmentName()+" "+winnerC.name()+" has been awarded the trophy for "+Trophy.MemberLevel.description+".");
+					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.MemberLevel.description));
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
@@ -1588,7 +1566,7 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 
 			// calculate winner of the exp contest
-			if(CMProps.getVar(CMProps.Str.CLANTROPEXP).length()>0)
+			if(CMProps.getVar(Trophy.Experience.propertyCode).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.Experience);
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
@@ -1604,7 +1582,7 @@ public class Clans extends StdLibrary implements ClanManager
 				if((winnerC!=null)&&(!CMath.bset(winnerC.getTrophies(),Trophy.Experience.flagNum()))&&(winnerC.getExp()>0))
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.Experience.flagNum());
-					clanAnnounceAll("The "+winnerC.getGovernmentName()+" "+winnerC.name()+" has been awarded the trophy for "+Trophy.Experience.description+".");
+					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.Experience.description));
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
@@ -1618,7 +1596,7 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 
 			// calculate winner of the pk contest
-			if(CMProps.getVar(CMProps.Str.CLANTROPPK).length()>0)
+			if(CMProps.getVar(Trophy.PlayerKills.propertyCode).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.PlayerKills);
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
@@ -1636,7 +1614,7 @@ public class Clans extends StdLibrary implements ClanManager
 				&&(winnerC.getCurrentClanKills(null)>0))
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.PlayerKills.flagNum());
-					clanAnnounceAll("The "+winnerC.getGovernmentName()+" "+winnerC.name()+" has been awarded the trophy for "+Trophy.PlayerKills.description+".");
+					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.PlayerKills.description));
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
@@ -1649,9 +1627,73 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 			}
 
+			// calculate winner of the player levels contest
+			if(CMProps.getVar(Trophy.PlayerLevelsGained.propertyCode).length()>0)
+			{
+				Clan winnerC=getTrophyWinner(Trophy.PlayerLevelsGained);
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					final Clan C=e.nextElement();
+					if(C==winnerC)
+						continue;
+					if((winnerC==null)||(C.getTrophyData(Trophy.PlayerLevelsGained)>winnerC.getTrophyData(Trophy.PlayerLevelsGained)))
+						winnerC=C;
+				}
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+					Log.debugOut("DefaultClan","PLTrophy: "+((winnerC==null)?"Noone":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getTrophyData(Trophy.PlayerLevelsGained)));
+				if((winnerC!=null)
+				&&(!CMath.bset(winnerC.getTrophies(),Trophy.PlayerLevelsGained.flagNum()))
+				&&(winnerC.getTrophyData(Trophy.PlayerLevelsGained)>0))
+				{
+					winnerC.setTrophies(winnerC.getTrophies()|Trophy.PlayerLevelsGained.flagNum());
+					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.PlayerLevelsGained.description));
+				}
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					final Clan C=e.nextElement();
+					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.PlayerLevelsGained.flagNum())))
+					{
+						C.setTrophies(C.getTrophies()-Trophy.PlayerLevelsGained.flagNum());
+						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.PlayerLevelsGained.description));
+					}
+				}
+			}
+
+			// calculate winner of the player levels contest
+			if(CMProps.getVar(Trophy.PlayerMinutes.propertyCode).length()>0)
+			{
+				Clan winnerC=getTrophyWinner(Trophy.PlayerMinutes);
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					final Clan C=e.nextElement();
+					if(C==winnerC)
+						continue;
+					if((winnerC==null)||(C.getTrophyData(Trophy.PlayerMinutes)>winnerC.getTrophyData(Trophy.PlayerMinutes)))
+						winnerC=C;
+				}
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+					Log.debugOut("DefaultClan","PLTrophy: "+((winnerC==null)?"Noone":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getTrophyData(Trophy.PlayerLevelsGained)));
+				if((winnerC!=null)
+				&&(!CMath.bset(winnerC.getTrophies(),Trophy.PlayerMinutes.flagNum()))
+				&&(winnerC.getTrophyData(Trophy.PlayerMinutes)>0))
+				{
+					winnerC.setTrophies(winnerC.getTrophies()|Trophy.PlayerMinutes.flagNum());
+					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.PlayerMinutes.description));
+				}
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					final Clan C=e.nextElement();
+					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.PlayerMinutes.flagNum())))
+					{
+						C.setTrophies(C.getTrophies()-Trophy.PlayerMinutes.flagNum());
+						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.PlayerMinutes.description));
+					}
+				}
+			}
+
 			// calculate winner of the conquest contests
-			if((CMProps.getVar(CMProps.Str.CLANTROPAREA).length()>0)
-			||(CMProps.getVar(CMProps.Str.CLANTROPCP).length()>0))
+			if((CMProps.getVar(Trophy.Areas.propertyCode).length()>0)
+			||(CMProps.getVar(Trophy.Points.propertyCode).length()>0))
 			{
 				Clan winnerMostClansControlledC=getTrophyWinner(Trophy.Areas);
 				long mostClansControlled=(winnerMostClansControlledC==null)?-1:winnerMostClansControlledC.getControlledAreas().size();
@@ -1722,6 +1764,54 @@ public class Clans extends StdLibrary implements ClanManager
 						C.setTrophies(C.getTrophies()-Trophy.Points.flagNum());
 						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.Points.description));
 					}
+				}
+			}
+
+			// now for the monthlies
+			final int lastMonthAwarded = CMath.s_int(Resources.getPropResource(this.name, "LAST_MONTHLY_AWARD_MONTH"));
+			if(lastMonthAwarded != Calendar.getInstance().get(Calendar.MONTH)+1)
+			{
+				Resources.setPropResource(this.name, "LAST_MONTHLY_AWARD_MONTH", ""+(Calendar.getInstance().get(Calendar.MONTH)+1));
+				for(final Trophy T : Trophy.values())
+				{
+					if(T.name().toUpperCase().indexOf("MONTHLY")<0)
+						continue;
+					// calculate winner of the player levels contest
+					if(CMProps.getVar(T.propertyCode).length()>0)
+					{
+						Clan winnerC=getTrophyWinner(T);
+						for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
+						{
+							final Clan C=e.nextElement();
+							if(C==winnerC)
+								continue;
+							if((winnerC==null)||(C.getTrophyData(T)>winnerC.getTrophyData(T)))
+								winnerC=C;
+						}
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
+							Log.debugOut("DefaultClan","PLTrophy: "+((winnerC==null)?"Noone":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getTrophyData(T)));
+						if((winnerC!=null)
+						&&(!CMath.bset(winnerC.getTrophies(),T.flagNum()))
+						&&(winnerC.getTrophyData(T)>0))
+						{
+							winnerC.setTrophies(winnerC.getTrophies()|T.flagNum());
+							clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),T.description));
+						}
+						for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
+						{
+							final Clan C=e.nextElement();
+							if((winnerC!=C)&&(CMath.bset(C.getTrophies(),T.flagNum())))
+							{
+								C.setTrophies(C.getTrophies()-T.flagNum());
+								C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),T.description));
+							}
+						}
+					}
+				}
+				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
+				{
+					final Clan C=e.nextElement();
+					C.resetMonthlyTrophyData();
 				}
 			}
 		}
