@@ -158,6 +158,7 @@ public class Auction extends Channel implements Tickable
 										CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),finalAmount),
 										winnerM.name(auctioneerM),
 										CMLib.beanCounter().nameCurrencyShort(AD.getCurrency(),houseCut)));
+								CMLib.commands().postStand(winnerM, true, true);
 								if(CMLib.commands().postGet(winnerM,null,AD.getAuctionedItem(),false)
 								||(winnerM.isMine(AD.getAuctionedItem())))
 								{
