@@ -1157,9 +1157,9 @@ public class Stat  extends Skills
 					if(C!=null)
 					{
 						str.setLength(0);
-						str.append(CMStrings.padRight(""+C.getClanLevel(),5)).append(": ").append(L("Clan Level")).append("\n\r");
+						str.append(CMStrings.padRight(""+C.getClanLevel(),7)).append(": ").append(L("Clan Level")).append("\n\r");
 						for(final Clan.Trophy t : Clan.Trophy.values())
-							str.append(CMStrings.padRight(""+C.getTrophyData(t),5)).append(": ").append(L(t.codeString)).append("\n\r");
+							str.append(CMStrings.padRight(""+C.getTrophyData(t),7)).append(": ").append(L(t.codeString)).append("\n\r");
 						mob.tell(str.toString());
 						return true;
 					}
