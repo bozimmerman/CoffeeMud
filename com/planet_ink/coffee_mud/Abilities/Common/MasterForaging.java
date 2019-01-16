@@ -59,7 +59,7 @@ public class MasterForaging extends Foraging
 	@Override
 	protected int getDuration(final MOB mob, final int level)
 	{
-		return getDuration(113, mob, level, 25);
+		return getDuration(80, mob, level, 18);
 	}
 
 	@Override
