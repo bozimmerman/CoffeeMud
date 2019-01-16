@@ -26,6 +26,7 @@
   25. Faithhelper, Racehelper, Alignhelper, and Playerhelper all now support max combatants argument.
   26. Eight new Clan Trophies added, including several Monthly awards. Check the INI file changes!
   27. Clans with no activity in the previous month will go into an informative Stagnant/Inactive status.
+  28. Archons can now Stat Clan "clanname"
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.
