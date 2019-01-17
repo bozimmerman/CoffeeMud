@@ -2212,36 +2212,19 @@ public class DefaultClan implements Clan
 				changed=true;
 			}
 		}
+
+		// player xp punished for taxes, but not awarded for trophies
+		bumpTrophyData(Trophy.MonthlyPlayerXP, exp);
+
 		if(getTrophies() != 0)
 		{
 			for(final Trophy t : Trophy.values())
 			{
 				if(CMath.bset(getTrophies(),t.flagNum()))
-				{
-					final String awardStr=CMProps.getVar(t.propertyCode);
-					if((awardStr!=null)
-					&&(awardStr.length()>0))
-					{
-						int amount=0;
-						double pct=0.0;
-						final Vector<String> V=CMParms.parse(awardStr);
-						if(V.size()>=2)
-						{
-							final String type=V.lastElement().toUpperCase();
-							final String amt=V.firstElement();
-							if(amt.endsWith("%"))
-								pct=CMath.div(CMath.s_int(amt.substring(0,amt.length()-1)),100.0);
-							else
-								amount=CMath.s_int(amt);
-							if("EXPERIENCE".startsWith(type))
-								exp+=((int)Math.round(CMath.mul(exp,pct)))+amount;
-						}
-					}
-				}
+					exp = CMLib.clans().adjustXPAward(t, exp);
 			}
 		}
 
-		bumpTrophyData(Trophy.MonthlyPlayerXP, exp);
 
 		if(changed)
 			update();

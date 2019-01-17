@@ -376,6 +376,16 @@ public interface ClanManager extends CMLibrary
 	public String translatePrize(Trophy trophy);
 
 	/**
+	 * Adjust the given experience by the award granted by the given trophy.
+	 * The trophy award is defined in the INI file.
+	 *
+	 * @param trophy the trophy to award
+	 * @param exp the amount of exp to possibly change
+	 * @return the amount of experience after the change
+	 */
+	public int adjustXPAward(final Trophy trophy, int exp);
+
+	/**
 	 * Returns whether this mud has activated its trophy system for clans.
 	 * @return whether this mud has activated its trophy system for clans.
 	 */

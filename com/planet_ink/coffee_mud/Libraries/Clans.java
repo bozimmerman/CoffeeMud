@@ -51,6 +51,7 @@ public class Clans extends StdLibrary implements ClanManager
 	protected Map<String,Clan>  	  	webPathClanMappings = new SHashtable<String,Clan>();
 	protected Map<String,String>		clanWebPathMappings = new SHashtable<String,String>();
 	protected ClanManager[]				clanLibList			= new ClanManager[0];
+	protected SHashtable<String,Object> xpAwardMap			= new SHashtable<String,Object>();
 
 	@Override
 	public String ID()
@@ -1817,6 +1818,44 @@ public class Clans extends StdLibrary implements ClanManager
 				}
 			}
 		}
+	}
+
+	@Override
+	public int adjustXPAward(final Trophy trophy, int exp)
+	{
+		final String awardStr=CMProps.getVar(trophy.propertyCode);
+		if((awardStr!=null)
+		&&(awardStr.length()>0))
+		{
+			Object D=this.xpAwardMap.get(awardStr);
+			if(D == null)
+			{
+				D=Integer.valueOf(0);
+				final Vector<String> V=CMParms.parse(awardStr);
+				if(V.size()>=2)
+				{
+					final String type=V.lastElement().toUpperCase();
+					if("EXPERIENCE".startsWith(type))
+					{
+						final String amt=V.firstElement();
+						if(amt.endsWith("%"))
+							D=Double.valueOf(CMath.div(CMath.s_int(amt.substring(0,amt.length()-1)),100.0));
+						else
+							D=Integer.valueOf(CMath.s_int(amt));
+					}
+				}
+				this.xpAwardMap.put(awardStr, D);
+			}
+			if(D instanceof Double)
+				exp += (int)Math.round(CMath.mul(exp, ((Double) D).doubleValue()));
+			else
+			if(D instanceof Integer)
+				exp += ((Integer)D).intValue();
+			else
+			if(D instanceof Long)
+				exp += ((Long)D).intValue();
+		}
+		return exp;
 	}
 
 	@Override
