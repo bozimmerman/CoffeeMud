@@ -94,6 +94,7 @@ public class DefaultClan implements Clan
 	protected int					monthClanLevels			= 0;
 	protected int					monthControlPoints		= 0;
 	protected int					monthNewMembers			= 0;
+	protected volatile int			tickUp					= 0;
 
 	protected final static List<Ability> empty=new XVector<Ability>(1,true);
 
@@ -1737,6 +1738,12 @@ public class DefaultClan implements Clan
 			return true;
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.CLANTICKS))
 			return true;
+
+		synchronized(this)
+		{
+			tickUp++;
+		}
+
 		if(lastPropsReload < CMProps.getLastResetTime())
 		{
 			lastPropsReload=CMProps.getLastResetTime();
@@ -1745,26 +1752,40 @@ public class DefaultClan implements Clan
 
 		try
 		{
+			if((tickUp % CMProps.getTicksPerMudHour())==0)
+			{
+				int onlineMembers=0;
+				for(final MemberRecord member : this.getMemberList())
+				{
+					final MOB M=CMLib.players().findPlayerOnline(member.name, true);
+					if(M!=null)
+						onlineMembers++;
+				}
+				final long ellapsedMs = System.currentTimeMillis() - this.lastClanTickMs;
+				final int playerMinutes = (int)((onlineMembers * ellapsedMs) / (1000 * 60));
+				bumpTrophyData(Trophy.MonthlyPlayerMinutes, playerMinutes);
+				bumpTrophyData(Trophy.PlayerMinutes, playerMinutes);
+				this.lastClanTickMs = System.currentTimeMillis();
+			}
+
+			// only do the following once per rl day
+			if(tickUp < CMProps.getTicksPerDay())
+			{
+				return true;
+			}
+			tickUp = 0;
+
 			List<FullMemberRecord> members=getFullMemberList();
 			int activeMembers=0;
-			int onlineMembers=0;
 			final long deathMilis=CMProps.getIntVar(CMProps.Int.DAYSCLANDEATH)*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
 			final long overthrowMilis=CMProps.getIntVar(CMProps.Int.DAYSCLANOVERTHROW)*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
+
 			for(final FullMemberRecord member : members)
 			{
 				final long lastLogin=member.timestamp;
 				if(((System.currentTimeMillis()-lastLogin)<deathMilis)||(deathMilis==0))
 					activeMembers++;
-				final MOB M=CMLib.players().findPlayerOnline(member.name, true);
-				if(M!=null)
-					onlineMembers++;
 			}
-
-			final long ellapsedMs = System.currentTimeMillis() - this.lastClanTickMs;
-			final int playerMinutes = (int)((onlineMembers * ellapsedMs) / (1000 * 60));
-			bumpTrophyData(Trophy.MonthlyPlayerMinutes, playerMinutes);
-			bumpTrophyData(Trophy.PlayerMinutes, playerMinutes);
-
 			final int minimumMembers = getMinClanMembers();
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
 				Log.debugOut("DefaultClan","("+clanID()+"): "+activeMembers+"/"+minimumMembers+" active members.");
