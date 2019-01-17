@@ -2617,7 +2617,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			if((nextTruePingReport==null)||(now>nextTruePingReport.longValue()))
 			{
 				final long tickMillis=CharState.REAL_TICK_ADJUST_FACTOR*CMProps.getTickMillis();
-				reporteds.put("system.nextTruePing", new Long((nextTruePingReport==null)?(now+tickMillis):(nextTruePingReport.longValue()+tickMillis)));
+				reporteds.put("system.nextTruePing", Long.valueOf((nextTruePingReport==null)?(now+tickMillis):(nextTruePingReport.longValue()+tickMillis)));
 				if(supportables.containsKey("comm.tick")||supportables.containsKey("comm"))
 				{
 					if(CMSecurity.isDebugging(DbgFlag.TELNET))
@@ -2629,7 +2629,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			if((nextMedReport==null)||(now>nextMedReport.longValue()))
 			{
-				reporteds.put("system.nextMedReport", new Long(now+3999));
+				reporteds.put("system.nextMedReport", Long.valueOf(now+3999));
 				if(charSupported||supportables.containsKey("char.status"))
 				{
 					buf=possiblePingGmcp(session, reporteds, supportables, "char.status");
@@ -2648,7 +2648,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			}
 			if((nextLongReport==null)||(now>nextLongReport.longValue()))
 			{
-				reporteds.put("system.nextLongReport", new Long(now+15996));
+				reporteds.put("system.nextLongReport", Long.valueOf(now+15996));
 				if(charSupported||supportables.containsKey("char.worth"))
 				{
 					buf=possiblePingGmcp(session, reporteds, supportables, "char.worth");

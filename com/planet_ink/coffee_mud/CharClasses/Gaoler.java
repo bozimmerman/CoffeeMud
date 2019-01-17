@@ -459,7 +459,7 @@ public class Gaoler extends StdCharClass
 							TimeClock C=CMLib.time().localClock(msg.source());
 							if(C==null)
 								C=CMLib.time().globalClock();
-							map.put(""+msg.target(), new Long(System.currentTimeMillis() + (CMProps.getMillisPerMudHour() * C.getHoursInDay())));
+							map.put(""+msg.target(), Long.valueOf(System.currentTimeMillis() + (CMProps.getMillisPerMudHour() * C.getHoursInDay())));
 						}
 					}
 					if(qualifyingFood)

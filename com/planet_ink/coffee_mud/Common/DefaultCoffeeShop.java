@@ -783,7 +783,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 				{
 				}
 			}
-			this.contentHash = new Integer(hash);
+			this.contentHash = Integer.valueOf(hash);
 			return hash;
 		}
 		else

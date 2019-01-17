@@ -101,7 +101,7 @@ public class JournalMessageNext extends StdWebMacro
 			{
 				pages = CMLib.database().DBReadJournalPages(journalName, null, null, pageLimit);
 				for(int i=0;i<pages.size();i++)
-					pages.set(i, new Long(pages.get(i).longValue()-1));
+					pages.set(i, Long.valueOf(pages.get(i).longValue()-1));
 				httpReq.getRequestObjects().put("JOURNAL_"+journalName+"_ALL_PAGES_MINUS_ONE", pages);
 			}
 			if(pages.size()<2)

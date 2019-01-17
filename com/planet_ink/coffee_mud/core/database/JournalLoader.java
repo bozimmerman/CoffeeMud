@@ -376,7 +376,7 @@ public class JournalLoader
 					parentKeysDone.put(entry.key(),entry);
 					entry.update(updated);
 				}
-				journalV.addElement(new Long(entry.update()));
+				journalV.addElement(Long.valueOf(entry.update()));
 				if(limit > 0)
 				{
 					done=true;

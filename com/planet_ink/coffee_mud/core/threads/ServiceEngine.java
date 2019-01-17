@@ -596,12 +596,12 @@ public class ServiceEngine implements ThreadEngine
 						final Triad<Long,Integer,Integer> t=list.get(i);
 						if(C.getMilliTotal()>=t.first.longValue())
 						{
-							list.add(i,new Triad<Long,Integer,Integer>(new Long(C.getMilliTotal()),Integer.valueOf(group),Integer.valueOf(tick)));
+							list.add(i,new Triad<Long,Integer,Integer>(Long.valueOf(C.getMilliTotal()),Integer.valueOf(group),Integer.valueOf(tick)));
 							break;
 						}
 					}
 					if((list.size()==0)||((i>=list.size())&&(list.size()<total)))
-						list.add(new Triad<Long,Integer,Integer>(new Long(C.getMilliTotal()),Integer.valueOf(group),Integer.valueOf(tick)));
+						list.add(new Triad<Long,Integer,Integer>(Long.valueOf(C.getMilliTotal()),Integer.valueOf(group),Integer.valueOf(tick)));
 					while(list.size()>total)
 						list.remove(list.size()-1);
 					tick++;

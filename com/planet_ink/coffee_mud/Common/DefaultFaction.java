@@ -2222,7 +2222,7 @@ public class DefaultFaction implements Faction, MsgListener
 		@Override
 		public void setNextChangeTimers(final Faction.FactionChangeEvent event, final long time)
 		{
-			nextChangeTime.put(event, new Long(time));
+			nextChangeTime.put(event, Long.valueOf(time));
 		}
 
 		@SuppressWarnings("unchecked")

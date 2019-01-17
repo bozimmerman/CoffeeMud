@@ -84,7 +84,7 @@ public class ClanKills extends StdCommand
 					for(final Clan.MemberRecord M : foundClan.getMemberList())
 					{
 						if((M.mobpvps+M.playerpvps) > 0)
-							topKillers.add(new Pair<String,Integer>(M.name,new Integer(M.mobpvps+M.playerpvps)));
+							topKillers.add(new Pair<String,Integer>(M.name,Integer.valueOf(M.mobpvps+M.playerpvps)));
 					}
 					@SuppressWarnings("unchecked")
 					final Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);

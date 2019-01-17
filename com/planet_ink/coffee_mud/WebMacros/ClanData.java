@@ -478,7 +478,7 @@ public class ClanData extends StdWebMacro
 								@Override
 								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
-									return new Integer(o1.role).compareTo(new Integer(o2.role));
+									return Integer.compare(o1.role,o2.role);
 								}
 							});
 						}
@@ -490,7 +490,7 @@ public class ClanData extends StdWebMacro
 								@Override
 								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
-									return new Integer(o2.mobpvps+o2.playerpvps).compareTo(new Integer(o1.mobpvps+o1.playerpvps));
+									return Integer.compare(o2.mobpvps+o2.playerpvps,o1.mobpvps+o1.playerpvps);
 								}
 							});
 						}
@@ -502,7 +502,7 @@ public class ClanData extends StdWebMacro
 								@Override
 								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
-									return new Integer(o2.mobpvps).compareTo(new Integer(o1.mobpvps));
+									return Integer.compare(o1.mobpvps,o2.mobpvps);
 								}
 							});
 						}
@@ -514,7 +514,7 @@ public class ClanData extends StdWebMacro
 								@Override
 								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
-									return new Integer(o2.playerpvps).compareTo(new Integer(o1.playerpvps));
+									return Integer.compare(o1.playerpvps,o2.playerpvps);
 								}
 							});
 						}
@@ -526,7 +526,7 @@ public class ClanData extends StdWebMacro
 								@Override
 								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
-									return new Double(o2.donatedGold).compareTo(new Double(o1.donatedXP));
+									return Double.compare(o1.donatedGold,o2.donatedGold);
 								}
 							});
 						}
@@ -538,7 +538,7 @@ public class ClanData extends StdWebMacro
 								@Override
 								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
-									return new Long(o2.donatedXP).compareTo(new Long(o1.donatedXP));
+									return Long.compare(o1.donatedXP,o2.donatedXP);
 								}
 							});
 						}

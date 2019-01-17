@@ -1221,7 +1221,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						warnStr.append(codedWarnStr+"\n");
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
 							Log.debugOut(serviceClient.getName(),"Warn loaded: "+warnedName+" last warned on "+CMLib.time().date2String(warningDateTime));
-						warnMap.put(warnedName, new Long(warningDateTime));
+						warnMap.put(warnedName, Long.valueOf(warningDateTime));
 					}
 					else
 						warnChanged=true;
@@ -1292,7 +1292,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					if((M!=null)&&(M.playerStats()!=null))
 					{
 						warnStr.append(M.name()+" "+M.playerStats().getEmail()+" "+System.currentTimeMillis()+"\n");
-						warnMap.put(M.Name().toUpperCase().trim(),new Long(System.currentTimeMillis()));
+						warnMap.put(M.Name().toUpperCase().trim(),Long.valueOf(System.currentTimeMillis()));
 						warnChanged=true;
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
 							Log.debugOut(serviceClient.getName(),name+" is now warned.");

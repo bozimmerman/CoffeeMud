@@ -39,7 +39,7 @@ public class ThrottleSpec
 	 */
 	public ThrottleSpec(final long bytesAllowedEachSecond)
 	{
-		this.maxBytesEachSecond = new Long(bytesAllowedEachSecond);
+		this.maxBytesEachSecond = Long.valueOf(bytesAllowedEachSecond);
 		this.bytesRemaining	= maxBytesEachSecond.longValue() - currentTotal;
 	}
 

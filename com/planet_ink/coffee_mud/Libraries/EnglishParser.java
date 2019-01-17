@@ -389,7 +389,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		if(distUnit==null)
 			return null;
-		return new Long(value.longValue() * distUnit.dm);
+		return Long.valueOf(value.longValue() * distUnit.dm);
 	}
 
 	@Override

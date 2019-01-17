@@ -216,7 +216,7 @@ public class PlanarAbility extends StdAbility
 			if(enables!=null)
 			{
 				final List<Pair<String,String>> enableAs=CMParms.parseSpaceParenList(enables);
-				Integer perLevel=new Integer(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
+				Integer perLevel=Integer.valueOf(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
 				Integer numSkills=Integer.valueOf(Integer.MAX_VALUE);
 				for(final Iterator<Pair<String,String>> p=enableAs.iterator();p.hasNext();)
 				{

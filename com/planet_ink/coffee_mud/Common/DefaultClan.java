@@ -1957,7 +1957,7 @@ public class DefaultClan implements Clan
 							@Override
 							public int compare(final MemberRecord o1, final MemberRecord o2)
 							{
-								return new Double(o1.donatedGold).compareTo(new Double(o2.donatedGold));
+								return Double.compare(o1.donatedGold,o2.donatedGold);
 							}
 						});
 					}
@@ -1968,7 +1968,7 @@ public class DefaultClan implements Clan
 							@Override
 							public int compare(final MemberRecord o1, final MemberRecord o2)
 							{
-								return new Long(o1.donatedXP).compareTo(new Long(o2.donatedXP));
+								return Long.compare(o1.donatedXP,o2.donatedXP);
 							}
 						});
 					}

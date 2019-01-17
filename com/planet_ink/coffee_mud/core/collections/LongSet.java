@@ -883,7 +883,7 @@ public class LongSet implements Set<Long>
 					final LongSet gc=g.copyOf();
 					g.addIntRange(x1, x1+n);
 					for(int x=x1;x<=x1+n;x++)
-						l.add(new Integer(x));
+						l.add(Integer.valueOf(x));
 					if(!checkList(g,l,span))
 					{
 						System.err.println("Fail !!");
@@ -895,7 +895,7 @@ public class LongSet implements Set<Long>
 					final int x1=r.nextInt(span)+1;
 					final LongSet gc=g.copyOf();
 					g.addInt(x1);
-					l.add(new Integer(x1));
+					l.add(Integer.valueOf(x1));
 					if(!checkList(g,l,span))
 					{
 						System.err.println("Fail !!");

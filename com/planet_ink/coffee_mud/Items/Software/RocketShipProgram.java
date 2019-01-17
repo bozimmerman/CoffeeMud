@@ -309,7 +309,7 @@ public class RocketShipProgram extends GenShipProgram
 			sensorReport.clear();
 			while(this.sensorReports.size()>10)
 				this.sensorReports.removeLast();
-			this.sensorReports.addFirst(new Pair<Long,List<SpaceObject>>(new Long(System.currentTimeMillis()),localSensorReport));
+			this.sensorReports.addFirst(new Pair<Long,List<SpaceObject>>(Long.valueOf(System.currentTimeMillis()),localSensorReport));
 		}
 		return localSensorReport;
 	}
@@ -530,53 +530,53 @@ public class RocketShipProgram extends GenShipProgram
 		if(lastAcceleration.doubleValue() < targetAcceleration)
 		{
 			if(lastAcceleration.doubleValue() < (targetAcceleration * .00001))
-				newInject = new Double(lastInject.doubleValue()*200.0);
+				newInject = Double.valueOf(lastInject.doubleValue()*200.0);
 			else
 			if(lastAcceleration.doubleValue() < (targetAcceleration * .001))
-				newInject = new Double(lastInject.doubleValue()*20.0);
+				newInject = Double.valueOf(lastInject.doubleValue()*20.0);
 			else
 			if(lastAcceleration.doubleValue() < (targetAcceleration * .1))
-				newInject = new Double(lastInject.doubleValue()*2.0);
+				newInject = Double.valueOf(lastInject.doubleValue()*2.0);
 			else
 			if(lastAcceleration.doubleValue() < (targetAcceleration * .5))
-				newInject = new Double(lastInject.doubleValue()*1.25);
+				newInject = Double.valueOf(lastInject.doubleValue()*1.25);
 			else
 			if(lastAcceleration.doubleValue() < (targetAcceleration * 0.9))
-				newInject = new Double(1.07 * lastInject.doubleValue());
+				newInject = Double.valueOf(1.07 * lastInject.doubleValue());
 			else
 			if(lastAcceleration.doubleValue() < (targetAcceleration * 0.95))
-				newInject = new Double(1.02 * lastInject.doubleValue());
+				newInject = Double.valueOf(1.02 * lastInject.doubleValue());
 			else
 			if(lastAcceleration.doubleValue() < (targetAcceleration * 0.99))
-				newInject = new Double(1.01 * lastInject.doubleValue());
+				newInject = Double.valueOf(1.01 * lastInject.doubleValue());
 			else
-				newInject = new Double(1.001 * lastInject.doubleValue());
+				newInject = Double.valueOf(1.001 * lastInject.doubleValue());
 		}
 		else
 		if(lastAcceleration.doubleValue() > targetAcceleration)
 		{
 			if(lastAcceleration.doubleValue() > (targetAcceleration * 1000000))
-				newInject = new Double(lastInject.doubleValue()/200.0);
+				newInject = Double.valueOf(lastInject.doubleValue()/200.0);
 			else
 			if(lastAcceleration.doubleValue() > (targetAcceleration * 10000))
-				newInject = new Double(lastInject.doubleValue()/20.0);
+				newInject = Double.valueOf(lastInject.doubleValue()/20.0);
 			else
 			if(lastAcceleration.doubleValue() > (targetAcceleration * 100))
-				newInject = new Double(lastInject.doubleValue()/2.0);
+				newInject = Double.valueOf(lastInject.doubleValue()/2.0);
 			else
 			if(lastAcceleration.doubleValue() > (targetAcceleration * 2))
-				newInject = new Double(lastInject.doubleValue()/1.25);
+				newInject = Double.valueOf(lastInject.doubleValue()/1.25);
 			else
 			if(lastAcceleration.doubleValue() > (targetAcceleration * 1.1))
-				newInject = new Double(0.93 * lastInject.doubleValue());
+				newInject = Double.valueOf(0.93 * lastInject.doubleValue());
 			else
 			if(lastAcceleration.doubleValue() > (targetAcceleration * 1.05))
-				newInject = new Double(0.98 * lastInject.doubleValue());
+				newInject = Double.valueOf(0.98 * lastInject.doubleValue());
 			else
 			if(lastAcceleration.doubleValue() > (targetAcceleration * 1.01))
-				newInject = new Double(0.99 * lastInject.doubleValue());
+				newInject = Double.valueOf(0.99 * lastInject.doubleValue());
 			else
-				newInject = new Double(0.999 * lastInject.doubleValue());
+				newInject = Double.valueOf(0.999 * lastInject.doubleValue());
 		}
 		else
 			newInject=lastInject;
@@ -742,10 +742,10 @@ public class RocketShipProgram extends GenShipProgram
 					if(this.lastInject != null)
 					{
 						if(ship.speed() < targetAcceleration.doubleValue())
-							this.lastInject = new Double(this.lastInject.doubleValue()/2.0);
+							this.lastInject = Double.valueOf(this.lastInject.doubleValue()/2.0);
 						else
 						if(ship.speed() < (targetAcceleration.doubleValue() * 2))
-							this.lastInject = new Double(this.lastInject.doubleValue()/1.5);
+							this.lastInject = Double.valueOf(this.lastInject.doubleValue()/1.5);
 					}
 				}
 			}
@@ -852,7 +852,7 @@ public class RocketShipProgram extends GenShipProgram
 						//System.out.println("** Coast: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()+"/"+this.lastInject); //BZ:DELME
 						final Double oldInject=this.lastInject;
 						final Double oldAccel=this.lastAcceleration;
-						performSimpleThrust(engineE,new Double(0.0), false);
+						performSimpleThrust(engineE,Double.valueOf(0.0), false);
 						this.lastInject=oldInject;
 						this.lastAcceleration=oldAccel;
 						break;
@@ -957,7 +957,7 @@ public class RocketShipProgram extends GenShipProgram
 				else
 				{
 					//this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
-					newInject=new Double(0.0);
+					newInject=Double.valueOf(0.0);
 				}
 			}
 			if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
@@ -1016,7 +1016,7 @@ public class RocketShipProgram extends GenShipProgram
 						if(Math.abs(angleDelta[0]) > 0.00001)
 						{
 							final TechComponent.ShipDir dir = angleDelta[0] < 0 ? ShipDir.PORT : ShipDir.STARBOARD;
-							final Double thrust = new Double(Math.abs(angleDelta[0]) / angleAchievedPerPt);
+							final Double thrust = Double.valueOf(Math.abs(angleDelta[0]) / angleAchievedPerPt);
 							if(isDebugging)
 							{
 								Log.debugOut("Delta0="+angleDelta[0]);
@@ -1042,7 +1042,7 @@ public class RocketShipProgram extends GenShipProgram
 						if(Math.abs(angleDelta[1]) > 0.00001)
 						{
 							final TechComponent.ShipDir dir = angleDelta[1] < 0 ? ShipDir.VENTRAL : ShipDir.DORSEL;
-							final Double thrust = new Double(Math.abs(angleDelta[1]) / angleAchievedPerPt);
+							final Double thrust = Double.valueOf(Math.abs(angleDelta[1]) / angleAchievedPerPt);
 							if(isDebugging)
 							{
 								Log.debugOut("Delta1="+angleDelta[1]);
@@ -1098,7 +1098,7 @@ public class RocketShipProgram extends GenShipProgram
 						lastTryAmt= 0.0001;
 					final CMMsg deactMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
 					msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-					Double prevAcceleration = new Double(0.0);
+					Double prevAcceleration = Double.valueOf(0.0);
 					while(--tries>0)
 					{
 						this.lastAcceleration =null;
@@ -1112,7 +1112,7 @@ public class RocketShipProgram extends GenShipProgram
 							if((thisLastAccel.doubleValue() >= targetAcceleration)
 							&&((!isDocked)||(ship.getIsDocked()==null)))
 							{
-								this.lastInject=new Double(lastTryAmt);
+								this.lastInject=Double.valueOf(lastTryAmt);
 								this.primeInjects.put(engineE,new Double[] {lastInject,lastAcceleration});
 								return engineE;
 							}
@@ -1607,7 +1607,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: TARGET requires the name of the target, and a percentage of the targets speed to lead it by.   Try HELP."));
 					return;
 				}
-				//Double leadPct = new Double(0.0);
+				//Double leadPct = Double.valueOf(0.0);
 				//if((parsed.get(parsed.size()-1).indexOf('%')>0)
 				//||(CMath.isPct(parsed.get(parsed.size()-1))))
 				//	leadPct=CMath.s_pct(parsed.remove(parsed.size()-1));
@@ -1645,7 +1645,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: Invalid emission percentage given."));
 					return;
 				}
-				this.weaponEmissionPct.put(weapon, new Double(pct));
+				this.weaponEmissionPct.put(weapon, Double.valueOf(pct));
 				super.addScreenMessage(L("Emission for @x1 locked in.",weapon.name()));
 				return;
 			}

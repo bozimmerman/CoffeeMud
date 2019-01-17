@@ -288,7 +288,7 @@ public class Remort extends StdCommand
 					for(final Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
-						abilities.add(new Triad<String,String,Integer>(A.ID(),A.text(),new Integer(A.proficiency())));
+						abilities.add(new Triad<String,String,Integer>(A.ID(),A.text(),Integer.valueOf(A.proficiency())));
 					}
 					int total = 0;
 					if(pctAmount != 0)
@@ -304,7 +304,7 @@ public class Remort extends StdCommand
 					{
 						final Ability A=a.nextElement();
 						if(A.proficiency() >= 100)
-							abilities100.add(new Triad<String,String,Integer>(A.ID(),A.text(),new Integer(A.proficiency())));
+							abilities100.add(new Triad<String,String,Integer>(A.ID(),A.text(),Integer.valueOf(A.proficiency())));
 					}
 					int total = 0;
 					if(pctAmount != 0)
@@ -319,7 +319,7 @@ public class Remort extends StdCommand
 					for(final Enumeration<String> f = mob.factions();f.hasMoreElements();)
 					{
 						final String facID = f.nextElement();
-						factions.add(new Pair<String,Integer>(facID,new Integer(mob.fetchFaction(facID))));
+						factions.add(new Pair<String,Integer>(facID,Integer.valueOf(mob.fetchFaction(facID))));
 					}
 					int total = 0;
 					if(pctAmount != 0)
