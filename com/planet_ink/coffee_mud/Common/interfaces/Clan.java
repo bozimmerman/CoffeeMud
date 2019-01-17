@@ -1030,7 +1030,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		Experience("Most clan experience", "Experience", CMProps.Str.CLANTROPEXP, 'E'),
 		Areas("Most controlled areas", "Areas Controlled", CMProps.Str.CLANTROPAREA, 'A'),
 		PlayerKills("Most rival player-kills", "PlayerKills", CMProps.Str.CLANTROPPK, 'K'),
-		Members("Most members", "Most Members", CMProps.Str.CLANTROPMB, 'M'),
+		Members("Most members", "Total Members", CMProps.Str.CLANTROPMB, 'M'),
 		MemberLevel("Highest median level", "Player Levelups", CMProps.Str.CLANTROPLVL, 'H'),
 		PlayerMinutes("Most player time", "Player Time", CMProps.Str.CLANTROPPTIME, 'T'),
 		PlayerLevelsGained("Most player Levels", "Most Levels", CMProps.Str.CLANTROPPLVL, 'L'),
