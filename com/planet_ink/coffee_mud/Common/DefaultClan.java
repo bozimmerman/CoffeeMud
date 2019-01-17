@@ -1755,11 +1755,16 @@ public class DefaultClan implements Clan
 			if((tickUp % CMProps.getTicksPerMudHour())==0)
 			{
 				int onlineMembers=0;
-				for(final MemberRecord member : this.getMemberList())
+				for(final Iterator<Session> s=CMLib.sessions().sessions();s.hasNext();)
 				{
-					final MOB M=CMLib.players().findPlayerOnline(member.name, true);
-					if(M!=null)
-						onlineMembers++;
+					final Session S=s.next();
+					if(S!=null)
+					{
+						final MOB M=S.mob();
+						if((M!=null)
+						&&(M.getClanRole(clanID())!=null))
+							onlineMembers++;
+					}
 				}
 				final long ellapsedMs = System.currentTimeMillis() - this.lastClanTickMs;
 				final int playerMinutes = (int)((onlineMembers * ellapsedMs) / (1000 * 60));
