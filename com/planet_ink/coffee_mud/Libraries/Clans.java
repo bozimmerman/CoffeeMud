@@ -492,7 +492,7 @@ public class Clans extends StdLibrary implements ClanManager
 		synchronized(all)
 		{
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLANTICKS))
-				CMLib.threads().startTickDown(C,Tickable.TICKID_CLAN,(int)CMProps.getTicksPerDay());
+				CMLib.threads().startTickDown(C,Tickable.TICKID_CLAN,1);
 			all.put(C.clanID().toUpperCase(),C);
 			all2.add(new Pair<Clan,Integer>(C,Integer.valueOf(C.getGovernment().getAcceptPos())));
 			setClanWebSiteMappings(C,CMProps.getVar(CMProps.Str.CLANWEBSITES));
