@@ -1597,9 +1597,9 @@ public class Clans extends StdLibrary implements ClanManager
 			}
 
 			// calculate winner of the pk contest
-			if(CMProps.getVar(Trophy.PlayerKills.propertyCode).length()>0)
+			if(CMProps.getVar(Trophy.ClanKills.propertyCode).length()>0)
 			{
-				Clan winnerC=getTrophyWinner(Trophy.PlayerKills);
+				Clan winnerC=getTrophyWinner(Trophy.ClanKills);
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
@@ -1611,19 +1611,19 @@ public class Clans extends StdLibrary implements ClanManager
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANS))
 					Log.debugOut("DefaultClan","PKTrophy: "+((winnerC==null)?"Noone":winnerC.clanID())+" won with "+((winnerC==null)?"0":""+winnerC.getCurrentClanKills(null)));
 				if((winnerC!=null)
-				&&(!CMath.bset(winnerC.getTrophies(),Trophy.PlayerKills.flagNum()))
+				&&(!CMath.bset(winnerC.getTrophies(),Trophy.ClanKills.flagNum()))
 				&&(winnerC.getCurrentClanKills(null)>0))
 				{
-					winnerC.setTrophies(winnerC.getTrophies()|Trophy.PlayerKills.flagNum());
-					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.PlayerKills.description));
+					winnerC.setTrophies(winnerC.getTrophies()|Trophy.ClanKills.flagNum());
+					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.ClanKills.description));
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
-					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.PlayerKills.flagNum())))
+					if((winnerC!=C)&&(CMath.bset(C.getTrophies(),Trophy.ClanKills.flagNum())))
 					{
-						C.setTrophies(C.getTrophies()-Trophy.PlayerKills.flagNum());
-						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.PlayerKills.description));
+						C.setTrophies(C.getTrophies()-Trophy.ClanKills.flagNum());
+						C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),Trophy.ClanKills.description));
 					}
 				}
 			}

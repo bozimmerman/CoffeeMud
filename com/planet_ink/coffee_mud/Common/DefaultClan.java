@@ -186,10 +186,11 @@ public class DefaultClan implements Clan
 	{
 		Long date=null;
 		final StringBuffer str=new StringBuffer("");
+		final long now=System.currentTimeMillis();
 		for(int i=clanKills.size()-1;i>=0;i--)
 		{
 			date=clanKills.get(i);
-			if(date.longValue()<(System.currentTimeMillis()))
+			if(date.longValue()<now)
 				clanKills.remove(i);
 			else
 				str.append(date.longValue()+";");
@@ -238,7 +239,7 @@ public class DefaultClan implements Clan
 			return exp;
 		case  Areas:
 			return getControlledAreas().size();
-		case PlayerKills:
+		case ClanKills:
 			return getCurrentClanKills(null);
 		case Members:
 			return getSize();
@@ -288,7 +289,7 @@ public class DefaultClan implements Clan
 		case  Areas:
 			// derived
 			break;
-		case PlayerKills:
+		case ClanKills:
 			// derived from member records
 			break;
 		case Members:
@@ -360,7 +361,7 @@ public class DefaultClan implements Clan
 		clanKills();
 		final Area A=CMLib.map().areaLocation(killer);
 		if(A!=null)
-			clanKills.add(Long.valueOf(System.currentTimeMillis() + (30L * 24L * 60L * 60L * 1000)));
+			clanKills.add(Long.valueOf(System.currentTimeMillis() + (365L * 24L * 60L * 60L * 1000)));
 		updateClanKills();
 		if((killer != null)
 		&&(killed != null))
