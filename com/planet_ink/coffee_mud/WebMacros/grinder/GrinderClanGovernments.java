@@ -122,6 +122,8 @@ public class GrinderClanGovernments
 			G.setConquestByWorship((str==null)?false:str.equalsIgnoreCase("on"));
 			str=httpReq.getUrlParameter("ISRIVALROUS");
 			G.setRivalrous((str==null)?false:str.equalsIgnoreCase("on"));
+			str=httpReq.getUrlParameter("MISCVARS");
+			G.setMiscVariableSettings((str==null)?"":str);
 			str=httpReq.getUrlParameter("MAXVOTEDAYS");
 			if(str!=null)
 				G.setMaxVoteDays(CMath.s_int(str));

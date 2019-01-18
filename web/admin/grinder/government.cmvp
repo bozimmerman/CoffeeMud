@@ -160,6 +160,10 @@
 			&nbsp;&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','Scriptable')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT>
 		</TD>
 	</TR>
+	<TR>
+		<TD WIDTH=25%><FONT COLOR=YELLOW>Misc. Vars:</TD>
+		<TD WIDTH=75%><INPUT TYPE=TEXT SIZE=50 NAME=MISCVARS VALUE="@ClanGovernmentData?MISCVARS@"></FONT></TD>
+	</TR>
     <TR>
         <TD WIDTH=25%><FONT COLOR=YELLOW>Clan Abilities: </FONT></TD>
         <TD WIDTH=75%><FONT COLOR=WHITE SIZE=-1>@ClanGovernmentData?RABLE&FONT=<FONT COLOR=WHITE SIZE=-2>@</FONT></TD>

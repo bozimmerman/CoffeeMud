@@ -42,12 +42,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the iD.
 	 *
+	 * @see ClanGovernment#getID()
+	 *
 	 * @return the iD
 	 */
 	public int getID();
 
 	/**
 	 * Sets the iD.
+	 *
+	 * @see ClanGovernment#getID()
 	 *
 	 * @param iD the new iD
 	 */
@@ -56,12 +60,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the name.
 	 *
+	 * @see ClanGovernment#setName(String)
+	 *
 	 * @return the name
 	 */
 	public String getName();
 
 	/**
 	 * Sets the name.
+	 *
+	 * @see ClanGovernment#getName()
 	 *
 	 * @param name the new name
 	 */
@@ -70,12 +78,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the category.
 	 *
+	 * @see ClanGovernment#setCategory(String)
+	 *
 	 * @return the category
 	 */
 	public String getCategory();
 
 	/**
 	 * Sets the category.
+	 *
+	 * @see ClanGovernment#getCategory()
 	 *
 	 * @param category the new category
 	 */
@@ -84,12 +96,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the auto role.
 	 *
+	 * @see ClanGovernment#setAutoRole(int)
+	 *
 	 * @return the auto role
 	 */
 	public int getAutoRole();
 
 	/**
 	 * Sets the auto role.
+	 *
+	 * @see ClanGovernment#getAutoRole()
 	 *
 	 * @param autoRole the new auto role
 	 */
@@ -98,12 +114,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the accept pos.
 	 *
+	 * @see ClanGovernment#setAcceptPos(int)
+	 *
 	 * @return the accept pos
 	 */
 	public int getAcceptPos();
 
 	/**
 	 * Sets the accept pos.
+	 *
+	 * @see ClanGovernment#getAcceptPos()
 	 *
 	 * @param acceptPos the new accept pos
 	 */
@@ -112,12 +132,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the short desc.
 	 *
+	 * @see ClanGovernment#setShortDesc(String)
+	 *
 	 * @return the short desc
 	 */
 	public String getShortDesc();
 
 	/**
 	 * Sets the short desc.
+	 *
+	 * @see ClanGovernment#getShortDesc()
 	 *
 	 * @param shortDesc the new short desc
 	 */
@@ -126,12 +150,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the long desc.
 	 *
+	 * @see ClanGovernment#setLongDesc(String)
+	 *
 	 * @return the long desc
 	 */
 	public String getLongDesc();
 
 	/**
 	 * Sets the long desc.
+	 *
+	 * @see ClanGovernment#getLongDesc()
 	 *
 	 * @param longDesc the new long desc
 	 */
@@ -140,12 +168,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the required mask str.
 	 *
+	 * @see ClanGovernment#setRequiredMaskStr(String)
+	 *
 	 * @return the required mask str
 	 */
 	public String getRequiredMaskStr();
 
 	/**
 	 * Sets the required mask str.
+	 *
+	 * @see ClanGovernment#getRequiredMaskStr()
 	 *
 	 * @param requiredMaskStr the new required mask str
 	 */
@@ -154,12 +186,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the Scriptable parm when joining/creating a clan.
 	 *
+	 * @see ClanGovernment#setEntryScript(String)
+	 *
 	 * @return the script for joining/creating a clan
 	 */
 	public String getEntryScript();
 
 	/**
 	 * Sets the Scriptable parm when joining/creating a clan.
+	 *
+	 * @see ClanGovernment#getEntryScript()
 	 *
 	 * @param scriptParm the Scriptable parm
 	 */
@@ -168,12 +204,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the Scriptable parm when resigning/exiling a clan.
 	 *
+	 * @see ClanGovernment#setExitScript(String)
+	 *
 	 * @return the script for resigning/exiling a clan
 	 */
 	public String getExitScript();
 
 	/**
 	 * Sets the Scriptable parm when resigning/exiling a clan.
+	 *
+	 * @see ClanGovernment#getExitScript()
 	 *
 	 * @param scriptParm the Scriptable parm
 	 */
@@ -182,12 +222,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Checks if is public.
 	 *
+	 * @see ClanGovernment#setPublic(boolean)
+	 *
 	 * @return true, if is public
 	 */
 	public boolean isPublic();
 
 	/**
 	 * Sets the public.
+	 *
+	 * @see ClanGovernment#isPublic()
 	 *
 	 * @param isPublic the new public
 	 */
@@ -196,12 +240,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Checks if is family only.
 	 *
+	 * @see ClanGovernment#setFamilyOnly(boolean)
+	 *
 	 * @return true, if is family only
 	 */
 	public boolean isFamilyOnly();
 
 	/**
 	 * Sets the family only.
+	 *
+	 * @see ClanGovernment#isFamilyOnly()
 	 *
 	 * @param isFamilyOnly the new family only
 	 */
@@ -211,6 +259,9 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	 * Returns true if this clan is rivalrous with other rivalrous clans,
 	 * meaning that pvp is enabled between them, and war can be declared
 	 * between them.
+	 *
+	 * @see ClanGovernment#setRivalrous(boolean)
+	 *
 	 * @return true or false
 	 */
 	public boolean isRivalrous();
@@ -218,12 +269,17 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Set to true if this clan is rivalrous with other rivalrous clans,
 	 * meaning that pvp is enabled between them, and war can be declared
+	 *
+	 * @see ClanGovernment#isRivalrous()
+	 *
 	 * @param isRivalrous true or false
 	 */
 	public void setRivalrous(boolean isRivalrous);
 
 	/**
 	 * Gets the override min members.
+	 *
+	 * @see ClanGovernment#setOverrideMinMembers(Integer)
 	 *
 	 * @return the override min members
 	 */
@@ -232,12 +288,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Sets the override min members.
 	 *
+	 * @see ClanGovernment#getOverrideMinMembers()
+	 *
 	 * @param overrideMinMembers the new override min members
 	 */
 	public void setOverrideMinMembers(Integer overrideMinMembers);
 
 	/**
 	 * Checks if is conquest enabled.
+	 *
+	 * @see ClanGovernment#setConquestEnabled(boolean)
 	 *
 	 * @return true, if is conquest enabled
 	 */
@@ -246,12 +306,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Sets the conquest enabled.
 	 *
+	 * @see ClanGovernment#isConquestEnabled()
+	 *
 	 * @param conquestEnabled the new conquest enabled
 	 */
 	public void setConquestEnabled(boolean conquestEnabled);
 
 	/**
 	 * Checks if is conquest item loyalty.
+	 *
+	 * @see ClanGovernment#setConquestItemLoyalty(boolean)
 	 *
 	 * @return true, if is conquest item loyalty
 	 */
@@ -260,12 +324,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Sets the conquest item loyalty.
 	 *
+	 * @see ClanGovernment#isConquestItemLoyalty()
+	 *
 	 * @param conquestItemLoyalty the new conquest item loyalty
 	 */
 	public void setConquestItemLoyalty(boolean conquestItemLoyalty);
 
 	/**
 	 * Checks if is conquest by worship.
+	 *
+	 * @see ClanGovernment#setConquestByWorship(boolean)
 	 *
 	 * @return true, if is conquest by worship
 	 */
@@ -274,12 +342,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Sets the conquest by worship.
 	 *
+	 * @see ClanGovernment#isConquestByWorship()
+	 *
 	 * @param conquestByWorship the new conquest by worship
 	 */
 	public void setConquestByWorship(boolean conquestByWorship);
 
 	/**
 	 * Gets the max vote days.
+	 *
+	 * @see ClanGovernment#setMaxVoteDays(int)
 	 *
 	 * @return the max vote days
 	 */
@@ -288,12 +360,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Sets the max vote days.
 	 *
+	 * @see ClanGovernment#getMaxVoteDays()
+	 *
 	 * @param maxVoteDays the new max vote days
 	 */
 	public void setMaxVoteDays(int maxVoteDays);
 
 	/**
 	 * Gets the vote quorum pct.
+	 *
+	 * @see ClanGovernment#setVoteQuorumPct(int)
 	 *
 	 * @return the vote quorum pct
 	 */
@@ -302,12 +378,39 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Sets the vote quorum pct.
 	 *
+	 * @see ClanGovernment#getVoteQuorumPct()
+	 *
 	 * @param voteQuorumPct the new vote quorum pct
 	 */
 	public void setVoteQuorumPct(int voteQuorumPct);
 
 	/**
+	 * Returns a miscellaneous variable setting configuration string
+	 * to be applied to new clans created with this government.
+	 * The format is VAR1="VALUE" VAR2="VALUE", etc..
+	 *
+	 * @see ClanGovernment#setMiscVariableSettings(String)
+	 *
+	 * @return the coded var string
+	 */
+	public String getMiscVariableSettings();
+
+	/**
+	 * Sets a miscellaneous variable setting configuration string
+	 * to be applied to new clans created with this government.
+	 * The format is VAR1="VALUE" VAR2="VALUE", etc..
+	 *
+	 * @see ClanGovernment#getMiscVariableSettings()
+	 *
+	 * @param vars the coded var string
+	 */
+	public void setMiscVariableSettings(String vars);
+
+	/**
 	 * Gets the xp calculation formula.
+	 *
+	 * @see ClanGovernment#setXpCalculationFormulaStr(String)
+	 * @see ClanGovernment#getXPCalculationFormula()
 	 *
 	 * @return the xp calculation formula
 	 */
@@ -316,12 +419,18 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Sets the xp calculation formula.
 	 *
+	 * @see ClanGovernment#setXpCalculationFormulaStr(String)
+	 * @see ClanGovernment#getXPCalculationFormula()
+	 *
 	 * @param xpCalculationFormulaStr the new xp calculation formula
 	 */
 	public void setXpCalculationFormulaStr(String xpCalculationFormulaStr);
 
 	/**
 	 * Returns the compiled xp calculation formula
+	 *
+	 * @see ClanGovernment#setXpCalculationFormulaStr(String)
+	 * @see ClanGovernment#getXPCalculationFormulaStr()
 	 *
 	 * @return the compiled xp calculation formula
 	 */
@@ -330,12 +439,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Checks if is default.
 	 *
+	 * @see ClanGovernment#setDefault(boolean)
+	 *
 	 * @return true, if is default
 	 */
 	public boolean isDefault();
 
 	/**
 	 * Sets the default.
+	 *
+	 * @see ClanGovernment#isDefault()
 	 *
 	 * @param isDefault the new default
 	 */
@@ -344,12 +457,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the positions.
 	 *
+	 * @see ClanGovernment#setPositions(ClanPosition[])
+	 *
 	 * @return the positions
 	 */
 	public ClanPosition[] getPositions();
 
 	/**
 	 * Sets the positions.
+	 *
+	 * @see ClanGovernment#getPositions()
 	 *
 	 * @param positions the new positions
 	 */
@@ -358,12 +475,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the auto promote by.
 	 *
+	 * @see ClanGovernment#setAutoPromoteBy(com.planet_ink.coffee_mud.Common.interfaces.Clan.AutoPromoteFlag)
+	 *
 	 * @return the auto promote by
 	 */
 	public Clan.AutoPromoteFlag getAutoPromoteBy();
 
 	/**
 	 * Sets the auto promote by.
+	 *
+	 * @see ClanGovernment#getAutoPromoteBy()
 	 *
 	 * @param autoPromoteBy the new auto promote by
 	 */
@@ -372,12 +493,16 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the level progression.
 	 *
+	 * @see ClanGovernment#setLevelProgression(int[])
+	 *
 	 * @return the level progression
 	 */
 	public int[] getLevelProgression();
 
 	/**
 	 * Sets the level progression.
+	 *
+	 * @see ClanGovernment#getLevelProgression()
 	 *
 	 * @param levelProgression the new level progression
 	 */
@@ -393,12 +518,22 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Adds the position.
 	 *
+	 * @see ClanGovernment#delPosition(ClanPosition)
+	 * @see ClanGovernment#getPosition(String)
+	 * @see ClanGovernment#findPositionRole(Integer)
+	 * @see ClanGovernment#findPositionRole(String)
+	 *
 	 * @return the clan position
 	 */
 	public ClanPosition addPosition();
 
 	/**
 	 * Del position.
+	 *
+	 * @see ClanGovernment#addPosition()
+	 * @see ClanGovernment#getPosition(String)
+	 * @see ClanGovernment#findPositionRole(Integer)
+	 * @see ClanGovernment#findPositionRole(String)
 	 *
 	 * @param pos the pos
 	 */
@@ -407,6 +542,11 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Gets the position.
 	 *
+	 * @see ClanGovernment#delPosition(ClanPosition)
+	 * @see ClanGovernment#addPosition()
+	 * @see ClanGovernment#findPositionRole(Integer)
+	 * @see ClanGovernment#findPositionRole(String)
+	 *
 	 * @param pos the pos
 	 * @return the position
 	 */
@@ -414,6 +554,12 @@ public interface ClanGovernment extends Modifiable, CMCommon
 
 	/**
 	 * returns clan position by the given role id
+	 *
+	 * @see ClanGovernment#delPosition(ClanPosition)
+	 * @see ClanGovernment#addPosition()
+	 * @see ClanGovernment#getPosition(String)
+	 * @see ClanGovernment#findPositionRole(String)
+	 *
 	 * @param roleID the role id to look for
 	 * @return the position role id goes to
 	 */
@@ -422,6 +568,12 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * returns clan position based on role id, or some part
 	 * of its id or name.
+	 *
+	 * @see ClanGovernment#delPosition(ClanPosition)
+	 * @see ClanGovernment#addPosition()
+	 * @see ClanGovernment#getPosition(String)
+	 * @see ClanGovernment#findPositionRole(Integer)
+	 *
 	 * @param pos the role id, name, or id
 	 * @return the clan position the pos goes to
 	 */
@@ -430,6 +582,7 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Return the list of abilities owned by someone
 	 * who is part of a clan of the given level.
+	 *
 	 * @param mob the mob enabled
 	 * @param clan the clan the abilities come from
 	 * @param level clan level
@@ -440,6 +593,7 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Return the list of effects owned by someone
 	 * who is part of a clan of the given level.
+	 *
 	 * @param mob the mob affected
 	 * @param clan the clan the effects come from
 	 * @param level clan level

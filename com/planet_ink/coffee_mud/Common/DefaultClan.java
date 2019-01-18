@@ -1788,7 +1788,7 @@ public class DefaultClan implements Clan
 
 			for(final FullMemberRecord member : members)
 			{
-				final long lastLogin=member.timestamp;
+				final long lastLogin=member.lastActiveTimeMs;
 				if(((System.currentTimeMillis()-lastLogin)<deathMilis)||(deathMilis==0))
 					activeMembers++;
 			}
@@ -1808,7 +1808,7 @@ public class DefaultClan implements Clan
 							destroyClan();
 							final StringBuffer buf=new StringBuffer("");
 							for(final FullMemberRecord member : members)
-								buf.append(member.name+" on "+CMLib.time().date2String(member.timestamp)+"  ");
+								buf.append(member.name+" on "+CMLib.time().date2String(member.lastActiveTimeMs)+"  ");
 							Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
 							return true;
 						}
@@ -1868,7 +1868,7 @@ public class DefaultClan implements Clan
 				final List<MemberRecord> highMembers=new LinkedList<MemberRecord>();
 				for(final FullMemberRecord member : members)
 				{
-					if((((System.currentTimeMillis()-member.timestamp)<overthrowMilis)||(overthrowMilis==0))
+					if((((System.currentTimeMillis()-member.lastActiveTimeMs)<overthrowMilis)||(overthrowMilis==0))
 					&&(highPositionList.contains(Integer.valueOf(member.role))))
 						highMembers.add(member);
 				}
@@ -1893,6 +1893,10 @@ public class DefaultClan implements Clan
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.XP;
 					break;
+				case JOINDATE_OVERWRITE:
+					overWrite=true;
+					basePromoteBy=AutoPromoteFlag.JOINDATE;
+					break;
 				default:
 					break;
 				}
@@ -1908,7 +1912,7 @@ public class DefaultClan implements Clan
 							continue;
 						for(final Integer posI : highPositionList)
 						{
-							if((((System.currentTimeMillis()-member.timestamp)<overthrowMilis)||(overthrowMilis==0))
+							if((((System.currentTimeMillis()-member.lastActiveTimeMs)<overthrowMilis)||(overthrowMilis==0))
 							&&(canBeAssigned(M, posI.intValue())))
 								highestQualifiedMembers.add(member);
 						}
@@ -1959,6 +1963,17 @@ public class DefaultClan implements Clan
 							public int compare(final MemberRecord o1, final MemberRecord o2)
 							{
 								return Double.compare(o1.donatedGold,o2.donatedGold);
+							}
+						});
+					}
+					if(basePromoteBy==AutoPromoteFlag.JOINDATE)
+					{
+						Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
+						{
+							@Override
+							public int compare(final MemberRecord o1, final MemberRecord o2)
+							{
+								return Double.compare(o2.joinDate, o1.joinDate);
 							}
 						});
 					}
@@ -2026,7 +2041,7 @@ public class DefaultClan implements Clan
 				members=getFullMemberList();
 				for(final FullMemberRecord member : members)
 				{
-					if((((System.currentTimeMillis()-member.timestamp)<deathMilis)||(deathMilis==0))
+					if((((System.currentTimeMillis()-member.lastActiveTimeMs)<deathMilis)||(deathMilis==0))
 					&&(highPositionList.contains(Integer.valueOf(member.role))))
 						highMembers.add(member);
 				}
@@ -2039,7 +2054,7 @@ public class DefaultClan implements Clan
 						destroyClan();
 						final StringBuffer buf=new StringBuffer("");
 						for(final FullMemberRecord member : members)
-							buf.append(member.name+" on "+CMLib.time().date2String(member.timestamp)+"  ");
+							buf.append(member.name+" on "+CMLib.time().date2String(member.lastActiveTimeMs)+"  ");
 						Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
 						return true;
 					}

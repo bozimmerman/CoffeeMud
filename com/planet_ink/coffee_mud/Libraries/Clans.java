@@ -846,6 +846,7 @@ public class Clans extends StdLibrary implements ClanManager
 		G.setRivalrous(true);
 		G.setVoteQuorumPct(66);
 		G.setDefault(true);
+		G.setMiscVariableSettings("");
 		return G;
 	}
 
@@ -1004,6 +1005,7 @@ public class Clans extends StdLibrary implements ClanManager
 		str.append(indt(1)).append("<PUBLIC>").append(gvt.isPublic()).append("</PUBLIC>\n");
 		str.append(indt(1)).append("<FAMILYONLY>").append(gvt.isFamilyOnly()).append("</FAMILYONLY>\n");
 		str.append(indt(1)).append("<RIVALROUS>").append(gvt.isRivalrous()).append("</RIVALROUS>\n");
+		str.append(indt(1)).append("<MISCVARS>").append(gvt.getMiscVariableSettings()).append("</MISCVARS>\n");
 		str.append(indt(1)).append("<XPPERLEVELFORMULA>").append(gvt.getXpCalculationFormulaStr()).append("</XPPERLEVELFORMULA>\n");
 		if(gvt.getOverrideMinMembers() == null)
 			str.append(indt(1)).append("<OVERRIDEMINMEMBERS />\n");
@@ -1288,6 +1290,7 @@ public class Clans extends StdLibrary implements ClanManager
 			final String rivalrousStr=clanTypePieceTag.getValFromPieces( "RIVALROUS");
 			if(CMath.isBool(rivalrousStr))
 				isRivalrous=CMath.s_bool(rivalrousStr);
+			final String miscVars=clanTypePieceTag.getValFromPieces( "MISCVARS");
 			final String xpPerLevelFormulaStr=clanTypePieceTag.getValFromPieces( "XPPERLEVELFORMULA");
 			final XMLTag conquestTag = clanTypePieceTag.getPieceFromPieces( "CONQUEST");
 			boolean conquestEnabled=true;
@@ -1323,6 +1326,7 @@ public class Clans extends StdLibrary implements ClanManager
 			G.setRivalrous(isRivalrous);
 			G.setVoteQuorumPct(minVotingPct);
 			G.setDefault(isDefault);
+			G.setMiscVariableSettings((miscVars != null)?miscVars:"");
 
 			final XMLTag abilitiesTag = clanTypePieceTag.getPieceFromPieces( "ABILITIES");
 			if((abilitiesTag!=null)&&(abilitiesTag.contents()!=null)&&(abilitiesTag.contents().size()>0))

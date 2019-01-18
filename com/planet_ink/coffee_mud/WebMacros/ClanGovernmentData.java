@@ -338,6 +338,13 @@ public class ClanGovernmentData extends StdWebMacro
 					old=G.getXpCalculationFormulaStr();
 				str.append(CMath.s_int(old)+", ");
 			}
+			if(parms.containsKey("MISCVARS"))
+			{
+				String old=httpReq.getUrlParameter("MISCVARS");
+				if(old==null)
+					old=G.getMiscVariableSettings();
+				str.append(CMath.s_int(old)+", ");
+			}
 			if(parms.containsKey("VOTEQUORUMPCT"))
 			{
 				String old=httpReq.getUrlParameter("VOTEQUORUMPCT");

@@ -220,6 +220,13 @@ public class ClanCreate extends StdCommand
 														}
 														*/
 														newClan.setGovernmentID(govtType);
+														final String miscVars = gvt.getMiscVariableSettings();
+														if(miscVars.length()>0)
+														{
+															final String setTax = CMParms.getParmStr(miscVars, "TAX", "");
+															if(setTax.indexOf('%')>0)
+																newClan.setTaxes(CMath.s_pct(setTax));
+														}
 														newRoleID=newClan.getTopQualifiedRoleID(Clan.Function.ASSIGN,mob);
 														if((newClan.getAuthority(newRoleID, Clan.Function.ASSIGN) == Clan.Authority.CAN_NOT_DO)
 														&&(newClan.getRolesList().length>1))

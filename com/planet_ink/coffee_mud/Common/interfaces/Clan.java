@@ -887,6 +887,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	{
 		public String	name;
 		public int		role;
+		public long		joinDate	= 0;
 		public int		mobpvps		= 0;
 		public int		playerpvps	= 0;
 		public long		donatedXP	= 0;
@@ -912,17 +913,18 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public class FullMemberRecord extends MemberRecord
 	{
 		public int level;
-		public long timestamp;
+		public long lastActiveTimeMs;
 		public boolean isAdmin;
 		public FullMemberRecord(final MemberRecord M, final int level, final long timestamp, final boolean isAdmin)
 		{
 			super(M.name,M.role);
 			this.mobpvps=M.mobpvps;
+			this.joinDate=M.joinDate;
 			this.playerpvps=M.playerpvps;
 			this.donatedGold=M.donatedGold;
 			this.donatedXP=M.donatedXP;
 			this.level=level;
-			this.timestamp=timestamp;
+			this.lastActiveTimeMs=timestamp;
 			this.isAdmin=isAdmin;
 		}
 	}
@@ -1092,6 +1094,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		RANK_OVERWRITE,
 		XP_OVERWRITE,
 		GOLD_OVERWRITE,
+		JOINDATE,
+		JOINDATE_OVERWRITE,
 	}
 
 	/**

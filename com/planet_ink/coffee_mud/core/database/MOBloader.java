@@ -803,6 +803,7 @@ public class MOBloader
 		int mobpvps=0;
 		int playerpvps=0;
 		long donatedXP=0;
+		long joinDate=0;
 		double donatedGold=0;
 		final String stats=DB.getRes(R,"CMCLSTS");
 		if(stats!=null)
@@ -816,12 +817,15 @@ public class MOBloader
 				donatedGold=CMath.s_double(splitstats[2]);
 			if(splitstats.length>3)
 				donatedXP=CMath.s_long(splitstats[3]);
+			if(splitstats.length>4)
+				joinDate=CMath.s_long(splitstats[4]);
 		}
 		final Clan.MemberRecord mR=new Clan.MemberRecord(username,clanRole);
 		mR.mobpvps=mobpvps;
 		mR.playerpvps=playerpvps;
 		mR.donatedGold=donatedGold;
 		mR.donatedXP=donatedXP;
+		mR.joinDate=joinDate;
 		return mR;
 	}
 
@@ -986,7 +990,7 @@ public class MOBloader
 					R.close();
 					M.donatedGold+=adjGold;
 					M.donatedXP+=adjXP;
-					final String newStats=M.mobpvps+";"+M.playerpvps+";"+M.donatedGold+";"+M.donatedXP;
+					final String newStats=M.mobpvps+";"+M.playerpvps+";"+M.donatedGold+";"+M.donatedXP+";"+M.joinDate;
 					D.update("UPDATE CMCHCL SET CMCLSTS='"+newStats+"' where CMCLAN='"+clan+"' and CMUSERID='"+name+"'", 0);
 				}
 			}

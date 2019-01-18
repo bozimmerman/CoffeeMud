@@ -507,6 +507,18 @@ public class ClanData extends StdWebMacro
 							});
 						}
 						else
+						if(sort.equalsIgnoreCase("JOINDATE"))
+						{
+							Collections.sort(members, new Comparator<MemberRecord>()
+							{
+								@Override
+								public int compare(final MemberRecord o1, final MemberRecord o2)
+								{
+									return Long.compare(o2.joinDate,o1.joinDate); // lower/older is better
+								}
+							});
+						}
+						else
 						if(sort.equalsIgnoreCase("PLAYERKILLS")||sort.equalsIgnoreCase("PVPKILLS"))
 						{
 							Collections.sort(members, new Comparator<MemberRecord>()

@@ -95,6 +95,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	public String 	xpCalculationFormulaStr;
 	/**  Whether this is the default government  */
 	public boolean	isDefault 		 = false;
+	/** The miscellaneous vars for new clans */
+	public String	miscVarsStr;
 
 	/** The list of ClanPosition objects for each holdable position in this government */
 	public ClanPosition[] 				positions;
@@ -502,6 +504,18 @@ public class DefaultClanGovernment implements ClanGovernment
 	}
 
 	@Override
+	public String getMiscVariableSettings()
+	{
+		return this.miscVarsStr;
+	}
+
+	@Override
+	public void setMiscVariableSettings(final String miscVars)
+	{
+		miscVarsStr = miscVars;
+	}
+
+	@Override
 	public ClanPosition findPositionRole(String pos)
 	{
 		if(pos==null)
@@ -637,7 +651,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		AUTOPROMOTEBY,VOTEFUNCS,LONGDESC,XPLEVELFORMULA,
 		NUMRABLE,GETRABLE,GETRABLEPROF,GETRABLEQUAL,GETRABLELVL,GETRABLEPARM,
 		NUMREFF,GETREFF,GETREFFPARM,GETREFFLVL,CATEGORY,ISRIVALROUS,
-		ENTRYSCRIPT,EXITSCRIPT,GETREFFROLE,GETRABLEROLE
+		ENTRYSCRIPT,EXITSCRIPT,GETREFFROLE,GETRABLEROLE,MISCVARS
 	}
 
 	@Override
@@ -756,6 +770,8 @@ public class DefaultClanGovernment implements ClanGovernment
 			return (clanEffectRoles == null) ? "" : (CMParms.toListString(clanEffectRoles[num]));
 		case CATEGORY:
 			return category;
+		case MISCVARS:
+			return miscVarsStr;
 		default:
 			Log.errOut("Clan", "getStat:Unhandled:" + stat.toString());
 			break;
@@ -1009,6 +1025,11 @@ public class DefaultClanGovernment implements ClanGovernment
 			if (clanEffectLevels == null)
 				clanEffectLevels = new int[num + 1];
 			clanEffectLevels[num] = CMath.s_int(val);
+			break;
+		}
+		case MISCVARS:
+		{
+			this.miscVarsStr = val;
 			break;
 		}
 		default:
