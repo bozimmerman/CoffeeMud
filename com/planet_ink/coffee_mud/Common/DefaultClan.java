@@ -71,7 +71,7 @@ public class DefaultClan implements Clan
 	protected String				acceptanceSettings		= "";
 	protected int					clanStatus				= 0;
 	protected long					lastStatusChange		= 0;
-	protected String				lastClanKillRecord		= null;
+	protected String				lastClanKillLog			= null;
 	protected double				taxRate					= 0.0;
 	protected volatile long			exp						= 0;
 	protected volatile long			lastClanTickMs			= System.currentTimeMillis();
@@ -166,16 +166,16 @@ public class DefaultClan implements Clan
 
 	private synchronized void clanKills()
 	{
-		if(lastClanKillRecord==null)
+		if(lastClanKillLog==null)
 		{
 			final List<PlayerData> V=CMLib.database().DBReadPlayerData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS");
 			clanKills.clear();
 			if(V.size()==0)
-				lastClanKillRecord="";
+				lastClanKillLog="";
 			else
 			{
-				lastClanKillRecord=V.get(0).xml();
-				final List<String> V2=CMParms.parseSemicolons(lastClanKillRecord,true);
+				lastClanKillLog=V.get(0).xml();
+				final List<String> V2=CMParms.parseSemicolons(lastClanKillLog,true);
 				for(int v=0;v<V2.size();v++)
 					clanKills.add(Long.valueOf(CMath.s_long(V2.get(v))));
 			}
@@ -193,11 +193,11 @@ public class DefaultClan implements Clan
 			if(date.longValue()<now)
 				clanKills.remove(i);
 			else
-				str.append(date.longValue()+";");
+				str.append(date.longValue()).append(";");
 		}
-		if((lastClanKillRecord==null)||(!lastClanKillRecord.equals(str.toString())))
+		if((lastClanKillLog==null)||(!lastClanKillLog.equals(str.toString())))
 		{
-			lastClanKillRecord=str.toString();
+			lastClanKillLog=str.toString();
 			CMLib.database().DBReCreatePlayerData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS",str.toString());
 		}
 	}
