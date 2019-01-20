@@ -1442,7 +1442,7 @@ public class PlanarAbility extends StdAbility
 		final String newPlaneName = planeIDNum.addAndGet(1)+"_"+cloneArea.Name();
 		final Area planeArea = CMClass.getAreaType("SubThinInstance");
 		planeArea.setName(newPlaneName);
-		planeArea.addBlurbFlag("PLANEOFEXISTENCE {"+newPlaneName+"}");
+		planeArea.addBlurbFlag("PLANEOFEXISTENCE {"+planeName+"}");
 		CMLib.map().addArea(planeArea);
 		planeArea.setAreaState(Area.State.ACTIVE); // starts ticking
 		final Room target=CMClass.getLocale("StdRoom");
@@ -1490,6 +1490,7 @@ public class PlanarAbility extends StdAbility
 				if(follower==mob)
 					break;
 			}
+			planeArea.addBlurbFlag("PLANEOFEXISTENCE {"+planeName+"}");
 		}
 		// return whether it worked
 		return success;
