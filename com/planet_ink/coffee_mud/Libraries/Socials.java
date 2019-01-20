@@ -71,6 +71,9 @@ public class Socials extends StdLibrary implements SocialsList
 				case 'O':
 					socobj.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
 					break;
+				case 'Q':
+					socobj.setSourceCode(CMMsg.MSG_SUBTLEMOVEMENT);
+					break;
 				default:
 					socobj.setSourceCode(CMMsg.MSG_HANDS);
 					break;
@@ -97,6 +100,10 @@ public class Socials extends StdLibrary implements SocialsList
 				case 'O':
 					socobj.setOthersCode(CMMsg.MSG_OK_VISUAL);
 					socobj.setTargetCode(CMMsg.MSG_OK_VISUAL);
+					break;
+				case 'Q':
+					socobj.setOthersCode(CMMsg.MSG_SUBTLEMOVEMENT);
+					socobj.setTargetCode(CMMsg.MSG_SUBTLEMOVEMENT);
 					break;
 				default:
 					socobj.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
@@ -268,31 +275,35 @@ public class Socials extends StdLibrary implements SocialsList
 		mob.session().safeRawPrintln(L("@x1. Others Effect type: @x2",""+showNumber,((me.getOthersCode()==CMMsg.MSG_HANDS)?"HANDS":((me.getOthersCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.getOthersCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.getOthersCode()==CMMsg.MSG_NOISYMOVEMENT)?"SEEING MOVEMENT":"HEARING NOISE"))))));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
-		String newName=mob.session().choose(L("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: "),L("WMSVH"),"");
+		String newName=mob.session().choose(L("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands, Q)uiet move: "),L("WMSVHQ"),"");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
 			switch(newName.charAt(0))
 			{
-				case 'H':
-					me.setOthersCode(CMMsg.MSG_HANDS);
-					me.setTargetCode(CMMsg.MSG_HANDS);
+			case 'H':
+				me.setOthersCode(CMMsg.MSG_HANDS);
+				me.setTargetCode(CMMsg.MSG_HANDS);
 				break;
-				case 'W':
-					me.setOthersCode(CMMsg.MSG_SPEAK);
-					me.setTargetCode(CMMsg.MSG_SPEAK);
+			case 'W':
+				me.setOthersCode(CMMsg.MSG_SPEAK);
+				me.setTargetCode(CMMsg.MSG_SPEAK);
 				break;
-				case 'M':
-					me.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
-					me.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
+			case 'M':
+				me.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
+				me.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
 				break;
-				case 'S':
-					me.setOthersCode(CMMsg.MSG_NOISE);
-					me.setTargetCode(CMMsg.MSG_NOISE);
+			case 'Q':
+				me.setOthersCode(CMMsg.MSG_SUBTLEMOVEMENT);
+				me.setTargetCode(CMMsg.MSG_SUBTLEMOVEMENT);
 				break;
-				case 'V':
-					me.setOthersCode(CMMsg.MSG_OK_VISUAL);
-					me.setTargetCode(CMMsg.MSG_OK_VISUAL);
+			case 'S':
+				me.setOthersCode(CMMsg.MSG_NOISE);
+				me.setTargetCode(CMMsg.MSG_NOISE);
+				break;
+			case 'V':
+				me.setOthersCode(CMMsg.MSG_OK_VISUAL);
+				me.setTargetCode(CMMsg.MSG_OK_VISUAL);
 				break;
 			}
 		}
@@ -309,26 +320,29 @@ public class Socials extends StdLibrary implements SocialsList
 		mob.session().safeRawPrintln(L("@x1. Target Effect type: @x2",""+showNumber,((me.getTargetCode()==CMMsg.MSG_HANDS)?"HANDS":((me.getTargetCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.getTargetCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.getTargetCode()==CMMsg.MSG_NOISYMOVEMENT)?"BEING MOVED ON":"HEARING NOISE"))))));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
-		String newName=mob.session().choose(L("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: "),L("WMSVH"),"");
+		String newName=mob.session().choose(L("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands, Q)uiet move: "),L("WMSVHQ"),"");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
 			switch(newName.charAt(0))
 			{
-				case 'W':
-					me.setTargetCode(CMMsg.MSG_SPEAK);
+			case 'W':
+				me.setTargetCode(CMMsg.MSG_SPEAK);
 				break;
-				case 'M':
-					me.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
+			case 'M':
+				me.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
 				break;
-				case 'H':
-					me.setTargetCode(CMMsg.MSG_HANDS);
+			case 'Q':
+				me.setTargetCode(CMMsg.MSG_SUBTLEMOVEMENT);
 				break;
-				case 'S':
-					me.setTargetCode(CMMsg.MSG_NOISE);
+			case 'H':
+				me.setTargetCode(CMMsg.MSG_HANDS);
 				break;
-				case 'V':
-					me.setTargetCode(CMMsg.MSG_OK_VISUAL);
+			case 'S':
+				me.setTargetCode(CMMsg.MSG_NOISE);
+				break;
+			case 'V':
+				me.setTargetCode(CMMsg.MSG_OK_VISUAL);
 				break;
 			}
 		}
@@ -345,23 +359,26 @@ public class Socials extends StdLibrary implements SocialsList
 		mob.session().safeRawPrintln(L("@x1. Your action type: @x2",""+showNumber,((me.getSourceCode()==CMMsg.MSG_NOISYMOVEMENT)?"LARGE MOVEMENT":((me.getSourceCode()==CMMsg.MSG_SPEAK)?"SPEAKING":((me.getSourceCode()==CMMsg.MSG_HANDS)?"MOVEMENT":"MAKING NOISE")))));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
-		String newName=mob.session().choose(L("Change W)ords, M)ovement (small), S)ound, L)arge Movement: "),L("WMSL"),"");
+		String newName=mob.session().choose(L("Change W)ords, M)ovement (small), S)ound, L)arge Movement, Q)uiet Move: "),L("WMSLQ"),"");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
 			switch(newName.charAt(0))
 			{
-				case 'W':
-					me.setSourceCode(CMMsg.MSG_SPEAK);
+			case 'W':
+				me.setSourceCode(CMMsg.MSG_SPEAK);
 				break;
-				case 'M':
-					me.setSourceCode(CMMsg.MSG_HANDS);
+			case 'M':
+				me.setSourceCode(CMMsg.MSG_HANDS);
 				break;
-				case 'S':
-					me.setSourceCode(CMMsg.MSG_NOISE);
+			case 'S':
+				me.setSourceCode(CMMsg.MSG_NOISE);
 				break;
-				case 'L':
-					me.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
+			case 'L':
+				me.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
+				break;
+			case 'Q':
+				me.setSourceCode(CMMsg.MSG_SUBTLEMOVEMENT);
 				break;
 			}
 		}
@@ -966,6 +983,10 @@ public class Socials extends StdLibrary implements SocialsList
 			case CMMsg.MSG_NOISYMOVEMENT:
 				buf.append('o');
 				break;
+			case CMMsg.MSG_QUIETMOVEMENT:
+			case CMMsg.MSG_SUBTLEMOVEMENT:
+				buf.append('q');
+				break;
 			default:
 				buf.append(' ');
 				break;
@@ -983,6 +1004,10 @@ public class Socials extends StdLibrary implements SocialsList
 				break;
 			case CMMsg.MSG_NOISYMOVEMENT:
 				buf.append('v');
+				break;
+			case CMMsg.MSG_QUIETMOVEMENT:
+			case CMMsg.MSG_SUBTLEMOVEMENT:
+				buf.append('q');
 				break;
 			case CMMsg.MSG_OK_VISUAL:
 				buf.append('o');

@@ -423,12 +423,12 @@ mt	NOOGIE SELF	You rub your head and create a static charge...	<S-NAME> rubs <S-
 mv	NTWIST	You pinch and twist your nipples playfully.	<S-NAME> twists <S-HIS-HER> nipples in a seductive manner.  Ooh-lala!			
 mv	NTWIST <T-NAME>	You twist <T-YOUPOSS> nipples.	<S-NAME> twists <T-YOUPOSS> nipples.	Ouch! <S-NAME> twists <T-YOUPOSS> nipples!	Whose nipples do you want to twist?	
 mv	NTWIST SELF	You masochist!	<S-NAME> twists <S-HIS-HER> nipples.  What a masochist!			
-mo	NUDGE	Nudge whom?				
-mt	NUDGE <T-NAME>	You nudge <T-HIM-HER>.	<S-NAME> nudges <T-NAMESELF>.	<S-NAME> nudges you.	Who?	
+qo	NUDGE	Nudge whom?				
+qt	NUDGE <T-NAME>	You nudge <T-HIM-HER>.	<S-NAME> nudges <T-NAMESELF>.	<S-NAME> nudges you.	Who?	
 oo	NUDGE SELF	You nudge yourself, for some strange reason.	<S-NAME> nudges <S-HIM-HERSELF>, to keep <S-HIM-HERSELF> awake.			
-mo	NUZZLE	Nuzzle who??				
-mt	NUZZLE <T-NAME>	You nuzzle <T-HIS-HER> neck softly.	<S-NAME> softly nuzzles <T-NAMESELF>'s neck.	<S-NAME> softly nuzzles your neck.	No.. they aren't here..	
-mo	NUZZLE SELF	I'm sorry, friend, but that's impossible.				
+qo	NUZZLE	Nuzzle who??				
+qq	NUZZLE <T-NAME>	You nuzzle <T-HIS-HER> neck softly.	<S-NAME> softly nuzzles <T-NAMESELF>'s neck.	<S-NAME> softly nuzzles your neck.	No.. they aren't here..	
+qo	NUZZLE SELF	I'm sorry, friend, but that's impossible.				
 oo	OGLE	You start to ogle at everyone in the room.	<S-NAME> ogles at everyone in the room.			
 oo	OGLE <T-NAME>	You ogle at <T-NAME>.	<S-NAME> ogles at <T-NAME> and drools.	<S-NAME> ogles you, drooling and grinning.	Aww. All your ogle zen and they aren`t here.	
 oo	OGLE SELF	You ogle at yourself. Having fun?	<S-NAME> ogles at <S-HIM-HERSELF> and giggles.			

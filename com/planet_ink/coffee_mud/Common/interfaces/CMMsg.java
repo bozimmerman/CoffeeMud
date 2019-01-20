@@ -1364,6 +1364,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_NOISYMOVEMENT=MASK_HANDS|MASK_SOUND|MASK_MOVE|TYP_NOISYMOVEMENT;
 	/** combined MAJOR and MINOR codes for useful event message type for a large quiet movement event */
 	public static final int MSG_QUIETMOVEMENT=MASK_HANDS|MASK_MOVE|TYP_QUIETMOVEMENT;
+	/** combined MAJOR and MINOR codes for useful event message type for a large quiet movement event */
+	public static final int MSG_SUBTLEMOVEMENT=MASK_MOVE|TYP_QUIETMOVEMENT;
 	/** combined MAJOR and MINOR codes for useful event message type for a missile weapon reload event*/
 	public static final int MSG_RELOAD=MASK_HANDS|TYP_RELOAD;
 	/** combined MAJOR and MINOR codes for useful event message type for a physical attack event*/
