@@ -520,7 +520,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			buildingI=(Item)msg.target();
+			this.buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		else
