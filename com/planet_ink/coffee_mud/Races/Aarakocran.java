@@ -95,7 +95,7 @@ public class Aarakocran extends StdRace
 	@Override
 	public long forbiddenWornBits()
 	{
-		return Wearable.WORN_BACK | Wearable.WORN_ABOUT_BODY | Wearable.WORN_FEET;
+		return Wearable.WORN_ABOUT_BODY | Wearable.WORN_FEET;
 	}
 
 	private final int[]	agingChart	= { 0, 1, 1, 10, 20, 35, 40, 43, 45 };
