@@ -941,7 +941,7 @@ public class Conquerable extends Arrest
 			return;
 		Clan C=CMLib.clans().getClanAnyHost(clanID);
 		if(C==null)
-			C=CMLib.clans().findClan(clanID);
+			C=CMLib.clans().fetchClan(clanID);
 		if((C==null)||(!C.getGovernment().isConquestEnabled()))
 			return;
 
@@ -1048,9 +1048,9 @@ public class Conquerable extends Arrest
 
 	protected boolean flagFound(final Area A, final String clanID)
 	{
-		Clan C=CMLib.clans().getClanAnyHost(clanID);
+		Clan C=CMLib.clans().fetchClanAnyHost(clanID);
 		if(C==null)
-			C=CMLib.clans().findClan(clanID);
+			C=CMLib.clans().fetchClan(clanID);
 		if((C==null)||(!C.getGovernment().isConquestEnabled()))
 			return false;
 		return flagFound(A,C);
