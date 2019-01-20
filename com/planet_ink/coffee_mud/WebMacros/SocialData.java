@@ -44,8 +44,8 @@ public class SocialData extends StdWebMacro
 	static String[] BEXTNS={""," ALL"," SELF"," <T-NAME>"," <I-NAME>"," <V-NAME>"," <E-NAME>"};
 	static String[] BFIELDS={"YOM","YONM","YOM","YTONMA","YONM","YONM","YONM"};
 
-	static String[] CODESTR={"WORDS","MOVEMENT","SOUND","VISUAL","HANDS"};
-	static int[] CODES={CMMsg.MSG_SPEAK,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISE,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_HANDS};
+	static String[] CODESTR={"WORDS","MOVEMENT","SOUND","VISUAL","HANDS","QUIETMOVE"};
+	static int[] CODES={CMMsg.MSG_SPEAK,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISE,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_HANDS,CMMsg.MSG_SUBTLEMOVEMENT};
 
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
