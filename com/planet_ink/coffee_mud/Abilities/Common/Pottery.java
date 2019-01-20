@@ -418,6 +418,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 			commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
 			return false;
 		}
+		final Item buildingI=this.buildingI;
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 		buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
 		String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
