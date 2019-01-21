@@ -296,6 +296,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 							}
 							if(buildingI instanceof BoardableShip)
 							{
+								final BoardableShip ship=(BoardableShip)buildingI;
 								MOB buyer = mob;
 								if(buyer.isMonster() && (buyer.amFollowing()!=null))
 									buyer = buyer.amUltimatelyFollowing();
@@ -313,6 +314,18 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 									finally
 									{
 										shopKeeper.destroy();
+									}
+								}
+								if(ship instanceof PrivateProperty)
+								{
+									final PrivateProperty shipP=(PrivateProperty)ship;
+									if(shipP.getOwnerName().length()>0)
+									{
+										final LandTitle titleI=(LandTitle)CMClass.getItem("GenTitle");
+										titleI.setLandPropertyID(ship.Name());
+										titleI.text(); // everything else is derived from the ship itself
+										((Item)titleI).recoverPhyStats();
+										mob.addItem((Item)titleI);
 									}
 								}
 							}
