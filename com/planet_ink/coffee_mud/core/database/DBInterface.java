@@ -904,6 +904,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public boolean DBExistsPlayerData(final String section, final String name)
+	{
+		return DataLoader.DBExistsData(section, name);
+	}
+
+	@Override
 	public List<PlayerData> DBReadPlayerData(final String player, final List<String> sections)
 	{
 		return DataLoader.DBRead(player, sections);

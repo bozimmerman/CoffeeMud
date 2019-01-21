@@ -367,6 +367,31 @@ public class DataLoader
 		return rows;
 	}
 
+	public boolean DBExistsData(String section, String name)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			section = DB.injectionClean(section);
+			name = DB.injectionClean(name);
+			final ResultSet R=D.query("SELECT CMPLID FROM CMPDAT WHERE CMSECT='"+section+"' AND CMPLID='"+name+"'");
+			if(R.next())
+			{
+				return true;
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return false;
+	}
+
 	public List<PlayerData> DBRead(String playerID, final List<String> sections)
 	{
 		DBConnection D=null;

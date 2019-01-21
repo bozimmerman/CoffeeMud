@@ -1528,6 +1528,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBReadPlayerData(String, String)
 	 * @see DatabaseEngine#DBCountPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
+	 * @see DatabaseEngine#DBExistsPlayerData(String, String)
 	 * @param player the user id of the player to delete the data of
 	 * @param sections the sections/types of data to return records for
 	 * @return the player data records that match the player and sections
@@ -1540,6 +1541,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * data type/section.
 	 * @see DatabaseEngine#DBReadPlayerSectionData(String)
 	 * @see DatabaseEngine#DBDeletePlayerSectionData(String)
+	 * @see DatabaseEngine#DBExistsPlayerData(String, String)
 	 * @param section the section to read player names for
 	 * @return the list of all unique names in this section
 	 */
@@ -1547,10 +1549,24 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERDATA
+	 * Check all unique player names for all players for the given
+	 * name/section.
+	 * @see DatabaseEngine#DBReadPlayerSectionData(String)
+	 * @see DatabaseEngine#DBReadPlayerDataPlayersBySection(String)
+	 * @see DatabaseEngine#DBDeletePlayerSectionData(String)
+	 * @param section the section to read player names for
+	 * @param name the name of the player
+	 * @return true if the player data exists
+	 */
+	public boolean DBExistsPlayerData(final String section, final String name);
+
+	/**
+	 * Table category: DBPLAYERDATA
 	 * Reads in all player data for all players for the given
 	 * data type/section. Use this sparingly!
 	 * @see DatabaseEngine.PlayerData
 	 * @see DatabaseEngine#DBReadPlayerDataPlayersBySection(String)
+	 * @see DatabaseEngine#DBExistsPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerSectionData(String)
 	 * @param section the section, type of data to delete
 	 * @return the player data in the given section for all players

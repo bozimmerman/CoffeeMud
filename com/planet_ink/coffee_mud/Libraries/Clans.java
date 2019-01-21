@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
@@ -581,7 +582,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		final String prizeStr=CMProps.getVar(trophy.propertyCode);
 		if(prizeStr.length()==0)
-			return "None";
+			return L("None");
 		if(prizeStr.length()>0)
 		{
 			final Vector<String> V=CMParms.parse(prizeStr);
@@ -590,7 +591,16 @@ public class Clans extends StdLibrary implements ClanManager
 				final String type=V.lastElement().toUpperCase();
 				final String amt=V.firstElement();
 				if("EXPERIENCE".startsWith(type))
-					return amt+" experience point bonus.";
+					return L("@x1 experience point bonus.",""+amt);
+				else
+				if("GOLD".startsWith(type)||"COINS".startsWith(type))
+					return L("@x1 currency awarded.",""+amt);
+				else
+				if("PRACTICES".startsWith(type))
+					return L("@x1 practice points awarded.",""+amt);
+				else
+				if("TRAINS".startsWith(type))
+					return L("@x1 practice points awarded.",""+amt);
 			}
 		}
 		return prizeStr;
@@ -1500,6 +1510,132 @@ public class Clans extends StdLibrary implements ClanManager
 		return null;
 	}
 
+	protected void awardTrophyPrize(final Clan winnerC, final Trophy trophy)
+	{
+		if(winnerC == null)
+			return;
+		final String prizeStr=CMProps.getVar(trophy.propertyCode);
+		if(prizeStr.length()==0)
+			return;
+		if(prizeStr.length()>0)
+		{
+			final Vector<String> V=CMParms.parse(prizeStr);
+			if(V.size()>=2)
+			{
+				final String type=V.lastElement().toUpperCase();
+				final String amt=V.firstElement();
+				if("EXPERIENCE".startsWith(type))
+					return;
+				else
+				if("GOLD".startsWith(type)||"COINS".startsWith(type))
+				{
+					Banker clanBank=null;
+					String currency="";
+					for(final Enumeration<Banker> b = CMLib.map().banks();b.hasMoreElements();)
+					{
+						final Banker B=b.nextElement();
+						if((B!=null)
+						&&(!B.amDestroyed())
+						&&(B.isAccountName(winnerC.clanID())))
+						{
+							clanBank=B;
+							currency=CMLib.beanCounter().getCurrency(B);
+							if((currency == null)
+							||(currency.length()==0))
+								currency="gold";
+							break;
+						}
+					}
+					final double money=CMath.s_double(amt);
+					if(money == 0)
+					{
+						Log.errOut(L("No money awarded for "+trophy.description));
+						return;
+					}
+					final String awardName=CMLib.beanCounter().nameCurrencyLong(currency, money);
+					if(clanBank == null)
+						winnerC.clanAnnounce(L("The @x1 @x2 would have been awarded @x3 in their bank account, but there isn't one.",winnerC.getGovernmentName(),winnerC.name(),awardName));
+					else
+					{
+						final Item oldCoins=clanBank.findDepositInventory(winnerC.clanID(),""+Integer.MAX_VALUE);
+						final String date=CMLib.utensils().getFormattedDate(clanBank);
+						CMLib.beanCounter().bankLedger(clanBank.bankChain(),winnerC.clanID(),date+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(currency,money)+": CoffeeMud");
+						final double oldValue = (oldCoins != null) ? ((Coins)oldCoins).getTotalValue() : 0.0;
+						if(oldCoins!=null)
+							clanBank.delDepositInventory(winnerC.clanID(),oldCoins);
+						final Coins C=CMLib.beanCounter().makeBestCurrency(currency, money + oldValue);
+						clanBank.addDepositInventory(winnerC.clanID(),C,null);
+						winnerC.clanAnnounce(L("The @x1 @x2 has been awarded @x3 @in their bank account.",winnerC.getGovernmentName(),winnerC.name(),awardName));
+					}
+				}
+				else
+				if("PRACTICES".startsWith(type))
+				{
+					final int num=CMath.s_int(amt);
+					if(num == 0)
+					{
+						Log.errOut(L("No pracs awarded for "+trophy.description));
+						return;
+					}
+					final Room donateR=(winnerC.getDonation()==null||winnerC.getDonation().length()==0)?null:CMLib.map().getRoom(winnerC.getDonation());
+					if(donateR == null)
+						winnerC.clanAnnounce(L("The @x1 @x2 would have been awarded @x3 practice point(s) at their donation room, but there isn't one.",winnerC.getGovernmentName(),winnerC.name(),""+amt));
+					else
+					{
+						final List<Item> items=new ArrayList<Item>(num);
+						for(int i=0;i<num;i++)
+						{
+							final Pill P=(Pill)CMClass.getMiscMagic("GenSuperPill");
+							P.setName("a practice point for "+winnerC.getGovernmentName()+" "+winnerC.name());
+							P.setDisplayText(P.name()+" is just sitting here");
+							P.setMiscText("PRAC+1");
+							final Ability A=CMClass.getAbility("Prop_HaveZapper");
+							A.setMiscText("-CLAN +\""+winnerC.name()+"\"");
+							P.addNonUninvokableEffect(A);
+							P.text();
+							items.add(P);
+						}
+						for(int i=0;i<items.size();i++)
+							donateR.addItem(items.get(i), Expire.Never);
+						winnerC.clanAnnounce(L("The @x1 @x2 has been awarded @x3 practice point(s) at their donation room.",winnerC.getGovernmentName(),winnerC.name(),""+amt));
+					}
+				}
+				else
+				if("TRAINS".startsWith(type))
+				{
+					final int num=CMath.s_int(amt);
+					if(num == 0)
+					{
+						Log.errOut(L("No pracs awarded for "+trophy.description));
+						return;
+					}
+					final Room donateR=(winnerC.getDonation()==null||winnerC.getDonation().length()==0)?null:CMLib.map().getRoom(winnerC.getDonation());
+					if(donateR == null)
+						winnerC.clanAnnounce(L("The @x1 @x2 would have been awarded @x3 training point(s) at their donation room, but there isn't one.",winnerC.getGovernmentName(),winnerC.name(),""+amt));
+					else
+					{
+						final List<Item> items=new ArrayList<Item>(num);
+						for(int i=0;i<num;i++)
+						{
+							final Pill P=(Pill)CMClass.getMiscMagic("GenSuperPill");
+							P.setName("a training point for "+winnerC.getGovernmentName()+" "+winnerC.name());
+							P.setDisplayText(P.name()+" is just sitting here");
+							P.setMiscText("TRAIN+1");
+							final Ability A=CMClass.getAbility("Prop_HaveZapper");
+							A.setMiscText("-CLAN +\""+winnerC.name()+"\"");
+							P.addNonUninvokableEffect(A);
+							P.text();
+							items.add(P);
+						}
+						for(int i=0;i<items.size();i++)
+							donateR.addItem(items.get(i), Expire.Never);
+						winnerC.clanAnnounce(L("The @x1 @x2 has been awarded @x3 training point(s) at their donation room.",winnerC.getGovernmentName(),winnerC.name(),""+amt));
+					}
+				}
+			}
+		}
+	}
+
 	public void clanTrophyScan()
 	{
 		if(trophySystemActive())
@@ -1525,6 +1661,7 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.Members.flagNum());
 					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.Members.description));
+					awardTrophyPrize(winnerC, Trophy.Members);
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
@@ -1558,6 +1695,7 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.MemberLevel.flagNum());
 					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.MemberLevel.description));
+					awardTrophyPrize(winnerC, Trophy.MemberLevel);
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
@@ -1588,6 +1726,7 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.Experience.flagNum());
 					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.Experience.description));
+					awardTrophyPrize(winnerC, Trophy.Experience);
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
@@ -1620,6 +1759,7 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.ClanKills.flagNum());
 					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.ClanKills.description));
+					awardTrophyPrize(winnerC, Trophy.ClanKills);
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
@@ -1652,6 +1792,7 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.PlayerLevelsGained.flagNum());
 					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.PlayerLevelsGained.description));
+					awardTrophyPrize(winnerC, Trophy.PlayerLevelsGained);
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
@@ -1684,6 +1825,7 @@ public class Clans extends StdLibrary implements ClanManager
 				{
 					winnerC.setTrophies(winnerC.getTrophies()|Trophy.PlayerMinutes.flagNum());
 					clanAnnounceAll(L("The @x1 @x2 has been awarded the trophy for @x3.",winnerC.getGovernmentName(),winnerC.name(),Trophy.PlayerMinutes.description));
+					awardTrophyPrize(winnerC, Trophy.PlayerMinutes);
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
@@ -1738,6 +1880,7 @@ public class Clans extends StdLibrary implements ClanManager
 					{
 						winnerMostClansControlledC.setTrophies(winnerMostClansControlledC.getTrophies()|Trophy.Areas.flagNum());
 						clanAnnounceAll("The "+winnerMostClansControlledC.getGovernmentName()+" "+winnerMostClansControlledC.name()+" has been awarded the trophy for "+Trophy.Areas.description+".");
+						awardTrophyPrize(winnerMostClansControlledC, Trophy.Areas);
 					}
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
@@ -1758,6 +1901,7 @@ public class Clans extends StdLibrary implements ClanManager
 					{
 						winnerMostControlPointsC.setTrophies(winnerMostControlPointsC.getTrophies()|Trophy.Points.flagNum());
 						clanAnnounceAll("The "+winnerMostControlPointsC.getGovernmentName()+" "+winnerMostControlPointsC.name()+" has been awarded the trophy for "+Trophy.Points.description+".");
+						awardTrophyPrize(winnerMostControlPointsC, Trophy.Areas);
 					}
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
@@ -1811,6 +1955,7 @@ public class Clans extends StdLibrary implements ClanManager
 								C.clanAnnounce(L("The @x1 @x2 has lost control of the trophy for @x3.",C.getGovernmentName(),C.name(),T.description));
 							}
 						}
+						awardTrophyPrize(winnerC, T);
 					}
 				}
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)

@@ -328,6 +328,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return mine;
 	}
 
+	@Override
+	public boolean isAccountName(final String name)
+	{
+		return CMLib.database().DBExistsPlayerData(bankChain(),name);
+	}
+
 	protected void bankLedger(final String depositorName, final String msg)
 	{
 		final String date=CMLib.utensils().getFormattedDate(this);

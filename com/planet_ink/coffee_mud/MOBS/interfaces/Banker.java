@@ -127,6 +127,14 @@ public interface Banker extends ShopKeeper
 	public List<String> getAccountNames();
 
 	/**
+	 * Returns true if the given name has an account at this bank.
+	 * The name is quite case sensitive.
+	 *
+	 * @return true if the account was found
+	 */
+	public boolean isAccountName(String name);
+
+	/**
 	 * When the given mob tries to deposit or withdraw something, this method is
 	 * called to get the proper account name, which is either the mob themselves
 	 * or their clan, if they are (optionally) permitted by their rank.
