@@ -636,6 +636,20 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return min;
 	}
 
+	protected double totalItemsPawningWorth(final MOB buyer, final String depositorName)
+	{
+		final List<Item> V=getDepositedItems(depositorName);
+		double min=0;
+		for(int v=0;v<V.size();v++)
+		{
+			final Item I=V.get(v);
+			if(!(I instanceof Coins))
+				min+=CMLib.coffeeShops().pawningPrice(this, buyer, I, this, shop).absoluteGoldPrice;
+			I.destroy();
+		}
+		return min;
+	}
+
 	@Override
 	public String getBankClientName(final MOB mob, final Clan.Function func, final boolean checked)
 	{
@@ -1072,7 +1086,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						return false;
 					MOB owner=msg.source();
 					double balance=getBalance(withdrawerName);
-					final double collateral=totalItemsWorth(withdrawerName);
+					final double totalItemsWorth=totalItemsWorth(withdrawerName);
 					if(msg.tool() instanceof Coins)
 					{
 						if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(this)))
@@ -1114,6 +1128,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(msg.tool() instanceof Item)
 					{
 						final double debt=CMLib.beanCounter().getDebtOwed(withdrawerName,bankChain());
+						final double collateral=totalItemsPawningWorth(mob,withdrawerName);
 						if((debt>0.0)
 						&&((collateral-((Item)msg.tool()).value())<debt))
 						{
@@ -1121,7 +1136,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							return false;
 						}
 					}
-					final double minbalance=(collateral/MIN_ITEM_BALANCE_DIVISOR);
+					final double minbalance=(totalItemsWorth/MIN_ITEM_BALANCE_DIVISOR);
 					if(msg.tool() instanceof Coins)
 					{
 						if(((Coins)msg.tool()).getTotalValue()>balance)
@@ -1187,7 +1202,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
 					return false;
 				}
-				final double collateralRemaining=((Coins)msg.tool()).getTotalValue()-totalItemsWorth(withdrawerName);
+				final double collateralRemaining=((Coins)msg.tool()).getTotalValue()-totalItemsPawningWorth(mob,withdrawerName);
 				if(collateralRemaining>0)
 				{
 					final StringBuffer str=new StringBuffer("");
@@ -1195,7 +1210,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						str.append(CMStrings.capitalizeFirstLetter(withdrawerName)+" ");
 					else
 						str.append("You ");
-					str.append(L("will need to deposit enough items with us as collateral.  You'll need items worth @x1 more to qualify.",CMLib.beanCounter().nameCurrencyShort(this,collateralRemaining)));
+					str.append(L("will need to deposit enough items with us as collateral.  You'll need items worth @x1 more to me to qualify.",CMLib.beanCounter().nameCurrencyShort(this,collateralRemaining)));
 					CMLib.commands().postSay(this,mob,str.toString()+"^T",true,false);
 					return false;
 				}
