@@ -1305,10 +1305,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		</ROOM>
 		<ROOM id="town_prison" class="WoodRoom"  condition="$__townprison&lt;1 and $__numshoptypes_all &gt; 10" define="__townprison+=1,__townsecond+=1">
 			<TITLE select="any-1">
-				<TITLE>The ${c:areaname} Prison</TITLE>
-				<TITLE>${c:areaname} Jail</TITLE>
 				<TITLE>The Jail</TITLE>
-				<TITLE>The Prison</TITLE>
 			</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
