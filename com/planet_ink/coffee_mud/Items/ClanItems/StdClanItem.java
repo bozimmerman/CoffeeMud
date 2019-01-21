@@ -364,7 +364,7 @@ public class StdClanItem extends StdItem implements ClanItem
 				}
 				else
 				{
-					final Clan itemC = CMLib.clans().getClan(((ClanItem) myHost).clanID());
+					final Clan itemC = CMLib.clans().getClanAnyHost(((ClanItem) myHost).clanID());
 					if (itemC == null)
 					{
 						msg.source().tell(CMLib.lang().L("This ancient relic from a lost clan fades out of existence."));
@@ -413,6 +413,32 @@ public class StdClanItem extends StdItem implements ClanItem
 						}
 					}
 				}
+			}
+		}
+		else
+		if(((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+			||((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+				&&(msg.tool() instanceof Ability)
+				&&(((Ability)msg.tool()).ID().equals("Spell_ClanExperience")))) // ugh, i hate doing stuff like this.
+		&&(((ClanItem) myHost).getClanItemType() == ClanItem.ClanItemType.TABBARD)
+		&&(msg.source() == ((Item)myHost).owner())
+		&&(((Item)myHost).amBeingWornProperly())
+		&&(msg.value()>0))
+		{
+			final Clan itemC = CMLib.clans().getClanAnyHost(((ClanItem) myHost).clanID());
+			if((itemC == null)
+			||(msg.source().getClanRole(itemC.clanID())==null))
+			{
+				msg.source().tell(CMLib.lang().L("This ancient relic from a lost clan fades out of existence."));
+				((ClanItem) myHost).destroy();
+				return false;
+			}
+			else
+			{
+				if(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+					itemC.adjExp(msg.source(), msg.value());
+				else
+					itemC.applyExpMods(msg.source(), msg.value());
 			}
 		}
 		return true;

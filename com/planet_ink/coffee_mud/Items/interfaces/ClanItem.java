@@ -60,7 +60,8 @@ public interface ClanItem extends Item
 		DONATIONJOURNAL("Journal"),
 		ANTI_PROPAGANDA("Anti-propaganda"),
 		SPECIALAPRON("Merchant tool"),
-		LEGALBADGE("Officer emblem")
+		LEGALBADGE("Officer emblem"),
+		TABBARD("Tabbard")
 		;
 		private final String ID;
 		private final String displayName;
