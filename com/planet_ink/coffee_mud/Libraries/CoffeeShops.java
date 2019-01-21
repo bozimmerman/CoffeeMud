@@ -693,7 +693,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		}
 	}
 
-	public double devalue(final ShopKeeper shop, final Environmental product, final double number)
+	protected double getStockSizeDevaluation(final ShopKeeper shop, final Environmental product, final double number)
 	{
 		int num=shop.getShop().numberInStock(product);
 		num += (int)Math.round(Math.floor(number/2.0));
@@ -801,7 +801,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			// gets the shopkeeper a deal on junk.  Pays 5% at 3 charisma, and 50% at 35
 			double buyPrice=CMath.div(CMath.mul(val.absoluteGoldPrice,buyer.charStats().getStat(CharStats.STAT_CHARISMA)),70.0);
 			if(!(product instanceof Ability))
-				buyPrice=CMath.mul(buyPrice,1.0-devalue(shopKeeper,product,number));
+				buyPrice=CMath.mul(buyPrice,1.0-getStockSizeDevaluation(shopKeeper,product,number));
 
 			final double sellPrice=sellingPrice(seller,buyer,product,shopKeeper,shop, false).absoluteGoldPrice;
 
