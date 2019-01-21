@@ -273,6 +273,11 @@ public class StdBehavior implements Behavior
 		return false;
 	}
 
+	protected static String I(final String str)
+	{
+		return CMLib.lang().commandWordTranslation(str);
+	}
+
 	public static boolean canActAtAll(final Tickable affecting)
 	{
 		return CMLib.flags().canActAtAll(affecting);

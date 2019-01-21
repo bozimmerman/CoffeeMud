@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -75,13 +76,13 @@ public class Nanny extends StdBehavior
 
 	private static class DropOff
 	{
-		public MOB				mommyM;
+		public String			mommyMname;
 		public PhysicalAgent	baby;
 		public long				dropOffTime;
 
-		public DropOff(final MOB momM, final PhysicalAgent baby, final long dropOff)
+		public DropOff(final String momMname, final PhysicalAgent baby, final long dropOff)
 		{
-			mommyM = momM;
+			mommyMname = momMname;
 			this.baby = baby;
 			dropOffTime = dropOff;
 		}
@@ -89,12 +90,12 @@ public class Nanny extends StdBehavior
 
 	private static class Payment
 	{
-		public MOB		mommyM;
+		public String	mommyMname;
 		public double	paid;
 
-		public Payment(final MOB M, final double d)
+		public Payment(final String mommyName, final double d)
 		{
-			mommyM = M;
+			this.mommyMname = mommyName;
 			paid = d;
 		}
 	}
@@ -106,7 +107,7 @@ public class Nanny extends StdBehavior
 		double amt=0.0;
 		for(final Payment P : payments)
 		{
-			if(P.mommyM==mob)
+			if(P.mommyMname.equalsIgnoreCase(mob.Name()))
 				amt+=P.paid;
 		}
 		return amt;
@@ -130,7 +131,8 @@ public class Nanny extends StdBehavior
 			return false;
 		for(final DropOff D : associations)
 		{
-			if((D.mommyM==P)||(D.baby==P))
+			if((D.mommyMname.equalsIgnoreCase(P.Name()))
+			||(D.baby==P))
 				return true;
 		}
 		return false;
@@ -142,13 +144,13 @@ public class Nanny extends StdBehavior
 			return;
 		for(final Payment P : payments)
 		{
-			if(P.mommyM==mob)
+			if(P.mommyMname.equalsIgnoreCase(mob.Name()))
 			{
 				P.paid += amt;
 				return;
 			}
 		}
-		payments.add(new Payment(mob,amt));
+		payments.add(new Payment(mob.Name(),amt));
 	}
 
 	public void clearTheSlate(final MOB mob)
@@ -157,18 +159,18 @@ public class Nanny extends StdBehavior
 			return;
 		for(final Payment P : payments)
 		{
-			if(P.mommyM==mob)
+			if(P.mommyMname.equalsIgnoreCase(mob.Name()))
 				payments.remove(P);
 		}
 		if(dropOffs != null)
 		{
 			for(final DropOff D : dropOffs)
 			{
-				if(D.mommyM==mob)
+				if(D.mommyMname.equalsIgnoreCase(mob.Name()))
 				{
 					boolean found=false;
 					for(final DropOff A : associations)
-						found = found || (A.mommyM==D.mommyM);
+						found = found || (A.mommyMname.equalsIgnoreCase(D.mommyMname));
 					if(!found)
 						associations.add(D);
 					dropOffs.remove(D);
@@ -191,7 +193,7 @@ public class Nanny extends StdBehavior
 		double amt=0.0;
 		for(final DropOff D : dropOffs)
 		{
-			if(D.mommyM==mob)
+			if(D.mommyMname.equalsIgnoreCase(mob.Name()))
 			{
 				long t=System.currentTimeMillis()-D.dropOffTime;
 				t=Math.round(Math.ceil(CMath.div(t,CMProps.getMillisPerMudHour())));
@@ -206,9 +208,13 @@ public class Nanny extends StdBehavior
 	{
 		final List<PhysicalAgent> V=new Vector<PhysicalAgent>();
 		if(mob!=null)
+		{
 			for(final DropOff D : dropOffs)
-				if(D.mommyM==mob)
+			{
+				if(D.mommyMname.equalsIgnoreCase(mob.Name()))
 					V.add(D.baby);
+			}
+		}
 		return V;
 	}
 
@@ -284,7 +290,7 @@ public class Nanny extends StdBehavior
 		final StringBuffer owed=new StringBuffer("");
 		for(final DropOff D : dropOffs)
 		{
-			if(D.mommyM==mob)
+			if(D.mommyMname.equalsIgnoreCase(mob.Name()))
 			{
 				long t=System.currentTimeMillis()-D.dropOffTime;
 				t=Math.round(Math.ceil(CMath.div(t,CMProps.getMillisPerMudHour())));
@@ -532,7 +538,7 @@ public class Nanny extends StdBehavior
 		return null;
 	}
 
-	public void addAssociationsIfNecessary(final Set<PhysicalAgent> H)
+	protected void addAssociationsIfNecessaryRealTime(final Set<PhysicalAgent> H)
 	{
 		PhysicalAgent P=null;
 		for(final Object o : H)
@@ -553,7 +559,7 @@ public class Nanny extends StdBehavior
 				{
 					final MOB source=getMommyOf(P);
 					if(source!=null)
-						associations.add(new DropOff(source,P,System.currentTimeMillis()));
+						associations.add(new DropOff(source.Name(),P,System.currentTimeMillis()));
 				}
 				if(P instanceof MOB)
 				{
@@ -565,7 +571,7 @@ public class Nanny extends StdBehavior
 						{
 							final MOB source=getMommyOf(I);
 							if(source!=null)
-								associations.add(new DropOff(source,I,System.currentTimeMillis()));
+								associations.add(new DropOff(source.Name(),I,System.currentTimeMillis()));
 						}
 					}
 				}
@@ -577,9 +583,13 @@ public class Nanny extends StdBehavior
 	{
 		final Vector<PhysicalAgent> V=new Vector<PhysicalAgent>();
 		if(mob!=null)
+		{
 			for(final DropOff A : associations)
-				if(A.mommyM==mob)
+			{
+				if(A.mommyMname.equalsIgnoreCase(mob.Name()))
 					V.add(A.baby);
+			}
+		}
 		return V;
 	}
 
@@ -599,6 +609,7 @@ public class Nanny extends StdBehavior
 			if(!H.contains(msg.source()))
 				H.add(msg.source());
 			HashSet<Environmental> H2 = null;
+			int attempts=100000;
 			do
 			{
 				H2 = new HashSet<Environmental>();
@@ -610,15 +621,17 @@ public class Nanny extends StdBehavior
 					{
 						final Rideable R = (Rideable)E;
 						for(int r = 0; r<R.numRiders(); r++)
+						{
 							if(!H.contains(R.fetchRider(r)))
 								H.add(R.fetchRider(r));
+						}
 					}
 				}
 			}
-			while(H.size() > H2.size())
+			while((H.size() > H2.size())&&((--attempts)>0))
 				;
 
-			addAssociationsIfNecessary(H);
+			addAssociationsIfNecessaryRealTime(H);
 			final List<PhysicalAgent> myAssocs=myCurrentAssocs(msg.source());
 			final StringBuffer list=new StringBuffer("");
 			for(int m=0;m<myAssocs.size();m++)
@@ -716,14 +729,37 @@ public class Nanny extends StdBehavior
 		&&(!msg.source().isMine(msg.tool()))
 		&&(!((MOB)msg.target()).isMine(msg.tool())))
 			CMLib.beanCounter().giveSomeoneMoney(msg.source(),(MOB)msg.target(),((Coins)msg.tool()).getTotalValue());
+		else
+		if((msg.source()!=host)
+		&&(msg.targetMinor()==CMMsg.TYP_SPEAK)
+		&&(msg.target() ==host)
+		&&(CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDMOBS))
+		&&(msg.sourceMessage()!=null))
+		{
+			final String say=CMStrings.getSayFromMessage(msg.sourceMessage());
+			if((say != null)
+			&&(say.toLowerCase().indexOf(I("report"))>=0))
+			{
+				final StringBuilder str=new StringBuilder(L("Drop Offs:\n\r"));
+				for(final DropOff d : this.dropOffs)
+					str.append(d.baby.Name()+" by "+d.mommyMname+" at "+CMLib.time().date2String(d.dropOffTime)).append("\n\r");
+				str.append(L("\n\rAssociations:\n\r"));
+				for(final DropOff d : this.associations)
+					str.append(d.baby.Name()+" by "+d.mommyMname+" at "+CMLib.time().date2String(d.dropOffTime)).append("\n\r");
+				str.append(L("\n\rPayments:\n\r"));
+				for(final Payment p : this.payments)
+					str.append(p.mommyMname+" paid "+CMLib.beanCounter().abbreviatedPrice((MOB)host, p.paid)).append("\n\r");
+				CMLib.commands().postSay((MOB)host, str.toString());
+			}
+		}
 	}
 
-	public int getNameCount(final Vector<String> V, final String name)
+	protected int getNameCount(final List<String> V, final String name)
 	{
 		int index=0;
 		for(int v=0;v<V.size();v++)
 		{
-			if(V.elementAt(v).equals(name))
+			if(V.get(v).equals(name))
 				index++;
 		}
 		return index;
@@ -764,7 +800,7 @@ public class Nanny extends StdBehavior
 				parms.append("<DROP>");
 
 				eName=D.baby.Name();
-				oName=D.mommyM.Name();
+				oName=D.mommyMname;
 				if(oldNames.contains(eName))
 					eName=getNameCount(oldNames,eName)+"."+eName;
 				parms.append(CMLib.xml().convertXMLtoTag("ENAM",CMLib.xml().parseOutAngleBrackets(eName)));
@@ -837,47 +873,38 @@ public class Nanny extends StdBehavior
 				{
 					final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(codes);
 					XMLTag P=null;
-					final Hashtable<String,Object> parsedPlayers=new Hashtable<String,Object>();
 					long time=0;
 					String eName=null;
 					PhysicalAgent PA=null;
 					String oName=null;
 					final Room R=CMLib.map().roomLocation((Environmental)ticking);
-					MOB M=null;
 					if((V!=null)&&(R!=null))
-					for(int v=0;v<V.size();v++)
 					{
-						P=(V.get(v));
-						if((P!=null)&&(P.contents()!=null)&&(P.contents().size()==3)&&(P.tag().equalsIgnoreCase("DROP")))
+						for(int v=0;v<V.size();v++)
 						{
-							eName=CMLib.xml().restoreAngleBrackets(P.getValFromPieces("ENAM"));
-							oName=CMLib.xml().restoreAngleBrackets(P.getValFromPieces("ONAM"));
-							time=P.getLongFromPieces("TIME");
-							if(parsedPlayers.get(oName) instanceof MOB)
-								M=(MOB)parsedPlayers.get(oName);
-							else
-							if(parsedPlayers.get(oName) instanceof String)
-								continue;
-							else
+							P=(V.get(v));
+							if((P!=null)&&(P.contents()!=null)&&(P.contents().size()==3)&&(P.tag().equalsIgnoreCase("DROP")))
 							{
-								M=CMLib.players().getLoadPlayer(oName);
-								if(M==null)
-									parsedPlayers.put(oName,"");
+								eName=CMLib.xml().restoreAngleBrackets(P.getValFromPieces("ENAM"));
+								oName=CMLib.xml().restoreAngleBrackets(P.getValFromPieces("ONAM"));
+								time=P.getLongFromPieces("TIME");
+								if(!CMLib.players().playerExistsAllHosts(oName))
+								{
+									continue;
+								}
+								PA=R.fetchInhabitant(eName);
+								if(PA==null)
+									PA=R.findItem(eName);
+								if(PA==null)
+									Log.errOut("Nanny","Unable to find "+eName+" for "+oName+"!!");
 								else
-									parsedPlayers.put(oName,M);
+								if(!isDroppedOff(PA))
+									dropOffs.add(new DropOff(oName,PA,time));
 							}
-							PA=R.fetchInhabitant(eName);
-							if(PA==null)
-								PA=R.findItem(eName);
-							if(PA==null)
-								Log.errOut("Nanny","Unable to find "+eName+" for "+oName+"!!");
 							else
-							if(!isDroppedOff(PA))
-								dropOffs.add(new DropOff(M,PA,time));
+							if(P!=null)
+								Log.errOut("Nanny","Unable to parse: "+codes+", specifically: "+P.value());
 						}
-						else
-						if(P!=null)
-							Log.errOut("Nanny","Unable to parse: "+codes+", specifically: "+P.value());
 					}
 				}
 			}
@@ -895,30 +922,36 @@ public class Nanny extends StdBehavior
 
 		final Room R=CMLib.map().roomLocation((Environmental)ticking);
 		if(R!=null)
-		for(final DropOff D : associations)
 		{
-			if(R.isHere(D.baby))
+			for(final DropOff D : associations)
 			{
-				if((CMLib.map().roomLocation(D.mommyM)!=R)
-				||(!CMLib.flags().isInTheGame(D.mommyM,true)))
+				if(R.isHere(D.baby))
 				{
-					if(!isDroppedOff(D.baby))
+					MOB hereM=R.fetchInhabitant("$"+D.mommyMname+"$");
+					if(hereM==null)
+						hereM=CMLib.players().getPlayerAllHosts(D.mommyMname);
+					if((hereM ==null)
+					||(!CMLib.flags().isInTheGame(hereM, true)))
 					{
-						if((D.baby instanceof MOB)&&(((MOB)D.baby).amFollowing()!=null))
-							((MOB)D.baby).setFollowing(null);
-						D.dropOffTime=System.currentTimeMillis();
-						dropOffs.add(D);
-						associations.remove(D);
-						changedSinceLastSave=true;
+						if(!isDroppedOff(D.baby))
+						{
+							if((D.baby instanceof MOB)&&(((MOB)D.baby).amFollowing()!=null))
+								((MOB)D.baby).setFollowing(null);
+							D.dropOffTime=System.currentTimeMillis();
+							dropOffs.add(D);
+							associations.remove(D);
+							changedSinceLastSave=true;
+						}
 					}
 				}
+				else
+					associations.remove(D);
 			}
-			else
-				associations.remove(D);
 		}
-
 		if(!changedSinceLastSave)
+		{
 			for(final DropOff D : dropOffs)
+			{
 				if((D.baby instanceof MOB)
 				&&(R!=null)
 				&&(!R.isInhabitant((MOB)D.baby)))
@@ -926,7 +959,10 @@ public class Nanny extends StdBehavior
 					dropOffs.remove(D);
 					changedSinceLastSave=true;
 				}
+			}
+		}
 		for(final DropOff D : dropOffs)
+		{
 			if((D.baby instanceof Item)
 			&&(R!=null)
 			&&(!R.isContent((Item)D.baby)))
@@ -934,6 +970,7 @@ public class Nanny extends StdBehavior
 				dropOffs.remove(D);
 				changedSinceLastSave=true;
 			}
+		}
 
 		if(changedSinceLastSave)
 		{
