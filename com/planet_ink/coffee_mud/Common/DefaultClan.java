@@ -1003,22 +1003,34 @@ public class DefaultClan implements Clan
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
 			msg.append("^x"+CMStrings.padRight(L("Clan Relations"),COLBL_WIDTH)+":^.^N \n\r");
+			boolean others = false;
 			final int COLCL_WIDTH=CMLib.lister().fixColWidth(26.0,mob);
 			for(final Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 			{
 				final Clan C=e.nextElement();
 				if((C!=this)&&(C.isRivalrous()))
 				{
-					msg.append("^H"+CMStrings.padRight(C.name(),COLCL_WIDTH)+":^.^N ");
 					final int rel=getClanRelations(C.clanID());
 					final int orel=C.getClanRelations(clanID());
-					msg.append(REL_COLORS[rel]).append(CMStrings.capitalizeAndLower(REL_DESCS[rel]));
 					if((rel!=REL_NEUTRAL) || (orel != REL_NEUTRAL))
-						msg.append("^N (^W<-").append(REL_COLORS[orel]).append(CMStrings.capitalizeAndLower(REL_DESCS[orel])).append("^N)");
+					{
+						msg.append("^H"+CMStrings.padRight(C.name(),COLCL_WIDTH)+":^.^N ");
+						msg.append(REL_COLORS[rel]).append(CMStrings.capitalizeAndLower(REL_DESCS[rel]));
+						if((rel!=REL_NEUTRAL) || (orel != REL_NEUTRAL))
+							msg.append("^N (^W<-").append(REL_COLORS[orel]).append(CMStrings.capitalizeAndLower(REL_DESCS[orel])).append("^N)");
+						else
+							msg.append("^N");
+						msg.append("\n\r");
+					}
 					else
-						msg.append("^N");
-					msg.append("\n\r");
+						others=true;
 				}
+			}
+			if(others)
+			{
+				msg.append("^H"+CMStrings.padRight("All Others",COLCL_WIDTH)+":^.^N ");
+				msg.append(REL_COLORS[REL_NEUTRAL]).append(CMStrings.capitalizeAndLower(REL_DESCS[REL_NEUTRAL]));
+				msg.append("^N").append("\n\r");
 			}
 		}
 		if(member||sysmsgs)
