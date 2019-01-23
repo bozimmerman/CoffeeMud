@@ -256,6 +256,18 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	public void setFamilyOnly(boolean isFamilyOnly);
 
 	/**
+	 * Returns a list of titles granted to players of clans
+	 * in this government.  Variables in the titles include:
+	 * @x1 The Clan Name
+	 * @x2 The Clan Government Name
+	 *
+	 * This list is manipulable.
+	 *
+	 * @return the clan base titles
+	 */
+	public List<String> getTitleAwards();
+
+	/**
 	 * Returns true if this clan is rivalrous with other rivalrous clans,
 	 * meaning that pvp is enabled between them, and war can be declared
 	 * between them.

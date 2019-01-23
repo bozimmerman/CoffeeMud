@@ -170,6 +170,18 @@ public interface ClanPosition extends Modifiable, CMCommon
 	public void setPublic(boolean isPublic);
 
 	/**
+	 * Returns a list of titles granted to players of clans
+	 * in this position.  Variables in the titles include:
+	 * @x1 The Clan Name
+	 * @x2 The Clan Government Name
+	 *
+	 * This list is manipulable.
+	 *
+	 * @return the clan base titles
+	 */
+	public List<String> getTitleAwards();
+
+	/**
 	 * Gets the function chart.
 	 *
 	 * @see ClanPosition#setFunctionChart(com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority[])

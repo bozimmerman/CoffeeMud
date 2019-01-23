@@ -400,7 +400,7 @@ public class ClanGovernmentData extends StdWebMacro
 				final List<String> titles=new ArrayList<String>();
 				if(old==null)
 				{
-					for(final String title : titles)
+					for(final String title : G.getTitleAwards())
 						titles.add(title);
 				}
 				else
@@ -414,14 +414,14 @@ public class ClanGovernmentData extends StdWebMacro
 						x++;
 					}
 				}
-				String field = "<INPUT TYPE=TEXT NAME=TITLE VALUE=\"\">";
+				String field = "<INPUT TYPE=TEXT NAME=TITLES VALUE=\"\">";
 				if(parms.containsKey("FIELD"))
 					field=parms.get("FIELD");
 				for(int i=0;i<titles.size()+1;i++)
 				{
 					final String x1=(i>0)?(""+i):"";
-					final String val=super.htmlOutgoingFilter(titles.get(i));
-					str.append(CMStrings.replaceAlls(field,new String[][] {{"TITLE","TITLE"+x1},{"\"\"",'\"'+val+'\"'}}));
+					final String val=(i<titles.size())?super.htmlOutgoingFilter(titles.get(i)):"";
+					str.append(CMStrings.replaceAlls(field,new String[][] {{"TITLES","TITLES"+x1},{"\"\"",'\"'+val+'\"'}}));
 				}
 			}
 			if(parms.containsKey("LONGDESC"))
