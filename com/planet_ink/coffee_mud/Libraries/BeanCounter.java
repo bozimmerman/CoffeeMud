@@ -1017,7 +1017,6 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 										  final Set<String> triedBanks,
 										  final String owner,
 										  final String explanation,
-										  final String currency,
 										  final double absoluteAmount)
 	{
 		Banker B=null;
@@ -1031,6 +1030,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			&&(!triedBanks.contains(B.bankChain())))
 			{
 				triedBanks.add(B.bankChain());
+				final String currency=CMLib.beanCounter().getCurrency(B);
 				if(modifyBankGold(B.bankChain(),owner,explanation,currency,absoluteAmount))
 					return true;
 			}
@@ -1042,18 +1042,18 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public boolean modifyLocalBankGold(final Area A,
 									   final String owner,
 									   final String explanation,
-									   final String currency,
 									   final double absoluteAmount)
 	{
 		final HashSet<String> triedBanks=new HashSet<String>();
-		if(modifyThisAreaBankGold(A,triedBanks,owner,explanation,currency,absoluteAmount))
+		if(modifyThisAreaBankGold(A,triedBanks,owner,explanation,absoluteAmount))
 			return true;
 		for(final Enumeration<Area> e=A.getParents();e.hasMoreElements();)
 		{
 			final Area A2=e.nextElement();
-			if(modifyThisAreaBankGold(A2,triedBanks,owner,explanation,currency,absoluteAmount))
+			if(modifyThisAreaBankGold(A2,triedBanks,owner,explanation,absoluteAmount))
 				return true;
 		}
+		final String currency=CMLib.beanCounter().getCurrency(A);
 		return modifyBankGold(null,owner,explanation,currency,absoluteAmount);
 	}
 

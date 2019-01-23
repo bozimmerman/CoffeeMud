@@ -149,6 +149,22 @@ public class GrinderClanGovernments
 				}
 			}
 
+			final String old2=httpReq.getUrlParameter("TITLES");
+			if(old2!=null)
+			{
+				G.getTitleAwards().clear();
+				if(old2.length()>0)
+				{
+					G.getTitleAwards().add(old2);
+					int x=1;
+					while(httpReq.getUrlParameter("TITLES"+x)!=null)
+					{
+						G.getTitleAwards().add(httpReq.getUrlParameter("TITLES"+x));
+						x++;
+					}
+				}
+			}
+
 			final List<ClanPosition> posList=new Vector<ClanPosition>();
 			String posDexStr="0";
 			int posDex=0;

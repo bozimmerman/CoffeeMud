@@ -1346,7 +1346,6 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 															CMLib.utensils().getFormattedDate(buyer)
 																+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(seller,totalFunds)
 																+": Purchase: "+product.Name()+" from "+seller.Name(),
-															CMLib.beanCounter().getCurrency(seller),
 															totalFunds);
 				}
 			}

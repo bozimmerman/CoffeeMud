@@ -103,6 +103,9 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
+    <TITLES>
+        <TITLE>*, @x2 of @x1</TITLE>
+    </TITLES>
     <ABILITIES>
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
@@ -254,6 +257,9 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
+    <TITLES>
+        <TITLE>*, @x2 of @x1</TITLE>
+    </TITLES>
     <ABILITIES>
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
@@ -396,6 +402,9 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
+    <TITLES>
+        <TITLE>*, @x2 of @x1</TITLE>
+    </TITLES>
     <ABILITIES>
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
@@ -543,6 +552,9 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
+    <TITLES>
+        <TITLE>*, @x2 of @x1</TITLE>
+    </TITLES>
     <ABILITIES>
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
@@ -693,6 +705,9 @@
         <ITEMLOYALTY>false</ITEMLOYALTY>
         <DEITYBASIS>true</DEITYBASIS>
     </CONQUEST>
+    <TITLES>
+        <TITLE>*, @x2 of @x1</TITLE>
+    </TITLES>
     <ABILITIES>
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
@@ -873,6 +888,9 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
+    <TITLES>
+        <TITLE>*, @x2 of @x1</TITLE>
+    </TITLES>
     <ABILITIES>
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
@@ -949,6 +967,9 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
+    <TITLES>
+        <TITLE>*, @x2 of @x1</TITLE>
+    </TITLES>
     <ABILITIES>
         <ABILITY ID="Spell_ClanExperience" PROFF=100 LEVEL=1 QUALIFYONLY=false />
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
@@ -1063,6 +1084,9 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
+    <TITLES>
+        <TITLE>*, @x2 of @x1</TITLE>
+    </TITLES>
     <ABILITIES />
     <EFFECTS />
 </CLANTYPE>

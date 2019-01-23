@@ -473,7 +473,6 @@ public class DefaultLawSet implements Law
 					&&(!CMLib.beanCounter().modifyLocalBankGold(A,
 						owner,
 						CMLib.utensils().getFormattedDate(A)+": Withdrawal of "+owed+": Taxes on property: "+properties.toString(),
-						CMLib.beanCounter().getCurrency(A),
 						-owed)))
 					{
 						boolean owesButNotConfiscated=false;

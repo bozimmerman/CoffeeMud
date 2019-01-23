@@ -783,6 +783,9 @@ public class DefaultClan implements Clan
 				M.recoverCharStats();
 			}
 		}
+
+		// this is going to need to be smarter... get a list of all possible spell grants from all clans,
+		// check against class qualifications.  Form a list of forbidden spells, and then remove THOSE.
 		M.delAbility(M.fetchAbility("Spell_ClanHome"));
 		M.delAbility(M.fetchAbility("Spell_ClanClanWard"));
 		M.delAbility(M.fetchAbility("Spell_ImprovedClanClanWard"));
@@ -792,48 +795,71 @@ public class DefaultClan implements Clan
 		final PlayerStats pStats = M.playerStats();
 		if(pStats!=null)
 		{
-			for(final ClanPosition pos : govt().getPositions())
+			final Set<String> myAllowedTitles = new TreeSet<String>();
+			if(p != null)
 			{
-				final String title="*, "+CMStrings.capitalizeAndLower(pos.getName())+" of "+name();
-				String existingTitle=null;
-				for(final String titleCheck : pStats.getTitles())
+				final ClanPosition myPos = govt().findPositionRole(p.second);
+				final String myNicePosName = CMStrings.capitalizeAndLower(myPos.getName());
+				for(final String baseTitle : govt().getTitleAwards())
+					myAllowedTitles.add(L(baseTitle,name(),myNicePosName));
+				for(final String posTitle : myPos.getTitleAwards())
+					myAllowedTitles.add(L(posTitle,name(),myNicePosName));
+				if(getAuthority(p.second.intValue(),Function.CLAN_TITLES)!=Clan.Authority.CAN_NOT_DO)
 				{
-					if(titleCheck.equalsIgnoreCase(title))
-						existingTitle=titleCheck;
-				}
-				if((p!=null)
-				&&(p.second.intValue()==pos.getRoleID())
-				&&(getAuthority(p.second.intValue(),Function.CLAN_TITLES)!=Clan.Authority.CAN_NOT_DO))
-				{
-					if(!pStats.getTitles().contains(title))
+					for(final String title : myAllowedTitles)
 					{
-						if(existingTitle!=null)
-							pStats.getTitles().remove(existingTitle);
-						pStats.getTitles().add(title);
+						if(!pStats.getTitles().contains(title))
+							pStats.getTitles().add(title);
 					}
 				}
-				else
+			}
+			for(final ClanPosition pos : govt().getPositions())
+			{
+				if((p==null)||(p.second.intValue()!=pos.getRoleID()))
 				{
-					if(pStats.getTitles().contains(title))
-						pStats.getTitles().remove(title);
-					if(existingTitle!=null)
-						pStats.getTitles().remove(existingTitle);
+					final String nicePosName = CMStrings.capitalizeAndLower(pos.getName());
+					for(final String baseTitle : govt().getTitleAwards())
+					{
+						final String badTitle = L(baseTitle,name(),nicePosName);
+						if(!myAllowedTitles.contains(badTitle))
+						{
+							for(final String titleCheck : pStats.getTitles())
+							{
+								if(titleCheck.equalsIgnoreCase(badTitle))
+									pStats.getTitles().remove(titleCheck);
+
+							}
+						}
+					}
+					for(final String posTitle : pos.getTitleAwards())
+					{
+						final String badTitle = L(posTitle,name(),nicePosName);
+						if(!myAllowedTitles.contains(badTitle))
+						{
+							for(final String titleCheck : pStats.getTitles())
+							{
+								if(titleCheck.equalsIgnoreCase(badTitle))
+									pStats.getTitles().remove(titleCheck);
+
+							}
+						}
+					}
 				}
 			}
 		}
 		if(p==null)
 		{
 			Item I=null;
-			final Vector<Item> itemsToMove=new Vector<Item>();
+			final List<Item> itemsToMove=new ArrayList<Item>();
 			for(int i=0;i<M.numItems();i++)
 			{
 				I=M.getItem(i);
 				if(I instanceof ClanItem)
-					itemsToMove.addElement(I);
+					itemsToMove.add(I);
 			}
 			for(int i=0;i<itemsToMove.size();i++)
 			{
-				I=itemsToMove.elementAt(i);
+				I=itemsToMove.get(i);
 				if(I!=null)
 				{
 					Room R=null;

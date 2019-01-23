@@ -394,6 +394,36 @@ public class ClanGovernmentData extends StdWebMacro
 					str.append(">"+func.toString());
 				}
 			}
+			if(parms.containsKey("TITLES"))
+			{
+				final String old=httpReq.getUrlParameter("TITLES");
+				final List<String> titles=new ArrayList<String>();
+				if(old==null)
+				{
+					for(final String title : titles)
+						titles.add(title);
+				}
+				else
+				if(old.length()>0)
+				{
+					titles.add(old);
+					int x=1;
+					while(httpReq.getUrlParameter("TITLES"+x)!=null)
+					{
+						titles.add(httpReq.getUrlParameter("TITLES"+x));
+						x++;
+					}
+				}
+				String field = "<INPUT TYPE=TEXT NAME=TITLE VALUE=\"\">";
+				if(parms.containsKey("FIELD"))
+					field=parms.get("FIELD");
+				for(int i=0;i<titles.size()+1;i++)
+				{
+					final String x1=(i>0)?(""+i):"";
+					final String val=super.htmlOutgoingFilter(titles.get(i));
+					str.append(CMStrings.replaceAlls(field,new String[][] {{"TITLE","TITLE"+x1},{"\"\"",'\"'+val+'\"'}}));
+				}
+			}
 			if(parms.containsKey("LONGDESC"))
 			{
 				String old=httpReq.getUrlParameter("LONGDESC");

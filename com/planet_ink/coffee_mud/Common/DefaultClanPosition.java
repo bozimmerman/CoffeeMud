@@ -63,7 +63,9 @@ public class DefaultClanPosition implements ClanPosition
 	/** the internal zapper mask for internal requirements to this position */
 	protected boolean 	isPublic;
 	/** a chart of whether this position can perform the indexed function in this government */
-	protected Clan.Authority[] functionChart;
+	protected Clan.Authority[]	functionChart;
+	/** the list of awarded titles for this position */
+	protected final List<String>titleAwards = new SVector<String>();
 
 	/** return a new instance of the object*/
 	@Override
@@ -211,8 +213,14 @@ public class DefaultClanPosition implements ClanPosition
 		this.functionChart = functionChart;
 	}
 
+	@Override
+	public List<String> getTitleAwards()
+	{
+		return titleAwards;
+	}
+
 	private static enum POS_STAT_CODES {
-		ID,RANK,NAME,PLURALNAME,MAX,INNERMASK,ISPUBLIC,FUNCTIONS
+		ID,RANK,NAME,PLURALNAME,MAX,INNERMASK,ISPUBLIC,FUNCTIONS,TITLES
 	}
 
 	@Override
@@ -267,6 +275,17 @@ public class DefaultClanPosition implements ClanPosition
 						str.append(",");
 					str.append(Clan.Function.values()[a]);
 				}
+			}
+			return str.toString();
+		}
+		case TITLES:
+		{
+			final StringBuilder str = new StringBuilder("");
+			for (int a = 0; a < titleAwards.size(); a++)
+			{
+				if (str.length() > 0)
+					str.append("\n\r");
+				str.append(titleAwards.get(a));
 			}
 			return str.toString();
 		}
@@ -328,6 +347,13 @@ public class DefaultClanPosition implements ClanPosition
 				if (func != null)
 					functionChart[func.ordinal()] = Clan.Authority.CAN_DO;
 			}
+			break;
+		}
+		case TITLES:
+		{
+			titleAwards.clear();
+			for(final String title : Resources.getFileLineVector(new StringBuffer(val)))
+				titleAwards.add(title.trim());
 			break;
 		}
 		default:

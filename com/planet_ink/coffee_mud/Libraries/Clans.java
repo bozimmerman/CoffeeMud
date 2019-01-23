@@ -857,6 +857,7 @@ public class Clans extends StdLibrary implements ClanManager
 		G.setVoteQuorumPct(66);
 		G.setDefault(true);
 		G.setMiscVariableSettings("");
+		G.getTitleAwards().add("*, @x2 of @x1");
 		return G;
 	}
 
@@ -988,6 +989,15 @@ public class Clans extends StdLibrary implements ClanManager
 								.append("RANK="+pos.getRank()+" ").append("NAME=\""+pos.getName()+"\" ").append("PLURAL=\""+pos.getPluralName()+"\" ")
 								.append("MAX="+pos.getMax()+" ").append("INNERMASK=\""+CMLib.xml().parseOutAngleBrackets(pos.getInnerMaskStr())+"\" ")
 								.append("PUBLIC=\""+pos.isPublic()+"\">\n");
+			if(pos.getTitleAwards().size()==0)
+				str.append(indt(3)).append("<TITLES />\n");
+			else
+			{
+				str.append(indt(3)).append("<TITLES>\n");
+				for(final String title : pos.getTitleAwards())
+					str.append(indt(4)).append("<TITLE>").append(CMLib.xml().parseOutAngleBrackets(title)).append("</TITLE>");
+				str.append(indt(3)).append("</TITLES>\n");
+			}
 			for(final Clan.Function func : Clan.Function.values())
 				if(pos.getFunctionChart()[func.ordinal()]==Clan.Authority.CAN_DO)
 					str.append(indt(3)).append("<POWER>").append(func.toString()).append("</POWER>\n");
@@ -1006,6 +1016,17 @@ public class Clans extends StdLibrary implements ClanManager
 				str.append(indt(2)).append("<POWER>").append(func.toString()).append("</POWER>\n");
 			str.append(indt(1)).append("</VOTING>\n");
 		}
+
+		if(gvt.getTitleAwards().size()==0)
+			str.append(indt(1)).append("<TITLES />\n");
+		else
+		{
+			str.append(indt(1)).append("<TITLES>\n");
+			for(final String title : gvt.getTitleAwards())
+				str.append(indt(2)).append("<TITLE>").append(CMLib.xml().parseOutAngleBrackets(title)).append("</TITLE>");
+			str.append(indt(1)).append("</TITLES>\n");
+		}
+
 		str.append(indt(1)).append("<AUTOPOSITION>").append(gvt.getPositions()[gvt.getAutoRole()].getID()).append("</AUTOPOSITION>\n");
 		str.append(indt(1)).append("<ACCEPTPOSITION>").append(gvt.getPositions()[gvt.getAcceptPos()].getID()).append("</ACCEPTPOSITION>\n");
 		str.append(indt(1)).append("<REQUIREDMASK>").append(CMLib.xml().parseOutAngleBrackets(gvt.getRequiredMaskStr())).append("</REQUIREDMASK>\n");
@@ -1171,6 +1192,7 @@ public class Clans extends StdLibrary implements ClanManager
 						functionChart[i]=Authority.CAN_NOT_DO;
 					Authority defaultAssignFunc = Authority.CAN_NOT_DO;
 					Authority defaultOtherVoteFunc = Authority.CAN_NOT_DO;
+					final List<String> posTitles = new ArrayList<String>();
 					for(final XMLTag powerPiece : posPiece.contents())
 					{
 						if(powerPiece.tag().equalsIgnoreCase("POWER"))
@@ -1184,6 +1206,15 @@ public class Clans extends StdLibrary implements ClanManager
 							else
 							if(power == Function.VOTE_OTHER)
 								defaultOtherVoteFunc = Authority.MUST_VOTE_ON;
+						}
+						else
+						if(powerPiece.tag().equalsIgnoreCase("TITLES"))
+						{
+							for(final XMLTag titlePiece : powerPiece.contents())
+							{
+								if(titlePiece.tag().equalsIgnoreCase("TITLE"))
+									posTitles.add(CMLib.xml().restoreAngleBrackets(titlePiece.value()));
+							}
 						}
 					}
 					for(final XMLTag piece : votingTag.contents())
@@ -1229,6 +1260,7 @@ public class Clans extends StdLibrary implements ClanManager
 					P.setInnerMaskStr(innerMaskStr);
 					P.setFunctionChart(functionChart);
 					P.setPublic(isPublic);
+					P.getTitleAwards().addAll(posTitles);
 					positions.add(P);
 				}
 			}
@@ -1312,6 +1344,16 @@ public class Clans extends StdLibrary implements ClanManager
 				conquestItemLoyalty=CMath.s_bool(conquestTag.getValFromPieces( "ITEMLOYALTY"));
 				conquestDeityBasis=CMath.s_bool(conquestTag.getValFromPieces( "DEITYBASIS"));
 			}
+			final List<String> titleAwards = new ArrayList<String>();
+			final XMLTag titleTag = clanTypePieceTag.getPieceFromPieces( "TITLES");
+			if(titleTag != null)
+			{
+				for(final XMLTag titlePiece : titleTag.contents())
+				{
+					if(titlePiece.tag().equalsIgnoreCase("TITLE"))
+						titleAwards.add(CMLib.xml().restoreAngleBrackets(titlePiece.value()));
+				}
+			}
 			final ClanGovernment G=(ClanGovernment)CMClass.getCommon("DefaultClanGovernment");
 			G.setID(typeID);
 			G.setName(typeName);
@@ -1337,6 +1379,7 @@ public class Clans extends StdLibrary implements ClanManager
 			G.setVoteQuorumPct(minVotingPct);
 			G.setDefault(isDefault);
 			G.setMiscVariableSettings((miscVars != null)?miscVars:"");
+			G.getTitleAwards().addAll(titleAwards);
 
 			final XMLTag abilitiesTag = clanTypePieceTag.getPieceFromPieces( "ABILITIES");
 			if((abilitiesTag!=null)&&(abilitiesTag.contents()!=null)&&(abilitiesTag.contents().size()>0))

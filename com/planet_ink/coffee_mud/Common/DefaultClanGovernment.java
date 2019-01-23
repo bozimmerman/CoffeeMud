@@ -104,6 +104,8 @@ public class DefaultClanGovernment implements ClanGovernment
 	public Clan.AutoPromoteFlag 		autoPromoteBy;
 	/** A fast-lookup cache for positions */
 	protected Map<Object,ClanPosition>	positionMap=new Hashtable<Object,ClanPosition>();
+	/** the list of awarded titles for this position */
+	protected final List<String>		titleAwards	= new SVector<String>();
 
 	// derived variable
 	public static final SearchIDList<Ability>  emptyIDs = new CMUniqSortSVec<Ability>(1);
@@ -477,6 +479,12 @@ public class DefaultClanGovernment implements ClanGovernment
 		exitScriptParam=scriptParm;
 	}
 
+	@Override
+	public List<String> getTitleAwards()
+	{
+		return titleAwards;
+	}
+
 	// the follow are derived, or post-create set options:
 	/** The list of xp amounts to progress in level */
 	public int[] 	levelProgression = new int[0];
@@ -651,7 +659,7 @@ public class DefaultClanGovernment implements ClanGovernment
 		AUTOPROMOTEBY,VOTEFUNCS,LONGDESC,XPLEVELFORMULA,
 		NUMRABLE,GETRABLE,GETRABLEPROF,GETRABLEQUAL,GETRABLELVL,GETRABLEPARM,
 		NUMREFF,GETREFF,GETREFFPARM,GETREFFLVL,CATEGORY,ISRIVALROUS,
-		ENTRYSCRIPT,EXITSCRIPT,GETREFFROLE,GETRABLEROLE,MISCVARS
+		ENTRYSCRIPT,EXITSCRIPT,GETREFFROLE,GETRABLEROLE,MISCVARS,TITLES
 	}
 
 	@Override
@@ -772,6 +780,17 @@ public class DefaultClanGovernment implements ClanGovernment
 			return category;
 		case MISCVARS:
 			return miscVarsStr;
+		case TITLES:
+		{
+			final StringBuilder str = new StringBuilder("");
+			for (int a = 0; a < titleAwards.size(); a++)
+			{
+				if (str.length() > 0)
+					str.append("\n\r");
+				str.append(titleAwards.get(a));
+			}
+			return str.toString();
+		}
 		default:
 			Log.errOut("Clan", "getStat:Unhandled:" + stat.toString());
 			break;
@@ -1030,6 +1049,13 @@ public class DefaultClanGovernment implements ClanGovernment
 		case MISCVARS:
 		{
 			this.miscVarsStr = val;
+			break;
+		}
+		case TITLES:
+		{
+			titleAwards.clear();
+			for(final String title : Resources.getFileLineVector(new StringBuffer(val)))
+				titleAwards.add(title.trim());
 			break;
 		}
 		default:
