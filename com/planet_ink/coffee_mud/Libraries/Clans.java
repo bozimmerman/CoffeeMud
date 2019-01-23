@@ -989,21 +989,21 @@ public class Clans extends StdLibrary implements ClanManager
 								.append("RANK="+pos.getRank()+" ").append("NAME=\""+pos.getName()+"\" ").append("PLURAL=\""+pos.getPluralName()+"\" ")
 								.append("MAX="+pos.getMax()+" ").append("INNERMASK=\""+CMLib.xml().parseOutAngleBrackets(pos.getInnerMaskStr())+"\" ")
 								.append("PUBLIC=\""+pos.isPublic()+"\">\n");
-			if(pos.getTitleAwards().size()==0)
-				str.append(indt(3)).append("<TITLES />\n");
-			else
+			if(pos.getTitleAwards().size()>0)
 			{
 				str.append(indt(3)).append("<TITLES>\n");
 				for(final String title : pos.getTitleAwards())
-					str.append(indt(4)).append("<TITLE>").append(CMLib.xml().parseOutAngleBrackets(title)).append("</TITLE>");
+					str.append(indt(4)).append("<TITLE>").append(CMLib.xml().parseOutAngleBrackets(title)).append("</TITLE>\n");
 				str.append(indt(3)).append("</TITLES>\n");
 			}
 			for(final Clan.Function func : Clan.Function.values())
+			{
 				if(pos.getFunctionChart()[func.ordinal()]==Clan.Authority.CAN_DO)
 					str.append(indt(3)).append("<POWER>").append(func.toString()).append("</POWER>\n");
 				else
 				if(pos.getFunctionChart()[func.ordinal()]==Clan.Authority.MUST_VOTE_ON)
 					voteSet.add(func);
+			}
 			str.append(indt(2)).append("</POSITION>\n");
 		}
 		str.append(indt(1)).append("</POSITIONS>\n");
@@ -1023,7 +1023,7 @@ public class Clans extends StdLibrary implements ClanManager
 		{
 			str.append(indt(1)).append("<TITLES>\n");
 			for(final String title : gvt.getTitleAwards())
-				str.append(indt(2)).append("<TITLE>").append(CMLib.xml().parseOutAngleBrackets(title)).append("</TITLE>");
+				str.append(indt(2)).append("<TITLE>").append(CMLib.xml().parseOutAngleBrackets(title)).append("</TITLE>\n");
 			str.append(indt(1)).append("</TITLES>\n");
 		}
 

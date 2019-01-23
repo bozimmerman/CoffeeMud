@@ -105,6 +105,7 @@ public class ClanGovernmentData extends StdWebMacro
 				final int oldMax=CMath.s_int(httpReq.getUrlParameter("GPOSMAX_"+posDexStr));
 				final String oldMask=httpReq.getUrlParameter("GPOSINNERMASK_"+posDexStr);
 				final String oldIsPublicStr=httpReq.getUrlParameter("GPOSISPUBLIC_"+posDexStr);
+				final String oldTitlesList=httpReq.getUrlParameter("GPOSTIT_"+posDexStr);
 				final boolean oldIsPublic=oldIsPublicStr==null?false:oldIsPublicStr.equalsIgnoreCase("on");
 				final Clan.Authority powerFuncs[]=new Clan.Authority[Clan.Function.values().length];
 				for(int f=0;f<Clan.Function.values().length;f++)
@@ -128,6 +129,12 @@ public class ClanGovernmentData extends StdWebMacro
 				P.setInnerMaskStr(oldMask);
 				P.setFunctionChart(powerFuncs);
 				P.setPublic(oldIsPublic);
+				P.getTitleAwards().clear();
+				for(final String title : Resources.getFileLineVector(new StringBuffer(oldTitlesList)))
+				{
+					if(title.trim().length()>0)
+						P.getTitleAwards().add(title.trim());
+				}
 				posList.add(P);
 				posDex++;
 				posDexStr=Integer.toString(posDex);
@@ -163,6 +170,13 @@ public class ClanGovernmentData extends StdWebMacro
 						str.append(" SELECTED");
 					str.append(">"+func.toString());
 				}
+			}
+			if((gPos!=null)&&parms.containsKey("GPOSTIT_"+cmpos+"_"))
+			{
+				final StringBuilder titlestr=new StringBuilder("");
+				for(final String title : gPos.getTitleAwards())
+					titlestr.append(title).append("\n");
+				str.append(titlestr.toString());
 			}
 			if(parms.containsKey("GPOSPOWERLIST"))
 			{
@@ -343,7 +357,7 @@ public class ClanGovernmentData extends StdWebMacro
 				String old=httpReq.getUrlParameter("MISCVARS");
 				if(old==null)
 					old=G.getMiscVariableSettings();
-				str.append(CMath.s_int(old)+", ");
+				str.append(old+", ");
 			}
 			if(parms.containsKey("VOTEQUORUMPCT"))
 			{
@@ -368,11 +382,26 @@ public class ClanGovernmentData extends StdWebMacro
 				{
 					if(posList.size()>0)
 					{
-						final ClanPosition P=posList.get(0);
-						for(final Clan.Function func : Clan.Function.values())
+						for(final ClanPosition P : posList)
 						{
-							if(P.getFunctionChart()[func.ordinal()]==Clan.Authority.MUST_VOTE_ON)
-								voteFuncs.add(func.toString());
+							for(final Clan.Function func : Clan.Function.values())
+							{
+								if((P.getFunctionChart()[func.ordinal()]==Clan.Authority.MUST_VOTE_ON)
+								&&(!voteFuncs.contains(func.toString())))
+									voteFuncs.add(func.toString());
+							}
+						}
+					}
+					else
+					{
+						for(final ClanPosition P : G.getPositions())
+						{
+							for(final Clan.Function func : Clan.Function.values())
+							{
+								if((P.getFunctionChart()[func.ordinal()]==Clan.Authority.MUST_VOTE_ON)
+								&&(!voteFuncs.contains(func.toString())))
+									voteFuncs.add(func.toString());
+							}
 						}
 					}
 				}

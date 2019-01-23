@@ -8202,6 +8202,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Position Mask","INNERMASK",false);
 			promptStatBool(mob, me,++showNumber, showFlag,"Is Shown", "ISPUBLIC");
 			promptStatCommaChoices(mob, me,CMParms.toListString(Clan.Function.values()),++showNumber, showFlag,"Powers", "FUNCTIONS",Clan.Function.values());
+			promptStatStr(mob,me,L("Format: CR delimited. x1=name,x2=position"),++showNumber,showFlag,"Title Awards","TITLES",true);
 
 			if (showFlag < -900)
 			{
@@ -8323,6 +8324,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatStr(mob,me,CMLib.help().getHelpText("SCRIPTABLE", mob, true).toString(),++showNumber,showFlag,"Entry Scriptable","ENTRYSCRIPT",true);
 			promptStatStr(mob,me,CMLib.help().getHelpText("SCRIPTABLE", mob, true).toString(),++showNumber,showFlag,"Exit Scriptable","EXITSCRIPT",true);
 			promptStatStr(mob,me,L("Format: VAR1=\"VALUE\" VAR2=\"VALUE\""),++showNumber,showFlag,"Misc Settings","MISCVARS",true);
+			promptStatStr(mob,me,L("Format: CR delimited. x1=name,x2=position"),++showNumber,showFlag,"Title Awards","TITLES",true);
 
 			genDynamicAbilities(mob,me,"Clan & Char","clan",++showNumber,showFlag);
 			genDynamicEffects(mob,me,"Clan","clan",++showNumber,showFlag);

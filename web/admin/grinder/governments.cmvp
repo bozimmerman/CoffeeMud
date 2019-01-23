@@ -10,7 +10,7 @@
 	<!--
 		function Government(action)
 		{
-			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=785,alwaysRaised=yes,dependent=yes";
 			w=window.open("government.cmvp?AUTH=@Authenticate?AUTH@&GOVERNMENT="+action,
 				"Government",strFeatures, false);
 		}

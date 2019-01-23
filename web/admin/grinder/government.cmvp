@@ -65,6 +65,12 @@
 			w=window.open("/"+file+"?HELPTOPIC="+named,
 			            "Help",strFeatures, false);
 		}
+		
+		function SwitchTitles(v)
+		{
+			document.RESOURCES.POS_USETITLES.value=v;
+			ReShow();
+		}
 	//-->
 	</script>
 </head>
@@ -72,6 +78,7 @@
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="government.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=POS_USETITLES VALUE="@RequestParameter?POS_USETITLES@">
 <INPUT TYPE=HIDDEN NAME=GOVERNMENT VALUE="@ClanGovernmentID@">
 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
 	<TR>
@@ -194,25 +201,45 @@
 		<TD><FONT COLOR=YELLOW>Plural</FONT></TD>
 		<TD><FONT COLOR=YELLOW>Max</FONT></TD>
 		<TD><FONT COLOR=YELLOW>Mask&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></FONT></TD>
-		<TD><FONT COLOR=YELLOW>Powers</FONT></TD>
+		<TD><FONT COLOR=YELLOW>
+			@if?CheckReqParm?POS_USETITLES=@
+				Powers/<a href="javascript:SwitchTitles('TITLES')"><FONT COLOR=YELLOW>Titles</FONT></a>
+			@else@
+				<a href="javascript:SwitchTitles('')"><FONT COLOR=YELLOW>Powers</FONT></a>/Titles
+			@endif@
+		</FONT></TD>
 		</TR>
 		@ClanGovernmentData?POSITIONSTART@
 		@loop@
-		@ClanGovernmentData?POSITIONNEXT@
-		<TR>
-		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=15 NAME="GPOSID_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSID_@@RequestParameter?GOVTPOSITION@@ @">
-		<BR>&nbsp;&nbsp;&nbsp;
-		<INPUT TYPE=CHECKBOX NAME="GPOSISPUBLIC_@RequestParameter?GOVTPOSITION@" @ClanGovernmentData?GPOSISPUBLIC_@@RequestParameter?GOVTPOSITION@@ @>
-		<FONT COLOR=WHITE SIZE=-1>Shown</FONT>
-		<INPUT TYPE=HIDDEN NAME="GPOSROLEID_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSROLEID_@@RequestParameter?GOVTPOSITION@@ @">
-		</TD>
-		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=1 NAME="GPOSRANK_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSRANK_@@RequestParameter?GOVTPOSITION@@ @"></TD>
-		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=10 NAME="GPOSNAME_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSNAME_@@RequestParameter?GOVTPOSITION@@ @"></TD>
-		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=10 NAME="GPOSPLURALNAME_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSPLURALNAME_@@RequestParameter?GOVTPOSITION@@ @"></TD>
-		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=5 NAME="GPOSMAX_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSMAX_@@RequestParameter?GOVTPOSITION@@ @"></TD>
-		<TD VALIGN=TOP><TEXTAREA NAME="GPOSINNERMASK_@RequestParameter?GOVTPOSITION@" ROWS=3 COLS=8 WRAP>@ClanGovernmentData?GPOSINNERMASK_@@RequestParameter?GOVTPOSITION@@ @</TEXTAREA></TD>
-		<TD VALIGN=TOP><SELECT MULTIPLE SIZE=4 NAME="GPOSPOWER_@RequestParameter?GOVTPOSITION@_">@ClanGovernmentData?GPOSPOWER_@@RequestParameter?GOVTPOSITION@@_@</TD>
-		</TR>
+			@ClanGovernmentData?POSITIONNEXT@
+			<TR>
+			<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=15 NAME="GPOSID_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSID_@@RequestParameter?GOVTPOSITION@@ @">
+			<BR>&nbsp;&nbsp;&nbsp;
+			<INPUT TYPE=CHECKBOX NAME="GPOSISPUBLIC_@RequestParameter?GOVTPOSITION@" @ClanGovernmentData?GPOSISPUBLIC_@@RequestParameter?GOVTPOSITION@@ @>
+			<FONT COLOR=WHITE SIZE=-1>Shown</FONT>
+			<INPUT TYPE=HIDDEN NAME="GPOSROLEID_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSROLEID_@@RequestParameter?GOVTPOSITION@@ @">
+			</TD>
+			<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=1 NAME="GPOSRANK_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSRANK_@@RequestParameter?GOVTPOSITION@@ @"></TD>
+			<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=10 NAME="GPOSNAME_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSNAME_@@RequestParameter?GOVTPOSITION@@ @"></TD>
+			<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=10 NAME="GPOSPLURALNAME_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSPLURALNAME_@@RequestParameter?GOVTPOSITION@@ @"></TD>
+			<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=5 NAME="GPOSMAX_@RequestParameter?GOVTPOSITION@" VALUE="@ClanGovernmentData?GPOSMAX_@@RequestParameter?GOVTPOSITION@@ @"></TD>
+			<TD VALIGN=TOP><TEXTAREA NAME="GPOSINNERMASK_@RequestParameter?GOVTPOSITION@" ROWS=3 COLS=8 WRAP>@ClanGovernmentData?GPOSINNERMASK_@@RequestParameter?GOVTPOSITION@@ @</TEXTAREA></TD>
+			@if?CheckReqParm?POS_USETITLES=@
+				<TD VALIGN=TOP>
+					<SELECT MULTIPLE SIZE=3 NAME="GPOSPOWER_@RequestParameter?GOVTPOSITION@_">@ClanGovernmentData?GPOSPOWER_@@RequestParameter?GOVTPOSITION@@_@
+					<DIV STYLE="display:none">
+						<TEXTAREA STYLE="display:none" NAME="GPOSTIT_@RequestParameter?GOVTPOSITION@" ROWS=3 COLS=16 WRAP>@ClanGovernmentData?GPOSTIT_@@RequestParameter?GOVTPOSITION@@ @</TEXTAREA>
+					</DIV>DIV>
+				</TD>
+			@else@
+				<TD VALIGN=TOP>
+					<TEXTAREA NAME="GPOSTIT_@RequestParameter?GOVTPOSITION@" ROWS=3 COLS=16 WRAP>@ClanGovernmentData?GPOSTIT_@@RequestParameter?GOVTPOSITION@@ @</TEXTAREA>
+					<DIV STYLE="display:none">
+						<SELECT STYLE="display:none" MULTIPLE SIZE=3 NAME="GPOSPOWER_@RequestParameter?GOVTPOSITION@_">@ClanGovernmentData?GPOSPOWER_@@RequestParameter?GOVTPOSITION@@_@
+					</DIV>
+				</TD>
+			</TR>
+			@endif@
 		@back@
 		<TR>
 		<TD VALIGN=TOP><INPUT TYPE=TEXT SIZE=15 NAME="GPOSID_@RequestParameter?LASTGOVTPOSITION@" VALUE="">
