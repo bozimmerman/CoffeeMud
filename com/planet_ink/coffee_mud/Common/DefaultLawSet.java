@@ -392,7 +392,7 @@ public class DefaultLawSet implements Law
 				return;
 			tax=CMath.div(tax,100.0);
 			List<LandTitle> titles=CMLib.law().getAllUniqueLandTitles(A.getMetroMap(),"*",false);
-			final Map<String,List<LandTitle>> owners=new Hashtable<String,List<LandTitle>>();
+			final Map<String,List<LandTitle>> owners=new HashMap<String,List<LandTitle>>();
 			for(final LandTitle T : titles)
 			{
 				List<LandTitle> D=owners.get(T.getOwnerName());
@@ -492,7 +492,7 @@ public class DefaultLawSet implements Law
 									if(clanC!=null)
 									{
 										final MOB M=clanC.getResponsibleMember();
-										final List<Pair<Clan,Integer>> clanSet=new Vector<Pair<Clan,Integer>>();
+										final List<Pair<Clan,Integer>> clanSet=new ArrayList<Pair<Clan,Integer>>();
 										clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
 										final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 										for(int i=0;i<channels.size();i++)
@@ -531,7 +531,7 @@ public class DefaultLawSet implements Law
 							{
 								final MOB M=clanC.getResponsibleMember();
 								final String amountOwed = CMLib.beanCounter().nameCurrencyLong(M, owed);
-								final List<Pair<Clan,Integer>> clanSet=new Vector<Pair<Clan,Integer>>();
+								final List<Pair<Clan,Integer>> clanSet=new ArrayList<Pair<Clan,Integer>>();
 								clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
 								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 								for(int i=0;i<channels.size();i++)
