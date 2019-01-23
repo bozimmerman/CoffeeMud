@@ -1192,18 +1192,26 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean isAchieved(final MOB mob)
 						{
-							if(mob.fetchFaction(factionID)==Integer.MAX_VALUE)
-								return false;
-							return (abelo > 0) ? (getCount(mob) > value) : (getCount(mob) < value);
+							if(mob != null)
+							{
+								if(mob.fetchFaction(factionID)==Integer.MAX_VALUE)
+									return false;
+								return (abelo > 0) ? (getCount(mob) > value) : (getCount(mob) < value);
+							}
+							return false;
 						}
 
 						@Override
 						public int getCount(final MOB mob)
 						{
-							final int f=mob.fetchFaction(factionID);
-							if(f == Integer.MAX_VALUE)
-								return 0;
-							return f;
+							if(mob != null)
+							{
+								final int f=mob.fetchFaction(factionID);
+								if(f == Integer.MAX_VALUE)
+									return 0;
+								return f;
+							}
+							return 0;
 						}
 
 						@Override
@@ -1331,6 +1339,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public int getCount(final MOB mob)
 						{
+							if(mob == null)
+								return 0;
 							int num=0;
 							for(final Faction F : factions)
 							{
@@ -1473,23 +1483,26 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public int getCount(final MOB mob)
 						{
-							final PlayerStats pstats=mob.playerStats();
-							if(pstats != null)
+							if(mob != null)
 							{
-								if(areaID.equals("WORLD"))
+								final PlayerStats pstats=mob.playerStats();
+								if(pstats != null)
 								{
-									final Room R=mob.location();
-									if((R!=null)&&(CMLib.map().getExtendedRoomID(CMLib.map().getRoom(R)).length()>0))
-										return pstats.percentVisited(mob,null);
-									else
-										return 0;
-								}
-								else
-								{
-									final Area A=CMLib.map().getArea(areaID);
-									if(A!=null)
+									if(areaID.equals("WORLD"))
 									{
-										return pstats.percentVisited(mob, A);
+										final Room R=mob.location();
+										if((R!=null)&&(CMLib.map().getExtendedRoomID(CMLib.map().getRoom(R)).length()>0))
+											return pstats.percentVisited(mob,null);
+										else
+											return 0;
+									}
+									else
+									{
+										final Area A=CMLib.map().getArea(areaID);
+										if(A!=null)
+										{
+											return pstats.percentVisited(mob, A);
+										}
 									}
 								}
 							}
@@ -2321,20 +2334,24 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public int getCount(final MOB mob)
 						{
+							//TODO: Clans need to support this.
 							int count = 0;
-							Tattooable other;
-							if((CMProps.isUsingAccountSystem())
-							&&(mob.playerStats()!=null))
-								other=mob.playerStats().getAccount();
-							else
-								other=null;
-							for(final String s : achievementList)
+							if(mob != null)
 							{
-								if(mob.findTattoo(s)!=null)
-									count++;
+								Tattooable other;
+								if((CMProps.isUsingAccountSystem())
+								&&(mob.playerStats()!=null))
+									other=mob.playerStats().getAccount();
 								else
-								if((other!=null)&&(other.findTattoo(s)!=null))
-									count++;
+									other=null;
+								for(final String s : achievementList)
+								{
+									if(mob.findTattoo(s)!=null)
+										count++;
+									else
+									if((other!=null)&&(other.findTattoo(s)!=null))
+										count++;
+								}
 							}
 							return count;
 						}
@@ -2459,6 +2476,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public int getCount(final MOB mob)
 						{
+							if(mob == null)
+								return 0;
 							int count = 0;
 							for(final String s : roomIDs)
 							{
@@ -2613,6 +2632,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						@Override
 						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
+							if(mob == null)
+								return false;
 							if(((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
 							&&(mob.charStats().getCurrentClass() == charClass))
 							{
