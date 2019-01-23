@@ -3475,6 +3475,9 @@ public class ListCmd extends StdCommand
 			case PLAYER:
 				str.append(L("^xPlayer Achievements: ^N\n\r"));
 				break;
+			case CLAN:
+				str.append(L("^xClan Achievements: ^N\n\r"));
+				break;
 			}
 			str.append(CMStrings.padRight(L("Tattoo"),COL_LEN1)+" ");
 			str.append(CMStrings.padRight(L("Type"),COL_LEN2)+" ");

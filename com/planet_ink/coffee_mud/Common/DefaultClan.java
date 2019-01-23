@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.Agent;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote;
@@ -17,6 +18,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
@@ -98,7 +101,9 @@ public class DefaultClan implements Clan
 
 	protected final static List<Ability> empty=new XVector<Ability>(1,true);
 
-	protected final List<Pair<Clan,Integer>> channelSet = new XVector<Pair<Clan,Integer>>(1,true);
+	protected final List<Pair<Clan, Integer>>	channelSet		= new XVector<Pair<Clan, Integer>>(1, true);
+	protected CMUniqNameSortSVec<Tattoo>		tattoos			= new CMUniqNameSortSVec<Tattoo>(1);
+	protected Map<String, Tracker>				achievementers	= new STreeMap<String, Tracker>();
 
 	/** return a new instance of the object*/
 	@Override
@@ -1345,6 +1350,16 @@ public class DefaultClan implements Clan
 			str.append(xmlLib.convertXMLtoTag("MINM",overrideMinClanMembers.toString()));
 		if(isRivalrous!=null)
 			str.append(xmlLib.convertXMLtoTag("RIVAL",isRivalrous.toString()));
+		str.append("<ACHIEVEMENTS");
+		for(final Iterator<Tracker> i=achievementers.values().iterator();i.hasNext();)
+		{
+			final Tracker T = i.next();
+			if(T.getAchievement().isSavableTracker() && (T.getCount(null) != 0))
+				str.append(" ").append(T.getAchievement().getTattoo()).append("=").append(T.getCount(null));
+			// getCount(null) should be ok, because it's only the un-savable trackers that need the mob obj
+		}
+		str.append(" />");
+		str.append("<TATTOOS>").append(CMParms.toListString(tattoos)).append("</TATTOOS>");
 		if(relations.size()==0)
 			str.append("<RELATIONS/>");
 		else
@@ -1407,7 +1422,20 @@ public class DefaultClan implements Clan
 		totalOnlineMins=xmlLib.getIntFromPieces(xml,"ONLINEMINS");
 		totalLevelsGained=xmlLib.getIntFromPieces(xml,"LVLSGAINED");
 
-
+		final XMLTag achievePiece = xmlLib.getPieceFromPieces(xml, "ACHIEVEMENTS");
+		achievementers.clear();
+		for(final Enumeration<Achievement> a=CMLib.achievements().achievements(Agent.ACCOUNT);a.hasMoreElements();)
+		{
+			final Achievement A=a.nextElement();
+			if((achievePiece != null) && achievePiece.parms().containsKey(A.getTattoo()))
+				achievementers.put(A.getTattoo(), A.getTracker(CMath.s_int(achievePiece.parms().get(A.getTattoo()).trim())));
+			else
+				achievementers.put(A.getTattoo(), A.getTracker(0));
+		}
+		final String[] allTattoos=xmlLib.getValFromPieces(xml, "TATTOOS").split(",");
+		this.tattoos.clear();
+		for(final String tattoo : allTattoos)
+			this.addTattoo(tattoo);
 
 		final List<XMLLibrary.XMLTag> poliData=xmlLib.getContentsFromPieces(xml,"POLITICS");
 		if(poliData==null)
@@ -2324,6 +2352,110 @@ public class DefaultClan implements Clan
 	public ItemCollection getExtItems()
 	{
 		return extItems;
+	}
+
+	/** Manipulation of the tatoo list */
+	@Override
+	public void addTattoo(final String of)
+	{
+		final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
+		addTattoo(T.set(of));
+	}
+
+	@Override
+	public void addTattoo(final String of, final int tickDown)
+	{
+		final Tattoo T=(Tattoo)CMClass.getCommon("DefaultTattoo");
+		addTattoo(T.set(of,tickDown));
+	}
+
+	@Override
+	public void delTattoo(final String of)
+	{
+		final Tattoo T=findTattoo(of);
+		if(T!=null)
+			tattoos.remove(T);
+	}
+
+	@Override
+	public void addTattoo(final Tattoo of)
+	{
+		if ((of == null) || (of.getTattooName() == null) || (of.getTattooName().length() == 0) || findTattoo(of.getTattooName()) != null)
+			return;
+		tattoos.addElement(of);
+	}
+
+	@Override
+	public void delTattoo(final Tattoo of)
+	{
+		if ((of == null) || (of.getTattooName() == null) || (of.getTattooName().length() == 0))
+			return;
+		final Tattoo tat = findTattoo(of.getTattooName());
+		if (tat == null)
+			return;
+		tattoos.remove(tat);
+	}
+
+	@Override
+	public Enumeration<Tattoo> tattoos()
+	{
+		return tattoos.elements();
+	}
+
+	@Override
+	public Tattoo findTattoo(final String of)
+	{
+		if ((of == null) || (of.length() == 0))
+			return null;
+		return tattoos.find(of.trim());
+	}
+
+	@Override
+	public Tattoo findTattooStartsWith(final String of)
+	{
+		if ((of == null) || (of.length() == 0))
+			return null;
+		return tattoos.findStartsWith(of.trim());
+	}
+
+	@Override
+	public void killAchievementTracker(final Achievement A)
+	{
+		if(achievementers.containsKey(A.getTattoo()))
+		{
+			achievementers.remove(A.getTattoo());
+		}
+	}
+
+	@Override
+	public Tracker getAchievementTracker(final Achievement A)
+	{
+		final Tracker T;
+		if(achievementers.containsKey(A.getTattoo()))
+		{
+			T=achievementers.get(A.getTattoo());
+		}
+		else
+		{
+			T=A.getTracker(0);
+			achievementers.put(A.getTattoo(), T);
+		}
+		return T;
+	}
+
+	@Override
+	public void rebuildAchievementTracker(final String achievementTattoo)
+	{
+		final Achievement A=CMLib.achievements().getAchievement(achievementTattoo);
+		if(A!=null)
+		{
+			if(achievementers.containsKey(A.getTattoo()))
+				achievementers.put(A.getTattoo(), A.getTracker(achievementers.get(A.getTattoo()).getCount(null)));
+			else
+				achievementers.put(A.getTattoo(), A.getTracker(0));
+		}
+		else
+			achievementers.remove(achievementTattoo);
 	}
 
 	@Override

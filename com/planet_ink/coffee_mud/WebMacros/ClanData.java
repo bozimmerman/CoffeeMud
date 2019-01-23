@@ -403,6 +403,11 @@ public class ClanData extends StdWebMacro
 					if(CC!=null)
 						str.append(CC.name()+", "); else str.append("");
 				}
+				if(parms.containsKey("TATTOOS"))
+				{
+					for(final Enumeration<Tattoo> e=C.tattoos();e.hasMoreElements();)
+						str.append(e.nextElement().toString()+", ");
+				}
 				if(parms.containsKey("EXP"))
 				{
 					String old=httpReq.getUrlParameter("EXP");

@@ -11,6 +11,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -49,7 +51,7 @@ import java.util.*;
    * </ul>
    * @author=Bo Zimmerman, Jeremy Vyska
   */
-public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
+public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooable
 {
 	/**
 	 * Returns whether the given roleID is allowed to perform the
@@ -840,6 +842,37 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return true if they can, false otherwise
 	 */
 	public boolean canBeAssigned(MOB mob, int role);
+
+	/**
+	 * Returns the tracker for the given achievement, for the clan, or
+	 * creates it if it does not exist.
+	 * @see AccountStats#rebuildAchievementTracker(MOB, String)
+	 * see #killAchievementTracker(Achievement)
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement
+	 * @param A the achievement to get the tracker for
+	 * @return the Tracker object that handles this achievement/mob
+	 */
+	public Tracker getAchievementTracker(Achievement A);
+
+	/**
+	 * Deletes the tracker for the given achievement, for the clan.
+	 * @see Clan#rebuildAchievementTracker(String)
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement
+	 * @param A the achievement to kill the tracker for
+	 */
+	public void killAchievementTracker(Achievement A);
+
+	/**
+	 * If an Achievement is modified or removed, this method will update the
+	 * internal tracker for that achievement.  It does not delete old
+	 * achievements per se, just their trackers!
+	 * @see Clan#getAchievementTracker(Achievement)
+	 * @param clan the clan to modify the tracker for.
+	 * @param achievementTattoo the tattoo/id of the achievement
+	 */
+	public void rebuildAchievementTracker(String achievementTattoo);
 
 	/**
 	 * Represents an individual clan vote

@@ -56,6 +56,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	// order is now significant, so they are Lists
 	private List<Achievement> 			playerAchievements	= null;
 	private List<Achievement> 			accountAchievements = null;
+	private List<Achievement> 			clanAchievements	= null;
 	private Map<Event,List<Achievement>>eventMap			= null;
 
 	private final static String achievementFilename  = "achievements.ini";
@@ -3771,6 +3772,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case PLAYER:
 				playerAchievements.add(A);
 				break;
+			case CLAN:
+				clanAchievements.add(A);
+				break;
 			}
 			List<Achievement> eventList = eventMap.get(A.getEvent());
 			if(eventList == null)
@@ -3785,11 +3789,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 
 	private void ensureAchievementsLoaded()
 	{
-		if((playerAchievements==null)||(accountAchievements==null))
+		if((playerAchievements==null)||(accountAchievements==null)||(clanAchievements==null))
 		{
 			synchronized(this)
 			{
-				if((playerAchievements==null)||(accountAchievements==null))
+				if((playerAchievements==null)||(accountAchievements==null)||(clanAchievements==null))
 				{
 					reloadAchievements();
 				}
@@ -3808,12 +3812,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			return new MultiEnumeration<Achievement>(new Enumeration[]{
 				new IteratorEnumeration<Achievement>(accountAchievements.iterator()),
 				new IteratorEnumeration<Achievement>(playerAchievements.iterator()),
+				new IteratorEnumeration<Achievement>(clanAchievements.iterator()),
 			});
 		}
 		switch(agent)
 		{
 		case ACCOUNT:
 			return new IteratorEnumeration<Achievement>(accountAchievements.iterator());
+		case CLAN:
+			return new IteratorEnumeration<Achievement>(clanAchievements.iterator());
 		default:
 		case PLAYER:
 			return new IteratorEnumeration<Achievement>(playerAchievements.iterator());
@@ -3853,6 +3860,28 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	}
 
+	protected void possiblyBumpClanAchievement(final MOB mob, final Achievement A, final Iterable<Pair<Clan,Integer>> clans, final Event E, final int bumpNum, final Object... parms)
+	{
+		if(clans != null)
+		{
+			for(final Pair<Clan,Integer> p : clans)
+			{
+				final Clan C=p.first;
+				if(C.findTattoo(A.getTattoo())==null)
+				{
+					final Tracker T=C.getAchievementTracker(A);
+					if(T.testBump(mob, bumpNum, parms))
+					{
+						if(T.isAchieved(mob))
+						{
+							giveAwards(A,C,mob,AchievementLoadFlag.NORMAL);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	@Override
 	public void possiblyBumpAchievement(final MOB mob, final Event E, final int bumpNum, final Object... parms)
 	{
@@ -3874,6 +3903,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							break;
 						case ACCOUNT:
 							possiblyBumpAccountAchievement(mob, A, account, E, bumpNum, parms);
+							break;
+						case CLAN:
+							possiblyBumpClanAchievement(mob, A, mob.clans(), E, bumpNum, parms);
 							break;
 						}
 					}
@@ -3921,6 +3953,31 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return achievements;
 	}
 
+	protected List<Achievement> fakeBumpClanAchievements(final MOB mob, final Achievement A, final Iterable<Pair<Clan,Integer>> clans, final Event E, final int bumpNum, final Object... parms)
+	{
+		final List<Achievement> achievements=new ArrayList<Achievement>(1);
+		if(clans != null)
+		{
+			for(final Pair<Clan,Integer> p : clans)
+			{
+				final Clan C=p.first;
+				if(C.findTattoo(A.getTattoo())==null)
+				{
+					Tracker T=C.getAchievementTracker(A);
+					T=T.copyOf();
+					if(T.testBump(mob, bumpNum, parms))
+					{
+						if(T.isAchieved(mob))
+						{
+							achievements.add(A);
+						}
+					}
+				}
+			}
+		}
+		return achievements;
+	}
+
 	@Override
 	public List<Achievement> fakeBumpAchievement(final MOB mob, final Event E, final int bumpNum, final Object... parms)
 	{
@@ -3943,6 +4000,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							break;
 						case ACCOUNT:
 							achievements.addAll(fakeBumpAccountAchievement(mob, A, account, E, bumpNum, parms));
+							break;
+						case CLAN:
+							achievements.addAll(fakeBumpClanAchievements(mob, A, mob.clans(), E, bumpNum, parms));
 							break;
 						}
 					}
@@ -4263,21 +4323,28 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if(holder.findTattoo(A.getTattoo())==null)
 		{
 			holder.addTattoo(A.getTattoo());
-			final StringBuilder awardMessage = new StringBuilder(L("^HYou have completed the '@x1' @x2 achievement!^?\n\r",A.getDisplayStr(),A.getAgent().name().toLowerCase()));
-			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACHIEVEMENTS);
-			if(!CMLib.flags().isCloaked(mob))
+			if(A.getAgent() != Agent.CLAN)
 			{
-				final PlayerStats pStats = mob.playerStats();
-				final PlayerAccount account = (pStats != null) ? pStats.getAccount() : null;
-				final String name = ((A.getAgent() == Agent.ACCOUNT) && (account != null)) ? account.getAccountName() : mob.name();
-				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has completed the '@x2' @x3 achievement!",name,A.getDisplayStr(),A.getAgent().name().toLowerCase()),true);
+				final StringBuilder awardMessage = new StringBuilder(L("^HYou have completed the '@x1' @x2 achievement!^?\n\r",A.getDisplayStr(),A.getAgent().name().toLowerCase()));
+				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACHIEVEMENTS);
+				if(!CMLib.flags().isCloaked(mob))
+				{
+					final PlayerStats pStats = mob.playerStats();
+					final PlayerAccount account = (pStats != null) ? pStats.getAccount() : null;
+					final String name = ((A.getAgent() == Agent.ACCOUNT) && (account != null)) ? account.getAccountName() : mob.name();
+					for(int i=0;i<channels.size();i++)
+						CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has completed the '@x2' @x3 achievement!",name,A.getDisplayStr(),A.getAgent().name().toLowerCase()),true);
+				}
+				final Award[] awardSet = A.getRewards();
+				mob.tell(awardMessage.toString());
+				if(A.getAgent() == Agent.PLAYER)
+				{
+					giveAwards(mob,awardSet,flag);
+				}
 			}
-			final Award[] awardSet = A.getRewards();
-			mob.tell(awardMessage.toString());
-			if(A.getAgent() == Agent.PLAYER)
+			else
 			{
-				giveAwards(mob,awardSet,flag);
+				//TODO: the award to the clan.  Yay.
 			}
 			return true;
 		}
@@ -4309,6 +4376,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				break;
 			case PLAYER:
 				playerAchievements.remove(A);
+				break;
+			case CLAN:
+				clanAchievements.remove(A);
 				break;
 			}
 			final List<Achievement> list=eventMap.get(A.getEvent());
@@ -4753,7 +4823,23 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return false;
 	}
 
-	private boolean evaluateAchievement(final Achievement A, final PlayerStats pStats, final PlayerAccount aStats, final MOB mob)
+	private boolean evaluateClanAchievement(final Achievement A, final Clan C, final MOB mob)
+	{
+		if(C != null)
+		{
+			if(C.findTattoo(A.getTattoo())==null)
+			{
+				final Tracker T=C.getAchievementTracker(A);
+				if(T.isAchieved(mob))
+				{
+					return giveAwards(A, C, mob,AchievementLoadFlag.NORMAL);
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean evaluateAchievement(final Achievement A, final PlayerStats pStats, final PlayerAccount aStats, final Iterable<Pair<Clan,Integer>> clans, final MOB mob)
 	{
 		switch(A.getAgent())
 		{
@@ -4761,6 +4847,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			return evaluatePlayerAchievement(A,pStats,mob);
 		case ACCOUNT:
 			return evaluateAccountAchievement(A,aStats,mob);
+		case CLAN:
+		{
+			boolean truefalse = false;
+			for(final Pair<Clan,Integer> p : clans)
+				truefalse = truefalse || evaluateClanAchievement(A,p.first,mob);
+			return truefalse;
+		}
 		}
 		return false;
 	}
@@ -4774,12 +4867,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if(P==null)
 			return false;
 		final PlayerAccount C=P.getAccount() != null ? P.getAccount() : null;
-
 		boolean somethingDone = false;
 		for(final Enumeration<Achievement> a=achievements(null);a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
-			if(evaluateAchievement(A,P,C,mob))
+			if(evaluateAchievement(A,P,C,mob.clans(),mob))
 				somethingDone = true;
 		}
 		return somethingDone;
@@ -4802,6 +4894,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	{
 		accountAchievements=new SLinkedList<Achievement>();
 		playerAchievements=new SLinkedList<Achievement>();
+		clanAchievements=new SLinkedList<Achievement>();
 		eventMap=new TreeMap<Event,List<Achievement>>();
 		final String achievementFilename = getAchievementFilename();
 		final List<String> V=Resources.getFileLineVector(Resources.getRawFileResource(achievementFilename,true));
@@ -4995,6 +5088,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if(A.getAgent() == Agent.ACCOUNT)
 			str.append("\n\r").append(CMStrings.padRight(L("Account Achievement:"),cols)).append(" ").append(A.getTattoo());
 		else
+		if(A.getAgent() == Agent.CLAN)
+			str.append("\n\r").append(CMStrings.padRight(L("Clan Achievement:"),cols)).append(" ").append(A.getTattoo());
+		else
 			str.append("\n\r").append(CMStrings.padRight(L("Char. Achievement:"),cols)).append(" ").append(A.getTattoo());
 		str.append("\n\r").append(CMStrings.padRight(L("Description:"),cols)).append(" ").append(A.getDisplayStr());
 		str.append("\n\r").append(CMStrings.padRight(L("Achievement Type:"),cols)).append(" ");
@@ -5003,6 +5099,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		{
 			if(A.getAgent() == Agent.ACCOUNT)
 				str.append("\n\r").append(CMStrings.padRight(L("Rewards Granted:"),cols)).append(" ").append(L("New Characters, Children, and Remorted"));
+			else
+			if(A.getAgent() == Agent.CLAN)
+				str.append("\n\r").append(CMStrings.padRight(L("Rewards Granted:"),cols)).append(" ").append(L("Existing Members"));
 			else
 				str.append("\n\r").append(CMStrings.padRight(L("Rewards Granted:"),cols)).append(" ").append(L("Immediately"));
 		}
@@ -5067,6 +5166,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		Resources.removeResource("SYSTEM_ACHIEVEMENT_HELP");
 		accountAchievements=null;
 		playerAchievements=null;
+		clanAchievements=null;
 		eventMap=null;
 		return super.shutdown();
 	}

@@ -423,7 +423,8 @@ public interface AccountStats extends CMCommon
 	public enum Agent
 	{
 		PLAYER,
-		ACCOUNT
+		ACCOUNT,
+		CLAN
 	}
 
 }

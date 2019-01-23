@@ -175,6 +175,16 @@ public class GrinderClans
 				str=httpReq.getUrlParameter("TYPEID");
 				if(str!=null)
 					C.setGovernmentID(CMath.s_int(str));
+				str=httpReq.getUrlParameter("TATTOOS");
+				if(str!=null)
+				{
+					final List<Tattoo> oldTatts = new XVector<Tattoo>(C.tattoos());
+					for(final Tattoo t : oldTatts)
+						C.delTattoo(t);
+					final List<String> tattNames = CMParms.parseCommas(str,true);
+					for(final String tattName : tattNames)
+						C.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tattName));
+				}
 				String err=GrinderClans.membersList(C,httpReq);
 				if(err.length()>0)
 					return err;
