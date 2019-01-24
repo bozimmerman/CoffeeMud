@@ -223,13 +223,35 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 						if(wM.get()==body)
 							m.remove();
 					}
+					((DeadBody)body).setSavedMOB(null, true); // revived, so don't destroy when body goes
 					rejuvedMOB.recoverCharStats();
 					rejuvedMOB.recoverMaxState();
 					body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
 					body.destroy();
 					rejuvedMOB.bringToLife(mob.location(),true);
-					rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> get(s) up!"));
-					CMLib.commands().postFollow(rejuvedMOB, mob, true);
+					CMLib.threads().scheduleRunnable(new Runnable()
+					{
+						final MOB M=rejuvedMOB;
+						public void run()
+						{
+							if((M==null)
+							||(M.location()==null)
+							||(M.amDestroyed()))
+							{
+								if((mob!=null)
+								&&(mob.location()!=null))
+								{
+									rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> twitch(es) and fade(s) away."));
+									Log.errOut(ID(),"Failed to rejuv mob");
+								}
+							}
+							else
+							{
+								rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> get(s) up!"));
+								CMLib.commands().postFollow(rejuvedMOB, mob, true);
+							}
+						}
+					}, 1000);
 				}
 			}
 		}
