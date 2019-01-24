@@ -874,7 +874,7 @@ public class Destroy extends StdCommand
 				final MOB M=m.nextElement();
 				if(M.playerStats()!=null)
 				{
-					M.playerStats().rebuildAchievementTracker(M, tattoo);
+					M.playerStats().rebuildAchievementTracker(mob, M, tattoo);
 				}
 			}
 			CMLib.achievements().resaveAchievements(tattoo);

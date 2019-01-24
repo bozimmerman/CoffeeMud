@@ -53,7 +53,7 @@ public class AchievementData extends StdWebMacro
 			final MOB M=m.nextElement();
 			if(M.playerStats()!=null)
 			{
-				M.playerStats().rebuildAchievementTracker(M, tattoo);
+				M.playerStats().rebuildAchievementTracker(M, M, tattoo);
 			}
 		}
 	}
@@ -336,7 +336,7 @@ public class AchievementData extends StdWebMacro
 					final PlayerStats pStats = M.playerStats();
 					if(pStats!=null)
 					{
-						final AchievementLibrary.Tracker T = pStats.getAchievementTracker(A, M);
+						final AchievementLibrary.Tracker T = pStats.getAchievementTracker(A, M, M);
 						str.append(""+T.getCount(M)).append(", ");
 					}
 					else
@@ -363,7 +363,7 @@ public class AchievementData extends StdWebMacro
 					final PlayerStats pStats = M.playerStats();
 					if(pStats!=null)
 					{
-						final AchievementLibrary.Tracker T = pStats.getAchievementTracker(A, M);
+						final AchievementLibrary.Tracker T = pStats.getAchievementTracker(A, M, M);
 						if(parms.containsKey("ISPLAYERACHIEVED"))
 						{
 							final boolean achieved = M.findTattoo(A.getTattoo()) != null;

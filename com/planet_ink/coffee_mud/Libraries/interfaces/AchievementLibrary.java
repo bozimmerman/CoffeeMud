@@ -421,10 +421,10 @@ public interface AchievementLibrary extends CMLibrary
 		 * Returns true if the given mob has completed this
 		 * achievement, even if the tattoo has not yet been
 		 * assigned.
-		 * @param mob the player being checked
+		 * @param tracked the player being checked
 		 * @return true if completion has happened, false otherwise
 		 */
-		public boolean isAchieved(MOB mob);
+		public boolean isAchieved(Tattooable tracked);
 
 		/**
 		 * For events which require tracked progress, this method is
@@ -432,20 +432,21 @@ public interface AchievementLibrary extends CMLibrary
 		 * the given mob and the given arguments to see if the
 		 * achievement deserves a bump in progress.
 		 * @param mob the player who did something trackable
+		 * @param tracked TODO
 		 * @param bumpNum the amount to bump the progress by
 		 * @param parms optional arguments unique to the Event
 		 * @return true if a bump occurred, false otherwise
 		 */
-		public boolean testBump(MOB mob, int bumpNum, Object... parms);
+		public boolean testBump(MOB mob, Tattooable tracked, int bumpNum, Object... parms);
 
 		/**
 		 * Returns the count/score to show for the given mob.  If the
 		 * achievement of this tracker is Savable, then the mob may be
 		 * null, since the count would then be internally stored.
-		 * @param mob the mob to get a count for -- required ONLY for unsavable
+		 * @param tracked the mob to get a count for -- required ONLY for unsavable
 		 * @return the score for this achievement and this mob
 		 */
-		public int getCount(MOB mob);
+		public int getCount(Tattooable tracked);
 
 		/**
 		 * Returns a copy of this tracker, unattached to the

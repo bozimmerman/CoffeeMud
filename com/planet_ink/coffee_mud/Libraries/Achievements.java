@@ -808,19 +808,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return (num>=0) && (getCount(mob) >= num);
+							return (num>=0) && (getCount(tracked) >= num);
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
@@ -939,21 +939,22 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
+							if((tracked instanceof MOB)
+							&&((playerMask==null)||(CMLib.masking().maskCheck(playerMask, (MOB)tracked, true))))
 								return true;
 							return false;
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							return 0;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
@@ -1064,19 +1065,21 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return (abelo > 0) ? (getCount(mob) > value) : (getCount(mob) < value);
+							return (abelo > 0) ? (getCount(tracked) > value) : (getCount(tracked) < value);
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
-							return CMath.s_int(CMLib.coffeeMaker().getAnyGenStat(mob, statName));
+							if(tracked instanceof MOB)
+								return CMath.s_int(CMLib.coffeeMaker().getAnyGenStat((MOB)tracked, statName));
+							return 0;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							return false;
 						}
@@ -1190,23 +1193,23 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							if(mob != null)
+							if(tracked instanceof MOB)
 							{
-								if(mob.fetchFaction(factionID)==Integer.MAX_VALUE)
+								if(((MOB)tracked).fetchFaction(factionID)==Integer.MAX_VALUE)
 									return false;
-								return (abelo > 0) ? (getCount(mob) > value) : (getCount(mob) < value);
+								return (abelo > 0) ? (getCount(tracked) > value) : (getCount(tracked) < value);
 							}
 							return false;
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
-							if(mob != null)
+							if(tracked instanceof MOB)
 							{
-								final int f=mob.fetchFaction(factionID);
+								final int f=((MOB)tracked).fetchFaction(factionID);
 								if(f == Integer.MAX_VALUE)
 									return 0;
 								return f;
@@ -1215,7 +1218,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							return false;
 						}
@@ -1331,29 +1334,31 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return getCount(mob) >= number;
+							return getCount(tracked) >= number;
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
-							if(mob == null)
-								return 0;
-							int num=0;
-							for(final Faction F : factions)
+							if(tracked instanceof MOB)
 							{
-								final int f = mob.fetchFaction(F.factionID());
-								if((f!=Integer.MAX_VALUE)
-								&&((abelo > 0) ? (f > value) : (f < value)))
-									num++;
+								int num=0;
+								for(final Faction F : factions)
+								{
+									final int f = ((MOB)tracked).fetchFaction(F.factionID());
+									if((f!=Integer.MAX_VALUE)
+									&&((abelo > 0) ? (f > value) : (f < value)))
+										num++;
+								}
+								return num;
 							}
-							return num;
+							return 0;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							return false;
 						}
@@ -1475,24 +1480,24 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return getCount(mob) >= pct;
+							return getCount(tracked) >= pct;
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
-							if(mob != null)
+							if(tracked instanceof MOB)
 							{
-								final PlayerStats pstats=mob.playerStats();
+								final PlayerStats pstats=((MOB)tracked).playerStats();
 								if(pstats != null)
 								{
 									if(areaID.equals("WORLD"))
 									{
-										final Room R=mob.location();
+										final Room R=((MOB)tracked).location();
 										if((R!=null)&&(CMLib.map().getExtendedRoomID(CMLib.map().getRoom(R)).length()>0))
-											return pstats.percentVisited(mob,null);
+											return pstats.percentVisited((MOB)tracked,null);
 										else
 											return 0;
 									}
@@ -1501,7 +1506,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 										final Area A=CMLib.map().getArea(areaID);
 										if(A!=null)
 										{
-											return pstats.percentVisited(mob, A);
+											return pstats.percentVisited((MOB)tracked, A);
 										}
 									}
 								}
@@ -1510,7 +1515,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							return false;
 						}
@@ -1623,19 +1628,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return getCount(mob) >= num;
+							return getCount(tracked) >= num;
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							final Ability A;
 							if(parms.length>0)
@@ -1806,19 +1811,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return getCount(mob) >= num;
+							return getCount(tracked) >= num;
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							final Ability A;
 							if(parms.length>0)
@@ -1983,19 +1988,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return getCount(mob) >= num;
+							return getCount(tracked) >= num;
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							final Social S;
 							if(parms.length>0)
@@ -2162,19 +2167,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return (num>=0) && getCount(mob) >= num;
+							return (num>=0) && getCount(tracked) >= num;
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							if((mask!=null)&&(!CMLib.masking().maskCheck(mask, mob, true)))
 								return false;
@@ -2326,38 +2331,36 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return getCount(mob) >= achievementList.size();
+							return getCount(tracked) >= achievementList.size();
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							//TODO: Clans need to support this.
 							int count = 0;
-							if(mob != null)
+							Tattooable other;
+							if((CMProps.isUsingAccountSystem())
+							&&(tracked instanceof MOB)
+							&&(((MOB)tracked).playerStats()!=null))
+								other=((MOB)tracked).playerStats().getAccount();
+							else
+								other=null;
+							for(final String s : achievementList)
 							{
-								Tattooable other;
-								if((CMProps.isUsingAccountSystem())
-								&&(mob.playerStats()!=null))
-									other=mob.playerStats().getAccount();
+								if(tracked.findTattoo(s)!=null)
+									count++;
 								else
-									other=null;
-								for(final String s : achievementList)
-								{
-									if(mob.findTattoo(s)!=null)
-										count++;
-									else
-									if((other!=null)&&(other.findTattoo(s)!=null))
-										count++;
-								}
+								if((other!=null)&&(other.findTattoo(s)!=null))
+									count++;
 							}
 							return count;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							return false;
 						}
@@ -2468,27 +2471,29 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return getCount(mob) >= roomIDs.size();
+							return getCount(tracked) >= roomIDs.size();
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
-							if(mob == null)
-								return 0;
-							int count = 0;
-							for(final String s : roomIDs)
+							if(tracked instanceof MOB)
 							{
-								if(mob.playerStats().hasVisited(CMLib.map().getRoom(s)))
-									count++;
+								int count = 0;
+								for(final String s : roomIDs)
+								{
+									if(((MOB)tracked).playerStats().hasVisited(CMLib.map().getRoom(s)))
+										count++;
+								}
+								return count;
 							}
-							return count;
+							return 0;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							return false;
 						}
@@ -2613,24 +2618,26 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return (num>=0) && (getCount(mob) > num);
+							return (num>=0) && (getCount(tracked) > num);
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
-							if(mob == null)
-								return 0;
-							final int classLevel = mob.charStats().getClassLevel(charClass);
-							if(classLevel < 0)
-								return 0;
-							return classLevel + 1;
+							if(tracked instanceof MOB)
+							{
+								final int classLevel = ((MOB)tracked).charStats().getClassLevel(charClass);
+								if(classLevel < 0)
+									return 0;
+								return classLevel + 1;
+							}
+							return 0;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							if(mob == null)
 								return false;
@@ -2754,19 +2761,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return (num>=0) && (getCount(mob) >= num);
+							return (num>=0) && (getCount(tracked) >= num);
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
 							{
@@ -2879,21 +2886,21 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return (num>=0) && (getCount(mob) >= num);
+							return (num>=0) && (getCount(tracked) >= num);
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
-							if(mob != null)
+							if(tracked instanceof MOB)
 							{
-								if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
+								if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, (MOB)tracked, true)))
 								{
 									int count = 0;
 									final boolean noMask=(itemMask==null);
-									for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
+									for(final Enumeration<Item> i=((MOB)tracked).items();i.hasMoreElements();)
 									{
 										final Item I=i.nextElement();
 										if(noMask || (CMLib.masking().maskCheck(itemMask, I, true)))
@@ -2906,7 +2913,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
 							{
@@ -3033,19 +3040,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return (getCount(mob) >= seconds);
+							return (getCount(tracked) >= seconds);
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
 							{
@@ -3161,19 +3168,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return (num>=0) && (getCount(mob) >= num);
+							return (num>=0) && (getCount(tracked) >= num);
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
@@ -3298,19 +3305,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return (num>=0) && (getCount(mob) >= num);
+							return (num>=0) && (getCount(tracked) >= num);
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
@@ -3435,19 +3442,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return (num>=0) && (getCount(mob) >= num);
+							return (num>=0) && (getCount(tracked) >= num);
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
@@ -3569,19 +3576,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return getCount(mob) >= 1;
+							return getCount(tracked) >= 1;
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
 							{
@@ -3695,19 +3702,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean isAchieved(final MOB mob)
+						public boolean isAchieved(final Tattooable tracked)
 						{
-							return (num>=0) && (getCount(mob) >= num);
+							return (num>=0) && (getCount(tracked) >= num);
 						}
 
 						@Override
-						public int getCount(final MOB mob)
+						public int getCount(final Tattooable tracked)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
@@ -3852,8 +3859,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	{
 		if(mob.findTattoo(A.getTattoo())==null)
 		{
-			final Tracker T=pStats.getAchievementTracker(A, mob);
-			if(T.testBump(mob, bumpNum, parms))
+			final Tracker T=pStats.getAchievementTracker(A, mob, mob);
+			if(T.testBump(mob, mob, bumpNum, parms))
 			{
 				if(T.isAchieved(mob))
 				{
@@ -3869,8 +3876,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		{
 			if(account.findTattoo(A.getTattoo())==null)
 			{
-				final Tracker T=account.getAchievementTracker(A, mob);
-				if(T.testBump(mob, bumpNum, parms))
+				final Tracker T=account.getAchievementTracker(A, mob, mob);
+				if(T.testBump(mob, mob, bumpNum, parms))
 				{
 					if(T.isAchieved(mob))
 					{
@@ -3890,10 +3897,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final Clan C=p.first;
 				if(C.findTattoo(A.getTattoo())==null)
 				{
-					final Tracker T=C.getAchievementTracker(A);
-					if(T.testBump(mob, bumpNum, parms))
+					final Tracker T=C.getAchievementTracker(A, C, mob);
+					if(T.testBump(mob, C, bumpNum, parms))
 					{
-						if(T.isAchieved(mob))
+						if(T.isAchieved(C))
 						{
 							giveAwards(A,C,mob,AchievementLoadFlag.NORMAL);
 						}
@@ -3940,9 +3947,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final List<Achievement> achievements=new ArrayList<Achievement>(1);
 		if(mob.findTattoo(A.getTattoo())==null)
 		{
-			Tracker T=pStats.getAchievementTracker(A, mob);
+			Tracker T=pStats.getAchievementTracker(A, mob, mob);
 			T=T.copyOf();
-			if(T.testBump(mob, bumpNum, parms))
+			if(T.testBump(mob, mob, bumpNum, parms))
 			{
 				if(T.isAchieved(mob))
 				{
@@ -3960,9 +3967,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		{
 			if(account.findTattoo(A.getTattoo())==null)
 			{
-				Tracker T=account.getAchievementTracker(A, mob);
+				Tracker T=account.getAchievementTracker(A, mob, mob);
 				T=T.copyOf();
-				if(T.testBump(mob, bumpNum, parms))
+				if(T.testBump(mob, mob, bumpNum, parms))
 				{
 					if(T.isAchieved(mob))
 					{
@@ -3984,11 +3991,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final Clan C=p.first;
 				if(C.findTattoo(A.getTattoo())==null)
 				{
-					Tracker T=C.getAchievementTracker(A);
+					Tracker T=C.getAchievementTracker(A, C, mob);
 					T=T.copyOf();
-					if(T.testBump(mob, bumpNum, parms))
+					if(T.testBump(mob, C, bumpNum, parms))
 					{
-						if(T.isAchieved(mob))
+						if(T.isAchieved(C))
 						{
 							achievements.add(A);
 						}
@@ -4712,7 +4719,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final MOB M=m.nextElement();
 				if(M.playerStats()!=null)
 				{
-					M.playerStats().rebuildAchievementTracker(M, parmTree.get("TATTOO"));
+					M.playerStats().rebuildAchievementTracker(mob, M, parmTree.get("TATTOO"));
 				}
 			}
 			this.resaveAchievements(parmTree.get("TATTOO"));
@@ -4819,7 +4826,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	{
 		if(mob.findTattoo(A.getTattoo())==null)
 		{
-			final Tracker T=pStats.getAchievementTracker(A, mob);
+			final Tracker T=pStats.getAchievementTracker(A, mob, mob);
 			if(T.isAchieved(mob))
 			{
 				return giveAwards(A, mob, mob,AchievementLoadFlag.NORMAL);
@@ -4834,7 +4841,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		{
 			if(account.findTattoo(A.getTattoo())==null)
 			{
-				final Tracker T=account.getAchievementTracker(A, mob);
+				final Tracker T=account.getAchievementTracker(A, mob, mob);
 				if(T.isAchieved(mob))
 				{
 					return giveAwards(A, account, mob,AchievementLoadFlag.NORMAL);
@@ -4850,8 +4857,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		{
 			if(C.findTattoo(A.getTattoo())==null)
 			{
-				final Tracker T=C.getAchievementTracker(A);
-				if(T.isAchieved(mob))
+				final Tracker T=C.getAchievementTracker(A, C, mob);
+				if(T.isAchieved(C))
 				{
 					return giveAwards(A, C, mob,AchievementLoadFlag.NORMAL);
 				}

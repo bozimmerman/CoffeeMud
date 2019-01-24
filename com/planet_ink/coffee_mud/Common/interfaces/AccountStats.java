@@ -38,7 +38,7 @@ import java.util.*;
  * An interface for a base player account. Shared by PlayerAccount
  * and PlayerStats (since the account system is optional)
  */
-public interface AccountStats extends CMCommon
+public interface AccountStats extends CMCommon, Achievable
 {
 	/**
 	 * Returns the players email address, if available.
@@ -346,39 +346,6 @@ public interface AccountStats extends CMCommon
 	 * @return the pride stat value/count/whatever
 	 */
 	public int getPrideStat(TimeClock.TimePeriod period, PrideStat stat);
-
-	/**
-	 * Returns the tracker for the given achievement, for the given mob, or
-	 * creates it if it does not exist.
-	 * @see AccountStats#rebuildAchievementTracker(MOB, String)
-	 * see #killAchievementTracker(Achievement, MOB)
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement
-	 * @param A the achievement to get the tracker for
-	 * @param mob the mob to create a tracker for
-	 * @return the Tracker object that handles this achievement/mob
-	 */
-	public Tracker getAchievementTracker(Achievement A, MOB mob);
-
-	/**
-	 * Deletes the tracker for the given achievement, for the given mob.
-	 * @see AccountStats#rebuildAchievementTracker(MOB, String)
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement
-	 * @param A the achievement to kill the tracker for
-	 * @param mob the mob to delete a tracker for
-	 */
-	public void killAchievementTracker(Achievement A, MOB mob);
-
-	/**
-	 * If an Achievement is modified or removed, this method will update the
-	 * internal player tracker for that achievement.  It does not delete old
-	 * achievements per se, just their trackers!
-	 * @see AccountStats#getAchievementTracker(com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement, MOB)
-	 * @param mob the mob to modify the tracker for.
-	 * @param achievementTattoo the tattoo/id of the achievement
-	 */
-	public void rebuildAchievementTracker(final MOB mob, String achievementTattoo);
 
 	/**
 	 * Returns an XML representation of all the data in this object, for

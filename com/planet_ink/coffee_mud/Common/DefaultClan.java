@@ -2419,7 +2419,7 @@ public class DefaultClan implements Clan
 	}
 
 	@Override
-	public void killAchievementTracker(final Achievement A)
+	public void killAchievementTracker(final Achievement A, final Tattooable C, final MOB mob)
 	{
 		if(achievementers.containsKey(A.getTattoo()))
 		{
@@ -2428,7 +2428,7 @@ public class DefaultClan implements Clan
 	}
 
 	@Override
-	public Tracker getAchievementTracker(final Achievement A)
+	public Tracker getAchievementTracker(final Achievement A, final Tattooable C, final MOB mob)
 	{
 		final Tracker T;
 		if(achievementers.containsKey(A.getTattoo()))
@@ -2444,13 +2444,13 @@ public class DefaultClan implements Clan
 	}
 
 	@Override
-	public void rebuildAchievementTracker(final String achievementTattoo)
+	public void rebuildAchievementTracker(final Tattooable C, final MOB mob, final String achievementTattoo)
 	{
 		final Achievement A=CMLib.achievements().getAchievement(achievementTattoo);
 		if(A!=null)
 		{
 			if(achievementers.containsKey(A.getTattoo()))
-				achievementers.put(A.getTattoo(), A.getTracker(achievementers.get(A.getTattoo()).getCount(null)));
+				achievementers.put(A.getTattoo(), A.getTracker(achievementers.get(A.getTattoo()).getCount(C)));
 			else
 				achievementers.put(A.getTattoo(), A.getTracker(0));
 		}
