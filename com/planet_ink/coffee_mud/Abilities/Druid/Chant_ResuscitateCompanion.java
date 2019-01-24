@@ -217,6 +217,16 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 				else
 				{
 					final MOB rejuvedMOB=((DeadBody)body).getSavedMOB();
+					if(rejuvedMOB == null)
+					{
+						if((mob!=null)
+						&&(mob.location()!=null))
+						{
+							mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,L("@x1 twitch(es) and fade(s) away.",body.name(mob)));
+							Log.errOut(ID(),"Failed to rejuv mob!");
+						}
+						return true;
+					}
 					for(final Iterator<WeakReference<DeadBody>> m=companionMobs.iterator();m.hasNext();)
 					{
 						final WeakReference<DeadBody> wM=m.next();
