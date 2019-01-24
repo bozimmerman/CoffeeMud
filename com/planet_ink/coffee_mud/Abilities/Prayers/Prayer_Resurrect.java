@@ -252,6 +252,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 					{
 						rejuvedMOB.recoverCharStats();
 						rejuvedMOB.recoverMaxState();
+						((DeadBody)body).setSavedMOB(null, true); // revived, so don't destroy when body goes
 						body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
 						body.destroy();
 						rejuvedMOB.bringToLife(R,true);
