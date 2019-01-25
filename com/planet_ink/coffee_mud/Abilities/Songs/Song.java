@@ -268,7 +268,6 @@ public class Song extends StdAbility
 				if(dir>=0)
 					CMLib.tracking().walk(mob,dir,false,false);
 			}
-			else
 			if((mob.location().isInhabitant(invoker()))
 			&&(CMLib.flags().canBeSeenBy(invoker(),mob)))
 				CMLib.combat().postAttack(mob,invoker(),mob.fetchWieldedItem());
