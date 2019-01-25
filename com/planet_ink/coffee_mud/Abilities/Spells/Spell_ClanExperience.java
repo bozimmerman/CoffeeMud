@@ -85,11 +85,6 @@ public class Spell_ClanExperience extends Spell
 		return true;
 	}
 
-	protected volatile int lastMudDate = 0;
-	protected volatile int donatedToday = 0;
-
-	protected static final int MAX_DONATION_PER_MUDDAY = 10000;
-
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
@@ -153,18 +148,6 @@ public class Spell_ClanExperience extends Spell
 			return false;
 		}
 
-		TimeClock clock=CMLib.time().localClock(mob.getStartRoom());
-		if(clock == null)
-			clock=CMLib.time().globalClock();
-		if(this.lastMudDate < clock.getYear()+clock.getMonth()+clock.getDayOfMonth())
-			this.donatedToday=0;
-
-		if(amt + this.donatedToday > Spell_ClanExperience.MAX_DONATION_PER_MUDDAY)
-		{
-			mob.tell(L("You can't donate any more today."));
-			return false;
-		}
-
 		if(C==null)
 		{
 			final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
@@ -193,8 +176,6 @@ public class Spell_ClanExperience extends Spell
 					CMLib.leveler().postExperience(mob, null, null, -amt, false);
 					C.adjExp(mob, msg.value());
 					C.update();
-					this.donatedToday += msg.value();
-					this.lastMudDate =clock.getYear()+clock.getMonth()+clock.getDayOfMonth();
 				}
 			}
 		}
