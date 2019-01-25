@@ -120,7 +120,9 @@ public class Chant_AstralProjection extends Chant
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
-		&&((msg.sourceMinor()==CMMsg.TYP_DEATH)||(msg.sourceMinor()==CMMsg.TYP_QUIT)))
+		&&((msg.sourceMinor()==CMMsg.TYP_DEATH)
+			||(msg.sourceMinor()==CMMsg.TYP_QUIT)
+			||(msg.sourceMinor()==CMMsg.TYP_DISPOSSESS)))
 			unInvoke();
 		return super.okMessage(myHost,msg);
 	}
