@@ -147,6 +147,12 @@ public class Spell_ClanExperience extends Spell
 			return false;
 		}
 
+		if(amt >= mob.getExpNeededLevel())
+		{
+			mob.tell(L("You haven't gained enough experience this level to donate that much."));
+			return false;
+		}
+
 		TimeClock clock=CMLib.time().localClock(mob.getStartRoom());
 		if(clock == null)
 			clock=CMLib.time().globalClock();
