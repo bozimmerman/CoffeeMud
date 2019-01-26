@@ -490,7 +490,7 @@ public class Age extends StdAbility
 				}
 
 				final Room R=CMLib.map().roomLocation(affected);
-				// check if player elligible, 
+				// check if player elligible,
 				// and if not, grow up to be nothing but a mob
 				if((R==null)
 				||(affected.Name().indexOf(' ')>0)
@@ -522,7 +522,7 @@ public class Age extends StdAbility
 					babe.text();
 					return;
 				}
-				
+
 				MOB liege=null;
 				if(babe.getLiegeID().length()>0)
 					liege=CMLib.players().getLoadPlayer(babe.getLiegeID());
@@ -574,7 +574,7 @@ public class Age extends StdAbility
 							newMan.addAbility((Ability)L.copyOf());
 					}
 					theme=M.playerStats().getTheme();
-					
+
 					final int legacyLevel=M.playerStats().getLegacyLevel(highestBaseClass);
 					if(legacyLevel>highestLegacyLevel)
 						highestLegacyLevel=legacyLevel;
@@ -598,7 +598,7 @@ public class Age extends StdAbility
 				}
 				newMan.setDescription(babe.description());
 				newMan.setDisplayText(babe.displayText());
-				newMan.setExperience(babe.getExperience());
+				newMan.setExperience(babe.getExperience()/10);
 				newMan.setFollowing(null);
 				newMan.setLiegeID(babe.getLiegeID());
 				newMan.setLocation(babe.location());
@@ -681,7 +681,7 @@ public class Age extends StdAbility
 					newMan.resetToMaxState();
 				}
 				//CMLib.achievements().loadAccountAchievements(newMan,AchievementLoadFlag.CHARCR_PRELOAD);
-				
+
 				database.DBCreateCharacter(newMan);
 				players.addPlayer(newMan);
 
