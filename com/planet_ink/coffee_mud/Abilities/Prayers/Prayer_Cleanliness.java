@@ -80,7 +80,7 @@ public class Prayer_Cleanliness extends Prayer
 		final Physical target=super.getAnyTarget(mob, commands, givenTarget, Wearable.FILTER_ANY);
 		if(target==null)
 			return false;
-		
+
 		if(target instanceof Room)
 		{
 		}
@@ -165,6 +165,18 @@ public class Prayer_Cleanliness extends Prayer
 				else
 				if(target instanceof MOB)
 				{
+					Ability A=target.fetchEffect("Soiled");
+					if(A!=null)
+					{
+						A.unInvoke();
+						target.delEffect(A);
+					}
+					A=target.fetchEffect("Dusty");
+					if(A!=null)
+					{
+						A.unInvoke();
+						target.delEffect(A);
+					}
 					final MOB targetM=(MOB)target;
 					if((targetM.playerStats()!=null)&&(targetM.playerStats().getHygiene()>0))
 						targetM.playerStats().setHygiene(0);
