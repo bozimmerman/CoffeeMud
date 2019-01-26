@@ -101,7 +101,7 @@ public class Disease_SeaSickness extends Disease
 	@Override
 	protected String DISEASE_START()
 	{
-		return L("^G<S-NAME> suffers from sea sickness.^?");
+		return L("^G<S-NAME> suffer(s) from sea sickness.^?");
 	}
 
 	@Override
