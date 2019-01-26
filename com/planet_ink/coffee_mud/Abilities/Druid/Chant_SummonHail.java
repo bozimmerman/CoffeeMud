@@ -146,8 +146,8 @@ public class Chant_SummonHail extends Chant
 						if((I.container()==null)
 						&&(I.amWearingAt(Wearable.WORN_HEAD))
 						&&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-							||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-							||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)))
+							||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
+							||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK)))
 							break;
 						I=null;
 					}
