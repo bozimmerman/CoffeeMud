@@ -1551,7 +1551,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final String areaID=CMParms.getParmStr(parms, "AREA", "").toUpperCase().trim();
 					if(areaID.length()==0)
 						return "Error: Missing AREA parameter: "+areaID+"!";
-					if((CMLib.map().getArea(areaID)==null)&&(!areaID.equals("WORLD")))
+					if((CMLib.map().getArea(areaID)==null)
+					&&(!areaID.equals("WORLD"))
+					&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 						return "Error: Unknown AREA: "+areaID+"!";
 					this.areaID=areaID;
 					return "";
