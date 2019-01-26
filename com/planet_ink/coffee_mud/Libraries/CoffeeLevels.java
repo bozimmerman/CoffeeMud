@@ -358,18 +358,18 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.tell(L("^HYou are now a level @x1 @x2^N.\n\r",""+mob.charStats().getClassLevel(mob.charStats().getCurrentClass()),mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())));
 		curClass.unLevel(mob);
 		Ability A=null;
-		final Vector<Ability> lose=new Vector<Ability>();
+		final List<Ability> lose=new ArrayList<Ability>();
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			A=mob.fetchAbility(a);
 			if((CMLib.ableMapper().getQualifyingLevel(curClass.ID(),false,A.ID())==oldClassLevel)
 			&&(CMLib.ableMapper().getDefaultGain(curClass.ID(),false,A.ID()))
 			&&(CMLib.ableMapper().classOnly(mob,curClass.ID(),A.ID())))
-				lose.addElement(A);
+				lose.add(A);
 		}
 		for(int l=0;l<lose.size();l++)
 		{
-			A=lose.elementAt(l);
+			A=lose.get(l);
 			mob.delAbility(A);
 			mob.tell(L("^HYou have forgotten @x1.^N.\n\r",A.name()));
 			A=mob.fetchEffect(A.ID());
