@@ -514,7 +514,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 												 int reach,
 												 final long worndata)
 	{
-		final Hashtable<String,String> vals=new Hashtable<String,String>();
+		final Hashtable<String,String> vals=new Hashtable<String,String>(); // return obj
 		final int materialvalue=RawMaterial.CODES.VALUE(material);
 		final int[] castMul=new int[1];
 		final Ability[] RET=getTimsAdjResCast(I,castMul);

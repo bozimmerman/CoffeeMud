@@ -90,7 +90,7 @@ public class Deviations extends StdCommand
 		return str.toString();
 	}
 
-	public boolean alreadyDone(final Environmental E, final Vector<Environmental> itemsDone)
+	public boolean alreadyDone(final Environmental E, final List<Environmental> itemsDone)
 	{
 		for(int i=0;i<itemsDone.size();i++)
 		{
@@ -100,7 +100,7 @@ public class Deviations extends StdCommand
 		return false;
 	}
 
-	private void fillCheckDeviations(final Room R, final String type, final Vector<Environmental> check)
+	private void fillCheckDeviations(final Room R, final String type, final List<Environmental> check)
 	{
 		if(type.equalsIgnoreCase("mobs")||type.equalsIgnoreCase("both"))
 		{
@@ -175,7 +175,7 @@ public class Deviations extends StdCommand
 
 	public StringBuffer deviations(final MOB mob, final String rest)
 	{
-		final Vector<String> V=CMParms.parse(rest);
+		final List<String> V=CMParms.parse(rest);
 		if((V.size()==0)
 		||((!V.get(0).equalsIgnoreCase("mobs"))
 		   &&(!V.get(0).equalsIgnoreCase("items"))
@@ -196,7 +196,7 @@ public class Deviations extends StdCommand
 		}
 		final String where=V.get(1).toLowerCase();
 		final Environmental E=mobR.fetchFromMOBRoomFavorsItems(mob,null,where,Wearable.FILTER_ANY);
-		final Vector<Environmental> check=new Vector<Environmental>();
+		final List<Environmental> check=new ArrayList<Environmental>();
 		if(where.equalsIgnoreCase("room"))
 			fillCheckDeviations(mobR,type,check);
 		else
@@ -265,7 +265,7 @@ public class Deviations extends StdCommand
 												I.basePhyStats().damage(),
 												vals,"DAMAGE"),5)+" ");
 				itemResults.append(CMStrings.padRight(""+getDeviation(
-												I.basePhyStats().damage(),
+												I.basePhyStats().armor(),
 												vals,"ARMOR"),5)+" ");
 				itemResults.append(CMStrings.padRight(""+getDeviation(
 												I.baseGoldValue(),

@@ -123,14 +123,21 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
-		if(phyStats().damage()!=0)
+		final PhyStats phyStats = phyStats();
+		if(phyStats.damage()!=0)
 		{
-			final int ability=super.wornLogicalAnd ? (phyStats().ability()*CMath.numberOfSetBits(super.properWornBitmap)) : phyStats().ability();
-			phyStats().setDamage(phyStats().damage()+(ability*2));
-			phyStats().setAttackAdjustment(phyStats().attackAdjustment()+(ability*10));
+			if(phyStats.ability() != 0)
+			{
+				final int ability=super.wornLogicalAnd ? (phyStats.ability()*CMath.numberOfSetBits(super.properWornBitmap)) : phyStats.ability();
+				if(ability != 0)
+				{
+					phyStats.setDamage(phyStats.damage()+(ability*2));
+					phyStats.setAttackAdjustment(phyStats.attackAdjustment()+(ability*10));
+				}
+			}
 		}
 		if((subjectToWearAndTear())&&(usesRemaining()<100))
-			phyStats().setDamage(((int)Math.round(CMath.mul(phyStats().damage(),CMath.div(usesRemaining(),100)))));
+			phyStats.setDamage(((int)Math.round(CMath.mul(phyStats.damage(),CMath.div(usesRemaining(),100)))));
 	}
 
 	@Override
