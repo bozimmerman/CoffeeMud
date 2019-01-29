@@ -65,6 +65,9 @@ public class Experience extends StdCommand
 					msg.append(L("You need ^!@x1^? experience points to advance to the next level.\n\r",""+(mob.getExpNeededLevel())));
 			}
 		}
+		else
+		if(msg.length()<5)
+			msg.append(L("This command is disabled.\n\r"));
 
 		return msg;
 	}
