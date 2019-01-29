@@ -154,7 +154,7 @@ public class Chant_SummonHail extends Chant
 					if((I!=null)&&(I.amWearingAt(Wearable.WORN_HEAD)))
 						target.location().show(target,I,null,CMMsg.MSG_OK_ACTION,L("Hailstones bounce harmlessly off <T-NAME> being worn by <S-NAME>."));
 					else
-						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,L("The hailstones <DAMAGE> <T-NAME>!"));
+						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BASHING,L("The storm of hailstones <DAMAGE> <T-NAME>!"));
 				}
 				final Climate C=mob.location().getArea().getClimateObj();
 				final Climate oldC=(Climate)C.copyOf();
