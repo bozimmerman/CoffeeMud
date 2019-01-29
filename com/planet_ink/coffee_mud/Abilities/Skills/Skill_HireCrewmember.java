@@ -253,7 +253,8 @@ public class Skill_HireCrewmember extends StdSkill
 			}
 		}
 		super.unInvoke();
-		affected.destroy();
+		if(affected != null)
+			affected.destroy();
 	}
 
 	@Override
