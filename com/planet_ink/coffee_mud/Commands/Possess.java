@@ -203,21 +203,25 @@ public class Possess extends StdCommand
 
 	protected boolean possess(final MOB mob, final MOB target, final boolean quiet)
 	{
-		final CMMsg msg=CMClass.getMsg(mob,target,null, CMMsg.MSG_POSSESS, quiet?null:L("<S-NAME> get(s) a far away look, then seem(s) to fall limp."));
-		final Room room=mob.location();
-		if((room==null)||(room.okMessage(mob, msg)))
+		final Session s=mob.session();
+		if(s != null)
 		{
-			if(room!=null)
-				room.send(mob, msg);
-			final Session s=mob.session();
-			s.setMob(target);
-			target.setSession(s);
-			target.setSoulMate(mob);
-			mob.setSession(null);
-			CMLib.commands().postLook(target,true);
-			if(!quiet)
-				target.tell(L("^HYour spirit has changed bodies@x1, use QUIT to return to yours.",(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS)?" and SECURITY mode is ON":"")));
-			return true;
+			final CMMsg msg=CMClass.getMsg(mob,target,null, CMMsg.MSG_POSSESS, quiet?null:L("<S-NAME> get(s) a far away look, then seem(s) to fall limp."));
+			final Room room=mob.location();
+			if((room==null)
+			||(room.okMessage(mob, msg)))
+			{
+				if(room!=null)
+					room.send(mob, msg);
+				s.setMob(target);
+				target.setSession(s);
+				target.setSoulMate(mob);
+				mob.setSession(null);
+				CMLib.commands().postLook(target,true);
+				if(!quiet)
+					target.tell(L("^HYour spirit has changed bodies@x1, use QUIT to return to yours.",(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS)?" and SECURITY mode is ON":"")));
+				return true;
+			}
 		}
 		return false;
 	}
