@@ -555,161 +555,171 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 		&&(msg.value()>0)
 		&&(msg.target() instanceof MOB)
 		&&(msg.targetMessage()!=null)
-		&&(msg.targetMessage().indexOf("<DAMAGE>")>=0)
-		&&(super.miscText.startsWith(msg.source().Name()+"/") // special directed damage stuff
-		   ||((CMProps.getIntVar(CMProps.Int.INJPCTHP)>=(int)Math.round(CMath.div(((MOB)msg.target()).curState().getHitPoints(),((MOB)msg.target()).maxState().getHitPoints())*100.0))
-			&&(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.Int.INJPCTCHANCE)))))
+		&&(msg.targetMessage().indexOf("<DAMAGE>")>=0))
 		{
-			final MOB mob=(MOB)msg.target();
-			Amputation ampuA=(Amputation)mob.fetchEffect("Amputation");
-			if(ampuA==null)
+			final String superTextReadOnly;
+			synchronized(this)
 			{
-				ampuA=new Amputation();
-				ampuA.setAffectedOne(mob);
+				superTextReadOnly = super.miscText;
 			}
-			final List<String> remains=ampuA.unaffectedLimbSet();
-			if(mob.charStats().getBodyPart(Race.BODY_HEAD)>0)
-				remains.add("head");
-			if(mob.charStats().getBodyPart(Race.BODY_TORSO)>0)
-				remains.add("torso");
-			if(remains.size()>0)
+			final String sourceName = msg.source().Name();
+			if(superTextReadOnly.startsWith(sourceName+"/") // special directed damage stuff
+			   ||((CMProps.getIntVar(CMProps.Int.INJPCTHP)>=(int)Math.round(CMath.div(((MOB)msg.target()).curState().getHitPoints(),((MOB)msg.target()).maxState().getHitPoints())*100.0))
+				&&(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.Int.INJPCTCHANCE))))
 			{
-				if(super.miscText.startsWith(msg.source().Name()+"/"))
+				final MOB mob=(MOB)msg.target();
+				Amputation ampuA=(Amputation)mob.fetchEffect("Amputation");
+				if(ampuA==null)
 				{
-					final String remainLoc=super.miscText.substring(super.miscText.indexOf('/')+1).toLowerCase();
-					if(remains.contains(remainLoc))
-					{
-						remains.clear();
-						remains.add(remainLoc);
-					}
-					else
-						return super.okMessage(host, msg);
+					ampuA=new Amputation();
+					ampuA.setAffectedOne(mob);
 				}
-				final int[] chances=new int[remains.size()];
-				int total=0;
-				for(int x=0;x<remains.size();x++)
+				final List<String> remains=ampuA.unaffectedLimbSet();
+				if(mob.charStats().getBodyPart(Race.BODY_HEAD)>0)
+					remains.add("head");
+				if(mob.charStats().getBodyPart(Race.BODY_TORSO)>0)
+					remains.add("torso");
+				if(remains.size()>0)
 				{
-					final String remain=remains.get(x); // is lowercase
-					if(Race.BODYPARTHASH_RL_LOWER.containsKey(remain))
+					if(superTextReadOnly.startsWith(sourceName+"/"))
 					{
-						final int bodyPart=Race.BODYPARTHASH_RL_LOWER.get(remain).intValue();
-						final int amount=INJURYCHANCE[bodyPart];
-						chances[x]+=amount;
-						total+=amount;
-					}
-				}
-				if(total>0)
-				{
-					int randomRoll=CMLib.dice().roll(1,total,-1);
-					int chosenOne=-1;
-					if((lastMsg!=null)
-					&&(lastLoc!=null)
-					&&((msg==lastMsg)||((lastMsg.trailerMsgs()!=null)&&(lastMsg.trailerMsgs().contains(msg))))
-					&&(remains.contains(lastLoc)))
-						chosenOne=remains.indexOf(lastLoc);
-					else
-					if((super.miscText.startsWith(msg.source().Name()+"/"))
-					&&(remains.contains(super.miscText.substring(msg.source().Name().length()+1))))
-					{
-						chosenOne=remains.indexOf(super.miscText.substring(msg.source().Name().length()+1));
-						super.miscText="";
-					}
-					else
-					for(int i=0;i<chances.length;i++)
-					{
-						if(chances[i]>0)
+						final String remainLoc=superTextReadOnly.substring(sourceName.length()+2).toLowerCase();
+						if(remains.contains(remainLoc))
 						{
-							chosenOne=i;
-							randomRoll-=chances[i];
-							if(randomRoll<=0)
-								break;
+							remains.clear();
+							remains.add(remainLoc);
+						}
+						else
+							return super.okMessage(host, msg);
+					}
+					final int[] chances=new int[remains.size()];
+					int total=0;
+					for(int x=0;x<remains.size();x++)
+					{
+						final String remain=remains.get(x); // is lowercase
+						if(Race.BODYPARTHASH_RL_LOWER.containsKey(remain))
+						{
+							final int bodyPart=Race.BODYPARTHASH_RL_LOWER.get(remain).intValue();
+							final int amount=INJURYCHANCE[bodyPart];
+							chances[x]+=amount;
+							total+=amount;
 						}
 					}
-					final int BodyPct=(int)Math.round(CMath.div(msg.value(),mob.maxState().getHitPoints())*100.0);
-					int LimbPct=BodyPct*CMProps.getIntVar(CMProps.Int.INJMULTIPLIER);
-					if(LimbPct<1)
-						LimbPct=1;
-					final Integer chosenBodyLoc=Race.BODYPARTHASH_RL_LOWER.get(remains.get(chosenOne));
-					if(chosenBodyLoc!=null)
+					if(total>0)
 					{
-						lastMsg=msg;
-						lastLoc=remains.get(chosenOne);
-						PairVector<String,Integer> bodyVec=injuries[chosenBodyLoc.intValue()];
-						if(bodyVec==null)
+						int randomRoll=CMLib.dice().roll(1,total,-1);
+						int chosenOne=-1;
+						if((lastMsg!=null)
+						&&(lastLoc!=null)
+						&&((msg==lastMsg)||((lastMsg.trailerMsgs()!=null)&&(lastMsg.trailerMsgs().contains(msg))))
+						&&(remains.contains(lastLoc)))
+							chosenOne=remains.indexOf(lastLoc);
+						else
+						if((superTextReadOnly.startsWith(sourceName+"/"))
+						&&(remains.contains(superTextReadOnly.substring(sourceName.length()+1))))
 						{
-							injuries[chosenBodyLoc.intValue()]=new PairVector<String,Integer>();
-							bodyVec=injuries[chosenBodyLoc.intValue()];
+							chosenOne=remains.indexOf(superTextReadOnly.substring(sourceName.length()+1));
+							super.miscText="";
 						}
-						int whichInjury=-1;
-						for(int i=0;i<bodyVec.size();i++)
+						else
 						{
-							final Pair<String,Integer> O=bodyVec.get(i);
-							if(O.first.equalsIgnoreCase(remains.get(chosenOne)))
+							for(int i=0;i<chances.length;i++)
 							{
-								whichInjury=i;
-								break;
-							}
-						}
-						final String newTarg=fixMessageString(msg.targetMessage(),remains.get(chosenOne).toLowerCase());
-						if(!newTarg.equalsIgnoreCase(msg.targetMessage()))
-						{
-							msg.modify(msg.source(),msg.target(),msg.tool(),
-									msg.sourceCode(),fixMessageString(msg.sourceMessage(),remains.get(chosenOne).toLowerCase()),
-									msg.targetCode(),newTarg,
-									msg.othersCode(),fixMessageString(msg.othersMessage(),remains.get(chosenOne).toLowerCase()));
-							Pair<String,Integer> O=null;
-							if(whichInjury<0)
-							{
-								O=new Pair<String,Integer>(
-									remains.get(chosenOne).toLowerCase(),
-									Integer.valueOf(0));
-								bodyVec.addElement(O);
-								whichInjury=bodyVec.size()-1;
-							}
-							O=bodyVec.get(whichInjury);
-							O.second=Integer.valueOf(O.second.intValue()+LimbPct);
-							if(O.second.intValue()>100)
-								O.second=Integer.valueOf(100);
-							if((O.second.intValue()>=100)
-							||((BodyPct>5)
-								&&((msg.tool() instanceof Electronics)||(BodyPct>=CMProps.getIntVar(CMProps.Int.INJPCTHPAMP)))))
-							{
-								boolean proceed=(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.Int.INJPCTCHANCEAMP))
-												&&(mob.phyStats().level()>=CMProps.getIntVar(CMProps.Int.INJMINLEVEL));
-								if(msg.tool() instanceof Weapon)
+								if(chances[i]>0)
 								{
-									switch(((Weapon)msg.tool()).weaponDamageType())
-									{
-									case Weapon.TYPE_FROSTING:
-									case Weapon.TYPE_GASSING:
-										proceed=false;
+									chosenOne=i;
+									randomRoll-=chances[i];
+									if(randomRoll<=0)
 										break;
-									default:
-										break;
-									}
 								}
-								if(Amputation.validamputees[chosenBodyLoc.intValue()]&&proceed)
+							}
+						}
+						final int BodyPct=(int)Math.round(CMath.div(msg.value(),mob.maxState().getHitPoints())*100.0);
+						int LimbPct=BodyPct*CMProps.getIntVar(CMProps.Int.INJMULTIPLIER);
+						if(LimbPct<1)
+							LimbPct=1;
+						final Integer chosenBodyLoc=Race.BODYPARTHASH_RL_LOWER.get(remains.get(chosenOne));
+						if(chosenBodyLoc!=null)
+						{
+							lastMsg=msg;
+							lastLoc=remains.get(chosenOne);
+							PairVector<String,Integer> bodyVec=injuries[chosenBodyLoc.intValue()];
+							if(bodyVec==null)
+							{
+								injuries[chosenBodyLoc.intValue()]=new PairVector<String,Integer>();
+								bodyVec=injuries[chosenBodyLoc.intValue()];
+							}
+							int whichInjury=-1;
+							for(int i=0;i<bodyVec.size();i++)
+							{
+								final Pair<String,Integer> O=bodyVec.get(i);
+								if(O.first.equalsIgnoreCase(remains.get(chosenOne)))
 								{
-									bodyVec.removeElement(O);
-									if(bodyVec.size()==0)
-										injuries[chosenBodyLoc.intValue()]=null;
-									final Amputation amputationA=ampuA;
-									final String bodyPartName=O.first.toLowerCase();
-									msg.addTrailerRunnable(new Runnable()
+									whichInjury=i;
+									break;
+								}
+							}
+							final String newTarg=fixMessageString(msg.targetMessage(),remains.get(chosenOne).toLowerCase());
+							if(!newTarg.equalsIgnoreCase(msg.targetMessage()))
+							{
+								msg.modify(msg.source(),msg.target(),msg.tool(),
+										msg.sourceCode(),fixMessageString(msg.sourceMessage(),remains.get(chosenOne).toLowerCase()),
+										msg.targetCode(),newTarg,
+										msg.othersCode(),fixMessageString(msg.othersMessage(),remains.get(chosenOne).toLowerCase()));
+								Pair<String,Integer> O=null;
+								if(whichInjury<0)
+								{
+									O=new Pair<String,Integer>(
+										remains.get(chosenOne).toLowerCase(),
+										Integer.valueOf(0));
+									bodyVec.addElement(O);
+									whichInjury=bodyVec.size()-1;
+								}
+								O=bodyVec.get(whichInjury);
+								O.second=Integer.valueOf(O.second.intValue()+LimbPct);
+								if(O.second.intValue()>100)
+									O.second=Integer.valueOf(100);
+								if((O.second.intValue()>=100)
+								||((BodyPct>5)
+									&&((msg.tool() instanceof Electronics)||(BodyPct>=CMProps.getIntVar(CMProps.Int.INJPCTHPAMP)))))
+								{
+									boolean proceed=(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.Int.INJPCTCHANCEAMP))
+													&&(mob.phyStats().level()>=CMProps.getIntVar(CMProps.Int.INJMINLEVEL));
+									if(msg.tool() instanceof Weapon)
 									{
-										@Override
-										public void run()
+										switch(((Weapon)msg.tool()).weaponDamageType())
 										{
-											if(amputationA.damageLimb(bodyPartName)!=null)
+										case Weapon.TYPE_FROSTING:
+										case Weapon.TYPE_GASSING:
+											proceed=false;
+											break;
+										default:
+											break;
+										}
+									}
+									if(Amputation.validamputees[chosenBodyLoc.intValue()]&&proceed)
+									{
+										bodyVec.removeElement(O);
+										if(bodyVec.size()==0)
+											injuries[chosenBodyLoc.intValue()]=null;
+										final Amputation amputationA=ampuA;
+										final String bodyPartName=O.first.toLowerCase();
+										msg.addTrailerRunnable(new Runnable()
+										{
+											@Override
+											public void run()
 											{
-												if(mob.fetchEffect(amputationA.ID())==null)
+												if(amputationA.damageLimb(bodyPartName)!=null)
 												{
-													amputationA.makeLongLasting();
-													mob.addEffect(amputationA);
+													if(mob.fetchEffect(amputationA.ID())==null)
+													{
+														amputationA.makeLongLasting();
+														mob.addEffect(amputationA);
+													}
 												}
 											}
-										}
-									});
+										});
+									}
 								}
 							}
 						}
