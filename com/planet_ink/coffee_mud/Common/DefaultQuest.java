@@ -440,20 +440,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return CMLib.map().rooms();
 	}
 
-	private final Iterable<Room> buildAppropriateRoomIterable(final QuestState q, final Iterable useThese)
+	private final Enumeration<Room> getAppropriateRoomSet(final QuestState q, final Iterable useThese)
 	{
-		final Enumeration<Room> e;
-		if(useThese!=null)
-			e=new IteratorEnumeration<Room>(useThese.iterator());
-		else
-		if(q.area!=null)
-			e=q.area.getMetroMap();
-		else
-			e=CMLib.map().rooms();
-		final LinkedList<Room> list=new LinkedList<Room>();
-		for(;e.hasMoreElements();)
-			list.add(e.nextElement());
-		return list;
+		if(useThese == null)
+			return getAppropriateRoomSet(q);
+		return new IteratorEnumeration<Room>(useThese.iterator());
 	}
 
 	private List sortSelect(final Environmental E,
@@ -796,9 +787,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								areas.addElement(CMLib.map().getRandomArea());
 							if(oldSize==areas.size())
 							{
-								for (final Enumeration e = CMLib.map().areas(); e.hasMoreElements(); )
+								for (final Enumeration<Area> e = CMLib.map().areas(); e.hasMoreElements(); )
 								{
-									final Area A2 = (Area) e.nextElement();
+									final Area A2 = e.nextElement();
 									if (A2.Name().equalsIgnoreCase(areaName))
 									{
 										areas.addElement(A2);
@@ -808,13 +799,45 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							}
 							if(oldSize==areas.size())
 							{
-								for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+								for(final Enumeration<BoardableShip> e=CMLib.map().ships();e.hasMoreElements();)
 								{
-									final Area A2=(Area)e.nextElement();
+									final BoardableShip ship=e.nextElement();
+									final Area A2=(ship != null) ? ship.getShipArea() : null;
+									if(A2 != null)
+									{
+										if (A2.Name().equalsIgnoreCase(areaName))
+										{
+											areas.addElement(A2);
+											break;
+										}
+									}
+								}
+							}
+							if(oldSize==areas.size())
+							{
+								for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+								{
+									final Area A2=e.nextElement();
 									if(CMLib.english().containsString(A2.Name(),areaName))
 									{
 										areas.addElement(A2);
 										break;
+									}
+								}
+							}
+							if(oldSize==areas.size())
+							{
+								for(final Enumeration<BoardableShip> e=CMLib.map().ships();e.hasMoreElements();)
+								{
+									final BoardableShip ship=e.nextElement();
+									final Area A2=(ship != null) ? ship.getShipArea() : null;
+									if(A2 != null)
+									{
+										if(CMLib.english().containsString(A2.Name(),areaName))
+										{
+											areas.addElement(A2);
+											break;
+										}
 									}
 								}
 							}
@@ -858,7 +881,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								}
 								else
 								{
-									final Area A2=CMLib.map().findArea(areaName);
+									Area A2=CMLib.map().findArea(areaName);
+									if(A2 == null)
+									{
+										final BoardableShip ship=CMLib.map().findShip(areaName, true);
+										if(ship != null)
+											A2=ship.getShipArea();
+									}
 									if((A2!=null)&&(!areas.contains(A2)))
 										areas.add(A2);
 								}
@@ -1356,18 +1385,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 							useThese=CMLib.tracking().getRadiantRooms(q.room,flags,range);
 						}
-						final Iterable<Room> list=buildAppropriateRoomIterable(q,useThese);
 						for(int n=0;n<names.size();n++)
 						{
 							final String localeName=names.elementAt(n).toUpperCase();
 							try
 							{
-								final Iterator<Room> e=list.iterator();
 								final boolean addAll=(localeName.equalsIgnoreCase("any")
 												||localeName.equalsIgnoreCase("all"));
-								for(;e.hasNext();)
+								for(final Enumeration<Room> r=getAppropriateRoomSet(q, useThese);r.hasMoreElements();)
 								{
-									final Room R2=e.next();
+									final Room R2=r.nextElement();
 									if(addAll||CMClass.classID(R2).toUpperCase().indexOf(localeName)>=0)
 										choices.add(R2);
 									else
@@ -1490,18 +1517,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 							useThese=CMLib.tracking().getRadiantRooms(q.room,flags,range);
 						}
-						final Iterable<Room> list=buildAppropriateRoomIterable(q,useThese);
 						for(int n=0;n<names.size();n++)
 						{
 							final String localeName=names.elementAt(n).toUpperCase();
 							try
 							{
-								final Iterator<Room> e=list.iterator();
 								final boolean addAll=localeName.equalsIgnoreCase("any")
 											 ||localeName.equalsIgnoreCase("all");
-								for(;e.hasNext();)
+								for(final Enumeration<Room> r=getAppropriateRoomSet(q, useThese);r.hasMoreElements();)
 								{
-									final Room R2=e.next();
+									final Room R2=r.nextElement();
 									if(R2==null)
 										continue;
 									final String display=R2.displayText().toUpperCase();
