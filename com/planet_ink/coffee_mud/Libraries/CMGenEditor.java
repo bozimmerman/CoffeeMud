@@ -10411,6 +10411,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			int showNumber=0;
 			R=genRoomType(mob,R,++showNumber,showFlag);
 			genDisplayText(mob,R,++showNumber,showFlag);
+			while(R.displayText().length()>253)
+			{
+				R.setDisplayText(R.displayText().substring(0, 253));
+				mob.tell(L("253 character limit.  Please confirm:"));
+				genDisplayText(mob,R,showNumber,showFlag);
+			}
 			genDescription(mob,R,++showNumber,showFlag);
 			if(R instanceof GridZones)
 			{

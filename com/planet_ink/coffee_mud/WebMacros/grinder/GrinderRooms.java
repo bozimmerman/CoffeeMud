@@ -112,6 +112,8 @@ public class GrinderRooms
 			final String name=httpReq.getUrlParameter("NAME");
 			if((name==null)||(name.length()==0))
 				return "Please enter a name for this room.";
+			if(name.length()>250)
+				return "The name you entered is too long.";
 			R.setDisplayText(name);
 
 			// description

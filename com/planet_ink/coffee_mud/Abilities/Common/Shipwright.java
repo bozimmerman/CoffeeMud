@@ -530,6 +530,11 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				commonTell(mob,L("A title must be specified."));
 				return false;
 			}
+			if(title.length()>250)
+			{
+				commonTell(mob,L("That title is too long."));
+				return false;
+			}
 			final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 			final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
 			for (final Room room2 : checkSet)
