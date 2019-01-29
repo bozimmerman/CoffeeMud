@@ -800,7 +800,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			&&(R!=null)
 			//&&(msg.othersMessage()!=null) // ant train fix. Justify it next time.
 			//&&(msg.othersMessage().length()>0)
-			&&(!shopkeeperMobPresent(R))
+			&&((msg.tool()==null)||(CMLib.coffeeShops().getShopKeeper(msg.tool()))==null) // getting from a shopkeeper is not stealing...
 			&&(!doesHavePriviledgesHere(msg.source(),R)))
 			{
 				if((!canAttackThisProperty(msg.source(), record))

@@ -1228,13 +1228,18 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 							   final ShopKeeper shop,
 							   final Environmental product)
 	{
-		Environmental coreSoldItem=product;
 		final Environmental rawSoldItem=product;
-		int number=1;
-		if(coreSoldItem instanceof PackagedItems)
+		final Environmental coreSoldItem;
+		final int number;
+		if(product instanceof PackagedItems)
 		{
 			coreSoldItem=((PackagedItems)rawSoldItem).peekFirstItem();
 			number=((PackagedItems)rawSoldItem).numberOfItemsInPackage();
+		}
+		else
+		{
+			coreSoldItem = product;
+			number=1;
 		}
 		if((coreSoldItem!=null)&&(shop.doISellThis(coreSoldItem)))
 		{
@@ -1256,7 +1261,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				for(int v=0;v<V.size();v++)
 					V.get(v).removeFromOwnerContainer();
 				if(coreSoldItem instanceof Physical)
-					((Physical)coreSoldItem).delEffect(((Physical)coreSoldItem).fetchEffect("Prop_PrivateProperty"));
+				{
+					final Ability privateEffect=((Physical)coreSoldItem).fetchEffect("Prop_PrivateProperty");
+					if(privateEffect != null)
+						((Physical)coreSoldItem).delEffect(privateEffect);
+				}
 				shop.getShop().addStoreInventory(coreSoldItem,number,-1);
 				if(V!=null)
 				{
@@ -1267,7 +1276,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 							item2.destroy();
 						else
 						{
-							item2.delEffect(item2.fetchEffect("Prop_PrivateProperty"));
+							final Ability privateEffect=item2.fetchEffect("Prop_PrivateProperty");
+							if(privateEffect != null)
+								item2.delEffect(privateEffect);
 							shop.getShop().addStoreInventory(item2,1,-1);
 						}
 					}
@@ -1370,8 +1381,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if(products.get(p) instanceof Item)
 				room.addItem((Item)products.get(p),ItemPossessor.Expire.Player_Drop);
 		}
-		final CMMsg msg2=CMClass.getMsg(mobFor,baseProduct,seller,CMMsg.MSG_GET,null);
-		if((baseProduct instanceof LandTitle)||(room.okMessage(mobFor,msg2)))
+		final CMMsg msg2=CMClass.getMsg(mobFor,baseProduct,seller,CMMsg.MSG_GET,null); // a shopkeeper get is distinguished by having the seller as the tool.
+		if((baseProduct instanceof LandTitle)
+		||(room.okMessage(mobFor,msg2)))
 		{
 			room.send(mobFor,msg2);
 			if(baseProduct instanceof InnKey)
