@@ -132,26 +132,32 @@ public class Prayer_AuraDivineEdict extends Prayer
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.target() instanceof MOB)
 		&&(((MOB)msg.target()).phyStats().level()<invoker().phyStats().level()+(super.getXLEVELLevel(invoker())*2))
-		&&(msg.sourceMessage()!=null)
-		&&(CMStrings.getSayFromMessage(msg.sourceMessage().toUpperCase()).equals(CMStrings.getSayFromMessage(msg.sourceMessage()))))
+		&&(msg.sourceMessage()!=null))
 		{
-			final Vector<String> V=CMParms.parse("ORDER \""+msg.target().Name()+"\" "+CMStrings.getSayFromMessage(msg.sourceMessage()));
-			final CMObject O=CMLib.english().findCommand((MOB)msg.target(),(List)V.clone());
-			if((!((MOB)msg.target()).isMonster())
-			&&(CMClass.classID(O).equalsIgnoreCase("DROP")
-			   ||CMClass.classID(O).equalsIgnoreCase("SELL")
-			   ||CMClass.classID(O).equalsIgnoreCase("GIVE")))
+			final String said = CMStrings.getSayFromMessage(msg.sourceMessage());
+			if((said!=null)
+			&&(CMStrings.isUpperCase(said))
+			&&(msg.source().location()!=null))
 			{
-			   msg.source().tell(L("The divine care not about such orders."));
-			   return false;
+				final String contextName = msg.source().location().getContextName(msg.target());
+				final Vector<String> V=CMParms.parse("ORDER \""+contextName+"\" "+said);
+				final CMObject O=CMLib.english().findCommand((MOB)msg.target(),(List)V.clone());
+				if((!((MOB)msg.target()).isMonster())
+				&&(CMClass.classID(O).equalsIgnoreCase("DROP")
+				   ||CMClass.classID(O).equalsIgnoreCase("SELL")
+				   ||CMClass.classID(O).equalsIgnoreCase("GIVE")))
+				{
+				   msg.source().tell(L("The divine care not about such orders."));
+				   return false;
+				}
+				noRecurse=true;
+				final String oldLiege=((MOB)msg.target()).getLiegeID();
+				((MOB)msg.target()).setLiegeID(msg.source().Name());
+				msg.source().doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
+				((MOB)msg.target()).setLiegeID(oldLiege);
+				noRecurse=false;
+				return false;
 			}
-			noRecurse=true;
-			final String oldLiege=((MOB)msg.target()).getLiegeID();
-			((MOB)msg.target()).setLiegeID(msg.source().Name());
-			msg.source().doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
-			((MOB)msg.target()).setLiegeID(oldLiege);
-			noRecurse=false;
-			return false;
 		}
 		noRecurse=false;
 		return true;
