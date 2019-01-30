@@ -82,6 +82,29 @@ public class Kill extends StdCommand
 		{
 			if(commands.get(commands.size()-1).equalsIgnoreCase("DEAD"))
 			{
+				if((commands.size()==3)&&(commands.get(1).equalsIgnoreCase("ALL")))
+				{
+					final List<MOB> killed = new ArrayList<MOB>();
+					for(final Enumeration<MOB> m=mob.location().inhabitants();m.hasMoreElements();)
+					{
+						final MOB M=m.nextElement();
+						if((M.isMonster())
+						&&(M.amFollowing()==null))
+							killed.add(M);
+					}
+					boolean somethingDone = false;
+					for(final MOB M : killed)
+					{
+						final List<String> cmds=new XVector<String>(commands);
+						cmds.set(1, "$"+mob.location().getContextName(M)+"$");
+						this.execute(mob, cmds, metaFlags);
+						if(M.amDead())
+							somethingDone=true;
+					}
+					if(!somethingDone)
+						mob.tell(L("Doesn't look like there is anyone here to kill."));
+					return somethingDone;
+				}
 				commands.remove(commands.size()-1);
 				whomToKill=CMParms.combine(commands,1);
 				reallyKill=true;
