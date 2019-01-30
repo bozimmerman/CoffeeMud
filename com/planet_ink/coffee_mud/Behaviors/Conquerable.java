@@ -338,6 +338,8 @@ public class Conquerable extends Arrest
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
 					Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+reason+".");
+				if(C!=null)
+					CMLib.achievements().possiblyBumpAchievement(C.getResponsibleMember(), AchievementLibrary.Event.CONQUEREDAREAS, -1, C, myArea);
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("@x1 has lost control of @x2@x3.",holdingClan,myArea.name(),reason),false);
@@ -418,6 +420,9 @@ public class Conquerable extends Arrest
 
 	protected void announceToArea(final Area area, final String clanID, final int amount)
 	{
+		final Clan C=CMLib.clans().fetchClan(clanID);
+		if(C!=null)
+			CMLib.achievements().possiblyBumpAchievement(C.getResponsibleMember(), AchievementLibrary.Event.CONQUESTPOINTS, amount, C, myArea);
 		for(final Session S : CMLib.sessions().localOnlineIterable())
 		{
 			if((S.mob()!=null)
@@ -1007,7 +1012,10 @@ public class Conquerable extends Arrest
 				}
 			}
 			if(C!=null)
+			{
 				C.bumpTrophyData(Clan.Trophy.MonthlyConquests, 1);
+				CMLib.achievements().possiblyBumpAchievement(C.getResponsibleMember(), AchievementLibrary.Event.CONQUEREDAREAS, 1, C, myArea);
+			}
 
 			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 			for(int i=0;i<channels.size();i++)

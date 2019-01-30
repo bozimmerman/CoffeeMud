@@ -122,6 +122,7 @@ public class ClanApply extends StdCommand
 									S.dequeResponses();
 									S.tick(mob,Tickable.TICKID_MOB);
 								}
+								CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLANMEMBERS, 1, C);
 								CMLib.clans().clanAnnounce(mob,L("The @x1 @x2 has a new member: @x3",C.getGovernmentName(),C.clanID(),mob.Name()));
 								mob.tell(L("You have successfully joined @x1.  Use CLANDETAILS for information.",C.clanID()));
 							}

@@ -565,6 +565,7 @@ public class DefaultClan implements Clan
 					setClanLevel(getClanLevel()+1);
 					bumpTrophyData(Trophy.MonthlyClanLevels, 1);
 					clanAnnounce(""+getGovernmentName()+" "+name()+" has attained clan level "+getClanLevel()+"!");
+					CMLib.achievements().possiblyBumpAchievement(getResponsibleMember(), AchievementLibrary.Event.CLANLEVELSGAINED, 1, this);
 					update();
 					nextLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()}, 0.0);
 				}
@@ -576,6 +577,7 @@ public class DefaultClan implements Clan
 				while(exp < prevLevelXP)
 				{
 					setClanLevel(getClanLevel()-1);
+					CMLib.achievements().possiblyBumpAchievement(getResponsibleMember(), AchievementLibrary.Event.CLANLEVELSGAINED, -1, this);
 					clanAnnounce(""+getGovernmentName()+" "+name()+" has reverted to clan level "+getClanLevel()+"!");
 					update();
 					prevLevelXP = CMath.parseMathExpression(form, new double[]{getClanLevel()-1}, 0.0);

@@ -2367,12 +2367,18 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					||(killer.playerStats()==null)
 					||(deadmob.playerStats().getAccount()==null)
 					||(killer.playerStats().getAccount()==null)
-					||(deadmob.playerStats().getAccount()!=killer.playerStats().getAccount()))
-				&&(CMLib.clans().findRivalrousClans(deadmob).size()>0))
+					||(deadmob.playerStats().getAccount()!=killer.playerStats().getAccount())))
 				{
 					final List<Pair<Clan,Integer>> list = CMLib.clans().findRivalrousClans(killer, deadmob);
-					for(final Pair<Clan,Integer> c : list)
-						c.first.recordClanKill(killer,deadmob);
+					if(list.size()>0)
+					{
+						for(final Pair<Clan,Integer> c : list)
+						{
+							c.first.recordClanKill(killer,deadmob);
+							if(killer.getClanRole(c.first.clanID()) != null)
+								CMLib.achievements().possiblyBumpAchievement(killer, AchievementLibrary.Event.CLANKILLS, 1, c.first, deadmob);
+						}
+					}
 				}
 			}
 		}

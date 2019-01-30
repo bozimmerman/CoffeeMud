@@ -493,12 +493,15 @@ public class DefaultPlayerAccount implements PlayerAccount
 		try
 		{
 			for(final String name : players)
+			{
 				if(name.equalsIgnoreCase(mob.Name()))
 					return;
+			}
 		}
 		catch(final Exception e)
 		{
 		}
+		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CHARACTERS, 1);
 		players.add(mob.Name());
 		thinPlayers.clear();
 	}
@@ -523,8 +526,11 @@ public class DefaultPlayerAccount implements PlayerAccount
 		try
 		{
 			for(final String name1 : players)
+			{
 				if(name1.equalsIgnoreCase(name))
 					players.remove(name1);
+			}
+			CMLib.achievements().possiblyBumpAchievement(null, AchievementLibrary.Event.CHARACTERS, -1);
 		}
 		catch(final Exception e)
 		{
@@ -541,12 +547,15 @@ public class DefaultPlayerAccount implements PlayerAccount
 		try
 		{
 			for(final String name : players)
+			{
 				if(name.equalsIgnoreCase(mob.Name()))
 					players.remove(name);
+			}
 		}
 		catch(final Exception e)
 		{
 		}
+		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CHARACTERS, -1);
 		thinPlayers.clear();
 	}
 
@@ -689,7 +698,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void killAchievementTracker(final Achievement A, Tattooable tracked, final MOB mob)
+	public void killAchievementTracker(final Achievement A, final Tattooable tracked, final MOB mob)
 	{
 		if(achievementers.containsKey(A.getTattoo()))
 		{
@@ -702,7 +711,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public Tracker getAchievementTracker(final Achievement A, Tattooable tracked, final MOB mob)
+	public Tracker getAchievementTracker(final Achievement A, final Tattooable tracked, final MOB mob)
 	{
 		final Tracker T;
 		if(achievementers.containsKey(A.getTattoo()))
@@ -718,7 +727,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void rebuildAchievementTracker(Tattooable tracked, final MOB mob, final String achievementTattoo)
+	public void rebuildAchievementTracker(final Tattooable tracked, final MOB mob, final String achievementTattoo)
 	{
 		final Achievement A=CMLib.achievements().getAchievement(achievementTattoo);
 		if(A!=null)

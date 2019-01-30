@@ -444,7 +444,7 @@ public class StdTitle extends StdItem implements LandTitle
 		return super.okMessage(myHost,msg);
 	}
 
-	private void removeBoardableProperty(final PrivateProperty P)
+	private void removeBoardableProperty(final MOB buyer, final PrivateProperty P)
 	{
 		if(P instanceof BoardableShip)
 		{
@@ -456,6 +456,12 @@ public class StdTitle extends StdItem implements LandTitle
 				{
 					final Clan C=(Clan)owner;
 					C.getExtItems().delItem(I);
+					if(P instanceof LandTitle)
+					{
+						final Room R=((LandTitle)P).getAllTitledRooms().size()>0 ? ((LandTitle)P).getAllTitledRooms().get(0) : null;
+						if(R != null)
+							CMLib.achievements().possiblyBumpAchievement(buyer, AchievementLibrary.Event.CLANPROPERTY, -1, C, R);
+					}
 				}
 				else
 				if(owner instanceof MOB)
@@ -534,7 +540,7 @@ public class StdTitle extends StdItem implements LandTitle
 				destroy();
 				return;
 			}
-			removeBoardableProperty(P);
+			removeBoardableProperty(msg.source(), P);
 			P.setOwnerName("");
 			if(P instanceof LandTitle)
 			{
@@ -564,7 +570,7 @@ public class StdTitle extends StdItem implements LandTitle
 				return;
 			}
 
-			removeBoardableProperty(P);
+			removeBoardableProperty(msg.source(), P);
 
 			if(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER))
 			{
@@ -573,6 +579,9 @@ public class StdTitle extends StdItem implements LandTitle
 				{
 					addBoardableProperty(P,targetClan.first);
 					P.setOwnerName(targetClan.first.clanID());
+					final Room R=this.getAllTitledRooms().size()>0 ? this.getAllTitledRooms().get(0) : null;
+					if(R != null)
+						CMLib.achievements().possiblyBumpAchievement((MOB)msg.target(), AchievementLibrary.Event.CLANPROPERTY, 1, targetClan, R);
 				}
 				else
 				{

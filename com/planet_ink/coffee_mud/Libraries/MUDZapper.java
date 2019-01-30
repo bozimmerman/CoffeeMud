@@ -4419,6 +4419,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		final Physical P = (E instanceof Physical)?(Physical)E:null;
 		if((mob==null)||(flags[0]&&(item==null)))
 			return false;
+		if(E instanceof Area)
+		{
+			final int[] areaStats = ((Area)E).getAreaIStats();
+			mob.addFaction(CMLib.factions().AlignID(), areaStats[Area.Stats.MED_ALIGNMENT.ordinal()]);
+		}
 		for(final CompiledZMaskEntry entry : cset.entries())
 		{
 			try
@@ -6236,14 +6241,32 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						return false;
 					break;
 				case GROUPSIZE: // +groupsize
-					if((entry.parms().length>0)
-					&&(mob.getGroupMembers(new HashSet<MOB>(1)).size()<(((Integer)entry.parms()[0]).intValue())))
-						return false;
+					if(entry.parms().length>0)
+					{
+						if(E instanceof Area)
+						{
+							final int[] areaStats = ((Area)E).getAreaIStats();
+							if(areaStats[Area.Stats.POPULATION.ordinal()]<(((Integer)entry.parms()[0]).intValue()))
+								return false;
+						}
+						else
+						if(mob.getGroupMembers(new HashSet<MOB>(1)).size()<(((Integer)entry.parms()[0]).intValue()))
+							return false;
+					}
 					break;
 				case _GROUPSIZE: // -groupsize
-					if((entry.parms().length>0)
-					&&(mob.getGroupMembers(new HashSet<MOB>(1)).size()>(((Integer)entry.parms()[0]).intValue())))
-						return false;
+					if(entry.parms().length>0)
+					{
+						if(E instanceof Area)
+						{
+							final int[] areaStats = ((Area)E).getAreaIStats();
+							if(areaStats[Area.Stats.POPULATION.ordinal()]>(((Integer)entry.parms()[0]).intValue()))
+								return false;
+						}
+						else
+						if(mob.getGroupMembers(new HashSet<MOB>(1)).size()>(((Integer)entry.parms()[0]).intValue()))
+							return false;
+					}
 					break;
 				case _IF: // -if
 					{

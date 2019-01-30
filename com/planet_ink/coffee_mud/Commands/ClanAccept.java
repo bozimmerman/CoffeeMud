@@ -129,6 +129,7 @@ public class ClanAccept extends StdCommand
 							S.dequeResponses();
 							S.tick(M,Tickable.TICKID_MOB);
 						}
+						CMLib.achievements().possiblyBumpAchievement(M, AchievementLibrary.Event.CLANMEMBERS, 1, C);
 						CMLib.clans().clanAnnounce(mob,L("@x1 is now a new member of @x2 @x3.",M.Name(),C.getGovernmentName(),C.name()));
 						mob.tell(L("@x1 has been accepted into @x2 '@x3'.",M.Name(),C.getGovernmentName(),C.clanID()));
 						if((M.session()!=null)&&(M.session().mob()==M))

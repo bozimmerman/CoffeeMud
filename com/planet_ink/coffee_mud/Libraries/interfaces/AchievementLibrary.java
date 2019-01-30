@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.Agent;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
@@ -87,6 +88,14 @@ public interface AchievementLibrary extends CMLibrary
 		RACEBIRTH("Race Creation",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
 		PLAYERBORN("Being a Player Born",new String[]{"PLAYERMASK"}),
 		PLAYERBORNPARENT("Being a Player Parent",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
+		CLANPROPERTY("Purchased property",new String[]{"NUM","AREAMASK"}),
+		CONQUEREDAREAS("Conquered an area",new String[]{"NUM","AREAMASK"}),
+		CLANKILLS("Killed a rival clan member",new String[]{"NUM","ZAPPERMASK","PLAYERMASK"}),
+		CLANDECLARE("Declared a new relationship",new String[]{"NUM","RELATION"}),
+		CHARACTERS("Account size",new String[]{"NUM", "PLAYERMASK"}),
+		CLANMEMBERS("Membership size",new String[]{"NUM", "PLAYERMASK"}),
+		CONQUESTPOINTS("Conquest points",new String[]{"NUM","AREAMASK"}),
+		CLANLEVELSGAINED("Clan levels",new String[]{"NUM"})
 		;
 		private final String[] parameters;
 		private final String displayName;
@@ -159,6 +168,16 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return the tattoo that is added to players or accounts
 		 */
 		public String getTattoo();
+
+		/**
+		 * Returns whether this achievement can be applied to the
+		 * given agent type.  Some are account or clan only, and
+		 * some account or player, etc...
+		 *
+		 * @param agent the agent type
+		 * @return true if the achievement applies, false otherwise
+		 */
+		public boolean canApplyTo(Agent agent);
 
 		/**
 		 * Creates a new tracker object with the given progress count as
@@ -474,12 +493,27 @@ public interface AchievementLibrary extends CMLibrary
 	public void reloadAchievements();
 
 	/**
-	 * Iterates through all the achievements to see if the given mob has completed
+	 * Iterates through all the player achievements to see if the given mob has completed
 	 * any new ones, granting them and the awards if they have.
 	 * @param mob the player to evaluate
 	 * @return true if any achievements were newly completed, false otherwise
 	 */
-	public boolean evaluateAchievements(MOB mob);
+	public boolean evaluatePlayerAchievements(MOB mob);
+
+	/**
+	 * Iterates through all the player account achievements to see if the given
+	 * mob has completed any new ones, granting them and the awards if they have.
+	 * @param mob the player whose account to evaluate
+	 * @return true if any achievements were newly completed, false otherwise
+	 */
+	public boolean evaluateAccountAchievements(final MOB mob);
+
+	/**
+	 * Iterates through all the clan achievements to see if any clans
+	 * have completed any new ones, granting them and the awards if they have.
+	 * @return true if any achievements were newly completed, false otherwise
+	 */
+	public boolean evaluateClanAchievements();
 
 	/**
 	 * Allows iterating through all the achievements of the given agent group.

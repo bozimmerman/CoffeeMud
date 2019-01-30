@@ -632,7 +632,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				final Room R=r.nextElement();
 				if((!outdoorOnly)||((R.domainType()&Room.INDOORS)==0))
 				{
-					if((msg != null) 
+					if((msg != null)
 					&& (!R.okMessage(msg.source(), msg)))
 						return false;
 				}
@@ -747,6 +747,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				{
 					C.getExtItems().delItem(this);
 					CMLib.database().DBUpdateClanItems(C);
+					CMLib.achievements().possiblyBumpAchievement(C.getResponsibleMember(), AchievementLibrary.Event.CLANPROPERTY, -1, C, getShipArea());
 				}
 			}
 			setOwnerName("");
@@ -755,7 +756,10 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		{
 			final Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
 			if(targetClan!=null)
+			{
 				setOwnerName(targetClan.first.clanID());
+				CMLib.achievements().possiblyBumpAchievement(buyer, AchievementLibrary.Event.CLANPROPERTY, 1, targetClan, getShipArea());
+			}
 			else
 				setOwnerName(buyer.Name());
 		}

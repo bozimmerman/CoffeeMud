@@ -2072,6 +2072,8 @@ public class Clans extends StdLibrary implements ClanManager
 				isDebugging=CMSecurity.isDebugging(DbgFlag.CLANS);
 				setThreadStatus(serviceClient,"clan trophy scan");
 				clanTrophyScan();
+				setThreadStatus(serviceClient,"clan achievement scan");
+				CMLib.achievements().evaluateClanAchievements();
 				setThreadStatus(serviceClient,"sleeping");
 			}
 		}

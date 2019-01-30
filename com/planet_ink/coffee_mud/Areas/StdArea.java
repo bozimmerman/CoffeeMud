@@ -1259,7 +1259,7 @@ public class StdArea implements Area
 		}
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
-		affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
+		affectableStats.setWeight(affectableStats.weight()+phyStats().weight()); // well, that's weird
 		eachEffect(new EachApplicable<Ability>()
 		{
 			@Override
@@ -1672,6 +1672,9 @@ public class StdArea implements Area
 			statData[Area.Stats.AVG_LEVEL.ordinal()]=(int)Math.round(CMath.div(statData[Area.Stats.TOTAL_LEVELS.ordinal()],statData[Area.Stats.POPULATION.ordinal()]));
 			statData[Area.Stats.AVG_ALIGNMENT.ordinal()]=(int)Math.round(((double)totalAlignments[0])/((double)statData[Area.Stats.POPULATION.ordinal()]));
 		}
+		basePhyStats().setLevel(statData[Area.Stats.MED_LEVEL.ordinal()]);
+		phyStats().setLevel(statData[Area.Stats.MED_LEVEL.ordinal()]);
+		//basePhyStats().setHeight(statData[Area.Stats.POPULATION.ordinal()]);
 		return statData;
 	}
 

@@ -1465,7 +1465,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 								//boolean didSomething =
 								CMLib.titles().evaluateAutoTitles(M);
 								//didSomething =
-								CMLib.achievements().evaluateAchievements(M);// || didSomething;
+								CMLib.achievements().evaluatePlayerAchievements(M);// || didSomething;
+								CMLib.achievements().evaluateAccountAchievements(M);// || didSomething;
 								//if(didSomething)&&(!CMLib.flags().isInTheGame(M,true)))
 								//	CMLib.database().DBUpdatePlayerMOBOnly(M);
 							}

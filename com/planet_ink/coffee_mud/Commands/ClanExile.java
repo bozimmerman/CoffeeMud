@@ -125,6 +125,7 @@ public class ClanExile extends StdCommand
 							S.dequeResponses();
 							S.tick(M,Tickable.TICKID_MOB);
 						}
+						CMLib.achievements().possiblyBumpAchievement(M, AchievementLibrary.Event.CLANMEMBERS, -1, C);
 						CMLib.clans().clanAnnounce(mob,L("Member exiled from @x1 @x2: @x3",C.getGovernmentName(),C.name(),M.Name()));
 						mob.tell(L("@x1 has been exiled from @x2 '@x3'.",M.Name(),C.getGovernmentName(),C.clanID()));
 						if((M.session()!=null)&&(M.session().mob()==M))

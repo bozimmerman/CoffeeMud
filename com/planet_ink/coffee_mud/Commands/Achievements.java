@@ -148,7 +148,9 @@ public class Achievements extends StdCommand
 			return false;
 		}
 
-		if(CMLib.achievements().evaluateAchievements(mob))
+		if(CMLib.achievements().evaluatePlayerAchievements(mob)
+		||CMLib.achievements().evaluateAccountAchievements(mob)
+		||CMLib.achievements().evaluateClanAchievements())
 		{
 			CMLib.s_sleep(4000);
 			// yes, I know, but if I call tick down, or some other

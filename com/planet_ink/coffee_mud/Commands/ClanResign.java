@@ -106,6 +106,7 @@ public class ClanResign extends StdCommand
 							S.dequeResponses();
 							S.tick(mob,Tickable.TICKID_MOB);
 						}
+						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLANMEMBERS, -1, C);
 						CMLib.clans().clanAnnounce(mob,L("Member resigned from @x1 @x2: @x3",C.getGovernmentName(),C.name(),mob.Name()));
 						C.delMember(mob);
 					}

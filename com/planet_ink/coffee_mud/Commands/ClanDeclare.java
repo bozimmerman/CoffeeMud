@@ -121,13 +121,13 @@ public class ClanDeclare extends StdCommand
 		{
 			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.DECLARE,false))
 			{
-				int newRole=-1;
+				int newRelationship=-1;
 				for(int i=0;i<Clan.REL_DESCS.length;i++)
 				{
 					if(rel.equalsIgnoreCase(Clan.REL_DESCS[i]))
-						newRole=i;
+						newRelationship=i;
 				}
-				if(newRole<0)
+				if(newRelationship<0)
 				{
 					mob.tell(L("'@x1' is not a valid relationship. Try WAR, HOSTILE, NEUTRAL, FRIENDLY, or ALLY.",rel));
 					return false;
@@ -137,17 +137,17 @@ public class ClanDeclare extends StdCommand
 					mob.tell(L("You can't do that."));
 					return false;
 				}
-				if(C.getClanRelations(C2.clanID())==newRole)
+				if(C.getClanRelations(C2.clanID())==newRelationship)
 				{
 					mob.tell(L("@x1 is already in that state with @x2.",C.getName(),C2.getName()));
 					return false;
 
 				}
-				long last=C.getLastRelationChange(C2.clanID());
-				if(last>(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)*CMProps.getTickMillis()))
+				long lastRelationshipChangeMs=C.getLastRelationChange(C2.clanID());
+				if(lastRelationshipChangeMs>(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)*CMProps.getTickMillis()))
 				{
-					last=last+(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)*CMProps.getTickMillis());
-					if(System.currentTimeMillis()<last)
+					lastRelationshipChangeMs=lastRelationshipChangeMs+(CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)*CMProps.getTickMillis());
+					if(System.currentTimeMillis()<lastRelationshipChangeMs)
 					{
 						mob.tell(L("You must wait at least 1 mud month between relation changes."));
 						return false;
@@ -159,8 +159,9 @@ public class ClanDeclare extends StdCommand
 				commands.add(rel);
 				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.DECLARE,true))
 				{
-					CMLib.clans().clanAnnounce(mob,L("The @x1 @x2 has declared @x3 @x4.",C.getGovernmentName(),C.clanID(),CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase()),C2.name()));
-					C.setClanRelations(C2.clanID(),newRole,System.currentTimeMillis());
+					CMLib.clans().clanAnnounce(mob,L("The @x1 @x2 has declared @x3 @x4.",C.getGovernmentName(),C.clanID(),CMStrings.capitalizeAndLower(Clan.REL_STATES[newRelationship].toLowerCase()),C2.name()));
+					CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLANDECLARE, -1, C, Clan.REL_DESCS[newRelationship]);
+					C.setClanRelations(C2.clanID(),newRelationship,System.currentTimeMillis());
 					C.update();
 					return false;
 				}
