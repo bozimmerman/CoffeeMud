@@ -922,7 +922,6 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 				{
 					data=(CatalogLibrary.CataData)icatalog.elementAt(d,2);
 					if((data.getRate()>0.0)
-					&&(data.getMaskV()!= null)
 					&&(data.getWhenLive()==live)
 					&&(Math.random() <= data.getRate())
 					&&(CMLib.masking().maskCheck(data.getMaskV(),M,true)))
