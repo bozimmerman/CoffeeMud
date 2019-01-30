@@ -1409,35 +1409,6 @@ public class DefaultClan implements Clan
 			Log.errOut("Clans","Unable to parse: "+politics);
 			return;
 		}
-		final String monthlyData = xmlLib.getValFromPieces(xml, "MONTHLYSTATS");
-		final int[] data=CMParms.parseIntList(monthlyData, ',');
-		if((data != null)&&(data.length>6))
-		{
-			monthOnlineMins = data[0];
-			monthPlayerXP = data[1];
-			monthClanXP = data[2];
-			monthConquered = data[3];
-			monthClanLevels = data[4];
-			monthControlPoints = data[5];
-			monthNewMembers = data[6];
-		}
-		totalOnlineMins=xmlLib.getIntFromPieces(xml,"ONLINEMINS");
-		totalLevelsGained=xmlLib.getIntFromPieces(xml,"LVLSGAINED");
-
-		final XMLTag achievePiece = xmlLib.getPieceFromPieces(xml, "ACHIEVEMENTS");
-		achievementers.clear();
-		for(final Enumeration<Achievement> a=CMLib.achievements().achievements(Agent.CLAN);a.hasMoreElements();)
-		{
-			final Achievement A=a.nextElement();
-			if((achievePiece != null) && achievePiece.parms().containsKey(A.getTattoo()))
-				achievementers.put(A.getTattoo(), A.getTracker(CMath.s_int(achievePiece.parms().get(A.getTattoo()).trim())));
-			else
-				achievementers.put(A.getTattoo(), A.getTracker(0));
-		}
-		final String[] allTattoos=xmlLib.getValFromPieces(xml, "TATTOOS").split(",");
-		this.tattoos.clear();
-		for(final String tattoo : allTattoos)
-			this.addTattoo(tattoo);
 
 		final List<XMLLibrary.XMLTag> poliData=xmlLib.getContentsFromPieces(xml,"POLITICS");
 		if(poliData==null)
@@ -1466,6 +1437,36 @@ public class DefaultClan implements Clan
 		piece=xmlLib.getPieceFromPieces(poliData, "RIVAL");
 		if(piece!=null)
 			setRivalrous(CMath.s_bool(piece.value()));
+
+		final String monthlyData = xmlLib.getValFromPieces(poliData, "MONTHLYSTATS");
+		final int[] data=CMParms.parseIntList(monthlyData, ',');
+		if((data != null)&&(data.length>6))
+		{
+			monthOnlineMins = data[0];
+			monthPlayerXP = data[1];
+			monthClanXP = data[2];
+			monthConquered = data[3];
+			monthClanLevels = data[4];
+			monthControlPoints = data[5];
+			monthNewMembers = data[6];
+		}
+		totalOnlineMins=xmlLib.getIntFromPieces(poliData,"ONLINEMINS");
+		totalLevelsGained=xmlLib.getIntFromPieces(poliData,"LVLSGAINED");
+
+		final XMLTag achievePiece = xmlLib.getPieceFromPieces(poliData, "ACHIEVEMENTS");
+		achievementers.clear();
+		for(final Enumeration<Achievement> a=CMLib.achievements().achievements(Agent.CLAN);a.hasMoreElements();)
+		{
+			final Achievement A=a.nextElement();
+			if((achievePiece != null) && achievePiece.parms().containsKey(A.getTattoo()))
+				achievementers.put(A.getTattoo(), A.getTracker(CMath.s_int(achievePiece.parms().get(A.getTattoo()).trim())));
+			else
+				achievementers.put(A.getTattoo(), A.getTracker(0));
+		}
+		final String[] allTattoos=xmlLib.getValFromPieces(poliData, "TATTOOS").split(",");
+		this.tattoos.clear();
+		for(final String tattoo : allTattoos)
+			this.addTattoo(tattoo);
 
 		// now RESOURCES!
 		final List<XMLLibrary.XMLTag> xV=xmlLib.getContentsFromPieces(poliData,"RELATIONS");

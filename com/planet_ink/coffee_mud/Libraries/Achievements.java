@@ -2720,9 +2720,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								return classLevel + 1;
 							}
 							else
-							if(tracked instanceof Clan)
 								return count;
-							return 0;
 						}
 
 						@Override
@@ -2757,7 +2755,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public boolean isSavableTracker()
 				{
-					return true;
+					return agent == Agent.CLAN;
 				}
 
 				@Override
@@ -5131,7 +5129,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				@Override
 				public boolean isSavableTracker()
 				{
-					return true;
+					return false;
 				}
 
 				@Override
