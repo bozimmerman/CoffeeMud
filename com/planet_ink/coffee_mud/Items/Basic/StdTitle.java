@@ -655,6 +655,9 @@ public class StdTitle extends StdItem implements LandTitle
 					{
 						newOwnerName=clanPair.first.clanID();
 						addBoardableProperty(P,clanPair.first);
+						final Room R=this.getAllTitledRooms().size()>0 ? this.getAllTitledRooms().get(0) : null;
+						if(R != null)
+							CMLib.achievements().possiblyBumpAchievement(msg.source(), AchievementLibrary.Event.CLANPROPERTY, 1, clanPair.first, R);
 					}
 					else
 						addBoardableProperty(P,msg.source());
