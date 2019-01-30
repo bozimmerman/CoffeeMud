@@ -369,78 +369,47 @@ public class Achievements extends StdCommand
 		final StringBuilder finalResponse = new StringBuilder();
 		for(final Agent agent : agents)
 		{
-			final AccountStats stat;
+			final PairList<Achievable,Tattooable> sets = new PairVector<Achievable, Tattooable>();
 			switch(agent)
 			{
 			default:
 			case PLAYER:
-				stat = mob.playerStats();
+				if(mob.playerStats() != null)
+					sets.add(whoM.playerStats(), whoM);
 				break;
 			case ACCOUNT:
-				stat = (mob.playerStats() != null) ? mob.playerStats().getAccount() : null;
+			{
+				final PlayerAccount stat = (whoM.playerStats() != null) ? whoM.playerStats().getAccount() : null;
+				if(stat != null)
+					sets.add(stat, whoM);
 				break;
+			}
 			case CLAN:
-				stat=null;
-				break;
-			}
-			final List<String> achievedList = new ArrayList<String>();
-			switch(list)
-			{
-			case ALL:
-			{
-				final List<Achievement> useList = getLowestNumberedTattoos(agent,WonList);
-				int padding=done.length()+1;
-				for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
+				for(final Pair<Clan,Integer> cp : mob.clans())
 				{
-					final Achievement A=a.next();
-					if(!WonList.contains(A.getTattoo()))
-					{
-						final AchievementLibrary.Tracker T=(stat != null) ? stat.getAchievementTracker(A, mob, whoM) : null;
-						final int score = (T==null) ? 0 : T.getCount(whoM);
-						int targetScore = A.getTargetCount();
-						if(A.getEvent()==Event.STATVALUE)
-							targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
-						if(targetScore != Integer.MIN_VALUE)
-						{
-							final int len = (""+score+"/"+targetScore).length();
-							if(len >= padding)
-								padding = len+1;
-						}
-					}
-				}
-				for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
-				{
-					final Achievement A=a.next();
-					if(WonList.contains(A.getTattoo()))
-						achievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
-					else
-					{
-						final AchievementLibrary.Tracker T=(stat != null) ? stat.getAchievementTracker(A, mob, whoM) : null;
-						final int score = (T==null) ? 0 : T.getCount(whoM);
-						int targetScore = A.getTargetCount();
-						if(A.getEvent()==Event.STATVALUE)
-							targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
-						if(targetScore == Integer.MIN_VALUE)
-							achievedList.add(CMStrings.padRight("^w", padding)+"^?: "+A.getDisplayStr());
-						else
-							achievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
-					}
+					sets.add(cp.first, cp.first);
+					break;
 				}
 				break;
 			}
-			case NOW:
+			for(final Pair<Achievable,Tattooable> set : sets)
 			{
-				int padding=done.length()+1;
-				final List<Achievement> useList = getLowestNumberedTattoos(agent,WonList);
-				for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
+				final Achievable stat = set.first;
+				final Tattooable tracked = set.second;
+				final List<String> achievedList = new ArrayList<String>();
+				switch(list)
 				{
-					final Achievement A=a.next();
-					if(!WonList.contains(A.getTattoo()))
+				case ALL:
+				{
+					final List<Achievement> useList = getLowestNumberedTattoos(agent,WonList);
+					int padding=done.length()+1;
+					for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
-						final AchievementLibrary.Tracker T=(stat != null) ? stat.getAchievementTracker(A, mob, whoM) : null;
-						final int score = (T==null) ? 0 : T.getCount(whoM);
-						if(score != 0)
+						final Achievement A=a.next();
+						if(!WonList.contains(A.getTattoo()))
 						{
+							final AchievementLibrary.Tracker T=(stat != null) ? stat.getAchievementTracker(A, tracked, mob) : null;
+							final int score = (T==null) ? 0 : T.getCount(tracked);
 							int targetScore = A.getTargetCount();
 							if(A.getEvent()==Event.STATVALUE)
 								targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
@@ -452,53 +421,101 @@ public class Achievements extends StdCommand
 							}
 						}
 					}
-				}
-				for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
-				{
-					final Achievement A=a.next();
-					if(WonList.contains(A.getTattoo()))
-						achievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
-					else
+					for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
-						final AchievementLibrary.Tracker T=(stat != null) ? stat.getAchievementTracker(A, mob, whoM) : null;
-						final int score = (T==null) ? 0 : T.getCount(whoM);
-						if(score != 0)
+						final Achievement A=a.next();
+						if(WonList.contains(A.getTattoo()))
+							achievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
+						else
 						{
+							final AchievementLibrary.Tracker T=(stat != null) ? stat.getAchievementTracker(A, tracked, mob) : null;
+							final int score = (T==null) ? 0 : T.getCount(tracked);
 							int targetScore = A.getTargetCount();
 							if(A.getEvent()==Event.STATVALUE)
 								targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
-							if(targetScore != Integer.MIN_VALUE)
-								achievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
-							else
+							if(targetScore == Integer.MIN_VALUE)
 								achievedList.add(CMStrings.padRight("^w", padding)+"^?: "+A.getDisplayStr());
+							else
+								achievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
 						}
 					}
+					break;
 				}
-				break;
-			}
-			case WON:
-			{
-				for(final Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+				case NOW:
 				{
-					final Achievement A=a.nextElement();
-					if(WonList.contains(A.getTattoo()))
+					int padding=done.length()+1;
+					final List<Achievement> useList = getLowestNumberedTattoos(agent,WonList);
+					for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
-						achievedList.add(A.getDisplayStr());
+						final Achievement A=a.next();
+						if(!WonList.contains(A.getTattoo()))
+						{
+							final AchievementLibrary.Tracker T=(stat != null) ? stat.getAchievementTracker(A, tracked, mob) : null;
+							final int score = (T==null) ? 0 : T.getCount(tracked);
+							if(score != 0)
+							{
+								int targetScore = A.getTargetCount();
+								if(A.getEvent()==Event.STATVALUE)
+									targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
+								if(targetScore != Integer.MIN_VALUE)
+								{
+									final int len = (""+score+"/"+targetScore).length();
+									if(len >= padding)
+										padding = len+1;
+								}
+							}
+						}
 					}
+					for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
+					{
+						final Achievement A=a.next();
+						if(WonList.contains(A.getTattoo()))
+							achievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
+						else
+						{
+							final AchievementLibrary.Tracker T=(stat != null) ? stat.getAchievementTracker(A, tracked, mob) : null;
+							final int score = (T==null) ? 0 : T.getCount(tracked);
+							if(score != 0)
+							{
+								int targetScore = A.getTargetCount();
+								if(A.getEvent()==Event.STATVALUE)
+									targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
+								if(targetScore != Integer.MIN_VALUE)
+									achievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
+								else
+									achievedList.add(CMStrings.padRight("^w", padding)+"^?: "+A.getDisplayStr());
+							}
+						}
+					}
+					break;
 				}
-				break;
-			}
-			}
-			if(achievedList.size()==0)
-				finalResponse .append("^H"+prefix+L(CMStrings.capitalizeAndLower(agent.name())+" Achievements: ^NNone!")+"^w\n\r\n\r");
-			else
-			{
-				finalResponse.append("^H"+prefix+L(CMStrings.capitalizeAndLower(agent.name())+" Achievements:")+"^w\n\r");
-				finalResponse.append(CMLib.lister().makeColumns(mob, achievedList, null, 2).toString()+"^w\n\r\n\r");
+				case WON:
+				{
+					for(final Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					{
+						final Achievement A=a.nextElement();
+						if(WonList.contains(A.getTattoo()))
+						{
+							achievedList.add(A.getDisplayStr());
+						}
+					}
+					break;
+				}
+				}
+				String subName = "";
+				if(tracked instanceof Clan)
+					subName = " (" + ((Clan)tracked).clanID()+")";
+				if(achievedList.size()==0)
+					finalResponse .append("^H"+prefix+L(CMStrings.capitalizeAndLower(agent.name())+" Achievements"+subName+": ^NNone!")+"^w\n\r\n\r");
+				else
+				{
+					finalResponse.append("^H"+prefix+L(CMStrings.capitalizeAndLower(agent.name())+" Achievements"+subName+":")+"^w\n\r");
+					finalResponse.append(CMLib.lister().makeColumns(mob, achievedList, null, 2).toString()+"^w\n\r\n\r");
+				}
 			}
 		}
 		if(finalResponse.length()==0)
-			finalResponse.append("^H"+prefix+L("Achievements: ^NNone!")+"^w\n\r");
+			finalResponse.append("^H"+prefix+L("Achievements@x1: ^NNone!")+"^w\n\r");
 		if(announce)
 			CMLib.commands().postSay(mob, finalResponse.toString());
 		else
