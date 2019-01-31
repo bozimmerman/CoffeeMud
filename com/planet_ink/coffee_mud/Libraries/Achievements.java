@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.Agent;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.FullMemberRecord;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -5483,7 +5484,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return achievements;
 	}
 
-	protected void giveAwards(final MOB mob, final Award[] awardSet, final AchievementLoadFlag flag)
+	protected void giveAwards(final MOB mob, final Clan forClan, final Award[] awardSet, final AchievementLoadFlag flag)
 	{
 		if(mob == null)
 			return;
@@ -5576,6 +5577,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					{
 						awardMessage.append(L("^HYou are awarded @x1!\n\r^?",aaward.getAmount() + " " + aaward.getStat()));
 						CMLib.coffeeMaker().setAnyGenStat(mob, aaward.getStat(), "" + (CMath.s_int(value) + aaward.getAmount()));
+						mob.recoverMaxState();
+						mob.recoverCharStats();
+						mob.recoverPhyStats();
 					}
 				}
 				break;
@@ -5620,10 +5624,16 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case TITLE:
 			{
 				final TitleAward aaward=(TitleAward)award;
-				if((pStats != null) && (!pStats.getTitles().contains(aaward.getTitle())))
+				if(pStats != null)
 				{
-					pStats.getTitles().add(aaward.getTitle());
-					awardMessage.append(L("^HYou are awarded the title: @x1!\n\r^?",CMStrings.replaceAll(aaward.getTitle(),"*",mob.Name())));
+					String titleStr = aaward.getTitle();
+					if(forClan != null)
+						titleStr = CMStrings.replaceAlls(titleStr, new String[][] {{"@1",forClan.getGovernmentName()},{"@2",forClan.clanID()}});
+					if(!pStats.getTitles().contains(titleStr))
+					{
+						pStats.getTitles().add(titleStr);
+						awardMessage.append(L("^HYou are awarded the title: @x1!\n\r^?",CMStrings.replaceAll(titleStr,"*",mob.Name())));
+					}
 				}
 				break;
 			}
@@ -5768,12 +5778,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			final Achievement A = this.getAchievement(T.getTattooName());
 			if((A!=null)
 			&&(mob.findTattoo(T.getTattooName())!=null))
-				str.append(removeAwards(mob, A));
+				str.append(removeAwards(mob, clan, A));
 		}
 		return str.toString();
 	}
 
-	protected String removeAwards(final MOB mob, final Achievement achievement)
+	protected String removeAwards(final MOB mob, final Clan forClan, final Achievement achievement)
 	{
 		if(mob == null)
 			return "";
@@ -5924,14 +5934,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case TITLE:
 			{
 				final TitleAward aaward=(TitleAward)award;
-				if((pStats != null)
-				&& (pStats.getTitles().contains(aaward.getTitle()))
-				&&(!alsoAwardedElsewhere))
+				if(pStats != null)
 				{
-					pStats.getTitles().remove(aaward.getTitle());
-					awardMessage.append(L("^HYou have lost the title: @x1!\n\r^?",CMStrings.replaceAll(aaward.getTitle(),"*",mob.Name())));
+					String titleStr = aaward.getTitle();
+					if(forClan != null)
+						titleStr = CMStrings.replaceAlls(titleStr, new String[][] {{"@1",forClan.getGovernmentName()},{"@2",forClan.clanID()}});
+					if((pStats.getTitles().contains(titleStr))
+					&&(!alsoAwardedElsewhere))
+					{
+						pStats.getTitles().remove(titleStr);
+						awardMessage.append(L("^HYou have lost the title: @x1!\n\r^?",CMStrings.replaceAll(titleStr,"*",mob.Name())));
+					}
+					break;
 				}
-				break;
 			}
 			case XP:
 			{
@@ -5982,21 +5997,36 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has completed the '@x2' @x3 achievement!",name,A.getDisplayStr(),A.getAgent().name().toLowerCase()),true);
 			}
+			final Award[] awardSet = A.getRewards();
 			if((A.getAgent() == Agent.CLAN)
 			&&(holder instanceof Clan))
 			{
 				final Clan C=(Clan)holder;
 				CMLib.clans().clanAnnounce(mob,L("Your @x2 @x3 has completed the @x1 achievement.",A.getDisplayStr(),C.getGovernmentName(),C.name()));
+				this.giveAwards(C, awardSet, flag);
+				for(final Iterator<Session> s = CMLib.sessions().sessions();s.hasNext();)
+				{
+					final Session S=s.next();
+					if(S!=null)
+					{
+						final MOB M=S.mob();
+						if(M!=null)
+						{
+							final Pair<Clan,Integer> role=M.getClanRole(C.clanID());
+							if(role!=null)
+								loadClanAchievements(C,M,role.second.intValue(),AchievementLoadFlag.NORMAL);
+						}
+					}
+				}
 			}
 			else
 			{
 				final StringBuilder awardMessage = new StringBuilder(L("^HYou have completed the '@x1' @x2 achievement!^?\n\r",A.getDisplayStr(),A.getAgent().name().toLowerCase()));
 				mob.tell(awardMessage.toString());
 			}
-			final Award[] awardSet = A.getRewards();
 			if(A.getAgent() == Agent.PLAYER)
 			{
-				giveAwards(mob,awardSet,flag);
+				giveAwards(mob,null,awardSet,flag);
 			}
 			return true;
 		}
@@ -6716,7 +6746,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final Achievement A=getAchievement(t.nextElement().getTattooName());
 				if((A != null)&&(A.getAgent()==Agent.PLAYER))
 				{
-					giveAwards(mob, A.getRewards(), flag);
+					giveAwards(mob, null, A.getRewards(), flag);
 					somethingDone=true;
 				}
 			}
@@ -6750,7 +6780,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							mob.addTattoo(A.getTattoo());
 							somethingDone=true;
 						}
-						giveAwards(mob, A.getRewards(), flag);
+						giveAwards(mob, null, A.getRewards(), flag);
 					}
 				}
 			}
@@ -6762,15 +6792,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	}
 
-	@Override
-	public void loadClanAchievements(final MOB mob, final AchievementLoadFlag flag)
+	protected boolean loadClanAchievements(final Clan clan, final MOB mob, final int clanRole, final AchievementLoadFlag flag)
 	{
 		boolean somethingDone = false;
-		final PlayerStats pStats = (mob==null) ? null : mob.playerStats();
-		for(final Pair<Clan,Integer> cp : mob.clans())
+		if((mob!=null) && (clan != null))
 		{
-			final Tattooable clan = cp.first;
-			if((mob!=null) && (clan != null))
+			if(clan.getAuthority(clanRole,Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO)
 			{
 				for(final Enumeration<Tattoo> t=clan.tattoos();t.hasMoreElements();)
 				{
@@ -6786,11 +6813,24 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								mob.addTattoo(A.getTattoo());
 								somethingDone=true;
 							}
-							giveAwards(mob, A.getRewards(), flag);
+							giveAwards(mob, clan, A.getRewards(), flag);
 						}
 					}
 				}
 			}
+		}
+		return somethingDone;
+	}
+
+	@Override
+	public void loadClanAchievements(final MOB mob, final AchievementLoadFlag flag)
+	{
+		boolean somethingDone = false;
+		final PlayerStats pStats = (mob==null) ? null : mob.playerStats();
+		for(final Pair<Clan,Integer> cp : mob.clans())
+		{
+			final Clan clan = cp.first;
+			somethingDone = this.loadClanAchievements(clan, mob, cp.second.intValue(), flag) || somethingDone;
 			if(somethingDone)
 			{
 				loadPlayerSkillAwards(mob, pStats);
