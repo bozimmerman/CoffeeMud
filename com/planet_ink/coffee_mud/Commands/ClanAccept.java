@@ -79,7 +79,6 @@ public class ClanAccept extends StdCommand
 		commands.add(getAccessWords()[0]);
 		commands.add(memberStr);
 		final StringBuffer msg=new StringBuffer("");
-		boolean found=false;
 		if(memberStr.length()>0)
 		{
 			if(C==null)
@@ -100,42 +99,52 @@ public class ClanAccept extends StdCommand
 					mob.tell(L("There are no applicants to your @x1.",C.getGovernmentName()));
 					return false;
 				}
+				final List<String> membersToAccept = new ArrayList<String>();
 				memberStr=CMStrings.capitalizeAndLower(memberStr);
 				for(final MemberRecord member : apps)
 				{
-					if(member.name.equalsIgnoreCase(memberStr))
+					if((member.name.equalsIgnoreCase(memberStr)||(memberStr.equals("All"))))
 					{
-						found=true;
+						membersToAccept.add(member.name);
 					}
 				}
-				if(found)
+				if(membersToAccept.size()>0)
 				{
-					final MOB M=CMLib.players().getLoadPlayer(memberStr);
-					if(M==null)
+					for(final String memberName : membersToAccept)
 					{
-						mob.tell(L("@x1 was not found.  Could not add to @x2.",memberStr,C.getGovernmentName()));
-						return false;
-					}
-					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,true))
-					{
-						C.addMember(M,C.getGovernment().getAcceptPos());
-						if(C.getGovernment().getEntryScript().trim().length()>0)
+						final MOB M=CMLib.players().getLoadPlayer(memberName);
+						if(msg.length()>0)
+							msg.append("\n\r");
+						if(M==null)
 						{
-							final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
-							S.setSavable(false);
-							S.setVarScope("*");
-							S.setScript(C.getGovernment().getEntryScript());
-							final CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,L("CLANENTRY"));
-							S.executeMsg(M, msg2);
-							S.dequeResponses();
-							S.tick(M,Tickable.TICKID_MOB);
+							msg.append(L("@x1 was not found.  Could not add to @x2.",memberName,C.getGovernmentName()));
+							if(membersToAccept.indexOf(memberName) == membersToAccept.size()-1)
+							{
+								mob.tell(msg.toString());
+								return false;
+							}
 						}
-						CMLib.achievements().possiblyBumpAchievement(M, AchievementLibrary.Event.CLANMEMBERS, 1, C);
-						CMLib.clans().clanAnnounce(mob,L("@x1 is now a new member of @x2 @x3.",M.Name(),C.getGovernmentName(),C.name()));
-						mob.tell(L("@x1 has been accepted into @x2 '@x3'.",M.Name(),C.getGovernmentName(),C.clanID()));
-						if((M.session()!=null)&&(M.session().mob()==M))
-							M.tell(L("@x1 has accepted you as a member of @x2 '@x3'.",mob.Name(),C.getGovernmentName(),C.clanID()));
-						return false;
+						else
+						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.ACCEPT,true))
+						{
+							C.addMember(M,C.getGovernment().getAcceptPos());
+							if(C.getGovernment().getEntryScript().trim().length()>0)
+							{
+								final ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+								S.setSavable(false);
+								S.setVarScope("*");
+								S.setScript(C.getGovernment().getEntryScript());
+								final CMMsg msg2=CMClass.getMsg(M,M,null,CMMsg.MSG_OK_VISUAL,null,null,L("CLANENTRY"));
+								S.executeMsg(M, msg2);
+								S.dequeResponses();
+								S.tick(M,Tickable.TICKID_MOB);
+							}
+							CMLib.achievements().possiblyBumpAchievement(M, AchievementLibrary.Event.CLANMEMBERS, 1, C);
+							CMLib.clans().clanAnnounce(mob,L("@x1 is now a new member of @x2 @x3.",M.Name(),C.getGovernmentName(),C.name()));
+							msg.append(L("@x1 has been accepted into @x2 '@x3'.",M.Name(),C.getGovernmentName(),C.clanID()));
+							if((M.session()!=null)&&(M.session().mob()==M))
+								M.tell(L("@x1 has accepted you as a member of @x2 '@x3'.",mob.Name(),C.getGovernmentName(),C.clanID()));
+						}
 					}
 				}
 				else
@@ -150,7 +159,17 @@ public class ClanAccept extends StdCommand
 		}
 		else
 		{
-			msg.append(L("You haven't specified which applicant you are accepting."));
+			final List<MemberRecord> apps=C.getMemberList(C.getGovernment().getAutoRole());
+			if(apps.size()<1)
+				msg.append(L("There are no applicants to your @x1.",C.getGovernmentName()));
+			else
+			{
+				msg.append(L("You haven't specified which applicant you are accepting.\n\r"));
+				final List<String> applicants = new ArrayList<String>(apps.size());
+				for(final MemberRecord member : apps)
+					applicants.add(member.name);
+				msg.append(L("Applicants include: @x1",CMLib.english().toEnglishStringList(applicants)));
+			}
 		}
 		mob.tell(msg.toString());
 		return false;

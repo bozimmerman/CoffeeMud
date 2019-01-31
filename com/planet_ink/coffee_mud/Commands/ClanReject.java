@@ -78,7 +78,6 @@ public class ClanReject extends StdCommand
 		commands.add(memberStr);
 
 		final StringBuffer msg=new StringBuffer("");
-		boolean found=false;
 		if(memberStr.length()>0)
 		{
 			if(C==null)
@@ -99,29 +98,39 @@ public class ClanReject extends StdCommand
 					mob.tell(L("There are no applicants to your @x1.",C.getGovernmentName()));
 					return false;
 				}
+				final List<String> membersToReject = new ArrayList<String>();
 				memberStr=CMStrings.capitalizeAndLower(memberStr);
 				for(final MemberRecord member : apps)
 				{
-					if(member.name.equalsIgnoreCase(memberStr))
+					if((member.name.equalsIgnoreCase(memberStr)||(memberStr.equals("All"))))
 					{
-						found=true;
+						membersToReject.add(member.name);
 					}
 				}
-				if(found)
+				if(membersToReject.size()>0)
 				{
-					final MOB M=CMLib.players().getLoadPlayer(memberStr);
-					if(M==null)
+					for(final String memberName : membersToReject)
 					{
-						mob.tell(L("@x1 was not found.  Could not reject from @x2.",memberStr,C.getGovernmentName()));
-						return false;
-					}
-					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.REJECT,true))
-					{
-						C.delMember(M);
-						mob.tell(L("@x1 has been denied acceptance to @x2 '@x3'.",M.Name(),C.getGovernmentName(),C.clanID()));
-						if((M.session()!=null)&&(M.session().mob()==M))
-							M.tell(L("You have been rejected as a member of @x1 '@x2'.",C.getGovernmentName(),C.clanID()));
-						return false;
+						final MOB M=CMLib.players().getLoadPlayer(memberName);
+						if(msg.length()>0)
+							msg.append("\n\r");
+						if(M==null)
+						{
+							msg.append(L("@x1 was not found.  Could not reject from @x2.",memberName,C.getGovernmentName()));
+							if(membersToReject.indexOf(memberName) == membersToReject.size()-1)
+							{
+								mob.tell(msg.toString());
+								return false;
+							}
+						}
+						else
+						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.REJECT,true))
+						{
+							C.delMember(M);
+							msg.append(L("@x1 has been denied acceptance to @x2 '@x3'.",M.Name(),C.getGovernmentName(),C.clanID()));
+							if((M.session()!=null)&&(M.session().mob()==M))
+								M.tell(L("You have been rejected as a member of @x1 '@x2'.",C.getGovernmentName(),C.clanID()));
+						}
 					}
 				}
 				else
@@ -136,7 +145,17 @@ public class ClanReject extends StdCommand
 		}
 		else
 		{
-			msg.append(L("You haven't specified which applicant you are rejecting."));
+			final List<MemberRecord> apps=C.getMemberList(C.getGovernment().getAutoRole());
+			if(apps.size()<1)
+				msg.append(L("There are no applicants to your @x1.",C.getGovernmentName()));
+			else
+			{
+				msg.append(L("You haven't specified which applicant you are rejecting.\n\r"));
+				final List<String> applicants = new ArrayList<String>(apps.size());
+				for(final MemberRecord member : apps)
+					applicants.add(member.name);
+				msg.append(L("Applicants include: @x1",CMLib.english().toEnglishStringList(applicants)));
+			}
 		}
 		mob.tell(msg.toString());
 		return false;

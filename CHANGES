@@ -33,6 +33,7 @@
   32. Clans can now be tattooed
   33. Clans now have their own set of achievements, see achivements in MG or achievements.ini for more info.
   34. New account achievement: characters, to create achievements for creating more characters
+  35. Can now CLANACCEPT ALL, also CLANACCEPT with no arguments lists applicants.  Ditto CLANREJECT
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.
