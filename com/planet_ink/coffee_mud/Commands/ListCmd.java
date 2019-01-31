@@ -3504,6 +3504,9 @@ public class ListCmd extends StdCommand
 					case CURRENCY:
 						rewardDisplay.append(((CurrencyAward)award).getAmount()+" "+((CurrencyAward)award).getCurrency()+" ");
 						break;
+					case CLANCURRENCY:
+						rewardDisplay.append(((CurrencyAward)award).getAmount()+" "+((CurrencyAward)award).getCurrency()+" ");
+						break;
 					case STAT:
 						if(((StatAward)award).getStat().indexOf(' ')>0)
 							rewardDisplay.append(((StatAward)award).getAmount()+" \\\""+((StatAward)award).getStat()+"\\\" ");
@@ -3524,6 +3527,9 @@ public class ListCmd extends StdCommand
 						break;
 					case XP:
 						rewardDisplay.append(((AmountAward)award).getAmount()+"XP ");
+						break;
+					case CLANXP:
+						rewardDisplay.append(((AmountAward)award).getAmount()+" Clan XP ");
 						break;
 					default:
 						break;

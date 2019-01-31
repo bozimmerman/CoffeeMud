@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.Agent;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -265,7 +266,9 @@ public interface AchievementLibrary extends CMLibrary
 		ABILITY,
 		EXPERTISE,
 		STAT,
-		NOPURGE
+		NOPURGE,
+		CLANXP,
+		CLANCURRENCY,
 		;
 	}
 
@@ -637,6 +640,16 @@ public interface AchievementLibrary extends CMLibrary
 	public void loadAccountAchievements(final MOB mob, final AchievementLoadFlag flag);
 
 	/**
+	 * When a new player added to a clan, this method inspects their clan tattoos
+	 * for any that need to be passed down to this new member.  If any are passed
+	 * down, then the awards are granted, including skill awards if any.
+	 * @see AchievementLibrary#loadPlayerSkillAwards(Tattooable, PlayerStats)
+	 * @param mob the new character to load up.
+	 * @param flag the circumstances under which achievements are being loaded
+	 */
+	public void loadClanAchievements(final MOB mob, final AchievementLoadFlag flag);
+
+	/**
 	 * When a player remorts, they keep their player achievements, but the rewards
 	 * are removed.  This method is called to re-reward all player achievement rewards.
 	 * @param mob the mob to award
@@ -654,13 +667,14 @@ public interface AchievementLibrary extends CMLibrary
 	public String getAchievementsHelp(String ID, boolean exact);
 
 	/**
-	 * When a player remorts, they lost their account achievement awards, which are restored
-	 * later.  This method is called to remove all account achievement rewards for a specific
-	 * achievement.
-	 * @param mob the mob to lost
-	 * @param awardSet the awards to remove
-	 * @param flag whether this is happening before or after stat selection
-	 * @return any messages you might want to show the user.
+	 * When a clan member is removed from his clan for any reason, this
+	 * method is called to remove any inhereted benefits, such as titles,
+	 * or abilities or expertises, etc.
+	 * @param mob the evicted mob
+	 * @param clan the clan evicted from
+	 * @return the message about what is removed
 	 */
-	public String removeAwards(final MOB mob, final Award[] awardSet, final AchievementLoadFlag flag);
+	public String removeClanAchievementAwards(final MOB mob, final Clan clan);
+
+
 }

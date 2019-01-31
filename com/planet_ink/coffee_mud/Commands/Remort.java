@@ -600,7 +600,10 @@ public class Remort extends StdCommand
 												recoverEverything(mob);
 											}
 											else
+											{
 												CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.REMORT_PRELOAD);
+												CMLib.achievements().loadClanAchievements(mob,AchievementLoadFlag.REMORT_PRELOAD);
+											}
 											for(final String prevCode : PCODE_RESTORE)
 												pStats.setStat(prevCode, oldPStats.getStat(prevCode));
 											mob.basePhyStats().setSensesMask(0);

@@ -192,6 +192,42 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						});
 					}
 					else
+					if(thing.equals("CLANXP") || thing.startsWith("CLANEXPERIEN") || thing.equals("CLANEXP"))
+					{
+						awardsList.add(new AmountAward()
+						{
+							@Override
+							public AwardType getType()
+							{
+								return AwardType.CLANXP;
+							}
+
+							@Override
+							public int getAmount()
+							{
+								return number;
+							}
+
+							@Override
+							public boolean isPreAwarded()
+							{
+								return false;
+							}
+
+							@Override
+							public boolean isNotAwardedOnRemort()
+							{
+								return false;
+							}
+
+							@Override
+							public String getDescription()
+							{
+								return L("@x1 Clan Experience Points",""+getAmount());
+							}
+						});
+					}
+					else
 					if(thing.equals("QP") || thing.startsWith("QUEST"))
 					{
 						awardsList.add(new AmountAward()
@@ -329,12 +365,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						else
 						if(CMLib.expertises().findDefinition(thing, true) != null)
 						{
-							final boolean isAutoGained = CMParms.getParmBool(parms, "AUTOGAIN", true);
+							final String finalParms = parms;
 							final ExpertiseDefinition oldDef=CMLib.expertises().findDefinition(thing, true);
-							final String ID = oldDef.ID();
 							final ExpertiseDefinition def = new ExpertiseDefinition()
 							{
+								final String ID = oldDef.ID();
+								final boolean isAutoGained = CMParms.getParmBool(finalParms, "AUTOGAIN", true);
+
 								volatile WeakReference<ExpertiseDefinition> ref=new WeakReference<ExpertiseDefinition>(CMLib.expertises().findDefinition(ID, true));
+
 								private ExpertiseDefinition baseDef()
 								{
 									if(ref == null)
@@ -679,6 +718,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 						else
 						{
+							thing=thing.trim();
+							final boolean clan=thing.toLowerCase().startsWith("clan ");
+							if(clan)
+								thing=thing.substring(5);
 							final String currency = CMLib.english().matchAnyCurrencySet(thing);
 							if(currency == null)
 								Log.debugOut("Achievement", "Unknown award type: "+thing);
@@ -692,10 +735,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									final String currencyName = thing;
 									awardsList.add(new CurrencyAward()
 									{
+										final boolean isClanCurrency = clan;
+
 										@Override
 										public AwardType getType()
 										{
-											return AwardType.CURRENCY;
+											return isClanCurrency?AwardType.CLANCURRENCY:AwardType.CURRENCY;
 										}
 
 										@Override
@@ -5473,6 +5518,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 			switch(award.getType())
 			{
+			case CLANXP:
+				// never granted to players
+				break;
+			case CLANCURRENCY:
+				// never granted to players
+				break;
 			case ABILITY:
 			{
 				final AbilityAward aaward = (AbilityAward)award;
@@ -5592,13 +5643,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		grantAbilitiesAndExpertises(mob);
 	}
 
-	@Override
-	public String removeAwards(final MOB mob, final Award[] awardSet, final AchievementLoadFlag flag)
+	protected void giveAwards(final Clan clan, final Award[] awardSet, final AchievementLoadFlag flag)
 	{
-		if(mob == null)
-			return "";
-		final PlayerStats pStats = mob.playerStats();
-		final StringBuilder awardMessage = new StringBuilder("");
+		if(clan == null)
+			return;
 		for(final Award award : awardSet)
 		{
 			switch(flag)
@@ -5628,23 +5676,164 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 			switch(award.getType())
 			{
+			case XP:
+				// awarded elsewhere, not directly to clan
+				break;
+			case CURRENCY:
+				// awarded elsewhere, not directly to clan
+				break;
+			case ABILITY:
+				// awarded elsewhere, not directly to clan
+				break;
+			case CLANCURRENCY:
+			{
+				final CurrencyAward aaward=(CurrencyAward)award;
+				String currency = CMLib.english().matchAnyCurrencySet(aaward.getCurrency());
+				if(currency != null)
+				{
+					final double denomination = CMLib.english().matchAnyDenomination(currency, aaward.getCurrency());
+					if(denomination != 0.0)
+					{
+						final double money=CMath.mul(aaward.getAmount(),  denomination);
+						Banker clanBank=null;
+						for(final Enumeration<Banker> b = CMLib.map().banks();b.hasMoreElements();)
+						{
+							final Banker B=b.nextElement();
+							if((B!=null)
+							&&(!B.amDestroyed())
+							&&(B.isAccountName(clan.clanID())))
+							{
+								clanBank=B;
+								currency=CMLib.beanCounter().getCurrency(B);
+								if((currency == null)
+								||(currency.length()==0))
+									currency="gold";
+								break;
+							}
+						}
+						if(clanBank == null)
+							CMLib.clans().clanAnnounce(clan.getResponsibleMember(),L("Your @x2 @x3 would have had @x1 deposited in its account, if it had one.",CMLib.beanCounter().getDenominationName(currency, denomination, aaward.getAmount()),clan.getGovernmentName(),clan.name()));
+						else
+						{
+							final MOB M=clan.getResponsibleMember();
+							CMLib.clans().clanAnnounce(clan.getResponsibleMember(),L("Your @x2 @x3 has @x1 deposited in its account.",CMLib.beanCounter().getDenominationName(currency, denomination, aaward.getAmount()),clan.getGovernmentName(),clan.name()));
+							CMLib.beanCounter().modifyBankGold(clanBank.bankChain(), clan.clanID(),
+									CMLib.utensils().getFormattedDate(M)
+									+": Deposit of "+CMLib.beanCounter().nameCurrencyShort(currency,money)
+									+": Achievement award",
+									currency, money);
+						}
+					}
+				}
+				break;
+			}
+			case STAT:
+				// awarded elsewhere, not directly to clan
+				break;
+			case EXPERTISE:
+				// awarded elsewhere, not directly to clan
+				break;
+			case QP:
+				// awarded elsewhere, not directly to clan
+				break;
+			case NOPURGE:
+				// awarded elsewhere, not directly to clan
+				break;
+			case TITLE:
+				// awarded elsewhere, not directly to clan
+				break;
+			case CLANXP:
+			{
+				final AmountAward aaward=(AmountAward)award;
+				CMLib.clans().clanAnnounce(clan.getResponsibleMember(),L("Your @x2 @x3 has been granted @x1 experience.",""+aaward.getAmount(),clan.getGovernmentName(),clan.name()));
+				clan.adjExp(null, aaward.getAmount());
+				break;
+			}
+			default:
+				break;
+
+			}
+		}
+	}
+
+	@Override
+	public String removeClanAchievementAwards(final MOB mob, final Clan clan)
+	{
+		if((clan == null)||(mob==null))
+			return "";
+		final StringBuilder str=new StringBuilder("");
+		for(final Enumeration<Tattoo> t=clan.tattoos();t.hasMoreElements();)
+		{
+			final Tattoo T=t.nextElement();
+			final Achievement A = this.getAchievement(T.getTattooName());
+			if((A!=null)
+			&&(mob.findTattoo(T.getTattooName())!=null))
+				str.append(removeAwards(mob, A));
+		}
+		return str.toString();
+	}
+
+	protected String removeAwards(final MOB mob, final Achievement achievement)
+	{
+		if(mob == null)
+			return "";
+		final PlayerStats pStats = mob.playerStats();
+		final StringBuilder awardMessage = new StringBuilder("");
+		final Award[] awardSet = achievement.getRewards();
+		for(final Award award : awardSet)
+		{
+			final String chkAwardDesc = award.getDescription();
+			boolean alsoAwardedElsewhere = false;
+			for(final Enumeration<Tattoo> t = mob.tattoos();t.hasMoreElements();)
+			{
+				final Tattoo T=t.nextElement();
+				final Achievement A = getAchievement(T.getTattooName());
+				if((A!=null)
+				&&(A!=achievement)
+				&&(!alsoAwardedElsewhere)
+				&&(mob.findTattoo(T.getTattooName())!=null))
+				{
+					for(final Award chkAward : A.getRewards())
+					{
+						if((chkAward.getType() == award.getType())
+						&&(chkAwardDesc.equals(award.getDescription())))
+						{
+							alsoAwardedElsewhere = true;
+							break;
+						}
+					}
+				}
+			}
+			switch(award.getType())
+			{
 			case ABILITY:
 			{
 				final AbilityAward aaward = (AbilityAward)award;
-				if((pStats!=null) && (pStats.getExtraQualifiedSkills().containsKey(aaward.getAbilityMapping().abilityID())))
+				if((pStats!=null)
+				&&(!alsoAwardedElsewhere)
+				&& (pStats.getExtraQualifiedSkills().containsKey(aaward.getAbilityMapping().abilityID())))
 				{
 					final Ability A=CMClass.getAbility(aaward.getAbilityMapping().abilityID());
 					if(A!=null)
 					{
 						pStats.getExtraQualifiedSkills().remove(A.ID());
+						if(!CMLib.ableMapper().qualifiesByLevel(mob, A))
+						{
+							final Ability myA=mob.fetchAbility(A.ID());
+							if(myA!=null)
+							{
+								mob.delAbility(myA);
+								final Ability effectA=mob.fetchEffect(myA.ID());
+								if(effectA.isNowAnAutoEffect())
+								{
+									effectA.unInvoke();
+									mob.delEffect(effectA);
+								}
+							}
+						}
 						awardMessage.append(L("^HYou have lost your qualification for @x1 at level @x2!\n\r^?",A.name(),""+aaward.getAbilityMapping().qualLevel()));
 					}
 				}
-				break;
-			}
-			case CURRENCY:
-			{
-				// is never un-awarded
 				break;
 			}
 			case STAT:
@@ -5686,9 +5875,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				final ExpertiseAward aaward = (ExpertiseAward)award;
 				if(pStats!=null)
 				{
-					if(pStats.getExtraQualifiedExpertises().containsKey(aaward.getExpertise().ID()))
+					if((pStats.getExtraQualifiedExpertises().containsKey(aaward.getExpertise().ID()))
+					&&(!alsoAwardedElsewhere))
 					{
-						pStats.getExtraQualifiedExpertises().remove(aaward.getExpertise().ID());
+						final ExpertiseDefinition E=aaward.getExpertise();
+						pStats.getExtraQualifiedExpertises().remove(E.ID());
+						boolean found=false;
+						for(final ExpertiseDefinition chkE : CMLib.expertises().myQualifiedExpertises(mob))
+						{
+							if(chkE.ID().equals(E.ID()))
+								found=true;
+						}
+						if(!found)
+							mob.delExpertise(E.ID());
 						awardMessage.append(L("^HYou have lost a qualification for @x1 at level @x2!\n\r^?",aaward.getExpertise().name(),""+aaward.getLevel()));
 					}
 				}
@@ -5707,7 +5906,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case NOPURGE:
 			{
 				final Command C=CMClass.getCommand("NoPurge");
-				if(C!=null)
+				if((C!=null)
+				&&(!alsoAwardedElsewhere))
 				{
 					try
 					{
@@ -5724,7 +5924,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case TITLE:
 			{
 				final TitleAward aaward=(TitleAward)award;
-				if((pStats != null) && (pStats.getTitles().contains(aaward.getTitle())))
+				if((pStats != null)
+				&& (pStats.getTitles().contains(aaward.getTitle()))
+				&&(!alsoAwardedElsewhere))
 				{
 					pStats.getTitles().remove(aaward.getTitle());
 					awardMessage.append(L("^HYou have lost the title: @x1!\n\r^?",CMStrings.replaceAll(aaward.getTitle(),"*",mob.Name())));
@@ -5734,6 +5936,21 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case XP:
 			{
 				// also, never lost
+				break;
+			}
+			case CLANXP:
+			{
+				// never lost to players per se
+				break;
+			}
+			case CLANCURRENCY:
+			{
+				// never lost to players per se
+				break;
+			}
+			case CURRENCY:
+			{
+				// is never un-awarded
 				break;
 			}
 			default:
@@ -5749,28 +5966,37 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if(holder.findTattoo(A.getTattoo())==null)
 		{
 			holder.addTattoo(A.getTattoo());
-			if(A.getAgent() != Agent.CLAN)
+			if(!CMLib.flags().isCloaked(mob))
 			{
-				final StringBuilder awardMessage = new StringBuilder(L("^HYou have completed the '@x1' @x2 achievement!^?\n\r",A.getDisplayStr(),A.getAgent().name().toLowerCase()));
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACHIEVEMENTS);
-				if(!CMLib.flags().isCloaked(mob))
-				{
-					final PlayerStats pStats = mob.playerStats();
-					final PlayerAccount account = (pStats != null) ? pStats.getAccount() : null;
-					final String name = ((A.getAgent() == Agent.ACCOUNT) && (account != null)) ? account.getAccountName() : mob.name();
-					for(int i=0;i<channels.size();i++)
-						CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has completed the '@x2' @x3 achievement!",name,A.getDisplayStr(),A.getAgent().name().toLowerCase()),true);
-				}
-				final Award[] awardSet = A.getRewards();
-				mob.tell(awardMessage.toString());
-				if(A.getAgent() == Agent.PLAYER)
-				{
-					giveAwards(mob,awardSet,flag);
-				}
+				final PlayerStats pStats = mob.playerStats();
+				final PlayerAccount account = (pStats != null) ? pStats.getAccount() : null;
+				final String name;
+				if((A.getAgent() == Agent.ACCOUNT) && (account != null))
+					name = account.getAccountName();
+				else
+				if((A.getAgent() == Agent.CLAN) && (holder instanceof Clan))
+					name = ((Clan)holder).clanID();
+				else
+					name = mob.name();
+				for(int i=0;i<channels.size();i++)
+					CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has completed the '@x2' @x3 achievement!",name,A.getDisplayStr(),A.getAgent().name().toLowerCase()),true);
+			}
+			if((A.getAgent() == Agent.CLAN)
+			&&(holder instanceof Clan))
+			{
+				final Clan C=(Clan)holder;
+				CMLib.clans().clanAnnounce(mob,L("Your @x2 @x3 has completed the @x1 achievement.",A.getDisplayStr(),C.getGovernmentName(),C.name()));
 			}
 			else
 			{
-				//TODO: the award to the clan.  Yay.
+				final StringBuilder awardMessage = new StringBuilder(L("^HYou have completed the '@x1' @x2 achievement!^?\n\r",A.getDisplayStr(),A.getAgent().name().toLowerCase()));
+				mob.tell(awardMessage.toString());
+			}
+			final Award[] awardSet = A.getRewards();
+			if(A.getAgent() == Agent.PLAYER)
+			{
+				giveAwards(mob,awardSet,flag);
 			}
 			return true;
 		}
@@ -5960,6 +6186,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				awardStr.append(" ").append(((CurrencyAward)award).getAmount())
 						.append(" ").append(((CurrencyAward)award).getCurrency());
 				break;
+			case CLANCURRENCY:
+				awardStr.append(" ").append(((CurrencyAward)award).getAmount())
+						.append(" clan ").append(((CurrencyAward)award).getCurrency());
+				break;
 			case STAT:
 				awardStr.append(" ").append(((StatAward)award).getAmount())
 						.append(" ").append(((StatAward)award).getStat());
@@ -5977,6 +6207,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case XP:
 				awardStr.append(" ").append(((AmountAward)award).getAmount())
 						.append(" ").append("XP");
+				break;
+			case CLANXP:
+				awardStr.append(" ").append(((AmountAward)award).getAmount())
+						.append(" ").append("CLANXP");
 				break;
 			case NOPURGE:
 				awardStr.append(" 1 NOPURGE");
@@ -6517,6 +6751,43 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							somethingDone=true;
 						}
 						giveAwards(mob, A.getRewards(), flag);
+					}
+				}
+			}
+			if(somethingDone)
+			{
+				loadPlayerSkillAwards(mob, pStats);
+				grantAbilitiesAndExpertises(mob);
+			}
+		}
+	}
+
+	@Override
+	public void loadClanAchievements(final MOB mob, final AchievementLoadFlag flag)
+	{
+		boolean somethingDone = false;
+		final PlayerStats pStats = (mob==null) ? null : mob.playerStats();
+		for(final Pair<Clan,Integer> cp : mob.clans())
+		{
+			final Tattooable clan = cp.first;
+			if((mob!=null) && (clan != null))
+			{
+				for(final Enumeration<Tattoo> t=clan.tattoos();t.hasMoreElements();)
+				{
+					final Tattoo T = t.nextElement();
+					final Achievement A=getAchievement(T.getTattooName());
+					if(A != null)
+					{
+						if(mob.findTattoo(T.getTattooName())==null)
+						{
+							if((flag != AchievementLoadFlag.CHARCR_PRELOAD)
+							&&(flag != AchievementLoadFlag.REMORT_PRELOAD))
+							{
+								mob.addTattoo(A.getTattoo());
+								somethingDone=true;
+							}
+							giveAwards(mob, A.getRewards(), flag);
+						}
 					}
 				}
 			}

@@ -5862,6 +5862,7 @@ public class Import extends StdCommand
 							M.playerStats().setLastUpdated(System.currentTimeMillis());
 						CMLib.achievements().loadPlayerSkillAwards(M, M.playerStats());
 						CMLib.achievements().loadAccountAchievements(M,AchievementLoadFlag.NORMAL);
+						CMLib.achievements().loadClanAchievements(M,AchievementLoadFlag.NORMAL);
 						CMLib.database().DBCreateCharacter(M);
 						CMLib.players().addPlayer(M);
 						Log.sysOut("Import","Imported user: "+M.Name());

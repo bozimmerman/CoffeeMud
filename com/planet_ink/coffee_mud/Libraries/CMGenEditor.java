@@ -5143,8 +5143,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(!found)
 					{
 						final MOB M=CMLib.players().getLoadPlayer(newName);
-						if((M!=null)&&(M.getClanRole(C.clanID())!=null))
+						if((M!=null)
+						&&(M.getClanRole(C.clanID())!=null))
+						{
 							C.delMember(M);
+							final String removeMsg =CMLib.achievements().removeClanAchievementAwards(M, C);
+							if((removeMsg != null)&&(removeMsg.length()>0))
+								M.tell(removeMsg);
+						}
 					}
 				}
 			}

@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
@@ -778,7 +779,8 @@ public class DefaultClan implements Clan
 			return false;
 		final Pair<Clan,Integer> p=M.getClanRole(clanID());
 
-		if((p!=null) && (getAuthority(p.second.intValue(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))
+		if((p!=null)
+		&& (getAuthority(p.second.intValue(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))
 		{
 			final CharClass CC=getClanClassC();
 			if((CC!=null)
@@ -789,6 +791,13 @@ public class DefaultClan implements Clan
 				did=true;
 				M.recoverCharStats();
 			}
+			CMLib.achievements().loadClanAchievements(M,AchievementLoadFlag.NORMAL);
+		}
+		else
+		{
+			final String removeMsg =CMLib.achievements().removeClanAchievementAwards(M, this);
+			if((removeMsg != null)&&(removeMsg.length()>0))
+				M.tell(removeMsg);
 		}
 
 		// this is going to need to be smarter... get a list of all possible spell grants from all clans,

@@ -108,6 +108,8 @@ public class Prop_ReRollStats extends Property
 								{
 									CMLib.achievements().loadAccountAchievements(M,AchievementLoadFlag.REMORT_POSTLOAD);
 									M.recoverCharStats();
+									CMLib.achievements().loadClanAchievements(M,AchievementLoadFlag.REMORT_POSTLOAD);
+									M.recoverCharStats();
 								}
 							},1000);
 						}

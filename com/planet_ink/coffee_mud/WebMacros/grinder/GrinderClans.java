@@ -70,7 +70,12 @@ public class GrinderClans
 				{
 					final MOB M=CMLib.players().getLoadPlayer(member.name);
 					if(M!=null)
+					{
 						C.delMember(M);
+						final String removeMsg =CMLib.achievements().removeClanAchievementAwards(M, C);
+						if((removeMsg != null)&&(removeMsg.length()>0))
+							M.tell(removeMsg);
+					}
 					else
 						CMLib.database().DBUpdateClanMembership(member.name, C.clanID(), -1);
 				}
