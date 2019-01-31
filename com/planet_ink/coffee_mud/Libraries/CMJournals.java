@@ -1040,7 +1040,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				{
 					if(paramAll==null)
 					{
-						final String line=paramAll;
+						final String line=this.input;
 						if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
 						{
 							final int ln=CMath.s_int(line);
