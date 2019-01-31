@@ -225,7 +225,7 @@ public class Skill_RacialLore extends StdSkill
 			tidbits.add(L("they require @x1 years to reach maturity",""+targetR.getAgingChart()[Race.AGE_MATURE]));
 			for(final long loc : Wearable.CODES.ALL())
 			{
-				if(CMath.bset(targetR.forbiddenWornBits(),loc))
+				if((loc != Item.IN_INVENTORY) && (CMath.bset(targetR.forbiddenWornBits(),loc)))
 					tidbits.add(L("due to their anatomy, they can't wear normal gear on their @x1",Wearable.CODES.NAME(loc).toLowerCase()));
 			}
 			for(final int rsc : targetR.getBreathables())
