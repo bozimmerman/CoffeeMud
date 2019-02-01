@@ -142,7 +142,7 @@ public class Spell_ClanExperience extends Spell
 			return false;
 		}
 
-		if(amt >= mob.getExpNeededLevel())
+		if(amt >= mob.getExpNeededDelevel())
 		{
 			mob.tell(L("You haven't gained enough experience this level to donate that much."));
 			return false;
