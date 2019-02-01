@@ -3830,6 +3830,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			for(int i=0;i<channels.size();i++)
 				CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has logged on.",mob.Name()),true);
 		}
+		for(final Pair<Clan,Integer> clan : mob.clans())
+			clan.first.updateClanPrivileges(mob);
 		setGlobalBitmaps(mob);
 		return LoginResult.NORMAL_LOGIN;
 	}

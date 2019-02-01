@@ -5783,6 +5783,33 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		return str.toString();
 	}
 
+	@Override
+	public String fixAwardDescription(final Achievement A, final Award award, final MOB forM, Tattooable forT)
+	{
+		if(award == null)
+			return "";
+		if(award.getType() == AwardType.TITLE)
+		{
+			final String name = (forM == null) ? "[Name]" : forM.name();
+			if((A!=null)
+			&&(A.getAgent()==Agent.CLAN)
+			&&(!(forT instanceof Clan))
+			&&(forM instanceof MOB))
+			{
+				for(final Pair<Clan, Integer> p : forM.clans())
+				{
+					final Clan C = p.first;
+					if(C.findTattoo(A.getTattoo()) != null)
+						forT=C;
+				}
+			}
+			final String clanType = (forT instanceof Clan) ? ((Clan)forT).getGovernmentName() : "[CLANTYPE]";
+			final String clanName = (forT instanceof Clan) ? ((Clan)forT).clanID() : "[CLANNAME]";
+			return CMStrings.replaceAlls(award.getDescription(), new String[][] {{"*",name},{"@1",clanType},{"@2",clanName}});
+		}
+		return award.getDescription();
+	}
+
 	protected String removeAwards(final MOB mob, final Clan forClan, final Achievement achievement)
 	{
 		if(mob == null)
@@ -6876,7 +6903,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				str.append("\n\r").append(CMStrings.padRight(L("Rewards Granted:"),cols)).append(" ").append(L("Immediately"));
 		}
 		for(final Award W : A.getRewards())
-			str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ").append(W.getDescription());
+		{
+			str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ")
+				.append(CMLib.achievements().fixAwardDescription(A, W, null, null));
+		}
 		str.append("\n\r");
 		helpMap.put(A.getTattoo(), str.toString());
 		return str.toString();

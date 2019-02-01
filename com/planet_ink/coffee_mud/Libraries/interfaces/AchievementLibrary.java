@@ -13,7 +13,9 @@ import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.Agent;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -665,6 +667,17 @@ public interface AchievementLibrary extends CMLibrary
 	 * @return the help entry, or ""
 	 */
 	public String getAchievementsHelp(String ID, boolean exact);
+
+	/**
+	 * Returns a friendly description of the award, adjusting for the recipient, and
+	 * who the award was actually awarded to.
+	 * @param A the achievement the award came from
+	 * @param award the award
+	 * @param forM the recipient of the award
+	 * @param forT the earner of the award (mob, clan, etc...)
+	 * @return the friendliest award description possible
+	 */
+	public String fixAwardDescription(final Achievement A, final Award award, final MOB forM, final Tattooable forT);
 
 	/**
 	 * When a clan member is removed from his clan for any reason, this

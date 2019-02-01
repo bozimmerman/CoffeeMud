@@ -79,7 +79,7 @@ public class Achievements extends StdCommand
 		return null;
 	}
 
-	private List<Achievement> getLowestNumberedTattoos(final Agent agent, final Set<String> WonList)
+	private List<Achievement> getLowestNumberedTattoos(final Agent agent, final Set<String> wonList)
 	{
 		final List<Achievement> useList = new LinkedList<Achievement>();
 		final HashSet<String> ignoredStarters = new HashSet<String>();
@@ -87,7 +87,7 @@ public class Achievements extends StdCommand
 		{
 			final Achievement A=a.nextElement();
 			final String tattooName = A.getTattoo();
-			if(WonList.contains(A.getTattoo()))
+			if(wonList.contains(A.getTattoo()))
 				useList.add(A);
 			else
 			if((tattooName.length()>1)
@@ -205,7 +205,7 @@ public class Achievements extends StdCommand
 						if(A.getRewards().length>0)
 							str.append(L("\n\rFrom the achievement '@x1':",A.getDisplayStr()));
 						for(final Award award : A.getRewards())
-							str.append("\n\r"+(i++)+") "+award.getDescription());
+							str.append("\n\r"+(i++)+") "+CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
 					}
 					str.append("\n\r");
 					mob.tell(mob,whoM,null,str.toString());
@@ -245,7 +245,7 @@ public class Achievements extends StdCommand
 					if(A.getRewards().length>0)
 						str.append(L("\n\rFrom the achievement '@x1':",A.getDisplayStr()));
 					for(final Award award : A.getRewards())
-						str.append("\n\r"+(i++)+") "+award.getDescription());
+						str.append("\n\r"+(i++)+") "+CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
 				}
 				str.append("\n\r");
 				mob.tell(whoM,null,null,str.toString());
@@ -263,7 +263,9 @@ public class Achievements extends StdCommand
 						if(A.getRewards().length>0)
 							str.append(L("\n\rFrom the achievement '@x1':",A.getDisplayStr()));
 						for(final Award award : A.getRewards())
-							str.append("\n\r"+(i++)+") "+award.getDescription());
+						{
+							str.append("\n\r"+(i++)+") "+CMLib.achievements().fixAwardDescription(A, award, whoM, whoM));
+						}
 					}
 				}
 				if(str.length()==0)

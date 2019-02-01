@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
@@ -774,7 +775,7 @@ public class DefaultClan implements Clan
 	@Override
 	public boolean updateClanPrivileges(final MOB M)
 	{
-		boolean did=false;
+		boolean didUpdatePlayer=false;
 		if(M==null)
 			return false;
 		final Pair<Clan,Integer> p=M.getClanRole(clanID());
@@ -788,7 +789,7 @@ public class DefaultClan implements Clan
 			&&(M.baseCharStats().getCurrentClass()!=CC))
 			{
 				M.baseCharStats().setCurrentClass(CC);
-				did=true;
+				didUpdatePlayer=true;
 				M.recoverCharStats();
 			}
 			CMLib.achievements().loadClanAchievements(M,AchievementLoadFlag.NORMAL);
@@ -899,13 +900,13 @@ public class DefaultClan implements Clan
 					else
 					if(M.isMine(I))
 						I.destroy();
-					did=true;
+					didUpdatePlayer=true;
 				}
 			}
 		}
-		if((did)&&(!CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS)))
+		if((didUpdatePlayer)&&(!CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS)))
 			CMLib.database().DBUpdatePlayer(M);
-		return did;
+		return didUpdatePlayer;
 	}
 
 	@Override
@@ -1072,6 +1073,7 @@ public class DefaultClan implements Clan
 						  +":^.^N "+crewList(members, pos.getRoleID())+"\n\r");
 			}
 		}
+
 		final List<String> control=new ArrayList<String>();
 		final List<Area> controlledAreas=getControlledAreas();
 		for(final Area A : controlledAreas)
@@ -1120,6 +1122,20 @@ public class DefaultClan implements Clan
 				}
 			}
 		}
+		final List<Achievement> achievements = new ArrayList<Achievement>(); // current users achievements rechecked above
+		for(final Tattoo tatt : this.tattoos)
+		{
+			final Achievement A=CMLib.achievements().getAchievement(tatt.getTattooName());
+			if(A!=null) // let's just trust this one.
+				achievements.add(A);
+		}
+		if(achievements.size()>0)
+		{
+			msg.append("-----------------------------------------------------------------\n\r");
+			msg.append(L("^xClan Achievements:^.^N\n\r"));
+			for(final Achievement A : achievements)
+				msg.append("^N"+A.getDisplayStr()+"\n\r");
+		}
 		if(((mobClanRole!=null)&&(getAuthority(mobClanRole.second.intValue(),Function.CLAN_BENEFITS)!=Clan.Authority.CAN_NOT_DO))||sysmsgs)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
@@ -1139,6 +1155,12 @@ public class DefaultClan implements Clan
 						||(aMap.extFields().containsKey(mobClanRole.second.toString())))
 							names.add(A.name()+(aMap.autoGain()?"":"(q)")+((aMap.extFields().size()>0)?"*":""));
 					}
+				}
+				for(final Achievement A : achievements)
+				{
+					final Award[] awards = A.getRewards();
+					for(final Award award : awards)
+						names.add(CMLib.achievements().fixAwardDescription(A, award, mob, mob));
 				}
 				msg.append(CMLib.lister().makeColumns(mob,names,null,3));
 				msg.append("\n\r");
