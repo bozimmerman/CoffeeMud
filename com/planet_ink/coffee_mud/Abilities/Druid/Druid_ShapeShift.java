@@ -244,7 +244,10 @@ public class Druid_ShapeShift extends StdAbility
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
+		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
+			this.myRaceLevel=-1;
+		}
 	}
 
 	public int getClassLevel(final MOB mob)
@@ -562,7 +565,7 @@ public class Druid_ShapeShift extends StdAbility
 					{
 						final String form=forms.get(A.myRaceCode).form;
 						list.append(CMStrings.padLeft(""+(i+1),2)+") "+form+": ");
-						final int raceLevel=A.getRaceLevel(mob);
+						final int raceLevel=A.getMaxRaceLevel(A.getClassLevel(mob));
 						for(int i1=raceLevel;i1>=0;i1--)
 						{
 							final String shape=forms.get(A.myRaceCode).shapes[i1];
