@@ -251,7 +251,18 @@ public class ThinRoom implements Room
 		&&(direction>=0)
 		&&(direction<Directions.NUM_DIRECTIONS())
 		&&(R.rawDoors()[direction]==this))
+		{
 			R.rawDoors()[direction]=myR;
+			final MOB mob=CMClass.getFactoryMOB("the wind",1,R);
+			try
+			{
+				R.executeMsg(mob, CMClass.getMsg(mob, R, CMMsg.MSG_NEWROOM, null));
+			}
+			finally
+			{
+				mob.destroy();
+			}
+		}
 		recurse=false;
 		if(myR instanceof ThinRoom)
 			return myR;

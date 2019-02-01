@@ -911,6 +911,7 @@ public class Create extends StdCommand
 		R.setDisplayText(CMClass.classID(R)+"-"+R.roomID());
 		R.setDescription("");
 		CMLib.database().DBCreateRoom(R);
+		R.executeMsg(mob, CMClass.getMsg(mob, R, CMMsg.MSG_NEWROOM, null));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The size of the world just increased!"));
 		mob.tell(L("You are now at @x1.",R.roomID()));
 		R.bringMobHere(mob,true);

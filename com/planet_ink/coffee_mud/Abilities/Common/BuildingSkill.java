@@ -633,6 +633,15 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				Log.debugOut(ID(),R.roomID()+" updated.");
 			CMLib.database().DBUpdateRoom(R);
 			CMLib.database().DBUpdateExits(R);
+			final MOB mob=CMClass.getFactoryMOB("the wind",1,R);
+			try
+			{
+				R.executeMsg(mob, CMClass.getMsg(mob, R, CMMsg.MSG_NEWROOM, null));
+			}
+			finally
+			{
+				mob.destroy();
+			}
 			room.destroy();
 		}
 		return R;
@@ -833,6 +842,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			newRoom.getArea().fillInAreaRoom(newRoom);
 			CMLib.database().DBUpdateExits(newRoom);
 			CMLib.database().DBUpdateExits(room);
+			newRoom.executeMsg(mob, CMClass.getMsg(mob, newRoom, CMMsg.MSG_NEWROOM, null));
 		}
 		return newRoom;
 	}

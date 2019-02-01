@@ -226,7 +226,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.baseState().setMovement(getLevelMove(mob));
 		if(mob.getWimpHitPoint()>0)
 			mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
-		mob.setExperience(CMLib.leveler().getLevelExperience(mob.phyStats().level()));
+		mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()));
 		return mob;
 	}
 

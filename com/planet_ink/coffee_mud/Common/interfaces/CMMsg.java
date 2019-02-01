@@ -1197,6 +1197,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_GRAVITY=134;
 	/** MINOR_MASK minor action code type, denoting a legal state change */
 	public static final int TYP_LEGALSTATE=135;
+	/** MINOR_MASK minor action code type, denoting a legal state change */
+	public static final int TYP_NEWROOM=136;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1226,7 +1228,7 @@ public interface CMMsg extends CMCommon
 		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION","AROMA","DUELLOSS",
 		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
 		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE",
-		"COMMANDREJECT","RECIPELEARNED", "GRAVITY", "LEGALSTATE"
+		"COMMANDREJECT","RECIPELEARNED", "GRAVITY", "LEGALSTATE", "NEWROOM"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1558,6 +1560,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_GRAVITY=MASK_MOVE|TYP_GRAVITY;
 	/** combined MAJOR and MINOR codes for useful event message type for a lega state change*/
 	public static final int MSG_LEGALSTATE=MASK_CNTRLMSG|TYP_LEGALSTATE;
+	/** combined MAJOR and MINOR codes for useful event message type for room being created*/
+	public static final int MSG_NEWROOM=MASK_CNTRLMSG|TYP_NEWROOM;
 
 	/**
 	 * An enum to use for an external message check from inside

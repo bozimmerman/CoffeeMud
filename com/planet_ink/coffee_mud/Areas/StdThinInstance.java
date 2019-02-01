@@ -165,11 +165,20 @@ public class StdThinInstance extends StdThinArea
 					}
 				}
 			}
-			for(final Enumeration<MOB> e=newR.inhabitants();e.hasMoreElements();)
-				e.nextElement().bringToLife(newR,true);
+			//for(final Enumeration<MOB> e=newR.inhabitants();e.hasMoreElements();) // is this really necc?
+			//	e.nextElement().bringToLife(newR,true);
 			newR.startItemRejuv();
 			fillInAreaRoom(newR);
 			newR.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+			final MOB mob=CMClass.getFactoryMOB("the wind",1,newR);
+			try
+			{
+				newR.executeMsg(mob, CMClass.getMsg(mob, newR, CMMsg.MSG_NEWROOM, null));
+			}
+			finally
+			{
+				mob.destroy();
+			}
 			return newR;
 		}
 		return existingR;

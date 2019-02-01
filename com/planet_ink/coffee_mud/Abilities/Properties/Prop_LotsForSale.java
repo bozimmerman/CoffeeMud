@@ -343,6 +343,15 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 						if(title!=null)
 							CMLib.law().colorRoomForSale(room,title,true);
 						room.getArea().fillInAreaRoom(room);
+						final MOB mob=CMClass.getFactoryMOB("the wind",1,room);
+						try
+						{
+							room.executeMsg(mob, CMClass.getMsg(mob, room, CMMsg.MSG_NEWROOM, null));
+						}
+						finally
+						{
+							mob.destroy();
+						}
 					}
 				});
 				didAnything=true;

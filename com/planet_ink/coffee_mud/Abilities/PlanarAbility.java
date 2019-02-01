@@ -895,14 +895,10 @@ public class PlanarAbility extends StdAbility
 	}
 
 	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost, msg))
-			return false;
-		switch(msg.targetMinor())
+		if(msg.targetMinor()==CMMsg.TYP_NEWROOM)
 		{
-		case CMMsg.TYP_LOOK:
-		case CMMsg.TYP_EXAMINE:
 			if((msg.target() instanceof Room)
 			&&(!roomDone((Room)msg.target()))
 			&&(((Room)msg.target()).getArea()==planeArea))
@@ -910,7 +906,17 @@ public class PlanarAbility extends StdAbility
 				doneRoom((Room)msg.target());
 				fixRoom((Room)msg.target());
 			}
-			break;
+		}
+		super.executeMsg(myHost, msg);
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		switch(msg.targetMinor())
+		{
 		case CMMsg.TYP_WEAPONATTACK:
 			if((msg.tool() instanceof AmmunitionWeapon)
 			&&(((AmmunitionWeapon)msg.tool()).requiresAmmunition())
