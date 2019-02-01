@@ -235,7 +235,7 @@ public class Skill_PrisonAssignment extends StdSkill
 		final String amtStr=CMLib.beanCounter().nameCurrencyLong(target, amt);
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob, currency) < amt)
 		{
-			CMLib.commands().postSay(mob, L("That kind of paperwork is tricky, it can't be donefor less than @x1.",amtStr));
+			CMLib.commands().postSay(target, L("That kind of paperwork is tricky, it can't be donefor less than @x1.",amtStr));
 			return false;
 		}
 
