@@ -90,7 +90,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			final Area A=CMLib.map().areaLocation(E);
 			final TimeClock C;
 			if(A != null)
-				C=((Area)E).getTimeObj();
+				C=A.getTimeObj();
 			else
 				C=CMLib.time().globalClock();
 			if(C!=null)
