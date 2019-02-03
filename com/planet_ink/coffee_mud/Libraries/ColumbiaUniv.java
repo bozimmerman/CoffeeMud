@@ -237,6 +237,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		{
 			final int[] xFlagCache=new int[ExpertiseLibrary.Flag.values().length];
 			final CharClass charClass = mob.baseCharStats().getCurrentClass();
+			if(charClass == null)
+				return 0;
 			for(final ExpertiseLibrary.Flag flag : ExpertiseLibrary.Flag.values())
 			{
 				xFlagCache[flag.ordinal()]=CMLib.expertises().getApplicableExpertiseLevel(abilityID,flag,mob)
