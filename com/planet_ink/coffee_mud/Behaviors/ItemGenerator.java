@@ -359,7 +359,7 @@ public class ItemGenerator extends ActiveTicker
 			tickDown = maxTicks;
 			return true;
 		}
-		int attempts=10000;
+		int attempts=avgItems*10;
 		final GeneratedItemSet items=getItems(ticking,getParms());
 		if((items==null)||(items.size()<2))
 			return true;
@@ -368,7 +368,8 @@ public class ItemGenerator extends ActiveTicker
 
 		while((maintained.size()<avgItems)
 		&&(((--attempts)>0))
-		&&(items.size()>1))
+		&&(items.size()>1)
+		&&(!E.amDestroyed()))
 		{
 			final double totalValue=items.totalValue;
 			final int maxValue=items.maxValue;
