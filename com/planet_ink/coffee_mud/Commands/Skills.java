@@ -117,11 +117,11 @@ public class Skills extends StdCommand
 	public boolean isDomainIncludedInAnyAbility(final int domain, final int acode)
 	{
 		@SuppressWarnings("unchecked")
-		Map<Integer, Set<Integer>> completeDomainMap = (Map<Integer, Set<Integer>>)Resources.getResource("SYSYETM_ABLEDOMAINMAP");
+		Map<Integer, Set<Integer>> completeDomainMap = (Map<Integer, Set<Integer>>)Resources.getResource("SYSTEM_ABLEDOMAINMAP");
 		if(completeDomainMap == null)
 		{
 			completeDomainMap = new SHashtable<Integer,Set<Integer>>();
-			Resources.submitResource("SYSYETM_ABLEDOMAINMAP",completeDomainMap);
+			Resources.submitResource("SYSTEM_ABLEDOMAINMAP",completeDomainMap);
 		}
 		STreeSet<Integer> V=(STreeSet<Integer>)completeDomainMap.get(Integer.valueOf(domain));
 		if(V==null)
