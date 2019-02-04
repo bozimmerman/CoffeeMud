@@ -72,9 +72,13 @@ public class Song_Death extends Song
 		if(mob==invoker)
 			return true;
 		final MOB invoker=(invoker()!=null) ? invoker() : mob;
-
-		final int hpLoss=(int)Math.round(Math.floor(mob.curState().getHitPoints()*(0.07+(0.02*(1+super.getXLEVELLevel(invoker()))))));
-		CMLib.combat().postDamage(invoker,mob,this,hpLoss,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("^SThe painful song <DAMAGE> <T-NAME>!^?"));
+		int hpLoss=(int)Math.round(Math.floor(mob.curState().getHitPoints()*(0.07+(0.02*(1+super.getXLEVELLevel(invoker()))))));
+		if(invoker != null)
+		{
+			if(invoker.location() != mob.location())
+				hpLoss /= 2;
+			CMLib.combat().postDamage(invoker,mob,this,hpLoss,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("^SThe painful song <DAMAGE> <T-NAME>!^?"));
+		}
 		return true;
 	}
 
