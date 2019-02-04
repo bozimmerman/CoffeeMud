@@ -1701,6 +1701,7 @@ public class MUD extends Thread implements MudHost
 
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("QUESTS")))
 			{
+				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Quests");
 				CMLib.quests().shutdown();
 				for(final Quest Q : CMLib.database().DBReadQuests())
 					CMLib.quests().addQuest(Q);

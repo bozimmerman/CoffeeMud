@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
@@ -52,9 +53,11 @@ public class Prop_LimitedItems extends Property
 		return Ability.CAN_ITEMS;
 	}
 
-	public static Map<String,List<Item>> instances=new Hashtable<String,List<Item>>();
-	
-	public static boolean[]		playersLoaded	= new boolean[1];
+	public static Map<String, List<Item>>	instances		= new Hashtable<String, List<Item>>();
+	public static boolean[]					playersLoaded	= new boolean[1];
+
+	protected volatile WeakReference<Physical> lastAdded = new WeakReference<Physical>(null);
+
 	protected volatile boolean	norecurse		= false;
 	protected boolean			destroy			= false;
 	protected int				maxItems		= 0;
@@ -68,9 +71,18 @@ public class Prop_LimitedItems extends Property
 	}
 
 	@Override
+	public void setAffectedOne(final Physical P)
+	{
+		super.setAffectedOne(P);
+		if(P != null)
+			lastAdded = new WeakReference<Physical>(P);
+	}
+
+	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
+		norecurse = false;
 		maxItems=1;
 		if(newMiscText.length()>0)
 		{
@@ -84,7 +96,56 @@ public class Prop_LimitedItems extends Property
 				maxItems = CMath.s_int(numStr);
 		}
 	}
-	
+
+	@Override
+	public CMObject copyOf()
+	{
+		final Physical affP = affected;
+		final Prop_LimitedItems meCopy = (Prop_LimitedItems)super.copyOf();
+		meCopy.norecurse=false;
+		if((affP instanceof Item)
+		&&(((Item)affP).owner() != null)
+		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		&&(!canBeUninvoked()))
+		{
+			CMLib.threads().scheduleRunnable(new Runnable(){
+				final Prop_LimitedItems chkA = meCopy;
+				final String miscText = text();
+				@Override
+				public void run()
+				{
+					final Physical chkAoldP;
+					synchronized(chkA)
+					{
+						chkAoldP = chkA.lastAdded.get();
+					}
+					if(chkAoldP instanceof Item)
+					{
+						final Item I=(Item)chkAoldP;
+						final ItemPossessor P;
+						synchronized(I)
+						{
+							P=I.owner();
+						}
+						if((!I.amDestroyed())
+						&&(CMLib.flags().isInTheGame(I, false))
+						&&(I.fetchEffect(ID())==null))
+						{
+							chkA.lastAdded = new WeakReference<Physical>(null);
+							final Prop_LimitedItems copyMe = new Prop_LimitedItems();
+							copyMe.setMiscText(miscText);
+							copyMe.norecurse=false;
+							I.addNonUninvokableEffect(copyMe);
+							if(P instanceof Physical)
+								((Physical)P).recoverPhyStats();
+						}
+					}
+				}
+			}, 5000);
+		}
+		return meCopy;
+	}
+
 	protected void countIfNecessary(final Item I)
 	{
 		if(CMLib.flags().isInTheGame(I,false))
@@ -133,7 +194,9 @@ public class Prop_LimitedItems extends Property
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);
-		if((msg.targetMinor()==CMMsg.TYP_ENTER)
+		if(((msg.targetMinor()==CMMsg.TYP_ENTER)
+			||(msg.targetMinor()==CMMsg.TYP_LOOK)
+			||(msg.targetMinor()==CMMsg.TYP_GET))
 		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 		&&(affected instanceof Item)
 		&&((!(((Item)affected).owner() instanceof MOB))
@@ -157,11 +220,11 @@ public class Prop_LimitedItems extends Property
 		try
 		{
 			norecurse=true;
-	
+
 			final Physical affected = this.affected;
 			if(affected == null)
 				return;
-	
+
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNLOCATABLE);
 			synchronized(playersLoaded)
 			{

@@ -3432,8 +3432,10 @@ public class CMMap extends StdLibrary implements WorldMap
 				area = getStartArea(AE);
 			addScriptHost(area, room, AE);
 			if(o instanceof MOB)
+			{
 				for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
 					addScriptHost(area, room, i.nextElement());
+			}
 		}
 	}
 
