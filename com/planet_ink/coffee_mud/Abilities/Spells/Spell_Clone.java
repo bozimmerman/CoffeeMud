@@ -105,6 +105,22 @@ public class Spell_Clone extends Spell
 			{
 				if(msg.sourceMinor()==CMMsg.TYP_DEATH)
 				{
+					final List<Item> destroyThese = new ArrayList<Item>(msg.source().numItems());
+					for(final Enumeration<Item> i=msg.source().items();i.hasMoreElements();)
+					{
+						final Item I=i.nextElement();
+						if(I!=null)
+						{
+							final Ability A=I.fetchEffect("Prop_HaveZapper");
+							if(A!=null)
+							{
+								if(A.text().equals("-NAMES"))
+									destroyThese.add(I);
+							}
+						}
+					}
+					for(final Item I : destroyThese)
+						I.destroy();
 					unInvoke();
 				}
 			}
@@ -230,6 +246,10 @@ public class Spell_Clone extends Spell
 				((Wand)I).setUsesRemaining(0);
 				((Wand)I).setSpell(null);
 			}
+			I.delEffect(I.fetchEffect("Prop_HaveZapper"));
+			final Ability A=CMClass.getAbility("Prop_HaveZapper");
+			A.setMiscText("-NAMES");
+			I.addNonUninvokableEffect(A);
 			I.recoverPhyStats();
 			I.text();
 		}
