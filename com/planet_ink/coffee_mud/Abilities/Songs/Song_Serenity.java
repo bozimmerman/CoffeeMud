@@ -75,6 +75,7 @@ public class Song_Serenity extends Song
 			return super.okMessage(myHost,msg);
 		if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(CMLib.flags().canBeHeardSpeakingBy(invoker,msg.source()))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(msg.target()!=null))
 		{
 			msg.source().makePeace(true);

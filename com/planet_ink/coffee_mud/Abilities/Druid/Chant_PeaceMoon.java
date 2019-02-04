@@ -102,10 +102,11 @@ public class Chant_PeaceMoon extends Chant
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected instanceof Room)
-		if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
-		||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-		||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MALICIOUS)))
+		if((affected instanceof Room)
+		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
+			||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+			||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MALICIOUS)))
+		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS)))
 		{
 			if((msg.target()!=null)
 			   &&(msg.source()!=msg.target()))
