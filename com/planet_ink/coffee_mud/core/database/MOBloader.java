@@ -230,6 +230,48 @@ public class MOBloader
 		return mob;
 	}
 
+	public PairList<String,String> DBReadPlayerItemData(String name, final String searchStr)
+	{
+		final PairList<String,String> items=new PairVector<String,String>();
+		if((name==null)||(name.length()==0))
+			return items;
+		name=CMStrings.capitalizeAndLower(DB.injectionClean(name));
+		DBConnection D=null;
+		// now grab the items
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT * FROM CMCHIT WHERE CMUSERID='"+name+"'");
+			while(R.next())
+			{
+				final String itemID=DBConnections.getRes(R,"CMITID");
+				final Item newItem=CMClass.getItemPrototype(itemID);
+				if(newItem==null)
+					Log.errOut("MOB","Couldn't find item '"+itemID+"'");
+				else
+				{
+					final String text=DBConnections.getResQuietly(R,"CMITTX");
+					if(text != null)
+					{
+						if((searchStr == null)
+						||(text.indexOf(searchStr)>=0))
+							items.add(itemID, text);
+					}
+				}
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return items;
+	}
+	
+	
 	public MOB DBRead(final String name)
 	{
 		if((name==null)||(name.length()==0))
@@ -248,10 +290,10 @@ public class MOBloader
 		CMLib.players().addPlayer(mob);
 		mob.recoverPhyStats();
 		mob.recoverCharStats();
-		Room oldLoc=mob.location();
+		Room prevRoom=mob.location();
 		boolean inhab=false;
-		if(oldLoc!=null)
-			inhab=oldLoc.isInhabitant(mob);
+		if(prevRoom!=null)
+			inhab=prevRoom.isInhabitant(mob);
 		mob.setLocation(mob.getStartRoom());
 		DBConnection D=null;
 		// now grab the items
@@ -259,8 +301,8 @@ public class MOBloader
 		{
 			D=DB.DBFetch();
 			final ResultSet R=D.query("SELECT * FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'");
-			final Hashtable<String,Item> itemNums=new Hashtable<String,Item>();
-			final Hashtable<Item,String> itemLocs=new Hashtable<Item,String>();
+			final Map<String,Item> itemNums=new HashMap<String,Item>();
+			final Map<Item,String> itemLocs=new HashMap<Item,String>();
 			while(R.next())
 			{
 				final String itemNum=DBConnections.getRes(R,"CMITNM");
@@ -308,12 +350,12 @@ public class MOBloader
 					{
 						newItem.setMiscText(text);
 					}
-					if((oldLoc==null)
+					if((prevRoom==null)
 					&&(newItem instanceof BoardableShip))
 					{
 						final Area area=((BoardableShip)newItem).getShipArea();
 						if(area != null)
-							oldLoc=area.getRoom(oldLocID[0]);
+							prevRoom=area.getRoom(oldLocID[0]);
 					}
 					final String loc=DBConnections.getResQuietly(R,"CMITLO");
 					if(loc.length()>0)
@@ -347,9 +389,8 @@ public class MOBloader
 					}
 				}
 			}
-			for(final Enumeration<Item> e=itemLocs.keys();e.hasMoreElements();)
+			for(final Item keyItem : itemLocs.keySet())
 			{
-				final Item keyItem=e.nextElement();
 				final String location=itemLocs.get(keyItem);
 				final Item container=itemNums.get(location);
 				if(container instanceof Container)
@@ -369,11 +410,11 @@ public class MOBloader
 			DB.DBDone(D);
 		}
 		D=null;
-		if(oldLoc!=null)
+		if(prevRoom!=null)
 		{
-			mob.setLocation(oldLoc);
-			if(inhab&&(!oldLoc.isInhabitant(mob)))
-				oldLoc.addInhabitant(mob);
+			mob.setLocation(prevRoom);
+			if(inhab&&(!prevRoom.isInhabitant(mob)))
+				prevRoom.addInhabitant(mob);
 		}
 		else
 		if((mob.location()!=null)

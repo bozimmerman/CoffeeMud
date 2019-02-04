@@ -695,6 +695,16 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
+	 * Reads the item class and misc text of each item in the given
+	 * players inventory.
+	 * @param name the name of the player
+	 * @param searchStr a string to search the misctext for, or nothing
+	 * @return the list of matching items
+	 */
+	public PairList<String,String> DBReadPlayerItemData(String name, final String searchStr);
+	
+	/**
+	 * Table category: DBPLAYERS
 	 * Renames all player records belonging to the old
 	 * name to the new name.  Does nothing to existing
 	 * cached objects, and the new name better not already

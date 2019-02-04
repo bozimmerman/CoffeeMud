@@ -53,9 +53,11 @@ public class Prop_LimitedItems extends Property
 	}
 
 	public static Map<String,List<Item>> instances=new Hashtable<String,List<Item>>();
-	public static boolean[] playersLoaded=new boolean[1];
-	protected boolean norecurse=false;
-	protected boolean destroy=false;
+	
+	public static boolean[]		playersLoaded	= new boolean[1];
+	protected volatile boolean	norecurse		= false;
+	protected boolean			destroy			= false;
+	protected int				maxItems		= 0;
 
 	@Override
 	public String accountForYourself()
@@ -65,11 +67,28 @@ public class Prop_LimitedItems extends Property
 		return "Only "+CMath.s_int(text())+" may exist.";
 	}
 
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		maxItems=1;
+		if(newMiscText.length()>0)
+		{
+			final int x=newMiscText.indexOf(';');
+			final String numStr;
+			if(x<0)
+				numStr = newMiscText;
+			else
+				numStr=newMiscText.substring(0,x);
+			if(CMath.isInteger(numStr))
+				maxItems = CMath.s_int(numStr);
+		}
+	}
+	
 	protected void countIfNecessary(final Item I)
 	{
 		if(CMLib.flags().isInTheGame(I,false))
 		{
-			int max=CMath.s_int(text());
 			List<Item> myInstances=null;
 			synchronized(instances)
 			{
@@ -87,15 +106,17 @@ public class Prop_LimitedItems extends Property
 				{
 					if(!myInstances.contains(I))
 					{
-						if(max==0)
-							max++;
+						if(maxItems==0)
+							maxItems++;
 						int num=0;
 						for(int i=myInstances.size()-1;i>=0;i--)
+						{
 							if(!myInstances.get(i).amDestroyed())
 								num++;
 							else
 								myInstances.remove(i);
-						if(num>=max)
+						}
+						if(num>=maxItems)
 						{
 							I.destroy();
 							destroy=true;
@@ -133,31 +154,61 @@ public class Prop_LimitedItems extends Property
 
 		if(norecurse)
 			return;
-		norecurse=true;
-
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNLOCATABLE);
-
-		synchronized(playersLoaded)
+		try
 		{
-			if(!playersLoaded[0])
+			norecurse=true;
+	
+			final Physical affected = this.affected;
+			if(affected == null)
+				return;
+	
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNLOCATABLE);
+			synchronized(playersLoaded)
 			{
-				playersLoaded[0]=true;
-				Log.sysOut("Prop_LimitedItems","Checking player inventories");
-				final List<String> V=CMLib.database().getUserList();
-				for(final String name : V)
+				if(!playersLoaded[0])
 				{
-					final MOB M=CMLib.players().getLoadPlayer(name);
-					if((M!=null)&&(M.location()!=null)&&(M.location().isInhabitant(M)))
-						Log.sysOut("Prop_LimitedItems",M.name()+" is in the Game!!!");
+					playersLoaded[0]=true;
+					Log.sysOut("Prop_LimitedItems","Checking player inventories");
+					final List<String> V=CMLib.database().getUserList();
+					for(final String name : V)
+					{
+						MOB M=CMLib.players().getPlayer(name);
+						if(M==null)
+						{
+							final PairList<String,String> matchingItems = CMLib.database().DBReadPlayerItemData(name,ID());
+							for(final Pair<String,String> p : matchingItems)
+							{
+								if(p.first.equalsIgnoreCase(affected.ID())
+								&&(p.second.indexOf(affected.Name())>0))
+								{
+									M=CMLib.players().getLoadPlayer(name);
+									break;
+								}
+							}
+							if(M!=null)
+							{
+								final Room R=M.location();
+								if((R!=null)
+								&&(R.isInhabitant(M)))
+									Log.sysOut("Prop_LimitedItems",M.name()+" was found in the game, even though this is supposed to be a temporary load.");
+								else
+								if(M.session()!=null)
+									Log.sysOut("Prop_LimitedItems",M.name()+" had a session, even though this is supposed to be a temporary load.");
+							}
+						}
+					}
+					Log.sysOut("Prop_LimitedItems","Done checking player inventories");
 				}
-				Log.sysOut("Prop_LimitedItems","Done checking player inventories");
 			}
+			if((((Item)affected).owner() instanceof MOB)
+			&&(((MOB)((Item)affected).owner()).playerStats()!=null))
+				countIfNecessary((Item)affected);
+			if(destroy)
+				((Item)affected).destroy();
 		}
-		if((((Item)affected).owner() instanceof MOB)
-		&&(((MOB)((Item)affected).owner()).playerStats()!=null))
-			countIfNecessary((Item)affected);
-		if(destroy)
-			((Item)affected).destroy();
-		norecurse=false;
+		finally
+		{
+			norecurse=false;
+		}
 	}
 }

@@ -796,6 +796,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public PairList<String,String> DBReadPlayerItemData(String name, final String searchStr)
+	{
+		return MOBloader.DBReadPlayerItemData(name, searchStr);
+	}
+	
+	@Override
 	public List<PlayerLibrary.ThinPlayer> getExtendedUserList()
 	{
 		return MOBloader.getExtendedUserList();
