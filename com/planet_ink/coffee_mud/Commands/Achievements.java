@@ -387,7 +387,7 @@ public class Achievements extends StdCommand
 				break;
 			}
 			case CLAN:
-				for(final Pair<Clan,Integer> cp : mob.clans())
+				for(final Pair<Clan,Integer> cp : whoM.clans())
 				{
 					sets.add(cp.first, cp.first);
 					break;
