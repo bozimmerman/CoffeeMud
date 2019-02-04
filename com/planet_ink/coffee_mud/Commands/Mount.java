@@ -58,7 +58,7 @@ public class Mount extends StdCommand
 		}
 		final String cmd=commands.remove(0).toString();
 		Environmental recipient=null;
-		final Vector<Rideable> possRecipients=new Vector<Rideable>();
+		final List<Rideable> possRecipients=new ArrayList<Rideable>();
 		for(int m=0;m<mob.location().numInhabitants();m++)
 		{
 			final MOB M=mob.location().fetchInhabitant(m);
@@ -102,7 +102,11 @@ public class Mount extends StdCommand
 				}
 			}
 		}
-		recipient=CMLib.english().fetchEnvironmental(possRecipients,CMParms.combine(commands,0),true);
+		if(commands.get(0).equalsIgnoreCase("self")
+		&&(mob instanceof Rideable))
+			recipient=mob;
+		if(recipient==null)
+			recipient=CMLib.english().fetchEnvironmental(possRecipients,CMParms.combine(commands,0),true);
 		if(recipient==null)
 			recipient=CMLib.english().fetchEnvironmental(possRecipients,CMParms.combine(commands,0),false);
 		if(recipient==null)
