@@ -101,7 +101,7 @@ public class Undead_LifeDrain extends StdAbility
 			if(target instanceof MOB)
 			{
 				if(CMLib.flags().isUndead((MOB)target))
-					return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
+					return super.castingQuality(mob, target,Ability.QUALITY_INDIFFERENT);
 			}
 		}
 		return super.castingQuality(mob,target);
