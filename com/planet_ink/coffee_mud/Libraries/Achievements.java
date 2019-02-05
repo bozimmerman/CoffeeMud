@@ -2777,7 +2777,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							if(((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
 							&&(mob.charStats().getCurrentClass() == charClass))
 							{
-								count++;
+								count+=bumpNum;
+								if(count<0)
+									count++;
 								return true;
 							}
 							return false;
