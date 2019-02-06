@@ -1026,7 +1026,8 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			B=e.nextElement();
 			R=CMLib.map().roomLocation(B);
 			if((R!=null)
-			&&(R.getArea()==A)
+			&&((A==null)
+				||(A.inMyMetroArea(R.getArea())))
 			&&(!triedBanks.contains(B.bankChain())))
 			{
 				triedBanks.add(B.bankChain());
