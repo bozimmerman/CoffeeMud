@@ -85,11 +85,22 @@ public interface CommonCommands extends CMLibrary
 	public void postStand(MOB mob, boolean ifNecessary, boolean quietly);
 	public void postSleep(MOB mob);
 	public void postFollow(MOB follower, MOB leader, boolean quiet);
+
+	/**
+	 * Shortcut method for forcing the given mob to do the command:
+	 * tell [target] [text] ... with special options
+	 *
+	 * @param mob the speaker
+	 * @param target the target of the tell
+	 * @param text the message to say
+	 * @param isPrivate true to TELL or private SAYTO, false to public SAYTO
+	 * @param tellFlag true to TELL, false to private SAYTO
+	 */
 	public void postSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag);
 
 	/**
 	 * Shortcut method for forcing the given mob to do the command:
-	 * sayto <target> <text>
+	 * sayto [target] [text]
 	 *
 	 * @param mob the mob to do the command
 	 * @param target the target being spoken to
@@ -99,7 +110,7 @@ public interface CommonCommands extends CMLibrary
 
 	/**
 	 * Shortcut method for forcing the given mob to do the command:
-	 * say <text>
+	 * say [text]
 	 *
 	 * @param mob the mob to do the command
 	 * @param text the text to say
