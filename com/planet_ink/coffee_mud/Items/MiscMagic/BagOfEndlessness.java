@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -90,8 +91,8 @@ public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 			&&(newitem.owner() !=null))
 			{
 				Item neweritem=(Item)newitem.copyOf();
-				final Vector<Item> allStuff=new Vector<Item>();
-				allStuff.addElement(neweritem);
+				final List<Item> allStuff=new ArrayList<Item>();
+				allStuff.add(neweritem);
 				if(newitem instanceof Container)
 				{
 					final List<Item> V=((Container)newitem).getDeepContents();
@@ -99,13 +100,13 @@ public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 					{
 						final Item I=(Item)V.get(v).copyOf();
 						I.setContainer((Container)neweritem);
-						allStuff.addElement(I);
+						allStuff.add(I);
 					}
 				}
 				neweritem.setContainer(this);
 				for(int i=0;i<allStuff.size();i++)
 				{
-					neweritem=allStuff.elementAt(i);
+					neweritem=allStuff.get(i);
 					if(newitem.owner() instanceof MOB)
 						((MOB)newitem.owner()).addItem(neweritem);
 					else

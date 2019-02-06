@@ -88,7 +88,7 @@ public class Chant_GrowForest extends Chant
 		}
 
 		int material=-1;
-		final Vector<Integer> choices=new Vector<Integer>();
+		final List<Integer> choices=new ArrayList<Integer>();
 		final String s=CMParms.combine(commands,0);
 
 		final List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_WOODEN);
@@ -96,7 +96,7 @@ public class Chant_GrowForest extends Chant
 		{
 			if(code.intValue()!=RawMaterial.RESOURCE_WOOD)
 			{
-				choices.addElement(code);
+				choices.add(code);
 				final String desc=RawMaterial.CODES.NAME(code.intValue());
 				if((s.length()>0)&&(CMLib.english().containsString(desc,s)))
 					material=code.intValue();
@@ -109,7 +109,7 @@ public class Chant_GrowForest extends Chant
 		}
 
 		if((material<0)&&(choices.size()>0))
-			material=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
+			material=choices.get(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 
 		if(material<0)
 			return false;

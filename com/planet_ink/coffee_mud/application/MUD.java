@@ -278,15 +278,15 @@ public class MUD extends Thread implements MudHost
 						if(introDir.isDirectory())
 						{
 							final CMFile[] files=introDir.listFiles();
-							final Vector<String> choices=new Vector<String>();
+							final List<String> choices=new ArrayList<String>();
 							for (final CMFile file : files)
 							{
 								if(file.getName().toLowerCase().startsWith("intro")
 								&&file.getName().toLowerCase().endsWith(".txt"))
-									choices.addElement("text/"+file.getName());
+									choices.add("text/"+file.getName());
 							}
 							if(choices.size()>0)
-								introFilename=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+								introFilename=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 						}
 						StringBuffer introText=Resources.getFileResource(introFilename,true);
 						try

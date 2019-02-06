@@ -83,7 +83,7 @@ public class Prop_ItemTransporter extends Property
 		Integer lastLook=lastLooks.get(text());
 		if((possibilities==null)||(lastLook==null)||(lastLook.intValue()<0))
 		{
-			possibilities=new Vector<PhysicalAgent>();
+			possibilities=new Vector<PhysicalAgent>(); // obviously vector is required here, for thread safety
 			possiblePossibilities.put(text(),possibilities);
 			lastLook=Integer.valueOf(10);
 			lastLooks.put(text(),lastLook);

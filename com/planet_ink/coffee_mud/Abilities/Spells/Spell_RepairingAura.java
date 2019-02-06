@@ -140,9 +140,9 @@ public class Spell_RepairingAura extends Spell
 		else
 		if(target instanceof MOB)
 		{
-			final Vector<Item> choices=new Vector<Item>();
-			final Vector<Item> inventory=new Vector<Item>();
+			final List<Item> choices=new ArrayList<Item>();
 			final MOB M=(MOB)target;
+			final List<Item> inventory=new ArrayList<Item>(M.numItems());
 			Item I=null;
 			for(int i=0;i<M.numItems();i++)
 			{
@@ -150,12 +150,12 @@ public class Spell_RepairingAura extends Spell
 				if((I!=null)&&(I.subjectToWearAndTear())&&(I.fetchEffect(ID())==null))
 				{
 					if(I.amWearingAt(Wearable.IN_INVENTORY))
-						inventory.addElement(I);
+						inventory.add(I);
 					else
-						choices.addElement(I);
+						choices.add(I);
 				}
 			}
-			Vector<Item> chooseFrom=inventory;
+			List<Item> chooseFrom=inventory;
 			if(choices.size()<3)
 				inventory.addAll(choices);
 			else
@@ -163,7 +163,7 @@ public class Spell_RepairingAura extends Spell
 			if(chooseFrom.size()<1)
 				success=false;
 			else
-				realTarget=chooseFrom.elementAt(CMLib.dice().roll(1,chooseFrom.size(),-1));
+				realTarget=chooseFrom.get(CMLib.dice().roll(1,chooseFrom.size(),-1));
 		}
 
 		if(success)

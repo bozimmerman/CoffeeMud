@@ -99,13 +99,13 @@ public class Ranger_Enemy1 extends StdAbility
 			if(!(affected instanceof MOB))
 				return super.text();
 			final MOB mob=(MOB)affected;
-			final Vector<String> choices=new Vector<String>();
+			final List<String> choices=new ArrayList<String>();
 			for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 			{
 				final Race R=r.nextElement();
 				if((!choices.contains(R.racialCategory()))
 				&&(CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
-					choices.addElement(R.racialCategory());
+					choices.add(R.racialCategory());
 			}
 			for(int a=0;a<mob.numAbilities();a++)
 			{
@@ -124,7 +124,7 @@ public class Ranger_Enemy1 extends StdAbility
 			choices.remove("Unique");
 			choices.remove("Unknown");
 			choices.remove(mob.charStats().getMyRace().racialCategory());
-			miscText=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+			miscText=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				final Ability A=mob.fetchAbility(a);

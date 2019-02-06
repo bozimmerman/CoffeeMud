@@ -67,12 +67,12 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 					Log.errOut("GenMobilePortal","Destination not found: "+readableText());
 					return;
 				}
-				final Vector<Item> choices=new Vector<Item>();
+				final List<Item> choices=new ArrayList<Item>();
 				for(int i=0;i<destR.numItems();i++)
 				{
 					final Item I=destR.getItem(i);
 					if((I!=null)&&(I instanceof StdPortal))
-						choices.addElement(I);
+						choices.add(I);
 				}
 				MOB M=null;
 				for(int m=0;m<destR.numInhabitants();m++)
@@ -84,23 +84,23 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 						{
 							final Item I=M.getItem(i);
 							if((I!=null)&&(I instanceof StdPortal))
-								choices.addElement(I);
+								choices.add(I);
 						}
 					}
 				}
 				if(choices.size()>0)
 				{
 					if(choices.size()==1)
-						myStationaryPortal=(StdPortal)choices.firstElement();
+						myStationaryPortal=(StdPortal)choices.get(0);
 					else
 					{
 						if(((myStationaryPortal==null)||(myStationaryPortal.amDestroyed()))&&(secretIdentity().length()>0))
 						{
 							for(int i=0;i<choices.size();i++)
 							{
-								if(choices.elementAt(i).secretIdentity().equals(secretIdentity()))
+								if(choices.get(i).secretIdentity().equals(secretIdentity()))
 								{
-									myStationaryPortal=(StdPortal)choices.elementAt(i);
+									myStationaryPortal=(StdPortal)choices.get(i);
 									break;
 								}
 							}
@@ -109,15 +109,15 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
 						{
 							for(int i=0;i<choices.size();i++)
 							{
-								if(choices.elementAt(i).Name().equals(Name()))
+								if(choices.get(i).Name().equals(Name()))
 								{
-									myStationaryPortal=(StdPortal)choices.elementAt(i);
+									myStationaryPortal=(StdPortal)choices.get(i);
 									break;
 								}
 							}
 						}
 						if((myStationaryPortal==null)||(myStationaryPortal.amDestroyed()))
-							myStationaryPortal=(StdPortal)choices.firstElement();
+							myStationaryPortal=(StdPortal)choices.get(0);
 					}
 				}
 			}

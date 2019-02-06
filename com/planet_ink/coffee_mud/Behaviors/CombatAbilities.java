@@ -720,7 +720,7 @@ public class CombatAbilities extends StdBehavior
 			{
 				if((newWeapon==null)&&(R!=null))
 				{
-					final Vector<Item> choices=new Vector<Item>(1);
+					final List<Item> choices=new ArrayList<Item>(1);
 					for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 					{
 						final Item I=i.nextElement();
@@ -731,9 +731,9 @@ public class CombatAbilities extends StdBehavior
 						||(!CMLib.flags().isGettable(I))
 						||(I.phyStats().level()>mob.phyStats().level()))
 							continue;
-						choices.addElement(I);
+						choices.add(I);
 					}
-					final Item I=(choices.size()==0)?null:(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					final Item I=(choices.size()==0)?null:(Item)choices.get(CMLib.dice().roll(1,choices.size(),-1));
 					if(I!=null)
 					{
 						CMLib.commands().forceInternalCommand(mob,"GET",I);

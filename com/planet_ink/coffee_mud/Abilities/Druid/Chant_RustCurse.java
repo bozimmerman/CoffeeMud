@@ -99,7 +99,7 @@ public class Chant_RustCurse extends Chant
 		if(affected instanceof MOB)
 		{
 			boolean goodChoices=false;
-			final Vector<Item> choices=new Vector<Item>();
+			final List<Item> choices=new ArrayList<Item>();
 			final MOB mob=(MOB)affected;
 			for(int i=0;i<mob.numItems();i++)
 			{
@@ -111,22 +111,22 @@ public class Chant_RustCurse extends Chant
 					if(!I.amWearingAt(Wearable.IN_INVENTORY))
 					{
 						goodChoices=true;
-						choices.addElement(I);
+						choices.add(I);
 					}
 					else
 					if(!goodChoices)
-						choices.addElement(I);
+						choices.add(I);
 				}
 			}
 			if(goodChoices)
 			for(int i=choices.size()-1;i>=0;i--)
 			{
-				if(choices.elementAt(i).amWearingAt(Wearable.IN_INVENTORY))
-					choices.removeElementAt(i);
+				if(choices.get(i).amWearingAt(Wearable.IN_INVENTORY))
+					choices.remove(i);
 			}
 			if(choices.size()>0)
 			{
-				final Item I=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+				final Item I=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 				if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)
 				||(CMLib.dice().rollPercentage()<10))
 					CMLib.combat().postItemDamage(mob, I, null, 1, CMMsg.TYP_ACID, "<T-NAME> rusts!");

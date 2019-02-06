@@ -198,7 +198,7 @@ public class Age extends StdAbility
 		if((following!=null)&&(babe.description().toUpperCase().indexOf(following.Name().toUpperCase())<0)&&(room!=null))
 		{
 			MOB M=null;
-			final Vector<MOB> choices=new Vector<MOB>();
+			final List<MOB> choices=new ArrayList<MOB>();
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				M=room.fetchInhabitant(i);
@@ -208,19 +208,19 @@ public class Age extends StdAbility
 				&&(babe.description().toUpperCase().indexOf(following.Name().toUpperCase())>=0))
 				{
 					if(M.isMonster())
-						choices.addElement(M);
+						choices.add(M);
 					else
 					if(choices.size()==0)
-						choices.addElement(M);
+						choices.add(M);
 					else
-						choices.insertElementAt(M,0);
+						choices.add(0,M);
 				}
 			}
 			if(choices.size()>0)
 			{
 				if(babe instanceof MOB)
-					((MOB)babe).setFollowing(choices.firstElement());
-				following=choices.firstElement();
+					((MOB)babe).setFollowing(choices.get(0));
+				following=choices.get(0);
 			}
 		}
 		return following;

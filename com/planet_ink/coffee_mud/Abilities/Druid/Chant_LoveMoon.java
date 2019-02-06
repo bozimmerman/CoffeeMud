@@ -114,7 +114,7 @@ public class Chant_LoveMoon extends Chant
 				unInvoke();
 			else
 			{
-				final Vector<MOB> choices=new Vector<MOB>();
+				final List<MOB> choices=new ArrayList<MOB>();
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
 					final MOB M=mob.location().fetchInhabitant(i);
@@ -124,11 +124,11 @@ public class Chant_LoveMoon extends Chant
 					&&(M.charStats().getStat(CharStats.STAT_GENDER)!=mob.charStats().getStat(CharStats.STAT_GENDER))
 					&&(M.charStats().getStat(CharStats.STAT_GENDER)!='N')
 					&&(M.charStats().getSave(CharStats.STAT_CHARISMA)>14))
-						choices.addElement(M);
+						choices.add(M);
 				}
 				if(choices.size()>0)
 				{
-					final MOB M=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					final MOB M=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 					if(CMLib.dice().rollPercentage()==1)
 					{
 						Item I=mob.fetchFirstWornItem(Wearable.WORN_WAIST);

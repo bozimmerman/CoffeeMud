@@ -163,7 +163,7 @@ public class Paladin_SummonMount extends StdAbility
 			mob.tell(L("Your alignment has alienated you from your god."));
 			return false;
 		}
-		final Vector<Integer> choices=new Vector<Integer>();
+		final List<Integer> choices=new ArrayList<Integer>();
 		int fromDir=-1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -175,14 +175,14 @@ public class Paladin_SummonMount extends StdAbility
 			&&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
 			&&((exit!=null)&&(exit.isOpen()))
 			&&(opExit!=null)&&(opExit.isOpen()))
-				choices.addElement(Integer.valueOf(d));
+				choices.add(Integer.valueOf(d));
 		}
 		if(choices.size()==0)
 		{
 			mob.tell(L("You must be further outdoors to call your mount."));
 			return false;
 		}
-		fromDir=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
+		fromDir=choices.get(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 		final Room newRoom=mob.location().getRoomInDir(fromDir);
 		final int opDir=Directions.getOpDirectionCode(fromDir);
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

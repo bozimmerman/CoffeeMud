@@ -818,7 +818,7 @@ public class WeatherAffects extends PuddleMaker
 			resetDustTicks();
 			if(C.weatherType(null)==Climate.WEATHER_DUSTSTORM)
 			{
-				final Vector<Room> choices=new Vector<Room>();
+				final List<Room> choices=new ArrayList<Room>(CMLib.sessions().numSessions());
 				Room R=null;
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
@@ -829,11 +829,11 @@ public class WeatherAffects extends PuddleMaker
 						continue;
 					R=S.mob().location();
 					if((R!=null)&&(!choices.contains(R)))
-						choices.addElement(R);
+						choices.add(R);
 				}
 				if(choices.size()>0)
 				{
-					R=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					R=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 					final MOB M=R.fetchRandomInhabitant();
 					if((M!=null)
 					&&(C.weatherType(R)==Climate.WEATHER_DUSTSTORM)
@@ -851,7 +851,7 @@ public class WeatherAffects extends PuddleMaker
 			resetHailTicks();
 			if(C.weatherType(null)==Climate.WEATHER_HAIL)
 			{
-				final Vector<Room> choices=new Vector<Room>();
+				final List<Room> choices=new ArrayList<Room>(CMLib.sessions().numSessions());
 				Room R=null;
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
@@ -862,11 +862,11 @@ public class WeatherAffects extends PuddleMaker
 						continue;
 					R=S.mob().location();
 					if((R!=null)&&(!choices.contains(R)))
-						choices.addElement(R);
+						choices.add(R);
 				}
 				if(choices.size()>0)
 				{
-					R=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					R=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 					final MOB M=R.fetchRandomInhabitant();
 					final Ability A2=CMClass.getAbility("Chant_SummonHail");
 					if((A2!=null)
@@ -930,7 +930,7 @@ public class WeatherAffects extends PuddleMaker
 			||(C.weatherType(null)==Climate.WEATHER_BLIZZARD)
 			||(C.weatherType(null)==Climate.WEATHER_DUSTSTORM))
 			{
-				final Vector<Room> choices=new Vector<Room>();
+				final List<Room> choices=new ArrayList<Room>(CMLib.sessions().numSessions());
 				Room R=null;
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
@@ -943,11 +943,11 @@ public class WeatherAffects extends PuddleMaker
 						continue;
 					R=S.mob().location();
 					if((R!=null)&&(!choices.contains(R)))
-						choices.addElement(R);
+						choices.add(R);
 				}
 				if(choices.size()>0)
 				{
-					R=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					R=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 					final MOB M=CMLib.map().getFactoryMOB(R);
 					final Ability A2=CMClass.getAbility("Chant_WindGust");
 					if(A2!=null)

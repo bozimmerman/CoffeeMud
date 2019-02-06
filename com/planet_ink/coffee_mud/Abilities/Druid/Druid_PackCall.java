@@ -206,13 +206,13 @@ public class Druid_PackCall extends StdAbility
 			return false;
 		}
 
-		final Vector<Integer> choices=new Vector<Integer>();
+		final List<Integer> choices=new ArrayList<Integer>();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Room R=mob.location().getRoomInDir(d);
 			final Exit E=mob.location().getExitInDir(d);
 			if((R!=null)&&(E!=null)&&(E.isOpen())&&(d!=Directions.UP))
-				choices.addElement(Integer.valueOf(d));
+				choices.add(Integer.valueOf(d));
 		}
 
 		if(choices.size()==0)
@@ -277,7 +277,7 @@ public class Druid_PackCall extends StdAbility
 					newMOB.setMoneyVariation(0);
 					if(victim.getVictim()!=newMOB)
 						victim.setVictim(newMOB);
-					final int dir=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
+					final int dir=choices.get(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 					if(newMOB.getVictim()!=victim)
 						newMOB.setVictim(victim);
 					newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,L("<S-NAME> arrive(s) @x1 and attack(s) <T-NAMESELF>!",CMLib.directions().getFromCompassDirectionName(dir)));

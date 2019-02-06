@@ -109,7 +109,7 @@ public class Thief_Alertness extends ThiefSkill
 			if(mob.location()!=room)
 			{
 				room=mob.location();
-				Vector<Item> choices=null;
+				List<Item> choices=null;
 				for(int i=0;i<room.numItems();i++)
 				{
 					final Item I=room.getItem(i);
@@ -118,8 +118,8 @@ public class Thief_Alertness extends ThiefSkill
 					&&(I.displayText().length()==0))
 					{
 						if(choices==null)
-							choices=new Vector<Item>();
-						choices.addElement(I);
+							choices=new ArrayList<Item>();
+						choices.add(I);
 					}
 				}
 				if(choices!=null)
@@ -129,8 +129,8 @@ public class Thief_Alertness extends ThiefSkill
 						alert=1;
 					while((alert>0)&&(choices.size()>0))
 					{
-						final Item I=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-						choices.removeElement(I);
+						final Item I=choices.get(CMLib.dice().roll(1,choices.size(),-1));
+						choices.remove(I);
 						mob.tell(I.name(mob)+": "+I.description());
 						alert--;
 					}

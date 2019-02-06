@@ -150,7 +150,7 @@ public class Spell_SummonMonster extends Spell
 		if(R==null)
 			return null;
 		MOB newMOB=null;
-		final Vector<MOB> choices=new Vector<MOB>();
+		final List<MOB> choices=new ArrayList<MOB>();
 		MOB M=null;
 		int range=0;
 		int diff=2;
@@ -194,15 +194,15 @@ public class Spell_SummonMonster extends Spell
 					}
 					continue;
 				}
-				choices.addElement(M);
+				choices.add(M);
 			}
 		}
 		if(choices.size()>0)
 		{
-			MOB winM=choices.firstElement();
+			MOB winM=choices.get(0);
 			for(int i=1;i<choices.size();i++)
 			{
-				M=choices.elementAt(i);
+				M=choices.get(i);
 				if(CMath.pow(level-M.basePhyStats().level(),2)<CMath.pow(level-winM.basePhyStats().level(),2))
 					winM=M;
 			}

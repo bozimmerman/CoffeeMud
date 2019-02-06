@@ -1602,12 +1602,12 @@ public class Quests extends StdLibrary implements QuestManager
 	throws IOException
 	{
 		MOB M=null;
-		final Vector<MOB> choices=new Vector<MOB>();
+		final List<MOB> choices=new ArrayList<MOB>();
 		MOB baseM=((showValue!=null)?baseM=CMLib.coffeeMaker().getMobFromXML(showValue):null);
 		final StringBuffer choiceDescs=new StringBuffer("");
 		if(baseM!=null)
 		{
-			choices.addElement(baseM);
+			choices.add(baseM);
 			choiceDescs.append(baseM.name()+", ");
 		}
 		final Room R=mob.location();
@@ -1617,7 +1617,7 @@ public class Quests extends StdLibrary implements QuestManager
 			M=R.fetchInhabitant(i);
 			if((M!=null)&&(M.isSavable()))
 			{
-				choices.addElement(M);
+				choices.add(M);
 				choiceDescs.append(M.name()+", ");
 			}
 		}
@@ -1637,7 +1637,7 @@ public class Quests extends StdLibrary implements QuestManager
 		final MOB canMOB=CMClass.getFactoryMOB();
 		canMOB.setName(L("CANCEL"));
 		choiceDescs.append("CANCEL");
-		choices.addElement(canMOB);
+		choices.add(canMOB);
 		String showName=showValue;
 		if(baseM!=null)
 			showName=CMLib.english().getContextName(choices,baseM);
@@ -1673,7 +1673,7 @@ public class Quests extends StdLibrary implements QuestManager
 	throws IOException
 	{
 		Item I=null;
-		final List<Item> choices=new Vector<Item>();
+		final List<Item> choices=new ArrayList<Item>();
 		Item baseI=((showValue!=null)?baseI=CMLib.coffeeMaker().getItemFromXML(showValue):null);
 		final StringBuffer choiceDescs=new StringBuffer("");
 		if(baseI!=null)
@@ -1729,7 +1729,8 @@ public class Quests extends StdLibrary implements QuestManager
 			// modify it!
 		}
 		final String newValue=(I!=null)?CMLib.coffeeMaker().getItemXML(I).toString():showValue;
-		for(int n=0;n<newItems.size();n++) newItems.get(n).destroy();
+		for(int n=0;n<newItems.size();n++)
+			newItems.get(n).destroy();
 		return (newValue==null)?"":newValue.trim();
 	}
 

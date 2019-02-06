@@ -935,11 +935,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						catch(final CMException ex)
 						{
 							q.mob=null;
-							final List<MOB> choices=new Vector<MOB>();
-							final Vector<String> mobTypes=CMParms.parse(CMParms.combine(p,2).toUpperCase());
+							final List<MOB> choices=new ArrayList<MOB>(); // thread safe -- not building a group
+							final List<String> mobTypes=CMParms.parse(CMParms.combine(p,2).toUpperCase());
 							for(int t=0;t<mobTypes.size();t++)
 							{
-								final String mobType=mobTypes.elementAt(t);
+								final String mobType=mobTypes.get(t);
 								if(mobType.startsWith("-"))
 									continue;
 								if(q.mobGroup==null)
@@ -1001,7 +1001,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
 							for(int t=0;t<mobTypes.size();t++)
 							{
-								String mobType=mobTypes.elementAt(t);
+								String mobType=mobTypes.get(t);
 								if(!mobType.startsWith("-"))
 									continue;
 								mobType=mobType.substring(1);
@@ -2700,7 +2700,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							mobName="ANY";
 						final boolean addAll=mobName.equalsIgnoreCase("ALL")
 										||mobName.equalsIgnoreCase("ANY");
-						final List<MOB> choices=new Vector<MOB>();
+						final List<MOB> choices=new ArrayList<MOB>(); // ok because is wholly temporary
 						for(int i=0;i<q.loadedMobs.size();i++)
 						{
 							final MOB M2=q.loadedMobs.get(i);
@@ -2716,7 +2716,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', no mob found to load '"+mobName+"'!");
 							break;
 						}
-						final List<MOB> mobsToDo=new Vector<MOB>();
+						final List<MOB> mobsToDo=new Vector<MOB>(); // must remain vector for thread safety
 						if(cmd.equalsIgnoreCase("MOB"))
 							mobsToDo.add(choices.get(CMLib.dice().roll(1,choices.size(),-1)));
 						else
@@ -2786,7 +2786,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							break;
 						}
 						final String itemName=CMParms.combine(p,2);
-						final List<Item> choices=new Vector<Item>();
+						final List<Item> choices=new ArrayList<Item>(); // only ever picked from locally
 						for(int i=0;i<q.loadedItems.size();i++)
 						{
 							final Item I2=q.loadedItems.get(i);
@@ -2805,13 +2805,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', no item found to load '"+itemName+"'!");
 							break;
 						}
-						final List<Item> itemsToDo=new ArrayList<Item>();
+						final List<Item> itemsToDo=new Vector<Item>(); // for thread safety, as this is global
 						if(cmd.equalsIgnoreCase("ITEM"))
 							itemsToDo.add(choices.get(CMLib.dice().roll(1,choices.size(),-1)));
 						else
 						{
 							itemsToDo.addAll(choices);
-							q.itemGroup=choices;
+							q.itemGroup=itemsToDo;
 						}
 						while((itemsToDo.size()>maxToLoad)&&(maxToLoad>0))
 							itemsToDo.remove(CMLib.dice().roll(1,itemsToDo.size(),-1));
@@ -2881,7 +2881,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							break;
 						}
 						final String mobName=CMParms.combine(p,2);
-						final List<MOB> choices=new Vector<MOB>();
+						final List<MOB> choices=new ArrayList<MOB>(); // only ever picked from locally
 						ReverseEnumeration<PreservedQuestObject> e;
 						for(e=new ReverseEnumeration<PreservedQuestObject>(q.worldObjects);e.hasMoreElements();)
 						{

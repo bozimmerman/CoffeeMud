@@ -112,8 +112,8 @@ public class Chant_Brittle extends Chant
 
 	private Item getItem(final MOB mobTarget)
 	{
-		final Vector<Item> goodPossibilities=new Vector<Item>();
-		final Vector<Item> possibilities=new Vector<Item>();
+		final List<Item> goodPossibilities=new ArrayList<Item>();
+		final List<Item> possibilities=new ArrayList<Item>();
 		for(int i=0;i<mobTarget.numItems();i++)
 		{
 			final Item item=mobTarget.getItem(i);
@@ -121,16 +121,16 @@ public class Chant_Brittle extends Chant
 			&&(item.subjectToWearAndTear()))
 			{
 				if(item.amWearingAt(Wearable.IN_INVENTORY))
-					possibilities.addElement(item);
+					possibilities.add(item);
 				else
-					goodPossibilities.addElement(item);
+					goodPossibilities.add(item);
 			}
 		}
 		if(goodPossibilities.size()>0)
-			return goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
+			return goodPossibilities.get(CMLib.dice().roll(1,goodPossibilities.size(),-1));
 		else
 		if(possibilities.size()>0)
-			return possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
+			return possibilities.get(CMLib.dice().roll(1,possibilities.size(),-1));
 		return null;
 	}
 

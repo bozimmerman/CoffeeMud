@@ -356,7 +356,7 @@ public class Charlatan extends StdCharClass
 
 			// now only give one, for current level, respecting alignment!
 			// first, get a list of all skills you don't qualify for that you MIGHT have gained or will gain
-			final List<Ability> choices=new Vector<Ability>();
+			final List<Ability> choices=new ArrayList<Ability>();
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();

@@ -155,11 +155,11 @@ public class Disease_FrostBite extends Disease
 			return;
 		if(where==null)
 		{
-			final Vector<Integer> choices=new Vector<Integer>();
+			final List<Integer> choices=new ArrayList<Integer>();
 			for (final int element : limbsAffectable)
 			{
 				if(affected.charStats().getBodyPart(element)>0)
-					choices.addElement(Integer.valueOf(element));
+					choices.add(Integer.valueOf(element));
 			}
 			if(choices.size()<=0)
 			{
@@ -167,7 +167,7 @@ public class Disease_FrostBite extends Disease
 				unInvoke();
 			}
 			else
-				where=Race.BODYPARTSTR[choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue()];
+				where=Race.BODYPARTSTR[choices.get(CMLib.dice().roll(1,choices.size(),-1)).intValue()];
 		}
 	}
 

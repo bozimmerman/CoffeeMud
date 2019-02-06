@@ -465,15 +465,15 @@ public class DefaultSession implements Session
 										if(introDir.isDirectory())
 										{
 											final CMFile[] files=introDir.listFiles();
-											final Vector<String> choices=new Vector<String>();
+											final List<String> choices=new ArrayList<String>();
 											for (final CMFile file : files)
 											{
 												if(file.getName().toLowerCase().startsWith("intro")
 												&&file.getName().toLowerCase().endsWith(".jpg"))
-													choices.addElement(file.getName());
+													choices.add(file.getName());
 											}
 											if(choices.size()>0)
-												introFilename=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+												introFilename=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 										}
 										println("\n\r\n\r\n\r^<IMAGE '"+introFilename+"' URL='"+paths[0]+"' H=400 W=400^>\n\r\n\r");
 										if(out!=null)

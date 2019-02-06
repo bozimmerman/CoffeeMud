@@ -142,10 +142,10 @@ public class Chant_HowlersMoon extends Chant
 				 return true;
 			if(fromDir<0)
 			{
-				final Vector<Integer> choices=fillChoices(room);
+				final List<Integer> choices=fillChoices(room);
 				if(choices.size()==0)
 					return true;
-				fromDir=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
+				fromDir=choices.get(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 			}
 			if(fromDir>=0)
 			{
@@ -189,9 +189,9 @@ public class Chant_HowlersMoon extends Chant
 		return true;
 	}
 
-	protected Vector<Integer> fillChoices(final Room R)
+	protected List<Integer> fillChoices(final Room R)
 	{
-		final Vector<Integer> choices=new Vector<Integer>();
+		final List<Integer> choices=new ArrayList<Integer>();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Room room=R.getRoomInDir(d);
@@ -202,7 +202,7 @@ public class Chant_HowlersMoon extends Chant
 			&&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
 			&&((exit!=null)&&(exit.isOpen()))
 			&&(opExit!=null)&&(opExit.isOpen()))
-				choices.addElement(Integer.valueOf(d));
+				choices.add(Integer.valueOf(d));
 		}
 		return choices;
 	}
@@ -224,7 +224,7 @@ public class Chant_HowlersMoon extends Chant
 					&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
 						return Ability.QUALITY_INDIFFERENT;
 				}
-				final Vector<Integer> choices=fillChoices(R);
+				final List<Integer> choices=fillChoices(R);
 				if(choices.size()==0)
 					return Ability.QUALITY_INDIFFERENT;
 			}
@@ -264,14 +264,14 @@ public class Chant_HowlersMoon extends Chant
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		final Vector<Integer> choices=fillChoices(mob.location());
+		final List<Integer> choices=fillChoices(mob.location());
 		fromDir=-1;
 		if(choices.size()==0)
 		{
 			mob.tell(L("You must be further outdoors to summon an animal."));
 			return false;
 		}
-		fromDir=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)).intValue();
+		fromDir=choices.get(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

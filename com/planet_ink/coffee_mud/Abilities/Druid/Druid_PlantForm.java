@@ -281,13 +281,13 @@ public class Druid_PlantForm extends StdAbility
 		if(choice.trim().length()>0)
 		{
 			final StringBuffer buf=new StringBuffer(L("Plant Forms:\n\r"));
-			final Vector<String> choices=new Vector<String>();
+			final List<String> choices=new ArrayList<String>();
 			for(int i=0;i<classLevel;i++)
 			{
 				final String s=getRaceName(i);
 				if(!choices.contains(s))
 				{
-					choices.addElement(s);
+					choices.add(s);
 					buf.append(s+"\n\r");
 				}
 				if(CMLib.english().containsString(s,choice))

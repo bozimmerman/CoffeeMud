@@ -53,7 +53,7 @@ public class BaseCharClassNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		final Vector<String> baseClasses=new Vector<String>();
+		final List<String> baseClasses=new ArrayList<String>();
 		final boolean showAll=parms.containsKey("ALL");
 		final boolean includeSkillOnly=parms.containsKey("INCLUDESKILLONLY");
 		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
@@ -63,12 +63,12 @@ public class BaseCharClassNext extends StdWebMacro
 			&&((!CMath.bset(C.availabilityCode(), Area.THEME_SKILLONLYMASK))||includeSkillOnly||showAll))
 			{
 				if(!baseClasses.contains(C.baseClass()))
-					baseClasses.addElement(C.baseClass());
+					baseClasses.add(C.baseClass());
 			}
 		}
 		for(int i=0;i<baseClasses.size();i++)
 		{
-			final String C=baseClasses.elementAt(i);
+			final String C=baseClasses.get(i);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("BASECLASS",C);

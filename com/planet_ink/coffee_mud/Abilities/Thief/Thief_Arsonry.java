@@ -104,7 +104,7 @@ public class Thief_Arsonry extends ThiefSkill
 				mob.tell(L("That way isn't open!"));
 				return false;
 			}
-			final Vector<Item> choices=new Vector<Item>();
+			final List<Item> choices=new ArrayList<Item>();
 			for(int i=0;i<room.numItems();i++)
 			{
 				final Item I=room.getItem(i);
@@ -114,14 +114,14 @@ public class Thief_Arsonry extends ThiefSkill
 				&&(CMLib.flags().isGettable(I))
 				&&(!(I instanceof ClanItem))
 				&&(CMLib.materials().getBurnDuration(I)>0))
-					choices.addElement(I);
+					choices.add(I);
 			}
 			if(choices.size()==0)
 			{
 				mob.tell(L("There's nothing that way you can burn!"));
 				return false;
 			}
-			target=choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+			target=choices.get(CMLib.dice().roll(1,choices.size(),-1));
 			targetRoom=room;
 		}
 		else

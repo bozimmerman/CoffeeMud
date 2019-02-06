@@ -79,7 +79,7 @@ public class Hunting extends GatheringSkill
 
 	public Room nearByRoom()
 	{
-		final Vector<Integer> possibilities=new Vector<Integer>();
+		final List<Integer> possibilities=new ArrayList<Integer>(Directions.NUM_DIRECTIONS());
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if(d!=Directions.UP)
@@ -87,12 +87,12 @@ public class Hunting extends GatheringSkill
 				final Room room=activityRoom.getRoomInDir(d);
 				final Exit exit=activityRoom.getExitInDir(d);
 				if((room!=null)&&(exit!=null)&&(exit.isOpen()))
-					possibilities.addElement(Integer.valueOf(d));
+					possibilities.add(Integer.valueOf(d));
 			}
 		}
 		if(possibilities.size()>0)
 		{
-			final int dir=possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1)).intValue();
+			final int dir=possibilities.get(CMLib.dice().roll(1,possibilities.size(),-1)).intValue();
 			return activityRoom.getRoomInDir(dir);
 		}
 		return null;

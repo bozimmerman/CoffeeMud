@@ -267,7 +267,7 @@ public class Bard extends StdCharClass
 					if((M instanceof ShopKeeper)
 					&&(M.getStartRoom()==R))
 					{
-						final List<Ability> V2=new Vector<Ability>();
+						final List<Ability> V2=new ArrayList<Ability>();
 						for(final Iterator<Environmental> i=((ShopKeeper)M).getShop().getStoreInventory();i.hasNext();)
 						{
 							final Environmental O=i.next();
