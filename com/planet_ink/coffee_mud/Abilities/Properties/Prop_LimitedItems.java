@@ -232,6 +232,8 @@ public class Prop_LimitedItems extends Property
 				{
 					playersLoaded[0]=true;
 					Log.sysOut("Prop_LimitedItems","Checking player inventories");
+					// known problem: players from different hosts who share a world map might allow
+					// duplicates/excess items.
 					final List<String> V=CMLib.database().getUserList();
 					for(final String name : V)
 					{
