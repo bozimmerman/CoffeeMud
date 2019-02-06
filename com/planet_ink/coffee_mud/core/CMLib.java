@@ -1619,13 +1619,26 @@ public class CMLib
 	 */
 	public final static char getLibraryThreadID(final Library code, final CMLibrary lib)
 	{
-		for(int l=0;l<libs.length;l++)
+		if(code != null)
 		{
-			if((libs[l]!=null)
-			&&(libs[l].libraries[code.ordinal()]==lib))
-				return (char)l;
+			for(int l=0;l<libs.length;l++)
+			{
+				if((libs[l]!=null)
+				&&(libs[l].libraries[code.ordinal()]==lib))
+					return (char)l;
+			}
 		}
 		return '\0';
+	}
+
+	/**
+	 * Return the private thread id that belongs to the given library
+	 * @param lib the library to look for
+	 * @return that libraries code
+	 */
+	public final static char getLibraryThreadID(final CMLibrary lib)
+	{
+		return getLibraryThreadID(CMLib.convertToLibraryCode(lib), lib);
 	}
 
 	/**
