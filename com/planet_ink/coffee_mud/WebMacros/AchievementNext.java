@@ -56,9 +56,12 @@ public class AchievementNext extends StdWebMacro
 		String agentStr = parms.get("AGENT");
 		if(agentStr == null)
 			agentStr=httpReq.getUrlParameter("AGENT");
-		final AccountStats.Agent agent = ((agentStr == null)||(agentStr.length()==0)||(!CMProps.isUsingAccountSystem())) ?
-				AccountStats.Agent.PLAYER : (AccountStats.Agent)CMath.s_valueOf(AccountStats.Agent.class, agentStr.toUpperCase().trim());
+		final AccountStats.Agent agent = (AccountStats.Agent)CMath.s_valueOf(AccountStats.Agent.class, agentStr.toUpperCase().trim());
 		if(agent == null)
+		{
+			return " @break@";
+		}
+		if((agent == AccountStats.Agent.ACCOUNT)&&(!CMProps.isUsingAccountSystem()))
 		{
 			return " @break@";
 		}

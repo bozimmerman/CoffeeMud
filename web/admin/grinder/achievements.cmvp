@@ -70,7 +70,7 @@
         <TABLE WIDTH=50% BORDER=1>
         <TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
         <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
-        <TR><TD><A href="javascript:Clicked('autotitles.cmvp')"><FONT COLOR=WHITE SIZE=-1><B>Auto-Titles</B></FONT></A></TD></TR>
+        <!-- <TR><TD><A href="javascript:Clicked('autotitles.cmvp')"><FONT COLOR=WHITE SIZE=-1><B>Auto-Titles</B></FONT></A></TD></TR> -->
         <TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
         </TABLE>
     </TD>
@@ -144,6 +144,31 @@
 	            <TD COLSPAN=4><a href="javascript:NewAchievement('ACCOUNT')"><FONT COLOR=WHITE><B>Create New Account Achievement</a></B></FONT></TD>
 	            </TR>
             @endif@
+            <TR><TD WIDTH=100% COLSPAN=7 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Clan Achievements Manager</H2></FONT></TD></TR>
+            <TR>
+            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Tattoo/ID</FONT></b></TD>
+            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Type</FONT></b></TD>
+            <TD WIDTH=25%><B><FONT COLOR=YELLOW>Display</FONT></b></TD>
+            <TD WIDTH=5%><B><FONT COLOR=YELLOW>Count</FONT></b></TD>
+            <TD WIDTH=15%><B><FONT COLOR=YELLOW>Awards</FONT></b></TD>
+            <TD WIDTH=25%><B><FONT COLOR=YELLOW>Misc</FONT></b></TD>
+            </TR>
+            @AchievementNext?RESET@
+            @AddRequestParameter?AGENT=CLAN@
+            @loop@
+            @AchievementNext@
+                <TR>
+                <TD><a href="javascript:Achievement('@AchievementID?ENCODED@','ACCOUNT')"><FONT COLOR=WHITE><B>@AchievementID@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@AchievementData?EVENT@</B></FONT></TD>
+                <TD><FONT COLOR=WHITE><B>@AchievementData?DISPLAY@</B></FONT></TD>
+                <TD><FONT COLOR=WHITE><B>@AchievementData?COUNT@</B></FONT></TD>
+                <TD><FONT COLOR=WHITE><B>@AchievementData?TITLE@ @AchievementData?REWARD@</B></FONT></TD>
+                <TD><FONT COLOR=WHITE><B>@AchievementData?MISC@</B></FONT></TD>
+                </TR>
+            @back@
+            <TR>
+            <TD COLSPAN=4><a href="javascript:NewAchievement('CLAN')"><FONT COLOR=WHITE><B>Create New Clan Achievement</a></B></FONT></TD>
+            </TR>
             </TABLE>
             </FORM>
         </TD>

@@ -2042,7 +2042,7 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT CMDATE, CMCHAN, CMPRPT, CMCOLR, CMLSIP, CMPFIL FROM CMCHIT WHERE CMUSERID='"+name+"'");
+			final ResultSet R=D.query("SELECT CMDATE, CMCHAN, CMPRPT, CMCOLR, CMLSIP, CMPFIL FROM CMCHAR WHERE CMUSERID='"+name+"'");
 			if(R.next())
 			{
 				pStats = (PlayerStats)CMClass.getCommon("DefaultPlayerStats");
