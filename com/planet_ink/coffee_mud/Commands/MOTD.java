@@ -51,13 +51,14 @@ public class MOTD extends StdCommand
 		return access;
 	}
 
-	private static Vector<String> DEFAULT_CMD=new ReadOnlyVector<String>(new String[]{"MOTD","AGAIN"});
+	private static List<String> DEFAULT_CMD=new ReadOnlyVector<String>(new String[]{"MOTD","AGAIN"});
 
 	@Override
 	public boolean execute(final MOB mob, List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		boolean pause=false;
+		boolean oldOk = false;
 		String what="MOTD";
 		if((commands!=null)&&(commands.size()>0))
 		{
@@ -83,7 +84,7 @@ public class MOTD extends StdCommand
 			commands.remove(commands.size()-1);
 		}
 		final String parm=CMParms.combine(commands,1).toUpperCase();
-		final boolean oldOk = "PREVIOUS".startsWith(parm) || parm.equals("OLD");
+		oldOk = "PREVIOUS".startsWith(parm) || parm.equals("OLD");
 		if((mob.playerStats()!=null)
 		&&(parm.equals("AGAIN")||parm.equals("NEW")||oldOk))
 		{
@@ -132,8 +133,8 @@ public class MOTD extends StdCommand
 						}
 					}
 				}
-				final Vector<String> postalChains=new Vector<String>();
-				final Vector<String> postalBranches=new Vector<String>();
+				final List<String> postalChains=new ArrayList<String>();
+				final List<String> postalBranches=new ArrayList<String>();
 				PostOffice P=null;
 				for(final Enumeration<PostOffice> e=CMLib.map().postOffices();e.hasMoreElements();)
 				{
@@ -179,7 +180,7 @@ public class MOTD extends StdCommand
 						buf.append("\n\r--------------------------------------\n\r");
 				}
 
-				final Vector<JournalsLibrary.CommandJournal> myEchoableCommandJournals=new Vector<JournalsLibrary.CommandJournal>();
+				final List<JournalsLibrary.CommandJournal> myEchoableCommandJournals=new ArrayList<JournalsLibrary.CommandJournal>();
 				for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 				{
 					final JournalsLibrary.CommandJournal CMJ=e.nextElement();
