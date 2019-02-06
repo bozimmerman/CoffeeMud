@@ -270,8 +270,7 @@ public class MOBloader
 		}
 		return items;
 	}
-	
-	
+
 	public MOB DBRead(final String name)
 	{
 		if((name==null)||(name.length()==0))
@@ -2030,5 +2029,43 @@ public class MOBloader
 			DB.DBDone(D);
 		}
 		return null;
+	}
+
+	public PlayerStats DBLoadPlayerStats(String name)
+	{
+		if((name==null)||(name.length()==0))
+			return null;
+		name=CMStrings.capitalizeAndLower(DB.injectionClean(name));
+		DBConnection D=null;
+		PlayerStats pStats = null;
+		// now grab the items
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT CMDATE, CMCHAN, CMPRPT, CMCOLR, CMLSIP, CMPFIL FROM CMCHIT WHERE CMUSERID='"+name+"'");
+			if(R.next())
+			{
+				pStats = (PlayerStats)CMClass.getCommon("DefaultPlayerStats");
+				pStats.setLastDateTime(CMath.s_long(DBConnections.getRes(R,"CMDATE")));
+				pStats.setChannelMask((int)DBConnections.getLongRes(R,"CMCHAN"));
+				pStats.setPrompt(DBConnections.getRes(R,"CMPRPT"));
+				final String colorStr=DBConnections.getRes(R,"CMCOLR");
+				if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL")))
+					pStats.setColorStr(colorStr);
+				pStats.setLastIP(DBConnections.getRes(R,"CMLSIP"));
+				final String buf=DBConnections.getRes(R,"CMPFIL");
+				pStats.setXML(buf);
+			}
+			R.close();
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return pStats;
 	}
 }

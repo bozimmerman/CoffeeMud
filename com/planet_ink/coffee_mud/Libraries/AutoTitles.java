@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -192,10 +193,15 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 		final String fixedTitle = CMStrings.removeColors(title).replace('\'', '`');
 		for(final String playerName : list)
 		{
-			final MOB M=CMLib.players().getLoadPlayer(playerName);
-			if(M.playerStats()!=null)
+			final MOB chkM=CMLib.players().getPlayer(playerName);
+			final PlayerStats pStats;
+			if(chkM != null)
+				pStats = chkM.playerStats();
+			else
+				pStats = CMLib.database().DBLoadPlayerStats(playerName);
+			if(pStats != null)
 			{
-				final List<String> ptV=M.playerStats().getTitles();
+				final List<String> ptV=pStats.getTitles();
 				synchronized(ptV)
 				{
 					int pdex=ptV.indexOf(title);
@@ -219,9 +225,13 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 					}
 					if(pdex>=0)
 					{
-						ptV.remove(pdex);
-						if(!CMLib.flags().isInTheGame(M,true))
-							CMLib.database().DBUpdatePlayerPlayerStats(M);
+						final MOB M=CMLib.players().getLoadPlayer(playerName);
+						if((M!=null)&&(M.playerStats()!=null))
+						{
+							M.playerStats().getTitles().remove(pdex);
+							if(!CMLib.flags().isInTheGame(M,true))
+								CMLib.database().DBUpdatePlayerPlayerStats(M);
+						}
 					}
 				}
 			}
@@ -241,6 +251,22 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	public String deleteTitleAndResave(final String title)
 	{
 		dispossesTitle(title);
+		final Set<CMLibrary> playerLibSets = CMLib.getLibrariesSharedWith(Library.PLAYERS, this);
+		for(final CMLibrary playerLib : playerLibSets)
+		{
+			if(playerLib != CMLib.players())
+			{
+				final char otherHostThreadId = CMLib.getLibraryThreadID(Library.PLAYERS, playerLib);
+				CMLib.threads().executeRunnable(otherHostThreadId, new Runnable() {
+					@Override
+					public void run()
+					{
+						if(CMLib.titles() instanceof AutoTitles)
+							((AutoTitles)CMLib.titles()).dispossesTitle(title);
+					}
+				});
+			}
+		}
 		final CMFile F=new CMFile(Resources.makeFileResourceName(titleFilename),null,CMFile.FLAG_LOGERRORS);
 		if(F.exists())
 		{

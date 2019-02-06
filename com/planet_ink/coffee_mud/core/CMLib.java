@@ -1629,6 +1629,36 @@ public class CMLib
 	}
 
 	/**
+	 * Returns the set of CMLibrarys of the *GIVEN* code type that are shared with the
+	 * given library instance of any type.  For example, if 3 hosts share a WorldMap, but
+	 * each have different database engines, you can return the database for each.
+	 *
+	 * @param codeTypeToGet the type of libraries to return
+	 * @param lib the library instance all hosts must share to return a representative from
+	 * @return the list of libraries that share the instance example
+	 */
+	public final static Set<CMLibrary> getLibrariesSharedWith(final Library codeTypeToGet, final CMLibrary lib)
+	{
+		final Set<CMLibrary> set = new HashSet<CMLibrary>();
+		if(lib == null)
+			return set;
+		final Library codeTypeSent = CMLib.convertToLibraryCode(lib);
+		if(codeTypeSent == null)
+			return set;
+		for(int l=0;l<libs.length;l++)
+		{
+			if((libs[l]!=null)
+			&&(libs[l].libraries[codeTypeSent.ordinal()]==lib))
+			{
+				final CMLibrary candidateLib = libs[l].libraries[codeTypeToGet.ordinal()];
+				if(!set.contains(candidateLib))
+					set.add(candidateLib);
+			}
+		}
+		return set;
+	}
+
+	/**
 	 * Calls registerLibrary on all the given CMLibrary objects
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary
 	 * @see CMLib#registerLibrary(CMLibrary)

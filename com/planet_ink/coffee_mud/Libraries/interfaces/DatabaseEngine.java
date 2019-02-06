@@ -702,7 +702,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @return the list of matching items
 	 */
 	public PairList<String,String> DBReadPlayerItemData(String name, final String searchStr);
-	
+
 	/**
 	 * Table category: DBPLAYERS
 	 * Renames all player records belonging to the old
@@ -802,6 +802,17 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param bringToLife true to bring them to life, false not
 	 */
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
+
+	/**
+	 * Table category: DBPLAYERS
+	 * Loads the player stats object for the given mob.  This
+	 * will be a new instance, unconnected to any given online
+	 * player, and is for reference or searching only.
+	 *
+	 * @param name the name of the player
+	 * @return the player stats object, or null.
+	 */
+	public PlayerStats DBLoadPlayerStats(String name);
 
 	/**
 	 * Table category: DBPLAYERS

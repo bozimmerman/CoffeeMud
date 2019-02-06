@@ -760,6 +760,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public PlayerStats DBLoadPlayerStats(final String name)
+	{
+		return MOBloader.DBLoadPlayerStats(name);
+	}
+
+	@Override
 	public void DBCreateArea(final Area A)
 	{
 		RoomLoader.DBCreate(A);
@@ -796,11 +802,11 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public PairList<String,String> DBReadPlayerItemData(String name, final String searchStr)
+	public PairList<String,String> DBReadPlayerItemData(final String name, final String searchStr)
 	{
 		return MOBloader.DBReadPlayerItemData(name, searchStr);
 	}
-	
+
 	@Override
 	public List<PlayerLibrary.ThinPlayer> getExtendedUserList()
 	{

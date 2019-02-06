@@ -432,7 +432,6 @@ public interface ChannelsLibrary extends CMLibrary
 		ADDAREA,
 		ADDACCOUNT,
 		REALNAMEOOC,
-		REALNAMEOOCNOADMIN,
-		NOLANG
+		REALNAMEOOCNOADMIN
 	}
 }

@@ -60,6 +60,7 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	public void executeRunnable(Runnable R);
 	public void scheduleRunnable(Runnable R, long ellapsedMs);
 	public void executeRunnable(String threadGroupName, Runnable R);
+	public void executeRunnable(final char threadGroupId, final Runnable R);
 	public void debugDumpStack(final String ID, Thread theThread);
 	public long getTicksEllapsedSinceStartup();
 }

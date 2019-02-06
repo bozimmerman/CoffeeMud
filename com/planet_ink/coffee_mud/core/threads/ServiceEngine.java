@@ -147,7 +147,6 @@ public class ServiceEngine implements ThreadEngine
 
 	protected CMThreadPoolExecutor getPoolExecutor(final String threadGroupName)
 	{
-
 		if(threadGroupName == null)
 			return getPoolExecutor(Thread.currentThread().getThreadGroup().getName().charAt(0));
 		else
@@ -259,6 +258,20 @@ public class ServiceEngine implements ThreadEngine
 		try
 		{
 			getPoolExecutor(threadGroupName).execute(R);
+		}
+		catch(final Exception e)
+		{
+			Log.errOut("ServiceEngine","ExecRun: "+e.getMessage());
+			Log.debugOut("ServiceEngine",e);
+		}
+	}
+
+	@Override
+	public void executeRunnable(final char threadGroupId, final Runnable R)
+	{
+		try
+		{
+			getPoolExecutor(threadGroupId).execute(R);
 		}
 		catch(final Exception e)
 		{
