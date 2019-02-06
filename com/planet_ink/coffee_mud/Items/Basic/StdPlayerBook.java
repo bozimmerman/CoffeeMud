@@ -182,7 +182,7 @@ public class StdPlayerBook extends StdBook
 			return;
 		}
 		else
-			cat=subkey;
+			cat="BOOK_"+subkey;
 		CMLib.database().DBUpdatePlayerData(from, cat, key, "::"+subject+"::"+message);
 	}
 
