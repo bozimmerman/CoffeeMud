@@ -55,6 +55,17 @@ public class Ver extends StdCommand
 		mob.tell(L("^<A HREF=\"mailto:bo@zimmers.net\"^>bo@zimmers.net^</A^>"));
 		mob.tell(L("^<A HREF=\"http://www.coffeemud.org\"^>http://www.coffeemud.org^</A^>"));
 		mob.tell(L("System up time: @x1",CMLib.time().date2EllapsedTime(CMLib.host().getUptimeSecs()*1000, TimeUnit.SECONDS, false)));
+		final Command C=CMClass.getCommand("Shutdown");
+		try
+		{
+			final Object o = C.executeInternal(mob, 0, new Object[0]);
+			if((o instanceof String)
+			&&(((String)o).length()>0))
+				mob.tell((String)o);
+		}
+		catch(final Exception e)
+		{
+		}
 		return false;
 	}
 
