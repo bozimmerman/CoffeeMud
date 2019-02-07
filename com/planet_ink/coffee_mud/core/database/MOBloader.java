@@ -919,6 +919,32 @@ public class MOBloader
 		return members;
 	}
 
+	public Clan.MemberRecord DBClanMember(String clan, String memberName)
+	{
+		Clan.MemberRecord member = null;
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			clan=DB.injectionClean(clan);
+			memberName=DB.injectionClean(CMStrings.capitalizeAndLower(memberName));
+			final ResultSet R=D.query("SELECT * FROM CMCHCL where CMCLAN='"+clan+"' AND CMUSERID='"+memberName+"'");
+			if(R!=null)
+			{
+				member = BuildClanMemberRecord(R);
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return member;
+	}
+
 	public void DBUpdateClanMembership(String name, String clan, final int role)
 	{
 		final MOB M=CMLib.players().getPlayer(name);

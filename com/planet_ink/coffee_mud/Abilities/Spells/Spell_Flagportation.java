@@ -92,11 +92,36 @@ public class Spell_Flagportation extends Spell
 			mob.tell(L("You aren't even a member of a clan."));
 			return false;
 		}
-		final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
-		if(clanPair==null)
+		final Pair<Clan,Integer> clanPair;
+		if(commands.size()>0)
 		{
-			mob.tell(L("You are not authorized to draw from the power of your clan."));
-			return false;
+			final String clanID = CMParms.combine(commands);
+			final Clan C=CMLib.clans().findClan(clanID);
+			if(C==null)
+			{
+				mob.tell(L("There is no such clan called '@x1'.",clanID));
+				return false;
+			}
+			clanPair=mob.getClanRole(C.clanID());
+			if(clanPair == null)
+			{
+				mob.tell(L("You aren't a member of '@x1'.",C.clanID()));
+				return false;
+			}
+			if(C.getAuthority(clanPair.second.intValue(), Clan.Function.CLAN_BENEFITS) == Clan.Authority.CAN_NOT_DO)
+			{
+				mob.tell(L("You aren't authorized to draw from the power of '@x1'.",C.clanID()));
+				return false;
+			}
+		}
+		else
+		{
+			clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
+			if(clanPair==null)
+			{
+				mob.tell(L("You are not authorized to draw from the power of your clan."));
+				return false;
+			}
 		}
 		final Clan C=clanPair.first;
 		final Vector<Room> candidates=new Vector<Room>();

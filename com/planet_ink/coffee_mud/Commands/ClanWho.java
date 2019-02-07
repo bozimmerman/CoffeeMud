@@ -53,11 +53,35 @@ public class ClanWho extends Who
 		final String clanName=CMParms.combine(commands,1).toUpperCase();
 		final StringBuffer msg=new StringBuffer("");
 		final List<String> clanList=new XVector<String>();
+		MOB whoM = null;
 		if(clanName.trim().length()>0)
 		{
 			final Clan C=CMLib.clans().findClan(clanName);
 			if(C==null)
-				mob.tell(L("There's no such clan as '@x1'.",clanName));
+			{
+				if(CMLib.players().playerExists(clanName))
+				{
+					for(final Pair<Clan,Integer> c : mob.clans())
+					{
+						if(c.first.getAuthority(c.second.intValue(), Clan.Function.CLAN_BENEFITS) != Clan.Authority.CAN_NOT_DO)
+						{
+							final MOB M = CMLib.players().getLoadPlayer(clanName);
+							if(M!=null)
+							{
+								if(M.getClanRole(c.first.clanID())!=null)
+								{
+									whoM=M;
+									clanList.add(c.first.clanID());
+								}
+							}
+						}
+					}
+					if(whoM == null)
+						mob.tell(L("You can't clanwho any such clan or player as '@x1'.",clanName));
+				}
+				else
+					mob.tell(L("There's no such clan or player as '@x1'.",clanName));
+			}
 			else
 				clanList.add(C.clanID());
 		}
@@ -78,25 +102,55 @@ public class ClanWho extends Who
 			final Clan C=CMLib.clans().getClan(clanID);
 			if(C!=null)
 			{
-				msg.append("\n\r^x").append(C.getGovernmentName()).append(" ").append(C.getName()).append("\n\r");
-				msg.append(getHead(colWidths));
-				for(final Session S : CMLib.sessions().localOnlineIterable())
+				msg.append("\n\r^x").append(C.getGovernmentName()).append(" ").append(C.getName()).append("^.^N\n\r");
+				if(whoM != null)
 				{
-					MOB mob2=S.mob();
-					if((mob2!=null)&&(mob2.soulMate()!=null))
-						mob2=mob2.soulMate();
-
-					if((mob2!=null)
-					&&(!S.isStopped())
-					&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
-						||((CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.WIZINV))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
-					&&(mob2.getClanRole(C.clanID())!=null)
-					&&(!alreadyDone.contains(mob2))
-					&&(CMLib.flags().isInTheGame(mob2,true))
-					&&(mob2.phyStats().level()>0))
+					final Clan.MemberRecord M=C.getMember(whoM.Name());
+					if(M != null)
 					{
-						msg.append(showWhoShort(mob2,colWidths));
-						alreadyDone.add(mob2);
+						msg.append(CMStrings.padRight("^HName", 10)).append(": ^N").append(whoM.name(mob)).append("\n\r");
+						msg.append(CMStrings.padRight("^HLevel", 10)).append(": ^N").append(whoM.phyStats().level()).append("\n\r");
+						msg.append(CMStrings.padRight("^HRace", 10)).append(": ^N")
+							.append(whoM.charStats().raceName()).append(" (").append(whoM.baseCharStats().genderName()).append(") ")
+							.append("\n\r");
+						for(final CharClass lC : mob.charStats().getCharClasses())
+						{
+							msg.append(CMStrings.padRight("^HClass", 10)).append(": ^N")
+								.append(lC.name(whoM.charStats().getClassLevel(lC)))
+								.append(" (").append(whoM.charStats().getClassLevel(lC)).append(")")
+								.append("\n\r");
+						}
+						msg.append(CMStrings.padRight("^HRank", 10)).append(": ^N").append(C.getRoleName(M.role, true, false)).append("\n\r");
+						msg.append(CMStrings.padRight("^HJoined", 10)).append(": ^N").append(CMLib.time().date2String(M.joinDate)).append("\n\r");
+						msg.append(CMStrings.padRight("^HPC Kills", 10)).append(": ^N").append(M.playerpvps).append("\n\r");
+						msg.append(CMStrings.padRight("^HNPC Kills", 10)).append(": ^N").append(M.mobpvps).append("\n\r");
+						msg.append(CMStrings.padRight("^H$ Donated", 10)).append(": ^N")
+							.append(CMLib.beanCounter().abbreviatedPrice(whoM, M.donatedGold))
+							.append("\n\r");
+						msg.append(CMStrings.padRight("^HXP Donated", 10)).append(": ^N").append(M.donatedXP).append("\n\r");
+					}
+				}
+				else
+				{
+					msg.append(getHead(colWidths));
+					for(final Session S : CMLib.sessions().localOnlineIterable())
+					{
+						MOB mob2=S.mob();
+						if((mob2!=null)&&(mob2.soulMate()!=null))
+							mob2=mob2.soulMate();
+
+						if((mob2!=null)
+						&&(!S.isStopped())
+						&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
+							||((CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.WIZINV))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
+						&&(mob2.getClanRole(C.clanID())!=null)
+						&&(!alreadyDone.contains(mob2))
+						&&(CMLib.flags().isInTheGame(mob2,true))
+						&&(mob2.phyStats().level()>0))
+						{
+							msg.append(showWhoShort(mob2,colWidths));
+							alreadyDone.add(mob2);
+						}
 					}
 				}
 			}

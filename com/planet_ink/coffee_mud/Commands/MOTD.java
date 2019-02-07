@@ -103,10 +103,11 @@ public class MOTD extends StdCommand
 				multiJournal.addAll(CMLib.database().DBReadJournalMsgsByUpdateDate("SYSTEM_NEWS", false, max));
 				if(max>multiJournal.size())
 					multiJournal.addAll(CMLib.database().DBReadJournalMsgsByUpdateDate("CoffeeMud News", false, max-multiJournal.size())); // deprecated
-				final ReverseFakeIterator<JournalEntry> entries = new ReverseFakeIterator<JournalEntry>(multiJournal);
+
 
 				//should read these descending, trim to the max, then iterate.
-				for(;entries.hasNext() && (max>=0); max--)
+				for(final ReverseFakeIterator<JournalEntry> entries = new ReverseFakeIterator<JournalEntry>(multiJournal)
+						;entries.hasNext() && (max>=0); max--)
 				{
 					final JournalEntry entry=entries.next();
 					final String from=entry.from();
@@ -128,11 +129,30 @@ public class MOTD extends StdCommand
 						{
 							if(message.startsWith("<cmvp>"))
 								message=new String(CMLib.webMacroFilter().virtualPageFilter(message.substring(6).getBytes()));
-							buf.append("\n\rNews: "+CMLib.time().date2String(last)+"\n\rFROM: "+CMStrings.padRight(from,15)+"\n\rTO  : "+CMStrings.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
+							buf.append("\n\rNews: "+CMLib.time().date2String(last)
+									 +"\n\rFROM: "+CMStrings.padRight(from,15)
+									 +"\n\rTO  : "+CMStrings.padRight(to,15)
+									 +"\n\rSUBJ: "+subject+"\n\r"+message);
 							buf.append("\n\r--------------------------------------\n\r");
 						}
 					}
 				}
+
+				for(final Pair<Clan,Integer> clanPair : CMLib.clans().findPrivilegedClans(mob, Clan.Function.CLAN_BENEFITS))
+				{
+					multiJournal.clear();
+					multiJournal.addAll(CMLib.database().DBReadJournalMsgsByUpdateDate("CLAN_MOTD_"+clanPair.first.clanID(), false, max));
+					for(final ReverseFakeIterator<JournalEntry> entries = new ReverseFakeIterator<JournalEntry>(multiJournal)
+							;entries.hasNext() && (max>=0); max--)
+					{
+						final JournalEntry entry=entries.next();
+						final String subject=entry.subj();
+						final String message=entry.msg();
+						buf.append("\n\r"+subject+":^N\n\r"+message);
+						buf.append("\n\r^N--------------------------------------\n\r");
+					}
+				}
+
 				final List<String> postalChains=new ArrayList<String>();
 				final List<String> postalBranches=new ArrayList<String>();
 				PostOffice P=null;

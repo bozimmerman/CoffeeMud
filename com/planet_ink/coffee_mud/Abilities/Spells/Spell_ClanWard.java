@@ -192,7 +192,21 @@ public class Spell_ClanWard extends Spell
 			mob.tell(L("You aren't even a member of a clan."));
 			return false;
 		}
-		final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
+
+		final LandTitle T=CMLib.law().getLandTitle(mob.location());
+		if((T==null)||(T.getOwnerName().length()==0))
+		{
+			mob.tell(L("Your clan does not own this room."));
+			return false;
+		}
+		final Clan C=CMLib.clans().fetchClan(T.getOwnerName());
+		if(C==null)
+		{
+			mob.tell(L("Your clan does not own this room."));
+			return false;
+		}
+
+		final Pair<Clan,Integer> clanPair=mob.getClanRole(C.clanID());
 		if(clanPair==null)
 		{
 			mob.tell(L("You are not authorized to draw from the power of your clan."));
@@ -201,7 +215,6 @@ public class Spell_ClanWard extends Spell
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		final Clan C=clanPair.first;
 		if(!CMLib.law().doesOwnThisLand(C.clanID(), R))
 		{
 			mob.tell(L("Your clan does not own this room."));
@@ -210,6 +223,12 @@ public class Spell_ClanWard extends Spell
 		if(!CMLib.flags().canAccess(mob,R))
 		{
 			mob.tell(L("You can't use this magic to get there from here."));
+			return false;
+		}
+
+		if(C.getAuthority(clanPair.second.intValue(), Clan.Function.CLAN_BENEFITS) == Clan.Authority.CAN_NOT_DO)
+		{
+			mob.tell(L("You aren't authorized to draw from the power of '@x1'.",C.clanID()));
 			return false;
 		}
 

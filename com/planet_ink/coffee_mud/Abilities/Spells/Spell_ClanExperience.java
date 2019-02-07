@@ -125,6 +125,11 @@ public class Spell_ClanExperience extends Spell
 					mob.tell(L("You are not a member of @x1!",C.clanID()));
 					return false;
 				}
+				if(C.getAuthority(mob.getClanRole(C.clanID()).second.intValue(), Clan.Function.CLAN_BENEFITS) == Clan.Authority.CAN_NOT_DO)
+				{
+					mob.tell(L("You aren't authorized to draw from the power of '@x1'.",C.clanID()));
+					return false;
+				}
 			}
 			else
 				amt=CMath.s_int(commands.get(i));

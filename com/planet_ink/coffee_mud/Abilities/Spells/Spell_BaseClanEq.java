@@ -122,7 +122,36 @@ public class Spell_BaseClanEq extends Spell
 			mob.tell(L("You aren't even a member of a clan."));
 			return false;
 		}
-		final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
+		Pair<Clan,Integer> clanPair=null;
+		{
+			final Iterator<Pair<Clan,Integer>> i=mob.clans().iterator();
+			if(i.hasNext())
+			{
+				i.next();
+				if(i.hasNext() && commands.size()>1)
+				{
+					final String clanID = commands.get(commands.size()-1);
+					final Clan C=CMLib.clans().findClan(clanID);
+					if(C!=null)
+					{
+						clanPair=mob.getClanRole(C.clanID());
+						if(clanPair == null)
+						{
+							mob.tell(L("You aren't a member of '@x1'.",C.clanID()));
+							return false;
+						}
+						if(C.getAuthority(clanPair.second.intValue(), Clan.Function.ENCHANT) == Clan.Authority.CAN_NOT_DO)
+						{
+							mob.tell(L("You aren't authorized to enchant for '@x1'.",C.clanID()));
+							return false;
+						}
+						commands.remove(commands.size()-1);
+					}
+				}
+			}
+		}
+		if(clanPair == null)
+			clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.ENCHANT);
 		if(clanPair==null)
 		{
 			mob.tell(L("You are not authorized to draw from the power of your clan."));

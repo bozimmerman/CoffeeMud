@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -654,6 +655,15 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 	public MOB findMember(final String name);
 
 	/**
+	 * Returns the names member record, if possible
+	 * @see Clan#getMemberList(int)
+	 * @see Clan#getFullMemberList()
+	 * @param name the name of the member
+	 * @return the member record
+	 */
+	public MemberRecord getMember(final String name);
+
+	/**
 	 * Returns the set of members, where
 	 * each row represents a FullMemberRecord
 	 * @see Clan#getMemberList()
@@ -1155,5 +1165,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 		CLAN_BENEFITS,
 		/** constant for the clan function of enjoying clan homes. @see Clan#getAuthority(int,Function) */
 		CLAN_TITLES,
+		/** constant for the clan function writing MOTD messages. @see Clan#getAuthority(int,Function) */
+		CLAN_MOTD,
 	}
 }

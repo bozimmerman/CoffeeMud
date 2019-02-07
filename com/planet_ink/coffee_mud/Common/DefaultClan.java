@@ -924,6 +924,7 @@ public class DefaultClan implements Clan
 			}
 		}
 		CMLib.database().DBDeleteJournal("a Journal of "+getGovernmentName()+" "+getName(), null);
+		CMLib.database().DBDeleteJournal("CLAN_MOTD"+clanID(), null);
 		CMLib.database().DBDeleteClan(this);
 		CMLib.clans().removeClan(this);
 	}
@@ -1625,6 +1626,7 @@ public class DefaultClan implements Clan
 		return null;
 	}
 
+	@Override
 	public MemberRecord getMember(final String name)
 	{
 		return CMLib.database().DBGetClanMember(clanID(),name);

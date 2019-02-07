@@ -11,6 +11,7 @@
             <POWER>SET_DONATE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PREMISE</POWER>
+            <POWER>CLAN_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -31,6 +32,7 @@
             <POWER>ACCEPT</POWER>
             <POWER>REJECT</POWER>
             <POWER>DEPOSIT</POWER>
+            <POWER>CLAN_MOTD</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
             <POWER>DEPOSIT_LIST</POWER>
@@ -317,6 +319,7 @@
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>DEPOSIT</POWER>
             <POWER>VOTE_ASSIGN</POWER>
+            <POWER>CLAN_MOTD</POWER>
             <POWER>DEPOSIT_LIST</POWER>
             <POWER>CHANNEL</POWER>
             <POWER>MORGUE</POWER>
@@ -451,6 +454,7 @@
             <POWER>VOTE_ASSIGN</POWER>
             <POWER>VOTE_OTHER</POWER>
             <POWER>DEPOSIT_LIST</POWER>
+            <POWER>CLAN_MOTD</POWER>
             <POWER>CHANNEL</POWER>
             <POWER>MORGUE</POWER>
             <POWER>LIST_MEMBERS</POWER>
@@ -463,6 +467,7 @@
             <POWER>DEPOSIT</POWER>
             <POWER>VOTE_ASSIGN</POWER>
             <POWER>VOTE_OTHER</POWER>
+            <POWER>CLAN_MOTD</POWER>
             <POWER>DEPOSIT_LIST</POWER>
             <POWER>CHANNEL</POWER>
             <POWER>MORGUE</POWER>
@@ -604,6 +609,7 @@
             <POWER>SET_DONATE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PREMISE</POWER>
+            <POWER>CLAN_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -757,6 +763,7 @@
             <POWER>SET_DONATE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PREMISE</POWER>
+            <POWER>CLAN_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -781,6 +788,7 @@
             <POWER>SET_DONATE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PREMISE</POWER>
+            <POWER>CLAN_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -936,6 +944,7 @@
             <POWER>SET_HOME</POWER>
             <POWER>SET_DONATE</POWER>
             <POWER>PREMISE</POWER>
+            <POWER>CLAN_MOTD</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
@@ -1028,6 +1037,7 @@
             <POWER>DEPOSIT</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>
+            <POWER>CLAN_MOTD</POWER>
             <POWER>VOTE_ASSIGN</POWER>
             <POWER>VOTE_OTHER</POWER>
             <POWER>DEPOSIT_LIST</POWER>
