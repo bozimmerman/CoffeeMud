@@ -2161,9 +2161,6 @@ public class DefaultClan implements Clan
 					}
 				});
 
-				if(this.clanID().equalsIgnoreCase("Pluto"))
-					System.out.println("BZ:DELME:STOP!");
-
 				final HashMap<String,Reference<ThinPlayer>> thinCache = new HashMap<String,Reference<ThinPlayer>>();
 				// finally we fill the positions
 				// if we are overwriting, then we always pick the best people who fit and
