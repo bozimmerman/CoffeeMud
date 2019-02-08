@@ -2241,7 +2241,16 @@ public class DefaultClan implements Clan
 				{
 					if(highPositionList.contains(Integer.valueOf(member.role))
 					&&(!finalRollers.containsKey(member)))
-						finalRollers.put(member, Integer.valueOf(acceptRole.getRoleID()));
+					{
+						boolean someoneIsTakingMyPlace = false;
+						for(final FullMemberRecord R : finalRollers.keySet())
+						{
+							if(finalRollers.get(R).intValue() == member.role)
+								someoneIsTakingMyPlace=true;
+						}
+						if(someoneIsTakingMyPlace)
+							finalRollers.put(member, Integer.valueOf(acceptRole.getRoleID()));
+					}
 				}
 
 				for(final FullMemberRecord member : members)
