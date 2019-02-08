@@ -91,6 +91,8 @@ public interface PlayerLibrary extends CMLibrary
 		public String ip();
 		public int exp();
 		public int expLvl();
+		public String liege();
+		public String worship();
 	}
 
 	public static class ThinnerPlayer

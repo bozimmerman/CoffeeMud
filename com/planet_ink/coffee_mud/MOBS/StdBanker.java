@@ -736,7 +736,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						{
 							final Clan C=CMLib.clans().getClan(depositorName);
 							if(C!=null)
-								C.adjDeposit(msg.source(), newValue);
+								C.adjDeposit(msg.source(), older.getTotalValue());
 						}
 
 						if(msg.sourceMessage()!=null)

@@ -5,6 +5,9 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
+
+import javafx.geometry.Pos;
+
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
@@ -985,9 +988,14 @@ public class Clans extends StdLibrary implements ClanManager
 		for(int p=gvt.getPositions().length-1;p>=0;p--)
 		{
 			final ClanPosition pos = gvt.getPositions()[p];
+			final String maxStr;
+			if(pos.getMax() >= 1)
+				maxStr = ""+(int)Math.round(pos.getMax());
+			else
+				maxStr = CMath.toWholePct(pos.getMax());
 			str.append(indt(2)).append("<POSITION ").append("ID=\""+pos.getID()+"\" ").append("ROLEID="+pos.getRoleID()+" ")
 								.append("RANK="+pos.getRank()+" ").append("NAME=\""+pos.getName()+"\" ").append("PLURAL=\""+pos.getPluralName()+"\" ")
-								.append("MAX="+pos.getMax()+" ").append("INNERMASK=\""+CMLib.xml().parseOutAngleBrackets(pos.getInnerMaskStr())+"\" ")
+								.append("MAX="+maxStr+" ").append("INNERMASK=\""+CMLib.xml().parseOutAngleBrackets(pos.getInnerMaskStr())+"\" ")
 								.append("PUBLIC=\""+pos.isPublic()+"\">\n");
 			if(pos.getTitleAwards().size()>0)
 			{
@@ -1236,7 +1244,15 @@ public class Clans extends StdLibrary implements ClanManager
 					final int rank=CMath.s_int(posPiece.parms().get("RANK"));
 					final String name=posPiece.parms().get("NAME");
 					final String pluralName=posPiece.parms().get("PLURAL");
-					final int max=CMath.s_int(posPiece.parms().get("MAX"));
+					final String maxStr=posPiece.parms().get("MAX");
+					final double max;
+					if(maxStr == null)
+						max=Integer.MAX_VALUE;
+					else
+					if(maxStr.endsWith("%"))
+						max=CMath.s_pct(maxStr);
+					else
+						max=CMath.s_int(maxStr);
 					final boolean isPublic=CMath.s_bool(posPiece.parms().get("PUBLIC"));
 					final String innerMaskStr=CMLib.xml().restoreAngleBrackets(posPiece.parms().get("INNERMASK"));
 					for(final XMLTag powerPiece : posPiece.contents())
@@ -1354,6 +1370,19 @@ public class Clans extends StdLibrary implements ClanManager
 						titleAwards.add(CMLib.xml().restoreAngleBrackets(titlePiece.value()));
 				}
 			}
+			boolean broken = false;
+			for(int id = 0;id<posArray.length;id++)
+			{
+				if(posArray[id] == null)
+				{
+					Log.errOut("Clans","Clan Position ID#"+id+" is not assigned to clan govt "+typeName);
+					broken=true;
+				}
+
+			}
+			if(broken)
+				continue;
+
 			final ClanGovernment G=(ClanGovernment)CMClass.getCommon("DefaultClanGovernment");
 			G.setID(typeID);
 			G.setName(typeName);

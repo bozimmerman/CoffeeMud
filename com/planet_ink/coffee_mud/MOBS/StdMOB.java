@@ -4798,8 +4798,11 @@ public class StdMOB implements MOB
 		}
 		try
 		{
-			for (final Ability A : clanEffects())
-				applier.apply(A);
+			if (!clans.isEmpty())
+			{
+				for (final Ability A : clanEffects())
+					applier.apply(A);
+			}
 		}
 		catch (final java.lang.IndexOutOfBoundsException x)
 		{

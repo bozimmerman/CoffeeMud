@@ -6395,6 +6395,35 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							return false;
 					}
 					break;
+				case _DEITY: // -Deity
+					{
+						if(E.worship().trim().length()==0)
+							return false;
+						boolean found=false;
+						for(final Object o : entry.parms())
+						{
+							if(E.worship().equalsIgnoreCase((String)o)||((String)o).equals("ANY"))
+							{
+								found = true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
+				case DEITY: // +Deity
+					{
+						if(E.worship().trim().length()>0)
+						{
+							for(final Object o : entry.parms())
+							{
+								if(E.worship().equalsIgnoreCase((String)o))
+									return false;
+							}
+						}
+					}
+					break;
 				case _LEVEL: // -level
 					{
 						final int level=E.level();
@@ -6694,8 +6723,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _QUALLVL: // -quallvl
 				case RESOURCE: // +resource
 				case _RESOURCE: // -resource
-				case _DEITY: // -deity
-				case DEITY: // +deity
 				case _EFFECT: // -effects
 				case _FACTION: // -faction
 				case FACTION: // +faction

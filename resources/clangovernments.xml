@@ -752,7 +752,7 @@
     </EFFECTS>
 </CLANTYPE>
 <CLANTYPE TYPEID=5 NAME="FAMILY" CATEGORY="">
-    <SHORTDESC>patron/patron rules a private group only family can join</SHORTDESC>
+    <SHORTDESC>patron/matron rules a private group only family can join</SHORTDESC>
     <LONGDESC>The Family is a clan that only family can join, and is ruled by either a Matron, a Patron, or both.  The traditional powers of treasurer and enchanter can be held by any of the adult members of the family, which includes Misters and Mistresses.  All other minor powers are held equally by all members, including the cousins, the children, and even the black sheep of the family.</LONGDESC>
     <POSITIONS>
         <POSITION ID="PATRON" ROLEID=6 RANK=0 NAME="PATRON" PLURAL="PATRONS" MAX=1 INNERMASK="-FEMALE -NEUTER" PUBLIC="true">
@@ -1031,7 +1031,7 @@
 
     </LONGDESC>
     <POSITIONS>
-        <POSITION ID="OFFICER" ROLEID=2 RANK=2 NAME="OFFICER" PLURAL="OFFICERS" MAX=2147483647 INNERMASK="" PUBLIC="true">
+        <POSITION ID="OFFICER" ROLEID=2 RANK=0 NAME="OFFICER" PLURAL="OFFICERS" MAX=2147483647 INNERMASK="" PUBLIC="true">
             <POWER>ACCEPT</POWER>
             <POWER>PROPERTY_OWNER</POWER>
             <POWER>DEPOSIT</POWER>
@@ -1063,7 +1063,7 @@
             <POWER>CLAN_BENEFITS</POWER>
             <POWER>CLAN_TITLES</POWER>
         </POSITION>
-        <POSITION ID="APPLICANT" ROLEID=0 RANK=0 NAME="APPLICANT" PLURAL="APPLICANTS" MAX=2147483647 INNERMASK="" PUBLIC="false">
+        <POSITION ID="APPLICANT" ROLEID=0 RANK=2 NAME="APPLICANT" PLURAL="APPLICANTS" MAX=2147483647 INNERMASK="" PUBLIC="false">
         </POSITION>
     </POSITIONS>
     <VOTING MAXDAYS=10 QUORUMPCT=66>
@@ -1099,5 +1099,395 @@
     </TITLES>
     <ABILITIES />
     <EFFECTS />
+</CLANTYPE>
+<CLANTYPE TYPEID=8 NAME="CO-OP" CATEGORY="">
+    <SHORTDESC>neither boss can tax, order underlings, or do clan relations</SHORTDESC>
+    <LONGDESC>The Co-op is run by house mother and father, who can not engage in war or alliance with other clans, tax the members, or order their underlings.</LONGDESC>
+    <POSITIONS>
+        <POSITION ID="HOUSE MOTHER" ROLEID=3 RANK=0 NAME="HOUSE MOTHER" PLURAL="HOUSE MOTHERS" MAX=1 INNERMASK="-GENDER +FEMALE" PUBLIC="true">
+            <POWER>ACCEPT</POWER>
+            <POWER>ASSIGN</POWER>
+            <POWER>EXILE</POWER>
+            <POWER>SET_HOME</POWER>
+            <POWER>SET_DONATE</POWER>
+            <POWER>REJECT</POWER>
+            <POWER>PREMISE</POWER>
+            <POWER>CLAN_MOTD</POWER>
+            <POWER>PROPERTY_OWNER</POWER>
+            <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
+            <POWER>ENCHANT</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>MORGUE</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>HOME_PRIVS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+        <POSITION ID="HOUSE FATHER" ROLEID=2 RANK=0 NAME="HOUSE FATHER" PLURAL="HOUSE FATHERS" MAX=1 INNERMASK="-GENDER +MALE" PUBLIC="true">
+            <POWER>ACCEPT</POWER>
+            <POWER>ASSIGN</POWER>
+            <POWER>EXILE</POWER>
+            <POWER>SET_HOME</POWER>
+            <POWER>SET_DONATE</POWER>
+            <POWER>REJECT</POWER>
+            <POWER>PREMISE</POWER>
+            <POWER>CLAN_MOTD</POWER>
+            <POWER>PROPERTY_OWNER</POWER>
+            <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
+            <POWER>ENCHANT</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>MORGUE</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>HOME_PRIVS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+        <POSITION ID="MEMBER" ROLEID=1 RANK=1 NAME="MEMBER" PLURAL="MEMBERS" MAX=999999 INNERMASK="" PUBLIC="true">
+            <POWER>DEPOSIT</POWER>
+            <POWER>PROPERTY_OWNER</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>ENCHANT</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>HOME_PRIVS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+        <POSITION ID="APPLICANT" ROLEID=0 RANK=2 NAME="APPLICANT" PLURAL="APPLICANTS" MAX=999999 INNERMASK="" PUBLIC="false">
+        </POSITION>
+    </POSITIONS>
+    <VOTING />
+    <AUTOPOSITION>APPLICANT</AUTOPOSITION>
+    <ACCEPTPOSITION>MEMBER</ACCEPTPOSITION>
+    <REQUIREDMASK></REQUIREDMASK>
+    <MISCVARS>TAX=10%</MISCVARS>
+    <ENTRYSCRIPT></ENTRYSCRIPT>
+    <EXITSCRIPT></EXITSCRIPT>
+    <AUTOPROMOTEBY>RANK</AUTOPROMOTEBY>
+    <PUBLIC>true</PUBLIC>
+    <FAMILYONLY>false</FAMILYONLY>
+    <RIVALROUS>true</RIVALROUS>
+    <XPPERLEVELFORMULA></XPPERLEVELFORMULA>
+    <OVERRIDEMINMEMBERS />
+    <CONQUEST>
+        <ENABLED>false</ENABLED>
+        <ITEMLOYALTY>true</ITEMLOYALTY>
+        <DEITYBASIS>false</DEITYBASIS>
+    </CONQUEST>
+    <TITLES>
+        <TITLE>*, @x2 of @x1</TITLE>
+    </TITLES>
+    <ABILITIES>
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanWard" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ImprovedClanWard" PROFF=0 LEVEL=20 QUALIFYONLY=true />
+    </ABILITIES>
+    <EFFECTS>
+        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ATTACK+1 HITPOINTS+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="WIS+1 MANA+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="HITPOINTS+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="CON+1 HITPOINTS+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="ATTACK+1 MANA+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="ARMOR-1 HITPOINTS+5 MOVEMENT+5 MANA+5" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="MOVEMENT+1 MANA+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
+    </EFFECTS>
+</CLANTYPE>
+<CLANTYPE TYPEID=9 NAME="MERITOCRACY" CATEGORY="">
+    <SHORTDESC>ruled by those who donate the most XP to their clan</SHORTDESC>
+    <LONGDESC>The meritocracy is an hierarchical organization run by those who donate the most net XP to the clan.  The ranks, from entrepreneurs down to workers, are automatically assigned by who has donated the most net XP to the clan.  Members also have the authority to maintain discipline in the ranks using the ORDER command.</LONGDESC>
+    <POSITIONS>
+        <POSITION ID="HIGH ENTREPRENUER" ROLEID=5 RANK=0 NAME="HIGH ENTREPRENUER" PLURAL="HIGH ENTREPRENUERS" MAX=2% INNERMASK="" PUBLIC="true">
+            <POWER>ACCEPT</POWER>
+            <POWER>EXILE</POWER>
+            <POWER>SET_HOME</POWER>
+            <POWER>SET_DONATE</POWER>
+            <POWER>REJECT</POWER>
+            <POWER>PREMISE</POWER>
+            <POWER>CLAN_MOTD</POWER>
+            <POWER>PROPERTY_OWNER</POWER>
+            <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT</POWER>
+            <POWER>ORDER_UNDERLINGS</POWER>
+            <POWER>ORDER_CONQUERED</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
+            <POWER>DECLARE</POWER>
+            <POWER>ENCHANT</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>MORGUE</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>HOME_PRIVS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+        <POSITION ID="ENTREPRENEUR" ROLEID=4 RANK=1 NAME="ENTREPRENEUR" PLURAL="ENTREPRENEURS" MAX=5% INNERMASK="" PUBLIC="true">
+            <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT</POWER>
+            <POWER>ACCEPT</POWER>
+            <POWER>REJECT</POWER>
+            <POWER>ENCHANT</POWER>
+            <POWER>CLAN_MOTD</POWER>
+            <POWER>SET_HOME</POWER>
+            <POWER>SET_DONATE</POWER>
+            <POWER>MORGUE</POWER>
+            <POWER>PREMISE</POWER>
+            <POWER>PROPERTY_OWNER</POWER>
+            <POWER>ORDER_UNDERLINGS</POWER>
+            <POWER>ORDER_CONQUERED</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>HOME_PRIVS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+        <POSITION ID="DILIGENT WORKER" ROLEID=3 RANK=2 NAME="DILIGENT WORKER" PLURAL="DILIGENT WORKERS" MAX=10% INNERMASK="" PUBLIC="false">
+            <POWER>DEPOSIT</POWER>
+            <POWER>ENCHANT</POWER>
+            <POWER>PROPERTY_OWNER</POWER>
+            <POWER>ORDER_UNDERLINGS</POWER>
+            <POWER>ORDER_CONQUERED</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>HOME_PRIVS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+        <POSITION ID="HARD WORKER" ROLEID=2 RANK=3 NAME="HARD WORKER" PLURAL="HARD WORKERS" MAX=50% INNERMASK="" PUBLIC="false">
+            <POWER>DEPOSIT</POWER>
+            <POWER>ENCHANT</POWER>
+            <POWER>ORDER_UNDERLINGS</POWER>
+            <POWER>ORDER_CONQUERED</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>HOME_PRIVS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+        <POSITION ID="WORKER" ROLEID=1 RANK=4 NAME="WORKER" PLURAL="WORKER" MAX=999999 INNERMASK="" PUBLIC="false">
+            <POWER>DEPOSIT</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+        <POSITION ID="APPLICANT" ROLEID=0 RANK=5 NAME="APPLICANT" PLURAL="APPLICANTS" MAX=999999 INNERMASK="" PUBLIC="false">
+        </POSITION>
+    </POSITIONS>
+    <VOTING />
+    <AUTOPOSITION>APPLICANT</AUTOPOSITION>
+    <ACCEPTPOSITION>WORKER</ACCEPTPOSITION>
+    <REQUIREDMASK></REQUIREDMASK>
+    <ENTRYSCRIPT></ENTRYSCRIPT>
+    <EXITSCRIPT></EXITSCRIPT>
+    <AUTOPROMOTEBY>XP_OVERWRITE</AUTOPROMOTEBY>
+    <PUBLIC>true</PUBLIC>
+    <MISCVARS>TAX=0%</MISCVARS>
+    <FAMILYONLY>false</FAMILYONLY>
+    <RIVALROUS>true</RIVALROUS>
+    <XPPERLEVELFORMULA></XPPERLEVELFORMULA>
+    <OVERRIDEMINMEMBERS />
+    <CONQUEST>
+        <ENABLED>true</ENABLED>
+        <ITEMLOYALTY>true</ITEMLOYALTY>
+        <DEITYBASIS>false</DEITYBASIS>
+    </CONQUEST>
+    <TITLES>
+        <TITLE>*, @x2 of @x1</TITLE>
+    </TITLES>
+    <ABILITIES>
+        <ABILITY ID="Spell_ClanExperience" PROFF=100 LEVEL=1 QUALIFYONLY=false />
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanWard" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ImprovedClanWard" PROFF=0 LEVEL=20 QUALIFYONLY=true />
+    </ABILITIES>
+    <EFFECTS>
+        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ATTACK+1 HITPOINTS+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="WIS+1 MANA+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="HITPOINTS+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="CON+1 HITPOINTS+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="ATTACK+1 MANA+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="ARMOR-1 HITPOINTS+5 MOVEMENT+5 MANA+5" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="MOVEMENT+1 MANA+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
+    </EFFECTS>
+</CLANTYPE>
+<CLANTYPE TYPEID=10 NAME="PLUTOCRACY" CATEGORY="">
+    <SHORTDESC>ruled by those who donate the most money to the clan</SHORTDESC>
+    <LONGDESC>The plutocracy is an hierarchical organization run by those who deposit the most net money to the clan.  The ranks, from tycoons down to serfs, are automatically assigned by who has donated the most money to the clan.  Members also have the authority to maintain discipline in the ranks using the ORDER command.</LONGDESC>
+    <POSITIONS>
+        <POSITION ID="TYCOON" ROLEID=5 RANK=0 NAME="TYCOON" PLURAL="TYCOONS" MAX=1% INNERMASK="" PUBLIC="true">
+            <POWER>ACCEPT</POWER>
+            <POWER>EXILE</POWER>
+            <POWER>TAX</POWER>
+            <POWER>SET_HOME</POWER>
+            <POWER>SET_DONATE</POWER>
+            <POWER>REJECT</POWER>
+            <POWER>PREMISE</POWER>
+            <POWER>CLAN_MOTD</POWER>
+            <POWER>PROPERTY_OWNER</POWER>
+            <POWER>WITHDRAW</POWER>
+            <POWER>DEPOSIT</POWER>
+            <POWER>ORDER_UNDERLINGS</POWER>
+            <POWER>ORDER_CONQUERED</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
+            <POWER>DECLARE</POWER>
+            <POWER>ENCHANT</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>MORGUE</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>HOME_PRIVS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+        <POSITION ID="MOGUL" ROLEID=4 RANK=1 NAME="MOGUL" PLURAL="MOGULS" MAX=3% INNERMASK="" PUBLIC="true">
+            <POWER>DEPOSIT</POWER>
+            <POWER>ENCHANT</POWER>
+            <POWER>CLAN_MOTD</POWER>
+            <POWER>PROPERTY_OWNER</POWER>
+            <POWER>ORDER_UNDERLINGS</POWER>
+            <POWER>ORDER_CONQUERED</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>HOME_PRIVS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+        <POSITION ID="LANDLORD" ROLEID=3 RANK=2 NAME="LANDLORD" PLURAL="LANDLORDS" MAX=5% INNERMASK="" PUBLIC="false">
+            <POWER>DEPOSIT</POWER>
+            <POWER>PROPERTY_OWNER</POWER>
+            <POWER>ORDER_UNDERLINGS</POWER>
+            <POWER>ORDER_CONQUERED</POWER>
+            <POWER>DEPOSIT_LIST</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>HOME_PRIVS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+        <POSITION ID="TENNANT" ROLEID=2 RANK=3 NAME="HARD WORKER" PLURAL="HARD WORKERS" MAX=50% INNERMASK="" PUBLIC="false">
+            <POWER>DEPOSIT</POWER>
+            <POWER>ORDER_CONQUERED</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>HOME_PRIVS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+        <POSITION ID="SERF" ROLEID=1 RANK=4 NAME="WORKER" PLURAL="WORKER" MAX=999999 INNERMASK="" PUBLIC="false">
+            <POWER>DEPOSIT</POWER>
+            <POWER>CHANNEL</POWER>
+            <POWER>LIST_MEMBERS</POWER>
+            <POWER>CLAN_BENEFITS</POWER>
+            <POWER>CLAN_TITLES</POWER>
+        </POSITION>
+        <POSITION ID="APPLICANT" ROLEID=0 RANK=5 NAME="APPLICANT" PLURAL="APPLICANTS" MAX=999999 INNERMASK="" PUBLIC="false">
+        </POSITION>
+    </POSITIONS>
+    <VOTING />
+    <AUTOPOSITION>APPLICANT</AUTOPOSITION>
+    <ACCEPTPOSITION>SERF</ACCEPTPOSITION>
+    <REQUIREDMASK></REQUIREDMASK>
+    <ENTRYSCRIPT></ENTRYSCRIPT>
+    <EXITSCRIPT></EXITSCRIPT>
+    <AUTOPROMOTEBY>GOLD_OVERWRITE</AUTOPROMOTEBY>
+    <PUBLIC>true</PUBLIC>
+    <FAMILYONLY>false</FAMILYONLY>
+    <RIVALROUS>true</RIVALROUS>
+    <XPPERLEVELFORMULA></XPPERLEVELFORMULA>
+    <OVERRIDEMINMEMBERS />
+    <CONQUEST>
+        <ENABLED>true</ENABLED>
+        <ITEMLOYALTY>true</ITEMLOYALTY>
+        <DEITYBASIS>false</DEITYBASIS>
+    </CONQUEST>
+    <TITLES>
+        <TITLE>*, @x2 of @x1</TITLE>
+    </TITLES>
+    <ABILITIES>
+        <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqMind" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqPoison" PROFF=0 LEVEL=7 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqWater" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanDonate" PROFF=100 LEVEL=2 QUALIFYONLY=false />
+        <ABILITY ID="Spell_Flagportation" PROFF=0 LEVEL=11 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqElectric" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqFire" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqDisease" PROFF=0 LEVEL=9 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqAcid" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_CEqCold" PROFF=0 LEVEL=4 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ClanHome" PROFF=100 LEVEL=3 QUALIFYONLY=false />
+        <ABILITY ID="Spell_ClanWard" PROFF=0 LEVEL=5 QUALIFYONLY=true />
+        <ABILITY ID="Spell_ImprovedClanWard" PROFF=0 LEVEL=20 QUALIFYONLY=true />
+    </ABILITIES>
+    <EFFECTS>
+        <EFFECT ID="Prop_Adjuster" LEVEL=3 PARMS="ATTACK+1 HITPOINTS+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=8 PARMS="WIS+1 MANA+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=6 PARMS="CHA+1 HITPOINTS+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=12 PARMS="HITPOINTS+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=13 PARMS="CON+1 HITPOINTS+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=14 PARMS="INT+1 MOVEMENT+2" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=15 PARMS="ATTACK+1 MANA+4" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=16 PARMS="ARMOR-1 HITPOINTS+5 MOVEMENT+5 MANA+5" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=17 PARMS="MOVEMENT+1 MANA+1" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=18 PARMS="DEX+1 MANA+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=19 PARMS="STR+1 MOVEMENT+3" />
+        <EFFECT ID="Prop_Adjuster" LEVEL=20 PARMS="ARMOR-1 MOVEMENT+4" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=21 PARMS="+10%" />
+        <EFFECT ID="Prop_ModExperience" LEVEL=22 PARMS="+10%" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=23 PARMS="-REACTION:+1" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=24 PARMS="+REACTION:+5" />
+        <EFFECT ID="Prop_ModFaction" LEVEL=25 PARMS="+REACTION:+5" />
+    </EFFECTS>
 </CLANTYPE>
 </CLANTYPES>

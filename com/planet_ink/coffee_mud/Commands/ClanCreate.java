@@ -229,6 +229,7 @@ public class ClanCreate extends StdCommand
 														}
 														newRoleID=newClan.getTopQualifiedRoleID(Clan.Function.ASSIGN,mob);
 														if((newClan.getAuthority(newRoleID, Clan.Function.ASSIGN) == Clan.Authority.CAN_NOT_DO)
+														&&(newClan.getGovernment().getAutoPromoteBy() == Clan.AutoPromoteFlag.NONE)
 														&&(newClan.getRolesList().length>1))
 														{
 															mob.tell(L("You are not qualified to lead a clan of this style.\n\r"));

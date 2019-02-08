@@ -63,30 +63,42 @@ public class TickTock extends StdCommand
 				mob.location().getArea().getTimeObj().save();
 			}
 			else
-			if(s.startsWith("clantick"))
 			{
-				CMLib.clans().tickAllClans();
-				mob.tell(L("Clans ticked!"));
-			}
-			else
-			if(s.startsWith("smtp"))
-				mob.tell(L(CMLib.host().executeCommand("TICK SMTP")));
-			else
-			{
-				for(final Enumeration<CMLibrary> e=CMLib.libraries();e.hasMoreElements();)
+				int numTimes=1;
+				if(CMath.isInteger(commands.get(commands.size()-1)))
+					numTimes=CMath.s_int(commands.get(commands.size()-1));
+				if(s.startsWith("clantick"))
 				{
-					final CMLibrary lib=e.nextElement();
-					if((lib.getServiceClient()!=null)&&(s.equalsIgnoreCase(lib.getServiceClient().getName())))
-					{
-						if(lib instanceof Runnable)
-							((Runnable)lib).run();
-						else
-							lib.getServiceClient().tickTicker(true);
-						mob.tell(L("Done."));
-						return false;
-					}
+					for(int n=0;n<numTimes;n++)
+						CMLib.clans().tickAllClans();
+					mob.tell(L("Clans ticked!"));
 				}
-				mob.tell(L("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id."));
+				else
+				if(s.startsWith("smtp"))
+				{
+					for(int n=0;n<numTimes;n++)
+						mob.tell(L(CMLib.host().executeCommand("TICK SMTP")));
+				}
+				else
+				{
+					for(final Enumeration<CMLibrary> e=CMLib.libraries();e.hasMoreElements();)
+					{
+						final CMLibrary lib=e.nextElement();
+						if((lib.getServiceClient()!=null)&&(s.equalsIgnoreCase(lib.getServiceClient().getName())))
+						{
+							for(int n=0;n<numTimes;n++)
+							{
+								if(lib instanceof Runnable)
+									((Runnable)lib).run();
+								else
+									lib.getServiceClient().tickTicker(true);
+							}
+							mob.tell(L("Done."));
+							return false;
+						}
+					}
+					mob.tell(L("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id."));
+				}
 			}
 		}
 		catch(final Exception e)

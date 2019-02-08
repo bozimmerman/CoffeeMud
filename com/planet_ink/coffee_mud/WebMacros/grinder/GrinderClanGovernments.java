@@ -175,7 +175,15 @@ public class GrinderClanGovernments
 				final String oldPluralName=httpReq.getUrlParameter("GPOSPLURALNAME_"+posDexStr);
 				final int oldRoleID=CMath.s_int(httpReq.getUrlParameter("GPOSROLEID_"+posDexStr));
 				final int oldRank=CMath.s_int(httpReq.getUrlParameter("GPOSRANK_"+posDexStr));
-				final int oldMax=CMath.s_int(httpReq.getUrlParameter("GPOSMAX_"+posDexStr));
+				final String oldMaxStr=httpReq.getUrlParameter("GPOSMAX_"+posDexStr);
+				final double oldMax;
+				if(oldMaxStr == null)
+					oldMax = Integer.MAX_VALUE;
+				else
+				if(oldMaxStr.endsWith("%"))
+					oldMax = CMath.s_pct(oldMaxStr);
+				else
+					oldMax=CMath.s_int(oldMaxStr);
 				final String oldMask=httpReq.getUrlParameter("GPOSINNERMASK_"+posDexStr);
 				final String oldIsPublicStr=httpReq.getUrlParameter("GPOSISPUBLIC_"+posDexStr);
 				final boolean oldIsPublic=oldIsPublicStr==null?false:oldIsPublicStr.equalsIgnoreCase("on");

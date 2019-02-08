@@ -581,6 +581,8 @@ public class MOBloader
 			final String ip=lsIP;
 			final int exp=CMath.s_int(DBConnections.getRes(R,"CMEXPE"));
 			final int expLvl=CMath.s_int(DBConnections.getRes(R,"CMEXLV"));
+			final String leigeID=DBConnections.getRes(R,"CMLEIG");
+			final String worshipID=DBConnections.getRes(R,"CMWORS");
 			return new PlayerLibrary.ThinPlayer()
 			{
 
@@ -642,6 +644,18 @@ public class MOBloader
 				public int expLvl()
 				{
 					return expLvl;
+				}
+
+				@Override
+				public String liege()
+				{
+					return leigeID;
+				}
+
+				@Override
+				public String worship()
+				{
+					return worshipID;
 				}
 			};
 		}

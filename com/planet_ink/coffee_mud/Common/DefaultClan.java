@@ -24,11 +24,14 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournal;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /**
@@ -100,6 +103,7 @@ public class DefaultClan implements Clan
 	protected int					monthControlPoints		= 0;
 	protected int					monthNewMembers			= 0;
 	protected volatile int			tickUp					= 0;
+	protected volatile int			transientSize			= -1;
 
 	protected final static List<Ability> empty=new XVector<Ability>(1,true);
 
@@ -758,6 +762,7 @@ public class DefaultClan implements Clan
 	@Override
 	public void addMember(final MOB M, final int role)
 	{
+		transientSize=-1;
 		M.setClan(clanID(),role);
 		CMLib.database().DBUpdateClanMembership(M.Name(), clanID(), role);
 		updateClanPrivileges(M);
@@ -767,6 +772,7 @@ public class DefaultClan implements Clan
 	@Override
 	public void delMember(final MOB M)
 	{
+		transientSize=-1;
 		CMLib.database().DBUpdateClanMembership(M.Name(), clanID(), -1);
 		M.setClan(clanID(),-1);
 		updateClanPrivileges(M);
@@ -1211,6 +1217,20 @@ public class DefaultClan implements Clan
 		return CMLib.masking().maskCheck(fixRequirementMask(pos.getInnerMaskStr()), mob, true);
 	}
 
+	private boolean canBeAssigned(final ThinPlayer mob, final int role)
+	{
+		if(mob==null)
+			return false;
+		if((role<0)||(role>govt().getPositions().length))
+			return false;
+		final ClanPosition pos = govt().getPositions()[role];
+		if((pos.getInnerMaskStr() == null)
+		||(pos.getInnerMaskStr().trim().length()==0))
+			return true;
+		final String mask = this.fixRequirementMask(pos.getInnerMaskStr());
+		return CMLib.masking().maskCheck(CMLib.masking().getPreCompiledMask(mask), mob);
+	}
+
 	@Override
 	public Authority getAuthority(final int roleID, final Function function)
 	{
@@ -1285,7 +1305,9 @@ public class DefaultClan implements Clan
 	@Override
 	public int getSize()
 	{
-		return CMLib.database().DBReadClanMembers(clanID()).size();
+		if(transientSize < 0)
+			transientSize = CMLib.database().DBReadClanMembers(clanID()).size();
+		return transientSize;
 	}
 
 	@Override
@@ -1597,13 +1619,16 @@ public class DefaultClan implements Clan
 	@Override
 	public List<MemberRecord> getMemberList(final int posFilter)
 	{
-		return filterMemberList(CMLib.database().DBReadClanMembers(clanID()), posFilter);
+		final List<MemberRecord> members=CMLib.database().DBReadClanMembers(clanID());
+		transientSize = members.size();
+		return filterMemberList(members, posFilter);
 	}
 
 	@Override
 	public MemberRecord findMemberRecord(final String name)
 	{
 		final List<MemberRecord> members=CMLib.database().DBReadClanMembers(clanID());
+		transientSize = members.size();
 		for(final MemberRecord member : members)
 		{
 			if(member.name.equalsIgnoreCase(name))
@@ -1636,7 +1661,9 @@ public class DefaultClan implements Clan
 	public List<FullMemberRecord> getFullMemberList()
 	{
 		final List<FullMemberRecord> members=new Vector<FullMemberRecord>();
-		final List<MemberRecord> subMembers=filterMemberList(CMLib.database().DBReadClanMembers(clanID()), -1);
+		final List<MemberRecord> fullMembers = CMLib.database().DBReadClanMembers(clanID());
+		final List<MemberRecord> subMembers=filterMemberList(fullMembers, -1);
+		transientSize = fullMembers.size();
 		for(final MemberRecord member : subMembers)
 		{
 			if(member!=null)
@@ -1795,7 +1822,15 @@ public class DefaultClan implements Clan
 	{
 		if((roleID<0)||(roleID>=govt().getPositions().length))
 			return 0;
-		return govt().getPositions()[roleID].getMax();
+		final double most = govt().getPositions()[roleID].getMax();
+		if(most >= 1.0)
+			return (int)Math.round(most);
+		if(most <= 0)
+			return 1;
+		final double rawMost = CMath.mul(getSize(), most);
+		if(rawMost < 1.0)
+			return 1;
+		return (int)Math.round(rawMost);
 	}
 
 	@Override
@@ -1883,7 +1918,7 @@ public class DefaultClan implements Clan
 			}
 			tickUp = 0;
 
-			List<FullMemberRecord> members=getFullMemberList();
+			final List<FullMemberRecord> members=getFullMemberList();
 			int activeMembers=0;
 			final long deathMilis=CMProps.getIntVar(CMProps.Int.DAYSCLANDEATH)*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
 			final long overthrowMilis=CMProps.getIntVar(CMProps.Int.DAYSCLANOVERTHROW)*CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY)*CMProps.getTickMillis();
@@ -1923,10 +1958,9 @@ public class DefaultClan implements Clan
 							//long lastLogin=((Long)members.elementAt(j,3)).longValue();
 							if(topRoles.contains(Integer.valueOf(role)))
 							{
-								final MOB player=CMLib.players().getLoadPlayer(name);
-								if(player!=null)
+								if(CMLib.players().playerExists(name))
 								{
-									CMLib.smtp().emailIfPossible("AutoPurge",player.Name(),"AutoPurge: "+name(),
+									CMLib.smtp().emailIfPossible("AutoPurge",CMStrings.capitalizeAndLower(name),"AutoPurge: "+name(),
 											""+getGovernmentName()+" "+name()+" is in danger of being deleted if at least "+(minimumMembers-activeMembers)
 											+" members do not log on within 24 hours.");
 								}
@@ -1966,181 +2000,258 @@ public class DefaultClan implements Clan
 			// handle any necessary promotions
 			if(govt().getAutoPromoteBy() != AutoPromoteFlag.NONE)
 			{
-				final List<Integer> highPositionList = getTopRankedRoles(null);
-				final List<MemberRecord> highMembers=new LinkedList<MemberRecord>();
+				// first step is to figure out which positions need filling
+				// 1. if at least one position can assign others, then the highest of those is the answer.
+				// 2. if none can assign others, than each over the applicants is the answer
+
+				// Algorithm:
+				// Get all the members who qualify by their last login time
+				// Sort them by the qualifying criteria
+				// for each available position, either fill holes (no overwrite), or move them (overwrite)
+				final List<FullMemberRecord> highestQualifiedMembers = new LinkedList<FullMemberRecord>();
 				for(final FullMemberRecord member : members)
 				{
+					if((member.role<0)||(member.role>=govt().getPositions().length))
+						continue;
+					// checking if they are only an applicant
+					if((member.role == govt().getAutoRole())
+					&&(govt().getAcceptPos() != govt().getAutoRole())
+					&&(govt().getAutoRole() >= 0)
+					&&(govt().getAcceptPos() >= 0)
+					&&(getTopRankedRoles(Function.ACCEPT).size()>0))
+						continue;
+					final ThinPlayer M = CMLib.database().getThinUser(member.name);
+					if(M==null)
+						continue;
 					if((((System.currentTimeMillis()-member.lastActiveTimeMs)<overthrowMilis)||(overthrowMilis==0))
-					&&(highPositionList.contains(Integer.valueOf(member.role))))
-						highMembers.add(member);
+					&&(!highestQualifiedMembers.contains(member)))
+						highestQualifiedMembers.add(member);
+				}
+				if(highestQualifiedMembers.size()==0)
+				{
+					for(final FullMemberRecord member : members)
+					{
+						if((member.role<0)||(member.role>=govt().getPositions().length))
+							member.role=0;
+						final ThinPlayer M = CMLib.database().getThinUser(member.name);
+						if(M==null)
+							continue;
+						if((((System.currentTimeMillis()-member.lastActiveTimeMs)<overthrowMilis)||(overthrowMilis==0))
+						&&(!highestQualifiedMembers.contains(member)))
+							highestQualifiedMembers.add(member);
+					}
+				}
+				if(highestQualifiedMembers.size()==0)
+				{
+					for(final FullMemberRecord member : members)
+					{
+						if((member.role<0)||(member.role>=govt().getPositions().length))
+							member.role=0;
+						final ThinPlayer M = CMLib.database().getThinUser(member.name);
+						if(M==null)
+							continue;
+						highestQualifiedMembers.add(member);
+					}
 				}
 
+				// now sort them.
 				AutoPromoteFlag basePromoteBy = govt().getAutoPromoteBy();
 				boolean overWrite = false;
+				// Now, sort the members by the qualifying criteria
 				switch(basePromoteBy)
 				{
 				case LEVEL_OVERWRITE:
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.LEVEL;
+				case LEVEL:
+					Collections.sort(highestQualifiedMembers,new Comparator<FullMemberRecord>()
+					{
+						@Override
+						public int compare(final FullMemberRecord o1, final FullMemberRecord o2)
+						{
+							return Double.compare(o2.level, o1.level);
+						}
+					});
 					break;
 				case RANK_OVERWRITE:
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.RANK;
+				case RANK:
+					Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
+					{
+						@Override
+						public int compare(final MemberRecord o1, final MemberRecord o2)
+						{
+							final ClanPosition cp1 = govt().getPositions()[o1.role];
+							final ClanPosition cp2 = govt().getPositions()[o2.role];
+							return Long.compare(cp1.getRank(),cp2.getRank());
+						}
+					});
 					break;
 				case GOLD_OVERWRITE:
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.GOLD;
+				case GOLD:
+					Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
+					{
+						@Override
+						public int compare(final MemberRecord o1, final MemberRecord o2)
+						{
+							return Double.compare(o2.donatedGold,o1.donatedGold);
+						}
+					});
 					break;
 				case XP_OVERWRITE:
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.XP;
+				case XP:
+					Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
+					{
+						@Override
+						public int compare(final MemberRecord o1, final MemberRecord o2)
+						{
+							return Long.compare(o2.donatedXP,o1.donatedXP);
+						}
+					});
 					break;
 				case JOINDATE_OVERWRITE:
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.JOINDATE;
+				case JOINDATE:
+					Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
+					{
+						@Override
+						public int compare(final MemberRecord o1, final MemberRecord o2)
+						{
+							return Double.compare(o1.joinDate, o2.joinDate);
+						}
+					});
+					break;
+				case NONE:
 					break;
 				default:
 					break;
 				}
-				if(overWrite || (highMembers.size()==0))
+
+				// now get all the positions we need to fill
+				// if a position can assign, then that's the winner(s)
+				final List<Integer> highPositionList = getTopRankedRoles(Function.ASSIGN);
+				if(highPositionList.size()==0)
 				{
-					final List<MemberRecord> highestQualifiedMembers = new LinkedList<MemberRecord>();
-					for(final FullMemberRecord member : members)
+					// otherwise, every position that's not an applicant is the winner
+					for(final ClanPosition pos : govt().getPositions())
 					{
-						if((member.role<0)||(member.role>=govt().getPositions().length))
+						if(((pos.getRoleID() == govt().getAutoRole())||(pos.getRoleID() == govt().getAcceptPos()))
+						&&(govt().getAcceptPos() != govt().getAutoRole())
+						&&(govt().getAutoRole() >= 0)
+						&&(govt().getAcceptPos() >= 0)
+						&&(getTopRankedRoles(Function.ACCEPT).size()>0))
 							continue;
-						final MOB M=CMLib.players().getLoadPlayer(member.name);
-						if(M==null)
-							continue;
-						for(final Integer posI : highPositionList)
-						{
-							if((((System.currentTimeMillis()-member.lastActiveTimeMs)<overthrowMilis)||(overthrowMilis==0))
-							&&(canBeAssigned(M, posI.intValue())))
-								highestQualifiedMembers.add(member);
-						}
+						highPositionList.add(Integer.valueOf(pos.getRoleID()));
 					}
-					if(basePromoteBy==AutoPromoteFlag.RANK)
+				}
+				Collections.sort(highPositionList, new Comparator<Integer>()
+				{
+					@Override
+					public int compare(final Integer o1, final Integer o2)
 					{
-						ClanPosition bestPos=null;
-						for(final MemberRecord member : highestQualifiedMembers)
+						final ClanPosition pos1=govt().getPositions()[o1.intValue()];
+						final ClanPosition pos2=govt().getPositions()[o2.intValue()];
+						return Integer.compare(pos1.getRank(), pos2.getRank());
+					}
+				});
+
+				if(this.clanID().equalsIgnoreCase("Pluto"))
+					System.out.println("BZ:DELME:STOP!");
+
+				final HashMap<String,Reference<ThinPlayer>> thinCache = new HashMap<String,Reference<ThinPlayer>>();
+				// finally we fill the positions
+				// if we are overwriting, then we always pick the best people who fit and
+				// kick out the rest.  If we are NOT overwriting, then we are only filling
+				// holes for when inactivity drops one out.
+				final Map<FullMemberRecord,Integer> finalHighRollers = new HashMap<FullMemberRecord,Integer>();
+				for(final Integer highPosI : highPositionList)
+				{
+					final int highRoleID = highPosI.intValue();
+					int most = this.getMostInRole(highRoleID);
+					if(most>getSize())
+						most=getSize();
+					int numToAdd = 0;
+					if(!overWrite)
+					{
+						int current = 0;
+						for(final Iterator<FullMemberRecord> i=highestQualifiedMembers.iterator();i.hasNext();)
 						{
-							final ClanPosition currentPos = govt().getPositions()[member.role];
-							if((bestPos==null)||(currentPos.getRank() < bestPos.getRank()))
-								bestPos=currentPos;
-						}
-						if(bestPos!=null)
-						{
-							for(final Iterator<MemberRecord> i=highestQualifiedMembers.iterator();i.hasNext();)
+							final FullMemberRecord M=i.next();
+							if(M.role == highRoleID)
 							{
-								if(i.next().role != bestPos.getRoleID())
-									i.remove();
-							}
-						}
-					}
-					if(basePromoteBy==AutoPromoteFlag.LEVEL)
-					{
-						int highestLevel=-1;
-						for(final MemberRecord member : highestQualifiedMembers)
-						{
-							final MOB M=CMLib.players().getLoadPlayer(member.name);
-							if(M==null)
-								continue;
-							if(M.basePhyStats().level() > highestLevel)
-								highestLevel=M.basePhyStats().level();
-						}
-						for(final Iterator<MemberRecord> i=highestQualifiedMembers.iterator();i.hasNext();)
-						{
-							final MOB M=CMLib.players().getLoadPlayer(i.next().name);
-							if(M==null)
-								continue;
-							if(M.basePhyStats().level()!=highestLevel)
 								i.remove();
-						}
-					}
-					if(basePromoteBy==AutoPromoteFlag.GOLD)
-					{
-						Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
-						{
-							@Override
-							public int compare(final MemberRecord o1, final MemberRecord o2)
-							{
-								return Double.compare(o1.donatedGold,o2.donatedGold);
-							}
-						});
-					}
-					if(basePromoteBy==AutoPromoteFlag.JOINDATE)
-					{
-						Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
-						{
-							@Override
-							public int compare(final MemberRecord o1, final MemberRecord o2)
-							{
-								return Double.compare(o2.joinDate, o1.joinDate);
-							}
-						});
-					}
-					if(basePromoteBy==AutoPromoteFlag.XP)
-					{
-						Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
-						{
-							@Override
-							public int compare(final MemberRecord o1, final MemberRecord o2)
-							{
-								return Long.compare(o1.donatedXP,o2.donatedXP);
-							}
-						});
-					}
-					if(highestQualifiedMembers.size()>0)
-					{
-						if(overWrite)
-						{
-							final ClanPosition newRole=govt().getPositions()[govt().getAcceptPos()];
-							for(final MemberRecord member : highMembers)
-							{
-								if(!highestQualifiedMembers.contains(member))
-								{
-									final MOB M=CMLib.players().getLoadPlayer(member.name);
-									if(M==null)
-										continue;
-									clanAnnounce(member.name+" is now a "+newRole.getName()+" of the "+getGovernmentName()+" "+name()+".");
-									Log.sysOut("Clans",member.name+" of "+getGovernmentName()+" "+name()+" was autodemoted to "+newRole.getName()+".");
-									M.setClan(clanID(),newRole.getRoleID());
-									member.role=newRole.getRoleID();
-									CMLib.database().DBUpdateClanMembership(M.Name(), name(), newRole.getRoleID());
-								}
+								finalHighRollers.put(M, highPosI);
+								current++;
 							}
 						}
-						for(final MemberRecord member : highestQualifiedMembers)
+						numToAdd = most-current;
+					}
+					else
+					{
+						numToAdd = most;
+					}
+					for(int i=0;i<numToAdd;i++)
+					{
+						for(int s=0;s<highestQualifiedMembers.size();s++)
 						{
-							if(!highMembers.contains(member))
+							final FullMemberRecord M=highestQualifiedMembers.get(s);
+							if(!thinCache.containsKey(M.name))
+								thinCache.put(M.name, new WeakReference<ThinPlayer>(CMLib.database().getThinUser(M.name)));
+							final ThinPlayer tP=thinCache.get(M.name).get();
+							if((tP!=null)
+							&&(canBeAssigned(tP, highRoleID)))
 							{
-								final MOB M=CMLib.players().getLoadPlayer(member.name);
-								if(M==null)
-									continue;
-								ClanPosition newRole=null;
-								for(final Integer posI : highPositionList)
-								{
-									if(canBeAssigned(M, posI.intValue()))
-									{
-										newRole=govt().getPositions()[posI.intValue()];
-										break;
-									}
-								}
-								if(newRole!=null)
-								{
-									clanAnnounce(member.name+" is now a "+newRole.getName()+" of the "+getGovernmentName()+" "+name()+".");
-									Log.sysOut("Clans",member.name+" of "+getGovernmentName()+" "+name()+" was autopromoted to "+newRole.getName()+".");
-									M.setClan(clanID(),newRole.getRoleID());
-									member.role=newRole.getRoleID();
-									CMLib.database().DBUpdateClanMembership(M.Name(), name(), newRole.getRoleID());
-									break;
-								}
+								highestQualifiedMembers.remove(s);
+								finalHighRollers.put(M, highPosI);
+								break;
 							}
 						}
 					}
 				}
-				highMembers.clear();
-				members=getFullMemberList();
+				final ClanPosition acceptRole=govt().getPositions()[govt().getAcceptPos()];
+				final Map<FullMemberRecord,Integer> finalRollers = finalHighRollers;
+				for(final FullMemberRecord member : members)
+				{
+					if(highPositionList.contains(Integer.valueOf(member.role))
+					&&(!finalRollers.containsKey(member)))
+						finalRollers.put(member, Integer.valueOf(acceptRole.getRoleID()));
+				}
+
+				for(final FullMemberRecord member : members)
+				{
+					if(finalRollers.containsKey(member))
+					{
+						final Integer newRoleI = finalRollers.get(member);
+						if(newRoleI.intValue() != member.role)
+						{
+							final ClanPosition oldPos = govt().getPositions()[member.role];
+							final ClanPosition newPos = govt().getPositions()[newRoleI.intValue()];
+
+							clanAnnounce(member.name+" is now a "+newPos.getName()+" of the "+getGovernmentName()+" "+name()+".");
+							if(oldPos.getRank() > newPos.getRank())
+								Log.sysOut("Clans",member.name+" of "+getGovernmentName()+" "+name()+" was auto-demoted to "+newPos.getName()+".");
+							else
+							if(oldPos.getRank() < newPos.getRank())
+								Log.sysOut("Clans",member.name+" of "+getGovernmentName()+" "+name()+" was auto-promoted to "+newPos.getName()+".");
+							else
+								Log.sysOut("Clans",member.name+" of "+getGovernmentName()+" "+name()+" was auto-assigned to "+newPos.getName()+".");
+							final MOB mob=CMLib.players().getPlayerAllHosts(member.name);
+							if((mob!=null)
+							&&(mob.getClanRole(clanID())!=null))
+								mob.setClan(clanID(),newPos.getRoleID());
+							member.role=newPos.getRoleID();
+							CMLib.database().DBUpdateClanMembership(member.name, name(), newPos.getRoleID());
+						}
+					}
+				}
+
+				final List<MemberRecord> highMembers=new LinkedList<MemberRecord>();
 				for(final FullMemberRecord member : members)
 				{
 					if((((System.currentTimeMillis()-member.lastActiveTimeMs)<deathMilis)||(deathMilis==0))

@@ -107,7 +107,7 @@ public class ClanApply extends StdCommand
 							if((newRole.second.intValue()!=C.getGovernment().getAcceptPos())
 							&&(newRole.second.intValue()==C.getGovernment().getAutoRole()))
 							{
-								CMLib.clans().clanAnnounce(mob,L("The @x1 @x2 has a new Applicant: @x3",C.getGovernmentName(),C.clanID(),mob.Name()));
+								CMLib.clans().clanAnnounce(mob,L("The @x1 @x2 has a new @x4: @x3",C.getGovernmentName(),C.clanID(),mob.Name(),C.getRoleName(newRole.second.intValue(), true, false)));
 								mob.tell(L("You have successfully applied for membership in clan @x1.  Your application will be reviewed by management.  Use SCORE to check for a change in status.",C.clanID()));
 							}
 							else

@@ -102,7 +102,15 @@ public class ClanGovernmentData extends StdWebMacro
 				final int oldRoleID=CMath.s_int(httpReq.getUrlParameter("GPOSROLEID_"+posDexStr));
 				usedRoleIDs.add(Integer.valueOf(oldRoleID));
 				final int oldRank=CMath.s_int(httpReq.getUrlParameter("GPOSRANK_"+posDexStr));
-				final int oldMax=CMath.s_int(httpReq.getUrlParameter("GPOSMAX_"+posDexStr));
+				final String oldMaxStr=httpReq.getUrlParameter("GPOSMAX_"+posDexStr);
+				final double oldMax;
+				if(oldMaxStr == null)
+					oldMax = Integer.MAX_VALUE;
+				else
+				if(oldMaxStr.endsWith("%"))
+					oldMax = CMath.s_pct(oldMaxStr);
+				else
+					oldMax=CMath.s_int(oldMaxStr);
 				final String oldMask=httpReq.getUrlParameter("GPOSINNERMASK_"+posDexStr);
 				final String oldIsPublicStr=httpReq.getUrlParameter("GPOSISPUBLIC_"+posDexStr);
 				final String oldTitlesList=httpReq.getUrlParameter("GPOSTIT_"+posDexStr);
@@ -156,7 +164,12 @@ public class ClanGovernmentData extends StdWebMacro
 			if((gPos!=null)&&parms.containsKey("GPOSRANK_"+cmpos))
 				str.append(gPos.getRank()+", ");
 			if((gPos!=null)&&parms.containsKey("GPOSMAX_"+cmpos))
-				str.append(gPos.getMax()+", ");
+			{
+				if(gPos.getMax()>=1)
+					str.append(Math.round(gPos.getMax())+", ");
+				else
+					str.append(CMath.toWholePct(gPos.getMax())+", ");
+			}
 			if((gPos!=null)&&parms.containsKey("GPOSINNERMASK_"+cmpos))
 				str.append(gPos.getInnerMaskStr()+", ");
 			if((gPos!=null)&&parms.containsKey("GPOSISPUBLIC_"+cmpos))

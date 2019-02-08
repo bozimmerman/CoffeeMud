@@ -57,7 +57,7 @@ public class DefaultClanPosition implements ClanPosition
 	/** the plural name of the position within this government */
 	protected String	pluralName;
 	/** the maximum number of members that can hold this position */
-	protected int		max;
+	protected double	max;
 	/** the internal zapper mask for internal requirements to this position */
 	protected String	innerMaskStr;
 	/** the internal zapper mask for internal requirements to this position */
@@ -166,13 +166,13 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	@Override
-	public int getMax()
+	public double getMax()
 	{
 		return max;
 	}
 
 	@Override
-	public void setMax(final int max)
+	public void setMax(final double max)
 	{
 		this.max = max;
 	}
@@ -257,7 +257,7 @@ public class DefaultClanPosition implements ClanPosition
 		case RANK:
 			return Integer.toString(rank);
 		case MAX:
-			return Integer.toString(max);
+			return Double.toString(max);
 		case PLURALNAME:
 			return pluralName;
 		case INNERMASK:

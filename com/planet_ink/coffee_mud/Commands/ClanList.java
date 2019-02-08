@@ -62,9 +62,24 @@ public class ClanList extends StdCommand
 			head.append(" | "+CMStrings.padRight(L("Trophies"),8));
 		head.append("]^.^? \n\r");
 		final StringBuffer msg=new StringBuffer("");
+		final List<Clan> clans=new ArrayList<Clan>(CMLib.clans().numClans());
 		for(final Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
+			clans.add(e.nextElement());
+		Collections.sort(clans, new Comparator<Clan>()
 		{
-			final Clan thisClan=e.nextElement();
+			@Override
+			public int compare(final Clan o1, final Clan o2)
+			{
+				if(o1.getStatus() > o2.getStatus())
+					return -1;
+				if(o1.getStatus() < o2.getStatus())
+					return 1;
+				return Integer.compare(o1.getSize(), o2.getSize());
+			}
+		});
+
+		for(final Clan thisClan : clans)
+		{
 			if(!thisClan.isPubliclyListedFor(mob))
 				continue;
 

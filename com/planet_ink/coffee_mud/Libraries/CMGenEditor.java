@@ -77,6 +77,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	};
 
 	@Override
+	public void promptStatDouble(final MOB mob, final Modifiable E, final int showNumber, final int showFlag, final String fieldDisplayStr, final String field) throws IOException
+	{
+		promptStatDouble(mob, E, null, showNumber, showFlag, fieldDisplayStr, field);
+	}
+
+	@Override
 	public void promptStatInt(final MOB mob, final Modifiable E, final int showNumber, final int showFlag, final String fieldDisplayStr, final String field) throws IOException
 	{
 		promptStatInt(mob, E, null, showNumber, showFlag, fieldDisplayStr, field);
@@ -86,6 +92,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	public void promptStatInt(final MOB mob, final Modifiable E, final String help, final int showNumber, final int showFlag, final String fieldDisplayStr, final String field) throws IOException
 	{
 		E.setStat(field, "" + prompt(mob, CMath.s_long(E.getStat(field)), showNumber, showFlag, fieldDisplayStr, help));
+	}
+
+	@Override
+	public void promptStatDouble(final MOB mob, final Modifiable E, final String help, final int showNumber, final int showFlag, final String fieldDisplayStr, final String field) throws IOException
+	{
+		E.setStat(field, "" + prompt(mob, CMath.s_double(E.getStat(field)), showNumber, showFlag, fieldDisplayStr, help));
 	}
 
 	@Override
@@ -8202,7 +8214,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatInt(mob, me,++showNumber, showFlag,"Rank (low=better)", "RANK");
 			if((me.getRank()<0)||(me.getRank()>99))
 				me.setRank(0);
-			promptStatInt(mob, me,++showNumber, showFlag,"Maximum", "MAX");
+			promptStatDouble(mob, me,++showNumber, showFlag,"Maximum", "MAX");
 			if((me.getMax()<0)||(me.getMax()>9999))
 				me.setMax(Integer.MAX_VALUE);
 			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Position Mask","INNERMASK",false);

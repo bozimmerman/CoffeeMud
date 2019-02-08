@@ -122,20 +122,24 @@ public interface ClanPosition extends Modifiable, CMCommon
 	public void setPluralName(String pluralName);
 
 	/**
-	 * Gets the max.
+	 * Gets the max members in this position.
+	 * A number >= 1.0 is an absolute number, while
+	 * a number >= 0 but less than 1 is a percentage.
 	 *
-	 * @see ClanPosition#setMax(int)
+	 * @see ClanPosition#setMax(double)
 	 * @return the max
 	 */
-	public int getMax();
+	public double getMax();
 
 	/**
-	 * Sets the max.
+	 * Sets the max members in this position.
+	 * A number >= 1.0 is an absolute number, while
+	 * a number >= 0 but less than 1 is a percentage.
 	 *
 	 * @see ClanPosition#getMax()
 	 * @param max the new max
 	 */
-	public void setMax(int max);
+	public void setMax(double max);
 
 	/**
 	 * Gets the inner mask str.
