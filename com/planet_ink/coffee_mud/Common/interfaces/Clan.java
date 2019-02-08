@@ -924,6 +924,12 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 				return name.equals(((MemberRecord)o).name);
 			return false;
 		}
+
+		@Override
+		public int hashCode()
+		{
+			return name.hashCode();
+		}
 	}
 	/**
 	 * A internal membership record, as returned by the database,

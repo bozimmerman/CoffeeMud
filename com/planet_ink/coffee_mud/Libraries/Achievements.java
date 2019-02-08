@@ -5974,8 +5974,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						pStats.getTitles().remove(titleStr);
 						awardMessage.append(L("^HYou have lost the title: @x1!\n\r^?",CMStrings.replaceAll(titleStr,"*",mob.Name())));
 					}
-					break;
 				}
+				break;
 			}
 			case XP:
 			{
@@ -6854,8 +6854,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public void loadClanAchievements(final MOB mob, final AchievementLoadFlag flag)
 	{
+		if(mob == null)
+			return;
 		boolean somethingDone = false;
-		final PlayerStats pStats = (mob==null) ? null : mob.playerStats();
+		final PlayerStats pStats = mob.playerStats();
 		for(final Pair<Clan,Integer> cp : mob.clans())
 		{
 			final Clan clan = cp.first;

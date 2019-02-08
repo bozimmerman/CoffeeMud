@@ -1732,6 +1732,18 @@ public class ListCmd extends StdCommand
 					return 0;
 				}
 
+				@Override
+				public String liege()
+				{
+					return "";
+				}
+
+				@Override
+				public String worship()
+				{
+					return "";
+				}
+
 			};
 			thinAcctHash.put(acct.getAccountName(), selectedU);
 		}

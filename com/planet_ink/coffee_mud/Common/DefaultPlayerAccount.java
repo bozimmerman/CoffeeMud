@@ -646,6 +646,18 @@ public class DefaultPlayerAccount implements PlayerAccount
 							{
 								return 0;
 							}
+
+							@Override
+							public String liege()
+							{
+								return "";
+							}
+
+							@Override
+							public String worship()
+							{
+								return "";
+							}
 						};
 					}
 					thinPlayers.add(tP);

@@ -144,6 +144,7 @@ public class ClanReject extends StdCommand
 			}
 		}
 		else
+		if(C!=null)
 		{
 			final List<MemberRecord> apps=C.getMemberList(C.getGovernment().getAutoRole());
 			if(apps.size()<1)

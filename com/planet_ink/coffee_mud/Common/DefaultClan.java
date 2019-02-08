@@ -2063,6 +2063,7 @@ public class DefaultClan implements Clan
 				case LEVEL_OVERWRITE:
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.LEVEL;
+					//$FALL-THROUGH$
 				case LEVEL:
 					Collections.sort(highestQualifiedMembers,new Comparator<FullMemberRecord>()
 					{
@@ -2076,6 +2077,7 @@ public class DefaultClan implements Clan
 				case RANK_OVERWRITE:
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.RANK;
+					//$FALL-THROUGH$
 				case RANK:
 					Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
 					{
@@ -2091,6 +2093,7 @@ public class DefaultClan implements Clan
 				case GOLD_OVERWRITE:
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.GOLD;
+					//$FALL-THROUGH$
 				case GOLD:
 					Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
 					{
@@ -2104,6 +2107,7 @@ public class DefaultClan implements Clan
 				case XP_OVERWRITE:
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.XP;
+					//$FALL-THROUGH$
 				case XP:
 					Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
 					{
@@ -2117,6 +2121,7 @@ public class DefaultClan implements Clan
 				case JOINDATE_OVERWRITE:
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.JOINDATE;
+					//$FALL-THROUGH$
 				case JOINDATE:
 					Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
 					{
@@ -2245,7 +2250,8 @@ public class DefaultClan implements Clan
 						boolean someoneIsTakingMyPlace = false;
 						for(final FullMemberRecord R : finalRollers.keySet())
 						{
-							if(finalRollers.get(R).intValue() == member.role)
+							if((finalRollers.get(R).intValue() == member.role)
+							&&(R.role != member.role))
 								someoneIsTakingMyPlace=true;
 						}
 						if(someoneIsTakingMyPlace)
