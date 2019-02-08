@@ -2162,6 +2162,7 @@ public class DefaultClan implements Clan
 				});
 
 				final HashMap<String,Reference<ThinPlayer>> thinCache = new HashMap<String,Reference<ThinPlayer>>();
+				final boolean fillAll = getTopRankedRoles(Function.ASSIGN).size()==0;
 				// finally we fill the positions
 				// if we are overwriting, then we always pick the best people who fit and
 				// kick out the rest.  If we are NOT overwriting, then we are only filling
@@ -2170,7 +2171,7 @@ public class DefaultClan implements Clan
 				for(final Integer highPosI : highPositionList)
 				{
 					final int highRoleID = highPosI.intValue();
-					int most = this.getMostInRole(highRoleID);
+					int most=getMostInRole(highRoleID);
 					if(most>getSize())
 						most=getSize();
 					int numToAdd = 0;
@@ -2188,10 +2189,33 @@ public class DefaultClan implements Clan
 							}
 						}
 						numToAdd = most-current;
+						if(!fillAll)
+						{
+							if(current>0)
+								numToAdd=0;
+							else
+							if(numToAdd>0)
+								numToAdd=1;
+						}
 					}
 					else
 					{
 						numToAdd = most;
+						if(!fillAll)
+						{
+							for(final Iterator<FullMemberRecord> i=highestQualifiedMembers.iterator();i.hasNext();)
+							{
+								final FullMemberRecord M=i.next();
+								if(M.role == highRoleID)
+								{
+									i.remove();
+									finalHighRollers.put(M, highPosI);
+									numToAdd=0;
+								}
+							}
+							if(numToAdd>0)
+								numToAdd=1;
+						}
 					}
 					for(int i=0;i<numToAdd;i++)
 					{
