@@ -272,7 +272,29 @@ public class Socials extends StdLibrary implements SocialsList
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.session().safeRawPrintln(L("@x1. Others Effect type: @x2",""+showNumber,((me.getOthersCode()==CMMsg.MSG_HANDS)?"HANDS":((me.getOthersCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.getOthersCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.getOthersCode()==CMMsg.MSG_NOISYMOVEMENT)?"SEEING MOVEMENT":"HEARING NOISE"))))));
+		String actionDesc;
+		switch(me.getOthersCode())
+		{
+		case CMMsg.MSG_HANDS:
+			actionDesc = "HANDS";
+			break;
+		case CMMsg.MSG_OK_VISUAL:
+			actionDesc = "VISUAL ONLY";
+			break;
+		case CMMsg.MSG_SPEAK:
+			actionDesc = "HEARING WORDS";
+			break;
+		case CMMsg.MSG_NOISYMOVEMENT:
+			actionDesc = "SEEING MOVEMENT";
+			break;
+		case CMMsg.MSG_SUBTLEMOVEMENT:
+			actionDesc = "QUIET MOVE";
+			break;
+		default:
+			actionDesc = "HEARING NOISE";
+			break;
+		}
+		mob.session().safeRawPrintln(L("@x1. Others Effect type: @x2",""+showNumber,actionDesc));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName=mob.session().choose(L("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands, Q)uiet move: "),L("WMSVHQ"),"");
@@ -356,7 +378,26 @@ public class Socials extends StdLibrary implements SocialsList
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.session().safeRawPrintln(L("@x1. Your action type: @x2",""+showNumber,((me.getSourceCode()==CMMsg.MSG_NOISYMOVEMENT)?"LARGE MOVEMENT":((me.getSourceCode()==CMMsg.MSG_SPEAK)?"SPEAKING":((me.getSourceCode()==CMMsg.MSG_HANDS)?"MOVEMENT":"MAKING NOISE")))));
+		String actionDesc;
+		switch(me.getSourceCode())
+		{
+		case CMMsg.MSG_NOISYMOVEMENT:
+			actionDesc = "LARGE MOVEMENT";
+			break;
+		case CMMsg.MSG_SPEAK:
+			actionDesc = "SPEAKING";
+			break;
+		case CMMsg.MSG_HANDS:
+			actionDesc = "MOVEMENT";
+			break;
+		case CMMsg.MSG_SUBTLEMOVEMENT:
+			actionDesc = "QUIET MOVE";
+			break;
+		default:
+			actionDesc="MAKING NOISE";
+			break;
+		}
+		mob.session().safeRawPrintln(L("@x1. Your action type: @x2",""+showNumber,actionDesc));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName=mob.session().choose(L("Change W)ords, M)ovement (small), S)ound, L)arge Movement, Q)uiet Move: "),L("WMSLQ"),"");
