@@ -1109,6 +1109,16 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						state=MsgMkrState.MENU;
 					}
 					else
+					if(param1 != null)
+					{
+						final int ln=CMath.isInteger(param1)?CMath.s_int(param1):-1;
+						if((ln<0)||(ln>=vbuf.size()))
+							sess.println(L("'@x1' is not a valid line number.",param1));
+						else
+							vbuf.add(ln,"");
+						state=MsgMkrState.EDITPROMPT;
+					}
+					else
 						state=MsgMkrState.EDITPROMPT;
 					break;
 				}
