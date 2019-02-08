@@ -154,6 +154,7 @@
             <POWER>EXILE</POWER>
             <POWER>REJECT</POWER>
             <POWER>PROPERTY_OWNER</POWER>
+            <POWER>CLAN_MOTD</POWER>
             <POWER>WITHDRAW</POWER>
             <POWER>DEPOSIT</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
@@ -174,6 +175,7 @@
             <POWER>ACCEPT</POWER>
             <POWER>REJECT</POWER>
             <POWER>PROPERTY_OWNER</POWER>
+            <POWER>CLAN_MOTD</POWER>
             <POWER>DEPOSIT</POWER>
             <POWER>ORDER_UNDERLINGS</POWER>
             <POWER>ORDER_CONQUERED</POWER>

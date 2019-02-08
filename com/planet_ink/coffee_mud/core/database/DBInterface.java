@@ -413,6 +413,19 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public boolean DBIsSavedRoomItemCopy(final String roomID, final String itemName)
+	{
+		return RoomLoader.DBIsSavedRoomItemCopy(roomID, itemName);
+	}
+
+	@Override
+	public Item DBGetSavedRoomItemCopy(final String roomID, final String itemName)
+	{
+		return RoomLoader.DBGetSavedRoomItemCopy(roomID, itemName);
+	}
+
+
+	@Override
 	public Area DBReadAreaObject(final String areaName)
 	{
 		return RoomLoader.DBReadAreaObject(areaName);

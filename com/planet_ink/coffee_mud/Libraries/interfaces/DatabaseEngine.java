@@ -174,6 +174,27 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
+	 * Check if an item with the given name is saved in this room.
+	 *
+	 * @param roomID the id of the room to load
+	 * @param itemName the name of the item to look for
+	 * @return true if an item with that name was found, false otherwise
+	 */
+	public boolean DBIsSavedRoomItemCopy(final String roomID, final String itemName);
+
+	/**
+	 * Table category: DBMAP
+	 * Return the first instance of an item with the given name in the db for
+	 * the given room.
+	 *
+	 * @param roomID the id of the room to load
+	 * @param itemName the name of the item to look for
+	 * @return true if an item with that name was found, false otherwise
+	 */
+	public Item DBGetSavedRoomItemCopy(final String roomID, final String itemName);
+
+	/**
+	 * Table category: DBMAP
 	 * Reloads the basic data of the given area, with a prefilled Name.
 	 * It does not load or alter rooms or anything like that, only
 	 * the internal variables of the area.

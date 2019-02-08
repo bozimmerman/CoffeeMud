@@ -85,7 +85,11 @@ public class BodyPiercing extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping)&&(target!=null))
+			if((affected!=null)
+			&&(affected instanceof MOB)
+			&&(!aborted)
+			&&(!helping)
+			&&(target!=null))
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
@@ -95,7 +99,8 @@ public class BodyPiercing extends CommonSkill
 					commonEmote(mob,L("<S-NAME> complete(s) the piercing on @x1.",target.name(mob)));
 					target.addTattoo(writing);
 				}
-				if((bodyPart!=null)&&(bodyPart.length()>0))
+				if((bodyPart!=null)
+				&&(bodyPart.length()>0))
 				{
 					Ability injuryA=CMClass.getAbility("Injury");
 					if(injuryA!=null)
@@ -307,6 +312,7 @@ public class BodyPiercing extends CommonSkill
 				for(int i=0;i<Race.BODY_WEARVECTOR.length;i++)
 				{
 					if((Race.BODY_WEARVECTOR[i] == wornCode)
+					&&(target.charStats().getBodyPart(i)>0)
 					&&(!bodyPartNums.contains(Integer.valueOf(i))))
 						bodyPartNums.add(Integer.valueOf(i));
 				}

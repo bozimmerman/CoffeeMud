@@ -878,6 +878,54 @@ public class RoomLoader
 		return count;
 	}
 
+	public Item DBGetSavedRoomItemCopy(final String roomID, final String itemName)
+	{
+		DBConnection D=null;
+		final Item I=null;
+		// now grab the items
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT * FROM CMROIT WHERE CMROID='"+roomID+"'");
+			while(R.next())
+			{
+				final String itemID=DBConnections.getRes(R,"CMITID");
+				final Item newItem=CMClass.getItem(itemID);
+				newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
+				newItem.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMITRE"));
+				newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
+				newItem.basePhyStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
+				newItem.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
+				newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
+				newItem.recoverPhyStats();
+				if(newItem.Name().equalsIgnoreCase(itemName))
+					return newItem;
+				newItem.destroy();
+			}
+			R.close();
+		}
+		catch(final SQLException sqle)
+		{
+			Log.errOut("Room",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return I;
+	}
+
+	public boolean DBIsSavedRoomItemCopy(final String roomID, final String itemName)
+	{
+		final Item I=this.DBGetSavedRoomItemCopy(roomID, itemName);
+		if(I!=null)
+		{
+			I.destroy();
+			return true;
+		}
+		return false;
+	}
+
 	public void DBReadContent(final String thisRoomID, final Room thisRoom, Map<String, Room> rooms, final RoomnumberSet unloadedRooms, final boolean setStatus, final boolean makeLive)
 	{
 		final boolean debug=Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMPOP));
