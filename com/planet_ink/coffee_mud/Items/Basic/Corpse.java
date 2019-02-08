@@ -65,7 +65,7 @@ public class Corpse extends GenContainer implements DeadBody
 		properWornBitmap=0;
 		basePhyStats.setWeight(150);
 		capacity=5;
-		baseGoldValue=0;
+		baseGoldValue=1;
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_MEAT;
 	}
