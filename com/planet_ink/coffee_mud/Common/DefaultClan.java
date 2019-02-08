@@ -2255,10 +2255,10 @@ public class DefaultClan implements Clan
 							final ClanPosition newPos = govt().getPositions()[newRoleI.intValue()];
 
 							clanAnnounce(member.name+" is now a "+newPos.getName()+" of the "+getGovernmentName()+" "+name()+".");
-							if(oldPos.getRank() > newPos.getRank())
+							if(oldPos.getRank() < newPos.getRank())
 								Log.sysOut("Clans",member.name+" of "+getGovernmentName()+" "+name()+" was auto-demoted to "+newPos.getName()+".");
 							else
-							if(oldPos.getRank() < newPos.getRank())
+							if(oldPos.getRank() > newPos.getRank())
 								Log.sysOut("Clans",member.name+" of "+getGovernmentName()+" "+name()+" was auto-promoted to "+newPos.getName()+".");
 							else
 								Log.sysOut("Clans",member.name+" of "+getGovernmentName()+" "+name()+" was auto-assigned to "+newPos.getName()+".");
