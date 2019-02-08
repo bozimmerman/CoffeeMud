@@ -66,7 +66,8 @@ public class Remort extends StdCommand
 		FACTION,
 		EXPERTISE,
 		BONUSSTATPOINT,
-		QUESTPOINT
+		QUESTPOINT,
+		WARRANTS
 	}
 
 	private static void recoverEverything(final MOB mob)
@@ -142,6 +143,12 @@ public class Remort extends StdCommand
 		final int retainCharClass = allRetains.indexOf("CHARCLASS");
 		if(retainCharClass >=0)
 			allRetains.remove(retainCharClass);
+		final int retainVisitation = allRetains.indexOf("VISITATION");
+		if(retainVisitation >=0)
+			allRetains.remove(retainVisitation);
+		final int retainWarrants = allRetains.indexOf("WARRANTS");
+		if(retainWarrants >=0)
+			allRetains.remove(retainWarrants);
 		final int retainStats = allRetains.indexOf("STATS");
 		if(retainStats >=0)
 			allRetains.remove(retainStats);
@@ -627,8 +634,25 @@ public class Remort extends StdCommand
 												}
 												recoverEverything(mob);
 											}
+											final Set<LegalBehavior> lawsDone = new HashSet<LegalBehavior>();
 											for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
-												mob.playerStats().unVisit(a.nextElement());
+											{
+												final Area A=a.nextElement();
+												if(retainWarrants<0)
+												{
+													final LegalBehavior lawB = CMLib.law().getLegalBehavior(A);
+													if((lawB != null)
+													&&(!lawsDone.contains(lawB)))
+													{
+														lawsDone.add(lawB);
+														final Area legalA = CMLib.law().getLegalObject(A);
+														for(final LegalWarrant warrant : lawB.getWarrantsOf(legalA, mob))
+															lawB.deleteWarrant(legalA, warrant);
+													}
+												}
+												if(retainVisitation<0)
+													mob.playerStats().unVisit(A);
+											}
 											mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
 											mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);
 											recoverEverything(mob);
