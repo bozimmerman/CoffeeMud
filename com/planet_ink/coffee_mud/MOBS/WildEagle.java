@@ -47,7 +47,7 @@ public class WildEagle extends StdMOB
 
 		username="an eagle";
 		setDescription("a majestic and very patriotic bird.");
-		setDisplayText("A eagle gracefully glides upon the wind currents.");
+		setDisplayText("An eagle gracefully glides upon the wind currents.");
 		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
 		setMoney(0);
 		setWimpHitPoint(0);
