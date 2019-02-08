@@ -240,6 +240,19 @@ public class Prop_Artifact extends Property
 		{
 			final Item I=(Item)affected;
 			final Room R=CMLib.map().roomLocation(I);
+			if(R==null)
+				return;
+
+			// if this is the room it's saved in, you should do nothing
+			if((I.owner()==R)
+			&&(CMLib.database().DBIsSavedRoomItemCopy(R.roomID(), I.Name())))
+			{
+				I.phyStats().setSensesMask(0);
+				I.basePhyStats().setSensesMask(0);
+				I.destroy();
+				return;
+			}
+
 			if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 			{
 				waitToReload=0;
@@ -397,19 +410,20 @@ public class Prop_Artifact extends Property
 										Item I=null;
 										if(foundMOB!=null)
 										{
-											for(int i=0;i<foundMOB.numItems();i++)
+											for(int i=foundMOB.numItems()-1;i>=0;i--)
 											{
 												I=foundMOB.getItem(i);
 												if(I==null)
 													break;
 												if(I.Name().equals(newItemMinusArtifact.Name()))
 												{
-													I=(Item)I.copyOf();
-													A2=I.fetchEffect(ID());
+													final Item copyI=(Item)I.copyOf();
+													A2=copyI.fetchEffect(ID());
 													if(A2!=null)
-														I.delEffect(A2);
-													if(newItemMinusArtifact.sameAs(I))
+														copyI.delEffect(A2);
+													if(newItemMinusArtifact.sameAs(copyI))
 														I.destroy();
+													copyI.destroy();
 												}
 											}
 											foundMOB.addItem(newItem);
@@ -418,29 +432,36 @@ public class Prop_Artifact extends Property
 										else
 										if(MOBname.length()==0)
 										{
-											for(int i=0;i<R.numItems();i++)
+											for(int i=R.numItems()-1;i>=0;i--)
 											{
 												I=R.getItem(i);
 												if(I==null)
 													break;
 												if(I.Name().equals(newItemMinusArtifact.Name()))
 												{
-													I=(Item)I.copyOf();
-													A2=I.fetchEffect(ID());
+													final Item copyI=(Item)I.copyOf();
+													A2=copyI.fetchEffect(ID());
 													if(A2!=null)
-														I.delEffect(A2);
-													if(newItemMinusArtifact.sameAs(I))
+														copyI.delEffect(A2);
+													if(newItemMinusArtifact.sameAs(copyI))
+													{
 														I.destroy();
+														R.delItem(I);
+														I.setOwner(null);
+													}
+													copyI.destroy();
 												}
 											}
 											R.addItem(newItem);
 										}
 										else
 										{
+											newItemMinusArtifact.destroy();
 											Log.errOut("Prop_Artifact","Unable to reset: "+getItemID()+" to "+MOBname+" in "+CMLib.map().getDescriptiveExtendedRoomID(R));
 											waitToReload=System.currentTimeMillis()+10*60000;
 											return true;
 										}
+										newItemMinusArtifact.destroy();
 									}
 								}
 								else
