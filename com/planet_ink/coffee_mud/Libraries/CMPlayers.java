@@ -114,6 +114,95 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
+	public ThinPlayer getThinPlayer(final String mobName)
+	{
+		final MOB M=this.getPlayer(mobName);
+		if(M!=null)
+			return getThinPlayer(M);
+		return CMLib.database().getThinUser(mobName);
+	}
+
+	protected ThinPlayer getThinPlayer(final MOB mob)
+	{
+		return new ThinPlayer()
+		{
+			final MOB M=mob;
+
+			@Override
+			public String name()
+			{
+				return M.Name();
+			}
+
+			@Override
+			public String charClass()
+			{
+				return M.baseCharStats().getCurrentClass().ID();
+			}
+
+			@Override
+			public String race()
+			{
+				return M.baseCharStats().getMyRace().ID();
+			}
+
+			@Override
+			public int level()
+			{
+				return M.basePhyStats().level();
+			}
+
+			@Override
+			public int age()
+			{
+				return (M.playerStats()!=null)?(int)(M.getAgeMinutes()/60):0;
+			}
+
+			@Override
+			public long last()
+			{
+				return (M.playerStats()!=null)?M.playerStats().getLastDateTime():0;
+			}
+
+			@Override
+			public String email()
+			{
+				return (M.playerStats()!=null)?M.playerStats().getEmail():"";
+			}
+
+			@Override
+			public String ip()
+			{
+				return (M.playerStats()!=null)?M.playerStats().getLastIP():"";
+			}
+
+			@Override
+			public int exp()
+			{
+				return M.getExperience();
+			}
+
+			@Override
+			public int expLvl()
+			{
+				return M.getExpNeededLevel();
+			}
+
+			@Override
+			public String liege()
+			{
+				return M.getLiegeID();
+			}
+
+			@Override
+			public String worship()
+			{
+				return M.getWorshipCharID();
+			}
+		};
+	}
+
+	@Override
 	public MOB getLoadPlayerByEmail(final String email)
 	{
 		for(final Enumeration<MOB> e=players();e.hasMoreElements();)

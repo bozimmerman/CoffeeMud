@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -36,6 +37,7 @@ public interface PlayerLibrary extends CMLibrary
 	public void addPlayer(MOB newOne);
 	public void delPlayer(MOB oneToDel);
 	public MOB getPlayer(String calledThis);
+	public ThinPlayer getThinPlayer(final String mobName);
 	public MOB getPlayerAllHosts(String calledThis);
 	public MOB getLoadPlayer(String last);
 	public MOB getLoadPlayerByEmail(String email);

@@ -66,8 +66,7 @@ public class Remort extends StdCommand
 		FACTION,
 		EXPERTISE,
 		BONUSSTATPOINT,
-		QUESTPOINT,
-		WARRANTS
+		QUESTPOINT
 	}
 
 	private static void recoverEverything(final MOB mob)
