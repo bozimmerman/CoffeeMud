@@ -121,6 +121,7 @@ public class Prayer_Disown extends Prayer
 		if(target==null)
 			return false;
 
+		boolean fixName=false;
 		if((target instanceof CagedAnimal)
 		&&(target.isGeneric())
 		&&((target.phyStats().ability()>0))
@@ -140,7 +141,20 @@ public class Prayer_Disown extends Prayer
 				mob.tell(L("@x1 is not in your group.",target.name(mob)));
 				return false;
 			}
+			fixName=true;
 			// all good.. we gots a toddler!
+		}
+		else
+		if((target instanceof MOB)
+		&&(((MOB)target).fetchEffect("Loyalty")!=null)
+		&&(target.isGeneric()))
+		{
+			if(!mob.getGroupMembers(new HashSet<MOB>()).contains(target))
+			{
+				mob.tell(L("@x1 is not in your group.",target.name(mob)));
+				return false;
+			}
+			fixName=false;
 		}
 		else
 		{
@@ -161,12 +175,16 @@ public class Prayer_Disown extends Prayer
 				if(target instanceof MOB)
 				{
 					final MOB M=(MOB)target;
-					final char gender=(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
-					final Race R=M.baseCharStats().getMyRace();
-					final String name = CMLib.english().startWithAorAn(R.makeMobName(gender, 2)).toLowerCase();
-					M.setName(name);
-					M.setDisplayText(L("@x1 is here",name));
+					if(fixName)
+					{
+						final char gender=(char)M.baseCharStats().getStat(CharStats.STAT_GENDER);
+						final Race R=M.baseCharStats().getMyRace();
+						final String name = CMLib.english().startWithAorAn(R.makeMobName(gender, 2)).toLowerCase();
+						M.setName(name);
+						M.setDisplayText(L("@x1 is here",name));
+					}
 					delEffect(M,"Prop_SafePET");
+					delEffect(M,"Loyalty");
 					delEffect(M,"Age");
 					final List<Tattoo> parents=getParentTattoos((MOB)target);
 					for(final Tattoo T : parents)
