@@ -113,7 +113,7 @@ public class ClanWho extends Who
 						msg.append(CMStrings.padRight("^HRace", 10)).append(": ^N")
 							.append(whoM.charStats().raceName()).append(" (").append(whoM.baseCharStats().genderName()).append(") ")
 							.append("\n\r");
-						for(final CharClass lC : mob.charStats().getCharClasses())
+						for(final CharClass lC : whoM.charStats().getCharClasses())
 						{
 							msg.append(CMStrings.padRight("^HClass", 10)).append(": ^N")
 								.append(lC.name(whoM.charStats().getClassLevel(lC)))
