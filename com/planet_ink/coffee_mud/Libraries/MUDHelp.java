@@ -839,7 +839,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			if(!found)
 			{
 				String s=CMLib.socials().getSocialsHelp(forMOB,helpStr.toUpperCase(), true);
-				if(s==null)
+				if((s==null)&&(origHelpStr.indexOf(' ')<0))
 					s=CMLib.socials().getSocialsHelp(forMOB,origHelpStr,true);
 				if(s!=null)
 				{

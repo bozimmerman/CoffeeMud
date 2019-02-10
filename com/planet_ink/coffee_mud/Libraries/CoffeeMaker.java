@@ -1057,7 +1057,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					synchronized(("SYNC"+R.roomID()).intern())
 					{
 						R=CMLib.map().getRoom(R);
-						fixFillingRoomUnlinkedExits(newRoom, R, andSave);
+						if(R!=null)
+							fixFillingRoomUnlinkedExits(newRoom, R, andSave);
 					}
 				}
 			}
@@ -1207,6 +1208,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	protected void fixFillingRoomUnlinkedExits(final Room newRoom, final Room R, final boolean andSave)
 	{
 		boolean changed=false;
+		if(R==null)
+			return;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Exit exit=R.getRawExit(d);
