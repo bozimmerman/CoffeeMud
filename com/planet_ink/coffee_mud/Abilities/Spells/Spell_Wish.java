@@ -621,15 +621,21 @@ public class Spell_Wish extends Spell
 			||(myWish.startsWith(" TO GO AWAY "))
 			||(myWish.startsWith(" TO GO TO HELL ")))
 			{
+				int levelDiffXPLoss=0;
 				if(target instanceof Item)
 				{
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 quietly vanishes.",target.name()));
-					((Item)target).destroy();
+					if(CMLib.utensils().canBePlayerDestroyed(mob, (Item)target, false, true))
+					{
+						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 quietly vanishes.",target.name()));
+						((Item)target).destroy();
+					}
 				}
 				else
 				if(target instanceof MOB)
 				{
 					final int exp=mob.getExperience();
+					if(((MOB)target).phyStats().level()>mob.phyStats().level())
+						levelDiffXPLoss = (((MOB)target).phyStats().level()-mob.phyStats().level())*50;
 					CMLib.combat().postDeath(mob,(MOB)target,null);
 					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 					&&!mob.charStats().getCurrentClass().expless()
@@ -637,7 +643,7 @@ public class Spell_Wish extends Spell
 					&&(mob.getExperience()>exp))
 						baseLoss=mob.getExperience()-exp;
 				}
-				wishDrain(mob,baseLoss*2,false);
+				wishDrain(mob,(baseLoss+levelDiffXPLoss)*2,false);
 				return true;
 			}
 
