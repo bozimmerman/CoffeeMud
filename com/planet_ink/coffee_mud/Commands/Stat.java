@@ -646,6 +646,8 @@ public class Stat  extends Skills
 				msg.append("MAX"+stat).append(", ");
 			for(final String stat : mob.charStats().getStatCodes())
 				msg.append(stat).append(", ");
+			for(final String stat : mob.charStats().getStatCodes())
+				msg.append("BASE"+stat).append(", ");
 			for(final String stat : mob.phyStats().getStatCodes())
 				msg.append(stat).append(", ");
 			msg.append("STINK, XP, XPTNL, XPFNL, QUESTPOINTS, TRAINS, PRACTICES, HEALTH, RESISTS, ATTRIBUTES");
@@ -1338,6 +1340,14 @@ public class Stat  extends Skills
 				}
 			}
 			for(int i=0;i<commands.size()-1;i++)
+			{
+				if(commands.get(i).toString().toUpperCase().equals("BASE"))
+				{
+					commands.remove(i);
+					commands.set(i,"BASE"+commands.get(i).toString());
+				}
+			}
+			for(int i=0;i<commands.size()-1;i++)
 				commands.set(i,CMStrings.replaceAll(commands.get(i).toString()," ",""));
 			for(int i=0;i<commands.size();i++)
 			{
@@ -1448,6 +1458,20 @@ public class Stat  extends Skills
 						}
 					}
 				}
+				if((!found)&&(thisStat.startsWith("BASE")))
+				{
+					for(final String stat : M.baseCharStats().getStatCodes())
+					{
+						if(stat.equals(thisStat.substring(4)))
+						{
+							CharStats base=(CharStats)M.baseCharStats().copyOf();
+							M.baseCharStats().getMyRace().affectCharStats(M, base);
+							str.append(base.getStat(stat)).append(" ");
+							found=true;
+							break;
+						}
+					}
+				}
 				if(!found)
 				{
 					for(final String stat : M.charStats().getStatCodes())
@@ -1514,6 +1538,20 @@ public class Stat  extends Skills
 						if(stat.startsWith(thisStat.substring(3)))
 						{
 							str.append(M.maxState().getStat(stat)).append(" ");
+							found=true;
+							break;
+						}
+					}
+				}
+				if((!found)&&(thisStat.startsWith("BASE")))
+				{
+					for(final String stat : M.maxState().getStatCodes())
+					{
+						if(stat.startsWith(thisStat.substring(4)))
+						{
+							CharStats base=(CharStats)M.baseCharStats().copyOf();
+							M.baseCharStats().getMyRace().affectCharStats(M, base);
+							str.append(base.getStat(stat)).append(" ");
 							found=true;
 							break;
 						}
