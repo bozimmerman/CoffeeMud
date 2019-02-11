@@ -884,7 +884,7 @@
     <ENTRYSCRIPT></ENTRYSCRIPT>
     <EXITSCRIPT></EXITSCRIPT>
     <TITLES>
-        <TITLE>DEFAULT</TITLE>
+        <TITLE>*, @x2 of @x1</TITLE>
         <TITLE>* @x1</TITLE>
     </TITLES>
     <AUTOPROMOTEBY>NONE</AUTOPROMOTEBY>
@@ -898,9 +898,6 @@
         <ITEMLOYALTY>true</ITEMLOYALTY>
         <DEITYBASIS>false</DEITYBASIS>
     </CONQUEST>
-    <TITLES>
-        <TITLE>*, @x2 of @x1</TITLE>
-    </TITLES>
     <ABILITIES>
         <ABILITY ID="Spell_CEqGas" PROFF=0 LEVEL=4 QUALIFYONLY=true />
         <ABILITY ID="Spell_CEqParalysis" PROFF=0 LEVEL=10 QUALIFYONLY=true />
