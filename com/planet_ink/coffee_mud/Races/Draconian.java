@@ -48,6 +48,12 @@ public class Draconian extends StdRace
 		return localizedStaticName;
 	}
 
+	public Draconian()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Scabies");
+	}
+
 	@Override
 	public int shortestMale()
 	{

@@ -48,6 +48,12 @@ public class Dragon extends StdRace
 		return localizedStaticName;
 	}
 
+	public Dragon()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Scabies");
+	}
+
 	@Override
 	public int shortestMale()
 	{

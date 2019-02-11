@@ -48,6 +48,12 @@ public class Wyvern extends StdRace
 		return localizedStaticName;
 	}
 
+	public Wyvern()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Scabies");
+	}
+
 	@Override
 	public int shortestMale()
 	{

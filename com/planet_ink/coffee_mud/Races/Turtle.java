@@ -48,6 +48,12 @@ public class Turtle extends StdRace
 		return localizedStaticName;
 	}
 
+	public Turtle()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Scabies");
+	}
+
 	@Override
 	public int shortestMale()
 	{

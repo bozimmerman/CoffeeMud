@@ -44,6 +44,7 @@ public class Kobold extends StdRace
 	{
 		super();
 		super.naturalAbilImmunities.add("Disease_Syphilis");
+		super.naturalAbilImmunities.add("Disease_Scabies");
 	}
 
 	private final static String localizedStaticName = CMLib.lang().L("Kobold");

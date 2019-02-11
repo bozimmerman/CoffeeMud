@@ -42,6 +42,12 @@ public class GreatLizard extends StdRace
 
 	private final static String localizedStaticName = CMLib.lang().L("Great Lizard");
 
+	public GreatLizard()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_Scabies");
+	}
+
 	@Override
 	public String name()
 	{
@@ -200,6 +206,28 @@ public class GreatLizard extends StdRace
 			return L("^g@x1^g has a few small bruises.^N",mob.name(viewer));
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		// the sex rules
+		if(!(myHost instanceof MOB))
+			return;
+
+		final MOB myChar=(MOB)myHost;
+		if((msg.amITarget(myChar))
+		&&(CMLib.dice().rollPercentage()<10)
+		&&(msg.tool() instanceof Social)
+		&&(msg.tool().Name().equals("MATE <T-NAME>")
+			||msg.tool().Name().equals("SEX <T-NAME>"))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+		{
+			final Ability A=CMClass.getAbility("Disease_Scabies");
+			if((A!=null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+				A.invoke(msg.source(),myChar,true,0);
+		}
 	}
 
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
