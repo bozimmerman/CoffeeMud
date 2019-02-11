@@ -241,7 +241,7 @@ public class Disease_Tourettes extends Disease
 					say = "Goop!";
 				break;
 			}
-			return L(say);
+			return L("<S-NAME> YELL(S) '"+say+"'!");
 		}
 		return "";
 	}
