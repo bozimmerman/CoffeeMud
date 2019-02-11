@@ -146,8 +146,14 @@ public class Insect extends StdRace
 		&&(((msg.value())>(((MOB)msg.target()).maxState().getHitPoints()/20)))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
-			final Ability A=CMClass.getAbility("Disease_Lyme");
-			if((A!=null)&&(((MOB)msg.target()).fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+			final Ability A;
+			if(CMLib.flags().isFlying(mob))
+				A=CMClass.getAbility("Disease_Zika");
+			else
+				A=CMClass.getAbility("Disease_Lyme");
+			if((A!=null)
+			&&(((MOB)msg.target()).fetchEffect(A.ID())==null)
+			&&(!CMSecurity.isAbilityDisabled(A.ID())))
 				A.invoke(mob,(MOB)msg.target(),true,0);
 		}
 		super.executeMsg(myHost,msg);
