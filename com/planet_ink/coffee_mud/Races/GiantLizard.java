@@ -52,6 +52,7 @@ public class GiantLizard extends StdRace
 	{
 		super();
 		super.naturalAbilImmunities.add("Disease_Scabies");
+		super.naturalAbilImmunities.add("Disease_Eczema");
 	}
 
 	@Override

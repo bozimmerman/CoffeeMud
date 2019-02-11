@@ -61,6 +61,25 @@ public class Desert extends StdRoom
 		return 4;
 	}
 
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
+		&&(!msg.source().isMonster())
+		&&(CMLib.dice().rollPercentage()==1)
+		&&(isInhabitant(msg.source()))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+		{
+			if((msg.source().curState().getMovement()<=(msg.source().maxState().getMovement()/2)))
+			{
+				final Ability A=CMClass.getAbility("Disease_Eczema");
+				if((A!=null)&&(msg.source().fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+					A.invoke(msg.source(),msg.source(),true,0);
+			}
+		}
+		super.executeMsg(myHost,msg);
+	}
+
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_CACTUS),
 		Integer.valueOf(RawMaterial.RESOURCE_SAND),

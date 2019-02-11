@@ -46,6 +46,7 @@ public class LizardMan extends StdRace
 		super.naturalAbilImmunities.add("Disease_Lepresy");
 		super.naturalAbilImmunities.add("Disease_Lycanthropy");
 		super.naturalAbilImmunities.add("Disease_Scabies");
+		super.naturalAbilImmunities.add("Disease_Eczema");
 	}
 
 	private final static String localizedStaticName = CMLib.lang().L("Lizard Man");
