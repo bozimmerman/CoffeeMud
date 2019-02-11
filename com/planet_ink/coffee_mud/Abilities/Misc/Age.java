@@ -337,6 +337,12 @@ public class Age extends StdAbility
 						babe.recoverCharStats();
 						babe.recoverPhyStats();
 						babe.recoverMaxState();
+						if(CMLib.dice().roll(1, 1000, 0)==1)
+						{
+							final Ability A=CMClass.getAbility("Disease_Tourettes");
+							if(A!=null)
+								A.invoke(babe, babe, true, CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
+						}
 						final Age A=(Age)babe.fetchEffect(ID());
 						if(A!=null)
 							A.setMiscText(text());
