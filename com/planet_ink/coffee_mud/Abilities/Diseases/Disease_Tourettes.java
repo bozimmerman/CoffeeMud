@@ -223,7 +223,13 @@ public class Disease_Tourettes extends Disease
 				say = "You aren't very smart!";
 				break;
 			case 27:
-				say = "You.. you.. ah nevermind.";
+				if((target!=null)
+				&&(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5)
+				&&(CMLib.flags().canBeHeardSpeakingBy(mob,target))
+				&&(CMLib.flags().canBeSeenBy(target,mob)))
+					say = "You.. you.. ah nevermind.";
+				else
+					say = "Whatever";
 				break;
 			case 28:
 				say = "Yokle!";
