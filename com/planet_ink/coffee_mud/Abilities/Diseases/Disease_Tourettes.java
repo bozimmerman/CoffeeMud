@@ -247,7 +247,7 @@ public class Disease_Tourettes extends Disease
 					say = "Goop!";
 				break;
 			}
-			return L("<S-NAME> YELL(S) '"+say+"'!");
+			return L(say);
 		}
 		return "";
 	}
@@ -269,7 +269,20 @@ public class Disease_Tourettes extends Disease
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
+		if(affected==null)
+			return false;
+		if(!(affected instanceof MOB))
+			return true;
+
+		final MOB mob=(MOB)affected;
+		if((!mob.amDead())&&((--diseaseTick)<=0))
+		{
+			diseaseTick=DISEASE_DELAY();
+			final String aff=this.DISEASE_AFFECT();
+			if((aff != null)&&(aff.length()>0))
+				CMLib.commands().forceStandardCommand(mob, "Yell", new XVector<String>("YELL",aff));
+			return true;
+		}
 		return true;
 	}
-
 }

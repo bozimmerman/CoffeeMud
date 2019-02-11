@@ -62,19 +62,27 @@ public class Swamp extends StdRoom implements Drink
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
 		&&(!msg.source().isMonster())
-		&&(msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
-		&&(CMLib.dice().rollPercentage()==1)
 		&&(CMLib.dice().rollPercentage()==1)
 		&&(isInhabitant(msg.source()))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
-			Ability A=null;
-			if(CMLib.dice().rollPercentage()>50)
-				A=CMClass.getAbility("Disease_Chlamydia");
-			else
-				A=CMClass.getAbility("Disease_Malaria");
-			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
-				A.invoke(msg.source(),msg.source(),true,0);
+			if((msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
+			&&(CMLib.dice().rollPercentage()==1))
+			{
+				Ability A=null;
+				if(CMLib.dice().rollPercentage()>50)
+					A=CMClass.getAbility("Disease_Chlamydia");
+				else
+					A=CMClass.getAbility("Disease_Malaria");
+				if((A!=null)&&(msg.source().fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+					A.invoke(msg.source(),msg.source(),true,0);
+			}
+			if((msg.source().curState().getMovement()<(msg.source().maxState().getMovement()/2)))
+			{
+				final Ability A=CMClass.getAbility("Disease_FootFungus");
+				if((A!=null)&&(msg.source().fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+					A.invoke(msg.source(),msg.source(),true,0);
+			}
 		}
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))
 		{
