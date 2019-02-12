@@ -42,6 +42,12 @@ public class Undead extends StdRace
 
 	private final static String localizedStaticName = CMLib.lang().L("Undead");
 
+	public Undead()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_RoyaltyRot");
+	}
+
 	@Override
 	public String name()
 	{
@@ -175,9 +181,25 @@ public class Undead extends StdRace
 	{
 		if(ticking instanceof MOB)
 		{
-			final MOB myM=(MOB)ticking;
-			myM.curState().setHunger(myM.maxState().getHunger());
-			myM.curState().setThirst(myM.maxState().getThirst());
+			final MOB mob=(MOB)ticking;
+			mob.curState().setHunger(mob.maxState().getHunger());
+			mob.curState().setThirst(mob.maxState().getThirst());
+			final MOB followingM = mob.amUltimatelyFollowing();
+			if((followingM!=null)
+			&&(followingM!=mob))
+			{
+				if((mob.location() == followingM.location())
+				&&(CMLib.dice().rollPercentage()==1)
+				&&(CMLib.dice().rollPercentage()==1)
+				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+				{
+					final Ability A=CMClass.getAbility("Disease_RoyaltyRot");
+					if((A!=null)
+					&&(mob.fetchEffect(A.ID())==null)
+					&&(!CMSecurity.isAbilityDisabled(A.ID())))
+						A.invoke(mob,mob,true,0);
+				}
+			}
 		}
 		return true;
 	}
@@ -201,79 +223,134 @@ public class Undead extends StdRace
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((myHost!=null)&&(myHost instanceof MOB))
+		if(myHost instanceof MOB)
 		{
 			final MOB mob=(MOB)myHost;
-			if(msg.amITarget(mob)
-			&&(msg.targetMinor()==CMMsg.TYP_HEALING))
+			if(msg.amITarget(mob))
 			{
-				final int amount=msg.value();
-				if((amount>0)
-				&&(msg.tool() instanceof Ability)
-				&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALINGMAGIC|Ability.FLAG_HOLY))
-				&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
+				switch(msg.targetMinor())
 				{
-					CMLib.combat().postDamage(msg.source(),mob,msg.tool(),amount,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,L("The healing magic from <S-NAME> <DAMAGES> <T-NAMESELF>."));
-					if((mob.getVictim()==null)&&(mob!=msg.source())&&(mob.isMonster()))
-						mob.setVictim(msg.source());
-				}
-				return false;
-			}
-			else
-			if((msg.amITarget(mob))
-			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&((msg.targetMinor()==CMMsg.TYP_UNDEAD)
-				||((msg.tool() instanceof Ability)
-					&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
-					&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))))
-			{
-				final int amount=msg.value();
-				if(amount>0)
-				{
-					msg.modify(msg.source(),mob,msg.tool(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,CMMsg.MSG_HEALING,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,L("The harming magic heals <T-NAMESELF>."));
-					msg.addTrailerRunnable(new Runnable()
+				case CMMsg.TYP_HEALING:
 					{
-						private final MOB me = mob;
-						private final MOB src = msg.source();
-						private final MOB follower=mob.amFollowing();
-						@Override
-						public void run()
+						final int amount=msg.value();
+						if((amount>0)
+						&&(msg.tool() instanceof Ability)
+						&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HEALINGMAGIC|Ability.FLAG_HOLY))
+						&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY)))
 						{
-							if((me.getVictim()==src)
-							&&(src.getVictim()==null))
-							{
-								me.setVictim(null);
-								System.out.println("Setting "+mob.name()+" follower to "+follower);
-								me.setFollowing(follower);
-							}
+							CMLib.combat().postDamage(msg.source(),mob,msg.tool(),amount,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,L("The healing magic from <S-NAME> <DAMAGES> <T-NAMESELF>."));
+							if((mob.getVictim()==null)&&(mob!=msg.source())&&(mob.isMonster()))
+								mob.setVictim(msg.source());
 						}
-					});
+					}
+					return false;
+				default:
+					if((msg.tool() instanceof Ability)
+					&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
+					&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY)))
+					{
+						// pass through
+					}
+					else
+					{
+						break;
+					}
+				case CMMsg.TYP_DAMAGE:
+				case CMMsg.TYP_UNDEAD:
+					{
+						final int amount=msg.value();
+						if(amount>0)
+						{
+							msg.modify(msg.source(),mob,msg.tool(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,CMMsg.MSG_HEALING,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,L("The harming magic heals <T-NAMESELF>."));
+							msg.addTrailerRunnable(new Runnable()
+							{
+								private final MOB me = mob;
+								private final MOB src = msg.source();
+								private final MOB follower=mob.amFollowing();
+								@Override
+								public void run()
+								{
+									if((me.getVictim()==src)
+									&&(src.getVictim()==null))
+									{
+										me.setVictim(null);
+										System.out.println("Setting "+mob.name()+" follower to "+follower);
+										me.setFollowing(follower);
+									}
+								}
+							});
+						}
+					}
+					break;
+				case CMMsg.TYP_GAS:
+				case CMMsg.TYP_MIND:
+				case CMMsg.TYP_PARALYZE:
+				case CMMsg.TYP_POISON:
+				case CMMsg.TYP_DISEASE:
+					if((!mob.amDead())
+					&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)))
+					{
+						String immunityName="certain";
+						if(msg.tool()!=null)
+							immunityName=msg.tool().name();
+						if(mob!=msg.source())
+							mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) immune to @x1 attacks from <T-NAME>.",immunityName));
+						else
+							mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) immune to @x1.",immunityName));
+						return false;
+					}
+					break;
 				}
-			}
-			else
-			if((msg.amITarget(mob))
-			&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)
-				||(msg.targetMinor()==CMMsg.TYP_DAMAGE))
-			&&((msg.targetMinor()==CMMsg.TYP_DISEASE)
-				||(msg.targetMinor()==CMMsg.TYP_GAS)
-				||(msg.targetMinor()==CMMsg.TYP_MIND)
-				||(msg.targetMinor()==CMMsg.TYP_PARALYZE)
-				||(msg.targetMinor()==CMMsg.TYP_POISON)
-				||(msg.sourceMinor()==CMMsg.TYP_DISEASE)
-				||(msg.sourceMinor()==CMMsg.TYP_GAS)
-				||(msg.sourceMinor()==CMMsg.TYP_MIND)
-				||(msg.sourceMinor()==CMMsg.TYP_PARALYZE)
-				||(msg.sourceMinor()==CMMsg.TYP_POISON))
-			&&(!mob.amDead()))
-			{
-				String immunityName="certain";
-				if(msg.tool()!=null)
-					immunityName=msg.tool().name();
-				if(mob!=msg.source())
-					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) immune to @x1 attacks from <T-NAME>.",immunityName));
-				else
-					mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) immune to @x1.",immunityName));
-				return false;
+				switch(msg.sourceMinor())
+				{
+				case CMMsg.TYP_DISEASE:
+				case CMMsg.TYP_GAS:
+				case CMMsg.TYP_MIND:
+				case CMMsg.TYP_PARALYZE:
+				case CMMsg.TYP_POISON:
+					if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)
+						||(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+					&&(!mob.amDead()))
+					{
+						String immunityName="certain";
+						if(msg.tool()!=null)
+							immunityName=msg.tool().name();
+						if(mob!=msg.source())
+							mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) immune to @x1 attacks from <T-NAME>.",immunityName));
+						else
+							mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) immune to @x1.",immunityName));
+						return false;
+					}
+					break;
+				case CMMsg.TYP_UNDEAD:
+					{
+						final int amount=msg.value();
+						if(amount>0)
+						{
+							msg.modify(msg.source(),mob,msg.tool(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,CMMsg.MSG_HEALING,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,L("The harming magic heals <T-NAMESELF>."));
+							msg.addTrailerRunnable(new Runnable()
+							{
+								private final MOB me = mob;
+								private final MOB src = msg.source();
+								private final MOB follower=mob.amFollowing();
+								@Override
+								public void run()
+								{
+									if((me.getVictim()==src)
+									&&(src.getVictim()==null))
+									{
+										me.setVictim(null);
+										System.out.println("Setting "+mob.name()+" follower to "+follower);
+										me.setFollowing(follower);
+									}
+								}
+							});
+						}
+					}
+					break;
+				default:
+					break;
+				}
 			}
 		}
 		return super.okMessage(myHost,msg);

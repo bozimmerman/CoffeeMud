@@ -368,6 +368,31 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 						return null;
 					}
 				}
+				if(affected instanceof MOB)
+				{
+					final MOB mob=(MOB)affected;
+					if((p==Race.BODY_HEAD)
+					&&(CMLib.dice().rollPercentage()==1)
+					&&(CMLib.dice().rollPercentage()==1)
+					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+					{
+						final Ability A=CMClass.getAbility("Disease_Vertigo");
+						if((A!=null)
+						&&(mob.fetchEffect(A.ID())==null)
+						&&(!CMSecurity.isAbilityDisabled(A.ID())))
+							A.invoke(mob,mob,true,0);
+					}
+					if((mob.playerStats().getHygiene()>=PlayerStats.HYGIENE_DELIMIT)
+					&&(CMLib.dice().rollPercentage()==1)
+					&&(CMLib.dice().rollPercentage()==1))
+					{
+						final Ability A=CMClass.getAbility("Disease_FilthFever");
+						if((A!=null)
+						&&(mob.fetchEffect(A.ID())==null)
+						&&(!CMSecurity.isAbilityDisabled(A.ID())))
+							A.invoke(mob,mob,true,0);
+					}
+				}
 				parts.add(new Pair<String,Integer>(limbName.toLowerCase(),Integer.valueOf(10)));
 				return null;
 			}
