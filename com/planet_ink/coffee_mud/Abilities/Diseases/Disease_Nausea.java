@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -166,6 +167,7 @@ public class Disease_Nausea extends Disease
 				I.setName(L("a puddle of vomit"));
 				I.setDisplayText(L("a stinky puddle lies here."));
 				I.setDescription(L("It`s really gross."));
+				R.addItem(I, Expire.Monster_EQ);
 				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 				{
 					final MOB M=m.nextElement();
