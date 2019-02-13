@@ -570,7 +570,15 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"HASACCTATTOO", // 99
 		"SHOPITEM", // 100
 		"NUMITEMSSHOP", // 101
-		"SHOPHAS" // 102
+		"SHOPHAS", // 102
+		"ISMONTH", // 103
+		"ISYEAR", // 104
+		"ISRLHOUR", // 105
+		"ISRLDAY", // 106
+		"ISRLMONTH", // 107
+		"ISRLYEAR", // 108
+		"HASTATTOOTIME", // 109
+		"ISHOUR", // 110
 	};
 
 	/** String list of all valid mobprog commands */

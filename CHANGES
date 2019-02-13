@@ -40,6 +40,7 @@
   39. New Clan Governments: Co-Op, Meritocracy, Plutocracy
   40. New Diseases: Tourettes (similar to spell), Zika, Scabies, Foot Fungus, Eczema 
   41. New Diseases: Vertigo, Filth Fever, Royalty Rot, Nausea, Diabetes, Anemia
+  42. New MOBPROG functions: ISMONTH, ISYEAR, ISRLHOUR, ISRLDAY, ISRLMONTH, ISRLYEAR, HASTATTOOTIME, ISHOUR
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

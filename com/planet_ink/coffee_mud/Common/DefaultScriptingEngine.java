@@ -3953,6 +3953,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			case 110: // ishour
+			{
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms)).toLowerCase().trim();
+				if(monster.location()==null)
+					returnable=false;
+				else
+				if((monster.location().getArea().getTimeObj().getHourOfDay()==CMath.s_int(arg1)))
+					returnable=true;
+				else
+					returnable=false;
+				break;
+			}
 			case 38: // istime
 			{
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms)).toLowerCase().trim();
@@ -3985,6 +3997,60 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
 				if((monster.location()!=null)&&(monster.location().getArea().getTimeObj().getDayOfMonth()==CMath.s_int(arg1.trim())))
+					returnable=true;
+				else
+					returnable=false;
+				break;
+			}
+			case 103: // ismonth
+			{
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+				if((monster.location()!=null)&&(monster.location().getArea().getTimeObj().getMonth()==CMath.s_int(arg1.trim())))
+					returnable=true;
+				else
+					returnable=false;
+				break;
+			}
+			case 104: // isyear
+			{
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+				if((monster.location()!=null)&&(monster.location().getArea().getTimeObj().getYear()==CMath.s_int(arg1.trim())))
+					returnable=true;
+				else
+					returnable=false;
+				break;
+			}
+			case 105: // isrlhour
+			{
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+				if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == CMath.s_int(arg1.trim()))
+					returnable=true;
+				else
+					returnable=false;
+				break;
+			}
+			case 106: // isrlday
+			{
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+				if(Calendar.getInstance().get(Calendar.DATE) == CMath.s_int(arg1.trim()))
+					returnable=true;
+				else
+					returnable=false;
+				break;
+			}
+			case 107: // isrlmonth
+			{
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+				if(Calendar.getInstance().get(Calendar.MONTH)+1 == CMath.s_int(arg1.trim()))
+					returnable=true;
+				else
+					returnable=false;
+				break;
+			}
+			case 108: // isrlyear
+			{
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+				if(Calendar.getInstance().get(Calendar.YEAR) == CMath.s_int(arg1.trim()))
 					returnable=true;
 				else
 					returnable=false;
@@ -4245,6 +4311,33 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 				if((E!=null)&&(E instanceof MOB))
 					returnable=(((MOB)E).findTattoo(arg2)!=null);
+				else
+					returnable=false;
+				break;
+			}
+			case 109: // hastattootime
+			{
+				if(tlen==1)
+					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+				final String arg1=tt[t+0];
+				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+				final String cmp=tt[t+2];
+				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
+				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				if(arg2.length()==0)
+				{
+					logError(scripted,"HASTATTOO","Syntax",funcParms);
+					break;
+				}
+				else
+				if((E!=null)&&(E instanceof MOB))
+				{
+					final Tattoo T=((MOB)E).findTattoo(arg2);
+					if(T==null)
+						returnable=false;
+					else
+						returnable=simpleEval(scripted,""+T.getTickDown(),arg3,cmp,"ISTATTOOTIME");
+				}
 				else
 					returnable=false;
 				break;
@@ -6399,6 +6492,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			case 109: // hastattootime
+			{
+				final String arg1=CMParms.getCleanBit(funcParms,0);
+				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
+				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				if((E!=null)&&(E instanceof MOB))
+				{
+					final Tattoo T=((MOB)E).findTattoo(arg2);
+					if(T!=null)
+						results.append(T.getTickDown());
+				}
+				break;
+			}
 			case 99: // hasacctattoo
 			{
 				final String arg1=CMParms.cleanBit(funcParms);
@@ -6563,6 +6669,48 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(lastKnownLocation!=null)
 					results.append(lastKnownLocation.getArea().getTimeObj().getTODCode().getDesc().toLowerCase());
+				break;
+			}
+			case 110: // ishour
+			{
+				if(lastKnownLocation!=null)
+					results.append(lastKnownLocation.getArea().getTimeObj().getHourOfDay());
+				break;
+			}
+			case 103: // ismonth
+			{
+				if(lastKnownLocation!=null)
+					results.append(lastKnownLocation.getArea().getTimeObj().getMonth());
+				break;
+			}
+			case 104: // isyear
+			{
+				if(lastKnownLocation!=null)
+					results.append(lastKnownLocation.getArea().getTimeObj().getYear());
+				break;
+			}
+			case 105: // isrlhour
+			{
+				if(lastKnownLocation!=null)
+					results.append(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+				break;
+			}
+			case 106: // isrlday
+			{
+				if(lastKnownLocation!=null)
+					results.append(Calendar.getInstance().get(Calendar.DATE));
+				break;
+			}
+			case 107: // isrlmonth
+			{
+				if(lastKnownLocation!=null)
+					results.append(Calendar.getInstance().get(Calendar.MONTH));
+				break;
+			}
+			case 108: // isrlyear
+			{
+				if(lastKnownLocation!=null)
+					results.append(Calendar.getInstance().get(Calendar.YEAR));
 				break;
 			}
 			case 39: // isday
