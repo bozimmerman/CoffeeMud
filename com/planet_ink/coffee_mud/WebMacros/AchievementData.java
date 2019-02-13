@@ -248,13 +248,18 @@ public class AchievementData extends StdWebMacro
 		if(parms.containsKey("TITLE"))
 		{
 			String value=httpReq.getUrlParameter("TITLE");
+			final boolean friendly=parms.containsKey("FRIENDLY");
 			if((value==null)&&(A!=null))
 			{
 				for(final Award award: A.getRewards())
 				{
 					if(award.getType()==AwardType.TITLE)
 					{
-						value=((TitleAward)award).getTitle();
+						if(friendly)
+							value=CMLib.achievements().fixAwardDescription(A, award, null, null);
+						else
+						if(award instanceof TitleAward)
+							value=((TitleAward)award).getTitle();
 					}
 				}
 			}
