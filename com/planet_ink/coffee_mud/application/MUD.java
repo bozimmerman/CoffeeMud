@@ -76,6 +76,13 @@ public class MUD extends Thread implements MudHost
 		STOPPED
 	}
 
+	private static enum ConnectState
+	{
+		NORMAL,
+		BANNED,
+		BLOCKED
+	}
+
 	private volatile MudState state		 = MudState.STOPPED;
 	private ServerSocket	  servsock	 = null;
 	private boolean			  acceptConns= false;
@@ -165,9 +172,9 @@ public class MUD extends Thread implements MudHost
 					catch(final Exception e)
 					{
 					}
-					int proceed=0;
+					ConnectState proceed=ConnectState.NORMAL;
 					if(CMSecurity.isBanned(address))
-						proceed=1;
+						proceed=ConnectState.BANNED;
 					int numAtThisAddress=0;
 					final long LastConnectionDelay=(5*60*1000);
 					boolean anyAtThisAddress=false;
@@ -177,9 +184,7 @@ public class MUD extends Thread implements MudHost
 						if(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, address))
 						{
 							if(CMSecurity.isIPBlocked(address))
-							{
-								proceed = 1;
-							}
+								proceed = ConnectState.BANNED;
 							else
 							{
 								@SuppressWarnings("unchecked")
@@ -221,18 +226,18 @@ public class MUD extends Thread implements MudHost
 								if(!anyAtThisAddress)
 									autoblocked.remove(address.toUpperCase());
 								else
-									proceed=2;
+									proceed=ConnectState.BLOCKED;
 							}
 							else
 							if(numAtThisAddress>=maxAtThisAddress)
 							{
 								autoblocked.add(address.toUpperCase());
-								proceed=2;
+								proceed=ConnectState.BLOCKED;
 							}
 						}
 					}
 
-					if(proceed!=0)
+					if(proceed != ConnectState.NORMAL)
 					{
 						final int abusiveCount=numAtThisAddress-maxAtThisAddress+1;
 						final long rounder=Math.round(Math.sqrt(abusiveCount));
@@ -242,7 +247,7 @@ public class MUD extends Thread implements MudHost
 						{
 							final PrintWriter out = new PrintWriter(sock.getOutputStream());
 							StringBuffer introText;
-							if(proceed==2)
+							if(proceed==ConnectState.BLOCKED)
 							{
 								introText=new StringBuffer(Resources.getFileResource(Resources.makeFileResourceName("text/connblocked.txt"),true));
 								introText=CMStrings.replaceAll(introText, "@mins@", ""+(LastConnectionDelay/60000));
@@ -732,7 +737,6 @@ public class MUD extends Thread implements MudHost
 			if(S!=null)
 				S.println(CMLib.lang().L("done"));
 			Log.sysOut(Thread.currentThread().getName(),"Map data saved.");
-
 		}
 
 		shutdownStateTime.set(System.currentTimeMillis());
@@ -1089,22 +1093,22 @@ public class MUD extends Thread implements MudHost
 				else
 				switch(CMath.s_int(playstate.trim()))
 				{
-					case 0:
-						playstate = "MudLib Development";
-						break;
-					case 1:
-						playstate = "Restricted Access";
-						break;
-					case 2:
-						playstate = "Beta Testing";
-						break;
-					case 3:
-						playstate = "Open to the public";
-						break;
-					default:
-						playstate = "MudLib Development";
-						break;
-					}
+				case 0:
+					playstate = "MudLib Development";
+					break;
+				case 1:
+					playstate = "Restricted Access";
+					break;
+				case 2:
+					playstate = "Beta Testing";
+					break;
+				case 3:
+					playstate = "Open to the public";
+					break;
+				default:
+					playstate = "MudLib Development";
+					break;
+				}
 				final IMudInterface imud=new IMudInterface(CMProps.getVar(CMProps.Str.MUDNAME),
 													 "CoffeeMud v"+CMProps.getVar(CMProps.Str.MUDVER),
 													 CMLib.mud(0).getPort(),
@@ -1239,7 +1243,10 @@ public class MUD extends Thread implements MudHost
 		tGroup.enumerate(tArray);
 		for (int i = 0; i<ac; ++i)
 		{
-			if (tArray[i] != null && tArray[i].isAlive() && (tArray[i] != Thread.currentThread()) && ((!nonDaemonsOnly)||(!tArray[i].isDaemon())))
+			if((tArray[i] != null)
+			&& tArray[i].isAlive()
+			&&(tArray[i] != Thread.currentThread())
+			&&((!nonDaemonsOnly)||(!tArray[i].isDaemon())))
 				realAC++;
 		}
 		return realAC;
@@ -1254,7 +1261,10 @@ public class MUD extends Thread implements MudHost
 		tGroup.enumerate(tArray);
 		for (int i = 0; i<ac; ++i)
 		{
-			if (tArray[i] != null && tArray[i].isAlive() && (tArray[i] != Thread.currentThread()) && ((!nonDaemonsOnly)||(!tArray[i].isDaemon())))
+			if ((tArray[i] != null)
+			&& tArray[i].isAlive()
+			&&(tArray[i] != Thread.currentThread())
+			&&((!nonDaemonsOnly)||(!tArray[i].isDaemon())))
 			{
 				CMLib.killThread(tArray[i],500,10);
 				killed++;
@@ -1342,12 +1352,12 @@ public class MUD extends Thread implements MudHost
 
 	private static class HostGroup extends Thread
 	{
-		private String		  name=null;
-		private String		  iniFile=null;
-		private String		  logName=null;
-		private char		  threadCode=MAIN_HOST;
-		private boolean		  hostStarted=false;
-		private boolean		  failedStart=false;
+		private String	name		= null;
+		private String	iniFile		= null;
+		private String	logName		= null;
+		private char	threadCode	= MAIN_HOST;
+		private boolean	hostStarted	= false;
+		private boolean	failedStart	= false;
 		//protected ThreadGroup threadGroup;
 
 		public HostGroup(final ThreadGroup G, final String mudName, final String iniFileName)
