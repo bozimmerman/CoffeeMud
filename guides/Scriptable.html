@@ -180,7 +180,7 @@
             <li><a href="#has">has</a></li>
             <li><a href="#hasacctattoo">hasacctattoo</a></li>
             <li><a href="#hasnum">hasnum</a></li>
-            <li><a href="#hastattoo">hastattoo</a></li>
+            <li><a href="#hastattoo">hastattoo</a></li><li><a href="#hastattootime">hastattootime</a></li>
             <li><a href="#hitprcnt">hitprcnt</a></li>
             <li><a href="#inarea">inarea</a></li>
             <li><a href="#incontainer">incontainer</a></li>
@@ -198,10 +198,10 @@
             <li><a href="#isfight">isfight</a></li>
             <li><a href="#isfollow">isfollow</a></li>
             <li><a href="#isgood">isgood</a></li>
-            <li><a href="#ishere">ishere</a></li>
+            <li><a href="#ishere">ishere</a></li><li><a href="#ishour">ishour</a></li>
             <li><a href="#isimmort">isimmort</a></li>
             <li><a href="#islike">islike</a></li>
-            <li><a href="#islocked">islocked</a></li>
+            <li><a href="#islocked">islocked</a></li><li><a href="#ismonth">ismonth</a></li>
             <li><a href="#ismoon">ismoon</a></li>
             <li><a href="#isname">isname</a></li>
             <li><a href="#isnpc">isnpc</a></li>
@@ -210,12 +210,12 @@
             <li><a href="#ispc">ispc</a></li>
             <li><a href="#ispkill">ispkill</a></li>
             <li><a href="#isquestmobalive">isquestmobalive</a></li>
-            <li><a href="#isrecall">isrecall</a></li>
+            <li><a href="#isrecall">isrecall</a></li><li><a href="#isrlhour">isrlhour</a></li><li><a href="#isrlday">isrlday</a></li><li><a href="#isrlmonth">isrlmonth</a></li><li><a href="#isrlyear">isrlyear</a></li>
             <li><a href="#isseason">isseason</a></li>
             <li><a href="#isservant">isservant</a></li>
             <li><a href="#isspeaking">isspeaking</a></li>
             <li><a href="#istime">istime</a></li>
-            <li><a href="#isweather">isweather</a></li>
+            <li><a href="#isweather">isweather</a></li><li><a href="#isyear">isyear</a></li>
             <li><a href="#level">level</a></li>
             <li><a href="#math">math</a></li>
             <li><a href="#mobitem">mobitem</a></li>
@@ -2095,7 +2095,7 @@ player common account</td>
             <td>HASTATTOO([mob code])</td>
             <td>Returns space delimited list of tattoos on the mob</td>
           </tr>
-          <tr>
+          <tr><td>HASTATTOOTIME([m] [t])</td><td>Returns the ticks remaining on the tattooo for mob code [m] and tattoo name [t]</td></tr><tr>
             <td>HASTITLE([code])</td>
             <td>Returns the
 selected title of the given player mob.</td>
@@ -2169,8 +2169,7 @@ container/rideable code.</td>
           </tr>
           <tr>
             <td>ISDAY()</td>
-            <td>Returns word the
-word day or the word evening.</td>
+            <td>Returns the day of the mud month</td>
           </tr>
           <tr>
             <td>ISEVIL([code])</td>
@@ -2199,7 +2198,7 @@ alignment string of the given mob.</td>
             <td>Returns the name
 of the area the scripted monster is in.</td>
           </tr>
-          <tr>
+          <tr><td>ISHOUR()</td><td>Returns the mud hour number</td></tr><tr>
             <td>ISIMMORT([code])</td>
             <td>not implemented.</td>
           </tr>
@@ -2222,7 +2221,7 @@ lock, or a direction name, such as north, south, east, etc.</td>
             <td>Returns the moon
 phase description.</td>
           </tr>
-          <tr>
+          <tr><td>ISMONTH()</td><td>Returns the month of the mud year</td></tr><tr>
             <td>ISNAME([code])</td>
             <td>Returns the
 real/full name of the given object.</td>
@@ -2266,7 +2265,7 @@ quest.</td>
             <td>Returns the start
 room of the given mob.</td>
           </tr>
-          <tr>
+          <tr><td>ISRLHOUR()</td><td>Returns the real-life hour 0-23</td></tr><tr><td>ISRLDAY()</td><td>Returns the real-life day of the month 1-31</td></tr><tr><td>ISRLMONTH()</td><td>Returns the real-life month of the year 1-12</td></tr><tr><td>ISRLYEAR()</td><td>Returns the real-life year</td></tr><tr>
             <td>ISSEASON()</td>
             <td>Returns the name
 of the season.</td>
@@ -2294,7 +2293,7 @@ approximate time of day in words.</td>
 description of the weather in a short
 sentence.</td>
           </tr>
-          <tr>
+          <tr><td>ISYEAR()</td><td>Returns the mud-year</td></tr><tr>
             <td>LEVEL([code])</td>
             <td>Returns the level
 of the given mob.</td>
@@ -4393,7 +4392,15 @@ the code for a room.</p>
 character has had the given tattoo
 assigned to them.</p>
       <p>EXAMPLE:</p>
-      <pre>if hastattoo($n beastmark)<br /> mpecho The actor has the tattoo called beastmark.<br />else<br /> mpecho The actor does not have the tattoo called beastmark.<br />endif<br /></pre>
+      <pre>if hastattoo($n beastmark)<br /> mpecho The actor has the tattoo called beastmark.<br />else<br /> mpecho The actor does not have the tattoo called beastmark.<br />endif<br /></pre><h3><a name="hastattootime">hastattootime</a></h3>
+      <p>Usage:</p>
+      hastattootime([character] tattoo == amount)<br />
+      <p>This checks whether the
+character has an amount of time remaining on a temporary&nbsp;tattoo
+assigned to them. &nbsp;Where '==' may be any logical operator
+from above.</p>
+      <p>EXAMPLE:</p>
+      <span style="font-family: monospace;">if hastattootime($n beastmark &lt; 15)</span><br style="font-family: monospace;" /><span style="font-family: monospace;">&nbsp;mpecho There is less than 1 minute left on the beastmark!</span><br style="font-family: monospace;" /><span style="font-family: monospace;"></span><span style="font-family: monospace;">endif</span>
       <h3><a name="hitprcnt">hitprcnt</a></h3>
       <p>Usage:</p>
       <pre>hitprcnt(character == amount)<br /></pre>
@@ -4552,7 +4559,12 @@ or item of the given name is in the
 room. Obviously, checking for $i will always return true when a mob is
 being scripted, so the best choice for an argument is a literal string.</p>
       <p>EXAMPLE:</p>
-      <pre>if ishere(a happy frog)<br /> mpecho A happy frog is in the room.<br />else<br /> mpecho A happy frog is not in the room.<br />endif<br /></pre>
+      <pre>if ishere(a happy frog)<br /> mpecho A happy frog is in the room.<br />else<br /> mpecho A happy frog is not in the room.<br />endif<br /></pre><h3><a name="ishour">ishour</a></h3>
+      <p>Usage:</p>
+      <span style="font-family: monospace;">ishour(integer)</span><br /><p>This function is used to
+check the mud hour of the day.&nbsp;</p>
+      <p>EXAMPLE:</p>
+      <span style="font-family: monospace;">if ishour(5)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho It is nighttime.</span><br style="font-family: monospace;" /><span style="font-family: monospace;">else</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho It must be dawn, dusk, or daytime.</span><br style="font-family: monospace;" /><span style="font-family: monospace;">endif</span>
       <h3><a name="isimmort">isimmort</a></h3>
       <p>Usage:</p>
       <pre>isimmort(character)<br /></pre>
@@ -4582,7 +4594,12 @@ and locked. The target may be either an item, or an item code ($o, $p),
 or a direction name (north, south, east, west, etc.), or a direction
 code ($x, $xN, $xS, etc..)</p>
       <p>EXAMPLE:</p>
-      <pre>if islocked(the chest)<br /> mpecho The chest is locked.<br />else<br /> mpecho The chest is not locked.<br />endif<br /></pre>
+      <pre>if islocked(the chest)<br /> mpecho The chest is locked.<br />else<br /> mpecho The chest is not locked.<br />endif<br /></pre><h3><a name="ismonth">ismonth</a></h3>
+      <p>Usage:</p>
+      ismonth(integer)<br /><p>This function is used to
+check the mud month number.&nbsp;</p>
+      <p>EXAMPLE:</p>
+      <span style="font-family: monospace;">if ismonth(1)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho It is month 1.</span><br style="font-family: monospace;" /><span style="font-family: monospace;"></span><span style="font-family: monospace;">endif</span>
       <h3><a name="ismoon">ismoon</a></h3>
       <p>Usage:</p>
       <pre>ismoon()<br />ismoon(phase)<br /></pre>
@@ -4665,7 +4682,7 @@ behavior was granted as part of a Quest, then * may be substituted for
 the questname. &nbsp; &nbsp;If the questname given is "ALL", then all
 running quests will be searched.</p>
       <p>EXAMPLE:</p>
-      <pre>if isquestmobalive(1 myquest)<br /> mpecho The first set mob in the quest myquest is still alive.<br />else<br /> mpecho He's not dead yet.<br />endif<br /><br /></pre>
+      <pre>if isquestmobalive(1 myquest)<br /> mpecho The first set mob in the quest myquest is still alive.<br />else<br /> mpecho He's not dead yet.<br />endif<br /></pre>
       <h3><a name="isrecall">isrecall</a></h3>
       <p>Usage:</p>
 isrecall(target == roomcode)
@@ -4677,8 +4694,13 @@ If you need to be need to find mobile mobs or items, you can include
 the mob or item name, followed by @ followed by a room id or area name.
 The '==' may also be '!='.</p>
       <p>EXAMPLES:</p>
-      <pre>if isrecall($i == a bathroom)<br /> mpecho This means I am from a bathroom.<br />else<br /> mpecho I am not from a bathroom.<br />endif<br /><br />if isrecall($i != MyArea#20001)<br /> mpecho I am not from room MyArea#20001.<br />else<br /> mpecho I am from room MyArea#20001.<br />endif<br /></pre>
-      <h3><a name="isseason">isseason</a></h3>
+      <pre>if isrecall($i == a bathroom)<br /> mpecho This means I am from a bathroom.<br />else<br /> mpecho I am not from a bathroom.<br />endif<br /><br />if isrecall($i != MyArea#20001)<br /> mpecho I am not from room MyArea#20001.<br />else<br /> mpecho I am from room MyArea#20001.<br />endif<br /></pre><h3><a name="isrlhour">isrlhour &nbsp;</a></h3><h3><a name="isrlday"></a>isrlday&nbsp;</h3><h3><a name="isrlmonth"></a>isrlmonth&nbsp;</h3><h3><a name="isrlyear"></a>isrlyear&nbsp;</h3><p>Usage:</p><span style="font-family: monospace;">
+isrlhour(integer)</span>
+      <p>This
+checks the real-life hour of the day (0-23), day of the month (1-31),
+month of the year (1-12), or year against the given integer value..</p>
+      <p>EXAMPLES:</p>
+      <span style="font-family: monospace;">if isrlday(15)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho This means it is the 15th of the month.</span><br style="font-family: monospace;" /><span style="font-family: monospace;"></span><span style="font-family: monospace;">endif</span><br /><h3><a name="isseason">isseason</a></h3>
       <p>Usage:</p>
       <pre>isseason(seasonname)<br /></pre>
       <p>This function is used to
@@ -4722,7 +4744,12 @@ for "CLEAR". Other valid weathernames include: "CLOUDY", "WINDY",
 "RAIN", "THUNDERSTORM", "SNOW", "HAIL", "HEAT", "SLEET", "BLIZZARD",
 "DUST", "DROUGHT", "COLD"</p>
       <p>EXAMPLE:</p>
-      <pre>if isweather(rain)<br /> mpecho Rain, rain go away...<br />else<br /> mpecho We can play! No Rain!<br />endif<br /></pre>
+      <pre>if isweather(rain)<br /> mpecho Rain, rain go away...<br />else<br /> mpecho We can play! No Rain!<br />endif<br /></pre><h3><a name="isyear">isyear</a></h3>
+      <p>Usage:</p>
+      isyear(integer)<br /><p>This function is used to
+check the mud year.&nbsp;</p>
+      <p>EXAMPLE:</p>
+      <span style="font-family: monospace;">if isyear(1)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho It is year 1.</span><br style="font-family: monospace;" /><span style="font-family: monospace;"></span><span style="font-family: monospace;">endif</span>
       <h3><a name="level">level</a></h3>
       <p>Usage:</p>
       <pre>level(character == number)<br /></pre>

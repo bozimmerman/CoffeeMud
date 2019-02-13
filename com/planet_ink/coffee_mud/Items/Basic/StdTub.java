@@ -336,7 +336,7 @@ public class StdTub extends StdRideable implements Drink
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.source().riding()==this)
-		&&(CMLib.commands().isHygienicMessage(msg, 0, PlayerStats.HYGIENE_WATERCLEAN)))
+		&&(CMLib.commands().isHygienicMessage(msg)))
 		{
 			final int extraRsc=getExtraLiquidResourceType();
 			if((amountOfLiquidRemaining>1)

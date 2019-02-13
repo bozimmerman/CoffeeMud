@@ -1898,7 +1898,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	}
 
 	@Override
-	public boolean isHygienicMessage(final CMMsg msg, final int minHygiene, final long adjHygiene)
+	public boolean isHygienicMessage(final CMMsg msg)
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.HYGIENE))
 			return false;
@@ -1916,7 +1916,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void handleHygienicMessage(final CMMsg msg, final int minHygiene, final long adjHygiene)
 	{
-		if(isHygienicMessage(msg,minHygiene,adjHygiene))
+		if(isHygienicMessage(msg))
 		{
 			final MOB mob=msg.source();
 			if(mob.playerStats().getHygiene()>(-adjHygiene))

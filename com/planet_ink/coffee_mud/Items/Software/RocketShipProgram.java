@@ -62,7 +62,6 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile Double				targetAcceleration	= Double.valueOf(SpaceObject.ACCELERATION_TYPICALSPACEROCKET);
 	protected volatile RocketStateMachine	rocketState			= null;
 	protected volatile SpaceObject			currentTarget		= null;
-	protected volatile Double				targetLeadPct		= null;
 	protected volatile SpaceObject			programPlanet		= null;
 	protected volatile List<ShipEngine>		programEngines		= null;
 	protected final	   List<SpaceObject>	sensorReport		= new LinkedList<SpaceObject>();
@@ -1604,7 +1603,7 @@ public class RocketShipProgram extends GenShipProgram
 			{
 				if(parsed.size()<3)
 				{
-					super.addScreenMessage(L("Error: TARGET requires the name of the target, and a percentage of the targets speed to lead it by.   Try HELP."));
+					super.addScreenMessage(L("Error: TARGET requires the name of the target.   Try HELP."));
 					return;
 				}
 				//Double leadPct = Double.valueOf(0.0);
@@ -1612,7 +1611,7 @@ public class RocketShipProgram extends GenShipProgram
 				//||(CMath.isPct(parsed.get(parsed.size()-1))))
 				//	leadPct=CMath.s_pct(parsed.remove(parsed.size()-1));
 
-				//TODO: target sensorname/num lead% of speed
+				//TODO: target sensorname
 			}
 			else
 			if(uword.equalsIgnoreCase("FIRE"))
