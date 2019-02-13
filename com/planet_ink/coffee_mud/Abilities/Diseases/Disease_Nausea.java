@@ -168,6 +168,12 @@ public class Disease_Nausea extends Disease
 				I.setDisplayText(L("a stinky puddle lies here."));
 				I.setDescription(L("It`s really gross."));
 				R.addItem(I, Expire.Monster_EQ);
+				final Ability sA=CMClass.getAbility("Prop_Smell");
+				if(sA!=null)
+				{
+					sA.setMiscText("+It smells awful.");
+					I.addNonUninvokableEffect(sA);
+				}
 				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 				{
 					final MOB M=m.nextElement();
