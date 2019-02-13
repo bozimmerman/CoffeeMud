@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Disease_Eczema extends Disease
+public class Disease_Diabetes extends Disease
 {
 	@Override
 	public String ID()
 	{
-		return "Disease_Eczema";
+		return "Disease_Diabetes";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Eczema");
+	private final static String localizedName = CMLib.lang().L("Diabetes");
 
 	@Override
 	public String name()
@@ -48,12 +48,18 @@ public class Disease_Eczema extends Disease
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Eczema)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Diabetes)");
 
 	@Override
 	public String displayText()
 	{
 		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return DiseaseAffect.SPREAD_CONSUMPTION;
 	}
 
 	@Override
@@ -83,43 +89,67 @@ public class Disease_Eczema extends Disease
 	@Override
 	public int difficultyLevel()
 	{
-		return 2;
+		return 8;
 	}
 
 	@Override
 	protected int DISEASE_TICKS()
 	{
-		return getTicksPerDay();
+		return 999999;
 	}
 
 	@Override
 	protected int DISEASE_DELAY()
 	{
-		return CMLib.dice().roll(1, 5, 5);
+		return getTicksPerDay();
 	}
 
 	@Override
 	protected String DISEASE_DONE()
 	{
-		return L("Your dry-skin problem clears up.");
+		return L("You feel much better.");
 	}
 
 	@Override
 	protected String DISEASE_START()
 	{
-		return L("^G<S-YOUPOSS> skin dr(ys) up!^?");
+		return L("^G<S-NAME> do(es) not feel right.^?");
 	}
 
 	@Override
-	protected String DISEASE_AFFECT()
-	{
-		return L("<S-NAME> scratch(es) <S-HIM-HER> skin.");
-	}
-
-	@Override
-	public int spreadBitmap()
+	public int abilityCode()
 	{
 		return 0;
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost,msg))
+			return false;
+		return true;
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if((msg.source()==affected)
+		&&(msg.sourceMinor()==CMMsg.TYP_EAT))
+		{
+			final MOB mob=msg.source();
+			final boolean hungry=mob.curState().getHunger()<=0;
+			if((!hungry)
+			&&(mob.curState().getHunger()>=mob.maxState().maxHunger(mob.baseWeight()))
+			&&(CMLib.dice().roll(1,100,0)<3)
+			&&(!CMLib.flags().isGolem(msg.source()))
+			&&(msg.source().fetchEffect("Disease_Obesity")==null))
+			{
+				final Ability A=CMClass.getAbility("Disease_Obesity");
+				if ((A != null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+					A.invoke(mob, mob, true, 0);
+			}
+		}
 	}
 
 	@Override
@@ -127,32 +157,21 @@ public class Disease_Eczema extends Disease
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(affected==null)
-			return false;
 		if(!(affected instanceof MOB))
 			return true;
-
 		final MOB mob=(MOB)affected;
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
-			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,DISEASE_AFFECT());
-			catchIt(mob);
-			return true;
+			if(CMLib.dice().rollPercentage()==1)
+			{
+				final Ability A=CMClass.getAbility("Disease_Nausea");
+				if ((A != null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+					A.invoke(mob, mob, true, 0);
+			}
 		}
 		return true;
 	}
 
-	@Override
-	public void affectCharStats(final MOB affected, final CharStats affectableStats)
-	{
-		if(affected==null)
-			return;
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)-3);
-		if(affectableStats.getStat(CharStats.STAT_DEXTERITY)<=0)
-			affectableStats.setStat(CharStats.STAT_DEXTERITY,1);
-		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)-3);
-		if(affectableStats.getStat(CharStats.STAT_CHARISMA)<=0)
-			affectableStats.setStat(CharStats.STAT_CHARISMA,1);
-	}
 }
+

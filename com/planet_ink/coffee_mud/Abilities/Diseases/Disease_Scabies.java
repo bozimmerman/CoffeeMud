@@ -89,7 +89,7 @@ public class Disease_Scabies extends Disease
 	@Override
 	protected int DISEASE_TICKS()
 	{
-		return (int)CMProps.getTicksPerMudHour() * 24 * 4;
+		return getTicksPerDay() * CMLib.dice().roll(1, 2, 2);
 	}
 
 	@Override

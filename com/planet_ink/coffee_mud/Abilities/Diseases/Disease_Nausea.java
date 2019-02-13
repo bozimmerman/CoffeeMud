@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2005-2019 Bo Zimmerman
+   Copyright 2019-2019 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Disease_Depression extends Disease
+public class Disease_Nausea extends Disease
 {
 	@Override
 	public String ID()
 	{
-		return "Disease_Depression";
+		return "Disease_Nausea";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Depression");
+	private final static String localizedName = CMLib.lang().L("Nausea");
 
 	@Override
 	public String name()
@@ -48,12 +48,18 @@ public class Disease_Depression extends Disease
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Depression)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Nausea)");
 
 	@Override
 	public String displayText()
 	{
 		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int spreadBitmap()
+	{
+		return 0; // handles it's own special kind of spreading
 	}
 
 	@Override
@@ -83,37 +89,31 @@ public class Disease_Depression extends Disease
 	@Override
 	public int difficultyLevel()
 	{
-		return 4;
+		return 0;
 	}
 
 	@Override
 	protected int DISEASE_TICKS()
 	{
-		return 900;
+		return (int)CMProps.getTicksPerMudHour()*2;
 	}
 
 	@Override
 	protected int DISEASE_DELAY()
 	{
-		return 20;
+		return CMLib.dice().roll(3, 4, 1);
 	}
 
 	@Override
 	protected String DISEASE_DONE()
 	{
-		return L("You feel better.");
+		return L("You feel much better.");
 	}
 
 	@Override
 	protected String DISEASE_START()
 	{
-		return L("^G<S-NAME> seem(s) depressed.^?");
-	}
-
-	@Override
-	protected String DISEASE_AFFECT()
-	{
-		return L("<S-NAME> moap(s).");
+		return L("^G<S-NAME> do(es) not feel right.^?");
 	}
 
 	@Override
@@ -123,47 +123,69 @@ public class Disease_Depression extends Disease
 	}
 
 	@Override
-	public long flags()
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		return super.flags() | Ability.FLAG_MINDALTERING;
-	}
-
-	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(!super.okMessage(myHost,msg))
-			return false;
-		if(affected instanceof MOB)
+		super.executeMsg(myHost,msg);
+		if((msg.source()==affected)
+		&&(msg.sourceMinor()==CMMsg.TYP_EAT))
 		{
-			if(msg.source()!=affected)
-				return true;
-			if(msg.source().location()==null)
-				return true;
-			final MOB mob=(MOB)affected;
-			if(((msg.amITarget(mob))||(msg.amISource(mob)))
-			&&(msg.tool() instanceof Social)
-			&&(msg.tool().Name().equals("MATE <T-NAME>")
-				||msg.tool().Name().equals("SEX <T-NAME>")))
+			final MOB mob=msg.source();
+			final boolean hungry=mob.curState().getHunger()<=0;
+			if((!hungry)
+			&&(mob.curState().getHunger()>=mob.maxState().maxHunger(mob.baseWeight()))
+			&&(CMLib.dice().roll(1,100,0)<3)
+			&&(!CMLib.flags().isGolem(msg.source()))
+			&&(msg.source().fetchEffect("Disease_Obesity")==null))
 			{
-				mob.tell(L("You don't really feel like doing it right now."));
-				return false;
+				final Ability A=CMClass.getAbility("Disease_Obesity");
+				if ((A != null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+					A.invoke(mob, mob, true, 0);
 			}
 		}
-		return true;
 	}
 
-	@Override
-	public void affectPhyStats(final Physical E, final PhyStats stats)
+	protected void beNautious()
 	{
-		super.affectPhyStats(E,stats);
-		stats.setAttackAdjustment(stats.attackAdjustment()-10);
-	}
-
-	@Override
-	public void affectCharStats(final MOB E, final CharStats stats)
-	{
-		super.affectCharStats(E,stats);
-		stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)-20);
+		if(affected instanceof MOB)
+		{
+			final MOB mob=(MOB)affected;
+			final Room R=mob.location();
+			if((R!=null)
+			&&(R.isInhabitant(mob))
+			&&(R.show(mob, null, this, CMMsg.MASK_HANDS|CMMsg.MASK_SOUND,L("<S-NAME> throw(s) up."))))
+			{
+				final Item I=CMClass.getItem("GenLiquidResource");
+				CMLib.flags().setGettable(I,true);
+				((Drink)I).setLiquidHeld(100);
+				((Drink)I).setLiquidRemaining(100);
+				((Drink)I).setLiquidType(RawMaterial.RESOURCE_SLIME);
+				I.setMaterial(RawMaterial.RESOURCE_SLIME);
+				I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
+				CMLib.materials().addEffectsToResource(I);
+				I.recoverPhyStats();
+				I.setName(L("a puddle of vomit"));
+				I.setDisplayText(L("a stinky puddle lies here."));
+				I.setDescription(L("It`s really gross."));
+				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+				{
+					final MOB M=m.nextElement();
+					if((M!=null)
+					&&(M!=mob)
+					&&(!CMLib.flags().isGolem(M))
+					&&(!CMLib.flags().isUndead(M))
+					&&(CMLib.flags().canBeSeenBy(mob, M))
+					&&(!CMLib.flags().isSleeping(M))
+					&&(CMLib.dice().rollPercentage()<20))
+					{
+						Ability A=(Ability)this.copyOf();
+						A.invoke(M, M, true, 0);
+						A=M.fetchEffect(ID());
+						if(A!=null)
+							A.setStat("TICKDOWN", "15"); // just enough for one puke
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -171,37 +193,14 @@ public class Disease_Depression extends Disease
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(affected==null)
-			return false;
 		if(!(affected instanceof MOB))
 			return true;
-
 		final MOB mob=(MOB)affected;
-		if(CMLib.dice().rollPercentage()==1)
-			mob.tell(L("You are hungry."));
-		if(mob.isInCombat()
-		&&(CMLib.dice().rollPercentage()<10))
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
-			mob.tell(L("Whats the point in fighting, really?"));
-			mob.makePeace(true);
+			diseaseTick=DISEASE_DELAY();
+			beNautious();
 		}
-		if((!mob.isInCombat())
-		&&(mob.session()!=null)
-		&&(mob.session().getIdleMillis()>10000)
-		&&((CMLib.dice().rollPercentage()==1)||(CMLib.flags().isSitting(mob))))
-		{
-			final Command C=CMClass.getCommand("Sleep");
-			try
-			{
-				C.execute(mob,new XVector<String>("Sleep"),MUDCmdProcessor.METAFLAG_FORCED);
-			}
-			catch(final Exception e)
-			{
-			}
-		}
-		if((mob.curState().getFatigue()<CharState.FATIGUED_MILLIS)
-		&&(mob.maxState().getFatigue()>Long.MIN_VALUE/2))
-			mob.curState().setFatigue(CharState.FATIGUED_MILLIS);
 		return true;
 	}
 

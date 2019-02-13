@@ -83,7 +83,7 @@ public class Disease_Zika extends Disease
 	@Override
 	protected int DISEASE_TICKS()
 	{
-		return (int)(CMProps.getTicksPerMudHour() * 24 * 150);
+		return getTicksPerDay() * 150;
 	}
 
 	@Override

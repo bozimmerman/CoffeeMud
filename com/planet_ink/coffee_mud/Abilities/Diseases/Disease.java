@@ -159,6 +159,14 @@ public class Disease extends StdAbility implements DiseaseAffect
 
 	protected int		diseaseTick	= DISEASE_DELAY();
 
+	protected int getTicksPerDay()
+	{
+		TimeClock C=(affected != null)?CMLib.time().localClock(affected):CMLib.time().globalClock();
+		if(C==null)
+			C=CMLib.time().globalClock();
+		return (int)(C.getHoursInDay() * CMProps.getTicksPerMudHour());
+	}
+
 	protected boolean catchIt(final MOB mob, final Physical target)
 	{
 		MOB diseased=invoker;

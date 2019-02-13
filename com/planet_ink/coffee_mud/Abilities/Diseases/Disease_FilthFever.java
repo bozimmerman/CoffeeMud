@@ -95,7 +95,7 @@ public class Disease_FilthFever extends Disease
 	@Override
 	protected int DISEASE_TICKS()
 	{
-		return (int)CMProps.getTicksPerMudHour() * 24 * CMLib.dice().roll(3, 4, 0);
+		return getTicksPerDay() * CMLib.dice().roll(3, 4, 0);
 	}
 
 	@Override
@@ -164,7 +164,8 @@ public class Disease_FilthFever extends Disease
 		super.affectPhyStats(E,stats);
 	}
 
-	public void affectChatStats(final MOB E, final CharStats stats)
+	@Override
+	public void affectCharStats(final MOB E, final CharStats stats)
 	{
 		super.affectCharStats(E,stats);
 		stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)-25);

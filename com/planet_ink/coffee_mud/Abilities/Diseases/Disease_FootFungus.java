@@ -84,7 +84,7 @@ public class Disease_FootFungus extends Disease
 	@Override
 	protected int DISEASE_TICKS()
 	{
-		return (int)CMProps.getTicksPerMudHour() * 24 * 7;
+		return getTicksPerDay() * CMLib.dice().roll(1, 3, 4);
 	}
 
 	@Override

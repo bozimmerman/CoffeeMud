@@ -157,7 +157,8 @@ public class Disease_Diarrhea extends Disease
 		super.affectPhyStats(E,stats);
 	}
 
-	public void affectChatStats(final MOB E, final CharStats stats)
+	@Override
+	public void affectCharStats(final MOB E, final CharStats stats)
 	{
 		super.affectCharStats(E,stats);
 		stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)-50);

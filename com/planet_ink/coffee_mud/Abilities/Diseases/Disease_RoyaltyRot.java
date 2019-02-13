@@ -85,7 +85,7 @@ public class Disease_RoyaltyRot extends Disease
 	@Override
 	protected int DISEASE_TICKS()
 	{
-		return (int)CMProps.getTicksPerMudHour() * 24 * CMLib.dice().roll(4, 9, 4);
+		return getTicksPerDay() * CMLib.dice().roll(4, 9, 4);
 	}
 
 	@Override
@@ -141,7 +141,8 @@ public class Disease_RoyaltyRot extends Disease
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
 
-	public void affectChatStats(final MOB E, final CharStats stats)
+	@Override
+	public void affectCharStats(final MOB E, final CharStats stats)
 	{
 		super.affectCharStats(E,stats);
 		stats.setStat(CharStats.STAT_STRENGTH,stats.getStat(CharStats.STAT_STRENGTH)-5);
