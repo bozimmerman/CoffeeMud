@@ -55,8 +55,14 @@ public class Prop_ModExperience extends Property
 		return Ability.CAN_MOBS | Ability.CAN_ITEMS | Ability.CAN_AREAS | Ability.CAN_ROOMS;
 	}
 
+	protected enum DirectionCheck
+	{
+		POSITIVE, NEGATIVE, POSINEGA
+	}
+
 	protected String			operationFormula	= "";
 	protected boolean			selfXP				= false;
+	protected DirectionCheck	dir					= DirectionCheck.POSITIVE;
 	protected CompiledFormula	operation			= null;
 	protected CompiledZMask		mask				= null;
 
@@ -102,6 +108,16 @@ public class Prop_ModExperience extends Property
 			selfXP=true;
 			s=s.substring(0,x)+s.substring(x+4);
 		}
+		dir = DirectionCheck.POSITIVE;
+		for(final DirectionCheck d : DirectionCheck.values())
+		{
+			x=s.indexOf(d.name());
+			{
+				dir = d;
+				s=s.substring(0,x)+s.substring(x+d.name().length());
+			}
+		}
+
 		operationFormula="Amount "+s;
 		final List<String> ops = new ArrayList<String>();
 		int paren=0;
@@ -185,6 +201,19 @@ public class Prop_ModExperience extends Property
 		   ||(affected instanceof Room)
 		   ||(affected instanceof Area)))
 		{
+			switch(dir)
+			{
+			case POSITIVE:
+				if(msg.value()<0)
+					return super.okMessage(myHost,msg);
+				break;
+			case NEGATIVE:
+				if(msg.value()>0)
+					return super.okMessage(myHost,msg);
+				break;
+			case POSINEGA:
+				break;
+			}
 			if(mask!=null)
 			{
 				if(affected instanceof Item)

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -37,6 +38,7 @@ public interface TechLibrary extends CMLibrary
 	 * Returns the appropriate electronics key for this electronic item,
 	 * area, or room.  It represents the electronical currents that tie
 	 * technology together.
+	 *
 	 * @param o the object to inspect
 	 * @return the key to use, or null if none can be found
 	 */
@@ -46,6 +48,7 @@ public interface TechLibrary extends CMLibrary
 	 * Unregisters an electronic component that belonged
 	 * in a complex circuitry, like a panel or a
 	 * generator.
+	 *
 	 * @param E the electronic component to unregister
 	 * @param oldKey the last key registered to this device
 	 */
@@ -55,6 +58,7 @@ public interface TechLibrary extends CMLibrary
 	 * Unregisters all electronic components that belonged
 	 * in a complex circuitry, like a panel or a
 	 * generator, of the given key.
+	 *
 	 * @param oldKey the last key registered to this device
 	 */
 	public void unregisterAllElectronics(final String oldKey);
@@ -63,6 +67,7 @@ public interface TechLibrary extends CMLibrary
 	 * Registers an electronic component that belongs
 	 * in a complex circuitry, like a panel or a
 	 * generator
+	 *
 	 * @param E the electronic component to register
 	 * @param oldKey the last key registered to this device
 	 * @return the new key assigned to this item (or old key)
@@ -73,6 +78,7 @@ public interface TechLibrary extends CMLibrary
 	 * Returns whether the currents at the given key are still
 	 * active.  Some currents go inactive when players leave
 	 * the game, or their areas may be suspended by the system.
+	 *
 	 * @param key the current key
 	 * @return true if the area is active
 	 */
@@ -88,6 +94,7 @@ public interface TechLibrary extends CMLibrary
 	/**
 	 * For the given key, return an eclusive list of all the electronics
 	 * that belong to that key.
+	 *
 	 * @param key the key to return electronics for
 	 * @return the list of electronic object of that key
 	 */
@@ -97,6 +104,7 @@ public interface TechLibrary extends CMLibrary
 	 * Certain Key Systems may automatically force batteries in their circuit
 	 * to activate in order to provide that system with power. This will make
 	 * that attempt.
+	 *
 	 * @param E the key device to seek power
 	 * @param key this devices key
 	 * @return true if an attempt to give power was made, false otherwise.
@@ -130,6 +138,7 @@ public interface TechLibrary extends CMLibrary
 	/**
 	 * Retrieves the manufacturer of the given name, or null
 	 * if it is not found.  Can not handle RANDOM!!
+	 *
 	 * @param name the manufacturer to fetch
 	 * @return the manufacturer found, or null
 	 */
@@ -139,6 +148,7 @@ public interface TechLibrary extends CMLibrary
 	 * Retrieves the manufacturer of the given name, or null
 	 * if it is not found.  If random is sent, it will find
 	 * a random manufacturer for the given item.
+	 *
 	 * @param E for random manufacturers, the item to check
 	 * @param name the manufacturer to fetch
 	 * @return the manufacturer found, or null
@@ -154,12 +164,14 @@ public interface TechLibrary extends CMLibrary
 	/**
 	 * Return all the rooms containing computers in the
 	 * given circuit key.
+	 *
 	 * @param key the circuit key
 	 * @return an iterator of rooms
 	 */
 	public Iterator<Room> getComputerRooms(String key);
 	/**
 	 * Return all the computers in the given circuit key.
+	 *
 	 * @param key the circuit key
 	 * @return an iterator of computers
 	 */
@@ -183,6 +195,7 @@ public interface TechLibrary extends CMLibrary
 	 * it's manufacturer is non-random, and by assigning a random
 	 * tech level within the valid range, and modifying its name
 	 * and displaytext to reflect the new tech level
+	 *
 	 * @param I An electronics item that needs fixing
 	 * @param newTechLevel the new tech level
 	 */
@@ -199,4 +212,14 @@ public interface TechLibrary extends CMLibrary
 	 * @return the amount of gravity force, or 0
 	 */
 	public double getGravityForce(SpaceObject S, SpaceObject cO);
+
+	/**
+	 * Given a ship war component, returns the directions in which it is
+	 * currently covering.
+	 *
+	 * @param comp the war component
+	 * @return the directions being covered
+	 */
+	public ShipDir[] getCurrentBattleCoveredDirections(final ShipWarComponent comp);
+
 }

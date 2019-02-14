@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
@@ -366,6 +367,35 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, CMProps.getTickMillis(), 1);
 		}
 		return true;
+	}
+
+	@Override
+	public ShipDir[] getCurrentBattleCoveredDirections(final ShipWarComponent comp)
+	{
+		final ShipDir[] currCoverage;
+		final ShipDir[] permitted = comp.getPermittedDirections();
+		final int numDirs = comp.getPermittedNumDirections();
+		if(numDirs >= permitted.length)
+			currCoverage = comp.getPermittedDirections();
+		else
+		{
+			final int centralIndex = CMLib.dice().roll(1, numDirs, -1);
+			final List<ShipDir> theDirs = new ArrayList<ShipDir>(numDirs);
+			int offset = 0;
+			final List<ShipDir> permittedDirs = new XVector<ShipDir>(permitted);
+			permittedDirs.addAll(Arrays.asList(permitted));
+			permittedDirs.addAll(Arrays.asList(permitted));
+			while(theDirs.size() < numDirs)
+			{
+				if(!theDirs.contains(permittedDirs.get(centralIndex+offset)))
+					theDirs.add(permittedDirs.get(centralIndex+offset));
+				if(!theDirs.contains(permittedDirs.get(centralIndex-offset)))
+					theDirs.add(permittedDirs.get(centralIndex-offset));
+				offset+=1;
+			}
+			currCoverage = theDirs.toArray(new ShipDir[theDirs.size()]);
+		}
+		return currCoverage;
 	}
 
 	@Override
