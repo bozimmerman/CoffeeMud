@@ -53,6 +53,7 @@ public class RocketShipProgram extends GenShipProgram
 
 	protected volatile List<ShipEngine>		engines		= null;
 	protected volatile List<TechComponent>	sensors		= null;
+	protected volatile List<TechComponent>	weapons		= null;
 	protected volatile List<TechComponent>	components	= null;
 	protected volatile List<TechComponent>	dampers		= null;
 
@@ -67,7 +68,6 @@ public class RocketShipProgram extends GenShipProgram
 	protected final	   List<SpaceObject>	sensorReport		= new LinkedList<SpaceObject>();
 
 	protected final PairSLinkedList<Long, List<SpaceObject>>	sensorReports		= new PairSLinkedList<Long, List<SpaceObject>>();
-	protected final Map<ShipWarComponent, Double>				weaponEmissionPct	= new Hashtable<ShipWarComponent, Double>();
 	protected volatile Map<ShipEngine, Double[]>				primeInjects		= new Hashtable<ShipEngine, Double[]>();
 
 	protected enum RocketStateMachine
@@ -96,6 +96,38 @@ public class RocketShipProgram extends GenShipProgram
 		baseGoldValue=1000;
 		recoverPhyStats();
 	}
+
+	private static class DistanceSorter implements Comparator<SpaceObject>
+	{
+		private final WorldMap map;
+		private final SpaceObject spaceObject;
+
+		private DistanceSorter(final SpaceObject me)
+		{
+			map=CMLib.map();
+			spaceObject=me;
+		}
+
+		@Override
+		public int compare(final SpaceObject o1, final SpaceObject o2)
+		{
+			if(o1 == null)
+				return (o2 == null) ? 0 : 1;
+			if(o2 == null)
+				return -1;
+			if(o1.coordinates() == null)
+				return (o2.coordinates() == null) ? 0 : 1;
+			if(o2.coordinates() == null)
+				return -1;
+			final long distance1 = map.getDistanceFrom(spaceObject, o1) - o1.radius();
+			final long distance2 = map.getDistanceFrom(spaceObject, o2) - o2.radius();
+			if(distance1 < distance2)
+				return -1;
+			if(distance1 > distance2)
+				return 1;
+			return 0;
+		}
+	};
 
 	@Override
 	public String getParentMenu()
@@ -185,6 +217,21 @@ public class RocketShipProgram extends GenShipProgram
 		return sensors;
 	}
 
+	protected synchronized List<TechComponent> getShipWeapons()
+	{
+		if(weapons == null)
+		{
+			final List<TechComponent> stuff=getTechComponents();
+			weapons=new Vector<TechComponent>(1);
+			for(final TechComponent E : stuff)
+			{
+				if(E.getTechType()==TechType.SHIP_WEAPON)
+					weapons.add(E);
+			}
+		}
+		return weapons;
+	}
+
 	protected synchronized List<TechComponent> getDampeners()
 	{
 		if(dampers == null)
@@ -245,7 +292,7 @@ public class RocketShipProgram extends GenShipProgram
 
 	protected ShipWarComponent findWeaponByName(final String name)
 	{
-		return (ShipWarComponent)findComponentByName(getEngines(), "WEAPON", name);
+		return (ShipWarComponent)findComponentByName(getShipWeapons(), "WEAPON", name);
 	}
 
 	protected ShipWarComponent findShieldByName(final String name)
@@ -1144,6 +1191,32 @@ public class RocketShipProgram extends GenShipProgram
 		return null;
 	}
 
+	private boolean sendMessage(final MOB mob, final Item E, final CMMsg msg, final String command)
+	{
+		if((E!=null) && (msg != null))
+		{
+			if(E.owner() instanceof Room)
+			{
+				if(((Room)E.owner()).okMessage(mob, msg))
+				{
+					((Room)E.owner()).send(mob, msg);
+					return true;
+				}
+			}
+			else
+			if(E.okMessage(mob, msg))
+			{
+				E.executeMsg(mob, msg);
+				return true;
+			}
+		}
+		else
+		{
+			super.addScreenMessage(L("Error: Unknown command '"+command+"'.   Try HELP."));
+		}
+		return false;
+	}
+
 	@Override
 	public void onTyping(final MOB mob, final String message)
 	{
@@ -1165,7 +1238,7 @@ public class RocketShipProgram extends GenShipProgram
 						+ "ACTIVATE [SYSTEM/ALL]  : turn on specified system\n\r"
 						+ "DEACTIVATE [SYSTEM/ALL]: turn off any system specified\n\r"
 						+ "LAUNCH / ORBIT         : take your ship off the planet\n\r"
-						+ "TARGET [NAME] [PCT]    : target a sensor object\n\r"
+						+ "TARGET [NAME]          : target a sensor object\n\r"
 						+ "FIRE [WEAPON]          : fire weapon at target\n\r"
 						+ "STOP   : negate all velocity\n\r"
 						+ "LAND   : land your ship on the nearest planet. \n\r"
@@ -1504,29 +1577,7 @@ public class RocketShipProgram extends GenShipProgram
 				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
 				for(final TechComponent sensor : sensors)
 					allObjects.addAll(takeSensorReport(sensor));
-				final WorldMap map=CMLib.map();
-				Collections.sort(allObjects, new Comparator<SpaceObject>()
-				{
-					@Override
-					public int compare(final SpaceObject o1, final SpaceObject o2)
-					{
-						if(o1 == null)
-							return (o2 == null) ? 0 : 1;
-						if(o2 == null)
-							return -1;
-						if(o1.coordinates() == null)
-							return (o2.coordinates() == null) ? 0 : 1;
-						if(o2.coordinates() == null)
-							return -1;
-						final long distance1 = map.getDistanceFrom(spaceObject, o1) - o1.radius();
-						final long distance2 = map.getDistanceFrom(spaceObject, o2) - o2.radius();
-						if(distance1 < distance2)
-							return -1;
-						if(distance1 > distance2)
-							return 1;
-						return 0;
-					}
-				});
+				Collections.sort(allObjects, new DistanceSorter(spaceObject));
 				SpaceObject landingPlanet = null;
 				for(final SpaceObject O : allObjects)
 				{
@@ -1601,22 +1652,129 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(uword.equalsIgnoreCase("TARGET"))
 			{
-				if(parsed.size()<3)
+				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+				if(ship==null)
+				{
+					super.addScreenMessage(L("Error: Malfunctioning hull interface."));
+					return;
+				}
+				if(parsed.size()<2)
 				{
 					super.addScreenMessage(L("Error: TARGET requires the name of the target.   Try HELP."));
 					return;
 				}
-				//Double leadPct = Double.valueOf(0.0);
-				//if((parsed.get(parsed.size()-1).indexOf('%')>0)
-				//||(CMath.isPct(parsed.get(parsed.size()-1))))
-				//	leadPct=CMath.s_pct(parsed.remove(parsed.size()-1));
-
-				//TODO: target sensorname
+				if(sensorReports.size()==0)
+				{
+					super.addScreenMessage(L("Error: no sensor data found to identify landing position."));
+					return;
+				}
+				final String targetStr=CMParms.combine(parsed, 1);
+				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+				for(final TechComponent sensor : sensors)
+					allObjects.addAll(takeSensorReport(sensor));
+				Collections.sort(allObjects, new DistanceSorter(spaceObject));
+				SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, false);
+				if(targetObj == null)
+					targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, targetStr, true);
+				if(targetObj == null)
+				{
+					super.addScreenMessage(L("No suitable target @x1 found within sensor range.",targetStr));
+					return;
+				}
+				if(targetObj.coordinates() == null)
+				{
+					super.addScreenMessage(L("Can not target @x1 due to lack of coordinate information.",targetObj.Name()));
+					return;
+				}
+				this.currentTarget = targetObj;
+				super.addScreenMessage(L("Target set for @x1.",targetObj.Name()));
+				return;
 			}
 			else
 			if(uword.equalsIgnoreCase("FIRE"))
 			{
-				//TODO: fire weaponname --- at target, at power amount set
+				final String rest = CMParms.combine(parsed,1).toUpperCase();
+				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+				if(ship==null)
+				{
+					super.addScreenMessage(L("Error: Malfunctioning hull interface."));
+					return;
+				}
+				if(currentTarget == null)
+				{
+					super.addScreenMessage(L("Target not set."));
+					return;
+				}
+				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+				for(final TechComponent sensor : sensors)
+					allObjects.addAll(takeSensorReport(sensor));
+				Collections.sort(allObjects, new DistanceSorter(spaceObject));
+				final SpaceObject targetObj = (SpaceObject)CMLib.english().fetchEnvironmental(allObjects, currentTarget.ID(), true);
+				if(targetObj == null)
+				{
+					super.addScreenMessage(L("Target no longer in sensor range."));
+					return;
+				}
+				if(targetObj.coordinates()==null)
+				{
+					super.addScreenMessage(L("Unable to determine target direction and range."));
+					return;
+				}
+				final double[] targetDirection = CMLib.map().getDirection(ship, targetObj);
+				TechComponent finalWeaponToFire = null;
+				final String weapName = CMParms.combine(parsed,1);
+				if(weapName.length()>0)
+				{
+					final ShipWarComponent weapon = this.findWeaponByName(rest);
+					if(weapon == null)
+					{
+						super.addScreenMessage(L("Error: Unknown weapon name or command word '"+rest+"'.   Try HELP."));
+						return;
+					}
+					finalWeaponToFire = weapon;
+				}
+				else
+				{
+					for(final TechComponent T : getShipWeapons())
+					{
+						if(T instanceof ShipWarComponent)
+						{
+
+							final ShipDir dir = CMLib.map().getDirectionFromDir(ship.facing(), ship.roll(), targetDirection);
+							if(CMParms.contains(CMLib.tech().getCurrentBattleCoveredDirections((ShipWarComponent)T), dir))
+							{
+								finalWeaponToFire = T;
+								break;
+							}
+						}
+						else
+							finalWeaponToFire = T;
+					}
+					if(finalWeaponToFire == null)
+					{
+						if(getShipWeapons().size()>0)
+							finalWeaponToFire = getShipWeapons().get(0);
+					}
+					if(finalWeaponToFire == null)
+					{
+						super.addScreenMessage(L("Error: No weapons found."));
+						return;
+					}
+					super.addScreenMessage(L("Info: Auto selected weapon '@x1'.",finalWeaponToFire.Name()));
+				}
+				{
+					E=finalWeaponToFire;
+					String code;
+
+					code=TechCommand.WEAPONTARGETSET.makeCommand(Double.valueOf(targetDirection[0]), Double.valueOf(targetDirection[1]));
+					msg=CMClass.getMsg(mob, finalWeaponToFire, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+					this.sendMessage(mob, finalWeaponToFire, msg, message);
+
+					code = TechCommand.WEAPONFIRE.makeCommand();
+					msg=CMClass.getMsg(mob, finalWeaponToFire, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+				}
 			}
 			else
 			if(uword.startsWith("WEAPON"))
@@ -1644,9 +1802,11 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: Invalid emission percentage given."));
 					return;
 				}
-				this.weaponEmissionPct.put(weapon, Double.valueOf(pct));
-				super.addScreenMessage(L("Emission for @x1 locked in.",weapon.name()));
-				return;
+				E=weapon;
+				String code;
+
+				code=TechCommand.POWERSET.makeCommand(Long.valueOf(Math.round(pct * 100.0)));
+				msg=CMClass.getMsg(mob, weapon, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			}
 			else
 			if(!uword.equalsIgnoreCase("HELP"))
@@ -1716,21 +1876,7 @@ public class RocketShipProgram extends GenShipProgram
 				else
 					msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 			}
-			if((E!=null) && (msg != null))
-			{
-				if(E.owner() instanceof Room)
-				{
-					if(((Room)E.owner()).okMessage(mob, msg))
-						((Room)E.owner()).send(mob, msg);
-				}
-				else
-				if(E.okMessage(mob, msg))
-					E.executeMsg(mob, msg);
-			}
-			else
-			{
-				super.addScreenMessage(L("Error: Unknown command '"+message+"'.   Try HELP."));
-			}
+			sendMessage(mob,E,msg,message);
 		}
 	}
 
