@@ -62,15 +62,6 @@ public interface EnglishParsing extends CMLibrary
 	public void evoke(MOB mob, Vector<String> commands);
 	public boolean containsString(final String toSrchStr, final String srchStr);
 	public String bumpDotNumber(String srchStr);
-	public List<String> parseWords(final String thisStr);
-	public Exit fetchExit(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
-	public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
-	public Environmental fetchEnvironmental(Enumeration<? extends Environmental> iter, String srchStr, boolean exactOnly);
-	public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly);
-	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly);
-	public Environmental fetchEnvironmental(Iterator<? extends Environmental> iter, String srchStr, boolean exactOnly);
-	public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly);
-	public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly);
 	public int getContextNumber(Environmental[] list, Environmental E);
 	public int getContextNumber(Collection<? extends Environmental> list, Environmental E);
 	public int getContextNumber(ItemCollection cont, Environmental E);
@@ -84,6 +75,15 @@ public interface EnglishParsing extends CMLibrary
 	public String getContextSameName(Collection<? extends Environmental> list, Environmental E);
 	public String getContextSameName(Environmental[] list, Environmental E);
 	public String getContextSameName(ItemCollection cont, Environmental E);
+	public List<String> parseWords(final String thisStr);
+	public Exit fetchExit(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
+	public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
+	public Environmental fetchEnvironmental(Enumeration<? extends Environmental> iter, String srchStr, boolean exactOnly);
+	public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly);
+	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly);
+	public Environmental fetchEnvironmental(Iterator<? extends Environmental> iter, String srchStr, boolean exactOnly);
+	public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly);
+	public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly);
 	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly);
 	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly, int[] counterSlap);
 	public Environmental parseShopkeeper(MOB mob, List<String> commands, String error);
@@ -101,12 +101,82 @@ public interface EnglishParsing extends CMLibrary
 	public Item possibleContainer(MOB mob, List<String> commands, boolean withStuff, Filterer<Environmental> filter);
 	public String returnTime(long millis, long ticks);
 	public int calculateMaxToGive(MOB mob, List<String> commands, boolean breakPackages, Environmental checkWhat, boolean getOnly);
+
+	/**
+	 * Returns the probability 0-100 of the given string being
+	 * english.  Used for Scholar stuff.
+	 *
+	 * @param str the text to inspect
+	 * @return 0-100 chance of it being english
+	 */
 	public int probabilityOfBeingEnglish(String str);
+
+	/**
+	 * Returns [best distance] for the given number.
+	 * A [best distance] picks the best of dm, km, etc..
+	 *
+	 * @see EnglishParsing#distanceDescShort(long)
+	 *
+	 * @param size the full dm distance
+	 * @return the best size string
+	 */
 	public String sizeDescShort(long size);
+
+	/**
+	 * Returns [best distance] for the given number.
+	 * A [best distance] picks the best of dm, km, etc..
+	 *
+	 * @see EnglishParsing#sizeDescShort(long)
+	 *
+	 * @param distance the full dm distance
+	 * @return the best distance string
+	 */
 	public String distanceDescShort(long distance);
+
+	/**
+	 * Returns [best distance],[best distance],[best distance]
+	 * A [best distance] picks the best of dm, km, etc..
+	 *
+	 * @see EnglishParsing#sizeDescShort(long)
+	 *
+	 * @param coords the 3-absolute coords
+	 * @return a displayable best distance coordinate
+	 */
 	public String coordDescShort(long[] coords);
+
+	/**
+	 * Rounds the given speed and returns [speed]/sec
+	 * @param speed the raw speed double
+	 * @return a friendlier display speed per sec
+	 */
 	public String speedDescShort(double speed);
+
+	/**
+	 * Returns direction in [degrees.YY] mark [degrees.YY]
+	 *
+	 * @see EnglishParsing#directionDescShortest(double[])
+	 *
+	 * @param dir the direction in radians
+	 * @return a short direction string
+	 */
 	public String directionDescShort(double[] dir);
+
+	/**
+	 * Returns direction in [degrees.Y] [space] [degrees.Y]
+	 *
+	 * @see EnglishParsing#directionDescShort(double[])
+	 *
+	 * @param dir the direction in radians
+	 * @return a shortest direction possible
+	 */
 	public String directionDescShortest(double[] dir);
+
+	/**
+	 * Returns the distance in decameters represented by the given
+	 * parsable user-entered string.
+	 *
+	 * @param dist the user-entered string
+	 * @return the distance in decameters
+	 */
 	public Long parseSpaceDistance(String dist);
 }
