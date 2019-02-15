@@ -112,6 +112,7 @@ public class Prop_ModExperience extends Property
 		for(final DirectionCheck d : DirectionCheck.values())
 		{
 			x=s.indexOf(d.name());
+			if(x>=0)
 			{
 				dir = d;
 				s=s.substring(0,x)+s.substring(x+d.name().length());
