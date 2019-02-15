@@ -311,7 +311,8 @@ public class Emoter extends ActiveTicker
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		super.tick(ticking,tickID);
+		if(!super.tick(ticking,tickID))
+			return false;
 		parseEmotes();
 		if((canAct(ticking,tickID))
 		&&(emotes.size()>0)
