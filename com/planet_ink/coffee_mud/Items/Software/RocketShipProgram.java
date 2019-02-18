@@ -482,33 +482,11 @@ public class RocketShipProgram extends GenShipProgram
 		}
 
 		final List<ShipEngine> engines = getEngines();
+		final List<TechComponent> weapons = getShipWeapons();
 		final List<TechComponent> components = getTechComponents();
 		if(components.size()> engines.size() + sensors.size())
 		{
-			str.append("^X").append(CMStrings.centerPreserve(L(" -- Other Systems -- "),60)).append("^.^N\n\r");
-			int systemNumber=1;
-			for(final TechComponent component : components)
-			{
-				if((!engines.contains(component))
-				&&(!sensors.contains(component)))
-				{
-					str.append("^H").append(CMStrings.padRight(L("SYSTEM@x1",""+systemNumber),9));
-					str.append(CMStrings.padRight(component.activated()?L("^gA"):L("^rI"),2));
-					str.append("^H").append(CMStrings.padRight(L("Pow."),5));
-					str.append("^N").append(CMStrings.padRight(Long.toString(component.powerRemaining()),11));
-					str.append("^H").append(CMStrings.padRight(component.Name(),31));
-					str.append("^.^N\n\r");
-					systemNumber++;
-				}
-			}
-			str.append("^.^N\n\r");
-		}
-
-		if(engines.size()==0)
-			str.append(noActivationMenu);
-		else
-		{
-			str.append("^X").append(CMStrings.centerPreserve(L(" -- Engines -- "),60)).append("^.^N\n\r");
+			str.append("^X").append(CMStrings.centerPreserve(L(" -- Ship Systems -- "),60)).append("^.^N\n\r");
 			int engineNumber=1;
 			for(final ShipEngine engine : engines)
 			{
@@ -528,11 +506,45 @@ public class RocketShipProgram extends GenShipProgram
 				str.append("^.^N\n\r");
 				engineNumber++;
 			}
-			str.append("^N\n\r");
+			int weaponNumber=1;
+			for(final TechComponent weapon : weapons)
+			{
+				str.append("^H").append(CMStrings.padRight(L("WEAPON@x1",""+weaponNumber),9));
+				str.append(CMStrings.padRight(weapon.activated()?L("^gA"):L("^rI"),2));
+				str.append("^H").append(CMStrings.padRight(L("Pow."),5));
+				str.append("^N").append(CMStrings.padRight(Long.toString(weapon.powerRemaining()),11));
+				str.append("^H").append(CMStrings.padRight(weapon.Name(),31));
+				str.append("^.^N\n\r");
+				weaponNumber++;
+			}
+			int systemNumber=1;
+			for(final TechComponent component : components)
+			{
+				if((!engines.contains(component))
+				&&(!sensors.contains(component))
+				&&(!weapons.contains(component)))
+				{
+					str.append("^H").append(CMStrings.padRight(L("SYSTEM@x1",""+systemNumber),9));
+					str.append(CMStrings.padRight(component.activated()?L("^gA"):L("^rI"),2));
+					str.append("^H").append(CMStrings.padRight(L("Pow."),5));
+					str.append("^N").append(CMStrings.padRight(Long.toString(component.powerRemaining()),11));
+					str.append("^H").append(CMStrings.padRight(component.Name(),31));
+					str.append("^.^N\n\r");
+					systemNumber++;
+				}
+			}
+			str.append("^.^N\n\r");
+		}
+
+		if(engines.size()==0)
+			str.append(noActivationMenu);
+		else
+		{
 			str.append("^X").append(CMStrings.centerPreserve(L(" -- Commands -- "),60)).append("^.^N\n\r");
 			str.append("^H").append(CMStrings.padRight(L("TYPE HELP INTO CONSOLE : Get help."),60)).append("\n\r");
 			if((container() instanceof Rideable)
-			&&(((Rideable)container()).rideBasis()==Rideable.RIDEABLE_TABLE))
+			&&(((Rideable)container()).rideBasis()==Rideable.RIDEABLE_TABLE)
+			&&(((Rideable)container()).numRiders()==0))
 				str.append("^H").append(CMStrings.padRight(L("* Sit at "+container().name()+" to shorten commands *"),60)).append("\n\r");
 			str.append("^X").append(CMStrings.centerPreserve("",60)).append("^.^N\n\r");
 			str.append("^N\n\r");

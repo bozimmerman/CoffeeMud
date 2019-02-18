@@ -147,6 +147,13 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 		}
 	}
 
+	protected ShipDir[] getCurrentBattleCoveredDirections()
+	{
+		if(this.currCoverage == null)
+			this.currCoverage = CMLib.tech().getCurrentBattleCoveredDirections(this);
+		return this.currCoverage;
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -211,7 +218,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								if(ship instanceof SpaceShip)
 								{
 									final ShipDir dir = CMLib.map().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), targetDirection);
-									if(!CMParms.contains(CMLib.tech().getCurrentBattleCoveredDirections(this), dir))
+									if(!CMParms.contains(getCurrentBattleCoveredDirections(), dir))
 										reportError(this, controlI, mob, lang.L("@x1 is not facing a covered direction.",me.name(mob)), lang.L("Failure: @x1: weapon is not facing correctly.",me.name(mob)));
 								}
 							}
@@ -230,7 +237,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								if(ship instanceof SpaceShip)
 								{
 									final ShipDir dir = CMLib.map().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), targetDirection);
-									if(CMParms.contains(CMLib.tech().getCurrentBattleCoveredDirections(this), dir))
+									if(CMParms.contains(getCurrentBattleCoveredDirections(), dir))
 										reportError(this, controlI, mob, lang.L("@x1 is not facing a covered direction.",me.name(mob)), lang.L("Failure: @x1: weapon is not facing correctly.",me.name(mob)));
 								}
 								final SpaceObject weaponO=(SpaceObject)CMClass.getTech("StdSpaceTech");
