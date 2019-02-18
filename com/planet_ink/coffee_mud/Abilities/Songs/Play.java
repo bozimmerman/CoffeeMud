@@ -228,14 +228,14 @@ public class Play extends StdAbility
 		if((invoker==null)
 		||(invoker.fetchEffect(ID())==null)
 		||(commonRoomSet==null))
-			return unplayMe(mob,null);
+			return unPlayMe(mob,null, false);
 		if(!commonRoomSet.contains(mob.location()))
 		{
 			final List<Room> V=getInvokerScopeRoomSet(null);
 			commonRoomSet.clear();
 			commonRoomSet.addAll(V);
 			if(!commonRoomSet.contains(mob.location()))
-				return unplayMe(mob,null);
+				return unPlayMe(mob,null, false);
 		}
 
 		if(skipStandardSongTick())
@@ -245,7 +245,7 @@ public class Play extends StdAbility
 		||((instrument!=null)&&(!usingInstrument(instrument,invoker)))
 		||(!CMLib.flags().isAliveAwakeMobileUnbound(invoker,true))
 		||(!CMLib.flags().canBeHeardSpeakingBy(invoker,mob)))
-			return unplayMe(mob,null);
+			return unPlayMe(mob,null, false);
 		return true;
 	}
 
@@ -312,12 +312,12 @@ public class Play extends StdAbility
 				if((A instanceof Play)
 				&&((!exceptThisOne)||(!A.ID().equals(ID())))
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
-					((Play)A).unplayMe(mob,invoker);
+					((Play)A).unPlayMe(mob,invoker, false);
 			}
 		}
 	}
 
-	protected boolean unplayMe(final MOB mob, final MOB invoker)
+	protected boolean unPlayMe(final MOB mob, final MOB invoker, final boolean noEcho)
 	{
 		if(mob==null)
 			return false;
@@ -325,16 +325,24 @@ public class Play extends StdAbility
 		if((A instanceof Play)
 		&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 		{
-			final Play P=(Play)A;
-			if(P.timeOut==0)
-			{
-				P.timeOut = System.currentTimeMillis()
-						  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
-			}
-			if(System.currentTimeMillis() >= P.timeOut)
+			if(noEcho)
 			{
 				A.unInvoke();
 				return false;
+			}
+			else
+			{
+				final Play P=(Play)A;
+				if(P.timeOut==0)
+				{
+					P.timeOut = System.currentTimeMillis()
+							  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
+				}
+				if(System.currentTimeMillis() >= P.timeOut)
+				{
+					A.unInvoke();
+					return false;
+				}
 			}
 		}
 		return true;

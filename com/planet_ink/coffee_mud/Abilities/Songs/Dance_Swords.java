@@ -79,7 +79,7 @@ public class Dance_Swords extends Dance
 		||(affected==null))
 		{
 			if(affected instanceof MOB)
-				undanceMe((MOB)affected,null);
+				unDanceMe((MOB)affected,null, false);
 			else
 				unInvoke();
 			return false;
@@ -93,7 +93,7 @@ public class Dance_Swords extends Dance
 			case CMMsg.TYP_PULL:
 			case CMMsg.TYP_REMOVE:
 				if(affected instanceof MOB)
-					undanceMe((MOB)affected,null);
+					unDanceMe((MOB)affected,null, false);
 				else
 					unInvoke();
 				break;
@@ -208,7 +208,7 @@ public class Dance_Swords extends Dance
 		else
 		{
 			if(affected instanceof MOB)
-				undanceMe((MOB)affected,null);
+				unDanceMe((MOB)affected,null, false);
 			else
 				unInvoke();
 			return false;

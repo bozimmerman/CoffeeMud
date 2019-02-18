@@ -101,14 +101,14 @@ public class Play_Solo extends Play
 					&&((otherBard.location()==originRoom)
 							||(originRoom==null)
 							||originRoom.showOthers(otherBard, myChar, null, CMMsg.MSG_OK_ACTION,L("<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!"))))
-								unplayMe(myChar,null);
+								unPlayMe(myChar,null, false);
 				}
 				else
 				if(otherBard.location()!=null)
 				{
 					otherBard.tell(L("You can't seem to upstage @x1's solo.",myChar.name()));
 					if(!invoker().curState().adjMana(-10,invoker().maxState()))
-						unplayMe(myChar,null);
+						unPlayMe(myChar,null, false);
 					return false;
 				}
 			}

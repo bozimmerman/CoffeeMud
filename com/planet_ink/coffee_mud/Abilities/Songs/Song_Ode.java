@@ -321,7 +321,7 @@ public class Song_Ode extends Song
 			||(!commonRoomSet.contains(whom.location()))
 			||(CMLib.flags().isSleeping(invoker))
 			||(!CMLib.flags().canBeSeenBy(whom,invoker)))
-				return unsingMe(mob,null);
+				return unSingMe(mob,null, false);
 		}
 
 		if((whom!=null)&&(song!=null)&&(affected==invoker())

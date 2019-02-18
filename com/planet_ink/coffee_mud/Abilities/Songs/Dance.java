@@ -186,14 +186,14 @@ public class Dance extends StdAbility
 		if((invoker==null)
 		||(invoker.fetchEffect(ID())==null)
 		||(commonRoomSet==null))
-			return undanceMe(mob,null);
+			return unDanceMe(mob,null, false);
 		if(!commonRoomSet.contains(mob.location()))
 		{
 			final List<Room> V=getInvokerScopeRoomSet(null);
 			commonRoomSet.clear();
 			commonRoomSet.addAll(V);
 			if(!commonRoomSet.contains(mob.location()))
-				return undanceMe(mob,null);
+				return unDanceMe(mob,null, false);
 		}
 
 		if(skipStandardDanceTick())
@@ -205,7 +205,7 @@ public class Dance extends StdAbility
 		||(!CMLib.flags().isAliveAwakeMobile(invoker(),true))
 		||(mob.riding() instanceof MOB)
 		||(!CMLib.flags().canBeSeenBy(invoker,mob)))
-			return undanceMe(mob,null);
+			return unDanceMe(mob,null, false);
 
 		if(invokerManaCost<0)
 			invokerManaCost=usageCost(invoker(),false)[1];
@@ -228,12 +228,12 @@ public class Dance extends StdAbility
 				if((A instanceof Dance)
 				&&((!exceptThisOne)||(!A.ID().equals(ID())))
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
-					((Dance)A).undanceMe(mob,invoker);
+					((Dance)A).unDanceMe(mob,invoker, false);
 			}
 		}
 	}
 
-	protected boolean undanceMe(final MOB mob, final MOB invoker)
+	protected boolean unDanceMe(final MOB mob, final MOB invoker, final boolean noEcho)
 	{
 		if(mob==null)
 			return false;
@@ -241,14 +241,22 @@ public class Dance extends StdAbility
 		if((A instanceof Dance)
 		&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 		{
-			final Dance D=(Dance)A;
-			if(D.timeOut==0)
-				D.timeOut = System.currentTimeMillis()
-						  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
-			if(System.currentTimeMillis() >= D.timeOut)
+			if(noEcho)
 			{
 				A.unInvoke();
 				return false;
+			}
+			else
+			{
+				final Dance D=(Dance)A;
+				if(D.timeOut==0)
+					D.timeOut = System.currentTimeMillis()
+							  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
+				if(System.currentTimeMillis() >= D.timeOut)
+				{
+					A.unInvoke();
+					return false;
+				}
 			}
 		}
 		return true;
