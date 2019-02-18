@@ -78,6 +78,14 @@ public class Song_Serenity extends Song
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(msg.target()!=null))
 		{
+			if((msg.tool() instanceof Ability)
+			&&(((Ability)msg.tool()).invoker()==invoker)
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
+			&&(msg.target() instanceof MOB)
+			&&(((MOB)msg.target()).fetchEffect(msg.tool().ID())!=null)
+			&&(((Ability)msg.tool()).canBeUninvoked()))
+				((Ability)msg.tool()).unInvoke();
+
 			msg.source().makePeace(true);
 			msg.source().tell(L("You feel too peaceful to fight."));
 			if(msg.target() instanceof MOB)

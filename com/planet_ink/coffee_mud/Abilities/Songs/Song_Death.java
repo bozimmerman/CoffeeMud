@@ -79,7 +79,7 @@ public class Song_Death extends Song
 			if((R != mob.location())
 			&&(R!=null))
 			{
-				hpLoss /= 2;
+				hpLoss /= 4;
 				boolean found=false;
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
@@ -88,7 +88,9 @@ public class Song_Death extends Song
 						found=true;
 				}
 				if(!found)
-					hpLoss /= 2;
+					hpLoss /= 4;
+				if(hpLoss < 1)
+					hpLoss=1;
 			}
 			CMLib.combat().postDamage(invoker,mob,this,hpLoss,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("^SThe painful song <DAMAGE> <T-NAME>!^?"));
 		}
