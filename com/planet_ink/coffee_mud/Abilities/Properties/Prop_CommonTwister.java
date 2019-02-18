@@ -83,13 +83,13 @@ public class Prop_CommonTwister extends Property
 		if((affected!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(msg.target()!=null)
-		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
+		&&(msg.sourceMinor()==CMMsg.TYP_ITEMGENERATED)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
 		&&((affected instanceof Room)||(affected instanceof Exit)||(affected instanceof Area)
 		   ||((affected instanceof Item)&&(msg.source().isMine(affected)))
 		   ||((affected instanceof MOB)&&(msg.source()==affected))))
 		{
-			final Vector<String> poss=new Vector<String>();
+			final List<String> poss=new ArrayList<String>();
 			final int randomResource=CMLib.dice().roll(1,RawMaterial.CODES.TOTAL()-1,0);
 			if(text().length()==0)
 			{
@@ -100,23 +100,26 @@ public class Prop_CommonTwister extends Property
 					((Item)msg.target()).setMaterial(I.material());
 			}
 			else
-			for(int v=0;v<changes.size();v++)
 			{
-				if(changes.get(v).first.equals("*")
-				||(changes.get(v).first.equalsIgnoreCase(msg.tool().ID())))
+				for(int v=0;v<changes.size();v++)
 				{
-					final String two=changes.get(v).second;
-					if(two.equals("*")
-					||(CMLib.english().containsString(msg.target().name(),two)))
-						poss.addElement(changes.get(v).third);
+					if(changes.get(v).first.equals("*")
+					||(changes.get(v).first.equalsIgnoreCase(msg.tool().ID())))
+					{
+						final String two=changes.get(v).second;
+						if(two.equals("*")
+						||(CMLib.english().containsString(msg.target().name(),two)))
+							poss.add(changes.get(v).third);
+					}
 				}
 			}
 			if(poss.size()==0)
 				return true;
-			final String var=poss.elementAt(CMLib.dice().roll(1,poss.size(),-1));
+			final String var=poss.get(CMLib.dice().roll(1,poss.size(),-1));
 			final String newname=CMParms.getParmStr(var,"NAME","");
 			final String newdisp=CMParms.getParmStr(var,"DISPLAY","");
 			final String newmat=CMParms.getParmStr(var,"MATERIAL","");
+			final String newsub=CMParms.getParmStr(var,"SUBTYPE",null);
 
 			if(newname.length()>0)
 			{
@@ -138,7 +141,11 @@ public class Prop_CommonTwister extends Property
 				else
 					msg.target().setDisplayText(newdisp);
 			}
-			if((newmat.length()>0)&&(msg.target() instanceof Item))
+			if((newsub != null)
+			&&(msg.target() instanceof RawMaterial))
+				((RawMaterial)msg.target()).setSubType(newsub);
+			if((newmat.length()>0)
+			&&(msg.target() instanceof Item))
 			{
 				final String oldMatName=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toLowerCase();
 				int newMatCode=-1;

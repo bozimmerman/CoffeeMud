@@ -554,10 +554,11 @@ public class CommonSkill extends StdAbility
 				final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
 				if(R.okMessage(mob,msg))
 				{
-					R.addItem(buildingI,ItemPossessor.Expire.Resource);
+					final Item I=(Item)msg.target();
+					R.addItem(I,ItemPossessor.Expire.Resource);
 					R.recoverRoomStats();
 					R.send(mob,msg);
-					return R.isContent(buildingI);
+					return R.isContent(I);
 				}
 			}
 			finally
