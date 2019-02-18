@@ -311,7 +311,7 @@ public class Song extends StdAbility
 		return true;
 	}
 
-	protected void unsingAll(final MOB mob, final MOB invoker)
+	protected void unSingAll(final MOB mob, final MOB invoker, final boolean exceptThisOne)
 	{
 		if(mob!=null)
 		{
@@ -319,21 +319,7 @@ public class Song extends StdAbility
 			{
 				final Ability A=mob.fetchEffect(a);
 				if((A instanceof Song)
-				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
-					((Song)A).unsingMe(mob,invoker);
-			}
-		}
-	}
-
-	protected void unsingAllByThis(final MOB mob, final MOB invoker)
-	{
-		if(mob!=null)
-		{
-			for(int a=mob.numEffects()-1;a>=0;a--)
-			{
-				final Ability A=mob.fetchEffect(a);
-				if((A instanceof Song)
-				&&(!A.ID().equals(ID()))
+				&&((!exceptThisOne)||(!A.ID().equals(ID())))
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 					((Song)A).unsingMe(mob,invoker);
 			}
@@ -485,7 +471,7 @@ public class Song extends StdAbility
 		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		unsingAllByThis(mob,mob);
+		unSingAll(mob,mob,true);
 		if(success)
 		{
 			invoker=mob;

@@ -135,7 +135,7 @@ public class Play_Solo extends Play
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		unplayAll(mob,mob);
+		unPlayAll(mob,mob,false);
 		if(success)
 		{
 			invoker=mob;

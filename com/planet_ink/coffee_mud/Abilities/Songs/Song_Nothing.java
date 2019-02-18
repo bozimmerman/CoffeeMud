@@ -82,7 +82,7 @@ public class Song_Nothing extends Song
 			if((A!=null)&&(A instanceof Song))
 				foundOne=true;
 		}
-		unsingAllByThis(mob,mob);
+		unSingAll(mob,mob,true);
 		if(!foundOne)
 		{
 			mob.tell(auto?L("There is no song playing."):L("You aren't singing."));

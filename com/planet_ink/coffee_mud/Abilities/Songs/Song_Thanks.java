@@ -166,7 +166,7 @@ public class Song_Thanks extends Song
 		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		unsingAllByThis(mob,mob);
+		unSingAll(mob,mob,true);
 		if(success)
 		{
 			invoker=mob;

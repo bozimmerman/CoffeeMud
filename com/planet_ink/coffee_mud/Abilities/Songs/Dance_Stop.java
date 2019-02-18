@@ -82,7 +82,7 @@ public class Dance_Stop extends Dance
 			if((A!=null)&&(A instanceof Dance))
 				foundOne=true;
 		}
-		undanceAll(mob,null);
+		unDanceAll(mob,null,false);
 		if(!foundOne)
 		{
 			mob.tell(auto?L("There is no dance going."):L("You aren't dancing."));

@@ -184,7 +184,7 @@ public class Song_Babble extends Song
 		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		unsingAllByThis(mob,mob);
+		unSingAll(mob,mob,true);
 		if(success)
 		{
 			invoker=mob;

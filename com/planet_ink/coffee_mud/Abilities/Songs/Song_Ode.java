@@ -474,7 +474,7 @@ public class Song_Ode extends Song
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			unsingAll(mob,mob);
+			unSingAll(mob,mob,false);
 			invoker=mob;
 			originRoom=mob.location();
 			commonRoomSet=getInvokerScopeRoomSet(null);

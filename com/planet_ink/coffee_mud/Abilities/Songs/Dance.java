@@ -212,13 +212,13 @@ public class Dance extends StdAbility
 		if(!mob.curState().adjMovement(-(invokerManaCost/15),mob.maxState()))
 		{
 			mob.tell(L("The dancing exhausts you."));
-			undanceAll(mob,null);
+			unDanceAll(mob,null,false);
 			return false;
 		}
 		return true;
 	}
 
-	protected void undanceAll(final MOB mob, final MOB invoker)
+	protected void unDanceAll(final MOB mob, final MOB invoker, final boolean exceptThisOne)
 	{
 		if(mob!=null)
 		{
@@ -226,21 +226,7 @@ public class Dance extends StdAbility
 			{
 				final Ability A=mob.fetchEffect(a);
 				if((A instanceof Dance)
-				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
-					((Dance)A).undanceMe(mob,invoker);
-			}
-		}
-	}
-
-	protected void undanceAllByThis(final MOB mob, final MOB invoker)
-	{
-		if(mob!=null)
-		{
-			for(int a=mob.numEffects()-1;a>=0;a--)
-			{
-				final Ability A=mob.fetchEffect(a);
-				if((A instanceof Dance)
-				&&(!A.ID().equals(ID()))
+				&&((!exceptThisOne)||(!A.ID().equals(ID())))
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 					((Dance)A).undanceMe(mob,invoker);
 			}
@@ -419,7 +405,7 @@ public class Dance extends StdAbility
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		undanceAll(mob,null);
+		unDanceAll(mob,null,false);
 
 		if(success)
 		{

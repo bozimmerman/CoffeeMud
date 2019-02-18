@@ -302,7 +302,7 @@ public class Play extends StdAbility
 		}
 	}
 
-	protected void unplayAll(final MOB mob, final MOB invoker)
+	protected void unPlayAll(final MOB mob, final MOB invoker, final boolean exceptThisOne)
 	{
 		if(mob!=null)
 		{
@@ -310,21 +310,7 @@ public class Play extends StdAbility
 			{
 				final Ability A=mob.fetchEffect(a);
 				if((A instanceof Play)
-				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
-					((Play)A).unplayMe(mob,invoker);
-			}
-		}
-	}
-
-	protected void unplayAllByThis(final MOB mob, final MOB invoker)
-	{
-		if(mob!=null)
-		{
-			for(int a=mob.numEffects()-1;a>=0;a--)
-			{
-				final Ability A=mob.fetchEffect(a);
-				if((A instanceof Play)
-				&&(!A.ID().equals(ID()))
+				&&((!exceptThisOne)||(!A.ID().equals(ID())))
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 					((Play)A).unplayMe(mob,invoker);
 			}
@@ -561,7 +547,7 @@ public class Play extends StdAbility
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		unplayAll(mob,mob);
+		unPlayAll(mob,mob,false);
 		if(success)
 		{
 			invoker=mob;

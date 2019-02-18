@@ -80,7 +80,7 @@ public class Song_Rebirth extends Song
 		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		unsingAllByThis(mob,mob);
+		unSingAll(mob,mob,true);
 		if(success)
 		{
 			invoker=mob;

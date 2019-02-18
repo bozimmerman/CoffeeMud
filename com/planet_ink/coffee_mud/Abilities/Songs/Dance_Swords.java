@@ -227,7 +227,7 @@ public class Dance_Swords extends Dance
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		undanceAll(mob,null);
+		unDanceAll(mob,null,false);
 		if(success)
 		{
 			invoker=mob;

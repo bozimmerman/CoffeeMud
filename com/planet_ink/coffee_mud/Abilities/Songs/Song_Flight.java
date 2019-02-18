@@ -96,7 +96,7 @@ public class Song_Flight extends Song
 		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		unsingAllByThis(mob,mob);
+		unSingAll(mob,mob,true);
 		if(success)
 		{
 			invoker=mob;
