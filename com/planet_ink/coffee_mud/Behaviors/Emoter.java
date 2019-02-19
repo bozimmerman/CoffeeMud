@@ -332,76 +332,97 @@ public class Emoter extends ActiveTicker
 				for(final Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
+					// if a tree falls in a forest...
+					if((R.numInhabitants()==0)||(R.numPCInhabitants()==0))
+						return true;
 					emoteHere(R,emoter,emote,null,false);
 				}
 				emoter.destroy();
 				return true;
 			}
-			if(ticking instanceof Room)
-			{
-				emoter=CMClass.getFactoryMOB();
-				emoteHere((Room)ticking,emoter,emote,null,false);
-				emoter.destroy();
-				return true;
-			}
-
-			final Room room=getBehaversRoom(ticking);
-			if(room==null)
-				return true;
-			boolean killEmoter=false;
-			if(ticking instanceof MOB)
-			{
-				if(canFreelyBehaveNormal(ticking))
-					emoter=(MOB)ticking;
-			}
 			else
 			{
-				if((ticking instanceof Item)&&(!CMLib.flags().isInTheGame((Item)ticking,false)))
+				final Room room=getBehaversRoom(ticking);
+				if(room==null)
 					return true;
-
-				emoter=CMClass.getFactoryMOB();
-				killEmoter=true;
-				final MOB mob=getBehaversMOB(ticking);
-				String name=ticking.name();
-				if(ticking instanceof Environmental)
-					name=((Environmental)ticking).name();
-				if(mob!=null)
+				boolean killEmoter=false;
+				// if a tree falls in a forest...
+				if((room.numInhabitants()==0)||(room.numPCInhabitants()==0))
 				{
-					if(CMLib.flags().isInTheGame(mob,false))
-						emoter.setName(L("@x1 carried by @x2",name,mob.name()));
-					else
-						emoter=null;
+					if(!emote.broadcast)
+						return true;
 				}
 				else
-					emoter.setName(name);
-			}
-			if(emoter==null)
-				return true;
-			emoteHere(room,emoter,emote,null,true);
-
-			if(emote.broadcast)
-			{
-				if(ticking instanceof MOB)
 				{
-					emoter=CMClass.getFactoryMOB();
-					killEmoter=true;
-				}
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				{
-					final Room R=room.getRoomInDir(d);
-					final Exit E=room.getExitInDir(d);
-					if((R!=null)&&(E!=null)&&(E.isOpen()))
+					if(ticking instanceof Room)
 					{
-						final String inDir=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
-								CMLib.directions().getShipInDirectionName(Directions.getOpDirectionCode(d)):
-									CMLib.directions().getInDirectionName(Directions.getOpDirectionCode(d));
-						emoter.setName(L("something @x1",inDir));
-						emoteHere(R,emoter,emote,null,true);
+						emoter=CMClass.getFactoryMOB();
+						killEmoter=true;
+						emoteHere((Room)ticking,emoter,emote,null,false);
+					}
+					else
+					{
+						if(ticking instanceof MOB)
+						{
+							if(canFreelyBehaveNormal(ticking))
+								emoter=(MOB)ticking;
+						}
+						else
+						{
+							if((ticking instanceof Item)&&(!CMLib.flags().isInTheGame((Item)ticking,false)))
+								return true;
+
+							emoter=CMClass.getFactoryMOB();
+							killEmoter=true;
+							final MOB mob=getBehaversMOB(ticking);
+							String name=ticking.name();
+							if(ticking instanceof Environmental)
+								name=((Environmental)ticking).name();
+							if(mob!=null)
+							{
+								if(CMLib.flags().isInTheGame(mob,false))
+									emoter.setName(L("@x1 carried by @x2",name,mob.name()));
+								else
+									emoter=null;
+							}
+							else
+								emoter.setName(name);
+						}
+						if(emoter==null)
+							return true;
+						emoteHere(room,emoter,emote,null,true);
 					}
 				}
+
+				if(emote.broadcast)
+				{
+					if(ticking instanceof MOB)
+					{
+						emoter=CMClass.getFactoryMOB();
+						killEmoter=true;
+					}
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					{
+						final Room R=room.getRoomInDir(d);
+						final Exit E=room.getExitInDir(d);
+						if((R!=null)
+						&&(E!=null)
+						&&(E.isOpen())
+						&&(R.numInhabitants()>0)
+						&&(R.numPCInhabitants()>0))
+						{
+							final String inDir=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
+									CMLib.directions().getShipInDirectionName(Directions.getOpDirectionCode(d)):
+										CMLib.directions().getInDirectionName(Directions.getOpDirectionCode(d));
+							emoter.setName(L("something @x1",inDir));
+							emoteHere(R,emoter,emote,null,true);
+						}
+					}
+				}
+
+				if(killEmoter)
+					emoter.destroy();
 			}
-			if(killEmoter)
-				emoter.destroy();
 		}
 		return true;
 	}
