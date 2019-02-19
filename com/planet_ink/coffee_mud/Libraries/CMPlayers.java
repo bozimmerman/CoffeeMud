@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -576,12 +577,17 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			final PlayerStats pstats=mob.playerStats();
 			if(pstats != null)
 			{
-				pstats.bumpPrideStat(stat, amt);
-				adjustTopPrideStats(topPlayers,mob.Name(),stat,pstats);
-				if(pstats.getAccount() != null)
+				if(!pstats.isSet(PlayerFlag.NOSTATS))
+					pstats.bumpPrideStat(stat, amt);
+				if(!pstats.isSet(PlayerFlag.NOTOP))
+					adjustTopPrideStats(topPlayers,mob.Name(),stat,pstats);
+				final PlayerAccount acct=pstats.getAccount();
+				if(acct != null)
 				{
-					pstats.getAccount().bumpPrideStat(stat,amt);
-					adjustTopPrideStats(topAccounts,pstats.getAccount().getAccountName(),stat,pstats.getAccount());
+					if(!acct.isSet(AccountFlag.NOSTATS))
+						pstats.getAccount().bumpPrideStat(stat,amt);
+					if(!acct.isSet(AccountFlag.NOTOP))
+						adjustTopPrideStats(topAccounts,pstats.getAccount().getAccountName(),stat,pstats.getAccount());
 				}
 				return amt;
 			}
@@ -1493,37 +1499,42 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
+	public void resetAllPrideStats()
+	{
+		CMLib.threads().executeRunnable(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				final List<Pair<String,Integer>>[][] pStats = CMLib.database().DBScanPridePlayerWinners(PRIDE_TOP_SIZE, (short)5);
+				for(int x=0;x<pStats.length;x++)
+				{
+					for(int y=0;y<pStats[x].length;y++)
+						topPlayers[x][y]=pStats[x][y];
+				}
+				if(CMProps.isUsingAccountSystem())
+				{
+					final List<Pair<String,Integer>>[][] aStats = CMLib.database().DBScanPrideAccountWinners(PRIDE_TOP_SIZE, (short)5);
+					for(int x=0;x<aStats.length;x++)
+					{
+						for(int y=0;y<aStats[x].length;y++)
+							topAccounts[x][y]=aStats[x][y];
+					}
+				}
+				for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
+					topPrideExpiration[period.ordinal()] = period.nextPeriod();
+			}
+
+		});
+	}
+	@Override
 	public boolean activate()
 	{
 		if(serviceClient==null)
 		{
 			name="THPlayers"+Thread.currentThread().getThreadGroup().getName().charAt(0);
 			serviceClient=CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK, MudHost.TIME_SAVETHREAD_SLEEP, 1);
-			CMLib.threads().executeRunnable(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					final List<Pair<String,Integer>>[][] pStats = CMLib.database().DBScanPridePlayerWinners(PRIDE_TOP_SIZE, (short)5);
-					for(int x=0;x<pStats.length;x++)
-					{
-						for(int y=0;y<pStats[x].length;y++)
-							topPlayers[x][y]=pStats[x][y];
-					}
-					if(CMProps.isUsingAccountSystem())
-					{
-						final List<Pair<String,Integer>>[][] aStats = CMLib.database().DBScanPrideAccountWinners(PRIDE_TOP_SIZE, (short)5);
-						for(int x=0;x<aStats.length;x++)
-						{
-							for(int y=0;y<aStats[x].length;y++)
-								topAccounts[x][y]=aStats[x][y];
-						}
-					}
-					for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
-						topPrideExpiration[period.ordinal()] = period.nextPeriod();
-				}
-
-			});
+			resetAllPrideStats();
 		}
 		return true;
 	}

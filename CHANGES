@@ -42,6 +42,7 @@
   41. New Diseases: Vertigo, Filth Fever, Royalty Rot, Nausea, Diabetes, Anemia
   42. New MOBPROG functions: ISMONTH, ISYEAR, ISRLHOUR, ISRLDAY, ISRLMONTH, ISRLYEAR, HASTATTOOTIME, ISHOUR
   43. All the ClassNESS behaviors (Fighterness, Thiefness, etc) can have min/max ticks and chance).
+  44. New account and player flags: NOTOP and NOSTATS, to keep players off the top lists
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

@@ -16,6 +16,8 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -486,6 +488,23 @@ public class GrinderPlayers extends GrinderMobs
 			final String old=httpReq.getUrlParameter("DEITY");
 			if((old!=null)&&(CMLib.map().getDeity(old)!=null))
 				M.setWorshipCharID(CMLib.map().getDeity(old).Name());
+		}
+		if(httpReq.isUrlParameter("FLAG"))
+		{
+			final String oldFlags = (M.playerStats()!=null)?M.playerStats().getStat("FLAGS"):"";
+			String id="";
+			final StringBuffer flags=new StringBuffer("");
+			for(int i=0;httpReq.isUrlParameter("FLAG"+id);id=""+(++i))
+				flags.append(httpReq.getUrlParameter("FLAG"+id)+",");
+			if(M.playerStats()!=null)
+			{
+				M.playerStats().setStat("FLAGS",flags.toString());
+				if(((oldFlags.indexOf(PlayerFlag.NOTOP.name())>=0)&&(flags.indexOf(PlayerFlag.NOTOP.name())<0))
+				||((oldFlags.indexOf(PlayerFlag.NOSTATS.name())>=0)&&(flags.indexOf(PlayerFlag.NOSTATS.name())<0))
+				||((flags.indexOf(PlayerFlag.NOTOP.name())>=0)&&(oldFlags.indexOf(PlayerFlag.NOTOP.name())<0))
+				||((flags.indexOf(PlayerFlag.NOTOP.name())>=0)&&(oldFlags.indexOf(PlayerFlag.NOTOP.name())<0)))
+					CMLib.players().resetAllPrideStats();
+			}
 		}
 		if(httpReq.isUrlParameter("ALIGNMENT"))
 		{

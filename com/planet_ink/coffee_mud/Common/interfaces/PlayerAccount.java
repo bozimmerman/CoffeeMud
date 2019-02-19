@@ -181,7 +181,11 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 		/** Constant for account flags that overrides account expiration */
 		ACCOUNTMENUSOFF,
 		/** Constant for account flags that turns off email forwarding all chars */
-		NOAUTOFORWARD
+		NOAUTOFORWARD,
+		/** Constant for account flags that turns off pride stats for the account */
+		NOSTATS,
+		/** Constant for account flags that turns off top awards for the account */
+		NOTOP
 		;
 		/**
 		 * Returns a comma-delimited list of strings representing the accountflag values

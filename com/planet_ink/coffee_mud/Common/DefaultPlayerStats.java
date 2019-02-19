@@ -119,6 +119,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected Map<String,String>	alias			= new STreeMap<String,String>();
 	protected Map<String,Integer>	legacy			= new STreeMap<String,Integer>();
 	protected Map<String,int[]>		combatSpams		= new STreeMap<String,int[]>();
+	protected Set<PlayerFlag>		playFlags		= new SHashSet<PlayerFlag>();
 
 	protected Map<String, AbilityMapping>		ableMap		= new SHashtable<String, AbilityMapping>();
 	protected Map<String, ExpertiseDefinition>	experMap	= new SHashtable<String, ExpertiseDefinition>();
@@ -173,6 +174,7 @@ public class DefaultPlayerStats implements PlayerStats
 			O.legacy=new SHashtable<String,Integer>(legacy);
 			O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			O.extItems=(ItemCollection)extItems.copyOf();
+			O.playFlags = new SHashSet<PlayerFlag>(playFlags);
 			return O;
 		}
 		catch(final CloneNotSupportedException e)
@@ -315,6 +317,21 @@ public class DefaultPlayerStats implements PlayerStats
 	public void setNotes(final String newnotes)
 	{
 		notes=newnotes;
+	}
+
+	@Override
+	public boolean isSet(final PlayerFlag flag)
+	{
+		return playFlags.contains(flag);
+	}
+
+	@Override
+	public void setFlag(final PlayerFlag flag, final boolean setOrUnset)
+	{
+		if(setOrUnset)
+			playFlags.add(flag);
+		else
+			playFlags.remove(flag);
 	}
 
 	@Override
@@ -800,6 +817,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+"<AUTOINVSET>"+CMLib.xml().parseOutAngleBrackets(getStat("AUTOINVSET"))+"</AUTOINVSET>"
 			+"<XP RP="+this.rolePlayXP+" MAXRP="+this.maxRolePlayXP+" DEF="+this.deferredXP+" MAXDEF="+this.maxDeferredXP+" />"
 			+"<LASTXPMILLIS>"+this.lastXPDateTime+"</LASTXPMILLIS>"
+			+((playFlags.size()>0)?"<FLAGS>"+this.getStat("FLAGS")+"</FLAGS>":"")
 			+roomSet().xml()
 			+rest.toString();
 	}
@@ -1005,6 +1023,8 @@ public class DefaultPlayerStats implements PlayerStats
 		if(notes==null)
 			notes="";
 		notes=xmlLib.restoreAngleBrackets(notes);
+
+		this.setStat("FLAGS", xmlLib.getValFromPieces(xml, "FLAGS"));
 
 		str=xmlLib.restoreAngleBrackets(xmlLib.getValFromPieces(xml,"DATES"));
 		if(debug)
@@ -1281,7 +1301,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void killAchievementTracker(final Achievement A, Tattooable tracked, final MOB mob)
+	public void killAchievementTracker(final Achievement A, final Tattooable tracked, final MOB mob)
 	{
 		if(achievementers.containsKey(A.getTattoo()))
 		{
@@ -1294,7 +1314,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public Tracker getAchievementTracker(final Achievement A, Tattooable tracked, final MOB mob)
+	public Tracker getAchievementTracker(final Achievement A, final Tattooable tracked, final MOB mob)
 	{
 		final Tracker T;
 		if(achievementers.containsKey(A.getTattoo()))
@@ -1310,7 +1330,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void rebuildAchievementTracker(Tattooable tracked, final MOB mob, final String achievementTattoo)
+	public void rebuildAchievementTracker(final Tattooable tracked, final MOB mob, final String achievementTattoo)
 	{
 		final Achievement A=CMLib.achievements().getAchievement(achievementTattoo);
 		if(A!=null)
@@ -1613,7 +1633,7 @@ public class DefaultPlayerStats implements PlayerStats
 									 "BONUSCHARSTATS","AUTOINVSET",
 									 "MAXRPXP","CURRRPXP",
 									 "MAXDEFXP","CURRDEFXP",
-									 "LASTXPAWARD"};
+									 "LASTXPAWARD","FLAGS"};
 
 	@Override
 	public String getStat(final String code)
@@ -1690,6 +1710,8 @@ public class DefaultPlayerStats implements PlayerStats
 			return ""+this.deferredXP;
 		case 34:
 			return ""+this.lastXPDateTime;
+		case 35:
+			return CMParms.toListString(playFlags);
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1812,6 +1834,17 @@ public class DefaultPlayerStats implements PlayerStats
 		case 34:
 			this.lastXPDateTime = CMath.s_parseLongExpression(val);
 			break;
+		case 35:
+		{
+			playFlags = new SHashSet<PlayerFlag>();
+			for(final String s : CMParms.parseCommas(val.toUpperCase(),true))
+			{
+				final PlayerFlag flag = (PlayerFlag)CMath.s_valueOf(PlayerFlag.class, s);
+				if(flag != null)
+					playFlags.add(flag);
+			}
+			break;
+		}
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

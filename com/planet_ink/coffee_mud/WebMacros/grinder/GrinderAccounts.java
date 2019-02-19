@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -111,11 +112,19 @@ public class GrinderAccounts
 						A.setAccountExpiration(C.getTimeInMillis());
 					}
 				}
-				String id="";
-				final StringBuffer flags=new StringBuffer("");
-				for(int i=0;httpReq.isUrlParameter("FLAG"+id);id=""+(++i))
-					flags.append(httpReq.getUrlParameter("FLAG"+id)+",");
-				A.setStat("FLAGS",flags.toString());
+				{
+					final String oldFlags = A.getStat("FLAGS");
+					String id="";
+					final StringBuffer flags=new StringBuffer("");
+					for(int i=0;httpReq.isUrlParameter("FLAG"+id);id=""+(++i))
+						flags.append(httpReq.getUrlParameter("FLAG"+id)+",");
+					A.setStat("FLAGS",flags.toString());
+					if(((oldFlags.indexOf(AccountFlag.NOTOP.name())>=0)&&(flags.indexOf(AccountFlag.NOTOP.name())<0))
+					||((oldFlags.indexOf(AccountFlag.NOSTATS.name())>=0)&&(flags.indexOf(AccountFlag.NOSTATS.name())<0))
+					||((flags.indexOf(AccountFlag.NOTOP.name())>=0)&&(oldFlags.indexOf(AccountFlag.NOTOP.name())<0))
+					||((flags.indexOf(AccountFlag.NOSTATS.name())>=0)&&(oldFlags.indexOf(AccountFlag.NOSTATS.name())<0)))
+						CMLib.players().resetAllPrideStats();
+				}
 				if(err.length()>0)
 					return err;
 				else

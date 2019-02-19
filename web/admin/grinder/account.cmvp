@@ -222,6 +222,16 @@
 	</TD>
 </TR>
 <TR>
+	<TD WIDTH=33%><FONT COLOR=YELLOW>Flags: </FONT></TD>
+	<TD WIDTH=66%>
+		@if?CheckReqParm?FUNCTION=EDIT@
+            <SELECT NAME=FLAG MULTIPLE>@AccountData?FLAGS@</SELECT>
+		@else@
+			<FONT COLOR=WHITE>@AccountData?FLAGS&READONLY@</FONT>&nbsp;
+		@endif@
+	</TD>
+</TR>
+<TR>
 	<TD WIDTH=33%><FONT COLOR=YELLOW>Bonuses: </FONT></TD>
 	<TD WIDTH=66%>
 		<TABLE WIDTH=100% BORDER=1>

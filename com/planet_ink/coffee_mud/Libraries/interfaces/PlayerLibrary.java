@@ -65,6 +65,7 @@ public interface PlayerLibrary extends CMLibrary
 	public boolean playerExistsAllHosts(String name);
 	public void unloadOfflinePlayer(final MOB mob);
 	public void forceTick();
+	public void resetAllPrideStats();
 	public int savePlayers();
 	public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache);
 	public int getCharThinSortCode(String codeName, boolean loose);

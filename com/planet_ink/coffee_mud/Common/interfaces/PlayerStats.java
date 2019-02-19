@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -958,6 +959,44 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @param time the time xp was awarded in millis
 	 */
 	public void setLastXPAwardMillis(long time);
+
+	/**
+	 * Checks whether the given string flag is set for this player.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setFlag(PlayerFlag, boolean)
+	 * @param flag the flag name
+	 * @return true if it is set, false if not
+	 */
+	public boolean isSet(PlayerFlag flag);
+
+	/**
+	 * Sets or unsets a player flag.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#isSet(PlayerFlag)
+	 * @param flag the flag name
+	 * @param setOrUnset true to set it, false to unset
+	 */
+	public void setFlag(PlayerFlag flag, boolean setOrUnset);
+
+	/**
+	 * Various player-level flags
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum PlayerFlag
+	{
+		/** Constant for player flags that turns off pride stat bumps */
+		NOSTATS,
+		/** Constant for player flags that turns off top stat appearances */
+		NOTOP
+		;
+		/**
+		 * Returns a comma-delimited list of strings representing the player flag values
+		 * @return a comma-delimited list of strings representing the player flag values
+		 */
+		public static String getListString()
+		{
+			return CMParms.toListString(AccountFlag.values());
+		}
+	}
 
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;

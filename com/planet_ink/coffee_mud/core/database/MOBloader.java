@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -1479,6 +1480,10 @@ public class MOBloader
 					pxml=DB.getRes(R, "CMAXML");
 				final String[] pridePeriods=CMLib.xml().returnXMLValue(pxml, "NEXTPRIDEPERIODS").split(",");
 				final String[] prideStats=CMLib.xml().returnXMLValue(pxml, "PRIDESTATS").split(";");
+				final String[] prideExceptions=CMLib.xml().returnXMLValue(pxml, "FLAGS").split(",");
+				if(CMParms.contains(prideExceptions, PlayerFlag.NOSTATS.toString())
+					||CMParms.contains(prideExceptions, PlayerFlag.NOTOP.toString()))
+					continue;
 				final Pair<Long,int[]>[] allData = CMLib.players().parsePrideStats(pridePeriods, prideStats);
 				for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 				{

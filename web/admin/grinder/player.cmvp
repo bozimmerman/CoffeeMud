@@ -709,6 +709,15 @@
 	</TD>
 </TR>
 <TR>
+	<TD WIDTH=100% COLSPAN=3><FONT COLOR=YELLOW>Flags: </FONT>
+		@if?CheckReqParm?FUNCTION=EDIT@
+            <SELECT NAME=FLAG MULTIPLE>@PlayerData?FLAGS@</SELECT>
+		@else@
+			<FONT COLOR=WHITE>@PlayerData?FLAGS&READONLY@</FONT>&nbsp;
+		@endif@
+	</TD>
+</TR>
+<TR>
 	<TD WIDTH=100% COLSPAN=3><FONT COLOR=YELLOW>Factions: </FONT>
 		@if?CheckReqParm?FUNCTION=EDIT@
 			<BR><FONT COLOR=WHITE>@PlayerData?FACTIONS@</FONT>

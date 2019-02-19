@@ -17,6 +17,8 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.ClanItem.ClanItemType;
@@ -9963,6 +9965,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genSecurity(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
 			genScripts(mob,me,++showNumber,showFlag);
+			final String oldFlags = (me.playerStats()!=null)?me.playerStats().getStat("FLAGS"):"";
+			promptStatStr(mob,me,PlayerStats.PlayerFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
+			{
+				final String flags=(me.playerStats()!=null)?me.playerStats().getStat("FLAGS"):"";
+				if(((oldFlags.indexOf(PlayerFlag.NOTOP.name())>=0)&&(flags.indexOf(PlayerFlag.NOTOP.name())<0))
+				||((oldFlags.indexOf(PlayerFlag.NOSTATS.name())>=0)&&(flags.indexOf(PlayerFlag.NOSTATS.name())<0))
+				||((flags.indexOf(PlayerFlag.NOTOP.name())>=0)&&(oldFlags.indexOf(PlayerFlag.NOTOP.name())<0))
+				||((flags.indexOf(PlayerFlag.NOSTATS.name())>=0)&&(oldFlags.indexOf(PlayerFlag.NOSTATS.name())<0)))
+					CMLib.players().resetAllPrideStats();
+			}
 			genNotes(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
@@ -10508,7 +10520,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genEmail(mob, A, ++showNumber, showFlag);
 			if(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION))
 				genAccountExpiration(mob,A,++showNumber,showFlag);
+
+			final String oldFlags = A.getStat("FLAGS");
 			promptStatStr(mob,A,PlayerAccount.AccountFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
+			{
+				final String flags = A.getStat("FLAGS");
+				if(((oldFlags.indexOf(AccountFlag.NOTOP.name())>=0)&&(flags.indexOf(AccountFlag.NOTOP.name())<0))
+				||((oldFlags.indexOf(AccountFlag.NOSTATS.name())>=0)&&(flags.indexOf(AccountFlag.NOSTATS.name())<0))
+				||((flags.indexOf(AccountFlag.NOTOP.name())>=0)&&(oldFlags.indexOf(AccountFlag.NOTOP.name())<0))
+				||((flags.indexOf(AccountFlag.NOSTATS.name())>=0)&&(oldFlags.indexOf(AccountFlag.NOSTATS.name())<0)))
+					CMLib.players().resetAllPrideStats();
+			}
 			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Languages: "),"BONUSLANGS");
 			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Char Limit: "),"BONUSCHARLIMIT");
 			promptStatInt(mob,A,++showNumber,showFlag,L("Bonus Char Online: "),"BONUSCHARONLINE");

@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -106,7 +107,7 @@ public class AccountData extends StdWebMacro
 				List<String> set=null;
 				if(old==null)
 				{
-					final String matList=A.getStat("FLAG");
+					final String matList=A.getStat("FLAGS");
 					set=CMParms.parseCommas(matList,true);
 				}
 				else
@@ -117,14 +118,19 @@ public class AccountData extends StdWebMacro
 						set.add(httpReq.getUrlParameter("FLAG"+id));
 				}
 				final StringBuffer str=new StringBuffer("");
-				for (final PlayerAccount.AccountFlag element : PlayerAccount.AccountFlag.values())
+				if(parms.containsKey("READONLY"))
+					str.append(CMParms.toListString(set));
+				else
 				{
-					str.append("<OPTION VALUE=\""+element.name()+"\"");
-					if(set.contains(element.name()))
-						str.append(" SELECTED");
-					str.append(">"+CMStrings.capitalizeAndLower(element.name()));
+					for (final PlayerAccount.AccountFlag element : PlayerAccount.AccountFlag.values())
+					{
+						str.append("<OPTION VALUE=\""+element.name()+"\"");
+						if(set.contains(element.name()))
+							str.append(" SELECTED");
+						str.append(">"+CMStrings.capitalizeAndLower(element.name()));
+					}
 				}
-				str.append(", ");
+				return str.toString();
 			}
 			if(parms.containsKey("IGNORE"))
 				return ""+CMParms.toListString(A.getIgnored());
