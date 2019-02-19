@@ -994,7 +994,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 		 */
 		public static String getListString()
 		{
-			return CMParms.toListString(AccountFlag.values());
+			return CMParms.toListString(PlayerFlag.values());
 		}
 	}
 

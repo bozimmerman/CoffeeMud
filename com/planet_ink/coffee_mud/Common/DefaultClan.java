@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -104,6 +105,7 @@ public class DefaultClan implements Clan
 	protected int					monthNewMembers			= 0;
 	protected volatile int			tickUp					= 0;
 	protected volatile int			transientSize			= -1;
+	protected Set<ClanFlag>			clanFlags				= new SHashSet<ClanFlag>();
 
 	protected final static List<Ability> empty=new XVector<Ability>(1,true);
 
@@ -143,6 +145,7 @@ public class DefaultClan implements Clan
 		{
 			final DefaultClan C=(DefaultClan)this.clone();
 			C.extItems=(ItemCollection)extItems.copyOf();
+			C.clanFlags = new SHashSet<ClanFlag>(clanFlags);
 			return C;
 		}
 		catch(final CloneNotSupportedException e)
@@ -427,6 +430,22 @@ public class DefaultClan implements Clan
 			return M.donatedXP;
 		}
 	}
+
+	@Override
+	public boolean isSet(final ClanFlag flag)
+	{
+		return clanFlags.contains(flag);
+	}
+
+	@Override
+	public void setFlag(final ClanFlag flag, final boolean setOrUnset)
+	{
+		if(setOrUnset)
+			clanFlags.add(flag);
+		else
+			clanFlags.remove(flag);
+	}
+
 
 	@Override
 	public boolean isOnlyFamilyApplicants()
@@ -1112,7 +1131,9 @@ public class DefaultClan implements Clan
 			}
 			msg.append("\n\r");
 		}
-		if((CMLib.clans().trophySystemActive())&&(getTrophies()!=0))
+		if((CMLib.clans().trophySystemActive())
+		&&(getTrophies()!=0)
+		&&(!isSet(ClanFlag.NOTROPHY)))
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
 			msg.append(L("^xTrophies awarded:^.^N\n\r"));
@@ -1399,6 +1420,7 @@ public class DefaultClan implements Clan
 		str.append(xmlLib.convertXMLtoTag("LEVEL",""+getClanLevel()));
 		str.append(xmlLib.convertXMLtoTag("CCLASS",""+getClanClass()));
 		str.append(xmlLib.convertXMLtoTag("AUTOPOS",""+getAutoPosition()));
+		str.append(xmlLib.convertXMLtoTag("FLAGS",""+getStat("FLAGS")));
 		str.append(xmlLib.convertXMLtoTag("LASTSTATUSCHANGE",""+this.lastStatusChange));
 		if(clanCategory!=null)
 			str.append(xmlLib.convertXMLtoTag("CATE",clanCategory));
@@ -1506,6 +1528,7 @@ public class DefaultClan implements Clan
 		}
 		totalOnlineMins=xmlLib.getIntFromPieces(poliData,"ONLINEMINS");
 		totalLevelsGained=xmlLib.getIntFromPieces(poliData,"LVLSGAINED");
+		setStat("FLAGS",xmlLib.getValFromPieces(poliData,"FLAGS"));
 
 		final XMLTag achievePiece = xmlLib.getPieceFromPieces(poliData, "ACHIEVEMENTS");
 		achievementers.clear();
@@ -2641,6 +2664,34 @@ public class DefaultClan implements Clan
 			achievementers.remove(achievementTattoo);
 	}
 
+	/** Stat variables associated with clan objects. */
+	private final static String[] CLAN_STATS={
+		"ACCEPTANCE", // 0
+		"DETAIL", // 1
+		"DONATEROOM", // 2
+		"EXP", // 3
+		"GOVT", // 4
+		"MORGUE", // 5
+		"POLITICS", // 6
+		"PREMISE", // 7
+		"RECALL", // 8
+		"SIZE", // 9
+		"STATUS", // 10
+		"TAXES", // 11
+		"TROPHIES", // 12
+		"TYPE", // 13
+		"AREAS", // 14
+		"MEMBERLIST", // 15
+		"TOPMEMBER", // 16
+		"CLANLEVEL", // 17
+		"CATEGORY", // 18
+		"RIVALROUS",//19
+		"MINMEMBERS", //20
+		"CLANCHARCLASS", // 21
+		"NAME", // 22
+		"FLAGS" // 23
+	};
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -2730,6 +2781,8 @@ public class DefaultClan implements Clan
 			return "" + getClanClass();
 		case 22:
 			return "" + getName();
+		case 23:
+			return CMParms.toListString(clanFlags);
 		}
 		return "";
 	}
@@ -2806,6 +2859,17 @@ public class DefaultClan implements Clan
 		case 22:
 			this.setName(val.trim());
 			break; // name
+		case 23:
+		{
+			clanFlags = new SHashSet<ClanFlag>();
+			for(final String s : CMParms.parseCommas(val.toUpperCase(),true))
+			{
+				final ClanFlag flag = (ClanFlag)CMath.s_valueOf(ClanFlag.class, s);
+				if(flag != null)
+					clanFlags.add(flag);
+			}
+			break;
+		}
 		}
 	}
 }

@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
@@ -854,6 +855,23 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 	public boolean canBeAssigned(MOB mob, int role);
 
 	/**
+	 * Checks whether the given string flag is set for this Clan.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setFlag(ClanFlag, boolean)
+	 * @param flag the flag name
+	 * @return true if it is set, false if not
+	 */
+	public boolean isSet(ClanFlag flag);
+
+	/**
+	 * Sets or unsets an account-wide flag.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#isSet(ClanFlag)
+	 * @param flag the flag name
+	 * @param setOrUnset true to set it, false to unset
+	 */
+	public void setFlag(ClanFlag flag, boolean setOrUnset);
+
+
+	/**
 	 * Represents an individual clan vote
 	 * @author Bo Zimmerman
 	 *
@@ -967,33 +985,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 		"Failed",
 		"Passed"
 	});
-
-	/** Stat variables associated with clan objects. */
-	public final static String[] CLAN_STATS={
-		"ACCEPTANCE", // 0
-		"DETAIL", // 1
-		"DONATEROOM", // 2
-		"EXP", // 3
-		"GOVT", // 4
-		"MORGUE", // 5
-		"POLITICS", // 6
-		"PREMISE", // 7
-		"RECALL", // 8
-		"SIZE", // 9
-		"STATUS", // 10
-		"TAXES", // 11
-		"TROPHIES", // 12
-		"TYPE", // 13
-		"AREAS", // 14
-		"MEMBERLIST", // 15
-		"TOPMEMBER", // 16
-		"CLANLEVEL", // 17
-		"CATEGORY", // 18
-		"RIVALROUS",//19
-		"MINMEMBERS", //20
-		"CLANCHARCLASS", // 21
-		"NAME" // 22
-	};
 
 	/** constant for the getStatus() method, denoting normal status. @see Clan#getStatus() .*/
 	public static final int CLANSTATUS_ACTIVE=0;
@@ -1122,6 +1113,26 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 		GOLD_OVERWRITE,
 		JOINDATE,
 		JOINDATE_OVERWRITE,
+	}
+
+	/**
+	 * Various clan-level flags
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum ClanFlag
+	{
+		/** Constant for account flags that turns off trophy awards for the clan */
+		NOTROPHY
+		;
+		/**
+		 * Returns a comma-delimited list of strings representing the clan flag values
+		 * @return a comma-delimited list of strings representing the clan flag values
+		 */
+		public static String getListString()
+		{
+			return CMParms.toListString(ClanFlag.values());
+		}
 	}
 
 	/**

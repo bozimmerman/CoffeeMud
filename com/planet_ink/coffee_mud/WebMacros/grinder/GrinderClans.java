@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -180,6 +181,13 @@ public class GrinderClans
 				str=httpReq.getUrlParameter("TYPEID");
 				if(str!=null)
 					C.setGovernmentID(CMath.s_int(str));
+				{
+					String id="";
+					final StringBuffer flags=new StringBuffer("");
+					for(int i=0;httpReq.isUrlParameter("FLAG"+id);id=""+(++i))
+						flags.append(httpReq.getUrlParameter("FLAG"+id)+",");
+					C.setStat("FLAGS",flags.toString());
+				}
 				str=httpReq.getUrlParameter("TATTOOS");
 				if(str!=null)
 				{

@@ -332,6 +332,35 @@ public class ClanData extends StdWebMacro
 					for(final ClanPosition pos : govt.getPositions())
 						str.append("<OPTION VALUE="+pos.getRoleID()+" "+((autoPos==pos.getRoleID())?"SELECTED":"")+">"+pos.getName());
 				}
+				if(parms.containsKey("FLAGS"))
+				{
+					final String old=httpReq.getUrlParameter("FLAGS");
+					List<String> set=null;
+					if(old==null)
+					{
+						final String matList=C.getStat("FLAGS");
+						set=CMParms.parseCommas(matList,true);
+					}
+					else
+					{
+						String id="";
+						set=new Vector<String>();
+						for(int i=0;httpReq.isUrlParameter("FLAG"+id);id=""+(++i))
+							set.add(httpReq.getUrlParameter("FLAG"+id));
+					}
+					if(parms.containsKey("READONLY"))
+						str.append(CMParms.toListString(set));
+					else
+					{
+						for (final Clan.ClanFlag element : Clan.ClanFlag.values())
+						{
+							str.append("<OPTION VALUE=\""+element.name()+"\"");
+							if(set.contains(element.name()))
+								str.append(" SELECTED");
+							str.append(">"+CMStrings.capitalizeAndLower(element.name()));
+						}
+					}
+				}
 				if(parms.containsKey("TROPHIES"))
 				{
 					if(C.getTrophies()==0)

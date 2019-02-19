@@ -126,6 +126,12 @@
 		<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=EXP VALUE="@ClanData?EXP@">&nbsp;nbsp;<FONT COLOR=WHITE>Level: @ClanData?LEVEL@</TD>
 	</TR>
 	<TR>
+		<TD WIDTH=25%><FONT COLOR=YELLOW>Flags: </FONT></TD>
+		<TD WIDTH=66%>
+			<SELECT NAME=FLAG MULTIPLE>@ClanData?FLAGS@</SELECT>
+		</TD>
+	</TR>
+	<TR>
 		<TD WIDTH=25%><FONT COLOR=YELLOW>Qualification Mask: </FONT></TD>
 		<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=50 NAME=ACCEPTANCEID VALUE="@ClanData?ACCEPTANCEID@">
 		<A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>

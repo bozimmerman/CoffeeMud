@@ -10249,6 +10249,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			C.setMorgue(genClanRoom(mob,C,C.getMorgue(),". Morgue RoomID: '@x1'.",++showNumber,showFlag));
 			C.setRecall(genClanRoom(mob,C,C.getRecall(),". Clan Home RoomID: '@x1'.",++showNumber,showFlag));
 			C.setDonation(genClanRoom(mob,C,C.getDonation(),". Clan Donate RoomID: '@x1'.",++showNumber,showFlag));
+			promptStatStr(mob,C,Clan.ClanFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
 			genClanAccept(mob,C,++showNumber,showFlag);
 			genClanClass(mob,C,++showNumber,showFlag);
 			genClanRole(mob,C,++showNumber,showFlag);

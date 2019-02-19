@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.DefaultClan;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.AutoPromoteFlag;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.FullMemberRecord;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Function;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
@@ -1716,10 +1717,14 @@ public class Clans extends StdLibrary implements ClanManager
 			if(CMProps.getVar(Trophy.Members.propertyCode).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.Members);
+				if((winnerC!=null)&&(winnerC.isSet(ClanFlag.NOTROPHY)))
+					winnerC=null;
 				int winnerMembers=(winnerC==null)?0:winnerC.getSize();
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					final Clan C=e.nextElement(); if(C==winnerC) continue;
+					final Clan C=e.nextElement();
+					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
+						continue;
 					final int numMembers=C.getSize();
 					if(numMembers>winnerMembers)
 					{
@@ -1750,10 +1755,14 @@ public class Clans extends StdLibrary implements ClanManager
 			if(CMProps.getVar(Trophy.MemberLevel.propertyCode).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.MemberLevel);
+				if((winnerC!=null)&&(winnerC.isSet(ClanFlag.NOTROPHY)))
+					winnerC=null;
 				int winnerLevel=(winnerC==null)?0:filterMedianLevel(winnerC.getFullMemberList());
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
-					final Clan C=e.nextElement(); if(C==winnerC) continue;
+					final Clan C=e.nextElement();
+					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
+						continue;
 					final int highestLevel=filterMedianLevel(C.getFullMemberList());
 					if(highestLevel>winnerLevel)
 					{
@@ -1784,10 +1793,12 @@ public class Clans extends StdLibrary implements ClanManager
 			if(CMProps.getVar(Trophy.Experience.propertyCode).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.Experience);
+				if((winnerC!=null)&&(winnerC.isSet(ClanFlag.NOTROPHY)))
+					winnerC=null;
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
-					if(C==winnerC)
+					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
 						continue;
 					if((winnerC==null)||(C.getExp()>winnerC.getExp()))
 						winnerC=C;
@@ -1815,10 +1826,12 @@ public class Clans extends StdLibrary implements ClanManager
 			if(CMProps.getVar(Trophy.ClanKills.propertyCode).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.ClanKills);
+				if((winnerC!=null)&&(winnerC.isSet(ClanFlag.NOTROPHY)))
+					winnerC=null;
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
-					if(C==winnerC)
+					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
 						continue;
 					if((winnerC==null)||(C.getCurrentClanKills(null)>winnerC.getCurrentClanKills(null)))
 						winnerC=C;
@@ -1848,10 +1861,12 @@ public class Clans extends StdLibrary implements ClanManager
 			if(CMProps.getVar(Trophy.PlayerLevelsGained.propertyCode).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.PlayerLevelsGained);
+				if((winnerC!=null)&&(winnerC.isSet(ClanFlag.NOTROPHY)))
+					winnerC=null;
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
-					if(C==winnerC)
+					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
 						continue;
 					if((winnerC==null)||(C.getTrophyData(Trophy.PlayerLevelsGained)>winnerC.getTrophyData(Trophy.PlayerLevelsGained)))
 						winnerC=C;
@@ -1881,10 +1896,12 @@ public class Clans extends StdLibrary implements ClanManager
 			if(CMProps.getVar(Trophy.PlayerMinutes.propertyCode).length()>0)
 			{
 				Clan winnerC=getTrophyWinner(Trophy.PlayerMinutes);
+				if((winnerC!=null)&&(winnerC.isSet(ClanFlag.NOTROPHY)))
+					winnerC=null;
 				for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 				{
 					final Clan C=e.nextElement();
-					if(C==winnerC)
+					if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
 						continue;
 					if((winnerC==null)||(C.getTrophyData(Trophy.PlayerMinutes)>winnerC.getTrophyData(Trophy.PlayerMinutes)))
 						winnerC=C;
@@ -2001,10 +2018,12 @@ public class Clans extends StdLibrary implements ClanManager
 					if(CMProps.getVar(T.propertyCode).length()>0)
 					{
 						Clan winnerC=getTrophyWinner(T);
+						if((winnerC!=null)&&(winnerC.isSet(ClanFlag.NOTROPHY)))
+							winnerC=null;
 						for(final Enumeration<Clan> e=clans();e.hasMoreElements();)
 						{
 							final Clan C=e.nextElement();
-							if(C==winnerC)
+							if((C==winnerC)||(C.isSet(ClanFlag.NOTROPHY)))
 								continue;
 							if((winnerC==null)||(C.getTrophyData(T)>winnerC.getTrophyData(T)))
 								winnerC=C;
