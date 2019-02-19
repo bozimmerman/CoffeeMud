@@ -104,7 +104,7 @@ public class Prayer_Blindsight extends Prayer
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK & (~PhyStats.CAN_NOT_SEE));
+		affectableStats.setSensesMask((affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK) & (~PhyStats.CAN_NOT_SEE));
 	}
 
 	@Override
