@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CombatAbilities extends StdBehavior
+public class CombatAbilities extends ActiveTicker
 {
 	@Override
 	public String ID()
@@ -83,6 +83,15 @@ public class CombatAbilities extends StdBehavior
 	public String accountForYourself()
 	{
 		return "skillful ability using";
+	}
+
+	@Override
+	public void setParms(final String newParms)
+	{
+		minTicks=1;
+		maxTicks=1;
+		chance=100;
+		super.setParms(newParms);
 	}
 
 	protected void makeClass(final MOB mob, final String theParms, final String defaultClassName)
@@ -644,6 +653,7 @@ public class CombatAbilities extends StdBehavior
 			}
 			return true;
 		}
+
 		MOB victim=mob.getVictim();
 		if(victim==null)
 			return true;
@@ -653,6 +663,9 @@ public class CombatAbilities extends StdBehavior
 
 		// insures we only try this once!
 		if(!isRightCombatAbilities(mob))
+			return true;
+
+		if(!super.canAct(ticking, tickID))
 			return true;
 
 		final Room R=mob.location();
