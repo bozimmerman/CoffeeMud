@@ -1286,6 +1286,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					return "";
 				}
+
+				@Override
+				public int maxColWidth()
+				{
+					return 20;
+				}
+
 			},
 			new AbilityParmEditorImpl("RES_SUBTYPE","Sub-Type",ParmType.STRINGORNULL)
 			{
