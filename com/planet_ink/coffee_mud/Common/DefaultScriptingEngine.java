@@ -10727,7 +10727,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if((V.get(v) instanceof Item)
 							&&(newRoom!=CMLib.map().roomLocation(V.get(v))))
 								newRoom.moveItemTo((Item)V.get(v),ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
-							if(V.get(v)==scripted)
+							if((V.get(v)==scripted)
+							&&(scripted instanceof Physical)
+							&&(newRoom.isHere(scripted)))
 								lastKnownLocation=newRoom;
 						}
 					}
