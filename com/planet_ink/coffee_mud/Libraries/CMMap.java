@@ -4192,7 +4192,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				final int maxIterations = mc.getPrecision() + 1;
 				for (int i = 0; !done && i < maxIterations; i++)
 				{
-					// aa can be 0 here because s2 becomes 0 through luck.
+					// area can be 0 here because aa was 0 because s2 becomes 0 through luck.
 					// something is wrong with this formula.
 					BigDecimal r = aa.divide(area, mc);
 					r = r.add(area);
