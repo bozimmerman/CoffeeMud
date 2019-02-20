@@ -12593,7 +12593,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				case 30: // logoff_prog
 					if((msg.sourceMinor()==CMMsg.TYP_QUIT)&&canTrigger(30)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster))
-					&&(!CMLib.flags().isCloaked(msg.source())))
+					&&((!CMLib.flags().isCloaked(msg.source()))||(!CMSecurity.isASysOp(msg.source()))))
 					{
 						if(t==null)
 							t=parseBits(script,0,"CR");
