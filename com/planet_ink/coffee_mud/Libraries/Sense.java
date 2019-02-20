@@ -1049,7 +1049,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				ownerCheck=owner.isContent(I);
 			}
 			if(!ownerCheck)
-				return I.name()+" is not where it is: "+owner.name();
+				return I.name()+" is not where it is: "+owner.name()+" ("+owner.ID()+"): "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(owner));
 			if(owner instanceof MOB)
 			{
 				final MOB M=(MOB)owner;
