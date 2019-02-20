@@ -221,8 +221,7 @@ public class Prop_Artifact extends Property
 				if(!CMLib.threads().isTicking(this,Tickable.TICKID_ITEM_BOUNCEBACK))
 					CMLib.threads().startTickDown(this, Tickable.TICKID_ITEM_BOUNCEBACK,4);
 				final Physical P = affected;
-				P.delEffect(this);
-				P.destroy();
+				destroyArtifact((Item)P);
 			}
 		}
 		return super.okMessage(myHost, msg);
@@ -247,9 +246,7 @@ public class Prop_Artifact extends Property
 			if((I.owner()==R)
 			&&(CMLib.database().DBIsSavedRoomItemCopy(R.roomID(), I.Name())))
 			{
-				I.phyStats().setSensesMask(0);
-				I.basePhyStats().setSensesMask(0);
-				I.destroy();
+				destroyArtifact(I);
 				return;
 			}
 
@@ -304,13 +301,24 @@ public class Prop_Artifact extends Property
 				data.append(CMLib.xml().convertXMLtoTag("IABLE",I.basePhyStats().ability()));
 				data.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(I.text())));
 				data.append("</ARTITEM>");
-				I.destroy();
+				destroyArtifact(I);
 				synchronized("SYSTEM_ARTIFACT_SAVER".intern())
 				{
 					CMLib.database().DBReCreatePlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID(),data.toString());
 				}
 			}
 		}
+	}
+
+	protected void destroyArtifact(final Item I)
+	{
+		if(I==null)
+			return;
+		I.delEffect(this);
+		I.delEffect(I.fetchEffect(ID()));
+		I.phyStats().setSensesMask(0);
+		I.basePhyStats().setSensesMask(0);
+		I.destroy();
 	}
 
 	@Override
@@ -404,7 +412,6 @@ public class Prop_Artifact extends Property
 											}
 										}
 										final Item newItemMinusArtifact=(Item)newItem.copyOf();
-										CMLib.threads().deleteAllTicks(newItemMinusArtifact);
 										Ability A2=newItemMinusArtifact.fetchEffect(ID());
 										if(A2!=null)
 											newItemMinusArtifact.delEffect(A2);
@@ -419,13 +426,12 @@ public class Prop_Artifact extends Property
 												if(I.Name().equals(newItemMinusArtifact.Name()))
 												{
 													final Item copyI=(Item)I.copyOf();
-													CMLib.threads().deleteAllTicks(copyI);
 													A2=copyI.fetchEffect(ID());
 													if(A2!=null)
 														copyI.delEffect(A2);
 													if(newItemMinusArtifact.sameAs(copyI))
-														I.destroy();
-													copyI.destroy();
+														destroyArtifact(I);
+													destroyArtifact(copyI);
 												}
 											}
 											foundMOB.addItem(newItem);
@@ -446,25 +452,20 @@ public class Prop_Artifact extends Property
 													if(A2!=null)
 														copyI.delEffect(A2);
 													if(newItemMinusArtifact.sameAs(copyI))
-													{
-														I.destroy();
-														R.delItem(I);
-														I.setOwner(null);
-													}
-													copyI.setOwner(null);
-													copyI.destroy();
+														destroyArtifact(I);
+													destroyArtifact(copyI);
 												}
 											}
 											R.addItem(newItem);
 										}
 										else
 										{
-											newItemMinusArtifact.destroy();
+											destroyArtifact(newItemMinusArtifact);
 											Log.errOut("Prop_Artifact","Unable to reset: "+getItemID()+" to "+MOBname+" in "+CMLib.map().getDescriptiveExtendedRoomID(R));
 											waitToReload=System.currentTimeMillis()+10*60000;
 											return true;
 										}
-										newItemMinusArtifact.destroy();
+										destroyArtifact(newItemMinusArtifact);
 									}
 								}
 								else
