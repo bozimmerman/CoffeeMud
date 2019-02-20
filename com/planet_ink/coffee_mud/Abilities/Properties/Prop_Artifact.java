@@ -404,6 +404,7 @@ public class Prop_Artifact extends Property
 											}
 										}
 										final Item newItemMinusArtifact=(Item)newItem.copyOf();
+										CMLib.threads().deleteAllTicks(newItemMinusArtifact);
 										Ability A2=newItemMinusArtifact.fetchEffect(ID());
 										if(A2!=null)
 											newItemMinusArtifact.delEffect(A2);
@@ -418,6 +419,7 @@ public class Prop_Artifact extends Property
 												if(I.Name().equals(newItemMinusArtifact.Name()))
 												{
 													final Item copyI=(Item)I.copyOf();
+													CMLib.threads().deleteAllTicks(copyI);
 													A2=copyI.fetchEffect(ID());
 													if(A2!=null)
 														copyI.delEffect(A2);
@@ -449,6 +451,7 @@ public class Prop_Artifact extends Property
 														R.delItem(I);
 														I.setOwner(null);
 													}
+													copyI.setOwner(null);
 													copyI.destroy();
 												}
 											}
