@@ -12917,7 +12917,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		final Item defaultItem=(ticking instanceof Item)?(Item)ticking:null;
-		final MOB mob=getMakeMOB(ticking);
+		final MOB mob;
+		synchronized(this) // supposedly this will cause a sync between cpus of the object
+		{
+			mob=getMakeMOB(ticking);
+		}
 		if((mob==null)||(lastKnownLocation==null))
 		{
 			altStatusTickable=null;
