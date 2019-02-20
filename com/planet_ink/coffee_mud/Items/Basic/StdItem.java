@@ -280,6 +280,8 @@ public class StdItem implements Item
 				}
 			}
 		}
+		// an item copy isn't linked to until added somewhere...
+		owner=null;
 	}
 
 	@Override
