@@ -12584,7 +12584,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=CMath.s_int(t[1]);
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
+								execute(affecting,msg.source(),monster,monster,defaultItem,null,script,null,t);
 								return;
 							}
 						}
