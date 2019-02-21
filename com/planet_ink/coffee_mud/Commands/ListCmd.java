@@ -2417,8 +2417,9 @@ public class ListCmd extends StdCommand
 			}
 			if(!finalCol.equals(lastWord))
 			{
-				if(!CMath.isInteger(lastWord))
-					return new StringBuilder("Invalid column: '"+lastWord+"'.  Valid cols are: "+CMParms.toListString(validCols));
+				// could be a multi-work mask
+				//if(!CMath.isInteger(lastWord))
+				//	return new StringBuilder("Invalid column: '"+lastWord+"'.  Valid cols are: "+CMParms.toListString(validCols));
 			}
 			else
 			{
@@ -2432,6 +2433,7 @@ public class ListCmd extends StdCommand
 			}
 		}
 
+		final boolean longer=!finalColName.equalsIgnoreCase("Status");
 		if("ACTIVE".startsWith(whichGroupStr.toUpperCase())&&(whichGroupStr.length()>0))
 			activeOnly=true;
 		else
@@ -2480,14 +2482,14 @@ public class ListCmd extends StdCommand
 		{
 			mask=whichGroupStr.toUpperCase().trim();
 		}
-		final int COL_LEN1=CMLib.lister().fixColWidth(4.0,viewerS);
-		final int COL_LEN2=CMLib.lister().fixColWidth(20.0,viewerS);
+		final int COL_LEN1=CMLib.lister().fixColWidth(2.0,viewerS);
+		final int COL_LEN2=CMLib.lister().fixColWidth(longer?8.0:23.0,viewerS);
 		final int COL_LEN3=CMLib.lister().fixColWidth(3.0,viewerS);
-		final int COL_LEN4=CMLib.lister().fixColWidth(8.0,viewerS);
+		final int COL_LEN4=CMLib.lister().fixColWidth(longer?23.0:8.0,viewerS);
 		msg.append("^w");
 		if(!activeOnly)
-			msg.append(CMStrings.padRight(L("Grp"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4));
-		msg.append(CMStrings.padRight(L("Grp"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
+			msg.append(CMStrings.padRight(L("G#"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4));
+		msg.append(CMStrings.padRight(L("G#"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
 		msg.append("^N");
 		int col=0;
 		final int numGroups=CMath.s_int(CMLib.threads().tickInfo("tickGroupSize"));
