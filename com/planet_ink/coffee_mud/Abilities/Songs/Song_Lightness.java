@@ -51,7 +51,7 @@ public class Song_Lightness extends Song
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_MALICIOUS;
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
 	}
 
 	@Override
