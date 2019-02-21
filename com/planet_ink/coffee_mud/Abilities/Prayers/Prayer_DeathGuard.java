@@ -146,7 +146,7 @@ public class Prayer_DeathGuard extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) protected by a death guard!"):L("^S<S-NAME> @x1 for a a death guard over <T-NAMESELF>!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) protected by a death guard!"):L("^S<S-NAME> @x1 for a death guard over <T-NAMESELF>!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
