@@ -157,9 +157,28 @@ public class GrinderItems
 				final StringBuffer str=new StringBuffer("No Item?!");
 				str.append(" Got: "+itemCode);
 				str.append(", Includes: ");
-				if(M==null)
+				if(M!=null)
 				{
-					if(R!=null)
+					for(int i=0;i<M.numItems();i++)
+					{
+						final Item I2=M.getItem(i);
+						if(I2!=null)
+							str.append(I2.Name()+"="+RoomData.getItemCode(M,I2));
+					}
+					if(M instanceof ShopKeeper)
+					{
+						final CoffeeShop shop=((ShopKeeper)M).getShop();
+						for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+						{
+							final Environmental E=i.next();
+							if(E instanceof Item)
+								str.append(E.Name()+"="+RoomData.getItemCode(M,(Item)E));
+						}
+					}
+				}
+				else
+				if(R!=null)
+				{
 					for(int i=0;i<R.numItems();i++)
 					{
 						final Item I2=R.getItem(i);
@@ -168,14 +187,7 @@ public class GrinderItems
 					}
 				}
 				else
-				{
-					for(int i=0;i<M.numItems();i++)
-					{
-						final Item I2=M.getItem(i);
-						if(I2!=null)
-							str.append(I2.Name()+"="+RoomData.getItemCode(M,I2));
-					}
-				}
+					str.append("No ROOM or MOB!!!!");
 				return str.toString();
 			}
 			Item copyItem=(Item)I.copyOf();
