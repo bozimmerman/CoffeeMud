@@ -3039,49 +3039,50 @@ public class DefaultSession implements Session
 				if(input.trim().length()>0)
 					prevMsgs.add(input);
 				setAfkFlag(false);
-				List<String> CMDS=CMParms.parse(input);
+				List<String> parsedInput=CMParms.parse(input);
 				final MOB mob=mob();
-				if((CMDS.size()>0)&&(mob!=null))
+				if((parsedInput.size()>0)&&(mob!=null))
 				{
 					waiting=false;
-					final String firstWord=CMDS.get(0);
+					final String firstWord=parsedInput.get(0);
 					final PlayerStats pStats=mob.playerStats();
-					final String alias=(pStats!=null)?pStats.getAlias(firstWord):"";
-					final List<List<String>> ALL_CMDS=new LinkedList<List<String>>();
+					final String rawAliasDefinition=(pStats!=null)?pStats.getAlias(firstWord):"";
+					final List<List<String>> executableCommands=new LinkedList<List<String>>();
 					boolean echoOn=false;
-					if(alias.length()>0)
+					if(rawAliasDefinition.length()>0)
 					{
-						CMDS.remove(0);
-						final List<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
+						parsedInput.remove(0);
+						final List<String> allAliasedCommands=CMParms.parseSquiggleDelimited(rawAliasDefinition,true);
 						echoOn=true;
-						if((all_stuff.size()>0)&&(all_stuff.get(0).toString().toLowerCase().startsWith("noecho")))
+						if((allAliasedCommands.size()>0)&&(allAliasedCommands.get(0).toString().toLowerCase().startsWith("noecho")))
 						{
 							echoOn=false;
-							all_stuff.set(0, all_stuff.get(0).toString().substring(6).trim());
+							allAliasedCommands.set(0, allAliasedCommands.get(0).toString().substring(6).trim());
 						}
-						for(final String stuff : all_stuff)
+						for(final String aliasedCommand : allAliasedCommands)
 						{
-							final List<String> THIS_CMDS=new XVector<String>(CMDS);
-							ALL_CMDS.add(THIS_CMDS);
-							final List<String> preCommands=CMParms.parse(stuff);
+							// just the parsed input arguments, the original command is removed.
+							final List<String> newCommand=new XVector<String>(parsedInput);
+							executableCommands.add(newCommand);
+							final List<String> preCommands=CMParms.parse(aliasedCommand);
 							for(int v=preCommands.size()-1;v>=0;v--)
-								THIS_CMDS.add(0,preCommands.get(v));
+								newCommand.add(0,preCommands.get(v));
 						}
 					}
 					else
-						ALL_CMDS.add(CMDS);
+						executableCommands.add(parsedInput);
 					final double curActions = mob.actions();
 					mob.setActions(0.0);
-					for(final Iterator<List<String>> i=ALL_CMDS.iterator();i.hasNext();)
+					for(final Iterator<List<String>> i=executableCommands.iterator();i.hasNext();)
 					{
-						CMDS=i.next();
-						setPreviousCmd(CMDS);
+						parsedInput=i.next();
+						setPreviousCmd(parsedInput);
 						milliTotal+=(lastStop-lastStart);
 
 						lastStart=System.currentTimeMillis();
 						if(echoOn)
-							rawPrintln(CMParms.combineQuoted(CMDS,0));
-						final List<List<String>> MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
+							rawPrintln(CMParms.combineQuoted(parsedInput,0));
+						final List<List<String>> MORE_CMDS=CMLib.lang().preCommandParser(parsedInput);
 						for(int m=0;m<MORE_CMDS.size();m++)
 							mob.enqueCommand(MORE_CMDS.get(m),metaFlags()|MUDCmdProcessor.METAFLAG_INORDER,0);
 						lastStop=System.currentTimeMillis();
