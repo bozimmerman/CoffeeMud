@@ -1400,6 +1400,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_STAND=MASK_MOVE|TYP_STAND;
 	/** combined MAJOR and MINOR codes for useful event message type for a flee event */
 	public static final int MSG_FLEE=MASK_MOVE|MASK_SOUND|TYP_FLEE;
+	/** combined MAJOR and MINOR codes for useful event message type for a flee event */
+	public static final int MSG_CRAWLFLEE=MASK_HANDS|MASK_SOUND|TYP_FLEE;
 	/** combined MAJOR and MINOR codes for useful event message type for a somantic spellcasting event */
 	public static final int MSG_CAST_SOMANTIC_SPELL=MSK_CAST_SOMANTIC|TYP_CAST_SPELL;
 	/** combined MAJOR and MINOR codes for useful event message type for a malicious somantic spellcasting event */

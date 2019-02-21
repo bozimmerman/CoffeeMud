@@ -31,8 +31,8 @@ TECH
    *. Droids! Powered slave mobs.
    *. Radiation Props: Alpha (damage), Beta (?!), Gamma (Mutation if in too long)
 
-NON-TECH
-   *. Builder Achievements, Archon Achievements, Clan Achievements, Timed achievements (within a time period)
+NON-TECH (Long Term)
+   *. Builder Achievements, Archon Achievements, Timed achievements (within a time period)
    *. Simple Desires quest behavior - see Tim's Wants and Needs doc
    *. Wants and Needs engine - similar to slavery system
    *. Port Siplet to C++ and shove it inside a Chromium window.

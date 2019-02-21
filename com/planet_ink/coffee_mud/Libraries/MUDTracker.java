@@ -1320,6 +1320,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return false;
 		}
 
+		final CMFlagLibrary flags=CMLib.flags();
 		final Exit opExit=thisRoom.getReverseExit(directionCode);
 		final boolean useShipDirs=((thisRoom instanceof BoardableShip)||(thisRoom.getArea() instanceof BoardableShip));
 		final int opDir=Directions.getOpDirectionCode(directionCode);
@@ -1339,7 +1340,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final int generalMask=always?CMMsg.MASK_ALWAYS:0;
 		final int leaveCode;
 		if(flee)
-			leaveCode=generalMask|CMMsg.MSG_FLEE;
+		{
+			if(flags.isSitting(mob)&&flags.isCrawlable(mob.location()))
+				leaveCode=generalMask|CMMsg.MSG_CRAWLFLEE;
+			else
+				leaveCode=generalMask|CMMsg.MSG_FLEE;
+		}
 		else
 			leaveCode=generalMask|CMMsg.MSG_LEAVE;
 
@@ -1357,14 +1363,14 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		else
 		{
-			final String arriveWord=CMLib.flags().getPresentDispositionVerb(mob,CMFlagLibrary.ComingOrGoing.ARRIVES);
+			final String arriveWord=flags.getPresentDispositionVerb(mob,CMFlagLibrary.ComingOrGoing.ARRIVES);
 			final String arriveStr=L("<S-NAME> "+arriveWord+" @x1.",otherDirectionPhrase);
 			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,arriveStr);
 			if(flee)
 				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,L("You flee @x1.",directionName),leaveCode,null,leaveCode,L("<S-NAME> flee(s) @x1.",directionName));
 			else
 			{
-				final String leaveWord=CMLib.flags().getPresentDispositionVerb(mob,CMFlagLibrary.ComingOrGoing.LEAVES);
+				final String leaveWord=flags.getPresentDispositionVerb(mob,CMFlagLibrary.ComingOrGoing.LEAVES);
 				final String leaveStr=L("<S-NAME> "+leaveWord+" @x1.",directionName);
 				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,null,leaveCode,null,leaveCode,leaveStr);
 			}
@@ -1501,7 +1507,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					if((follower.amFollowing()==mob)
 					&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
 					{
-						if((follower.location()==thisRoom)&&(CMLib.flags().isAliveAwakeMobile(follower,true)))
+						if((follower.location()==thisRoom)&&(flags.isAliveAwakeMobile(follower,true)))
 						{
 							if(follower.isAttributeSet(MOB.Attrib.AUTOGUARD))
 								thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> remain(s) on guard here."));
@@ -1511,15 +1517,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 										CMLib.directions().getShipDirectionName(directionCode):CMLib.directions().getDirectionName(directionCode);
 								follower.tell(L("You follow @x1 @x2.",mob.name(follower),inDir));
 								boolean tryStand=false;
-								if(CMLib.flags().isSitting(mob))
+								if(flags.isSitting(mob))
 								{
-									if(CMLib.flags().isSitting(follower))
+									if(flags.isSitting(follower))
 										tryStand=true;
 									else
 									{
 										final CMMsg msg=CMClass.getMsg(follower,null,null,CMMsg.MSG_SIT,null);
 										if((thisRoom.okMessage(mob,msg))
-										&&(!CMLib.flags().isSitting(follower)))
+										&&(!flags.isSitting(follower)))
 										{
 											thisRoom.send(mob,msg);
 											tryStand=true;
