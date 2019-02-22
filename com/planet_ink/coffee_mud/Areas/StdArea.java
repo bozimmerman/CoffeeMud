@@ -2133,7 +2133,11 @@ public class StdArea implements Area
 						Log.errOut("StdArea","Wow, proper room size = "+this.properRooms.size()+", but no room! ("+this.amDestroyed+")");
 				}
 				else
+				{
+					if(this.numberOfProperIDedRooms()==0)
+						return null;
 					Log.errOut("StdArea","Wow, proper room size = 0, but numrooms="+this.numberOfProperIDedRooms()+"! ("+this.amDestroyed+")");
+				}
 			}
 		}
 		if(R instanceof GridLocale)
