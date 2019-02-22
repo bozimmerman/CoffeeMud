@@ -445,7 +445,7 @@ public class Song_Ode extends Song
 			{
 				invoker=mob;
 				originRoom=mob.location();
-				commonRoomSet=getInvokerScopeRoomSet(null);
+				commonRoomSet=getInvokerScopeRoomSet(0);
 				name=key;
 				song=H.get(name);
 				benefits=null;
@@ -474,10 +474,10 @@ public class Song_Ode extends Song
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			unSingAll(mob,mob,false);
+			unSingAll(mob,mob,false,false);
 			invoker=mob;
 			originRoom=mob.location();
-			commonRoomSet=getInvokerScopeRoomSet(null);
+			commonRoomSet=getInvokerScopeRoomSet(0);
 			whom=target;
 			final String str=L("^S<S-NAME> begin(s) to compose an @x1.^?",songOf());
 			final CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,str);

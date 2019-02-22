@@ -90,19 +90,29 @@ public class Play_Reveille extends Play
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		final boolean success=proficiencyCheck(mob,0,auto);
-		unPlayAll(mob,mob,false);
+
+		final int newDepth = this.calculateNewSongDepth(mob);
+		final boolean replay = mob.fetchEffect(ID())!=null;
+		unPlayAll(mob,mob,false,false); // because ALWAYS removing myself, depth needs pre-calculating
 		if(success)
 		{
 			invoker=mob;
 			originRoom=mob.location();
-			commonRoomSet=getInvokerScopeRoomSet(null);
+			final int oldDepth = this.playDepth;
+			commonRoomSet=getInvokerScopeRoomSet(newDepth);
+			this.playDepth = newDepth;
 			String str=auto?L("^S@x1 begins to play!^?",songOf()):L("^S<S-NAME> begin(s) to play @x1 on @x2.^?",songOf(),instrumentName());
-			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=L("^S<S-NAME> start(s) playing @x1 on @x2 again.^?",songOf(),instrumentName());
+			if((!auto) && (replay))
+			{
+				if(newDepth > oldDepth)
+					str=L("^S<S-NAME> extend(s) the @x1`s range.^?",songOf());
+				else
+					str=L("^S<S-NAME> start(s) playing @x1 on @x2 again.^?",songOf(),instrumentName());
+			}
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				final Room R=commonRoomSet.elementAt(v);
+				final Room R=commonRoomSet.get(v);
 				final String msgStr=getCorrectMsgString(R,str,v);
 				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
@@ -140,7 +150,8 @@ public class Play_Reveille extends Play
 						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 						if(auto)
 							affectType=affectType|CMMsg.MASK_ALWAYS;
-						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)
+						&&(follower.fetchEffect(this.ID())==null)))
 						{
 							final CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 							if(R2.okMessage(mob,msg2))

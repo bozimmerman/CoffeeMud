@@ -92,10 +92,11 @@ public class Dance extends StdAbility
 		return adjustedMaxInvokerRange(2);
 	}
 
-	protected int invokerManaCost=-1;
-	protected long timeOut=0;
-	protected Vector<Room> commonRoomSet=null;
-	protected Room originRoom=null;
+	protected int			invokerManaCost	= -1;
+	protected long			timeOut			= 0;
+	protected List<Room>	commonRoomSet	= null;
+	protected Room			originRoom		= null;
+	protected volatile int	danceDepth		= 0;
 
 	protected boolean skipStandardDanceInvoke()
 	{
@@ -154,7 +155,7 @@ public class Dance extends StdAbility
 		final MOB mob=(MOB)affected;
 		if((affected==invoker())&&(invoker()!=null)&&(invoker().location()!=originRoom))
 		{
-			final Vector<Room> V=getInvokerScopeRoomSet(null);
+			final List<Room> V=getInvokerScopeRoomSet(this.danceDepth);
 			commonRoomSet.clear();
 			commonRoomSet.addAll(V);
 			originRoom=invoker().location();
@@ -189,7 +190,7 @@ public class Dance extends StdAbility
 			return unDanceMe(mob,null, false);
 		if(!commonRoomSet.contains(mob.location()))
 		{
-			final List<Room> V=getInvokerScopeRoomSet(null);
+			final List<Room> V=getInvokerScopeRoomSet(this.danceDepth);
 			commonRoomSet.clear();
 			commonRoomSet.addAll(V);
 			if(!commonRoomSet.contains(mob.location()))
@@ -212,13 +213,13 @@ public class Dance extends StdAbility
 		if(!mob.curState().adjMovement(-(invokerManaCost/15),mob.maxState()))
 		{
 			mob.tell(L("The dancing exhausts you."));
-			unDanceAll(mob,null,false);
+			unDanceAll(mob,null,false,false);
 			return false;
 		}
 		return true;
 	}
 
-	protected void unDanceAll(final MOB mob, final MOB invoker, final boolean exceptThisOne)
+	protected void unDanceAll(final MOB mob, final MOB invoker, final boolean exceptThisOne, final boolean noEcho)
 	{
 		if(mob!=null)
 		{
@@ -228,7 +229,7 @@ public class Dance extends StdAbility
 				if((A instanceof Dance)
 				&&((!exceptThisOne)||(!A.ID().equals(ID())))
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
-					((Dance)A).unDanceMe(mob,invoker, false);
+					((Dance)A).unDanceMe(mob,invoker, noEcho);
 			}
 		}
 	}
@@ -262,18 +263,31 @@ public class Dance extends StdAbility
 		return true;
 	}
 
-	protected Vector<Room> getInvokerScopeRoomSet(final MOB backupMob)
+	protected int calculateNewSongDepth(final MOB invoker)
 	{
-		if((invoker()==null)
-		||(invoker().location()==null))
+		if((invoker!=null)
+		&&(invoker.fetchEffect(ID())!=null))
 		{
-			if((backupMob!=null)&&(backupMob.location()!=null))
-				 return new XVector<Room>(backupMob.location());
-			return new Vector<Room>();
+			final Dance D=(Dance)invoker.fetchAbility(ID());
+			final int maxDepth = getXMAXRANGELevel(invoker()) / 2; // decreased because fireball
+			final int songDepth = ((D!=null)?D.danceDepth:this.danceDepth) + 1;
+			if(songDepth > maxDepth)
+				return maxDepth;
+			return songDepth;
 		}
-		final int depth=super.getXMAXRANGELevel(invoker()) / 2; // decreased because fireball
+		return 0;
+	}
+
+	protected List<Room> getInvokerScopeRoomSet(final int depth)
+	{
+		final MOB invoker = invoker();
+		final Room invokerRoom = (invoker != null) ? invoker.location() : null;
+		if((invoker==null)
+		||(invokerRoom==null))
+			return new Vector<Room>();
+
 		if(depth==0)
-			return new XVector<Room>(invoker().location());
+			return new XVector<Room>(invokerRoom);
 		final Vector<Room> rooms=new Vector<Room>();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
@@ -281,9 +295,9 @@ public class Dance extends StdAbility
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR);
-		CMLib.tracking().getRadiantRooms(invoker().location(), rooms, flags, null, depth, null);
-		if(!rooms.contains(invoker().location()))
-			rooms.addElement(invoker().location());
+		CMLib.tracking().getRadiantRooms(invokerRoom, rooms, flags, null, depth, null);
+		if(!rooms.contains(invokerRoom))
+			rooms.addElement(invokerRoom);
 		return rooms;
 	}
 
@@ -413,20 +427,29 @@ public class Dance extends StdAbility
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		unDanceAll(mob,null,false);
+		final int newDepth = this.calculateNewSongDepth(mob);
+		final boolean redance = mob.fetchEffect(ID())!=null;
+		unDanceAll(mob,null,false,false); // because ALWAYS removing myself, depth needs pre-calculating.
 
 		if(success)
 		{
 			invoker=mob;
 			originRoom=mob.location();
-			commonRoomSet=getInvokerScopeRoomSet(null);
+			final int oldDepth = this.danceDepth;
+			commonRoomSet=getInvokerScopeRoomSet(newDepth);
+			this.danceDepth = newDepth;
 			String str=auto?L("^SThe @x1 begins!^?",danceOf()):L("^S<S-NAME> begin(s) to dance the @x1.^?",danceOf());
-			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=L("^S<S-NAME> start(s) the @x1 over again.^?",danceOf());
+			if((!auto) && (redance))
+			{
+				if(newDepth > oldDepth)
+					str=L("^S<S-NAME> extend(s) the @x1`s range.^?",danceOf());
+				else
+					str=L("^S<S-NAME> start(s) the @x1 over again.^?",danceOf());
+			}
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				final Room R=commonRoomSet.elementAt(v);
+				final Room R=commonRoomSet.get(v);
 				final String msgStr=getCorrectMsgString(R,str,v);
 				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
@@ -451,7 +474,12 @@ public class Dance extends StdAbility
 						if(auto)
 							affectType=affectType|CMMsg.MASK_ALWAYS;
 
-						if((R2!=null)&&(CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+						final Dance effectD = (Dance)follower.fetchEffect(this.ID());
+						if(effectD!=null)
+							effectD.danceDepth = this.danceDepth;
+						else
+						if((R2!=null)
+						&&(CMLib.flags().canBeSeenBy(invoker,follower)))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 							final CMMsg msg3=msg2;
@@ -463,7 +491,7 @@ public class Dance extends StdAbility
 								if(msg2.value()<=0)
 								{
 									R2.send(follower,msg3);
-									if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
+									if(msg3.value()<=0)
 									{
 										//possiblyUndance(follower,null,false);
 										newOne.setSavable(false);

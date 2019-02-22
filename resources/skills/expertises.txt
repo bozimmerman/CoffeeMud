@@ -250,7 +250,7 @@ BEATDANCE@x1=Beat Dancing @x2,10,LEVEL,-SKILLFLAG +DANCING&!BENEFICIAL_SELF&!MAL
 HELP_=<EXPERTISE>The ability to perform dances that have a more powerful beneficial aggressive affect.
 
 LONGDANCE@x1=Long Dancing @x2,10,MAXRANGE,-SKILLFLAG +DANCING,-MAXCLASSLEVEL +>={18+(5*@x1)},+STR {12+@x1} +CHA {12+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to perform dances that garner audiences from more rooms away.  This will cause aggressive dances to draw enemies to the dancer.
+HELP_=<EXPERTISE>The ability to perform dances that garner audiences from more rooms away every time the dance is re-started.  This will cause aggressive dances to draw enemies to the dancer, and beneficial dances to affect party members several rooms away.
 
 STEADYDANCE@x1=Steady Dancing @x2,10,TIME,-SKILLFLAG +DANCING,-MAXCLASSLEVEL +>={19+(5*@x1)},+STR {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to perform dances whose affects linger after the dance is completed, for all affected except the dancer.
@@ -262,7 +262,7 @@ BOLDTUNE@x1=Bold Playing @x2,10,LEVEL,-SKILLFLAG +PLAYING&!MALICIOUS +PLAYING&OK
 HELP_=<EXPERTISE>The ability to play tunes that have a more powerful beneficial affect.
 
 RESOUNDINGTUNE@x1=Resounding Playing @x2,10,MAXRANGE,-SKILLFLAG +PLAYING,-MAXCLASSLEVEL +>={18+(5*@x1)},+INT {12+@x1} +CHA {12+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to play tunes that can be heard from more rooms away.  This will cause aggressive tunes to draw enemies to the player.
+HELP_=<EXPERTISE>The ability to play tunes that can be heard from more rooms away every time the tune is re-started.  This will cause aggressive tunes to draw enemies to the dancer, and beneficial tunes to affect party members several rooms away.
 
 RYTHMICTUNE@x1=Rhythmic Playing @x2,10,TIME,-SKILLFLAG +PLAYING,-MAXCLASSLEVEL +>={19+(5*@x1)},+INT {12+@x1} +CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to play tunes that linger a little longer after they are played, for all affected except the player.
@@ -274,7 +274,7 @@ REJOICESING@x1=Rejoicing Singing @x2,10,LEVEL,-SKILLFLAG +SINGING&!MALICIOUS +SI
 HELP_=<EXPERTISE>The ability to sing songs that have a more powerful beneficial affect.
 
 RESOUNDSING@x1=Resounding Singing @x2,10,MAXRANGE,-SKILLFLAG +SINGING,-MAXCLASSLEVEL +>={18+(5*@x1)},+CHA {15+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to sing songs that can be heard from more rooms away.  This will cause aggressive songs to draw enemies to the singer.
+HELP_=<EXPERTISE>The ability to sing songs that can be heard from more rooms away every time the song is re-started.  This will cause aggressive songs to draw enemies to the dancer, and beneficial songs to affect party members several rooms away.
 
 ECHOSING@x1=Echoed Singing @x2,10,TIME,-SKILLFLAG +SINGING,-MAXCLASSLEVEL +>={19+(5*@x1)},+CHA {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to sing songs whose effects linger after the bard stops singing, for all affected except the singer.

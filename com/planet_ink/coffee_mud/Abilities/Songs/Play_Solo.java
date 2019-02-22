@@ -135,19 +135,29 @@ public class Play_Solo extends Play
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		unPlayAll(mob,mob,false);
+
+		final int newDepth = this.calculateNewSongDepth(mob);
+		final boolean replay = mob.fetchEffect(ID())!=null;
+		unPlayAll(mob,mob,false,false); // because ALWAYS removing myself, depth needs pre-calculating
 		if(success)
 		{
 			invoker=mob;
 			originRoom=mob.location();
-			commonRoomSet=getInvokerScopeRoomSet(null);
+			final int oldDepth = this.playDepth;
+			commonRoomSet=getInvokerScopeRoomSet(newDepth);
+			this.playDepth = newDepth;
 			String str=auto?L("^S@x1 begins to play!^?",songOf()):L("^S<S-NAME> begin(s) to play @x1 on @x2.^?",songOf(),instrumentName());
-			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=L("^S<S-NAME> start(s) playing @x1 on @x2 again.^?",songOf(),instrumentName());
+			if((!auto) && (replay))
+			{
+				if(newDepth > oldDepth)
+					str=L("^S<S-NAME> extend(s) the @x1`s range.^?",songOf());
+				else
+					str=L("^S<S-NAME> start(s) playing @x1 on @x2 again.^?",songOf(),instrumentName());
+			}
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				final Room R=commonRoomSet.elementAt(v);
+				final Room R=commonRoomSet.get(v);
 				final String msgStr=getCorrectMsgString(R,str,v);
 				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
@@ -159,7 +169,7 @@ public class Play_Solo extends Play
 					invoker=mob;
 					final Play newOne=(Play)this.copyOf();
 
-					final Vector<Ability> songsToCancel=new Vector<Ability>();
+					final List<Ability> songsToCancel=new ArrayList<Ability>();
 					for(int i=0;i<R.numInhabitants();i++)
 					{
 						final MOB M=R.fetchInhabitant(i);
@@ -170,7 +180,7 @@ public class Play_Solo extends Play
 							if((A!=null)
 							&&(A.invoker()!=mob)
 							&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
-								songsToCancel.addElement(A);
+								songsToCancel.add(A);
 						}
 					}
 					final int reqMana=songsToCancel.size()*10;
@@ -182,7 +192,7 @@ public class Play_Solo extends Play
 					mob.curState().adjMana(-reqMana,mob.maxState());
 					for(int i=0;i<songsToCancel.size();i++)
 					{
-						final Ability A=songsToCancel.elementAt(i);
+						final Ability A=songsToCancel.get(i);
 						A.unInvoke();
 					}
 					mob.addEffect(newOne);

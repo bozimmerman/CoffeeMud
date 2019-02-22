@@ -125,6 +125,7 @@ public class Song extends StdAbility
 	protected volatile long			timeOut			= 0;
 	protected volatile List<Room>	commonRoomSet	= null;
 	protected volatile Room			originRoom		= null;
+	protected volatile int			songDepth		= 0;
 
 	@Override
 	public int adjustedLevel(final MOB mob, final int asLevel)
@@ -245,7 +246,7 @@ public class Song extends StdAbility
 		&&(invoker()!=null)
 		&&(invoker().location()!=originRoom))
 		{
-			final List<Room> V=getInvokerScopeRoomSet(null);
+			final List<Room> V=getInvokerScopeRoomSet(this.songDepth);
 			commonRoomSet.clear();
 			commonRoomSet.addAll(V);
 			originRoom=invoker().location();
@@ -279,7 +280,7 @@ public class Song extends StdAbility
 			return unSingMe(mob,null, false);
 		if(!commonRoomSet.contains(mob.location()))
 		{
-			final List<Room> V=getInvokerScopeRoomSet(null);
+			final List<Room> V=getInvokerScopeRoomSet(this.songDepth);
 			commonRoomSet.clear();
 			commonRoomSet.addAll(V);
 			if(!commonRoomSet.contains(mob.location()))
@@ -311,7 +312,7 @@ public class Song extends StdAbility
 		return true;
 	}
 
-	protected void unSingAll(final MOB mob, final MOB invoker, final boolean exceptThisOne)
+	protected void unSingAll(final MOB mob, final MOB invoker, final boolean exceptThisOne, final boolean noEcho)
 	{
 		if(mob!=null)
 		{
@@ -321,7 +322,7 @@ public class Song extends StdAbility
 				if((A instanceof Song)
 				&&((!exceptThisOne)||(!A.ID().equals(ID())))
 				&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
-					((Song)A).unSingMe(mob,invoker, false);
+					((Song)A).unSingMe(mob,invoker, noEcho);
 			}
 		}
 	}
@@ -358,18 +359,32 @@ public class Song extends StdAbility
 		return true;
 	}
 
-	protected List<Room> getInvokerScopeRoomSet(final MOB backupMob)
+	protected int calculateNewSongDepth(final MOB invoker)
 	{
-		if((invoker()==null)
-		||(invoker().location()==null))
+		if((invoker!=null)
+		&&(invoker.fetchEffect(ID())!=null))
 		{
-			if((backupMob!=null)&&(backupMob.location()!=null))
-				return new XVector<Room>(backupMob.location());
-			return new Vector<Room>();
+			final Song S=(Song)invoker.fetchAbility(ID());
+			final int maxDepth = getXMAXRANGELevel(invoker()) / 2; // decreased because fireball
+			final int songDepth = ((S!=null)?S.songDepth:this.songDepth) + 1;
+			if(songDepth > maxDepth)
+				return maxDepth;
+			return songDepth;
 		}
-		final int depth=getXMAXRANGELevel(invoker()) / 2; // decreased because fireball
+		return 0;
+	}
+
+	protected List<Room> getInvokerScopeRoomSet(final int depth)
+	{
+		final MOB invoker = invoker();
+		final Room invokerRoom = (invoker != null) ? invoker.location() : null;
+		if((invoker==null)
+		||(invokerRoom==null))
+			return new Vector<Room>();
+
 		if(depth==0)
-			return new XVector<Room>(invoker().location());
+			return new XVector<Room>(invokerRoom);
+
 		final Vector<Room> rooms=new Vector<Room>();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
@@ -377,9 +392,9 @@ public class Song extends StdAbility
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR);
-		CMLib.tracking().getRadiantRooms(invoker().location(), rooms,flags, null, depth, null);
-		if(!rooms.contains(invoker().location()))
-			rooms.addElement(invoker().location());
+		CMLib.tracking().getRadiantRooms(invokerRoom, rooms,flags, null, depth, null);
+		if(!rooms.contains(invokerRoom))
+			rooms.addElement(invokerRoom);
 		return rooms;
 	}
 
@@ -479,15 +494,24 @@ public class Song extends StdAbility
 		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		unSingAll(mob,mob,true);
+		unSingAll(mob,mob,true,false);
 		if(success)
 		{
 			invoker=mob;
 			originRoom=mob.location();
-			commonRoomSet=getInvokerScopeRoomSet(null);
+			final int oldDepth = this.songDepth;
+			final int newDepth = this.calculateNewSongDepth(mob);
+			commonRoomSet=getInvokerScopeRoomSet(newDepth);
+			this.songDepth = newDepth;
 			String str=auto?L("^SThe @x1 begins to play!^?",songOf()):L("^S<S-NAME> begin(s) to sing the @x1.^?",songOf());
-			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=L("^S<S-NAME> start(s) the @x1 over again.^?",songOf());
+			if((!auto)
+			&&(mob.fetchEffect(this.ID())!=null))
+			{
+				if(newDepth > oldDepth)
+					str=L("^S<S-NAME> extend(s) the @x1`s range.^?",songOf());
+				else
+					str=L("^S<S-NAME> start(s) the @x1 over again.^?",songOf());
+			}
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
 				final Room R=commonRoomSet.get(v);
@@ -511,7 +535,11 @@ public class Song extends StdAbility
 						if((castingQuality(mob,follower)==Ability.QUALITY_MALICIOUS)&&(follower!=mob))
 							affectType=affectType|CMMsg.MASK_MALICIOUS;
 
-						if((CMLib.flags().canBeHeardSpeakingBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+						final Song effectS = (Song)follower.fetchEffect(this.ID());
+						if(effectS!=null)
+							effectS.songDepth = this.songDepth;
+						else
+						if(CMLib.flags().canBeHeardSpeakingBy(invoker,follower))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 							final CMMsg msg3=msg2;
@@ -523,7 +551,7 @@ public class Song extends StdAbility
 								if(msg2.value()<=0)
 								{
 									R2.send(follower,msg3);
-									if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
+									if(msg3.value()<=0)
 									{
 										newOne.setSavable(false);
 										if(follower!=mob)

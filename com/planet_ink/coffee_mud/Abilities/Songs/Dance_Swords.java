@@ -227,19 +227,28 @@ public class Dance_Swords extends Dance
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		unDanceAll(mob,null,false);
+		final int newDepth = this.calculateNewSongDepth(mob);
+		final boolean redance = mob.fetchEffect(ID())!=null;
+		unDanceAll(mob,null,false,false); // because ALWAYS removing myself, depth needs pre-calculating.
 		if(success)
 		{
 			invoker=mob;
 			originRoom=mob.location();
-			commonRoomSet=getInvokerScopeRoomSet(null);
+			final int oldDepth = this.danceDepth;
+			commonRoomSet=getInvokerScopeRoomSet(newDepth);
+			this.danceDepth = newDepth;
 			String str=auto?L("^SThe @x1 begins!^?",danceOf()):L("^S<S-NAME> begin(s) to dance the @x1.^?",danceOf());
-			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
-				str=L("^S<S-NAME> start(s) the @x1 over again.^?",danceOf());
+			if((!auto)&&(redance))
+			{
+				if(newDepth > oldDepth)
+					str=L("^S<S-NAME> extend(s) the @x1`s range.^?",danceOf());
+				else
+					str=L("^S<S-NAME> start(s) the @x1 over again.^?",danceOf());
+			}
 
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
-				final Room R=commonRoomSet.elementAt(v);
+				final Room R=commonRoomSet.get(v);
 				final String msgStr=getCorrectMsgString(R,str,v);
 				final CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
@@ -259,13 +268,17 @@ public class Dance_Swords extends Dance
 					if(auto)
 						affectType=affectType|CMMsg.MASK_ALWAYS;
 
-					if((CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+					final Dance effectD = (Dance)follower.fetchEffect(this.ID());
+					if(effectD!=null)
+						effectD.danceDepth = this.danceDepth;
+					else
+					if(CMLib.flags().canBeSeenBy(invoker,follower))
 					{
 						final CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 						if(R.okMessage(mob,msg2))
 						{
 							follower.location().send(follower,msg2);
-							if((msg2.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
+							if(msg2.value()<=0)
 								follower.addEffect(newOne);
 						}
 					}

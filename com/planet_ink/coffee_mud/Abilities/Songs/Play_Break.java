@@ -87,7 +87,7 @@ public class Play_Break extends Play
 			mob.tell(auto?L("There is noone playing."):L("You aren't playing anything."));
 			return true;
 		}
-		unPlayAll(mob,mob,false);
+		unPlayAll(mob,mob,false,true);
 		mob.location().show(mob,null,CMMsg.MSG_NOISE,auto?L("Silence."):L("<S-NAME> stop(s) playing."));
 		mob.location().recoverRoomStats();
 		return true;
