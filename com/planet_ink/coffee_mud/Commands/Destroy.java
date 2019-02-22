@@ -1671,7 +1671,7 @@ public class Destroy extends StdCommand
 			}
 		}
 		else
-		if(commandType.equals("CM1") || commandType.equals("IMC2") || commandType.equals("I3"))
+		if(commandType.equals("CM1") || commandType.equals("IMC2") || commandType.equals("I3")|| commandType.equals("SMTP"))
 		{
 			if(!CMSecurity.isASysOp(mob))
 				return errorOut(mob);

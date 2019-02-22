@@ -2250,6 +2250,18 @@ public class MUD extends Thread implements MudHost
 				else
 					return "Failure";
 			}
+			else
+			if(what.equalsIgnoreCase("SMTP"))
+			{
+				if(smtpServerThread==null)
+				{
+					smtpServerThread = new SMTPserver(CMLib.mud(0)); // initializes variables, even if it's not used
+					smtpServerThread.start();
+					serviceEngine.startTickDown(Thread.currentThread().getThreadGroup(),smtpServerThread,Tickable.TICKID_EMAIL,CMProps.getTickMillis(),(int)CMProps.getTicksPerMinute() * 5);
+					return "Done";
+				}
+				return "Failure";
+			}
 		}
 		else
 		if(word.equalsIgnoreCase("STOP")&&(V.size()>1))
@@ -2286,6 +2298,18 @@ public class MUD extends Thread implements MudHost
 					return "Done";
 				else
 					return "Failure";
+			}
+			else
+			if(what.equalsIgnoreCase("SMTP"))
+			{
+				if(smtpServerThread!=null)
+				{
+					smtpServerThread.shutdown();
+					serviceEngine.deleteAllTicks(smtpServerThread);
+					smtpServerThread = null;
+					return "Done";
+				}
+				return "Failure";
 			}
 		}
 		else
