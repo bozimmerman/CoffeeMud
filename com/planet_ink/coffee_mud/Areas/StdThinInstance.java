@@ -756,7 +756,7 @@ public class StdThinInstance extends StdThinArea
 			{
 				Room R=redirectA.getRoom(((StdThinInstance)redirectA).convertToMyArea(CMLib.map().getExtendedRoomID((Room)msg.target())));
 				int tries=1000;
-				while((R==null)&&((--tries)>0))
+				while((R==null)&&((--tries)>0)&&(redirectA.numberOfProperIDedRooms()>0))
 				{
 					R=redirectA.getRandomProperRoom();
 					if(R!=null)
