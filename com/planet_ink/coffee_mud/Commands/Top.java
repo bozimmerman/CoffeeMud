@@ -42,6 +42,20 @@ public class Top extends StdCommand
 		return access;
 	}
 
+	protected String fixI(final Integer I)
+	{
+		if(I==null)
+			return "";
+		final int ilen=I.toString().length();
+		if(ilen > 6)
+		{
+			if(ilen > 9)
+				return I.toString().substring(0, ilen-6)+"m";
+			return I.toString().substring(0, ilen-3)+"k";
+		}
+		return I.toString();
+	}
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags) throws java.io.IOException
 	{
@@ -85,11 +99,11 @@ public class Top extends StdCommand
 			String data;
 			for(int i=0;i<10;i++)
 			{
-				data = CMStrings.padRight((set1.size()>i)?("^N"+set1.get(i).first):"",nameWidth)+"^c"+((set1.size()>i)?("^N"+set1.get(i).second):"");
+				data = CMStrings.padRight((set1.size()>i)?("^N"+set1.get(i).first):"",nameWidth)+"^c"+((set1.size()>i)?("^N"+fixI(set1.get(i).second)):"");
 				str.append(CMStrings.padRight("^H"+(i+1)+((i>=9)?"":" ")+". ^N"+data,width)+"^.^N ");
-				data = CMStrings.padRight((set2.size()>i)?("^N"+set2.get(i).first):"",nameWidth)+"^c"+((set2.size()>i)?("^N"+set2.get(i).second):"");
+				data = CMStrings.padRight((set2.size()>i)?("^N"+set2.get(i).first):"",nameWidth)+"^c"+((set2.size()>i)?("^N"+fixI(set2.get(i).second)):"");
 				str.append(CMStrings.padRight("^H"+(i+1)+((i>=9)?"":" ")+". ^N"+data,width)+"^.^N ");
-				data = CMStrings.padRight((set3.size()>i)?("^N"+set3.get(i).first):"",nameWidth)+"^c"+((set3.size()>i)?("^N"+set3.get(i).second):"");
+				data = CMStrings.padRight((set3.size()>i)?("^N"+set3.get(i).first):"",nameWidth)+"^c"+((set3.size()>i)?("^N"+fixI(set3.get(i).second)):"");
 				str.append(CMStrings.padRight("^H"+(i+1)+((i>=9)?"":" ")+". ^N"+data,width)+"^.^N\n\r");
 			}
 			str.append("\n\r");
@@ -105,11 +119,11 @@ public class Top extends StdCommand
 					CMLib.players().getTopPrideAccounts(period, AccountStats.PrideStat.QUESTPOINTS_EARNED);
 			for(int i=0;i<10;i++)
 			{
-				data = CMStrings.padRight((set1.size()>i)?("^N"+set1.get(i).first):"",nameWidth)+"^c"+((set1.size()>i)?("^N"+set1.get(i).second):"");
+				data = CMStrings.padRight((set1.size()>i)?("^N"+set1.get(i).first):"",nameWidth)+"^c"+((set1.size()>i)?("^N"+fixI(set1.get(i).second)):"");
 				str.append(CMStrings.padRight("^H"+(i+1)+((i>=9)?"":" ")+". ^N"+data,width)+"^.^N ");
-				data = CMStrings.padRight((set2.size()>i)?("^N"+set2.get(i).first):"",nameWidth)+"^c"+((set2.size()>i)?("^N"+set2.get(i).second):"");
+				data = CMStrings.padRight((set2.size()>i)?("^N"+set2.get(i).first):"",nameWidth)+"^c"+((set2.size()>i)?("^N"+fixI(set2.get(i).second)):"");
 				str.append(CMStrings.padRight("^H"+(i+1)+((i>=9)?"":" ")+". ^N"+data,width)+"^.^N ");
-				data = CMStrings.padRight((set3.size()>i)?("^N"+set3.get(i).first):"",nameWidth)+"^c"+((set3.size()>i)?("^N"+set3.get(i).second):"");
+				data = CMStrings.padRight((set3.size()>i)?("^N"+set3.get(i).first):"",nameWidth)+"^c"+((set3.size()>i)?("^N"+fixI(set3.get(i).second)):"");
 				str.append(CMStrings.padRight("^H"+(i+1)+((i>=9)?"":" ")+". ^N"+data,width)+"^.^N\n\r");
 			}
 			str.append("\n\r");
