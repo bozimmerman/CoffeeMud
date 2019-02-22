@@ -9966,7 +9966,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genImage(mob,me,++showNumber,showFlag);
 			genScripts(mob,me,++showNumber,showFlag);
 			final String oldFlags = (me.playerStats()!=null)?me.playerStats().getStat("FLAGS"):"";
-			promptStatStr(mob,me,PlayerStats.PlayerFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
+			promptStatStr(mob,me.playerStats(),PlayerStats.PlayerFlag.getListString(),++showNumber,showFlag,"Flags (?)","FLAGS",true);
 			{
 				final String flags=(me.playerStats()!=null)?me.playerStats().getStat("FLAGS"):"";
 				if(((oldFlags.indexOf(PlayerFlag.NOTOP.name())>=0)&&(flags.indexOf(PlayerFlag.NOTOP.name())<0))
