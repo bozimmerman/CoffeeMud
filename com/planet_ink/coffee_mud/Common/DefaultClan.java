@@ -1692,7 +1692,8 @@ public class DefaultClan implements Clan
 			if(member!=null)
 			{
 				final MOB M=CMLib.players().getPlayer(member.name);
-				if(M!=null)
+				if((M!=null)
+				&&(M.playerStats()!=null))
 				{
 					final boolean isAdmin=CMSecurity.isASysOp(M) || M.phyStats().level() > CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
 					if(M.lastTickedDateTime()>0)
