@@ -86,7 +86,8 @@ public class Song_Mercy extends Song
 	{
 		final MOB mob=(MOB)affected;
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
-		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+		&&((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+				||((msg.tool() instanceof Ability)&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
 		&&(mob.location()!=null)
 		&&((msg.amITarget(mob)))
 		&&((count>0)||(lastRoom==null)||(lastRoom!=mob.location())))

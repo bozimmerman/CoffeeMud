@@ -64,7 +64,8 @@ public class Dance_Basse extends Dance
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
-		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+		&&((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+			||((msg.tool() instanceof Ability)&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
 		&&((msg.amITarget(affected))))
 		{
 			final MOB target=(MOB)msg.target();
