@@ -255,8 +255,13 @@ public class Undead extends StdRace
 					{
 						break;
 					}
+					//$FALL-THROUGH$
 				case CMMsg.TYP_DAMAGE:
 				case CMMsg.TYP_UNDEAD:
+					if((msg.sourceMinor()==CMMsg.TYP_UNDEAD)
+					||((msg.tool() instanceof Ability)
+						&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))
+						&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))))
 					{
 						final int amount=msg.value();
 						if(amount>0)
