@@ -78,7 +78,8 @@ public class Song_Serenity extends Song
 		&&(msg.target() instanceof MOB)
 		&&((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			||((msg.tool() instanceof Ability)&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
-		&&(CMLib.dice().rollPercentage()>((msg.source().phyStats().level()-affected.phyStats().level()-getXLEVELLevel(invoker()))*20))
+		&&((invoker()==null)
+			||(CMLib.dice().rollPercentage()>((msg.source().phyStats().level()-invoker().phyStats().level()-getXLEVELLevel(invoker()))*20)))
 		)
 		{
 			if((msg.tool() instanceof Ability)
