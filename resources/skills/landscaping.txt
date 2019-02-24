@@ -1,16 +1,74 @@
-Demolish	1	25	0		DIR	DEMOLISH	Plains	-		demolishing		Demolishes something, which has different effects.
-Title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
-Description	1	10	0			DESC	NA	-	-	description		Long elaborate description of the room details.
-Barrier	1	25	100		DIR	WALL	NA	-		barrier @x1		Blocks entry or exit between two places.
-Desert	10	113	1500	SAND	OUTDOOR	ROOM	Desert	0		desert		Turns a place into a dry hot sandy one.
-Hills	25	225	3000	ROCK	OUTDOOR	ROOM	Hills	0		hills		Turns a place into a green hilly one.
-Jungle	20	188	2500	WOODEN	OUTDOOR	ROOM	Jungle	0		jungle		Turns a place into a deep green jungle.
-Mountains	30	6000	5000	ROCK	OUTDOOR	ROOM	Mountains	0		mountains		Turns a place into a tall mountenous one.
-Cave	17	169	2250	ROCK	OUTDOOR	ROOM	CaveRoom	0		cave		Turns a room into an indoor cave room.
 Plains	1	5	1000	VEGETATION	OUTDOOR	ROOM	Plains	0		plains		Turns a place into a flat green one.
+Description	1	10	0			DESC	NA	-	-	description		Long elaborate description of the room details.
+Title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
+Demolish	1	25	0		DIR	DEMOLISH	Plains	-		demolishing		Demolishes something, which has different effects.
+Barrier	1	25	100		DIR	WALL	NA	-		barrier @x1		Blocks entry or exit between two places.
 Road	1	38	500	ROCK	OUTDOOR	ROOM	Road	0		road		Turns a place into an easily travellable one.
-CityStreet	1	38	500	ROCK	OUTDOOR	ROOM	CityStreet	0		city street		Turns a place into a city street.
+CityStreet	5	38	500	ROCK	OUTDOOR	ROOM	CityStreet	0		city street		Turns a place into a city street.
+Forest	3	112	750	WOODEN	OUTDOOR	ROOM	Woods	0		forest		Turns a place into a deep green forest.
 Shallow Water	5	75	1000	SAND	OUTDOOR	ROOM	ShallowWater	0		shallow water		Turns outdoor room into a very wet outdoor room.
 Shore	7	94	1250	SAND	OUTDOOR	ROOM	Shore	0		shore		Turns a place into a sandy shore by the water.
+Desert	10	113	1500	SAND	OUTDOOR	ROOM	Desert	0		desert		Turns a place into a dry hot sandy one.
 Swamp	15	150	2000	VEGETATION	OUTDOOR	ROOM	Swamp	0		swamp		Turns a place into a very wet hot green mucky one.
-Forest	3	112	750	WOODEN	OUTDOOR	ROOM	Woods	0		forest		Turns a place into a deep green forest.
+Cave	17	169	2250	ROCK	OUTDOOR	ROOM	CaveRoom	0		cave		Turns a room into an indoor cave room.
+Jungle	20	188	2500	WOODEN	OUTDOOR	ROOM	Jungle	0		jungle		Turns a place into a deep green jungle.
+Hills	25	225	3000	ROCK	OUTDOOR	ROOM	Hills	0		hills		Turns a place into a green hilly one.
+Mountains	30	6000	5000	ROCK	OUTDOOR	ROOM	Mountains	0		mountains		Turns a place into a tall mountenous one.
+Long Road	10	40	600	ROCK	OUTDOOR	ROOM	LongRoad	0		longroad		Turns an outdoor room into a long road which takes more movement to traverse.
+Longer Road	20	50	750	ROCK	OUTDOOR	ROOM	LongerRoad	0		longer road		Turns an outdoor room into a very long road which takes more movement to traverse.
+Longest Road	30	60	1000	ROCK	OUTDOOR	ROOM	LongestRoad	0		longest road		Turns an outdoor room into an extremely long road which takes more movement to traverse.
+Till Land	22	150	0		OUTDOOR	DELEFFECT			ResourceOverride()	land clearing		Removes any artificial crop restrictions.
+Tomato Field	24	100	250	TOMATOES	OUTDOOR	ROOMEFFECT			ResourceOverride(Tomatoes)	planting tomatoes		Makes an outdoor room only produce tomato resources.
+Pepper Field	26	102	250	PEPPERS	OUTDOOR	ROOMEFFECT			ResourceOverride(Peppers)	planting peppers		Makes an outdoor room only produce pepper resources.
+Apple Orchard	27	104	250	APPLES	OUTDOOR	ROOMEFFECT			ResourceOverride(Apples)	planting apples		Makes an outdoor room only with only apple trees.
+Potato Field	28	106	250	POTATOES	OUTDOOR	ROOMEFFECT			ResourceOverride(Potatoes)	planting potatoes		Makes an outdoor room only produce potato resources.
+Barrelstalk Grove	29	108	250	MUSHROOMS	CAVEONLY	ROOMEFFECT			ResourceOverride(Mushrooms)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Foraging mask=mushrooms name="a pound of barrelstalk" display="a pound of barrelstalk is here" material=mushrooms subtype=barrelstalk)	planting barrelstalk	-ANYCLASS +Delver	Makes an cave room only produce barrelstalk resources.
+Cotton Field	30	110	250	COTTON	OUTDOOR	ROOMEFFECT			ResourceOverride(Cotton)	planting cotton		Makes an outdoor room only produce cotton resources.
+Wheat Field	32	112	250	WHEAT	OUTDOOR	ROOMEFFECT			ResourceOverride(Wheat)	planting wheat		Makes an outdoor room only produce wheat resources.
+Nut Orchard	33	114	250	NUTS	OUTDOOR	ROOMEFFECT			ResourceOverride(Nuts)	planting nuts		Makes an outdoor room only with only nut trees.
+Rice Paddy	34	116	250	RICE	OUTDOOR	ROOMEFFECT			ResourceOverride(Rice)	planting rice		Makes an outdoor room only produce rice resources.
+Kes Grove	35	118	250	CARROTS	CAVEONLY	ROOMEFFECT			ResourceOverride(Carrots)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Foraging mask=carrots name="a pound of kes" display="a pound of kes is here" material=carrots subtype=kes)	planting kes	-ANYCLASS +Delver	Makes an cave room only produce kes resources.
+Corn Field	36	120	250	CORN	OUTDOOR	ROOMEFFECT			ResourceOverride(Corn)	planting corn		Makes an outdoor room only produce corn resources.
+Carrot Field	38	122	250	CARROTS	OUTDOOR	ROOMEFFECT			ResourceOverride(Carrots)	planting carrots		Makes an outdoor room only produce carrot resources.
+Lemon Orchard	39	124	250	LEMONS	OUTDOOR	ROOMEFFECT			ResourceOverride(Lemons)	planting lemons		Makes an outdoor room only with only lemon trees.
+Bean Field	40	126	250	BEANS	OUTDOOR	ROOMEFFECT			ResourceOverride(Beans)	planting beans		Makes an outdoor room only produce bean resources.
+Suls Patch	41	128	250	POTATOES	CAVEONLY	ROOMEFFECT			ResourceOverride(Potatoes)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Foraging mask=potatoes name="a pound of suls" display="a pound of suls is here" material=potatoes subtype=suls)	planting suls	-RACE +Drow	Makes an cave room only produce suls resources.
+Leafy Greens Field	42	130	250	GREENS	OUTDOOR	ROOMEFFECT			ResourceOverride(Greens)	planting greens		Makes an outdoor room only produce leafy greens resources.
+Onion Field	44	132	250	ONIONS	OUTDOOR	ROOMEFFECT			ResourceOverride(Onions)	planting onions		Makes an outdoor room only produce onion resources.
+Orange Orchard	45	134	250	ORANGES	OUTDOOR	ROOMEFFECT			ResourceOverride(Oranges)	planting oranges		Makes an outdoor room only with only orange trees.
+Mushroom Grove	46	136	250	MUSHROOMS	CAVEONLY	ROOMEFFECT			ResourceOverride(Mushrooms)	planting mushrooms		Makes an cave room only produce mushroom resources.
+Firelichen Grove	47	138	250	FUNGUS	CAVEONLY	ROOMEFFECT			ResourceOverride(Fungus)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Foraging mask=fungus name="a pound of firelichen" display="a pound of firelichen is here" material=fungus subtype=firelichen)	planting firelichen	-ANYCLASS +Delver	Makes an cave room only produce firelichen resources.
+Flower Garden	48	140	250	FLOWERS	OUTDOOR	ROOMEFFECT			ResourceOverride(Flowers)	planting flowers		Makes an outdoor room only produce flower resources.
+Coffeebean Field	50	142	250	COFFEEBEANS	OUTDOOR	ROOMEFFECT			ResourceOverride(Coffeebeans)	planting coffeebeans		Makes an outdoor room only produce coffeebeans resources.
+Coconut Orchard	51	144	250	COCONUTS	OUTDOOR	ROOMEFFECT			ResourceOverride(Coconuts)	planting coconuts		Makes an outdoor room only with only coconut trees.
+Sugar Field	52	146	250	SUGAR	OUTDOOR	ROOMEFFECT			ResourceOverride(Sugar)	planting sugar		Makes an outdoor room only produce sugar resources.
+Trillimac Grove	53	148	250	MUSHROOMS	CAVEONLY	ROOMEFFECT			ResourceOverride(Mushrooms)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Foraging mask=mushrooms name="a pound of trillimac" display="a pound of trillimac is here" material=mushrooms subtype=trillimac)	planting trillimac	-ANYCLASS +Delver	Makes an cave room only produce trillimac resources.
+Strawberry Field	54	150	250	STRAWBERRIES	OUTDOOR	ROOMEFFECT			ResourceOverride(Strawberries)	planting strawberries		Makes an outdoor room only produce strawberry resources.
+Barley Field	56	152	250	BARLEY	OUTDOOR	ROOMEFFECT			ResourceOverride(Barley)	planting barley		Makes an outdoor room only produce barley resources.
+Lime Orchard	57	154	250	LIMES	OUTDOOR	ROOMEFFECT			ResourceOverride(Limes)	planting limes		Makes an outdoor room only with only lime trees.
+Cocoa Field	58	156	250	COCOA	OUTDOOR	ROOMEFFECT			ResourceOverride(Cocoa)	planting cocoa		Makes an outdoor room only produce cocoa resources.
+Tur-pah Patch	59	158	250	GREENS	CAVEONLY	ROOMEFFECT			ResourceOverride(Greens)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Foraging mask=greens name="a pound of tur-pah" display="a pound of tur-pah is here" material=greens subtype=tur-pah)	planting tur-pah	-ANYCLASS +Delver	Makes an cave room only produce tur-pah resources.
+Hemp Field	60	160	250	HEMP	OUTDOOR	ROOMEFFECT			ResourceOverride(Hemp)	planting hemp		Makes an outdoor room only produce hemp resources.
+Hops field	62	162	250	HOPS	OUTDOOR	ROOMEFFECT			ResourceOverride(Hops)	planting hops		Makes an outdoor room only produce hops resources.
+Pineapple Plantation	63	164	250	PINEAPPLES	OUTDOOR	ROOMEFFECT			ResourceOverride(Pineapples)	planting pineapples		Makes an outdoor room only produce pineapple resources.
+Olive Field	64	166	250	OLIVES	OUTDOOR	ROOMEFFECT			ResourceOverride(Olives)	planting olives		Makes an outdoor room only produce olive resources.
+Fellroot Patch	65	168	250	POTATOES	CAVEONLY	ROOMEFFECT			ResourceOverride(Potatoes)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Foraging mask=potatoes name="a pound of fellroot" display="a pound of fellroot is here" material=potatoes subtype=fellroot)	planting fellroot	-ANYCLASS +Delver	Makes an cave room only produce fellroot resources.
+Pipeweed Plantation	66	170	250	PIPEWEED	OUTDOOR	ROOMEFFECT			ResourceOverride(Pipeweed)	planting pipeweed		Makes an outdoor room only produce pipeweed resources.
+Raspberry Field	68	172	250	RASPBERRIES	OUTDOOR	ROOMEFFECT			ResourceOverride(Raspberries)	planting raspberries		Makes an outdoor room only produce raspberry resources.
+Banana Orchard	69	174	250	BANANAS	OUTDOOR	ROOMEFFECT			ResourceOverride(Bananas)	planting bananas		Makes an outdoor room only with only banana trees.
+Herb Garden	70	176	250	HERBS	OUTDOOR	ROOMEFFECT			ResourceOverride(Herbs)	planting herbs		Makes an outdoor room only produce herb resources.
+Zurkhwood Grove	71	178	250	WOOD	CAVEONLY	ROOMEFFECT			ResourceOverride(wood)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Chopping mask=wood name="a pound of zurkhwood" display="a pound of zurkhwood is here" material=wood subtype=zurkhwood)	planting zurkhwood	-ANYCLASS +Delver	Makes an cave room only produce zurkhwood resources.
+Blueberry Field	72	180	250	BLUEBERRIES	OUTDOOR	ROOMEFFECT			ResourceOverride(Blueberries)	planting blueberries		Makes an outdoor room only produce blueberry resources.
+Date Field	74	182	250	DATES	OUTDOOR	ROOMEFFECT			ResourceOverride(Dates)	planting dates		Makes an outdoor room only produce date resources.
+Peach Orchard	75	184	250	PEACHES	OUTDOOR	ROOMEFFECT			ResourceOverride(Peaches)	planting peaches		Makes an outdoor room only with only peach trees.
+Blackberry Field	76	186	250	BLACKBERRIES	OUTDOOR	ROOMEFFECT			ResourceOverride(Blackberries)	planting blackberries		Makes an outdoor room only produce blackberry resources.
+Waterorb Grove	77	188	250	FUNGUS	CAVEONLY	ROOMEFFECT			ResourceOverride(Fungus)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Foraging mask=fungus name="a pound of waterorb" display="a pound of waterorb is here" material=fungus subtype=waterorb)	planting waterorb	-ANYCLASS +Delver	Makes an cave room only produce waterorb resources.
+Cranberry Field	78	190	250	CRANBERRIES	OUTDOOR	ROOMEFFECT			ResourceOverride(Cranberries)	planting cranberries		Makes an outdoor room only produce cranberry resources.
+Vineyard	80	192	250	GRAPES	OUTDOOR	ROOMEFFECT			ResourceOverride(Grapes)	planting grapes		Makes an outdoor room only with only grape vines.
+Cherry Orchard	81	194	250	CHERRIES	OUTDOOR	ROOMEFFECT			ResourceOverride(Cherries)	planting cherries		Makes an outdoor room only with only cherry trees.
+Boysenberry Field	82	196	250	BOYSENBERRIES	OUTDOOR	ROOMEFFECT			ResourceOverride(Boysenberries)	planting boysenberries		Makes an outdoor room only produce boysenberry resources.
+Underwood Grove	83	198	250	WOOD	CAVEONLY	ROOMEFFECT			ResourceOverride(Wood)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Chopping mask=wood name="a pound of underwood" display="a pound of underwood is here" material=wood subtype=underwood)	planting underwood	-ANYCLASS +Delver	Makes an cave room only produce underwood resources.
+Cactus Field	84	200	250	CACTUS	OUTDOOR	ROOMEFFECT			ResourceOverride(Cactus)	planting cactus		Makes an outdoor room only produce cactus resources.
+Plum Orchard	87	202	250	PLUMS	OUTDOOR	ROOMEFFECT			ResourceOverride(Plums)	planting plums		Makes an outdoor room only with only plum trees.
+Bluecap Grove	89	204	250	MUSHROOMS	CAVEONLY	ROOMEFFECT			ResourceOverride(Mushrooms)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Foraging mask=mushrooms name="a pound of bluecap" display="a pound of bluecap is here" material=mushrooms subtype=bluecap)	planting bluecap	-ANYCLASS +Delver	Makes an cave room only produce bluecap resources.
+Crystal Cluster	90	206	250	CRYSTAL	CAVEONLY	ROOMEFFECT			ResourceOverride(Crystal)	growing crystals	-ANYCLASS +Delver	Makes an cave room only produce crystal resources.
