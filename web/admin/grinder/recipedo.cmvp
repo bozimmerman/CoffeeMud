@@ -20,14 +20,20 @@
     window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=SAVE@
+	@AddRequestParameter?FUNCTION=@
     var v='@AbilityRecipeData?SAVEROW@';
     if((v != '')&&(alert))
+    {
         alert(v);
+        document.location.href='recipe.cmvp?@RequestParametersEncoded@';
+    }
     else
     if(alert)
+    {
         alert('Recipe created/modified.');
-    opener.Refresh();
-    window.close();
+        opener.Refresh();
+        window.close();
+    }
 @endif@
 //-->
 </SCRIPT>
