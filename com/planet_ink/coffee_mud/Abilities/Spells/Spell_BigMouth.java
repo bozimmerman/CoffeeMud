@@ -90,47 +90,49 @@ public class Spell_BigMouth extends Spell
 			final CMMsg maliciousNessMsg=CMClass.getMsg(msg.source(), msg.target(), CMMsg.MSG_OK_ACTION | CMMsg.MASK_MALICIOUS, null);
 			final int targetWeight = (msg.target() instanceof MOB) ? ((MOB)msg.target()).baseWeight() : ((Physical)msg.target()).phyStats().weight();
 			if((targetWeight<(mob.baseWeight()/3))
-			&&(mob.location()!=null)
-			&&(mob.location().okMessage(myHost, maliciousNessMsg)))
+			&&(mob.location()!=null))
 			{
-				final int maxInhabitants=1+((mob.fetchAbility(ID())!=null)?super.getXLEVELLevel(mob):0);
-				if((Stomach()!=null)&&(Stomach().numInhabitants()>maxInhabitants))
+				if(mob.location().okMessage(myHost, maliciousNessMsg))
 				{
-					mob.tell(L("Your stomach is too full."));
-					return false;
-				}
-
-				if(msg.target() instanceof MOB)
-				{
-					final MOB target=(MOB)msg.target();
-					final boolean isHit=CMLib.combat().rollToHit(msg.source(),target);
-					if(!isHit)
+					final int maxInhabitants=1+((mob.fetchAbility(ID())!=null)?super.getXLEVELLevel(mob):0);
+					if((Stomach()!=null)&&(Stomach().numInhabitants()>maxInhabitants))
 					{
-						mob.tell(L("You fail to eat @x1.",target.name(mob)));
-						if((!target.isInCombat())&&(target.isMonster())&&(target!=msg.source())
-						&&(target.location()==msg.source().location())&&(target.location().isInhabitant(msg.source()))
-						&&(CMLib.flags().canBeSeenBy(msg.source(),target)))
-							CMLib.combat().postAttack(target,msg.source(),target.fetchWieldedItem());
+						mob.tell(L("Your stomach is too full."));
 						return false;
 					}
-				}
-				else
-				if(msg.target() instanceof Food)
-					return super.okMessage(myHost,msg);
-				else
-				if(!(msg.target() instanceof Item))
-					return super.okMessage(myHost,msg);
-				else
-				if((!CMLib.flags().isGettable((Item)msg.target()))||(msg.target().displayText().length()==0))
-				{
-					mob.tell(L("You can not eat @x1.",((Item)msg.target()).name(mob)));
-					return false;
-				}
 
-				msg.modify(msg.source(),msg.target(),msg.tool(),
-						   msg.sourceCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.sourceMessage(),
-						   CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,msg.targetMessage(),
-						   msg.othersCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.othersMessage());
+					if(msg.target() instanceof MOB)
+					{
+						final MOB target=(MOB)msg.target();
+						final boolean isHit=CMLib.combat().rollToHit(msg.source(),target);
+						if(!isHit)
+						{
+							mob.tell(L("You fail to eat @x1.",target.name(mob)));
+							if((!target.isInCombat())&&(target.isMonster())&&(target!=msg.source())
+							&&(target.location()==msg.source().location())&&(target.location().isInhabitant(msg.source()))
+							&&(CMLib.flags().canBeSeenBy(msg.source(),target)))
+								CMLib.combat().postAttack(target,msg.source(),target.fetchWieldedItem());
+							return false;
+						}
+					}
+					else
+					if(msg.target() instanceof Food)
+						return super.okMessage(myHost,msg);
+					else
+					if(!(msg.target() instanceof Item))
+						return super.okMessage(myHost,msg);
+					else
+					if((!CMLib.flags().isGettable((Item)msg.target()))||(msg.target().displayText().length()==0))
+					{
+						mob.tell(L("You can not eat @x1.",((Item)msg.target()).name(mob)));
+						return false;
+					}
+
+					msg.modify(msg.source(),msg.target(),msg.tool(),
+							   msg.sourceCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.sourceMessage(),
+							   CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,msg.targetMessage(),
+							   msg.othersCode()|CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS,msg.othersMessage());
+				}
 
 			}
 			else
