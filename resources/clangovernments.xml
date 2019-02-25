@@ -1101,7 +1101,7 @@
 </CLANTYPE>
 <CLANTYPE TYPEID=8 NAME="CO-OP" CATEGORY="">
     <SHORTDESC>neither boss can tax, order underlings, or do clan relations</SHORTDESC>
-    <LONGDESC>The Co-op is run by house mother and father, who can not engage in war or alliance with other clans, tax the members, or order their underlings.</LONGDESC>
+    <LONGDESC>The Co-op is run by house mother and father, who can not engage in war or alliance with other clans, change the 10% tax rate, or order their underlings.</LONGDESC>
     <POSITIONS>
         <POSITION ID="HOUSE MOTHER" ROLEID=3 RANK=0 NAME="HOUSE MOTHER" PLURAL="HOUSE MOTHERS" MAX=1 INNERMASK="-GENDER +FEMALE" PUBLIC="true">
             <POWER>ACCEPT</POWER>
