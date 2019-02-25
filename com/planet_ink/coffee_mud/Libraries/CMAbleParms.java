@@ -3271,7 +3271,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					}
 					str.append("<TR><TD WIDTH=50%>");
 					str.append("\n\r<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+fieldName+"_AFFECT"+(spells.size()+1)+">");
-					str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
+					str.append("<OPTION SELECTED VALUE=\"\">Select Effect/Behavior");
 					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
