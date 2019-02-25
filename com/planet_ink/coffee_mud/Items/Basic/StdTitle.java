@@ -466,7 +466,7 @@ public class StdTitle extends StdItem implements LandTitle
 				else
 				if(owner instanceof MOB)
 				{
-					final PlayerStats pStats = ((MOB)owner()).playerStats();
+					final PlayerStats pStats = ((MOB)owner).playerStats();
 					if(pStats != null)
 						pStats.getExtItems().delItem(I);
 				}
@@ -494,11 +494,11 @@ public class StdTitle extends StdItem implements LandTitle
 				else
 				if(owner instanceof MOB)
 				{
-					final PlayerStats pStats = ((MOB)owner()).playerStats();
+					final PlayerStats pStats = ((MOB)owner).playerStats();
 					if((pStats != null)
 					&&(!pStats.getExtItems().isContent(I)))
 					{
-						I.setSavable(false); // if the clan is saving it, rooms are NOT.
+						I.setSavable(false); // if the pstats is saving it, rooms are NOT.
 						pStats.getExtItems().addItem(I);
 					}
 				}

@@ -809,8 +809,25 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 						return;
 					}
 					CMLib.tech().unregisterAllElectronics(CMLib.tech().getElectronicsKey(me.getShipArea()));
+					final String oldName=me.Name();
 					me.renameShip(this.input.trim());
 					buyer.tell(L("@x1 is now signed over to @x2.",name(),getOwnerName()));
+					for(final Enumeration<Item> i=buyer.items();i.hasMoreElements();)
+					{
+						final Item I=i.nextElement();
+						if(I.ID().equalsIgnoreCase("GenTitle")
+						&&(I instanceof LandTitle))
+						{
+							final LandTitle L=(LandTitle)I;
+							if(L.landPropertyID().equals(oldName))
+							{
+								L.setName("");
+								L.setLandPropertyID(me.Name());
+								L.text(); // everything else is derived from the ship itself
+								I.recoverPhyStats();
+							}
+						}
+					}
 					final Room finalR=findNearestDocks(R);
 					if(finalR==null)
 					{
