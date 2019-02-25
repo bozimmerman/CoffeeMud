@@ -89,7 +89,7 @@ public class Spell_BigMouth extends Spell
 		{
 			final CMMsg maliciousNessMsg=CMClass.getMsg(msg.source(), msg.target(), CMMsg.MSG_OK_ACTION | CMMsg.MASK_MALICIOUS, null);
 			final int targetWeight = (msg.target() instanceof MOB) ? ((MOB)msg.target()).baseWeight() : ((Physical)msg.target()).phyStats().weight();
-			if((targetWeight<(mob.phyStats().weight()/3))
+			if((targetWeight<(mob.baseWeight()/3))
 			&&(mob.location()!=null)
 			&&(mob.location().okMessage(myHost, maliciousNessMsg)))
 			{
