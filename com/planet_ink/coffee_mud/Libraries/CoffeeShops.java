@@ -519,9 +519,29 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		// the price is 200% at 0 charisma, and 100% at 35
 		if(seller.isMonster() && (!CMLib.flags().isGolem(seller)))
 		{
+			final int buyerCha=buyer.charStats().getStat(CharStats.STAT_CHARISMA);
+			final int buyerMaxCha=buyer.charStats().getMaxStat(CharStats.STAT_CHARISMA);
+			final int buyerAdjCha;
+			final int buyerExtraCha;
+			if(buyerCha > buyerMaxCha)
+			{
+				buyerAdjCha = buyerMaxCha;
+				buyerExtraCha = buyerCha - buyerMaxCha;
+			}
+			else
+			{
+				buyerAdjCha = buyerCha;
+				buyerExtraCha = 0;
+			}
+			final int sellerMaxWis=buyer.charStats().getMaxStat(CharStats.STAT_WISDOM);
+			int sellerWis=seller.charStats().getStat(CharStats.STAT_WISDOM);
+			if(sellerWis < 3)
+				sellerWis = 3;
+			if(sellerWis > sellerMaxWis)
+				sellerWis = sellerMaxWis;
 			val.absoluteGoldPrice=val.absoluteGoldPrice
 								 +val.absoluteGoldPrice
-								 -CMath.mul(val.absoluteGoldPrice,CMath.div(buyer.charStats().getStat(CharStats.STAT_CHARISMA),35.0));
+								 -(buyerAdjCha/(10*sellerWis)+(buyerExtraCha/20*buyerMaxCha));
 		}
 
 		if(includeSalesTax)
