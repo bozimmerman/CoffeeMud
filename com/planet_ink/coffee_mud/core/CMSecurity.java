@@ -203,7 +203,7 @@ public class CMSecurity
 		for(final Enumeration<Object> e=page.keys();e.hasMoreElements();)
 		{
 			final String key=(String)e.nextElement();
-			if(key.startsWith("GROUP_"))
+			if(key.toUpperCase().startsWith("GROUP_"))
 			{
 				final String groupName=key.substring(6).trim().toUpperCase();
 				allGroups.add(new Pair<String,String>(groupName,(String)page.get(key)));
