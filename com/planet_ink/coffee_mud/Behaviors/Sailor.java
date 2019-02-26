@@ -428,10 +428,17 @@ public class Sailor extends StdBehavior
 				if(loyalShipItem==null)
 					return true;
 
+				final boolean inShipCombat = this.isMyShipInCombat(mob);
+				if((inShipCombat)
+				&&(this.targetShipItem==null)
+				&&(loyalShipItem instanceof SailingShip)
+				&&(((SailingShip)loyalShipItem).getCombatant() instanceof Rideable))
+					this.targetShipItem = (Rideable)((SailingShip)loyalShipItem).getCombatant();
+
 				boolean amIInCombat = mob.isInCombat();
 				if((defender || boarder)&&(!amIInCombat))
 				{
-					if(this.isMyShipInCombat(mob))
+					if(inShipCombat)
 					{
 						if(mobRoom.numInhabitants()>1)
 						{
