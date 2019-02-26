@@ -544,7 +544,6 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				if((msg.tool() instanceof Physical)
 				&&(getShop().doIHaveThisInStock(msg.tool().Name(),mob)))
 				{
-
 					CMLib.commands().postSay(merchantM,msg.source(),L("Interested in @x1? Here is some information for you:\n\rLevel @x2\n\rDescription: @x3",msg.tool().name(),""+((Physical)msg.tool()).phyStats().level(),msg.tool().description()),true,false);
 				}
 				break;

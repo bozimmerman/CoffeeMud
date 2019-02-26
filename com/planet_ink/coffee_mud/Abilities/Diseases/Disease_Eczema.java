@@ -113,7 +113,7 @@ public class Disease_Eczema extends Disease
 	@Override
 	protected String DISEASE_AFFECT()
 	{
-		return L("<S-NAME> scratch(es) <S-HIM-HER> skin.");
+		return L("<S-NAME> scratch(es) <S-HIS-HER> skin.");
 	}
 
 	@Override
