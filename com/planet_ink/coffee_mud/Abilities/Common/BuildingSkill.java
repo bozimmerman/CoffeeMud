@@ -836,6 +836,26 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			CMLib.database().DBCreateRoom(newRoom);
 			if(newTitle!=null)
 			{
+				if(newTitle.gridLayout())
+				{
+					final PairVector<Room,int[]> rooms=CMLib.tracking().buildGridList(newRoom, newTitle.getOwnerName(), 100);
+					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					{
+						if(d==Directions.GATE)
+							continue;
+						Room R3=newRoom.getRoomInDir(d);
+						if(R3 == null)
+						{
+							R3=CMLib.tracking().getCalculatedAdjacentRoom(rooms, R3, d);
+							if(R3!=null)
+							{
+								newRoom.rawDoors()[d]=R3;
+								if(R3.rawDoors()[Directions.getOpDirectionCode(d)]==null)
+									R3.rawDoors()[Directions.getOpDirectionCode(d)]=newRoom;
+							}
+						}
+					}
+				}
 				CMLib.law().colorRoomForSale(newRoom, newTitle, true);
 				newTitle.updateLot(null);
 			}
