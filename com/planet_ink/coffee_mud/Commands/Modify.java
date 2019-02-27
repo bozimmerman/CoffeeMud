@@ -1448,11 +1448,22 @@ public class Modify extends StdCommand
 		M.basePhyStats().copyInto(copyMOB.basePhyStats());
 		M.phyStats().copyInto(copyMOB.phyStats());
 		mob.location().delInhabitant(copyMOB); //necc because location is cleared later, before destroy is called.
+		if(M.location()!=null)
+			M.location().delInhabitant(copyMOB); //necc because location is cleared later, before destroy is called.
 		if(commands.size()<4)
 		{
 			CMLib.genEd().modifyPlayer(mob,M,-1);
 			if(!copyMOB.sameAs(M))
-				Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+".");
+			{
+				final StringBuilder changed=new StringBuilder("");
+				final String[] codes = M.getStatCodes();
+				for (int i = 0; i < codes.length; i++)
+				{
+					if (!M.getStat(codes[i]).equals(copyMOB.getStat(codes[i])))
+						changed.append(codes[i]).append(" ");
+				}
+				Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+": "+changed.toString()+".");
+			}
 		}
 		else
 		{
