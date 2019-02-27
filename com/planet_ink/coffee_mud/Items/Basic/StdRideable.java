@@ -873,6 +873,7 @@ public class StdRideable extends StdContainer implements Rideable
 						public void run()
 						{
 							msg.source().tell(visualCondition.toString());
+							msg.trailerRunnables().remove(this);
 						}
 					});
 				}

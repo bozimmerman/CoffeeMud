@@ -84,10 +84,13 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
-		if(usesRemaining()>0)
-			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
-		else
-			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FALLING);
+		if(owner instanceof Room)
+		{
+			if(usesRemaining()>0)
+				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
+			else
+				phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FALLING);
+		}
 	}
 
 	@Override
@@ -1855,7 +1858,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	public static void appendCondition(final StringBuilder visualCondition, final double pct, final String name)
 	{
 		if(pct<=0.0)
-			visualCondition.append(staticL("\n\r^r@x1^r is SINKING!^N",name));
+			visualCondition.append(staticL("\n\r^r@x1^r is nothing but wreckage!^N",name));
 		else
 		if(pct<.10)
 			visualCondition.append(staticL("\n\r^r@x1^r is near destruction!^N",name));
@@ -1954,6 +1957,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						public void run()
 						{
 							msg.source().tell(visualCondition.toString());
+							msg.trailerRunnables().remove(this);
 						}
 					});
 				}
