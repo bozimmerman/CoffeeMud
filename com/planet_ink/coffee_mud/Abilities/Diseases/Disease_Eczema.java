@@ -137,7 +137,6 @@ public class Disease_Eczema extends Disease
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,DISEASE_AFFECT());
-			catchIt(mob);
 			return true;
 		}
 		return true;
