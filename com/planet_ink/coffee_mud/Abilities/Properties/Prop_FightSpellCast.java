@@ -95,7 +95,7 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 			{
 				if(CMLib.combat().isAShipSiegeWeapon(myItem)
 				&&(msg.target() instanceof MOB))
-					addMeIfNeccessary(msg.source(),(MOB)msg.target(),true,0,maxTicks);
+					addMeIfNeccessary(msg.source(),(MOB)msg.target(),false,0,maxTicks);
 				else
 				if((myItem.amBeingWornProperly())
 				&&(myItem.owner() instanceof MOB)
@@ -110,12 +110,12 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 						&&(msg.tool()==myItem)
 						&&(myItem.amWearingAt(Wearable.WORN_WIELD))
 						&&(msg.amISource(mob)))
-							addMeIfNeccessary(msg.source(),(MOB)msg.target(),true,0,maxTicks);
+							addMeIfNeccessary(msg.source(),(MOB)msg.target(),false,0,maxTicks);
 						else
 						if((msg.amITarget(mob))
 						&&(!myItem.amWearingAt(Wearable.WORN_WIELD))
 						&&(!(myItem instanceof Weapon)))
-							addMeIfNeccessary(mob,mob,true,0,maxTicks);
+							addMeIfNeccessary(mob,mob,false,0,maxTicks);
 					}
 				}
 				else
