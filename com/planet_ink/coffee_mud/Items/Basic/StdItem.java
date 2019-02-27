@@ -1431,6 +1431,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_JUSTICE:
 		case CMMsg.TYP_WAND_USE:
 		case CMMsg.TYP_RECIPELEARNED:
+		case CMMsg.TYP_COLD: // free metal
 		case CMMsg.TYP_ACID: // slime
 		case CMMsg.TYP_FIRE: // lighting
 		case CMMsg.TYP_WATER: // rust
