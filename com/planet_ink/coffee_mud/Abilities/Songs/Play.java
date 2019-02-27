@@ -568,13 +568,13 @@ public class Play extends StdAbility
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		final boolean replay = mob.fetchEffect(ID())!=null;
+		final int newDepth = this.calculateNewSongDepth(mob);
 		unPlayAll(mob,mob,false,false);
 		if(success)
 		{
 			invoker=mob;
 			originRoom=mob.location();
 			final int oldDepth = this.playDepth;
-			final int newDepth = this.calculateNewSongDepth(mob);
 			commonRoomSet=getInvokerScopeRoomSet(newDepth);
 			this.playDepth = newDepth;
 			String songOfStr=L("@x1 on ",songOf());
