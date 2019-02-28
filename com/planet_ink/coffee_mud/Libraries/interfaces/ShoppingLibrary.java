@@ -37,11 +37,11 @@ public interface ShoppingLibrary extends CMLibrary
 	public String getViewDescription(MOB viewerM, Environmental E);
 	public double prejudiceValueFromPart(MOB customer, boolean sellTo, String part);
 	public double prejudiceFactor(MOB customer, String factors, boolean sellTo);
-	public ShopKeeper.ShopPrice sellingPrice(MOB seller, MOB buyer, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop, boolean includeSalesTax);
-	public ShopKeeper.ShopPrice pawningPrice(MOB seller, MOB buyer, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop);
+	public ShopKeeper.ShopPrice sellingPrice(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop, boolean includeSalesTax);
+	public ShopKeeper.ShopPrice pawningPrice(MOB buyerShopM, MOB sellerCustM, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop);
 	public double getSalesTax(Room homeRoom, MOB seller);
-	public boolean standardSellEvaluation(MOB seller, MOB buyer, Environmental product, ShopKeeper shop, double maxToPay, double maxEverPaid, boolean sellNotValue);
-	public boolean standardBuyEvaluation(MOB seller, MOB buyer, Environmental product, ShopKeeper shop, boolean buyNotView);
+	public boolean standardSellEvaluation(MOB buyerShopM, MOB sellerCustM, Environmental product, ShopKeeper shop, double maxToPay, double maxEverPaid, boolean sellNotValue);
+	public boolean standardBuyEvaluation(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shop, boolean buyNotView);
 	public String getListInventory(MOB seller,  MOB buyer, List<? extends Environmental> inventory, int limit, ShopKeeper shop, String mask);
 	public String findInnRoom(InnKey key, String addThis, Room R);
 	public MOB parseBuyingFor(MOB buyer, String message);
