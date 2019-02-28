@@ -72,23 +72,21 @@ public class Chant_SweetScent extends Chant
 		return Ability.CAN_ITEMS;
 	}
 
+	private final List<Room> rooms = new ArrayList<Room>();
+	private volatile int tickDown = 0;
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((affected!=null)&&(affected instanceof Item))
+		if((affected!=null)&&(affected instanceof Item)&&((tickDown--)<=0))
 		{
+			tickDown = 2;
 			final Item I=(Item)affected;
 			if(I.owner() instanceof Room)
 			{
 				final Room room=(Room)I.owner();
-				final ArrayList<Room> rooms=new ArrayList<Room>();
-				TrackingLibrary.TrackingFlags flags;
-				flags = CMLib.tracking().newFlags()
-						.plus(TrackingLibrary.TrackingFlag.OPENONLY);
-				final int range=10 + super.getXLEVELLevel(invoker())+(2*super.getXMAXRANGELevel(invoker()));
-				CMLib.tracking().getRadiantRooms(room,rooms,flags,null,range,null);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					final MOB M=room.fetchInhabitant(i);
@@ -171,7 +169,20 @@ public class Chant_SweetScent extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,0);
+				final Room room=CMLib.map().roomLocation(target);
+				if(room != null)
+				{
+					final Chant_SweetScent A = (Chant_SweetScent)beneficialAffect(mob,target,asLevel,0);
+					if(A!=null)
+					{
+						TrackingLibrary.TrackingFlags flags;
+						flags = CMLib.tracking().newFlags()
+								.plus(TrackingLibrary.TrackingFlag.OPENONLY);
+						final int range=10 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
+						A.rooms.clear();
+						CMLib.tracking().getRadiantRooms(room,A.rooms,flags,null,range,null);
+					}
+				}
 			}
 		}
 		else
