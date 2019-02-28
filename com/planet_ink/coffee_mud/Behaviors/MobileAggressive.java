@@ -46,7 +46,7 @@ public class MobileAggressive extends Mobile
 	@Override
 	public long flags()
 	{
-		return Behavior.FLAG_POTENTIALLYAGGRESSIVE | Behavior.FLAG_TROUBLEMAKING;
+		return Behavior.FLAG_POTENTIALLYAGGRESSIVE | Behavior.FLAG_TROUBLEMAKING | super.flags();
 	}
 
 	protected boolean			mobkill				= false;
