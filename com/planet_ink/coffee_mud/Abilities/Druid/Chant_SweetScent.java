@@ -100,17 +100,17 @@ public class Chant_SweetScent extends Chant
 					final Room R=rooms.get(r);
 					if(R!=room)
 					{
-						final int dir=CMLib.tracking().radiatesFromDir(R,rooms);
-						if(dir>=0)
+						for(int i=0;i<R.numInhabitants();i++)
 						{
-							for(int i=0;i<R.numInhabitants();i++)
+							final MOB M=R.fetchInhabitant(i);
+							if((M!=null)
+							&&(CMLib.flags().isAnimalIntelligence(M))
+							&&(!M.isInCombat())
+							&&((!M.isMonster())||(CMLib.flags().isMobile(M)))
+							&&(CMLib.flags().canSmell(M)))
 							{
-								final MOB M=R.fetchInhabitant(i);
-								if((M!=null)
-								&&(CMLib.flags().isAnimalIntelligence(M))
-								&&(!M.isInCombat())
-								&&((!M.isMonster())||(CMLib.flags().isMobile(M)))
-								&&(CMLib.flags().canSmell(M)))
+								final int dir=CMLib.tracking().radiatesFromDir(R,rooms);
+								if(dir>=0)
 								{
 									M.tell(M,null,null,L("You smell something irresistable @x1.",CMLib.directions().getInDirectionName(dir)));
 									if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_MIND))
