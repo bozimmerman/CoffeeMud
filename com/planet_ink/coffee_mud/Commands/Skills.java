@@ -87,7 +87,7 @@ public class Skills extends StdCommand
 				line.append("\n\rLevel ^!"+level+"^?:\n\r");
 				if(useWords)
 				{
-					final String message = this.getRPProficiencyStr(A.proficiency());
+					final String message = this.getRPProficiencyStr(A2.proficiency());
 					line.append(CMStrings.padRight("^<HELP^>"+A2.name()+"^</HELP^>",19));
 					line.append(" ("+CMStrings.padRight(message,3)+")");
 				}
