@@ -830,7 +830,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 				else
 				{
-					if((month==bmonth)&&(day==bday))
+					if((month==bmonth)
+					&&(day==bday)
+					&&(mob.getAgeMinutes() > 10))
 						mob.tell(L("Happy Birthday!"));
 					mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.baseCharStats().getStat(CharStats.STAT_AGE)+1);
 					mob.recoverCharStats();
