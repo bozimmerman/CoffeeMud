@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Int;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -59,6 +60,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	protected PairList<Item, int[]>		coordinates			= null;
 	protected PairList<Weapon, int[]>	aimings				= new PairVector<Weapon, int[]>();
 	protected List<Item>				smallTenderRequests	= new SLinkedList<Item>();
+	protected volatile Room				prevItemRoom		= null;
 
 	protected int					maxHullPoints	= -1;
 	protected volatile int			lastSpamCt		= 0;
@@ -1917,9 +1919,60 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		case CMMsg.TYP_COMMAND:
 			break;
 		default:
-			if((msg.source().riding()==this)
-			||(msg.othersMessage()==null)
-			)
+			if(msg.source().riding()==this)
+			{
+				sendAreaMessage(msg, true);
+				if((owner() instanceof Room)
+				&&(owner() != prevItemRoom)
+				&&(this.area instanceof BoardableShip))
+				{
+					final Room R = (Room)owner();
+					boolean fixSky=false;
+					final Room oldR;
+					synchronized(this)
+					{
+						oldR=this.prevItemRoom;
+						fixSky = ((R!=null)&&(R!=oldR)&&(oldR!=null));
+						if(oldR!=R)
+							this.prevItemRoom=R;
+					}
+					if(fixSky)
+					{
+						final boolean wasWater=CMLib.flags().isUnderWateryRoom(oldR);
+						final boolean isWater=CMLib.flags().isUnderWateryRoom(R);
+						final boolean isSunk = isWater && (R.getGridParent()!=null) && (R.getGridParent().roomID().length()==0);
+						if(wasWater || isSunk)
+						{
+							for(final Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
+							{
+								final Room inR=r.nextElement();
+								if(((inR.domainType()&Room.INDOORS)==0)
+								&&(inR.roomID().length()>0))
+								{
+									inR.clearSky();
+									if(isSunk)
+									{
+										if((inR.getRoomInDir(Directions.UP)==null)
+										&&(inR.getExitInDir(Directions.UP)==null))
+										{
+											inR.giveASky(0);
+											final Exit redirExit = CMClass.getExit("NamedRedirectable");
+											redirExit.setDisplayText(R.displayText());
+											redirExit.setDescription(R.displayText());
+											redirExit.lastRoomUsedFrom(R);
+											inR.setRawExit(Directions.UP, redirExit);
+										}
+									}
+									else
+										inR.giveASky(0);
+								}
+							}
+						}
+					}
+				}
+			}
+			else
+			if(msg.othersMessage()==null)
 				sendAreaMessage(msg, true);
 			else
 			{
@@ -2194,20 +2247,22 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	}
 
 	@Override
+	public void setExpirationDate(final long time)
+	{
+		// necessary because stdboardable protects its space ships in rooms
+		this.dispossessionTime=time;
+	}
+
+	@Override
 	public long expirationDate()
 	{
 		final Room R=CMLib.map().roomLocation(this);
 		if(R==null)
-			dispossessionTime = 0;
-		else
-		if(CMLib.flags().isUnderWateryRoom(R))
-		{
-			if(dispossessionTime == 0)
-				dispossessionTime = System.currentTimeMillis()+(CMProps.getIntVar(CMProps.Int.EXPIRE_PLAYER_DROP) * TimeManager.MILI_MINUTE);
-		}
-		else
-			dispossessionTime = 0;
-		return dispossessionTime;
+			return 0;
+		if((!CMLib.flags().isUnderWateryRoom(R))
+		&&(this.usesRemaining()>0))
+			return 0;
+		return super.expirationDate();
 	}
 
 	@Override
