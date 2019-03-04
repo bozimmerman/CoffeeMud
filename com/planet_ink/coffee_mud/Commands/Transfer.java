@@ -289,6 +289,36 @@ public class Transfer extends At
 		}
 		if(V.size()==0)
 		{
+			try
+			{
+				final ConvertingEnumeration<BoardableShip,Item> shipItems=new ConvertingEnumeration<BoardableShip,Item>(
+					new FilteredEnumeration<BoardableShip>(CMLib.map().ships(),new Filterer<BoardableShip>()
+					{
+						@Override
+						public boolean passesFilter(final BoardableShip obj)
+						{
+							return obj instanceof Item;
+						}
+					}),
+					new Converter<BoardableShip,Item>()
+					{
+						@Override
+						public Item convert(final BoardableShip obj)
+						{
+							return (Item)obj;
+						}
+					}
+				);
+				final Environmental E=CMLib.english().fetchEnvironmental(shipItems, searchName, false);
+				if(E instanceof Item)
+					V.add((Item)E);
+			}
+			catch (final NoSuchElementException nse)
+			{
+			}
+		}
+		if(V.size()==0)
+		{
 			mob.tell(L("Transfer what?  '@x1' is unknown to you.",searchName));
 			return false;
 		}
