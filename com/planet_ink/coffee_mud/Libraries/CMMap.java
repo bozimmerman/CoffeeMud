@@ -1130,6 +1130,25 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
+	public String getApproximateExtendedRoomID(final Room room)
+	{
+		if(room==null)
+			return "";
+		Room validRoom = CMLib.tracking().getNearestValidIDRoom(room);
+		if(validRoom != null)
+		{
+			if((validRoom instanceof GridLocale)
+			&&(validRoom.roomID()!=null)
+			&&(validRoom.roomID().length()>0))
+				validRoom=((GridLocale)validRoom).getRandomGridChild();
+			return getExtendedRoomID(validRoom);
+		}
+		if(room.getArea()!=null)
+			return room.getArea().Name()+"#?";
+		return "";
+	}
+
+	@Override
 	public String getExtendedTwinRoomIDs(final Room R1,final Room R2)
 	{
 		final String R1s=getExtendedRoomID(R1);

@@ -65,6 +65,7 @@ public interface TrackingLibrary extends CMLibrary
 	public void walkForced(MOB M, Room fromHere, Room toHere, boolean andFollowers, boolean forceLook, String msg);
 	public int findExitDir(MOB mob, Room R, String desc);
 	public int findRoomDir(MOB mob, Room R);
+	public Room getNearestValidIDRoom(final Room R);
 	public boolean isAnAdminHere(Room R, boolean sysMsgsOnly);
 	public void markToWanderHomeLater(MOB M);
 	public List<Integer> getShortestTrail(final List<List<Integer>> finalSets);

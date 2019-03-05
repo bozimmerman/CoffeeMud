@@ -343,6 +343,13 @@ public class MOBloader
 									newItem.setExpirationDate(expirationDate);
 									addToMOB=false;
 								}
+								else
+								if(newItem instanceof BoardableShip)
+								{
+									Log.errOut("Destroying "+newItem.name()+" on "+name+" because it has an invalid location '"+roomID+"'.");
+									newItem.destroy();
+									continue;
+								}
 							}
 						}
 					}
@@ -1409,8 +1416,20 @@ public class MOBloader
 					CMLib.catalog().updateCatalogIntegrity(thisItem);
 					final Item cont=thisItem.ultimateContainer(null);
 					final String sql=getDBItemUpdateString(mob,thisItem);
-					final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.map().isObjectInSpace((SpaceObject)thisItem)))?
-							("SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
+					final String roomID;
+					if((cont.owner()==null)
+					&&(thisItem instanceof SpaceObject)
+					&&(CMLib.map().isObjectInSpace((SpaceObject)thisItem)))
+						roomID="SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates());
+					else
+					if(cont.owner() instanceof Room)
+						roomID=CMLib.map().getApproximateExtendedRoomID((Room)cont.owner());
+					else
+					if((thisItem instanceof SpaceObject)
+					&&(CMLib.map().isObjectInSpace((SpaceObject)thisItem)))
+						roomID="SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates());
+					else
+						roomID="";
 					final String text="<ROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />"+thisItem.text();
 					if(!useBulkInserts)
 						strings.add(new DBPreparedBatchEntry(sql,text+" "));

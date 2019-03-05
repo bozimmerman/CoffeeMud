@@ -66,6 +66,7 @@ public interface WorldMap extends CMLibrary
 	public String getExtendedRoomID(final Room R);
 	public String getDescriptiveExtendedRoomID(final Room room);
 	public String getExtendedTwinRoomIDs(final Room R1,final Room R2);
+	public String getApproximateExtendedRoomID(final Room room);
 	public Room getRoom(Room room);
 	public Room getRoom(String calledThis);
 	public Room getRoom(Enumeration<Room> roomSet, String calledThis);

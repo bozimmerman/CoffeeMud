@@ -64,6 +64,25 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 	}
 
+	protected final RFilters emptyFilter = new DefaultRFilters();
+	protected final RFilter validIDFilter = new RFilter()
+	{
+		@Override
+		public boolean isFilteredOut(final Room hostR, final Room R, final Exit E, final int dir)
+		{
+			if(R==null)
+				return true;
+			if((R.roomID()!=null)
+			&&(R.roomID().length()>0))
+				return false;
+			if((R.getGridParent()!=null)
+			&&(R.getGridParent().roomID()!=null)
+			&&(R.getGridParent().roomID().length()>0))
+				return false;
+			return true;
+		}
+	};
+
 	protected static class DefaultRFilters implements RFilters
 	{
 		private RFilterNode head=null;
@@ -660,6 +679,16 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Room getNearestValidIDRoom(final Room R)
+	{
+		if(R==null)
+			return null;
+		if(!validIDFilter.isFilteredOut(R, R, null, 0))
+			return R;
+		return getRadiantRoomTarget(R, emptyFilter, validIDFilter);
 	}
 
 	@Override
