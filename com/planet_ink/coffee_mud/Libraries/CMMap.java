@@ -1811,12 +1811,25 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	protected void delShip(final BoardableShip oneToDel)
 	{
-		shipList.remove(oneToDel);
 		if(oneToDel!=null)
 		{
+			shipList.remove(oneToDel);
+			final Item shipI = oneToDel.getShipItem();
+			if(shipI instanceof BoardableShip)
+			{
+				final BoardableShip boardableShipI = (BoardableShip)shipI;
+				shipList.remove(boardableShipI);
+			}
 			final Area area=oneToDel.getShipArea();
 			if(area!=null)
+			{
+				if(area instanceof BoardableShip)
+				{
+					final BoardableShip boardableShipA = (BoardableShip)area;
+					shipList.remove(boardableShipA);
+				}
 				area.setAreaState(Area.State.STOPPED);
+			}
 		}
 	}
 
