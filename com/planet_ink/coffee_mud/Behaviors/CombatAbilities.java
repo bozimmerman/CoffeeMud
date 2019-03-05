@@ -402,8 +402,12 @@ public class CombatAbilities extends ActiveTicker
 		for(int v=0;v<V.size();v++)
 		{
 			s=V.elementAt(v);
+			final String ls=s.toLowerCase();
 			if(s.equalsIgnoreCase("proficient"))
 				proficient=true;
+			else
+			if(ls.startsWith("min")||ls.startsWith("max")||ls.startsWith("chance"))
+				continue;
 			else
 			if(s.equalsIgnoreCase("nostat")||s.equalsIgnoreCase("nostats"))
 				noStat=true;
