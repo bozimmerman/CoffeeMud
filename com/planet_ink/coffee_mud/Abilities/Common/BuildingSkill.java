@@ -133,7 +133,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		WATERSURFACEONLY,
 		UNDERWATERONLY,
 		SALTWATER,
-		FRESHWATER
+		FRESHWATER,
+		UPONLY
 	}
 
 	protected Room		room				= null;
@@ -782,12 +783,17 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				newRoom.addNonUninvokableEffect((Ability)newTitle);
 			}
 
-			int newFloorNum = (floor+1);
-			int curFloorNum = floor;
+			int newFloorNum;
+			int curFloorNum;
 			if(dir == Directions.DOWN)
 			{
 				newFloorNum = floor;
 				curFloorNum = (floor - 1);
+			}
+			else
+			{
+				newFloorNum = (floor+1);
+				curFloorNum = floor;
 			}
 
 			final Exit newExit;
@@ -1608,6 +1614,18 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				return false;
 			}
 			dir=Directions.DOWN;
+		}
+
+		if(flags.contains(Flag.UPONLY))
+		{
+			final Room nextRoom=mob.location().getRoomInDir(Directions.UP);
+			final Exit exitRoom=mob.location().getExitInDir(Directions.UP);
+			if((nextRoom!=null)&&(exitRoom!=null)&&(nextRoom.roomID().length()>0))
+			{
+				commonTell(mob,L("You may not build that here!"));
+				return false;
+			}
+			dir=Directions.UP;
 		}
 
 		if(flags.contains(Flag.CAVEONLY))
