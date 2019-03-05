@@ -704,7 +704,9 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 		{
 			final String errMsg = e.getMessage() == null ? e.toString() : e.getMessage();
 			if ((errMsg != null)
-			&& ((!Log.isMaskedErrMsg(errMsg)) || (CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPMACROS))))
+			&& ((!Log.isMaskedErrMsg(errMsg)) || (CMSecurity.isDebugging(CMSecurity.DbgFlag.HTTPMACROS)))
+			&&(e.getStackTrace()!=null)
+			&&(e.getStackTrace().length>0))
 			{
 				Log.errOut(Thread.currentThread().getName(), "Exception in virtualPageFilter() - " + errMsg);
 				Log.errOut(Thread.currentThread().getName(), e);
