@@ -439,7 +439,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		&&((isSold(ShopKeeper.DEAL_LANDSELLER))||(isSold(ShopKeeper.DEAL_CLANDSELLER))
 			||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER))))
 		{
-			final List<Environmental> titles=CMLib.coffeeShops().addRealEstateTitles(new Vector<Environmental>(),mob,this,startRoom());
+			final List<Environmental> titles=CMLib.coffeeShops().addRealEstateTitles(new ArrayList<Environmental>(0),mob,this,startRoom());
 			item=CMLib.english().fetchEnvironmental(titles,name,true);
 			if(item==null)
 				item=CMLib.english().fetchEnvironmental(titles,name,false);
@@ -488,7 +488,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		   ||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER)))
 		&&(mob!=null))
 		{
-			final List<Environmental> titles=CMLib.coffeeShops().addRealEstateTitles(new Vector<Environmental>(),mob,this,startRoom());
+			final List<Environmental> titles=CMLib.coffeeShops().addRealEstateTitles(new ArrayList<Environmental>(0),mob,this,startRoom());
 			item=CMLib.english().fetchEnvironmental(titles,name,true);
 			if(item==null)
 				item=CMLib.english().fetchEnvironmental(titles,name,false);
@@ -581,11 +581,11 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public List<Environmental> removeSellableProduct(final String named, final MOB mob)
 	{
-		final Vector<Environmental> V=new Vector<Environmental>();
+		final List<Environmental> removedProductsV=new Vector<Environmental>();
 		final Environmental product=removeStock(named,mob);
 		if(product==null)
-			return V;
-		V.addElement(product);
+			return removedProductsV;
+		removedProductsV.add(product);
 		if(product instanceof Container)
 		{
 			DoorKey foundKey=null;
@@ -598,7 +598,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 					if((I instanceof DoorKey)&&(((DoorKey)I).getKey().equals(C.keyName())))
 						foundKey=(DoorKey)I;
 					((Item)I).unWear();
-					V.addElement(I);
+					removedProductsV.add(I);
 					storeInventory.remove(SP);
 					((Item)I).setContainer(C);
 				}
@@ -611,10 +611,10 @@ public class DefaultCoffeeShop implements CoffeeShop
 				final DoorKey key=(DoorKey)CMClass.getItem("StdKey");
 				key.setKey(keyName);
 				key.setContainer(C);
-				V.addElement(key);
+				removedProductsV.add(key);
 			}
 		}
-		return V;
+		return removedProductsV;
 	}
 
 	@Override
@@ -645,7 +645,6 @@ public class DefaultCoffeeShop implements CoffeeShop
 	@Override
 	public void buildShopFromXML(final String text)
 	{
-		final Vector<Environmental> V=new Vector<Environmental>();
 		destroyStoreInventory();
 		storeInventory=new SVector<ShelfProduct>();
 		enumerableInventory=new SVector<Environmental>();
@@ -748,7 +747,6 @@ public class DefaultCoffeeShop implements CoffeeShop
 			CMLib.coffeeMaker().setPropertiesStr(newOne,idat,true);
 			final PhysicalAgent P=newOne;
 			P.recoverPhyStats();
-			V.addElement(P);
 			addStoreInventory(P,itemnum,val);
 			P.destroy();
 		}

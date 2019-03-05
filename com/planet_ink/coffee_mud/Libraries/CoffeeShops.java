@@ -1006,7 +1006,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					return false;
 				}
 			}
-			if((product instanceof LandTitle)
+			if((product instanceof PrivateProperty)
 			&&((shop.isSold(ShopKeeper.DEAL_CLANDSELLER))||(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))))
 			{
 				final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(buyerCustM, Clan.Function.PROPERTY_OWNER);
@@ -1098,14 +1098,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	{
 		final StringBuilder str=new StringBuilder("");
 		int csize=0;
-		final Vector<Environmental> inventory=new Vector<Environmental>();
+		final List<Environmental> inventory=new ArrayList<Environmental>(rawInventory.size());
 		Environmental E=null;
 		for(int i=0;i<rawInventory.size();i++)
 		{
 			E=rawInventory.get(i);
 			if(shownInInventory(seller,buyer,E,shop)
 			&&((mask==null)||(mask.length()==0)||(CMLib.english().containsString(E.name(),mask))))
-				inventory.addElement(E);
+				inventory.add(E);
 		}
 
 		if(inventory.size()>0)
@@ -1119,7 +1119,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			ShopKeeper.ShopPrice price=null;
 			for(int i=0;i<inventory.size();i++)
 			{
-				E=inventory.elementAt(i);
+				E=inventory.get(i);
 				price=sellingPrice(seller,buyer,E,shop,shop.getShop(), true);
 				if((price.experiencePrice>0)&&(((""+price.experiencePrice).length()+2)>(4+csize)))
 					csize=(""+price.experiencePrice).length()-2;
@@ -1148,7 +1148,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			String col=null;
 			for(int i=0;i<inventory.size();i++)
 			{
-				E=inventory.elementAt(i);
+				E=inventory.get(i);
 				price=sellingPrice(seller,buyer,E,shop,shop.getShop(), true);
 				col=null;
 				if(csize >= 0)
@@ -1218,12 +1218,15 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	public MOB parseBuyingFor(final MOB buyer, final String message)
 	{
 		MOB mobFor=buyer;
-		if((message!=null)&&(message.length()>0)&&(buyer.location()!=null))
+		if((message!=null)
+		&&(message.length()>0)
+		&&(buyer.location()!=null))
 		{
-			final Vector<String> V=CMParms.parse(message);
-			if(V.elementAt(V.size()-2).equalsIgnoreCase("for"))
+			final List<String> V=CMParms.parse(message);
+			if((V.size()>2)
+			&&(V.get(V.size()-2).equalsIgnoreCase("for")))
 			{
-				String s=V.lastElement();
+				String s=V.get(V.size()-1);
 				if(s.endsWith("."))
 					s=s.substring(0,s.length()-1);
 				final MOB M=buyer.location().fetchInhabitant("$"+s+"$");
@@ -1494,10 +1497,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					victims[x][1]=M.getVictim();
 				}
 			}
-			final Vector<String> V=new Vector<String>();
+			final List<String> V=new ArrayList<String>();
 			if(A.canTarget(Ability.CAN_MOBS))
 			{
-				V.addElement("$"+mobFor.name()+"$");
+				V.add("$"+mobFor.name()+"$");
 				A.invoke(seller,V,mobFor,true,0);
 			}
 			else
@@ -1512,7 +1515,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					I=mobFor.fetchItem(null,Wearable.FILTER_UNWORNONLY,"all");
 				if(I!=null)
 				{
-					V.addElement("$"+I.name()+"$");
+					V.add("$"+I.name()+"$");
 					seller.addItem(I);
 					A.invoke(seller,V,I,true,0);
 					seller.delItem(I);
@@ -1555,10 +1558,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public List<Environmental> addRealEstateTitles(final List<Environmental> V, final MOB buyer, final CoffeeShop shop, final Room myRoom)
+	public List<Environmental> addRealEstateTitles(final List<Environmental> productsV, final MOB buyer, final CoffeeShop shop, final Room myRoom)
 	{
 		if((myRoom==null)||(buyer==null))
-			return V;
+			return productsV;
 		final Area myArea=myRoom.getArea();
 		String name=buyer.Name();
 		Pair<Clan,Integer> buyerClanPair=null;
@@ -1627,7 +1630,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					if((T.getOwnerName().length()==0)
 					&&(I.Name().endsWith(" (Copy)")))
 						I.setName(I.Name().substring(0,I.Name().length()-7));
-					V.add(I);
+					productsV.add(I);
 				}
 			}
 		}
@@ -1636,41 +1639,42 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			final PlayerStats pStats = buyer.playerStats();
 			if((pStats != null)&&(pStats.getExtItems()!=null))
-				this.addShipProperty(buyer, V, pStats.getExtItems());
+				this.addShipProperty(buyer, productsV, pStats.getExtItems());
 		}
 		if(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))
 		{
 			buyerClanPair=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
 			if((buyerClanPair != null)&&(buyerClanPair.first!=null)&&(buyerClanPair.first.getExtItems()!=null))
-				this.addShipProperty(buyer, V, buyerClanPair.first.getExtItems());
+				this.addShipProperty(buyer, productsV, buyerClanPair.first.getExtItems());
 		}
 
-		if(V.size()<2)
-			return V;
-		final Vector<Environmental> V2=new Vector<Environmental>(V.size());
+		if(productsV.size()<2)
+			return productsV;
+		// this is actually returned
+		final List<Environmental> finalTitleList=new Vector<Environmental>(productsV.size());
 		LandTitle L=null;
 		LandTitle L2=null;
 		int x=-1;
 		int x2=-1;
-		while(V.size()>0)
+		while(productsV.size()>0)
 		{
-			if(((!(V.get(0) instanceof LandTitle)))
-			||((x=(L=(LandTitle)V.get(0)).landPropertyID().lastIndexOf('#'))<0))
+			if(((!(productsV.get(0) instanceof LandTitle)))
+			||((x=(L=(LandTitle)productsV.get(0)).landPropertyID().lastIndexOf('#'))<0))
 			{
-				if(V2.size()==0)
-					V2.addElement(V.remove(0));
+				if(finalTitleList.size()==0)
+					finalTitleList.add(productsV.remove(0));
 				else
-					V2.insertElementAt(V.remove(0),0);
+					finalTitleList.add(0,productsV.remove(0));
 			}
 			else
 			{
 				int lowest=CMath.s_int(L.landPropertyID().substring(x+1).trim());
 				int chk=0;
-				for(int v=1;v<V.size();v++)
+				for(int v=1;v<productsV.size();v++)
 				{
-					if(V.get(v) instanceof LandTitle)
+					if(productsV.get(v) instanceof LandTitle)
 					{
-						L2=(LandTitle)V.get(v);
+						L2=(LandTitle)productsV.get(v);
 						x2=L2.landPropertyID().lastIndexOf('#');
 						if(x2>0)
 						{
@@ -1683,11 +1687,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						}
 					}
 				}
-				V.remove(L);
-				V2.addElement(L);
+				productsV.remove(L);
+				finalTitleList.add(L);
 			}
 		}
-		return V2;
+		return finalTitleList;
 	}
 
 	@Override
