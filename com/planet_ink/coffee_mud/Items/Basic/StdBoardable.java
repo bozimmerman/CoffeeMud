@@ -363,6 +363,16 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	@Override
 	public void destroy()
 	{
+		final CMObject propOwner=getOwnerObject();
+		if(propOwner != null)
+		{
+			if((propOwner instanceof MOB)
+			&&(((MOB)propOwner).playerStats()!=null))
+				((MOB)propOwner).playerStats().getExtItems().delItem(this);
+			else
+			if(propOwner instanceof Clan)
+				((Clan)propOwner).getExtItems().delItem(this);
+		}
 		if(area!=null)
 		{
 			final Area A=area;
