@@ -607,7 +607,11 @@ public class StdExit implements Exit
 						   ||((item.container().container()==null)
 							  &&((item.container().containTypes()&Container.CONTAIN_KEYS)>0)))
 						&&(CMLib.flags().canBeSeenBy(item,mob)))
+						{
+							if(msg.tool()==null)
+								msg.setTool(item);
 							return true;
+						}
 					}
 					mob.tell(L("You don't seem to have the key."));
 					return false;

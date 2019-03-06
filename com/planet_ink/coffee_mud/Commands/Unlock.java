@@ -68,7 +68,7 @@ public class Unlock extends StdCommand
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatTounlock));
 			return false;
 		}
-		final String unlockMsg="<S-NAME> unlock(s) <T-NAMESELF>."+CMLib.protocol().msp("doorunlock.wav",10);
+		final String unlockMsg="<S-NAME> unlock(s) <T-NAMESELF><O-WITHNAME>."+CMLib.protocol().msp("doorunlock.wav",10);
 		final CMMsg msg=CMClass.getMsg(mob,unlockThis,null,CMMsg.MSG_UNLOCK,unlockMsg,whatTounlock,unlockMsg);
 		if(unlockThis instanceof Exit)
 		{

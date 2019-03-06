@@ -907,7 +907,7 @@ public class RocketShipProgram extends GenShipProgram
 					final double diff = Math.abs(ticksToDecellerate-ticksToDestinationAtCurrentSpeed);
 					if((diff < 1) || (diff < Math.sqrt(ticksToDecellerate)))
 					{
-						//System.out.println("** Coast: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()+"/"+this.lastInject); //BZ:DELME
+						//System.out.println("** Coast: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()+"/"+this.lastInject); //BZ:COMMENTMEOUT
 						final Double oldInject=this.lastInject;
 						final Double oldAccel=this.lastAcceleration;
 						performSimpleThrust(engineE,Double.valueOf(0.0), false);
@@ -918,13 +918,13 @@ public class RocketShipProgram extends GenShipProgram
 					else
 					if(ticksToDecellerate > ticksToDestinationAtCurrentSpeed)
 					{
-						//System.out.println("** Decelerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
+						//System.out.println("** Decelerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:COMMENTMEOUT
 						this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
 					}
 					else
 					if((ticksToDecellerate<50)||(diff > 10.0))
 					{
-						//System.out.println("** Accelerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
+						//System.out.println("** Accelerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:COMMENTMEOUT
 						this.changeFacing(ship, dirToPlanet);
 					}
 					final double targetAcceleration = this.targetAcceleration.doubleValue(); //

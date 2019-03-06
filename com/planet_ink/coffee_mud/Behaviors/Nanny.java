@@ -1084,7 +1084,7 @@ public class Nanny extends StdBehavior
 					}
 				}
 				else
-					R.show(mob, PA, CMMsg.MSG_LOCK,L("<S-NAME> admire(s) <T-NAME>."));
+					R.show(mob, PA, CMMsg.MSG_LOOK,L("<S-NAME> admire(s) <T-NAME>."));
 			}
 			else
 			if(PA instanceof MOB)

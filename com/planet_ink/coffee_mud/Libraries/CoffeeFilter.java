@@ -1269,6 +1269,14 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 										replacement=regarding.name()+"'s";
 								}
 								break;
+							case WITHNAME:
+								{
+									if(regarding==null)
+										replacement="";
+									else
+										replacement=L(" with @x1",((PhysicalAgent)regarding).name(mob));
+								}
+								break;
 							case HISHER:
 								{
 									if(regarding==null)

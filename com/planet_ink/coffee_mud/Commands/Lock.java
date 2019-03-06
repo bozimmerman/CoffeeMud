@@ -78,7 +78,7 @@ public class Lock extends StdCommand
 					return false;
 			}
 		}
-		final String lockMsg="<S-NAME> lock(s) <T-NAMESELF>."+CMLib.protocol().msp("doorlock.wav",10);
+		final String lockMsg="<S-NAME> lock(s) <T-NAMESELF><O-WITHNAME>."+CMLib.protocol().msp("doorlock.wav",10);
 		final CMMsg msg=CMClass.getMsg(mob,lockThis,null,CMMsg.MSG_LOCK,lockMsg,whatTolock,lockMsg);
 		if(lockThis instanceof Exit)
 		{

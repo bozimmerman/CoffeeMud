@@ -52,7 +52,9 @@ public interface TelnetFilter extends CMLibrary
 		MISTERMADAM("-MISTERMADAM",null),
 		ISARE2("IS-ARE",null),
 		NAMENOART("-NAMENOART",null),
-		ACCOUNTNAME("-ACCOUNTNAME",null);
+		ACCOUNTNAME("-ACCOUNTNAME",null),
+		WITHNAME("-WITHNAME",null)
+		;
 		public final String suffix;
 		public final String emoteSuffix;
 		private Pronoun(final String suffix, final String emoteSuffix)

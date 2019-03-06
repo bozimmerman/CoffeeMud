@@ -609,7 +609,7 @@ public class Patroller extends ActiveTicker
 						CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 						if(mob.location().okMessage(mob,msg))
 						{
-							msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> unlock(s) <T-NAMESELF>."));
+							msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> unlock(s) <T-NAMESELF><O-WITHNAME>."));
 							CMLib.utensils().roomAffectFully(msg,thisRoom,direction);
 						}
 					}

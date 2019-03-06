@@ -785,13 +785,17 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(pStats != null)
 			pStats.getExtItems().delAllItems(true);
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
-		for(int i=0;i<channels.size();i++)
+		if(channels.size()>0)
 		{
 			String name=deadMOB.Name();
 			if((pStats != null)
 			&&(pStats.getAccount()!=null))
 				name+=" ("+pStats.getAccount().getAccountName()+")";
-			CMLib.commands().postChannel(channels.get(i),deadMOB.clans(),CMLib.lang().fullSessionTranslation("@x1 has just been deleted.",name),true);
+			final String msgStr = CMLib.lang().fullSessionTranslation("@x1 has just been deleted.",name);
+			for(int i=0;i<channels.size();i++)
+			{
+				CMLib.commands().postChannel(channels.get(i),deadMOB.clans(),msgStr,true);
+			}
 		}
 		CMLib.coffeeTables().bump(deadMOB,CoffeeTableRow.STAT_PURGES);
 

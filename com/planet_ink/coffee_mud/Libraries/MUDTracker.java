@@ -884,7 +884,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				if(oldRoom.okMessage(mob,msg))
 				{
 					relock=true;
-					msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> unlock(s) <T-NAMESELF>."));
+					msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> unlock(s) <T-NAMESELF><O-WITHNAME>."));
 					if(oldRoom.okMessage(mob,msg))
 						CMLib.utensils().roomAffectFully(msg,oldRoom,direction);
 				}
@@ -972,7 +972,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					CMMsg msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 					if(nextRoom.okMessage(mob,msg))
 					{
-						msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> lock(s) <T-NAMESELF>."));
+						msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> lock(s) <T-NAMESELF><O-WITHNAME>."));
 						if(nextRoom.okMessage(mob,msg))
 							CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
 					}
