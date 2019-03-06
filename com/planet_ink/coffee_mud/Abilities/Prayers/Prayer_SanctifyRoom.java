@@ -101,7 +101,7 @@ public class Prayer_SanctifyRoom extends Prayer
 			final LandTitle T=CMLib.law().getLandTitle(R);
 			if(T!=null)
 			{
-				final Clan roomC=CMLib.clans().fetchClan(T.getOwnerName());
+				final Clan roomC=CMLib.clans().getClanExact(T.getOwnerName());
 				if(roomC!=null)
 				{
 					for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(mob))

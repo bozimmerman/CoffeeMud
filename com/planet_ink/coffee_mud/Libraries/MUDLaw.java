@@ -427,7 +427,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 
 	protected boolean doesHaveClanFriendlyPrivilegesHere(final MOB mob, final String clanID)
 	{
-		final Clan C=CMLib.clans().fetchClan(clanID);
+		final Clan C=CMLib.clans().getClanExact(clanID);
 		if(C!=null)
 		{
 			final Pair<Clan,Integer> clanRole=mob.getClanRole(C.clanID());
@@ -578,7 +578,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return null;
 		if(record.getOwnerName().startsWith("#"))
 			return null;
-		final Clan clan = CMLib.clans().getClan(record.getOwnerName());
+		final Clan clan = CMLib.clans().getClanExact(record.getOwnerName());
 		if(clan != null)
 			return clan.getResponsibleMember();
 		final MOB M=CMLib.players().getPlayerAllHosts(record.getOwnerName());
@@ -600,7 +600,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return true;
 		if((record.getOwnerName().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 			return true;
-		final Clan clan = CMLib.clans().getClan(record.getOwnerName());
+		final Clan clan = CMLib.clans().getClanExact(record.getOwnerName());
 		if(clan != null)
 		{
 			final Pair<Clan,Integer> clanRole=mob.getClanRole(record.getOwnerName());

@@ -458,6 +458,7 @@ public class WeatherAffects extends PuddleMaker
 				break;
 			}
 		}
+Log.errOut(ticking.name()+"/"+diseaseDown);
 		if((diseaseDown--)==1)
 		{
 			resetDiseaseTicks();
@@ -528,6 +529,7 @@ public class WeatherAffects extends PuddleMaker
 						frostBiteChance=frostBiteChance+(int)Math.round(CMath.mul(frostBiteChance,0.25));
 				}
 				final int save=(M.charStats().getSave(CharStats.STAT_SAVE_COLD)+M.charStats().getSave(CharStats.STAT_SAVE_WATER))/2;
+Log.errOut(M.name()+"/"+frostBiteChance+"/"+save);
 				if((CMLib.dice().rollPercentage()<(coldChance-save))
 				&&((C.weatherType(M.location())!=Climate.WEATHER_CLEAR)))
 				{

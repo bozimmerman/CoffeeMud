@@ -109,7 +109,7 @@ public class Prop_PrivateProperty extends Property implements PrivateProperty
 		final String owner=getOwnerName();
 		if(owner.length()==0)
 			return null;
-		final Clan C=CMLib.clans().getClan(owner);
+		final Clan C=CMLib.clans().getClanExact(owner);
 		if(C!=null)
 			return C;
 		return CMLib.players().getLoadPlayer(owner);

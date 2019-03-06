@@ -420,7 +420,7 @@ public class Conquerable extends Arrest
 
 	protected void announceToArea(final Area area, final String clanID, final int amount)
 	{
-		final Clan C=CMLib.clans().fetchClan(clanID);
+		final Clan C=CMLib.clans().getClanExact(clanID);
 		if(C!=null)
 			CMLib.achievements().possiblyBumpAchievement(C.getResponsibleMember(), AchievementLibrary.Event.CONQUESTPOINTS, amount, C, myArea);
 		for(final Session S : CMLib.sessions().localOnlineIterable())
@@ -946,7 +946,7 @@ public class Conquerable extends Arrest
 			return;
 		Clan C=CMLib.clans().getClanAnyHost(clanID);
 		if(C==null)
-			C=CMLib.clans().fetchClan(clanID);
+			C=CMLib.clans().getClanExact(clanID);
 		if((C==null)||(!C.getGovernment().isConquestEnabled()))
 			return;
 
@@ -1058,7 +1058,7 @@ public class Conquerable extends Arrest
 	{
 		Clan C=CMLib.clans().fetchClanAnyHost(clanID);
 		if(C==null)
-			C=CMLib.clans().fetchClan(clanID);
+			C=CMLib.clans().getClanExact(clanID);
 		if((C==null)||(!C.getGovernment().isConquestEnabled()))
 			return false;
 		return flagFound(A,C);
@@ -1153,7 +1153,7 @@ public class Conquerable extends Arrest
 			}
 			if(amount > 0)
 			{
-				final Clan C = CMLib.clans().fetchClan(clanID);
+				final Clan C = CMLib.clans().getClanExact(clanID);
 				if(C!=null)
 					C.bumpTrophyData(Clan.Trophy.MonthlyControlPoints, amount);
 			}

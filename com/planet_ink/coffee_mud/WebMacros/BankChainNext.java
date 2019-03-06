@@ -69,7 +69,7 @@ public class BankChainNext extends StdWebMacro
 				if(((!M.Name().equalsIgnoreCase(player)))
 				&&(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.CMDPLAYERS)))
 					return "";
-				final Clan C=CMLib.clans().getClan(player);
+				final Clan C=CMLib.clans().getClanExact(player);
 				if(C!=null)
 				{
 					playerM=CMClass.getFactoryMOB();

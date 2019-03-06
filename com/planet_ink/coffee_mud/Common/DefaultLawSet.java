@@ -413,7 +413,7 @@ public class DefaultLawSet implements Law
 			for(final String owner : owners.keySet())
 			{
 				MOB responsibleMob=null;
-				final Clan C=CMLib.clans().getClan(owner);
+				final Clan C=CMLib.clans().getClanExact(owner);
 				if(C!=null)
 					responsibleMob=C.getResponsibleMember();
 				else
@@ -487,7 +487,7 @@ public class DefaultLawSet implements Law
 								T.setBackTaxes((int)Math.round(oldBackTaxes+owedOnThisLand));
 								if(CMath.div(T.getPrice(),T.backTaxes())<2.0)
 								{
-									final Clan clanC=CMLib.clans().getClan(T.getOwnerName());
+									final Clan clanC=CMLib.clans().getClanExact(T.getOwnerName());
 									if(clanC!=null)
 									{
 										final MOB M=clanC.getResponsibleMember();
@@ -525,7 +525,7 @@ public class DefaultLawSet implements Law
 						}
 						if(owesButNotConfiscated)
 						{
-							final Clan clanC=CMLib.clans().getClan(owner);
+							final Clan clanC=CMLib.clans().getClanExact(owner);
 							if(clanC!=null)
 							{
 								final MOB M=clanC.getResponsibleMember();

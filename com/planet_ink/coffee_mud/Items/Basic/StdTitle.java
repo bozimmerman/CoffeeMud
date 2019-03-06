@@ -196,7 +196,7 @@ public class StdTitle extends StdItem implements LandTitle
 		final String owner=P.getOwnerName();
 		if(owner.length()==0)
 			return null;
-		final Clan C=CMLib.clans().getClan(owner);
+		final Clan C=CMLib.clans().getClanExact(owner);
 		if(C!=null)
 			return C;
 		return CMLib.players().getLoadPlayer(owner);

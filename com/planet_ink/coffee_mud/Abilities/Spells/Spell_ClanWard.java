@@ -199,7 +199,7 @@ public class Spell_ClanWard extends Spell
 			mob.tell(L("Your clan does not own this room."));
 			return false;
 		}
-		final Clan C=CMLib.clans().fetchClan(T.getOwnerName());
+		final Clan C=CMLib.clans().getClanExact(T.getOwnerName());
 		if(C==null)
 		{
 			mob.tell(L("Your clan does not own this room."));

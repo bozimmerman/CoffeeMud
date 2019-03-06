@@ -219,6 +219,11 @@ public class Skill_HardToPort extends StdSkill
 						try
 						{
 							smob.setRiding(myShipItem);
+							if(myShipItem instanceof PrivateProperty)
+							{
+								if(((PrivateProperty)myShipItem).getOwnerObject() instanceof Clan)
+									smob.setClan(((PrivateProperty)myShipItem).getOwnerObject().name(), ((Clan)((PrivateProperty)myShipItem).getOwnerObject()).getAutoPosition());
+							}
 							smob.basePhyStats().setDisposition(smob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 							smob.phyStats().setDisposition(smob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 							final String directionName = CMLib.directions().getDirectionName(newDirection);

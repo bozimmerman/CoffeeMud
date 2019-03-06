@@ -260,6 +260,11 @@ public class Sinking extends StdAbility
 				if((item instanceof Rideable)&&(item instanceof BoardableShip))
 				{
 					mob = CMClass.getFactoryMOB(item.name(),item.phyStats().level(),room);
+					if(item instanceof PrivateProperty)
+					{
+						if(((PrivateProperty)item).getOwnerObject() instanceof Clan)
+							mob.setClan(((PrivateProperty)item).getOwnerObject().name(), ((Clan)((PrivateProperty)item).getOwnerObject()).getAutoPosition());
+					}
 					mob.setRiding((Rideable)item);
 				}
 				else

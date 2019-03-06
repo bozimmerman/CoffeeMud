@@ -289,7 +289,7 @@ public interface ClanManager extends CMLibrary
 	 * @param id the clan name
 	 * @return the Clan object associated with the given clan name
 	 */
-	public Clan fetchClan(final String id);
+	public Clan getClanExact(final String id);
 
 	/**
 	 * Returns the Clan object associated with the given clan name

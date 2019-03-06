@@ -387,7 +387,7 @@ public class Clans extends StdLibrary implements ClanManager
 	}
 
 	@Override
-	public Clan fetchClan(final String id)
+	public Clan getClanExact(final String id)
 	{
 		if((id==null)||(id.length()==0))
 			return null;
@@ -404,7 +404,7 @@ public class Clans extends StdLibrary implements ClanManager
 			return null;
 		for(final ClanManager cLib : getOtherClanLibAllHosts())
 		{
-			final Clan C=cLib.fetchClan(id);
+			final Clan C=cLib.getClanExact(id);
 			if(C!=null)
 				return C;
 		}

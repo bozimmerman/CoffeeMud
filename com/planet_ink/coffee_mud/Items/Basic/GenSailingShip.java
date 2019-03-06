@@ -422,6 +422,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						try
 						{
 							mob.setRiding(this);
+							if(getOwnerObject() instanceof Clan)
+								mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
 							mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 							mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 							if(otherShip.tenderShip == this)
@@ -1407,6 +1409,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			try
 			{
 				mob.setRiding(this);
+				if(getOwnerObject() instanceof Clan)
+					mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
 				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 				final CMMsg maneuverMsg=CMClass.getMsg(mob,I,null,CMMsg.MSG_ADVANCE,null,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,null,CMMsg.MSG_ADVANCE,L("<S-NAME> engage(s) @x1.",I.Name()));
@@ -1685,6 +1689,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						try
 						{
 							mob.setRiding(this);
+							if(getOwnerObject() instanceof Clan)
+								mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
 							mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 							mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 							combatRoom.show(mob, this, CMMsg.MSG_ACTIVATE|CMMsg.MASK_MALICIOUS, null);
@@ -1750,6 +1756,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					try
 					{
 						mob.setRiding(this);
+						if(getOwnerObject() instanceof Clan)
+							mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
 						mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 						mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 						int notLoaded = 0;
@@ -2467,6 +2475,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				try
 				{
 					mob.setRiding(this);
+					if(getOwnerObject() instanceof Clan)
+						mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
 					mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 					mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 					if(directionFacing == direction)
@@ -2539,6 +2549,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				final Exit opExit=thisRoom.getExitInDir(oppositeDirectionFacing);
 				final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),CMLib.map().roomLocation(this));
 				mob.setRiding(this);
+				if(getOwnerObject() instanceof Clan)
+					mob.setClan(getOwnerObject().name(), ((Clan)getOwnerObject()).getAutoPosition());
 				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SWIMMING);
 				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 				try
