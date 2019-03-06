@@ -293,7 +293,12 @@ public class BodyPiercing extends CommonSkill
 		final int duration=getDuration(30,mob,1,6);
 		String msgStr=L("<S-NAME> start(s) piercing <T-NAMESELF> on the @x1.",wornName.toLowerCase());
 		if("REMOVE".equals(command))
-			msgStr=L("<S-NAME> heal(s) the piercing on <T-YOUPOSS> @x1.",wornName.toLowerCase());
+		{
+			if(writing.length()==0)
+				msgStr=L("<S-NAME> fail(s) to heal the piercing on <T-YOUPOSS> @x1.",wornName.toLowerCase());
+			else
+				msgStr=L("<S-NAME> heal(s) the piercing on <T-YOUPOSS> @x1.",wornName.toLowerCase());
+		}
 		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),msgStr);
 		if(mob.location().okMessage(mob,msg))
 		{
@@ -305,7 +310,9 @@ public class BodyPiercing extends CommonSkill
 				CMLib.combat().postDamage(mob, target, this, percentOff, CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE, Weapon.TYPE_PIERCING, null);
 			}
 			if("REMOVE".equals(command))
+			{
 				target.delTattoo(target.findTattoo(writing));
+			}
 			else
 			{
 				final List<Integer> bodyPartNums = new ArrayList<Integer>();
