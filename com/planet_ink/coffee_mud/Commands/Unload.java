@@ -392,6 +392,8 @@ public class Unload extends StdCommand
 					Resources.removeResource(key);
 					mob.tell(L("Resource '@x1' unloaded.",key));
 				}
+				if(which.toLowerCase().startsWith("title"))
+					CMLib.titles().reloadAutoTitles();
 			}
 			else
 			if(commands.get(1).equalsIgnoreCase("FILE"))
