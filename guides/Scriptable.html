@@ -349,10 +349,10 @@ Tutorial at: <a href="http://www.pandapub.com/tutorial/MobprogTutorial.htm">http
       <pre>all_greet_prog [integer percentage]<br /></pre>
       <p>This type of mobprog
 checks a percentage chance every time
-someone enters the room that the mob is currently in. If the random
+someone enters the room that the script mob, item, exit, or room is currently in. If the random
 number generated between 1 and 100 is equal to or below the percentage
-of the all_greet_prog, the prog is triggered. Note that all_greet_progs
-are triggered by both players and mobs, and a mob in a maze can
+of the all_greet_prog, the prog is triggered.&nbsp; Note that all_greet_progs
+are triggered by both players and mobs, even sneaking ones, and a mob in a maze can
 actually sometimes end up triggering itself! This type of mobprog has
 all sorts of uses, ranging from giving in-zone quest information to
 people entering the room, creating aggressive progs, etc.</p>
@@ -429,10 +429,10 @@ act_progs, so do not try to use them; it won't work.</p>
       <pre>arrive_prog [integer percentage]<br /></pre>
       <p>This type of mobprog
 checks a percentage chance every time
-the scripted mob or item enters a new room, or when it enters the game.
+the scripted mob or item owner enters a new room, or when they enter the game.
 If the random
 number generated between 1 and 100 is equal to or below the percentage
-of the greet_prog, the prog is triggered. This type of mobprog has all
+of the <span style="font-weight: bold;">arrive</span>_prog, the prog is triggered. This type of mobprog has all
 sorts
 of uses, ranging from giving in-zone quest information to people
 the mob stumbles upon, creating aggressive progs, etc.</p>
@@ -446,7 +446,7 @@ triggered 100% of the time when the mob enters a room. This means every
 time.</p>
       <p>SPECIAL NOTES: You'll
 probably want to make sure you understand the difference between the
-arrive_prog and greet_prog/all_greet_prog.</p>
+arrive_prog and greet_prog/all_greet_prog. &nbsp;Scripted Exits and Rooms will never trigger this event.</p>
       <h3><a name="bribe_prog">bribe_prog</a></h3>
       <p>Usage:</p>
       <pre>bribe_prog [money value]<br /></pre>
@@ -803,10 +803,13 @@ juicy and a drop_prog p apple red poisoned.</p>
       <h3><a name="entry_prog">entry_prog</a></h3>
       <p>Usage:</p>
       <pre>entry_prog [integer percentage]<br /></pre>
-      <p>This type of prog checks
+      <p>This
+type of prog checks
 a percentage chance every time the
-mob moves into a new room. If the random number generated is equal to
-or below the percentage of the entry_prog when the mob steps into a new
+scripted mob moves into a new room, or if a scripted item owner mob
+enters a new room, or a scripted room or exit is entered . If the
+random number generated is equal to
+or below the percentage of the entry_prog when a mob steps into a new
 room, then the prog is triggered. This prog has a variety of uses, for
 instance, you can use it in conjunction with the inroom function to
 make sure a mob stays in the same room or never oversteps a boundary,
@@ -818,7 +821,9 @@ possibilities.</p>
 the time when the mob enters a room.</p>
       <pre>entry_prog 100<br /></pre>
       <p>This will trigger 100%,
-or every time, the mob enters a room.</p>
+or every time, the mob enters a room.</p><p>SPECIAL
+NOTES: This program is triggered on a normal delay unless it is
+multiply triggered, in which case it will occur once, but immediately.</p>
       <h3><a name="execmsg_prog">execmsg_prog</a></h3>
       <p>Usage:</p>
       <pre>execmsg_prog [message code] [commands/keyword list]<br />execmsg_prog [message code] p [commands/keyword list]<br />execmsg_prog [message code] all<br /></pre>
@@ -1030,10 +1035,10 @@ items other than the ones it will accept in other give_progs.</p>
       <pre>greet_prog [integer percentage]<br /></pre>
       <p>This type of mobprog
 checks a percentage chance every time
-someone enters the room that the mob is currently in. If the random
+someone enters the room that the scripted mob, item, room, or exit is currently in. If the random
 number generated between 1 and 100 is equal to or below the percentage
 of the greet_prog, the prog is triggered. Note that greet_progs are
-triggered by both players and mobs, and a mob in a maze can actually
+triggered by both non-sneaking players and mobs, and a mob in a maze can actually
 sometimes end up triggering itself! This type of mobprog has all sorts
 of uses, ranging from giving in-zone quest information to people
 entering the room, creating aggressive progs, etc.</p>
