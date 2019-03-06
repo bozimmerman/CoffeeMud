@@ -47,6 +47,7 @@
   46. Lots of new landscaping recipes.
   47. Ranged songs/plays/dances are now OPT-IN instead of automatic.  See help on e.g. Long Dancing 
   48. Yet more changes to the buy/sell formula vis-a-vis charisma.
+  49. Lock/Unlock message now includes the name of the key.  Also, new <O-WITHNAME> to support this.
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.
