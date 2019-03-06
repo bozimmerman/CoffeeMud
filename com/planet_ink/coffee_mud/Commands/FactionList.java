@@ -50,7 +50,46 @@ public class FactionList extends StdCommand
 	{
 		final StringBuffer msg=new StringBuffer(L("\n\r^HFaction Standings:^?^N\n\r"));
 		boolean none=true;
-		final XVector<String> list=new XVector<String>(mob.factions());
+		final String args = CMParms.combine(commands,1).toUpperCase();
+		final Enumeration<String> factions;
+		if(args.length()==0)
+			factions=mob.factions();
+		else
+		{
+			final Faction F=CMLib.factions().getFactionByName(args);
+			if(F!=null)
+				factions=new XVector<String>(F.factionID()).elements();
+			else
+			{
+				final Vector<String> facsV=new XVector<String>();
+				for(final Enumeration<String> s=mob.factions();s.hasMoreElements();)
+				{
+					final String fid=s.nextElement();
+					final Faction.FRange rF=CMLib.factions().getRange(fid,mob.fetchFaction(fid));
+					if((rF!=null)
+					&&(rF.name().toUpperCase().startsWith(args)))
+						facsV.addElement(fid);
+				}
+				if(facsV.size()>0)
+					factions=facsV.elements();
+				else
+				{
+					factions = new FilteredEnumeration<String>(mob.factions(),new Filterer<String>() {
+						@Override
+						public boolean passesFilter(final String obj)
+						{
+							final Faction F=CMLib.factions().getFaction(obj);
+							if((F!=null)
+							&&(CMLib.english().containsString(F.name(), args)))
+								return true;
+							return false;
+						}
+					});
+				}
+			}
+		}
+
+		final XVector<String> list=new XVector<String>(factions);
 		list.sort();
 		for (final String name : list)
 		{
