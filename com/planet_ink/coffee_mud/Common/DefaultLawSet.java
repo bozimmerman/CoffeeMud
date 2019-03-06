@@ -548,7 +548,7 @@ public class DefaultLawSet implements Law
 							}
 							else
 							{
-								notifyPlayer(owner,"",owed,"",A.Name()+"Taxes Owed by @x1 on @x3.",
+								notifyPlayer(owner,"",owed,"",A.Name()+" Taxes Owed by @x1 on @x3.",
 										"@x1 owes @x2 in back taxes to "+A.Name()+".  Sufficient were not found in a local bank account.  "
 												+ "Failure to pay could result in loss of property.");
 							}
