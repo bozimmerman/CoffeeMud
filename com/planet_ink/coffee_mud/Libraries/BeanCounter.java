@@ -525,7 +525,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		return C;
 	}
 
-	protected void parseDebt(final Vector<DebtItem> debt, final String debtor, final String xml)
+	protected void parseDebt(final List<DebtItem> debt, final String debtor, final String xml)
 	{
 		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
 		if(xml==null)
@@ -549,7 +549,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			final String reason=ablk.getValFromPieces("FOR");
 			final long due=ablk.getLongFromPieces("DUE");
 			final double interest=ablk.getDoubleFromPieces("INT");
-			debt.addElement(new DebtItem()
+			debt.add(new DebtItem()
 			{
 				double amount = amt;
 
@@ -598,20 +598,21 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		}
 	}
 
-	protected String unparseDebt(final Vector<DebtItem> debt, final String name, final String owedTo)
+	protected String unparseDebt(final List<DebtItem> debt, final String name, final String owedTo)
 	{
 		final StringBuffer xml=new StringBuffer("<DEBT>");
 		for(int d=0;d<debt.size();d++)
 		{
-			if((debt.elementAt(d).debtor().equalsIgnoreCase(name))
-			&&(debt.elementAt(d).owedTo().equalsIgnoreCase(owedTo)))
+			final DebtItem D=debt.get(d);
+			if((D.debtor().equalsIgnoreCase(name))
+			&&(D.owedTo().equalsIgnoreCase(owedTo)))
 			{
 				xml.append("<OWE>");
-				xml.append(CMLib.xml().convertXMLtoTag("TO",debt.elementAt(d).owedTo()));
-				xml.append(CMLib.xml().convertXMLtoTag("AMT",""+debt.elementAt(d).amt()));
-				xml.append(CMLib.xml().convertXMLtoTag("FOR",debt.elementAt(d).reason()));
-				xml.append(CMLib.xml().convertXMLtoTag("DUE",""+debt.elementAt(d).due()));
-				xml.append(CMLib.xml().convertXMLtoTag("INT",""+debt.elementAt(d).interest()));
+				xml.append(CMLib.xml().convertXMLtoTag("TO",D.owedTo()));
+				xml.append(CMLib.xml().convertXMLtoTag("AMT",""+D.amt()));
+				xml.append(CMLib.xml().convertXMLtoTag("FOR",D.reason()));
+				xml.append(CMLib.xml().convertXMLtoTag("DUE",""+D.due()));
+				xml.append(CMLib.xml().convertXMLtoTag("INT",""+D.interest()));
 				xml.append("</OWE>");
 			}
 		}
@@ -625,10 +626,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		final String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
 		synchronized(key.intern())
 		{
-			final Vector<DebtItem> debt=getDebt(name,owedTo);
+			final List<DebtItem> debt=getDebt(name,owedTo);
 			double total=0.0;
 			for(int d=0;d<debt.size();d++)
-				total+=debt.elementAt(d).amt();
+				total+=debt.get(d).amt();
 			return total;
 		}
 	}
@@ -644,10 +645,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public Vector<DebtItem> getDebtOwed(final String owedTo)
+	public List<DebtItem> getDebtOwed(final String owedTo)
 	{
 		final List<PlayerData> rows=CMLib.database().DBReadPlayerDataByKeyMask("DEBT",".*-DEBT-"+owedTo.toUpperCase().trim());
-		final Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
+		final List<DebtItem> debt=new Vector<DebtItem>(rows.size());
 		for(int r=0;r<rows.size();r++)
 		{
 			final PlayerData row=rows.get(r);
@@ -664,12 +665,12 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		final String key=name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim();
 		synchronized(key.intern())
 		{
-			final Vector<DebtItem> debts=getDebt(name,owedTo);
+			final List<DebtItem> debts=getDebt(name,owedTo);
 			final boolean update=debts.size()>0;
 			boolean done=false;
 			for(int d=0;d<debts.size();d++)
 			{
-				final DebtItem debt=debts.elementAt(d);
+				final DebtItem debt=debts.get(d);
 				if((debt.debtor().equalsIgnoreCase(name))
 				&&(debt.owedTo().equalsIgnoreCase(owedTo))
 				&&(debt.interest()==interest)
@@ -678,7 +679,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 				{
 					debt.setAmt(debt.amt()+adjustAmt);
 					if(debt.amt()<=0.0)
-						debts.removeElementAt(d);
+						debts.remove(d);
 					done=true;
 					break;
 				}
@@ -686,7 +687,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			if((!done)&&(adjustAmt>=0.0))
 			{
 				final double initialAdjustedAmount = adjustAmt;
-				debts.addElement(new DebtItem()
+				debts.add(new DebtItem()
 				{
 					double amount = initialAdjustedAmount;
 
@@ -748,7 +749,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public Vector<DebtItem> getDebt(final String name, final String owedTo)
+	public List<DebtItem> getDebt(final String name, final String owedTo)
 	{
 		final List<PlayerData> rows=CMLib.database().DBReadPlayerData(name.toUpperCase(),"DEBT",name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim());
 		final Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
@@ -763,10 +764,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
 	@Override
-	public Vector<DebtItem> getDebt(final String name)
+	public List<DebtItem> getDebt(final String name)
 	{
 		final List<PlayerData> rows=CMLib.database().DBReadPlayerData(name.toUpperCase(),"DEBT");
-		final Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
+		final List<DebtItem> debt=new Vector<DebtItem>(rows.size());
 		for(int r=0;r<rows.size();r++)
 		{
 			final PlayerData row=rows.get(r);

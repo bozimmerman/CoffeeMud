@@ -104,9 +104,9 @@ public interface MoneyLibrary extends CMLibrary
 	public double getTotalAbsoluteNativeValue(MOB mob);
 	public double getTotalAbsoluteShopKeepersValue(MOB mob, MOB shopkeeper);
 	public double getTotalAbsoluteValueAllCurrencies(MOB mob);
-	public Vector<DebtItem> getDebt(String name);
-	public Vector<DebtItem> getDebt(String name, String owedTo);
-	public Vector<DebtItem> getDebtOwed(String owedTo);
+	public List<DebtItem> getDebt(String name);
+	public List<DebtItem> getDebt(String name, String owedTo);
+	public List<DebtItem> getDebtOwed(String owedTo);
 	public double getDebtOwed(String name, String owedTo);
 	public void adjustDebt(String name, String owedTo, double adjustAmt, String reason, double interest, long due);
 	public void delAllDebt(String name, String owedTo);

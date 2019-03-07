@@ -417,13 +417,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 	@Override
 	public MoneyLibrary.DebtItem getDebtInfo(final String depositorName)
 	{
-		final Vector<MoneyLibrary.DebtItem> debt=CMLib.beanCounter().getDebtOwed(bankChain());
+		final List<MoneyLibrary.DebtItem> debt=CMLib.beanCounter().getDebtOwed(bankChain());
 		if(depositorName.length()==0)
 			return null;
 		for(int d=0;d<debt.size();d++)
 		{
-			if(debt.elementAt(d).debtor().equalsIgnoreCase(depositorName))
-				return debt.elementAt(d);
+			if(debt.get(d).debtor().equalsIgnoreCase(depositorName))
+				return debt.get(d);
 		}
 		return null;
 	}
@@ -448,7 +448,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		if(proceed)
 		{
 			final List<String> bankDataV=CMLib.database().DBReadPlayerDataPlayersBySection(bankChain());
-			final Vector<String> userNames=new Vector<String>();
+			final Set<String> userNames=new HashSet<String>();
 			for(int v=0;v<bankDataV.size();v++)
 			{
 				final String name=bankDataV.get(v);
@@ -459,16 +459,16 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if((CMLib.clans().getClanAnyHost(name))==null)
 							delAllDeposits(name);
 						else
-							userNames.addElement(name);
+							userNames.add(name);
 					}
 					else
-						userNames.addElement(name);
+						userNames.add(name);
 				}
 			}
-			final Vector<MoneyLibrary.DebtItem> debts=CMLib.beanCounter().getDebtOwed(bankChain());
-			for(int u=0;u<userNames.size();u++)
+			final List<MoneyLibrary.DebtItem> debts=CMLib.beanCounter().getDebtOwed(bankChain());
+			for(final Iterator<String> i=userNames.iterator();i.hasNext();)
 			{
-				final String name=userNames.elementAt(u);
+				final String name=i.next();
 				Coins coinItem=null;
 				int totalValue=0;
 				final List<Item> items=getDepositedItems(name);
@@ -489,16 +489,16 @@ public class StdBanker extends StdShopKeeper implements Banker
 					newBalance+=CMath.mul(totalValue,itemInterest);
 				for(int d=debts.size()-1;d>=0;d--)
 				{
-					final MoneyLibrary.DebtItem debtItem=debts.elementAt(d);
+					final MoneyLibrary.DebtItem debtItem=debts.get(d);
 					final String debtor=debtItem.debtor();
 					if(debtor.equalsIgnoreCase(name))
 					{
-						final long debtDueAt=debtItem.due();
-						final double intRate=debtItem.interest();
-						final double dueAmount=debtItem.amt();
-						final String reason=debtItem.reason();
-						final double intDue=CMath.mul(intRate,dueAmount);
-						final long timeRemaining=debtDueAt-System.currentTimeMillis();
+						final long debtDueAt = debtItem.due();
+						final double intRate = debtItem.interest();
+						final double dueAmount = debtItem.amt();
+						final String reason = debtItem.reason();
+						final double intDue = CMath.mul(intRate, dueAmount);
+						final long timeRemaining = debtDueAt - System.currentTimeMillis();
 						if((timeRemaining<0)&&(newBalance<((dueAmount)+intDue)))
 							newBalance=-1.0;
 						else
@@ -513,7 +513,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							else
 								CMLib.beanCounter().adjustDebt(debtor,bankChain(),intDue,reason,intRate,debtDueAt);
 						}
-						debts.removeElementAt(d);
+						debts.remove(d);
 					}
 				}
 				if(newBalance<0)
@@ -557,7 +557,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 			}
 			for(int d=debts.size()-1;d>=0;d--)
-				CMLib.beanCounter().delAllDebt(debts.elementAt(d).debtor(),bankChain());
+				CMLib.beanCounter().delAllDebt(debts.get(d).debtor(),bankChain());
 		}
 	}
 
@@ -974,12 +974,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 						else
 							str.append("Your balance is ^H"+CMLib.beanCounter().nameCurrencyLong(this,balance)+"^?.");
 					}
-					final Vector<MoneyLibrary.DebtItem> debts=CMLib.beanCounter().getDebt(listerName,bankChain());
+					final List<MoneyLibrary.DebtItem> debts=CMLib.beanCounter().getDebt(listerName,bankChain());
 					if(debts!=null)
 					{
 						for(int d=0;d<debts.size();d++)
 						{
-							final MoneyLibrary.DebtItem debt=debts.elementAt(d);
+							final MoneyLibrary.DebtItem debt=debts.get(d);
 							final long debtDueAt=debt.due();
 							final double intRate=debt.interest();
 							final double dueAmount=debt.amt();

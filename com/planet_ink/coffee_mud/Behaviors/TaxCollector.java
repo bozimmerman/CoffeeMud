@@ -188,9 +188,9 @@ public class TaxCollector extends StdBehavior
 					}
 				}
 
-				int numProperties=0;
-				int numBackTaxesUnpaid=0;
-				boolean paidBackTaxes=false;
+				int numProperties = 0;
+				int numBackTaxesUnpaid = 0;
+				boolean paidBackTaxes = false;
 				for(int i=0;i<taxableProperties.size();i++)
 				{
 					final LandTitle T=taxableProperties.get(i);
@@ -222,7 +222,9 @@ public class TaxCollector extends StdBehavior
 						}
 					}
 				}
-				if((paidBackTaxes)&&(numBackTaxesUnpaid==0)&&(mob.location()!=null))
+				if((paidBackTaxes)
+				&&(numBackTaxesUnpaid==0)
+				&&(mob.location()!=null))
 				{
 					final LegalBehavior B=CMLib.law().getLegalBehavior(mob.location().getArea());
 					if((B!=null)&&(!msg.source().isMonster()))
@@ -232,16 +234,19 @@ public class TaxCollector extends StdBehavior
 					}
 				}
 
-				if((paidAmount>0)&&(numProperties>0))
-				for(int i=0;i<taxableProperties.size();i++)
+				if((paidAmount>0)
+				&&(numProperties>0))
 				{
-					final LandTitle T=taxableProperties.get(i);
-					if(((T.getOwnerName().equals(msg.source().Name())))
-					&&(paidAmount>0))
+					for(int i=0;i<taxableProperties.size();i++)
 					{
-						T.setBackTaxes(T.backTaxes()-(int)Math.round(CMath.div(paidAmount,numProperties)));
-						T.updateTitle();
-						paidAmount-=CMath.div(paidAmount,numProperties);
+						final LandTitle T=taxableProperties.get(i);
+						if(((T.getOwnerName().equals(msg.source().Name())))
+						&&(paidAmount>0))
+						{
+							T.setBackTaxes(T.backTaxes()-(int)Math.round(CMath.div(paidAmount,numProperties)));
+							T.updateTitle();
+							paidAmount-=CMath.div(paidAmount,numProperties);
+						}
 					}
 				}
 				msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),null,CMMsg.MSG_SPEAK,L("<S-NAME> says 'Very good.  Your taxes are paid in full.' to <T-NAMESELF>.")));
@@ -305,7 +310,8 @@ public class TaxCollector extends StdBehavior
 		}
 
 		final Room R=mob.location();
-		if((R!=null)&&(lastMonthChecked!=R.getArea().getTimeObj().getMonth()))
+		if((R!=null)
+		&&(lastMonthChecked!=R.getArea().getTimeObj().getMonth()))
 		{
 			lastMonthChecked=R.getArea().getTimeObj().getMonth();
 			final Law theLaw=CMLib.law().getTheLaw(R,mob);
@@ -315,7 +321,9 @@ public class TaxCollector extends StdBehavior
 				final String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
 				LandTitle T=null;
 				peopleWhoOwe.clear();
-				if((taxs!=null)&&(taxs.length()>0)&&(CMath.s_double(taxs)>0))
+				if((taxs!=null)
+				&&(taxs.length()>0)
+				&&(CMath.s_double(taxs)>0))
 				{
 					taxableProperties=CMLib.law().getAllUniqueLandTitles(A2.getMetroMap(),"*",false);
 					for(int v=0;v<taxableProperties.size();v++)
@@ -378,21 +386,30 @@ public class TaxCollector extends StdBehavior
 					final String currency=CMLib.beanCounter().getCurrency(mob);
 					final double denomination=CMLib.beanCounter().getLowestDenomination(currency);
 					if(owe[OWE_CITIZENTAX]>1.0)
-						say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_CITIZENTAX],denomination)))+" in local taxes. ");
+					{
+						final String moneyStr = CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_CITIZENTAX],denomination)));
+						say.append(L("You owe @x1 in local taxes. ",moneyStr));
+					}
 					if(owe[OWE_BACKTAXES]>1.0)
-						say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_BACKTAXES],denomination)))+" in back property taxes");
+					{
+						final String moneyStr = CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_BACKTAXES],denomination)));
+						say.append(L("You owe @x1  in back property taxes",moneyStr));
+					}
 					if(owe[OWE_FINES]>1.0)
-						say.append("You owe "+CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_FINES],denomination)))+" in fines");
+					{
+						final String moneyStr = CMLib.beanCounter().getDenominationName(currency,denomination,Math.round(CMath.div(owe[OWE_FINES],denomination)));
+						say.append(L("You owe @x1 in fines",moneyStr));
+					}
 					if(say.length()>0)
 					{
 						CMLib.commands().postSay(mob,M,L("@x1.  You must pay me immediately or face the consequences.",say.toString()),false,false);
 						demanded.addElement(M,Long.valueOf(System.currentTimeMillis()));
 						if(M.isMonster())
 						{
-							final Vector<String> V=new Vector<String>();
-							V.addElement("GIVE");
-							V.addElement(""+Math.round(owe[OWE_TOTAL]));
-							V.addElement(mob.name());
+							final List<String> V=new Vector<String>();
+							V.add("GIVE");
+							V.add(""+Math.round(owe[OWE_TOTAL]));
+							V.add(mob.name());
 							M.doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
 						}
 					}

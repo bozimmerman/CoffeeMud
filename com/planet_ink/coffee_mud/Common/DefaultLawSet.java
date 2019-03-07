@@ -596,7 +596,7 @@ public class DefaultLawSet implements Law
 						&&(evasionBits[Law.BIT_CRIMENAME].length()>0)
 						&&(responsibleMob!=null))
 						{
-							while(getWarrant(responsibleMob,evasionBits[Law.BIT_CRIMENAME],true,debugging)!=null)
+							while(removeWarrant(responsibleMob,evasionBits[Law.BIT_CRIMENAME],debugging)!=null)
 							{
 							}
 						}
@@ -889,10 +889,8 @@ public class DefaultLawSet implements Law
 
 	public LegalWarrant getWarrant(final MOB criminal,
 								   final String crime,
-								   final boolean pull,
 								   final boolean debugging)
 	{
-		LegalWarrant W=null;
 		for(int i=0;i<warrants.size();i++)
 		{
 			final LegalWarrant W2=warrants.elementAt(i);
@@ -900,14 +898,32 @@ public class DefaultLawSet implements Law
 			&&(W2.crime().equals(crime))
 			&&(legalDetails.isStillACrime(W2,debugging)))
 			{
-				W=W2;
-				if(pull)
-					warrants.removeElement(W2);
-				break;
+				return W2;
 			}
 		}
-		return W;
+		return null;
 	}
+
+
+
+	public LegalWarrant removeWarrant(final MOB criminal,
+									  final String crime,
+									  final boolean debugging)
+	{
+		for(int i=0;i<warrants.size();i++)
+		{
+			final LegalWarrant W2=warrants.elementAt(i);
+			if((W2.criminal()==criminal)
+			&&(W2.crime().equals(crime))
+			&&(legalDetails.isStillACrime(W2,debugging)))
+			{
+				warrants.removeElement(W2);
+				return W2;
+			}
+		}
+		return null;
+	}
+
 
 	@Override
 	public LegalWarrant getCopkiller(final Area A, final LegalBehavior behav, final MOB mob)
