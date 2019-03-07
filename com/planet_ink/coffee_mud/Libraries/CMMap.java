@@ -55,23 +55,25 @@ public class CMMap extends StdLibrary implements WorldMap
 		return "CMMap";
 	}
 
-	public static final BigDecimal TWO 					= BigDecimal.valueOf(2L);
+	public final double			ZERO_ALMOST			= 0.000001;
+	public final BigDecimal 	ALMOST_ZERO			= BigDecimal.valueOf(ZERO_ALMOST);
+	public final BigDecimal 	ONE 				= BigDecimal.valueOf(1L);
+	public final BigDecimal 	TWO 				= BigDecimal.valueOf(2L);
+	public final double			PI_ALMOST			= Math.PI-ZERO_ALMOST;
+	public final double			PI_TIMES_2			= Math.PI*2.0;
+	public final double			PI_BY_2				= Math.PI/2.0;
+	public final int			QUADRANT_WIDTH  	= 10;
+	public static MOB   		deityStandIn		= null;
+	public long 				lastVReset  		= 0;
+	public CMNSortSVec<Area>	areasList   		= new CMNSortSVec<Area>();
+	public List<Deity>  		deitiesList 		= new SVector<Deity>();
+	public List<BoardableShip>	shipList 			= new SVector<BoardableShip>();
+	public List<PostOffice> 	postOfficeList  	= new SVector<PostOffice>();
+	public List<Auctioneer> 	auctionHouseList	= new SVector<Auctioneer>();
+	public List<Banker> 		bankList			= new SVector<Banker>();
+	public List<Librarian> 		libraryList			= new SVector<Librarian>();
+	public RTree<SpaceObject>	space				= new RTree<SpaceObject>();
 
-	public final double			ZERO_ALMOST				= 0.000001;
-	public final double			PI_ALMOST				= Math.PI-ZERO_ALMOST;
-	public final double			PI_TIMES_2				= Math.PI*2.0;
-	public final double			PI_BY_2					= Math.PI/2.0;
-	public final int			QUADRANT_WIDTH  		= 10;
-	public static MOB   		deityStandIn			= null;
-	public long 				lastVReset  			= 0;
-	public CMNSortSVec<Area>	areasList   			= new CMNSortSVec<Area>();
-	public List<Deity>  		deitiesList 			= new SVector<Deity>();
-	public List<BoardableShip>	shipList 				= new SVector<BoardableShip>();
-	public List<PostOffice> 	postOfficeList  		= new SVector<PostOffice>();
-	public List<Auctioneer> 	auctionHouseList		= new SVector<Auctioneer>();
-	public List<Banker> 		bankList				= new SVector<Banker>();
-	public List<Librarian> 		libraryList				= new SVector<Librarian>();
-	public RTree<SpaceObject>	space					= new RTree<SpaceObject>();
 	protected Map<String,Object>SCRIPT_HOST_SEMAPHORES	= new Hashtable<String,Object>();
 
 	protected static final Comparator<Area>	areaComparator = new Comparator<Area>()
@@ -4211,12 +4213,20 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			try
 			{
-				final BigDecimal s=new BigDecimal(prevDistance/2.0)
-									.add(new BigDecimal(curDistance/2.0))
-									.add(new BigDecimal(baseDistance/2.0));
-				final BigDecimal s1=s.subtract(new BigDecimal(prevDistance));
-				final BigDecimal s2=s.subtract(new BigDecimal(curDistance));
-				final BigDecimal s3=s.subtract(new BigDecimal(baseDistance));
+				BigDecimal s=new BigDecimal(prevDistance/2.0)
+							.add(new BigDecimal(curDistance/2.0))
+							.add(new BigDecimal(baseDistance/2.0));
+				if(s.doubleValue()==0.0)
+					s=s.add(ONE);
+				BigDecimal s1=s.subtract(new BigDecimal(prevDistance));
+				if(s1.doubleValue()==0.0)
+					s1=s1.add(ONE);
+				BigDecimal s2=s.subtract(new BigDecimal(curDistance));
+				if(s2.doubleValue()==0.0)
+					s2=s2.add(ONE);
+				BigDecimal s3=s.subtract(new BigDecimal(baseDistance));
+				if(s3.doubleValue()==0.0)
+					s3=s3.add(ONE);
 				final BigDecimal aa=s.multiply(s1).multiply(s2).multiply(s3);
 				final MathContext mc= MathContext.DECIMAL64;
 				BigDecimal area = aa.divide(TWO, mc);
@@ -4224,8 +4234,6 @@ public class CMMap extends StdLibrary implements WorldMap
 				final int maxIterations = mc.getPrecision() + 1;
 				for (int i = 0; !done && i < maxIterations; i++)
 				{
-					// area can be 0 here because aa was 0 because s2 becomes 0 through luck.
-					// something is wrong with this formula.
 					BigDecimal r = aa.divide(area, mc);
 					r = r.add(area);
 					r = r.divide(TWO, mc);
