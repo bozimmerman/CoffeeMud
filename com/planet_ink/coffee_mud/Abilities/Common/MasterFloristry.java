@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class MasterFloristry extends Herbology
+public class MasterFloristry extends Floristry
 {
 	@Override
 	public String ID()
