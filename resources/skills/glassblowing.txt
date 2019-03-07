@@ -61,7 +61,7 @@ beaker	61	35	1	21	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	5
 % bust	61	90	25	1375	GenItem	STATUE		
 large display case	62	40	100	2450	GenContainer		400	Prop_NoPurge
 large % six-sided die	63	50	2	63	GenDice		6	
-glass chandelier	63	90	300	17000	GenItem			Spell_ContinualLight
+glass chandelier	63	90	300	17000	GenFixture			Spell_ContinualLight
 charger	64	20	4	49	GenContainer		10	
 distilling column	65	30	1	20	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	5	
 large % four-sided die	65	60	2	78	GenDice		4	
@@ -80,7 +80,7 @@ pipette	75	30	1	23	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	3
 large % twenty-sided die	79	90	2	144	GenDice		20	
 small % Crate	80	45	15	535	GenContainer	LID	500	
 % thirty-sided die	82	90	1	75	GenDice		30	
-ornate chandelier	83	150	1000	126000	GenItem			Spell_ContinualLight
+ornate chandelier	83	150	1000	126000	GenFixture			Spell_ContinualLight
 burette	85	25	1	22	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	3	
 Small %  storage barrel	85	60	10	510	GenContainer	LID	100	
 % hundred-sided die	85	100	1	86	GenDice		100	

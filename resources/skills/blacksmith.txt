@@ -14,7 +14,7 @@
 % hook-hand	10	30	5	50	GenLimb			
 % pitcher	11	30	2	20	GenEmptyDrink	LIQUID	15	
 % wand	12	40	1	10	GenWand		20	
-% lamp post	13	150	250	2000	GenItem			Spell_ContinualLight
+% lamp post	13	150	250	2000	GenFixture			Spell_ContinualLight
 % pan	14	30	2	20	GenContainer	EATABLES|RAWMATERIALS	15	
 % gravy boat	15	15	2	10	GenEmptyDrink	LIQUID	5	
 large % grill	16	120	80	3000	GenRideable		250	Burning
@@ -76,7 +76,7 @@ small % bench	39	20	10	130	GenChair	CHAIR	2
 % sarcophogus	42	40	200	5450	GenBed	BED	500	Prop_NoPurge
 % stool	43	20	5	66	GenChair	CHAIR	1	
 % tub	43	60	100	4150	GenTub	CHAIR	2000	
-% brazier	43	40	125	2500	GenItem			Spell_ContinualLight
+% brazier	43	40	125	2500	GenFixture			Spell_ContinualLight
 % platter	44	25	3	51	GenContainer		20	
 % flask	45	25	2	35	GenEmptyDrink	LIQUID|LID	5	
 % blacksmithing tongs	45	20	3	41	GenItem			
@@ -93,7 +93,7 @@ small % chest	45	80	10	560	GenContainer	LOCK	100
 % storage rack	51	25	50	910	GenContainer		500	
 % armor rack	52	30	75	1650	GenContainer	CLOTHES	2000	Prop_NoPurge
 large % six-sided die	53	50	2	75	GenDice		6	
-% chandelier	53	90	500	10000	GenItem			Spell_ContinualLight
+% chandelier	53	90	500	10000	GenFixture			Spell_ContinualLight
 % serving tray	54	20	4	58	GenContainer		50	
 % candlestick	55	10	1	7	GenItem			
 large % four-sided die	55	60	2	90	GenDice		4	
