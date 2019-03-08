@@ -456,6 +456,8 @@ public class ListCmd extends StdCommand
 
 		try
 		{
+			final int col1=CMLib.lister().fixColWidth(25.0,mob.session());
+			final int roomNameCol=CMLib.lister().fixColWidth(20.0,mob.session());
 			for(;r.hasMoreElements();)
 			{
 				R=r.nextElement();
@@ -469,8 +471,8 @@ public class ListCmd extends StdCommand
 						||CMLib.english().containsString(R.displayText(),rest)
 						||CMLib.english().containsString(R.description(),rest))
 						{
-							lines.append("^!"+CMStrings.padRight("*",17)+"^?| ");
-							lines.append(R.displayText(mob));
+							lines.append("^!"+CMStrings.padRight("*",col1)+"^?| ");
+							lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
 							lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 							lines.append("\n\r");
 						}
@@ -486,7 +488,7 @@ public class ListCmd extends StdCommand
 								||((E.doorName().length()>0)&& CMLib.english().containsString(E.doorName(),rest))
 								||(CMLib.english().containsString(E.viewableText(mob,R).toString(),rest))))
 							{
-								lines.append("^!"+CMStrings.padRight(CMLib.directions().getDirectionName(d),17)+"^N| ");
+								lines.append("^!"+CMStrings.padRight(CMLib.directions().getDirectionName(d),col1)+"^N| ");
 								lines.append("^N^. (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 								lines.append("\n\r");
 							}
@@ -505,7 +507,7 @@ public class ListCmd extends StdCommand
 								||(CMLib.english().containsString(E.displayText(),rest))
 								||(CMLib.english().containsString(E.description(),rest)))
 								{
-									lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),17)+"^N| ");
+									lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),col1)+"^N| ");
 									lines.append("SHOP: "+cataMark(R)+R.name(mob)+"^N");
 									lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 									if(shopOnly)
@@ -524,8 +526,8 @@ public class ListCmd extends StdCommand
 							{
 								if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
 								{
-									lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
-									lines.append(R.displayText(mob));
+									lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),col1)+"^N| ");
+									lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
 									lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 									lines.append("\n\r");
 								}
@@ -535,8 +537,8 @@ public class ListCmd extends StdCommand
 							{
 								if(CMLib.masking().maskCheck(rest,I,true))
 								{
-									lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
-									lines.append(R.displayText(mob));
+									lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),col1)+"^N| ");
+									lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
 									lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 									lines.append("\n\r");
 								}
@@ -547,8 +549,8 @@ public class ListCmd extends StdCommand
 							||(CMLib.english().containsString(I.displayText(),rest))
 							||(CMLib.english().containsString(I.description(),rest)))
 							{
-								lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
-								lines.append(R.displayText(mob));
+								lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),col1)+"^N| ");
+								lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
 								lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 								lines.append("\n\r");
 							}
@@ -565,8 +567,8 @@ public class ListCmd extends StdCommand
 								{
 									if(CMLib.masking().maskCheck(compiledZapperMask,M,true))
 									{
-										lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),17)+"^N| ");
-										lines.append(R.displayText(mob));
+										lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),col1)+"^N| ");
+										lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
 										lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 										lines.append("\n\r");
 									}
@@ -576,8 +578,8 @@ public class ListCmd extends StdCommand
 								{
 									if(CMLib.masking().maskCheck(rest,M,true))
 									{
-										lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),17)+"^N| ");
-										lines.append(R.displayText(mob));
+										lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),col1)+"^N| ");
+										lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
 										lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 										lines.append("\n\r");
 									}
@@ -588,8 +590,8 @@ public class ListCmd extends StdCommand
 								||(CMLib.english().containsString(M.displayText(),rest))
 								||(CMLib.english().containsString(M.description(),rest)))
 								{
-									lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),17)+"^N| ");
-									lines.append(R.displayText(mob));
+									lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),col1)+"^N| ");
+									lines.append(CMStrings.limit(R.displayText(mob),roomNameCol));
 									lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 									lines.append("\n\r");
 								}
@@ -605,7 +607,7 @@ public class ListCmd extends StdCommand
 										{
 											if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
 											{
-												lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
+												lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),col1)+"^N| ");
 												lines.append("INV: "+cataMark(M)+M.name(mob)+"^N");
 												lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 												lines.append("\n\r");
@@ -616,7 +618,7 @@ public class ListCmd extends StdCommand
 										{
 											if(CMLib.masking().maskCheck(rest,I,true))
 											{
-												lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
+												lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),col1)+"^N| ");
 												lines.append("INV: "+cataMark(M)+M.name(mob)+"^N");
 												lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 												lines.append("\n\r");
@@ -628,7 +630,7 @@ public class ListCmd extends StdCommand
 										||(CMLib.english().containsString(I.displayText(),rest))
 										||(CMLib.english().containsString(I.description(),rest)))
 										{
-											lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
+											lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),col1)+"^N| ");
 											lines.append("INV: "+cataMark(M)+M.name(mob)+"^N");
 											lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 											lines.append("\n\r");
@@ -645,7 +647,7 @@ public class ListCmd extends StdCommand
 										{
 											if(CMLib.masking().maskCheck(compiledZapperMask,E,true))
 											{
-												lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),17)+"^N| ");
+												lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),col1)+"^N| ");
 												lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
 												lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 												if(shopOnly)
@@ -658,7 +660,7 @@ public class ListCmd extends StdCommand
 										{
 											if(CMLib.masking().maskCheck(compiledZapperMask,E,true))
 											{
-												lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),17)+"^N| ");
+												lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),col1)+"^N| ");
 												lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
 												lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 												if(shopOnly)
@@ -671,7 +673,7 @@ public class ListCmd extends StdCommand
 										{
 											if(CMLib.masking().maskCheck(rest,E,true))
 											{
-												lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),17)+"^N| ");
+												lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),col1)+"^N| ");
 												lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
 												lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 												if(shopOnly)
@@ -684,7 +686,7 @@ public class ListCmd extends StdCommand
 										{
 											if(CMLib.masking().maskCheck(rest,E,true))
 											{
-												lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),17)+"^N| ");
+												lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),col1)+"^N| ");
 												lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
 												lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 												if(shopOnly)
@@ -698,7 +700,7 @@ public class ListCmd extends StdCommand
 										||(CMLib.english().containsString(E.displayText(),rest))
 										||(CMLib.english().containsString(E.description(),rest)))
 										{
-											lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),17)+"^N| ");
+											lines.append("^!"+CMStrings.padRight(cataMark(E)+E.name(),col1)+"^N| ");
 											lines.append("SHOP: "+cataMark(M)+M.name(mob)+"^N");
 											lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 											if(shopOnly)
@@ -728,6 +730,7 @@ public class ListCmd extends StdCommand
 			return lines;
 		if(commands.size()==1)
 		{
+			lines.append("^HArea IDs:^N\n\r");
 			Room thisThang=null;
 			String thisOne=null;
 			for(final Enumeration<Room> r=these;r.hasMoreElements();)
@@ -741,6 +744,7 @@ public class ListCmd extends StdCommand
 		}
 		else
 		{
+			lines.append("^HStuff:^N\n\r");
 			lines.append(getStuff(mob, commands, 1, these));
 		}
 		return lines;
@@ -5037,7 +5041,6 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(roomDetails(mob.session(), mob.location().getArea().getMetroMap(), mob.location(), rest).toString());
 			break;
 		case AREA:
-			s.println("^HArea IDs:^N");
 			s.wraplessPrintln(roomTypes(mob, mob.location().getArea().getMetroMap(), mob.location(), commands).toString());
 			break;
 		case LOCALES:
