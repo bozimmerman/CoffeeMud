@@ -384,6 +384,17 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	@Override
 	public String[] getApplicableExpertises(final String ID, final Flag code)
 	{
+		if(code == null)
+		{
+			final Set<String> all=new TreeSet<String>();
+			for(final Flag f : Flag.values())
+			{
+				final String[] set=completeUsageMaps[f.ordinal()].get(ID);
+				if(set != null)
+					all.addAll(Arrays.asList(set));
+			}
+			return all.toArray(new String[0]);
+		}
 		return completeUsageMaps[code.ordinal()].get(ID);
 	}
 

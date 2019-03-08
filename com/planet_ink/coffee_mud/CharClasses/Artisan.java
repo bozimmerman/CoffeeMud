@@ -274,6 +274,21 @@ public class Artisan extends StdCharClass
 	}
 
 	@Override
+	public void startCharacter(final MOB mob, final boolean isBorrowedClass, final boolean verifyOnly)
+	{
+		super.startCharacter(mob, isBorrowedClass, verifyOnly);
+		if(mob.fetchEffect("ArtisanalFocus")==null)
+		{
+			final Ability A=CMClass.getAbility("ArtisanalFocus");
+			if(A!=null)
+			{
+				A.setSavable(true);
+				mob.addNonUninvokableEffect(A);
+			}
+		}
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.source() == myHost)
