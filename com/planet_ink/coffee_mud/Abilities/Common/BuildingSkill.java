@@ -182,7 +182,6 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -648,7 +647,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		return R;
 	}
 
-	protected void buildDoor(final String[] recipe, Room room, final int dir)
+	protected void buildDoor(final String[] recipe, Room room, final int dir, final int recipeLevel)
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
@@ -690,6 +689,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			if(X.defaultsClosed() && X.hasADoor())
 				X.setDoorsNLocks(X.hasADoor(), !X.defaultsClosed(), X.defaultsClosed(), X.hasALock(), X.hasALock(), X.defaultsLocked());
 			addEffects(X, room.getRoomInDir(dir),spells);
+			X.basePhyStats().setLevel(recipeLevel);
 			X.recoverPhyStats();
 			X.text();
 			room.setRawExit(dir,X);
@@ -999,7 +999,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		}
 		case DOOR:
 		{
-			this.buildDoor(recipe, room, dir);
+			this.buildDoor(recipe, room, dir, CMath.s_int(recipe[RCP_LEVEL]));
 			break;
 		}
 		case ITEM:
@@ -1312,6 +1312,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		if(("SURVEY").startsWith(str.toUpperCase()))
 		{
 			//TODO: FINISH
+			//TODO: OK, but what's it do again?
 		}
 
 		designTitle="";
