@@ -1074,6 +1074,12 @@ public class DefaultSession implements Session
 			Log.errOut("ZLibFail",x.getMessage());
 			this.setKillFlag(true);
 		}
+		catch(final NullPointerException x)
+		{
+			final IOException ioe=new IOException("rawBytesOut: "+x.getMessage());
+			ioe.setStackTrace(new StackTraceElement[0]);
+			throw ioe;
+		}
 		finally
 		{
 			lastWriteTime=System.currentTimeMillis();
