@@ -562,7 +562,12 @@ public class MOBloader
 			{
 				C=CMClass.getCharClass(cclass.substring(x+1));
 				if(C!=null)
-					cclass=C.name();
+				{
+					if(C.nameSet().length>1)
+						cclass=C.ID();
+					else
+						cclass=C.name();
+				}
 			}
 			final String charClass=(cclass);
 			final String rrace=DBConnections.getRes(R,"CMRACE");
