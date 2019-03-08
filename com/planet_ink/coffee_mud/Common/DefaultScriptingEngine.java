@@ -3100,7 +3100,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final int day=C.getDayOfMonth();
 						final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
 						final int bmonth=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
-						if((C.getYear()>mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])
+						if((C.getYear()==mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])
 						&&((month==bmonth)&&(day==bday)))
 							returnable=true;
 						else
