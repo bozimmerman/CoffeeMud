@@ -112,6 +112,7 @@ public class DefaultFaction implements Faction, MsgListener
 	protected double							rateModifier	 = 1.0;
 	protected CMap<String,FactionChangeEvent[]>	changes			 = new SHashtable<String,FactionChangeEvent[]>();
 	protected CMap<String,FactionChangeEvent[]>	abilChangeCache	 = new SHashtable<String,FactionChangeEvent[]>();
+	protected CMap<String,FactionChangeEvent[]>	socChangeCache	 = new SHashtable<String,FactionChangeEvent[]>();
 	protected CList<Faction.FZapFactor>			factors			 = new SVector<Faction.FZapFactor>();
 	protected CMap<String,Double> 				relations		 = new SHashtable<String,Double>();
 	protected CList<Faction.FAbilityUsage>		abilityUsages	 = new SVector<Faction.FAbilityUsage>();
@@ -913,6 +914,29 @@ public class DefaultFaction implements Faction, MsgListener
 	}
 
 	@Override
+	public FactionChangeEvent[] findSocialChangeEvents(final Social soc)
+	{
+		if(soc==null)
+			return null;
+		if(socChangeCache.containsKey(soc.name()))
+			return socChangeCache.get(soc.name());
+		final String starName=soc.baseName().toUpperCase()+" *";
+		if(socChangeCache.containsKey(starName))
+			return socChangeCache.get(starName);
+		if(changes.containsKey(soc.name()))
+		{
+			socChangeCache.put(soc.name(), changes.get(soc.name()));
+			return socChangeCache.get(soc.name());
+		}
+		if(changes.containsKey(starName))
+		{
+			socChangeCache.put(starName, changes.get(starName));
+			return socChangeCache.get(starName);
+		}
+		return null;
+	}
+
+	@Override
 	public Faction.FRange fetchRange(final String codeName)
 	{
 		return ranges.get(codeName.toUpperCase().trim());
@@ -1323,6 +1347,19 @@ public class DefaultFaction implements Faction, MsgListener
 					executeChange(msg.source(),null,C);
 			}
 		}
+		// Social Watching
+		if((msg.tool() instanceof Social)
+		&&((events=findSocialChangeEvents((Social)msg.tool()))!=null))
+		{
+			for (final FactionChangeEvent C : events)
+			{
+				if((msg.target() instanceof MOB)&&(C.applies(msg.source(),(MOB)msg.target())))
+					executeChange(msg.source(),(MOB)msg.target(),C);
+				else
+				if (!(msg.target() instanceof MOB))
+					executeChange(msg.source(),null,C);
+			}
+		}
 	}
 
 	@Override
@@ -1557,6 +1594,17 @@ public class DefaultFaction implements Faction, MsgListener
 			ALL_TYPES.append(element+", ");
 		for (final String element : Ability.FLAG_DESCS)
 			ALL_TYPES.append(element+", ");
+		final Set<String> doneSoc=new HashSet<String>();
+		for(final Enumeration<Social> s = CMLib.socials().getAllSocials();s.hasMoreElements();)
+		{
+			final Social S=s.nextElement();
+			ALL_TYPES.append(S.name()).append(", ");
+			if(!doneSoc.contains(S.baseName()))
+			{
+				doneSoc.add(S.baseName());
+				ALL_TYPES.append(S.baseName()+" *, ");
+			}
+		}
 		_ALL_TYPES=ALL_TYPES.toString()+" a valid Skill, Spell, Chant, etc. ID.";
 		return _ALL_TYPES;
 	}
@@ -1576,6 +1624,7 @@ public class DefaultFaction implements Faction, MsgListener
 		else
 			event=new DefaultFaction.DefaultFactionChangeEvent(this,key);
 		abilChangeCache.clear();
+		socChangeCache.clear();
 		Faction.FactionChangeEvent[] events=changes.get(event.eventID().toUpperCase().trim());
 		if(events==null)
 			events=new Faction.FactionChangeEvent[0];
@@ -1608,7 +1657,10 @@ public class DefaultFaction implements Faction, MsgListener
 				nevents[ne1++]=event2;
 		}
 		if(done)
+		{
 			abilChangeCache.clear();
+			socChangeCache.clear();
+		}
 		return done;
 	}
 
@@ -1616,6 +1668,7 @@ public class DefaultFaction implements Faction, MsgListener
 	public void clearChangeEvents()
 	{
 		abilChangeCache.clear();
+		socChangeCache.clear();
 		changes.clear();
 	}
 
@@ -1627,6 +1680,7 @@ public class DefaultFaction implements Faction, MsgListener
 			if(replaceEvents(e.nextElement(),event,true))
 			{
 				abilChangeCache.clear();
+				socChangeCache.clear();
 				return true;
 			}
 		}
@@ -1635,6 +1689,7 @@ public class DefaultFaction implements Faction, MsgListener
 			if(replaceEvents(e.nextElement(),event,false))
 			{
 				abilChangeCache.clear();
+				socChangeCache.clear();
 				return true;
 			}
 		}
@@ -1882,6 +1937,17 @@ public class DefaultFaction implements Faction, MsgListener
 			if(CMClass.getAbility(newID)!=null)
 			{
 				ID = newID;
+				return true;
+			}
+			if(CMLib.socials().fetchSocial(newID, true)!=null)
+			{
+				ID=newID.toUpperCase();
+				return true;
+			}
+			if((newID.endsWith(" *"))
+			&&(CMLib.socials().fetchSocial(newID.substring(0,newID.length()-2).trim(), true)!=null))
+			{
+				ID=newID.toUpperCase().trim();
 				return true;
 			}
 			return false;
@@ -2824,6 +2890,7 @@ public class DefaultFaction implements Faction, MsgListener
 		affBehavs.clear();
 		changes.clear();
 		abilChangeCache.clear();
+		socChangeCache.clear();
 		factors.clear();
 		relations.clear();
 		abilityUsages.clear();

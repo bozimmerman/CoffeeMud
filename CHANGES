@@ -50,6 +50,7 @@
   49. Lock/Unlock message now includes the name of the key.  Also, new <O-WITHNAME> to support this.
   50. New item types: GenFixture and GenFurniture, to make ungettables that can be pushed and pulled.
   51. Artisans with a specific focus will get a special character class name that can be toggled with ARTFOCUS.
+  52. Factions now support social change triggers
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

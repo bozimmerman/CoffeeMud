@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.DefaultFaction;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
@@ -508,6 +509,17 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @return the FactionChangeEvent that applies, or null.
 	 */
 	public FactionChangeEvent[] findAbilityChangeEvents(Ability key);
+
+	/**
+	 * Returns a FactionChangeEvent that applies when the given Social is used
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#executeChange(MOB, MOB, com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
+	 * @param key the Social to find a change event for.
+	 * @return the FactionChangeEvent that applies, or null.
+	 */
+	public FactionChangeEvent[] findSocialChangeEvents(final Social soc);
 
 	/**
 	 * Returns a FactionChangeEvent that applies when the given event name (a trigger

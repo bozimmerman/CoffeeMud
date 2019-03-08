@@ -1699,8 +1699,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isMetal(final Environmental E)
 	{
 		if(E instanceof Item)
+		{
 			return((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 				||((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL);
+		}
 		if(E instanceof MOB)
 		{
 			final MOB M=(MOB)E;
