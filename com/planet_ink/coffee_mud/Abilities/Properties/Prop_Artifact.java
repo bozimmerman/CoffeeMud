@@ -163,7 +163,13 @@ public class Prop_Artifact extends Property
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof Item))
-			return false;
+		{
+			if(affected == null)
+				Log.errOut("Prop_Artifact had null affected link-back on "+myHost.Name());
+			else
+				Log.errOut("Prop_Artifact had affected "+affected.name()+" link-back on "+myHost.Name());
+			return true;
+		}
 		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
 		&&(msg.target() instanceof Room)
 		&&(((Room)msg.target()).isContent((Item)affected)))
