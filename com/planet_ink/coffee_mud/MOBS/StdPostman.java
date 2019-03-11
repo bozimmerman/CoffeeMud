@@ -476,7 +476,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			if(M.getStartRoom()!=null)
 			{
 				final Map<String,String> allBranchBoxes=getOurOpenBoxes(toWhom);
-				final PostOffice P=CMLib.map().getPostOffice(postalChain(),M.getStartRoom().getArea().Name());
+				final PostOffice P=CMLib.map().getPostOffice(postalChain(), M.getStartRoom().getArea().Name());
 				String branch=null;
 				if(P!=null)
 				{
@@ -558,21 +558,21 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			if(proceed)
 			{
 				List<PlayerData> V=getBoxRowPDData(postalChain());
+				if(V==null)
+					V=new ArrayList<PlayerData>(0);
 				// first parse all the pending mail,
 				// and remove it from the sorter
-				final Vector<MailPiece> parsed=new Vector<MailPiece>();
-				if(V==null)
-					V=new Vector<PlayerData>();
+				final List<MailPiece> parsed=new ArrayList<MailPiece>(V.size());
 				for(int v=0;v<V.size();v++)
 				{
 					final DatabaseEngine.PlayerData PD=V.get(v);
-					parsed.addElement(parsePostalItemData(PD.xml()));
+					parsed.add(parsePostalItemData(PD.xml()));
 					CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
 				}
 				PostOffice P=null;
 				for(int v=0;v<parsed.size();v++)
 				{
-					final MailPiece V2=parsed.elementAt(v);
+					final MailPiece V2=parsed.get(v);
 					final String toWhom=V2.to;
 					String deliveryBranch=findProperBranch(toWhom);
 					if(deliveryBranch!=null)

@@ -1970,10 +1970,11 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public PostOffice getPostOffice(final String chain, final String areaNameOrBranch)
 	{
+		final boolean anyArea = areaNameOrBranch.equalsIgnoreCase("*");
 		for (final PostOffice P : postOfficeList)
 		{
 			if((P.postalChain().equalsIgnoreCase(chain))
-			&&(P.postalBranch().equalsIgnoreCase(areaNameOrBranch)))
+			&&((anyArea)||(P.postalBranch().equalsIgnoreCase(areaNameOrBranch))))
 				return P;
 		}
 

@@ -62,6 +62,8 @@ public class ListCmd extends StdCommand
 		return access;
 	}
 
+	protected boolean helpChecked = false;
+
 	private enum WikiFlag
 	{
 		NO,
@@ -2218,6 +2220,77 @@ public class ListCmd extends StdCommand
 		return lines;
 	}
 
+	public StringBuilder listPostOffices(final MOB mob, final Session viewerS, final List<String> commands)
+	{
+		final StringBuilder buf=new StringBuilder("");
+		if(!CMLib.map().postOffices().hasMoreElements())
+			buf.append(L("No post offices exist."));
+		else
+		{
+			buf.append("\n\r^xPost Offices:^.^N\n\r");
+			final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerS);
+			final int COL_LEN2=CMLib.lister().fixColWidth(20.0,viewerS);
+			final int COL_LEN3=CMLib.lister().fixColWidth(25.0,viewerS);
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Chain"),COL_LEN2)+CMStrings.padRight(L("Branch"),COL_LEN3)+" Name^.^N\n\r");
+			int num=1;
+			for(final Enumeration<PostOffice> p=CMLib.map().postOffices();p.hasMoreElements();)
+			{
+				final PostOffice P=p.nextElement();
+				buf.append(CMStrings.padRight(""+num,COL_LEN1)+CMStrings.padRight(P.postalChain(),COL_LEN2)+CMStrings.padRight(P.postalBranch(),COL_LEN3)+" "+P.name()+"^.^N\n\r");
+				num++;
+			}
+		}
+		return buf;
+	}
+
+	public StringBuilder listBanks(final MOB mob, final Session viewerS, final List<String> commands)
+	{
+		final StringBuilder buf=new StringBuilder("");
+		if(!CMLib.map().banks().hasMoreElements())
+			buf.append(L("No banks exist."));
+		else
+		{
+			buf.append("\n\r^xBanks:^.^N\n\r");
+			final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerS);
+			final int COL_LEN2=CMLib.lister().fixColWidth(20.0,viewerS);
+			final int COL_LEN3=CMLib.lister().fixColWidth(25.0,viewerS);
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Chain"),COL_LEN2)+CMStrings.padRight(L("Branch"),COL_LEN3)+" Name^.^N\n\r");
+			int num=1;
+			for(final Enumeration<Banker> b=CMLib.map().banks();b.hasMoreElements();)
+			{
+				final Banker B=b.nextElement();
+				final String branch=(B instanceof MOB)?CMLib.map().getExtendedRoomID(((MOB)B).getStartRoom()):"";
+				buf.append(CMStrings.padRight(""+num,COL_LEN1)+CMStrings.padRight(B.bankChain(),COL_LEN2)+CMStrings.padRight(branch,COL_LEN3)+" "+B.name()+"^.^N\n\r");
+				num++;
+			}
+		}
+		return buf;
+	}
+
+	public StringBuilder listLibraries(final MOB mob, final Session viewerS, final List<String> commands)
+	{
+		final StringBuilder buf=new StringBuilder("");
+		if(!CMLib.map().libraries().hasMoreElements())
+			buf.append(L("No libraries exist."));
+		else
+		{
+			buf.append("\n\r^xLibraries:^.^N\n\r");
+			final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerS);
+			final int COL_LEN2=CMLib.lister().fixColWidth(20.0,viewerS);
+			final int COL_LEN3=CMLib.lister().fixColWidth(25.0,viewerS);
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Chain"),COL_LEN2)+CMStrings.padRight(L("Branch"),COL_LEN3)+" Name^.^N\n\r");
+			int num=1;
+			for(final Enumeration<Librarian> l=CMLib.map().libraries();l.hasMoreElements();)
+			{
+				final Librarian L=l.nextElement();
+				final String branch=(L instanceof MOB)?CMLib.map().getExtendedRoomID(((MOB)L).getStartRoom()):"";
+				buf.append(CMStrings.padRight(""+num,COL_LEN1)+CMStrings.padRight(L.libraryChain(),COL_LEN2)+CMStrings.padRight(branch,COL_LEN3)+" "+L.name()+"^.^N\n\r");
+				num++;
+			}
+		}
+		return buf;
+	}
+
 	public StringBuilder listQuests(final Session viewerS)
 	{
 		final StringBuilder buf=new StringBuilder("");
@@ -3973,6 +4046,9 @@ public class ListCmd extends StdCommand
 		SOCIALS("SOCIALS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDSOCIALS,SecFlag.AREA_CMDSOCIALS}),
 		AREATYPES("AREATYPES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
 		GENSTATS("STATS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDITEMS,SecFlag.CMDMOBS}),
+		BANKS("BANKS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
+		LIBRARIES("LIBRARIES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
+		POSTOFFICES("POSTOFFICES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -4285,8 +4361,18 @@ public class ListCmd extends StdCommand
 		else
 		{
 			@SuppressWarnings("unchecked")
-			final
-			PhysicalAgent P=mob.location().fetchFromMOBRoomFavorsItems(mob, null, wd, Filterer.ANYTHING);
+			Modifiable P=mob.location().fetchFromMOBRoomFavorsItems(mob, null, wd, Filterer.ANYTHING);
+			if(P==null)
+			{
+				if(wd.equalsIgnoreCase("here"))
+					P=mob.location();
+				else
+				if(CMLib.map().getRoom(wd)!=null)
+					P=CMLib.map().getRoom(wd);
+				else
+				if(CMLib.map().getArea(wd)!=null)
+					P=CMLib.map().getArea(wd);
+			}
 			if(P!=null)
 				mob.tell("Stats for '"+P.ID()+"': "+CMParms.toListString(P.getStatCodes()));
 			else
@@ -4992,6 +5078,15 @@ public class ListCmd extends StdCommand
 				mob.tell(L("You are not allowed to use this command!"));
 			else
 			{
+				if(!helpChecked)
+				{
+					helpChecked=true;
+					for(final String key : V)
+					{
+						if(!CMLib.help().getArcHelpFile().containsKey("LIST_"+key.toUpperCase().trim()))
+							Log.helpOut("Missing help entry: LIST_"+key.toUpperCase().trim());
+					}
+				}
 				final StringBuilder str=new StringBuilder("");
 				for(int v=0;v<V.size();v++)
 				{
@@ -5110,6 +5205,15 @@ public class ListCmd extends StdCommand
 			break;
 		case DISEASES:
 			listAbilities(mob,s,commands,"Disease",Ability.ACODE_DISEASE);
+			break;
+		case POSTOFFICES:
+			mob.tell(listPostOffices(mob,s,commands).toString());
+			break;
+		case BANKS:
+			mob.tell(listBanks(mob,s,commands).toString());
+			break;
+		case LIBRARIES:
+			mob.tell(listLibraries(mob,s,commands).toString());
 			break;
 		case POISONS:
 			listAbilities(mob,s,commands,"Poison",Ability.ACODE_POISON);
