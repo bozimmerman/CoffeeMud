@@ -54,7 +54,7 @@ public interface CMMiscUtils extends CMLibrary
 	 * @param prompt the players prompt template string
 	 * @return the fully filled in customized prompt string
 	 */
-	public String builtPrompt(MOB mob, String prompt);
+	public String buildPrompt(MOB mob, String prompt);
 
 	/**
 	 * Returns the current mud-month-day-year for the object, depending

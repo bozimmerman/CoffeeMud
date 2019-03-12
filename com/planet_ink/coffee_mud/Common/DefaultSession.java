@@ -2435,7 +2435,7 @@ public class DefaultSession implements Session
 				.append("'^>^<!ENTITY ExpNeed '").append(mob.getExpNeededLevel())
 				.append("'^>\n\r\n\r");
 		}
-		buf.append(CMLib.utensils().builtPrompt(mob, mob.playerStats().getPrompt()));
+		buf.append(CMLib.utensils().buildPrompt(mob, mob.playerStats().getPrompt()));
 		promptPrint("^<Prompt^>"+buf.toString()+"^</Prompt^>^.^N");
 	}
 

@@ -44,7 +44,7 @@
   43. All the ClassNESS behaviors (Fighterness, Thiefness, etc) can have min/max ticks and chance).
   44. New account and player flags: NOTOP and NOSTATS, to keep players off the top lists
   45. New clan flags: NOTROPHY, to prevent a clan from earning trophies
-  46. Lots of new landscaping recipes.
+  46. Lots of new landscaping, irrigation, masonry, etc recipes.
   47. Ranged songs/plays/dances are now OPT-IN instead of automatic.  See help on e.g. Long Dancing 
   48. Yet more changes to the buy/sell formula vis-a-vis charisma.
   49. Lock/Unlock message now includes the name of the key.  Also, new <O-WITHNAME> to support this.
@@ -52,6 +52,7 @@
   51. Artisans with a specific focus will get a special character class name that can be toggled with ARTFOCUS.
   52. Factions now support social change triggers
   53. Can now browse the postal system in the player manager in mudgrinder.
+  54. Any faction can now be added to the prompt using the new %f, %F syntax
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

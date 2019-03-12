@@ -1354,7 +1354,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public String builtPrompt(final MOB mob, final String prompt)
+	public String buildPrompt(final MOB mob, final String prompt)
 	{
 		final StringBuffer buf=new StringBuffer("\n\r");
 		String promptUp=null;
@@ -1492,6 +1492,60 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					final Faction.FRange FR = CMLib.factions().getRange(CMLib.factions().AlignID(), mob.fetchFaction(CMLib.factions().AlignID()));
 					buf.append((FR != null) ? FR.name() : "" + mob.fetchFaction(CMLib.factions().AlignID()));
 					c++;
+					break;
+				}
+				case 'f':
+				{
+					if(c<(prompt.length()-3))
+					{
+						if(promptUp==null)
+							promptUp=prompt.toUpperCase();
+						final String promptSub=promptUp.substring(c+1);
+						for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+						{
+							final Faction F=f.nextElement();
+							if(promptSub.startsWith(F.factionID()))
+							{
+								c+=1+F.factionID().length();
+								buf.append(CMLib.factions().getRangePercent(F.factionID(),mob.fetchFaction(F.factionID()))+"%");
+								break;
+							}
+							if(promptSub.startsWith(F.upperName()))
+							{
+								c+=1+F.name().length();
+								buf.append(CMLib.factions().getRangePercent(F.factionID(),mob.fetchFaction(F.factionID()))+"%");
+								break;
+							}
+						}
+					}
+					break;
+				}
+				case 'F':
+				{
+					if(c<(prompt.length()-3))
+					{
+						if(promptUp==null)
+							promptUp=prompt.toUpperCase();
+						final String promptSub=promptUp.substring(c+1);
+						for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+						{
+							final Faction F=f.nextElement();
+							if(promptSub.startsWith(F.factionID()))
+							{
+								c+=1+F.factionID().length();
+								final Faction.FRange FR = CMLib.factions().getRange(F.factionID(), mob.fetchFaction(F.factionID()));
+								buf.append((FR != null) ? FR.name() : "" + mob.fetchFaction(CMLib.factions().AlignID()));
+								break;
+							}
+							if(promptSub.startsWith(F.upperName()))
+							{
+								c+=1+F.name().length();
+								final Faction.FRange FR = CMLib.factions().getRange(F.factionID(), mob.fetchFaction(F.factionID()));
+								buf.append((FR != null) ? FR.name() : "" + mob.fetchFaction(CMLib.factions().AlignID()));
+								break;
+							}
+						}
+					}
 					break;
 				}
 				case 'B':

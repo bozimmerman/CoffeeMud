@@ -2614,6 +2614,18 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(str2).append(" ");
 					}
 					break;
+				case OFFICER:
+					buf.append(L((skipFirstWord?"Being":"Requires being")+" an officer of the law "));
+					break;
+				case _OFFICER:
+					buf.append(L((skipFirstWord?"Not":"Disallows being")+" an officer of the law "));
+					break;
+				case JUDGE:
+					buf.append(L((skipFirstWord?"Being":"Requires being")+" a legal judge "));
+					break;
+				case _JUDGE:
+					buf.append(L((skipFirstWord?"Not":"Disallows being")+" a lega judge "));
+					break;
 				case SUBOP:
 					// this line intentionally left blank
 					break;
@@ -3966,6 +3978,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					break;
+				case OFFICER: // +officer
+				case _OFFICER: // +officer
+				case JUDGE: // +judge
+				case _JUDGE: // +judge
 				case SUBOP: // +subop
 				case _SUBOP: // +subop
 					buildRoomFlag=true;
@@ -4857,6 +4873,48 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)E).weaponClassification())) < 0)
 								return false;
 						}
+					}
+					break;
+				case _OFFICER: // -officer
+					{
+						if(mob.isMonster())
+						{
+							final LegalBehavior B=CMLib.law().getLegalBehavior(mob.getStartRoom());
+							if((B!=null)
+							&&(B.isAnyOfficer(CMLib.law().getLegalObject(mob.getStartRoom()), mob)))
+								return false;
+						}
+					}
+					break;
+				case OFFICER: //+officer
+					{
+						if(!mob.isMonster())
+							return false;
+						final LegalBehavior B=CMLib.law().getLegalBehavior(mob.getStartRoom());
+						if((B!=null)
+						&&(!B.isAnyOfficer(CMLib.law().getLegalObject(mob.getStartRoom()), mob)))
+							return false;
+					}
+					break;
+				case _JUDGE: // -judge
+					{
+						if(mob.isMonster())
+						{
+							final LegalBehavior B=CMLib.law().getLegalBehavior(mob.getStartRoom());
+							if((B!=null)
+							&&(B.isJudge(CMLib.law().getLegalObject(mob.getStartRoom()), mob)))
+								return false;
+						}
+					}
+					break;
+				case JUDGE: // +judge
+					{
+						if(!mob.isMonster())
+							return false;
+						final LegalBehavior B=CMLib.law().getLegalBehavior(mob.getStartRoom());
+						if((B!=null)
+						&&(!B.isJudge(CMLib.law().getLegalObject(mob.getStartRoom()), mob)))
+							return false;
 					}
 					break;
 				case _MOOD: // -mood
@@ -6688,6 +6746,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case TATTOO: // +tattoo
 				case _MOOD: // -mood
 				case MOOD: // +mood
+				case _OFFICER: // -officer
+				case OFFICER: // +officer
+				case _JUDGE: // -judge
+				case JUDGE: // +judge
 				case _ACCCHIEVE: // -accchieves
 				case ACCCHIEVE: // +accchieves
 				case _EXPERTISE: // -expertise

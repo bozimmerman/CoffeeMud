@@ -86,6 +86,7 @@ public class DefaultFaction implements Faction, MsgListener
 
 	protected String	 ID					= "";
 	protected String	 name				= "";
+	protected String	 upName				= "";
 	protected String	 choiceIntro		= "";
 	protected long[]	 lastDataChange		= new long[1];
 	protected int   	 minimum			= Integer.MIN_VALUE;
@@ -147,6 +148,12 @@ public class DefaultFaction implements Faction, MsgListener
 	public String name()
 	{
 		return name;
+	}
+
+	@Override
+	public String upperName()
+	{
+		return upName;
 	}
 
 	@Override
@@ -460,6 +467,7 @@ public class DefaultFaction implements Faction, MsgListener
 	{
 		ID=aname;
 		name=aname;
+		upName=aname.toUpperCase();
 		minimum=0;
 		middle=50;
 		maximum=100;
@@ -481,6 +489,7 @@ public class DefaultFaction implements Faction, MsgListener
 		if(alignProp.isEmpty())
 			return;
 		name=alignProp.getStr("NAME");
+		upName=name.toUpperCase();
 		choiceIntro=alignProp.getStr("CHOICEINTRO");
 		minimum=alignProp.getInt("MINIMUM");
 		maximum=alignProp.getInt("MAXIMUM");
@@ -1146,6 +1155,8 @@ public class DefaultFaction implements Faction, MsgListener
 		&&(msg.sourceMinor()!=CMMsg.TYP_CHANNEL))
 		{
 			events=getChangeEvents("SOCIAL");
+			if(events == null)
+				events=findSocialChangeEvents((Social)msg.tool());
 			if(events!=null)
 			{
 				final Social social = (Social)msg.tool();
@@ -1154,10 +1165,16 @@ public class DefaultFaction implements Faction, MsgListener
 				Faction.FData data = mob.fetchFactionData(factionID());
 				for (final FactionChangeEvent event : events)
 				{
-					final String triggerID=event.getTriggerParm("ID");
-					if((triggerID.length()>0)
-					&&(socialName.equals(triggerID)||triggerID.equalsIgnoreCase("ALL"))
-					&&(event.applies(mob,(MOB)msg.target())))
+					if(event.eventID().equals("SOCIAL"))
+					{
+						final String triggerID=event.getTriggerParm("ID");
+						if(triggerID.length()==0)
+							continue;
+						if(!socialName.equals(triggerID)
+						&&(!triggerID.equalsIgnoreCase("ALL")))
+							continue;
+					}
+					if((event.applies(mob,(MOB)msg.target())))
 					{
 						if((data != null) && (System.currentTimeMillis() < data.getNextChangeTimers(event)))
 							continue;
@@ -1335,29 +1352,32 @@ public class DefaultFaction implements Faction, MsgListener
 		// Ability Watching
 		if((msg.tool() instanceof Ability)
 		&&(msg.othersMessage()!=null)
+		&&(msg.source()==myHost)
 		&&((events=findAbilityChangeEvents((Ability)msg.tool()))!=null)
 		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			for (final FactionChangeEvent C : events)
 			{
+				final MOB target;
 				if((msg.target() instanceof MOB)&&(C.applies(msg.source(),(MOB)msg.target())))
-					executeChange(msg.source(),(MOB)msg.target(),C);
+					target=(MOB)msg.target();
 				else
 				if (!(msg.target() instanceof MOB))
-					executeChange(msg.source(),null,C);
-			}
-		}
-		// Social Watching
-		if((msg.tool() instanceof Social)
-		&&((events=findSocialChangeEvents((Social)msg.tool()))!=null))
-		{
-			for (final FactionChangeEvent C : events)
-			{
-				if((msg.target() instanceof MOB)&&(C.applies(msg.source(),(MOB)msg.target())))
-					executeChange(msg.source(),(MOB)msg.target(),C);
+					target=null;
 				else
-				if (!(msg.target() instanceof MOB))
-					executeChange(msg.source(),null,C);
+					continue;
+				Faction.FData data = msg.source().fetchFactionData(factionID());
+				if((data != null) && (System.currentTimeMillis() < data.getNextChangeTimers(C)))
+					continue;
+				executeChange(msg.source(),target,C);
+				if(data == null)
+					data = msg.source().fetchFactionData(factionID());
+				if(data != null)
+				{
+					final long newTime=CMath.s_long(C.getTriggerParm("WAIT"))*CMProps.getTickMillis();
+					if(newTime != 0)
+						data.setNextChangeTimers(C, System.currentTimeMillis()+newTime);
+				}
 			}
 		}
 	}
@@ -1516,15 +1536,15 @@ public class DefaultFaction implements Faction, MsgListener
 		if(factionAdj==0)
 			return;
 
-		CMMsg FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
-		FacMsg.setValue(factionAdj);
+		CMMsg facMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
+		facMsg.setValue(factionAdj);
 		final Room R=source.location();
 		if(R!=null)
 		{
-			if(R.okMessage(source,FacMsg))
+			if(R.okMessage(source,facMsg))
 			{
-				R.send(source, FacMsg);
-				factionAdj=FacMsg.value();
+				R.send(source, facMsg);
+				factionAdj=facMsg.value();
 				if((factionAdj!=Integer.MAX_VALUE)&&(factionAdj!=Integer.MIN_VALUE))
 				{
 					// Now execute the changes on the relation.  We do this AFTER the execution of the first so
@@ -1532,10 +1552,10 @@ public class DefaultFaction implements Faction, MsgListener
 					for(final Enumeration<String> e=relations.keys();e.hasMoreElements();)
 					{
 						final String relID=(e.nextElement());
-						FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
-						FacMsg.setValue((int)Math.round(CMath.mul(factionAdj, relations.get(relID).doubleValue())));
-						if(R.okMessage(source,FacMsg))
-							R.send(source, FacMsg);
+						facMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
+						facMsg.setValue((int)Math.round(CMath.mul(factionAdj, relations.get(relID).doubleValue())));
+						if(R.okMessage(source,facMsg))
+							R.send(source, facMsg);
 					}
 				}
 			}

@@ -200,7 +200,11 @@ public interface MaskingLibrary extends CMLibrary
 		_ACCOUNT("-ACCOUNTS"),
 		ACCOUNT("+ACCOUNTS"),
 		_LOCATION,
-		LOCATION
+		LOCATION,
+		_OFFICER,
+		OFFICER,
+		_JUDGE,
+		JUDGE
 		;
 		private final String[] keys;
 		private ZapperKey(final String... exts)

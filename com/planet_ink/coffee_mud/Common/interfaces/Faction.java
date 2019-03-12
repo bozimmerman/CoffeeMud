@@ -57,6 +57,14 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public void initializeFaction(String aname);
 
 	/**
+	 * Returns the full-uppercase version of the faction name, which
+	 * might be useful for key-ing and searches.
+	 *
+	 * @return the uppercase version of the name
+	 */
+	public String upperName();
+
+	/**
 	 * Initializes a new faction from a faction.ini properties formatted document,
 	 * and a given new faction ID
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#initializeFaction(String)
