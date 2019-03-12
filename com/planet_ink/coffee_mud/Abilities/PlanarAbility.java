@@ -609,6 +609,17 @@ public class PlanarAbility extends StdAbility
 						M.removeFaction(CMLib.factions().AlignID());
 						M.addFaction(CMLib.factions().AlignID(), CMath.s_int(align));
 					}
+					for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+					{
+						final Faction F=f.nextElement();
+						String facNumStr = planeVars.get(F.factionID());
+						if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
+							facNumStr = planeVars.get(F.name().toUpperCase());
+						if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
+							continue;
+						M.removeFaction(F.factionID());
+						M.addFaction(F.factionID(), CMath.s_int(facNumStr));
+					}
 					for(final Enumeration<Item> mi=M.items();mi.hasMoreElements();)
 					{
 						final Item mI=mi.nextElement();
@@ -1018,7 +1029,9 @@ public class PlanarAbility extends StdAbility
 					final Map<String,String> planeParms = CMParms.parseEQParms(line);
 					for(final String key : planeParms.keySet())
 					{
-						if(CMath.s_valueOf(PlanarVar.class, key)==null)
+						if((CMath.s_valueOf(PlanarVar.class, key)==null)
+						&&(CMLib.factions().getFaction(key)==null)
+						&&(CMLib.factions().getFactionByName(key)==null))
 							Log.errOut("Spell_Planeshift","Unknown planar var: "+key);
 					}
 					planeParms.put(PlanarVar.ID.toString(), planename);

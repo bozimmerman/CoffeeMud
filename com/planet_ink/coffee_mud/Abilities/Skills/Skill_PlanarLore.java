@@ -421,6 +421,19 @@ public class Skill_PlanarLore extends StdSkill
 						tidbits.add(L("The creatures there are @x1 aligned.",rangeName));
 					}
 				}
+				for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+				{
+					final Faction F=f.nextElement();
+					String facNumStr = planeVars.get(F.factionID());
+					if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
+						facNumStr = planeVars.get(F.name().toUpperCase());
+					if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
+						continue;
+					if(F.factionID().equals(CMLib.factions().AlignID()))
+						continue;
+					final String rangeName = F.fetchRangeName(CMath.s_int(facNumStr));
+					tidbits.add(L("The creatures there are @x1.",rangeName));
+				}
 			}
 			if(expertise > 8)
 			{
