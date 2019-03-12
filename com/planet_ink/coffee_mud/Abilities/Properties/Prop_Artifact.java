@@ -499,7 +499,9 @@ public class Prop_Artifact extends Property
 		{
 			if(nolocate)
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNLOCATABLE);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNDESTROYABLE);
+			if((((Item)affected).owner() != null)
+			&&(((Item)affected).owner().isContent((Item)affected)))
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNDESTROYABLE);
 			if(((Item)affected).subjectToWearAndTear())
 				((Item)affected).setUsesRemaining(100);
 			((Item)affected).setExpirationDate(0);
