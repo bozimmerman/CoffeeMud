@@ -45,6 +45,9 @@
 		@if?CheckAuthCode?AUTH_CMDPLAYERS=true@
 			<TR><TD><a href="javascript:Clicked('bankaccts.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Bank Accounts</B></FONT></A></TD></TR>
 		@endif@
+		@if?CheckAuthCode?AUTH_CMDPLAYERS=true@
+			<TR><TD><a href="javascript:Clicked('postaccts.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Postal Accounts</B></FONT></A></TD></TR>
+		@endif@
 		<TR><TD><a href="javascript:Sort('@RequestParameter?SORTBY@');"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
 		</TABLE>
 	</TD>

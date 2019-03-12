@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDPLAYERS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>Post Accounts Browser</title>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.PLAYBACK.action=action;
+			document.PLAYBACK.submit();
+		}
+		function Clicked1(chain)
+		{
+			document.POSTCHAIN.POSTCHAIN.value=chain;
+			document.POSTCHAIN.POSTBOX.value='';
+			document.POSTCHAIN.action="postaccts.cmvp#"+chain;
+			document.POSTCHAIN.submit();
+		}
+		function Clicked2(chain,player)
+		{
+			document.POSTCHAIN.POSTCHAIN.value=chain;
+			document.POSTCHAIN.POSTBOX.value=player;
+			document.POSTCHAIN.action="postaccts.cmvp#"+chain;
+			document.POSTCHAIN.submit();
+		}
+		function sfideas()
+		{
+			document.POSTCHAIN.action="sfideas.cmvp";
+			document.POSTCHAIN.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+		<TABLE WIDTH=50% BORDER=1>
+		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+		<TR><TD><a href="javascript:Clicked('/grinder/players.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Player Manager</B></FONT></A></TD></TR>
+		<TR><TD><a href="javascript:Clicked2('@RequestParameter?POSTCHAIN@','@RequestParameter?JOURNALMESSAGE@');"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+		</TABLE>
+	</TD>
+	</TR>
+	</TABLE>
+<CENTER>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=POSTCHAIN TARGET=_top METHOD=POST ACTION="/grinder/postaccts.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=POSTCHAIN VALUE="@RequestParameter?POSTCHAIN@">
+<INPUT TYPE=HIDDEN NAME=POSTBOX VALUE="@RequestParameter?POSTBOX@">
+<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Postal Box Browser<a href="javascript:sfideas();"><FONT COLOR=WHITE>.</FONT></a></H2></FONT></TD></TR>
+		@AddRequestParameter?OLDCHAIN=@@RequestParameter?POSTCHAIN@@ @
+		@AddRequestParameter?OLDPOSTBOX=@@RequestParameter?POSTBOX@@ @
+		@AddRequestParameter?POSTBOX=@
+		@PostOfficeNext?RESET@
+		@loop@
+			@PostOfficeNext@
+		    <TR><TD WIDTH=30% VALIGN=TOP>
+			<a name="@PostOfficeName@" href="javascript:Clicked1('@PostOfficeName@')"><FONT COLOR=YELLOW>@PostOfficeName@</FONT></a>
+			@if?CheckReqParm?POSTCHAIN=@@RequestParameter?OLDCHAIN@@ @
+				@PostOfficeBoxNext?RESET@
+				<UL>
+				@loop@
+					@PostOfficeBoxNext@
+					<LI><a href="javascript:Clicked2('@PostOfficeName@','@RequestParameter?POSTBOX@')"><FONT COLOR=YELLOW>@RequestParameter?POSTBOX@</FONT></a> <FONT SIZE=-1 COLOR=WHITE>(@PostalBoxInfo?TOTMAIL@)</FONT></LI>
+				@back@
+				</UL>
+				</TD>
+				<TD WIDTH=70% VALIGN=TOP>
+				@AddRequestParameter?POSTBOX=@@RequestParameter?OLDPOSTBOX@@ @
+				@if?!CheckReqParm?POSTBOX=@
+					@PostalBoxInfo?RESET@
+					<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+						<TR>
+							<TD WIDTH=15%><FONT COLOR=YELLOW>From</FONT></TD>
+							<TD WIDTH=15%><FONT COLOR=YELLOW>To</FONT></TD>
+							<TD WIDTH=20%><FONT COLOR=YELLOW>Time</FONT></TD>
+							<TD WIDTH=50%><FONT COLOR=YELLOW>Message</FONT></TD>
+						</TR>
+					@loop@
+						@PostalBoxInfo?NEXT@
+						<TR>
+							<TD><FONT COLOR=WHITE>@PostalBoxInfo?FROM@</FONT></TD>
+							<TD><FONT COLOR=WHITE>@PostalBoxInfo?TO@</FONT></TD>
+							<TD><FONT COLOR=WHITE>@PostalBoxInfo?TIME@</FONT></TD>
+							<TD><FONT COLOR=WHITE>(@PostalBoxInfo?NAME@) @PostalBoxInfo?CLASS@</FONT></TD>
+						</TR>
+					@back@
+					</TABLE>
+				@endif@
+				</TD>
+				</TR>
+			@else@
+			<TD><BR></TR>
+			@endif@
+			@AddRequestParameter?POSTBOX=@
+		@back@
+</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=100% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Clicked2('@RequestParameter?POSTCHAIN@','@RequestParameter?JOURNALMESSAGE@');">
+	</TD>
+	</TR>
+	</TABLE>
+</FORM>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=PLAYBACK TARGET=_top METHOD=POST ACTION="/grinder/players.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@
+
