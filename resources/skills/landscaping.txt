@@ -17,7 +17,7 @@ Mountains	30	6000	5000	ROCK	OUTDOOR	ROOM	Mountains	0		mountains		Turns a place i
 Long Road	10	40	600	ROCK	OUTDOOR	ROOM	LongRoad	0		longroad		Turns an outdoor room into a long road which takes more movement to traverse.
 Longer Road	20	50	750	ROCK	OUTDOOR	ROOM	LongerRoad	0		longer road		Turns an outdoor room into a very long road which takes more movement to traverse.
 Longest Road	30	60	1000	ROCK	OUTDOOR	ROOM	LongestRoad	0		longest road		Turns an outdoor room into an extremely long road which takes more movement to traverse.
-Till Land	22	150	0		OUTDOOR	DELEFFECT			ResourceOverride()	land clearing		Removes any artificial crop restrictions.
+Till Land	22	150	0		OUTDOOR	DELEFFECT			ResourceOverride()Prop_CommonTwister()	land clearing		Removes any artificial crop restrictions from an outdoor room.
 Tomato Field	24	100	250	TOMATOES	OUTDOOR	ROOMEFFECT			ResourceOverride(Tomatoes)	planting tomatoes		Makes an outdoor room only produce tomato resources.
 Pepper Field	26	102	250	PEPPERS	OUTDOOR	ROOMEFFECT			ResourceOverride(Peppers)	planting peppers		Makes an outdoor room only produce pepper resources.
 Apple Orchard	27	104	250	APPLES	OUTDOOR	ROOMEFFECT			ResourceOverride(Apples)	planting apples		Makes an outdoor room only with only apple trees.
@@ -72,3 +72,4 @@ Cactus Field	84	200	250	CACTUS	OUTDOOR	ROOMEFFECT			ResourceOverride(Cactus)	pla
 Plum Orchard	87	202	250	PLUMS	OUTDOOR	ROOMEFFECT			ResourceOverride(Plums)	planting plums		Makes an outdoor room only with only plum trees.
 Bluecap Grove	89	204	250	MUSHROOMS	CAVEONLY	ROOMEFFECT			ResourceOverride(Mushrooms)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Foraging mask=mushrooms name="a pound of bluecap" display="a pound of bluecap is here" material=mushrooms subtype=bluecap)	planting bluecap	-ANYCLASS +Delver	Makes an cave room only produce bluecap resources.
 Crystal Cluster	90	206	250	CRYSTAL	CAVEONLY	ROOMEFFECT			ResourceOverride(Crystal)	growing crystals	-ANYCLASS +Delver	Makes an cave room only produce crystal resources.
+Till Cave	23	150	0		CAVEONLY	DELEFFECT			ResourceOverride()Prop_CommonTwister()	cave clearing	-ANYCLASS +Delver	Removes any artificial crop restrictions from a cave room.		

@@ -1,13 +1,28 @@
-Demolish	1	25	0		DIR OUTDOOR WATERONLY	DEMOLISH	Swamp	-		demolishing		Demolishes something, which has different effects.
-Title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
 Description	1	10	0			DESC	NA	-	-	description		Long elaborate description of the room details.
+Title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
+Demolish	1	25	0		DIR OUTDOOR WATERONLY	DEMOLISH	Swamp	-		demolishing		Demolishes something, which has different effects.
 Barrier	1	25	100		DIR	WALL	NA	-		barrier @x1		Blocks entry or exit between two places.
-Sea	15	325	600	VALUE	OUTDOOR	ROOM	SaltWaterSurface	0		sea		Turns an outdoor room into a salty water surface.
+Wading Pool	5	100	100	VALUE	OUTDOOR	ROOM	ShallowWater	0		pond		Turns an outdoor room into a small pond that can be walked over without swimming.
 Lake	10	225	300	VALUE	OUTDOOR	ROOM	WaterSurface	0		lake		Turns an outdoor room into a fresh water surface.
+Sea	15	325	600	VALUE	OUTDOOR	ROOM	SaltWaterSurface	0		sea		Turns an outdoor room into a salty water surface.
+Fresh Underwater	17	90	255	VALUE	DOWNONLY WATERSURFACEONLY FRESHWATER	STAIRS	UnderWater	0		underwater		Adds a deep fresh under-water room below a Lake. 
+Salty Underwater	17	90	255	VALUE	DOWNONLY WATERSURFACEONLY SALTWATER	STAIRS	UnderSaltWater	0		underwater		Adds a deep salt under-water room below a Lake.
+Beach	20	200	500	VALUE	OUTDOOR	ROOM	Shore	0		shore		Turns an outdoor room into a beach where boats may enter, but not sailing ships.
 No Current	22	150	0		WATERONLY DIR	DELEFFECT			WaterCurrents()	no current		Removes any artificial currents from a water surface.
 Slow Current	22	150	50	VALUE	WATERONLY DIR	ROOMEFFECT			WaterCurrents(min=1 max=20 chance=99 @dir)	slow current		Adds a slow artificial current to a swimmable room.
 Light Current	23	150	100	VALUE	WATERONLY DIR	ROOMEFFECT			WaterCurrents(min=1 max=15 chance=99 @dir)	light current		Adds a light artificial current to a swimmable room.
 Water Current	25	150	150	VALUE	WATERONLY DIR	ROOMEFFECT			WaterCurrents(min=1 max=10 chance=99 @dir)	water current		Adds an artificial current to a swimmable room.
 Strong Current	27	150	200	VALUE	WATERONLY DIR	ROOMEFFECT			WaterCurrents(min=1 max=5 chance=99 @dir)	strong current		Adds a strong artificial current to a swimmable room.
-Fresh Underwater	17	90	255	VALUE	DOWNONLY WATERSURFACEONLY FRESHWATER	STAIRS	UnderWater	0		underwater		Adds a deep fresh under-water room below a Lake. 
-Salty Underwater	17	90	255	VALUE	DOWNONLY WATERSURFACEONLY SALTWATER	STAIRS	UnderSaltWater	0		underwater		Adds a deep salt under-water room below a Lake.
+Dock	30	300	100	VALUE	WATERSURFACEONLY	ROOM	SeaPort	0		dock		Turns an outdoor water room into a sea port that sailing ships may use.
+Restore sealife	33	25	0		WATERONLY	DELEFFECT			ResourceOverride()Prop_CommonTwister()	normal resources		Makes a water room able to produce any normal resources available to that type of environment.
+Iceshelf	35	400	500	VALUE	OUTDOOR WATERSURFACEONLY	ROOM	IcePlains	0		ice shelf	-BASECLASS +Druid	Turns an outdoor water room into an icy plain.
+Seaweed Field	38	100	500	Seaweed	WATERONLY	ROOMEFFECT			ResourceOverride(Seaweed)	planting seaweed		Makes a water room only produce seaweed resources.
+Shrimp Hatchery	63	100	500	Shrimp	WATERONLY SALTWATER	ROOMEFFECT			ResourceOverride(Shrimp)	seeding shrimp		Makes a water room only produce seaweed resources.
+Trout Hatchery	48	100	500	Trout	WATERONLY FRESHWATER	ROOMEFFECT			ResourceOverride(Trout)	seeding trout		Makes a water room only produce seaweed resources.
+Salmon Hatchery	53	100	500	Salmon	WATERONLY FRESHWATER	ROOMEFFECT			ResourceOverride(Salmon)	seeding salmon		Makes a water room only produce seaweed resources.
+Tuna Hatchery	58	100	500	Tuna	WATERONLY SALTWATER	ROOMEFFECT			ResourceOverride(Tuna)	seeding tuna		Makes a water room only produce seaweed resources.
+Catfish Hatchery	43	100	500	Catfish	WATERONLY FRESHWATER	ROOMEFFECT			ResourceOverride(Catfish)	seeding catfish		Makes a water room only produce seaweed resources.
+Carp Hatchery	68	100	500	Carp	WATERONLY FRESHWATER	ROOMEFFECT			ResourceOverride(Carp)	seeding carp		Makes a water room only produce seaweed resources.
+Yellowfin Hatchery	73	100	1000	Tuna	WATERONLY SALTWATER	ROOMEFFECT			ResourceOverride(Tuna)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Fishing,Trawling mask=tuna name="a pound of yellowfin" display="a pound of yellowfin is here" material=tuna subtype=yellowfin)	seeding yellowfin		Makes a water room only produce seaweed resources.
+Crab Hatchery	78	100	1000	Shrimp	WATERONLY SALTWATER	ROOMEFFECT			ResourceOverride(Shrimp)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Fishing,Trawling mask=shrimp name="a pound of crab" display="a pound of crab is here" material=shrimp subtype=crab)	seeding crab		Makes a water room only produce seaweed resources.
+Druidic Monument	13	200	1000	ROCK	UNDERWATERONLY	ITEM	DruidicMonument			druidic monument	-ANYCLASS +Mer	Constructs a spiritual druidic monument.

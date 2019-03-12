@@ -1,21 +1,47 @@
+Description	1	10	0			DESC	NA	-	-	description		Long elaborate description of the room details.
+Title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
+Demolish	1	25	0		DIR	DEMOLISH	Plains	-	-	demolishing		Demolishes something, which has different effects.
 Wall	1	60	250		DIR INDOOR	WALL	NA	-		wall @x1		Blocks entry or exit between two indoor places.
 Roof	1	125	500		OUTDOOR	ROOM	StoneRoom	0		frame and roof		Turns an outdoor place into an indoor one.
-Low Roof	1	100	250		OUTDOOR	ROOM	StoneRoom	0	Prop_Crawlspace()	lower frame and roof		Turns an outdoor place into an indoor one you crawl through.
-Wide Roof	1	150	1000		OUTDOOR	ROOM	StoneRoom	0	Prop_EnlargeRoom(10)	broad frame and roof		Turns an outdoor place into an indoor one of exceptional size.
-Small Maze	1	175	1500		OUTDOOR	ROOM	StoneMaze	3		small maze frame and roof		Turns an outdoor place into a small indoor one of twisting turns.
-Maze	1	200	2500		OUTDOOR	ROOM	StoneMaze	5		maze frame and roof		Turns an outdoor place into a larger indoor one of twisting turns
-Big Maze	1	225	3500		OUTDOOR	ROOM	StoneMaze	7		large maze frame and roof		Turns an outdoor place into a large indoor one of twisting turns
-Archway	1	25	200		DIR	DOOR	GenExit	archway		archway @x1		A specially named open exit between two places.
-Demolish	1	25	0		DIR	DEMOLISH	Plains	-	-	demolishing		Demolishes something, which has different effects.
-Title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
-Description	1	10	0			DESC	NA	-	-	description		Long elaborate description of the room details.
-Druidic Monument	1	200	1000		OUTDOOR	ITEM	DruidicMonument			druidic monument	-BASECLASS +Druid	Constructs a spiritual druidic monument.
-Window	1	25	100		INDOOR DIR NOWALL	DOOR	GenDoor	window|open|close|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	window @x1		Object that, when looked at, shows you what's behind it.
-Crawlway	1	25	500		INDOOR DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1		Exit between two indoor places you crawl through.
-Pool	1	160	400		OUTDOOR	ROOM	WaterSurface	0		pool		Turns an outdoor place into a swimmable water place.
-Deep Pool	1	200	700		OUTDOOR	ROOM	WaterSurface	1		pool		Turns an outdoor place into a deep diveable swimmable place.
-Portcullis	1	25	100	METAL	DIR	DOOR	GenDoor	portcullis|raise|lower|A portcullis blocks your way.		portcullis @x1		Openable exit between two places.
-Stairs	1	210	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exit from an indoor place to a new indoor room above it.
-Hole Floor	1	180	2550		INDOOR	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor		Exit from an indoor place to an existing room below it.
-Raised Ceiling	1	240	2500		INDOOR	STAIRS	IndoorInTheAir	@x1 to the @x2 floor	Spell_Fly()	scaffolding and supports to raise the ceiling		Turns an indoor room into a much taller one.
+Archway	5	25	200		DIR	DOOR	GenExit	archway		archway @x1		A specially named open exit between two places.
+Dark Room	7	100	100		INDOOR	ROOMEFFECT		0	Prop_RoomDark()	light-proff frame and roof		Makes an indoor room completely dark.
+Nondark Room	7	25	0		INDOOR	DELEFFECT			Prop_RoomDark()	room clear		Removes the darkening affect from a dark room.
+Small Maze	8	175	1500		OUTDOOR	ROOM	StoneMaze	3		small maze frame and roof		Turns an outdoor place into a small indoor one of twisting turns.
+Low Roof	9	100	250		OUTDOOR	ROOM	StoneRoom	0	Prop_Crawlspace()	lower frame and roof		Turns an outdoor place into an indoor one you crawl through.
+Grate	10	25	20	METAL	DIR	DOOR	GenDoor	grate		grate @x1		Openable exit between two places.
+Crawlway	11	25	500		INDOOR DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace()	crawlway @x1		Exit between two indoor places you crawl through.
+Druidic Monument	13	200	1000		OUTDOOR	ITEM	DruidicMonument			druidic monument	=-BASECLASS +Druid	Constructs a spiritual druidic monument.
+Hot Room	14	150	750		OUTDOOR	ROOM	HotRoom	0		insulated frame and roof		Turns an outdoor place into an indoor place with a hot climate.
+Manhole Cover	15	30	25	METAL	DOWNONLY	DOOR	GenDoor	manhole cover|remove|replace|A large manhole cover blocks your way.		manhole cover @x1		Openable exit between two places.
+Outdoor Pool	17	160	400		OUTDOOR	ROOM	WaterSurface	0		pool		Turns an outdoor place into a swimmable water place.
+Medium Maze	18	200	2500		OUTDOOR	ROOM	StoneMaze	5		maze frame and roof		Turns an outdoor place into a larger indoor one of twisting turns
+Wide Roof	29	150	1000		OUTDOOR	ROOM	StoneRoom	0	Prop_EnlargeRoom(10)	broad frame and roof		Turns an outdoor place into an indoor one of exceptional size.
+Light Stone Door	20	45	60		INDOOR DIR	DOOR	GenDoor	light stone door		door @x1		Openable exit between two indoor places.
+Stairs	21	210	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exit from an indoor place to a new indoor room above it.
+Window	26	25	100		INDOOR DIR NOWALL	DOOR	GenDoor	window|open|close|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	window @x1		Object that, when looked at, shows you what's behind it.
+Outdoor Deep Pool	27	200	700		OUTDOOR	ROOM	WaterSurface	1		pool		Turns an outdoor place into a deep diveable swimmable place.
+Big Maze	28	225	3500		OUTDOOR	ROOM	StoneMaze	7		large maze frame and roof		Turns an outdoor place into a large indoor one of twisting turns.
+Hole	29	180	2550		INDOOR	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor		Exit from an indoor place to an existing room below it.
+Great Room	19	150	750		OUTDOOR	ROOM	LargeStoneRoom	0		large frame and roof		Turns an outdoor place into a large indoor place.
+Yett	30	55	30	METAL	DIR	DOOR	GenDoor	yett		yett @x1		Openable exit between two places.
 Cellar	31	300	3000		DOWNONLY	STAIRS	CaveRoom	@x1stairs to the @x2 cellar		cellar @x1		Exit from an indoor place to a new indoor room below it.
+Raised Ceiling	36	240	2500		INDOOR	STAIRS	IndoorInTheAir	@x1 to the @x2 floor	Spell_Fly()	scaffolding and supports to raise the ceiling		Turns an indoor room into a much taller one.
+Indoor Wade Pool	37	250	1000		INDOOR	ROOM	IndoorShallowWater	0		indoor pool		Turns an indoor room into a wet indoor room.
+Heavy Stone Door	40	55	70		INDOOR DIR	DOOR	GenDoor	heavy stone door		door @x1		Openable exit between two indoor places.
+Indoor Pool	47	300	1500		INDOOR	ROOM	IndoorWaterSurface	0		indoor pool		Turns an indoor room into an indoor water room.
+Sliding Stone Door	50	65	80		INDOOR DIR	DOOR	GenDoor	door|slides open|slides closed|A closed door|An open doorway.		door @x1		Openable exit between two indoor places.
+Indoor Deep Pool	57	400	2500		INDOOR	ROOM	IndoorWaterSurface	1		indoor pool		Turns an indoor room into a deeper indoor water room.
+Portcullis	60	75	40	METAL	DIR	DOOR	GenDoor	portcullis|raise|lower|A portcullis blocks your way.		portcullis @x1		Openable exit between two places.
+Quiet Room	67	250	750		OUTDOOR	ROOM	StoneRoom	0	FasterRecovery(health=2)Prop_NoChannel(QUIET)	sound-resistant frame and roof	=-SKILLS +Prayer_Silence(100)	Turns an outdoor place into an indoor one that allows faster health recovery, and prevents the usage of channels.
+Nonquiet Room	67	25	0		INDOOR	DELEFFECT			FasterRecovery()Prop_NoChannel()	room clear		Removes the quiet restriction and health recovery bonus from a quiet room.
+Huge Maze	68	400	5000		OUTDOOR	ROOM	StoneMaze	9		huge maze frame and roof		Turns an outdoor place into a huge indoor one of twisting turns.
+Massive Stone Door	70	85	100		INDOOR DIR	DOOR	GenDoor	massive stone door		door @x1		Openable exit between two indoor places.
+Security Door	75	90	50	METAL	DIR	DOOR	GenDoor	security door		door @x1		Openable exit between two places.
+Ice Room	77	375	1000		OUTDOOR	ROOM	StoneRoom	0	Prop_IceBox()	insulated frame and roof	=-SKILLS +Prayer_ElementalAid(100)	Turns an outdoor place into an indoor one that preserves food freshness.
+Deice Room	77	25	0		INDOOR	DELEFFECT			Prop_IceBox()	room clear		Removes the food preservation properties from an ice room.
+Concealed Stone Door	80	150	200		INDOOR DIR	DOOR	GenDoor	concealed stone door	Prop_Hidden	obscured door @x1	-BASECLASS +Thief	Hidden openable exit between two indoor places.
+Blast Door	85	100	75	METAL	DIR	DOOR	GenDoor	blast door|seal|breach|A blast door blocks your way.|An open doorway.		door @x1		Openable exit between two places.
+Fire Room	87	375	1000		OUTDOOR	ROOM	StoneRoom	0	FieryRoom()	fire-resistant frame and roof	=-SKILLS +Prayer_ElementalAid(100)	Turns an outdoor place into an indoor one that is constantly burning.
+Defire Room	87	25	0		INDOOR	DELEFFECT			FieryRoom()	room clear		Removes the fiery status from a fire room.
+Vault Door	90	125	100	METAL	DIR	DOOR	GenDoor	vault door|swings open|swings closed|A heavy vault door blocks your way.|An open doorway.		door @x1		Openable exit between two places.
+Secret Stone Door	90	200	250		INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	secret door @x1	-BASECLASS +Thief	Hidden openable exit between two indoor places.
