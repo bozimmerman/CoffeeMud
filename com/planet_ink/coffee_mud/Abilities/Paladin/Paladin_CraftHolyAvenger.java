@@ -96,6 +96,9 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		if(!PaladinSkill.paladinAlignmentCheck(this, mob, auto))
+			return false;
+
 		int completion=16;
 		final Item fire=getRequiredFire(mob,0);
 		if(fire==null)

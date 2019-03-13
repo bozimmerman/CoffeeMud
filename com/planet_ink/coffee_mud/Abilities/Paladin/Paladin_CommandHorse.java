@@ -83,11 +83,15 @@ public class Paladin_CommandHorse extends StdAbility
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		if(!PaladinSkill.paladinAlignmentCheck(this, mob, auto))
+			return false;
+		/* handled by alignment.ini
 		if((!auto)&&(!(CMLib.flags().isGood(mob))))
 		{
 			mob.tell(L("Your alignment has alienated you from your god."));
 			return false;
 		}
+		*/
 		final List<String> V=new Vector<String>();
 		if(commands.size()>0)
 		{

@@ -78,7 +78,7 @@ public class Paladin_PaladinsMount extends PaladinSkill
 			if((!((Rideable)affected).amRiding(invoker))
 			||(affectedMob.amDead())
 			||(CMLib.flags().isEvil(affectedMob))
-			||(!CMLib.flags().isGood(invoker)))
+			||(!appropriateToMyFactions(invoker)))
 			{
 				affected.delEffect(this);
 				affected.recoverPhyStats();
@@ -89,7 +89,7 @@ public class Paladin_PaladinsMount extends PaladinSkill
 		else
 		if((affected == invoker)
 		&&(invoker!=null)
-		&&(CMLib.flags().isGood(invoker))
+		&&(appropriateToMyFactions(invoker))
 		&&(invoker.riding()!=null)
 		&&(invoker.riding() instanceof MOB)
 		&&(((MOB)invoker.riding()).charStats().getMyRace().racialCategory().equals("Equine"))
@@ -124,17 +124,18 @@ public class Paladin_PaladinsMount extends PaladinSkill
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((invoker==null)
-		||(!(CMLib.flags().isGood(invoker)))
-		||(affected==null)
-		||(affected==invoker)
-		||(!(affected instanceof MOB)))
-			return true;
 
 		if(msg.target()==affected)
 		{
 			if(msg.tool() instanceof Ability)
 			{
+				if((invoker==null)
+				||(!appropriateToMyFactions(invoker))
+				||(affected==null)
+				||(affected==invoker)
+				||(!(affected instanceof MOB)))
+					return true;
+
 				if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 				&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 				&&(!CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_HOLY))

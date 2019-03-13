@@ -64,7 +64,7 @@ public class Paladin_PoisonImmunity extends PaladinSkill
 		if((msg.amITarget(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_POISON)
 		&&(!mob.amDead())
-		&&(CMLib.flags().isGood(mob))
+		&&(appropriateToMyFactions(invoker))
 		&&((invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			return false;
 		return super.okMessage(myHost,msg);
@@ -74,7 +74,8 @@ public class Paladin_PoisonImmunity extends PaladinSkill
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if((affected!=null)&&(CMLib.flags().isGood(affected)))
+		if((affected!=null)
+		&&(appropriateToMyFactions(invoker)))
 			affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+50+proficiency()+(5*getXLEVELLevel(affected)));
 	}
 }

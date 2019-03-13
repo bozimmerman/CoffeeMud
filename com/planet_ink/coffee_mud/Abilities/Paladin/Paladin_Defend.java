@@ -177,11 +177,15 @@ public class Paladin_Defend extends StdAbility
 			return false;
 		}
 
+		if(!PaladinSkill.paladinAlignmentCheck(this, mob, auto))
+			return false;
+		/* handled by alignment.ini
 		if((!auto)&&(!(CMLib.flags().isGood(mob))))
 		{
 			mob.tell(L("You don't feel worthy of a good defence."));
 			return false;
 		}
+		*/
 		if(!super.invoke(mob,commands,mob,auto,asLevel))
 			return false;
 

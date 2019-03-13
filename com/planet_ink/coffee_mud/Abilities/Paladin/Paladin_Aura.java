@@ -91,7 +91,8 @@ public class Paladin_Aura extends PaladinSkill
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((invoker==null)||(!(CMLib.flags().isGood(invoker))))
+		if((invoker==null)
+		||(!appropriateToMyFactions(invoker)))
 			return true;
 		if(affected==null)
 			return true;

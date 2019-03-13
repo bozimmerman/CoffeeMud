@@ -58,7 +58,8 @@ public class Paladin_ImprovedResists extends PaladinSkill
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if((affected!=null)&&(CMLib.flags().isGood(affected)))
+		if((affected!=null)
+		&&(appropriateToMyFactions(invoker)))
 		{
 			final int amount=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),affected.phyStats().level()+(2*getXLEVELLevel(invoker))));
 			for(final int i : CharStats.CODES.SAVING_THROWS())

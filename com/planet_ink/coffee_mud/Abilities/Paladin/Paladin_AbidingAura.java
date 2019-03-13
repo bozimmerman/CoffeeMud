@@ -68,7 +68,7 @@ public class Paladin_AbidingAura extends PaladinSkill
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(invoker!=null)
-		&&(CMLib.flags().isGood(invoker))
+		&&(appropriateToMyFactions(invoker))
 		&&(super.paladinsGroup.contains(msg.source())))
 		{
 			final MOB mob=msg.source();

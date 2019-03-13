@@ -106,6 +106,20 @@ public class PaladinSkill extends StdAbility
 		return P;
 	}
 
+	protected static boolean paladinAlignmentCheck(final StdAbility A, final MOB mob, final boolean auto)
+	{
+		if((!auto)
+		&&(!mob.isMonster())
+		&&(!A.disregardsArmorCheck(mob))
+		&&(mob.isMine(A))
+		&&(!A.appropriateToMyFactions(mob)))
+		{
+			mob.tell(CMLib.lang().L("You don't feel worthy enough to @x1.",A.name()));
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -116,7 +130,7 @@ public class PaladinSkill extends StdAbility
 		final MOB paladinMob=(invoker == null) ? (MOB)affected : invoker;
 		if(paladinMob==null)
 			return false;
-		if(!(CMLib.flags().isGood(paladinMob)))
+		if(!appropriateToMyFactions(paladinMob))
 			return false;
 		final Set<MOB> paladinsGroup=this.paladinsGroup;
 		if(paladinsGroup!=null)

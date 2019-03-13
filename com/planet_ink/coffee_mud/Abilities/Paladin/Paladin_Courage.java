@@ -65,24 +65,24 @@ public class Paladin_Courage extends PaladinSkill
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((invoker==null)||(!(CMLib.flags().isGood(invoker))))
-			return true;
-		if(affected==null)
-			return true;
+
 		if(!(affected instanceof MOB))
 			return true;
 
 		if((msg.target() instanceof MOB)
 		&&(paladinsGroup.contains(msg.target()))
 		&&(!paladinsGroup.contains(msg.source()))
+		&&(invoker!=null)
 		&&(msg.source()!=invoker)
 		&&(((MOB)msg.target()).location()==invoker.location()))
 		{
-			if((CMLib.flags().isGood(invoker))
-			&&(msg.tool() instanceof Ability)
-			&&((invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false))
+			if((msg.tool() instanceof Ability)
+			&&((invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false))
 			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
+				if(!appropriateToMyFactions(invoker))
+					return true;
+
 				final String str1=msg.tool().ID().toUpperCase();
 				if((str1.indexOf("SPOOK")>=0)
 				||(str1.indexOf("NIGHTMARE")>=0)
