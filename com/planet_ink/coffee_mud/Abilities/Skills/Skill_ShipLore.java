@@ -119,7 +119,7 @@ public class Skill_ShipLore extends StdSkill
 		final String shipName=CMParms.combine(commands);
 		Room shipChkR=R;
 		if(shipChkR.getArea() instanceof BoardableShip)
-			shipChkR=CMLib.map().roomLocation(((BoardableShip)shipChkR).getShipItem());
+			shipChkR=CMLib.map().roomLocation(((BoardableShip)shipChkR.getArea()).getShipItem());
 		if(shipChkR==null)
 			return false;
 		if((shipChkR.domainType()&Room.INDOORS)==Room.INDOORS)
