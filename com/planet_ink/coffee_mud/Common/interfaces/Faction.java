@@ -966,9 +966,9 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#eventID()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDclassFilter()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDdomainFilter()
-		 * @return -1, or an index into an Ability FLAG
+		 * @return -1, or an mask for an Ability FLAG
 		 */
-		public int IDflagFilter();
+		public long IDflagFilter();
 
 		/**
 		 * A derivative of the event id, this will return a value of 0 or above
@@ -978,7 +978,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#eventID()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDclassFilter()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#IDflagFilter()
-		 * @return -1, or an index into an Ability ACODE
+		 * @return -1, or a mask for an Ability domain
 		 */
 		public int IDdomainFilter();
 

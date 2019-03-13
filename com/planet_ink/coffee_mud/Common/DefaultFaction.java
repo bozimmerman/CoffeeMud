@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.database.DBInterface;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Misc.PresenceReaction;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -891,35 +892,92 @@ public class DefaultFaction implements Faction, MsgListener
 	{
 		if(key==null)
 			return null;
-		// Direct ability ID's
-		if(abilChangeCache.containsKey(key.ID().toUpperCase()))
-			return abilChangeCache.get(key.ID().toUpperCase());
-		if(changes.containsKey(key.ID().toUpperCase()))
+		if(abilChangeCache.size()==0)
 		{
-			abilChangeCache.put(key.ID().toUpperCase(), changes.get(key.ID().toUpperCase()));
-			return abilChangeCache.get(key.ID().toUpperCase());
-		}
-		// By TYPE or FLAGS
-		FactionChangeEvent[] Cs =null;
-		final Vector<FactionChangeEvent> events=new Vector<FactionChangeEvent>();
-		for (final Enumeration<FactionChangeEvent[]> e=changes.elements();e.hasMoreElements();)
-		{
-			Cs=e.nextElement();
-			for(final FactionChangeEvent C : Cs)
+			if(CMClass.numPrototypes(CMObjectType.ABILITY)==0)
+				return null;
+			final Map<Integer,List<FactionChangeEvent>> abilityClassMap=new HashMap<Integer,List<FactionChangeEvent>>(); 
+			for(int classificationCode = 0;classificationCode < Ability.ACODE_DESCS.length;classificationCode++)
 			{
-				if((key.classificationCode()&Ability.ALL_ACODES)==C.IDclassFilter())
-					events.addElement(C);
-				else
-				if((key.classificationCode()&Ability.ALL_DOMAINS)==C.IDdomainFilter())
-					events.addElement(C);
-				else
-				if((C.IDflagFilter()>0)&&(CMath.bset(key.flags(),C.IDflagFilter())))
-					events.addElement(C);
+				for (final Enumeration<FactionChangeEvent[]> e=changes.elements();e.hasMoreElements();)
+				{
+					final FactionChangeEvent[] Cs=e.nextElement();
+					for(final FactionChangeEvent C : Cs)
+					{
+						if(classificationCode==C.IDclassFilter())
+						{
+							if(!abilityClassMap.containsKey(Integer.valueOf(classificationCode)))
+								abilityClassMap.put(Integer.valueOf(classificationCode), new ArrayList<FactionChangeEvent>());
+							abilityClassMap.get(Integer.valueOf(classificationCode)).add(C);
+						}
+					}
+				}
 			}
+			final Map<Integer,List<FactionChangeEvent>> abilityDomainMap=new HashMap<Integer,List<FactionChangeEvent>>(); 
+			for(int domainCode = 0;domainCode < Ability.DOMAIN_DESCS.length;domainCode++)
+			{
+				final int domainID = domainCode << 5;
+				for (final Enumeration<FactionChangeEvent[]> e=changes.elements();e.hasMoreElements();)
+				{
+					final FactionChangeEvent[] Cs=e.nextElement();
+					for(final FactionChangeEvent C : Cs)
+					{
+						if(domainID==C.IDdomainFilter())
+						{
+							if(!abilityDomainMap.containsKey(Integer.valueOf(domainID)))
+								abilityDomainMap.put(Integer.valueOf(domainID), new ArrayList<FactionChangeEvent>());
+							abilityDomainMap.get(Integer.valueOf(domainID)).add(C);
+						}
+					}
+				}
+			}
+			final Map<Long,List<FactionChangeEvent>> abilityFlagMap=new HashMap<Long,List<FactionChangeEvent>>(); 
+			for(int flagIndex = 0;flagIndex < Ability.FLAG_DESCS.length;flagIndex++)
+			{
+				final long flagMask = Math.round(Math.pow(2, flagIndex));
+				for (final Enumeration<FactionChangeEvent[]> e=changes.elements();e.hasMoreElements();)
+				{
+					final FactionChangeEvent[] Cs=e.nextElement();
+					for(final FactionChangeEvent C : Cs)
+					{
+						if((C.IDflagFilter()>0)&&(CMath.bset(C.IDflagFilter(), flagMask)))
+						{
+							if(!abilityFlagMap.containsKey(Long.valueOf(flagMask)))
+								abilityFlagMap.put(Long.valueOf(flagMask), new ArrayList<FactionChangeEvent>());
+							abilityFlagMap.get(Long.valueOf(flagMask)).add(C);
+						}
+					}
+				}
+			}
+			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
+				final ArrayList<FactionChangeEvent> set=new ArrayList<FactionChangeEvent>(0);
+				if(changes.containsKey(A.ID()))
+					set.addAll(Arrays.asList(changes.get(A.ID())));
+				if(abilityClassMap.containsKey(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES)))
+					set.addAll(abilityClassMap.get(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES)));
+				if(abilityDomainMap.containsKey(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS)))
+					set.addAll(abilityDomainMap.get(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS)));
+				if(A.flags()>0)
+				{
+					for(int flagIndex = 0;flagIndex < Ability.FLAG_DESCS.length;flagIndex++)
+					{
+						final long flagMask = Math.round(Math.pow(2, flagIndex));
+						if(CMath.bset(A.flags(), flagMask))
+						{
+							if(abilityFlagMap.containsKey(Long.valueOf(flagMask)))
+								set.addAll(abilityFlagMap.get(Long.valueOf(flagMask)));
+						}
+					}
+				}
+				if(set.size()>0)
+					abilChangeCache.put(A.ID(), set.toArray(new FactionChangeEvent[0]));
+			}
+			if(abilChangeCache.size()==0)
+				abilChangeCache.put("StdAbility", new FactionChangeEvent[0]);
 		}
-		final FactionChangeEvent[] evs = events.toArray(new FactionChangeEvent[0]);
-		abilChangeCache.put(key.ID().toUpperCase(), evs);
-		return evs;
+		return abilChangeCache.get(key.ID());
 	}
 
 	@Override
@@ -927,22 +985,23 @@ public class DefaultFaction implements Faction, MsgListener
 	{
 		if(soc==null)
 			return null;
-		if(socChangeCache.containsKey(soc.name()))
-			return socChangeCache.get(soc.name());
-		final String starName=soc.baseName().toUpperCase()+" *";
-		if(socChangeCache.containsKey(starName))
-			return socChangeCache.get(starName);
-		if(changes.containsKey(soc.name()))
+		if(socChangeCache.size()==0)
 		{
-			socChangeCache.put(soc.name(), changes.get(soc.name()));
-			return socChangeCache.get(soc.name());
+			if(CMLib.socials().numSocialSets()==0)
+				return null;
+			for(final Enumeration<Social> s=CMLib.socials().getAllSocials();s.hasMoreElements();)
+			{
+				final Social S = s.nextElement();
+				if(changes.containsKey(S.name()))
+					socChangeCache.put(S.name(), changes.get(S.name()));
+				else
+				if(changes.containsKey(S.baseName()+" *"))
+					socChangeCache.put(S.name(), changes.get(S.baseName()+" *"));
+			}
+			if(socChangeCache.size()==0)
+				socChangeCache.put("DefaultSocial", new FactionChangeEvent[0]);
 		}
-		if(changes.containsKey(starName))
-		{
-			socChangeCache.put(starName, changes.get(starName));
-			return socChangeCache.get(starName);
-		}
-		return null;
+		return socChangeCache.get(soc.name());
 	}
 
 	@Override
@@ -1721,7 +1780,7 @@ public class DefaultFaction implements Faction, MsgListener
 		private String		ID				= "";
 		private String		flagCache		= "";
 		private int			IDclassFilter	= -1;
-		private int			IDflagFilter	= -1;
+		private long		IDflagFilter	= -1;
 		private int			IDdomainFilter	= -1;
 		private int			direction		= 0;
 		private double		factor			= 0.0;
@@ -1760,7 +1819,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public int IDflagFilter()
+		public long IDflagFilter()
 		{
 			return IDflagFilter;
 		}
@@ -1949,7 +2008,7 @@ public class DefaultFaction implements Faction, MsgListener
 			{
 				if(Ability.FLAG_DESCS[i].equalsIgnoreCase(newID))
 				{
-					IDflagFilter = (int) CMath.pow(2, i);
+					IDflagFilter = Math.round(Math.pow(2, i));
 					ID = newID;
 					return true;
 				}
