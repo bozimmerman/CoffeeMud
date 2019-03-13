@@ -143,15 +143,15 @@ public class Chant_DeepThoughts extends Chant
 				return true;
 			lastTime[0]=System.currentTimeMillis();
 			final Room room=mob.location();
-			final int myAlignment=mob.fetchFaction(CMLib.factions().AlignID());
-			final int total=CMLib.factions().getTotal(CMLib.factions().AlignID());
+			final int myAlignment=mob.fetchFaction(CMLib.factions().getAlignmentID());
+			final int total=CMLib.factions().getTotal(CMLib.factions().getAlignmentID());
 			final int ratePct=(int)Math.round(CMath.mul(total,.01));
 			if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.INDIFF)<99)
 			{
 				if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.EVIL)<CMLib.factions().getAlignPurity(myAlignment,Faction.Align.GOOD))
-					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), ratePct);
+					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), ratePct);
 				else
-					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -ratePct);
+					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), -ratePct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
 				case 0:

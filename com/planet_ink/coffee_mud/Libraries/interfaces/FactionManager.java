@@ -44,6 +44,7 @@ public interface FactionManager extends CMLibrary, Tickable
 	public void reloadFactions(String factionList);
 	public boolean isRangeCodeName(String key);
 	public boolean isFactionedThisWay(MOB mob, Faction.FRange rangeCode);
+	public boolean isFactionID(String key);
 	public String rangeDescription(Faction.FRange FR, String andOr);
 	public Faction getFaction(String factionID);
 	public Faction getFactionByRangeCodeName(String rangeCodeName);
@@ -64,7 +65,8 @@ public interface FactionManager extends CMLibrary, Tickable
 	public int getTotal(String factionID);
 	public int getRandom(String factionID);
 	public void updatePlayerFactions(MOB mob, Room R, boolean forceAutoCheck);
-	public String AlignID();
+	public String getAlignmentID();
+	public String getAxisID();
 	public void setAlignment(MOB mob, Faction.Align newAlignment);
 	public void setAlignmentOldRange(MOB mob, int oldRange);
 	public int getAlignPurity(int faction, Faction.Align eq);

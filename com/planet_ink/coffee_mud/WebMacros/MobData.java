@@ -1412,10 +1412,10 @@ public class MobData extends StdWebMacro
 					str.append(old);
 					break;
 				case ALIGNMENT: // alignment
-					if(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)
+					if(CMLib.factions().getFaction(CMLib.factions().getAlignmentID())!=null)
 					{
 						if(firstTime)
-							old=""+M.fetchFaction(CMLib.factions().AlignID());
+							old=""+M.fetchFaction(CMLib.factions().getAlignmentID());
 						for(final Faction.Align v : Faction.Align.values())
 						{
 							if(v!=Faction.Align.INDIFF)

@@ -148,13 +148,13 @@ public class Surveying extends CommonSkill
 						}
 						if(expertise > 3)
 						{
-							final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+							final Faction F=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
 							if(F!=null)
 								msgBuilder.append(L("^HMed Align. : ^N")).append(F.fetchRangeName(A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()])).append("\n\r");
 						}
 						if(expertise > 4)
 						{
-							final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+							final Faction F=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
 							if(F!=null)
 							{
 								msgBuilder.append(L("^HAlign Range: ^N"))

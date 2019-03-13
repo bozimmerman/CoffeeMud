@@ -255,8 +255,8 @@ public class Purist extends Cleric
 		&&(myChar.isMine(msg.tool()))
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool())))
 		{
-			final int alignment = myChar.fetchFaction(CMLib.factions().AlignID());
-			final int pct = CMLib.factions().getPercent(CMLib.factions().AlignID(), alignment);
+			final int alignment = myChar.fetchFaction(CMLib.factions().getAlignmentID());
+			final int pct = CMLib.factions().getPercent(CMLib.factions().getAlignmentID(), alignment);
 			if(pct < 50)
 			{
 				myChar.tell(L("Your impurity disrupts the prayer."));

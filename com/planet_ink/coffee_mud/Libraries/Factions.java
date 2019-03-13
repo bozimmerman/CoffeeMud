@@ -200,6 +200,20 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
+	public boolean isFactionID(String key)
+	{
+		if(key==null)
+			return false;
+		key=key.toUpperCase().trim();
+		if(factionSet.containsKey(key))
+			return true;
+		final CMFile f=new CMFile(Resources.makeFileResourceName(makeFactionFilename(key)),null,CMFile.FLAG_LOGERRORS);
+		if(f.exists())
+			return getFaction(key)!=null;
+		return false;
+	}
+
+	@Override
 	public Faction getFaction(final String factionID)
 	{
 		if(factionID==null)
@@ -427,22 +441,28 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public String AlignID()
+	public String getAlignmentID()
 	{
 		return "alignment.ini";
 	}
 
 	@Override
+	public String getAxisID()
+	{
+		return "axis.ini";
+	}
+
+	@Override
 	public void setAlignment(final MOB mob, final Faction.Align newAlignment)
 	{
-		if(getFaction(AlignID())!=null)
-			mob.addFaction(AlignID(),getAlignMedianFacValue(newAlignment));
+		if(getFaction(getAlignmentID())!=null)
+			mob.addFaction(getAlignmentID(),getAlignMedianFacValue(newAlignment));
 	}
 
 	@Override
 	public void setAlignmentOldRange(final MOB mob, final int oldRange)
 	{
-		if(getFaction(AlignID())!=null)
+		if(getFaction(getAlignmentID())!=null)
 		{
 			if(oldRange>=650)
 				setAlignment(mob,Faction.Align.GOOD);
@@ -723,8 +743,8 @@ public class Factions extends StdLibrary implements FactionManager
 	{
 		int bottom=Integer.MAX_VALUE;
 		int top=Integer.MIN_VALUE;
-		final int pct=getPercent(AlignID(),faction);
-		final Enumeration<FRange> e = getRanges(AlignID());
+		final int pct=getPercent(getAlignmentID(),faction);
+		final Enumeration<FRange> e = getRanges(getAlignmentID());
 		if(e!=null)
 		for(;e.hasMoreElements();)
 		{
@@ -740,11 +760,11 @@ public class Factions extends StdLibrary implements FactionManager
 		switch(eq)
 		{
 			case GOOD:
-				return Math.abs(pct - getPercent(AlignID(),top));
+				return Math.abs(pct - getPercent(getAlignmentID(),top));
 			case EVIL:
-				return Math.abs(getPercent(AlignID(),bottom) - pct);
+				return Math.abs(getPercent(getAlignmentID(),bottom) - pct);
 			case NEUTRAL:
-				return Math.abs(getPercent(AlignID(),(int)Math.round(CMath.div((top+bottom),2))) - pct);
+				return Math.abs(getPercent(getAlignmentID(),(int)Math.round(CMath.div((top+bottom),2))) - pct);
 			default:
 				return 0;
 		}
@@ -756,7 +776,7 @@ public class Factions extends StdLibrary implements FactionManager
 	{
 		int bottom=Integer.MAX_VALUE;
 		int top=Integer.MIN_VALUE;
-		final Enumeration<FRange> e = getRanges(AlignID());
+		final Enumeration<FRange> e = getRanges(getAlignmentID());
 		if(e==null)
 			return 0;
 		for(;e.hasMoreElements();)

@@ -81,7 +81,7 @@ public class Prayer_MoralBalance extends Prayer
 		if((mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 			msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,L("<T-NAME> do(es) not seem to like <S-NAME> messing with <T-HIS-HER> head."));
 
-		if((success)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
+		if((success)&&(CMLib.factions().getFaction(CMLib.factions().getAlignmentID())!=null))
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> feel(s) completely different about the world.":"^S<S-NAME> "+prayWord(mob)+" to bring balance to <T-NAMESELF>!^?"));
 			if((mob.location().okMessage(mob,msg))
@@ -91,7 +91,7 @@ public class Prayer_MoralBalance extends Prayer
 				if((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
 				{
 					target.tell(L("Your views on the world suddenly change."));
-					final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+					final Faction F=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
 					if(F!=null)
 					{
 					 	final int bredth=F.maximum()-F.minimum();
@@ -99,7 +99,7 @@ public class Prayer_MoralBalance extends Prayer
 						final int distance=midpoint-target.fetchFaction(F.factionID());
 						final int amt=target.fetchFaction(F.factionID())+(distance/8);
 						final int change=amt-target.fetchFaction(F.factionID());
-						CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(),change);
+						CMLib.factions().postFactionChange(target,this, CMLib.factions().getAlignmentID(),change);
 					}
 				}
 				if(msg2!=null)

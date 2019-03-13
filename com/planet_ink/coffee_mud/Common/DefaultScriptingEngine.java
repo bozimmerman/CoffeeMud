@@ -6049,11 +6049,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB)))
 				{
-					final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),((MOB)E).fetchFaction(CMLib.factions().AlignID()));
+					final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().getAlignmentID(),((MOB)E).fetchFaction(CMLib.factions().getAlignmentID()));
 					if(FR!=null)
 						results.append(FR.name());
 					else
-						results.append(((MOB)E).fetchFaction(CMLib.factions().AlignID()));
+						results.append(((MOB)E).fetchFaction(CMLib.factions().getAlignmentID()));
 				}
 				break;
 			}
@@ -6070,7 +6070,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg1=CMParms.cleanBit(funcParms);
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB)))
-					results.append(((MOB)E).fetchFaction(CMLib.factions().AlignID()));
+					results.append(((MOB)E).fetchFaction(CMLib.factions().getAlignmentID()));
 				break;
 			}
 			case 11: // isimmort
@@ -10317,7 +10317,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					{
 						Faction.FRange FR=null;
-						final Enumeration<Faction.FRange> e=CMLib.factions().getRanges(CMLib.factions().AlignID());
+						final Enumeration<Faction.FRange> e=CMLib.factions().getRanges(CMLib.factions().getAlignmentID());
 						if(e!=null)
 						for(;e.hasMoreElements();)
 						{

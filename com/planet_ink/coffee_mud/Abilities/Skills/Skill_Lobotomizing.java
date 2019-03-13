@@ -195,10 +195,10 @@ public class Skill_Lobotomizing extends StdSkill
 							eA.setProficiency(0);
 					}
 				}
-				final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+				final Faction F=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
 				if(F != null)
 				{
-					int fac = target.fetchFaction(CMLib.factions().AlignID());
+					int fac = target.fetchFaction(CMLib.factions().getAlignmentID());
 					if((fac > 0) && (fac < F.maximum()))
 						fac += 1000;
 				}

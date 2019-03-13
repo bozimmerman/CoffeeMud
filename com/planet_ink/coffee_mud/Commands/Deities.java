@@ -51,10 +51,10 @@ public class Deities extends StdCommand
 	{
 		final StringBuffer msg = new StringBuffer("");
 		msg.append("\n\r^x"+D.name()+"^.^?");
-		if(D.hasFaction(CMLib.factions().AlignID()))
+		if(D.hasFaction(CMLib.factions().getAlignmentID()))
 		{
-			final int faction=D.fetchFaction(CMLib.factions().AlignID());
-			msg.append("^N ("+CMLib.factions().getRange(CMLib.factions().AlignID(), faction)+")");
+			final int faction=D.fetchFaction(CMLib.factions().getAlignmentID());
+			msg.append("^N ("+CMLib.factions().getRange(CMLib.factions().getAlignmentID(), faction)+")");
 		}
 		msg.append("\n\r");
 		msg.append(D.description()+"\n\r\n\r");

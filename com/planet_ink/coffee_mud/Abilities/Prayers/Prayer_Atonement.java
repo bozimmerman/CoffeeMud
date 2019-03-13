@@ -81,7 +81,7 @@ public class Prayer_Atonement extends Prayer
 		if((mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 			msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,L("<T-NAME> do(es) not seem to like <S-NAME> messing with <T-HIS-HER> head."));
 
-		if(success&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
+		if(success&&(CMLib.factions().getFaction(CMLib.factions().getAlignmentID())!=null))
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> feel(s) more good.":"^S<S-NAME> "+prayWord(mob)+" to atone <T-NAMESELF>!^?"));
 			if((mob.location().okMessage(mob,msg))
@@ -92,7 +92,7 @@ public class Prayer_Atonement extends Prayer
 				{
 					target.tell(L("Good, pure thoughts fill your head."));
 					final int evilness=CMLib.dice().roll(10,adjustedLevel(mob,asLevel),0);
-					CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), evilness);
+					CMLib.factions().postFactionChange(target,this, CMLib.factions().getAlignmentID(), evilness);
 				}
 				if(msg2!=null)
 					mob.location().send(mob,msg2);

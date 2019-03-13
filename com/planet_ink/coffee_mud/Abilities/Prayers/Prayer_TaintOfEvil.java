@@ -106,7 +106,7 @@ public class Prayer_TaintOfEvil extends Prayer
 		if((msg.source()==affected)
 		&&(msg.sourceMinor()== CMMsg.TYP_FACTIONCHANGE)
 		&&(msg.othersMessage()!=null)
-		&&(msg.othersMessage().equalsIgnoreCase(CMLib.factions().AlignID()))
+		&&(msg.othersMessage().equalsIgnoreCase(CMLib.factions().getAlignmentID()))
 		&&(msg.value()>0)
 		&&(msg.value()<Integer.MAX_VALUE))
 		{

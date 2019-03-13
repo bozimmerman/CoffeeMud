@@ -4438,7 +4438,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if(E instanceof Area)
 		{
 			final int[] areaStats = ((Area)E).getAreaIStats();
-			mob.addFaction(CMLib.factions().AlignID(), areaStats[Area.Stats.MED_ALIGNMENT.ordinal()]);
+			mob.addFaction(CMLib.factions().getAlignmentID(), areaStats[Area.Stats.MED_ALIGNMENT.ordinal()]);
 		}
 		for(final CompiledZMaskEntry entry : cset.entries())
 		{

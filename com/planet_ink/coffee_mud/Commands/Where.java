@@ -449,7 +449,7 @@ public class Where extends StdCommand
 		}
 		else
 		{
-			int alignment=mob.fetchFaction(CMLib.factions().AlignID());
+			int alignment=mob.fetchFaction(CMLib.factions().getAlignmentID());
 			for(int i=commands.size()-1;i>=0;i--)
 			{
 				final String s=commands.get(i);
@@ -575,7 +575,7 @@ public class Where extends StdCommand
 
 					msg.append(CMStrings.padRight(A.name(),35))
 					   .append(CMStrings.padRight(Integer.toString(lvl),6))
-					   .append(CMStrings.padRight(CMLib.factions().getRange(CMLib.factions().AlignID(), align).name(),20))
+					   .append(CMStrings.padRight(CMLib.factions().getRange(CMLib.factions().getAlignmentID(), align).name(),20))
 					   .append(CMStrings.padRight(Integer.toString(A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]),10))
 					   .append("\n\r");
 				}

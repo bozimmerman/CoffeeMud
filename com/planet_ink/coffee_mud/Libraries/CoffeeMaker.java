@@ -3473,7 +3473,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			final MOB mob=(MOB)E;
 			final String alignStr=xml.getValFromPieces(buf,"ALIG");
-			if((alignStr.length()>0)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
+			if((alignStr.length()>0)&&(CMLib.factions().getFaction(CMLib.factions().getAlignmentID())!=null))
 				CMLib.factions().setAlignmentOldRange(mob,CMath.s_int(alignStr));
 			CMLib.beanCounter().setMoney(mob,xml.getIntFromPieces(buf,"MONEY"));
 			mob.setMoneyVariation(xml.getDoubleFromPieces(buf,"VARMONEY"));
@@ -3805,7 +3805,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			mob.baseState().setMana(mblk.getIntFromPieces("MANA"));
 			mob.baseState().setMovement(mblk.getIntFromPieces("MOVE"));
 			final String alignStr=mblk.getValFromPieces("ALIG");
-			if((alignStr.length()>0)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
+			if((alignStr.length()>0)&&(CMLib.factions().getFaction(CMLib.factions().getAlignmentID())!=null))
 				CMLib.factions().setAlignmentOldRange(mob,CMath.s_int(alignStr));
 			mob.setExperience(mblk.getIntFromPieces("EXP"));
 			//mob.setExpNextLevel(CMLib.xml().getIntFromPieces(mblk.contents,"EXLV"));
@@ -4704,7 +4704,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return money;
 		}
 		case ALIGNMENT:
-			return "" + M.fetchFaction(CMLib.factions().AlignID()); // alignment
+			return "" + M.fetchFaction(CMLib.factions().getAlignmentID()); // alignment
 		case DISPOSITION:
 			return "" + M.basePhyStats().disposition(); // disposition
 		case SENSES:
@@ -4805,9 +4805,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			break; // money
 		case ALIGNMENT:
 			if (CMath.s_int(val) == Integer.MAX_VALUE) // alignment
-				M.removeFaction(CMLib.factions().AlignID());
+				M.removeFaction(CMLib.factions().getAlignmentID());
 			else
-				M.addFaction(CMLib.factions().AlignID(), CMath.s_parseIntExpression(val));
+				M.addFaction(CMLib.factions().getAlignmentID(), CMath.s_parseIntExpression(val));
 			break;
 		case DISPOSITION:
 		{

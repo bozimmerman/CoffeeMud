@@ -106,7 +106,7 @@ public class MOBloader
 				state.setMovement(CMath.s_int(DBConnections.getRes(R,"CMMOVE")));
 				mob.setDescription(DBConnections.getRes(R,"CMDESC"));
 				final int align=(CMath.s_int(DBConnections.getRes(R,"CMALIG")));
-				if((CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)&&(align>=0))
+				if((CMLib.factions().getFaction(CMLib.factions().getAlignmentID())!=null)&&(align>=0))
 					CMLib.factions().setAlignmentOldRange(mob,align);
 				mob.setExperience(CMath.s_int(DBConnections.getRes(R,"CMEXPE")));
 				//mob.setExpNextLevel(CMath.s_int(DBConnections.getRes(R,"CMEXLV")));

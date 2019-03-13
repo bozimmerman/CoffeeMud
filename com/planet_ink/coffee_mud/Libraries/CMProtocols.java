@@ -1167,7 +1167,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		case ALIGNMENT:
 			if(M!=null)
 			{
-				final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
+				final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().getAlignmentID(),M.fetchFaction(CMLib.factions().getAlignmentID()));
 				if(FR!=null)
 					return FR.name();
 			}
@@ -1310,7 +1310,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		case ALIGNMENT:
 			if(M!=null)
 			{
-				final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
+				final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().getAlignmentID(),M.fetchFaction(CMLib.factions().getAlignmentID()));
 				if(FR!=null)
 					buf.write(FR.name().toLowerCase().getBytes(Session.MSDP_CHARSET));
 			}
@@ -2240,7 +2240,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						doc.append("\"fatigue\":").append(mob.curState().getFatigue()).append(",");
 						if(mob.playerStats()!=null)
 							doc.append("\"stink_pct\":").append(CMath.round(100.0 * mob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT)).append(",");
-						final int align=mob.fetchFaction(CMLib.factions().AlignID());
+						final int align=mob.fetchFaction(CMLib.factions().getAlignmentID());
 						if(align!=Integer.MAX_VALUE)
 							doc.append("\"align\":").append(align).append(",");
 						int state=3;
@@ -2379,7 +2379,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								.append("\"mv\":").append(M.curState().getMovement()).append(",")
 								.append("\"mmv\":").append(M.maxState().getMovement()).append(",")
 								.append("\"lvl\":").append(M.phyStats().level()).append(",");
-							final int align=mob.fetchFaction(CMLib.factions().AlignID());
+							final int align=mob.fetchFaction(CMLib.factions().getAlignmentID());
 							if(align!=Integer.MAX_VALUE)
 								doc.append("\"align\":").append(align).append(",");
 							doc.append("\"tnl\":").append(M.getExpNeededLevel());

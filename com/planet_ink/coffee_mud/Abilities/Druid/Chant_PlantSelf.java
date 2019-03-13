@@ -142,15 +142,15 @@ public class Chant_PlantSelf extends Chant
 				return true;
 			lastTime[0]=System.currentTimeMillis();
 			final Room room=mob.location();
-			final int myAlignment=mob.fetchFaction(CMLib.factions().AlignID());
-			final int total=CMLib.factions().getTotal(CMLib.factions().AlignID());
+			final int myAlignment=mob.fetchFaction(CMLib.factions().getAlignmentID());
+			final int total=CMLib.factions().getTotal(CMLib.factions().getAlignmentID());
 			final int oneHalfPct=(int)Math.round(CMath.mul(total,.015));
 			if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.INDIFF)<99)
 			{
 				if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.EVIL)<CMLib.factions().getAlignPurity(myAlignment,Faction.Align.GOOD))
-					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), oneHalfPct);
+					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), oneHalfPct);
 				else
-					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -oneHalfPct);
+					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), -oneHalfPct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
 				case 0:

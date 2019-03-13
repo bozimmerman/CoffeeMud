@@ -85,6 +85,7 @@ public class PlanarAbility extends StdAbility
 	protected String					planarPrefix	= null;
 	protected List<Pair<String, String>>behavList		= null;
 	protected List<Pair<String, String>>reffectList		= null;
+	protected List<Pair<String, String>>factionList		= null;
 	protected int						bonusDmgStat	= -1;
 	protected Set<String>				reqWeapons		= null;
 	protected int						recoverRate		= 0;
@@ -126,7 +127,8 @@ public class PlanarAbility extends StdAbility
 		ELITE,
 		ROOMCOLOR,
 		ROOMADJS,
-		AREAEMOTER
+		AREAEMOTER,
+		FACTIONS
 	}
 
 	public static enum PlanarSpecFlag
@@ -148,6 +150,7 @@ public class PlanarAbility extends StdAbility
 		this.behavList=null;
 		this.enableList=null;
 		this.reffectList=null;
+		this.factionList=null;
 		bonusDmgStat=-1;
 		this.reqWeapons=null;
 		this.recoverTick=-1;
@@ -212,6 +215,9 @@ public class PlanarAbility extends StdAbility
 			final String reffects = planeVars.get(PlanarVar.REFFECT.toString());
 			if(reffects!=null)
 				this.reffectList=CMParms.parseSpaceParenList(reffects);
+			final String factions = planeVars.get(PlanarVar.FACTIONS.toString());
+			if(factions!=null)
+				this.factionList=CMParms.parseSpaceParenList(factions);
 			final String enables = planeVars.get(PlanarVar.ENABLE.toString());
 			if(enables!=null)
 			{
@@ -606,19 +612,36 @@ public class PlanarAbility extends StdAbility
 					final String align=planeVars.get(PlanarVar.ALIGNMENT.toString());
 					if(align!=null)
 					{
-						M.removeFaction(CMLib.factions().AlignID());
-						M.addFaction(CMLib.factions().AlignID(), CMath.s_int(align));
+						M.removeFaction(CMLib.factions().getAlignmentID());
+						M.addFaction(CMLib.factions().getAlignmentID(), CMath.s_int(align));
 					}
-					for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+					if(this.factionList!=null)
 					{
-						final Faction F=f.nextElement();
-						String facNumStr = planeVars.get(F.factionID());
-						if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
-							facNumStr = planeVars.get(F.name().toUpperCase());
-						if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
-							continue;
-						M.removeFaction(F.factionID());
-						M.addFaction(F.factionID(), CMath.s_int(facNumStr));
+						for(final Pair<String,String> p : this.factionList)
+						{
+							Faction F=null;
+							if(CMLib.factions().isFactionID(p.first))
+								F=CMLib.factions().getFaction(p.first);
+							if(F==null)
+								F=CMLib.factions().getFactionByName(p.first);
+							if(F!=null)
+							{
+								if(CMath.isInteger(p.second))
+								{
+									M.removeFaction(F.factionID());
+									M.addFaction(F.factionID(), CMath.s_int(p.second));
+								}
+								else
+								{
+									final Faction.FRange FR = F.fetchRange(p.second);
+									if(FR != null)
+									{
+										M.removeFaction(F.factionID());
+										M.addFaction(F.factionID(), FR.random());
+									}
+								}
+							}
+						}
 					}
 					for(final Enumeration<Item> mi=M.items();mi.hasMoreElements();)
 					{

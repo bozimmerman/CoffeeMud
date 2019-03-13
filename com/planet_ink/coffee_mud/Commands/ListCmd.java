@@ -4907,7 +4907,7 @@ public class ListCmd extends StdCommand
 		}
 		else
 			a=CMLib.map().areas();
-		Faction theFaction=CMLib.factions().getFaction(CMLib.factions().AlignID());
+		Faction theFaction=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
 		if(theFaction == null)
 		{
 			for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)

@@ -414,7 +414,7 @@ public class Skill_PlanarLore extends StdSkill
 				final String alignNumStr = planeVars.get(PlanarVar.ALIGNMENT.toString());
 				if((alignNumStr != null)&&(CMath.isInteger(alignNumStr)))
 				{
-					final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+					final Faction F=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
 					if(F!=null)
 					{
 						final String rangeName = F.fetchRangeName(CMath.s_int(alignNumStr));
@@ -429,7 +429,7 @@ public class Skill_PlanarLore extends StdSkill
 						facNumStr = planeVars.get(F.name().toUpperCase());
 					if((facNumStr == null)||(!CMath.isInteger(facNumStr)))
 						continue;
-					if(F.factionID().equals(CMLib.factions().AlignID()))
+					if(F.factionID().equals(CMLib.factions().getAlignmentID()))
 						continue;
 					final String rangeName = F.fetchRangeName(CMath.s_int(facNumStr));
 					tidbits.add(L("The creatures there are @x1.",rangeName));

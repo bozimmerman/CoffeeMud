@@ -288,7 +288,7 @@ public class Skill_Befriend extends BardSkill
 			return false;
 		}
 
-		final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+		final Faction F=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
 		if(F!=null)
 		{
 			final int his=target.fetchFaction(F.factionID());

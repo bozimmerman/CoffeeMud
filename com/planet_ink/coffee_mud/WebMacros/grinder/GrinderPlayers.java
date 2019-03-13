@@ -509,7 +509,7 @@ public class GrinderPlayers extends GrinderMobs
 		if(httpReq.isUrlParameter("ALIGNMENT"))
 		{
 			final String old=httpReq.getUrlParameter("ALIGNMENT");
-			final Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+			final Faction F=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
 			if((F!=null)&&(old!=null)&&(old.length()>0))
 			{
 				for(final Faction.Align v : Faction.Align.values())

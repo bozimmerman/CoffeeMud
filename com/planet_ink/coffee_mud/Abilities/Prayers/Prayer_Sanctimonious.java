@@ -95,7 +95,7 @@ public class Prayer_Sanctimonious extends Prayer
 		final MOB mob=(MOB)affected;
 		if(mob.isInCombat())
 		{
-			final String alignmentID=CMLib.factions().AlignID();
+			final String alignmentID=CMLib.factions().getAlignmentID();
 			final MOB victim=mob.getVictim();
 			if((CMLib.flags().isGood(victim) ||(CMLib.flags().isNeutral(victim) && (mob.fetchFaction(alignmentID)>0)))
 			&&(mob.fetchFaction(alignmentID) > victim.fetchFaction(alignmentID)))
@@ -127,7 +127,7 @@ public class Prayer_Sanctimonious extends Prayer
 		if(mob!=null)
 		{
 			final MOB victim=mob.getVictim();
-			final String alignmentID=CMLib.factions().AlignID();
+			final String alignmentID=CMLib.factions().getAlignmentID();
 			if((CMLib.flags().isGood(victim) ||(CMLib.flags().isNeutral(victim) && (mob.fetchFaction(alignmentID)>0)))
 			&&(mob.fetchFaction(alignmentID) > victim.fetchFaction(alignmentID)))
 				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);

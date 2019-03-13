@@ -1483,14 +1483,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					break;
 				case 'a':
 				{
-					buf.append(CMLib.factions().getRangePercent(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()))+"%");
+					buf.append(CMLib.factions().getRangePercent(CMLib.factions().getAlignmentID(),mob.fetchFaction(CMLib.factions().getAlignmentID()))+"%");
 					c++;
 					break;
 				}
 				case 'A':
 				{
-					final Faction.FRange FR = CMLib.factions().getRange(CMLib.factions().AlignID(), mob.fetchFaction(CMLib.factions().AlignID()));
-					buf.append((FR != null) ? FR.name() : "" + mob.fetchFaction(CMLib.factions().AlignID()));
+					final Faction.FRange FR = CMLib.factions().getRange(CMLib.factions().getAlignmentID(), mob.fetchFaction(CMLib.factions().getAlignmentID()));
+					buf.append((FR != null) ? FR.name() : "" + mob.fetchFaction(CMLib.factions().getAlignmentID()));
 					c++;
 					break;
 				}
@@ -1534,14 +1534,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							{
 								c+=1+F.factionID().length();
 								final Faction.FRange FR = CMLib.factions().getRange(F.factionID(), mob.fetchFaction(F.factionID()));
-								buf.append((FR != null) ? FR.name() : "" + mob.fetchFaction(CMLib.factions().AlignID()));
+								buf.append((FR != null) ? FR.name() : "" + mob.fetchFaction(CMLib.factions().getAlignmentID()));
 								break;
 							}
 							if(promptSub.startsWith(F.upperName()))
 							{
 								c+=1+F.name().length();
 								final Faction.FRange FR = CMLib.factions().getRange(F.factionID(), mob.fetchFaction(F.factionID()));
-								buf.append((FR != null) ? FR.name() : "" + mob.fetchFaction(CMLib.factions().AlignID()));
+								buf.append((FR != null) ? FR.name() : "" + mob.fetchFaction(CMLib.factions().getAlignmentID()));
 								break;
 							}
 						}
@@ -1897,13 +1897,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							break;
 						case 'n':
 						{
-							final Faction.FRange FR = CMLib.factions().getRange(CMLib.factions().AlignID(), A.getAreaIStats()[Area.Stats.AVG_ALIGNMENT.ordinal()]);
+							final Faction.FRange FR = CMLib.factions().getRange(CMLib.factions().getAlignmentID(), A.getAreaIStats()[Area.Stats.AVG_ALIGNMENT.ordinal()]);
 							buf.append((FR==null)?"":FR.name());
 							c+=2;
 							break;
 						}
 						case 'N':
-							final Faction.FRange FR = CMLib.factions().getRange(CMLib.factions().AlignID(), A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()]);
+							final Faction.FRange FR = CMLib.factions().getRange(CMLib.factions().getAlignmentID(), A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()]);
 							buf.append((FR==null)?"":FR.name());
 							c+=2;
 							break;

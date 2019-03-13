@@ -431,13 +431,13 @@ public class Cleric extends StdCharClass
 			if(basis==0)
 			{
 				if(hq==0)
-					basis=CMLib.factions().getAlignPurity(myChar.fetchFaction(CMLib.factions().AlignID()),Faction.Align.EVIL);
+					basis=CMLib.factions().getAlignPurity(myChar.fetchFaction(CMLib.factions().getAlignmentID()),Faction.Align.EVIL);
 				else
 				if(hq==1000)
-					basis=CMLib.factions().getAlignPurity(myChar.fetchFaction(CMLib.factions().AlignID()),Faction.Align.GOOD);
+					basis=CMLib.factions().getAlignPurity(myChar.fetchFaction(CMLib.factions().getAlignmentID()),Faction.Align.GOOD);
 				else
 				{
-					basis=CMLib.factions().getAlignPurity(myChar.fetchFaction(CMLib.factions().AlignID()),Faction.Align.NEUTRAL);
+					basis=CMLib.factions().getAlignPurity(myChar.fetchFaction(CMLib.factions().getAlignmentID()),Faction.Align.NEUTRAL);
 					basis-=10;
 				}
 			}
