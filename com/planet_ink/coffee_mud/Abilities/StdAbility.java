@@ -2322,6 +2322,8 @@ public class StdAbility implements Ability
 	@Override
 	public boolean appropriateToMyFactions(final MOB mob)
 	{
+		if(mob == null)
+			return true;
 		for(final Enumeration<String> e=mob.factions();e.hasMoreElements();)
 		{
 			final String factionID=e.nextElement();
