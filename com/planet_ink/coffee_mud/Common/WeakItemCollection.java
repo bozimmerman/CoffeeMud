@@ -159,9 +159,11 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 		return items;
 	}
 
-	@Override @SuppressWarnings({"unchecked","rawtypes"})
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<Item> findItems(final String itemID)
 	{
+		@SuppressWarnings("rawtypes")
 		List items=CMLib.english().fetchEnvironmentals(contents,itemID,true);
 		if(items.size()==0)
 			items=CMLib.english().fetchEnvironmentals(contents,itemID, false);

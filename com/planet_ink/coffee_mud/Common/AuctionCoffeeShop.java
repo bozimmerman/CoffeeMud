@@ -39,7 +39,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class AuctionCoffeeShop implements CoffeeShop
 {
 	@Override
@@ -100,7 +99,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 	@Override
 	public CoffeeShop build(final ShopKeeper SK)
 	{
-		shopKeeper=new WeakReference(SK);
+		shopKeeper=new WeakReference<ShopKeeper>(SK);
 		return this;
 	}
 

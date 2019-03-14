@@ -33,7 +33,6 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class LPCData
 {
 	static public Object getLPCData(final String cmd) throws I3Exception
@@ -41,8 +40,9 @@ public class LPCData
 		return getLPCData(cmd, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	static public Object getLPCData(String cmd, final boolean flag) throws I3Exception {
-		final Vector data = new Vector(2);
+		final Vector<Object> data = new Vector<Object>(2);
 
 		data.addElement(null);
 		data.addElement("");
@@ -88,12 +88,12 @@ public class LPCData
 			{
 				case '{':
 				{
-					final Vector v = new Vector();
+					final Vector<Object> v = new Vector<Object>();
 
 					cmd = cmd.substring(2, cmd.length());
 					while( cmd.charAt(0) != '}' )
 					{
-						final Vector tmp = (Vector)getLPCData(cmd, true);
+						final Vector<Object> tmp = (Vector<Object>)getLPCData(cmd, true);
 
 						v.addElement(tmp.elementAt(0));
 						cmd = ((String)tmp.elementAt(1)).trim();
@@ -130,12 +130,12 @@ public class LPCData
 
 				case '[':
 				{
-					final Hashtable h = new Hashtable();
+					final Hashtable<Object,Object> h = new Hashtable<Object,Object>();
 
 					cmd = cmd.substring(2, cmd.length());
 					while( cmd.charAt(0) != ']' )
 					{
-						Vector tmp = (Vector)getLPCData(cmd, true);
+						Vector<Object> tmp = (Vector<Object>)getLPCData(cmd, true);
 						Object key, value;
 
 						cmd = (String)tmp.elementAt(1);
@@ -146,7 +146,7 @@ public class LPCData
 						}
 						cmd = cmd.substring(1, cmd.length());
 						key = tmp.elementAt(0);
-						tmp = (Vector)getLPCData(cmd, true);
+						tmp = (Vector<Object>)getLPCData(cmd, true);
 						value = tmp.elementAt(0);
 						cmd = (String)tmp.elementAt(1);
 						h.put(key, value);

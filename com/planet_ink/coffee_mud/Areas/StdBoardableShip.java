@@ -37,7 +37,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 {
 	@Override
@@ -57,7 +56,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	protected String		displayText 	= "";
 	protected String		description 	= "";
 	protected String		miscText		= "";
-	protected SVector<Room> myRooms 		= new SVector();
+	protected SVector<Room> myRooms 		= new SVector<Room>();
 	protected State			flag			= State.ACTIVE;
 	protected int			tickStatus  	= Tickable.STATUS_NOT;
 	protected String		author  		= ""; // will be used for owner, I guess.
@@ -927,7 +926,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 
 	public List<Room> getMetroCollection()
 	{
-		return new ReadOnlyList(myRooms);
+		return new ReadOnlyList<Room>(myRooms);
 	}
 
 	@Override
@@ -1085,6 +1084,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return (affects==null)?0:affects.size();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration<Ability> effects()
 	{
@@ -1246,10 +1246,11 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 					}
 				}
 			}
-			for(final Enumeration i=CMLib.map().roomIDs();i.hasMoreElements();)
+			for(final Enumeration<String> i=CMLib.map().roomIDs();i.hasMoreElements();)
 			{
-				roomID=(String)i.nextElement();
-				if((roomID.length()>0)&&(roomID.startsWith(name+"#")))
+				roomID=i.nextElement();
+				if((roomID.length()>0)
+				&&(roomID.startsWith(name+"#")))
 				{
 					roomID=roomID.substring(name.length()+1);
 					if(CMath.isInteger(roomID))
@@ -1350,6 +1351,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return (behaviors==null)?0:behaviors.size();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration<Behavior> behaviors()
 	{
@@ -1477,6 +1479,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return (scripts == null) ? 0 : scripts.size();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration<ScriptingEngine> scripts()
 	{
@@ -1724,6 +1727,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return getProperMap();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration<String> subOps()
 	{
@@ -1731,6 +1735,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	// Children
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration<Area> getChildren()
 	{

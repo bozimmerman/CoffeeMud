@@ -129,13 +129,6 @@ public class Paladin_HolyStrike extends StdAbility
 		}
 		if(!PaladinSkill.paladinAlignmentCheck(this, mob, false))
 			return false;
-		/* handled by alignment.ini
-		if(!(CMLib.flags().isGood(mob)))
-		{
-			mob.tell(L("Your alignment has alienated you from your god."));
-			return false;
-		}
-		*/
 
 		final Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon))||(((Weapon)w).weaponClassification()!=Weapon.CLASS_SWORD))

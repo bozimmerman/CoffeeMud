@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class MOBReSave extends ActiveTicker
 {
 	@Override
@@ -57,7 +56,7 @@ public class MOBReSave extends ActiveTicker
 	protected static HashSet<Room> roomsReset=new HashSet<Room>();
 	protected boolean noRecurse=false;
 	protected CharStats startStats=null;
-	protected WeakReference host=null;
+	protected WeakReference<MOB> host=null;
 
 	public MOBReSave()
 	{
@@ -86,7 +85,7 @@ public class MOBReSave extends ActiveTicker
 	{
 		if(host==null)
 			return super.getParms();
-		final MOB M=(MOB)host.get();
+		final MOB M=host.get();
 		if(M==null)
 			return super.getParms();
 		final StringBuffer rebuiltParms=new StringBuffer(super.rebuildParms());
@@ -109,7 +108,7 @@ public class MOBReSave extends ActiveTicker
 		{
 			final MOB mob=(MOB)ticking;
 			if((host==null)||(host.get()==null))
-				host=new WeakReference(mob);
+				host=new WeakReference<MOB>(mob);
 			noRecurse=true;
 			if(startStats != null)
 			{

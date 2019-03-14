@@ -208,7 +208,7 @@ public class MUDGrinder extends StdWebMacro
 		return (req==null) ? null : getRoomObject(req.getUrlParameter("AREA"), ID);
 	}
 
-	@SuppressWarnings({"unchecked","rawtypes"})
+	@SuppressWarnings("unchecked")
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
@@ -1471,9 +1471,9 @@ public class MUDGrinder extends StdWebMacro
 					}
 				}
 			}
-			for(final Enumeration e=deferredExitSaves.getRoomIDs();e.hasMoreElements();)
+			for(final Enumeration<String> e=deferredExitSaves.getRoomIDs();e.hasMoreElements();)
 			{
-				R=getRoomObject(httpReq,(String)e.nextElement());
+				R=getRoomObject(httpReq,e.nextElement());
 				CMLib.database().DBUpdateExits(R);
 			}
 			Log.sysOut("Grinder",mob.name()+" updated "+deferredExitSaves.roomCountAllAreas()+" rooms exits.");

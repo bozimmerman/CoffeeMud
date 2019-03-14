@@ -160,13 +160,7 @@ public class Paladin_SummonMount extends StdAbility
 		}
 		if(!PaladinSkill.paladinAlignmentCheck(this, mob, auto))
 			return false;
-		/* handled by alignment.ini
-		if((!auto)&&(!(CMLib.flags().isGood(mob))))
-		{
-			mob.tell(L("Your alignment has alienated you from your god."));
-			return false;
-		}
-		*/
+
 		final List<Integer> choices=new ArrayList<Integer>();
 		int fromDir=-1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

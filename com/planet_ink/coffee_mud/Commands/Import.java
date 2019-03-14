@@ -37,7 +37,6 @@ import java.io.InputStream;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Import extends StdCommand
 {
 	public Import()
@@ -2331,10 +2330,11 @@ public class Import extends StdCommand
 		return CMath.s_int(str.toString());
 	}
 
+	@SuppressWarnings("unchecked")
 	protected static void readBlocks(
 						   final List<String> buf,
 						   final List<String> areaData,
-						   final List<List<String>> roomData,
+						   final List<Object> roomData,
 						   final List<String> mobData,
 						   final List<String> resetData,
 						   final List<String> objectData,
@@ -2347,7 +2347,7 @@ public class Import extends StdCommand
 	{
 		final List<String> helpsToEat=new ArrayList<String>();
 
-		List wasUsingThisOne=null;
+		List<? extends Object> wasUsingThisOne=null;
 		List<String> useThisOne=null;
 		while(buf.size()>0)
 		{
@@ -2463,7 +2463,8 @@ public class Import extends StdCommand
 				&&(wasUsingThisOne!=null))
 				{
 					final List<String> V=new ArrayList<String>();
-					wasUsingThisOne.add(V);
+					final List<Object> wasV=(List<Object>)wasUsingThisOne;
+					wasV.add(V);
 					useThisOne=V;
 				}
 				else
@@ -2750,13 +2751,14 @@ public class Import extends StdCommand
 		return (roll*dice)+plus;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected static MOB getMOB(final String OfThisID,
 								final Room putInRoom,
 								final Session session,
-								final List mobData,
-								final List mobProgData,
-								final List specialData,
-								final List shopData,
+								final List<?> mobData,
+								final List<?> mobProgData,
+								final List<?> specialData,
+								final List<?> shopData,
 								final Map<String,MOB> areaMOBS,
 								final Map<String,MOB> doneMOBS,
 								final String areaFileName,
@@ -2803,7 +2805,7 @@ public class Import extends StdCommand
 		{
 			List<String> objV=null;
 			if(mobData.get(m) instanceof List)
-				objV=(List)mobData.get(m);
+				objV=(List<String>)mobData.get(m);
 			else
 			if(mobData.get(m) instanceof String)
 			{
@@ -3964,11 +3966,12 @@ public class Import extends StdCommand
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private static Item getItem(final String OfThisID,
 								final Session session,
 								final String areaName,
-								final List objectData,
-								final List objProgData,
+								final List<?> objectData,
+								final List<?> objProgData,
 								final Map<String,Item> areaItems,
 								final Map<String,Item> doneItems,
 								final Map<String,Room> areaRooms,
@@ -3995,7 +3998,7 @@ public class Import extends StdCommand
 		{
 			List<String> objV=null;
 			if(objectData.get(o) instanceof List)
-				objV=(List)objectData.get(o);
+				objV=(List<String>)objectData.get(o);
 			else
 			if(objectData.get(o) instanceof String)
 			{
@@ -5140,6 +5143,7 @@ public class Import extends StdCommand
 		return str.trim();
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean executeImporter(final MOB mob, List<Object> commands) throws java.io.IOException
 	{
 		boolean prompt=true;
@@ -5229,22 +5233,22 @@ public class Import extends StdCommand
 			}
 		}
 
-		final List mobData=new ArrayList(); // outside the for loop -- why?
-		final List objectData=new ArrayList(); // outside the for loop -- why?
+		final List<String> mobData=new ArrayList<String>(); // outside the for loop -- why?
+		final List<String> objectData=new ArrayList<String>(); // outside the for loop -- why?
 
 		multiArea=commands.size()>1;
 		final HashSet<String> baseFilesAlreadyDone=new HashSet<String>();
 		while(commands.size()>0)
 		{
 			final Object O=commands.remove(0);
-			final List areaData=new ArrayList();
-			final List roomData=new ArrayList();
+			final List<String> areaData=new ArrayList<String>();
+			final List<Object> roomData=new ArrayList<Object>();
 			final List<String> resetData=new ArrayList<String>();
-			final List mobProgData=new ArrayList();
-			final List roomProgData=new ArrayList();
-			final List objProgData=new ArrayList();
-			final List shopData=new ArrayList();
-			final List specialData=new ArrayList();
+			final List<String> mobProgData=new ArrayList<String>();
+			final List<String> roomProgData=new ArrayList<String>();
+			final List<String> objProgData=new ArrayList<String>();
+			final List<String> shopData=new ArrayList<String>();
+			final List<String> specialData=new ArrayList<String>();
 			final List<Room> newRooms=new ArrayList<Room>();
 			final List<String> socialData=new ArrayList<String>();
 			List<String> reLinkTable=null;
@@ -5261,8 +5265,8 @@ public class Import extends StdCommand
 			else
 			if(O instanceof Pair)
 			{
-				areaFileName=((Pair)O).first.toString();
-				buf=(StringBuffer)((Pair)O).second;
+				areaFileName=((Pair<Object,StringBuffer>)O).first.toString();
+				buf=((Pair<Object,StringBuffer>)O).second;
 			}
 			else
 			if(O instanceof java.util.zip.ZipInputStream)
@@ -6198,7 +6202,7 @@ public class Import extends StdCommand
 					List<String> roomV=null;
 					if(roomData.get(r) instanceof List)
 					{
-						roomV=(List)roomData.get(r);
+						roomV=(List<String>)roomData.get(r);
 						if((roomV.size()==1)
 						&&(roomV.get(1).toUpperCase().trim().startsWith("#ROOM")))
 							continue;
@@ -6517,7 +6521,7 @@ public class Import extends StdCommand
 				{
 					List<String> roomV=null;
 					if(roomData.get(r) instanceof List)
-						roomV=(List)roomData.get(r);
+						roomV=(List<String>)roomData.get(r);
 					else
 						continue;
 					final String roomID=eatLine(roomV);

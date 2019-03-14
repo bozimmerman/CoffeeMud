@@ -49,7 +49,6 @@ import java.util.*;
  *
  */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public final class IMC2Driver extends Thread
 {
 	Socket sa;
@@ -78,13 +77,13 @@ public final class IMC2Driver extends Thread
 	call_out c_thread=null;
 	call_in c_thread2=null;
 
-	Hashtable<String,REMOTEINFO> muds = new Hashtable();
-	Hashtable channels = new Hashtable();
-	public Hashtable chanhist = new Hashtable();
-	Hashtable replies = new Hashtable();
+	Hashtable<String,REMOTEINFO> muds = new Hashtable<String,REMOTEINFO>();
+	Hashtable<String,IMC_CHANNEL> channels = new Hashtable<String,IMC_CHANNEL>();
+	public Hashtable<String,List<String>> chanhist = new Hashtable<String,List<String>>();
+	Hashtable<String,String> replies = new Hashtable<String,String>();
 
-	public Hashtable chan_conf = new Hashtable();
-	public Hashtable chan_mask = new Hashtable();
+	public Hashtable<String,String> chan_conf = new Hashtable<String,String>();
+	public Hashtable<String,String> chan_mask = new Hashtable<String,String>();
 
 	BufferedReader in;
 	DataOutputStream out;
@@ -157,11 +156,11 @@ public final class IMC2Driver extends Thread
 	final public List<CMChannel> rebuildChannelMap()
 	{
 		final List<CMChannel> map=new Vector<CMChannel>(chan_conf.size());
-		for(final Enumeration e=chan_conf.keys();e.hasMoreElements();)
+		for(final Enumeration<String> e=chan_conf.keys();e.hasMoreElements();)
 		{
-			final String name=(String)e.nextElement();
-			final String mask=(String)chan_mask.get(name);
-			final String imc2Name=(String)chan_conf.get(name);
+			final String name=e.nextElement();
+			final String mask=chan_mask.get(name);
+			final String imc2Name=chan_conf.get(name);
 			final CMChannel chan=CMLib.channels().createNewChannel(name, "", imc2Name, mask, new HashSet<ChannelFlag>(),"","");
 			map.add(chan);
 		}
@@ -701,7 +700,7 @@ public final class IMC2Driver extends Thread
 	final IMC_CHANNEL imc_findchannel( final String name )
 	{
 		if(channels.get(name)!=null)
-			return (IMC_CHANNEL) channels.get(name);
+			return channels.get(name);
 		return null;
 	}
 
@@ -906,11 +905,11 @@ public final class IMC2Driver extends Thread
 //
 	// list of all active call_out's in the game
 	//
-	static LinkedList call_outs = new LinkedList();
+	static LinkedList<Vector<Object>> call_outs = new LinkedList<Vector<Object>>();
 
 	public void imc_register_call_out(final int hbeat, final String function_name, final Object param)
 	{
-		final Vector call_out = new Vector();
+		final Vector<Object> call_out = new Vector<Object>();
 		call_out.add(function_name);
 		call_out.add(Long.valueOf(HeartBeat + hbeat));
 		call_out.add(param);
@@ -927,7 +926,7 @@ public final class IMC2Driver extends Thread
 
 		for (int i = 0; i < call_outs.size(); i++)
 		{
-			final Vector call_out = (Vector) call_outs.get(i);
+			final Vector<Object> call_out = call_outs.get(i);
 			final String fun = (String) call_out.elementAt(0);
 			final long hbeat = ( (Long) call_out.elementAt(1)).longValue();
 			final Object param = call_out.elementAt(2);
@@ -1159,12 +1158,12 @@ public final class IMC2Driver extends Thread
 
 	public REMOTEINFO getIMC2Mud(final String named)
 	{
-		final Hashtable l=query_muds();
+		final Hashtable<String,REMOTEINFO> l=query_muds();
 		if(l.containsKey(named))
-			return (REMOTEINFO)l.get(named);
-		for(final Enumeration e=l.elements();e.hasMoreElements();)
+			return l.get(named);
+		for(final Enumeration<REMOTEINFO> e=l.elements();e.hasMoreElements();)
 		{
-			final REMOTEINFO m=(REMOTEINFO)e.nextElement();
+			final REMOTEINFO m=e.nextElement();
 			if(m.name.equalsIgnoreCase(named))
 				return m;
 		}
@@ -1226,9 +1225,9 @@ public final class IMC2Driver extends Thread
 			}
 		}
 
-		LinkedList l = (LinkedList) chanhist.get(channel);
+		List<String> l = chanhist.get(channel);
 		if(l == null)
-			l = new LinkedList();
+			l = new LinkedList<String>();
 
 		l.add(str);
 		chanhist.put(channel, l);
@@ -1307,10 +1306,10 @@ public final class IMC2Driver extends Thread
 		if(channame==null)
 			return "";
 		channame=channame.toUpperCase();
-		for(final Enumeration e=chan_conf.keys();e.hasMoreElements();)
+		for(final Enumeration<String> e=chan_conf.keys();e.hasMoreElements();)
 		{
-			final String key=(String)e.nextElement();
-			final String val=((String)chan_conf.get(key)).toUpperCase();
+			final String key=e.nextElement();
+			final String val=chan_conf.get(key).toUpperCase();
 			if(val.equals(channame))
 				return key;
 			if(val.endsWith(":"+channame))
@@ -1324,9 +1323,9 @@ public final class IMC2Driver extends Thread
 	public IMC_CHANNEL getAnIMC2Channel(String name)
 	{
 		name=name.toUpperCase();
-		for(final Enumeration e=channels.elements();e.hasMoreElements();)
+		for(final Enumeration<IMC_CHANNEL> e=channels.elements();e.hasMoreElements();)
 		{
-			final IMC_CHANNEL c=(IMC_CHANNEL)e.nextElement();
+			final IMC_CHANNEL c=e.nextElement();
 			if(read_channel_name(c.name).equalsIgnoreCase(name))
 				return c;
 		}
@@ -1407,12 +1406,12 @@ public final class IMC2Driver extends Thread
 	   return def;
 	}
 
-	final public Hashtable query_channels()
+	final public Hashtable<String,IMC_CHANNEL> query_channels()
 	{
 		return channels;
 	}
 
-	final public Hashtable query_muds()
+	final public Hashtable<String,REMOTEINFO> query_muds()
 	{
 		return muds;
 	}
@@ -1893,7 +1892,7 @@ public final class IMC2Driver extends Thread
 			return "IMC is not active.";
 
 		setdata(out, from);
-		final String to = (String) replies.get(from.name);
+		final String to = replies.get(from.name);
 		if (to == null)
 			return "Noone to reply to.";
 
@@ -1950,9 +1949,9 @@ public final class IMC2Driver extends Thread
 			"] " +
 			" " + text + "^?";
 
-		LinkedList l = (LinkedList) chanhist.get(chan);
+		List<String> l =  chanhist.get(chan);
 		if (l == null)
-			l = new LinkedList();
+			l = new LinkedList<String>();
 
 		l.add(chatText);
 		chanhist.put(chan, l);

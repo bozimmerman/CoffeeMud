@@ -38,7 +38,6 @@ import java.util.Map;
  *
  * Modified in 2013 to cut down on thread use
  */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ServerThread implements Tickable
 {
 	private java.util.Date				boot_time		= null;
@@ -210,8 +209,8 @@ public class ServerThread implements Tickable
 
 		synchronized( this )
 		{
-			objects = new Hashtable(1000, 100);
-			interactives = new Hashtable(50, 20);
+			objects = new Hashtable<String,ServerObject>(1000, 100);
+			interactives = new Hashtable<String,ServerUser>(50, 20);
 		}
 
 		running = true;

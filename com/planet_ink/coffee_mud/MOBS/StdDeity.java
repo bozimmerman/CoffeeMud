@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdDeity extends StdMOB implements Deity
 {
 	@Override
@@ -65,16 +64,16 @@ public class StdDeity extends StdMOB implements Deity
 	protected List<DeityPower>		blessings			= new SVector<DeityPower>();
 	protected List<DeityPower>		curses				= new SVector<DeityPower>();
 	protected List<Ability>			powers				= new SVector<Ability>();
-	protected Map<String, boolean[]>trigBlessingParts	= new SHashtable();
-	protected Map<String, Long>		trigBlessingTimes	= new SHashtable();
-	protected Map<String, boolean[]>trigPowerParts		= new SHashtable();
-	protected Map<String, Long>		trigPowerTimes		= new SHashtable();
-	protected Map<String, boolean[]>trigCurseParts		= new SHashtable();
-	protected Map<String, Long>		trigCurseTimes		= new SHashtable();
-	protected Map<String, boolean[]>trigServiceParts	= new SHashtable();
-	protected Map<String, Long>		trigServiceTimes	= new SHashtable();
+	protected Map<String, boolean[]>trigBlessingParts	= new SHashtable<String, boolean[]>();
+	protected Map<String, Long>		trigBlessingTimes	= new SHashtable<String, Long>();
+	protected Map<String, boolean[]>trigPowerParts		= new SHashtable<String, boolean[]>();
+	protected Map<String, Long>		trigPowerTimes		= new SHashtable<String, Long>();
+	protected Map<String, boolean[]>trigCurseParts		= new SHashtable<String, boolean[]>();
+	protected Map<String, Long>		trigCurseTimes		= new SHashtable<String, Long>();
+	protected Map<String, boolean[]>trigServiceParts	= new SHashtable<String, boolean[]>();
+	protected Map<String, Long>		trigServiceTimes	= new SHashtable<String, Long>();
 	protected List<WorshipService>	services			= new SVector<WorshipService>();
-	protected List<MOB>				waitingFor			= new SLinkedList();
+	protected List<MOB>				waitingFor			= new SLinkedList<MOB>();
 
 	public StdDeity()
 	{
@@ -1272,9 +1271,9 @@ public class StdDeity extends StdMOB implements Deity
 		&&((--rebukeCheckDown)<0))
 		{
 			rebukeCheckDown=10;
-			for(final Enumeration p=CMLib.players().players();p.hasMoreElements();)
+			for(final Enumeration<MOB> p=CMLib.players().players();p.hasMoreElements();)
 			{
-				final MOB M=(MOB)p.nextElement();
+				final MOB M=p.nextElement();
 				if((lastBlackmark>0)
 				&&(blacklist!=null)
 				&&(blacklist!=M)
@@ -1414,7 +1413,7 @@ public class StdDeity extends StdMOB implements Deity
 			{
 				if(waitingFor.size()>0)
 				{
-					executeMOBList=new ArrayList(waitingFor);
+					executeMOBList=new ArrayList<MOB>(waitingFor);
 					waitingFor.clear();
 				}
 				else

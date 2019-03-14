@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdThinGrid extends StdRoom implements GridLocale
 {
 	@Override
@@ -45,8 +44,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 
 	protected String[] 			descriptions=new String[0];
 	protected String[] 			displayTexts=new String[0];
-	protected SVector<CrossExit>
-								gridexits=new SVector<CrossExit>(1);
+	protected SVector<CrossExit>gridexits=new SVector<CrossExit>(1);
 	protected int 				xsize=5;
 	protected int 				ysize=5;
 	protected int 				yLength=1;
@@ -143,7 +141,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		rooms.clear();
 		descriptions=new String[0];
 		displayTexts=new String[0];
-		gridexits=new SVector(1);
+		gridexits=new SVector<CrossExit>(1);
 	}
 
 	@Override

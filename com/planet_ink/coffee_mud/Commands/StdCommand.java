@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdCommand implements Command
 {
 	protected final String	ID;
@@ -110,6 +109,7 @@ public class StdCommand implements Command
 		return Boolean.valueOf(execute(mob,commands,metaFlags));
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public boolean checkArguments(final Class[][] fmt, final Object... args)
 	{
 		for (final Class[] element : fmt)

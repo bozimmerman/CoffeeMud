@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Druid extends StdCharClass
 {
 	@Override
@@ -373,6 +372,7 @@ public class Druid extends StdCharClass
 		return raceRequiredList;
 	}
 
+	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
@@ -447,6 +447,7 @@ public class Druid extends StdCharClass
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void doAnimalFreeingCheck(final CharClass C, final Environmental host, final CMMsg msg)
 	{
 		if((msg.source()!=host)
@@ -480,7 +481,7 @@ public class Druid extends StdCharClass
 				stuff[2]=new Vector<String>();
 			}
 			if((((Integer)stuff[1]).intValue()<19)
-			&&(!((List)stuff[2]).contains(""+msg.source())))
+			&&(!((List<String>)stuff[2]).contains(""+msg.source())))
 			{
 				final ExtAbility A=(ExtAbility)CMClass.getAbility("ExtAbility");
 				A.setAbilityID("Peace_Between_"+msg.source().Name()+"_and_"+host.Name());

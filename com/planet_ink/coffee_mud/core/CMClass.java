@@ -49,7 +49,6 @@ import org.mozilla.javascript.optimizer.*;
  * simply returned as the template, in cases where the objects are shared).
  * @author Bo Zimmerman
  */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CMClass extends ClassLoader
 {
 	protected static boolean						debugging		= false;
@@ -553,21 +552,22 @@ public class CMClass extends ClassLoader
 	 * @param type the type of object to count
 	 * @return the number stored
 	 */
+	@SuppressWarnings("unchecked")
 	public static final int numPrototypes(final CMObjectType type)
 	{
 		final Object o = getClassSet(type);
 		if(o instanceof Set)
-			return ((Set)o).size();
+			return ((Set<CMObject>)o).size();
 		if(o instanceof List)
-			return ((List)o).size();
+			return ((List<CMObject>)o).size();
 		if(o instanceof Collection)
-			return ((Collection)o).size();
+			return ((Collection<CMObject>)o).size();
 		if(o instanceof HashSet)
-			return ((HashSet)o).size();
+			return ((HashSet<CMObject>)o).size();
 		if(o instanceof Hashtable)
-			return ((Hashtable)o).size();
+			return ((Hashtable<String,CMObject>)o).size();
 		if(o instanceof Vector)
-			return ((Vector)o).size();
+			return ((Vector<CMObject>)o).size();
 		return 0;
 	}
 
@@ -1329,6 +1329,7 @@ public class CMClass extends ClassLoader
 	 * @param O the specific prototype class to remove
 	 * @return true
 	 */
+	@SuppressWarnings("unchecked")
 	public static final boolean delClass(final CMObjectType type, final CMObject O)
 	{
 		if(O==null)
@@ -1341,16 +1342,16 @@ public class CMClass extends ClassLoader
 		CMClass.lastUpdateTime=System.currentTimeMillis();
 		if(set instanceof List)
 		{
-			((List)set).remove(O);
+			((List<CMObject>)set).remove(O);
 			if(set instanceof XVector)
-				((XVector)set).sort();
+				((XVector<CMObject>)set).sort();
 		}
 		else
 		if(set instanceof Hashtable)
-			((Hashtable)set).remove(O.ID().trim());
+			((Hashtable<String,CMObject>)set).remove(O.ID().trim());
 		else
 		if(set instanceof HashSet)
-			((HashSet)set).remove(O);
+			((HashSet<CMObject>)set).remove(O);
 		else
 			return false;
 		if(set==c().commands)
@@ -1365,6 +1366,7 @@ public class CMClass extends ClassLoader
 	 * @param O the specific prototype class to add
 	 * @return true
 	 */
+	@SuppressWarnings("unchecked")
 	public static final boolean addClass(final CMObjectType type, final CMObject O)
 	{
 		final Object set=getClassSet(type);
@@ -1373,16 +1375,16 @@ public class CMClass extends ClassLoader
 		CMClass.lastUpdateTime=System.currentTimeMillis();
 		if(set instanceof List)
 		{
-			((List)set).add(O);
+			((List<CMObject>)set).add(O);
 			if(set instanceof XVector)
-				((XVector)set).sort();
+				((XVector<CMObject>)set).sort();
 		}
 		else
 		if(set instanceof Hashtable)
-			((Hashtable)set).put(O.ID().trim().toUpperCase(), O);
+			((Hashtable<String,CMObject>)set).put(O.ID().trim().toUpperCase(), O);
 		else
 		if(set instanceof HashSet)
-			((HashSet)set).add(O);
+			((HashSet<CMObject>)set).add(O);
 		else
 			return false;
 		if(set==c().commands)
@@ -1464,6 +1466,7 @@ public class CMClass extends ClassLoader
 	 * @param quiet true to not report errors to the log, false otherwise
 	 * @return true if the prototype was loaded
 	 */
+	@SuppressWarnings("unchecked")
 	public static final boolean loadClass(final CMObjectType classType, final String path, final boolean quiet)
 	{
 		debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.CLASSLOADER);
@@ -1478,7 +1481,7 @@ public class CMClass extends ClassLoader
 		if(set instanceof List)
 		{
 			if(set instanceof XVector)
-				((XVector)set).sort();
+				((XVector<CMObject>)set).sort();
 			if(set==c().commands)
 				reloadCommandWords();
 			if(set==c().libraries)
@@ -1585,6 +1588,7 @@ public class CMClass extends ClassLoader
 	 * @param calledThis the ID of the cmobjecttype
 	 * @return the base prototype of the given type, by id
 	 */
+	@SuppressWarnings("unchecked")
 	public static final CMObject getPrototypeByID(final CMObjectType type, final String calledThis)
 	{
 		final Object set=getClassSet(type);
@@ -1592,10 +1596,10 @@ public class CMClass extends ClassLoader
 			return null;
 		CMObject thisItem;
 		if(set instanceof List)
-			thisItem=getGlobal((List)set,calledThis);
+			thisItem=getGlobal((List<CMObject>)set,calledThis);
 		else
 		if(set instanceof Map)
-			thisItem=getGlobal((Map)set,calledThis);
+			thisItem=getGlobal((Map<String,CMObject>)set,calledThis);
 		else
 			return null;
 		return thisItem;
@@ -2116,6 +2120,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Initializes ALL the internal classes in these sets.  All of them.  All types.
 	 */
+	@SuppressWarnings("unchecked")
 	public final void intializeClasses()
 	{
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
@@ -2125,10 +2130,10 @@ public class CMClass extends ClassLoader
 			{
 				final Object set = CMClass.getClassSet(o);
 				if(set instanceof List)
-					initializeClassGroup((List)set);
+					initializeClassGroup((List<CMObject>)set);
 				else
 				if(set instanceof Hashtable)
-					initializeClassGroup((Map)set);
+					initializeClassGroup((Map<String,CMObject>)set);
 			}
 		}
 	}
@@ -2142,6 +2147,7 @@ public class CMClass extends ClassLoader
 	 * @param ancestor the full class name of an acester/interface
 	 * @return a hashtable mapping the IDs of the classes with a prototype instance of the classes
 	 */
+	@SuppressWarnings("rawtypes")
 	public static Hashtable loadHashListToObj(final String defaultPath, String requestedPathList, final String ancestor)
 	{
 		final Hashtable<String,Object> h=new Hashtable<String,Object>();
@@ -2167,6 +2173,7 @@ public class CMClass extends ClassLoader
 	 * @param ancestor the full class name of an acester/interface
 	 * @return a vector of all the  prototype instance of the classes
 	 */
+	@SuppressWarnings("rawtypes")
 	public static final XVector loadVectorListToObj(final String defaultPath, String requestedPathList, final String ancestor)
 	{
 		final Vector<Object> v=new Vector<Object>();
@@ -2286,6 +2293,7 @@ public class CMClass extends ClassLoader
 	 * @param quiet true to not report errors, false otherwise
 	 * @return true if classes were loaded successfully, false otherwise
 	 */
+	@SuppressWarnings("unchecked")
 	public static final boolean loadListToObj(final Object collection, final String filePath, final Class<?> ancestorCl, final boolean quiet)
 	{
 		final CMClass loader=new CMClass();
@@ -2354,7 +2362,7 @@ public class CMClass extends ClassLoader
 						itemName=itemName.substring(x+1);
 					if(collection instanceof Map)
 					{
-						final Map H=(Map)collection;
+						final Map<String,Object> H=(Map<String,Object>)collection;
 						if(H.containsKey(itemName.trim().toUpperCase()))
 							H.remove(itemName.trim().toUpperCase());
 						H.put(itemName.trim().toUpperCase(),O);
@@ -2362,7 +2370,7 @@ public class CMClass extends ClassLoader
 					else
 					if(collection instanceof List)
 					{
-						final List V=(List)collection;
+						final List<Object> V=(List<Object>)collection;
 						boolean doNotAdd=false;
 						for(int v=0;v<V.size();v++)
 						{
@@ -2379,7 +2387,7 @@ public class CMClass extends ClassLoader
 					else
 					if(collection instanceof Collection)
 					{
-						final Collection V=(Collection)collection;
+						final Collection<Object> V=(Collection<Object>)collection;
 						for(final Object o : V)
 						{
 							if(getSimpleClassName(o).equals(itemName))
@@ -2726,7 +2734,7 @@ public class CMClass extends ClassLoader
 			Class<?> mainClass=null;
 			if(implementsClasses.size()>0)
 			{
-				final Class[] CS=new Class[implementsClasses.size()];
+				final Class<?>[] CS=new Class[implementsClasses.size()];
 				for(int i=0;i<implementsClasses.size();i++)
 					CS[i]=implementsClasses.elementAt(i);
 				cc.setTargetImplements(CS);
@@ -2794,6 +2802,7 @@ public class CMClass extends ClassLoader
 	 * @param page the coffeemud.ini file
 	 * @return true if success happened, and false otherwise
 	 */
+	@SuppressWarnings("unchecked")
 	public static final boolean loadAllCoffeeMudClasses(final CMProps page)
 	{
 		CMClass c=c();
@@ -2842,9 +2851,9 @@ public class CMClass extends ClassLoader
 			{
 				c.webMacros=CMClass.loadHashListToObj(prefix+"WebMacros/", "%DEFAULT%",CMObjectType.WEBMACRO.ancestorName);
 				Log.sysOut(Thread.currentThread().getName(),"WebMacros loaded  : "+c.webMacros.size());
-				for(final Enumeration e=c.webMacros.keys();e.hasMoreElements();)
+				for(final Enumeration<String> e=c.webMacros.keys();e.hasMoreElements();)
 				{
-					final String key=(String)e.nextElement();
+					final String key=e.nextElement();
 					if(key.length()>longestWebMacro)
 						longestWebMacro=key.length();
 				}

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Charlatan extends StdCharClass
 {
 	@Override
@@ -106,7 +105,7 @@ public class Charlatan extends StdCharClass
 		return disallowedWeapons;
 	}
 
-	protected volatile WeakReference<Ability> invokable = new WeakReference(null);
+	protected volatile WeakReference<Ability> invokable = new WeakReference<Ability>(null);
 
 	public Charlatan()
 	{
@@ -230,6 +229,7 @@ public class Charlatan extends StdCharClass
 		return raceRequiredList;
 	}
 
+	@SuppressWarnings("unchecked")
 	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
 		new Pair<String,Integer>("Charisma",Integer.valueOf(9)),
 		new Pair<String,Integer>("Wisdom",Integer.valueOf(9))
@@ -288,7 +288,7 @@ public class Charlatan extends StdCharClass
 			&&(myChar.isMine(msg.tool()))
 			&&(myChar.charStats().getClassLevel(this)>=30)
 			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())<1))
-				invokable=new WeakReference(msg.tool());
+				invokable=new WeakReference<Ability>((Ability)msg.tool());
 		}
 		super.executeMsg(host,msg);
 		Bard.visitationBonusMessage(host,msg);

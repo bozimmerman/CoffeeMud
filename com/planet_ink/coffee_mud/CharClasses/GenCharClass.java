@@ -40,7 +40,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class GenCharClass extends StdCharClass
 {
 	protected String		ID						= "GenCharClass";
@@ -80,11 +79,13 @@ public class GenCharClass extends StdCharClass
 	protected CharClass 	eventBuddy				= null;
 	protected int 			disableFlags			= 0;
 	protected String 		startingMoney			= "";
+	@SuppressWarnings("unchecked")
 	protected List<String>[]securityGroups			= new List[0];
 	protected Integer[] 	securityGroupLevels		= {};
 	protected String 		helpEntry 				= "";
 
 	//protected Vector<Item> outfitChoices=null; from stdcharclass -- but don't forget them!
+	@SuppressWarnings("unchecked")
 	private Pair<String,Integer>[] 			   minimumStatRequirements	= new Pair[0];
 	protected Map<Integer,CMSecurity.SecGroup> securityGroupCache		= new Hashtable<Integer,CMSecurity.SecGroup>();
 
@@ -345,9 +346,9 @@ public class GenCharClass extends StdCharClass
 		if((disallowedWeaponClasses(null)!=null)&&(disallowedWeaponClasses(null).size()>0))
 		{
 			str.append(L("The following weapon types may not be used: "));
-			for(final Iterator i=disallowedWeaponClasses(null).iterator();i.hasNext();)
+			for(final Iterator<Integer> i=disallowedWeaponClasses(null).iterator();i.hasNext();)
 			{
-				final Integer I=(Integer)i.next();
+				final Integer I=i.next();
 				str.append(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[I.intValue()])+" ");
 			}
 			str.append(".  ");
@@ -355,9 +356,9 @@ public class GenCharClass extends StdCharClass
 		if((requiredWeaponMaterials()!=null)&&(requiredWeaponMaterials().size()>0))
 		{
 			str.append(L("Requires using weapons made of the following materials: "));
-			for(final Iterator i=requiredWeaponMaterials().iterator();i.hasNext();)
+			for(final Iterator<Integer> i=requiredWeaponMaterials().iterator();i.hasNext();)
 			{
-				final Integer I=(Integer)i.next();
+				final Integer I=i.next();
 				str.append(CMStrings.capitalizeAndLower(CMLib.materials().getMaterialDesc(I.intValue()))+" ");
 			}
 			str.append(".  ");
@@ -621,9 +622,9 @@ public class GenCharClass extends StdCharClass
 		else
 		{
 			str.append("<NOWEAPS>");
-			for(final Iterator i=disallowedWeaponSet.iterator();i.hasNext();)
+			for(final Iterator<Integer> i=disallowedWeaponSet.iterator();i.hasNext();)
 			{
-				final Integer I=(Integer)i.next();
+				final Integer I=i.next();
 				str.append(CMLib.xml().convertXMLtoTag("WCLASS",""+I.intValue()));
 			}
 			str.append("</NOWEAPS>");
@@ -633,9 +634,9 @@ public class GenCharClass extends StdCharClass
 		else
 		{
 			str.append("<NOWMATS>");
-			for(final Iterator i=requiredWeaponMaterials.iterator();i.hasNext();)
+			for(final Iterator<Integer> i=requiredWeaponMaterials.iterator();i.hasNext();)
 			{
-				final Integer I=(Integer)i.next();
+				final Integer I=i.next();
 				str.append(CMLib.xml().convertXMLtoTag("WMAT",""+I.intValue()));
 			}
 			str.append("</NOWMATS>");
@@ -672,6 +673,7 @@ public class GenCharClass extends StdCharClass
 		return str.toString();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setClassParms(final String parms)
 	{
@@ -1134,6 +1136,7 @@ public class GenCharClass extends StdCharClass
 
 	protected String[] tempables=new String[9];
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setStat(String code, final String val)
 	{

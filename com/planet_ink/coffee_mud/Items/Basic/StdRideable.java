@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdRideable extends StdContainer implements Rideable
 {
 	@Override
@@ -182,7 +181,7 @@ public class StdRideable extends StdContainer implements Rideable
 	protected void cloneFix(final Item E)
 	{
 		super.cloneFix(E);
-		riders=new SVector();
+		riders=new SVector<Rider>();
 	}
 
 	@Override

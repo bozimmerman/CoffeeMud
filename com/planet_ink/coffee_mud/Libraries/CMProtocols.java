@@ -563,13 +563,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return pre+"^<IMAGE '"+fixedFilenames[1]+"' URL=\""+fixedFilenames[0]+"\" "+parms+"^>^N"+post;
 	}
 
-	@SuppressWarnings({"unchecked","rawtypes"})
+	@SuppressWarnings("unchecked")
 	public String getHashedMXPImage(final String key)
 	{
-		Map<String,String> H=(Map)Resources.getResource("MXP_IMAGES");
+		Map<String,String> H=(Map<String,String>)Resources.getResource("MXP_IMAGES");
 		if(H==null)
 			getDefaultMXPImage(null);
-		H=(Map)Resources.getResource("MXP_IMAGES");
+		H=(Map<String,String>)Resources.getResource("MXP_IMAGES");
 		if(H==null)
 			return "";
 		return getHashedMXPImage(H,key);
@@ -596,13 +596,14 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return s;
 	}
 
-	@Override @SuppressWarnings({"unchecked","rawtypes"})
+	@Override
 	public String getDefaultMXPImage(final Object O)
 	{
 		if((CMProps.getVar(Str.MXPIMAGEPATH).length()==0)
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.MXP)))
 			return "";
-		Map<String,String> H=(Map)Resources.getResource("PARSED: mxp_images.ini");
+		@SuppressWarnings("unchecked")
+		Map<String,String> H=(Map<String,String>)Resources.getResource("PARSED: mxp_images.ini");
 		if(H==null)
 		{
 			H=new Hashtable<String,String>();

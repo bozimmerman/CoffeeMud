@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdAbility implements Ability
 {
 	@Override
@@ -778,16 +777,17 @@ public class StdAbility implements Ability
 		return false;
 	}
 
-	protected MOB getTarget(final MOB mob, final List commands, final Environmental givenTarget)
+	protected MOB getTarget(final MOB mob, final List<String> commands, final Environmental givenTarget)
 	{
 		return getTarget(mob,commands,givenTarget,false,false);
 	}
 
-	protected MOB getTarget(final MOB mob, final List commands, final Environmental givenTarget, final boolean quiet, final boolean alreadyAffOk)
+	protected MOB getTarget(final MOB mob, final List<String> commands, final Environmental givenTarget, final boolean quiet, final boolean alreadyAffOk)
 	{
 		String targetName=CMParms.combine(commands,0);
 		MOB target=null;
-		if((givenTarget!=null)&&(givenTarget instanceof MOB))
+		if((givenTarget!=null)
+		&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
 		if(targetName.length()==0)
@@ -1378,6 +1378,7 @@ public class StdAbility implements Ability
 
 	protected Map<String, int[]> getHardOverrideManaCache()
 	{
+		@SuppressWarnings("unchecked")
 		Map<String,int[]> hardOverrideCache	= (Map<String,int[]>)Resources.getResource("SYSTEM_ABLEUSAGE_HARD_OVERRIDE_CACHE");
 		if(hardOverrideCache == null)
 		{
@@ -1679,7 +1680,7 @@ public class StdAbility implements Ability
 		&&(CMLib.flags().isInTheGame((MOB)givenTarget,true)))
 		{
 			if(h==null)
-				h=new SHashSet();
+				h=new SHashSet<MOB>();
 			if(!h.contains(givenTarget))
 				h.add((MOB)givenTarget);
 		}
@@ -2321,9 +2322,9 @@ public class StdAbility implements Ability
 	@Override
 	public boolean appropriateToMyFactions(final MOB mob)
 	{
-		for(final Enumeration e=mob.factions();e.hasMoreElements();)
+		for(final Enumeration<String> e=mob.factions();e.hasMoreElements();)
 		{
-			final String factionID=(String)e.nextElement();
+			final String factionID=e.nextElement();
 			final Faction F=CMLib.factions().getFaction(factionID);
 			if((F!=null)&&F.hasUsage(this))
 				return F.canUse(mob,this);

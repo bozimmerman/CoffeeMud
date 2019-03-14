@@ -47,7 +47,7 @@ public class HolidayNext extends StdWebMacro
 		return true;
 	}
 
-	@SuppressWarnings({"unchecked","rawtypes"})
+	@SuppressWarnings("unchecked")
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
@@ -105,9 +105,9 @@ public class HolidayNext extends StdWebMacro
 			}
 		}
 		String lastID="";
-		for(final Enumeration q=holidays.elements();q.hasMoreElements();)
+		for(final Enumeration<String> q=holidays.elements();q.hasMoreElements();)
 		{
-			final String holidayID=(String)q.nextElement();
+			final String holidayID=q.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!holidayID.equalsIgnoreCase(lastID))))
 			{
 				httpReq.addFakeUrlParameter("HOLIDAY",holidayID);

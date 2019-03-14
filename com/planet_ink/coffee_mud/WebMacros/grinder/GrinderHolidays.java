@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderHolidays
 {
 	public String name()
@@ -59,6 +58,7 @@ public class GrinderHolidays
 		return newVAL;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static String createModifyHoliday(final HTTPRequest httpReq, final java.util.Map<String,String> parms, final String holidayName)
 	{
 		int index=CMLib.quests().getHolidayIndex(holidayName);
@@ -143,10 +143,10 @@ public class GrinderHolidays
 		{
 			int areaNum=2;
 			boolean reallyAll=true;
-			for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
+			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();areaNum++)
 			{
 				if(areaCodes.contains("AREAGROUP"+areaNum))
-					areaGroup.append(" \"" + ((Area)e.nextElement()).Name()+"\"");
+					areaGroup.append(" \"" + e.nextElement().Name()+"\"");
 				else
 				{
 					reallyAll=false;

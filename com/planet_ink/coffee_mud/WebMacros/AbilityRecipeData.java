@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class AbilityRecipeData extends StdWebMacro
 {
 	@Override
@@ -151,7 +150,8 @@ public class AbilityRecipeData extends StdWebMacro
 							if(recipeData.columns().get(c) instanceof List)
 								editRow.addElement(recipeData.columns().get(c),"");
 						}
-						final List<String> o=(List)editRow.elementAt(cfIndex,1);
+						@SuppressWarnings("unchecked")
+						final List<String> o=(List<String>)editRow.elementAt(cfIndex,1);
 						classFieldEditor = CMLib.ableParms().getEditors().get(o.get(0).toString());
 					}
 					else

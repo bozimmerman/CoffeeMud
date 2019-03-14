@@ -36,7 +36,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class CMAbleMap extends StdLibrary implements AbilityMapper
 {
 	@Override
@@ -193,7 +192,8 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		final Map<String, AbilityMapping> allAbleMap=completeAbleMap.get("All");
 		if((!addAll)||(allAbleMap==null))
 			return new IteratorEnumeration<AbilityMapping>(ableMap.values().iterator());
-		final Iterator[] iters=new Iterator[]
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		final Iterator<AbilityMapping>[] iters=new Iterator[]
 		{
 			ableMap.values().iterator(),
 			new FilteredIterator(allAbleMap.values().iterator(),
@@ -210,7 +210,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				}
 			)
 		};
-		return new IteratorEnumeration(new MultiIterator(iters));
+		return new IteratorEnumeration<AbilityMapping>(new MultiIterator<AbilityMapping>(iters));
 	}
 
 	@Override
@@ -334,10 +334,11 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			}
 			else
 			{
-				SVector V=(SVector)allows.get(s);
+				@SuppressWarnings("unchecked")
+				SVector<String> V=(SVector<String>)allows.get(s);
 				if(V==null)
 				{
-					V=new SVector();
+					V=new SVector<String>();
 					allows.put(s,V);
 				}
 				if(!V.contains(ID))
@@ -359,10 +360,11 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				}
 				else
 				{
-					SVector V=(SVector)allows.get(s);
+					@SuppressWarnings("unchecked")
+					SVector<String> V=(SVector<String>)allows.get(s);
 					if(V==null)
 					{
-						V=new SVector();
+						V=new SVector<String>();
 						allows.put(s,V);
 					}
 					if(!V.contains(ID))
@@ -454,6 +456,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			for(int r=0;r<remove.size();r++)
 				allows.remove(remove.elementAt(r));
 		}
+		@SuppressWarnings("unchecked")
 		final SVector<String> set = (SVector<String>)allows.get(ableID);
 		return (set==null)?new SVector<String>(1).iterator():set.iterator();
 	}
@@ -890,9 +893,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			if(ableMap.containsKey(abilityID))
 				return true;
 		}
-		for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+		for(final Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
 		{
-			final CharClass C=(CharClass)e.nextElement();
+			final CharClass C=e.nextElement();
 			if(completeAbleMap.containsKey(C.ID()))
 			{
 				final Map<String, AbilityMapping> ableMap=completeAbleMap.get(C.ID());
@@ -1333,6 +1336,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			}
 			else
 			{
+				@SuppressWarnings("unchecked")
 				final List<String> orset=(List<String>)V.elementAt(v,1);
 				for(int o=orset.size()-1;o>=0;o--)
 				{
@@ -1388,11 +1392,12 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				prof=(Integer)preReqs.elementAt(p,2);
 				if(preReqs.elementAt(p,1) instanceof List)
 				{
-					final List V=(List)preReqs.elementAt(p,1);
+					@SuppressWarnings({ "unchecked", "rawtypes" })
+					final List<String> V=(List)preReqs.elementAt(p,1);
 					names.append("(One of: ");
 					for(int v=0;v<V.size();v++)
 					{
-						final Ability A=CMClass.getAbility((String)V.get(v));
+						final Ability A=CMClass.getAbility(V.get(v));
 						if(A!=null)
 						{
 							names.append("'"+A.name()+"'");
@@ -1982,9 +1987,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	public boolean getSecretSkill(final String abilityID)
 	{
 		boolean secretFound=false;
-		for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+		for(final Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
 		{
-			final String charClass=((CharClass)e.nextElement()).ID();
+			final String charClass=e.nextElement().ID();
 			if(completeAbleMap.containsKey(charClass)&&(!charClass.equals("Archon")))
 			{
 				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(charClass);
@@ -1996,9 +2001,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				}
 			}
 		}
-		for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+		for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 		{
-			final String ID=((Race)e.nextElement()).ID();
+			final String ID=e.nextElement().ID();
 			if(completeAbleMap.containsKey(ID))
 			{
 				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(ID);
@@ -2065,9 +2070,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	public Integer[] getCostOverrides(final String abilityID)
 	{
 		Integer[] found=null;
-		for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+		for(final Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
 		{
-			final String charClass=((CharClass)e.nextElement()).ID();
+			final String charClass=e.nextElement().ID();
 			if(completeAbleMap.containsKey(charClass)&&(!charClass.equals("Archon")))
 			{
 				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(charClass);
@@ -2075,9 +2080,9 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 					found=ableMap.get(abilityID).costOverrides();
 			}
 		}
-		for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+		for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 		{
-			final String ID=((Race)e.nextElement()).ID();
+			final String ID=e.nextElement().ID();
 			if(completeAbleMap.containsKey(ID))
 			{
 				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(ID);
@@ -2277,13 +2282,14 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		};
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache)
 	{
 		Map<String, Map<String,AbilityMapping>> bothMaps;
 		if(cache!=null)
 		{
-			bothMaps=(Map)cache.get("ALLQUALIFIES_MAP");
+			bothMaps=(Map<String, Map<String,AbilityMapping>>)cache.get("ALLQUALIFIES_MAP");
 			if(bothMaps!=null)
 				return bothMaps;
 		}

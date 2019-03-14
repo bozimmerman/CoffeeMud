@@ -44,7 +44,6 @@ import java.io.ObjectOutputStream;
  * limitations under the License.
  *
  */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class IMudPeer implements PersistentPeer
 {
 	Object myobj=null;
@@ -56,6 +55,7 @@ public class IMudPeer implements PersistentPeer
 	 * back to the object for which this peer exists.
 	 * @exception com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistenceException if an error occurs during restore
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void restore() throws PersistenceException
 	{
@@ -75,7 +75,7 @@ public class IMudPeer implements PersistentPeer
 					((Intermud)myobj).password=((Integer)newobj).intValue();
 				newobj=in.readObject();
 				if(newobj instanceof Hashtable)
-					((Intermud)myobj).banned=(Hashtable)newobj;
+					((Intermud)myobj).banned=(Hashtable<String,String>)newobj;
 				newobj=in.readObject();
 				if(newobj instanceof ChannelList)
 					((Intermud)myobj).channels=(ChannelList)newobj;
@@ -84,7 +84,7 @@ public class IMudPeer implements PersistentPeer
 					((Intermud)myobj).muds=(MudList)newobj;
 				newobj=in.readObject();
 				if(newobj instanceof List)
-				((Intermud)myobj).name_servers=(List)newobj;
+				((Intermud)myobj).name_servers=(List<NameServer>)newobj;
 			}
 			catch(final Exception e)
 			{

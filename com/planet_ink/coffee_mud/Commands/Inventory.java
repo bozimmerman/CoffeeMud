@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Inventory extends StdCommand
 {
 	public Inventory()
@@ -53,13 +52,13 @@ public class Inventory extends StdCommand
 		public boolean foundAndSeen=false;
 		public boolean foundButUnseen=false;
 		public Vector<Item> viewItems=new Vector<Item>();
-		public Hashtable<String,Vector<Coins>> moneyItems=new Hashtable<String,Vector<Coins>>();
+		public Hashtable<String,List<Coins>> moneyItems=new Hashtable<String,List<Coins>>();
 	}
 
 	public static InventoryList fetchInventory(final MOB seer, final MOB mob)
 	{
 		final InventoryList lst = new InventoryList();
-		Vector<Coins> coinsV=null;
+		List<Coins> coinsV=null;
 		int insertAt=-1;
 		CMLib.beanCounter().getTotalAbsoluteNativeValue(mob);
 		for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
@@ -92,7 +91,7 @@ public class Inventory extends StdCommand
 					if(insertAt>=coinsV.size())
 						coinsV.add((Coins)thisItem);
 					else
-						coinsV.insertElementAt((Coins)thisItem,insertAt);
+						coinsV.add(insertAt,(Coins)thisItem);
 				}
 			}
 		}
@@ -106,10 +105,10 @@ public class Inventory extends StdCommand
 		{
 			msg.append(L("\n\r^HMoney:^N\n\r"));
 			Item I=null;
-			for(final Enumeration e=list.moneyItems.keys();e.hasMoreElements();)
+			for(final Enumeration<String> e=list.moneyItems.keys();e.hasMoreElements();)
 			{
-				final String key=(String)e.nextElement();
-				final Vector<Coins> V=list.moneyItems.get(key);
+				final String key=e.nextElement();
+				final List<Coins> V=list.moneyItems.get(key);
 				double totalValue=0.0;
 				for(int v=0;v<V.size();v++)
 				{
@@ -148,6 +147,7 @@ public class Inventory extends StdCommand
 			mask=mask.trim().toUpperCase();
 			if(!mask.startsWith("all"))
 				mask="all "+mask;
+			@SuppressWarnings("unchecked")
 			final Vector<Item> V=(Vector<Item>)list.viewItems.clone();
 			list.viewItems.clear();
 			Item I=(V.size()>0)?(Item)V.get(0):null;

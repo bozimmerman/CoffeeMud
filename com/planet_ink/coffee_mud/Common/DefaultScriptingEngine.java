@@ -45,7 +45,6 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class DefaultScriptingEngine implements ScriptingEngine
 {
 	@Override
@@ -177,7 +176,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(key.startsWith("SCRIPTVAR-"))
 			{
 				str.append("<"+key.substring(10)+">");
-				final Hashtable<String,String> H=(Hashtable)resources._getResource(key);
+				@SuppressWarnings("unchecked")
+				final Hashtable<String,String> H=(Hashtable<String,String>)resources._getResource(key);
 				for(final Enumeration<String> e=H.keys();e.hasMoreElements();)
 				{
 					final String vn=e.nextElement();
@@ -507,13 +507,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return rawHost;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean isVar(final String host, String var)
 	{
 		if(host.equalsIgnoreCase("*"))
 		{
 			String val=null;
-			Hashtable H=null;
+			Hashtable<String,String> H=null;
 			String key=null;
 			var=var.toUpperCase();
 			for(final Iterator<String> k = resources._findResourceKeys("SCRIPTVAR-");k.hasNext();)
@@ -521,18 +522,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				key=k.next();
 				if(key.startsWith("SCRIPTVAR-"))
 				{
-					H=(Hashtable)resources._getResource(key);
-					val=(String)H.get(var);
+					H=(Hashtable<String,String>)resources._getResource(key);
+					val=H.get(var);
 					if(val!=null)
 						return true;
 				}
 			}
 			return false;
 		}
-		final Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+host);
+		final Hashtable<String,String> H=(Hashtable<String,String>)resources._getResource("SCRIPTVAR-"+host);
 		String val=null;
 		if(H!=null)
-			val=(String)H.get(var.toUpperCase());
+			val=H.get(var.toUpperCase());
 		return (val!=null);
 	}
 
@@ -564,6 +565,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return getVar(Resources.instance(),host,var,"");
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getVar(final Resources resources, final String host, String var, final String defaultVal)
 	{
 		if(host.equalsIgnoreCase("*"))
@@ -575,7 +577,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				return str.toString();
 			}
 			String val=null;
-			Hashtable H=null;
+			Hashtable<String,String> H=null;
 			String key=null;
 			var=var.toUpperCase();
 			for(final Iterator<String> k = resources._findResourceKeys("SCRIPTVAR-");k.hasNext();)
@@ -583,8 +585,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				key=k.next();
 				if(key.startsWith("SCRIPTVAR-"))
 				{
-					H=(Hashtable)resources._getResource(key);
-					val=(String)H.get(var);
+					H=(Hashtable<String,String>)resources._getResource(key);
+					val=H.get(var);
 					if(val!=null)
 						return val;
 				}
@@ -592,10 +594,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return defaultVal;
 		}
 		Resources.instance();
-		final Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+host);
+		final Hashtable<String,String> H=(Hashtable<String,String>)resources._getResource("SCRIPTVAR-"+host);
 		String val=null;
 		if(H!=null)
-			val=(String)H.get(var.toUpperCase());
+			val=H.get(var.toUpperCase());
 		else
 		if((defaultQuestName!=null)&&(defaultQuestName.length()>0))
 		{
@@ -927,10 +929,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 	}
 
-	protected List<PhysicalAgent> loadMobsFromFile(final Environmental scripted, String filename)
+	protected List<MOB> loadMobsFromFile(final Environmental scripted, String filename)
 	{
 		filename=filename.trim();
-		List monsters=(List)Resources.getResource("RANDOMMONSTERS-"+filename);
+		@SuppressWarnings("unchecked")
+		List<MOB> monsters=(List<MOB>)Resources.getResource("RANDOMMONSTERS-"+filename);
 		if(monsters!=null)
 			return monsters;
 		final StringBuffer buf=getResourceFileData(filename, true);
@@ -947,7 +950,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return null;
 		}
 		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
-		monsters=new Vector<PhysicalAgent>();
+		monsters=new Vector<MOB>();
 		if(xml!=null)
 		{
 			if(CMLib.xml().getContentsFromPieces(xml,"MOBS")!=null)
@@ -984,10 +987,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return monsters;
 	}
 
-	protected List<PhysicalAgent> generateMobsFromFile(final Environmental scripted, String filename, final String tagName, final String rest)
+	protected List<MOB> generateMobsFromFile(final Environmental scripted, String filename, final String tagName, final String rest)
 	{
 		filename=filename.trim();
-		List monsters=(List)Resources.getResource("RANDOMGENMONSTERS-"+filename+"."+tagName+"-"+rest);
+		@SuppressWarnings("unchecked")
+		List<MOB> monsters=(List<MOB>)Resources.getResource("RANDOMGENMONSTERS-"+filename+"."+tagName+"-"+rest);
 		if(monsters!=null)
 			return monsters;
 		final StringBuffer buf=getResourceFileData(filename, true);
@@ -1004,7 +1008,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return null;
 		}
 		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
-		monsters=new Vector<PhysicalAgent>();
+		monsters=new Vector<MOB>();
 		if(xml!=null)
 		{
 			if(CMLib.xml().getContentsFromPieces(xml,"AREADATA")!=null)
@@ -1064,10 +1068,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return monsters;
 	}
 
-	protected List<PhysicalAgent> loadItemsFromFile(final Environmental scripted, String filename)
+	protected List<Item> loadItemsFromFile(final Environmental scripted, String filename)
 	{
 		filename=filename.trim();
-		List items=(List)Resources.getResource("RANDOMITEMS-"+filename);
+		@SuppressWarnings("unchecked")
+		List<Item> items=(List<Item>)Resources.getResource("RANDOMITEMS-"+filename);
 		if(items!=null)
 			return items;
 		final StringBuffer buf=getResourceFileData(filename, true);
@@ -1083,7 +1088,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		items=new Vector<PhysicalAgent>();
+		items=new Vector<Item>();
 		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
 		if(xml!=null)
 		{
@@ -1121,10 +1126,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return items;
 	}
 
-	protected List<PhysicalAgent> generateItemsFromFile(final Environmental scripted, String filename, final String tagName, final String rest)
+	protected List<Item> generateItemsFromFile(final Environmental scripted, String filename, final String tagName, final String rest)
 	{
 		filename=filename.trim();
-		List items=(List)Resources.getResource("RANDOMGENITEMS-"+filename+"."+tagName+"-"+rest);
+		@SuppressWarnings("unchecked")
+		List<Item> items=(List<Item>)Resources.getResource("RANDOMGENITEMS-"+filename+"."+tagName+"-"+rest);
 		if(items!=null)
 			return items;
 		final StringBuffer buf=getResourceFileData(filename, true);
@@ -1140,7 +1146,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
-		items=new Vector<PhysicalAgent>();
+		items=new Vector<Item>();
 		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf.toString());
 		if(xml!=null)
 		{
@@ -1201,6 +1207,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return items;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Environmental findSomethingCalledThis(final String thisName, final MOB meMOB, final Room imHere, List<Environmental> OBJS, final boolean mob)
 	{
 		if(thisName.length()==0)
@@ -1211,7 +1218,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			try
 			{
-				List V=null;
+				List<? extends Environmental> V=null;
 				if(mob)
 					V=loadMobsFromFile(null,CMParms.getCleanBit(thisName,1));
 				else
@@ -1220,12 +1227,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					final String name=CMParms.getPastBitClean(thisName,1);
 					if(name.equalsIgnoreCase("ALL"))
-						OBJS=V;
+						OBJS=(List<Environmental>)V;
 					else
 					if(name.equalsIgnoreCase("ANY"))
 					{
 						if(V.size()>0)
-							areaThing=(Environmental)V.get(CMLib.dice().roll(1,V.size(),-1));
+							areaThing=V.get(CMLib.dice().roll(1,V.size(),-1));
 					}
 					else
 					{
@@ -1244,7 +1251,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			try
 			{
-				List V=null;
+				List<? extends Environmental> V=null;
 				final String filename=CMParms.getCleanBit(thisName, 1);
 				final String name=CMParms.getCleanBit(thisName, 2);
 				final String tagName=CMParms.getCleanBit(thisName, 3);
@@ -1256,12 +1263,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(V!=null)
 				{
 					if(name.equalsIgnoreCase("ALL"))
-						OBJS=V;
+						OBJS=(List<Environmental>)V;
 					else
 					if(name.equalsIgnoreCase("ANY"))
 					{
 						if(V.size()>0)
-							areaThing=(Environmental)V.get(CMLib.dice().roll(1,V.size(),-1));
+							areaThing=V.get(CMLib.dice().roll(1,V.size(),-1));
 					}
 					else
 					{
@@ -1381,7 +1388,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 				if((O instanceof List)&&(str.length()>3)&&(str.charAt(2)=='.'))
 				{
-					final List V=(List)O;
+					final List<?> V=(List<?>)O;
 					String back=str.substring(2);
 					if(back.charAt(1)=='$')
 						back=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,back);
@@ -1524,7 +1531,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	private String makeNamedString(final Object O)
 	{
 		if(O instanceof List)
-			return makeParsableString((List)O);
+			return makeParsableString((List<?>)O);
 		else
 		if(O instanceof Room)
 			return ((Room)O).displayText(null);
@@ -1537,7 +1544,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return "";
 	}
 
-	private String makeParsableString(final List V)
+	private String makeParsableString(final List<?> V)
 	{
 		if((V==null)||(V.size()==0))
 			return "";
@@ -1915,12 +1922,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String key=k.next();
 				if(key.startsWith("SCRIPTVAR-"))
 				{
-					final Hashtable H=(Hashtable)resources._getResource(key);
+					@SuppressWarnings("unchecked")
+					final Hashtable<String,?> H=(Hashtable<String,?>)resources._getResource(key);
 					if(varname.equals("*"))
 					{
-						for(final Enumeration e=H.keys();e.hasMoreElements();)
+						for(final Enumeration<String> e=H.keys();e.hasMoreElements();)
 						{
-							final String vn=(String)e.nextElement();
+							final String vn=e.nextElement();
 							set.addElement(key.substring(10),vn);
 						}
 					}
@@ -1931,12 +1939,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		else
 		{
-			final Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+mobname);
+			@SuppressWarnings("unchecked")
+			final Hashtable<String,?> H=(Hashtable<String,?>)resources._getResource("SCRIPTVAR-"+mobname);
 			if(varname.equals("*"))
 			{
-				for(final Enumeration e=H.keys();e.hasMoreElements();)
+				for(final Enumeration<String> e=H.keys();e.hasMoreElements();)
 				{
-					final String vn=(String)e.nextElement();
+					final String vn=e.nextElement();
 					set.addElement(mobname,vn);
 				}
 			}
@@ -2202,7 +2211,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			final String name=(String)V.elementAt(v,1);
 			key=((String)V.elementAt(v,2)).toUpperCase();
-			Hashtable<String,String> H=(Hashtable)resources._getResource("SCRIPTVAR-"+name);
+			@SuppressWarnings("unchecked")
+			Hashtable<String,String> H=(Hashtable<String,String>)resources._getResource("SCRIPTVAR-"+name);
 			if((H==null)&&(defaultQuestName!=null)&&(defaultQuestName.length()>0))
 			{
 				final MOB M=CMLib.players().getPlayerAllHosts(name);
@@ -3721,9 +3731,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				try
 				{
-					for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 					{
-						final Room R=(Room)e.nextElement();
+						final Room R=e.nextElement();
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							final MOB M=R.fetchInhabitant(m);
@@ -3756,9 +3766,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				int num=0;
 				Room R=null;
 				MOB M=null;
-				for(final Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
+				for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
-					R=(Room)e.nextElement();
+					R=e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						M=R.fetchInhabitant(m);
@@ -3779,9 +3789,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				int num=0;
 				try
 				{
-					for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 					{
-						final Room R=(Room)e.nextElement();
+						final Room R=e.nextElement();
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							final MOB M=R.fetchInhabitant(m);
@@ -6566,9 +6576,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				try
 				{
-					for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 					{
-						final Room R=(Room)e.nextElement();
+						final Room R=e.nextElement();
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							final MOB M=R.fetchInhabitant(m);
@@ -6597,9 +6607,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
 				Room R=null;
 				MOB M=null;
-				for(final Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
+				for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
-					R=(Room)e.nextElement();
+					R=e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						M=R.fetchInhabitant(m);
@@ -6618,9 +6628,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				MOB M=null;
 				try
 				{
-					for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 					{
-						R=(Room)e.nextElement();
+						R=e.nextElement();
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							M=R.fetchInhabitant(m);
@@ -9691,8 +9701,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final Area A=CMLib.map().findArea(next);
 						if(A!=null)
 						{
-							for(final Enumeration e=A.getProperMap();e.hasMoreElements();)
-								CMLib.threads().rejuv((Room)e.nextElement(),tickID);
+							for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+								CMLib.threads().rejuv(e.nextElement(),tickID);
 						}
 						else
 							logError(scripted,"MPREJUV","Syntax","Unknown location: "+next+" for "+scripted.Name());
@@ -9905,9 +9915,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(parm.equalsIgnoreCase("world"))
 				{
 					lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
-					for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 					{
-						final Room R=(Room)e.nextElement();
+						final Room R=e.nextElement();
 						if(R.numInhabitants()>0)
 							R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
 					}
@@ -9916,9 +9926,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(parm.equalsIgnoreCase("area")&&(lastKnownLocation!=null))
 				{
 					lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
-					for(final Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
+					for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 					{
-						final Room R=(Room)e.nextElement();
+						final Room R=e.nextElement();
 						if(R.numInhabitants()>0)
 							R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
 					}
@@ -9930,9 +9940,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(CMLib.map().findArea(parm)!=null)
 				{
 					lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
-					for(final Enumeration e=CMLib.map().findArea(parm).getMetroMap();e.hasMoreElements();)
+					for(final Enumeration<Room> e=CMLib.map().findArea(parm).getMetroMap();e.hasMoreElements();)
 					{
-						final Room R=(Room)e.nextElement();
+						final Room R=e.nextElement();
 						if(R.numInhabitants()>0)
 							R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]));
 					}
@@ -10659,9 +10669,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								}
 								if((findOne==null)&&(A!=null))
 								{
-									for(final Enumeration r=A.getProperMap();r.hasMoreElements();)
+									for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 									{
-										final Room R=(Room)r.nextElement();
+										final Room R=r.nextElement();
 										findOne=R.fetchInhabitant(mobName);
 										if((findOne!=null)&&(findOne!=monster))
 											V.add(findOne);
@@ -10876,11 +10886,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						which=(String)V.elementAt(0,1);
 						arg2=((String)V.elementAt(0,2)).toUpperCase();
-						final Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+which);
+						@SuppressWarnings("unchecked")
+						final Hashtable<String,String> H=(Hashtable<String,String>)resources._getResource("SCRIPTVAR-"+which);
 						String val="";
 						if(H!=null)
 						{
-							val=(String)H.get(arg2);
+							val=H.get(arg2);
 							if(val==null)
 								val="";
 						}
@@ -11591,7 +11602,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLE)||CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTING))
 			return empty;
-		List scripts=(List)Resources.getResource(getScriptResourceKey());
+		@SuppressWarnings("unchecked")
+		List<DVector> scripts=(List<DVector>)Resources.getResource(getScriptResourceKey());
 		if(scripts==null)
 		{
 			String scr=getScript();

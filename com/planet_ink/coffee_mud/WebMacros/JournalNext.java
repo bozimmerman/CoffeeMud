@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class JournalNext extends StdWebMacro
 {
 	@Override
@@ -56,15 +55,16 @@ public class JournalNext extends StdWebMacro
 			return "";
 		}
 
+		@SuppressWarnings("unchecked")
 		List<String> journals=(List<String>)httpReq.getRequestObjects().get("JOURNALLIST");
 		if(journals==null)
 		{
 			final List<String> rawJournals=CMLib.database().DBReadJournals();
 			if(!rawJournals.contains("SYSTEM_NEWS"))
 				rawJournals.add("SYSTEM_NEWS");
-			for(final Enumeration e=CMLib.journals().commandJournals();e.hasMoreElements();)
+			for(final Enumeration<CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 			{
-				final CommandJournal CJ=(CommandJournal)e.nextElement();
+				final CommandJournal CJ=e.nextElement();
 				if((!rawJournals.contains(CJ.NAME().toUpperCase()))
 				&&(!rawJournals.contains(CJ.JOURNAL_NAME())))
 					rawJournals.add(CJ.JOURNAL_NAME());

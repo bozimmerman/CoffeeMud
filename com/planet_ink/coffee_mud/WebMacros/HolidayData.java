@@ -43,7 +43,7 @@ public class HolidayData extends StdWebMacro
 		return "HolidayData";
 	}
 
-	@SuppressWarnings({"unchecked","rawtypes"})
+	@SuppressWarnings("unchecked")
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
@@ -157,10 +157,10 @@ public class HolidayData extends StdWebMacro
 							int areaNum=2;
 							boolean reallyAll=true;
 
-							for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
+							for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();areaNum++)
 							{
 								if(areaCodes.contains("AREAGROUP"+areaNum))
-									areaNames.add(((Area)e.nextElement()).Name().toUpperCase());
+									areaNames.add(e.nextElement().Name().toUpperCase());
 								else
 								{
 									e.nextElement();
@@ -177,9 +177,9 @@ public class HolidayData extends StdWebMacro
 					str.append("<OPTION VALUE=\"AREAGROUP0\" "+(areaNames.contains("ALL")?"SELECTED":"")+">All");
 					str.append("<OPTION VALUE=\"AREAGROUP1\" "+(areaNames.contains("ANY")?"SELECTED":"")+">Any (Random)");
 					int areaNum=2;
-					for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
+					for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();areaNum++)
 					{
-						final Area A=(Area)e.nextElement();
+						final Area A=e.nextElement();
 						str.append("<OPTION VALUE=\"AREAGROUP"+areaNum+"\" "+(areaNames.contains(A.Name().toUpperCase())?"SELECTED":"")+">"+A.Name());
 					}
 				}

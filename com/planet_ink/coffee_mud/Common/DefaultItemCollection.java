@@ -142,9 +142,10 @@ public class DefaultItemCollection implements ItemCollection, CMCommon
 		return items;
 	}
 
-	@Override @SuppressWarnings({"unchecked","rawtypes"})
+	@SuppressWarnings("unchecked")
 	public List<Item> findItems(final String itemID)
 	{
+		@SuppressWarnings("rawtypes")
 		List items=CMLib.english().fetchEnvironmentals(contents,itemID,true);
 		if(items.size()==0)
 			items=CMLib.english().fetchEnvironmentals(contents,itemID, false);

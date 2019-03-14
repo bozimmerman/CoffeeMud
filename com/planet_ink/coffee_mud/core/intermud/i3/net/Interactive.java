@@ -40,7 +40,6 @@ import java.util.Vector;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-@SuppressWarnings({"unchecked","rawtypes"})
 public abstract class Interactive implements ServerUser
 {
 	/**
@@ -134,8 +133,9 @@ public abstract class Interactive implements ServerUser
 	private PrintStream 	output_stream;
 	private String  		password;
 	private String  		real_name;
-	private final Vector  	redirect;
 	private Socket  		socket;
+
+	private final Vector<Input>	redirect;
 
 	/**
 	 * Constructs a new interactive object and initializes
@@ -148,7 +148,7 @@ public abstract class Interactive implements ServerUser
 		input_thread = null;
 		object_id = null;
 		output_stream = null;
-		redirect = new Vector();
+		redirect = new Vector<Input>();
 	}
 
 	/**
@@ -207,7 +207,7 @@ public abstract class Interactive implements ServerUser
 
 		if( redirect.size() > 0 )
 		{
-			ob = (Input)redirect.elementAt(0);
+			ob = redirect.elementAt(0);
 			redirect.removeElementAt(0);
 		}
 		if( ob != null )
@@ -631,7 +631,6 @@ public abstract class Interactive implements ServerUser
  * @version 1.0
  * @see com.planet_ink.coffee_mud.core.intermud.i3.net.Interactive
  */
-@SuppressWarnings({"unchecked","rawtypes"})
 class InputThread implements Runnable
 {
 	private final List<String>  			input_buffer;
@@ -654,7 +653,7 @@ class InputThread implements Runnable
 	public InputThread(final Socket s, final Interactive u) throws java.io.IOException {
 		destructed = false;
 		user = u;
-		input_buffer = new Vector(10);
+		input_buffer = new Vector<String>(10);
 		stream = new java.io.BufferedReader(new java.io.InputStreamReader(s.getInputStream()));
 		thread = new Thread(Thread.currentThread().getThreadGroup(),this,"I3_"+Thread.currentThread().getName());
 		thread.setDaemon(true);

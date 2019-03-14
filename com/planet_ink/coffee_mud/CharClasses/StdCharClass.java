@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdCharClass implements CharClass
 {
 	@Override
@@ -242,6 +241,7 @@ public class StdCharClass implements CharClass
 		return raceRequiredList;
 	}
 
+	@SuppressWarnings("unchecked")
 	private final Pair<String, Integer>[]	minimumStatRequirements	= new Pair[0];
 
 	@Override
@@ -931,8 +931,8 @@ public class StdCharClass implements CharClass
 				&&(!alreadyAble.containsKey(A.ID())))
 					giveMobAbility(mob,A,100,"",true,false);
 			}
-			for(final Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)
-				mob.addExpertise(((ExpertiseLibrary.ExpertiseDefinition)e.nextElement()).ID());
+			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+				mob.addExpertise((e.nextElement()).ID());
 			alreadyAble.clear();
 			alreadyAff.clear();
 		}

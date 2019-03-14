@@ -80,7 +80,8 @@ public class Paladin_Courage extends PaladinSkill
 			&&((invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false))
 			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
-				if(!appropriateToMyFactions(invoker))
+				if((!appropriateToMyFactions(invoker))
+				||(!appropriateToMyFactions((MOB)msg.target())))
 					return true;
 
 				final String str1=msg.tool().ID().toUpperCase();

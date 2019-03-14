@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdClanCommonItem extends StdClanItem
 {
 	@Override
@@ -41,7 +40,7 @@ public class StdClanCommonItem extends StdClanItem
 		return "StdClanCommonItem";
 	}
 
-	private static final Map<Area,DVector> needChart = new Hashtable<Area,DVector>();
+	private static final Map<Area,PairList<MOB,List<Integer>>> needChart = new Hashtable<Area,PairList<MOB,List<Integer>>>();
 
 	protected int 		workDown=0;
 	protected boolean 	glows=false;
@@ -249,10 +248,10 @@ public class StdClanCommonItem extends StdClanItem
 					&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_BUILDINGSKILL)
 					&&(CMLib.flags().isMobile(M)))
 					{
-						final DVector DV=needChart.get(M.location().getArea());
+						final PairList<MOB,List<Integer>> DV=needChart.get(M.location().getArea());
 						if(DV!=null)
 						{
-							List needs=null;
+							List<Integer> needs=null;
 							MOB M2=null;
 							boolean getToWork=false;
 							if(A.ID().equalsIgnoreCase("FireBuilding"))
@@ -263,8 +262,8 @@ public class StdClanCommonItem extends StdClanItem
 									try
 									{
 										final int rand=i;
-										needs=(List)DV.elementAt(rand,2);
-										M2=(MOB)DV.elementAt(rand,1);
+										needs=DV.get(rand).second;
+										M2=DV.get(rand).first;
 									}
 									catch (final Exception e)
 									{
@@ -293,7 +292,7 @@ public class StdClanCommonItem extends StdClanItem
 									return true;
 								}
 							}
-							List rsc=null;
+							List<Item> rsc=null;
 							// if I have the stuff on hand.
 							if(!getToWork)
 							for(int i=DV.size()-1;i>=0;i--)
@@ -301,11 +300,11 @@ public class StdClanCommonItem extends StdClanItem
 								try
 								{
 									final int rand=i;
-									needs=(List)DV.elementAt(rand,2);
-									M2=(MOB)DV.elementAt(rand,1);
+									needs=DV.get(rand).second;
+									M2=DV.get(rand).first;
 									if(!CMLib.flags().isInTheGame(M2,true))
 									{
-										DV.removeElementAt(i);
+										DV.remove(i);
 										continue;
 									}
 								}
@@ -321,32 +320,9 @@ public class StdClanCommonItem extends StdClanItem
 									if(rsc.size()>0)
 									{
 										for(int r=0;r<rsc.size();r++)
-											CMLib.commands().postDrop(M,(Environmental)rsc.get(r),false,true,false);
+											CMLib.commands().postDrop(M,rsc.get(r),false,true,false);
 										return true;
 									}
-								}
-							}
-							if(!getToWork)
-							for(int i=0;i<DV.size();i++)
-							{
-								try
-								{
-									final int rand=CMLib.dice().roll(1,DV.size(),-1);
-									needs=(List)DV.elementAt(rand,2);
-									M2=(MOB)DV.elementAt(rand,1);
-								}
-								catch(final Exception e)
-								{
-									continue;
-								}
-								if((needs!=null)
-								&&(M2!=null)
-								&&(M.location()!=M2.location()))
-								{
-									rsc=resourceHere(M,needs);
-									if((rsc.size()>0)
-									&&(trackTo(M,M2)))
-										return true;
 								}
 							}
 							if(!getToWork)
@@ -356,8 +332,33 @@ public class StdClanCommonItem extends StdClanItem
 									try
 									{
 										final int rand=CMLib.dice().roll(1,DV.size(),-1);
-										needs=(List)DV.elementAt(rand,2);
-										M2=(MOB)DV.elementAt(rand,1);
+										needs=DV.get(rand).second;
+										M2=DV.get(rand).first;
+									}
+									catch(final Exception e)
+									{
+										continue;
+									}
+									if((needs!=null)
+									&&(M2!=null)
+									&&(M.location()!=M2.location()))
+									{
+										rsc=resourceHere(M,needs);
+										if((rsc.size()>0)
+										&&(trackTo(M,M2)))
+											return true;
+									}
+								}
+							}
+							if(!getToWork)
+							{
+								for(int i=0;i<DV.size();i++)
+								{
+									try
+									{
+										final int rand=CMLib.dice().roll(1,DV.size(),-1);
+										needs=DV.get(rand).second;
+										M2=DV.get(rand).first;
 									}
 									catch(final Exception e)
 									{
@@ -371,7 +372,7 @@ public class StdClanCommonItem extends StdClanItem
 										if(rsc.size()>0)
 										{
 											for(int r=0;r<rsc.size();r++)
-												CMLib.commands().postGet(M,null,(Item)rsc.get(r),false);
+												CMLib.commands().postGet(M,null,rsc.get(r),false);
 											if(trackTo(M,M2))
 												return true;
 										}
@@ -437,25 +438,25 @@ public class StdClanCommonItem extends StdClanItem
 					if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
 					||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_EPICUREAN))
 					{
-						DVector DV=needChart.get(M.location().getArea());
+						PairList<MOB,List<Integer>> DV=needChart.get(M.location().getArea());
 						if(!success)
 						{
 							if(DV==null)
 							{
-								DV=new DVector(2);
+								DV=new PairSVector<MOB,List<Integer>>();
 								needChart.put(M.location().getArea(),DV);
 							}
-							DV.removeElement(M);
+							DV.removeElementFirst(M);
 							final String req=A.accountForYourself();
 							final int reqIndex=req.indexOf(':');
 							if(reqIndex>0)
-								DV.addElement(M,enCode(M,req.substring(reqIndex+1)));
+								DV.add(M,enCode(M,req.substring(reqIndex+1)));
 							else
-								DV.addElement(M,enCode(M,req));
+								DV.add(M,enCode(M,req));
 						}
 						else
 						if(DV!=null)
-							DV.removeElement(M);
+							DV.removeElementFirst(M);
 					}
 				}
 			}

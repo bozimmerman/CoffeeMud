@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Nanny extends StdBehavior
 {
 	@Override
@@ -604,8 +603,9 @@ public class Nanny extends StdBehavior
 		&&(msg.target()==CMLib.map().roomLocation(host)))
 		{
 			final String currency=CMLib.beanCounter().getCurrency(host);
-			final Set H=msg.source().getGroupMembers(new HashSet<MOB>());
-			msg.source().getRideBuddies(H);
+			final Set<PhysicalAgent> H=new HashSet<PhysicalAgent>();
+			H.addAll(msg.source().getGroupMembers(new HashSet<MOB>()));
+			H.addAll(msg.source().getRideBuddies(new HashSet<MOB>()));
 			if(!H.contains(msg.source()))
 				H.add(msg.source());
 			HashSet<Environmental> H2 = null;
@@ -622,8 +622,9 @@ public class Nanny extends StdBehavior
 						final Rideable R = (Rideable)E;
 						for(int r = 0; r<R.numRiders(); r++)
 						{
-							if(!H.contains(R.fetchRider(r)))
-								H.add(R.fetchRider(r));
+							final Rider mR=R.fetchRider(r);
+							if(!H.contains(mR))
+								H.add(mR);
 						}
 					}
 				}

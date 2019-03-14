@@ -41,7 +41,6 @@ import java.io.Serializable;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class IMudInterface implements ImudServices, Serializable
 {
 	public static final long serialVersionUID=0;
@@ -486,13 +485,13 @@ public class IMudInterface implements ImudServices, Serializable
 				if(smob!=null)
 				{
 					final StringBuffer buf=new StringBuffer("\n\rwhois@"+fixColors(wk.sender_mud)+":\n\r");
-					final Vector V=wk.who;
+					final Vector<?> V=wk.who;
 					if(V.size()==0)
 						buf.append("Nobody!");
 					else
 					for(int v=0;v<V.size();v++)
 					{
-						final Vector V2=(Vector)V.elementAt(v);
+						final Vector<?> V2=(Vector<?>)V.elementAt(v);
 						final String nom = fixColors((String)V2.elementAt(0));
 						int idle=0;
 						if(V2.elementAt(1) instanceof Integer)
@@ -513,7 +512,7 @@ public class IMudInterface implements ImudServices, Serializable
 				if(smob!=null)
 				{
 					final StringBuffer buf=new StringBuffer("\n\rListening on "+wk.channel+"@"+fixColors(wk.sender_mud)+":\n\r");
-					final Vector V=wk.who;
+					final Vector<?> V=wk.who;
 					if(V.size()==0)
 						buf.append("Nobody!");
 					else
@@ -589,7 +588,7 @@ public class IMudInterface implements ImudServices, Serializable
 				wkr.type=Packet.WHO_REPLY;
 				wkr.target_name=wk.sender_name;
 				wkr.target_mud=wk.sender_mud;
-				final Vector whoV=new Vector();
+				final Vector<Vector<Object>> whoV=new Vector<Vector<Object>>();
 				for(final Session S : CMLib.sessions().localOnlineIterable())
 				{
 					MOB smob=S.mob();
@@ -600,7 +599,7 @@ public class IMudInterface implements ImudServices, Serializable
 					&&(CMLib.flags().isInTheGame(smob,true))
 					&&(!CMLib.flags().isCloaked(smob)))
 					{
-						final Vector whoV2=new Vector();
+						final Vector<Object> whoV2=new Vector<Object>();
 						whoV2.addElement(smob.name());
 						whoV2.addElement(Integer.valueOf((int)(S.getIdleMillis()/1000)));
 						whoV2.addElement(smob.charStats().displayClassLevel(smob,true));
@@ -654,9 +653,9 @@ public class IMudInterface implements ImudServices, Serializable
 	 * @return an enumeration of channels this mud subscribes to
 	 */
 	@Override
-	public java.util.Enumeration getChannels()
+	public java.util.Enumeration<String> getChannels()
 	{
-		final Vector V=new Vector();
+		final Vector<String> V=new Vector<String>();
 		for(final CMChannel chan : channels)
 			V.addElement(chan.i3name());
 		return V.elements();

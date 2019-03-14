@@ -55,7 +55,6 @@ import java.util.concurrent.TimeUnit;
  * @see com.planet_ink.coffee_mud.core.intermud.i3.persist.PersistentPeer
  */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Intermud implements Runnable, Persistent, Serializable
 {
 	public static final long serialVersionUID=0;
@@ -224,12 +223,13 @@ public class Intermud implements Runnable, Persistent, Serializable
 	public boolean				shutdown=false;
 	public DataInputStream 		input;
 	public int  			   	attempts;
-	public Hashtable		   	banned;
 	public ChannelList  	   	channels;
 	public MudList  		   	muds;
 	public List<NameServer>    	name_servers;
 	public int  			   	password;
 	public NameServer		   	currentRouter;
+
+	public Hashtable<String,String>	banned;
 
 	private Intermud(final ImudServices imud, final PersistentPeer p)
 	{
@@ -243,8 +243,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 		input_thread = null;
 		channels = new ChannelList(-1);
 		muds = new MudList(-1);
-		banned = new Hashtable();
-		name_servers = new Vector();
+		banned = new Hashtable<String,String>();
+		name_servers = new Vector<NameServer>();
 		String s=CMProps.getVar(CMProps.Str.I3ROUTERS);
 		final List<String> V=CMParms.parseCommas(s,true);
 		for(int v=0;v<V.size();v++)
@@ -361,10 +361,11 @@ public class Intermud implements Runnable, Persistent, Serializable
 	}
 
 	// Handles an incoming channel list packet
-	private synchronized void channelList(final Vector packet)
+	@SuppressWarnings("unchecked")
+	private synchronized void channelList(final Vector<?> packet)
 	{
-		final Hashtable list = (Hashtable)packet.elementAt(7);
-		final Enumeration keys = list.keys();
+		final Hashtable<String,Vector<?>> list = (Hashtable<String,Vector<?>>)packet.elementAt(7);
+		final Enumeration<String> keys = list.keys();
 
 		synchronized( channels )
 		{
@@ -374,7 +375,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 				final Channel c = new Channel();
 				Object ob;
 
-				c.channel = (String)keys.nextElement();
+				c.channel = keys.nextElement();
 				ob = list.get(c.channel);
 				if( ob instanceof Integer )
 				{
@@ -382,14 +383,14 @@ public class Intermud implements Runnable, Persistent, Serializable
 				}
 				else
 				{
-					final Vector info = (Vector)ob;
+					final Vector<?> info = (Vector<?>)ob;
 
 					c.owner = (String)info.elementAt(0);
 					if(info.elementAt(1) instanceof Integer)
 						c.type = ((Integer)info.elementAt(1)).intValue();
 					else
 					if(info.elementAt(1) instanceof List)
-						Log.errOut("InterMud","Received unexpected channel-reply: " + CMParms.toListString((List)info.elementAt(1)));
+						Log.errOut("InterMud","Received unexpected channel-reply: " + CMParms.toListString((List<?>)info.elementAt(1)));
 					addChannel(c);
 				}
 			}
@@ -423,7 +424,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 			{
 				if(CMProps.getVar(CMProps.Str.ADMINEMAIL).indexOf('@')<0)
 					Log.errOut("Intermud","Please set ADMINEMAIL in your coffeemud.ini file.");
-				final Vector connectionStatuses=new Vector(name_servers.size());
+				final Vector<String> connectionStatuses=new Vector<String>(name_servers.size());
 				for(int i=0;i<name_servers.size();i++)
 				{
 					currentRouter = name_servers.get(i);
@@ -448,11 +449,11 @@ public class Intermud implements Runnable, Persistent, Serializable
 					input_thread.setDaemon(true);
 					input_thread.setName(("I3Client:"+currentRouter.ip+"@"+currentRouter.port));
 					input_thread.start();
-					final Enumeration e = intermud.getChannels();
+					final Enumeration<String> e = intermud.getChannels();
 
 					while( e.hasMoreElements() )
 					{
-						final String chan = (String)e.nextElement();
+						final String chan = e.nextElement();
 
 						send("({\"channel-listen\",5,\"" + intermud.getMudName() + "\",0,\"" +
 								currentRouter.name + "\",0,\"" + chan + "\",1,})");
@@ -462,7 +463,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 				}
 				if(!connected)
 					for(int e=0;e<connectionStatuses.size();e++)
-						Log.errOut("Intermud",(String)connectionStatuses.elementAt(e));
+						Log.errOut("Intermud",connectionStatuses.elementAt(e));
 			}
 		}
 		catch( final Exception e )
@@ -481,7 +482,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 	}
 
 	// Handles an incoming error packet
-	private synchronized void error(final Vector packet)
+	private synchronized void error(final Vector<?> packet)
 	{
 		final Object target = packet.elementAt(5);
 		final String msg = (String)packet.elementAt(7);
@@ -502,22 +503,23 @@ public class Intermud implements Runnable, Persistent, Serializable
 		}
 	}
 
-	private synchronized void mudlist(final Vector packet)
+	@SuppressWarnings("unchecked")
+	private synchronized void mudlist(final Vector<?> packet)
 	{
-		Hashtable list;
-		Enumeration keys;
+		Hashtable<String,?> list;
+		Enumeration<String> keys;
 
 		synchronized( muds )
 		{
 			muds.setMudListId(((Integer)packet.elementAt(6)).intValue());
-			list = (Hashtable)packet.elementAt(7);
+			list = (Hashtable<String,?>)packet.elementAt(7);
 			keys = list.keys();
 			while( keys.hasMoreElements() )
 			{
 				final I3Mud mud = new I3Mud();
 				Object info;
 
-				mud.mud_name = (String)keys.nextElement();
+				mud.mud_name = keys.nextElement();
 				info = list.get(mud.mud_name);
 				if( info instanceof Integer )
 				{
@@ -525,7 +527,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 				}
 				else
 				{
-					final Vector v = (Vector)info;
+					final Vector<?> v = (Vector<?>)info;
 					int total=0;
 					for(int vi=0;vi<v.size();vi++)
 					{
@@ -603,7 +605,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 
 		while( connected && (!shutdown))
 		{
-			Vector data;
+			Vector<?> data;
 
 			try { Thread.sleep(100); }
 			catch( final InterruptedException e )
@@ -737,7 +739,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 					Log.sysOut("Intermud","Receiving: "+cmd);
 				final Object o=LPCData.getLPCData(cmd);
 				if(o instanceof Vector)
-					data=(Vector)o;
+					data=(Vector<?>)o;
 				else
 				{
 					Log.errOut("InterMud","390-"+o);
@@ -1048,13 +1050,14 @@ public class Intermud implements Runnable, Persistent, Serializable
 	}
 
 	// Handle a startup reply packet
-	private synchronized void startupReply(final Vector packet)
+	@SuppressWarnings("unchecked")
+	private synchronized void startupReply(final Vector<?> packet)
 	{
-		final Vector router_list = (Vector)packet.elementAt(6);
+		final Vector<Vector<?>> router_list = (Vector<Vector<?>>)packet.elementAt(6);
 
 		if( router_list != null )
 		{
-			final Vector router = (Vector)router_list.elementAt(0);
+			final Vector<?> router = router_list.elementAt(0);
 			final NameServer name_server = name_servers.get(0);
 
 			if( !name_server.name.equals(router.elementAt(0)) )

@@ -36,7 +36,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Merge extends StdCommand
 {
 	public Merge()
@@ -85,7 +84,7 @@ public class Merge extends StdCommand
 	protected static boolean tryMerge(final MOB mob,
 									  final Room room,
 									  final Environmental E,
-									  final List things,
+									  final List<?> things,
 									  final List<String> changes,
 									  final List<String> onfields,
 									  final List<String> ignore,
@@ -196,11 +195,11 @@ public class Merge extends StdCommand
 		return didAnything;
 	}
 
-	public void sortEnumeratedList(final Enumeration e, final List<String> allKnownFields, final StringBuffer allFieldsMsg)
+	public void sortEnumeratedList(final Enumeration<? extends Environmental> e, final List<String> allKnownFields, final StringBuffer allFieldsMsg)
 	{
 		for(;e.hasMoreElements();)
 		{
-			final Environmental E=(Environmental)e.nextElement();
+			final Environmental E=e.nextElement();
 			final String[] fields=E.getStatCodes();
 			for(int x=0;x<fields.length;x++)
 			{
@@ -463,9 +462,9 @@ public class Merge extends StdCommand
 			{
 				final Area A=(Area)placesToDo.get(i);
 				placesToDo.removeElement(A);
-				for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 				{
-					final Room R=(Room)r.nextElement();
+					final Room R=r.nextElement();
 					if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.MERGE))
 						placesToDo.add(R);
 				}
@@ -717,7 +716,7 @@ public class Merge extends StdCommand
 		final boolean dbTransact=CMParms.getParmBool(theRest,"DBTRANSACT", false);
 		final String ignore=CMParms.getParmStr(theRest,"IGNORE","");
 		final String maskStr=CMParms.getParmStr(theRest,"MASK","");
-		final Set<String> ignores=new SHashSet(CMParms.parseCommas(ignore.toUpperCase(),true));
+		final Set<String> ignores=new SHashSet<String>(CMParms.parseCommas(ignore.toUpperCase(),true));
 		final MaskingLibrary.CompiledZMask mask=CMLib.masking().maskCompile(maskStr);
 		if(dbClass.length()==0)
 		{

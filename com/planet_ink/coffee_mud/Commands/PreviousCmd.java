@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class PreviousCmd extends StdCommand
 {
 	public PreviousCmd()
@@ -52,7 +51,10 @@ public class PreviousCmd extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			mob.enqueCommand((List)CMParms.copyFlattenList(mob.session().getPreviousCMD()),metaFlags,0);
+			final List<String> cmds = new Vector<String>(commands.size());
+			for(final Object o : CMParms.copyFlattenList(mob.session().getPreviousCMD()))
+				cmds.add(o.toString());
+			mob.enqueCommand(cmds,metaFlags,0);
 		}
 		return false;
 	}

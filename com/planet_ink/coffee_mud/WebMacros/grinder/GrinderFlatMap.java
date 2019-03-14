@@ -36,7 +36,6 @@ import java.net.URLEncoder;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderFlatMap
 {
 	protected List<GrinderRoom>			areaMap		= null;
@@ -70,12 +69,12 @@ public class GrinderFlatMap
 			final RoomnumberSet currentSet=A.getCachedRoomnumbers();
 			String roomID=null;
 			//RoomnumberSet loadRooms=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
-			for(final Enumeration e=A.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
+			for(final Enumeration<String> e=A.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
 			{
 				// this makes sure that, even though this is
 				// an unloaded room, it is ALSO actually needed
 				// for mapping.
-				roomID=(String)e.nextElement();
+				roomID=e.nextElement();
 				if((currentSet==null)||(!currentSet.contains(roomID)))
 				{
 					if(area instanceof GridZones)
@@ -392,6 +391,7 @@ public class GrinderFlatMap
 
 		// now cluster them into a top-level grid.. we'll trim the grid later.
 		// yes, i know there must be a more efficient way...
+		@SuppressWarnings("unchecked")
 		final List<GrinderRoom>[][] grid=new Vector[sets.size()+1][sets.size()+1];
 		final int[] midXY=new int[2];
 		midXY[0]=(int)Math.round(Math.floor((sets.size()+1.0)/2.0));

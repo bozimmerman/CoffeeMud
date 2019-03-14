@@ -36,7 +36,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdRace implements Race
 {
 	@Override
@@ -49,9 +48,11 @@ public class StdRace implements Race
 	protected static final int[] breatheAirArray		= new int[] { RawMaterial.RESOURCE_AIR };
 	protected static final int[] breatheWaterArray		= new int[] { RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER };
 	protected static final int[] breatheAirWaterArray	= new int[] { RawMaterial.RESOURCE_FRESHWATER, RawMaterial.RESOURCE_SALTWATER, RawMaterial.RESOURCE_AIR };
+	@SuppressWarnings("rawtypes")
 	protected static final List empty					= new ReadOnlyVector(1);
 	//  												   an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] 	parts					= {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+	@SuppressWarnings("rawtypes")
 	protected static final SearchIDList emptyIDs = new CMUniqSortSVec(1);
 
 	private final int[]		agingChart				= { 0, 1, 3, 15, 35, 53, 70, 74, 78 };
@@ -1153,7 +1154,7 @@ public class StdRace implements Race
 		}
 		else
 		{
-			finalFinalV = new ChameleonList(finalV,
+			finalFinalV = new ChameleonList<Ability>(finalV,
 			new ChameleonList.Signaler<Ability>(myList)
 			{
 				@Override
@@ -1166,6 +1167,7 @@ public class StdRace implements Race
 					return false;
 				}
 
+				@SuppressWarnings("unchecked")
 				@Override
 				public void rebuild(final ChameleonList<Ability> me)
 				{
@@ -1182,6 +1184,7 @@ public class StdRace implements Race
 		return finalFinalV;
 	}
 
+	@SuppressWarnings("unchecked")
 	public final List<Ability> racialEffectsList(final MOB mob)
 	{
 		if(!CMClass.abilities().hasMoreElements())
@@ -1248,8 +1251,8 @@ public class StdRace implements Race
 			}
 			if((finalV != empty)&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 			{
-				((CMUniqSortSVec)finalV).trimToSize();
-				racialEffectMap.put(level, (CMUniqSortSVec)finalV);
+				((CMUniqSortSVec<Ability>)finalV).trimToSize();
+				racialEffectMap.put(level, (CMUniqSortSVec<Ability>)finalV);
 			}
 		}
 		return finalV;
@@ -1866,6 +1869,7 @@ public class StdRace implements Race
 		return ables;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public SearchIDList<Ability> racialAbilities(final MOB mob)
 	{

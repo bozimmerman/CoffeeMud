@@ -39,7 +39,6 @@ import java.net.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class IMudClient implements I3Interface
 {
 	@Override
@@ -153,7 +152,7 @@ public class IMudClient implements I3Interface
 			wk.type=Packet.WHO_REQUEST;
 			wk.sender_name=mob.Name();
 			wk.target_mud=mudName;
-			wk.who=new Vector();
+			wk.who=new Vector<String>();
 			try
 			{
 				wk.send();
@@ -776,7 +775,7 @@ public class IMudClient implements I3Interface
 			return;
 		if(mob.isMonster())
 			return;
-		final Hashtable l=imc2.query_muds();
+		final Hashtable<String,REMOTEINFO> l=imc2.query_muds();
 		final Vector<REMOTEINFO> V=new Vector<REMOTEINFO>();
 		for(final Enumeration<REMOTEINFO> e=l.elements();e.hasMoreElements();)
 		{
@@ -883,10 +882,10 @@ public class IMudClient implements I3Interface
 		final ChannelList list=Intermud.getAllChannelList();
 		if(list!=null)
 		{
-			final Hashtable l=list.getChannels();
-			for(final Enumeration e=l.elements();e.hasMoreElements();)
+			final Hashtable<String,Channel> l=list.getChannels();
+			for(final Enumeration<Channel> e=l.elements();e.hasMoreElements();)
 			{
-				final Channel c=(Channel)e.nextElement();
+				final Channel c=e.nextElement();
 				if(c.type==0)
 					buf.append("["+CMStrings.padRight(c.channel,20)+"] "+c.owner+"\n\r");
 			}
@@ -902,13 +901,13 @@ public class IMudClient implements I3Interface
 		if(mob.isMonster())
 			return;
 		final StringBuffer buf=new StringBuffer("\n\rIMC2 Channels List:\n\r");
-		final Hashtable channels=imc2.query_channels();
+		final Hashtable<String,IMC_CHANNEL> channels=imc2.query_channels();
 		buf.append(CMStrings.padRight(L("Name"), 22)+CMStrings.padRight(L("Policy"),25)+CMStrings.padRight(L("Owner"),20)+"\n\r");
-		final Enumeration e = channels.keys();
+		final Enumeration<String> e = channels.keys();
 		while (e.hasMoreElements())
 		{
-			final String key = (String) e.nextElement();
-			final IMC_CHANNEL r = (IMC_CHANNEL) channels.get(key);
+			final String key = e.nextElement();
+			final IMC_CHANNEL r = channels.get(key);
 			if (r != null)
 			{
 				String policy = "final public";

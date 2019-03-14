@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdRideable extends StdMOB implements Rideable
 {
 	@Override
@@ -43,7 +42,7 @@ public class StdRideable extends StdMOB implements Rideable
 
 	protected int			rideBasis		= Rideable.RIDEABLE_LAND;
 	protected int			riderCapacity	= 2;
-	protected List<Rider>	riders			= new SVector();
+	protected List<Rider>	riders			= new SVector<Rider>();
 	protected String		putString		= "";
 	protected String		rideString		= "";
 	protected String		stateString		= "";
@@ -66,7 +65,7 @@ public class StdRideable extends StdMOB implements Rideable
 	protected void cloneFix(final MOB E)
 	{
 		super.cloneFix(E);
-		riders=new SVector();
+		riders=new SVector<Rider>();
 	}
 
 	@Override

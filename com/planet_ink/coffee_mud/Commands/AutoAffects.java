@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class AutoAffects extends StdCommand
 {
 	public AutoAffects()
@@ -124,6 +123,7 @@ public class AutoAffects extends StdCommand
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
@@ -151,7 +151,7 @@ public class AutoAffects extends StdCommand
 			else
 			if(args[0] instanceof List)
 			{
-				((List)args[0]).add(getAutoAffects(mob,mob));
+				((List<String>)args[0]).add(getAutoAffects(mob,mob));
 				return Boolean.TRUE;
 			}
 		}

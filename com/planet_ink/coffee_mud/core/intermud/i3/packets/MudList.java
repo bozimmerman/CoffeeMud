@@ -40,7 +40,6 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class MudList implements Serializable
 {
 	public static final long serialVersionUID=0;
@@ -54,7 +53,7 @@ public class MudList implements Serializable
 		super();
 		id = -1;
 		modified = Persistent.MODIFIED;
-		list = new Hashtable();
+		list = new Hashtable<String,I3Mud>();
 	}
 
 	public MudList(final int i)

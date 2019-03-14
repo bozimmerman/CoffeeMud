@@ -33,18 +33,17 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class ChannelList implements Serializable
 {
 	public static final long serialVersionUID=0;
 	private int id;
-	private final Hashtable list;
+	private final Hashtable<String,Channel> list;
 
 	public ChannelList()
 	{
 		super();
 		id = -1;
-		list = new Hashtable(10, 5);
+		list = new Hashtable<String,Channel>(10, 5);
 	}
 
 	public ChannelList(final int i)
@@ -68,7 +67,7 @@ public class ChannelList implements Serializable
 		{
 			return null;
 		}
-		return (Channel)list.get(channel);
+		return list.get(channel);
 	}
 
 	public void removeChannel(final Channel c)
@@ -90,7 +89,7 @@ public class ChannelList implements Serializable
 		id = x;
 	}
 
-	public Hashtable getChannels()
+	public Hashtable<String,Channel> getChannels()
 	{
 		return list;
 	}

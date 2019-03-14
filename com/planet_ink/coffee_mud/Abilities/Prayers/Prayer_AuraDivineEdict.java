@@ -109,7 +109,6 @@ public class Prayer_AuraDivineEdict extends Prayer
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The divine edict aura around <S-NAME> fades."));
 	}
 
-	@SuppressWarnings({"unchecked","rawtypes"})
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -141,7 +140,8 @@ public class Prayer_AuraDivineEdict extends Prayer
 			{
 				final String contextName = msg.source().location().getContextName(msg.target());
 				final Vector<String> V=CMParms.parse("ORDER \""+contextName+"\" "+said);
-				final CMObject O=CMLib.english().findCommand((MOB)msg.target(),(List)V.clone());
+				@SuppressWarnings("unchecked")
+				final CMObject O=CMLib.english().findCommand((MOB)msg.target(),(List<String>)V.clone());
 				if((!((MOB)msg.target()).isMonster())
 				&&(CMClass.classID(O).equalsIgnoreCase("DROP")
 				   ||CMClass.classID(O).equalsIgnoreCase("SELL")
