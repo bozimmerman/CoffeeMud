@@ -108,10 +108,16 @@ public class Dance_Polka extends Dance
 			if(CMLib.flags().isEvil(mob))
 				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around making ugly faces.");
 			else
-			if(!CMLib.flags().isGood(mob))
+			if(CMLib.flags().isChaotic(mob))
 				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around aimlessly.");
 			else
+			if(CMLib.flags().isGood(mob))
 				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around trying to hug everyone.");
+			else
+			if(CMLib.flags().isLawful(mob))
+				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around trying to get a grip on <S-HIMHERSELF>.");
+			else
+				show(mob,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around.");
 
 		}
 		return true;

@@ -203,8 +203,11 @@ public class Ranger extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"PlantLore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_BreatheWater",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_NaturalBalance",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)||CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_NaturalBalance",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)||CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Chant_NaturalOrder",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_WindGust",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_HoldAnimal",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_AnimalCompanion",false);

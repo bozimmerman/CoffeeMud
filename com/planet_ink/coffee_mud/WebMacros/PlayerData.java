@@ -606,7 +606,7 @@ public class PlayerData extends StdWebMacro
 					old=""+M.fetchFaction(CMLib.factions().getAlignmentID());
 				if(CMLib.factions().getFaction(CMLib.factions().getAlignmentID())!=null)
 				{
-					for(final Faction.Align v : Faction.Align.values())
+					for(final Faction.Align v : Faction.Align.alignAligns)
 					{
 						if(v!=Faction.Align.INDIFF)
 						{

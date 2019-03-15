@@ -46,6 +46,7 @@ public class Factions extends StdLibrary implements FactionManager
 
 	public SHashtable<String, Faction>	factionMap			= new SHashtable<String, Faction>();
 	public SHashtable<String, FRange>	hashedFactionRanges	= new SHashtable<String, FRange>();
+	public Map<Faction.Align, List<FRange>>	hashedFactionAligns	= new SHashtable<Faction.Align, List<FRange>>();
 
 	@Override
 	public Enumeration<Faction> factions()
@@ -64,6 +65,7 @@ public class Factions extends StdLibrary implements FactionManager
 	{
 		factionMap.clear();
 		hashedFactionRanges.clear();
+		hashedFactionAligns.clear();
 	}
 
 	@Override
@@ -148,18 +150,24 @@ public class Factions extends StdLibrary implements FactionManager
 		for(final Enumeration<FRange> e=F.ranges();e.hasMoreElements();)
 		{
 			final Faction.FRange FR=e.nextElement();
-			final String CodeName=(FR.codeName().length()>0)?FR.codeName().toUpperCase():FR.name().toUpperCase();
-			if(!hashedFactionRanges.containsKey(CodeName))
-				hashedFactionRanges.put(CodeName,FR);
-			final String SimpleUniqueCodeName = F.name().toUpperCase()+"."+FR.name().toUpperCase();
-			if(!hashedFactionRanges.containsKey(SimpleUniqueCodeName))
-				hashedFactionRanges.put(SimpleUniqueCodeName,FR);
-			final String UniqueCodeName = SimpleUniqueCodeName.replace(' ','_');
-			if(!hashedFactionRanges.containsKey(UniqueCodeName))
-				hashedFactionRanges.put(UniqueCodeName,FR);
-			final String SimpleUniqueIDName = F.factionID().toUpperCase()+"."+FR.name().toUpperCase();
-			if(!hashedFactionRanges.containsKey(SimpleUniqueIDName))
-				hashedFactionRanges.put(SimpleUniqueIDName,FR);
+			final String codeName=(FR.codeName().length()>0)?FR.codeName().toUpperCase():FR.name().toUpperCase();
+			if(!hashedFactionRanges.containsKey(codeName))
+				hashedFactionRanges.put(codeName,FR);
+			final String simpleUniqueCodeName = F.name().toUpperCase()+"."+FR.name().toUpperCase();
+			if(!hashedFactionRanges.containsKey(simpleUniqueCodeName))
+				hashedFactionRanges.put(simpleUniqueCodeName,FR);
+			final String uniqueCodeName = simpleUniqueCodeName.replace(' ','_');
+			if(!hashedFactionRanges.containsKey(uniqueCodeName))
+				hashedFactionRanges.put(uniqueCodeName,FR);
+			final String simpleUniqueIDName = F.factionID().toUpperCase()+"."+FR.name().toUpperCase();
+			if(!hashedFactionRanges.containsKey(simpleUniqueIDName))
+				hashedFactionRanges.put(simpleUniqueIDName,FR);
+			if(FR.alignEquiv() != null)
+			{
+				if(!hashedFactionAligns.containsKey(FR.alignEquiv()))
+					hashedFactionAligns.put(FR.alignEquiv(), new ArrayList<FRange>());
+				hashedFactionAligns.get(FR.alignEquiv()).add(FR);
+			}
 		}
 		return addFaction(F) ? F : null;
 	}
@@ -211,6 +219,29 @@ public class Factions extends StdLibrary implements FactionManager
 		if(f.exists())
 			return getFaction(key)!=null;
 		return false;
+	}
+
+	@Override
+	public boolean isFactionLoaded(String key)
+	{
+		if(key==null)
+			return false;
+		key=key.toUpperCase().trim();
+		if(factionMap.containsKey(key))
+			return true;
+		if((!key.endsWith(".INI"))
+		&&(factionMap.containsKey(key+".INI")))
+			return true;
+		return false;
+	}
+
+	@Override
+	public boolean isAlignmentLoaded(final Faction.Align align)
+	{
+		if(align==null)
+			return false;
+		return hashedFactionAligns.containsKey(align)
+				&& (hashedFactionAligns.get(align).size()>0);
 	}
 
 	@Override
@@ -453,9 +484,9 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public String getAxisID()
+	public String getInclinationID()
 	{
-		return "axis.ini";
+		return "inclination.ini";
 	}
 
 	@Override
@@ -773,6 +804,40 @@ public class Factions extends StdLibrary implements FactionManager
 				return Math.abs(getPercent(getAlignmentID(),bottom) - pct);
 			case NEUTRAL:
 				return Math.abs(getPercent(getAlignmentID(),(int)Math.round(CMath.div((top+bottom),2))) - pct);
+			default:
+				return 0;
+		}
+	}
+
+	@Override
+	public int getInclinationPurity(final int faction, final Faction.Align eq)
+	{
+		if(!factionMap.containsKey(this.getInclinationID().toUpperCase()))
+			return 0;
+		int bottom=Integer.MAX_VALUE;
+		int top=Integer.MIN_VALUE;
+		final int pct=getPercent(getInclinationID(),faction);
+		final Enumeration<FRange> e = getRanges(getInclinationID());
+		if(e!=null)
+		for(;e.hasMoreElements();)
+		{
+			final Faction.FRange R=e.nextElement();
+			if(R.alignEquiv()==eq)
+			{
+				if(R.low()<bottom)
+					bottom=R.low();
+				if(R.high()>top)
+					top=R.high();
+			}
+		}
+		switch(eq)
+		{
+			case LAWFUL:
+				return Math.abs(pct - getPercent(getInclinationID(),top));
+			case CHAOTIC:
+				return Math.abs(getPercent(getInclinationID(),bottom) - pct);
+			case INDIFF:
+				return Math.abs(getPercent(getInclinationID(),(int)Math.round(CMath.div((top+bottom),2))) - pct);
 			default:
 				return 0;
 		}

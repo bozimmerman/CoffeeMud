@@ -104,7 +104,7 @@ public class Spell_GravitySlam extends Spell
 				if(CMLib.flags().isWaterySurfaceRoom(R))
 					maxDie=maxDie/4;
 
-				damage += CMLib.dice().roll(maxDie,20,6+maxDie);
+				damage += CMLib.dice().roll(maxDie,10,6+maxDie);
 				if(msg.value()>0)
 					damage = (int)Math.round(CMath.div(damage,2.0));
 				if(!CMLib.flags().isInFlight(target))

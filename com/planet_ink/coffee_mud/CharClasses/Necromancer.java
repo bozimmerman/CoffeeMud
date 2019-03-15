@@ -157,9 +157,13 @@ public class Necromancer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_AnimateGhost",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_InfuseUnholiness",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_InfuseUnholiness",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)||CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_InfuseModeration",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",true);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Designation",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true,CMParms.parseSemicolons("Prayer_Paralyze",true));

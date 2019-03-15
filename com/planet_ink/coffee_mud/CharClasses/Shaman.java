@@ -100,17 +100,27 @@ public class Shaman extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CauseLight",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseLife",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Bury",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_MinorInfusion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_FortifyFood",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtLaw",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtChaos",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_SenseLaw",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_Deafness",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CreateFood",true);
@@ -149,7 +159,10 @@ public class Shaman extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Prayer_GuardianHearth",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Tremor",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_InfuseBalance",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_InfuseImpunity",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.NEUTRAL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_InfuseBalance",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_SanctifyRoom",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);

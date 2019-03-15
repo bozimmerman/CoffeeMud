@@ -80,7 +80,18 @@ public class Spell_KnowAlignment extends Spell
 		{
 			mob.location().send(mob,msg);
 			if(success)
-				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> is @x1.",CMLib.flags().getAlignmentName(target).toLowerCase()));
+			{
+				String alignment;
+				final String goodEvilName = CMLib.flags().getAlignmentName(target).toLowerCase();
+				if(CMLib.flags().isChaotic(target))
+					alignment = L("chaotic "+goodEvilName);
+				else
+				if(CMLib.flags().isChaotic(target))
+					alignment = L("lawful "+goodEvilName);
+				else
+					alignment = L(goodEvilName);
+				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> is @x1.",alignment));
+			}
 			else
 			{
 				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> is @x1.",Faction.Align.values()[CMLib.dice().roll(1,Faction.Align.values().length-1,0)].toString().toLowerCase()));

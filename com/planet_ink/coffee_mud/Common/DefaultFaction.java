@@ -896,7 +896,7 @@ public class DefaultFaction implements Faction, MsgListener
 		{
 			if(CMClass.numPrototypes(CMObjectType.ABILITY)==0)
 				return null;
-			final Map<Integer,List<FactionChangeEvent>> abilityClassMap=new HashMap<Integer,List<FactionChangeEvent>>(); 
+			final Map<Integer,List<FactionChangeEvent>> abilityClassMap=new HashMap<Integer,List<FactionChangeEvent>>();
 			for(int classificationCode = 0;classificationCode < Ability.ACODE_DESCS.length;classificationCode++)
 			{
 				for (final Enumeration<FactionChangeEvent[]> e=changes.elements();e.hasMoreElements();)
@@ -913,7 +913,7 @@ public class DefaultFaction implements Faction, MsgListener
 					}
 				}
 			}
-			final Map<Integer,List<FactionChangeEvent>> abilityDomainMap=new HashMap<Integer,List<FactionChangeEvent>>(); 
+			final Map<Integer,List<FactionChangeEvent>> abilityDomainMap=new HashMap<Integer,List<FactionChangeEvent>>();
 			for(int domainCode = 0;domainCode < Ability.DOMAIN_DESCS.length;domainCode++)
 			{
 				final int domainID = domainCode << 5;
@@ -931,7 +931,7 @@ public class DefaultFaction implements Faction, MsgListener
 					}
 				}
 			}
-			final Map<Long,List<FactionChangeEvent>> abilityFlagMap=new HashMap<Long,List<FactionChangeEvent>>(); 
+			final Map<Long,List<FactionChangeEvent>> abilityFlagMap=new HashMap<Long,List<FactionChangeEvent>>();
 			for(int flagIndex = 0;flagIndex < Ability.FLAG_DESCS.length;flagIndex++)
 			{
 				final long flagMask = Math.round(Math.pow(2, flagIndex));
@@ -2175,10 +2175,10 @@ public class DefaultFaction implements Faction, MsgListener
 	{
 		public int				low;
 		public int				high;
-		public String			Name		= "";
-		public String			CodeName	= "";
-		public Faction.Align	AlignEquiv;
-		public Faction			myFaction	= null;
+		public String			name		= "";
+		public String			codeName	= "";
+		public Faction.Align	alignEquiv;
+		public Faction			faction		= null;
 
 		@Override
 		public int low()
@@ -2195,25 +2195,25 @@ public class DefaultFaction implements Faction, MsgListener
 		@Override
 		public String name()
 		{
-			return Name;
+			return name;
 		}
 
 		@Override
 		public String codeName()
 		{
-			return CodeName;
+			return codeName;
 		}
 
 		@Override
 		public Align alignEquiv()
 		{
-			return AlignEquiv;
+			return alignEquiv;
 		}
 
 		@Override
 		public Faction getFaction()
 		{
-			return myFaction;
+			return faction;
 		}
 
 		@Override
@@ -2231,34 +2231,34 @@ public class DefaultFaction implements Faction, MsgListener
 		@Override
 		public void setName(final String newVal)
 		{
-			Name = newVal;
+			name = newVal;
 		}
 
 		@Override
 		public void setAlignEquiv(final Faction.Align newVal)
 		{
-			AlignEquiv = newVal;
+			alignEquiv = newVal;
 		}
 
 		public DefaultFactionRange(final Faction F, final String key)
 		{
-			myFaction=F;
+			faction=F;
 			final List<String> v = CMParms.parseSemicolons(key,false);
-			Name = v.get(2);
+			name = v.get(2);
 			low = CMath.s_int( v.get(0));
 			high = CMath.s_int( v.get(1));
 			if(v.size()>3)
-				CodeName=v.get(3);
+				codeName=v.get(3);
 			if(v.size()>4)
-				AlignEquiv = CMLib.factions().getAlignEnum(v.get(4));
+				alignEquiv = CMLib.factions().getAlignEnum(v.get(4));
 			else
-				AlignEquiv = Faction.Align.INDIFF;
+				alignEquiv = Faction.Align.INDIFF;
 		}
 
 		@Override
 		public String toString()
 		{
-			return low +";"+high+";"+Name+";"+CodeName+";"+AlignEquiv.toString();
+			return low +";"+high+";"+name+";"+codeName+";"+alignEquiv.toString();
 		}
 
 		@Override

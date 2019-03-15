@@ -512,7 +512,7 @@ public class GrinderPlayers extends GrinderMobs
 			final Faction F=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
 			if((F!=null)&&(old!=null)&&(old.length()>0))
 			{
-				for(final Faction.Align v : Faction.Align.values())
+				for(final Faction.Align v : Faction.Align.alignAligns)
 				{
 					if((v!=Faction.Align.INDIFF)&&(v.toString().equalsIgnoreCase(old)))
 						CMLib.factions().setAlignment(M,v);

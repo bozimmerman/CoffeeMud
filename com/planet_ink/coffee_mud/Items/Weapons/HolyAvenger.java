@@ -77,7 +77,8 @@ public class HolyAvenger extends TwoHandedSword
 		case CMMsg.TYP_WIELD:
 		case CMMsg.TYP_GET:
 			if((!msg.source().charStats().getCurrentClass().ID().equals("Paladin"))
-			||(!CMLib.flags().isGood(msg.source())))
+			||((!CMLib.flags().isGood(msg.source()))&&(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)))
+			||((!CMLib.flags().isLawful(msg.source()))&&(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))))
 			{
 				unWear();
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 flashes and flies out of <S-HIS-HER> hands!",name()));

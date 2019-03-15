@@ -101,6 +101,22 @@ public interface CMFlagLibrary extends CMLibrary
 
 	/**
 	 * Returns whether the given mob has the ability to see
+	 * chaos in people/things.
+	 * @param P the thing to check
+	 * @return whether the this can see chaos in people/things
+	 */
+	public boolean canSeeChaos(Physical P);
+
+	/**
+	 * Returns whether the given mob has the ability to see
+	 * law in people/things.
+	 * @param P the thing to check
+	 * @return whether the this can see law in people/things
+	 */
+	public boolean canSeeLaw(Physical P);
+
+	/**
+	 * Returns whether the given mob has the ability to see
 	 * sneaking mobs.
 	 * @param M the mob to check
 	 * @return whether the mob can see sneaking mobs
@@ -569,6 +585,22 @@ public interface CMFlagLibrary extends CMLibrary
 	 * @return true if it is evilness
 	 */
 	public boolean isEvil(Physical P);
+
+	/**
+	 * Returns whether the given item, mob, room, whatever is
+	 * lawfully aligned, assuming you are using the law/chaos axis.
+	 * @param P the room, mob, or item to check
+	 * @return true if it is lawfullness
+	 */
+	public boolean isLawful(final Physical P);
+
+	/**
+	 * Returns whether the given item, mob, room, whatever is
+	 * chaotically aligned, assuming you are using the law/chaos axis.
+	 * @param P the room, mob, or item to check
+	 * @return true if it is chaoticness
+	 */
+	public boolean isChaotic(final Physical P);
 
 	/**
 	 * Returns whether the given object has a trap set on it.

@@ -129,6 +129,9 @@ public class Chant_BlueMoon extends Chant
 			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
 			if(CMLib.flags().isGood(mob))
 				recovery=recovery*-1;
+			else
+			if(!CMLib.flags().isEvil(mob))
+				return true;
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;

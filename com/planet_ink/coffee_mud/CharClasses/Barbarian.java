@@ -321,6 +321,22 @@ public class Barbarian extends StdCharClass
 		return outfitChoices;
 	}
 
+
+	@Override
+	public boolean qualifiesForThisClass(final MOB mob, final boolean quiet)
+	{
+		if(quiet)
+			return super.qualifiesForThisClass(mob, quiet);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+		{
+			if(!CMLib.flags().isChaotic(mob))
+			{
+				mob.tell(L("You must be chaotic to be a barbarian."));
+				return false;
+			}
+		}
+		return super.qualifiesForThisClass(mob, quiet);
+	}
 	@Override
 	public int classDurationModifier(final MOB myChar, final Ability skill, final int duration)
 	{

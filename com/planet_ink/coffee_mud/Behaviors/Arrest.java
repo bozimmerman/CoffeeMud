@@ -640,7 +640,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			&&M.isMonster()
 			&&(M!=accused)
 			&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>3)
-			&&(CMLib.dice().rollPercentage()>=(CMLib.flags().isEvil(accused)?25:(CMLib.flags().isGood(accused)?95:50))
+			&&(CMLib.dice().rollPercentage()>=(CMLib.flags().isChaotic(accused)?25:(CMLib.flags().isLawful(accused)?95:50))
 				||(isAnyOfficer(myArea, M))))
 				return M;
 		}

@@ -179,8 +179,11 @@ public class Druid extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_Goodberry",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_Hunger",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_FeelCold",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_NaturalBalance",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)||CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_NaturalBalance",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)||CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_NaturalOrder",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_WarpWood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_ControlFire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_VenomWard",false);

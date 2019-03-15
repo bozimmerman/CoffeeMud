@@ -940,6 +940,12 @@ public interface Ability extends Environmental
 	public static final long FLAG_MINDALTERING=2147483648L;
 	/** constant mask for the flags() method designating that this ability tortures in some way @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_TORTURING=4294967296L;
+	/** constant mask for the flags() method designating that this ability is a law effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_LAW=8589934592L;
+	/** constant mask for the flags() method designating that this ability is a chaos  effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_CHAOS=17179869184L;
+	/** constant mask for the flags() method designating that this ability is a moderate effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_MODERATE=FLAG_LAW|FLAG_CHAOS;
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS=
@@ -975,7 +981,9 @@ public interface Ability extends Environmental
 		"TIDEALTERING",
 		"SUNSUMMONING",
 		"MINDALTERING",
-		"TORTURING"
+		"TORTURING",
+		"LAW",
+		"CHAOS"
 	};
 
 	/** constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()}*/

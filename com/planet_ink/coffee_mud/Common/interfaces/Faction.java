@@ -1719,8 +1719,12 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	public static final long IFLAG_CUSTOMTICK=4;
 
 	/** legacy enumerator constant for {@link FRange#alignEquiv()} denoting that the range does not reflect alignment */
-	public enum Align {
-		INDIFF, EVIL, NEUTRAL, GOOD
+	public enum Align
+	{
+		INDIFF, EVIL, NEUTRAL, GOOD, LAWFUL, CHAOTIC, MODERATE
+		;
+		public final static Align[] alignAligns = { EVIL, NEUTRAL, GOOD};
+		public final static Align[] inclinationAligns = { CHAOTIC, MODERATE, LAWFUL};
 	}
 
 	/** String list for the valid {@link Faction#experienceFlag()} constants */

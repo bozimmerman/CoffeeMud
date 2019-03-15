@@ -61,7 +61,7 @@ public class Paladin_ImprovedResists extends PaladinSkill
 		if((affected!=null)
 		&&(appropriateToMyFactions(invoker)))
 		{
-			final int amount=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),affected.phyStats().level()+(2*getXLEVELLevel(invoker))));
+			final int amount=(int)Math.round(CMath.mul(CMath.div(proficiency(),100.0),adjustedLevel(affected,0)/2));
 			for(final int i : CharStats.CODES.SAVING_THROWS())
 				affectableStats.setStat(i,affectableStats.getStat(i)+amount);
 		}

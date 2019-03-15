@@ -178,9 +178,12 @@ public class Mer extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_FeelElectricity",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_BloodyWater",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_KnowPlants",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_NaturalBalance",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)||CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_NaturalBalance",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_WaterCover",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)||CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_NaturalOrder",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_UnderwaterAction",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_WaterHammer",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_AnimalCompanion",false);

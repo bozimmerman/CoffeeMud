@@ -894,7 +894,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 			if((product instanceof Item)
 			&& (!CMLib.law().mayOwnThisItem(sellerCustM, (Item)product))
-			&& (!CMLib.flags().isEvil(buyerShopM)))
+			&& ((!CMLib.flags().isEvil(buyerShopM))
+				||(CMLib.flags().isLawful(buyerShopM))))
 			{
 				CMLib.commands().postSay(buyerShopM,sellerCustM,L("I don't buy stolen goods."),true,false);
 				return false;

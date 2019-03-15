@@ -99,22 +99,31 @@ public class Missionary extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_DivineLuck",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseLife",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Bury",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_InfuseBalance",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_InfuseDiscipline",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.NEUTRAL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_InfuseBalance",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_Position",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_SenseChaos",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CreateFood",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_BirdsEye",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CreateWater",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_SenseTraps",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_HuntChaos",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_ElectricStrike",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);

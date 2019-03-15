@@ -113,9 +113,12 @@ public class Purist extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Fidelity",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Sanctimonious",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",true);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_SenseChaos",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CreateFood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_ProtCold",false);
 
@@ -123,7 +126,10 @@ public class Purist extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_RighteousIndignation",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_HuntEvil",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_HuntEvil",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_ProtChaos",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Freedom",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
@@ -137,6 +143,8 @@ public class Purist extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Monolith",0,"ICE",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_DispelChaos",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_FountainLife",false);
 
@@ -150,10 +158,14 @@ public class Purist extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Calm",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_Conviction",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_InfuseHoliness",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_InfuseDiscipline",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Prayer_InfuseHoliness",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_PietyCurse",true);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_PietyCurse",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
@@ -161,7 +173,8 @@ public class Purist extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Wave",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",true);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_AuraDivineEdict",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassFreedom",false,CMParms.parseSemicolons("Prayer_Freedom",true));
@@ -175,8 +188,11 @@ public class Purist extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_MassHeal",false,CMParms.parseSemicolons("Prayer_Heal",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_Judgement",true);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_Judgement",true);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_WordOfLaw",false,CMParms.parseSemicolons("Prayer_ProtChaos",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_HolyWord",false,CMParms.parseSemicolons("Prayer_HolyAura",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_Nullification",true);
 

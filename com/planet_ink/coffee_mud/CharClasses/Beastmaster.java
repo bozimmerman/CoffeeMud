@@ -172,8 +172,11 @@ public class Beastmaster extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_Bite",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false,CMParms.parseSemicolons("Apothecary",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_AnimalFriendship",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_NaturalBalance",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)||CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_NaturalBalance",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)||CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_NaturalOrder",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Trip",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_FurCoat",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_AnimalCompanion",false);

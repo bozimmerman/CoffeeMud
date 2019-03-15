@@ -164,7 +164,8 @@ public class Delver extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_EndureRust",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_Brittle",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_DeepThoughts",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)||CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_DeepThoughts",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_FodderSignal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_Den",false);

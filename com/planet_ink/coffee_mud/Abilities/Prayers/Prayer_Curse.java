@@ -121,8 +121,8 @@ public class Prayer_Curse extends Prayer
 
 	public static Item getSomething(final MOB mob, final boolean blessedOnly)
 	{
-		final Vector<Item> good=new Vector<Item>();
-		final Vector<Item> great=new Vector<Item>();
+		final List<Item> good=new ArrayList<Item>(1);
+		final List<Item> great=new ArrayList<Item>(1);
 		Item target=null;
 		for(int i=0;i<mob.numItems();i++)
 		{
@@ -130,16 +130,16 @@ public class Prayer_Curse extends Prayer
 			if((!blessedOnly)||(isBlessed(I)))
 			{
 				if(I.amWearingAt(Wearable.IN_INVENTORY))
-					good.addElement(I);
+					good.add(I);
 				else
-					great.addElement(I);
+					great.add(I);
 			}
 		}
 		if(great.size()>0)
-			target=great.elementAt(CMLib.dice().roll(1,great.size(),-1));
+			target=great.get(CMLib.dice().roll(1,great.size(),-1));
 		else
 		if(good.size()>0)
-			target=good.elementAt(CMLib.dice().roll(1,good.size(),-1));
+			target=good.get(CMLib.dice().roll(1,good.size(),-1));
 		return target;
 	}
 

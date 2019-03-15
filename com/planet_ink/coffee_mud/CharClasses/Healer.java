@@ -107,15 +107,22 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CureLight",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_InfuseHoliness",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_InfuseHoliness",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_InfuseImpunity",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_RemoveDeathMark",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_CureFatigue",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_SenseLaw",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_Fidelity",false);
 
@@ -124,12 +131,15 @@ public class Healer extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_BrighteningAura",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_ProtLaw",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Freedom",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Forgive",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_RemoveParalysis",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_DispelEvil",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_DispelEvil",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_GodLight",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",true);
@@ -159,7 +169,8 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_DispelUndead",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_BlessedHearth",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_DeathsDoor",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_PeaceRitual",false);
@@ -174,6 +185,8 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_MassHeal",true,CMParms.parseSemicolons("Prayer_Heal",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_MassCureDisease",false,CMParms.parseSemicolons("Prayer_CureDisease",true));
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_WordOfChaos",false,CMParms.parseSemicolons("Prayer_ProtLaw",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_HolyWord",false,CMParms.parseSemicolons("Prayer_HolyAura",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_DivineResistance",false);
 

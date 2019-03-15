@@ -127,58 +127,117 @@ public class Spell_Delude extends Spell
 					success=beneficialAffect(mob,target,asLevel,0)!=null;
 					if(success)
 					{
-						int which=0;
-						if(CMLib.flags().isEvil(target))
-							which=1;
-						else
-						if(CMLib.flags().isGood(target))
-							which=2;
-						else
-						if(CMLib.dice().rollPercentage()>50)
-							which=1;
-						else
-							which=2;
-						Enumeration<Faction.FRange> e;
-						switch(which)
+						if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL)||CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
 						{
-						case 1:
-							// find a good range, set them within that
-							int newAlign=0;
-							e=CMLib.factions().getRanges(CMLib.factions().getAlignmentID());
-							if(e!=null)
+							int which=0;
+							if(CMLib.flags().isEvil(target))
+								which=1;
+							else
+							if(CMLib.flags().isGood(target))
+								which=2;
+							else
+							if(CMLib.dice().rollPercentage()>50)
+								which=1;
+							else
+								which=2;
+							Enumeration<Faction.FRange> e;
+							switch(which)
 							{
-								for(;e.hasMoreElements();)
+							case 1:
+								// find a good range, set them within that
+								int newAlign=0;
+								e=CMLib.factions().getRanges(CMLib.factions().getAlignmentID());
+								if(e!=null)
 								{
-									final Faction.FRange R=e.nextElement();
-									if(R.alignEquiv()==Faction.Align.GOOD)
+									for(;e.hasMoreElements();)
 									{
-										newAlign = R.random();
-										break;
+										final Faction.FRange R=e.nextElement();
+										if(R.alignEquiv()==Faction.Align.GOOD)
+										{
+											newAlign = R.random();
+											break;
+										}
 									}
 								}
-							}
-							CMLib.factions().postFactionChange(target,this, CMLib.factions().getAlignmentID(), newAlign-target.fetchFaction(CMLib.factions().getAlignmentID()));
-							CMLib.utensils().confirmWearability(target);
-							return true;
-						case 2:
-							// find an evil range, set them within that
-							newAlign=0;
-							e=CMLib.factions().getRanges(CMLib.factions().getAlignmentID());
-							if(e!=null)
-							{
-								for(;e.hasMoreElements();)
+								CMLib.factions().postFactionChange(target,this, CMLib.factions().getAlignmentID(), newAlign-target.fetchFaction(CMLib.factions().getAlignmentID()));
+								CMLib.utensils().confirmWearability(target);
+								return true;
+							case 2:
+								// find an evil range, set them within that
+								newAlign=0;
+								e=CMLib.factions().getRanges(CMLib.factions().getAlignmentID());
+								if(e!=null)
 								{
-									final Faction.FRange R=e.nextElement();
-									if(R.alignEquiv()==Faction.Align.EVIL)
+									for(;e.hasMoreElements();)
 									{
-										newAlign = R.random();
-										break;
+										final Faction.FRange R=e.nextElement();
+										if(R.alignEquiv()==Faction.Align.EVIL)
+										{
+											newAlign = R.random();
+											break;
+										}
 									}
 								}
+								CMLib.factions().postFactionChange(target,this, CMLib.factions().getAlignmentID(), newAlign-target.fetchFaction(CMLib.factions().getAlignmentID()));
+								CMLib.utensils().confirmWearability(target);
+								return true;
 							}
-							CMLib.factions().postFactionChange(target,this, CMLib.factions().getAlignmentID(), newAlign-target.fetchFaction(CMLib.factions().getAlignmentID()));
-							CMLib.utensils().confirmWearability(target);
-							return true;
+						}
+						if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC)||CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+						{
+							int which=0;
+							if(CMLib.flags().isChaotic(target))
+								which=1;
+							else
+							if(CMLib.flags().isLawful(target))
+								which=2;
+							else
+							if(CMLib.dice().rollPercentage()>50)
+								which=1;
+							else
+								which=2;
+							Enumeration<Faction.FRange> e;
+							switch(which)
+							{
+							case 1:
+								// find a lawful range, set them within that
+								int newAlign=0;
+								e=CMLib.factions().getRanges(CMLib.factions().getInclinationID());
+								if(e!=null)
+								{
+									for(;e.hasMoreElements();)
+									{
+										final Faction.FRange R=e.nextElement();
+										if(R.alignEquiv()==Faction.Align.LAWFUL)
+										{
+											newAlign = R.random();
+											break;
+										}
+									}
+								}
+								CMLib.factions().postFactionChange(target,this, CMLib.factions().getInclinationID(), newAlign-target.fetchFaction(CMLib.factions().getInclinationID()));
+								CMLib.utensils().confirmWearability(target);
+								return true;
+							case 2:
+								// find an chaotic range, set them within that
+								newAlign=0;
+								e=CMLib.factions().getRanges(CMLib.factions().getInclinationID());
+								if(e!=null)
+								{
+									for(;e.hasMoreElements();)
+									{
+										final Faction.FRange R=e.nextElement();
+										if(R.alignEquiv()==Faction.Align.CHAOTIC)
+										{
+											newAlign = R.random();
+											break;
+										}
+									}
+								}
+								CMLib.factions().postFactionChange(target,this, CMLib.factions().getAlignmentID(), newAlign-target.fetchFaction(CMLib.factions().getAlignmentID()));
+								CMLib.utensils().confirmWearability(target);
+								return true;
+							}
 						}
 					}
 				}

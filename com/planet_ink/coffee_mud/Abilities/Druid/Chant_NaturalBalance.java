@@ -154,7 +154,7 @@ public class Chant_NaturalBalance extends Chant
 			final int myAlignment=mob.fetchFaction(CMLib.factions().getAlignmentID());
 			final int total=CMLib.factions().getTotal(CMLib.factions().getAlignmentID());
 			final int oneHalfPct=(int)Math.round(CMath.mul(total,.01))/2;
-			if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.INDIFF)<99)
+			if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.MODERATE)<99)
 			{
 				if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.EVIL)<CMLib.factions().getAlignPurity(myAlignment,Faction.Align.GOOD))
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), oneHalfPct);
@@ -184,7 +184,7 @@ public class Chant_NaturalBalance extends Chant
 					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> become(s) one with life."));
 					break;
 				case 7:
-					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> seek(s) the inner beauty of the natural order."));
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> seek(s) the inner beauty of the natural balance."));
 					break;
 				case 8:
 					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts."));

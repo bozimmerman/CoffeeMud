@@ -53,6 +53,11 @@
   52. Factions now support social change triggers
   53. Can now browse the postal system in the player manager in mudgrinder.
   54. Any faction can now be added to the prompt using the new %f, %F syntax
+  55. New optional faction: Law/Chaos inclination.
+  56. New optional prayers: Dispel Law, Dispel Chaos, Infuse Discipline, Infuse Moderation, Infuse Impunity, 
+  57. New optional prayers: Hunt Law, Hunt Chaos, Protection from Chaos, Protection from Law, 
+  58. New optional prayers: Sense Chaos, Sense Law, Taint of Chaos, Word of Law, Word of Chaos  
+  59. New optional chants: White Moon, Purple Moon, Natural Order
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

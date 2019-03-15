@@ -102,21 +102,28 @@ public class Templar extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_InfuseUnholiness",true);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_InfuseUnholiness",true);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_InfuseDiscipline",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CauseLight",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Annul",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Divorce",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_SenseLife",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Prayer_CauseFatigue",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Prayer_Desecrate",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Specialization_EdgedWeapon",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_UnholyArmament",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_SenseChaos",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Specialization_FlailedWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_Deafness",true);
 
@@ -125,7 +132,10 @@ public class Templar extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_CauseSerious",false,CMParms.parseSemicolons("Prayer_CauseLight",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Curse",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_HuntGood",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_HuntGood",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_ProtChaos",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Specialization_Polearm",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Paralyze",true);
@@ -134,7 +144,8 @@ public class Templar extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Specialization_Hammer",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Specialization_Ranged",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_DispelGood",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_DispelGood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Prayer_CauseExhaustion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Prayer_Poison",false);
@@ -164,7 +175,8 @@ public class Templar extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Enervate",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_Drain",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Hellfire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Maladiction",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true,CMParms.parseSemicolons("Prayer_Paralyze",true));
@@ -179,6 +191,8 @@ public class Templar extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_CreateIdol",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_WordOfLaw",false,CMParms.parseSemicolons("Prayer_ProtChaos",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true,CMParms.parseSemicolons("Prayer_GreatCurse",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_SunCurse",0,"",false,false);
 
@@ -202,7 +216,8 @@ public class Templar extends Cleric
 		if((tickID==Tickable.TICKID_MOB)&&((--tickDown)<=0))
 		{
 			tickDown=5;
-			if(myChar.fetchEffect("Prayer_AuraStrife")==null)
+			if((myChar.fetchEffect("Prayer_AuraStrife")==null)
+			&&(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL)))
 			{
 				final Ability A=CMClass.getAbility("Prayer_AuraStrife");
 				if(A!=null)

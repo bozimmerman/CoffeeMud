@@ -171,7 +171,8 @@ public class SkyWatcher extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_MuddyGrounds",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_LightningWard",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_StarGazing",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)||CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_StarGazing",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_Dehydrate",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Chant_ColdWard",false);
@@ -188,13 +189,23 @@ public class SkyWatcher extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_HealingMoon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Chant_AcidWard",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_DispelLaw",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_DispelChaos",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_Dirt",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_WindShape",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Chant_MoonCalf",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_GroveWalk",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_BlueMoon",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_RedMoon",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_BlueMoon",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_RedMoon",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_WhiteMoon",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Chant_PurpleMoon",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_CalmWeather",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Chant_SongWard",false);

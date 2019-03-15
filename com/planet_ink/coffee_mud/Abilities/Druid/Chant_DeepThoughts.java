@@ -146,12 +146,19 @@ public class Chant_DeepThoughts extends Chant
 			final int myAlignment=mob.fetchFaction(CMLib.factions().getAlignmentID());
 			final int total=CMLib.factions().getTotal(CMLib.factions().getAlignmentID());
 			final int ratePct=(int)Math.round(CMath.mul(total,.01));
-			if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.INDIFF)<99)
+			if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.MODERATE)<99)
 			{
 				if(CMLib.factions().getAlignPurity(myAlignment,Faction.Align.EVIL)<CMLib.factions().getAlignPurity(myAlignment,Faction.Align.GOOD))
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), ratePct);
 				else
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), -ratePct);
+				if(mob.fetchFaction(CMLib.factions().getInclinationID())!=Integer.MAX_VALUE)
+				{
+					if(CMLib.factions().getInclinationPurity(myAlignment,Faction.Align.CHAOTIC)<CMLib.factions().getInclinationPurity(myAlignment,Faction.Align.LAWFUL))
+						CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), ratePct);
+					else
+						CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), -ratePct);
+				}
 				switch(CMLib.dice().roll(1,10,0))
 				{
 				case 0:

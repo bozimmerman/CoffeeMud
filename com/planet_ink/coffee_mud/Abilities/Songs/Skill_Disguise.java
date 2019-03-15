@@ -139,11 +139,13 @@ public class Skill_Disguise extends BardSkill
 		if(values[5]!=null)
 			affectableStats.setName(values[5]);
 		if(values[7]!=null)
+		{
 			if(values[7].equalsIgnoreCase("good"))
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOOD);
 			else
 			if(values[7].equalsIgnoreCase("evil"))
 				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_EVIL);
+		}
 	}
 
 	@Override

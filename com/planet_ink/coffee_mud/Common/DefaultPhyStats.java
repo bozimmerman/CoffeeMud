@@ -248,6 +248,8 @@ public class DefaultPhyStats implements PhyStats
 		if(ambiance==null)
 			return;
 		ambiance=ambiance.trim();
+		if(ambiance.length()==0)
+			return;
 		final String[] ambiances = this.ambiances;
 		if(ambiances == null)
 		{

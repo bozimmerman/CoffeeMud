@@ -114,6 +114,8 @@ public class Ranger_AnimalFrenzy extends StdAbility
 
 		if(rangersGroup!=null)
 		{
+			if(!this.appropriateToMyFactions(invoker))
+				return true;
 			final Set<MOB> H=invoker.getGroupMembers(new HashSet<MOB>());
 			for (final Object element : H)
 			{

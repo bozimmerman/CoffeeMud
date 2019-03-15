@@ -3212,13 +3212,6 @@ public class CMClass extends ClassLoader
 			}
 			Log.sysOut(Thread.currentThread().getName(),"Classes loaded    : "+numCharClasses);
 		}
-		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: initializing classes");
-		c.intializeClasses();
-		if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("EXPERTISES")))
-		{
-			CMLib.expertises().recompileExpertises();
-			Log.sysOut(Thread.currentThread().getName(),"Expertises defined: "+CMLib.expertises().numExpertises());
-		}
 		if(tCode==MudHost.MAIN_HOST)
 			classLoaderSync[0]=true;
 		CMClass.lastUpdateTime=System.currentTimeMillis();

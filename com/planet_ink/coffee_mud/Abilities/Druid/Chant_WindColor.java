@@ -118,13 +118,17 @@ public class Chant_WindColor extends Chant
 		case 4:
 			return "grey";
 		case 5:
-			return "purple";
+			return "maroon";
 		case 6:
 			return "yellow";
 		case 7:
 			return "brown";
 		case 8:
 			return "orange";
+		case 9:
+			return "white";
+		case 10:
+			return "purple";
 		}
 		return "";
 	}
@@ -146,7 +150,7 @@ public class Chant_WindColor extends Chant
 			{
 				int done=0;
 				if(colors==null)
-					colors=new int[9];
+					colors=new int[11];
 				if(I.phyStats().level()>=(mob.phyStats().level()+25))
 					levelCode=4;
 				else
@@ -210,11 +214,23 @@ public class Chant_WindColor extends Chant
 					done++;
 					colors[1]++;
 				}
+				if (CMLib.flags().isLawful(I))
+				{
+					done++;
+					colors[9]++;
+				}
+				else
+				if (CMLib.flags().isChaotic(I))
+				{
+					done++;
+					colors[10]++;
+				}
 				if(done>1)
 				{
 					if(sourceCode>=0)
 						sourceCode=1;
-					else sourceCode=0;
+					else
+						sourceCode=0;
 				}
 			}
 		}
@@ -285,6 +301,11 @@ public class Chant_WindColor extends Chant
 						sourceCode=1;
 					else sourceCode=0;
 				}
+				if(CMLib.flags().isLawful(M))
+					colors[9]++;
+				else
+				if(CMLib.flags().isChaotic(M))
+					colors[10]++;
 				if(CMLib.flags().isGood(M))
 					colors[2]++;
 				else

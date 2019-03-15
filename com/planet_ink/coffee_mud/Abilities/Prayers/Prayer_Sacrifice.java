@@ -123,7 +123,7 @@ public class Prayer_Sacrifice extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(CMLib.flags().isGood(mob))
+				if(CMLib.flags().isGood(mob)||CMLib.flags().isLawful(mob))
 				{
 					double exp=5.0;
 					final int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);

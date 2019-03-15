@@ -95,7 +95,16 @@ public class Prayer_SenseAlignment extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> is @x1.",CMLib.flags().getAlignmentName(target).toLowerCase()));
+				String alignment;
+				final String goodEvilName = CMLib.flags().getAlignmentName(target).toLowerCase();
+				if(CMLib.flags().isChaotic(target))
+					alignment = L("chaotic "+goodEvilName);
+				else
+				if(CMLib.flags().isChaotic(target))
+					alignment = L("lawful "+goodEvilName);
+				else
+					alignment = L(goodEvilName);
+				mob.tell(mob,target,null,L("<T-NAME> seem(s) like <T-HE-SHE> is @x1.",alignment.toLowerCase()));
 			}
 		}
 		else

@@ -155,7 +155,8 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureLight",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_SenseEvil",true);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_SenseEvil",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_WandUse",false);
@@ -164,8 +165,13 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Paladin_PaladinsMount",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtEvil",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtEvil",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_ProtChaos",false);
 
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_SenseChaos",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_CureDeafness",false);
 
@@ -180,7 +186,8 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_Freedom",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Paladin_Courage",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_DispelEvil",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_DispelEvil",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_RestoreVoice",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Paladin_Purity",false);
@@ -199,7 +206,8 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Prayer_CureCritical",false,CMParms.parseSemicolons("Prayer_CureSerious",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_Trip",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Paladin_Aura",true);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Paladin_Aura",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_HolyAura",false,CMParms.parseSemicolons("Prayer_Bless",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",false);
@@ -212,7 +220,8 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CureFatigue",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Paladin_CommandHorse",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_LightHammer",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_LightHammer",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Fighter_Sweep",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Paladin_Goodness",false);
@@ -221,13 +230,43 @@ public class Paladin extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Paladin_AbidingAura",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Heal",false,CMParms.parseSemicolons("Prayer_CureCritical",true));
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Paladin_CraftHolyAvenger",true,CMParms.parseSemicolons("Specialization_Sword;Weaponsmithing",true));
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Paladin_CraftHolyAvenger",true,CMParms.parseSemicolons("Specialization_Sword;Weaponsmithing",true));
 	}
 
 	@Override
 	public int availabilityCode()
 	{
 		return Area.THEME_FANTASY;
+	}
+
+	@Override
+	public boolean qualifiesForThisClass(final MOB mob, final boolean quiet)
+	{
+		if(quiet)
+			return super.qualifiesForThisClass(mob, quiet);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)
+		||CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+		{
+			if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			{
+				if(!CMLib.flags().isGood(mob))
+				{
+					mob.tell(L("You must be good to be a paladin."));
+					return false;
+				}
+			}
+			if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			{
+				if(!CMLib.flags().isLawful(mob))
+				{
+					mob.tell(L("You must be lawful to be a paladin."));
+					return false;
+				}
+			}
+			return super.qualifiesForThisClass(mob, quiet);
+		}
+		return false;
 	}
 
 	@Override
@@ -279,7 +318,8 @@ public class Paladin extends StdCharClass
 		final MOB myChar=(MOB)myHost;
 		if((msg.amISource(myChar))
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-		&&(!CMLib.flags().isGood(myChar))
+		&&(((!CMLib.flags().isGood(myChar))&&(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)))
+			||((!CMLib.flags().isLawful(myChar))&&(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))))
 		&&((msg.tool()==null)||((CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 								&&(myChar.isMine(msg.tool()))))
 		&&(CMLib.dice().rollPercentage()>myChar.charStats().getStat(CharStats.STAT_WISDOM)*2))

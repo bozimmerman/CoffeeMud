@@ -1139,7 +1139,7 @@ public class MobData extends StdWebMacro
 				httpReq.getRequestObjects().put(last,R);
 			}
 		}
-		
+
 		String shopMobCode=httpReq.getUrlParameter("SHOPMOB");
 		if(shopMobCode==null)
 			shopMobCode="";
@@ -1416,7 +1416,7 @@ public class MobData extends StdWebMacro
 					{
 						if(firstTime)
 							old=""+M.fetchFaction(CMLib.factions().getAlignmentID());
-						for(final Faction.Align v : Faction.Align.values())
+						for(final Faction.Align v : Faction.Align.alignAligns)
 						{
 							if(v!=Faction.Align.INDIFF)
 							{
