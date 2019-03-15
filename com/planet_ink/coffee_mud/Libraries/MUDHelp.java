@@ -676,9 +676,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 							rangeDescs=F.usageFactorRangeDescription(A);
 							if(rangeDescs.length()>0)
 							{
-								prepend.append("\n\r"+CMStrings.padRight(L("Faction"),9)+": "
-										+CMStrings.capitalizeAndLower(F.name())
-										+" ("+rangeDescs+")");
+								prepend.append("\n\r"+CMStrings.padRight(L("Alignment"),9)+": "
+										+rangeDescs);
 							}
 						}
 					}
