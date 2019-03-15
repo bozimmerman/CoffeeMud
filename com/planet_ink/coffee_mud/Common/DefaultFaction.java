@@ -1116,7 +1116,11 @@ public class DefaultFaction implements Faction, MsgListener
 	{
 		for(final FAbilityUsage usage : abilityUsages)
 		{
-			if((usage.possibleAbilityID()&&usage.abilityFlags().equalsIgnoreCase(A.ID()))
+			if(usage.possibleAbilityID()
+			&&(!usage.abilityFlags().equalsIgnoreCase(A.ID())))
+				continue;
+
+			if(usage.possibleAbilityID()
 			||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
 				&&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
 				&&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
@@ -1131,7 +1135,11 @@ public class DefaultFaction implements Faction, MsgListener
 	{
 		for(final FAbilityUsage usage : abilityUsages)
 		{
-			if((usage.possibleAbilityID()&&usage.abilityFlags().equalsIgnoreCase(A.ID()))
+			if(usage.possibleAbilityID()
+			&&(!usage.abilityFlags().equalsIgnoreCase(A.ID())))
+				continue;
+
+			if(usage.possibleAbilityID()
 			||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
 				&&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
 				&&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
@@ -1633,7 +1641,11 @@ public class DefaultFaction implements Faction, MsgListener
 		final HashSet<String> namesAdded=new HashSet<String>();
 		for(final FAbilityUsage usage : abilityUsages)
 		{
-			if((usage.possibleAbilityID()&&usage.abilityFlags().equalsIgnoreCase(A.ID()))
+			if(usage.possibleAbilityID()
+			&&(!usage.abilityFlags().equalsIgnoreCase(A.ID())))
+				continue;
+
+			if(usage.possibleAbilityID()
 			||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
 				&&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
 				&&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
@@ -2828,10 +2840,10 @@ public class DefaultFaction implements Faction, MsgListener
 		public boolean	possibleAbilityID	= false;
 		public int		type				= -1;
 		public int		domain				= -1;
-		public int		flag				= -1;
+		public long		flag				= -1;
 		public int		low					= 0;
 		public int		high				= 0;
-		public int		notflag				= -1;
+		public long		notflag				= -1;
 
 		@Override
 		public String abilityFlags()
@@ -2858,7 +2870,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public int flag()
+		public long flag()
 		{
 			return flag;
 		}
@@ -2876,7 +2888,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public int notflag()
+		public long notflag()
 		{
 			return notflag;
 		}
@@ -2915,12 +2927,12 @@ public class DefaultFaction implements Faction, MsgListener
 		public List<String> setAbilityFlag(final String str)
 		{
 			ID=str;
-			final Vector<String> flags=CMParms.parse(ID);
-			final Vector<String> unknowns=new Vector<String>();
+			final List<String> flags=CMParms.parse(ID);
+			final List<String> unknowns=new Vector<String>();
 			possibleAbilityID=false;
 			for(int f=0;f<flags.size();f++)
 			{
-				String strflag=flags.elementAt(f);
+				String strflag=flags.get(f);
 				final boolean not=strflag.startsWith("!");
 				if(not)
 					strflag=strflag.substring(1);
@@ -2938,17 +2950,17 @@ public class DefaultFaction implements Faction, MsgListener
 					{
 						if(notflag<0)
 							notflag=0;
-						notflag=notflag|(int)CMath.pow(2,val);
+						notflag=notflag|CMath.pow(2,val);
 					}
 					else
 					{
 						if(flag<0)
 							flag=0;
-						flag=flag|(int)CMath.pow(2,val);
+						flag=flag|CMath.pow(2,val);
 					}
 					break;
 				default:
-					unknowns.addElement(strflag);
+					unknowns.add(strflag);
 					break;
 				}
 			}

@@ -1467,7 +1467,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#FLAG_DESCS
 		 * @return a bitmask of Ability flags that must not be set by the ability
 		 */
-		public int notflag();
+		public long notflag();
 
 		/**
 		 * A bitmask of ability flags that MUST be set for this usage to apply to an ability
@@ -1476,7 +1476,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#FLAG_DESCS
 		 * @return a bitmask of Ability flags that must be set by the ability
 		 */
-		public int flag();
+		public long flag();
 
 		/**
 		 * Whether the abilityFlags() method is possibly a specific Ability ID

@@ -980,6 +980,7 @@ public interface Ability extends Environmental
 		"AGGROING",
 		"TIDEALTERING",
 		"SUNSUMMONING",
+		"NOUNINVOKING",
 		"MINDALTERING",
 		"TORTURING",
 		"LAW",
