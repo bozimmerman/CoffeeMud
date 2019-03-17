@@ -113,6 +113,9 @@ public class DiligentStudying extends StdAbility
 				else
 				if(amt < -1)
 					msg.source().tell(L("^NYou lose ^H@x1^N practice points.\n\r^N",""+(-amt)));
+				else
+				if(amt == 0)
+					msg.source().tell(L("^NYou got no bonus practice points because @x1 and @x2 where the same level.\n\r^N",""+(msg.value()),""+msg.source().basePhyStats().level()));
 
 				msg.source().setPractices(msg.source().getPractices() + amt);
 				if(msg.source().getPractices()<0)
