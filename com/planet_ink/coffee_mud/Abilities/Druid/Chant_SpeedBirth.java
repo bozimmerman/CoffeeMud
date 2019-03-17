@@ -120,7 +120,7 @@ public class Chant_SpeedBirth extends Chant
 						remain=(end-System.currentTimeMillis())+19999;
 				}
 				else
-					remain=remain/2;
+					remain=Math.round(CMath.div(remain,(2.0-(0.05*super.getX1Level(mob)))));
 
 				A.setStat("PREGSTART",""+(start-remain));
 				A.setStat("PREGEND",""+(end-remain));
