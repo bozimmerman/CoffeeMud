@@ -53,7 +53,7 @@
   52. Factions now support social change triggers
   53. Can now browse the postal system in the player manager in mudgrinder.
   54. Any faction can now be added to the prompt using the new %f, %F syntax
-  55. New optional faction: Law/Chaos inclination.
+  55. New optional faction: Law/Chaos inclination.  See FACTIONS in ini file for where to include it.
   56. New optional prayers: Dispel Law, Dispel Chaos, Infuse Discipline, Infuse Moderation, Infuse Impunity, 
   57. New optional prayers: Hunt Law, Hunt Chaos, Protection from Chaos, Protection from Law, 
   58. New optional prayers: Sense Chaos, Sense Law, Taint of Chaos, Word of Law, Word of Chaos  
