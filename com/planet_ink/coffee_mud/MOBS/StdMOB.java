@@ -3855,7 +3855,7 @@ public class StdMOB implements MOB
 					if ((riding != null) && (CMLib.map().roomLocation(riding) != R))
 						setRiding(null);
 
-					if ((!isMonster) && (soulMate() == null))
+					if ((!isMonster) && (soulMate() == null) && (ageMinutes >= 0))
 					{
 						CMLib.coffeeTables().bump(this, CoffeeTableRow.STAT_TICKSONLINE);
 						if (((++tickAgeCounter) * CMProps.getTickMillis()) >= AGE_MILLIS_THRESHOLD)
