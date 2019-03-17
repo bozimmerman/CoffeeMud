@@ -100,8 +100,28 @@ public class Chant_SpeedTime extends Chant
 			{
 				final int mana=mob.curState().getMana();
 				mob.location().send(mob,msg);
-				for(int i=0;i<(adjustedLevel(mob,asLevel)/2);i++)
-					CMLib.threads().tickAllTickers(mob.location());
+				final Room R=mob.location();
+				final Map<MOB,Long> oldAges = new HashMap<MOB,Long>();
+				try
+				{
+					for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+					{
+						final MOB M=m.nextElement();
+						if(M!=null)
+						{
+							if(M.getAgeMinutes()>=0)
+								oldAges.put(M, Long.valueOf(M.getAgeMinutes()));
+							M.setAgeMinutes(-1000);
+						}
+					}
+					for(int i=0;i<(adjustedLevel(mob,asLevel)/2);i++)
+						CMLib.threads().tickAllTickers(mob.location());
+				}
+				finally
+				{
+					for(final MOB M : oldAges.keySet())
+						M.setAgeMinutes(oldAges.get(M).longValue());
+				}
 				if(mob.curState().getMana()>mana)
 					mob.curState().setMana(mana);
 				mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?L("It stops."):L("^S<S-NAME> stop(s) chanting.^?"));
