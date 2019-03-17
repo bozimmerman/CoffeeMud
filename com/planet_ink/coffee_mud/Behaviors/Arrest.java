@@ -3742,6 +3742,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 										W.setTravelAttemptTime(0);
 										fileAllWarrants(laws,W,W.criminal());
 										unCuff(W.criminal());
+										final Ability pA=W.criminal().fetchEffect("Prisoner");
+										if(pA!=null)
+											W.criminal().delEffect(pA);
 										CMLib.commands().postSay(W.arrestingOfficer(),W.criminal(),L("Don't worry, you can always recall."),false,false);
 										dismissOfficer(W.arrestingOfficer());
 										W.setArrestingOfficer(myArea,null);
@@ -3756,6 +3759,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 									CMLib.commands().postSay(officer,null,L("There's always recall."),false,false);
 								}
 								W.setTravelAttemptTime(0);
+								final Ability pA=W.criminal().fetchEffect("Prisoner");
+								if(pA!=null)
+									W.criminal().delEffect(pA);
 								fileAllWarrants(laws,W,W.criminal());
 								unCuff(W.criminal());
 								if(officer!=null)
@@ -3768,9 +3774,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(W.arrestingOfficer()!=null)
 						{
 							debugLogLostConvicts("Officer can't release2 criminal: ",W,W.arrestingOfficer());
-							CMLib.commands().postSay(W.arrestingOfficer(),null,L("Well, he can always recall."),false,false);
+							CMLib.commands().postSay(W.arrestingOfficer(),null,L("Well, the prisoner can always recall."),false,false);
 						}
 						W.setTravelAttemptTime(0);
+						final Ability pA=W.criminal().fetchEffect("Prisoner");
+						if(pA!=null)
+							W.criminal().delEffect(pA);
 						fileAllWarrants(laws,W,W.criminal());
 						unCuff(W.criminal());
 						if(W.arrestingOfficer()!=null)
