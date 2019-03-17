@@ -456,7 +456,7 @@ public class StdCharClass implements CharClass
 					return false;
 				if((multiClassRule.equals("NO"))||(multiClassRule.equals("MULTI")))
 					return true;
-				if((multiClassRule.equals("SUB")||multiClassSecondRule.equals("BASE"))
+				if((multiClassRule.equals("SUB")||multiClassFirstRule.equals("SUB")||multiClassSecondRule.equals("BASE"))
 				&&(changeToBaseClassID.equals(changeToClassID)||(changeToSubClassRule==SubClassRule.ANY)))
 					return true;
 				if((multiClassSecondRule.equals("SUBONLY"))
