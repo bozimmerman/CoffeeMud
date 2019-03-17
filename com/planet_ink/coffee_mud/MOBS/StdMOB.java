@@ -4699,7 +4699,7 @@ public class StdMOB implements MOB
 			Pair<Clan,Integer> p=clans.get(clanID);
 			if(p==null)
 			{
-				final Clan C=CMLib.clans().getClan(clanID);
+				final Clan C=CMLib.clans().getClanAnyHost(clanID);
 				if(C==null)
 					Log.errOut("StdMOB","Unknown clan: "+clanID+" on "+Name()+" in "+CMLib.map().getDescriptiveExtendedRoomID(location()));
 				else
