@@ -110,8 +110,10 @@ public class Chant_SpeedTime extends Chant
 						if(M!=null)
 						{
 							if(M.getAgeMinutes()>=0)
+							{
 								oldAges.put(M, Long.valueOf(M.getAgeMinutes()));
-							M.setAgeMinutes(-1000);
+								M.setAgeMinutes(-1000);
+							}
 						}
 					}
 					for(int i=0;i<(adjustedLevel(mob,asLevel)/2);i++)
