@@ -207,7 +207,7 @@ public class Spell_WallOfStone extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				amountRemaining=mob.baseState().getHitPoints()/6;
+				amountRemaining=(mob.baseState().getHitPoints()/3)+(mob.phyStats().level()/3*(super.getXLEVELLevel(mob)));
 				final Item I=CMClass.getItem("GenItem");
 				I.setName(L("a wall of stone"));
 				I.setDisplayText(L("a mighty wall of stone has been erected here"));

@@ -218,7 +218,7 @@ public class Spell_WallOfIce extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				amountRemaining=20;
+				amountRemaining=20+(mob.phyStats().level()/3*(super.getXLEVELLevel(mob)));;
 				final Item I=CMClass.getItem("GenItem");
 				I.setName(L("a wall of ice"));
 				I.setDisplayText(L("a mighty wall of ice has been erected here"));
