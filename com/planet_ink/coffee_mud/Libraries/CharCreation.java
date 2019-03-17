@@ -2874,6 +2874,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 			statstr.append("^w"+CMStrings.padRight(L("STATS TOTAL"),15)+"^N: ^w"+total+"^N/^w"+(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)*6)+"^.^N");
 			session.println(statstr.toString());
+			if((qualifyingClassListV.size()==0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)))
+				qualifyingClassListV=classQualifies(mob,loginObj.theme);
 			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
 			&&(!mob.baseCharStats().getMyRace().classless())
 			&&(randomRoll || qualifyingClassListV.size()>0)

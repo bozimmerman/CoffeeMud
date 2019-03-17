@@ -118,6 +118,8 @@ public class DefaultFaction implements Faction, MsgListener
 	protected CList<Faction.FZapFactor>			factors			 = new SVector<Faction.FZapFactor>();
 	protected CMap<String,Double> 				relations		 = new SHashtable<String,Double>();
 	protected CList<Faction.FAbilityUsage>		abilityUsages	 = new SVector<Faction.FAbilityUsage>();
+	protected Map<String,Faction.FAbilityUsage> abilityUseCache	 = new STreeMap<String,Faction.FAbilityUsage>();
+	protected Set<String> 						abilityUseMisses = new STreeSet<String>();
 	protected CList<String>   					choices			 = new SVector<String>();
 	protected CList<Faction.FReactionItem>		reactions		 = new SVector<Faction.FReactionItem>();
 	protected CMap<String,CList<FReactionItem>>	reactionHash	 = new SHashtable<String,CList<Faction.FReactionItem>>();
@@ -517,6 +519,8 @@ public class DefaultFaction implements Faction, MsgListener
 		factors=new SVector<FZapFactor>();
 		relations=new SHashtable<String,Double>();
 		abilityUsages=new SVector<FAbilityUsage>();
+		abilityUseCache=new STreeMap<String,FAbilityUsage>();
+		abilityUseMisses=new STreeSet<String>();
 		reactions=new SVector<FReactionItem>();
 		reactionHash=new SHashtable<String,CList<FReactionItem>>();
 		for(final Enumeration<Object> e=alignProp.keys();e.hasMoreElements();)
@@ -1111,28 +1115,15 @@ public class DefaultFaction implements Faction, MsgListener
 		return (mob.fetchFaction(ID)!=Integer.MAX_VALUE);
 	}
 
-	@Override
-	public boolean hasUsage(final Ability A)
+	protected FAbilityUsage getAbilityUsage(final Ability A)
 	{
-		for(final FAbilityUsage usage : abilityUsages)
-		{
-			if(usage.possibleAbilityID()
-			&&(!usage.abilityFlags().equalsIgnoreCase(A.ID())))
-				continue;
-
-			if(usage.possibleAbilityID()
-			||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
-				&&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
-				&&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
-				&&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
-				return true;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean canUse(final MOB mob, final Ability A)
-	{
+		if(A==null)
+			return null;
+		if(abilityUseCache.containsKey(A.ID()))
+			return abilityUseCache.get(A.ID());
+		if(abilityUseMisses.contains(A.ID()))
+			return null;
+				
 		for(final FAbilityUsage usage : abilityUsages)
 		{
 			if(usage.possibleAbilityID()
@@ -1145,11 +1136,29 @@ public class DefaultFaction implements Faction, MsgListener
 				&&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
 				&&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
 			{
-				final int faction=mob.fetchFaction(ID);
-				if((faction < usage.low()) || (faction > usage.high()))
-					return false;
+				abilityUseCache.put(A.ID(), usage);
+				return usage;
 			}
 		}
+		abilityUseMisses.add(A.ID());
+		return null;
+	}
+	
+	@Override
+	public boolean hasUsage(final Ability A)
+	{
+		return getAbilityUsage(A) != null;
+	}
+
+	@Override
+	public boolean canUse(final MOB mob, final Ability A)
+	{
+		final FAbilityUsage usage = this.getAbilityUsage(A);
+		if(usage == null)
+			return true;
+		final int faction=mob.fetchFaction(ID);
+		if((faction < usage.low()) || (faction > usage.high()))
+			return false;
 		return true;
 	}
 
@@ -1639,30 +1648,20 @@ public class DefaultFaction implements Faction, MsgListener
 	{
 		final StringBuffer rangeStr=new StringBuffer();
 		final HashSet<String> namesAdded=new HashSet<String>();
-		for(final FAbilityUsage usage : abilityUsages)
+		final FAbilityUsage usage = getAbilityUsage(A);
+		if(usage != null)
 		{
-			if(usage.possibleAbilityID()
-			&&(!usage.abilityFlags().equalsIgnoreCase(A.ID())))
-				continue;
-
-			if(usage.possibleAbilityID()
-			||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
-				&&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
-				&&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
-				&&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
+			for(final Enumeration<FRange> e=ranges();e.hasMoreElements();)
 			{
-				for(final Enumeration<FRange> e=ranges();e.hasMoreElements();)
+				final FRange R=e.nextElement();
+				if((((R.high()<=usage.high())&&(R.high()>=usage.low()))
+					||((R.low()>=usage.low()))&&(R.low()<=usage.high()))
+				&&(!namesAdded.contains(R.name())))
 				{
-					final FRange R=e.nextElement();
-					if((((R.high()<=usage.high())&&(R.high()>=usage.low()))
-						||((R.low()>=usage.low()))&&(R.low()<=usage.high()))
-					&&(!namesAdded.contains(R.name())))
-					{
-						namesAdded.add(R.name());
-						if(rangeStr.length()>0)
-							rangeStr.append(", ");
-						rangeStr.append(R.name());
-					}
+					namesAdded.add(R.name());
+					if(rangeStr.length()>0)
+						rangeStr.append(", ");
+					rangeStr.append(R.name());
 				}
 			}
 		}
@@ -2299,6 +2298,7 @@ public class DefaultFaction implements Faction, MsgListener
 					  : new DefaultFaction.DefaultFactionAbilityUsage(key);
 		abilityUsages.add(usage);
 		abilityUsages.trimToSize();
+		abilityUseCache.clear();
 		return usage;
 	}
 
@@ -2308,6 +2308,7 @@ public class DefaultFaction implements Faction, MsgListener
 		if(!abilityUsages.remove(usage))
 			return false;
 		abilityUsages.trimToSize();
+		abilityUseCache.clear();
 		return true;
 	}
 
@@ -2985,6 +2986,7 @@ public class DefaultFaction implements Faction, MsgListener
 		factors.clear();
 		relations.clear();
 		abilityUsages.clear();
+		abilityUseCache.clear();
 		choices.clear();
 		reactions.clear();
 		reactionHash.clear();
