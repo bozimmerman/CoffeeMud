@@ -355,6 +355,15 @@ public class Age extends StdAbility
 							if(STAT!=null)
 								STAT.setMiscText("CHA=10 CON=7 DEX=3 INT=3 STR=2 WIS=2");
 						}
+						else
+						{
+							Ability A1=babe.fetchEffect("Prop_SafePet");
+							if(A1==null)
+							{
+								A1=CMClass.getAbility("Prop_SafePet");
+								babe.addNonUninvokableEffect(A);
+							}
+						}
 						babe.text();
 						babe.bringToLife(R,true);
 						CMLib.beanCounter().clearZeroMoney(babe,null);
@@ -753,7 +762,8 @@ public class Age extends StdAbility
 			if(getMyRace()==null)
 				return;
 			babe.setAttribute(MOB.Attrib.AUTOASSIST,true);
-			if(ellapsed>=myRace.getAgingChart()[2])
+			if((ellapsed>=myRace.getAgingChart()[2])
+			&&(babe.fetchBehavior("MudChat")==null)) // this is how we tell if we've already done this
 			{
 				final Room R=CMLib.map().roomLocation(affected);
 				if(R!=null)
@@ -778,7 +788,7 @@ public class Age extends StdAbility
 					final Behavior B=CMClass.getBehavior("MudChat");
 					if(B!=null)
 						babe.addBehavior(B);
-					babe.delEffect(this);
+					//babe.delEffect(this);
 					babe.recoverCharStats();
 					babe.recoverPhyStats();
 					babe.recoverMaxState();
@@ -786,7 +796,8 @@ public class Age extends StdAbility
 				}
 			}
 			else
-			if(ellapsed>=myRace.getAgingChart()[3])
+			if((ellapsed>=myRace.getAgingChart()[3])
+			&&(babe.fetchEffect("Prop_SafePet")!=null)) // and this is how we tell if we've already done THIS!)
 			{
 				final Ability A=babe.fetchEffect("Prop_SafePet");
 				if(A!=null)
@@ -831,7 +842,9 @@ public class Age extends StdAbility
 				if(A!=null)
 					babe.delEffect(A);
 				A=babe.fetchEffect(ID());
-				babe.delEffect(A);
+				if(A!=null)
+					babe.delEffect(A);
+				babe.delEffect(this);
 				babe.recoverCharStats();
 				babe.recoverPhyStats();
 				babe.recoverMaxState();
