@@ -333,9 +333,8 @@ public class Emoter extends ActiveTicker
 				{
 					final Room R=r.nextElement();
 					// if a tree falls in a forest...
-					if((R.numInhabitants()==0)||(R.numPCInhabitants()==0))
-						return true;
-					emoteHere(R,emoter,emote,null,false);
+					if((R.numInhabitants()>0)&&(R.numPCInhabitants()>0))
+						emoteHere(R,emoter,emote,null,false);
 				}
 				emoter.destroy();
 				return true;
@@ -414,13 +413,18 @@ public class Emoter extends ActiveTicker
 							final String inDir=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
 									CMLib.directions().getShipInDirectionName(Directions.getOpDirectionCode(d)):
 										CMLib.directions().getInDirectionName(Directions.getOpDirectionCode(d));
+							if(emoter == null)
+							{
+								emoter=CMClass.getFactoryMOB();
+								killEmoter=true;
+							}
 							emoter.setName(L("something @x1",inDir));
 							emoteHere(R,emoter,emote,null,true);
 						}
 					}
 				}
 
-				if(killEmoter)
+				if(killEmoter && (emoter != null))
 					emoter.destroy();
 			}
 		}
