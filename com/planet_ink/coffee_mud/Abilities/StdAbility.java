@@ -1610,7 +1610,7 @@ public class StdAbility implements Ability
 				else
 				{
 					consumed=Arrays.copyOf(consumed, consumed.length);
-					final double pctPenalty = CMath.div(CMProps.getIntVar(CMProps.Int.MANACOMPOUND_AMTPENALTY), 100.0);
+					final double pctPenalty = CMath.div(CMProps.getIntVar(CMProps.Int.MANACOMPOUND_PCTPENALTY), 100.0);
 					for(int usageIndex = 0 ; usageIndex < Ability.USAGEINDEX_TOTAL; usageIndex++)
 					{
 						if(consumed[usageIndex]>0)
