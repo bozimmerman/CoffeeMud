@@ -44,8 +44,8 @@ public class Factions extends StdLibrary implements FactionManager
 		return "Factions";
 	}
 
-	public SHashtable<String, Faction>	factionMap			= new SHashtable<String, Faction>();
-	public SHashtable<String, FRange>	hashedFactionRanges	= new SHashtable<String, FRange>();
+	public SHashtable<String, Faction>		factionMap			= new SHashtable<String, Faction>();
+	public SHashtable<String, FRange>		hashedFactionRanges	= new SHashtable<String, FRange>();
 	public Map<Faction.Align, List<FRange>>	hashedFactionAligns	= new SHashtable<Faction.Align, List<FRange>>();
 
 	@Override
