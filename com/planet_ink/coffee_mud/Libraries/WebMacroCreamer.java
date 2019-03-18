@@ -324,6 +324,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						i += (foundMacro.length() + 2);
 					else
 					if ((foundMacro.startsWith("if?"))
+					|| (foundMacro.startsWith("elif?"))
 					|| (foundMacro.equalsIgnoreCase("else"))
 					|| (foundMacro.equalsIgnoreCase("loop"))
 					|| (foundMacro.equalsIgnoreCase("back"))
@@ -381,17 +382,17 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							Log.debugOut("ProcessHTTPRequest", "Found macro: " + foundMacro);
 						if (foundMacro.startsWith("if?") || foundMacro.startsWith("IF?"))
 						{
-							final int l = foundMacro.length() + 2;
-							final int v = myEndif(s, i + l, lastFoundMacro);
-							if (v < 0)
+							final int macroLen = foundMacro.length() + 2;
+							final int endIfIndex = myEndif(s, i + macroLen, lastFoundMacro);
+							if (endIfIndex < 0)
 							{
 								if (debugMacros)
 									Log.debugOut("ProcessHTTPRequest", "if without endif");
-								s.replace(i, i + l, "[if without endif]");
+								s.replace(i, i + macroLen, "[if without endif]");
 							}
 							else
 							{
-								final int v2 = myElse(s, i + l, v, lastFoundMacro);
+								final int elseIndex = myElse(s, i + macroLen, endIfIndex, lastFoundMacro);
 								foundMacro = foundMacro.substring(3);
 								try
 								{
@@ -410,20 +411,25 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 									{
 										if (debugMacros)
 											Log.debugOut("ProcessHTTPRequest", "Result IF macro: TRUE");
-										if (v2 >= 0)
-											s.replace(v2, v + 7, "");
+										if (elseIndex >= 0)
+											s.replace(elseIndex, endIfIndex + 7, "");
 										else
-											s.replace(v, v + 7, "");
-										s.replace(i, i + l, "");
+											s.replace(endIfIndex, endIfIndex + 7, "");
+										s.replace(i, i + macroLen, "");
 									}
 									else
 									{
 										if (debugMacros)
 											Log.debugOut("ProcessHTTPRequest", "Result IF macro: FALSE");
-										if (v2 >= 0)
-											s.replace(i, v2 + 6, "");
+										if (elseIndex >= 0)
+										{
+											if(Character.toLowerCase(s.charAt(elseIndex+3))=='i')
+												s.replace(i--, elseIndex, "");
+											else
+												s.replace(i, elseIndex + 6, "");
+										}
 										else
-											s.replace(i, v + 7, "");
+											s.replace(i, endIfIndex + 7, "");
 									}
 								}
 								catch (final HTTPRedirectException e)
@@ -515,6 +521,68 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 								s.replace(i, i + l, o.toString());
 							else
 								s.delete(i, i + l);
+							continue;
+						}
+						else
+						if (foundMacro.startsWith("elif?") || foundMacro.startsWith("ELIF?"))
+						{
+							final int macroLen = foundMacro.length() + 2;
+							final int endIfIndex = myEndif(s, i + macroLen, lastFoundMacro);
+							if (endIfIndex < 0)
+							{
+								if (debugMacros)
+									Log.debugOut("ProcessHTTPRequest", "if without endif");
+								s.replace(i, i + macroLen, "[if without endif]");
+							}
+							else
+							{
+								final int elseIndex = myElse(s, i + macroLen, endIfIndex, lastFoundMacro);
+								foundMacro = foundMacro.substring(5);
+								try
+								{
+									String compare = "true";
+									if (foundMacro.startsWith("!"))
+									{
+										foundMacro = foundMacro.substring(1);
+										compare = "false";
+									}
+									if (debugMacros)
+										Log.debugOut("ProcessHTTPRequest", "Found ELIF macro: " + foundMacro);
+									final String q = runMacro(request, foundMacro, lastFoundMacro, isAdminServer);
+									if (debugMacros)
+										Log.debugOut("ProcessHTTPRequest", "Ran ELIF macro: " + foundMacro + "=" + q);
+									if ((q != null) && (q.equalsIgnoreCase(compare)))
+									{
+										if (debugMacros)
+											Log.debugOut("ProcessHTTPRequest", "Result ELIF macro: TRUE");
+										if (elseIndex >= 0)
+											s.replace(elseIndex, endIfIndex + 7, "");
+										else
+											s.replace(endIfIndex, endIfIndex + 7, "");
+										s.replace(i, i + macroLen, "");
+									}
+									else
+									{
+										if (debugMacros)
+											Log.debugOut("ProcessHTTPRequest", "Result ELIF macro: FALSE");
+										if (elseIndex >= 0)
+										{
+											if(Character.toLowerCase(s.charAt(elseIndex+3))=='i')
+												s.replace(i--, elseIndex, "");
+											else
+												s.replace(i, elseIndex + 6, "");
+										}
+										else
+											s.replace(i, endIfIndex + 7, "");
+									}
+								}
+								catch (final HTTPRedirectException e)
+								{
+									if (debugMacros)
+										Log.debugOut("ProcessHTTPRequest", "elif exception: " + e.getMessage());
+									redirectTo = e.getMessage();
+								}
+							}
 							continue;
 						}
 						else
@@ -836,6 +904,10 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 						if (endifsToFind <= 0)
 							return -1;
 					}
+					else
+					if ((foundMacro.startsWith("elif?"))
+					&& (endifsToFind == 1))
+						return i;
 					else
 					if ((foundMacro.equalsIgnoreCase("else"))
 					&& (endifsToFind == 1))

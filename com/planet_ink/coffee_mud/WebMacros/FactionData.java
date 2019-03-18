@@ -61,7 +61,12 @@ public class FactionData extends StdWebMacro
 
 		String last=httpReq.getUrlParameter("FACTION");
 		if(last==null)
-			return " @break@";
+		{
+			if(parms.containsKey("FACTION"))
+				last=parms.get("FACTION");
+			if(last == null)
+				return " @break@";
+		}
 		if(last.length()>0)
 		{
 			final String newFactionID=httpReq.getUrlParameter("NEWFACTION");

@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2006-2019 Bo Zimmerman
+   Copyright 2019-2019 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class FactionID extends StdWebMacro
+public class CheckFactionLoaded extends StdWebMacro
 {
 	@Override
 	public String name()
@@ -50,11 +50,29 @@ public class FactionID extends StdWebMacro
 		{
 			if(parms.containsKey("FACTION"))
 				last=parms.get("FACTION");
-			if(last == null)
-				return " @break@";
 		}
-		if(last.length()>0)
-			return clearWebMacros(last);
-		return "";
+		if(last != null)
+			parms.put(last, last);
+		for(String factionID : parms.keySet())
+		{
+			boolean not;
+			if(factionID.startsWith("!"))
+			{
+				factionID=factionID.substring(1);
+				not=true;
+			}
+			else
+				not=false;
+			final boolean found=CMLib.factions().isFactionLoaded(factionID);
+			if(!found)
+			{
+				if(!not)
+					return "false";
+			}
+			else
+			if(not)
+				return "false";
+		}
+		return "true";
 	}
 }

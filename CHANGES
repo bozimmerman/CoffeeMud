@@ -60,6 +60,7 @@
   59. New optional chants: White Moon, Purple Moon, Natural Order
   60. New property: Prop_ShortEffects
   61. New optional skill mana usage system: MANACOMPOUND - see ini file or mudgrinder
+  62. WebMacroCreamer now supports @elif?...@ syntax. Also new Macro: CheckFactionLoaded
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

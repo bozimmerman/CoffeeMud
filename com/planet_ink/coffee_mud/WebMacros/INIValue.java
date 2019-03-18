@@ -85,6 +85,203 @@ public class INIValue extends StdWebMacro
 		return "";
 	}
 
+	protected String getFinalValue(final Map<String,String> parms, final CMProps page, final String key, final String mask)
+	{
+		if(parms.containsKey("VALUE"))
+			return clearWebMacros(page.getStr(key));
+		if(parms.containsKey("INIHELP"))
+		{
+			if(parms.containsKey("NOCR"))
+				return clearWebMacros(CMStrings.replaceAll(getHelpFor(key,mask),"<BR>","&nbsp;"));
+			else
+				return clearWebMacros(getHelpFor(key,mask));
+		}
+		String retVal="";
+		if(parms.containsKey("ISNULL"))
+		{
+			if((page.getStr(key) == null) || (page.getStr(key).trim().length()==0))
+				retVal="true";
+			else
+				return "false";
+		}
+		if(parms.containsKey("ISNOTNULL"))
+		{
+			if((page.getStr(key) != null) && (page.getStr(key).trim().length()>0))
+				retVal="true";
+			else
+				return "false";
+		}
+		if(parms.containsKey("CONTAINS"))
+		{
+			final String iniVal=page.getStr(key);
+			if((iniVal != null)&&(iniVal.length()>0))
+			{
+				final String val=parms.get("CONTAINS");
+				if(iniVal.indexOf(val)>0)
+					retVal="true";
+				else
+					return "false";
+			}
+			else
+				return "false";
+		}
+		if(parms.containsKey("NOTCONTAINS"))
+		{
+			final String iniVal=page.getStr(key);
+			if((iniVal != null)&&(iniVal.length()>0))
+			{
+				final String val=parms.get("NOTCONTAINS");
+				if(iniVal.indexOf(val)>0)
+					return "false";
+				else
+					retVal="true";
+			}
+			else
+				retVal="true";
+		}
+		if(parms.containsKey("CONTAINSIGNORECASE"))
+		{
+			final String iniVal=page.getStr(key);
+			if((iniVal != null)&&(iniVal.length()>0))
+			{
+				final String val=parms.get("CONTAINSIGNORECASE");
+				if(iniVal.toLowerCase().indexOf(val.toLowerCase())>0)
+					retVal="true";
+				else
+					return "false";
+			}
+			else
+				return "false";
+		}
+		if(parms.containsKey("NOTCONTAINSIGNORECASE"))
+		{
+			final String iniVal=page.getStr(key);
+			if((iniVal != null)&&(iniVal.length()>0))
+			{
+				final String val=parms.get("NOTCONTAINSIGNORECASE");
+				if(iniVal.toLowerCase().indexOf(val.toLowerCase())>0)
+					return "false";
+				else
+					retVal="true";
+			}
+			else
+				retVal="true";
+		}
+		if(parms.containsKey("EQUALS"))
+		{
+			final String iniVal=page.getStr(key);
+			if(iniVal != null)
+			{
+				final String val=parms.get("EQUALS");
+				if(iniVal.equals(val))
+					retVal="true";
+				else
+					return "false";
+			}
+			else
+				return "false";
+		}
+		if(parms.containsKey("NOTEQUALS"))
+		{
+			final String iniVal=page.getStr(key);
+			if(iniVal != null)
+			{
+				final String val=parms.get("NOTEQUALS");
+				if(iniVal.equals(val))
+					return "false";
+				else
+					retVal="true";
+			}
+			else
+				retVal="true";
+		}
+		if(parms.containsKey("EQUALSIGNORECASE"))
+		{
+			final String iniVal=page.getStr(key);
+			if(iniVal != null)
+			{
+				final String val=parms.get("EQUALSIGNORECASE");
+				if(iniVal.equalsIgnoreCase(val))
+					retVal="true";
+				else
+					return "false";
+			}
+			else
+				return "false";
+		}
+		if(parms.containsKey("NOTEQUALSIGNORECASE"))
+		{
+			final String iniVal=page.getStr(key);
+			if(iniVal != null)
+			{
+				final String val=parms.get("NOTEQUALSIGNORECASE");
+				if(iniVal.equalsIgnoreCase(val))
+					return "false";
+				else
+					retVal="true";
+			}
+			else
+				retVal="true";
+		}
+		if(parms.containsKey("GREATERTHAN"))
+		{
+			final String iniVal=page.getStr(key);
+			if((iniVal != null)&&(iniVal.length()>0))
+			{
+				final String val=parms.get("GREATERTHAN");
+				if(CMath.s_double(iniVal)>CMath.s_double(val))
+					retVal="true";
+				else
+					return "false";
+			}
+			else
+				return "false";
+		}
+		if(parms.containsKey("NOTGREATERTHAN"))
+		{
+			final String iniVal=page.getStr(key);
+			if((iniVal != null)&&(iniVal.length()>0))
+			{
+				final String val=parms.get("NOTGREATERTHAN");
+				if(CMath.s_double(iniVal)>CMath.s_double(val))
+					return "false";
+				else
+					retVal="true";
+			}
+			else
+				retVal="true";
+		}
+		if(parms.containsKey("LESSTHAN"))
+		{
+			final String iniVal=page.getStr(key);
+			if((iniVal != null)&&(iniVal.length()>0))
+			{
+				final String val=parms.get("LESSTHAN");
+				if(CMath.s_double(iniVal)<CMath.s_double(val))
+					retVal="true";
+				else
+					return "false";
+			}
+			else
+				return "false";
+		}
+		if(parms.containsKey("NOTLESSTHAN"))
+		{
+			final String iniVal=page.getStr(key);
+			if((iniVal != null)&&(iniVal.length()>0))
+			{
+				final String val=parms.get("NOTLESSTHAN");
+				if(CMath.s_double(iniVal)<CMath.s_double(val))
+					return "false";
+				else
+					retVal="true";
+			}
+			else
+				retVal="true";
+		}
+		return retVal;
+	}
+
 	@Override
 	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
@@ -168,26 +365,11 @@ public class INIValue extends StdWebMacro
 				if(key.startsWith(mask.substring(0,mask.length()-1)))
 				{
 					httpReq.addFakeUrlParameter("INI",key);
-					if(parms.containsKey("VALUE"))
-						return clearWebMacros(page.getStr(key));
-					else
-					if(parms.containsKey("INIHELP"))
-						return clearWebMacros(getHelpFor(key,mask));
-					return "";
+					return getFinalValue(parms, page, mask, mask);
 				}
 			}
 		}
 		httpReq.addFakeUrlParameter("INI",mask);
-		if(parms.containsKey("VALUE"))
-			return clearWebMacros(page.getStr(mask));
-		else
-		if(parms.containsKey("INIHELP"))
-		{
-			if(parms.containsKey("NOCR"))
-				return clearWebMacros(CMStrings.replaceAll(getHelpFor(mask,mask),"<BR>","&nbsp;"));
-			else
-				return clearWebMacros(getHelpFor(mask,mask));
-		}
-		return "";
+		return getFinalValue(parms, page, mask, mask);
 	}
 }
