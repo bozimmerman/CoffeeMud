@@ -1611,6 +1611,7 @@ public class StdAbility implements Ability
 				{
 					consumed=Arrays.copyOf(consumed, consumed.length);
 					final double pctPenalty = CMath.div(CMProps.getIntVar(CMProps.Int.MANACOMPOUND_PCTPENALTY), 100.0);
+					final double amtPenalty = CMProps.getIntVar(CMProps.Int.MANACOMPOUND_AMTPENALTY);
 					for(int usageIndex = 0 ; usageIndex < Ability.USAGEINDEX_TOTAL; usageIndex++)
 					{
 						if(consumed[usageIndex]>0)
@@ -1620,7 +1621,7 @@ public class StdAbility implements Ability
 							{
 								if(newAmt<Short.MAX_VALUE)
 								{
-									newAmt+=CMProps.getIntVar(CMProps.Int.MANACOMPOUND_AMTPENALTY);
+									newAmt+=amtPenalty;
 									newAmt+=CMath.mul(newAmt, pctPenalty);
 								}
 							}
