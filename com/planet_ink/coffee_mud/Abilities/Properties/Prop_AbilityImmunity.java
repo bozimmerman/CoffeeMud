@@ -109,11 +109,11 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 			||(owner && (affected instanceof Item) && (msg.target()==((Item)affected).owner()))
 			||(owner && (affected instanceof Item) && (msg.target()==((Item)affected).owner()) && (!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))))
 		{
-			final Ability d = (Ability)msg.tool();
+			final Ability A = (Ability)msg.tool();
 			for(int i = 0; i < diseases.size(); i++)
 			{
-				if((CMLib.english().containsString(d.ID(),diseases.get(i)))
-				||(CMLib.english().containsString(d.name(),diseases.get(i))))
+				if((CMLib.english().containsString(A.ID(),diseases.get(i)))
+				||(CMLib.english().containsString(A.name(),diseases.get(i))))
 				{
 					if(msg.target() instanceof MOB)
 						((MOB)msg.target()).tell(L("You are immune to @x1.",msg.tool().name()));

@@ -706,9 +706,11 @@ public class PlanarAbility extends StdAbility
 						{
 						case 1:
 							reEffect(M,"Prop_Adjuster", "multiplych=true hitpoints+300 multiplyph=true attack+150 damage+150 armor+115 ALLSAVES+15");
+							reEffect(M,"Prop_ShortEffects", "");
 							break;
 						default:
 							reEffect(M,"Prop_Adjuster", "multiplych=true hitpoints+600 multiplyph=true attack+150 damage+150 armor+115 ALLSAVES+15");
+							reEffect(M,"Prop_ShortEffects", "");
 							break;
 						}
 						reEffect(M,"Prop_ModExperience","*2");

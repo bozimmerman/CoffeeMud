@@ -7,7 +7,7 @@
   6. New standard races: Pegasus, Pegacorn
   7. Improvements to glassblowing and boatwright recipes.
   8. Journal messages can now be forwarded to the senders game mailbox, even if smtp server isn't running.
-  9. Can now use CREATE A CAT to quickly generate a GenMOB of a particular race.
+  9. Can now use CREATE A CAT/COW to quickly generate a GenMOB of a particular race.
   10. Items in npc mob inventory can now be set to populate only at boot time.
   11. Private property left untampered for mud-months will get increasingly "Dusty". Use CLEAN.
   12. Channel backlogs can now be managed from the Journal Browser in the MUDGrinder
@@ -58,6 +58,7 @@
   57. New optional prayers: Hunt Law, Hunt Chaos, Protection from Chaos, Protection from Law, 
   58. New optional prayers: Sense Chaos, Sense Law, Taint of Chaos, Word of Law, Word of Chaos  
   59. New optional chants: White Moon, Purple Moon, Natural Order
+  60. New property: Prop_ShortEffects
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.
