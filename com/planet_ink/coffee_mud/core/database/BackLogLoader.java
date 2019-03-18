@@ -221,7 +221,7 @@ public class BackLogLoader
 		try
 		{
 			final int number = numToReturn + newestToSkip;
-			final int oldest = number >= counter ? 1 : (counter - number);
+			final int oldest = number >= counter ? 1 : (counter - number + 1);
 			final int newest = newestToSkip >= counter ? counter : (counter - newestToSkip);
 			D=DB.DBFetch();
 			final StringBuilder sql=new StringBuilder("SELECT CMDATA,CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"'");
