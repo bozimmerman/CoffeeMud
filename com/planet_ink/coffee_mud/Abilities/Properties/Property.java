@@ -665,7 +665,7 @@ public class Property implements Ability
 	{
 	}
 
-	private static final int[]	cost	= new int[3];
+	private static final int[]	cost	= new int[Ability.CACHEINDEX_TOTAL];
 
 	@Override
 	public int[] usageCost(final MOB mob, final boolean ignoreCostOverride)

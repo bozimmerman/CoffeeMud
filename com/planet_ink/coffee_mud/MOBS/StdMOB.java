@@ -121,7 +121,7 @@ public class StdMOB implements MOB
 	/* containers of items and attributes */
 	protected SVector<Item>					inventory		= new SVector<Item>(1);
 	protected CMUniqSortSVec<Ability>		abilitys		= new CMUniqSortSVec<Ability>(1);
-	protected int[]							abilityUseTrig	= new int[3];
+	protected int[]							abilityUseTrig	= new int[Ability.USAGEINDEX_TOTAL];
 	protected STreeMap<String, int[][]>		abilityUseCache	= new STreeMap<String, int[][]>();
 	protected STreeMap<String, Integer>		expertises		= new STreeMap<String, Integer>();
 	protected SVector<Ability>				affects			= new SVector<Ability>(1);
@@ -641,7 +641,7 @@ public class StdMOB implements MOB
 
 		inventory= new SVector<Item>();
 		abilitys= new CMUniqSortSVec<Ability>();
-		abilityUseTrig = new int[3];
+		abilityUseTrig = new int[Ability.USAGEINDEX_TOTAL];
 		abilityUseCache= new STreeMap<String,int[][]>();
 		behaviors= new CMUniqSortSVec<Behavior>();
 		tattoos	= new CMUniqNameSortSVec<Tattoo>();

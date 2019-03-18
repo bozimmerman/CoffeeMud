@@ -854,7 +854,7 @@ public class WaterCurrents extends ActiveTicker
 		{
 		}
 
-		protected static final int[]	cost	= new int[3];
+		protected static final int[]	cost	= new int[Ability.CACHEINDEX_TOTAL];
 
 		@Override
 		public int[] usageCost(final MOB mob, final boolean ignoreClassOverride)

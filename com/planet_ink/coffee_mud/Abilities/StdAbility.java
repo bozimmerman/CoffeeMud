@@ -55,7 +55,7 @@ public class StdAbility implements Ability
 	protected long 				lastCastHelp	= 0;
 	protected boolean 			amDestroyed		= false;
 
-	private static final int[] STATIC_USAGE_NADA= new int[3];
+	private static final int[] STATIC_USAGE_NADA= new int[Ability.USAGEINDEX_TOTAL];
 
 	public StdAbility()
 	{
@@ -1293,7 +1293,7 @@ public class StdAbility implements Ability
 
 	protected int[] buildCostArray(final MOB mob, final int consumed, int minimum)
 	{
-		final int[] usageCosts=new int[3];
+		final int[] usageCosts=new int[Ability.USAGEINDEX_TOTAL];
 		int costDown=0;
 		if(consumed>2)
 		{
@@ -1396,7 +1396,7 @@ public class StdAbility implements Ability
 			final Map<String,int[]> overrideCache=getHardOverrideManaCache();
 			if(!overrideCache.containsKey(ID()))
 			{
-				final int[] usage=new int[3];
+				final int[] usage=new int[Ability.USAGEINDEX_TOTAL];
 				Arrays.fill(usage,overrideMana());
 				overrideCache.put(ID(), usage);
 			}
@@ -1592,7 +1592,45 @@ public class StdAbility implements Ability
 				return false;
 			}
 
-			final int[] consumed=usageCost(mob,false);
+			int[] consumed=usageCost(mob,false);
+			final int[] timeCache;
+			final int nowLSW = (int)(System.currentTimeMillis()&0x7FFFFFFF);
+			final int compoundTicks=CMProps.getIntVar(CMProps.Int.MANACOMPOUND_TICKS);
+			if((compoundTicks > 0)
+			&&(consumed != STATIC_USAGE_NADA))
+			{
+				final int[][] abilityUsageCache=mob.getAbilityUsageCache(ID());
+				int[] cache = abilityUsageCache[Ability.CACHEINDEX_LASTTIME];
+				if(cache == null)
+					abilityUsageCache[Ability.CACHEINDEX_LASTTIME] = new int[USAGEINDEX_TOTAL];
+				timeCache=abilityUsageCache[Ability.CACHEINDEX_LASTTIME];
+				final int numTicksSinceLastCast=(int)((nowLSW-timeCache[USAGEINDEX_TIMELSW]) / CMProps.getTickMillis());
+				if(numTicksSinceLastCast >= compoundTicks)
+					timeCache[USAGEINDEX_COUNT]=0;
+				else
+				{
+					consumed=Arrays.copyOf(consumed, consumed.length);
+					final double pctPenalty = CMath.div(CMProps.getIntVar(CMProps.Int.MANACOMPOUND_AMTPENALTY), 100.0);
+					for(int usageIndex = 0 ; usageIndex < Ability.USAGEINDEX_TOTAL; usageIndex++)
+					{
+						if(consumed[usageIndex]>0)
+						{
+							double newAmt=consumed[usageIndex];
+							for(int ct=0;ct<timeCache[USAGEINDEX_COUNT];ct++)
+							{
+								if(newAmt<Short.MAX_VALUE)
+								{
+									newAmt+=CMProps.getIntVar(CMProps.Int.MANACOMPOUND_AMTPENALTY);
+									newAmt+=CMath.mul(newAmt, pctPenalty);
+								}
+							}
+							consumed[usageIndex]=(int)Math.round(Math.ceil(newAmt));
+						}
+					}
+				}
+			}
+			else
+				timeCache=null;
 			if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 			{
 				if(mob.maxState().getMana()==consumed[Ability.USAGEINDEX_MANA])
@@ -1634,6 +1672,11 @@ public class StdAbility implements Ability
 			}
 			if(!checkComponents(mob))
 				return false;
+			if(timeCache!=null)
+			{
+				timeCache[USAGEINDEX_COUNT]++;
+				timeCache[USAGEINDEX_TIMELSW]=nowLSW;
+			}
 			mob.curState().adjMana(-consumed[0],mob.maxState());
 			mob.curState().adjMovement(-consumed[1],mob.maxState());
 			mob.curState().adjHitPoints(-consumed[2],mob.maxState());

@@ -608,7 +608,9 @@ public interface Ability extends Environmental
 	/** index into internal cache used by usageCost(MOB,boolean) @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
 	public final static int CACHEINDEX_EXPERTISE=2;
 	/** index into internal cache used by usageCost(MOB,boolean) @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
-	public final static int CACHEINDEX_TOTAL=3;
+	public final static int CACHEINDEX_LASTTIME=3;
+	/** index into internal cache used by usageCost(MOB,boolean) @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
+	public final static int CACHEINDEX_TOTAL=4;
 
 	/** Constant for overrideMana to denote that the skill uses all of a players mana @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
 	public final static int COST_ALL=Integer.MAX_VALUE;
@@ -623,6 +625,12 @@ public interface Ability extends Environmental
 	public final static int USAGEINDEX_MOVEMENT=1;
 	/** index into usageCost(MOB,boolean) array for the amount of hp this skill costs @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
 	public final static int USAGEINDEX_HITPOINTS=2;
+	/** index into usageCost(MOB,boolean) array index for last time used @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
+	public final static int USAGEINDEX_TIMELSW=0;
+	/** index into usageCost(MOB,boolean) array index for counts used @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
+	public final static int USAGEINDEX_COUNT=1;
+	/** index into usageCost(MOB,boolean) array sized @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#usageCost(MOB,boolean) */
+	public final static int USAGEINDEX_TOTAL=3;
 
 	/** constant returned by classificationCode() designating this ability as a Skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int ACODE_SKILL=0;
