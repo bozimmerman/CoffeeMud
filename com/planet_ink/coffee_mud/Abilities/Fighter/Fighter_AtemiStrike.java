@@ -100,6 +100,9 @@ public class Fighter_AtemiStrike extends MonkSkill
 		return USAGE_MOVEMENT;
 	}
 
+	protected volatile int tickUp = 0;
+	protected volatile int tickTarget = 0;
+
 	@Override
 	public void unInvoke()
 	{
@@ -112,11 +115,20 @@ public class Fighter_AtemiStrike extends MonkSkill
 
 		if(canBeUninvoked())
 		{
-			if(!mob.amDead())
+			if((!mob.amDead())
+			&&((tickTarget<=0)||(tickUp==0)||(tickUp>=tickTarget)))
 				CMLib.combat().postDeath(invoker,mob,null);
 		}
 	}
 
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		tickUp++;
+		return true;
+	}
 	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
@@ -197,7 +209,11 @@ public class Fighter_AtemiStrike extends MonkSkill
 				if(msg.value()<=0)
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> do(es) not look well."));
-					success=maliciousAffect(mob,target,asLevel,((2*getXLEVELLevel(mob))+mob.phyStats().level())/3,-1)!=null;
+					final int ticks = 20 - (getXLEVELLevel(mob)/2);
+					final Fighter_AtemiStrike strike = (Fighter_AtemiStrike)maliciousAffect(mob,target,asLevel,ticks,-1);
+					strike.tickUp=0;
+					strike.tickTarget = ticks/2;
+					success=strike!=null;
 				}
 			}
 		}
