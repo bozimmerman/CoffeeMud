@@ -87,6 +87,10 @@ public class Emote extends StdCommand
 		else
 			combinedCommands=" "+combinedCommands.trim();
 		Environmental target=null;
+		if(mob.isPlayer()
+		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED)
+		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER))
+			combinedCommands=CMLib.coffeeFilter().secondaryUserInputFilter(combinedCommands);
 		int x=combinedCommands.indexOf('/');
 		while(x>0)
 		{
@@ -115,10 +119,6 @@ public class Emote extends StdCommand
 			}
 			x=combinedCommands.indexOf('/',x+1);
 		}
-		if(mob.isPlayer()
-		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED)
-		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER))
-			combinedCommands=CMLib.coffeeFilter().secondaryUserInputFilter(combinedCommands);
 		final String emote="^E<S-NAME>"+combinedCommands+" ^?";
 		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_EMOTE,emote);
 		if(R.okMessage(mob,msg))
