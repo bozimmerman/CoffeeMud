@@ -114,6 +114,9 @@ public class Spell_FutureDeath extends Spell
 						@Override
 						public void run()
 						{
+							if((target.amDead())||(target.amDestroyed()))
+								return;
+
 							if(CMLib.dice().rollPercentage() <= target.charStats().getSave(CharStats.STAT_SAVE_MIND))
 							{
 								target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> manage(s) to shake off the nightmare."));
