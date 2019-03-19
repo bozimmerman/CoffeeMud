@@ -159,15 +159,37 @@ public class Prop_Artifact extends Property
 		super.unInvoke();
 	}
 
+	protected String identifyStr(final Environmental myHost)
+	{
+		final String destroyed = ((myHost != null)?(myHost.amDestroyed()?" (Host Destroyed) ":""):"");
+		if(!(myHost instanceof Item))
+		{
+			if(myHost == null)
+				return "null";
+			return destroyed+" ("+myHost.ID()+")";
+		}
+		else
+		{
+			final Item I=(Item)myHost;
+			if(I.owner()==null)
+				return destroyed+" (null owner)";
+			else
+			{
+				final String destroyed2 = I.owner().amDestroyed()?" (Owner Destroyed) ":"";
+				return destroyed+I.owner().name()+" ("+I.owner().ID()+")"+destroyed2;
+			}
+		}
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof Item))
 		{
 			if(affected == null)
-				Log.errOut("Prop_Artifact had null affected link-back on "+myHost.Name());
+				Log.errOut("Prop_Artifact had null affected link-back on "+myHost.Name()+", with owner: "+identifyStr(myHost));
 			else
-				Log.errOut("Prop_Artifact had affected "+affected.name()+" link-back on "+myHost.Name());
+				Log.errOut("Prop_Artifact had affected "+affected.name()+" link-back on "+myHost.Name()+", with owner: "+identifyStr(myHost));
 			return true;
 		}
 		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
