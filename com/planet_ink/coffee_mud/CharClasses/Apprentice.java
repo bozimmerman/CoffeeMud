@@ -231,7 +231,9 @@ public class Apprentice extends StdCharClass
 			{
 				if(mob.getExperience() + amount > mob.getExpNextLevel())
 				{
-					amount = 0;
+					amount = mob.getExpNextLevel() - mob.getExperience() - 1;
+					if(amount < 0)
+						amount = 0;
 				}
 			}
 		}
