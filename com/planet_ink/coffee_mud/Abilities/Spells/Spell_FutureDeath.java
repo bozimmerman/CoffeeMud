@@ -95,7 +95,7 @@ public class Spell_FutureDeath extends Spell
 		final boolean success=proficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)+(levelDiff*15)),auto);
 		if(success)
 		{
-			String str=auto?"":L("^S<S-NAME> incant(s) at <T-NAMESELF>^?");
+			final String str=auto?"":L("^S<S-NAME> incant(s) at <T-NAMESELF>^?");
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),str);
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
@@ -104,42 +104,61 @@ public class Spell_FutureDeath extends Spell
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					str=null;
-					switch(CMLib.dice().roll(1,10,0))
-					{
-					case 1:
-						str=L("<S-NAME> grab(s) at <S-HIS-HER> throat and choke(s) to death!");
-						break;
-					case 2:
-						str=L("<S-NAME> wave(s) <S-HIS-HER> arms and look(s) down as if falling. Then <S-HE-SHE> hit(s).");
-						break;
-					case 3:
-						str=L("<S-NAME> defend(s) <S-HIM-HERSELF> from unseen blows, then fall(s) dead.");
-						break;
-					case 4:
-						str=L("<S-NAME> gasp(s) for breathe, as if underwater, and drown(s).");
-						break;
-					case 5:
-						str=L("<S-NAME> kneel(s) and lower(s) <S-HIS-HER> head, as if on the block.  In one last whimper, <S-HE-SHE> die(s).");
-						break;
-					case 6:
-						str=L("<S-NAME> jerk(s) as if being struck by a thousand arrows, and die(s).");
-						break;
-					case 7:
-						str=L("<S-NAME> writhe(s) as if being struck by a powerful electric spell, and die(s).");
-						break;
-					case 8:
-						str=L("<S-NAME> lie(s) on the ground, take(s) on a sickly expression, and die(s).");
-						break;
-					case 9:
-						str=L("<S-NAME> grab(s) at <S-HIS-HER> heart, and then it stops.");
-						break;
-					case 10:
-						str=L("<S-NAME> stand(s) on <S-HIS-HER> toes, stick(s) out <S-HIS-HER> tongue, and die(s).");
-						break;
-					}
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,str);
-					CMLib.combat().postDeath(mob,target,null);
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAMEPOSS> eyes go wide!"));
+					final MOB t=target;
+					final MOB m=mob;
+					CMLib.threads().scheduleRunnable(new Runnable() {
+						final MOB mob=m;
+						final MOB target=t;
+
+						@Override
+						public void run()
+						{
+							if(CMLib.dice().rollPercentage() <= target.charStats().getSave(CharStats.STAT_SAVE_MIND))
+							{
+								target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> manage(s) to shake off the nightmare."));
+								return;
+							}
+							final String str;
+							switch(CMLib.dice().roll(1,10,0))
+							{
+							case 1:
+								str=L("<S-NAME> grab(s) at <S-HIS-HER> throat and choke(s) to death!");
+								break;
+							case 2:
+								str=L("<S-NAME> wave(s) <S-HIS-HER> arms and look(s) down as if falling. Then <S-HE-SHE> hit(s).");
+								break;
+							case 3:
+								str=L("<S-NAME> defend(s) <S-HIM-HERSELF> from unseen blows, then fall(s) dead.");
+								break;
+							case 4:
+								str=L("<S-NAME> gasp(s) for breathe, as if underwater, and drown(s).");
+								break;
+							case 5:
+								str=L("<S-NAME> kneel(s) and lower(s) <S-HIS-HER> head, as if on the block.  In one last whimper, <S-HE-SHE> die(s).");
+								break;
+							case 6:
+								str=L("<S-NAME> jerk(s) as if being struck by a thousand arrows, and die(s).");
+								break;
+							case 7:
+								str=L("<S-NAME> writhe(s) as if being struck by a powerful electric spell, and die(s).");
+								break;
+							case 8:
+								str=L("<S-NAME> lie(s) on the ground, take(s) on a sickly expression, and die(s).");
+								break;
+							case 9:
+								str=L("<S-NAME> grab(s) at <S-HIS-HER> heart, and then it stops.");
+								break;
+							default:
+							case 10:
+								str=L("<S-NAME> stand(s) on <S-HIS-HER> toes, stick(s) out <S-HIS-HER> tongue, and die(s).");
+								break;
+							}
+							target.location().show(target,null,CMMsg.MSG_OK_VISUAL,str);
+							CMLib.combat().postDeath(mob,target,null);
+						}
+
+					}, 1000);
 				}
 			}
 		}
