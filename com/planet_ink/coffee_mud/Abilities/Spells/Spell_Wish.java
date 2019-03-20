@@ -1111,7 +1111,8 @@ public class Spell_Wish extends Spell
 						}
 						else
 						{
-							while(MT.basePhyStats().level()>newLevel)
+							int tries=MT.basePhyStats().level();
+							while((MT.basePhyStats().level()>newLevel)&&(tries-->0))
 							{
 								CMLib.leveler().unLevel(MT);
 								MT.setExperience(CMLib.leveler().getLevelExperience(MT.basePhyStats().level()-1));
