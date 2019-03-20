@@ -48,7 +48,7 @@ glass eight-sided die	47	50	1	23	GenDice		8
 glass ten-sided die	49	60	1	30	GenDice		10	
 glass box	50	45	10	222	GenContainer	LID	150	
 carafe	51	20	5	48	GenEmptyDrink	LIQUID	8	
-% Figurine	51	60	1	31	GenItem	STATUE		
+glass figurine	51	60	1	31	GenItem	STATUE		
 glass twelve-sided die	51	70	1	36	GenDice		12	
 glass bookshelf	52	30	50	750	GenContainer	READABLES|SCROLLS|READABLES	100	
 serving tray	54	20	8	81	GenContainer		50	
@@ -58,30 +58,30 @@ glass twenty-sided die	57	80	1	46	GenDice		20
 glass table	58	30	60	1010	GenRideable	TABLE	50	
 large glass box	60	60	15	540	GenContainer	LID	300	
 beaker	61	35	1	21	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	5	
-% bust	61	90	25	1375	GenItem	STATUE		
+glass bust	61	90	25	1375	GenItem	STATUE		
 large display case	62	40	100	2450	GenContainer		400	Prop_NoPurge
-large % six-sided die	63	50	2	63	GenDice		6	
+large glass six-sided die	63	50	2	63	GenDice		6	
 glass chandelier	63	90	300	17000	GenFixture			Spell_ContinualLight
 charger	64	20	4	49	GenContainer		10	
 distilling column	65	30	1	20	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	5	
-large % four-sided die	65	60	2	78	GenDice		4	
-Small % Chest	65	75	10	490	GenContainer	LID	100	
-large % eight-sided die	67	60	2	81	GenDice		8	
-large % ten-sided die	69	70	2	98	GenDice		10	
-% Jewelry Box	70	40	5	138	GenContainer	LOCK	10	
+large glass four-sided die	65	60	2	78	GenDice		4	
+Small glass chest	65	75	10	490	GenContainer	LID	100	
+large glass eight-sided die	67	60	2	81	GenDice		8	
+large glass ten-sided die	69	70	2	98	GenDice		10	
+glass jewelry box	70	40	5	138	GenContainer	LOCK	10	
 casserole dish	71	30	3	63	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	25	
-large % twelve-sided die	71	80	2	115	GenDice		12	
-% statue	71	120	150	12900	GenItem	STATUE		
+large glass twelve-sided die	71	80	2	115	GenDice		12	
+glass statue	71	120	150	12900	GenItem	STATUE		
 huge display case	72	50	250	9000	GenContainer		1000	Prop_NoPurge
 fancy chandelier	73	120	600	53000	GenItem			Spell_ContinualLight
 glass tub	73	150	300	33400	GenTub		2000	
 pipette	75	30	1	23	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	3	
-% Chest	75	125	15	1425	GenContainer	LID	250	
-large % twenty-sided die	79	90	2	144	GenDice		20	
-small % Crate	80	45	15	535	GenContainer	LID	500	
-% thirty-sided die	82	90	1	75	GenDice		30	
+glass chest	75	125	15	1425	GenContainer	LID	250	
+large glass twenty-sided die	79	90	2	144	GenDice		20	
+small glass crate	80	45	15	535	GenContainer	LID	500	
+glass thirty-sided die	82	90	1	75	GenDice		30	
 ornate chandelier	83	150	1000	126000	GenFixture			Spell_ContinualLight
 burette	85	25	1	22	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	3	
-Small %  storage barrel	85	60	10	510	GenContainer	LID	100	
-% hundred-sided die	85	100	1	86	GenDice		100	
-Large % Chest	90	150	25	3400	GenContainer	LID	500	
+small glass storage barrel	85	60	10	510	GenContainer	LID	100	
+glass hundred-sided die	85	100	1	86	GenDice		100	
+large glass chest	90	150	25	3400	GenContainer	LID	500	
