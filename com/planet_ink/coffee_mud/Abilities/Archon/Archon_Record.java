@@ -190,7 +190,7 @@ public class Archon_Record extends ArchonSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to hush <T-NAMESELF>, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to record <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }
