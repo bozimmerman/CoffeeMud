@@ -283,6 +283,16 @@ public class Archon_CRecord extends ArchonSkill
 			else
 			if(isRecorder)
 			{
+				if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+				&&(msg.sourceMessage()!=null))
+				{
+					final String noColor = CMStrings.removeColors(msg.othersMessage()).trim();
+					addToBuffer(dateFormat.format(Long.valueOf(System.currentTimeMillis()))
+							+" "
+							+CMLib.coffeeFilter().fullOutFilter(null, mob, msg.source(), msg.target(), msg.tool(), noColor, false)
+							+"\n\r");
+				}
+				else
 				if((CMath.bset(msg.sourceMajor(), CMMsg.MASK_MALICIOUS))
 				||(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS))
 				||(mob.isInCombat()))
