@@ -685,10 +685,19 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		if(P instanceof FactionMember)
 		{
-			final int fac=((FactionMember)P).fetchFaction(CMLib.factions().getInclinationID());
-			if(fac == Integer.MAX_VALUE)
-				return false;
-			return fac > 4500;
+			Faction F=null;
+			Faction.FRange FR=null;
+			final FactionMember M=(FactionMember)P;
+			for(final Enumeration<String> e=M.factions();e.hasMoreElements();)
+			{
+				F=CMLib.factions().getFaction(e.nextElement());
+				if(F!=null)
+				{
+					FR=CMLib.factions().getRange(F.factionID(),M.fetchFaction(F.factionID()));
+					if((FR!=null)&&(FR.alignEquiv()==Faction.Align.LAWFUL))
+						return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -700,10 +709,19 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		if(P instanceof FactionMember)
 		{
-			final int fac=((FactionMember)P).fetchFaction(CMLib.factions().getInclinationID());
-			if(fac != Integer.MAX_VALUE)
-				return false;
-			return fac < -4500;
+			Faction F=null;
+			Faction.FRange FR=null;
+			final FactionMember M=(FactionMember)P;
+			for(final Enumeration<String> e=M.factions();e.hasMoreElements();)
+			{
+				F=CMLib.factions().getFaction(e.nextElement());
+				if(F!=null)
+				{
+					FR=CMLib.factions().getRange(F.factionID(),M.fetchFaction(F.factionID()));
+					if((FR!=null)&&(FR.alignEquiv()==Faction.Align.CHAOTIC))
+						return true;
+				}
+			}
 		}
 		return false;
 	}
