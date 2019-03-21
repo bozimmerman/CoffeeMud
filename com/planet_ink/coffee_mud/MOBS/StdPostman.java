@@ -363,7 +363,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			final int x=data.indexOf(';');
 			if(x<0)
 			{
-				Log.errOut("StdPostman","Man formed postal data: "+data);
+				Log.errOut("StdPostman","Malformed postal data: "+data);
 				return null;
 			}
 			switch(i)
