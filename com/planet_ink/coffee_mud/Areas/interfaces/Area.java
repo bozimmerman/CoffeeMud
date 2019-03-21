@@ -741,7 +741,16 @@ public interface Area extends Economics, PhysicalAgent, Places
 		VISITABLE_ROOMS,
 		INDOOR_ROOMS,
 		MIN_ALIGNMENT,
-		MAX_ALIGNMENT
+		MAX_ALIGNMENT,
+		ANIMALS,
+		/*
+		HUMANOIDS,
+		GOOD_MOBS,
+		EVIL_MOBS,
+		LAWFUL_MOBS,
+		CHAOTIC_MOBS,
+		BOSS_MOBS
+		*/
 	}
 
 	/**
