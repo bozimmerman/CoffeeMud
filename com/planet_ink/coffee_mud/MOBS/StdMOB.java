@@ -607,23 +607,29 @@ public class StdMOB implements MOB
 	{
 		if (M == null)
 			return;
-		me=this;
-		if (!isGeneric())
+		synchronized(this)
 		{
-			final PhyStats oldBase=basePhyStats;
-			basePhyStats = (PhyStats) M.basePhyStats().copyOf();
-			phyStats = (PhyStats) M.phyStats().copyOf();
-			basePhyStats.setAbility(oldBase.ability());
-			basePhyStats.setRejuv(oldBase.rejuv());
-			basePhyStats.setLevel(oldBase.level());
-			phyStats.setAbility(oldBase.ability());
-			phyStats.setRejuv(oldBase.rejuv());
-			phyStats.setLevel(oldBase.level());
+			me=this;
 		}
-		else
+		synchronized(M)
 		{
-			basePhyStats = (PhyStats) M.basePhyStats().copyOf();
-			phyStats = (PhyStats) M.phyStats().copyOf();
+			if (!isGeneric())
+			{
+				final PhyStats oldBase=basePhyStats;
+				basePhyStats = (PhyStats) M.basePhyStats().copyOf();
+				phyStats = (PhyStats) M.phyStats().copyOf();
+				basePhyStats.setAbility(oldBase.ability());
+				basePhyStats.setRejuv(oldBase.rejuv());
+				basePhyStats.setLevel(oldBase.level());
+				phyStats.setAbility(oldBase.ability());
+				phyStats.setRejuv(oldBase.rejuv());
+				phyStats.setLevel(oldBase.level());
+			}
+			else
+			{
+				basePhyStats = (PhyStats) M.basePhyStats().copyOf();
+				phyStats = (PhyStats) M.phyStats().copyOf();
+			}
 		}
 
 		affectPhyStats = new ApplyAffectPhyStats<Ability>(this);
@@ -1019,7 +1025,6 @@ public class StdMOB implements MOB
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public void recoverMaxState()
 	{
