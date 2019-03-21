@@ -1585,7 +1585,9 @@ public class StdArea implements Area
 
 	protected void buildAreaIMobStats(final int[] statData, final long[] totalAlignments, final Faction theFaction, final List<Integer> alignRanges, final List<Integer> levelRanges, final MOB mob)
 	{
-		if((mob!=null)&&(mob.isMonster())&&(!CMLib.flags().isUnattackable(mob)))
+		if((mob!=null)
+		&&(mob.isMonster())
+		&&(!CMLib.flags().isUnattackable(mob)))
 		{
 			final int lvl=mob.basePhyStats().level();
 			levelRanges.add(Integer.valueOf(lvl));
@@ -1598,12 +1600,38 @@ public class StdArea implements Area
 			statData[Area.Stats.TOTAL_LEVELS.ordinal()]+=lvl;
 			if(!CMLib.flags().isAnimalIntelligence(mob))
 				statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()]+=lvl;
+			else
+				statData[Area.Stats.ANIMALS.ordinal()]++;
 			if(lvl<statData[Area.Stats.MIN_LEVEL.ordinal()])
 				statData[Area.Stats.MIN_LEVEL.ordinal()]=lvl;
 			if(lvl>statData[Area.Stats.MAX_LEVEL.ordinal()])
 				statData[Area.Stats.MAX_LEVEL.ordinal()]=lvl;
+			/*
+			if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			{
+				if(CMLib.flags().isGood(mob))
+					statData[Area.Stats.GOOD_MOBS.ordinal()]++;
+				else
+				if(CMLib.flags().isEvil(mob))
+					statData[Area.Stats.EVIL_MOBS.ordinal()]++;
+			}
+			if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			{
+				if(CMLib.flags().isLawful(mob))
+					statData[Area.Stats.LAWFUL_MOBS.ordinal()]++;
+				else
+				if(CMLib.flags().isChaotic(mob))
+					statData[Area.Stats.CHAOTIC_MOBS.ordinal()]++;
+			}
+			if(mob.fetchEffect("Prop_ShortEffects")!=null)
+				statData[Area.Stats.BOSS_MOBS.ordinal()]++;
+			if(" Humanoid Elf Dwarf Halfling HalfElf ".indexOf(" "+mob.charStats().getMyRace().racialCategory()+" ")>=0)
+				statData[Area.Stats.HUMANOIDS.ordinal()]++;
+			*/
 		}
 	}
+
+
 
 	protected int[] buildAreaIStats()
 	{
