@@ -101,6 +101,17 @@ public class GModify extends StdCommand
 			{
 				return ""+CMClass.getObjectType(E).toString();
 			}
+			else
+			if(E instanceof FactionMember)
+			{
+				for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+				{
+					final Faction F=f.nextElement();
+					if(stat.equalsIgnoreCase(F.factionID())
+					&&((FactionMember)E).hasFaction(F.factionID()))
+						return ""+((FactionMember)E).fetchFaction(F.factionID());
+				}
+			}
 			return E.getStat(stat);
 		}
 		return "";
@@ -257,7 +268,30 @@ public class GModify extends StdCommand
 			&&(E instanceof Behavable))
 				((Behavable)E).delBehavior(((Behavable)E).fetchBehavior(value));
 			else
-				E.setStat(stat,value);
+			if((stat.equalsIgnoreCase("DELFACTION"))
+			&&(E instanceof FactionMember))
+				((FactionMember)E).removeFaction(value.toUpperCase().trim());
+			else
+			{
+				boolean found=false;
+				if(E instanceof FactionMember)
+				{
+					for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+					{
+						final Faction F=f.nextElement();
+						if(stat.equalsIgnoreCase(F.factionID())
+						&&(E instanceof FactionMember)
+						&&(CMath.isInteger(value)))
+						{
+							((FactionMember)E).addFaction(F.factionID(), CMath.s_int(value));
+							found=true;
+							break;
+						}
+					}
+				}
+				if(!found)
+					E.setStat(stat,value);
+			}
 		}
 		return E;
 	}
@@ -564,7 +598,13 @@ public class GModify extends StdCommand
 			addEnumeratedStatCodes(CMClass.clanItems(),allKnownFields,allFieldsMsg);
 			addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
 			addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
-			allFieldsMsg.append("CLASSTYPE ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV GENDER DESTROY RESOURCE MATERIALTYPE ");
+			for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+			{
+				final Faction F=f.nextElement();
+				if(F.isPreLoaded())
+					allFieldsMsg.append(F.factionID()).append(" ");
+			}
+			allFieldsMsg.append("CLASSTYPE ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV GENDER DESTROY RESOURCE MATERIALTYPE DELFACTION ");
 			mob.tell(L("Valid field names are @x1",allFieldsMsg.toString()));
 			return false;
 		}
@@ -619,8 +659,14 @@ public class GModify extends StdCommand
 		addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
 		addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
 		addEnumeratedStatCodes(CMClass.locales(),allKnownFields,allFieldsMsg);
-		allFieldsMsg.append("CLASSTYPE REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT ");
-		allKnownFields.addAll(Arrays.asList(new String[]{"CLASSTYPE","REJUV","RESOURCE","MATERIALTYPE","GENDER","DESTROY","ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT"}));
+		for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+		{
+			final Faction F=f.nextElement();
+			if(F.isPreLoaded())
+				allFieldsMsg.append(F.factionID()).append(" ");
+		}
+		allFieldsMsg.append("CLASSTYPE REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT DELFACTION ");
+		allKnownFields.addAll(Arrays.asList(new String[]{"CLASSTYPE","REJUV","RESOURCE","MATERIALTYPE","GENDER","DESTROY","ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT","DELFACTION"}));
 
 		use=onfields;
 		final Vector<String> newSet=new Vector<String>();
