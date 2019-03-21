@@ -407,7 +407,7 @@ public class Archon_CRecord extends ArchonSkill
 			else
 			{
 				A.minLevel=CMath.s_int(commands.get(1));
-				mob.tell(L("CRecord minimum level is now @x1.",""+this.minLevel));
+				mob.tell(L("CRecord minimum level is now @x1.",""+A.minLevel));
 			}
 			return false;
 		}
