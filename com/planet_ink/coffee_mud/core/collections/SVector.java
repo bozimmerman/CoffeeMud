@@ -159,10 +159,13 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 	{
 		try
 		{
-			final SVector<T> copy= (SVector<T>) clone();
-			copy.underList = (CopyOnWriteArrayList<T>)underList.clone();
-			copy.list = Collections.synchronizedList(copy.underList);
-			return copy;
+			synchronized(this)
+			{
+				final SVector<T> copy= (SVector<T>) clone();
+				copy.underList = (CopyOnWriteArrayList<T>)underList.clone();
+				copy.list = Collections.synchronizedList(copy.underList);
+				return copy;
+			}
 		}
 		catch (final Exception e)
 		{
