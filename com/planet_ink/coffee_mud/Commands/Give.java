@@ -80,7 +80,7 @@ public class Give extends StdCommand
 		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("to")))
 			commands.remove(commands.size()-1);
 
-		final int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToGive=CMLib.english().parseMaxToGive(mob,commands,true,mob,false);
 		if(maxToGive<0)
 			return false;
 
@@ -101,7 +101,7 @@ public class Give extends StdCommand
 		}
 
 		final boolean onlyGoldFlag = mob.hasOnlyGoldInInventory();
-		Item giveThis=CMLib.english().bestPossibleGold(mob,null,thingToGive);
+		Item giveThis=CMLib.english().parseBestPossibleGold(mob,null,thingToGive);
 		if(giveThis!=null)
 		{
 			if((CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER)||CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED))
@@ -111,7 +111,7 @@ public class Give extends StdCommand
 				mob.tell(L("Yea, you don't want to do that."));
 				return false;
 			}
-			if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thingToGive))
+			if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().parseNumPossibleGold(mob,thingToGive))
 				return false;
 			if(CMLib.flags().canBeSeenBy(giveThis,mob))
 				V.add(giveThis);

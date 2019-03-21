@@ -168,7 +168,7 @@ public class Put extends StdCommand
 			return false;
 
 		final String containerName = commands.get(commands.size()-1);
-		Environmental container=CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_ANY);
+		Environmental container=CMLib.english().parsePossibleContainer(mob,commands,false,Wearable.FILTER_ANY);
 		if(container == null)
 		{
 			container = R.fetchFromMOBRoomFavorsItems(mob,null, containerName, Wearable.FILTER_UNWORNONLY);
@@ -197,7 +197,7 @@ public class Put extends StdCommand
 			return false;
 		}
 
-		final int maxToPut=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToPut=CMLib.english().parseMaxToGive(mob,commands,true,mob,false);
 		if(maxToPut<0)
 			return false;
 
@@ -217,10 +217,10 @@ public class Put extends StdCommand
 			thingToPut = "ALL " + thingToPut.substring(0, thingToPut.length() - 4);
 		}
 		final boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
-		Item putThis=CMLib.english().bestPossibleGold(mob,null,thingToPut);
+		Item putThis=CMLib.english().parseBestPossibleGold(mob,null,thingToPut);
 		if(putThis!=null)
 		{
-			if(((Coins)putThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thingToPut))
+			if(((Coins)putThis).getNumberOfCoins()<CMLib.english().parseNumPossibleGold(mob,thingToPut))
 				return false;
 			if(CMLib.flags().canBeSeenBy(putThis,mob))
 				V.add(putThis);

@@ -60,7 +60,7 @@ public class Sell extends StdCommand
 			return false;
 		}
 
-		final int maxToDo=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToDo=CMLib.english().parseMaxToGive(mob,commands,true,mob,false);
 		if(maxToDo<0)
 			return false;
 

@@ -230,11 +230,11 @@ public class Create extends StdCommand
 		}
 
 		Item newItem=CMClass.getItem(itemID);
-		if((newItem==null)&&(CMLib.english().numPossibleGold(null,itemID)>0))
+		if((newItem==null)&&(CMLib.english().parseNumPossibleGold(null,itemID)>0))
 		{
-			final long numCoins=CMLib.english().numPossibleGold(null,itemID);
-			final String currency=CMLib.english().numPossibleGoldCurrency(mob,itemID);
-			final double denom=CMLib.english().numPossibleGoldDenomination(mob,currency,itemID);
+			final long numCoins=CMLib.english().parseNumPossibleGold(null,itemID);
+			final String currency=CMLib.english().parseNumPossibleGoldCurrency(mob,itemID);
+			final double denom=CMLib.english().parseNumPossibleGoldDenomination(mob,currency,itemID);
 			if((numCoins>0)&&(denom>0.0))
 				newItem=CMLib.beanCounter().makeCurrency(currency,denom,numCoins);
 		}
@@ -1807,7 +1807,7 @@ public class Create extends StdCommand
 			Environmental E=null;
 			E=CMClass.getItem(allWord);
 			if((E instanceof Item)
-			||((CMLib.english().numPossibleGold(null,allWord)>0)
+			||((CMLib.english().parseNumPossibleGold(null,allWord)>0)
 				&&((CMParms.parse(allWord).size()!=2)
 					||(!CMath.isInteger(CMParms.parse(allWord).get(0)))
 					||(RawMaterial.CODES.FIND_IgnoreCase(CMParms.parse(allWord).get(1))<0)))
@@ -1894,7 +1894,7 @@ public class Create extends StdCommand
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL, L("Suddenly @x1 @x2 fall from the sky.",""+num,RawMaterial.CODES.NAME(matCode)));
 					}
 					else
-					if(CMLib.english().numPossibleGold(null,firstWord+" "+theRest)>0)
+					if(CMLib.english().parseNumPossibleGold(null,firstWord+" "+theRest)>0)
 					{
 						commands.add(1,"ITEM");
 						return execute(mob,commands,metaFlags);
@@ -1933,7 +1933,7 @@ public class Create extends StdCommand
 				{
 					E=CMClass.getItem(firstWord);
 					if((E instanceof Item)
-					||(CMLib.english().numPossibleGold(null,firstWord)>0)
+					||(CMLib.english().parseNumPossibleGold(null,firstWord)>0)
 					||(CMLib.catalog().getCatalogItem(firstWord)!=null))
 					{
 						commands.add(1,"ITEM");

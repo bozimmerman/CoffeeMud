@@ -154,7 +154,7 @@ public class Draw extends Get
 		{
 			containerName=commands.get(commands.size()-1);
 			commands.add(0,"all");
-			containers=CMLib.english().possibleContainers(mob,commands,Wearable.FILTER_WORNONLY,true);
+			containers=CMLib.english().parsePossibleContainers(mob,commands,Wearable.FILTER_WORNONLY,true);
 			if(containers.size()==0)
 				containers=sheaths;
 			whatToGet=CMParms.combine(commands,0);

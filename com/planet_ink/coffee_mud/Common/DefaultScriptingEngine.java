@@ -9051,9 +9051,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final boolean plus=!amtStr.startsWith("-");
 				if(amtStr.startsWith("+")||amtStr.startsWith("-"))
 					amtStr=amtStr.substring(1).trim();
-				final String currency = CMLib.english().numPossibleGoldCurrency(source, amtStr);
-				final long amt = CMLib.english().numPossibleGold(source, amtStr);
-				final double denomination = CMLib.english().numPossibleGoldDenomination(source, currency, amtStr);
+				final String currency = CMLib.english().parseNumPossibleGoldCurrency(source, amtStr);
+				final long amt = CMLib.english().parseNumPossibleGold(source, amtStr);
+				final double denomination = CMLib.english().parseNumPossibleGoldDenomination(source, currency, amtStr);
 				Container container = null;
 				if(newTarget instanceof Item)
 				{
@@ -9353,11 +9353,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							}
 						}
 					}
-					final long coins=CMLib.english().numPossibleGold(null,name);
+					final long coins=CMLib.english().parseNumPossibleGold(null,name);
 					if(coins>0)
 					{
-						final String currency=CMLib.english().numPossibleGoldCurrency(scripted,name);
-						final double denom=CMLib.english().numPossibleGoldDenomination(scripted,currency,name);
+						final String currency=CMLib.english().parseNumPossibleGoldCurrency(scripted,name);
+						final double denom=CMLib.english().parseNumPossibleGoldDenomination(scripted,currency,name);
 						final Coins C=CMLib.beanCounter().makeCurrency(currency,denom,coins);
 						if(addHere instanceof MOB)
 							((MOB)addHere).addItem(C);
@@ -9441,11 +9441,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							}
 						}
 					}
-					final long coins=CMLib.english().numPossibleGold(null,name);
+					final long coins=CMLib.english().parseNumPossibleGold(null,name);
 					if(coins>0)
 					{
-						final String currency=CMLib.english().numPossibleGoldCurrency(monster,name);
-						final double denom=CMLib.english().numPossibleGoldDenomination(monster,currency,name);
+						final String currency=CMLib.english().parseNumPossibleGoldCurrency(monster,name);
+						final double denom=CMLib.english().parseNumPossibleGoldDenomination(monster,currency,name);
 						final Coins C=CMLib.beanCounter().makeCurrency(currency,denom,coins);
 						Is.add(C);
 					}

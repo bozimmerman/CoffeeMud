@@ -999,7 +999,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if((thisStr==null)||(thisStr.length()==0))
 			return new Vector<String>(1);
-		return CMParms.parseSpaces(CMLib.english().stripPunctuation(thisStr), true);
+		return CMParms.parseSpaces(stripPunctuation(thisStr), true);
 	}
 
 	public boolean equalsPunctuationless(final char[] strC, final char[] str2C)
@@ -1543,7 +1543,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public long numPossibleGold(final Environmental mine, String itemID)
+	public long parseNumPossibleGold(final Environmental mine, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
@@ -1600,7 +1600,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public String numPossibleGoldCurrency(final Environmental mine, String itemID)
+	public String parseNumPossibleGoldCurrency(final Environmental mine, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
@@ -1662,7 +1662,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public double numPossibleGoldDenomination(final Environmental mine, final String currency, String moneyStr)
+	public double parseNumPossibleGoldDenomination(final Environmental mine, final String currency, String moneyStr)
 	{
 		if(moneyStr.toUpperCase().trim().startsWith("A PILE OF "))
 			moneyStr=moneyStr.substring(10);
@@ -1764,7 +1764,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public Item possibleRoomGold(final MOB seer, final Room room, final Container container, String moneyStr)
+	public Item parsePossibleRoomGold(final MOB seer, final Room room, final Container container, String moneyStr)
 	{
 		if(moneyStr.toUpperCase().trim().startsWith("A PILE OF "))
 			moneyStr=moneyStr.substring(10);
@@ -1812,7 +1812,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public Item bestPossibleGold(final MOB mob, final Container container, String itemID)
+	public Item parseBestPossibleGold(final MOB mob, final Container container, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
@@ -1885,7 +1885,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public List<Container> possibleContainers(final MOB mob, final List<String> commands, final Filterer<Environmental> filter, final boolean withContentOnly)
+	public List<Container> parsePossibleContainers(final MOB mob, final List<String> commands, final Filterer<Environmental> filter, final boolean withContentOnly)
 	{
 		final Vector<Container> V=new Vector<Container>(1);
 		if(commands.size()==1)
@@ -1975,7 +1975,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public Item possibleContainer(final MOB mob, final List<String> commands, final boolean withStuff, final Filterer<Environmental> filter)
+	public Item parsePossibleContainer(final MOB mob, final List<String> commands, final boolean withStuff, final Filterer<Environmental> filter)
 	{
 		if(commands.size()==1)
 			return null;
@@ -2062,11 +2062,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			correctCurrency=myCurrency;
 		if(amount.length()>0)
 		{
-			myCurrency=CMLib.english().numPossibleGoldCurrency(mob,amount);
+			myCurrency=parseNumPossibleGoldCurrency(mob,amount);
 			if(myCurrency!=null)
 			{
-				denomination=CMLib.english().numPossibleGoldDenomination(null,correctCurrency,amount);
-				final long num=CMLib.english().numPossibleGold(null,amount);
+				denomination=parseNumPossibleGoldDenomination(null,correctCurrency,amount);
+				final long num=parseNumPossibleGold(null,amount);
 				b=CMath.mul(denomination,num);
 			}
 			else
@@ -2076,11 +2076,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public int calculateMaxToGive(final MOB mob, final List<String> commands, final boolean breakPackages, final Environmental checkWhat, final boolean getOnly)
+	public int parseMaxToGive(final MOB mob, final List<String> commands, final boolean breakPackages, final Environmental checkWhat, final boolean getOnly)
 	{
 		int maxToGive=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(CMLib.english().numPossibleGold(mob,CMParms.combine(commands,0))==0))
+		&&(parseNumPossibleGold(mob,CMParms.combine(commands,0))==0))
 		{
 			if(CMath.s_int(commands.get(0))>0)
 			{
@@ -2163,8 +2163,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					{
 						final Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,1,null);
 						if((toWhat==null)
-						||((!CMLib.english().containsString(toWhat.name(), getName))
-							&&(!CMLib.english().containsString(toWhat.displayText(), getName))))
+						||((!containsString(toWhat.name(), getName))
+							&&(!containsString(toWhat.displayText(), getName))))
 						{
 							return maxToGive;
 						}

@@ -67,7 +67,7 @@ public class StdDice extends StdItem implements MiscMagic
 			return false;
 
 		final Vector<Item> V=new Vector<Item>();
-		final int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToDrop=CMLib.english().parseMaxToGive(mob,commands,true,mob,false);
 		if(maxToDrop<0)
 			return false;
 

@@ -67,7 +67,7 @@ public class Deposit extends StdCommand
 		final String thisName=CMParms.combine(commands,0);
 		Item thisThang=null;
 		if(!(SHOP instanceof Librarian))
-			thisThang = CMLib.english().bestPossibleGold(mob,null,thisName);
+			thisThang = CMLib.english().parseBestPossibleGold(mob,null,thisName);
 		if(thisThang==null)
 		{
 			thisThang=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thisName);
@@ -78,7 +78,7 @@ public class Deposit extends StdCommand
 			}
 		}
 		else
-		if(((Coins)thisThang).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thisName))
+		if(((Coins)thisThang).getNumberOfCoins()<CMLib.english().parseNumPossibleGold(mob,thisName))
 			return false;
 		CMMsg newMsg=null;
 		if(SHOP instanceof Librarian)

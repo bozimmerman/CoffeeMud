@@ -153,7 +153,7 @@ public class Sheath extends StdCommand
 		else
 		{
 			commands.add(0,"all");
-			final Container container=(Container)CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_WORNONLY);
+			final Container container=(Container)CMLib.english().parsePossibleContainer(mob,commands,false,Wearable.FILTER_WORNONLY);
 			String thingToPut=CMParms.combine(commands,0);
 			int addendum=1;
 			String addendumStr="";

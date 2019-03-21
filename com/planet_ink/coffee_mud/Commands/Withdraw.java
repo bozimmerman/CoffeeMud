@@ -67,9 +67,9 @@ public class Withdraw extends StdCommand
 		String str=CMParms.combine(commands,0);
 		if(str.equalsIgnoreCase("all"))
 			str=""+Integer.MAX_VALUE;
-		final long numCoins=CMLib.english().numPossibleGold(null,str);
-		final String currency=CMLib.english().numPossibleGoldCurrency(shopkeeper,str);
-		final double denomination=CMLib.english().numPossibleGoldDenomination(shopkeeper,currency,str);
+		final long numCoins=CMLib.english().parseNumPossibleGold(null,str);
+		final String currency=CMLib.english().parseNumPossibleGoldCurrency(shopkeeper,str);
+		final double denomination=CMLib.english().parseNumPossibleGoldDenomination(shopkeeper,currency,str);
 		Item thisThang=null;
 		if(SHOP instanceof Banker)
 		{

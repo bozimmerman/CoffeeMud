@@ -55,11 +55,11 @@ public class Split extends StdCommand
 			return false;
 		}
 		final String itemID=CMParms.combine(commands,1);
-		final long numGold=CMLib.english().numPossibleGold(mob,itemID);
+		final long numGold=CMLib.english().parseNumPossibleGold(mob,itemID);
 		if(numGold>0)
 		{
-			final String currency=CMLib.english().numPossibleGoldCurrency(mob,itemID);
-			final double denom=CMLib.english().numPossibleGoldDenomination(mob,currency,itemID);
+			final String currency=CMLib.english().parseNumPossibleGoldCurrency(mob,itemID);
+			final double denom=CMLib.english().parseNumPossibleGoldDenomination(mob,currency,itemID);
 
 			int num=0;
 			final Set<MOB> H=mob.getGroupMembers(new SHashSet<MOB>());

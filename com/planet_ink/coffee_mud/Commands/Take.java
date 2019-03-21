@@ -81,7 +81,7 @@ public class Take extends StdCommand
 			if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("from")))
 				commands.remove(commands.size()-1);
 
-			final int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,victim,false);
+			final int maxToGive=CMLib.english().parseMaxToGive(mob,commands,true,victim,false);
 			if(maxToGive<0)
 				return false;
 
@@ -127,11 +127,11 @@ public class Take extends StdCommand
 			while(doBugFix || ((allFlag)&&(addendum<=maxToGive)))
 			{
 				doBugFix=false;
-				Environmental giveThis=CMLib.english().bestPossibleGold(victim,null,thingToGive);
+				Environmental giveThis=CMLib.english().parseBestPossibleGold(victim,null,thingToGive);
 
 				if(giveThis!=null)
 				{
-					if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().numPossibleGold(victim,thingToGive))
+					if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().parseNumPossibleGold(victim,thingToGive))
 						return false;
 					allFlag=false;
 				}

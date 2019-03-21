@@ -59,7 +59,7 @@ public class Package extends StdCommand
 		String whatName="";
 		if(commands.size()>0)
 			whatName=commands.get(commands.size()-1);
-		final int maxToGet=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToGet=CMLib.english().parseMaxToGive(mob,commands,true,mob,false);
 		if(maxToGet<0)
 			return false;
 

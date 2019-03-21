@@ -221,11 +221,11 @@ public class Auction extends Channel implements Tickable
 			getLiveData().setAuctioningMob(mob);
 			getLiveData().setAuctionedItem((Item)target);
 			final String sb=CMParms.combine(commands,0);
-			getLiveData().setCurrency(CMLib.english().numPossibleGoldCurrency(mob,sb));
+			getLiveData().setCurrency(CMLib.english().parseNumPossibleGoldCurrency(mob,sb));
 			if((getLiveData().getCurrency().length()==0)&&(CMath.isInteger(sb)))
 				getLiveData().setCurrency(CMLib.beanCounter().getCurrency(mob));
-			final double denomination=CMLib.english().numPossibleGoldDenomination(null,getLiveData().getCurrency(),sb);
-			final long num=CMLib.english().numPossibleGold(null,sb);
+			final double denomination=CMLib.english().parseNumPossibleGoldDenomination(null,getLiveData().getCurrency(),sb);
+			final long num=CMLib.english().parseNumPossibleGold(null,sb);
 			getLiveData().setBid(CMath.mul(denomination,num));
 			getLiveData().setHighBid(getLiveData().getBid()-1);
 			getLiveData().setHighBidderMob(null);
@@ -331,7 +331,7 @@ public class Auction extends Channel implements Tickable
 			}
 			final Vector<String> V=new Vector<String>();
 			if((commands.size()>=2)
-			&&((CMLib.english().numPossibleGold(mob,commands.get(commands.size()-1))>0)||(commands.get(commands.size()-1).equals("0"))))
+			&&((CMLib.english().parseNumPossibleGold(mob,commands.get(commands.size()-1))>0)||(commands.get(commands.size()-1).equals("0"))))
 			{
 				V.add(commands.get(commands.size()-1));
 				commands.remove(commands.size()-1);

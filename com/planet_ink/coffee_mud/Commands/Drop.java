@@ -127,7 +127,7 @@ public class Drop extends StdCommand
 		// all of the contents of your 1.sack, leaving the sack in inventory.
 		//container=CMLib.english().possibleContainer(mob,commands,true,Wearable.FILTER_UNWORNONLY);
 
-		final int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToDrop=CMLib.english().parseMaxToGive(mob,commands,true,mob,false);
 		if(maxToDrop<0)
 			return false;
 
@@ -146,10 +146,10 @@ public class Drop extends StdCommand
 		int addendum=1;
 		String addendumStr="";
 		final boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
-		Item dropThis=CMLib.english().bestPossibleGold(mob,null,whatToDrop);
+		Item dropThis=CMLib.english().parseBestPossibleGold(mob,null,whatToDrop);
 		if(dropThis!=null)
 		{
-			if(((Coins)dropThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,whatToDrop+addendumStr))
+			if(((Coins)dropThis).getNumberOfCoins()<CMLib.english().parseNumPossibleGold(mob,whatToDrop+addendumStr))
 				return false;
 			if(CMLib.flags().canBeSeenBy(dropThis,mob))
 				V.add(dropThis);

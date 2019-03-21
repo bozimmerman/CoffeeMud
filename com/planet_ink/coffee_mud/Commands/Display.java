@@ -72,7 +72,7 @@ public class Display extends StdCommand
 		if((commands.size()>0)&&(commands.get(commands.size()-1).equalsIgnoreCase("to")))
 			commands.remove(commands.size()-1);
 
-		final int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToGive=CMLib.english().parseMaxToGive(mob,commands,true,mob,false);
 		if(maxToGive<0)
 			return false;
 
@@ -95,10 +95,10 @@ public class Display extends StdCommand
 		while(doBugFix || ((allFlag)&&(addendum<=maxToGive)))
 		{
 			doBugFix=false;
-			Environmental giveThis=CMLib.english().bestPossibleGold(mob,null,thingToGive);
+			Environmental giveThis=CMLib.english().parseBestPossibleGold(mob,null,thingToGive);
 			if(giveThis!=null)
 			{
-				if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thingToGive))
+				if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().parseNumPossibleGold(mob,thingToGive))
 					return false;
 			}
 			else

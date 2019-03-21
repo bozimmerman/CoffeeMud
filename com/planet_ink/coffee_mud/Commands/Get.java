@@ -121,10 +121,10 @@ public class Get extends StdCommand
 		if(commands.size()>0)
 			containerName=commands.get(commands.size()-1);
 		final Vector<String> containerCommands=new XVector<String>(commands);
-		final java.util.List<Container> containers=CMLib.english().possibleContainers(mob,commands,Wearable.FILTER_ANY,true);
+		final java.util.List<Container> containers=CMLib.english().parsePossibleContainers(mob,commands,Wearable.FILTER_ANY,true);
 		int c=0;
 
-		int maxToGet=CMLib.english().calculateMaxToGive(mob,commands,containers.size()==0,R,true);
+		int maxToGet=CMLib.english().parseMaxToGive(mob,commands,containers.size()==0,R,true);
 		if(maxToGet<0)
 			return false;
 
@@ -160,7 +160,7 @@ public class Get extends StdCommand
 				else
 				{
 					if(!allFlag)
-						getThis=CMLib.english().possibleRoomGold(mob,R,container,whatToGet);
+						getThis=CMLib.english().parsePossibleRoomGold(mob,R,container,whatToGet);
 					if(getThis==null)
 						getThis=R.fetchFromRoomFavorItems(container,whatToGet+addendumStr);
 				}
@@ -224,7 +224,7 @@ public class Get extends StdCommand
 				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see anything here."));
 			else
 			{
-				final java.util.List<Container> V=CMLib.english().possibleContainers(mob,containerCommands,Wearable.FILTER_ANY,false);
+				final java.util.List<Container> V=CMLib.english().parsePossibleContainers(mob,containerCommands,Wearable.FILTER_ANY,false);
 				if(V.size()==0)
 					CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",containerName));
 				else

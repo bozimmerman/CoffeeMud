@@ -80,7 +80,7 @@ public class Empty extends Drop
 				target=mob.location();
 			else
 			{
-				target=CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_UNWORNONLY);
+				target=CMLib.english().parsePossibleContainer(mob,commands,false,Wearable.FILTER_UNWORNONLY);
 				if(target==null)
 					target=mob.location().fetchFromRoomFavorItems(null,s);
 				else
@@ -96,7 +96,7 @@ public class Empty extends Drop
 			return false;
 		}
 
-		final int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToDrop=CMLib.english().parseMaxToGive(mob,commands,true,mob,false);
 		if(maxToDrop<0)
 			return false;
 

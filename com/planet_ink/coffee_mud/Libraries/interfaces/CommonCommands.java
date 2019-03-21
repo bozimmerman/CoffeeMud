@@ -616,7 +616,6 @@ public interface CommonCommands extends CMLibrary
 	 */
 	public boolean isHygienicMessage(final CMMsg msg);
 
-
 	/**
 	 * Adjusts the mobs age based on ellapsed time,
 	 * and checks for age related diseases and

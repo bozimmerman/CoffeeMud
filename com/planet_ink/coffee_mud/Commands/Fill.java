@@ -99,7 +99,7 @@ public class Fill extends StdCommand
 				commands.remove(commands.size()-1);
 		}
 
-		final int maxToFill=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
+		final int maxToFill=CMLib.english().parseMaxToGive(mob,commands,true,mob,false);
 		if(maxToFill<0)
 			return false;
 

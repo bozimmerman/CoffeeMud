@@ -682,11 +682,11 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			}
 			else
 			{
-				final long numberCoins=CMLib.english().numPossibleGold(mob,s);
+				final long numberCoins=CMLib.english().parseNumPossibleGold(mob,s);
 				if(numberCoins>0)
 				{
-					final String currency=CMLib.english().numPossibleGoldCurrency(mob,s);
-					final double denom=CMLib.english().numPossibleGoldDenomination(mob,currency,s);
+					final String currency=CMLib.english().parseNumPossibleGoldCurrency(mob,s);
+					final double denom=CMLib.english().parseNumPossibleGoldDenomination(mob,currency,s);
 					if(denom>0.0)
 					{
 						val=CMath.mul(numberCoins,denom);

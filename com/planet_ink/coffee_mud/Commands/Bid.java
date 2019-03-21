@@ -65,7 +65,7 @@ public class Bid extends StdCommand
 		}
 
 		String bidStr=commands.get(0);
-		if(CMLib.english().numPossibleGold(mob,bidStr)<=0)
+		if(CMLib.english().parseNumPossibleGold(mob,bidStr)<=0)
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("It does not look like '@x1' is enough to offer.",bidStr));
 			return false;
