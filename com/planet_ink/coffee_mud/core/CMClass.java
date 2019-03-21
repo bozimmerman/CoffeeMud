@@ -106,8 +106,6 @@ public class CMClass extends ClassLoader
 		return c();
 	}
 
-	private static boolean[] classLoaderSync={false};
-
 	public static enum CMObjectType
 	{
 	/** stat constant for race type objects */
@@ -2810,18 +2808,6 @@ public class CMClass extends ClassLoader
 			c=new CMClass();
 		final CMClass baseC=clss[MudHost.MAIN_HOST];
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		// wait for baseC
-		while((tCode!=MudHost.MAIN_HOST)&&(!classLoaderSync[0]))
-		{
-			try
-			{
-				Thread.sleep(500);
-			}
-			catch(final Exception e)
-			{
-				break;
-			}
-		}
 		try
 		{
 			final String prefix="com/planet_ink/coffee_mud/";
@@ -3212,8 +3198,6 @@ public class CMClass extends ClassLoader
 			}
 			Log.sysOut(Thread.currentThread().getName(),"Classes loaded    : "+numCharClasses);
 		}
-		if(tCode==MudHost.MAIN_HOST)
-			classLoaderSync[0]=true;
 		CMClass.lastUpdateTime=System.currentTimeMillis();
 		return true;
 	}
@@ -3519,7 +3503,6 @@ public class CMClass extends ClassLoader
 			if(cls!=null)
 				cls.unload();
 		}
-		classLoaderSync[0]=false;
 	}
 
 	/**

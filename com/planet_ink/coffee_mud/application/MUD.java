@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.net.*;
 import java.util.*;
@@ -100,6 +101,8 @@ public class MUD extends Thread implements MudHost
 	private static List<DBConnector>	databases			= new Vector<DBConnector>();
 	private static List<CM1Server>		cm1Servers			= new Vector<CM1Server>();
 	private static final ServiceEngine	serviceEngine		= new ServiceEngine();
+	private static AtomicBoolean 		bootSync			= new AtomicBoolean(false);
+
 
 	public MUD(final String name)
 	{
@@ -500,6 +503,7 @@ public class MUD extends Thread implements MudHost
 	{
 		CMProps.setBoolAllVar(CMProps.Bool.MUDSTARTED,false);
 		CMProps.setBoolAllVar(CMProps.Bool.MUDSHUTTINGDOWN,true);
+		bootSync.set(false);
 		final AtomicLong shutdownStateTime = new AtomicLong(System.currentTimeMillis());
 		final long shutdownTimeout = 5 * 60 * 1000;
 		final Thread currentShutdownThread=Thread.currentThread();
@@ -1551,6 +1555,11 @@ public class MUD extends Thread implements MudHost
 			}
 
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading base classes");
+			// wait for baseC
+			while((tCode!=MudHost.MAIN_HOST)
+			&&(!bootSync.get())
+			&&(CMLib.s_sleep(500)))
+				;
 			if(!CMClass.loadAllCoffeeMudClasses(page))
 			{
 				fatalStartupError(t,0);
@@ -1563,6 +1572,10 @@ public class MUD extends Thread implements MudHost
 
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: initializing classes");
 			CMClass.instance().intializeClasses();
+
+			if(tCode==MudHost.MAIN_HOST)
+				bootSync.set(true);
+
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading expertises");
 			if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("EXPERTISES")))
 			{
