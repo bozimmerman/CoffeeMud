@@ -358,12 +358,13 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	public MailPiece parsePostalItemData(String data)
 	{
 		final MailPiece piece = new MailPiece();
+		final String origData = data;
 		for(int i=0;i<5;i++)
 		{
 			final int x=data.indexOf(';');
 			if(x<0)
 			{
-				Log.errOut("StdPostman","Malformed postal data: "+data);
+				Log.errOut("StdPostman","Malformed postal data: '"+origData+"' : '"+data+"'");
 				return null;
 			}
 			switch(i)
