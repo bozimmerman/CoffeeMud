@@ -98,7 +98,7 @@ public class Expire extends StdCommand
 			if(timeLeft<=0)
 				mob.tell(L("Player/Account '@x1' is now expired.",playerName));
 			else
-				mob.tell(L("Player/Account '@x1' currently has @x2 left.",playerName,(CMLib.english().returnTime(timeLeft,0))));
+				mob.tell(L("Player/Account '@x1' currently has @x2 left.",playerName,(CMLib.english().stringifyElapsedTimeOrTicks(timeLeft,0))));
 			return false;
 		}
 		else
@@ -162,7 +162,7 @@ public class Expire extends StdCommand
 				if(timeLeft<=0)
 					mob.tell(L("Player/Account '@x1' is now expired.",playerName));
 				else
-					mob.tell(L("Player/Account '@x1' now has @x2 days left.",playerName,(CMLib.english().returnTime(timeLeft,0))));
+					mob.tell(L("Player/Account '@x1' now has @x2 days left.",playerName,(CMLib.english().stringifyElapsedTimeOrTicks(timeLeft,0))));
 			}
 			return false;
 		}

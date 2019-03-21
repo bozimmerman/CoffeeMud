@@ -101,7 +101,7 @@ public class After extends StdCommand implements Tickable
 				final AfterCommand V=afterCmds.get(s);
 				every=V.every;
 				str.append(CMStrings.padRight(CMLib.time().date2String(V.start+V.duration),20)+" ");
-				str.append((every?"*":" ")+CMStrings.padRight(CMLib.english().returnTime(V.duration,0),20)+" ");
+				str.append((every?"*":" ")+CMStrings.padRight(CMLib.english().stringifyElapsedTimeOrTicks(V.duration,0),20)+" ");
 				str.append(CMStrings.padRight(V.M.Name(),10)+" ");
 				str.append(CMStrings.limit(CMParms.combine(V.command,0),25)+"\n\r");
 				s++;

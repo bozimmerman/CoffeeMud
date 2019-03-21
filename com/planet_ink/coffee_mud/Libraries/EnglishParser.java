@@ -2028,7 +2028,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public String returnTime(long millis, final long ticks)
+	public String stringifyElapsedTimeOrTicks(long millis, final long ticks)
 	{
 		String avg="";
 		if(ticks>0)

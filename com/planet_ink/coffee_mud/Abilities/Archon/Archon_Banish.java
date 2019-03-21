@@ -107,7 +107,7 @@ public class Archon_Banish extends ArchonSkill
 			return "indefinitely";
 		if(releaseTime<System.currentTimeMillis())
 			return "until any second now.";
-		return "for another "+CMLib.english().returnTime(releaseTime-System.currentTimeMillis(),0);
+		return "for another "+CMLib.english().stringifyElapsedTimeOrTicks(releaseTime-System.currentTimeMillis(),0);
 	}
 
 	public Room prison()

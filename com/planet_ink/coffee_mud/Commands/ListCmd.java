@@ -1466,7 +1466,7 @@ public class ListCmd extends StdCommand
 		}
 		final StringBuilder buf=new StringBuilder("");
 		final long totalTime=System.currentTimeMillis()-CMSecurity.getStartTime();
-		buf.append(L("The system has been running for ^H@x1^?.\n\r",""+CMLib.english().returnTime(totalTime,0)));
+		buf.append(L("The system has been running for ^H@x1^?.\n\r",""+CMLib.english().stringifyElapsedTimeOrTicks(totalTime,0)));
 		final long free=Runtime.getRuntime().freeMemory()/1024;
 		final long total=Runtime.getRuntime().totalMemory()/1024;
 		buf.append(L("The system is utilizing ^H@x1^?kb out of ^H@x2^?kb.\n\r",""+(total-free),""+total));
@@ -1476,7 +1476,7 @@ public class ListCmd extends StdCommand
 		final long totalMillis=CMath.s_long(CMLib.threads().systemReport("totalMillis"));
 		final long totalTicks=CMath.s_long(CMLib.threads().systemReport("totalTicks"));
 		buf.append(L("There are ^H@x1^? ticking objects in ^H@x2^? groups.\n\r",totalTickers,tickGroupSize));
-		buf.append(L("The ticking objects have consumed: ^H@x1^?.\n\r",CMLib.english().returnTime(totalMillis,totalTicks)));
+		buf.append(L("The ticking objects have consumed: ^H@x1^?.\n\r",CMLib.english().stringifyElapsedTimeOrTicks(totalMillis,totalTicks)));
 		/*
 		String topGroupNumber=CMLib.threads().systemReport("topGroupNumber");
 		long topGroupMillis=CMath.s_long(CMLib.threads().systemReport("topGroupMillis"));
@@ -1501,7 +1501,7 @@ public class ListCmd extends StdCommand
 		{
 			final long saveThreadMilliTotal=CMath.s_long(CMLib.threads().systemReport("Thread"+threadNum+"MilliTotal"));
 			final long saveThreadTickTotal=CMath.s_long(CMLib.threads().systemReport("Thread"+threadNum+"TickTotal"));
-			buf.append("Service '"+threadName+"' has consumed: ^H"+CMLib.english().returnTime(saveThreadMilliTotal,saveThreadTickTotal)+" ("+CMLib.threads().systemReport("Thread"+threadNum+"Status")+")^?.");
+			buf.append("Service '"+threadName+"' has consumed: ^H"+CMLib.english().stringifyElapsedTimeOrTicks(saveThreadMilliTotal,saveThreadTickTotal)+" ("+CMLib.threads().systemReport("Thread"+threadNum+"Status")+")^?.");
 			buf.append("\n\r");
 			threadNum++;
 			threadName=CMLib.threads().systemReport("Thread"+threadNum+"name");
@@ -1511,7 +1511,7 @@ public class ListCmd extends StdCommand
 		final long totalMOBMillis=CMath.s_long(CMLib.threads().systemReport("totalMOBMillis"));
 		final long totalMOBTicks=CMath.s_long(CMLib.threads().systemReport("totalMOBTicks"));
 		buf.append(L("There are ^H@x1^? ticking players logged on.\n\r",""+CMLib.sessions().numLocalOnline()));
-		buf.append(L("The ticking players have consumed: ^H@x1^?.\n\r",""+CMLib.english().returnTime(totalMOBMillis,totalMOBTicks)));
+		buf.append(L("The ticking players have consumed: ^H@x1^?.\n\r",""+CMLib.english().stringifyElapsedTimeOrTicks(totalMOBMillis,totalMOBTicks)));
 		/*
 		long topMOBMillis=CMath.s_long(CMLib.threads().systemReport("topMOBMillis"));
 		long topMOBTicks=CMath.s_long(CMLib.threads().systemReport("topMOBTicks"));
@@ -5005,7 +5005,7 @@ public class ListCmd extends StdCommand
 			else
 				set[3]=CMStrings.padRight(L("NAMELESS"),17)+"| ";
 			set[4]=CMStrings.padRight(S.getAddress(),17)+"| ";
-			set[5]=CMStrings.padRight(CMLib.english().returnTime(S.getIdleMillis(),0)+"",17);
+			set[5]=CMStrings.padRight(CMLib.english().stringifyElapsedTimeOrTicks(S.getIdleMillis(),0)+"",17);
 			broken.add(set);
 		}
 		List<String[]> sorted=null;
