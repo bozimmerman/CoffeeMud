@@ -166,17 +166,24 @@ public class Prop_Artifact extends Property
 		{
 			if(myHost == null)
 				return "null";
-			return destroyed+" ("+myHost.ID()+")";
+			return destroyed+" ("+myHost.ID()+": "+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(myHost))+")";
 		}
 		else
 		{
 			final Item I=(Item)myHost;
-			if(I.owner()==null)
-				return destroyed+" (null owner)";
-			else
+			try
 			{
-				final String destroyed2 = I.owner().amDestroyed()?" (Owner Destroyed) ":"";
-				return destroyed+I.owner().name()+" ("+I.owner().ID()+")"+destroyed2;
+				if(I.owner()==null)
+					return destroyed+" (null owner)";
+				else
+				{
+					final String destroyed2 = I.owner().amDestroyed()?" (Owner Destroyed) ":"";
+					return destroyed+I.owner().name()+" ("+I.owner().ID()+": "+CMLib.map().getApproximateExtendedRoomID(CMLib.map().roomLocation(I.owner()))+")"+destroyed2;
+				}
+			}
+			finally
+			{
+				this.destroyArtifact(I);
 			}
 		}
 	}
