@@ -142,6 +142,18 @@ public class CMSecurity
 	}
 
 	/**
+	 * Forces the current thread group to use the security group object associated with
+	 * the given thread group id
+	 * @param c the thread group
+	 */
+	public static void shareWith(final char c)
+	{
+		if(secs[c]==null)
+			secs[c] = new CMSecurity();
+		secs[Thread.currentThread().getThreadGroup().getName().charAt(0)] = secs[c];
+	}
+
+	/**
 	 * Designates that the thread which called this method should instead use the security system
 	 * of the MAIN_HOST, sharing it.
 	 */

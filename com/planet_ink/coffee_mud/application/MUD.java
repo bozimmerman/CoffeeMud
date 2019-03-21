@@ -1622,6 +1622,8 @@ public class MUD extends Thread implements MudHost
 				CMSecurity.setSysOp(page.getStr("SYSOPMASK")); // requires all classes be loaded
 				CMSecurity.parseGroups(page);
 			}
+			else
+				CMSecurity.shareWith(MAIN_HOST);
 
 			if((tCode==MAIN_HOST)
 			||(checkPrivate&&CMProps.isPrivateToMe("SOCIALS")))
