@@ -1573,15 +1573,13 @@ public class MUD extends Thread implements MudHost
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: initializing classes");
 			CMClass.instance().intializeClasses();
 
-			if(tCode==MudHost.MAIN_HOST)
-				bootSync.set(true);
-
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading expertises");
 			if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("EXPERTISES")))
 			{
 				CMLib.expertises().recompileExpertises();
 				Log.sysOut(Thread.currentThread().getName(),"Expertises defined: "+CMLib.expertises().numExpertises());
 			}
+
 			CMLib.lang().setLocale(CMLib.props().getStr("LANGUAGE"),CMLib.props().getStr("COUNTRY"));
 			if((threadCode==MudHost.MAIN_HOST)
 			||(CMLib.time()!=CMLib.library(MudHost.MAIN_HOST, CMLib.Library.TIME)))
@@ -1591,6 +1589,9 @@ public class MUD extends Thread implements MudHost
 				CMProps.setIntVar(CMProps.Int.TICKSPERMUDDAY,""+((CMProps.getMillisPerMudHour()*CMLib.time().globalClock().getHoursInDay()/CMProps.getTickMillis())));
 				CMProps.setIntVar(CMProps.Int.TICKSPERMUDMONTH,""+((CMProps.getMillisPerMudHour()*CMLib.time().globalClock().getHoursInDay()*CMLib.time().globalClock().getDaysInMonth()/CMProps.getTickMillis())));
 			}
+
+			if(tCode==MudHost.MAIN_HOST)
+				bootSync.set(true);
 
 			if((tCode==MAIN_HOST)
 			||(checkPrivate&&CMProps.isPrivateToMe("CHANNELS"))
