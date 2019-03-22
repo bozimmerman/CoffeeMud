@@ -1485,7 +1485,23 @@ public class GenRace extends StdRace
 			break;
 		}
 		case 43:
-			disableFlags = CMath.s_int(val);
+			if(CMath.isLong(val))
+				disableFlags = CMath.s_int(val);
+			else
+			{
+				disableFlags = 0;
+				for(final String s : CMParms.parseCommas(val,true))
+				{
+					if(CMath.isLong(s))
+						disableFlags |= CMath.s_int(s);
+					else
+					{
+						final int x=CMParms.indexOf(Race.GENFLAG_DESCS, s.toUpperCase().trim());
+						if(x>=0)
+							disableFlags |= (1<<x);
+					}
+				}
+			}
 			break;
 		case 44:
 		{
