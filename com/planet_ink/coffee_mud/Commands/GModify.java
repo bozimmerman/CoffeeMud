@@ -212,7 +212,17 @@ public class GModify extends StdCommand
 			else
 			if((stat.equalsIgnoreCase("GENDER"))
 			&&(E instanceof MOB))
-				((MOB)E).baseCharStats().setStat(CharStats.STAT_GENDER,Character.toUpperCase(value.charAt(0)));
+			{
+				if(value.charAt(0)=='?')
+				{
+					if(CMLib.dice().rollPercentage()>50)
+						((MOB)E).baseCharStats().setStat(CharStats.STAT_GENDER,'M');
+					else
+						((MOB)E).baseCharStats().setStat(CharStats.STAT_GENDER,'F');
+				}
+				else
+					((MOB)E).baseCharStats().setStat(CharStats.STAT_GENDER,Character.toUpperCase(value.charAt(0)));
+			}
 			else
 			if((stat.equalsIgnoreCase("ADDABILITY"))
 			&&(E instanceof AbilityContainer))
