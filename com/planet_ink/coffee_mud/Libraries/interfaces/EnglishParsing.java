@@ -100,22 +100,60 @@ public interface EnglishParsing extends CMLibrary
 	public Environmental parseShopkeeper(MOB mob, List<String> commands, String error);
 	public List<Item> fetchItemList(Environmental from, MOB mob, Item container, List<String> commands, Filterer<Environmental> filter, boolean visionMatters);
 
-	public long parseNumPossibleGold(Environmental mine, String itemID);
-	public String parseNumPossibleGoldCurrency(Environmental mine, String itemID);
+	/**
+	 * For cases when a string input probably contains an amount of money,
+	 * this method is used to determine the amount (not value).  It will attempt
+	 * to prefer whatever kind of money the given mine mob has on hand,
+	 * if mine is specified at all, which matches the amount in the user
+	 * input.  Otherwise, it will rely entirely on whatever clues the
+	 * user input provides as to the amount.
+	 *
+	 * @param mine someone with money, like a mob, or null
+	 * @param moneyStr a user input string to parse
+	 * @return the amount of money units
+	 */
+	public long parseNumPossibleGold(Environmental mine, String moneyStr);
 
-	public double parseNumPossibleGoldDenomination(Environmental mine, String currency, String itemID);
+	/**
+	 * For cases when a string input probably contains an amount of money,
+	 * this method is used to determine the currency id.  It will attempt
+	 * to prefer whatever kind of currency the given mine mob has on hand,
+	 * if mine is specified at all, which matches the amount in the user
+	 * input.  Otherwise, it will rely entirely on whatever clues the
+	 * user input provides.
+	 *
+	 * @param mine someone with money, like a mob, or null
+	 * @param moneyStr a user input string to parse
+	 * @return the currency id to use
+	 */
+	public String parseNumPossibleGoldCurrency(Environmental mine, String moneyStr);
+
+	/**
+	 * For cases when a string input probably contains an amount of money,
+	 * this method is used to determine the denomination.  It will attempt
+	 * to prefer whatever kind of currency the given mine mob has on hand,
+	 * if mine is specified at all.  Otherwise, it relies utterly on the
+	 * given currency.
+	 *
+	 * @param mine someone with money, like a mob, or null
+	 * @param currency currency to use if mine is unavail
+	 * @param moneyStr a user input string to parse
+	 * @return the denomination reflected by the input, or 0.0
+	 */
+	public double parseNumPossibleGoldDenomination(Environmental mine, String currency, String moneyStr);
 
 	/**
 	 * For cases when a string input probably contains an amount of money,
 	 * this method is used to determine the currency, denomination, and
-	 * number of units of that currency.
+	 * number of units of that currency.  It will attempt to prefer
+	 * whatever kind of currency the given mob has on hand.
 	 *
-	 * @param mob
-	 * @param amount
-	 * @param correctCurrency
-	 * @return
+	 * @param mob the user to use to find the right currency
+	 * @param moneyStr the parsable user input
+	 * @param correctCurrency a currency id to use, or null to use mob above
+	 * @return the currency, denomination, and amount as a triad
 	 */
-	public Triad<String, Double, Long> parseMoneyStringSDL(MOB mob, String amount, String correctCurrency);
+	public Triad<String, Double, Long> parseMoneyStringSDL(MOB mob, String moneyStr, String correctCurrency);
 
 	/**
 	 * For cases when a string input must contain an amount of money,
