@@ -72,6 +72,12 @@ public class Thief_DetectTraps extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ALERT;
 	}
 
+	@Override
+	protected boolean ignoreCompounding()
+	{
+		return true;
+	}
+
 	private static final String[] triggerStrings =I(new String[] {"CHECK"});
 	@Override
 	public String[] triggerStrings()

@@ -87,6 +87,12 @@ public class Thief_Detection extends ThiefSkill
 		return triggerStrings;
 	}
 
+	@Override
+	protected boolean ignoreCompounding()
+	{
+		return true;
+	}
+
 	protected Room lastRoom=null;
 	private int bonusThisRoom=0;
 

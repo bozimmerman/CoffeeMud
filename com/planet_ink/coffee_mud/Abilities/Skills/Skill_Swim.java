@@ -95,6 +95,12 @@ public class Skill_Swim extends StdSkill
 	}
 
 	@Override
+	protected boolean ignoreCompounding()
+	{
+		return true;
+	}
+
+	@Override
 	public double castingTime(final MOB mob, final List<String> cmds)
 	{
 		return CMProps.getSkillActionCost(ID(), CMath.greater(CMath.div(CMProps.getIntVar(CMProps.Int.DEFABLETIME), 50.0), 1.0));

@@ -81,6 +81,12 @@ public class Skill_Climb extends StdSkill
 	}
 
 	@Override
+	protected boolean ignoreCompounding()
+	{
+		return true;
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SKILL | Ability.DOMAIN_FITNESS;

@@ -107,6 +107,12 @@ public class Thief_Hide extends ThiefSkill
 	}
 
 	@Override
+	protected boolean ignoreCompounding()
+	{
+		return true;
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))

@@ -87,6 +87,12 @@ public class Thief_Sneak extends ThiefSkill
 	}
 
 	@Override
+	protected boolean ignoreCompounding()
+	{
+		return true;
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);

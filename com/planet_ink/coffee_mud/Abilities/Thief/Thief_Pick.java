@@ -102,6 +102,12 @@ public class Thief_Pick extends ThiefSkill
 	}
 
 	@Override
+	protected boolean ignoreCompounding()
+	{
+		return true;
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final int[] dirCode=new int[]{-1};

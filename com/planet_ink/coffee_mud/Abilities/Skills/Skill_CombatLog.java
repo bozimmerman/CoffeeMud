@@ -435,6 +435,12 @@ public class Skill_CombatLog extends StdSkill
 	}
 
 	@Override
+	protected boolean ignoreCompounding()
+	{
+		return true;
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final boolean logging = (this.loggingM != null) && (this.loggingM.fetchEffect(ID()) != null);

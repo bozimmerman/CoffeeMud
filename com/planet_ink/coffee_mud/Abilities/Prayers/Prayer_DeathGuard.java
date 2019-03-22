@@ -112,7 +112,16 @@ public class Prayer_DeathGuard extends Prayer
 				if(A==null)
 					A=clericM.fetchAbility("Prayer_CureLight");
 				if(A!=null)
+				{
+					final int[][] abilityUsageCache = mob.getAbilityUsageCache(A.ID());
+					final int[] cache = abilityUsageCache[Ability.CACHEINDEX_LASTTIME];
+					final int oldCount = (cache == null)? 0 : cache[USAGEINDEX_COUNT];
 					A.invoke(clericM, new XVector<String>(mob.Name()), mob, false, 0);
+					if(cache == null)
+						abilityUsageCache[Ability.CACHEINDEX_LASTTIME]=null;
+					else
+						cache[USAGEINDEX_COUNT]=oldCount;
+				}
 			}
 		}
 		return true;

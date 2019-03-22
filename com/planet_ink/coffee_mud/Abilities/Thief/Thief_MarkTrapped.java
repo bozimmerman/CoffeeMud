@@ -101,6 +101,12 @@ public class Thief_MarkTrapped extends ThiefSkill
 	}
 
 	@Override
+	protected boolean ignoreCompounding()
+	{
+		return true;
+	}
+
+	@Override
 	public void affectPhyStats(final Physical host, final PhyStats stats)
 	{
 		super.affectPhyStats(host,stats);

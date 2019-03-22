@@ -122,7 +122,16 @@ public class Fighter_AutoBash extends FighterSkill
 			{
 				final Ability A=mob.fetchAbility("Skill_Bash");
 				if(A!=null)
+				{
+					final int[][] abilityUsageCache = mob.getAbilityUsageCache(A.ID());
+					final int[] cache = abilityUsageCache[Ability.CACHEINDEX_LASTTIME];
+					final int oldCount = (cache == null)? 0 : cache[USAGEINDEX_COUNT];
 					A.invoke(mob,mob.getVictim(),false,adjustedLevel(mob,0));
+					if(cache == null)
+						abilityUsageCache[Ability.CACHEINDEX_LASTTIME]=null;
+					else
+						cache[USAGEINDEX_COUNT]=oldCount;
+				}
 				if(CMLib.dice().rollPercentage()<(10/numberOfShields))
 					helpProficiency(mob, 0);
 			}

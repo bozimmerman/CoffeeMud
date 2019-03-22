@@ -99,6 +99,12 @@ public class Thief_Swipe extends ThiefSkill
 		code=newCode;
 	}
 
+	@Override
+	protected boolean ignoreCompounding()
+	{
+		return true;
+	}
+
 	private final PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
 	protected int timesPicked(final MOB target)
 	{

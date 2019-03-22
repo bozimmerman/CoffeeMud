@@ -188,6 +188,11 @@ public class StdAbility implements Ability
 		return false;
 	}
 
+	protected boolean ignoreCompounding()
+	{
+		return false;
+	}
+
 	protected int getTicksBetweenCasts()
 	{
 		return 0;
@@ -1600,12 +1605,11 @@ public class StdAbility implements Ability
 			&&(consumed != STATIC_USAGE_NADA))
 			{
 				final int[][] abilityUsageCache=mob.getAbilityUsageCache(ID());
-				int[] cache = abilityUsageCache[Ability.CACHEINDEX_LASTTIME];
-				if(cache == null)
+				if(abilityUsageCache[Ability.CACHEINDEX_LASTTIME] == null)
 					abilityUsageCache[Ability.CACHEINDEX_LASTTIME] = new int[USAGEINDEX_TOTAL];
-				timeCache=abilityUsageCache[Ability.CACHEINDEX_LASTTIME];
+				timeCache = abilityUsageCache[Ability.CACHEINDEX_LASTTIME];
 				final int numTicksSinceLastCast=(int)((nowLSW-timeCache[USAGEINDEX_TIMELSW]) / CMProps.getTickMillis());
-				if(numTicksSinceLastCast >= compoundTicks)
+				if((numTicksSinceLastCast >= compoundTicks)||(ignoreCompounding()))
 					timeCache[USAGEINDEX_COUNT]=0;
 				else
 				{

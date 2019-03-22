@@ -87,6 +87,12 @@ public class Skill_Write extends StdSkill
 	}
 
 	@Override
+	protected boolean ignoreCompounding()
+	{
+		return true;
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<5)

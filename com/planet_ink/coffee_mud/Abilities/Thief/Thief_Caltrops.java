@@ -161,6 +161,12 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	}
 
 	@Override
+	protected boolean ignoreCompounding()
+	{
+		return true;
+	}
+
+	@Override
 	public Trap setTrap(final MOB mob, final Physical P, final int trapBonus, final int qualifyingClassLevel, final boolean perm)
 	{
 		maliciousAffect(mob, P, qualifyingClassLevel + trapBonus, 0, -1);
