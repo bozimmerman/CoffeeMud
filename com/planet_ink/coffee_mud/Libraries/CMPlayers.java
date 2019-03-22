@@ -1408,7 +1408,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					{
 						obliteratePlayer(M,true, true);
 						M.destroy();
-						Log.sysOut(serviceClient.getName(),"AutoPurged user "+name+". Last logged in "+(CMLib.time().date2String(userLastLoginDateTime))+".");
+						Log.sysOut(serviceClient.getName(),"AutoPurged user "+name+" ("+M.basePhyStats().level()+"). Last logged in "+(CMLib.time().date2String(userLastLoginDateTime))+".");
 					}
 				}
 			}
