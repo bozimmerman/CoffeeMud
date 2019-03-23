@@ -1930,17 +1930,18 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			if(msg.source().riding()==this)
 			{
 				sendAreaMessage(msg, true);
-				if((owner() instanceof Room)
-				&&(owner() != prevItemRoom)
+				final ItemPossessor owner = owner();
+				if((owner instanceof Room)
+				&&(owner != prevItemRoom)
 				&&(this.area instanceof BoardableShip))
 				{
-					final Room R = (Room)owner();
+					final Room R = (Room)owner;
 					boolean fixSky=false;
 					final Room oldR;
 					synchronized(this)
 					{
 						oldR=this.prevItemRoom;
-						fixSky = ((R!=null)&&(R!=oldR)&&(oldR!=null));
+						fixSky = ((R!=oldR)&&(oldR!=null));
 						if(oldR!=R)
 							this.prevItemRoom=R;
 					}

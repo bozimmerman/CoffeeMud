@@ -80,7 +80,7 @@ public class PostOfficeBoxNext extends StdWebMacro
 			postalBoxes.add(M.Name());
 			for(final Pair<Clan,Integer> C : M.clans())
 			{
-				if(C.first.getAuthority(C.second,Function.WITHDRAW)!=Authority.CAN_NOT_DO)
+				if(C.first.getAuthority(C.second.intValue(),Function.WITHDRAW)!=Authority.CAN_NOT_DO)
 					postalBoxes.add(C.first.name());
 			}
 		}

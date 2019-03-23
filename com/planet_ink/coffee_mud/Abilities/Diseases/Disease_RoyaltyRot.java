@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Abilities.Diseases;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.sun.javafx.scene.traversal.Direction;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;

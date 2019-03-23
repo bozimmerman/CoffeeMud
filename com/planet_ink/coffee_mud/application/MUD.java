@@ -1559,7 +1559,7 @@ public class MUD extends Thread implements MudHost
 			while((tCode!=MudHost.MAIN_HOST)
 			&&(!bootSync.get())
 			&&(CMLib.s_sleep(500)))
-				;
+			{}
 			if(!CMClass.loadAllCoffeeMudClasses(page))
 			{
 				fatalStartupError(t,0);

@@ -4582,23 +4582,16 @@ public class StdMOB implements MOB
 		Ability A=abilitys.find(ID);
 		if(A!=null)
 			return A;
-		for(final Pair<Clan,Integer> p : clans())
+		if(clans.size()>0)
 		{
-			A=p.first.clanAbilities(this).find(ID);
-			if(A!=null)
-				return A;
+			for(final Pair<Clan,Integer> p : clans())
+			{
+				A=p.first.clanAbilities(this).find(ID);
+				if(A!=null)
+					return A;
+			}
 		}
-		final Race R = charStats().getMyRace();
-		A=R.racialAbilities(this).find(ID);
-		if(A!=null)
-			return A;
-		for (final Enumeration<Ability> a = allAbilities(); a.hasMoreElements();)
-		{
-			A = a.nextElement();
-			if (A.Name().equalsIgnoreCase(ID))
-				return A;
-		}
-		return null;
+		return charStats().getMyRace().racialAbilities(this).find(ID);
 	}
 
 	@Override

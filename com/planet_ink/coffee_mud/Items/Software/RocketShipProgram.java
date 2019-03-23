@@ -127,7 +127,7 @@ public class RocketShipProgram extends GenShipProgram
 				return 1;
 			return 0;
 		}
-	};
+	}
 
 	@Override
 	public String getParentMenu()

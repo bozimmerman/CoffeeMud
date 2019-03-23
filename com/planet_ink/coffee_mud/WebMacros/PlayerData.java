@@ -649,6 +649,7 @@ public class PlayerData extends StdWebMacro
 				if(parms.containsKey("READONLY"))
 					str.append(CMParms.toListString(set));
 				else
+				if(set != null)
 				{
 					for (final PlayerStats.PlayerFlag element : PlayerStats.PlayerFlag.values())
 					{

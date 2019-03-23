@@ -6,8 +6,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMappi
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 
-import javafx.geometry.Pos;
-
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;

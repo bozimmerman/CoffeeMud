@@ -902,7 +902,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				status[0]=Tickable.STATUS_NOT;
 			return false;
 		}
-
+		
+		if(mob.numAllAbilities()>0)
 		if(((flags.isWaterySurfaceRoom(nextRoom)))
 		   &&(!flags.isWaterWorthy(mob))
 		   &&(!flags.isInFlight(mob))
