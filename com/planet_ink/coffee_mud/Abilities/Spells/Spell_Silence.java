@@ -104,19 +104,26 @@ public class Spell_Silence extends Spell
 		if((affected instanceof MOB)||(affected instanceof Item))
 		{
 			final Room R=CMLib.map().roomLocation(affected);
-			if((R!=null)&&(R==theRoom)&&(!unInvoked)&&(R.fetchEffect(ID())==this))
+			if((R!=null)
+			&&(R==theRoom)
+			&&(!unInvoked)
+			&&(R.fetchEffect(ID())==this))
 			{
 				affectableStats.setSensesMask(affectableStats.sensesMask() |  PhyStats.CAN_NOT_SPEAK);
 				affectableStats.setSensesMask(affectableStats.sensesMask() |  PhyStats.CAN_NOT_HEAR);
 			}
 			else
 			{
+				final Physical P=affecting();
 				affected.delEffect(this);
+				if(P instanceof Room)
+					this.setAffectedOne(P);
 				affected.recoverPhyStats();
 			}
 		}
 		else
-		if((affected instanceof Room)&&(!unInvoked))
+		if((affected instanceof Room)
+		&&(!unInvoked))
 		{
 			final Room R=(Room)affected;
 			theRoom=R;
@@ -124,7 +131,8 @@ public class Spell_Silence extends Spell
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				M=R.fetchInhabitant(i);
-				if((M!=null)&&(M.fetchEffect(ID())==null))
+				if((M!=null)
+				&&(M.fetchEffect(ID())==null))
 				{
 					M.addEffect(this);
 					setAffectedOne(R);
