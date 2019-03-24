@@ -5002,7 +5002,10 @@ public class StdMOB implements MOB
 	public void delExpertise(final String baseCode)
 	{
 		if(baseCode==null)
+		{
+			clearAbilityUsageCache();
 			return;
+		}
 		if(expertises.remove(baseCode.toUpperCase())==null)
 		{
 			final Entry<String,Integer> p=CMath.getStringFollowedByNumber(baseCode, true);

@@ -380,6 +380,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			}
 		}
 		fixMobStatsIfNecessary(mob,-1);
+		mob.delExpertise(null); // clears the cache
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELSGAINED, -1, mob);
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLASSLEVELSGAINED, -1, mob);
 	}
