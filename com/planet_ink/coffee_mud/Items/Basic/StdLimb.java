@@ -67,6 +67,7 @@ public class StdLimb extends StdItem implements FalseLimb
 		super.setName(name);
 		wearplace=-1;
 		partnum=-1;
+		getWearLocations();
 	}
 
 	@Override
@@ -148,6 +149,8 @@ public class StdLimb extends StdItem implements FalseLimb
 			wearplace=0;
 		else
 			wearplace=Race.BODY_WEARVECTOR[num];
+		super.properWornBitmap=wearplace;
+		super.wornLogicalAnd=false;
 		return wearplace;
 	}
 
@@ -155,6 +158,8 @@ public class StdLimb extends StdItem implements FalseLimb
 	public void setWearLocations(final long wearPlace)
 	{
 		wearplace=wearPlace;
+		super.wornLogicalAnd=false;
+		super.properWornBitmap=wearplace;
 	}
 
 	@Override
