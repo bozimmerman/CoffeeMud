@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.Expertise
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.SkillCost;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.SecFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -398,6 +399,31 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		return completeUsageMaps[code.ordinal()].get(ID);
 	}
 
+	protected int getConfirmedExpertiseLevel(final MOB mob, final String baseID, final Pair<String,Integer> e)
+	{
+		final ExpertiseDefinition def=getDefinition(baseID+e.getValue().toString());
+		if((!mob.isMonster())
+		&&(!CMSecurity.isAllowedEverywhere(mob, SecFlag.ALLSKILLS)))
+		{
+			if((def == null)
+			||(!CMLib.masking().maskCheck(def.compiledListMask(), mob, true))
+			||(!CMLib.masking().maskCheck(def.compiledFinalMask(), mob, true)))
+			{
+				final List<String> defList = getStageCodes(baseID);
+				for(int i = defList.size()-e.getValue().intValue();i<defList.size();i++)
+				{
+					final ExpertiseDefinition def2=getDefinition(defList.get(i));
+					if((def2 != null)
+					&&(CMLib.masking().maskCheck(def2.compiledListMask(), mob, true))
+					&&(CMLib.masking().maskCheck(def2.compiledFinalMask(), mob, true)))
+						return this.getStageNumber(def2);
+				}
+				return 0;
+			}
+		}
+		return e.getValue().intValue();
+	}
+	
 	@Override
 	public int getApplicableExpertiseLevel(final String ID, final Flag code, final MOB mob)
 	{
@@ -405,15 +431,17 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		if((applicableExpIDs==null)||(applicableExpIDs.length<1))
 			return 0;
 		final Pair<String,Integer> e=mob.fetchExpertise(applicableExpIDs[0]);
-		if((e!=null)&&(e.getValue()!=null))
-			return e.getValue().intValue();
+		if((e!=null)
+		&&(e.getValue()!=null))
+			return getConfirmedExpertiseLevel(mob, applicableExpIDs[0], e);
 		if(applicableExpIDs.length<2)
 			return 0;
 		for(final String expID : applicableExpIDs)
 		{
 			final Pair<String,Integer> e2=mob.fetchExpertise(expID);
-			if((e2!=null)&&(e2.getValue()!=null))
-				return e2.getValue().intValue();
+			if((e2!=null)
+			&&(e2.getValue()!=null))
+				return getConfirmedExpertiseLevel(mob, applicableExpIDs[0], e2);
 		}
 		return 0;
 	}
