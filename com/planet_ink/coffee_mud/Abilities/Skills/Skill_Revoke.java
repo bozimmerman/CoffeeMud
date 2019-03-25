@@ -87,6 +87,12 @@ public class Skill_Revoke extends StdSkill
 	}
 
 	@Override
+	public boolean ignoreCompounding()
+	{
+		return true;
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final String whatToRevoke=CMParms.combine(commands,0);

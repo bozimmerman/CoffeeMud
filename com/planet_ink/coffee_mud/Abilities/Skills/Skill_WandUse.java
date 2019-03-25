@@ -79,6 +79,12 @@ public class Skill_WandUse extends StdSkill
 	}
 
 	@Override
+	public boolean ignoreCompounding()
+	{
+		return true;
+	}
+
+	@Override
 	public int abilityCode()
 	{
 		return (invoker==null)?0:(getXLEVELLevel(invoker));
