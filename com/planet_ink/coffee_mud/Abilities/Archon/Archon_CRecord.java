@@ -439,6 +439,7 @@ public class Archon_CRecord extends ArchonSkill
 			else
 			{
 				A.triggerTime=0;
+				CMLib.map().delGlobalHandler(A, CMMsg.TYP_LEVEL);
 				mob.tell(L("CRecord level listener is now stopped."));
 			}
 			return false;
@@ -473,6 +474,7 @@ public class Archon_CRecord extends ArchonSkill
 						M.delEffect(A2);
 						A.myPlayers.remove(M.Name());
 						mob.tell(L("Recording on @x1 has been stopped.",M.Name()));
+						CMLib.map().delGlobalHandler(A, CMMsg.TYP_LEVEL);
 					}
 				}
 			}
@@ -498,6 +500,7 @@ public class Archon_CRecord extends ArchonSkill
 					{
 						mob.location().send(mob,msg);
 						A.triggerTime=CMath.s_int(commands.get(1)) * 60 * 1000;
+						CMLib.map().addGlobalHandler(A, CMMsg.TYP_LEVEL);
 					}
 				}
 				else
