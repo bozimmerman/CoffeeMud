@@ -159,11 +159,6 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if((ticking == this) && (tickID == Tickable.TICKID_BEAMWEAPON))
-		{
-			this.destroy();
-			return false;
-		}
 		return true;
 	}
 
