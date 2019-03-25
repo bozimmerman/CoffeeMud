@@ -51,13 +51,13 @@ public class NoBattleSpam extends StdCommand
 		throws java.io.IOException
 	{
 		final String parm = (commands.size() > 1) ? CMParms.combine(commands,1) : "";
-		if((mob.isAttributeSet(MOB.Attrib.NOBATTLESPAM) && (parm.length()==0))||(parm.equalsIgnoreCase("ON")))
+		if((mob.isAttributeSet(MOB.Attrib.NOBATTLESPAM) && (parm.length()==0))||(parm.equalsIgnoreCase("OFF")))
 		{
 			mob.setAttribute(MOB.Attrib.NOBATTLESPAM,false);
 			mob.tell(L("No Battle Spam has been turned off.  You will now see combat messages again."));
 		}
 		else
-		if((!mob.isAttributeSet(MOB.Attrib.NOBATTLESPAM) && (parm.length()==0))||(parm.equalsIgnoreCase("OFF")))
+		if((!mob.isAttributeSet(MOB.Attrib.NOBATTLESPAM) && (parm.length()==0))||(parm.equalsIgnoreCase("ON")))
 		{
 			mob.setAttribute(MOB.Attrib.NOBATTLESPAM,true);
 			mob.tell(L("No Battle Spam has been turned on.  You will no longer see many combat messages."));
