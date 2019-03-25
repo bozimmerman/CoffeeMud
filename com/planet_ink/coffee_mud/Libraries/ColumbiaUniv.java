@@ -242,7 +242,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				return 0;
 			for(final ExpertiseLibrary.Flag flag : ExpertiseLibrary.Flag.values())
 			{
-				xFlagCache[flag.ordinal()]=CMLib.expertises().getApplicableExpertiseLevel(abilityID,flag,mob)
+				xFlagCache[flag.ordinal()]=getApplicableExpertiseLevel(abilityID,flag,mob)
 											+charClass.addedExpertise(mob, flag, abilityID);
 			}
 			usageCache[Ability.CACHEINDEX_EXPERTISE]=xFlagCache;
@@ -784,7 +784,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		for(;i.hasNext();)
 		{
 			final String id=i.next();
-			final ExpertiseDefinition def=CMLib.expertises().getDefinition(id);
+			final ExpertiseDefinition def=getDefinition(id);
 			if((def != null)
 			&&(!(def.ID().equals(def.getBaseName()+"1")||def.ID().equals(def.getBaseName()+"I")||(def.ID().equals(def.getBaseName())))))
 			{
