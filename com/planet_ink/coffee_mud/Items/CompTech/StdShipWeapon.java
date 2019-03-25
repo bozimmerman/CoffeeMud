@@ -237,7 +237,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								if(ship instanceof SpaceShip)
 								{
 									final ShipDir dir = CMLib.map().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), targetDirection);
-									if(CMParms.contains(getCurrentBattleCoveredDirections(), dir))
+									if(!CMParms.contains(getCurrentBattleCoveredDirections(), dir))
 										reportError(this, controlI, mob, lang.L("@x1 is not facing a covered direction.",me.name(mob)), lang.L("Failure: @x1: weapon is not facing correctly.",me.name(mob)));
 								}
 								final SpaceObject weaponO=(SpaceObject)CMClass.getTech("StdSpaceTech");
