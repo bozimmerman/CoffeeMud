@@ -78,7 +78,8 @@ public class Mount extends StdCommand
 			if(I!=null)
 			{
 				commands.remove(0);
-				I.setRiding(null);
+				// this caused re-mounting to occur as if the item was never mounted to anything to begin with.
+				//I.setRiding(null); // why do you get to dismount without a message every time you specify an item to mount?
 				RI=I;
 			}
 			if(RI==null)
