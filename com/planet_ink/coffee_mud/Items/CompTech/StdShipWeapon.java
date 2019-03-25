@@ -291,9 +291,10 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 									break;
 								}
 								weaponO.setKnownSource(ship);
-								final long[] firstCoords = CMLib.map().moveSpaceObject(ship.coordinates(), targetDirection, ship.radius());
+								final int weaponRadius = 10;
+								final long[] firstCoords = CMLib.map().moveSpaceObject(ship.coordinates(), targetDirection, ship.radius()+weaponRadius+1);
 								weaponO.setCoords(firstCoords);
-								weaponO.setRadius(10);
+								weaponO.setRadius(weaponRadius);
 								weaponO.setDirection(targetDirection);
 								weaponO.setSpeed(SpaceObject.VELOCITY_LIGHT);
 								((Technical)weaponO).setTechLevel(techLevel());
