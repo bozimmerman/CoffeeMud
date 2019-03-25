@@ -54,18 +54,28 @@ public class Expertises extends StdCommand
 		for(final Enumeration<String> e=mob.expertises();e.hasMoreElements();)
 		{
 			final String exper=e.nextElement();
+			final ExpertiseLibrary.ExpertiseDefinition baseDef=CMLib.expertises().getDefinition(exper);
+			//final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getConfirmedDefinition(mob, exper);
 			final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(exper);
 			if(def==null)
 			{
-				final Pair<String,Integer> p=mob.fetchExpertise(exper);
-				if(p==null)
-					expers.add("?"+CMStrings.capitalizeAllFirstLettersAndLower(exper));
+				if(baseDef != null)
+					expers.add("("+baseDef.name()+")");
 				else
-				if(p.first.endsWith("%"))
-					expers.add("?"+CMStrings.capitalizeAllFirstLettersAndLower(p.first.substring(0,p.first.length()-1))+" ("+p.second.intValue()+"%)");
-				else
-					expers.add("?"+CMStrings.capitalizeAllFirstLettersAndLower(p.first)+" "+p.second.intValue());
+				{
+					final Pair<String,Integer> p=mob.fetchExpertise(exper);
+					if(p==null)
+						expers.add("?("+CMStrings.capitalizeAllFirstLettersAndLower(exper)+")");
+					else
+					if(p.first.endsWith("%"))
+						expers.add("?("+CMStrings.capitalizeAllFirstLettersAndLower(p.first.substring(0,p.first.length()-1))+" ("+p.second.intValue()+"%))");
+					else
+						expers.add("?("+CMStrings.capitalizeAllFirstLettersAndLower(p.first)+" "+p.second.intValue()+")");
+				}
 			}
+			else
+			if(baseDef != def)
+				expers.add(def.name()+" *");
 			else
 				expers.add(def.name());
 		}

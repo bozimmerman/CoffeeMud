@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -148,6 +149,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	public Enumeration<ExpertiseDefinition> definitions();
 	public List<ExpertiseDefinition> myQualifiedExpertises(MOB mob);
 	public List<ExpertiseDefinition> myListableExpertises(MOB mob);
+	public ExpertiseDefinition getConfirmedDefinition(final MOB mob, final String ID);
 	public int numExpertises();
 	public SkillCost createNewSkillCost(CostType costType, Double value);
 	public void recompileExpertises();

@@ -399,6 +399,33 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		return completeUsageMaps[code.ordinal()].get(ID);
 	}
 
+	@Override
+	public ExpertiseDefinition getConfirmedDefinition(final MOB mob, final String ID)
+	{
+		if(mob == null)
+			return getDefinition(ID);
+		if(ID!=null)
+		{
+			final ExpertiseDefinition def=getDefinition(ID);
+			if(def != null)
+			{
+				final Pair<String,Integer> e=mob.fetchExpertise(ID);
+				if((e!=null)
+				&&(e.getValue()!=null))
+				{
+					final int level = getConfirmedExpertiseLevel(mob, def.getBaseName(), e);
+					if(level == e.second.intValue())
+						return def;
+					if(level == 0)
+						return null;
+					return getDefinition(def.getBaseName()+level);
+				}
+			}
+			return completeEduMap.get(ID.trim().toUpperCase());
+		}
+		return null;
+	}
+
 	protected int getConfirmedExpertiseLevel(final MOB mob, final String baseID, final Pair<String,Integer> e)
 	{
 		if((!mob.isMonster())
@@ -423,7 +450,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		return e.getValue().intValue();
 	}
-	
+
 	@Override
 	public int getApplicableExpertiseLevel(final String ID, final Flag code, final MOB mob)
 	{
@@ -433,7 +460,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		final Pair<String,Integer> e=mob.fetchExpertise(applicableExpIDs[0]);
 		if((e!=null)
 		&&(e.getValue()!=null))
-			return getConfirmedExpertiseLevel(mob, applicableExpIDs[0], e);
+			return e.getValue().intValue();
+			//return getConfirmedExpertiseLevel(mob, applicableExpIDs[0], e);
 		if(applicableExpIDs.length<2)
 			return 0;
 		for(final String expID : applicableExpIDs)
@@ -441,7 +469,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			final Pair<String,Integer> e2=mob.fetchExpertise(expID);
 			if((e2!=null)
 			&&(e2.getValue()!=null))
-				return getConfirmedExpertiseLevel(mob, applicableExpIDs[0], e2);
+				return e2.getValue().intValue();
+				//return getConfirmedExpertiseLevel(mob, applicableExpIDs[0], e2);
 		}
 		return 0;
 	}
