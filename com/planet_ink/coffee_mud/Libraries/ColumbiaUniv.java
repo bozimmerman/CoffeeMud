@@ -401,10 +401,10 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 
 	protected int getConfirmedExpertiseLevel(final MOB mob, final String baseID, final Pair<String,Integer> e)
 	{
-		final ExpertiseDefinition def=getDefinition(baseID+e.getValue().toString());
 		if((!mob.isMonster())
 		&&(!CMSecurity.isAllowedEverywhere(mob, SecFlag.ALLSKILLS)))
 		{
+			final ExpertiseDefinition def=getDefinition(baseID+e.getValue().toString());
 			if((def == null)
 			||(!CMLib.masking().maskCheck(def.compiledListMask(), mob, true))
 			||(!CMLib.masking().maskCheck(def.compiledFinalMask(), mob, true)))
