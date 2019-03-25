@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2019 Bo Zimmerman
+   Copyright 2019-2019 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_RepairingAura extends Spell
+public class Spell_ImprovedRepairingAura extends Spell
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_RepairingAura";
+		return "Spell_ImprovedRepairingAura";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Repairing Aura");
+	private final static String	localizedName	= CMLib.lang().L("Improved Repairing Aura");
 
 	@Override
 	public String name()
@@ -58,7 +58,7 @@ public class Spell_RepairingAura extends Spell
 	@Override
 	protected int canTargetCode()
 	{
-		return CAN_ITEMS;
+		return CAN_ITEMS|CAN_MOBS;
 	}
 
 	@Override
@@ -109,8 +109,66 @@ public class Spell_RepairingAura extends Spell
 					((MOB)I.owner()).tell(L("@x1 is magically repairing itself.",I.name()));
 				I.setUsesRemaining(I.usesRemaining()+1+(super.getXLEVELLevel(invoker())/3));
 			}
+			else
+			{
+				final ItemPossessor owner=I.owner();
+				if(owner instanceof Room)
+				{
+				}
+				else
+				if(owner instanceof MOB)
+				{
+					final List<Item> chooseFrom = this.getChoices(owner);
+					if(chooseFrom.size()<1)
+					{
+						// do nothing, as this is supposed to be a runtime spell
+						//unInvoke();
+						//return false;
+					}
+					else
+					{
+						final Item nextItem=chooseFrom.get(CMLib.dice().roll(1,chooseFrom.size(),-1));
+						I.delEffect(this);
+						nextItem.addEffect(this);
+					}
+				}
+				else
+				{
+					unInvoke();
+					return false;
+				}
+
+			}
 		}
 		return true;
+	}
+
+	protected List<Item> getChoices(final ItemPossessor owner)
+	{
+		final List<Item> choices=new ArrayList<Item>();
+		final List<Item> inventory=new ArrayList<Item>(owner.numItems());
+		Item I=null;
+		for(int i=0;i<owner.numItems();i++)
+		{
+			I=owner.getItem(i);
+			if((I!=null)
+			&&(I.subjectToWearAndTear())
+			&&(I.fetchEffect("Spell_RepairingAura")==null)
+			&&(I.fetchEffect("Spell_MassRepairingAura")==null)
+			&&(I.fetchEffect(ID())==null))
+			{
+				if(I.amWearingAt(Wearable.IN_INVENTORY))
+					inventory.add(I);
+				else
+					choices.add(I);
+			}
+		}
+		List<Item> chooseFrom=inventory;
+		if(choices.size()<3)
+			inventory.addAll(choices);
+		else
+			chooseFrom=choices;
+		return chooseFrom;
 	}
 
 	@Override
@@ -120,7 +178,7 @@ public class Spell_RepairingAura extends Spell
 		if(target==null)
 			return false;
 		if((target.fetchEffect(this.ID())!=null)
-		||(target.fetchEffect("Spell_ImprovedRepairingAura")!=null)
+		||(target.fetchEffect("Spell_RepairingAura")!=null)
 		||(target.fetchEffect("Spell_MassRepairingAura")!=null))
 		{
 			mob.tell(L("@x1 is already repairing!",target.name(mob)));
@@ -142,26 +200,7 @@ public class Spell_RepairingAura extends Spell
 		else
 		if(target instanceof MOB)
 		{
-			final List<Item> choices=new ArrayList<Item>();
-			final MOB M=(MOB)target;
-			final List<Item> inventory=new ArrayList<Item>(M.numItems());
-			Item I=null;
-			for(int i=0;i<M.numItems();i++)
-			{
-				I=M.getItem(i);
-				if((I!=null)&&(I.subjectToWearAndTear())&&(I.fetchEffect(ID())==null))
-				{
-					if(I.amWearingAt(Wearable.IN_INVENTORY))
-						inventory.add(I);
-					else
-						choices.add(I);
-				}
-			}
-			List<Item> chooseFrom=inventory;
-			if(choices.size()<3)
-				inventory.addAll(choices);
-			else
-				chooseFrom=choices;
+			final List<Item> chooseFrom = this.getChoices((MOB)target);
 			if(chooseFrom.size()<1)
 				success=false;
 			else
@@ -179,9 +218,9 @@ public class Spell_RepairingAura extends Spell
 				mob.location().send(mob,msg);
 				if(msg2!=null)
 					mob.location().send(mob,msg2);
-				mob.location().show(mob,realTarget,CMMsg.MSG_OK_ACTION,L("<T-NAME> attain(s) a repairing aura."));
+				mob.location().show(mob,realTarget,CMMsg.MSG_OK_ACTION,L("<T-NAME> attain(s) an improved repairing aura."));
 				beneficialAffect(mob,realTarget,asLevel,0);
-				final Spell_RepairingAura A=(Spell_RepairingAura)realTarget.fetchEffect(ID());
+				final Spell_ImprovedRepairingAura A=(Spell_ImprovedRepairingAura)realTarget.fetchEffect(ID());
 				if(A!=null)
 					A.adjustedLevel=adjustedLevel(mob,asLevel);
 				realTarget.recoverPhyStats();

@@ -62,6 +62,7 @@
   61. New optional skill mana usage system: MANACOMPOUND - see ini file or mudgrinder
   62. WebMacroCreamer now supports @elif?...@ syntax. Also new Macro: CheckFactionLoaded
   63. New Archon skill CRECORD -- a developer tool for auto-snooping combat logs.
+  64. New spells: Improved Repairing Aura, Mass Repairing Aura
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

@@ -84,6 +84,7 @@ public class Alterer extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Spell_PolymorphObject",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_GravitySlam",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_Fabricate",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Spell_MassRepairingAura",25,false,CMParms.parseSemicolons("Spell_RepairingAura(100)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_Duplicate",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Wish",25,true);
 	}
