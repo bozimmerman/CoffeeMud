@@ -372,7 +372,11 @@ public class StdTrap extends StdAbility implements Trap
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(!sprung)
+		if(sprung)
+		{
+			super.executeMsg(myHost,msg);
+			return;
+		}
 		if(CMath.bset(canAffectCode(),Ability.CAN_EXITS))
 		{
 			if(msg.amITarget(affected))

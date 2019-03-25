@@ -678,31 +678,32 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public TechComponent.ShipDir getDirectionFromDir(final double[] facing, final double roll, final double[] direction)
 	{
-
-		double yD = ((Math.toDegrees(facing[0]) % 360.0) - (Math.toDegrees(facing[0]) % 360.0)) % 360.0;
+		//Log.debugOut("facing="+(Math.toDegrees(facing[0]) % 360.0)+","+(Math.toDegrees(facing[1]) % 180.0));
+		//Log.debugOut("direction="+(Math.toDegrees(direction[0]) % 360.0)+","+(Math.toDegrees(direction[1]) % 180.0));
+		double yD = ((Math.toDegrees(facing[0]) % 360.0) - (Math.toDegrees(direction[0]) % 360.0)) % 360.0;
 		if(yD < 0)
 			yD = 360.0 + yD;
-		double pD = ((Math.toDegrees(facing[1]) % 180.0) - (Math.toDegrees(direction[1]) % 180.0)) % 180.0;
-		if(pD < 0)
-			pD = 180.0 + pD;
+		final double pD = Math.abs(((Math.toDegrees(facing[1]) % 180.0) - (Math.toDegrees(direction[1]) % 180.0)) % 180.0);
+		//Log.debugOut("yD,pD="+yD+","+pD);
 		double rD = (yD + (Math.toDegrees(roll) % 360.0)) % 360.0;
 		if(rD < 0)
 			rD = 360.0 + rD;
+		//Log.debugOut("rD="+rD);
 		if(pD<45 || pD > 135)
 		{
 			if(yD < 45.0 || yD > 315.0)
-				return ShipDir.AFT;
-			if(yD> 135.0 && yD < 225.0)
 				return ShipDir.FORWARD;
+			if(yD> 135.0 && yD < 225.0)
+				return ShipDir.AFT;
 		}
 		if(rD >= 315.0 || rD<45.0)
 			return ShipDir.DORSEL;
 		if(rD >= 45.0 && rD <135.0)
-			return ShipDir.STARBOARD;
+			return ShipDir.PORT;
 		if(rD >= 135.0 && rD <225.0)
 			return ShipDir.VENTRAL;
 		if(rD >= 225.0 && rD <315.0)
-			return ShipDir.PORT;
+			return ShipDir.STARBOARD;
 		return ShipDir.AFT;
 	}
 
