@@ -3120,15 +3120,19 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	protected void tickAllShips()
 	{
-		for(final Enumeration<BoardableShip> s = CMLib.map().ships();s.hasMoreElements();)
+		if((CMLib.map() != CMLib.get(MudHost.MAIN_HOST)._map())
+		||(Thread.currentThread().getThreadGroup().getName().charAt(0)==MudHost.MAIN_HOST))
 		{
-			final BoardableShip ship = s.nextElement();
-			ship.tick(ship, Tickable.TICKID_SPECIALMANEUVER);
-		}
-		for(final Enumeration<BoardableShip> s = CMLib.map().ships();s.hasMoreElements();)
-		{
-			final BoardableShip ship = s.nextElement();
-			ship.tick(ship, Tickable.TICKID_SPECIALCOMBAT);
+			for(final Enumeration<BoardableShip> s = CMLib.map().ships();s.hasMoreElements();)
+			{
+				final BoardableShip ship = s.nextElement();
+				ship.tick(ship, Tickable.TICKID_SPECIALMANEUVER);
+			}
+			for(final Enumeration<BoardableShip> s = CMLib.map().ships();s.hasMoreElements();)
+			{
+				final BoardableShip ship = s.nextElement();
+				ship.tick(ship, Tickable.TICKID_SPECIALCOMBAT);
+			}
 		}
 	}
 
