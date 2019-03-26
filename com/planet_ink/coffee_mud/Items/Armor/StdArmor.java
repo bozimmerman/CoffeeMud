@@ -272,6 +272,7 @@ public class StdArmor extends StdContainer implements Armor
 			final int oldUses=usesRemaining();
 			if(weaponDamageType>=0)
 			{
+				//TODO: make this into a chart in lists.ini .. somehow
 				switch(material()&RawMaterial.MATERIAL_MASK)
 				{
 				case RawMaterial.MATERIAL_CLOTH:
