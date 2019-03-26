@@ -3410,7 +3410,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(o instanceof Deity)
 			delDeity((Deity)o);
 
-		if(o instanceof BoardableShip)
+		if((o instanceof BoardableShip)&&(!(o instanceof Area)))
 			delShip((BoardableShip)o);
 
 		if(o instanceof PostOffice)
