@@ -72,6 +72,30 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	}
 
 	@SuppressWarnings("unchecked")
+	public SHashtable(final SHashtable<K, F> H, final boolean reverse)
+	{
+		super();
+		this.H = new Hashtable<K, F>();
+		if (H != null)
+		{
+			if(reverse)
+			{
+				for (final K o : H.keySet())
+					this.H.put((K)H.get(o), (F)o);
+			}
+			else
+			{
+				this.H.putAll(H);
+			}
+		}
+	}
+
+	public SHashtable(final SHashtable<K, F> H)
+	{
+		this(H,false);
+	}
+
+	@SuppressWarnings("unchecked")
 	public synchronized Hashtable<K, F> toHashtable()
 	{
 		return (Hashtable<K, F>) H.clone();

@@ -263,32 +263,10 @@ public class StdArmor extends StdContainer implements Armor
 				if(msg.tool() instanceof Weapon)
 					weaponDamageType=((Weapon)msg.tool()).weaponDamageType();
 				else
-				switch(msg.sourceMinor())
 				{
-				case CMMsg.TYP_FIRE:
-					weaponDamageType=Weapon.TYPE_BURNING;
-					break;
-				case CMMsg.TYP_WATER:
-					weaponDamageType=Weapon.TYPE_FROSTING;
-					break;
-				case CMMsg.TYP_ACID:
-					weaponDamageType=Weapon.TYPE_MELTING;
-					break;
-				case CMMsg.TYP_COLD:
-					weaponDamageType=Weapon.TYPE_FROSTING;
-					break;
-				case CMMsg.TYP_GAS:
-					weaponDamageType=Weapon.TYPE_GASSING;
-					break;
-				case CMMsg.TYP_ELECTRIC:
-					weaponDamageType=Weapon.TYPE_STRIKING;
-					break;
-				case CMMsg.TYP_SONIC:
-					weaponDamageType=Weapon.TYPE_SONICING;
-					break;
-				case CMMsg.TYP_LASER:
-					weaponDamageType=Weapon.TYPE_LASERING;
-					break;
+					final Integer weaponType = Weapon.MSG_TYPE_MAP.get(Integer.valueOf(msg.sourceMinor()));
+					if(weaponType != null)
+						weaponDamageType = weaponType.intValue();
 				}
 			}
 			final int oldUses=usesRemaining();
@@ -303,6 +281,8 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
 					case Weapon.TYPE_GASSING:
+					case Weapon.TYPE_STULTIFYING:
+					case Weapon.TYPE_CORRUPTING:
 						break;
 					case Weapon.TYPE_STRIKING:
 						if(CMLib.dice().rollPercentage()<25)
@@ -314,11 +294,13 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					case Weapon.TYPE_MELTING:
 					case Weapon.TYPE_BURNING:
+					case Weapon.TYPE_DISRUPTING:
 						if(CMLib.dice().rollPercentage()<25)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,15,0));
 						break;
 					case Weapon.TYPE_NATURAL:
 					case Weapon.TYPE_SONICING:
+					case Weapon.TYPE_SCRAPING:
 						if(CMLib.dice().rollPercentage()==1)
 							setUsesRemaining(usesRemaining()-1);
 						break;
@@ -338,13 +320,17 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_MELTING:
 					case Weapon.TYPE_BURNING:
 					case Weapon.TYPE_LASERING:
+					case Weapon.TYPE_CORRUPTING:
+					case Weapon.TYPE_SCRAPING:
 						break;
 					case Weapon.TYPE_SONICING:
+					case Weapon.TYPE_DISRUPTING:
 						if(CMLib.dice().rollPercentage()<75)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,75,0));
 						break;
 					case Weapon.TYPE_STRIKING:
 					case Weapon.TYPE_FROSTING:
+					case Weapon.TYPE_STULTIFYING:
 						if(CMLib.dice().rollPercentage()<5)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,20,0));
 						break;
@@ -369,10 +355,12 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_GASSING:
 						break;
 					case Weapon.TYPE_STRIKING:
+					case Weapon.TYPE_CORRUPTING:
 						if(CMLib.dice().rollPercentage()<25)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,5,0));
 						break;
 					case Weapon.TYPE_LASERING:
+					case Weapon.TYPE_DISRUPTING:
 						if(CMLib.dice().rollPercentage()<50)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,50,0));
 						break;
@@ -384,6 +372,8 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_BASHING:
 					case Weapon.TYPE_NATURAL:
 					case Weapon.TYPE_SONICING:
+					case Weapon.TYPE_STULTIFYING:
+					case Weapon.TYPE_SCRAPING:
 						if(CMLib.dice().rollPercentage()<5)
 							setUsesRemaining(usesRemaining()-1);
 						break;
@@ -399,17 +389,21 @@ public class StdArmor extends StdContainer implements Armor
 					}
 					break;
 				case RawMaterial.MATERIAL_MITHRIL:
-					if(CMLib.dice().rollPercentage()==1)
-						setUsesRemaining(usesRemaining()-1);
-					break;
+					if(CMLib.dice().rollPercentage()>1)
+						break;
+					//$FALL-THROUGH$
 				case RawMaterial.MATERIAL_METAL:
 					switch(weaponDamageType)
 					{
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
 					case Weapon.TYPE_GASSING:
+					case Weapon.TYPE_SCRAPING:
+					case Weapon.TYPE_STULTIFYING:
+					case Weapon.TYPE_CORRUPTING:
 						break;
 					case Weapon.TYPE_LASERING:
+					case Weapon.TYPE_DISRUPTING:
 						if(CMLib.dice().rollPercentage()<35)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,35,0));
 						break;
@@ -454,13 +448,17 @@ public class StdArmor extends StdContainer implements Armor
 					{
 					case Weapon.TYPE_FROSTING:
 					case Weapon.TYPE_GASSING:
+					case Weapon.TYPE_CORRUPTING:
 						break;
 					case Weapon.TYPE_LASERING:
+					case Weapon.TYPE_DISRUPTING:
 						if(CMLib.dice().rollPercentage()<20)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,25,0));
 						break;
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_MELTING:
+					case Weapon.TYPE_SCRAPING:
+					case Weapon.TYPE_STULTIFYING:
 						if(CMLib.dice().rollPercentage()<5)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,10,0));
 						break;
@@ -491,12 +489,16 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
 					case Weapon.TYPE_GASSING:
+					case Weapon.TYPE_STULTIFYING:
+					case Weapon.TYPE_CORRUPTING:
 						break;
 					case Weapon.TYPE_LASERING:
+					case Weapon.TYPE_SCRAPING:
 						if((CMLib.dice().rollPercentage()<50)&&((material&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS))
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,50,0));
 						break;
 					case Weapon.TYPE_SONICING:
+					case Weapon.TYPE_DISRUPTING:
 						if(CMLib.dice().rollPercentage()<35)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,35,0));
 						break;
@@ -528,6 +530,7 @@ public class StdArmor extends StdContainer implements Armor
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
 					case Weapon.TYPE_GASSING:
+					case Weapon.TYPE_STULTIFYING:
 						break;
 					case Weapon.TYPE_STRIKING:
 						if(CMLib.dice().rollPercentage()<20)
@@ -535,10 +538,13 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					case Weapon.TYPE_MELTING:
 					case Weapon.TYPE_BURNING:
+					case Weapon.TYPE_SCRAPING:
 						if(CMLib.dice().rollPercentage()<20)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,5,0));
 						break;
 					case Weapon.TYPE_LASERING:
+					case Weapon.TYPE_DISRUPTING:
+					case Weapon.TYPE_CORRUPTING:
 						if(CMLib.dice().rollPercentage()<50)
 							setUsesRemaining(usesRemaining()-CMLib.dice().roll(1,50,0));
 						break;

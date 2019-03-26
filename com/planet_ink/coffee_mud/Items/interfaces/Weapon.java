@@ -2,6 +2,10 @@ package com.planet_ink.coffee_mud.Items.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+
+import java.util.Hashtable;
+import java.util.Map;
+
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -67,6 +71,14 @@ public interface Weapon extends Item
 	public final static int TYPE_LASERING=11;
 	/** One of the weapon type, denotes sonic weapon damage */
 	public final static int TYPE_SONICING=12;
+	/** One of the weapon type, denotes disrupting weapon damage */
+	public final static int TYPE_DISRUPTING=13;
+	/** One of the weapon type, denotes disrupting weapon damage */
+	public final static int TYPE_STULTIFYING=14;
+	/** One of the weapon type, denotes corrupting weapon damage */
+	public final static int TYPE_CORRUPTING=15;
+	/** One of the weapon type, denotes scraping weapon damage */
+	public final static int TYPE_SCRAPING=16;
 
 	/**
 	 * Description code words for the weapon/damage types, indexed
@@ -86,8 +98,41 @@ public interface Weapon extends Item
 		"MELTING",
 		"STRIKING",
 		"LASERING",
-		"SONICING"
+		"SONICING",
+		"DISRUPTING",
+		"STULTIFYING",
+		"CORRUPTING",
+		"SCRAPING"
 	};
+
+	/**
+	 * Map of damage types to CMMsg msg types
+	 */
+	public final static SHashtable<Integer,Integer> TYPE_MSG_MAP = new SHashtable<Integer,Integer>(new Integer[][]
+	{
+		{TYPE_NATURAL, -1},
+		{TYPE_SLASHING, -1},
+		{TYPE_PIERCING, -1},
+		{TYPE_BASHING, -1},
+		{TYPE_BURNING, CMMsg.TYP_FIRE},
+		{TYPE_BURSTING, -1},
+		{TYPE_SHOOT, -1},
+		{TYPE_FROSTING, CMMsg.TYP_COLD},
+		{TYPE_GASSING, CMMsg.TYP_GAS},
+		{TYPE_MELTING, CMMsg.TYP_ACID},
+		{TYPE_STRIKING, CMMsg.TYP_ELECTRIC},
+		{TYPE_LASERING, CMMsg.TYP_LASER},
+		{TYPE_SONICING, CMMsg.TYP_SONIC},
+		{TYPE_DISRUPTING, CMMsg.TYP_POISON},
+		{TYPE_STULTIFYING, CMMsg.TYP_PARALYZE},
+		{TYPE_CORRUPTING, CMMsg.TYP_UNDEAD},
+		{TYPE_SCRAPING, CMMsg.TYP_WATER}
+	});
+
+	/**
+	 * Map of CMMsg message types to damage types
+	 */
+	public final static SHashtable<Integer,Integer> MSG_TYPE_MAP = new SHashtable<Integer,Integer>(TYPE_MSG_MAP,true);
 
 	/** One of the weapon classification, denotes an axe swinging type weapon */
 	public final static int CLASS_AXE=0;
