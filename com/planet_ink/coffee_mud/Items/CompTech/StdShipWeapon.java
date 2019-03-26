@@ -235,10 +235,16 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 									if(!CMParms.contains(getCurrentBattleCoveredDirections(), dir))
 										reportError(this, controlI, mob, lang.L("@x1 is not facing a covered direction.",me.name(mob)), lang.L("Failure: @x1: weapon is not facing correctly.",me.name(mob)));
 								}
-								final SpaceObject weaponO=(SpaceObject)CMClass.getTech("StdSpaceTech");
+								final SpaceObject weaponO=(SpaceObject)CMClass.getTech("StdSpaceTechWeapon");
 								int damageMsgType = CMMsg.TYP_ELECTRIC;
 								if(getDamageMsgTypes().length>0)
 									damageMsgType = getDamageMsgTypes()[CMLib.dice().roll(1, getDamageMsgTypes().length, -1)];
+								final Integer weaponDamageType = Weapon.MSG_TYPE_MAP.get(Integer.valueOf(damageMsgType));
+								if((weaponDamageType != null)&&(weaponDamageType.intValue()>=0))
+									((Weapon)weaponO).setWeaponDamageType(weaponDamageType.intValue());
+								else
+									((Weapon)weaponO).setWeaponDamageType(Weapon.TYPE_BASHING);
+								((Weapon)weaponO).setWeaponClassification(Weapon.CLASS_RANGED);
 								switch(damageMsgType)
 								{
 								case CMMsg.TYP_COLLISION:
