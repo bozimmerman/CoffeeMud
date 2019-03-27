@@ -225,7 +225,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 							if(ship == null)
 								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 							else
-							if(this.power < this.powerSetting)
+							if(this.power < Math.min(powerCapacity,powerSetting))
 								reportError(this, controlI, mob, lang.L("@x1 is not charged up.",me.name(mob)), lang.L("Failure: @x1: weapon is not charged.",me.name(mob)));
 							else
 							{
@@ -319,6 +319,14 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 				break;
 			}
 			case CMMsg.TYP_POWERCURRENT:
+				//add bleeding so people don't keep these weapons activated at all times.
+				if(powerRemaining() > 0)
+				{
+					double onePercent = CMath.mul(powerCapacity, 0.02-(getComputedEfficiency()*.01));
+					if(onePercent < 1)
+						onePercent = 1;
+					setPowerRemaining(powerRemaining()-(int)Math.round(onePercent));
+				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:
 				this.activate(false);
