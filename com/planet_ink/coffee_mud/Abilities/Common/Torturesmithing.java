@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.EnhancedExpertise;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -34,7 +35,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Torturesmithing extends CraftingSkill implements ItemCraftor
+public class Torturesmithing extends EnhancedCraftingSkill implements ItemCraftor
 {
 	@Override
 	public String ID()
@@ -215,6 +216,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		if(super.checkInfo(mob, commands))
 			return true;
 
+		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
+
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
@@ -228,7 +231,6 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		String startStr=null;
 		bundling=false;
 		int duration=4;
-		@SuppressWarnings("unused")
 		int recipeLevel=1;
 		if(str.equalsIgnoreCase("list"))
 		{
@@ -257,6 +259,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 				}
 			}
 			commonTell(mob,buf.toString());
+			enhanceList(mob);
 			return true;
 		}
 		else
@@ -335,7 +338,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 												0,null,null,
 												bundling,
 												autoGenerate,
-												null);
+												enhancedTypes);
 		if(data==null)
 			return false;
 		woodRequired=data[0][FOUND_AMT];
@@ -443,6 +446,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			mob.location().send(mob,msg);
 			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
+			enhanceItem(mob,buildingI,recipeLevel,enhancedTypes);
 		}
 		return true;
 	}
