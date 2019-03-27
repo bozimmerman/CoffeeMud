@@ -164,20 +164,23 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 
 	protected int getBleedAmount()
 	{
-		final double onePercent = CMath.mul(powerCapacity, 0.02-(getComputedEfficiency()*.01));
-		return (onePercent < 1) ? 1 : (int)Math.round(onePercent);
+		final double bleedAmt = CMath.mul(powerCapacity, 0.1-(getComputedEfficiency()*.1));
+		return (int)Math.round(bleedAmt);
 	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		super.executeMsg(myHost, msg);
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
 			{
+			default:
+				super.executeMsg(myHost, msg);
+				break;
 			case CMMsg.TYP_ACTIVATE:
 			{
+				super.executeMsg(myHost, msg);
 				final LanguageLibrary lang=CMLib.lang();
 				final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
 				final MOB mob=msg.source();
@@ -325,16 +328,19 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 				break;
 			}
 			case CMMsg.TYP_POWERCURRENT:
-				//add bleeding so people don't keep these weapons activated at all times.
 				if(powerRemaining() > 0)
-					setPowerRemaining(powerRemaining()-getBleedAmount());
+					setPowerRemaining(powerRemaining()-Math.min(getBleedAmount(),1));
+				super.executeMsg(myHost, msg);
 				break;
 			case CMMsg.TYP_DEACTIVATE:
+				super.executeMsg(myHost, msg);
 				this.activate(false);
 				this.power = 0;
 				break;
 			}
 		}
+		else
+			super.executeMsg(myHost, msg);
 	}
 
 	@Override
