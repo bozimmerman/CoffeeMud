@@ -435,11 +435,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				final long[] startCoords=Arrays.copyOf(O.coordinates(),3);
 				if(speed>=1)
 				{
-					map.moveSpaceObject(O);
 					cube=cube.expand(O.direction(),(long)speed);
+					map.moveSpaceObject(O);
 				}
 				boolean inAirFlag = false;
-				final List<SpaceObject> cOs=map.getSpaceObjectsWithin(O, 0, 4*SpaceObject.Distance.LightSecond.dm);
+				final List<SpaceObject> cOs=map.getSpaceObjectsWithin(O, 0, Math.max(4*SpaceObject.Distance.LightSecond.dm,Math.round(speed)));
 				final long oMass = O.getMass();
 				for(final SpaceObject cO : cOs)
 				{
