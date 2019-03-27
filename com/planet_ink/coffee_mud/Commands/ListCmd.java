@@ -2510,7 +2510,7 @@ public class ListCmd extends StdCommand
 			}
 		}
 
-		final boolean longer=!finalColName.equalsIgnoreCase("Status");
+		boolean longer=!finalColName.equalsIgnoreCase("Status");
 		if("ACTIVE".startsWith(whichGroupStr.toUpperCase())&&(whichGroupStr.length()>0))
 			activeOnly=true;
 		else
@@ -2528,7 +2528,10 @@ public class ListCmd extends StdCommand
 				finalColName="Msavg";
 			}
 			if(finalCol.equals("tickermillitotal"))
+			{
 				probType="tickerProb2"+ (lastNum>0?("-"+lastNum):"");
+				longer=false;
+			}
 			else
 			{
 				msg.append("\n\r^HProblems by total time used:^N\n\r");
