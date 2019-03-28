@@ -99,12 +99,33 @@ public class GenTitle extends StdTitle
 		recoverPhyStats();
 	}
 
+	private final static String[] MYCODES={"OWNER","PRICE"};
+
+	@Override
+	protected int getCodeNum(final String code)
+	{
+		for(int i=0;i<MYCODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
 	@Override
 	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		switch(getCodeNum(code))
+		{
+		case 0:
+			return this.getOwnerName();
+		case 1:
+			return ""+this.getPrice();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
 	}
 
 	@Override
@@ -112,7 +133,18 @@ public class GenTitle extends StdTitle
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
-		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
+		switch(getCodeNum(code))
+		{
+		case 0:
+			this.setOwnerName(val);
+			break;
+		case 1:
+			setPrice(CMath.s_int(val));
+			break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
+			break;
+		}
 	}
 
 	private static String[]	codes	= null;
@@ -120,8 +152,16 @@ public class GenTitle extends StdTitle
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes==null)
-			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
+		if(codes!=null)
+			return codes;
+		final String[] MYCODES=CMProps.getStatCodesList(GenTitle.MYCODES,this);
+		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
 		return codes;
 	}
 
