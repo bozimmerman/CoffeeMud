@@ -485,8 +485,8 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			{
 			case CMMsg.TYP_DROP:
 			case CMMsg.TYP_THROW:
-				if((msg.target() instanceof Item)
-				||(msg.tool() instanceof Item))
+				if(((msg.target() instanceof Item)||(msg.tool() instanceof Item))
+				&&(!msg.targetMajor(CMMsg.MASK_INTERMSG))) // give is different
 				{
 					if(this.getShipFlag(ShipFlag.NO_GRAVITY))
 					{
