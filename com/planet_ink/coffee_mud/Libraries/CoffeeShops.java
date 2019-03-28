@@ -809,7 +809,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				final double buyerWis=buyerShopM.charStats().getStat(CharStats.STAT_WISDOM);
 				final double buyerMinWis = (buyerWis < 3) ? 3 : buyerWis;
 				final double denom = (sellerMinCha + buyerMinWis) * 0.8;
-				buyPrice=(buyPrice/2)+(buyPrice*((sellerMinCha-buyerMinWis)/denom));
+				buyPrice=(buyPrice/2)+((buyPrice/2)*((sellerMinCha-buyerMinWis)/denom));
 
 			}
 			if(!(product instanceof Ability))
