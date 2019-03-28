@@ -115,7 +115,7 @@ ornate % stool	43	60	10	255	GenChair	CHAIR	1		0
 % heater shield	44	30	24	48	GenShield	HELD	1	24	0	
 % platter	44	15	3	18	GenContainer		20		0	
 master % quarterstaff	44	120	10	2331	GenStaff	STAFF	2	47	13	
-small %  storage barrel	45	40	10	175	GenContainer	LID	100		0	
+small % storage barrel	45	40	10	175	GenContainer	LID	100		0	
 four poster % bed	46	60	250	6850	GenBed	BED	4		0	
 % cabinet	47	90	60	2550	GenContainer	LID	100		0	
 master % mace	47	100	16	1746	GenWeapon	BLUNT	1	31	14	

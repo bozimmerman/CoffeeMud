@@ -96,7 +96,7 @@ small % crate	70	30	60	1225	GenContainer	LID	500	0
 ornate % sarcophagus	72	100	1500	109000	GenBed	BED	500	64	Prop_NoPurge
 % throne	73	180	150	20000	GenChair	CHAIR	1	0	
 % jacuzzi	73	80	600	35000	GenTub	CHAIR	2600	0	
-small %  storage barrel	75	40	40	1180	GenContainer	LID	100	0	
+small % storage barrel	75	40	40	1180	GenContainer	LID	100	0	
 % sleigh bed	76	60	1000	45500	GenBed	BED	3	0	
 great % forge	76	120	2500	230000	GenContainer	LID	5000	0	Burning
 large % chest	80	100	100	8050	GenContainer	LOCK	500	0	

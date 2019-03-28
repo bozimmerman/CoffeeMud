@@ -59,7 +59,7 @@ large stoneware jug	51	35	12	210	GenEmptyDrink	LIQUID|LID	100
 % bust	51	90	30	1400	GenItem	STATUE		
 % wand	52	30	3	46	GenWand		20	
 stoneware trivet	53	5	2	4	GenContainer	DRINKABLES	50	
-small %  storage barrel	55	80	20	880	GenContainer	LID	100	
+small % storage barrel	55	80	20	880	GenContainer	LID	100	
 stoneware charger	59	10	3	16	GenContainer		10	
 large % chest	60	200	50	6100	GenContainer	LOCK	500	
 % brick	61	20	1	12	GenResource	STONE		
