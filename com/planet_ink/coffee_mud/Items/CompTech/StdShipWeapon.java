@@ -42,6 +42,12 @@ import java.util.*;
 */
 public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 {
+	public StdShipWeapon()
+	{
+		super();
+		this.maxRechargePer = 0.2f;
+	}
+
 	@Override
 	public String ID()
 	{
@@ -73,7 +79,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 	@Override
 	public int powerNeeds()
 	{
-		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, (int)Math.round((double)powerCapacity*getRechargeRate()));
+		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, (int)Math.round((double)powerCapacity*getRechargeRate()*this.getComputedEfficiency()));
 	}
 
 	protected synchronized SpaceShip getMyShip()
@@ -319,6 +325,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 								((Technical)weaponO).phyStats().setDamage(phyStats().damage());
 								CMLib.threads().startTickDown(weaponO, Tickable.TICKID_BEAMWEAPON, 10);
 								CMLib.map().addObjectToSpace(weaponO, firstCoords);
+								setPowerRemaining(0);
 							}
 						}
 						else

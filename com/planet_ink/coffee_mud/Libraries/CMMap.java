@@ -30,6 +30,7 @@ import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.Map.Entry;
 /*
@@ -708,12 +709,18 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public double[] getDirection(final SpaceObject FROM, final SpaceObject TO)
+	public double[] getDirection(final SpaceObject fromObj, final SpaceObject toObj)
+	{
+		return getDirection(fromObj.coordinates(),toObj.coordinates());
+	}
+
+	@Override
+	public double[] getDirection(final long[] fromCoords, final long[] toCoords)
 	{
 		final double[] dir=new double[2];
-		final double x=TO.coordinates()[0]-FROM.coordinates()[0];
-		final double y=TO.coordinates()[1]-FROM.coordinates()[1];
-		final double z=TO.coordinates()[2]-FROM.coordinates()[2];
+		final double x=toCoords[0]-fromCoords[0];
+		final double y=toCoords[1]-fromCoords[1];
+		final double z=toCoords[2]-fromCoords[2];
 		if((x!=0)||(y!=0))
 		{
 			if(x<0)
@@ -4188,70 +4195,73 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public double getMinDistanceFrom(final SpaceObject FROM, final long prevDistance, final SpaceObject TO)
+	public double getMinDistanceFrom(final SpaceObject fromObj, final long prevDistance, final SpaceObject toObj)
 	{
-		final long curDistance = getDistanceFrom(FROM.coordinates(), TO.coordinates());
-		final double baseDistance=FROM.speed();
+		final long curDistance = getDistanceFrom(fromObj.coordinates(), toObj.coordinates());
+		final double baseDistance=fromObj.speed();
 		if(baseDistance==0)
 			return curDistance;
-		final double cd2=(curDistance * curDistance);
-		final double pd2=(prevDistance * prevDistance);
-		final double sp2=(baseDistance * baseDistance);
-		final double angleCurDistance=Math.acos((pd2+sp2-cd2) / (2.0 * baseDistance * prevDistance));
-		final double anglePrevDistance=Math.acos((cd2+sp2-pd2) / (2.0 * baseDistance * curDistance));
-		final long minDistance;
 		if(baseDistance < curDistance/1000.0)
 			return curDistance;
 		else
 		if(baseDistance < prevDistance/1000.0)
 			return prevDistance;
 		else
-		if(angleCurDistance > 1.5708)
-			minDistance=curDistance;
-		else
-		if(anglePrevDistance > 1.5708)
-			minDistance=prevDistance;
-		else
 		{
-			try
+			final BigDecimal bdBaseDistance = new BigDecimal(baseDistance);
+			final BigDecimal bdCurDistance = new BigDecimal(curDistance);
+			final BigDecimal bdPrevDistance = new BigDecimal(prevDistance);
+			final BigDecimal cd2=bdCurDistance.multiply(bdCurDistance);
+			final BigDecimal pd2=bdPrevDistance.multiply(bdPrevDistance);
+			final BigDecimal sp2=bdBaseDistance.multiply(bdBaseDistance);
+			final MathContext mc= MathContext.DECIMAL64;
+			final double angleCurDistance=Math.acos(pd2.add(sp2).subtract(cd2).divide(bdBaseDistance.multiply(bdPrevDistance).multiply(TWO),mc.getPrecision(),RoundingMode.HALF_UP).doubleValue());
+			final double anglePrevDistance=Math.acos(cd2.add(sp2).subtract(pd2).divide(bdBaseDistance.multiply(bdCurDistance).multiply(TWO),mc.getPrecision(),RoundingMode.HALF_UP).doubleValue());
+			if(angleCurDistance > 1.5708)
+				return curDistance;
+			else
+			if(anglePrevDistance > 1.5708)
+				return prevDistance;
+			else
 			{
-				BigDecimal s=new BigDecimal(prevDistance/2.0)
-							.add(new BigDecimal(curDistance/2.0))
-							.add(new BigDecimal(baseDistance/2.0));
-				if(s.doubleValue()==0.0)
-					s=s.add(ONE);
-				BigDecimal s1=s.subtract(new BigDecimal(prevDistance));
-				if(s1.doubleValue()==0.0)
-					s1=s1.add(ONE);
-				BigDecimal s2=s.subtract(new BigDecimal(curDistance));
-				if(s2.doubleValue()==0.0)
-					s2=s2.add(ONE);
-				BigDecimal s3=s.subtract(new BigDecimal(baseDistance));
-				if(s3.doubleValue()==0.0)
-					s3=s3.add(ONE);
-				final BigDecimal aa=s.multiply(s1).multiply(s2).multiply(s3);
-				final MathContext mc= MathContext.DECIMAL64;
-				BigDecimal area = aa.divide(TWO, mc);
-				boolean done = false;
-				final int maxIterations = mc.getPrecision() + 1;
-				for (int i = 0; !done && i < maxIterations; i++)
+				try
 				{
-					BigDecimal r = aa.divide(area, mc);
-					r = r.add(area);
-					r = r.divide(TWO, mc);
-					done = r.equals(area);
-					area = r;
+					BigDecimal s=bdPrevDistance.divide(TWO)
+								.add(bdCurDistance.divide(TWO))
+								.add(bdBaseDistance.divide(TWO));
+					if(s.doubleValue()==0.0)
+						s=s.add(ONE);
+					BigDecimal s1=s.subtract(bdPrevDistance);
+					if(s1.doubleValue()==0.0)
+						s1=s1.add(ONE);
+					BigDecimal s2=s.subtract(bdCurDistance);
+					if(s2.doubleValue()==0.0)
+						s2=s2.add(ONE);
+					BigDecimal s3=s.subtract(bdBaseDistance);
+					if(s3.doubleValue()==0.0)
+						s3=s3.add(ONE);
+					final BigDecimal aa=s.multiply(s1).multiply(s2).multiply(s3);
+					BigDecimal area = aa.divide(TWO, mc);
+					boolean done = false;
+					final int maxIterations = mc.getPrecision() + 1;
+					for (int i = 0; !done && i < maxIterations; i++)
+					{
+						BigDecimal r = aa.divide(area, mc);
+						r = r.add(area);
+						r = r.divide(TWO, mc);
+						done = r.equals(area);
+						area = r;
+					}
+					final double height=2.0 * (area.doubleValue()/baseDistance);
+					return Math.round(height);
 				}
-				final double height=2.0 * (area.doubleValue()/baseDistance);
-				minDistance=Math.round(height);
-			}
-			catch(final Throwable t)
-			{
-				Log.errOut("Bad Math: "+curDistance+","+prevDistance+","+baseDistance+"  -- " + FROM.speed());
-				Log.errOut(t);
-				return (prevDistance + curDistance) / 2.0;
+				catch(final Throwable t)
+				{
+					Log.errOut("Bad Math: "+curDistance+","+prevDistance+","+baseDistance+"  -- " + fromObj.speed());
+					Log.errOut(t);
+					return (prevDistance + curDistance) / 2.0;
+				}
 			}
 		}
-		return minDistance;
 	}
 }
