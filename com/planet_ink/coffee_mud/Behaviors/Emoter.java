@@ -333,7 +333,7 @@ public class Emoter extends ActiveTicker
 				{
 					final Room R=r.nextElement();
 					// if a tree falls in a forest...
-					if((R.numInhabitants()>0)&&(R.numPCInhabitants()>0))
+					if((R!=null)&&(R.numInhabitants()>0)&&(R.numPCInhabitants()>0))
 						emoteHere(R,emoter,emote,null,false);
 				}
 				emoter.destroy();
