@@ -2464,6 +2464,49 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
+	protected StringBuilder appendTick(final int group, final int tick, final boolean activeOnly, final String mask, final String finalCol, final int[] col, final int[] COL)
+	{
+		final StringBuilder msg=new StringBuilder("");
+		final long tickerlaststartdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststartmillis"+group+"-"+tick));
+		final long tickerlaststopdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststopmillis"+group+"-"+tick));
+		final boolean isActive=(tickerlaststopdate<tickerlaststartdate);
+		if((!activeOnly)||(isActive))
+		{
+			final String name=CMLib.threads().tickInfo("tickerName"+group+"-"+tick);
+			if((mask==null)||(name.toUpperCase().indexOf(mask)>=0))
+			{
+				final String id=CMLib.threads().tickInfo("tickerID"+group+"-"+tick);
+				String finalVal=CMLib.threads().tickInfo(finalCol+group+"-"+tick);
+				final boolean suspended=CMath.s_bool(CMLib.threads().tickInfo("tickerSuspended"+group+"-"+tick));
+				final int realCol4Len=COL[3]-(suspended?2:1);
+				if(finalVal.length()>realCol4Len)
+				{
+					if(CMath.isLong(finalVal))
+					{
+						int lvl=-1;
+						while((finalVal.length()>realCol4Len)&&(lvl<3))
+						{
+							finalVal = ""+Math.round(CMath.div(CMath.s_long(finalVal),1000.0));
+							lvl++;
+						}
+						finalVal=finalVal+"kmbg".charAt(lvl);
+					}
+				}
+				if(((col[0]++)>=2)||(activeOnly))
+				{
+					msg.append("\n\r");
+					col[0]=1;
+				}
+				final String chunk=CMStrings.padRight(""+group,COL[0])
+								   +" "+CMStrings.padRight(id+"",COL[2])
+								   +CMStrings.padRight(name,COL[1])+"^N"
+								   +" "+CMStrings.padRight((activeOnly?(finalVal+(suspended?"*":"")):finalVal+(suspended?"*":"")),COL[3]);
+				msg.append(chunk);
+			}
+		}
+		return msg;
+	}
+
 	public StringBuilder listTicks(final Session viewerS, String whichGroupStr)
 	{
 		final StringBuilder msg=new StringBuilder("\n\r");
@@ -2538,7 +2581,7 @@ public class ListCmd extends StdCommand
 				msg.append(listTicks(viewerS,"problems"+ (lastNum>0?(" "+lastNum):"")+" tickermillitotal"));
 				msg.append("\n\r\n\r^HProblems by average time used:^N\n\r\n\r");
 			}
-			whichTicks=new HashSet<Pair<Integer,Integer>>();
+			whichTicks=new LinkedHashSet<Pair<Integer,Integer>>();
 			final String problemSets=CMLib.threads().systemReport(probType);
 			final List<String> sets=CMParms.parseSemicolons(problemSets, true);
 			for(final String set : sets)
@@ -2571,58 +2614,29 @@ public class ListCmd extends StdCommand
 			msg.append(CMStrings.padRight(L("G#"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4));
 		msg.append(CMStrings.padRight(L("G#"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
 		msg.append("^N");
-		int col=0;
 		final int numGroups=CMath.s_int(CMLib.threads().tickInfo("tickGroupSize"));
 		if((mask!=null)&&(mask.length()==0))
 			mask=null;
-		String chunk=null;
-		for(int group=0;group<numGroups;group++)
+		final int[] col= {0};
+		final int[] COL = {COL_LEN1,COL_LEN2,COL_LEN3,COL_LEN4};
+		if(whichTicks != null)
 		{
-			if((whichGroups==null)||(whichGroups.contains(Integer.valueOf(group))))
+			for(final Pair<Integer,Integer> tdata : whichTicks)
 			{
-				final int tickersSize=CMath.s_int(CMLib.threads().tickInfo("tickersSize"+group));
-				for(int tick=0;tick<tickersSize;tick++)
+				final int group=tdata.first.intValue();
+				final int tick=tdata.second.intValue();
+				msg.append(this.appendTick(group, tick, activeOnly, mask, finalCol, col, COL));
+			}
+		}
+		else
+		{
+			for(int group=0;group<numGroups;group++)
+			{
+				if((whichGroups==null)||(whichGroups.contains(Integer.valueOf(group))))
 				{
-					if((whichTicks==null)||(whichTicks.contains(new Pair<Integer,Integer>(Integer.valueOf(group), Integer.valueOf(tick)))))
-					{
-						final long tickerlaststartdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststartmillis"+group+"-"+tick));
-						final long tickerlaststopdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststopmillis"+group+"-"+tick));
-						final boolean isActive=(tickerlaststopdate<tickerlaststartdate);
-						if((!activeOnly)||(isActive))
-						{
-							final String name=CMLib.threads().tickInfo("tickerName"+group+"-"+tick);
-							if((mask==null)||(name.toUpperCase().indexOf(mask)>=0))
-							{
-								final String id=CMLib.threads().tickInfo("tickerID"+group+"-"+tick);
-								String finalVal=CMLib.threads().tickInfo(finalCol+group+"-"+tick);
-								final boolean suspended=CMath.s_bool(CMLib.threads().tickInfo("tickerSuspended"+group+"-"+tick));
-								final int realCol4Len=COL_LEN4-(suspended?2:1);
-								if(finalVal.length()>realCol4Len)
-								{
-									if(CMath.isLong(finalVal))
-									{
-										int lvl=-1;
-										while((finalVal.length()>realCol4Len)&&(lvl<3))
-										{
-											finalVal = ""+Math.round(CMath.div(CMath.s_long(finalVal),1000.0));
-											lvl++;
-										}
-										finalVal=finalVal+"kmbg".charAt(lvl);
-									}
-								}
-								if(((col++)>=2)||(activeOnly))
-								{
-									msg.append("\n\r");
-									col=1;
-								}
-								chunk=CMStrings.padRight(""+group,COL_LEN1)
-								   +" "+CMStrings.padRight(id+"",COL_LEN3)
-								   +CMStrings.padRight(name,COL_LEN2)+"^N"
-								   +" "+CMStrings.padRight((activeOnly?(finalVal+(suspended?"*":"")):finalVal+(suspended?"*":"")),COL_LEN4);
-								msg.append(chunk);
-							}
-						}
-					}
+					final int tickersSize=CMath.s_int(CMLib.threads().tickInfo("tickersSize"+group));
+					for(int tick=0;tick<tickersSize;tick++)
+						msg.append(this.appendTick(group, tick, activeOnly, mask, finalCol, col, COL));
 				}
 			}
 		}
