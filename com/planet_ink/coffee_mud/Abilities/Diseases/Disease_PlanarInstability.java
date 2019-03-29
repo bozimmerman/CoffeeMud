@@ -216,7 +216,8 @@ public class Disease_PlanarInstability extends Disease
 			{
 				final Area A=CMLib.map().areaLocation(msg.source());
 				if((A!=null)
-				&&(A.numEffects()>0))
+				&&(A.numEffects()>0)
+				&&(msg.value()!=0))
 				{
 					boolean found=false;
 					for(final Enumeration<Ability> a=A.effects();a.hasMoreElements();)
