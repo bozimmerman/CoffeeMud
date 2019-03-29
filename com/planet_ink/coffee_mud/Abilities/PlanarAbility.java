@@ -1496,7 +1496,10 @@ public class PlanarAbility extends StdAbility
 		{
 			final long[] data = this.recentVisits.get(planeCodeString);
 			data[0]=System.currentTimeMillis();
-			data[1]++;
+			if(data[1]==0)
+				data[1]++;
+			else
+				data[1]*=2;
 			hardBumpLevel=(int)data[1];
 		}
 		else
