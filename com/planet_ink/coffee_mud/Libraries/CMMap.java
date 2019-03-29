@@ -4199,69 +4199,30 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		final long curDistance = getDistanceFrom(fromObj.coordinates(), toObj.coordinates());
 		final double baseDistance=fromObj.speed();
-		if(baseDistance==0)
+		if(baseDistance == 0)
 			return curDistance;
-		if(baseDistance < curDistance/1000.0)
-			return curDistance;
-		else
-		if(baseDistance < prevDistance/1000.0)
-			return prevDistance;
-		else
+		if((prevDistance == 0)||(curDistance==0))
+			return 0;
+		if(baseDistance == (curDistance + prevDistance))
+			return 0.0;
+		if((baseDistance < curDistance)
+		&&(baseDistance < prevDistance))
 		{
-			final BigDecimal bdBaseDistance = new BigDecimal(baseDistance);
-			final BigDecimal bdCurDistance = new BigDecimal(curDistance);
-			final BigDecimal bdPrevDistance = new BigDecimal(prevDistance);
-			final BigDecimal cd2=bdCurDistance.multiply(bdCurDistance);
-			final BigDecimal pd2=bdPrevDistance.multiply(bdPrevDistance);
-			final BigDecimal sp2=bdBaseDistance.multiply(bdBaseDistance);
-			final MathContext mc= MathContext.DECIMAL64;
-			final double angleCurDistance=Math.acos(pd2.add(sp2).subtract(cd2).divide(bdBaseDistance.multiply(bdPrevDistance).multiply(TWO),mc.getPrecision(),RoundingMode.HALF_UP).doubleValue());
-			final double anglePrevDistance=Math.acos(cd2.add(sp2).subtract(pd2).divide(bdBaseDistance.multiply(bdCurDistance).multiply(TWO),mc.getPrecision(),RoundingMode.HALF_UP).doubleValue());
-			if(angleCurDistance > 1.5708)
+			if(curDistance<prevDistance)
 				return curDistance;
-			else
-			if(anglePrevDistance > 1.5708)
+			if(prevDistance<curDistance)
 				return prevDistance;
-			else
-			{
-				try
-				{
-					BigDecimal s=bdPrevDistance.divide(TWO)
-								.add(bdCurDistance.divide(TWO))
-								.add(bdBaseDistance.divide(TWO));
-					if(s.doubleValue()==0.0)
-						s=s.add(ONE);
-					BigDecimal s1=s.subtract(bdPrevDistance);
-					if(s1.doubleValue()==0.0)
-						s1=s1.add(ONE);
-					BigDecimal s2=s.subtract(bdCurDistance);
-					if(s2.doubleValue()==0.0)
-						s2=s2.add(ONE);
-					BigDecimal s3=s.subtract(bdBaseDistance);
-					if(s3.doubleValue()==0.0)
-						s3=s3.add(ONE);
-					final BigDecimal aa=s.multiply(s1).multiply(s2).multiply(s3);
-					BigDecimal area = aa.divide(TWO, mc);
-					boolean done = false;
-					final int maxIterations = mc.getPrecision() + 1;
-					for (int i = 0; !done && i < maxIterations; i++)
-					{
-						BigDecimal r = aa.divide(area, mc);
-						r = r.add(area);
-						r = r.divide(TWO, mc);
-						done = r.equals(area);
-						area = r;
-					}
-					final double height=2.0 * (area.doubleValue()/baseDistance);
-					return Math.round(height);
-				}
-				catch(final Throwable t)
-				{
-					Log.errOut("Bad Math: "+curDistance+","+prevDistance+","+baseDistance+"  -- " + fromObj.speed());
-					Log.errOut(t);
-					return (prevDistance + curDistance) / 2.0;
-				}
-			}
 		}
+		final BigDecimal bdBaseDistance = new BigDecimal(baseDistance);
+		final BigDecimal bdCurDistance = new BigDecimal(curDistance);
+		final BigDecimal bdPrevDistance = new BigDecimal(prevDistance);
+		final BigDecimal s0=bdCurDistance.multiply(bdCurDistance);
+		final BigDecimal s1=bdPrevDistance.multiply(bdPrevDistance);
+		final BigDecimal s2=bdBaseDistance.multiply(bdBaseDistance);
+		BigDecimal s3=bdPrevDistance.multiply(bdBaseDistance).multiply(TWO);
+		if(s3.doubleValue()==0.0)
+			s3=ONE;
+		final double distAngle = Math.acos(s0.add(s2).subtract(s1).divide(s3,MathContext.DECIMAL64.getPrecision(),RoundingMode.HALF_UP).doubleValue());
+		return Math.round(prevDistance * Math.sin(distAngle));
 	}
 }
