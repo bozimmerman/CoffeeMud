@@ -4205,14 +4205,6 @@ public class CMMap extends StdLibrary implements WorldMap
 			return 0;
 		if(baseDistance == (curDistance + prevDistance))
 			return 0.0;
-		if((baseDistance < curDistance)
-		&&(baseDistance < prevDistance))
-		{
-			if(curDistance<prevDistance)
-				return curDistance;
-			if(prevDistance<curDistance)
-				return prevDistance;
-		}
 		final BigDecimal bdBaseDistance = new BigDecimal(baseDistance);
 		final BigDecimal bdCurDistance = new BigDecimal(curDistance);
 		final BigDecimal bdPrevDistance = new BigDecimal(prevDistance);
