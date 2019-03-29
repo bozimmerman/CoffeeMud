@@ -109,7 +109,7 @@ public class Thief_LetterOfMarque extends ThiefSkill
 		{
 			if((msg.sourceMinor()==CMMsg.MSG_LEGALWARRANT)
 			&&(super.proficiencyCheck(msg.source(), 0, false))
-			&&(CMLib.dice().rollPercentage()<=(super.getXLEVELLevel(msg.source())+5))
+			&&(CMLib.dice().rollPercentage()<=((2*super.getXLEVELLevel(msg.source()))+25))
 			&&((legalA==null)||(legalA.inMyMetroArea(CMLib.map().areaLocation(msg.source())))))
 				return false;
 		}
