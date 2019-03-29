@@ -92,6 +92,10 @@ public class PlanarAbility extends StdAbility
 	protected int						fatigueRate		= 0;
 	protected volatile int				recoverTick		= 0;
 	protected Set<PlanarSpecFlag>		specFlags		= null;
+	protected int						hardBumpLevel	= 0;
+	protected final Map<String,long[]>	recentVisits	= new TreeMap<String,long[]>();
+
+	protected final static long			hardBumpTimeout	= (60L * 60L * 1000L);
 
 	protected Pair<Pair<Integer,Integer>,List<Pair<String,String>>> enableList=null;
 
@@ -608,7 +612,9 @@ public class PlanarAbility extends StdAbility
 					}
 					M.basePhyStats().setLevel(newLevel);
 					M.phyStats().setLevel(newLevel);
-					CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
+					CMLib.leveler().fillOutMOB(M,M.basePhyStats().level()+hardBumpLevel);
+					M.basePhyStats().setLevel(newLevel);
+					M.phyStats().setLevel(newLevel);
 					final String align=planeVars.get(PlanarVar.ALIGNMENT.toString());
 					if(align!=null)
 					{
@@ -1483,6 +1489,18 @@ public class PlanarAbility extends StdAbility
 			planeFound = getPlane(planeName);
 		}
 
+		final String planeCodeString = planeName + "_" + cloneArea.Name();
+		int hardBumpLevel = 0;
+		if(recentVisits.containsKey(planeCodeString)
+		&&((recentVisits.get(planeCodeString)[0]+this.hardBumpTimeout)>System.currentTimeMillis()))
+		{
+			final long[] data = this.recentVisits.get(planeCodeString);
+			data[0]=System.currentTimeMillis();
+			data[1]++;
+			hardBumpLevel=(int)data[1];
+		}
+		else
+			this.recentVisits.put(planeCodeString, new long[] {System.currentTimeMillis(),0});
 		final String newPlaneName = planeIDNum.addAndGet(1)+"_"+cloneArea.Name();
 		final Area planeArea = CMClass.getAreaType("SubThinInstance");
 		planeArea.setName(newPlaneName);
@@ -1509,8 +1527,12 @@ public class PlanarAbility extends StdAbility
 				return false;
 
 			this.lastCasting=System.currentTimeMillis();
-			final Ability A=this.beneficialAffect(mob, planeArea, asLevel, 0);
-			A.setMiscText(planeName);
+			final PlanarAbility A=(PlanarAbility)this.beneficialAffect(mob, planeArea, asLevel, 0);
+			if(A!=null)
+			{
+				A.hardBumpLevel = hardBumpLevel;
+				A.setMiscText(planeName);
+			}
 
 			final Room thisRoom=mob.location();
 			for (final MOB follower : h)
