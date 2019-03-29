@@ -674,6 +674,9 @@ public class PlanarAbility extends StdAbility
 					final String resistWeak = planeVars.get(PlanarVar.MOBRESIST.toString());
 					if(resistWeak != null)
 						reEffect(M,"Prop_Resistance",resistWeak);
+					else
+					if(this.hardBumpLevel>0)
+						reEffect(M,"Prop_Resistance","magic holy disease poison evil weapons "+(5*hardBumpLevel)+"% ");
 					final String setStat = planeVars.get(PlanarVar.SETSTAT.toString());
 					if(setStat != null)
 						reEffect(M,"Prop_StatTrainer",setStat);
