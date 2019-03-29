@@ -197,18 +197,28 @@ public class Disease_PlanarInstability extends Disease
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		if((msg.source()==affected)
-		&&(msg.tool() instanceof PlanarAbility)
-		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-		&&(CMLib.dice().rollPercentage() > (10 * level)))
+		if(msg.source()==affected)
 		{
-			final Room room = msg.source().location();
-			if(room != null)
+			if((msg.tool() instanceof PlanarAbility)
+			&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+			&&(CMLib.dice().rollPercentage() > (10 * level)))
 			{
-				room.show(msg.source(), null, CMMsg.MSG_OK_ACTION, L("<S-YOUPOSS> planar instability cause(s) <S-HIS-HER> magic to fizzle."));
-				return false;
+				final Room room = msg.source().location();
+				if(room != null)
+				{
+					room.show(msg.source(), null, CMMsg.MSG_OK_ACTION, L("<S-YOUPOSS> planar instability cause(s) <S-HIS-HER> magic to fizzle."));
+					return false;
+				}
 			}
-		}
+			if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+				||(msg.sourceMinor()==CMMsg.TYP_RPXPCHANGE))
+			{
+				if(msg.value()<0)
+					msg.setValue((int)Math.round(CMath.mul(msg.value(),1+(0.1*level))));
+				else
+					msg.setValue(Math.round(msg.value()/level));
+			}
+	}
 		return true;
 	}
 
