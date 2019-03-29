@@ -1492,7 +1492,7 @@ public class PlanarAbility extends StdAbility
 		final String planeCodeString = planeName + "_" + cloneArea.Name();
 		int hardBumpLevel = 0;
 		if(recentVisits.containsKey(planeCodeString)
-		&&((recentVisits.get(planeCodeString)[0]+this.hardBumpTimeout)>System.currentTimeMillis()))
+		&&((recentVisits.get(planeCodeString)[0]+hardBumpTimeout)>System.currentTimeMillis()))
 		{
 			final long[] data = this.recentVisits.get(planeCodeString);
 			data[0]=System.currentTimeMillis();
