@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.Enumeration;
 import java.util.List;
 
 /*
@@ -213,10 +214,24 @@ public class Disease_PlanarInstability extends Disease
 			if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 				||(msg.sourceMinor()==CMMsg.TYP_RPXPCHANGE))
 			{
-				if(msg.value()<0)
-					msg.setValue((int)Math.round(CMath.mul(msg.value(),1+(0.1*level))));
-				else
-					msg.setValue(Math.round(msg.value()/level));
+				final Area A=CMLib.map().areaLocation(msg.source());
+				if((A!=null)
+				&&(A.numEffects()>0))
+				{
+					boolean found=false;
+					for(final Enumeration<Ability> a=A.effects();a.hasMoreElements();)
+					{
+						if(a.nextElement() instanceof PlanarAbility)
+							found=true;
+					}
+					if(found)
+					{
+						if(msg.value()<0)
+							msg.setValue((int)Math.round(CMath.mul(msg.value(),1+(0.1*level))));
+						else
+							msg.setValue(Math.round(msg.value()/level));
+					}
+				}
 			}
 	}
 		return true;
