@@ -184,9 +184,11 @@ public class Spell_ChanneledMissiles extends Spell
 					final Spell_ChanneledMissiles thisSpellA = (Spell_ChanneledMissiles)mob.fetchEffect(ID());
 					if(thisSpellA!=null)
 					{
+						final MOB M=mob;
 						thisSpellA.channelingClass = new Runnable()
 						{
 							private volatile MOB targetM = target;
+							private final MOB mob=M;
 
 							@Override
 							public void run()
