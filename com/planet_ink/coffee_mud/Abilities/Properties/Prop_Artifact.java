@@ -221,6 +221,8 @@ public class Prop_Artifact extends Property
 					}
 				}
 			}
+			this.destroyArtifact((Item)this.affected);
+			return true;
 		}
 		else
 		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
@@ -399,7 +401,6 @@ public class Prop_Artifact extends Property
 				final List<PlayerData> itemSet=CMLib.database().DBReadPlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 				if((itemSet!=null)&&(itemSet.size()>0))
 				{
-					// does it already exist?
 					if(registeredArtifacts.containsKey(getItemID()))
 						registeredArtifacts.remove(getItemID());
 					final String data=itemSet.get(0).xml();
