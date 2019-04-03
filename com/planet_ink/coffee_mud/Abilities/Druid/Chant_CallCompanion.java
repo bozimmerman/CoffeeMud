@@ -57,7 +57,7 @@ public class Chant_CallCompanion extends Chant
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER | Ability.DOMAIN_ANIMALAFFINITY;
+		return Ability.ACODE_CHANT | Ability.DOMAIN_ANIMALAFFINITY;
 	}
 
 	@Override
