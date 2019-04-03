@@ -199,6 +199,30 @@ public class Prop_Artifact extends Property
 				Log.errOut("Prop_Artifact had affected "+affected.name()+" link-back on "+myHost.Name()+", with owner: "+identifyStr(myHost));
 			return true;
 		}
+		if((msg.target()==affected)
+		&&(msg.targetMinor()==CMMsg.TYP_SPEAK)
+		&&(msg.sourceMessage()!=null))
+		{
+			final String say=CMStrings.getSayFromMessage(msg.sourceMessage());
+			if((say != null)
+			&&(say.toLowerCase().indexOf("reset prop_artifact")>=0)
+			&&(CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDITEMS)))
+			{
+				final String name=affected.Name();
+				final List<String> keys=new XVector<String>(Prop_Artifact.registeredArtifacts.keySet());
+				for(final String key : keys)
+				{
+					final Item I=Prop_Artifact.registeredArtifacts.get(key);
+					if((I!=null)
+					&&(I.Name().equals(name)))
+					{
+						Prop_Artifact.registeredArtifacts.remove(key);
+						msg.source().tell("Removed: "+key);
+					}
+				}
+			}
+		}
+		else
 		if((msg.targetMinor()==CMMsg.TYP_EXPIRE)
 		&&(msg.target() instanceof Room)
 		&&(((Room)msg.target()).isContent((Item)affected)))
