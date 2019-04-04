@@ -1288,6 +1288,11 @@ public class StdItem implements Item
 					mob.tell(L("You can't see that."));
 					return false;
 				}
+				if(riding()!=null)
+				{
+					mob.tell(L("@x1 is mounted to @x2.",name(msg.source()),riding().name(msg.source())));
+					return false;
+				}
 				if((mob.phyStats().level()<phyStats().level()-(10+(mob.phyStats().level()/5)))
 				&&(!(mob instanceof ShopKeeper))
 				&&(!mob.charStats().getMyRace().leveless())
