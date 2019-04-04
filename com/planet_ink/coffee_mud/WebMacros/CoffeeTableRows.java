@@ -89,9 +89,23 @@ public class CoffeeTableRows extends StdWebMacro
 		String colspan="";
 		if(parms.containsKey("SKILLUSE"))
 		{
-			CharClass CharC=null;
-			if(code.length()>1)
-				CharC=CMClass.getCharClass(code.substring(1));
+			final List<CharClass> classes = new ArrayList<CharClass>(1);
+			if(code.startsWith("C"))
+				classes.add(CMClass.getCharClass(code.substring(1)));
+			else
+			if(code.startsWith("B"))
+			{
+				final String codeSub1=code.substring(1);
+				for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+				{
+					final CharClass C1=c.nextElement();
+					if(C1.baseClass().equalsIgnoreCase(codeSub1))
+						classes.add(C1);
+				}
+			}
+			if(classes.size()==0)
+				classes.add(null);
+
 			final List<Ability> allSkills=new ArrayList<Ability>();
 			int onlyAbilityTypes=-1;
 			int onlyAbilityDomains=-1;
@@ -109,13 +123,17 @@ public class CoffeeTableRows extends StdWebMacro
 				if(domainIndex>=0)
 					onlyAbilityDomains=domainIndex<<5;
 			}
-			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			for(final CharClass charC : classes)
 			{
-				final Ability A=e.nextElement();
-				if(((CharC==null)||(CMLib.ableMapper().getQualifyingLevel(CharC.ID(),true,A.ID())>=0))
-				&&((onlyAbilityTypes<0)||((A.classificationCode()&Ability.ALL_ACODES)==onlyAbilityTypes))
-				&&((onlyAbilityDomains<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==onlyAbilityDomains)))
-					allSkills.add(A);
+				for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+				{
+					final Ability A=e.nextElement();
+					if(((charC==null)
+						||((CMLib.ableMapper().getQualifyingLevel(charC.ID(),true,A.ID())>=0)&&(!allSkills.contains(A))))
+					&&((onlyAbilityTypes<0)||((A.classificationCode()&Ability.ALL_ACODES)==onlyAbilityTypes))
+					&&((onlyAbilityDomains<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==onlyAbilityDomains)))
+						allSkills.add(A);
+				}
 			}
 			final long[][] totals=new long[allSkills.size()][CoffeeTableRow.STAT_TOTAL];
 			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
@@ -129,11 +147,11 @@ public class CoffeeTableRows extends StdWebMacro
 				C2.set(Calendar.SECOND,59);
 				C2.set(Calendar.MILLISECOND,999);
 				curTime=C2.getTimeInMillis();
-				final Vector<CoffeeTableRow> set=new Vector<CoffeeTableRow>();
+				final List<CoffeeTableRow> set=new LinkedList<CoffeeTableRow>();
 				if(V.size()==1)
 				{
 					final CoffeeTableRow T=V.get(0);
-					set.addElement(T);
+					set.add(T);
 					V.remove(0);
 				}
 				else
@@ -142,13 +160,12 @@ public class CoffeeTableRows extends StdWebMacro
 					final CoffeeTableRow T=V.get(v);
 					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 					{
-						set.addElement(T);
+						set.add(T);
 						V.remove(v);
 					}
 				}
-				for(int s=0;s<set.size();s++)
+				for(final CoffeeTableRow T : set)
 				{
-					final CoffeeTableRow T=set.elementAt(s);
 					for(int x=0;x<allSkills.size();x++)
 						T.totalUp("A"+allSkills.get(x).ID().toUpperCase(),totals[x]);
 				}
