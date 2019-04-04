@@ -85,7 +85,7 @@ public class Spell_BigMouth extends Spell
 		if((msg.amISource(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_EAT)
 		&&(msg.target() instanceof Physical)
-		&&(Stomach()!=null))
+		&&(getStomach()!=null))
 		{
 			final CMMsg maliciousNessMsg=CMClass.getMsg(msg.source(), msg.target(), CMMsg.MSG_OK_ACTION | CMMsg.MASK_MALICIOUS, null);
 			final int targetWeight = (msg.target() instanceof MOB) ? ((MOB)msg.target()).baseWeight() : ((Physical)msg.target()).phyStats().weight();
@@ -95,7 +95,7 @@ public class Spell_BigMouth extends Spell
 				if(mob.location().okMessage(myHost, maliciousNessMsg))
 				{
 					final int maxInhabitants=1+((mob.fetchAbility(ID())!=null)?super.getXLEVELLevel(mob):0);
-					if((Stomach()!=null)&&(Stomach().numInhabitants()>maxInhabitants))
+					if((getStomach()!=null)&&(getStomach().numInhabitants()>maxInhabitants))
 					{
 						mob.tell(L("Your stomach is too full."));
 						return false;
@@ -158,7 +158,7 @@ public class Spell_BigMouth extends Spell
 		if((msg.amISource(mob))
 		&&(msg.sourceMinor()==CMMsg.TYP_EAT)
 		&&(msg.target() instanceof Physical)
-		&&(Stomach()!=null))
+		&&(getStomach()!=null))
 		{
 			final int targetWeight = (msg.target() instanceof MOB) ? ((MOB)msg.target()).baseWeight() : ((Physical)msg.target()).phyStats().weight();
 			if(targetWeight<(mob.phyStats().weight()/2))
@@ -172,15 +172,15 @@ public class Spell_BigMouth extends Spell
 						TastyMorsel.location().send(mob,msg2);
 						if(msg2.value()<=0)
 						{
-							Stomach().bringMobHere(TastyMorsel,false);
-							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,L("<S-NAME> <S-IS-ARE> swallowed whole by @x1!",mob.name()),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
-							Stomach().send(TastyMorsel,enterMsg);
+							getStomach().bringMobHere(TastyMorsel,false);
+							final CMMsg enterMsg=CMClass.getMsg(TastyMorsel,getStomach(),null,CMMsg.MSG_ENTER,L("<S-NAME> <S-IS-ARE> swallowed whole by @x1!",mob.name()),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> slide(s) down the gullet into the stomach!"));
+							getStomach().send(TastyMorsel,enterMsg);
 						}
 					}
 				}
 				if((msg.target() instanceof Item)
 				&&(!(msg.target() instanceof Food)))
-					Stomach().moveItemTo((Item)msg.target(),ItemPossessor.Expire.Monster_EQ);
+					getStomach().moveItemTo((Item)msg.target(),ItemPossessor.Expire.Monster_EQ);
 			}
 		}
 
@@ -207,7 +207,7 @@ public class Spell_BigMouth extends Spell
 		return lastKnownRoom;
 	}
 
-	protected Room Stomach()
+	protected Room getStomach()
 	{
 		if((myStomachR==null)&&(affected!=null))
 		{
@@ -225,29 +225,29 @@ public class Spell_BigMouth extends Spell
 
 	public void kill()
 	{
-		if((Stomach()==null)||(lastKnownLocation()==null))
+		if((getStomach()==null)||(lastKnownLocation()==null))
 			return;
 
 		// ===== move all inhabitants to the dragons location
 		// ===== loop through all inhabitants of the stomach
-		final int morselCount = Stomach().numInhabitants();
+		final int morselCount = getStomach().numInhabitants();
 		for (int x=morselCount-1;x>=0;x--)
 		{
 			// ===== get the tasty morsels
-			final MOB TastyMorsel = Stomach().fetchInhabitant(x);
+			final MOB TastyMorsel = getStomach().fetchInhabitant(x);
 			if(TastyMorsel!=null)
 				lastKnownLocation().bringMobHere(TastyMorsel,false);
 		}
 
 		// =====move the inventory of the stomach to the room
-		final int itemCount = Stomach().numItems();
+		final int itemCount = getStomach().numItems();
 		for (int y=itemCount-1;y>=0;y--)
 		{
-			final Item PartiallyDigestedItem = Stomach().getItem(y);
+			final Item PartiallyDigestedItem = getStomach().getItem(y);
 			if (PartiallyDigestedItem!=null)
 			{
 				lastKnownLocation().addItem(PartiallyDigestedItem,ItemPossessor.Expire.Player_Drop);
-				Stomach().delItem(PartiallyDigestedItem);
+				getStomach().delItem(PartiallyDigestedItem);
 			}
 		}
 		if((morselCount>0)||(itemCount>0))
@@ -262,13 +262,13 @@ public class Spell_BigMouth extends Spell
 		if(invoker()==null)
 			return true;
 		final MOB mob=invoker();
-		if((!mob.amDead())&&((--digestDown)<=0)&&(Stomach()!=null))
+		if((!mob.amDead())&&((--digestDown)<=0)&&(getStomach()!=null))
 		{
 			digestDown=2;
-			for (int x=0;x<Stomach().numInhabitants();x++)
+			for (int x=0;x<getStomach().numInhabitants();x++)
 			{
 				// ===== get a tasty morsel
-				final MOB TastyMorsel = Stomach().fetchInhabitant(x);
+				final MOB TastyMorsel = getStomach().fetchInhabitant(x);
 				if (TastyMorsel != null)
 				{
 					final CMMsg DigestMsg=CMClass.getMsg(mob,
@@ -277,7 +277,7 @@ public class Spell_BigMouth extends Spell
 											   CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,
 											   L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 					// no OKaffectS, since the dragon is not in his own stomach.
-					Stomach().send(mob,DigestMsg);
+					getStomach().send(mob,DigestMsg);
 					int damage=(int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2));
 					if(damage<(TastyMorsel.phyStats().level()+6))
 						damage=TastyMorsel.curState().getHitPoints()*100;
@@ -310,11 +310,11 @@ public class Spell_BigMouth extends Spell
 			if(thang instanceof MOB)
 			{
 				((MOB)thang).tell(L("Your mouth shrinks to normal size."));
-				if((Stomach()!=null)&&(Stomach().numInhabitants()>0))
+				if((getStomach()!=null)&&(getStomach().numInhabitants()>0))
 				{
 					unInvoked=false;
 					final Spell_BigMouth A =(Spell_BigMouth)this.copyOf();
-					A.startTickDown(invoker,Stomach(),10000);
+					A.startTickDown(invoker,getStomach(),10000);
 				}
 			}
 			else
