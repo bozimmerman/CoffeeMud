@@ -1338,7 +1338,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				final XMLTag ablk=aV.get(r);
 				if(!ablk.tag().equalsIgnoreCase("FILE"))
-					return unpackErr("Custom","Wrong tag in custome file! "+ablk.value(),ablk);
+					return unpackErr("Custom","Wrong tag in custom file! "+ablk.value(),ablk);
 				final String filename=ablk.getParmValue("NAME");
 				if((filename==null)||(filename.length()==0))
 					return unpackErr("Custom","No custom file filename! "+ablk.value(),ablk);
