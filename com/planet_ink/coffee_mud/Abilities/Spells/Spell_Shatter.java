@@ -113,7 +113,7 @@ public class Spell_Shatter extends Spell
 		Item target=null;
 		if(mobTarget!=null)
 		{
-			target=getItem(mob);
+			target=getItem(mobTarget);
 			if(target==null)
 				return maliciousFizzle(mob,mobTarget,L("<S-NAME> attempt(s) a shattering spell at <T-NAMESELF>, but nothing happens."));
 		}
