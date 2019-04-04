@@ -65,6 +65,30 @@ public class StdSpaceTechWeapon extends StdSpaceTech implements SpaceObject, Wea
 	}
 
 	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+
+		switch(msg.targetMinor())
+		{
+		case CMMsg.TYP_DAMAGE: // kinetic damage taken to the body by a weapon
+		case CMMsg.TYP_COLLISION:
+		{
+			if((msg.tool()==this) || (msg.target()==this))
+			{
+				if (!amDestroyed())
+				{
+					this.destroy();
+				}
+			}
+			break;
+		}
+		default:
+			break;
+		}
+	}
+
+	@Override
 	public int weaponDamageType()
 	{
 		return weaponType;

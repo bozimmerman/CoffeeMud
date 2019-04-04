@@ -195,7 +195,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				final double myMass=getMass();
 				final double hardness = RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm;
 				msg.setValue((int)Math.round((usesRemaining() * (msg.value() / myMass)) / hardness));
-				if((msg.value() < 2) || (!okAreaMessage(msg,false)))
+				if(!okAreaMessage(msg,false))
 					return false;
 				return true;
 			}

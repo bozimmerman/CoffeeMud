@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -11,6 +12,9 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.SpaceShip.ShipFlag;
+import com.planet_ink.coffee_mud.Items.interfaces.TechComponent.ShipDir;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -151,5 +155,49 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	public long getMass()
 	{
 		return basePhyStats().weight() * radius();
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(msg.amITarget(this))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_DAMAGE:
+			{
+				final double myMass=getMass();
+				final double hardness = RawMaterial.CODES.HARDNESS(material()) * SpaceObject.Distance.Kilometer.dm;
+				msg.setValue((int)Math.round((usesRemaining() * (msg.value() / myMass)) / hardness));
+				return true; // avoid the stditem damage to item code
+			}
+			}
+		}
+		return super.okMessage(myHost, msg);
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+
+		if(msg.amITarget(this) && (!amDestroyed()))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_DAMAGE: // kinetic damage taken to the body by a weapon
+			case CMMsg.TYP_COLLISION:
+			{
+				final long myMass=getMass();
+				if((msg.value() > 0)&&(myMass>0))
+				{
+					// not sure
+				}
+				break;
+			}
+			default:
+				break;
+			}
+		}
 	}
 }
