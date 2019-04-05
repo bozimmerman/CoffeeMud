@@ -673,7 +673,10 @@ public class GModify extends StdCommand
 		{
 			final Faction F=f.nextElement();
 			if(F.isPreLoaded())
-				allFieldsMsg.append(F.factionID()).append(" ");
+			{
+				allFieldsMsg.append(F.factionID().toUpperCase()).append(" ");
+				allKnownFields.add(F.factionID().toUpperCase());
+			}
 		}
 		allFieldsMsg.append("CLASSTYPE REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT DELFACTION ");
 		allKnownFields.addAll(Arrays.asList(new String[]{"CLASSTYPE","REJUV","RESOURCE","MATERIALTYPE","GENDER","DESTROY","ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT","DELFACTION"}));
