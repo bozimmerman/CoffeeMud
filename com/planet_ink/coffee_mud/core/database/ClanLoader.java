@@ -57,8 +57,10 @@ public class ClanLoader
 		{
 			D=DB.DBFetch();
 			final ResultSet R=D.query("SELECT * FROM CMCLIT");
+			recordCount=DB.getRecordCount(D,R);
 			while(R.next())
 			{
+				currentRecordPos=R.getRow();
 				final String clanID=DBConnections.getRes(R,"CMCLID");
 				final Clan C=clans.get(clanID);
 				if(C==null)
