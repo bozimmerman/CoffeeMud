@@ -52,15 +52,17 @@ public class Prop_Doppleganger extends Property
 		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
 	}
 	//protected boolean lastLevelChangers=true;
-	protected Physical lastOwner=null;
-	private int maxLevel=Integer.MAX_VALUE;
-	private int minLevel=Integer.MIN_VALUE;
-	protected int lastLevel=Integer.MIN_VALUE;
-	protected int levelAdd=0;
-	protected double levelPct=1.0;
-	protected boolean matchPlayersOnly=false;
-	protected boolean matchPlayersFollowersOnly=false;
-	protected int asMaterial=-1;
+	protected Physical	lastOwner					= null;
+	private int			maxLevel					= Integer.MAX_VALUE;
+	private int			minLevel					= Integer.MIN_VALUE;
+	protected int		lastLevel					= Integer.MIN_VALUE;
+	protected int		levelAdd					= 0;
+	protected double	levelPct					= 1.0;
+	protected int		diffAdd						= 0;
+	protected double	diffPct						= 1.0;
+	protected boolean	matchPlayersOnly			= false;
+	protected boolean	matchPlayersFollowersOnly	= false;
+	protected int		asMaterial					= -1;
 
 	@Override
 	public long flags()
@@ -79,7 +81,9 @@ public class Prop_Doppleganger extends Property
 	{
 		super.setMiscText(text);
 		levelAdd=0;
+		diffAdd=0;
 		levelPct=1.0;
+		diffPct=1.0;
 		asMaterial=-1;
 		maxLevel=Integer.MAX_VALUE;
 		minLevel=Integer.MIN_VALUE;
@@ -94,6 +98,8 @@ public class Prop_Doppleganger extends Property
 			minLevel=CMParms.getParmInt(text,"MIN",Integer.MIN_VALUE);
 			levelAdd=CMParms.getParmInt(text, "LEVELADD", 0);
 			levelPct=CMParms.getParmInt(text, "LEVELPCT", 100)/100.0;
+			diffAdd=CMParms.getParmInt(text, "DIFFLADD", 0);
+			diffPct=CMParms.getParmInt(text, "DIFFPCT", 100)/100.0;
 			matchPlayersFollowersOnly=CMParms.getParmBool(text, "PLAYERSNFOLS", false);
 			matchPlayersOnly=CMParms.getParmBool(text, "PLAYERSONLY", false);
 			final String asMat = CMParms.getParmStr(text, "ASMATERIAL", "");
@@ -102,46 +108,135 @@ public class Prop_Doppleganger extends Property
 		}
 	}
 
+	protected void doppleGangItem(final Item I)
+	{
+		final ItemPossessor owner=I.owner();
+		if(owner!=null)
+		{
+			lastOwner=owner;
+			lastLevel=owner.phyStats().level();
+			int level=(int)Math.round(CMath.mul(((MOB)owner).phyStats().level(),levelPct))+levelAdd;
+			if(level<minLevel)
+				level=minLevel;
+			if(level>maxLevel)
+				level=maxLevel;
+			int difflevel=(int)Math.round(CMath.mul(level,diffPct))+diffAdd;
+			I.basePhyStats().setLevel(difflevel);
+			I.phyStats().setLevel(difflevel);
+			final int oldMaterial=I.material();
+			if(asMaterial != -1)
+				I.setMaterial(asMaterial);
+			CMLib.itemBuilder().balanceItemByLevel(I);
+			I.basePhyStats().setLevel(level);
+			I.phyStats().setLevel(level);
+			I.setMaterial(oldMaterial);
+			level=((MOB)owner).phyStats().level();
+			if(level<minLevel)
+				level=minLevel;
+			if(level>maxLevel)
+				level=maxLevel;
+			I.basePhyStats().setLevel(level);
+			I.phyStats().setLevel(level);
+			owner.recoverPhyStats();
+			if(owner instanceof Room)
+				((Room)owner).recoverRoomStats();
+			else
+			if(owner instanceof MOB)
+			{
+				final MOB M=(MOB)owner;
+				M.recoverCharStats();
+				M.recoverMaxState();
+				M.recoverPhyStats();
+			}
+		}
+	}
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((affected instanceof Item)
 		&&((((Item)affected).owner()!=lastOwner)||((lastOwner!=null)&&(lastOwner.phyStats().level()!=lastLevel)))
 		&&(((Item)affected).owner() instanceof MOB))
-		{
-			final Item I=(Item)affected;
-			lastOwner=I.owner();
-			lastLevel=lastOwner.phyStats().level();
-			int level=(int)Math.round(CMath.mul(((MOB)lastOwner).phyStats().level(),levelPct))+levelAdd;
-			if(level<minLevel)
-				level=minLevel;
-			if(level>maxLevel)
-				level=maxLevel;
-			I.basePhyStats().setLevel(level);
-			I.phyStats().setLevel(level);
-			final int oldMaterial=I.material();
-			if(asMaterial != -1)
-				I.setMaterial(asMaterial);
-			CMLib.itemBuilder().balanceItemByLevel(I);
-			I.setMaterial(oldMaterial);
-			level=((MOB)lastOwner).phyStats().level();
-			if(level<minLevel)
-				level=minLevel;
-			if(level>maxLevel)
-				level=maxLevel;
-			I.basePhyStats().setLevel(level);
-			I.phyStats().setLevel(level);
-			lastOwner.recoverPhyStats();
-			final Room R=((MOB)lastOwner).location();
-			if(R!=null)
-				R.recoverRoomStats();
-		}
+			doppleGangItem((Item)affected);
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean qualifies(final MOB mob, final Room R)
+	protected void doppleGangMob(final MOB entrantM, final MOB mob, final Room R)
 	{
-		if((mob==affected)||(mob==null))
+		if((R!=null)
+		&&(CMLib.flags().isAliveAwakeMobile(mob,true))
+		&&(mob.curState().getHitPoints()>=mob.maxState().getHitPoints()))
+		{
+			int total=0;
+			int num=0;
+			final MOB victim=mob.getVictim();
+			if(canMimic(victim,R))
+			{
+				total+=victim.phyStats().level();
+				num++;
+			}
+			if(canMimic(entrantM,R))
+			{
+				total+=entrantM.phyStats().level();
+				num++;
+			}
+			for(int i=0;i<R.numInhabitants();i++)
+			{
+				final MOB M=R.fetchInhabitant(i);
+				if((M!=null)
+				&&(M!=mob)
+				&&((M.getVictim()==mob)||(victim==null))
+				&&((M!=victim)&&(M!=entrantM))
+				&&(canMimic(M,R)))
+				{
+					total+=M.phyStats().level();
+					num++;
+				}
+			}
+			if(num>0)
+			{
+				int level=(int)Math.round(CMath.mul(CMath.div(total,num),levelPct))+levelAdd;
+				if(level<minLevel)
+					level=minLevel;
+				if(level>maxLevel)
+					level=maxLevel;
+				int difflevel=(int)Math.round(CMath.mul(level,diffPct))+diffAdd;
+				if(level!=mob.basePhyStats().level())
+				{
+					mob.basePhyStats().setLevel(difflevel);
+					mob.phyStats().setLevel(difflevel);
+					mob.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(mob));
+					mob.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(mob));
+					mob.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(mob));
+					mob.basePhyStats().setSpeed(1.0+(CMath.div(level,100)*4.0));
+					mob.baseState().setHitPoints(CMLib.leveler().getPlayerHitPoints(mob));
+					mob.baseState().setMana(CMLib.leveler().getLevelMana(mob));
+					mob.baseState().setMovement(CMLib.leveler().getLevelMove(mob));
+					mob.basePhyStats().setLevel(level);
+					mob.phyStats().setLevel(level);
+					mob.recoverPhyStats();
+					mob.recoverCharStats();
+					mob.recoverMaxState();
+					mob.resetToMaxState();
+				}
+			}
+		}
+	}
+	
+	public boolean canMimic(final MOB mob, final Room R)
+	{
+		if((mob==affected)
+		||(mob==null))
+			return false;
+		if((affected instanceof Room)
+		&&(mob.isMonster())
+		&&(mob.getStartRoom()!=null)
+		&&(mob.getStartRoom().getArea()==((Room)affected).getArea()))
+			return false;
+		if((affected instanceof Area)
+		&&(mob.isMonster())
+		&&(mob.getStartRoom()!=null)
+		&&(mob.getStartRoom().getArea()==(Area)affected))
 			return false;
 		if(mob.fetchEffect(ID())!=null)
 			return false;
@@ -165,67 +260,45 @@ public class Prop_Doppleganger extends Property
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected instanceof MOB)
-		&&(((msg.target() instanceof Room)&&(msg.sourceMinor()==CMMsg.TYP_ENTER))
-		   ||(msg.sourceMinor()==CMMsg.TYP_LIFE)))
+		if((((msg.target() instanceof Room)&&(msg.sourceMinor()==CMMsg.TYP_ENTER))
+		   ||(msg.sourceMinor()==CMMsg.TYP_LIFE))
+		&&(!(affected instanceof Item)))
 		//&&(lastLevelChangers))
 		{
+if(!msg.source().isMonster())
+	System.out.println("hi");
 			//lastLevelChangers=false;
-			final MOB mob=(MOB)affected;
-			final Room R=(msg.target() instanceof Room)?((Room)msg.target()):msg.source().location();
-			if((R!=null)
-			&&(CMLib.flags().isAliveAwakeMobile(mob,true))
-			&&(mob.curState().getHitPoints()>=mob.maxState().getHitPoints()))
+			if(affected instanceof MOB)
 			{
-				int total=0;
-				int num=0;
-				final MOB victim=mob.getVictim();
-				if(qualifies(victim,R))
+				final Room R=(msg.target() instanceof Room)?((Room)msg.target()):msg.source().location();
+				this.doppleGangMob(msg.source(), (MOB)affected, R);
+			}
+			else
+			if(affected instanceof Room)
+			{
+				final Room R=(Room)affected;
+				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 				{
-					total+=victim.phyStats().level();
-					num++;
+					final MOB M=m.nextElement();
+					if((M.isMonster())
+					&&(M.getStartRoom()!=null)
+					&&(M.amFollowing()==null)
+					&&(M.getStartRoom().getArea()==R.getArea()))
+						this.doppleGangMob(msg.source(), M, R);
 				}
-				final MOB entrant=msg.source();
-				if(qualifies(entrant,R))
+			}
+			else
+			if(affected instanceof Area)
+			{
+				final Room R=(msg.target() instanceof Room)?((Room)msg.target()):msg.source().location();
+				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 				{
-					total+=entrant.phyStats().level();
-					num++;
-				}
-				for(int i=0;i<R.numInhabitants();i++)
-				{
-					final MOB M=R.fetchInhabitant(i);
-					if((M!=null)
-					&&(M!=mob)
-					&&((M.getVictim()==mob)||(victim==null))
-					&&((M!=victim)&&(M!=entrant))
-					&&(qualifies(M,R)))
-					{
-						total+=M.phyStats().level();
-						num++;
-					}
-				}
-				if(num>0)
-				{
-					int level=(int)Math.round(CMath.mul(CMath.div(total,num),levelPct))+levelAdd;
-					if(level<minLevel)
-						level=minLevel;
-					if(level>maxLevel)
-						level=maxLevel;
-					if(level!=mob.basePhyStats().level())
-					{
-						mob.basePhyStats().setLevel(level);
-						mob.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(mob));
-						mob.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(mob));
-						mob.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(mob));
-						mob.basePhyStats().setSpeed(1.0+(CMath.div(level,100)*4.0));
-						mob.baseState().setHitPoints(CMLib.leveler().getPlayerHitPoints(mob));
-						mob.baseState().setMana(CMLib.leveler().getLevelMana(mob));
-						mob.baseState().setMovement(CMLib.leveler().getLevelMove(mob));
-						mob.recoverPhyStats();
-						mob.recoverCharStats();
-						mob.recoverMaxState();
-						mob.resetToMaxState();
-					}
+					final MOB M=m.nextElement();
+					if((M.isMonster())
+					&&(M.getStartRoom()!=null)
+					&&(M.amFollowing()==null)
+					&&(M.getStartRoom().getArea()==affected))
+						this.doppleGangMob(msg.source(), M, R);
 				}
 			}
 		}
