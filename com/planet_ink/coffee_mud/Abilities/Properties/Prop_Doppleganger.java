@@ -265,8 +265,6 @@ public class Prop_Doppleganger extends Property
 		&&(!(affected instanceof Item)))
 		//&&(lastLevelChangers))
 		{
-if(!msg.source().isMonster())
-	System.out.println("hi");
 			//lastLevelChangers=false;
 			if(affected instanceof MOB)
 			{
