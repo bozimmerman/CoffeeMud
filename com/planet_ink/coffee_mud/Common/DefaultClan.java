@@ -2094,7 +2094,11 @@ public class DefaultClan implements Clan
 						@Override
 						public int compare(final FullMemberRecord o1, final FullMemberRecord o2)
 						{
-							return Double.compare(o2.level, o1.level);
+							if(o2.level==o1.level)
+								return 0;
+							if(o2.level<o1.level)
+								return -1;
+							return 1;
 						}
 					});
 					break;
@@ -2110,7 +2114,11 @@ public class DefaultClan implements Clan
 						{
 							final ClanPosition cp1 = govt().getPositions()[o1.role];
 							final ClanPosition cp2 = govt().getPositions()[o2.role];
-							return Long.compare(cp1.getRank(),cp2.getRank());
+							if(cp1.getRank()==cp2.getRank())
+								return 0;
+							if(cp1.getRank()<cp2.getRank())
+								return -1;
+							return 1;
 						}
 					});
 					break;
@@ -2124,7 +2132,11 @@ public class DefaultClan implements Clan
 						@Override
 						public int compare(final MemberRecord o1, final MemberRecord o2)
 						{
-							return Double.compare(o2.donatedGold,o1.donatedGold);
+							if(o2.donatedGold==o1.donatedGold)
+								return 0;
+							if(o2.donatedGold<o1.donatedGold)
+								return -1;
+							return 1;
 						}
 					});
 					break;
@@ -2138,7 +2150,11 @@ public class DefaultClan implements Clan
 						@Override
 						public int compare(final MemberRecord o1, final MemberRecord o2)
 						{
-							return Long.compare(o2.donatedXP,o1.donatedXP);
+							if(o2.donatedXP==o1.donatedXP)
+								return 0;
+							if(o2.donatedXP<o1.donatedXP)
+								return -1;
+							return 1;
 						}
 					});
 					break;
@@ -2152,7 +2168,11 @@ public class DefaultClan implements Clan
 						@Override
 						public int compare(final MemberRecord o1, final MemberRecord o2)
 						{
-							return Double.compare(o1.joinDate, o2.joinDate);
+							if(o1.joinDate==o2.joinDate)
+								return 0;
+							if(o1.joinDate<o2.joinDate)
+								return -1;
+							return 1;
 						}
 					});
 					break;
@@ -2186,7 +2206,11 @@ public class DefaultClan implements Clan
 					{
 						final ClanPosition pos1=govt().getPositions()[o1.intValue()];
 						final ClanPosition pos2=govt().getPositions()[o2.intValue()];
-						return Integer.compare(pos1.getRank(), pos2.getRank());
+						if(pos1.getRank()==pos2.getRank())
+							return 0;
+						if(pos1.getRank()<pos2.getRank())
+							return -1;
+						return 1;
 					}
 				});
 

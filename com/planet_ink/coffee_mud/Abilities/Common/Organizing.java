@@ -151,7 +151,13 @@ public class Organizing extends CommonSkill
 									result = brand1.compareTo(brand2);
 									break;
 								case LEVEL:
-									result=Integer.compare(o1.phyStats().level(),o2.phyStats().level());
+									if(o1.phyStats().level()==o2.phyStats().level())
+										result=0;
+									else
+									if(o1.phyStats().level()<o2.phyStats().level())
+										result=-1;
+									else
+										result=1;
 									break;
 								case NAME:
 									result=CMLib.english().removeArticleLead(o1.Name()).compareTo(CMLib.english().removeArticleLead(o2.Name()));
@@ -165,10 +171,22 @@ public class Organizing extends CommonSkill
 										result = o1.ID().compareTo(o2.ID());
 									break;
 								case VALUE:
-									result=Integer.compare(o1.baseGoldValue(),o2.baseGoldValue());
+									if(o1.baseGoldValue()==o2.baseGoldValue())
+										result=0;
+									else
+									if(o1.baseGoldValue()<o2.baseGoldValue())
+										result=-1;
+									else
+										result=1;
 									break;
 								case WEIGHT:
-									result=Integer.compare(o1.phyStats().weight(),o2.phyStats().weight());
+									if(o1.phyStats().weight()==o2.phyStats().weight())
+										result=0;
+									else
+									if(o1.phyStats().weight()<o2.phyStats().weight())
+										result=-1;
+									else
+										result=1;
 									break;
 								}
 								if((result == 0)&&(orgaT != OrganizeBy.NAME))

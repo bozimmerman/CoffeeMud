@@ -74,7 +74,11 @@ public class ClanList extends StdCommand
 					return 1;
 				if(o1.getStatus() < o2.getStatus())
 					return -1;
-				return Integer.compare(o2.getSize(), o1.getSize());
+				if(o2.getSize()==o1.getSize())
+					return 0;
+				if(o2.getSize()<o1.getSize())
+					return -1;
+				return 1;
 			}
 		});
 

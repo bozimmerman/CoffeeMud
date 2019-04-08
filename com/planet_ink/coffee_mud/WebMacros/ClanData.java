@@ -512,7 +512,11 @@ public class ClanData extends StdWebMacro
 								@Override
 								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
-									return Integer.compare(o1.role,o2.role);
+									if(o1.role==o2.role)
+										return 0;
+									if(o1.role<o2.role)
+										return -1;
+									return 1;
 								}
 							});
 						}
@@ -524,7 +528,11 @@ public class ClanData extends StdWebMacro
 								@Override
 								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
-									return Integer.compare(o2.mobpvps+o2.playerpvps,o1.mobpvps+o1.playerpvps);
+									if(o2.mobpvps+o2.playerpvps==o1.mobpvps+o1.playerpvps)
+										return 0;
+									if(o2.mobpvps+o2.playerpvps<o1.mobpvps+o1.playerpvps)
+										return -1;
+									return 1;
 								}
 							});
 						}
@@ -536,7 +544,11 @@ public class ClanData extends StdWebMacro
 								@Override
 								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
-									return Integer.compare(o1.mobpvps,o2.mobpvps);
+									if(o1.mobpvps==o2.mobpvps)
+										return 0;
+									if(o1.mobpvps<o2.mobpvps)
+										return -1;
+									return 1;
 								}
 							});
 						}
@@ -548,7 +560,11 @@ public class ClanData extends StdWebMacro
 								@Override
 								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
-									return Long.compare(o2.joinDate,o1.joinDate); // lower/older is better
+									if(o2.joinDate==o1.joinDate)
+										return 0;
+									if(o2.joinDate<o1.joinDate)
+										return -1;
+									return 1;
 								}
 							});
 						}
@@ -560,7 +576,11 @@ public class ClanData extends StdWebMacro
 								@Override
 								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
-									return Integer.compare(o1.playerpvps,o2.playerpvps);
+									if(o1.playerpvps==o2.playerpvps)
+										return 0;
+									if(o1.playerpvps<o2.playerpvps)
+										return -1;
+									return 1;
 								}
 							});
 						}
@@ -572,7 +592,11 @@ public class ClanData extends StdWebMacro
 								@Override
 								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
-									return Double.compare(o1.donatedGold,o2.donatedGold);
+									if(o1.donatedGold==o2.donatedGold)
+										return 0;
+									if(o1.donatedGold<o2.donatedGold)
+										return -1;
+									return 1;
 								}
 							});
 						}
@@ -584,7 +608,11 @@ public class ClanData extends StdWebMacro
 								@Override
 								public int compare(final MemberRecord o1, final MemberRecord o2)
 								{
-									return Long.compare(o1.donatedXP,o2.donatedXP);
+									if(o1.donatedXP==o2.donatedXP)
+										return 0;
+									if(o1.donatedXP<o2.donatedXP)
+										return -1;
+									return 1;
 								}
 							});
 						}

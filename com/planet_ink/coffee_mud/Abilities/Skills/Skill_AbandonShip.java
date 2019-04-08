@@ -249,7 +249,13 @@ public class Skill_AbandonShip extends StdSkill
 						@Override
 						public int compare(final Item arg0, final Item arg1)
 						{
-							return Integer.compare(arg0.phyStats().weight(),arg1.phyStats().weight());
+							if(arg0.phyStats().weight()==arg1.phyStats().weight())
+								return 0;
+							else
+							if(arg0.phyStats().weight()<arg1.phyStats().weight())
+								return -1;
+							else
+								return 1;
 						}
 					});
 					if(boats.size()==0)
