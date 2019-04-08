@@ -1,4 +1,4 @@
-# Build 5.9.8 Release ?
+# Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque
   2. New wainwrighting & smelting recipes
   3. Longlook to mobs now shows interesting body part info.
@@ -63,6 +63,7 @@
   62. WebMacroCreamer now supports @elif?...@ syntax. Also new Macro: CheckFactionLoaded
   63. New Archon skill CRECORD -- a developer tool for auto-snooping combat logs.
   64. New spells: Improved Repairing Aura, Mass Repairing Aura
+  65. Prop_Doppleganger can now apply to areas and has new args
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.
