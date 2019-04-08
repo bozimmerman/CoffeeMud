@@ -365,7 +365,7 @@ public class DefaultClimate implements Climate
 
 			String say=null;
 			int goodWeatherTotal=0;
-			nextWeather = nextWeather % Climate.WEATHER_DESCS.length;
+			nextWeather = Math.abs(nextWeather) % Climate.WEATHER_DESCS.length;
 			int possibleNextWeather=nextWeather;
 			for(int g=0;g<Climate.NUM_WEATHER;g++)
 			{
