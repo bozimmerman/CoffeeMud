@@ -161,7 +161,7 @@ public class Spell_BigMouth extends Spell
 		&&(getStomach()!=null))
 		{
 			final int targetWeight = (msg.target() instanceof MOB) ? ((MOB)msg.target()).baseWeight() : ((Physical)msg.target()).phyStats().weight();
-			if(targetWeight<(mob.phyStats().weight()/2))
+			if(targetWeight<(mob.baseWeight()/3))
 			{
 				if(msg.target() instanceof MOB)
 				{
