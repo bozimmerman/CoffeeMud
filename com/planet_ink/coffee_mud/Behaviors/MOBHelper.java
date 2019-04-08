@@ -46,6 +46,29 @@ public class MOBHelper extends StdBehavior
 		return "friend protecting";
 	}
 
+	protected int		num			= 999;
+
+	@Override
+	public void startBehavior(final PhysicalAgent forMe)
+	{
+		super.startBehavior(forMe);
+		if(forMe instanceof MOB)
+		{
+			if(parms.length()>0)
+			{
+				final List<String> V=CMParms.parse(parms.toUpperCase());
+				for(int i=V.size()-1;i>=0;i--)
+				{
+					if(CMath.isInteger(V.get(i)))
+					{
+						num=CMath.s_int(V.get(i));
+						V.remove(i);
+					}
+				}
+			}
+		}
+	}
+
 	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
@@ -65,6 +88,23 @@ public class MOBHelper extends StdBehavior
 		&&(CMLib.flags().canBeSeenBy(victim,monster))
 		&&((!(msg.tool() instanceof DiseaseAffect))||(((DiseaseAffect)msg.tool()).isMalicious()))
 		&&(victim.isMonster()))
-			Aggressive.startFight(monster,attacker,true,false,null);
+		{
+			final Room R=attacker.location();
+			if(R!=null)
+			{
+				int numInFray=0;
+				if((num > 0) && (num < 999))
+				{
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						final MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(M.getVictim()==attacker))
+							numInFray++;
+					}
+				}
+				if(((num==0)||(numInFray<num)))
+					Aggressive.startFight(monster,attacker,true,false,null);
+			}
+		}
 	}
 }

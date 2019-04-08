@@ -40,32 +40,47 @@ public class ClanHelper extends StdBehavior
 		return "ClanHelper";
 	}
 
+	protected boolean	mobKiller	= false;
+	protected int		num			= 999;
+	protected String	clanName	= "";
+
 	@Override
 	public String accountForYourself()
 	{
-		if(parms.length()>0)
-			return "fellow '"+parms+"' protecting";
+		if(clanName.length()>0)
+			return "fellow '"+clanName+"' protecting";
 		else
 			return "fellow clan members protecting";
 	}
-
-	protected boolean mobKiller=false;
 
 	@Override
 	public void startBehavior(final PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
+		num=999;
 		if(forMe instanceof MOB)
 		{
-			if(parms.length()>0)
+			String clanName=parms.trim();
+			final int x=clanName.lastIndexOf(' ');
+			if(x>0)
 			{
-				Clan C=CMLib.clans().getClan(parms.trim());
+				final String s=clanName.substring(x+1).trim();
+				if(CMath.isInteger(s))
+				{
+					clanName=clanName.substring(0,x).trim();
+					num=CMath.s_int(s);
+				}
+			}
+			if(clanName.length()>0)
+			{
+				this.clanName=clanName;
+				Clan C=CMLib.clans().getClan(clanName.trim());
 				if(C==null)
-					C=CMLib.clans().findClan(parms.trim());
+					C=CMLib.clans().findClan(clanName.trim());
 				if(C!=null)
 					((MOB)forMe).setClan(C.clanID(),C.getGovernment().getAcceptPos());
 				else
-					Log.errOut("ClanHelper","Unknown clan "+parms+" for "+forMe.Name()+" in "+CMLib.map().getDescriptiveExtendedRoomID(CMLib.map().roomLocation(forMe)));
+					Log.errOut("ClanHelper","Unknown clan "+clanName+" for "+forMe.Name()+" in "+CMLib.map().getDescriptiveExtendedRoomID(CMLib.map().roomLocation(forMe)));
 			}
 		}
 	}
@@ -95,19 +110,36 @@ public class ClanHelper extends StdBehavior
 			final List<Triad<Clan,Integer,Integer>> list=CMLib.clans().findCommonRivalrousClans(observer, target);
 			if(list.size()>0)
 			{
-				Clan C=null;
-				for(final Triad<Clan,Integer,Integer> t : list)
+				final Room R=source.location();
+				if(R!=null)
 				{
-					if(source.getClanRole(t.first.clanID())==null)
+					int numInFray=0;
+					if((num > 0) && (num < 999))
 					{
-						C=t.first;
-						break;
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							final MOB M=R.fetchInhabitant(m);
+							if((M!=null)&&(M.getVictim()==source))
+								numInFray++;
+						}
+					}
+					if(((num==0)||(numInFray<num)))
+					{
+						Clan C=null;
+						for(final Triad<Clan,Integer,Integer> t : list)
+						{
+							if(source.getClanRole(t.first.clanID())==null)
+							{
+								C=t.first;
+								break;
+							}
+						}
+						String reason="WE ARE UNDER ATTACK!! CHARGE!!";
+						if(C!=null)
+							reason=C.getName().toUpperCase()+"S UNITE! CHARGE!";
+						Aggressive.startFight(observer,source,true,false,reason);
 					}
 				}
-				String reason="WE ARE UNDER ATTACK!! CHARGE!!";
-				if(C!=null)
-					reason=C.getName().toUpperCase()+"S UNITE! CHARGE!";
-				Aggressive.startFight(observer,source,true,false,reason);
 			}
 		}
 	}
