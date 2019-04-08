@@ -150,8 +150,11 @@ public class GModify extends StdCommand
 				else
 				{
 					final CMClass.CMObjectType type=CMClass.getObjectType(E);
-					final Environmental newObj=(Environmental)CMClass.getByType(value, type);
-					if((newObj instanceof Physical)&&(E instanceof Physical))
+					Environmental newObj=(Environmental)CMClass.getByType(value, type);
+					if(newObj == null)
+						newObj=CMClass.getUnknown(value);
+					if((newObj instanceof Physical)
+					&&(E instanceof Physical))
 					{
 						final Physical P1=(Physical)E;
 						final Physical P2=(Physical)newObj;

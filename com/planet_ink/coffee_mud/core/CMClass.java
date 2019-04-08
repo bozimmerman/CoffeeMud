@@ -120,8 +120,6 @@ public class CMClass extends ClassLoader
 	LOCALE("com.planet_ink.coffee_mud.Locales.interfaces.Room"),
 	/** stat constant for exit type objects */
 	EXIT("com.planet_ink.coffee_mud.Exits.interfaces.Exit"),
-	/** stat constant for item type objects */
-	ITEM("com.planet_ink.coffee_mud.Items.interfaces.Item"),
 	/** stat constant for behavior type objects */
 	BEHAVIOR("com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior"),
 	/** stat constant for clan type objects */
@@ -144,6 +142,8 @@ public class CMClass extends ClassLoader
 	COMPTECH("com.planet_ink.coffee_mud.Items.interfaces.TechComponent"),
 	/** stat constant for misc tech type objects */
 	SOFTWARE("com.planet_ink.coffee_mud.Items.interfaces.Software"),
+	/** stat constant for item type objects */
+	ITEM("com.planet_ink.coffee_mud.Items.interfaces.Item"),
 	/** stat constant for webmacros type objects */
 	WEBMACRO("com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro"),
 	/** stat constant for common type objects */
