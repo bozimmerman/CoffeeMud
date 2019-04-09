@@ -1,3 +1,12 @@
+My attempt at merging the look and world of MajorMUD with the features of CoffeeMud.
+MajorMUD images:           https://imgur.com/a/pjNkVVh
+I'm currently poking around the code on a private repo.
+I've managed to get the short exits looking nice, including door status.
+Currenly trying to remove blank lines from the output, also trying to
+change what happens when the user presses enter with no command.
+
+--------
+
 CoffeeMud (C)2000-2019 Bo Zimmerman
 Please read the LICENSE file for license information
 Please read the NOTICE file for credits information
