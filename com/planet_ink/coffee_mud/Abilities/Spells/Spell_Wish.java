@@ -1535,6 +1535,9 @@ public class Spell_Wish extends Spell
 					foundAttribute=CharStats.STAT_SAVE_UNDEAD;
 				if(myWish.indexOf(" EVIL")>=0)
 					foundAttribute=CharStats.STAT_SAVE_UNDEAD;
+			}
+			if(foundAttribute < 0)
+			{
 				if(myWish.indexOf(" TRAIN")>=0)
 					foundAttribute=1001;
 				if(myWish.indexOf(" PRACTICE")>=0)
