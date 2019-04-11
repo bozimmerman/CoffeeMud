@@ -957,6 +957,7 @@ public class CharClassData extends StdWebMacro
 						if(parms.containsKey("LIMIT"))
 							limit=CMath.s_int(parms.get("LIMIT"));
 						str.append(helpHelp(s,limit));
+						return str.toString();
 					}
 				}
 				if(parms.containsKey("PLAYABLE"))
