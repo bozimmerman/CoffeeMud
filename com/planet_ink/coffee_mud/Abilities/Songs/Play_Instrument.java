@@ -61,6 +61,24 @@ public class Play_Instrument extends Play
 		return "";
 	}
 
+	protected volatile long lastPlay = 0;
+
+	protected int calculateNewSongDepth(final MOB invoker)
+	{
+		if((invoker!=null)
+		&&(System.currentTimeMillis()-lastPlay<30000))
+		{
+			final int maxDepth = getXMAXRANGELevel(invoker()) / 2; // decreased because fireball
+			this.playDepth = this.playDepth + 1;
+			if(this.playDepth > maxDepth)
+				this.playDepth = maxDepth;
+		}
+		else
+			this.playDepth = 0;
+		this.lastPlay=System.currentTimeMillis();
+		return this.playDepth;
+	}
+
 	@Override
 	protected void inpersistentAffect(final MOB mob)
 	{
@@ -75,7 +93,7 @@ public class Play_Instrument extends Play
 			if((A.abstractQuality()==Ability.QUALITY_MALICIOUS)
 			&&(mob.isMonster())
 			&&(!mob.isInCombat())
-			&&(CMLib.flags().isMobile(mob))
+			//&&(CMLib.flags().isMobile(mob))
 			&&(!CMLib.flags().isATrackingMonster(mob))
 			&&(mob.amFollowing()==null)
 			&&(!mob.amDead())

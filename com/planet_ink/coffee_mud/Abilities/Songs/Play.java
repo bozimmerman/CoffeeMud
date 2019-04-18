@@ -412,11 +412,15 @@ public class Play extends StdAbility
 		final Room invokerRoom = (invoker != null) ? invoker.location() : null;
 		if((invoker==null)
 		||(invokerRoom==null))
-			return new Vector<Room>();
+			return new ArrayList<Room>();
 
 		if(depth==0)
-			return new XVector<Room>(invokerRoom);
-		final Vector<Room> rooms=new Vector<Room>();
+		{
+			final List<Room> listR=new ArrayList<Room>(1);
+			listR.add(invokerRoom);
+			return listR;
+		}
+		final ArrayList<Room> rooms=new ArrayList<Room>();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
 		flags = CMLib.tracking().newFlags()
@@ -425,7 +429,7 @@ public class Play extends StdAbility
 				.plus(TrackingLibrary.TrackingFlag.NOAIR);
 		CMLib.tracking().getRadiantRooms(invokerRoom, rooms,flags, null, depth, null);
 		if(!rooms.contains(invokerRoom))
-			rooms.addElement(invokerRoom);
+			rooms.add(invokerRoom);
 		return rooms;
 	}
 
