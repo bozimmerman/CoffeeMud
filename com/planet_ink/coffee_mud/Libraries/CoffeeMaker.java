@@ -259,12 +259,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			str.append(xml.convertXMLtoTag("CURRENCY",myArea.getCurrency()));
 			if(myArea instanceof BoardableShip)
 				str.append(xml.convertXMLtoTag("DISP",xml.parseOutAngleBrackets(myArea.displayText())));
-			final Vector<String> V=new Vector<String>();
+			final List<String> V=new ArrayList<String>();
 			String flag=null;
 			for(final Enumeration<String> f=myArea.areaBlurbFlags();f.hasMoreElements();)
 			{
 				flag=f.nextElement();
-				V.addElement((flag+" "+myArea.getBlurbFlag(flag)).trim());
+				V.add((flag+" "+myArea.getBlurbFlag(flag)).trim());
 			}
 			str.append(xml.convertXMLtoTag("BLURBS",xml.getXMLList(V)));
 			str.append(xml.convertXMLtoTag("AATMO",((Area)E).getAtmosphereCode()));
@@ -981,15 +981,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					final List<String> CEs=CMParms.parseSemicolons(xdata.trim(),true);
 					for(int ces=0;ces<CEs.size();ces++)
 					{
-						final Vector<String> SCE=CMParms.parse(CEs.get(ces).trim());
+						final List<String> SCE=CMParms.parse(CEs.get(ces).trim());
 						final GridLocale.CrossExit CE=new GridLocale.CrossExit();
 						if(SCE.size()<3)
 							continue;
-						CE.x=CMath.s_int(SCE.elementAt(0));
-						CE.y=CMath.s_int(SCE.elementAt(1));
-						final int codeddir=CMath.s_int(SCE.elementAt(2));
+						CE.x=CMath.s_int(SCE.get(0));
+						CE.y=CMath.s_int(SCE.get(1));
+						final int codeddir=CMath.s_int(SCE.get(2));
 						if(SCE.size()>=4)
-							CE.destRoomID=doorID+SCE.elementAt(3);
+							CE.destRoomID=doorID+SCE.get(3);
 						else
 							CE.destRoomID=doorID;
 						CE.out=(codeddir&256)==256;
@@ -1722,7 +1722,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				List<MOB> dups=found.get(mob.Name()+mob.displayText());
 				if(dups==null)
 				{
-					dups=new Vector<MOB>();
+					dups=new ArrayList<MOB>();
 					found.put(mob.Name()+mob.displayText(),dups);
 					dups.add(mob);
 				}
@@ -1823,7 +1823,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		room=makeNewRoomContent(room,false);
 		if(room==null)
 			return buf;
-		final List<MOB> mobs=new Vector<MOB>();
+		final List<MOB> mobs=new ArrayList<MOB>();
 		for(int i=0;i<room.numInhabitants();i++)
 			mobs.add(room.fetchInhabitant(i));
 		buf.append(getMobsXML(mobs,custom,files,found));
@@ -1881,7 +1881,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			List<Item> dups=found.get(item.Name()+item.displayText());
 			if(dups==null)
 			{
-				dups=new Vector<Item>();
+				dups=new ArrayList<Item>();
 				found.put(item.Name()+item.displayText(),dups);
 				dups.add(item);
 			}
@@ -2153,10 +2153,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		room=makeNewRoomContent(room,false);
 		if(room==null)
 			return buf;
-		final List<Item> items=new Vector<Item>();
+		final List<Item> items=new ArrayList<Item>();
 		for(int i=0;i<room.numItems();i++)
 			items.add(room.getItem(i));
-		final List<MOB> mobs=new Vector<MOB>();
+		final List<MOB> mobs=new ArrayList<MOB>();
 		for(int i=0;i<room.numInhabitants();i++)
 			mobs.add(room.fetchInhabitant(i));
 		for(int i=0;i<items.size();i++)
@@ -2202,14 +2202,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(room==null)
 			return buf;
 		// do this quick before a tick messes it up!
-		final List<MOB> inhabs=new Vector<MOB>();
+		final List<MOB> inhabs=new ArrayList<MOB>();
 		final Room croom=andIsInDB?makeNewRoomContent(room,false):room;
 		if(andContent)
 		{
 			for(int i=0;i<croom.numInhabitants();i++)
 				inhabs.add(croom.fetchInhabitant(i));
 		}
-		final List<Item> items=new Vector<Item>();
+		final List<Item> items=new ArrayList<Item>();
 		if(andContent)
 		{
 			for(int i=0;i<croom.numItems();i++)
@@ -2359,6 +2359,24 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						ibuf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.basePhyStats().level()));
 						ibuf.append(CMLib.xml().convertXMLtoTag("IABLE",item.basePhyStats().ability()));
 						ibuf.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(item.text())));
+						if((item instanceof BoardableShip)
+						&&(files != null))
+						{
+							for(final Enumeration<Room> r=((BoardableShip)item).getShipArea().getProperMap();r.hasMoreElements();)
+							{
+								final Room shipR=r.nextElement();
+								fillFileSet(shipR,files);
+								for(final Enumeration<Item> shipi=shipR.items();shipi.hasMoreElements();)
+									fillFileSet(shipi.nextElement(),files);
+								for(final Enumeration<MOB> shipm=shipR.inhabitants();shipm.hasMoreElements();)
+								{
+									final MOB shipM=shipm.nextElement();
+									fillFileSet(shipM,files);
+									for(final Enumeration<Item> shipi=shipM.items();shipi.hasMoreElements();)
+										fillFileSet(shipi.nextElement(),files);
+								}
+							}
+						}
 						if(itemList != null)
 						{
 							final String itemStr=ibuf.toString();
@@ -3431,7 +3449,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					final String mobsXML=xml.getValFromPieces(buf,"MOBS");
 					if((mobsXML!=null)&&(mobsXML.length()>0))
 					{
-						final List<MOB> V=new Vector<MOB>();
+						final List<MOB> V=new ArrayList<MOB>();
 						final String err=addMOBsFromXML("<MOBS>"+mobsXML+"</MOBS>",V,null);
 						if((err.length()==0)&&(V.size()>0))
 						{
@@ -3931,8 +3949,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				final XMLTag xmlPiece=mblk.getPieceFromPieces( "AXML");
 				final String accountXML=xmlPiece.value();
 				final XMLTag playersPiece=mblk.getPieceFromPieces( "PLAYERS");
-				final Vector<String> names = new Vector<String>();
-				final List<MOB> accountMobs=new Vector<MOB>();
+				final List<String> names = new ArrayList<String>();
+				final List<MOB> accountMobs=new ArrayList<MOB>();
 				final String err=addPlayersOnlyFromXML(playersPiece.contents(),accountMobs,S);
 				if(err.length()>0)
 					return err;
