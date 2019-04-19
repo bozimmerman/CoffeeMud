@@ -63,6 +63,7 @@ public class Play_Instrument extends Play
 
 	protected volatile long lastPlay = 0;
 
+	@Override
 	protected int calculateNewSongDepth(final MOB invoker)
 	{
 		if((invoker!=null)
