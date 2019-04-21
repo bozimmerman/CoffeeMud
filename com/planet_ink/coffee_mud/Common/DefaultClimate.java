@@ -341,6 +341,9 @@ public class DefaultClimate implements Climate
 		}
 		if((--weatherTicker)<=0)
 		{
+			if((currentWeather < 0)
+			||(currentWeather >= Climate.NUM_WEATHER))
+				currentWeather = Climate.WEATHER_CLEAR;
 			// create a seasonal CHANCE graph
 			int[] seasonal=new int[seasonalWeather.length];
 			seasonal=addMaskAndReturn(seasonalWeather,seasonal);
