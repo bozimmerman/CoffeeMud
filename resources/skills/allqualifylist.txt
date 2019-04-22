@@ -60,7 +60,6 @@
 
 3 Blacksmithing MASK=+STR 10 
 3 Carpentry MASK=+CON 10 
-3 ClanCrafting 
 3 LeatherWorking MASK=+CON 10 
 3 Tailoring MASK=+DEX 10 
 
@@ -117,4 +116,3 @@
 
 29 MasterHerbology MASK=+INT 12 REQUIRES=Herbology(100) 
 29 MasterFloristry MASK=+INT 12 REQUIRES=Floristry(100) 
-29 Shipwright MASK=+INT 12 REQUIRES=Boatwright(100) 

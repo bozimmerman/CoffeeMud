@@ -200,6 +200,21 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		}
 	}
 
+	protected void doShipTransfer(final BoardableShip buildingI, final MOB buyer)
+	{
+		final MOB shopKeeper = CMClass.getMOB("StdShopkeeper");
+		try
+		{
+			((ShopKeeper)shopKeeper).setWhatIsSoldMask(ShopKeeper.DEAL_SHIPSELLER);
+			final CMMsg msg=CMClass.getMsg(buyer,buildingI,shopKeeper,CMMsg.MSG_GET,null);
+			buildingI.executeMsg(buyer, msg);
+		}
+		finally
+		{
+			shopKeeper.destroy();
+		}
+	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -303,19 +318,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 								if(buyer.isMonster())
 									((BoardableShip)buildingI).renameShip(""+CMLib.dice().roll(1, 999, 0));
 								else
-								{
-									final MOB shopKeeper = CMClass.getMOB("StdShopkeeper");
-									try
-									{
-										((ShopKeeper)shopKeeper).setWhatIsSoldMask(ShopKeeper.DEAL_SHIPSELLER);
-										final CMMsg msg=CMClass.getMsg(buyer,buildingI,shopKeeper,CMMsg.MSG_GET,null);
-										buildingI.executeMsg(buyer, msg);
-									}
-									finally
-									{
-										shopKeeper.destroy();
-									}
-								}
+									doShipTransfer(ship, buyer);
 								if(ship instanceof PrivateProperty)
 								{
 									final PrivateProperty shipP=(PrivateProperty)ship;
@@ -386,6 +389,11 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		return true;
 	}
 
+	protected String getIdentifierCommandWord()
+	{
+		return "shipwright";
+	}
+
 	@Override
 	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
@@ -413,9 +421,10 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Shipwright what? Enter \"shipwright list\" for a list, \"shipwright info <item>\", \"shipwright scan\","
-						+ " \"shipwright learn <item>\", \"shipwright mend <item>\", \"shipwright title <text>\", \"shipwright desc <text>\","
-						+ " \"shipwright door <dir>\", \"shipwright demolish <dir>\", or \"shipwright stop\" to cancel."));
+			commonTell(mob,L("@x1 what? Enter \"@x2 list\" for a list, \"@x2 info <item>\", \"@x2 scan\","
+						+ " \"@x2 learn <item>\", \"@x2 mend <item>\", \"@x2 title <text>\", \"@x2 desc <text>\","
+						+ " \"@x2 door <dir>\", \"@x2 demolish <dir>\", or \"@x2 stop\" to cancel.",
+							CMStrings.capitalizeFirstLetter(getIdentifierCommandWord()),getIdentifierCommandWord()));
 			return false;
 		}
 		if((!auto)
@@ -762,7 +771,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,L("You don't know how to carve a '@x1'.  Try \"shipwright list\" for a list.",recipeName));
+				commonTell(mob,L("You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,getIdentifierCommandWord()));
 				return false;
 			}
 
