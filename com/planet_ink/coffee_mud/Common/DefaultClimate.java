@@ -184,12 +184,24 @@ public class DefaultClimate implements Climate
 	@Override
 	public void setNextWeatherType(final int weatherCode)
 	{
+		if(nextWeather >= Climate.NUM_WEATHER)
+		{
+			Log.errOut("Attempt to set weather to "+nextWeather+".");
+			Log.errOut("Climate",new Exception());
+			currentWeather = Climate.WEATHER_CLEAR;
+		}
 		nextWeather = weatherCode;
 	}
 
 	@Override
 	public void setCurrentWeatherType(final int weatherCode)
 	{
+		if(weatherCode >= Climate.NUM_WEATHER)
+		{
+			Log.errOut("Attempt to set weather to "+weatherCode+".");
+			Log.errOut("Climate",new Exception());
+			currentWeather = Climate.WEATHER_CLEAR;
+		}
 		currentWeather = weatherCode;
 	}
 
