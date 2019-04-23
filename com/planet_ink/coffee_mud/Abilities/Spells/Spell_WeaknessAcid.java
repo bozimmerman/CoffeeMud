@@ -88,7 +88,7 @@ public class Spell_WeaknessAcid extends Spell
 		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&(msg.sourceMinor()==CMMsg.TYP_ACID))
 		{
-			final int recovery=(int)Math.round(CMath.mul((msg.value()),1.5));
+			final int recovery=(int)Math.round(CMath.mul((msg.value()),1.0+CMath.mul(super.getXLEVELLevel(mob), 0.05)));
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;
