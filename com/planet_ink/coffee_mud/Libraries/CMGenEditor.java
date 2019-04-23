@@ -2274,7 +2274,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					 PhyStats.IS_SNEAKING,
 					 PhyStats.IS_SWIMMING,
 					 PhyStats.IS_EVIL,
-					 PhyStats.IS_GOOD};
+					 PhyStats.IS_GOOD,
+					 PhyStats.IS_UNATTACKABLE};
 		final String[] briefs={"invisible",
 						 "hide",
 						 "unseen",
@@ -2286,7 +2287,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						 "sneak",
 						 "swimmer",
 						 "evil",
-						 "good"};
+						 "good",
+						 "unattackable"};
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			final StringBuffer buf=new StringBuffer(showNumber+". Dispositions: ");
