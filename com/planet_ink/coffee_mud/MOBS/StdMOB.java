@@ -1451,6 +1451,8 @@ public class StdMOB implements MOB
 	{
 		if (!(victim instanceof MOB))
 		{
+			if(CMLib.flags().isUnattackable(victim))
+				return false;
 			if(victim instanceof Rideable)
 				return CMLib.combat().mayIAttackThisVessel(this, victim);
 			return false;
