@@ -140,6 +140,7 @@ public class Templar extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Specialization_Polearm",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Paralyze",true);
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_FaithfulHellhound",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Prayer_Behemoth",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Specialization_Hammer",false);
 
