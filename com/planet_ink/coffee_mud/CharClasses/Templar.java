@@ -136,6 +136,7 @@ public class Templar extends Cleric
 			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_HuntGood",false);
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_ProtChaos",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_MorphUnholyWeapon",false,CMParms.parseSemicolons("Prayer_UnholyArmament",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Specialization_Polearm",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Paralyze",true);
@@ -191,6 +192,7 @@ public class Templar extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Haunted",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_CreateIdol",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Prayer_EmpowerUnholyWeapon",false,CMParms.parseSemicolons("Prayer_UnholyArmament",true));
 
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.CHAOTIC))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_WordOfLaw",false,CMParms.parseSemicolons("Prayer_ProtChaos",true));
