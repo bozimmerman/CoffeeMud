@@ -183,6 +183,8 @@ public class Shaman extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_DrunkenStupor",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Stasis",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_RemoveInhibitions",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true,CMParms.parseSemicolons("Prayer_Curse",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);

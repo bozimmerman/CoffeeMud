@@ -177,7 +177,8 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Heal",true,CMParms.parseSemicolons("Prayer_CureCritical",true));
-		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Atonement",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Atonement",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_BlessItem",false,CMParms.parseSemicolons("Prayer_Bless",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_ConsecrateLand",false);

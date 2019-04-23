@@ -163,6 +163,8 @@ public class Missionary extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Gateway",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",true);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Discipline",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Prayer_ModerateInfusion",false);

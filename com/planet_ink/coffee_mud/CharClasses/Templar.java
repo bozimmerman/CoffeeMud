@@ -184,7 +184,8 @@ public class Templar extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true,CMParms.parseSemicolons("Prayer_Paralyze",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_Absorption",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Corruption",false);
+		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Corruption",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_Attack2",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Harm",false,CMParms.parseSemicolons("Prayer_CauseCritical",true));
 
