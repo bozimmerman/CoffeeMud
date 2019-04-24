@@ -599,6 +599,17 @@ public class CraftingSkill extends GatheringSkill
 					}
 					commonTell(mob,L("There is no @x1 here to make anything from!  It might need to be put down first.",req1Desc.toLowerCase()));
 				}
+				else
+				if((req1!=null)&&(req1.length>0))
+				{
+					final int rscCode=req1[0];
+					final String rscName=CMLib.materials().makeResourceSimpleName(rscCode, "");
+					if(rscName!=null)
+					{
+						commonTell(mob,L("There is no @x1 here to make anything from!  It might need to be put down first.",rscName));
+						return null;
+					}
+				}
 				return null;
 			}
 			if(!bundle)
