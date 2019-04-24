@@ -643,6 +643,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				mob.destroy();
 			}
 			room.destroy();
+			R.clearSky();
+			R.giveASky(0);
 		}
 		return R;
 	}
