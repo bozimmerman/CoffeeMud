@@ -46,7 +46,9 @@ public class Prop_CloseCommand extends Property
 		return "Closing Command";
 	}
 
-	private final List<String[]> commandPhrases = new SLinkedList<String[]>();
+	protected final List<String[]>	commandPhrases	= new SLinkedList<String[]>();
+	protected boolean				noclose			= false;
+	protected String				overMsg			= null;
 
 	@Override
 	public void setMiscText(final String newMiscText)
@@ -56,11 +58,19 @@ public class Prop_CloseCommand extends Property
 		{
 			if(p.trim().length()>0)
 			{
-				final String[] cmd = CMParms.parse(p).toArray(new String[0]);
-				if(cmd.length>0)
+				if(p.equalsIgnoreCase("noclose"))
+					noclose=true;
+				if(p.toLowerCase().startsWith("message")
+				&&(p.substring(7).trim().startsWith("=")))
+					overMsg=p.substring(7).trim().substring(1);
+				else
 				{
-					cmd[0]=cmd[0].toUpperCase();
-					commandPhrases.add(cmd);
+					final String[] cmd = CMParms.parse(p).toArray(new String[0]);
+					if(cmd.length>0)
+					{
+						cmd[0]=cmd[0].toUpperCase();
+						commandPhrases.add(cmd);
+					}
 				}
 			}
 		}
@@ -82,6 +92,17 @@ public class Prop_CloseCommand extends Property
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if((msg.target()==affected)
+		&&(noclose)
+		&&(msg.targetMinor()==CMMsg.TYP_CLOSE))
+		{
+			if(affected instanceof Exit)
+				msg.source().tell(L("You can't @x1 @x2.",((Exit)affected).closeWord(),affected.Name()));
+			else
+				msg.source().tell(L("You can't close @x1.",affected.Name()));
+			return false;
+		}
+
 		if((msg.sourceMinor()==CMMsg.TYP_HUH)
 		&&(msg.targetMessage()!=null))
 		{
@@ -139,7 +160,8 @@ public class Prop_CloseCommand extends Property
 							}
 							if(dirCode>=0)
 							{
-								CMMsg msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_CLOSE,L("<T-NAME> "+CMLib.english().makePlural(E.closeWord())+"."));
+								final String msgStr = (this.overMsg!=null) ? this.overMsg : L("<T-NAME> "+CMLib.english().makePlural(E.closeWord())+".");
+								CMMsg msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_CLOSE,msgStr);
 								CMLib.utensils().roomAffectFully(msg2,R,dirCode);
 								if(E.hasALock())
 								{
@@ -152,12 +174,13 @@ public class Prop_CloseCommand extends Property
 					else
 					if(affected instanceof Container)
 					{
-						CMMsg msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_OPEN,L("<T-NAME> closes."));
-						affected.executeMsg(mob,msg2);
+						final String msgStr = (this.overMsg!=null) ? this.overMsg : L("<T-NAME> closes.");
+						CMMsg msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_OPEN,msgStr);
+						R.send(mob,msg2);
 						if(((Container)affected).hasALock())
 						{
 							msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_LOCK,null);
-							affected.executeMsg(mob,msg2);
+							R.send(mob,msg2);
 						}
 					}
 					return false;

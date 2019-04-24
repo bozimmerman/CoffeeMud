@@ -46,21 +46,33 @@ public class Prop_OpenCommand extends Property
 		return "Opening Command";
 	}
 
-	private final List<String[]> commandPhrases = new SLinkedList<String[]>();
+	protected final List<String[]>	commandPhrases	= new SLinkedList<String[]>();
+	protected boolean				noopen			= false;
+	protected String				overMsg			= null;
 
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		commandPhrases.clear();
+		noopen=false;
+		overMsg=null;
 		for (final String p : newMiscText.split(";"))
 		{
 			if(p.trim().length()>0)
 			{
-				final String[] cmd = CMParms.parse(p).toArray(new String[0]);
-				if(cmd.length>0)
+				if(p.equalsIgnoreCase("noopen"))
+					noopen=true;
+				if(p.toLowerCase().startsWith("message")
+				&&(p.substring(7).trim().startsWith("=")))
+					overMsg=p.substring(7).trim().substring(1);
+				else
 				{
-					cmd[0]=cmd[0].toUpperCase();
-					commandPhrases.add(cmd);
+					final String[] cmd = CMParms.parse(p).toArray(new String[0]);
+					if(cmd.length>0)
+					{
+						cmd[0]=cmd[0].toUpperCase();
+						commandPhrases.add(cmd);
+					}
 				}
 			}
 		}
@@ -82,6 +94,17 @@ public class Prop_OpenCommand extends Property
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
+		if((msg.target()==affected)
+		&&(noopen)
+		&&(msg.targetMinor()==CMMsg.TYP_OPEN))
+		{
+			if(affected instanceof Exit)
+				msg.source().tell(L("You can't @x1 @x2.",((Exit)affected).openWord(),affected.Name()));
+			else
+				msg.source().tell(L("You can't open @x1.",affected.Name()));
+			return false;
+		}
+
 		if((msg.sourceMinor()==CMMsg.TYP_HUH)
 		&&(msg.targetMessage()!=null))
 		{
@@ -139,9 +162,10 @@ public class Prop_OpenCommand extends Property
 							}
 							if(dirCode>=0)
 							{
+								final String msgStr = (this.overMsg!=null) ? this.overMsg : L("<T-NAME> "+CMLib.english().makePlural(E.openWord())+".");
 								CMMsg msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_UNLOCK,null);
 								CMLib.utensils().roomAffectFully(msg2,R,dirCode);
-								msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_OPEN,L("<T-NAME> "+CMLib.english().makePlural(E.openWord())+"."));
+								msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_OPEN,msgStr);
 								CMLib.utensils().roomAffectFully(msg2,R,dirCode);
 							}
 						}
@@ -149,10 +173,11 @@ public class Prop_OpenCommand extends Property
 					else
 					if(affected instanceof Container)
 					{
+						final String msgStr = (this.overMsg!=null) ? this.overMsg : L("<T-NAME> opens.");
 						CMMsg msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_UNLOCK,null);
-						affected.executeMsg(mob,msg2);
-						msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_OPEN,L("<T-NAME> opens."));
-						affected.executeMsg(mob,msg2);
+						R.send(mob,msg2);
+						msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_OPEN,msgStr);
+						R.send(mob,msg2);
 					}
 					return false;
 				}
