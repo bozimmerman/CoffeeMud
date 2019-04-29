@@ -1067,6 +1067,7 @@ public class MUD extends Thread implements MudHost
 					webServerThread.close();
 					Log.sysOut(Thread.currentThread().getName(),"Web server "+webServerThread.getName()+" stopped.");
 					webServers.remove(webServerThread);
+					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"OK");
 					return true;
 				}
 			}
