@@ -114,7 +114,6 @@ public class Digging extends GatheringSkill
 				else
 				{
 					final StringBuffer str=new StringBuffer(L("You can't seem to find anything worth digging up here.\n\r"));
-					commonTell(mob,str.toString());
 					int d=lookingForMat(RawMaterial.MATERIAL_PRECIOUS,mob.location());
 					if(d<0) d=lookingForMat(RawMaterial.MATERIAL_GLASS,mob.location());
 					if(d<0) d=lookingForRsc(RawMaterial.RESOURCE_SAND,mob.location());
