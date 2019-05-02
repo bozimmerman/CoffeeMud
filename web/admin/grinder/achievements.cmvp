@@ -110,7 +110,7 @@
                 <TD><FONT COLOR=WHITE><B>@AchievementData?EVENT@</B></FONT></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?DISPLAY@</B></FONT></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?COUNT@</B></FONT></TD>
-                <TD><FONT COLOR=WHITE><B>@AchievementData?TITLE&FRIENDLY@ @AchievementData?REWARD@</B></FONT></TD>
+                <TD><FONT COLOR=WHITE><B>@AchievementData?TITLE&FRIENDLY@ @AchievementData?REWARDS@</B></FONT></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?MISC@</B></FONT></TD>
                 </TR>
             @back@
@@ -136,7 +136,7 @@
 	                <TD><FONT COLOR=WHITE><B>@AchievementData?EVENT@</B></FONT></TD>
 	                <TD><FONT COLOR=WHITE><B>@AchievementData?DISPLAY@</B></FONT></TD>
 	                <TD><FONT COLOR=WHITE><B>@AchievementData?COUNT@</B></FONT></TD>
-	                <TD><FONT COLOR=WHITE><B>@AchievementData?TITLE&FRIENDLY@ @AchievementData?REWARD@</B></FONT></TD>
+	                <TD><FONT COLOR=WHITE><B>@AchievementData?TITLE&FRIENDLY@ @AchievementData?REWARDS@</B></FONT></TD>
 	                <TD><FONT COLOR=WHITE><B>@AchievementData?MISC@</B></FONT></TD>
 	                </TR>
 	            @back@
@@ -162,7 +162,7 @@
                 <TD><FONT COLOR=WHITE><B>@AchievementData?EVENT@</B></FONT></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?DISPLAY@</B></FONT></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?COUNT@</B></FONT></TD>
-                <TD><FONT COLOR=WHITE><B>@AchievementData?TITLE&FRIENDLY@ @AchievementData?REWARD@</B></FONT></TD>
+                <TD><FONT COLOR=WHITE><B>@AchievementData?TITLE&FRIENDLY@ @AchievementData?REWARDS@</B></FONT></TD>
                 <TD><FONT COLOR=WHITE><B>@AchievementData?MISC@</B></FONT></TD>
                 </TR>
             @back@
