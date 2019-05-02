@@ -1405,8 +1405,8 @@ public class ItemData extends StdWebMacro
 						{
 							final String xml=CMLib.xml().parseOutAngleBracketsAndQuotes(CMLib.coffeeMaker().getAreaObjectXML(((BoardableShip)I).getShipArea(), null, null, null, true).toString());
 							str.append((firstTime) ?
-								xml :
-								old).append(", ");
+								this.htmlOutgoingFilter(xml) :
+									this.htmlOutgoingFilter(old)).append(", ");
 						}
 						break;
 					case ISBOOK:
