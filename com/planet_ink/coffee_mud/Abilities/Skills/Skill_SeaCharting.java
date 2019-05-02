@@ -283,7 +283,7 @@ public class Skill_SeaCharting extends StdSkill
 				if(cmd.equalsIgnoreCase("REMOVE"))
 				{
 					rooms.remove(chartPointIndex);
-					setMiscText(CMParms.combine(rooms,';'));
+					setMiscText(CMParms.combineWith(rooms,';'));
 				}
 				else
 				if(cmd.equalsIgnoreCase("DISTANCE"))
