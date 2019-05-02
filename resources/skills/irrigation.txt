@@ -13,16 +13,17 @@ slow current	22	150	50	VALUE	WATERONLY DIR	ROOMEFFECT			WaterCurrents(min=1 max=
 light current	23	150	100	VALUE	WATERONLY DIR	ROOMEFFECT			WaterCurrents(min=1 max=15 chance=99 @dir)	light current		Adds a light artificial current to a swimmable room.
 water current	25	150	150	VALUE	WATERONLY DIR	ROOMEFFECT			WaterCurrents(min=1 max=10 chance=99 @dir)	water current		Adds an artificial current to a swimmable room.
 strong current	27	150	200	VALUE	WATERONLY DIR	ROOMEFFECT			WaterCurrents(min=1 max=5 chance=99 @dir)	strong current		Adds a strong artificial current to a swimmable room.
+fish hatchery	28	100	500	FISH	WATERONLY	ROOMEFFECT			ResourceOverride(Fish)	seeding fish		Makes a water room only produce fish resources.
 dock	30	300	100	VALUE	WATERSURFACEONLY	ROOM	SeaPort	0		dock		Turns an outdoor water room into a sea port that sailing ships may use.
 restore sealife	33	25	0		WATERONLY	DELEFFECT			ResourceOverride()Prop_CommonTwister()	normal resources		Makes a water room able to produce any normal resources available to that type of environment.
 iceshelf	35	400	500	VALUE	OUTDOOR WATERSURFACEONLY	ROOM	IcePlains	0		ice shelf	-BASECLASS +Druid	Turns an outdoor water room into an icy plain.
 seaweed field	38	100	500	Seaweed	WATERONLY	ROOMEFFECT			ResourceOverride(Seaweed)	planting seaweed		Makes a water room only produce seaweed resources.
-shrimp hatchery	63	100	500	Shrimp	WATERONLY SALTWATER	ROOMEFFECT			ResourceOverride(Shrimp)	seeding shrimp		Makes a water room only produce seaweed resources.
-trout hatchery	48	100	500	Trout	WATERONLY FRESHWATER	ROOMEFFECT			ResourceOverride(Trout)	seeding trout		Makes a water room only produce seaweed resources.
-salmon hatchery	53	100	500	Salmon	WATERONLY FRESHWATER	ROOMEFFECT			ResourceOverride(Salmon)	seeding salmon		Makes a water room only produce seaweed resources.
-tuna hatchery	58	100	500	Tuna	WATERONLY SALTWATER	ROOMEFFECT			ResourceOverride(Tuna)	seeding tuna		Makes a water room only produce seaweed resources.
-catfish hatchery	43	100	500	Catfish	WATERONLY FRESHWATER	ROOMEFFECT			ResourceOverride(Catfish)	seeding catfish		Makes a water room only produce seaweed resources.
-carp hatchery	68	100	500	Carp	WATERONLY FRESHWATER	ROOMEFFECT			ResourceOverride(Carp)	seeding carp		Makes a water room only produce seaweed resources.
-yellowfin hatchery	73	100	1000	Tuna	WATERONLY SALTWATER	ROOMEFFECT			ResourceOverride(Tuna)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Fishing,Trawling mask=tuna name="a pound of yellowfin" display="a pound of yellowfin is here" material=tuna subtype=yellowfin)	seeding yellowfin		Makes a water room only produce seaweed resources.
-crab hatchery	78	100	1000	Shrimp	WATERONLY SALTWATER	ROOMEFFECT			ResourceOverride(Shrimp)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Fishing,Trawling mask=shrimp name="a pound of crab" display="a pound of crab is here" material=shrimp subtype=crab)	seeding crab		Makes a water room only produce seaweed resources.
+shrimp hatchery	63	100	500	SHRIMP	WATERONLY SALTWATER	ROOMEFFECT			ResourceOverride(Shrimp)	seeding shrimp		Makes a water room only produce shrimp resources.
+trout hatchery	48	100	500	TROUT	WATERONLY FRESHWATER	ROOMEFFECT			ResourceOverride(Trout)	seeding trout		Makes a water room only produce trout resources.
+salmon hatchery	53	100	500	SALMON	WATERONLY FRESHWATER	ROOMEFFECT			ResourceOverride(Salmon)	seeding salmon		Makes a water room only produce salmon resources.
+tuna hatchery	58	100	500	TUNA	WATERONLY SALTWATER	ROOMEFFECT			ResourceOverride(Tuna)	seeding tuna		Makes a water room only produce tuna resources.
+catfish hatchery	43	100	500	CATFISH	WATERONLY FRESHWATER	ROOMEFFECT			ResourceOverride(Catfish)	seeding catfish		Makes a water room only produce catfish resources.
+carp hatchery	68	100	500	CARP	WATERONLY FRESHWATER	ROOMEFFECT			ResourceOverride(Carp)	seeding carp		Makes a water room only produce carp resources.
+yellowfin hatchery	73	100	1000	TUNA	WATERONLY SALTWATER	ROOMEFFECT			ResourceOverride(Tuna)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Fishing,Trawling mask=tuna name="a pound of yellowfin" display="a pound of yellowfin is here" material=tuna subtype=yellowfin)	seeding yellowfin		Makes a water room only produce yellowfin resources.
+crab hatchery	78	100	1000	SHRIMP	WATERONLY SALTWATER	ROOMEFFECT			ResourceOverride(Shrimp)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Fishing,Trawling mask=shrimp name="a pound of crab" display="a pound of crab is here" material=shrimp subtype=crab)	seeding crab		Makes a water room only produce crab resources.
 druidic monument	13	200	1000	ROCK	UNDERWATERONLY	ITEM	DruidicMonument			druidic monument	-ANYCLASS +Mer	Constructs a spiritual druidic monument.

@@ -6,7 +6,7 @@ wall	1	45	100		DIR INDOOR	WALL	NA	-		wall @x1		Blocks entry or exit between two 
 roof	1	110	350		OUTDOOR	ROOM	WoodRoom	0		frame and roof		Turns an outdoor place into an indoor one.
 curtain	3	25	20	CLOTH	INDOOR DIR	DOOR	GenCurtain	curtain|draw open|draw close|A closed curtain.|An open doorway.		curtain @x1		Openable cloth exit between two indoor places.
 fence	4	25	50		OUTDOOR DIR	WALL	NA			fence @x1		Blocks entry or exit between two outdoor places.
-weak gate	5	25	20		INDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
+weak gate	5	25	20		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
 flimsy door	6	25	20		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 small maze	7	160	1500		OUTDOOR	ROOM	WoodRoomMaze	3		small maze frame and roof		Turns an outdoor place into a small indoor one of twisting turns.
 simple gate	8	25	30		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
@@ -57,10 +57,10 @@ siege gate	88	105	125		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit be
 barricade door	90	115	250		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 secret door	90	200	250		INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	obscured door @x1	-BASECLASS +Thief	Hidden openable exit between two indoor places.
 grand hall	29	175	1500		OUTDOOR	ROOM	LargeWoodRoom	0		large frame and room		Turns an oudoor place into a large indoor one.
-small orchestra Box	41	90	150		INDOOR	ROOMEFFECT			SoundEcho(1)	acoustic paneling	-ANYCLASS +Minstrel	Installs panels to carry sound to adjacent rooms.
-medium orchestra Box	51	120	250		INDOOR	ROOMEFFECT			SoundEcho(2)	acoustic paneling	-ANYCLASS +Minstrel	Installs panels to carry sound to rooms up to 2 rooms away.
-large orchestra Box	61	150	500		INDOOR	ROOMEFFECT			SoundEcho(3)	acoustic paneling	-ANYCLASS +Minstrel	Installs panels to carry sound to rooms up to 3 rooms away.
+small orchestra box	41	90	150		INDOOR	ROOMEFFECT			SoundEcho(1)	acoustic paneling	-ANYCLASS +Minstrel	Installs panels to carry sound to adjacent rooms.
+medium orchestra box	51	120	250		INDOOR	ROOMEFFECT			SoundEcho(2)	acoustic paneling	-ANYCLASS +Minstrel	Installs panels to carry sound to rooms up to 2 rooms away.
+large orchestra box	61	150	500		INDOOR	ROOMEFFECT			SoundEcho(3)	acoustic paneling	-ANYCLASS +Minstrel	Installs panels to carry sound to rooms up to 3 rooms away.
 huge orchestra Box	71	180	1000		INDOOR	ROOMEFFECT			SoundEcho(4)	acoustic paneling	-ANYCLASS +Minstrel	Installs panels to carry sound to rooms up to 4 rooms away.
-remove orchestra Box	41	30	0		INDOOR	DELEFFECT			SoundEcho()	removed acoustic paneling	-ANYCLASS +Minstrel	Removes acoustic effects from the room.
+remove orchestra box	41	30	0		INDOOR	DELEFFECT			SoundEcho()	removed acoustic paneling	-ANYCLASS +Minstrel	Removes acoustic effects from the room.
 auditorium	31	120	250		INDOOR DIR	ROOMEFFECT			Prop_RoomWatch()	sloped floor	-BASECLASS +Bard	Makes a room see all of the target rooms actions, but does not allow the audience to interact with them.
 deauditorium	31	30	0		INDOOR	DELEFFECT			Prop_RoomWatch()	releveled floor	-BASECLASS +Bard	Removes the auditorium effect from an indoor room.
