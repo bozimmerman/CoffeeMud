@@ -739,16 +739,21 @@ public class DefaultClanGovernment implements ClanGovernment
 		case VOTEFUNCS:
 		{
 			final StringBuilder str = new StringBuilder("");
+			final Set<Function> found=new HashSet<Function>();
 			for (final ClanPosition pos : positions)
 			{
 				for (int a = 0; a < Function.values().length; a++)
-					if (pos.getFunctionChart()[a] == Authority.MUST_VOTE_ON)
-					{
-						if (str.length() > 0)
-							str.append(",");
-						str.append(Function.values()[a]);
-					}
-				break;
+				{
+					if((pos.getFunctionChart()[a] == Authority.MUST_VOTE_ON)
+					&&(!found.contains(Function.values()[a])))
+						found.add(Function.values()[a]);
+				}
+			}
+			for(final Function func : found)
+			{
+				if (str.length() > 0)
+					str.append(",");
+				str.append(func.toString());
 			}
 			return str.toString();
 		}
@@ -910,14 +915,16 @@ public class DefaultClanGovernment implements ClanGovernment
 			{
 				for (int a = 0; a < Function.values().length; a++)
 				{
-					if (pos.getFunctionChart()[a] == Authority.MUST_VOTE_ON)
+					final Function func = Function.values()[a];
+					final boolean voteOn = funcs.contains(func.toString());
+					if(voteOn)
+					{
+						if(pos.getFunctionChart()[a] == Authority.CAN_NOT_DO)
+							pos.getFunctionChart()[a] = Authority.MUST_VOTE_ON;
+					}
+					else
+					if(pos.getFunctionChart()[a] == Authority.MUST_VOTE_ON)
 						pos.getFunctionChart()[a] = Authority.CAN_NOT_DO;
-				}
-				for (final String funcName : funcs)
-				{
-					final Clan.Function func = (Clan.Function) CMath.s_valueOf(Function.values(), funcName);
-					if (func != null)
-						pos.getFunctionChart()[func.ordinal()] = Authority.MUST_VOTE_ON;
 				}
 			}
 			break;
