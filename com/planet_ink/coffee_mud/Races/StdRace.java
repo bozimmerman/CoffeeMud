@@ -959,8 +959,10 @@ public class StdRace implements Race
 		final DeadBody bodyI=(DeadBody)CMClass.getItem("Corpse");
 		if(mob.isMonster())
 		{
-			if((mob.amFollowing()!=null)
-			&&((!mob.amFollowing().isMonster())||(!mob.amUltimatelyFollowing().isMonster())))
+			final MOB following=mob.amFollowing();
+			final MOB ultFollow=mob.amUltimatelyFollowing();
+			if((following!=null)
+			&&((!following.isMonster())||(!ultFollow.isMonster())))
 			{
 				final MOB M=(MOB)mob.copyOf();
 				CMLib.threads().deleteAllTicks(M);
