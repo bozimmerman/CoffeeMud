@@ -65,9 +65,13 @@ public class Leave extends StdCommand
 				return false;
 			}
 		}
-		final CMMsg msg=CMClass.getMsg(mob,mob.riding(),null,CMMsg.MSG_DISMOUNT,L("<S-NAME> @x1 <T-NAMESELF>.",mob.riding().dismountString(mob)));
-		if(mob.location().okMessage(mob,msg))
-			mob.location().send(mob,msg);
+		final Room R=mob.location();
+		if(R!=null)
+		{
+			final CMMsg msg=CMClass.getMsg(mob,mob.riding(),null,CMMsg.MSG_DISMOUNT,L("<S-NAME> @x1 <T-NAMESELF>.",mob.riding().dismountString(mob)));
+			if(R.okMessage(mob,msg))
+				R.send(mob,msg);
+		}
 		return false;
 	}
 
