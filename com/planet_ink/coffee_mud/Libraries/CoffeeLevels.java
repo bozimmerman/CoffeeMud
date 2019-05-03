@@ -663,11 +663,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		||mob.charStats().getCurrentClass().expless()
 		||mob.charStats().getMyRace().expless())
 			return false;
-		final CMMsg msg=CMClass.getMsg(mob,victim,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_EXPCHANGE,null,CMMsg.NO_EFFECT,homage,CMMsg.NO_EFFECT,""+quiet);
-		msg.setValue(amount);
 		final Room R=mob.location();
 		if(R!=null)
 		{
+			final CMMsg msg=CMClass.getMsg(mob,victim,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_EXPCHANGE,null,CMMsg.NO_EFFECT,homage,CMMsg.NO_EFFECT,""+quiet);
+			msg.setValue(amount);
 			if(R.okMessage(mob,msg))
 				R.send(mob,msg);
 			else
