@@ -73,10 +73,10 @@ public class Prop_Weather extends Property
 					{
 						if(Places.CLIMATE_DESCS[i].equalsIgnoreCase(parm))
 						{
-							if(code<0)
-								code=0;
+							if(climask<0)
+								climask=0;
 							if(i>0)
-								code=code|((int)CMath.pow(2,i-1));
+								climask=climask|((int)CMath.pow(2,i-1));
 						}
 					}
 				}
