@@ -3145,7 +3145,7 @@ public class CMProps extends Properties
 				deferXPPct=deferXPPct/100.0;
 		}
 		CMProps.setIntVar(Int.EXPDEFER_PCT, (int)Math.round(deferXPPct*100.0));
-		if(x<0)
+		if((x<0)||(x==ln.length()))
 			return;
 		ln=ln.substring(x+1).trim();
 		if(!ln.startsWith("("))
