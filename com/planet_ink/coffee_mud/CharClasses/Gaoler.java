@@ -507,6 +507,6 @@ public class Gaoler extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Gains experience when using certain skills, the screams of victims from certain skills per hr, sleeping by an occupied cell, feeding innamtes bad food.");
+		return L("Gains experience when using certain skills, the screams of victims from certain skills per hr, sleeping by an occupied cell, feeding inmates bad food.");
 	}
 }
