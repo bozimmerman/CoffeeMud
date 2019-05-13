@@ -366,7 +366,8 @@ public class Scholar extends StdCharClass
 							CMLib.leveler().postExperience(msg.source(), null, null, xp, false);
 						}
 					}
-					CMLib.leveler().postExperience(msg.source(), null, null, 10, false);
+					else
+						CMLib.leveler().postExperience(msg.source(), null, null, 10, false);
 				}
 				else
 				if((msg.tool() instanceof Ability)
