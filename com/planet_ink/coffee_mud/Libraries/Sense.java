@@ -1745,14 +1745,22 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if(R==null)
 			return false;
-		if((isHidden(R)) && (mob==null))
+		if(isHidden(R))
+		{
+			if(mob!=null)
+			{
+				if((CMSecurity.isASysOp(mob))
+				||(R.getArea().amISubOp(mob.Name())))
+					return true;
+			}
 			return false;
-		if(((!isHidden(R))
-			&&(mob.location()!=null)&&(mob.location().getArea().getTimeObj()==R.getArea().getTimeObj()))
-		||(CMSecurity.isASysOp(mob))
-		||(R.getArea().amISubOp(mob.Name())))
-			return true;
-		return false;
+		}
+		else
+		if((mob!=null)
+		&&(mob.location()!=null)
+		&&(mob.location().getArea().getTimeObj()==R.getArea().getTimeObj()))
+			return false;
+		return true;
 	}
 
 	@Override
