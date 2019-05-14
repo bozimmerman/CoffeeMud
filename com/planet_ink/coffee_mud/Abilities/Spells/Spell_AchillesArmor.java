@@ -108,10 +108,10 @@ public class Spell_AchillesArmor extends Spell
 
 		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
-		&&(msg.source()!=msg.target())
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.source()!=mob)
 		&&(mob.location()!=null)
 		&&(mob.location().isInhabitant(msg.source()))
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)
 		&&(!mob.amDead()))
 		{
