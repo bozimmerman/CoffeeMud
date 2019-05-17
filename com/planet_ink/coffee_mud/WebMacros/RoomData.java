@@ -1284,7 +1284,7 @@ public class RoomData extends StdWebMacro
 			}
 			if(parms.containsKey("MOBLIST"))
 			{
-				final Vector<MOB> classes=new Vector<MOB>();
+				final List<MOB> classes=new ArrayList<MOB>();
 				List<MOB> moblist=null;
 				if(httpReq.isUrlParameter("MOB1"))
 				{
@@ -1299,7 +1299,7 @@ public class RoomData extends StdWebMacro
 						{
 							final MOB M2=getMOBFromCode(R,MATCHING);
 							if(M2!=null)
-								classes.addElement(M2);
+								classes.add(M2);
 						}
 						else
 						if(MATCHING.startsWith("CATALOG-"))
@@ -1309,7 +1309,7 @@ public class RoomData extends StdWebMacro
 							{
 								M=(MOB)M.copyOf();
 								CMLib.catalog().changeCatalogUsage(M,true);
-								classes.addElement(M);
+								classes.add(M);
 							}
 						}
 						else
@@ -1320,7 +1320,7 @@ public class RoomData extends StdWebMacro
 								final MOB M2=m.next();
 								if(MATCHING.equals(""+M2))
 								{
-									classes.addElement(M2);
+									classes.add(M2);
 									break;
 								}
 							}
@@ -1332,7 +1332,7 @@ public class RoomData extends StdWebMacro
 							if(CMClass.classID(M2).equals(MATCHING)
 							&&(!M2.isGeneric()))
 							{
-								classes.addElement((MOB)M2.copyOf());
+								classes.add((MOB)M2.copyOf());
 								break;
 							}
 						}
@@ -1347,7 +1347,7 @@ public class RoomData extends StdWebMacro
 						{
 							CMLib.catalog().updateCatalogIntegrity(M);
 							if(M.isSavable()||(!R.isSavable()))
-								classes.addElement(M);
+								classes.add(M);
 						}
 					}
 					moblist=contributeMOBs(classes);
@@ -1355,7 +1355,7 @@ public class RoomData extends StdWebMacro
 				str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
 				for(int i=0;i<classes.size();i++)
 				{
-					final MOB M=classes.elementAt(i);
+					final MOB M=classes.get(i);
 					str.append("<TR>");
 					str.append("<TD WIDTH=90%>");
 					str.append("<SELECT ONCHANGE=\"DelMOB(this);\" NAME=MOB"+(i+1)+">");

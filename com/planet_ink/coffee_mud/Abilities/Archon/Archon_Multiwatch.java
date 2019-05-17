@@ -325,13 +325,13 @@ public class Archon_Multiwatch extends ArchonSkill
 		else
 		if((commands.size()>1)&&(commands.get(0)).equalsIgnoreCase("add"))
 		{
-			final Vector<MOB> V=new Vector<MOB>();
+			final List<MOB> V=new ArrayList<MOB>();
 			for(int i=1;i<commands.size();i++)
 			{
 				final String name=commands.get(i);
 				final MOB M=CMLib.players().getPlayerAllHosts(name);
 				if((M.session()!=null)&&(CMLib.flags().isInTheGame(M,true)))
-					V.addElement(M);
+					V.add(M);
 				else
 					mob.tell(L("'@x1' is not online.",name));
 			}
@@ -339,7 +339,7 @@ public class Archon_Multiwatch extends ArchonSkill
 			{
 				for(int n=0;n<V.size();n++)
 				{
-					final MOB MN=V.elementAt(n);
+					final MOB MN=V.get(n);
 					if(MN.fetchEffect(ID())==null)
 					{
 						final Ability A=(Ability)copyOf();

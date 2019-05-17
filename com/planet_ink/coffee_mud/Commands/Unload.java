@@ -265,7 +265,7 @@ public class Unload extends StdCommand
 			&&(mob.session()!=null))
 			{
 				final String which=CMParms.combine(commands,2);
-				final Vector<MOB> users=new Vector<MOB>();
+				final List<MOB> users=new ArrayList<MOB>();
 				if((which.equalsIgnoreCase("all"))
 				&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)))
 				{

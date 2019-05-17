@@ -1123,7 +1123,7 @@ public class DefaultFaction implements Faction, MsgListener
 			return abilityUseCache.get(A.ID());
 		if(abilityUseMisses.contains(A.ID()))
 			return null;
-				
+
 		for(final FAbilityUsage usage : abilityUsages)
 		{
 			if(usage.possibleAbilityID()
@@ -1143,7 +1143,7 @@ public class DefaultFaction implements Faction, MsgListener
 		abilityUseMisses.add(A.ID());
 		return null;
 	}
-	
+
 	@Override
 	public boolean hasUsage(final Ability A)
 	{
@@ -1302,7 +1302,7 @@ public class DefaultFaction implements Faction, MsgListener
 			if((events!=null)&&(events.length>0))
 			{
 				final Room R=msg.source().location();
-				final Vector<MOB> targets=new Vector<MOB>();
+				final List<MOB> targets=new ArrayList<MOB>();
 				if(msg.target() instanceof MOB)
 					targets.add((MOB)msg.target());
 				else
@@ -1365,7 +1365,7 @@ public class DefaultFaction implements Faction, MsgListener
 			if((events!=null)&&(events.length>0))
 			{
 				final Room R=msg.source().location();
-				final Vector<MOB> targets=new Vector<MOB>();
+				final List<MOB> targets=new ArrayList<MOB>();
 				if(msg.target() instanceof MOB)
 					targets.add((MOB)msg.target());
 				else

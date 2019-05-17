@@ -159,7 +159,7 @@ public class Spell_AlternateReality extends Spell
 						final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 						if(!H.contains(mob))
 							H.add(mob);
-						final Vector<MOB> badGuys=new Vector<MOB>();
+						final List<MOB> badGuys=new ArrayList<MOB>();
 						for(int i=0;i<R.numInhabitants();i++)
 						{
 							final MOB M=R.fetchInhabitant(i);
@@ -170,10 +170,10 @@ public class Spell_AlternateReality extends Spell
 									if(M.getVictim()==mob)
 									{
 										badGuys.clear();
-										badGuys.addElement(M);
+										badGuys.add(M);
 										break;
 									}
-									badGuys.addElement(M);
+									badGuys.add(M);
 								}
 								else
 								if(M.getVictim()==target)
@@ -182,9 +182,9 @@ public class Spell_AlternateReality extends Spell
 						}
 						if(badGuys.size()>0)
 						{
-							target.setVictim(badGuys.elementAt(CMLib.dice().roll(1,badGuys.size(),-1)));
+							target.setVictim(badGuys.get(CMLib.dice().roll(1,badGuys.size(),-1)));
 							if(mob.getVictim()==null)
-								mob.setVictim(badGuys.elementAt(CMLib.dice().roll(1,badGuys.size(),-1)));
+								mob.setVictim(badGuys.get(CMLib.dice().roll(1,badGuys.size(),-1)));
 						}
 					}
 				}

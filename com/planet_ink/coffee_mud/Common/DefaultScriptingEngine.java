@@ -6741,12 +6741,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						which=lastKnownLocation.fetchInhabitant(arg1.trim());
 					if(which!=null)
 					{
-						final Vector<MOB> list=new Vector<MOB>();
+						final List<MOB> list=new ArrayList<MOB>();
 						for(int i=0;i<lastKnownLocation.numInhabitants();i++)
 						{
 							final MOB M=lastKnownLocation.fetchInhabitant(i);
 							if(M!=null)
-								list.addElement(M);
+								list.add(M);
 						}
 						results.append(CMLib.english().getContextName(list,which));
 					}
@@ -7698,7 +7698,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			MOB M=null;
 			if(room!=null)
 			{
-				final Vector<MOB> choices = new Vector<MOB>();
+				final List<MOB> choices = new ArrayList<MOB>();
 				for(int p=0;p<room.numInhabitants();p++)
 				{
 					M=room.fetchInhabitant(p);
@@ -7710,11 +7710,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							seen.add(M);
 							M=M.amFollowing();
 						}
-						choices.addElement(M);
+						choices.add(M);
 					}
 				}
 				if(choices.size() > 0)
-					tmp[SPECIAL_RANDPC] = choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					tmp[SPECIAL_RANDPC] = choices.get(CMLib.dice().roll(1,choices.size(),-1));
 			}
 		}
 		return (MOB)tmp[SPECIAL_RANDPC];
@@ -7727,7 +7727,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			MOB M=null;
 			if(room!=null)
 			{
-				final Vector<MOB> choices = new Vector<MOB>();
+				final List<MOB> choices = new ArrayList<MOB>();
 				for(int p=0;p<room.numInhabitants();p++)
 				{
 					M=room.fetchInhabitant(p);
@@ -7739,11 +7739,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							seen.add(M);
 							M=M.amFollowing();
 						}
-						choices.addElement(M);
+						choices.add(M);
 					}
 				}
 				if(choices.size() > 0)
-					tmp[SPECIAL_RANDANYONE] = choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+					tmp[SPECIAL_RANDANYONE] = choices.get(CMLib.dice().roll(1,choices.size(),-1));
 			}
 		}
 		return (MOB)tmp[SPECIAL_RANDANYONE];
@@ -9718,22 +9718,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null)
 						return null;
 				}
-				final Vector<MOB> V=new Vector<MOB>();
+				final List<MOB> V=new ArrayList<MOB>();
 				final String who=tt[1];
 				if(who.equalsIgnoreCase("all"))
 				{
 					for(int i=0;i<lastKnownLocation.numInhabitants();i++)
-						V.addElement(lastKnownLocation.fetchInhabitant(i));
+						V.add(lastKnownLocation.fetchInhabitant(i));
 				}
 				else
 				{
 					final Environmental newTarget=getArgumentItem(who,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 					if(newTarget instanceof MOB)
-						V.addElement((MOB)newTarget);
+						V.add((MOB)newTarget);
 				}
 				for(int v=0;v<V.size();v++)
 				{
-					final Environmental newTarget=V.elementAt(v);
+					final Environmental newTarget=V.get(v);
 					if(newTarget instanceof MOB)
 					{
 						final MOB mob=(MOB)newTarget;
@@ -10768,25 +10768,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					if(lastKnownLocation!=null)
 					{
-						final Vector<MOB> V=new Vector<MOB>();
+						final List<MOB> V=new ArrayList<MOB>();
 						if(beacon.equalsIgnoreCase("all"))
 						{
 							for(int x=0;x<lastKnownLocation.numInhabitants();x++)
 							{
 								final MOB m=lastKnownLocation.fetchInhabitant(x);
 								if((m!=null)&&(m!=monster)&&(!m.isMonster())&&(!V.contains(m)))
-									V.addElement(m);
+									V.add(m);
 							}
 						}
 						else
 						{
 							final MOB findOne=lastKnownLocation.fetchInhabitant(beacon);
 							if((findOne!=null)&&(findOne!=monster)&&(!findOne.isMonster()))
-								V.addElement(findOne);
+								V.add(findOne);
 						}
 						for(int v=0;v<V.size();v++)
 						{
-							final MOB follower=V.elementAt(v);
+							final MOB follower=V.get(v);
 							if(!follower.isMonster())
 								follower.setStartRoom(newRoom);
 						}

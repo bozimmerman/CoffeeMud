@@ -81,18 +81,18 @@ public class Spell_ChainLightening extends Spell
 			h=new HashSet<MOB>();
 
 		final Set<MOB> myGroup=mob.getGroupMembers(new HashSet<MOB>());
-		final Vector<MOB> targets=new Vector<MOB>(h);
+		final List<MOB> targets=new ArrayList<MOB>(h);
 		for (final MOB element : h)
-			targets.addElement(element);
+			targets.add(element);
 		for (final MOB element : myGroup)
 		{
 			final MOB M=element;
 			if((M!=mob)
 			&&(!targets.contains(M)))
-				targets.addElement(M);
+				targets.add(M);
 		}
 		if(!targets.contains(mob))
-			targets.addElement(mob);
+			targets.add(mob);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -111,13 +111,13 @@ public class Spell_ChainLightening extends Spell
 					final int oldDamage=damage;
 					for(int i=0;i<targets.size();i++)
 					{
-						final MOB target=targets.elementAt(i);
+						final MOB target=targets.get(i);
 						if(target.amDead()||(target.location()!=R))
 						{
 							int count=0;
 							for(int i2=0;i2<targets.size();i2++)
 							{
-								final MOB M2=targets.elementAt(i2);
+								final MOB M2=targets.get(i2);
 								if((!M2.amDead())
 								&&(R!=null)
 								&&(R.isInhabitant(M2))

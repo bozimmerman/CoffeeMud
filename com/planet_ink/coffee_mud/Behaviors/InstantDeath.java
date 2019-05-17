@@ -79,7 +79,7 @@ public class InstantDeath extends ActiveTicker
 	{
 		if(R==null)
 			return;
-		final Vector<MOB> V=new Vector<MOB>();
+		final List<MOB> V=new ArrayList<MOB>();
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			final MOB M=R.fetchInhabitant(i);
@@ -88,11 +88,11 @@ public class InstantDeath extends ActiveTicker
 			if((M!=null)
 			&&(!CMSecurity.isAllowed(M,R,CMSecurity.SecFlag.IMMORT))
 			&&((mask==null)||(CMLib.masking().maskCheck(mask, M, false))))
-				V.addElement(M);
+				V.add(M);
 		}
 		for(int v=0;v<V.size();v++)
 		{
-			final MOB M=V.elementAt(v);
+			final MOB M=V.get(v);
 			CMLib.combat().postDeath(null,M,null);
 		}
 	}

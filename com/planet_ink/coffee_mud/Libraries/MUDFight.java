@@ -1424,7 +1424,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final String currency=CMLib.beanCounter().getCurrency(target);
 		final double deadMoney=CMLib.beanCounter().getTotalAbsoluteValue(target,currency);
 		double myAmountOfDeadMoney=0.0;
-		final Vector<MOB> goldLooters=new Vector<MOB>();
+		final List<MOB> goldLooters=new ArrayList<MOB>();
 		for (final MOB M : beneficiaries)
 		{
 			if(((M.isAttributeSet(MOB.Attrib.AUTOGOLD))
@@ -1432,7 +1432,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			&&(M!=target)
 			&&(M.location()==deathRoom)
 			&&(deathRoom.isInhabitant(M)))
-				goldLooters.addElement(M);
+				goldLooters.add(M);
 		}
 		if((goldLooters.size()>0)&&(deadMoney>0))
 		{
@@ -2575,11 +2575,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		V.addElement(to);
 		if(R==null)
 			return V;
-		final Vector<MOB> everyV=new Vector<MOB>();
+		final List<MOB> everyV=new ArrayList<MOB>();
 		for(int i=0;i<R.numInhabitants();i++)
-			everyV.addElement(R.fetchInhabitant(i));
+			everyV.add(R.fetchInhabitant(i));
 		if(!everyV.contains(to))
-			everyV.addElement(to);
+			everyV.add(to);
 		final int[][] map=new int[everyV.size()][everyV.size()];
 		for(int x=0;x<map.length;x++)
 		{

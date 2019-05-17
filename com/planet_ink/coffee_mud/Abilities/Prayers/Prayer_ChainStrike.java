@@ -79,7 +79,7 @@ public class Prayer_ChainStrike extends Prayer
 		if(h==null)
 			h=new HashSet<MOB>();
 
-		final Vector<MOB> targets=new Vector<MOB>(h);
+		final List<MOB> targets=new ArrayList<MOB>(h);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -96,13 +96,13 @@ public class Prayer_ChainStrike extends Prayer
 					final int oldDamage=damage;
 					for(int i=0;i<targets.size();i++)
 					{
-						final MOB target=targets.elementAt(i);
+						final MOB target=targets.get(i);
 						if(target.amDead()||(target.location()!=mob.location()))
 						{
 							int count=0;
 							for(int i2=0;i2<targets.size();i2++)
 							{
-								final MOB M2=targets.elementAt(i2);
+								final MOB M2=targets.get(i2);
 								if((!M2.amDead())
 								   &&(mob.location()!=null)
 								   &&(mob.location().isInhabitant(M2))

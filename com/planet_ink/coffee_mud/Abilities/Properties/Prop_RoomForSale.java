@@ -263,7 +263,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		&&(affected instanceof Room))
 		{
 			updateLot(null);
-			final Vector<MOB> mobs=new Vector<MOB>();
+			final List<MOB> mobs=new ArrayList<MOB>();
 			Room R=(Room)affected;
 			if(R!=null)
 			{
@@ -279,7 +279,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 						&&((M.basePhyStats().rejuv()==0)||(M.basePhyStats().rejuv()==PhyStats.NO_REJUV)))
 						{
 							CMLib.catalog().updateCatalogIntegrity(M);
-							mobs.addElement(M);
+							mobs.add(M);
 						}
 					}
 					if(!CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPROPERTYMOBS))

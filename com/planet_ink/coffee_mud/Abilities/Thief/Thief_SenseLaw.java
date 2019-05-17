@@ -94,7 +94,7 @@ public class Thief_SenseLaw extends ThiefSkill
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;
 	}
 
-	public Vector<MOB> getLawMen(final Area legalObject, final Room room, final LegalBehavior B)
+	public List<MOB> getLawMen(final Area legalObject, final Room room, final LegalBehavior B)
 	{
 		if(room==null)
 			return empty;
@@ -102,12 +102,14 @@ public class Thief_SenseLaw extends ThiefSkill
 			return empty;
 		if(B==null)
 			return empty;
-		final Vector<MOB> V=new Vector<MOB>();
+		final List<MOB> V=new ArrayList<MOB>();
 		for(int m=0;m<room.numInhabitants();m++)
 		{
 			final MOB M=room.fetchInhabitant(m);
-			if((M!=null)&&(M.isMonster())&&(B.isElligibleOfficer(legalObject,M)))
-				V.addElement(M);
+			if((M!=null)
+			&&(M.isMonster())
+			&&(B.isElligibleOfficer(legalObject,M)))
+				V.add(M);
 		}
 		return V;
 	}
@@ -129,10 +131,10 @@ public class Thief_SenseLaw extends ThiefSkill
 				if(B==null)
 					return super.tick(ticking,tickID);
 				final StringBuffer buf=new StringBuffer("");
-				Vector<MOB> V=getLawMen(CMLib.law().getLegalObject(mob.location()),mob.location(),B);
+				List<MOB> V=getLawMen(CMLib.law().getLegalObject(mob.location()),mob.location(),B);
 				for(int l=0;l<V.size();l++)
 				{
-					final MOB M=V.elementAt(l);
+					final MOB M=V.get(l);
 					if(CMLib.flags().canBeSeenBy(M,mob))
 						buf.append(L("@x1 is an officer of the law.  ",M.name(mob)));
 					else

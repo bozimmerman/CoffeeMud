@@ -207,24 +207,24 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		super.unInvoke();
 	}
 
-	public void bringMOBSHere(final Room newRoom, final Vector<MOB> group, final String enterStr, final String leaveStr)
+	public void bringMOBSHere(final Room newRoom, final List<MOB> group, final String enterStr, final String leaveStr)
 	{
 		for(int g=group.size()-1;g>=0;g--)
 		{
-			final MOB follower=group.elementAt(g);
+			final MOB follower=group.get(g);
 			if(!bringMOBHere(newRoom,follower,enterStr,leaveStr))
-				group.removeElementAt(g);
+				group.remove(g);
 		}
 	}
 
-	public void bringMOBSLikeHere(final List<Room> rooms, final Room newRoom, final Vector<MOB> group, final String enterStr, final String leaveStr)
+	public void bringMOBSLikeHere(final List<Room> rooms, final Room newRoom, final List<MOB> group, final String enterStr, final String leaveStr)
 	{
 		for(int g=group.size()-1;g>=0;g--)
 		{
-			final MOB follower=group.elementAt(g);
+			final MOB follower=group.get(g);
 			final Room R=(Room)newRoom.copyOf();
 			if(!bringMOBHere(R,follower,enterStr,leaveStr))
-				group.removeElementAt(g);
+				group.remove(g);
 			else
 				rooms.add(R);
 		}

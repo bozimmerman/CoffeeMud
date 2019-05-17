@@ -99,8 +99,8 @@ public class Prayer_Revival extends Prayer
 			final MOB mob=(MOB)affected;
 			final Room R=mob.location();
 			int levels=0;
-			final Vector<MOB> inhabs=new Vector<MOB>();
-			final Vector<MOB> clerics=new Vector<MOB>();
+			final List<MOB> inhabs=new ArrayList<MOB>();
+			final List<MOB> clerics=new ArrayList<MOB>();
 			final int bonus=(2*getXLEVELLevel(invoker()));
 			for(int i=0;i<R.numInhabitants();i++)
 			{
@@ -112,12 +112,12 @@ public class Prayer_Revival extends Prayer
 						if(M.fetchEffect(ID())!=null)
 						{
 							levels+=(M.phyStats().level()+bonus);
-							clerics.addElement(M);
+							clerics.add(M);
 						}
 					}
 					else
 					if(CMLib.dice().rollPercentage()<10)
-						inhabs.addElement(M);
+						inhabs.add(M);
 				}
 			}
 			final Deity D=CMLib.map().getDeity(mob.getWorshipCharID());
@@ -145,7 +145,7 @@ public class Prayer_Revival extends Prayer
 				case 7:
 					if (clerics.size() > 1)
 					{
-						final MOB M = clerics.elementAt(CMLib.dice().roll(1, clerics.size(), -1));
+						final MOB M = clerics.get(CMLib.dice().roll(1, clerics.size(), -1));
 						if (M != mob)
 							CMLib.commands().postSay(mob, null, L("Preach it @x1!", M.name(mob)), false, false);
 						else
@@ -177,7 +177,7 @@ public class Prayer_Revival extends Prayer
 			{
 				levels=levels/clerics.size();
 				levels=levels+((clerics.size()-3)*5);
-				final MOB M=inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
+				final MOB M=inhabs.get(CMLib.dice().roll(1,inhabs.size(),-1));
 				if((M!=null)&&(levels>=(M.phyStats().level()+bonus)))
 				{
 					final MOB vic1=mob.getVictim();
@@ -199,7 +199,7 @@ public class Prayer_Revival extends Prayer
 								{
 									for(int c=0;c<clerics.size();c++)
 									{
-										final MOB M2=clerics.elementAt(c);
+										final MOB M2=clerics.get(c);
 										if(M2!=mob)
 											CMLib.leveler().postExperience(M2,M,null,25,false);
 									}

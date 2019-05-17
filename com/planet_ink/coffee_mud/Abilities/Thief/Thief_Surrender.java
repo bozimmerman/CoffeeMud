@@ -82,7 +82,7 @@ public class Thief_Surrender extends ThiefSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final Vector<MOB> theList=new Vector<MOB>();
+		final List<MOB> theList=new ArrayList<MOB>();
 		int gold=0;
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
@@ -90,7 +90,7 @@ public class Thief_Surrender extends ThiefSkill
 			if((vic!=null)&&(vic!=mob)&&(vic.isInCombat())&&(vic.getVictim()==mob))
 			{
 				gold+=(vic.phyStats().level()*100)-(2*getXLEVELLevel(mob));
-				theList.addElement(vic);
+				theList.add(vic);
 			}
 		}
 		final double goldRequired=gold;
@@ -112,7 +112,7 @@ public class Thief_Surrender extends ThiefSkill
 			final StringBuffer enemiesList=new StringBuffer("");
 			for(int v=0;v<theList.size();v++)
 			{
-				final MOB vic=theList.elementAt(v);
+				final MOB vic=theList.get(v);
 				if(v==0)
 					enemiesList.append(vic.name());
 				else
@@ -130,7 +130,7 @@ public class Thief_Surrender extends ThiefSkill
 				mob.makePeace(true);
 				for(int v=0;v<theList.size();v++)
 				{
-					final MOB vic=theList.elementAt(v);
+					final MOB vic=theList.get(v);
 					CMLib.beanCounter().addMoney(vic,localCurrency,CMath.div(goldRequired,theList.size()));
 					vic.recoverPhyStats();
 					vic.makePeace(true);

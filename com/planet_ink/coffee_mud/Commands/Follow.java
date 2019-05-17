@@ -73,7 +73,7 @@ public class Follow extends StdCommand
 	public void unfollow(final MOB mob, final boolean quiet)
 	{
 		nofollow(mob,false,quiet);
-		final Vector<MOB> V=new Vector<MOB>();
+		final List<MOB> V=new ArrayList<MOB>();
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			final MOB F=mob.fetchFollower(f);

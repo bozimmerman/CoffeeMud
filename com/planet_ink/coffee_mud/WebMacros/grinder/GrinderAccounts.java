@@ -130,13 +130,13 @@ public class GrinderAccounts
 				else
 				if(!newName.equalsIgnoreCase(A.getAccountName()))
 				{
-					final Vector<MOB> V=new Vector<MOB>();
+					final List<MOB> V=new ArrayList<MOB>();
 					for(final Enumeration<String> es=A.getPlayers();es.hasMoreElements();)
 					{
 						final String playerName=es.nextElement();
 						final MOB playerM=CMLib.players().getLoadPlayer(playerName);
 						if((playerM!=null)&&(!CMLib.flags().isInTheGame(playerM,true)))
-							V.addElement(playerM);
+							V.add(playerM);
 					}
 					CMLib.database().DBDeleteAccount(A);
 					A.setAccountName(newName);

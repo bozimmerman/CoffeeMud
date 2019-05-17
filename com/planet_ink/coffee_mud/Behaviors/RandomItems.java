@@ -431,16 +431,16 @@ public class RandomItems extends ActiveTicker
 						room=((GridLocale)room).getRandomGridChild();
 					if(room!=null)
 					{
-						final Vector<MOB> inhabs=new Vector<MOB>();
+						final List<MOB> inhabs=new ArrayList<MOB>();
 						for(int m=0;m<room.numInhabitants();m++)
 						{
 							final MOB M=room.fetchInhabitant(m);
 							if((M.isSavable())&&(M.getStartRoom().getArea().inMyMetroArea(room.getArea())))
-								inhabs.addElement(M);
+								inhabs.add(M);
 						}
 						if(inhabs.size()>0)
 						{
-							final MOB M=inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
+							final MOB M=inhabs.get(CMLib.dice().roll(1,inhabs.size(),-1));
 							M.addItem(I);
 							I.wearIfPossible(M);
 							maintained.add(I);

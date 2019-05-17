@@ -71,7 +71,7 @@ public class Order extends StdCommand
 		}
 
 		String whomToOrder=commands.get(0);
-		final Vector<MOB> V=new Vector<MOB>();
+		final List<MOB> V=new ArrayList<MOB>();
 		boolean allFlag=whomToOrder.equalsIgnoreCase("all");
 		if (whomToOrder.toUpperCase().startsWith("ALL."))
 		{
@@ -139,7 +139,7 @@ public class Order extends StdCommand
 			}
 		}
 
-		final Vector<MOB> doV=new Vector<MOB>();
+		final List<MOB> doV=new ArrayList<MOB>();
 		for(int v=0;v<V.size();v++)
 		{
 			target=V.get(v);

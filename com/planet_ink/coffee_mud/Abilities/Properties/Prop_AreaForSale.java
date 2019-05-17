@@ -262,7 +262,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 				{
 					R=CMLib.map().getRoom(R);
 					lastMobSave=System.currentTimeMillis();
-					final Vector<MOB> mobs=new Vector<MOB>();
+					final List<MOB> mobs=new ArrayList<MOB>();
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						final MOB M=R.fetchInhabitant(m);
@@ -270,7 +270,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 						&&(M.isSavable())
 						&&(M.getStartRoom()==R)
 						&&((M.basePhyStats().rejuv()==0)||(M.basePhyStats().rejuv()==PhyStats.NO_REJUV)))
-							mobs.addElement(M);
+							mobs.add(M);
 					}
 					if(!CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPROPERTYMOBS))
 						CMLib.database().DBUpdateTheseMOBs(R,mobs);

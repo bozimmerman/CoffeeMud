@@ -1083,7 +1083,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if((mob==null)||(room==null))
 			return;
-		final Vector<MOB> parishaners=new Vector<MOB>();
+		final List<MOB> parishaners=new ArrayList<MOB>();
 		synchronized(services)
 		{
 			for(final WorshipService w : services)
@@ -1126,7 +1126,7 @@ public class StdDeity extends StdMOB implements Deity
 						if(TRACKA!=null)
 						{
 							TRACKA.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(room)+"\""),room,true,0);
-							parishaners.addElement(M);
+							parishaners.add(M);
 						}
 					}
 				}

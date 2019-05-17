@@ -1621,7 +1621,7 @@ public class Quests extends StdLibrary implements QuestManager
 				choiceDescs.append(M.name()+", ");
 			}
 		}
-		final Vector<MOB> newMobs=new Vector<MOB>();
+		final List<MOB> newMobs=new ArrayList<MOB>();
 		for(final Enumeration<MOB> e=CMClass.mobTypes();e.hasMoreElements();)
 		{
 			M=e.nextElement();
@@ -1657,7 +1657,8 @@ public class Quests extends StdLibrary implements QuestManager
 			// modify it!
 		}
 		final String newValue=(M!=null)?CMLib.coffeeMaker().getMobXML(M).toString():showValue;
-		for(int n=0;n<newMobs.size();n++) newMobs.elementAt(n).destroy();
+		for(int n=0;n<newMobs.size();n++)
+			newMobs.get(n).destroy();
 		return newValue==null?"":newValue.trim();
 	}
 

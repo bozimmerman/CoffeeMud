@@ -120,14 +120,14 @@ public class Spell_MarkerSummoning extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final Vector<MOB> inhabs=new Vector<MOB>();
+		final List<MOB> inhabs=new ArrayList<MOB>();
 		int profNeg=0;
 		for(int m=0;m<oldRoom.numInhabitants();m++)
 		{
 			final MOB M=oldRoom.fetchInhabitant(m);
 			if(M!=null)
 			{
-				inhabs.addElement(M);
+				inhabs.add(M);
 				final int adjustment=M.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 				profNeg+=adjustment;
 			}
@@ -144,7 +144,7 @@ public class Spell_MarkerSummoning extends Spell
 				mob.location().send(mob,msg);
 				for(int i=0;i<inhabs.size();i++)
 				{
-					final MOB follower=inhabs.elementAt(i);
+					final MOB follower=inhabs.get(i);
 					final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appear(s) in a burst of light."));
 					final CMMsg leaveMsg=CMClass.getMsg(follower,oldRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) in a great summoning swirl."));
 					if(oldRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
@@ -157,16 +157,16 @@ public class Spell_MarkerSummoning extends Spell
 						CMLib.commands().postLook(follower,true);
 					}
 				}
-				final Vector<Item> items=new Vector<Item>();
+				final List<Item> items=new ArrayList<Item>();
 				for(int i=oldRoom.numItems()-1;i>=0;i--)
 				{
 					final Item I=oldRoom.getItem(i);
 					if(I!=null)
-						items.addElement(I);
+						items.add(I);
 				}
 				for(int i=0;i<items.size();i++)
 				{
-					final Item I=items.elementAt(i);
+					final Item I=items.get(i);
 					oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 disappears in a summoning swirl!",I.name()));
 					newRoom.moveItemTo(I);
 					newRoom.showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 appears in a burst of light!",I.name()));

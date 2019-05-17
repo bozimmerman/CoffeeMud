@@ -1238,7 +1238,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				((GridLocale)R).setYGridSize(((GridLocale)oldR).yGridSize());
 				((GridLocale)R).clearGrid(null);
 			}
-			final Vector<MOB> allmobs=new Vector<MOB>();
+			final List<MOB> allmobs=new ArrayList<MOB>();
 			int skip=0;
 			while(oldR.numInhabitants()>(skip))
 			{
@@ -1246,7 +1246,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(M.isSavable())
 				{
 					if(!allmobs.contains(M))
-						allmobs.addElement(M);
+						allmobs.add(M);
 					oldR.delInhabitant(M);
 				}
 				else
@@ -1258,18 +1258,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				else
 					skip++;
 			}
-			final Vector<Item> allitems=new Vector<Item>();
+			final List<Item> allitems=new ArrayList<Item>();
 			while(oldR.numItems()>0)
 			{
 				final Item I=oldR.getItem(0);
 				if(!allitems.contains(I))
-					allitems.addElement(I);
+					allitems.add(I);
 				oldR.delItem(I);
 			}
 
 			for(int i=0;i<allitems.size();i++)
 			{
-				final Item I=allitems.elementAt(i);
+				final Item I=allitems.get(i);
 				if(!R.isContent(I))
 				{
 					if(I.subjectToWearAndTear())
@@ -1281,7 +1281,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			for(int m=0;m<allmobs.size();m++)
 			{
-				final MOB M=allmobs.elementAt(m);
+				final MOB M=allmobs.get(m);
 				if(!R.isInhabitant(M))
 				{
 					final MOB M2=(MOB)M.copyOf();

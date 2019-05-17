@@ -118,12 +118,12 @@ public class Skill_Shuffle extends BardSkill
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				final Vector<MOB> V=new Vector<MOB>();
+				final List<MOB> V=new ArrayList<MOB>();
 				final Room R=mob.location();
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					final MOB M=R.fetchInhabitant(i);
-					V.addElement(M);
+					V.add(M);
 				}
 				while(R.numInhabitants()>0)
 				{
@@ -132,10 +132,10 @@ public class Skill_Shuffle extends BardSkill
 				}
 				while(V.size()>0)
 				{
-					final MOB M=V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+					final MOB M=V.get(CMLib.dice().roll(1,V.size(),-1));
 					if(M.location()==R)
 						R.addInhabitant(M);
-					V.removeElement(M);
+					V.remove(M);
 				}
 			}
 		}
