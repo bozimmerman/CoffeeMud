@@ -249,16 +249,18 @@ public class StdArmor extends StdContainer implements Armor
 			msg.source().tell(armorHealth());
 		else
 		if((!amWearingAt(Wearable.IN_INVENTORY))
-		&&(owner()!=null)
 		&&(owner() instanceof MOB)
 		&&(msg.amITarget(owner()))
-		&&(CMLib.dice().rollPercentage()>((phyStats().level()/2)+(10*phyStats().ability())+(CMLib.flags().isABonusItems(this)?20:0)))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.value())>0)
 		&&(subjectToWearAndTear())
+		&&((!(msg.tool() instanceof Ability))
+			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES) != Ability.ACODE_POISON)
+			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES) != Ability.ACODE_DISEASE))
+		&&(CMLib.dice().rollPercentage()>((phyStats().level()/2)+(10*phyStats().ability())+(CMLib.flags().isABonusItems(this)?20:0)))
 		&&(CMLib.dice().rollPercentage()>(((MOB)owner()).charStats().getStat(CharStats.STAT_DEXTERITY))))
 		{
 			int weaponDamageType=-1;
-			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&((msg.value())>0))
 			{
 				if(msg.tool() instanceof Weapon)
 					weaponDamageType=((Weapon)msg.tool()).weaponDamageType();
