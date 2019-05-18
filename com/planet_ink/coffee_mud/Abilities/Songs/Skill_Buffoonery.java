@@ -127,7 +127,7 @@ public class Skill_Buffoonery extends BardSkill
 
 	public Item targetItem(final MOB target)
 	{
-		final Vector<Item> V=new Vector<Item>();
+		final List<Item> V=new ArrayList<Item>();
 		for(int i=0;i<target.numItems();i++)
 		{
 			final Item I2=target.getItem(i);
@@ -135,10 +135,10 @@ public class Skill_Buffoonery extends BardSkill
 			&&(((I2 instanceof Weapon)&&(I2.basePhyStats().damage()>1))
 			   ||((I2 instanceof Armor)&&(I2.basePhyStats().armor()>1)))
 			&&(I2.container()==null))
-				V.addElement(I2);
+				V.add(I2);
 		}
 		if(V.size()>0)
-			return V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+			return V.get(CMLib.dice().roll(1,V.size(),-1));
 		return null;
 	}
 

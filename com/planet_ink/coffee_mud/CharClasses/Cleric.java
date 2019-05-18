@@ -496,7 +496,7 @@ public class Cleric extends StdCharClass
 	@Override
 	public List<Item> outfit(final MOB myChar)
 	{
-		final Vector<Item> outfitChoices=new Vector<Item>();
+		final Vector<Item> outfitChoices=new Vector<Item>(); // return value
 		if(CMLib.flags().isEvil(myChar))
 		{
 			final Weapon w=CMClass.getWeapon("Shortsword");

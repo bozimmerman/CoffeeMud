@@ -698,7 +698,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 
 		String itemName=CMParms.combine(commands,0);
-		final Vector<Item> V=new Vector<Item>();
+		final List<Item> itemsV=new ArrayList<Item>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if(itemName.toUpperCase().startsWith("ALL."))
 		{
@@ -731,11 +731,11 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			if(!target.sameAs(I))
 				break;
 			if(CMLib.flags().canBeSeenBy(I,mob))
-				V.addElement(I);
+				itemsV.add(I);
 			addendumStr="."+(++addendum);
 		}
 
-		if(V.size()==0)
+		if(itemsV.size()==0)
 		{
 			commonTell(mob,L("You don't seem to be carrying '@x1'.",itemName));
 			return false;
@@ -760,9 +760,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			for(int i=0;i<V.size();i++)
+			for(int i=0;i<itemsV.size();i++)
 			{
-				final Item I=V.elementAt(i);
+				final Item I=itemsV.get(i);
 				if(val<=0)
 					getShop().addStoreInventory(I);
 				else

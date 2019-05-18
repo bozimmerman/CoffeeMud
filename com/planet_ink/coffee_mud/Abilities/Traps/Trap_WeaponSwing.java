@@ -92,7 +92,7 @@ public class Trap_WeaponSwing extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector<Item> V=new Vector<Item>();
+		final Vector<Item> V=new Vector<Item>(); // return value
 		V.addElement(CMClass.getWeapon("Sword"));
 		return V;
 	}

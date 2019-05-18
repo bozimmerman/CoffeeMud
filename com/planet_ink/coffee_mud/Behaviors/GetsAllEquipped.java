@@ -86,26 +86,26 @@ public class GetsAllEquipped extends ActiveTicker
 				return true;
 
 			DoneEquipping=true;
-			final Vector<Item> stuffIHad=new Vector<Item>();
+			final List<Item> stuffIHad=new ArrayList<Item>();
 			for(int i=0;i<mob.numItems();i++)
-				stuffIHad.addElement(mob.getItem(i));
+				stuffIHad.add(mob.getItem(i));
 			mob.enqueCommand(new XVector<String>("GET","ALL"),MUDCmdProcessor.METAFLAG_FORCED,0);
 			Item I=null;
-			final Vector<Item> dropThisStuff=new Vector<Item>();
+			final List<Item> dropThisStuff=new ArrayList<Item>();
 			for(int i=0;i<mob.numItems();i++)
 			{
 				I=mob.getItem(i);
 				if((I!=null)&&(!stuffIHad.contains(I)))
 				{
 					if(I instanceof DeadBody)
-						dropThisStuff.addElement(I);
+						dropThisStuff.add(I);
 					else
 					if((I.container()!=null)&&(I.container() instanceof DeadBody))
 						I.setContainer(null);
 				}
 			}
 			for(int d=0;d<dropThisStuff.size();d++)
-				mob.enqueCommand(new XVector<String>("DROP","$"+dropThisStuff.elementAt(d).Name()+"$"),MUDCmdProcessor.METAFLAG_FORCED,0);
+				mob.enqueCommand(new XVector<String>("DROP","$"+dropThisStuff.get(d).Name()+"$"),MUDCmdProcessor.METAFLAG_FORCED,0);
 			mob.enqueCommand(new XVector<String>("WEAR","ALL"),MUDCmdProcessor.METAFLAG_FORCED,0);
 		}
 		return true;

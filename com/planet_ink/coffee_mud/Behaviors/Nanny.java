@@ -1001,9 +1001,9 @@ public class Nanny extends StdBehavior
 				CMLib.database().DBUpdateTheseMOBs(R,mobsToSave);
 			}
 
-			final Vector<Item> itemsToSave=new Vector<Item>();
+			final List<Item> itemsToSave=new ArrayList<Item>();
 			if(ticking instanceof Item)
-				itemsToSave.addElement((Item)ticking);
+				itemsToSave.add((Item)ticking);
 			Item I=null;
 			if(R!=null)
 			{
@@ -1014,14 +1014,14 @@ public class Nanny extends StdBehavior
 					&&(I.isSavable())
 					&&((!CMLib.flags().isGettable(I))||(I.displayText().length()==0))
 					&&(!itemsToSave.contains(I)))
-						itemsToSave.addElement(I);
+						itemsToSave.add(I);
 				}
 				for(final DropOff D : dropOffs)
 				{
 					if((D.baby instanceof Item)
 					&&(R.isContent((Item)D.baby))
 					&&(!itemsToSave.contains(D.baby)))
-						itemsToSave.addElement((Item)D.baby);
+						itemsToSave.add((Item)D.baby);
 				}
 				CMLib.database().DBUpdateTheseItems(R,itemsToSave);
 			}

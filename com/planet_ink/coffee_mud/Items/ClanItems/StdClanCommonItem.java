@@ -73,9 +73,9 @@ public class StdClanCommonItem extends StdClanItem
 		return false;
 	}
 
-	public Vector<Item> resourceHere(final Room R, final int material)
+	protected List<Item> resourceHere(final Room R, final int material)
 	{
-		final Vector<Item> here=new Vector<Item>();
+		final List<Item> here=new ArrayList<Item>();
 		for(int i=0;i<R.numItems();i++)
 		{
 			final Item I2=R.getItem(i);
@@ -85,14 +85,14 @@ public class StdClanCommonItem extends StdClanItem
 			&&(((I2.material()&RawMaterial.RESOURCE_MASK)==material)
 				||(((I2.material())&RawMaterial.MATERIAL_MASK)==material))
 			&&(!CMLib.flags().isEnchanted(I2)))
-				here.addElement(I2);
+				here.add(I2);
 		}
 		return here;
 	}
 
-	public Vector<Item> resourceHere(final MOB M, final int material)
+	protected List<Item> resourceHere(final MOB M, final int material)
 	{
-		final Vector<Item> here=new Vector<Item>();
+		final List<Item> here=new Vector<Item>();
 		for(int i=0;i<M.numItems();i++)
 		{
 			final Item I2=M.getItem(i);
@@ -102,7 +102,7 @@ public class StdClanCommonItem extends StdClanItem
 			&&(((I2.material()&RawMaterial.RESOURCE_MASK)==material)
 				||(((I2.material())&RawMaterial.MATERIAL_MASK)==material))
 			&&(!CMLib.flags().isEnchanted(I2)))
-				here.addElement(I2);
+				here.add(I2);
 		}
 		return here;
 	}

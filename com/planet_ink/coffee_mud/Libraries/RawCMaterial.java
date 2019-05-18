@@ -85,8 +85,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	{
 		if((item==null)||(item.amDestroyed()))
 			return false;
-		final Vector<Item> found=new Vector<Item>();
-		found.addElement(item);
+		final List<Item> found=new ArrayList<Item>();
+		found.add(item);
 		Item I=null;
 		final Environmental owner=item.owner();
 		long lowestNonZeroFoodNumber=Long.MAX_VALUE;
@@ -105,7 +105,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				&&(I.container()==item.container())
 				&&(((RawMaterial)I).getSubType().equals(subType))
 				&&(I.rawSecretIdentity().equals(item.rawSecretIdentity())))
-					found.addElement(I);
+					found.add(I);
 			}
 		}
 		else
@@ -123,7 +123,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				&&(I.container()==item.container())
 				&&(((RawMaterial)I).getSubType().equals(subType))
 				&&(I.rawSecretIdentity().equals(item.rawSecretIdentity())))
-					found.addElement(I);
+					found.add(I);
 			}
 		}
 		else
@@ -139,7 +139,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		int totalThirstRemain=0;
 		for(int i=0;i<found.size();i++)
 		{
-			I=found.elementAt(i);
+			I=found.get(i);
 			final int weight=I.basePhyStats().weight();
 			totalWeight+=weight;
 			totalValue+=I.baseGoldValue();
@@ -162,14 +162,14 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		}
 		if(bundle==null)
 			bundle=item;
-		found.removeElement(bundle);
+		found.remove(bundle);
 		if(lowestNonZeroFoodNumber==Long.MAX_VALUE)
 			lowestNonZeroFoodNumber=0;
 		final Map<String,Ability> foundAblesH=new HashMap<String,Ability>();
 		Ability A=null;
 		for(int i=0;i<found.size();i++)
 		{
-			I=found.elementAt(i);
+			I=found.get(i);
 			for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
 			{
 				A=a.nextElement();
@@ -198,7 +198,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				bundle.addNonUninvokableEffect((Ability)A.copyOf());
 		}
 		for(int i=0;i<found.size();i++)
-			((RawMaterial)found.elementAt(i)).quickDestroy();
+			((RawMaterial)found.get(i)).quickDestroy();
 		if((owner instanceof Room)&&(((Room)owner).numItems()>0)&&(((Room)owner).getItem(((Room)owner).numItems()-1)!=bundle))
 		{
 			final Container C=bundle.container();

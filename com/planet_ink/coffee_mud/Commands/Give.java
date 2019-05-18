@@ -87,7 +87,7 @@ public class Give extends StdCommand
 		String thingToGive=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
-		final Vector<Item> V = new Vector<Item>();
+		final List<Item> itemsV = new ArrayList<Item>();
 		boolean allFlag = (commands.size() > 0) ? commands.get(0).equalsIgnoreCase("all") : false;
 		if (thingToGive.toUpperCase().startsWith("ALL."))
 		{
@@ -114,17 +114,17 @@ public class Give extends StdCommand
 			if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().parseNumPossibleGold(mob,thingToGive))
 				return false;
 			if(CMLib.flags().canBeSeenBy(giveThis,mob))
-				V.add(giveThis);
+				itemsV.add(giveThis);
 		}
 		boolean doBugFix = true;
-		if(V.size()==0)
+		if(itemsV.size()==0)
 		{
 			while(doBugFix || ((allFlag)&&(addendum<=maxToGive)))
 			{
 				doBugFix=false;
 				giveThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToGive+addendumStr);
 				if((giveThis==null)
-				&&(V.size()==0)
+				&&(itemsV.size()==0)
 				&&(addendumStr.length()==0)
 				&&(!allFlag))
 				{
@@ -162,19 +162,19 @@ public class Give extends StdCommand
 							giveThis=null;
 						}
 						else
-							V.add(giveThis);
+							itemsV.add(giveThis);
 					}
 				}
 				addendumStr="."+(++addendum);
 			}
 		}
 
-		if(V.size()==0)
+		if(itemsV.size()==0)
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
-		for(int i=0;i<V.size();i++)
+		for(int i=0;i<itemsV.size();i++)
 		{
-			giveThis=V.get(i);
+			giveThis=itemsV.get(i);
 			give(mob, recipient, giveThis, false);
 		}
 		return false;

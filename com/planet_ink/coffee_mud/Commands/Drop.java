@@ -110,7 +110,6 @@ public class Drop extends StdCommand
 	{
 		String whatToDrop=null;
 		final Item container=null;
-		final Vector<Item> V=new Vector<Item>();
 
 		if(commands.size()<2)
 		{
@@ -143,6 +142,7 @@ public class Drop extends StdCommand
 			allFlag=true;
 			whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);
 		}
+		final List<Item> items=new ArrayList<Item>();
 		int addendum=1;
 		String addendumStr="";
 		final boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
@@ -152,54 +152,56 @@ public class Drop extends StdCommand
 			if(((Coins)dropThis).getNumberOfCoins()<CMLib.english().parseNumPossibleGold(mob,whatToDrop+addendumStr))
 				return false;
 			if(CMLib.flags().canBeSeenBy(dropThis,mob))
-				V.add(dropThis);
+				items.add(dropThis);
 		}
 		boolean doBugFix = true;
-		if(V.size()==0)
-		while(doBugFix || ((allFlag)&&(addendum<=maxToDrop)))
+		if(items.size()==0)
 		{
-			doBugFix=false;
-			dropThis=mob.fetchItem(container,Wearable.FILTER_UNWORNONLY,whatToDrop+addendumStr);
-			if((dropThis==null)
-			&&(V.size()==0)
-			&&(addendumStr.length()==0)
-			&&(!allFlag))
+			while(doBugFix || ((allFlag)&&(addendum<=maxToDrop)))
 			{
-				dropThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,whatToDrop);
-				if(dropThis!=null)
+				doBugFix=false;
+				dropThis=mob.fetchItem(container,Wearable.FILTER_UNWORNONLY,whatToDrop+addendumStr);
+				if((dropThis==null)
+				&&(items.size()==0)
+				&&(addendumStr.length()==0)
+				&&(!allFlag))
 				{
-					if((!dropThis.amWearingAt(Wearable.WORN_HELD))&&(!dropThis.amWearingAt(Wearable.WORN_WIELD)))
+					dropThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,whatToDrop);
+					if(dropThis!=null)
 					{
-						mob.tell(L("You must remove that first."));
-						return false;
+						if((!dropThis.amWearingAt(Wearable.WORN_HELD))&&(!dropThis.amWearingAt(Wearable.WORN_WIELD)))
+						{
+							mob.tell(L("You must remove that first."));
+							return false;
+						}
+						final CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
+						if(R.okMessage(mob,newMsg))
+							R.send(mob,newMsg);
+						else
+							return false;
 					}
-					final CMMsg newMsg=CMClass.getMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
-					if(R.okMessage(mob,newMsg))
-						R.send(mob,newMsg);
-					else
-						return false;
 				}
+				if((allFlag)&&(!onlyGoldFlag)&&(dropThis instanceof Coins)&&(whatToDrop.equalsIgnoreCase("all")))
+					dropThis=null;
+				else
+				{
+					if(dropThis==null)
+						break;
+					if((CMLib.flags().canBeSeenBy(dropThis,mob)||(dropThis instanceof Light))
+					&&(!items.contains(dropThis)))
+						items.add(dropThis);
+				}
+				addendumStr="."+(++addendum);
 			}
-			if((allFlag)&&(!onlyGoldFlag)&&(dropThis instanceof Coins)&&(whatToDrop.equalsIgnoreCase("all")))
-				dropThis=null;
-			else
-			{
-				if(dropThis==null)
-					break;
-				if((CMLib.flags().canBeSeenBy(dropThis,mob)||(dropThis instanceof Light))
-				&&(!V.contains(dropThis)))
-					V.add(dropThis);
-			}
-			addendumStr="."+(++addendum);
 		}
 
-		final boolean optimize = V.size()>1 || allFlag;
-		if(V.size()==0)
+		final boolean optimize = items.size()>1 || allFlag;
+		if(items.size()==0)
 			mob.tell(L("You don't seem to be carrying that."));
 		else
-		for(int i=0;i<V.size();i++)
+		for(int i=0;i<items.size();i++)
 		{
-			final Item I=V.get(i);
+			final Item I=items.get(i);
 			if(!I.amDestroyed())
 				drop(mob,I,false,optimize,false);
 		}

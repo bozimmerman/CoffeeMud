@@ -781,16 +781,16 @@ public class PokerDealer extends StdBehavior
 					{
 						final List<Item> cards=new Vector<Item>();
 						cards.addAll(hand.getContents());
-						final Vector<Item> removed=new Vector<Item>();
+						final List<Item> removed=new ArrayList<Item>();
 						// make a list of cards to remove
 						for(int i=0;i<parsed.size();i++)
 						{
 							if(!removed.contains(cards.get(CMath.s_int(parsed.elementAt(i))-1)))
-								removed.addElement(cards.get(CMath.s_int(parsed.elementAt(i))-1));
+								removed.add(cards.get(CMath.s_int(parsed.elementAt(i))-1));
 						}
 						// remove them from our cards list
 						for(int i=0;i<removed.size();i++)
-							cards.remove(removed.elementAt(i));
+							cards.remove(removed.get(i));
 						// if nothign is left, problem!
 						if(cards.size()==0)
 							communicate(host,whoseTurn,"You may not draw all of your cards.  Try asking for fewer.",msg);
@@ -802,7 +802,7 @@ public class PokerDealer extends StdBehavior
 							// everything is still good, so lets officially get those
 							// cards out of the players hand and back in the deck
 							for(int i=0;i<removed.size();i++)
-								theDeck().addCard((PlayingCard)removed.elementAt(i));
+								theDeck().addCard((PlayingCard)removed.get(i));
 							// now we deal the player new ones.
 							dealToPlayer(host,whoseTurn,removed.size(),0);
 							nextPlayerNextState(host);
@@ -1281,16 +1281,16 @@ public class PokerDealer extends StdBehavior
 				final Room R=winner.location();
 				Item I=null;
 				double totalValue=0.0;
-				final Vector<Item> winnings=new Vector<Item>();
+				final List<Item> winnings=new ArrayList<Item>();
 				for(int i=R.numItems()-1;i>=0;i--)
 				{
 					I=R.getItem(i);
 					if(I instanceof Coins)
-						winnings.addElement(I);
+						winnings.add(I);
 				}
 				for(int i=0;i<winnings.size();i++)
 				{
-					I=winnings.elementAt(i);
+					I=winnings.get(i);
 					I.setContainer(null);
 					totalValue+=((Coins)I).getTotalValue();
 					I.destroy();

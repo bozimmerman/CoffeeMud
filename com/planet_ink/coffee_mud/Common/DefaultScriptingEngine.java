@@ -6760,13 +6760,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				int ct=1;
 				if(lastKnownLocation!=null)
 				{
-					final Vector<Item> list=new Vector<Item>();
+					final List<Item> list=new ArrayList<Item>();
 					for(int i=0;i<lastKnownLocation.numItems();i++)
 					{
 						final Item I=lastKnownLocation.getItem(i);
 						if((I!=null)&&(I.container()==null))
 						{
-							list.addElement(I);
+							list.add(I);
 							if(ct==CMath.s_int(arg1.trim()))
 							{
 								which = I;

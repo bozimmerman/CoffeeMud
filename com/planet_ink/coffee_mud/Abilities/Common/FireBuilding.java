@@ -122,9 +122,9 @@ public class FireBuilding extends CommonSkill
 		return false;
 	}
 
-	public Vector<Item> resourceHere(final Room R, final int material)
+	protected List<Item> resourceHere(final Room R, final int material)
 	{
-		final Vector<Item> here=new Vector<Item>();
+		final List<Item> here=new Vector<Item>(); // return value
 		for(int i=0;i<R.numItems();i++)
 		{
 			final Item I2=R.getItem(i);
@@ -134,7 +134,7 @@ public class FireBuilding extends CommonSkill
 			&&(((I2.material()&RawMaterial.RESOURCE_MASK)==material)
 				||(((I2.material())&RawMaterial.MATERIAL_MASK)==material))
 			&&(!CMLib.flags().isEnchanted(I2)))
-				here.addElement(I2);
+				here.add(I2);
 		}
 		return here;
 	}
@@ -150,7 +150,7 @@ public class FireBuilding extends CommonSkill
 		{
 			if((!fireHere(mob.location()))
 			&&(resourceHere(mob.location(),RawMaterial.MATERIAL_WOODEN).size()>0))
-				commands.add(((Environmental)resourceHere(mob.location(),RawMaterial.MATERIAL_WOODEN).firstElement()).Name());
+				commands.add(((Environmental)resourceHere(mob.location(),RawMaterial.MATERIAL_WOODEN).get(0)).Name());
 			else
 				commands.add("fire");
 		}

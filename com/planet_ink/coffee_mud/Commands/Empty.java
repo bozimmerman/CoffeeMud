@@ -51,7 +51,7 @@ public class Empty extends Drop
 	{
 		String whatToDrop=null;
 		Environmental target=mob;
-		final Vector<Item> V=new Vector<Item>();
+		final List<Item> itemsV=new ArrayList<Item>();
 		if(commands.size()<2)
 		{
 			mob.tell(L("Empty what where?"));
@@ -121,7 +121,7 @@ public class Empty extends Drop
 			doBugFix=false;
 			Item dropThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,whatToDrop+addendumStr);
 			if((dropThis==null)
-			&&(V.size()==0)
+			&&(itemsV.size()==0)
 			&&(addendumStr.length()==0)
 			&&(!allFlag))
 			{
@@ -146,8 +146,8 @@ public class Empty extends Drop
 				drink=(Drink)dropThis;
 			if((CMLib.flags().canBeSeenBy(dropThis,mob))
 			&&(dropThis instanceof Container)
-			&&(!V.contains(dropThis)))
-				V.add(dropThis);
+			&&(!itemsV.contains(dropThis)))
+				itemsV.add(dropThis);
 			addendumStr="."+(++addendum);
 		}
 
@@ -159,27 +159,27 @@ public class Empty extends Drop
 			str+=".";
 		else str+=" into "+target.Name()+".";
 
-		if((V.size()==0)&&(drink!=null))
+		if((itemsV.size()==0)&&(drink!=null))
 		{
 			mob.tell(L("@x1 must be POURed out.",drink.name()));
 			return false;
 		}
 
-		if(V.size()==0)
+		if(itemsV.size()==0)
 			mob.tell(L("You don't seem to be carrying that."));
 		else
-		if((V.size()==1)&&(V.get(0)==target))
+		if((itemsV.size()==1)&&(itemsV.get(0)==target))
 			mob.tell(L("You can't empty something into itself!"));
 		else
-		if((V.size()==1)
-		&&(V.get(0) instanceof Drink)
-		&&(!((Drink)V.get(0)).containsDrink())
+		if((itemsV.size()==1)
+		&&(itemsV.get(0) instanceof Drink)
+		&&(!((Drink)itemsV.get(0)).containsDrink())
 		)
-			mob.tell(mob,V.get(0),null,L("<T-NAME> is already empty."));
+			mob.tell(mob,itemsV.get(0),null,L("<T-NAME> is already empty."));
 		else
-		for(int v=0;v<V.size();v++)
+		for(int v=0;v<itemsV.size();v++)
 		{
-			final Container C=(Container)V.get(v);
+			final Container C=(Container)itemsV.get(v);
 			if(C==target)
 				continue;
 

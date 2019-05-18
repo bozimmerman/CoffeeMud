@@ -88,7 +88,7 @@ public class Take extends StdCommand
 			String thingToGive=CMParms.combine(commands,0);
 			int addendum=1;
 			String addendumStr="";
-			final Vector<Item> V=new Vector<Item>();
+			final List<Item> itemsV=new ArrayList<Item>();
 			boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 			if(thingToGive.toUpperCase().startsWith("ALL."))
 			{
@@ -138,7 +138,7 @@ public class Take extends StdCommand
 				else
 					giveThis=victim.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToGive+addendumStr);
 				if((giveThis==null)
-				&&(V.size()==0)
+				&&(itemsV.size()==0)
 				&&(addendumStr.length()==0)
 				&&(!allFlag))
 					giveThis=victim.findItem(thingToGive);
@@ -148,17 +148,17 @@ public class Take extends StdCommand
 				{
 					((Item)giveThis).unWear();
 					((Item)giveThis).setContainer(null);
-					V.add((Item)giveThis);
+					itemsV.add((Item)giveThis);
 				}
 				addendumStr="."+(++addendum);
 			}
 
-			if(V.size()==0)
+			if(itemsV.size()==0)
 				CMLib.commands().postCommandFail(mob,origCmds,L("@x1 does not seem to be carrying that.",victim.name()));
 			else
-			for(int i=0;i<V.size();i++)
+			for(int i=0;i<itemsV.size();i++)
 			{
-				final Item giveThis=V.get(i);
+				final Item giveThis=itemsV.get(i);
 				final CMMsg newMsg=CMClass.getMsg(victim,mob,giveThis,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,L("<T-NAME> take(s) <O-NAME> from <S-NAMESELF>."));
 				if(victim.location().okMessage(victim,newMsg))
 					victim.location().send(victim,newMsg);

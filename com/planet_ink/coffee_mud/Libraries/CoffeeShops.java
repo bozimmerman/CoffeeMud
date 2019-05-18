@@ -2095,17 +2095,19 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	public AuctionData getEnumeratedAuction(final String named, final String auctionHouse)
 	{
 		final List<AuctionData> V=getAuctions(null,auctionHouse);
-		final Vector<Item> V2=new Vector<Item>();
+		final List<Item> V2=new ArrayList<Item>();
 		for(int v=0;v<V.size();v++)
-			V2.addElement(V.get(v).getAuctionedItem());
+			V2.add(V.get(v).getAuctionedItem());
 		Environmental E=CMLib.english().fetchEnvironmental(V2,named,true);
 		if(!(E instanceof Item))
 			E=CMLib.english().fetchEnvironmental(V2,named,false);
 		if(E!=null)
-		for(int v=0;v<V.size();v++)
 		{
-			if(V.get(v).getAuctionedItem()==E)
-				return V.get(v);
+			for(int v=0;v<V.size();v++)
+			{
+				if(V.get(v).getAuctionedItem()==E)
+					return V.get(v);
+			}
 		}
 		return null;
 	}

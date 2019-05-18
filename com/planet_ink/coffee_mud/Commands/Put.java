@@ -204,7 +204,7 @@ public class Put extends StdCommand
 		String thingToPut=CMParms.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
-		final Vector<Item> V=new Vector<Item>();
+		final List<Item> V=new ArrayList<Item>();
 		boolean allFlag = (commands.size() > 0) ? commands.get(0).equalsIgnoreCase("all") : false;
 		if (thingToPut.toUpperCase().startsWith("ALL."))
 		{

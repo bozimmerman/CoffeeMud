@@ -66,7 +66,7 @@ public class StdDice extends StdItem implements MiscMagic
 		if(R==null)
 			return false;
 
-		final Vector<Item> V=new Vector<Item>();
+		final List<Item> itemsV=new ArrayList<Item>();
 		final int maxToDrop=CMLib.english().parseMaxToGive(mob,commands,true,mob,false);
 		if(maxToDrop<0)
 			return false;
@@ -87,14 +87,14 @@ public class StdDice extends StdItem implements MiscMagic
 		String addendumStr="";
 		Item dropThis=null;
 		boolean doBugFix = true;
-		if(V.size()==0)
+		if(itemsV.size()==0)
 		{
 			while(doBugFix || ((allFlag)&&(addendum<=maxToDrop)))
 			{
 				doBugFix=false;
 				dropThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,whatToDrop+addendumStr);
 				if((dropThis==null)
-				&&(V.size()==0)
+				&&(itemsV.size()==0)
 				&&(addendumStr.length()==0)
 				&&(!allFlag))
 				{
@@ -116,14 +116,14 @@ public class StdDice extends StdItem implements MiscMagic
 				if(dropThis==null)
 					break;
 				if((CMLib.flags().canBeSeenBy(dropThis,mob)||(dropThis instanceof Light))
-				&&(!V.contains(dropThis))
+				&&(!itemsV.contains(dropThis))
 				&&(dropThis instanceof StdDice))
-					V.add(dropThis);
+					itemsV.add(dropThis);
 				addendumStr="."+(++addendum);
 			}
 		}
 
-		if(V.size()==0)
+		if(itemsV.size()==0)
 		{
 			if(word.toUpperCase().startsWith("T"))
 				return true;
@@ -132,9 +132,9 @@ public class StdDice extends StdItem implements MiscMagic
 			return false;
 		}
 		else
-		for(int i=0;i<V.size();i++)
+		for(int i=0;i<itemsV.size();i++)
 		{
-			final Item I=V.get(i);
+			final Item I=itemsV.get(i);
 			if(!I.amDestroyed())
 			{
 				final CMMsg msg2=CMClass.getMsg(mob,I,null,CMMsg.MSG_DROP,L("<S-NAME> roll(s) <T-NAME>."));

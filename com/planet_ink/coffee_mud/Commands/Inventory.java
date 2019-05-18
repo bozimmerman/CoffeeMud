@@ -148,16 +148,16 @@ public class Inventory extends StdCommand
 			if(!mask.startsWith("all"))
 				mask="all "+mask;
 			@SuppressWarnings("unchecked")
-			final Vector<Item> V=(Vector<Item>)list.viewItems.clone();
+			final List<Item> itemsV=(Vector<Item>)list.viewItems.clone();
 			list.viewItems.clear();
-			Item I=(V.size()>0)?(Item)V.get(0):null;
+			Item I=(itemsV.size()>0)?(Item)itemsV.get(0):null;
 			while(I!=null)
 			{
-				I=(Item)CMLib.english().fetchEnvironmental(V,mask,false);
+				I=(Item)CMLib.english().fetchEnvironmental(itemsV,mask,false);
 				if(I!=null)
 				{
 					list.viewItems.add(I);
-					V.remove(I);
+					itemsV.remove(I);
 				}
 			}
 		}

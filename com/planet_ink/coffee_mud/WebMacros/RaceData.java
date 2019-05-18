@@ -268,9 +268,9 @@ public class RaceData extends StdWebMacro
 	public static StringBuffer itemList(List<? extends Item> items, final char c, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize, final boolean one)
 	{
 		if(items==null)
-			items=new Vector<Item>();
+			items=new ArrayList<Item>();
 		final StringBuffer str=new StringBuffer("");
-		final Vector<Item> classes=new Vector<Item>();
+		final List<Item> classes=new ArrayList<Item>();
 		List<Item> itemlist=null;
 		if(httpReq.isUrlParameter(c+"ITEM1"))
 		{
@@ -288,7 +288,7 @@ public class RaceData extends StdWebMacro
 						RoomData.contributeItems(new XVector<Item>(I2));
 				}
 				if(I2!=null)
-					classes.addElement(I2);
+					classes.add(I2);
 				if(one)
 					break;
 			}
@@ -304,7 +304,7 @@ public class RaceData extends StdWebMacro
 		for(int i=0;i<classes.size();i++)
 		{
 			numItems++;
-			final Item I=classes.elementAt(i);
+			final Item I=classes.get(i);
 			str.append("<TR>");
 			str.append("<TD WIDTH=90%>");
 			str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME="+c+"ITEM"+(numItems)+">");
@@ -350,10 +350,10 @@ public class RaceData extends StdWebMacro
 				boolean selected=false;
 				for(int x=0;x<classes.size();x++)
 				{
-					if(classes.elementAt(x).ID().equals(element))
+					if(classes.get(x).ID().equals(element))
 					{
 						selected=true;
-						found.add(classes.elementAt(x).ID());
+						found.add(classes.get(x).ID());
 						break;
 					}
 				}
@@ -361,8 +361,8 @@ public class RaceData extends StdWebMacro
 			}
 			for(int x=0;x<classes.size();x++)
 			{
-				if(!found.contains(classes.elementAt(x).ID()))
-					str.append("<OPTION SELECTED VALUE=\""+classes.elementAt(x).ID()+"\">"+classes.elementAt(x).ID());
+				if(!found.contains(classes.get(x).ID()))
+					str.append("<OPTION SELECTED VALUE=\""+classes.get(x).ID()+"\">"+classes.get(x).ID());
 			}
 		}
 		else
@@ -1161,7 +1161,7 @@ public class RaceData extends StdWebMacro
 					str.append(itemList(R.outfit(null),'O',httpReq,parms,0,false)+", ");
 				if(parms.containsKey("WEAPON"))
 				{
-					final Vector<Item> V=new XVector<Item>(R.myNaturalWeapon());
+					final List<Item> V=new XVector<Item>(R.myNaturalWeapon());
 					str.append(itemList(V,'W',httpReq,parms,0,true)+", ");
 				}
 				if(parms.containsKey("RESOURCES"))

@@ -103,7 +103,7 @@ public interface AbilityParameters extends CMLibrary
 		 * @param V the list of objects to create choices from
 		 * @return key/display pairs
 		 */
-		public PairList<String,String> createChoices(Vector<? extends Object> V);
+		public PairList<String,String> createChoices(List<? extends Object> V);
 
 		/**
 		 * Creates key/display pairs from a list of strings whose identity

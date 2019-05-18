@@ -1203,7 +1203,7 @@ public class CraftingSkill extends GatheringSkill
 				return false;
 			}
 		}
-		final Vector<Item> allStuff=getAllMendable(mob,scanning,null);
+		final List<Item> allStuff=getAllMendable(mob,scanning,null);
 		if(allStuff.size()==0)
 		{
 			if(mob==scanning)
@@ -1219,7 +1219,7 @@ public class CraftingSkill extends GatheringSkill
 			buf.append(L("The following items on @x1 could use some @x2:\n\r",scanning.name(),name()));
 		for(int i=0;i<allStuff.size();i++)
 		{
-			final Item I=allStuff.elementAt(i);
+			final Item I=allStuff.get(i);
 			buf.append(CMStrings.padRight(I.usesRemaining()+"%",5)+I.name());
 			if(!I.amWearingAt(Wearable.IN_INVENTORY))
 				buf.append(" ("+Wearable.CODES.NAME(I.rawWornCode())+")");

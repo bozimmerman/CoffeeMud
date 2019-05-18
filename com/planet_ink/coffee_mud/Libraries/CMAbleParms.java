@@ -1956,20 +1956,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public void createChoices()
 				{
-					final Vector<Item> V  = new Vector<Item>();
+					final List<Item> V  = new ArrayList<Item>();
 					V.addAll(new XVector<ClanItem>(CMClass.clanItems()));
 					V.addAll(new XVector<Armor>(CMClass.armor()));
 					V.addAll(new XVector<Item>(CMClass.basicItems()));
 					V.addAll(new XVector<MiscMagic>(CMClass.miscMagic()));
 					V.addAll(new XVector<Technical>(CMClass.tech()));
 					V.addAll(new XVector<Weapon>(CMClass.weapons()));
-					final Vector<Item> V2=new Vector<Item>();
+					final List<Item> V2=new ArrayList<Item>();
 					Item I;
-					for(final Enumeration<Item> e=V.elements();e.hasMoreElements();)
+					for(final Iterator<Item> e=V.iterator();e.hasNext();)
 					{
-						I=e.nextElement();
+						I=e.next();
 						if(I.isGeneric() || I.ID().equalsIgnoreCase("StdDeckOfCards"))
-							V2.addElement(I);
+							V2.add(I);
 					}
 					createChoices(V2);
 				}
@@ -5501,10 +5501,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			return choices;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
-		public PairList<String,String> createChoices(final Vector<? extends Object> V)
+		public PairList<String,String> createChoices(final List<? extends Object> V)
 		{
-			return createChoices(V.elements());
+			return createChoices(new IteratorEnumeration<Object>((Iterator<Object>)V.iterator()));
 		}
 
 		@Override

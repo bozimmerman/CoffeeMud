@@ -179,12 +179,12 @@ public class Chant_SummonDustdevil extends Chant
 		if(mob.location()!=null)
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> dissipate(s)."));
-			final Vector<Item> V=new Vector<Item>();
+			final List<Item> V=new ArrayList<Item>();
 			for(int i=0;i<mob.numItems();i++)
-				V.addElement(mob.getItem(i));
+				V.add(mob.getItem(i));
 			for(int i=0;i<V.size();i++)
 			{
-				final Item I=V.elementAt(i);
+				final Item I=V.get(i);
 				mob.delItem(I);
 				mob.location().addItem(I,ItemPossessor.Expire.Monster_EQ);
 			}

@@ -423,11 +423,11 @@ public class GrinderPlayers extends GrinderMobs
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
 
-		final Vector<Item> allitems=new Vector<Item>();
+		final List<Item> allitems=new ArrayList<Item>();
 		while(M.numItems()>0)
 		{
 			final Item I=M.getItem(0);
-			allitems.addElement(I);
+			allitems.add(I);
 			M.delItem(I);
 		}
 

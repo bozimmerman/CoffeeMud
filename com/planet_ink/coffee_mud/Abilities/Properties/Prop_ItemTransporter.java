@@ -242,7 +242,7 @@ public class Prop_ItemTransporter extends Property
 				if((container.owner()!=null)&&(container.owner() instanceof MOB))
 					mobMover=(MOB)container.owner();
 			}
-			final Vector<Item> itemsToMove=new Vector<Item>();
+			final List<Item> itemsToMove=new ArrayList<Item>();
 			if(roomMover!=null)
 			{
 				for(int i=0;i<roomMover.numItems();i++)
@@ -252,10 +252,10 @@ public class Prop_ItemTransporter extends Property
 					   &&(item!=container)
 					   &&(item.amWearingAt(Wearable.IN_INVENTORY))
 					   &&((item.container()==container)||(ultimateParent(item)==container)))
-					   itemsToMove.addElement(item);
+					   itemsToMove.add(item);
 				}
 				for(int i=0;i<itemsToMove.size();i++)
-					roomMover.delItem(itemsToMove.elementAt(i));
+					roomMover.delItem(itemsToMove.get(i));
 			}
 			else
 			if(mobMover!=null)
@@ -268,10 +268,10 @@ public class Prop_ItemTransporter extends Property
 					&&(item!=container)
 					&&(item.amWearingAt(Wearable.IN_INVENTORY))
 					&&((item.container()==container)||(ultimateParent(item)==container)))
-						itemsToMove.addElement(item);
+						itemsToMove.add(item);
 				}
 				for(int i=oldNum;i<itemsToMove.size();i++)
-					mobMover.delItem(itemsToMove.elementAt(i));
+					mobMover.delItem(itemsToMove.get(i));
 			}
 			if(itemsToMove.size()>0)
 			{
@@ -281,7 +281,7 @@ public class Prop_ItemTransporter extends Property
 				{
 					for(int i=0;i<itemsToMove.size();i++)
 					{
-						final Item item=itemsToMove.elementAt(i);
+						final Item item=itemsToMove.get(i);
 						if((item.container()==null)||(item.container()==container))
 							item.setContainer(nextDestination);
 						room.addItem(item,ItemPossessor.Expire.Player_Drop);
@@ -291,7 +291,7 @@ public class Prop_ItemTransporter extends Property
 				{
 					for(int i=0;i<itemsToMove.size();i++)
 					{
-						final Item item=itemsToMove.elementAt(i);
+						final Item item=itemsToMove.get(i);
 						if((item.container()==null)||(item.container()==container))
 							item.setContainer(nextDestination);
 						if(mob instanceof ShopKeeper)

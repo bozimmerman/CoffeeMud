@@ -144,7 +144,7 @@ public class Get extends StdCommand
 		boolean doneSomething=false;
 		while((c<containers.size())||(containers.size()==0))
 		{
-			final Vector<Item> V=new Vector<Item>();
+			final List<Item> itemsV=new ArrayList<Item>();
 			Container container=null;
 			if(containers.size()>0)
 				container=containers.get(c++);
@@ -182,16 +182,16 @@ public class Get extends StdCommand
 				if((getThis instanceof Item)
 				&&((CMLib.flags().canBeSeenBy(getThis,mob)||(getThis instanceof Light)))
 				&&((!allFlag)||CMLib.flags().isGettable(((Item)getThis))||(getThis.displayText().length()>0))
-				&&(!V.contains(getThis)))
-					V.add((Item)getThis);
+				&&(!itemsV.contains(getThis)))
+					itemsV.add((Item)getThis);
 
 				addendumStr="."+(++addendum);
 			}
 
-			final boolean optimize = V.size()>1 || allFlag;
-			for(int i=0;i<V.size();i++)
+			final boolean optimize = itemsV.size()>1 || allFlag;
+			for(int i=0;i<itemsV.size();i++)
 			{
-				final Item getThis=V.get(i);
+				final Item getThis=itemsV.get(i);
 				if(!getThis.amDestroyed())
 				{
 					get(mob,container,getThis,quiet,"get",optimize);

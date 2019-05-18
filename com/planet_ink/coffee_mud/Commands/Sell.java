@@ -65,7 +65,7 @@ public class Sell extends StdCommand
 			return false;
 
 		String whatName=CMParms.combine(commands,0);
-		final Vector<Item> V=new Vector<Item>();
+		final List<Item> itemsV=new ArrayList<Item>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if (whatName.toUpperCase().startsWith("ALL."))
 		{
@@ -87,18 +87,18 @@ public class Sell extends StdCommand
 			if(itemToDo==null)
 				break;
 			if((CMLib.flags().canBeSeenBy(itemToDo,mob))
-			&&(!V.contains(itemToDo)))
-				V.add(itemToDo);
+			&&(!itemsV.contains(itemToDo)))
+				itemsV.add(itemToDo);
 			addendumStr="."+(++addendum);
 		}
 
-		if(V.size()==0)
+		if(itemsV.size()==0)
 			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",whatName));
 		else
 		{
-			for(int v=0;v<V.size();v++)
+			for(int v=0;v<itemsV.size();v++)
 			{
-				final Item thisThang=V.get(v);
+				final Item thisThang=itemsV.get(v);
 				final CMMsg newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_SELL,L("<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>."));
 				if(mob.location().okMessage(mob,newMsg))
 					mob.location().send(mob,newMsg);

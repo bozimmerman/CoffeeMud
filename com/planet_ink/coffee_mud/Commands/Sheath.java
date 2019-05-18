@@ -45,10 +45,11 @@ public class Sheath extends StdCommand
 		return access;
 	}
 
-	public static Vector<Container> getSheaths(final MOB mob)
+	protected static List<Container> getSheaths(final MOB mob)
 	{
-		final Vector<Container> sheaths=new Vector<Container>();
-		if(mob!=null)
+		final List<Container> sheaths=new ArrayList<Container>();
+		if(mob==null)
+			return sheaths;
 		for(int i=0;i<mob.numItems();i++)
 		{
 			final Item I=mob.getItem(i);
@@ -104,9 +105,9 @@ public class Sheath extends StdCommand
 			if((noerrors)&&(item1==null)&&(item2==null))
 				return false;
 		}
-		final Vector<Container> sheaths=getSheaths(mob);
-		final Vector<Item> items=new Vector<Item>();
-		final Vector<Container> containers=new Vector<Container>();
+		final List<Container> sheaths=getSheaths(mob);
+		final List<Item> items=new ArrayList<Item>();
+		final List<Container> containers=new Vector<Container>();
 		Item sheathable=null;
 		if(commands.size()==0)
 		{

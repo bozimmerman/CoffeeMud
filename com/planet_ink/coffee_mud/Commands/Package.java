@@ -75,7 +75,7 @@ public class Package extends StdCommand
 			allFlag=true;
 			whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);
 		}
-		final Vector<Item> V=new Vector<Item>();
+		final List<Item> itemsV=new ArrayList<Item>();
 		int addendum=1;
 		String addendumStr="";
 		boolean packagingPackagesProblem=false;
@@ -92,15 +92,15 @@ public class Package extends StdCommand
 				if((getThis instanceof Item)
 				&&(CMLib.flags().canBeSeenBy(getThis,mob))
 				&&((!allFlag)||CMLib.flags().isGettable(((Item)getThis))||(getThis.displayText().length()>0))
-				&&(!V.contains(getThis)))
-					V.add((Item)getThis);
+				&&(!itemsV.contains(getThis)))
+					itemsV.add((Item)getThis);
 			}
 			addendumStr="."+(++addendum);
 		}
 		while((allFlag)&&(addendum<=maxToGet))
 			;
 
-		if(V.size()==0)
+		if(itemsV.size()==0)
 		{
 			if(packagingPackagesProblem)
 				CMLib.commands().postCommandFail(mob,origCmds,L("You can't package up packages.",whatName));
@@ -109,9 +109,9 @@ public class Package extends StdCommand
 			return false;
 		}
 
-		for(int i=0;i<V.size();i++)
+		for(int i=0;i<itemsV.size();i++)
 		{
-			final Item I=V.get(i);
+			final Item I=itemsV.get(i);
 			if((I instanceof Coins)
 			||(CMLib.flags().isEnspelled(I))
 			||(CMLib.flags().isOnFire(I)))
@@ -123,30 +123,30 @@ public class Package extends StdCommand
 		final PackagedItems thePackage=(PackagedItems)CMClass.getItem("GenPackagedItems");
 		if(thePackage==null)
 			return false;
-		if(!thePackage.isPackagable(V))
+		if(!thePackage.isPackagable(itemsV))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("All items in a package must be absolutely identical.  Some here are not."));
 			return false;
 		}
 		Item getThis=null;
-		for(int i=0;i<V.size();i++)
+		for(int i=0;i<itemsV.size();i++)
 		{
-			getThis=V.get(i);
+			getThis=itemsV.get(i);
 			if((!mob.isMine(getThis))&&(!Get.get(mob,null,getThis,true,"get",true)))
 				return false;
 		}
 		if(getThis==null)
 			return false;
 		final String name=CMLib.english().removeArticleLead(getThis.name());
-		final CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> package(s) up @x1 <T-NAMENOART>(s).",""+V.size()));
+		final CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> package(s) up @x1 <T-NAMENOART>(s).",""+itemsV.size()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			thePackage.setName(name);
-			if(thePackage.packageMe(getThis,V.size()))
+			if(thePackage.packageMe(getThis,itemsV.size()))
 			{
-				for(int i=0;i<V.size();i++)
-					V.get(i).destroy();
+				for(int i=0;i<itemsV.size();i++)
+					itemsV.get(i).destroy();
 				mob.location().addItem(thePackage,ItemPossessor.Expire.Player_Drop);
 				mob.location().recoverRoomStats();
 				mob.location().recoverRoomStats();

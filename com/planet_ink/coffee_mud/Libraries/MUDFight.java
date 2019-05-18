@@ -1520,26 +1520,31 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 
 			Coins C=null;
-			if((deadMoney>0)&&(myAmountOfDeadMoney>0)&&(body!=null)&&(bodyRoom!=null))
-			for(int g=0;g<goldLooters.size();g++)
+			if((deadMoney>0)
+			&&(myAmountOfDeadMoney>0)
+			&&(body!=null)
+			&&(bodyRoom!=null))
 			{
-				C=CMLib.beanCounter().makeBestCurrency(currency,myAmountOfDeadMoney,null,body);
-				if(C!=null)
+				for(int g=0;g<goldLooters.size();g++)
 				{
-					C.recoverPhyStats();
-					bodyRoom.addItem(C,ItemPossessor.Expire.Monster_EQ);
-					bodyRoom.recoverRoomStats();
-					final MOB mob=goldLooters.elementAt(g);
-					if(mob.location()==bodyRoom)
+					C=CMLib.beanCounter().makeBestCurrency(currency,myAmountOfDeadMoney,null,body);
+					if(C!=null)
 					{
-						if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
-							mob.tell(L("You'll need to dismount to get @x1 off the body.",C.name()));
-						else
-						if((mob.riding()!=null)&&(mob.riding() instanceof Item))
-							mob.tell(L("You'll need to disembark to get @x1 off the body.",C.name()));
-						else
-						if(CMLib.flags().canBeSeenBy(body,mob))
-							CMLib.commands().postGet(mob,body,C,false);
+						C.recoverPhyStats();
+						bodyRoom.addItem(C,ItemPossessor.Expire.Monster_EQ);
+						bodyRoom.recoverRoomStats();
+						final MOB mob=goldLooters.get(g);
+						if(mob.location()==bodyRoom)
+						{
+							if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
+								mob.tell(L("You'll need to dismount to get @x1 off the body.",C.name()));
+							else
+							if((mob.riding()!=null)&&(mob.riding() instanceof Item))
+								mob.tell(L("You'll need to disembark to get @x1 off the body.",C.name()));
+							else
+							if(CMLib.flags().canBeSeenBy(body,mob))
+								CMLib.commands().postGet(mob,body,C,false);
+						}
 					}
 				}
 			}

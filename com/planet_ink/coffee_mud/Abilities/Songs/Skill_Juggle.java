@@ -449,7 +449,7 @@ public class Skill_Juggle extends BardSkill
 			commands.set(0,"all");
 		}
 
-		final Vector<Item> V=new Vector<Item>();
+		final List<Item> itemsV=new ArrayList<Item>();
 		boolean allFlag=commands.get(0).equalsIgnoreCase("all");
 		if(whatToJuggle.toUpperCase().startsWith("ALL."))
 		{
@@ -483,12 +483,12 @@ public class Skill_Juggle extends BardSkill
 				break;
 			if((CMLib.flags().canBeSeenBy(juggleThis,mob))
 			&&((A==null)||(!A.juggles.contains(juggleThis)))
-			&&(!V.contains(juggleThis)))
-				V.addElement(juggleThis);
+			&&(!itemsV.contains(juggleThis)))
+				itemsV.add(juggleThis);
 			addendumStr="."+(++addendum);
 		}
 
-		if(V.size()==0)
+		if(itemsV.size()==0)
 		{
 			mob.tell(L("You don't seem to be carrying that."));
 			return false;
@@ -510,9 +510,9 @@ public class Skill_Juggle extends BardSkill
 			}
 			A.makeLongLasting();
 			A.pause=true;
-			for(int i=0;i<V.size();i++)
+			for(int i=0;i<itemsV.size();i++)
 			{
-				final Item I=V.elementAt(i);
+				final Item I=itemsV.get(i);
 				final CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_DELICATE_HANDS_ACT,L("<S-NAME> start(s) juggling <T-NAMESELF>."));
 				if((A.juggles.size()<A.maxJuggles())
 				&&(mob.location().okMessage(mob,msg)))

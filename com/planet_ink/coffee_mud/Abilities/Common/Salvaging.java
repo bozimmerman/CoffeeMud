@@ -217,7 +217,7 @@ public class Salvaging extends CommonSkill
 		final Area shipArea=ship.getShipArea();
 
 		final int totalWeight=I.phyStats().weight();
-		final Vector<Item> itemsToMove=new Vector<Item>();
+		final List<Item> itemsToMove=new ArrayList<Item>();
 		for(final Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();

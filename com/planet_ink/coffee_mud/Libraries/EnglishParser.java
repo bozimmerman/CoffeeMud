@@ -1488,7 +1488,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		if(wornOnly && (!V.isEmpty()))
 		{
-			final Vector<Item> V2=new Vector<Item>();
+			final Vector<Item> V2=new Vector<Item>(); // return value
 			short topLayer=0;
 			short curLayer=0;
 			int which=-1;
@@ -1515,7 +1515,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		else
 		if(unwornOnly && (!V.isEmpty()))
 		{
-			final Vector<Item> V2=new Vector<Item>();
+			final Vector<Item> V2=new Vector<Item>(); // return value
 			short topLayer=0;
 			short curLayer=0;
 			int which=-1;
@@ -2809,7 +2809,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	@Override
 	public List<Item> fetchAvailableItems(final List<Item> list, String srchStr, final Item goodLocation, final Filterer<Environmental> filter, final boolean exactOnly)
 	{
-		final Vector<Item> matches=new Vector<Item>(1);
+		final Vector<Item> matches=new Vector<Item>(1); // return value
 		if(list.isEmpty())
 			return matches;
 		final FetchFlags flags=fetchFlags(srchStr);

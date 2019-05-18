@@ -1001,7 +1001,7 @@ public class Destroy extends StdCommand
 				mob.tell(L("Destroy what?"));
 				return false;
 			}
-			final Vector<Item> V=new Vector<Item>();
+			final List<Item> V=new ArrayList<Item>();
 			int maxToDrop=Integer.MAX_VALUE;
 
 			if((commands.size()>1)

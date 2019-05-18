@@ -242,7 +242,7 @@ public class Druid_MyPlants extends StdAbility
 	public static List<Item> getMyPlants(final MOB mob, final Collection<Room> rooms)
 	{
 		final List<Item> myPlants = getMyPlants(mob);
-		final Vector<Item> V=new Vector<Item>();
+		final Vector<Item> V=new Vector<Item>(); // return value
 		if(rooms == null)
 			return V;
 		for(int i=0;i<myPlants.size();i++)
@@ -267,7 +267,7 @@ public class Druid_MyPlants extends StdAbility
 	public static List<Room> myPlantRooms(final MOB mob)
 	{
 		final List<Item> myPlants = getMyPlants(mob);
-		final Vector<Room> V=new Vector<Room>();
+		final Vector<Room> V=new Vector<Room>(); // return value
 		for(int i=0;i<myPlants.size();i++)
 		{
 			try

@@ -5400,7 +5400,7 @@ public class StdMOB implements MOB
 	@Override
 	public List<Item> fetchWornItems(final long wornCode, final short aboveOrAroundLayer, final short layerAttributes)
 	{
-		final Vector<Item> V = new Vector<Item>();
+		final Vector<Item> V = new Vector<Item>(); // return value
 		final boolean equalOk = (layerAttributes & Armor.LAYERMASK_MULTIWEAR) > 0;
 		final boolean allWorn = wornCode == Long.MIN_VALUE;
 		int lay = 0;

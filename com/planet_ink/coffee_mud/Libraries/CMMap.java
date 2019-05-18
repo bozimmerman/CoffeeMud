@@ -1701,9 +1701,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		return null;
 	}
 
-	public List<Item> findRoomItems(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final boolean anyItems, final boolean returnFirst, final int timePct)
+	protected List<Item> findRoomItems(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final boolean anyItems, final boolean returnFirst, final int timePct)
 	{
-		final Vector<Item> found=new Vector<Item>();
+		final Vector<Item> found=new Vector<Item>(); // ultimate return value
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		if(delay>1000)
 			delay=1000;

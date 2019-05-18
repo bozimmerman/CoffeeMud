@@ -128,7 +128,7 @@ public class Cataloging extends CommonSkill
 							||((contitem instanceof Drink)&&(((Drink)contitem).liquidRemaining()>0))))
 						{
 							buf.append(item.name()+" contains:\n\r");
-							final Vector<Item> newItems=new Vector<Item>();
+							final List<Item> newItems=new ArrayList<Item>();
 							if((item instanceof Drink)&&(((Drink)item).liquidRemaining()>0))
 							{
 								final RawMaterial l=(RawMaterial)CMClass.getItem("GenLiquidResource");
@@ -143,7 +143,7 @@ public class Cataloging extends CommonSkill
 								l.setDescription("");
 								CMLib.materials().addEffectsToResource(l);
 								l.recoverPhyStats();
-								newItems.addElement(l);
+								newItems.add(l);
 							}
 
 							if(item.owner() instanceof MOB)
@@ -153,7 +153,7 @@ public class Cataloging extends CommonSkill
 								{
 									final Item item2=M.getItem(i);
 									if((item2!=null)&&(item2.container()==item))
-										newItems.addElement(item2);
+										newItems.add(item2);
 								}
 								buf.append(CMLib.lister().lister(mob,newItems,true,null,null,true,false));
 							}
@@ -166,7 +166,7 @@ public class Cataloging extends CommonSkill
 								{
 									final Item item2=room.getItem(i);
 									if((item2!=null)&&(item2.container()==item))
-										newItems.addElement(item2);
+										newItems.add(item2);
 								}
 								buf.append(CMLib.lister().lister(mob,newItems,true,null,null,true,false));
 							}

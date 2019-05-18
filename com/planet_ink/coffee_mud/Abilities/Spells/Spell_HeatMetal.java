@@ -162,7 +162,7 @@ public class Spell_HeatMetal extends Spell
 		if(affected instanceof MOB)
 		{
 			final MOB M=(MOB)affected;
-			final Vector<Item> affectedItems=this.affectedItems;
+			final List<Item> affectedItems=this.affectedItems;
 			if(canBeUninvoked())
 			{
 				super.unInvoke();
@@ -170,7 +170,7 @@ public class Spell_HeatMetal extends Spell
 					M.tell(L("Some of your items begin to cool down."));
 				for(int i=0;i<affectedItems.size();i++)
 				{
-					final Item I=affectedItems.elementAt(i);
+					final Item I=affectedItems.get(i);
 					Ability A=I.fetchEffect(this.ID());
 					for(int x=0;(x<3) && (A!=null);x++)
 					{

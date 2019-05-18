@@ -110,7 +110,7 @@ public class Trap_SleepGas extends StdTrap
 	@Override
 	public List<Item> getTrapComponents()
 	{
-		final Vector<Item> V=new Vector<Item>();
+		final Vector<Item> V=new Vector<Item>(); // return value
 		final Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_POISON);
 		Ability A=CMClass.getAbility(text());
 		if(A==null)
