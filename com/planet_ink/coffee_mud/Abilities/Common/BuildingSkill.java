@@ -446,6 +446,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			extraProp=CMStrings.replaceAll(extraProp, "@dir", CMLib.directions().getDirectionName(dir));
 			removeEffects(R,extraProp);
 		}
+		CMLib.database().DBUpdateRoom(R);
 		return R;
 	}
 
@@ -458,6 +459,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			E=R.getExitInDir(dir);
 			removeEffects(E,extraProp);
 		}
+		CMLib.database().DBUpdateExits(R);
 		return E;
 	}
 
