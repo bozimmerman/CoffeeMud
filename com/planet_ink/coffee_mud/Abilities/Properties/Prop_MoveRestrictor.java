@@ -94,7 +94,7 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
-		message = L("<S-NAME> can`t go that way.");
+		message = CMParms.getParmStr(newText,"MESSAGE",L("<S-NAME> can`t go that way."));
 		chance = CMParms.getParmInt(newText, "CHANCE", 100);
 		publicMsg = CMParms.getParmBool(newText, "PUBLIC", false);
 		dismount = CMParms.getParmBool(newText, "DISMOUNT", false);
