@@ -1454,7 +1454,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		CMLib.commands().postFollow(product,mobFor,false);
 		if(product.amFollowing()==null)
 		{
-			mobFor.tell(L("You cannot accept seem to accept this follower!"));
+			mobFor.tell(L("You cannot seem to accept this follower!"));
 			return false;
 		}
 		return true;
