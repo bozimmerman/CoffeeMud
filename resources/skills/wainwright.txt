@@ -1,12 +1,12 @@
 % travois	1	10	10	50	GenContainer		200		0		Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP","MOUNTAINS"
-% sled	2	12	15	63	GenRideable		0	1	0	riding;used by;steers;lay;dismount;put	Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP"
+% sled	2	12	15	63	GenRideable		0	1	0	;used by;steer(s);lay(s) on;;	Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP"
 % hand wagon	3	15	20	80	GenContainer		300		0		Prop_MoveRestrictor;ONLYDOMAINS="STONE","WOODEN","CAVE","MAGIC","METAL","CITY","SEAPORT"
 % hand trolley	4	15	25	85	GenContainer		100		0		Prop_MoveRestrictor;ONLYDOMAINS="STONE","WOODEN","CAVE","MAGIC","METAL","CITY","SEAPORT"
-% dog sled	5	15	30	90	GenRideable		100	1	0	riding;driven by;drives;mount;dismount;put	Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP","MOUNTAINS"
+% dog sled	5	15	30	90	GenRideable		100	1	0	;driven by;drive(s);;;	Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP","MOUNTAINS"
 % wheel barrow	6	20	35	115	GenContainer		500		0		Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP","MOUNTAINS"
 % baby carriage	7	45	10	190	GenContainer		20		0		*Prop_MoveRestrictor;ONLYDOMAINS="STONE","WOODEN","CAVE","MAGIC","METAL","CITY","SEAPORT"
 all-terrain % baby carriage	37	60	15	255	GenContainer		30		0		
-% tobaggon	8	30	20	140	GenRideable		0	2	0	riding;used by;steers;sit;dismount;put	Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP"
+% tobaggon	8	30	20	140	GenRideable		0	2	0	;used by;steer(s);sit(s) on;;	Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP"
 % cabriolet	9	60	60	300	GenRideable		0	3	0		
 small % coach	10	70	60	340	GenRideable	LID	100	4	0		
 medium % coach	11	75	80	380	GenRideable	LID	200	6	0		
