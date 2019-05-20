@@ -85,6 +85,16 @@ public interface CMMiscUtils extends CMLibrary
 	public String niceCommaList(List<?> V, boolean andTOrF);
 
 	/**
+	 * Returns the calculated "pull weight" of a physical item.
+	 * This would include anything it is mounted to, or that
+	 * is mounted to it.  A discount is given for pulling
+	 * a wagon.
+	 * @param P the item to get the pull weight of. 
+	 * @return the calculated pull weight.
+	 */
+	public int getPullWeight(final Physical P);
+	
+	/**
 	 * This strange method takes a list of space-delimited expressions of the
 	 * form [CONDITION]number number number number, etc. E.G.: &gt;1 3 2 5 3 2.
 	 * Each list must contain the given num of digits. If the condition falls

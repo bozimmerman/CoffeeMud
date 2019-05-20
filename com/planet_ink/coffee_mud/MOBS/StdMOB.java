@@ -2505,11 +2505,14 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_PULL:
 				case CMMsg.TYP_PUSH:
 				{
-					if((msg.target() instanceof Physical)
-					&&((maxCarry()*10)<((Physical)msg.target()).phyStats().weight()))
+					if(msg.target() instanceof Physical)
 					{
-						tell(L("That's way too heavy."));
-						return false;
+						final int totalWeight=CMLib.utensils().getPullWeight((Physical)msg.target());
+						if((maxCarry()*10)<totalWeight)
+						{
+							tell(L("That's way too heavy."));
+							return false;
+						}
 					}
 					final int movesReq = ((msg.targetMinor()==CMMsg.TYP_PUSH)?
 						((Physical)msg.target()).phyStats().movesReqToPush():

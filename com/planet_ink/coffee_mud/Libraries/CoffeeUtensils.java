@@ -80,7 +80,52 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return id;
 	}
-
+	
+	protected int getSimpleWeight(final Physical P)
+	{
+		if(P instanceof Item)
+			return ((Item)P).recursiveWeight();
+		else
+			return P.phyStats().weight();
+	}
+	
+	@Override
+	public int getPullWeight(final Physical P)
+	{
+		if(P instanceof Rider)
+		{
+			Rider R=(Rider)P;
+			int ct=99;
+			while((R.riding() != null) &&(--ct>0))
+				R=R.riding();
+			if(R instanceof Rideable)
+			{
+				int totalWeight=0;
+				final boolean smallWeight = (((Rideable)R).rideBasis()==Rideable.RIDEABLE_WAGON);
+				LinkedList<Rider> weightsToDo = new LinkedList<Rider>();
+				weightsToDo.add(R);
+				while((weightsToDo.size()>0)
+				&&(totalWeight < Integer.MAX_VALUE/2))
+				{
+					R=weightsToDo.pop();
+					totalWeight += getSimpleWeight(R);
+					if(R instanceof Rideable)
+					{
+						for(final Enumeration<Rider> r=((Rideable)R).riders();r.hasMoreElements();)
+							weightsToDo.addLast(r.nextElement());
+					}
+				}
+				if(smallWeight)
+					totalWeight /= 300;
+				return totalWeight;
+			}
+			else
+				return getSimpleWeight(P);
+		}
+		else
+			return getSimpleWeight(P);
+	}
+	
 	@Override
 	public String getFormattedDate(final Environmental E)
 	{
