@@ -3963,9 +3963,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 
 		if((roomID==null)||(roomID.length()==0))
-			roomID=startRooms.get(race);
-		if((roomID==null)||(roomID.length()==0))
 			roomID=startRooms.get(realrace);
+		if((roomID==null)||(roomID.length()==0))
+			roomID=startRooms.get(race);
 		if(((roomID==null)||(roomID.length()==0)))
 			roomID=startRooms.get(align);
 		if(((roomID==null)||(roomID.length()==0)))
@@ -4008,6 +4008,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		charClass=charClass.replace(' ','_');
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race=race.replace(' ','_');
+		String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
+		realrace=realrace.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity=deity.replace(' ','_');
 		final String align=CMLib.flags().getAlignmentName(mob);
@@ -4026,6 +4028,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			}
 		}
 
+		if(((roomID==null)||(roomID.length()==0)))
+			roomID=deathRooms.get(realrace);
 		if(((roomID==null)||(roomID.length()==0)))
 			roomID=deathRooms.get(race);
 		if(((roomID==null)||(roomID.length()==0)))
@@ -4107,9 +4111,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 
 		if((roomID==null)||(roomID.length()==0))
-			roomID=bodyRooms.get(race);
-		if((roomID==null)||(roomID.length()==0))
 			roomID=bodyRooms.get(realrace);
+		if((roomID==null)||(roomID.length()==0))
+			roomID=bodyRooms.get(race);
 		if(((roomID==null)||(roomID.length()==0)))
 			roomID=bodyRooms.get(align);
 		if(((roomID==null)||(roomID.length()==0)))
