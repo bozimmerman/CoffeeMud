@@ -1371,16 +1371,32 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		}
 
 		boolean canBuild=CMLib.law().doesOwnThisLand(mob,mob.location());
+		final String allWords=CMParms.combine(commands,0).toUpperCase();
 		for(int r=0;r<data.length;r++)
 		{
 			final Building buildCode = Building.valueOf(data[r][DAT_BUILDCODE]);
-			if((data[r][0].toUpperCase().startsWith(firstWord.toUpperCase()))
+			if((data[r][0].toUpperCase().startsWith(allWords))
 			&&((data[r][DAT_BUILDERMASK].length()==0)
 				||(CMLib.masking().maskCheck(data[r][DAT_BUILDERMASK], mob, false))
 				||CMSecurity.isASysOp(mob)))
 			{
 				doingCode=buildCode;
 				recipe = data[r];
+			}
+		}
+		if((doingCode==null) || (recipe == null))
+		{
+			for(int r=0;r<data.length;r++)
+			{
+				final Building buildCode = Building.valueOf(data[r][DAT_BUILDCODE]);
+				if((data[r][0].toUpperCase().startsWith(firstWord.toUpperCase()))
+				&&((data[r][DAT_BUILDERMASK].length()==0)
+					||(CMLib.masking().maskCheck(data[r][DAT_BUILDERMASK], mob, false))
+					||CMSecurity.isASysOp(mob)))
+				{
+					doingCode=buildCode;
+					recipe = data[r];
+				}
 			}
 		}
 		if((doingCode == null)||(recipe == null))
