@@ -853,6 +853,29 @@ public class Age extends StdAbility
 		}
 	}
 
+	protected volatile long lastCheckTime = System.currentTimeMillis();
+
+	final Age me=this;
+	final Runnable myAgeCheckRunner = new Runnable()
+	{
+		@Override
+		public void run()
+		{
+			long lastCheckedAt;
+			synchronized(me)
+			{
+				lastCheckedAt = me.lastCheckTime;
+			}
+			if(System.currentTimeMillis() < lastCheckedAt)
+				return;
+			synchronized(this)
+			{
+				me.lastCheckTime = System.currentTimeMillis() + 5000;
+			}
+			me.doAgeChangeCheck();
+		}
+	};
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -973,7 +996,7 @@ public class Age extends StdAbility
 					}
 				}
 			}
-			doAgeChangeCheck();
+			msg.addTrailerRunnable(myAgeCheckRunner);
 		}
 	}
 
@@ -981,7 +1004,7 @@ public class Age extends StdAbility
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		doAgeChangeCheck();
+		this.myAgeCheckRunner.run();
 	}
 
 	@Override
