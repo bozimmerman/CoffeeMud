@@ -136,9 +136,10 @@ public class Foraging extends GatheringSkill
 				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted)&&(mob.location()!=null))
 				{
-					final int amount=((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)?
+					int amount=((found.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)?
 							   (CMLib.dice().roll(1,10,0)*(baseYield()+abilityCode())):
 							   (CMLib.dice().roll(1,3,0)*(baseYield()+abilityCode()));
+					amount=super.adjustYieldBasedOnRoomSpam(amount, mob.location());
 					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
 					msg.setValue(amount);
 					if(mob.location().okMessage(mob, msg))
@@ -193,6 +194,7 @@ public class Foraging extends GatheringSkill
 			return false;
 		final int resourceType=mob.location().myResource();
 		if((proficiencyCheck(mob,0,auto))
+		   &&(super.checkIfAnyYield(mob.location()))
 		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			  ||(resourceType==RawMaterial.RESOURCE_HEMP)
 			  ||(resourceType==RawMaterial.RESOURCE_SALT)

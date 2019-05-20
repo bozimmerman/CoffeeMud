@@ -121,9 +121,9 @@ public class Trawling extends GatheringSkill
 				final MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted)&&(!helping)&&(mob.location()!=null))
 				{
-					final int amount=CMLib.dice().roll(1,30,0)*(baseYield()+abilityCode());
 					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
-					msg.setValue(amount);
+					final int yield = super.adjustYieldBasedOnRoomSpam(CMLib.dice().roll(1,30,0)*(baseYield()+abilityCode()), mob.location());
+					msg.setValue(yield);
 					if(mob.location().okMessage(mob, msg))
 					{
 						String s="s";
@@ -204,6 +204,7 @@ public class Trawling extends GatheringSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if((proficiencyCheck(mob,0,auto))
+		&&(super.checkIfAnyYield(mob.location()))
 		&&(foundFish>0))
 		{
 			found=(Item)CMLib.materials().makeResource(foundFish,Integer.toString(fishRoom.domainType()),false,null, "");

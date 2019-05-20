@@ -23,6 +23,26 @@ public class QuadVector<T, K, L, M> extends Vector<Quad<T, K, L, M>> implements 
 {
 	private static final long	serialVersionUID	= -9175373358892311411L;
 
+	public QuadVector()
+	{
+		super();
+	}
+
+	public QuadVector(final int initial)
+	{
+		super(initial);
+	}
+
+	public QuadVector(final QuadVector<T, K, L, M> list)
+	{
+		super();
+		if(list != null)
+		{
+			for(final Quad<T, K, L, M> t : list)
+				add(t.first, t.second, t.third, t.fourth);
+		}
+	}
+
 	public Quad.FirstConverter<T, K, L, M> getFirstConverter()
 	{
 		return new Quad.FirstConverter<T, K, L, M>();

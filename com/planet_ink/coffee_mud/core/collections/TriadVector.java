@@ -28,6 +28,11 @@ public class TriadVector<T, K, L> extends Vector<Triad<T, K, L>> implements Tria
 		super();
 	}
 
+	public TriadVector(final int initial)
+	{
+		super(initial);
+	}
+
 	public TriadVector(final TriadList<T, K, L> list)
 	{
 		super();

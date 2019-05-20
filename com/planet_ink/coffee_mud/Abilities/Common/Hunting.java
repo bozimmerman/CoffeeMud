@@ -159,6 +159,7 @@ public class Hunting extends GatheringSkill
 			{
 				if(found!=null)
 				{
+					super.adjustYieldBasedOnRoomSpam(1, mob.location());
 					if(CMLib.flags().isWateryRoom(mob.location()))
 						commonTell(mob,L("You have found some @x1 signs!",foundShortName));
 					else
@@ -260,6 +261,7 @@ public class Hunting extends GatheringSkill
 			domainName = (domainType < Room.DOMAIN_INDOORS_DESCS.length) ? Room.DOMAIN_INDOORS_DESCS[domainType].toUpperCase() : "";
 
 		if((proficiencyCheck(mob,0,auto))
+		&&(super.checkIfAnyYield(mob.location()))
 		&&(nearByRoom()!=null))
 		{
 			final List<List<String>> recipes = loadRecipes("hunting.txt");

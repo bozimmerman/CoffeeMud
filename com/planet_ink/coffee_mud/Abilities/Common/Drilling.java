@@ -145,6 +145,7 @@ public class Drilling extends GatheringSkill
 						amount=(container.liquidHeld()-container.liquidRemaining());
 					if(amount>((Container)container).capacity())
 						amount=((Container)container).capacity();
+					amount = super.adjustYieldBasedOnRoomSpam(amount, mob.location());
 					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
 					msg.setValue(amount);
 					if(mob.location().okMessage(mob, msg))
@@ -249,6 +250,7 @@ public class Drilling extends GatheringSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if((proficiencyCheck(mob,0,auto))
+		   &&(super.checkIfAnyYield(mob.location()))
 		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)))
 		{
 			found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null, "");

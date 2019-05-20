@@ -140,6 +140,7 @@ public class Mining extends GatheringSkill
 					&&(found.material()!=RawMaterial.RESOURCE_COAL))
 						amount=CMLib.dice().roll(1,25,0);
 					amount=amount*(baseYield()+abilityCode());
+					amount=super.adjustYieldBasedOnRoomSpam(amount, mob.location());
 					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
 					msg.setValue(amount);
 					if(mob.location().okMessage(mob, msg))
@@ -194,12 +195,13 @@ public class Mining extends GatheringSkill
 			return false;
 		final int resourceType=mob.location().myResource();
 		if((proficiencyCheck(mob,0,auto))
+		   &&(super.checkIfAnyYield(mob.location()))
 		   &&((resourceType&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PRECIOUS)
 		   &&((resourceType&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)
 		   &&(resourceType!=RawMaterial.RESOURCE_SAND)
 		   &&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK)
-		   ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-		   ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)))
+		     ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+		     ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)))
 		{
 			found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null, "");
 			foundShortName="nothing";

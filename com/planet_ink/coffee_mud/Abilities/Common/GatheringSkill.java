@@ -64,9 +64,81 @@ public class GatheringSkill extends CommonSkill
 
 	protected static final Map<String, List<Integer>>	supportedResources	= new Hashtable<String, List<Integer>>();
 
+	protected static TreeMap<Room,Quad<Room,Integer,short[],Long>> roomSpamCounter = new TreeMap<Room,Quad<Room,Integer,short[],Long>>();
+
 	public GatheringSkill()
 	{
 		super();
+	}
+
+	protected double getRoomSpamDropRate()
+	{
+		return 0.25;
+	}
+
+	protected boolean checkIfAnyYield(Room R)
+	{
+		R=CMLib.map().getRoom(R);
+		if(R==null)
+			return false;
+		synchronized(roomSpamCounter)
+		{
+			if(roomSpamCounter.containsKey(R))
+			{
+				final Quad<Room,Integer,short[],Long> oldRecord = roomSpamCounter.get(R);
+				if((oldRecord!=null)
+				&&((System.currentTimeMillis() > oldRecord.fourth.longValue())
+				  ||(oldRecord.second != R.myResource())))
+				{
+					roomSpamCounter.remove(R);
+					return true;
+				}
+			}
+			final Quad<Room,Integer,short[],Long> curRecord = roomSpamCounter.get(R);
+			if(curRecord == null)
+				return true;
+			final double pctDrop = this.getRoomSpamDropRate() * curRecord.third[0];
+			final int finalYield = (int)Math.round(10 - CMath.mul(10, pctDrop));
+			if(finalYield >= 1)
+				return true;
+			return false;
+		}
+	}
+
+	protected int adjustYieldBasedOnRoomSpam(final int initialYield, final Room R)
+	{
+		if((R==null)
+		||(initialYield==0))
+			return 0;
+		synchronized(roomSpamCounter)
+		{
+			if(roomSpamCounter.containsKey(R))
+			{
+				final Quad<Room,Integer,short[],Long> oldRecord = roomSpamCounter.get(R);
+				if((oldRecord!=null)
+				&&((System.currentTimeMillis() > oldRecord.fourth.longValue())
+				  ||(oldRecord.second != R.myResource())))
+					roomSpamCounter.remove(R);
+			}
+			final Quad<Room,Integer,short[],Long> curRecord = roomSpamCounter.get(R);
+			if(curRecord == null)
+			{
+				final Long expirationTime = new Long(System.currentTimeMillis() + (30 * 60 * 1000)); // intentional
+				final short[] first = new short[] {1};
+				final Quad<Room,Integer,short[],Long> record = new Quad<Room,Integer,short[],Long>(R,Integer.valueOf(R.myResource()),first,expirationTime);
+				roomSpamCounter.put(R, record);
+				return initialYield;
+			}
+			else
+			{
+				final double pctDrop = this.getRoomSpamDropRate() * curRecord.third[0];
+				curRecord.third[0]++;
+				final int finalYield = (int)Math.round(initialYield - CMath.mul(initialYield, pctDrop));
+				if(finalYield <= 0)
+					return 0;
+				return finalYield;
+			}
+		}
 	}
 
 	@Override

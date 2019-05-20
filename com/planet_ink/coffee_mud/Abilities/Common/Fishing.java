@@ -129,9 +129,9 @@ public class Fishing extends GatheringSkill
 				&&(!helping)
 				&&(mob.location()!=null))
 				{
-					final int amount=CMLib.dice().roll(1,3,0)*(baseYield()+abilityCode());
 					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
-					msg.setValue(amount);
+					final int yield = super.adjustYieldBasedOnRoomSpam(CMLib.dice().roll(1,3,0)*(baseYield()+abilityCode()), mob.location());
+					msg.setValue(yield);
 					if(mob.location().okMessage(mob, msg))
 					{
 						String s="s";
@@ -205,6 +205,7 @@ public class Fishing extends GatheringSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if((proficiencyCheck(mob,0,auto))
+	   &&(super.checkIfAnyYield(mob.location()))
 		&&(foundFish>0)
 		&&(fishRoom!=null))
 		{

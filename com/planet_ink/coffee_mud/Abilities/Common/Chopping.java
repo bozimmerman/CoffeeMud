@@ -138,7 +138,8 @@ public class Chopping extends GatheringSkill
 				if((found!=null)&&(!aborted)&&(mob.location()!=null))
 				{
 					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
-					msg.setValue(CMLib.dice().roll(1,7,3)*(baseYield()+abilityCode()));
+					final int yield = super.adjustYieldBasedOnRoomSpam(CMLib.dice().roll(1,7,3)*(baseYield()+abilityCode()), mob.location());
+					msg.setValue(yield);
 					if(mob.location().okMessage(mob, msg))
 					{
 						String s="s";
@@ -189,7 +190,7 @@ public class Chopping extends GatheringSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		final int resourceType=mob.location().myResource();
-		if(proficiencyCheck(mob,0,auto))
+		if(proficiencyCheck(mob,0,auto) && (super.checkIfAnyYield(mob.location())))
 		{
 			if((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 			{
