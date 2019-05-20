@@ -499,23 +499,47 @@ public class StdLanguage extends StdAbility implements Language
 					&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDMOBS)||(!((MOB)msg.target()).isMonster()))
 					&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDROOMS)||(!((MOB)msg.target()).isMonster())))
 					{
-						final Language L;
-						if((msg.tool() instanceof Language)&&(msg.tool().ID().equals(ID())))
-							L=(Language)msg.tool();
+						Language spokenL; // this is the language being spoken
+						if(msg.tool() instanceof Language)
+							spokenL=(Language)msg.tool();
 						else
-							L=getAnyTranslator(ID(),msg.source());
-						if((L==null)
-						||(!L.beingSpoken(ID()))
-						||((CMLib.dice().rollPercentage()*2)>(L.getProficiency(ID())+getProficiency(ID()))))
+						if((affected instanceof MOB)
+						&&(((MOB)affected).isMonster())
+						&& this.beingSpoken(ID()))
+						{
+							spokenL=getAnyTranslator(this.ID(),msg.source());
+							if(spokenL==null)
+							{
+								msg.setTargetCode(CMMsg.TYP_SPEAK);
+								msg.setSourceCode(CMMsg.TYP_SPEAK);
+								msg.setOthersCode(CMMsg.TYP_SPEAK);
+								final String reply;
+								reply="<S-NAME> speak(s) "+name()+" and do(es) not understand <T-HIM-HER>.";
+								msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),null,CMMsg.MSG_OK_VISUAL,reply));
+								break;
+							}
+						}
+						else
+							break;
+						final Language heardL; // this is the language as heard
+						if(spokenL.ID().equals(ID()))
+							heardL=this;
+						else
+						if(affected instanceof MOB)
+							heardL=getAnyTranslator(spokenL.ID(),(MOB)affected);
+						else
+							heardL=getAnyTranslator(spokenL.ID(),msg.source());
+						if((heardL==null)
+						||((CMLib.dice().rollPercentage()*2)>(spokenL.getProficiency(spokenL.ID())+heardL.getProficiency(heardL.ID()))))
 						{
 							msg.setTargetCode(CMMsg.TYP_SPEAK);
 							msg.setSourceCode(CMMsg.TYP_SPEAK);
 							msg.setOthersCode(CMMsg.TYP_SPEAK);
 							String reply=null;
-							if((L==null)||(!L.beingSpoken(ID())))
-								reply="<S-NAME> <S-IS-ARE> speaking "+name()+" and <T-NAME> would not understand <S-HIM-HER>.";
+							if(heardL==null)
+								reply="<S-NAME> do(s) not speak "+spokenL.name()+" and would not understand <T-HIM-HER>.";
 							else
-								reply="<T-NAME> <T-IS-ARE> having trouble understanding <S-YOUPOSS> pronunciation.";
+								reply="<T-NAME> <T-IS-ARE> having trouble understanding <T-YOUPOSS> pronunciation.";
 							msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),null,CMMsg.MSG_OK_VISUAL,reply));
 						}
 					}
