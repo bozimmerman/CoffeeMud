@@ -558,16 +558,17 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			}
 			if(proceed)
 			{
-				List<PlayerData> V=getBoxRowPDData(postalChain());
-				if(V==null)
-					V=new ArrayList<PlayerData>(0);
+				List<PlayerData> postalDataV=getBoxRowPDData(postalChain());
+				if(postalDataV==null)
+					postalDataV=new ArrayList<PlayerData>(0);
 				// first parse all the pending mail,
 				// and remove it from the sorter
-				final List<MailPiece> parsed=new ArrayList<MailPiece>(V.size());
-				for(int v=0;v<V.size();v++)
+				final List<MailPiece> parsed=new ArrayList<MailPiece>(postalDataV.size());
+				for(int v=0;v<postalDataV.size();v++)
 				{
-					final DatabaseEngine.PlayerData PD=V.get(v);
-					parsed.add(parsePostalItemData(PD.xml()));
+					final DatabaseEngine.PlayerData PD=postalDataV.get(v);
+					if(PD.key().startsWith(postalBranch()+";"))
+						parsed.add(parsePostalItemData(PD.xml()));
 					CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
 				}
 				PostOffice P=null;
@@ -596,15 +597,15 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 							P.addToBox(fromWhom,I,V2.to,"POSTMASTER",System.currentTimeMillis(),0.0);
 					}
 				}
-				V=CMLib.database().DBReadPlayerSectionData(postalChain());
+				postalDataV=CMLib.database().DBReadPlayerSectionData(postalChain());
 				TimeClock TC=null;
 				if(getStartRoom()!=null)
 					TC=getStartRoom().getArea().getTimeObj();
 				if((TC!=null)&&(maxMudMonthsHeld()>0))
 				{
-					for(int v=0;v<V.size();v++)
+					for(int v=0;v<postalDataV.size();v++)
 					{
-						final DatabaseEngine.PlayerData V2=V.get(v);
+						final DatabaseEngine.PlayerData V2=postalDataV.get(v);
 						if(V2.key().startsWith(postalBranch()+";"))
 						{
 							final MailPiece data=parsePostalItemData(V2.xml());
@@ -944,24 +945,24 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				super.executeMsg(myHost,msg);
 				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
-					List<PlayerData> V=null;
+					List<PlayerData> allPostalData=null;
 					final String theName=getSenderName(msg.source(),Clan.Function.DEPOSIT_LIST,false);
 					if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
-						V=getAllLocalBoxPD(theName);
+						allPostalData=getAllLocalBoxPD(theName);
 					else
 					{
-						V=getAllLocalBoxPD(theName);
+						allPostalData=getAllLocalBoxPD(theName);
 						if(mob.isMarriedToLiege())
 						{
 							final List<PlayerData> PDV=getAllLocalBoxPD(mob.getLiegeID());
 							if((PDV!=null)&&(PDV.size()>0))
-								V.addAll(PDV);
+								allPostalData.addAll(PDV);
 						}
 					}
 
 					final TimeClock C=CMLib.time().localClock(getStartRoom());
 					boolean codCharge=false;
-					if(V.size()==0)
+					if(allPostalData.size()==0)
 						mob.tell(L("\n\rYour postal box is presently empty."));
 					else
 					{
@@ -969,9 +970,10 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						str.append(L("\n\rItems in your postal box here:\n\r"));
 						str.append(L("^x[COD     ][From           ][Sent           ][Item                        ]^.^N"));
 						mob.tell(str.toString());
-						for(int i=0;i<V.size();i++)
+						for(int i=0;i<allPostalData.size();i++)
 						{
-							final DatabaseEngine.PlayerData PD=V.get(i);
+							final DatabaseEngine.PlayerData PD=allPostalData.get(i);
+							// already filtered by getAllLocalBoxPD
 							final MailPiece pieces=parsePostalItemData(PD.xml());
 							final Item I=makeItem(pieces);
 							if(I==null)

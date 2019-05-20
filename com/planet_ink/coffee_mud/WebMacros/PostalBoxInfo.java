@@ -68,23 +68,29 @@ public class PostalBoxInfo extends StdWebMacro
 		}
 
 		final List<MailPiece> mailPieces;
-		if(httpReq.getRequestObjects().containsKey("MAIL_PIECES"+chain+"_"+box))
-			mailPieces = (List<MailPiece>)httpReq.getRequestObjects().get("MAIL_PIECES"+chain+"_"+box);
+		if(httpReq.getRequestObjects().containsKey("MAIL_PIECES_"+chain+"_"+box))
+			mailPieces = (List<MailPiece>)httpReq.getRequestObjects().get("MAIL_PIECES_"+chain+"_"+box);
 		else
 		{
-			mailPieces=new ArrayList<MailPiece>(1);
 			final PostOffice P=CMLib.map().getPostOffice(chain, "*");
 			if(P!=null)
 			{
 				final List<DatabaseEngine.PlayerData> data = CMLib.database().DBReadPlayerData(box, chain);
+				mailPieces=new ArrayList<MailPiece>(data.size());
 				for(final DatabaseEngine.PlayerData PD : data)
 				{
-					final MailPiece MP=P.parsePostalItemData(PD.xml());
-					if(MP != null)
-						mailPieces.add(MP);
+					if((PD!=null)
+					&&(PD.key().indexOf(';')>0))
+					{
+						final MailPiece MP=P.parsePostalItemData(PD.xml());
+						if(MP != null)
+							mailPieces.add(MP);
+					}
 				}
 			}
-			httpReq.getRequestObjects().put("MAIL_PIECES"+chain+"_"+box,mailPieces);
+			else
+				mailPieces=new ArrayList<MailPiece>(1);
+			httpReq.getRequestObjects().put("MAIL_PIECES_"+chain+"_"+box,mailPieces);
 		}
 
 		if(parms.containsKey("NEXT"))

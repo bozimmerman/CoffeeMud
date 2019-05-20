@@ -73,6 +73,7 @@ public class PostOfficeBoxNext extends StdWebMacro
 		{
 			postalBoxes=CMLib.database().DBReadPlayerDataAuthorsBySection(chain);
 			postalBoxes.add(0, chain);
+			httpReq.getRequestObjects().put("POSTAL_BOXES_"+chain, postalBoxes);
 		}
 		else
 		{
@@ -83,6 +84,7 @@ public class PostOfficeBoxNext extends StdWebMacro
 				if(C.first.getAuthority(C.second.intValue(),Function.WITHDRAW)!=Authority.CAN_NOT_DO)
 					postalBoxes.add(C.first.name());
 			}
+			httpReq.getRequestObjects().put("POSTAL_BOXES_"+chain, postalBoxes);
 		}
 		String lastID="";
 		for(final String postalBox : postalBoxes)
