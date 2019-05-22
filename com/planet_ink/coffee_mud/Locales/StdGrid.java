@@ -346,26 +346,31 @@ public class StdGrid extends StdRoom implements GridLocale
 	@Override
 	public List<Room> getAllRooms()
 	{
-		final Vector<Room> V=new Vector<Room>();
 		final Room[][] subMap=getBuiltGrid();
 		if(subMap!=null)
 		{
+			final Vector<Room> roomsV=new Vector<Room>(subMap.length * ((subMap.length>0)?subMap[0].length:0));
 			for (final Room[] element : subMap)
 			{
 				for(int y=0;y<element.length;y++)
-					V.addElement(element[y]);
+				{
+					final Room R=element[y];
+					if(R!=null)
+						roomsV.addElement(R);
+				}
 			}
+			return roomsV;
 		}
-		return V;
+		return new Vector<Room>(0);
 	}
 
 	@Override
 	public List<Room> getAllRoomsFilled()
 	{
-		final Vector<Room> V=new Vector<Room>();
 		final Room[][] subMap=getBuiltGrid();
 		if(subMap!=null)
 		{
+			final Vector<Room> roomsV=new Vector<Room>(subMap.length * ((subMap.length>0)?subMap[0].length:0));
 			for (final Room[] element : subMap)
 			{
 				for(int y=0;y<element.length;y++)
@@ -373,13 +378,25 @@ public class StdGrid extends StdRoom implements GridLocale
 					final Room R=element[y];
 					if(R==null)
 					{
-						V.clear();
+						roomsV.clear();
 						if(!this.amDestroyed())
+						{
+							CMLib.s_sleep(10);
+							for (final Room[] element2 : getBuiltGrid())
+							{
+								for(int y2=0;y2<element2.length;y2++)
+								{
+									final Room R2=element[y2];
+									if(R2==null)
+										return this.getAllRooms(); // give up.
+								}
+							}
 							return getAllRoomsFilled();
-						return V;
+						}
+						return roomsV;
 					}
-					if(!V.contains(R))
-						V.addElement(R);
+					if(!roomsV.contains(R))
+						roomsV.addElement(R);
 					final List<Room> sky = R.getSky();
 					if(sky == null)
 						Log.errOut("No Sky for "+R.roomID());
@@ -388,16 +405,16 @@ public class StdGrid extends StdRoom implements GridLocale
 						for(final Room R2 : sky)
 						{
 							if(R2 instanceof GridLocale)
-								V.addAll(((GridLocale)R2).getAllRoomsFilled());
+								roomsV.addAll(((GridLocale)R2).getAllRoomsFilled());
 							else
-							if(!V.contains(R2))
-								V.add(R2);
+							if(!roomsV.contains(R2))
+								roomsV.add(R2);
 						}
 					}
 				}
 			}
 		}
-		return V;
+		return new Vector<Room>(0);
 	}
 
 	private static final Iterator<Room> emptyIterator = new Iterator<Room>()
