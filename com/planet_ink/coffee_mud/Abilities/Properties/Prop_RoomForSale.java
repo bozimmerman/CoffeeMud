@@ -424,7 +424,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				}
 				if(!playerExists)
 				{
-					Log.warnOut("Property owned by "+T.getOwnerName()+" is now lost: "+T.getUniqueLotID());
+					Log.warnOut("Property owned by non-existant player "+T.getOwnerName()+" is now lost: "+T.getUniqueLotID());
 					T.setOwnerName("");
 					T.updateLot(null);
 					return new int[] {-1, 0};
