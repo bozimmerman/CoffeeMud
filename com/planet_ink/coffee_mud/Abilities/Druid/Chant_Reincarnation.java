@@ -214,7 +214,11 @@ public class Chant_Reincarnation extends Chant
 
 		boolean success=proficiencyCheck(mob,0,auto);
 		final Set<MOB> groupMembers=mob.getGroupMembers(new HashSet<MOB>());
-		if(success&&(!auto)&&(mob!=target)&&(!mob.mayIFight(target))&&(!groupMembers.contains(target)))
+		if(success
+		&&(!auto)
+		&&(mob!=target)
+		&&(!mob.mayIFight(target))
+		&&(!groupMembers.contains(target)))
 		{
 			mob.tell(L("@x1 is a player, so you must be group members, and your playerkill flags must be on for this to work.",target.name(mob)));
 			success=false;

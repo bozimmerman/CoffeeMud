@@ -219,8 +219,7 @@ public class Fighter_BodyFlip extends FighterSkill
 			levelDiff=0;
 		final int adjustment = ( -levelDiff ) +
 						 ( -( (int)Math.round ( ( (target.charStats().getStat( CharStats.STAT_STRENGTH) ) - 9.0 ) * 3.0 ) ) );
-		boolean success=proficiencyCheck(mob,adjustment,auto);
-		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
+		final boolean success=proficiencyCheck(mob,adjustment,auto);
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<T-NAME> flip(s) over!"):L("^F^<FIGHT^><S-NAME> flip(s) <T-NAMESELF> over!^</FIGHT^>^?"));
