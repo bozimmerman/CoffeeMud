@@ -101,7 +101,7 @@ public class ClanMOTD extends StdCommand
 			@Override
 			public void showPrompt()
 			{
-				session.promptPrint(L("Enter the message\n\r: "));
+				session.promptPrint(L("Enter the message (or DELETE)\n\r: "));
 			}
 
 			@Override
@@ -115,6 +115,12 @@ public class ClanMOTD extends StdCommand
 				final String premise=this.input;
 				if(premise.length()==0)
 				{
+					return;
+				}
+				if(premise.equalsIgnoreCase("DELETE")||premise.equalsIgnoreCase("CLEAR"))
+				{
+					CMLib.clans().clanAnnounce(mob,L("Clan MOTD has been cleared. "));
+					CMLib.database().DBDeleteJournal("CLAN_MOTD_"+C.clanID(), null);
 					return;
 				}
 				final Vector<String> cmds=new Vector<String>();
