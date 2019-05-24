@@ -293,42 +293,44 @@ public class Artisan extends StdCharClass
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.source() == myHost)
-		&&(msg.targetMinor() == CMMsg.TYP_ITEMGENERATED)
-		&&(msg.target() != null)
-		&&(msg.tool() instanceof Ability)
-		&&(msg.value() > 0)
-		&&((!(msg.target() instanceof DoorKey))||(msg.tool().ID().equals("LockSmith")))
-		&&(((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_CRAFTINGSKILL)
-			||((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_EPICUREAN)
-			||((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_BUILDINGSKILL)))
+		&&(msg.source().charStats().getCurrentClass().ID().equals("Artisan")))
 		{
-			CMLib.leveler().postExperience(msg.source(),null,null,msg.value(),false);
-		}
-		else
-		if((msg.source() == myHost)
-		&&(msg.targetMinor() == CMMsg.TYP_RECIPELEARNED)
-		&&(msg.target() != null)
-		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_CRAFTINGSKILL)
-		&&(msg.value() > 0))
-		{
-			final Map<String,Object> persMap = msg.source().playerStats().getClassVariableMap(this);
-			if(persMap != null)
+			if((msg.targetMinor() == CMMsg.TYP_ITEMGENERATED)
+			&&(msg.target() != null)
+			&&(msg.tool() instanceof Ability)
+			&&(msg.value() > 0)
+			&&((!(msg.target() instanceof DoorKey))||(msg.tool().ID().equals("LockSmith")))
+			&&(((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_CRAFTINGSKILL)
+			 ||((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_EPICUREAN)
+			 ||((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_BUILDINGSKILL)))
 			{
-				final String key = "LAST_DATE_FOR_"+msg.tool().ID().toUpperCase().trim();
-				long[] lastTime = (long[])persMap.get(key);
-				if(lastTime == null)
+				CMLib.leveler().postExperience(msg.source(),null,null,msg.value(),false);
+			}
+			else
+			if((msg.targetMinor() == CMMsg.TYP_RECIPELEARNED)
+			&&(msg.target() != null)
+			&&(msg.tool() instanceof Ability)
+			&&((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_CRAFTINGSKILL)
+			&&(msg.value() > 0))
+			{
+				final Map<String,Object> persMap = msg.source().playerStats().getClassVariableMap(this);
+				if(persMap != null)
 				{
-					lastTime = new long[1];
-					persMap.put(key, lastTime);
-				}
-				final Area homeA=CMLib.map().areaLocation(msg.source().getStartRoom());
-				final TimeClock homeL = (homeA == null) ? null : homeA.getTimeObj();
-				if((homeL!=null)
-				&&((homeL.toHoursSinceEpoc() - lastTime[0])>0))
-				{
-					lastTime[0] = homeL.toHoursSinceEpoc();
-					CMLib.leveler().postExperience(msg.source(), null, null, msg.value(), false);
+					final String key = "LAST_DATE_FOR_"+msg.tool().ID().toUpperCase().trim();
+					long[] lastTime = (long[])persMap.get(key);
+					if(lastTime == null)
+					{
+						lastTime = new long[1];
+						persMap.put(key, lastTime);
+					}
+					final Area homeA=CMLib.map().areaLocation(msg.source().getStartRoom());
+					final TimeClock homeL = (homeA == null) ? null : homeA.getTimeObj();
+					if((homeL!=null)
+					&&((homeL.toHoursSinceEpoc() - lastTime[0])>0))
+					{
+						lastTime[0] = homeL.toHoursSinceEpoc();
+						CMLib.leveler().postExperience(msg.source(), null, null, msg.value(), false);
+					}
 				}
 			}
 		}
