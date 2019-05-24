@@ -383,6 +383,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.delExpertise(null); // clears the cache
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELSGAINED, -1, mob);
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLASSLEVELSGAINED, -1, mob);
+		if(mob.isPlayer()
+		&&(!CMLib.flags().isInTheGame(mob, true)))
+			CMLib.database().DBUpdatePlayerMOBOnly(mob);
 	}
 
 	@Override
@@ -912,6 +915,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELSGAINED, 1, mob);
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLASSLEVELSGAINED, 1, mob);
+		if(mob.isPlayer()
+		&&(!CMLib.flags().isInTheGame(mob, true)))
+			CMLib.database().DBUpdatePlayerMOBOnly(mob);
 	}
 
 	protected void ensureMaxDeferredXP(final MOB mob, final PlayerStats pStats)
