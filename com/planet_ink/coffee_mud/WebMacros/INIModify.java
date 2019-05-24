@@ -325,15 +325,15 @@ public class INIModify extends StdWebMacro
 			if(((i3Name!=null)&&(i3Name.trim().length()>0))
 			||((imc2Name!=null)&&(imc2Name.trim().length()>0)))
 				return;
-			if(str.length()>0)
-				str.append(", ");
+			if(str.length()>4)
+				str.append(",\\\r\n\t");
 			str.append(firstPart);
 		}
 	}
 
 	protected String buildChannelsVar(final HTTPRequest httpReq)
 	{
-		final StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("\\\r\n\t");
 		for(int index=0;httpReq.isUrlParameter("CHANNEL_"+index+"_NAME");index++)
 			addChannelsVar(httpReq,Integer.toString(index),str);
 		addChannelsVar(httpReq,"",str);
@@ -348,8 +348,8 @@ public class INIModify extends StdWebMacro
 			final String i3Name=httpReq.getUrlParameter("CHANNEL_"+index+"_I3NAME");
 			if((i3Name!=null)&&(i3Name.trim().length()>0))
 			{
-				if(str.length()>0)
-					str.append(", ");
+				if(str.length()>4)
+					str.append(",\\\r\n\t");
 				str.append(firstPart).append(" ").append(i3Name);
 			}
 		}
@@ -357,7 +357,7 @@ public class INIModify extends StdWebMacro
 
 	protected String buildIChannelsVar(final HTTPRequest httpReq)
 	{
-		final StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("\\\r\n\t");
 		for(int index=0;httpReq.isUrlParameter("CHANNEL_"+index+"_NAME");index++)
 			addIChannelsVar(httpReq,Integer.toString(index),str);
 		addIChannelsVar(httpReq,"",str);
@@ -372,8 +372,8 @@ public class INIModify extends StdWebMacro
 			final String imc2Name=httpReq.getUrlParameter("CHANNEL_"+index+"_IMC2NAME");
 			if((imc2Name!=null)&&(imc2Name.trim().length()>0))
 			{
-				if(str.length()>0)
-					str.append(", ");
+				if(str.length()>4)
+					str.append(",\\\r\n\t");
 				str.append(firstPart).append(" ").append(imc2Name);
 			}
 		}
@@ -381,7 +381,7 @@ public class INIModify extends StdWebMacro
 
 	protected String buildIMC2ChannelsVar(final HTTPRequest httpReq)
 	{
-		final StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("\\\r\n\t");
 		for(int index=0;httpReq.isUrlParameter("CHANNEL_"+index+"_NAME");index++)
 			addIMC2ChannelsVar(httpReq,Integer.toString(index),str);
 		addIMC2ChannelsVar(httpReq,"",str);
@@ -392,11 +392,12 @@ public class INIModify extends StdWebMacro
 	{
 		final String name=httpReq.getUrlParameter("COMMANDJOURNAL_"+index+"_NAME");
 		final String mask=httpReq.getUrlParameter("COMMANDJOURNAL_"+index+"_MASK");
-		if((name!=null)&&(name.trim().length()>0)
+		if((name!=null)
+		&&(name.trim().length()>0)
 		&&(!name.trim().equalsIgnoreCase("auction")))
 		{
-			if(str.length()>0)
-				str.append(", ");
+			if(str.length()>4)
+				str.append(",\\\r\n\t");
 			str.append(name.trim().replace(',',' ').toUpperCase()).append(" ");
 			for(final JournalsLibrary.CommandJournalFlags flag : JournalsLibrary.CommandJournalFlags.values())
 			{
@@ -412,7 +413,7 @@ public class INIModify extends StdWebMacro
 
 	protected String buildCommandJournalsVar(final HTTPRequest httpReq)
 	{
-		final StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("\\\r\n\t");
 		for(int index=0;httpReq.isUrlParameter("COMMANDJOURNAL_"+index+"_NAME");index++)
 			addCommandJournalsVar(httpReq,Integer.toString(index),str);
 		addCommandJournalsVar(httpReq,"",str);
@@ -425,8 +426,8 @@ public class INIModify extends StdWebMacro
 		if((name!=null)&&(name.trim().length()>0)
 		&&(!name.trim().equalsIgnoreCase("auction")))
 		{
-			if(str.length()>0)
-				str.append(", ");
+			if(str.length()>4)
+				str.append(",\\\r\n\t");
 			str.append(name.trim().replace(',',' ')).append(" ");
 
 			for(final JournalsLibrary.ForumJournalFlags flag : JournalsLibrary.ForumJournalFlags.values())
@@ -441,7 +442,7 @@ public class INIModify extends StdWebMacro
 
 	protected String buildForumJournalsVar(final HTTPRequest httpReq)
 	{
-		final StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("\\\r\n\t");
 		for(int index=0;httpReq.isUrlParameter("FORUMJOURNAL_"+index+"_NAME");index++)
 			addForumJournalsVar(httpReq,Integer.toString(index),str);
 		addForumJournalsVar(httpReq,"",str);
