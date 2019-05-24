@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Bool;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -1250,6 +1251,9 @@ public class CMSecurity
 					set.put(flag,flagList.toArray(new String[0]));
 					return true;
 				}
+				else
+				if(CMProps.getBoolVar(Bool.MUDSTARTED))
+					return true;
 			}
 		}
 		return false;
