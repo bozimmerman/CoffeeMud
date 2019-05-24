@@ -137,7 +137,8 @@ public class ClanDeclare extends StdCommand
 					mob.tell(L("You can't do that."));
 					return false;
 				}
-				if(C.getClanRelations(C2.clanID())==newRelationship)
+				final int oldRelationship=C.getClanRelations(C2.clanID());
+				if(oldRelationship==newRelationship)
 				{
 					mob.tell(L("@x1 is already in that state with @x2.",C.getName(),C2.getName()));
 					return false;
@@ -160,7 +161,8 @@ public class ClanDeclare extends StdCommand
 				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.Function.DECLARE,true))
 				{
 					CMLib.clans().clanAnnounce(mob,L("The @x1 @x2 has declared @x3 @x4.",C.getGovernmentName(),C.clanID(),CMStrings.capitalizeAndLower(Clan.REL_STATES[newRelationship].toLowerCase()),C2.name()));
-					CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLANDECLARE, -1, C, Clan.REL_DESCS[newRelationship]);
+					CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLANDECLARE, -1, C, Clan.REL_DESCS[oldRelationship]);
+					CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLANDECLARE, 1, C, Clan.REL_DESCS[newRelationship]);
 					C.setClanRelations(C2.clanID(),newRelationship,System.currentTimeMillis());
 					C.update();
 					return false;
