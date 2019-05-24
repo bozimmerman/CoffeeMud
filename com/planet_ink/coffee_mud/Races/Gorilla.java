@@ -157,7 +157,7 @@ public class Gorilla extends Monkey
 					(L("a strip of @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur",name().toLowerCase())));
 				}
 				resources.addElement(makeResource
-				(L("an @x1 nose",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
+				(L("a @x1 nose",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				for(int i=0;i<3;i++)
 				{
 					resources.addElement(makeResource
