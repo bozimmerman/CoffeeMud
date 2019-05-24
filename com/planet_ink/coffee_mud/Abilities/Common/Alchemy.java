@@ -167,9 +167,11 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		if((spells == null)||(spells.size()==0))
 			return false;
 		for(final Ability A : spells)
+		{
 			if(((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL)
 			&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_PRAYER))
 				return false;
+		}
 		return true;
 	}
 
@@ -199,7 +201,10 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 						buildingI.destroy();
 					}
 					else
+					{
 						mob.addItem(buildingI);
+						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this);
+					}
 				}
 				buildingI=null;
 			}
