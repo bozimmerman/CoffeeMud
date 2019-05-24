@@ -225,7 +225,7 @@ public class Gaoler extends StdCharClass
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
 		{
 			final MOB mob=(MOB)ticking;
-			if(mob.charStats().getCurrentClass().ID().equals(ID()))
+			if(mob.charStats().getCurrentClass() == this)
 			{
 				int exp=0;
 				for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
@@ -334,7 +334,7 @@ public class Gaoler extends StdCharClass
 		&&(msg.amITarget(host))
 		&&(msg.source().isMonster())
 		&&(host instanceof MOB)
-		&&(((MOB)host).charStats().getCurrentClass().ID().equals(ID()))
+		&&(((MOB)host).charStats().getCurrentClass() == this)
 		&&(!((MOB)host).isInCombat())
 		&&(msg.source().getVictim()!=host))
 		{

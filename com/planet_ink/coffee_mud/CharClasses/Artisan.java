@@ -293,7 +293,7 @@ public class Artisan extends StdCharClass
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.source() == myHost)
-		&&(msg.source().charStats().getCurrentClass().ID().equals("Artisan")))
+		&&(msg.source().charStats().getCurrentClass() == this))
 		{
 			if((msg.targetMinor() == CMMsg.TYP_ITEMGENERATED)
 			&&(msg.target() != null)

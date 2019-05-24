@@ -294,6 +294,7 @@ public class Sailor extends StdCharClass
 		&&(!CMath.bset(R.getArea().flags(),Area.FLAG_INSTANCE_CHILD))
 		&&(!mob.playerStats().hasVisited(R))
 		&&(mob.soulMate()==null)
+		&&(mob.charStats().getCurrentClass() == this)
 		&&(CMLib.flags().isWaterySurfaceRoom(R))
 		)
 		{
@@ -313,7 +314,8 @@ public class Sailor extends StdCharClass
 	{
 		super.executeMsg(myHost, msg);
 
-		if((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
+		if((msg.target() instanceof Room)
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 		{
 			if((msg.source()==myHost)
 			&&(msg.source().riding() !=null)
