@@ -109,14 +109,14 @@ public class GrinderAreas
 
 	public static String modifyArea(final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
-		final Vector<Area> areasNeedingUpdates=new Vector<Area>();
+		final Set<Area> areasNeedingUpdates=new HashSet<Area>();
 		final String last=httpReq.getUrlParameter("AREA");
 		if((last==null)||(last.length()==0))
 			return "Old area name not defined!";
 		Area A=CMLib.map().getArea(last);
 		if(A==null)
 			return "Old Area not defined!";
-		areasNeedingUpdates.addElement(A);
+		areasNeedingUpdates.add(A);
 
 		boolean redoAllMyDamnRooms=false;
 		Vector<Room> allMyDamnRooms=null;
@@ -140,7 +140,7 @@ public class GrinderAreas
 			A.setName(oldA.Name());
 			redoAllMyDamnRooms=true;
 			areasNeedingUpdates.remove(oldA);
-			areasNeedingUpdates.addElement(A);
+			areasNeedingUpdates.add(A);
 		}
 
 		// name
@@ -332,50 +332,78 @@ public class GrinderAreas
 		}
 
 		// modify Parent Area list
-		while(A.getParents().hasMoreElements())
-			A.removeParent(A.getParents().nextElement());
+		final List<Area> existingParents=new XVector<Area>(A.getParents());
+		final List<Area> newParents=new ArrayList<Area>();
 		for(int i=1;;i++)
 		{
 			if(httpReq.isUrlParameter("PARENT"+(Integer.toString(i))))
 			{
 				final Area parent=CMLib.map().getArea(httpReq.getUrlParameter("PARENT"+(Integer.toString(i))));
 				if(parent!=null)
-				{
-					if(A.canParent(parent))
-					{
-						A.addParent(parent);
-						parent.addChild(A);
-						areasNeedingUpdates.addElement(parent);
-					}
-					else
-						return "The area, '"+parent.Name()+"', cannot be added as a parent, as this would create a circular reference.";
-				}
+					newParents.add(parent);
 			}
 			else
 				break;
 		}
+		for(final Area parent : existingParents)
+		{
+			if(!newParents.contains(parent))
+			{
+				A.removeParent(parent);
+				parent.removeChild(A);
+				areasNeedingUpdates.add(parent);
+			}
+		}
+		for(final Area parent : newParents)
+		{
+			if(!existingParents.contains(parent))
+			{
+				if(A.canParent(parent))
+				{
+					A.addParent(parent);
+					parent.addChild(A);
+					areasNeedingUpdates.add(parent);
+				}
+				else
+					return "The area, '"+parent.Name()+"', cannot be added as a parent, as this would create a circular reference.";
+			}
+		}
 
 		// modify Child Area list
-		while(A.getChildren().hasMoreElements())
-			A.removeChild(A.getChildren().nextElement());
+		final List<Area> existingChildren=new XVector<Area>(A.getChildren());
+		final List<Area> newChildren=new ArrayList<Area>();
 		for(int i=1;;i++)
 		{
 			if(httpReq.isUrlParameter("CHILDREN"+(Integer.toString(i))))
 			{
 				final Area child=CMLib.map().getArea(httpReq.getUrlParameter("CHILDREN"+(Integer.toString(i))));
 				if(child!=null)
+					newChildren.add(child);
+			}
+			else
+				break;
+		}
+		for(final Area child : existingChildren)
+		{
+			if(!newChildren.contains(child))
+			{
+				A.removeChild(child);
+				child.removeParent(A);
+				areasNeedingUpdates.add(child);
+			}
+		}
+		for(final Area child : newChildren)
+		{
+			if(!existingChildren.contains(child))
+			{
+				if(A.canChild(child))
 				{
-					if(A.canChild(child))
-					{
-						A.addChild(child);
-						child.addParent(A);
-						areasNeedingUpdates.addElement(child);
-					}
-					else
-						return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
+					A.addChild(child);
+					child.addParent(A);
+					areasNeedingUpdates.add(child);
 				}
 				else
-					break;
+					return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
 			}
 		}
 
@@ -389,9 +417,8 @@ public class GrinderAreas
 		if((redoAllMyDamnRooms)&&(allMyDamnRooms!=null))
 			CMLib.map().renameRooms(A,oldName,allMyDamnRooms);
 
-		for(int i=0;i<areasNeedingUpdates.size();i++) // will always include A
+		for(final Area A2 : areasNeedingUpdates) // will always include A
 		{
-			final Area A2=areasNeedingUpdates.elementAt(i);
 			if(CMLib.flags().isSavable(A2))
 			{
 				CMLib.database().DBUpdateArea(A2.Name(),A2);

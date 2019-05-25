@@ -1722,7 +1722,8 @@ public class RoomLoader
 		+"CMTECH="+A.getThemeCode()+" "
 		+"WHERE CMAREA='"+areaID+"'",
 		new String[]{A.description()+" ",A.text()+" "});
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
+		if(Log.debugChannelOn()
+		&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMAREA)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done updating area "+A.name());
 	}
 
