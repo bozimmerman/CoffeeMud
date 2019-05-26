@@ -1201,8 +1201,8 @@ public class DefaultFaction implements Faction, MsgListener
 
 		if((msg.tool() instanceof Ability)
 		&&(msg.target()==myHost)	// Arrested watching
-		&&(msg.tool().ID().equals("Skill_Handcuff"))
 		&&(msg.source().isMonster())
+		&&(msg.tool().ID().equals("Skill_HandCuff"))
 		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			final Room R=msg.source().location();
@@ -1216,8 +1216,9 @@ public class DefaultFaction implements Faction, MsgListener
 					{
 						for (final FactionChangeEvent event : events)
 						{
+							// reversed because the target is the one getting factioned
 							if(event.applies(msg.source(),(MOB)msg.target()))
-								executeChange(msg.source(),(MOB)msg.target(),event);
+								executeChange((MOB)msg.target(),msg.source(),event);
 						}
 					}
 				}
@@ -1499,7 +1500,9 @@ public class DefaultFaction implements Faction, MsgListener
 	{
 		final int sourceFaction= source.fetchFaction(ID);
 		int targetFaction = sourceFaction * -1;
-		if((source==target)&&(!event.selfTargetOK())&&(!event.eventID().equalsIgnoreCase("TIME")))
+		if((source==target)
+		&&(!event.selfTargetOK())
+		&&(!event.eventID().equalsIgnoreCase("TIME")))
 			return;
 
 		if(target!=null)
@@ -1518,7 +1521,8 @@ public class DefaultFaction implements Faction, MsgListener
 			return;
 
 		double baseChangeAmount=100.0;
-		if((source!=target)&&(!event.just100()))
+		if((source!=target)
+		&&(!event.just100()))
 		{
 			final int levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
 			final int levelDiff=target.phyStats().level()-source.phyStats().level();
@@ -1625,13 +1629,16 @@ public class DefaultFaction implements Faction, MsgListener
 				{
 					// Now execute the changes on the relation.  We do this AFTER the execution of the first so
 					// that any changes from okMessage are incorporated
-					for(final Enumeration<String> e=relations.keys();e.hasMoreElements();)
+					if(relations.size()>0)
 					{
-						final String relID=(e.nextElement());
-						facMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
-						facMsg.setValue((int)Math.round(CMath.mul(factionAdj, relations.get(relID).doubleValue())));
-						if(R.okMessage(source,facMsg))
-							R.send(source, facMsg);
+						for(final Enumeration<String> e=relations.keys();e.hasMoreElements();)
+						{
+							final String relID=(e.nextElement());
+							facMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
+							facMsg.setValue((int)Math.round(CMath.mul(factionAdj, relations.get(relID).doubleValue())));
+							if(R.okMessage(source,facMsg))
+								R.send(source, facMsg);
+						}
 					}
 				}
 			}
