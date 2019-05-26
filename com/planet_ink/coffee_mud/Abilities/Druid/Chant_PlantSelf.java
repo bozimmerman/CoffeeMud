@@ -153,10 +153,13 @@ public class Chant_PlantSelf extends Chant
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getAlignmentID(), -oneHalfPct);
 				if(mob.fetchFaction(CMLib.factions().getInclinationID())!=Integer.MAX_VALUE)
 				{
-					if(CMLib.factions().getInclinationPurity(myAlignment,Faction.Align.CHAOTIC)<CMLib.factions().getInclinationPurity(myAlignment,Faction.Align.LAWFUL))
-						CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), oneHalfPct);
+					final int myInclination=mob.fetchFaction(CMLib.factions().getInclinationID());
+					final int inclinationTotal=CMLib.factions().getTotal(CMLib.factions().getInclinationID());
+					final int inclinationRatePct=(int)Math.round(CMath.mul(inclinationTotal,.01));
+					if(CMLib.factions().getInclinationPurity(myInclination,Faction.Align.CHAOTIC)<CMLib.factions().getInclinationPurity(myInclination,Faction.Align.LAWFUL))
+						CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), inclinationRatePct);
 					else
-						CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), -oneHalfPct);
+						CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), -inclinationRatePct);
 				}
 				switch(CMLib.dice().roll(1,10,0))
 				{

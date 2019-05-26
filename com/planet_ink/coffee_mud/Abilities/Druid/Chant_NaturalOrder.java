@@ -151,12 +151,12 @@ public class Chant_NaturalOrder extends Chant
 				return true;
 			lastTime[0]=System.currentTimeMillis();
 			final Room room=mob.location();
-			final int myAlignment=mob.fetchFaction(CMLib.factions().getAlignmentID());
-			final int total=CMLib.factions().getTotal(CMLib.factions().getAlignmentID());
-			final int oneHalfPct=(int)Math.round(CMath.mul(total,.01))/2;
-			if(CMLib.factions().getInclinationPurity(myAlignment,Faction.Align.MODERATE)<99)
+			final int myInclination=mob.fetchFaction(CMLib.factions().getInclinationID());
+			final int inclinationTotal=CMLib.factions().getTotal(CMLib.factions().getInclinationID());
+			final int oneHalfPct=(int)Math.round(CMath.mul(inclinationTotal,.01))/2;
+			if(CMLib.factions().getInclinationPurity(myInclination,Faction.Align.MODERATE)<99)
 			{
-				if(CMLib.factions().getInclinationPurity(myAlignment,Faction.Align.CHAOTIC)<CMLib.factions().getInclinationPurity(myAlignment,Faction.Align.LAWFUL))
+				if(CMLib.factions().getInclinationPurity(myInclination,Faction.Align.CHAOTIC)<CMLib.factions().getInclinationPurity(myInclination,Faction.Align.LAWFUL))
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), oneHalfPct);
 				else
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().getInclinationID(), -oneHalfPct);
