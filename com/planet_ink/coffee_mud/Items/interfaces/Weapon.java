@@ -110,23 +110,23 @@ public interface Weapon extends Item
 	 */
 	public final static SHashtable<Integer,Integer> TYPE_MSG_MAP = new SHashtable<Integer,Integer>(new Integer[][]
 	{
-		{TYPE_NATURAL, -1},
-		{TYPE_SLASHING, -1},
-		{TYPE_PIERCING, -1},
-		{TYPE_BASHING, -1},
-		{TYPE_BURNING, CMMsg.TYP_FIRE},
-		{TYPE_BURSTING, -1},
-		{TYPE_SHOOT, -1},
-		{TYPE_FROSTING, CMMsg.TYP_COLD},
-		{TYPE_GASSING, CMMsg.TYP_GAS},
-		{TYPE_MELTING, CMMsg.TYP_ACID},
-		{TYPE_STRIKING, CMMsg.TYP_ELECTRIC},
-		{TYPE_LASERING, CMMsg.TYP_LASER},
-		{TYPE_SONICING, CMMsg.TYP_SONIC},
-		{TYPE_DISRUPTING, CMMsg.TYP_POISON},
-		{TYPE_STULTIFYING, CMMsg.TYP_PARALYZE},
-		{TYPE_CORRUPTING, CMMsg.TYP_UNDEAD},
-		{TYPE_SCRAPING, CMMsg.TYP_WATER}
+		{Integer.valueOf(TYPE_NATURAL), Integer.valueOf(-1)},
+		{Integer.valueOf(TYPE_SLASHING), Integer.valueOf(-1)},
+		{Integer.valueOf(TYPE_PIERCING), Integer.valueOf(-1)},
+		{Integer.valueOf(TYPE_BASHING), Integer.valueOf(-1)},
+		{Integer.valueOf(TYPE_BURNING), Integer.valueOf(CMMsg.TYP_FIRE)},
+		{Integer.valueOf(TYPE_BURSTING), Integer.valueOf(-1)},
+		{Integer.valueOf(TYPE_SHOOT), Integer.valueOf(-1)},
+		{Integer.valueOf(TYPE_FROSTING), Integer.valueOf(CMMsg.TYP_COLD)},
+		{Integer.valueOf(TYPE_GASSING), Integer.valueOf(CMMsg.TYP_GAS)},
+		{Integer.valueOf(TYPE_MELTING), Integer.valueOf(CMMsg.TYP_ACID)},
+		{Integer.valueOf(TYPE_STRIKING), Integer.valueOf(CMMsg.TYP_ELECTRIC)},
+		{Integer.valueOf(TYPE_LASERING), Integer.valueOf(CMMsg.TYP_LASER)},
+		{Integer.valueOf(TYPE_SONICING), Integer.valueOf(CMMsg.TYP_SONIC)},
+		{Integer.valueOf(TYPE_DISRUPTING), Integer.valueOf(CMMsg.TYP_POISON)},
+		{Integer.valueOf(TYPE_STULTIFYING), Integer.valueOf(CMMsg.TYP_PARALYZE)},
+		{Integer.valueOf(TYPE_CORRUPTING), Integer.valueOf(CMMsg.TYP_UNDEAD)},
+		{Integer.valueOf(TYPE_SCRAPING), Integer.valueOf(CMMsg.TYP_WATER)}
 	});
 
 	/**

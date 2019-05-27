@@ -160,7 +160,9 @@ public class Thief_LetterOfMarque extends ThiefSkill
 			target.tell(L("A letter of marque can only be issued by a legal judge."));
 			return false;
 		}
-		if((!auto)&&(legalB.getWarrantsOf(legalA, target).size()>0))
+		if((!auto)
+		&&(legalB!=null)
+		&&(legalB.getWarrantsOf(legalA, target).size()>0))
 		{
 			target.tell(L("You can only be issued a letter of marque if you have no outstanding warrants in the area."));
 			return false;
