@@ -64,7 +64,7 @@ public class Prop_SparringRoom extends Property
 			return false;
 		if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 		{
-			msg.source().tell(L("Noone hears your plea."));
+			msg.source().tell(L("No one hears your plea."));
 			return false;
 		}
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)

@@ -50,7 +50,7 @@ FUNCTION_PROG StartPlay
 FUNCTION_PROG NextRound
 	IF VAR($i KBROUND == 1)
 		IF VAR($i KBLEADER == '')
-			say "Since noone has chosen to throw their dice.  This game is hereby forfeit, and the house keeps the winnings."
+			say "Since no one has chosen to throw their dice.  This game is hereby forfeit, and the house keeps the winnings."
 			MPCALLFUNC ClearOut
 		ELSE
 			say "Well done.  $<$i KBLEADER> appears to be our leader with a score of $<$i KBLEADSCORE> !!  Now $<$i KBSTART> has a few seconds to either throw the dice again, or stand pat.  If he rolls again, all be given a chance to roll again."

@@ -57,7 +57,7 @@ public class Buy extends StdCommand
 			final MOB M=mob.location().fetchInhabitant(commands.get(commands.size()-1));
 			if(M==null)
 			{
-				CMLib.commands().postCommandFail(mob,origCmds,L("There is noone called '@x1' here.",(commands.get(commands.size()-1))));
+				CMLib.commands().postCommandFail(mob,origCmds,L("There is no one called '@x1' here.",(commands.get(commands.size()-1))));
 				return false;
 			}
 			commands.remove(commands.size()-1);

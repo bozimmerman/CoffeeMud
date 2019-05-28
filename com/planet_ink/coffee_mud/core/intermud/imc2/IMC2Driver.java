@@ -1894,7 +1894,7 @@ public final class IMC2Driver extends Thread
 		setdata(out, from);
 		final String to = replies.get(from.name);
 		if (to == null)
-			return "Noone to reply to.";
+			return "No one to reply to.";
 
 		out.to = to;
 		out.type = "tell";

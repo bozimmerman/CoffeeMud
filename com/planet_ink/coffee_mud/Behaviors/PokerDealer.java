@@ -96,7 +96,7 @@ public class PokerDealer extends StdBehavior
 
 	// whose turn it is to play, or bet, or whatever
 	// -- depends on gameState also.
-	// NULL means noone has been determined.
+	// NULL means no one has been determined.
 	// otherwise, its the mob object whose turn it is.
 	private MOB whoseTurn=null;
 

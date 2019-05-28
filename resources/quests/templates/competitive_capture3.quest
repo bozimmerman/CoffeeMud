@@ -87,7 +87,7 @@
 #$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Aha, we got them! Congratulations!
 #
 #Announcer failure:
-#Select what type of speech the announcer will make when noone returns with the captured mobs.
+#Select what type of speech the announcer will make when no one returns with the captured mobs.
 #$QUEST_LOSESPEECH_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
 #This is what the announcement says.
 #$QUEST_LOSESPEECH_TEXT=($LONG_STRING)=Looks like I'll have wait for the law to get after them.

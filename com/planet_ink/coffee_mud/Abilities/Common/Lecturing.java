@@ -134,7 +134,7 @@ public class Lecturing extends CommonSkill
 			{
 				if(success==false)
 				{
-					final StringBuffer str=new StringBuffer(L("Noone is paying attention. Your lecture failed.\n\r"));
+					final StringBuffer str=new StringBuffer(L("No one is paying attention. Your lecture failed.\n\r"));
 					commonTell(mob,str.toString());
 					unInvoke();
 				}

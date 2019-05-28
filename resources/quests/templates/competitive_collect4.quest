@@ -86,7 +86,7 @@
 #$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Fantastic!
 #
 #Announcer failure:
-#Select what type of speech the announcer will make when noone gives him the items he needs.
+#Select what type of speech the announcer will make when no one gives him the items he needs.
 #$QUEST_LOSESPEECH_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
 #This is what the announcement says.
 #$QUEST_LOSESPEECH_TEXT=($LONG_STRING)=Looks like I'll have get them myself

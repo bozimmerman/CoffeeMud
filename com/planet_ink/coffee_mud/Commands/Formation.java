@@ -76,7 +76,7 @@ public class Formation extends StdCommand
 			CMLib.commands().postCommandFail(mob,origCmds,L("Put whom in what row?"));
 		else
 		if(mob.numFollowers()==0)
-			CMLib.commands().postCommandFail(mob,origCmds,L("Noone is following you!"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("No one is following you!"));
 		else
 		{
 			String row=commands.get(commands.size()-1);
@@ -105,7 +105,7 @@ public class Formation extends StdCommand
 			}
 			if(who==null)
 			{
-				CMLib.commands().postCommandFail(mob,origCmds,L("There is noone following you called @x1.",name));
+				CMLib.commands().postCommandFail(mob,origCmds,L("There is no one following you called @x1.",name));
 				return false;
 			}
 			if((!CMath.isNumber(row))||(CMath.s_int(row)<0))

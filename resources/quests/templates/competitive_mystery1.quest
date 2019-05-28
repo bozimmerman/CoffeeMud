@@ -747,7 +747,7 @@ endif
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
 	give behavior QuestChat +( victim | murder)\;9Sure, I heard all about that.
-	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9Noone would use $ARG2 if $ARG3 was involved.
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9No one would use $ARG2 if $ARG3 was involved.
 	give affect Spell_LedFoot
 </OPTION>
 <OPTION>

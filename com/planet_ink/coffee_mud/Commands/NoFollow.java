@@ -74,7 +74,7 @@ public class NoFollow extends Follow
 				if(M!=null)
 					CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is not following you!",M.name(mob)));
 				else
-					CMLib.commands().postCommandFail(mob,origCmds,L("There is noone here called '@x1' following you!",name));
+					CMLib.commands().postCommandFail(mob,origCmds,L("There is no one here called '@x1' following you!",name));
 				return false;
 			}
 			if((mob.location()!=null)&&(M!=null)&&(M.amFollowing()==mob))
@@ -82,7 +82,7 @@ public class NoFollow extends Follow
 				nofollow(M,true,false);
 				return true;
 			}
-			CMLib.commands().postCommandFail(mob,origCmds,L("There is noone called '@x1' following you!",name));
+			CMLib.commands().postCommandFail(mob,origCmds,L("There is no one called '@x1' following you!",name));
 			return false;
 		}
 		if(!mob.isAttributeSet(MOB.Attrib.NOFOLLOW))

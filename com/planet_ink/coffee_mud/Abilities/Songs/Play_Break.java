@@ -84,7 +84,7 @@ public class Play_Break extends Play
 		}
 		if(!foundOne)
 		{
-			mob.tell(auto?L("There is noone playing."):L("You aren't playing anything."));
+			mob.tell(auto?L("There is no one playing."):L("You aren't playing anything."));
 			return true;
 		}
 		unPlayAll(mob,mob,false,true);

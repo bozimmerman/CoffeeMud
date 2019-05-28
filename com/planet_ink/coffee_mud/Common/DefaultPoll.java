@@ -89,7 +89,7 @@ public class DefaultPoll implements Poll
 	protected String			name		= "POLL";
 	protected String			subject		= "Poll Results Title";
 	protected String			description	= "This is a Poll! Choose from the following:";
-	protected String			author		= "noone";
+	protected String			author		= "no one";
 	protected long				expiration	= 0;
 	protected long				bitmap		= 0;
 	protected String			qualZapper	= "";

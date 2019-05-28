@@ -224,7 +224,7 @@ oo	FLASH	You grin and strut as you open your coat and show what you've got!	<S-N
 oo	FLASH <T-NAME>	Swiftly you jerk open your jacket, trying to get <T-HIM-HER> to notice you.	Cover your eyes, <S-NAME> is exposing <S-HIM-HERSELF> to <S-NAME>!  EWWWW!	You gasp!  <S-NAME> has just revealed <S-HIS-HER> "equipment" to you!	Exhibitionist, that person isn't here!	
 oo	FLASH SELF	That's sick.	PERVERT PRESENT!  <S-NAME> is trying to flash <S-HIM-HERSELF>			
 oo	FLAUGH	You fall down laughing.	<S-NAME> falls down laughing.			
-oo	FLAUGH <T-NAME>	You fall down laughing mercilessly at <T-NAME>.	<S-NAME> falls down laughing mercilessly at <T-NAME>.	<S-NAME> falls down laughing mercilessly at you. HAHAHA	You fall down laughing at......noone!!!	
+oo	FLAUGH <T-NAME>	You fall down laughing mercilessly at <T-NAME>.	<S-NAME> falls down laughing mercilessly at <T-NAME>.	<S-NAME> falls down laughing mercilessly at you. HAHAHA	You fall down laughing at......no one!!!	
 oo	FLAUGH SELF	You fall over laughing at yourself. What a dork!	<S-NAME> falls over laughing at <S-him-herself>.			
 mo	FLEX	You flex your muscles proudly!	<S-NAME> flexes <S-HIS-HER> muscles...what a stud!?!			
 mo	FLEX <T-NAME>	You show off to <T-NAMESELF>, flexing your muscles proudly.	<S-NAME> flexes <S-HIS-HER> muscles, in a vain attempt to impress <T-NAMESELF>.	<S-NAME> flexes <S-HIS-HER> muscles in a vain attempt to show off to you.		
@@ -267,8 +267,8 @@ ss	GASP SELF	You look at yourself and gasp!	<S-NAME> takes one look at <S-HIM-HE
 ss	GIGGLE	You giggle.	<S-NAME> giggles.			giggle.wav
 ss	GIGGLE <T-NAME>	You giggle at <T-HIM-HER>.	<S-NAME> giggles at <T-NAME>.	<S-NAME> giggles at you.	You giggle by yourself, since you can't find a partner to giggle with.	giggle.wav
 ss	GIGGLE SELF	You giggle to yourself.	<S-NAME> giggles to <T-HIM-HERSELF>.			giggle.wav
-mo	GIRN	You girn at noone in particular.	<S-NAME> girns at noone in particular.			
-mt	GIRN <T-NAME>	You attempt to grin but fail horribly.	<S-NAME> contorts <S-HIS-HER> face as <S-HE-SHE> attempts to grin.	<S-NAME> contort(s) <S-HIS-HER> face at you.	You girn at noone in particular.	
+mo	GIRN	You girn at no one in particular.	<S-NAME> girns at no one in particular.			
+mt	GIRN <T-NAME>	You attempt to grin but fail horribly.	<S-NAME> contorts <S-HIS-HER> face as <S-HE-SHE> attempts to grin.	<S-NAME> contort(s) <S-HIS-HER> face at you.	You girn at no one in particular.	
 mo	GIRN SELF	You attempt to grin but fail horribly.				
 mo	GLARE	You glare at nothing in particular.	<S-NAME> glares around <S-HIM-HER>.			
 mo	GLARE <T-NAME>	You glare icily at <T-HIM-HER>.	<S-NAME> glares at <T-NAMESELF>.	<S-NAME> glares icily at you, you feel cold to your bones.	You try to glare at somebody who is not present.	
