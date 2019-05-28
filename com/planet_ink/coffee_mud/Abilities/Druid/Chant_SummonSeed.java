@@ -152,6 +152,7 @@ public class Chant_SummonSeed extends Chant
 					newItem.setMaterial(material);
 					((RawMaterial)newItem).setSubType(RawMaterial.ResourceSubType.SEED.name());
 					newItem.basePhyStats().setWeight(0);
+					newItem.setBaseValue(0);
 					newItem.recoverPhyStats();
 					newItem.setMiscText(newItem.text());
 					mob.addItem(newItem);

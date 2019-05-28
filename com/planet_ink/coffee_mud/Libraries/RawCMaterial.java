@@ -91,6 +91,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		final Environmental owner=item.owner();
 		long lowestNonZeroFoodNumber=Long.MAX_VALUE;
 		final String subType=(item instanceof RawMaterial)?((RawMaterial)item).getSubType():"";
+		if(subType.equals(RawMaterial.ResourceSubType.SEED.name()))
+			return false;
 		if(owner instanceof Room)
 		{
 			final Room R=(Room)owner;
