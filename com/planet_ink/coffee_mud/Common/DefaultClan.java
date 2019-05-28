@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Award;
@@ -826,11 +827,25 @@ public class DefaultClan implements Clan
 				M.tell(removeMsg);
 		}
 
-		// this is going to need to be smarter... get a list of all possible spell grants from all clans,
-		// check against class qualifications.  Form a list of forbidden spells, and then remove THOSE.
+		// Get a list of all possible spell grants for this clan, check against class qualifications.
+		// Form a list of forbidden spells, and then remove THOSE.
+		final Map<String, AbilityMapping> allAbles =  CMLib.ableMapper().getAbleMapping(this.getGovernment().getName());
+		final Set<String> qualAbleIDS = new TreeSet<String>();
+		for(final Ability A :  this.getGovernment().getClanLevelAbilities(M, this, this.getClanLevel()))
+			qualAbleIDS.add(A.ID());
+		for(final String ableID : allAbles.keySet())
+		{
+			final Ability A=M.fetchAbility(ableID);
+			if((A != null)
+			&&(!qualAbleIDS.contains(ableID))
+			&&(!CMLib.ableMapper().qualifiesByLevel(M, ableID)) // this will check ALL clans, as well as other sources.
+			&&(allAbles.get(ableID).autoGain()))
+				M.delAbility(A);
+		}
+
 		M.delAbility(M.fetchAbility("Spell_ClanHome"));
-		M.delAbility(M.fetchAbility("Spell_ClanClanWard"));
-		M.delAbility(M.fetchAbility("Spell_ImprovedClanClanWard"));
+		//M.delAbility(M.fetchAbility("Spell_ClanWard")); -- these are qualified for...
+		//M.delAbility(M.fetchAbility("Spell_ImprovedClanWard")); -- these are qualified for...
 		M.delAbility(M.fetchAbility("Spell_ClanDonate"));
 		M.delAbility(M.fetchAbility("Spell_Flagportation"));
 
