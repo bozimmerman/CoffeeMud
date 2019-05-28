@@ -220,6 +220,9 @@ public class StdJournal extends StdItem implements Book
 				mob.tell(L("The journal or user '@x1' does not presently exist.",journal));
 			else
 			{
+				final MOB toM=CMLib.players().getPlayerAllHosts(realName);
+				if(toM != null)
+					toM.tell(L("A message in @x1 was transferred to you.",Name()));
 				entry2.to(realName);
 				CMLib.database().DBUpdateJournal(Name(), entry2);
 				msg.setValue(-1);

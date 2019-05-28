@@ -449,10 +449,20 @@ public class JournalFunction extends StdWebMacro
 							if(journal.equals("FROM")||users.contains(journal)||isPlayer)
 							{
 								if(journal.equals("FROM"))
+								{
 									entry.to(entry.from());
+									final MOB toM=CMLib.players().getPlayerAllHosts(journal);
+									if(toM != null)
+										toM.tell(L("A message in @x1 was transferred to you.",journalName));
+								}
 								else
 								if(isPlayer)
+								{
 									entry.to(CMStrings.capitalizeAndLower(journal));
+									final MOB toM=CMLib.players().getPlayerAllHosts(journal);
+									if(toM != null)
+										toM.tell(L("A message in @x1 was transferred to you.",journalName));
+								}
 								else
 									entry.to(journal);
 								CMLib.journals().clearJournalSummaryStats(forum);
