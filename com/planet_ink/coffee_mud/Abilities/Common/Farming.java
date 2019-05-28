@@ -442,9 +442,12 @@ public class Farming extends GatheringSkill
 			&&(found.material()==RawMaterial.RESOURCE_HERBS)
 			&&(mine.material()==found.material()))
 			{
-				found.setName(mine.name());
-				found.setDisplayText(mine.displayText());
-				found.setDescription(mine.description());
+				if(!(mine instanceof RawMaterial) && (((RawMaterial)mine).getSubType().equals(RawMaterial.ResourceSubType.SEED.name())))
+				{
+					found.setName(mine.name());
+					found.setDisplayText(mine.displayText());
+					found.setDescription(mine.description());
+				}
 				found.text();
 			}
 		}
