@@ -843,12 +843,6 @@ public class DefaultClan implements Clan
 				M.delAbility(A);
 		}
 
-		M.delAbility(M.fetchAbility("Spell_ClanHome"));
-		//M.delAbility(M.fetchAbility("Spell_ClanWard")); -- these are qualified for...
-		//M.delAbility(M.fetchAbility("Spell_ImprovedClanWard")); -- these are qualified for...
-		M.delAbility(M.fetchAbility("Spell_ClanDonate"));
-		M.delAbility(M.fetchAbility("Spell_Flagportation"));
-
 		final PlayerStats pStats = M.playerStats();
 		if(pStats!=null)
 		{
