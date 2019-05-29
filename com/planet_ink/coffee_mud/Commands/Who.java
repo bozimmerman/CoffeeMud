@@ -133,31 +133,36 @@ public class Who extends StdCommand
 		return name;
 	}
 
-	public boolean checkWho(final MOB seerM, final MOB seenM, final Set<String> friends, final Filterer<MOB> mobFilter)
+	public boolean checkWho(final MOB seerM, final MOB seenM, final Filterer<MOB> mobFilter)
 	{
 		if((seenM!=null)
 		&&(((!CMLib.flags().isCloaked(seenM))
 			||((CMSecurity.isAllowedAnywhere(seerM,CMSecurity.SecFlag.CLOAK)||CMSecurity.isAllowedAnywhere(seerM,CMSecurity.SecFlag.WIZINV))&&(seerM.phyStats().level()>=seenM.phyStats().level()))))
-		&&((friends==null)||(friends.contains(seenM.Name())||(friends.contains("All"))))
 		&&((mobFilter==null)||(mobFilter.passesFilter(seenM)))
 		&&(seenM.basePhyStats().level()>0))
 			return true;
 		return false;
 	}
 
-	public String getWho(final MOB mob, final Set<String> friends, final boolean emptyOnNone, final Filterer<MOB> mobFilter)
+	public String getWho(final MOB mob, final boolean emptyOnNone, final Filterer<MOB> mobFilter, final Comparator<MOB> mobSort)
 	{
 		final StringBuffer msg=new StringBuffer("");
 		final int[] colWidths=getShortColWidths(mob);
+		final List<MOB> mobs=new ArrayList<MOB>(CMLib.sessions().numLocalOnline());
 		for(final Session S : CMLib.sessions().localOnlineIterable())
 		{
 			MOB mob2=S.mob();
 			if((mob2!=null)&&(mob2.soulMate()!=null))
 				mob2=mob2.soulMate();
 
-			if(checkWho(mob,mob2,friends,mobFilter))
-				msg.append(showWhoShort(mob2,colWidths));
+			if(checkWho(mob,mob2,mobFilter))
+				mobs.add(mob2);
 		}
+		if(mobSort != null)
+			Collections.sort(mobs, mobSort);
+		for(final MOB mob2 : mobs)
+			msg.append(showWhoShort(mob2,colWidths));
+		mobs.clear();
 		if((emptyOnNone)&&(msg.length()==0))
 			return "";
 		else
@@ -166,6 +171,20 @@ public class Who extends StdCommand
 			head.append(msg.toString());
 			return head.toString();
 		}
+	}
+
+	protected static Integer nullObjectCompare(final Object o1, final Object o2)
+	{
+		if(o1 == null)
+		{
+			if(o2 == null)
+				return Integer.valueOf(0);
+			return Integer.valueOf(-1);
+		}
+		else
+		if(o2 == null)
+			return Integer.valueOf(1);
+		return null;
 	}
 
 	@Override
@@ -184,54 +203,126 @@ public class Who extends StdCommand
 				CMLib.intermud().i3who(mob,mobName.substring(1));
 			return false;
 		}
-		Set<String> friends=null;
-		if((mobName!=null)
-		&&(mob!=null)
-		&&(mobName.equalsIgnoreCase("friends"))
-		&&(mob.playerStats()!=null))
-		{
-			friends=mob.playerStats().getFriends();
-			mobName=null;
-		}
 
-		if((mobName!=null)
-		&&(mob!=null)
-		&&(mobName.equalsIgnoreCase("pk")
-		||mobName.equalsIgnoreCase("pkill")
-		||mobName.equalsIgnoreCase("playerkill")))
+		Filterer<MOB> mobFilter = null;
+		final Comparator<MOB> mobSort = new Comparator<MOB>()
 		{
-			friends=new HashSet<String>();
-			for(final Session S : CMLib.sessions().allIterable())
+			@Override
+			public int compare(final MOB o1, final MOB o2)
 			{
-				final MOB mob2=S.mob();
-				if((mob2!=null)&&(mob2.isAttributeSet(MOB.Attrib.PLAYERKILL)))
-					friends.add(mob2.Name());
+				final Integer check=nullObjectCompare(o1,o2);
+				if(check != null)
+					return check.intValue();
+				if(CMSecurity.isASysOp(o1))
+				{
+					if(CMSecurity.isASysOp(o2))
+						return 0;
+					return -1;
+				}
+				else
+				if(CMSecurity.isASysOp(o2))
+					return 1;
+				final int lastPlayerLevel = CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
+				if(o1.phyStats().level()>= lastPlayerLevel)
+				{
+					if(o2.phyStats().level()>=lastPlayerLevel)
+						return 0;
+					return 1;
+				}
+				else
+				if(o2.phyStats().level()>= lastPlayerLevel)
+					return -1;
+				return 0;
 			}
-		}
+		};
 
-		if((mobName!=null)
-		&&(mob!=null)
-		&&(mobName.equalsIgnoreCase("acct")
-			||mobName.equalsIgnoreCase("accounts")
-			||mobName.equalsIgnoreCase("account"))
-		&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))
-		&&(CMProps.isUsingAccountSystem()))
+		if((mobName != null) && (mob != null))
 		{
-			final int[] colWidths = new int[]{
-				CMLib.lister().fixColWidth(20,mob.session()),
-				CMLib.lister().fixColWidth(40,mob.session())
-			};
-			final StringBuilder msg=new StringBuilder("");
-			msg.append("^x[");
-			msg.append(CMStrings.padRight(L("Account"),colWidths[0]));
-			msg.append(L("] Character name^.^N\n\r"));
-			for(final Session S : CMLib.sessions().localOnlineIterable())
+			if((mobName.equalsIgnoreCase("friends"))
+			&&(mob.playerStats()!=null))
 			{
-				MOB mob2=S.mob();
-				if((mob2!=null)&&(mob2.soulMate()!=null))
-					mob2=mob2.soulMate();
+				mobFilter = new Filterer<MOB>()
+				{
+					final Set<String> friends = mob.playerStats().getFriends();
+					@Override
+					public boolean passesFilter(final MOB obj)
+					{
+						return (obj != null) && (this.friends.contains(obj.Name()));
+					}
+				};
+				mobName=null;
+			}
+			else
+			if((mobName.equalsIgnoreCase("pk")
+			||mobName.equalsIgnoreCase("pkill")
+			||mobName.equalsIgnoreCase("playerkill")))
+			{
+				final Set<String> pkErs = new TreeSet<String>();
+				for(final Session S : CMLib.sessions().allIterable())
+				{
+					final MOB mob2=S.mob();
+					if((mob2!=null)&&(mob2.isAttributeSet(MOB.Attrib.PLAYERKILL)))
+						pkErs.add(mob2.Name());
+				}
+				mobFilter = new Filterer<MOB>()
+				{
+					final Set<String> pkNames = pkErs;
+					@Override
+					public boolean passesFilter(final MOB obj)
+					{
+						return (obj != null) && (this.pkNames.contains(obj.Name()));
+					}
+				};
+				mobName = null;
+			}
+			else
+			if((mobName.equalsIgnoreCase("acct")
+				||mobName.equalsIgnoreCase("accounts")
+				||mobName.equalsIgnoreCase("account"))
+			&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS))
+			&&(CMProps.isUsingAccountSystem()))
+			{
+				final int[] colWidths = new int[]{
+					CMLib.lister().fixColWidth(20,mob.session()),
+					CMLib.lister().fixColWidth(40,mob.session())
+				};
+				final StringBuilder msg=new StringBuilder("");
+				msg.append("^x[");
+				msg.append(CMStrings.padRight(L("Account"),colWidths[0]));
+				msg.append(L("] Character name^.^N\n\r"));
+				final List<MOB> mobs=new ArrayList<MOB>(CMLib.sessions().numLocalOnline());
+				for(final Session S : CMLib.sessions().localOnlineIterable())
+				{
+					MOB mob2=S.mob();
+					if((mob2!=null)&&(mob2.soulMate()!=null))
+						mob2=mob2.soulMate();
 
-				if(checkWho(mob,mob2,friends,null) && (mob2!=null))
+					if(checkWho(mob,mob2,null) && (mob2!=null))
+						mobs.add(mob2);
+				}
+				Collections.sort(mobs, new Comparator<MOB>()
+				{
+					@Override
+					public int compare(final MOB o1, final MOB o2)
+					{
+						Integer check = nullObjectCompare(o1,o2);
+						if(check != null)
+							return check.intValue();
+						final PlayerStats p1 = o1.playerStats();
+						final PlayerStats p2 = o2.playerStats();
+						check = nullObjectCompare(p1, p2);
+						if(check != null)
+							return check.intValue();
+						final PlayerAccount a1 = p1.getAccount();
+						final PlayerAccount a2 = p2.getAccount();
+						check = nullObjectCompare(a1, a2);
+						if(check != null)
+							return check.intValue();
+						return a1.getAccountName().compareTo(a2.getAccountName());
+					}
+
+				});
+				for(final MOB mob2 : mobs)
 				{
 					final PlayerStats pStats2=mob2.playerStats();
 					final String accountName = (pStats2 != null) && (pStats2.getAccount() != null) ? pStats2.getAccount().getAccountName() : "?!?";
@@ -240,20 +331,12 @@ public class Who extends StdCommand
 					msg.append("] "+CMStrings.padRight(name,colWidths[1]));
 					msg.append("\n\r");
 				}
+				mob.tell(msg.toString());
+				return false;
 			}
-			mob.tell(msg.toString());
-			return false;
 		}
 
-		if((mobName!=null)
-		&&(mob!=null)
-		&&(mobName.length()>0)
-		&&(friends==null))
-		{
-
-		}
-
-		final String msg = getWho(mob,friends,mobName!=null,null);
+		final String msg = getWho(mob,mobName!=null,mobFilter,mobSort);
 		if((mobName!=null)&&(msg.length()==0))
 			mob.tell(L("That person doesn't appear to be online.\n\r"));
 		else
@@ -266,10 +349,10 @@ public class Who extends StdCommand
 	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(args.length==0)
-			return getWho(mob,null,false,null);
+			return getWho(mob,false,null,null);
 		else
-		if(super.checkArguments(filterParameters, args))
-			return getWho(mob,null,((Boolean)args[0]).booleanValue(),(Filterer<MOB>)args[1]);
+		if(super.checkArguments(filterParameters, args, null))
+			return getWho(mob,((Boolean)args[0]).booleanValue(),(Filterer<MOB>)args[1],null);
 		return Boolean.FALSE;
 	}
 
