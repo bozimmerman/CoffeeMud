@@ -254,6 +254,8 @@ public class StdArmor extends StdContainer implements Armor
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)
 		&&(subjectToWearAndTear())
+		&&(msg.sourceMinor()!=CMMsg.TYP_POISON)
+		&&(msg.sourceMinor()!=CMMsg.TYP_DISEASE)
 		&&((!(msg.tool() instanceof Ability))
 			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES) != Ability.ACODE_POISON)
 			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES) != Ability.ACODE_DISEASE))
