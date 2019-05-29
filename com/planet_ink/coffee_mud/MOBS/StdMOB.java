@@ -4964,7 +4964,11 @@ public class StdMOB implements MOB
 	@Override
 	public int[][] getAbilityUsageCache(final String abilityID)
 	{
-		int[][] ableCache=abilityUseCache.get(abilityID);
+		int[][] ableCache;
+		synchronized(abilityUseCache)
+		{
+			ableCache=abilityUseCache.get(abilityID);
+		}
 		if(ableCache==null)
 		{
 			ableCache=new int[Ability.CACHEINDEX_TOTAL][];
@@ -4972,14 +4976,19 @@ public class StdMOB implements MOB
 		}
 		final CharStats charStats = charStats();
 		final CharClass charClass=charStats.getCurrentClass();
-		if((phyStats().level()!=abilityUseTrig[0])
-		||(charStats.getCurrentClassLevel()!=abilityUseTrig[1])
-		||(charClass.hashCode()!=abilityUseTrig[2]))
+		final int[] ableUseTrig;
+		synchronized(abilityUseTrig)
+		{
+			ableUseTrig = this.abilityUseTrig;
+		}
+		if((phyStats().level()!=ableUseTrig[0])
+		||(charStats.getCurrentClassLevel()!=ableUseTrig[1])
+		||(charClass.hashCode()!=ableUseTrig[2]))
 		{
 			clearAbilityUsageCache();
-			abilityUseTrig[0]=phyStats().level();
-			abilityUseTrig[1]=charStats.getCurrentClassLevel();
-			abilityUseTrig[2]=charClass.hashCode();
+			ableUseTrig[0]=phyStats().level();
+			ableUseTrig[1]=charStats.getCurrentClassLevel();
+			ableUseTrig[2]=charClass.hashCode();
 		}
 		return ableCache;
 	}
