@@ -459,12 +459,10 @@ public class CraftingSkill extends GatheringSkill
 
 	protected void setWearLocation(final Item I, final String wearLocation, final int hardnessMultiplier)
 	{
-		short[] layerAtt = null;
-		short[] layers = null;
+		final short[] layerAtt = new short[1];;
+		final short[] layers = new short[1];;
 		if(I instanceof Armor)
 		{
-			layerAtt = new short[1];
-			layers = new short[1];
 			final long[] wornLoc = new long[1];
 			final boolean[] logicalAnd = new boolean[1];
 			final double[] hardBonus=new double[]{hardnessMultiplier};
@@ -477,6 +475,15 @@ public class CraftingSkill extends GatheringSkill
 			}
 			if(I.basePhyStats().armor()>0)
 				I.basePhyStats().setArmor(I.basePhyStats().armor()+(int)Math.round(hardBonus[0]));
+			I.setRawLogicalAnd(logicalAnd[0]);
+			I.setRawProperLocationBitmap(wornLoc[0]);
+		}
+		else
+		{
+			final long[] wornLoc = new long[1];
+			final boolean[] logicalAnd = new boolean[1];
+			final double[] hardBonus=new double[]{1};
+			CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,wearLocation);
 			I.setRawLogicalAnd(logicalAnd[0]);
 			I.setRawProperLocationBitmap(wornLoc[0]);
 		}
