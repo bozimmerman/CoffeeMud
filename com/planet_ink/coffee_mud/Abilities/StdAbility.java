@@ -1602,7 +1602,8 @@ public class StdAbility implements Ability
 			final int nowLSW = (int)(System.currentTimeMillis()&0x7FFFFFFF);
 			final int compoundTicks=CMProps.getIntVar(CMProps.Int.MANACOMPOUND_TICKS);
 			if((compoundTicks > 0)
-			&&(consumed != STATIC_USAGE_NADA))
+			&&(consumed != STATIC_USAGE_NADA)
+			&&(overrideMana()<Integer.MAX_VALUE-51))
 			{
 				final int[][] abilityUsageCache=mob.getAbilityUsageCache(ID());
 				if(abilityUsageCache[Ability.CACHEINDEX_LASTTIME] == null)
