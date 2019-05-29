@@ -257,8 +257,8 @@ public class StdArmor extends StdContainer implements Armor
 		&&(msg.sourceMinor()!=CMMsg.TYP_POISON)
 		&&(msg.sourceMinor()!=CMMsg.TYP_DISEASE)
 		&&((!(msg.tool() instanceof Ability))
-			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES) != Ability.ACODE_POISON)
-			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES) != Ability.ACODE_DISEASE))
+			||(((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES) != Ability.ACODE_POISON)
+				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES) != Ability.ACODE_DISEASE)))
 		&&(CMLib.dice().rollPercentage()>((phyStats().level()/2)+(10*phyStats().ability())+(CMLib.flags().isABonusItems(this)?20:0)))
 		&&(CMLib.dice().rollPercentage()>(((MOB)owner()).charStats().getStat(CharStats.STAT_DEXTERITY))))
 		{
