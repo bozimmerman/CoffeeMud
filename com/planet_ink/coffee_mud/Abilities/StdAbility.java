@@ -1582,7 +1582,8 @@ public class StdAbility implements Ability
 			if((getTicksBetweenCasts()>0)
 			&&(getTimeOfNextCast()>0)
 			&&(System.currentTimeMillis()<getTimeOfNextCast())
-			&&(room!=null)&&(room.getArea()!=null))
+			&&(room!=null)
+			&&(room.getArea()!=null))
 			{
 				final TimeClock C=room.getArea().getTimeObj();
 				if(C!=null)
@@ -1609,6 +1610,8 @@ public class StdAbility implements Ability
 				if(abilityUsageCache[Ability.CACHEINDEX_LASTTIME] == null)
 					abilityUsageCache[Ability.CACHEINDEX_LASTTIME] = new int[USAGEINDEX_TOTAL];
 				timeCache = abilityUsageCache[Ability.CACHEINDEX_LASTTIME];
+				if(timeCache[USAGEINDEX_TIMELSW]>nowLSW)
+					timeCache[USAGEINDEX_TIMELSW]=0;
 				final int numTicksSinceLastCast=(int)((nowLSW-timeCache[USAGEINDEX_TIMELSW]) / CMProps.getTickMillis());
 				if((numTicksSinceLastCast >= compoundTicks)||(ignoreCompounding()))
 					timeCache[USAGEINDEX_COUNT]=0;
