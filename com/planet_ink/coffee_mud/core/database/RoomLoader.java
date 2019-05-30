@@ -579,7 +579,7 @@ public class RoomLoader
 						}
 						else
 						if(!nextRoomID.startsWith("#"))
-							Log.errOut("RoomLoader","Unknown unlinked room #"+nextRoomID);
+							Log.errOut("RoomLoader","Unknown unlinked room #"+nextRoomID+" in "+roomID);
 						else
 						if(newExit!=null)
 							newExit.setTemporaryDoorLink(nextRoomID);
