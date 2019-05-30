@@ -130,7 +130,7 @@ public class ItemData extends StdWebMacro
 						{
 							final MOB M2=R.fetchInhabitant(m);
 							if((M2!=null)&&(M2.isSavable()))
-								str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+								str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2)+"<BR>\n\r");
 						}
 						return clearWebMacros(str);
 					}
@@ -216,7 +216,7 @@ public class ItemData extends StdWebMacro
 				{
 					final Item I2=R.getItem(i);
 					if(I2!=null)
-						str.append(I2.Name()+"="+RoomData.getItemCode(R,I2));
+						str.append(I2.Name()+"="+RoomData.getItemCode(R,I2)+"<BR>\n\r");
 				}
 			}
 			else
@@ -225,7 +225,7 @@ public class ItemData extends StdWebMacro
 				{
 					final Item I2=M.getItem(i);
 					if(I2!=null)
-						str.append(RoomData.getItemCode(M,I2));
+						str.append(RoomData.getItemCode(M,I2)+"<BR>\n\r");
 				}
 			}
 			return clearWebMacros(str);

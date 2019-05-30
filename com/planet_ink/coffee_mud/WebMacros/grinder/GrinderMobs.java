@@ -451,7 +451,7 @@ public class GrinderMobs
 					{
 						final MOB M2=R.fetchInhabitant(m);
 						if((M2!=null)&&(M2.isSavable()))
-							str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+							str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2)+"<BR>\n\r");
 					}
 				}
 				return str.toString();

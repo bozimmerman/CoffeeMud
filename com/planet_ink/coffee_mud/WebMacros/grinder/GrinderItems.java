@@ -136,7 +136,7 @@ public class GrinderItems
 					{
 						final MOB M2=R.fetchInhabitant(m);
 						if((M2!=null)&&(M2.isSavable()))
-							str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+							str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2)+"<BR>\n\r");
 					}
 					return str.toString();
 				}
@@ -163,7 +163,7 @@ public class GrinderItems
 					{
 						final Item I2=M.getItem(i);
 						if(I2!=null)
-							str.append(I2.Name()+"="+RoomData.getItemCode(M,I2));
+							str.append(I2.Name()+"="+RoomData.getItemCode(M,I2)+"<BR>\n\r");
 					}
 					if(M instanceof ShopKeeper)
 					{
@@ -172,7 +172,7 @@ public class GrinderItems
 						{
 							final Environmental E=i.next();
 							if(E instanceof Item)
-								str.append(E.Name()+"="+RoomData.getItemCode(M,(Item)E));
+								str.append(E.Name()+"="+RoomData.getItemCode(M,(Item)E)+"<BR>\n\r");
 						}
 					}
 				}

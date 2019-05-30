@@ -119,11 +119,13 @@ public class RoomData extends StdWebMacro
 		{
 			final ShopKeeper shopK=(ShopKeeper)M;
 			final CoffeeShop shop=shopK.getShop();
+			int x=0;
 			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 			{
 				final Environmental E=i.next();
 				if(E==I)
-					return Long.toString( ( I.ID() + "/" + I.Name() + "/" + I.displayText() ).hashCode() << 5 ) + i;
+					return Long.toString( ( I.ID() + "/" + I.Name() + "/" + I.displayText() ).hashCode() << 5 ) + x;
+				x++;
 			}
 		}
 		return "";
