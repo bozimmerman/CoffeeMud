@@ -69,6 +69,12 @@ public class ColorSet extends StdCommand
 				buf.append(L("^N=background, foreground="));
 			}
 			else
+			if(what.indexOf('~')>0)
+			{
+				what=what.substring(what.indexOf('~'));
+				buf.append(L("^N=foreground, background="));
+			}
+			else
 				what=null;
 		}
 		return buf.toString();
@@ -396,7 +402,7 @@ public class ColorSet extends StdCommand
 											{
 												final char colorCode1 = Character.toLowerCase(Color.values()[colorNum1].getCodeChar());
 												final char colorCode2 = Color.values()[colorNum2].getCodeChar();
-												clookup[0][colorCodeNum]=CMLib.color().translateCMCodeToANSI("^"+colorCode1+"|^"+colorCode2);
+												clookup[0][colorCodeNum]="^"+colorCode2+"^~"+colorCode1;
 												makeColorChanges(theSet, pstats, session, clookup);
 											}
 											session.prompt(IC[0].reset());

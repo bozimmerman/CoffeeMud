@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -612,19 +613,26 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			str.delete(index, index+1);
 			return index;
 		default:
-			if((c>=0)&&(c<256)&&((S==null)||(S.getClientTelnetMode(Session.TELNET_ANSI))))
+			if((c>=0)
+			&&(c<256)
+			&&((S==null)||(S.getClientTelnetMode(Session.TELNET_ANSI))))
 			{
 				final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.getColorCodes();
 				String escapeSequence=clookup[c];
 				if(escapeSequence==null)
 					return index;
-				if((S!=null)&&(escapeSequence.length()>0)&&(escapeSequence.charAt(0)=='\033'))
+				if((S!=null)
+				&&(escapeSequence.length()>0)
+				&&(escapeSequence.charAt(0)=='\033'))
 				{
 					final ColorState state=S.getCurrentColor();
 					if(state.backgroundCode()!='.')
 						escapeSequence=ColorLibrary.Color.NONE.getANSICode()+escapeSequence;
 					S.setLastColor(state);
-					S.setCurrentColor(CMLib.color().valueOf(c,'.'));
+					if(escapeSequence.indexOf(";4")>0)
+						S.setCurrentColor(CMLib.color().valueOf(c,c));
+					else
+						S.setCurrentColor(CMLib.color().valueOf(c,'.'));
 				}
 				str.insert(index+2, escapeSequence);
 				str.delete(index, index+2);

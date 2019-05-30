@@ -1557,12 +1557,14 @@ public class DefaultSession implements Session
 						subChar=change.charAt(0);
 						subColor=change.substring(1);
 					}
-					clookup[subChar]=CMLib.color().translateCMCodeToANSI(subColor);
+					clookup[subChar]=subColor;
 				}
 				for(int i=0;i<clookup.length;i++)
 				{
 					final String s=clookup[i];
-					if((s!=null)&&(s.startsWith("^"))&&(s.length()>1))
+					if((s!=null)
+					&&(s.startsWith("^"))
+					&&(s.length()==2))
 						clookup[i]=clookup[s.charAt(1)];
 				}
 			}
