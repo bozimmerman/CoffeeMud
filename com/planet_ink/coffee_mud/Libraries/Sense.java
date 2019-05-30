@@ -1759,7 +1759,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if((mob!=null)
 		&&(mob.location()!=null)
 		&&(mob.location().getArea().getTimeObj()!=R.getArea().getTimeObj()))
-			return false;
+		{
+			if((mob==null)||(!CMSecurity.isASysOp(mob)))
+				return false;
+		}
 		return true;
 	}
 

@@ -413,6 +413,7 @@ public class StdGrid extends StdRoom implements GridLocale
 					}
 				}
 			}
+			return roomsV;
 		}
 		return new Vector<Room>(0);
 	}
