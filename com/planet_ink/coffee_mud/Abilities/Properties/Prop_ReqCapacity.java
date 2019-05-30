@@ -56,6 +56,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 	public int		playerCap		= Integer.MAX_VALUE;
 	public int		mobCap			= Integer.MAX_VALUE;
 	public int		itemCap			= Integer.MAX_VALUE;
+	public int		siegeCap		= Integer.MAX_VALUE;
 	public int		maxWeight		= Integer.MAX_VALUE;
 	public int		roomLimit		= Integer.MAX_VALUE;
 	public boolean	indoorOnly		= false;
@@ -83,6 +84,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 		  +((playerCap==Integer.MAX_VALUE)?"":L("\n\rPlayer limit: @x1",(""+playerCap)))
 		  +((mobCap==Integer.MAX_VALUE)?"":L("\n\rMOB limit   : @x1",(""+mobCap)))
 		  +((itemCap==Integer.MAX_VALUE)?"":L("\n\rItem limit  : @x1",(""+itemCap)))
+		  +((siegeCap==Integer.MAX_VALUE)?"":L("\n\rsiege Wep. limit  : @x1",(""+itemCap)))
 		  +((roomLimit==Integer.MAX_VALUE)?"":L("\n\rRoom limit  : @x1",(""+roomLimit)))
 		  +((maxWeight==Integer.MAX_VALUE)?"":L("\n\rWeight limit: @x1",(""+maxWeight)));
 	}
@@ -95,6 +97,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 		playerCap=Integer.MAX_VALUE;
 		mobCap=Integer.MAX_VALUE;
 		itemCap=Integer.MAX_VALUE;
+		siegeCap=Integer.MAX_VALUE;
 		maxWeight=Integer.MAX_VALUE;
 		roomLimit=Integer.MAX_VALUE;
 		indoorOnly=false;
@@ -109,6 +112,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 			playerCap=CMParms.getParmInt(txt,"players",playerCap);
 			mobCap=CMParms.getParmInt(txt,"mobs",mobCap);
 			itemCap=CMParms.getParmInt(txt,"items",itemCap);
+			siegeCap=CMParms.getParmInt(txt,"siegeweapons",itemCap);
 			roomLimit=CMParms.getParmInt(txt,"rooms",roomLimit);
 			maxWeight=CMParms.getParmInt(txt,"weight",maxWeight);
 			indoorOnly=CMParms.getParmBool(txt,"indoor",indoorOnly);
@@ -139,6 +143,20 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 		{
 			final Item I=R.getItem(i);
 			if((I!=null)&&(I.container()==null))
+				soFar++;
+		}
+		return soFar;
+	}
+
+	protected int getRoomSiegeCount(final Room R)
+	{
+		if(R==null)
+			return Integer.MAX_VALUE/2;
+		int soFar=0;
+		for(int i=0;i<R.numItems();i++)
+		{
+			final Item I=R.getItem(i);
+			if(CMLib.combat().isAShipSiegeWeapon(I))
 				soFar++;
 		}
 		return soFar;
@@ -196,6 +214,40 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 										{
 											final Item I=R.getItem(ri);
 											if((I!=null)&&(I.container()==null))
+												targetRoom.moveItemTo(I);
+										}
+									}
+								}
+							}
+							if(siegeCap<Integer.MAX_VALUE)
+							{
+								final int roomItemCount=getRoomSiegeCount(R);
+								if(roomItemCount>itemCap)
+								{
+									int totOver=roomItemCount-itemCap;
+									Room targetRoom = null;
+									int smallestCount=Integer.MAX_VALUE/2;
+									for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+									{
+										final Room R2=R.getRoomInDir(d);
+										final Exit E2=R.getExitInDir(d);
+										if((R2!=null)&&(E2!=null)
+										&&(E2.isOpen())&&(!CMLib.flags().isAiryRoom(R2)))
+										{
+											final int rct=this.getRoomSiegeCount(R2);
+											if(rct < smallestCount)
+											{
+												targetRoom=R2;
+												smallestCount=rct;
+											}
+										}
+									}
+									if(targetRoom != null)
+									{
+										for(int ri=R.numItems()-1;ri>=0 && totOver>0;ri--,totOver--)
+										{
+											final Item I=R.getItem(ri);
+											if(CMLib.combat().isAShipSiegeWeapon(I))
 												targetRoom.moveItemTo(I);
 										}
 									}
@@ -355,6 +407,21 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 								msg.source().tell(L("There is no more room in here to drop @x1.",msg.target().Name()));
 								if((rawResources>0)&&(CMath.div(rawResources,itemCap)>0.5))
 									msg.source().tell(L("You should consider bundling up some of those resources."));
+								return false;
+							}
+						}
+						if(siegeCap<Integer.MAX_VALUE)
+						{
+							int soFar=0;
+							for(int i=0;i<R.numItems();i++)
+							{
+								final Item I=R.getItem(i);
+								if(CMLib.combat().isAShipSiegeWeapon(I))
+									soFar++;
+							}
+							if(soFar>=siegeCap)
+							{
+								msg.source().tell(L("There is no more room in here to put @x1.",msg.target().Name()));
 								return false;
 							}
 						}
