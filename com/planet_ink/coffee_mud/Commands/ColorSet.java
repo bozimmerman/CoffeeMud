@@ -71,7 +71,7 @@ public class ColorSet extends StdCommand
 			else
 			if(what.indexOf('~')>0)
 			{
-				what=what.substring(what.indexOf('~'));
+				what=what.substring(what.indexOf('~')).toUpperCase();
 				buf.append(L("^N=foreground, background="));
 			}
 			else
