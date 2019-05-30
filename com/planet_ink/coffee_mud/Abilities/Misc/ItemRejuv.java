@@ -46,7 +46,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	@Override
 	public String name()
 	{
-		return localizedName;
+		return (affected != null) ? affected.name() : localizedName;
 	}
 
 	private final static String	localizedStaticDisplay	= CMLib.lang().L("(ItemRejuv)");
@@ -185,6 +185,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 					}
 					newThisItem.setExpirationDate(0);
 					R.addItem(newThisItem);
+					CMLib.map().registerWorldObjectLoaded(R.getArea(), R, newThisItem);
 
 					newThisItem.setContainer(thisContainer);
 				}
@@ -210,6 +211,11 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 
 		if(tickID==Tickable.TICKID_ROOM_ITEM_REJUV)
 		{
+			if((contents.size()==0)||(ccontents.size()==0))
+			{
+				Log.errOut("Content error in ItemRejuv for "+affected.name());
+				return false;
+			}
 			if((CMLib.flags().canNotBeCamped(item)||CMLib.flags().canNotBeCamped(R))
 			&& (R.numPCInhabitants() > 0)
 			&& (!CMLib.tracking().isAnAdminHere(R,false)))
@@ -217,8 +223,10 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 				CMLib.threads().setTickPending(ticking,Tickable.TICKID_ROOM_ITEM_REJUV);
 				return true; // it will just come back next time
 			}
+
 			if(!verifyFixContents())
 				return false;
+
 			if((!R.isContent(item))
 			&&((!CMLib.flags().isMobile(item)) || (!CMLib.flags().isInTheGame(item,true))))
 			{

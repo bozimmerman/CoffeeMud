@@ -97,6 +97,18 @@ public class TickTock extends StdCommand
 							return false;
 						}
 					}
+					List<TickClient> tickables = CMLib.threads().findTickClient(s, true);
+					if((tickables == null) || (tickables.size()==0))
+						tickables = CMLib.threads().findTickClient(s, false);
+					if((tickables != null) && (tickables.size()>0))
+					{
+						for(final TickClient T : tickables)
+						{
+							T.tickTicker(false);
+							mob.tell(L("Ticked "+T.getName()));
+						}
+						return false;
+					}
 					mob.tell(L("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id."));
 				}
 			}

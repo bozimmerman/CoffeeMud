@@ -842,6 +842,42 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 	@Override
+	public List<TickClient> findTickClient(final String name, final boolean exactOnly)
+	{
+		final List<TickClient> clientsV=new Vector<TickClient>(1);
+		TickableGroup almostTock=null;
+		TickClient C=null;
+		for(final Iterator<TickableGroup> e=tickGroups();e.hasNext();)
+		{
+			almostTock=e.next();
+			try
+			{
+				for(final Iterator<TickClient> i=almostTock.tickers();i.hasNext();)
+				{
+					C=i.next();
+					final Tickable T=(C!=null)?C.getClientObject():null;
+					if(T!=null)
+					{
+						System.out.println(T.name());
+						if(exactOnly)
+						{
+							if(T.name().equalsIgnoreCase(name))
+								clientsV.add(C);
+						}
+						else
+						if(CMLib.english().containsString(T.name(), name))
+							clientsV.add(C);
+					}
+				}
+			}
+			catch(final NoSuchElementException ex)
+			{
+			}
+		}
+		return clientsV;
+	}
+
+	@Override
 	public void tickAllTickers(final Room here)
 	{
 		TickableGroup almostTock=null;
