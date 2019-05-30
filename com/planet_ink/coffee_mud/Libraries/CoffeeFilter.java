@@ -629,10 +629,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					if(state.backgroundCode()!='.')
 						escapeSequence=ColorLibrary.Color.NONE.getANSICode()+escapeSequence;
 					S.setLastColor(state);
-					if(escapeSequence.indexOf(";4")>0)
-						S.setCurrentColor(CMLib.color().valueOf(c,c));
-					else
-						S.setCurrentColor(CMLib.color().valueOf(c,'.'));
+					S.setCurrentColor(CMLib.color().valueOf(c,'.'));
 				}
 				str.insert(index+2, escapeSequence);
 				str.delete(index, index+2);
