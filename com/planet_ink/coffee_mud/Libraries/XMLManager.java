@@ -497,51 +497,78 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		if(s==null)
 			return null;
-		final StringBuilder buf=new StringBuilder(s);
+
+		final StringBuilder buf=new StringBuilder();
 		int loop=0;
-		while(loop<buf.length())
+		while(loop<s.length())
 		{
-			switch(buf.charAt(loop))
+			switch(s.charAt(loop))
 			{
 			case '&':
-				if(loop<buf.length()-3)
+				if(loop<s.length()-3)
 				{
-					switch(buf.charAt(loop+1))
+					switch(s.charAt(loop+1))
 					{
 					case 'l':
-						if(buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
-							buf.replace(loop,loop+4,"<");
+						if(s.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
+						{
+							buf.append('<');
+							loop+=3;
+						}
 						break;
 					case 'g':
-						if(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;"))
-							buf.replace(loop,loop+4,">");
+						if(s.substring(loop+1,loop+4).equalsIgnoreCase("gt;"))
+						{
+							buf.append('>');
+							loop+=3;
+						}
 						break;
 					case 'q':
-						if(buf.substring(loop+1,loop+6).equalsIgnoreCase("quot;"))
-							buf.replace(loop,loop+6,"\"");
+						if(s.substring(loop+1,loop+6).equalsIgnoreCase("quot;"))
+						{
+							buf.append('\"');
+							loop+=5;
+						}
 						break;
 					case 'a':
-						if(buf.substring(loop+1,loop+6).equalsIgnoreCase("amp;"))
-							buf.replace(loop,loop+5,"&");
+						if(s.substring(loop+1,loop+6).equalsIgnoreCase("amp;"))
+						{
+							buf.append('&');
+							loop+=4;
+						}
 						else
-						if(buf.substring(loop+1,loop+6).equalsIgnoreCase("apos;"))
-							buf.replace(loop,loop+6,"'");
+						if(s.substring(loop+1,loop+6).equalsIgnoreCase("apos;"))
+						{
+							buf.append('\'');
+							loop+=5;
+						}
+						break;
+					default:
+						buf.append(s.charAt(loop));
 						break;
 					}
 				}
+				else
+					buf.append(s.charAt(loop));
 				break;
 			case '%':
-				if(loop<buf.length()-2)
+				if(loop<s.length()-2)
 				{
-					final int dig1=HEX_DIGITS.indexOf(buf.charAt(loop+1));
-					final int dig2=HEX_DIGITS.indexOf(buf.charAt(loop+2));
+					final int dig1=HEX_DIGITS.indexOf(s.charAt(loop+1));
+					final int dig2=HEX_DIGITS.indexOf(s.charAt(loop+2));
 					if((dig1>=0)&&(dig2>=0))
 					{
-						buf.setCharAt(loop,(char)((dig1*16)+dig2));
-						buf.deleteCharAt(loop+1);
-						buf.deleteCharAt(loop+1);
+						buf.append((char)((dig1*16)+dig2));
+						loop+=2;
 					}
+					else
+						buf.append(s.charAt(loop));
 				}
+				else
+					buf.append(s.charAt(loop));
+				break;
+			default:
+				buf.append(s.charAt(loop));
 				break;
 			}
 			++loop;
