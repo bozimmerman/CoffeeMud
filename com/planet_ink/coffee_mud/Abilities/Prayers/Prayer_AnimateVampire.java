@@ -251,7 +251,7 @@ public class Prayer_AnimateVampire extends Prayer
 				final Ability A=CMClass.getAbility("Prop_WeaponImmunity");
 				if(A!=null)
 				{
-					A.setMiscText("+ALL -WOODEN -MAGIC -MAGICSKILLS");
+					A.setMiscText("+ALL -WOODEN -MAGICSKILLS");
 					newMOB.addNonUninvokableEffect(A);
 				}
 				newMOB.addAbility(CMClass.getAbility("Undead_EnergyDrain"));
