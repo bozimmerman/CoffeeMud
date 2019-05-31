@@ -247,10 +247,11 @@ public class Prayer_AnimateVampire extends Prayer
 				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
-				final Ability A=CMClass.getAbility("Immunities");
+
+				final Ability A=CMClass.getAbility("Prop_WeaponImmunity");
 				if(A!=null)
 				{
-					A.setMiscText("all");
+					A.setMiscText("+ALL -WOOD");
 					newMOB.addNonUninvokableEffect(A);
 				}
 				newMOB.addAbility(CMClass.getAbility("Undead_EnergyDrain"));
