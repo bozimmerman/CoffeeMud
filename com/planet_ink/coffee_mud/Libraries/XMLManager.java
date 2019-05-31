@@ -498,8 +498,12 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		if(s==null)
 			return null;
 
-		final StringBuilder buf=new StringBuilder();
+		if((s.indexOf('&')<0)
+		&&(s.indexOf('%')<0))
+			return s;
+
 		int loop=0;
+		final StringBuilder buf=new StringBuilder();
 		while(loop<s.length())
 		{
 			switch(s.charAt(loop))
