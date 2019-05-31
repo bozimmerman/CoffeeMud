@@ -223,15 +223,15 @@ public class Who extends StdCommand
 				if(CMSecurity.isASysOp(o2))
 					return 1;
 				final int lastPlayerLevel = CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
-				if(o1.phyStats().level()>= lastPlayerLevel)
+				if(o1.phyStats().level()>=lastPlayerLevel)
 				{
 					if(o2.phyStats().level()>=lastPlayerLevel)
 						return 0;
-					return 1;
+					return -1;
 				}
 				else
 				if(o2.phyStats().level()>= lastPlayerLevel)
-					return -1;
+					return 1;
 				return 0;
 			}
 		};
