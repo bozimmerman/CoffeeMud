@@ -143,9 +143,46 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	}
 
 	@Override
+	public String[] fixPlayerColorDefs(final String colorDefs)
+	{
+		final String[] clookup=CMLib.color().standardColorLookups().clone();
+		final List<String> changesList = CMParms.parseAny(colorDefs, '#', true);
+		for(final String change : changesList)
+		{
+			int subChar;
+			String subColor;
+			if(change.startsWith("(") && (change.indexOf(')')>0))
+			{
+				final int x=change.indexOf(')');
+				subChar=CMath.s_int(change.substring(1,x));
+				subColor = change.substring(x+1);
+			}
+			else
+			{
+				subChar=change.charAt(0);
+				subColor=change.substring(1);
+			}
+			if((subColor.length()>4)
+			&&(subColor.charAt(2)=='|')
+			&&(subColor.charAt(3)=='^'))
+				subColor=subColor.substring(0, 2)+"^~"+subColor.substring(4);
+			clookup[subChar]=subColor;
+		}
+		for(int i=0;i<clookup.length;i++)
+		{
+			final String s=clookup[i];
+			if((s!=null)
+			&&(s.startsWith("^"))
+			&&(s.length()==2))
+				clookup[i]=clookup[s.charAt(1)];
+		}
+		return clookup;
+	}
+
+	@Override
 	public String translateCMCodeToANSI(final String code)
 	{
-		if(code.length()==0)
+		if((code==null)||(code.length()==0))
 			return code;
 		if(!code.startsWith("^"))
 			return code;

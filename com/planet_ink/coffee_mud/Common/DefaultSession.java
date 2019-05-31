@@ -1539,35 +1539,7 @@ public class DefaultSession implements Session
 			if(pstats.getColorStr().length()==0)
 				clookup=CMLib.color().standardColorLookups();
 			else
-			{
-				clookup=CMLib.color().standardColorLookups().clone();
-				final List<String> changesList = CMParms.parseAny(pstats.getColorStr(), '#', true);
-				for(final String change : changesList)
-				{
-					int subChar;
-					String subColor;
-					if(change.startsWith("(") && (change.indexOf(')')>0))
-					{
-						final int x=change.indexOf(')');
-						subChar=CMath.s_int(change.substring(1,x));
-						subColor = change.substring(x+1);
-					}
-					else
-					{
-						subChar=change.charAt(0);
-						subColor=change.substring(1);
-					}
-					clookup[subChar]=subColor;
-				}
-				for(int i=0;i<clookup.length;i++)
-				{
-					final String s=clookup[i];
-					if((s!=null)
-					&&(s.startsWith("^"))
-					&&(s.length()==2))
-						clookup[i]=clookup[s.charAt(1)];
-				}
-			}
+				clookup=CMLib.color().fixPlayerColorDefs(lastColorStr);
 		}
 		return clookup;
 	}

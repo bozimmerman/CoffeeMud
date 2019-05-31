@@ -387,6 +387,16 @@ public interface ColorLibrary extends CMLibrary
 	public String[] standardColorLookups();
 
 	/**
+	 * Translates encoded color definition overrides into a
+	 * completed color mapping, where mappings are from char
+	 * code ints to either escape strings, or more defs.
+	 * Returns a mapping
+	 * @param colorDefs the encoded colorDef to translate
+	 * @return the map of codes to colors
+	 */
+	public String[] fixPlayerColorDefs(final String colorDefs);
+
+	/**
 	 * Generates a new ColorState object from the given
 	 * foreground and background basic 16 ^ color codes.
 	 * @see ColorLibrary.ColorState

@@ -621,15 +621,24 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				String escapeSequence=clookup[c];
 				if(escapeSequence==null)
 					return index;
-				if((S!=null)
-				&&(escapeSequence.length()>0)
-				&&(escapeSequence.charAt(0)=='\033'))
+				if(escapeSequence.length()>0)
 				{
-					final ColorState state=S.getCurrentColor();
-					if(state.backgroundCode()!='.')
-						escapeSequence=ColorLibrary.Color.NONE.getANSICode()+escapeSequence;
-					S.setLastColor(state);
-					S.setCurrentColor(CMLib.color().valueOf(c,'.'));
+					if((S!=null)
+					&&(escapeSequence.charAt(0)=='\033'))
+					{
+						final ColorState state=S.getCurrentColor();
+						if(state.backgroundCode()!='.')
+							escapeSequence=ColorLibrary.Color.NONE.getANSICode()+escapeSequence;
+						S.setLastColor(state);
+						S.setCurrentColor(CMLib.color().valueOf(c,'.'));
+					}
+					else
+					if(escapeSequence.charAt(0)=='^')
+					{
+						str.insert(index+2, escapeSequence);
+						str.delete(index, index+2);
+						return index-1;
+					}
 				}
 				str.insert(index+2, escapeSequence);
 				str.delete(index, index+2);
