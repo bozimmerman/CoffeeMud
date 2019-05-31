@@ -165,7 +165,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			if((subColor.length()>4)
 			&&(subColor.charAt(2)=='|')
 			&&(subColor.charAt(3)=='^'))
-				subColor=subColor.substring(0, 2)+"^~"+subColor.substring(4);
+				subColor=subColor.substring(4)+"^~"+subColor.substring(0, 2);
 			clookup[subChar]=subColor;
 		}
 		for(int i=0;i<clookup.length;i++)
