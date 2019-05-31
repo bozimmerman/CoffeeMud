@@ -50,8 +50,9 @@ public class ClanLoader
 		CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading "+loading+" ("+currentRecordPos+" of "+recordCount+")");
 	}
 
-	public void DBReadClanItems(final Map<String,Clan> clans)
+	public List<Item> DBReadClanItems(final Map<String,Clan> clans)
 	{
+		final List<Item> items=new LinkedList<Item>();
 		DBConnection D=null;
 		try
 		{
@@ -114,6 +115,7 @@ public class ClanLoader
 						newItem.recoverPhyStats();
 						CMLib.map().registerWorldObjectLoaded(null, null, newItem);
 						C.getExtItems().addItem(newItem);
+						items.add(newItem);
 					}
 				}
 				updateBootStatus("Clan Items");
@@ -127,6 +129,7 @@ public class ClanLoader
 		{
 			DB.DBDone(D);
 		}
+		return items;
 	}
 
 	public List<Clan> DBRead()

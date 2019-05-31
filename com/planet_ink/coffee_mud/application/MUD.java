@@ -1733,7 +1733,8 @@ public class MUD extends Thread implements MudHost
 
 			if(clanPostLoads.size()>0)
 			{
-				CMLib.database().DBReadClanItems(clanPostLoads);
+				final int num = CMLib.database().DBReadClanItems(clanPostLoads);
+				Log.sysOut(Thread.currentThread().getName(),"Clan owned items  : "+num);
 			}
 
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("QUESTS")))

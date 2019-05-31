@@ -1013,8 +1013,9 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBReadClanItems(Map)
 	 * @see DatabaseEngine#DBCreateClan(Clan)
 	 * @param clans the map of clanids to clan objects
+	 * @return number of items loaded overall
 	 */
-	public void DBReadClanItems(Map<String,Clan> clans);
+	public int DBReadClanItems(Map<String,Clan> clans);
 
 	/**
 	 * Table category: DBCLANS
