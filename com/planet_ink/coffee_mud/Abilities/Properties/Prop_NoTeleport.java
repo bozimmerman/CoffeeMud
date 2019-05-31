@@ -41,7 +41,8 @@ public class Prop_NoTeleport extends Property
 		return "Prop_NoTeleport";
 	}
 
-	protected List<String> exceptionRooms = new ArrayList<String>(1);
+	protected List<String>  exceptionRooms = new ArrayList<String>(1);
+	protected boolean		nosummon	   = false;
 
 	@Override
 	public String name()
@@ -66,6 +67,7 @@ public class Prop_NoTeleport extends Property
 	{
 		super.setMiscText(newMiscText);
 		exceptionRooms=CMParms.parseCommas(CMParms.getParmStr(newMiscText.toLowerCase(), "EXCEPTIONS", ""), true);
+		nosummon=CMParms.getParmBool(newMiscText.toLowerCase(), "NOSUMMON", false);
 	}
 
 	@Override
@@ -80,7 +82,7 @@ public class Prop_NoTeleport extends Property
 		&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE)
 		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
-			final boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
+			final boolean summon=nosummon&&CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
 			final boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
 			final boolean shere=(R==affected)
 								||((affected instanceof Area)
