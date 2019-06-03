@@ -1223,7 +1223,6 @@ public class StdRoom implements Room
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public void recoverPhyStats()
 	{

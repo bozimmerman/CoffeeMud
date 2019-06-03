@@ -565,6 +565,14 @@ public class StdRideable extends StdContainer implements Rideable
 			return false;
 		switch(msg.targetMinor())
 		{
+		case CMMsg.TYP_PUSH:
+		case CMMsg.TYP_PULL:
+			if(amRiding(msg.source()))
+			{
+				msg.source().tell(L("You cannot do that while @x1 @x2!",stateString(msg.source()),name(msg.source())));
+				return false;
+			}
+			break;
 		case CMMsg.TYP_ADVANCE:
 			if((rideBasis()==Rideable.RIDEABLE_LADDER)
 			&&(amRiding(msg.source())))
