@@ -257,8 +257,14 @@ public class Where extends StdCommand
 								for(int i=0;i<R.numItems();i++)
 								{
 									final Item I=R.getItem(i);
-									if((areaFlag)&&(I instanceof BoardableShip))
-										r.addEnumeration(((BoardableShip)I).getShipArea().getProperMap());
+									if((areaFlag)
+									&&(I instanceof BoardableShip))
+									{
+										final Area A=((BoardableShip)I).getShipArea();
+										final Enumeration<Room> Ar=(A==null)?null:A.getProperMap();
+										if(Ar!=null)
+											r.addEnumeration(Ar);
+									}
 									if((zapperMask)&&(itemOnly))
 									{
 										if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
@@ -338,8 +344,14 @@ public class Where extends StdCommand
 										for(int i=0;i<M.numItems();i++)
 										{
 											final Item I=M.getItem(i);
-											if((areaFlag)&&(I instanceof BoardableShip))
-												r.addEnumeration(((BoardableShip)I).getShipArea().getProperMap());
+											if((areaFlag)
+											&&(I instanceof BoardableShip))
+											{
+												final Area A=((BoardableShip)I).getShipArea();
+												final Enumeration<Room> Ar=(A==null)?null:A.getProperMap();
+												if(Ar!=null)
+													r.addEnumeration(Ar);
+											}
 											if((zapperMask)&&(itemOnly))
 											{
 												if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
@@ -378,8 +390,14 @@ public class Where extends StdCommand
 										for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 										{
 											final Environmental E=i.next();
-											if((areaFlag)&&(E instanceof BoardableShip))
-												r.addEnumeration(((BoardableShip)E).getShipArea().getProperMap());
+											if((areaFlag)
+											&&(E instanceof BoardableShip))
+											{
+												final Area A=((BoardableShip)E).getShipArea();
+												final Enumeration<Room> Ar=(A==null)?null:A.getProperMap();
+												if(Ar!=null)
+													r.addEnumeration(Ar);
+											}
 											if((zapperMask)&&(E instanceof Item)&&(itemOnly))
 											{
 												if(CMLib.masking().maskCheck(compiledZapperMask,E,true))
