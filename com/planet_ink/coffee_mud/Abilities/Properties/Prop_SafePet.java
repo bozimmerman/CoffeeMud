@@ -52,6 +52,17 @@ public class Prop_SafePet extends Property
 		return Ability.CAN_MOBS;
 	}
 
+	@Override
+	public boolean canAffect(final Physical P)
+	{
+		if(super.canAffect(P))
+			return true;
+		if((P instanceof BoardableShip)
+		&&(P instanceof Item))
+			return true;
+		return false;
+	}
+
 	protected boolean	disabled		= false;
 	protected String	displayMessage	= "Awww, leave <T-NAME> alone.";
 
