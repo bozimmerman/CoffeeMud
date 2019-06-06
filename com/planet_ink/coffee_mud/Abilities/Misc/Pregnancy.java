@@ -416,11 +416,13 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							final Ability SAFE = CMClass.getAbility("Prop_SafePet");
 							if (SAFE != null)
 								babe.addNonUninvokableEffect(SAFE);
-							final Ability AGE = CMClass.getAbility("Age");
-							if (AGE != null)
 							{
-								AGE.setMiscText("" + System.currentTimeMillis());
-								babe.addNonUninvokableEffect(AGE);
+								final Ability AGE = CMClass.getAbility("Age");
+								if (AGE != null)
+								{
+									AGE.setMiscText("" + System.currentTimeMillis());
+									babe.addNonUninvokableEffect(AGE);
+								}
 							}
 							babe.recoverCharStats();
 							babe.recoverPhyStats();
@@ -438,8 +440,12 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							final Item I = CMClass.getItem("GenCaged");
 							((CagedAnimal) I).cageMe(babe);
 							((CagedAnimal) I).setCageFlagsBitmap(CagedAnimal.CAGEFLAG_TO_MOB_PROGRAMMATICALLY);
+							final Ability AGE = CMClass.getAbility("Age");
 							if (AGE != null)
-								I.addNonUninvokableEffect((Ability) AGE.copyOf());
+							{
+								AGE.setMiscText("" + System.currentTimeMillis());
+								I.addNonUninvokableEffect(AGE);
+							}
 							if(CMLib.flags().isEggLayer(mob.charStats().getMyRace()))
 								name = CMLib.english().startWithAorAn(L("@x1 egg",R.name())).toLowerCase();
 							else

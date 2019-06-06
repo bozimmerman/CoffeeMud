@@ -988,7 +988,9 @@ public class Age extends StdAbility
 					if((mob==null)&&(((Item)affected).owner() instanceof Room))
 						mob=((Room)((Item)affected).owner()).fetchInhabitant(0);
 
-					if((soil)&&(affected.fetchEffect("Soiled")==null)&&(mob!=null)&&(!affected.name().toLowerCase().endsWith(" egg")))
+					if((soil)
+					&&(affected.fetchEffect("Soiled")==null)
+					&&(mob!=null)&&(!affected.name().toLowerCase().endsWith(" egg")))
 					{
 						final Ability A=CMClass.getAbility("Soiled");
 						if(A!=null)
