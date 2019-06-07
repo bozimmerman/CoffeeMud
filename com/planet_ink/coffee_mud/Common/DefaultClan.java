@@ -850,7 +850,7 @@ public class DefaultClan implements Clan
 			if(p != null)
 			{
 				final ClanPosition myPos = govt().findPositionRole(p.second);
-				final String myNicePosName = CMStrings.capitalizeAndLower(myPos.getName());
+				final String myNicePosName = CMStrings.capitalizeAllFirstLettersAndLower(myPos.getName());
 				for(final String baseTitle : govt().getTitleAwards())
 					myAllowedTitles.add(L(baseTitle,name(),myNicePosName));
 				for(final String posTitle : myPos.getTitleAwards())
@@ -868,7 +868,7 @@ public class DefaultClan implements Clan
 			{
 				if((p==null)||(p.second.intValue()!=pos.getRoleID()))
 				{
-					final String nicePosName = CMStrings.capitalizeAndLower(pos.getName());
+					final String nicePosName = CMStrings.capitalizeAllFirstLettersAndLower(pos.getName());
 					for(final String baseTitle : govt().getTitleAwards())
 					{
 						final String badTitle = L(baseTitle,name(),nicePosName);
@@ -1046,7 +1046,7 @@ public class DefaultClan implements Clan
 			}
 			if(topRankedPos != null)
 			{
-				msg.append("^x"+CMStrings.padRight(CMStrings.capitalizeAndLower(topRankedPos.getPluralName()),COLBL_WIDTH)+":^.^N "+crewList(members, topRankedPos.getRoleID())+"\n\r");
+				msg.append("^x"+CMStrings.padRight(CMStrings.capitalizeAllFirstLettersAndLower(topRankedPos.getPluralName()),COLBL_WIDTH)+":^.^N "+crewList(members, topRankedPos.getRoleID())+"\n\r");
 				sortedPositions.add(topRankedPos);
 			}
 		}
@@ -1882,7 +1882,7 @@ public class DefaultClan implements Clan
 		if(!titleCase)
 			return pos.getName().toLowerCase();
 		else
-			return CMStrings.capitalizeAndLower(pos.getName());
+			return CMStrings.capitalizeAllFirstLettersAndLower(pos.getName());
 	}
 
 	protected boolean isSafeFromPurge()

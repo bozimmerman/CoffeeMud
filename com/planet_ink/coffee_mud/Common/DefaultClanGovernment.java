@@ -1146,7 +1146,7 @@ public class DefaultClanGovernment implements ClanGovernment
 			for(int p=0;p<posses.length;p++)
 			{
 				final ClanPosition pos = sortedPositions.get(p);
-				final String name=CMStrings.capitalizeAndLower(pos.getName().replace('_',' '));
+				final String name=CMStrings.capitalizeAllFirstLettersAndLower(pos.getName().replace('_',' '));
 				str.append(CMStrings.padRight(name,posses[p]-1));
 				if(p<posses.length-1)
 					str.append("!");
@@ -1226,7 +1226,7 @@ public class DefaultClanGovernment implements ClanGovernment
 									{
 										final ClanPosition P=findPositionRole(posI);
 										if(P!=null)
-											roleList.add(CMStrings.capitalizeAndLower(P.getName()));
+											roleList.add(CMStrings.capitalizeAllFirstLettersAndLower(P.getName()));
 									}
 									roleNames=CMLib.english().toEnglishStringList(roleList);
 								}
@@ -1256,7 +1256,7 @@ public class DefaultClanGovernment implements ClanGovernment
 									{
 										final ClanPosition P=findPositionRole(posI);
 										if(P!=null)
-											roleList.add(CMStrings.capitalizeAndLower(P.getName()));
+											roleList.add(CMStrings.capitalizeAllFirstLettersAndLower(P.getName()));
 									}
 									roleNames=CMLib.english().toEnglishStringList(roleList);
 								}
