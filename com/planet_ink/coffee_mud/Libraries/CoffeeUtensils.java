@@ -80,7 +80,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return id;
 	}
-	
+
 	protected int getSimpleWeight(final Physical P)
 	{
 		if(P instanceof Item)
@@ -88,7 +88,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		else
 			return P.phyStats().weight();
 	}
-	
+
 	@Override
 	public int getPullWeight(final Physical P)
 	{
@@ -102,7 +102,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			{
 				int totalWeight=0;
 				final boolean smallWeight = (((Rideable)R).rideBasis()==Rideable.RIDEABLE_WAGON);
-				LinkedList<Rider> weightsToDo = new LinkedList<Rider>();
+				final LinkedList<Rider> weightsToDo = new LinkedList<Rider>();
 				weightsToDo.add(R);
 				while((weightsToDo.size()>0)
 				&&(totalWeight < Integer.MAX_VALUE/2))
@@ -125,7 +125,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		else
 			return getSimpleWeight(P);
 	}
-	
+
 	@Override
 	public String getFormattedDate(final Environmental E)
 	{
@@ -746,6 +746,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	public boolean armorCheck(final MOB mob, final Item I, final int allowedArmorLevel)
 	{
 		if((((I instanceof Armor)||(I instanceof Shield)))
+		&&(!(I instanceof FalseLimb))
 		&&(I.rawProperLocationBitmap()&CharClass.ARMOR_WEARMASK)>0)
 		{
 			DoubleFilterer.Result filterResult = DoubleFilterer.Result.NOTAPPLICABLE;
