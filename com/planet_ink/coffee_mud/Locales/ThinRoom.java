@@ -205,7 +205,7 @@ public class ThinRoom implements Room
 		return true;
 	}
 
-	private boolean	recurse	= false;
+	private volatile boolean	recurse	= false;
 
 	@Override
 	public boolean isHere(final Environmental E)
@@ -229,45 +229,53 @@ public class ThinRoom implements Room
 			return null;
 		if((roomID==null)||(roomID.length()==0)||(recurse))
 			return null;
-		recurse=true;
-		Room myR=null;
-		synchronized(("SYNC"+roomID).intern())
+		try
 		{
-			myR=CMLib.map().getRoom(roomID);
-			if(myR==null)
+			recurse=true;
+			Room myR=null;
+			synchronized(("SYNC"+roomID).intern())
 			{
-				myR=CMLib.database().DBReadRoom(roomID,false);
-				if(myR!=null)
+				myR=CMLib.map().getRoom(roomID);
+				if(myR==null)
 				{
-					CMLib.database().DBReadRoomExits(roomID,myR,false);
-					CMLib.database().DBReadContent(roomID,myR,true);
-					myR.getArea().fillInAreaRoom(R);
-					if(CMath.bset(myR.getArea().flags(),Area.FLAG_THIN))
-						myR.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+					myR=CMLib.database().DBReadRoom(roomID,false);
+					if(myR!=null)
+					{
+						CMLib.database().DBReadRoomExits(roomID,myR,false);
+						CMLib.database().DBReadContent(roomID,myR,true);
+						myR.getArea().fillInAreaRoom(R);
+						if(CMath.bset(myR.getArea().flags(),Area.FLAG_THIN))
+							myR.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+					}
 				}
 			}
+			if((myR!=null)
+			&&(direction>=0)
+			&&(direction<Directions.NUM_DIRECTIONS())
+			&&(R.rawDoors()[direction]==this))
+			{
+				R.rawDoors()[direction]=myR;
+				final MOB mob=CMClass.getFactoryMOB("the wind",1,R);
+				try
+				{
+					R.executeMsg(mob, CMClass.getMsg(mob, R, CMMsg.MSG_NEWROOM, null));
+				}
+				finally
+				{
+					mob.destroy();
+				}
+			}
+			if(myR!=null)
+			{
+				if(myR instanceof ThinRoom) // the purpose of a thin room is to be expanded when requested.
+					return null;
+				return myR.prepareRoomInDir(R,direction);
+			}
 		}
-		if((myR!=null)
-		&&(direction>=0)
-		&&(direction<Directions.NUM_DIRECTIONS())
-		&&(R.rawDoors()[direction]==this))
+		finally
 		{
-			R.rawDoors()[direction]=myR;
-			final MOB mob=CMClass.getFactoryMOB("the wind",1,R);
-			try
-			{
-				R.executeMsg(mob, CMClass.getMsg(mob, R, CMMsg.MSG_NEWROOM, null));
-			}
-			finally
-			{
-				mob.destroy();
-			}
+			recurse=false;
 		}
-		recurse=false;
-		if(myR instanceof ThinRoom)
-			return myR;
-		if(myR!=null)
-			return myR.prepareRoomInDir(R,direction);
 		return null;
 	}
 
