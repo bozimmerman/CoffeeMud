@@ -103,7 +103,10 @@ public class StdCommand implements Command
 	{
 		// fake it!
 		final Vector<String> commands = new Vector<String>();
-		commands.add(getAccessWords()[0]);
+		if(getAccessWords().length>0)
+			commands.add(getAccessWords()[0]);
+		else
+			commands.add(ID());
 		for(final Object o : args)
 			commands.add(o.toString());
 		return Boolean.valueOf(execute(mob,commands,metaFlags));
