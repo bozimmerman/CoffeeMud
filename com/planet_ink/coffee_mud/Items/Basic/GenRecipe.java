@@ -348,6 +348,8 @@ public class GenRecipe extends GenReadable implements Recipe
 						final Pair<String,Integer> nameAndLevel = ((CraftorAbility)A).getDecodedItemNameAndLevel( V );
 						String itemName=CMStrings.replaceAll( nameAndLevel.first, "% ","");
 						itemName=CMStrings.replaceAll( itemName, " % ","");
+						if(CMClass.getAbilityPrototype(itemName) != null)
+							itemName=CMClass.getAbilityPrototype(itemName).Name();
 						if(x>=0)
 							replaceName=CMStrings.replaceAll( Name(), "%", itemName );
 						else
