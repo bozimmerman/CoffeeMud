@@ -29,7 +29,7 @@ nut orchard	33	114	250	NUTS	OUTDOOR	ROOMEFFECT			ResourceOverride(Nuts)	planting
 rice paddy	34	116	250	RICE	OUTDOOR	ROOMEFFECT			ResourceOverride(Rice)	planting rice		Makes an outdoor room only produce rice resources.
 kes grove	35	118	250	CARROTS	CAVEONLY	ROOMEFFECT			ResourceOverride(Carrots)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Foraging mask=carrots name="a pound of kes" display="a pound of kes is here" material=carrots subtype=kes)	planting kes	-ANYCLASS +Delver	Makes a cave room only produce kes resources.
 corn field	36	120	250	CORN	OUTDOOR	ROOMEFFECT			ResourceOverride(Corn)	planting corn		Makes an outdoor room only produce corn resources.
-carrot cield	38	122	250	CARROTS	OUTDOOR	ROOMEFFECT			ResourceOverride(Carrots)	planting carrots		Makes an outdoor room only produce carrot resources.
+carrot field	38	122	250	CARROTS	OUTDOOR	ROOMEFFECT			ResourceOverride(Carrots)	planting carrots		Makes an outdoor room only produce carrot resources.
 lemon orchard	39	124	250	LEMONS	OUTDOOR	ROOMEFFECT			ResourceOverride(Lemons)	planting lemons		Makes an outdoor room with only lemon trees.
 bean field	40	126	250	BEANS	OUTDOOR	ROOMEFFECT			ResourceOverride(Beans)	planting beans		Makes an outdoor room only produce bean resources.
 suls patch	41	128	250	POTATOES	CAVEONLY	ROOMEFFECT			ResourceOverride(Potatoes)Prop_CommonTwister(@remove)Prop_CommonTwister(skill=Foraging mask=potatoes name="a pound of suls" display="a pound of suls is here" material=potatoes subtype=suls)	planting suls	-RACE +Drow	Makes a cave room only produce suls resources.
