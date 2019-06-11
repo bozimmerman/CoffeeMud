@@ -72,6 +72,7 @@ public class PlayerOnline extends StdWebMacro
 				}
 				if(M!=null)
 				{
+					final Session sess=M.session();
 					final String login=Authenticate.getLogin(httpReq);
 					final String pass=Authenticate.getPassword(httpReq);
 					if(Authenticate.authenticated(httpReq,login,pass))
@@ -100,8 +101,8 @@ public class PlayerOnline extends StdWebMacro
 
 						if(canBan&&(parms.containsKey("BANBYNAME")))
 							CMSecurity.ban(last);
-						if(canBan&&(parms.containsKey("BANBYIP")))
-							CMSecurity.ban(M.session().getAddress());
+						if(canBan&&(parms.containsKey("BANBYIP"))&&(sess!=null))
+							CMSecurity.ban(sess.getAddress());
 						if(canModify&&(parms.containsKey("DELIMG")))
 						{
 							if(M.rawImage().length()>0)
@@ -178,11 +179,11 @@ public class PlayerOnline extends StdWebMacro
 							return "File not uploaded -- wrong type!";
 						}
 
-						if(M.session()!=null)
+						if(sess!=null)
 						{
 							if(canBoot&&(parms.containsKey("BOOT")))
 							{
-								M.session().stopSession(false,false,false);
+								sess.stopSession(false,false,false);
 								return "false";
 							}
 							return "true";
