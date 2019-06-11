@@ -29,7 +29,7 @@ standard gate	28	45	40		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit b
 hole	29	165	2550		INDOOR	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor		Exit from an indoor place to an existing room above it.
 standard door	30	55	80		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 obscured door	30	100	100		INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	secret door @x1	-BASECLASS +Thief	Very high-level hidden openable exit between two indoor places.
-trap door	33	55	120		DOWNONLY INDOOR	DOOR	GenDoor	trapdoor|open|close|A closed trapdoor.|An open doorway.		door @x1		Openable exit between two indoor rooms above or below each other.
+trap door	33	55	120		DOWNONLY INDOOR	DOOR	GenDoor	trapdoor|open(s)|close(s)|A closed trapdoor.|An open doorway.		door @x1		Openable exit between two indoor rooms above or below each other.
 sturdy door	35	55	90		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 diving board	36	125	250		OUTDOOR WATERONLY UPONLY	ROOM	OverTheLedge	0		high dive platform		Turns the space above an outdoor water room into a platform above the room that can be jumped from.
 small crawlmaze	37	120	1000		OUTDOOR	ROOM	WoodRoomMaze	3	Prop_Crawlspace()	crawlmaze		Turns an outdoor place into a small, short indoor maze of twisting turns.
@@ -39,14 +39,14 @@ back curtain	43	65	100	CLOTH	INDOOR DIR	DOOR	GenCurtain	curtain|raise|lower|A ba
 heavy door	45	65	120		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 medium crawlmaze	45	145	2000		OUTDOOR	ROOM	WoodRoomMaze	5	Prop_Crawlspace()	crawlmaze		Turns an outdoor place into a medium, short indoor maze of twisting turns.
 strong gate	48	65	90		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
-folding door	50	75	125		INDOOR DIR	DOOR	GenDoor	door|folds open|folds closed|A closed folding door|An open doorway with folding doors.		door @x1		Openable exit between two indoor places.
+folding door	50	75	125		INDOOR DIR	DOOR	GenDoor	door|fold(s) open|fold(s) closed|A closed folding door|An open doorway with folding doors.		door @x1		Openable exit between two indoor places.
 front curtain	53	75	150	CLOTH	INDOOR DIR	DOOR	GenCurtain	curtain|raise|lower|A closed stage curtain.|To the stage.		curtain @x1		Openable cloth exit between the stage and the audience.
 saloon door	55	75	135		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
 large crawlmaze	57	170	3000		OUTDOOR	ROOM	WoodRoomMaze	7	Prop_Crawlspace()	crawlmaze		Turns an outdoor place into a large, short indoor maze of twisting turns.
 heavy gate	58	75	60		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
 hidden door	60	150	200		INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	hidden door @x1	-BASECLASS +Thief	High-level hidden openable exit between two indoor places.
 grand drape	63	85	200	CLOTH	INDOOR DIR	DOOR	GenCurtain	curtain|raise|lower|A closed stage curtain.|To the stage.		curtain @x1		Openable cloth exit between the stage and the audience.
-glass door	65	85	100	GLASS	INDOOR DIR	DOOR	GenDoor	glass door|open|close|A glass door.|An open glass door.	Prop_RoomView()	glass door @x1		Door that, when looked at, shows you what's behind it.
+glass door	65	85	100	GLASS	INDOOR DIR	DOOR	GenDoor	glass door|open(s)|close(s)|A glass door.|An open glass door.	Prop_RoomView()	glass door @x1		Door that, when looked at, shows you what's behind it.
 huge maze	67	450	10000		OUTDOOR	ROOM	WoodRoomMaze	9		huge maze frame and roof		Turns an outdoor place into a huge indoor one of twisting turns.
 reinforced gate	68	85	75		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
 reinforced door	70	95	150		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.

@@ -5,10 +5,10 @@ demolish	1	200	0		DIRUPDOWN	DEMOLISH		-		demolishing		Demolishes something, whic
 room	3	145	0		DIRUPDOWN CAVEONLY	EXCAVATE	CaveRoom	0		new room @x1		Excavates a new room in the given direction.
 archway	5	25	200		CAVEONLY DIR NOWALL	DOOR	GenExit	archway		archway @x1		A special kind of open passageway between two cave rooms.
 shallow water	7	35	0		CAVEONLY	ROOM	WetCaveRoom	0		shallow water		Turns a room into a very wet one.
-light boulder	10	15	50		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	light boulder|push aside|set in place|A light boulder blocks your way.		light boulder closure @x1		Very low level openable exit between two rooms.
+light boulder	10	15	50		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	light boulder|push(s) aside|set(s) in place|A light boulder blocks your way.		light boulder closure @x1		Very low level openable exit between two rooms.
 small maze	15	190	1500		CAVEONLY	ROOM	CaveMaze	3		small maze frame and roof		Turns a room into a small series of twists and turns.
 swimming pool	17	160	0		CAVEONLY	ROOM	IndoorWaterSurface	0		pool		Turns a room into one of water to swim through.
-solid boulder	20	20	25		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	solid boulder|push aside|set in place|A solid boulder blocks your way.		solid boulder closure @x1		Low level openable exit between two rooms.
+solid boulder	20	20	25		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	solid boulder|push(s) aside|set(s) in place|A solid boulder blocks your way.		solid boulder closure @x1		Low level openable exit between two rooms.
 medium maze	23	215	2500		CAVEONLY	ROOM	CaveMaze	5		maze frame and roof		Turns a room into a series of twists and turns.
 crawlway	25	25	0		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1		Exit between two indoor places you crawl through.
 deep pool	27	200	0		CAVEONLY	ROOM	IndoorWaterSurface	1		pool		Turns a room into one of deep water to swim through and under.
@@ -16,16 +16,16 @@ big maze	30	240	3500		CAVEONLY	ROOM	CaveMaze	7		large maze frame and roof		Turns
 cavern	33	235	0		DIRUPDOWN CAVEONLY	EXCAVATE	LargeCaveRoom			new cavern @x1		Excavates a new narrow room in a given direction.
 ventilation shaft	35	65	0		CAVEONLY DIRUPDOWN	EXCAVATE	CaveRoom		Prop_Crawlspace	narrow passage @x1		Excavates a new tall room in a given direction.
 huge maze	37	265	4500		CAVEONLY	ROOM	CaveMaze	9		huge maze frame and roof		Turns a room into many series of twists and turns.
-heavy boulder	40	50	50		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	heavy boulder|push aside|set in place|A heavy boulder blocks your way.		heavy boulder closure @x1		Moderate level openable exit between two rooms.
+heavy boulder	40	50	50		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	heavy boulder|push(s) aside|set(s) in place|A heavy boulder blocks your way.		heavy boulder closure @x1		Moderate level openable exit between two rooms.
 small wet maze	45	240	2000		CAVEONLY	ROOM	WetCaveMaze	3		small damp maze frame and roof		Turns a room into a small, damp series of twists and turns.
 very deep pool	47	400	0		CAVEONLY	ROOM	IndoorWaterSurface	2		pool		Turns a room into one of very deep water to swim through and under.
-sliding boulder	50	150	40		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	sliding boulder|slide open|slide close|A sliding boulder blocks your way.		sliding boulder closure @x1		High level openable exit between two rooms.
+sliding boulder	50	150	40		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	sliding boulder|slide(s) open|slide(s) close|A sliding boulder blocks your way.		sliding boulder closure @x1		High level openable exit between two rooms.
 medium wet maze	53	255	3000		CAVEONLY	ROOM	WetCaveMaze	5		damp maze frame and roof		Turns a room into a damp series of twists and turns.
 big wet maze	60	280	4000		CAVEONLY	ROOM	WetCaveMaze	7		large damp maze frame and roof		Turns a room into a numerouse damp series of twists and turns.
 cliff race	65	300	1000		DIRUPDOWN CAVEONLY	EXCAVATE	CaveSurface			cliff face @x1		Creates a room that requires climbing or flight.
 huge wet maze	67	305	5000		CAVEONLY	ROOM	WetCaveMaze	9		huge damp maze frame and roof		Turns a room into many damp series of twists and turns.
-massive boulder	70	75	100		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	massive boulder|push aside|set in place|A massive boulder blocks your way.		massive boulder closure @x1		Very high level openable exit between two rooms.
-concealed boulder	75	100	150		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	concealed boulder|push aside|set in place|A concealed boulder blocks your way.	Prop_Hidden	concealed boulder closure @x1	-BASECLASS +Thief	High level hidden openable exit between two indoor places.
+massive boulder	70	75	100		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	massive boulder|push(s) aside|set(s) in place|A massive boulder blocks your way.		massive boulder closure @x1		Very high level openable exit between two rooms.
+concealed boulder	75	100	150		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	concealed boulder|push(s) aside|set(s) in place|A concealed boulder blocks your way.	Prop_Hidden	concealed boulder closure @x1	-BASECLASS +Thief	High level hidden openable exit between two indoor places.
 escape tunnel	80	5000	5000		CAVEONLY DIRUPDOWN NODOWN	EXCAVATE	MountainSurface			passageway outside @x1		Creates an exit to an external mountain surface, which requires flight or climbing to navigate.
 secret door	90	100	200		CAVEONLY DIRUPDOWN NOWALL	DOOR	GenDoor	secret door	Prop_Hidden	secret door @x1	-BASECLASS +Thief	Very high level hidden openable exit between two indoor places.
 druidic monument	13	200	1000		CAVEONLY	ITEM	DruidicMonument			druidic monument	-ANYCLASS +Delver	Constructs a spiritual druidic monument.

@@ -14,7 +14,7 @@ small % jon boat	5	66	(onground:consumed:148:METAL:)	560	GenBoat		2	200	;paddled
 % shad boat	15	64	144	544	GenBoat		2	300	;sailed by;sail(s);;;	*Prop_MoveRestrictor;nolocales="shallowwater" message="The water is too shallow for the keel of your <S-NAME>!" public=false
 % coracle	16	39	(onground:consumed:94:CLOTH:)	344	GenBoat		1	150	;paddled by;paddle(s);;;	*Prop_MoveRestrictor;nolocales="oceangrid,oceanthingrid,saltwatersurface,saltwatersurfacecolumn,saltwaterthinsurface" message="<S-NAME> is not an ocean-worthy vessel!" public=false
 % punt	17	114	244	944	GenBoat		4	600	;poled by;pole(s);;;	*Prop_MoveRestrictor;nolocales="shallowwater" message="The water is too shallow for the keel of your <S-NAME>!" public=false
-% wWaka	18	114	244	944	GenBoat		4	600	;paddled by;paddle(s);;;	*Prop_MoveRestrictor;nolocales="oceangrid,oceanthingrid,saltwatersurface,saltwatersurfacecolumn,saltwaterthinsurface" message="<S-NAME> is not an ocean-worthy vessel!" public=false
+% waka	18	114	244	944	GenBoat		4	600	;paddled by;paddle(s);;;	*Prop_MoveRestrictor;nolocales="oceangrid,oceanthingrid,saltwatersurface,saltwatersurfacecolumn,saltwaterthinsurface" message="<S-NAME> is not an ocean-worthy vessel!" public=false
 % sandolo	20	89	192	740	GenBoat		3	600	;rowed by;row(s);;;	*Prop_MoveRestrictor;nolocales="oceangrid,oceanthingrid,saltwatersurface,saltwatersurfacecolumn,saltwaterthinsurface" message="<S-NAME> is not an ocean-worthy vessel!" public=false
 % dinghy	21	164	342	1340	GenBoat		6	1200	;rowed by;row(s);;;	
 % kayak	22	39	92	340	GenBoat		1	200	;paddled by;paddle(s);;;	*Prop_MoveRestrictor;nolocales="oceangrid,oceanthingrid,saltwatersurface,saltwatersurfacecolumn,saltwaterthinsurface" message="<S-NAME> is not an ocean-worthy vessel!" public=false
