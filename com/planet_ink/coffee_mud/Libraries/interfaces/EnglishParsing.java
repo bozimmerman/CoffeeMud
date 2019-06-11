@@ -54,6 +54,7 @@ public interface EnglishParsing extends CMLibrary
 	public boolean hasPunctuation(String str);
 	public String makePlural(String str);
 	public String makeSingular(String str);
+	public String makePastTense(String word, String defaultWord);
 	public String getFirstWord(final String str);
 	public String properIndefiniteArticle(String str);
 	public String toEnglishStringList(final String[] V);

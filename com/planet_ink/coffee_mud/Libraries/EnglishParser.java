@@ -137,6 +137,26 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
+	public String makePastTense(String word, final String defaultWord)
+	{
+		if(word == null)
+			return defaultWord;
+		word = word.trim();
+		if(word.length()==0)
+			return defaultWord;
+		final int x=word.indexOf(' ');
+		if(x>0)
+			word=word.substring(x+1).trim();
+		if(CMStrings.isVowel(word.charAt(word.length()-1)))
+			return word+"d";
+		else
+		if(!word.endsWith("ed"))
+			return word+"ed";
+		else
+			return word;
+	}
+
+	@Override
 	public boolean isAnArticle(String s)
 	{
 		s=s.toLowerCase();
