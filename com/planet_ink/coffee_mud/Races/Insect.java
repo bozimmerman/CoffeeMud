@@ -144,6 +144,7 @@ public class Insect extends StdRace
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
 		&&(!((MOB)msg.target()).isMonster())
 		&&(((msg.value())>(((MOB)msg.target()).maxState().getHitPoints()/20)))
+		&&(CMLib.dice().rollPercentage()>=95)
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A;
