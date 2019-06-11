@@ -51,7 +51,7 @@ public class Open extends StdCommand
 	public boolean open(final MOB mob, final Environmental openThis, final String openableWord, int dirCode, final boolean quietly)
 	{
 		final String openWord=(!(openThis instanceof Exit))?"open":((Exit)openThis).openWord();
-		final String openMsg=quietly?null:("<S-NAME> "+openWord+"(s) <T-NAMESELF>.")+CMLib.protocol().msp("dooropen.wav",10);
+		final String openMsg=quietly?null:("<S-NAME> "+((openWord.indexOf('(')>0)?openWord:(openWord+"(s)"))+" <T-NAMESELF>.")+CMLib.protocol().msp("dooropen.wav",10);
 		final CMMsg msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,openMsg,openableWord,openMsg);
 		if(openThis instanceof Exit)
 		{

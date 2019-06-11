@@ -194,7 +194,8 @@ public class Skill_Track extends StdSkill
 								if(oldRoom.okMessage(mob,msg))
 								{
 									relock=true;
-									msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> unlock(s) <T-NAMESELF><O-WITHNAME>."));
+									msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,
+											L("<S-NAME> unlock(s) <T-NAMESELF><O-WITHNAME>."));
 									CMLib.utensils().roomAffectFully(msg,oldRoom,nextDirection);
 								}
 							}
@@ -202,7 +203,8 @@ public class Skill_Track extends StdSkill
 							if(oldRoom.okMessage(mob,msg))
 							{
 								reclose=true;
-								msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,L("<S-NAME> @x1(s) <T-NAMESELF>.",nextExit.openWord()));
+								msg=CMClass.getMsg(mob,nextExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,
+										L("<S-NAME> @x1 <T-NAMESELF>.",((nextExit.openWord().indexOf('(')>0)?nextExit.openWord():(nextExit.openWord()+"(s)"))));
 								CMLib.utensils().roomAffectFully(msg,oldRoom,nextDirection);
 							}
 						}
@@ -241,7 +243,8 @@ public class Skill_Track extends StdSkill
 										CMMsg msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 										if(nextRoom.okMessage(mob,msg))
 										{
-											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,L("<S-NAME> @x1(s) <T-NAMESELF>.",nextExit.closeWord()));
+											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,
+													L("<S-NAME> @x1 <T-NAMESELF>.",((nextExit.closeWord().indexOf('(')>0)?nextExit.closeWord():(nextExit.closeWord()+"(s)"))));
 											CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
 										}
 										if((opExit.hasALock())&&(relock))
@@ -249,7 +252,8 @@ public class Skill_Track extends StdSkill
 											msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 											if(nextRoom.okMessage(mob,msg))
 											{
-												msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> lock(s) <T-NAMESELF><O-WITHNAME>."));
+												msg=CMClass.getMsg(mob,opExit,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,
+														L("<S-NAME> lock(s) <T-NAMESELF><O-WITHNAME>."));
 												CMLib.utensils().roomAffectFully(msg,nextRoom,opDirection);
 											}
 										}

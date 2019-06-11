@@ -52,7 +52,7 @@ public class Close extends StdCommand
 	{
 		final boolean useShipDirs=(mob.location() instanceof BoardableShip)||(mob.location().getArea() instanceof BoardableShip);
 		final String closeWord=(!(closeThis instanceof Exit))?"close":((Exit)closeThis).closeWord();
-		final String closeMsg="<S-NAME> "+closeWord+"(s) <T-NAMESELF>."+CMLib.protocol().msp("dooropen.wav",10);
+		final String closeMsg="<S-NAME> "+((closeWord.indexOf('(')>0)?closeWord:(closeWord+"(s)"))+" <T-NAMESELF>."+CMLib.protocol().msp("dooropen.wav",10);
 		final CMMsg msg=CMClass.getMsg(mob,closeThis,null,CMMsg.MSG_CLOSE,closeMsg,whatToClose,closeMsg);
 		if(closeThis instanceof Exit)
 		{

@@ -282,7 +282,8 @@ public class Prop_ClosedDayNight extends Property
 								msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 								if(R2.okMessage(mob,msg))
 								{
-									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,L("<S-NAME> @x1(s) <T-NAMESELF>.",E.closeWord()));
+									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_CLOSE,CMMsg.MSG_OK_VISUAL,
+											L("<S-NAME> @x1 <T-NAMESELF>.",((E.closeWord().indexOf('(')>0)?E.closeWord():(E.closeWord()+"(s)"))));
 									CMLib.utensils().roomAffectFully(msg,mob.location(),d);
 								}
 							}
@@ -291,7 +292,8 @@ public class Prop_ClosedDayNight extends Property
 								msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 								if(R2.okMessage(mob,msg))
 								{
-									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> lock(s) <T-NAMESELF><O-WITHNAME>."));
+									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,
+											L("<S-NAME> lock(s) <T-NAMESELF><O-WITHNAME>."));
 									CMLib.utensils().roomAffectFully(msg,mob.location(),d);
 								}
 							}
@@ -365,7 +367,8 @@ public class Prop_ClosedDayNight extends Property
 								msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 								if(R2.okMessage(mob,msg))
 								{
-									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,L("<S-NAME> unlock(s) <T-NAMESELF><O-WITHNAME>."));
+									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,
+											L("<S-NAME> unlock(s) <T-NAMESELF><O-WITHNAME>."));
 									CMLib.utensils().roomAffectFully(msg,mob.location(),d);
 								}
 							}
@@ -374,7 +377,8 @@ public class Prop_ClosedDayNight extends Property
 								msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 								if(R2.okMessage(mob,msg))
 								{
-									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,L("<S-NAME> @x1(s) <T-NAMESELF>.",E.openWord()));
+									msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OPEN,CMMsg.MSG_OK_VISUAL,
+											L("<S-NAME> @x1 <T-NAMESELF>.",((E.openWord().indexOf('(')>0)?E.openWord():(E.openWord()+"(s)"))));
 									CMLib.utensils().roomAffectFully(msg,mob.location(),d);
 								}
 							}

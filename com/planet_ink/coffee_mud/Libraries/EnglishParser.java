@@ -179,6 +179,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		if((str==null)||(str.length()==0))
 			return str;
+
+		if(str.indexOf("(s)")>0)
+			return CMStrings.replaceAll(str, "(s)", "s");
+		if(str.indexOf("(es)")>0)
+			return CMStrings.replaceAll(str, "(es)", "es");
+		if(str.indexOf("(ys)")>0)
+			return CMStrings.replaceAll(str, "(ys)", "ies");
+
 		final boolean uppercase=Character.isUpperCase(str.charAt(str.length()-1));
 		final String lowerStr=str.toLowerCase();
 		if(CMStrings.contains(fnouns, lowerStr))
