@@ -72,7 +72,11 @@ public class PlayerOnline extends StdWebMacro
 				}
 				if(M!=null)
 				{
-					final Session sess=M.session();
+					final Session sess;
+					synchronized(M)
+					{
+						sess=M.session();
+					}
 					final String login=Authenticate.getLogin(httpReq);
 					final String pass=Authenticate.getPassword(httpReq);
 					if(Authenticate.authenticated(httpReq,login,pass))
