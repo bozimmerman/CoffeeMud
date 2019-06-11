@@ -3835,6 +3835,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		for(final Pair<Clan,Integer> clan : mob.clans())
 			clan.first.updateClanPrivileges(mob);
 		setGlobalBitmaps(mob);
+		if(mob.location()!=null)
+			CMLib.players().changePlayersLocation(mob, mob.location());
 		return LoginResult.NORMAL_LOGIN;
 	}
 
