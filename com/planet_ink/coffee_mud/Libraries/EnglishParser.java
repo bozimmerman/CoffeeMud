@@ -147,6 +147,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		final int x=word.indexOf(' ');
 		if(x>0)
 			word=word.substring(x+1).trim();
+		if(word.endsWith("(s)"))
+			word=word.substring(0, word.length()-3);
+		if(word.endsWith("(es)"))
+			word=word.substring(0, word.length()-4);
+		if(word.endsWith("(ys)"))
+			word=word.substring(0, word.length()-4);
 		if(CMStrings.isVowel(word.charAt(word.length()-1)))
 			return word+"d";
 		else
