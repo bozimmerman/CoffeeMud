@@ -386,7 +386,6 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 					{
 					}
 				}
-
 			}
 			return curShop;
 		}
@@ -810,8 +809,17 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				{
 					if ((!this.shop.doIHaveThisInStock(msg.tool().Name(), null)) && (this.getItemRecords(msg.tool().Name()).size() == 0))
 					{
-						mob.tell(this, msg.tool(), null, L("<S-HE-SHE> has no interest in <T-NAME>."));
-						CMLib.commands().postSay(this, mob, L("That item was not checked out here."), true, false);
+						if(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDMOBS))
+						{
+							this.shop.addStoreInventory(msg.tool(), 1, 0);
+							this.shopApply=true;
+							CMLib.commands().postSay(this, mob, L("I will now loan out @x1.",msg.tool().Name()), true, false);
+						}
+						else
+						{
+							mob.tell(this, msg.tool(), null, L("<S-HE-SHE> has no interest in <T-NAME>."));
+							CMLib.commands().postSay(this, mob, L("That item was not checked out here."), true, false);
+						}
 						return false;
 					}
 				}
