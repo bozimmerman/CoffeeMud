@@ -108,7 +108,10 @@ public class StdCommand implements Command
 		else
 			commands.add(ID());
 		for(final Object o : args)
-			commands.add(o.toString());
+		{
+			if(o != null)
+				commands.add(o.toString());
+		}
 		return Boolean.valueOf(execute(mob,commands,metaFlags));
 	}
 

@@ -140,13 +140,14 @@ public class Publishing extends CommonSkill
 							&&(SK.isSold(ShopKeeper.DEAL_BOOKS)))
 							{
 								if(M.getStartRoom()!=null)
-									shops.add(SK,mob.getStartRoom());
+									shops.add(SK,M.getStartRoom());
 								else
 									shops.add(SK,R);
 							}
 						}
 					}
 					rooms.clear();
+					final Publishing realPubA = (Publishing)mob.fetchAbility(ID());
 					if(shops.size()==0)
 						commonTell(mob,L("There were no appropriate book shops nearby to publish at."));
 					else
@@ -197,13 +198,13 @@ public class Publishing extends CommonSkill
 							}
 							if(proceed)
 							{
-								Log.infoOut("The book "+shopItem.Name()+" was published by "+mob.Name()+" to "+CMLib.map().roomLocation(SKs.second));
+								Log.infoOut("The book "+shopItem.Name()+" was published by "+mob.Name()+" to "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(SKs.second)));
 								pubbed++;
 								if(SK instanceof Librarian)
 									((Librarian)SK).getBaseLibrary().addStoreInventory((Item)shopItem.copyOf(), adjustedLevel(mob,0), (int)CMath.round(price));
 								else
 									SK.getShop().addStoreInventory((Item)shopItem.copyOf(), adjustedLevel(mob,0), (int)CMath.round(price));
-								final MiniJSON.JSONObject obj=getData();
+								final MiniJSON.JSONObject obj=(realPubA!=null)?realPubA.getData():getData();
 								if(!obj.containsKey(shopItem.Name()))
 									obj.put(shopItem.Name(), new MiniJSON.JSONObject());
 								try
@@ -228,7 +229,10 @@ public class Publishing extends CommonSkill
 										locObj.put("room", CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(SKs.second)));
 										locs[locs.length-1]=locObj;
 										bookObj.put("locs", locs);
-										setData(obj);
+										if(realPubA!=null)
+											realPubA.setData(obj);
+										else
+											setData(obj);
 									}
 								}
 								catch (final MJSONException e)
@@ -250,9 +254,12 @@ public class Publishing extends CommonSkill
 								if(A!=null)
 								{
 									final TimeClock C=A.getTimeObj();
-									final MiniJSON.JSONObject obj=getData();
+									final MiniJSON.JSONObject obj=(realPubA!=null)?realPubA.getData():getData();
 									obj.put("lastpub", Long.valueOf(C.toHoursSinceEpoc()));
-									this.setData(obj);
+									if(realPubA!=null)
+										realPubA.setData(obj);
+									else
+										setData(obj);
 								}
 							}
 						}
@@ -483,7 +490,9 @@ public class Publishing extends CommonSkill
 			return false;
 		final TimeClock C=A.getTimeObj();
 		final MiniJSON.JSONObject obj=getData();
-		if(obj.containsKey("lastpub"))
+		if(obj.containsKey("lastpub")
+		&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDMOBS))
+		&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.ALLSKILLS)))
 		{
 			try
 			{
