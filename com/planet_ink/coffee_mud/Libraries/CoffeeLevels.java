@@ -500,9 +500,20 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 	protected void checkLevelGain(final MOB mob)
 	{
+		if(mob == null)
+			return;
 		if((mob.getExperience()>=mob.getExpNextLevel())
 		&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
-			level(mob);
+		{
+			synchronized(("SYSTEM_LEVELING_"+mob.Name()).intern())
+			{
+				synchronized(mob) // does this really do anything?
+				{}
+				if((mob.getExperience()>=mob.getExpNextLevel())
+				&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
+					level(mob);
+			}
+		}
 	}
 
 	@Override
