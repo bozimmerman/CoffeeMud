@@ -1074,7 +1074,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		for(int a=room.numEffects()-1;a>=0;a--)
 		{
 			final Ability A=room.fetchEffect(a);
-			if(A!=null)
+			if((A!=null)
+			&&(!A.ID().equalsIgnoreCase("Prop_Crawlspace")))
 			{
 				room.delEffect(A);
 				R.addEffect(A);
