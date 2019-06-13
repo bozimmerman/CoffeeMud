@@ -1549,7 +1549,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(C!=null)
 		{
 			final Calendar calC=Calendar.getInstance();
-			final String filename = "/resources/sys_reports/top_report_"+calC.get(Calendar.YEAR)+"-"+(calC.get(Calendar.MONTH)+1)+"-"+calC.get(Calendar.DAY_OF_MONTH)+".txt";
+			final String filename = "/resources/sys_reports/"+name()+"_top_report_"+calC.get(Calendar.YEAR)+"-"+(calC.get(Calendar.MONTH)+1)+"-"+calC.get(Calendar.DAY_OF_MONTH)+".txt";
 			final CMFile F=new CMFile(filename, null);
 			if(!F.exists())
 			{
