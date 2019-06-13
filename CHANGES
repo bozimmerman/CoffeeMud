@@ -4,6 +4,7 @@
   3. Prop_OpenCommand and Prop_CloseCommand have expanded arguments.
   4. Room-based Gathering skills now decrease yield with repeated spams of the same room.
   5. WHO list will now sort archons to the top.  WHO Account will sort by account name.
+  6. Monthly TOP reports will, at the end of the month, now be saved in DBFS dir /resources/reports 
 
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque

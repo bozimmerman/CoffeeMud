@@ -1543,6 +1543,32 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return true;
 	}
 
+	protected void saveLastMonthsTopsData()
+	{
+		final Command C=CMClass.getCommand("Top");
+		if(C!=null)
+		{
+			final Calendar calC=Calendar.getInstance();
+			final String filename = "/resources/sys_reports/top_report_"+calC.get(Calendar.YEAR)+"-"+(calC.get(Calendar.MONTH)+1)+"-"+calC.get(Calendar.DAY_OF_MONTH)+".txt";
+			final CMFile F=new CMFile(filename, null);
+			if(!F.exists())
+			{
+				final MOB mob=CMLib.map().deity();
+				Object o;
+				try
+				{
+					o = C.executeInternal(mob, 0, new Object[0]);
+					if(o instanceof String)
+						F.saveText(o);
+				}
+				catch (final IOException e)
+				{
+					Log.errOut(e);
+				}
+			}
+		}
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -1590,6 +1616,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 							continue;
 						if(now > topPrideExpiration[period.ordinal()])
 						{
+							if(period == TimeClock.TimePeriod.MONTH)
+								saveLastMonthsTopsData();
 							topPrideExpiration[period.ordinal()] = period.nextPeriod();
 							for(final AccountStats.PrideStat stat : AccountStats.PrideStat.values())
 							{

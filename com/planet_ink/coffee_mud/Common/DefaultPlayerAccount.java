@@ -308,7 +308,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 	public void bumpPrideStat(final PrideStat stat, final int amt)
 	{
 		final long now=System.currentTimeMillis();
-		if(stat!=null)
+		if(stat==null)
+			return;
 		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 		{
 			if(period==TimeClock.TimePeriod.ALLTIME)

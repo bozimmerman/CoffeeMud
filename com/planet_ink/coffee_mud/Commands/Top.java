@@ -36,6 +36,9 @@ import java.util.*;
 public class Top extends StdCommand
 {
 	private final String[] access=I(new String[]{"TOP"});
+
+	private final static Class<?>[][]	internalParameters	= new Class<?>[][] { {}, { Boolean.class, Integer.class } };
+
 	@Override
 	public String[] getAccessWords()
 	{
@@ -56,33 +59,15 @@ public class Top extends StdCommand
 		return I.toString();
 	}
 
-	@Override
-	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags) throws java.io.IOException
+	public String getTopData(final int width, final boolean doPlayers, final TimePeriod[] periods)
 	{
-		boolean doPlayers=true;
-		if(commands.size()>1)
-		{
-			final String what=commands.get(1).toUpperCase();
-			if("PLAYERS".startsWith(what))
-				doPlayers=true;
-			else
-			if((CMProps.isUsingAccountSystem())&&("ACCOUNTS".startsWith(what)))
-				doPlayers=false;
-			else
-			{
-				mob.tell(L("'@x1' is unknown.  Try PLAYERS or ACCOUNTS",what));
-				return true;
-			}
-		}
-
+		final StringBuilder str=new StringBuilder();
+		final int nameWidth=width - (width/3)-3;
+		final String slashes=CMStrings.repeat('=', width);
 		List<Pair<String,Integer>> set1;
 		List<Pair<String,Integer>> set2;
 		List<Pair<String,Integer>> set3;
-		final StringBuilder str=new StringBuilder();
-		final int width=CMLib.lister().fixColWidth(72, mob)/3;
-		final int nameWidth=width - (width/3)-3;
-		final String slashes=CMStrings.repeat('=', width);
-		for(final TimePeriod period : new TimePeriod[]{TimePeriod.ALLTIME,TimePeriod.MONTH})
+		for(final TimePeriod period : periods)
 		{
 			final String desc=(period==TimePeriod.ALLTIME)?"All Time":"This Month";
 			str.append(L("^xTop @x1 @x2\n\r^x@x3^.^N ^x@x4^.^N ^x@x5^.^N\n\r",(doPlayers?"Characters":"Accounts"),desc,slashes,slashes,slashes));
@@ -128,9 +113,45 @@ public class Top extends StdCommand
 			}
 			str.append("\n\r");
 		}
+		return str.toString();
+	}
+
+	@Override
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags) throws java.io.IOException
+	{
+		boolean doPlayers=true;
+		if(commands.size()>1)
+		{
+			final String what=commands.get(1).toUpperCase();
+			if("PLAYERS".startsWith(what))
+				doPlayers=true;
+			else
+			if((CMProps.isUsingAccountSystem())&&("ACCOUNTS".startsWith(what)))
+				doPlayers=false;
+			else
+			{
+				mob.tell(L("'@x1' is unknown.  Try PLAYERS or ACCOUNTS",what));
+				return true;
+			}
+		}
+
+		final int width=CMLib.lister().fixColWidth(72, mob)/3;
+		final String str=this.getTopData(width, doPlayers, new TimePeriod[]{TimePeriod.ALLTIME,TimePeriod.MONTH});
 		if(mob.session()!=null)
 			mob.session().print(str.toString());
 		return false;
+	}
+
+	@Override
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		final TimePeriod[] periods = new TimePeriod[]{TimePeriod.MONTH};
+		if((args != null)&&(args.length>1))
+			return this.getTopData(((Integer)args[1]).intValue(), ((Boolean)args[0]).booleanValue(), periods);
+		else
+			return this.getTopData(78, true, periods)+"\n\r"+this.getTopData(78, false, periods);
 	}
 
 	@Override
