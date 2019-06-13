@@ -102,6 +102,89 @@ public class Publishing extends CommonSkill
 	}
 
 	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if(newMiscText.length()>0)
+			doStorePublish();
+	}
+
+	protected volatile boolean alreadyStored = false;
+
+	protected void doStorePublish()
+	{
+		if(alreadyStored)
+			return;
+		alreadyStored = true;
+		final MiniJSON.JSONObject obj = getData();
+		for(final String itemName : obj.keySet())
+		{
+			if(obj.containsKey(itemName)
+			&&(!itemName.equalsIgnoreCase("lastpub")))
+			{
+				try
+				{
+					final MiniJSON.JSONObject bobj = obj.getCheckedJSONObject(itemName);
+					if(bobj.containsKey("locs"))
+					{
+						final String author = bobj.getCheckedString("author");
+						final MOB M=CMLib.players().getPlayer(author);
+						if(M==null)
+						{
+							alreadyStored=false;
+							return;
+						}
+						final Object[] locs=bobj.getCheckedArray("locs");
+						for(final Object locO : locs)
+						{
+							final MiniJSON.JSONObject lobj = (MiniJSON.JSONObject)locO;
+							final String locName = lobj.getCheckedString("name");
+							final String locRoom = lobj.getCheckedString("room");
+							final Room R=CMLib.map().getRoom(locRoom);
+							if(R!=null)
+							{
+								Physical P=R.fetchInhabitant(locName);
+								if(P==null)
+									P=R.findItem(locName);
+								if(P!=null)
+								{
+									final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(P);
+									if((SK!=null)
+									&&(!SK.getShop().getStoreInventory("$"+itemName+"$").hasNext()))
+									{
+										final Item shopItem=M.findItem("$"+itemName+"$");
+										if(shopItem!=null)
+										{
+											double price=100;
+											int level=30;
+											if(bobj.containsKey("price"))
+												price=bobj.getCheckedDouble("price").doubleValue();
+											if(bobj.containsKey("level"))
+												level=bobj.getCheckedLong("level").intValue();
+											if(SK instanceof Librarian)
+											{
+												((Librarian)SK).getBaseLibrary().addStoreInventory((Item)shopItem.copyOf(), level, (int)CMath.round(price));
+											}
+											else
+											{
+												SK.getShop().addStoreInventory((Item)shopItem.copyOf(), level, (int)CMath.round(price));
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				catch (final MJSONException e)
+				{
+					Log.errOut(e);
+				}
+			}
+		}
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -218,7 +301,8 @@ public class Publishing extends CommonSkill
 									{
 										final MiniJSON.JSONObject locObj = (MiniJSON.JSONObject)o;
 										if(locObj.getCheckedString("name").equals(SK.Name())
-										&&(CMLib.map().getExtendedRoomID(SKs.second)).equals(locObj.getCheckedString("room")))
+										&&(CMLib.map().getExtendedRoomID(SKs.second)).equals(locObj.getCheckedString("room"))
+										&&(bookObj.containsKey("author")))
 											found=true;
 									}
 									if(!found)
@@ -229,6 +313,9 @@ public class Publishing extends CommonSkill
 										locObj.put("room", CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(SKs.second)));
 										locs[locs.length-1]=locObj;
 										bookObj.put("locs", locs);
+										bookObj.put("author", mob.Name());
+										bookObj.put("price", Double.valueOf(price));
+										bookObj.put("level", Integer.valueOf(adjustedLevel(mob, 0)));
 										if(realPubA!=null)
 											realPubA.setData(obj);
 										else
@@ -459,6 +546,8 @@ public class Publishing extends CommonSkill
 						if(bookName.equalsIgnoreCase("lastpub"))
 							continue;
 						final MiniJSON.JSONObject bookObj = data.getCheckedJSONObject(bookName);
+						if(!bookObj.containsKey("author"))
+							str.append("* This book might need to be republished.\n\r");
 						str.append(index+") ^H"+bookName+"^?:\n\r");
 						String purchased="0";
 						String royalties="0";
