@@ -355,7 +355,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		{
 		case '?':
 		{
-			if((S!=null)&&(S.getClientTelnetMode(Session.TELNET_ANSI)))
+			if((S!=null)
+			&&(S.getClientTelnetMode(Session.TELNET_ANSI)))
 			{
 				ColorState lastColor=S.getLastColor();
 				final ColorState currColor=S.getCurrentColor();
@@ -432,31 +433,66 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			if(finalNum >=0)
 			{
 				final boolean isFg=(c==ColorLibrary.COLORCODE_FANSI256);
-				String escapeSequence;
-				if(isFg)
-				{
-					escapeSequence="\033[38;5;"+finalNum+"m";
-					if((S!=null)
-					&&(S.getCurrentColor().backgroundCode()!='.'))
-						escapeSequence=ColorLibrary.Color.NONE.getANSICode()+escapeSequence;
-				}
+				final Color color16;
+				if((S!=null)&&(S.getClientTelnetMode(Session.TELNET_ANSI16)))
+					color16 = CMLib.color().getANSI16Equivalent((short)finalNum);
 				else
-					escapeSequence="\033[48;5;"+finalNum+"m";
-				str.insert(index+5, escapeSequence);
-				str.delete(index, index+5);
-				if(S!=null)
+					color16 = null;
+				if(color16 == null)
 				{
+					String escapeSequence;
 					if(isFg)
 					{
-						S.setLastColor(S.getCurrentColor());
-						S.setCurrentColor(CMLib.color().valueOf((char)(256 | finalNum), '.'));
+						escapeSequence="\033[38;5;"+finalNum+"m";
+						if((S!=null)
+						&&(S.getCurrentColor().backgroundCode()!='.'))
+							escapeSequence=ColorLibrary.Color.NONE.getANSICode()+escapeSequence;
+					}
+					else
+						escapeSequence="\033[48;5;"+finalNum+"m";
+					if(S!=null)
+					{
+						if(isFg)
+						{
+							S.setLastColor(S.getCurrentColor());
+							S.setCurrentColor(CMLib.color().valueOf((char)(256 | finalNum), '.'));
+						}
+						else
+						{
+							S.setCurrentColor(CMLib.color().valueOf(S.getCurrentColor().foregroundCode(), (char)(256 | finalNum)));
+						}
+					}
+					str.insert(index+5, escapeSequence);
+					str.delete(index, index+5);
+					return index+escapeSequence.length()-1;
+				}
+				else
+				{
+					String escapeSequence = color16.getANSICode();
+					if(isFg)
+					{
+						if(S!=null)
+						{
+							if((S!=null)
+							&&(S.getCurrentColor().backgroundCode()!='.'))
+								escapeSequence=ColorLibrary.Color.NONE.getANSICode()+escapeSequence;
+							S.setLastColor(S.getCurrentColor());
+							S.setCurrentColor(CMLib.color().valueOf(color16.getCodeChar(),'.'));
+						}
 					}
 					else
 					{
-						S.setCurrentColor(CMLib.color().valueOf(S.getCurrentColor().foregroundCode(), (char)(256 | finalNum)));
+						escapeSequence=ColorLibrary.MAP_ANSICOLOR_TO_ANSIBGCOLOR.get(escapeSequence);
+						if(S!=null)
+						{
+							final ColorState curColor=S.getCurrentColor();
+							S.setCurrentColor(CMLib.color().valueOf(curColor.foregroundCode(), color16.getCodeChar()));
+						}
 					}
+					str.insert(index+5, escapeSequence);
+					str.delete(index, index+5);
+					return index+escapeSequence.length()-1;
 				}
-				return index+escapeSequence.length()-1;
 			}
 			str.delete(index, index+5);
 			return index-1;

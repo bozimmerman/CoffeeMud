@@ -1276,6 +1276,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			acct.setFlag(PlayerAccount.AccountFlag.ANSI, false);
 			session.setServerTelnetMode(Session.TELNET_ANSI,false);
 			session.setClientTelnetMode(Session.TELNET_ANSI,false);
+			session.setServerTelnetMode(Session.TELNET_ANSI16,false);
+			session.setClientTelnetMode(Session.TELNET_ANSI16,false);
 		}
 		else
 		if((input.length()>0)&&(!input.startsWith("Y")))
@@ -1599,6 +1601,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final PlayerAccount acct=loginObj.acct;
 		session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.AccountFlag.ANSI));
 		session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.AccountFlag.ANSI));
+		session.setServerTelnetMode(Session.TELNET_ANSI16,acct.isSet(PlayerAccount.AccountFlag.ANSI16));
+		session.setClientTelnetMode(Session.TELNET_ANSI16,acct.isSet(PlayerAccount.AccountFlag.ANSI16));
 		// if its not a new account, do this?
 		StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"selchar.txt",null,CMFile.FLAG_LOGERRORS).text();
 		try
@@ -1855,11 +1859,60 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			{
 				acct.setFlag(AccountFlag.ANSI, !acct.isSet(AccountFlag.ANSI));
 				if(acct.isSet(AccountFlag.ANSI))
-					session.println(L("ANSI color is now ON."));
+				{
+					if(acct.isSet(AccountFlag.ANSI16))
+						session.println(L("ANSI 16 color is now ON."));
+					else
+						session.println(L("ANSI 256 color is now ON."));
+				}
 				else
 					session.println(L("ANSI color is now OFF."));
 				session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
 				session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
+			}
+			else
+			if(cmd.equals("ANSI16")||cmd.equals("COLOR16"))
+			{
+				if(acct.isSet(AccountFlag.ANSI))
+				{
+					acct.setFlag(AccountFlag.ANSI16, !acct.isSet(AccountFlag.ANSI16));
+					if(acct.isSet(AccountFlag.ANSI16))
+						session.println(L("ANSI 16 color is now ON."));
+					else
+						session.println(L("ANSI 256 color is now ON."));
+				}
+				else
+				{
+					acct.setFlag(AccountFlag.ANSI, true);
+					acct.setFlag(AccountFlag.ANSI16, true);
+					session.println(L("ANSI 16 color is now ON."));
+				}
+				session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
+				session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
+				session.setServerTelnetMode(Session.TELNET_ANSI16,acct.isSet(AccountFlag.ANSI16));
+				session.setClientTelnetMode(Session.TELNET_ANSI16,acct.isSet(AccountFlag.ANSI16));
+			}
+			else
+			if(cmd.equals("ANSI256")||cmd.equals("COLOR256"))
+			{
+				if(acct.isSet(AccountFlag.ANSI))
+				{
+					acct.setFlag(AccountFlag.ANSI16, !acct.isSet(AccountFlag.ANSI16));
+					if(acct.isSet(AccountFlag.ANSI16))
+						session.println(L("ANSI 16 color is now ON."));
+					else
+						session.println(L("ANSI 256 color is now ON."));
+				}
+				else
+				{
+					acct.setFlag(AccountFlag.ANSI, true);
+					acct.setFlag(AccountFlag.ANSI16, false);
+					session.println(L("ANSI 256 color is now ON."));
+				}
+				session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
+				session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
+				session.setServerTelnetMode(Session.TELNET_ANSI16,acct.isSet(AccountFlag.ANSI16));
+				session.setClientTelnetMode(Session.TELNET_ANSI16,acct.isSet(AccountFlag.ANSI16));
 			}
 			else
 			if((parms.length>1)&&(parms[1].equalsIgnoreCase("ON")))
@@ -1869,7 +1922,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				else
 				{
 					acct.setFlag(AccountFlag.ANSI, true);
-					session.println(L("ANSI color is now ON."));
+					if(acct.isSet(AccountFlag.ANSI16))
+						session.println(L("ANSI 16 color is now ON."));
+					else
+						session.println(L("ANSI 256 color is now ON."));
 					session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
 					session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
 				}
@@ -2451,6 +2507,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				mob.setAttribute(MOB.Attrib.ANSI,false);
 				session.setServerTelnetMode(Session.TELNET_ANSI,false);
 				session.setClientTelnetMode(Session.TELNET_ANSI,false);
+				session.setServerTelnetMode(Session.TELNET_ANSI16,false);
+				session.setClientTelnetMode(Session.TELNET_ANSI16,false);
 			}
 			loginObj.state=LoginState.CHARCR_ANSIDONE;
 		}
@@ -2471,17 +2529,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(input.startsWith("N"))
 		{
 			mob.setAttribute(MOB.Attrib.ANSI,false);
+			mob.setAttribute(MOB.Attrib.ANSI16,false);
 			session.setServerTelnetMode(Session.TELNET_ANSI,false);
 			session.setClientTelnetMode(Session.TELNET_ANSI,false);
+			session.setServerTelnetMode(Session.TELNET_ANSI16,false);
+			session.setClientTelnetMode(Session.TELNET_ANSI16,false);
 		}
 		else
-		if((input.length()>0)&&(!input.startsWith("Y")))
+		if((input.length()>0)
+		&&(!input.startsWith("Y")))
 		{
 			session.promptPrint(L(RECONFIRMSTR));
 			return LoginResult.INPUT_REQUIRED;
 		}
 		else
+		{
 			mob.setAttribute(MOB.Attrib.ANSI,true);
+			mob.setAttribute(MOB.Attrib.ANSI16,false);
+		}
 		loginObj.state=LoginState.CHARCR_ANSIDONE;
 		return null;
 	}

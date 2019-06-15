@@ -51,9 +51,10 @@ public class ANSI extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if((commands!=null)
-			&&(commands.size()>1)
-			&&(commands.get(1).toUpperCase().equals("OFF")))
+			final String firstCmd = ((commands!=null)&&(commands.size()>1))?commands.get(1):"";
+			final String lastCmd = ((commands!=null)&&(commands.size()>1))?commands.get(commands.size()-1):"";
+			final boolean lastOff = lastCmd.equalsIgnoreCase("off");
+			if(lastOff)
 			{
 				final Command C=CMClass.getCommand("NOANSI");
 				if(C!=null)
@@ -61,23 +62,117 @@ public class ANSI extends StdCommand
 					return C.execute(mob, commands, metaFlags);
 				}
 			}
+			if(firstCmd.equals("16"))
+			{
+				if(lastOff)
+				{
+					if(mob.isAttributeSet(MOB.Attrib.ANSI))
+					{
+						if(mob.isAttributeSet(MOB.Attrib.ANSI16))
+						{
+							mob.setAttribute(MOB.Attrib.ANSI16,true);
+							mob.tell(L("^!ANSI^N ^H256 colour^N re-enabled.\n\r"));
+						}
+						else
+						{
+							mob.tell(L("^!ANSI^N 256 color is ^Halready^N enabled.\n\r"));
+						}
+					}
+					else
+					{
+						final Command C=CMClass.getCommand("NOANSI");
+						if(C!=null)
+						{
+							return C.execute(mob, commands, metaFlags);
+						}
+					}
+				}
+				else
+				if(mob.isAttributeSet(MOB.Attrib.ANSI))
+				{
+					mob.setAttribute(MOB.Attrib.ANSI16,!mob.isAttributeSet(MOB.Attrib.ANSI16));
+					if(mob.isAttributeSet(MOB.Attrib.ANSI16))
+						mob.tell(L("^!ANSI^N ^H16 colour^N enabled.\n\r"));
+					else
+						mob.tell(L("^!ANSI^N ^H256 colour^N enabled.\n\r"));
+				}
+				else
+				{
+					mob.setAttribute(MOB.Attrib.ANSI,true);
+					mob.setAttribute(MOB.Attrib.ANSI16,true);
+					mob.tell(L("^!ANSI^N 16 ^Hcolour^N enabled.\n\r"));
+				}
+			}
+			else
+			if(firstCmd.equals("256"))
+			{
+				if(lastOff)
+				{
+					if(mob.isAttributeSet(MOB.Attrib.ANSI))
+					{
+						if(!mob.isAttributeSet(MOB.Attrib.ANSI16))
+						{
+							mob.setAttribute(MOB.Attrib.ANSI16,true);
+							mob.tell(L("^!ANSI^N ^H256 colour^N re-enabled.\n\r"));
+						}
+						else
+						{
+							mob.tell(L("^!ANSI^N 256 color is ^Halready^N enabled.\n\r"));
+						}
+					}
+					else
+					{
+						final Command C=CMClass.getCommand("NOANSI");
+						if(C!=null)
+						{
+							return C.execute(mob, commands, metaFlags);
+						}
+					}
+				}
+				else
+				if(mob.isAttributeSet(MOB.Attrib.ANSI))
+				{
+					mob.setAttribute(MOB.Attrib.ANSI16,!mob.isAttributeSet(MOB.Attrib.ANSI16));
+					if(mob.isAttributeSet(MOB.Attrib.ANSI16))
+						mob.tell(L("^!ANSI^N ^H16 colour^N enabled.\n\r"));
+					else
+						mob.tell(L("^!ANSI^N ^H256 colour^N enabled.\n\r"));
+				}
+				else
+				{
+					mob.setAttribute(MOB.Attrib.ANSI,true);
+					mob.setAttribute(MOB.Attrib.ANSI16,false);
+					mob.tell(L("^!ANSI^N 256 ^Hcolour^N enabled.\n\r"));
+				}
+			}
+			else
+			{
+				if(!mob.isAttributeSet(MOB.Attrib.ANSI))
+				{
+					mob.setAttribute(MOB.Attrib.ANSI,true);
+					if(mob.isAttributeSet(MOB.Attrib.ANSI16))
+						mob.tell(L("^!ANSI^N ^H16 colour^N enabled.\n\r"));
+					else
+						mob.tell(L("^!ANSI^N ^H256 colour^N enabled.\n\r"));
+				}
+				else
+				{
+					mob.tell(L("^!ANSI^N is ^Halready^N enabled.\n\r"));
+				}
+			}
 
 			PlayerAccount acct = null;
 			if(mob.playerStats()!=null)
 				acct = mob.playerStats().getAccount();
 			if(acct != null)
-				acct.setFlag(PlayerAccount.AccountFlag.ANSI, true);
-			if(!mob.isAttributeSet(MOB.Attrib.ANSI))
 			{
-				mob.setAttribute(MOB.Attrib.ANSI,true);
-				mob.tell(L("^!ANSI^N ^Hcolour^N enabled.\n\r"));
+				acct.setFlag(PlayerAccount.AccountFlag.ANSI, mob.isAttributeSet(MOB.Attrib.ANSI));
+				acct.setFlag(PlayerAccount.AccountFlag.ANSI16, mob.isAttributeSet(MOB.Attrib.ANSI16));
 			}
-			else
-			{
-				mob.tell(L("^!ANSI^N is ^Halready^N enabled.\n\r"));
-			}
-			mob.session().setClientTelnetMode(Session.TELNET_ANSI,true);
-			mob.session().setServerTelnetMode(Session.TELNET_ANSI,true);
+			mob.session().setClientTelnetMode(Session.TELNET_ANSI,mob.isAttributeSet(MOB.Attrib.ANSI));
+			mob.session().setServerTelnetMode(Session.TELNET_ANSI,mob.isAttributeSet(MOB.Attrib.ANSI));
+			mob.session().setClientTelnetMode(Session.TELNET_ANSI16,mob.isAttributeSet(MOB.Attrib.ANSI16));
+			mob.session().setServerTelnetMode(Session.TELNET_ANSI16,mob.isAttributeSet(MOB.Attrib.ANSI16));
 		}
 		return false;
 	}

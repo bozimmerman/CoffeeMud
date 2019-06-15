@@ -1,0 +1,237 @@
+#Num	CM Name	Amaris Name	Time Repeated	Non-256 conversion	HEX	exclude	Expertise	CM-base6
+0	black	black	1	0	#000000	0	BLACK
+1	maroon	maroon	1	1	#800000	0	RED
+2	strong green	green	1	2	#008000	0	GREEN
+3	olive green	olive-green	1	3	#808000	0	BROWN
+4	navy blue	navy-blue 	1	4	#000080	0	BLUE
+5	purple	purple	1	5	#800080	0	PURPLE
+6	strong cyan	teal	1	6	#008080	0	CYAN
+7	silver	silvery	1	7	#c0c0c0	0	GREY
+8	grey	grey	1	8	#808080	0	DARKGREY
+9	red	red	1	9	#ff0000	0	LIGHTRED
+10	lime	lime	1	10	#00ff00	0	LIGHTGREEN
+11	yellow	yellow	1	11	#ffff00	0	YELLOW
+12	blue	blue	1	12	#0000ff	0	LIGHTBLUE
+13	fuchsia	fuchsia	1	13	#ff00ff	0	LIGHTPURPLE
+14	aqua	aqua	1	14	#00ffff	0	LIGHTCYAN
+15	white	white	1	15	#ffffff	0	WHITE
+16	black	vader-black	1	0	#000000	10	000
+17	deep blue	midnight-blue	1	4	#00005f	8	001
+18	very dark blue	cobalt-blue 	1	4	#000087	1	002
+19	dark blue	hooloovoo-blue	1	4	#0000af	2	003
+20	vivid blue	ravenclaw-blue	1	4	#0000d7	3	004
+21	luminous vivid blue	valenthian-blue	1	12	#0000ff	10	005
+22	deep green	emerald-green	1	2	#005f00	1	010
+23	deep cyan	hernadonian-teal	1	6	#005f5f	8	011
+24	strong cerulean	steel-blue	1	4	#005f87	4	012
+25	strong azure	tardis-blue	1	4	#005faf	5	013
+26	vivid azure	dodger-blue	1	4	#005fd7	6	014
+27	luminous vivid cobalt blue	cobalt-blue	1	12	#005fff	9	015
+28	emerald green	slytherin-green	1	2	#008700	2	020
+29	strong turquoise	eucalyptus-colored	1	6	#00875f	1	021
+30	strong artic blue	cadet-blue	1	6	#008787	2	022
+31	cerulean	cerulean	1	6	#0087af	3	023
+32	vivid cornflower blue	lochmara-blue	1	4	#0087d7	7	024
+33	lumious vivid azure	azure	1	12	#0087ff	8	025
+34	strong green	kelly-green	1	2	#00af00	3	030
+35	stong spring green	jade-colored	1	2	#00af5f	4	031
+36	strong turquoise	thalosian-green	1	6	#00af87	4	032
+37	strong cyan	celadon	1	6	#00afaf	5	033
+38	vivid artic blue	artic-blue	1	6	#00afd7	6	034
+39	lumionus vivid cornflower blue	azure-radiance	1	12	#00afff	7	035
+40	vivid green	shamrock-green	1	2	#00d700	5	040
+41	vivid spring green	spring-green	1	2	#00d75f	6	041
+42	vivid aquamarine	caribbean-green	1	2	#00d787	7	042
+43	vivid opal	opal-colored	1	6	#00d7af	7	043
+44	vivid cyan	downy-blue	1	6	#00d7d7	8	044
+45	luminious vivid artic blue	turquoise-colored	1	14	#00d7ff	1	045
+46	luminous vivid green	harlequin-green	1	10	#00ff00	1	050
+47	luminous vivid sea green	malachite-green	1	10	#00ff5f	2	051
+48	luminous vivid spring green	Medium-spring-green	1	10	#00ff87	3	052
+49	luminous vivid aquamarine	scandal-green	1	10	#00ffaf	4	053
+50	luminoius vivid opal	java-colored	1	14	#00ffd7	2	054
+51	lumious vivid cyan	cyan	1	14	#00ffff	3	055
+52	deep reddish brown	scarlet	1	1	#5f0000	2	100
+53	deep magenta	eggplant-colored	1	5	#5f005f	4	101
+54	strong mulberry	pigment-indigo	1	5	#5f0087	6	102
+55	strong violet	indigo	1	5	#5f00af	8	103
+56	vivid violet	purple-iris-colored	1	5	#5f00d7	9	104
+57	luminous vivid blue Violet	blueviolet	1	4	#5f00ff	9	105
+58	deep olive	citron-green	1	3	#5f5f00	4	110
+59	drak gray	taupe	1	8	#5f5f5f	1	111
+60	grayish blue	comet-grey	1	4	#5f5f87	1	112
+61	grayish blue	scampi-blue	1	4	#5f5faf	10	113
+62	light blue	delphinium-blue	1	4	#5f5fd7	5	114
+63	light brilliant blue	periwinkle 	1	4	#5f5fff	3	115
+64	stong lime green	olive-drab	1	2	#5f8700	8	120
+65	grayish green	sage-green	1	2	#5f875f	9	121
+66	grayish cyan 	juniper-grey	1	6	#5f8787	9	122
+67	grayish azure	steel-blue 	1	12	#5f87af	6	123
+68	light cobalt blue	sapphire-blue 	1	12	#5f87d7	5	124
+69	light brilliant sapphire blue	cornflower-blue	1	12	#5f87ff	4	125
+70	stong chartreuse green	limeade-green	1	2	#5faf00	10	130
+71	grayish green	thussevy-green 	1	2	#5faf5f	2	131
+72	grayish spring green	silvertree-colored	1	12	#5faf87	3	132
+73	grayish cyan 	tradewind-blue	1	6	#5fafaf	10	133
+74	light cornflower blue	shakespeare-blue	1	12	#5fafd7	2	134
+75	light brilliant azure	ice-blue	1	12	#5fafff	1	135
+76	vivid chartreuse green	bahia-green	1	2	#5fd700	4	140
+77	light green	mantis-green	1	2	#5fd75f	6	141
+78	light sea green	sea-green	1	2	#5fd787	7	142
+79	light aquamarine	aquamarine-colored	1	14	#5fd7af	4	143
+80	light cyan	viking-blue	1	14	#5fd7d7	5	144
+81	light brilliant cerulean 	tiffany-blue 	1	14	#5fd7ff	6	145
+82	luminous vivid pistachio	pistachio-colored	1	10	#5fff00	5	150
+83	light brilliant green	screaming-green	1	10	#5fff5f	6	151
+84	light brilliant malachite green	tidal-green	1	10	#5fff87	7	152
+85	light brilliant spring green	moss-green	1	10	#5fffaf	8	153
+86	light brilliant turquoise	powder-blue	1	14	#5fffd7	7	154
+87	light brilliant cyan	spray-cyan	1	14	#5fffff	8	155
+88	strong red	burgundy 	1	1	#870000	1	200
+89	strong fuchsia	boysenberry-colored	1	5	#87005f	1	201
+90	strong magenta	camelot-purple	1	5	#870087	2	202
+91	strong mulberry	mulberry-colored	1	5	#8700af	3	203
+92	vivid purple	violet	1	5	#8700d7	4	204
+93	luminous vivid violet	electric-violet	1	5	#8700ff	5	205
+94	strong amber	browncoat-colored	1	3	#875f00	1	210
+95	grayish red	copper-rose-colored	1	3	#875f5f	2	211
+96	grayish magenta	strikemaster-plum	1	5	#875f87	6	212
+97	grayish violet	mauve	1	5	#875faf	7	213
+98	light blue violet	tananite 	1	5	#875fd7	8	214
+99	light brilliant indigo	amethyst-colored	1	4	#875fff	7	215
+100	strong olive	olive-colored	1	3	#878700	3	220
+101	grayish olive	clay-creek-colored	1	3	#87875f	5	221
+102	medium gray	dim-grey	1	7	#878787	2	222
+103	blue grey	wild-blue-yonder	1	4	#8787af	10	223
+104	light pale grey blue	chetwode-blue	1	5	#8787d7	9	224
+105	very light blue	malibu-blue	1	12	#8787ff	2	225
+106	stong lime green	lime-green	1	3	#87af00	6	230
+107	grayish chartreuse green	asparagus-colored	1	3	#87af5f	7	231
+108	greenish gray	bayleaf-green	1	2	#87af87	9	232
+109	cyanish gray	gulfstream-grey	1	6	#87afaf	2	233
+110	pale light grayish azure	slate-blue 	1	12	#87afd7	5	234
+111	very light cobalt blue	sky-blue	1	12	#87afff	8	235
+112	vivid spring bud	atlantis-green	1	2	#87d700	10	240
+113	light pistachio	fern-green 	1	10	#87d75f	9	241
+114	pale light grayish green	feijoa-green	1	10	#87d787	10	242
+115	pale light grayish spring green	vista-blue	1	10	#87d7af	1	243
+116	pale light grayish cyan	bermuda-blue	1	14	#87d7d7	9	244
+117	very light cornflower blue	baby-blue	1	14	#87d7ff	10	245
+118	luminous vivid chartreuse green	chartreuse	1	10	#87ff00	2	250
+119	light brilliant harlequin	prim-green	1	10	#87ff5f	3	251
+120	very light green	mint-green	1	10	#87ff87	4	252
+121	very light sea green	sprout-green	1	10	#87ffaf	5	253
+122	very light aquamarine	caper-cyan	1	14	#87ffd7	1	254
+123	very light cyan	seaglass-cyan 	1	14	#87ffff	3	255
+245	medium grey	slate-grey	1	7	#8a8a8a	3	621
+246	Mild Grey	dusty-grey	1	7	#949494	4	622
+247	subtle grey	silver-chalice-grey	1	7	#9e9e9e	5	623
+248	almost grey	merideth-grey	1	7	#a8a8a8	6	624
+124	strong scarlet	griffindor-scarlet 	1	1	#af0000	3	300
+125	strong rose	red-flirt-colored	1	1	#af005f	4	301
+126	strong fuchsia	violet-flirt	1	5	#af0087	10	302
+127	strong magenta	red-violet	1	5	#af00af	1	303
+128	vivid heliotrope	cabaret-colored	1	5	#af00d7	2	304
+129	luminous vivid purple	lilac-colored	1	5	#af00ff	3	305
+130	strong orange	beige	1	1	#af5f00	5	310
+131	grayish red	merlot-colored	1	1	#af5f5f	6	311
+132	grayish rose	tapestry-colored	1	9	#af5f87	9	312
+133	grayish magenta	fuchia-pink	1	5	#af5faf	4	313
+134	light purple	medium-purple	1	5	#af5fd7	5	314
+135	light brilliant violet	heliotrope	1	5	#af5fff	6	315
+136	strong amber	pirat-golden	1	3	#af8700	8	320
+137	grayish brown	muesli-colored	1	3	#af875f	9	321
+138	reddish gray	pharlap-colored	1	1	#af8787	7	322
+139	magentaish gray	purple-bouquet	1	5	#af87af	7	323
+140	pale light grayish violet	lavender-colored	1	5	#af87d7	8	324
+141	very light blue violet	kimian-purple	1	5	#af87ff	9	325
+142	strong olive	golden	1	3	#afaf00	10	330
+143	grayish olive	dark-khaki	1	3	#afaf5f	1	331
+144	yellowish gray	hillary-brown	1	3	#afaf87	2	332
+145	deep silver (medium gray)	base-grey	1	7	#afafaf	7	333
+146	light bluish gray	wistful-blue	1	12	#afafd7	4	334
+147	pale blue	melrose-colored	1	12	#afafff	6	335
+148	vivid apple green	green-apple-colored	1	3	#afd700	3	340
+149	light spring bud	conifer-green	1	3	#afd75f	4	341
+150	pale light grayish chartreuse green	flax-green	1	3	#afd787	5	342
+151	light greenish gray	pixie-green	1	6	#afd7af	5	343
+152	light cyanish gray	junglemist-blue	1	14	#afd7d7	4	344
+153	pale azure	clearskies-blue	1	14	#afd7ff	6	345
+154	luminous vivid spring bud	pear-green	1	10	#afff00	6	350
+155	light brilliant chartreuse green	green-yellow	1	10	#afff5f	7	351
+156	very light pistachio	mindaro-green	1	10	#afff87	8	352
+157	very light sap green	sulu-green	1	10	#afffaf	9	353
+158	pale spring green	aero-blue	1	14	#afffd7	7	354
+159	pale cyan	robbinegg-blue	1	14	#afffff	9	355
+160	vivid red	santa-red	1	1	#d70000	8	400
+161	vivid rose	crimson	1	1	#d7005f	9	401
+162	vivid cerise	carnation-colored	1	1	#d70087	10	402
+163	vivid orchid	cerise	1	5	#d700af	10	403
+164	vivid magenta	purple-pizzazz	1	5	#d700d7	1	404
+165	luminous vivid heliotrope	pretty-in-pink	1	13	#d700ff	9	405
+166	vivid orange	tenn-colored	1	1	#d75f00	3	410
+167	pink	Indian-red	1	9	#d75f5f	8	411
+168	light raspberry	cranberry-colored	1	9	#d75f87	7	412
+169	light cerise	hot-pink	1	9	#d75faf	6	413
+170	brilliant orchid	orchid-colored	1	13	#d75fd7	8	414
+171	light brilliant mulberry	wilderberry-colored	1	5	#d75fff	3	415
+172	vivid gamboge	mango-colored	1	1	#d78700	7	420
+173	light tangelo	tangelo-colored	1	9	#d7875f	10	421
+174	pale grayish pink	salmon-colored	1	9	#d78787	4	422
+175	pale light grayish rose	dusty-rose-colored	1	9	#d787af	3	423
+176	pale light grayish magenta	plum-colored	1	13	#d787d7	7	424
+177	very light purple	perfume-colored	1	13	#d787ff	6	425
+178	vivid gold	filigree-golden	1	3	#d7af00	6	430
+179	light gamboge	tacha	1	3	#d7af5f	7	431
+180	pale light grayish brown	tan	1	3	#d7af87	8	432
+181	pinkish gray	clamshell-colored	1	9	#d7afaf	2	433
+182	light magentaish gray	thistle-colored	1	13	#d7afd7	5	434
+183	pale violet	melanie-colored	1	13	#d7afff	4	435
+184	vivid yellow	corn-yellow	1	11	#d7d700	8	440
+185	light yellow	khaki	1	3	#d7d75f	9	441
+186	pale light grayish olive	deco-yellow	1	11	#d7d787	9	442
+187	light yellowish gray	mist-yellow	1	11	#d7d7af	10	443
+188	bright silver	gainsboro-grey	1	7	#d7d7d7	8	444
+189	very pale blue	atat-silver	1	12	#d7d7ff	9	445
+190	luminious vivid apple green	chartreuse-yellow	1	11	#d7ff00	7	450
+191	light brilliant lime green	canary-yellow	1	11	#d7ff5f	7	451
+192	very light spring bud	honeysuckle-colored	1	11	#d7ff87	1	452
+193	pale chartreuse green	reef-yellow	1	10	#d7ffaf	10	453
+194	very pale green	snowy-mint-colored	1	10	#d7ffd7	1	454
+195	light cyan	oysterbay-blue	1	14	#d7ffff	10	455
+196	luminous vivid red	cherry-red	1	9	#ff0000	2	500
+197	luminous vivid raspberry	raspberry-red	1	9	#ff005f	1	501
+198	luminous vivid rose	razzledazzle-rose-colored	1	13	#ff0087	3	502
+199	luminous vivid cerise	rose-colored	1	13	#ff00af	2	503
+200	luminous vivid orchid	shocking-pink	1	13	#ff00d7	10	504
+201	luminous vivid magenta	magenta	1	13	#ff00ff	1	505
+202	lumnious vivid tangelo	burnt-orange	1	9	#ff5f00	2	510
+203	light brilliant red	bittersweet-red	1	9	#ff5f5f	3	511
+204	light brilliant crimson	wild-watermelon-colored	1	9	#ff5f87	4	512
+205	light brilliant rose	wewak-pink	1	13	#ff5faf	2	513
+206	light brilliant fuchsia	thalosian-pink	1	13	#ff5fd7	3	514
+207	light brilliant magenta	pink-flamingo-colored	1	13	#ff5fff	4	515
+208	luminous vivid orange	orange-colored	1	9	#ff8700	5	520
+209	light brilliant vermilion 	hydrascale-red	1	9	#ff875f	6	521
+210	light pink	coral-colored	1	9	#ff8787	7	522
+211	very light raspberry	pink-salmon	1	9	#ff87af	8	523
+212	very light cerise	lavender-rose-colored	1	13	#ff87d7	5	524
+213	very light magenta	blush-pink	1	13	#ff87ff	6	525
+214	lumionus vivid gamboge	butterscotch-colored	1	9	#ffaf00	9	530
+215	light brilliant orange	orthindar-rose-colored	1	3	#ffaf5f	10	531
+216	very light tangelo	pink-ice	1	9	#ffaf87	10	532
+217	pale pink	flesh-colored	1	9	#ffafaf	5	533
+218	pale rose	pink	1	9	#ffafd7	1	534
+219	pale magenta	cherub-pink	1	13	#ffafff	10	535
+220	luminous vivid gold	golden-hufflepuff	1	11	#ffd700	6	540
+221	light brilliant amber	goldernrod 	1	11	#ffd75f	5	541
+222	very light gamboge	grandis-yellow	1	11	#ffd787	5	542
+223	pale orange	champagne-colored	1	3	#ffd7af	8	543
+224	very pale pink	mistyrose-colored	1	13	#ffd7d7	8	544
+225	very pale magenta	lace-pink	1	13	#ffd7ff	9	545
+226	luminous vivid yellow	zacarian-yellow	1	11	#ffff00	10	550
+227	light brilliant yellow	lemon-colored	1	11	#ffff5f	1	551
+228	very light yellow	yellow-rose-colored	1	11	#ffff87	2	552
+229	pale yellow	vanilla-cream-colored	1	11	#ffffaf	3	553
+230	very pale yellow	cornsilk-white	1	11	#ffffd7	4	554
+231	grey100	snow-white	1	15	#ffffff	9	555

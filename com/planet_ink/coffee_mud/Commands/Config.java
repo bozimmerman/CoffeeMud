@@ -130,6 +130,13 @@ public class Config extends StdCommand
 						mob.session().setServerTelnetMode(Session.TELNET_ANSI,newSet);
 					}
 					break;
+				case ANSI16:
+					if(mob.session() != null)
+					{
+						mob.session().setClientTelnetMode(Session.TELNET_ANSI16,newSet);
+						mob.session().setServerTelnetMode(Session.TELNET_ANSI16,newSet);
+					}
+					break;
 				case AUTOASSIST:
 					break;
 				case AUTODRAW:

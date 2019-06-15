@@ -55,7 +55,10 @@ public class NoANSI extends StdCommand
 			if(mob.playerStats()!=null)
 				acct = mob.playerStats().getAccount();
 			if(acct != null)
+			{
 				acct.setFlag(PlayerAccount.AccountFlag.ANSI, false);
+				acct.setFlag(PlayerAccount.AccountFlag.ANSI16, false);
+			}
 			if(mob.isAttributeSet(MOB.Attrib.ANSI))
 			{
 				mob.setAttribute(MOB.Attrib.ANSI,false);
@@ -67,6 +70,8 @@ public class NoANSI extends StdCommand
 			}
 			mob.session().setClientTelnetMode(Session.TELNET_ANSI,false);
 			mob.session().setServerTelnetMode(Session.TELNET_ANSI,false);
+			mob.session().setClientTelnetMode(Session.TELNET_ANSI16,false);
+			mob.session().setServerTelnetMode(Session.TELNET_ANSI16,false);
 		}
 		return false;
 	}

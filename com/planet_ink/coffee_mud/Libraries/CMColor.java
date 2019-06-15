@@ -41,8 +41,11 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		return "CMColor";
 	}
 
-	public String[] clookup=null;
-	public String[] htlookup=null;
+	protected String[]		clookup		= null;
+	protected String[]		htlookup	= null;
+	protected Color256[]	color256s	= null;
+
+	protected final Map<Short, Color> color256to16map =  new HashMap<Short, Color>();
 
 	private final static Map<Integer,ColorState> cache=new SHashtable<Integer,ColorState>();
 
@@ -86,6 +89,34 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			return (backgroundCode * 65536) + foregroundCode;
 		}
 
+	}
+
+	/**
+	 * Special mapping object for 256 color ansi system.
+	 *
+	 * @author BZ
+	 */
+	protected static class Color256
+	{
+		public final short number;
+		public final String name1;
+		public final String name2;
+		public Color non256color;
+		public final String htmlCode;
+		public final short expertiseNum;
+		public final short cm6Code;
+
+		public Color256(final short number,  final String name1, final String name2, final Color non256color,
+						final String htmlCode, final short expertiseNum, final short cm6Code)
+		{
+			this.number=number;
+			this.name1=name1;
+			this.name2=name2;
+			this.non256color=non256color;
+			this.htmlCode=htmlCode;
+			this.expertiseNum=expertiseNum;
+			this.cm6Code=cm6Code;
+		}
 	}
 
 	private static final ColorState COLORSTATE_NORMAL=new ColorStateImpl('N','.');
@@ -540,5 +571,94 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			}
 		}
 		return clookup;
+	}
+
+
+
+	@Override
+	public boolean activate()
+	{
+		final List<Color256> list=new ArrayList<Color256>();
+		final CMFile F=new CMFile(Resources.buildResourcePath("text/colors.dat"),null);
+		if(F.exists())
+		{
+			color256to16map.clear();
+			final List<String> lines=Resources.getFileLineVector(F.text());
+			final Map<Short,Short> color16map=new TreeMap<Short,Short>();
+			final Map<Short,Color256> straightMap=new TreeMap<Short,Color256>();
+			for(final String line : lines)
+			{
+				if(line.trim().startsWith("#"))
+					continue;
+				final String[] bits = line.split("\t");
+				if(bits.length>=8)
+				{
+					Color baseColor = null;
+					short cm6code = -1;
+					if(bits[7].length()>0)
+					{
+						if(CMath.isNumber(bits[7].substring(0, 1)))
+						{
+							int num=bits[7].charAt(0)-'0';
+							if((num>=0)&&(num<=5))
+							{
+								int buildNum=(num*36);
+								num=bits[7].charAt(1)-'0';
+								if((num>=0)&&(num<=5))
+								{
+									buildNum+=(num*6);
+									num=bits[7].charAt(2)-'0';
+									if((num>=0)&&(num<=5))
+										cm6code=(short)((buildNum + num) + 16);
+								}
+							}
+						}
+						else
+							baseColor = (ColorLibrary.Color)CMath.s_valueOf(ColorLibrary.Color.class, bits[7].toUpperCase().trim());
+					}
+					final Color256 newColor = new Color256(
+						CMath.s_short(bits[0]),  bits[1], bits[2], baseColor,
+						bits[5], CMath.s_short(bits[6]), cm6code
+					);
+					if(bits[4].length()>0)
+						color16map.put(Short.valueOf(newColor.number), Short.valueOf(CMath.s_short(bits[4])));
+					list.add(newColor);
+					straightMap.put(Short.valueOf(newColor.number), newColor);
+				}
+			}
+			for(final Short s : color16map.keySet())
+			{
+				final Short color256to16 = color16map.get(s);
+				final Color256 color256 = straightMap.get(s);
+				if(color256 != null)
+				{
+					final Color256 color16 = straightMap.get(color256to16);
+					if((color16 != null)
+					&&(color16.non256color != null))
+					{
+						color256.non256color = color16.non256color;
+						color256to16map.put(Short.valueOf(color256.cm6Code), color16.non256color);
+					}
+					else
+						Log.errOut("Unable to map color.dat number "+color256.number+" to "+color256to16);
+				}
+			}
+			Collections.sort(list, new Comparator<Color256>()
+			{
+				@Override
+				public int compare(final Color256 o1, final Color256 o2)
+				{
+					return Integer.valueOf(o1.number).compareTo(Integer.valueOf(o2.number));
+				}
+			});
+			color256s=list.toArray(new Color256[0]);
+		}
+		return true;
+	}
+
+	@Override
+	public Color getANSI16Equivalent(final short color256Code)
+	{
+		return color256to16map.get(Short.valueOf(color256Code));
 	}
 }

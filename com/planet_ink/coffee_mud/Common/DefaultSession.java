@@ -344,6 +344,8 @@ public class DefaultSession implements Session
 
 			setServerTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_ANSI,true);
+			setServerTelnetMode(TELNET_ANSI16,false);
+			setClientTelnetMode(TELNET_ANSI16,false);
 			setClientTelnetMode(TELNET_TERMTYPE,true);
 			changeTelnetMode(rawout,TELNET_TERMTYPE,true);
 			negotiateTelnetMode(rawout,TELNET_TERMTYPE);
@@ -771,6 +773,8 @@ public class DefaultSession implements Session
 	{
 		setServerTelnetMode(TELNET_ANSI,CMath.bset(attributesBitmap,MOB.Attrib.ANSI.getBitCode()));
 		setClientTelnetMode(TELNET_ANSI,CMath.bset(attributesBitmap,MOB.Attrib.ANSI.getBitCode()));
+		setServerTelnetMode(TELNET_ANSI16,CMath.bset(attributesBitmap,MOB.Attrib.ANSI16.getBitCode()));
+		setClientTelnetMode(TELNET_ANSI16,CMath.bset(attributesBitmap,MOB.Attrib.ANSI16.getBitCode()));
 		boolean changedSomething=false;
 		final boolean mxpSet=(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP))&&CMath.bset(attributesBitmap,MOB.Attrib.MXP.getBitCode());
 		if(mxpSet!=getClientTelnetMode(TELNET_MXP))
@@ -2812,6 +2816,16 @@ public class DefaultSession implements Session
 			if(mob.playerStats()!=null)
 				CMLib.threads().suspendResumeRecurse(mob, false, false);
 			userLoginTime=System.currentTimeMillis();
+			final String ansiStr;
+			if((mob.isAttributeSet(MOB.Attrib.ANSI)&&getClientTelnetMode(Session.TELNET_ANSI)))
+			{
+				if(!mob.isAttributeSet(MOB.Attrib.ANSI16))
+					ansiStr = " ANSI";
+				else
+					ansiStr = " ANSI-16";
+			}
+			else
+				ansiStr="";
 			final StringBuilder loginMsg=new StringBuilder("");
 			loginMsg.append(getAddress()).append(" "+terminalType)
 			.append(((mob.isAttributeSet(MOB.Attrib.MXP)&&getClientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
@@ -2819,7 +2833,7 @@ public class DefaultSession implements Session
 			.append(getClientTelnetMode(Session.TELNET_ATCP)?" ATCP":"")
 			.append(getClientTelnetMode(Session.TELNET_GMCP)?" GMCP":"")
 			.append((getClientTelnetMode(Session.TELNET_COMPRESS)||getClientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
-			.append(((mob.isAttributeSet(MOB.Attrib.ANSI)&&getClientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
+			.append(ansiStr)
 			.append(", character login: "+mob.Name());
 			Log.sysOut(loginMsg.toString());
 			if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)

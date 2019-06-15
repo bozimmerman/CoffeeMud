@@ -872,6 +872,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * A response received later will trigger mode changed.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI16
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setClientTelnetMode(int, boolean)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setServerTelnetMode(int, boolean)
 	 * @param telnetCode the telnet code
@@ -883,6 +884,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * Change telnet mode by negotiating the command to the clients client.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI16
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setClientTelnetMode(int, boolean)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setServerTelnetMode(int, boolean)
 	 * @param telnetCode the telnet code
@@ -986,6 +988,8 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public static final int TELNET_WILL=251;
 	/** TELNET CODE: Indicates the refusal to perform, or continue performing, the indicated option*/
 	public static final int TELNET_WONT=252;
+	/** TELNET CODE: 252 doubles as fake ansi 16 telnet code*/
+	public static final int TELNET_ANSI16=252;
 	/** TELNET CODE: Indicates the request that the other party perform, or confirmation that you are expecting the other party to perform, the indicated option*/
 	public static final int TELNET_DO=253;
 	/** TELNET CODE: 253 doubles as fake ansi telnet code*/

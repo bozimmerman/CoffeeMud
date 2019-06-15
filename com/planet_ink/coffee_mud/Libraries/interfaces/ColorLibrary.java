@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -385,6 +386,15 @@ public interface ColorLibrary extends CMLibrary
 	 * @return the ansi escape color lookup table
 	 */
 	public String[] standardColorLookups();
+
+	/**
+	 * Returns the ANSI 16 color equivalent to the given
+	 * CM-encoded ANSI 256 color.  This is for users who lack 256 color
+	 * support.
+	 * @param color256Code the CM-encoded 256 color number
+	 * @return the ANSI-16 Color object, or null.
+	 */
+	public Color getANSI16Equivalent(final short color256Code);
 
 	/**
 	 * Translates encoded color definition overrides into a

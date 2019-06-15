@@ -185,7 +185,9 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 		/** Constant for account flags that turns off pride stats for the account */
 		NOSTATS,
 		/** Constant for account flags that turns off top awards for the account */
-		NOTOP
+		NOTOP,
+		/** Constant for account flags that require 16 color ansi instead of 256 */
+		ANSI16,
 		;
 		/**
 		 * Returns a comma-delimited list of strings representing the accountflag values

@@ -321,7 +321,7 @@ public class CMath
 		if(ups.length()==0)
 			return false;
 		int start=0;
-		if(ups.startsWith("-"))
+		if(ups.startsWith("-") && (ups.length()>1))
 			start=1;
 		for(int i=start;i<ups.length();i++)
 		{
@@ -899,7 +899,7 @@ public class CMath
 			return s.substring(0,s.length()-1);
 		return s;
 	}
-	
+
 	/**
 	 * Converts a percentage 1&gt;d&gt;0 to a string.
 	 * With NO decimal places!
