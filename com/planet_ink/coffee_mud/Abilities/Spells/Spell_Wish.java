@@ -103,26 +103,33 @@ public class Spell_Wish extends Spell
 		return foundThang;
 	}
 
-	private void bringThangHere(final MOB mob, final Room here, final Physical target)
+	private double bringThangHere(final MOB mob, final Room newRoom, final Physical target)
 	{
+		double factor = 1.0;
 		if(target instanceof MOB)
 		{
-			mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> teleport(s) to @x1.",here.displayText()));
-			here.bringMobHere((MOB)target,false);
-			if(here.isInhabitant((MOB)target))
-				here.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> appear(s) out of nowhere."));
+			final Room thisRoom=mob.location();
+			final CMMsg enterMsg=CMClass.getMsg(mob,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
+			final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,null);
+			if(!thisRoom.okMessage(mob,leaveMsg)||!newRoom.okMessage(mob,enterMsg))
+				factor=40.0;
+			mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> teleport(s) to @x1.",newRoom.displayText()));
+			newRoom.bringMobHere((MOB)target,false);
+			if(newRoom.isInhabitant((MOB)target))
+				newRoom.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> appear(s) out of nowhere."));
 		}
 		else
 		if(target instanceof Item)
 		{
 			final Item item=(Item)target;
-			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> is teleported to @x1!",here.displayText()));
+			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> is teleported to @x1!",newRoom.displayText()));
 			item.unWear();
 			item.setContainer(null);
 			item.removeFromOwnerContainer();
-			here.addItem(item,ItemPossessor.Expire.Player_Drop);
+			newRoom.addItem(item,ItemPossessor.Expire.Player_Drop);
 			mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> appears out of the Java Plane!"));
 		}
+		return factor;
 	}
 
 	public void wishDrain(final MOB mob, int expLoss, final boolean conLoss)
@@ -592,8 +599,8 @@ public class Spell_Wish extends Spell
 					recallRoom=((MOB)target).getStartRoom();
 				if(recallRoom!=null)
 				{
+					baseLoss *= bringThangHere(mob,recallRoom,target);
 					wishDrain(mob,baseLoss,false);
-					bringThangHere(mob,recallRoom,target);
 					return true;
 				}
 			}
@@ -747,7 +754,7 @@ public class Spell_Wish extends Spell
 				{
 					if(CMLib.flags().canAccess(mob, newRoom))
 					{
-						bringThangHere(mob,newRoom,target);
+						baseLoss *= bringThangHere(mob,newRoom,target);
 						newRoom.show(mob, null, CMMsg.MSG_OK_VISUAL, L("<S-NAME> appears!"));
 						wishDrain(mob,baseLoss,false);
 						return true;
