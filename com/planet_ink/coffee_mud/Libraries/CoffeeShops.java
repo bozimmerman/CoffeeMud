@@ -141,6 +141,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		final StringBuilder str=new StringBuilder("");
 		if(E==null)
 			return str.toString();
+		if(E instanceof Ability)
+		{
+			final StringBuilder text = CMLib.help().getHelpText(E.ID(), viewerM, false);
+			if((text != null)
+			&&(text.length()>0))
+				str.append(text);
+		}
 		if(E instanceof Physical)
 		{
 			str.append("\n\rLevel      : "+((Physical)E).phyStats().level());

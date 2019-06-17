@@ -7,6 +7,7 @@
   6. Monthly TOP reports will, at the end of the month, now be saved in DBFS dir /resources/reports
   7. MUD Clients that only support 16 colors, can have 256-color ansi codes translated to 16.  See HELP ANSI.
   8. ANSI-256 color codes are now all in /resources/text/colors.dat.
+  9. Shopkeeper VIEW on an ability will give it's help entry. 
 
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque
