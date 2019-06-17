@@ -1348,6 +1348,8 @@ public class Spell_Wish extends Spell
 							&&(onFlag)
 							&&(target!=mob)&&(!A.isAutoInvoked()))
 							{
+								baseLoss+=975;
+								wishDrain(mob,baseLoss,false);
 								A.setProficiency(100);
 								A.invoke(mob, target, true, asLevel);
 								A=null;
