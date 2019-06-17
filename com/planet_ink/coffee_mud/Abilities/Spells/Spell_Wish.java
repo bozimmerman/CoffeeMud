@@ -134,7 +134,7 @@ public class Spell_Wish extends Spell
 
 	public void wishDrain(final MOB mob, int expLoss, final boolean conLoss)
 	{
-		if(mob==null)
+		if((mob==null) || (CMSecurity.isASysOp(mob)))
 			return;
 		expLoss=getXPCOSTAdjustment(mob,expLoss);
 		if(expLoss > mob.getExperience())
