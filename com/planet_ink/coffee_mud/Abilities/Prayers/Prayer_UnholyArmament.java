@@ -218,6 +218,11 @@ public class Prayer_UnholyArmament extends Prayer
 					I.setName(L("an unholy girdle"));
 					I.setDisplayText(L("a wicked looking girdle sits here."));
 					I.setDescription(L("Whatever made this twisted black metal couldn`t have been good."));
+					if(I instanceof Container)
+					{
+						((Container)I).setCapacity(50);
+						((Container)I).setContainTypes(Container.CONTAIN_ONEHANDWEAPONS);
+					}
 				}
 				if(pos==Wearable.WORN_LEGS)
 				{
