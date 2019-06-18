@@ -394,12 +394,12 @@ public class DefaultSocial implements Social
 					{
 						if(tmob.isPlayer())
 						{
-							if((CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC)>0)&&(awardRPXP(mob)))
+							if((CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC)!=0)&&(awardRPXP(mob)))
 								CMLib.leveler().postRPExperience(mob, tmob, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC), false);
 						}
 						else
 						{
-							if((CMProps.getIntVar(CMProps.Int.RP_SOCIAL_NPC)>0)&&(awardRPXP(mob)))
+							if((CMProps.getIntVar(CMProps.Int.RP_SOCIAL_NPC)!=0)&&(awardRPXP(mob)))
 								CMLib.leveler().postRPExperience(mob, tmob, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_NPC), false);
 						}
 					}
@@ -420,7 +420,7 @@ public class DefaultSocial implements Social
 				}
 				else
 				{
-					if((CMProps.getIntVar(CMProps.Int.RP_SOCIAL_OTH)>0)&&(awardRPXP(mob)))
+					if((CMProps.getIntVar(CMProps.Int.RP_SOCIAL_OTH)!=0)&&(awardRPXP(mob)))
 						CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_OTH), false);
 				}
 			}

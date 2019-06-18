@@ -9,6 +9,7 @@
   8. ANSI-256 color codes are now all in /resources/text/colors.dat.
   9. Shopkeeper VIEW on an ability will give it's help entry. 
  10. New command: WORTH, mostly for legacy mud support.
+ 11. New RPAWARDS: EMOTE-x and CHANNEL.  See coffeemud.ini file for more information
 
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque

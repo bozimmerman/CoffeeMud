@@ -45,6 +45,20 @@ public class Emote extends StdCommand
 		return access;
 	}
 
+	protected boolean awardRPXP(final MOB mob)
+	{
+		final PlayerStats pStats=mob.playerStats();
+		if(pStats != null)
+		{
+			if(System.currentTimeMillis() >= pStats.getLastRolePlayXPTime() + CMProps.getIntVar(CMProps.Int.RP_AWARD_DELAY))
+			{
+				pStats.setLastRolePlayXPTime(System.currentTimeMillis());
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -122,7 +136,26 @@ public class Emote extends StdCommand
 		final String emote="^E<S-NAME>"+combinedCommands+" ^?";
 		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_EMOTE,emote);
 		if(R.okMessage(mob,msg))
+		{
 			R.send(mob,msg);
+			if(mob.isPlayer() && R.numPCInhabitants() > 1)
+			{
+				if((CMProps.getIntVar(CMProps.Int.RP_EMOTE_PC)!=0)&&(awardRPXP(mob)))
+					CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_EMOTE_PC), false);
+			}
+			else
+			if(R.numInhabitants() > 1)
+			{
+				if((CMProps.getIntVar(CMProps.Int.RP_EMOTE_NPC)!=0)&&(awardRPXP(mob)))
+					CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_EMOTE_NPC), false);
+			}
+			else
+			{
+				if((CMProps.getIntVar(CMProps.Int.RP_EMOTE_OTH)!=0)&&(awardRPXP(mob)))
+					CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_EMOTE_OTH), false);
+			}
+
+		}
 		return false;
 	}
 

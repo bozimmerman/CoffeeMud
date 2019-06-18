@@ -1432,7 +1432,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void handleIntroductions(final MOB speaker, final MOB me, final String msg)
 	{
-		if(((me.playerStats()!=null)||(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC)>0))
+		if(((me.playerStats()!=null)||(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC)!=0))
 		&&(speaker!=me)
 		&&(speaker.playerStats()!=null)
 		&&(msg!=null)
@@ -1441,12 +1441,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			if(me.isPlayer())
 			{
-				if(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_PC)>0)
+				if(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_PC)!=0)
 					CMLib.leveler().postRPExperience(speaker, me, L(""), CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_PC), false);
 			}
 			else
 			{
-				if(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC)>0)
+				if(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC)!=0)
 					CMLib.leveler().postRPExperience(speaker, me, L(""), CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC), false);
 			}
 			if(me.playerStats()!=null)
@@ -1457,7 +1457,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void handleBeingSpokenTo(final MOB speaker, final MOB me, final String msg)
 	{
-		if(((me.playerStats()!=null)||(CMProps.getIntVar(CMProps.Int.RP_SAY_NPC)>0))
+		if(((me.playerStats()!=null)||(CMProps.getIntVar(CMProps.Int.RP_SAY_NPC)!=0))
 		&&(speaker!=me)
 		&&(speaker.playerStats()!=null)
 		&&(msg!=null))
@@ -1467,7 +1467,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				return;
 			if(me.isPlayer())
 			{
-				if(CMProps.getIntVar(CMProps.Int.RP_SAY_PC)>0)
+				if(CMProps.getIntVar(CMProps.Int.RP_SAY_PC)!=0)
 				{
 					pStats.setLastRolePlayXPTime(System.currentTimeMillis());
 					CMLib.leveler().postRPExperience(speaker, me, "", CMProps.getIntVar(CMProps.Int.RP_SAY_PC), false);
@@ -1475,7 +1475,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 			else
 			{
-				if(CMProps.getIntVar(CMProps.Int.RP_SAY_NPC)>0)
+				if(CMProps.getIntVar(CMProps.Int.RP_SAY_NPC)!=0)
 				{
 					pStats.setLastRolePlayXPTime(System.currentTimeMillis());
 					CMLib.leveler().postRPExperience(speaker, me, "", CMProps.getIntVar(CMProps.Int.RP_SAY_NPC), false);

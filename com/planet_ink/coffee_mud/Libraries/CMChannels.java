@@ -736,6 +736,32 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		&&(R!=null)&&(R.getArea()!=null))
 			nameAppendage+=" at "+CMStrings.replaceAll(R.getArea().name(mob),"\'","");
 
+		if((mob!=null)
+		&&(mob.isPlayer())
+		&&(!systemMsg)
+		&&(((CMProps.getIntVar(CMProps.Int.RP_CHANNEL)!=0)||(CMProps.getIntVar(CMProps.Int.RP_CHANNEL_NAMED)!=0))))
+		{
+			if(System.currentTimeMillis() >= pStats.getLastRolePlayXPTime() + CMProps.getIntVar(CMProps.Int.RP_AWARD_DELAY))
+			{
+				if(CMProps.isSpecialRPChannel(channelName))
+				{
+					if(CMProps.getIntVar(CMProps.Int.RP_CHANNEL_NAMED)!=0)
+					{
+						pStats.setLastRolePlayXPTime(System.currentTimeMillis());
+						CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_CHANNEL_NAMED), false);
+					}
+				}
+				else
+				{
+					if(CMProps.getIntVar(CMProps.Int.RP_CHANNEL)!=0)
+					{
+						pStats.setLastRolePlayXPTime(System.currentTimeMillis());
+						CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_CHANNEL), false);
+					}
+				}
+			}
+		}
+
 		CMMsg msg=null;
 		if(systemMsg)
 		{
