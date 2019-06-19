@@ -177,7 +177,7 @@
 175	pale light grayish rose	dusty-rose-colored	1	9	#d787af	3	423
 176	pale light grayish magenta	plum-colored	1	13	#d787d7	7	424
 177	very light purple	perfume-colored	1	13	#d787ff	6	425
-178	vivid gold	filigree-golden	1	3	#d7af00	6	430
+178	vivid golden	filigree-golden	1	3	#d7af00	6	430
 179	light gamboge	tacha	1	3	#d7af5f	7	431
 180	pale light grayish brown	tan	1	3	#d7af87	8	432
 181	pinkish gray	clamshell-colored	1	9	#d7afaf	2	433
@@ -219,7 +219,7 @@
 217	pale pink	flesh-colored	1	9	#ffafaf	5	533
 218	pale rose	pink	1	9	#ffafd7	1	534
 219	pale magenta	cherub-pink	1	13	#ffafff	10	535
-220	luminous vivid gold	golden-hufflepuff	1	11	#ffd700	6	540
+220	luminous vivid golden	golden-hufflepuff	1	11	#ffd700	6	540
 221	light brilliant amber	goldernrod 	1	11	#ffd75f	5	541
 222	very light gamboge	grandis-yellow	1	11	#ffd787	5	542
 223	pale orange	champagne-colored	1	3	#ffd7af	8	543
