@@ -537,6 +537,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				str=prepend.toString()+"\n\r"+str;
 			}
 		}
+		if(str.endsWith("<COLORS>"))
+			str=str.substring(0, str.length()-8)+CMLib.color().getColorInfo(false);
+		if(str.endsWith("<COLORS256>"))
+			str=str.substring(0, str.length()-11)+CMLib.color().getColorInfo(true);
 		if(str.startsWith("<ABILITY>"))
 		{
 			str=str.substring(9);

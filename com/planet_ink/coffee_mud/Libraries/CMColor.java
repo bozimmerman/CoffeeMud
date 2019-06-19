@@ -105,9 +105,10 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		public final String htmlCode;
 		public final short expertiseNum;
 		public final short cm6Code;
+		public String cmChars;
 
 		public Color256(final short number,  final String name1, final String name2, final Color non256color,
-						final String htmlCode, final short expertiseNum, final short cm6Code)
+						final String htmlCode, final short expertiseNum, final short cm6Code, final String cmChars)
 		{
 			this.number=number;
 			this.name1=name1;
@@ -116,6 +117,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			this.htmlCode=htmlCode;
 			this.expertiseNum=expertiseNum;
 			this.cm6Code=cm6Code;
+			this.cmChars=cmChars;
 		}
 	}
 
@@ -454,6 +456,8 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	public void clearLookups()
 	{
 		clookup = null;
+		Resources.removeResource("SYSTEM_COLOR_INFO: "+true);
+		Resources.removeResource("SYSTEM_COLOR_INFO: "+false);
 	}
 
 	@Override
@@ -573,13 +577,133 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		return clookup;
 	}
 
+	@Override
+	public String getColorInfo(final boolean doAll256)
+	{
+		StringBuffer buf = (StringBuffer)Resources.getResource("SYSTEM_COLOR_INFO: "+doAll256);
+		if(buf == null)
+		{
+			buf = new StringBuffer("");
+			int longestName = 0;
+			int secondLongestName = 0;
+			for(final Color256 C : color256s)
+			{
+				if(C!=null)
+				{
+					if(C.name1.length()>longestName)
+						longestName=C.name1.length();
+					if(C.name2.length()>secondLongestName)
+						secondLongestName=C.name2.length();
+				}
+			}
+			final int colSize = (longestName + secondLongestName + 2 + 6);
+			final int max_cols = 78 / colSize;
+			int col=1;
+			for(final Color256 C : color256s)
+			{
+				if((C==null)
+				||((!doAll256) && (C.cm6Code >=0))
+				||((C.cm6Code<0)&&(C.non256color==Color.BLACK)))
+					continue;
+				buf.append("^N").append(CMStrings.padRight("^"+C.cmChars, 6))
+					.append(C.cmChars)
+					.append(CMStrings.padRight(C.name1, longestName))
+					.append("^N: ").append(C.cmChars)
+					.append(CMStrings.padRight(C.name2, secondLongestName))
+					.append("^N");
+				if((++col) >= max_cols)
+				{
+					col=1;
+					buf.append("\n\r");
+				}
+			}
+			Resources.submitResource("SYSTEM_COLOR_INFO: "+doAll256, buf);
+		}
+		return buf.toString();
+	}
 
+	private void generateRecipes()
+	{
+		final StringBuilder str=new StringBuilder("");
+		final Set<String> namesUsed = new HashSet<String>();
+		final List<Color256> allColors = new XVector<Color256>(color256s);
+		Collections.sort(allColors, new Comparator<Color256>()
+		{
+			@Override
+			public int compare(final Color256 o1, final Color256 o2)
+			{
+				int level1 = 1;
+				if(o1.expertiseNum > 0)
+				{
+					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition("TUNING"+o1.expertiseNum);
+					if(def.getMinimumLevel()>0)
+						level1=def.getMinimumLevel();
+				}
+				int level2 = 1;
+				if(o2.expertiseNum > 0)
+				{
+					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition("TUNING"+o2.expertiseNum);
+					if(def.getMinimumLevel()>0)
+						level2=def.getMinimumLevel();
+				}
+				if(level1==level2)
+					return 0;
+				if(level1>level2)
+					return 1;
+				return -1;
+			}
+
+		});
+		for(final Color256 c : allColors)
+		{
+			if((c.name1.indexOf("black")>=0)
+			||(c.name2.indexOf("black")>=0))
+				continue;
+			int level = 1;
+			if(c.expertiseNum > 0)
+			{
+				final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition("TUNING"+c.expertiseNum);
+				if(def.getMinimumLevel()>0)
+					level=def.getMinimumLevel();
+			}
+			if(namesUsed.contains(c.name1))
+			{
+				System.out.println("Re-used: "+c.name1);
+				continue;
+			}
+			final String misc = (c.cmChars.indexOf('#')>0)?"ANSI256=TRUE":"";
+			str.append(c.name1).append("\t")
+			   .append(level).append("\t")
+			   .append(9+level).append("\t")
+			   .append(c.cmChars).append(c.name1).append("^?\t")
+			   .append("").append("\t") // application mask
+			   .append(c.expertiseNum).append("\t")  // expertise
+			   .append(misc).append("\n\r");
+			namesUsed.add(c.name1);
+			if(namesUsed.contains(c.name2))
+				continue;
+			if(!c.name1.equals(c.name2))
+			{
+				str.append(c.name2).append("\t")
+				   .append(level+10).append("\t")
+				   .append(10+level).append("\t")
+				   .append(c.cmChars).append(c.name2).append("^?\t")
+				   .append("").append("\t") // application mask
+				   .append(c.expertiseNum).append("\t")  // expertise
+				   .append(misc).append("\n\r");
+			}
+		}
+		final CMFile F1=new CMFile("///resources/skills/dyeing.txt",null);
+		F1.saveText(str.toString());
+		final CMFile F2=new CMFile("///resources/skills/lacquering.txt",null);
+		F2.saveText(str.toString());
+	}
 
 	@Override
 	public boolean activate()
 	{
 		final List<Color256> list=new ArrayList<Color256>();
-		final CMFile F=new CMFile(Resources.buildResourcePath("text/colors.dat"),null);
+		final CMFile F=new CMFile(Resources.buildResourcePath("skills/colors.txt"),null);
 		if(F.exists())
 		{
 			color256to16map.clear();
@@ -616,9 +740,22 @@ public class CMColor extends StdLibrary implements ColorLibrary
 						else
 							baseColor = (ColorLibrary.Color)CMath.s_valueOf(ColorLibrary.Color.class, bits[7].toUpperCase().trim());
 					}
+					String cmChars;
+					if(cm6code < 0)
+					{
+						if(baseColor != null)
+							cmChars = "^"+baseColor.getCodeChar();
+						else
+						{
+							Log.errOut("Error in skills/colors.txt: "+line);
+							continue;
+						}
+					}
+					else
+						cmChars = "^#"+bits[7];
 					final Color256 newColor = new Color256(
 						CMath.s_short(bits[0]),  bits[1], bits[2], baseColor,
-						bits[5], CMath.s_short(bits[6]), cm6code
+						bits[5], CMath.s_short(bits[6]), cm6code, cmChars
 					);
 					if(bits[4].length()>0)
 						color16map.put(Short.valueOf(newColor.number), Short.valueOf(CMath.s_short(bits[4])));
@@ -653,6 +790,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			});
 			color256s=list.toArray(new Color256[0]);
 		}
+		//generateRecipes(); //BZ:DELME
 		return true;
 	}
 

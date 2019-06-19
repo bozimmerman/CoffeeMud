@@ -1,26 +1,449 @@
-white	1	10	^wwhite^?
-green	1	10	^ggreen^?
-blue	1	10	^bblue^?
-red	1	10	^rred^?
-yellow	1	10	^yyellow^?
-cyan	1	10	^ccyan^?
-purple	1	10	^ppurple^?
-grey	1	10	^Wgrey^?
-dark green	5	10	^Gdark green^?
-dark blue	5	10	^Bdark blue^?
-dark red	5	10	^Rdark red^?
-brown	5	10	^Ybrown^?
-dark cyan	5	10	^Cdark cyan^?
-dark purple	5	10	^Pdark purple^?
-deep green	10	10	^Gdeep green^?
-deep blue	10	10	^Bdeep blue^?
-deep red	10	10	^Rdeep red^?
-deep brown	10	10	^Ydeep brown^?
-deep cyan	10	10	^Cdeep cyan^?
-deep purple	10	10	^Pdeep purple^?
-very green	15	10	^gvery green^?
-very blue	15	10	^bvery blue^?
-very red	15	10	^rvery red^?
-very yellow	15	10	^yvery yellow^?
-very cyan	15	10	^cvery cyan^?
-very purple	15	10	^pvery purple^?
+red	1	10	^rred^?		0	
+green	1	10	^ggreen^?		0	
+blue	1	10	^bblue^?		0	
+white	1	10	^wwhite^?		0
+yellow	5	10	^yyellow^?		0	
+purple	5	10	^Ppurple^?		0	
+cyan	5	10	^Ccyan^?		0	
+grey	5	10	^kgrey^?		0	
+silvery	10	10	^Wsilvery^?		0	
+fuchsia	10	10	^pfuchsia^?		0	
+aqua	10	10	^caqua^?		0	
+teal	10	11	^Cteal^?		0	
+maroon	15	10	^Rmaroon^?		0	
+dark green	15	10	^Gdark green^?		0	
+brown	15	10	^Ybrown^?		0	
+dark blue	15	10	^Bdark blue^?		0	
+silver-colored	20	11	^Wsilver-colored^?		0	
+forest green	20	11	^Gforest green^?		0	
+olive-green	25	11	^Yolive-green^?		0	
+navy-blue 	25	11	^Bnavy-blue ^?		0
+lime green	30	11	^glime green^?		0	
+very dark blue	32	41	^#002very dark blue^?		1	ANSI256=TRUE
+cobalt-blue 	42	42	^#002cobalt-blue ^?		1	ANSI256=TRUE
+deep green	32	41	^#010deep green^?		1	ANSI256=TRUE
+emerald-green	42	42	^#010emerald-green^?		1	ANSI256=TRUE
+strong turquoise	32	41	^#021strong turquoise^?		1	ANSI256=TRUE
+eucalyptus-colored	42	42	^#021eucalyptus-colored^?		1	ANSI256=TRUE
+luminious vivid artic blue	32	41	^#045luminious vivid artic blue^?		1	ANSI256=TRUE
+turquoise-colored	42	42	^#045turquoise-colored^?		1	ANSI256=TRUE
+luminous vivid green	32	41	^#050luminous vivid green^?		1	ANSI256=TRUE
+harlequin-green	42	42	^#050harlequin-green^?		1	ANSI256=TRUE
+drak gray	32	41	^#111drak gray^?		1	ANSI256=TRUE
+taupe	42	42	^#111taupe^?		1	ANSI256=TRUE
+grayish blue	32	41	^#112grayish blue^?		1	ANSI256=TRUE
+comet-grey	42	42	^#112comet-grey^?		1	ANSI256=TRUE
+light brilliant azure	32	41	^#135light brilliant azure^?		1	ANSI256=TRUE
+ice-blue	42	42	^#135ice-blue^?		1	ANSI256=TRUE
+strong red	32	41	^#200strong red^?		1	ANSI256=TRUE
+burgundy 	42	42	^#200burgundy ^?		1	ANSI256=TRUE
+strong fuchsia	32	41	^#201strong fuchsia^?		1	ANSI256=TRUE
+boysenberry-colored	42	42	^#201boysenberry-colored^?		1	ANSI256=TRUE
+strong amber	32	41	^#210strong amber^?		1	ANSI256=TRUE
+browncoat-colored	42	42	^#210browncoat-colored^?		1	ANSI256=TRUE
+pale light grayish spring green	32	41	^#243pale light grayish spring green^?		1	ANSI256=TRUE
+vista-blue	42	42	^#243vista-blue^?		1	ANSI256=TRUE
+very light aquamarine	32	41	^#254very light aquamarine^?		1	ANSI256=TRUE
+caper-cyan	42	42	^#254caper-cyan^?		1	ANSI256=TRUE
+strong magenta	32	41	^#303strong magenta^?		1	ANSI256=TRUE
+red-violet	42	42	^#303red-violet^?		1	ANSI256=TRUE
+light grayish olive	32	41	^#331light grayish olive^?		1	ANSI256=TRUE
+dark-khaki	42	42	^#331dark-khaki^?		1	ANSI256=TRUE
+vivid magenta	32	41	^#404vivid magenta^?		1	ANSI256=TRUE
+purple-pizzazz	42	42	^#404purple-pizzazz^?		1	ANSI256=TRUE
+very light spring bud	32	41	^#452very light spring bud^?		1	ANSI256=TRUE
+honeysuckle-colored	42	42	^#452honeysuckle-colored^?		1	ANSI256=TRUE
+very pale green	32	41	^#454very pale green^?		1	ANSI256=TRUE
+snowy-mint-colored	42	42	^#454snowy-mint-colored^?		1	ANSI256=TRUE
+luminous vivid raspberry	32	41	^#501luminous vivid raspberry^?		1	ANSI256=TRUE
+raspberry-red	42	42	^#501raspberry-red^?		1	ANSI256=TRUE
+luminous vivid magenta	32	41	^#505luminous vivid magenta^?		1	ANSI256=TRUE
+magenta	42	42	^#505magenta^?		1	ANSI256=TRUE
+pale rose	32	41	^#534pale rose^?		1	ANSI256=TRUE
+pink	42	42	^#534pink^?		1	ANSI256=TRUE
+light brilliant yellow	32	41	^#551light brilliant yellow^?		1	ANSI256=TRUE
+lemon-colored	42	42	^#551lemon-colored^?		1	ANSI256=TRUE
+strong dark blue	37	46	^#003strong dark blue^?		2	ANSI256=TRUE
+hooloovoo-blue	47	47	^#003hooloovoo-blue^?		2	ANSI256=TRUE
+emerald green	37	46	^#020emerald green^?		2	ANSI256=TRUE
+slytherin-green	47	47	^#020slytherin-green^?		2	ANSI256=TRUE
+strong artic blue	37	46	^#022strong artic blue^?		2	ANSI256=TRUE
+cadet-blue	47	47	^#022cadet-blue^?		2	ANSI256=TRUE
+luminous vivid sea green	37	46	^#051luminous vivid sea green^?		2	ANSI256=TRUE
+malachite-green	47	47	^#051malachite-green^?		2	ANSI256=TRUE
+luminoius vivid opal	37	46	^#054luminoius vivid opal^?		2	ANSI256=TRUE
+java-colored	47	47	^#054java-colored^?		2	ANSI256=TRUE
+deep reddish brown	37	46	^#100deep reddish brown^?		2	ANSI256=TRUE
+scarlet	47	47	^#100scarlet^?		2	ANSI256=TRUE
+light grayish green	37	46	^#131light grayish green^?		2	ANSI256=TRUE
+thussevy-green 	47	47	^#131thussevy-green ^?		2	ANSI256=TRUE
+light cornflower blue	37	46	^#134light cornflower blue^?		2	ANSI256=TRUE
+shakespeare-blue	47	47	^#134shakespeare-blue^?		2	ANSI256=TRUE
+strong purplish magenta	37	46	^#202strong purplish magenta^?		2	ANSI256=TRUE
+camelot-purple	47	47	^#202camelot-purple^?		2	ANSI256=TRUE
+grayish red	37	46	^#211grayish red^?		2	ANSI256=TRUE
+copper-rose-colored	47	47	^#211copper-rose-colored^?		2	ANSI256=TRUE
+medium gray	37	46	^#222medium gray^?		2	ANSI256=TRUE
+dim-grey	47	47	^#222dim-grey^?		2	ANSI256=TRUE
+very light blue	37	46	^#225very light blue^?		2	ANSI256=TRUE
+malibu-blue	47	47	^#225malibu-blue^?		2	ANSI256=TRUE
+cyanish gray	37	46	^#233cyanish gray^?		2	ANSI256=TRUE
+gulfstream-grey	47	47	^#233gulfstream-grey^?		2	ANSI256=TRUE
+luminous vivid chartreuse green	37	46	^#250luminous vivid chartreuse green^?		2	ANSI256=TRUE
+chartreuse	47	47	^#250chartreuse^?		2	ANSI256=TRUE
+vivid heliotrope	37	46	^#304vivid heliotrope^?		2	ANSI256=TRUE
+cabaret-colored	47	47	^#304cabaret-colored^?		2	ANSI256=TRUE
+yellowish gray	37	46	^#332yellowish gray^?		2	ANSI256=TRUE
+hillary-brown	47	47	^#332hillary-brown^?		2	ANSI256=TRUE
+pinkish gray	37	46	^#433pinkish gray^?		2	ANSI256=TRUE
+clamshell-colored	47	47	^#433clamshell-colored^?		2	ANSI256=TRUE
+luminous vivid red	37	46	^#500luminous vivid red^?		2	ANSI256=TRUE
+cherry-red	47	47	^#500cherry-red^?		2	ANSI256=TRUE
+luminous vivid cerise	37	46	^#503luminous vivid cerise^?		2	ANSI256=TRUE
+rose-colored	47	47	^#503rose-colored^?		2	ANSI256=TRUE
+lumnious vivid tangelo	37	46	^#510lumnious vivid tangelo^?		2	ANSI256=TRUE
+burnt-orange	47	47	^#510burnt-orange^?		2	ANSI256=TRUE
+light brilliant rose	37	46	^#513light brilliant rose^?		2	ANSI256=TRUE
+wewak-pink	47	47	^#513wewak-pink^?		2	ANSI256=TRUE
+very light yellow	37	46	^#552very light yellow^?		2	ANSI256=TRUE
+yellow-rose-colored	47	47	^#552yellow-rose-colored^?		2	ANSI256=TRUE
+vivid blue	42	51	^#004vivid blue^?		3	ANSI256=TRUE
+ravenclaw-blue	52	52	^#004ravenclaw-blue^?		3	ANSI256=TRUE
+cerulean	42	51	^#023cerulean^?		3	ANSI256=TRUE
+strong green	42	51	^#030strong green^?		3	ANSI256=TRUE
+kelly-green	52	52	^#030kelly-green^?		3	ANSI256=TRUE
+luminous vivid spring green	42	51	^#052luminous vivid spring green^?		3	ANSI256=TRUE
+Medium-spring-green	52	52	^#052Medium-spring-green^?		3	ANSI256=TRUE
+lumious vivid cyan	42	51	^#055lumious vivid cyan^?		3	ANSI256=TRUE
+light brilliant blue	42	51	^#115light brilliant blue^?		3	ANSI256=TRUE
+periwinkle 	52	52	^#115periwinkle ^?		3	ANSI256=TRUE
+grayish spring green	42	51	^#132grayish spring green^?		3	ANSI256=TRUE
+silvertree-colored	52	52	^#132silvertree-colored^?		3	ANSI256=TRUE
+strong light mulberry	42	51	^#203strong light mulberry^?		3	ANSI256=TRUE
+mulberry-colored	52	52	^#203mulberry-colored^?		3	ANSI256=TRUE
+strong olive	42	51	^#220strong olive^?		3	ANSI256=TRUE
+olive-colored	52	52	^#220olive-colored^?		3	ANSI256=TRUE
+light brilliant harlequin	42	51	^#251light brilliant harlequin^?		3	ANSI256=TRUE
+prim-green	52	52	^#251prim-green^?		3	ANSI256=TRUE
+very light cyan	42	51	^#255very light cyan^?		3	ANSI256=TRUE
+seaglass-cyan 	52	52	^#255seaglass-cyan ^?		3	ANSI256=TRUE
+strong scarlet	42	51	^#300strong scarlet^?		3	ANSI256=TRUE
+griffindor-scarlet 	52	52	^#300griffindor-scarlet ^?		3	ANSI256=TRUE
+luminous vivid purple	42	51	^#305luminous vivid purple^?		3	ANSI256=TRUE
+lilac-colored	52	52	^#305lilac-colored^?		3	ANSI256=TRUE
+vivid apple green	42	51	^#340vivid apple green^?		3	ANSI256=TRUE
+green-apple-colored	52	52	^#340green-apple-colored^?		3	ANSI256=TRUE
+vivid orange	42	51	^#410vivid orange^?		3	ANSI256=TRUE
+tenn-colored	52	52	^#410tenn-colored^?		3	ANSI256=TRUE
+light brilliant mulberry	42	51	^#415light brilliant mulberry^?		3	ANSI256=TRUE
+wilderberry-colored	52	52	^#415wilderberry-colored^?		3	ANSI256=TRUE
+pale light grayish rose	42	51	^#423pale light grayish rose^?		3	ANSI256=TRUE
+dusty-rose-colored	52	52	^#423dusty-rose-colored^?		3	ANSI256=TRUE
+luminous vivid rose	42	51	^#502luminous vivid rose^?		3	ANSI256=TRUE
+razzledazzle-rose-colored	52	52	^#502razzledazzle-rose-colored^?		3	ANSI256=TRUE
+light brilliant red	42	51	^#511light brilliant red^?		3	ANSI256=TRUE
+bittersweet-red	52	52	^#511bittersweet-red^?		3	ANSI256=TRUE
+light brilliant fuchsia	42	51	^#514light brilliant fuchsia^?		3	ANSI256=TRUE
+thalosian-pink	52	52	^#514thalosian-pink^?		3	ANSI256=TRUE
+pale yellow	42	51	^#553pale yellow^?		3	ANSI256=TRUE
+vanilla-cream-colored	52	52	^#553vanilla-cream-colored^?		3	ANSI256=TRUE
+strong cerulean	47	56	^#012strong cerulean^?		4	ANSI256=TRUE
+steel-blue	57	57	^#012steel-blue^?		4	ANSI256=TRUE
+strong spring green	47	56	^#031strong spring green^?		4	ANSI256=TRUE
+jade-colored	57	57	^#031jade-colored^?		4	ANSI256=TRUE
+turquoise	47	56	^#032turquoise^?		4	ANSI256=TRUE
+thalosian-green	57	57	^#032thalosian-green^?		4	ANSI256=TRUE
+luminous vivid aquamarine	47	56	^#053luminous vivid aquamarine^?		4	ANSI256=TRUE
+scandal-green	57	57	^#053scandal-green^?		4	ANSI256=TRUE
+deep magenta	47	56	^#101deep magenta^?		4	ANSI256=TRUE
+eggplant-colored	57	57	^#101eggplant-colored^?		4	ANSI256=TRUE
+deep olive	47	56	^#110deep olive^?		4	ANSI256=TRUE
+citron-green	57	57	^#110citron-green^?		4	ANSI256=TRUE
+light brilliant sapphire blue	47	56	^#125light brilliant sapphire blue^?		4	ANSI256=TRUE
+cornflower-blue	57	57	^#125cornflower-blue^?		4	ANSI256=TRUE
+vivid chartreuse green	47	56	^#140vivid chartreuse green^?		4	ANSI256=TRUE
+bahia-green	57	57	^#140bahia-green^?		4	ANSI256=TRUE
+light aquamarine	47	56	^#143light aquamarine^?		4	ANSI256=TRUE
+aquamarine-colored	57	57	^#143aquamarine-colored^?		4	ANSI256=TRUE
+vivid purple	47	56	^#204vivid purple^?		4	ANSI256=TRUE
+violet	57	57	^#204violet^?		4	ANSI256=TRUE
+very light green	47	56	^#252very light green^?		4	ANSI256=TRUE
+mint-green	57	57	^#252mint-green^?		4	ANSI256=TRUE
+strong rose	47	56	^#301strong rose^?		4	ANSI256=TRUE
+red-flirt-colored	57	57	^#301red-flirt-colored^?		4	ANSI256=TRUE
+light grayish magenta	47	56	^#313light grayish magenta^?		4	ANSI256=TRUE
+fuchia-pink	57	57	^#313fuchia-pink^?		4	ANSI256=TRUE
+light bluish gray	47	56	^#334light bluish gray^?		4	ANSI256=TRUE
+wistful-blue	57	57	^#334wistful-blue^?		4	ANSI256=TRUE
+light spring bud	47	56	^#341light spring bud^?		4	ANSI256=TRUE
+conifer-green	57	57	^#341conifer-green^?		4	ANSI256=TRUE
+light cyanish gray	47	56	^#344light cyanish gray^?		4	ANSI256=TRUE
+junglemist-blue	57	57	^#344junglemist-blue^?		4	ANSI256=TRUE
+pale grayish pink	47	56	^#422pale grayish pink^?		4	ANSI256=TRUE
+salmon-colored	57	57	^#422salmon-colored^?		4	ANSI256=TRUE
+pale violet	47	56	^#435pale violet^?		4	ANSI256=TRUE
+melanie-colored	57	57	^#435melanie-colored^?		4	ANSI256=TRUE
+light brilliant crimson	47	56	^#512light brilliant crimson^?		4	ANSI256=TRUE
+wild-watermelon-colored	57	57	^#512wild-watermelon-colored^?		4	ANSI256=TRUE
+light brilliant magenta	47	56	^#515light brilliant magenta^?		4	ANSI256=TRUE
+pink-flamingo-colored	57	57	^#515pink-flamingo-colored^?		4	ANSI256=TRUE
+very pale yellow	47	56	^#554very pale yellow^?		4	ANSI256=TRUE
+cornsilk-white	57	57	^#554cornsilk-white^?		4	ANSI256=TRUE
+strong azure	52	61	^#013strong azure^?		5	ANSI256=TRUE
+tardis-blue	62	62	^#013tardis-blue^?		5	ANSI256=TRUE
+strong cyan	52	61	^#033strong cyan^?		5	ANSI256=TRUE
+celadon	62	62	^#033celadon^?		5	ANSI256=TRUE
+vivid green	52	61	^#040vivid green^?		5	ANSI256=TRUE
+shamrock-green	62	62	^#040shamrock-green^?		5	ANSI256=TRUE
+light blue	52	61	^#114light blue^?		5	ANSI256=TRUE
+delphinium-blue	62	62	^#114delphinium-blue^?		5	ANSI256=TRUE
+light cobalt blue	52	61	^#124light cobalt blue^?		5	ANSI256=TRUE
+sapphire-blue 	62	62	^#124sapphire-blue ^?		5	ANSI256=TRUE
+lightish cyan	52	61	^#144lightish cyan^?		5	ANSI256=TRUE
+viking-blue	62	62	^#144viking-blue^?		5	ANSI256=TRUE
+luminous vivid pistachio	52	61	^#150luminous vivid pistachio^?		5	ANSI256=TRUE
+pistachio-colored	62	62	^#150pistachio-colored^?		5	ANSI256=TRUE
+luminous vivid violet	52	61	^#205luminous vivid violet^?		5	ANSI256=TRUE
+electric-violet	62	62	^#205electric-violet^?		5	ANSI256=TRUE
+grayish olive	52	61	^#221grayish olive^?		5	ANSI256=TRUE
+clay-creek-colored	62	62	^#221clay-creek-colored^?		5	ANSI256=TRUE
+pale light grayish azure	52	61	^#234pale light grayish azure^?		5	ANSI256=TRUE
+slate-blue 	62	62	^#234slate-blue ^?		5	ANSI256=TRUE
+very light sea green	52	61	^#253very light sea green^?		5	ANSI256=TRUE
+sprout-green	62	62	^#253sprout-green^?		5	ANSI256=TRUE
+strong orange	52	61	^#310strong orange^?		5	ANSI256=TRUE
+beige	62	62	^#310beige^?		5	ANSI256=TRUE
+light purple	52	61	^#314light purple^?		5	ANSI256=TRUE
+medium-purple	62	62	^#314medium-purple^?		5	ANSI256=TRUE
+pale light grayish chartreuse green	52	61	^#342pale light grayish chartreuse green^?		5	ANSI256=TRUE
+flax-green	62	62	^#342flax-green^?		5	ANSI256=TRUE
+light greenish gray	52	61	^#343light greenish gray^?		5	ANSI256=TRUE
+pixie-green	62	62	^#343pixie-green^?		5	ANSI256=TRUE
+light magentaish gray	52	61	^#434light magentaish gray^?		5	ANSI256=TRUE
+thistle-colored	62	62	^#434thistle-colored^?		5	ANSI256=TRUE
+luminous vivid orange	52	61	^#520luminous vivid orange^?		5	ANSI256=TRUE
+orange-colored	62	62	^#520orange-colored^?		5	ANSI256=TRUE
+very light cerise	52	61	^#524very light cerise^?		5	ANSI256=TRUE
+lavender-rose-colored	62	62	^#524lavender-rose-colored^?		5	ANSI256=TRUE
+pale pink	52	61	^#533pale pink^?		5	ANSI256=TRUE
+flesh-colored	62	62	^#533flesh-colored^?		5	ANSI256=TRUE
+light brilliant amber	52	61	^#541light brilliant amber^?		5	ANSI256=TRUE
+goldernrod 	62	62	^#541goldernrod ^?		5	ANSI256=TRUE
+very light gamboge	52	61	^#542very light gamboge^?		5	ANSI256=TRUE
+grandis-yellow	62	62	^#542grandis-yellow^?		5	ANSI256=TRUE
+vivid azure	57	66	^#014vivid azure^?		6	ANSI256=TRUE
+dodger-blue	67	67	^#014dodger-blue^?		6	ANSI256=TRUE
+vivid artic blue	57	66	^#034vivid artic blue^?		6	ANSI256=TRUE
+artic-blue	67	67	^#034artic-blue^?		6	ANSI256=TRUE
+vivid spring green	57	66	^#041vivid spring green^?		6	ANSI256=TRUE
+spring-green	67	67	^#041spring-green^?		6	ANSI256=TRUE
+strong mulberry	57	66	^#102strong mulberry^?		6	ANSI256=TRUE
+pigment-indigo	67	67	^#102pigment-indigo^?		6	ANSI256=TRUE
+grayish azure	57	66	^#123grayish azure^?		6	ANSI256=TRUE
+steel-blue 	67	67	^#123steel-blue ^?		6	ANSI256=TRUE
+light green	57	66	^#141light green^?		6	ANSI256=TRUE
+mantis-green	67	67	^#141mantis-green^?		6	ANSI256=TRUE
+light brilliant cerulean 	57	66	^#145light brilliant cerulean ^?		6	ANSI256=TRUE
+tiffany-blue 	67	67	^#145tiffany-blue ^?		6	ANSI256=TRUE
+light brilliant green	57	66	^#151light brilliant green^?		6	ANSI256=TRUE
+screaming-green	67	67	^#151screaming-green^?		6	ANSI256=TRUE
+grayish magenta	57	66	^#212grayish magenta^?		6	ANSI256=TRUE
+strikemaster-plum	67	67	^#212strikemaster-plum^?		6	ANSI256=TRUE
+strong lime green	57	66	^#230strong lime green^?		6	ANSI256=TRUE
+lime-green	67	67	^#230lime-green^?		6	ANSI256=TRUE
+light grayish red	57	66	^#311light grayish red^?		6	ANSI256=TRUE
+merlot-colored	67	67	^#311merlot-colored^?		6	ANSI256=TRUE
+light brilliant violet	57	66	^#315light brilliant violet^?		6	ANSI256=TRUE
+heliotrope	67	67	^#315heliotrope^?		6	ANSI256=TRUE
+pale blue	57	66	^#335pale blue^?		6	ANSI256=TRUE
+melrose-colored	67	67	^#335melrose-colored^?		6	ANSI256=TRUE
+pale azure	57	66	^#345pale azure^?		6	ANSI256=TRUE
+clearskies-blue	67	67	^#345clearskies-blue^?		6	ANSI256=TRUE
+luminous vivid spring bud	57	66	^#350luminous vivid spring bud^?		6	ANSI256=TRUE
+pear-green	67	67	^#350pear-green^?		6	ANSI256=TRUE
+light cerise	57	66	^#413light cerise^?		6	ANSI256=TRUE
+hot-pink	67	67	^#413hot-pink^?		6	ANSI256=TRUE
+very light purple	57	66	^#425very light purple^?		6	ANSI256=TRUE
+perfume-colored	67	67	^#425perfume-colored^?		6	ANSI256=TRUE
+vivid gold	57	66	^#430vivid gold^?		6	ANSI256=TRUE
+filigree-golden	67	67	^#430filigree-golden^?		6	ANSI256=TRUE
+light brilliant vermilion 	57	66	^#521light brilliant vermilion ^?		6	ANSI256=TRUE
+hydrascale-red	67	67	^#521hydrascale-red^?		6	ANSI256=TRUE
+very light magenta	57	66	^#525very light magenta^?		6	ANSI256=TRUE
+blush-pink	67	67	^#525blush-pink^?		6	ANSI256=TRUE
+luminous vivid gold	57	66	^#540luminous vivid gold^?		6	ANSI256=TRUE
+golden-hufflepuff	67	67	^#540golden-hufflepuff^?		6	ANSI256=TRUE
+vivid cornflower blue	62	71	^#024vivid cornflower blue^?		7	ANSI256=TRUE
+lochmara-blue	72	72	^#024lochmara-blue^?		7	ANSI256=TRUE
+lumionus vivid cornflower blue	62	71	^#035lumionus vivid cornflower blue^?		7	ANSI256=TRUE
+azure-radiance	72	72	^#035azure-radiance^?		7	ANSI256=TRUE
+vivid aquamarine	62	71	^#042vivid aquamarine^?		7	ANSI256=TRUE
+caribbean-green	72	72	^#042caribbean-green^?		7	ANSI256=TRUE
+vivid opal	62	71	^#043vivid opal^?		7	ANSI256=TRUE
+opal-colored	72	72	^#043opal-colored^?		7	ANSI256=TRUE
+light sea green	62	71	^#142light sea green^?		7	ANSI256=TRUE
+sea-green	72	72	^#142sea-green^?		7	ANSI256=TRUE
+light brilliant malachite green	62	71	^#152light brilliant malachite green^?		7	ANSI256=TRUE
+tidal-green	72	72	^#152tidal-green^?		7	ANSI256=TRUE
+light brilliant turquoise	62	71	^#154light brilliant turquoise^?		7	ANSI256=TRUE
+powder-blue	72	72	^#154powder-blue^?		7	ANSI256=TRUE
+grayish violet	62	71	^#213grayish violet^?		7	ANSI256=TRUE
+mauve	72	72	^#213mauve^?		7	ANSI256=TRUE
+light brilliant indigo	62	71	^#215light brilliant indigo^?		7	ANSI256=TRUE
+amethyst-colored	72	72	^#215amethyst-colored^?		7	ANSI256=TRUE
+grayish chartreuse green	62	71	^#231grayish chartreuse green^?		7	ANSI256=TRUE
+asparagus-colored	72	72	^#231asparagus-colored^?		7	ANSI256=TRUE
+reddish gray	62	71	^#322reddish gray^?		7	ANSI256=TRUE
+pharlap-colored	72	72	^#322pharlap-colored^?		7	ANSI256=TRUE
+magentaish gray	62	71	^#323magentaish gray^?		7	ANSI256=TRUE
+purple-bouquet	72	72	^#323purple-bouquet^?		7	ANSI256=TRUE
+deep silver (medium gray)	62	71	^#333deep silver (medium gray)^?		7	ANSI256=TRUE
+base-grey	72	72	^#333base-grey^?		7	ANSI256=TRUE
+light brilliant chartreuse green	62	71	^#351light brilliant chartreuse green^?		7	ANSI256=TRUE
+green-yellow	72	72	^#351green-yellow^?		7	ANSI256=TRUE
+pale spring green	62	71	^#354pale spring green^?		7	ANSI256=TRUE
+aero-blue	72	72	^#354aero-blue^?		7	ANSI256=TRUE
+light raspberry	62	71	^#412light raspberry^?		7	ANSI256=TRUE
+cranberry-colored	72	72	^#412cranberry-colored^?		7	ANSI256=TRUE
+vivid gamboge	62	71	^#420vivid gamboge^?		7	ANSI256=TRUE
+mango-colored	72	72	^#420mango-colored^?		7	ANSI256=TRUE
+pale light grayish magenta	62	71	^#424pale light grayish magenta^?		7	ANSI256=TRUE
+plum-colored	72	72	^#424plum-colored^?		7	ANSI256=TRUE
+light gamboge	62	71	^#431light gamboge^?		7	ANSI256=TRUE
+tacha	72	72	^#431tacha^?		7	ANSI256=TRUE
+luminious vivid yellow	62	71	^#450luminious vivid yellow^?		7	ANSI256=TRUE
+chartreuse-yellow	72	72	^#450chartreuse-yellow^?		7	ANSI256=TRUE
+light vivid yellow	62	71	^#451light vivid yellow^?		7	ANSI256=TRUE
+canary-yellow	72	72	^#451canary-yellow^?		7	ANSI256=TRUE
+light pink	62	71	^#522light pink^?		7	ANSI256=TRUE
+coral-colored	72	72	^#522coral-colored^?		7	ANSI256=TRUE
+deep blue	67	76	^#001deep blue^?		8	ANSI256=TRUE
+midnight-blue	77	77	^#001midnight-blue^?		8	ANSI256=TRUE
+deep cyan	67	76	^#011deep cyan^?		8	ANSI256=TRUE
+hernadonian-teal	77	77	^#011hernadonian-teal^?		8	ANSI256=TRUE
+lumious vivid azure	67	76	^#025lumious vivid azure^?		8	ANSI256=TRUE
+azure	77	77	^#025azure^?		8	ANSI256=TRUE
+vivid cyan	67	76	^#044vivid cyan^?		8	ANSI256=TRUE
+downy-blue	77	77	^#044downy-blue^?		8	ANSI256=TRUE
+strong violet	67	76	^#103strong violet^?		8	ANSI256=TRUE
+indigo	77	77	^#103indigo^?		8	ANSI256=TRUE
+strong lime colored	67	76	^#120strong lime colored^?		8	ANSI256=TRUE
+olive-drab	77	77	^#120olive-drab^?		8	ANSI256=TRUE
+light brilliant spring green	67	76	^#153light brilliant spring green^?		8	ANSI256=TRUE
+moss-green	77	77	^#153moss-green^?		8	ANSI256=TRUE
+light brilliant cyan	67	76	^#155light brilliant cyan^?		8	ANSI256=TRUE
+spray-cyan	77	77	^#155spray-cyan^?		8	ANSI256=TRUE
+light blue violet	67	76	^#214light blue violet^?		8	ANSI256=TRUE
+tananite 	77	77	^#214tananite ^?		8	ANSI256=TRUE
+very light cobalt blue	67	76	^#235very light cobalt blue^?		8	ANSI256=TRUE
+sky-blue	77	77	^#235sky-blue^?		8	ANSI256=TRUE
+strong light amber	67	76	^#320strong light amber^?		8	ANSI256=TRUE
+pirat-golden	77	77	^#320pirat-golden^?		8	ANSI256=TRUE
+pale light grayish violet	67	76	^#324pale light grayish violet^?		8	ANSI256=TRUE
+lavender-colored	77	77	^#324lavender-colored^?		8	ANSI256=TRUE
+very light pistachio	67	76	^#352very light pistachio^?		8	ANSI256=TRUE
+mindaro-green	77	77	^#352mindaro-green^?		8	ANSI256=TRUE
+vivid red	67	76	^#400vivid red^?		8	ANSI256=TRUE
+santa-red	77	77	^#400santa-red^?		8	ANSI256=TRUE
+pink	67	76	^#411pink^?		8	ANSI256=TRUE
+Indian-red	77	77	^#411Indian-red^?		8	ANSI256=TRUE
+brilliant orchid	67	76	^#414brilliant orchid^?		8	ANSI256=TRUE
+orchid-colored	77	77	^#414orchid-colored^?		8	ANSI256=TRUE
+pale light grayish brown	67	76	^#432pale light grayish brown^?		8	ANSI256=TRUE
+tan	77	77	^#432tan^?		8	ANSI256=TRUE
+vivid yellow	67	76	^#440vivid yellow^?		8	ANSI256=TRUE
+corn-yellow	77	77	^#440corn-yellow^?		8	ANSI256=TRUE
+bright silver	67	76	^#444bright silver^?		8	ANSI256=TRUE
+gainsboro-grey	77	77	^#444gainsboro-grey^?		8	ANSI256=TRUE
+very light raspberry	67	76	^#523very light raspberry^?		8	ANSI256=TRUE
+pink-salmon	77	77	^#523pink-salmon^?		8	ANSI256=TRUE
+pale orange	67	76	^#543pale orange^?		8	ANSI256=TRUE
+champagne-colored	77	77	^#543champagne-colored^?		8	ANSI256=TRUE
+very pale pink	67	76	^#544very pale pink^?		8	ANSI256=TRUE
+mistyrose-colored	77	77	^#544mistyrose-colored^?		8	ANSI256=TRUE
+luminous vivid cobalt blue	72	81	^#015luminous vivid cobalt blue^?		9	ANSI256=TRUE
+cobalt-blue	82	82	^#015cobalt-blue^?		9	ANSI256=TRUE
+vivid violet	72	81	^#104vivid violet^?		9	ANSI256=TRUE
+purple-iris-colored	82	82	^#104purple-iris-colored^?		9	ANSI256=TRUE
+luminous vivid blue Violet	72	81	^#105luminous vivid blue Violet^?		9	ANSI256=TRUE
+blueviolet	82	82	^#105blueviolet^?		9	ANSI256=TRUE
+grayish green	72	81	^#121grayish green^?		9	ANSI256=TRUE
+sage-green	82	82	^#121sage-green^?		9	ANSI256=TRUE
+grayish cyan 	72	81	^#122grayish cyan ^?		9	ANSI256=TRUE
+juniper-grey	82	82	^#122juniper-grey^?		9	ANSI256=TRUE
+light pale grey blue	72	81	^#224light pale grey blue^?		9	ANSI256=TRUE
+chetwode-blue	82	82	^#224chetwode-blue^?		9	ANSI256=TRUE
+greenish gray	72	81	^#232greenish gray^?		9	ANSI256=TRUE
+bayleaf-green	82	82	^#232bayleaf-green^?		9	ANSI256=TRUE
+light pistachio	72	81	^#241light pistachio^?		9	ANSI256=TRUE
+fern-green 	82	82	^#241fern-green ^?		9	ANSI256=TRUE
+pale light grayish cyan	72	81	^#244pale light grayish cyan^?		9	ANSI256=TRUE
+bermuda-blue	82	82	^#244bermuda-blue^?		9	ANSI256=TRUE
+grayish rose	72	81	^#312grayish rose^?		9	ANSI256=TRUE
+tapestry-colored	82	82	^#312tapestry-colored^?		9	ANSI256=TRUE
+grayish brown	72	81	^#321grayish brown^?		9	ANSI256=TRUE
+muesli-colored	82	82	^#321muesli-colored^?		9	ANSI256=TRUE
+very light blue violet	72	81	^#325very light blue violet^?		9	ANSI256=TRUE
+kimian-purple	82	82	^#325kimian-purple^?		9	ANSI256=TRUE
+very light sap green	72	81	^#353very light sap green^?		9	ANSI256=TRUE
+sulu-green	82	82	^#353sulu-green^?		9	ANSI256=TRUE
+pale cyan	72	81	^#355pale cyan^?		9	ANSI256=TRUE
+robbinegg-blue	82	82	^#355robbinegg-blue^?		9	ANSI256=TRUE
+vivid rose	72	81	^#401vivid rose^?		9	ANSI256=TRUE
+crimson	82	82	^#401crimson^?		9	ANSI256=TRUE
+luminous vivid heliotrope	72	81	^#405luminous vivid heliotrope^?		9	ANSI256=TRUE
+pretty-in-pink	82	82	^#405pretty-in-pink^?		9	ANSI256=TRUE
+light yellow	72	81	^#441light yellow^?		9	ANSI256=TRUE
+khaki	82	82	^#441khaki^?		9	ANSI256=TRUE
+pale light grayish olive	72	81	^#442pale light grayish olive^?		9	ANSI256=TRUE
+deco-yellow	82	82	^#442deco-yellow^?		9	ANSI256=TRUE
+very pale blue	72	81	^#445very pale blue^?		9	ANSI256=TRUE
+atat-silver	82	82	^#445atat-silver^?		9	ANSI256=TRUE
+lumionus vivid gamboge	72	81	^#530lumionus vivid gamboge^?		9	ANSI256=TRUE
+butterscotch-colored	82	82	^#530butterscotch-colored^?		9	ANSI256=TRUE
+very pale magenta	72	81	^#545very pale magenta^?		9	ANSI256=TRUE
+lace-pink	82	82	^#545lace-pink^?		9	ANSI256=TRUE
+pale white	72	81	^#555pale white^?		9	ANSI256=TRUE
+snow-white	82	82	^#555snow-white^?		9	ANSI256=TRUE
+luminous vivid blue	77	86	^#005luminous vivid blue^?		10	ANSI256=TRUE
+valenthian-blue	87	87	^#005valenthian-blue^?		10	ANSI256=TRUE
+light grayish blue	77	86	^#113light grayish blue^?		10	ANSI256=TRUE
+scampi-blue	87	87	^#113scampi-blue^?		10	ANSI256=TRUE
+strong chartreuse green	77	86	^#130strong chartreuse green^?		10	ANSI256=TRUE
+limeade-green	87	87	^#130limeade-green^?		10	ANSI256=TRUE
+light grayish cyan 	77	86	^#133light grayish cyan ^?		10	ANSI256=TRUE
+tradewind-blue	87	87	^#133tradewind-blue^?		10	ANSI256=TRUE
+blue grey	77	86	^#223blue grey^?		10	ANSI256=TRUE
+wild-blue-yonder	87	87	^#223wild-blue-yonder^?		10	ANSI256=TRUE
+vivid spring bud	77	86	^#240vivid spring bud^?		10	ANSI256=TRUE
+atlantis-green	87	87	^#240atlantis-green^?		10	ANSI256=TRUE
+pale light grayish green	77	86	^#242pale light grayish green^?		10	ANSI256=TRUE
+feijoa-green	87	87	^#242feijoa-green^?		10	ANSI256=TRUE
+very light cornflower blue	77	86	^#245very light cornflower blue^?		10	ANSI256=TRUE
+baby-blue	87	87	^#245baby-blue^?		10	ANSI256=TRUE
+strong light fuchsia	77	86	^#302strong light fuchsia^?		10	ANSI256=TRUE
+violet-flirt	87	87	^#302violet-flirt^?		10	ANSI256=TRUE
+strong light olive	77	86	^#330strong light olive^?		10	ANSI256=TRUE
+golden	87	87	^#330golden^?		10	ANSI256=TRUE
+vivid cerise	77	86	^#402vivid cerise^?		10	ANSI256=TRUE
+carnation-colored	87	87	^#402carnation-colored^?		10	ANSI256=TRUE
+vivid orchid	77	86	^#403vivid orchid^?		10	ANSI256=TRUE
+cerise	87	87	^#403cerise^?		10	ANSI256=TRUE
+light tangelo	77	86	^#421light tangelo^?		10	ANSI256=TRUE
+tangelo-colored	87	87	^#421tangelo-colored^?		10	ANSI256=TRUE
+light yellowish gray	77	86	^#443light yellowish gray^?		10	ANSI256=TRUE
+mist-yellow	87	87	^#443mist-yellow^?		10	ANSI256=TRUE
+pale chartreuse green	77	86	^#453pale chartreuse green^?		10	ANSI256=TRUE
+reef-yellow	87	87	^#453reef-yellow^?		10	ANSI256=TRUE
+light cyan	77	86	^#455light cyan^?		10	ANSI256=TRUE
+oysterbay-blue	87	87	^#455oysterbay-blue^?		10	ANSI256=TRUE
+luminous vivid orchid	77	86	^#504luminous vivid orchid^?		10	ANSI256=TRUE
+shocking-pink	87	87	^#504shocking-pink^?		10	ANSI256=TRUE
+light brilliant orange	77	86	^#531light brilliant orange^?		10	ANSI256=TRUE
+orthindar-rose-colored	87	87	^#531orthindar-rose-colored^?		10	ANSI256=TRUE
+very light tangelo	77	86	^#532very light tangelo^?		10	ANSI256=TRUE
+pink-ice	87	87	^#532pink-ice^?		10	ANSI256=TRUE
+pale magenta	77	86	^#535pale magenta^?		10	ANSI256=TRUE
+cherub-pink	87	87	^#535cherub-pink^?		10	ANSI256=TRUE
+luminous vivid yellow	77	86	^#550luminous vivid yellow^?		10	ANSI256=TRUE
+zacarian-yellow	87	87	^#550zacarian-yellow^?		10	ANSI256=TRUE

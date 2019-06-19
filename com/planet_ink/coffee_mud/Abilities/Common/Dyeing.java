@@ -64,8 +64,11 @@ public class Dyeing extends CommonSkill
 	// common recipe definition indexes
 	protected static final int	RCP_FINALNAME	= 0;
 	protected static final int	RCP_LEVEL		= 1;
-	protected static final int	RCP_FREQ		= 2;
+	protected static final int	RCP_TICKS		= 2;
 	protected static final int	RCP_COLOR		= 3;
+	protected static final int	RCP_MASK		= 4;
+	protected static final int	RCP_EXPERTISE	= 5;
+	protected static final int	RCP_MISC		= 6;
 
 	protected Item found=null;
 	protected String writing="";
@@ -83,7 +86,7 @@ public class Dyeing extends CommonSkill
 		verb=L("dyeing");
 	}
 
-	protected String fixColor(String name, final char colorChar, final String colorWord)
+	protected String fixColor(String name, final String colorChar, final String colorWord)
 	{
 		final int end=name.indexOf("^?");
 		if((end>0)&&(end<=name.length()-3))
@@ -137,29 +140,48 @@ public class Dyeing extends CommonSkill
 					commonEmote(mob,L("<S-NAME> mess(es) up the dyeing."));
 				else
 				{
-					char colorCode='^';
+					String colorCode="^";
 					for(int i=0;i<writing.length();i++)
 					{
 						if((writing.charAt(i)=='^')
 						&&(i<writing.length()-1)
-						&&(writing.charAt(i+1)!='?')
-						&&(writing.charAt(i+1)!=ColorLibrary.COLORCODE_BACKGROUND)
-						&&(writing.charAt(i+1)!=ColorLibrary.COLORCODE_FANSI256)
-						&&(writing.charAt(i+1)!=ColorLibrary.COLORCODE_BANSI256))
+						&&(writing.charAt(i+1)!='?'))
 						{
-							colorCode=writing.charAt(i+1);
-							break;
+							if((writing.charAt(i+1)==ColorLibrary.COLORCODE_FANSI256)
+							&&(i<writing.length()-1))
+							{
+								colorCode=writing.substring(i+1, i+5);
+								break;
+							}
+							else
+							if((writing.charAt(i+1)!=ColorLibrary.COLORCODE_BACKGROUND)
+							&&(writing.charAt(i+1)!=ColorLibrary.COLORCODE_BANSI256))
+							{
+								colorCode=""+writing.charAt(i+1);
+								break;
+							}
 						}
 					}
 					final StringBuffer desc=new StringBuffer(found.description());
 					for(int x=0;x<(desc.length()-1);x++)
 					{
 						if((desc.charAt(x)=='^')
-						&&(desc.charAt(x+1)!='?')
-						&&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_BACKGROUND)
-						&&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_FANSI256)
-						&&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_BANSI256))
-							desc.setCharAt(x+1, colorCode);
+						&&(desc.charAt(x+1)!='?'))
+						{
+							if((desc.charAt(x+1)==ColorLibrary.COLORCODE_FANSI256)
+							&&(x<desc.length()-4))
+							{
+								desc.delete(x+1, x+5);
+								desc.insert(x+1, colorCode);
+							}
+							else
+							if((desc.charAt(x+1)!=ColorLibrary.COLORCODE_BACKGROUND)
+							&&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_BANSI256))
+							{
+								desc.delete(x+1, x+2);
+								desc.insert(x+1, colorCode);
+							}
+						}
 					}
 					final String d=desc.toString();
 					if(!d.endsWith("^?"))
@@ -189,12 +211,14 @@ public class Dyeing extends CommonSkill
 			final StringBuilder colors=new StringBuilder(L("^NColors you can choose: "));
 			for(final List<String> list : recipes)
 			{
-				final String name=list.get(0);
-				final int level=CMath.s_int(list.get(1));
-				if(level <= adjustedLevel(mob,asLevel))
-					colors.append(name).append(", ");
+				final String name=list.get(RCP_COLOR);
+				final int level=CMath.s_int(list.get(RCP_LEVEL));
+				final int exp=CMath.s_int(list.get(RCP_EXPERTISE));
+				if((level <= adjustedLevel(mob,asLevel))
+				&&((exp<=super.getXLEVELLevel(mob))))
+					colors.append(name).append("^N, ");
 			}
-			commonTell(mob,colors.substring(0,colors.length()-2)+".\n\r");
+			commonTell(mob,colors.substring(0,colors.length()-2)+"^N.\n\r");
 			return false;
 		}
 		if(commands.size()<2)
@@ -225,8 +249,10 @@ public class Dyeing extends CommonSkill
 		{
 			final String name=list.get(0);
 			final int level=CMath.s_int(list.get(1));
+			final int exp=CMath.s_int(list.get(RCP_EXPERTISE));
 			if(name.equalsIgnoreCase(writing)
-			&&(level<=adjustedLevel(mob,asLevel)))
+			&&(level<=adjustedLevel(mob,asLevel))
+			&&((exp<=super.getXLEVELLevel(mob))))
 			{
 				finalRecipe=list;
 				break;

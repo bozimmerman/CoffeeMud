@@ -388,6 +388,15 @@ public interface ColorLibrary extends CMLibrary
 	public String[] standardColorLookups();
 
 	/**
+	 * Returns a friendly readable chart of colors,
+	 * formatted for 80 columns.
+	 *
+	 * @param doAll256 true to send all 256, false for 16
+	 * @return the friendly help
+	 */
+	public String getColorInfo(final boolean doAll256);
+
+	/**
 	 * Returns the ANSI 16 color equivalent to the given
 	 * CM-encoded ANSI 256 color.  This is for users who lack 256 color
 	 * support.

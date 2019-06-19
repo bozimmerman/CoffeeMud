@@ -1,12 +1,12 @@
 #Num	CM Name	Amaris Name	Time Repeated	Non-256 conversion	HEX	exclude	Expertise	CM-base6
 0	black	black	1	0	#000000	0	BLACK
 1	maroon	maroon	1	1	#800000	0	RED
-2	dark green	green	1	2	#008000	0	GREEN
+2	dark green	forest green	1	2	#008000	0	GREEN
 3	brown	olive-green	1	3	#808000	0	BROWN
 4	dark blue	navy-blue 	1	4	#000080	0	BLUE
 5	purple	purple	1	5	#800080	0	PURPLE
 6	cyan	teal	1	6	#008080	0	CYAN
-7	silver	silvery	1	7	#c0c0c0	0	GREY
+7	silvery	silver-colored	1	7	#c0c0c0	0	GREY
 8	grey	grey	1	8	#808080	0	DARKGREY
 9	red	red	1	9	#ff0000	0	LIGHTRED
 10	green	lime green	1	10	#00ff00	0	LIGHTGREEN
@@ -230,4 +230,4 @@
 228	very light yellow	yellow-rose-colored	1	11	#ffff87	2	552
 229	pale yellow	vanilla-cream-colored	1	11	#ffffaf	3	553
 230	very pale yellow	cornsilk-white	1	11	#ffffd7	4	554
-231	grey100	snow-white	1	15	#ffffff	9	555
+231	pale white	snow-white	1	15	#ffffff	9	555
