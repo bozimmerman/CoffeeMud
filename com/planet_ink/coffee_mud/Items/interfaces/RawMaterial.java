@@ -805,7 +805,7 @@ public interface RawMaterial extends Item
 		DILITHIUM(RESOURCE_DILITHIUM	, 5000, 0,  7, 5010, "", "", null),
 		TAR(RESOURCE_TAR				, 10,   15, 2, 1280, "strong oily", "", null),
 		SALT(RESOURCE_SALT				, 10,   20, 5, 750, "", "", null),
-		SPICE(RESOURCE_SPICE			, 100,  5,  1, 750, "spicy smell", "", null),
+		SPICE(RESOURCE_SPICE			, 100,  5,  1, 750, "very spicy", "", null),
 		DIRT(RESOURCE_DIRT				, 1,   50,  1, 1600, "rich earthy smell", "", null),
 		FUNGUS(RESOURCE_FUNGUS			, 1,    3,  1,  750, "", "", null),
 
