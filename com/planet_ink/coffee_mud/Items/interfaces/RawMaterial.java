@@ -786,9 +786,9 @@ public interface RawMaterial extends Item
 		AIR(RESOURCE_AIR, 0, 100, 0, 0, "", "", null),
 		OXYGEN(RESOURCE_OXYGEN, 10, 100, 0, 0, "", "", null),
 		HYDROGEN(RESOURCE_HYDROGEN,       20, 100,  0, 0, "", "", null),
-		FLOURINE(RESOURCE_FLOURINE,       60, 40,   0, 0, "strong pungent smell", "", null),
+		FLOURINE(RESOURCE_FLOURINE,       60, 40,   0, 0, "strong pungent", "", null),
 		NITROGEN(RESOURCE_NITROGEN,       10, 100,  0, 0, "", "", null),
-		CHLORINE(RESOURCE_CHLORINE,       10, 100,  0, 0, "strong acidic smell", "", null),
+		CHLORINE(RESOURCE_CHLORINE,       10, 100,  0, 0, "strong acidic", "", null),
 		TITANIUM(RESOURCE_TITANIUM		, 75,   0,  8, 784, "", "", null),
 		FIBREGLASS(RESOURCE_FIBREGLASS	, 10,   0,  3, 0, "", "", null),
 		ULTRANIUM(RESOURCE_ULTRANIUM	, 175,  0, 11, 900, "", "", null),
@@ -806,7 +806,7 @@ public interface RawMaterial extends Item
 		TAR(RESOURCE_TAR				, 10,   15, 2, 1280, "strong oily", "", null),
 		SALT(RESOURCE_SALT				, 10,   20, 5, 750, "", "", null),
 		SPICE(RESOURCE_SPICE			, 100,  5,  1, 750, "very spicy", "", null),
-		DIRT(RESOURCE_DIRT				, 1,   50,  1, 1600, "rich earthy smell", "", null),
+		DIRT(RESOURCE_DIRT				, 1,   50,  1, 1600, "rich earthy", "", null),
 		FUNGUS(RESOURCE_FUNGUS			, 1,    3,  1,  750, "", "", null),
 
 		;//code, 						  v, freq, h, b, smell, effects, ResourceFlag flags
