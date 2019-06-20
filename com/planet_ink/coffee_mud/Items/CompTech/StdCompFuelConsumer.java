@@ -188,7 +188,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 			&&(!I.amDestroyed())
 			&&CMParms.contains(this.getConsumedFuelTypes(), ((RawMaterial)I).material()))
 			{
-				amount-=CMLib.materials().destroyResourcesAmt(fuel, amount, ((RawMaterial)I).material(),this);
+				amount-=CMLib.materials().destroyResourcesAmt(fuel, amount, ((RawMaterial)I).material(), ((RawMaterial)I).getSubType(), this);
 				if(!I.amDestroyed()) // why is this necessary
 					I.recoverPhyStats();
 				didSomething=true;

@@ -622,7 +622,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		return buf.toString();
 	}
 
-	private void generateRecipes()
+	protected void generateRecipes()
 	{
 		final StringBuilder str=new StringBuilder("");
 		final Set<String> namesUsed = new HashSet<String>();

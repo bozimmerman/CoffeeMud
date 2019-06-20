@@ -906,21 +906,26 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public int destroyResourcesAmt(final MOB E, final int howMuch, final int finalMaterial, final Container C)
+	public int destroyResourcesAmt(final MOB E, final int howMuch, final int finalMaterial, final String subType, final Container C)
 	{
-		return destroyResourcesAmt(getAllItems(E), howMuch, finalMaterial, C);
+		return destroyResourcesAmt(getAllItems(E), howMuch, finalMaterial, subType, C);
 	}
 
 	@Override
-	public int destroyResourcesAmt(final Room E, final int howMuch, final int finalMaterial, final Container C)
+	public int destroyResourcesAmt(final Room E, final int howMuch, final int finalMaterial, final String subType, final Container C)
 	{
-		return destroyResourcesAmt(getAllItems(E), howMuch, finalMaterial, C);
+		return destroyResourcesAmt(getAllItems(E), howMuch, finalMaterial, subType, C);
 	}
 
 	@Override
-	public int destroyResourcesAmt(final List<Item> V, final int howMuch, final int finalMaterial, final Container C)
+	public int destroyResourcesAmt(final List<Item> V, final int howMuch, final int finalMaterial, final String subType, final Container C)
 	{
-		return destroyResources(V, howMuch, finalMaterial, -1, null, C).lostAmt;
+		if((V==null)||(V.size()==0))
+			return 0;
+		if(howMuch<=0)
+			return 0;
+		final RawMaterial firstMaterialI = (finalMaterial>0)?this.findFirstResource(V, finalMaterial, C, subType):null;
+		return destroyResources(V, howMuch, finalMaterial, -1, null, C, firstMaterialI, null).lostAmt;
 	}
 
 	@Override
@@ -938,22 +943,23 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	@Override
 	public int destroyResourcesValue(final List<Item> V, final int howMuch, final int finalMaterial, final int otherMaterial, final Item never, final Container C)
 	{
-		return destroyResources(V, howMuch, finalMaterial, otherMaterial, never, C).lostValue;
+		return destroyResources(V, howMuch, finalMaterial, otherMaterial, never, C, null, null).lostValue;
 	}
 
 	@Override
 	public DeadResourceRecord destroyResources(final Room R, final int howMuch, final int finalMaterial, final int otherMaterial, final Item never, final Container C)
 	{
-		return destroyResources(getAllItems(R),howMuch,finalMaterial,otherMaterial,never,C);
+		return destroyResources(getAllItems(R),howMuch,finalMaterial,otherMaterial,never,C, null, null);
 	}
 
 	@Override
 	public DeadResourceRecord destroyResources(final MOB M, final int howMuch, final int finalMaterial, final int otherMaterial, final Item never, final Container C)
 	{
-		return destroyResources(getAllItems(M),howMuch,finalMaterial,otherMaterial,never,C);
+		return destroyResources(getAllItems(M),howMuch,finalMaterial,otherMaterial,never,C, null, null);
 	}
 
-	protected DeadResourceRecord destroyResources(final List<Item> V, int howMuch, int finalMaterial, int otherMaterial, final Item never, final Container C)
+	protected DeadResourceRecord destroyResources(final List<Item> V, int howMuch, int finalMaterial, int otherMaterial, final Item never,
+												  final Container C, RawMaterial firstMaterialI, RawMaterial otherMaterialI)
 	{
 		final DeadResourceRecord record = new DeadResourceRecord();
 		if((V==null)||(V.size()==0))
@@ -963,8 +969,10 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 
 		final XVector<Ability> props=new XVector<Ability>();
 		record.lostProps=props;
-		final RawMaterial firstMaterialI = (finalMaterial>0)?this.findFirstResource(V, finalMaterial, C, null):null;
-		final RawMaterial otherMaterialI = (otherMaterial>0)?this.findFirstResource(V, otherMaterial, C, null):null;
+		if(firstMaterialI == null)
+			firstMaterialI = (finalMaterial>0)?this.findFirstResource(V, finalMaterial, C, null):null;
+		if(otherMaterialI == null)
+			otherMaterialI = (otherMaterial>0)?this.findFirstResource(V, otherMaterial, C, null):null;
 		final int firstResourceType = (firstMaterialI != null)?firstMaterialI.material():-1;
 		final int otherResourceType = (otherMaterialI != null)?otherMaterialI.material():-1;
 		for(int i=V.size()-1;i>=0;i--)
