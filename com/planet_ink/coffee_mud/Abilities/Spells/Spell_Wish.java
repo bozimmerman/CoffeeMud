@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.LegalLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -85,6 +86,8 @@ public class Spell_Wish extends Spell
 	{
 		return Ability.COST_ALL;
 	}
+
+	protected volatile long lastCastTime = 0;
 
 	protected Physical maybeAdd(final MOB mob, final Physical E, final List<Physical> foundAll, Physical foundThang)
 	{
@@ -187,6 +190,12 @@ public class Spell_Wish extends Spell
 			return false;
 		}
 
+		if(System.currentTimeMillis() < (lastCastTime + TimeManager.MILI_DAY))
+		{
+			mob.tell(L("You are too wish-weary to cast this right now."));
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -209,6 +218,7 @@ public class Spell_Wish extends Spell
 			// cast wish to cast disintegrate on orc
 			// cast wish to cast geas on orc to kill bob
 			Log.sysOut("Wish",mob.Name()+" wished for "+myWish+".");
+			lastCastTime = System.currentTimeMillis();
 
 			mob.location().send(mob,msg);
 			final StringBuffer wish=new StringBuffer(myWish);
