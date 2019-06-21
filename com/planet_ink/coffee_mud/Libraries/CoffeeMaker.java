@@ -714,10 +714,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				if(savedDeadBodyM!=null)
 				{
 					// prevent recursion!
-					final boolean recurCheck = savedDeadBodyM.isContent((DeadBody)E);
-					if(recurCheck)
-						savedDeadBodyM.delItem((DeadBody)E);
-					else
+					boolean recurCheck=false;
+					for(final Enumeration<Item> i=savedDeadBodyM.items();i.hasMoreElements();)
+					{
+						if(i.nextElement() instanceof DeadBody)
+							recurCheck=true;
+					}
+					if(!recurCheck) // so, the deadbody on a mob/player will not save the **MOB** portion of any dead body they carry.
 					{
 						text.append("<MOBS>"+getMobXML(savedDeadBodyM)+"</MOBS>");
 						if(recurCheck)
