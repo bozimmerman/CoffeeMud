@@ -9985,6 +9985,28 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			case 89: // mpcastexp
+			{
+				if(tt==null)
+				{
+					tt=parseBits(script,si,"Cccr");
+					if(tt==null)
+						return null;
+				}
+				final String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
+				final Physical newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				final String args=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
+				Ability A=null;
+				if(cast!=null)
+					A=CMClass.findAbility(cast);
+				if((newTarget!=null)&&(A!=null))
+				{
+					A.setProficiency(100);
+					final List<String> commands = CMParms.parse(args);
+					A.invoke(monster, commands, newTarget, false, 0);
+				}
+				break;
+			}
 			case 30: // mpaffect
 			{
 				if(tt==null)

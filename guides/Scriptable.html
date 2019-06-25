@@ -87,7 +87,7 @@
             <li><a href="#mpbeacon">mpbeacon</a></li>
             <li><a href="#mpbehave">mpbehave</a></li>
             <li><a href="#mpcallfunc">mpcallfunc</a></li>
-            <li><a href="#mpcast">mpcast</a></li>
+            <li><a href="#mpcast">mpcast</a></li><li><a href="#mpcastext">mpcastext</a></li>
             <li><a href="#mpchannel">mpchannel</a></li>
             <li><a href="#mpchoose">mpchoose</a></li>
             <li><a href="#mpclose">mpclose</a></li>
@@ -1249,6 +1249,7 @@ activity.</p>
       <p>EXAMPLES:</p>
       <pre>llook_prog all<br /></pre>
       <p>This will trigger if any
+
 
 
 the scripted item, room, or mob is
@@ -2938,7 +2939,26 @@ require the mob to actually have the skill. Although there is still the
 1-in-20 chance of failure of any skill, and the level of the host will
 affect the probability of success.</p>
       <p>EXAMPLES:</p>
-      <pre>mpcast fireball $r<br />mpcast 'stinking cloud'<br /></pre>
+      <pre>mpcast fireball $r<br />mpcast 'stinking cloud'</pre><h3><a name="mpcastext">mpcastext</a></h3>
+      <p>Usage:</p>
+      mpcastext [spell] [target] [arguments]<br />
+      <p>This
+command causes the
+host mob to cast the given spell,
+chant, prayer, song, or use the given skill against the given target.
+Unlike using the mundane cast command, this scripting form does not
+require the mob to actually have the skill. &nbsp;And unlike MPCAST, it
+also allows you to spell out all of the arguments to the spell, for
+cases where the spell requires that. &nbsp; Remember that in targeted
+spells, the first argument is usually the targets name, so specifying
+that name again can be useful. &nbsp;Also, if you need to separate
+arguments, be sure to use double-quote "" instead of single quotes,
+since those strings will be parsed by the coffeemud engine instead of
+the mobprog engine.</p><p> Although there is still the
+1-in-20 chance of failure of any skill, and the level of the host will
+affect the probability of success.</p>
+      <p>EXAMPLES:</p>
+      mpcast brainwash '$r' "$r" "I'm a pretty princess"<br />
       <h3><a name="mpchannel">mpchannel</a></h3>
       <p>Usage:</p>
       <span style="font-family: monospace;">mpchannel
