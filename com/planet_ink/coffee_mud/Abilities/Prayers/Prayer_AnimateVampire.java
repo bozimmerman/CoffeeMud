@@ -212,7 +212,9 @@ public class Prayer_AnimateVampire extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final MOB newMOB=CMClass.getMOB("GenUndead");
+				final String undeadRace = ((body.charStats()!=null) && (body.charStats().getMyRace() != null) && (body.charStats().getMyRace().useRideClass())) ?
+						"GenRideableUndead" : "GenUndead";
+				final MOB newMOB=CMClass.getMOB(undeadRace);
 				newMOB.setName(L("@x1 vampire",race));
 				newMOB.setDescription(description);
 				newMOB.setDisplayText(L("@x1 vampire is here",race));

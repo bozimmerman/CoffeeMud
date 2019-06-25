@@ -164,7 +164,9 @@ public class Prayer_AnimateDead extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final MOB newMOB=CMClass.getMOB("GenUndead");
+				final String undeadRace = ((body.charStats()!=null) && (body.charStats().getMyRace() != null) && (body.charStats().getMyRace().useRideClass())) ?
+						"GenRideableUndead" : "GenUndead";
+				final MOB newMOB=CMClass.getMOB(undeadRace);
 				newMOB.setName(L("@x1 zombie",realName));
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("");

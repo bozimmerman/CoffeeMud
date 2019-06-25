@@ -247,7 +247,7 @@ public class Skill_RacialLore extends StdSkill
 					tidbits.add(str);
 			}
 			if(targetR.useRideClass())
-				tidbits.add(L("they can be ridden by humanoids"));
+				tidbits.add(L("they can be ridden"));
 			if(tidbits.size()==0)
 			{
 				if(report)

@@ -201,7 +201,9 @@ public class Prayer_AnimateGhast extends Prayer
 			{
 				mob.location().send(mob,msg);
 				final int undeadLevel = this.getUndeadLevel(mob, 6, body.phyStats().level());
-				final MOB newMOB=CMClass.getMOB("GenUndead");
+				final String undeadRace = ((body.charStats()!=null) && (body.charStats().getMyRace() != null) && (body.charStats().getMyRace().useRideClass())) ?
+						"GenRideableUndead" : "GenUndead";
+				final MOB newMOB=CMClass.getMOB(undeadRace);
 				newMOB.setName(L("@x1 ghast",race));
 				newMOB.setDescription(description);
 				newMOB.setDisplayText(L("@x1 ghast is here",race));

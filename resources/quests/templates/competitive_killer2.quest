@@ -96,7 +96,7 @@
 #Killables Area/Room: 
 #Specify below the name of the area that your killerable mob or mobs will be created
 #in and/or the rooms in which the mob or mobs will be created.  You may leave both blank
-#to force the quest manager to create the mobs randomly throughout the world if you link.
+#to force the quest manager to create the mobs randomly throughout the world if you like.
 #Use double-quotes around multi-word areas and room ids/names.  
 #
 #Killables Area:
