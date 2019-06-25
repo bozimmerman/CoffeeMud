@@ -311,6 +311,7 @@ public class CommandJournal extends StdCommand
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
+		final Session sess=mob.session();
 		if((commands==null)||(commands.size()<2))
 		{
 			mob.tell(L("@x1 what??!?!",((commands==null)||(commands.size()==0))?"":commands.get(0).toString()));
@@ -351,13 +352,13 @@ public class CommandJournal extends StdCommand
 		&&(!transfer(mob,journal.JOURNAL_NAME(),journal.NAME().toLowerCase()+"s",commands,journal.NAME())))
 		{
 			String msgString=CMParms.combine(commands,1);
-			if((mob.session()!=null)&&(!mob.session().isStopped()))
+			if((sess!=null)&&(!sess.isStopped()))
 				msgString=CMLib.journals().getScriptValue(mob,journal.NAME(),msgString);
 			if(msgString.trim().length()>0)
 			{
-				if(journal.getFlag(JournalsLibrary.CommandJournalFlags.CONFIRM)!=null)
+				if((journal.getFlag(JournalsLibrary.CommandJournalFlags.CONFIRM)!=null)&&(sess!=null))
 				{
-					if(!mob.session().confirm(L("\n\r^HSubmit this @x1: '^N@x2^H' (Y/n)?^.^N",journal.NAME().toLowerCase(),msgString),"Y"))
+					if(!sess.confirm(L("\n\r^HSubmit this @x1: '^N@x2^H' (Y/n)?^.^N",journal.NAME().toLowerCase(),msgString),"Y"))
 						return false;
 				}
 				final String prePend;

@@ -240,8 +240,6 @@ public class Disease extends StdAbility implements DiseaseAffect
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(affected==null)
-			return;
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;

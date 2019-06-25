@@ -12,6 +12,7 @@
  11. New RPAWARDS: EMOTE-x and CHANNEL.  See coffeemud.ini file for more information
  12. Lacquering/Dyeing now support 256 colors, recipes updated and re-formatted.
  13. Wish now has a one rl-day cool-down.
+ 14. Siplet now supports ANSI-256
 
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque

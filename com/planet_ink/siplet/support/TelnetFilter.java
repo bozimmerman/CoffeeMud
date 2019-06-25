@@ -55,26 +55,6 @@ public class TelnetFilter
 	protected static final char	MCCP_COMPRESS2			= 86;
 	protected static final char	TELOPT_NEWENVIRONMENT	= 39;
 
-	private static String		defaultBackground		= "black";
-	private static String		defaultForeground		= "white";
-	private static String[]		colorCodes1				= { // 30-37
-														"black", // black
-			"#993300", // red
-			"green", // green
-			"#999966", // brown
-			"#000099", // blue
-			"purple", // purple
-			"darkcyan", // cyan
-			"lightgrey"								};							// grey
-	private static String[]		colorCodes2				= { "gray", // dark grey
-			"red", // light red
-			"lightgreen", // light green
-			"yellow", // yellow
-			"blue", // light blue
-			"violet", // light purple
-			"cyan", // light cyan
-			"white"									};							// white
-
 	protected String			lastBackground			= null;
 	protected String			lastForeground			= null;
 	protected boolean			blinkOn					= false;
@@ -234,8 +214,8 @@ public class TelnetFilter
 	{
 		if (fontOn)
 		{
-			setLastBackground(defaultBackground);
-			setLastForeground(defaultForeground);
+			setLastBackground(ColorSupport.defaultBackground);
+			setLastForeground(ColorSupport.defaultForeground);
 			fontOn = false;
 			return "</FONT>";
 		}
@@ -289,15 +269,15 @@ public class TelnetFilter
 	public static int getColorCodeIndex(String word)
 	{
 		if (word == null)
-			word = defaultForeground;
-		for (int i = 0; i < colorCodes1.length; i++)
+			word = ColorSupport.defaultForeground;
+		for (int i = 0; i < ColorSupport.colorCodes1.length; i++)
 		{
-			if (word.equalsIgnoreCase(colorCodes1[i]))
+			if (word.equalsIgnoreCase(ColorSupport.colorCodes1[i]))
 				return (40 + i);
 		}
-		for (int i = 0; i < colorCodes2.length; i++)
+		for (int i = 0; i < ColorSupport.colorCodes2.length; i++)
 		{
-			if (word.equalsIgnoreCase(colorCodes2[i]))
+			if (word.equalsIgnoreCase(ColorSupport.colorCodes2[i]))
 				return (30 + i);
 		}
 		return 30;
@@ -363,7 +343,7 @@ public class TelnetFilter
 				case 1:
 					boldOn = true;
 					if ((V.size() == 1) && (lastForeground() != null))
-						foreground = colorCodes2[getRelativeColorCodeIndex(lastForeground())];
+						foreground = ColorSupport.colorCodes2[getRelativeColorCodeIndex(lastForeground())];
 					break;
 				case 4:
 				{
@@ -401,8 +381,8 @@ public class TelnetFilter
 				}
 				case 8:
 				{
-					background = defaultBackground;
-					foreground = defaultBackground;
+					background = ColorSupport.defaultBackground;
+					foreground = ColorSupport.defaultBackground;
 					break;
 				}
 				case 22:
@@ -425,10 +405,10 @@ public class TelnetFilter
 				case 35:
 				case 36:
 				case 37:
-					foreground = boldOn ? colorCodes2[code - 30] : colorCodes1[code - 30];
+					foreground = boldOn ? ColorSupport.colorCodes2[code - 30] : ColorSupport.colorCodes1[code - 30];
 					break;
 				case 39:
-					foreground = defaultForeground;
+					foreground = ColorSupport.defaultForeground;
 					break;
 				case 40:
 				case 41:
@@ -438,18 +418,42 @@ public class TelnetFilter
 				case 45:
 				case 46:
 				case 47:
-					background = colorCodes1[code - 40];
+					background = ColorSupport.colorCodes1[code - 40];
 					break;
 				case 49:
-					background = defaultForeground;
+					background = ColorSupport.defaultForeground;
+					break;
+				case 38: // foreground ansi-256
+					if((i<V.size()-2)
+					&&(Util.s_int(V.get(i+1))==5))
+					{
+						final int cd=Util.s0_int(V.get(i+2));
+						if((cd >=0)
+						&& (cd < ColorSupport.html256.length)
+						&&(ColorSupport.html256[cd].length()>0))
+							foreground = ColorSupport.html256[cd];
+						i=V.size()-1;
+					}
+					break;
+				case 48: // background ansi 256
+					if((i<V.size()-2)
+					&&(Util.s_int(V.get(i+1))==5))
+					{
+						final int cd=Util.s0_int(V.get(i+2));
+						if((cd >=0)
+						&& (cd < ColorSupport.html256.length)
+						&&(ColorSupport.html256[cd].length()>0))
+							background = ColorSupport.html256[cd];
+						i=V.size()-1;
+					}
 					break;
 				}
 				if ((background != null) || (foreground != null))
 				{
 					if (lastBackground() == null)
-						setLastBackground(defaultBackground);
+						setLastBackground(ColorSupport.defaultBackground);
 					if (lastForeground() == null)
-						setLastForeground(defaultForeground);
+						setLastForeground(ColorSupport.defaultForeground);
 					if (background == null)
 						background = lastBackground();
 					if (foreground == null)
