@@ -100,8 +100,11 @@ public class Chant_Grapevine extends Chant
 	@Override
 	public void unInvoke()
 	{
-		if((affected instanceof MOB)&&(myChants!=null))
+		if((affected instanceof MOB)
+		&&(myChants!=null)
+		&&(this.canBeUninvoked()))
 		{
+			final MOB mob=(MOB)affected;
 			final List<Ability> V=myChants;
 			myChants=null;
 			for(int i=0;i<V.size();i++)
@@ -115,6 +118,7 @@ public class Chant_Grapevine extends Chant
 					I.delEffect(A);
 				}
 			}
+			mob.tell(L("You can no longer hear the whispers from your plants."));
 		}
 		super.unInvoke();
 	}
