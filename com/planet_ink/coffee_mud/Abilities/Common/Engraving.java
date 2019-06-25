@@ -126,7 +126,7 @@ public class Engraving extends CommonSkill
 			}
 			if(!ok)
 			{
-				commonTell(mob,L("You aren't allowed to work on '@x1'.",(commands.get(0))));
+				commonTell(mob,L("You aren't allowed to work on '@x1'.  It must be an item you crafted. ",(commands.get(0))));
 				return false;
 			}
 		}
