@@ -315,6 +315,62 @@ public interface ColorLibrary extends CMLibrary
 	}
 
 	/**
+	 * The object with information about all
+	 * supported ANSI-256 colors
+	 *
+	 * @author BZ
+	 *
+	 */
+	public interface Color256
+	{
+		/**
+		 * @return the number
+		 */
+		public short getNumber();
+
+		/**
+		 * @return the name1
+		 */
+		public String getName1();
+
+		/**
+		 * @return the name2
+		 */
+		public String getName2();
+
+		/**
+		 * @return the non256color
+		 */
+		public Color getNon256color();
+
+		/**
+		 * @return the htmlCode
+		 */
+		public String getHtmlCode();
+
+		/**
+		 * @return the expertiseNum
+		 */
+		public short getExpertiseNum();
+
+		/**
+		 * @return the cm6Code
+		 */
+		public short getCm6Code();
+
+		/**
+		 * @return the cmChars
+		 */
+		public String getCmChars();
+
+		/**
+		 * @param non256color the non256color to set
+		 */
+		public void setNon256color(Color non256color);
+
+	}
+
+	/**
 	 * Clears the color code lookup tables so that the next
 	 * translations will come from the properties.
 	 */
@@ -404,6 +460,12 @@ public interface ColorLibrary extends CMLibrary
 	 * @return the ANSI-16 Color object, or null.
 	 */
 	public Color getANSI16Equivalent(final short color256Code);
+
+	/**
+	 * Returns an enumeration of the supported ansi-256 colors
+	 * that are supported by the system in general.
+	 */
+	public Enumeration<Color256> getColors256();
 
 	/**
 	 * Translates encoded color definition overrides into a

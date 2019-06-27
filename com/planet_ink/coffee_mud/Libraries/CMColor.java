@@ -96,19 +96,19 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	 *
 	 * @author BZ
 	 */
-	protected static class Color256
+	private static class Color256Impl implements Color256
 	{
-		public final short number;
-		public final String name1;
-		public final String name2;
-		public Color non256color;
-		public final String htmlCode;
-		public final short expertiseNum;
-		public final short cm6Code;
-		public String cmChars;
+		private final short number;
+		private final String name1;
+		private final String name2;
+		private Color non256color;
+		private final String htmlCode;
+		private final short expertiseNum;
+		private final short cm6Code;
+		private final String cmChars;
 
-		public Color256(final short number,  final String name1, final String name2, final Color non256color,
-						final String htmlCode, final short expertiseNum, final short cm6Code, final String cmChars)
+		public Color256Impl(final short number,  final String name1, final String name2, final Color non256color,
+							final String htmlCode, final short expertiseNum, final short cm6Code, final String cmChars)
 		{
 			this.number=number;
 			this.name1=name1;
@@ -118,6 +118,87 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			this.expertiseNum=expertiseNum;
 			this.cm6Code=cm6Code;
 			this.cmChars=cmChars;
+		}
+
+		/**
+		 * @param non256color the non256color to set
+		 */
+		@Override
+		public void setNon256color(final Color non256color)
+		{
+			this.non256color = non256color;
+		}
+
+		/**
+		 * @return the number
+		 */
+		@Override
+		public short getNumber()
+		{
+			return number;
+		}
+
+		/**
+		 * @return the name1
+		 */
+		@Override
+		public String getName1()
+		{
+			return name1;
+		}
+
+		/**
+		 * @return the name2
+		 */
+		@Override
+		public String getName2()
+		{
+			return name2;
+		}
+
+		/**
+		 * @return the non256color
+		 */
+		@Override
+		public Color getNon256color()
+		{
+			return non256color;
+		}
+
+		/**
+		 * @return the htmlCode
+		 */
+		@Override
+		public String getHtmlCode()
+		{
+			return htmlCode;
+		}
+
+		/**
+		 * @return the expertiseNum
+		 */
+		@Override
+		public short getExpertiseNum()
+		{
+			return expertiseNum;
+		}
+
+		/**
+		 * @return the cm6Code
+		 */
+		@Override
+		public short getCm6Code()
+		{
+			return cm6Code;
+		}
+
+		/**
+		 * @return the cmChars
+		 */
+		@Override
+		public String getCmChars()
+		{
+			return cmChars;
 		}
 	}
 
@@ -590,10 +671,10 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			{
 				if(C!=null)
 				{
-					if(C.name1.length()>longestName)
-						longestName=C.name1.length();
-					if(C.name2.length()>secondLongestName)
-						secondLongestName=C.name2.length();
+					if(C.getName1().length()>longestName)
+						longestName=C.getName1().length();
+					if(C.getName2().length()>secondLongestName)
+						secondLongestName=C.getName2().length();
 				}
 			}
 			final int colSize = (longestName + secondLongestName + 2 + 6);
@@ -602,14 +683,14 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			for(final Color256 C : color256s)
 			{
 				if((C==null)
-				||((!doAll256) && (C.cm6Code >=0))
-				||((C.cm6Code<0)&&(C.non256color==Color.BLACK)))
+				||((!doAll256) && (C.getCm6Code() >=0))
+				||((C.getCm6Code()<0)&&(C.getNon256color()==Color.BLACK)))
 					continue;
-				buf.append("^N").append(CMStrings.padRight("^"+C.cmChars, 6))
-					.append(C.cmChars)
-					.append(CMStrings.padRight(C.name1, longestName))
-					.append("^N: ").append(C.cmChars)
-					.append(CMStrings.padRight(C.name2, secondLongestName))
+				buf.append("^N").append(CMStrings.padRight("^"+C.getCmChars(), 6))
+					.append(C.getCmChars())
+					.append(CMStrings.padRight(C.getName1(), longestName))
+					.append("^N: ").append(C.getCmChars())
+					.append(CMStrings.padRight(C.getName2(), secondLongestName))
 					.append("^N");
 				if((++col) >= max_cols)
 				{
@@ -633,16 +714,16 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			public int compare(final Color256 o1, final Color256 o2)
 			{
 				int level1 = 1;
-				if(o1.expertiseNum > 0)
+				if(o1.getExpertiseNum() > 0)
 				{
-					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition("TUNING"+o1.expertiseNum);
+					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition("TUNING"+o1.getExpertiseNum());
 					if(def.getMinimumLevel()>0)
 						level1=def.getMinimumLevel();
 				}
 				int level2 = 1;
-				if(o2.expertiseNum > 0)
+				if(o2.getExpertiseNum() > 0)
 				{
-					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition("TUNING"+o2.expertiseNum);
+					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition("TUNING"+o2.getExpertiseNum());
 					if(def.getMinimumLevel()>0)
 						level2=def.getMinimumLevel();
 				}
@@ -656,40 +737,40 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		});
 		for(final Color256 c : allColors)
 		{
-			if((c.name1.indexOf("black")>=0)
-			||(c.name2.indexOf("black")>=0))
+			if((c.getName1().indexOf("black")>=0)
+			||(c.getName2().indexOf("black")>=0))
 				continue;
 			int level = 1;
-			if(c.expertiseNum > 0)
+			if(c.getExpertiseNum() > 0)
 			{
-				final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition("TUNING"+c.expertiseNum);
+				final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition("TUNING"+c.getExpertiseNum());
 				if(def.getMinimumLevel()>0)
 					level=def.getMinimumLevel();
 			}
-			if(namesUsed.contains(c.name1))
+			if(namesUsed.contains(c.getName1()))
 			{
-				System.out.println("Re-used: "+c.name1);
+				System.out.println("Re-used: "+c.getName1());
 				continue;
 			}
-			final String misc = (c.cmChars.indexOf('#')>0)?"ANSI256=TRUE":"";
-			str.append(c.name1).append("\t")
+			final String misc = (c.getCmChars().indexOf('#')>0)?"ANSI256=TRUE":"";
+			str.append(c.getName1()).append("\t")
 			   .append(level).append("\t")
 			   .append(9+level).append("\t")
-			   .append(c.cmChars).append(c.name1).append("^?\t")
+			   .append(c.getCmChars()).append(c.getName1()).append("^?\t")
 			   .append("").append("\t") // application mask
-			   .append(c.expertiseNum).append("\t")  // expertise
+			   .append(c.getExpertiseNum()).append("\t")  // expertise
 			   .append(misc).append("\n\r");
-			namesUsed.add(c.name1);
-			if(namesUsed.contains(c.name2))
+			namesUsed.add(c.getName1());
+			if(namesUsed.contains(c.getName2()))
 				continue;
-			if(!c.name1.equals(c.name2))
+			if(!c.getName1().equals(c.getName2()))
 			{
-				str.append(c.name2).append("\t")
+				str.append(c.getName2()).append("\t")
 				   .append(level+10).append("\t")
 				   .append(10+level).append("\t")
-				   .append(c.cmChars).append(c.name2).append("^?\t")
+				   .append(c.getCmChars()).append(c.getName2()).append("^?\t")
 				   .append("").append("\t") // application mask
-				   .append(c.expertiseNum).append("\t")  // expertise
+				   .append(c.getExpertiseNum()).append("\t")  // expertise
 				   .append(misc).append("\n\r");
 			}
 		}
@@ -753,7 +834,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 					}
 					else
 						cmChars = "^#"+bits[7];
-					final Color256 newColor = new Color256(
+					final Color256Impl newColor = new Color256Impl(
 						CMath.s_short(bits[0]),  bits[1], bits[2], baseColor,
 						bits[5], CMath.s_short(bits[6]), cm6code, cmChars
 					);
@@ -771,13 +852,13 @@ public class CMColor extends StdLibrary implements ColorLibrary
 				{
 					final Color256 color16 = straightMap.get(color256to16);
 					if((color16 != null)
-					&&(color16.non256color != null))
+					&&(color16.getNon256color() != null))
 					{
-						color256.non256color = color16.non256color;
-						color256to16map.put(Short.valueOf(color256.cm6Code), color16.non256color);
+						color256.setNon256color(color16.getNon256color());
+						color256to16map.put(Short.valueOf(color256.getCm6Code()), color16.getNon256color());
 					}
 					else
-						Log.errOut("Unable to map color.dat number "+color256.number+" to "+color256to16);
+						Log.errOut("Unable to map color.dat number "+color256.getNumber()+" to "+color256to16);
 				}
 			}
 			Collections.sort(list, new Comparator<Color256>()
@@ -785,7 +866,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 				@Override
 				public int compare(final Color256 o1, final Color256 o2)
 				{
-					return Integer.valueOf(o1.number).compareTo(Integer.valueOf(o2.number));
+					return Integer.valueOf(o1.getNumber()).compareTo(Integer.valueOf(o2.getNumber()));
 				}
 			});
 			color256s=list.toArray(new Color256[0]);
@@ -798,5 +879,11 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	public Color getANSI16Equivalent(final short color256Code)
 	{
 		return color256to16map.get(Short.valueOf(color256Code));
+	}
+
+	@Override
+	public Enumeration<Color256> getColors256()
+	{
+		return new IteratorEnumeration<Color256>(Arrays.asList(this.color256s).iterator());
 	}
 }

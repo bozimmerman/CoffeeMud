@@ -10,7 +10,7 @@
   9. Shopkeeper VIEW on an ability will give it's help entry. 
  10. New command: WORTH, mostly for legacy mud support.
  11. New RPAWARDS: EMOTE-x and CHANNEL.  See coffeemud.ini file for more information
- 12. Lacquering/Dyeing now support 256 colors, recipes updated and re-formatted.
+ 12. Lacquering/Dyeing now support 256 colors and REMOVE, recipes updated and re-formatted.
  13. Wish now has a one rl-day cool-down.
  14. Siplet now supports ANSI-256
  15. New Scriptable command: MPCASTEXT
