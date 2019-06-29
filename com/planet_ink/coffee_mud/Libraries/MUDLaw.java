@@ -879,11 +879,15 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		{
 			if(doesHaveWeakPrivilegesWith(mob,record))
 				return true;
-			final MOB following=mob.amFollowing();
-			while((following!=null)&&(following!=mob))
+			MOB following=mob.amFollowing();
+			int ct=100;
+			while((following!=null)
+			&&(following!=mob)
+			&&(--ct>0))
 			{
 				if(doesHaveWeakPrivilegesWith(following,record))
 					return true;
+				following=following.amFollowing();
 			}
 			if(item.owner() instanceof Room)
 			{
