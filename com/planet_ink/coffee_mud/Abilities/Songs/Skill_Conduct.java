@@ -130,20 +130,24 @@ public class Skill_Conduct extends BardSkill
 				for (final Object element : h)
 				{
 					final MOB follower=(MOB)element;
-
-					// malicious songs must not affect the invoker!
-					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
-					if(auto)
-						affectType=affectType|CMMsg.MASK_ALWAYS;
-					if(CMLib.flags().canBeSeenBy(invoker,follower))
+					if(follower == null)
+						continue;
+					final Room R=follower.location();
+					if(R!=null)
 					{
-						final CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
-						if(mob.location().okMessage(mob,msg2)
-						&&(follower.location()!=null))
+						// malicious songs must not affect the invoker!
+						int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
+						if(auto)
+							affectType=affectType|CMMsg.MASK_ALWAYS;
+						if(CMLib.flags().canBeSeenBy(invoker,follower))
 						{
-							follower.location().send(follower,msg2);
-							if(msg2.value()<=0)
-								SYMPHONY.invoke(follower,new Vector<String>(),null,false,asLevel+(3*getXLEVELLevel(mob)));
+							final CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
+							if(mob.location().okMessage(mob,msg2))
+							{
+								R.send(follower,msg2);
+								if(msg2.value()<=0)
+									SYMPHONY.invoke(follower,new Vector<String>(),null,false,asLevel+(3*getXLEVELLevel(mob)));
+							}
 						}
 					}
 				}
