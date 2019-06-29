@@ -138,7 +138,8 @@ public class Skill_Conduct extends BardSkill
 					if(CMLib.flags().canBeSeenBy(invoker,follower))
 					{
 						final CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
-						if(mob.location().okMessage(mob,msg2))
+						if(mob.location().okMessage(mob,msg2)
+						&&(follower.location()!=null))
 						{
 							follower.location().send(follower,msg2);
 							if(msg2.value()<=0)
