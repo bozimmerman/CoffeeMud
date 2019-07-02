@@ -369,14 +369,15 @@ public interface XMLLibrary extends CMLibrary
 	public void fromXMLtoPOJO(List<XMLTag> xmlObj, Object o);
 
 	/**
-	 * Converts a map into an xml document
+	 * Converts a map into an xml document.  This method handles
+	 * angle brackets and such.
 	 * @return an xml document
 	 */
 	public String toXML(final Map<String,String> map);
 
-
 	/**
-	 * Converts a map into an xml document
+	 * Converts a map into an xml document.   This method handles
+	 * angle brackets and such.
 	 * @return an xml document
 	 */
 	public Map<String,String> fromXML(final String str);

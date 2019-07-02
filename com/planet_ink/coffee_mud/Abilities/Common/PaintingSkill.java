@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color256;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -62,7 +63,7 @@ public class PaintingSkill extends CommonSkill
 	protected Item found=null;
 	protected String writing="";
 
-	protected String fixColor(final String name, final String colorChar, final String colorWord)
+	protected String fixColor(final String name, final String colorWord)
 	{
 		final Vector<String> V=CMParms.parse(name);
 		for(int v=0;v<V.size();v++)
@@ -91,10 +92,10 @@ public class PaintingSkill extends CommonSkill
 		return CMParms.combine(V,0);
 	}
 
-	public List<String> getAllColorPhrases()
+	public List<String> getAllPaintingPhrases()
 	{
 		@SuppressWarnings("unchecked")
-		List<String> colors = (List<String>)Resources.getResource("SYSTEM_COLOR256_PHRASES");
+		List<String> colors = (List<String>)Resources.getResource("SYSTEM_PAINTING_PHRASES");
 		if(colors == null)
 		{
 			colors = new LinkedList<String>();
@@ -118,7 +119,59 @@ public class PaintingSkill extends CommonSkill
 					}
 				}
 			}
+			Resources.submitResource("SYSTEM_PAINTING_PHRASES", colors);
+		}
+		return colors;
+	}
+
+	public List<String> getAllColors256NamesLowercased()
+	{
+		@SuppressWarnings("unchecked")
+		List<String> colors = (List<String>)Resources.getResource("SYSTEM_COLOR256_PHRASES");
+		if(colors == null)
+		{
+			colors = new LinkedList<String>();
+			for(final Enumeration<Color256> c=CMLib.color().getColors256();c.hasMoreElements(); )
+			{
+				final Color256 C=c.nextElement();
+				if(!colors.contains(C.getName1().toLowerCase()))
+					colors.add(C.getName1());
+				if(!colors.contains(C.getName2()))
+					colors.add(C.getName2().toLowerCase());
+			}
+			colors.sort(new Comparator<String>()
+			{
+				@Override
+				public int compare(final String o1, final String o2)
+				{
+					if(o1.length()==o2.length())
+						return 0;
+					if(o1.length()>o2.length())
+						return -1;
+					return 1;
+				}
+			});
 			Resources.submitResource("SYSTEM_COLOR256_PHRASES", colors);
+		}
+		return colors;
+	}
+
+	public Map<String, Color256> getAllColors256NamesMap()
+	{
+		@SuppressWarnings("unchecked")
+		Map<String, Color256> colors = (Map<String, Color256>)Resources.getResource("SYSTEM_COLOR256_NAME_MAP");
+		if(colors == null)
+		{
+			colors = new TreeMap<String, Color256>();
+			for(final Enumeration<Color256> c=CMLib.color().getColors256();c.hasMoreElements(); )
+			{
+				final Color256 C=c.nextElement();
+				if(!colors.containsKey(C.getName1().toLowerCase()))
+					colors.put(C.getName1().toLowerCase(), C);
+				if(!colors.containsKey(C.getName2().toLowerCase()))
+					colors.put(C.getName2().toLowerCase(), C);
+			}
+			Resources.submitResource("SYSTEM_COLOR256_NAME_MAP", colors);
 		}
 		return colors;
 	}
@@ -135,47 +188,37 @@ public class PaintingSkill extends CommonSkill
 		return str;
 	}
 
-	protected void removePaintJob(final Physical P)
+	protected void removePaintJob(final Physical foundP)
 	{
-		if(P != null)
+		if(foundP != null)
 		{
-			final Ability A=P.fetchEffect("UnderThePaintJob");
-			if(A != null)
+			if(!restoreOldName(foundP))
 			{
-				final XMLLibrary xml=CMLib.xml();
-				final List<XMLLibrary.XMLTag> tags=xml.parseAllXML(A.text());
-				if(xml.isTagInPieces(tags, "NAME"))
-					P.setName(xml.restoreAngleBrackets(xml.getValFromPieces(tags, "NAME")));
-				if(xml.isTagInPieces(tags, "DISPLAY"))
-					P.setDisplayText(xml.restoreAngleBrackets(xml.getValFromPieces(tags, "DISPLAY")));
-				if(xml.isTagInPieces(tags, "DESCRIPTION"))
-					P.setDescription(xml.restoreAngleBrackets(xml.getValFromPieces(tags, "DESCRIPTION")));
-				P.delEffect(A);
-			}
-			final List<String> colors = this.getAllColorPhrases();
-			String name=found.Name();
-			String disp=found.displayText();
-			for(final String color : colors)
-			{
-				int x=name.toLowerCase().indexOf(color);
-				if(x>=0)
+				final List<String> colors = this.getAllPaintingPhrases();
+				String name=foundP.Name();
+				String disp=foundP.displayText();
+				for(final String color : colors)
 				{
-					name = removeRemainingColor(name.substring(0, x).trim()+" "+name.substring(x+color.length()).trim());
-					x=disp.toLowerCase().indexOf(color);
+					int x=name.toLowerCase().indexOf(color);
 					if(x>=0)
-						disp = removeRemainingColor(disp.substring(0, x).trim()+" "+disp.substring(x+color.length()).trim());
-					break;
+					{
+						name = removeRemainingColor(name.substring(0, x).trim()+" "+name.substring(x+color.length()).trim());
+						x=disp.toLowerCase().indexOf(color);
+						if(x>=0)
+							disp = removeRemainingColor(disp.substring(0, x).trim()+" "+disp.substring(x+color.length()).trim());
+						break;
+					}
 				}
+				if(name.toLowerCase().startsWith("a "))
+					name=CMLib.english().startWithAorAn(name.substring(2));
+				else
+				if(name.toLowerCase().startsWith("an "))
+					name=CMLib.english().startWithAorAn(name.substring(3));
+				foundP.setName(name);
+				foundP.setDisplayText(disp);
+				foundP.setDescription(CMStrings.removeColors(foundP.description()));
 			}
-			if(name.toLowerCase().startsWith("a "))
-				name=CMLib.english().startWithAorAn(name.substring(2));
-			else
-			if(name.toLowerCase().startsWith("an "))
-				name=CMLib.english().startWithAorAn(name.substring(3));
-			found.setName(name);
-			found.setDisplayText(disp);
-			found.setDescription(CMStrings.removeColors(found.description()));
-			found.text();
+			foundP.text();
 		}
 	}
 
@@ -184,26 +227,8 @@ public class PaintingSkill extends CommonSkill
 		return "paintingskill.txt";
 	}
 
-	protected void addPaintJob(final Physical found, final String writing)
+	protected String getColorCode(final String writing)
 	{
-		/*
-		if(P.fetchEffect("UnderThePaintJob") == null)
-		{
-			final ThinAbility A=new ThinAbility()
-			{
-				@Override
-				public String ID()
-				{
-					return "UnderThePaintJob";
-				}
-			};
-			final XMLLibrary xml=CMLib.xml();
-			A.setMiscText(xml.convertXMLtoTag("NAME", xml.parseOutAngleBrackets(P.Name()))+
-							xml.convertXMLtoTag("DISPLAY", xml.parseOutAngleBrackets(P.displayText()))+
-							xml.convertXMLtoTag("DESCRIPTION", xml.parseOutAngleBrackets(P.description())));
-			P.addNonUninvokableEffect(A);
-		}
-		*/
 		String colorCode="^";
 		for(int i=0;i<writing.length();i++)
 		{
@@ -226,6 +251,11 @@ public class PaintingSkill extends CommonSkill
 				}
 			}
 		}
+		return colorCode;
+	}
+
+	protected String getDescriptionColor(final Physical found, final String colorCode)
+	{
 		final StringBuffer desc=new StringBuffer(found.description());
 		for(int x=0;x<(desc.length()-1);x++)
 		{
@@ -252,10 +282,55 @@ public class PaintingSkill extends CommonSkill
 			desc.append("^?");
 		if(!d.startsWith("^"+colorCode))
 			desc.insert(0,"^"+colorCode);
-		found.setDescription(desc.toString());
-		found.setName(fixColor(found.Name(), colorCode, writing));
-		found.setDisplayText(fixColor(found.displayText(), colorCode, writing));
-		found.text();
+		return desc.toString();
 	}
 
+	protected boolean restoreOldName(final Physical found)
+	{
+		final Ability A=found.fetchEffect("ExtraData");
+		if((A != null)
+		&&(A.isStat("PRE_PAINT_JOB_NAME"))
+		&&(A.isStat("PRE_PAINT_JOB_DISPLAY")))
+		{
+			found.setName(A.getStat("PRE_PAINT_JOB_NAME"));
+			found.setDisplayText(A.getStat("PRE_PAINT_JOB_DISPLAY"));
+			if(found.isStat("PRE_PAINT_JOB_DESCRIPTION"))
+				found.setDescription(A.getStat("PRE_PAINT_JOB_DESCRIPTION"));
+			else
+				found.setDescription(CMStrings.removeColors(found.description()));
+			return true;
+		}
+		return false;
+	}
+
+	protected boolean saveOldName(final Physical found)
+	{
+		if(found.displayText().indexOf("^?")<0) //don't save the colored things
+		{
+			Ability A=found.fetchEffect("ExtraData");
+			if(A==null)
+			{
+				A=CMClass.getAbility("ExtraData");
+				found.addNonUninvokableEffect(A);
+			}
+			if(!A.isStat("PRE_PAINT_JOB_NAME"))
+				A.setStat("PRE_PAINT_JOB_NAME", found.Name());
+			if(!A.isStat("PRE_PAINT_JOB_DISPLAY"))
+				A.setStat("PRE_PAINT_JOB_DISPLAY", found.displayText());
+			//if(!A.isStat("PRE_PAINT_JOB_DESCRIPTION"))
+			//	A.setStat("PRE_PAINT_JOB_DESCRIPTION", found.description());
+			return true;
+		}
+		return false;
+	}
+
+	protected void addPaintJob(final Physical found, final String writing)
+	{
+		saveOldName(found);
+		final String colorCode = getColorCode(writing);
+		found.setDescription(getDescriptionColor(found, colorCode));
+		found.setName(fixColor(found.Name(), writing));
+		found.setDisplayText(fixColor(found.displayText(), writing));
+		found.text();
+	}
 }

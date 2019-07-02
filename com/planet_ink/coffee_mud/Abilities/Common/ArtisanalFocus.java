@@ -96,7 +96,7 @@ public class ArtisanalFocus extends StdAbility
 		{"Chef","Baking","FoodPrep","Cooking","Distilling","MeatCuring","FoodPreserving","Butchering","MasterButchering","MasterFoodPrep","MasterBaking","MasterDistilling","MasterCooking"},
 		{"Carpenter","InstrumentMaking","Boatwright","Wainwrighting","Carpentry","WandMaking","StaffMaking","Fletching","Siegecraft","Skill_ShipLore","Costuming","PaperMaking","MasterCostuming"},
 		{"Architect","Shipwright","Masonry","Excavation","Construction","Landscaping"},
-		{"Artist","Lacquerring","Dyeing","Skill_Write","Painting","Decorating","Engraving","Embroidering"},
+		{"Artist","Lacquerring","Dyeing","Skill_Write","Painting","Decorating","Engraving","Embroidering","MasterLacquerring","MasterDyeing"},
 	};
 	protected final static Map<String, String[]>	namesLookup	= new Hashtable<String, String[]>();
 	protected final static Map<String, Integer[]>	indexLookup	= new Hashtable<String, Integer[]>();

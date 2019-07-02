@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color256;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -19,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2019 Bo Zimmerman
+   Copyright 2019-2019 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +34,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Lacquerring extends PaintingSkill
+public class MasterLacquerring extends MasterPaintingSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Lacquerring";
+		return "MasterLacquerring";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Lacquering");
+	private final static String localizedName = CMLib.lang().L("Master Lacquering");
 
 	@Override
 	public String name()
@@ -49,7 +50,12 @@ public class Lacquerring extends PaintingSkill
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "LACQUERING", "LACQUER" });
+	private static final String[] triggerStrings =I(new String[] {"MASTERLACQUERING", "MASTERLACQUER", "MLACQUER", "MLACQUERING"});
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ARTISTIC;
+	}
 
 	@Override
 	public String[] triggerStrings()
@@ -58,22 +64,16 @@ public class Lacquerring extends PaintingSkill
 	}
 
 	@Override
-	public int classificationCode()
+	protected boolean canBeDoneSittingDown()
 	{
-		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ARTISTIC;
+		return true;
 	}
 
-	public Lacquerring()
+	public MasterLacquerring()
 	{
 		super();
 		displayText=L("You are lacquering...");
 		verb=L("lacquering");
-	}
-
-	@Override
-	protected String getRecipeFile()
-	{
-		return "lacquering.txt";
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class Lacquerring extends PaintingSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonEmote(mob,L("<S-NAME> mess(es) up the dyeing."));
+					commonEmote(mob,L("<S-NAME> mess(es) up the lacquering."));
 				else
 				{
 					removePaintJob(found);
@@ -114,36 +114,85 @@ public class Lacquerring extends PaintingSkill
 	}
 
 	@Override
+	protected String getRecipeFile()
+	{
+		return "masterlacquering.txt";
+	}
+
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
+
 		final List<List<String>> recipes = addRecipes(mob,super.loadRecipes(getRecipeFile()));
+		if(CMSecurity.isASysOp(mob) && (CMParms.combine(commands).equalsIgnoreCase("test")))
+		{
+			doPaintingTest(mob, recipes);
+			return false;
+		}
+
 		writing=CMParms.combine(commands,0).toLowerCase();
 		List<String> finalRecipe = null;
 		if(writing.equalsIgnoreCase("list"))
 		{
-			final StringBuilder colors=new StringBuilder(L("^NColors you can choose: "));
+			final StringBuilder colors=new StringBuilder(L("^NDesigns you can choose: "));
+			final TreeSet<String> namesUsed = new TreeSet<String>();
 			for(final List<String> list : recipes)
 			{
-				final String name=list.get(RCP_COLOR);
+				final String name=list.get(RCP_FINALNAME);
 				final int level=CMath.s_int(list.get(RCP_LEVEL));
-				final int exp=CMath.s_int(list.get(RCP_EXPERTISE));
 				if((level <= adjustedLevel(mob,asLevel))
-				&&((exp<=super.getXLEVELLevel(mob))))
-					colors.append(name).append(", ");
+				&&(!namesUsed.contains(name)))
+				{
+					namesUsed.add(name);
+					colors.append(name).append("^N, ");
+				}
 			}
-			commonTell(mob,colors.substring(0,colors.length()-2)+".\n\r");
+			commonTell(mob,colors.substring(0,colors.length()-2)+"^N.  "+L("Use MASTERLACQUER COLORS to see what colors you can choose.\n\r"));
 			return false;
 		}
-		if(commands.size()<2)
+		else
+		if(writing.toLowerCase().startsWith("color"))
 		{
-			commonTell(mob,L("You must specify what you want to lacqer, and color to it to be or the word REMOVE, or specify LIST."));
+			final StringBuilder colors=new StringBuilder(L("^NColors you can choose: "));
+			final TreeSet<String> done=new TreeSet<String>();
+			for(final Enumeration<Color256> c=CMLib.color().getColors256();c.hasMoreElements();)
+			{
+				final Color256 C=c.nextElement();
+				final int exp=C.getExpertiseNum();
+				if(exp<=super.getXLEVELLevel(mob))
+				{
+					if(!done.contains(C.getName1()))
+					{
+						colors.append(C.getCmChars()).append(C.getName1()).append("^N, ");
+						done.add(C.getName1());
+					}
+					if(!done.contains(C.getName2()))
+					{
+						colors.append(C.getCmChars()).append(C.getName2()).append("^N, ");
+						done.add(C.getName2());
+					}
+				}
+			}
+			commonTell(mob,colors.substring(0,colors.length()-2)+"^N.\n\r");
 			return false;
 		}
-		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
-		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
-			target=mob.location().findItem(null, commands.get(0));
+		if(commands.get(1).equalsIgnoreCase("remove"))
+		{
+			// ok
+			writing="remove";
+		}
+		else
+		if(commands.size()<4)
+		{
+			commonTell(mob,L("You must specify what you want to lacqer, the design to use, and two or three colors to use, or the word REMOVE, or specify LIST."));
+			return false;
+		}
+		else
+			writing=commands.get(1);
+		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
 		if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
@@ -164,8 +213,48 @@ public class Lacquerring extends PaintingSkill
 			commonTell(mob,L("You don't seem to have a '@x1'.",(commands.get(0))));
 			return false;
 		}
-		commands.remove(commands.get(0));
-
+		commands.remove(commands.get(0)); // remove item
+		commands.remove(commands.get(0)); // remove design
+		final String allColors = CMParms.combine(commands,0);
+		final List<Color256> colorsFound = new ArrayList<Color256>();
+		final List<String> colorNamesFound = new ArrayList<String>();
+		String workColors = allColors.toLowerCase();
+		while(workColors.length()>0)
+		{
+			final int numFound=colorsFound.size();
+			for(final String cStr : getAllColors256NamesLowercased())
+			{
+				if(workColors.startsWith(cStr))
+				{
+					final Color256 C=getAllColors256NamesMap().get(cStr);
+					if(C!=null)
+					{
+						if(C.getExpertiseNum()<=super.getXLEVELLevel(mob))
+						{
+							colorNamesFound.add(cStr);
+							colorsFound.add(C);
+							workColors=workColors.substring(cStr.length()).trim();
+						}
+					}
+					break;
+				}
+			}
+			if(colorsFound.size()==numFound)
+			{
+				commonTell(mob,L("The first color in '@x1' is unrecognized. Try MASTERLACQUER COLORS",workColors));
+				return false;
+			}
+		}
+		if(colorsFound.size()<2)
+		{
+			commonTell(mob,L("At least two colors is required."));
+			return false;
+		}
+		if(colorsFound.size()>3)
+		{
+			commonTell(mob,L("You may not list more than 3 colors."));
+			return false;
+		}
 		if((((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)
@@ -179,16 +268,14 @@ public class Lacquerring extends PaintingSkill
 			return false;
 		}
 
-		writing=CMParms.combine(commands,0).toLowerCase();
-
 		for(final List<String> list : recipes)
 		{
 			final String name=list.get(0);
 			final int level=CMath.s_int(list.get(1));
-			final int exp=CMath.s_int(list.get(RCP_EXPERTISE));
+			final int numColors=requiredColorsInRecipe(list.get(RCP_MASK));
 			if(name.equalsIgnoreCase(writing)
 			&&(level<=adjustedLevel(mob,asLevel))
-			&&((exp<=super.getXLEVELLevel(mob))))
+			&&(numColors==colorsFound.size()))
 			{
 				finalRecipe=list;
 				break;
@@ -196,23 +283,38 @@ public class Lacquerring extends PaintingSkill
 		}
 		if((finalRecipe == null) && (!writing.equalsIgnoreCase("remove")))
 		{
-			commonTell(mob,L("You can't lacquer anything '@x1'. Try LACQUER LIST for a list, or use REMOVE as the color.",writing));
-			return false;
+			for(final List<String> list : recipes)
+			{
+				final String name=list.get(0);
+				final int level=CMath.s_int(list.get(1));
+				if(name.equalsIgnoreCase(writing)
+				&&(level<=adjustedLevel(mob,asLevel)))
+				{
+					commonTell(mob,L("I'm afraid that recipe does not support @x1 colors.",""+colorsFound.size()));
+					return false;
+				}
+			}
 		}
 
+		if((finalRecipe == null) && (!writing.equalsIgnoreCase("remove")))
+		{
+			commonTell(mob,L("You can't lacquer anything '@x1'. Try MASTERLACQUERING LIST for a list or use REMOVE as the color.",writing));
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		final String startMsg;
+		String startMsg;
 		if(writing.equalsIgnoreCase("remove"))
 		{
 			writing =  "remove";
 			verb=L("removing the color from @x1",target.name());
 			startMsg=L("<S-NAME> start(s) un-lacquering @x1.",target.name());
-
 		}
 		else
 		{
 			writing =  finalRecipe.get(RCP_COLOR);
+			for(int i=0;i<colorNamesFound.size();i++)
+				writing=CMStrings.replaceAll(writing, "@x"+(i+1), colorNamesFound.get(i));
 			verb=L("lacquering @x1 @x2",target.name(),writing);
 			startMsg=L("<S-NAME> start(s) lacquering @x1.",target.name());
 		}
@@ -223,12 +325,20 @@ public class Lacquerring extends PaintingSkill
 		int duration=30;
 		if(finalRecipe != null)
 			duration=CMath.s_int(finalRecipe.get(RCP_TICKS));
-		duration=getDuration(duration,mob,1,12);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),startMsg);
+		if((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
+			duration*=2;
+		duration=getDuration(duration,mob,1,6);
+		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startMsg);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,asLevel,duration);
+			final MasterLacquerring M=(MasterLacquerring)beneficialAffect(mob,mob,asLevel,duration);
+			if(M!=null)
+			{
+				M.colors=colorsFound;
+				M.recipe=finalRecipe;
+				M.colorsNames=colorNamesFound;
+			}
 		}
 		return true;
 	}

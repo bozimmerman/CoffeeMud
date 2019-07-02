@@ -1,0 +1,55 @@
+# name, level, ticks, color words, mask, expertise, misc
+# 1 = one char of one color
+# 2 = one char of second color
+# 3 = one char of third color
+# w = break to end of word
+# W = anchored end of word (length is static, NOT LAST CHAR).
+# | = options (choose from matching anchored first, then choose among ones not word anchored)
+# e = skip to last letter of word, respect next w or W
+# E = skip to beginning of last word
+# F = skip to next-to-last-word
+# c = skip to before middle letter(s). Do next thing once for odd, twice for even
+# C = skip to before center word(s)
+# m = skip to middle of entire phrase
+# - = go back 1 char
+# * = break. finish entire phrase
+striped	1	10	@x1 and @x2 striped	12
+banded	2	10	@x1 and @x2 banded	1w2w
+pinstriped	3	10	@x1 and @x2 pinstriped	1Cc21*
+widestriped	4	10	@x1 and @x2 wide-striped	1122
+widebanded	5	10	@x1 and @x2 wide-banded	1w1w2w2w
+checkered	6	10	@x1 and @x2 checkered	12
+polkadotted	7	10	@x1 and @x2 polka-dotted	112
+tiedyed	8	10	@x1 and @x2 tie-dyed	1W|11W|121W|1c221w
+toptipped	9	10	@x1 and @x2 top-tipped	12w
+bottomtipped	10	10	@x1 and @x2 bottom-tipped	1e2w
+topbanded	11	10	@x1 and @x2 top-banded	1w2*
+bottombanded	12	10	@x1 and @x2 bottom-banded	1wE2*
+paisley	13	10	@x1 and @x2 paisley	1C2w1*
+flowered	14	10	@x1 and @x2 flowered	1w1w2w
+plaid	15	15	@x1 and @x2 plaid	12
+tigerstriped	16	15	@x1 and @x2 tiger-striped	11122
+leopardspotted	17	15	@x1 and @x2 leopard-spotted	1121112
+argyle	18	20	@x1 and @x2 argyle	121111
+ikat	19	20	@x1 and @x2 ikat	0W|020W|0220W|10220W|1c02201w
+camouflaged	20	20	@x1 and @x2 camouflaged	12|122|1222|112|1122|11222|1112|11122|111222
+striped	21	21	@x1, @x2 and @x3 striped	123
+banded	22	22	@x1, @x2 and @x3 banded	1w2w3w
+pinstriped	23	23	@x1, @x2 and @x3 pinstriped	1m---31121131*
+widestriped	24	24	@x1, @x2 and @x3 wide-striped	112233
+widebanded	25	25	@x1, @x2 and @x3 wide-banded	1w1w2w2w3w3w
+checkered	26	26	@x1, @x2 and @x3 checkered	123
+polkadotted	27	27	@x1, @x2 and @x3 polka-dotted	112113
+tiedyed	28	28	@x1, @x2 and @x3 tie-dyed	1W|11W|111W|1221W|3222W|2332W|1331W|1231W|1321W|12231W|12331W|122331W|133221W|1c22331w|1c33221w
+toptipped	29	29	@x1, @x2 and @x3 top-tipped	123w
+bottomtipped	30	30	@x1, @x2 and @x3 bottom-tipped	1W|11W|1e23w
+topbanded	31	31	@x1, @x2 and @x3 top-banded	1w2w3*
+bottombanded	32	32	@x1, @x2 and @x3 bottom-banded	1F2w3w
+paisley	33	33	@x1, @x2 and @x3 paisley	1C2w3w1*
+flowered	34	34	@x1, @x2 and @x3 flowered	1w1w2w1w1w3w
+plaid	35	35	@x1, @x2 and @x3 plaid	123
+tigerstriped	36	36	@x1, @x2 and @x3 tiger-striped	1112211133
+leopardspotted	37	37	@x1, @x2 and @x3 leopard-spotted	1121113
+argyle	38	38	@x1, @x2 and @x3 argyle	1213
+ikat	39	39	@x1, @x2 and @x3 ikat	0W|00W|010W|020W|030W|0220W|0330W|10201W|10301W|1c0201w|1c0301w
+camouflaged	40	40	@x1, @x2 and @x3 camouflaged	123|1223|12223|1233|12333|12233|122233|1222333|1123|11223|112223|11233|112333|112233|1122233|11222333|11123|111223|1112223|111233|1112333|1112233|11122233|111222333

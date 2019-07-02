@@ -1680,7 +1680,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		final StringBuilder xml=new StringBuilder("");
 		for(final String key : map.keySet())
-			xml.append(convertXMLtoTag(key, map.get(key)));
+			xml.append(convertXMLtoTag(this.parseOutAngleBrackets(key), this.parseOutAngleBrackets(map.get(key))));
 		return xml.toString();
 	}
 
@@ -1689,7 +1689,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		final Hashtable<String,String> map=new Hashtable<String,String>();
 		for(final XMLTag tag : this.parseAllXML(str))
-			map.put(tag.tag(), tag.value());
+			map.put(this.restoreAngleBrackets(tag.tag()), this.restoreAngleBrackets(tag.value()));
 		return map;
 	}
 
