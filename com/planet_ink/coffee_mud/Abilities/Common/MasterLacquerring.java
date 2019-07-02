@@ -162,7 +162,8 @@ public class MasterLacquerring extends MasterPaintingSkill
 			{
 				final Color256 C=c.nextElement();
 				final int exp=C.getExpertiseNum();
-				if(exp<=super.getXLEVELLevel(mob))
+				if(exp<=super.getXLEVELLevel(mob)
+				&&(!C.getCmChars().equals("^K")))
 				{
 					if(!done.contains(C.getName1()))
 					{
