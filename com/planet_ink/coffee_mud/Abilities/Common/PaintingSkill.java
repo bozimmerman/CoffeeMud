@@ -105,7 +105,7 @@ public class PaintingSkill extends CommonSkill
 				if(A instanceof PaintingSkill)
 				{
 					final PaintingSkill P=(PaintingSkill)A;
-					if(!P.ID().equals("PaintingSkill"))
+					if(!P.ID().endsWith("PaintingSkill"))
 					{
 						for(final List<String> recipe : super.loadRecipes(P.getRecipeFile()))
 						{
