@@ -111,7 +111,7 @@ public class Blessing extends StdAbility
 	public void unInvoke()
 	{
 		final MOB mob=(MOB)affected;
-		if(canBeUninvoked())
+		if(canBeUninvoked() && (mob!=null))
 			mob.tell(L("Your aura of blessing fades."));
 		super.unInvoke();
 	}
