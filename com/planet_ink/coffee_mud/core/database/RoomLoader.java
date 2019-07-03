@@ -559,8 +559,25 @@ public class RoomLoader
 						if(x>0)
 						{
 							otherA=CMLib.map().getArea(nextRoomID.substring(0,x));
-							if((otherA!=null)&&(otherA!=thisRoom.getArea()))
-								newRoom=otherA.getRoom(nextRoomID);
+							if(otherA!=null)
+							{
+								if(otherA!=thisRoom.getArea())
+									newRoom=otherA.getRoom(nextRoomID);
+							}
+						}
+						else
+						{
+							for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+							{
+								final Area A=a.nextElement();
+								if((A!=null)
+								&&(A.getCachedRoomnumbers().contains(nextRoomID)))
+								{
+									otherA=A;
+									if(!CMath.bset(A.flags(), Area.FLAG_THIN))
+										newRoom=otherA.getRoom(nextRoomID);
+								}
+							}
 						}
 						if(newRoom!=null)
 						{
