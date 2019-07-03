@@ -360,7 +360,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		verb=L("making @x1",buildingI.name());
 		playSound="crumple.wav";
 		buildingI.setDisplayText(L("@x1 lies here",itemName));
-		buildingI.setDescription(itemName+". ");
+		buildingI.setDescription(determineDescription(itemName, buildingI.material(), deadMats, deadComps));
 		int weight = getStandardWeight(woodRequired+compData[CF_AMOUNT],data[1][FOUND_CODE], bundling) / 10;
 		if(weight < 1)
 			weight = 1;

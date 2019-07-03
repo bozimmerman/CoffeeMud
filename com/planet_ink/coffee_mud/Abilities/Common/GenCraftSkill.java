@@ -781,7 +781,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			playSound=(String)V(ID,V_SOND);
 			verb=verbing+" "+buildingI.name();
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
-			buildingI.setDescription(itemName+". ");
+			buildingI.setDescription(determineDescription(itemName, buildingI.material(), deadMats, deadComps));
 			buildingI.basePhyStats().setWeight(getStandardWeight(numRequired, data[1][FOUND_CODE], bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;

@@ -372,7 +372,7 @@ public class Wainwrighting extends EnhancedCraftingSkill implements ItemCraftor
 		verb=L("building @x1",buildingI.name());
 		playSound="hammer.wav";
 		buildingI.setDisplayText(L("@x1 lies here",itemName));
-		buildingI.setDescription(itemName+". ");
+		buildingI.setDescription(determineDescription(itemName, buildingI.material(), deadMats, deadComps));
 		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],data[1][FOUND_CODE], bundling));
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));

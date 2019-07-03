@@ -549,7 +549,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			playSound="sawing.wav";
 			verb=L("carving @x1",buildingI.name());
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
-			buildingI.setDescription(itemName+". ");
+			buildingI.setDescription(determineDescription(itemName, buildingI.material(), deadMats, deadComps));
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],data[1][FOUND_CODE], bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;

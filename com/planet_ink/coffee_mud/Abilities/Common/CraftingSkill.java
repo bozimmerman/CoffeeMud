@@ -160,17 +160,31 @@ public class CraftingSkill extends GatheringSkill
 		return newWeight;
 	}
 
-	protected String determineFinalName(final String thisStr, final int backupMaterial, final MaterialLibrary.DeadResourceRecord res1, final MaterialLibrary.DeadResourceRecord res2)
+	protected String determineFinalResourceName(final int backupMaterial, final MaterialLibrary.DeadResourceRecord res1, final MaterialLibrary.DeadResourceRecord res2)
 	{
 		if((res1 != null)&&(res1.subType.length()>0))
-			return replacePercent(thisStr, res1.subType.toLowerCase()).toLowerCase();
+			return res1.subType.toLowerCase();
 		if((res2 != null)&&(res2.subType.length()>0))
-			return replacePercent(thisStr, res2.subType.toLowerCase()).toLowerCase();
+			return res2.subType.toLowerCase();
 		if((res1!=null)&&(res1.resCode>=0))
-			return replacePercent(thisStr, RawMaterial.CODES.NAME(res1.resCode)).toLowerCase();
+			return RawMaterial.CODES.NAME(res1.resCode).toLowerCase();
 		if((res2!=null)&&(res2.resCode>=0))
-			return replacePercent(thisStr, RawMaterial.CODES.NAME(res2.resCode)).toLowerCase();
-		return replacePercent(thisStr, RawMaterial.CODES.NAME(backupMaterial)).toLowerCase();
+			return RawMaterial.CODES.NAME(res2.resCode).toLowerCase();
+		return RawMaterial.CODES.NAME(backupMaterial).toLowerCase();
+	}
+
+	protected String determineFinalName(final String thisStr, final int backupMaterial, final MaterialLibrary.DeadResourceRecord res1, final MaterialLibrary.DeadResourceRecord res2)
+	{
+		final String resourceName = this.determineFinalResourceName(backupMaterial, res1, res2);
+		return replacePercent(thisStr, resourceName).toLowerCase();
+	}
+
+	protected String determineDescription(final String name, final int backupMaterial, final MaterialLibrary.DeadResourceRecord res1, final MaterialLibrary.DeadResourceRecord res2)
+	{
+		final String resourceName = this.determineFinalResourceName(backupMaterial, res1, res2);
+		if(name.toLowerCase().indexOf(resourceName) >= 0)
+			return name+".  ";
+		return L("@x1 made from @x2. ", name, resourceName);
 	}
 
 	@Override

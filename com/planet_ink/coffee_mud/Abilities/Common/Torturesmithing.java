@@ -370,7 +370,7 @@ public class Torturesmithing extends EnhancedCraftingSkill implements ItemCrafto
 		verb=L("making @x1",buildingI.name());
 		playSound="hammer.wav";
 		buildingI.setDisplayText(L("@x1 lies here",itemName));
-		buildingI.setDescription(itemName+". ");
+		buildingI.setDescription(determineDescription(itemName, buildingI.material(), deadMats, deadComps));
 		buildingI.basePhyStats().setWeight(woodRequired);
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));

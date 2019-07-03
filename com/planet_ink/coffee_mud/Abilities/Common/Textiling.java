@@ -388,7 +388,7 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
-			buildingI.setDescription(itemName+". ");
+			buildingI.setDescription(determineDescription(itemName, buildingI.material(), deadMats, deadComps));
 			buildingI.basePhyStats().setWeight(getStandardWeight(compData[CF_AMOUNT],data[1][FOUND_CODE], bundling));
 			if(buildingI.basePhyStats().weight()==0)
 				buildingI.basePhyStats().setWeight(1);

@@ -337,6 +337,7 @@ public class Barbarian extends StdCharClass
 		}
 		return super.qualifiesForThisClass(mob, quiet);
 	}
+
 	@Override
 	public int classDurationModifier(final MOB myChar, final Ability skill, final int duration)
 	{

@@ -455,7 +455,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			verb=L("making @x1",buildingI.name());
 			playSound="sanding.wav";
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
-			buildingI.setDescription(itemName+". ");
+			buildingI.setDescription(determineDescription(itemName, buildingI.material(), deadMats, deadComps));
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired + compData[CF_AMOUNT],data[1][FOUND_CODE], bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			final int level=CMath.s_int(foundRecipe.get(RCP_LEVEL));

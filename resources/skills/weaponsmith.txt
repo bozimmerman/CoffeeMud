@@ -101,11 +101,11 @@ crowbill	22	70	14	601	GenWeapon	AXE	PIERCING	19	0	1	0	WOODEN
 stiletto	22	140	10	88	GenWeapon	DAGGER	PIERCING	5	28	1	0		
 barbed whip	22	100	18	912	GenWeapon	FLAILED	SLASHING	23	-6	1	1	LEATHER	
 % hammer	22	40	10	665	GenWeapon	HAMMER	BASHING	21	-10	1	0	WOODEN	
-javelin	22	90	8	400	GenSpear	THROWN	PIERCING	20	0	1	2		
+% javelin	22	90	8	400	GenSpear	THROWN	PIERCING	20	0	1	2		
 flanged % mace	23	80	14	515	GenWeapon	BLUNT	BASHING	17	6	1	0		
 martel de fer	23	140	40	2600	GenWeapon	HAMMER	BASHING	52	-10	2	0	WOODEN	
-trident	23	150	22	1600	GenWeapon	POLEARM	PIERCING	40	-10	2	1		
-scimitar	23	60	16	735	GenWeapon	SWORD	SLASHING	21	0	1	0		
+% trident	23	150	22	1600	GenWeapon	POLEARM	PIERCING	40	-10	2	1		
+% scimitar	23	60	16	735	GenWeapon	SWORD	SLASHING	21	0	1	0		
 three-sectioned staff	24	20	15	1788	GenWeapon	FLAILED	BASHING	43	-7	2	0		
 bec de corbin	24	170	22	1892	GenWeapon	POLEARM	SLASHING	44	-15	2	1		
 no-dachi	24	120	20	1332	GenWeapon	SWORD	SLASHING	36	5	2	0		
@@ -125,11 +125,11 @@ main gauche	28	160	4	101	GenWeapon	DAGGER	PIERCING	5	36	1	0
 lucern hammer	28	140	18	1936	GenWeapon	HAMMER	BASHING	44	-10	2	1		
 scythe	28	200	20	2025	GenWeapon	POLEARM	SLASHING	45	-10	2	1		
 executioners axe	29	150	25	2600	GenWeapon	AXE	SLASHING	52	-10	2	0	WOODEN	
-warhammer	29	70	12	1125	GenWeapon	HAMMER	BASHING	27	-10	1	0	WOODEN	
-sabre	29	60	8	770	GenWeapon	SWORD	SLASHING	21	5	1	0		
+% warhammer	29	70	12	1125	GenWeapon	HAMMER	BASHING	27	-10	1	0	WOODEN	
+% sabre	29	60	8	770	GenWeapon	SWORD	SLASHING	21	5	1	0		
 dwarven thrower	29	170	4	476	GenSpear	THROWN	BASHING	22	0	1	2	MITHRIL	Prop_HaveZapper;-RACECAT +Dwarf;Spell_Boomerang
 half-moon	30	90	25	1591	GenWeapon	BLUNT	SLASHING	39	9	2	0		
-three-headed flail	30	130	18	2818	GenWeapon	FLAILED	BASHING	54	-9	2	0		
-naginata	30	230	35	3025	GenWeapon	POLEARM	SLASHING	55	-10	2	1		
-zweihander	30	70	24	2304	GenWeapon	SWORD	SLASHING	48	0	2	0		
-hurlbat	30	140	8	1171	GenSpear	THROWN	SLASHING	38	-15	1	1		
+three-headed % flail	30	130	18	2818	GenWeapon	FLAILED	BASHING	54	-9	2	0		
+% naginata	30	230	35	3025	GenWeapon	POLEARM	SLASHING	55	-10	2	1		
+% zweihander	30	70	24	2304	GenWeapon	SWORD	SLASHING	48	0	2	0		
+% hurlbat	30	140	8	1171	GenSpear	THROWN	SLASHING	38	-15	1	1		
