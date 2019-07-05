@@ -611,6 +611,13 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 								String s3 = " ";
 								while (s3.length() > 0)
 								{
+									if(s.length() > 1024 * 1024 * 200)
+									{
+										Log.errOut("WebMacroCreamer", "200mb loop size failure on "+request.getFullRequest());
+										s.insert(ldex, "[error]");
+										ldex += 7;
+										break;
+									}
 									try
 									{
 										s3 = new String(virtualPageFilter(request, objects, processStartTime, lastFoundMacro, new StringBuffer(s2)));
@@ -620,7 +627,6 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 										s3 = " ";
 										redirectTo = e.getMessage();
 									}
-
 									s.insert(ldex, s3);
 									ldex += s3.length();
 								}
@@ -667,6 +673,13 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 									set = CMParms.parseCommas(q, false);
 								for (final String qq : set)
 								{
+									if(s.length() > 1024 * 1024 * 200)
+									{
+										Log.errOut("WebMacroCreamer", "200mb loop size failure on "+request.getFullRequest());
+										s.insert(ldex, "[error]");
+										ldex += 7;
+										break;
+									}
 									try
 									{
 										request.addFakeUrlParameter(varName, qq);
