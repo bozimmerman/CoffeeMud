@@ -396,19 +396,27 @@ public class StdGrid extends StdRoom implements GridLocale
 						return roomsV;
 					}
 					if(!roomsV.contains(R))
-						roomsV.addElement(R);
-					final List<Room> sky = R.getSky();
-					if(sky == null)
-						Log.errOut("No Sky for "+R.roomID());
-					else
 					{
-						for(final Room R2 : sky)
+						roomsV.addElement(R);
+						final List<Room> sky = R.getSky();
+						if(sky == null)
+							Log.errOut("No Sky for "+R.roomID());
+						else
 						{
-							if(R2 instanceof GridLocale)
-								roomsV.addAll(((GridLocale)R2).getAllRoomsFilled());
-							else
-							if(!roomsV.contains(R2))
-								roomsV.add(R2);
+							for(final Room R2 : sky)
+							{
+								if(R2 instanceof GridLocale)
+								{
+									for(final Room R3 : ((GridLocale)R2).getAllRoomsFilled())
+									{
+										if(!roomsV.contains(R3))
+											roomsV.add(R3);
+									}
+								}
+								else
+								if(!roomsV.contains(R2))
+									roomsV.add(R2);
+							}
 						}
 					}
 				}

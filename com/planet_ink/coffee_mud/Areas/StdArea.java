@@ -2223,13 +2223,20 @@ public class StdArea implements Area
 		for(;r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();
-			if(R!=null)
+			if((R!=null)
+			&&(!V.contains(R)))
 			{
 				V.add(R);
 				for(final Room R2 : R.getSky())
 				{
 					if(R2 instanceof GridLocale)
-						V.addAll(((GridLocale)R2).getAllRoomsFilled());
+					{
+						for(final Room R3 : ((GridLocale)R2).getAllRoomsFilled())
+						{
+							if(!V.contains(R3))
+								V.add(R3);
+						}
+					}
 					else
 					if(!V.contains(R2))
 						V.add(R2);

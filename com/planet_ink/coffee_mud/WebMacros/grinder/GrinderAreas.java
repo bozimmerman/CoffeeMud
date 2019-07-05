@@ -332,7 +332,10 @@ public class GrinderAreas
 		}
 
 		// modify Parent Area list
+		final Area defaultParentArea=CMLib.map().getDefaultParentArea();
 		final List<Area> existingParents=new XVector<Area>(A.getParents());
+		if(defaultParentArea != null)
+			existingParents.remove(defaultParentArea);
 		final List<Area> newParents=new ArrayList<Area>();
 		for(int i=1;;i++)
 		{
@@ -371,6 +374,8 @@ public class GrinderAreas
 
 		// modify Child Area list
 		final List<Area> existingChildren=new XVector<Area>(A.getChildren());
+		if(defaultParentArea == A)
+			existingChildren.clear();
 		final List<Area> newChildren=new ArrayList<Area>();
 		for(int i=1;;i++)
 		{

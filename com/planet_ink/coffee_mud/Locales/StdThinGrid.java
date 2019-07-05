@@ -702,14 +702,22 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			try
 			{
 				if(!V.contains(R))
-					V.addElement(R);
-				for(final Room R2 : R.getSky())
 				{
-					if(R2 instanceof GridLocale)
-						V.addAll(((GridLocale)R2).getAllRoomsFilled());
-					else
-					if(!V.contains(R2))
-						V.add(R2);
+					V.addElement(R);
+					for(final Room R2 : R.getSky())
+					{
+						if(R2 instanceof GridLocale)
+						{
+							for(final Room R3 : ((GridLocale)R2).getAllRoomsFilled())
+							{
+								if(!V.contains(R3))
+									V.add(R3);
+							}
+						}
+						else
+						if(!V.contains(R2))
+							V.add(R2);
+					}
 				}
 			}
 			catch(final Exception e)
