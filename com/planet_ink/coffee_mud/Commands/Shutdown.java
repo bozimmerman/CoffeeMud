@@ -81,6 +81,7 @@ public class Shutdown extends StdCommand implements Tickable
 		boolean noPrompt=false;
 		String externalCommand=null;
 		boolean keepItDown=true;
+		boolean startCountDown=false;
 		for(int i=commands.size()-1;i>=1;i--)
 		{
 			final String s=commands.get(i);
@@ -135,22 +136,31 @@ public class Shutdown extends StdCommand implements Tickable
 				shuttingDownCompletes=System.currentTimeMillis()+(wait * timeMultiplier)-1;
 				shuttingDownNextAnnounce=System.currentTimeMillis() + ((wait * timeMultiplier)/2)-100;
 				shuttingDownMob=mob;
-				CMLib.threads().startTickDown(this, Tickable.TICKID_AREA, 1);
-				showDisplayableShutdownTimeRemaining();
-				return true;
+				startCountDown=true;
 			}
 		}
 		if((!keepItDown)&&(commands.size()>1))
 			externalCommand=CMParms.combine(commands,1);
 
-		if((!noPrompt)
-		&&(!mob.session().confirm(L("Shutdown @x1 (y/N)?",CMProps.getVar(CMProps.Str.MUDNAME)),"N")))
-			return false;
-		shuttingDownMob=null;
+		if(!startCountDown)
+		{
+			if((!noPrompt)
+			&&(!mob.session().confirm(L("Shutdown @x1 (y/N)?",CMProps.getVar(CMProps.Str.MUDNAME)),"N")))
+				return false;
+
+			shuttingDownMob=null;
+		}
 		this.externalCommand=externalCommand;
 		this.keepItDown=keepItDown;
 
-		startShutdown(mob);
+		if(startCountDown)
+		{
+			CMLib.threads().startTickDown(this, Tickable.TICKID_AREA, 1);
+			showDisplayableShutdownTimeRemaining();
+			return true;
+		}
+		else
+			startShutdown(mob);
 		return false;
 	}
 

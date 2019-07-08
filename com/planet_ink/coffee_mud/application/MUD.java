@@ -517,8 +517,8 @@ public class MUD extends Thread implements MudHost
 					final long ellapsed=System.currentTimeMillis()-shutdownStateTime.get();
 					if(ellapsed > shutdownTimeout)
 					{
-						if((externalCommand!=null)&&(externalCommand.equalsIgnoreCase("hard")))
-							MUD.execExternalRestart();
+						if(externalCommand!=null)
+							MUD.execExternalRestart(externalCommand);
 						Log.errOut("** Shutdown timeout. **");
 						final StringBuilder lines=new StringBuilder("");
 						lines.append("\n\r^HThread: ^N"+currentShutdownThread.getName()+"\n\r");
@@ -2171,9 +2171,9 @@ public class MUD extends Thread implements MudHost
 			}
 			if(!bringDown)
 			{
-				if((execExternalCommand!=null)&&(execExternalCommand.equalsIgnoreCase("hard")))
+				if(execExternalCommand!=null)
 				{
-					execExternalRestart();
+					execExternalRestart(execExternalCommand);
 					execExternalCommand=null;
 					bringDown=true;
 				}
@@ -2181,21 +2181,35 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 
-	public static void execExternalRestart()
+	public static void execExternalRestart(final String command)
 	{
 		final Runtime r=Runtime.getRuntime();
 		try
 		{
-			if(new File("./restart.sh").exists())
+			if((command==null) || (command.equalsIgnoreCase("hard")))
 			{
-				r.exec("sh restart.sh");
-				Log.sysOut("Attempted to execute 'restart.sh' in "+new File(".").getCanonicalPath());
+				if(new File("./restart.sh").exists())
+				{
+					r.exec("sh restart.sh");
+					Log.sysOut("Attempted to execute 'restart.sh' in "+new File(".").getCanonicalPath());
+				}
+				else
+				if(new File(".\\restart.bat").exists())
+				{
+					r.exec("cmd.exe /c restart.bat");
+					Log.sysOut("Attempted to execute 'restart.bat' in "+new File(".").getCanonicalPath());
+				}
 			}
 			else
-			if(new File(".\\restart.bat").exists())
+			if(System.getProperty("os.name").toLowerCase().indexOf("windows")>=0)
 			{
-				r.exec("cmd.exe /c restart.bat");
-				Log.sysOut("Attempted to execute 'restart.bat' in "+new File(".").getCanonicalPath());
+				r.exec("cmd.exe /c "+command);
+				Log.sysOut("Attempted to execute '"+command+"' in "+new File(".").getCanonicalPath());
+			}
+			else
+			{
+				r.exec("sh "+command);
+				Log.sysOut("Attempted to execute '"+command+"' in "+new File(".").getCanonicalPath());
 			}
 		}
 		catch (final IOException e)
