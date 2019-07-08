@@ -389,13 +389,26 @@ public class Gardening extends GatheringSkill
 				}
 			}
 		}
+		Item mine=null;
+		if(code<0)
+		{
+			final PhysicalAgent P=R.fetchFromRoomFavorItems(null, what);
+			if((P instanceof Item)
+			&&(plantable(mob,(Item)P)))
+			{
+				mine=(Item)P;
+				code=mine.material();
+				foundShortName=mine.Name();
+			}
+			else
+				mine=null;
+		}
 		if(code<0)
 		{
 			commonTell(mob,L("You've never heard of '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 
-		Item mine=null;
 		for(int i=0;i<R.numItems();i++)
 		{
 			final Item I=R.getItem(i);
@@ -431,7 +444,8 @@ public class Gardening extends GatheringSkill
 		if((proficiencyCheck(mob,0,auto))
 		&&(isPotentialCrop(R,code)))
 		{
-			found=(Item)CMLib.materials().makeResource(code,Integer.toString(R.domainType()),false,null, "");
+			final String subType = (mine instanceof RawMaterial)?((RawMaterial)mine).getSubType():"";
+			found=(Item)CMLib.materials().makeResource(code,Integer.toString(R.domainType()),false,null, subType);
 			if((found!=null)
 			&&(mine.material()==found.material()))
 			{
