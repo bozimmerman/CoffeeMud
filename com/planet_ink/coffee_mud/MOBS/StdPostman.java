@@ -545,16 +545,18 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 		if((tickID==Tickable.TICKID_MOB)&&(getStartRoom()!=null))
 		{
 			boolean proceed=false;
-			// handle interest by watching the days go by...
 			// each chain is handled by one branch,
 			// since pending mail all looks the same.
-			Long L=postalTimes.get(postalChain()+"/"+postalBranch());
-			if((L==null)||(L.longValue()<System.currentTimeMillis()))
+			synchronized(postalTimes)
 			{
-				proceed=(L!=null);
-				L=Long.valueOf(System.currentTimeMillis()+postalWaitTime());
-				postalTimes.remove(postalChain()+"/"+postalBranch());
-				postalTimes.put(postalChain()+"/"+postalBranch(),L);
+				Long L=postalTimes.get(postalChain()+"/"+postalBranch());
+				if((L==null)||(L.longValue()<System.currentTimeMillis()))
+				{
+					proceed=(L!=null);
+					L=Long.valueOf(System.currentTimeMillis()+postalWaitTime());
+					postalTimes.remove(postalChain()+postalBranch());
+					postalTimes.put(postalChain()+postalBranch(),L);
+				}
 			}
 			if(proceed)
 			{
@@ -568,8 +570,10 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				{
 					final DatabaseEngine.PlayerData PD=postalDataV.get(v);
 					if(PD.key().startsWith(postalBranch()+";"))
+					{
 						parsed.add(parsePostalItemData(PD.xml()));
-					CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
+						CMLib.database().DBDeletePlayerData(PD.who(),PD.section(),PD.key());
+					}
 				}
 				PostOffice P=null;
 				for(int v=0;v<parsed.size();v++)
