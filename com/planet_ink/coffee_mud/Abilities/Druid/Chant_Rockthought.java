@@ -153,6 +153,15 @@ public class Chant_Rockthought extends Chant
 						if(target.isInCombat())
 							target.makePeace(true);
 						target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> look(s) stubborn."));
+						if(mob.getVictim()==target)
+							mob.makePeace(false);
+						for(final Enumeration<Pair<MOB,Short>> m=mob.followers();m.hasMoreElements();)
+						{
+							final MOB M=m.nextElement().first;
+							if((M!=null)
+							&&(M.getVictim()==target))
+								M.makePeace(true);
+						}
 					}
 				}
 			}
