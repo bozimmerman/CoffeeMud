@@ -571,7 +571,7 @@ public class RoomLoader
 							{
 								final Area A=a.nextElement();
 								if((A!=null)
-								&&(A.getCachedRoomnumbers().contains(nextRoomID)))
+								&&(A.getProperRoomnumbers().contains(nextRoomID)))
 								{
 									otherA=A;
 									if(!CMath.bset(A.flags(), Area.FLAG_THIN))
@@ -579,6 +579,7 @@ public class RoomLoader
 								}
 							}
 						}
+
 						if(newRoom!=null)
 						{
 							/* its all worked out now */

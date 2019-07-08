@@ -163,7 +163,8 @@ public class MasterDyeing extends MasterPaintingSkill
 				final Color256 C=c.nextElement();
 				final int exp=C.getExpertiseNum();
 				if(exp<=super.getXLEVELLevel(mob)
-				&&(!C.getCmChars().equals("^K")))
+				&&(!C.getCmChars().equals("^K"))
+				&&(!C.getCmChars().equals("^#000")))
 				{
 					if(!done.contains(C.getName1()))
 					{
