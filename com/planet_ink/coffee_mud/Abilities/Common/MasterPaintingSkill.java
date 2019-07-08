@@ -66,8 +66,6 @@ public class MasterPaintingSkill extends PaintingSkill
 		for(int i=0;i<colorsNames.size();i++)
 			finalColorPhrase=CMStrings.replaceAll(finalColorPhrase, "@x"+(i+1), colorsNames.get(i));
 		final String finalUncoloredPhrase = super.fixColor(basePhrase, finalColorPhrase);
-		//if(finalUncoloredPhrase.indexOf("pinstriped")>0) //TODO:BZ:DELME
-		//	System.out.print(""); //TODO:BZ:DELME
 		final Integer ZERO=Integer.valueOf(0);
 		final Map<Integer, List<String>> masks = new HashMap<Integer, List<String>>();
 		masks.put(ZERO, new ArrayList<String>());

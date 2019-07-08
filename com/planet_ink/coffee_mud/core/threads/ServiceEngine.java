@@ -858,7 +858,6 @@ public class ServiceEngine implements ThreadEngine
 					final Tickable T=(C!=null)?C.getClientObject():null;
 					if(T!=null)
 					{
-						System.out.println(T.name());
 						if(exactOnly)
 						{
 							if(T.name().equalsIgnoreCase(name))
