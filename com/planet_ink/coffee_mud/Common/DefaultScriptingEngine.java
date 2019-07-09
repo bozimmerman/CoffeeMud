@@ -9981,6 +9981,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((newTarget!=null)&&(A!=null))
 				{
 					A.setProficiency(100);
+					monster.resetToMaxState();
 					A.invoke(monster,newTarget,false,0);
 				}
 				break;
@@ -10003,6 +10004,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					A.setProficiency(100);
 					final List<String> commands = CMParms.parse(args);
+					monster.resetToMaxState();
 					A.invoke(monster, commands, newTarget, false, 0);
 				}
 				break;
