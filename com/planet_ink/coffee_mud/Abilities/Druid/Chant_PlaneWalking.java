@@ -112,10 +112,10 @@ public class Chant_PlaneWalking extends PlanarAbility
 			this.alwaysRandomArea=true;
 			if(super.getPlanarAbility(R.getArea())==null)
 			{
-				final boolean hereok=mob.location().findItem(null,"DruidicMonument")!=null;
-				if(!hereok)
+				final Item otherPlant = Druid_MyPlants.myPlant(R, mob, 0);
+				if(otherPlant==null)
 				{
-					mob.tell(L("There is no druidic monument here.  You can only begin this chant in a druidic grove."));
+					mob.tell(L("There is none of your plants here.  You can only travel from here through one of your plants."));
 					return false;
 				}
 			}
@@ -124,7 +124,7 @@ public class Chant_PlaneWalking extends PlanarAbility
 				final Item otherPlant = Druid_MyPlants.myPlant(R, mob, 0);
 				if(otherPlant == null)
 				{
-					mob.tell(L("There is none of your plants here.  You can travel from here through one of your plants."));
+					mob.tell(L("There is none of your plants here.  You can only travel from here through one of your plants."));
 					return false;
 				}
 			}
