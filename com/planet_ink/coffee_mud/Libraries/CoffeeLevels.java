@@ -585,18 +585,20 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			}
 		}
 
-		mob.setExperience(mob.getExperience()+amount);
-		if(pStats != null)
-			pStats.setLastXPAwardMillis(System.currentTimeMillis());
-		if(!quiet)
+		if(mob.basePhyStats().level() < CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
 		{
-			if(amount>1)
-				mob.tell(L("^N^!You gain ^H@x1^N^! experience points@x2.^N",""+amount,homageMessage));
-			else
-			if(amount>0)
-				mob.tell(L("^N^!You gain ^H@x1^N^! experience point@x2.^N",""+amount,homageMessage));
+			mob.setExperience(mob.getExperience()+amount);
+			if(pStats != null)
+				pStats.setLastXPAwardMillis(System.currentTimeMillis());
+			if(!quiet)
+			{
+				if(amount>1)
+					mob.tell(L("^N^!You gain ^H@x1^N^! experience points@x2.^N",""+amount,homageMessage));
+				else
+				if(amount>0)
+					mob.tell(L("^N^!You gain ^H@x1^N^! experience point@x2.^N",""+amount,homageMessage));
+			}
 		}
-
 		checkLevelGain(mob);
 	}
 
@@ -658,13 +660,16 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				return;
 		}
 
-		mob.setExperience(mob.getExperience()+amount);
-		if(pStats!=null)
-			pStats.setLastXPAwardMillis(System.currentTimeMillis());
-		//if(homageMessage==null)
-		//	homageMessage="";
-		//if(!quiet)
-		//	mob.tell(L("^N^!You gain ^H@x1^N^! roleplay XP@x2.^N",""+amount,homageMessage));
+		if(mob.basePhyStats().level() < CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
+		{
+			mob.setExperience(mob.getExperience()+amount);
+			if(pStats!=null)
+				pStats.setLastXPAwardMillis(System.currentTimeMillis());
+			//if(homageMessage==null)
+			//	homageMessage="";
+			//if(!quiet)
+			//	mob.tell(L("^N^!You gain ^H@x1^N^! roleplay XP@x2.^N",""+amount,homageMessage));
+		}
 
 		checkLevelGain(mob);
 	}
