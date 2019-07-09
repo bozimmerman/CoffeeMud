@@ -9981,7 +9981,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((newTarget!=null)&&(A!=null))
 				{
 					A.setProficiency(100);
-					monster.resetToMaxState();
+					if(monster != scripted)
+						monster.resetToMaxState();
 					A.invoke(monster,newTarget,false,0);
 				}
 				break;
@@ -10004,7 +10005,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					A.setProficiency(100);
 					final List<String> commands = CMParms.parse(args);
-					monster.resetToMaxState();
+					if(monster != scripted)
+						monster.resetToMaxState();
 					A.invoke(monster, commands, newTarget, false, 0);
 				}
 				break;
@@ -10031,7 +10033,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
 						newTarget.addNonUninvokableEffect(A);
 					else
+					{
+						if(monster != scripted)
+							monster.resetToMaxState();
 						A.invoke(monster,CMParms.parse(m2),newTarget,true,0);
+					}
 				}
 				break;
 			}
@@ -11135,6 +11141,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(A!=null)
 				{
 					altStatusTickable=A;
+					if(monster != scripted)
+						monster.resetToMaxState();
 					A.invoke(monster,CMParms.parse(arg1),null,true,0);
 					altStatusTickable=null;
 				}
@@ -11153,6 +11161,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(A!=null)
 				{
 					altStatusTickable=A;
+					if(monster != scripted)
+						monster.resetToMaxState();
 					A.invoke(monster,CMParms.parse(arg1+" LANDONLY"),null,true,0);
 					altStatusTickable=null;
 				}
