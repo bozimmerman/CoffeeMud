@@ -101,6 +101,8 @@ public class Prayer_TrueResurrection extends Prayer_Resurrect
 		return false;
 	}
 
+	protected TreeMap<String, Long> lastCasts = new TreeMap<String, Long>();
+
 	@Override
 	protected boolean canResurrectNormalMobs()
 	{
@@ -138,6 +140,29 @@ public class Prayer_TrueResurrection extends Prayer_Resurrect
 				return false;
 			}
 			givenTarget = corpseItem;
+			final Long lastTime;
+			synchronized(lastCasts)
+			{
+				final TimeClock C=CMLib.time().localClock(mob);
+				final long millisPerMudDay = C.getHoursInDay() * CMProps.getMillisPerMudHour();
+				final long expires = System.currentTimeMillis() - millisPerMudDay;
+				final List<String> removeThese = new ArrayList<String>(1);
+				for(final String key : lastCasts.keySet())
+				{
+					if(lastCasts.get(key).longValue() <= expires)
+						removeThese.remove(key);
+				}
+				for(final String key : removeThese)
+					lastCasts.remove(key);
+				lastTime = lastCasts.get(corpseName);
+			}
+			if(lastTime == null)
+				lastCasts.put(corpseName, lastTime);
+			else
+			{
+				mob.tell(L("That spirit can not handle another True Resurrection right now."));
+				return false;
+			}
 		}
 		return super.invoke(mob,commands,givenTarget,auto,asLevel);
 	}
