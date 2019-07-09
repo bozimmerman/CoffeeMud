@@ -95,7 +95,7 @@
 10 Masonry MASK=+CON 12 REQUIRES=Sculpting 
 10 Boatwright MASK=+WIS 12 REQUIRES=Carpentry 
 10 Siegecraft MASK=+STR 12 REQUIRES=Carpentry 
-10 Smelting MASK=+CON 12 REQUIRES=Blacksmithing 
+10 Smelting MASK=+CON 12
 10 Speculate MASK=+WIS 10 
 10 Taxidermy MASK=+INT 12 
 10 Wainwrighting MASK=+INT 12 REQUIRES=Carpentry 
