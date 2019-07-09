@@ -5366,7 +5366,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	{
 		if((mob != null)
 		&&(E!=null)
-		&&(!mob.isMonster())
+		&&(mob.isPlayer())
 		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 		{
 			ensureAchievementsLoaded();
@@ -5466,7 +5466,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final List<Achievement> achievements=new ArrayList<Achievement>(1);
 		if((mob != null)
 		&&(E!=null)
-		&&(!mob.isMonster())
+		&&(mob.isPlayer())
 		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 		{
 			ensureAchievementsLoaded();
@@ -6315,7 +6315,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public boolean addModifyAchievement(final MOB mob, final Agent agent, final String tattoo, final Achievement A)
 	{
-		if(mob.isMonster())
+		if(!mob.isPlayer())
 			return false;
 		boolean ok=false;
 		int showFlag=-1;
