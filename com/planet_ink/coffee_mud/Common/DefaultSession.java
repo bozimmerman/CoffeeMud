@@ -1452,7 +1452,7 @@ public class DefaultSession implements Session
 				for(final Iterator<SessionFilter> s=textFilters.iterator();s.hasNext();)
 				{
 					final SessionFilter filter = s.next();
-					newMsg = filter.applyFilter(src, trg, tol, newMsg);
+					newMsg = filter.applyFilter(mob, src, trg, tol, newMsg);
 					if(newMsg == null)
 					{
 						s.remove();

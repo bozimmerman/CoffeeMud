@@ -48,14 +48,15 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		/**
 		 * Applies this filter to the text about to be sent to a session.
 		 * Returns either the modified text, or null to cancel the filter.
-		 *
+		 * @param mob the mob whose session this is
 		 * @param source the source of the text message
 		 * @param target the target of the text message
 		 * @param tool the tool being used by the message generator
 		 * @param msg the message itself
+		 *
 		 * @return the modified message, or null to remove the filter
 		 */
-		public String applyFilter(final Physical source, final Environmental target, final Environmental tool, final String msg);
+		public String applyFilter(MOB mob, final Physical source, final Environmental target, final Environmental tool, final String msg);
 	}
 
 	/**
