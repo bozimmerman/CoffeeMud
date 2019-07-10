@@ -3235,8 +3235,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		else
 		if((qualClassesV.size()==1)||(session==null)||(session.isStopped()))
 		{
-			mob.baseCharStats().setCurrentClass(qualClassesV.get(0));
-			mob.charStats().setCurrentClass(qualClassesV.get(0));
+			CharClass newClass = null;
+			for(final Iterator<CharClass> c=qualClassesV.iterator();c.hasNext();)
+			{
+				final CharClass C=c.next();
+				if(C.getSubClassRule()==CharClass.SubClassRule.ANY)
+				{
+					newClass=C;
+					break;
+				}
+			}
+			if((newClass == null)
+			&&(qualClassesV.contains(CMClass.getCharClass("Apprentice"))))
+				newClass = CMClass.getCharClass("Apprentice");
+			if(newClass == null)
+				newClass = qualClassesV.get(0);
+			mob.baseCharStats().setCurrentClass(newClass);
+			mob.charStats().setCurrentClass(newClass);
 			loginObj.state=LoginState.CHARCR_CLASSDONE;
 			return null;
 		}
