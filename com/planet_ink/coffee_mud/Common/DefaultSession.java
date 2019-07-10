@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionFilter;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -141,7 +142,8 @@ public class DefaultSession implements Session
 	protected boolean		 debugBinInput		 = false;
 	protected StringBuffer   debugBinInputBuf	 = new StringBuffer("");
 
-	protected volatile InputCallback inputCallback  = null;
+	protected List<SessionFilter>		textFilters		= new Vector<SessionFilter>(3);
+	protected volatile InputCallback	inputCallback	= null;
 
 	@Override
 	public String ID()
@@ -1323,7 +1325,7 @@ public class DefaultSession implements Session
 	@Override
 	public void print(final String msg)
 	{
-		onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false),false);
+		onlyPrint(applyFilters(mob,mob,null,msg,false),false);
 	}
 
 	@Override
@@ -1374,19 +1376,19 @@ public class DefaultSession implements Session
 	@Override
 	public void stdPrint(final String msg)
 	{
-		rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false));
+		rawPrint(applyFilters(mob,mob,null,msg,false));
 	}
 
 	@Override
 	public void print(final Physical src, final Environmental trg, final Environmental tol, final String msg)
 	{
-		onlyPrint((CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)),false);
+		onlyPrint((applyFilters(src,trg,tol,msg,false)),false);
 	}
 
 	@Override
 	public void stdPrint(final Physical src, final Environmental trg, final Environmental tol, final String msg)
 	{
-		rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,trg,msg,false));
+		rawPrint(applyFilters(src,trg,trg,msg,false));
 	}
 
 	@Override
@@ -1400,7 +1402,7 @@ public class DefaultSession implements Session
 	public void wraplessPrintln(final String msg)
 	{
 		if(msg!=null)
-			onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,true)+"\n\r",false);
+			onlyPrint(applyFilters(mob,mob,null,msg,true)+"\n\r",false);
 		needPrompt=true;
 	}
 
@@ -1408,7 +1410,7 @@ public class DefaultSession implements Session
 	public void wraplessPrint(final String msg)
 	{
 		if(msg!=null)
-			onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,true),false);
+			onlyPrint(applyFilters(mob,mob,null,msg,true),false);
 		needPrompt=true;
 	}
 
@@ -1440,25 +1442,50 @@ public class DefaultSession implements Session
 		needPrompt=true;
 	}
 
+	protected String applyFilters(final Physical src, final Environmental trg, final Environmental tol, final String msg, final boolean noWrap)
+	{
+		if(msg!=null)
+		{
+			if(!textFilters.isEmpty())
+			{
+				String newMsg = msg;
+				for(final Iterator<SessionFilter> s=textFilters.iterator();s.hasNext();)
+				{
+					final SessionFilter filter = s.next();
+					newMsg = filter.applyFilter(src, trg, tol, newMsg);
+					if(newMsg == null)
+					{
+						s.remove();
+						return CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,noWrap);
+					}
+				}
+				return CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,newMsg,noWrap);
+			}
+			else
+				return CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,noWrap);
+		}
+		return msg;
+	}
+
 	@Override
 	public void stdPrintln(final String msg)
 	{
 		if(msg!=null)
-			rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false)+"\n\r");
+			rawPrint(applyFilters(mob,mob,null,msg,false)+"\n\r");
 	}
 
 	@Override
 	public void println(final Physical src, final Environmental trg, final Environmental tol, final String msg)
 	{
 		if(msg!=null)
-			onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r",false);
+			onlyPrint(applyFilters(src,trg,tol,msg,false)+"\n\r",false);
 	}
 
 	@Override
-	public void stdPrintln(final Physical src,final Environmental trg, final Environmental tol, final String msg)
+	public void stdPrintln(final Physical src, final Environmental trg, final Environmental tol, final String msg)
 	{
 		if(msg!=null)
-			rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r");
+			rawPrint(applyFilters(src,trg,tol,msg,false)+"\n\r");
 	}
 
 	@Override
@@ -3355,6 +3382,19 @@ public class DefaultSession implements Session
 		{
 			return (activeMillis>0)?System.currentTimeMillis()-activeMillis:0;
 		}
+	}
+
+	@Override
+	public boolean addSessionFilter(final SessionFilter filter)
+	{
+		if(filter == null)
+			return false;
+		if(!textFilters.contains(filter))
+		{
+			this.textFilters.add(filter);
+			return true;
+		}
+		return false;
 	}
 
 	@Override

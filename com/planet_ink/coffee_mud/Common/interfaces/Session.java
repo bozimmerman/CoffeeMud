@@ -43,6 +43,21 @@ import java.net.SocketException;
  */
 public interface Session extends CMCommon, Modifiable, CMRunnable
 {
+	public interface SessionFilter
+	{
+		/**
+		 * Applies this filter to the text about to be sent to a session.
+		 * Returns either the modified text, or null to cancel the filter.
+		 *
+		 * @param source the source of the text message
+		 * @param target the target of the text message
+		 * @param tool the tool being used by the message generator
+		 * @param msg the message itself
+		 * @return the modified message, or null to remove the filter
+		 */
+		public String applyFilter(final Physical source, final Environmental target, final Environmental tool, final String msg);
+	}
+
 	/**
 	 * Negotiates various telnet options (or attempts to), and
 	 * prints the introTextStr to the user.
@@ -214,6 +229,15 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * @return true if this session is not a connection
 	 */
 	public boolean isFake();
+
+	/**
+	 * Adds a new text filter to this session, which can
+	 * modify any text immediately before it is sent
+	 * to the user.
+	 * @param filter the filter to add
+	 * @return true if the filter was added, false if it was already there
+	 */
+	public boolean addSessionFilter(final SessionFilter filter);
 
 	/**
 	 * Returns whether this session is engaged in a login/account
