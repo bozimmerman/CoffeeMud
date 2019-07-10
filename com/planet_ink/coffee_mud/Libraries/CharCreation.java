@@ -277,7 +277,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public List<CharClass> classQualifies(final MOB mob, final int theme)
 	{
 		mob.recoverCharStats();
-		final Vector<CharClass> them=new Vector<CharClass>();
+		final Vector<CharClass> them=new Vector<CharClass>(); // return value
 		final HashSet<String> doneClasses=new HashSet<String>();
 		for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 		{
@@ -306,7 +306,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	@Override
 	public List<Race> raceQualifies(final int theme)
 	{
-		final Vector<Race> qualRaces = new Vector<Race>();
+		final Vector<Race> qualRaces = new Vector<Race>(); // return value
 		final HashSet<String> doneRaces=new HashSet<String>();
 		for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 		{
@@ -3236,18 +3236,21 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((qualClassesV.size()==1)||(session==null)||(session.isStopped()))
 		{
 			CharClass newClass = null;
-			for(final Iterator<CharClass> c=qualClassesV.iterator();c.hasNext();)
+			if(qualClassesV.size()>1)
 			{
-				final CharClass C=c.next();
-				if(C.getSubClassRule()==CharClass.SubClassRule.ANY)
+				for(final Iterator<CharClass> c=qualClassesV.iterator();c.hasNext();)
 				{
-					newClass=C;
-					break;
+					final CharClass C=c.next();
+					if(C.getSubClassRule()==CharClass.SubClassRule.ANY)
+					{
+						newClass=C;
+						break;
+					}
 				}
+				if((newClass == null)
+				&&(qualClassesV.contains(CMClass.getCharClass("Apprentice"))))
+					newClass = CMClass.getCharClass("Apprentice");
 			}
-			if((newClass == null)
-			&&(qualClassesV.contains(CMClass.getCharClass("Apprentice"))))
-				newClass = CMClass.getCharClass("Apprentice");
 			if(newClass == null)
 				newClass = qualClassesV.get(0);
 			mob.baseCharStats().setCurrentClass(newClass);
