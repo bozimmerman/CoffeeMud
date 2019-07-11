@@ -18,6 +18,7 @@
  17. New internal property: ExtraData, for attaching random data to specific objects.
  18. New common skills: Master Dyeing, and Master Lacquering
  19. Players >= last player level no longer gain experience.
+ 20. New disease: Color Blindness.  All Canine-related races now have it.
 
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque
