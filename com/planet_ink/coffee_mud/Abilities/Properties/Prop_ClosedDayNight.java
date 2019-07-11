@@ -60,7 +60,7 @@ public class Prop_ClosedDayNight extends Property
 	protected boolean	lockupFlag	= false;
 	protected int		openTime	= -1;
 	protected int		closeTime	= -1;
-	protected String	Home		= null;
+	protected String	homeStr		= null;
 	protected String	shopMsg		= null;
 	protected Room		exitRoom	= null;
 
@@ -89,7 +89,7 @@ public class Prop_ClosedDayNight extends Property
 		openTime=-1;
 		closeTime=-1;
 		lastClosed=-1;
-		Home=null;
+		homeStr=null;
 		shopMsg=null;
 		for(int v=0;v<V.size();v++)
 		{
@@ -118,7 +118,7 @@ public class Prop_ClosedDayNight extends Property
 			}
 			else
 			if(s.startsWith("HOME="))
-				Home=V.elementAt(v).substring(5);
+				homeStr=V.elementAt(v).substring(5);
 			else
 			if(s.startsWith("SHOPMSG="))
 				shopMsg=V.elementAt(v).substring(8);
@@ -178,7 +178,7 @@ public class Prop_ClosedDayNight extends Property
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(closed(affected))
-		&&(Home!=null)
+		&&(homeStr!=null)
 		&&(!CMLib.flags().isSleeping(affected))
 		&&((msg.targetMinor()==CMMsg.TYP_BUY)
 		   ||(msg.targetMinor()==CMMsg.TYP_BID)
@@ -199,9 +199,9 @@ public class Prop_ClosedDayNight extends Property
 
 	protected Room getHomeRoom()
 	{
-		if(Home==null)
+		if(homeStr==null)
 			return null;
-		Room R=CMLib.map().getRoom(Home);
+		Room R=CMLib.map().getRoom(homeStr);
 		if(R!=null)
 			return R;
 		if(affected instanceof MOB)
@@ -214,15 +214,15 @@ public class Prop_ClosedDayNight extends Property
 				for (final Room room : checkSet)
 				{
 					final Room R2=CMLib.map().getRoom(room);
-					if((R2.roomID().indexOf(Home)>=0)
-					||CMLib.english().containsString(R2.name(),Home)
-					||CMLib.english().containsString(R2.displayText(),Home)
-					||CMLib.english().containsString(R2.description(),Home))
+					if((R2.roomID().indexOf(homeStr)>=0)
+					||CMLib.english().containsString(R2.name(),homeStr)
+					||CMLib.english().containsString(R2.displayText(),homeStr)
+					||CMLib.english().containsString(R2.description(),homeStr))
 					{
 						R = R2;
 						break;
 					}
-					if (R2.fetchInhabitant(Home) != null)
+					if (R2.fetchInhabitant(homeStr) != null)
 					{
 						R = R2;
 						break;
@@ -233,12 +233,12 @@ public class Prop_ClosedDayNight extends Property
 				return R;
 			try
 			{
-				final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, Home,false,10);
+				final List<Room> rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, homeStr,false,10);
 				if(rooms.size()>0)
 					R=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 				else
 				{
-					final List<MOB> inhabs=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob, Home, false, 10);
+					final List<MOB> inhabs=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob, homeStr, false, 10);
 					if(inhabs.size()>0)
 						R=CMLib.map().roomLocation(inhabs.get(CMLib.dice().roll(1,inhabs.size(),-1)));
 				}
@@ -301,7 +301,7 @@ public class Prop_ClosedDayNight extends Property
 					}
 				}
 
-				if(Home!=null)
+				if(homeStr!=null)
 				{
 					final Room R=getHomeRoom();
 					if((R!=null)&&(R!=mob.location()))
@@ -323,10 +323,58 @@ public class Prop_ClosedDayNight extends Property
 				}
 
 				if(sleepFlag)
-					mob.doCommand(CMParms.parse("SLEEP"),MUDCmdProcessor.METAFLAG_FORCED);
+				{
+					final Room R=mob.location();
+					if(R!=null)
+					{
+						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+						{
+							final Item I=i.nextElement();
+							if((I!=null)
+							&&(I.container()==null)
+							&&(I instanceof Rideable)
+							&&(!(I instanceof Exit))
+							&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_SLEEP))
+							{
+								final String itemName=R.getContextName(I);
+								if(!CMLib.flags().isSleeping(mob))
+								{
+									mob.doCommand(CMParms.parse("SLEEP \""+itemName+"\""),MUDCmdProcessor.METAFLAG_FORCED);
+									break;
+								}
+							}
+						}
+					}
+					if(!CMLib.flags().isSleeping(mob))
+						mob.doCommand(CMParms.parse("SLEEP"),MUDCmdProcessor.METAFLAG_FORCED);
+				}
 				else
 				if(sitFlag)
-					mob.doCommand(CMParms.parse("SIT"),MUDCmdProcessor.METAFLAG_FORCED);
+				{
+					final Room R=mob.location();
+					if(R!=null)
+					{
+						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+						{
+							final Item I=i.nextElement();
+							if((I!=null)
+							&&(I.container()==null)
+							&&(I instanceof Rideable)
+							&&(!(I instanceof Exit))
+							&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_SIT))
+							{
+								final String itemName=R.getContextName(I);
+								if(!CMLib.flags().isSitting(mob))
+								{
+									mob.doCommand(CMParms.parse("SIT \""+itemName+"\""),MUDCmdProcessor.METAFLAG_FORCED);
+									break;
+								}
+							}
+						}
+					}
+					if(!CMLib.flags().isSitting(mob))
+						mob.doCommand(CMParms.parse("SIT"),MUDCmdProcessor.METAFLAG_FORCED);
+				}
 				lastClosed=1;
 			}
 			else
@@ -334,7 +382,7 @@ public class Prop_ClosedDayNight extends Property
 				CMLib.commands().postStand(mob,true, false);
 				if(!CMLib.flags().isAliveAwakeMobile(mob,true)||(mob.isInCombat()))
 					return true;
-				if(Home!=null)
+				if(homeStr!=null)
 				{
 					if(mob.location()!=mob.getStartRoom())
 					{
@@ -399,7 +447,7 @@ public class Prop_ClosedDayNight extends Property
 		||(affected instanceof Item))
 		{
 			if((closed(affected))
-			&&(Home==null)
+			&&(homeStr==null)
 			&&(!sleepFlag)
 			&&(!sitFlag)
 			&&((!(affected instanceof MOB))||(!((MOB)affected).isInCombat())))
