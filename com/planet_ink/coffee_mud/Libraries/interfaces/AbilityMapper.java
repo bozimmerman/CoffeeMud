@@ -999,6 +999,17 @@ public interface AbilityMapper extends CMLibrary
 	public PairList<String,Integer> getAvailabilityList(final Ability A, int abbreviateAt);
 
 	/**
+	 * Returns the applicable mana compounding rule for the given mob and ability.
+	 * @see AbilityMapper.CompoundingRule
+	 *
+	 * @param mob the mob to find a rule for, or null to find one for everyone
+	 * @param A the ability to find a rule for
+	 *
+	 * @return the applicable rule, or null
+	 */
+	public CompoundingRule getCompoundingRule(final MOB mob, final Ability A);
+
+	/**
 	 * A mapping between an Ability ID and it's qualifying level
 	 * @see AbilityMapper#getAbilityAllowsList(String)
 	 * @author Bo Zimmerman
@@ -1319,4 +1330,56 @@ public interface AbilityMapper extends CMLibrary
 		 */
 		public AbilityMapping		copyOf();
 	}
+
+	/**
+	 * A definition class for a mana compounding rule.  These
+	 * are defined in the INI file under MANACOMPOUND.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static interface CompoundingRule
+	{
+		/**
+		 * The compiled zapper mask for mobs to whom this
+		 * rule applies, or null to apply to everyone.
+		 *
+		 * @return the compiled zappermask
+		 */
+		public MaskingLibrary.CompiledZMask mobMask();
+
+		/**
+		 * The compiled zapper mask for abilities to whom this
+		 * rule applies, or null to apply to all unmatched ones.
+		 *
+		 * @return the compiled zappermask
+		 */
+		public MaskingLibrary.CompiledZMask ableMask();
+
+		/**
+		 * The number of ticks that this rule applies for.
+		 *
+		 * @return the number of ticks
+		 */
+		public int compoundingTicks();
+
+		/**
+		 * The percentage of mana/move cost increased for each
+		 * subsequent use within the compoundingTicks time.
+		 *
+		 * @return a percentage increase
+		 */
+		public double pctPenalty();
+
+		/**
+		 * A flat amount of mana/move cost increased for
+		 * each subsequent use within the compoundingTicks time,
+		 * or -1 to reject the skill use entirely, thus making
+		 * the manacompound system into a cooldown system.
+		 *
+		 * @return an amount of cost, or -1
+		 */
+		public int amtPenalty();
+	}
+
 }

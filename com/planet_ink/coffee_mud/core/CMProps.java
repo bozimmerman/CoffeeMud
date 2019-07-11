@@ -218,7 +218,8 @@ public class CMProps extends Properties
 		CLANTROPMONTHLYAREA,
 		CLANTROPMONTHLYLVLS,
 		CLANTROPMONTHLYCP,
-		CLANTROPMONTHLYMB
+		CLANTROPMONTHLYMB,
+		MANACOMPOUND_RULES
 	}
 
 	/**
@@ -332,10 +333,7 @@ public class CMProps extends Properties
 		RP_EMOTE_OTH,
 		RP_GOAFK,
 		RP_CHANNEL,
-		RP_CHANNEL_NAMED,
-		MANACOMPOUND_TICKS,
-		MANACOMPOUND_PCTPENALTY,
-		MANACOMPOUND_AMTPENALTY,
+		RP_CHANNEL_NAMED
 		;
 
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -2357,31 +2355,8 @@ public class CMProps extends Properties
 			setIntVar(Int.MANACONSUMEAMT,-200);
 		else
 			setIntVar(Int.MANACONSUMEAMT,CMath.s_int(getStr("MANACONSUMEAMT").trim()));
+		setUpLowVar(Str.MANACOMPOUND_RULES,getStr("MANACOMPOUND"));
 		String s;
-		s=getStr("MANACOMPOUND");
-		setIntVar(Int.MANACOMPOUND_PCTPENALTY,0);
-		setIntVar(Int.MANACOMPOUND_AMTPENALTY,0);
-		setIntVar(Int.MANACOMPOUND_TICKS,0);
-		if(s.trim().length()>0)
-		{
-			for(final String entry : CMParms.parseSemicolons(s, true))
-			{
-				final List<String> eparts = CMParms.parseSpaces(entry,true);
-				if(eparts.size()>1)
-				{
-					setIntVar(Int.MANACOMPOUND_TICKS,CMath.s_int(eparts.get(0)));
-					for(int i=1;i<eparts.size();i++)
-					{
-						final String epart=eparts.get(i);
-						if(CMath.isPct(epart))
-							setIntVar(Int.MANACOMPOUND_PCTPENALTY,CMath.s_int(epart.substring(0,epart.length()-1)));
-						else
-						if(CMath.isInteger(epart))
-							setIntVar(Int.MANACOMPOUND_AMTPENALTY,CMath.s_int(epart));
-					}
-				}
-			}
-		}
 		s=getStr("COMBATSYSTEM");
 		if("queue".equalsIgnoreCase(s))
 			setIntVar(Int.COMBATSYSTEM,CombatLibrary.CombatSystem.QUEUE.ordinal());

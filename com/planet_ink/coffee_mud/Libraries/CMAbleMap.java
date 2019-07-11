@@ -1,9 +1,12 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.CompoundingRule;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CommonSkill;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -50,6 +53,10 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 									reverseAbilityMap		= new TreeMap<String, Map<String, AbilityMapping>>();
 	public final static Map<String,AbilityMapping>
 									emptyAbleMap 			= new ReadOnlySortedMap<String,AbilityMapping>();
+	protected Map<String,List<CompoundingRule>>
+									compounders				= new SHashtable<String, List<CompoundingRule>>();
+	protected List<CompoundingRule>	compoundingRules		= new Vector<CompoundingRule>();
+	protected volatile boolean		compoundingRulesLoaded	= false;
 	protected Map<String, Integer>	lowestQualifyingLevelMap= new SHashtable<String, Integer>();
 	protected Map<String, Integer>	maxProficiencyMap	 	= new SHashtable<String, Integer>();
 	protected Map<String, Object>	allows  				= new SHashtable<String, Object>();
@@ -2282,6 +2289,60 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		};
 	}
 
+	public CompoundingRule getCompoundingRule(final MOB mob, final Ability A)
+	{
+		if(A==null)
+			return null;
+		if(compoundingRules.isEmpty())
+		{
+			if(compoundingRulesLoaded)
+				return null;
+			loadCompoundingRules();
+			if(compoundingRules.isEmpty())
+				return null;
+		}
+		List<CompoundingRule> rules = compounders.get(A.ID().toUpperCase());
+		if(rules == null)
+		{
+			rules=new LinkedList<CompoundingRule>();
+			final List<CompoundingRule> remainRules = new LinkedList<CompoundingRule>();
+			for(final CompoundingRule rule : compoundingRules)
+			{
+				if(rule.ableMask()==null)
+					remainRules.add(rule);
+				else
+				if(CMLib.masking().maskCheck(rule.ableMask(), A, true))
+					rules.add(rule);
+			}
+			if(rules.size()==0)
+				rules.addAll(remainRules);
+			compounders.put(A.ID().toUpperCase(), rules);
+		}
+		if(rules.isEmpty())
+			return null;
+		if(rules.size()==1)
+		{
+			final CompoundingRule rule = rules.get(0);
+			if(rule.mobMask()==null)
+				return rule;
+			if((mob != null)
+			&&(CMLib.masking().maskCheck(rule.mobMask(), mob, true)))
+				return rule;
+			return null;
+		}
+		CompoundingRule remainRule = null;
+		for(final CompoundingRule rule : rules)
+		{
+			if(rule.mobMask()==null)
+				remainRule=rule;
+			else
+			if((mob != null)
+			&&(CMLib.masking().maskCheck(rule.mobMask(), mob, true)))
+				return rule;
+		}
+		return remainRule;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Map<String,AbilityMapping>> getAllQualifiesMap(final Map<String,Object> cache)
@@ -2485,5 +2546,110 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			}
 		}
 		return avail;
+	}
+
+	protected void loadCompoundingRules()
+	{
+		if(compoundingRulesLoaded || (!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+			return;
+		final List<String> compoundRuleStrs = CMParms.parseCommas(CMProps.getVar(Str.MANACOMPOUND_RULES), true);
+		this.compounders.clear();
+		this.compoundingRules.clear();
+		for(String ruleStr : compoundRuleStrs)
+		{
+			final int x=ruleStr.indexOf(' ');
+			if(x<=0)
+			{
+				Log.errOut("Bad rule in MANACOMPOUND: "+ruleStr);
+				continue;
+			}
+			final String ticksStr=ruleStr.substring(0,x).trim();
+			if(!CMath.isInteger(ticksStr))
+			{
+				Log.errOut("Bad ticks in MANACOMPOUND: "+ruleStr);
+				continue;
+			}
+			final int finalTicks=CMath.s_int(ticksStr);
+			ruleStr=ruleStr.substring(x+1).trim();
+			final int y=ruleStr.indexOf(' ');
+			String amtStr;
+			if(y<0)
+				amtStr=ruleStr;
+			else
+			{
+				amtStr=ruleStr.substring(0,y).trim();
+				ruleStr=ruleStr.substring(y+1).trim();
+			}
+			final double amtPct;
+			final int amount;
+			if(CMath.isPct(amtStr))
+			{
+				amtPct=CMath.s_pct(amtStr);
+				amount=0;
+			}
+			else
+			if(CMath.isInteger(amtStr))
+			{
+				amtPct=0.0;
+				amount=CMath.s_int(amtStr);
+			}
+			else
+			{
+				Log.errOut("Bad amt in MANACOMPOUND: "+ruleStr);
+				continue;
+			}
+			final String mobMaskStr = CMParms.getParmStr(ruleStr, "MOBMASK", "");
+			final MaskingLibrary.CompiledZMask mobMask = (mobMaskStr.trim().length()>0) ? CMLib.masking().getPreCompiledMask(mobMaskStr) : null;
+			final String ableMaskStr = CMParms.getParmStr(ruleStr, "ABILITYMASK", "");
+			final MaskingLibrary.CompiledZMask ableMask = (ableMaskStr.trim().length()>0) ? CMLib.masking().getPreCompiledMask(ableMaskStr) : null;
+			final AbilityMapper.CompoundingRule rule = new AbilityMapper.CompoundingRule()
+			{
+				final MaskingLibrary.CompiledZMask	mmask	= mobMask;
+				final MaskingLibrary.CompiledZMask	amask	= ableMask;
+				final double						pct		= amtPct;
+				final int							amt		= amount;
+				final int							ticks	= finalTicks;
+
+				@Override
+				public CompiledZMask mobMask()
+				{
+					return mmask;
+				}
+
+				@Override
+				public CompiledZMask ableMask()
+				{
+					return amask;
+				}
+
+				@Override
+				public int compoundingTicks()
+				{
+					return ticks;
+				}
+
+				@Override
+				public double pctPenalty()
+				{
+					return pct;
+				}
+
+				@Override
+				public int amtPenalty()
+				{
+					return amt;
+				}
+			};
+			compoundingRules.add(rule);
+		}
+		compoundingRulesLoaded = true;
+	}
+
+	@Override
+	public void propertiesLoaded()
+	{
+		super.propertiesLoaded();
+		compoundingRulesLoaded=false;
+		loadCompoundingRules();
 	}
 }

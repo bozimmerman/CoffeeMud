@@ -1601,8 +1601,9 @@ public class StdAbility implements Ability
 			int[] consumed=usageCost(mob,false);
 			final int[] timeCache;
 			final int nowLSW = (int)(System.currentTimeMillis()&0x7FFFFFFF);
-			final int compoundTicks=CMProps.getIntVar(CMProps.Int.MANACOMPOUND_TICKS);
-			if((compoundTicks > 0)
+			final AbilityMapper.CompoundingRule rule = CMLib.ableMapper().getCompoundingRule(mob, this);
+			if((rule!=null)
+			&&(rule.compoundingTicks() > 0)
 			&&(consumed != STATIC_USAGE_NADA)
 			&&(overrideMana()<Integer.MAX_VALUE-51))
 			{
@@ -1613,27 +1614,35 @@ public class StdAbility implements Ability
 				if(timeCache[USAGEINDEX_TIMELSW]>nowLSW)
 					timeCache[USAGEINDEX_TIMELSW]=0;
 				final int numTicksSinceLastCast=(int)((nowLSW-timeCache[USAGEINDEX_TIMELSW]) / CMProps.getTickMillis());
-				if((numTicksSinceLastCast >= compoundTicks)||(ignoreCompounding()))
+				if((numTicksSinceLastCast >= rule.compoundingTicks())||(ignoreCompounding()))
 					timeCache[USAGEINDEX_COUNT]=0;
 				else
 				{
 					consumed=Arrays.copyOf(consumed, consumed.length);
-					final double pctPenalty = CMath.div(CMProps.getIntVar(CMProps.Int.MANACOMPOUND_PCTPENALTY), 100.0);
-					final double amtPenalty = CMProps.getIntVar(CMProps.Int.MANACOMPOUND_AMTPENALTY);
-					for(int usageIndex = 0 ; usageIndex < Ability.USAGEINDEX_TOTAL; usageIndex++)
+					final double pctPenalty = rule.pctPenalty();
+					final double amtPenalty = rule.amtPenalty();
+					if(amtPenalty < 0)
 					{
-						if(consumed[usageIndex]>0)
+						mob.tell(L("You can't do that again just yet."));
+						return false;
+					}
+					else
+					{
+						for(int usageIndex = 0 ; usageIndex < Ability.USAGEINDEX_TOTAL; usageIndex++)
 						{
-							double newAmt=consumed[usageIndex];
-							for(int ct=0;ct<timeCache[USAGEINDEX_COUNT];ct++)
+							if(consumed[usageIndex]>0)
 							{
-								if(newAmt<Short.MAX_VALUE)
+								double newAmt=consumed[usageIndex];
+								for(int ct=0;ct<timeCache[USAGEINDEX_COUNT];ct++)
 								{
-									newAmt+=amtPenalty;
-									newAmt+=CMath.mul(newAmt, pctPenalty);
+									if(newAmt<Short.MAX_VALUE)
+									{
+										newAmt+=amtPenalty;
+										newAmt+=CMath.mul(newAmt, pctPenalty);
+									}
 								}
+								consumed[usageIndex]=(int)Math.round(Math.ceil(newAmt));
 							}
-							consumed[usageIndex]=(int)Math.round(Math.ceil(newAmt));
 						}
 					}
 				}
