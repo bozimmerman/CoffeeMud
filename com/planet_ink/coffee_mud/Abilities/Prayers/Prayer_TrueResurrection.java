@@ -157,7 +157,7 @@ public class Prayer_TrueResurrection extends Prayer_Resurrect
 				lastTime = lastCasts.get(corpseName);
 			}
 			if(lastTime == null)
-				lastCasts.put(corpseName, lastTime);
+				lastCasts.put(corpseName, Long.valueOf(System.currentTimeMillis()));
 			else
 			{
 				mob.tell(L("That spirit can not handle another True Resurrection right now."));
