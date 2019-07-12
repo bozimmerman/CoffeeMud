@@ -88,7 +88,8 @@ public interface ProtocolLibrary extends CMLibrary
 		request,
 		maplevel,
 		client,
-		client_version
+		client_version,
+		external_discord_hello
 	}
 
 	/**
