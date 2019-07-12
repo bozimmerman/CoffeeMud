@@ -2548,6 +2548,12 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		return avail;
 	}
 
+	@Override
+	public Enumeration<CompoundingRule> compoundingRules()
+	{
+		return new IteratorEnumeration<CompoundingRule>(this.compoundingRules.iterator());
+	}
+
 	protected void loadCompoundingRules()
 	{
 		if(compoundingRulesLoaded || (!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))

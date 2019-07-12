@@ -1001,6 +1001,7 @@ public interface AbilityMapper extends CMLibrary
 	/**
 	 * Returns the applicable mana compounding rule for the given mob and ability.
 	 * @see AbilityMapper.CompoundingRule
+	 * @see AbilityMapper#compoundingRules()
 	 *
 	 * @param mob the mob to find a rule for, or null to find one for everyone
 	 * @param A the ability to find a rule for
@@ -1008,6 +1009,15 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the applicable rule, or null
 	 */
 	public CompoundingRule getCompoundingRule(final MOB mob, final Ability A);
+
+	/**
+	 * Returns an enumeration of all defined compounding rules.
+	 * @see AbilityMapper.CompoundingRule
+	 * @see AbilityMapper#getCompoundingRule(MOB, Ability)
+	 *
+	 * @return  an enumeration of all defined compounding rules.
+	 */
+	public Enumeration<CompoundingRule> compoundingRules();
 
 	/**
 	 * A mapping between an Ability ID and it's qualifying level
