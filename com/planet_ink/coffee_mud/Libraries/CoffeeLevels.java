@@ -39,6 +39,8 @@ import java.util.*;
 */
 public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 {
+	protected int experienceCap = -1;
+
 	@Override
 	public String ID()
 	{
@@ -226,7 +228,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.baseState().setMovement(getLevelMove(mob));
 		if(mob.getWimpHitPoint()>0)
 			mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
-		mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()));
+		mob.setExperience(getLevelExperience(mob.basePhyStats().level()));
 		return mob;
 	}
 
@@ -491,7 +493,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				int sireShare=(int)Math.round(CMath.div(amount,10.0));
 				if(sireShare<=0)
 					sireShare=1;
-				CMLib.leveler().postExperience(sire,null," from "+mob.name(sire),sireShare,quiet);
+				postExperience(sire,null," from "+mob.name(sire),sireShare,quiet);
 				return amount-sireShare;
 			}
 		}
@@ -586,7 +588,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 
 		if((mob.basePhyStats().level() < CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
-		||(mob.getExperience()<CMath.mul(CMLib.leveler().getLevelExperience(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)), 1.02)))
+		||(mob.getExperience()<getGainedExperienceCap()))
 		{
 			mob.setExperience(mob.getExperience()+amount);
 			if(pStats != null)
@@ -662,7 +664,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 
 		if((mob.basePhyStats().level() < CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
-		||(mob.getExperience()<CMath.mul(CMLib.leveler().getLevelExperience(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)), 1.02)))
+		||(mob.getExperience()<getGainedExperienceCap()))
 		{
 			mob.setExperience(mob.getExperience()+amount);
 			if(pStats!=null)
@@ -727,6 +729,15 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		else
 			loseRPExperience(mob,-amount);
 		return true;
+	}
+
+	protected int getGainedExperienceCap()
+	{
+		if(experienceCap < 0)
+		{
+			experienceCap = (int)Math.round(CMath.mul(getLevelExperience(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)), 1.02));
+		}
+		return experienceCap;
 	}
 
 	@Override
@@ -1203,7 +1214,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 						for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 						{
 							final MOB M=m.nextElement();
-							posted = CMLib.leveler().postExperience(M, null, null, amount, false) && posted;
+							posted = postExperience(M, null, null, amount, false) && posted;
 						}
 					}
 				}
@@ -1215,5 +1226,6 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	@Override
 	public void propertiesLoaded()
 	{
+		experienceCap = -1;
 	}
 }

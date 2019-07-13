@@ -17,7 +17,7 @@
  16. New MOB class: GenRideableUndead, with Raise Undead support in prayers.
  17. New internal property: ExtraData, for attaching random data to specific objects.
  18. New common skills: Master Dyeing, and Master Lacquering
- 19. Players >= last player level no longer gain experience.
+ 19. Players >= last player level no longer gain experience above a 2% over cap.
  20. New disease: Color Blindness.  All Canine-related races now have it.
  21. MANACOMPOUND system expanded to support multiple rules, masks, and ability cooldowns
  22. New PROMPT variable to list your skills on cooldown/mana compounding.
