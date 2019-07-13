@@ -585,7 +585,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			}
 		}
 
-		if(mob.basePhyStats().level() < CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
+		if((mob.basePhyStats().level() < CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
+		||(mob.getExperience()<CMath.mul(CMLib.leveler().getLevelExperience(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)), 1.02)))
 		{
 			mob.setExperience(mob.getExperience()+amount);
 			if(pStats != null)
@@ -660,7 +661,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				return;
 		}
 
-		if(mob.basePhyStats().level() < CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
+		if((mob.basePhyStats().level() < CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
+		||(mob.getExperience()<CMath.mul(CMLib.leveler().getLevelExperience(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)), 1.02)))
 		{
 			mob.setExperience(mob.getExperience()+amount);
 			if(pStats!=null)
