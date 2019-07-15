@@ -351,7 +351,7 @@ public class Who extends StdCommand
 		if(args.length==0)
 			return getWho(mob,false,null,null);
 		else
-		if(super.checkArguments(filterParameters, args, null))
+		if(super.checkArguments(filterParameters, args))
 			return getWho(mob,((Boolean)args[0]).booleanValue(),(Filterer<MOB>)args[1],null);
 		return Boolean.FALSE;
 	}
