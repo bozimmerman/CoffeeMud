@@ -333,7 +333,8 @@ public class CMProps extends Properties
 		RP_EMOTE_OTH,
 		RP_GOAFK,
 		RP_CHANNEL,
-		RP_CHANNEL_NAMED
+		RP_CHANNEL_NAMED,
+		MAXITEMSWORN,
 		;
 
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -2535,6 +2536,7 @@ public class CMProps extends Properties
 			setIntVar(Int.STARTMOVE,CMath.s_int(stateVar));
 
 		setIntVar(Int.MAXITEMSHOWN,getStr("MAXITEMSHOWN"));
+		setIntVar(Int.MAXITEMSWORN,getStr("MAXITEMSWORN"));
 		setIntVar(Int.MUDSTATE,getStr("MUDSTATE"));
 
 		setUpLowVar(Str.FORMULA_ATTACKADJUSTMENT, getStr("FORMULA_ATTACKADJUSTMENT","(50+@x1+(((@x2-9)/5)*((@x3-9)/5)*((@x3-9)/5))+@x4)-(0.15*@xx*@x5)-(0.15*@xx*@x6)-(0.3*@xx*@x7)"));

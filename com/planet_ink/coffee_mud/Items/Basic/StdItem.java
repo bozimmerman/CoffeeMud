@@ -523,6 +523,7 @@ public class StdItem implements Item
 			return (whereCantWear(mob)==0);
 		if((rawProperLocationBitmap()&where)!=where)
 			return false;
+
 		return mob.freeWearPositions(where,(short)0,(short)0)>0;
 	}
 

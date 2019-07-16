@@ -5328,7 +5328,11 @@ public class StdMOB implements MOB
 		int x = getWearPositions(wornCode);
 		if (x <= 0)
 			return 0;
-		x -= fetchWornItems(wornCode, belowLayer, layerAttributes).size();
+		final int maxItemsEver = CMProps.getIntVar(CMProps.Int.MAXITEMSWORN);
+		final List<Item> allItems=fetchWornItems(wornCode, belowLayer, layerAttributes);
+		if((maxItemsEver > 0) && (allItems.size()>=maxItemsEver))
+			return 0;
+		x -= counItemsWornAt(allItems, wornCode);
 		if (x <= 0)
 			return 0;
 		return x;
@@ -5407,6 +5411,17 @@ public class StdMOB implements MOB
 		if (!found)
 			return 1;
 		return add;
+	}
+
+	protected int counItemsWornAt(final List<Item> items, final long wornCode)
+	{
+		int ct=0;
+		for (final Item thisItem : items)
+		{
+			if (thisItem.amWearingAt(wornCode))
+				ct++;
+		}
+		return ct;
 	}
 
 	@Override

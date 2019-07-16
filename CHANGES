@@ -22,6 +22,7 @@
  21. MANACOMPOUND system expanded to support multiple rules, masks, and ability cooldowns
  22. New PROMPT variable to list your skills on cooldown/mana compounding.
  23. New command: SUBSCRIBE, for getting notifications about journal posts
+ 24. New INI entry: MAXITEMSWORN, to limit total items worn
 
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque
