@@ -848,9 +848,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				if((M!=null)
 				&&(M.playerStats()!=null)
 				&&(M.playerStats().getSubscriptions().contains(notifyName))
-				&&(to==null)
+				&&((from==null)
+					||(!from.equalsIgnoreCase(M.Name())))
+				&&((to==null)
 					||(to.equalsIgnoreCase("ALL"))
-					||(to.equalsIgnoreCase(M.Name())))
+					||(to.equalsIgnoreCase(M.Name()))))
 				{
 					M.tell(L("^w@x1 Notification: @x2 just added a new message.^?",journal,from));
 				}

@@ -93,7 +93,7 @@ public class Subscribe extends StdCommand
 				return false;
 			}
 			name=CMStrings.capitalizeAndLower(name);
-			final PhysicalAgent A=mob.location().fetchFromMOBRoomFavorsItems(mob, null, name, null);
+			final PhysicalAgent A=mob.location().fetchFromMOBRoomFavorsItems(mob, null, name, Wearable.FILTER_UNWORNONLY);
 			String journalName=null;
 			if(A!=null)
 			{
