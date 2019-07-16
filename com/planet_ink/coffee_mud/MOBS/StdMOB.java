@@ -5329,7 +5329,7 @@ public class StdMOB implements MOB
 		if (x <= 0)
 			return 0;
 		final int maxItemsEver = CMProps.getIntVar(CMProps.Int.MAXITEMSWORN);
-		final List<Item> allItems=fetchWornItems(wornCode, belowLayer, layerAttributes);
+		final List<Item> allItems=fetchWornItems(Long.MIN_VALUE, belowLayer, layerAttributes);
 		if((maxItemsEver > 0) && (allItems.size()>=maxItemsEver))
 			return 0;
 		x -= counItemsWornAt(allItems, wornCode);
