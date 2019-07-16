@@ -123,7 +123,7 @@
 121	very light sea green	sprout-green	1	10	#87ffaf	5	253
 122	very light aquamarine-colored	caper-cyan	1	14	#87ffd7	1	254
 123	very light cyan	seaglass-cyan	1	14	#87ffff	3	255
-124	strong scarlet	griffindor-scarlet	1	1	#af0000	3	300
+124	strong scarlet	gryffindor-scarlet	1	1	#af0000	3	300
 125	strong rose	red-flirt-colored	1	1	#af005f	4	301
 126	strong light fuchsia	violet-flirt	1	5	#af0087	10	302
 127	strong magenta	red-violet	1	5	#af00af	1	303
