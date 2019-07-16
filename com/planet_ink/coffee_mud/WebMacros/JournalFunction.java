@@ -167,6 +167,7 @@ public class JournalFunction extends StdWebMacro
 				&&(entry.parent().equals(msg.parent())))
 					return "";
 			}
+			CMLib.journals().notifyPosting(journalName, msg.from(), msg.to(), msg.subj());
 			CMLib.database().DBWriteJournal(journalName,msg);
 			JournalInfo.clearJournalCache(httpReq, journalName);
 			if(parent!=null)
@@ -289,6 +290,7 @@ public class JournalFunction extends StdWebMacro
 						messages.append("Reply to #"+cardinalNumber+" not submitted -- No text!<BR>");
 					else
 					{
+						CMLib.journals().notifyReplying(journalName, entry.from(), from, entry.subj());
 						CMLib.database().DBWriteJournalReply(journalName,entry.key(),from,"","",clearWebMacros(text));
 						CMLib.journals().clearJournalSummaryStats(forum);
 						JournalInfo.clearJournalCache(httpReq, journalName);

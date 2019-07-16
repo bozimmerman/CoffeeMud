@@ -80,7 +80,22 @@ public class ForumInfo extends StdWebMacro
 		{
 			final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
 			final List<String> mylist=lists.get(last);
-			str.append( ((mylist!=null)&&(M!=null)) ? Boolean.toString(mylist.contains(M.Name())) : "false").append(", ");
+			final boolean found;
+			if((mylist != null)&&(M!=null))
+			{
+				if(mylist.contains(M.Name()))
+					found=true;
+				else
+				if((M.playerStats()!=null)
+				&&(M.playerStats().getAccount()!=null)
+				&&(mylist.contains(M.playerStats().getAccount().getAccountName())))
+					found=true;
+				else
+					found=false;
+			}
+			else
+				found=false;
+			str.append(""+found).append(", ");
 		}
 
 		if(parms.containsKey("SMTPADDRESS"))

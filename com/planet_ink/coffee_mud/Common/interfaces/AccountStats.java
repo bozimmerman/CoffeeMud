@@ -293,6 +293,15 @@ public interface AccountStats extends CMCommon, Achievable
 	public void setBonusLanguageLimits(int bonus);
 
 	/**
+	 * Returns a modifiable Set that contains the set of journal
+	 * subscriptions, normalized to uppercase, that the player
+	 * has subscribed to and wishes to get notifications about.
+	 *
+	 * @return a set of journal names
+	 */
+	public Set<String> getSubscriptions();
+
+	/**
 	 * Returns a modifiable Set that contains the set of player
 	 * Names that constitutes this players friends.
 	 *

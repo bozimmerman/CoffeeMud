@@ -208,6 +208,30 @@ public class StdBook extends StdItem implements Book
 	}
 
 	@Override
+	public boolean canRead(final MOB mob)
+	{
+		final String adminReq=getAdminReq().trim();
+		final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
+		if((!admin)
+		&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)))
+		&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean canWrite(final MOB mob)
+	{
+		final String adminReq=getAdminReq().trim();
+		final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
+		if((!CMLib.masking().maskCheck(getWriteReq(),mob,true))
+		&&(!admin)
+		&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))))
+			return false;
+		return true;
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		final MOB mob=msg.source();
@@ -271,7 +295,7 @@ public class StdBook extends StdItem implements Book
 					final String adminReq=getAdminReq().trim();
 					final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
 					final long lastTime=mob.playerStats().getLastDateTime();
-					if((admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
+					if((!admin)&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
 					{
 						mob.tell(L("You are not allowed to read @x1.",name()));
 						return;

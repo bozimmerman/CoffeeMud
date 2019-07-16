@@ -63,6 +63,9 @@ public interface JournalsLibrary extends CMLibrary
 	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, boolean autoAdd) throws IOException;
 	public void makeMessageASync(final MOB mob, final String messageTitle, final List<String> vbuf, final boolean autoAdd, final MsgMkrCallback back);
 
+	public void notifyPosting(final String journal, final String from, final String to, final String subject);
+	public void notifyReplying(final String journal, final String tpAuthor, final String reAuthor, final String subject);
+
 	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
 
 	public interface MsgMkrCallback

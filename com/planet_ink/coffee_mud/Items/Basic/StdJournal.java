@@ -149,6 +149,31 @@ public class StdJournal extends StdItem implements Book
 		return super.okMessage(myHost,msg);
 	}
 
+	@Override
+	public boolean canRead(final MOB mob)
+	{
+		final String adminReq=getAdminReq().trim();
+		final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
+		if((!admin)
+		&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)))
+		&&(!CMLib.masking().maskCheck(getReadReq(),mob,true)))
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean canWrite(final MOB mob)
+	{
+		final String adminReq=getAdminReq().trim();
+		final boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true))
+							||CMSecurity.isJournalAccessAllowed(mob,Name());
+		if((!CMLib.masking().maskCheck(getWriteReq(),mob,true))
+		&&(!admin)
+		&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS))))
+			return false;
+		return true;
+	}
+
 	protected boolean completeTransfer(final MOB mob, final CMMsg msg, final String journal, final JournalEntry entry2)
 	{
 		String realName=null;
@@ -169,6 +194,7 @@ public class StdJournal extends StdItem implements Book
 		if(realName!=null)
 		{
 			CMLib.database().DBDeleteJournal(Name(),entry2.key());
+			CMLib.journals().notifyPosting(realName, entry2.from(), entry2.to(), entry2.subj());
 			CMLib.database().DBWriteJournal(realName,
 											  entry2.from(),
 											  entry2.to(),
@@ -454,6 +480,7 @@ public class StdJournal extends StdItem implements Book
 											final String replyMsg=mob.session().prompt(L("Enter your response\n\r: "));
 											if(replyMsg.trim().length()>0)
 											{
+												CMLib.journals().notifyReplying(Name(), read.from(),mob.Name(), read.subj());
 												read = CMLib.database().DBWriteJournalReply(Name(),read.key(),mob.Name(),"","",replyMsg);
 												if(R!=null)
 													R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Reply added."), CMMsg.MSG_WROTE, replyMsg, -1, null));
@@ -648,6 +675,7 @@ public class StdJournal extends StdItem implements Book
 							mob.tell(L("Illegal code, aborted."));
 							return;
 						}
+						CMLib.journals().notifyPosting(Name(), mob.Name(), to, subject);
 						CMLib.database().DBWriteJournal(Name(),mob.Name(),to,subject,message);
 						if((R!=null)&&(msg.targetMessage().length()<=1))
 							R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Journal entry added."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
@@ -972,6 +1000,7 @@ public class StdJournal extends StdItem implements Book
 	@Override
 	public void addRawContent(final String authorName, final String content)
 	{
+		CMLib.journals().notifyPosting(Name(), authorName, "ALL", L("Unknown"));
 		if(content.startsWith("::")&&(content.length()>2)&&(content.charAt(2)!=':'))
 		{
 			final int x=content.indexOf("::",2);

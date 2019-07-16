@@ -156,4 +156,17 @@ public class StdPaper extends StdItem implements Book
 		}
 		return true;
 	}
+
+	@Override
+	public boolean canRead(final MOB mob)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canWrite(final MOB mob)
+	{
+		return true;
+	}
+
 }

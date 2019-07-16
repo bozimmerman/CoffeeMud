@@ -114,4 +114,21 @@ public interface Book extends Item
 	 * @return true if it is shared, false otherwise
 	 */
 	public boolean isJournal();
+
+	/**
+	 * Returns whether the content is readable by the given mob/player.
+	 *
+	 * @param mob the mob/player to check
+	 * @return true if this journal item can be read by that mob/player
+	 */
+	public boolean canRead(final MOB mob);
+
+
+	/**
+	 * Returns whether this can be written to by the given mob/player
+	 *
+	 * @param mob the mob/player to check
+	 * @return true if this journal item can be written to by that mob/player
+	 */
+	public boolean canWrite(final MOB mob);
 }

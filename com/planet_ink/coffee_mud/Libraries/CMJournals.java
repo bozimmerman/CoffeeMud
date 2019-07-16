@@ -837,6 +837,48 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
+	public void notifyPosting(final String journal, final String from, final String to, final String subject)
+	{
+		final String notifyName = " P :"+journal.toUpperCase().trim();
+		for(final Session S : CMLib.sessions().allIterableAllHosts())
+		{
+			if(S!=null)
+			{
+				final MOB M=S.mob();
+				if((M!=null)
+				&&(M.playerStats()!=null)
+				&&(M.playerStats().getSubscriptions().contains(notifyName))
+				&&(to==null)
+					||(to.equalsIgnoreCase("ALL"))
+					||(to.equalsIgnoreCase(M.Name())))
+				{
+					M.tell(L("^w@x1 Notification: @x2 just added a new message.^?",journal,from));
+				}
+			}
+		}
+	}
+
+	@Override
+	public void notifyReplying(final String journal, final String tpAuthor, final String reAuthor, final String subject)
+	{
+		final String notifyName = " P :"+journal.toUpperCase().trim();
+		for(final Session S : CMLib.sessions().allIterableAllHosts())
+		{
+			if(S!=null)
+			{
+				final MOB M=S.mob();
+				if((M!=null)
+				&&(M.playerStats()!=null)
+				&&(M.playerStats().getSubscriptions().contains(notifyName))
+				&&(M.Name().equalsIgnoreCase(tpAuthor)))
+				{
+					M.tell(L("^w@x1 Notification: @x2 just replied to your message '@x3'.^?",journal,reAuthor,subject));
+				}
+			}
+		}
+	}
+
+	@Override
 	public void makeMessageASync(final MOB M, final String messageTitle, final List<String> vbuf, final boolean autoAdd, final MsgMkrCallback back)
 	{
 		final Session sess=M.session();

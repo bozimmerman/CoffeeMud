@@ -101,6 +101,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected long  		 replyTime		= 0;
 	protected Set<String>	 friends		= new SHashSet<String>();
 	protected Set<String>	 ignored		= new SHashSet<String>();
+	protected Set<String>	 subscriptions	= new SHashSet<String>();
 	protected List<String>	 tellStack		= new SVector<String>();
 	protected List<String>	 gtellStack		= new SVector<String>();
 	protected List<String>	 titles			= new SVector<String>();
@@ -167,6 +168,7 @@ public class DefaultPlayerStats implements PlayerStats
 			O.securityFlags=securityFlags.copyOf();
 			O.friends=new SHashSet<String>(friends);
 			O.ignored=new SHashSet<String>(ignored);
+			O.subscriptions=new SHashSet<String>(subscriptions);
 			O.tellStack=new SVector<String>(tellStack);
 			O.gtellStack=new SVector<String>(gtellStack);
 			O.titles=new SVector<String>(titles);
@@ -444,10 +446,12 @@ public class DefaultPlayerStats implements PlayerStats
 		if((str==null)||(str.length()==0))
 			return h;
 		str=CMStrings.replaceAll(str,"<FRIENDS>","");
+		str=CMStrings.replaceAll(str,"<SUBSCRIPTIONS>","");
 		str=CMStrings.replaceAll(str,"<IGNORED>","");
 		str=CMStrings.replaceAll(str,"<INTROS>","");
 		str=CMStrings.replaceAll(str,"</INTROS>","");
 		str=CMStrings.replaceAll(str,"</FRIENDS>","");
+		str=CMStrings.replaceAll(str,"</SUBSCRIPTIONS>","");
 		str=CMStrings.replaceAll(str,"</IGNORED>","");
 		int x=str.indexOf(';');
 		while(x>=0)
@@ -504,6 +508,14 @@ public class DefaultPlayerStats implements PlayerStats
 		if(account != null)
 			return account.getFriends();
 		return friends;
+	}
+
+	@Override
+	public Set<String> getSubscriptions()
+	{
+		if(account != null)
+			return account.getSubscriptions();
+		return subscriptions;
 	}
 
 	@Override
@@ -761,6 +773,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		final String friendsStr=getPrivateList(getFriends());
 		final String ignoredStr=getPrivateList(getIgnored());
+		final String subscriptionStr=getPrivateList(getSubscriptions());
 		final String privateListStr=getPrivateList(introductions);
 		final StringBuffer rest=new StringBuffer("");
 		final String[] codes=getStatCodes();
@@ -795,6 +808,7 @@ public class DefaultPlayerStats implements PlayerStats
 		return ((friendsStr.length()>0)?"<FRIENDS>"+friendsStr+"</FRIENDS>":"")
 			+((ignoredStr.length()>0)?"<IGNORED>"+ignoredStr+"</IGNORED>":"")
 			+((privateListStr.length()>0)?"<INTROS>"+privateListStr+"</INTROS>":"")
+			+((subscriptionStr.length()>0)?"<SUBSCRIPTIONS>"+subscriptionStr+"</SUBSCRIPTIONS>":"")
 			+"<WRAP>"+wrap+"</WRAP>"
 			+"<THEME>"+theme+"</THEME>"
 			+"<PAGEBREAK>"+pageBreak+"</PAGEBREAK>"
@@ -918,6 +932,11 @@ public class DefaultPlayerStats implements PlayerStats
 			Log.debugOut("FRIENDS="+str);
 		friends.clear();
 		friends.addAll(getHashFrom(str));
+		str=xmlLib.getValFromPieces(xml,"SUBSCRIPTIONS");
+		if(debug)
+			Log.debugOut("SUBSCRIPTIONS="+str);
+		subscriptions.clear();
+		subscriptions.addAll(getHashFrom(str));
 		str=xmlLib.getValFromPieces(xml,"IGNORED");
 		if(debug)
 			Log.debugOut("IGNORED="+str);
@@ -1633,7 +1652,7 @@ public class DefaultPlayerStats implements PlayerStats
 									 "BONUSCHARSTATS","AUTOINVSET",
 									 "MAXRPXP","CURRRPXP",
 									 "MAXDEFXP","CURRDEFXP",
-									 "LASTXPAWARD","FLAGS"};
+									 "LASTXPAWARD","FLAGS","SUBSCRIPTIONS"};
 
 	@Override
 	public String getStat(final String code)
@@ -1712,6 +1731,8 @@ public class DefaultPlayerStats implements PlayerStats
 			return ""+this.lastXPDateTime;
 		case 35:
 			return CMParms.toListString(playFlags);
+		case 36:
+			return getPrivateList(getSubscriptions());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1845,6 +1866,12 @@ public class DefaultPlayerStats implements PlayerStats
 			}
 			break;
 		}
+		case 36:
+		{
+			subscriptions.clear();
+			subscriptions.addAll(getHashFrom(val));
+			break;
+		}
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -1930,6 +1957,7 @@ public class DefaultPlayerStats implements PlayerStats
 	public void destroy()
 	{
 		friends.clear();
+		subscriptions.clear();
 		ignored.clear();
 		tellStack.clear();
 		gtellStack.clear();

@@ -366,6 +366,7 @@ public class CommandJournal extends StdCommand
 					prePend="(^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
 				else
 					prePend="";
+				CMLib.journals().notifyPosting(journal.JOURNAL_NAME(), mob.Name(), "ALL", msgString);
 				CMLib.database().DBWriteJournal(journal.JOURNAL_NAME(),mob.Name(),"ALL",
 						CMStrings.padRight("^.^N"+msgString+"^.^N",20),
 						prePend+msgString);

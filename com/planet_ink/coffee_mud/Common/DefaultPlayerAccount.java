@@ -57,6 +57,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 
 	protected SHashSet<String>	friends				= new SHashSet<String>();
 	protected SHashSet<String>	ignored				= new SHashSet<String>();
+	protected SHashSet<String>	subscriptions		= new SHashSet<String>();
 	protected SVector<String>	players				= new SVector<String>();
 	protected String			accountName 		= "";
 	protected String			lastIP				= "";
@@ -114,6 +115,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		{
 			final DefaultPlayerAccount O=(DefaultPlayerAccount)this.clone();
 			O.friends=friends.copyOf();
+			O.subscriptions=subscriptions.copyOf();
 			O.ignored=ignored.copyOf();
 			O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			O.thinPlayers = thinPlayers.copyOf();
@@ -140,6 +142,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		{
 			final DefaultPlayerAccount O = (DefaultPlayerAccount)otherAccount;
 			O.friends=friends.copyOf();
+			O.subscriptions=subscriptions.copyOf();
 			O.ignored=ignored.copyOf();
 			O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			O.thinPlayers = thinPlayers.copyOf();
@@ -276,6 +279,12 @@ public class DefaultPlayerAccount implements PlayerAccount
 	public Set<String> getIgnored()
 	{
 		return ignored;
+	}
+
+	@Override
+	public Set<String> getSubscriptions()
+	{
+		return subscriptions;
 	}
 
 	@Override
@@ -905,7 +914,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","LASTIP","LASTDATETIME",
 									 "NOTES","ACCTEXPIRATION","FLAGS","EMAIL",
 									 "BONUSCOMMON", "BONUSCRAFT","BONUSNONCRAFT","BONUSLANGS",
-									 "BONUSCHARSTATS", "BONUSCHARLIMIT", "BONUSCHARONLINE"};
+									 "BONUSCHARSTATS", "BONUSCHARLIMIT", "BONUSCHARONLINE",
+									 "SUBSCRIPTIONS"};
 
 	@Override
 	public String getStat(final String code)
@@ -944,6 +954,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 			return "" + bonusCharLimit;
 		case 15:
 			return "" + bonusCharOnlineLimit;
+		case 16:
+			return getPrivateList(getSubscriptions());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1015,6 +1027,12 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 15:
 			bonusCharOnlineLimit = CMath.s_parseIntExpression(val);
 			break;
+		case 16:
+		{
+			subscriptions.clear();
+			subscriptions.addAll(getHashFrom(val));
+			break;
+		}
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
