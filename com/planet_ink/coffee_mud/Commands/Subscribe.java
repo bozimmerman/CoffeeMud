@@ -130,7 +130,7 @@ public class Subscribe extends StdCommand
 						||CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.JOURNALS)))
 					{
 						found=true;
-						journalName=F.NAME();
+						journalName=F.NAME().toUpperCase().trim();
 						break;
 					}
 				}
@@ -144,7 +144,7 @@ public class Subscribe extends StdCommand
 						&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.JOURNALS)))
 						{
 							found=true;
-							journalName=F.NAME();
+							journalName=F.NAME().toUpperCase().trim();
 							break;
 						}
 					}
@@ -160,7 +160,7 @@ public class Subscribe extends StdCommand
 							||CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.JOURNALS)))
 						{
 							found=true;
-							journalName=F.NAME();
+							journalName=F.NAME().toUpperCase().trim();
 							break;
 						}
 					}
@@ -175,7 +175,7 @@ public class Subscribe extends StdCommand
 						&&(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.JOURNALS)))
 						{
 							found=true;
-							journalName=F.NAME();
+							journalName=F.NAME().toUpperCase().trim();
 							break;
 						}
 					}
