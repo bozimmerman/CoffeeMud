@@ -267,25 +267,26 @@ public class MOTD extends StdCommand
 				}
 
 				final List<Quest> qQVec=CMLib.quests().getPlayerPersistentQuests(mob);
+				final Session session = mob.session();
 				if(mob.session()!=null)
 				{
 					if(buf.length()>0)
 					{
 						if(qQVec.size()>0)
 							buf.append(L("\n\r^HYou are on @x1 quest(s).  Enter QUESTS to see them!.^?^.\n\r",""+qQVec.size()));
-						mob.session().wraplessPrintln("\n\r--------------------------------------\n\r"+buf.toString());
+						session.wraplessPrintln("\n\r--------------------------------------\n\r"+buf.toString());
 						if (pause)
 						{
-							mob.session().prompt(L("\n\rPress ENTER: "), 10000);
-							mob.session().println("\n\r");
+							session.prompt(L("\n\rPress ENTER: "), 10000);
+							session.println("\n\r");
 						}
 					}
 					else
 					if(qQVec.size()>0)
-						buf.append(L("\n\r^HYou are on @x1 quest(s).  Enter QUESTS to see them!.^?^.\n\r",""+qQVec.size()));
+						session.println(L("\n\r^HYou are on @x1 quest(s).  Enter QUESTS to see them!.^?^.\n\r",""+qQVec.size()));
 					else
 					if(parm.equals("AGAIN"))
-						mob.session().println(L("No @x1 to re-read.",what));
+						session.println(L("No @x1 to re-read.",what));
 
 					// check for new commandjournal postings that require a reply-to-self...
 					for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
@@ -296,7 +297,6 @@ public class MOTD extends StdCommand
 						final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan(CMJ.JOURNAL_NAME(), mob.Name(), -1);
 						if((items!=null)&&(items.size()>0))
 						{
-							final Session session=mob.session();
 							if(session.confirm(L("You have messages waiting response in @x1. Read now (y/N)? ", CMJ.NAME()),"N",5000))
 							{
 								int count=1;
@@ -319,6 +319,57 @@ public class MOTD extends StdCommand
 									if(msg2.value()>0)
 										count++;
 								}
+							}
+						}
+					}
+					final PlayerStats pstats = mob.playerStats();
+					if((pstats != null)
+					&&(pstats.getSubscriptions().size()>0))
+					{
+						for(String sub : pstats.getSubscriptions())
+						{
+							if(!sub.startsWith(" P :"))
+								continue;
+							sub=sub.substring(4).trim();
+							final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan(sub, null, pstats.getLastDateTime());
+							int newPosts = 0;
+							int newReplies=0;
+							final Map<String,JournalEntry> newEntries = new HashMap<String,JournalEntry>();
+							for(final JournalEntry J : items)
+								newEntries.put(J.key(), J);
+							for(final JournalEntry J : items)
+							{
+								if((J.to().equalsIgnoreCase(mob.Name())||J.to().equalsIgnoreCase("ALL"))
+								&&(!J.from().equalsIgnoreCase(mob.Name())))
+								{
+									if((J.parent()==null)
+									||(J.parent().length()==0))
+										newPosts++;
+									else
+									{
+										if(!newEntries.containsKey(J.parent()))
+										{
+											final JournalEntry E=CMLib.database().DBReadJournalEntry(sub, J.parent());
+											if(E!=null)
+												newEntries.put(E.key(), E);
+										}
+										final JournalEntry E=newEntries.get(J.parent());
+										if((E!=null)&&(E.from().equalsIgnoreCase(mob.Name())))
+											newReplies++;
+									}
+								}
+							}
+							if((session!=null)
+							&&(!session.isStopped()))
+							{
+								if((newPosts > 0) && (newReplies > 0))
+									session.println(L("The journal @x1 has @x2 new entries and @x3 replies for you.",sub,""+newPosts,""+newReplies));
+								else
+								if(newPosts > 0)
+									session.println(L("The journal @x1 has @x2 new entries.",sub,""+newPosts));
+								else
+								if(newReplies > 0)
+									session.println(L("The journal @x1 has @x2 new replies for you.",sub,""+newReplies));
 							}
 						}
 					}
