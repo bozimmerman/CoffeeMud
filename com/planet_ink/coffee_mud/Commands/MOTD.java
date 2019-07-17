@@ -85,7 +85,8 @@ public class MOTD extends StdCommand
 		}
 		final String parm=CMParms.combine(commands,1).toUpperCase();
 		oldOk = "PREVIOUS".startsWith(parm) || parm.equals("OLD");
-		if((mob.playerStats()!=null)
+		final PlayerStats pStats = mob.playerStats();
+		if((pStats!=null)
 		&&(parm.equals("AGAIN")||parm.equals("NEW")||oldOk))
 		{
 			final StringBuffer buf=new StringBuffer("");
@@ -116,7 +117,7 @@ public class MOTD extends StdCommand
 					final String subject=entry.subj();
 					String message=entry.msg();
 					final long compdate=entry.update();
-					if((compdate>mob.playerStats().getLastDateTime())||(oldOk))
+					if((compdate>pStats.getLastDateTime())||(oldOk))
 					{
 						boolean allMine=to.equalsIgnoreCase(mob.Name())
 										||from.equalsIgnoreCase(mob.Name());
@@ -167,7 +168,7 @@ public class MOTD extends StdCommand
 				if((postalChains.size()>0)&&(P!=null))
 				{
 					List<PlayerData> V=CMLib.database().DBReadPlayerData(mob.Name(),postalChains);
-					final Map<PostOffice,int[]> res=getPostalResults(V,mob.playerStats().getLastDateTime());
+					final Map<PostOffice,int[]> res=getPostalResults(V,pStats.getLastDateTime());
 					for(final Iterator<PostOffice> e=res.keySet().iterator();e.hasNext();)
 					{
 						P=e.next();
@@ -185,7 +186,7 @@ public class MOTD extends StdCommand
 								V=CMLib.database().DBReadPlayerData(C.name(),postalChains);
 								if(V.size()>0)
 								{
-									res2.putAll(getPostalResults(V,mob.playerStats().getLastDateTime()));
+									res2.putAll(getPostalResults(V,pStats.getLastDateTime()));
 								}
 							}
 							for(final Iterator<PostOffice> e=res2.keySet().iterator();e.hasNext();)
@@ -213,7 +214,7 @@ public class MOTD extends StdCommand
 				for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
 				{
 					final JournalsLibrary.CommandJournal CMJ=myEchoableCommandJournals.get(cj);
-					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan("SYSTEM_"+CMJ.NAME()+"S", "ALL", mob.playerStats().getLastDateTime());
+					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan("SYSTEM_"+CMJ.NAME()+"S", "ALL", pStats.getLastDateTime());
 					if(items!=null)
 					{
 						for(int i=0;i<items.size();i++)
@@ -230,11 +231,10 @@ public class MOTD extends StdCommand
 					buf.append("\n\r--------------------------------------\n\r");
 
 				final boolean canReceiveRealEmail =
-						(mob.playerStats()!=null)
-					  &&(mob.playerStats().getEmail().length()>0)
+						(pStats.getEmail().length()>0)
 					  &&(mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
-					  &&((mob.playerStats().getAccount()==null)
-						||(!mob.playerStats().getAccount().isSet(AccountFlag.NOAUTOFORWARD)));
+					  &&((pStats.getAccount()==null)
+						||(!pStats.getAccount().isSet(AccountFlag.NOAUTOFORWARD)));
 
 				if(canReceiveRealEmail
 				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
@@ -268,7 +268,7 @@ public class MOTD extends StdCommand
 
 				final List<Quest> qQVec=CMLib.quests().getPlayerPersistentQuests(mob);
 				final Session session = mob.session();
-				if(mob.session()!=null)
+				if(session!=null)
 				{
 					if(buf.length()>0)
 					{
@@ -322,16 +322,14 @@ public class MOTD extends StdCommand
 							}
 						}
 					}
-					final PlayerStats pstats = mob.playerStats();
-					if((pstats != null)
-					&&(pstats.getSubscriptions().size()>0))
+					if((pStats.getSubscriptions().size()>0))
 					{
-						for(String sub : pstats.getSubscriptions())
+						for(String sub : pStats.getSubscriptions())
 						{
 							if(!sub.startsWith(" P :"))
 								continue;
 							sub=sub.substring(4).trim();
-							final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan(sub, null, pstats.getLastDateTime());
+							final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan(sub, null, pStats.getLastDateTime());
 							int newPosts = 0;
 							int newReplies=0;
 							final Map<String,JournalEntry> newEntries = new HashMap<String,JournalEntry>();
