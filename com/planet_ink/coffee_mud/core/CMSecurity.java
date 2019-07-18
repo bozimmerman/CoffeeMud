@@ -2718,7 +2718,8 @@ public class CMSecurity
 		ANSIPROMPT("ANSI Y/N Prompt"),
 		FOODROT("food/milk rot"),
 		SHOWXP("show experience"),
-		LANGUAGES("language system")
+		LANGUAGES("language system"),
+		COMBATSTATS("player combat stats")
 		;
 		private final String desc;
 

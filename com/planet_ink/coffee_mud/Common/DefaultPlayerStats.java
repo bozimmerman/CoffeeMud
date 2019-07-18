@@ -1943,7 +1943,10 @@ public class DefaultPlayerStats implements PlayerStats
 	@Override
 	public long bumpLevelCombatStat(final PlayerCombatStat stat, final int level, final int amt)
 	{
-		if((stat == null) || (level <= 0) || (level >= CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)+10))
+		if((stat == null)
+		|| (level <= 0)
+		|| (CMSecurity.isDisabled(CMSecurity.DisFlag.COMBATSTATS))
+		|| (level >= CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)+10))
 			return 0;
 		if(level > combatStats.length)
 			combatStats = Arrays.copyOf(combatStats, level);

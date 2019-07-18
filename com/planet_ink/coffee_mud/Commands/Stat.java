@@ -946,7 +946,8 @@ public class Stat  extends Skills
 				if(ableTypes==ABLETYPE_COMBAT)
 				{
 					final PlayerStats pStats = target.playerStats();
-					if(pStats != null)
+					if((pStats != null)
+					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.COMBATSTATS)))
 					{
 						final int level=target.basePhyStats().level();
 						/*
