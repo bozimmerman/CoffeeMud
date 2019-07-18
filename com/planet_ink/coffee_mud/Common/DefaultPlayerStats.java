@@ -113,6 +113,8 @@ public class DefaultPlayerStats implements PlayerStats
 	protected Set<String>	 introductions	= new SHashSet<String>();
 	protected long[]	 	 prideExpireTime= new long[TimeClock.TimePeriod.values().length];
 	protected int[][]		 prideStats		= new int[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
+	protected long[][]		 combatStats	= new long[0][PlayerCombatStat.values().length];
+
 	protected ItemCollection extItems;
 
 	protected volatile boolean		isSavable		= true;
@@ -1652,7 +1654,8 @@ public class DefaultPlayerStats implements PlayerStats
 									 "BONUSCHARSTATS","AUTOINVSET",
 									 "MAXRPXP","CURRRPXP",
 									 "MAXDEFXP","CURRDEFXP",
-									 "LASTXPAWARD","FLAGS","SUBSCRIPTIONS"};
+									 "LASTXPAWARD","FLAGS","SUBSCRIPTIONS",
+									 "COMBATSTATS"};
 
 	@Override
 	public String getStat(final String code)
@@ -1733,6 +1736,23 @@ public class DefaultPlayerStats implements PlayerStats
 			return CMParms.toListString(playFlags);
 		case 36:
 			return getPrivateList(getSubscriptions());
+		case 37:
+		{
+			final StringBuilder str=new StringBuilder("");
+			if(combatStats.length>0)
+			{
+				for(final long[] list : this.combatStats)
+				{
+					if(list != null)
+						str.append(CMParms.toTightListString(list));
+					str.append(';');
+				}
+				while((str.length()>0)
+				&&(str.charAt(str.length()-1)==';'))
+					str.deleteCharAt(str.length()-1);
+			}
+			return str.toString();
+		}
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1872,6 +1892,24 @@ public class DefaultPlayerStats implements PlayerStats
 			subscriptions.addAll(getHashFrom(val));
 			break;
 		}
+		case 37:
+		{
+			final List<String> lines = CMParms.parseSemicolons(val, false);
+			while((lines.size()>0)
+			&& (lines.get(lines.size()-1).trim().length()==0))
+				lines.remove(lines.size()-1);
+			combatStats=new long[lines.size()][PlayerCombatStat.values().length];
+			for(int level = 0; level<combatStats.length; level++)
+			{
+				final long[] levelLine = CMParms.parseLongList(lines.get(level), ',');
+				if(levelLine.length < PlayerCombatStat.values().length)
+					combatStats[level] = Arrays.copyOf(levelLine, PlayerCombatStat.values().length);
+				else
+					combatStats[level] = levelLine;
+			}
+			break;
+
+		}
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -1900,6 +1938,27 @@ public class DefaultPlayerStats implements PlayerStats
 	public void removeAutoInvokeList(final String abilityID)
 	{
 		this.autoInvokeSet.remove(abilityID);
+	}
+
+	@Override
+	public long bumpLevelCombatStat(final PlayerCombatStat stat, final int level, final int amt)
+	{
+		if((stat == null) || (level <= 0) || (level >= CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)+10))
+			return 0;
+		if(level > combatStats.length)
+			combatStats = Arrays.copyOf(combatStats, level);
+		if(combatStats[level-1] == null)
+		{
+			combatStats[level-1] = new long[PlayerCombatStat.values().length];
+			combatStats[level-1][PlayerCombatStat.STATS_LEVEL.ordinal()] = level;
+		}
+		if((amt > 0)
+		&&(amt < Integer.MAX_VALUE/2))
+		{
+			if(Long.MAX_VALUE-combatStats[level-1][stat.ordinal()] > amt)
+				combatStats[level-1][stat.ordinal()] += amt;
+		}
+		return combatStats[level-1][stat.ordinal()];
 	}
 
 	@Override
@@ -1974,6 +2033,7 @@ public class DefaultPlayerStats implements PlayerStats
 		ableMap.clear();
 		experMap.clear();
 		levelInfo.clear();
+		combatStats=new long[0][PlayerCombatStat.values().length];
 	}
 
 	@Override

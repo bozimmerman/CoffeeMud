@@ -189,7 +189,8 @@ public class Link extends At
 			}
 		}
 		else
-		if(room.rawDoors()[opDir]==null)
+		if((room.rawDoors()[opDir]==null)
+		&&(!(mob.location().getArea() instanceof BoardableShip)))
 		{
 			if(hereGL!=null)
 			{

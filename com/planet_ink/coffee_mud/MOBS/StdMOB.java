@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FData;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerCombatStat;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -330,7 +331,10 @@ public class StdMOB implements MOB
 	public void setExperience(final int newVal)
 	{
 		if((newVal > experience) && (this.playerStats()!=null))
+		{
+			this.playerStats().bumpLevelCombatStat(PlayerCombatStat.EXPERIENCE_TOTAL, basePhyStats().level(), newVal-experience);
 			this.playerStats().setLastXPAwardMillis(System.currentTimeMillis());
+		}
 		experience = newVal;
 	}
 
@@ -2060,6 +2064,18 @@ public class StdMOB implements MOB
 			final int metaFlags = cmd.metaFlags;
 			try
 			{
+				// record an action taken in personal combat stats
+				final MOB combatant = victim;
+				if((cmd.actionCost>0)
+				&&(combatant!=null))
+				{
+					if(playerStats!=null)
+						playerStats.bumpLevelCombatStat(PlayerCombatStat.ACTIONS_DONE, basePhyStats().level(), 1);
+					if(combatant.playerStats()!=null)
+						combatant.playerStats().bumpLevelCombatStat(PlayerCombatStat.ACTIONS_TAKEN, combatant.basePhyStats().level(), 1);
+				}
+
+				// actually do the command queued up
 				if (O instanceof Command)
 				{
 					if (!((Command) O).preExecute(this, commands, metaFlags, secondsElapsed, -diff))
@@ -3802,12 +3818,20 @@ public class StdMOB implements MOB
 						tickStatus = Tickable.STATUS_FIGHT;
 						if((!isMonster) && isAttributeSet(MOB.Attrib.NOBATTLESPAM) && (peaceTime>0))
 							tell(L("^F^<FIGHT^>You are now in combat.^</FIGHT^>^N"));
-						peaceTime = 0;
 						if(CMLib.flags().canAutoAttack(this))
 							CMLib.combat().tickCombat(this);
 
 						if(!isMonster)
+						{
+							if(playerStats()!=null)
+							{
+								if(peaceTime > 0)
+									playerStats().bumpLevelCombatStat(PlayerCombatStat.COMBATS_TOTAL, basePhyStats().level(), 1);
+								playerStats().bumpLevelCombatStat(PlayerCombatStat.ROUNDS_TOTAL, basePhyStats().level(), 1);
+							}
 							CMLib.combat().handleDamageSpamSummary(this);
+						}
+						peaceTime = 0;
 					}
 					else
 					{

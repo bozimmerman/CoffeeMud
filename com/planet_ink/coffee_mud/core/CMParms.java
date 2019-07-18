@@ -792,6 +792,33 @@ public class CMParms
 	}
 
 	/**
+	 * Parses the given string comma-delimited for an long array
+	 * @param s the string to parse
+	 * @param delim the delimiter to use
+	 * @return the list of parsed longs
+	 */
+	public final static long[] parseLongList(final String s, final char delim)
+	{
+		final List<String> lst = parseAny(s,delim,true);
+		final List<Long> finalLst=new ArrayList<Long>(lst.size());
+		for(final String entry : lst)
+		{
+			try
+			{
+				if(entry.trim().length()>0)
+					finalLst.add(Long.valueOf(Long.parseLong(entry.trim())));
+			}
+			catch(final Exception e)
+			{
+			}
+		}
+		final long[] array = new long[finalLst.size()];
+		for(int i=0;i<finalLst.size();i++)
+			array[i]=finalLst.get(i).longValue();
+		return array;
+	}
+
+	/**
 	 * Parses the given string period-delimited.
 	 * @param s the string to parse
 	 * @return the list of parsed strings

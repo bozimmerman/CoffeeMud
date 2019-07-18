@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerCombatStat;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -944,7 +945,76 @@ public class Stat  extends Skills
 				else
 				if(ableTypes==ABLETYPE_COMBAT)
 				{
-					str.append(L("Combat summary:\n\r\n\r"));
+					final PlayerStats pStats = target.playerStats();
+					if(pStats != null)
+					{
+						final int level=target.basePhyStats().level();
+						/*
+						EXPERIENCE_TOTAL,
+						ROUNDS_TOTAL,
+						DEATHS_DONE,
+						ACTIONS_DONE,
+						DAMAGE_DONE,
+						HITS_DONE,
+						DEATHS_TAKEN,
+						ACTIONS_TAKEN,
+						DAMAGE_TAKEN,
+						HITS_TAKEN
+						*/
+						final long combats = pStats.bumpLevelCombatStat(PlayerCombatStat.COMBATS_TOTAL, level, 0);
+						final long rounds = pStats.bumpLevelCombatStat(PlayerCombatStat.ROUNDS_TOTAL, level, 0);
+						final long xp = pStats.bumpLevelCombatStat(PlayerCombatStat.EXPERIENCE_TOTAL, level, 0);
+						final long damage = pStats.bumpLevelCombatStat(PlayerCombatStat.DAMAGE_DONE, level, 0);
+						final long hits = pStats.bumpLevelCombatStat(PlayerCombatStat.HITS_DONE, level, 0);
+						final long hurt = pStats.bumpLevelCombatStat(PlayerCombatStat.DAMAGE_TAKEN, level, 0);
+						final long hitstaken = pStats.bumpLevelCombatStat(PlayerCombatStat.HITS_TAKEN, level, 0);
+						final long actions = pStats.bumpLevelCombatStat(PlayerCombatStat.ACTIONS_DONE, level, 0);
+						str.append(L("Player Combat Summary for level @x1:\n\r",""+level));
+						str.append(CMStrings.padRight(L("Total Combats"),20)).append(": ")
+							.append(combats)
+							.append("\n\r");
+						str.append(CMStrings.padRight(L("Total Rounds"),20)).append(": ")
+							.append(rounds)
+							.append("\n\r");
+						str.append(CMStrings.padRight(L("Total Kills"),20)).append(": ")
+							.append(pStats.bumpLevelCombatStat(PlayerCombatStat.DEATHS_DONE, level, 0))
+							.append("\n\r");
+						str.append(CMStrings.padRight(L("Total Deaths"),20)).append(": ")
+							.append(pStats.bumpLevelCombatStat(PlayerCombatStat.DEATHS_TAKEN, level, 0))
+							.append("\n\r");
+						str.append(CMStrings.padRight(L("Experience"),20)).append(": ")
+							.append(CMStrings.padRight(""+xp,15))
+							.append(" ").append(CMath.round(CMath.div(xp,combats),2)).append("/combat ")
+							.append(", ").append(CMath.round(CMath.div(xp,rounds),2)).append("/round")
+							.append("\n\r");
+						str.append(CMStrings.padRight(L("Damage Done"),20)).append(": ")
+							.append(CMStrings.padRight(""+damage,15))
+							.append(" ").append(CMath.round(CMath.div(damage,combats),2)).append("/combat ")
+							.append(", ").append(CMath.round(CMath.div(damage,rounds),2)).append("/round")
+							.append("\n\r");
+						str.append(CMStrings.padRight(L("Damage Taken"),20)).append(": ")
+							.append(CMStrings.padRight(""+hurt,15))
+							.append(" ").append(CMath.round(CMath.div(hurt,combats),2)).append("/combat ")
+							.append(", ").append(CMath.round(CMath.div(hurt,rounds),2)).append("/round")
+							.append("\n\r");
+						str.append(CMStrings.padRight(L("Hits Done"),20)).append(": ")
+							.append(CMStrings.padRight(""+hits,15))
+							.append(" ").append(CMath.round(CMath.div(hits,combats),2)).append("/combat ")
+							.append(", ").append(CMath.round(CMath.div(hits,rounds),2)).append("/round")
+							.append("\n\r");
+						str.append(CMStrings.padRight(L("Hits Taken"),20)).append(": ")
+							.append(CMStrings.padRight(""+hitstaken,15))
+							.append(" ").append(CMath.round(CMath.div(hitstaken,combats),2)).append("/combat ")
+							.append(", ").append(CMath.round(CMath.div(hitstaken,rounds),2)).append("/round")
+							.append("\n\r");
+						str.append(CMStrings.padRight(L("Actions Done"),20)).append(": ")
+							.append(CMStrings.padRight(""+actions,15))
+							.append(" ").append(CMath.round(CMath.div(actions,combats),2)).append("/combat ")
+							.append(", ").append(CMath.round(CMath.div(actions,rounds),2)).append("/round")
+							.append("\n\r");
+						str.append("^W-------------------------\n\r");
+					}
+					str.append(L("\n\r^cCombat summary:\n\r\n\r^N"));
 					final MOB M=CMClass.getMOB("StdMOB");
 					M.setBaseCharStats((CharStats)target.baseCharStats().copyOf());
 					M.setBasePhyStats((PhyStats)target.basePhyStats().copyOf());
@@ -1464,7 +1534,7 @@ public class Stat  extends Skills
 					{
 						if(stat.equals(thisStat.substring(4)))
 						{
-							CharStats base=(CharStats)M.baseCharStats().copyOf();
+							final CharStats base=(CharStats)M.baseCharStats().copyOf();
 							M.baseCharStats().getMyRace().affectCharStats(M, base);
 							str.append(base.getStat(stat)).append(" ");
 							found=true;
@@ -1549,7 +1619,7 @@ public class Stat  extends Skills
 					{
 						if(stat.startsWith(thisStat.substring(4)))
 						{
-							CharStats base=(CharStats)M.baseCharStats().copyOf();
+							final CharStats base=(CharStats)M.baseCharStats().copyOf();
 							M.baseCharStats().getMyRace().affectCharStats(M, base);
 							str.append(base.getStat(stat)).append(" ");
 							found=true;

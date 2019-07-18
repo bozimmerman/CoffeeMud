@@ -998,6 +998,38 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 		}
 	}
 
+	/**
+	 * Various combat stats
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public enum PlayerCombatStat
+	{
+		STATS_LEVEL,
+		COMBATS_TOTAL,
+		EXPERIENCE_TOTAL,
+		ROUNDS_TOTAL,
+		DEATHS_DONE,
+		ACTIONS_DONE,
+		DAMAGE_DONE,
+		HITS_DONE,
+		DEATHS_TAKEN,
+		ACTIONS_TAKEN,
+		DAMAGE_TAKEN,
+		HITS_TAKEN
+	}
+
+	/**
+	 * Alter and return a player combat stat.
+	 *
+	 * @param stat the stat to read and/or alter
+	 * @param level the level of the player to read/alter
+	 * @param amt the amount to change, or 0 to read only
+	 * @return the current value of the stat after alteration
+	 */
+	public long bumpLevelCombatStat(final PlayerCombatStat stat, final int level, final int amt);
+
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;
 	/** Constant for month of birthday, as from {@link PlayerStats#getBirthday()} */

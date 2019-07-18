@@ -2274,6 +2274,31 @@ public class CMath
 	}
 
 	/**
+	 * Rounds to specified precision
+	 * @see java.lang.Math#round(float)
+	 * @param d the real number
+	 * @return the rounded number as a long
+	 */
+	public final static double round(final double d, final int precision)
+	{
+		final double dPrecision = Math.pow(10, precision);
+		return (Math.round(d)*dPrecision)/dPrecision;
+	}
+
+
+	/**
+	 * Rounds to specified precision
+	 * @see java.lang.Math#round(float)
+	 * @param d the real number
+	 * @return the rounded number as a long
+	 */
+	public final static float round(final float d, final int precision)
+	{
+		final double dPrecision = Math.pow(10, precision);
+		return (float)((Math.round(d)*dPrecision)/dPrecision);
+	}
+
+	/**
 	 * @see java.lang.Math#abs(double)
 	 * @param d the real number
 	 * @return the absolute value of the number

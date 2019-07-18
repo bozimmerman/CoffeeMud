@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat;
 import com.planet_ink.coffee_mud.Common.interfaces.CMMsg.View;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.PlayerCombatStat;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -1084,38 +1085,45 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public CMMsg postWeaponAttackResult(final MOB source, final MOB target, final Item item, final boolean success)
+	public CMMsg postWeaponAttackResult(final MOB sourceM, final MOB targetM, final Item item, final boolean success)
 	{
-		if(source==null)
+		if(sourceM==null)
 			return null;
-		if(!source.mayIFight(target))
+		if(!sourceM.mayIFight(targetM))
 			return null;
 		Weapon weapon=null;
 		int damageInt = 0;
 		if(item instanceof Weapon)
 		{
 			weapon=(Weapon)item;
-			damageInt=adjustedDamage(source,weapon,target,0,true,false);
+			damageInt=adjustedDamage(sourceM,weapon,targetM,0,true,false);
 		}
 		if(success)
-			postWeaponDamage(source,target,item,damageInt);
+		{
+			if((sourceM.playerStats()!=null)
+			&&(sourceM!=targetM))
+				sourceM.playerStats().bumpLevelCombatStat(PlayerCombatStat.HITS_DONE, sourceM.basePhyStats().level(), 1);
+			if(targetM.playerStats()!=null)
+				targetM.playerStats().bumpLevelCombatStat(PlayerCombatStat.HITS_TAKEN, targetM.basePhyStats().level(), 1);
+			postWeaponDamage(sourceM,targetM,item,damageInt);
+		}
 		else
 		{
 			final String missString="^F^<FIGHT^>"+((weapon!=null)?
 								weapon.missString():
 								standardMissString(Weapon.TYPE_BASHING,Weapon.CLASS_BLUNT,item.name(),false))+"^</FIGHT^>^?";
-			final CMMsg msg=CMClass.getMsg(source,
-									target,
+			final CMMsg msg=CMClass.getMsg(sourceM,
+									targetM,
 									weapon,
 									CMMsg.MSG_ATTACKMISS,
 									missString);
 			CMLib.color().fixSourceFightColor(msg);
 			// why was there no okaffect here?
-			final Room R=source.location();
+			final Room R=sourceM.location();
 			if(R!=null)
-			if(R.okMessage(source,msg) && (!source.amDead()) && (!source.amDestroyed()))
+			if(R.okMessage(sourceM,msg) && (!sourceM.amDead()) && (!sourceM.amDestroyed()))
 			{
-				R.send(source,msg);
+				R.send(sourceM,msg);
 				return msg;
 			}
 		}
@@ -2222,8 +2230,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		synchronized(("DMG"+target.Name().toUpperCase()).intern())
 		{
-			if((dmg>0)&&(target.curState().getHitPoints()>0))
+			if((dmg>0)
+			&&(target.curState().getHitPoints()>0))
 			{
+				if((attacker!=null)
+				&&(attacker.playerStats()!=null)
+				&&(attacker!=target))
+					attacker.playerStats().bumpLevelCombatStat(PlayerCombatStat.DAMAGE_DONE, attacker.basePhyStats().level(), dmg);
+				if(target.playerStats()!=null)
+					target.playerStats().bumpLevelCombatStat(PlayerCombatStat.DAMAGE_TAKEN, target.basePhyStats().level(), dmg);
 				if((!target.curState().adjHitPoints(-dmg,target.maxState()))
 				&&(target.curState().getHitPoints()<1)
 				&&(target.location()!=null))
@@ -2268,6 +2283,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			if((!deadmob.isMonster())&&(deadmob.soulMate()==null))
 			{
+				if(deadmob.playerStats()!=null)
+					deadmob.playerStats().bumpLevelCombatStat(PlayerCombatStat.DEATHS_TAKEN, deadmob.basePhyStats().level(), 1);
 				CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_DEATHS);
 				final PlayerStats playerStats=deadmob.playerStats();
 				if(playerStats!=null)
@@ -2295,6 +2312,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			{
 				final MOB killer=(MOB)msg.tool();
 				doDeathPostProcessing(msg);
+				int count=10;
+				MOB killerM=killer;
+				while((killerM != null)
+				&&(--count>0))
+				{
+					if(killerM.playerStats()!=null)
+						killerM.playerStats().bumpLevelCombatStat(PlayerCombatStat.DEATHS_DONE, killerM.basePhyStats().level(), 1);
+					killerM=killerM.amFollowing();
+				}
 				justDie(killer,deadmob);
 			}
 			else
