@@ -148,6 +148,7 @@ public class Archon_Record extends ArchonSkill
 		final Archon_Record A=(Archon_Record)target.fetchEffect(ID());
 		if(A!=null)
 		{
+			A.unInvoke();
 			target.delEffect(A);
 			if(target.playerStats()!=null)
 				target.playerStats().setLastUpdated(0);
