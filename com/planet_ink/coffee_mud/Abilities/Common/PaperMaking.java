@@ -343,7 +343,10 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		if((componentsFoundList.size() > 0)||(autoGenerate>0))
 			deadMats = new MaterialLibrary.DeadResourceRecord();
 		else
-			deadMats = CMLib.materials().destroyResources(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
+		{
+			deadMats = CMLib.materials().destroyResources(mob.location(),data[0][FOUND_AMT],
+					data[0][FOUND_CODE],data[0][FOUND_SUB],data[1][FOUND_CODE],data[1][FOUND_SUB]);
+		}
 		final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		if(buildingI==null)

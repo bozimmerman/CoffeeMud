@@ -340,7 +340,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		CMLib.materials().destroyResourcesValue(mob.location(),100, resource.material(), -1, null);
+		CMLib.materials().destroyResourcesValue(mob.location(),100, resource.material(), resource.getSubType().hashCode(),0,0);
 
 		final CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,(auto?L("@x1 begins to glow!",trapThis.name()):L("<S-NAME> attempt(s) to lay a trap here.")));
 		if(mob.location().okMessage(mob,msg))

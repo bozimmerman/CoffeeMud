@@ -246,6 +246,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			{
 				Collections.sort(compInts);
 				data[0][FOUND_CODE]=compInts.get((int)Math.round(Math.floor(compInts.size()/2))).intValue();
+				data[0][FOUND_SUB]="".hashCode();
 			}
 		}
 		else
@@ -260,7 +261,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					if(rscs.contains(Integer.valueOf(I.material())))
 					{
 						if(data[0][FOUND_CODE]==0)
+						{
 							data[0][FOUND_CODE]=I.material();
+							data[0][FOUND_SUB]=((I instanceof RawMaterial)?((RawMaterial)I).getSubType().hashCode():("".hashCode()));
+						}
 						data[0][FOUND_AMT] += I.phyStats().weight();
 					}
 				}
@@ -281,6 +285,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				{
 					Collections.sort(compInts);
 					data[0][FOUND_CODE]=compInts.get((int)Math.round(Math.floor(compInts.size()/2))).intValue();
+					data[0][FOUND_SUB]="".hashCode();
 				}
 			}
 		}

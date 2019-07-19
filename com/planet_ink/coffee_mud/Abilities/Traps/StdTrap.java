@@ -684,9 +684,9 @@ public class StdTrap extends StdAbility implements Trap
 		return CMLib.materials().findMostOfMaterial(room, material);
 	}
 
-	protected void destroyResources(final Room room, final int resource, final int number)
+	protected void destroyResources(final Room room, final int resource, final String subType, final int number)
 	{
-		CMLib.materials().destroyResourcesValue(room,number,resource,-1,null);
+		CMLib.materials().destroyResourcesValue(room,number,resource,subType.hashCode(),0,0);
 	}
 
 	protected int findNumberOfResource(final Room room, final RawMaterial resource)

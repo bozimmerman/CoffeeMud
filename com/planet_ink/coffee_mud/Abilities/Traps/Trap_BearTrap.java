@@ -88,11 +88,11 @@ public class Trap_BearTrap extends StdTrap
 			return null;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
+			RawMaterial I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
 			if(I==null)
 				I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_MITHRIL);
 			if(I!=null)
-				super.destroyResources(mob.location(),I.material(),30);
+				super.destroyResources(mob.location(),I.material(),I.getSubType(),30);
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}

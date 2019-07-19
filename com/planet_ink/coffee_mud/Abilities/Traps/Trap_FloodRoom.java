@@ -137,12 +137,12 @@ public class Trap_FloodRoom extends StdTrap
 	{
 		if(P==null)
 			return null;
-		Item I=null;
+		RawMaterial I=null;
 		if(mob!=null)
 		{
 			I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
 			if(I!=null)
-				super.destroyResources(mob.location(),I.material(),100);
+				super.destroyResources(mob.location(),I.material(),I.getSubType(),100);
 			killWaterskins(mob);
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);

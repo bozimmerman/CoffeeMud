@@ -518,6 +518,7 @@ public class CraftingSkill extends GatheringSkill
 
 	protected static final int FOUND_CODE=0;
 	protected static final int FOUND_AMT=1;
+	protected static final int FOUND_SUB=2;
 
 	public List<List<String>> fetchRecipes()
 	{
@@ -538,7 +539,7 @@ public class CraftingSkill extends GatheringSkill
 											 final int autoGeneration,
 											 final PairVector<EnhancedExpertise,Integer> eduMods)
 	{
-		final int[][] data=new int[2][2];
+		final int[][] data=new int[2][3];
 		if((req1Desc!=null)&&(req1Desc.length()==0))
 			req1Desc=null;
 		if((req2Desc!=null)&&(req2Desc.length()==0))
@@ -551,6 +552,8 @@ public class CraftingSkill extends GatheringSkill
 			data[1][FOUND_AMT]=req2Required;
 			data[0][FOUND_CODE]=autoGeneration;
 			data[1][FOUND_CODE]=autoGeneration;
+			data[0][FOUND_SUB]="".hashCode();
+			data[1][FOUND_SUB]="".hashCode();
 			return data;
 		}
 
@@ -564,9 +567,13 @@ public class CraftingSkill extends GatheringSkill
 					firstWood=CMLib.materials().findMostOfMaterial(mob.location(),element);
 				else
 					firstWood=CMLib.materials().findFirstResource(mob.location(),element);
-
 				if(firstWood!=null)
-					break;
+				{
+					if(firstWood.getSubType().equals(RawMaterial.ResourceSubType.SEED.name()))
+						firstWood=null;
+					else
+						break;
+				}
 			}
 		}
 		else
@@ -577,6 +584,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			data[0][FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),firstWood);
 			data[0][FOUND_CODE]=firstWood.material();
+			data[0][FOUND_SUB]=firstWood.getSubType().hashCode();
 		}
 
 		if(req2!=null)
@@ -588,7 +596,12 @@ public class CraftingSkill extends GatheringSkill
 				else
 					firstOther=CMLib.materials().findFirstResource(mob.location(),element);
 				if(firstOther!=null)
-					break;
+				{
+					if(firstOther.getSubType().equals(RawMaterial.ResourceSubType.SEED.name()))
+						firstOther=null;
+					else
+						break;
+				}
 			}
 		}
 		else
@@ -599,6 +612,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			data[1][FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),firstOther);
 			data[1][FOUND_CODE]=firstOther.material();
+			data[1][FOUND_SUB]=firstOther.getSubType().hashCode();
 		}
 		if(req1Required>0)
 		{

@@ -245,17 +245,28 @@ public class Composting extends GatheringSkill
 
 	protected int[][] fetchFoundResourceData(final MOB mob, int req1Required, String req1Desc, final Item first)
 	{
-		final int[][] data=new int[2][2];
+		final int[][] data=new int[2][3];
 		if((req1Desc!=null)&&(req1Desc.length()==0))
 			req1Desc=null;
 
 		final Item firstWood=first;
 
+		String subType = "";
 		data[0][CraftingSkill.FOUND_AMT]=0;
 		if(firstWood!=null)
 		{
-			data[0][CraftingSkill.FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),(RawMaterial)firstWood);
+			if(firstWood instanceof RawMaterial)
+			{
+				subType = ((RawMaterial)first).getSubType();
+				data[0][CraftingSkill.FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),(RawMaterial)firstWood);
+			}
+			else
+				data[0][CraftingSkill.FOUND_AMT]=1;
 			data[0][CraftingSkill.FOUND_CODE]=firstWood.material();
+			if(firstWood instanceof RawMaterial)
+				data[0][CraftingSkill.FOUND_SUB]=(((RawMaterial)firstWood).getSubType()).hashCode();
+			else
+				data[0][CraftingSkill.FOUND_SUB]="".hashCode();
 		}
 
 		if(req1Required>0)
@@ -272,7 +283,7 @@ public class Composting extends GatheringSkill
 		if(req1Required>data[0][CraftingSkill.FOUND_AMT])
 		{
 			commonTell(mob,L("You need @x1 pounds of @x2 to do that.  There is not enough here.  Are you sure you set it all on the ground first?",
-					""+req1Required,CMLib.materials().makeResourceSimpleName(first.material(), ((RawMaterial)first).getSubType()).toLowerCase()));
+					""+req1Required,CMLib.materials().makeResourceSimpleName(first.material(), subType).toLowerCase()));
 			return null;
 		}
 		data[0][CraftingSkill.FOUND_AMT]=req1Required;

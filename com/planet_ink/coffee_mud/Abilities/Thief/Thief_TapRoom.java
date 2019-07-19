@@ -251,7 +251,7 @@ public class Thief_TapRoom extends ThiefSkill
 						else
 						{
 							final RawMaterial I=lineV.get(0);
-							CMLib.materials().destroyResourcesValue(msg.source(),1,I.material(),0,null);
+							CMLib.materials().destroyResourcesValue(msg.source(),1,I.material(),I.getSubType().hashCode(),0,0);
 							msg.addTrailerMsg(CMClass.getMsg(msg.source(),I,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("You stretch out another length of tap-line here using some of <T-NAME>"),null,L("<S-NAME> do(es) something in the corner with <T-NAME>")));
 							int roomsLeft=0;
 							if(p.size()>3)

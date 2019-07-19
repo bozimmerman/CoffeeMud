@@ -522,7 +522,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			mob.curState().adjMana(-manaToLose, mob.maxState());
 
 			if((resourceType>0)&&(data != null))
-				CMLib.materials().destroyResourcesValue(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],0,null);
+				CMLib.materials().destroyResourcesValue(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],data[0][FOUND_SUB],0,0);
 
 			playSound=null;
 			if(experienceToLose > 0)

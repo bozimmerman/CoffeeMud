@@ -85,9 +85,9 @@ public class Trap_Tripline extends StdTrap
 			return null;
 		if(mob!=null)
 		{
-			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
+			final RawMaterial I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
 			if(I!=null)
-				super.destroyResources(mob.location(),I.material(),1);
+				super.destroyResources(mob.location(),I.material(),I.getSubType(),1);
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}

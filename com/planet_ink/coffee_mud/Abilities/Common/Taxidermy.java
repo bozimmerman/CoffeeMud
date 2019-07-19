@@ -234,7 +234,7 @@ public class Taxidermy extends CraftingSkill
 		buildingI=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
+		CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[0][FOUND_SUB],0,0);
 		messedUp=!proficiencyCheck(mob,0,auto);
 		if(buildingI!=null)
 			foundShortName=I.Name();

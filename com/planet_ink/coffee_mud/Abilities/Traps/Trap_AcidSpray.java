@@ -79,11 +79,11 @@ public class Trap_AcidSpray extends StdTrap
 			return null;
 		if(mob!=null)
 		{
-			Item I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LEMONS);
+			RawMaterial I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LEMONS);
 			if(I==null)
 				I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
 			if(I!=null)
-				super.destroyResources(mob.location(),I.material(),1);
+				super.destroyResources(mob.location(),I.material(),I.getSubType(),1);
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}

@@ -360,7 +360,7 @@ public class LockSmith extends CraftingSkill
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
+			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[0][FOUND_SUB],0,0);
 			makeResource=data[0][FOUND_CODE];
 			final String prefix = (label.length()>0) ? label : RawMaterial.CODES.NAME(makeResource);
 			itemName=(prefix+" key").toLowerCase();

@@ -79,9 +79,9 @@ public class Trap_ElectricShock extends StdTrap
 			return null;
 		if(mob!=null)
 		{
-			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
+			final RawMaterial I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
 			if(I!=null)
-				super.destroyResources(mob.location(),I.material(),10);
+				super.destroyResources(mob.location(),I.material(),I.getSubType(),10);
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}

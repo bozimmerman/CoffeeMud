@@ -79,9 +79,9 @@ public class Trap_Snare extends StdTrap
 			return null;
 		if(mob!=null)
 		{
-			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
+			final RawMaterial I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
 			if(I!=null)
-				super.destroyResources(mob.location(),I.material(),5);
+				super.destroyResources(mob.location(),I.material(),I.getSubType(),5);
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}

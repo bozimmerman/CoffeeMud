@@ -929,15 +929,17 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public int destroyResourcesValue(final Room E, final int howMuch, final int finalMaterial, final int otherMaterial, final Item never)
+	public int destroyResourcesValue(final Room E, final int howMuch, final int finalMaterial, final int finalSubHash, final int otherMaterial, final int otherSubHash)
 	{
-		return destroyResourcesValue(getAllItems(E), howMuch, finalMaterial, otherMaterial, never, null);
+		final List<Item> materials = this.getSomeRawMaterial(E, finalMaterial, finalSubHash, otherMaterial, otherSubHash);
+		return destroyResourcesValue(materials, howMuch, finalMaterial, otherMaterial, null, null);
 	}
 
 	@Override
-	public int destroyResourcesValue(final MOB E, final int howMuch, final int finalMaterial, final int otherMaterial, final Item never)
+	public int destroyResourcesValue(final MOB E, final int howMuch, final int finalMaterial, final int finalSubHash, final int otherMaterial, final int otherSubHash)
 	{
-		return destroyResourcesValue(getAllItems(E), howMuch, finalMaterial, otherMaterial, never, null);
+		final List<Item> materials = this.getSomeRawMaterial(E, finalMaterial, finalSubHash, otherMaterial, otherSubHash);
+		return destroyResourcesValue(materials, howMuch, finalMaterial,  otherMaterial, null, null);
 	}
 
 	@Override
@@ -947,15 +949,10 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public DeadResourceRecord destroyResources(final Room R, final int howMuch, final int finalMaterial, final int otherMaterial, final Item never, final Container C)
+	public DeadResourceRecord destroyResources(final Room R, final int howMuch, final int finalMaterial, final int finalSubHash, final int otherMaterial, final int otherSubHash)
 	{
-		return destroyResources(getAllItems(R),howMuch,finalMaterial,otherMaterial,never,C, null, null);
-	}
-
-	@Override
-	public DeadResourceRecord destroyResources(final MOB M, final int howMuch, final int finalMaterial, final int otherMaterial, final Item never, final Container C)
-	{
-		return destroyResources(getAllItems(M),howMuch,finalMaterial,otherMaterial,never,C, null, null);
+		final List<Item> materials = this.getSomeRawMaterial(R, finalMaterial, finalSubHash, otherMaterial, otherSubHash);
+		return destroyResources(materials,howMuch,finalMaterial,otherMaterial,null, null, null, null);
 	}
 
 	protected DeadResourceRecord destroyResources(final List<Item> V, int howMuch, int finalMaterial, int otherMaterial, final Item never,
@@ -1119,6 +1116,33 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return null;
 	}
 
+	protected RawMaterial findMostResource(final List<Item> V, final int resource, final Container C)
+	{
+		int most=0;
+		int mostMaterial=-1;
+		RawMaterial mostItem=null;
+		for(int i=0;i<V.size();i++)
+		{
+			final Item I=V.get(i);
+			if((I instanceof RawMaterial)
+			&&(I.material()==resource)
+			&&(I.material()!=mostMaterial)
+			&&(!CMLib.flags().isOnFire(I))
+			&&(!CMLib.flags().isEnchanted(I))
+			&&(I.container()==C))
+			{
+				final int num=findNumberOfResource(V,(RawMaterial)I);
+				if(num>most)
+				{
+					mostItem=(RawMaterial)I;
+					most=num;
+					mostMaterial=I.material();
+				}
+			}
+		}
+		return mostItem;
+	}
+
 	@Override
 	public RawMaterial findMostOfMaterial(final Room E, final String other)
 	{
@@ -1224,11 +1248,53 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		final List<Item> V=new Vector<Item>();
 		Item I=null;
 		if(R!=null)
-		for(int r=0;r<R.numItems();r++)
 		{
-			I=R.getItem(r);
-			if(I!=null)
-				V.add(I);
+			for(int r=0;r<R.numItems();r++)
+			{
+				I=R.getItem(r);
+				if(I!=null)
+					V.add(I);
+			}
+		}
+		return V;
+	}
+
+	protected List<Item> getSomeRawMaterial(final Room R, final int material1, final int subTypeHash1, final int material2, final int subTypeHash2)
+	{
+		final List<Item> V=new Vector<Item>();
+		Item I=null;
+		if(R!=null)
+		{
+			for(int r=0;r<R.numItems();r++)
+			{
+				I=R.getItem(r);
+				if((I instanceof RawMaterial)
+				&&((material1==0)
+					||((I.material()==material1)&&(((RawMaterial)I).getSubType().hashCode()==subTypeHash1)))
+				&&((material2==0)
+					||((I.material()==material2)&&(((RawMaterial)I).getSubType().hashCode()==subTypeHash2)))
+				)
+					V.add(I);
+			}
+		}
+		return V;
+	}
+
+	protected List<Item> getAllRawMaterial(final Room R, final int material1, final int material2)
+	{
+		final List<Item> V=new Vector<Item>();
+		Item I=null;
+		if(R!=null)
+		{
+			for(int r=0;r<R.numItems();r++)
+			{
+				I=R.getItem(r);
+				if((I instanceof RawMaterial)
+				&&((material1==0)||(I.material()==material1))
+				&&((material2==0)||(I.material()==material2))
+				)
+					V.add(I);
+			}
 		}
 		return V;
 	}
@@ -1238,11 +1304,53 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		final List<Item> V=new Vector<Item>();
 		Item I=null;
 		if(M!=null)
-		for(int i=0;i<M.numItems();i++)
 		{
-			I=M.getItem(i);
-			if(I!=null)
-				V.add(I);
+			for(int i=0;i<M.numItems();i++)
+			{
+				I=M.getItem(i);
+				if(I!=null)
+					V.add(I);
+			}
+		}
+		return V;
+	}
+
+	protected List<Item> getSomeRawMaterial(final MOB M, final int material1, final int subTypeHash1, final int material2, final int subTypeHash2)
+	{
+		final List<Item> V=new Vector<Item>();
+		Item I=null;
+		if(M!=null)
+		{
+			for(int r=0;r<M.numItems();r++)
+			{
+				I=M.getItem(r);
+				if((I instanceof RawMaterial)
+				&&((material1==0)
+					||((I.material()==material1)&&(((RawMaterial)I).getSubType().hashCode()==subTypeHash1)))
+				&&((material2==0)
+					||((I.material()==material2)&&(((RawMaterial)I).getSubType().hashCode()==subTypeHash2)))
+				)
+					V.add(I);
+			}
+		}
+		return V;
+	}
+
+	protected List<Item> getAllRawMaterial(final MOB M, final int material1, final int material2)
+	{
+		final List<Item> V=new Vector<Item>();
+		Item I=null;
+		if(M!=null)
+		{
+			for(int r=0;r<M.numItems();r++)
+			{
+				I=M.getItem(r);
+				if((I instanceof RawMaterial)
+				&&((material1==0)||(I.material()==material1))
+				&&((material2==0)||(I.material()==material2))
+				)
+					V.add(I);
+			}
 		}
 		return V;
 	}

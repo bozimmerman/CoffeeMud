@@ -1852,7 +1852,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			room = room.getGridParent();
 
 		if((woodRequired>0)&&(idata!=null))
-			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,idata[0][FOUND_CODE],0,null);
+			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,idata[0][FOUND_CODE],idata[0][FOUND_SUB],0,0);
 		else
 		if(recipe[DAT_WOODTYPE].equalsIgnoreCase("VALUE"))
 		{

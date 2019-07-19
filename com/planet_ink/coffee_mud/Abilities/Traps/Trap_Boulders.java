@@ -79,9 +79,9 @@ public class Trap_Boulders extends StdTrap
 			return null;
 		if(mob!=null)
 		{
-			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
+			final RawMaterial I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
 			if(I!=null)
-				super.destroyResources(mob.location(),I.material(),50);
+				super.destroyResources(mob.location(),I.material(),I.getSubType(),50);
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}

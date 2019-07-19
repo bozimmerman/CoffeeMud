@@ -79,9 +79,9 @@ public class Trap_AcidPit extends Trap_RoomPit
 			return null;
 		if(mob!=null)
 		{
-			final Item I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
+			final RawMaterial I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
 			if(I!=null)
-				super.destroyResources(mob.location(),I.material(),1);
+				super.destroyResources(mob.location(),I.material(),I.getSubType(),1);
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}

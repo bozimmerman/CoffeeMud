@@ -207,9 +207,9 @@ public class Thief_Footlocks extends ThiefSkill
 			levelDiff=0;
 
 		if(cloth!=null)
-			CMLib.materials().destroyResourcesValue(mob,1,cloth.material(),-1,null);
+			CMLib.materials().destroyResourcesValue(mob,1,cloth.material(),cloth.getSubType().hashCode(),0,0);
 		if(wood!=null)
-			CMLib.materials().destroyResourcesValue(mob,2,wood.material(),-1,null);
+			CMLib.materials().destroyResourcesValue(mob,2,wood.material(),wood.getSubType().hashCode(),0,0);
 
 		final boolean success=proficiencyCheck(mob,-levelDiff,auto);
 		if(success)

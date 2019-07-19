@@ -670,7 +670,10 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			if(autoGenerate<=0)
-				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
+			{
+				CMLib.materials().destroyResources(mob.location(),woodRequired,
+					data[0][FOUND_CODE],data[0][FOUND_SUB],data[1][FOUND_CODE],data[1][FOUND_SUB]);
+			}
 
 			doorDir = dir;
 			activity = CraftingActivity.DOORING;
@@ -802,7 +805,10 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			if((componentsFoundList.size() > 0)||(autoGenerate>0))
 				deadMats = new MaterialLibrary.DeadResourceRecord();
 			else
-				deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
+			{
+				deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,
+						data[0][FOUND_CODE],data[0][FOUND_SUB],data[1][FOUND_CODE],data[1][FOUND_SUB]);
+			}
 			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 			final String shipIndexStr = foundRecipe.get(RCP_SHIPINDEX);
