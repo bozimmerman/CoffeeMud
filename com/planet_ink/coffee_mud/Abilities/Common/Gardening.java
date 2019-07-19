@@ -445,13 +445,19 @@ public class Gardening extends GatheringSkill
 		&&(isPotentialCrop(R,code)))
 		{
 			final String subType = (mine instanceof RawMaterial)?((RawMaterial)mine).getSubType():"";
-			found=(Item)CMLib.materials().makeResource(code,Integer.toString(R.domainType()),false,null, subType);
+			String makeSubType=subType;
+			if(subType.equalsIgnoreCase(RawMaterial.ResourceSubType.SEED.name()))
+				makeSubType="";
+			found=(Item)CMLib.materials().makeResource(code,Integer.toString(R.domainType()),false,null, makeSubType);
 			if((found!=null)
 			&&(mine.material()==found.material()))
 			{
-				found.setName(mine.name());
-				found.setDisplayText(mine.displayText());
-				found.setDescription(mine.description());
+				if(!subType.equalsIgnoreCase(RawMaterial.ResourceSubType.SEED.name()))
+				{
+					found.setName(mine.name());
+					found.setDisplayText(mine.displayText());
+					found.setDescription(mine.description());
+				}
 				found.text();
 			}
 		}

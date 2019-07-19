@@ -326,7 +326,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				final List<Environmental> bundle=new XVector<Environmental>();
 				for(int x=0;x<number;x+=bundleSize)
 				{
-					E=makeResource(I.material(),null,true,I.rawSecretIdentity(), "");
+					E=makeResource(I.material(),null,true,I.rawSecretIdentity(), ((RawMaterial)I).getSubType());
 					if(E instanceof Item)
 					{
 						((Item)E).setContainer(C);
@@ -697,10 +697,10 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			I.setBaseValue(RawMaterial.CODES.VALUE(myResource));
 			I.basePhyStats().setWeight(1);
 			I.setDomainSource(localeCode);
-			adjustResourceName(I);
-			I.setDescription("");
 			if(subType != null)
 				I.setSubType(subType.toUpperCase().trim());
+			adjustResourceName(I);
+			I.setDescription("");
 			addEffectsToResource(I);
 			I.recoverPhyStats();
 			return I;

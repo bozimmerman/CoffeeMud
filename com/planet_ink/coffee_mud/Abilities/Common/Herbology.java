@@ -124,6 +124,8 @@ public class Herbology extends CommonSkill
 							found.setName(L("some @x1",herb));
 						found.setDisplayText(L("@x1 is here",found.Name()));
 						found.setDescription("");
+						if(found instanceof RawMaterial)
+							((RawMaterial)found).setSubType(herb.toUpperCase().trim());
 						found.text();
 						if((!isLimitedToOne()) && (foundName!=null))
 						{
