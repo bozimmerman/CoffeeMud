@@ -131,6 +131,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.target() instanceof MOB)
 		&&(((MOB)msg.target()).phyStats().level()<invoker().phyStats().level()+(super.getXLEVELLevel(invoker())*2))
+		&&(proficiencyCheck(invoker(),0,false))
 		&&(msg.sourceMessage()!=null))
 		{
 			final String said = CMStrings.getSayFromMessage(msg.sourceMessage());
@@ -152,10 +153,16 @@ public class Prayer_AuraDivineEdict extends Prayer
 				}
 				noRecurse=true;
 				final String oldLiege=((MOB)msg.target()).getLiegeID();
-				((MOB)msg.target()).setLiegeID(msg.source().Name());
-				msg.source().doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
-				((MOB)msg.target()).setLiegeID(oldLiege);
-				noRecurse=false;
+				try
+				{
+					((MOB)msg.target()).setLiegeID(msg.source().Name());
+					msg.source().doCommand(V,MUDCmdProcessor.METAFLAG_FORCED);
+				}
+				finally
+				{
+					((MOB)msg.target()).setLiegeID(oldLiege);
+					noRecurse=false;
+				}
 				return false;
 			}
 		}

@@ -171,7 +171,10 @@ public class CMStrings
 		for(int c=0;c<str.length();c++)
 		{
 			final char ch=str.charAt(c);
-			if((!Character.isUpperCase(ch))&&(ch!='_')&&(!Character.isDigit(ch)))
+			if((!Character.isUpperCase(ch))
+			&&(ch!='_')
+			&&(ch!=' ')
+			&&(!Character.isDigit(ch)))
 				return false;
 		}
 		return true;
@@ -190,7 +193,10 @@ public class CMStrings
 		for(int c=0;c<str.length();c++)
 		{
 			final char ch=str.charAt(c);
-			if((!Character.isLowerCase(ch))&&(ch!='_')&&(!Character.isDigit(ch)))
+			if((!Character.isLowerCase(ch))
+			&&(ch!='_')
+			&&(ch!=' ')
+			&&(!Character.isDigit(ch)))
 				return false;
 		}
 		return true;
@@ -1769,7 +1775,7 @@ public class CMStrings
 		}
 		return nos;
 	}
-	
+
 	/**
 	 * Returns the length of the string as if it has neither
 	 * ansi nor cm color codes.
