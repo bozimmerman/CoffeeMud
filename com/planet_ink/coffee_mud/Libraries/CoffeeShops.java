@@ -1705,7 +1705,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	@Override
 	public boolean ignoreIfNecessary(final MOB mob, final String ignoreMask, final MOB whoIgnores)
 	{
-		if((ignoreMask.length()>0)&&(!CMLib.masking().maskCheck(ignoreMask,mob,false)))
+		if((whoIgnores != null)
+		&&(CMLib.flags().isSleeping(whoIgnores)))
+		{
+			mob.tell(whoIgnores,null,null,L("<S-NAME> appear(s) to be ignoring you."));
+			return false;
+		}
+		if((ignoreMask.length()>0)
+		&&(!CMLib.masking().maskCheck(ignoreMask,mob,false)))
 		{
 			mob.tell(whoIgnores,null,null,L("<S-NAME> appear(s) to be ignoring you."));
 			return false;
