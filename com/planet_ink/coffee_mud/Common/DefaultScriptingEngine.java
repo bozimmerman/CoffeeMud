@@ -9978,10 +9978,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				Ability A=null;
 				if(cast!=null)
 					A=CMClass.findAbility(cast);
-				if((newTarget!=null)&&(A!=null))
+				if((newTarget!=null)
+				&&(A!=null))
 				{
 					A.setProficiency(100);
-					if(monster != scripted)
+					if((monster != scripted)
+					&&(monster!=null))
 						monster.resetToMaxState();
 					A.invoke(monster,newTarget,false,0);
 				}
@@ -10001,11 +10003,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				Ability A=null;
 				if(cast!=null)
 					A=CMClass.findAbility(cast);
-				if((newTarget!=null)&&(A!=null))
+				if((newTarget!=null)
+				&&(A!=null))
 				{
 					A.setProficiency(100);
 					final List<String> commands = CMParms.parse(args);
-					if(monster != scripted)
+					if((monster != scripted)
+					&&(monster!=null))
 						monster.resetToMaxState();
 					A.invoke(monster, commands, newTarget, false, 0);
 				}
@@ -10034,7 +10038,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						newTarget.addNonUninvokableEffect(A);
 					else
 					{
-						if(monster != scripted)
+						if((monster != scripted)
+						&&(monster!=null))
 							monster.resetToMaxState();
 						A.invoke(monster,CMParms.parse(m2),newTarget,true,0);
 					}
@@ -10418,7 +10423,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				final Environmental newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((newTarget!=null)&&(newTarget instanceof MOB)&&(monster!=null))
+				if((newTarget!=null)
+				&&(newTarget instanceof MOB)
+				&&(monster!=null))
 					monster.setVictim((MOB)newTarget);
 				break;
 			}
@@ -11141,7 +11148,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(A!=null)
 				{
 					altStatusTickable=A;
-					if(monster != scripted)
+					if((monster != scripted)
+					&&(monster!=null))
 						monster.resetToMaxState();
 					A.invoke(monster,CMParms.parse(arg1),null,true,0);
 					altStatusTickable=null;
@@ -11161,7 +11169,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(A!=null)
 				{
 					altStatusTickable=A;
-					if(monster != scripted)
+					if((monster != scripted)
+					&&(monster!=null))
 						monster.resetToMaxState();
 					A.invoke(monster,CMParms.parse(arg1+" LANDONLY"),null,true,0);
 					altStatusTickable=null;
@@ -11614,7 +11623,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(cmd.length()>0)
 				{
 					final Vector<String> V=CMParms.parse(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
-					if((V.size()>0)&&(monster!=null))
+					if((V.size()>0)
+					&&(monster!=null))
 						monster.doCommand(V,MUDCmdProcessor.METAFLAG_MPFORCED);
 				}
 				break;

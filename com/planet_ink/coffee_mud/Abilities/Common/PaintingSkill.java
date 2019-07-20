@@ -139,7 +139,8 @@ public class PaintingSkill extends CommonSkill
 				if(!colors.contains(C.getName2()))
 					colors.add(C.getName2().toLowerCase());
 			}
-			colors.sort(new Comparator<String>()
+			
+			Collections.sort(colors,new Comparator<String>()
 			{
 				@Override
 				public int compare(final String o1, final String o2)

@@ -88,7 +88,7 @@ public class GatheringSkill extends CommonSkill
 				final Quad<Room,Integer,short[],Long> oldRecord = roomSpamCounter.get(R);
 				if((oldRecord!=null)
 				&&((System.currentTimeMillis() > oldRecord.fourth.longValue())
-				  ||(oldRecord.second != R.myResource())))
+				  ||(oldRecord.second.intValue() != R.myResource())))
 				{
 					roomSpamCounter.remove(R);
 					return true;
@@ -118,7 +118,7 @@ public class GatheringSkill extends CommonSkill
 				final Quad<Room,Integer,short[],Long> oldRecord = roomSpamCounter.get(R);
 				if((oldRecord!=null)
 				&&((now > oldRecord.fourth.longValue())
-				  ||(oldRecord.second != R.myResource())))
+				  ||(oldRecord.second.intValue() != R.myResource())))
 					roomSpamCounter.remove(R);
 			}
 			for(final Iterator<Room> i=roomSpamCounter.keySet().iterator();i.hasNext();)

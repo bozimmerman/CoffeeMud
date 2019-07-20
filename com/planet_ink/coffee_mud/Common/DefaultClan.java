@@ -829,9 +829,9 @@ public class DefaultClan implements Clan
 
 		// Get a list of all possible spell grants for this clan, check against class qualifications.
 		// Form a list of forbidden spells, and then remove THOSE.
-		final Map<String, AbilityMapping> allAbles =  CMLib.ableMapper().getAbleMapping(this.getGovernment().getName());
+		final Map<String, AbilityMapping> allAbles =  CMLib.ableMapper().getAbleMapping(getGovernment().getName());
 		final Set<String> qualAbleIDS = new TreeSet<String>();
-		for(final Ability A :  this.getGovernment().getClanLevelAbilities(M, this, this.getClanLevel()))
+		for(final Ability A :  getGovernment().getClanLevelAbilities(M, this, Integer.valueOf(getClanLevel())))
 			qualAbleIDS.add(A.ID());
 		for(final String ableID : allAbles.keySet())
 		{

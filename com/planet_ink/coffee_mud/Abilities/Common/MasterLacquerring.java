@@ -313,6 +313,7 @@ public class MasterLacquerring extends MasterPaintingSkill
 			startMsg=L("<S-NAME> start(s) un-lacquering @x1.",target.name());
 		}
 		else
+		if(finalRecipe != null)
 		{
 			writing =  finalRecipe.get(RCP_COLOR);
 			for(int i=0;i<colorNamesFound.size();i++)
@@ -320,6 +321,8 @@ public class MasterLacquerring extends MasterPaintingSkill
 			verb=L("lacquering @x1 @x2",target.name(),writing);
 			startMsg=L("<S-NAME> start(s) lacquering @x1.",target.name());
 		}
+		else
+			startMsg=L("<S-NAME> start(s) dyeing @x1.",target.name());
 		displayText=L("You are @x1",verb);
 		found=target;
 		if(!proficiencyCheck(mob,0,auto))

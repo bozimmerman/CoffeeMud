@@ -194,11 +194,14 @@ public class Dyeing extends PaintingSkill
 			startMsg=L("<S-NAME> start(s) un-dyeing @x1.",target.name());
 		}
 		else
+		if(finalRecipe != null)
 		{
 			writing =  finalRecipe.get(RCP_COLOR);
 			verb=L("dyeing @x1 @x2",target.name(),writing);
 			startMsg=L("<S-NAME> start(s) dyeing @x1.",target.name());
 		}
+		else
+			startMsg=L("<S-NAME> start(s) dyeing @x1.",target.name());
 		displayText=L("You are @x1",verb);
 		found=target;
 		if(!proficiencyCheck(mob,0,auto))

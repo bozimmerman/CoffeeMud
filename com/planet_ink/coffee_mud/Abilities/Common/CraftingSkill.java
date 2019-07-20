@@ -473,8 +473,8 @@ public class CraftingSkill extends GatheringSkill
 
 	protected void setWearLocation(final Item I, final String wearLocation, final int hardnessMultiplier)
 	{
-		final short[] layerAtt = new short[1];;
-		final short[] layers = new short[1];;
+		final short[] layerAtt = new short[1];
+		final short[] layers = new short[1];
 		if(I instanceof Armor)
 		{
 			final long[] wornLoc = new long[1];

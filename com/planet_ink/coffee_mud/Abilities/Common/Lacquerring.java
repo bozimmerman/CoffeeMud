@@ -211,11 +211,14 @@ public class Lacquerring extends PaintingSkill
 
 		}
 		else
+		if(finalRecipe != null)
 		{
 			writing =  finalRecipe.get(RCP_COLOR);
 			verb=L("lacquering @x1 @x2",target.name(),writing);
 			startMsg=L("<S-NAME> start(s) lacquering @x1.",target.name());
 		}
+		else
+			startMsg=L("<S-NAME> start(s) dyeing @x1.",target.name());
 		displayText=L("You are @x1",verb);
 		found=target;
 		if(!proficiencyCheck(mob,0,auto))

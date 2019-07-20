@@ -370,9 +370,17 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		 * ********************** Weapon addtl. Damage
 		 * **********************
 		 */
-		if((msg.source().location()!=null)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)&&(msg.value()>0)&&(msg.tool()==affected)&&(!notAgain)
-				&&(msg.target() instanceof MOB)&&(msg.tool() instanceof Weapon)&&(!(msg.tool() instanceof Wand))&&(typeOfEffect<1000)
-				&&(!((MOB)msg.target()).amDead()))
+		if((msg.source().location()!=null)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.value()>0)
+		&&(msg.tool()==affected)
+		&&(!notAgain)
+		&&(msg.target() instanceof MOB)
+		&&(msg.tool() instanceof Weapon)
+		&&(!(msg.tool() instanceof Wand))
+		&&(typeOfEffect<1000)
+		&&(mob!=null)
+		&&(!((MOB)msg.target()).amDead()))
 		{
 			double flameDamage=CMLib.dice().roll(1,6*powerLevel,1*powerLevel);
 			if(flameDamage > mob.phyStats().level())
