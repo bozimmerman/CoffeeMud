@@ -519,7 +519,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				{
 					if((buildingI.fitsOn(Wearable.WORN_MOUTH))
 					||(((Container)buildingI).containTypes()==Container.CONTAIN_SMOKEABLES))
-						((Container)buildingI).setCapacity(1);
+						((Container)buildingI).setCapacity(((Container)buildingI).basePhyStats().weight()+1);
 					else
 						((Container)buildingI).setCapacity(0);
 				}

@@ -499,7 +499,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 				((Light)buildingI).setDuration((capacity > 200) ? capacity : 200);
 				if((buildingI.fitsOn(Wearable.WORN_MOUTH))
 				||(((Container)buildingI).containTypes()==Container.CONTAIN_SMOKEABLES))
-					((Container)buildingI).setCapacity(1);
+					((Container)buildingI).setCapacity(((Container)buildingI).basePhyStats().weight()+1);
 				else
 					((Container)buildingI).setCapacity(0);
 			}
