@@ -237,8 +237,11 @@ public class Skill_Dirt extends StdSkill
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> blinded!"));
-				maliciousAffect(mob,target,asLevel,3+(getXLEVELLevel(mob)/3),-1);
+				if(msg.value()<=0)
+				{
+					R.show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> blinded!"));
+					maliciousAffect(mob,target,asLevel,3+(getXLEVELLevel(mob)/3),-1);
+				}
 			}
 		}
 		else
