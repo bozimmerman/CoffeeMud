@@ -34,6 +34,7 @@ function reconnect(s)
 }
 function sendData(me)
 {
+	me==''+me.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
 	allwindows[currentWindow].sendData(me);
 }
 function addToPrompt(x,att)
