@@ -28,7 +28,7 @@ medium % wagon	32	105	200	620	GenRideable		2500	2	0
 medium covered % wagon	34	110	225	665	GenRideable	LID	2500	2	0		
 medium % storage wagon	44	130	300	820	GenRideable	LOCK	2500	2	0		
 % food cart	38	135	150	1690	GenRideable	LID	500	0	131072		prop_icebox
-medium lantern wagon	40	120	175	1155	GenRideable		2500	2	0		Spell_Light
+medium % lantern wagon	40	120	175	1155	GenRideable		2500	2	0		*Spell_Light;
 medium % sprung cart	42	100	130	530	GenRideable		2000	4	0		
 medium % storage cart	36	120	250	730	GenRideable	LOCK	3000	0	0		
 large % chariot	46	150	450	1050	GenRideable		500	3	0		Prop_RideAdjuster;Speed+1
@@ -36,7 +36,7 @@ large % unsprung cart	48	110	230	670	GenRideable		9000	0	0
 large % wagon	50	135	300	840	GenRideable		7500	2	0		
 large covered % wagon	52	140	325	885	GenRideable	LID	7500	2	0		
 large % storage wagon	60	160	450	1090	GenRideable	LOCK	7500	2	0		
-large lantern wagon	56	150	275	1375	GenRideable		7500	2	0		Spell_Light
+large % lantern wagon	56	150	275	1375	GenRideable		7500	2	0		*Spell_Light;
 large % sprung cart	58	130	250	770	GenRideable		7000	6	0		
 large % storage cart	54	150	500	1100	GenRideable	LOCK	9000	0	0		
 small % war chariot	62	180	650	1370	GenRideable		100	1	0		*Prop_RideAdjuster;Speed+1 Armor-50
@@ -46,10 +46,10 @@ huge % wagon	68	165	500	1160	GenRideable		25000	2	0
 % chuck wagon	70	185	450	2190	GenRideable	LID	2500	2	131072		prop_icebox
 % trolley	72	195	650	1430	GenRideable	LOCK	25000	2	0		
 % plow	74	120	100	1580	GenRideable		0	1	0		*Prop_RideEnabler;Chant_Fertilization
-portable forge	76	250	800	3800	GenRideable	LID	1000	0	0		burning
+% portable forge	76	250	(onground:consumed:800:ROCK:)	3800	GenRideable	LID	1000	0	0		*Burning;
 % seige tower	78	120	500	1230	GenRideable		2000	16	0		*Prop_RideEnabler;Skill_MountedCombat
-fur-lined sleigh	80	180	350	1570	GenRideable		2000	6	0		*Prop_RideSpellCast;Prayer_ProtCold
-portable aquarium	82	300	1000	4700	GenRideable		0	4	0		*Prop_RideSpellCast;Chant_BreatheAir
-signal tower	84	120	350	930	GenRideable		0	1	0		*Prop_RideEnabler;Fighter_SmokeSignals
-portable tower	86	90	150	1510	GenRideable		0	1	0		*Prop_RideEnabler;Skill_RegionalAwareness
+fur-lined % sleigh	80	180	350	1570	GenRideable		2000	6	0		*Prop_RideSpellCast;Prayer_ProtCold
+% portable aquarium	82	300	1000	4700	GenRideable		0	4	0		*Prop_RideSpellCast;Chant_BreatheAir
+% signal tower	84	120	350	930	GenRideable		0	1	0		*Prop_RideEnabler;Fighter_SmokeSignals
+portable % tower	86	90	150	1510	GenRideable		0	1	0		*Prop_RideEnabler;Skill_RegionalAwareness
 % prairie schooner	88	200	750	2550	GenRideable	LOCK	20000	12	0		Prop_NoPurge
