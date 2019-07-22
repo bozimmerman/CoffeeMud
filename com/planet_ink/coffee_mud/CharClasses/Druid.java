@@ -438,9 +438,10 @@ public class Druid extends StdCharClass
 			&&(druidM.charStats().getCurrentClass().ID().equals(C.ID()))
 			&&(CMLib.flags().isAnimalIntelligence(msg.source())
 			  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
-			  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem")))
+			  ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem"))
+			&&(Math.abs(druidM.phyStats().level()-msg.source().phyStats().level())<=10))
 			{
-				final int xp=msg.source().phyStats().level()*5;
+				final int xp=25;//msg.source().phyStats().level()*5;
 				if(xp>0)
 				{
 					druidM.tell(CMLib.lang().L("Your stewardship has benefitted @x1.",msg.source().name(druidM)));
