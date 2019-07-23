@@ -7974,18 +7974,48 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tt=parseBits(script,si,"Cr");
 					if(tt==null)
 						return null;
+					if(script.elementAt(si, 3)==null)
+						script.setElementAt(si, 3, new Hashtable<String,Integer>());
 				}
+				@SuppressWarnings("unchecked")
+				final Map<String,Integer> skipSwitchMap=(Map<String,Integer>)script.elementAt(si, 3);
 				final String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]).trim();
 				final DVector subScript=new DVector(3);
 				subScript.addElement("",null,null);
 				int depth=0;
-				boolean foundendif=false;
+				boolean foundEndSwitch=false;
 				boolean ignoreUntilEndScript=false;
 				boolean inCase=false;
 				boolean matchedCase=false;
 				si++;
 				String s2=null;
-				while(si<script.size())
+				if(skipSwitchMap.size()>0)
+				{
+					if(skipSwitchMap.containsKey(var.toUpperCase()))
+					{
+						inCase=true;
+						matchedCase=true;
+						si=skipSwitchMap.get(var.toUpperCase()).intValue()+1; // first line of code in matching case
+					}
+					else
+					if(skipSwitchMap.containsKey("$FIRSTVAR"))  // first variable case
+						si=skipSwitchMap.get("$FIRSTVAR").intValue();
+					else
+					if(skipSwitchMap.containsKey("$DEFAULT")) // the "default" case
+					{
+						inCase=true;
+						matchedCase=true;
+						si=skipSwitchMap.get("$DEFAULT").intValue()+1;
+					}
+					else
+					if(skipSwitchMap.containsKey("$ENDSWITCH")) // the "default" case
+					{
+						foundEndSwitch=true;
+						si=skipSwitchMap.get("$ENDSWITCH").intValue();
+					}
+				}
+				while((si<script.size())
+				&&(!foundEndSwitch))
 				{
 					s=((String)script.elementAt(si,1)).trim();
 					tt=(String[])script.elementAt(si,2);
@@ -8009,13 +8039,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					if(ignoreUntilEndScript)
 					{
+						// only applies when <SCRIPT> encountered.
 					}
 					else
 					if(cmd.equals("ENDSWITCH")&&(depth==0))
 					{
 						if(tt==null)
+						{
 							tt=parseBits(script,si,"C");
-						foundendif=true;
+							skipSwitchMap.put("$ENDSWITCH", Integer.valueOf(si));
+						}
+						foundEndSwitch=true;
 						break;
 					}
 					else
@@ -8026,6 +8060,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							tt=parseBits(script,si,"Ccr");
 							if(tt==null)
 								return null;
+							if(tt[1].indexOf('$')>=0)
+							{
+								if(!skipSwitchMap.containsKey("$FIRSTVAR"))
+									skipSwitchMap.put("$FIRSTVAR", Integer.valueOf(si));
+							}
+							else
+							if(!skipSwitchMap.containsKey(tt[1].toUpperCase()))
+								skipSwitchMap.put(tt[1].toUpperCase(), Integer.valueOf(si));
 						}
 						s2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]).trim();
 						inCase=var.equalsIgnoreCase(s2);
@@ -8034,6 +8076,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					if(cmd.equals("DEFAULT")&&(depth==0))
 					{
+						if(tt==null)
+						{
+							tt=parseBits(script,si,"C");
+							if(!skipSwitchMap.containsKey("$DEFAULT"))
+								skipSwitchMap.put("$DEFAULT", Integer.valueOf(si));
+						}
 						inCase=!matchedCase;
 					}
 					else
@@ -8056,7 +8104,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					si++;
 				}
-				if(!foundendif)
+				if(!foundEndSwitch)
 				{
 					logError(scripted,"SWITCH","Syntax"," Without ENDSWITCH!");
 					tickStatus=Tickable.STATUS_END;

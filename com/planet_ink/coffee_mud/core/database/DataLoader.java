@@ -489,9 +489,17 @@ public class DataLoader
 			playerID = DB.injectionClean(playerID);
 			section = DB.injectionClean(section);
 			D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'",0);
-			CMLib.s_sleep(500);
-			if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'")>0)
-				Log.errOut("Failed to delete data for player "+playerID+".");
+			for(int i=0;i<10;i++)
+			{
+				if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'")==0)
+					break;
+				CMLib.s_sleep(250);
+				if(i==5)
+					D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'",0);
+				if(i==9)
+					Log.errOut("Failed to delete "+section+" data for player "+playerID+".");
+
+			}
 		}
 		catch(final Exception sqle)
 		{
