@@ -624,6 +624,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 							if (rec == null)
 							{
 								CMLib.commands().postSay(this, mob, L("What is this?!"), true, false);
+								super.executeMsg(myHost, msg);
 								return;
 							}
 							msg.tool().destroy(); // it's almost done being
@@ -664,6 +665,12 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 						}
 					}
 				}
+				if ((CMSecurity.isAllowed(msg.source(), location(), CMSecurity.SecFlag.ORDER)
+				|| (CMLib.law().doesHavePriviledgesHere(msg.source(), getStartRoom()))
+				|| (CMSecurity.isAllowed(msg.source(), location(), CMSecurity.SecFlag.CMDMOBS) && (isMonster()))
+				|| (CMSecurity.isAllowed(msg.source(), location(), CMSecurity.SecFlag.CMDROOMS) && (isMonster()))))
+					return;
+				super.executeMsg(myHost, msg);
 				return;
 			case CMMsg.TYP_BORROW:
 			case CMMsg.TYP_WITHDRAW:
@@ -708,6 +715,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 						}
 					}
 				}
+				super.executeMsg(myHost, msg);
 				return;
 			case CMMsg.TYP_VALUE:
 			case CMMsg.TYP_SELL:
@@ -787,86 +795,86 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			{
 			case CMMsg.TYP_GIVE:
 			case CMMsg.TYP_DEPOSIT:
-			{
-				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), finalIgnoreMask(), this))
-					return false;
-				if (msg.tool() == null)
-					return false;
-				if (!(msg.tool() instanceof Item))
 				{
-					mob.tell(L("@x1 doesn't look interested.", mob.charStats().HeShe()));
-					return false;
-				}
-				if (CMLib.flags().isEnspelled((Item) msg.tool()) || CMLib.flags().isOnFire((Item) msg.tool()))
-				{
-					mob.tell(this, msg.tool(), null, L("<S-HE-SHE> refuses to accept <T-NAME>."));
-					return false;
-				}
-				boolean moneyPass = false;
-				if (msg.tool() instanceof Coins)
-					moneyPass = this.getTotalOverdueCharges(msg.source().Name()) > 0.0;
-				if (!moneyPass)
-				{
-					if ((!this.shop.doIHaveThisInStock(msg.tool().Name(), null)) && (this.getItemRecords(msg.tool().Name()).size() == 0))
+					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), finalIgnoreMask(), this))
+						return false;
+					if (msg.tool() == null)
+						return false;
+					if (!(msg.tool() instanceof Item))
 					{
-						if(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDMOBS))
+						mob.tell(L("@x1 doesn't look interested.", mob.charStats().HeShe()));
+						return false;
+					}
+					if (CMLib.flags().isEnspelled((Item) msg.tool()) || CMLib.flags().isOnFire((Item) msg.tool()))
+					{
+						mob.tell(this, msg.tool(), null, L("<S-HE-SHE> refuses to accept <T-NAME>."));
+						return false;
+					}
+					boolean moneyPass = false;
+					if (msg.tool() instanceof Coins)
+						moneyPass = this.getTotalOverdueCharges(msg.source().Name()) > 0.0;
+					if (!moneyPass)
+					{
+						if ((!this.shop.doIHaveThisInStock(msg.tool().Name(), null)) && (this.getItemRecords(msg.tool().Name()).size() == 0))
 						{
-							this.shop.addStoreInventory(msg.tool(), 1, 0);
-							this.shopApply=true;
-							CMLib.commands().postSay(this, mob, L("I will now loan out @x1.",msg.tool().Name()), true, false);
+							if(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDMOBS))
+							{
+								this.shop.addStoreInventory(msg.tool(), 1, 0);
+								this.shopApply=true;
+								CMLib.commands().postSay(this, mob, L("I will now loan out @x1.",msg.tool().Name()), true, false);
+							}
+							else
+							{
+								mob.tell(this, msg.tool(), null, L("<S-HE-SHE> has no interest in <T-NAME>."));
+								CMLib.commands().postSay(this, mob, L("That item was not checked out here."), true, false);
+							}
+							return false;
 						}
-						else
-						{
-							mob.tell(this, msg.tool(), null, L("<S-HE-SHE> has no interest in <T-NAME>."));
-							CMLib.commands().postSay(this, mob, L("That item was not checked out here."), true, false);
-						}
+					}
+					return super.okMessage(myHost, msg);
+				}
+			case CMMsg.TYP_WITHDRAW:
+			case CMMsg.TYP_BORROW:
+				{
+					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), finalIgnoreMask(), this))
+						return false;
+					if ((msg.tool() == null) || (!(msg.tool() instanceof Item)) || (msg.tool() instanceof Coins))
+					{
+						CMLib.commands().postSay(this, mob, L("What do you want? I'm busy! Also, SHHHH!!!!"), true, false);
+						return false;
+					}
+					if ((msg.tool() != null) && (!msg.tool().okMessage(myHost, msg)))
+						return false;
+					if (!this.getShop().doIHaveThisInStock(msg.tool().Name(), null))
+					{
+						CMLib.commands().postSay(this, mob, L("We don't stock anything like that."), true, false);
+						return false;
+					}
+					final double due = getTotalOverdueCharges(msg.source().Name());
+					if (due > 0.0)
+					{
+						final String totalAmount = CMLib.beanCounter().nameCurrencyShort(this, due);
+						CMLib.commands().postSay(this, mob, L("I'm sorry, but you have @x1 in overdue charges and may not borrow any more.", totalAmount), true, false);
+						return false;
+					}
+					if (getAllMyRecords(msg.source().Name()).size() >= this.getMaxBorrowed())
+					{
+						CMLib.commands().postSay(this, mob, L("I'm sorry, but you may only borrow @x1 items.", "" + getMaxBorrowed()), true, false);
+						return false;
+					}
+					if (getRecord(msg.source().Name(), msg.tool().Name()) != null)
+					{
+						CMLib.commands().postSay(this, mob, L("I'm sorry, but you already borrowed a copy of that.", "" + getMaxBorrowed()), true, false);
+						return false;
+					}
+					final CoffeeShop shop = this.getShop();
+					if (shop == this.shop) // never borrow from the main library
+					{
+						CMLib.commands().postSay(this, mob, L("Please come back a little later."), true, false);
 						return false;
 					}
 				}
-				return true;
-			}
-			case CMMsg.TYP_WITHDRAW:
-			case CMMsg.TYP_BORROW:
-			{
-				if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), finalIgnoreMask(), this))
-					return false;
-				if ((msg.tool() == null) || (!(msg.tool() instanceof Item)) || (msg.tool() instanceof Coins))
-				{
-					CMLib.commands().postSay(this, mob, L("What do you want? I'm busy! Also, SHHHH!!!!"), true, false);
-					return false;
-				}
-				if ((msg.tool() != null) && (!msg.tool().okMessage(myHost, msg)))
-					return false;
-				if (!this.getShop().doIHaveThisInStock(msg.tool().Name(), null))
-				{
-					CMLib.commands().postSay(this, mob, L("We don't stock anything like that."), true, false);
-					return false;
-				}
-				final double due = getTotalOverdueCharges(msg.source().Name());
-				if (due > 0.0)
-				{
-					final String totalAmount = CMLib.beanCounter().nameCurrencyShort(this, due);
-					CMLib.commands().postSay(this, mob, L("I'm sorry, but you have @x1 in overdue charges and may not borrow any more.", totalAmount), true, false);
-					return false;
-				}
-				if (getAllMyRecords(msg.source().Name()).size() >= this.getMaxBorrowed())
-				{
-					CMLib.commands().postSay(this, mob, L("I'm sorry, but you may only borrow @x1 items.", "" + getMaxBorrowed()), true, false);
-					return false;
-				}
-				if (getRecord(msg.source().Name(), msg.tool().Name()) != null)
-				{
-					CMLib.commands().postSay(this, mob, L("I'm sorry, but you already borrowed a copy of that.", "" + getMaxBorrowed()), true, false);
-					return false;
-				}
-				final CoffeeShop shop = this.getShop();
-				if (shop == this.shop) // never borrow from the main library
-				{
-					CMLib.commands().postSay(this, mob, L("Please come back a little later."), true, false);
-					return false;
-				}
-			}
-				return true;
+				return super.okMessage(myHost, msg);
 			case CMMsg.TYP_SELL:
 			case CMMsg.TYP_VALUE:
 				if ((contributorMask().length() > 0) && (!CMLib.masking().maskCheck(contributorMask(), msg.source(), false)))
