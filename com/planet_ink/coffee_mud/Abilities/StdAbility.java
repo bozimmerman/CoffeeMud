@@ -653,6 +653,9 @@ public class StdAbility implements Ability
 
 	public boolean disregardsArmorCheck(final MOB mob)
 	{
+		// armor checks are mostly handled by classes.
+		// this is here for cases when someone gets a skill without the class to keep it in check.
+		// that's why you disregard the armor check with you DO qualify
 		return ((mob==null)
 				||(mob.isMonster())
 				||(CMLib.ableMapper().qualifiesByLevel(mob,this)));

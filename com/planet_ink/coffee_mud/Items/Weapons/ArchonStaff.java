@@ -44,7 +44,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 	}
 
 	private static Wand theWand=(Wand)CMClass.getMiscMagic("StdWand");
-	protected final static String[] MAGIC_WORDS={"LEVEL","RESTORE","REFRESH","BLAST","BURN"};
+	protected final static String[] MAGIC_WORDS={"LEVEL","RESTORE","REFRESH","BLAST","BURN","GAIN"};
 
 	public ArchonStaff()
 	{
@@ -68,7 +68,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		weaponClassification=Weapon.CLASS_STAFF;
 		if(theWand==null)
 			theWand=(Wand)CMClass.getMiscMagic("StdWand");
-		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
+		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
 	}
 
 	@Override
@@ -86,14 +86,14 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 	public void setSpell(final Ability theSpell)
 	{
 		super.setSpell(theSpell);
-		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
+		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
 	}
 
 	@Override
 	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
-		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN";
+		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X UP";
 	}
 
 	public boolean safetyCheck(final MOB mob, final String message)
@@ -195,7 +195,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					return;
 				}
 				else
-				if(message.startsWith("GAIN ")&&message.endsWith(" UP"))
+				if(message.toUpperCase().startsWith("GAIN ")&&message.toUpperCase().endsWith(" UP"))
 				{
 					if(!safetyCheck(mob,message))
 						return;
@@ -382,7 +382,8 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 				}
 			}
 		}
-		StdWand.waveIfAble(mob,afftarget,message,this);
+		if(this.getSpell()!=null)
+			StdWand.waveIfAble(mob,afftarget,message,this);
 	}
 
 	@Override
