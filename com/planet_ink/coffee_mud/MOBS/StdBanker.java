@@ -1062,6 +1062,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 						}
 						return super.okMessage(myHost, msg);
 					}
+					else
+					{
+						if(getItemInterest()>0.5)
+						{
+							CMLib.commands().postSay(this,mob,L("I'm sorry, I don't have any deposit boxes to hold items like that."),true,false);
+							return false;
+						}
+					}
 					if(!(msg.tool() instanceof Item))
 					{
 						mob.tell(L("@x1 doesn't look interested.",mob.charStats().HeShe()));
@@ -1183,12 +1191,16 @@ public class StdBanker extends StdShopKeeper implements Banker
 				return super.okMessage(myHost,msg);
 			case CMMsg.TYP_BORROW:
 			{
-
 				if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
 					return false;
 				if(!(msg.tool() instanceof Coins))
 				{
 					CMLib.commands().postSay(this,mob,L("I'm sorry, only MONEY can be borrowed."),true,false);
+					return false;
+				}
+				if(getLoanInterest()<-0.5)
+				{
+					CMLib.commands().postSay(this,mob,L("I'm sorry, I don't loan money."),true,false);
 					return false;
 				}
 				final String withdrawerName=getBankClientName(msg.source(),Clan.Function.WITHDRAW,true);

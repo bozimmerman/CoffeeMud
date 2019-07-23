@@ -24,6 +24,7 @@
  23. New command: SUBSCRIBE, for getting notifications about journal posts
  24. New INI entry: MAXITEMSWORN, to limit total items worn
  25. Combat stats now recorded for players at each level.  STAT COMBAT will give a limited view.
+ 26. Banker ability to hold items and make loans can be disabled on a per-mob basis.  See GenBanker in Archon's Guide.
 
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque
