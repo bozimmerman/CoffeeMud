@@ -8069,9 +8069,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(!skipSwitchMap.containsKey(tt[1].toUpperCase()))
 								skipSwitchMap.put(tt[1].toUpperCase(), Integer.valueOf(si));
 						}
-						s2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]).trim();
-						inCase=var.equalsIgnoreCase(s2);
-						matchedCase=matchedCase||inCase;
+						if(matchedCase
+						&&inCase
+						&&(skipSwitchMap.containsKey("$ENDSWITCH"))) // we're done
+						{
+							foundEndSwitch=true;
+							si=skipSwitchMap.get("$ENDSWITCH").intValue();
+						}
+						else
+						{
+							s2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]).trim();
+							inCase=var.equalsIgnoreCase(s2);
+							matchedCase=matchedCase||inCase;
+						}
 					}
 					else
 					if(cmd.equals("DEFAULT")&&(depth==0))
@@ -8082,7 +8092,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(!skipSwitchMap.containsKey("$DEFAULT"))
 								skipSwitchMap.put("$DEFAULT", Integer.valueOf(si));
 						}
-						inCase=!matchedCase;
+						if(matchedCase
+						&&inCase
+						&&(skipSwitchMap.containsKey("$ENDSWITCH"))) // we're done
+						{
+							foundEndSwitch=true;
+							si=skipSwitchMap.get("$ENDSWITCH").intValue();
+						}
+						else
+							inCase=!matchedCase;
 					}
 					else
 					{
