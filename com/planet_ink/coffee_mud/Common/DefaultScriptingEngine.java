@@ -754,17 +754,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 	}
 
-	protected Vector<DVector> parseScripts(String text)
+	protected List<DVector> parseScripts(String text)
 	{
 		buildHashes();
 		text=parseLoads(text,0,null,null);
 		final List<List<String>> V = CMParms.parseDoubleDelimited(text,'~',';');
-		final Vector<DVector> V2=new Vector<DVector>(2);
+		final Vector<DVector> V2=new Vector<DVector>(3);
 		for(final List<String> ls : V)
 		{
-			final DVector DV=new DVector(2);
+			final DVector DV=new DVector(3);
 			for(final String s : ls)
-				DV.addElement(s,null);
+				DV.addElement(s,null,null);
 			V2.add(DV);
 		}
 		return V2;
@@ -1912,9 +1912,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return varifyable;
 	}
 
-	protected DVector getScriptVarSet(final String mobname, final String varname)
+	protected PairList<String,String> getScriptVarSet(final String mobname, final String varname)
 	{
-		final DVector set=new DVector(2);
+		final PairList<String,String> set=new PairVector<String,String>();
 		if(mobname.equals("*"))
 		{
 			for(final Iterator<String> k = resources._findResourceKeys("SCRIPTVAR-");k.hasNext();)
@@ -1929,11 +1929,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						for(final Enumeration<String> e=H.keys();e.hasMoreElements();)
 						{
 							final String vn=e.nextElement();
-							set.addElement(key.substring(10),vn);
+							set.add(key.substring(10),vn);
 						}
 					}
 					else
-						set.addElement(key.substring(10),varname);
+						set.add(key.substring(10),varname);
 				}
 			}
 		}
@@ -1946,11 +1946,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				for(final Enumeration<String> e=H.keys();e.hasMoreElements();)
 				{
 					final String vn=e.nextElement();
-					set.addElement(mobname,vn);
+					set.add(mobname,vn);
 				}
 			}
 			else
-				set.addElement(mobname,varname);
+				set.add(mobname,varname);
 		}
 		return set;
 	}
@@ -2206,11 +2206,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	@Override
 	public void setVar(final String baseName, String key, String val)
 	{
-		final DVector V=getScriptVarSet(baseName,key);
-		for(int v=0;v<V.size();v++)
+		final PairList<String,String> vars=getScriptVarSet(baseName,key);
+		for(int v=0;v<vars.size();v++)
 		{
-			final String name=(String)V.elementAt(v,1);
-			key=((String)V.elementAt(v,2)).toUpperCase();
+			final String name=vars.elementAtFirst(v);
+			key=vars.elementAtSecond(v).toUpperCase();
 			@SuppressWarnings("unchecked")
 			Hashtable<String,String> H=(Hashtable<String,String>)resources._getResource("SCRIPTVAR-"+name);
 			if((H==null)&&(defaultQuestName!=null)&&(defaultQuestName.length()>0))
@@ -7877,8 +7877,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tt=EVAL[0];
 					script.setElementAt(si,2,tt);
 				}
-				final DVector V=new DVector(2);
-				V.addElement("",null);
+				final DVector subScript=new DVector(3);
+				subScript.addElement("",null,null);
 				int depth=0;
 				boolean foundendif=false;
 				boolean ignoreUntilEndScript=false;
@@ -7942,7 +7942,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							depth--;
 						}
 						if(condition)
-							V.addSharedElements(script.elementsAt(si));
+							subScript.addSharedElements(script.elementsAt(si));
 					}
 					si++;
 				}
@@ -7952,12 +7952,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tickStatus=Tickable.STATUS_END;
 					return null;
 				}
-				if(V.size()>1)
+				if(subScript.size()>1)
 				{
 					//source.tell(L("Starting @x1",conditionStr));
 					//for(int v=0;v<V.size();v++)
 					//  source.tell(L("Statement @x1",((String)V.elementAt(v))));
-					final String response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
+					final String response=execute(scripted,source,target,monster,primaryItem,secondaryItem,subScript,msg,tmp);
 					if(response!=null)
 					{
 						tickStatus=Tickable.STATUS_END;
@@ -7976,8 +7976,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 				}
 				final String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]).trim();
-				final DVector V=new DVector(2);
-				V.addElement("",null);
+				final DVector subScript=new DVector(3);
+				subScript.addElement("",null,null);
 				int depth=0;
 				boolean foundendif=false;
 				boolean ignoreUntilEndScript=false;
@@ -8039,7 +8039,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					{
 						if(inCase)
-							V.addElement(s,tt);
+							subScript.addSharedElements(script.elementsAt(si));
 						if(cmd.equals("SWITCH"))
 						{
 							if(tt==null)
@@ -8062,9 +8062,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tickStatus=Tickable.STATUS_END;
 					return null;
 				}
-				if(V.size()>1)
+				if(subScript.size()>1)
 				{
-					final String response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
+					final String response=execute(scripted,source,target,monster,primaryItem,secondaryItem,subScript,msg,tmp);
 					if(response!=null)
 					{
 						tickStatus=Tickable.STATUS_END;
@@ -8131,8 +8131,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tickStatus=Tickable.STATUS_END;
 					return null;
 				}
-				final DVector V=new DVector(2);
-				V.addElement("",null);
+				final DVector subScript=new DVector(3);
+				subScript.addElement("",null,null);
 				int depth=0;
 				boolean foundnext=false;
 				boolean ignoreUntilEndScript=false;
@@ -8185,7 +8185,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								tt=parseBits(script,si,"C");
 							depth--;
 						}
-						V.addSharedElements(script.elementsAt(si));
+						subScript.addSharedElements(script.elementsAt(si));
 					}
 					si++;
 				}
@@ -8195,7 +8195,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tickStatus=Tickable.STATUS_END;
 					return null;
 				}
-				if(V.size()>1)
+				if(subScript.size()>1)
 				{
 					//source.tell(L("Starting @x1",conditionStr));
 					//for(int v=0;v<V.size();v++)
@@ -8212,7 +8212,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						for(int forLoop=fromInt;forLoop!=toInt;forLoop+=increment)
 						{
 							tmp[whichVar]=""+forLoop;
-							response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
+							response=execute(scripted,source,target,monster,primaryItem,secondaryItem,subScript,msg,tmp);
 							if(response!=null)
 								break;
 							if(System.currentTimeMillis()>tm)
@@ -8223,7 +8223,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						tmp[whichVar]=""+toInt;
 						if(response == null)
-							response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
+							response=execute(scripted,source,target,monster,primaryItem,secondaryItem,subScript,msg,tmp);
 						else
 						if(response.equalsIgnoreCase("break"))
 							response=null;
@@ -10626,11 +10626,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(goHere!=null)
 						{
 							goHere.bringMobHere(monster,true);
-							final DVector DV=new DVector(2);
-							DV.addElement("",null);
-							DV.addElement(doWhat,null);
+							final DVector subScript=new DVector(3);
+							subScript.addElement("",null,null);
+							subScript.addElement(doWhat,null,null);
 							lastKnownLocation=goHere;
-							execute(scripted,source,target,monster,primaryItem,secondaryItem,DV,msg,tmp);
+							execute(scripted,source,target,monster,primaryItem,secondaryItem,subScript,msg,tmp);
 							lastKnownLocation=lastPlace;
 							lastPlace.bringMobHere(monster,true);
 							if(!(scripted instanceof MOB))
@@ -10843,9 +10843,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String force=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]).trim();
 				if(newTarget!=null)
 				{
-					final DVector vscript=new DVector(2);
-					vscript.addElement("FUNCTION_PROG MPFORCE_"+System.currentTimeMillis()+Math.random(),null);
-					vscript.addElement(force,null);
+					final DVector vscript=new DVector(3);
+					vscript.addElement("FUNCTION_PROG MPFORCE_"+System.currentTimeMillis()+Math.random(),null,null);
+					vscript.addElement(force,null,null);
 					// this can not be permanently parsed because it is variable
 					execute(newTarget, source, target, getMakeMOB(newTarget), primaryItem, secondaryItem, vscript, msg, tmp);
 				}
@@ -10918,11 +10918,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				which=getVarHost(E,which,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
 				if((which.length()>0)&&(arg2.length()>0))
 				{
-					final DVector V=getScriptVarSet(which,arg2);
-					for(int v=0;v<V.size();v++)
+					final PairList<String,String> vars=getScriptVarSet(which,arg2);
+					for(int v=0;v<vars.size();v++)
 					{
-						which=(String)V.elementAt(0,1);
-						arg2=((String)V.elementAt(0,2)).toUpperCase();
+						which=vars.elementAtFirst(v);
+						arg2=vars.elementAtSecond(v).toUpperCase();
 						@SuppressWarnings("unchecked")
 						final Hashtable<String,String> H=(Hashtable<String,String>)resources._getResource("SCRIPTVAR-"+which);
 						String val="";
@@ -11480,9 +11480,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				final String[][] EVALO={EVAL};
-				final DVector vscript=new DVector(2);
-				vscript.addElement("FUNCTION_PROG MPWHILE_"+Math.random(),null);
-				vscript.addElement(DO,DOT);
+				final DVector vscript=new DVector(3);
+				vscript.addElement("FUNCTION_PROG MPWHILE_"+Math.random(),null,null);
+				vscript.addElement(DO,DOT,null);
 				final long time=System.currentTimeMillis();
 				while((eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,EVALO,0))
 				&&((System.currentTimeMillis()-time)<4000))
@@ -11540,9 +11540,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					logError(scripted,"MPALARM","Syntax","No command!");
 					break;
 				}
-				final DVector vscript=new DVector(2);
-				vscript.addElement("FUNCTION_PROG ALARM_"+time+Math.random(),null);
-				vscript.addElement(parms,null);
+				final DVector vscript=new DVector(3);
+				vscript.addElement("FUNCTION_PROG ALARM_"+time+Math.random(),null,null);
+				vscript.addElement(parms,null,null);
 				prequeResponse(scripted,source,target,monster,primaryItem,secondaryItem,vscript,CMath.s_int(time.trim()),msg);
 				break;
 			}
