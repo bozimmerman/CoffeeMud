@@ -8109,7 +8109,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(cmd.equals("SWITCH"))
 						{
 							if(tt==null)
+							{
 								tt=parseBits(script,si,"Cr");
+								if(script.elementAt(si, 3)==null)
+									script.setElementAt(si, 3, new Hashtable<String,Integer>());
+							}
 							depth++;
 						}
 						else
