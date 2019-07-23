@@ -776,6 +776,12 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 							CMLib.commands().postSay(this,mob,L("I can't seem to deliver @x1.",msg.tool().name()),true,false);
 					}
 				}
+				if ((CMSecurity.isAllowed(msg.source(), location(), CMSecurity.SecFlag.ORDER)
+				|| (CMLib.law().doesHavePriviledgesHere(msg.source(), getStartRoom()))
+				|| (CMSecurity.isAllowed(msg.source(), location(), CMSecurity.SecFlag.CMDMOBS) && (isMonster()))
+				|| (CMSecurity.isAllowed(msg.source(), location(), CMSecurity.SecFlag.CMDROOMS) && (isMonster()))))
+					return;
+				super.executeMsg(myHost, msg);
 				return;
 			case CMMsg.TYP_WITHDRAW:
 				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
@@ -821,6 +827,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 							location().send(mob,msg2);
 					}
 				}
+				super.executeMsg(myHost, msg);
 				return;
 			case CMMsg.TYP_VALUE:
 			case CMMsg.TYP_SELL:
@@ -1061,7 +1068,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						return false;
 					}
 				}
-				return true;
+				return super.okMessage(myHost, msg);
 			case CMMsg.TYP_WITHDRAW:
 				{
 					if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
@@ -1093,7 +1100,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						return false;
 					}
 				}
-				return true;
+				return super.okMessage(myHost,msg);
 			case CMMsg.TYP_VALUE:
 			case CMMsg.TYP_SELL:
 			case CMMsg.TYP_VIEW:
