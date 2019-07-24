@@ -104,6 +104,7 @@ public class Archon_CRecord extends ArchonSkill
 	protected boolean	isRecorder	= false;
 	protected long		triggerTime	= 0;
 	protected int		minLevel	= 10;
+	protected String	myArchon	= "";
 	protected String	recordingDir= "::/resources/clogs/";
 
 	protected final List<String>	myPlayers	= new ArrayList<String>();
@@ -118,7 +119,7 @@ public class Archon_CRecord extends ArchonSkill
 	@Override
 	public boolean isAutoInvoked()
 	{
-		return !isRecorder;
+		return true;//!isRecorder;
 	}
 
 	@Override
@@ -180,9 +181,11 @@ public class Archon_CRecord extends ArchonSkill
 			else
 			{
 				recordingDir = CMParms.getParmStr(newMiscText, "FILENAME", "");
+				myArchon = CMParms.getParmStr(newMiscText, "BY", "");
 				minLevel = CMParms.getParmInt(newMiscText, "MINLEVEL", 0);
 				if((recordingDir.length()==0)
 				||(triggerTime==0)
+				||(myArchon.length()==0)
 				||(minLevel==0))
 				{
 					Log.errOut("Unable to start CRecording: "+newMiscText);
@@ -202,7 +205,9 @@ public class Archon_CRecord extends ArchonSkill
 		if(affected != null)
 		{
 			str.append("FILENAME=\""+recordingDir+"\" ISRECORDER="+isRecorder+" TRIGGERTIME="+triggerTime+" MINLEVEL="+minLevel);
-			if(!isRecorder)
+			if(isRecorder)
+				str.append(" BY="+myArchon);
+			else
 				str.append(" PLAYERS=\""+CMParms.combine(myPlayers)+"\"");
 		}
 		return str.toString();
@@ -228,7 +233,7 @@ public class Archon_CRecord extends ArchonSkill
 			final Archon_CRecord A2=(Archon_CRecord)copyOf();
 			A2.setSavable(true);
 			targetM.addNonUninvokableEffect(A2);
-			A2.setMiscText("FILENAME=\""+filename+"\" ISRECORDER=TRUE TRIGGERTIME="+triggerTime+" MINLEVEL="+minLevel);
+			A2.setMiscText("FILENAME=\""+filename+"\" ISRECORDER=TRUE TRIGGERTIME="+triggerTime+" MINLEVEL="+minLevel+" BY="+mob.Name());
 			final Archon_CRecord iA=(Archon_CRecord)mob.fetchEffect(ID());
 			if(iA!=null)
 				iA.myPlayers.add(targetM.Name());
@@ -267,6 +272,22 @@ public class Archon_CRecord extends ArchonSkill
 					if(msg.source() == mob)
 					{
 						this.flushBuffer();
+						if(myArchon.length()>0)
+						{
+							MOB arcM=CMLib.players().getLoadPlayer(myArchon);
+							if(arcM==null)
+								arcM=CMLib.players().getPlayerAllHosts(myArchon);
+							if(arcM!=null)
+							{
+								final Archon_CRecord cA=(Archon_CRecord)arcM.fetchEffect(ID());
+								if(cA!=null)
+								{
+									arcM.tell("C-recording ended: "+msg.source().name());
+									Log.sysOut("C-recording ended: "+msg.source().name());
+									cA.myPlayers.remove(msg.source().Name());
+								}
+							}
+						}
 						msg.source().delEffect(this);
 					}
 				}
