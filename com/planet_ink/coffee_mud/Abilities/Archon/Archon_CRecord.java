@@ -299,6 +299,9 @@ public class Archon_CRecord extends ArchonSkill
 					final Archon_CRecord iA=(Archon_CRecord)mob.fetchEffect(ID());
 					if(iA!=null)
 						iA.myPlayers.remove(msg.source().Name());
+					final Archon_CRecord hA=(Archon_CRecord)msg.source().fetchEffect(ID());
+					if(hA!=null)
+						msg.source().delEffect(hA);
 				}
 			}
 			else
