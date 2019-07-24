@@ -738,11 +738,22 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				A.delPlayer(deadMOB);
 		}
 		final Room deadLoc=deadMOB.location();
+		final CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:L("A horrible death cry is heard throughout the land."));
 		if(deleteAssets)
 		{
-			final CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:L("A horrible death cry is heard throughout the land."));
 			if(deadLoc!=null)
 				deadLoc.send(deadMOB,msg);
+
+		}
+		final Session session = deadMOB.session();
+		if((session!=null)&&(!session.isStopped()))
+		{
+			session.logout(true);
+			if(session!=null)
+				session.stopSession(false,false,false);
+		}
+		if(deleteAssets)
+		{
 			try
 			{
 				for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
@@ -755,6 +766,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						else
 						{
 							addPlayer(deadMOB);
+							// your session is still gone, but at least you are not
 							return;
 						}
 					}
@@ -848,8 +860,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 		}
 
-		if(deadMOB.session()!=null)
-			deadMOB.session().stopSession(false,false,false);
 		Log.sysOut(deadMOB.name()+" has been deleted.");
 		deadMOB.destroy();
 	}

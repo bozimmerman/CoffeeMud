@@ -2600,6 +2600,7 @@ public class DefaultSession implements Session
 			stopSession(false,false,false);
 		else
 		{
+			Log.debugOut("prelogout done"); //BZ:DELME
 			preLogout(M);
 			if(removeMOB)
 				M.removeFromGame(true, false);
