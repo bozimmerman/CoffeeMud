@@ -72,6 +72,8 @@ public class ChannelFunction extends StdWebMacro
 							&&(msgnum.length()>0)
 							&&(CMath.isNumber(msgnum)))
 							{
+								httpReq.getRequestObjects().clear();
+								C.queue().clear();
 								CMLib.database().delBackLogEntry(last, CMath.s_long(msgnum));
 								return "Channel message "+msgnum+" deleted.";
 							}
