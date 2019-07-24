@@ -146,7 +146,7 @@ public class Draconian extends StdRace
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+5);
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+5);
-		affectableStats.setStat(CharStats.STAT_GENDER,'N');
+		//affectableStats.setStat(CharStats.STAT_GENDER,'N');
 	}
 
 	@Override
