@@ -1197,26 +1197,60 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public boolean postExperienceToAllAboard(final Physical possibleShip, final int amount)
+	public boolean postExperienceToAllAboard(final Physical possibleShip, final int amount, Physical target)
 	{
 		boolean posted = false;
 		if(possibleShip instanceof BoardableShip)
 		{
-			final Area A=((BoardableShip)possibleShip).getShipArea();
-			if(A!=null)
+			boolean destroyTargetMob=false;
+			final MOB targetM;
+			if(target instanceof MOB)
+				targetM=(MOB)target;
+			else
+			if(target==null)
+				targetM=null;
+			else
 			{
-				posted = true;
-				for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				targetM=CMClass.getFactoryMOB(target.Name(), target.phyStats().level(), null);
+				if(target instanceof Rideable)
 				{
-					final Room R=r.nextElement();
-					if(R!=null)
+					synchronized(target)
 					{
-						for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+						targetM.setRiding((Rideable)target);
+					}
+				}
+				destroyTargetMob=true;
+			}
+			try
+			{
+				final Area A=((BoardableShip)possibleShip).getShipArea();
+				if(A!=null)
+				{
+					posted = true;
+					for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+					{
+						final Room R=r.nextElement();
+						if(R!=null)
 						{
-							final MOB M=m.nextElement();
-							posted = postExperience(M, null, null, amount, false) && posted;
+							for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+							{
+								final MOB M=m.nextElement();
+								posted = postExperience(M, targetM, null, amount, false) && posted;
+							}
 						}
 					}
+				}
+			}
+			finally
+			{
+				if(destroyTargetMob
+				&&(targetM!=null))
+				{
+					synchronized(target)
+					{
+						targetM.setRiding(null);
+					}
+					targetM.destroy();
 				}
 			}
 		}

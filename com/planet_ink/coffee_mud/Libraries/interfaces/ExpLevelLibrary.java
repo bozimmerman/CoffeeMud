@@ -78,9 +78,10 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * amount of experience to all abord.
 	 * @param possibleShip the ship to give experience to
 	 * @param amount amount of experience to give to each person found
+	 * @param target TODO
 	 * @return true if experience is posted, false otherwise
 	 */
-	public boolean postExperienceToAllAboard(Physical possibleShip, int amount);
+	public boolean postExperienceToAllAboard(Physical possibleShip, int amount, Physical target);
 
 	/**
 	 * This method fills in combat and rejuvenation related stats for the given
