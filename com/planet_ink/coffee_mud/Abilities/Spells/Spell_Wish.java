@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.FRange;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
@@ -212,9 +213,6 @@ public class Spell_Wish extends Spell
 		else
 		if(mob.location().okMessage(mob,msg))
 		{
-			// cast wish bless were cast on me
-			// cast wish to have restoration cast on me
-			// cast wish to cast bless on me
 			// cast wish to cast disintegrate on orc
 			// cast wish to cast geas on orc to kill bob
 			Log.sysOut("Wish",mob.Name()+" wished for "+myWish+".");
@@ -1464,6 +1462,45 @@ public class Spell_Wish extends Spell
 						}
 					}
 				}
+				
+				if(myWish.endsWith(" WAS CAST ON ME")
+				||myWish.endsWith(" CAST ON ME")
+				||myWish.endsWith(" WAS ON ME")
+				||myWish.endsWith(" ON ME"))
+				{
+					final MOB tm=(MOB)target;
+					String spellName=myWish;
+					if(myWish.endsWith(" WAS CAST ON ME"))
+						spellName=myWish.substring(0,myWish.length()-15).trim();
+					else
+					if(myWish.endsWith(" CAST ON ME"))
+						spellName=myWish.substring(0,myWish.length()-11).trim();
+					else
+					if(myWish.endsWith(" WAS ON ME"))
+						spellName=myWish.substring(0,myWish.length()-10).trim();
+					else
+					if(myWish.endsWith(" ON ME"))
+						spellName=myWish.substring(0,myWish.length()-6).trim();
+					final Ability A=CMClass.findAbility(spellName);
+					if((A!=null)
+					&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)
+					&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
+					{
+						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
+						{
+							baseLoss=getXPCOSTAdjustment(mob,baseLoss);
+							CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
+							mob.tell(L("Your wish has drained you of @x1 experience points, but that is beyond your wishing ability.",""+baseLoss));
+							return false;
+						}
+						if(tm.fetchEffect(A.ID())==null)
+							A.invoke(mob, target, true, 1);
+						baseLoss=getXPCOSTAdjustment(mob,baseLoss);
+						CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
+						mob.tell(L("Your wish has drained you of @x1 experience points.",""+baseLoss));
+						return false;
+					}
+				}
 			}
 
 			// attributes will be hairy
@@ -1623,7 +1660,6 @@ public class Spell_Wish extends Spell
 			{
 				if(foundAttribute>1000)
 				{
-
 					switch(foundAttribute)
 					{
 					case 1001:
@@ -1690,6 +1726,123 @@ public class Spell_Wish extends Spell
 				return true;
 			}
 
+			// possibly a faction change
+			if((target instanceof MOB)
+			&&((myWish.indexOf(" BECOME ")>=0)
+			||(myWish.indexOf(" TO BE ")>=0)
+			||(myWish.indexOf(" BE MORE")>=0)))
+			{
+				final MOB tmob=(MOB)target;
+				String factionID=null;
+				int rangeChange=-1;
+				for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+				{
+					final Faction F=f.nextElement();
+					if(F.isPreLoaded())
+					{
+						for(final Enumeration<FRange> gr=F.ranges();gr.hasMoreElements();)
+						{
+							final FRange FR=gr.nextElement();
+							if(myWish.endsWith(FR.name().toUpperCase()))
+							{
+								factionID=F.factionID();
+								rangeChange=FR.random();
+								break;
+							}
+						}
+					}
+				}
+				int inx=myWish.indexOf(" IN ");
+				if(inx<0)
+					inx=myWish.indexOf(" WITH ");
+				if(inx>0)
+				{
+					String prev=" "+myWish.substring(0,inx).trim().toUpperCase()+" ";
+					inx++;
+					inx=myWish.indexOf(" ",inx+1);
+					String where=myWish.substring(inx+1).trim().toUpperCase();
+					for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+					{
+						final Faction F=f.nextElement();
+						if(F.name().toUpperCase().indexOf(where)>=0)
+						{
+							for(final Enumeration<FRange> gr=F.ranges();gr.hasMoreElements();)
+							{
+								final FRange FR=gr.nextElement();
+								if(prev.indexOf(" "+FR.name().toUpperCase()+" ")>=0)
+								{
+									factionID=F.factionID();
+									rangeChange=FR.random();
+									break;
+								}
+							}
+						}
+					}
+				}
+				if((factionID != null)
+				&&(factionID.length()>0))
+				{
+					baseLoss=100;
+					final Faction F=CMLib.factions().getFaction(factionID);
+					int casterF = mob.fetchFaction(factionID);
+					int targetF = tmob.fetchFaction(factionID);
+					int targetDiff = 0;
+					int targetChange = 0;
+					if(targetF == Integer.MAX_VALUE)
+					{
+						targetDiff=CMath.abs(rangeChange);
+						targetChange=-rangeChange;
+					}
+					else
+					{
+						targetDiff=CMath.abs(targetF-rangeChange);
+						if(targetChange > targetF)
+							targetChange=targetDiff;
+						else
+							targetChange=-targetDiff;
+					}
+					baseLoss += targetDiff/10;
+					
+					wishDrain(mob,baseLoss,false);
+					if(mob != tmob)
+					{
+						if(casterF==Integer.MAX_VALUE)
+						{
+							mob.addFaction(F.factionID(), -rangeChange);
+							mob.tell(L("Your wish causes you become known by @x1!",F.name()));
+						}
+						else
+						{
+							mob.addFaction(F.factionID(), casterF-targetChange);
+							if(targetChange > 0)
+								mob.tell(L("Your wish causes you to lose faction with @x1!",F.name()));
+							else
+								mob.tell(L("Your wish causes you to gain faction with @x1!",F.name()));
+						}
+					}
+					else
+					if(targetF==Integer.MAX_VALUE)
+					{
+						tmob.addFaction(F.factionID(), -rangeChange);
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has become known to @x2.",target.name(),F.name()));
+					}
+					else
+					{
+						tmob.addFaction(F.factionID(), targetF+targetChange);
+						if(targetChange > 0)
+							mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has gain reputation with @x2.",target.name(),F.name()));
+						else
+							mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has lost reputation with @x2.",target.name(),F.name()));
+					}
+					tmob.recoverCharStats();
+					tmob.recoverMaxState();
+					tmob.recoverPhyStats();
+					mob.recoverCharStats();
+					mob.recoverMaxState();
+					mob.recoverPhyStats();
+					return true;
+				}
+			}
 			baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 			CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 			Log.sysOut("Wish",mob.Name()+" unsuccessfully wished for '"+CMParms.combine(commands,0)+"'");
