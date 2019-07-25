@@ -351,29 +351,23 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	@Override
 	public double getOverdueCharge()
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setOverdueCharge(double charge)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public double getDailyOverdueCharge()
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setDailyOverdueCharge(double charge)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
