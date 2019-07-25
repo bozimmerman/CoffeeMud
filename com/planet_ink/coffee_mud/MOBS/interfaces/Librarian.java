@@ -97,6 +97,35 @@ public interface Librarian extends ShopKeeper
 	 */
 	public final static int		DEFAULT_MAX_BORROWED		= 5;
 
+	/**
+	 * A class to hold information about a checked-out book
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static class CheckedOutRecord
+	{
+		/**
+		 * The user id of the player who checked out the book
+		 */
+		public String	playerName		= "";
+		/**
+		 * The full item name of the checked out book
+		 */
+		public String	itemName		= "";
+		/**
+		 * The epoc time when the book is due
+		 */
+		public long		mudDueDateMs	= 0;
+		/**
+		 * The epoc time when the book will be reclaimed
+		 */
+		public long		mudReclaimDateMs= 0;
+		/**
+		 * The total charged accrued
+		 */
+		public double	charges			= 0.0;
+	}
 
 	/**
 	 * Gets the minimum base currency charge due the moment

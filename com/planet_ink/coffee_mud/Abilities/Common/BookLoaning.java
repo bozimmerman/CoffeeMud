@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.StdLibrarian.CheckedOutRecord;
+import com.planet_ink.coffee_mud.MOBS.interfaces.Librarian.CheckedOutRecord;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -355,7 +355,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public void setOverdueCharge(double charge)
+	public void setOverdueCharge(final double charge)
 	{
 	}
 
@@ -366,7 +366,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public void setDailyOverdueCharge(double charge)
+	public void setDailyOverdueCharge(final double charge)
 	{
 	}
 
@@ -377,7 +377,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public void setOverdueChargePct(double pct)
+	public void setOverdueChargePct(final double pct)
 	{
 	}
 
@@ -388,7 +388,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public void setDailyOverdueChargePct(double pct)
+	public void setDailyOverdueChargePct(final double pct)
 	{
 	}
 
@@ -399,7 +399,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public void setMinOverdueDays(int days)
+	public void setMinOverdueDays(final int days)
 	{
 		minOverdueDays=days;
 	}
@@ -411,7 +411,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public void setMaxOverdueDays(int days)
+	public void setMaxOverdueDays(final int days)
 	{
 		maxOverdueDays=days;
 	}
@@ -423,7 +423,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public void setMaxBorrowed(int items)
+	public void setMaxBorrowed(final int items)
 	{
 		maxBorrowed=items;
 	}
@@ -437,7 +437,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public void setLibraryChain(String name)
+	public void setLibraryChain(final String name)
 	{
 	}
 
@@ -448,7 +448,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	}
 
 	@Override
-	public void setContributorMask(String mask)
+	public void setContributorMask(final String mask)
 	{
 	}
 
