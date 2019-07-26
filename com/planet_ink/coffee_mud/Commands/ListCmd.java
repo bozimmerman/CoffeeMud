@@ -2475,7 +2475,12 @@ public class ListCmd extends StdCommand
 			final String name=CMLib.threads().tickInfo("tickerName"+group+"-"+tick);
 			if((mask==null)||(name.toUpperCase().indexOf(mask)>=0))
 			{
-				final String id=CMLib.threads().tickInfo("tickerID"+group+"-"+tick);
+				String id=CMLib.threads().tickInfo("tickerID"+group+"-"+tick);
+				if(CMath.isInteger(id))
+				{
+					final int idx=CMath.s_int(id);
+					id=Integer.toString(idx & 255);
+				}
 				String finalVal=CMLib.threads().tickInfo(finalCol+group+"-"+tick);
 				final boolean suspended=CMath.s_bool(CMLib.threads().tickInfo("tickerSuspended"+group+"-"+tick));
 				final int realCol4Len=COL[3]-(suspended?2:1);
