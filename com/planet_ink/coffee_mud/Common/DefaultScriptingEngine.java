@@ -7936,7 +7936,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							script.setElementAt(si,1,"ELSE");
 							script.setElementAt(si,2,new String[]{"ELSE"});
-							script.insertElementAt(si+1,s.substring(4).trim(),null);
+							script.insertElementAt(si+1,s.substring(4).trim(),null,null);
 						}
 						else
 						if(tt==null)
