@@ -82,6 +82,7 @@ public class Shell extends StdCommand
 		boolean recurse=false;
 		boolean forceOverwrites=false;
 		boolean preservePaths=false;
+		boolean longDir=false;
 		public cp_options(final List<String> cmds)
 		{
 			for(int c=cmds.size()-1;c>=0;c--)
@@ -103,6 +104,10 @@ public class Shell extends StdCommand
 					case 'p':
 					case 'P':
 						preservePaths=true;
+						break;
+					case 'l':
+					case 'L':
+						longDir=true;
 						break;
 					}
 					cmds.remove(c);
@@ -309,10 +314,18 @@ public class Shell extends StdCommand
 				mob.tell(L("^xError: invalid directory!^N"));
 				return false;
 			}
-			final StringBuffer msg=new StringBuffer("\n\r^y .\n\r^y ..\n\r");
-			final int COL1_LEN=CMLib.lister().fixColWidth(35.0, mob);
-			final int COL2_LEN=CMLib.lister().fixColWidth(20.0, mob);
-			final int COL3_LEN=CMLib.lister().fixColWidth(20.0, mob);
+			final StringBuffer msg=new StringBuffer();
+			final int COL1_LEN=CMLib.lister().fixColWidth(opts.longDir?35:38.0, mob);
+			final int COL2_LEN=CMLib.lister().fixColWidth(opts.longDir?10.0:10.0, mob);
+			final int COL3_LEN=CMLib.lister().fixColWidth(opts.longDir?10.0:10.0, mob);
+			final int COL4_LEN=CMLib.lister().fixColWidth(opts.longDir?20.0:20.0, mob);
+			int col=0;
+			if(opts.longDir)
+				msg.append("\n\r^y .\n\r^y ..\n\r");
+			else
+				msg.append("\n\r^y"+CMStrings.padRight(" .",COL1_LEN))
+					.append(CMStrings.padRight("  ..",COL1_LEN))
+					.append("\n\r");
 			for (final CMFile dir : dirs)
 			{
 				final CMFile entry=dir;
@@ -327,9 +340,21 @@ public class Shell extends StdCommand
 					else
 						msg.append("^r-");
 					msg.append("^y"+CMStrings.padRight(entry.getName(),COL1_LEN));
-					msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),COL2_LEN));
-					msg.append("^w"+CMStrings.padRight(entry.author(),COL3_LEN));
-					msg.append("\n\r");
+					if(opts.longDir)
+					{
+						msg.append("^w"+CMStrings.padRight(""+entry.length(),COL2_LEN));
+						msg.append("^w"+CMStrings.padRight(entry.author(),COL3_LEN));
+						msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),COL4_LEN));
+						msg.append("\n\r");
+					}
+					else
+					{
+						if(++col>=2)
+						{
+							col=0;
+							msg.append("\n\r");
+						}
+					}
 				}
 			}
 			for (final CMFile dir : dirs)
@@ -348,11 +373,25 @@ public class Shell extends StdCommand
 					else
 						msg.append("^r-");
 					msg.append("^w"+CMStrings.padRight(entry.getName(),COL1_LEN));
-					msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),COL2_LEN));
-					msg.append("^w"+CMStrings.padRight(entry.author(),COL3_LEN));
-					msg.append("\n\r");
+					if(opts.longDir)
+					{
+						msg.append("^w"+CMStrings.padRight(""+entry.length(),COL2_LEN));
+						msg.append("^w"+CMStrings.padRight(entry.author(),COL3_LEN));
+						msg.append("^w"+CMStrings.padRight(CMLib.time().date2String(entry.lastModified()),COL4_LEN));
+						msg.append("\n\r");
+					}
+					else
+					{
+						if(++col>=2)
+						{
+							col=0;
+							msg.append("\n\r");
+						}
+					}
 				}
 			}
+			if(!msg.toString().endsWith("\n\r"))
+				msg.append("\n\r");
 			if(mob.session()!=null)
 				mob.session().colorOnlyPrintln(msg.toString());
 			break;
