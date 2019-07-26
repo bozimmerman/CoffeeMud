@@ -2953,30 +2953,42 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					logError(scripted,"HAS","Syntax",funcParms);
 					return returnable;
 				}
-				final Environmental E2=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if(E==null)
 					returnable=false;
 				else
-				if(E instanceof MOB)
 				{
-					if(E2!=null)
-						returnable=((MOB)E).isMine(E2);
+					if((E instanceof MOB)
+					&&(((MOB)E).findItem(arg2)!=null))
+						returnable = true;
 					else
-						returnable=(((MOB)E).findItem(arg2)!=null);
-				}
-				else
-				if(E instanceof Item)
-					returnable=CMLib.english().containsString(E.name(),arg2);
-				else
-				if(E instanceof Room)
-				{
-					if(E2 instanceof Item)
-						returnable=((Room)E).isContent((Item)E2);
+					if((E instanceof Room)
+					&&(((Room)E).findItem(arg2)!=null))
+						returnable=true;
 					else
-						returnable=(((Room)E).findItem(null,arg2)!=null);
+					{
+						final Environmental E2=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+						if(E instanceof MOB)
+						{
+							if(E2!=null)
+								returnable=((MOB)E).isMine(E2);
+							else
+								returnable=(((MOB)E).findItem(arg2)!=null);
+						}
+						else
+						if(E instanceof Item)
+							returnable=CMLib.english().containsString(E.name(),arg2);
+						else
+						if(E instanceof Room)
+						{
+							if(E2 instanceof Item)
+								returnable=((Room)E).isContent((Item)E2);
+							else
+								returnable=(((Room)E).findItem(null,arg2)!=null);
+						}
+						else
+							returnable=false;
+					}
 				}
-				else
-					returnable=false;
 				break;
 			}
 			case 74: // hasnum
