@@ -93,7 +93,7 @@ public class Chant_FeelHeat extends Chant
 		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&(msg.sourceMinor()==CMMsg.TYP_FIRE))
 		{
-			final int recovery=(int)Math.round(CMath.mul((msg.value()),1.5+CMath.mul(super.getXLEVELLevel(mob), 0.05)));
+			final int recovery=(int)Math.round(CMath.mul(msg.value(),0.5+CMath.mul(super.getXLEVELLevel(mob), 0.05)));
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;
