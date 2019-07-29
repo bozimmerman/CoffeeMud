@@ -47,7 +47,7 @@ public class Unload extends StdCommand
 		return access;
 	}
 
-	final String[]	ARCHON_LIST	= { "CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "ACHIEVEMENTS", "[FILENAME]" };
+	final String[]	ARCHON_LIST	= { "CLASS", "HELP", "USER", "AREA", "FACTION", "ALL", "FILE", "RESOURCE", "INIFILE", "ACHIEVEMENTS", "[FILENAME]", "VFS" };
 
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
@@ -234,6 +234,12 @@ public class Unload extends StdCommand
 					return false;
 				}
 				mob.tell(L("No access to help."));
+			}
+			else
+			if(str.equalsIgnoreCase("vfs"))
+			{
+				CMFile.unloadVFS();
+				mob.tell(L("VFS Cache unloaded"));
 			}
 			else
 			if(str.equalsIgnoreCase("achievements"))

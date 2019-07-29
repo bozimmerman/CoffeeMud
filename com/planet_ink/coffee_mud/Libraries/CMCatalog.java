@@ -1432,11 +1432,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		return new CMFile.CMVFSDir(root,root.getPath()+"catalog/")
 		{
-			private CMFile.CMDBFSFile[]	myFiles		= null;
-			private CMFile.CMDBFSFile[]	oldFiles	= null;
+			private CMFile.CMVFSFile[]	myFiles		= null;
+			private CMFile.CMVFSFile[]	oldFiles	= null;
 
 			@Override
-			protected CMFile.CMDBFSFile[] getFiles()
+			protected CMFile.CMVFSFile[] getFiles()
 			{
 				if((myFiles==null)||(oldFiles!=super.files)||(catalogFileItemsRoot==null)||(catalogFileMobsRoot==null))
 				{
@@ -1447,7 +1447,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 					if(super.files!=null)
 						myFiles=Arrays.copyOf(super.files, super.files.length+xtra);
 					else
-						myFiles=new CMFile.CMDBFSFile[xtra];
+						myFiles=new CMFile.CMVFSFile[xtra];
 					if(xtra==2)
 					{
 						myFiles[myFiles.length-2]=mdir;
@@ -1478,7 +1478,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			final Physical obj=(Physical)catalog.elementAt(i, 1);
 			final CataData data=(CataData)catalog.elementAt(i, 2);
 
-			catalogFileRoot.add(new CMFile.CMDBFSFile(catalogFileRoot.getPath()+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
+			catalogFileRoot.add(new CMFile.CMVFSFile(catalogFileRoot.getPath()+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
 			{
 				@Override
 				public Object readData()
@@ -1498,7 +1498,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			final List<Physical> list=usedCats.get(data.category());
 			list.add(obj);
 		}
-		catalogFileRoot.add(new CMFile.CMDBFSFile(catalogFileRoot.getPath()+"all.cmare",48,System.currentTimeMillis(),"SYS")
+		catalogFileRoot.add(new CMFile.CMVFSFile(catalogFileRoot.getPath()+"all.cmare",48,System.currentTimeMillis(),"SYS")
 		{
 			@Override
 			public Object readData()
@@ -1536,7 +1536,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			{
 				for(final Physical obj : objs)
 				{
-					catagoryRoot.add(new CMFile.CMDBFSFile(catagoryRoot.getPath()+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
+					catagoryRoot.add(new CMFile.CMVFSFile(catagoryRoot.getPath()+obj.Name().replace(' ','_')+".cmare",48,System.currentTimeMillis(),"SYS")
 					{
 						@Override
 						public Object readData()
@@ -1552,7 +1552,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 					});
 				}
 			}
-			catagoryRoot.add(new CMFile.CMDBFSFile(catagoryRoot.getPath()+"all.cmare",48,System.currentTimeMillis(),"SYS")
+			catagoryRoot.add(new CMFile.CMVFSFile(catagoryRoot.getPath()+"all.cmare",48,System.currentTimeMillis(),"SYS")
 			{
 				@Override
 				public Object readData()

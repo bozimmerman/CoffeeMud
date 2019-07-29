@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
-import com.planet_ink.coffee_mud.core.CMFile.CMDBFSFile;
+import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
 import com.planet_ink.coffee_mud.core.database.ClanLoader;
 import com.planet_ink.coffee_mud.core.database.DBConnections;
 import com.planet_ink.coffee_mud.core.database.DBConnector;
@@ -2075,7 +2075,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Reads the complete DBFS file record for the given filepath.  The
 	 * path does not begin with a /.
 	 *
-	 * @see com.planet_ink.coffee_mud.core.CMFile.CMDBFSFile
+	 * @see com.planet_ink.coffee_mud.core.CMFile.CMVFSFile
 	 * @see DatabaseEngine#DBReadVFSDirectory()
 	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
@@ -2084,7 +2084,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param filename the path of the file to read
 	 * @return the complete file record, including data
 	 */
-	public CMFile.CMDBFSFile DBReadVFSFile(String filename);
+	public CMFile.CMVFSFile DBReadVFSFile(String filename);
 
 	/**
 	 * Table category: DBVFS

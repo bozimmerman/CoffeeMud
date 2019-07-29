@@ -2,7 +2,7 @@
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMFile.CMVFSDir;
-import com.planet_ink.coffee_mud.core.CMFile.CMDBFSFile;
+import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.database.DBConnector;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;

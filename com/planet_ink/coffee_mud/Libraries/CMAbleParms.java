@@ -5032,7 +5032,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				return;
 			}
 			final CMFile F = new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,CMFile.FLAG_LOGERRORS);
-			wasVFS=F.isDBFSFile();
+			wasVFS=F.isVFSFile();
 			final StringBuffer str=F.text();
 			columns = parseRecipeFormatColumns(recipeFormat);
 			numberOfDataColumns = 0;
