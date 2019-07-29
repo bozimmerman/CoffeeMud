@@ -1290,6 +1290,52 @@ public class Spell_Wish extends Spell
 				}
 			}
 
+			if(myWish.startsWith(" TO FORGET ")
+			||myWish.startsWith(" TO UNLEARN "))
+			{
+				String possSpell=myWish.substring(6);
+				possSpell=possSpell.substring(possSpell.indexOf(' ')).trim();
+				final Ability A=CMClass.findAbility(possSpell);
+				if(A!=null)
+				{
+					if(target instanceof MOB)
+					{
+						final Ability myA=((MOB)target).fetchAbility(A.ID());
+						if(myA!=null)
+						{
+							((MOB)target).delAbility(myA);
+							final Ability eA=target.fetchEffect(myA.ID());
+							if(eA!=null)
+							{
+								eA.unInvoke();
+								target.delEffect(eA);
+							}
+							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 has forgotten @x2!",target.name(),A.name()));
+						}
+					}
+					else
+					{
+						final Ability myA=mob.fetchAbility(A.ID());
+						if(myA!=null)
+						{
+							mob.delAbility(myA);
+							final Ability eA=mob.fetchEffect(myA.ID());
+							if(eA!=null)
+							{
+								eA.unInvoke();
+								mob.delEffect(eA);
+							}
+							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 has forgotten @x2!",mob.name(),A.name()));
+						}
+					}
+					baseLoss=getXPCOSTAdjustment(mob,baseLoss);
+					CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
+					mob.tell(L("Your wish has drained you of @x1 experience points.",""+baseLoss));
+					return false;
+				}
+
+			}
+
 			// gaining new abilities!
 			if(target instanceof MOB)
 			{
