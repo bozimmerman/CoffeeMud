@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.core.database;
-import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
+import com.planet_ink.coffee_mud.core.CMFile.CMDBFSFile;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -60,7 +60,7 @@ public class VFSLoader
 				final int mask = (int)DBConnections.getLongRes(R,"CMDTYP");
 				final long time = DBConnections.getLongRes(R,"CMMODD");
 				final String author = DBConnections.getRes(R,"CMWHOM");
-				root.add(new CMFile.CMVFSFile(fname,mask,time,author));
+				root.add(new CMFile.CMDBFSFile(fname,mask,time,author));
 			}
 		}
 		catch(final Exception sqle)
@@ -76,10 +76,10 @@ public class VFSLoader
 		return root;
 	}
 
-	public CMFile.CMVFSFile DBRead(final String filename)
+	public CMFile.CMDBFSFile DBRead(final String filename)
 	{
 		DBConnection D=null;
-		CMFile.CMVFSFile row = null;
+		CMFile.CMDBFSFile row = null;
 		try
 		{
 			D=DB.DBFetch();
@@ -93,7 +93,7 @@ public class VFSLoader
 					final long mod=DBConnections.getLongRes(R,"CMMODD");
 					final String author = DBConnections.getRes(R,"CMWHOM");
 					final String data=DBConnections.getRes(R,"CMDATA");
-					row = new CMFile.CMVFSFile(filename,bits,mod,author);
+					row = new CMFile.CMDBFSFile(filename,bits,mod,author);
 					row.setData(B64Encoder.B64decode(data));
 				}
 			}

@@ -331,11 +331,11 @@ public class Shell extends StdCommand
 				final CMFile entry=dir;
 				if(entry.isDirectory())
 				{
-					if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
+					if(entry.isLocalFile()&&(!entry.canDBFSEquiv()))
 						msg.append(" ");
 					else
-					if((entry.isLocalFile()&&(entry.canVFSEquiv()))
-					||((entry.isVFSFile())&&(entry.canLocalEquiv())))
+					if((entry.isLocalFile()&&(entry.canDBFSEquiv()))
+					||((entry.isDBFSFile())&&(entry.canLocalEquiv())))
 						msg.append("^R+");
 					else
 						msg.append("^r-");
@@ -364,11 +364,11 @@ public class Shell extends StdCommand
 				final CMFile entry=dir;
 				if(!entry.isDirectory())
 				{
-					if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
+					if(entry.isLocalFile()&&(!entry.canDBFSEquiv()))
 						msg.append(" ");
 					else
-					if((entry.isLocalFile()&&(entry.canVFSEquiv()))
-					||((entry.isVFSFile())&&(entry.canLocalEquiv())))
+					if((entry.isLocalFile()&&(entry.canDBFSEquiv()))
+					||((entry.isDBFSFile())&&(entry.canLocalEquiv())))
 						msg.append("^R+");
 					else
 						msg.append("^r-");
@@ -486,7 +486,7 @@ public class Shell extends StdCommand
 						target=target+"/"+name;
 					else
 						target=name;
-					if(DD.demandedVFS())
+					if(DD.demandedDBFS())
 						target="::"+target;
 					else
 					if(DD.demandedLocal())
@@ -668,11 +668,11 @@ public class Shell extends StdCommand
 				final CMFile entry=dir;
 				if(!entry.isDirectory())
 				{
-					if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
+					if(entry.isLocalFile()&&(!entry.canDBFSEquiv()))
 						msg.append(" ");
 					else
-					if((entry.isLocalFile()&&(entry.canVFSEquiv()))
-					||((entry.isVFSFile())&&(entry.canLocalEquiv())))
+					if((entry.isLocalFile()&&(entry.canDBFSEquiv()))
+					||((entry.isDBFSFile())&&(entry.canLocalEquiv())))
 						msg.append("^R+");
 					else
 						msg.append("^r-");
@@ -734,11 +734,11 @@ public class Shell extends StdCommand
 			for(int d=0;d<dirs2.size();d++)
 			{
 				final CMFile entry=dirs2.get(d);
-				if(entry.isLocalFile()&&(!entry.canVFSEquiv()))
+				if(entry.isLocalFile()&&(!entry.canDBFSEquiv()))
 					msg.append(" ");
 				else
-				if((entry.isLocalFile()&&(entry.canVFSEquiv()))
-				||((entry.isVFSFile())&&(entry.canLocalEquiv())))
+				if((entry.isLocalFile()&&(entry.canDBFSEquiv()))
+				||((entry.isDBFSFile())&&(entry.canLocalEquiv())))
 					msg.append("^R+");
 				else
 					msg.append("^r-");
@@ -879,7 +879,7 @@ public class Shell extends StdCommand
 						target=target+"/"+name;
 					else
 						target=name;
-					if(DD.demandedVFS())
+					if(DD.demandedDBFS())
 						target="::"+target;
 					else
 					if(DD.demandedLocal())
@@ -968,7 +968,7 @@ public class Shell extends StdCommand
 			String prefix="";
 			if(secondFilename.equals("."))
 			{
-				if(file1.isVFSFile())
+				if(file1.isDBFSFile())
 				{
 					prefix="//";
 					secondFilename=CMFile.vfsifyFilename(firstFilename);

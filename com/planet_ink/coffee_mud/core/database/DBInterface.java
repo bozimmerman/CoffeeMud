@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.core.database;
-import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
+import com.planet_ink.coffee_mud.core.CMFile.CMDBFSFile;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -1139,7 +1139,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public CMFile.CMVFSFile DBReadVFSFile(final String filename)
+	public CMFile.CMDBFSFile DBReadVFSFile(final String filename)
 	{
 		return VFSLoader.DBRead(filename);
 	}

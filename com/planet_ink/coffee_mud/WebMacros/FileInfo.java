@@ -88,9 +88,9 @@ public class FileInfo extends StdWebMacro
 			if(parms.containsKey("ISLOCAL"))
 				return ""+F.canLocalEquiv();
 			if(parms.containsKey("ISBOTH"))
-				return ""+(F.canLocalEquiv()&&(F.canVFSEquiv()));
+				return ""+(F.canLocalEquiv()&&(F.canDBFSEquiv()));
 			if(parms.containsKey("ISVFS"))
-				return ""+F.canVFSEquiv();
+				return ""+F.canDBFSEquiv();
 			if(parms.containsKey("ISTEXT"))
 			{
 				final int x=F.getName().lastIndexOf('.');

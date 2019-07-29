@@ -125,7 +125,7 @@ public class FileMgr extends StdWebMacro
 				filePath+="/";
 			String prefix="";
 			if(parms.containsKey("DEFAULT"))
-				prefix = new CMFile(filePath,M).canVFSEquiv()?"::":"//";
+				prefix = new CMFile(filePath,M).canDBFSEquiv()?"::":"//";
 			else
 			if(parms.containsKey("VFS")
 			||parms.containsKey("LOCAL")

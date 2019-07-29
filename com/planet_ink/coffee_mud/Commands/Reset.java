@@ -551,6 +551,13 @@ public class Reset extends StdCommand
 		}
 		String s=commands.get(0);
 		String rest=(commands.size()>1)?CMParms.combine(commands,1):"";
+		if(s.equalsIgnoreCase("dbfs"))
+		{
+			CMFile.resetDBFS();
+			mob.tell(L("The entire DBFS cache has been flushed"));
+			return true;
+		}
+		else
 		if(s.equalsIgnoreCase("rejuv"))
 		{
 			commands.remove(0);
