@@ -950,20 +950,12 @@ public class Stat  extends Skills
 					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.COMBATSTATS)))
 					{
 						final int level=target.basePhyStats().level();
-						/*
-						EXPERIENCE_TOTAL,
-						ROUNDS_TOTAL,
-						DEATHS_DONE,
-						ACTIONS_DONE,
-						DAMAGE_DONE,
-						HITS_DONE,
-						DEATHS_TAKEN,
-						ACTIONS_TAKEN,
-						DAMAGE_TAKEN,
-						HITS_TAKEN
-						*/
-						final long combats = pStats.bumpLevelCombatStat(PlayerCombatStat.COMBATS_TOTAL, level, 0);
-						final long rounds = pStats.bumpLevelCombatStat(PlayerCombatStat.ROUNDS_TOTAL, level, 0);
+						long combats = pStats.bumpLevelCombatStat(PlayerCombatStat.COMBATS_TOTAL, level, 0);
+						if(combats == 0)
+							combats=1;
+						long rounds = pStats.bumpLevelCombatStat(PlayerCombatStat.ROUNDS_TOTAL, level, 0);
+						if(rounds == 0)
+							rounds=1;
 						final long xp = pStats.bumpLevelCombatStat(PlayerCombatStat.EXPERIENCE_TOTAL, level, 0);
 						final long damage = pStats.bumpLevelCombatStat(PlayerCombatStat.DAMAGE_DONE, level, 0);
 						final long hits = pStats.bumpLevelCombatStat(PlayerCombatStat.HITS_DONE, level, 0);
