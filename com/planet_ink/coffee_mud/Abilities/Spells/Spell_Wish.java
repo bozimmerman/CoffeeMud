@@ -191,7 +191,8 @@ public class Spell_Wish extends Spell
 			return false;
 		}
 
-		if(System.currentTimeMillis() < (lastCastTime + TimeManager.MILI_DAY))
+		if((System.currentTimeMillis() < (lastCastTime + TimeManager.MILI_DAY))
+		&&(!CMSecurity.isASysOp(mob)))
 		{
 			mob.tell(L("You are too wish-weary to cast this right now."));
 			return false;
@@ -1462,13 +1463,13 @@ public class Spell_Wish extends Spell
 						}
 					}
 				}
-				
+
 				if(myWish.endsWith(" WAS CAST ON ME")
 				||myWish.endsWith(" CAST ON ME")
 				||myWish.endsWith(" WAS ON ME")
 				||myWish.endsWith(" ON ME"))
 				{
-					final MOB tm=(MOB)target;
+					final MOB tm=mob;
 					String spellName=myWish;
 					if(myWish.endsWith(" WAS CAST ON ME"))
 						spellName=myWish.substring(0,myWish.length()-15).trim();
@@ -1500,6 +1501,46 @@ public class Spell_Wish extends Spell
 						mob.tell(L("Your wish has drained you of @x1 experience points.",""+baseLoss));
 						return false;
 					}
+				}
+			}
+
+
+			final String[] castOnMes = new String[]
+			{
+				" WAS CAST ",
+				" TO BE CAST ",
+				" CAST "
+			};
+			int castOn = -1;
+			for(int x=0;x<castOnMes.length;x++)
+				if(myWish.endsWith(castOnMes[x]))
+				{
+					castOn=x;
+					break;
+				}
+			if((target!=null)
+			&&(castOn>=0))
+			{
+				final MOB tm=(MOB)target;
+				final String spellName=myWish.substring(0,myWish.length()-castOnMes[castOn].length()).trim();
+				final Ability A=CMClass.findAbility(spellName);
+				if((A!=null)
+				&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)
+				&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
+				{
+					if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
+					{
+						baseLoss=getXPCOSTAdjustment(mob,baseLoss);
+						CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
+						mob.tell(L("Your wish has drained you of @x1 experience points, but that is beyond your wishing ability.",""+baseLoss));
+						return false;
+					}
+					if(tm.fetchEffect(A.ID())==null)
+						A.invoke(mob, target, true, 1);
+					baseLoss=getXPCOSTAdjustment(mob,baseLoss);
+					CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
+					mob.tell(L("Your wish has drained you of @x1 experience points.",""+baseLoss));
+					return false;
 				}
 			}
 
@@ -1757,10 +1798,10 @@ public class Spell_Wish extends Spell
 					inx=myWish.indexOf(" WITH ");
 				if(inx>0)
 				{
-					String prev=" "+myWish.substring(0,inx).trim().toUpperCase()+" ";
+					final String prev=" "+myWish.substring(0,inx).trim().toUpperCase()+" ";
 					inx++;
 					inx=myWish.indexOf(" ",inx+1);
-					String where=myWish.substring(inx+1).trim().toUpperCase();
+					final String where=myWish.substring(inx+1).trim().toUpperCase();
 					for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
 					{
 						final Faction F=f.nextElement();
@@ -1784,8 +1825,8 @@ public class Spell_Wish extends Spell
 				{
 					baseLoss=100;
 					final Faction F=CMLib.factions().getFaction(factionID);
-					int casterF = mob.fetchFaction(factionID);
-					int targetF = tmob.fetchFaction(factionID);
+					final int casterF = mob.fetchFaction(factionID);
+					final int targetF = tmob.fetchFaction(factionID);
 					int targetDiff = 0;
 					int targetChange = 0;
 					if(targetF == Integer.MAX_VALUE)
@@ -1802,7 +1843,7 @@ public class Spell_Wish extends Spell
 							targetChange=-targetDiff;
 					}
 					baseLoss += targetDiff/10;
-					
+
 					wishDrain(mob,baseLoss,false);
 					if(mob != tmob)
 					{
