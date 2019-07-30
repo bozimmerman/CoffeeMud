@@ -5434,6 +5434,9 @@ public class StdMOB implements MOB
 		}
 		if (!found)
 			return 1;
+		final int maxPerSlot = CMProps.getIntVar(CMProps.Int.MAXWEARPERLOC);
+		if((add > maxPerSlot) && (maxPerSlot > 0))
+			return maxPerSlot;
 		return add;
 	}
 

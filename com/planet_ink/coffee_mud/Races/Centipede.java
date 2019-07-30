@@ -88,7 +88,7 @@ public class Centipede extends StdRace
 	@Override
 	public long forbiddenWornBits()
 	{
-		return ~(Wearable.WORN_TORSO);
+		return ~(Wearable.WORN_LEGS | Wearable.WORN_FEET | Wearable.WORN_TORSO);
 	}
 
 	private final static String localizedStaticRacialCat = CMLib.lang().L("Insect");

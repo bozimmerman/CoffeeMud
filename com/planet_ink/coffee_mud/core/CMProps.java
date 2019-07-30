@@ -335,6 +335,7 @@ public class CMProps extends Properties
 		RP_CHANNEL,
 		RP_CHANNEL_NAMED,
 		MAXITEMSWORN,
+		MAXWEARPERLOC,
 		;
 
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -2537,6 +2538,7 @@ public class CMProps extends Properties
 
 		setIntVar(Int.MAXITEMSHOWN,getStr("MAXITEMSHOWN"));
 		setIntVar(Int.MAXITEMSWORN,getStr("MAXITEMSWORN"));
+		setIntVar(Int.MAXWEARPERLOC,getStr("MAXWEARPERLOC"),10);
 		setIntVar(Int.MUDSTATE,getStr("MUDSTATE"));
 
 		setUpLowVar(Str.FORMULA_ATTACKADJUSTMENT, getStr("FORMULA_ATTACKADJUSTMENT","(50+@x1+(((@x2-9)/5)*((@x3-9)/5)*((@x3-9)/5))+@x4)-(0.15*@xx*@x5)-(0.15*@xx*@x6)-(0.3*@xx*@x7)"));

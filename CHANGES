@@ -22,7 +22,7 @@
  21. MANACOMPOUND system expanded to support multiple rules, masks, and ability cooldowns
  22. New PROMPT variable to list your skills on cooldown/mana compounding.
  23. New command: SUBSCRIBE, for getting notifications about journal posts
- 24. New INI entry: MAXITEMSWORN, to limit total items worn
+ 24. New INI entries: MAXITEMSWORN, to limit total items worn, and MAXWEARPERLOC to limit replicated parts
  25. Combat stats now recorded for players at each level.  STAT COMBAT will give a limited view.
  26. Banker ability to hold items and make loans can be disabled on a per-mob basis.  See GenBanker in Archon's Guide.
 
