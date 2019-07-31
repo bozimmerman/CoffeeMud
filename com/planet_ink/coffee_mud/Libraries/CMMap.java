@@ -481,9 +481,14 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public long getDistanceFrom(final long[] coord1, final long[] coord2)
 	{
-		return Math.round(Math.sqrt(CMath.mul((coord1[0]-coord2[0]),(coord1[0]-coord2[0]))
-									+CMath.mul((coord1[1]-coord2[1]),(coord1[1]-coord2[1]))
-									+CMath.mul((coord1[2]-coord2[2]),(coord1[2]-coord2[2]))));
+		final BigInteger coord_0 = BigInteger.valueOf(coord1[0]).subtract(BigInteger.valueOf(coord2[0]));
+		final BigInteger coord_0m = coord_0.multiply(coord_0);
+		final BigInteger coord_1 = BigInteger.valueOf(coord1[1]).subtract(BigInteger.valueOf(coord2[1]));
+		final BigInteger coord_1m = coord_1.multiply(coord_1);
+		final BigInteger coord_2 = BigInteger.valueOf(coord1[2]).subtract(BigInteger.valueOf(coord2[2]));
+		final BigInteger coord_2m = coord_2.multiply(coord_2);
+		final BigInteger coords_all = coord_0m.add(coord_1m).add(coord_2m);
+		return Math.round(Math.sqrt(coords_all.doubleValue()));
 	}
 
 	@Override
