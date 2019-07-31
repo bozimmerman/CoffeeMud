@@ -443,13 +443,12 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				final long oMass = O.getMass();
 				for(final SpaceObject cO : cOs)
 				{
-					if(cO != O)
+					if((cO != O)
+					&&(!cO.amDestroyed())
+					&&(!O.amDestroyed()))
 					{
-						//System.out.println(O.name()+"->"+cO.Name());
 						final long prevDistance=map.getDistanceFrom(startCoords, cO.coordinates());
-						//System.out.println(prevDistance+"   ("+CMParms.toListString(startCoords)+"  ,  "+CMParms.toListString(cO.coordinates())+")");
 						final double minDistance=map.getMinDistanceFrom(O, prevDistance, cO);
-						//System.out.println(minDistance+"   ("+CMParms.toListString(O.coordinates())+"  ,  "+CMParms.toListString(cO.coordinates())+")");
 						final double gravitationalMove=getGravityForce(O, cO);
 						if(gravitationalMove > 0)
 						{
@@ -463,6 +462,9 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						&&((speed>0)||(cO.speed()>0))
 						&&((oMass < SpaceObject.MOONLET_MASS)||(cO.getMass() < SpaceObject.MOONLET_MASS)))
 						{
+							//System.out.println(O.name()+"->"+cO.Name());
+							//System.out.println(prevDistance+"   ("+CMParms.toListString(startCoords)+"  ,  "+CMParms.toListString(cO.coordinates())+")");
+							//System.out.println(minDistance+"   ("+CMParms.toListString(O.coordinates())+"  ,  "+CMParms.toListString(cO.coordinates())+")");
 							final MOB host=map.deity();
 							CMMsg msg;
 							if((O instanceof Weapon)||(cO instanceof Weapon))
