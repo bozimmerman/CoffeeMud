@@ -152,6 +152,7 @@ public class Prop_LimitedEquip extends Property
 						msg.source().tell(L("You may not wear any more of those."));
 					else
 						msg.source().tell(msgStr);
+					return false;
 				}
 			}
 		}
