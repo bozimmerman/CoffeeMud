@@ -53,21 +53,28 @@ public class Prop_LimitedItems extends Property
 		return Ability.CAN_ITEMS;
 	}
 
-	public static Map<String, List<Item>>	instances		= new Hashtable<String, List<Item>>();
-	public static boolean[]					playersLoaded	= new boolean[1];
+	public static Map<String, List<Item>>	instances			= new Hashtable<String, List<Item>>();
+	public static Set<String>				inventoriesChecked	= new HashSet<String>();
 
 	protected volatile WeakReference<Physical> lastAdded = new WeakReference<Physical>(null);
 
 	protected volatile boolean	norecurse		= false;
 	protected boolean			destroy			= false;
 	protected int				maxItems		= 0;
+	protected String			id				= null;
 
 	@Override
 	public String accountForYourself()
 	{
 		if(CMath.s_int(text())<=0)
 			return "Only 1 may exist";
-		return "Only "+CMath.s_int(text())+" may exist.";
+		final int x=text().indexOf(';');
+		final String numStr;
+		if(x<0)
+			numStr = text();
+		else
+			numStr=text().substring(0,x);
+		return "Only "+CMath.s_int(numStr)+" may exist.";
 	}
 
 	@Override
@@ -84,6 +91,7 @@ public class Prop_LimitedItems extends Property
 		super.setMiscText(newMiscText);
 		norecurse = false;
 		maxItems=1;
+		this.id=null;
 		if(newMiscText.length()>0)
 		{
 			final int x=newMiscText.indexOf(';');
@@ -91,7 +99,13 @@ public class Prop_LimitedItems extends Property
 			if(x<0)
 				numStr = newMiscText;
 			else
+			{
+				final String parms = newMiscText.substring(x+1).trim();
+				final String newId = CMParms.getParmStr(parms, "ID", "");
+				if(newId.trim().length()>0)
+					this.id=newId;
 				numStr=newMiscText.substring(0,x);
+			}
 			if(CMath.isInteger(numStr))
 				maxItems = CMath.s_int(numStr);
 		}
@@ -146,21 +160,41 @@ public class Prop_LimitedItems extends Property
 		return meCopy;
 	}
 
+	protected String getId(final Physical I)
+	{
+		if(I == affected)
+		{
+			if(this.id != null)
+				return this.id;
+			return I.Name();
+		}
+		else
+		if(I != null)
+		{
+			final Prop_LimitedItems liA = (Prop_LimitedItems)I.fetchEffect(ID());
+			if((liA==null) || (liA.id == null))
+				return I.Name();
+			return liA.id;
+		}
+		return "N/A";
+	}
+
 	protected void countIfNecessary(final Item I)
 	{
+		final String Iid = getId(I);
 		if(CMLib.flags().isInTheGame(I,false))
 		{
 			List<Item> myInstances=null;
 			synchronized(instances)
 			{
-				if(!instances.containsKey(I.Name()))
+				if(!instances.containsKey(Iid))
 				{
 					myInstances=new Vector<Item>();
-					instances.put(I.Name(),myInstances);
+					instances.put(Iid,myInstances);
 					myInstances.add(I);
 				}
 			}
-			myInstances=instances.get(I.Name());
+			myInstances=instances.get(Iid);
 			if(myInstances!=null)
 			{
 				synchronized(myInstances)
@@ -226,43 +260,56 @@ public class Prop_LimitedItems extends Property
 				return;
 
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNLOCATABLE);
-			synchronized(playersLoaded)
+			final String affId = getId(affected);
+			if(!inventoriesChecked.contains(affId))
 			{
-				if(!playersLoaded[0])
+				boolean doScan = false;
+				synchronized(inventoriesChecked)
 				{
-					playersLoaded[0]=true;
-					Log.sysOut("Prop_LimitedItems","Checking player inventories");
-					// known problem: players from different hosts who share a world map might allow
-					// duplicates/excess items.
-					final List<String> V=CMLib.database().getUserList();
-					for(final String name : V)
+					if(!inventoriesChecked.contains(affId))
+						doScan = true;
+				}
+				if(doScan)
+				{
+					synchronized((ID()+"_"+affId).intern())
 					{
-						MOB M=CMLib.players().getPlayer(name);
-						if(M==null)
+						if(!inventoriesChecked.contains(affId))
 						{
-							final PairList<String,String> matchingItems = CMLib.database().DBReadPlayerItemData(name,ID());
-							for(final Pair<String,String> p : matchingItems)
+							inventoriesChecked.add(affId);
+							Log.sysOut("Prop_LimitedItems","Checking player inventories for "+affId);
+							// known problem: players from different hosts who share a world map might allow
+							// duplicates/excess items.
+							final List<String> V=CMLib.database().getUserList();
+							for(final String name : V)
 							{
-								if(p.first.equalsIgnoreCase(affected.ID())
-								&&(p.second.indexOf(affected.Name())>0))
+								MOB M=CMLib.players().getPlayer(name);
+								if(M==null)
 								{
-									M=CMLib.players().getLoadPlayer(name);
-									break;
+									final PairList<String,String> matchingItems = CMLib.database().DBReadPlayerItemData(name,ID());
+									for(final Pair<String,String> p : matchingItems)
+									{
+										if(p.first.equalsIgnoreCase(affected.ID())
+										&&(p.second.indexOf(affId)>0))
+										{
+											M=CMLib.players().getLoadPlayer(name);
+											break;
+										}
+									}
+									if(M!=null)
+									{
+										final Room R=M.location();
+										if((R!=null)
+										&&(R.isInhabitant(M)))
+											Log.sysOut("Prop_LimitedItems",M.name()+" was found in the game, even though this is supposed to be a temporary load.");
+										else
+										if(M.session()!=null)
+											Log.sysOut("Prop_LimitedItems",M.name()+" had a session, even though this is supposed to be a temporary load.");
+									}
 								}
 							}
-							if(M!=null)
-							{
-								final Room R=M.location();
-								if((R!=null)
-								&&(R.isInhabitant(M)))
-									Log.sysOut("Prop_LimitedItems",M.name()+" was found in the game, even though this is supposed to be a temporary load.");
-								else
-								if(M.session()!=null)
-									Log.sysOut("Prop_LimitedItems",M.name()+" had a session, even though this is supposed to be a temporary load.");
-							}
+							Log.sysOut("Prop_LimitedItems","Done checking player inventories for "+affId);
 						}
 					}
-					Log.sysOut("Prop_LimitedItems","Done checking player inventories");
 				}
 			}
 			if((((Item)affected).owner() instanceof MOB)

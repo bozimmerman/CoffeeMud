@@ -25,6 +25,7 @@
  24. New INI entries: MAXITEMSWORN, to limit total items worn, and MAXWEARPERLOC to limit replicated parts
  25. Combat stats now recorded for players at each level.  STAT COMBAT will give a limited view.
  26. Banker ability to hold items and make loans can be disabled on a per-mob basis.  See GenBanker in Archon's Guide.
+ 27. New property: Prop_LimitedEquip, for limiting the number of times a specific item can be equipped
 
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque
