@@ -445,8 +445,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 				{
 					if(cO != O)
 					{
+						//System.out.println(O.name()+"->"+cO.Name());
 						final long prevDistance=map.getDistanceFrom(startCoords, cO.coordinates());
+						//System.out.println(prevDistance+"   ("+CMParms.toListString(startCoords)+"  ,  "+CMParms.toListString(cO.coordinates())+")");
 						final double minDistance=map.getMinDistanceFrom(O, prevDistance, cO);
+						//System.out.println(minDistance+"   ("+CMParms.toListString(O.coordinates())+"  ,  "+CMParms.toListString(cO.coordinates())+")");
 						final double gravitationalMove=getGravityForce(O, cO);
 						if(gravitationalMove > 0)
 						{
@@ -463,7 +466,13 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							final MOB host=map.deity();
 							CMMsg msg;
 							if((O instanceof Weapon)||(cO instanceof Weapon))
+							{
 								msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,CMMsg.MSG_DAMAGE,CMMsg.MSG_COLLISION,null);
+								if(O instanceof Weapon)
+									msg.setValue(((Weapon)O).phyStats().damage());
+								else
+									msg.setValue(((Weapon)cO).phyStats().damage());
+							}
 							else
 								msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,null);
 							if(O.okMessage(host, msg))
