@@ -228,13 +228,15 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(isSlotted())
+		if(isSlotted()
+		&&(myHost instanceof Physical))
 		{
+			final Physical P=(affected2 != null)?affected2:(Physical)myHost;
 			for(final Ability A : getAffects())
 			{
 				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
 				{
-					if(!A.okMessage(myHost, msg))
+					if(!A.okMessage(P, msg))
 						return false;
 				}
 			}
@@ -245,13 +247,15 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(isSlotted())
+		if(isSlotted()
+		&&(myHost instanceof Physical))
 		{
+			final Physical P=(affected2 != null)?affected2:(Physical)myHost;
 			for(final Ability A : getAffects())
 			{
 				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
 				{
-					A.executeMsg(myHost, msg);
+					A.executeMsg(P, msg);
 				}
 			}
 		}
@@ -263,11 +267,12 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	{
 		if(isSlotted())
 		{
+			final Physical P=(affected2 != null)?affected2:host;
 			for(final Ability A : getAffects())
 			{
 				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
 				{
-					A.affectPhyStats(host, affectableStats);
+					A.affectPhyStats(P, affectableStats);
 				}
 			}
 		}

@@ -161,26 +161,31 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 		{
 			processing=true;
 			if(host instanceof Item)
-			{
 				myItem=(Item)host;
+			else
+			if(affected instanceof Item)
+				myItem=(Item)affected;
 
-				final boolean worn=(!myItem.amWearingAt(Wearable.IN_INVENTORY))
-				&&((!myItem.amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(myItem.fitsOn(Wearable.WORN_FLOATING_NEARBY)));
+			final Item I=myItem;
+			if(I!=null)
+			{
+				final boolean worn=(!I.amWearingAt(Wearable.IN_INVENTORY))
+				&&((!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(I.fitsOn(Wearable.WORN_FLOATING_NEARBY)));
 
 				if((lastMOB instanceof MOB)
 				&&(((MOB)lastMOB).location()!=null)
-				&&((myItem.owner()!=lastMOB)||(!worn)))
+				&&((I.owner()!=lastMOB)||(!worn)))
 					removeMyAffectsFromLastMob();
 
 				if((lastMOB==null)
 				&&(worn)
-				&&(myItem.owner()!=null)
-				&&(myItem.owner() instanceof MOB)
-				&&(((MOB)myItem.owner()).location()!=null))
+				&&(I.owner()!=null)
+				&&(I.owner() instanceof MOB)
+				&&(((MOB)I.owner()).location()!=null))
 				{
-					if(myItem instanceof Armor)
-						check((MOB)myItem.owner(),((Armor)myItem));
-					addMeIfNeccessary(myItem.owner(),myItem.owner(),maxTicks);
+					if(I instanceof Armor)
+						check((MOB)I.owner(),((Armor)I));
+					addMeIfNeccessary(I.owner(),I.owner(),maxTicks);
 				}
 			}
 		}

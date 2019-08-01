@@ -511,7 +511,7 @@ public class Prop_ItemSlot extends Property
 			{
 				if(A!=null)
 				{
-					A.affectPhyStats(host, affectableStats);
+					A.affectPhyStats(A.affecting(), affectableStats);
 				}
 			}
 		}

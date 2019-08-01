@@ -201,17 +201,24 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 			if(host instanceof Item)
 			{
 				myItem=(Item)host;
+			}
+			else
+			if(affected instanceof Item)
+				myItem=(Item)affected;
 
+			final Item I=myItem;
+			if(I!=null)
+			{
 				if((lastMOB instanceof MOB)
-				&&((myItem.owner()!=lastMOB)||(myItem.amDestroyed()))
+				&&((I.owner()!=lastMOB)||(I.amDestroyed()))
 				&&(((MOB)lastMOB).location()!=null))
 					removeMyAffectsFromLastMob();
 
 				if((lastMOB==null)
-				&&(myItem.owner()!=null)
-				&&(myItem.owner() instanceof MOB)
-				&&(((MOB)myItem.owner()).location()!=null))
-					addMeIfNeccessary(myItem.owner(),myItem.owner(),maxTicks);
+				&&(I.owner()!=null)
+				&&(I.owner() instanceof MOB)
+				&&(((MOB)I.owner()).location()!=null))
+					addMeIfNeccessary(I.owner(),I.owner(),maxTicks);
 			}
 		}
 		finally
