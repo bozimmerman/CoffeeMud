@@ -4210,9 +4210,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			return 0;
 		if(baseDistance == (curDistance + prevDistance))
 			return 0.0;
-		final BigDecimal bdBaseDistance = new BigDecimal(baseDistance);
-		final BigDecimal bdCurDistance = new BigDecimal(curDistance);
-		final BigDecimal bdPrevDistance = new BigDecimal(prevDistance);
+		final BigDecimal bdBaseDistance = BigDecimal.valueOf(baseDistance);
+		final BigDecimal bdCurDistance = BigDecimal.valueOf(curDistance);
+		final BigDecimal bdPrevDistance = BigDecimal.valueOf(prevDistance);
 		final BigDecimal s0=bdCurDistance.multiply(bdCurDistance);
 		final BigDecimal s1=bdPrevDistance.multiply(bdPrevDistance);
 		final BigDecimal s2=bdBaseDistance.multiply(bdBaseDistance);
