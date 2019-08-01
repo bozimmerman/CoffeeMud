@@ -5367,8 +5367,9 @@ public class StdMOB implements MOB
 	{
 		if ((charStats().getWearableRestrictionsBitmap() & wornCode) > 0)
 			return 0;
+		final int maxPerSlot = CMProps.getIntVar(CMProps.Int.MAXWEARPERLOC);
 		if (wornCode == Wearable.WORN_FLOATING_NEARBY)
-			return 6;
+			return (maxPerSlot == 0) ? 6 : maxPerSlot;
 		int total;
 		int add = 0;
 		boolean found = false;
@@ -5434,7 +5435,6 @@ public class StdMOB implements MOB
 		}
 		if (!found)
 			return 1;
-		final int maxPerSlot = CMProps.getIntVar(CMProps.Int.MAXWEARPERLOC);
 		if((add > maxPerSlot) && (maxPerSlot > 0))
 			return maxPerSlot;
 		return add;
