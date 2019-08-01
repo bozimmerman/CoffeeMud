@@ -207,7 +207,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 				.append("RECLAIMDATE=").append(rec.mudReclaimDateMs).append(" ")
 				.append("/>");
 		}
-		records.append("<CHECKEDOUTRECORDS>");
+		records.append("</CHECKEDOUTRECORDS>");
 		return records.toString();
 	}
 
@@ -275,10 +275,10 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	{
 		synchronized(this)
 		{
-			this.records.clear();
 			final int x=text.lastIndexOf("<CHECKEDOUTRECORDS>");
 			if(x>0)
 			{
+				this.records.clear();
 				final String recordXML = text.substring(x);
 				final String shopXML = text.substring(0,x);
 				parseRecords(recordXML);
