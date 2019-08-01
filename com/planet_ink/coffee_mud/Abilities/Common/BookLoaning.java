@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Druid.Chant_ChargeMetal;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -114,12 +115,13 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	private String[]		pricingAdjustments	= new String[0];
 	private String			itemZapperMask		= "";
 	private final String	contributorMask		= "";
-	private int				minOverdueDays		= 1;
-	private int				maxOverdueDays		= 5;
-	private int				maxBorrowed			= 5;
+	private int				minOverdueDays		= 12;
+	private int				maxOverdueDays		= 24;
+	private int				maxBorrowed			= 48;
+	private double			dailyOverdueCharge	= 1;
 
-	private Pair<Long, TimePeriod>			budget	= new Pair<Long, TimePeriod>(Long.valueOf(100000), TimePeriod.DAY);
-	private final List<CheckedOutRecord>	records	= new LinkedList<CheckedOutRecord>();
+	private Pair<Long, TimePeriod>	budget	= new Pair<Long, TimePeriod>(Long.valueOf(100000), TimePeriod.DAY);
+	private List<CheckedOutRecord>	records	= new LinkedList<CheckedOutRecord>();
 
 	public BookLoaning()
 	{
@@ -134,6 +136,27 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 		if(affected != null)
 			return CMLib.time().localClock(affected);
 		return CMLib.time().globalClock();
+	}
+
+	@Override
+	public CMObject copyOf()
+	{
+		final BookLoaning obj=(BookLoaning)super.copyOf();
+		obj.shop=(CoffeeShop)shop.copyOf();
+		obj.shop.build(obj);
+		obj.records = new LinkedList<CheckedOutRecord>();
+		obj.records.addAll(records);
+		if(budget!=null)
+			obj.budget=new Pair<Long, TimePeriod>(budget.first, budget.second);
+		return obj;
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		final BookLoaning obj = (BookLoaning)super.newInstance();
+		obj.shop.build(obj);
+		return obj;
 	}
 
 	@Override
@@ -367,12 +390,13 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	@Override
 	public double getDailyOverdueCharge()
 	{
-		return 0;
+		return dailyOverdueCharge;
 	}
 
 	@Override
 	public void setDailyOverdueCharge(final double charge)
 	{
+		dailyOverdueCharge=charge;
 	}
 
 	@Override
@@ -732,6 +756,9 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_GIVE:
+				if((affected instanceof MOB)
+				&&(((MOB)affected).isPlayer()))
+					break;
 			case CMMsg.TYP_DEPOSIT:
 				{
 					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), finalIgnoreMask(), merchantM))
@@ -994,6 +1021,9 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_GIVE:
+				if((affected instanceof MOB)
+				&&(((MOB)affected).isPlayer()))
+					break;
 			case CMMsg.TYP_DEPOSIT:
 				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
@@ -1290,8 +1320,10 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			final CMMsg msg=CMClass.getMsg(mob,mob,CMMsg.MSG_LIST,L("<S-NAME> review(s) <S-HIS-HER> selections."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
+			//TODO: tack on the checked-out records so you know what you had
 			return true;
 		}
+		final BookLoaning loanA=(BookLoaning)mob.fetchEffect(ID());
 		if((commands.get(0)).equalsIgnoreCase("remove")
 		||(commands.get(0)).equalsIgnoreCase("delete"))
 		{
@@ -1301,9 +1333,9 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 				return false;
 			}
 			final String itemName=CMParms.combine(commands,1);
-			shopApply=true; // make sure you are removing ONLY from the currentShop
-			final CoffeeShop curShop=this.getShop(); // this should be curShop
-			shopApply=false;
+			loanA.shopApply=true; // make sure you are removing ONLY from the currentShop
+			final CoffeeShop curShop=loanA.getShop(); // this should be curShop
+			loanA.shopApply=false;
 			Item I=(Item)curShop.removeStock(itemName,mob);
 			if(I==null)
 			{
@@ -1317,14 +1349,14 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 				mob.addItem(I);
 				I=(Item)curShop.removeStock(itemName,mob);
 			}
-			I=(Item)shop.removeStock(itemName, mob); // now from the base Shop
+			I=(Item)loanA.shop.removeStock(itemName, mob); // now from the base Shop
 			while(I!=null)
 			{
-				shop.delAllStoreInventory(I);
-				I=(Item)shop.removeStock(itemName,mob);
+				loanA.shop.delAllStoreInventory(I);
+				I=(Item)loanA.shop.removeStock(itemName,mob);
 			}
 
-			shopApply=false;
+			loanA.shopApply=false;
 			mob.recoverCharStats();
 			mob.recoverPhyStats();
 			mob.recoverMaxState();
@@ -1393,9 +1425,9 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			for(int i=0;i<itemsV.size();i++)
 			{
 				final Item I=itemsV.get(i);
-				shop.addStoreInventory(I);
-				curShop=null;
-				shopApply=false;
+				loanA.shop.addStoreInventory(I);
+				loanA.curShop=null;
+				loanA.shopApply=false;
 				mob.delItem(I);
 			}
 		}
@@ -1409,7 +1441,16 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	{
 		if(mob instanceof ShopKeeper)
 			return false;
-		return super.autoInvocation(mob, force);
+		if(super.autoInvocation(mob, force))
+		{
+			final BookLoaning ook=(BookLoaning)mob.fetchEffect(ID());
+			if(ook != null)
+			{
+				ook.shop=shop;
+				ook.records=records;
+			}
+		}
+		return false;
 	}
 
 
