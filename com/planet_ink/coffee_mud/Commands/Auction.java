@@ -399,6 +399,11 @@ public class Auction extends Channel implements Tickable
 				return false;
 			}
 			final String amount=CMParms.combine(commands,0);
+			if(amount.trim().equals("0"))
+			{
+				mob.tell(L("Bid how much?"));
+				return false;
+			}
 			doLiveAuction(mob,new XVector<String>(amount),null);
 			return true;
 		}
