@@ -218,7 +218,7 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		if(!(affected instanceof Item))
 			return true;
 		final Item I=(Item)affected;
-		if(I.owner() == null)
+		if(I.owner() == null) // this is the key "tell"
 			return true;
 		return false;
 	}
