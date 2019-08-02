@@ -10398,6 +10398,43 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			case 92: // mpput
+			{
+				if(tt==null)
+				{
+					tt=parseBits(script,si,"Ccr");
+					if(tt==null)
+						return null;
+				}
+				final Physical newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				if(newTarget!=null)
+				{
+					if(tt[2].equalsIgnoreCase("NULL")||tt[2].equalsIgnoreCase("NONE"))
+					{
+						if(newTarget instanceof Item)
+							((Item)newTarget).setContainer(null);
+						if(newTarget instanceof Rider)
+							((Rider)newTarget).setRiding(null);
+					}
+					else
+					{
+						final Physical newContainer=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+						if(newContainer!=null)
+						{
+							if((newTarget instanceof Item)
+							&&(newContainer instanceof Container))
+								((Item)newTarget).setContainer((Container)newContainer);
+							if((newTarget instanceof Rider)
+							&&(newContainer instanceof Rideable))
+								((Rider)newTarget).setRiding((Rideable)newContainer);
+						}
+					}
+					newTarget.recoverPhyStats();
+					if(lastKnownLocation!=null)
+						lastKnownLocation.recoverRoomStats();
+				}
+				break;
+			}
 			case 55: // mpnotrigger
 			{
 				if(tt==null)

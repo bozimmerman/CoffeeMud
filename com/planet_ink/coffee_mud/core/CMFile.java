@@ -610,7 +610,7 @@ public class CMFile extends File
 
 	public static final void unloadVFS()
 	{
-		Arrays.setAll(vfs, null);
+		Arrays.fill(vfs, null);
 	}
 
 	private static final CMVFSDir vfsV()

@@ -759,6 +759,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 				if((affected instanceof MOB)
 				&&(((MOB)affected).isPlayer()))
 					break;
+				//$FALL-THROUGH$
 			case CMMsg.TYP_DEPOSIT:
 				{
 					if (!CMLib.coffeeShops().ignoreIfNecessary(msg.source(), finalIgnoreMask(), merchantM))
@@ -1024,6 +1025,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 				if((affected instanceof MOB)
 				&&(((MOB)affected).isPlayer()))
 					break;
+				//$FALL-THROUGH$
 			case CMMsg.TYP_DEPOSIT:
 				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
@@ -1220,10 +1222,12 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 									{
 										final Item I = (Item) E;
 										if (locationR != null)
+										{
 											locationR.addItem(I, ItemPossessor.Expire.Player_Drop);
-										final CMMsg msg2 = CMClass.getMsg(mob, I, this, CMMsg.MSG_GET, null);
-										if (locationR.okMessage(mob, msg2))
-											locationR.send(mob, msg2);
+											final CMMsg msg2 = CMClass.getMsg(mob, I, this, CMMsg.MSG_GET, null);
+											if (locationR.okMessage(mob, msg2))
+												locationR.send(mob, msg2);
+										}
 									}
 								}
 								this.records.add(rec);

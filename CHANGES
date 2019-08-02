@@ -26,6 +26,7 @@
  25. Combat stats now recorded for players at each level.  STAT COMBAT will give a limited view.
  26. Banker ability to hold items and make loans can be disabled on a per-mob basis.  See GenBanker in Archon's Guide.
  27. New property: Prop_LimitedEquip, for limiting the number of times a specific item can be equipped
+ 28. New Scriptable commands: MPLINK, MPUNLINK, and MPPUT
 
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque

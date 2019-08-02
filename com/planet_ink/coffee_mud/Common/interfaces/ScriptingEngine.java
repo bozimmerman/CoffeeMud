@@ -674,7 +674,8 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"MER", //88
 		"MPCASTEXT", //89
 		"MPLINK", //90
-		"MPUNLINK" //91
+		"MPUNLINK", //91
+		"MPPUT" //92
 	};
 
 	/** a list of some some extra stat codes for mobs*/
