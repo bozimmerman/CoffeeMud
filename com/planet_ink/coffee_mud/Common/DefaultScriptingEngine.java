@@ -11217,6 +11217,68 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			case 90: // mplink
+			{
+				if(tt==null)
+				{
+					tt=parseBits(script,si,"Cccr");
+					if(tt==null)
+						return null;
+				}
+				final String dirWord=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
+				final int dir=CMLib.directions().getGoodDirectionCode(dirWord);
+				if(dir < 0)
+					logError(scripted,"MPLINK","RunTime",dirWord+" is not a valid direction.");
+				else
+				{
+					final String roomID = varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
+					final Room R=this.getRoom(roomID, lastKnownLocation);
+					if((R==null)||(lastKnownLocation==null)||(R.getArea()!=lastKnownLocation.getArea()))
+						logError(scripted,"MPLINK","RunTime",roomID+" is not a target room.");
+					else
+					{
+						String exitID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
+						String nameArg=null;
+						int x=exitID.indexOf(' ');
+						if(x>0)
+						{
+							nameArg=exitID.substring(x+1).trim();
+							exitID=exitID.substring(0,x);
+						}
+						final Exit E=CMClass.getExit(exitID);
+						if(E==null)
+							logError(scripted,"MPLINK","RunTime",exitID+" is not a exit class.");
+						else
+						{
+							lastKnownLocation.rawDoors()[dir]=R;
+							lastKnownLocation.setRawExit(dir, E);
+							if(nameArg!=null)
+								E.setName(nameArg);
+						}
+					}
+				}
+				break;
+			}
+			case 91: // mpunlink
+			{
+				if(tt==null)
+				{
+					tt=parseBits(script,si,"Cr");
+					if(tt==null)
+						return null;
+				}
+				final String dirWord=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
+				final int dir=CMLib.directions().getGoodDirectionCode(dirWord);
+				if((dir < 0)||(lastKnownLocation==null)
+				||((lastKnownLocation.rawDoors()[dir]!=null)&&(lastKnownLocation.rawDoors()[dir].getArea()!=lastKnownLocation.getArea())))
+					logError(scripted,"MPLINK","RunTime",dirWord+" is not a valid direction.");
+				else
+				{
+					lastKnownLocation.setRawExit(dir, null);
+					lastKnownLocation.rawDoors()[dir]=null;
+				}
+				break;
+			}
 			case 29: // mptrackto
 			{
 				if(tt==null)
