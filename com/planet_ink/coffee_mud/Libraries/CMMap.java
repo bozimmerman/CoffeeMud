@@ -4209,6 +4209,10 @@ public class CMMap extends StdLibrary implements WorldMap
 		final BigDecimal baseDistance=BigDecimal.valueOf(getDistanceFrom(prevPos, curPosition));
 		if(baseDistance.compareTo(currentDistance.add(prevDistance))>0)
 			return 0;
+		if(prevDistance.subtract(baseDistance).equals(currentDistance)
+		||currentDistance.subtract(baseDistance).equals(prevDistance))
+			return Double.MAX_VALUE/10;
+
 		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO);
 		final BigDecimal areaOfTriangle=BigDecimal.valueOf(CMath.sqrt(CMath.abs(
 				semiPerimeter.multiply(semiPerimeter.subtract(currentDistance))
