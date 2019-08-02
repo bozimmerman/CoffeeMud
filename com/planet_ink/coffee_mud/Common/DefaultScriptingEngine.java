@@ -12616,7 +12616,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					break;
 				case 21: // put_prog
 					if((msg.targetMinor()==CMMsg.TYP_PUT)&&canTrigger(21)
-					&&((msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area)||(affecting instanceof MOB))
+					&&((msg.amITarget(affecting))
+						||(affecting instanceof Room)
+						||(affecting instanceof Area)
+						||(affecting instanceof MOB))
 					&&(msg.tool() instanceof Item)
 					&&(!msg.amISource(monster))
 					&&(msg.target() instanceof Item)
