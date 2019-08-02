@@ -232,6 +232,20 @@ public class StdThinInstance extends StdThinArea
 					protectTheseList.add(M);
 			}
 		}
+		for(final Enumeration<Room> r=childA.getFilledCompleteMap();r.hasMoreElements();)
+		{
+			final Room R=r.nextElement();
+			if(R!=null)
+			{
+				for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+				{
+					final Item I=i.nextElement();
+					if((I instanceof DeadBody)
+					&&(((DeadBody)I).isPlayerCorpse()))
+						protectTheseList.add(I);
+				}
+			}
+		}
 		for(final Enumeration<BoardableShip> s = CMLib.map().ships();s.hasMoreElements();)
 		{
 			final BoardableShip B=s.nextElement();
