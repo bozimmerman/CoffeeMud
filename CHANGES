@@ -13,7 +13,7 @@
  12. Lacquering/Dyeing now support 256 colors and REMOVE, recipes updated and re-formatted.
  13. Wish now has a one rl-day cool-down.
  14. Siplet now supports ANSI-256
- 15. New Scriptable command: MPCASTEXT
+ 15. New Scriptable command: MPCASTEXT, MPLINK, MPUNLINK, and MPPUT
  16. New MOB class: GenRideableUndead, with Raise Undead support in prayers.
  17. New internal property: ExtraData, for attaching random data to specific objects.
  18. New common skills: Master Dyeing, and Master Lacquering
@@ -26,7 +26,7 @@
  25. Combat stats now recorded for players at each level.  STAT COMBAT will give a limited view.
  26. Banker ability to hold items and make loans can be disabled on a per-mob basis.  See GenBanker in Archon's Guide.
  27. New property: Prop_LimitedEquip, for limiting the number of times a specific item can be equipped
- 28. New Scriptable commands: MPLINK, MPUNLINK, and MPPUT
+ 28. New Scriptable trigger: putting_prog 
  29. New locales for Sailing Ship prototyping: ShipDeck, ShipLightGunDeck, ShipHold, ShipMagazine, ShipQuarter, etc.
 
 # Build 5.9.8 Release 4/8/2019

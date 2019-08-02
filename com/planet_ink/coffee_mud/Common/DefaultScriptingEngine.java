@@ -12639,6 +12639,31 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
+				case 46: // putting_prog
+					if((msg.targetMinor()==CMMsg.TYP_PUT)&&canTrigger(21)
+					&&((msg.tool()==affecting)
+						||(affecting instanceof Room)
+						||(affecting instanceof Area)
+						||(affecting instanceof MOB))
+					&&(msg.tool() instanceof Item)
+					&&(!msg.amISource(monster))
+					&&(msg.target() instanceof Item)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.tool());
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
+								execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
+							else
+								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)msg.tool(),script,1,check, t);
+							return;
+						}
+					}
+					break;
 				case 27: // buy_prog
 					if((msg.targetMinor()==CMMsg.TYP_BUY)&&canTrigger(27)
 					&&((!(affecting instanceof ShopKeeper))

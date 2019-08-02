@@ -54,7 +54,7 @@
             <li><a href="#once_prog">once_prog</a></li>
             <li><a href="#open_prog">open_prog</a></li>
             <li><a href="#quest_time_prog">quest_time_prog</a></li>
-            <li><a href="#put_prog">put_prog</a></li>
+            <li><a href="#put_prog">put_prog</a></li><li><a href="#putting_prog">putting_prog</a></li>
             <li><a href="#rand_prog">rand_prog</a></li>
             <li><a href="#regmask_prog">regmask_prog</a></li>
             <li><a href="#remove_prog">remove_prog</a></li>
@@ -1336,9 +1336,12 @@ the quest 'that quest'.</p>
       <h3><a name="put_prog">put_prog</a></h3>
       <p>Usage:</p>
       <pre>put_prog [keyword list]<br />put_prog p [keyword list]<br />put_prog all<br /></pre>
-      <p>This type of mobprog is
-triggered by putting something in a
-container. If the container being used matches the keywords of the
+      <p>This
+type of mobprog is
+triggered by observing something being put in a
+container, or by the scripted object being a matching container that
+something is being put into. It does not trigger if the scripted object
+is the thing being put into the container. &nbsp;</p><p>Now, if the container involved matches the keywords of the
 put_prog, the prog is triggered. If there is a &#8216;p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
@@ -1371,7 +1374,44 @@ Generally it is best not to have put_progs with the same keywords in
 them, unless they are a put_prog p with different keyword lists but
 some of the same keywords &#8211; for example a put_prog p apple
 red
-juicy and a put_prog p apple red poisoned.</p>
+juicy and a put_prog p apple red poisoned.
+      </p><h3><a name="putting_prog">putting_prog</a></h3>
+      <p>Usage:</p>
+      <pre>putting_prog [keyword list]<br />putting_prog p [keyword list]<br />putting_prog all<br /></pre>
+      <p>This
+type of mobprog is
+triggered by putting a matched thing into a
+container. It does not trigger if the scripted object is the container
+itself, however.&nbsp;If the object being put into the container
+matches the keywords of the
+put_prog, the prog is triggered. If there is a &#8216;p' placed
+before
+the keyword list, the keywords of the object must exactly match that of
+the put_prog. If there is not, then any object with any of the
+keywords in the list in it will trigger it. If a put_prog all is used,
+then the put_prog will trigger from any item being put in any container
+at all.
+This type of prog is usually used for in-zone quests and special mob
+behavior, and has a variety of uses.</p>
+      <p>EXAMPLES:</p>
+      <pre>putting_prog key skeleton<br /></pre>
+      <p>This will trigger if &nbsp;an object with the
+keywords key or skeleton is being put into a container.&nbsp;</p>
+      <pre>putting_prog p the skeleton key<br /></pre>
+      <p>This
+will trigger if the item with exact
+keywords the skeleton key is being put into a container. The prog would not be triggered by
+items with keywords skeleton or the key or anything except the exact order and wording of the keyword
+list.&nbsp;</p>
+      <pre>putting_prog all<br /></pre>
+      <p>This will trigger if any item is being put somewhere.</p>
+      <p>MULTIPLE PROGS: You can
+have more than one putting_prog on a mob.
+Generally it is best not to have putting_progs with the same keywords in
+them, unless they are a put_prog p with different keyword lists but
+some of the same keywords &#8211; for example a putting_prog p apple
+red
+juicy and a putting_prog p apple red poisoned.</p>
       <h3><a name="rand_prog">rand_prog</a></h3>
       <p>Usage:</p>
       <pre>rand_prog [integer percentage]<br /></pre>
