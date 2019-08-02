@@ -108,7 +108,7 @@
             <li><a href="#mpheal">mpheal</a></li>
             <li><a href="#mphide">mphide</a></li>
             <li><a href="#mpjunk">mpjunk</a></li>
-            <li><a href="#mpkill">mpkill</a></li>
+            <li><a href="#mpkill">mpkill</a></li><li><a href="#mplink">mplink</a></li>
             <li><a href="#mploadquestobj">mploadquestobj</a></li>
             <li><a href="#mploadvar">mploadvar</a></li>
             <li><a href="#mplock">mplock</a></li>
@@ -125,7 +125,7 @@
             <li><a href="#mppossess">mppossess</a></li>
             <li><a href="#mppracs">mppracs</a></li>
             <li><a href="#mpprompt">mpprompt</a></li>
-            <li><a href="#mppurge">mppurge</a></li>
+            <li><a href="#mppurge">mppurge</a></li><li><a href="#mpput">mpput</a></li>
             <li><a href="#mpquestpoints">mpquestpoints</a></li>
             <li><a href="#mpquestwin">mpquestwin</a></li>
             <li><a href="#mpqset">mpqset</a></li>
@@ -153,7 +153,7 @@
             <li><a href="#mpunloadscript">mpunloadscript</a></li>
             <li><a href="#mpunlock">mpunlock</a></li>
             <li><a href="#mpwhile">mpwhile</a></li>
-            <li><a href="#mpwalkto">mpwalkto</a></li>
+            <li><a href="#mpwalkto">mpwalkto</a></li><li><a href="#mpunlink">mpunlink</a></li>
             <li><a href="#return">return</a></li>
           </ul>
         </li>
@@ -3350,6 +3350,15 @@ this command doesn't get used much. It
 was built for other MUD's which might have level requirements for kill,
 etc. You can use it, but it more or less works exactly the same as
 kill, murder, hit, etc.</p>
+      <h3><a name="mplink">mplink</a></h3>
+      <p>Usage:</p>
+mplink [direction] [target room] [exit class id] ([exit name])
+      <p>This
+command allows a standard exit to be created from the room in which the
+scripted object is currently in, to another room in the same area,
+provided the script is only operating in its origin area. &nbsp;It will
+NOT overwrite/obliterate any existing exit in the same direction.</p>
+      <p>EXAMPLE:</p>mplink UP 'My Area#12322' OpenNameable my name
       <h3><a name="mploadquestobj">mploadquestobj</a></h3>
       <p>Usage:</p>
       <pre>mploadquestobj [questname] [variable expression/name] [$var]<br /></pre>
@@ -3696,7 +3705,16 @@ there is no mistake what you are trying to mppurge. Also, you should
 avoid mppurging players, as it basically causes them to be ejected from
 the game. Use this command for mobs that set up special quests and then
 go away, so each zone reset you'll have a fresh zone for adventurers to
-pillage.</p>
+pillage.
+      </p><h3><a name="mpput">mpput</a></h3>
+      <p>Usage:</p>
+      <pre>mpput [item code] [container code]/NONE<br />mpput [mob code] [rideable code]/NONE<br /></pre>
+      <p>This
+command can be used to put an item into a container, remove an item
+from a container (using the NONE container), mount a wagon to a horse,
+or mount a player on a horse. &nbsp;</p>
+      <p>EXAMPLES:</p>
+      <pre>mpput $i 'the horse'<br />mpput $o 'the sack'</pre>
       <h3><a name="mpqset">mpqset</a></h3>
       <p>Usage:</p>
       <pre>mpqset [questname] [variable] [value]<br /></pre>
@@ -3776,12 +3794,16 @@ scripting special events that require a room or areas default mobs or
 items to be present.</p>
       <h3><a name="mpreset">mpreset</a></h3>
       <p>Usage:</p>
-      <pre>mpreset area<br />mpreset room<br />mpreset [area name]<br />mpreset [room id]<br /></pre>
-      <p>This command allows you
+      <pre>mpreset area<br />mpreset room<br />mpreset [area name]<br />mpreset [room id]<br />mpreset [mob code]<br />mpreset [item code]<br /></pre>
+      <p>This
+command allows you
 to force the system to reload an area
 or a room from the database. The keywords area and room will refer to
 the scripted objects current area and room. Otherwise, the name of the
-area, or the full roomID can be specified.</p>
+area, or the full roomID can be specified. &nbsp;It also allows you to
+reset the durability of an item and remove it from any container.
+&nbsp;For mobs, this will reset the targets hit points, mana, and
+movement back to maximum, assuming they are alive and targetable.</p>
       <p>EXAMPLES:</p>
       <pre>mpreset area<br /></pre>
       <p>SPECIAL NOTES: Be very
@@ -4114,7 +4136,12 @@ command line.</p>
 affects of mphide, making the target
 (possibly) visible again.</p>
       <p>EXAMPLES:</p>
-      <pre>mpunhide $n<br /><br /></pre>
+      <pre>mpunhide $n<br /><br /></pre><h3><a name="mpunlink">mpunlink</a></h3>
+      <p>Usage:</p>
+mpunlink [direction]
+      <p>This
+command allows an exit created using the MPLINK command to be removed and destroyed.</p>
+      <p>EXAMPLE:</p>mpunlink UP<span style="font-family: monospace;"><br /></span>
       <h3><a name="mpunhide">mpunloadscript</a></h3>
       <p>Usage:</p>
 mpunloadscript [file name]

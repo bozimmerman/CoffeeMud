@@ -77,6 +77,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	protected MOB					lastToHurtMe	 = null;
 	protected Room					lastKnownLocation= null;
+	protected Room					homeKnownLocation= null;
 	protected Tickable				altStatusTickable= null;
 	protected List<DVector>			oncesDone		 = new Vector<DVector>();
 	protected Map<Integer,Integer>	delayTargetTimes = new Hashtable<Integer,Integer>();
@@ -445,7 +446,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			final List<DVector> scripts=getScripts();
 			if(!mob.amDead())
+			{
 				lastKnownLocation=mob.location();
+				if(homeKnownLocation==null)
+					homeKnownLocation=lastKnownLocation;
+			}
 			String trigger="";
 			String[] tt=null;
 			for(int v=0;v<scripts.size();v++)
@@ -638,6 +643,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		que = new Vector<ScriptableResponse>();
 		lastToHurtMe = null;
 		lastKnownLocation= null;
+		homeKnownLocation=null;
 		altStatusTickable= null;
 		oncesDone = new Vector<DVector>();
 		delayTargetTimes = new Hashtable<Integer,Integer>();
@@ -1581,7 +1587,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if((monster!=null)&&(monster.location()!=null))
 			lastKnownLocation=monster.location();
 		if(lastKnownLocation==null)
+		{
 			lastKnownLocation=source.location();
+			if(homeKnownLocation==null)
+				homeKnownLocation=lastKnownLocation;
+		}
+		else
+		if(homeKnownLocation==null)
+			homeKnownLocation=lastKnownLocation;
 		MOB randMOB=null;
 		while((t>=0)&&(t<varifyable.length()-1))
 		{
@@ -11291,14 +11304,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 				{
 					final String roomID = varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
+					final Room startR=(homeKnownLocation!=null)?homeKnownLocation:CMLib.map().getStartRoom(scripted);
 					final Room R=this.getRoom(roomID, lastKnownLocation);
 					if((R==null)||(lastKnownLocation==null)||(R.getArea()!=lastKnownLocation.getArea()))
 						logError(scripted,"MPLINK","RunTime",roomID+" is not a target room.");
 					else
+					if((startR!=null)&&(startR.getArea()!=lastKnownLocation.getArea()))
+						logError(scripted,"MPLINK","RunTime","mplink from "+roomID+" is an illegal source room.");
+					else
 					{
 						String exitID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
 						String nameArg=null;
-						int x=exitID.indexOf(' ');
+						final int x=exitID.indexOf(' ');
 						if(x>0)
 						{
 							nameArg=exitID.substring(x+1).trim();
@@ -11308,9 +11325,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(E==null)
 							logError(scripted,"MPLINK","RunTime",exitID+" is not a exit class.");
 						else
+						if((lastKnownLocation.rawDoors()[dir]==null)
+						&&(lastKnownLocation.getRawExit(dir)==null))
 						{
 							lastKnownLocation.rawDoors()[dir]=R;
 							lastKnownLocation.setRawExit(dir, E);
+							E.basePhyStats().setSensesMask(E.basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNOWISH);
+							E.setSavable(false);
+							E.recoverPhyStats();
 							if(nameArg!=null)
 								E.setName(nameArg);
 						}
@@ -11331,6 +11353,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((dir < 0)||(lastKnownLocation==null)
 				||((lastKnownLocation.rawDoors()[dir]!=null)&&(lastKnownLocation.rawDoors()[dir].getArea()!=lastKnownLocation.getArea())))
 					logError(scripted,"MPLINK","RunTime",dirWord+" is not a valid direction.");
+				else
+				if(lastKnownLocation.getRawExit(dir)==null)
+					logError(scripted,"MPLINK","RunTime",dirWord+" is not a valid direction.");
+				else
+				if(lastKnownLocation.getRawExit(dir).isSavable()||(!CMath.bset(lastKnownLocation.getRawExit(dir).basePhyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH)))
+					logError(scripted,"MPLINK","RunTime",dirWord+" is not a legal unlinkable exit.");
 				else
 				{
 					lastKnownLocation.setRawExit(dir, null);
@@ -12040,7 +12068,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					final MOB monster=getMakeMOB(affecting);
 					if(lastKnownLocation==null)
+					{
 						lastKnownLocation=msg.source().location();
+						if(homeKnownLocation==null)
+							homeKnownLocation=lastKnownLocation;
+					}
 					if((monster==null)||(monster.amDead())||(lastKnownLocation==null))
 						return true;
 					final Item defaultItem=(affecting instanceof Item)?(Item)affecting:null;
@@ -12118,7 +12150,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			final MOB monster=getMakeMOB(affecting);
 
 			if(lastKnownLocation==null)
+			{
 				lastKnownLocation=msg.source().location();
+				if(homeKnownLocation==null)
+					homeKnownLocation=lastKnownLocation;
+			}
 			if((monster==null)||(monster.amDead())||(lastKnownLocation==null))
 				return;
 
