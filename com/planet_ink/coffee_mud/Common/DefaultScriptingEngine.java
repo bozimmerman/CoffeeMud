@@ -9731,7 +9731,29 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(A!=null)
 							CMLib.map().resetArea(A);
 						else
-							logError(scripted,"MPRESET","Syntax","Unknown location: "+arg+" for "+scripted.Name());
+						{
+							final Physical newTarget=getArgumentItem(arg,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+							if(newTarget == null)
+								logError(scripted,"MPRESET","Syntax","Unknown location or item: "+arg+" for "+scripted.Name());
+							else
+							if(newTarget instanceof Item)
+							{
+								final Item I=(Item)newTarget;
+								I.setContainer(null);
+								if(I.subjectToWearAndTear())
+									I.setUsesRemaining(100);
+								I.recoverPhyStats();
+							}
+							else
+							if(newTarget instanceof MOB)
+							{
+								final MOB M=(MOB)newTarget;
+								M.resetToMaxState();
+								M.recoverMaxState();
+								M.recoverCharStats();
+								M.recoverPhyStats();
+							}
+						}
 					}
 				}
 				break;
