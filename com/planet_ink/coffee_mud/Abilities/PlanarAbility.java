@@ -1105,6 +1105,13 @@ public class PlanarAbility extends StdAbility
 	{
 		if(planeA != null)
 		{
+			Area parentArea = null;
+			int x=planeA.Name().indexOf('_');
+			if(x<0)
+				x=planeA.Name().indexOf(' ');
+			if(x>=0)
+				parentArea = CMLib.map().getArea(Name().substring(x+1));
+
 			for(final Enumeration<Room> r=planeA.getFilledProperMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
@@ -1129,6 +1136,36 @@ public class PlanarAbility extends StdAbility
 								oldRoom.bringMobHere(M, true);
 								CMLib.commands().postLook(M,true);
 								R.delInhabitant(M);
+							}
+						}
+					}
+					for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+					{
+						final Item I=i.nextElement();
+						if((I instanceof DeadBody)
+						&&(((DeadBody)I).isPlayerCorpse()))
+						{
+							if((parentArea != null)
+							&&(R.roomID().length()>0)
+							&&(R.roomID().indexOf(parentArea.Name()+"#")>=0)
+							&&(parentArea.getRoom(parentArea.Name()+R.roomID().substring(R.roomID().lastIndexOf('#'))))!=null)
+							{
+								final Room sendR=parentArea.getRoom(parentArea.Name()+R.roomID().substring(R.roomID().lastIndexOf('#')));
+								sendR.moveItemTo(I);
+							}
+							else
+							{
+								MOB M=((DeadBody)I).getSavedMOB();
+								if(M==null)
+									M=CMLib.players().getPlayerAllHosts(((DeadBody)I).getMobName());
+								if(M!=null)
+								{
+									if(M.location()!=null)
+										M.location().moveItemTo(I);
+									else
+									if(M.getStartRoom()!=null)
+										M.getStartRoom().moveItemTo(I);
+								}
 							}
 						}
 					}
