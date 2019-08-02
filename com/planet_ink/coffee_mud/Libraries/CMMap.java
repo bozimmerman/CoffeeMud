@@ -4200,26 +4200,19 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public double getMinDistanceFrom(final SpaceObject fromObj, final long prevDistance, final SpaceObject toObj)
+	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos)
 	{
-		final long curDistance = getDistanceFrom(fromObj.coordinates(), toObj.coordinates());
-		final double baseDistance=fromObj.speed();
-		if(baseDistance == 0)
-			return curDistance;
-		if((prevDistance == 0)||(curDistance==0))
+		final BigDecimal currentDistance=BigDecimal.valueOf(getDistanceFrom(curPosition, objPos));
+		if(Arrays.equals(prevPos, curPosition))
+			return currentDistance.doubleValue();
+		final BigDecimal prevDistance=BigDecimal.valueOf(getDistanceFrom(prevPos, objPos));
+		final BigDecimal baseDistance=BigDecimal.valueOf(getDistanceFrom(prevPos, curPosition));
+		if(baseDistance.compareTo(currentDistance.add(prevDistance))>0)
 			return 0;
-		if(baseDistance == (curDistance + prevDistance))
-			return 0.0;
-		final BigDecimal bdBaseDistance = BigDecimal.valueOf(baseDistance);
-		final BigDecimal bdCurDistance = BigDecimal.valueOf(curDistance);
-		final BigDecimal bdPrevDistance = BigDecimal.valueOf(prevDistance);
-		final BigDecimal s0=bdCurDistance.multiply(bdCurDistance);
-		final BigDecimal s1=bdPrevDistance.multiply(bdPrevDistance);
-		final BigDecimal s2=bdBaseDistance.multiply(bdBaseDistance);
-		BigDecimal s3=bdPrevDistance.multiply(bdBaseDistance).multiply(TWO);
-		if(s3.doubleValue()==0.0)
-			s3=ONE;
-		final double distAngle = Math.acos(s0.add(s2).subtract(s1).divide(s3,MathContext.DECIMAL64.getPrecision(),RoundingMode.HALF_UP).doubleValue());
-		return Math.round(prevDistance * Math.sin(distAngle));
+		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO);
+		final BigDecimal areaOfTriangle=BigDecimal.valueOf(CMath.sqrt(semiPerimeter.multiply(semiPerimeter.subtract(currentDistance))
+																					.multiply(semiPerimeter.subtract(baseDistance))
+																					.multiply(semiPerimeter.subtract(prevDistance)).doubleValue()));
+		return TWO.multiply(areaOfTriangle).divide(baseDistance).doubleValue();
 	}
 }

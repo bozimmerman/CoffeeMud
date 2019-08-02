@@ -80,7 +80,8 @@ public class VeryAggressive extends Aggressive
 	public void tickVeryAggressively(final Tickable ticking, final int tickID,
 									 final boolean wander, final boolean mobKiller,
 									 final boolean misBehave, final boolean levelCheck,
-									 final MaskingLibrary.CompiledZMask mask, final String attackMsg)
+									 final MaskingLibrary.CompiledZMask mask, final String attackMsg,
+									 final boolean noGangUp)
 	{
 		if(tickID!=Tickable.TICKID_MOB)
 			return;
@@ -154,7 +155,7 @@ public class VeryAggressive extends Aggressive
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBILITY)))
 		{
 			CMLib.tracking().walk(mob,dirCode,false,false);
-			pickAFight(mob,mask,mobKiller,misBehave,levelCheck,attackMsg);
+			pickAFight(mob,mask,mobKiller,misBehave,levelCheck,attackMsg,noGangUp);
 		}
 	}
 
@@ -171,7 +172,8 @@ public class VeryAggressive extends Aggressive
 								 misbehave,
 								 this.levelcheck,
 								 this.mask,
-								 attackMessage);
+								 attackMessage,
+								 noGangUp);
 		}
 		return true;
 	}

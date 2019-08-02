@@ -53,6 +53,7 @@ public class MobileAggressive extends Mobile
 	protected boolean			misbehave			= false;
 	protected String			attackMsg			= null;
 	protected int				aggressiveTickDown	= 0;
+	protected boolean			noGangUp			= false;
 	protected boolean			levelcheck			= false;
 	protected VeryAggressive	veryA				= new VeryAggressive();
 	protected CompiledZMask		mask				= null;
@@ -85,6 +86,7 @@ public class MobileAggressive extends Mobile
 		final Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		levelcheck=V.contains("CHECKLEVEL");
 		mobkill=V.contains("MOBKILL");
+		noGangUp=V.contains("NOGANG")||V.contains("NOGANGUP");
 		misbehave=V.contains("MISBEHAVE");
 		this.mask=CMLib.masking().getPreCompiledMask(newParms);
 	}
@@ -119,9 +121,9 @@ public class MobileAggressive extends Mobile
 		{
 			aggressiveTickDown=tickWait;
 			tickStatus=Tickable.STATUS_MISC+2;
-			veryA.tickAggressively(ticking,tickID,mobkill,misbehave,levelcheck,this.mask,attackMsg);
+			veryA.tickAggressively(ticking,tickID,mobkill,misbehave,levelcheck,this.mask,attackMsg,noGangUp);
 			tickStatus=Tickable.STATUS_MISC+3;
-			veryA.tickVeryAggressively(ticking,tickID,wander,mobkill,misbehave,levelcheck,this.mask,attackMsg);
+			veryA.tickVeryAggressively(ticking,tickID,wander,mobkill,misbehave,levelcheck,this.mask,attackMsg,noGangUp);
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;

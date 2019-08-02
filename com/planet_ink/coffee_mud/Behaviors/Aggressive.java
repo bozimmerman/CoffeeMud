@@ -50,6 +50,7 @@ public class Aggressive extends StdBehavior
 	protected int		tickDown			= 0;
 	protected boolean	wander				= false;
 	protected boolean	mobkill				= false;
+	protected boolean	noGangUp			= false;
 	protected boolean	misbehave			= false;
 	protected boolean	levelcheck			= false;
 	protected String	attackMessage		= null;
@@ -92,6 +93,7 @@ public class Aggressive extends StdBehavior
 		wander=V.contains("WANDER");
 		levelcheck=V.contains("CHECKLEVEL");
 		mobkill=V.contains("MOBKILL")||(V.contains("MOBKILLER"));
+		noGangUp=V.contains("NOGANG")||V.contains("NOGANGUP");
 		misbehave=V.contains("MISBEHAVE");
 		tickDown=tickWait;
 		this.mask=CMLib.masking().getPreCompiledMask(newParms);
@@ -134,7 +136,8 @@ public class Aggressive extends StdBehavior
 		return false;
 	}
 
-	public boolean pickAFight(final MOB observer, final MaskingLibrary.CompiledZMask mask, final boolean mobKiller, final boolean misBehave, final boolean levelCheck, final String attackMsg)
+	public boolean pickAFight(final MOB observer, final MaskingLibrary.CompiledZMask mask, final boolean mobKiller, final boolean misBehave,
+							  final boolean levelCheck, final String attackMsg, final boolean noGangUp)
 	{
 		if(!canFreelyBehaveNormal(observer))
 			return false;
@@ -156,6 +159,7 @@ public class Aggressive extends StdBehavior
 					&&((!mob.isMonster())||(mobKiller))
 					&&(CMLib.masking().maskCheck(mask,mob,false))
 					&&(!groupMembers.contains(mob))
+					&&((!noGangUp)||(!mob.isInCombat()))
 					&&(startFight(observer,mob,mobKiller,misBehave,attackMsg)))
 						return true;
 				}
@@ -164,7 +168,9 @@ public class Aggressive extends StdBehavior
 		return false;
 	}
 
-	public void tickAggressively(final Tickable ticking, final int tickID, final boolean mobKiller, final boolean misBehave, final boolean levelCheck, final MaskingLibrary.CompiledZMask mask, final String attackMsg)
+	public void tickAggressively(final Tickable ticking, final int tickID, final boolean mobKiller, final boolean misBehave,
+								 final boolean levelCheck, final MaskingLibrary.CompiledZMask mask, final String attackMsg,
+								 final boolean noGangUp)
 	{
 		if(tickID!=Tickable.TICKID_MOB)
 			return;
@@ -172,7 +178,7 @@ public class Aggressive extends StdBehavior
 			return;
 		if(!(ticking instanceof MOB))
 			return;
-		pickAFight((MOB)ticking,mask,mobKiller,misBehave,levelCheck,attackMsg);
+		pickAFight((MOB)ticking,mask,mobKiller,misBehave,levelCheck,attackMsg,noGangUp);
 	}
 
 	@Override
@@ -190,7 +196,8 @@ public class Aggressive extends StdBehavior
 							 misbehave,
 							 this.levelcheck,
 							 this.mask,
-							 attackMessage);
+							 attackMessage,
+							 this.noGangUp);
 		}
 		return true;
 	}
