@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
-  <meta name="generator" content="HTML Tidy, see www.w3.org" />
+
+  <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Scripting in CoffeeMud 5.9</title>
   
-  <title>Scripting in CoffeeMud 5.9</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
-<body>
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head><body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
   <tbody>
@@ -631,7 +631,7 @@ COMMANDFAIL , METACOMMAND</span>
       <p>And here are some general
 message code types that may also be
 used:</p>
-      <span style="font-family: monospace;">TOUCH,MOVE,EYES,MOUTH,SOUND,GENERAL,MAGIC,DELICATE,MALICIOUS,CHANNEL,OPTIMIZE,CNTRLMSG,INTERMSG</span>
+      <span style="font-family: monospace;">TOUCH, MOVE, EYES, MOUTH, SOUND, GENERAL, MAGIC, DELICATE, MALICIOUS, CHANNEL, OPTIMIZE, CNTRLMSG, INTERMSG, UNINTENTIONAL</span>
       <p>For truly advanced users,
 you can also prefix a message code
 with some combination of the letters S, O, and T followed by an equal
@@ -860,7 +860,8 @@ DUELLOSS, COMMANDFAIL, METACOMMAND</span>
       <p>And here are some general
 message code types that may also be
 used:</p>
-      <span style="font-family: monospace;">TOUCH,MOVE,EYES,MOUTH,SOUND,GENERAL,MAGIC,DELICATE,MALICIOUS,CHANNEL,OPTIMIZE,CNTRLMSG,INTERMSG</span>
+      <span style="font-family: monospace;">TOUCH, MOVE, EYES, MOUTH, SOUND, GENERAL, MAGIC, DELICATE, MALICIOUS, CHANNEL, OPTIMIZE, CNTRLMSG, INTERMSG, UNINTENTIONAL<br />
+</span>
       <p>For truly advanced users,
 you can also prefix a message code
 with
@@ -4494,7 +4495,7 @@ character has an amount of time remaining on a temporary&nbsp;tattoo
 assigned to them. &nbsp;Where '==' may be any logical operator
 from above.</p>
       <p>EXAMPLE:</p>
-      <span style="font-family: monospace;">if hastattootime($n beastmark &lt; 15)</span><br style="font-family: monospace;" /><span style="font-family: monospace;">&nbsp;mpecho There is less than 1 minute left on the beastmark!</span><br style="font-family: monospace;" /><span style="font-family: monospace;"></span><span style="font-family: monospace;">endif</span>
+      <span style="font-family: monospace;">if hastattootime($n beastmark &lt; 15)</span><br style="font-family: monospace;" /><span style="font-family: monospace;">&nbsp;mpecho There is less than 1 minute left on the beastmark!</span><br style="font-family: monospace;" /><span style="font-family: monospace;" /><span style="font-family: monospace;">endif</span>
       <h3><a name="hitprcnt">hitprcnt</a></h3>
       <p>Usage:</p>
       <pre>hitprcnt(character == amount)<br /></pre>
@@ -4693,7 +4694,7 @@ code ($x, $xN, $xS, etc..)</p>
       ismonth(integer)<br /><p>This function is used to
 check the mud month number.&nbsp;</p>
       <p>EXAMPLE:</p>
-      <span style="font-family: monospace;">if ismonth(1)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho It is month 1.</span><br style="font-family: monospace;" /><span style="font-family: monospace;"></span><span style="font-family: monospace;">endif</span>
+      <span style="font-family: monospace;">if ismonth(1)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho It is month 1.</span><br style="font-family: monospace;" /><span style="font-family: monospace;" /><span style="font-family: monospace;">endif</span>
       <h3><a name="ismoon">ismoon</a></h3>
       <p>Usage:</p>
       <pre>ismoon()<br />ismoon(phase)<br /></pre>
@@ -4788,13 +4789,13 @@ If you need to be need to find mobile mobs or items, you can include
 the mob or item name, followed by @ followed by a room id or area name.
 The '==' may also be '!='.</p>
       <p>EXAMPLES:</p>
-      <pre>if isrecall($i == a bathroom)<br /> mpecho This means I am from a bathroom.<br />else<br /> mpecho I am not from a bathroom.<br />endif<br /><br />if isrecall($i != MyArea#20001)<br /> mpecho I am not from room MyArea#20001.<br />else<br /> mpecho I am from room MyArea#20001.<br />endif<br /></pre><h3><a name="isrlhour">isrlhour &nbsp;</a></h3><h3><a name="isrlday"></a>isrlday&nbsp;</h3><h3><a name="isrlmonth"></a>isrlmonth&nbsp;</h3><h3><a name="isrlyear"></a>isrlyear&nbsp;</h3><p>Usage:</p><span style="font-family: monospace;">
+      <pre>if isrecall($i == a bathroom)<br /> mpecho This means I am from a bathroom.<br />else<br /> mpecho I am not from a bathroom.<br />endif<br /><br />if isrecall($i != MyArea#20001)<br /> mpecho I am not from room MyArea#20001.<br />else<br /> mpecho I am from room MyArea#20001.<br />endif<br /></pre><h3><a name="isrlhour">isrlhour &nbsp;</a></h3><h3><a name="isrlday" />isrlday&nbsp;</h3><h3><a name="isrlmonth" />isrlmonth&nbsp;</h3><h3><a name="isrlyear" />isrlyear&nbsp;</h3><p>Usage:</p><span style="font-family: monospace;">
 isrlhour(integer)</span>
       <p>This
 checks the real-life hour of the day (0-23), day of the month (1-31),
 month of the year (1-12), or year against the given integer value..</p>
       <p>EXAMPLES:</p>
-      <span style="font-family: monospace;">if isrlday(15)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho This means it is the 15th of the month.</span><br style="font-family: monospace;" /><span style="font-family: monospace;"></span><span style="font-family: monospace;">endif</span><br /><h3><a name="isseason">isseason</a></h3>
+      <span style="font-family: monospace;">if isrlday(15)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho This means it is the 15th of the month.</span><br style="font-family: monospace;" /><span style="font-family: monospace;" /><span style="font-family: monospace;">endif</span><br /><h3><a name="isseason">isseason</a></h3>
       <p>Usage:</p>
       <pre>isseason(seasonname)<br /></pre>
       <p>This function is used to
@@ -4843,7 +4844,7 @@ for "CLEAR". Other valid weathernames include: "CLOUDY", "WINDY",
       isyear(integer)<br /><p>This function is used to
 check the mud year.&nbsp;</p>
       <p>EXAMPLE:</p>
-      <span style="font-family: monospace;">if isyear(1)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho It is year 1.</span><br style="font-family: monospace;" /><span style="font-family: monospace;"></span><span style="font-family: monospace;">endif</span>
+      <span style="font-family: monospace;">if isyear(1)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho It is year 1.</span><br style="font-family: monospace;" /><span style="font-family: monospace;" /><span style="font-family: monospace;">endif</span>
       <h3><a name="level">level</a></h3>
       <p>Usage:</p>
       <pre>level(character == number)<br /></pre>

@@ -88,7 +88,8 @@ public class RaceHelper extends StdBehavior
 		&&(source!=target)
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
-		&&(!BrotherHelper.isBrother(source,observer,false)))
+		&&(!BrotherHelper.isBrother(source,observer,false))
+		&&((!(msg.tool() instanceof DiseaseAffect))||(((DiseaseAffect)msg.tool()).isMalicious())))
 		{
 			final Room R=source.location();
 			if(observer.charStats().getMyRace().ID().equalsIgnoreCase(target.charStats().getMyRace().ID())

@@ -76,7 +76,7 @@ public class MobileGoodGuardian extends Mobile
 		}
 		tickStatus=Tickable.STATUS_MISC+2;
 		if(((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
-		||(!CMLib.flags().canTaste(mob)))
+		||(!CMLib.flags().canTaste(mob))) // wtf?
 		{
 			tickStatus=Tickable.STATUS_NOT;
 			return true;
