@@ -88,18 +88,256 @@ public interface EnglishParsing extends CMLibrary
 	public String getContextSameName(ItemCollection cont, Environmental E);
 	public List<String> parseWords(final String thisStr);
 
+	/**
+	 * Returns a matching exit object from an iterable collection of them
+	 * by using a search string to matching. The search string may include
+	 * things like counters 1.itemname, etc, or even all itemname.
+	 * The name matches may include object ids, names, or display text.  Exact
+	 * matches can be demanded using the anchor $ character on the front, back,
+	 * or both, of the match words.
+	 *
+	 * Matching may be exact or inexact.  Exact matching must include full
+	 * names, display texts, etc.  Inexact can include substrings.  Both are
+	 * case-insensitive, however.
+	 *
+	 * @param list the collection of exit objects to search through
+	 * @param srchStr the search string
+	 * @param exactOnly true for exact matching, false for inexact
+	 * @return a matching object, or null
+	 */
 	public Exit fetchExit(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
+
+	/**
+	 * Returns a matching environmental object from an iterable collection of them
+	 * by using a search string to matching. The search string may include
+	 * things like counters 1.itemname, etc, or even all itemname.
+	 * The name matches may include object ids, names, or display text.  Exact
+	 * matches can be demanded using the anchor $ character on the front, back,
+	 * or both, of the match words.
+	 *
+	 * Matching may be exact or inexact.  Exact matching must include full
+	 * names, display texts, etc.  Inexact can include substrings.  Both are
+	 * case-insensitive, however.
+	 *
+	 * @param list the collection of environmental objects to search through
+	 * @param srchStr the search string
+	 * @param exactOnly true for exact matching, false for inexact
+	 * @return a matching object, or null
+	 */
 	public Environmental fetchEnvironmental(Iterable<? extends Environmental> list, String srchStr, boolean exactOnly);
+
+	/**
+	 * Returns a matching environmental object from an enumeration of them
+	 * by using a search string to matching. The search string may include
+	 * things like counters 1.itemname, etc, or even all itemname.
+	 * The name matches may include object ids, names, or display text.  Exact
+	 * matches can be demanded using the anchor $ character on the front, back,
+	 * or both, of the match words.
+	 *
+	 * Matching may be exact or inexact.  Exact matching must include full
+	 * names, display texts, etc.  Inexact can include substrings.  Both are
+	 * case-insensitive, however.
+	 *
+	 * @param iter the enumeraton of environmental objects to search through
+	 * @param srchStr the search string
+	 * @param exactOnly true for exact matching, false for inexact
+	 * @return a matching object, or null
+	 */
 	public Environmental fetchEnvironmental(Enumeration<? extends Environmental> iter, String srchStr, boolean exactOnly);
+
+	/**
+	 * Returns a matching environmental object from map of them
+	 * by using a search string to matching. The search string may include
+	 * things like counters 1.itemname, etc, or even all itemname.
+	 * The name matches may include object ids, names, or display text.  Exact
+	 * matches can be demanded using the anchor $ character on the front, back,
+	 * or both, of the match words.
+	 *
+	 * Matching may be exact or inexact.  Exact matching must include full
+	 * names, display texts, etc.  Inexact can include substrings.  Both are
+	 * case-insensitive, however.
+	 *
+	 * @param list the map of environmental objects to search through
+	 * @param srchStr the search string
+	 * @param exactOnly true for exact matching, false for inexact
+	 * @return a matching object, or null
+	 */
 	public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly);
-	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly);
+
+	/**
+	 * Returns a matching environmental object from an iterator of them
+	 * by using a search string to matching. The search string may include
+	 * things like counters 1.itemname, etc, or even all itemname.
+	 * The name matches may include object ids, names, or display text.  Exact
+	 * matches can be demanded using the anchor $ character on the front, back,
+	 * or both, of the match words.
+	 *
+	 * Matching may be exact or inexact.  Exact matching must include full
+	 * names, display texts, etc.  Inexact can include substrings.  Both are
+	 * case-insensitive, however.
+	 *
+	 * @param iter the iterator of objects to search through
+	 * @param srchStr the search string
+	 * @param exactOnly true for exact matching, false for inexact
+	 * @return a matching object, or null
+	 */
 	public Environmental fetchEnvironmental(Iterator<? extends Environmental> iter, String srchStr, boolean exactOnly);
+
+	/**
+	 * Returns a set of matching environmental objects from a collection of them
+	 * by using a search string to matching. The search string may include
+	 * things like counters 1.itemname, etc, or even all itemname.
+	 * The name matches may include object ids, names, or display text.  Exact
+	 * matches can be demanded using the anchor $ character on the front, back,
+	 * or both, of the match words.
+	 *
+	 * Matching may be exact or inexact.  Exact matching must include full
+	 * names, display texts, etc.  Inexact can include substrings.  Both are
+	 * case-insensitive, however.
+	 *
+	 * @param list the list of objects to search through
+	 * @param srchStr the search string
+	 * @param exactOnly true for exact matching, false for inexact
+	 * @return a set of matched objects
+	 */
+	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly);
+
+	/**
+	 * Returns a matching item from a collection of them
+	 * by using a search string to matching, a required filter, and
+	 * a container which may be null.  The search string may include
+	 * things like counters 1.itemname, etc, or even all itemname.
+	 * The name matches may include item ids, names, or display text.  Exact
+	 * matches can be demanded using the anchor $ character on the front, back,
+	 * or both, of the match words.
+	 *
+	 * Matching may be exact or inexact.  Exact matching must include full
+	 * names, display texts, etc.  Inexact can include substrings.  Both are
+	 * case-insensitive, however.
+	 *
+	 * @param list the list of items to search through
+	 * @param srchStr the search string
+	 * @param goodLocation a container, or null
+	 * @param filter the required filter
+	 * @param exactOnly true for exact matching, false for inexact
+	 * @return a matched item, or null
+	 */
 	public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly);
+
+	/**
+	 * Returns a set of matching items from a collection of them
+	 * by using a search string to matching, a required filter, and
+	 * a container which may be null.  The search string may include
+	 * things like counters 1.itemname, etc, or even all itemname.
+	 * The name matches may include item ids, names, or display text.  Exact
+	 * matches can be demanded using the anchor $ character on the front, back,
+	 * or both, of the match words.
+	 *
+	 * Matching may be exact or inexact.  Exact matching must include full
+	 * names, display texts, etc.  Inexact can include substrings.  Both are
+	 * case-insensitive, however.
+	 *
+	 * @param list the list of items to search through
+	 * @param srchStr the search string
+	 * @param goodLocation a container, or null
+	 * @param filter the required filter
+	 * @param exactOnly true for exact matching, false for inexact
+	 * @return all matched items
+	 */
 	public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly);
+
+	/**
+	 * Returns a matching environmental object from a collection of them
+	 * by using a search string to matching, a required filter, and for items,
+	 * a container which may be null.  The search string may include
+	 * things like counters 1.itemname, etc, or even all itemname.
+	 * The name matches may include object ids, names, or display text.  Exact
+	 * matches can be demanded using the anchor $ character on the front, back,
+	 * or both, of the match words.
+	 *
+	 * Matching may be exact or inexact.  Exact matching must include full
+	 * names, display texts, etc.  Inexact can include substrings.  Both are
+	 * case-insensitive, however.
+	 *
+	 * @param list the list of objects to search through
+	 * @param srchStr the search string
+	 * @param goodLocation a container, or null
+	 * @param filter the required filter
+	 * @param exactOnly true for exact matching, false for inexact
+	 * @return a matched object, or null
+	 */
 	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly);
+
+	/**
+	 * Returns a matching environmental object from a collection of them
+	 * by using a search string to matching, a required filter, and for items,
+	 * a container which may be null.  The search string may include
+	 * things like counters 1.itemname, etc, or even all itemname.
+	 * The name matches may include object ids, names, or display text.  Exact
+	 * matches can be demanded using the anchor $ character on the front, back,
+	 * or both, of the match words.
+	 *
+	 * Matching may be exact or inexact.  Exact matching must include full
+	 * names, display texts, etc.  Inexact can include substrings.  Both are
+	 * case-insensitive, however.
+	 *
+	 * A one-dimensional integer array called counterSlap must be sent
+	 * for tracking occurrences.  The occurrence sought will have the
+	 * existing counterSlap value subtracted from it before matching,
+	 * and will be updated afterwards if a match is found.
+	 *
+	 * @param list the list of objects to search through
+	 * @param srchStr the search string
+	 * @param goodLocation a container, or null
+	 * @param filter the required filter
+	 * @param exactOnly true for exact matching, false for inexact
+	 * @param counterSlap a one-dimensional array, usually with 0
+	 * @return a matched object, or null.  counterslap is modified
+	 */
 	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, Filterer<Environmental> filter, boolean exactOnly, int[] counterSlap);
-	public Environmental parseShopkeeper(MOB mob, List<String> commands, String error);
-	public List<Item> fetchItemList(Environmental from, MOB mob, Item container, List<String> commands, Filterer<Environmental> filter, boolean visionMatters);
+
+	/**
+	 * Returns a set of matching items from a given item possessor.  The items
+	 * must match a string descriptor given in matchWords, as well as the given
+	 * Filterer, and within the given container. The matchWords may include
+	 * things like counters 1.itemname, etc, or even all itemname.
+	 * The name matches may include item ids, names, or display text.  Exact
+	 * matches can be demanded using the anchor $ character on the front, back,
+	 * or both, of the match words.  The mob argument is required due to having
+	 * a viewer for the visionMatters argument, and as an alternate possible
+	 * source of items when the item possessor (from) is a room.
+	 *
+	 * @param from The room or mob that possess items to select.
+	 * @param mob the mob in the room, or the viewer of the items
+	 * @param container the required container that the items should be in, or null
+	 * @param matchWords the words that must be matched to select an item
+	 * @param filter the required filter for items
+	 * @param visionMatters true if the items must be seen by the mob, or false otherwise
+	 * @return the list of all selected items, which could be empty.
+	 */
+	public List<Item> fetchItemList(ItemPossessor from, MOB mob, Item container, List<String> matchWords, Filterer<Environmental> filter, boolean visionMatters);
+
+	/**
+	 * Returns a matching shopkeeper from a given and his/her location, or null.
+	 * The shopkeeper must match the minimal *end* of the string descriptor given
+	 * in matchWords, and, if found, the method will remove those terms from the
+	 * matchWords list.  The first word in matchWords is ALWAYS REMOVED, and so
+	 * should always be a dummy term.
+	 *
+	 * The name matches may include object ids, names, or display text.  Exact
+	 * matches can be demanded using the anchor $ character on the front, back,
+	 * or both, of the match words.
+	 *
+	 * The returned shopkeeper may not itself implement the shopkeeper
+	 * interface, but will, if not implement it, have an effect that
+	 * does implement it.
+	 *
+	 * @param mob the mob looking for a shopkeeper nearby
+	 * @param matchWords the search words, possibly modified
+	 * @param error the error message to send for bad arguments
+	 * @return a matched shopkeeper, with a modified matchWords list
+	 */
+	public Environmental parseShopkeeper(MOB mob, List<String> matchWords, String error);
 
 	/**
 	 * For cases when a string input probably contains an amount of money,
