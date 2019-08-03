@@ -1443,7 +1443,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public List<Item> fetchItemList(final Environmental from,
+	public List<Item> fetchItemList(final ItemPossessor from,
 									final MOB mob,
 									final Item container,
 									final List<String> commands,
