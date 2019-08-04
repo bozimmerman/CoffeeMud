@@ -1238,9 +1238,9 @@ public class StdAbility implements Ability
 	{
 		unInvoked=true;
 
-		if(affected==null)
-			return;
 		final Physical being=affected;
+		if(being==null)
+			return;
 
 		if(canBeUninvoked())
 		{
