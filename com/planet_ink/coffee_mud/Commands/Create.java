@@ -1849,14 +1849,14 @@ public class Create extends StdCommand
 			if(E instanceof MOB)
 			{
 				E.destroy();
-				commands.add(1,"ITEM");
+				commands.add(1,"MOB");
 				return execute(mob,commands,metaFlags);
 			}
 			else
 			if(E instanceof Item)
 			{
 				E.destroy();
-				commands.add(1,"MOB");
+				commands.add(1,"ITEM");
 				return execute(mob,commands,metaFlags);
 			}
 			else
