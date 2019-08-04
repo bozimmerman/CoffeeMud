@@ -112,6 +112,10 @@ public interface GenericBuilder extends CMLibrary
 	public String getGenMobInventory(MOB M);
 	public void doGenPropertiesCopy(Environmental fromE, Environmental toE);
 	public String unpackRoomFromXML(String buf, boolean andContent);
+	public Environmental getUnknownFromXML(final String xml);
+	public StringBuffer getUnknownXML(final Environmental obj);
+	public CMClass.CMObjectType getUnknownTypeFromXML(final String xml);
+	public String getUnknownNameFromXML(final String xml);
 	public String unpackRoomFromXML(List<XMLTag> xml, boolean andContent);
 	public String fillAreaAndCustomVectorFromXML(String buf,  List<XMLTag> area, List<CMObject> custom, Map<String,String> externalFiles);
 	public String fillCustomVectorFromXML(String xml, List<CMObject> custom, Map<String,String> externalFiles);

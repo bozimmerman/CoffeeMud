@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.RoomContent;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -44,6 +45,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	{
 		return "CMCatalog";
 	}
+
+	protected String				commonBuilderTemplateKey= "SYSTEM_BTEMPLATE";
+	protected String				templatePersonalSection	= commonBuilderTemplateKey + "_PERSONAL";
+	protected String				templateSharedSection	= commonBuilderTemplateKey + "_SHARED";
 
 	public DVector					icatalog				= new DVector(2);
 	public DVector					mcatalog				= new DVector(2);
@@ -219,11 +224,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	public Item[] getCatalogItems()
 	{
 		final List<Item> itemsV=(List)icatalog.getDimensionList(1);
-		final Item[] items=new Item[itemsV.size()];
-		int x=0;
-		for (final Item item : itemsV)
-			items[x++]=item;
-		return items;
+		return itemsV.toArray(new Item[itemsV.size()]);
 	}
 
 	@Override
@@ -231,11 +232,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	public MOB[] getCatalogMobs()
 	{
 		final List<MOB> mobsV=(List)mcatalog.getDimensionList(1);
-		final MOB[] mobs=new MOB[mobsV.size()];
-		int x=0;
-		for (final MOB mob : mobsV)
-			mobs[x++]=mob;
-		return mobs;
+		return mobsV.toArray(new MOB[mobsV.size()]);
 	}
 
 	@Override
@@ -1573,5 +1570,125 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 			});
 		}
 		return catalogFileRoot;
+	}
+	
+	@Override
+	public String makeValidNewBuilderTemplateID(final String ID)
+	{
+		if((ID==null)||(ID.trim().length()==0)||(ID.indexOf(' ')>=0))
+			return null;
+		int x=ID.indexOf('_');
+		if(x<0)
+			return ID.toUpperCase().trim();
+		if(x==0)
+			return null;
+		String possPlayer = ID.substring(0,x);
+		if(CMLib.players().playerExists(possPlayer)||CMLib.players().accountExists(possPlayer))
+			return null;
+		return ID.toUpperCase().trim();
+	}
+	
+	public Map<String,PlayerData> getBuilderTemplates(final String playerName)
+	{
+		final Map<String, PlayerData> allMyTemplates=new Hashtable<String, PlayerData>();
+		if((playerName==null)
+		||(playerName.length()==0))
+			return allMyTemplates;
+		List<PlayerData> pDat = CMLib.database().DBReadPlayerData(playerName, templatePersonalSection);
+		List<PlayerData> sDat = CMLib.database().DBReadPlayerData(playerName, templateSharedSection);
+		for(final PlayerData PD : pDat)
+			allMyTemplates.put(PD.key().substring(commonBuilderTemplateKey.length()+1+PD.who().length()+1).toUpperCase().trim(), PD);
+		for(final PlayerData PD : sDat)
+		{
+			if(PD.who().equalsIgnoreCase(playerName))
+				allMyTemplates.put(PD.key().substring(commonBuilderTemplateKey.length()+1+PD.who().length()+1).toUpperCase().trim().trim(), PD);
+			else
+				allMyTemplates.put(PD.key().substring(commonBuilderTemplateKey.length()+1).toUpperCase().trim(), PD);
+		}
+		return allMyTemplates;
+	}
+
+	@Override
+	public List<Triad<String, String, String>> getBuilderTemplateList(final String playerName)
+	{
+		List<Triad<String, String, String>> list = new Vector<Triad<String, String, String>>();
+		final Map<String, PlayerData> PDs=getBuilderTemplates(playerName);
+		if((PDs!=null)&&(PDs.size()>0))
+		{
+			for(final String ID : PDs.keySet())
+			{
+				final PlayerData pData = PDs.get(ID);
+				CMClass.CMObjectType typ=CMLib.coffeeMaker().getUnknownTypeFromXML(pData.xml());
+				if(typ == null)
+					typ=CMClass.CMObjectType.WEBMACRO;
+				final String typName;
+				if(!pData.who().equalsIgnoreCase(playerName))
+					typName="*"+typ.toString();
+				else
+				if(pData.section().equals(templateSharedSection))
+					typName="+"+typ.toString();
+				else
+					typName=" "+typ.toString();
+				final String name=CMLib.coffeeMaker().getUnknownNameFromXML(pData.xml());
+				list.add(new Triad<String, String, String>(ID,typName,name));
+			}
+		}
+		return list;
+	}
+	
+	@Override
+	public Environmental getBuilderTemplateObject(final String playerName, final String ID)
+	{
+		if((ID==null)||(ID.length()==0))
+			return null;
+		final PlayerData PD=getBuilderTemplates(playerName).get(ID.toUpperCase().trim());
+		if(PD==null)
+			return null;
+		return CMLib.coffeeMaker().getUnknownFromXML(PD.xml());
+	}
+	
+	@Override
+	public boolean addNewBuilderTemplateObject(final String playerName, final String ID, final Environmental E)
+	{
+		final StringBuffer xml=CMLib.coffeeMaker().getUnknownXML(E);
+		if(xml==null)
+			return false;
+		CMLib.database().DBCreatePlayerData(playerName, templatePersonalSection, commonBuilderTemplateKey+"_"+playerName.toUpperCase().trim()+"_"+ID.toUpperCase().trim(), xml.toString());
+		return true;
+	}
+	
+	@Override
+	public boolean deleteBuilderTemplateObject(final String playerName, final String ID)
+	{
+		CMLib.database().DBDeletePlayerData(playerName, templatePersonalSection, commonBuilderTemplateKey+"_"+playerName.toUpperCase().trim()+"_"+ID.toUpperCase().trim());
+		CMLib.database().DBDeletePlayerData(playerName, templateSharedSection, commonBuilderTemplateKey+"_"+playerName.toUpperCase().trim()+"_"+ID.toUpperCase().trim());
+		return true;
+	}
+	
+	@Override
+	public boolean toggleBuilderTemplateObject(final String playerName, final String ID)
+	{
+		if((ID==null)||(ID.length()==0))
+			return false;
+		final PlayerData PD=getBuilderTemplates(playerName).get(ID.toUpperCase().trim());
+		if(PD==null)
+			return false;
+		if(!PD.who().equalsIgnoreCase(playerName))
+			return false;
+		if(PD.section().equals(templatePersonalSection))
+		{
+			CMLib.database().DBDeletePlayerData(PD.who(), PD.section(), PD.key());
+			CMLib.database().DBCreatePlayerData(PD.who(), templateSharedSection, PD.key(), PD.xml());
+			return true;
+		}
+		else
+		if(PD.section().equals(templateSharedSection))
+		{
+			CMLib.database().DBDeletePlayerData(PD.who(), PD.section(), PD.key());
+			CMLib.database().DBCreatePlayerData(PD.who(), templatePersonalSection, PD.key(), PD.xml());
+			return true;
+		}
+		else
+			return false;
 	}
 }

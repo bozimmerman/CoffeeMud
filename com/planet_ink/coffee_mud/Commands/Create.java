@@ -72,11 +72,20 @@ public class Create extends StdCommand
 			return;
 		}
 
-		final String Locale=commands.get(3);
-		Exit thisExit=CMClass.getExit(Locale);
+		final String exitClassID=commands.get(3);
+		Exit thisExit=CMClass.getExit(exitClassID);
+		if(thisExit == null)
+		{
+			final Environmental E=CMLib.catalog().getBuilderTemplateObject(mob.Name(), exitClassID.toUpperCase().trim());
+			if(E instanceof Exit)
+				thisExit=(Exit)E;
+			else
+			if(E != null)
+				E.destroy();
+		}
 		if(thisExit==null)
 		{
-			mob.tell(L("You have failed to specify a valid exit type '@x1'.\n\r",Locale));
+			mob.tell(L("You have failed to specify a valid exit type '@x1'.\n\r",exitClassID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
@@ -230,7 +239,8 @@ public class Create extends StdCommand
 		}
 
 		Item newItem=CMClass.getItem(itemID);
-		if((newItem==null)&&(CMLib.english().parseNumPossibleGold(null,itemID)>0))
+		if((newItem==null)
+		&&(CMLib.english().parseNumPossibleGold(null,itemID)>0))
 		{
 			final long numCoins=CMLib.english().parseNumPossibleGold(null,itemID);
 			final String currency=CMLib.english().parseNumPossibleGoldCurrency(mob,itemID);
@@ -244,6 +254,15 @@ public class Create extends StdCommand
 		{
 			newItem=getNewCatalogItem(itemID);
 			doGenerica=newItem==null;
+		}
+		if(newItem == null)
+		{
+			final Environmental E=CMLib.catalog().getBuilderTemplateObject(mob.Name(), itemID.toUpperCase().trim());
+			if(E instanceof Item)
+				newItem=(Item)E;
+			else
+			if(E != null)
+				E.destroy();
 		}
 
 		if(newItem==null)
@@ -431,11 +450,25 @@ public class Create extends StdCommand
 		Room thisRoom=null;
 		final String Locale=commands.get(3);
 		thisRoom=CMClass.getLocale(Locale);
-		if(thisRoom==null)
+		if(thisRoom == null)
 		{
-			mob.tell(L("You have failed to specify a valid room type '@x1'.\n\rThe format is CREATE ROOM [DIRECTION] ([ROOM TYPE] / LINK [ROOM ID]) \n\r",Locale));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
-			return;
+			final Environmental E=CMLib.catalog().getBuilderTemplateObject(mob.Name(), Locale.toUpperCase().trim());
+			if(E instanceof Room)
+				thisRoom=(Room)E;
+			else
+			if(E != null)
+				E.destroy();
+			if(thisRoom==null)
+			{
+				mob.tell(L("You have failed to specify a valid room type '@x1'.\n\rThe format is CREATE ROOM [DIRECTION] ([ROOM TYPE] / LINK [ROOM ID]) \n\r",Locale));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
+				return;
+			}
+		}
+		else
+		{
+			thisRoom.setDisplayText(CMClass.classID(thisRoom)+"-"+thisRoom.roomID());
+			thisRoom.setDescription("");
 		}
 		final Room room=mob.location();
 		thisRoom.setRoomID(room.getArea().getNewRoomID(room,direction));
@@ -446,8 +479,6 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
-		thisRoom.setDisplayText(CMClass.classID(thisRoom)+"-"+thisRoom.roomID());
-		thisRoom.setDescription("");
 		if(CMLib.flags().isSavable(thisRoom))
 			CMLib.database().DBCreateRoom(thisRoom);
 
@@ -731,6 +762,16 @@ public class Create extends StdCommand
 			}
 		}
 
+		if(newMOB == null)
+		{
+			final Environmental E=CMLib.catalog().getBuilderTemplateObject(mob.Name(), mobID.toUpperCase().trim());
+			if(E instanceof MOB)
+				newMOB=(MOB)E;
+			else
+			if(E != null)
+				E.destroy();
+		}
+		
 		if(newMOB==null)
 		{
 			mob.tell(L("There's no such thing as a '@x1'.\n\r",mobID));
@@ -1804,7 +1845,49 @@ public class Create extends StdCommand
 				firstWord=commands.get(1);
 				lastWord=commands.get(commands.size()-1);
 			}
-			Environmental E=null;
+			Environmental E=CMLib.catalog().getBuilderTemplateObject(mob.Name(), firstWord.toUpperCase().trim());
+			if(E instanceof MOB)
+			{
+				E.destroy();
+				commands.add(1,"ITEM");
+				return execute(mob,commands,metaFlags);
+			}
+			else
+			if(E instanceof Item)
+			{
+				E.destroy();
+				commands.add(1,"MOB");
+				return execute(mob,commands,metaFlags);
+			}
+			else
+			if(lastWord != null)
+			{
+				if(E instanceof Room)
+				{
+					E.destroy();
+					commands=new Vector<String>();
+					commands.add("CREATE");
+					commands.add("ROOM");
+					commands.add(lastWord);
+					commands.add(allWord);
+					return execute(mob,commands,metaFlags);
+				}
+				else
+				if(E instanceof Exit)
+				{
+					E.destroy();
+					commands=new Vector<String>();
+					commands.add("CREATE");
+					commands.add("EXIT");
+					commands.add(lastWord);
+					commands.add(allWord);
+					return execute(mob,commands,metaFlags);
+				}
+			}
+			else
+			if(E != null)
+				E.destroy();
+			
 			E=CMClass.getItem(allWord);
 			if((E instanceof Item)
 			||((CMLib.english().parseNumPossibleGold(null,allWord)>0)
