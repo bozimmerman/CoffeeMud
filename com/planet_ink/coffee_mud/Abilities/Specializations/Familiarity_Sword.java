@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Familiarity_Sword extends Proficiency_Weapon
+public class Familiarity_Sword extends Familiarity_Weapon
 {
 	@Override
 	public String ID()
