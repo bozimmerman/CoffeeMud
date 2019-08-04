@@ -179,11 +179,32 @@ public class Say extends StdCommand
 					if(!(target instanceof MOB))
 						target=null;
 					else
-					if(target.name().toUpperCase().indexOf(whom.toUpperCase())<0)
-						target=null;
-					else
-					if((!target.name().equalsIgnoreCase(whom))&&(whom.length()<4))
-						target=null;
+					{
+						final String tname = target.name().toUpperCase();
+						int x=whom.lastIndexOf('.'); // clean out any numeric references
+						final String srchWhom;
+						if(x<0)
+							srchWhom=whom.toUpperCase();
+						else
+						if(CMath.isInteger(whom.substring(x+1)))
+							srchWhom=whom.toUpperCase().substring(0,x);
+						else
+						{
+							x=whom.indexOf('.');
+							if(CMath.isInteger(whom.substring(0,x)))
+								srchWhom=whom.toUpperCase().substring(x+1);
+							else
+								srchWhom=whom.toUpperCase();
+						}
+						if(whom.length()<4)
+						{
+							if(!srchWhom.equals(tname))
+								target=null;
+						}
+						else
+						if(tname.indexOf(srchWhom)<0)
+							target=null;
+					}
 				}
 
 				if(target!=null)
@@ -239,8 +260,8 @@ public class Say extends StdCommand
 			// if you are the only one in the room to talk to
 			// then grab a random mob and assume that's who
 			// you are addressing.
-			if(!toFlag)
-			if((langTarget==null)
+			if((!toFlag)
+			&&(langTarget==null)
 			&&(target==null)
 			&&(R.numInhabitants()==2))
 			{
