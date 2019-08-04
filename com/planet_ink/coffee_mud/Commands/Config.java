@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.ByteArrayInputStream;
 import java.util.*;
 
 /*
@@ -52,6 +53,7 @@ public class Config extends StdCommand
 		throws java.io.IOException
 	{
 		String postStr="";
+		final int maxAttribLen = 15;
 		if((commands!=null)&&(commands.size()>1))
 		{
 			final String name=commands.get(1);
@@ -63,6 +65,60 @@ public class Config extends StdCommand
 			}
 			if(finalA==null)
 			{
+				if(name.equalsIgnoreCase("HELP"))
+				{
+					final String rest=CMParms.combine(commands,2).toUpperCase().trim();
+					final List<String> sorted = new ArrayList<String>();
+					for(final MOB.Attrib a : MOB.Attrib.values())
+					{
+						if((a==MOB.Attrib.SYSOPMSGS)&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))))
+							continue;
+						if((a==MOB.Attrib.AUTOMAP)&&(CMProps.getIntVar(CMProps.Int.AWARERANGE)<=0))
+							continue;
+						sorted.add(a.getName());
+					}
+					sorted.add("LINEWRAP");
+					sorted.add("PAGEBREAK");
+					Collections.sort(sorted);
+					final Object rawHelp=CMLib.help().getHelpFile().get("CONFIG_HELP_OPTIONS");
+					if((!(rawHelp instanceof String))||(((String)rawHelp).length()==0))
+						mob.tell(L("No help!"));
+					else
+					{
+						Properties P=new Properties();
+						P.load(new ByteArrayInputStream(rawHelp.toString().getBytes()));
+						for(final MOB.Attrib a : MOB.Attrib.values())
+						{
+							int x=a.getName().indexOf(' ');
+							if(x>0)
+							{
+								String val=P.getProperty(a.getName().substring(0,x).trim());
+								if(val != null)
+								{
+									x=val.lastIndexOf('=');
+									if(x>0)
+										val=val.substring(x+1);
+									P.put(a.getName(), val);
+								}
+							}
+						}
+						final StringBuilder m=new StringBuilder("");
+						for(final String aStr : sorted)
+						{
+							final String aHelp=P.getProperty(aStr);
+							if((aHelp != null)
+							&&(aHelp.length()>0)
+							&&((rest==null)||(aStr.indexOf(rest)>=0)))
+							{
+								m.append("^H"+CMStrings.padRight(aStr,maxAttribLen)+"^N: ");
+								m.append(aHelp).append("\n\r");
+							}
+						}
+						mob.tell(m.toString());
+					}
+					return true;
+				}
+				else
 				if(name.equalsIgnoreCase("TELNETGA"))
 					finalA=MOB.Attrib.TELNET_GA;
 				else
@@ -154,6 +210,8 @@ public class Config extends StdCommand
 					}
 					break;
 				}
+				case PRIVACY:
+					break;
 				case AUTOGOLD:
 					break;
 				case AUTOGUARD:
@@ -229,6 +287,8 @@ public class Config extends StdCommand
 				return o1.getName().compareTo(o2.getName());
 			}
 		});
+		final Set<String> xtrasDone = new HashSet<String>();
+		int col=0;
 		for(final MOB.Attrib a : sorted)
 		{
 			if((a==MOB.Attrib.SYSOPMSGS)&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))))
@@ -236,26 +296,61 @@ public class Config extends StdCommand
 			if((a==MOB.Attrib.AUTOMAP)&&(CMProps.getIntVar(CMProps.Int.AWARERANGE)<=0))
 				continue;
 
-			msg.append("^W"+CMStrings.padRight(a.getName(),15)+"^N: ");
+			if(mob.playerStats()!=null)
+			{
+				if((!xtrasDone.contains("LINEWRAP"))
+				&&(a.getName().compareTo("LINEWRAP")>0))
+				{
+					final String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
+					StringBuilder m=new StringBuilder("^W"+CMStrings.padRight(L("LINEWRAP"),maxAttribLen)+"^N: ^w"+wrap);
+					if((mob.session()!=null)&&(mob.playerStats().getWrap() != mob.session().getWrap()))
+						m.append(" ("+mob.session().getWrap()+")");
+					if(++col==2)
+					{
+						msg.append(m.toString());
+						msg.append("\n\r");
+						col=0;
+					}
+					else
+						msg.append(CMStrings.padRight(m.toString(), 40));
+					xtrasDone.add("LINEWRAP");
+				}
+				else
+				if((!xtrasDone.contains("PAGEBREAK"))
+				&&(a.getName().compareTo("PAGEBREAK")>0))
+				{
+					final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"^rDisabled";
+					StringBuilder m=new StringBuilder("^W"+CMStrings.padRight(L("PAGEBREAK"),maxAttribLen)+"^N: ^w"+pageBreak);
+					if(++col==2)
+					{
+						msg.append(m.toString());
+						msg.append("\n\r");
+						col=0;
+					}
+					else
+						msg.append(CMStrings.padRight(m.toString(), 40));
+					xtrasDone.add("PAGEBREAK");
+				}
+			}
+			
+			
+			final StringBuilder m=new StringBuilder("");
+			m.append("^W"+CMStrings.padRight(a.getName(),maxAttribLen)+"^N: ");
 			boolean set=mob.isAttributeSet(a);
 			if(a.isAutoReversed())
 				set=!set;
-			msg.append(set?L("^gON"):L("^rOFF"));
-			msg.append("\n\r");
+			m.append(set?L("^gON"):L("^rOFF"));
+			if(++col==2)
+			{
+				msg.append(m.toString());
+				msg.append("\n\r");
+				col=0;
+			}
+			else
+				msg.append(CMStrings.padRight(m.toString(), 40));
 		}
 		msg.append("^N");
-		if(mob.playerStats()!=null)
-		{
-			final String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
-			msg.append("^W"+CMStrings.padRight(L("LINEWRAP"),15)+"^N: ^w"+wrap);
-			if((mob.session()!=null)&&(mob.playerStats().getWrap() != mob.session().getWrap()))
-				msg.append(" ("+mob.session().getWrap()+")");
-			msg.append("^N^.\n\r");
-			final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"^rDisabled";
-			msg.append("^w"+CMStrings.padRight(L("PAGEBREAK"),15)+"^N: ^w"+pageBreak);
-			msg.append("^N^.\n\r");
-		}
-		msg.append("^N");
+		msg.append(L("\n\rUse CONFIG HELP (X) for more information.\n\r"));
 		mob.tell(msg.toString());
 		mob.tell(postStr);
 		return false;

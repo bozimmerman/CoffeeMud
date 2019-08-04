@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
@@ -712,9 +713,10 @@ public class Age extends StdAbility
 				if((liege != null) && (liege.session() != null))
 					newMan.playerStats().setLastIP(liege.session().getAddress());
 				Log.sysOut("Age","Created user: "+newMan.Name());
-				CMLib.login().notifyFriends(newMan,L("^X@x1 has just been created.^.^?",newMan.Name()));
+				if(!newMan.isAttributeSet(Attrib.PRIVACY))
+					CMLib.login().notifyFriends(newMan,L("^X@x1 has just been created.^.^?",newMan.Name()));
 
-				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
+				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS, newMan);
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),newMan.clans(),L("@x1 has just been created.",newMan.Name()),true);
 

@@ -361,13 +361,6 @@ public interface ClanManager extends CMLibrary
 	public void tickAllClans();
 
 	/**
-	 * Sends a message to the games official CLAN chat channel.  This
-	 * is normally for messages that may interest all clans.
-	 * @param msg the message to send
-	 */
-	public void clanAnnounceAll(String msg);
-
-	/**
 	 * Returns a descriptive name for the given trophy code number.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.Trophy
 	 * @param trophy the trophy code number

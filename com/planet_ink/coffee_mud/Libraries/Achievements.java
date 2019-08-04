@@ -6023,7 +6023,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			holder.addTattoo(A.getTattoo());
 			if(!CMLib.flags().isCloaked(mob))
 			{
-				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACHIEVEMENTS);
+				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACHIEVEMENTS, mob);
 				final PlayerStats pStats = mob.playerStats();
 				final PlayerAccount account = (pStats != null) ? pStats.getAccount() : null;
 				final String name;

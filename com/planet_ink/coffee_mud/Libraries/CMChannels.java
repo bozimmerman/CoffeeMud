@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelMsg
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.lang.reflect.Method;
@@ -416,13 +417,23 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 
 	@Override
-	public List<String> getFlaggedChannelNames(final ChannelFlag flag)
+	public List<String> getFlaggedChannelNames(final ChannelFlag flag, MOB mob)
 	{
 		final List<String> channels=new Vector<String>();
 		for(int c=0;c<channelList.size();c++)
 		{
-			if(channelList.get(c).flags().contains(flag))
-				channels.add(channelList.get(c).name().toUpperCase());
+			final CMChannel chan=channelList.get(c);
+			if((chan!=null)
+			&&(chan.flags().contains(flag)))
+			{
+				if((mob==null)
+				||(!mob.isAttributeSet(Attrib.PRIVACY)))
+					channels.add(chan.name().toUpperCase());
+				else
+				if(!CMLib.masking().maskCheck(chan.mask(),mob,true))
+					channels.add(chan.name().toUpperCase());
+				
+			}
 		}
 		return channels;
 	}

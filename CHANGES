@@ -29,6 +29,7 @@
  28. New Scriptable trigger: putting_prog 
  29. New locales for Sailing Ship prototyping: ShipDeck, ShipLightGunDeck, ShipHold, ShipMagazine, ShipQuarter, etc.
  30. New Aggressive behaviors option: NOGANG.. to prevent aggro mobs from ganging up on players
+ 31. CONFIG now has HELP, and also supports new player PRIVACY flag.
 
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque

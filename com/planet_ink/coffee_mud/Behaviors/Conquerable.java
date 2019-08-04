@@ -340,7 +340,7 @@ public class Conquerable extends Arrest
 					Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+reason+".");
 				if(C!=null)
 					CMLib.achievements().possiblyBumpAchievement(C.getResponsibleMember(), AchievementLibrary.Event.CONQUEREDAREAS, -1, C, myArea);
-				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
+				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS, null);
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("@x1 has lost control of @x2@x3.",holdingClan,myArea.name(),reason),false);
 				if(journalName.length()>0)
@@ -675,7 +675,7 @@ public class Conquerable extends Arrest
 								Log.sysOut("Conquerable",A.Name()+" revolted against "+holdingClan+" with "+chance+"% chance");
 								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
 									Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
-								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
+								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS, null);
 								for(int i=0;i<channels.size();i++)
 									CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("The inhabitants of @x1 have revolted against @x2.",myArea.name(),holdingClan),false);
 								if(journalName.length()>0)
@@ -691,7 +691,7 @@ public class Conquerable extends Arrest
 							}
 							else
 							{
-								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
+								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS, null);
 								for(int i=0;i<channels.size();i++)
 									CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("There are the rumblings of revolt in @x1.",myArea.name()),false);
 								revoltFails=20;
@@ -1017,7 +1017,7 @@ public class Conquerable extends Arrest
 				CMLib.achievements().possiblyBumpAchievement(C.getResponsibleMember(), AchievementLibrary.Event.CONQUEREDAREAS, 1, C, myArea);
 			}
 
-			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
+			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS, null);
 			for(int i=0;i<channels.size();i++)
 				CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("@x1 gains control of @x2.",holdingClan,myArea.name()),false);
 			if(journalName.length()>0)

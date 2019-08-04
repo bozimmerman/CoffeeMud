@@ -2289,8 +2289,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				final PlayerStats playerStats=deadmob.playerStats();
 				if(playerStats!=null)
 					playerStats.setHygiene(0);
-				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDDEATHS);
-				final List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DEATHS);
+				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDDEATHS, deadmob);
+				final List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DEATHS, deadmob);
 				if(!CMLib.flags().isCloaked(deadmob))
 				{
 					for(int i=0;i<channels.size();i++)

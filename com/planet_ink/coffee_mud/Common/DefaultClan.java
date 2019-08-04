@@ -2326,6 +2326,7 @@ public class DefaultClan implements Clan
 							final ClanPosition oldPos = govt().getPositions()[member.role];
 							final ClanPosition newPos = govt().getPositions()[newRoleI.intValue()];
 
+							final MOB mob=CMLib.players().getPlayerAllHosts(member.name);
 							clanAnnounce(member.name+" is now a "+newPos.getName()+" of the "+getGovernmentName()+" "+name()+".");
 							if(oldPos.getRank() < newPos.getRank())
 								Log.sysOut("Clans",member.name+" of "+getGovernmentName()+" "+name()+" was auto-demoted to "+newPos.getName()+".");
@@ -2334,7 +2335,6 @@ public class DefaultClan implements Clan
 								Log.sysOut("Clans",member.name+" of "+getGovernmentName()+" "+name()+" was auto-promoted to "+newPos.getName()+".");
 							else
 								Log.sysOut("Clans",member.name+" of "+getGovernmentName()+" "+name()+" was auto-assigned to "+newPos.getName()+".");
-							final MOB mob=CMLib.players().getPlayerAllHosts(member.name);
 							if((mob!=null)
 							&&(mob.getClanRole(clanID())!=null))
 								mob.setClan(clanID(),newPos.getRoleID());
@@ -2492,7 +2492,7 @@ public class DefaultClan implements Clan
 					channelSet.add(new Pair<Clan,Integer>(this,Integer.valueOf(getGovernment().getAcceptPos())));
 			}
 		}
-		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO, null);
 		for(int i=0;i<channels.size();i++)
 			CMLib.commands().postChannel(channels.get(i),channelSet,msg,true);
 	}

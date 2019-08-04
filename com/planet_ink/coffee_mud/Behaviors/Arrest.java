@@ -354,7 +354,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			laws.warrants().add(W);
 			if(W.criminal()!=null)
 			{
-				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.WARRANTS);
+				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.WARRANTS, W.criminal());
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),null,L("@x1 has been accused of @x2.",W.criminal().name(),fixCharge(W)),true);
 			}
@@ -3017,7 +3017,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if((highestCrimeAction(laws,W,W.criminal())==Law.PUNISHMENT_EXECUTE)
 						&&(judge.location()!=null))
 						{
-							final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.EXECUTIONS);
+							final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.EXECUTIONS, W.criminal());
 							for(int i=0;i<channels.size();i++)
 								CMLib.commands().postChannel(judge,channels.get(i),L("@x1 is being executed at @x2 for @x3 crimes.",W.criminal().Name(),judge.location().displayText(judge),W.criminal().charStats().hisher()),true);
 						}

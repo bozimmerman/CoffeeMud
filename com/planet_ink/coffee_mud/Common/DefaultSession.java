@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginS
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.jcraft.jzlib.*;
 
@@ -2559,11 +2560,12 @@ public class DefaultSession implements Session
 				}
 				if(!CMLib.flags().isCloaked(M))
 				{
-					final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS);
+					final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS, M);
 					for(int i=0;i<channels.size();i++)
 						CMLib.commands().postChannel(channels.get(i),M.clans(),L("@x1 has logged out",name),true);
 				}
-				CMLib.login().notifyFriends(M,L("^X@x1 has logged off.^.^?",M.Name()));
+				if(!M.isAttributeSet(Attrib.PRIVACY))
+					CMLib.login().notifyFriends(M,L("^X@x1 has logged off.^.^?",M.Name()));
 
 				// the player quit message!
 				CMLib.threads().executeRunnable(groupName,new LoginLogoutThread(M,CMMsg.MSG_QUIT));

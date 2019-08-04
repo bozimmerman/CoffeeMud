@@ -474,7 +474,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							if ((mob.playerStats() != null) || ((otherParentM != null) && (otherParentM.playerStats() != null)))
 							{
 								CMLib.coffeeTables().bump(mob, CoffeeTableRow.STAT_BIRTHS);
-								final List<String> channels = CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.BIRTHS);
+								final List<String> channels = CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.BIRTHS, mob);
 								for (int i = 0; i < channels.size(); i++)
 									CMLib.commands().postChannel(mob, channels.get(i), L("@x1 has just given birth to @x2!", mob.name(), I.name()), true);
 								String parent = mob.Name();
@@ -572,7 +572,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 			if (mob.location().show(mob, target, this, CMMsg.TYP_GENERAL, auto ? null : L("<S-NAME> imgregnate(s) <T-NAMESELF>.")))
 			{
 				setMiscText(start + "/" + end + "/" + mob.Name() + "/" + mob.charStats().getMyRace().ID());
-				final List<String> channels = CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS);
+				final List<String> channels = CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS, mob);
 				for (int i = 0; i < channels.size(); i++)
 					CMLib.commands().postChannel(channels.get(i), mob.clans(), L("@x1 is now in a 'family way'.", target.name()), true);
 				target.addNonUninvokableEffect((Ability) copyOf());

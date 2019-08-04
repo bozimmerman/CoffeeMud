@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achieve
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -5862,8 +5863,9 @@ public class Import extends StdCommand
 						CMLib.database().DBCreateCharacter(M);
 						CMLib.players().addPlayer(M);
 						Log.sysOut("Import","Imported user: "+M.Name());
-						CMLib.login().notifyFriends(M,L("^X@x1 has just been created.^.^?",M.Name()));
-						final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
+						if(!M.isAttributeSet(Attrib.PRIVACY))
+							CMLib.login().notifyFriends(M,L("^X@x1 has just been created.^.^?",M.Name()));
+						final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS, M);
 						for(int i=0;i<channels.size();i++)
 							CMLib.commands().postChannel(channels.get(i),M.clans(),L("@x1 has just been created.",M.Name()),true);
 						if(M.getStartRoom()==null)

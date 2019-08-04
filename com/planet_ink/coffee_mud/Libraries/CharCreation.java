@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_web.util.CWThread;
 
@@ -3566,7 +3567,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		&&(mob.isAttributeSet(MOB.Attrib.PLAYERKILL)))
 			mob.setAttribute(MOB.Attrib.PLAYERKILL,false);
 		CMLib.database().DBUpdatePlayer(mob);
-		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
+		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS, mob);
 		for(int i=0;i<channels.size();i++)
 			CMLib.commands().postChannel(channels.get(i),mob.clans(),L("@x1 has just been created.",mob.Name()),true);
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
@@ -3902,14 +3903,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		if(mob.playerStats()!=null)
 			mob.playerStats().setLastIP(session.getAddress());
-		notifyFriends(mob,L("^X@x1 has logged on.^.^?",mob.Name()));
+		if(!mob.isAttributeSet(Attrib.PRIVACY))
+			notifyFriends(mob,L("^X@x1 has logged on.^.^?",mob.Name()));
 		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS"))
 		&&(!mob.isAttributeSet(MOB.Attrib.PLAYERKILL)))
 			mob.setAttribute(MOB.Attrib.PLAYERKILL,true);
 		if((CMProps.getVar(CMProps.Str.PKILL).startsWith("NEVER"))
 		&&(mob.isAttributeSet(MOB.Attrib.PLAYERKILL)))
 			mob.setAttribute(MOB.Attrib.PLAYERKILL,false);
-		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGINS);
+		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGINS, mob);
 		if(!CMLib.flags().isCloaked(mob))
 		{
 			for(int i=0;i<channels.size();i++)

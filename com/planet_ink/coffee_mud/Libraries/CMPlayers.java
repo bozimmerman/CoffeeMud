@@ -796,7 +796,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		final PlayerStats pStats = deadMOB.playerStats();
 		if(pStats != null)
 			pStats.getExtItems().delAllItems(true);
-		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
+		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES, deadMOB);
 		if(channels.size()>0)
 		{
 			String name=deadMOB.Name();

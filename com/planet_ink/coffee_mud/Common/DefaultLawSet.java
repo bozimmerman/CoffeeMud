@@ -493,7 +493,7 @@ public class DefaultLawSet implements Law
 										final MOB M=clanC.getResponsibleMember();
 										final List<Pair<Clan,Integer>> clanSet=new ArrayList<Pair<Clan,Integer>>();
 										clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
-										final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+										final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO, M);
 										for(int i=0;i<channels.size();i++)
 										{
 											CMLib.commands().postChannel(channels.get(i),clanSet,
@@ -532,7 +532,7 @@ public class DefaultLawSet implements Law
 								final String amountOwed = CMLib.beanCounter().nameCurrencyLong(M, owed);
 								final List<Pair<Clan,Integer>> clanSet=new ArrayList<Pair<Clan,Integer>>();
 								clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
-								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO, null);
 								for(int i=0;i<channels.size();i++)
 								{
 									CMLib.commands().postChannel(channels.get(i),clanSet,CMLib.lang().L("@x1 owes @x2 in back taxes to "+A.Name()+".  "

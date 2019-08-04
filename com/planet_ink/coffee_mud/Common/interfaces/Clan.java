@@ -73,6 +73,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable, Tattooa
 
 	/**
 	 * Sends a message to all members of all clans.
+	 * 
 	 * @param msg the message to send
 	 */
 	public void clanAnnounce(String msg);
