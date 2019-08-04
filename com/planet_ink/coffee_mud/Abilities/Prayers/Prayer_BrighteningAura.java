@@ -146,7 +146,7 @@ public class Prayer_BrighteningAura extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> attain(s) a brightening aura."):L("^S<S-NAME> invoke(s) a brightening aura upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) a brightening aura."):L("^S<S-NAME> invoke(s) a brightening aura upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

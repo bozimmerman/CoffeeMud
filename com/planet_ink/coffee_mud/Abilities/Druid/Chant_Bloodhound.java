@@ -149,7 +149,7 @@ public class Chant_Bloodhound extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> gain(s) a bloodhound(s) nose!"):L("^S<S-NAME> chant(s) for a bloodhounds nose!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) a bloodhound(s) nose!"):L("^S<S-NAME> chant(s) for a bloodhounds nose!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -115,7 +115,7 @@ public class Chant_UnicornsHealth extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> gain(s) the health of a unicorn!"):L("^S<S-NAME> chant(s), feeling the health of a unicorn!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) the health of a unicorn!"):L("^S<S-NAME> chant(s), feeling the health of a unicorn!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

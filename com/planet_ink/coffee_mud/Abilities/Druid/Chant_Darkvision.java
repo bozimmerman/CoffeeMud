@@ -131,7 +131,7 @@ public class Chant_Darkvision extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> gain(s) darkvision!"):L("^S<S-NAME> chant(s) for darkvision!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) darkvision!"):L("^S<S-NAME> chant(s) for darkvision!^?"));
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);

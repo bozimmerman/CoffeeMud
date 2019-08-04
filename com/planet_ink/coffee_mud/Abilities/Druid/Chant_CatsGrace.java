@@ -116,7 +116,7 @@ public class Chant_CatsGrace extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> gain(s) the grace of a cat!"):L("^S<S-NAME> chant(s) for the grace of a cat!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) the grace of a cat!"):L("^S<S-NAME> chant(s) for the grace of a cat!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

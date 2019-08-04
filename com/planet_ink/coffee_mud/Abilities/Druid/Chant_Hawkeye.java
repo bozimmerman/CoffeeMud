@@ -149,7 +149,7 @@ public class Chant_Hawkeye extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> gain(s) hawk(s) eyes!"):L("^S<S-NAME> chant(s) for hawk's eyes!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> gain(s) hawk(s) eyes!"):L("^S<S-NAME> chant(s) for hawk's eyes!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

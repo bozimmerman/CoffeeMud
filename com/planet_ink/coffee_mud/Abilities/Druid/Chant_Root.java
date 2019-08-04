@@ -164,7 +164,7 @@ public class Chant_Root extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<S-NAME> become(s) rooted to the ground!"):L("^S<S-NAME> chant(s) as <S-HIS-HER> feet become rooted in the ground!^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) rooted to the ground!"):L("^S<S-NAME> chant(s) as <S-HIS-HER> feet become rooted in the ground!^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
