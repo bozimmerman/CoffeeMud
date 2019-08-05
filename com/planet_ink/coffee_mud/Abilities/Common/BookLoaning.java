@@ -98,7 +98,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_INFLUENTIAL;
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_CALLIGRAPHY;
 	}
 
 	protected volatile CoffeeShop	curShop				= null;
@@ -117,7 +117,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	private final String	contributorMask		= "";
 	private int				minOverdueDays		= 12;
 	private int				maxOverdueDays		= 24;
-	private int				maxBorrowed			= 48;
+	private int				maxBorrowed			= 2;
 	private double			dailyOverdueCharge	= 1;
 
 	private Pair<Long, TimePeriod>	budget	= new Pair<Long, TimePeriod>(Long.valueOf(100000), TimePeriod.DAY);
