@@ -105,7 +105,7 @@ public class Pirate extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ThievesCant",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"PirateTalk",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",0,false);

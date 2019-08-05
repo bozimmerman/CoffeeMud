@@ -31,6 +31,7 @@
  30. New Aggressive behaviors option: NOGANG.. to prevent aggro mobs from ganging up on players
  31. CONFIG now has HELP, and also supports new player PRIVACY flag.
  32. New Command Line builder tool: TEMPLATE -- for saving your favorite kinds of things.
+ 33. New languages: PigLatin (for Archons), and Pirate (which the Pirate class now gets instead of thieves cant)
 
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque
