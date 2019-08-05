@@ -1324,7 +1324,16 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			final CMMsg msg=CMClass.getMsg(mob,mob,CMMsg.MSG_LIST,L("<S-NAME> review(s) <S-HIS-HER> selections."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
-			//TODO: tack on the checked-out records so you know what you had
+			for(final CheckedOutRecord rec : this.records)
+			{
+				TimeClock reClk = (TimeClock)this.getMyClock().copyOf();
+				reClk=reClk.deriveClock(rec.mudDueDateMs);
+				mob.tell(L("@x1 checked out @x2, due on @x3 and now owes @x4.",
+						rec.playerName,
+						rec.itemName,
+						reClk.getShortTimeDescription(),
+						CMLib.beanCounter().abbreviatedPrice(mob, rec.charges)));
+			}
 			return true;
 		}
 		final BookLoaning loanA=(BookLoaning)mob.fetchEffect(ID());
