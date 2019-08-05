@@ -1595,7 +1595,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		||(playerName.length()==0))
 			return allMyTemplates;
 		List<PlayerData> pDat = CMLib.database().DBReadPlayerData(playerName, templatePersonalSection);
-		List<PlayerData> sDat = CMLib.database().DBReadPlayerData(playerName, templateSharedSection);
+		List<PlayerData> sDat = CMLib.database().DBReadPlayerSectionData(templateSharedSection);
 		for(final PlayerData PD : pDat)
 			allMyTemplates.put(PD.key().substring(commonBuilderTemplateKey.length()+1+PD.who().length()+1).toUpperCase().trim(), PD);
 		for(final PlayerData PD : sDat)

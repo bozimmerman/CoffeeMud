@@ -98,11 +98,14 @@ public class Template extends StdCommand
 				final String mask=CMParms.combine(commands,0);
 				final StringBuffer list=new StringBuffer("");
 				final List<Triad<String,String,String>> dats = CMLib.catalog().getBuilderTemplateList(mob.Name());
-				int col=0;
-				final int col1 = CMLib.lister().fixColWidth(9, mob.session());
-				final int col2 = CMLib.lister().fixColWidth(6, mob.session());
-				final int col3 = CMLib.lister().fixColWidth(21, mob.session());
 				int tot =  CMLib.lister().fixColWidth(78, mob.session());
+				int numCols = (int)Math.round(CMath.floor(CMath.div(tot, 78)));
+				if(numCols == 0)
+					numCols=1;
+				int col=0;
+				final int col1 = CMLib.lister().fixColWidth(15, mob.session());
+				final int col2 = CMLib.lister().fixColWidth(9, mob.session());
+				final int col3 = CMLib.lister().fixColWidth(50, mob.session());
 				for(int ttyp = 0; ttyp < 3; ttyp++)
 				{
 					final Filterer<Triad<String,String,String>> filter;
@@ -162,30 +165,31 @@ public class Template extends StdCommand
 						switch(ttyp)
 						{
 						case 0:
-							list.append(L("^HPersonal and Private template objects^N\n\r"));
+							list.append(L("\n\r^HPersonal and Private template objects^N\n\r"));
 							break;
 						case 1:
-							list.append(L("^HPersonal Shared template objects^N\n\r"));
+							list.append(L("\n\r^HPersonal Shared template objects^N\n\r"));
 							break;
 						case 2:
-							list.append(L("^HOther folks shared template objects^N\n\r"));
+							list.append(L("\n\r^HOther folks shared template objects^N\n\r"));
 							break;
 						}
-						list.append(CMStrings.padRight(L("ID"),col1)+" ");
-						list.append(CMStrings.padRight("Type",col2)+" ");
-						list.append(CMStrings.padRight(L("Name"),col3)+" ");
-						list.append(CMStrings.padRight(L("ID"),col1)+" ");
-						list.append(CMStrings.padRight("Type",col2)+" ");
-						list.append(CMStrings.padRight(L("Name"),col3)+"\n\r");
-						list.append(CMStrings.repeat(' ', tot));
+						for(int i=0;i<numCols;i++)
+						{
+							list.append(CMStrings.padRight(L("ID"),col1)+" ");
+							list.append(CMStrings.padRight("Type",col2)+" ");
+							list.append(CMStrings.padRight(L("Name"),col3)+" ");
+						}
+						list.append("\n\r");
+						list.append(CMStrings.repeat('-', tot)).append("\n\r");
 						for(final Triad<String, String, String> dat : dats)
 						{
 							if(filter.passesFilter(dat))
 							{
 								list.append(CMStrings.padRight(dat.first, col1)+" ");
 								list.append(CMStrings.padRight(dat.second.substring(1),col2)+" ");
-								list.append(CMStrings.padRight(dat.third,col3)+" ");
-								if(++col==2)
+								list.append(CMStrings.padRight(dat.third,col3));
+								if(++col>numCols)
 								{
 									col=0;
 									list.append("\n\r");
@@ -195,6 +199,8 @@ public class Template extends StdCommand
 							}
 						}
 					}
+					if((list.length()>0)&&(list.charAt(list.length()-1)!='\r'))
+						list.append("\n\r");
 				}
 				list.append("\n\r");
 				if(mob.session()!=null)
