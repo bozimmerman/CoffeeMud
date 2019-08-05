@@ -107,13 +107,13 @@ public class CombatAbilities extends ActiveTicker
 			}
 			return;
 		}
-		final Vector<String> V=CMParms.parse(theParms.trim());
-		final Vector<CharClass> classes=new Vector<CharClass>();
+		final List<String> V=CMParms.parse(theParms.trim());
+		final List<CharClass> classes=new ArrayList<CharClass>();
 		for(int v=0;v<V.size();v++)
 		{
-			C=CMClass.findCharClass(V.elementAt(v));
+			C=CMClass.findCharClass(V.get(v));
 			if((C!=null)&&(C.availabilityCode()!=0))
-				classes.addElement(C);
+				classes.add(C);
 		}
 		if(classes.size()==0)
 		{
@@ -127,7 +127,7 @@ public class CombatAbilities extends ActiveTicker
 		}
 		for(int i=0;i<classes.size();i++)
 		{
-			C=classes.elementAt(i);
+			C=classes.get(i);
 			mob.baseCharStats().setCurrentClass(C);
 			mob.baseCharStats().setClassLevel(C,mob.basePhyStats().level()/classes.size());
 		}
@@ -169,8 +169,13 @@ public class CombatAbilities extends ActiveTicker
 				&&(!M.amDead()))
 				{
 					final Room room=M.getStartRoom();
-					if(room != null)
-						M.bringToLife(room, true);
+					{
+						if(room != null)
+						{
+							// this is just scary.. there must be a better way...
+							//M.bringToLife(room, true);
+						}
+					}
 				}
 			}
 		}
