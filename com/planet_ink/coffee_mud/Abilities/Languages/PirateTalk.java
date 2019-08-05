@@ -61,9 +61,9 @@ public class PirateTalk extends StdLanguage
 	{
 		final String res = super.translate(language, word);
 		if(res.endsWith("ING") && (!res.equalsIgnoreCase("sing")))
-			return CMLib.dice().rollPercentage()>50?(res.substring(0,res.length()-3)+"IN'"):(res.substring(0,res.length()-3)+"N'");
+			return res.substring(0,res.length()-3)+"IN'";
 		if(res.endsWith("ing") && (!res.equalsIgnoreCase("sing")))
-			return CMLib.dice().rollPercentage()>50?(res.substring(0,res.length()-3)+"in'"):(res.substring(0,res.length()-3)+"n'");
+			return res.substring(0,res.length()-3)+"in'";
 		return res;
 	}
 
