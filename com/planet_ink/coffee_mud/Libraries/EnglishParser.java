@@ -1378,15 +1378,15 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public Environmental parseShopkeeper(final MOB mob, final List<String> commands, final String error)
+	public Environmental parseShopkeeper(final MOB mob, final List<String> matchWords, final String error)
 	{
-		if(commands.isEmpty())
+		if(matchWords.isEmpty())
 		{
 			if(error.length()>0)
 				mob.tell(error);
 			return null;
 		}
-		commands.remove(0);
+		matchWords.remove(0);
 
 		final List<Environmental> V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
 		if(V.isEmpty())
@@ -1397,13 +1397,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		if(V.size()>1)
 		{
-			if(commands.size()<2)
+			if(matchWords.size()<2)
 			{
 				if(error.length()>0)
 					mob.tell(error);
 				return null;
 			}
-			final String what=commands.get(commands.size()-1);
+			final String what=matchWords.get(matchWords.size()-1);
 
 			Environmental shopkeeper=fetchEnvironmental(V,what,false);
 			if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))
@@ -1420,23 +1420,23 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			if((shopkeeper!=null)
 			&&(CMLib.coffeeShops().getShopKeeper(shopkeeper)!=null)
 			&&(CMLib.flags().canBeSeenBy(shopkeeper,mob)))
-				commands.remove(commands.size()-1);
+				matchWords.remove(matchWords.size()-1);
 			else
 			{
-				CMLib.commands().postCommandFail(mob,new XVector<String>(commands),
-						L("You don't see anyone called '@x1' here buying or selling.",commands.get(commands.size()-1)));
+				CMLib.commands().postCommandFail(mob,new XVector<String>(matchWords),
+						L("You don't see anyone called '@x1' here buying or selling.",matchWords.get(matchWords.size()-1)));
 				return null;
 			}
 			return shopkeeper;
 		}
 		Environmental shopkeeper=V.get(0);
-		if(commands.size()>1)
+		if(matchWords.size()>1)
 		{
-			final MOB M=mob.location().fetchInhabitant(commands.get(commands.size()-1));
+			final MOB M=mob.location().fetchInhabitant(matchWords.get(matchWords.size()-1));
 			if((M!=null)&&(CMLib.coffeeShops().getShopKeeper(M)!=null)&&(CMLib.flags().canBeSeenBy(M,mob)))
 			{
 				shopkeeper=M;
-				commands.remove(commands.size()-1);
+				matchWords.remove(matchWords.size()-1);
 			}
 		}
 		return shopkeeper;
@@ -1446,7 +1446,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public List<Item> fetchItemList(final ItemPossessor from,
 									final MOB mob,
 									final Item container,
-									final List<String> commands,
+									final List<String> matchWords,
 									final Filterer<Environmental> filter,
 									final boolean visionMatters)
 	{
@@ -1455,15 +1455,15 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		List<Item> V=new Vector<Item>();
 
 		int maxToItem=Integer.MAX_VALUE;
-		if((commands.size()>1)
-		&&(CMath.s_int(commands.get(0))>0))
+		if((matchWords.size()>1)
+		&&(CMath.s_int(matchWords.get(0))>0))
 		{
-			maxToItem=CMath.s_int(commands.get(0));
-			commands.set(0,"all");
+			maxToItem=CMath.s_int(matchWords.get(0));
+			matchWords.set(0,"all");
 		}
 
-		String name=CMParms.combine(commands,0);
-		boolean allFlag = (!commands.isEmpty()) ? commands.get(0).equalsIgnoreCase("all") : false;
+		String name=CMParms.combine(matchWords,0);
+		boolean allFlag = (!matchWords.isEmpty()) ? matchWords.get(0).equalsIgnoreCase("all") : false;
 		if (name.toUpperCase().startsWith("ALL."))
 		{
 			allFlag = true;
