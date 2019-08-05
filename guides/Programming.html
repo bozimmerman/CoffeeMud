@@ -1,10 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
-  <meta content="HTML Tidy, see www.w3.org" name="generator" />
-  
-  <title>Programming for CoffeeMud 5.9</title><link media="screen" type="text/css" href="style.css" rel="StyleSheet" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head>
 
-<body>
+  <meta content="HTML Tidy, see www.w3.org" name="generator" /><title>Programming for CoffeeMud 5.9</title>
+  
+  <link media="screen" type="text/css" href="style.css" rel="StyleSheet" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head><body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0">
   <tbody>
@@ -3874,13 +3873,17 @@ Behavior.FLAG_MOBILITY, or Behavior.FLAG_TROUBLEMAKING. The last method
 says whether or not this method
 would necessary cause the host mob to attack the mob (M) in the
 parameter.</p>
-      <pre>  public void startBehavior( PhysicalAgent forMe )<br />  {}<br /></pre>
-      <p>The next method, seldom
-used, is still quite important.
+      <pre>  public void startBehavior( PhysicalAgent forMe )<br />  {}<br />  public void endBehavior( PhysicalAgent forMe )<br />  {}<br /></pre>
+      <p>The
+next methods, seldom
+used, are still quite important.
 startBehavior receives as its parameter the brand new host of this
 behavior. If the behavior instance needs to do any variable or other
 preparation to either the behaving object host (forMe) or itself, it
-should do so here.</p>
+should do so here.&nbsp; Even less used is its companion endBehavior,
+which is used to clean up any changes that the behavior made to the
+host.<br />
+</p>
       <pre>  public String getParms(){ return super.getParms(); }<br />  public void setParms( String parameters )<br />  {<br />    super.setParms( parameters );<br />  }<br /></pre>
       <p>These methods, part of
 the StdBehavior and Behavior interface,

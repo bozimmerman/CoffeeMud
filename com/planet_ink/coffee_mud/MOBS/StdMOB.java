@@ -4928,7 +4928,8 @@ public class StdMOB implements MOB
 	@Override
 	public void delBehavior(final Behavior to)
 	{
-		behaviors.removeElement(to);
+		if(behaviors.removeElement(to))
+			to.endBehavior(this);
 	}
 
 	@Override

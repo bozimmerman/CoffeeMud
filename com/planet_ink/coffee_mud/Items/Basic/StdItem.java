@@ -1962,6 +1962,7 @@ public class StdItem implements Item
 			return;
 		if(behaviors.remove(to))
 		{
+			to.endBehavior(this);
 			if(((behaviors==null)||(behaviors.isEmpty()))&&((scripts==null)||(scripts.isEmpty())))
 				CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 		}

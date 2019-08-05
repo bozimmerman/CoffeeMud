@@ -1331,7 +1331,10 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public void delBehavior(final Behavior to)
 	{
 		if(behaviors!=null)
-			behaviors.removeElement(to);
+		{
+			if(behaviors.removeElement(to))
+				to.endBehavior(this);
+		}
 	}
 
 	@Override

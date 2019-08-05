@@ -131,6 +131,11 @@ public class StdBehavior implements Behavior
 	{
 	}
 
+	@Override
+	public void endBehavior(PhysicalAgent forMe)
+	{
+	}
+
 	/*
 	protected void finalize()
 	{

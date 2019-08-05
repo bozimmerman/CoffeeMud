@@ -1083,7 +1083,8 @@ public class StdExit implements Exit
 	{
 		if(behaviors==null)
 			return;
-		behaviors.remove(to);
+		if(behaviors.remove(to))
+			to.endBehavior(this);
 		if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
 			CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
 	}

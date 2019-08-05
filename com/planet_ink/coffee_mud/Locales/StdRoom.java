@@ -2915,6 +2915,7 @@ public class StdRoom implements Room
 			return;
 		if(behaviors.remove(to))
 		{
+			to.endBehavior(this);
 			if(behaviors.isEmpty())
 				behaviors=new SVector<Behavior>(1);
 			if(((behaviors==null)||(behaviors.isEmpty()))&&((scripts==null)||(scripts.isEmpty())))

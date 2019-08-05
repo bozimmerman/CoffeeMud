@@ -1473,7 +1473,8 @@ public class StdArea implements Area
 	@Override
 	public void delBehavior(final Behavior to)
 	{
-		behaviors.removeElement(to);
+		if(behaviors.removeElement(to))
+			to.endBehavior(this);
 	}
 
 	@Override

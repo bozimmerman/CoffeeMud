@@ -54,6 +54,17 @@ public interface Behavior extends Tickable, MsgListener, Contingent, Modifiable
 	public void startBehavior(PhysicalAgent forMe);
 
 	/**
+	 * Called when a behavior is cleanly removed from a mob,
+	 * such as when a quest does so.
+	 * The point is to do any cleanup.  This method assumes
+	 * setParms() has already been called as well.
+	 * @see com.planet_ink.coffee_mud.core.interfaces.PhysicalAgent#delBehavior(Behavior)
+	 * @see Behavior#setParms(String)
+	 * @param forMe the object to which this behavior has been removed
+	 */
+	public void endBehavior(PhysicalAgent forMe);
+
+	/**
 	 * Called after a behavior is added to an Environmental object.
 	 * The point is to register a quest objet, should it be needed or
 	 * be useful to the quest.

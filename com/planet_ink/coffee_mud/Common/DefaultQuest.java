@@ -4072,7 +4072,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	{
 		if((--waitRemaining)>=0)
 			return false;
-
 		boolean allowedToRun=true;
 		if(runLevel()>=0)
 		{

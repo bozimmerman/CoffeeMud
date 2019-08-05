@@ -152,6 +152,31 @@ public class CombatAbilities extends ActiveTicker
 		return CMParms.combine(V,0);
 	}
 
+	@Override
+	public void endBehavior(final PhysicalAgent forMe)
+	{
+		if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)
+		&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+		&&(forMe != null)
+		&&(!forMe.amDestroyed()))
+		{
+			// what these classes do to mobs is just too grotesque for words
+			// so let's just reset the bastards to stock
+			if(forMe instanceof MOB)
+			{
+				final MOB M=(MOB)forMe;
+				if(M.isGeneric()
+				&&(!M.amDead()))
+				{
+					final Room room=M.getStartRoom();
+					if(room != null)
+						M.bringToLife(room, true);
+				}
+			}
+		}
+		super.endBehavior(forMe);
+	}
+	
 	protected void newCharacter(final MOB mob)
 	{
 		final Set<Ability> oldAbilities=new HashSet<Ability>();

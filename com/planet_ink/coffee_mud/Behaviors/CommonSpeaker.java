@@ -47,9 +47,11 @@ public class CommonSpeaker extends StdBehavior
 		return language+" speaking";
 	}
 
-	int tickTocker=1;
-	int tickTock=0;
-	String language="Common";
+	protected int		tickTocker	= 1;
+	protected int		tickTock	= 0;
+	protected String	language	= "Common";
+	protected Ability	langA		= null;
+	protected Ability	langE		= null;
 
 	@Override
 	public void setParms(final String parameters)
@@ -61,6 +63,18 @@ public class CommonSpeaker extends StdBehavior
 			language="Common";
 		tickTocker=1;
 		tickTock=0;
+	}
+
+	@Override
+	public void endBehavior(PhysicalAgent forMe)
+	{
+		if((langA!=null)
+		&&(forMe instanceof MOB))
+		{
+			((MOB)forMe).delAbility(langA);
+			if(langE != null)
+				((MOB)forMe).delEffect(langE);
+		}
 	}
 
 	@Override
@@ -90,11 +104,17 @@ public class CommonSpeaker extends StdBehavior
 			if(A==null)
 			{
 				final Ability lA=CMClass.getAbility(L.ID());
+				final Ability lE=((MOB)ticking).fetchEffect(L.ID());
 				lA.setProficiency(100);
 				lA.setSavable(false);
+				langA=lA;
 				((MOB)ticking).addAbility(lA);
 				lA.autoInvocation((MOB)ticking, false);
 				lA.invoke((MOB)ticking,null,false,0);
+				final Ability nowlE=((MOB)ticking).fetchEffect(L.ID());
+				if((nowlE!=null)
+				&&(nowlE!=lE))
+					langE=nowlE;
 			}
 			else
 				A.invoke((MOB)ticking,null,false,0);
