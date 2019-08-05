@@ -750,6 +750,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					methH.put(methods[i],Integer.valueOf(i+1));
 				for(int i=0;i<progs.length;i++)
 					progH.put(progs[i],Integer.valueOf(i+1));
+				for(int i=0;i<progs.length;i++)
+					methH.put(progs[i],Integer.valueOf(Integer.MIN_VALUE));
 				for(int i=0;i<CONNECTORS.length;i++)
 					connH.put(CONNECTORS[i],Integer.valueOf(i));
 				for(int i=0;i<GSTATCODES_ADDITIONAL.length;i++)
@@ -834,7 +836,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(scripted!=null)
 		{
 			final Room R=CMLib.map().roomLocation(scripted);
-			Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getDescriptiveExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
+			Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getDescriptiveExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg+"/"+CMParms.toListString(externalFiles()));
 			if(R!=null)
 				R.showHappens(CMMsg.MSG_OK_VISUAL,L("Scripting Error: @x1/@x2/@x3/@x4/@x5/@x6",scripted.name(),CMLib.map().getExtendedRoomID(R),CMParms.toListString(externalFiles()),cmdName,errType,errMsg));
 		}
@@ -2253,91 +2255,100 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				H=new Hashtable<String,String>();
 				resources._submitResource("SCRIPTVAR-"+name,H);
 			}
-			if(val.equals("++"))
+			if(val.length()>0)
 			{
-				String num=H.get(key);
-				if(num==null)
-					num="0";
-				val=Integer.toString(CMath.s_int(num.trim())+1);
-			}
-			else
-			if(val.equals("--"))
-			{
-				String num=H.get(key);
-				if(num==null)
-					num="0";
-				val=Integer.toString(CMath.s_int(num.trim())-1);
-			}
-			else
-			if(val.startsWith("+"))
-			{
-				String num=H.get(key);
-				// add via +number form
-				if(CMath.isNumber(val.substring(1).trim()))
+				switch(val.charAt(0))
 				{
-					if(num==null)
-						num="0";
-					val=val.substring(1);
-					final int amount=CMath.s_int(val.trim());
-					val=Integer.toString(CMath.s_int(num.trim())+amount);
-				}
-				else
-				if((num!=null)&&(CMath.isNumber(num)))
-					val=num;
-			}
-			else
-			if(val.startsWith("-"))
-			{
-				// subtract -number form
-				String num=H.get(key);
-				if(CMath.isNumber(val.substring(1).trim()))
-				{
-					val=val.substring(1);
-					final int amount=CMath.s_int(val.trim());
-					if(num==null)
-						num="0";
-					val=Integer.toString(CMath.s_int(num.trim())-amount);
-				}
-				else
-				if((num!=null)&&(CMath.isNumber(num)))
-					val=num;
-			}
-			else
-			if(val.startsWith("*"))
-			{
-				// multiply via *number form
-				String num=H.get(key);
-				if(CMath.isNumber(val.substring(1).trim()))
-				{
-					val=val.substring(1);
-					final int amount=CMath.s_int(val.trim());
-					if(num==null)
-						num="0";
-					val=Integer.toString(CMath.s_int(num.trim())*amount);
-				}
-				else
-				if((num!=null)&&(CMath.isNumber(num)))
-					val=num;
-			}
-			else
-			if(val.startsWith("/"))
-			{
-				// divide /number form
-				String num=H.get(key);
-				if(CMath.isNumber(val.substring(1).trim()))
-				{
-					val=val.substring(1);
-					final int amount=CMath.s_int(val.trim());
-					if(num==null)
-						num="0";
-					if(amount==0)
-						Log.errOut("Scripting","Scripting SetVar error: Division by 0: "+name+"/"+key+"="+val);
+				case '+':
+					if(val.equals("++"))
+					{
+						String num=H.get(key);
+						if(num==null)
+							num="0";
+						val=Integer.toString(CMath.s_int(num.trim())+1);
+					}
 					else
-						val=Integer.toString(CMath.s_int(num.trim())/amount);
+					{
+						String num=H.get(key);
+						// add via +number form
+						if(CMath.isNumber(val.substring(1).trim()))
+						{
+							if(num==null)
+								num="0";
+							val=val.substring(1);
+							final int amount=CMath.s_int(val.trim());
+							val=Integer.toString(CMath.s_int(num.trim())+amount);
+						}
+						else
+						if((num!=null)&&(CMath.isNumber(num)))
+							val=num;
+					}
+					break;
+				case '-':
+					if(val.equals("--"))
+					{
+						String num=H.get(key);
+						if(num==null)
+							num="0";
+						val=Integer.toString(CMath.s_int(num.trim())-1);
+					}
+					else
+					{
+						// subtract -number form
+						String num=H.get(key);
+						if(CMath.isNumber(val.substring(1).trim()))
+						{
+							val=val.substring(1);
+							final int amount=CMath.s_int(val.trim());
+							if(num==null)
+								num="0";
+							val=Integer.toString(CMath.s_int(num.trim())-amount);
+						}
+						else
+						if((num!=null)&&(CMath.isNumber(num)))
+							val=num;
+					}
+					break;
+				case '*':
+				{
+					// multiply via *number form
+					String num=H.get(key);
+					if(CMath.isNumber(val.substring(1).trim()))
+					{
+						val=val.substring(1);
+						final int amount=CMath.s_int(val.trim());
+						if(num==null)
+							num="0";
+						val=Integer.toString(CMath.s_int(num.trim())*amount);
+					}
+					else
+					if((num!=null)&&(CMath.isNumber(num)))
+						val=num;
+					break;
 				}
-				else
-				if((num!=null)&&(CMath.isNumber(num)))
-					val=num;
+				case '/':
+				{
+					// divide /number form
+					String num=H.get(key);
+					if(CMath.isNumber(val.substring(1).trim()))
+					{
+						val=val.substring(1);
+						final int amount=CMath.s_int(val.trim());
+						if(num==null)
+							num="0";
+						if(amount==0)
+							Log.errOut("Scripting","Scripting SetVar error: Division by 0: "+name+"/"+key+"="+val);
+						else
+							val=Integer.toString(CMath.s_int(num.trim())/amount);
+					}
+					else
+					if((num!=null)&&(CMath.isNumber(num)))
+						val=num;
+					break;
+				}
+				default:
+					break;
+				}
 			}
 			if(H.containsKey(key))
 				H.remove(key);
@@ -7887,6 +7898,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						for(int i=0;i<ttParms.length;i++)
 							tt[i+1]=ttParms[i];
 						script.setElementAt(si,2,tt);
+						script.setElementAt(si, 3, new Triad<DVector,DVector,Integer>(null,null,null));
 					}
 					catch(final Exception e)
 					{
@@ -7895,20 +7907,36 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return null;
 					}
 				}
+
 				final String[][] EVAL={tt};
-				boolean condition=eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,EVAL,1);
+				final boolean condition=eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,EVAL,1);
 				if(EVAL[0]!=tt)
 				{
 					tt=EVAL[0];
 					script.setElementAt(si,2,tt);
 				}
-				final DVector subScript=new DVector(3);
-				subScript.addElement("",null,null);
-				int depth=0;
 				boolean foundendif=false;
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				final Triad<DVector,DVector,Integer> parsedBlocks = (Triad)script.elementAt(si, 3);
+				DVector subScript;
+				if(parsedBlocks.third != null)
+				{
+					if(condition)
+						subScript=parsedBlocks.first;
+					else
+						subScript=parsedBlocks.second;
+					si=parsedBlocks.third.intValue();
+					si--; // because we want to be pointing at the ENDIF with si++ happens below.
+					foundendif=true;
+				}
+				else
+					subScript=null;
+				int depth=0;
 				boolean ignoreUntilEndScript=false;
 				si++;
-				while(si<script.size())
+				boolean positiveCondition=true;
+				while((si<script.size())
+				&&(!foundendif))
 				{
 					s=((String)script.elementAt(si,1)).trim();
 					tt=(String[])script.elementAt(si,2);
@@ -7938,19 +7966,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						if(tt==null)
 							tt=parseBits(script,si,"C");
+						parsedBlocks.third=Integer.valueOf(si);
 						foundendif=true;
 						break;
 					}
 					else
 					if(cmd.equals("ELSE")&&(depth==0))
 					{
-						condition=!condition;
+						positiveCondition=false;
 						if(s.substring(4).trim().length()>0)
-						{
-							script.setElementAt(si,1,"ELSE");
-							script.setElementAt(si,2,new String[]{"ELSE"});
-							script.insertElementAt(si+1,s.substring(4).trim(),null,null);
-						}
+							logError(scripted,"ELSE","Syntax"," Decorated ELSE is now illegal!!");
 						else
 						if(tt==null)
 							tt=parseBits(script,si,"C");
@@ -7966,8 +7991,28 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								tt=parseBits(script,si,"C");
 							depth--;
 						}
-						if(condition)
-							subScript.addSharedElements(script.elementsAt(si));
+						if(positiveCondition)
+						{
+							if(parsedBlocks.first==null)
+							{
+								parsedBlocks.first=new DVector(3);
+								parsedBlocks.first.addElement("",null,null);
+							}
+							if(condition)
+								subScript=parsedBlocks.first;
+							parsedBlocks.first.addSharedElements(script.elementsAt(si));
+						}
+						else
+						{
+							if(parsedBlocks.second==null)
+							{
+								parsedBlocks.second=new DVector(3);
+								parsedBlocks.second.addElement("",null,null);
+							}
+							if(!condition)
+								subScript=parsedBlocks.second;
+							parsedBlocks.second.addSharedElements(script.elementsAt(si));
+						}
 					}
 					si++;
 				}
@@ -7977,7 +8022,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tickStatus=Tickable.STATUS_END;
 					return null;
 				}
-				if(subScript.size()>1)
+				if((subScript != null)
+				&&(subScript.size()>1))
 				{
 					//source.tell(L("Starting @x1",conditionStr));
 					//for(int v=0;v<V.size();v++)
@@ -7992,6 +8038,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			case 93: //	"ENDIF", //93 JUST for catching errors...
+				logError(scripted,"ENDIF","Syntax"," Without IF("+si+")!");
+				tickStatus=Tickable.STATUS_END;
+				break;
+			case 94: //"ENDSWITCH", //94 JUST for catching errors...
+				logError(scripted,"ENDSWITCH","Syntax"," Without SWITCH!");
+				tickStatus=Tickable.STATUS_END;
+				break;
+			case 95: //"NEXT", //95 JUST for catching errors...
+				logError(scripted,"NEXT","Syntax"," Without FOR!");
+				tickStatus=Tickable.STATUS_END;
+				break;
+			case 96: //"CASE" //96 JUST for catching errors...
+				logError(scripted,"CASE","Syntax"," Without SWITCH!");
+				tickStatus=Tickable.STATUS_END;
+				break;
 			case 70: // switch
 			{
 				if(tt==null)
@@ -8020,20 +8082,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						inCase=true;
 						matchedCase=true;
-						si=skipSwitchMap.get(var.toUpperCase()).intValue()+1; // first line of code in matching case
+						si=skipSwitchMap.get(var.toUpperCase()).intValue();
+						si++;
 					}
 					else
 					if(skipSwitchMap.containsKey("$FIRSTVAR"))  // first variable case
+					{
 						si=skipSwitchMap.get("$FIRSTVAR").intValue();
+					}
 					else
 					if(skipSwitchMap.containsKey("$DEFAULT")) // the "default" case
 					{
 						inCase=true;
 						matchedCase=true;
-						si=skipSwitchMap.get("$DEFAULT").intValue()+1;
+						si=skipSwitchMap.get("$DEFAULT").intValue();
+						si++;
 					}
 					else
-					if(skipSwitchMap.containsKey("$ENDSWITCH")) // the "default" case
+					if(skipSwitchMap.containsKey("$")) // the "default" case
 					{
 						foundEndSwitch=true;
 						si=skipSwitchMap.get("$ENDSWITCH").intValue();
@@ -8100,6 +8166,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							foundEndSwitch=true;
 							si=skipSwitchMap.get("$ENDSWITCH").intValue();
+							break; // this is important, otherwise si will get increment and screw stuff up
 						}
 						else
 						{
@@ -8122,7 +8189,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						&&(skipSwitchMap.containsKey("$ENDSWITCH"))) // we're done
 						{
 							foundEndSwitch=true;
-							si=skipSwitchMap.get("$ENDSWITCH").intValue();
+							skipSwitchMap.get("$ENDSWITCH").intValue();
 						}
 						else
 							inCase=!matchedCase;
@@ -9410,7 +9477,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 6: // mpoload
 			{
-				// if not mob
+				//if not mob
 				Physical addHere;
 				if(scripted instanceof MOB)
 					addHere=monster;
@@ -9578,7 +9645,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 84: // mpoloadshop
 			{
-				// if not mob
 				ShopKeeper addHere = CMLib.coffeeShops().getShopKeeper(scripted);
 				if((addHere == null)&&(scripted instanceof Item))
 					addHere=CMLib.coffeeShops().getShopKeeper(((Item)scripted).owner());
@@ -9639,7 +9705,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 85: // mpmloadshop
 			{
-				// if not mob
 				ShopKeeper addHere = CMLib.coffeeShops().getShopKeeper(scripted);
 				if((addHere == null)&&(scripted instanceof Item))
 					addHere=CMLib.coffeeShops().getShopKeeper(((Item)scripted).owner());
@@ -11593,38 +11658,54 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null)
 						return null;
 				}
-				final String named=tt[1];
-				final String parms=tt[2].trim();
-				boolean found=false;
-				final List<DVector> scripts=getScripts();
-				for(int v=0;v<scripts.size();v++)
+				if(script.elementAt(si, 3) != null)
 				{
-					final DVector script2=scripts.get(v);
-					if(script2.size()<1)
-						continue;
-					final String trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
-					final String[] ttrigger=(String[])script2.elementAt(0,2);
-					if(getTriggerCode(trigger,ttrigger)==17) // function_prog
+					execute(scripted,
+							source,
+							target,
+							monster,
+							primaryItem,
+							secondaryItem,
+							(DVector)script.elementAt(si, 3),
+							varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2].trim()),
+							tmp);
+				}
+				else
+				{
+					final String named=tt[1];
+					final String parms=tt[2].trim();
+					boolean found=false;
+					final List<DVector> scripts=getScripts();
+					for(int v=0;v<scripts.size();v++)
 					{
-						final String fnamed=CMParms.getCleanBit(trigger,1);
-						if(fnamed.equalsIgnoreCase(named))
+						final DVector script2=scripts.get(v);
+						if(script2.size()<1)
+							continue;
+						final String trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
+						final String[] ttrigger=(String[])script2.elementAt(0,2);
+						if(getTriggerCode(trigger,ttrigger)==17) // function_prog
 						{
-							found=true;
-							execute(scripted,
-									source,
-									target,
-									monster,
-									primaryItem,
-									secondaryItem,
-									script2,
-									varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,parms),
-									tmp);
-							break;
+							final String fnamed=CMParms.getCleanBit(trigger,1);
+							if(fnamed.equalsIgnoreCase(named))
+							{
+								found=true;
+								script.setElementAt(si, 3, script2);
+								execute(scripted,
+										source,
+										target,
+										monster,
+										primaryItem,
+										secondaryItem,
+										script2,
+										varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,parms),
+										tmp);
+								break;
+							}
 						}
 					}
+					if(!found)
+						logError(scripted,"MPCALLFUNC","Unknown","Function: "+named);
 				}
-				if(!found)
-					logError(scripted,"MPCALLFUNC","Unknown","Function: "+named);
 				break;
 			}
 			case 27: // MPWHILE
@@ -11850,6 +11931,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			case Integer.MIN_VALUE:
+				logError(scripted,cmd.toUpperCase(),"Syntax","Unexpected prog start -- missing '~'?");
+				break;
 			default:
 				if(cmd.length()>0)
 				{
@@ -13351,7 +13435,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							delayProgCounter[0]++;
 					}
 					if(exec)
+					{
 						execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
+					}
 				}
 				break;
 			case 7: // fight_Prog

@@ -244,6 +244,7 @@ public class ItemGenerator extends ActiveTicker
 			List<Item> allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
 			if(allItems!=null)
 				return false;
+			Log.sysOut(ID(),"Starting master item generation");
 			allItems=new Vector<Item>();
 
 			final List<ItemCraftor> skills=new Vector<ItemCraftor>();
@@ -265,6 +266,7 @@ public class ItemGenerator extends ActiveTicker
 						return false;
 				}
 			}
+			Log.sysOut(ID(),"Finished master item generation");
 			Resources.submitResource("ITEMGENERATOR-ALLITEMS",allItems);
 			return false;
 		}

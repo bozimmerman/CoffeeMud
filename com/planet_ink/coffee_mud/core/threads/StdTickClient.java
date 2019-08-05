@@ -175,7 +175,6 @@ public class StdTickClient implements TickClient
 				milliTotal+=Math.round(Math.floor(nanoTotal / 1000000L));
 				nanoTotal = nanoTotal % 1000000L;
 			}
-
 		}
 		return false;
 	}
