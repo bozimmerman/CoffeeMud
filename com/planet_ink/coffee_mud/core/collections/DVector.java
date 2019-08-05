@@ -39,6 +39,8 @@ public class DVector implements Cloneable, NList<Object>, java.io.Serializable
 	private SVector<Object[]> 	stuff;
 	private final static int 	MAX_SIZE=9;
 
+	public final static DVector empty = new DVector(1);
+
 	public DVector(final int dim)
 	{
 		if(dim<1)
