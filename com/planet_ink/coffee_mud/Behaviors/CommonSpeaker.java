@@ -128,6 +128,9 @@ public class CommonSpeaker extends StdBehavior
 			return true;
 		if(--tickTock>0)
 			return true;
+		if((++tickTocker)==100)
+			tickTocker=99;
+		tickTock=tickTocker;
 		if(!(ticking instanceof Physical))
 			return true;
 
@@ -205,9 +208,6 @@ public class CommonSpeaker extends StdBehavior
 				}
 			}
 		}
-		if((++tickTocker)==100)
-			tickTocker=99;
-		tickTock=tickTocker;
 		return true;
 	}
 }
