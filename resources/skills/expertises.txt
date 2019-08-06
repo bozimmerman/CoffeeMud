@@ -406,7 +406,7 @@ VIGOPREP@x1=Creative Food Prep @x2,10,X4,-SKILL +FoodPrep +MasterFoodPrep,-MAXCL
 HELP_=<EXPERTISE>The ability to prep foods that fortify movement.
 DATA_=Least,Lesser,Minor,Moderate,Great,Incredibe,Major,Wonderful,Super,Ultimate
 
-ADVNCRAFT@x1=Advanced Crafting @x2,3,LEVEL,-SKILLFLAG "+CRAFTING&!NATURE_LORE",-MAXCLASSLEVEL +>={1+(20*@x1)},+WIS {10+(4*@x1)} +INT {10+(4*@x1)},0,2,0,0,0
+ADVNCRAFT@x1=Advanced Crafting @x2,3,LEVEL,-SKILLFLAG "+CRAFTING&!NATURE_LORE" +JAVACLASS -TEXTILING,-MAXCLASSLEVEL +>={1+(20*@x1)},+WIS {10+(4*@x1)} +INT {10+(4*@x1)},0,2,0,0,0
 HELP_=<EXPERTISE>The ability to craft items of higher level.
 HELP_ADVNCRAFT1=<EXPERTISE>The ability to craft items of higher level. Items crafted "Improved" are also a tiny bit better.
 HELP_ADVNCRAFT2=<EXPERTISE>The ability to craft items of higher level. Items crafted "Enhanced" are also a little better.
