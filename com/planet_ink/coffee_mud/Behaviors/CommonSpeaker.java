@@ -50,12 +50,23 @@ public class CommonSpeaker extends StdBehavior
 	protected int		tickTocker	= 1;
 	protected int		tickTock	= 0;
 	protected String	language	= "Common";
-	protected Ability	langA		= null;
-	protected Ability	langE		= null;
+	protected Language	lang		= null;
+	protected String	prevLang	= null;
+
+	@Override
+	public CMObject copyOf()
+	{
+		final CommonSpeaker cp = (CommonSpeaker)super.copyOf();
+		cp.lang=null;
+		cp.prevLang=null;
+		return cp;
+	}
 
 	@Override
 	public void setParms(final String parameters)
 	{
+		lang=null;
+		prevLang=null;
 		super.setParms(parameters);
 		if(parameters.trim().length()>0)
 			language=parameters;
@@ -66,14 +77,45 @@ public class CommonSpeaker extends StdBehavior
 	}
 
 	@Override
-	public void endBehavior(PhysicalAgent forMe)
+	public void endBehavior(final PhysicalAgent forMe)
 	{
-		if((langA!=null)
-		&&(forMe instanceof MOB))
+		if(lang != null)
 		{
-			((MOB)forMe).delAbility(langA);
-			if(langE != null)
-				((MOB)forMe).delEffect(langE);
+			if(!lang.isSavable())
+			{
+				if(forMe instanceof MOB)
+					((MOB)forMe).delAbility(lang);
+				final Ability langE=forMe.fetchEffect(lang.ID());
+				if((langE!=null)
+				&&(!langE.isSavable()))
+				{
+					langE.unInvoke();
+					forMe.delEffect(langE);
+				}
+			}
+		}
+		if(prevLang != null)
+		{
+			final Language tempL=CMLib.utensils().getLanguageSpoken(forMe);
+			if((prevLang.length()==0)
+			||(prevLang.equalsIgnoreCase("Common")))
+			{
+				if((tempL!=null)
+				&&(!tempL.ID().equalsIgnoreCase("Common")))
+					tempL.setBeingSpoken(tempL.ID(), false);
+			}
+			else
+			if((tempL==null)
+			||(tempL.ID().equalsIgnoreCase("Common"))
+			||(!tempL.ID().equalsIgnoreCase(prevLang)))
+			{
+
+				if(tempL!=null)
+					tempL.setBeingSpoken(tempL.ID(), false);
+				final Language goodL=(Language)forMe.fetchEffect(prevLang);
+				if(goodL!=null)
+					goodL.setBeingSpoken(goodL.ID(), true);
+			}
 		}
 	}
 
@@ -86,38 +128,82 @@ public class CommonSpeaker extends StdBehavior
 			return true;
 		if(--tickTock>0)
 			return true;
-		if(!(ticking instanceof Environmental))
+		if(!(ticking instanceof Physical))
 			return true;
 
-		final Ability L=CMClass.getAbilityPrototype(language);
-		if(L==null)
+		if(lang == null)
 		{
-			if(!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+			final Physical mob=(Physical)ticking;
+			final Ability L=CMClass.getAbilityPrototype(language);
+			if((L==null)||(!(L instanceof Language)))
 			{
-				Log.errOut("CommonSpeaker on "+ticking.name()+" in "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation((Environmental)ticking))
-						+" has unknown language '"+language+"'");
+				if(!CMSecurity.isDisabled(DisFlag.LANGUAGES))
+				{
+					Log.errOut("CommonSpeaker on "+ticking.name()+" in "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(mob))
+							+" has unknown language '"+language+"'");
+				}
+				return false;
 			}
-		}
-		else
-		{
-			final Ability A=((MOB)ticking).fetchAbility(L.ID());
-			if(A==null)
+			if(prevLang == null)
 			{
-				final Ability lA=CMClass.getAbility(L.ID());
-				final Ability lE=((MOB)ticking).fetchEffect(L.ID());
-				lA.setProficiency(100);
-				lA.setSavable(false);
-				langA=lA;
-				((MOB)ticking).addAbility(lA);
-				lA.autoInvocation((MOB)ticking, false);
-				lA.invoke((MOB)ticking,null,false,0);
-				final Ability nowlE=((MOB)ticking).fetchEffect(L.ID());
-				if((nowlE!=null)
-				&&(nowlE!=lE))
-					langE=nowlE;
+				final Language spokenL=CMLib.utensils().getLanguageSpoken(mob);
+				if(spokenL != null)
+					prevLang=spokenL.ID();
+				else
+					prevLang="";
+			}
+			if(mob instanceof MOB)
+			{
+				final Ability A=((MOB)mob).fetchAbility(L.ID());
+				if(A==null)
+				{
+					lang=(Language)CMClass.getAbility(L.ID());
+					lang.setProficiency(100);
+					lang.setSavable(false);
+					((MOB)mob).addAbility(lang);
+					lang.autoInvocation((MOB)ticking, false);
+				}
+				else
+				if(A.isSavable() || (((MOB)mob).isRacialAbility(A.ID())))
+					lang=(Language)A;
+				else
+				{
+					tickTock=Integer.MAX_VALUE;
+					Log.debugOut("CommonSpeaker on "+ticking.name()+" in "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(mob))
+							+" disabled due to temp language conflict.");
+					return true; // no idea what to do here
+				}
 			}
 			else
-				A.invoke((MOB)ticking,null,false,0);
+			{
+				lang=(Language)CMClass.getAbility(L.ID());
+				lang.setProficiency(100);
+				lang.setSavable(false);
+			}
+		}
+
+
+		if((ticking instanceof MOB)&&(!((MOB)ticking).isMine(lang)))
+			lang=null;
+		else
+		{
+			final Language spoken=(Language)((Physical)ticking).fetchEffect(lang.ID());
+			if((spoken==null)
+			||(!spoken.beingSpoken(lang.ID())))
+			{
+				if(ticking instanceof MOB)
+				{
+					lang.autoInvocation((MOB)ticking, false);
+					lang.invoke((MOB)ticking,null,false,0);
+				}
+				else
+				{
+					final Language langE=(Language)lang.copyOf();
+					langE.setBeingSpoken(lang.ID(), true);
+					langE.setSavable(false);
+					((Physical)ticking).addNonUninvokableEffect(langE);
+				}
+			}
 		}
 		if((++tickTocker)==100)
 			tickTocker=99;
