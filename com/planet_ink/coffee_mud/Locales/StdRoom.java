@@ -2487,7 +2487,7 @@ public class StdRoom implements Room
 				return found;
 			while((found!=null)&&(!CMLib.flags().canBeSeenBy(found,mob)))
 			{
-				newThingName=CMLib.english().bumpDotNumber(thingName);
+				newThingName=CMLib.english().bumpDotNumber(thingName,1);
 				if(!newThingName.equals(thingName))
 				{
 					thingName=newThingName;
@@ -2647,14 +2647,38 @@ public class StdRoom implements Room
 			thingName=thingName.trim().substring(3).trim();
 		if((mob!=null)&&(favorItems)&&(filter!=Wearable.FILTER_WORNONLY))
 		{
-			found=mob.fetchItem(goodLocation, new Filterer<Environmental>()
+			final Filterer<Environmental> mobCheckFilter = new Filterer<Environmental>()
 			{
 				@Override
 				public boolean passesFilter(final Environmental obj)
 				{
 					return filter.passesFilter(obj) && Wearable.FILTER_UNWORNONLY.passesFilter(obj);
 				}
-			}, thingName);
+			};
+			found=mob.fetchItem(goodLocation, mobCheckFilter, thingName);
+			if(found == null)
+			{
+				// this ugliness allows you do use dot syntax on things on the ground when you have SOME stuff in inventory, but not much
+				final int dotNumber=CMLib.english().getDotNumber(thingName);
+				if(dotNumber > 1)
+				{
+					thingName =  CMLib.english().bumpDotNumber(thingName, -(dotNumber-1));
+					int numMobHas = 0;
+					for(int i=1;i<=dotNumber;i++)
+					{
+						if(mob.fetchItem(goodLocation, mobCheckFilter, thingName)==null)
+							break;
+						numMobHas++;
+						thingName =  CMLib.english().bumpDotNumber(thingName, 1);
+					}
+					if(dotNumber > numMobHas)
+					{
+						final int curDotNumber=numMobHas+1;
+						final int delta = -(curDotNumber-1) + (dotNumber-numMobHas-1);
+						thingName =  CMLib.english().bumpDotNumber(thingName, delta);
+					}
+				}
+			}
 		}
 		if((found==null)&&(!mineOnly))
 		{
@@ -2666,7 +2690,7 @@ public class StdRoom implements Room
 				return found;
 			while((found!=null)&&(!CMLib.flags().canBeSeenBy(found,mob)))
 			{
-				newThingName=CMLib.english().bumpDotNumber(thingName);
+				newThingName=CMLib.english().bumpDotNumber(thingName,1);
 				if(!newThingName.equals(thingName))
 				{
 					thingName=newThingName;
