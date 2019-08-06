@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.PostOffice.MailPiece;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Map;
@@ -96,11 +97,21 @@ public interface PostOffice extends ShopKeeper
 	/**
 	 * Searches the given postal box for an item with the given
 	 * name, or one with the given string as a substring.
+	 * If found, the item is returned.
 	 * @param boxName the player or clan name of the postal box
 	 * @param likeThis the search string for the item name
 	 * @return the item found, or null
 	 */
 	public Item findBoxContents(String boxName, String likeThis);
+
+	/**
+	 * Searches the given postal box for an item like the given
+	 * one. If found, the mail piece info is returned.
+	 * @param boxName the player or clan name of the postal box
+	 * @param likeThis the item to look for
+	 * @return the mail data, or null
+	 */
+	public MailPiece findExactBoxData(final String boxName, final Item likeThis);
 
 	/**
 	 * Returns a mapping of postal branches in this chain to forwarding

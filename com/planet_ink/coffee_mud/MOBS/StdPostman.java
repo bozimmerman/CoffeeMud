@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.PostOffice.MailPiece;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -330,11 +331,13 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 					continue;
 				if(CMLib.english().containsString(I.Name(),likeThis))
 					return I;
+				I.destroy();
 			}
 		}
 		return null;
 	}
 
+	@Override
 	public MailPiece findExactBoxData(final String boxName, final Item likeThis)
 	{
 		final List<PlayerData> V=getBoxRowPDData(boxName);
