@@ -116,11 +116,13 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	private String			itemZapperMask		= "";
 	private final String	contributorMask		= "";
 	private int				minOverdueDays		= 12;
-	private int				maxOverdueDays		= 24;
+	private int				maxOverdueDays		= 48;
 	private int				maxBorrowed			= 2;
 
 	private Pair<Long, TimePeriod>	budget	= new Pair<Long, TimePeriod>(Long.valueOf(100000), TimePeriod.DAY);
 	private List<CheckedOutRecord>	records	= new LinkedList<CheckedOutRecord>();
+	protected volatile Item			approvedI	= null;
+	protected volatile String		approvedMob	= null;
 
 	public BookLoaning()
 	{
@@ -752,6 +754,37 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			}
 		}
 
+		if(msg.amISource(merchantM))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_WITHDRAW:
+			{
+				if((msg.target() instanceof PostOffice)
+				&&(affected instanceof MOB)
+				&&(((MOB)affected).isPlayer())
+				&&(msg.tool() instanceof Item)
+				&&(this.shop.doIHaveThisInStock(msg.tool().Name(), null))
+				&&(this.records.size()>0))
+				{
+					final PostOffice post=(PostOffice)msg.target();
+					final PostOffice.MailPiece piece=post.findExactBoxData(merchantM.Name(), (Item)msg.tool());
+					if(piece != null)
+					{
+						final List<CheckedOutRecord> recs=this.getItemRecords(msg.tool().Name());
+						for(final CheckedOutRecord rec : recs)
+						{
+							if(rec.playerName.equalsIgnoreCase(piece.from))
+								this.approvedI=(Item)msg.tool();
+						}
+					}
+				}
+			}
+			default:
+				break;
+			}
+		}
+
 		if(msg.amITarget(merchantM)||(msg.amITarget(affected)))
 		{
 			switch(msg.targetMinor())
@@ -1031,6 +1064,55 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 		&& ((msg.source().location() == merchantM.location()) || (msg.sourceMinor() == CMMsg.TYP_ENTER))
 		&& (!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS)))
 			shopApply = true;
+
+		if(msg.amISource(merchantM))
+		{
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_WITHDRAW:
+			{
+				if((msg.target() instanceof PostOffice)
+				&&(msg.tool()==approvedI)
+				&&(approvedMob != null)
+				&&(msg.tool() instanceof Item))
+				{
+					final List<CheckedOutRecord> recs=this.getItemRecords(msg.tool().Name());
+					CheckedOutRecord finalRecord = null;
+					for(final CheckedOutRecord rec : recs)
+					{
+						if(rec.playerName.equalsIgnoreCase(approvedMob))
+							finalRecord = rec;
+					}
+					if(finalRecord != null)
+					{
+						final Item finalI=approvedI;
+						final CheckedOutRecord r=finalRecord;
+						approvedMob=null;
+						approvedI=null;
+						msg.addTrailerRunnable(new Runnable()
+						{
+							final CheckedOutRecord rr=r;
+							final Item I=finalI;
+
+							@Override
+							public void run()
+							{
+								if(I != null)
+								{
+									I.destroy();
+									merchantM.tell(L("@x1 has just returned @x2.",rr.playerName,rr.itemName));
+									rr.itemName="";
+									updateCheckedOutRecords();
+								}
+							}
+						});
+					}
+				}
+			}
+			default:
+				break;
+			}
+		}
 
 		if(msg.amITarget(merchantM)||(msg.amITarget(affected)))
 		{
