@@ -287,7 +287,7 @@ public class Sailor extends StdCharClass
 		return super.tick(ticking,tickID);
 	}
 
-	protected void giveExploreXP(final MOB mob, final Room R, final int amt)
+	protected void giveExploreXP(final MOB mob, final Room R, final int amt, final CMMsg msg)
 	{
 		if(((R.roomID().length()>0)
 			||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
@@ -298,12 +298,41 @@ public class Sailor extends StdCharClass
 		&&(CMLib.flags().isWaterySurfaceRoom(R))
 		)
 		{
+			final int pctBefore=mob.playerStats().percentVisited(mob,R.getArea());
 			if(mob.playerStats().addRoomVisit(R))
 			{
+				final Area A=R.getArea();
 				CMLib.players().bumpPrideStat(mob,AccountStats.PrideStat.ROOMS_EXPLORED,1);
 				if(mob.playerStats().hasVisited(R))
 				{
 					CMLib.leveler().postExperience(mob, null, null, amt, false);
+				}
+				final double totalCountableRooms=A.getAreaIStats()[Area.Stats.COUNTABLE_ROOMS.ordinal()];
+				if((totalCountableRooms > 0)
+				&&(CMath.div(A.getAreaIStats()[Area.Stats.WATER_ROOMS.ordinal()], totalCountableRooms)>.80))
+				{
+					final int pctAfter=mob.playerStats().percentVisited(mob,A);
+					if((pctBefore<50)&&(pctAfter>=50))
+					{
+						int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],mob.phyStats().level()));
+						if(xp>125)
+							xp=125;
+						if(xp<50)
+							xp=50;
+						if((xp>0)&&CMLib.leveler().postExperience(mob,null,null,xp,true))
+							msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have familiarized yourself with '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					}
+					else
+					if((pctBefore<90)&&(pctAfter>=90))
+					{
+						int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.Stats.AVG_LEVEL.ordinal()],mob.phyStats().level()));
+						if(xp>250)
+							xp=250;
+						if(xp<125)
+							xp=125;
+						if((xp>0)&&CMLib.leveler().postExperience(mob,null,null,xp,true))
+							msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have explored '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+					}
 				}
 			}
 		}
@@ -322,14 +351,14 @@ public class Sailor extends StdCharClass
 			&&(!msg.source().isMonster())
 			&&(msg.source().playerStats()!=null)
 			&&(msg.source().riding().rideBasis() == Rideable.RIDEABLE_WATER))
-				giveExploreXP(msg.source(), (Room)msg.target(), 5);
+				giveExploreXP(msg.source(), (Room)msg.target(), 5, msg);
 			if((msg.source().riding() instanceof SailingShip)
 			&&(msg.source().Name().equals(msg.source().riding().Name()))
 			&&(myHost instanceof MOB)
 			&&(((MOB)myHost).playerStats()!=null)
 			&&(((MOB)myHost).location()!=null)
 			&&(((MOB)myHost).location().getArea() == ((BoardableShip)msg.source().riding()).getShipArea()))
-				giveExploreXP((MOB)myHost, (Room)msg.target(), 10);
+				giveExploreXP((MOB)myHost, (Room)msg.target(), 10, msg);
 		}
 
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)

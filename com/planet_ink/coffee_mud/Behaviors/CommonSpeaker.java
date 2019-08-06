@@ -170,6 +170,9 @@ public class CommonSpeaker extends StdBehavior
 				if(A.isSavable() || (((MOB)mob).isRacialAbility(A.ID())))
 					lang=(Language)A;
 				else
+				if(!A.isSavable())
+					lang=(Language)A;
+				else
 				{
 					tickTock=Integer.MAX_VALUE;
 					Log.debugOut("CommonSpeaker on "+ticking.name()+" in "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(mob))

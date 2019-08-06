@@ -2859,6 +2859,20 @@ public class Test extends StdCommand
 					mobs[1].setPlayerStats(null);
 				}
 			}
+			if(what.equalsIgnoreCase("citycheck"))
+			{
+				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+				{
+					final Area A=a.nextElement();
+					final boolean newCheck;
+					if(A.getAreaIStats()[Area.Stats.COUNTABLE_ROOMS.ordinal()]>0)
+						newCheck = CMLib.law().isACity(A);
+					else
+						newCheck=false;
+					if(newCheck)
+					mob.tell(newCheck+"("+(CMath.div(A.getAreaIStats()[Area.Stats.CITY_ROOMS.ordinal()],A.getAreaIStats()[Area.Stats.COUNTABLE_ROOMS.ordinal()]))+") : "+A.Name());
+				}
+			}
 			reset(mobs,backups,R,IS,R2);
 			CMLib.map().emptyRoom(R2,null,true);
 			R2.destroy();

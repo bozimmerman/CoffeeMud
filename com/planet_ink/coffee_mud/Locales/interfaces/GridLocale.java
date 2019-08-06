@@ -149,6 +149,14 @@ public interface GridLocale extends Room, GridZones
 	public void delOuterExit(CrossExit x);
 
 	/**
+	 * Returns the total number of possible grid-child rooms that
+	 * this locale could possibly generate.
+	 *
+	 * @return the total size
+	 */
+	public int getGridSize();
+
+	/**
 	 * class definition for an exit that goes from inside a grid locale child to a place
 	 * outside the parent gridlocale room
 	 * @author Bo Zimmerman

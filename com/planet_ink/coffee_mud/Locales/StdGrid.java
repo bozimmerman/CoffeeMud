@@ -76,6 +76,12 @@ public class StdGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
+	public int getGridSize()
+	{
+		return xsize * ysize;
+	}
+
+	@Override
 	public Room getGridChild(final XYVector xy)
 	{
 		if(xy==null)

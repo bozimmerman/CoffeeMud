@@ -743,6 +743,11 @@ public interface Area extends Economics, PhysicalAgent, Places
 		MIN_ALIGNMENT,
 		MAX_ALIGNMENT,
 		ANIMALS,
+		COUNTABLE_ROOMS,
+		WATER_ROOMS,
+		DESERT_ROOMS,
+		CITY_ROOMS,
+		CAVE_ROOMS
 		/*
 		HUMANOIDS,
 		GOOD_MOBS,

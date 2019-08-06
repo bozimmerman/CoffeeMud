@@ -113,6 +113,12 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
+	public int getGridSize()
+	{
+		return xsize * ysize;
+	}
+
+	@Override
 	public void setXGridSize(final int x)
 	{
 		if(x>0)

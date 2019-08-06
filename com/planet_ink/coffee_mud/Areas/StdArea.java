@@ -1659,10 +1659,50 @@ public class StdArea implements Area
 		for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();
+			final int countable;
 			if(R instanceof GridLocale)
+			{
 				statData[Area.Stats.VISITABLE_ROOMS.ordinal()]--;
+				countable = ((GridLocale)R).getGridSize();
+			}
+			else
+				countable=1;
+			statData[Area.Stats.COUNTABLE_ROOMS.ordinal()]+=countable;
 			if((R.domainType()&Room.INDOORS)>0)
-				statData[Area.Stats.INDOOR_ROOMS.ordinal()]++;
+			{
+				statData[Area.Stats.INDOOR_ROOMS.ordinal()]+=countable;
+				switch(R.domainType())
+				{
+				case Room.DOMAIN_INDOORS_CAVE:
+					statData[Area.Stats.CAVE_ROOMS.ordinal()]+=countable;
+					break;
+				case Room.DOMAIN_INDOORS_METAL:
+				case Room.DOMAIN_INDOORS_STONE:
+				case Room.DOMAIN_INDOORS_WOOD:
+					statData[Area.Stats.CITY_ROOMS.ordinal()]+=countable;
+					break;
+				case Room.DOMAIN_INDOORS_UNDERWATER:
+				case Room.DOMAIN_INDOORS_WATERSURFACE:
+					statData[Area.Stats.WATER_ROOMS.ordinal()]+=countable;
+					break;
+				}
+			}
+			else
+			{
+				switch(R.domainType())
+				{
+				case Room.DOMAIN_OUTDOORS_CITY:
+					statData[Area.Stats.CITY_ROOMS.ordinal()]+=countable;
+					break;
+				case Room.DOMAIN_OUTDOORS_DESERT:
+					statData[Area.Stats.DESERT_ROOMS.ordinal()]+=countable;
+					break;
+				case Room.DOMAIN_OUTDOORS_UNDERWATER:
+				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+					statData[Area.Stats.WATER_ROOMS.ordinal()]+=countable;
+					break;
+				}
+			}
 			for(int i=0;i<R.numInhabitants();i++)
 				buildAreaIMobStats(statData,totalAlignments,theFaction,alignRanges,levelRanges,R.fetchInhabitant(i));
 			for(int i=0;i<R.numItems();i++)

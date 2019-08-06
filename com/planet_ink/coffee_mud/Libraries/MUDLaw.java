@@ -116,28 +116,10 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean isACity(final Area A)
 	{
-		int other=0;
-		int streets=0;
-		int buildings=0;
-		Room R=null;
-		for(final Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
-		{
-			R=e.nextElement();
-			if((R==null)||(R.roomID()==null)||(R.roomID().length()==0))
-				continue;
-			if(R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
-				streets++;
-			else
-			if((R.domainType()==Room.DOMAIN_INDOORS_METAL)
-			||(R.domainType()==Room.DOMAIN_INDOORS_STONE)
-			||(R.domainType()==Room.DOMAIN_INDOORS_WOOD))
-				buildings++;
-			else
-				other++;
-		}
-		if((streets<(other/2))||((streets+buildings)<other))
+		if((A==null)
+		||(A.getAreaIStats()[Area.Stats.COUNTABLE_ROOMS.ordinal()]==0))
 			return false;
-		return true;
+		return CMath.div(A.getAreaIStats()[Area.Stats.CITY_ROOMS.ordinal()],A.getAreaIStats()[Area.Stats.COUNTABLE_ROOMS.ordinal()]) > .60;
 	}
 
 	@Override
