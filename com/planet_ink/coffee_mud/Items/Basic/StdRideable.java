@@ -716,7 +716,16 @@ public class StdRideable extends StdContainer implements Rideable
 				msg.source().tell(null,msg.source(),null,L("<T-NAME> <T-IS-ARE> already @x1 @x2!",stateString(msg.source()),name(msg.source())));
 				return false;
 			}
-			if(msg.amITarget(this))
+			if((msg.tool() instanceof Item)
+			&&(msg.amITarget(this))
+			&&(((Item)msg.tool()).container() != container()))
+			{
+				msg.source().tell(null,msg.tool(),null,L("<T-NAME> can't be mounted to @x1 from where it is!",name(msg.source())));
+				return false;
+			}
+			else
+			if((msg.tool() instanceof MOB)
+			&&(msg.amITarget(this)))
 			{
 				final Rider whoWantsToRide=(msg.tool() instanceof Rider)?(Rider)msg.tool():msg.source();
 				if(amRiding(whoWantsToRide))
@@ -744,6 +753,13 @@ public class StdRideable extends StdContainer implements Rideable
 				if(msg.tool() instanceof Rideable)
 				{
 					msg.source().tell(L("@x1 is not allowed on @x2.",((Rideable)msg.tool()).name(msg.source()),name(msg.source())));
+					return false;
+				}
+				else
+				if((container() != null)
+				&&((MOB)msg.tool()).riding() != container())
+				{
+					msg.source().tell(L("@x1 can not be mounted to @x2 from there!",msg.tool().name(),name(msg.source())));
 					return false;
 				}
 				if(msg.tool()==null)
