@@ -72,7 +72,8 @@ public interface EnglishParsing extends CMLibrary
 	public void evoke(MOB mob, Vector<String> commands);
 	public boolean containsString(final String toSrchStr, final String srchStr);
 
-	public String bumpDotNumber(String srchStr);
+	public int getDotNumber(final String srchStr);
+	public String bumpDotNumber(String srchStr, int byThisMuch);
 	public int getContextNumber(Environmental[] list, Environmental E);
 	public int getContextNumber(Collection<? extends Environmental> list, Environmental E);
 	public int getContextNumber(ItemCollection cont, Environmental E);

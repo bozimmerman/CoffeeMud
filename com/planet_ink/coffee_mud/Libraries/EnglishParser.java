@@ -1208,16 +1208,25 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public String bumpDotNumber(final String srchStr)
+	public String bumpDotNumber(final String srchStr, final int thisMuch)
 	{
 		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null)
 			return srchStr;
 		if(flags.allFlag)
 			return srchStr;
-		if(flags.occurrance==0)
-			return "1."+flags.srchStr;
-		return (flags.occurrance+1)+"."+flags.srchStr;
+		return (flags.occurrance+thisMuch)+"."+flags.srchStr;
+	}
+
+	@Override
+	public int getDotNumber(final String srchStr)
+	{
+		final FetchFlags flags=fetchFlags(srchStr);
+		if(flags==null)
+			return 0;
+		if(flags.allFlag)
+			return 0;
+		return flags.occurrance;
 	}
 
 	@Override

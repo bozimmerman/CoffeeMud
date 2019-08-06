@@ -681,8 +681,8 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 				final double value = (P!=null)? P.absoluteGoldPrice : 0;
 				if(rec.charges < value)
 					rec.charges = value;
-				rec.itemName = ""; // the item is now
-									// reclaimed!
+				// the item is now reclaimed!
+				rec.itemName = "";
 				recordsChanged = true;
 			}
 		}
@@ -1024,7 +1024,18 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			case CMMsg.TYP_GIVE:
 				if((affected instanceof MOB)
 				&&(((MOB)affected).isPlayer()))
-					break;
+				{
+					if(msg.tool() instanceof Coins)
+					{
+						if(this.getTotalOverdueCharges(msg.source().Name()) == 0.0)
+							break;
+					}
+					else
+					if((msg.tool() != null)
+					&&((!this.shop.doIHaveThisInStock(msg.tool().Name(), null))
+						||(this.getItemRecords(msg.tool().Name()).size() == 0)))
+						break;
+				}
 				//$FALL-THROUGH$
 			case CMMsg.TYP_DEPOSIT:
 				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
@@ -1250,7 +1261,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
 					final StringBuilder str = new StringBuilder("");
-					final List<CheckedOutRecord> recs = this.records;
+					final List<CheckedOutRecord> recs = this.getAllMyRecords(msg.source().Name());
 					double totalDue = 0.0;
 					final TimeClock clock = getMyClock();
 					if (clock != null)
@@ -1324,16 +1335,32 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 			final CMMsg msg=CMClass.getMsg(mob,mob,CMMsg.MSG_LIST,L("<S-NAME> review(s) <S-HIS-HER> selections."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
+			boolean recordsChanged = false;
 			for(final CheckedOutRecord rec : this.records)
 			{
+				final boolean recordChanged = processCheckedOutRecord(rec);
+				recordsChanged = recordsChanged || recordChanged;
 				TimeClock reClk = (TimeClock)this.getMyClock().copyOf();
 				reClk=reClk.deriveClock(rec.mudDueDateMs);
-				mob.tell(L("@x1 checked out @x2, due on @x3 and now owes @x4.",
-						rec.playerName,
-						rec.itemName,
-						reClk.getShortTimeDescription(),
-						CMLib.beanCounter().abbreviatedPrice(mob, rec.charges)));
+				if((rec.itemName==null)
+				||(rec.itemName.length()==0))
+				{
+					mob.tell(L("@x1 has owed @x2 since @x3.",
+							rec.playerName,
+							CMLib.beanCounter().abbreviatedPrice(mob, rec.charges),
+							reClk.getShortTimeDescription()));
+				}
+				else
+				{
+					mob.tell(L("@x1 checked out @x2, due on @x3 and now owes @x4.",
+							rec.playerName,
+							rec.itemName,
+							reClk.getShortTimeDescription(),
+							CMLib.beanCounter().abbreviatedPrice(mob, rec.charges)));
+				}
 			}
+			if(recordsChanged)
+				this.updateCheckedOutRecords();
 			return true;
 		}
 		final BookLoaning loanA=(BookLoaning)mob.fetchEffect(ID());
