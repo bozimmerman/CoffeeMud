@@ -775,7 +775,10 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 						for(final CheckedOutRecord rec : recs)
 						{
 							if(rec.playerName.equalsIgnoreCase(piece.from))
+							{
+								this.approvedMob=piece.from;
 								this.approvedI=(Item)msg.tool();
+							}
 						}
 					}
 				}
