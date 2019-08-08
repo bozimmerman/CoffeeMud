@@ -236,14 +236,14 @@ public class JournalLoader
 
 		final boolean searching=((searchStr!=null)&&(searchStr.length()>0));
 
-		final Vector<JournalEntry> journalV=new Vector<JournalEntry>();
+		final Vector<JournalEntry> journalV=new Vector<JournalEntry>(); // return value
 		DBConnection D=null;
 		try
 		{
 			D=DB.DBFetch();
 			String sql="SELECT * FROM CMJRNL WHERE";
 			if(newerDate==0)
-				sql+=" CMUPTM > 0"; // <0 are the meta msgs
+				sql+=" CMUPTM >= 0"; // <0 are the meta msgs
 			else
 			if((parent==null)||(parent.length()>0))
 				sql+=" CMUPTM > " + newerDate;

@@ -8039,19 +8039,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				break;
 			}
 			case 93: //	"ENDIF", //93 JUST for catching errors...
-				logError(scripted,"ENDIF","Syntax"," Without IF("+si+")!");
+				logError(scripted,"ENDIF","Syntax"," Without IF ("+si+")!");
 				tickStatus=Tickable.STATUS_END;
 				break;
 			case 94: //"ENDSWITCH", //94 JUST for catching errors...
-				logError(scripted,"ENDSWITCH","Syntax"," Without SWITCH!");
+				logError(scripted,"ENDSWITCH","Syntax"," Without SWITCH ("+si+")!");
 				tickStatus=Tickable.STATUS_END;
 				break;
 			case 95: //"NEXT", //95 JUST for catching errors...
-				logError(scripted,"NEXT","Syntax"," Without FOR!");
+				logError(scripted,"NEXT","Syntax"," Without FOR ("+si+")!");
 				tickStatus=Tickable.STATUS_END;
 				break;
 			case 96: //"CASE" //96 JUST for catching errors...
-				logError(scripted,"CASE","Syntax"," Without SWITCH!");
+				logError(scripted,"CASE","Syntax"," Without SWITCH ("+si+")!");
 				tickStatus=Tickable.STATUS_END;
 				break;
 			case 70: // switch
@@ -8190,6 +8190,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							foundEndSwitch=true;
 							skipSwitchMap.get("$ENDSWITCH").intValue();
+							break; // this is important, otherwise si will get increment and screw stuff up
 						}
 						else
 							inCase=!matchedCase;

@@ -110,7 +110,7 @@ public class JournalInfo extends StdWebMacro
 		if((dbsearch!=null)&&(dbsearch.length()>0))
 			parent=null;
 		final String httpkey="JOURNAL: "+journalName+": "+parent+": "+dbsearch+": "+page;
-		List<JournalEntry> msgs=(List<JournalEntry>)objs.get(httpkey);
+		List<JournalEntry> msgs=(objs==null)?null:(List<JournalEntry>)objs.get(httpkey);
 		if(msgs==null)
 		{
 			if((page==null)||(page.length()==0))
@@ -137,7 +137,8 @@ public class JournalInfo extends StdWebMacro
 				//if((dbsearch!=null)&&(dbsearch.length()>0)) // parent filtering
 				//	pageDate=mergeParentMessages(journalName, msgs, pageDate);
 			}
-			objs.put(httpkey,msgs);
+			if(objs!=null)
+				objs.put(httpkey,msgs);
 		}
 		return msgs;
 	}
