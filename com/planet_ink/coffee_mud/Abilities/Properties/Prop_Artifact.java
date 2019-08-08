@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -62,6 +63,7 @@ public class Prop_Artifact extends Property
 	private boolean	nocast		= true;
 	private boolean	nolocate	= true;
 	private boolean	nomobs		= true;
+	private boolean nodb		= false;
 	private boolean	autoreset	= false;
 	private long	waitToReload= 0;
 
@@ -127,6 +129,7 @@ public class Prop_Artifact extends Property
 		nolocate=CMParms.getParmBool(text,"NOLOCATE",true);
 		nomobs=CMParms.getParmBool(text,"NOMOBS",true);
 		autoreset=CMParms.getParmBool(text,"AUTORESET",false);
+		nodb=CMParms.getParmBool(text, "NODB", false);
 	}
 
 	/**
@@ -136,7 +139,9 @@ public class Prop_Artifact extends Property
 	 */
 	public void deleteFromDB()
 	{
-		if((affected!=null)&&(getItemID().length()>0))
+		if((affected!=null)
+		&&(getItemID().length()>0)
+		&&(!nodb))
 		{
 			try
 			{
@@ -296,7 +301,8 @@ public class Prop_Artifact extends Property
 			return;
 		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 			||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
-		&&(getItemID()!=null))
+		&&(getItemID()!=null)
+		&&(!nodb))
 		{
 			final Item I=(Item)affected;
 			final Room R=CMLib.map().roomLocation(I);
@@ -369,6 +375,40 @@ public class Prop_Artifact extends Property
 				}
 			}
 		}
+		if((msg.target()==affected)
+		&&((msg.targetMinor()==CMMsg.TYP_EXAMINE)||(msg.targetMinor()==CMMsg.TYP_LOOK))
+		&&(msg.source().isAttributeSet(Attrib.SYSOPMSGS))
+		&&(CMSecurity.isAllowed(msg.source(), msg.source().location(), CMSecurity.SecFlag.CMDITEMS)))
+		{
+			final StringBuilder extraInfo = new StringBuilder("\n\r^N");
+			final List<PlayerData> itemSet=CMLib.database().DBReadPlayerData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
+			if((itemSet!=null)&&(itemSet.size()>0))
+			{
+				final String data=itemSet.get(0).xml();
+				final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(data);
+				for(int c=0;c<xml.size();c++)
+				{
+					final XMLTag iblk=xml.get(c);
+					if((iblk.tag().equalsIgnoreCase("ARTITEM"))&&(iblk.contents()!=null))
+					{
+						final List<XMLLibrary.XMLTag> roomData=iblk.contents();
+						final String roomID=CMLib.xml().getValFromPieces(roomData,"ROOMID");
+						final String MOBname=CMLib.xml().getValFromPieces(roomData,"MOB");
+						extraInfo.append(CMStrings.padRight(L("Artifact ID"), 15)).append(": ").append(getItemID()).append("\n\r");
+						extraInfo.append(CMStrings.padRight(L(" Room ID"), 15)).append(": ").append(roomID).append("\n\r");
+						extraInfo.append(CMStrings.padRight(L(" MOB name"), 15)).append(": ").append(MOBname).append("\n\r");
+					}
+				}
+				msg.addTrailerRunnable(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						msg.source().tell(extraInfo.toString());
+					}
+				});
+			}
+		}
 	}
 
 	protected void destroyArtifact(final Item I)
@@ -386,7 +426,8 @@ public class Prop_Artifact extends Property
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((waitToReload>0)
-		&&(tickID==Tickable.TICKID_ITEM_BOUNCEBACK))
+		&&(tickID==Tickable.TICKID_ITEM_BOUNCEBACK)
+		&&(!nodb))
 		{
 			if(System.currentTimeMillis()>waitToReload)
 			{
