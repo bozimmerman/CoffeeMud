@@ -8054,6 +8054,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				logError(scripted,"CASE","Syntax"," Without SWITCH ("+si+")!");
 				tickStatus=Tickable.STATUS_END;
 				break;
+			case 97: //"DEFAULT" //97 JUST for catching errors...
+				logError(scripted,"DEFAULT","Syntax"," Without SWITCH ("+si+")!");
+				tickStatus=Tickable.STATUS_END;
+				break;
 			case 70: // switch
 			{
 				if(tt==null)
