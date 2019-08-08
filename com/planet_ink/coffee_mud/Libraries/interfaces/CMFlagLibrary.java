@@ -1382,6 +1382,14 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean isAlcoholic(Physical thang);
 
 	/**
+	 * Returns the parents of the given baby or mob
+	 *
+	 * @param thang the baby or mob
+	 * @return the parents, if any, or empty
+	 */
+	public List<String> getParents(final Physical thang);
+
+	/**
 	 * A disposition enum for various flagg methods.
 	 * Helps determine the english phrasing of what's
 	 * returned.

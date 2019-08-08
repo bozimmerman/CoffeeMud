@@ -2304,6 +2304,29 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public List<String> getParents(final Physical thang)
+	{
+		final List<String> parents=new Vector<String>(2);
+		final MOB babe;
+		if(thang instanceof MOB)
+			babe=(MOB)thang;
+		else
+		if(thang instanceof CagedAnimal)
+			babe=((CagedAnimal)thang).unCageMe();
+		else
+			return parents;
+		for(final Enumeration<Tattoo> t= babe.tattoos();t.hasMoreElements();)
+		{
+			final Tattoo T=t.nextElement();
+			if(T.name().startsWith("PARENT:"))
+				parents.add(T.name().substring(7).trim());
+		}
+		if(thang instanceof CagedAnimal)
+			babe.destroy();
+		return parents;
+	}
+
+	@Override
 	public boolean isAlcoholic(final Physical thang)
 	{
 		if(thang==null)

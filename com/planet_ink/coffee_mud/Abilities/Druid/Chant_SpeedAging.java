@@ -83,21 +83,41 @@ public class Chant_SpeedAging extends Chant
 			return false;
 
 		final Set<MOB> casterGrp = mob.getGroupMembers(new HashSet<MOB>());
+		final List<String> parents=CMLib.flags().getParents(target);
+		for(final String parent : parents)
+		{
+			final MOB M;
+			if(CMLib.players().isLoadedPlayer(parent))
+				M=CMLib.players().getPlayer(parent);
+			else
+			if(CMLib.players().playerExists(parent))
+				M=CMLib.players().getLoadPlayer(parent);
+			else
+				M=mob.location().fetchInhabitantExact(parent);
+			if((M!=null)
+			&&(!casterGrp.contains(M)))
+				casterGrp.add(M);
+		}
 		int type=verbalCastCode(mob,target,auto);
 		if((target instanceof MOB)
-		&&(CMath.bset(type,CMMsg.MASK_MALICIOUS))
-		&&(((MOB)target).charStats().getStat(CharStats.STAT_AGE)>0))
+		&&(CMath.bset(type,CMMsg.MASK_MALICIOUS)))
 		{
 			final MOB mobt=(MOB)target;
-			if(mobt.charStats().ageCategory()<=Race.AGE_CHILD)
+			if(casterGrp.contains(mobt))
 				type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
 			else
-			if((mobt.getLiegeID().equals(mob.Name()))||(casterGrp.contains(mobt)))
+			if(mobt.getLiegeID().equals(mob.Name()))
 				type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
 			else
-			if((mobt.charStats().ageCategory()<=Race.AGE_MATURE)
-			&&(mobt.getLiegeID().length()>0))
-				type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
+			if(((MOB)target).charStats().getStat(CharStats.STAT_AGE)>0)
+			{
+				if(mobt.charStats().ageCategory()<=Race.AGE_CHILD)
+					type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
+				else
+				if((mobt.charStats().ageCategory()<=Race.AGE_MATURE)
+				&&(mobt.getLiegeID().length()>0))
+					type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
+			}
 		}
 
 		if((target instanceof Item)
