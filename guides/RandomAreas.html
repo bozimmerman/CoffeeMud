@@ -1,11 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  <title>Scripting in CoffeeMud 5.9</title>
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog -->
-</head>
+  
+  <title>Scripting in CoffeeMud 5.9</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
+
 <body>
 <center>
 <table style="width: 90%;" border="1" cellpadding="10" cellspacing="0">
@@ -37,8 +35,7 @@ Tags</a>
             <li><a href="#contenttag">Content</a></li>
             <li><a href="exittag">Exit</a></li>
             <li><a href="#racetag">Race</a></li>
-            <li><a href="#factiontag">Faction</a><span
- style="text-decoration: underline;"><br />
+            <li><a href="#factiontag">Faction</a><span style="text-decoration: underline;"><br />
               </span></li>
           </ul>
         </li>
@@ -73,8 +70,7 @@ and potentially the context in which each alternative applies or
 doesn't apply, and then makes selections and instantiates&nbsp;real
 mud objects based on those selections. &nbsp;The input to the
 engine is a very specifically built XML file, and the output is actual
-mud objects (mobs, items, areas, rooms, or all the above) in your game.<span
- style="font-weight: bold;" /></p>
+mud objects (mobs, items, areas, rooms, or all the above) in your game.<span style="font-weight: bold;"></span></p>
       <h2><a name="structure">Overview of
 XML Tags</a></h2>
       <a name="structure">The random generator works by reading a
@@ -139,8 +135,7 @@ Tags are always evaluated recursively, from first to last.
 meta-attributes:<br />
 &nbsp;&nbsp;<br />
       </a>
-      <table style="text-align: left; width: 100%;" border="1"
- cellpadding="2" cellspacing="2">
+      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td>id</td>
@@ -152,7 +147,7 @@ or to the "insert"&nbsp;or "like" attributes.</td>
             <td>the xml inside the file named is inserted into
 the tag</td>
           </tr>
-          <tr>
+          <tr><td>content_load</td><td>the text inside the file names is returned as the value of the tag. &nbsp;Variables in the content are handled.</td></tr><tr>
             <td>like</td>
             <td>a comma separated list of other tag "id"s of the
 SAME TYPE. These may NOT be container tags.&nbsp; This will allow
@@ -400,8 +395,7 @@ the&nbsp;content is built from the file in
 resources/randareas/example.xml, though the builder&nbsp;may
 specify his or her own xml file path as one of the many
 arguments.&nbsp; The arguments,&nbsp;briefly, are:<br />
-      <table style="text-align: left; width: 100%;" border="1"
- cellpadding="2" cellspacing="2">
+      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td>OBJ TYPE</td>
@@ -871,5 +865,4 @@ Required details:&nbsp;</p>
   </tbody>
 </table>
 </center>
-</body>
-</html>
+</body></html>

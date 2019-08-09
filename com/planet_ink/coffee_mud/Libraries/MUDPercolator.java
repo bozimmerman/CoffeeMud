@@ -2504,6 +2504,56 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final Object asDefined = defined.get(tagName);
 		if(asDefined instanceof String)
 			return (String)asDefined;
+
+		final String contentload = piece.getParmValue("CONTENT_LOAD");
+		if((contentload!=null)
+		&&(contentload.length()>0))
+		{
+			final CMFile file = new CMFile(contentload,null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
+			if(file.exists() && file.canRead())
+				return strFilter(E, ignoreStats, defPrefix,file.text().toString(), piece, defined);
+			else
+				throw new CMException("Bad content_load filename in '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
+		}
+
+		final String questTemplateLoad = piece.getParmValue("QUEST_TEMPLATE_ID");
+		if((questTemplateLoad!=null)
+		&&(questTemplateLoad.length()>0))
+		{
+			final CMFile file = new CMFile(Resources.makeFileResourceName("quests/"+questTemplateLoad+".quest"),null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
+			if(file.exists() && file.canRead())
+			{
+				final String rawFileText = file.text().toString();
+				final int endX=rawFileText.lastIndexOf("#!QUESTMAKER_END_SCRIPT");
+				if(endX > 0)
+				{
+					final int lastCR = rawFileText.indexOf('\n', endX);
+					final int lastEOF = rawFileText.indexOf('\r', endX);
+					final int endScript = lastCR > endX ? (lastCR < lastEOF ? lastCR : lastEOF): lastEOF;
+					final List<String> wizList = Resources.getFileLineVector(new StringBuffer(rawFileText.substring(0, endScript).trim()));
+					String cleanedFileText = rawFileText.substring(endScript).trim();
+					for(final String wiz : wizList)
+					{
+						if(wiz.startsWith("#$"))
+						{
+							final int x=wiz.indexOf('=');
+							if(x>0)
+							{
+								final String var=wiz.substring(2,x);
+								final String value=findStringNow(var, piece, defined);
+								cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,value);
+							}
+						}
+					}
+					return cleanedFileText;
+				}
+				else
+					throw new CMException("Corrupt quest_template in '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
+			}
+			else
+				throw new CMException("Bad quest_template_id in '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
+		}
+
 		XMLTag processDefined=null;
 		if(asDefined instanceof XMLTag)
 		{
