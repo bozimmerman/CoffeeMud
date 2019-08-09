@@ -2914,45 +2914,59 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				throw new CMException("Can't pick "+num+" of "+choices.size()+" on piece '"+piece.tag()+"', Tag: "+tagName+", Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			selectedChoicesV=new Vector<XMLTag>();
 			final List<XMLLibrary.XMLTag> cV=new XArrayList<XMLLibrary.XMLTag>(choices);
+			final List<Integer> wV=new XArrayList<Integer>(choices.size());
+			for(int c=0;c<cV.size();c++)
+			{
+				final XMLTag lilP=cV.get(c);
+				final String pickWeight=lilP.getParmValue("PICKWEIGHT");
+				final int weight;
+				if(pickWeight==null)
+					weight=0;
+				else
+				{
+					final String weightValue=strFilterNow(E,ignoreStats,defPrefix,pickWeight,piece, defined);
+					weight=CMath.s_parseIntExpression(weightValue);
+				}
+				if(weight < 0)
+				{
+					cV.remove(c);
+					c--;
+				}
+				else
+				{
+					wV.add(Integer.valueOf(weight));
+				}
+			}
 			for(int v=0;v<num;v++)
 			{
 				int total=0;
-				int[] weights=new int[cV.size()];
 				for(int c=0;c<cV.size();c++)
+					total += wV.get(c).intValue();
+				if(total==0)
 				{
-					final XMLTag lilP=cV.get(c);
-					final String pickWeight=lilP.getParmValue("PICKWEIGHT");
-					final int weight;
-					if(pickWeight==null)
-						weight=0;
-					else
+					if(cV.size()>0)
 					{
-						final String weightValue=strFilterNow(E,ignoreStats,defPrefix,pickWeight,piece, defined);
-						weight=CMath.s_parseIntExpression(weightValue);
-					}
-					if(weight < 0)
-					{
+						final int c=CMLib.dice().roll(1,cV.size(),-1);
+						selectedChoicesV.add(cV.get(c));
 						cV.remove(c);
-						weights=Arrays.copyOf(weights, weights.length-1);
-						c--;
+						wV.remove(c);
 					}
-					else
+				}
+				else
+				{
+					int choice=CMLib.dice().roll(1,total,0);
+					int c=-1;
+					while(choice>0)
 					{
-						weights[c]=weight;
-						total+=weight;
+						c++;
+						choice-=wV.get(c).intValue();
 					}
-				}
-				int choice=CMLib.dice().roll(1,total,0);
-				int c=-1;
-				while(choice>0)
-				{
-					c++;
-					choice-=weights[c];
-				}
-				if((c>=0)&&(c<cV.size()))
-				{
-					selectedChoicesV.add(cV.get(c));
-					cV.remove(c);
+					if((c>=0)&&(c<cV.size()))
+					{
+						selectedChoicesV.add(cV.get(c));
+						cV.remove(c);
+						wV.remove(c);
+					}
 				}
 			}
 		}
