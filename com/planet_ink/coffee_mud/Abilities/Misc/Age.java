@@ -857,7 +857,7 @@ public class Age extends StdAbility
 
 	protected volatile long nextAgeCheckTimeMs = System.currentTimeMillis();
 
-	protected void myAgeCheckRunner()
+	protected void doPeriodicAgeCheck()
 	{
 		long lastCheckedAt;
 		synchronized(this)
@@ -995,22 +995,60 @@ public class Age extends StdAbility
 					}
 				}
 			}
-			msg.addTrailerRunnable(new Runnable()
+			msg.addTrailerRunnable(myAgeCheckRunner);
+		}
+	}
+
+	protected Runnable myAgeCheckRunner = new Runnable()
+	{
+		@Override
+		public void run()
+		{
+			doPeriodicAgeCheck();
+		}
+	};
+
+	@Override
+	public CMObject copyOf()
+	{
+		final Age A=(Age)super.copyOf();
+		if(A!=null)
+		{
+			A.myAgeCheckRunner = new Runnable()
 			{
 				@Override
 				public void run()
 				{
-					myAgeCheckRunner();
+					A.doPeriodicAgeCheck();
 				}
-			});
+			};
 		}
+		return A;
+	}
+
+	@Override
+	public CMObject newInstance()
+	{
+		final Age A=(Age)super.newInstance();
+		if(A!=null)
+		{
+			A.myAgeCheckRunner = new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					A.doPeriodicAgeCheck();
+				}
+			};
+		}
+		return A;
 	}
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		this.myAgeCheckRunner();
+		this.doPeriodicAgeCheck();
 	}
 
 	@Override
