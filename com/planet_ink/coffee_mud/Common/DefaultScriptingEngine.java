@@ -2055,6 +2055,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				case GSTATADD_DEITY:
 					val = M.getWorshipCharID();
 					break;
+				case GSTATADD_MATTRIB:
+				{
+					for(final MOB.Attrib A : MOB.Attrib.values())
+					{
+						if(M.isAttributeSet(A))
+							val += " "+A.name();
+					}
+					val = val.trim();
+					break;
+				}
 				case GSTATADD_CLAN:
 				{
 					Clan C = CMLib.clans().findRivalrousClan(M);
@@ -2179,6 +2189,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						case GSTATADD_DEITY:
 							val = M.getWorshipCharID();
 							break;
+						case GSTATADD_MATTRIB:
+						{
+							for(final MOB.Attrib A : MOB.Attrib.values())
+							{
+								if(M.isAttributeSet(A))
+									val += " "+A.name();
+							}
+							val = val.trim();
+							break;
+						}
 						case GSTATADD_CLAN:
 						{
 							Clan C = CMLib.clans().findRivalrousClan(M);
@@ -8808,6 +8828,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							case GSTATADD_DEITY:
 								M.setWorshipCharID(arg3);
 								break;
+							case GSTATADD_MATTRIB:
+								break;
 							case GSTATADD_CLAN:
 							{
 								Pair<Clan, Integer> p = M.getClanRole(arg3);
@@ -9081,6 +9103,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										break;
 									case GSTATADD_DEITY:
 										M.setWorshipCharID(arg3);
+										break;
+									case GSTATADD_MATTRIB:
 										break;
 									case GSTATADD_CLAN:
 									{
