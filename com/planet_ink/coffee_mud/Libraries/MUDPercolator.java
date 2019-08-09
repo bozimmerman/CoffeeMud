@@ -298,7 +298,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(R == null)
 			throw new CMException("Unable to build room on classID '"+classID+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		addDefinition("ROOM_CLASS",classID,defined);
-		final List<String> ignoreStats=new XVector<String>(new String[]{"CLASS","DISPLAY","DESCRIPTION"});
+		final List<String> ignoreStats=new XArrayList<String>(new String[]{"CLASS","DISPLAY","DESCRIPTION"});
 		fillOutRequiredStatCodeSafe(R, ignoreStats, "ROOM_", "TITLE", "DISPLAY", piece, defined);
 		fillOutRequiredStatCodeSafe(R, ignoreStats, "ROOM_", "DESCRIPTION", "DESCRIPTION", piece, defined);
 		fillOutCopyCodes(R, ignoreStats, "ROOM_", piece, defined);
@@ -629,7 +629,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						{
 							if(node.links().get(Integer.valueOf(d))!=null)
 							{
-								final List<LayoutNode> grpCopy=new XVector<LayoutNode>(group);
+								final List<LayoutNode> grpCopy=new XArrayList<LayoutNode>(group);
 								final HashSet<LayoutNode> nodesAlreadyGroupedCopy=(HashSet<LayoutNode>)nodesAlreadyGrouped.clone();
 								layoutFollow(node,LayoutTypes.street,d,nodesAlreadyGroupedCopy,grpCopy);
 								if(node.links().get(Integer.valueOf(Directions.getOpDirectionCode(d)))!=null)
@@ -774,7 +774,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if((!CMath.isInteger(size))||(CMath.s_int(size)<=0))
 			throw new CMException("Unable to build area of size "+size);
 		defined.put("AREA_SIZE",size);
-		final List<String> ignoreStats=new XVector<String>(new String[]{"CLASS","NAME","DESCRIPTION","LAYOUT","SIZE"});
+		final List<String> ignoreStats=new XArrayList<String>(new String[]{"CLASS","NAME","DESCRIPTION","LAYOUT","SIZE"});
 		fillOutStatCodes(A, ignoreStats,"AREA_",piece,defined);
 
 		final List<Ability> aV = findAffects(A,piece,defined,null);
@@ -1226,7 +1226,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		final String classID = findStringNow("class",piece,defined);
 		MOB M = null;
-		final List<String> ignoreStats=new XVector<String>();
+		final List<String> ignoreStats=new XArrayList<String>();
 		boolean copyFilled = false;
 		if(classID.equalsIgnoreCase("catalog"))
 		{
@@ -1439,7 +1439,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	// remember to check ROOMLINK_DIR for N,S,E,W,U,D,etc..
 	protected Exit buildExit(final XMLTag piece, final Map<String,Object> defined) throws CMException
 	{
-		final List<String> ignoreStats=new XVector<String>();
+		final List<String> ignoreStats=new XArrayList<String>();
 		final String classID = findStringNow("class",piece,defined);
 		final Exit E = CMClass.getExit(classID);
 		if(E == null)
@@ -1736,7 +1736,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final Map<String,Object> preContentDefined = new SHashtable<String,Object>(defined);
 		final String classID = findStringNow("class",piece,defined);
 		final List<Item> contents = new Vector<Item>();
-		final List<String> ignoreStats=new XVector<String>();
+		final List<String> ignoreStats=new XArrayList<String>();
 		final int senseFlag = CMath.s_bool(findOptionalStringNow(null,null,null,"nowear",piece,defined,false)) ? PhyStats.SENSE_ITEMNOAUTOWEAR : 0;
 		if(classID.toLowerCase().startsWith("metacraft"))
 		{
@@ -2244,7 +2244,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		addDefinition("RACE_CLASS",R.ID(),defined); // define so we can mess with it
 		R.setStat("NAME", findStringNow("name",piece,defined));
 		addDefinition("RACE_NAME",R.name(),defined); // define so we can mess with it
-		final List<String> ignoreStats=new XVector<String>(new String[]{"CLASS","NAME"});
+		final List<String> ignoreStats=new XArrayList<String>(new String[]{"CLASS","NAME"});
 
 		final List<Item> raceWeapons=getRaceItems(E,"WEAPON","RACE_WEAPON_",piece,defined);
 		if(raceWeapons.size()>0)
@@ -2913,21 +2913,35 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if((num<0)||(num>choices.size()))
 				throw new CMException("Can't pick "+num+" of "+choices.size()+" on piece '"+piece.tag()+"', Tag: "+tagName+", Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			selectedChoicesV=new Vector<XMLTag>();
-			final List<XMLLibrary.XMLTag> cV=new XVector<XMLLibrary.XMLTag>(choices);
+			final List<XMLLibrary.XMLTag> cV=new XArrayList<XMLLibrary.XMLTag>(choices);
 			for(int v=0;v<num;v++)
 			{
-				final int[] weights=new int[cV.size()];
 				int total=0;
+				int[] weights=new int[cV.size()];
 				for(int c=0;c<cV.size();c++)
 				{
 					final XMLTag lilP=cV.get(c);
-					int weight=CMath.s_parseIntExpression(lilP.getParmValue("PICKWEIGHT"));
-					if(weight<1)
-						weight=1;
-					weights[c]=weight;
-					total+=weight;
+					final String pickWeight=lilP.getParmValue("PICKWEIGHT");
+					final int weight;
+					if(pickWeight==null)
+						weight=0;
+					else
+					{
+						final String weightValue=strFilterNow(E,ignoreStats,defPrefix,pickWeight,piece, defined);
+						weight=CMath.s_parseIntExpression(weightValue);
+					}
+					if(weight < 0)
+					{
+						cV.remove(c);
+						weights=Arrays.copyOf(weights, weights.length-1);
+						c--;
+					}
+					else
+					{
+						weights[c]=weight;
+						total+=weight;
+					}
 				}
-
 				int choice=CMLib.dice().roll(1,total,0);
 				int c=-1;
 				while(choice>0)
@@ -2935,8 +2949,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					c++;
 					choice-=weights[c];
 				}
-				selectedChoicesV.add(cV.get(c));
-				cV.remove(c);
+				if((c>=0)&&(c<cV.size()))
+				{
+					selectedChoicesV.add(cV.get(c));
+					cV.remove(c);
+				}
 			}
 		}
 		else
@@ -2949,7 +2966,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if((num<0)||(num>choices.size()))
 				throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag()+"', Tag: "+tagName+", Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			selectedChoicesV=new Vector<XMLTag>();
-			final List<XMLLibrary.XMLTag> cV=new XVector<XMLLibrary.XMLTag>(choices);
+			final List<XMLLibrary.XMLTag> cV=new XArrayList<XMLLibrary.XMLTag>(choices);
 			for(int v=0;v<num;v++)
 			{
 				final int x=CMLib.dice().roll(1,cV.size(),-1);
@@ -2964,7 +2981,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(num<0)
 				throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag()+"', Tag: "+tagName+", Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			selectedChoicesV=new Vector<XMLTag>();
-			final List<XMLLibrary.XMLTag> cV=new XVector<XMLLibrary.XMLTag>(choices);
+			final List<XMLLibrary.XMLTag> cV=new XArrayList<XMLLibrary.XMLTag>(choices);
 			for(int v=0;v<num;v++)
 			{
 				final int x=CMLib.dice().roll(1,cV.size(),-1);
@@ -2978,7 +2995,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if((num<0)||(num>choices.size()))
 				throw new CMException("Can't pick any "+num+" of "+choices.size()+" on piece '"+piece.tag()+"', Tag: "+tagName+", Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			selectedChoicesV=new Vector<XMLTag>();
-			final List<XMLLibrary.XMLTag> cV=new XVector<XMLLibrary.XMLTag>(choices);
+			final List<XMLLibrary.XMLTag> cV=new XArrayList<XMLLibrary.XMLTag>(choices);
 			for(int v=0;v<num;v++)
 			{
 				final int x=CMLib.dice().roll(1,cV.size(),-1);

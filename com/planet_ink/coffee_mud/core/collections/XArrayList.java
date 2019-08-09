@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /*
-   Copyright 2010-2019 Bo Zimmerman
+   Copyright 2019-2019 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -20,30 +20,30 @@ import java.util.*;
  */
 
 /*
- * A version of the Vector class with better constructors
+ * A version of the ArrayList class with better constructors
  */
-public class XVector<T> extends Vector<T>
+public class XArrayList<T> extends ArrayList<T>
 {
 	private static final long	serialVersionUID	= 6687178785122563992L;
 
-	public XVector(final List<? extends T> V)
+	public XArrayList(final List<? extends T> V)
 	{
 		super((V==null)?0:V.size());
 		if (V != null)
 			addAll(V);
 	}
 
-	public XVector()
+	public XArrayList()
 	{
 		super();
 	}
 
-	public XVector(final int size, final boolean boo)
+	public XArrayList(final int size, final boolean boo)
 	{
 		super(size);
 	}
 
-	public XVector(final T[] E)
+	public XArrayList(final T[] E)
 	{
 		super((E==null)?0:E.length);
 		if (E != null)
@@ -51,42 +51,42 @@ public class XVector<T> extends Vector<T>
 				add(o);
 	}
 
-	public XVector(final T E)
+	public XArrayList(final T E)
 	{
 		super();
 		if (E != null)
 			add(E);
 	}
 
-	public XVector(final T E, final T E2)
+	public XArrayList(final T E, final T E2)
 	{
 		this(E);
 		if (E2 != null)
 			add(E2);
 	}
 
-	public XVector(final T E, final T E2, final T E3)
+	public XArrayList(final T E, final T E2, final T E3)
 	{
 		this(E, E2);
 		if (E3 != null)
 			add(E3);
 	}
 
-	public XVector(final T E, final T E2, final T E3, final T E4)
+	public XArrayList(final T E, final T E2, final T E3, final T E4)
 	{
 		this(E, E2, E3);
 		if (E4 != null)
 			add(E4);
 	}
 
-	public XVector(final T E, final T E2, final T E3, final T E4, final T E5)
+	public XArrayList(final T E, final T E2, final T E3, final T E4, final T E5)
 	{
 		this(E, E2, E3, E4);
 		if (E5 != null)
 			add(E5);
 	}
 
-	public XVector(final Set<T> E)
+	public XArrayList(final Set<T> E)
 	{
 		super((E==null)?0:E.size());
 		if (E != null)
@@ -96,7 +96,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public XVector(final Enumeration<T> E)
+	public XArrayList(final Enumeration<T> E)
 	{
 		super();
 		if (E != null)
@@ -106,7 +106,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public XVector(final Iterator<T> E)
+	public XArrayList(final Iterator<T> E)
 	{
 		super();
 		if (E != null)
