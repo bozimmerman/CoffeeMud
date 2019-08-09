@@ -8103,7 +8103,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						si++;
 					}
 					else
-					if(skipSwitchMap.containsKey("$")) // the "default" case
+					if(skipSwitchMap.containsKey("$ENDSWITCH")) // the "endswitch" case
 					{
 						foundEndSwitch=true;
 						si=skipSwitchMap.get("$ENDSWITCH").intValue();
@@ -8193,7 +8193,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						&&(skipSwitchMap.containsKey("$ENDSWITCH"))) // we're done
 						{
 							foundEndSwitch=true;
-							skipSwitchMap.get("$ENDSWITCH").intValue();
+							si=skipSwitchMap.get("$ENDSWITCH").intValue();
 							break; // this is important, otherwise si will get increment and screw stuff up
 						}
 						else
