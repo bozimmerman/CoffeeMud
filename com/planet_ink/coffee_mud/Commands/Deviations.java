@@ -119,7 +119,17 @@ public class Deviations extends StdCommand
 				if((I!=null)
 				&&((I instanceof Armor)||(I instanceof Weapon))
 				&&(!alreadyDone(I,check)))
-					check.add(I);
+				{
+					final Item checkI=(Item)I.copyOf();
+					CMLib.threads().deleteAllTicks(checkI);
+					checkI.setContainer(null);
+					checkI.setOwner(null);
+					checkI.recoverPhyStats();
+					if(!alreadyDone(checkI,check))
+						check.add(I);
+					else
+						checkI.destroy();
+				}
 			}
 			for(int m=0;m<R.numInhabitants();m++)
 			{
@@ -132,7 +142,17 @@ public class Deviations extends StdCommand
 						if((I!=null)
 						&&((I instanceof Armor)||(I instanceof Weapon))
 						&&(!alreadyDone(I,check)))
-							check.add(I);
+						{
+							final Item checkI=(Item)I.copyOf();
+							CMLib.threads().deleteAllTicks(checkI);
+							checkI.setContainer(null);
+							checkI.setOwner(null);
+							checkI.recoverPhyStats();
+							if(!alreadyDone(checkI,check))
+								check.add(I);
+							else
+								checkI.destroy();
+						}
 					}
 					final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 					if(SK!=null)
@@ -145,7 +165,17 @@ public class Deviations extends StdCommand
 								final Item I=(Item)E2;
 								if(((I instanceof Armor)||(I instanceof Weapon))
 								&&(!alreadyDone(I,check)))
-									check.add(I);
+								{
+									final Item checkI=(Item)I.copyOf();
+									CMLib.threads().deleteAllTicks(checkI);
+									checkI.setContainer(null);
+									checkI.setOwner(null);
+									checkI.recoverPhyStats();
+									if(!alreadyDone(checkI,check))
+										check.add(I);
+									else
+										checkI.destroy();
+								}
 							}
 						}
 					}
@@ -285,6 +315,7 @@ public class Deviations extends StdCommand
 					itemResults.append(CMStrings.padRight(" - ",4)+" ");
 				*/
 				itemResults.append("\n\r");
+				I.destroy(); // these are always copies, so all good
 			}
 			else
 			{
