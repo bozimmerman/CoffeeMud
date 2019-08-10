@@ -199,7 +199,7 @@ public class Chant_SenseAge extends Chant
 				}
 
 				mob.tell(info.toString());
-				if(destroyM)
+				if(destroyM && (M!=null))
 					M.destroy();
 			}
 		}

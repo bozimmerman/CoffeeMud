@@ -871,7 +871,7 @@ public class Age extends StdAbility
 			this.nextAgeCheckTimeMs = System.currentTimeMillis() + 5000;
 		}
 		this.doAgeChangeCheck();
-	};
+	}
 
 	@Override
 	public void setStat(final String code, final String val)

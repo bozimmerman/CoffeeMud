@@ -434,7 +434,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 						if((otherParentName!=null)&&(otherParentName.length()==0))
 							otherParentName = null;
 						MOB otherParentM = null;
-						if(otherParentName.length()>0)
+						if((otherParentName!=null)&&(otherParentName.length()>0))
 							otherParentM=CMLib.players().getLoadPlayer(otherParentName);
 						for(int k=0;k<numKids;k++)
 						{

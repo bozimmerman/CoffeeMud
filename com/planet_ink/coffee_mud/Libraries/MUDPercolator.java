@@ -2964,7 +2964,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				throw new CMException("Can't pick "+num+" of "+choices.size()+" on piece '"+piece.tag()+"', Tag: "+tagName+", Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			selectedChoicesV=new Vector<XMLTag>();
 			final List<XMLLibrary.XMLTag> cV=new XArrayList<XMLLibrary.XMLTag>(choices);
-			final List<Integer> wV=new XArrayList<Integer>(choices.size());
+			final List<Integer> wV=new XArrayList<Integer>(choices.size(),true);
 			for(int c=0;c<cV.size();c++)
 			{
 				final XMLTag lilP=cV.get(c);

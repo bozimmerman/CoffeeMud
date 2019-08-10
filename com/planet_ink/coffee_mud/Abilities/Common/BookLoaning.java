@@ -782,6 +782,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 						}
 					}
 				}
+				break;
 			}
 			default:
 				break;
@@ -1111,6 +1112,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 						});
 					}
 				}
+				break;
 			}
 			default:
 				break;
