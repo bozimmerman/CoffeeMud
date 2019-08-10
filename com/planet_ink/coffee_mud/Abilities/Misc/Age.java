@@ -881,6 +881,19 @@ public class Age extends StdAbility
 			if (code.equalsIgnoreCase("BIRTHDATE"))
 				this.setMiscText(""+CMath.s_long(val));
 			else
+			if (code.equalsIgnoreCase("AGEYEARS"))
+			{
+				final int numYears = CMath.s_int(val);
+				if(numYears > 0)
+				{
+					final TimeClock C=CMLib.time().localClock(affected);
+					final int months = C.getMonthsInYear() * numYears;
+					final int days = months * C.getDaysInMonth();
+					final long hours = days * C.getHoursInDay();
+					setMiscText(""+(System.currentTimeMillis()-(hours * CMProps.getMillisPerMudHour())));
+				}
+			}
+			else
 				super.setStat(code, val);
 		}
 	}
@@ -892,6 +905,20 @@ public class Age extends StdAbility
 		{
 			if (code.equalsIgnoreCase("BIRTHDATE"))
 				return text();
+			else
+			if (code.equalsIgnoreCase("AGEYEARS"))
+			{
+				final long start=CMath.s_long(text());
+				if(start<Short.MAX_VALUE)
+					return "";
+				final TimeClock C=CMLib.time().localClock(affected);
+				final long days=((System.currentTimeMillis()-start)/CMProps.getTickMillis())/CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY); // down to days;
+				final long months=days/C.getDaysInMonth();
+				final long years=months/C.getMonthsInYear();
+				if(years > 0)
+					return ""+years;
+				return "0";
+			}
 			else
 				return super.getStat(code);
 		}
