@@ -874,6 +874,31 @@ public class Age extends StdAbility
 	};
 
 	@Override
+	public void setStat(final String code, final String val)
+	{
+		if(code != null)
+		{
+			if (code.equalsIgnoreCase("BIRTHDATE"))
+				this.setMiscText(""+CMath.s_long(val));
+			else
+				super.setStat(code, val);
+		}
+	}
+
+	@Override
+	public String getStat(final String code)
+	{
+		if(code != null)
+		{
+			if (code.equalsIgnoreCase("BIRTHDATE"))
+				return text();
+			else
+				return super.getStat(code);
+		}
+		return "";
+	}
+
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

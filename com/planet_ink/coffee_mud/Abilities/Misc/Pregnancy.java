@@ -287,7 +287,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 				return (affected == null) ? "" : affected.Name();
 			else
 			if (code.equalsIgnoreCase("MOTHERRACE"))
-				return (!(affected instanceof MOB)) ? "" : ((MOB)affected).baseCharStats().getMyRace().name();
+				return (!(affected instanceof MOB)) ? "" : ((MOB)affected).baseCharStats().getMyRace().ID();
 			else
 			if (code.equalsIgnoreCase("FATHERNAME"))
 				return "" + this.getFathersName();
@@ -308,7 +308,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	{
 		final String text = getHealthConditionDesc();
 		if (text.length() > 0)
-			return "(is " + text + ")";
+			return "(" + text + ")";
 		return "";
 	}
 

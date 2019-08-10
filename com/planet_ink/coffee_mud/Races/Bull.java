@@ -136,7 +136,9 @@ public class Bull extends Buffalo
 	@Override
 	public boolean canBreedWith(final Race R, final boolean crossBreed)
 	{
-		if((!super.sameAs(R))&&(R!=null))
+		if((!super.sameAs(R))
+		&&(R!=null)
+		&&(!crossBreed))
 			return R.ID().equals("Cow");
 		return true;
 	}

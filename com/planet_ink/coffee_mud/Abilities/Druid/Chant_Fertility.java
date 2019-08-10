@@ -129,6 +129,28 @@ public class Chant_Fertility extends Chant
 		}
 	}
 
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(ticking instanceof MOB)
+		{
+			final Ability pregA=((MOB)ticking).fetchEffect("Pregnancy");
+			if(pregA != null)
+			{
+				final int numKids = CMath.s_int(pregA.getStat("NUMBABIES"));
+				if((CMLib.dice().roll(1, 10^(1+numKids), 0)==1)
+				&&(numKids<9)
+				&&(canBeUninvoked()))
+				{
+					pregA.setStat("NUMBABIES", ""+(numKids+1));
+					this.unInvoke();
+				}
+			}
+		}
+		return true;
+	}
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
