@@ -13276,7 +13276,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	protected int getTriggerCode(final String trigger, final String[] ttrigger)
 	{
-		Integer I=null;
+		final Integer I;
 		if((ttrigger!=null)&&(ttrigger.length>0))
 			I=progH.get(ttrigger[0]);
 		else
