@@ -1400,44 +1400,47 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return dividers;
 	}
 
-	protected DeadBody justDie(final MOB source, final MOB target)
+	protected DeadBody justDie(final MOB killerM, final MOB deadM)
 	{
-		if(target==null)
+		if(deadM==null)
 			return null;
-		final Room deathRoom=target.location();
+		final Room deathRoom=deadM.location();
 		if(deathRoom == null)
 			return null;
-		final Session srcSession=(source==null)?null:source.session();
-		final Session tgtSession=target.session();
+		if(deadM.isPlayer())
+			CMLib.achievements().possiblyBumpAchievement(deadM, AchievementLibrary.Event.DEATHS, 1, killerM);
+
+		final Session killerSess=(killerM==null)?null:killerM.session();
+		final Session deadMSess=deadM.session();
 
 		//TODO: this creates too many loops.  The right thing is to loop once
 		// and call  a boolean function to populate all these lists.
-		final CharClass combatCharClass=getCombatDominantClass(source,target);
-		final Set<MOB> beneficiaries=getCombatBeneficiaries(source,target,combatCharClass);
-		final Set<MOB> hisGroupH=target.getGroupMembers(new HashSet<MOB>());
+		final CharClass combatCharClass=getCombatDominantClass(killerM,deadM);
+		final Set<MOB> beneficiaries=getCombatBeneficiaries(killerM,deadM,combatCharClass);
+		final Set<MOB> hisGroupH=deadM.getGroupMembers(new HashSet<MOB>());
 		for(final Enumeration<MOB> m=deathRoom.inhabitants();m.hasMoreElements();)
 		{
 			final MOB M=m.nextElement();
 			if((M!=null)
-			&&(M.getVictim()==target))
-				pickNextVictim(M, target, hisGroupH);
+			&&(M.getVictim()==deadM))
+				pickNextVictim(M, deadM, hisGroupH);
 		}
-		final Set<MOB> dividers=getCombatDividers(source,target,combatCharClass);
+		final Set<MOB> dividers=getCombatDividers(killerM,deadM,combatCharClass);
 
-		if(source != null)
-			CMLib.get(srcSession)._combat().dispenseExperience(beneficiaries,dividers,target);
+		if(killerM != null)
+			CMLib.get(killerSess)._combat().dispenseExperience(beneficiaries,dividers,deadM);
 		else
-			CMLib.get(tgtSession)._combat().dispenseExperience(beneficiaries,dividers,target);
+			CMLib.get(deadMSess)._combat().dispenseExperience(beneficiaries,dividers,deadM);
 
-		final String currency=CMLib.beanCounter().getCurrency(target);
-		final double deadMoney=CMLib.beanCounter().getTotalAbsoluteValue(target,currency);
+		final String currency=CMLib.beanCounter().getCurrency(deadM);
+		final double deadMoney=CMLib.beanCounter().getTotalAbsoluteValue(deadM,currency);
 		double myAmountOfDeadMoney=0.0;
 		final List<MOB> goldLooters=new ArrayList<MOB>();
 		for (final MOB M : beneficiaries)
 		{
 			if(((M.isAttributeSet(MOB.Attrib.AUTOGOLD))
 			&&(!goldLooters.contains(M)))
-			&&(M!=target)
+			&&(M!=deadM)
 			&&(M.location()==deathRoom)
 			&&(deathRoom.isInhabitant(M)))
 				goldLooters.add(M);
@@ -1445,83 +1448,83 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((goldLooters.size()>0)&&(deadMoney>0))
 		{
 			myAmountOfDeadMoney=CMath.div(deadMoney,goldLooters.size());
-			CMLib.beanCounter().subtractMoney(target,deadMoney);
+			CMLib.beanCounter().subtractMoney(deadM,deadMoney);
 		}
 
-		final int[] expLost={100*target.phyStats().level()};
+		final int[] expLost={100*deadM.phyStats().level()};
 		if(expLost[0]<100)
 			expLost[0]=100;
 		String[] cmds=null;
-		if((target.isMonster())||(target.soulMate()!=null))
+		if((deadM.isMonster())||(deadM.soulMate()!=null))
 			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.getVar(CMProps.Str.MOBDEATH),true));
 		else
-			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.get(target.session()).getStr(CMProps.Str.PLAYERDEATH),true));
+			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.get(deadM.session()).getStr(CMProps.Str.PLAYERDEATH),true));
 
 		DeadBody body=null; //must be done before consequences because consequences could be purging
 		if((!CMParms.containsIgnoreCase(cmds,"RECALL"))
-		&&(!isKnockedOutUponDeath(target,source)))
-			body=target.killMeDead(true);
+		&&(!isKnockedOutUponDeath(deadM,killerM)))
+			body=deadM.killMeDead(true);
 
-		final boolean stillExists = handleCombatLossConsequences(target,source,cmds,expLost,"^*You lose @x1 experience points.^?^.");
-		if(!isKnockedOutUponDeath(target,source))
+		final boolean stillExists = handleCombatLossConsequences(deadM,killerM,cmds,expLost,"^*You lose @x1 experience points.^?^.");
+		if(!isKnockedOutUponDeath(deadM,killerM))
 		{
 			Room bodyRoom=deathRoom;
 			if((body!=null)&&(body.owner() instanceof Room)&&(((Room)body.owner()).isContent(body)))
 				bodyRoom=(Room)body.owner();
-			if((source!=null)&&(body!=null))
+			if((killerM!=null)&&(body!=null))
 			{
-				body.setKillerName(source.Name());
-				body.setIsKillerPlayer(!source.isMonster());
-				body.setKillerTool(source.fetchWieldedItem());
+				body.setKillerName(killerM.Name());
+				body.setIsKillerPlayer(!killerM.isMonster());
+				body.setKillerTool(killerM.fetchWieldedItem());
 				if(body.getKillerTool()==null)
-					body.setKillerTool(source.getNaturalWeapon());
+					body.setKillerTool(killerM.getNaturalWeapon());
 			}
 
-			if((!target.isMonster())
+			if((!deadM.isMonster())
 			&&(CMLib.dice().rollPercentage()==1)
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE))
 			&&(stillExists))
 			{
 				final Ability A=CMClass.getAbility("Disease_Amnesia");
 				if((A!=null)
-				&&(target.fetchEffect(A.ID())==null)
+				&&(deadM.fetchEffect(A.ID())==null)
 				&&(!CMSecurity.isAbilityDisabled(A.ID())))
-					A.invoke(target,target,true,0);
+					A.invoke(deadM,deadM,true,0);
 			}
 
-			if(target.soulMate()!=null)
+			if(deadM.soulMate()!=null)
 			{
-				final Session s=target.session();
-				s.setMob(target.soulMate());
-				target.soulMate().setSession(s);
-				target.setSession(null);
-				target.soulMate().tell(L("^HYour spirit has returned to your body...\n\r\n\r^N"));
-				CMLib.commands().postLook(target.soulMate(),true);
-				target.setSoulMate(null);
+				final Session s=deadM.session();
+				s.setMob(deadM.soulMate());
+				deadM.soulMate().setSession(s);
+				deadM.setSession(null);
+				deadM.soulMate().tell(L("^HYour spirit has returned to your body...\n\r\n\r^N"));
+				CMLib.commands().postLook(deadM.soulMate(),true);
+				deadM.setSoulMate(null);
 			}
 
-			if((source!=null)
+			if((killerM!=null)
 			&&(bodyRoom!=null)
 			&&(body!=null)
-			&&(source.location()==bodyRoom)
-			&&(bodyRoom.isInhabitant(source))
-			&&(source.isAttributeSet(MOB.Attrib.AUTOLOOT)))
+			&&(killerM.location()==bodyRoom)
+			&&(bodyRoom.isInhabitant(killerM))
+			&&(killerM.isAttributeSet(MOB.Attrib.AUTOLOOT)))
 			{
-				if((source.riding()!=null)&&(source.riding() instanceof MOB))
-					source.tell(L("You'll need to dismount to loot the body."));
+				if((killerM.riding()!=null)&&(killerM.riding() instanceof MOB))
+					killerM.tell(L("You'll need to dismount to loot the body."));
 				else
-				if((source.riding()!=null)&&(source.riding() instanceof MOB))
-					source.tell(L("You'll need to disembark to loot the body."));
+				if((killerM.riding()!=null)&&(killerM.riding() instanceof MOB))
+					killerM.tell(L("You'll need to disembark to loot the body."));
 				else
 				for(int i=bodyRoom.numItems()-1;i>=0;i--)
 				{
 					final Item item=bodyRoom.getItem(i);
 					if((item!=null)
 					&&(item.container()==body)
-					&&(CMLib.flags().canBeSeenBy(body,source))
+					&&(CMLib.flags().canBeSeenBy(body,killerM))
 					&&((!body.isDestroyedAfterLooting())||(!(item instanceof RawMaterial)))
-					&&(CMLib.flags().canBeSeenBy(item,source)))
-						CMLib.commands().postGet(source,body,item,false);
+					&&(CMLib.flags().canBeSeenBy(item,killerM)))
+						CMLib.commands().postGet(killerM,body,item,false);
 				}
 				if(body.isDestroyedAfterLooting())
 					bodyRoom.recoverRoomStats();
@@ -1557,9 +1560,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				}
 			}
 
-			if((source != null)&&(source.getVictim()==target))
-				source.setVictim(null);
-			target.setVictim(null);
+			if((killerM != null)&&(killerM.getVictim()==deadM))
+				killerM.setVictim(null);
+			deadM.setVictim(null);
 			if((body!=null)&&(bodyRoom!=null)&&(body.isDestroyedAfterLooting()))
 			{
 				for(int i=bodyRoom.numItems()-1;i>=0;i--)
