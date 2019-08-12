@@ -248,7 +248,6 @@ public class RoomLoader
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");
 
 				CMLib.map().addArea(A);
-				CMLib.map().registerWorldObjectLoaded(A, null, A);
 				areasLoaded.add(new Pair<Area,String>(A,miscData));
 			}
 			for(final Pair<Area,String> a : areasLoaded)
@@ -258,6 +257,7 @@ public class RoomLoader
 			for(final Pair<Area,String> a : areasLoaded)
 			{
 				a.first.setAreaState(Area.State.ACTIVE);
+				CMLib.map().registerWorldObjectLoaded(a.first, null, a.first);
 			}
 		}
 		catch(final SQLException sqle)
