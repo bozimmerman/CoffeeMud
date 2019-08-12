@@ -59,9 +59,9 @@ public class ShipQuarter extends WoodRoom
 	@Override
 	public CMObject copyOf()
 	{
-		final ShipMagazine R = (ShipMagazine)super.copyOf();
+		final ShipQuarter R = (ShipQuarter)super.copyOf();
 		R.capacityA=CMClass.getAbility("Prop_ReqCapacity");
-		capacityA.setMiscText("items=100 weight=1000");
+		R.capacityA.setMiscText("items=100 weight=1000");
 		R.capacityA.setAffectedOne(R);
 		R.capacityA.makeNonUninvokable();
 		return R;
@@ -70,9 +70,9 @@ public class ShipQuarter extends WoodRoom
 	@Override
 	public CMObject newInstance()
 	{
-		final ShipMagazine R = (ShipMagazine)super.newInstance();
+		final ShipQuarter R = (ShipQuarter)super.newInstance();
 		R.capacityA=CMClass.getAbility("Prop_ReqCapacity");
-		capacityA.setMiscText("items=100 weight=1000");
+		R.capacityA.setMiscText("items=100 weight=1000");
 		R.capacityA.setAffectedOne(R);
 		R.capacityA.makeNonUninvokable();
 		return R;

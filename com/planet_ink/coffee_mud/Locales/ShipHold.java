@@ -61,7 +61,7 @@ public class ShipHold extends WoodRoom
 	{
 		final ShipHold R = (ShipHold)super.copyOf();
 		R.capacityA=CMClass.getAbility("Prop_ReqCapacity");
-		capacityA.setMiscText("items=100 weight=10000");
+		R.capacityA.setMiscText("items=100 weight=10000");
 		R.capacityA.setAffectedOne(R);
 		R.capacityA.makeNonUninvokable();
 		return R;
@@ -72,7 +72,7 @@ public class ShipHold extends WoodRoom
 	{
 		final ShipHold R = (ShipHold)super.newInstance();
 		R.capacityA=CMClass.getAbility("Prop_ReqCapacity");
-		capacityA.setMiscText("items=100 weight=10000");
+		R.capacityA.setMiscText("items=100 weight=10000");
 		R.capacityA.setAffectedOne(R);
 		R.capacityA.makeNonUninvokable();
 		return R;
