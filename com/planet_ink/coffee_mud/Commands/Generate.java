@@ -291,6 +291,7 @@ public class Generate extends StdCommand
 				{
 					final Area A=(Area)V.get(v);
 					CMLib.map().addArea(A);
+					CMLib.map().registerWorldObjectLoaded(A, null, A);
 					if(save)
 						CMLib.database().DBCreateArea(A);
 					Room R=A.getRoom(A.Name()+"#0");

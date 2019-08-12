@@ -161,6 +161,7 @@ public class GrinderAreas
 			A=CMClass.getAreaType(A.ID());
 			A.setName(name);
 			CMLib.map().addArea(A);
+			CMLib.map().registerWorldObjectLoaded(A, null, A);
 			CMLib.database().DBCreateArea(A);
 			redoAllMyDamnRooms=true;
 			httpReq.addFakeUrlParameter("AREA",A.Name());

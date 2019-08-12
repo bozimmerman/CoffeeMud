@@ -346,6 +346,7 @@ public class Modify extends StdCommand
 						CMLib.map().addArea(A);
 						CMLib.database().DBCreateArea(A);
 						mob.location().setArea(A);
+						CMLib.map().registerWorldObjectLoaded(A, null, A);
 						CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);
 						reid=true;
 						mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("This entire area twitches.\n\r"));

@@ -358,6 +358,7 @@ public class Copy extends StdCommand
 				if(!CMSecurity.isASysOp(mob))
 					newArea.addSubOp(mob.Name());
 				CMLib.map().addArea(newArea);
+				CMLib.map().registerWorldObjectLoaded(newArea, null, newArea);
 				CMLib.database().DBCreateArea(newArea);
 				final Map<Room,Room> translationMap=new HashMap<Room,Room>();
 				for(final Enumeration<Room> r=((Area)E).getCompleteMap();r.hasMoreElements();)

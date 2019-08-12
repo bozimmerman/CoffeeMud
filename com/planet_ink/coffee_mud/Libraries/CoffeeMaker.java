@@ -932,7 +932,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		return exit;
 	}
-	
+
 	@Override
 	public String unpackRoomFromXML(final String buf, final boolean andContent)
 	{
@@ -950,7 +950,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		return unpackRoomFromXML(null, xml, andContent, true);
 	}
-	
+
 	protected Room unpackRoomObjectFromXML(final String buf, final boolean andContent)
 	{
 		final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(buf);
@@ -1092,7 +1092,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		return "";
 	}
-	
+
 	protected String unpackRoomFromXML(final Area forceArea, final List<XMLTag> xml, final boolean andContent, final boolean andSave)
 	{
 		Area myArea;
@@ -1526,6 +1526,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return unpackErr("Area","No class: "+areaClass);
 		newArea.setName(areaName);
 		CMLib.map().addArea(newArea);
+		CMLib.map().registerWorldObjectLoaded(newArea, null, newArea);
 		CMLib.database().DBCreateArea(newArea);
 
 		newArea.setDescription(CMLib.coffeeFilter().safetyFilter(CMLib.xml().getValFromPieces(aV,"ADESC")));
@@ -1767,7 +1768,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		buf.append("</MOB>\n\r");
 		return buf;
 	}
-	
+
 	protected StringBuffer getExitXML(final Exit exit)
 	{
 		final StringBuffer buf=new StringBuffer("");
@@ -2115,13 +2116,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return CMClass.CMObjectType.EXIT;
 		return null;
 	}
-	
+
 	@Override
 	public String getUnknownNameFromXML(final String xml)
 	{
 		if(xml==null)
 			return L("Unknown");
-		CMClass.CMObjectType typ=this.getUnknownTypeFromXML(xml);
+		final CMClass.CMObjectType typ=this.getUnknownTypeFromXML(xml);
 		if(typ==null)
 			return L("Unknown");
 		switch(typ)
@@ -2130,10 +2131,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case ITEM:
 		case EXIT:
 		{
-			int start=xml.indexOf("&lt;NAME&gt;");
+			final int start=xml.indexOf("&lt;NAME&gt;");
 			if(start>0)
 			{
-				int end=xml.indexOf("&lt;/NAME&gt;",start+12);
+				final int end=xml.indexOf("&lt;/NAME&gt;",start+12);
 				if(end > 0)
 					return xml.substring(start+12,end);
 			}
@@ -2141,10 +2142,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		case LOCALE:
 		{
-			int start=xml.indexOf("<RDISP>");
+			final int start=xml.indexOf("<RDISP>");
 			if(start>0)
 			{
-				int end=xml.indexOf("</RDISP>",start+7);
+				final int end=xml.indexOf("</RDISP>",start+7);
 				if(end > 0)
 					return xml.substring(start+7,end);
 			}
@@ -2155,13 +2156,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		return L("Unknown");
 	}
-	
+
 	@Override
 	public Environmental getUnknownFromXML(final String xml)
 	{
 		if(xml==null)
 			return null;
-		CMClass.CMObjectType typ=this.getUnknownTypeFromXML(xml);
+		final CMClass.CMObjectType typ=this.getUnknownTypeFromXML(xml);
 		if(typ==null)
 			return null;
 		switch(typ)
@@ -2178,7 +2179,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return null;
 		}
 	}
-	
+
 	@Override
 	public StringBuffer getUnknownXML(final Environmental obj)
 	{
@@ -2192,7 +2193,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return this.getRoomXML((Room)obj, null, null, true, false, true);
 		return null;
 	}
-	
+
 	@Override
 	public MOB getMobFromXML(final String xmlBuffer)
 	{
@@ -5122,6 +5123,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		else
 			CMLib.flags().setSavable(newArea, false);
 		CMLib.map().addArea(newArea);
+		CMLib.map().registerWorldObjectLoaded(newArea, null, newArea);
 		final Map<String,String> altIDs=new Hashtable<String,String>();
 		for(final Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 		{

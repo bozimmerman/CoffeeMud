@@ -954,6 +954,7 @@ public class Create extends StdCommand
 		}
 		A.setName(areaName);
 		CMLib.map().addArea(A);
+		CMLib.map().registerWorldObjectLoaded(A, null, A);
 		CMLib.database().DBCreateArea(A);
 
 		final Room R=CMClass.getLocale((A instanceof SpaceObject)?"SpacePort":"StdRoom");

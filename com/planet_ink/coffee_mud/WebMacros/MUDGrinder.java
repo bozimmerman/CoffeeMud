@@ -682,7 +682,9 @@ public class MUDGrinder extends StdWebMacro
 				CMLib.map().addArea(A);
 				CMLib.database().DBCreateArea(A);
 				A.setName(AREA);
-				CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);			}
+				CMLib.map().registerWorldObjectLoaded(A, null, A);
+				CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);
+			}
 			else
 				return "false";
 			Log.sysOut("Grinder",mob.Name()+" added area "+A.Name());

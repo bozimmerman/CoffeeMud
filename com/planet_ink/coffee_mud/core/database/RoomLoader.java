@@ -145,6 +145,7 @@ public class RoomLoader
 
 		final RoomnumberSet set = CMLib.database().DBReadAreaRoomList(areaName, false);
 		CMLib.map().addArea(A);
+		CMLib.map().registerWorldObjectLoaded(A, null, A);
 		final Map<String,Room> rooms=DBReadRoomData(null,set,false,null,unloadedRooms);
 
 		DBReadRoomExits(null,rooms,false,unloadedRooms);
@@ -247,6 +248,7 @@ public class RoomLoader
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Areas ("+currentRecordPos+" of "+recordCount+")");
 
 				CMLib.map().addArea(A);
+				CMLib.map().registerWorldObjectLoaded(A, null, A);
 				areasLoaded.add(new Pair<Area,String>(A,miscData));
 			}
 			for(final Pair<Area,String> a : areasLoaded)
@@ -685,6 +687,7 @@ public class RoomLoader
 			A.setName(areaName);
 			DBCreate(A);
 			CMLib.map().addArea(A);
+			CMLib.map().registerWorldObjectLoaded(A, null, A);
 			for(final Map.Entry<String,Room> entry : rooms.entrySet())
 			{
 				final Room R=entry.getValue();

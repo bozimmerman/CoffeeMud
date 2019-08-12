@@ -1720,6 +1720,7 @@ public class MUD extends Thread implements MudHost
 					room.setArea(newArea);
 					room.setDisplayText(CMLib.lang().L("New Room"));
 					room.setDescription(CMLib.lang().L("Brand new database room! You need to change this text with the MODIFY ROOM command.  If your character is not an Archon, pick up the book you see here and read it immediately!"));
+					CMLib.map().registerWorldObjectLoaded(newArea, null, newArea);
 					CMLib.database().DBCreateRoom(room);
 					final Item I=CMClass.getMiscMagic("ManualArchon");
 					room.addItem(I);
