@@ -165,7 +165,7 @@ public class DefaultArrestWarrant implements LegalWarrant
 	}
 
 	@Override
-	public int punishment()
+	public int punishmentCode()
 	{
 		return punishment;
 	}

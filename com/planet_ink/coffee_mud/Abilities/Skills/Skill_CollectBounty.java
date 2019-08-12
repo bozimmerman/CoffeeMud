@@ -236,7 +236,7 @@ public class Skill_CollectBounty extends StdSkill
 				for(int i=0;i<warrants.size();i++)
 				{
 					W=warrants.get(i);
-					gold+=(W.punishment()*(5+getXLEVELLevel(mob)));
+					gold+=((W.punishmentCode()&Law.PUNISHMENT_MASK)*(5+getXLEVELLevel(mob)));
 				}
 				mob.location().show(judge,mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> pay(s) <T-NAMESELF> the bounty of @x1 on @x2.",CMLib.beanCounter().nameCurrencyShort(judge,gold),target.Name()));
 				final String currency=CMLib.beanCounter().getCurrency(judge);

@@ -151,12 +151,12 @@ public interface LegalWarrant extends CMCommon
 	 *
 	 * @return the full punishment code for the crime
 	 */
-	public int punishment();
+	public int punishmentCode();
 
 	/**
 	 * Sets the full punishment code for the crime
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#punishment()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#punishmentCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#getPunishmentParm(int)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#addPunishmentParm(int, String)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#PUNISHMENT_DESCS
@@ -171,7 +171,7 @@ public interface LegalWarrant extends CMCommon
 	 * bitmask on the punishment.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#addPunishmentParm(int, String)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#punishment()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#punishmentCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#setPunishment(int)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#PUNISHMENTMASK_DESCS
 	 *
@@ -185,7 +185,7 @@ public interface LegalWarrant extends CMCommon
 	 * bitmask on the punishment.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#getPunishmentParm(int)
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#punishment()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#punishmentCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant#setPunishment(int)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Law#PUNISHMENTMASK_DESCS
 	 *

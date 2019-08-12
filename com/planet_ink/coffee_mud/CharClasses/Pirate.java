@@ -454,7 +454,7 @@ public class Pirate extends Thief
 			{
 				if((W.victim()==msg.tool())
 				&&(W.crime() == msg.targetMessage()))
-					W.setPunishment(W.punishment()+1);
+					W.setPunishment(W.punishmentCode()+1);
 			}
 		}
 	}

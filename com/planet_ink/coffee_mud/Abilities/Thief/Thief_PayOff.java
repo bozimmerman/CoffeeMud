@@ -215,8 +215,8 @@ public class Thief_PayOff extends ThiefSkill
 				{
 					for(final LegalWarrant W : warrants)
 					{
-						if(W.punishment()>0)
-							W.setPunishment(W.punishment()-1);
+						if((W.punishmentCode()&Law.PUNISHMENT_MASK)>0)
+							W.setPunishment(W.punishmentCode()-1);
 					}
 				}
 				else

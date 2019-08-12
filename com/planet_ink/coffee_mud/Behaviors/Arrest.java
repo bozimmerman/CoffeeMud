@@ -852,7 +852,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			&&(W2!=W)
 			&&((W==null)
 				||(W2.crime()==null)
-				||(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
+				||(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
 				||(W2.crime().equalsIgnoreCase(W.crime()))))
 					V.add(W2);
 		}
@@ -862,7 +862,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public double getFine(final Law laws, final LegalWarrant W, final MOB criminal)
 	{
 		String s=null;
-		if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
+		if(CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
 		{
 			s=W.getPunishmentParm(Law.PUNISHMENTMASK_FINE);
 			if((s==null)||(s.length()==0)||(!CMath.isNumber(s)))
@@ -874,7 +874,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		for(int w2=0;w2<V.size();w2++)
 		{
 			final LegalWarrant W2=V.get(w2);
-			if(!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
+			if(!CMath.bset(W2.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
 			{
 				s=W.getPunishmentParm(Law.PUNISHMENTMASK_FINE);
 				if((s!=null)&&(s.length()>0)&&(CMath.isNumber(s)))
@@ -892,7 +892,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 		String s=null;
 		int days=0;
-		if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
+		if(CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
 		{
 			s=W.getPunishmentParm(Law.PUNISHMENTMASK_BANISH);
 			if((s != null)&&(s.indexOf(',')>0))
@@ -907,7 +907,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			for(int w2=0;w2<V.size();w2++)
 			{
 				final LegalWarrant W2=V.get(w2);
-				if(!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
+				if(!CMath.bset(W2.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
 				{
 					s=W.getPunishmentParm(Law.PUNISHMENTMASK_BANISH);
 					if((s != null)&&(s.indexOf(',')>0))
@@ -931,7 +931,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 		String s=null;
 		int days=0;
-		if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
+		if(CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
 		{
 			s=W.getPunishmentParm(Law.PUNISHMENTMASK_SHAME);
 			if((s==null)||(s.length()==0)||(!CMath.isNumber(s)))
@@ -944,7 +944,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			for(int w2=0;w2<V.size();w2++)
 			{
 				final LegalWarrant W2=V.get(w2);
-				if(!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
+				if(!CMath.bset(W2.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
 				{
 					s=W.getPunishmentParm(Law.PUNISHMENTMASK_SHAME);
 					if((s!=null)&&(s.length()>0)&&(CMath.isNumber(s)))
@@ -961,7 +961,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	protected String getDetainParm(final Law laws, final LegalWarrant W, final MOB criminal)
 	{
 		String s=null;
-		if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
+		if(CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
 		{
 			s=W.getPunishmentParm(Law.PUNISHMENTMASK_DETAIN);
 			if((s==null)||(s.length()==0))
@@ -974,7 +974,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			for(int w2=0;w2<V.size();w2++)
 			{
 				final LegalWarrant W2=V.get(w2);
-				if(!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
+				if(!CMath.bset(W2.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
 				{
 					s=W.getPunishmentParm(Law.PUNISHMENTMASK_DETAIN);
 					if((s!=null)&&(s.length()>0))
@@ -1025,24 +1025,24 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public int highestCrimeAction(final Law laws, final LegalWarrant W, final MOB criminal)
 	{
-		int highest=W.punishment();
-		if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
-			return W.punishment();
+		int highest=W.punishmentCode();
+		if(CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
+			return W.punishmentCode();
 		final List<LegalWarrant> V=getRelevantWarrants(laws.warrants(),W,criminal);
 		for(int w2=0;w2<V.size();w2++)
 		{
 			final LegalWarrant W2=V.get(w2);
-			if(!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
+			if(!CMath.bset(W2.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
 			{
-				if(((W2.punishment()&Law.PUNISHMENT_MASK)+W2.offenses())>(highest&Law.PUNISHMENT_MASK))
-					highest=(W2.punishment()&Law.PUNISHMENT_MASK)+((W2.offenses()<4)?W2.offenses():3);
+				if(((W2.punishmentCode()&Law.PUNISHMENT_MASK)+W2.offenses())>(highest&Law.PUNISHMENT_MASK))
+					highest=(W2.punishmentCode()&Law.PUNISHMENT_MASK)+((W2.offenses()<4)?W2.offenses():3);
 			}
 		}
 		for(int w2=0;w2<V.size();w2++)
 		{
 			final LegalWarrant W2=V.get(w2);
-			if((!CMath.bset(W2.punishment(),Law.PUNISHMENTMASK_SEPARATE))
-			&&(highest<((W2.punishment()&Law.PUNISHMENT_MASK)+4)))
+			if((!CMath.bset(W2.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
+			&&(highest<((W2.punishmentCode()&Law.PUNISHMENT_MASK)+4)))
 				highest++;
 		}
 		if((highest&Law.PUNISHMENT_MASK)>Law.PUNISHMENT_HIGHEST)
@@ -1304,7 +1304,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		final Vector<LegalWarrant> V=new Vector<LegalWarrant>();
 		{
 			LegalWarrant W=null;
-			if((W1!=null)&&(CMath.bset(W1.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
+			if((W1!=null)&&(CMath.bset(W1.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
 			{
 				for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
 				{
@@ -1495,10 +1495,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean judgeMe(final Law laws, MOB judge, final MOB officer, final MOB criminal, final LegalWarrant W, final Area A, final boolean debugging)
 	{
 		final List<LegalWarrant> relevantCrimes=getRelevantWarrants(laws.warrants(),W,criminal);
-		if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SKIPTRIAL))
+		if(CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SKIPTRIAL))
 			judge=officer;
 		if(debugging)
-			Log.debugOut("Arrest","("+lastAreaName+"): "+W.crime()+" "+criminal.Name()+" judged for "+W.crime()+" has base action "+W.punishment()+", and final judgement "+highestCrimeAction(laws,W,W.criminal()));
+			Log.debugOut("Arrest","("+lastAreaName+"): "+W.crime()+" "+criminal.Name()+" judged for "+W.crime()+" has base action "+W.punishmentCode()+", and final judgement "+highestCrimeAction(laws,W,W.criminal()));
 		boolean totallyDone=false;
 		switch(highestCrimeAction(laws,W,W.criminal())&Law.PUNISHMENT_MASK)
 		{
@@ -1517,11 +1517,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						str.append(L("The charge of @x1 was witnessed by @x2.  ",fixCharge(W2),W2.witness().name()));
 					if((W2.warnMsg()!=null)&&(W2.warnMsg().length()>0))
 						str.append(W2.warnMsg()+"  ");
-					if((W2.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
+					if((W2.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
 						str.append(laws.getMessage(Law.MSG_PREVOFF)+"  ");
 				}
 			}
-			if((laws.getMessage(Law.MSG_WARNING).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_DETAIN)))
+			if((laws.getMessage(Law.MSG_WARNING).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_DETAIN)))
 				str.append(laws.getMessage(Law.MSG_WARNING)+"  ");
 			CMLib.commands().postSay(judge,criminal,str.toString(),false,false);
 			totallyDone=true;
@@ -1542,11 +1542,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						str.append(L("The charge of @x1 was witnessed by @x2.  ",fixCharge(W2),W2.witness().name()));
 					if((W2.warnMsg()!=null)&&(W2.warnMsg().length()>0))
 						str.append(W2.warnMsg()+"  ");
-					if((W2.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
+					if((W2.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
 						str.append(laws.getMessage(Law.MSG_PREVOFF)+"  ");
 				}
 			}
-			if((laws.getMessage(Law.MSG_THREAT).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_DETAIN)))
+			if((laws.getMessage(Law.MSG_THREAT).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_DETAIN)))
 				str.append(laws.getMessage(Law.MSG_THREAT)+"  ");
 			CMLib.commands().postSay(judge,criminal,str.toString(),false,false);
 			totallyDone=true;
@@ -1555,7 +1555,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		case Law.PUNISHMENT_PAROLE1:
 			if(judge!=null)
 			{
-				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
+				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
 					CMLib.commands().postSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.paroleMessages(0).length()>0)
 					CMLib.commands().postSay(judge,criminal,laws.paroleMessages(0),false,false);
@@ -1567,7 +1567,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		case Law.PUNISHMENT_PAROLE2:
 			if(judge!=null)
 			{
-				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
+				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
 					CMLib.commands().postSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.paroleMessages(1).length()>0)
 					CMLib.commands().postSay(judge,criminal,laws.paroleMessages(1),false,false);
@@ -1579,7 +1579,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		case Law.PUNISHMENT_PAROLE3:
 			if(judge!=null)
 			{
-				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
+				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
 					CMLib.commands().postSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.paroleMessages(2).length()>0)
 					CMLib.commands().postSay(judge,criminal,laws.paroleMessages(2),false,false);
@@ -1591,7 +1591,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		case Law.PUNISHMENT_PAROLE4:
 			if(judge!=null)
 			{
-				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
+				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
 					CMLib.commands().postSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.paroleMessages(3).length()>0)
 					CMLib.commands().postSay(judge,criminal,laws.paroleMessages(3),false,false);
@@ -1603,7 +1603,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		case Law.PUNISHMENT_JAIL1:
 			if(judge!=null)
 			{
-				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
+				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
 					CMLib.commands().postSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.jailMessages(0).length()>0)
 					CMLib.commands().postSay(judge,criminal,laws.jailMessages(0),false,false);
@@ -1615,7 +1615,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		case Law.PUNISHMENT_JAIL2:
 			if(judge!=null)
 			{
-				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
+				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
 					CMLib.commands().postSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.jailMessages(1).length()>0)
 					CMLib.commands().postSay(judge,criminal,laws.jailMessages(1),false,false);
@@ -1627,7 +1627,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		case Law.PUNISHMENT_JAIL3:
 			if(judge!=null)
 			{
-				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
+				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
 					CMLib.commands().postSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.jailMessages(2).length()>0)
 					CMLib.commands().postSay(judge,criminal,laws.jailMessages(2),false,false);
@@ -1639,7 +1639,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		case Law.PUNISHMENT_JAIL4:
 			if(judge!=null)
 			{
-				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
+				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
 					CMLib.commands().postSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.jailMessages(3).length()>0)
 					CMLib.commands().postSay(judge,criminal,laws.jailMessages(3),false,false);
@@ -1652,7 +1652,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if(judge!=null)
 			{
 				criminal.setFollowing(null);
-				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
+				if((W.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
 					CMLib.commands().postSay(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.getMessage(Law.MSG_EXECUTE).length()>0)
 					CMLib.commands().postSay(judge,criminal,laws.getMessage(Law.MSG_EXECUTE),false,false);
@@ -1661,7 +1661,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			totallyDone=false;
 			break;
 		}
-		if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_FINE)
+		if(CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_FINE)
 		&&((judge != null)||(totallyDone)))
 		{
 			final double fines=getFine(laws,W,criminal);
@@ -1680,7 +1680,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 
 		if((!totallyDone)
-		&&(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_BANISH))
+		&&(CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_BANISH))
 		&&(judge != null))
 		{
 			final int ticks=getBanishmentTicks(laws,W,criminal);
@@ -1716,7 +1716,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 
 		if((!totallyDone)
-		&&(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SHAME))
+		&&(CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SHAME))
 		&&(judge != null))
 		{
 			final int ticks=getShameTicks(laws,W,criminal);
@@ -1750,7 +1750,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 
 		if((totallyDone)
-		&&(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_DETAIN)))
+		&&(CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_DETAIN)))
 		{
 			W.setState(Law.STATE_DETAINING);
 			if(officer!=null)
@@ -2050,7 +2050,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(s.equalsIgnoreCase(Law.PUNISHMENTMASK_DESCS[i]))
 				{
 					actionCodeSet=true;
-					W.setPunishment(W.punishment()|Law.PUNISHMENTMASK_CODES[i]);
+					W.setPunishment(W.punishmentCode()|Law.PUNISHMENTMASK_CODES[i]);
 					if(parm!=null)
 						W.addPunishmentParm(Law.PUNISHMENTMASK_CODES[i],parm);
 				}
@@ -2064,8 +2064,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 		if((W.victim()!=null)
 		&&(isTroubleMaker(W.victim()))
-		&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
-			W.setPunishment((W.punishment()&Law.PUNISHMENT_MASK)/2);
+		&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE)))
+			W.setPunishment((W.punishmentCode()&Law.PUNISHMENT_MASK)/2);
 
 		if((isStillACrime(W,CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST)))
 		&&((W.witness()==null)||CMLib.flags().canBeSeenBy(W.criminal(),W.witness())))
@@ -2182,7 +2182,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			if((W.victim()!=null)
 			&&(W.criminal()!=null)
 			&&(W.victim()==victim)
-			&&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
+			&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
 			&&(W.criminal()==criminal))
 				laws.warrants().remove(W);
 		}
@@ -2597,7 +2597,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				continue;
 			}
 
-			if(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
+			if(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_SEPARATE))
 			{
 				if(handled.contains(W.criminal().Name()))
 					continue;
@@ -3355,7 +3355,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(!served)
 							CMLib.combat().postAttack(judgeM,criminalM,judgeM.fetchWieldedItem());
 						else
-						if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_BANISH))
+						if(CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_BANISH))
 						{
 							W.setState(Law.STATE_BANISHING);
 							break;
@@ -3701,7 +3701,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					{
 						if(W.criminal().location()==W.releaseRoom())
 						{
-							if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_BANISH))
+							if(CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_BANISH))
 							{
 								W.setState(Law.STATE_BANISHING);
 								break;
