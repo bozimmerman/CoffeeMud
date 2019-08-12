@@ -439,20 +439,30 @@ public class Create extends StdCommand
 			return;
 		}
 
-		final int direction=CMLib.directions().getGoodDirectionCode((commands.get(2)));
+		int direction=CMLib.directions().getGoodDirectionCode((commands.get(2)));
 		if(direction<0)
 		{
-			mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
-			return;
+			final int dir2=CMLib.directions().getGoodDirectionCode((commands.get(commands.size()-1)));
+			if((dir2<0)||(commands.size()<=3))
+			{
+				mob.tell(L("You have failed to specify a direction.  Try @x1.\n\r",Directions.LETTERS()));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
+				return;
+			}
+			else
+			{
+				direction=dir2;
+				final String dirStr=commands.remove(commands.size()-1);
+				commands.add(2, dirStr);
+			}
 		}
 
 		Room thisRoom=null;
-		final String Locale=commands.get(3);
-		thisRoom=CMClass.getLocale(Locale);
+		final String possLocale=commands.get(3);
+		thisRoom=CMClass.getLocale(possLocale);
 		if(thisRoom == null)
 		{
-			final Environmental E=CMLib.catalog().getBuilderTemplateObject(mob.Name(), Locale.toUpperCase().trim());
+			final Environmental E=CMLib.catalog().getBuilderTemplateObject(mob.Name(), possLocale.toUpperCase().trim());
 			if(E instanceof Room)
 				thisRoom=(Room)E;
 			else
@@ -460,7 +470,7 @@ public class Create extends StdCommand
 				E.destroy();
 			if(thisRoom==null)
 			{
-				mob.tell(L("You have failed to specify a valid room type '@x1'.\n\rThe format is CREATE ROOM [DIRECTION] ([ROOM TYPE] / LINK [ROOM ID]) \n\r",Locale));
+				mob.tell(L("You have failed to specify a valid room type '@x1'.\n\rThe format is CREATE ROOM [DIRECTION] ([ROOM TYPE] / LINK [ROOM ID]) \n\r",possLocale));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 				return;
 			}
@@ -771,7 +781,7 @@ public class Create extends StdCommand
 			if(E != null)
 				E.destroy();
 		}
-		
+
 		if(newMOB==null)
 		{
 			mob.tell(L("There's no such thing as a '@x1'.\n\r",mobID));
@@ -1887,7 +1897,7 @@ public class Create extends StdCommand
 			else
 			if(E != null)
 				E.destroy();
-			
+
 			E=CMClass.getItem(allWord);
 			if((E instanceof Item)
 			||((CMLib.english().parseNumPossibleGold(null,allWord)>0)
