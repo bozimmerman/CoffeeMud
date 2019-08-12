@@ -305,14 +305,20 @@ public class Composting extends GatheringSkill
 				return bundle(mob,commands);
 			return false;
 		}
-
-		int amount=CMath.s_int(commands.get(0));
-		if(commands.get(0).equalsIgnoreCase("ALL"))
-			amount=Integer.MAX_VALUE;
-		if(amount<=0)
-			amount=1;
-		else
-			commands.remove(0);
+		
+		if(commands.size()==0)
+		{
+			if(auto)
+			{
+				// ?
+				return false;
+			}
+			else
+			{
+				mob.tell(L("Compost how much of what?"));
+				return false;
+			}
+		}
 
 		verb=L("composting");
 		if(mob.isMonster()
@@ -353,9 +359,17 @@ public class Composting extends GatheringSkill
 		else
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Compost what?"));
+			commonTell(mob,L("Compost how much of what?"));
 			return false;
 		}
+		int amount=CMath.s_int(commands.get(0));
+		if(commands.get(0).equalsIgnoreCase("ALL"))
+			amount=Integer.MAX_VALUE;
+		if(amount<=0)
+			amount=1;
+		else
+			commands.remove(0);
+
 		foundShortName = CMParms.combine(commands);
 		final Item mine=super.getTarget(mob, mob.location(), givenTarget, commands, new Filterer<Environmental>()
 		{
