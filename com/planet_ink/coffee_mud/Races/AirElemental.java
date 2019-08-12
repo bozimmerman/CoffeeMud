@@ -173,7 +173,7 @@ public class AirElemental extends StdRace
 	@Override
 	public String makeMobName(final char gender, final int age)
 	{
-		return makeMobName('N',Race.AGE_MATURE);
+		return super.makeMobName('N',Race.AGE_MATURE);
 	}
 
 	@Override
