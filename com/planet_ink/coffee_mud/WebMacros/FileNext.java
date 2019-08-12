@@ -90,17 +90,36 @@ public class FileNext extends StdWebMacro
 			if(dirs==null)
 			{
 				dirs=CMFile.getFileList(path,M,false,true,null);
+				Arrays.sort(dirs, new Comparator<CMFile>()
+				{
+					@Override
+					public int compare(final CMFile o1, final CMFile o2)
+					{
+						if(o1.isDirectory())
+						{
+							if(o2.isDirectory())
+								return o1.getName().compareToIgnoreCase(o2.getName());
+							return -1;
+						}
+						else
+						{
+							if(!o2.isDirectory())
+								return o1.getName().compareToIgnoreCase(o2.getName());
+							return 1;
+						}
+					}
+				});
 				httpReq.getRequestObjects().put(pathKey, dirs);
 				for(final CMFile file : dirs)
 				{
-					final String filepath=path.endsWith("/")?path+file.getName():path+"/"+file.getName();
+					final String filepath=path.endsWith("/")?(path+file.getName()):(path+"/"+file.getName());
 					httpReq.getRequestObjects().put("CMFSFILE_"+trimSlash(filepath), file);
 				}
 			}
 			for (final CMFile dir : dirs)
 				fileList.addElement(dir.getName());
 		}
-		fileList.sort();
+
 		String lastID="";
 		for(int q=0;q<fileList.size();q++)
 		{
