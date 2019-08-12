@@ -1408,7 +1408,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(deathRoom == null)
 			return null;
 		if(deadM.isPlayer())
-			CMLib.achievements().possiblyBumpAchievement(deadM, AchievementLibrary.Event.DEATHS, 1, killerM);
+		{
+			if(killerM != null)
+				CMLib.achievements().possiblyBumpAchievement(deadM, AchievementLibrary.Event.DEATHS, 1, killerM);
+			else
+				CMLib.achievements().possiblyBumpAchievement(deadM, AchievementLibrary.Event.DEATHS, 1, deadM);
+		}
 
 		final Session killerSess=(killerM==null)?null:killerM.session();
 		final Session deadMSess=deadM.session();
