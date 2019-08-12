@@ -169,8 +169,8 @@ public class PuddleMaker extends StdBehavior
 				if(A!=null)
 				{
 					A.setMiscText("LEVEL=1 INTERVAL="+(Integer.MAX_VALUE/4));
-					I.addNonUninvokableEffect(A);
 					A.setSavable(false);
+					A.startTickDown(CMLib.map().deity(),I,(int)(CMLib.time().localClock(R).getHoursInDay() * CMProps.getTicksPerMudHour()));
 				}
 			}
 		}
