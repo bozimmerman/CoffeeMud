@@ -42,6 +42,17 @@
 			document.BROWSE.PATH.value=path;
 			document.BROWSE.submit();
 		}
+		function RenameFile(action)
+		{
+			var newName = window.prompt('New name/path',action);
+			if((newName != null) && (newName != action))
+			{
+				document.BROWSE.FILE.value=action;
+				document.BROWSE.FUNCTION.value="RENAME";
+				document.BROWSE.NEWFILE.value=newName;
+				document.BROWSE.submit();
+			}
+		}
 		function NewFile(action)
 		{
 			OpenFile(action);
@@ -88,7 +99,9 @@
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=FILE VALUE="">
+<INPUT TYPE=HIDDEN NAME=NEWFILE VALUE="">
 @if?CheckReqParm?FUNCTION=DELETE@<FONT COLOR=RED>@FileMgr?DELETE@</FONT><BR>@endif@
+@if?CheckReqParm?FUNCTION=RENAME@<FONT COLOR=RED>@FileMgr?RENAME@</FONT><BR>@endif@
 @if?CheckReqParm?FUNCTION=NEWDIR@<FONT COLOR=RED>@FileMgr?CREATEDIR@</FONT><BR>@endif@
 @if?CheckReqParm?FUNCTION=UPLOAD@<FONT COLOR=RED>@FileMgr?UPLOAD@</FONT><BR>@endif@
 @if?CheckReqParm?FUNCTION=SEARCH@<FONT COLOR=RED>@FileMgr?SEARCH&STR=@@RequestParameter?SEARCHSTR@@ @</FONT><BR>@endif@
@@ -100,14 +113,14 @@
 <a href="javascript:RefreshDir();"><IMG BORDER=0 SRC=images/folder_refresh.gif alt="Refresh directory" title="Refresh directory"></a>
 </TD><TD COLSPAN=2 ALIGN=RIGHT>
 <a href="javascript:CreateDir();"><IMG BORDER=0 SRC=images/folder_add.gif alt="Add a new directory" title="Add a new directory"></a>
-</TD><TD>
+</TD><TD COLSPAN=2>
 <a href="javascript:DeleteDir();"><IMG BORDER=0 SRC=images/folder_delete.gif alt="Delete this directory" title="Delete this directory"></a>
 </TD></TR>
 @FileNext?RESET@
 @loop@
 @FileNext@
 	@if?FileInfo?ISDIRECTORY@
-		<TR bgcolor="#@RequestParameter?BGCOL@"><TD COLSPAN=6>
+		<TR bgcolor="#@RequestParameter?BGCOL@"><TD COLSPAN=7>
 		<a href="javascript:NewDir('@RequestParameter?FILE@')"  style="text-decoration:none">
 		@if?FileInfo?ISBOTH@<B>@else@ @if?!FileInfo?ISLOCAL@<I>@endif@ @endif@
 		<FONT COLOR=YELLOW>@RequestParameter?FILE@</FONT>
@@ -128,6 +141,8 @@
 		@if?FileInfo?ISVFS@</I>@endif@ 	@if?FileInfo?ISBOTH@</B>@endif@
 		</TD><TD>
 		<a href="javascript:OpenFile('@RequestParametersEncoded@')"><IMG BORDER=0 SRC=images/edit.gif alt="Edit" title="Edit"></a>
+		</TD><TD>
+		<a href="javascript:RenameFile('@RequestParameter?FILE@')"><IMG BORDER=0 SRC=images/rename.gif alt="Rename/Move" title="Rename/Move"></a>
 		</TD><TD>
 		<a href="javascript:DownloadFile('@RequestParametersEncoded@')"><IMG BORDER=0 SRC=images/download.gif alt="Download" title="Download"></a>
 		</TD><TD>

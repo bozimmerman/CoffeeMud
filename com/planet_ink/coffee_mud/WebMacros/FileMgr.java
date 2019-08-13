@@ -152,6 +152,36 @@ public class FileMgr extends StdWebMacro
 				return "File `"+last+"` was NOT deleted. Perhaps it`s read-only?";
 			}
 			else
+			if(parms.containsKey("RENAME"))
+			{
+				String target = httpReq.getUrlParameter("NEWFILE");
+				final String pfix;
+				if((target.trim().startsWith("::"))
+				||(target.trim().startsWith("//")))
+				{
+					pfix=target.substring(0,2);
+					target=target.substring(2);
+				}
+				else
+					pfix="";
+				if((target != null)&&(target.length()>0))
+				{
+					if((target.indexOf("..")>=0)
+					||(target.indexOf("*")>=0)
+					||(target.indexOf("?")>=0))
+						return "File `"+last+"` should not contain illegal characters";
+					if(!target.startsWith("/"))
+						target=pfix+filePath+target;
+					final CMFile targetF = new CMFile(target,M);
+					if(targetF.exists())
+						return "File `"+target+"` already exists.";
+					if(targetF.saveRaw(F.raw()))
+						F.delete();
+					return "File `"+last+"` was renamed/moved to '"+target+"'.";
+				}
+				return "File `"+last+"` was NOT renamed?";
+			}
+			else
 			if(parms.containsKey("CREATE"))
 			{
 				final String s=httpReq.getUrlParameter("RAWTEXT");
