@@ -11472,12 +11472,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Ability A=CMClass.getAbility("Skill_Track");
 				if(A!=null)
 				{
-					altStatusTickable=A;
 					if((monster != scripted)
 					&&(monster!=null))
 						monster.resetToMaxState();
-					A.invoke(monster,CMParms.parse(arg1),null,true,0);
-					altStatusTickable=null;
+					if(A.text().length()>0 && A.text().equalsIgnoreCase(arg1))
+					{
+						// already on the move
+					}
+					else
+					{
+						altStatusTickable=A;
+						A.invoke(monster,CMParms.parse(arg1),null,true,0);
+						altStatusTickable=null;
+					}
 				}
 				break;
 			}
