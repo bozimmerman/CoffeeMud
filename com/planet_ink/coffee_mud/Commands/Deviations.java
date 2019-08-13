@@ -126,7 +126,7 @@ public class Deviations extends StdCommand
 					checkI.setOwner(null);
 					checkI.recoverPhyStats();
 					if(!alreadyDone(checkI,check))
-						check.add(I);
+						check.add(checkI);
 					else
 						checkI.destroy();
 				}
@@ -149,7 +149,7 @@ public class Deviations extends StdCommand
 							checkI.setOwner(null);
 							checkI.recoverPhyStats();
 							if(!alreadyDone(checkI,check))
-								check.add(I);
+								check.add(checkI);
 							else
 								checkI.destroy();
 						}
@@ -172,7 +172,7 @@ public class Deviations extends StdCommand
 									checkI.setOwner(null);
 									checkI.recoverPhyStats();
 									if(!alreadyDone(checkI,check))
-										check.add(I);
+										check.add(checkI);
 									else
 										checkI.destroy();
 								}
