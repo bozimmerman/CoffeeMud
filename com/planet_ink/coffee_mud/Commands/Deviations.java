@@ -265,6 +265,9 @@ public class Deviations extends StdCommand
 		&&(!(E instanceof MOB)))
 			return new StringBuffer("'"+where+"' is not a MOB, or Weapon, or Item.");
 		else
+		if(E instanceof Item)
+			check.add((Item)E.copyOf());
+		else
 			check.add(E);
 		final StringBuffer str=new StringBuffer("");
 		str.append(L("Deviations Report:\n\r"));
