@@ -352,6 +352,7 @@ public class Skill_Track extends StdSkill
 		}
 
 		final String mobName=CMParms.combine(commands,0);
+		setMiscText(mobName);
 		if((givenTarget==null)&&(mobName.length()==0))
 		{
 			mob.tell(L("Track whom?"));
