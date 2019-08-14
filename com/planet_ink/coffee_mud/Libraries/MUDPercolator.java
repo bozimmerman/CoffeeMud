@@ -1064,8 +1064,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					x+=2;
 					varstart+=2;
 				}
-				while((x<str.length())&&(str.charAt(x)!='}'))
+				int depth=0;
+				while((x<str.length())
+				&&((str.charAt(x)!='}')||(depth>0)))
+				{
+					if(str.charAt(x)=='{')
+						depth++;
+					else
+					if(str.charAt(x)=='}')
+						depth--;
 					x++;
+				}
 				var.var = str.substring(varstart+2,x);
 				if(x<str.length())
 					x++;
@@ -1076,8 +1085,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final int varstart=var.outerStart;
 				x++;
-				while((x<str.length())&&(str.charAt(x)!=']'))
+				int depth=0;
+				while((x<str.length())
+				&&((str.charAt(x)!=']')||(depth>0)))
+				{
+					if(str.charAt(x)=='[')
+						depth++;
+					else
+					if(str.charAt(x)==']')
+						depth--;
 					x++;
+				}
 				var.var = str.substring(varstart+2,x);
 				var.isMathExpression=true;
 				if(x<str.length())
