@@ -3157,9 +3157,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		public static class WhereClause
 		{
 			WhereConnector	afterConnector	= WhereConnector.ENDCLAUSE;
-			Object			lhs				= null;
+			String			lhs				= null;
 			WhereComparator	comp			= null;
-			Object			rhs				= null;
+			String			rhs				= null;
 		}
 
 		public static class WhatBit extends Pair<String,String>
