@@ -476,7 +476,8 @@ public class MOBloader
 								newAbility.setProficiency(CMLib.ableMapper().getMaxProficiency(newAbility.ID()));
 								mob.addNonUninvokableEffect(newAbility);
 								newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
-							}else
+							}
+							else
 							{
 								proficiency=proficiency+200;
 								newAbility.setProficiency(proficiency);
@@ -485,7 +486,8 @@ public class MOBloader
 								mob.addNonUninvokableEffect(newAbility);
 								mob.addAbility(newAbility2);
 							}
-						}else
+						}
+						else
 						{
 							newAbility.setProficiency(proficiency);
 							newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));

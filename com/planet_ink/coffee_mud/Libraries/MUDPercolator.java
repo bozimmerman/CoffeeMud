@@ -2516,11 +2516,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				throw new CMException("Bad content_load filename in '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		}
 
-		final String questTemplateLoad = piece.getParmValue("QUEST_TEMPLATE_ID");
+		String questTemplateLoad = piece.getParmValue("QUEST_TEMPLATE_ID");
 		if((questTemplateLoad!=null)
 		&&(questTemplateLoad.length()>0))
 		{
-			final CMFile file = new CMFile(Resources.makeFileResourceName("quests/"+questTemplateLoad+".quest"),null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
+			piece.parms().remove("QUEST_TEMPLATE_ID"); // once only, please
+			questTemplateLoad = strFilter(E,ignoreStats,defPrefix,questTemplateLoad,piece, defined);
+			final CMFile file = new CMFile(Resources.makeFileResourceName("quests/templates/"+questTemplateLoad.trim()+".quest"),null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
 			if(file.exists() && file.canRead())
 			{
 				final String rawFileText = file.text().toString();
@@ -2540,8 +2542,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							if(x>0)
 							{
 								final String var=wiz.substring(2,x);
-								final String value=findStringNow(var, piece, defined);
-								cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,value);
+								if(cleanedFileText.indexOf(var)>0)
+								{
+									final String value=findStringNow(var, piece, defined);
+									cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,value);
+								}
 							}
 						}
 					}
@@ -3085,6 +3090,255 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	}
 
+	private static enum SelectSQLState
+	{
+		STATE_SELECT0, // name
+		STATE_SELECT1, // as or from or ,
+		STATE_AS0, // as
+		STATE_AS1, // expect from or , ONLY
+		STATE_FROM0, // loc
+		STATE_FROM1, // paren
+		STATE_FROM2, // expect where
+		STATE_WHERE0, // object
+		STATE_WHERE1, // comparator
+		STATE_WHERE2, // object rhs
+		STATE_WHERE3, // expect ( or joiner
+	}
+
+	protected List<Map<String,String>> doSubSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	{
+		final List<Map<String,String>> results=new ArrayList<Map<String,String>>();
+		final int x=str.indexOf(':');
+		if(x<0)
+			throw new CMException("Malformed sql: "+str);
+		final String sqlbits=str.substring(x+1).toUpperCase();
+		final List<Pair<String,String>> what=new ArrayList<Pair<String,String>>(1);
+		final List<Object> froms=new LinkedList<Object>();
+		final StringBuilder curr=new StringBuilder("");
+		int pdepth=0;
+
+		SelectSQLState state=SelectSQLState.STATE_SELECT0;
+		for(int i=0;i<=sqlbits.length();i++)
+		{
+			final char c=(i==sqlbits.length())?' ':sqlbits.charAt(i);
+			switch(state)
+			{
+			case STATE_SELECT0: // select state
+			{
+				if(Character.isWhitespace(c))
+				{
+					if(curr.length()>0)
+					{
+						// we just got a name symbol, so go to state 1 and expect AS or FROM or ,
+						what.add(new Pair<String,String>(curr.toString(),curr.toString()));
+						state=SelectSQLState.STATE_SELECT1;
+						curr.setLength(0);
+					}
+				}
+				else
+				if(c==',')
+					throw new CMException("Unexpected , in Malformed sql: "+str);
+				else
+					curr.append(c);
+				break;
+			}
+			case STATE_SELECT1: // expect AS or FROM or ,
+			{
+				if(Character.isWhitespace(c))
+				{
+					if(curr.length()>0)
+					{
+						if(curr.toString().equals("FROM"))
+						{
+							curr.setLength(0);
+							state=SelectSQLState.STATE_FROM0;
+						}
+						else
+						if(curr.toString().equals("AS"))
+						{
+							curr.setLength(0);
+							state=SelectSQLState.STATE_AS0;
+						}
+						else
+							throw new CMException("Unexpected select string in Malformed sql: "+str);
+					}
+				}
+				else
+				if(c==',')
+				{
+					if(curr.length()==0)
+						state=SelectSQLState.STATE_SELECT0;
+					else
+						throw new CMException("Unexpected , in Malformed sql: "+str);
+				}
+				else
+					curr.append(c);
+				break;
+			}
+			case STATE_AS0: // as name
+			{
+				if(Character.isWhitespace(c)
+				||(c==','))
+				{
+					if(curr.length()>0)
+					{
+						if(curr.toString().equals("FROM"))
+							throw new CMException("Unexpected FROM in Malformed sql: "+str);
+						else
+						if(curr.toString().equals("AS"))
+							throw new CMException("Unexpected AS in Malformed sql: "+str);
+						else
+						{
+							state=SelectSQLState.STATE_AS1; // expect from or , ONLY
+							what.get(what.size()-1).second = curr.toString();
+							curr.setLength(0);
+						}
+					}
+					else
+					if(c==',')
+						throw new CMException("Unexpected , in Malformed sql: "+str);
+				}
+				else
+					curr.append(c);
+				break;
+			}
+			case STATE_AS1: // expect FROM or , only
+			{
+				if(Character.isWhitespace(c))
+				{
+					if(curr.length()>0)
+					{
+						if(curr.toString().equals("FROM"))
+						{
+							curr.setLength(0);
+							state=SelectSQLState.STATE_FROM0;
+						}
+						else
+							throw new CMException("Unexpected name string in Malformed sql: "+str);
+					}
+				}
+				else
+				if(c==',')
+				{
+					if(curr.length()==0)
+						state=SelectSQLState.STATE_SELECT0;
+					else
+						throw new CMException("Unexpected , in Malformed sql: "+str);
+				}
+				else
+					curr.append(c);
+				break;
+			}
+			case STATE_FROM0: // from state
+			{
+				if(Character.isWhitespace(c))
+				{
+					if(curr.length()>0)
+					{
+						if(curr.toString().equals("WHERE"))
+							throw new CMException("Unexpected WHERE in Malformed sql: "+str);
+						else
+						{
+							//TODO: parse the from and turn it into an object on the from list
+
+							curr.setLength(0);
+							state=SelectSQLState.STATE_FROM2; // now expect where
+						}
+					}
+				}
+				else
+				if(c=='(')
+				{
+					if(curr.length()==0)
+						state=SelectSQLState.STATE_FROM1;
+					else
+						throw new CMException("Unexpected ( in Malformed sql: "+str);
+				}
+				else
+					curr.append(c);
+				break;
+			}
+			case STATE_FROM1: // from () state
+			{
+				if(c=='(')
+					pdepth++;
+				else
+				if(c==')')
+				{
+					if(pdepth==0)
+					{
+						//TODO: figure out what we have
+						// allowed: select:, a literal keypair list?,
+						// add to froms list
+						state=SelectSQLState.STATE_FROM2; // expect where
+					}
+					else
+						pdepth--;
+				}
+				else
+					curr.append(c);
+				break;
+			}
+			case STATE_FROM2: // expect where clause
+			{
+				if(Character.isWhitespace(c))
+				{
+					if(curr.length()>0)
+					{
+						if(!curr.toString().equals("WHERE"))
+							throw new CMException("Eexpected WHERE in Malformed sql: "+str);
+						else
+						{
+							curr.setLength(0);
+							state=SelectSQLState.STATE_WHERE0;
+						}
+					}
+				}
+				else
+					curr.append(c);
+				break;
+			}
+			case STATE_WHERE0: // initial where state
+			{
+				if(Character.isWhitespace(c))
+				{
+					if(curr.length()>0)
+					{
+						curr.setLength(0);
+						state=SelectSQLState.STATE_WHERE1; // now expect comparator
+					}
+				}
+				else
+				if(c=='(')
+				{
+					if(curr.length()==0)
+						state=SelectSQLState.STATE_WHERE2;
+					else
+						throw new CMException("Unexpected ( in Malformed sql: "+str);
+				}
+				else
+					curr.append(c);
+				break;
+			}
+			default:
+				throw new CMException("Malformed sql: "+str);
+			}
+		}
+		return results;
+	}
+
+	protected String doSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	{
+		final List<Map<String,String>> res=doSubSelect(E,ignoreStats,defPrefix,str,piece,defined);
+		final StringBuilder finalStr = new StringBuilder("");
+		for(final Map<String,String> map : res)
+		{
+			for(final String key : map.keySet())
+				finalStr.append(map.get(key)).append(" ");
+		}
+		return finalStr.toString().trim();
+	}
+
 	protected String strFilter(Modifiable E, final List<String> ignoreStats, final String defPrefix, String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		List<Varidentifier> vars=parseVariables(str);
@@ -3105,6 +3359,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				else
 					throw new CMException("Invalid math expression '$"+expression+"' in str '"+str+"'");
+			}
+			else
+			if(V.var.toUpperCase().startsWith("SELECT:"))
+			{
+				val=doSelect(E,ignoreStats,defPrefix,V.var,piece, defined);
 			}
 			else
 			if(V.var.toUpperCase().startsWith("STAT:") && (E!=null))

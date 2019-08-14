@@ -155,16 +155,9 @@ public class Archon_CRecord extends ArchonSkill
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
-		if(affected == null)
-		{
-			if(newMiscText.length()>0)
-				Log.errOut("Unable to start CRecording: "+newMiscText);
-		}
-		else
 		if(newMiscText.length()==0)
 			Log.errOut("Unable to start CRecording: "+newMiscText);
 		else
-		if(affected instanceof MOB)
 		{
 			isRecorder = CMParms.getParmBool(newMiscText, "ISRECORDER", false);
 			triggerTime = CMParms.getParmLong(newMiscText, "TRIGGERTIME", 0);
@@ -202,7 +195,7 @@ public class Archon_CRecord extends ArchonSkill
 	public String text()
 	{
 		final StringBuilder str=new StringBuilder("");
-		if(affected != null)
+		if(affected != null || isSavable())
 		{
 			str.append("FILENAME=\""+recordingDir+"\" ISRECORDER="+isRecorder+" TRIGGERTIME="+triggerTime+" MINLEVEL="+minLevel);
 			if(isRecorder)
@@ -235,8 +228,10 @@ public class Archon_CRecord extends ArchonSkill
 			targetM.addNonUninvokableEffect(A2);
 			A2.setMiscText("FILENAME=\""+filename+"\" ISRECORDER=TRUE TRIGGERTIME="+triggerTime+" MINLEVEL="+minLevel+" BY="+mob.Name());
 			final Archon_CRecord iA=(Archon_CRecord)mob.fetchEffect(ID());
-			if(iA!=null)
+			if((iA!=null)&&(!iA.myPlayers.contains(targetM.Name())))
 				iA.myPlayers.add(targetM.Name());
+			if(!myPlayers.contains(targetM.Name()))
+				myPlayers.add(targetM.Name());
 		}
 	}
 
@@ -285,7 +280,11 @@ public class Archon_CRecord extends ArchonSkill
 									arcM.tell("C-recording ended: "+msg.source().name());
 									Log.sysOut("C-recording ended: "+msg.source().name());
 									cA.myPlayers.remove(msg.source().Name());
+
 								}
+								final Archon_CRecord aA=(Archon_CRecord)arcM.fetchAbility(ID());
+								if(aA!=null)
+									aA.myPlayers.remove(msg.source().Name());
 							}
 						}
 						msg.source().delEffect(this);
@@ -299,9 +298,15 @@ public class Archon_CRecord extends ArchonSkill
 					final Archon_CRecord iA=(Archon_CRecord)mob.fetchEffect(ID());
 					if(iA!=null)
 						iA.myPlayers.remove(msg.source().Name());
+					final Archon_CRecord aA=(Archon_CRecord)mob.fetchAbility(ID());
+					if(aA!=null)
+						aA.myPlayers.remove(msg.source().Name());
 					final Archon_CRecord hA=(Archon_CRecord)msg.source().fetchEffect(ID());
 					if(hA!=null)
 						msg.source().delEffect(hA);
+					final Archon_CRecord aaA=(Archon_CRecord)msg.source().fetchAbility(ID());
+					if(aaA!=null)
+						aaA.myPlayers.remove(msg.source().Name());
 				}
 			}
 			else
@@ -392,6 +397,9 @@ public class Archon_CRecord extends ArchonSkill
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final String args=CMParms.combine(commands,0);
+		if((mob.isPlayer() && mob.isMine(this) && (CMLib.ableMapper().qualifiesByAnyCharClass(ID()))))
+			super.setSavable(true);
+
 		final Archon_CRecord A=(Archon_CRecord)mob.fetchEffect(ID());
 		if(A==null)
 		{
@@ -431,6 +439,7 @@ public class Archon_CRecord extends ArchonSkill
 			else
 			{
 				A.minLevel=CMath.s_int(commands.get(1));
+				this.minLevel=CMath.s_int(commands.get(1));
 				mob.tell(L("CRecord minimum level is now @x1.",""+A.minLevel));
 			}
 			return false;
@@ -463,6 +472,7 @@ public class Archon_CRecord extends ArchonSkill
 			else
 			{
 				A.triggerTime=0;
+				this.triggerTime=0;
 				CMLib.map().delGlobalHandler(A, CMMsg.TYP_LEVEL);
 				mob.tell(L("CRecord level listener is now stopped."));
 			}
@@ -481,12 +491,13 @@ public class Archon_CRecord extends ArchonSkill
 				if(M==null)
 					mob.tell(L("Unknown player @x1",commands.get(1)));
 				else
-				if(!A.myPlayers.contains(M.Name()))
+				if(!A.myPlayers.contains(M.Name()) && (!myPlayers.contains(M.Name())))
 					mob.tell(L("Player @x1 is not being recorded by YOU.",commands.get(1)));
 				else
 				if(M.fetchEffect(ID())==null)
 				{
 					A.myPlayers.remove(M.Name());
+					myPlayers.remove(M.Name());
 					mob.tell(L("Player @x1 is not being recorded.",commands.get(1)));
 				}
 				else
@@ -497,6 +508,7 @@ public class Archon_CRecord extends ArchonSkill
 						A2.flushBuffer();
 						M.delEffect(A2);
 						A.myPlayers.remove(M.Name());
+						myPlayers.remove(M.Name());
 						mob.tell(L("Recording on @x1 has been stopped.",M.Name()));
 						CMLib.map().delGlobalHandler(A, CMMsg.TYP_LEVEL);
 					}
@@ -524,6 +536,7 @@ public class Archon_CRecord extends ArchonSkill
 					{
 						mob.location().send(mob,msg);
 						A.triggerTime=CMath.s_int(commands.get(1)) * 60 * 1000;
+						this.triggerTime=A.triggerTime;
 						CMLib.map().addGlobalHandler(A, CMMsg.TYP_LEVEL);
 					}
 				}

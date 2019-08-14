@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!-- ----------------------------------------------------------------------------
+Copyright 2019-2019 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--------------------------------------------------------------------------------
+
+See guides/RandomAreas.html for information about documents of this type.
+<!-- TODO: add QUESTSCRIPT to the official tags list -->
+<!-- TODO: add QUEST_TEMPLATE_ID to the official parms list -->
+-->
+
+<QUEST id="all" QUEST_TEMPLATE_ID="$quest_template" >
+	<QUEST_ID>${quest_template}_${area_name}_$[100000000?999999999]</QUEST_ID>
+	<QUEST_NAME>STRING=Normal Capture #1</QUEST_NAME>
+	<QUEST_CRITERIA>ZAPPERMASK</QUEST_CRITERIA>
+	<ANNOUNCER_AREA>=(AREA)</ANNOUNCER_AREA>
+	<ANNOUNCER_ROOM>=(ROOMID)</ANNOUNCER_ROOM>
+	<ANNOUNCER_NAME>NAME</ANNOUNCER_NAME>
+	<QUEST_NOTIFYSTRING>=(LONG_STRING)=I have someone I need captured!  Are you game?</QUEST_NOTIFYSTRING>
+	<QUEST_INSTRUCTIONSSTRING>=(LONG_STRING)=I need you to capture some folks.  They are somewhere around somewhere.  Just beat them senseless, and they will yield to you.</QUEST_INSTRUCTIONSSTRING>
+	<QUEST_WINSPEECH_TEXT>=(LONG_STRING)=Aha, we got them! Congratulations!</QUEST_WINSPEECH_TEXT>
+	<QUEST_LOSESPEECH_TEXT>=(LONG_STRING)=Looks like I'll have wait for the law to get after them.</QUEST_LOSESPEECH_TEXT>
+	<CAPTURABLES_MASK>=ZAPPERMASK</CAPTURABLES_MASK>
+	<NUM_CAPTURABLES>(EXPRESSION)=1</NUM_CAPTURABLES>
+	<CAPTURABLES_RESPONSE>=(STRING)=So, you've come for me.  Come and get me.</CAPTURABLES_RESPONSE>
+	<CAPTURABLES_ATTACK>=CHOOSE=NO-USE-DEFAULT_BEHAVIOR,YES-ATTACK-ON-SIGHT</CAPTURABLES_ATTACK>
+	<CAPTURABLES_SURRENDER>=(STRING)=I surrender</CAPTURABLES_SURRENDER>
+	<CAPTURABLES_FOLLOW>CHOOSE=VIOLENT,PEACEFUL</CAPTURABLES_FOLLOW>
+	<QUEST_POINT>CHOOSE=YES,NO</QUEST_POINT>
+	<GOLD>=(EXPRESSION)</GOLD>
+	<EXP>=(STRING)=10%</EXP>
+	<FACTION>=(FACTION)</FACTION>
+	<NUMFACTION>=(STRING)</NUMFACTION>
+	<MULTIPLE>CHOOSE=YES,NO</MULTIPLE>
+	<NEXT_QUEST></NEXT_QUEST>
+	<!-- TODO: add a BINDING to the existence of this quest -->
+	<!-- TODO: add an EXPIRATION time to the existence of this quest -->
+</QUEST>
+
+<STRING SELECT="Any-1" ACTION=REPLACE id="quest_template" define="quest_template" condition="$quest_template=''">
+	<STRING>normal_capture1</STRING>
+</STRING>
+
+<STRING 
