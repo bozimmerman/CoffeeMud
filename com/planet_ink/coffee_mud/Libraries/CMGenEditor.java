@@ -1217,14 +1217,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			CMLib.threads().deleteTick(oldR,-1);
 			R.setRoomID(oldR.roomID());
-			final Area A=oldR.getArea();
-			if(A!=null)
-				A.delProperRoom(oldR);
-			R.setArea(A);
 			for(int d=0;d<R.rawDoors().length;d++)
 				R.rawDoors()[d]=oldR.rawDoors()[d];
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				R.setRawExit(d,oldR.getRawExit(d));
+			final Area A=oldR.getArea();
+			if(A!=null)
+				A.delProperRoom(oldR);
+			R.setSavable(oldR.getArea().isSavable() && oldR.isSavable());
+			R.setArea(A);
 			R.setDisplayText(oldR.displayText());
 			R.setDescription(oldR.description());
 			if(R.image().equalsIgnoreCase(CMLib.protocol().getDefaultMXPImage(oldR)))
@@ -1300,6 +1301,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 			try
 			{
+				for(final Enumeration<Room> r=R.getArea().getFilledProperMap();r.hasMoreElements();)
+				{
+					final Room R2=r.nextElement();
+					for(int d=0;d<R2.rawDoors().length;d++)
+					{
+						if(R2.rawDoors()[d]==oldR)
+						{
+							R2.rawDoors()[d]=R;
+							if(R2 instanceof GridLocale)
+								((GridLocale)R2).buildGrid();
+						}
+					}
+				}
 				for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					final Room R2=r.nextElement();
@@ -1340,10 +1354,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				else
 					R.addNonUninvokableEffect((Ability)oldBehavsNEffects.elementAt(i));
 			}
-			CMLib.database().DBUpdateRoom(R);
-			CMLib.database().DBUpdateMOBs(R);
-			CMLib.database().DBUpdateItems(R);
+			if(R.isSavable())
+			{
+				CMLib.database().DBUpdateRoom(R);
+				CMLib.database().DBUpdateMOBs(R);
+				CMLib.database().DBUpdateItems(R);
+			}
 			oldR.destroy();
+			R.giveASky(0);
 			R.getArea().addProperRoom(R); // necessary because of the destroy
 			R.setImage(R.rawImage());
 			R.startItemRejuv();
