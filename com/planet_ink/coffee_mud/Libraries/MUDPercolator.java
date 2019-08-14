@@ -3644,7 +3644,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return this.doSubSelect(E, ignoreStats, defPrefix, clause, piece, defined);
 	}
 
-	protected String doSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected String doSelectString(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		final List<Map<String,String>> res=doSubSelect(E,ignoreStats,defPrefix,str,piece,defined);
 		final StringBuilder finalStr = new StringBuilder("");
@@ -3680,7 +3680,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			else
 			if(V.var.toUpperCase().startsWith("SELECT:"))
 			{
-				val=doSelect(E,ignoreStats,defPrefix,V.var,piece, defined);
+				val=doSelectString(E,ignoreStats,defPrefix,V.var,piece, defined);
 			}
 			else
 			if(V.var.toUpperCase().startsWith("STAT:") && (E!=null))
