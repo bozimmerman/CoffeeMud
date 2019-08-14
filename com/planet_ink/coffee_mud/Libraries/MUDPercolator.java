@@ -3102,229 +3102,546 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		STATE_WHERE0, // object
 		STATE_WHERE1, // comparator
 		STATE_WHERE2, // object rhs
-		STATE_WHERE3, // expect ( or joiner
+		STATE_WHERE3, // expect connector or end of clause
+		STATE_WHEREEMBEDLEFT0, // got ( on left of comparator
+		STATE_WHEREEMBEDRIGHT0, // got ( on right of comparator
+		STATE_EXPECTNOTHING // end of where clause
 	}
 
-	protected List<Map<String,String>> doSubSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
-	{
-		final List<Map<String,String>> results=new ArrayList<Map<String,String>>();
-		final int x=str.indexOf(':');
-		if(x<0)
-			throw new CMException("Malformed sql: "+str);
-		final String sqlbits=str.substring(x+1).toUpperCase();
-		final List<Pair<String,String>> what=new ArrayList<Pair<String,String>>(1);
-		final List<Object> froms=new LinkedList<Object>();
-		final StringBuilder curr=new StringBuilder("");
-		int pdepth=0;
 
-		SelectSQLState state=SelectSQLState.STATE_SELECT0;
-		for(int i=0;i<=sqlbits.length();i++)
+	/**
+	 * Class for semi-parsed SQLClause, including method
+	 * to do the parsig to fill out this object
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	private static class SQLClause
+	{
+		/**
+		 * Connector descriptors for connecting sql where clauses together
+		 * @author Bo Zimmerman
+		 *
+		 */
+		public static enum WhereConnector { ENDCLAUSE, AND, OR }
+
+		/**
+		 * Connector descriptors for connecting sql where clauses together
+		 * @author Bo Zimmerman
+		 *
+		 */
+		public static enum WhereComparator { EQ, NEQ, GT, LT, GTEQ, LTEQ, LIKE, IN, NOTLIKE, NOTIN}
+
+		/** An abstract Where Clause
+		 * @author Bo Zimmerman
+		 *
+		 */
+		public static class WhereClause
 		{
-			final char c=(i==sqlbits.length())?' ':sqlbits.charAt(i);
-			switch(state)
+			WhereConnector	afterConnector	= WhereConnector.ENDCLAUSE;
+			Object			lhs				= null;
+			WhereComparator	comp			= null;
+			Object			rhs				= null;
+		}
+
+		public static class WhatBit extends Pair<String,String>
+		{
+			public WhatBit(final String what, final String as)
 			{
-			case STATE_SELECT0: // select state
-			{
-				if(Character.isWhitespace(c))
-				{
-					if(curr.length()>0)
-					{
-						// we just got a name symbol, so go to state 1 and expect AS or FROM or ,
-						what.add(new Pair<String,String>(curr.toString(),curr.toString()));
-						state=SelectSQLState.STATE_SELECT1;
-						curr.setLength(0);
-					}
-				}
-				else
-				if(c==',')
-					throw new CMException("Unexpected , in Malformed sql: "+str);
-				else
-					curr.append(c);
-				break;
+				super(what,as);
 			}
-			case STATE_SELECT1: // expect AS or FROM or ,
+
+			public String what()
 			{
-				if(Character.isWhitespace(c))
-				{
-					if(curr.length()>0)
-					{
-						if(curr.toString().equals("FROM"))
-						{
-							curr.setLength(0);
-							state=SelectSQLState.STATE_FROM0;
-						}
-						else
-						if(curr.toString().equals("AS"))
-						{
-							curr.setLength(0);
-							state=SelectSQLState.STATE_AS0;
-						}
-						else
-							throw new CMException("Unexpected select string in Malformed sql: "+str);
-					}
-				}
-				else
-				if(c==',')
-				{
-					if(curr.length()==0)
-						state=SelectSQLState.STATE_SELECT0;
-					else
-						throw new CMException("Unexpected , in Malformed sql: "+str);
-				}
-				else
-					curr.append(c);
-				break;
+				return first;
 			}
-			case STATE_AS0: // as name
+
+			public String at()
 			{
-				if(Character.isWhitespace(c)
-				||(c==','))
+				return second;
+			}
+		}
+
+		public String					sql		= "";
+		public final List<WhatBit>		what	= new ArrayList<WhatBit>(1);
+		public String					from	= "";
+		public final List<WhereClause>	wheres	= new ArrayList<WhereClause>(1);
+
+		public void parseSQL(final String str, final String sqlbits) throws CMException
+		{
+			this.sql=str;
+			final StringBuilder curr=new StringBuilder("");
+			int pdepth=0;
+
+			SelectSQLState state=SelectSQLState.STATE_SELECT0;
+			for(int i=0;i<=sqlbits.length();i++)
+			{
+				final char c=(i==sqlbits.length())?' ':sqlbits.charAt(i);
+				switch(state)
 				{
-					if(curr.length()>0)
+				case STATE_SELECT0: // select state
+				{
+					if(Character.isWhitespace(c))
 					{
-						if(curr.toString().equals("FROM"))
-							throw new CMException("Unexpected FROM in Malformed sql: "+str);
-						else
-						if(curr.toString().equals("AS"))
-							throw new CMException("Unexpected AS in Malformed sql: "+str);
-						else
+						if(curr.length()>0)
 						{
-							state=SelectSQLState.STATE_AS1; // expect from or , ONLY
-							what.get(what.size()-1).second = curr.toString();
+							// we just got a name symbol, so go to state 1 and expect AS or FROM or ,
+							what.add(new WhatBit(curr.toString(),curr.toString()));
+							state=SelectSQLState.STATE_SELECT1;
 							curr.setLength(0);
 						}
 					}
 					else
 					if(c==',')
 						throw new CMException("Unexpected , in Malformed sql: "+str);
-				}
-				else
-					curr.append(c);
-				break;
-			}
-			case STATE_AS1: // expect FROM or , only
-			{
-				if(Character.isWhitespace(c))
-				{
-					if(curr.length()>0)
-					{
-						if(curr.toString().equals("FROM"))
-						{
-							curr.setLength(0);
-							state=SelectSQLState.STATE_FROM0;
-						}
-						else
-							throw new CMException("Unexpected name string in Malformed sql: "+str);
-					}
-				}
-				else
-				if(c==',')
-				{
-					if(curr.length()==0)
-						state=SelectSQLState.STATE_SELECT0;
 					else
-						throw new CMException("Unexpected , in Malformed sql: "+str);
+						curr.append(c);
+					break;
 				}
-				else
-					curr.append(c);
-				break;
-			}
-			case STATE_FROM0: // from state
-			{
-				if(Character.isWhitespace(c))
+				case STATE_SELECT1: // expect AS or FROM or ,
 				{
-					if(curr.length()>0)
+					if(Character.isWhitespace(c))
 					{
-						if(curr.toString().equals("WHERE"))
-							throw new CMException("Unexpected WHERE in Malformed sql: "+str);
-						else
+						if(curr.length()>0)
 						{
-							//TODO: parse the from and turn it into an object on the from list
-
-							curr.setLength(0);
-							state=SelectSQLState.STATE_FROM2; // now expect where
+							if(curr.toString().equals("FROM"))
+							{
+								curr.setLength(0);
+								state=SelectSQLState.STATE_FROM0;
+							}
+							else
+							if(curr.toString().equals("AS"))
+							{
+								curr.setLength(0);
+								state=SelectSQLState.STATE_AS0;
+							}
+							else
+								throw new CMException("Unexpected select string in Malformed sql: "+str);
 						}
 					}
-				}
-				else
-				if(c=='(')
-				{
-					if(curr.length()==0)
-						state=SelectSQLState.STATE_FROM1;
 					else
-						throw new CMException("Unexpected ( in Malformed sql: "+str);
-				}
-				else
-					curr.append(c);
-				break;
-			}
-			case STATE_FROM1: // from () state
-			{
-				if(c=='(')
-					pdepth++;
-				else
-				if(c==')')
-				{
-					if(pdepth==0)
+					if(c==',')
 					{
-						//TODO: figure out what we have
-						// allowed: select:, a literal keypair list?,
-						// add to froms list
-						state=SelectSQLState.STATE_FROM2; // expect where
+						if(curr.length()==0)
+							state=SelectSQLState.STATE_SELECT0;
+						else
+							throw new CMException("Unexpected , in Malformed sql: "+str);
 					}
 					else
-						pdepth--;
+						curr.append(c);
+					break;
 				}
-				else
-					curr.append(c);
-				break;
-			}
-			case STATE_FROM2: // expect where clause
-			{
-				if(Character.isWhitespace(c))
+				case STATE_AS0: // as name
 				{
-					if(curr.length()>0)
+					if(Character.isWhitespace(c)
+					||(c==','))
 					{
-						if(!curr.toString().equals("WHERE"))
-							throw new CMException("Eexpected WHERE in Malformed sql: "+str);
-						else
+						if(curr.length()>0)
 						{
-							curr.setLength(0);
-							state=SelectSQLState.STATE_WHERE0;
+							if(curr.toString().equals("FROM"))
+								throw new CMException("Unexpected FROM in Malformed sql: "+str);
+							else
+							if(curr.toString().equals("AS"))
+								throw new CMException("Unexpected AS in Malformed sql: "+str);
+							else
+							{
+								state=SelectSQLState.STATE_AS1; // expect from or , ONLY
+								what.get(what.size()-1).second = curr.toString();
+								curr.setLength(0);
+							}
+						}
+						else
+						if(c==',')
+							throw new CMException("Unexpected , in Malformed sql: "+str);
+					}
+					else
+						curr.append(c);
+					break;
+				}
+				case STATE_AS1: // expect FROM or , only
+				{
+					if(Character.isWhitespace(c))
+					{
+						if(curr.length()>0)
+						{
+							if(curr.toString().equals("FROM"))
+							{
+								curr.setLength(0);
+								state=SelectSQLState.STATE_FROM0;
+							}
+							else
+								throw new CMException("Unexpected name string in Malformed sql: "+str);
 						}
 					}
-				}
-				else
-					curr.append(c);
-				break;
-			}
-			case STATE_WHERE0: // initial where state
-			{
-				if(Character.isWhitespace(c))
-				{
-					if(curr.length()>0)
+					else
+					if(c==',')
 					{
-						curr.setLength(0);
-						state=SelectSQLState.STATE_WHERE1; // now expect comparator
+						if(curr.length()==0)
+							state=SelectSQLState.STATE_SELECT0;
+						else
+							throw new CMException("Unexpected , in Malformed sql: "+str);
 					}
+					else
+						curr.append(c);
+					break;
 				}
-				else
-				if(c=='(')
+				case STATE_FROM0: // from state
+				{
+					if(Character.isWhitespace(c))
+					{
+						if(curr.length()>0)
+						{
+							if(curr.toString().equals("WHERE"))
+								throw new CMException("Unexpected WHERE in Malformed sql: "+str);
+							else
+							{
+								from=curr.toString();
+								curr.setLength(0);
+								state=SelectSQLState.STATE_FROM2; // now expect where
+							}
+						}
+					}
+					else
+					if(c=='(')
+					{
+						if(curr.length()==0)
+							state=SelectSQLState.STATE_FROM1;
+						else
+							throw new CMException("Unexpected ( in Malformed sql: "+str);
+					}
+					else
+						curr.append(c);
+					break;
+				}
+				case STATE_FROM1: // from () state
+				{
+					if(c=='(')
+						pdepth++;
+					else
+					if(c==')')
+					{
+						if(pdepth==0)
+						{
+							from=curr.toString();
+							state=SelectSQLState.STATE_FROM2; // expect where
+							curr.setLength(0);
+						}
+						else
+							pdepth--;
+					}
+					else
+						curr.append(c);
+					break;
+				}
+				case STATE_FROM2: // expect where clause
+				{
+					if(Character.isWhitespace(c))
+					{
+						if(curr.length()>0)
+						{
+							if(curr.toString().equals(";"))
+							{
+								curr.setLength(0);
+								state=SelectSQLState.STATE_EXPECTNOTHING;
+							}
+							else
+							if(!curr.toString().equals("WHERE"))
+								throw new CMException("Eexpected WHERE in Malformed sql: "+str);
+							else
+							{
+								curr.setLength(0);
+								state=SelectSQLState.STATE_WHERE0;
+							}
+						}
+					}
+					else
+						curr.append(c);
+					break;
+				}
+				case STATE_WHERE0: // initial where state
+				{
+					if(Character.isWhitespace(c)
+					||("<>!=".indexOf(c)>=0))
+					{
+						if(curr.length()>0)
+						{
+							final WhereClause w = new WhereClause();
+							w.lhs = curr.toString();
+							wheres.add(w);
+							curr.setLength(0);
+							if(!Character.isWhitespace(c))
+								curr.append(c);
+							state=SelectSQLState.STATE_WHERE1; // now expect comparator
+						}
+					}
+					else
+					if(c=='(')
+					{
+						if(curr.length()==0)
+						{
+							final WhereClause w = new WhereClause();
+							wheres.add(w);
+							state=SelectSQLState.STATE_WHEREEMBEDLEFT0;
+						}
+						else
+							throw new CMException("Unexpected ( in Malformed sql: "+str);
+					}
+					else
+						curr.append(c);
+					break;
+				}
+				case STATE_WHEREEMBEDLEFT0:
+				{
+					if(c=='(')
+						pdepth++;
+					else
+					if(c==')')
+					{
+						if(pdepth==0)
+						{
+							wheres.get(wheres.size()-1).lhs=curr.toString();
+							state=SelectSQLState.STATE_WHERE1; // expect connector or endofclause
+							curr.setLength(0);
+						}
+						else
+							pdepth--;
+					}
+					else
+						curr.append(c);
+					break;
+				}
+				case STATE_WHERE1: // expect comparator
 				{
 					if(curr.length()==0)
-						state=SelectSQLState.STATE_WHERE2;
+					{
+						if(!Character.isWhitespace(c))
+							curr.append(c);
+					}
 					else
-						throw new CMException("Unexpected ( in Malformed sql: "+str);
+					{
+						boolean saveC = false;
+						boolean done=false;
+						if("<>!=".indexOf(c)>=0)
+						{
+							if("<>!=".indexOf(curr.charAt(0))>=0)
+							{
+								curr.append(c);
+								done=curr.length()>=2;
+							}
+							else
+								throw new CMException("Unexpected '"+c+"' in Malformed sql: "+str);
+						}
+						else
+						if(!Character.isWhitespace(c))
+						{
+							if("<>!=".indexOf(curr.charAt(0))>=0)
+							{
+								saveC=true;
+								done=true;
+							}
+							else
+								curr.append(c);
+						}
+						else
+							done=true;
+						if(done)
+						{
+							final String fcurr=curr.toString();
+							if(fcurr.equals("="))
+							{
+								wheres.get(wheres.size()-1).comp=WhereComparator.EQ;
+								curr.setLength(0);
+								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+							}
+							else
+							if(fcurr.equals("!=")||fcurr.equals("<>"))
+							{
+								wheres.get(wheres.size()-1).comp=WhereComparator.NEQ;
+								curr.setLength(0);
+								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+							}
+							else
+							if(fcurr.equals(">"))
+							{
+								wheres.get(wheres.size()-1).comp=WhereComparator.GT;
+								curr.setLength(0);
+								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+							}
+							else
+							if(fcurr.equals("<"))
+							{
+								wheres.get(wheres.size()-1).comp=WhereComparator.LT;
+								curr.setLength(0);
+								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+							}
+							else
+							if(fcurr.equals(">=")||fcurr.equals("=>"))
+							{
+								wheres.get(wheres.size()-1).comp=WhereComparator.GTEQ;
+								curr.setLength(0);
+								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+							}
+							else
+							if(fcurr.equals("<=")||fcurr.equals("<="))
+							{
+								wheres.get(wheres.size()-1).comp=WhereComparator.LTEQ;
+								curr.setLength(0);
+								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+							}
+							else
+							if(fcurr.equals("IN"))
+							{
+								wheres.get(wheres.size()-1).comp=WhereComparator.IN;
+								curr.setLength(0);
+								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+							}
+							else
+							if(fcurr.equals("LIKE"))
+							{
+								wheres.get(wheres.size()-1).comp=WhereComparator.LIKE;
+								curr.setLength(0);
+								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+							}
+							else
+							if(fcurr.equals("NOTIN"))
+							{
+								wheres.get(wheres.size()-1).comp=WhereComparator.NOTIN;
+								curr.setLength(0);
+								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+							}
+							else
+							if(fcurr.equals("NOTLIKE"))
+							{
+								wheres.get(wheres.size()-1).comp=WhereComparator.NOTLIKE;
+								curr.setLength(0);
+								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+							}
+							else
+								throw new CMException("Unexpected '"+fcurr+"' in Malformed sql: "+str);
+							if(saveC)
+								curr.append(c);
+						}
+					}
+					break;
 				}
-				else
-					curr.append(c);
-				break;
+				case STATE_WHERE2: // where rhs of clause
+				{
+					if(Character.isWhitespace(c))
+					{
+						if(curr.length()>0)
+						{
+							wheres.get(wheres.size()-1).rhs=curr.toString();
+							curr.setLength(0);
+							state=SelectSQLState.STATE_WHERE3;
+						}
+					}
+					else
+					if(c==';')
+					{
+						if(curr.length()==0)
+							throw new CMException("Unexpected ; in Malformed sql: "+str);
+						else
+						{
+							wheres.get(wheres.size()-1).rhs=curr.toString();
+							curr.setLength(0);
+							state=SelectSQLState.STATE_EXPECTNOTHING;
+						}
+					}
+					else
+					if(c=='(')
+					{
+						if(curr.length()==0)
+							state=SelectSQLState.STATE_WHEREEMBEDRIGHT0;
+						else
+							throw new CMException("Unexpected ( in Malformed sql: "+str);
+					}
+					else
+						curr.append(c);
+					break;
+				}
+				case STATE_WHEREEMBEDRIGHT0:
+				{
+					if(c=='(')
+						pdepth++;
+					else
+					if(c==')')
+					{
+						if(pdepth==0)
+						{
+							wheres.get(wheres.size()-1).lhs=curr.toString();
+							state=SelectSQLState.STATE_WHERE3; // expect connector or endofclause
+							curr.setLength(0);
+						}
+						else
+							pdepth--;
+					}
+					else
+						curr.append(c);
+					break;
+				}
+				case STATE_WHERE3: // expect connector or endofclause
+				{
+					if(c==';')
+					{
+						state=SelectSQLState.STATE_EXPECTNOTHING;
+					}
+					else
+					if(Character.isWhitespace(c))
+					{
+						if(curr.length()>0)
+						{
+							if(curr.toString().equals("AND"))
+							{
+								wheres.get(wheres.size()-1).afterConnector = WhereConnector.AND;
+								state=SelectSQLState.STATE_WHERE0;
+								curr.setLength(0);
+							}
+							else
+							if(curr.toString().equals("OR"))
+							{
+								wheres.get(wheres.size()-1).afterConnector = WhereConnector.OR;
+								state=SelectSQLState.STATE_WHERE0;
+								curr.setLength(0);
+							}
+							else
+								throw new CMException("Unexpected '"+curr.toString()+"': Malformed sql: "+str);
+						}
+					}
+					else
+						curr.append(c);
+					break;
+				}
+				default:
+					if(!Character.isWhitespace(c))
+						throw new CMException("Unexpected '"+c+"': Malformed sql: "+str);
+					break;
+				}
 			}
-			default:
-				throw new CMException("Malformed sql: "+str);
-			}
+			if(state != SelectSQLState.STATE_EXPECTNOTHING)
+				throw new CMException("Unpected end of clause in state "+state.toString()+" in sql: "+str);
 		}
+	}
+
+	protected List<Map<String,String>> doSubSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final SQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	{
+		final List<Map<String,String>> results=new ArrayList<Map<String,String>>();
+		// first estalish the from object
+		if(clause.from.length()==0)
+			throw new CMException("No FROM clause in "+clause.sql);
+		final Object from;
+
 		return results;
+	}
+
+	protected List<Map<String,String>> doSubSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	{
+		final int x=str.indexOf(':');
+		if(x<0)
+			throw new CMException("Malformed sql: "+str);
+		final String sqlbits=str.substring(x+1).toUpperCase();
+		final SQLClause clause = new SQLClause();
+		clause.parseSQL(str, sqlbits);
+		return this.doSubSelect(E, ignoreStats, defPrefix, clause, piece, defined);
 	}
 
 	protected String doSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
