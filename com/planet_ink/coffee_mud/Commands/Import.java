@@ -5437,7 +5437,7 @@ public class Import extends StdCommand
 						if(session!=null)
 							session.rawPrint(L("Unpacking area #@x1/@x2...",""+(a+1),""+num));
 						final List<XMLLibrary.XMLTag> area=areas.get(0);
-						error=CMLib.coffeeMaker().unpackAreaFromXML(area,session,areaType,true);
+						error=CMLib.coffeeMaker().unpackAreaFromXML(area,session,areaType,true, true);
 						if(session!=null)
 							session.rawPrintln("!");
 						if(error.startsWith("Area Exists: "))
@@ -5510,7 +5510,7 @@ public class Import extends StdCommand
 					if(error.length()==0)
 						importCustomFiles(mob,externalFiles,customBotherChecker,!prompt,nodelete);
 					if(error.length()==0)
-						error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,areaType,true);
+						error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,areaType,true, true);
 					if(session!=null)
 						session.rawPrintln("!");
 					if(error.startsWith("Area Exists: "))
@@ -5530,7 +5530,7 @@ public class Import extends StdCommand
 							return false;
 						if(session!=null)
 							session.rawPrint(L("Unpacking area from file: '@x1'...",areaFileName));
-						error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,areaType,true);
+						error=CMLib.coffeeMaker().unpackAreaFromXML(areaD,session,areaType,true, true);
 						if(session!=null)
 							session.rawPrintln("!");
 					}
@@ -5542,7 +5542,9 @@ public class Import extends StdCommand
 					continue;
 				}
 				else
-				if((buf!=null)&&(buf.length()>20)&&(buf.substring(0,20).indexOf("<AROOM>")>=0))
+				if((buf!=null)
+				&&(buf.length()>20)
+				&&(buf.substring(0,20).indexOf("<AROOM>")>=0))
 				{
 					if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.IMPORTROOMS))
 					{

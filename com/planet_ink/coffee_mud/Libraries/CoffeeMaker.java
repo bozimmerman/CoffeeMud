@@ -942,7 +942,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		final List<XMLLibrary.XMLTag> roomData=CMLib.xml().getContentsFromPieces(xml,"AROOM");
 		if(roomData==null)
 			return unpackErr("Room","null 'roomData'",xml);
-		return unpackRoomFromXML(roomData,andContent);
+		return unpackRoomFromXML(roomData, andContent);
 	}
 
 	@Override
@@ -1093,7 +1093,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return "";
 	}
 
-	protected String unpackRoomFromXML(final Area forceArea, final List<XMLTag> xml, final boolean andContent, final boolean andSave)
+	@Override
+	public String unpackRoomFromXML(final Area forceArea, final List<XMLTag> xml, final boolean andContent, final boolean andSave)
 	{
 		Area myArea;
 		String areaName;
@@ -1512,12 +1513,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
-	public String unpackAreaFromXML(final List<XMLTag> aV, final Session S, final String overrideAreaType, final boolean andRooms)
+	public String unpackAreaFromXML(final List<XMLTag> aV, final Session S, final String overrideAreaType, final boolean andRooms, final boolean savable)
 	{
 		String areaClass=CMLib.xml().getValFromPieces(aV,"ACLAS");
 		final String areaName=CMLib.xml().getValFromPieces(aV,"ANAME");
 
-		if(CMLib.map().getArea(areaName)!=null)
+		if((CMLib.map().getArea(areaName)!=null) && (savable))
 			return "Area Exists: "+areaName;
 		if(overrideAreaType!=null)
 			areaClass=overrideAreaType;
@@ -1525,9 +1526,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(newArea==null)
 			return unpackErr("Area","No class: "+areaClass);
 		newArea.setName(areaName);
-		CMLib.map().addArea(newArea);
-		CMLib.map().registerWorldObjectLoaded(newArea, null, newArea);
-		CMLib.database().DBCreateArea(newArea);
+
+		if(savable)
+		{
+			CMLib.map().addArea(newArea);
+			CMLib.map().registerWorldObjectLoaded(newArea, null, newArea);
+			CMLib.database().DBCreateArea(newArea);
+		}
+		else
+			CMLib.flags().setSavable(newArea, false);
 
 		newArea.setDescription(CMLib.coffeeFilter().safetyFilter(CMLib.xml().getValFromPieces(aV,"ADESC")));
 		newArea.setClimateType(CMLib.xml().getIntFromPieces(aV,"ACLIM"));
@@ -1535,7 +1542,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		newArea.setSubOpList(CMLib.xml().getValFromPieces(aV,"ASUBS"));
 		newArea.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(aV,"ADATA")));
 		if(CMLib.flags().isSavable(newArea))
-		CMLib.database().DBUpdateArea(newArea.Name(),newArea);
+			CMLib.database().DBUpdateArea(newArea.Name(),newArea);
 		if(andRooms)
 		{
 			final List<XMLLibrary.XMLTag> rV=CMLib.xml().getContentsFromPieces(aV,"AROOMS");
@@ -1547,7 +1554,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				if((!ablk.tag().equalsIgnoreCase("AROOM"))||(ablk.contents()==null))
 					return unpackErr("Area","??"+ablk.tag());
 				//if(S!=null) S.rawPrint(".");
-				final String err=unpackRoomFromXML(ablk.contents(),true);
+				final String err;
+				if(savable)
+					err=unpackRoomFromXML(ablk.contents(),true);
+				else
+					err=unpackRoomFromXML(newArea, ablk.contents(), true, false);
 				if(err.length()>0)
 					return err;
 			}
@@ -1564,7 +1575,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		final List<XMLLibrary.XMLTag> aV=CMLib.xml().getContentsFromPieces(xml,"AREA");
 		if(aV==null)
 			return unpackErr("Area","null 'aV'",xml);
-		return unpackAreaFromXML(aV,S,overrideAreaType,andRooms);
+		return unpackAreaFromXML(aV,S,overrideAreaType,andRooms, true);
 	}
 
 	@Override
