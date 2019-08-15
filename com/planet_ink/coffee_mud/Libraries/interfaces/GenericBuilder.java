@@ -117,13 +117,14 @@ public interface GenericBuilder extends CMLibrary
 	public CMClass.CMObjectType getUnknownTypeFromXML(final String xml);
 	public String getUnknownNameFromXML(final String xml);
 	public String unpackRoomFromXML(List<XMLTag> xml, boolean andContent);
+	public String unpackRoomFromXML(final Area forceArea, final List<XMLTag> xml, final boolean andContent, final boolean andSave);
 	public String fillAreaAndCustomVectorFromXML(String buf,  List<XMLTag> area, List<CMObject> custom, Map<String,String> externalFiles);
 	public String fillCustomVectorFromXML(String xml, List<CMObject> custom, Map<String,String> externalFiles);
 	public String fillCustomVectorFromXML(List<XMLTag> xml,  List<CMObject> custom, Map<String,String> externalFiles);
 	public String fillAreasVectorFromXML(String buf,  List<List<XMLTag>> areas, List<CMObject> custom, Map<String,String> externalFiles);
 	public void addAutoPropsToAreaIfNecessary(Area newArea);
 	public Area unpackAreaObjectFromXML(String xml) throws CMException;
-	public String unpackAreaFromXML(List<XMLTag> aV, Session S, String overrideAreaType, boolean andRooms);
+	public String unpackAreaFromXML(List<XMLTag> aV, Session S, String overrideAreaType, boolean andRooms, boolean savable);
 	public String unpackAreaFromXML(String buf, Session S, String overrideAreaType, boolean andRooms);
 	public StringBuffer getAreaXML(Area area,  Session S, Set<CMObject> custom, Set<String> files, boolean andRooms);
 	public StringBuffer getAreaObjectXML(Area area, Session S, Set<CMObject> custom, Set<String> files, boolean andRooms);
