@@ -3155,12 +3155,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		 * @author Bo Zimmerman
 		 *
 		 */
+		private static class WhereComp
+		{
+			private Object			lhs		= null;
+			private WhereComparator	comp	= null;
+			private String			rhs		= null;
+		}
+
 		private static class WhereClause
 		{
-			private WhereConnector	afterConnector	= WhereConnector.ENDCLAUSE;
-			private String			lhs				= null;
-			private WhereComparator	comp			= null;
-			private String			rhs				= null;
+			private WhereClause		prev	= null;
+			private WhereClause		parent	= null;
+			private Object			lhs		= null;
+			private WhereConnector	conn	= null;
+			private WhereClause		next	= null;
 		}
 
 		private static class WhatBit extends Pair<String,String>
@@ -3184,14 +3192,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		private String					sql		= "";
 		private final List<WhatBit>		what	= new ArrayList<WhatBit>(1);
 		private String					from	= "";
-		private final List<WhereClause>	wheres	= new ArrayList<WhereClause>(1);
+		private final WhereClause		wheres	= null;
 
 		private void parseSQL(final String str, final String sqlbits) throws CMException
 		{
 			this.sql=str;
 			final StringBuilder curr=new StringBuilder("");
 			int pdepth=0;
-
+			WhereClause wheres = new WhereClause();
+			WhereComp	wcomp  = null;
 			SelectSQLState state=SelectSQLState.STATE_SELECT0;
 			for(int i=0;i<=sqlbits.length();i++)
 			{
@@ -3384,9 +3393,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							final WhereClause w = new WhereClause();
-							w.lhs = curr.toString();
-							wheres.add(w);
+							wcomp=new WhereComp();
+							if(wheres.lhs!=null)
+							{
+								final WhereClause newClause = new WhereClause();
+								newClause.prev=wheres;
+								wheres.next=newClause;
+								wheres=newClause;
+							}
+							wheres.lhs=wcomp;
+							wcomp.lhs = curr.toString();
 							curr.setLength(0);
 							if(!Character.isWhitespace(c))
 								curr.append(c);
@@ -3397,11 +3413,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if(c=='(')
 					{
 						if(curr.length()==0)
-						{
-							final WhereClause w = new WhereClause();
-							wheres.add(w);
 							state=SelectSQLState.STATE_WHEREEMBEDLEFT0;
-						}
 						else
 							throw new CMException("Unexpected ( in Malformed sql: "+str);
 					}
@@ -3412,13 +3424,42 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				case STATE_WHEREEMBEDLEFT0:
 				{
 					if(c=='(')
-						pdepth++;
+					{
+						if(curr.length()==0)
+						{
+							final WhereClause newClause = new WhereClause();
+							newClause.parent=wheres;
+							if(wheres.lhs!=null)
+								wheres.lhs=newClause;
+							else
+							{
+								final WhereClause rightClause = new WhereClause();
+								wheres.next=rightClause;
+								rightClause.prev=wheres;
+								rightClause.lhs=newClause;
+							}
+							wheres=newClause;
+							i--;
+							state=SelectSQLState.STATE_WHERE0; // expect lhs of a comp
+						}
+						else
+							pdepth++;
+					}
 					else
 					if(c==')')
 					{
 						if(pdepth==0)
 						{
-							wheres.get(wheres.size()-1).lhs=curr.toString();
+							wcomp=new WhereComp();
+							if(wheres.lhs!=null)
+							{
+								final WhereClause newClause = new WhereClause();
+								wheres.next=newClause;
+								newClause.prev=wheres;
+								wheres=newClause;
+							}
+							wheres.lhs=wcomp;
+							wcomp.lhs=curr.toString();
 							state=SelectSQLState.STATE_WHERE1; // expect connector or endofclause
 							curr.setLength(0);
 						}
@@ -3426,7 +3467,31 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							pdepth--;
 					}
 					else
+					if(Character.isWhitespace(c) && (curr.length()==0))
+					{}
+					else
+					{
 						curr.append(c);
+						if((curr.length()<8)
+						&&(!"SELECT:".startsWith(curr.toString())))
+						{
+							final WhereClause newClause = new WhereClause();
+							newClause.parent=wheres;
+							if(wheres.lhs!=null)
+								wheres.lhs=newClause;
+							else
+							{
+								final WhereClause rightClause = new WhereClause();
+								wheres.next=rightClause;
+								rightClause.prev=wheres;
+								rightClause.lhs=newClause;
+							}
+							wheres=newClause;
+							i=sqlbits.lastIndexOf('(',i)-1;
+							curr.setLength(0);
+							state=SelectSQLState.STATE_WHERE0; // expect lhs of a comp
+						}
+					}
 					break;
 				}
 				case STATE_WHERE1: // expect comparator
@@ -3468,70 +3533,70 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							final String fcurr=curr.toString();
 							if(fcurr.equals("="))
 							{
-								wheres.get(wheres.size()-1).comp=WhereComparator.EQ;
+								wcomp.comp=WhereComparator.EQ;
 								curr.setLength(0);
 								state=SelectSQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("!=")||fcurr.equals("<>"))
 							{
-								wheres.get(wheres.size()-1).comp=WhereComparator.NEQ;
+								wcomp.comp=WhereComparator.NEQ;
 								curr.setLength(0);
 								state=SelectSQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals(">"))
 							{
-								wheres.get(wheres.size()-1).comp=WhereComparator.GT;
+								wcomp.comp=WhereComparator.GT;
 								curr.setLength(0);
 								state=SelectSQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("<"))
 							{
-								wheres.get(wheres.size()-1).comp=WhereComparator.LT;
+								wcomp.comp=WhereComparator.LT;
 								curr.setLength(0);
 								state=SelectSQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals(">=")||fcurr.equals("=>"))
 							{
-								wheres.get(wheres.size()-1).comp=WhereComparator.GTEQ;
+								wcomp.comp=WhereComparator.GTEQ;
 								curr.setLength(0);
 								state=SelectSQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("<=")||fcurr.equals("<="))
 							{
-								wheres.get(wheres.size()-1).comp=WhereComparator.LTEQ;
+								wcomp.comp=WhereComparator.LTEQ;
 								curr.setLength(0);
 								state=SelectSQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("IN"))
 							{
-								wheres.get(wheres.size()-1).comp=WhereComparator.IN;
+								wcomp.comp=WhereComparator.IN;
 								curr.setLength(0);
 								state=SelectSQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("LIKE"))
 							{
-								wheres.get(wheres.size()-1).comp=WhereComparator.LIKE;
+								wcomp.comp=WhereComparator.LIKE;
 								curr.setLength(0);
 								state=SelectSQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("NOTIN"))
 							{
-								wheres.get(wheres.size()-1).comp=WhereComparator.NOTIN;
+								wcomp.comp=WhereComparator.NOTIN;
 								curr.setLength(0);
 								state=SelectSQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("NOTLIKE"))
 							{
-								wheres.get(wheres.size()-1).comp=WhereComparator.NOTLIKE;
+								wcomp.comp=WhereComparator.NOTLIKE;
 								curr.setLength(0);
 								state=SelectSQLState.STATE_WHERE2; // now expect RHS
 							}
@@ -3549,7 +3614,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							wheres.get(wheres.size()-1).rhs=curr.toString();
+							wcomp.rhs=curr.toString();
 							curr.setLength(0);
 							state=SelectSQLState.STATE_WHERE3;
 						}
@@ -3561,7 +3626,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							throw new CMException("Unexpected ; in Malformed sql: "+str);
 						else
 						{
-							wheres.get(wheres.size()-1).rhs=curr.toString();
+							wcomp.rhs=curr.toString();
 							curr.setLength(0);
 							state=SelectSQLState.STATE_EXPECTNOTHING;
 						}
@@ -3581,13 +3646,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				case STATE_WHEREEMBEDRIGHT0:
 				{
 					if(c=='(')
+					{
 						pdepth++;
+					}
 					else
 					if(c==')')
 					{
 						if(pdepth==0)
 						{
-							wheres.get(wheres.size()-1).lhs=curr.toString();
+							wcomp.rhs=curr.toString();
 							state=SelectSQLState.STATE_WHERE3; // expect connector or endofclause
 							curr.setLength(0);
 						}
@@ -3600,6 +3667,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				case STATE_WHERE3: // expect connector or endofclause
 				{
+					//TODO: connector might mean replacing rhs of current wheres with new wheres
 					if(c==';')
 					{
 						state=SelectSQLState.STATE_EXPECTNOTHING;
@@ -3611,20 +3679,29 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						{
 							if(curr.toString().equals("AND"))
 							{
-								wheres.get(wheres.size()-1).afterConnector = WhereConnector.AND;
+								wheres.conn = WhereConnector.AND;
 								state=SelectSQLState.STATE_WHERE0;
 								curr.setLength(0);
 							}
 							else
 							if(curr.toString().equals("OR"))
 							{
-								wheres.get(wheres.size()-1).afterConnector = WhereConnector.OR;
+								wheres.conn = WhereConnector.OR;
 								state=SelectSQLState.STATE_WHERE0;
 								curr.setLength(0);
 							}
 							else
 								throw new CMException("Unexpected '"+curr.toString()+"': Malformed sql: "+str);
 						}
+					}
+					else
+					if((c==')') && (curr.length()==0))
+					{
+						while(wheres.prev!=null)
+							wheres=wheres.prev;
+						if(wheres.parent==null)
+							throw new CMException("Unexpected ): Malformed sql: "+str);
+						wheres=wheres.parent;
 					}
 					else
 						curr.append(c);
