@@ -138,7 +138,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return getDuration(40,mob,level,5);
 	}
 
-	public boolean isMineForCooking(final MOB mob, final Container cooking)
+	protected boolean isMineForCooking(final MOB mob, final Container cooking)
 	{
 		for(int a=0;a<mob.numEffects();a++)
 		{
@@ -156,7 +156,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return false;
 	}
 
-	public boolean meetsLidRequirements(final MOB mob, final Container cooking)
+	protected boolean meetsLidRequirements(final MOB mob, final Container cooking)
 	{
 		if(!requireLid())
 			return true;
@@ -184,7 +184,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return super.okMessage(myHost, msg);
 	}
 
-	public void stirThePot(final MOB mob)
+	protected void stirThePot(final MOB mob)
 	{
 		if(buildingI!=null)
 		{
@@ -308,7 +308,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	public boolean contentsSame(final Map<String,Integer> h1, final Map<String,Integer> h2)
+	protected boolean contentsSame(final Map<String,Integer> h1, final Map<String,Integer> h2)
 	{
 		if(h1.size()!=h2.size())
 			return false;
@@ -324,7 +324,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return true;
 	}
 
-	public Map<String,Integer> potContents(final Container pot)
+	protected Map<String,Integer> potContents(final Container pot)
 	{
 		final Map<String,Integer> h=new Hashtable<String,Integer>();
 		if((pot instanceof Drink)&&(((Drink)pot).liquidRemaining()>0))
@@ -361,13 +361,16 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			Integer INT=h.get(ing+"/"+I.rawSecretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/");
 			if(INT==null)
 				INT=Integer.valueOf(0);
-			INT=Integer.valueOf(INT.intValue()+1);
+			if(I instanceof RawMaterial)
+				INT=Integer.valueOf(INT.intValue()+((RawMaterial)I).phyStats().weight());
+			else
+				INT=Integer.valueOf(INT.intValue()+1);
 			h.put(ing+"/"+I.rawSecretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/",INT);
 		}
 		return h;
 	}
 
-	public Vector<Object> countIngredients(final List<String> Vr)
+	protected List<Object> countIngredients(final List<String> Vr)
 	{
 		final String[] contents=new String[oldPotContents.size()];
 		final int[] amounts=new int[oldPotContents.size()];
@@ -381,7 +384,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 
 		int amountMade=0;
 
-		final Vector<Object> codedList=new Vector<Object>();
+		final List<Object> codedList=new ArrayList<Object>();
 		boolean RanOutOfSomething=false;
 		boolean NotEnoughForThisRun=false;
 		while((!RanOutOfSomething)&&(!NotEnoughForThisRun))
@@ -421,7 +424,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		}
 		if(NotEnoughForThisRun)
 		{
-			codedList.addElement(Integer.valueOf(-amountMade));
+			codedList.add(Integer.valueOf(-amountMade));
 			for(int i=0;i<contents.length;i++)
 			{
 				if(amounts[i]<0)
@@ -429,13 +432,13 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					String content=contents[i];
 					if(content.indexOf('/')>=0)
 						content=content.substring(0,content.indexOf('/'));
-					codedList.addElement(content);
+					codedList.add(content);
 				}
 			}
 		}
 		else
 		{
-			codedList.addElement(Integer.valueOf(amountMade));
+			codedList.add(Integer.valueOf(amountMade));
 			for(int i=0;i<contents.length;i++)
 			{
 				final String ingredient2=contents[i];
@@ -447,7 +450,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					String content=contents[i];
 					if(content.indexOf('/')>=0)
 						content=content.substring(0,content.indexOf('/'));
-					codedList.addElement(content);
+					codedList.add(content);
 				}
 			}
 		}
@@ -455,9 +458,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return codedList;
 	}
 
-	public Vector<String> extraIngredientsInOldContents(final List<String> Vr, final boolean perfectOnly)
+	private List<String> extraIngredientsInOldContents(final List<String> Vr, final boolean perfectOnly)
 	{
-		final Vector<String> extra=new Vector<String>();
+		final List<String> extra=new ArrayList<String>();
 		for(final String ingredient : oldPotContents.keySet())
 		{
 			boolean found=false;
@@ -479,15 +482,15 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				String content=ingredient;
 				if(content.indexOf('/')>=0)
 					content=content.substring(0,content.indexOf('/'));
-				extra.addElement(content);
+				extra.add(content);
 			}
 		}
 		return extra;
 	}
 
-	public Vector<String> missingIngredientsFromOldContents(final List<String> Vr, final boolean perfectOnly)
+	public List<String> missingIngredientsFromOldContents(final List<String> Vr, final boolean perfectOnly)
 	{
-		final Vector<String> missing=new Vector<String>();
+		final List<String> missing=new ArrayList<String>();
 
 		String possiblyMissing=null;
 		boolean foundOptional=false;
@@ -514,7 +517,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				if(amount>=0)
 				{
 					if(!found)
-						missing.addElement(ingredient);
+						missing.add(ingredient);
 				}
 				else
 				if(amount<0)
@@ -528,7 +531,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 		}
 		if((foundOptional)&&(!hasOptional))
-			missing.addElement(possiblyMissing);
+			missing.add(possiblyMissing);
 		return missing;
 	}
 
@@ -895,8 +898,11 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 
 		if(buildingI!=null)
 		{
+			if(buildingI instanceof RawMaterial)
+				((RawMaterial)buildingI).setSecretIdentity(buildingI.name());
+			else
 			if(mob!=null)
-				buildingI.setSecretIdentity("This was prepared by "+mob.Name()+".");
+				buildingI.setSecretIdentity(L("This was prepared by @x1.",mob.Name()));
 			final String spell=finalRecipe.get(RCP_BONUSSPELL);
 			if((spell!=null)&&(spell.length()>0))
 			{
@@ -1128,9 +1134,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		//***********************************************
 		//* figure out recipe
 		//***********************************************
-		Vector<List<String>> perfectRecipes=new Vector<List<String>>();
-		final Vector<List<String>> closerRecipes=new Vector<List<String>>();
-		final Vector<List<String>> closeRecipes=new Vector<List<String>>();
+		List<List<String>> perfectRecipes=new ArrayList<List<String>>();
+		final List<List<String>> closerRecipes=new ArrayList<List<String>>();
+		final List<List<String>> closeRecipes=new ArrayList<List<String>>();
 		for(int v=0;v<allRecipes.size();v++)
 		{
 			final List<String> Vr=allRecipes.get(v);
@@ -1144,14 +1150,16 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					break;
 				}
 			}
+			if(Vr.get(0).indexOf("ruit brand")>=0)
+				System.out.println("hi");
 			if(found)
-				closeRecipes.addElement(Vr);
+				closeRecipes.add(Vr);
 			if((missingIngredientsFromOldContents(Vr,true).size()==0)
 			&&(extraIngredientsInOldContents(Vr,true).size()==0))
-				perfectRecipes.addElement(Vr);
+				perfectRecipes.add(Vr);
 			if((missingIngredientsFromOldContents(Vr,false).size()==0)
 			&&(extraIngredientsInOldContents(Vr,false).size()==0))
-				closerRecipes.addElement(Vr);
+				closerRecipes.add(Vr);
 		}
 
 		if(perfectRecipes.size()==0)
@@ -1165,9 +1173,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			for(int vr=0;vr<closeRecipes.size();vr++)
 			{
-				final List<String> Vr=closeRecipes.elementAt(vr);
-				final Vector<String> missing=missingIngredientsFromOldContents(Vr,false);
-				final Vector<String> extra=extraIngredientsInOldContents(Vr,false);
+				final List<String> Vr=closeRecipes.get(vr);
+				final List<String> missing=missingIngredientsFromOldContents(Vr,false);
+				final List<String> extra=extraIngredientsInOldContents(Vr,false);
 				final String recipeName=replacePercent(Vr.get(RCP_FINALFOOD),Vr.get(RCP_MAININGR).toLowerCase());
 				if(extra.size()>0)
 				{
@@ -1175,12 +1183,12 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					for(int i=0;i<extra.size();i++)
 					{
 						if(i==0)
-							buf.append(extra.elementAt(i).toLowerCase());
+							buf.append(extra.get(i).toLowerCase());
 						else
 						if(i==extra.size()-1)
-							buf.append(L(", and @x1",extra.elementAt(i).toLowerCase()));
+							buf.append(L(", and @x1",extra.get(i).toLowerCase()));
 						else
-							buf.append(", " + extra.elementAt(i).toLowerCase());
+							buf.append(", " + extra.get(i).toLowerCase());
 					}
 					commonTell(mob,buf.toString()+".");
 				}
@@ -1191,29 +1199,29 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					for(int i=0;i<missing.size();i++)
 					{
 						if(i==0)
-							buf.append(missing.elementAt(i).toLowerCase());
+							buf.append(missing.get(i).toLowerCase());
 						else
 						if(i==missing.size()-1)
-							buf.append(L(", and @x1",missing.elementAt(i).toLowerCase()));
+							buf.append(L(", and @x1",missing.get(i).toLowerCase()));
 						else
-							buf.append(", "+missing.elementAt(i).toLowerCase());
+							buf.append(", "+missing.get(i).toLowerCase());
 					}
 					commonTell(mob,buf.toString()+".");
 				}
 			}
 			return false;
 		}
-		final Vector<String> complaints=new Vector<String>();
+		final List<String> complaints=new ArrayList<String>();
 		for(int vr=0;vr<perfectRecipes.size();vr++)
 		{
-			final List<String> Vr=perfectRecipes.elementAt(vr);
-			final Vector<Object> counts=countIngredients(Vr);
-			final Integer amountMaking=(Integer)counts.elementAt(0);
+			final List<String> Vr=perfectRecipes.get(vr);
+			final List<Object> counts=countIngredients(Vr);
+			final Integer amountMaking=(Integer)counts.get(0);
 			final String recipeName=replacePercent(Vr.get(RCP_FINALFOOD),Vr.get(RCP_MAININGR).toLowerCase());
 			if(counts.size()==1)
 			{
 				if(CMath.s_int(Vr.get(RCP_LEVEL))>xlevel(mob))
-					complaints.addElement("If you are trying to make "+recipeName+", you need to wait until you are level "+CMath.s_int(Vr.get(RCP_LEVEL))+".");
+					complaints.add("If you are trying to make "+recipeName+", you need to wait until you are level "+CMath.s_int(Vr.get(RCP_LEVEL))+".");
 				else
 				{
 					finalRecipe=Vr;
@@ -1228,14 +1236,14 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				for(int i=1;i<counts.size();i++)
 				{
 					if(i==1)
-						buf.append(((String)counts.elementAt(i)).toLowerCase());
+						buf.append(((String)counts.get(i)).toLowerCase());
 					else
 					if(i==counts.size()-1)
-						buf.append(L(", and @x1",((String)counts.elementAt(i)).toLowerCase()));
+						buf.append(L(", and @x1",((String)counts.get(i)).toLowerCase()));
 					else
-						buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
+						buf.append(", "+((String)counts.get(i)).toLowerCase());
 				}
-				complaints.addElement(buf.toString());
+				complaints.add(buf.toString());
 			}
 			else
 			if(amountMaking.intValue()>0)
@@ -1244,20 +1252,20 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				for(int i=1;i<counts.size();i++)
 				{
 					if(i==1)
-						buf.append(((String)counts.elementAt(i)).toLowerCase());
+						buf.append(((String)counts.get(i)).toLowerCase());
 					else
 					if(i==counts.size()-1)
-						buf.append(L(", and @x1",((String)counts.elementAt(i)).toLowerCase()));
+						buf.append(L(", and @x1",((String)counts.get(i)).toLowerCase()));
 					else
-						buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
+						buf.append(", "+((String)counts.get(i)).toLowerCase());
 				}
-				complaints.addElement(buf.toString());
+				complaints.add(buf.toString());
 			}
 		}
 		if(finalRecipe==null)
 		{
 			for(int c=0;c<complaints.size();c++)
-				commonTell(mob,(complaints.elementAt(c)));
+				commonTell(mob,(complaints.get(c)));
 			return false;
 		}
 
