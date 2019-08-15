@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.Area.State;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -3141,51 +3142,51 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		 * @author Bo Zimmerman
 		 *
 		 */
-		public static enum WhereConnector { ENDCLAUSE, AND, OR }
+		private static enum WhereConnector { ENDCLAUSE, AND, OR }
 
 		/**
 		 * Connector descriptors for connecting sql where clauses together
 		 * @author Bo Zimmerman
 		 *
 		 */
-		public static enum WhereComparator { EQ, NEQ, GT, LT, GTEQ, LTEQ, LIKE, IN, NOTLIKE, NOTIN}
+		private static enum WhereComparator { EQ, NEQ, GT, LT, GTEQ, LTEQ, LIKE, IN, NOTLIKE, NOTIN}
 
 		/** An abstract Where Clause
 		 * @author Bo Zimmerman
 		 *
 		 */
-		public static class WhereClause
+		private static class WhereClause
 		{
-			WhereConnector	afterConnector	= WhereConnector.ENDCLAUSE;
-			String			lhs				= null;
-			WhereComparator	comp			= null;
-			String			rhs				= null;
+			private WhereConnector	afterConnector	= WhereConnector.ENDCLAUSE;
+			private String			lhs				= null;
+			private WhereComparator	comp			= null;
+			private String			rhs				= null;
 		}
 
-		public static class WhatBit extends Pair<String,String>
+		private static class WhatBit extends Pair<String,String>
 		{
-			public WhatBit(final String what, final String as)
+			private WhatBit(final String what, final String as)
 			{
 				super(what,as);
 			}
 
-			public String what()
+			private String what()
 			{
 				return first;
 			}
 
-			public String at()
+			private String as()
 			{
 				return second;
 			}
 		}
 
-		public String					sql		= "";
-		public final List<WhatBit>		what	= new ArrayList<WhatBit>(1);
-		public String					from	= "";
-		public final List<WhereClause>	wheres	= new ArrayList<WhereClause>(1);
+		private String					sql		= "";
+		private final List<WhatBit>		what	= new ArrayList<WhatBit>(1);
+		private String					from	= "";
+		private final List<WhereClause>	wheres	= new ArrayList<WhereClause>(1);
 
-		public void parseSQL(final String str, final String sqlbits) throws CMException
+		private void parseSQL(final String str, final String sqlbits) throws CMException
 		{
 			this.sql=str;
 			final StringBuilder curr=new StringBuilder("");
@@ -3640,14 +3641,256 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 	}
 
-	protected List<Map<String,String>> doSubSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final SQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected void doneWithSQLObject(final Object o)
 	{
-		final List<Map<String,String>> results=new ArrayList<Map<String,String>>();
+		if(o instanceof Physical)
+		{
+			final Physical P=(Physical)o;
+			if(!P.isSavable())
+			{
+				if((P instanceof DBIdentifiable)
+				&&(((DBIdentifiable)P).databaseID().equals("DELETE")))
+					P.destroy();
+				else
+				if((P instanceof Area)
+				&&(((Area)P).getAreaState()==Area.State.STOPPED))
+					P.destroy();
+				else
+				if((P instanceof Room)
+				&&(((Room)P).getArea().amDestroyed()))
+					P.destroy();
+			}
+		}
+	}
+
+	protected List<Object> parseSQLCMFile(final CMFile F, final String sql) throws CMException
+	{
+		final List<Object> from=new LinkedList<Object>();
+		String str=F.text().toString().trim();
+		// normalize singletons
+		if(str.startsWith("<MOB>"))
+			str="<MOBS>"+str+"</MOB>";
+		else
+		if(str.startsWith("<ITEM>"))
+			str="<ITEMS>"+str+"</ITEMS>";
+		else
+		if(str.startsWith("<AREA>"))
+			str="<AREAS>"+str+"</AREAS>";
+
+		if(str.startsWith("<MOBS>"))
+		{
+			final List<MOB> mobList=new LinkedList<MOB>();
+			final String err = CMLib.coffeeMaker().addMOBsFromXML(str, mobList, null);
+			if((err!=null)&&(err.length()>0))
+				throw new CMException("CMFile "+F.getAbsolutePath()+" failed mob parsing '"+err+"' in "+sql);
+			for(final MOB M : mobList)
+			{
+				CMLib.threads().deleteAllTicks(M);
+				M.setSavable(false);
+				M.setDatabaseID("DELETE");
+			}
+			from.addAll(mobList);
+		}
+		else
+		if(str.startsWith("<ITEMS>"))
+		{
+			final List<Item> itemList=new LinkedList<Item>();
+			final String err = CMLib.coffeeMaker().addItemsFromXML(str, itemList, null);
+			if((err!=null)&&(err.length()>0))
+				throw new CMException("CMFile "+F.getAbsolutePath()+" failed item parsing '"+err+"' in "+sql);
+			for(final Item I : itemList)
+			{
+				CMLib.threads().deleteAllTicks(I);
+				I.setSavable(false);
+				I.setDatabaseID("DELETE");
+			}
+			from.addAll(itemList);
+		}
+		else
+		if(str.startsWith("<AREAS>"))
+		{
+			final List<Area> areaList=new LinkedList<Area>();
+			final List<List<XMLLibrary.XMLTag>> areas=new ArrayList<List<XMLLibrary.XMLTag>>();
+			String err=CMLib.coffeeMaker().fillAreasVectorFromXML(str,areas,null,null);
+			if((err!=null)&&(err.length()>0))
+				throw new CMException("CMFile "+F.getAbsolutePath()+" failed area parsing '"+err+"' in "+sql);
+			for(final List<XMLLibrary.XMLTag> area : areas)
+				err=CMLib.coffeeMaker().unpackAreaFromXML(area, null, null, true, false);
+			for(final Area A : areaList)
+			{
+				CMLib.threads().deleteAllTicks(A);
+				A.setSavable(false);
+				A.setAreaState(State.STOPPED);
+			}
+			from.addAll(areaList);
+		}
+		else
+		if(str.startsWith("<AROOM>"))
+		{
+			final List<Room> roomList=new LinkedList<Room>();
+			final Area dumbArea=CMClass.getAreaType("StdArea");
+			CMLib.flags().setSavable(dumbArea, false);
+			final List<XMLLibrary.XMLTag> tags=CMLib.xml().parseAllXML(str);
+			final String err=CMLib.coffeeMaker().unpackRoomFromXML(dumbArea, tags, true, false);
+			if((err!=null)&&(err.length()>0)||(!dumbArea.getProperMap().hasMoreElements()))
+				throw new CMException("CMFile "+F.getAbsolutePath()+" failed room parsing '"+err+"' in "+sql);
+			roomList.add(dumbArea.getProperMap().nextElement());
+			for(final Room R : roomList)
+			{
+				CMLib.threads().deleteAllTicks(R);
+				dumbArea.delProperRoom(R);
+				R.setSavable(false);
+			}
+			dumbArea.destroy();
+			from.addAll(roomList);
+		}
+		else
+			throw new CMException("CMFile "+F.getAbsolutePath()+" not selectable from in "+sql);
+		return from;
+	}
+
+	protected List<Object> parseSQLFrom(final String fromClause, final String sql, final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	{
+		final List<Object> from=new LinkedList<Object>();
+		// clauses:
+		// imported physicalagents of all sorts
+		// world map
+		for(final String f : fromClause.split("\\"))
+		{
+			if(f.startsWith("/")
+			|| f.startsWith("::")
+			|| f.startsWith("//"))
+			{
+				final CMFile F=new CMFile(f,null);
+				if(!F.exists())
+					throw new CMException("CMFile "+f+" not found in "+sql);
+				if(F.isDirectory())
+				{
+					for(final CMFile F2 : F.listFiles())
+					{
+						if(!F2.isDirectory())
+							from.addAll(this.parseSQLCMFile(F, sql));
+					}
+				}
+				else
+					from.addAll(this.parseSQLCMFile(F, sql));
+			}
+			else
+			if(f.equals("AREAS"))
+			{
+				if(from.size()==0)
+					from.addAll(new XVector<Area>(CMLib.map().areas()));
+				else
+				{
+					final List<Object> oldFrom=new LinkedList<Object>();
+					oldFrom.addAll(from);
+					from.clear();
+					for(final Object o : oldFrom)
+					{
+						final Area A;
+						if (o instanceof CMObject)
+							A=CMLib.map().areaLocation((CMObject)o);
+						else
+							A=null;
+						if(A==null)
+							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+sql);
+						else
+						if(!from.contains(A))
+							from.add(A);
+					}
+				}
+			}
+			else
+			if(f.equals("ROOMS"))
+			{
+				if(from.size()==0)
+					from.addAll(new XVector<Room>(CMLib.map().rooms()));
+				else
+				{
+					final List<Object> oldFrom=new LinkedList<Object>();
+					oldFrom.addAll(from);
+					from.clear();
+					for(final Object o : oldFrom)
+					{
+						final Room R;
+						if(o instanceof Area)
+						{
+							from.addAll(new XVector<Room>(((Area)o).getProperMap()));
+							continue;
+						}
+						if (o instanceof Environmental)
+							R=CMLib.map().roomLocation((Environmental)o);
+						else
+							R=null;
+						if(R==null)
+							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+sql);
+						else
+						if(!from.contains(R))
+							from.add(R);
+					}
+				}
+			}
+			else
+			if(f.equals("AREA"))
+			{
+				if(from.size()==0)
+				{
+					//TODO: discover the CORRECT area
+				}
+				else
+				{
+					final List<Object> oldFrom=new LinkedList<Object>();
+					oldFrom.addAll(from);
+					from.clear();
+					for(final Object o : oldFrom)
+					{
+						final Room R;
+						if(o instanceof Area)
+						{
+							from.addAll(new XVector<Room>(((Area)o).getProperMap()));
+							continue;
+						}
+						if (o instanceof Environmental)
+							R=CMLib.map().roomLocation((Environmental)o);
+						else
+							R=null;
+						if(R==null)
+							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+sql);
+						else
+						if(!from.contains(R))
+							from.add(R);
+					}
+				}
+			}
+			else //TODO: add MOBS, ITEMS, EQUIPMENT (for mobs), OWNER (for items), ROOM (correct room?), MOB (correct mob?), item (correct item?)
+				throw new CMException("Unknown from clause "+f+" in "+sql);
+		}
+		return from;
+	}
+
+	protected List<Map<String,Object>> doSubObjSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final SQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	{
+		final List<Map<String,Object>> results=new ArrayList<Map<String,Object>>();
 		// first estalish the from object
 		if(clause.from.length()==0)
 			throw new CMException("No FROM clause in "+clause.sql);
-		final Object from;
+		final List<Object> froms=this.parseSQLFrom(clause.from, clause.sql, E, ignoreStats, defPrefix, piece, defined);
+		//TODO: filter by the WHERE clause
+		//TODO: finally, select the WHATS
+		return results;
+	}
 
+	protected List<Map<String,String>> doSubSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final SQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	{
+		final List<Map<String,String>> results=new ArrayList<Map<String,String>>();
+		final List<Map<String, Object>> objs=this.doSubObjSelect(E, ignoreStats, defPrefix, clause, piece, defined);
+		for(final Map<String,Object> o : objs)
+		{
+			final Map<String,String> n=new TreeMap<String,String>();
+			results.add(n);
+			for(final String key : o.keySet())
+				n.put(key, o.get(key).toString());
+		}
 		return results;
 	}
 
