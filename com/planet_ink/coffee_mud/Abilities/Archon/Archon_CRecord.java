@@ -156,7 +156,9 @@ public class Archon_CRecord extends ArchonSkill
 	public void setMiscText(final String newMiscText)
 	{
 		if(newMiscText.length()==0)
-			Log.errOut("Unable to start CRecording: "+newMiscText);
+		{
+			//Log.errOut("Unable to start CRecording: "+newMiscText);
+		}
 		else
 		{
 			isRecorder = CMParms.getParmBool(newMiscText, "ISRECORDER", false);
