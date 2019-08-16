@@ -3191,7 +3191,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		 */
 		private static class WhereComp
 		{
-			private Object			lhs		= null;
+			private String			lhs		= null;
 			private WhereComparator	comp	= null;
 			private String			rhs		= null;
 		}
@@ -3201,7 +3201,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			private WhereClause		prev	= null;
 			private WhereClause		parent	= null;
 			private WhereClause		child	= null;
-			private Object			lhs		= null;
+			private WhereComp		lhs		= null;
 			private WhereConnector	conn	= null;
 			private WhereClause		next	= null;
 		}
