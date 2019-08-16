@@ -110,9 +110,8 @@ public class Spell_SpellTurning extends Spell
 		&&(!mob.amDead())
 		&&(mob!=msg.source()))
 		{
-			final int levelDiff = (mob.phyStats().level()-msg.source().phyStats().level()) * 5;
 			if(((mob.fetchAbility(ID())==null)||proficiencyCheck(null,((mob.phyStats().level()+getXLEVELLevel(invoker()))-(msg.source().phyStats().level()))*2,false))
-			&&(((CMLib.dice().rollPercentage()+(2*getXLEVELLevel(invoker()))+levelDiff)>75)))
+			&&(((CMLib.dice().rollPercentage()+(2*getXLEVELLevel(invoker())))>75)))
 			{
 				oncePerRound=true;
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("The field around <S-NAME> reflects the spell!"));
