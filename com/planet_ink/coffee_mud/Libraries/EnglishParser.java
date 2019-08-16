@@ -1029,11 +1029,25 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
+	public String spaceOutPunctuation(final String str)
+	{
+		if(!hasPunctuation(str))
+			return str;
+		final char[] strc=str.toCharArray();
+		for(int x=0;x<strc.length;x++)
+		{
+			if(isPunctuation((byte)strc[x]))
+				strc[x]=' ';
+		}
+		return new String(strc);
+	}
+
+	@Override
 	public List<String> parseWords(final String thisStr)
 	{
 		if((thisStr==null)||(thisStr.length()==0))
 			return new Vector<String>(1);
-		return CMParms.parseSpaces(stripPunctuation(thisStr), true);
+		return CMParms.parseSpaces(spaceOutPunctuation(thisStr), true);
 	}
 
 	public boolean equalsPunctuationless(final char[] strC, final char[] str2C)
@@ -1208,7 +1222,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public String bumpDotNumber(final String srchStr, final int thisMuch)
+	public String bumpDotContextNumber(final String srchStr, final int thisMuch)
 	{
 		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null)
@@ -1219,7 +1233,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public int getDotNumber(final String srchStr)
+	public int getContextDotNumber(final String srchStr)
 	{
 		final FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null)

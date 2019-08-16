@@ -50,6 +50,7 @@ public interface EnglishParsing extends CMLibrary
 	public String cleanPrepositions(String s);
 	public boolean startsWithAnArticle(String s);
 	public String stripPunctuation(String str);
+	public String spaceOutPunctuation(final String str);
 	public boolean isPunctuation(final byte b);
 	public boolean hasPunctuation(String str);
 	public String makePlural(String str);
@@ -72,21 +73,172 @@ public interface EnglishParsing extends CMLibrary
 	public void evoke(MOB mob, Vector<String> commands);
 	public boolean containsString(final String toSrchStr, final String srchStr);
 
-	public int getDotNumber(final String srchStr);
-	public String bumpDotNumber(String srchStr, int byThisMuch);
-	public int getContextNumber(Environmental[] list, Environmental E);
-	public int getContextNumber(Collection<? extends Environmental> list, Environmental E);
-	public int getContextNumber(ItemCollection cont, Environmental E);
-	public String getContextName(Collection<? extends Environmental> list, Environmental E);
+	/**
+	 * Returns the context number of the given context-specific name.
+	 *
+	 * @param srchStr the context-specific name
+	 * @return the number found, or 0
+	 */
+	public int getContextDotNumber(final String srchStr);
+
+	/**
+	 * Given a context-specific name, this method returns the
+	 * name with the number adjusted according to the given amount.
+	 * There is NO validation that the resulting context number
+	 * remains valid.
+	 *
+	 * @param srchStr the context name
+	 * @param byThisMuch the amount to adjust by, + or -
+	 * @return the new name
+	 */
+	public String bumpDotContextNumber(String srchStr, int byThisMuch);
+
+	/**
+	 * Given a list of objects and an optional filter, this method returns
+	 * a list of identical size and order, with the context-specific names
+	 * instead of the objects.  Items that do not match the filter are
+	 * represented as "" in the returned list.  It apllows easy mapping
+	 * between a list and the context names.
+	 *
+	 * @param list the list of objects to return the names of
+	 * @param filter an optional filter, or null
+	 * @return the list of context-specific names
+	 */
 	public List<String> getAllContextNames(Collection<? extends Environmental> list, Filterer<Environmental> filter);
+
+	/**
+	 * Returns the context number of the item in the given
+	 * list is exactly the given environmental.
+	 *
+	 * @param list the list containing the environmental
+	 * @param E the object to find in the list
+	 * @return the context number, or -1
+	 */
+	public int getContextNumber(Environmental[] list, Environmental E);
+
+	/**
+	 * Returns the context number of the item in the given
+	 * collection is exactly the given environmental.
+	 *
+	 * @param list the collection containing the environmental
+	 * @param E the object to find in the collection
+	 * @return the context number, or -1
+	 */
+	public int getContextNumber(Collection<? extends Environmental> list, Environmental E);
+
+	/**
+	 * Returns the context number of the item in the given
+	 * collection is exactly the given environmental.
+	 *
+	 * @param cont the collection containing the environmental
+	 * @param E the object to find in the collection
+	 * @return the context number, or -1
+	 */
+	public int getContextNumber(ItemCollection cont, Environmental E);
+
+	/**
+	 * Returns the context-qualified name of the item in the given
+	 * collection is exactly the given environmental.
+	 *
+	 * @param list the collection containing the environmental
+	 * @param E the object to find in the collection
+	 * @return the context-qualified name
+	 */
+	public String getContextName(Collection<? extends Environmental> list, Environmental E);
+
+	/**
+	 * Returns the context-qualified name of the item in the given
+	 * list is exactly the given environmental.
+	 *
+	 * @param list the list containing the environmental
+	 * @param E the object to find in the list
+	 * @return the context-qualified name
+	 */
 	public String getContextName(Environmental[] list, Environmental E);
+
+	/**
+	 * Returns the context-qualified name of the item in the given
+	 * collection is exactly the given environmental.
+	 *
+	 * @param cont the collection containing the environmental
+	 * @param E the object to find in the collection
+	 * @return the context-qualified name
+	 */
 	public String getContextName(ItemCollection cont, Environmental E);
+
+	/**
+	 * Returns the context number of the object in the
+	 * given collection that is otherwise identical to the given
+	 * environmental.
+	 *
+	 * @param list the collection to find a match in
+	 * @param E the environmental to find in the collection
+	 * @return the context number of the item in the collection, or -1
+	 */
 	public int getContextSameNumber(Environmental[] list, Environmental E);
+
+	/**
+	 * Returns the context number of the object in the
+	 * given list that is otherwise identical to the given
+	 * environmental.
+	 *
+	 * @param list the list to find a match in
+	 * @param E the environmental to find in the collection
+	 * @return the context number of the item in the list, or -1
+	 */
 	public int getContextSameNumber(Collection<? extends Environmental> list, Environmental E);
+
+	/**
+	 * Returns the context number of the object in the
+	 * given collection that is otherwise identical to the given
+	 * environmental.
+	 *
+	 * @param cont the collection to find a match in
+	 * @param E the environmental to find in the collection
+	 * @return the context number of the item in the collection, or -1
+	 */
 	public int getContextSameNumber(ItemCollection cont, Environmental E);
+
+	/**
+	 * Returns the context-specific full name of the object in the
+	 * given collection that is otherwise identical to the given
+	 * environmental.
+	 *
+	 * @param list the collection to find a match in
+	 * @param E the environmental to find in the collection
+	 * @return the context-specific name of the item in the collection, or null
+	 */
 	public String getContextSameName(Collection<? extends Environmental> list, Environmental E);
+
+
+	/**
+	 * Returns the context-specific full name of the object in the
+	 * given list that is otherwise identical to the given
+	 * environmental.
+	 *
+	 * @param list the collection to find a match in
+	 * @param E the environmental to find in the collection
+	 * @return the context-specific name of the item in the list, or null
+	 */
 	public String getContextSameName(Environmental[] list, Environmental E);
+
+	/**
+	 * Returns the context-specific full name of the object in the
+	 * given collection that is otherwise identical to the given
+	 * environmental.
+	 *
+	 * @param cont the collection to find a match in
+	 * @param E the environmental to find in the collection
+	 * @return the context-specific name of the item in the collection, or null
+	 */
 	public String getContextSameName(ItemCollection cont, Environmental E);
+
+	/**
+	 * Strips out all punctuation and returns the individual words in
+	 * an english sentence.
+	 * @param thisStr the sentence
+	 * @return the individual words
+	 */
 	public List<String> parseWords(final String thisStr);
 
 	/**

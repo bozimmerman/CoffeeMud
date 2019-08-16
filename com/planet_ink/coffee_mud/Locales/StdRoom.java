@@ -2487,7 +2487,7 @@ public class StdRoom implements Room
 				return found;
 			while((found!=null)&&(!CMLib.flags().canBeSeenBy(found,mob)))
 			{
-				newThingName=CMLib.english().bumpDotNumber(thingName,1);
+				newThingName=CMLib.english().bumpDotContextNumber(thingName,1);
 				if(!newThingName.equals(thingName))
 				{
 					thingName=newThingName;
@@ -2659,23 +2659,23 @@ public class StdRoom implements Room
 			if(found == null)
 			{
 				// this ugliness allows you do use dot syntax on things on the ground when you have SOME stuff in inventory, but not much
-				final int dotNumber=CMLib.english().getDotNumber(thingName);
+				final int dotNumber=CMLib.english().getContextDotNumber(thingName);
 				if(dotNumber > 1)
 				{
-					thingName =  CMLib.english().bumpDotNumber(thingName, -(dotNumber-1));
+					thingName =  CMLib.english().bumpDotContextNumber(thingName, -(dotNumber-1));
 					int numMobHas = 0;
 					for(int i=1;i<=dotNumber;i++)
 					{
 						if(mob.fetchItem(goodLocation, mobCheckFilter, thingName)==null)
 							break;
 						numMobHas++;
-						thingName =  CMLib.english().bumpDotNumber(thingName, 1);
+						thingName =  CMLib.english().bumpDotContextNumber(thingName, 1);
 					}
 					if(dotNumber > numMobHas)
 					{
 						final int curDotNumber=numMobHas+1;
 						final int delta = -(curDotNumber-1) + (dotNumber-numMobHas-1);
-						thingName =  CMLib.english().bumpDotNumber(thingName, delta);
+						thingName =  CMLib.english().bumpDotContextNumber(thingName, delta);
 					}
 				}
 			}
@@ -2690,7 +2690,7 @@ public class StdRoom implements Room
 				return found;
 			while((found!=null)&&(!CMLib.flags().canBeSeenBy(found,mob)))
 			{
-				newThingName=CMLib.english().bumpDotNumber(thingName,1);
+				newThingName=CMLib.english().bumpDotContextNumber(thingName,1);
 				if(!newThingName.equals(thingName))
 				{
 					thingName=newThingName;
