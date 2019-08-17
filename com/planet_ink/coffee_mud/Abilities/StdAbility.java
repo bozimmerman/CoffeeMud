@@ -1799,7 +1799,7 @@ public class StdAbility implements Ability
 	{
 		if(tickAdjustmentFromStandard>0)
 			return tickAdjustmentFromStandard;
-		return adjustMaliciousTickdownTime(mob,target,((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),1.3)))+25,asLevel);
+		return adjustMaliciousTickdownTime(mob,target,((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),1.1)))+25,asLevel);
 	}
 
 	public Ability maliciousAffect(final MOB mob, final Physical target, final int asLevel, int tickAdjustmentFromStandard, final int additionAffectCheckCode)
