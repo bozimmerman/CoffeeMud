@@ -2221,6 +2221,43 @@ public class StdRoom implements Room
 		return contents.elements();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Enumeration<Item> itemsRecursive()
+	{
+		return new MultiEnumeration<Item>(
+			items(),
+			new Enumeration<Item>()
+			{
+				private final Enumeration<MOB> curMobEnumeration = inhabitants();
+				private volatile Enumeration<Item> curItemEnumeration;
+
+				@Override
+				public boolean hasMoreElements()
+				{
+					boolean hasMore = (curItemEnumeration!=null)&&(curItemEnumeration.hasMoreElements());
+					while(!hasMore)
+					{
+						if((curMobEnumeration == null)||(!curMobEnumeration.hasMoreElements()))
+							return false;
+						curItemEnumeration=curMobEnumeration.nextElement().items();
+						hasMore = (curMobEnumeration!=null)&&(curMobEnumeration.hasMoreElements());
+					}
+					return hasMore;
+				}
+
+				@Override
+				public Item nextElement()
+				{
+					if(!hasMoreElements())
+						throw new NoSuchElementException();
+					return curItemEnumeration.nextElement();
+				}
+			}
+		);
+	}
+
+
 	@Override
 	public Item findItem(final Item goodLocation, final String itemID)
 	{

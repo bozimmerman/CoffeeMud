@@ -1117,6 +1117,13 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	public String getContextName(Environmental E);
 
 	/**
+	 * Returns an enumeration of all the items in the room,
+	 * any items on any inhabitants also.
+	 * @return a more recursive item list
+	 */
+	public Enumeration<Item> itemsRecursive();
+
+	/**
 	 * Searches the room for a mob, item, or exit that matches
 	 * the given search string, favoring Exits over other types
 	 * of objects.  If nothing is found, this method also does

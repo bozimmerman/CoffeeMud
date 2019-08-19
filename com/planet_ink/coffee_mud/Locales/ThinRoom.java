@@ -692,6 +692,12 @@ public class ThinRoom implements Room
 		return emptyItems;
 	}
 
+	@Override
+	public Enumeration<Item> itemsRecursive()
+	{
+		return emptyItems;
+	}
+
 	public Item getItem(final String s)
 	{
 		return null;

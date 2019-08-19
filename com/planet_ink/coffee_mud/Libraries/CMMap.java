@@ -1753,13 +1753,31 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public Enumeration<Room> rooms()
 	{
-		return new AllAreasRoomEnumerator(false);
+		return new AreasRoomsEnumerator(areasPlusShips(), false);
 	}
 
 	@Override
 	public Enumeration<Room> roomsFilled()
 	{
-		return new AllAreasRoomEnumerator(true);
+		return new AreasRoomsEnumerator(areasPlusShips(), true);
+	}
+
+	@Override
+	public Enumeration<MOB> worldMobs()
+	{
+		return new RoomMobsEnumerator(roomsFilled());
+	}
+
+	@Override
+	public Enumeration<Item> worldRoomItems()
+	{
+		return new RoomItemsEnumerator(roomsFilled(), false);
+	}
+
+	@Override
+	public Enumeration<Item> worldEveryItems()
+	{
+		return new RoomItemsEnumerator(roomsFilled(),true);
 	}
 
 	@Override
@@ -2362,14 +2380,16 @@ public class CMMap extends StdLibrary implements WorldMap
 		return false;
 	}
 
-	public class AllAreasRoomEnumerator implements Enumeration<Room>
+	public class AreasRoomsEnumerator implements Enumeration<Room>
 	{
-		private Enumeration<Area> curAreaEnumeration=areasPlusShips();
-		private Enumeration<Room> curRoomEnumeration=null;
-		private boolean addSkys = false;
-		public AllAreasRoomEnumerator(final boolean includeSkys)
+		private final Enumeration<Area>		curAreaEnumeration;
+		private final boolean				addSkys;
+		private volatile Enumeration<Room>	curRoomEnumeration	= null;
+
+		public AreasRoomsEnumerator(final Enumeration<Area> curAreaEnumeration, final boolean includeSkys)
 		{
 			addSkys = includeSkys;
+			this.curAreaEnumeration=curAreaEnumeration;
 		}
 
 		@Override
@@ -2381,7 +2401,6 @@ public class CMMap extends StdLibrary implements WorldMap
 				if((curAreaEnumeration == null)||(!curAreaEnumeration.hasMoreElements()))
 				{
 					curRoomEnumeration = null;
-					curAreaEnumeration = null;
 					return false;
 				}
 				if(addSkys)
@@ -2399,6 +2418,83 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(!hasMoreElements())
 				throw new NoSuchElementException();
 			return curRoomEnumeration.nextElement();
+		}
+	}
+
+	public class RoomMobsEnumerator implements Enumeration<MOB>
+	{
+		private final Enumeration<Room>		curRoomEnumeration;
+		private volatile Enumeration<MOB>	curMobEnumeration	= null;
+
+		public RoomMobsEnumerator(final Enumeration<Room> curRoomEnumeration)
+		{
+			this.curRoomEnumeration=curRoomEnumeration;
+		}
+
+		@Override
+		public boolean hasMoreElements()
+		{
+			boolean hasMore = (curMobEnumeration!=null)&&(curMobEnumeration.hasMoreElements());
+			while(!hasMore)
+			{
+				if((curRoomEnumeration == null)||(!curRoomEnumeration.hasMoreElements()))
+				{
+					curMobEnumeration = null;
+					return false;
+				}
+				curMobEnumeration=curRoomEnumeration.nextElement().inhabitants();
+				hasMore = (curMobEnumeration!=null)&&(curMobEnumeration.hasMoreElements());
+			}
+			return hasMore;
+		}
+
+		@Override
+		public MOB nextElement()
+		{
+			if(!hasMoreElements())
+				throw new NoSuchElementException();
+			return curMobEnumeration.nextElement();
+		}
+	}
+
+	public class RoomItemsEnumerator implements Enumeration<Item>
+	{
+		private final Enumeration<Room>		curRoomEnumeration;
+		private final boolean				includeMobItems;
+		private volatile Enumeration<Item>	curItemEnumeration	= null;
+
+		public RoomItemsEnumerator(final Enumeration<Room> curRoomEnumeration, final boolean includeMobItems)
+		{
+			this.curRoomEnumeration=curRoomEnumeration;
+			this.includeMobItems=includeMobItems;
+		}
+
+		@Override
+		public boolean hasMoreElements()
+		{
+			boolean hasMore = (curItemEnumeration!=null)&&(curItemEnumeration.hasMoreElements());
+			while(!hasMore)
+			{
+				if((curRoomEnumeration == null)||(!curRoomEnumeration.hasMoreElements()))
+				{
+					curItemEnumeration = null;
+					return false;
+				}
+				if(includeMobItems)
+					curItemEnumeration=curRoomEnumeration.nextElement().itemsRecursive();
+				else
+					curItemEnumeration=curRoomEnumeration.nextElement().items();
+				hasMore = (curItemEnumeration!=null)&&(curItemEnumeration.hasMoreElements());
+			}
+			return hasMore;
+		}
+
+		@Override
+		public Item nextElement()
+		{
+			if(!hasMoreElements())
+				throw new NoSuchElementException();
+			return curItemEnumeration.nextElement();
 		}
 	}
 

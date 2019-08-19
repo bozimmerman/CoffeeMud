@@ -3936,7 +3936,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					from.addAll(this.parseSQLCMFile(F, sql));
 			}
 			else
-			if(f.equals("AREAS"))
+			if(f.equals("AREAS")
+			||((from.size()>0)&&(f.equals("AREA"))))
 			{
 				if(from.size()==0)
 					from.addAll(new XVector<Area>(CMLib.map().areas()));
@@ -3961,7 +3962,18 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 			}
 			else
-			if(f.equals("ROOMS"))
+			if(f.equals("AREA") && (from.size()==0))
+			{
+				final Area A=(E instanceof Environmental) ? CMLib.map().areaLocation(E) : null;
+				if(A==null)
+					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+sql);
+				else
+				if(!from.contains(A))
+					from.add(A);
+			}
+			else
+			if(f.equals("ROOMS")
+			||((from.size()>0)&&(f.equals("ROOM"))))
 			{
 				if(from.size()==0)
 					from.addAll(new XVector<Room>(CMLib.map().rooms()));
@@ -3991,11 +4003,134 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 			}
 			else
-			if(f.equals("AREA"))
+			if(f.equals("ROOM") && (from.size()==0))
+			{
+				final Room R=(E instanceof Environmental) ? CMLib.map().roomLocation((Environmental)E) : null;
+				if(R==null)
+					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+sql);
+				else
+				if(!from.contains(R))
+					from.add(R);
+			}
+			else
+			if(f.equals("MOBS")
+			||((from.size()>0)&&(f.equals("MOB"))))
+			{
+				if(from.size()==0)
+					from.addAll(new XVector<MOB>(CMLib.map().worldMobs()));
+				else
+				{
+					final List<Object> oldFrom=new LinkedList<Object>();
+					oldFrom.addAll(from);
+					from.clear();
+					for(final Object o : oldFrom)
+					{
+						if(o instanceof Area)
+						{
+							for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
+							{
+								final Room R=r.nextElement();
+								for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+								{
+									final MOB M=m.nextElement();
+									if(!from.contains(M))
+										from.add(M);
+								}
+							}
+						}
+						else
+						{
+							final Room R;
+							if (o instanceof Environmental)
+								R=CMLib.map().roomLocation((Environmental)o);
+							else
+								R=null;
+							if(R==null)
+								throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+sql);
+							else
+							{
+								for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+								{
+									final MOB M=m.nextElement();
+									if(!from.contains(M))
+										from.add(M);
+								}
+							}
+						}
+					}
+				}
+			}
+			else
+			if(f.equals("MOB") && (from.size()==0))
+			{
+				final Environmental oE=(E instanceof MOB) ? (Environmental)E : null;
+				if(oE==null)
+					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+sql);
+				else
+				if(!from.contains(oE))
+					from.add(oE);
+			}
+			else
+			if(f.equals("ITEMS")
+			||((from.size()>0)&&(f.equals("ITEM"))))
+			{
+				if(from.size()==0)
+					from.addAll(new XVector<Item>(CMLib.map().worldEveryItems()));
+				else
+				{
+					final List<Object> oldFrom=new LinkedList<Object>();
+					oldFrom.addAll(from);
+					from.clear();
+					for(final Object o : oldFrom)
+					{
+						if(o instanceof Area)
+						{
+							for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
+								from.addAll(new XVector<Item>(r.nextElement().itemsRecursive()));
+						}
+						else
+						{
+							final Room R;
+							if (o instanceof Environmental)
+								R=CMLib.map().roomLocation((Environmental)o);
+							else
+								R=null;
+							if(R==null)
+								throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+sql);
+							else
+								from.addAll(new XVector<Item>(R.itemsRecursive()));
+						}
+					}
+				}
+			}
+			else
+			if(f.equals("ITEM") && (from.size()==0))
+			{
+				final Environmental oE=(E instanceof Item) ? (Environmental)E : null;
+				if(oE==null)
+					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+sql);
+				else
+				if(!from.contains(oE))
+					from.add(oE);
+			}
+			else
+			if(f.equals("EQUIPMENT"))
 			{
 				if(from.size()==0)
 				{
-					//TODO: discover the CORRECT area
+					final Environmental oE=(E instanceof MOB) ? (Environmental)E : null;
+					if(oE==null)
+						throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+sql);
+					else
+					{
+						for(final Enumeration<Item> i=((MOB)oE).items();i.hasMoreElements();)
+						{
+							final Item I=i.nextElement();
+							if((I!=null)
+							&&(I.amBeingWornProperly()))
+								from.add(I);
+						}
+					}
 				}
 				else
 				{
@@ -4004,26 +4139,142 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					from.clear();
 					for(final Object o : oldFrom)
 					{
-						final Room R;
 						if(o instanceof Area)
 						{
-							from.addAll(new XVector<Room>(((Area)o).getProperMap()));
-							continue;
+							for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
+							{
+								for(final Enumeration<MOB> m=r.nextElement().inhabitants();m.hasMoreElements();)
+								{
+									final MOB M=m.nextElement();
+									for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
+									{
+										final Item I=i.nextElement();
+										if((I!=null)
+										&&(I.amBeingWornProperly()))
+											from.add(I);
+									}
+								}
+							}
 						}
-						if (o instanceof Environmental)
-							R=CMLib.map().roomLocation((Environmental)o);
 						else
-							R=null;
-						if(R==null)
+						if(o instanceof MOB)
+						{
+							for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
+							{
+								final Item I=i.nextElement();
+								if((I!=null)
+								&&(I.amBeingWornProperly()))
+									from.add(I);
+							}
+						}
+						else
+						if(o instanceof Room)
+						{
+							for(final Enumeration<MOB> m=((Room)o).inhabitants();m.hasMoreElements();)
+							{
+								final MOB M=m.nextElement();
+								for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
+								{
+									final Item I=i.nextElement();
+									if((I!=null)
+									&&(I.amBeingWornProperly()))
+										from.add(I);
+								}
+							}
+						}
+						else
+						if(o instanceof Item)
+						{
+							if(((Item)o).amBeingWornProperly())
+								from.add(o);
+						}
+						else
 							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+sql);
-						else
-						if(!from.contains(R))
-							from.add(R);
 					}
 				}
 			}
-			else //TODO: add MOBS, ITEMS, EQUIPMENT (for mobs), OWNER (for items), ROOM (correct room?), MOB (correct mob?), item (correct item?)
-				throw new CMException("Unknown from clause "+f+" in "+sql);
+			else
+			if(f.equals("OWNER"))
+			{
+				if(from.size()==0)
+				{
+					final Environmental oE=(E instanceof Item) ? (Environmental)E : null;
+					if(oE==null)
+						throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+sql);
+					else
+					if(((Item)E).owner()!=null)
+						from.add(((Item)E).owner());
+				}
+				else
+				{
+					final List<Object> oldFrom=new LinkedList<Object>();
+					oldFrom.addAll(from);
+					from.clear();
+					for(final Object o : oldFrom)
+					{
+						if(o instanceof Area)
+						{
+							for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
+							{
+								for(final Enumeration<MOB> m=r.nextElement().inhabitants();m.hasMoreElements();)
+								{
+									final MOB M=m.nextElement();
+									for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
+									{
+										final Item I=i.nextElement();
+										if((I!=null)
+										&&(I.owner()!=null)
+										&&(!from.contains(I.owner())))
+											from.add(I.owner());
+									}
+								}
+							}
+						}
+						else
+						if(o instanceof MOB)
+						{
+							for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
+							{
+								final Item I=i.nextElement();
+								if((I!=null)
+								&&(I.owner()!=null)
+								&&(!from.contains(I.owner())))
+									from.add(I.owner());
+							}
+						}
+						else
+						if(o instanceof Room)
+						{
+							for(final Enumeration<MOB> m=((Room)o).inhabitants();m.hasMoreElements();)
+							{
+								final MOB M=m.nextElement();
+								for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
+								{
+									final Item I=i.nextElement();
+									if((I!=null)
+									&&(I.owner()!=null)
+									&&(!from.contains(I.owner())))
+										from.add(I.owner());
+								}
+							}
+						}
+						else
+						if(o instanceof Item)
+						{
+							if(((Item)o).amBeingWornProperly())
+								from.add(o);
+						}
+						else
+							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+sql);
+					}
+				}
+			}
+			else
+			{
+				//TODO: look for objects in a defined tag set.
+
+				throw new CMException("Unknown from clause selector '"+f+"' in "+sql);
+			}
 		}
 		return from;
 	}
