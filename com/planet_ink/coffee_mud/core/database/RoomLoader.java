@@ -1752,7 +1752,7 @@ public class RoomLoader
 	{
 		String keyName=item.databaseID();
 		if(keyName.length()==0)
-			keyName=""+item;
+			keyName=this.getShortID(item);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROIT)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done updating item "+item.name()+" in room "+roomID);
 		DB.update(
@@ -1780,7 +1780,7 @@ public class RoomLoader
 	{
 		String keyName=mob.databaseID();
 		if(keyName.length()==0)
-			keyName=""+mob;
+			keyName=this.getShortID(mob);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+roomID);
 		DB.update(
