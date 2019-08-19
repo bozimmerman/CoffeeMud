@@ -204,9 +204,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	//@Override
-	private void testSQLParsing()
+	protected void testMQLParsing()
 	{
-		final String[] testSqls = new String[] {
+		final String[] testMQLs = new String[] {
 			"SELECT: x from y",
 			"SELECT: x, XX from y",
 			"SELECT: x,xx,xxx from y",
@@ -220,15 +220,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			"SELECT: x from (select: x from y) where (xxx > ydd) and ( yyy<=djj ) or (zzz > jkkk)and(rrr>ddd)",
 			"SELECT: x from y where ((xxx > ydd) and ( yyy<=djj )) or((zzz > jkkk)and ((rrr>ddd) or (ddd>888)))",
 		};
-		for(int i=0;i<testSqls.length;i++)
+		for(int i=0;i<testMQLs.length;i++)
 		{
-			final String sqlWSelect=testSqls[i];
-			final int x=sqlWSelect.indexOf(':');
-			final String sql=sqlWSelect.substring(x+1).toUpperCase().trim();
+			final String mqlWSelect=testMQLs[i];
+			final int x=mqlWSelect.indexOf(':');
+			final String mql=mqlWSelect.substring(x+1).toUpperCase().trim();
 			try
 			{
-				final SQLClause clause = new SQLClause();
-				clause.parseSQL(testSqls[i], sql);
+				final MQLClause clause = new MQLClause();
+				clause.parseMQL(testMQLs[i], mql);
 			}
 			catch(final Exception e)
 			{
@@ -3143,7 +3143,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	}
 
-	private static enum SelectSQLState
+	private static enum SelectMQLState
 	{
 		STATE_SELECT0, // name
 		STATE_SELECT1, // as or from or ,
@@ -3163,23 +3163,23 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 
 	/**
-	 * Class for semi-parsed SQLClause, including method
+	 * Class for semi-parsed MQLClause, including method
 	 * to do the parsig to fill out this object
 	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
-	private static class SQLClause
+	private static class MQLClause
 	{
 		/**
-		 * Connector descriptors for connecting sql where clauses together
+		 * Connector descriptors for connecting mql where clauses together
 		 * @author Bo Zimmerman
 		 *
 		 */
 		private static enum WhereConnector { ENDCLAUSE, AND, OR }
 
 		/**
-		 * Connector descriptors for connecting sql where clauses together
+		 * Connector descriptors for connecting mql where clauses together
 		 * @author Bo Zimmerman
 		 *
 		 */
@@ -3232,30 +3232,30 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 		}
 
-		private String				sql		= "";
+		private String				mql		= "";
 		private final List<WhatBit>	what	= new ArrayList<WhatBit>(1);
 		private String				from	= "";
 		private WhereClause			wheres	= null;
 
 		/**
-		 * parse the sql statement into this object
+		 * parse the mql statement into this object
 		 *
-		 * @param str the original sql statement
-		 * @param sqlbits sql statement, minus select: must be ALL UPPERCASE
+		 * @param str the original mql statement
+		 * @param mqlbits mql statement, minus select: must be ALL UPPERCASE
 		 * @throws CMException
 		 */
-		private void parseSQL(final String str, final String sqlbits) throws CMException
+		private void parseMQL(final String str, final String mqlbits) throws CMException
 		{
-			this.sql=str;
+			this.mql=str;
 			final StringBuilder curr=new StringBuilder("");
 			int pdepth=0;
 			WhereClause wheres = new WhereClause();
 			this.wheres=wheres;
 			WhereComp	wcomp  = null;
-			SelectSQLState state=SelectSQLState.STATE_SELECT0;
-			for(int i=0;i<=sqlbits.length();i++)
+			SelectMQLState state=SelectMQLState.STATE_SELECT0;
+			for(int i=0;i<=mqlbits.length();i++)
 			{
-				final char c=(i==sqlbits.length())?' ':sqlbits.charAt(i);
+				final char c=(i==mqlbits.length())?' ':mqlbits.charAt(i);
 				switch(state)
 				{
 				case STATE_SELECT0: // select state
@@ -3266,7 +3266,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						{
 							// we just got a name symbol, so go to state 1 and expect AS or FROM or ,
 							what.add(new WhatBit(curr.toString(),curr.toString()));
-							state=SelectSQLState.STATE_SELECT1;
+							state=SelectMQLState.STATE_SELECT1;
 							curr.setLength(0);
 						}
 					}
@@ -3279,7 +3279,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							curr.setLength(0);
 						}
 						else
-							throw new CMException("Unexpected , in Malformed sql: "+str);
+							throw new CMException("Unexpected , in Malformed mql: "+str);
 					}
 					else
 						curr.append(c);
@@ -3294,25 +3294,25 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							if(curr.toString().equals("FROM"))
 							{
 								curr.setLength(0);
-								state=SelectSQLState.STATE_FROM0;
+								state=SelectMQLState.STATE_FROM0;
 							}
 							else
 							if(curr.toString().equals("AS"))
 							{
 								curr.setLength(0);
-								state=SelectSQLState.STATE_AS0;
+								state=SelectMQLState.STATE_AS0;
 							}
 							else
-								throw new CMException("Unexpected select string in Malformed sql: "+str);
+								throw new CMException("Unexpected select string in Malformed mql: "+str);
 						}
 					}
 					else
 					if(c==',')
 					{
 						if(curr.length()==0)
-							state=SelectSQLState.STATE_SELECT0;
+							state=SelectMQLState.STATE_SELECT0;
 						else
-							throw new CMException("Unexpected , in Malformed sql: "+str);
+							throw new CMException("Unexpected , in Malformed mql: "+str);
 					}
 					else
 						curr.append(c);
@@ -3326,20 +3326,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(curr.length()>0)
 						{
 							if(curr.toString().equals("FROM"))
-								throw new CMException("Unexpected FROM in Malformed sql: "+str);
+								throw new CMException("Unexpected FROM in Malformed mql: "+str);
 							else
 							if(curr.toString().equals("AS"))
-								throw new CMException("Unexpected AS in Malformed sql: "+str);
+								throw new CMException("Unexpected AS in Malformed mql: "+str);
 							else
 							{
-								state=SelectSQLState.STATE_AS1; // expect from or , ONLY
+								state=SelectMQLState.STATE_AS1; // expect from or , ONLY
 								what.get(what.size()-1).second = curr.toString();
 								curr.setLength(0);
 							}
 						}
 						else
 						if(c==',')
-							throw new CMException("Unexpected , in Malformed sql: "+str);
+							throw new CMException("Unexpected , in Malformed mql: "+str);
 					}
 					else
 						curr.append(c);
@@ -3354,19 +3354,19 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							if(curr.toString().equals("FROM"))
 							{
 								curr.setLength(0);
-								state=SelectSQLState.STATE_FROM0;
+								state=SelectMQLState.STATE_FROM0;
 							}
 							else
-								throw new CMException("Unexpected name string in Malformed sql: "+str);
+								throw new CMException("Unexpected name string in Malformed mql: "+str);
 						}
 					}
 					else
 					if(c==',')
 					{
 						if(curr.length()==0)
-							state=SelectSQLState.STATE_SELECT0;
+							state=SelectMQLState.STATE_SELECT0;
 						else
-							throw new CMException("Unexpected , in Malformed sql: "+str);
+							throw new CMException("Unexpected , in Malformed mql: "+str);
 					}
 					else
 						curr.append(c);
@@ -3379,12 +3379,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(curr.length()>0)
 						{
 							if(curr.toString().equals("WHERE"))
-								throw new CMException("Unexpected WHERE in Malformed sql: "+str);
+								throw new CMException("Unexpected WHERE in Malformed mql: "+str);
 							else
 							{
 								from=curr.toString();
 								curr.setLength(0);
-								state=SelectSQLState.STATE_EXPECTWHEREOREND; // now expect where
+								state=SelectMQLState.STATE_EXPECTWHEREOREND; // now expect where
 							}
 						}
 					}
@@ -3392,9 +3392,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if(c=='(')
 					{
 						if(curr.length()==0)
-							state=SelectSQLState.STATE_FROM1;
+							state=SelectMQLState.STATE_FROM1;
 						else
-							throw new CMException("Unexpected ( in Malformed sql: "+str);
+							throw new CMException("Unexpected ( in Malformed mql: "+str);
 					}
 					else
 						curr.append(c);
@@ -3410,7 +3410,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(pdepth==0)
 						{
 							from=curr.toString();
-							state=SelectSQLState.STATE_EXPECTWHEREOREND; // expect where
+							state=SelectMQLState.STATE_EXPECTWHEREOREND; // expect where
 							curr.setLength(0);
 						}
 						else
@@ -3429,15 +3429,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							if(curr.toString().equals(";"))
 							{
 								curr.setLength(0);
-								state=SelectSQLState.STATE_EXPECTNOTHING;
+								state=SelectMQLState.STATE_EXPECTNOTHING;
 							}
 							else
 							if(!curr.toString().equals("WHERE"))
-								throw new CMException("Eexpected WHERE in Malformed sql: "+str);
+								throw new CMException("Eexpected WHERE in Malformed mql: "+str);
 							else
 							{
 								curr.setLength(0);
-								state=SelectSQLState.STATE_WHERE0;
+								state=SelectMQLState.STATE_WHERE0;
 							}
 						}
 					}
@@ -3465,20 +3465,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							curr.setLength(0);
 							if(!Character.isWhitespace(c))
 								curr.append(c);
-							state=SelectSQLState.STATE_WHERE1; // now expect comparator
+							state=SelectMQLState.STATE_WHERE1; // now expect comparator
 						}
 					}
 					else
 					if(c=='(')
 					{
 						if(curr.length()==0)
-							state=SelectSQLState.STATE_WHEREEMBEDLEFT0;
+							state=SelectMQLState.STATE_WHEREEMBEDLEFT0;
 						else
-							throw new CMException("Unexpected ( in Malformed sql: "+str);
+							throw new CMException("Unexpected ( in Malformed mql: "+str);
 					}
 					else
 					if(c==')')
-						throw new CMException("Unexpected ) in Malformed sql: "+str);
+						throw new CMException("Unexpected ) in Malformed mql: "+str);
 					else
 						curr.append(c);
 					break;
@@ -3501,7 +3501,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							wheres.parent=priorityClause;
 							wheres=priorityClause;
 							i--;
-							state=SelectSQLState.STATE_WHERE0; // expect lhs of a comp
+							state=SelectMQLState.STATE_WHERE0; // expect lhs of a comp
 						}
 						else
 							pdepth++;
@@ -3521,7 +3521,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							}
 							wheres.lhs=wcomp;
 							wcomp.lhs=curr.toString();
-							state=SelectSQLState.STATE_WHERE1; // expect connector or endofclause
+							state=SelectMQLState.STATE_WHERE1; // expect connector or endofclause
 							curr.setLength(0);
 						}
 						else
@@ -3547,9 +3547,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							priorityClause.child=wheres;
 							wheres.parent=priorityClause;
 							wheres=priorityClause;
-							i=sqlbits.lastIndexOf('(',i);
+							i=mqlbits.lastIndexOf('(',i);
 							curr.setLength(0);
-							state=SelectSQLState.STATE_WHERE0; // expect lhs of a comp
+							state=SelectMQLState.STATE_WHERE0; // expect lhs of a comp
 						}
 					}
 					break;
@@ -3573,7 +3573,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								done=curr.length()>=2;
 							}
 							else
-								throw new CMException("Unexpected '"+c+"' in Malformed sql: "+str);
+								throw new CMException("Unexpected '"+c+"' in Malformed mql: "+str);
 						}
 						else
 						if(!Character.isWhitespace(c))
@@ -3595,73 +3595,73 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							{
 								wcomp.comp=WhereComparator.EQ;
 								curr.setLength(0);
-								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+								state=SelectMQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("!=")||fcurr.equals("<>"))
 							{
 								wcomp.comp=WhereComparator.NEQ;
 								curr.setLength(0);
-								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+								state=SelectMQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals(">"))
 							{
 								wcomp.comp=WhereComparator.GT;
 								curr.setLength(0);
-								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+								state=SelectMQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("<"))
 							{
 								wcomp.comp=WhereComparator.LT;
 								curr.setLength(0);
-								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+								state=SelectMQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals(">=")||fcurr.equals("=>"))
 							{
 								wcomp.comp=WhereComparator.GTEQ;
 								curr.setLength(0);
-								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+								state=SelectMQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("<=")||fcurr.equals("<="))
 							{
 								wcomp.comp=WhereComparator.LTEQ;
 								curr.setLength(0);
-								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+								state=SelectMQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("IN"))
 							{
 								wcomp.comp=WhereComparator.IN;
 								curr.setLength(0);
-								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+								state=SelectMQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("LIKE"))
 							{
 								wcomp.comp=WhereComparator.LIKE;
 								curr.setLength(0);
-								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+								state=SelectMQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("NOTIN"))
 							{
 								wcomp.comp=WhereComparator.NOTIN;
 								curr.setLength(0);
-								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+								state=SelectMQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
 							if(fcurr.equals("NOTLIKE"))
 							{
 								wcomp.comp=WhereComparator.NOTLIKE;
 								curr.setLength(0);
-								state=SelectSQLState.STATE_WHERE2; // now expect RHS
+								state=SelectMQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
-								throw new CMException("Unexpected '"+fcurr+"' in Malformed sql: "+str);
+								throw new CMException("Unexpected '"+fcurr+"' in Malformed mql: "+str);
 							if(saveC)
 								curr.append(c);
 						}
@@ -3676,42 +3676,42 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						{
 							wcomp.rhs=curr.toString();
 							curr.setLength(0);
-							state=SelectSQLState.STATE_EXPECTCONNOREND;
+							state=SelectMQLState.STATE_EXPECTCONNOREND;
 						}
 					}
 					else
 					if(c==')')
 					{
 						if(curr.length()==0)
-							throw new CMException("Unexpected ): Malformed sql: "+str);
+							throw new CMException("Unexpected ): Malformed mql: "+str);
 						wcomp.rhs=curr.toString();
 						curr.setLength(0);
 						while(wheres.prev!=null)
 							wheres=wheres.prev;
 						if(wheres.child==null)
-							throw new CMException("Unexpected ): Malformed sql: "+str);
+							throw new CMException("Unexpected ): Malformed mql: "+str);
 						wheres=wheres.child;
-						state=SelectSQLState.STATE_EXPECTCONNOREND;
+						state=SelectMQLState.STATE_EXPECTCONNOREND;
 					}
 					else
 					if(c==';')
 					{
 						if(curr.length()==0)
-							throw new CMException("Unexpected ; in Malformed sql: "+str);
+							throw new CMException("Unexpected ; in Malformed mql: "+str);
 						else
 						{
 							wcomp.rhs=curr.toString();
 							curr.setLength(0);
-							state=SelectSQLState.STATE_EXPECTNOTHING;
+							state=SelectMQLState.STATE_EXPECTNOTHING;
 						}
 					}
 					else
 					if(c=='(')
 					{
 						if(curr.length()==0)
-							state=SelectSQLState.STATE_WHEREEMBEDRIGHT0;
+							state=SelectMQLState.STATE_WHEREEMBEDRIGHT0;
 						else
-							throw new CMException("Unexpected ( in Malformed sql: "+str);
+							throw new CMException("Unexpected ( in Malformed mql: "+str);
 					}
 					else
 						curr.append(c);
@@ -3729,7 +3729,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(pdepth==0)
 						{
 							wcomp.rhs=curr.toString();
-							state=SelectSQLState.STATE_EXPECTCONNOREND; // expect connector or endofclause
+							state=SelectMQLState.STATE_EXPECTCONNOREND; // expect connector or endofclause
 							curr.setLength(0);
 						}
 						else
@@ -3744,7 +3744,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					//TODO: connector might mean replacing rhs of current wheres with new wheres
 					if(c==';')
 					{
-						state=SelectSQLState.STATE_EXPECTNOTHING;
+						state=SelectMQLState.STATE_EXPECTNOTHING;
 					}
 					else
 					if(Character.isWhitespace(c) || (c=='('))
@@ -3754,7 +3754,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							if(curr.toString().equals("AND"))
 							{
 								wheres.conn = WhereConnector.AND;
-								state=SelectSQLState.STATE_WHERE0;
+								state=SelectMQLState.STATE_WHERE0;
 								curr.setLength(0);
 								if(c=='(')
 									i--;
@@ -3763,17 +3763,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							if(curr.toString().equals("OR"))
 							{
 								wheres.conn = WhereConnector.OR;
-								state=SelectSQLState.STATE_WHERE0;
+								state=SelectMQLState.STATE_WHERE0;
 								curr.setLength(0);
 								if(c=='(')
 									i--;
 							}
 							else
-								throw new CMException("Unexpected '"+curr.toString()+"': Malformed sql: "+str);
+								throw new CMException("Unexpected '"+curr.toString()+"': Malformed mql: "+str);
 						}
 						else
 						if(c=='(')
-							throw new CMException("Unexpected ): Malformed sql: "+str);
+							throw new CMException("Unexpected ): Malformed mql: "+str);
 					}
 					else
 					if((c==')') && (curr.length()==0))
@@ -3781,7 +3781,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						while(wheres.prev!=null)
 							wheres=wheres.prev;
 						if(wheres.child==null)
-							throw new CMException("Unexpected ): Malformed sql: "+str);
+							throw new CMException("Unexpected ): Malformed mql: "+str);
 						wheres=wheres.child;
 					}
 					else
@@ -3790,18 +3790,18 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				default:
 					if(!Character.isWhitespace(c))
-						throw new CMException("Unexpected '"+c+"': Malformed sql: "+str);
+						throw new CMException("Unexpected '"+c+"': Malformed mql: "+str);
 					break;
 				}
 			}
-			if((state != SelectSQLState.STATE_EXPECTNOTHING)
-			&&(state != SelectSQLState.STATE_EXPECTWHEREOREND)
-			&&(state != SelectSQLState.STATE_EXPECTCONNOREND))
-				throw new CMException("Unpected end of clause in state "+state.toString()+" in sql: "+str);
+			if((state != SelectMQLState.STATE_EXPECTNOTHING)
+			&&(state != SelectMQLState.STATE_EXPECTWHEREOREND)
+			&&(state != SelectMQLState.STATE_EXPECTCONNOREND))
+				throw new CMException("Unpected end of clause in state "+state.toString()+" in mql: "+str);
 		}
 	}
 
-	protected void doneWithSQLObject(final Object o)
+	protected void doneWithMQLObject(final Object o)
 	{
 		if(o instanceof Physical)
 		{
@@ -3823,7 +3823,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 	}
 
-	protected List<Object> parseSQLCMFile(final CMFile F, final String sql) throws CMException
+	protected List<Object> parseMQLCMFile(final CMFile F, final String mql) throws CMException
 	{
 		final List<Object> from=new LinkedList<Object>();
 		String str=F.text().toString().trim();
@@ -3842,7 +3842,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final List<MOB> mobList=new LinkedList<MOB>();
 			final String err = CMLib.coffeeMaker().addMOBsFromXML(str, mobList, null);
 			if((err!=null)&&(err.length()>0))
-				throw new CMException("CMFile "+F.getAbsolutePath()+" failed mob parsing '"+err+"' in "+sql);
+				throw new CMException("CMFile "+F.getAbsolutePath()+" failed mob parsing '"+err+"' in "+mql);
 			for(final MOB M : mobList)
 			{
 				CMLib.threads().deleteAllTicks(M);
@@ -3857,7 +3857,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final List<Item> itemList=new LinkedList<Item>();
 			final String err = CMLib.coffeeMaker().addItemsFromXML(str, itemList, null);
 			if((err!=null)&&(err.length()>0))
-				throw new CMException("CMFile "+F.getAbsolutePath()+" failed item parsing '"+err+"' in "+sql);
+				throw new CMException("CMFile "+F.getAbsolutePath()+" failed item parsing '"+err+"' in "+mql);
 			for(final Item I : itemList)
 			{
 				CMLib.threads().deleteAllTicks(I);
@@ -3873,7 +3873,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final List<List<XMLLibrary.XMLTag>> areas=new ArrayList<List<XMLLibrary.XMLTag>>();
 			String err=CMLib.coffeeMaker().fillAreasVectorFromXML(str,areas,null,null);
 			if((err!=null)&&(err.length()>0))
-				throw new CMException("CMFile "+F.getAbsolutePath()+" failed area parsing '"+err+"' in "+sql);
+				throw new CMException("CMFile "+F.getAbsolutePath()+" failed area parsing '"+err+"' in "+mql);
 			for(final List<XMLLibrary.XMLTag> area : areas)
 				err=CMLib.coffeeMaker().unpackAreaFromXML(area, null, null, true, false);
 			for(final Area A : areaList)
@@ -3893,7 +3893,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final List<XMLLibrary.XMLTag> tags=CMLib.xml().parseAllXML(str);
 			final String err=CMLib.coffeeMaker().unpackRoomFromXML(dumbArea, tags, true, false);
 			if((err!=null)&&(err.length()>0)||(!dumbArea.getProperMap().hasMoreElements()))
-				throw new CMException("CMFile "+F.getAbsolutePath()+" failed room parsing '"+err+"' in "+sql);
+				throw new CMException("CMFile "+F.getAbsolutePath()+" failed room parsing '"+err+"' in "+mql);
 			roomList.add(dumbArea.getProperMap().nextElement());
 			for(final Room R : roomList)
 			{
@@ -3905,11 +3905,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			from.addAll(roomList);
 		}
 		else
-			throw new CMException("CMFile "+F.getAbsolutePath()+" not selectable from in "+sql);
+			throw new CMException("CMFile "+F.getAbsolutePath()+" not selectable from in "+mql);
 		return from;
 	}
 
-	protected List<Object> parseSQLFrom(final String fromClause, final String sql, final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected List<Object> parseMQLFrom(final String fromClause, final String mql, final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		final List<Object> from=new LinkedList<Object>();
 		// clauses:
@@ -3923,17 +3923,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final CMFile F=new CMFile(f,null);
 				if(!F.exists())
-					throw new CMException("CMFile "+f+" not found in "+sql);
+					throw new CMException("CMFile "+f+" not found in "+mql);
 				if(F.isDirectory())
 				{
 					for(final CMFile F2 : F.listFiles())
 					{
 						if(!F2.isDirectory())
-							from.addAll(this.parseSQLCMFile(F, sql));
+							from.addAll(this.parseMQLCMFile(F, mql));
 					}
 				}
 				else
-					from.addAll(this.parseSQLCMFile(F, sql));
+					from.addAll(this.parseMQLCMFile(F, mql));
 			}
 			else
 			if(f.equals("AREAS")
@@ -3954,7 +3954,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						else
 							A=null;
 						if(A==null)
-							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+sql);
+							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
 						else
 						if(!from.contains(A))
 							from.add(A);
@@ -3966,7 +3966,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final Area A=(E instanceof Environmental) ? CMLib.map().areaLocation(E) : null;
 				if(A==null)
-					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+sql);
+					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 				else
 				if(!from.contains(A))
 					from.add(A);
@@ -3995,7 +3995,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						else
 							R=null;
 						if(R==null)
-							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+sql);
+							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
 						else
 						if(!from.contains(R))
 							from.add(R);
@@ -4007,7 +4007,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final Room R=(E instanceof Environmental) ? CMLib.map().roomLocation((Environmental)E) : null;
 				if(R==null)
-					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+sql);
+					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 				else
 				if(!from.contains(R))
 					from.add(R);
@@ -4046,7 +4046,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							else
 								R=null;
 							if(R==null)
-								throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+sql);
+								throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
 							else
 							{
 								for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
@@ -4065,7 +4065,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final Environmental oE=(E instanceof MOB) ? (Environmental)E : null;
 				if(oE==null)
-					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+sql);
+					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 				else
 				if(!from.contains(oE))
 					from.add(oE);
@@ -4096,7 +4096,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							else
 								R=null;
 							if(R==null)
-								throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+sql);
+								throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
 							else
 								from.addAll(new XVector<Item>(R.itemsRecursive()));
 						}
@@ -4108,7 +4108,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final Environmental oE=(E instanceof Item) ? (Environmental)E : null;
 				if(oE==null)
-					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+sql);
+					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 				else
 				if(!from.contains(oE))
 					from.add(oE);
@@ -4120,7 +4120,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					final Environmental oE=(E instanceof MOB) ? (Environmental)E : null;
 					if(oE==null)
-						throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+sql);
+						throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 					else
 					{
 						for(final Enumeration<Item> i=((MOB)oE).items();i.hasMoreElements();)
@@ -4189,7 +4189,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								from.add(o);
 						}
 						else
-							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+sql);
+							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
 					}
 				}
 			}
@@ -4200,7 +4200,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					final Environmental oE=(E instanceof Item) ? (Environmental)E : null;
 					if(oE==null)
-						throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+sql);
+						throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 					else
 					if(((Item)E).owner()!=null)
 						from.add(((Item)E).owner());
@@ -4265,33 +4265,107 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								from.add(o);
 						}
 						else
-							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+sql);
+							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
 					}
 				}
 			}
 			else
 			{
-				//TODO: look for objects in a defined tag set.
-
-				throw new CMException("Unknown from clause selector '"+f+"' in "+sql);
+				final Object asDefined = defined.get(f);
+				if(asDefined == null)
+					throw new CMException("Unknown from clause selector '"+f+"' in "+mql);
+				if(asDefined instanceof List)
+					from.addAll((from));
+				else
+					from.add(asDefined);
 			}
 		}
 		return from;
 	}
 
-	protected List<Map<String,Object>> doSubObjSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final SQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected Object getSimpleMQLValue(final String valueName, final Object from)
+	{
+		if(valueName.equals("."))
+			return from;
+		if(from instanceof Map)
+			return ((Map)from).get(valueName);
+		if(from instanceof MOB)
+		{
+			return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
+		}
+		else
+		if(from instanceof Item)
+		{
+			return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
+		}
+		else
+		if(from instanceof Room)
+		{
+			return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
+		}
+		else
+		if(from instanceof Area)
+		{
+			return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
+		}
+		return null;
+	}
+
+	protected boolean doMQLWhereClauseFilter(final MQLClause.WhereClause whereClause, final List<Object> allFrom, final Object from)
+	{
+		MQLClause.WhereConnector lastConn=null;
+		MQLClause.WhereClause clause=whereClause;
+		boolean result=true;
+		while(clause != null)
+		{
+			final boolean thisResult=true;
+			//TODO: what does lhs and parent != null MEAN?!
+			if(lastConn != null)
+			{
+				switch(lastConn)
+				{
+				case AND:
+					result=result&&thisResult;
+					break;
+				case ENDCLAUSE:
+					break;
+				case OR:
+					result=result||thisResult;
+					break;
+				default:
+					break;
+
+				}
+			}
+			if(clause.conn != null)
+				lastConn=clause.conn;
+			else
+				result=thisResult;
+			clause=clause.next;
+		}
+		return result;
+	}
+
+	protected List<Map<String,Object>> doSubObjSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final MQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		final List<Map<String,Object>> results=new ArrayList<Map<String,Object>>();
 		// first estalish the from object
 		if(clause.from.length()==0)
-			throw new CMException("No FROM clause in "+clause.sql);
-		final List<Object> froms=this.parseSQLFrom(clause.from, clause.sql, E, ignoreStats, defPrefix, piece, defined);
-		//TODO: filter by the WHERE clause
-		//TODO: finally, select the WHATS
+			throw new CMException("No FROM clause in "+clause.mql);
+		// froms can have any environmental, or tags
+		final List<Object> froms=this.parseMQLFrom(clause.from, clause.mql, E, ignoreStats, defPrefix, piece, defined);
+		for(final Object o : froms)
+		{
+			if(this.doMQLWhereClauseFilter(clause.wheres, froms, o))
+			{
+				//TODO: finally, select the WHATS
+				//  .. and add to results
+			}
+		}
 		return results;
 	}
 
-	protected List<Map<String,String>> doSubSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final SQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected List<Map<String,String>> doSubSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final MQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		final List<Map<String,String>> results=new ArrayList<Map<String,String>>();
 		final List<Map<String, Object>> objs=this.doSubObjSelect(E, ignoreStats, defPrefix, clause, piece, defined);
@@ -4309,10 +4383,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		final int x=str.indexOf(':');
 		if(x<0)
-			throw new CMException("Malformed sql: "+str);
-		final String sqlbits=str.substring(x+1).toUpperCase();
-		final SQLClause clause = new SQLClause();
-		clause.parseSQL(str, sqlbits);
+			throw new CMException("Malformed mql: "+str);
+		final String mqlbits=str.substring(x+1).toUpperCase();
+		final MQLClause clause = new MQLClause();
+		clause.parseMQL(str, mqlbits);
 		return this.doSubSelect(E, ignoreStats, defPrefix, clause, piece, defined);
 	}
 
