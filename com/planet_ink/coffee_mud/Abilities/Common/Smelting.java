@@ -415,7 +415,8 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			if(buildingI instanceof RawMaterial)
 			{
 				((RawMaterial)buildingI).setSubType(subType.toUpperCase().trim());
-				buildingI.setSecretIdentity(itemName);
+				if(subType.toUpperCase().trim().length()>0)
+					buildingI.setSecretIdentity(itemName);
 			}
 			else
 				setBrand(mob, buildingI);
