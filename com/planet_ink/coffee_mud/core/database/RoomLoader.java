@@ -1512,15 +1512,15 @@ public class RoomLoader
 		final boolean catalog=((roomID!=null)&&(roomID.startsWith("CATALOG_")));
 
 		String ride=null;
-		if(thisMOB.riding()!=null)
-			ride=""+thisMOB.riding();
-		else
-		if(thisMOB.amFollowing()!=null)
-			ride=""+thisMOB.amFollowing();
-		else
-			ride="";
 		final String mobID=this.getShortID(thisMOB);
 		thisMOB.setDatabaseID(mobID);
+		if(thisMOB.riding()!=null)
+			ride=this.getShortID(thisMOB.riding());
+		else
+		if(thisMOB.amFollowing()!=null)
+			ride=this.getShortID(thisMOB.amFollowing());
+		else
+			ride="";
 
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Created mob "+thisMOB.name()+" for room "+roomID);
