@@ -35,6 +35,7 @@
  34. New common skill/property: BookLoaning, similar to merchant, but for loaning instead of buying.
  35. FileManager in MUDGrinder now has file rename/move feature.
  36. New property: Prop_LimitedContents, for limiting the number of items of a type in a container or room
+ 37. Massive number of new shipwrighting recipes.
  
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque
