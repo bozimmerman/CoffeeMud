@@ -1101,7 +1101,9 @@ public class DefaultSession implements Session
 
 	public void rawCharsOut(final PrintWriter out, final char[] chars)
 	{
-		if((out==null)||(chars==null)||(chars.length==0))
+		final Socket sock=this.sock;
+		if((out==null)||(chars==null)||(chars.length==0)
+		||(sock==null)||(sock.isClosed())||(!sock.isConnected()))
 			return;
 		try
 		{
