@@ -708,8 +708,18 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			}
 			}
 		}
-		if(!CMLib.law().robberyCheck(this,msg, false))
-			return false;
+		if(((msg.targetMinor()==CMMsg.TYP_GET)&&(!msg.isTarget(CMMsg.MASK_INTERMSG)))
+		||(msg.targetMinor()==CMMsg.TYP_PUSH)
+		||(msg.targetMinor()==CMMsg.TYP_PULL))
+		{
+			final Room R=msg.source().location();
+			if((R!=null)
+			&&(R.getArea()==this.getShipArea()))
+			{
+				if(!CMLib.law().robberyCheck(this,msg, false))
+					return false;
+			}
+		}
 		return true;
 	}
 
