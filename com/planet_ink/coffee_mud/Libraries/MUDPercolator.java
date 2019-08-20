@@ -3752,7 +3752,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				case STATE_EXPECTCONNOREND: // expect connector or endofclause
 				{
-					//TODO: connector might mean replacing rhs of current wheres with new wheres
 					if(c==';')
 					{
 						state=SelectMQLState.STATE_EXPECTNOTHING;

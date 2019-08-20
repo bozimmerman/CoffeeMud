@@ -1652,6 +1652,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))
 		{
 			buyerClanPair=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
+			if(buyerClanPair==null)
+				buyerClanPair=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.CLAN_BENEFITS);
 			if((buyerClanPair != null)&&(buyerClanPair.first!=null)&&(buyerClanPair.first.getExtItems()!=null))
 				this.addShipProperty(buyer, productsV, buyerClanPair.first.getExtItems());
 		}
