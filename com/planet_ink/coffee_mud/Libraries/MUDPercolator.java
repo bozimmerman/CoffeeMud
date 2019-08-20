@@ -203,10 +203,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 	}
 
-	//@Override
-	protected void testMQLParsing()
+	//@Override public
+	void testMQLParsing()
 	{
 		final String[] testMQLs = new String[] {
+			"SELECT: x from y where xxx > ydd and ( yyy<=djj ) or zzz > jkkk",
+			"SELECT: x from y where xxx > ydd and ttt>3 or ( yyy<=djj ) and zzz > jkkk or 6>7",
 			"SELECT: x from y",
 			"SELECT: x, XX from y",
 			"SELECT: x,xx,xxx from y",
@@ -229,6 +231,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final MQLClause clause = new MQLClause();
 				clause.parseMQL(testMQLs[i], mql);
+				System.out.println(clause);
 			}
 			catch(final Exception e)
 			{
@@ -3453,7 +3456,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(curr.length()>0)
 						{
 							wcomp=new WhereComp();
-							if(wheres.lhs!=null)
+							if((wheres.lhs!=null)
+							||(wheres.parent!=null))
 							{
 								final WhereClause newClause = new WhereClause();
 								newClause.prev=wheres;
@@ -3489,8 +3493,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()==0)
 						{
+
 							final WhereClause priorityClause = new WhereClause();
-							if(wheres.parent != null)
+							if((wheres.lhs!=null)
+							||(wheres.parent!=null)
+							||(wheres.conn!=null))
 							{
 								final WhereClause dummyClause = new WhereClause();
 								wheres.next=dummyClause;
@@ -3512,7 +3519,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(pdepth==0)
 						{
 							wcomp=new WhereComp();
-							if(wheres.lhs!=null)
+							if((wheres.lhs!=null)
+							||(wheres.parent!=null)
+							||(wheres.conn!=null))
 							{
 								final WhereClause newClause = new WhereClause();
 								wheres.next=newClause;
@@ -3537,7 +3546,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						&&(!"SELECT:".startsWith(curr.toString())))
 						{
 							final WhereClause priorityClause = new WhereClause();
-							if(wheres.parent != null)
+							if((wheres.lhs!=null)
+							||(wheres.parent!=null)
+							||(wheres.conn!=null))
 							{
 								final WhereClause dummyClause = new WhereClause();
 								wheres.next=dummyClause;
@@ -4283,6 +4294,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return from;
 	}
 
+	@SuppressWarnings("rawtypes")
 	protected Object getSimpleMQLValue(final String valueName, final Object from)
 	{
 		if(valueName.equals("."))

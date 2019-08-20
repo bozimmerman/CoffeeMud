@@ -483,4 +483,5 @@ public interface AreaGenerationLibrary extends CMLibrary
 		nwse
 	}
 
+	//public void testMQLParsing();
 }

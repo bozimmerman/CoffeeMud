@@ -1542,6 +1542,9 @@ public class Test extends StdCommand
 					return false;
 				}
 			}
+
+			//if(what.equalsIgnoreCase("rsql")) CMLib.percolator().testMQLParsing();
+
 			if((what.equalsIgnoreCase("all_properties"))
 			||(what.equalsIgnoreCase("Prop_RideZapper"))
 			||what.equalsIgnoreCase("all"))
