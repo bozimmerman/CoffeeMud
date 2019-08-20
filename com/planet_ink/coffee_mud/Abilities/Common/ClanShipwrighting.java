@@ -123,7 +123,7 @@ public class ClanShipwrighting extends Shipwright
 			Clan foundC=null;
 			for(final Pair<Clan,Integer> pairC : mob.clans())
 			{
-				if(pairC.first.getAuthority(pairC.second.intValue(), Clan.Function.CLAN_BENEFITS) != Clan.Authority.CAN_NOT_DO)
+				if(pairC.first.getAuthority(pairC.second.intValue(), Clan.Function.PROPERTY_OWNER) != Clan.Authority.CAN_NOT_DO)
 					foundC=pairC.first;
 			}
 			if(foundC==null)

@@ -764,9 +764,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		}
 		if(clanSale)
 		{
-			Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
-			if(targetClan==null)
-				targetClan=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.CLAN_BENEFITS);
+			final Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan(buyer, Clan.Function.PROPERTY_OWNER);
 			if(targetClan!=null)
 			{
 				setOwnerName(targetClan.first.clanID());
