@@ -4323,36 +4323,104 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return null;
 	}
 
-	protected boolean doMQLWhereClauseFilter(final MQLClause.WhereClause whereClause, final List<Object> allFrom, final Object from)
+	protected String getFinalMQLValue(final String str, final List<Object> allFrom, final Object from) throws CMException
+	{
+		//TODO:
+		return str;
+	}
+
+	protected boolean doMQLComparison(final MQLClause.WhereComp comp, final List<Object> allFrom, final Object from) throws CMException
+	{
+		final Object lhso=getFinalMQLValue(comp.lhs, allFrom, from);
+		final Object rhso=getFinalMQLValue(comp.rhs, allFrom, from);
+		final String lhs=lhso.toString();
+		final String rhs=rhso.toString();
+		switch(comp.comp)
+		{
+		case EQ:
+			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
+				return CMath.s_double(lhs) == CMath.s_double(rhs);
+			return lhs.equalsIgnoreCase(rhs);
+		case GT:
+			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
+				return CMath.s_double(lhs) > CMath.s_double(rhs);
+			return lhs.compareToIgnoreCase(rhs) > 0;
+		case GTEQ:
+			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
+				return CMath.s_double(lhs) >= CMath.s_double(rhs);
+			return lhs.compareToIgnoreCase(rhs) >= 0;
+		case NOTIN:
+		case IN:
+			//TODO:
+			break;
+		case NOTLIKE:
+		case LIKE:
+			//TODO:
+			break;
+		case LT:
+			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
+				return CMath.s_double(lhs) < CMath.s_double(rhs);
+			return lhs.compareToIgnoreCase(rhs) < 0;
+		case LTEQ:
+			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
+				return CMath.s_double(lhs) <= CMath.s_double(rhs);
+			return lhs.compareToIgnoreCase(rhs) <= 0;
+		case NEQ:
+			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
+				return CMath.s_double(lhs) == CMath.s_double(rhs);
+			return lhs.equalsIgnoreCase(rhs);
+		default:
+			break;
+
+		}
+		return true;
+	}
+
+	protected boolean doMQLWhereClauseFilter(final MQLClause.WhereClause whereClause, final List<Object> allFrom, final Object from) throws CMException
 	{
 		MQLClause.WhereConnector lastConn=null;
 		MQLClause.WhereClause clause=whereClause;
 		boolean result=true;
 		while(clause != null)
 		{
-			final boolean thisResult=true;
-			//TODO: what does lhs and parent != null MEAN?!
+			boolean thisResult;
+			if(clause.parent != null)
+			{
+				if(clause.lhs != null)
+					throw new CMException("Parent & lhs error ");
+				thisResult=doMQLWhereClauseFilter(clause.parent,allFrom,from);
+			}
+			else
+			if(clause.lhs != null)
+				thisResult=doMQLComparison(clause.lhs, allFrom, from);
+			else
+			if(clause.next != null)
+			{
+				if(clause.conn != null)
+					lastConn=clause.conn;
+				clause=clause.next;
+				continue;
+			}
+			else
+				return result;
 			if(lastConn != null)
 			{
 				switch(lastConn)
 				{
+				default:
+				case ENDCLAUSE:
 				case AND:
 					result=result&&thisResult;
-					break;
-				case ENDCLAUSE:
 					break;
 				case OR:
 					result=result||thisResult;
 					break;
-				default:
-					break;
-
 				}
 			}
+			else
+				result=result&&thisResult;
 			if(clause.conn != null)
 				lastConn=clause.conn;
-			else
-				result=thisResult;
 			clause=clause.next;
 		}
 		return result;
