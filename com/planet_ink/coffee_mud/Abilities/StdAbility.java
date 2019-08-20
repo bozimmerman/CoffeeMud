@@ -1773,13 +1773,16 @@ public class StdAbility implements Ability
 		&&(!(target instanceof Room)))
 		{
 			int levelDiff = target.phyStats().level()-adjustedLevel(mob,asLevel);
-			final int expRate=CMProps.getIntVar(CMProps.Int.EXPRATE)+1; // because we don't want it to drop to 0 AT exprate
+			final int expRate=CMProps.getIntVar(CMProps.Int.EXPRATE);
+			if(baseTicks > Integer.MAX_VALUE/4)
+				levelDiff=0;
+			else
 			if(levelDiff > expRate)
 				levelDiff = expRate;
 			else
 			if(levelDiff < -expRate)
 				levelDiff = -expRate;
-			final double levelTimeFudge = CMath.div(levelDiff, expRate);
+			final double levelTimeFudge = CMath.div(levelDiff, expRate+1);
 			tickDown-=(int)Math.round(CMath.mul(tickDown,levelTimeFudge));
 			if((tickDown>(CMProps.getTicksPerHour()/3))
 			||(mob instanceof Deity))
