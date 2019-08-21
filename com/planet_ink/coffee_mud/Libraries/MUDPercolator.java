@@ -2453,14 +2453,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 	}
 
-	protected void defineReward(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String defineString, final XMLTag piece, final String value, final Map<String,Object> defined, final boolean recurseAllowed) throws CMException, PostProcessException
+	protected void defineReward(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String defineString, final XMLTag piece, final Object value, final Map<String,Object> defined, final boolean recurseAllowed) throws CMException, PostProcessException
 	{
 		if((defineString!=null)&&(defineString.trim().length()>0))
 		{
 			final List<String> V=CMParms.parseCommas(defineString,true);
 			for (String defVar : V)
 			{
-				String definition=value;
+				Object definition=value;
 				final int x=defVar.indexOf('=');
 				if(x==0)
 					continue;
@@ -2487,9 +2487,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				if(definition==null)
 					definition="!";
-				definition=strFilter(E,ignoreStats,defPrefix,definition,piece, defined);
-				if(CMath.isMathExpression(definition))
-					definition=Integer.toString(CMath.s_parseIntExpression(definition));
+				if(definition instanceof String)
+				{
+					definition=strFilter(E,ignoreStats,defPrefix,(String)definition,piece, defined);
+					if(CMath.isMathExpression((String)definition))
+						definition=Integer.toString(CMath.s_parseIntExpression((String)definition));
+				}
 				if(defVar.trim().length()>0)
 					defined.put(defVar.toUpperCase().trim(), definition);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
@@ -2659,6 +2662,96 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(processDefined!=null)
 			defineReward(E,ignoreStats,defPrefix,piece.getParmValue("DEFINE"),processDefined,finalFinalValue,defined,true);
 		return finalFinalValue;
+	}
+
+	protected Object findObject(final Modifiable E, final List<String> ignoreStats, final String defPrefix, String tagName, XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	{
+		tagName=tagName.toUpperCase().trim();
+
+		if(defPrefix != null)
+		{
+			final Object asPreviouslyDefined = defined.get((defPrefix+tagName).toUpperCase());
+			if(asPreviouslyDefined instanceof String)
+				return strFilter(E,ignoreStats,defPrefix,(String)asPreviouslyDefined,piece, defined);
+			if(!(asPreviouslyDefined instanceof XMLTag))
+				return asPreviouslyDefined;
+		}
+
+		final String asParm = piece.getParmValue(tagName);
+		if(asParm != null)
+			return strFilter(E,ignoreStats,defPrefix,asParm,piece, defined);
+
+		final Object asDefined = defined.get(tagName);
+		if((!(asDefined instanceof XMLTag))
+		&&(!(asDefined instanceof String)))
+			return asDefined;
+
+		XMLTag processDefined=null;
+		if(asDefined instanceof XMLTag)
+		{
+			piece=(XMLTag)asDefined;
+			processDefined=piece;
+			tagName=piece.tag();
+		}
+		final List<XMLLibrary.XMLTag> choices = getAllChoices(E,ignoreStats,defPrefix,tagName, piece, defined,true);
+		if((choices==null)||(choices.size()==0))
+			throw new CMException("Unable to find tag '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
+		final List<Object> finalValues = new ArrayList<Object>();
+
+		for(int c=0;c<choices.size();c++)
+		{
+			final XMLTag valPiece = choices.get(c);
+			if(valPiece.parms().containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
+				continue;
+
+			final String valueStr=strFilter(E,ignoreStats,defPrefix,valPiece.value(),valPiece, defined);
+			final Object value;
+			if(valueStr.startsWith("SELECT:"))
+			{
+				final List<Map<String,Object>> sel=this.doSubSelectObjs(E, ignoreStats, defPrefix, valueStr, valPiece, defined);
+				value=sel;
+				finalValues.addAll(sel);
+			}
+			else
+			if(valueStr.equals("MOB"))
+			{
+				final List<MOB> objs = this.findMobs(E, valPiece, defined, null);
+				value=objs;
+				finalValues.addAll(objs);
+			}
+			else
+			if(valueStr.equals("ITEM"))
+			{
+				final List<Item> objs = this.findItems(E, valPiece, defined, null);
+				value=objs;
+				finalValues.addAll(objs);
+			}
+			else
+			if(valueStr.equals("ABILITY"))
+			{
+				final List<Ability> objs = this.findAbilities(E, valPiece, defined, null);
+				value=objs;
+				finalValues.addAll(objs);
+			}
+			else
+			{
+				try
+				{
+					final List<Object> objs = parseMQLFrom(valueStr, valueStr, E, ignoreStats, defPrefix, valPiece, defined);
+					value=objs;
+					finalValues.addAll(objs);
+				}
+				catch(final CMException e)
+				{
+					throw new CMException("Unable to produce '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMStrings.limit(piece.value(),100)+":"+e.getMessage());
+				}
+			}
+			if(processDefined!=valPiece)
+				defineReward(E,ignoreStats,defPrefix,valPiece.getParmValue("DEFINE"),valPiece,value,defined,true);
+		}
+		if(processDefined!=null)
+			defineReward(E,ignoreStats,defPrefix,piece.getParmValue("DEFINE"),processDefined,finalValues.size()==1?finalValues.get(0):finalValues,defined,true);
+		return finalValues.size()==1?finalValues.get(0):finalValues;
 	}
 
 	protected XMLTag processLikeParm(final String tagName, XMLTag piece, final Map<String,Object> defined) throws CMException
@@ -4322,52 +4415,222 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return null;
 	}
 
-	protected String getFinalMQLValue(final String str, final List<Object> allFrom, final Object from) throws CMException
+	protected Object getFinalMQLValue(final String str, final List<Object> allFrom, final Object from,
+			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
-		//TODO:
+		if(CMath.isNumber(str.trim()) || (str.trim().length()==0))
+			return str.trim();
+		if(str.startsWith("\"")&&(str.endsWith("\""))&&(str.length()>1))
+			return this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\\"","\""), piece, defined);
+		if(str.startsWith("'")&&(str.endsWith("'"))&&(str.length()>1))
+			return this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\'","'"), piece, defined);
+		if(str.startsWith("SELECT:"))
+		{
+			final List<Map<String,Object>> res=doSubSelectObjs(E,ignoreStats,defPrefix,str,piece,defined);
+			//TODO: flatten the inner maps into objects and/or strings ?
+
+		}
+		if(str.startsWith("$"))
+		{
+			Object val = defined.get(str.substring(1));
+			if(val instanceof XMLTag)
+			{
+				//TODO: turn into a list of maps?
+				final Object objs = findObject(E,ignoreStats,defPrefix,"OBJECT",(XMLTag)val,defined);
+				// could also BE a list
+			}
+			if((val == null)&&(defPrefix!=null)&&(defPrefix.length()>0)&&(E!=null))
+			{
+				String preValue=str;
+				if(preValue.toUpperCase().startsWith(defPrefix.toUpperCase()))
+				{
+					preValue=preValue.toUpperCase().substring(defPrefix.length());
+					if((E.isStat(preValue))
+					&&((ignoreStats==null)||(!ignoreStats.contains(preValue.toUpperCase()))))
+					{
+						val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,piece,defined, false);
+						XMLTag statPiece=piece;
+						while((val == null)
+						&&(statPiece.parent()!=null)
+						&&(!(defPrefix.startsWith(statPiece.tag())&&(!defPrefix.startsWith(statPiece.parent().tag())))))
+						{
+							statPiece=statPiece.parent();
+							val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,statPiece,defined, false);
+						}
+						if((ignoreStats!=null)&&(val!=null))
+							ignoreStats.add(preValue.toUpperCase());
+					}
+				}
+			}
+			if(val == null)
+				throw new CMException("Unknown variable '$"+str+"' in str '"+str+"'",new CMException("$"+str));
+			return val;
+		}
+		//TODO: SELECT: turns into a list of maps I guess?
+		//TODO: $vars turn into a list of objects, or an object if only one?
 		return str;
 	}
 
-	protected boolean doMQLComparison(final MQLClause.WhereComp comp, final List<Object> allFrom, final Object from) throws CMException
+	protected boolean doMQLComparison(final Object lhso, MQLClause.WhereComparator comp, final Object rhso, final List<Object> allFrom, final Object from,
+			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
-		final Object lhso=getFinalMQLValue(comp.lhs, allFrom, from);
-		final Object rhso=getFinalMQLValue(comp.rhs, allFrom, from);
 		final String lhs=lhso.toString();
 		final String rhs=rhso.toString();
-		switch(comp.comp)
+		if(lhso instanceof List)
 		{
+			if(rhso instanceof List)
+			{
+				@SuppressWarnings("rawtypes")
+				final List llhso=(List)lhso;
+				@SuppressWarnings("rawtypes")
+				final List lrhso=(List)rhso;
+				switch(comp)
+				{
+				case GT:
+					return llhso.size()>lrhso.size();
+				case LT:
+					return llhso.size()<lrhso.size();
+				case GTEQ:
+					if(llhso.size()>lrhso.size())
+						return true;
+					comp=MQLClause.WhereComparator.EQ;
+					break;
+				case LTEQ:
+					if(llhso.size()<lrhso.size())
+						return true;
+					comp=MQLClause.WhereComparator.EQ;
+					break;
+				default:
+					// see below;
+					break;
+				}
+				switch(comp)
+				{
+				case NEQ:
+				case EQ:
+				{
+					if(llhso.size()!=lrhso.size())
+						return (comp==MQLClause.WhereComparator.NEQ);
+					boolean allSame=true;
+					for(final Object o1 : llhso)
+					{
+						for(final Object o2 : lrhso)
+							allSame = allSame || doMQLComparison(o1, MQLClause.WhereComparator.EQ, o2, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
+					}
+					if(allSame)
+						return (comp==MQLClause.WhereComparator.EQ);
+					return (comp==MQLClause.WhereComparator.NEQ);
+				}
+				case LIKE:
+				case NOTLIKE:
+				{
+					if(llhso.size()!=lrhso.size())
+						return (comp==MQLClause.WhereComparator.NOTLIKE);
+					boolean allSame=true;
+					for(final Object o1 : llhso)
+					{
+						for(final Object o2 : lrhso)
+							allSame = allSame || doMQLComparison(o1, MQLClause.WhereComparator.LIKE, o2, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
+					}
+					if(allSame)
+						return (comp==MQLClause.WhereComparator.LIKE);
+					return (comp==MQLClause.WhereComparator.NOTLIKE);
+				}
+				case IN:
+				case NOTIN:
+				{
+					boolean allIn=true;
+					for(final Object o1 : llhso)
+						allIn = allIn || doMQLComparison(o1, MQLClause.WhereComparator.IN, lrhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
+					if(allIn)
+						return (comp==MQLClause.WhereComparator.IN);
+					return (comp==MQLClause.WhereComparator.NOTIN);
+				}
+				default:
+					// see above:
+					break;
+				}
+			}
+			else
+				throw new CMException("Can not compare a list to an object.");
+		}
+		if((rhso instanceof List)
+		&&(comp != MQLClause.WhereComparator.IN)
+		&&(comp != MQLClause.WhereComparator.NOTIN))
+		{
+			@SuppressWarnings("rawtypes")
+			final List rL=(List)rhso;
+			if(rL.size()>1)
+			{
+				return comp==MQLClause.WhereComparator.NEQ
+				|| comp==MQLClause.WhereComparator.NOTLIKE
+				|| comp==MQLClause.WhereComparator.LT
+				|| comp==MQLClause.WhereComparator.LTEQ;
+			}
+			return doMQLComparison(lhso, comp, rL.get(0), allFrom, from,E,ignoreStats,defPrefix,piece,defined);
+		}
+		switch(comp)
+		{
+		case NEQ:
 		case EQ:
 			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
-				return CMath.s_double(lhs) == CMath.s_double(rhs);
-			return lhs.equalsIgnoreCase(rhs);
+				return (CMath.s_double(lhs) == CMath.s_double(rhs)) == (comp==MQLClause.WhereComparator.EQ);
+			if((lhs instanceof String)||(rhs instanceof String))
+				return lhs.equalsIgnoreCase(rhs) == (comp==MQLClause.WhereComparator.EQ);
+			//TODO:
+			break;
 		case GT:
 			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
 				return CMath.s_double(lhs) > CMath.s_double(rhs);
-			return lhs.compareToIgnoreCase(rhs) > 0;
+			if((lhs instanceof String)||(rhs instanceof String))
+				return lhs.compareToIgnoreCase(rhs) > 0;
+			return false; // objects can't be > than each other
 		case GTEQ:
 			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
 				return CMath.s_double(lhs) >= CMath.s_double(rhs);
-			return lhs.compareToIgnoreCase(rhs) >= 0;
+			if((lhs instanceof String)||(rhs instanceof String))
+				return lhs.compareToIgnoreCase(rhs) >= 0;
+			return doMQLComparison(lhso, MQLClause.WhereComparator.EQ, rhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
 		case NOTIN:
 		case IN:
-			//TODO:
+			if(rhso instanceof List)
+			{
+				@SuppressWarnings("rawtypes")
+				final List lrhso=(List)rhso;
+				for(final Object o2 : lrhso)
+				{
+					if(doMQLComparison(lhso, MQLClause.WhereComparator.EQ, o2, allFrom, from,E,ignoreStats,defPrefix,piece,defined))
+						return comp==(MQLClause.WhereComparator.IN);
+				}
+				return comp==(MQLClause.WhereComparator.NOTIN);
+			}
+			//TODO: turn rhso into a comma-delimited list maybe??
 			break;
 		case NOTLIKE:
 		case LIKE:
-			//TODO:
+			if(!(rhso instanceof String))
+				throw new CMException("Nothing can ever be LIKE '"+rhso.toString()+"'");
+			if(lhso instanceof Environmental)
+				return CMLib.masking().maskCheck(rhs, (Environmental)lhso, true);
+			if(lhso instanceof Map)
+			{
+				//TODO: turn the map into an object, and then run through mask check.
+			}
+			else
+				throw new CMException("'"+lhso.toString()+"' can ever be LIKE anything.");
 			break;
 		case LT:
 			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
 				return CMath.s_double(lhs) < CMath.s_double(rhs);
-			return lhs.compareToIgnoreCase(rhs) < 0;
+			if((lhs instanceof String)||(rhs instanceof String))
+				return lhs.compareToIgnoreCase(rhs) < 0;
+			return false; // objects can't be < than each other
 		case LTEQ:
 			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
 				return CMath.s_double(lhs) <= CMath.s_double(rhs);
-			return lhs.compareToIgnoreCase(rhs) <= 0;
-		case NEQ:
-			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
-				return CMath.s_double(lhs) == CMath.s_double(rhs);
-			return lhs.equalsIgnoreCase(rhs);
+			if((lhs instanceof String)||(rhs instanceof String))
+				return lhs.compareToIgnoreCase(rhs) <= 0;
+			return doMQLComparison(lhso, MQLClause.WhereComparator.EQ, rhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
 		default:
 			break;
 
@@ -4375,7 +4638,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return true;
 	}
 
-	protected boolean doMQLWhereClauseFilter(final MQLClause.WhereClause whereClause, final List<Object> allFrom, final Object from) throws CMException
+	protected boolean doMQLComparison(final MQLClause.WhereComp comp, final List<Object> allFrom, final Object from,
+			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	{
+		final Object lhso=getFinalMQLValue(comp.lhs, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
+		final Object rhso=getFinalMQLValue(comp.rhs, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
+		return doMQLComparison(lhso, comp.comp, rhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
+	}
+
+	protected boolean doMQLWhereClauseFilter(final MQLClause.WhereClause whereClause, final List<Object> allFrom, final Object from,
+			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		MQLClause.WhereConnector lastConn=null;
 		MQLClause.WhereClause clause=whereClause;
@@ -4387,11 +4659,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				if(clause.lhs != null)
 					throw new CMException("Parent & lhs error ");
-				thisResult=doMQLWhereClauseFilter(clause.parent,allFrom,from);
+				thisResult=doMQLWhereClauseFilter(clause.parent,allFrom,from,E,ignoreStats,defPrefix,piece,defined);
 			}
 			else
 			if(clause.lhs != null)
-				thisResult=doMQLComparison(clause.lhs, allFrom, from);
+				thisResult=doMQLComparison(clause.lhs, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
 			else
 			if(clause.next != null)
 			{
@@ -4435,7 +4707,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final List<Object> froms=this.parseMQLFrom(clause.from, clause.mql, E, ignoreStats, defPrefix, piece, defined);
 		for(final Object o : froms)
 		{
-			if(this.doMQLWhereClauseFilter(clause.wheres, froms, o))
+			if(this.doMQLWhereClauseFilter(clause.wheres, froms, o,E,ignoreStats,defPrefix,piece,defined))
 			{
 				//TODO: finally, select the WHATS
 				//  .. and add to results
@@ -4444,7 +4716,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return results;
 	}
 
-	protected List<Map<String,String>> doSubSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final MQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected List<Map<String,String>> doSubSelectStr(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final MQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		final List<Map<String,String>> results=new ArrayList<Map<String,String>>();
 		final List<Map<String, Object>> objs=this.doSubObjSelect(E, ignoreStats, defPrefix, clause, piece, defined);
@@ -4458,7 +4730,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return results;
 	}
 
-	protected List<Map<String,String>> doSubSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+
+	protected List<Map<String,String>> doSubSelectStr(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		final int x=str.indexOf(':');
 		if(x<0)
@@ -4466,12 +4739,23 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final String mqlbits=str.substring(x+1).toUpperCase();
 		final MQLClause clause = new MQLClause();
 		clause.parseMQL(str, mqlbits);
-		return this.doSubSelect(E, ignoreStats, defPrefix, clause, piece, defined);
+		return this.doSubSelectStr(E, ignoreStats, defPrefix, clause, piece, defined);
+	}
+
+	protected List<Map<String,Object>> doSubSelectObjs(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	{
+		final int x=str.indexOf(':');
+		if(x<0)
+			throw new CMException("Malformed mql: "+str);
+		final String mqlbits=str.substring(x+1).toUpperCase();
+		final MQLClause clause = new MQLClause();
+		clause.parseMQL(str, mqlbits);
+		return this.doSubObjSelect(E, ignoreStats, defPrefix, clause, piece, defined);
 	}
 
 	protected String doSelectString(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
-		final List<Map<String,String>> res=doSubSelect(E,ignoreStats,defPrefix,str,piece,defined);
+		final List<Map<String,String>> res=doSubSelectStr(E,ignoreStats,defPrefix,str,piece,defined);
 		final StringBuilder finalStr = new StringBuilder("");
 		for(final Map<String,String> map : res)
 		{
