@@ -4415,60 +4415,108 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return null;
 	}
 
-	protected Object getFinalMQLValue(final String str, final List<Object> allFrom, final Object from,
+	protected Object getFinalMQLValue(final String strpath, final List<Object> allFrom, final Object from,
 			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
-		if(CMath.isNumber(str.trim()) || (str.trim().length()==0))
-			return str.trim();
-		if(str.startsWith("\"")&&(str.endsWith("\""))&&(str.length()>1))
-			return this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\\"","\""), piece, defined);
-		if(str.startsWith("'")&&(str.endsWith("'"))&&(str.length()>1))
-			return this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\'","'"), piece, defined);
-		if(str.startsWith("SELECT:"))
+		Object finalO=null;
+		for(final String str : strpath.split("\\"))
 		{
-			final List<Map<String,Object>> res=doSubSelectObjs(E,ignoreStats,defPrefix,str,piece,defined);
-			//TODO: flatten the inner maps into objects and/or strings ?
-
-		}
-		if(str.startsWith("$"))
-		{
-			Object val = defined.get(str.substring(1));
-			if(val instanceof XMLTag)
+			if(CMath.isNumber(str.trim()) || (str.trim().length()==0))
+				finalO=str.trim();
+			else
+			if(str.startsWith("\"")&&(str.endsWith("\""))&&(str.length()>1))
+				finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\\"","\""), piece, defined);
+			else
+			if(str.startsWith("'")&&(str.endsWith("'"))&&(str.length()>1))
+				finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\'","'"), piece, defined);
+			else
+			if(str.startsWith("SELECT:"))
+				finalO=doSubSelectObjs(E,ignoreStats,defPrefix,str,piece,defined);
+			else
+			if(str.equals("COUNT"))
 			{
-				//TODO: turn into a list of maps?
-				final Object objs = findObject(E,ignoreStats,defPrefix,"OBJECT",(XMLTag)val,defined);
-				// could also BE a list
-			}
-			if((val == null)&&(defPrefix!=null)&&(defPrefix.length()>0)&&(E!=null))
-			{
-				String preValue=str;
-				if(preValue.toUpperCase().startsWith(defPrefix.toUpperCase()))
+				if(finalO == null)
+					finalO=""+allFrom.size();
+				else
+				if(finalO instanceof List)
 				{
-					preValue=preValue.toUpperCase().substring(defPrefix.length());
-					if((E.isStat(preValue))
-					&&((ignoreStats==null)||(!ignoreStats.contains(preValue.toUpperCase()))))
+					@SuppressWarnings("rawtypes")
+					final List l=(List)finalO;
+					finalO=""+l.size();
+				}
+				else
+					finalO="1";
+			}
+			else
+			if(str.startsWith("$"))
+			{
+				Object val = defined.get(str.substring(1));
+				if(val instanceof String)
+					finalO=val;
+				else
+				if(val instanceof XMLTag)
+				{
+					final XMLTag tag=(XMLTag)val;
+					if(tag.tag().equalsIgnoreCase("STRING"))
+						finalO=findString(E,ignoreStats,defPrefix,"STRING",(XMLTag)val,defined);
+					else
 					{
-						val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,piece,defined, false);
-						XMLTag statPiece=piece;
-						while((val == null)
-						&&(statPiece.parent()!=null)
-						&&(!(defPrefix.startsWith(statPiece.tag())&&(!defPrefix.startsWith(statPiece.parent().tag())))))
+						final Object o =findObject(E,ignoreStats,defPrefix,"OBJECT",tag,defined);
+						if(o instanceof Tickable)
+							CMLib.threads().deleteAllTicks((Tickable)o);
+						if(o instanceof List)
 						{
-							statPiece=statPiece.parent();
-							val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,statPiece,defined, false);
+							@SuppressWarnings("rawtypes")
+							final List l=(List)o;
+							for(final Object o2 : l)
+							{
+								if(o2 instanceof Tickable)
+									CMLib.threads().deleteAllTicks((Tickable)o2);
+							}
 						}
-						if((ignoreStats!=null)&&(val!=null))
-							ignoreStats.add(preValue.toUpperCase());
+						finalO=o;
 					}
 				}
+				if((val == null)&&(defPrefix!=null)&&(defPrefix.length()>0)&&(E!=null))
+				{
+					String preValue=str;
+					if(preValue.toUpperCase().startsWith(defPrefix.toUpperCase()))
+					{
+						preValue=preValue.toUpperCase().substring(defPrefix.length());
+						if((E.isStat(preValue))
+						&&((ignoreStats==null)||(!ignoreStats.contains(preValue.toUpperCase()))))
+						{
+							val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,piece,defined, false);
+							XMLTag statPiece=piece;
+							while((val == null)
+							&&(statPiece.parent()!=null)
+							&&(!(defPrefix.startsWith(statPiece.tag())&&(!defPrefix.startsWith(statPiece.parent().tag())))))
+							{
+								statPiece=statPiece.parent();
+								val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,statPiece,defined, false);
+							}
+							if((ignoreStats!=null)&&(val!=null))
+								ignoreStats.add(preValue.toUpperCase());
+						}
+					}
+				}
+				if(val == null)
+					throw new CMException("Unknown variable '$"+str+"' in str '"+str+"'",new CMException("$"+str));
+				finalO=val;
 			}
-			if(val == null)
-				throw new CMException("Unknown variable '$"+str+"' in str '"+str+"'",new CMException("$"+str));
-			return val;
+			else
+			{
+				final Object newObj;
+				if(finalO == null)
+					newObj=getSimpleMQLValue(str,from);
+				else
+					newObj=getSimpleMQLValue(str,finalO);
+				if(newObj == null)
+					throw new CMException("Unknown variable '$"+str+"' in str '"+str+"'",new CMException("$"+str));
+				finalO=newObj;
+			}
 		}
-		//TODO: SELECT: turns into a list of maps I guess?
-		//TODO: $vars turn into a list of objects, or an object if only one?
-		return str;
+		return finalO;
 	}
 
 	protected boolean doMQLComparison(final Object lhso, MQLClause.WhereComparator comp, final Object rhso, final List<Object> allFrom, final Object from,
@@ -4554,31 +4602,74 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			else
 				throw new CMException("Can not compare a list to an object.");
 		}
-		if((rhso instanceof List)
-		&&(comp != MQLClause.WhereComparator.IN)
+		if((comp != MQLClause.WhereComparator.IN)
 		&&(comp != MQLClause.WhereComparator.NOTIN))
 		{
-			@SuppressWarnings("rawtypes")
-			final List rL=(List)rhso;
-			if(rL.size()>1)
+			if(rhso instanceof List)
 			{
-				return comp==MQLClause.WhereComparator.NEQ
-				|| comp==MQLClause.WhereComparator.NOTLIKE
-				|| comp==MQLClause.WhereComparator.LT
-				|| comp==MQLClause.WhereComparator.LTEQ;
+				@SuppressWarnings("rawtypes")
+				final List rL=(List)rhso;
+				if(rL.size()>1)
+				{
+					return comp==MQLClause.WhereComparator.NEQ
+					|| comp==MQLClause.WhereComparator.NOTLIKE
+					|| comp==MQLClause.WhereComparator.LT
+					|| comp==MQLClause.WhereComparator.LTEQ;
+				}
+				return doMQLComparison(lhso, comp, rL.get(0), allFrom, from,E,ignoreStats,defPrefix,piece,defined);
 			}
-			return doMQLComparison(lhso, comp, rL.get(0), allFrom, from,E,ignoreStats,defPrefix,piece,defined);
+			if(lhso instanceof Map)
+			{
+				@SuppressWarnings("rawtypes")
+				final Map mlhso=(Map)lhso;
+				boolean allSame=true;
+				for(final Object o1 : mlhso.keySet())
+					allSame = allSame && doMQLComparison(mlhso.get(o1), comp, rhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
+				return allSame;
+			}
+			else
+			if(rhso instanceof Map)
+			{
+				@SuppressWarnings("rawtypes")
+				final Map mrhso=(Map)rhso;
+				boolean allSame=true;
+				for(final Object o1 : mrhso.keySet())
+					allSame = allSame && doMQLComparison(lhso, comp, mrhso.get(o1), allFrom, from,E,ignoreStats,defPrefix,piece,defined);
+				return allSame;
+			}
 		}
 		switch(comp)
 		{
 		case NEQ:
 		case EQ:
+		{
+			final boolean eq=(comp==MQLClause.WhereComparator.EQ);
 			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
-				return (CMath.s_double(lhs) == CMath.s_double(rhs)) == (comp==MQLClause.WhereComparator.EQ);
-			if((lhs instanceof String)||(rhs instanceof String))
-				return lhs.equalsIgnoreCase(rhs) == (comp==MQLClause.WhereComparator.EQ);
-			//TODO:
-			break;
+				return (CMath.s_double(lhs) == CMath.s_double(rhs)) == eq;
+			if(lhs instanceof String)
+			{
+				if(rhs instanceof String)
+					return lhs.equalsIgnoreCase(rhs) == eq;
+				//TODO:
+			}
+			else
+			if(rhs instanceof String)
+			{
+				//TODO:
+			}
+			if(lhso instanceof Environmental)
+			{
+				if(rhso instanceof Environmental)
+					return ((Environmental)lhso).sameAs((Environmental)rhso) == eq;
+				//TODO:
+			}
+			else
+			if(rhso instanceof Environmental)
+			{
+				//TODO:
+			}
+			return (lhso.equals(rhso)) == eq;
+		}
 		case GT:
 			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
 				return CMath.s_double(lhs) > CMath.s_double(rhs);
@@ -4604,20 +4695,71 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				return comp==(MQLClause.WhereComparator.NOTIN);
 			}
-			//TODO: turn rhso into a comma-delimited list maybe??
-			break;
+			if(rhso instanceof String)
+			{
+				if(lhso instanceof String)
+					return (rhs.toUpperCase().indexOf(lhs.toUpperCase()) >= 0) == (comp==MQLClause.WhereComparator.IN);
+				else
+					throw new CMException("'"+lhso.toString()+"' can't be in a string");
+			}
+			if(rhso instanceof Map)
+			{
+				@SuppressWarnings("rawtypes")
+				final Map m=(Map)rhso;
+				if(m.containsKey(lhs.toUpperCase()))
+					return (comp==MQLClause.WhereComparator.IN);
+				for(final Object key : m.keySet())
+				{
+					if(doMQLComparison(lhso, MQLClause.WhereComparator.EQ, m.get(key), allFrom, from,E,ignoreStats,defPrefix,piece,defined))
+						return comp==(MQLClause.WhereComparator.IN);
+				}
+			}
+			if(rhso instanceof Environmental)
+			{
+				return doMQLComparison(lhso, MQLClause.WhereComparator.EQ, rhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined)
+					== (comp==(MQLClause.WhereComparator.IN));
+			}
+			throw new CMException("'"+rhso.toString()+"' can't contain anything");
 		case NOTLIKE:
 		case LIKE:
 			if(!(rhso instanceof String))
 				throw new CMException("Nothing can ever be LIKE '"+rhso.toString()+"'");
 			if(lhso instanceof Environmental)
-				return CMLib.masking().maskCheck(rhs, (Environmental)lhso, true);
+			{
+				return CMLib.masking().maskCheck(rhs, (Environmental)lhso, true)
+						== (comp==MQLClause.WhereComparator.LIKE);
+			}
 			if(lhso instanceof Map)
 			{
-				//TODO: turn the map into an object, and then run through mask check.
+				@SuppressWarnings("rawtypes")
+				final Map m=(Map)lhso;
+				Object o=m.get("CLASS");
+				if(!(o instanceof String))
+					throw new CMException("'"+lhso.toString()+"' can ever be LIKE anything.");
+				o=CMClass.getObjectOrPrototype((String)o);
+				if(o == null)
+					throw new CMException("'"+lhso.toString()+"' can ever be LIKE anything but nothing.");
+				if(!(o instanceof Modifiable))
+					throw new CMException("'"+lhso.toString()+"' can ever be LIKE anything modifiable.");
+				if(!(o instanceof Environmental))
+					throw new CMException("'"+lhso.toString()+"' can ever be LIKE anything envronmental.");
+				final Modifiable mo=(Modifiable)((Modifiable)o).newInstance();
+				for(final Object key : m.keySet())
+				{
+					if((key instanceof String)
+					&&(m.get(key) instanceof String))
+						mo.setStat((String)key, (String)m.get(key));
+				}
+				if(mo instanceof Environmental)
+				{
+					final boolean rv = CMLib.masking().maskCheck(rhs, (Environmental)lhso, true)
+							== (comp==MQLClause.WhereComparator.LIKE);
+					((Environmental)mo).destroy();
+					return rv;
+				}
 			}
 			else
-				throw new CMException("'"+lhso.toString()+"' can ever be LIKE anything.");
+				throw new CMException("'"+lhso.toString()+"' can ever be LIKE anything at all.");
 			break;
 		case LT:
 			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
