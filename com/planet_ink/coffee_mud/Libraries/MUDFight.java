@@ -561,6 +561,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			return true;
 		if(CMSecurity.isASysOp(mob) && mob.isAttributeSet(Attrib.PLAYERKILL))
 			return true;
+		if(CMLib.flags().isUnattackable(defender))
+			return false;
 		if(defender instanceof BoardableShip)
 		{
 			final Area otherArea = ((BoardableShip)defender).getShipArea();
