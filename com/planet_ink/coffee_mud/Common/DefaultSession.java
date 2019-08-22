@@ -1102,13 +1102,14 @@ public class DefaultSession implements Session
 	public void rawCharsOut(final PrintWriter out, final char[] chars)
 	{
 		final Socket sock=this.sock;
-		if((out==null)||(chars==null)||(chars.length==0)
-		||(sock==null)||(sock.isClosed())||(!sock.isConnected()))
+		if((out==null)||(chars==null)||(chars.length==0))
 			return;
 		try
 		{
 			if(writeLock.tryLock(10000, TimeUnit.MILLISECONDS))
 			{
+				if((sock==null)||(sock.isClosed())||(!sock.isConnected()))
+					return;
 				try
 				{
 					writeThread=Thread.currentThread();
