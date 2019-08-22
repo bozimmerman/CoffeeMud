@@ -3174,6 +3174,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(getGenItemCodeNum(stat)>=0)
 				return getGenItemStat((Item)P, stat);
 		}
+		else
+		if(P instanceof Area)
+		{
+			final Area A=(Area)P;
+			final Area.Stats areaStat=(Area.Stats)CMath.s_valueOf(Area.Stats.class, stat);
+			if(areaStat != null)
+				return ""+A.getAreaIStats()[areaStat.ordinal()];
+		}
 		return "";
 	}
 
