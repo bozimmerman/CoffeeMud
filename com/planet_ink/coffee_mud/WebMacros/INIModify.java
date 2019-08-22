@@ -267,6 +267,15 @@ public class INIModify extends StdWebMacro
 					CMLib.login().initBodyRooms(ipage);
 				if(modified(modified,"FACTIONS"))
 					CMLib.factions().reloadFactions(CMProps.getVar(CMProps.Str.PREFACTIONS));
+				if(modified(modified,"HOURSINDAY")
+				||modified(modified,"DAYSINWEEK")
+				||modified(modified,"DAYSINMONTH")
+				||modified(modified,"YEARDESC")
+				||modified(modified,"DAWNHR")
+				||modified(modified,"DAYHR")
+				||modified(modified,"DUSKHR")
+				||modified(modified,"NIGHTHR"))
+					CMLib.time().globalClock().initializeINIClock(ipage);
 				if(modified(modified,"CHANNELS")
 				||(modified(modified,"ICHANNELS"))
 				||(modified(modified,"COMMANDJOURNALS"))
