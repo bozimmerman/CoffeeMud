@@ -2187,7 +2187,29 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 								shipR.show(msg.source(), this, CMMsg.MSG_OK_ACTION, sinkString);
 								this.announceActionToUnderDeck(msg.source(), sinkString);
 							}
-
+							if((msg.source().riding() instanceof BoardableShip)
+							&&((msg.source().Name().equals(msg.source().riding().Name()))))
+							{
+								final Area A=((BoardableShip)msg.source().riding()).getShipArea();
+								if(A!=null)
+								{
+									for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+									{
+										final Room R=r.nextElement();
+										if((R!=null)
+										&&(R.numInhabitants()>0))
+										{
+											for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+											{
+												final MOB M=m.nextElement();
+												final CMMsg msg2=CMClass.getMsg(M, this, CMMsg.MSG_CAUSESINK, null);
+												this.sendAreaMessage(msg2, false);
+												R.showSource(M, this, CMMsg.MSG_CAUSESINK, null);
+											}
+										}
+									}
+								}
+							}
 							if(!CMLib.leveler().postExperienceToAllAboard(msg.source().riding(), 500, this))
 								CMLib.leveler().postExperience(msg.source(), null, null, 500, false);
 							this.clearTacticalMode();

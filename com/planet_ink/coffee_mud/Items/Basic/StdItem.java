@@ -1453,6 +1453,10 @@ public class StdItem implements Item
 				return true;
 			break;
 		}
+		case CMMsg.TYP_CAUSESINK:
+			if(this instanceof BoardableShip)
+				return true;
+			break;
 		case CMMsg.TYP_FILL:
 			if(this instanceof Drink)
 				return true;

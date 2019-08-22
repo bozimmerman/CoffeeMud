@@ -1177,285 +1177,318 @@ public class DefaultFaction implements Faction, MsgListener
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		FactionChangeEvent[] events;
-		if((msg.sourceMinor()==CMMsg.TYP_DEATH)    // A death occured
-		&&((msg.source()==myHost)||(msg.tool()==myHost))
-		&&(msg.tool() instanceof MOB))
+		switch(msg.sourceMinor())
 		{
-			final MOB killedM=msg.source();
-			final MOB killingBlowM=(MOB)msg.tool();
-			events=getChangeEvents((msg.source()==myHost)?"MURDER":"KILL");
-			if(events!=null)
+		case CMMsg.TYP_DEATH:
+			if(((msg.source()==myHost)||(msg.tool()==myHost))
+			&&(msg.tool() instanceof MOB))
 			{
-				for (final FactionChangeEvent event : events)
-				{
-					if(event.applies(killingBlowM,killedM))
-					{
-						final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
-						final Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
-						for (final MOB mob : combatBeneficiaries)
-							executeChange(mob,killedM,event);
-					}
-				}
-			}
-		}
-
-		if((msg.tool() instanceof Ability)
-		&&(msg.target()==myHost)	// Arrested watching
-		&&(msg.source().isMonster())
-		&&(msg.tool().ID().equals("Skill_HandCuff"))
-		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
-		{
-			final Room R=msg.source().location();
-			if((R!=null)&&(R.getArea()!=null))
-			{
-				events=getChangeEvents("ARRESTED");
+				final MOB killedM=msg.source();
+				final MOB killingBlowM=(MOB)msg.tool();
+				events=getChangeEvents((msg.source()==myHost)?"MURDER":"KILL");
 				if(events!=null)
 				{
-					final LegalBehavior B=CMLib.law().getLegalBehavior(R);
-					if((B!=null)&&(B.isAnyOfficer(R.getArea(), msg.source())))
-					{
-						for (final FactionChangeEvent event : events)
-						{
-							// reversed because the target is the one getting factioned
-							if(event.applies(msg.source(),(MOB)msg.target()))
-								executeChange((MOB)msg.target(),msg.source(),event);
-						}
-					}
-				}
-			}
-		}
-
-		if((msg.tool() instanceof Social)		// socials
-		&&(msg.source()==myHost)
-		&&(msg.target() instanceof MOB)
-		&&(((Social)msg.tool()).targetable(msg.source()))
-		&&(msg.sourceMinor()!=CMMsg.TYP_CHANNEL))
-		{
-			events=getChangeEvents("SOCIAL");
-			if(events == null)
-				events=findSocialChangeEvents((Social)msg.tool());
-			if(events!=null)
-			{
-				final Social social = (Social)msg.tool();
-				final String socialName = social.baseName();
-				final MOB mob=msg.source();
-				Faction.FData data = mob.fetchFactionData(factionID());
-				for (final FactionChangeEvent event : events)
-				{
-					if(event.eventID().equals("SOCIAL"))
-					{
-						final String triggerID=event.getTriggerParm("ID");
-						if(triggerID.length()==0)
-							continue;
-						if(!socialName.equals(triggerID)
-						&&(!triggerID.equalsIgnoreCase("ALL")))
-							continue;
-					}
-					if((event.applies(mob,(MOB)msg.target())))
-					{
-						if((data != null) && (System.currentTimeMillis() < data.getNextChangeTimers(event)))
-							continue;
-						executeChange(mob,(MOB)msg.target(),event);
-						if(data == null)
-							data = mob.fetchFactionData(factionID());
-						if(data != null)
-						{
-							final long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
-							if(newTime != 0)
-								data.setNextChangeTimers(event, System.currentTimeMillis()+newTime);
-						}
-					}
-				}
-			}
-		}
-
-		if((msg.sourceMinor()==CMMsg.TYP_GIVE)    // Bribe watching
-		&&(msg.source()==myHost)
-		&&(msg.tool() instanceof Coins)
-		&&(msg.target() instanceof MOB))
-		{
-			events=getChangeEvents("BRIBE");
-			if(events!=null)
-			{
-				for (final FactionChangeEvent event : events)
-				{
-					if(event.applies(msg.source(),(MOB)msg.target()))
-					{
-						double amount=CMath.s_double(event.getTriggerParm("AMOUNT"));
-						final double pctAmount = CMath.s_pct(event.getTriggerParm("PCT"))
-										 * CMLib.beanCounter().getTotalAbsoluteNativeValue((MOB)msg.target());
-						if(pctAmount>amount)
-							amount=pctAmount;
-						if(amount==0)
-							amount=1.0;
-						if(((Coins)msg.tool()).getTotalValue()>=amount)
-							executeChange(msg.source(),(MOB)msg.target(),event);
-					}
-				}
-			}
-		}
-
-		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)    // Talk watching
-		&&(msg.othersMessage()!=null)
-		&&(msg.source()==myHost))
-		{
-			events=getChangeEvents("TALK");
-			if((events!=null)&&(events.length>0))
-			{
-				final Room R=msg.source().location();
-				final List<MOB> targets=new ArrayList<MOB>();
-				if(msg.target() instanceof MOB)
-					targets.add((MOB)msg.target());
-				else
-				for(int m=0;m<R.numInhabitants();m++)
-				{
-					final MOB M=R.fetchInhabitant(m);
-					if((M!=null)&&(M.isMonster())
-					&&(CMLib.flags().canBeHeardSpeakingBy(msg.source(),M))
-					&&(M.amFollowing()!=msg.source()))
-						targets.add(M);
-				}
-				final String sayMsg=CMStrings.getSayFromMessage(msg.othersMessage().toLowerCase());
-				Matcher M=null;
-				if((sayMsg!=null)&&(sayMsg.length()>0)&&(R!=null))
-				{
-					final MOB mob=msg.source();
-					Faction.FData data = mob.fetchFactionData(factionID());
 					for (final FactionChangeEvent event : events)
 					{
-						Pattern P=(Pattern)event.stateVariable(0);
-						if(P==null)
+						if(event.applies(killingBlowM,killedM))
 						{
-							String mask=event.getTriggerParm("REGEX");
-							if((mask==null)||(mask.trim().length()==0))
-								mask=".*";
-							P=Pattern.compile(mask.toLowerCase());
-							event.setStateVariable(0,P);
-						}
-						M=P.matcher(sayMsg);
-						if(M.matches())
-						{
-							if((data != null) && (System.currentTimeMillis() < data.getNextChangeTimers(event)))
-								continue;
-							boolean foundOne=false;
-							for(final MOB target : targets)
-							{
-								if(event.applies(mob,target))
-								{
-									executeChange(mob,target,event);
-									foundOne=true;
-									break;
-								}
-							}
-							if(foundOne)
-							{
-								if(data == null)
-									data = mob.fetchFactionData(factionID());
-								if(data != null)
-								{
-									final long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
-									if(newTime != 0)
-										data.setNextChangeTimers(event, System.currentTimeMillis()+newTime);
-								}
-							}
+							final CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
+							final Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
+							for (final MOB mob : combatBeneficiaries)
+								executeChange(mob,killedM,event);
 						}
 					}
 				}
 			}
-			events=getChangeEvents("MUDCHAT");
-			if((events!=null)&&(events.length>0))
+			break;
+		case CMMsg.TYP_CAUSESINK:
+			if((myHost instanceof MOB)
+			&&(msg.target() instanceof BoardableShip))
 			{
-				final Room R=msg.source().location();
-				final List<MOB> targets=new ArrayList<MOB>();
-				if(msg.target() instanceof MOB)
-					targets.add((MOB)msg.target());
+				final MOB killerM=msg.source();
+				final Area shipArea=((BoardableShip)msg.target()).getShipArea();
+				if(CMLib.map().areaLocation(killerM)==shipArea)
+					events=getChangeEvents("SUNK");
 				else
-				for(int m=0;m<R.numInhabitants();m++)
+				if(killerM == myHost)
+					events=getChangeEvents("SINK");
+				else
+					events=null;
+				if(events!=null)
 				{
-					final MOB M=R.fetchInhabitant(m);
-					if((M!=null)&&(M.isMonster())
-					&&(CMLib.flags().canBeHeardSpeakingBy(msg.source(),M))
-					&&(M.amFollowing()!=msg.source()))
-						targets.add(M);
-				}
-				boolean foundOne=false;
-				for(final MOB target : targets)
-				{
-					ChattyBehavior mudChatB=null;
-					Behavior B=null;
-					for(final Enumeration<Behavior> e=target.behaviors();e.hasMoreElements();)
+					final MOB targetM=(killerM==myHost)?null:(MOB)myHost;
+					for (final FactionChangeEvent event : events)
 					{
-						B=e.nextElement();
-						if(B instanceof ChattyBehavior)
-							mudChatB=(ChattyBehavior)B;
+						if(event.applies(killerM, targetM))
+							executeChange(killerM,targetM,event);
 					}
-					if(mudChatB!=null)
+				}
+			}
+			break;
+		case CMMsg.TYP_GIVE:
+			if((msg.source()==myHost)
+			&&(msg.tool() instanceof Coins)
+			&&(msg.target() instanceof MOB))
+			{
+				events=getChangeEvents("BRIBE");
+				if(events!=null)
+				{
+					for (final FactionChangeEvent event : events)
 					{
-						final String sayMsg=CMStrings.getSayFromMessage(msg.othersMessage().toLowerCase());
-						if((sayMsg!=null)&&(sayMsg.length()>0))
+						if(event.applies(msg.source(),(MOB)msg.target()))
 						{
-							final MOB mob=msg.source();
-							Faction.FData data = mob.fetchFactionData(factionID());
-							for (final FactionChangeEvent event : events)
+							double amount=CMath.s_double(event.getTriggerParm("AMOUNT"));
+							final double pctAmount = CMath.s_pct(event.getTriggerParm("PCT"))
+											 * CMLib.beanCounter().getTotalAbsoluteNativeValue((MOB)msg.target());
+							if(pctAmount>amount)
+								amount=pctAmount;
+							if(amount==0)
+								amount=1.0;
+							if(((Coins)msg.tool()).getTotalValue()>=amount)
+								executeChange(msg.source(),(MOB)msg.target(),event);
+						}
+					}
+				}
+			}
+			break;
+		case CMMsg.TYP_TEACH:
+		case CMMsg.TYP_CHANNEL:
+			// don't do the defaults!
+			break;
+		case CMMsg.TYP_SPEAK:
+			if((msg.othersMessage()!=null)
+			&&(msg.source()==myHost))
+			{
+				events=getChangeEvents("TALK");
+				if((events!=null)&&(events.length>0))
+				{
+					final Room R=msg.source().location();
+					final List<MOB> targets=new ArrayList<MOB>();
+					if(msg.target() instanceof MOB)
+						targets.add((MOB)msg.target());
+					else
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						final MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(M.isMonster())
+						&&(CMLib.flags().canBeHeardSpeakingBy(msg.source(),M))
+						&&(M.amFollowing()!=msg.source()))
+							targets.add(M);
+					}
+					final String sayMsg=CMStrings.getSayFromMessage(msg.othersMessage().toLowerCase());
+					Matcher M=null;
+					if((sayMsg!=null)&&(sayMsg.length()>0)&&(R!=null))
+					{
+						final MOB mob=msg.source();
+						Faction.FData data = mob.fetchFactionData(factionID());
+						for (final FactionChangeEvent event : events)
+						{
+							Pattern P=(Pattern)event.stateVariable(0);
+							if(P==null)
 							{
-								if(event.applies(mob,target))
+								String mask=event.getTriggerParm("REGEX");
+								if((mask==null)||(mask.trim().length()==0))
+									mask=".*";
+								P=Pattern.compile(mask.toLowerCase());
+								event.setStateVariable(0,P);
+							}
+							M=P.matcher(sayMsg);
+							if(M.matches())
+							{
+								if((data != null) && (System.currentTimeMillis() < data.getNextChangeTimers(event)))
+									continue;
+								boolean foundOne=false;
+								for(final MOB target : targets)
 								{
-									if((mudChatB.getLastRespondedTo()==mob)
-									&&(mudChatB.getLastThingSaid()!=null)
-									&&(!mudChatB.getLastThingSaid().equalsIgnoreCase(sayMsg)))
+									if(event.applies(mob,target))
 									{
-										if((data != null) && (System.currentTimeMillis() < data.getNextChangeTimers(event)))
-											continue;
 										executeChange(mob,target,event);
 										foundOne=true;
-										if(data == null)
-											data = mob.fetchFactionData(factionID());
-										if(data != null)
-										{
-											final long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
-											if(newTime != 0)
-												data.setNextChangeTimers(event, System.currentTimeMillis()+newTime);
-										}
+										break;
+									}
+								}
+								if(foundOne)
+								{
+									if(data == null)
+										data = mob.fetchFactionData(factionID());
+									if(data != null)
+									{
+										final long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
+										if(newTime != 0)
+											data.setNextChangeTimers(event, System.currentTimeMillis()+newTime);
 									}
 								}
 							}
 						}
-						if(foundOne)
-							break;
+					}
+				}
+				events=getChangeEvents("MUDCHAT");
+				if((events!=null)&&(events.length>0))
+				{
+					final Room R=msg.source().location();
+					final List<MOB> targets=new ArrayList<MOB>();
+					if(msg.target() instanceof MOB)
+						targets.add((MOB)msg.target());
+					else
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						final MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(M.isMonster())
+						&&(CMLib.flags().canBeHeardSpeakingBy(msg.source(),M))
+						&&(M.amFollowing()!=msg.source()))
+							targets.add(M);
+					}
+					boolean foundOne=false;
+					for(final MOB target : targets)
+					{
+						ChattyBehavior mudChatB=null;
+						Behavior B=null;
+						for(final Enumeration<Behavior> e=target.behaviors();e.hasMoreElements();)
+						{
+							B=e.nextElement();
+							if(B instanceof ChattyBehavior)
+								mudChatB=(ChattyBehavior)B;
+						}
+						if(mudChatB!=null)
+						{
+							final String sayMsg=CMStrings.getSayFromMessage(msg.othersMessage().toLowerCase());
+							if((sayMsg!=null)&&(sayMsg.length()>0))
+							{
+								final MOB mob=msg.source();
+								Faction.FData data = mob.fetchFactionData(factionID());
+								for (final FactionChangeEvent event : events)
+								{
+									if(event.applies(mob,target))
+									{
+										if((mudChatB.getLastRespondedTo()==mob)
+										&&(mudChatB.getLastThingSaid()!=null)
+										&&(!mudChatB.getLastThingSaid().equalsIgnoreCase(sayMsg)))
+										{
+											if((data != null) && (System.currentTimeMillis() < data.getNextChangeTimers(event)))
+												continue;
+											executeChange(mob,target,event);
+											foundOne=true;
+											if(data == null)
+												data = mob.fetchFactionData(factionID());
+											if(data != null)
+											{
+												final long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
+												if(newTime != 0)
+													data.setNextChangeTimers(event, System.currentTimeMillis()+newTime);
+											}
+										}
+									}
+								}
+							}
+							if(foundOne)
+								break;
+						}
 					}
 				}
 			}
-		}
-		// Ability Watching
-		if((msg.tool() instanceof Ability)
-		&&(msg.othersMessage()!=null)
-		&&(msg.source()==myHost)
-		&&((events=findAbilityChangeEvents((Ability)msg.tool()))!=null)
-		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
-		{
-			for (final FactionChangeEvent C : events)
+			break;
+		default:
+			if(msg.tool() instanceof Ability)
 			{
-				final MOB target;
-				if((msg.target() instanceof MOB)&&(C.applies(msg.source(),(MOB)msg.target())))
-					target=(MOB)msg.target();
-				else
-				if (!(msg.target() instanceof MOB))
-					target=null;
-				else
-					continue;
-				Faction.FData data = msg.source().fetchFactionData(factionID());
-				if((data != null) && (System.currentTimeMillis() < data.getNextChangeTimers(C)))
-					continue;
-				executeChange(msg.source(),target,C);
-				if(data == null)
-					data = msg.source().fetchFactionData(factionID());
-				if(data != null)
+				if((msg.target()==myHost)	// Arrested watching
+				&&(msg.source().isMonster())
+				&&(msg.tool().ID().equals("Skill_HandCuff"))
+				&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 				{
-					final long newTime=CMath.s_long(C.getTriggerParm("WAIT"))*CMProps.getTickMillis();
-					if(newTime != 0)
-						data.setNextChangeTimers(C, System.currentTimeMillis()+newTime);
+					final Room R=msg.source().location();
+					if((R!=null)&&(R.getArea()!=null))
+					{
+						events=getChangeEvents("ARRESTED");
+						if(events!=null)
+						{
+							final LegalBehavior B=CMLib.law().getLegalBehavior(R);
+							if((B!=null)&&(B.isAnyOfficer(R.getArea(), msg.source())))
+							{
+								for (final FactionChangeEvent event : events)
+								{
+									// reversed because the target is the one getting factioned
+									if(event.applies(msg.source(),(MOB)msg.target()))
+										executeChange((MOB)msg.target(),msg.source(),event);
+								}
+							}
+						}
+					}
+				}
+				else
+				if((msg.othersMessage()!=null)
+				&&(msg.source()==myHost)
+				&&((events=findAbilityChangeEvents((Ability)msg.tool()))!=null))
+				{
+					for (final FactionChangeEvent C : events)
+					{
+						final MOB target;
+						if((msg.target() instanceof MOB)&&(C.applies(msg.source(),(MOB)msg.target())))
+							target=(MOB)msg.target();
+						else
+						if (!(msg.target() instanceof MOB))
+							target=null;
+						else
+							continue;
+						Faction.FData data = msg.source().fetchFactionData(factionID());
+						if((data != null) && (System.currentTimeMillis() < data.getNextChangeTimers(C)))
+							continue;
+						executeChange(msg.source(),target,C);
+						if(data == null)
+							data = msg.source().fetchFactionData(factionID());
+						if(data != null)
+						{
+							final long newTime=CMath.s_long(C.getTriggerParm("WAIT"))*CMProps.getTickMillis();
+							if(newTime != 0)
+								data.setNextChangeTimers(C, System.currentTimeMillis()+newTime);
+						}
+					}
 				}
 			}
+			else
+			if((msg.tool() instanceof Social)		// socials
+			&&(msg.source()==myHost)
+			&&(msg.target() instanceof MOB)
+			&&(((Social)msg.tool()).targetable(msg.source()))
+			&&(msg.sourceMinor()!=CMMsg.TYP_CHANNEL))
+			{
+				events=getChangeEvents("SOCIAL");
+				if(events == null)
+					events=findSocialChangeEvents((Social)msg.tool());
+				if(events!=null)
+				{
+					final Social social = (Social)msg.tool();
+					final String socialName = social.baseName();
+					final MOB mob=msg.source();
+					Faction.FData data = mob.fetchFactionData(factionID());
+					for (final FactionChangeEvent event : events)
+					{
+						if(event.eventID().equals("SOCIAL"))
+						{
+							final String triggerID=event.getTriggerParm("ID");
+							if(triggerID.length()==0)
+								continue;
+							if(!socialName.equals(triggerID)
+							&&(!triggerID.equalsIgnoreCase("ALL")))
+								continue;
+						}
+						if((event.applies(mob,(MOB)msg.target())))
+						{
+							if((data != null) && (System.currentTimeMillis() < data.getNextChangeTimers(event)))
+								continue;
+							executeChange(mob,(MOB)msg.target(),event);
+							if(data == null)
+								data = mob.fetchFactionData(factionID());
+							if(data != null)
+							{
+								final long newTime=CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis();
+								if(newTime != 0)
+									data.setNextChangeTimers(event, System.currentTimeMillis()+newTime);
+							}
+						}
+					}
+				}
+			}
+			break;
 		}
 	}
 

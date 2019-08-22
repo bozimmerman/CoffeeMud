@@ -1248,7 +1248,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/** the code words for the various flags to set miscellaneous change event values, such as xp grants */
 		public static final String[] FLAG_KEYVALS={"XP","RPXP"};
 		/** some non-ability-related event trigger ids */
-		public static final String[] MISC_TRIGGERS={"MURDER","TIME","ADDOUTSIDER","KILL","BRIBE","TALK","MUDCHAT","ARRESTED","SOCIAL"};
+		public static final String[] MISC_TRIGGERS={"MURDER","TIME","ADDOUTSIDER","KILL","BRIBE","TALK","MUDCHAT","ARRESTED","SOCIAL","SINK","SUNK"};
 	}
 
 	/**
