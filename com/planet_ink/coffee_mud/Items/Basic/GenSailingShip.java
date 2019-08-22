@@ -25,6 +25,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 
 /*
    Copyright 2014-2019 Bo Zimmerman
@@ -2205,6 +2206,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 												final CMMsg msg2=CMClass.getMsg(M, this, CMMsg.MSG_CAUSESINK, null);
 												this.sendAreaMessage(msg2, false);
 												R.showSource(M, this, CMMsg.MSG_CAUSESINK, null);
+												CMLib.achievements().possiblyBumpAchievement(M, Event.SHIPSSUNK, 1, this);
 											}
 										}
 									}

@@ -98,7 +98,8 @@ public interface AchievementLibrary extends CMLibrary
 		CHARACTERS("Account size",new String[]{"NUM", "PLAYERMASK"}),
 		CLANMEMBERS("Membership size",new String[]{"NUM", "PLAYERMASK"}),
 		CONQUESTPOINTS("Conquest points",new String[]{"NUM","AREAMASK"}),
-		CLANLEVELSGAINED("Clan levels",new String[]{"NUM"})
+		CLANLEVELSGAINED("Clan levels",new String[]{"NUM"}),
+		SHIPSSUNK("Ships sunk",new String[] {"NUM", "PLAYERMASK", "SHIPMASK"})
 		;
 		private final String[] parameters;
 		private final String displayName;
