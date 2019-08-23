@@ -1516,29 +1516,36 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				Log.sysOut(loginMsg.toString());
 				//session.setStatus(SessionStatus.ACCOUNTMENU);
 				loginObj.state=LoginState.ACCTMENU_START;
-				boolean alreadyOnline = false;
-				for(final Session S : CMLib.sessions().allIterableAllHosts())
+				try
 				{
-					if((S.mob()!=null)
-					&&(S.mob().playerStats()!=null)
-					&&(S.mob().playerStats().getAccount()==loginObj.acct))
-						alreadyOnline=true;
+					boolean alreadyOnline = false;
+					for(final Session S : CMLib.sessions().allIterableAllHosts())
+					{
+						if((S.mob()!=null)
+						&&(S.mob().playerStats()!=null)
+						&&(S.mob().playerStats().getAccount()==loginObj.acct))
+							alreadyOnline=true;
+					}
+					if(!alreadyOnline)
+					{
+						MOB mob=null;
+						for(final Enumeration<String> p= loginObj.acct.getPlayers();p.hasMoreElements();)
+						{
+							final MOB M=CMLib.players().getPlayerAllHosts(p.nextElement());
+							if(M!=null)
+								mob=M;
+						}
+						final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACCOUNTLOGINS, mob);
+						if((mob==null)||(!CMLib.flags().isCloaked(mob)))
+						{
+							for(int i=0;i<channels.size();i++)
+								CMLib.commands().postChannel(channels.get(i),null,L("Account @x1 has logged on.",loginObj.acct.getAccountName()),true);
+						}
+					}
 				}
-				if(!alreadyOnline)
+				catch(final Exception e)
 				{
-					MOB mob=null;
-					for(final Enumeration<String> p= loginObj.acct.getPlayers();p.hasMoreElements();)
-					{
-						final MOB M=CMLib.players().getPlayerAllHosts(p.nextElement());
-						if(M!=null)
-							mob=M;
-					}
-					final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACCOUNTLOGINS, mob);
-					if((mob==null)||(!CMLib.flags().isCloaked(mob)))
-					{
-						for(int i=0;i<channels.size();i++)
-							CMLib.commands().postChannel(channels.get(i),null,L("Account @x1 has logged on.",loginObj.acct.getAccountName()),true);
-					}
+					Log.errOut(e);
 				}
 				return null;
 			}
