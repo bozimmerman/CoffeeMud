@@ -107,6 +107,11 @@ public class Spell_Wish extends Spell
 		return foundThang;
 	}
 
+	protected boolean isLegalTarget(final MOB mob, final Physical target, final boolean isTargetChanger, final String myWish)
+	{
+		return true;
+	}
+
 	private double bringThangHere(final MOB mob, final Room newRoom, final Physical target)
 	{
 		double factor = 1.0;
@@ -345,6 +350,8 @@ public class Spell_Wish extends Spell
 				newItem.setDenomination(CMLib.english().matchAnyDenomination(newItem.getCurrency(),CMParms.combine(goldCheck,1)));
 				final long goldCoins=CMath.s_long(goldCheck.get(0));
 				newItem.setNumberOfCoins(goldCoins);
+				if(!isLegalTarget(mob, newItem, false, myWish))
+					return false;
 				int experienceRequired=Math.max((int)Math.round(CMath.div(newItem.getTotalValue(),10.0)),0);
 				while((experienceRequired > mob.getExperience())
 				&& (experienceRequired > 0)
@@ -428,6 +435,8 @@ public class Spell_Wish extends Spell
 				if(foundThang instanceof MOB)
 				{
 					final MOB foundMOB=(MOB)foundThang;
+					if(!isLegalTarget(mob, foundMOB, false, myWish))
+						return false;
 					MOB newMOB;
 					final boolean isPlayer=foundMOB.playerStats()!=null;
 					if(isPlayer && (!foundMOB.isMonster()) && CMLib.flags().isInTheGame(foundMOB, true))
@@ -480,6 +489,8 @@ public class Spell_Wish extends Spell
 						final int levelProblem=(foundThang.phyStats().level()-mob.phyStats().level());
 						if((wearableProblemA != null)||(levelProblem>0))
 						{
+							if(!isLegalTarget(mob, foundThang, false, myWish))
+								return false;
 							experienceRequired = 0;
 							if(wearableProblemA != null)
 							{
@@ -495,6 +506,8 @@ public class Spell_Wish extends Spell
 							return true;
 						}
 					}
+					if(!isLegalTarget(mob, foundThang, false, myWish))
+						return false;
 					final Item newItem=(Item)foundThang.copyOf();
 					experienceRequired+=newItem.value();
 					if(newItem instanceof LandTitle)
@@ -608,6 +621,8 @@ public class Spell_Wish extends Spell
 					recallRoom=((MOB)target).getStartRoom();
 				if(recallRoom!=null)
 				{
+					if(!isLegalTarget(mob, recallRoom, false, myWish))
+						return false;
 					baseLoss *= bringThangHere(mob,recallRoom,target);
 					wishDrain(mob,baseLoss,false);
 					return true;
@@ -638,6 +653,8 @@ public class Spell_Wish extends Spell
 			||(myWish.startsWith(" TO GO TO HELL ")))
 			{
 				int levelDiffXPLoss=0;
+				if(!isLegalTarget(mob, target, false, myWish))
+					return false;
 				if(target instanceof Item)
 				{
 					if(CMLib.utensils().canBePlayerDestroyed(mob, (Item)target, false, true))
@@ -763,6 +780,8 @@ public class Spell_Wish extends Spell
 				{
 					if(CMLib.flags().canAccess(mob, newRoom))
 					{
+						if(!isLegalTarget(mob, target, false, myWish))
+							return false;
 						baseLoss *= bringThangHere(mob,newRoom,target);
 						newRoom.show(mob, null, CMMsg.MSG_OK_VISUAL, L("<S-NAME> appears!"));
 						wishDrain(mob,baseLoss,false);
@@ -780,6 +799,8 @@ public class Spell_Wish extends Spell
 				final Ability A=target.fetchEffect("Pregnancy");
 				if(A != null)
 				{
+					if(!isLegalTarget(mob, target, false, myWish))
+						return false;
 					A.unInvoke();
 					target.delEffect(A);
 					A.setAffectedOne(null);
@@ -803,6 +824,8 @@ public class Spell_Wish extends Spell
 					final long pregEnd = CMath.s_long(A.getStat("PREGEND"));
 					if((pregStart>=0)&&(pregEnd>=0))
 					{
+						if(!isLegalTarget(mob, target, false, myWish))
+							return false;
 						final long diff = pregEnd - System.currentTimeMillis() + 10000;
 						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 start(s) going into labor!",target.name()));
 						A.setStat("PREGSTART", ""+(pregStart - diff));
@@ -826,10 +849,12 @@ public class Spell_Wish extends Spell
 				&&((A==null)||(A.displayText().length()==0)))
 				{
 					final MOB M=(MOB)target;
-					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> age(s) a bit."));
 					final int ageCat = M.baseCharStats().ageCategory();
 					if(ageCat < Race.AGE_ANCIENT)
 					{
+						if(!isLegalTarget(mob, target, false, myWish))
+							return false;
+						mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> age(s) a bit."));
 						while((M.baseCharStats().ageCategory() == ageCat)
 						||(M.baseCharStats().ageCategory() < Race.AGE_YOUNGADULT))
 						{
@@ -853,6 +878,8 @@ public class Spell_Wish extends Spell
 					final long millisPerMonth=CMLib.time().globalClock().getDaysInMonth() * millisPerMudday;
 					final long millisPerYear=CMLib.time().globalClock().getMonthsInYear() * millisPerMonth;
 					final int ageYears = (int)(age / millisPerYear);
+					if(!isLegalTarget(mob, target, false, myWish))
+						return false;
 					final CharStats stats = (CharStats)CMClass.getCommon("DefaultCharStats");
 					stats.setStat(CharStats.STAT_AGE,ageYears);
 					final int ageCat = stats.ageCategory();
@@ -892,6 +919,8 @@ public class Spell_Wish extends Spell
 				final MOB tm=(MOB)target;
 				if((myWish.indexOf("HIT POINT")>=0)&&(tm.curState().getHitPoints()<tm.maxState().getHitPoints()))
 				{
+					if(!isLegalTarget(mob, target, false, myWish))
+						return false;
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is healthier!",target.name()));
 					tm.curState().setHitPoints(tm.maxState().getHitPoints());
 					wishDrain(mob,baseLoss,false);
@@ -900,6 +929,8 @@ public class Spell_Wish extends Spell
 				else
 				if(myWish.indexOf("HIT POINT")>=0)
 				{
+					if(!isLegalTarget(mob, target, true, myWish))
+						return false;
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is healthier!",target.name()));
 					tm.baseState().setHitPoints(tm.baseState().getHitPoints()+2);
 					tm.recoverMaxState();
@@ -908,6 +939,8 @@ public class Spell_Wish extends Spell
 				}
 				if((myWish.indexOf("MANA")>=0)&&(tm.curState().getMana()<tm.maxState().getMana()))
 				{
+					if(!isLegalTarget(mob, target, false, myWish))
+						return false;
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 has more mana!",target.name()));
 					tm.curState().setMana(tm.maxState().getMana());
 					wishDrain(mob,baseLoss,false);
@@ -916,6 +949,8 @@ public class Spell_Wish extends Spell
 				else
 				if(myWish.indexOf("MANA")>=0)
 				{
+					if(!isLegalTarget(mob, target, true, myWish))
+						return false;
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 has more mana!",target.name()));
 					tm.baseState().setMana(tm.baseState().getMana()+2);
 					tm.recoverMaxState();
@@ -924,6 +959,8 @@ public class Spell_Wish extends Spell
 				}
 				if((myWish.indexOf("MOVE")>=0)&&(tm.curState().getMovement()<tm.maxState().getMovement()))
 				{
+					if(!isLegalTarget(mob, target, false, myWish))
+						return false;
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 has more move points!",target.name()));
 					tm.curState().setMovement(tm.maxState().getMovement());
 					wishDrain(mob,baseLoss,false);
@@ -932,6 +969,8 @@ public class Spell_Wish extends Spell
 				else
 				if(myWish.indexOf("MOVE")>=0)
 				{
+					if(!isLegalTarget(mob, target, true, myWish))
+						return false;
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 has more move points!",target.name()));
 					tm.baseState().setMovement(tm.baseState().getMovement()+5);
 					tm.recoverMaxState();
@@ -952,6 +991,8 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" MAN ")>=0)
 			||(myWish.indexOf(" BOY ")>=0)))
 			{
+				if(!isLegalTarget(mob, target, true, myWish))
+					return false;
 				wishDrain(mob,baseLoss,true);
 				((MOB)target).baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 				((MOB)target).recoverCharStats();
@@ -965,6 +1006,8 @@ public class Spell_Wish extends Spell
 			&&((myWish.indexOf(" LIGHTER ")>=0)
 			||(myWish.indexOf(" LOSE WEIGHT ")>=0)))
 			{
+				if(!isLegalTarget(mob, target, true, myWish))
+					return false;
 				wishDrain(mob,baseLoss,true);
 				int weight=((MOB)target).basePhyStats().weight();
 				weight-=50;
@@ -981,6 +1024,8 @@ public class Spell_Wish extends Spell
 			&&((myWish.indexOf(" HEAVIER ")>=0)
 			||(myWish.indexOf(" GAIN WEIGHT ")>=0)))
 			{
+				if(!isLegalTarget(mob, target, true, myWish))
+					return false;
 				wishDrain(mob,baseLoss,true);
 				int weight=((MOB)target).basePhyStats().weight();
 				weight+=50;
@@ -993,6 +1038,8 @@ public class Spell_Wish extends Spell
 			&&((myWish.indexOf(" EXP ")>=0)
 			||(myWish.indexOf(" EXPERIENCE ")>=0)))
 			{
+				if(!isLegalTarget(mob, target, true, myWish))
+					return false;
 				int x=myWish.indexOf(" EXP");
 				final String wsh=myWish.substring(0,x).trim();
 				x=wsh.lastIndexOf(' ');
@@ -1113,6 +1160,8 @@ public class Spell_Wish extends Spell
 						}
 					}
 
+					if(!isLegalTarget(mob, target, true, myWish))
+						return false;
 					if(target instanceof MOB)
 					{
 						final MOB MT=(MOB)target;
@@ -1163,6 +1212,8 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" SHORT ")>=0)
 			||(myWish.indexOf(" LITTLE ")>=0)))
 			{
+				if(!isLegalTarget(mob, target, true, myWish))
+					return false;
 				wishDrain(mob,baseLoss,true);
 				int weight=((MOB)target).basePhyStats().height();
 				weight-=12;
@@ -1180,6 +1231,8 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" BIG ")>=0)
 			||(myWish.indexOf(" TALL ")>=0)))
 			{
+				if(!isLegalTarget(mob, target, true, myWish))
+					return false;
 				wishDrain(mob,baseLoss,true);
 				int weight=((MOB)target).basePhyStats().height();
 				weight+=12;
@@ -1201,6 +1254,8 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WOMAN ")>=0)
 			||(myWish.indexOf(" GIRL ")>=0)))
 			{
+				if(!isLegalTarget(mob, target, true, myWish))
+					return false;
 				wishDrain(mob,baseLoss,true);
 				((MOB)target).baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 				((MOB)target).recoverCharStats();
@@ -1223,6 +1278,8 @@ public class Spell_Wish extends Spell
 				&&(!R.ID().equalsIgnoreCase("StdRace"))
 				&&(!R.ID().equalsIgnoreCase("Unique")))
 				{
+					if(!isLegalTarget(mob, target, true, myWish))
+						return false;
 					if(!((MOB)target).isMonster())
 					{
 						baseLoss+=500;
@@ -1259,6 +1316,8 @@ public class Spell_Wish extends Spell
 				final CharClass C=CMClass.findCharClass(wishV.get(wishV.size()-1));
 				if((C!=null)&&(CMath.bset(C.availabilityCode(),Area.THEME_FANTASY)))
 				{
+					if(!isLegalTarget(mob, target, true, myWish))
+						return false;
 					final CharClass oldC=mob.baseCharStats().getCurrentClass();
 					baseLoss+=1000;
 					wishDrain(mob,baseLoss,true);
@@ -1298,6 +1357,8 @@ public class Spell_Wish extends Spell
 				final Ability A=CMClass.findAbility(possSpell);
 				if(A!=null)
 				{
+					if(!isLegalTarget(mob, target, false, myWish))
+						return false;
 					if(target instanceof MOB)
 					{
 						final Ability myA=((MOB)target).fetchAbility(A.ID());
@@ -1381,6 +1442,8 @@ public class Spell_Wish extends Spell
 					&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)
 					&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
 					{
+						if(!isLegalTarget(mob, target, true, myWish))
+							return false;
 						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
 						{
 							baseLoss=getXPCOSTAdjustment(mob,baseLoss);
@@ -1480,6 +1543,8 @@ public class Spell_Wish extends Spell
 					if((A!=null)
 					&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0))
 					{
+						if(!isLegalTarget(mob, target, false, myWish))
+							return false;
 						if(tm.fetchAbility(A.ID())!=null)
 						{
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 no longer knows @x2!",target.name(),A.name()));
@@ -1533,6 +1598,8 @@ public class Spell_Wish extends Spell
 					&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)
 					&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
 					{
+						if(!isLegalTarget(mob, target, false, myWish))
+							return false;
 						if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
 						{
 							baseLoss=getXPCOSTAdjustment(mob,baseLoss);
@@ -1574,6 +1641,8 @@ public class Spell_Wish extends Spell
 				&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)
 				&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
 				{
+					if(!isLegalTarget(mob, target, false, myWish))
+						return false;
 					if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>=25)
 					{
 						baseLoss=getXPCOSTAdjustment(mob,baseLoss);
@@ -1696,6 +1765,8 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" NO IMMUN")>=0)
 			||(myWish.indexOf(" LOSE ")>=0)))
 			{
+				if(!isLegalTarget(mob, target, true, myWish))
+					return false;
 				if(foundAttribute>1000)
 				{
 					baseLoss-=1000;
@@ -1745,6 +1816,8 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WAS ")>=0)
 			||(myWish.indexOf(" TO BE ")>=0)))
 			{
+				if(!isLegalTarget(mob, target, true, myWish))
+					return false;
 				if(foundAttribute>1000)
 				{
 					switch(foundAttribute)
@@ -1869,6 +1942,8 @@ public class Spell_Wish extends Spell
 				if((factionID != null)
 				&&(factionID.length()>0))
 				{
+					if(!isLegalTarget(mob, target, false, myWish))
+						return false;
 					baseLoss=100;
 					final Faction F=CMLib.factions().getFaction(factionID);
 					final int casterF = mob.fetchFaction(factionID);
