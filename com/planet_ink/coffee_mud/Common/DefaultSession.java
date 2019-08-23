@@ -2707,6 +2707,7 @@ public class DefaultSession implements Session
 			{
 				try
 				{
+					setInputLoopTime(); // update the input loop time so we don't get suspicious
 					final String input=readlineContinue();
 					if(input != null)
 					{
