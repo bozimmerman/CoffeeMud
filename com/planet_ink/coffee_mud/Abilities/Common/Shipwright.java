@@ -441,6 +441,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		String startStr=null;
 		int duration=4;
 		bundling=false;
+		helpingAbility=null;
+		helping=false;
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
