@@ -513,6 +513,42 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			verb=L("mending @x1",buildingI.name());
 		}
 		else
+		if(str.equalsIgnoreCase("help"))
+		{
+			messedUp=!proficiencyCheck(mob,0,auto);
+			duration=25;
+			commands.remove(0);
+			final MOB targetMOB=getTarget(mob,commands,givenTarget,false,true);
+			if(targetMOB==null)
+				return false;
+			if(targetMOB==mob)
+			{
+				commonTell(mob,L("You can not do that."));
+				return false;
+			}
+			helpingAbility=targetMOB.fetchEffect(ID());
+			if(helpingAbility==null)
+			{
+				commonTell(mob,L("@x1 is not wrighting anything.",targetMOB.Name()));
+				return false;
+			}
+			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			{
+				helpingAbility=null;
+				return false;
+			}
+			helping=true;
+			verb=L("helping @x1 with @x2",targetMOB.name(),helpingAbility.name());
+			startStr=L("<S-NAME> start(s) @x1",verb);
+			final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr+".");
+			if(mob.location().okMessage(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				beneficialAffect(mob,mob,asLevel,duration);
+			}
+			return true;
+		}
+		else
 		if(str.equalsIgnoreCase("title"))
 		{
 			buildingI=null;
