@@ -171,9 +171,9 @@ public interface ChannelsLibrary extends CMLibrary
 	 * Returns the list of channel names that have the given
 	 * ChannelFlag set.  It can be further limited by the
 	 * given mob argument -- if the mob is given and has
-	 * their privacy flag sent, this will only return 
+	 * their privacy flag sent, this will only return
 	 * channels they are not permitted to read.
-	 * 
+	 *
 	 * @see ChannelsLibrary.ChannelFlag
 	 * @param flag the flag to find channels for
 	 * @param mob the mob whose privacy flag to respect, or null
@@ -437,6 +437,8 @@ public interface ChannelsLibrary extends CMLibrary
 		ADDAREA,
 		ADDACCOUNT,
 		REALNAMEOOC,
-		REALNAMEOOCNOADMIN
+		REALNAMEOOCNOADMIN,
+		ACCOUNTLOGINS,
+		ACCOUNTLOGOFFS
 	}
 }

@@ -38,6 +38,7 @@
  37. Massive number of new shipwrighting recipes.
  38. Factions now support SINK and SUNK faction events, Achievements now support SINKSHIP type.
  39. Alterer nerf: Wish is now level 60, and new spell: Limited Wish, gained at 30.
+ 40. Channels now support ACCOUNTLOGINS and ACCOUNTLOGOFFS for those using the account system.
  
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque

@@ -2983,6 +2983,42 @@ public class DefaultSession implements Session
 			else
 				finalMsg="";
 			previousCmd.clear(); // will let system know you are back in login menu
+			if(acct!=null)
+			{
+				try
+				{
+					MOB M2=(M!=null)?M:null;
+					if(M2==null)
+					{
+						for(final Enumeration<String> p=acct.getPlayers();p.hasMoreElements();)
+						{
+							final MOB M3=CMLib.players().getPlayerAllHosts(p.nextElement());
+							if(M3!=null)
+								M2=M3;
+						}
+					}
+					boolean stillOnline = false;
+					for(final Session S : CMLib.sessions().allIterableAllHosts())
+					{
+						if((S.mob()!=null)
+						&&(S!=this)
+						&&(S.mob().playerStats()!=null)
+						&&(S.mob().playerStats().getAccount()==acct))
+							stillOnline=true;
+					}
+					if((!stillOnline)
+					&&((M2==null)||(!CMLib.flags().isCloaked(M2))))
+					{
+						final List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACCOUNTLOGOFFS, M2);
+						for(int i=0;i<channels2.size();i++)
+							CMLib.commands().postChannel(channels2.get(i),null,L("Account @x1 has logged off.",acct.getAccountName()),true);
+					}
+				}
+				catch(final Exception e)
+				{
+					Log.errOut(e);
+				}
+			}
 			if(M!=null)
 			{
 				try
