@@ -3360,6 +3360,22 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		private String				from	= "";
 		private WhereClause			wheres	= null;
 
+		private boolean isTermProperlyEnded(final StringBuilder curr)
+		{
+			if(curr.length()<2)
+				return true;
+			if((curr.charAt(0)=='\"')
+			||(curr.charAt(0)=='\''))
+			{
+				final int endDex=curr.length()-1;
+				if(curr.charAt(endDex) != curr.charAt(0))
+					return false;
+				if((curr.length()>2)&&(curr.charAt(endDex-1)=='\\'))
+					return false;
+			}
+			return true;
+		}
+		
 		/**
 		 * parse the mql statement into this object
 		 *
@@ -3374,7 +3390,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			int pdepth=0;
 			WhereClause wheres = new WhereClause();
 			this.wheres=wheres;
-			WhereComp	wcomp  = null;
+			WhereComp	wcomp  = new WhereComp();
 			SelectMQLState state=SelectMQLState.STATE_SELECT0;
 			for(int i=0;i<=mqlbits.length();i++)
 			{
@@ -3387,8 +3403,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							if(((curr.charAt(0)!='\"')||(curr.charAt(curr.length()-1)=='\"'))
-							&&((curr.charAt(0)!='\'')||(curr.charAt(curr.length()-1)=='\'')))
+							if(isTermProperlyEnded(curr))
 							{
 								// we just got a name symbol, so go to state 1 and expect AS or FROM or ,
 								what.add(new WhatBit(curr.toString(),curr.toString()));
@@ -3404,8 +3419,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							if(((curr.charAt(0)!='\"')||(curr.charAt(curr.length()-1)=='\"'))
-							&&((curr.charAt(0)!='\'')||(curr.charAt(curr.length()-1)=='\'')))
+							if(isTermProperlyEnded(curr))
 							{
 								what.add(new WhatBit(curr.toString(),curr.toString()));
 								curr.setLength(0);
@@ -3460,8 +3474,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							if(((curr.charAt(0)!='\"')||(curr.charAt(curr.length()-1)=='\"'))
-							&&((curr.charAt(0)!='\'')||(curr.charAt(curr.length()-1)=='\'')))
+							if(isTermProperlyEnded(curr))
 							{
 								if(curr.toString().equals("FROM"))
 									throw new MQLException("Unexpected FROM in Malformed mql: "+str);
@@ -3519,8 +3532,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							if(((curr.charAt(0)!='\"')||(curr.charAt(curr.length()-1)=='\"'))
-							&&((curr.charAt(0)!='\'')||(curr.charAt(curr.length()-1)=='\'')))
+							if(isTermProperlyEnded(curr))
 							{
 								if(curr.toString().equals("WHERE"))
 									throw new MQLException("Unexpected WHERE in Malformed mql: "+str);
@@ -3599,8 +3611,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							if(((curr.charAt(0)!='\"')||(curr.charAt(curr.length()-1)=='\"'))
-							&&((curr.charAt(0)!='\'')||(curr.charAt(curr.length()-1)=='\'')))
+							if(isTermProperlyEnded(curr))
 							{
 								wcomp=new WhereComp();
 								if((wheres.lhs!=null)
@@ -3834,8 +3845,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							if(((curr.charAt(0)!='\"')||(curr.charAt(curr.length()-1)=='\"'))
-							&&((curr.charAt(0)!='\'')||(curr.charAt(curr.length()-1)=='\'')))
+							if(isTermProperlyEnded(curr))
 							{
 								wcomp.rhs=curr.toString();
 								curr.setLength(0);
