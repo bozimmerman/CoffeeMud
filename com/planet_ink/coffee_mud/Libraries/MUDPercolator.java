@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
+import com.planet_ink.coffee_mud.core.exceptions.MQLException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -60,6 +61,24 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		public void willBuild(Environmental E, XMLTag XMLTag);
 	}
+
+	private static final Comparator<Object> objComparator = new Comparator<Object>()
+	{
+		@Override
+		public int compare(final Object o1, final Object o2)
+		{
+			final String s1=(o1 instanceof Environmental)?((Environmental)o1).Name():(o1==null?"":o1.toString());
+			final String s2=(o1 instanceof Environmental)?((Environmental)o2).Name():(o2==null?"":o2.toString());
+			if(CMath.isNumber(s1) && CMath.isNumber(s2))
+			{
+				final double d1=CMath.s_double(s1);
+				final double d2=CMath.s_double(s2);
+				return (d1==d2)?0:(d1>d2?1:-1);
+			}
+			return s1.compareToIgnoreCase(s2);
+		}
+	};
+
 
 	@Override
 	public LayoutManager getLayoutManager(final String named)
@@ -2708,7 +2727,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final Object value;
 			if(valueStr.startsWith("SELECT:"))
 			{
-				final List<Map<String,Object>> sel=this.doSubSelectObjs(E, ignoreStats, defPrefix, valueStr, valPiece, defined);
+				final List<Map<String,Object>> sel=this.doMQLSelectObjs(E, ignoreStats, defPrefix, valueStr, valPiece, defined);
 				value=sel;
 				finalValues.addAll(sel);
 			}
@@ -3302,6 +3321,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			private WhereClause		next	= null;
 		}
 
+		private enum AggregatorFunctions
+		{
+			COUNT,
+			MEDIAN,
+			MEAN,
+			UNIQUE
+		}
+
 		private static class WhatBit extends Pair<String,String>
 		{
 			private WhatBit(final String what, final String as)
@@ -3340,7 +3367,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		 * @param mqlbits mql statement, minus select: must be ALL UPPERCASE
 		 * @throws CMException
 		 */
-		private void parseMQL(final String str, final String mqlbits) throws CMException
+		private void parseMQL(final String str, final String mqlbits) throws MQLException
 		{
 			this.mql=str;
 			final StringBuilder curr=new StringBuilder("");
@@ -3360,10 +3387,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							// we just got a name symbol, so go to state 1 and expect AS or FROM or ,
-							what.add(new WhatBit(curr.toString(),curr.toString()));
-							state=SelectMQLState.STATE_SELECT1;
-							curr.setLength(0);
+							if(((curr.charAt(0)!='\"')||(curr.charAt(curr.length()-1)=='\"'))
+							&&((curr.charAt(0)!='\'')||(curr.charAt(curr.length()-1)=='\'')))
+							{
+								// we just got a name symbol, so go to state 1 and expect AS or FROM or ,
+								what.add(new WhatBit(curr.toString(),curr.toString()));
+								state=SelectMQLState.STATE_SELECT1;
+								curr.setLength(0);
+							}
+							else
+								curr.append(c);
 						}
 					}
 					else
@@ -3371,11 +3404,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							what.add(new WhatBit(curr.toString(),curr.toString()));
-							curr.setLength(0);
+							if(((curr.charAt(0)!='\"')||(curr.charAt(curr.length()-1)=='\"'))
+							&&((curr.charAt(0)!='\'')||(curr.charAt(curr.length()-1)=='\'')))
+							{
+								what.add(new WhatBit(curr.toString(),curr.toString()));
+								curr.setLength(0);
+							}
+							else
+								curr.append(c);
 						}
 						else
-							throw new CMException("Unexpected , in Malformed mql: "+str);
+							throw new MQLException("Unexpected , in Malformed mql: "+str);
 					}
 					else
 						curr.append(c);
@@ -3399,7 +3438,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								state=SelectMQLState.STATE_AS0;
 							}
 							else
-								throw new CMException("Unexpected select string in Malformed mql: "+str);
+								throw new MQLException("Unexpected select string in Malformed mql: "+str);
 						}
 					}
 					else
@@ -3408,7 +3447,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(curr.length()==0)
 							state=SelectMQLState.STATE_SELECT0;
 						else
-							throw new CMException("Unexpected , in Malformed mql: "+str);
+							throw new MQLException("Unexpected , in Malformed mql: "+str);
 					}
 					else
 						curr.append(c);
@@ -3421,21 +3460,27 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							if(curr.toString().equals("FROM"))
-								throw new CMException("Unexpected FROM in Malformed mql: "+str);
-							else
-							if(curr.toString().equals("AS"))
-								throw new CMException("Unexpected AS in Malformed mql: "+str);
-							else
+							if(((curr.charAt(0)!='\"')||(curr.charAt(curr.length()-1)=='\"'))
+							&&((curr.charAt(0)!='\'')||(curr.charAt(curr.length()-1)=='\'')))
 							{
-								state=SelectMQLState.STATE_AS1; // expect from or , ONLY
-								what.get(what.size()-1).second = curr.toString();
-								curr.setLength(0);
+								if(curr.toString().equals("FROM"))
+									throw new MQLException("Unexpected FROM in Malformed mql: "+str);
+								else
+								if(curr.toString().equals("AS"))
+									throw new MQLException("Unexpected AS in Malformed mql: "+str);
+								else
+								{
+									state=SelectMQLState.STATE_AS1; // expect from or , ONLY
+									what.get(what.size()-1).second = curr.toString();
+									curr.setLength(0);
+								}
 							}
+							else
+								curr.append(c);
 						}
 						else
 						if(c==',')
-							throw new CMException("Unexpected , in Malformed mql: "+str);
+							throw new MQLException("Unexpected , in Malformed mql: "+str);
 					}
 					else
 						curr.append(c);
@@ -3453,7 +3498,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								state=SelectMQLState.STATE_FROM0;
 							}
 							else
-								throw new CMException("Unexpected name string in Malformed mql: "+str);
+								throw new MQLException("Unexpected name string in Malformed mql: "+str);
 						}
 					}
 					else
@@ -3462,7 +3507,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(curr.length()==0)
 							state=SelectMQLState.STATE_SELECT0;
 						else
-							throw new CMException("Unexpected , in Malformed mql: "+str);
+							throw new MQLException("Unexpected , in Malformed mql: "+str);
 					}
 					else
 						curr.append(c);
@@ -3474,14 +3519,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							if(curr.toString().equals("WHERE"))
-								throw new CMException("Unexpected WHERE in Malformed mql: "+str);
-							else
+							if(((curr.charAt(0)!='\"')||(curr.charAt(curr.length()-1)=='\"'))
+							&&((curr.charAt(0)!='\'')||(curr.charAt(curr.length()-1)=='\'')))
 							{
-								from=curr.toString();
-								curr.setLength(0);
-								state=SelectMQLState.STATE_EXPECTWHEREOREND; // now expect where
+								if(curr.toString().equals("WHERE"))
+									throw new MQLException("Unexpected WHERE in Malformed mql: "+str);
+								else
+								{
+									from=curr.toString();
+									curr.setLength(0);
+									state=SelectMQLState.STATE_EXPECTWHEREOREND; // now expect where
+								}
 							}
+							else
+								curr.append(c);
 						}
 					}
 					else
@@ -3490,7 +3541,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(curr.length()==0)
 							state=SelectMQLState.STATE_FROM1;
 						else
-							throw new CMException("Unexpected ( in Malformed mql: "+str);
+							throw new MQLException("Unexpected ( in Malformed mql: "+str);
 					}
 					else
 						curr.append(c);
@@ -3529,7 +3580,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							}
 							else
 							if(!curr.toString().equals("WHERE"))
-								throw new CMException("Eexpected WHERE in Malformed mql: "+str);
+								throw new MQLException("Eexpected WHERE in Malformed mql: "+str);
 							else
 							{
 								curr.setLength(0);
@@ -3548,21 +3599,27 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							wcomp=new WhereComp();
-							if((wheres.lhs!=null)
-							||(wheres.parent!=null))
+							if(((curr.charAt(0)!='\"')||(curr.charAt(curr.length()-1)=='\"'))
+							&&((curr.charAt(0)!='\'')||(curr.charAt(curr.length()-1)=='\'')))
 							{
-								final WhereClause newClause = new WhereClause();
-								newClause.prev=wheres;
-								wheres.next=newClause;
-								wheres=newClause;
+								wcomp=new WhereComp();
+								if((wheres.lhs!=null)
+								||(wheres.parent!=null))
+								{
+									final WhereClause newClause = new WhereClause();
+									newClause.prev=wheres;
+									wheres.next=newClause;
+									wheres=newClause;
+								}
+								wheres.lhs=wcomp;
+								wcomp.lhs = curr.toString();
+								curr.setLength(0);
+								if(!Character.isWhitespace(c))
+									curr.append(c);
+								state=SelectMQLState.STATE_WHERE1; // now expect comparator
 							}
-							wheres.lhs=wcomp;
-							wcomp.lhs = curr.toString();
-							curr.setLength(0);
-							if(!Character.isWhitespace(c))
+							else
 								curr.append(c);
-							state=SelectMQLState.STATE_WHERE1; // now expect comparator
 						}
 					}
 					else
@@ -3571,11 +3628,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(curr.length()==0)
 							state=SelectMQLState.STATE_WHEREEMBEDLEFT0;
 						else
-							throw new CMException("Unexpected ( in Malformed mql: "+str);
+							throw new MQLException("Unexpected ( in Malformed mql: "+str);
 					}
 					else
 					if(c==')')
-						throw new CMException("Unexpected ) in Malformed mql: "+str);
+						throw new MQLException("Unexpected ) in Malformed mql: "+str);
 					else
 						curr.append(c);
 					break;
@@ -3586,7 +3643,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()==0)
 						{
-
 							final WhereClause priorityClause = new WhereClause();
 							if((wheres.lhs!=null)
 							||(wheres.parent!=null)
@@ -3677,7 +3733,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								done=curr.length()>=2;
 							}
 							else
-								throw new CMException("Unexpected '"+c+"' in Malformed mql: "+str);
+								throw new MQLException("Unexpected '"+c+"' in Malformed mql: "+str);
 						}
 						else
 						if(!Character.isWhitespace(c))
@@ -3765,7 +3821,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								state=SelectMQLState.STATE_WHERE2; // now expect RHS
 							}
 							else
-								throw new CMException("Unexpected '"+fcurr+"' in Malformed mql: "+str);
+								throw new MQLException("Unexpected '"+fcurr+"' in Malformed mql: "+str);
 							if(saveC)
 								curr.append(c);
 						}
@@ -3778,22 +3834,28 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(curr.length()>0)
 						{
-							wcomp.rhs=curr.toString();
-							curr.setLength(0);
-							state=SelectMQLState.STATE_EXPECTCONNOREND;
+							if(((curr.charAt(0)!='\"')||(curr.charAt(curr.length()-1)=='\"'))
+							&&((curr.charAt(0)!='\'')||(curr.charAt(curr.length()-1)=='\'')))
+							{
+								wcomp.rhs=curr.toString();
+								curr.setLength(0);
+								state=SelectMQLState.STATE_EXPECTCONNOREND;
+							}
+							else
+								curr.append(c);
 						}
 					}
 					else
 					if(c==')')
 					{
 						if(curr.length()==0)
-							throw new CMException("Unexpected ): Malformed mql: "+str);
+							throw new MQLException("Unexpected ): Malformed mql: "+str);
 						wcomp.rhs=curr.toString();
 						curr.setLength(0);
 						while(wheres.prev!=null)
 							wheres=wheres.prev;
 						if(wheres.child==null)
-							throw new CMException("Unexpected ): Malformed mql: "+str);
+							throw new MQLException("Unexpected ): Malformed mql: "+str);
 						wheres=wheres.child;
 						state=SelectMQLState.STATE_EXPECTCONNOREND;
 					}
@@ -3801,7 +3863,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if(c==';')
 					{
 						if(curr.length()==0)
-							throw new CMException("Unexpected ; in Malformed mql: "+str);
+							throw new MQLException("Unexpected ; in Malformed mql: "+str);
 						else
 						{
 							wcomp.rhs=curr.toString();
@@ -3815,7 +3877,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(curr.length()==0)
 							state=SelectMQLState.STATE_WHEREEMBEDRIGHT0;
 						else
-							throw new CMException("Unexpected ( in Malformed mql: "+str);
+							throw new MQLException("Unexpected ( in Malformed mql: "+str);
 					}
 					else
 						curr.append(c);
@@ -3872,11 +3934,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 									i--;
 							}
 							else
-								throw new CMException("Unexpected '"+curr.toString()+"': Malformed mql: "+str);
+								throw new MQLException("Unexpected '"+curr.toString()+"': Malformed mql: "+str);
 						}
 						else
 						if(c=='(')
-							throw new CMException("Unexpected ): Malformed mql: "+str);
+							throw new MQLException("Unexpected ): Malformed mql: "+str);
 					}
 					else
 					if((c==')') && (curr.length()==0))
@@ -3884,7 +3946,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						while(wheres.prev!=null)
 							wheres=wheres.prev;
 						if(wheres.child==null)
-							throw new CMException("Unexpected ): Malformed mql: "+str);
+							throw new MQLException("Unexpected ): Malformed mql: "+str);
 						wheres=wheres.child;
 					}
 					else
@@ -3893,14 +3955,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				default:
 					if(!Character.isWhitespace(c))
-						throw new CMException("Unexpected '"+c+"': Malformed mql: "+str);
+						throw new MQLException("Unexpected '"+c+"': Malformed mql: "+str);
 					break;
 				}
 			}
 			if((state != SelectMQLState.STATE_EXPECTNOTHING)
 			&&(state != SelectMQLState.STATE_EXPECTWHEREOREND)
 			&&(state != SelectMQLState.STATE_EXPECTCONNOREND))
-				throw new CMException("Unpected end of clause in state "+state.toString()+" in mql: "+str);
+				throw new MQLException("Unpected end of clause in state "+state.toString()+" in mql: "+str);
 		}
 	}
 
@@ -3926,7 +3988,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 	}
 
-	protected List<Object> parseMQLCMFile(final CMFile F, final String mql) throws CMException
+	protected List<Object> parseMQLCMFile(final CMFile F, final String mql) throws MQLException
 	{
 		final List<Object> from=new LinkedList<Object>();
 		String str=F.text().toString().trim();
@@ -3945,7 +4007,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final List<MOB> mobList=new LinkedList<MOB>();
 			final String err = CMLib.coffeeMaker().addMOBsFromXML(str, mobList, null);
 			if((err!=null)&&(err.length()>0))
-				throw new CMException("CMFile "+F.getAbsolutePath()+" failed mob parsing '"+err+"' in "+mql);
+				throw new MQLException("CMFile "+F.getAbsolutePath()+" failed mob parsing '"+err+"' in "+mql);
 			for(final MOB M : mobList)
 			{
 				CMLib.threads().deleteAllTicks(M);
@@ -3960,7 +4022,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final List<Item> itemList=new LinkedList<Item>();
 			final String err = CMLib.coffeeMaker().addItemsFromXML(str, itemList, null);
 			if((err!=null)&&(err.length()>0))
-				throw new CMException("CMFile "+F.getAbsolutePath()+" failed item parsing '"+err+"' in "+mql);
+				throw new MQLException("CMFile "+F.getAbsolutePath()+" failed item parsing '"+err+"' in "+mql);
 			for(final Item I : itemList)
 			{
 				CMLib.threads().deleteAllTicks(I);
@@ -3976,7 +4038,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final List<List<XMLLibrary.XMLTag>> areas=new ArrayList<List<XMLLibrary.XMLTag>>();
 			String err=CMLib.coffeeMaker().fillAreasVectorFromXML(str,areas,null,null);
 			if((err!=null)&&(err.length()>0))
-				throw new CMException("CMFile "+F.getAbsolutePath()+" failed area parsing '"+err+"' in "+mql);
+				throw new MQLException("CMFile "+F.getAbsolutePath()+" failed area parsing '"+err+"' in "+mql);
 			for(final List<XMLLibrary.XMLTag> area : areas)
 				err=CMLib.coffeeMaker().unpackAreaFromXML(area, null, null, true, false);
 			for(final Area A : areaList)
@@ -3996,7 +4058,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final List<XMLLibrary.XMLTag> tags=CMLib.xml().parseAllXML(str);
 			final String err=CMLib.coffeeMaker().unpackRoomFromXML(dumbArea, tags, true, false);
 			if((err!=null)&&(err.length()>0)||(!dumbArea.getProperMap().hasMoreElements()))
-				throw new CMException("CMFile "+F.getAbsolutePath()+" failed room parsing '"+err+"' in "+mql);
+				throw new MQLException("CMFile "+F.getAbsolutePath()+" failed room parsing '"+err+"' in "+mql);
 			roomList.add(dumbArea.getProperMap().nextElement());
 			for(final Room R : roomList)
 			{
@@ -4008,17 +4070,19 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			from.addAll(roomList);
 		}
 		else
-			throw new CMException("CMFile "+F.getAbsolutePath()+" not selectable from in "+mql);
+			throw new MQLException("CMFile "+F.getAbsolutePath()+" not selectable from in "+mql);
 		return from;
 	}
 
-	protected List<Object> parseMQLFrom(final String fromClause, final String mql, final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected List<Object> parseMQLFrom(final String fromClause, final String mql, final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		final List<Object> from=new LinkedList<Object>();
-		// clauses:
-		// imported physicalagents of all sorts
-		// world map
-		for(final String f : fromClause.split("\\"))
+		if(fromClause.startsWith("SELECT:"))
+		{
+			from.addAll(doMQLSelectObjs(E, ignoreStats, defPrefix, fromClause, piece, defined));
+			return from;
+		}
+		for(final String f : fromClause.split("\\\\"))
 		{
 			if(f.startsWith("/")
 			|| f.startsWith("::")
@@ -4026,7 +4090,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final CMFile F=new CMFile(f,null);
 				if(!F.exists())
-					throw new CMException("CMFile "+f+" not found in "+mql);
+					throw new MQLException("CMFile "+f+" not found in "+mql);
 				if(F.isDirectory())
 				{
 					for(final CMFile F2 : F.listFiles())
@@ -4057,7 +4121,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						else
 							A=null;
 						if(A==null)
-							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
 						else
 						if(!from.contains(A))
 							from.add(A);
@@ -4069,7 +4133,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final Area A=(E instanceof Environmental) ? CMLib.map().areaLocation(E) : null;
 				if(A==null)
-					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+					throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 				else
 				if(!from.contains(A))
 					from.add(A);
@@ -4098,7 +4162,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						else
 							R=null;
 						if(R==null)
-							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
 						else
 						if(!from.contains(R))
 							from.add(R);
@@ -4110,7 +4174,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final Room R=(E instanceof Environmental) ? CMLib.map().roomLocation((Environmental)E) : null;
 				if(R==null)
-					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+					throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 				else
 				if(!from.contains(R))
 					from.add(R);
@@ -4149,7 +4213,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							else
 								R=null;
 							if(R==null)
-								throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+								throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
 							else
 							{
 								for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
@@ -4168,7 +4232,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final Environmental oE=(E instanceof MOB) ? (Environmental)E : null;
 				if(oE==null)
-					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+					throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 				else
 				if(!from.contains(oE))
 					from.add(oE);
@@ -4199,7 +4263,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							else
 								R=null;
 							if(R==null)
-								throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+								throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
 							else
 								from.addAll(new XVector<Item>(R.itemsRecursive()));
 						}
@@ -4211,7 +4275,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final Environmental oE=(E instanceof Item) ? (Environmental)E : null;
 				if(oE==null)
-					throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+					throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 				else
 				if(!from.contains(oE))
 					from.add(oE);
@@ -4223,7 +4287,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					final Environmental oE=(E instanceof MOB) ? (Environmental)E : null;
 					if(oE==null)
-						throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+						throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 					else
 					{
 						for(final Enumeration<Item> i=((MOB)oE).items();i.hasMoreElements();)
@@ -4292,7 +4356,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								from.add(o);
 						}
 						else
-							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
 					}
 				}
 			}
@@ -4303,7 +4367,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					final Environmental oE=(E instanceof Item) ? (Environmental)E : null;
 					if(oE==null)
-						throw new CMException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+						throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 					else
 					if(((Item)E).owner()!=null)
 						from.add(((Item)E).owner());
@@ -4368,7 +4432,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								from.add(o);
 						}
 						else
-							throw new CMException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
 					}
 				}
 			}
@@ -4376,7 +4440,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final Object asDefined = defined.get(f);
 				if(asDefined == null)
-					throw new CMException("Unknown from clause selector '"+f+"' in "+mql);
+					throw new MQLException("Unknown from clause selector '"+f+"' in "+mql);
 				if(asDefined instanceof List)
 					from.addAll((from));
 				else
@@ -4389,7 +4453,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	@SuppressWarnings("rawtypes")
 	protected Object getSimpleMQLValue(final String valueName, final Object from)
 	{
-		if(valueName.equals("."))
+		if(valueName.equals(".")||valueName.equals("*"))
 			return from;
 		if(from instanceof Map)
 			return ((Map)from).get(valueName);
@@ -4416,114 +4480,157 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	protected Object getFinalMQLValue(final String strpath, final List<Object> allFrom, final Object from,
-			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		Object finalO=null;
-		for(final String str : strpath.split("\\"))
+		try
 		{
-			if(CMath.isNumber(str.trim()) || (str.trim().length()==0))
-				finalO=str.trim();
-			else
-			if(str.startsWith("\"")&&(str.endsWith("\""))&&(str.length()>1))
-				finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\\"","\""), piece, defined);
-			else
-			if(str.startsWith("'")&&(str.endsWith("'"))&&(str.length()>1))
-				finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\'","'"), piece, defined);
-			else
-			if(str.startsWith("SELECT:"))
-				finalO=doSubSelectObjs(E,ignoreStats,defPrefix,str,piece,defined);
-			else
-			if(str.equals("COUNT"))
+			int index=0;
+			final String[] strs=CMStrings.replaceAll(strpath,"\\\\","\\").split("\\\\");
+			for(final String str : strs)
 			{
-				if(finalO == null)
-					finalO=""+allFrom.size();
-				else
-				if(finalO instanceof List)
+				index++;
+				if(str.equals("*")||str.equals("."))
 				{
-					@SuppressWarnings("rawtypes")
-					final List l=(List)finalO;
-					finalO=""+l.size();
+					if(finalO==null)
+						finalO=from;
 				}
 				else
-					finalO="1";
-			}
-			else
-			if(str.startsWith("$"))
-			{
-				Object val = defined.get(str.substring(1));
-				if(val instanceof String)
-					finalO=val;
+				if(CMath.isNumber(str.trim()) || (str.trim().length()==0))
+					finalO=str.trim();
 				else
-				if(val instanceof XMLTag)
+				if(str.startsWith("\"")&&(str.endsWith("\""))&&(str.length()>1))
+					finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\\"","\""), piece, defined);
+				else
+				if(str.startsWith("'")&&(str.endsWith("'"))&&(str.length()>1))
+					finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\'","'"), piece, defined);
+				else
+				if(str.startsWith("`")&&(str.endsWith("`"))&&(str.length()>1))
+					finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\`","`"), piece, defined);
+				else
+				if(str.startsWith("SELECT:"))
+					finalO=doMQLSelectObjs(E,ignoreStats,defPrefix,str,piece,defined);
+				else
+				if(str.startsWith("COUNT"))
 				{
-					final XMLTag tag=(XMLTag)val;
-					if(tag.tag().equalsIgnoreCase("STRING"))
-						finalO=findString(E,ignoreStats,defPrefix,"STRING",(XMLTag)val,defined);
+					if(finalO==null)
+						throw new MQLException("Can not count instances of null in '"+strpath+"'");
 					else
+					if(finalO instanceof List)
 					{
-						final Object o =findObject(E,ignoreStats,defPrefix,"OBJECT",tag,defined);
-						if(o instanceof Tickable)
-							CMLib.threads().deleteAllTicks((Tickable)o);
-						if(o instanceof List)
-						{
-							@SuppressWarnings("rawtypes")
-							final List l=(List)o;
-							for(final Object o2 : l)
-							{
-								if(o2 instanceof Tickable)
-									CMLib.threads().deleteAllTicks((Tickable)o2);
-							}
-						}
-						finalO=o;
+						@SuppressWarnings("rawtypes")
+						final List l=(List)finalO;
+						finalO=""+l.size();
 					}
-				}
-				if((val == null)&&(defPrefix!=null)&&(defPrefix.length()>0)&&(E!=null))
-				{
-					String preValue=str;
-					if(preValue.toUpperCase().startsWith(defPrefix.toUpperCase()))
+					else
+					if((finalO instanceof String)
+					||(finalO instanceof Environmental))
 					{
-						preValue=preValue.toUpperCase().substring(defPrefix.length());
-						if((E.isStat(preValue))
-						&&((ignoreStats==null)||(!ignoreStats.contains(preValue.toUpperCase()))))
+						if(index>1)
 						{
-							val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,piece,defined, false);
-							XMLTag statPiece=piece;
-							while((val == null)
-							&&(statPiece.parent()!=null)
-							&&(!(defPrefix.startsWith(statPiece.tag())&&(!defPrefix.startsWith(statPiece.parent().tag())))))
+							final StringBuilder whatBuilder=new StringBuilder("");
+							for(int i=0;i<index-1;i++)
+								whatBuilder.append(strs[i]).append("\\");
+							final String newWhat=whatBuilder.substring(0,whatBuilder.length()-1);
+							int count=0;
+							for(final Object o : allFrom)
 							{
-								statPiece=statPiece.parent();
-								val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,statPiece,defined, false);
+								if(o==from)
+									count++;
+								else
+								if(finalO.equals(getFinalMQLValue(newWhat, allFrom, o, E, ignoreStats, defPrefix, piece, defined)))
+									count++;
 							}
-							if((ignoreStats!=null)&&(val!=null))
-								ignoreStats.add(preValue.toUpperCase());
+							finalO=""+count;
 						}
+						else
+							finalO=""+allFrom.size();
 					}
+					else
+						finalO="1";
 				}
-				if(val == null)
-					throw new CMException("Unknown variable '$"+str+"' in str '"+str+"'",new CMException("$"+str));
-				finalO=val;
-			}
-			else
-			{
-				final Object newObj;
-				if(finalO == null)
-					newObj=getSimpleMQLValue(str,from);
 				else
-					newObj=getSimpleMQLValue(str,finalO);
-				if(newObj == null)
-					throw new CMException("Unknown variable '$"+str+"' in str '"+str+"'",new CMException("$"+str));
-				finalO=newObj;
+				if(str.startsWith("$"))
+				{
+					Object val = defined.get(str.substring(1));
+					if(val instanceof String)
+						finalO=val;
+					else
+					if(val instanceof XMLTag)
+					{
+						final XMLTag tag=(XMLTag)val;
+						if(tag.tag().equalsIgnoreCase("STRING"))
+							finalO=findString(E,ignoreStats,defPrefix,"STRING",(XMLTag)val,defined);
+						else
+						{
+							final Object o =findObject(E,ignoreStats,defPrefix,"OBJECT",tag,defined);
+							if(o instanceof Tickable)
+								CMLib.threads().deleteAllTicks((Tickable)o);
+							if(o instanceof List)
+							{
+								@SuppressWarnings("rawtypes")
+								final List l=(List)o;
+								for(final Object o2 : l)
+								{
+									if(o2 instanceof Tickable)
+										CMLib.threads().deleteAllTicks((Tickable)o2);
+								}
+							}
+							finalO=o;
+						}
+					}
+					if((val == null)&&(defPrefix!=null)&&(defPrefix.length()>0)&&(E!=null))
+					{
+						String preValue=str;
+						if(preValue.toUpperCase().startsWith(defPrefix.toUpperCase()))
+						{
+							preValue=preValue.toUpperCase().substring(defPrefix.length());
+							if((E.isStat(preValue))
+							&&((ignoreStats==null)||(!ignoreStats.contains(preValue.toUpperCase()))))
+							{
+								val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,piece,defined, false);
+								XMLTag statPiece=piece;
+								while((val == null)
+								&&(statPiece.parent()!=null)
+								&&(!(defPrefix.startsWith(statPiece.tag())&&(!defPrefix.startsWith(statPiece.parent().tag())))))
+								{
+									statPiece=statPiece.parent();
+									val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,statPiece,defined, false);
+								}
+								if((ignoreStats!=null)&&(val!=null))
+									ignoreStats.add(preValue.toUpperCase());
+							}
+						}
+					}
+					if(val == null)
+						throw new MQLException("Unknown variable '$"+str+"' in str '"+str+"'",new CMException("$"+str));
+					finalO=val;
+				}
+				else
+				{
+					final Object fromO=(finalO==null)?from:finalO;
+					final Object newObj=getSimpleMQLValue(str,fromO);
+					if(newObj == null)
+						throw new MQLException("Unknown variable '"+str+"' on '"+fromO+"'",new CMException("$"+str));
+					finalO=newObj;
+				}
 			}
+		}
+		catch(final CMException e)
+		{
+			if(e instanceof MQLException)
+				throw (MQLException)e;
+			else
+				throw new MQLException("MQL failure on $"+strpath,e);
 		}
 		return finalO;
 	}
 
 	protected boolean doMQLComparison(final Object lhso, MQLClause.WhereComparator comp, final Object rhso, final List<Object> allFrom, final Object from,
-			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
-		final String lhs=lhso.toString();
-		final String rhs=rhso.toString();
+		final String lhstr=(lhso==null)?"":lhso.toString();
+		final String rhstr=(rhso==null)?"":rhso.toString();
 		if(lhso instanceof List)
 		{
 			if(rhso instanceof List)
@@ -4600,7 +4707,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 			}
 			else
-				throw new CMException("Can not compare a list to an object.");
+				throw new MQLException("Can not compare a list to an object.");
 		}
 		if((comp != MQLClause.WhereComparator.IN)
 		&&(comp != MQLClause.WhereComparator.NOTIN))
@@ -4644,43 +4751,50 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		case EQ:
 		{
 			final boolean eq=(comp==MQLClause.WhereComparator.EQ);
-			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
-				return (CMath.s_double(lhs) == CMath.s_double(rhs)) == eq;
-			if(lhs instanceof String)
+			if(CMath.isNumber(lhstr) && CMath.isNumber(rhstr))
+				return (CMath.s_double(lhstr) == CMath.s_double(rhstr)) == eq;
+			if(lhso instanceof String)
 			{
-				if(rhs instanceof String)
-					return lhs.equalsIgnoreCase(rhs) == eq;
-				//TODO:
+				if(rhso instanceof String)
+					return lhstr.equalsIgnoreCase(rhstr) == eq;
+				if(rhso instanceof Environmental)
+					return ((Environmental)rhso).Name().equalsIgnoreCase(lhstr) == eq;
+				else
+					return lhstr.equalsIgnoreCase(rhstr) == eq;
 			}
 			else
-			if(rhs instanceof String)
+			if(rhso instanceof String)
 			{
-				//TODO:
+				if(lhso instanceof Environmental)
+					return ((Environmental)lhso).Name().equalsIgnoreCase(rhstr) == eq;
+				else
+					return rhstr.equalsIgnoreCase(lhstr) == eq;
 			}
 			if(lhso instanceof Environmental)
 			{
 				if(rhso instanceof Environmental)
 					return ((Environmental)lhso).sameAs((Environmental)rhso) == eq;
-				//TODO:
+				throw new MQLException("'"+rhstr+"' can't be compared to '"+lhstr+"'");
 			}
 			else
 			if(rhso instanceof Environmental)
-			{
-				//TODO:
-			}
-			return (lhso.equals(rhso)) == eq;
+				throw new MQLException("'"+rhstr+"' can't be compared to '"+lhstr+"'");
+			if((lhso != null)&&(rhso != null))
+				return (rhso.equals(rhso)) == eq;
+			else
+				return (lhso == rhso) == eq;
 		}
 		case GT:
-			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
-				return CMath.s_double(lhs) > CMath.s_double(rhs);
-			if((lhs instanceof String)||(rhs instanceof String))
-				return lhs.compareToIgnoreCase(rhs) > 0;
+			if(CMath.isNumber(lhstr) && CMath.isNumber(rhstr))
+				return CMath.s_double(lhstr) > CMath.s_double(rhstr);
+			if((lhstr instanceof String)||(rhstr instanceof String))
+				return lhstr.compareToIgnoreCase(rhstr) > 0;
 			return false; // objects can't be > than each other
 		case GTEQ:
-			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
-				return CMath.s_double(lhs) >= CMath.s_double(rhs);
-			if((lhs instanceof String)||(rhs instanceof String))
-				return lhs.compareToIgnoreCase(rhs) >= 0;
+			if(CMath.isNumber(lhstr) && CMath.isNumber(rhstr))
+				return CMath.s_double(lhstr) >= CMath.s_double(rhstr);
+			if((lhstr instanceof String)||(rhstr instanceof String))
+				return lhstr.compareToIgnoreCase(rhstr) >= 0;
 			return doMQLComparison(lhso, MQLClause.WhereComparator.EQ, rhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
 		case NOTIN:
 		case IN:
@@ -4698,15 +4812,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(rhso instanceof String)
 			{
 				if(lhso instanceof String)
-					return (rhs.toUpperCase().indexOf(lhs.toUpperCase()) >= 0) == (comp==MQLClause.WhereComparator.IN);
+					return (rhstr.toUpperCase().indexOf(lhstr.toUpperCase()) >= 0) == (comp==MQLClause.WhereComparator.IN);
 				else
-					throw new CMException("'"+lhso.toString()+"' can't be in a string");
+					throw new MQLException("'"+lhstr+"' can't be in a string");
 			}
 			if(rhso instanceof Map)
 			{
 				@SuppressWarnings("rawtypes")
 				final Map m=(Map)rhso;
-				if(m.containsKey(lhs.toUpperCase()))
+				if(m.containsKey(lhstr.toUpperCase()))
 					return (comp==MQLClause.WhereComparator.IN);
 				for(final Object key : m.keySet())
 				{
@@ -4719,14 +4833,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				return doMQLComparison(lhso, MQLClause.WhereComparator.EQ, rhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined)
 					== (comp==(MQLClause.WhereComparator.IN));
 			}
-			throw new CMException("'"+rhso.toString()+"' can't contain anything");
+			throw new MQLException("'"+rhstr+"' can't contain anything");
 		case NOTLIKE:
 		case LIKE:
 			if(!(rhso instanceof String))
-				throw new CMException("Nothing can ever be LIKE '"+rhso.toString()+"'");
+				throw new MQLException("Nothing can ever be LIKE '"+rhstr+"'");
 			if(lhso instanceof Environmental)
 			{
-				return CMLib.masking().maskCheck(rhs, (Environmental)lhso, true)
+				return CMLib.masking().maskCheck(rhstr, (Environmental)lhso, true)
 						== (comp==MQLClause.WhereComparator.LIKE);
 			}
 			if(lhso instanceof Map)
@@ -4735,14 +4849,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final Map m=(Map)lhso;
 				Object o=m.get("CLASS");
 				if(!(o instanceof String))
-					throw new CMException("'"+lhso.toString()+"' can ever be LIKE anything.");
+					throw new MQLException("'"+lhstr+"' can ever be LIKE anything.");
 				o=CMClass.getObjectOrPrototype((String)o);
 				if(o == null)
-					throw new CMException("'"+lhso.toString()+"' can ever be LIKE anything but nothing.");
+					throw new MQLException("'"+lhstr+"' can ever be LIKE anything but nothing.");
 				if(!(o instanceof Modifiable))
-					throw new CMException("'"+lhso.toString()+"' can ever be LIKE anything modifiable.");
+					throw new MQLException("'"+lhstr+"' can ever be LIKE anything modifiable.");
 				if(!(o instanceof Environmental))
-					throw new CMException("'"+lhso.toString()+"' can ever be LIKE anything envronmental.");
+					throw new MQLException("'"+lhstr+"' can ever be LIKE anything envronmental.");
 				final Modifiable mo=(Modifiable)((Modifiable)o).newInstance();
 				for(final Object key : m.keySet())
 				{
@@ -4752,26 +4866,26 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				if(mo instanceof Environmental)
 				{
-					final boolean rv = CMLib.masking().maskCheck(rhs, (Environmental)lhso, true)
+					final boolean rv = CMLib.masking().maskCheck(rhstr, (Environmental)lhso, true)
 							== (comp==MQLClause.WhereComparator.LIKE);
 					((Environmental)mo).destroy();
 					return rv;
 				}
 			}
 			else
-				throw new CMException("'"+lhso.toString()+"' can ever be LIKE anything at all.");
+				throw new MQLException("'"+lhstr+"' can ever be LIKE anything at all.");
 			break;
 		case LT:
-			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
-				return CMath.s_double(lhs) < CMath.s_double(rhs);
-			if((lhs instanceof String)||(rhs instanceof String))
-				return lhs.compareToIgnoreCase(rhs) < 0;
+			if(CMath.isNumber(lhstr) && CMath.isNumber(rhstr))
+				return CMath.s_double(lhstr) < CMath.s_double(rhstr);
+			if((lhstr instanceof String)||(rhstr instanceof String))
+				return lhstr.compareToIgnoreCase(rhstr) < 0;
 			return false; // objects can't be < than each other
 		case LTEQ:
-			if(CMath.isNumber(lhs) && CMath.isNumber(rhs))
-				return CMath.s_double(lhs) <= CMath.s_double(rhs);
-			if((lhs instanceof String)||(rhs instanceof String))
-				return lhs.compareToIgnoreCase(rhs) <= 0;
+			if(CMath.isNumber(lhstr) && CMath.isNumber(rhstr))
+				return CMath.s_double(lhstr) <= CMath.s_double(rhstr);
+			if((lhstr instanceof String)||(rhstr instanceof String))
+				return lhstr.compareToIgnoreCase(rhstr) <= 0;
 			return doMQLComparison(lhso, MQLClause.WhereComparator.EQ, rhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
 		default:
 			break;
@@ -4781,7 +4895,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	protected boolean doMQLComparison(final MQLClause.WhereComp comp, final List<Object> allFrom, final Object from,
-			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		final Object lhso=getFinalMQLValue(comp.lhs, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
 		final Object rhso=getFinalMQLValue(comp.rhs, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
@@ -4789,7 +4903,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	protected boolean doMQLWhereClauseFilter(final MQLClause.WhereClause whereClause, final List<Object> allFrom, final Object from,
-			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		MQLClause.WhereConnector lastConn=null;
 		MQLClause.WhereClause clause=whereClause;
@@ -4800,7 +4914,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(clause.parent != null)
 			{
 				if(clause.lhs != null)
-					throw new CMException("Parent & lhs error ");
+					throw new MQLException("Parent & lhs error ");
 				thisResult=doMQLWhereClauseFilter(clause.parent,allFrom,from,E,ignoreStats,defPrefix,piece,defined);
 			}
 			else
@@ -4839,26 +4953,118 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return result;
 	}
 
-	protected List<Map<String,Object>> doSubObjSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final MQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected List<Map<String,Object>> doSubObjSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final MQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		final List<Map<String,Object>> results=new ArrayList<Map<String,Object>>();
 		// first estalish the from object
 		if(clause.from.length()==0)
-			throw new CMException("No FROM clause in "+clause.mql);
+			throw new MQLException("No FROM clause in "+clause.mql);
 		// froms can have any environmental, or tags
 		final List<Object> froms=this.parseMQLFrom(clause.from, clause.mql, E, ignoreStats, defPrefix, piece, defined);
+		final MQLClause.AggregatorFunctions[] aggregates=new MQLClause.AggregatorFunctions[clause.what.size()];
+		boolean aggregate=false;
+		for(int i=0;i<clause.what.size();i++)
+		{
+			final String w=clause.what.get(i).what();
+			final int x=w.indexOf('\\');
+			if(x<0)
+				continue;
+			final MQLClause.AggregatorFunctions aggr=(MQLClause.AggregatorFunctions)CMath.s_valueOf(MQLClause.AggregatorFunctions.class, w.substring(0,x));
+			if(aggr != null)
+			{
+				clause.what.get(i).first=w.substring(x+1);
+				aggregates[i]=aggr;
+				aggregate=true;
+			}
+		}
 		for(final Object o : froms)
 		{
-			if(this.doMQLWhereClauseFilter(clause.wheres, froms, o,E,ignoreStats,defPrefix,piece,defined))
+			if(doMQLWhereClauseFilter(clause.wheres, froms, o,E,ignoreStats,defPrefix,piece,defined))
 			{
-				//TODO: finally, select the WHATS
-				//  .. and add to results
+				final Map<String,Object> m=new TreeMap<String,Object>();
+				for(final MQLClause.WhatBit bit : clause.what)
+				{
+					final Object o1 = this.getFinalMQLValue(bit.what(), froms, o, E, ignoreStats, defPrefix, piece, defined);
+					if(o1 instanceof Map)
+					{
+						@SuppressWarnings("unchecked")
+						final Map<String,Object> m2=(Map<String, Object>)o1;
+						m.putAll(m2);
+					}
+					else
+						m.put(bit.as(), o1);
+				}
+				results.add(m);
 			}
+		}
+		if(aggregate)
+		{
+
+			final List<Map<String,Object>> nonresults=new ArrayList<Map<String,Object>>(results.size());
+			nonresults.addAll(results);
+			results.clear();
+			final Map<String,Object> oneRow=new TreeMap<String,Object>();
+			results.add(oneRow);
+			for(int i=0;i<aggregates.length;i++)
+			{
+				if(aggregates[i] == null)
+					continue;
+
+				final String whatName=clause.what.get(i).as();
+				switch(aggregates[i])
+				{
+				case COUNT:
+					oneRow.put(whatName, ""+nonresults.size());
+					break;
+				case UNIQUE:
+				{
+					final TreeSet<Object> done=new TreeSet<Object>(objComparator);
+					for(final Map<String,Object> r : nonresults)
+					{
+						if(r.containsKey(whatName)
+						&&(r.get(whatName)!=null)
+						&&(!done.contains(r.get(whatName))))
+						{
+							done.add(r.get(whatName));
+							results.add(r);
+						}
+					}
+					break;
+				}
+				case MEDIAN:
+				{
+					final List<Object> allValues=new ArrayList<Object>(nonresults.size());
+					for(final Map<String,Object> r : nonresults)
+					{
+						if(r.containsKey(whatName)&&(r.get(whatName)!=null))
+							allValues.add(r.get(whatName));
+					}
+					Collections.sort(allValues,objComparator);
+					if(allValues.size()>0)
+						oneRow.put(clause.what.get(i).as(), allValues.get((int)Math.round(Math.floor(CMath.div(allValues.size(), 2)))));
+					break;
+				}
+				case MEAN:
+				{
+					double totalValue=0.0;
+					for(final Map<String,Object> r : nonresults)
+					{
+						if(r.containsKey(whatName)&&(r.get(whatName)!=null))
+							totalValue += CMath.s_double(r.get(whatName).toString());
+					}
+					if(nonresults.size()>0)
+						oneRow.put(clause.what.get(i).as(), ""+(totalValue/nonresults.size()));
+					break;
+				}
+				}
+			}
+			if(oneRow.size()==0)
+				results.remove(oneRow);
 		}
 		return results;
 	}
 
-	protected List<Map<String,String>> doSubSelectStr(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final MQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected List<Map<String,String>> doSubSelectStr(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final MQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		final List<Map<String,String>> results=new ArrayList<Map<String,String>>();
 		final List<Map<String, Object>> objs=this.doSubObjSelect(E, ignoreStats, defPrefix, clause, piece, defined);
@@ -4872,32 +5078,31 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return results;
 	}
 
-
-	protected List<Map<String,String>> doSubSelectStr(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected List<Map<String,String>> doMQLSelectStrs(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		final int x=str.indexOf(':');
 		if(x<0)
-			throw new CMException("Malformed mql: "+str);
+			throw new MQLException("Malformed mql: "+str);
 		final String mqlbits=str.substring(x+1).toUpperCase();
 		final MQLClause clause = new MQLClause();
 		clause.parseMQL(str, mqlbits);
 		return this.doSubSelectStr(E, ignoreStats, defPrefix, clause, piece, defined);
 	}
 
-	protected List<Map<String,Object>> doSubSelectObjs(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected List<Map<String,Object>> doMQLSelectObjs(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		final int x=str.indexOf(':');
 		if(x<0)
-			throw new CMException("Malformed mql: "+str);
+			throw new MQLException("Malformed mql: "+str);
 		final String mqlbits=str.substring(x+1).toUpperCase();
 		final MQLClause clause = new MQLClause();
 		clause.parseMQL(str, mqlbits);
 		return this.doSubObjSelect(E, ignoreStats, defPrefix, clause, piece, defined);
 	}
 
-	protected String doSelectString(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
+	protected String doMQLSelectString(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
-		final List<Map<String,String>> res=doSubSelectStr(E,ignoreStats,defPrefix,str,piece,defined);
+		final List<Map<String,String>> res=doMQLSelectStrs(E,ignoreStats,defPrefix,str,piece,defined);
 		final StringBuilder finalStr = new StringBuilder("");
 		for(final Map<String,String> map : res)
 		{
@@ -4905,6 +5110,40 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				finalStr.append(map.get(key)).append(" ");
 		}
 		return finalStr.toString().trim();
+	}
+
+	@Override
+	public String doMQLSelectString(final Modifiable E, final String mql)
+	{
+		final Map<String,Object> defined=new TreeMap<String,Object>();
+		final XMLTag piece=CMLib.xml().createNewTag("tag", "value");
+		try
+		{
+			return doMQLSelectString(E,null,null,mql,piece,defined);
+		}
+		catch(final Exception e)
+		{
+			final ByteArrayOutputStream bout=new ByteArrayOutputStream();
+			final PrintStream pw=new PrintStream(bout);
+			e.printStackTrace(pw);
+			pw.flush();
+			return e.getMessage()+"\n\r"+bout.toString();
+		}
+	}
+
+	@Override
+	public List<Map<String,Object>> doMQLSelectObjects(final Modifiable E, final String mql) throws MQLException
+	{
+		final Map<String,Object> defined=new TreeMap<String,Object>();
+		final XMLTag piece=CMLib.xml().createNewTag("tag", "value");
+		try
+		{
+			return doMQLSelectObjs(E,null,null,mql,piece,defined);
+		}
+		catch(final PostProcessException e)
+		{
+			throw new MQLException("Cannot post-process MQL.", e);
+		}
 	}
 
 	protected String strFilter(Modifiable E, final List<String> ignoreStats, final String defPrefix, String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
@@ -4931,7 +5170,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			else
 			if(V.var.toUpperCase().startsWith("SELECT:"))
 			{
-				val=doSelectString(E,ignoreStats,defPrefix,V.var,piece, defined);
+				val=doMQLSelectString(E,ignoreStats,defPrefix,V.var,piece, defined);
 			}
 			else
 			if(V.var.toUpperCase().startsWith("STAT:") && (E!=null))

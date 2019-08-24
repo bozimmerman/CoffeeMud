@@ -1,51 +1,54 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
-  <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  
-  <title>Scripting in CoffeeMud 5.9</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Scripting in CoffeeMud 5.9</title>
 
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+<!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog -->
+</head>
 <body>
 <center>
 <table style="width: 90%;" border="1" cellpadding="10" cellspacing="0">
-  <tbody>
-    <tr>
-      <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
-      <h1>Random Generation in CoffeeMud 5.9</h1>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="top" width="20%">
-      <ul>
-        <li><a href="#introduction">Introduction to
+<tbody>
+<tr>
+<td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
+<h1>Random Generation in CoffeeMud 5.9</h1>
+</td>
+</tr>
+<tr>
+<td align="left" valign="top" width="20%">
+<ul>
+<li><a href="#introduction">Introduction to
 Random Generation</a></li>
-        <li><a href="#structure">Overview of XML Tags</a></li>
-        <li><a href="RandomAreas.html#using">Using
+<li><a href="#structure">Overview of XML Tags</a></li>
+<li><a href="RandomAreas.html#using">Using
 the Random Generator</a></li>
-        <li> <a href="#glossary">Glossary of XML
+<li> <a href="#glossary">Glossary of XML
 Tags</a>
-          <ul>
-            <li><a href="#areatag">Area</a></li>
-            <li><a href="#roomtag">Room</a></li>
-            <li><a href="#mobtag">Mob</a></li>
-            <li><a href="#itemtag">Item</a></li>
-            <li><a href="#affecttag">Affect</a></li>
-            <li><a href="#abilitytag">Ability</a></li>
-            <li><a href="#culturalability">Culturalability</a></li>
-            <li><a href="#behaviortag">Behavior</a></li>
-            <li><a href="#contenttag">Content</a></li>
-            <li><a href="exittag">Exit</a></li>
-            <li><a href="#racetag">Race</a></li>
-            <li><a href="#factiontag">Faction</a><span style="text-decoration: underline;"><br />
-              </span></li>
-          </ul>
-        </li>
-      </ul>
-      </td>
-      <td style="text-align: left;">
-      <p class="center"><img src="images/mug.jpg" alt="coffeemud logo" /></p>
-      <h2><a name="introduction">Introduction to
+<ul>
+<li><a href="#areatag">Area</a></li>
+<li><a href="#roomtag">Room</a></li>
+<li><a href="#mobtag">Mob</a></li>
+<li><a href="#itemtag">Item</a></li>
+<li><a href="#affecttag">Affect</a></li>
+<li><a href="#abilitytag">Ability</a></li>
+<li><a href="#culturalability">Culturalability</a></li>
+<li><a href="#behaviortag">Behavior</a></li>
+<li><a href="#contenttag">Content</a></li>
+<li><a href="exittag">Exit</a></li>
+<li><a href="#racetag">Race</a></li>
+<li><a href="#factiontag">Faction</a><span style="text-decoration: underline;"><br />
+</span></li>
+</ul>
+</li>
+<li> <a href="#mql">Notes on MQL</a>
+</li>
+</ul>
+</td>
+<td style="text-align: left;">
+<p class="center"><img src="images/mug.jpg" alt="coffeemud logo" /></p>
+<h2><a name="introduction">Introduction to
 Random Generation</a></h2>
-      <p>Random generation in the realm of mud areas, rooms,
+<p>Random generation in the realm of mud areas, rooms,
 items, mobs, and so forth is a strange proposition. &nbsp;In the
 end, it always boils down to selecting among known, fixed, and constant
 alternatives that make sense in a particular context. &nbsp;For
@@ -62,7 +65,7 @@ the context in which an alternative makes sense can be extremely
 narrow. &nbsp;Having "a rat" as a random monster in your dungeon
 almost always makes sense, except in the "cat room". &nbsp;Again,
 judgement must come into play.</p>
-      <p>All of these considerations and more have gone into the
+<p>All of these considerations and more have gone into the
 devising of a random mud engine, and particularly to the format of the
 input data it uses. &nbsp;This engine receives a series of sets of
 alternatives which may include a relative weight for each alternative,
@@ -71,27 +74,28 @@ doesn't apply, and then makes selections and instantiates&nbsp;real
 mud objects based on those selections. &nbsp;The input to the
 engine is a very specifically built XML file, and the output is actual
 mud objects (mobs, items, areas, rooms, or all the above) in your game.<span style="font-weight: bold;"></span></p>
-      <h2><a name="structure">Overview of
+<h2><a name="structure">Overview of
 XML Tags</a></h2>
-      <a name="structure">The random generator works by reading a
+<a name="structure">The random generator works by
+reading a
 specially-written XML document
 that contains tags describing the object or objects to generate.
 &nbsp;For example, area generation looks for tags named
 &lt;AREA /&gt;, mobs for &lt;MOB /&gt;, items for
 &lt;ITEM /&gt;, rooms for &lt;ROOM /&gt;, and so forth.
 &nbsp;<br />
-      <br />
+<br />
 The embedding of tags can&nbsp;also be significant. &nbsp;For
 example, to generate a mob from a given &lt;MOB /&gt; tag, the
 tag must either contain a NAME attribute, or a &lt;NAME /&gt;
 tag embedded inside the &lt;MOB /&gt; tag. &nbsp;Another
 example would be that<br />
 room tags may contain mob and item tags.<br />
-      <br />
+<br />
 Generation sometimes requires that a specific starting object be named
 by ID, in which case an ID attribute may be found on the tag, allowing
 it to be referenced globally, no matter where it is embedded.<br />
-      <br />
+<br />
 The basic&nbsp;tag types are AREA, ROOM, MOB, ITEM, and STRING.
 &nbsp;Any tag that contains other tags of the same tag type is a
 Container tag, and usually has rules in the form of special attributes
@@ -101,7 +105,7 @@ available, and no rules are found for how to select among them, a
 random roll will be made. &nbsp;In cases where one or more of
 something is allowed, and multiple options are available, all the
 alternatives found will be selected.<br />
-      <br />
+<br />
 Each basic tag type is used to build an object of that type.&nbsp;
 For
 instance, the MOB tag is used to build a MOB.&nbsp; Therefore, each
@@ -118,7 +122,7 @@ what.&nbsp; A
 detail found as an defined variable identifier, supersedes both tags and<br />
 attributes. &nbsp;See the glossary for more tails on each major tag
 type.<br />
-      <br />
+<br />
 Basic
 tags may also have special pre-defined variables to help give some
 context to help with their parsing, and will often cause variables to
@@ -129,56 +133,61 @@ object to be created, and other optional details which may or may not
 be given, and which are extremely object-specific. &nbsp;Again, the
 glossary entry for each basic tag type will have more information about
 this.<br />
-      <br />
+<br />
 Tags are always evaluated recursively, from first to last.
 &nbsp;Any tag may contain zero or more of the following
 meta-attributes:<br />
 &nbsp;&nbsp;<br />
-      </a>
-      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
-        <tbody>
-          <tr>
-            <td>id</td>
-            <td>exposes the tag to either the Generate command,
+</a>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td>id</td>
+<td>exposes the tag to either the Generate command,
 or to the "insert"&nbsp;or "like" attributes.</td>
-          </tr>
-          <tr>
-            <td>load</td>
-            <td>the xml inside the file named is inserted into
+</tr>
+<tr>
+<td>load</td>
+<td>the xml inside the file named is inserted into
 the tag</td>
-          </tr>
-          <tr><td>content_load</td><td>the text inside the file names is returned as the value of the tag. &nbsp;Variables in the content are handled.</td></tr><tr>
-            <td>like</td>
-            <td>a comma separated list of other tag "id"s of the
+</tr>
+<tr>
+<td>content_load</td>
+<td>the text inside the file names is returned as the
+value of the tag. &nbsp;Variables in the content are handled.</td>
+</tr>
+<tr>
+<td>like</td>
+<td>a comma separated list of other tag "id"s of the
 SAME TYPE. These may NOT be container tags.&nbsp; This will allow
 the current tag to be parsed&nbsp;as if it contained the same tags
 and attributes as the listed tags.&nbsp;This is useful for making
 one-off variations on existing tag structures.</td>
-          </tr>
-          <tr>
-            <td>insert</td>
-            <td>a comma separated list of other tag ids. The
+</tr>
+<tr>
+<td>insert</td>
+<td>a comma separated list of other tag ids. The
 targeted tags may be of any type, and may be containers.&nbsp; It
 will cause the tags to be parsed and the resulting tags added as
 contents of the host tag as if they were already inside it.&nbsp;
 Remember, the listed tags will be parsed first, so any "condition",
 "select" or other operations will occur.</td>
-          </tr>
-          <tr>
-            <td>copyof</td>
-            <td>a tag "id" or standard class id. This will cause
+</tr>
+<tr>
+<td>copyof</td>
+<td>a tag "id" or standard class id. This will cause
 the stats and attributes&nbsp;and other details of the listed items
 into the current object.</td>
-          </tr>
-          <tr>
-            <td>validate</td>
-            <td>a boolean expression which must evaluate to true
+</tr>
+<tr>
+<td>validate</td>
+<td>a boolean expression which must evaluate to true
 for the tag to be finally built into an object.&nbsp; Check
 "condition" below for more information....</td>
-          </tr>
-          <tr>
-            <td>condition</td>
-            <td> the value is a boolean expression which must
+</tr>
+<tr>
+<td>condition</td>
+<td> the value is a boolean expression which must
 evaluate to true for the tag to be included in its parent.&nbsp;
 This is similar to "validate" except that "condition" determines
 whether a tag is among the allowed choices,&nbsp;whereas "validate"
@@ -198,24 +207,24 @@ Undefined string&nbsp;ids are treated as ''.&nbsp; Remember
 that in XML, a &lt; and &gt; characters can not&nbsp;appear
 in attribute values, which is why they must be written as &amp;lt;
 and&nbsp;&amp;gt; in your xml.</td>
-          </tr>
-          <tr>
-            <td>define</td>
-            <td>this attribute is only used if its "condition" is
+</tr>
+<tr>
+<td>define</td>
+<td>this attribute is only used if its "condition" is
 met, and it is "selected" by its parent tag, if applicable.&nbsp;
 It is a comma separated list of any&nbsp;combination of the
 following:<br />
-            <ul>
-              <li>"id": either a new or existing identifier, in
+<ul>
+<li>"id": either a new or existing identifier, in
 which case the value that&nbsp;this tag resolves to will be set to
 that identifier, allowing it to be used in "condition", tag values, or
 other places.</li>
-              <li>"id=value": will set the new or existing
+<li>"id=value": will set the new or existing
 identifier "id" to the given constant "value".</li>
-              <li>"id+=number": see below</li>
-              <li>"id*=number": see below</li>
-              <li>"id-=number": see below</li>
-              <li>"id/=number": Will attempt to evaluate the
+<li>"id+=number": see below</li>
+<li>"id*=number": see below</li>
+<li>"id-=number": see below</li>
+<li>"id/=number": Will attempt to evaluate the
 existing value of the identifier"id" as a number, and perform the given
 operation upon it with the "number" given. For instance "bob+=3" will
 add the number 3 to the current value of&nbsp;the identifier
@@ -226,88 +235,88 @@ persist for&nbsp;every tag and object in the room's "room
 group".&nbsp; An identifier whose name&nbsp;starts with "__"
 will persist throughout the entire area.&nbsp; Otherwise, any
 variables defined using this command will persist only for one room.</li>
-            </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>predefine</td>
-            <td>identical to "define", but always evaluated when
+</ul>
+</td>
+</tr>
+<tr>
+<td>predefine</td>
+<td>identical to "define", but always evaluated when
 encountered.</td>
-          </tr>
-          <tr>
-            <td>select</td>
-            <td>used mostly by container tags, this attribute
+</tr>
+<tr>
+<td>select</td>
+<td>used mostly by container tags, this attribute
 allows you to specify how multiple choices are resolved by this
 tag.&nbsp; More than one selection may be made, which makes sense
 when selecting MOB tags for a ROOM.&nbsp; However,
 &nbsp;sometimes it does not, such as when selecting a NAME for a
 MOB.&nbsp; In those cases, any remaining multiple-choices are
 always selected randomly from.&nbsp;&nbsp;Possible values are:<br />
-            <ul>
-              <li>"all": always selects every choice.</li>
-              <li>"any-X": selects any X** of the choices,
+<ul>
+<li>"all": always selects every choice.</li>
+<li>"any-X": selects any X** of the choices,
 without repeating.&nbsp; Make
 sure you have another choices to cover the possible value of X!</li>
-              <li>"pick-X": same as "any-X", but the tag choices
+<li>"pick-X": same as "any-X", but the tag choices
 will be checked for the </li>
-              <ul>
-                <li>"pickweight" is container-entry attribute,
+<ul>
+<li>"pickweight" is container-entry attribute,
 and is used only when the parent tag is using 'select="pick-X" ' as a
 relative weight when selecting among the choices.</li>
-              </ul>
-              <li>"limit-x": selects up to X** random choices,
+</ul>
+<li>"limit-x": selects up to X** random choices,
 but less is OK too if no more.</li>
-              <li>"repeat-X": always selects every choice, and
+<li>"repeat-X": always selects every choice, and
 treats the choices as
 if &nbsp;enough of them actually existed to select X** of them,
 even if not
 enough choices were given.</li>
-              <li>"none": always selects none of the choices (why
+<li>"none": always selects none of the choices (why
 would anyone use this?!)</li>
-              <li>"first": selects the first choice (another
+<li>"first": selects the first choice (another
 stupid one)</li>
-              <li>"last": you guessed it, select the last choice</li>
-              <li>"first-X": selects the first X** choices.</li>
-              <li>"last-X": selects the last X** choices.</li>
-            </ul>
+<li>"last": you guessed it, select the last choice</li>
+<li>"first-X": selects the first X** choices.</li>
+<li>"last-X": selects the last X** choices.</li>
+</ul>
 ** Where you see X above, this may be a number, or a math formula or
 math expression. (see mud help on math formulas/math expressions)</td>
-          </tr>
-          <tr>
-            <td>merge</td>
-            <td>must be "true" if two tags with the same ID are
+</tr>
+<tr>
+<td>merge</td>
+<td>must be "true" if two tags with the same ID are
 included in the same xml document.&nbsp; It permits some of the tag
 parameters, and all of the content tags, to be merged together into a
 single referenced tag. &nbsp;In this circumstance, child tags of
 parent tags which are being merged may optionally include "merge=false"
 to prevent duplicates from being formed.</td>
-          </tr>
-          <tr>
-            <td>pickweight</td>
-            <td>a&nbsp;helper attribute for the "select"
+</tr>
+<tr>
+<td>pickweight</td>
+<td>a&nbsp;helper attribute for the "select"
 attribute, when a "pick" value is used by the select
 attribute.&nbsp; See "select" attribute above.</td>
-          </tr>
-          <tr>
-            <td>action</td>
-            <td> used by string-type choices to inform the engine
+</tr>
+<tr>
+<td>action</td>
+<td> used by string-type choices to inform the engine
 on how to combine the multiple choices into a single string.&nbsp;
 Possible values include:<br />
-            <ul>
-              <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<ul>
+<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 "append": append the tags value to the string as built so far.</li>
-              <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 "replace": completely replace any string build so far with this ones
 value.</li>
-              <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 "prepend": always put this strings value at the beginning of the final
 string</li>
-            </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>requires</td>
-            <td>a comma-separated list of variable identifiers
+</ul>
+</td>
+</tr>
+<tr>
+<td>requires</td>
+<td>a comma-separated list of variable identifiers
 which must have already been defined before this tag can be
 evaluated.&nbsp; Such variables are usually defined by the user of
 the GENERATE command, but can also be defined at parse-time by the
@@ -317,46 +326,47 @@ not only if the variable is defined, but that it is defined
 properly.&nbsp; Possible types include "#" for a number, "int" for
 an integer, "$" for a string, or a semicolon-delimited list of possible
 string values.</td>
-          </tr>
-        </tbody>
-      </table>
-      <a name="structure"> <br />
-      <span style="font-weight: bold;">Tag values</span>:<br />
+</tr>
+</tbody>
+</table>
+<a name="structure"> <br />
+<span style="font-weight: bold;">Tag values</span>:<br />
 A non-container non-basic tag will typically have a string
 value.&nbsp; This value may contain any embedded variables or
 identifiers, so long as they are preceded with a $ character.<br />
-      <br />
+<br />
 A string beginning with a $ character will be assumed to be an
 identifier, and will be searched for within the list of defined
 variables and identifiers.&nbsp; If the identifier resolves to a
 tag, the tag will be parsed as a string.&nbsp; If the identifier
 resolves to<br />
 a string, so much the easier.<br />
-      <br />
+<br />
 Defined variables or tag names can also be embedded in {} characters;
 for example: ${ame}. When embedded in this way, the name may be
 preceeded by:<br />
-      </a>
-      <ul>
-        <a name="structure"> <li>"u:" to force to all-uppercase</li>
-        <li>"l:" to force all-lowercase</li>
-        <li>"p:" to force plural</li>
-        <li>"c:" to force to be capitalized (first letter upper,
+</a>
+<ul>
+<a name="structure"> <li>"u:" to force to
+all-uppercase</li>
+<li>"l:" to force all-lowercase</li>
+<li>"p:" to force plural</li>
+<li>"c:" to force to be capitalized (first letter upper,
 rest lower).</li>
-        </a>
-      </ul>
-      <a name="structure"> <span style="font-weight: bold;">Special
+</a>
+</ul>
+<a name="structure"> <span style="font-weight: bold;">Special
 embedded
 variables</span>:<br />
-      </a>
-      <ul>
-        <a name="structure"> <li>$SYSTEM_RANDOM_NAME:[NUMX]-[NUMY]
+</a>
+<ul>
+<a name="structure"> <li>$SYSTEM_RANDOM_NAME:[NUMX]-[NUMY]
 generate a random
 name with between NUMX and NUMY syllables.</li>
-        <li>${STAT:[STATNAME]} embed the value from another stat
+<li>${STAT:[STATNAME]} embed the value from another stat
 on the same object.&nbsp; STATs are things like NAME, DISPLAY,
 DESCRIPTION, etc...</li>
-        <li>${STAT:[PATH]:[TO]:[ANOTHER]:[OBJECT]:[STATNAME]}
+<li>${STAT:[PATH]:[TO]:[ANOTHER]:[OBJECT]:[STATNAME]}
 embed the value from another objects stat, potentially in a different
 room. Where path-to-another-object may be: ROOM to refer to the room
 containing the object, NORTH,SOUTH,EAST,WEST,UP,DOWN,NORTHEAST..etc..
@@ -369,25 +379,25 @@ ${STAT:ROOM:EAST:MOB:NAME}" would embed the name of a mob in a room to
 the east of the current room. This command may internally cause
 post-processing if necessary, and so is almost guaranteed to always
 work unlike some of the special ROOM_ tags.</li>
-        <li>(a(n)) will remove any indefinite or definite
+<li>(a(n)) will remove any indefinite or definite
 articles from the string immediately following it and replace it (or
 insert) either "a" or "an" depending on the first letter of the word.</li>
-        </a>
-      </ul>
-      <a name="structure"> </a>
-      <h2><a name="using">Using the Random Generator</a></h2>
+</a>
+</ul>
+<a name="structure"> </a>
+<h2><a name="using">Using the Random Generator</a></h2>
 There are currently two ways to use the Random Generator, one is the
 Archon GENERATE command, and the other is the Area type
 "StdAutoGenInstance".<br />
-      <br />
-      <span style="font-weight: bold;">Generate Command</span>:<br />
-      <br />
+<br />
+<span style="font-weight: bold;">Generate Command</span>:<br />
+<br />
 The most straightforward way to access the random generator is using
 the Archon GENERATE command. &nbsp;The usage is as follows:<br />
-      <br />
+<br />
 GENERATE [OBJ TYPE] [ID] (FROM [FILENAME]) ([VAR]=[VAL]...)
 ([DIRECTION])<br />
-      <br />
+<br />
 This command uses an xml file to generate random content for your
 mud.&nbsp; This content can&nbsp;be anything from whole areas,
 to rooms, mobs, items, or simple strings. By default,
@@ -395,28 +405,28 @@ the&nbsp;content is built from the file in
 resources/randareas/example.xml, though the builder&nbsp;may
 specify his or her own xml file path as one of the many
 arguments.&nbsp; The arguments,&nbsp;briefly, are:<br />
-      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
-        <tbody>
-          <tr>
-            <td>OBJ TYPE</td>
-            <td>One of the following: AREA, ROOM, MOB, ITEM, or
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td>OBJ TYPE</td>
+<td>One of the following: AREA, ROOM, MOB, ITEM, or
 STRING</td>
-          </tr>
-          <tr>
-            <td>ID</td>
-            <td>one of the "id" xml attributes defined on any tag
+</tr>
+<tr>
+<td>ID</td>
+<td>one of the "id" xml attributes defined on any tag
 in the XML file.&nbsp;Use
 GENERATE STRING LIST for a list of all "id" attributes defined in your
 file.</td>
-          </tr>
-          <tr>
-            <td>FROM "path/to/xmlfile.xml"</td>
-            <td>An optional argument to specify your own xml
+</tr>
+<tr>
+<td>FROM "path/to/xmlfile.xml"</td>
+<td>An optional argument to specify your own xml
 file, with the resources&nbsp;directory being the default root.</td>
-          </tr>
-          <tr>
-            <td>VAR=VAL</td>
-            <td>One or more variables and their
+</tr>
+<tr>
+<td>VAR=VAL</td>
+<td>One or more variables and their
 definitions.&nbsp; Many tags will have a
 specific set of required&nbsp;variables which must be defined in
 order for
@@ -438,18 +448,18 @@ LEVEL&nbsp;for mobs and
 items, or NAME, etc) as well as the XML id tags, can have their
 "random" values overridden&nbsp;by defining them using the generate
 command.</td>
-          </tr>
-          <tr>
-            <td>DIRECTION</td>
-            <td>This applies only to ROOM and AREA object
+</tr>
+<tr>
+<td>DIRECTION</td>
+<td>This applies only to ROOM and AREA object
 types.&nbsp; The object, if
 successfully generated, will&nbsp;be linked to the current room
 that the
 player is standing in, in the direction they specify.</td>
-          </tr>
-        </tbody>
-      </table>
-      <br />
+</tr>
+</tbody>
+</table>
+<br />
 The GENERATE command is an interesting way to deliver large amounts of
 dynamic content&nbsp;for your world, though it can never replace
 the caring touch of a real, creative builder.&nbsp;
@@ -457,30 +467,30 @@ If&nbsp;anyone is interested in writing their own xml content,
 please open up the /resources/randareas/example.xml&nbsp;file and
 begin reading it and all of the LOADed files. Use those file as an
 example on how to construct your own.<br />
-      <br />
+<br />
 Examples of the Generate Command: <br />
 generate area maze_dungeon from randareas/example.xml areasize=50
 areaname=test&nbsp;level_range=10?20 aggrochance=50 theme=kobolds
 south<br />
-      <br />
+<br />
 generate string list<br />
-      <br />
-      <span style="font-weight: bold;">StdAutoGenInstance
+<br />
+<span style="font-weight: bold;">StdAutoGenInstance
 Area Type</span>:<br />
-      <br />
+<br />
 The StdAutoGenInstance area type is specially formulated to replace any
 rooms of its own with auto-generated rooms and content. &nbsp;<br />
-      <br />
+<br />
 This area type is, firstly, an Instance generator. &nbsp;That means
 that each group that goes into the area will have their own unique
 generated rooms to play in, which will be different from any other
 groups, and will persist until the group gets tired of playing it
 (causing the area to time-out and be garbage collected).<br />
-      <br />
+<br />
 This area type also permits the path and name of the top-level random
 generation xml file to be specified, where the /resource directory is
 considered the default path root.<br />
-      <br />
+<br />
 Lastly, any required or optional variables. Many tags will have a
 specific set of required&nbsp;variables which must be defined in
 order for
@@ -496,9 +506,9 @@ to
 required variables, you&nbsp;may also use the space to enter one or
 more
 "override" values for existing defined things.
-      <h2><a name="glossary">Glossary of XML Tags</a></h2>
-      <p><a name="areatag"><span style="font-weight: bold;">AREA tags</span></a>:
-      <br />
+<h2><a name="glossary">Glossary of XML Tags</a></h2>
+<p><a name="areatag"><span style="font-weight: bold;">AREA tags</span></a>:
+<br />
 As the highest-level possible tag, an area is parsed only with the
 variables it is given on the GENERATE command line, and using whatever
 it can find in its XML contents for its details.&nbsp; All details
@@ -508,7 +518,7 @@ are parsed.&nbsp;
 The variable will be called "AREA_DETAILNAME".&nbsp; For instance
 "AREA_CLASS" for
 class, and "AREA_NAME" for name.<br />
-      <br />
+<br />
 The layout of an area will cause its rooms to be logically grouped up
 into streets, "leaf" rooms (rooms with only one exist), and other
 logical
@@ -517,352 +527,455 @@ streets, and others.&nbsp; The
 layout will automatically define certain variables for each room to
 help with parsing the rooms
 details.&nbsp; These variables include:<br />
-      </p>
-      <ul>
-        <li>$AREA_NUMLEAFS: the number of leaf rooms for the whole area</li>
-        <li>$ROOMTAG_NODETYPE: one of surround, leaf, offleaf, street,
+</p>
+<ul>
+<li>$AREA_NUMLEAFS: the number of leaf rooms for the
+whole area</li>
+<li>$ROOMTAG_NODETYPE: one of surround, leaf, offleaf,
+street,
 square,
 interior</li>
-        <li>$ROOMTAG_NODERUN: for streets, which way they run.&nbsp;
+<li>$ROOMTAG_NODERUN: for streets, which way they
+run.&nbsp;
 Values are
 ns, ew, nwse, nesw</li>
-        <li>$ROOMTAG_NODEFLAGS: various rooms flags. Values include:
+<li>$ROOMTAG_NODEFLAGS: various rooms flags. Values
+include:
 corner, gate,
 intersection, tee, offleaf </li>
-        <li>$ROOMTAG_NODEEXITS: comma separated list of all exits from
+<li>$ROOMTAG_NODEEXITS: comma separated list of all exits
+from
 a room</li>
-        <li>$ROOMTAG_NODEGATEEXIT: if this room is a "gate" rooms,
+<li>$ROOMTAG_NODEGATEEXIT: if this room is a "gate"
+rooms,
 which direction
 is the gate in.</li>
-        <li>$ROOMLINK_N, $ROOMLINK_S, $ROOMLINK_E, $ROOMLINK_W, etc:
+<li>$ROOMLINK_N, $ROOMLINK_S, $ROOMLINK_E, $ROOMLINK_W,
+etc:
 "true" if an exit
 exists that way.</li>
-        <li>$ROOMTITLE_N, $ROOMTITLE_S, $ROOMTITLE_E, $ROOMTITLE_W,
+<li>$ROOMTITLE_N, $ROOMTITLE_S, $ROOMTITLE_E,
+$ROOMTITLE_W,
 etc: if already
 done, the title of a room that way.</li>
-        <li>$NODETYPE_N, $NODETYPE_S, $NODETYPE_E, $NODETYPE_W, etc:
+<li>$NODETYPE_N, $NODETYPE_S, $NODETYPE_E, $NODETYPE_W,
+etc:
 type of room node
 in that direction, if any.</li>
-      </ul>
-      <p>Required details:<br />
-      </p>
-      <ul>
-        <li>"CLASS": The CoffeeMud class type to use to create the area.</li>
-        <li>"NAME": The name of the area.&nbsp; Must be unique to your
+</ul>
+<p>Required details:<br />
+</p>
+<ul>
+<li>"CLASS": The CoffeeMud class type to use to create
+the area.</li>
+<li>"NAME": The name of the area.&nbsp; Must be
+unique to your
 MUD.</li>
-        <li>"LAYOUT": The name of the layout generator to use.&nbsp; At
+<li>"LAYOUT": The name of the layout generator to
+use.&nbsp; At
 the moment,
 supported layouts include MAZE, BOXCITY, BOXCITYSQUARE, CROSS,
 GRIDCITY, TREE, APARTMENT</li>
-        <li>"SIZE": The number of rooms to create in the area.</li>
-      </ul>
-      <p>Optional objects: (See below for details on these object tag
+<li>"SIZE": The number of rooms to create in the area.</li>
+</ul>
+<p>Optional objects: (See below for details on these object
+tag
 types and
 their details)<br />
-      </p>
-      <ul>
-        <li>"AFFECT"</li>
-        <li>"BEHAVIOR"</li>
-        <li>"ROOM"</li>
-      </ul>
-      <p>Optional details: (See Archon's Guide)<br />
-      </p>
-      <ul>
-        <li>"CLIMATE"</li>
-        <li>"DESCRIPTION"</li>
-        <li>"THEME"</li>
-        <li>"BLURBS"</li>
-        <li>"PREJUDICE"</li>
-        <li>"BUDGET"</li>
-        <li>"DEVALRATE",</li>
-        <li>"INVRESETRATE"</li>
-        <li>"IGNOREMASK"</li>
-        <li>"PRICEMASKS"</li>
-        <li>"AUTHOR"</li>
-        <li>"ATMOSPHERE"&nbsp; </li>
-      </ul>
-      <p><a name="roomtag"><span style="font-weight: bold;">ROOM tags</span></a>:
-      <br />
+</p>
+<ul>
+<li>"AFFECT"</li>
+<li>"BEHAVIOR"</li>
+<li>"ROOM"</li>
+</ul>
+<p>Optional details: (See Archon's Guide)<br />
+</p>
+<ul>
+<li>"CLIMATE"</li>
+<li>"DESCRIPTION"</li>
+<li>"THEME"</li>
+<li>"BLURBS"</li>
+<li>"PREJUDICE"</li>
+<li>"BUDGET"</li>
+<li>"DEVALRATE",</li>
+<li>"INVRESETRATE"</li>
+<li>"IGNOREMASK"</li>
+<li>"PRICEMASKS"</li>
+<li>"AUTHOR"</li>
+<li>"ATMOSPHERE"&nbsp; </li>
+</ul>
+<p><a name="roomtag"><span style="font-weight: bold;">ROOM tags</span></a>:
+<br />
 Parsed with variables from the generate command, and from any defined
 variables internal, and from any internal tags and attributes, and from
 any variables defined
 by its AREA tag. As with areas, its details will cause variables
 beginning with ROOM_ to be
 defined.<br />
-      <br />
+<br />
 Required details: <br />
-      </p>
-      <ul>
-        <li>"CLASS"</li>
-        <li>"TITLE"</li>
-        <li>"DESCRIPTION"</li>
-      </ul>
-      <p>Optional Objects: (See below for details on these object tag
+</p>
+<ul>
+<li>"CLASS"</li>
+<li>"TITLE"</li>
+<li>"DESCRIPTION"</li>
+</ul>
+<p>Optional Objects: (See below for details on these object
+tag
 types and
 their details) <br />
-      </p>
-      <ul>
-        <li>"MOB"</li>
-        <li>"ITEM"</li>
-        <li>"AFFECT"</li>
-        <li>"BEHAVIOR"</li>
-        <li>"EXIT"</li>
-      </ul>
-      <p>You can also specify a "LAYOUT" attribute on a room tag, in
+</p>
+<ul>
+<li>"MOB"</li>
+<li>"ITEM"</li>
+<li>"AFFECT"</li>
+<li>"BEHAVIOR"</li>
+<li>"EXIT"</li>
+</ul>
+<p>You can also specify a "LAYOUT" attribute on a room tag,
+in
 which case
 all rooms contained inside that room tag (or inserted, or whatever) are
 used to build multiple
 rooms from that layout, much as specified above on the AREA tag. <br />
-      <br />
-      <a name="mobtag"><span style="font-weight: bold;">MOB tags</span></a>:
-      <br />
+<br />
+<a name="mobtag"><span style="font-weight: bold;">MOB
+tags</span></a>: <br />
 Parsed with variables from the generate command, and from any defined
 variables internal, and from any internal tags and attributes, and from
 any variables defined
 by other room tags. As with areas, its details will cause variables
 beginning with MOB_ to be
 defined.</p>
-      <p>Required details: <br />
-      </p>
-      <ul>
-        <li>"CLASS": normally the CoffeeMud class the mob will be made
+<p>Required details: <br />
+</p>
+<ul>
+<li>"CLASS": normally the CoffeeMud class the mob will be
+made
 from, though
 it may also be the word catalog in order to select a mob from your
 catalog, in which case
 "name" also becomes a required detail.</li>
-      </ul>
-      <p>Optional Objects: <br />
-      </p>
-      <ul>
-        <li>"MOB"</li>
-        <li>"ITEM"</li>
-        <li>"AFFECT"</li>
-        <li>"ABILITY"</li>
-        <li>"BEHAVIOR"</li>
-        <li>"FACTION"</li>
-      </ul>
-      <p>Optional details: (See Archon's Guide)<br />
-      </p>
-      <ul>
-        <li>"RACE"</li>
-        <li>"HPMOD"</li>
-        <li>"LEVEL"</li>
-        <li>"NAME"</li>
-        <li>"DISPLAY"</li>
-        <li>"DESCRIPTION"</li>
-        <li>"MONEY"</li>
-        <li>"ALIGNMENT"</li>
-        <li>&nbsp;"DISPOSITION"</li>
-        <li>"SENSES",</li>
-        <li>"ARMOR"</li>
-        <li>"DAMAGE"</li>
-        <li>"ATTACK"</li>
-        <li>"SPEED"</li>
-        <li>"TATTS"</li>
-        <li>"EXPS"</li>
-        <li>"IMG"</li>
-        <li>"FACTIONS"</li>
-        <li>"VARMONEY"</li>
-      </ul>
-      <p>(plus or minus others depending upon class)</p>
-      <p>The "RACE" detail can be the name of a race, or resolve to a
+</ul>
+<p>Optional Objects: <br />
+</p>
+<ul>
+<li>"MOB"</li>
+<li>"ITEM"</li>
+<li>"AFFECT"</li>
+<li>"ABILITY"</li>
+<li>"BEHAVIOR"</li>
+<li>"FACTION"</li>
+</ul>
+<p>Optional details: (See Archon's Guide)<br />
+</p>
+<ul>
+<li>"RACE"</li>
+<li>"HPMOD"</li>
+<li>"LEVEL"</li>
+<li>"NAME"</li>
+<li>"DISPLAY"</li>
+<li>"DESCRIPTION"</li>
+<li>"MONEY"</li>
+<li>"ALIGNMENT"</li>
+<li>&nbsp;"DISPOSITION"</li>
+<li>"SENSES",</li>
+<li>"ARMOR"</li>
+<li>"DAMAGE"</li>
+<li>"ATTACK"</li>
+<li>"SPEED"</li>
+<li>"TATTS"</li>
+<li>"EXPS"</li>
+<li>"IMG"</li>
+<li>"FACTIONS"</li>
+<li>"VARMONEY"</li>
+</ul>
+<p>(plus or minus others depending upon class)</p>
+<p>The "RACE" detail can be the name of a race, or resolve
+to a
 RACE tag,
 see below.<br />
-      <br />
-      <a name="mobtag"><span style="font-weight: bold;">ITEM tags</span></a>:
-      <br />
+<br />
+<a name="mobtag"><span style="font-weight: bold;">ITEM
+tags</span></a>: <br />
 Parsed with variables from the generate command, and from any defined
 variables internal, and from any internal tags and attributes, and from
 any variables defined
 by other room tags. As with areas, its details will cause variables
 beginning with ITEM_ to be
 defined.</p>
-      <p>Required details: <br />
-      </p>
-      <ul>
-        <li>"CLASS": normally the CoffeeMud class the item will be made
+<p>Required details: <br />
+</p>
+<ul>
+<li>"CLASS": normally the CoffeeMud class the item will
+be made
 from,
 though it may also be the word catalog in order to select an item from
 your catalog, in which
-case "name" also becomes a required detail.&nbsp; This may also start
+case "name" also becomes a required detail.&nbsp; This may also
+start
 with the string
 "metacraft:", in which case the remainder of the "class" value becomes
 either the name of the item to
 metacraft, the word "anything", &nbsp;"all", or the words "any-" or
 "all-" followed by the ID of the common
-skill to use. &nbsp;"metacraft:" class strings may also end with the
+skill to use. &nbsp;"metacraft:" class strings may also end with
+the
 characters "&lt;"
-followed by a math expression &nbsp;evaluating to an upper level limit
+followed by a math expression &nbsp;evaluating to an upper level
+limit
 for the item to craft, "&gt;"
 for a lower limit, or "=" followed by a the base class ID to to filter
 in.</li>
-      </ul>
-      <p>Optional Objects: <br />
-      </p>
-      <ul>
-        <li>"MOB"</li>
-        <li>"ITEM"</li>
-        <li>"AFFECT"</li>
-        <li>"CONTENT"</li>
-        <li>"BEHAVIOR"</li>
-        <li>"EXIT"</li>
-      </ul>
-      <p>Optional details: (See Archon's Guide)<br />
-      </p>
-      <ul>
-        <li>"USES"</li>
-        <li>"LEVEL"</li>
-        <li>"ABILITY"</li>
-        <li>"NAME"</li>
-        <li>"DISPLAY"</li>
-        <li>"DESCRIPTION"</li>
-        <li>"SECRET"</li>
-        <li>"PROPERWORN"</li>
-        <li>"WORNAND",</li>
-        <li>"BASEGOLD"</li>
-        <li>"ISGETTABLE"</li>
-        <li>"ISREADABLE"</li>
-        <li>"ISDROPPABLE"</li>
-        <li>"ISREMOVABLE"</li>
-        <li>"MATERIAL"</li>
-        <li>"DISPOSITION"</li>
-        <li>"WEIGHT"</li>
-        <li>"ARMOR"</li>
-        <li>"DAMAGE"</li>
-        <li>"ATTACK"</li>
-        <li>"READABLETEXT"</li>
-        <li>"IMG"</li>
-        <li>"NOWEAR" (set to true to prevent the item from being
+</ul>
+<p>Optional Objects: <br />
+</p>
+<ul>
+<li>"MOB"</li>
+<li>"ITEM"</li>
+<li>"AFFECT"</li>
+<li>"CONTENT"</li>
+<li>"BEHAVIOR"</li>
+<li>"EXIT"</li>
+</ul>
+<p>Optional details: (See Archon's Guide)<br />
+</p>
+<ul>
+<li>"USES"</li>
+<li>"LEVEL"</li>
+<li>"ABILITY"</li>
+<li>"NAME"</li>
+<li>"DISPLAY"</li>
+<li>"DESCRIPTION"</li>
+<li>"SECRET"</li>
+<li>"PROPERWORN"</li>
+<li>"WORNAND",</li>
+<li>"BASEGOLD"</li>
+<li>"ISGETTABLE"</li>
+<li>"ISREADABLE"</li>
+<li>"ISDROPPABLE"</li>
+<li>"ISREMOVABLE"</li>
+<li>"MATERIAL"</li>
+<li>"DISPOSITION"</li>
+<li>"WEIGHT"</li>
+<li>"ARMOR"</li>
+<li>"DAMAGE"</li>
+<li>"ATTACK"</li>
+<li>"READABLETEXT"</li>
+<li>"IMG"</li>
+<li>"NOWEAR" (set to true to prevent the item from being
 automatically worn by mobs)</li>
-      </ul>
-      <p>(plus or minus many many others depending upon class)<br />
-      <br />
+</ul>
+<p>(plus or minus many many others depending upon class)<br />
+<br />
 "ShopKeeper" type classes may use "SHOPINVENTORY" tags to hold ITEM,
-MOB, or ABILITY tags to designate what else is sold.&nbsp; Also, the
+MOB, or ABILITY tags to designate what else is sold.&nbsp; Also,
+the
 SHOPINVENTORY or
-those ITEM, MOB, or ABILITY tags &nbsp;may contain optional PRICE or
+those ITEM, MOB, or ABILITY tags &nbsp;may contain optional PRICE
+or
 NUMBER attributes.<br />
-      <br />
-      <br />
-      <a name="affecttag"><span style="font-weight: bold;">AFFECT tags</span></a>:&nbsp;</p>
-      <p><a name="abilitytag"><span style="font-weight: bold;">ABILITY
+<br />
+<br />
+<a name="affecttag"><span style="font-weight: bold;">AFFECT tags</span></a>:&nbsp;</p>
+<p><a name="abilitytag"><span style="font-weight: bold;">ABILITY
 tags</span></a>:</p>
-      <p><a name="culturalabilitytag"><span style="font-weight: bold;">CULTURALABILITY
+<p><a name="culturalabilitytag"><span style="font-weight: bold;">CULTURALABILITY
 tags</span></a>:&nbsp;</p>
-      <p><a name="behaviortag"><span style="font-weight: bold;">BEHAVIOR
+<p><a name="behaviortag"><span style="font-weight: bold;">BEHAVIOR
 tags</span></a>:&nbsp;</p>
-      <p>Required detail:&nbsp;</p>
-      <ul>
-        <li>"CLASS"</li>
-      </ul>
-      <p>Optional Detail:&nbsp;</p>
-      <ul>
-        <li>"PARMS"</li>
-      </ul>
+<p>Required detail:&nbsp;</p>
+<ul>
+<li>"CLASS"</li>
+</ul>
+<p>Optional Detail:&nbsp;</p>
+<ul>
+<li>"PARMS"</li>
+</ul>
 Optional Details that apply only when this tag applies to a RACE tag:<br />
-      <ul>
-        <li>"PROFF"</li>
-        <li>"LEVEL"</li>
-        <li>"QUALIFY"</li>
-      </ul>
-      <p><a name="contenttag"><span style="font-weight: bold;">CONTENT
+<ul>
+<li>"PROFF"</li>
+<li>"LEVEL"</li>
+<li>"QUALIFY"</li>
+</ul>
+<p><a name="contenttag"><span style="font-weight: bold;">CONTENT
 tags</span></a>: <br />
 Content tags:<br />
 A pure container tag that contains one or more ITEM tags, as above.<br />
-      <br />
-      <a name="exittag"><span style="font-weight: bold;">EXIT tags</span></a>:
-      <br />
+<br />
+<a name="exittag"><span style="font-weight: bold;">EXIT
+tags</span></a>: <br />
 Exit tags:<br />
 Required detail:&nbsp;</p>
-      <ul>
-        <li>"CLASS"</li>
-      </ul>
-      <p>Optional Objects:&nbsp;</p>
-      <ul>
-        <li>"AFFECT"</li>
-        <li>"BEHAVIOR"</li>
-      </ul>
+<ul>
+<li>"CLASS"</li>
+</ul>
+<p>Optional Objects:&nbsp;</p>
+<ul>
+<li>"AFFECT"</li>
+<li>"BEHAVIOR"</li>
+</ul>
 Optional Details:
-      <ul>
-        <li>"NAME"</li>
-        <li>"DISPLAY"</li>
-        <li>"DESCRIPTION"</li>
-        <li>"DOOR"</li>
-        <li>"LEVEL"</li>
-        <li>"ABILITY"</li>
-        <li>"ISREADABLE"</li>
-        <li>"DISPOSITION"</li>
-        <li>"READABLETEXT"</li>
-        <li>"HASADOOR"</li>
-        <li>"DEFCLOSED"</li>
-        <li>"HASALOCK"</li>
-        <li>"DEFLOCKED"</li>
-        <li>"KEYNAME",</li>
-        <li>"CLOSEWORD",</li>
-        <li>"OPENWORD",</li>
-        <li>"CLOSEDTEXT"</li>
-      </ul>
-      <p><a name="raceag"><span style="font-weight: bold;">RACE tags</span></a>:</p>
-      <p>Required detail:&nbsp;</p>
-      <ul>
-        <li>"CLASS"</li>
-        <li>"NAME"</li>
-      </ul>
+<ul>
+<li>"NAME"</li>
+<li>"DISPLAY"</li>
+<li>"DESCRIPTION"</li>
+<li>"DOOR"</li>
+<li>"LEVEL"</li>
+<li>"ABILITY"</li>
+<li>"ISREADABLE"</li>
+<li>"DISPOSITION"</li>
+<li>"READABLETEXT"</li>
+<li>"HASADOOR"</li>
+<li>"DEFCLOSED"</li>
+<li>"HASALOCK"</li>
+<li>"DEFLOCKED"</li>
+<li>"KEYNAME",</li>
+<li>"CLOSEWORD",</li>
+<li>"OPENWORD",</li>
+<li>"CLOSEDTEXT"</li>
+</ul>
+<p><a name="raceag"><span style="font-weight: bold;">RACE tags</span></a>:</p>
+<p>Required detail:&nbsp;</p>
+<ul>
+<li>"CLASS"</li>
+<li>"NAME"</li>
+</ul>
 Optional Objects:<br />
-      <ul>
-        <li>"WEAPON": tag which should contain an ITEM tag, denoting
+<ul>
+<li>"WEAPON": tag which should contain an ITEM tag,
+denoting
 the creatures natural weapon</li>
-        <li>"RESOURCES": tag which should contain one or more ITEM
+<li>"RESOURCES": tag which should contain one or more
+ITEM
 tags, denoting racial resources</li>
-        <li>"OUTFIT": tag which should contain one or more ITEM tags,
+<li>"OUTFIT": tag which should contain one or more ITEM
+tags,
 denoting the racial outfit</li>
-        <li>"ABILITY"</li>
-        <li>"CULTUREABILITY": same as ABILITY tag, but these are
+<li>"ABILITY"</li>
+<li>"CULTUREABILITY": same as ABILITY tag, but these are
 cultural abilities</li>
-        <li>"AFFECT"</li>
-      </ul>
+<li>"AFFECT"</li>
+</ul>
 Optional Details:&nbsp;
-      <ul>
-        <li>"CAT"</li>
-        <li>"VWEIGHT"</li>
-        <li>"BWEIGHT"</li>
-        <li>"VHEIGHT"</li>
-        <li>"FHEIGHT"</li>
-        <li>"MHEIGHT"</li>
-        <li>"AVAIL"</li>
-        <li>"LEAVE",</li>
-        <li>"BODYKILL"</li>
-        <li>"AGING"</li>
-        <li>"HELP"</li>
-        <li>"BREATHES"</li>
-        <li>"ARRIVE",</li>
-        <li>"HEALTHRACE"</li>
-        <li>"BODY"</li>
-        <li>"WEAPONRACE"</li>
-        <li>"DISFLAGS"</li>
-        <li>"EVENTRACE"</li>
-        <li>"WEAR" - either a bitmask number, or wear locations names
+<ul>
+<li>"CAT"</li>
+<li>"VWEIGHT"</li>
+<li>"BWEIGHT"</li>
+<li>"VHEIGHT"</li>
+<li>"FHEIGHT"</li>
+<li>"MHEIGHT"</li>
+<li>"AVAIL"</li>
+<li>"LEAVE",</li>
+<li>"BODYKILL"</li>
+<li>"AGING"</li>
+<li>"HELP"</li>
+<li>"BREATHES"</li>
+<li>"ARRIVE",</li>
+<li>"HEALTHRACE"</li>
+<li>"BODY"</li>
+<li>"WEAPONRACE"</li>
+<li>"DISFLAGS"</li>
+<li>"EVENTRACE"</li>
+<li>"WEAR" - either a bitmask number, or wear locations
+names
 set equal to
 true to forbid, or false to allow, e.g (mouth=true
 back=false left_wrist=false)</li>
-        <li>"ESTATS","ASTATS","CSTATS","ASTATE","STARTASTATE" - either
+<li>"ESTATS","ASTATS","CSTATS","ASTATE","STARTASTATE" -
+either
 a |
 delimited stat list, or a series of var=value, e.g.
 (STRENGTH=5 HITS=2 ATTACK=2 etc..)</li>
-      </ul>
-      <p><br />
-      <a name="factiontag"><span style="font-weight: bold;">FACTION tags</span></a>:
-      <br />
+</ul>
+<p><br />
+<a name="factiontag"><span style="font-weight: bold;">FACTION tags</span></a>:
+<br />
 Required details:&nbsp;</p>
-      <ul>
-        <li>"ID"</li>
-        <li>"VALUE"</li>
-      </ul>
-      <span style="font-family: monospace;">
-      <pre><br /></pre>
-      </span></td>
-    </tr>
-  </tbody>
+<ul>
+<li>"ID"</li>
+<li>"VALUE"</li>
+</ul>
+<span style="font-family: monospace;"></span>
+<h2><a name="mql">Notes on MQL</a></h2>
+<p>MQL Stands for MUD Query Language. &nbsp;It's purpose is to allow
+the Archon, or a random quest xml document, to select existing objects
+in the game, or the properties of existing objects. &nbsp;</p><p>The structure of MQL is similar to SQL in that all MQL statements are of this structure: <br /></p><p><span style="font-family: monospace;">SELECT:</span> [property, property, ..] <span style="font-family: monospace;">FROM</span> [object set] &nbsp;<span style="font-family: monospace;">WHERE</span> [object comparison, object comparison]<br />* note the colon : after the word SELECT above.</p><p>The SELECT clause defines the properties you wish to be returned from the MQL statement.<br />The FROM clause defines the set of objects that you might want to return the properties of.<br />The
+WHERE clause defines the conditions under which any member of the set
+in the FROM clause may be included in the final results.</p><p>A FROM clause can be a simple world set term, such as one of the following:<br /></p><ul><li>A CMFS file path to a CMARE file, such as :<span style="font-family: monospace;">:/resources/map/plains.cmare</span></li><li><span style="font-family: monospace;">AREAS</span> to use the set of all world areas</li><li><span style="font-family: monospace;">ROOMS</span> to use the set of all existing world rooms</li><li><span style="font-family: monospace;">MOBS</span> to use the set of all existing world mobs</li><li><span style="font-family: monospace;">ITEMS</span> to use the set of all existing world items</li><li>In case where a qualifying object is implied, <span style="font-family: monospace;">AREA</span> can be used to refer to that specific area.</li><li>Another SELECT: statement in parenthesis, such as: <span style="font-family: monospace;">SELECT: name from (SELECT * from AREA)</span></li></ul>The
+FROM clause can also include narrowing suffixes. &nbsp;A narrowing
+suffix comes after the&nbsp;simple term, and is separated from it by a
+backslash \. &nbsp; For example, if your from clause looks like <span style="font-family: monospace;">SELECT * FROM AREAS\ROOM</span>
+&nbsp;, then the ROOM portion is the narrowing suffix of the AREAS
+term. &nbsp;You can also continue adding more narrowing suffixes as
+needed. &nbsp;For example: <span style="font-family: monospace;">SELECT * FROM AREAS\MOBS\EQUIPMENT</span>
+&nbsp;. &nbsp;Each suffix narrows or alters the term immediate before
+it, and the entire FROM clause will end up reflecting the type of
+object described by the final term, whether it be simple, or a
+narrowing term.<br /><br />The following are useful narrowing terms:<br /><ul><li><span style="font-family: monospace;">AREAS</span> to use the unique set of areas in which the prior term is located</li><li><span style="font-family: monospace;">ROOMS</span> to use the unique set of rooms in which the prior term is located, or which the prior term contains</li><li><span style="font-family: monospace;">MOBS, MOB</span> to use the set of all mobs contained in the prior term</li><li><span style="font-family: monospace;">ITEMS, ITEM</span> to use the set of all items contained in the prior term</li><li><span style="font-family: monospace;">OWNER</span> to use the set of all item owners of the prior term, if it was items</li><li><span style="font-family: monospace;">EQUIPMENT</span> to use the set of all &nbsp;worn items of the prior term</li></ul>Be
+careful when using narrowing terms to make sure they make sense for the
+term prior to them. &nbsp;For example, if importing mobs from a cmare
+file, AREAS will not likely resolve to anything, since the mobs aren't
+in the world yet.<br /><br />The SELECT: clause can include one or more
+comma-delimited properties of &nbsp;the objects in the from clause, or
+it can be an asterisk *, or a period ., to refer simply to the from
+objects themselves. &nbsp;It can also be a string or numeric literal,
+or an XML tag when embedding MQL in a random quest document.&nbsp;
+&nbsp; Different kinds of objects have different kinds of properties,
+so it is tricky to define precisely what a legal and illegal object
+property might be. &nbsp;Choosing incorrectly will usually just result
+in an empty string "".<br /><br />An example of a legal property might
+be the property CLASS, since it applies to everything from areas and
+rooms, to mobs, and items. &nbsp;NAME is also a property that almost
+all objects have. &nbsp;Beyond this. using the GMODIFY command might be
+the simplest way to get a list of valid properties for a specific type
+of world object, or objects imported from cmare files. &nbsp;<br /><br />As
+mentioned previously, SELECT: clause properties can be separated by
+commas in order to select more than one. &nbsp;For example: <span style="font-family: monospace;">SELECT: class, name FROM areas\mobs</span> would show the class id and name of every mob in your game. &nbsp;<br /><br />SELECT:
+clauses can also include an AS qualifier for each property selected.
+&nbsp;This has only the effect of changing the apparent name of the
+property for other parts of the system. &nbsp;For an example using the
+WHERE command to issue MQL: <span style="font-family: monospace;">WHERE AREA SELECT: class as classid, name as mob_name FROM areas\mobs&nbsp;</span>would
+show the same results as the previous example statement, but with
+different name tags for the class and name properties. &nbsp;This might
+be important when using an embedded SELECT: statement as your FROM
+clause, since you can only select properties that the embedded clause
+has returned, by the names they were given.<br /><br />SELECT: clauses,
+similar to FROM clauses above, can include narrowing terms. &nbsp;Like
+FROM clauses, these narrowing terms are separated by backslashes \.
+&nbsp; SELECT clauses, at the moment, only support one narrowing term:
+COUNT. &nbsp;The purpose of the COUNT term is to report the number of
+times the value of the previous terms appears in the rest of the FROM:
+clause. &nbsp;For example, suppose you wanted to know the number of
+times each mob name is used, to do that, you might enter <span style="font-family: monospace;">SELECT: name, name\count FROM areas\mobs</span><br /><br />Lastly,
+SELECT: clause can contain aggregating prefixes before a property term,
+which will transform the final result set in some way by aggregating
+the rows according to the prefix. &nbsp;Prefixes, like suffixes, are
+separated from the property term by a backslash \. &nbsp;The value
+aggregating prefixes are:<br /><ul><li>MEDIAN to return only the median value of all the property terms in the existing result set</li><li>MEAN to return the mean value of all the property terms in the existing result set</li><li>COUNT to return the count of the number of &nbsp;items in the result set</li><li>UNIQUE to include only one row where the property is of any given value</li></ul>For example, to quickly count the mobs in your game, you might enter <span style="font-family: monospace;">SELECT: COUNT\* from AREAS\MOBS</span><br /><br />The
+WHERE clause contains one or more conditions, which you can further
+compare using connectors like AND, OR, or parenthesis to group
+conditions together. &nbsp;Each condition consists of &nbsp;two terms
+separated by a comparator. &nbsp;Value comparitors include = (equal
+to), &lt;&gt; (not equal to), &gt; (greater than), &lt; (less than),
+&gt;= (greater or equal), &lt;= (less or equal), IN (in a set or object
+group, or a substring of), or LIKE (matching a ZAPPERMASK).<br /><br />A
+condition consists of two property terms, similar to those described in
+the SELECT: clause above, except that condition terms can not use
+aggregating prefixes. &nbsp;Narrowing suffixes, however, are permitted.
+&nbsp;For example <span style="font-family: monospace;">NAME = 'Bob'</span>
+is checking whether the NAME property of an item in the FROM clause is
+equal to the string literal "BOB". &nbsp;If it is, when that condition
+is true. &nbsp;Putting it together then, to show the mobs in your game
+whose names are EXACTLY "BOB", you might do <span style="font-family: monospace;">SELECT: * FROM areas\mobs WHERE name="BOB"</span>. This works because NAME is a property of every mob in the AREAS\MOBS from set, and can be compared with the word "BOB".<br /><br />Condition
+statements are grouped together into conditions using AND or OR.
+&nbsp;For example, chaning the above condition to WHERE name="BOB" OR
+name="JOE" would expand the number of possible results by one name.
+&nbsp;<br /><br /><br /><br /><br /><br /><p></p>
+</td>
+</tr>
+</tbody>
 </table>
+<br />
 </center>
 </body></html>

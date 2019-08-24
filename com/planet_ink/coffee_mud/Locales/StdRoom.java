@@ -2241,7 +2241,7 @@ public class StdRoom implements Room
 						if((curMobEnumeration == null)||(!curMobEnumeration.hasMoreElements()))
 							return false;
 						curItemEnumeration=curMobEnumeration.nextElement().items();
-						hasMore = (curMobEnumeration!=null)&&(curMobEnumeration.hasMoreElements());
+						hasMore = (curItemEnumeration!=null)&&(curItemEnumeration.hasMoreElements());
 					}
 					return hasMore;
 				}

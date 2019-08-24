@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
+import com.planet_ink.coffee_mud.core.exceptions.MQLException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -207,6 +208,25 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * @return true if the room was modified, false otherwise.
 	 */
 	public boolean relevelRoom(Room room, int oldMin, int oldMax, int newMin, int newMax);
+
+	/**
+	 * Returns the raw output from an MQL query that begins with SELECT:
+	 *
+	 * @param E a random object you want to use as a base, or null
+	 * @param mql the MQL query
+	 * @return the list of maps that is the reqult of the query
+	 * @throws MQLException something went wrong
+	 */
+	public List<Map<String,Object>> doMQLSelectObjects(final Modifiable E, final String mql) throws MQLException;
+
+	/**
+	 * Returns a flattened string result from an MQL query that begins with SELECT:
+	 *
+	 * @param E a random object you want to use as a base, or null
+	 * @param mql the MQL query
+	 * @return the flatted string result, or an error message and stack trace
+	 */
+	public String doMQLSelectString(final Modifiable E, final String mql);
 
 	/**
 	 * Area generators work by first laying out a set of rooms into a
