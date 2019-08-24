@@ -4553,9 +4553,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				if(str.startsWith("$"))
 				{
 					Object val = defined.get(str.substring(1));
-					if(val instanceof String)
-						finalO=val;
-					else
 					if(val instanceof XMLTag)
 					{
 						final XMLTag tag=(XMLTag)val;
@@ -4576,30 +4573,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 										CMLib.threads().deleteAllTicks((Tickable)o2);
 								}
 							}
-							finalO=o;
-						}
-					}
-					if((val == null)&&(defPrefix!=null)&&(defPrefix.length()>0)&&(E!=null))
-					{
-						String preValue=str;
-						if(preValue.toUpperCase().startsWith(defPrefix.toUpperCase()))
-						{
-							preValue=preValue.toUpperCase().substring(defPrefix.length());
-							if((E.isStat(preValue))
-							&&((ignoreStats==null)||(!ignoreStats.contains(preValue.toUpperCase()))))
-							{
-								val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,piece,defined, false);
-								XMLTag statPiece=piece;
-								while((val == null)
-								&&(statPiece.parent()!=null)
-								&&(!(defPrefix.startsWith(statPiece.tag())&&(!defPrefix.startsWith(statPiece.parent().tag())))))
-								{
-									statPiece=statPiece.parent();
-									val=fillOutStatCode(E,ignoreStats,defPrefix,preValue,statPiece,defined, false);
-								}
-								if((ignoreStats!=null)&&(val!=null))
-									ignoreStats.add(preValue.toUpperCase());
-							}
+							val=o;
 						}
 					}
 					if(val == null)
