@@ -24,7 +24,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<QUEST_ID>${quest_template}_${area_name}_$[100000000?999999999]</QUEST_ID>
 	<QUEST_NAME>STRING=Normal Capture #1</QUEST_NAME>
 	<QUEST_CRITERIA>ZAPPERMASK</QUEST_CRITERIA>
-	<ANNOUNCER_AREA>=(AREA)</ANNOUNCER_AREA>
+	<ANNOUNCER_AREA>=$announcer_area</ANNOUNCER_AREA>
 	<ANNOUNCER_ROOM>=(ROOMID)</ANNOUNCER_ROOM>
 	<ANNOUNCER_NAME>NAME</ANNOUNCER_NAME>
 	<QUEST_NOTIFYSTRING>=(LONG_STRING)=I have someone I need captured!  Are you game?</QUEST_NOTIFYSTRING>
@@ -47,6 +47,10 @@ See guides/RandomAreas.html for information about documents of this type.
 	<!-- TODO: add a BINDING to the existence of this quest -->
 	<!-- TODO: add an EXPIRATION time to the existence of this quest -->
 </QUEST>
+
+<STRING SELECT="FIRST" id="announcer_area" define="announcer_area">
+
+</STRING>
 
 <STRING SELECT="Any-1" ACTION=REPLACE id="quest_template" define="quest_template" condition="$quest_template=''">
 	<STRING>normal_capture1</STRING>

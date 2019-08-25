@@ -1,11 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
+
 <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Scripting in CoffeeMud 5.9</title>
 
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog -->
-</head>
-<body>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head><body>
 <center>
 <table style="width: 90%;" border="1" cellpadding="10" cellspacing="0">
 <tbody>
@@ -73,7 +71,7 @@ and potentially the context in which each alternative applies or
 doesn't apply, and then makes selections and instantiates&nbsp;real
 mud objects based on those selections. &nbsp;The input to the
 engine is a very specifically built XML file, and the output is actual
-mud objects (mobs, items, areas, rooms, or all the above) in your game.<span style="font-weight: bold;"></span></p>
+mud objects (mobs, items, areas, rooms, or all the above) in your game.<span style="font-weight: bold;" /></p>
 <h2><a name="structure">Overview of
 XML Tags</a></h2>
 <a name="structure">The random generator works by
@@ -347,26 +345,26 @@ for example: ${ame}. When embedded in this way, the name may be
 preceeded by:<br />
 </a>
 <ul>
-<a name="structure"> <li>"u:" to force to
-all-uppercase</li>
-<li>"l:" to force all-lowercase</li>
-<li>"p:" to force plural</li>
-<li>"c:" to force to be capitalized (first letter upper,
-rest lower).</li>
-</a>
+<a name="structure"> </a><li><a name="structure">"u:" to force to
+all-uppercase</a></li>
+<li><a name="structure">"l:" to force all-lowercase</a></li>
+<li><a name="structure">"p:" to force plural</a></li>
+<li><a name="structure">"c:" to force to be capitalized (first letter upper,
+rest lower).</a></li>
+
 </ul>
 <a name="structure"> <span style="font-weight: bold;">Special
 embedded
 variables</span>:<br />
 </a>
 <ul>
-<a name="structure"> <li>$SYSTEM_RANDOM_NAME:[NUMX]-[NUMY]
+<a name="structure"> </a><li><a name="structure">$SYSTEM_RANDOM_NAME:[NUMX]-[NUMY]
 generate a random
-name with between NUMX and NUMY syllables.</li>
-<li>${STAT:[STATNAME]} embed the value from another stat
+name with between NUMX and NUMY syllables.</a></li>
+<li><a name="structure">${STAT:[STATNAME]} embed the value from another stat
 on the same object.&nbsp; STATs are things like NAME, DISPLAY,
-DESCRIPTION, etc...</li>
-<li>${STAT:[PATH]:[TO]:[ANOTHER]:[OBJECT]:[STATNAME]}
+DESCRIPTION, etc...</a></li>
+<li><a name="structure">${STAT:[PATH]:[TO]:[ANOTHER]:[OBJECT]:[STATNAME]}
 embed the value from another objects stat, potentially in a different
 room. Where path-to-another-object may be: ROOM to refer to the room
 containing the object, NORTH,SOUTH,EAST,WEST,UP,DOWN,NORTHEAST..etc..
@@ -378,11 +376,11 @@ example a string such as: "To the east is the residence of
 ${STAT:ROOM:EAST:MOB:NAME}" would embed the name of a mob in a room to
 the east of the current room. This command may internally cause
 post-processing if necessary, and so is almost guaranteed to always
-work unlike some of the special ROOM_ tags.</li>
-<li>(a(n)) will remove any indefinite or definite
+work unlike some of the special ROOM_ tags.</a></li>
+<li><a name="structure">(a(n)) will remove any indefinite or definite
 articles from the string immediately following it and replace it (or
-insert) either "a" or "an" depending on the first letter of the word.</li>
-</a>
+insert) either "a" or "an" depending on the first letter of the word.</a></li>
+
 </ul>
 <a name="structure"> </a>
 <h2><a name="using">Using the Random Generator</a></h2>
@@ -896,7 +894,7 @@ Required details:&nbsp;</p>
 <li>"ID"</li>
 <li>"VALUE"</li>
 </ul>
-<span style="font-family: monospace;"></span>
+<span style="font-family: monospace;" />
 <h2><a name="mql">Notes on MQL</a></h2>
 <p>MQL Stands for MUD Query Language. &nbsp;It's purpose is to allow
 the Archon, or a random quest xml document, to select existing objects
@@ -912,19 +910,35 @@ needed. &nbsp;For example: <span style="font-family: monospace;">SELECT * FROM A
 &nbsp;. &nbsp;Each suffix narrows or alters the term immediate before
 it, and the entire FROM clause will end up reflecting the type of
 object described by the final term, whether it be simple, or a
-narrowing term.<br /><br />The following are useful narrowing terms:<br /><ul><li><span style="font-family: monospace;">AREAS</span> to use the unique set of areas in which the prior term is located</li><li><span style="font-family: monospace;">ROOMS</span> to use the unique set of rooms in which the prior term is located, or which the prior term contains</li><li><span style="font-family: monospace;">MOBS, MOB</span> to use the set of all mobs contained in the prior term</li><li><span style="font-family: monospace;">ITEMS, ITEM</span> to use the set of all items contained in the prior term</li><li><span style="font-family: monospace;">OWNER</span> to use the set of all item owners of the prior term, if it was items</li><li><span style="font-family: monospace;">EQUIPMENT</span> to use the set of all &nbsp;worn items of the prior term</li></ul>Be
+narrowing term.<br /><br />The following are useful narrowing terms:<br /><ul><li><span style="font-family: monospace;">AREAS</span> to use the unique set of areas in which the prior term is located</li><li><span style="font-family: monospace;">ROOMS</span> to use the unique set of rooms in which the prior term is located, or which the prior term contains</li><li><span style="font-family: monospace;">MOBS, MOB</span> to use the set of all mobs contained in the prior term</li><li><span style="font-family: monospace;">ITEMS, ITEM</span> to use the set of all items contained in the prior term</li><li><span style="font-family: monospace;">OWNER</span> to use the set of all item owners of the prior term, if it was items</li>
+        <li><span style="font-family: monospace;">PLAYERS, PLAYER</span> to use the set of all players contained in the prior term<br />
+        </li>
+        <li><span style="font-family: monospace;">NPCS, NPC</span> to use the set of all non-player mobs contained in the prior term<br />
+        </li>
+<li><span style="font-family: monospace;">EQUIPMENT</span> to use the set of all &nbsp;worn items of the prior term</li></ul>Be
 careful when using narrowing terms to make sure they make sense for the
 term prior to them. &nbsp;For example, if importing mobs from a cmare
 file, AREAS will not likely resolve to anything, since the mobs aren't
 in the world yet.<br /><br />The SELECT: clause can include one or more
 comma-delimited properties of &nbsp;the objects in the from clause, or
-it can be an asterisk *, or a period ., to refer simply to the from
+it can be an asterisk *, or a period ., to refer simply to the FROM
 objects themselves. &nbsp;It can also be a string or numeric literal,
 or an XML tag when embedding MQL in a random quest document.&nbsp;
 &nbsp; Different kinds of objects have different kinds of properties,
 so it is tricky to define precisely what a legal and illegal object
 property might be. &nbsp;Choosing incorrectly will usually just result
-in an empty string "".<br /><br />An example of a legal property might
+in an empty string "".<br />
+      <br />
+To summarize, valid property terms include:<br />
+      <ul>
+        <li>A valid property of an object from the FROM set, e.g <span style="font-family: monospace;">NAME</span>, <span style="font-family: monospace;">CLASS</span>, etc..<br />
+        </li>
+        <li>A string or numeric literal, e.g. <span style="font-family: monospace;">"Bob The Builder"</span>, <span style="font-family: monospace;">12.34</span>, etc..</li>
+        <li>An asterisk * or a period . to refer to the FROM set object itself.</li>
+        <li>Another MQL statement, e.g.<span style="font-family: monospace;"> (SELECT: * FROM areas\mobs)</span></li>
+        <li>An XML tag id, e.g. <span style="font-family: monospace;">$tagname</span></li>
+      </ul>
+An example of a legal property might
 be the property CLASS, since it applies to everything from areas and
 rooms, to mobs, and items. &nbsp;NAME is also a property that almost
 all objects have. &nbsp;Beyond this. using the GMODIFY command might be
@@ -971,7 +985,7 @@ whose names are EXACTLY "BOB", you might do <span style="font-family: monospace;
 statements are grouped together into conditions using AND or OR.
 &nbsp;For example, chaning the above condition to WHERE name="BOB" OR
 name="JOE" would expand the number of possible results by one name.
-&nbsp;<br /><br /><br /><br /><br /><br /><p></p>
+&nbsp;<br /><br /><br /><br /><br /><br /><p />
 </td>
 </tr>
 </tbody>

@@ -16,7 +16,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -62,6 +61,38 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		public void willBuild(Environmental E, XMLTag XMLTag);
 	}
 
+	private static final Filterer<MOB> noMobFilter = new Filterer<MOB>()
+	{
+
+		@Override
+		public boolean passesFilter(MOB obj)
+		{
+			return (obj != null) && (CMLib.flags().isInTheGame(obj, true));
+		}
+
+	};
+	
+	private static final Filterer<MOB> npcFilter = new Filterer<MOB>()
+	{
+
+		@Override
+		public boolean passesFilter(MOB obj)
+		{
+			return (obj != null) && (!obj.isPlayer());
+		}
+
+	};
+	
+	private static final Converter<Session, MOB> sessionToMobConvereter= new Converter<Session, MOB>()
+	{
+		@Override
+		public MOB convert(Session obj)
+		{
+			// TODO Auto-generated method stub
+			return null;
+		}
+	};
+	
 	private static final Comparator<Object> objComparator = new Comparator<Object>()
 	{
 		@Override
@@ -2880,8 +2911,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					final boolean missingMobVarCondition;
 					if(defPrefix != null)
 					{
-						missingMobVarCondition =
-						  (defined!=null)
+						missingMobVarCondition = (defined!=null)
 						&&(id.var.toUpperCase().startsWith(defPrefix))
 						&&(!defined.containsKey(id.var.toUpperCase()));
 						if(missingMobVarCondition)
@@ -4190,6 +4220,74 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					from.add(R);
 			}
 			else
+			if((f.equals("PLAYERS"))
+			||((from.size()>0)&&(f.equals("PLAYER"))))
+			{
+				if(from.size()==0)
+				{
+					final Enumeration<Session> sesss = new IteratorEnumeration<Session>(CMLib.sessions().allIterableAllHosts().iterator());
+					final Enumeration<MOB> m=new FilteredEnumeration<MOB>(new ConvertingEnumeration<Session, MOB>(sesss, sessionToMobConvereter), noMobFilter);
+					for(;m.hasMoreElements();)
+						from.add(m.nextElement());
+				}
+				else
+				{
+					final List<Object> oldFrom=new LinkedList<Object>();
+					oldFrom.addAll(from);
+					from.clear();
+					for(final Object o : oldFrom)
+					{
+						if(o instanceof Area)
+						{
+							final Enumeration<Session> sesss = new IteratorEnumeration<Session>(CMLib.sessions().allIterableAllHosts().iterator());
+							final Enumeration<MOB> m=new FilteredEnumeration<MOB>(new ConvertingEnumeration<Session, MOB>(sesss, sessionToMobConvereter), noMobFilter);
+							for(;m.hasMoreElements();)
+							{
+								final MOB M=m.nextElement();
+								if(CMLib.map().areaLocation(M) == o)
+									from.add(M);
+							}
+						}
+						else
+						if(o instanceof Room)
+						{
+							for(final Enumeration<MOB> m=((Room)o).inhabitants();m.hasMoreElements();)
+							{
+								final MOB M=m.nextElement();
+								if((M!=null)
+								&&(M.isPlayer()))
+									from.add(M);
+							}
+						}
+						if(o instanceof MOB)
+						{
+							if(((MOB)o).isPlayer())
+								from.add(o);
+						}
+						else
+						if(o instanceof Item)
+						{
+							final Item I=(Item)o;
+							if((I.owner() instanceof MOB)
+							&&(((MOB)I.owner())).isPlayer())
+								from.add(I.owner());
+						}
+						else
+							throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+					}
+				}
+			}
+			else
+			if(f.equals("PLAYER") && (from.size()==0))
+			{
+				final MOB oE=(E instanceof MOB) ? (MOB)E : null;
+				if((oE==null)||(!oE.isPlayer()))
+					throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+				else
+				if(!from.contains(oE))
+					from.add(oE);
+			}
+			else
 			if(f.equals("MOBS")
 			||((from.size()>0)&&(f.equals("MOB"))))
 			{
@@ -4242,6 +4340,64 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final Environmental oE=(E instanceof MOB) ? (Environmental)E : null;
 				if(oE==null)
+					throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+				else
+				if(!from.contains(oE))
+					from.add(oE);
+			}
+			else
+			if(f.equals("NPCS")
+			||((from.size()>0)&&(f.equals("NPC"))))
+			{
+				if(from.size()==0)
+					from.addAll(new XVector<MOB>(new FilteredEnumeration<MOB>(CMLib.map().worldMobs(),npcFilter)));
+				else
+				{
+					final List<Object> oldFrom=new LinkedList<Object>();
+					oldFrom.addAll(from);
+					from.clear();
+					for(final Object o : oldFrom)
+					{
+						if(o instanceof Area)
+						{
+							for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
+							{
+								final Room R=r.nextElement();
+								for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+								{
+									final MOB M=m.nextElement();
+									if(npcFilter.passesFilter(M) && (!from.contains(M)))
+										from.add(M);
+								}
+							}
+						}
+						else
+						{
+							final Room R;
+							if (o instanceof Environmental)
+								R=CMLib.map().roomLocation((Environmental)o);
+							else
+								R=null;
+							if(R==null)
+								throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							else
+							{
+								for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+								{
+									final MOB M=m.nextElement();
+									if(npcFilter.passesFilter(M) && (!from.contains(M)))
+										from.add(M);
+								}
+							}
+						}
+					}
+				}
+			}
+			else
+			if(f.equals("NPC") && (from.size()==0))
+			{
+				final MOB oE=(E instanceof MOB) ? (MOB)E : null;
+				if((oE==null) || (oE.isPlayer()))
 					throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 				else
 				if(!from.contains(oE))
@@ -5057,7 +5213,28 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final Map<String,String> n=new TreeMap<String,String>();
 			results.add(n);
 			for(final String key : o.keySet())
-				n.put(key, o.get(key).toString());
+			{
+				final Object o1=o.get(key);
+				if(o1 instanceof MOB)
+					n.put(key, CMLib.coffeeMaker().getMobXML((MOB)o1).toString());
+				else
+				if(o1 instanceof Item)
+					n.put(key, CMLib.coffeeMaker().getItemXML((Item)o1).toString());
+				else
+				if(o1 instanceof Ability)
+					n.put(key, ((Ability)o1).ID());
+				else
+				if(o1 instanceof Room)
+					n.put(key, CMLib.map().getExtendedRoomID((Room)o1));
+				else
+				if(o1 instanceof Area)
+					n.put(key, ((Area)o1).Name());
+				else
+				if(o1 instanceof Behavior)
+					n.put(key, ((Behavior)o1).ID());
+				else
+					n.put(key, o.get(key).toString());
+			}
 		}
 		return results;
 	}

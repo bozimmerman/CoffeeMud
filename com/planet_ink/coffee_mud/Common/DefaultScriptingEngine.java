@@ -12760,7 +12760,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					break;
 				case 46: // putting_prog
-					if((msg.targetMinor()==CMMsg.TYP_PUT)&&canTrigger(21)
+					if((msg.targetMinor()==CMMsg.TYP_PUT)&&canTrigger(46)
 					&&((msg.tool()==affecting)
 						||(affecting instanceof Room)
 						||(affecting instanceof Area)

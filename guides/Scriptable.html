@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 
+
   <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Scripting in CoffeeMud 5.9</title>
   
   <link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head><body>
@@ -1388,9 +1389,9 @@ matches the keywords of the
 put_prog, the prog is triggered. If there is a &#8216;p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
-the put_prog. If there is not, then any object with any of the
-keywords in the list in it will trigger it. If a put_prog all is used,
-then the put_prog will trigger from any item being put in any container
+the putting_prog. If there is not, then any object with any of the
+keywords in the list in it will trigger it. If a putting_prog all is used,
+then the putting_prog will trigger from any item being put in any container
 at all.
 This type of prog is usually used for in-zone quests and special mob
 behavior, and has a variety of uses.</p>
@@ -4495,7 +4496,7 @@ character has an amount of time remaining on a temporary&nbsp;tattoo
 assigned to them. &nbsp;Where '==' may be any logical operator
 from above.</p>
       <p>EXAMPLE:</p>
-      <span style="font-family: monospace;">if hastattootime($n beastmark &lt; 15)</span><br style="font-family: monospace;" /><span style="font-family: monospace;">&nbsp;mpecho There is less than 1 minute left on the beastmark!</span><br style="font-family: monospace;" /><span style="font-family: monospace;" /><span style="font-family: monospace;">endif</span>
+      <span style="font-family: monospace;">if hastattootime($n beastmark &lt; 15)</span><br style="font-family: monospace;" /><span style="font-family: monospace;">&nbsp;mpecho There is less than 1 minute left on the beastmark!</span><br style="font-family: monospace;" /><span style="font-family: monospace;"><span style="font-family: monospace;">endif</span>
       <h3><a name="hitprcnt">hitprcnt</a></h3>
       <p>Usage:</p>
       <pre>hitprcnt(character == amount)<br /></pre>
@@ -4694,7 +4695,7 @@ code ($x, $xN, $xS, etc..)</p>
       ismonth(integer)<br /><p>This function is used to
 check the mud month number.&nbsp;</p>
       <p>EXAMPLE:</p>
-      <span style="font-family: monospace;">if ismonth(1)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho It is month 1.</span><br style="font-family: monospace;" /><span style="font-family: monospace;" /><span style="font-family: monospace;">endif</span>
+      <span style="font-family: monospace;">if ismonth(1)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho It is month 1.</span><br style="font-family: monospace;" /><span style="font-family: monospace;"><span style="font-family: monospace;">endif</span>
       <h3><a name="ismoon">ismoon</a></h3>
       <p>Usage:</p>
       <pre>ismoon()<br />ismoon(phase)<br /></pre>
@@ -4789,13 +4790,13 @@ If you need to be need to find mobile mobs or items, you can include
 the mob or item name, followed by @ followed by a room id or area name.
 The '==' may also be '!='.</p>
       <p>EXAMPLES:</p>
-      <pre>if isrecall($i == a bathroom)<br /> mpecho This means I am from a bathroom.<br />else<br /> mpecho I am not from a bathroom.<br />endif<br /><br />if isrecall($i != MyArea#20001)<br /> mpecho I am not from room MyArea#20001.<br />else<br /> mpecho I am from room MyArea#20001.<br />endif<br /></pre><h3><a name="isrlhour">isrlhour &nbsp;</a></h3><h3><a name="isrlday" />isrlday&nbsp;</h3><h3><a name="isrlmonth" />isrlmonth&nbsp;</h3><h3><a name="isrlyear" />isrlyear&nbsp;</h3><p>Usage:</p><span style="font-family: monospace;">
-isrlhour(integer)</span>
-      <p>This
+      <pre>if isrecall($i == a bathroom)<br /> mpecho This means I am from a bathroom.<br />else<br /> mpecho I am not from a bathroom.<br />endif<br /><br />if isrecall($i != MyArea#20001)<br /> mpecho I am not from room MyArea#20001.<br />else<br /> mpecho I am from room MyArea#20001.<br />endif<br /></pre><h3><a name="isrlhour">isrlhour &nbsp;</a></h3><h3><a name="isrlday">isrlday&nbsp;</a></h3><h3><a name="isrlmonth">isrlmonth&nbsp;</a></h3><h3><a name="isrlyear">isrlyear&nbsp;</a></h3><p><a name="isrlyear">Usage:</a></p><span style="font-family: monospace;">
+<a name="isrlyear">isrlhour(integer)</a></span>
+<a name="isrlyear">      </a><p><a name="isrlyear">This
 checks the real-life hour of the day (0-23), day of the month (1-31),
-month of the year (1-12), or year against the given integer value..</p>
-      <p>EXAMPLES:</p>
-      <span style="font-family: monospace;">if isrlday(15)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho This means it is the 15th of the month.</span><br style="font-family: monospace;" /><span style="font-family: monospace;" /><span style="font-family: monospace;">endif</span><br /><h3><a name="isseason">isseason</a></h3>
+month of the year (1-12), or year against the given integer value..</a></p>
+<a name="isrlyear">      </a><p><a name="isrlyear">EXAMPLES:</a></p>
+<a name="isrlyear">      <span style="font-family: monospace;">if isrlday(15)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho This means it is the 15th of the month.</span><br style="font-family: monospace;" /><span style="font-family: monospace;"><span style="font-family: monospace;">endif</span><br /><h3><a name="isseason">isseason</a></h3>
       <p>Usage:</p>
       <pre>isseason(seasonname)<br /></pre>
       <p>This function is used to
@@ -4844,7 +4845,7 @@ for "CLEAR". Other valid weathernames include: "CLOUDY", "WINDY",
       isyear(integer)<br /><p>This function is used to
 check the mud year.&nbsp;</p>
       <p>EXAMPLE:</p>
-      <span style="font-family: monospace;">if isyear(1)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho It is year 1.</span><br style="font-family: monospace;" /><span style="font-family: monospace;" /><span style="font-family: monospace;">endif</span>
+      <span style="font-family: monospace;">if isyear(1)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho It is year 1.</span><br style="font-family: monospace;" /><span style="font-family: monospace;"><span style="font-family: monospace;">endif</span>
       <h3><a name="level">level</a></h3>
       <p>Usage:</p>
       <pre>level(character == number)<br /></pre>
@@ -5333,7 +5334,7 @@ actor is not wearing purple shoes on
 his feet.</span><br style="font-family: monospace;" />
       <span style="font-family: monospace;">endif</span>
       <pre><br /></pre>
-      </td>
+      </span></span></a></span></span></td>
     </tr>
   </tbody>
 </table>

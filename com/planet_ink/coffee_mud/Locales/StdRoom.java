@@ -3164,7 +3164,7 @@ public class StdRoom implements Room
 		return (xtraValues == null) ? getStatCodes().length : getStatCodes().length - xtraValues.length;
 	}
 
-	protected static final String[]	STDCODES	= { "CLASS", "DISPLAY", "DESCRIPTION", "TEXT", "AFFBEHAV", "IMAGE", "CLIMATE", "ATMOSPHERE" };
+	protected static final String[]	STDCODES	= { "CLASS", "DISPLAY", "DESCRIPTION", "TEXT", "AFFBEHAV", "IMAGE", "CLIMATE", "ATMOSPHERE", "ROOMID" };
 	private static String[]			codes		= null;
 
 	@Override
@@ -3207,6 +3207,8 @@ public class StdRoom implements Room
 			return "" + getClimateTypeCode();
 		case 7:
 			return "" + getAtmosphereCode();
+		case 8:
+			return ""+CMLib.map().getExtendedRoomID(this);
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -3250,6 +3252,9 @@ public class StdRoom implements Room
 				setAtmosphere(matCode);
 			break;
 		}
+		case 8:
+			this.setRoomID(val);
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
@@ -3265,6 +3270,7 @@ public class StdRoom implements Room
 		for (int i = 0; i < codes.length; i++)
 		{
 			if((!E.getStat(codes[i]).equals(getStat(codes[i])))
+			&&(!codes[i].equals("ROOMID"))
 			&&(!codes[i].equals("ATMOSPHERE")))
 				return false;
 		}
