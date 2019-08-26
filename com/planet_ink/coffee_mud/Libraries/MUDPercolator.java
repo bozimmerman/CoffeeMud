@@ -2659,10 +2659,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							final int x=wiz.indexOf('=');
 							if(x>0)
 							{
-								final String var=wiz.substring(2,x);
+								final String var=wiz.substring(1,x);
 								if(cleanedFileText.indexOf(var)>0)
 								{
-									final String value=findStringNow(var, piece, defined);
+									final String value=findStringNow(wiz.substring(2,x), piece, defined);
 									cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,value);
 								}
 							}
@@ -2999,8 +2999,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 			}
 			fixed.putAll(defined);
-			if(condition.toLowerCase().indexOf("will_attack_code")>0)
-				System.out.println("!"+"/"+fixed.get("WILL_ATTACK_CODE"));
 			final boolean test= CMStrings.parseStringExpression(condition.toUpperCase(),fixed, true);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MudPercolator","TEST "+piece.tag()+": "+condition+"="+test);
@@ -5658,7 +5656,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(V.toLowerCase)
 				val=val.toString().toLowerCase();
 			if(V.toPlural)
-				val=CMLib.english().makePlural(val.toString());
+				val=CMLib.english().removeArticleLead(CMLib.english().makePlural(val.toString()));
 			if(V.toCapitalized)
 				val=CMStrings.capitalizeAndLower(val.toString());
 			if(V.toOneWord)
