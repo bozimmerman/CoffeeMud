@@ -247,7 +247,7 @@ public class Generate extends StdCommand
 			{
 				CMLib.percolator().preDefineReward(piece, definedIDs);
 				CMLib.percolator().defineReward(piece,definedIDs);
-				final String s=CMLib.percolator().findString("QUEST", piece, definedIDs);
+				final String s=CMLib.percolator().buildQuestScript(piece, definedIDs, null);
 				if(s!=null)
 					V.add(s);
 				break;

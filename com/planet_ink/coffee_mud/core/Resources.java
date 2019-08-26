@@ -386,6 +386,11 @@ public class Resources
 	{
 		if((path==null)||(path.length()==0))
 			return "resources/";
+		final String lpath=path.toLowerCase();
+		if(lpath.startsWith("/resources/"))
+			return path.substring(1);
+		if(lpath.startsWith("resources/"))
+			return path;
 		return "resources/"+path+"/";
 	}
 

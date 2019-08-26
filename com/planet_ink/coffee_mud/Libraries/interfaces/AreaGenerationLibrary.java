@@ -99,6 +99,18 @@ public interface AreaGenerationLibrary extends CMLibrary
 	public Room buildRoom(XMLTag piece, Map<String,Object> defined, Exit[] exits, int direction) throws CMException;
 
 	/**
+	 * Builds a quest script based around the given variables using the given xml tag root.
+	 *
+	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map)
+	 * @param piece the identified tag that can return a room
+	 * @param defined the defined id set from the entire xml document
+	 * @param E a given set object or null (such as an area, room, or mob)
+	 * @return the quest script
+	 * @throws CMException any parsing or generation errors
+	 */
+	public String buildQuestScript(final XMLTag piece, final Map<String,Object> defined, final Modifiable E) throws CMException;
+
+	/**
 	 * Does nothing but check the requirements to build the given xml tag piece, and compares it with
 	 * the variables in the given id definition map, to see if all requirements are met.  If not,
 	 * it throws an exception.

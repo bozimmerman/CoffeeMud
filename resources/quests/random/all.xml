@@ -48,33 +48,33 @@ See guides/RandomAreas.html for information about documents of this type.
 </QUEST>
 
 
-<OBJECT id="source_area" SELECT="Pick-1">
+<OBJECT id="source_area" SELECT="Pick-1" define="source_area">
 	<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
-	<OBJECT pickweight=1 condition="'${SELECT: name FROM area}' = ''">
-		SELECT: . FROM areas WHERE (select count from area\mobs WHERE name\count =1) > 0
-			AND (select count from area\mobs WHERE name\count >$num_targets) > 0
+	<OBJECT pickweight=1 select="any-1" condition="'${SELECT: name FROM area}' = ''">
+		SELECT: . FROM areas WHERE (SELECT: count\. from area\mobs WHERE name\count =1) > 0
+			AND (SELECT:count\. from area\mobs WHERE name\count >$num_targets) > 0
 	</OBJECT>
 </OBJECT>
 
-<OBJECT id="source_room" SELECT="Pick-1">
+<OBJECT id="source_room" SELECT="Pick-1" define="source_room">
 	<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: roomid FROM room}' != ''">SELECT: . FROM room</OBJECT>
 	<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: roomid FROM room}' = ''">SELECT: . FROM $source\room</OBJECT>
 </OBJECT>
 
-<OBJECT id="source" SELECT="Pick-1">
+<OBJECT id="source" SELECT="Pick-1" define="source">
 	<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
-	<OBJECT PICKWEIGHT=1 SELECT="any-1" CONDITION="'${SELECT: name FROM mob}' = ''" insert="SELECT: . FROM $source_area\mobs WHERE name\count=1" />
+	<OBJECT PICKWEIGHT=1 SELECT="any-1" CONDITION="'${SELECT: name FROM mob}' = ''">SELECT: . FROM $source_area\mobs WHERE name\count=1</OBJECT>
 </OBJECT>
 
-<OBJECT id="target" SELECT="Any-1" insert="SELECT: . FROM $source_area\mobs WHERE name\count>$num_targets" /> 
-<STRING id="target_level" define="target_level">${SELECT level/mean from $target}</STRING>
+<OBJECT id="target" SELECT="Any-1"  define="target" insert="SELECT: . FROM $source_area\mobs WHERE name\count>$num_targets" /> 
+<STRING id="target_level" define="target_level" define="target_level">${SELECT:level/mean from $target}</STRING>
 
 <STRING id="num_targets" define="num_targets">$[3?10]</STRING>
 <STRING id="level_range" define="level_range">$[3?6]</STRING>
-<STRING id="source_area_name" define="source_area">${SELECT name from $source_area}</STRING>
-<STRING id="source_room_id" define="source_room_id">${SELECT room from $source_room}</STRING>
-<STRING id="source_name" define="source_name">${SELECT name from $source}</STRING>
-<STRING id="target_name" define="target_name">${SELECT name from $source}</STRING>
+<STRING id="source_area_name" define="source_area">${SELECT:name from $source_area}</STRING>
+<STRING id="source_room_id" define="source_room_id">${SELECT:room from $source_room}</STRING>
+<STRING id="source_name" define="source_name">${SELECT:name from $source}</STRING>
+<STRING id="target_name" define="target_name">${SELECT:name from $source}</STRING>
 
 <STRING SELECT="Any-1" ACTION=REPLACE id="quest_template" define="quest_template" condition="$quest_template=''">
 	<STRING>normal_capture1</STRING>
