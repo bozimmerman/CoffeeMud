@@ -50,8 +50,8 @@ See guides/RandomAreas.html for information about documents of this type.
 
 <OBJECT id="source_area" SELECT="Pick-1" define="source_area">
 	<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
-	<OBJECT pickweight=1 select="any-1" condition="'${SELECT: name FROM area}' = ''">
-		SELECT: . FROM areas WHERE (SELECT: count\. from area\mobs WHERE name\count =1) > 0
+	<OBJECT pickweight=1 condition="'${SELECT: name FROM area}' = ''">
+		SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\mobs WHERE name\count =1) > 0
 			AND (SELECT:count\. from area\mobs WHERE name\count >$num_targets) > 0
 	</OBJECT>
 </OBJECT>
@@ -63,20 +63,21 @@ See guides/RandomAreas.html for information about documents of this type.
 
 <OBJECT id="source" SELECT="Pick-1" define="source">
 	<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
-	<OBJECT PICKWEIGHT=1 SELECT="any-1" CONDITION="'${SELECT: name FROM mob}' = ''">SELECT: . FROM $source_area\mobs WHERE name\count=1</OBJECT>
+	<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\mobs WHERE name\count=1</OBJECT>
 </OBJECT>
 
-<OBJECT id="target" SELECT="Any-1"  define="target" insert="SELECT: . FROM $source_area\mobs WHERE name\count>$num_targets" /> 
-<STRING id="target_level" define="target_level" define="target_level">${SELECT:level/mean from $target}</STRING>
+<OBJECT id="target" define="target">SELECT: ANY\. FROM $source_area\mobs WHERE name\count>$num_targets</OBJECT>
+<STRING id="target_level" define="target_level" define="target_level">${SELECT:mean\level from $target\mob}</STRING>
 
 <STRING id="num_targets" define="num_targets">$[3?10]</STRING>
 <STRING id="level_range" define="level_range">$[3?6]</STRING>
-<STRING id="source_area_name" define="source_area">${SELECT:name from $source_area}</STRING>
-<STRING id="source_room_id" define="source_room_id">${SELECT:room from $source_room}</STRING>
-<STRING id="source_name" define="source_name">${SELECT:name from $source}</STRING>
-<STRING id="target_name" define="target_name">${SELECT:name from $source}</STRING>
+<STRING id="source_area_name" define="source_area_name">${SELECT:name from $source_area\area}</STRING>
+<STRING id="source_room_id" define="source_room_id">${SELECT:roomid from $source_room\room}</STRING>
+<STRING id="source_name" define="source_name">${SELECT:name from $source\mob}</STRING>
+<STRING id="target_name" define="target_name">${SELECT:name from $source\mob}</STRING>
+<STRING id="target_area_name" define="target_area_name">$source_area_name</STRING>
 
-<STRING SELECT="Any-1" ACTION=REPLACE id="quest_template" define="quest_template" condition="$quest_template=''">
+<STRING SELECT="Any-1" ACTION=REPLACE id="quest_template" DEFINE="quest_template" condition="$quest_template=''">
 	<STRING>normal_capture1</STRING>
 </STRING>
 
@@ -90,16 +91,16 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING CONDITION="'$will_attack_code'='YES-ATTACK-ON-SIGHT'">VIOLENT</STRING>
 </STRING>
 
-<STRING ID="quest_point_awarded" define="quest_point_awarded" SELECT="Pick-1">
+<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
 	<STRING PICKWEIGHT=2>NO</STRING>
 	<STRING PICKWEIGHT=1>YES</STRING>
 </STRING>
 
-<STRING ID="gold_amount_awarded" define="gold_amount_awarded">$[$target_level*2]</STRING>
+<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded">$[$target_level*2]</STRING>
 
-<STRING ID="xp_amount_awarded" define="xp_amount_awarded">$[100 + $target_level*3]</STRING>
+<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded">$[100 + $target_level*3]</STRING>
 
-<STRING ID="quest_repeatable" define="quest_repeatable" SELECT="Pick-1">
+<STRING ID="quest_repeatable" DEFINE="quest_repeatable" SELECT="Pick-1">
 	<STRING PICKWEIGHT=99>NO</STRING>
 	<STRING PICKWEIGHT=1>YES</STRING>
 </STRING>

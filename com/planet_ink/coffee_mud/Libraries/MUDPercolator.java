@@ -283,7 +283,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final MQLClause clause = new MQLClause();
 				clause.parseMQL(testMQLs[i], mql);
-				System.out.println(clause);
 			}
 			catch(final Exception e)
 			{
@@ -4399,6 +4398,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							}
 						}
 						else
+						if((o instanceof MOB)&&(f.equals("MOB")))
+							from.add(o);
+						else
 						{
 							final Room R;
 							if (o instanceof Environmental)
@@ -4460,6 +4462,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							}
 						}
 						else
+						if((o instanceof MOB)
+						&&(f.equals("NPC"))
+						&&(npcFilter.passesFilter((MOB)o)))
+							from.add(o);
+						else
 						{
 							final Room R;
 							if (o instanceof Environmental)
@@ -4509,6 +4516,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
 								from.addAll(new XVector<Item>(r.nextElement().itemsRecursive()));
 						}
+						else
+						if((o instanceof Item)
+						&&(f.equals("ITEM")))
+							from.add(o);
 						else
 						{
 							final Room R;
