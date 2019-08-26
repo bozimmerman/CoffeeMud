@@ -105,14 +105,14 @@ public class Prayer_DreamFeast extends Prayer
 			ticksSleeping++;
 			if(ticksSleeping > 8)
 			{
-				if(affected instanceof MOB)
+				if((affected instanceof MOB)
+				&&((ticksSleeping %9)==0))
 					((MOB)affected).tell(L("You have wonderful dreams of an abundant feasts and overflowing wines."));
 			}
 		}
 		else
 		if(ticksSleeping > 8)
 		{
-
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
