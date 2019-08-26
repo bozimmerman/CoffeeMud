@@ -95,7 +95,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING PICKWEIGHT=1>YES</STRING>
 </STRING>
 
-<STRING ID="gold_amount_awarded" define="gold_amount_awarded">$[$target_level*3]</STRING>
+<STRING ID="gold_amount_awarded" define="gold_amount_awarded">$[$target_level*2]</STRING>
 
 <STRING ID="xp_amount_awarded" define="xp_amount_awarded">$[100 + $target_level*3]</STRING>
 
