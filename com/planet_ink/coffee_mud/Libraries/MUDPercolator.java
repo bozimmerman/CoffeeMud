@@ -78,7 +78,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		@Override
 		public boolean passesFilter(MOB obj)
 		{
-			return (obj != null) && (!obj.isPlayer());
+			return (obj != null) 
+				&& (!obj.isPlayer())
+				&&((obj.amFollowing()==null)||(!obj.amUltimatelyFollowing().isPlayer()));
 		}
 
 	};
@@ -1121,6 +1123,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		public boolean toCapitalized=false;
 		public boolean toPlural=false;
 		public boolean isMathExpression=false;
+		public boolean toOneWord=false;
 	}
 
 	protected List<Varidentifier> parseVariables(final String str)
@@ -1138,17 +1141,24 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				x++;
 				while((x<str.length()-2)&&(str.charAt(x+1)==':'))
 				{
-					if((str.charAt(x)=='l')||(str.charAt(x)=='L'))
+					switch(str.charAt(x))
+					{
+					case 'l': case 'L':
 						var.toLowerCase=true;
-					else
-					if((str.charAt(x)=='u')||(str.charAt(x)=='U'))
+						break;
+					case 'u': case 'U':
 						var.toUpperCase=true;
-					else
-					if((str.charAt(x)=='p')||(str.charAt(x)=='P'))
+						break;
+					case 'p': case 'P':
 						var.toPlural=true;
-					else
-					if((str.charAt(x)=='c')||(str.charAt(x)=='C'))
+						break;
+					case 'c': case 'C':
 						var.toCapitalized=true;
+						break;
+					case '_':
+						var.toOneWord=true;
+						break;
+					}
 					x+=2;
 					varstart+=2;
 				}
@@ -2940,7 +2950,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 					else
 						missingMobVarCondition = false;
-					String value=findString(E,ignoreStats,defPrefix,id.var, piece, defined);
+					String value;
+					try
+					{
+						value=findString(E,ignoreStats,defPrefix,id.var, piece, defined);
+					}
+					catch(MQLException e)
+					{
+						value="";
+					}
 					if(CMath.isMathExpression(value))
 					{
 						final String origValue = value;
@@ -3372,7 +3390,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			COUNT,
 			MEDIAN,
 			MEAN,
-			UNIQUE
+			UNIQUE,
+			FIRST,
+			ANY
 		}
 
 		private static class WhatBit extends Pair<String,String>
@@ -4619,6 +4639,51 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 			}
 			else
+			if(f.startsWith("$"))
+			{
+				Object val = defined.get(f.substring(1));
+				if(val == null)
+					throw new MQLException("Unknown from clause selector '"+f+"' in "+mql);
+				if(val instanceof XMLTag)
+				{
+					final XMLTag tag=(XMLTag)val;
+					try
+					{
+						if(tag.tag().equalsIgnoreCase("STRING"))
+							from.add(findString(E,ignoreStats,defPrefix,"STRING",(XMLTag)val,defined));
+						else
+						{
+							final Object o =findObject(E,ignoreStats,defPrefix,"OBJECT",tag,defined);
+							if(o instanceof Tickable)
+							{
+								CMLib.threads().deleteAllTicks((Tickable)o);
+								from.add(o);
+							}
+							else
+							if(o instanceof List)
+							{
+								@SuppressWarnings({ "unchecked" })
+								final List<Object> l=(List<Object>)o;
+								for(final Object o2 : l)
+								{
+									if(o2 instanceof Tickable)
+										CMLib.threads().deleteAllTicks((Tickable)o2);
+								}
+								from.addAll(l);
+							}
+							else
+								from.add(o);
+						}
+					}
+					catch(CMException e)
+					{
+						throw new MQLException(e.getMessage(),e);
+					}
+				}
+				else
+					from.add(val);
+			}
+			else
 			{
 				final Object asDefined = defined.get(f);
 				if(asDefined == null)
@@ -5163,11 +5228,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(aggregate)
 		{
 
-			final List<Map<String,Object>> nonresults=new ArrayList<Map<String,Object>>(results.size());
-			nonresults.addAll(results);
-			results.clear();
-			final Map<String,Object> oneRow=new TreeMap<String,Object>();
-			results.add(oneRow);
 			for(int i=0;i<aggregates.length;i++)
 			{
 				if(aggregates[i] == null)
@@ -5177,12 +5237,41 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				switch(aggregates[i])
 				{
 				case COUNT:
-					oneRow.put(whatName, ""+nonresults.size());
+				{
+					String sz=""+results.size();
+					results.clear();
+					final Map<String,Object> oneRow=new TreeMap<String,Object>();
+					results.add(oneRow);
+					oneRow.put(whatName, sz);
 					break;
+				}
+				case FIRST:
+				{
+					if(results.size()>0)
+					{
+						Map<String,Object> first=results.get(0);
+						results.clear();
+						results.add(first);
+					}
+					break;
+				}
+				case ANY:
+				{
+					if(results.size()>0)
+					{
+						Map<String,Object> any=results.get(CMLib.dice().roll(1, results.size(), -1));
+						results.clear();
+						results.add(any);
+					}
+					break;
+				}
 				case UNIQUE:
 				{
+					final List<Map<String,Object>> nonresults=new ArrayList<Map<String,Object>>(results.size());
+					nonresults.addAll(results);
+					results.clear();
 					final TreeSet<Object> done=new TreeSet<Object>(objComparator);
-					for(final Map<String,Object> r : nonresults)
+					for(final Map<String,Object> r : results)
 					{
 						if(r.containsKey(whatName)
 						&&(r.get(whatName)!=null)
@@ -5196,33 +5285,42 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				case MEDIAN:
 				{
-					final List<Object> allValues=new ArrayList<Object>(nonresults.size());
-					for(final Map<String,Object> r : nonresults)
+					final List<Object> allValues=new ArrayList<Object>(results.size());
+					for(final Map<String,Object> r : results)
 					{
 						if(r.containsKey(whatName)&&(r.get(whatName)!=null))
 							allValues.add(r.get(whatName));
 					}
 					Collections.sort(allValues,objComparator);
 					if(allValues.size()>0)
+					{
+						results.clear();
+						final Map<String,Object> oneRow=new TreeMap<String,Object>();
+						results.add(oneRow);
 						oneRow.put(clause.what.get(i).as(), allValues.get((int)Math.round(Math.floor(CMath.div(allValues.size(), 2)))));
+					}
 					break;
 				}
 				case MEAN:
 				{
 					double totalValue=0.0;
-					for(final Map<String,Object> r : nonresults)
+					for(final Map<String,Object> r : results)
 					{
 						if(r.containsKey(whatName)&&(r.get(whatName)!=null))
 							totalValue += CMath.s_double(r.get(whatName).toString());
 					}
-					if(nonresults.size()>0)
-						oneRow.put(clause.what.get(i).as(), ""+(totalValue/nonresults.size()));
+					if(results.size()>0)
+					{
+						String mean=""+(totalValue/results.size());
+						results.clear();
+						final Map<String,Object> oneRow=new TreeMap<String,Object>();
+						results.add(oneRow);
+						oneRow.put(clause.what.get(i).as(), mean);
+					}
 					break;
 				}
 				}
 			}
-			if(oneRow.size()==0)
-				results.remove(oneRow);
 		}
 		return results;
 	}
@@ -5499,6 +5597,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				val=CMLib.english().makePlural(val.toString());
 			if(V.toCapitalized)
 				val=CMStrings.capitalizeAndLower(val.toString());
+			if(V.toOneWord)
+				val=CMStrings.removePunctuation(val.toString().replace(' ', '_'));
 			if(killArticles)
 				val=CMLib.english().removeArticleLead(val.toString());
 			str=str.substring(0,V.outerStart)+val.toString()+str.substring(V.outerEnd);

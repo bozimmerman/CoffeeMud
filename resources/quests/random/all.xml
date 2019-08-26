@@ -16,44 +16,91 @@ limitations under the License.
 --------------------------------------------------------------------------------
 
 See guides/RandomAreas.html for information about documents of this type.
-<!-- TODO: add QUESTSCRIPT to the official tags list -->
 <!-- TODO: add QUEST_TEMPLATE_ID to the official parms list -->
 -->
 
 <QUEST id="all" QUEST_TEMPLATE_ID="$quest_template" >
-	<QUEST_ID>${quest_template}_${area_name}_$[100000000?999999999]</QUEST_ID>
-	<QUEST_NAME>STRING=Normal Capture #1</QUEST_NAME>
-	<QUEST_CRITERIA>ZAPPERMASK</QUEST_CRITERIA>
-	<ANNOUNCER_AREA>=$announcer_area</ANNOUNCER_AREA>
-	<ANNOUNCER_ROOM>=(ROOMID)</ANNOUNCER_ROOM>
-	<ANNOUNCER_NAME>NAME</ANNOUNCER_NAME>
-	<QUEST_NOTIFYSTRING>=(LONG_STRING)=I have someone I need captured!  Are you game?</QUEST_NOTIFYSTRING>
-	<QUEST_INSTRUCTIONSSTRING>=(LONG_STRING)=I need you to capture some folks.  They are somewhere around somewhere.  Just beat them senseless, and they will yield to you.</QUEST_INSTRUCTIONSSTRING>
-	<QUEST_WINSPEECH_TEXT>=(LONG_STRING)=Aha, we got them! Congratulations!</QUEST_WINSPEECH_TEXT>
-	<QUEST_LOSESPEECH_TEXT>=(LONG_STRING)=Looks like I'll have wait for the law to get after them.</QUEST_LOSESPEECH_TEXT>
-	<CAPTURABLES_MASK>=ZAPPERMASK</CAPTURABLES_MASK>
-	<NUM_CAPTURABLES>(EXPRESSION)=1</NUM_CAPTURABLES>
-	<CAPTURABLES_RESPONSE>=(STRING)=So, you've come for me.  Come and get me.</CAPTURABLES_RESPONSE>
-	<CAPTURABLES_ATTACK>=CHOOSE=NO-USE-DEFAULT_BEHAVIOR,YES-ATTACK-ON-SIGHT</CAPTURABLES_ATTACK>
-	<CAPTURABLES_SURRENDER>=(STRING)=I surrender</CAPTURABLES_SURRENDER>
-	<CAPTURABLES_FOLLOW>CHOOSE=VIOLENT,PEACEFUL</CAPTURABLES_FOLLOW>
-	<QUEST_POINT>CHOOSE=YES,NO</QUEST_POINT>
-	<GOLD>=(EXPRESSION)</GOLD>
-	<EXP>=(STRING)=10%</EXP>
-	<FACTION>=(FACTION)</FACTION>
-	<NUMFACTION>=(STRING)</NUMFACTION>
-	<MULTIPLE>CHOOSE=YES,NO</MULTIPLE>
+	<QUEST_ID>${_:source_area_name}_${_:source_name}_${_:quest_template}_R$[100000000?999999999]</QUEST_ID>
+	<QUEST_NAME>${C:source_name} in ${C:source_area_name} needs ${C:target_name}</QUEST_NAME><!-- TODO -->
+	<QUEST_CRITERIA>-LEVELS +&gt;$[$target_level - $level_range] +&lt;$[$target_level + $level_range]<</QUEST_CRITERIA>
+	<ANNOUNCER_AREA>$source_area_name</ANNOUNCER_AREA>
+	<ANNOUNCER_ROOM>$source_room_id</ANNOUNCER_ROOM>
+	<ANNOUNCER_NAME>$source_name</ANNOUNCER_NAME>
+	<QUEST_NOTIFYSTRING>I have someone I need captured!  Are you game?</QUEST_NOTIFYSTRING>
+	<QUEST_INSTRUCTIONSSTRING>I need you to capture some folks.  They are somewhere around somewhere.  Just beat them senseless, and they will yield to you.</QUEST_INSTRUCTIONSSTRING>
+	<QUEST_WINSPEECH_TEXT>Aha, we got them! Congratulations!</QUEST_WINSPEECH_TEXT>
+	<QUEST_LOSESPEECH_TEXT>Looks like I'll have wait for the law to get after them.</QUEST_LOSESPEECH_TEXT>
+	<CAPTURABLES_MASK>-HOME "+$target_area_name" -NAMES "+$target_name"</CAPTURABLES_MASK>
+	<NUM_CAPTURABLES>$num_targets</NUM_CAPTURABLES>
+	<CAPTURABLES_RESPONSE>So, you've come for me.  Come and get me.</CAPTURABLES_RESPONSE>
+	<CAPTURABLES_ATTACK>=$will_attack_code</CAPTURABLES_ATTACK>
+	<CAPTURABLES_SURRENDER>I surrender</CAPTURABLES_SURRENDER>
+	<CAPTURABLES_FOLLOW>$will_react_peacefully</CAPTURABLES_FOLLOW>
+	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
+	<GOLD>$gold_amount_awarded</GOLD>
+	<EXP>$xp_amount_awarded</EXP>
+	<FACTION></FACTION><!-- TODO -->
+	<NUMFACTION></NUMFACTION><!-- TODO -->
+	<MULTIPLE>$quest_repeatable</MULTIPLE>
 	<NEXT_QUEST></NEXT_QUEST>
 	<!-- TODO: add a BINDING to the existence of this quest -->
 	<!-- TODO: add an EXPIRATION time to the existence of this quest -->
 </QUEST>
 
-<STRING SELECT="FIRST" id="announcer_area" define="announcer_area">
 
-</STRING>
+<OBJECT id="source_area" SELECT="Pick-1">
+	<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
+	<OBJECT pickweight=1 condition="'${SELECT: name FROM area}' = ''">
+		SELECT: . FROM areas WHERE (select count from area\mobs WHERE name\count =1) > 0
+			AND (select count from area\mobs WHERE name\count >$num_targets) > 0
+	</OBJECT>
+</OBJECT>
+
+<OBJECT id="source_room" SELECT="Pick-1">
+	<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: roomid FROM room}' != ''">SELECT: . FROM room</OBJECT>
+	<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: roomid FROM room}' = ''">SELECT: . FROM $source\room</OBJECT>
+</OBJECT>
+
+<OBJECT id="source" SELECT="Pick-1">
+	<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
+	<OBJECT PICKWEIGHT=1 SELECT="any-1" CONDITION="'${SELECT: name FROM mob}' = ''" insert="SELECT: . FROM $source_area\mobs WHERE name\count=1" />
+</OBJECT>
+
+<OBJECT id="target" SELECT="Any-1" insert="SELECT: . FROM $source_area\mobs WHERE name\count>$num_targets" /> 
+<STRING id="target_level" define="target_level">${SELECT level/mean from $target}</STRING>
+
+<STRING id="num_targets" define="num_targets">$[3?10]</STRING>
+<STRING id="level_range" define="level_range">$[3?6]</STRING>
+<STRING id="source_area_name" define="source_area">${SELECT name from $source_area}</STRING>
+<STRING id="source_room_id" define="source_room_id">${SELECT room from $source_room}</STRING>
+<STRING id="source_name" define="source_name">${SELECT name from $source}</STRING>
+<STRING id="target_name" define="target_name">${SELECT name from $source}</STRING>
 
 <STRING SELECT="Any-1" ACTION=REPLACE id="quest_template" define="quest_template" condition="$quest_template=''">
 	<STRING>normal_capture1</STRING>
 </STRING>
 
-<STRING 
+<STRING id="will_attack_code" DEFINE="will_attack_code" SELECT="Pick-1">
+	<STRING PICKWEIGHT=2>NO-USE-DEFAULT_BEHAVIOR</STRING>
+	<STRING PICKWEIGHT=1>YES-ATTACK-ON-SIGHT</STRING>
+</STRING>
+
+<STRING id="will_react_peacefully" DEFINE="will_react_peacefully" SELECT="Any-1">
+	<STRING CONDITION="'$will_attack_code'='NO-USE-DEFAULT_BEHAVIOR'">PEACEFUL</STRING>
+	<STRING CONDITION="'$will_attack_code'='YES-ATTACK-ON-SIGHT'">VIOLENT</STRING>
+</STRING>
+
+<STRING ID="quest_point_awarded" define="quest_point_awarded" SELECT="Pick-1">
+	<STRING PICKWEIGHT=2>NO</STRING>
+	<STRING PICKWEIGHT=1>YES</STRING>
+</STRING>
+
+<STRING ID="gold_amount_awarded" define="gold_amount_awarded">$[$target_level*3]</STRING>
+
+<STRING ID="xp_amount_awarded" define="xp_amount_awarded">$[100 + $target_level*3]</STRING>
+
+<STRING ID="quest_repeatable" define="quest_repeatable" SELECT="Pick-1">
+	<STRING PICKWEIGHT=99>NO</STRING>
+	<STRING PICKWEIGHT=1>YES</STRING>
+</STRING>
+ 
