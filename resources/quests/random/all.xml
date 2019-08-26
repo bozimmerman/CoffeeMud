@@ -48,7 +48,7 @@ See guides/RandomAreas.html for information about documents of this type.
 </QUEST>
 
 
-<OBJECT id="source_area" SELECT="Pick-1" define="source_area">
+<OBJECT id="source_area" SELECT="Pick-1" DEFINE="source_area">
 	<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
 	<OBJECT pickweight=1 condition="'${SELECT: name FROM area}' = ''">
 		SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\mobs WHERE name\count =1) > 0
@@ -56,12 +56,12 @@ See guides/RandomAreas.html for information about documents of this type.
 	</OBJECT>
 </OBJECT>
 
-<OBJECT id="source_room" SELECT="Pick-1" define="source_room">
+<OBJECT id="source_room" SELECT="Pick-1" DEFINE="source_room">
 	<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: roomid FROM room}' != ''">SELECT: . FROM room</OBJECT>
 	<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: roomid FROM room}' = ''">SELECT: . FROM $source\room</OBJECT>
 </OBJECT>
 
-<OBJECT id="source" SELECT="Pick-1" define="source">
+<OBJECT id="source" SELECT="Pick-1" DEFINE="source">
 	<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
 	<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\mobs WHERE name\count=1</OBJECT>
 </OBJECT>
@@ -87,8 +87,8 @@ See guides/RandomAreas.html for information about documents of this type.
 </STRING>
 
 <STRING id="will_react_peacefully" DEFINE="will_react_peacefully" SELECT="Any-1">
-	<STRING CONDITION="'$will_attack_code'='NO-USE-DEFAULT_BEHAVIOR'">PEACEFUL</STRING>
-	<STRING CONDITION="'$will_attack_code'='YES-ATTACK-ON-SIGHT'">VIOLENT</STRING>
+	<STRING CONDITION="$will_attack_code='NO-USE-DEFAULT_BEHAVIOR'">PEACEFUL</STRING>
+	<STRING CONDITION="$will_attack_code='YES-ATTACK-ON-SIGHT'">VIOLENT</STRING>
 </STRING>
 
 <STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">

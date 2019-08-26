@@ -2999,6 +2999,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 			}
 			fixed.putAll(defined);
+			if(condition.toLowerCase().indexOf("will_attack_code")>0)
+				System.out.println("!"+"/"+fixed.get("WILL_ATTACK_CODE"));
 			final boolean test= CMStrings.parseStringExpression(condition.toUpperCase(),fixed, true);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MudPercolator","TEST "+piece.tag()+": "+condition+"="+test);
