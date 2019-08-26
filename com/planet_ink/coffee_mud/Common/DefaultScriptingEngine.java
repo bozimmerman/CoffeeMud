@@ -12634,7 +12634,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(lastMsg==msg)
 								break;
 							lastMsg=msg;
-							enqueResponse(affecting,msg.source(),msg.target(),monster,checkInE,defaultItem,script,1,check, t);
+							final Item pTool = ((msg.tool() instanceof Item)&&(msg.target()==affecting))?((Item)msg.tool()):defaultItem;
+							enqueResponse(affecting,msg.source(),msg.target(),monster,checkInE,pTool,script,1,check, t);
 							return;
 						}
 					}
