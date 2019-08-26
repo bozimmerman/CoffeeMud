@@ -2652,6 +2652,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					final int endScript = lastCR > endX ? (lastCR < lastEOF ? lastCR : lastEOF): lastEOF;
 					final List<String> wizList = Resources.getFileLineVector(new StringBuffer(rawFileText.substring(0, endScript).trim()));
 					String cleanedFileText = rawFileText.substring(endScript).trim();
+					cleanedFileText = CMStrings.replaceAll(cleanedFileText, "$#AUTHOR", "CoffeeMud");
 					for(final String wiz : wizList)
 					{
 						if(wiz.startsWith("#$"))
