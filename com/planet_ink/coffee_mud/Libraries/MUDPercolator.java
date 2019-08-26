@@ -2853,17 +2853,33 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final String inserter = piece.getParmValue("INSERT");
 		if(inserter != null)
 		{
-			final List<String> V=CMParms.parseCommas(inserter,true);
-			for(int v=0;v<V.size();v++)
+			final String upperInserter = inserter.toUpperCase().trim();
+			if(upperInserter.startsWith("SELECT:"))
 			{
-				String s = V.get(v);
-				if(s.startsWith("$"))
-					s=s.substring(1).trim();
-				final XMLTag insertPiece =(XMLTag)defined.get(s.toUpperCase().trim());
-				if(insertPiece == null)
-					throw new CMException("Undefined insert: '"+s+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
-				if(insertPiece.tag().equalsIgnoreCase(tagName))
-					choices.addAll(getAllChoices(E,ignoreStats,defPrefix,tagName,insertPiece,defined,false));
+				List<Map<String,Object>> objs=this.doMQLSelectObjs(E, ignoreStats, defPrefix, inserter, piece, defined);
+				for(final Map<String,Object> m : objs)
+				{
+					for(final String key : m.keySet())
+					{
+						if(key.equalsIgnoreCase(tagName))
+							choices.add(CMLib.xml().createNewTag(tagName, this.convertMQLObjectToString(m.get(key))));
+					}
+				}
+			}
+			else
+			{
+				final List<String> V=CMParms.parseCommas(upperInserter,true);
+				for(int v=0;v<V.size();v++)
+				{
+					String s = V.get(v);
+					if(s.startsWith("$"))
+						s=s.substring(1).trim();
+					final XMLTag insertPiece =(XMLTag)defined.get(s.trim());
+					if(insertPiece == null)
+						throw new CMException("Undefined insert: '"+s+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
+					if(insertPiece.tag().equalsIgnoreCase(tagName))
+						choices.addAll(getAllChoices(E,ignoreStats,defPrefix,tagName,insertPiece,defined,false));
+				}
 			}
 		}
 		else
@@ -4648,6 +4664,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected Object getFinalMQLValue(final String strpath, final List<Object> allFrom, final Object from,
 			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
+		if(strpath.startsWith("SELECT:"))
+		{
+			if(from instanceof Modifiable)
+				return doMQLSelectObjs((Modifiable)from,ignoreStats,defPrefix,strpath,piece,defined);
+			else
+				return doMQLSelectObjs(E,ignoreStats,defPrefix,strpath,piece,defined);
+		}
 		Object finalO=null;
 		try
 		{
@@ -4674,23 +4697,23 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				if(str.startsWith("`")&&(str.endsWith("`"))&&(str.length()>1))
 					finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\`","`"), piece, defined);
 				else
-				if(str.startsWith("SELECT:"))
-					finalO=doMQLSelectObjs(E,ignoreStats,defPrefix,str,piece,defined);
-				else
 				if(str.startsWith("COUNT"))
 				{
-					if(finalO==null)
+					Object chkO=finalO;
+					if(chkO==null)
+						chkO=from;
+					if(chkO==null)
 						throw new MQLException("Can not count instances of null in '"+strpath+"'");
 					else
-					if(finalO instanceof List)
+					if(chkO instanceof List)
 					{
 						@SuppressWarnings("rawtypes")
-						final List l=(List)finalO;
-						finalO=""+l.size();
+						final List l=(List)chkO;
+						chkO=""+l.size();
 					}
 					else
-					if((finalO instanceof String)
-					||(finalO instanceof Environmental))
+					if((chkO instanceof String)
+					||(chkO instanceof Environmental))
 					{
 						if(index>1)
 						{
@@ -4704,7 +4727,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								if(o==from)
 									count++;
 								else
-								if(finalO.equals(getFinalMQLValue(newWhat, allFrom, o, E, ignoreStats, defPrefix, piece, defined)))
+								if(chkO.equals(getFinalMQLValue(newWhat, allFrom, o, E, ignoreStats, defPrefix, piece, defined)))
 									count++;
 							}
 							finalO=""+count;
@@ -5204,6 +5227,32 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return results;
 	}
 
+	protected String convertMQLObjectToString(final Object o1)
+	{
+		if(o1 instanceof MOB)
+			return CMLib.coffeeMaker().getMobXML((MOB)o1).toString();
+		else
+		if(o1 instanceof Item)
+			return CMLib.coffeeMaker().getItemXML((Item)o1).toString();
+		else
+		if(o1 instanceof Ability)
+			return ((Ability)o1).ID();
+		else
+		if(o1 instanceof Room)
+			return  CMLib.map().getExtendedRoomID((Room)o1);
+		else
+		if(o1 instanceof Area)
+			return ((Area)o1).Name();
+		else
+		if(o1 instanceof Behavior)
+			return ((Behavior)o1).ID();
+		else
+		if(o1 != null)
+			return  o1.toString();
+		else
+			return "";
+	}
+	
 	protected List<Map<String,String>> doSubSelectStr(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final MQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		final List<Map<String,String>> results=new ArrayList<Map<String,String>>();
@@ -5215,25 +5264,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			for(final String key : o.keySet())
 			{
 				final Object o1=o.get(key);
-				if(o1 instanceof MOB)
-					n.put(key, CMLib.coffeeMaker().getMobXML((MOB)o1).toString());
-				else
-				if(o1 instanceof Item)
-					n.put(key, CMLib.coffeeMaker().getItemXML((Item)o1).toString());
-				else
-				if(o1 instanceof Ability)
-					n.put(key, ((Ability)o1).ID());
-				else
-				if(o1 instanceof Room)
-					n.put(key, CMLib.map().getExtendedRoomID((Room)o1));
-				else
-				if(o1 instanceof Area)
-					n.put(key, ((Area)o1).Name());
-				else
-				if(o1 instanceof Behavior)
-					n.put(key, ((Behavior)o1).ID());
-				else
-					n.put(key, o.get(key).toString());
+				n.put(key, this.convertMQLObjectToString(o1));
 			}
 		}
 		return results;
