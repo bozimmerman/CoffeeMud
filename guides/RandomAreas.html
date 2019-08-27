@@ -2,14 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
   
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  <title>Scripting in CoffeeMud 5.9</title>
+  
 
   
   
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-
-<!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog -->
-</head><body>
+  <title>Scripting in CoffeeMud 5.9</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
+<body>
 <center>
 <table style="width: 90%;" border="1" cellpadding="10" cellspacing="0">
   <tbody>
@@ -77,7 +75,7 @@ and potentially the context in which each alternative applies or
 doesn't apply, and then makes selections and instantiates&nbsp;real
 mud objects based on those selections. &nbsp;The input to the
 engine is a very specifically built XML file, and the output is actual
-mud objects (mobs, items, areas, rooms, or all the above) in your game.<span style="font-weight: bold;" /></p>
+mud objects (mobs, items, areas, rooms, or all the above) in your game.<span style="font-weight: bold;"></span></p>
       <h2><a name="structure">Overview of
 XML Tags</a></h2>
 The random generator works by
@@ -954,17 +952,19 @@ the unique set of areas in which the prior term is located</li>
         <li><span style="font-family: monospace;">ROOMS</span> to use
 the unique set of rooms in which the prior term is located, or which
 the prior term contains</li>
-        <li><span style="font-family: monospace;">MOBS, MOB</span> to
-use the set of all mobs contained in the prior term</li>
-        <li><span style="font-family: monospace;">ITEMS, ITEM</span> to
-use the set of all items contained in the prior term</li>
+        <li><span style="font-family: monospace;">MOBS&nbsp;</span>to use mobs in a room or area, or nearby mobs for others</li><li><span style="font-family: monospace;">MOB</span> to
+use the set of all mob&nbsp;contained in the prior term, or ensure the simple Mob result of a query</li>
+        <li><span style="font-family: monospace;">ITEMS</span> to
+use all items in a roow or area, or nearby items for others</li><li><span style="font-family: monospace;">ITEM</span> to
+use the set of all items contained in the prior term, or ensure the simple Item result of a query</li>
         <li><span style="font-family: monospace;">OWNER</span> to use
 the set of all item owners of the prior term, if it was items</li>
         <li><span style="font-family: monospace;">PLAYERS, PLAYER</span>
 to use the set of all players contained in the prior term<br />
         </li>
-        <li><span style="font-family: monospace;">NPCS, NPC</span> to
-use the set of all non-player mobs contained in the prior term<br />
+        <li><span style="font-family: monospace;">NPCS&nbsp;</span>to
+use the set of all non-player mobs in a room or area, or nearby npcs for others</li><li><span style="font-family: monospace;">NPC</span> to
+use the set of all non-player mobs contained in the prior term, or ensure the simple Mob result of a query<br />
         </li>
         <li><span style="font-family: monospace;">EQUIPMENT</span> to
 use the set of all &nbsp;worn items of the prior term</li>
