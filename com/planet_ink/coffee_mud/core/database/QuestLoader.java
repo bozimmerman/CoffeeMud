@@ -138,6 +138,8 @@ public class QuestLoader
 				types.add(CMClass.classID(Q));
 			}
 		}
+		if(types.isEmpty())
+			types.add("DefaultQuest");
 		final List<Quest> updateThese=new ArrayList<Quest>();
 		final List<String[]> deleteThese=new LinkedList<String[]>();
 		try

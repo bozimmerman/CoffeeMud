@@ -460,7 +460,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
 					tt=(String[])script.elementAt(0,2);
-					if((getTriggerCode(trigger,tt)==13) //questtimeprog
+					if((getTriggerCode(trigger,tt)==13) //questtimeprog quest_time_prog
 					&&(!oncesDone.contains(script)))
 					{
 						if(tt==null)
@@ -11525,7 +11525,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					Q.stopQuest();
 				}
 				else
-				if((tt[1].length()>0)&&(defaultQuestName!=null)&&(defaultQuestName.length()>0))
+				if((tt[1].length()>0)
+				&&(defaultQuestName!=null)
+				&&(defaultQuestName.length()>0))
 				{
 					final PhysicalAgent newTarget=getArgumentMOB(tt[1].trim(),source,monster,target,primaryItem,secondaryItem,msg,tmp);
 					if(newTarget==null)
@@ -11543,7 +11545,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				else
-					logError(scripted,"MPENDQUEST","Unknown","Quest: "+s);
+				if(q.length()>0)
+				{
+					boolean foundOne=false;
+					for(int i=scripted.numScripts()-1;i>=0;i--)
+					{
+						final ScriptingEngine S=scripted.fetchScript(i);
+						if((S!=null)
+						&&(S.defaultQuestName()!=null)
+						&&(S.defaultQuestName().equalsIgnoreCase(defaultQuestName)))
+						{
+							foundOne=true;
+							scripted.delScript(S);
+						}
+					}
+					if(!foundOne)
+						logError(scripted,"MPENDQUEST","Unknown","Quest: "+s);
+				}
 				break;
 			}
 			case 69: // MPSTEPQUEST

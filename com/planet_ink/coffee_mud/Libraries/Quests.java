@@ -155,7 +155,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public void save()
+	public synchronized void save()
 	{
 		CMLib.database().DBUpdateQuests(quests);
 	}
@@ -509,7 +509,7 @@ public class Quests extends StdLibrary implements QuestManager
 		String var=null;
 		String cmd=null;
 		int pricingMobIndex=-1;
-		final String[] SETTINGS={"NAME","WAIT","DATE","DURATION","MUDDAY","AREAGROUP","MOBGROUP"};
+		final String[] SETTINGS={"NAME","WAIT","DATE","DURATION","EXPIRATION","MUDDAY","AREAGROUP","MOBGROUP"};
 		for(int v=0;v<stepV.size();v++)
 		{
 			line=stepV.get(v);

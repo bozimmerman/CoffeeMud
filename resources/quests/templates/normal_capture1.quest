@@ -145,14 +145,14 @@ set duration 0
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ALL_GREET_PROG 100
-IF QUESTSCRIPTED($n *)
-else
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
-		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept $QUEST_NAME' to take on this quest.
+	IF QUESTSCRIPTED($n *)
+	else
+		if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+			if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+				sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept $QUEST_NAME' to take on this quest.
+			endif
 		endif
 	endif
-endif
 ~
 
 SPEECH_PROG p i accept $QUEST_NAME
@@ -160,7 +160,7 @@ SPEECH_PROG p i accept $QUEST_NAME
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			mpqset * STATISTICS ACCEPTED
-            mpscript $n INDIVIDUAL SAVABLE LOAD=$QUEST_ID_playertrack.script
+			mpscript $n INDIVIDUAL SAVABLE LOAD=$QUEST_ID_playertrack.script
 		endif
 	endif
 ~
@@ -168,85 +168,99 @@ SPEECH_PROG p i accept $QUEST_NAME
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
-    mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
 	mpsetvar $i $QUEST_ID_CAPTURED 0
 	mpsetvar $i $QUEST_ID_RETURNED 0
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+~
+
+TIME_PROG 1
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPECHOAT $i 'The quest "$QUEST_NAME" has ended.'
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+~
+
+QUEST_TIME_PROG 0
+	MPECHOAT $i 'The quest "$QUEST_NAME" has ended.'
 ~
 
 GREET_PROG 100
 	if ISLIKE($n $CAPTURABLES_MASK) AND !ISFOLLOW('$n')
-	    if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
-            mpforce $n kill $i
-        else
+		if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+			mpforce $n kill $i
+		else
 			if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
 				mpforce $n sayto "$i" $CAPTURABLES_SURRENDER
 				mpforce $n mpstop all
 				mpforce $n follow "$i"
 			endif
-    	endif
-    endif
+		endif
+	endif
 ~
 
 ENTRY_PROG 100
-if INROOM($i == $g)
-    if INROOM($i == '${1 *}')
-        mpargset $9 '${1 *}'
-        for $0 = '$%NUMMOBSROOM(*)%' to 1
-            mpargset $1 '$%ROOMMOB($0)%'
-            if ISLIKE($1 $CAPTURABLES_MASK) AND ISNPC('$1') AND ISFOLLOW('$1')
-                mpsetvar $i $QUEST_ID_RETURNED ++
-                mpsetvar $i PROGRESS Captured $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
-                mpechoat $i You've brought in $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
-                mpforce $1 follow self
-                mppurge $1
-            endif
-        next
-        if var($i $QUEST_ID_RETURNED >= $NUM_CAPTURABLES)
-            if EVAL('$EXP' != '')
-                mpexp $i $EXP
-            endif
-            if EVAL('$FACTION' != '')
-                mpfaction $i $FACTION $NUMFACTION
-            endif
-            if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
-                mpforce $9 mpoload QuestPoint
-                mpforce $9 give "a quest point" "$i"
-            endif
-            if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-                mpforce $9 mpoload $GOLD
-                mpforce $9 give $GOLD "$i"
-            endif
-            mpquestwin $i *
-            mpforce $9 sayto $i $QUEST_WINSPEECH_TEXT
-            mpendquest $i
-			mpqset * STATISTICS SUCCESS
-        ENDIF
-    else
-        for $0 = 1 to '$%NUMMOBSROOM(*)%'
-            if ISLIKE('$%ROOMMOB($0)%' $CAPTURABLES_MASK) AND !ISFOLLOW('$%ROOMMOB($0)%')
-                mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_RESPONSE
-                if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
-                    mpforce '$%ROOMMOB($0)%' kill $i
-                else
-                    if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
-                        mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_SURRENDER
-                        mpforce '$%ROOMMOB($0)%' mpstop all
-                        mpforce '$%ROOMMOB($0)%' follow "$i"
-                    endif
-                endif
-            endif
-        next
-    endif
-endif
+	if INROOM($i == $g)
+		if INROOM($i == '${1 *}')
+			mpargset $9 '${1 *}'
+			for $0 = '$%NUMMOBSROOM(*)%' to 1
+				mpargset $1 '$%ROOMMOB($0)%'
+				if ISLIKE($1 $CAPTURABLES_MASK) AND ISNPC('$1') AND ISFOLLOW('$1')
+					mpsetvar $i $QUEST_ID_RETURNED ++
+					mpsetvar $i PROGRESS Captured $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
+					mpechoat $i You've brought in $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
+					mpforce $1 follow self
+					mppurge $1
+				endif
+			next
+			if var($i $QUEST_ID_RETURNED >= $NUM_CAPTURABLES)
+				if EVAL('$EXP' != '')
+					mpexp $i $EXP
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $i $FACTION $NUMFACTION
+				endif
+				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
+					mpforce $9 mpoload QuestPoint
+					mpforce $9 give "a quest point" "$i"
+				endif
+				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+					mpforce $9 mpoload $GOLD
+					mpforce $9 give $GOLD "$i"
+				endif
+				mpquestwin $i *
+				mpforce $9 sayto $i $QUEST_WINSPEECH_TEXT
+				mpendquest $i
+				mpqset * STATISTICS SUCCESS
+			ENDIF
+		else
+			for $0 = 1 to '$%NUMMOBSROOM(*)%'
+				if ISLIKE('$%ROOMMOB($0)%' $CAPTURABLES_MASK) AND !ISFOLLOW('$%ROOMMOB($0)%')
+					mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_RESPONSE
+					if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+						mpforce '$%ROOMMOB($0)%' kill $i
+					else
+						if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
+							mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_SURRENDER
+							mpforce '$%ROOMMOB($0)%' mpstop all
+							mpforce '$%ROOMMOB($0)%' follow "$i"
+						endif
+					endif
+				endif
+			next
+		endif
+	endif
 ~
 
 CNCLMSG_PROG STO=DEATH ALL
 	if ISNPC($n) AND ISLIKE($n $CAPTURABLES_MASK) AND !ISFOLLOW($n) AND ISFIGHT($n)
-        mpargset $9 '$%ISFIGHT($n)%'
+		mpargset $9 '$%ISFIGHT($n)%'
 		if EVAL($9 == $i)
 			mpgset $n HITS 1
 			mpforce $n mpstop all
-            mpstop all
+			mpstop all
 			mpforce $n sayto "$i" $CAPTURABLES_SURRENDER
 			mpforce $n follow "$i"
 			mpsetvar $i $QUEST_ID_CAPTURED ++

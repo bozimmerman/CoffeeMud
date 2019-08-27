@@ -1520,6 +1520,23 @@ public class CMStrings
 		final StringBuilder str=new StringBuilder(s);
 		for(int i=str.length()-1;i>=0;i--)
 		{
+			if("!@#$%^&*()+<>.,'\";:) {}[]|\\/?~`".indexOf(str.charAt(i))>=0)
+				str.deleteCharAt(i);
+		}
+		return str.toString();
+	}
+
+	/**
+	 * Strips punctuation characters, leaving only letters and
+	 * numbers and such.
+	 * @param s the string to strip
+	 * @return the stripped string
+	 */
+	public final static String removeAllButLettersAndDigits(final String s)
+	{
+		final StringBuilder str=new StringBuilder(s);
+		for(int i=str.length()-1;i>=0;i--)
+		{
 			if(!Character.isLetterOrDigit(str.charAt(i)))
 				str.deleteCharAt(i);
 		}

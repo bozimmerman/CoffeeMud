@@ -16,112 +16,14 @@ limitations under the License.
 --------------------------------------------------------------------------------
 
 See guides/RandomAreas.html for information about documents of this type.
-<!-- 
-TODO: add QUEST_TEMPLATE_ID to the official parms list -->
 -->
 
+<STRING load="/resources/quests/random/normal_capture1.xml" />
 
-<!-- 
-template: normal_capture1
-vars: 
-    source_area_name(area name)
-    source_name(mob name)
-    source_room(mob room)
-    target_name(mobs name)
-    num_targets(num mobs to capture)
-	aggression(YES,NO)
-	xp_amount_awarded
-	gold_amount_awarded
-	quest_point_awarded(YES,NO)
--->
-<QUEST id="all" QUEST_TEMPLATE_ID="$quest_template" >
-	<QUEST_ID>${_:source_area_name}_${_:source_name}_${_:quest_template}_R$[100000000?999999999]</QUEST_ID>
-	<QUEST_NAME>${C:source_name} in ${C:source_area_name} needs $num_targets ${p:target_name}</QUEST_NAME><!-- TODO -->
-	<QUEST_CRITERIA>-LEVELS +&gt;$[$target_level - $level_range] +&lt;$[$target_level + $level_range]</QUEST_CRITERIA>
-	<ANNOUNCER_AREA>$source_area_name</ANNOUNCER_AREA>
-	<ANNOUNCER_ROOM>$source_room_id</ANNOUNCER_ROOM>
-	<ANNOUNCER_NAME>$source_name</ANNOUNCER_NAME>
-	<QUEST_NOTIFYSTRING>I have someone I need captured!  Are you game?</QUEST_NOTIFYSTRING>
-	<QUEST_INSTRUCTIONSSTRING>I need you to capture $num_targets ${p:target_name}.  They are somewhere around somewhere.  Just beat them senseless, and they will yield to you.</QUEST_INSTRUCTIONSSTRING>
-	<QUEST_WINSPEECH_TEXT>Aha, we got them! Congratulations!</QUEST_WINSPEECH_TEXT>
-	<QUEST_LOSESPEECH_TEXT>Looks like I'll have wait for the law to get after them.</QUEST_LOSESPEECH_TEXT>
-	<CAPTURABLES_MASK>-HOME "+$target_area_name" -NAMES "+$target_name"</CAPTURABLES_MASK>
-	<NUM_CAPTURABLES>$num_targets</NUM_CAPTURABLES>
-	<CAPTURABLES_RESPONSE>So, you've come for me.  Come and get me.</CAPTURABLES_RESPONSE>
-	<CAPTURABLES_ATTACK>=$will_attack_code</CAPTURABLES_ATTACK>
-	<CAPTURABLES_SURRENDER>I surrender</CAPTURABLES_SURRENDER>
-	<CAPTURABLES_FOLLOW>$will_react_peacefully</CAPTURABLES_FOLLOW>
-	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
-	<GOLD>$gold_amount_awarded</GOLD>
-	<EXP>$xp_amount_awarded</EXP>
-	<FACTION></FACTION><!-- TODO -->
-	<NUMFACTION></NUMFACTION><!-- TODO -->
-	<MULTIPLE>$quest_repeatable</MULTIPLE>
-	<NEXT_QUEST></NEXT_QUEST>
-	<!-- TODO: add a BINDING to the existence of this quest -->
-	<!-- TODO: add an EXPIRATION time to the existence of this quest -->
+<QUEST ID="ALL" SELECT="Any-1" merge=true>
 </QUEST>
 
-
-<OBJECT id="source_area" SELECT="Pick-1" DEFINE="source_area">
-	<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
-	<OBJECT pickweight=1 condition="'${SELECT: name FROM area}' = ''">
-		SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\mobs WHERE name\count =1 and intelligence>8) > 0
-			AND (SELECT:count\. from area\mobs WHERE name\count >$num_targets) > 0
-	</OBJECT>
-</OBJECT>
-
-<OBJECT id="source_room" SELECT="Pick-1" DEFINE="source_room">
-	<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: roomid FROM room}' != ''">SELECT: . FROM room</OBJECT>
-	<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: roomid FROM room}' = ''">SELECT: . FROM $source\room</OBJECT>
-</OBJECT>
-
-<OBJECT id="source" SELECT="Pick-1" DEFINE="source">
-	<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
-	<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\mobs WHERE name\count=1</OBJECT>
-</OBJECT>
-
-<OBJECT id="target" define="target">SELECT: ANY\. FROM $source_area\mobs WHERE name\count>$num_targets</OBJECT>
-<STRING id="target_level" define="target_level" define="target_level">${SELECT:mean\level from $target\mob}</STRING>
-
-<STRING id="num_targets" define="num_targets">$[3?10]</STRING>
-<STRING id="level_range" define="level_range">$[3?6]</STRING>
-<STRING id="source_area_name" define="source_area_name">${SELECT:name from $source_area\area}</STRING>
-<STRING id="source_room_id" define="source_room_id">${SELECT:roomid from $source_room\room}</STRING>
-<STRING id="source_name" define="source_name">${SELECT:name from $source\mob}</STRING>
-<STRING id="target_name" define="target_name">${SELECT:name from $target\mob}</STRING>
-<STRING id="target_area_name" define="target_area_name">$source_area_name</STRING>
-
-<STRING SELECT="Any-1" ACTION=REPLACE id="quest_template" DEFINE="quest_template" condition="$quest_template=''">
-	<STRING>normal_capture1</STRING>
-</STRING>
-
-<STRING id="aggression" DEFINE="aggression" SELECT="Pick-1">
-	<STRING PICKWEIGHT=50>NO</STRING>
-	<STRING PICKWEIGHT="$target_level">YES</STRING>
-</STRING>
-
-<STRING id="will_attack_code" DEFINE="will_attack_code" SELECT="Any-1">
-	<STRING CONDITION="$agression='NO'">NO-USE-DEFAULT_BEHAVIOR</STRING>
-	<STRING CONDITION="$agression='YES'">YES-ATTACK-ON-SIGHT</STRING>
-</STRING>
-
-<STRING id="will_react_peacefully" DEFINE="will_react_peacefully" SELECT="Any-1">
-	<STRING CONDITION="$agression='NO'">PEACEFUL</STRING>
-	<STRING CONDITION="$agression='YES'">VIOLENT</STRING>
-</STRING>
-
-<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
-	<STRING PICKWEIGHT=2>NO</STRING>
-	<STRING PICKWEIGHT=1>YES</STRING>
-</STRING>
-
-<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded">$[$target_level*2]</STRING>
-
-<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded">$[100 + $target_level*3]</STRING>
-
-<STRING ID="quest_repeatable" DEFINE="quest_repeatable" SELECT="Pick-1">
-	<STRING PICKWEIGHT=99>NO</STRING>
-	<STRING PICKWEIGHT=1>YES</STRING>
-</STRING>
- 
+<string id=random_template" define="quest_template" merge=true select="any-1">
+	<string condition="$template!=''">$template</string>
+</string>
+  

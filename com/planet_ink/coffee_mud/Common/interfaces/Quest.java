@@ -724,7 +724,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	/** The list of BASIC non-iterative variable codes that pertain to a quest object */
 	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
 										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE", "DISPLAY",
-										 "INSTRUCTIONS", "PERSISTANCE", "AUTHOR"};
+										 "INSTRUCTIONS", "PERSISTANCE", "AUTHOR", "EXPIRATION"};
 	/** The list of basic quest objects defined in an iterative fashion during quest script execution */
 	public final static String[] QOBJS={"LOADEDMOBS", "LOADEDITEMS", "AREA", "ROOM", "MOBGROUP", "ITEMGROUP", "ROOMGROUP",
 		 								"ITEM", "ENVOBJ", "STUFF", "MOB"};

@@ -50,6 +50,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	protected String	displayName			= "";
 	protected String	startDate			= "";
 	protected int		duration			= 450;// about		// 30	// minutes
+	protected boolean	expires				= false;
 	protected String	rawScriptParameter	= "";
 	protected boolean	durable				= false;
 	protected int		minWait				= -1;
@@ -198,6 +199,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			return Boolean.toString(durable);
 		case 14:
 			return "" + author();
+		case 15:
+			return ""+(isCopy()?duration():0);
 		}
 		return questState.getStat(named);
 	}
@@ -4908,6 +4911,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			break;
 		case 14:
 			author = val;
+			break;
+		case 15:
+			{
+				final int ticks=CMLib.time().parseTickExpression(val);
+				if(ticks == 0)
+					this.setCopy(false);
+				else
+				{
+					this.setDuration(ticks);
+					this.setCopy(true);
+				}
+			}
 			break;
 		case 12: // instructions can and should fall through the default
 		default:

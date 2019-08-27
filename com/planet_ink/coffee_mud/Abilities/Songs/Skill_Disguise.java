@@ -365,13 +365,13 @@ public class Skill_Disguise extends BardSkill
 			}
 			else
 			{
-				if(CMLib.players().playerExistsAllHosts(CMStrings.removePunctuation(CMStrings.removeColors(how))))
+				if(CMLib.players().playerExistsAllHosts(CMStrings.removeAllButLettersAndDigits(CMStrings.removeColors(how))))
 				{
 					mob.tell(L("You cannot disguise yourself as a player except through Mark Disguise."));
 					return false;
 				}
 				else
-				if(CMLib.login().isBadName(CMStrings.removePunctuation(CMStrings.removeColors(how))))
+				if(CMLib.login().isBadName(CMStrings.removeAllButLettersAndDigits(CMStrings.removeColors(how))))
 				{
 					mob.tell(L("You cannot disguise yourself as that."));
 					return false;

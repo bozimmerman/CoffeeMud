@@ -2,9 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Scripting in CoffeeMud 5.9</title>
 
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog -->
-</head>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
 <body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -3511,7 +3509,7 @@ specified. The quest name may be the name of a loaded quest, or * if
 this Scriptable object was loaded directly by a Quest script.</p>
 <p>The variable expressions
 may be one of these standard string
-values (non-objects): "CLASS", "NAME", "DURATION", "WAIT",
+values (non-objects): "CLASS", "NAME", "DURATION", "EXPIRATION", "WAIT",
 "MINPLAYERS", "PLAYERMASK", "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL"</p>
 <p>The variable expressions
 may also be based on one of these
@@ -3864,7 +3862,7 @@ or mount a player on a horse. &nbsp;</p>
 <p>This command is used to
 set one of the internal quest
 variables. These variables can be one of the standard Quest settings,
-such as: "CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS",
+such as: "CLASS", "NAME", "DURATION", "EXPIRATION","WAIT", "MINPLAYERS",
 "REMAINING",
 "PLAYERMASK", "RUNLEVEL", "DATE", "MUDDAY", or "INTERVAL". More
 commonly though, they are user-defined variables which are only
@@ -5250,7 +5248,7 @@ value)</span>
 <p>This is used to evaluate
 one of the official or user-defined
 quest variables. User-defined quest variables are defined using MPQSET.
-Official variables names include: "CLASS", "NAME", "DURATION", "WAIT",
+Official variables names include: "CLASS", "NAME", "DURATION", "EXPIRATION", "WAIT",
 "MINPLAYERS", "PLAYERMASK", "RUNLEVEL", "DATE", "MUDDAY", "REMAINING",
 or
 "INTERVAL". &nbsp;Official object variables include: "AREA",

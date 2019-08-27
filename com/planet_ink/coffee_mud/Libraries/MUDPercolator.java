@@ -2575,6 +2575,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 	}
 
+	protected String replaceLineStartsWithIgnoreCase(final String wholeText, final String lineStarter, final String fullNewLine)
+	{
+		final int x=wholeText.toLowerCase().indexOf(lineStarter.toLowerCase());
+		if(x>0)
+		{
+			int y=wholeText.indexOf('\n',x+1);
+			final int z=wholeText.indexOf('\r',x+1);
+			if((y<x)||((z>x)&&(z<y)))
+				y=z;
+			if(y>x)
+				return wholeText.substring(0,x)+fullNewLine+wholeText.substring(y);
+		}
+		return wholeText;
+	}
+
 	protected String findString(final Modifiable E, final List<String> ignoreStats, final String defPrefix, String tagName, XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		tagName=tagName.toUpperCase().trim();
@@ -2653,6 +2668,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					final List<String> wizList = Resources.getFileLineVector(new StringBuffer(rawFileText.substring(0, endScript).trim()));
 					String cleanedFileText = rawFileText.substring(endScript).trim();
 					cleanedFileText = CMStrings.replaceAll(cleanedFileText, "$#AUTHOR", "CoffeeMud");
+					final String duration=this.findOptionalString(E, ignoreStats, defPrefix, "DURATION", piece, defined, false);
+					if((duration != null) && (duration.trim().length()>0))
+						cleanedFileText = this.replaceLineStartsWithIgnoreCase(cleanedFileText, "set duration", "SET DURATION "+duration);
+					final String expiration=this.findOptionalString(E, ignoreStats, defPrefix, "EXPIRATION", piece, defined, false);
+					if((expiration != null)  && (expiration.trim().length()>0))
+						cleanedFileText = this.replaceLineStartsWithIgnoreCase(cleanedFileText, "set duration", "SET EXPIRATION "+expiration);
 					for(final String wiz : wizList)
 					{
 						if(wiz.startsWith("#$"))
@@ -2663,7 +2684,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								final String var=wiz.substring(1,x);
 								if(cleanedFileText.indexOf(var)>0)
 								{
-									final String value=findStringNow(wiz.substring(2,x), piece, defined);
+									final String findVar=wiz.substring(2,x);
+									final String value=findStringNow(findVar, piece, defined);
 									cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,value);
 								}
 							}
@@ -4748,13 +4770,30 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return from;
 	}
 
-	@SuppressWarnings("rawtypes")
 	protected Object getSimpleMQLValue(final String valueName, final Object from)
 	{
 		if(valueName.equals(".")||valueName.equals("*"))
 			return from;
 		if(from instanceof Map)
-			return ((Map)from).get(valueName);
+		{
+			@SuppressWarnings({ "unchecked" })
+			final Map<String,Object> m=(Map<String,Object>)from;
+			if(m.containsKey(valueName))
+				return m.get(valueName);
+			for(final String key : m.keySet())
+			{
+				final Object o=m.get(key);
+				if(o instanceof CMObject)
+					return getSimpleMQLValue(valueName,o);
+			}
+		}
+		if(from instanceof List)
+		{
+			@SuppressWarnings("rawtypes")
+			final List l=(List)from;
+			if(l.size()>0)
+				return getSimpleMQLValue(valueName,l.get(0));
+		}
 		if(from instanceof MOB)
 		{
 			return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
@@ -4773,6 +4812,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(from instanceof Area)
 		{
 			return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
+		}
+		else
+		if(from instanceof Modifiable)
+		{
+			return ((Modifiable)from).getStat(valueName);
 		}
 		return null;
 	}

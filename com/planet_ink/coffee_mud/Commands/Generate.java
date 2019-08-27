@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -279,7 +280,35 @@ public class Generate extends StdCommand
 				if(V.get(v) instanceof String)
 				{
 					CMLib.percolator().postProcess(definedIDs);
-					mob.tell((String)V.get(v));
+					if(codeI==CMObjectType.WEBMACRO)
+					{
+						if((!definedIDs.containsKey("QUEST_ID"))
+						||(!(definedIDs.get("QUEST_ID") instanceof String)))
+						{
+							mob.tell("Unable to create your quest because a quest_id was not generated");
+							return false;
+						}
+						final String name=(String)definedIDs.get("QUEST_ID");
+						final Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
+						Q.setScript((String)V.get(0),true);
+						if((Q.name().trim().length()==0)||(Q.duration()<0))
+						{
+							mob.tell("Unable to create your quest.  Please consult the log.");
+							return false;
+						}
+						final Quest badQ=CMLib.quests().fetchQuest(name);
+						if(badQ!=null)
+						{
+							mob.tell("Unable to create your quest.  One of that name already exists!");
+							return false;
+						}
+						mob.tell("Generated quest '"+Q.name()+"'");
+						Log.sysOut("Generate",mob.Name()+" created quest '"+Q.name()+"'");
+						CMLib.quests().addQuest(Q);
+						CMLib.quests().save();
+					}
+					else
+						mob.tell((String)V.get(v));
 				}
 				else
 				if(V.get(v) instanceof Room)
