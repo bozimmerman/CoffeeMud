@@ -4309,11 +4309,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		||currentDistance.subtract(baseDistance).equals(prevDistance))
 			return Double.MAX_VALUE/10;
 
-		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO);
+		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO, RoundingMode.HALF_UP);
 		final BigDecimal areaOfTriangle=BigDecimal.valueOf(CMath.sqrt(CMath.abs(
 				semiPerimeter.multiply(semiPerimeter.subtract(currentDistance))
 							.multiply(semiPerimeter.subtract(baseDistance))
 							.multiply(semiPerimeter.subtract(prevDistance)).doubleValue())));
-		return TWO.multiply(areaOfTriangle).divide(baseDistance).doubleValue();
+		return TWO.multiply(areaOfTriangle).divide(baseDistance, RoundingMode.HALF_UP).doubleValue();
 	}
 }
