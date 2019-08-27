@@ -1739,20 +1739,22 @@ public class Quests extends StdLibrary implements QuestManager
 	public List<Quest> getPlayerPersistentQuests(final MOB player)
 	{
 		final Vector<Quest> qVec=new Vector<Quest>();
-		for(int q=0;q<CMLib.quests().numQuests();q++)
+		for(final Enumeration<ScriptingEngine> e=player.scripts();e.hasMoreElements();)
 		{
-			final Quest Q=CMLib.quests().fetchQuest(q);
-			if(Q==null)
+			final ScriptingEngine SE=e.nextElement();
+			if(SE==null)
 				continue;
-			for(final Enumeration<ScriptingEngine> e=player.scripts();e.hasMoreElements();)
+			if(SE.defaultQuestName().length()>0)
 			{
-				final ScriptingEngine SE=e.nextElement();
-				if(SE==null)
-					continue;
-				if((SE.defaultQuestName().length()>0)
-				&&(SE.defaultQuestName().equalsIgnoreCase(Q.name()))
-				&&(!qVec.contains(Q)))
-					qVec.addElement(Q);
+				final Quest Q=CMLib.quests().fetchQuest(SE.defaultQuestName());
+				if(Q==null)
+				{
+					SE.endQuest(player, player, SE.defaultQuestName());
+					player.delScript(SE);
+				}
+				else
+					qVec.add(Q);
+
 			}
 		}
 		return qVec;
