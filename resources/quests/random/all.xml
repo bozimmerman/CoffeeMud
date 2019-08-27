@@ -22,8 +22,7 @@ See guides/RandomAreas.html for information about documents of this type.
 <QUEST id="all" QUEST_TEMPLATE_ID="$quest_template" >
 	<QUEST_ID>${_:source_area_name}_${_:source_name}_${_:quest_template}_R$[100000000?999999999]</QUEST_ID>
 	<QUEST_NAME>${C:source_name} in ${C:source_area_name} needs $num_targets ${p:target_name}</QUEST_NAME><!-- TODO -->
-	<QUEST_CRITERIA>-LEVELS +&gt;$[$target_level - $level_range] +&lt;$[$target_level + $level_range]<</QUEST_CRITERIA>
-	<AUTHOR
+	<QUEST_CRITERIA>-LEVELS +&gt;$[$target_level - $level_range] +&lt;$[$target_level + $level_range]</QUEST_CRITERIA>
 	<ANNOUNCER_AREA>$source_area_name</ANNOUNCER_AREA>
 	<ANNOUNCER_ROOM>$source_room_id</ANNOUNCER_ROOM>
 	<ANNOUNCER_NAME>$source_name</ANNOUNCER_NAME>
