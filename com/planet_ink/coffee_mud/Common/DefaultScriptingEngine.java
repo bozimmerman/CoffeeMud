@@ -765,30 +765,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected List<DVector> parseScripts(String text)
 	{
 		buildHashes();
-		final List<List<String>> V;
-		if((text!=null)
-		&&(text.length()>20)
-		&&(text.trim().substring(0,7).toUpperCase().startsWith("SCRIPT=")))
-		{
-			V=new ArrayList<List<String>>();
-			final List<String> rawLines=Resources.getFileLineVector(new StringBuffer(text.trim().substring(7)));
-			List<String> script=new ArrayList<String>();
-			V.add(script);
-			for(final String s : rawLines)
-			{
-				script.add(s.trim());
-				if(s.trim().endsWith("~"))
-				{
-					script=new ArrayList<String>();
-					V.add(script);
-				}
-			}
-		}
-		else
-		{
-			text=parseLoads(text,0,null,null);
-			V = CMParms.parseDoubleDelimited(text,'~',';');
-		}
+		while((text.length()>0)
+		&&(Character.isWhitespace(text.charAt(0))))
+			text=text.substring(1);
+		text=parseLoads(text,0,null,null);
+		if((text.length()>10)
+		&&(text.substring(0,10).toUpperCase().startsWith("STATIC=")))
+			this.setScript(text.substring(7));
+		final List<List<String>> V = CMParms.parseDoubleDelimited(text,'~',';');
 		final Vector<DVector> V2=new Vector<DVector>(3);
 		for(final List<String> ls : V)
 		{
@@ -10389,6 +10373,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				boolean proceed=true;
 				boolean savable=false;
 				boolean execute=false;
+				boolean staticScript=false;
 				String scope=getVarScope();
 				while(proceed)
 				{
@@ -10397,6 +10382,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						savable=true;
 						m2=m2.substring(8).trim();
+						proceed=true;
+					}
+					else
+					if(m2.toUpperCase().startsWith("STATIC"))
+					{
+						staticScript=true;
+						m2=m2.substring(6).trim();
 						proceed=true;
 					}
 					else

@@ -100,8 +100,8 @@ vars:
 	<OBJECT id="source_area" SELECT="Pick-1" DEFINE="source_area" merge=true condition="$quest_template='normal_capture1'">
 		<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
 		<OBJECT pickweight=1 condition="'${SELECT: name FROM area}' = ''">
-			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\mobs WHERE name\count =1 and intelligence>8) > 0
-				AND (SELECT:count\. from area\mobs WHERE name\count >$num_targets) > 0
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and intelligence>8 and "Aggressive" notin affbehav) > 0
+				AND (SELECT:count\. from area\npcs WHERE name\count >$num_targets) > 0
 		</OBJECT>
 	</OBJECT>
 	
@@ -112,7 +112,7 @@ vars:
 	
 	<OBJECT id="source" SELECT="Pick-1" DEFINE="source" merge=true condition="$quest_template='normal_capture1'">
 		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
-		<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\mobs WHERE name\count=1</OBJECT>
+		<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\npcs WHERE name\count=1 and intelligence>8 and "Aggressive" notin affbehav</OBJECT>
 	</OBJECT>
 	
 	<OBJECT id="target" define="target" select="any-1" merge=true condition="$quest_template='normal_capture1'">
