@@ -16,9 +16,24 @@ limitations under the License.
 --------------------------------------------------------------------------------
 
 See guides/RandomAreas.html for information about documents of this type.
-<!-- TODO: add QUEST_TEMPLATE_ID to the official parms list -->
+<!-- 
+TODO: add QUEST_TEMPLATE_ID to the official parms list -->
 -->
 
+
+<!-- 
+template: normal_capture1
+vars: 
+    source_area_name(area name)
+    source_name(mob name)
+    source_room(mob room)
+    target_name(mobs name)
+    num_targets(num mobs to capture)
+	aggression(YES,NO)
+	xp_amount_awarded
+	gold_amount_awarded
+	quest_point_awarded(YES,NO)
+-->
 <QUEST id="all" QUEST_TEMPLATE_ID="$quest_template" >
 	<QUEST_ID>${_:source_area_name}_${_:source_name}_${_:quest_template}_R$[100000000?999999999]</QUEST_ID>
 	<QUEST_NAME>${C:source_name} in ${C:source_area_name} needs $num_targets ${p:target_name}</QUEST_NAME><!-- TODO -->
@@ -81,14 +96,19 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING>normal_capture1</STRING>
 </STRING>
 
-<STRING id="will_attack_code" DEFINE="will_attack_code" SELECT="Pick-1">
-	<STRING PICKWEIGHT=2>NO-USE-DEFAULT_BEHAVIOR</STRING>
-	<STRING PICKWEIGHT=1>YES-ATTACK-ON-SIGHT</STRING>
+<STRING id="aggression" DEFINE="aggression" SELECT="Pick-1">
+	<STRING PICKWEIGHT=50>NO</STRING>
+	<STRING PICKWEIGHT="$target_level">YES</STRING>
+</STRING>
+
+<STRING id="will_attack_code" DEFINE="will_attack_code" SELECT="Any-1">
+	<STRING CONDITION="$agression='NO'">NO-USE-DEFAULT_BEHAVIOR</STRING>
+	<STRING CONDITION="$agression='YES'">YES-ATTACK-ON-SIGHT</STRING>
 </STRING>
 
 <STRING id="will_react_peacefully" DEFINE="will_react_peacefully" SELECT="Any-1">
-	<STRING CONDITION="$will_attack_code='NO-USE-DEFAULT_BEHAVIOR'">PEACEFUL</STRING>
-	<STRING CONDITION="$will_attack_code='YES-ATTACK-ON-SIGHT'">VIOLENT</STRING>
+	<STRING CONDITION="$agression='NO'">PEACEFUL</STRING>
+	<STRING CONDITION="$agression='YES'">VIOLENT</STRING>
 </STRING>
 
 <STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
