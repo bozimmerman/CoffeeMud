@@ -1744,7 +1744,7 @@ public class Quests extends StdLibrary implements QuestManager
 			final ScriptingEngine SE=e.nextElement();
 			if(SE==null)
 				continue;
-			if(SE.defaultQuestName().length()>0)
+			if(SE.defaultQuestName().length()>1)
 			{
 				final Quest Q=CMLib.quests().fetchQuest(SE.defaultQuestName());
 				if(Q==null)
