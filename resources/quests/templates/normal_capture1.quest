@@ -178,13 +178,13 @@ ONCE_PROG 100
 
 TIME_PROG 1
 	IF !isquestmobalive(1 '$QUEST_ID')
-		MPECHOAT $i 'The quest "$QUEST_NAME" has ended.'
+		MPECHOAT $i The quest "$QUEST_NAME" has ended.
 		MPENDQUEST '$QUEST_ID'
 	ENDIF
 ~
 
 QUEST_TIME_PROG 0
-	MPECHOAT $i 'The quest "$QUEST_NAME" has ended.'
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
 ~
 
 GREET_PROG 100
