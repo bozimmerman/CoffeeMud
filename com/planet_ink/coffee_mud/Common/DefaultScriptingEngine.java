@@ -765,8 +765,30 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected List<DVector> parseScripts(String text)
 	{
 		buildHashes();
-		text=parseLoads(text,0,null,null);
-		final List<List<String>> V = CMParms.parseDoubleDelimited(text,'~',';');
+		final List<List<String>> V;
+		if((text!=null)
+		&&(text.length()>20)
+		&&(text.trim().substring(0,7).toUpperCase().startsWith("SCRIPT=")))
+		{
+			V=new ArrayList<List<String>>();
+			final List<String> rawLines=Resources.getFileLineVector(new StringBuffer(text.trim().substring(7)));
+			List<String> script=new ArrayList<String>();
+			V.add(script);
+			for(final String s : rawLines)
+			{
+				script.add(s.trim());
+				if(s.trim().endsWith("~"))
+				{
+					script=new ArrayList<String>();
+					V.add(script);
+				}
+			}
+		}
+		else
+		{
+			text=parseLoads(text,0,null,null);
+			V = CMParms.parseDoubleDelimited(text,'~',';');
+		}
 		final Vector<DVector> V2=new Vector<DVector>(3);
 		for(final List<String> ls : V)
 		{
@@ -11517,6 +11539,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(tt==null)
 						return null;
 				}
+				final PhysicalAgent newTarget;
 				final String q=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1].trim());
 				final Quest Q=getQuest(q);
 				if(Q!=null)
@@ -11527,21 +11550,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 				if((tt[1].length()>0)
 				&&(defaultQuestName!=null)
-				&&(defaultQuestName.length()>0))
+				&&(defaultQuestName.length()>0)
+				&&((newTarget=getArgumentMOB(tt[1].trim(),source,monster,target,primaryItem,secondaryItem,msg,tmp))!=null))
 				{
-					final PhysicalAgent newTarget=getArgumentMOB(tt[1].trim(),source,monster,target,primaryItem,secondaryItem,msg,tmp);
-					if(newTarget==null)
-						logError(scripted,"MPENDQUEST","Unknown","Quest or MOB: "+s);
-					else
+					for(int i=newTarget.numScripts()-1;i>=0;i--)
 					{
-						for(int i=newTarget.numScripts()-1;i>=0;i--)
-						{
-							final ScriptingEngine S=newTarget.fetchScript(i);
-							if((S!=null)
-							&&(S.defaultQuestName()!=null)
-							&&(S.defaultQuestName().equalsIgnoreCase(defaultQuestName)))
-								newTarget.delScript(S);
-						}
+						final ScriptingEngine S=newTarget.fetchScript(i);
+						if((S!=null)
+						&&(S.defaultQuestName()!=null)
+						&&(S.defaultQuestName().equalsIgnoreCase(defaultQuestName)))
+							newTarget.delScript(S);
 					}
 				}
 				else
@@ -11559,7 +11577,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							scripted.delScript(S);
 						}
 					}
-					if(!foundOne)
+					if((!foundOne)
+					&&((defaultQuestName==null)||(!defaultQuestName.equalsIgnoreCase(q))))
 						logError(scripted,"MPENDQUEST","Unknown","Quest: "+s);
 				}
 				break;
