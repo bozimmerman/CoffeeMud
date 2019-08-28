@@ -5277,7 +5277,26 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			else
 				result=result&&thisResult;
 			if(clause.conn != null)
+			{
 				lastConn=clause.conn;
+				if(clause.next != null)
+				{
+					switch(lastConn)
+					{
+					case AND:
+						if(!result)
+							return false;
+						break;
+					case OR:
+						if(result)
+							return true;
+						break;
+					default:
+					case ENDCLAUSE:
+						break;
+					}
+				}
+			}
 			clause=clause.next;
 		}
 		return result;
