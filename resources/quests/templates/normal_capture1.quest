@@ -168,13 +168,10 @@ SPEECH_PROG p i accept $QUEST_NAME
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
-	mpsetinternal DEFAULTQUEST $QUEST_ID
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
-	mploadvar $i $QUEST_ID_CAPTURED
 	if var($i $QUEST_ID_CAPTURED = '')
 		mpsetvar $i $QUEST_ID_CAPTURED 0
 	endif
-	mploadvar $i $QUEST_ID_RETURNED
 	if var($i $QUEST_ID_RETURNED = '')
 		mpsetvar $i $QUEST_ID_RETURNED 0
 	endif

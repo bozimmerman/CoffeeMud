@@ -203,16 +203,13 @@ SPEECH_PROG p i accept $QUEST_NAME
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
-	mpsetinternal DEFAULTQUEST $QUEST_ID
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
 	IF !isquestmobalive(1 '$QUEST_ID')
 		MPENDQUEST '$QUEST_ID'
 	ENDIF
-	mploadvar $i $QUEST_ID_RETURNED
 	if var($i $QUEST_ID_RETURNED = '')
 		mpsetvar $i $QUEST_ID_RETURNED 0
 	endif
-	mploadvar $i $QUEST_ID_GOT
 	if var($i $QUEST_ID_GOT = '')
 		mpsetvar $i $QUEST_ID_GOT 0
 	endif

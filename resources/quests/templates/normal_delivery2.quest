@@ -266,7 +266,6 @@ DROP_PROG all
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
-	mpsetinternal DEFAULTQUEST $QUEST_ID
 	mpsetvar $i INSTRUCTIONS Please deliver $[1, *] to ${2 *}. $REASONING 
 	IF !isquestmobalive(1 '$QUEST_ID')
 		MPENDQUEST '$QUEST_ID'
