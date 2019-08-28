@@ -97,8 +97,8 @@ public class Spell_ChainLightening extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final int maxDie=(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)))/2;
-		int damage = CMLib.dice().roll(maxDie,8,maxDie);
+		final int maxDie =  (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2.0*super.getX1Level(mob)),2.0));
+		int damage = CMLib.dice().roll(maxDie,6,maxDie);
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
