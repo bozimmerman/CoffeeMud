@@ -155,7 +155,7 @@ SPEECH_PROG p i accept $QUEST_NAME
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			mpqset * STATISTICS ACCEPTED
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
-            mpscript $n INDIVIDUAL SAVABLE LOAD=$QUEST_ID_playertrack.script
+			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 		endif
 	endif
 ~
@@ -191,6 +191,20 @@ GREET_PROG 100
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
-    mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	mpsetinternal DEFAULTQUEST $QUEST_ID
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
 ~
+TIME_PROG 1
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+~
+
+QUEST_TIME_PROG -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
 </DATA></FILE>

@@ -161,111 +161,127 @@ set duration 0
 
 # this script is for the human chosen to be the note bearer
 GREET_PROG 100
-    if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
-        if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-            if QUESTSCRIPTED($n *)
-                sayto "$n" What are you doing back here?  Take $[1 *] to $DESTINATION_DESC!
-            else
-                sayto "$n" I have something I need to be taken to $DESTINATION_DESC.  If you'll deliver it for me, say 'I accept $QUEST_NAME', and I will give you the details.
-            endif
-        endif
-    endif
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if QUESTSCRIPTED($n *)
+				sayto "$n" What are you doing back here?  Take $[1 *] to $DESTINATION_DESC!
+			else
+				sayto "$n" I have something I need to be taken to $DESTINATION_DESC.  If you'll deliver it for me, say 'I accept $QUEST_NAME', and I will give you the details.
+			endif
+		endif
+	endif
 ~
 
 SPEECH_PROG p i accept $QUEST_NAME
-    if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
-        if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			mpqset * STATISTICS ACCEPTED
-            if !HAS($i '$[1 *]')
-                mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
-            endif
-            if !has($n '$[1 *]')
-                give "$[1 *]" "$n"
-            endif
-            sayto "$n" Please deliver this to $DESTINATION_DESC.  $REASONING
-            mpscript $n INDIVIDUAL SAVABLE LOAD=$QUEST_ID_playertrack.script
-        endif
-    endif
+			if !HAS($i '$[1 *]')
+				mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
+			endif
+			if !has($n '$[1 *]')
+				give "$[1 *]" "$n"
+			endif
+			sayto "$n" Please deliver this to $DESTINATION_DESC.  $REASONING
+			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+		endif
+	endif
 ~
-    
+	
 
 GIVE_PROG all
-    if EVAL($o == '$[1 *]')
-        sayto "$n" So, you refuse?  Help me find someone else then.  Ok?
-        mpjunk $o
-        mpendquest $n
-    endif
+	if EVAL($o == '$[1 *]')
+		sayto "$n" So, you refuse?  Help me find someone else then.  Ok?
+		mpjunk $o
+		mpendquest $n
+	endif
 ~
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_deliveree.script</NAME>
 <DATA>
 
 PUT_PROG all
-    if EVAL($p == '$[1 *]') AND EVAL($o == '$[2 *]') AND EVAL('$[2 *]' != '')
-        if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)
-            if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-                # do nothing
-            else
-                if EVAL($p == '$[1 *]')
-                    if EVAL('$EXP' != '')
-                        mpexp $n $EXP
-                    endif
-                    if EVAL('$FACTION' != '')
-                        mpfaction $n $FACTION $NUMFACTION
-                    endif
-                    if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-                        mpoloadroom QuestPoint
-                        mpforce $n GET "a quest point"
-                    endif
-                    if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-                        mpoload $GOLD
-                        mpforce $n GET $GOLD
-                    endif
-                    mpquestwin $n *
-                    mpecho $DELIVER_RESPONSE
-                    mpendquest $n
+	if EVAL($p == '$[1 *]') AND EVAL($o == '$[2 *]') AND EVAL('$[2 *]' != '')
+		if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)
+			if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
+				# do nothing
+			else
+				if EVAL($p == '$[1 *]')
+					if EVAL('$EXP' != '')
+						mpexp $n $EXP
+					endif
+					if EVAL('$FACTION' != '')
+						mpfaction $n $FACTION $NUMFACTION
+					endif
+					if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+						mpoloadroom QuestPoint
+						mpforce $n GET "a quest point"
+					endif
+					if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+						mpoload $GOLD
+						mpforce $n GET $GOLD
+					endif
+					mpquestwin $n *
+					mpecho $DELIVER_RESPONSE
+					mpendquest $n
 					mpqset * STATISTICS SUCCESS
-                endif
-            endif
-        endif
-    endif
+				endif
+			endif
+		endif
+	endif
 ~
 
 DROP_PROG all
-    if EVAL('$[2 *]' != '') 
-        RETURN
-    ENDIF
-    if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)
-        if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-            # do nothing
-        else
-            if EVAL($o == '$[1 *]')
-                if EVAL('$EXP' != '')
-                    mpexp $n 10%
-                endif
-                if EVAL('$FACTION' != '')
-                    mpfaction $n $FACTION $NUMFACTION
-                endif
-                if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-                    mpoloadroom QuestPoint
-                    mpforce $n GET "a quest point"
-                endif
-                if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-                    mpoload $GOLD
-                    mpforce $n GET $GOLD
-                endif
-                mpquestwin $n *
-                mpecho $DELIVER_RESPONSE
-                mpendquest $n
+	if EVAL('$[2 *]' != '') 
+		RETURN
+	ENDIF
+	if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)
+		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
+			# do nothing
+		else
+			if EVAL($o == '$[1 *]')
+				if EVAL('$EXP' != '')
+					mpexp $n 10%
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $n $FACTION $NUMFACTION
+				endif
+				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+					mpoloadroom QuestPoint
+					mpforce $n GET "a quest point"
+				endif
+				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+					mpoload $GOLD
+					mpforce $n GET $GOLD
+				endif
+				mpquestwin $n *
+				mpecho $DELIVER_RESPONSE
+				mpendquest $n
 				mpqset * STATISTICS SUCCESS
-            endif
-        endif
-    endif
+			endif
+		endif
+	endif
 ~
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
-    mpsetvar $i INSTRUCTIONS Please deliver $[1, *] to ${2 *}. $REASONING 
+	mpsetinternal DEFAULTQUEST $QUEST_ID
+	mpsetvar $i INSTRUCTIONS Please deliver $[1, *] to ${2 *}. $REASONING 
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
 ~
+
+TIME_PROG 1
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+~
+
+QUEST_TIME_PROG -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+
 </DATA></FILE>

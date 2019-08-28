@@ -165,73 +165,89 @@ set duration 0
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 GREET_PROG 100
-    if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
-        if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-            sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept $QUEST_NAME' to take on this quest.
-        endif
-    endif
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept $QUEST_NAME' to take on this quest.
+		endif
+	endif
 ~
 
 SPEECH_PROG p i accept $QUEST_NAME
-    if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
-        if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-            sayto "$n" $QUEST_INSTRUCTIONSSTRING
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			mpqset * STATISTICS ACCEPTED
-            if !HAS($i '$[1 *]')
-                mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
-            endif
-            give "$[1 *]" "$n"
-            sayto "$n" Please deliver this to ${2 *}.
-            mpscript $n INDIVIDUAL SAVABLE LOAD=$QUEST_ID_playertrack.script
-        endif
-    endif
+			if !HAS($i '$[1 *]')
+				mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
+			endif
+			give "$[1 *]" "$n"
+			sayto "$n" Please deliver this to ${2 *}.
+			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+		endif
+	endif
 ~
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_deliveree.script</NAME>
 <DATA>
 GREET_PROG 100
-    if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) AND QUESTSCRIPTED($n *)
-        if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-        else
-            sayto $n $DELIVEREE_RESPONSE
-        endif
-    endif
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) AND QUESTSCRIPTED($n *)
+		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
+		else
+			sayto $n $DELIVEREE_RESPONSE
+		endif
+	endif
 ~
 
 GIVE_PROG all
-    if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) AND QUESTSCRIPTED($n *)
-        if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-        else
-            if EVAL($o == '$[1 *]')
-                if EVAL('$EXP' != '')
-                    mpexp $n $EXP
-                endif
-                if EVAL('$FACTION' != '')
-                    mpfaction $n $FACTION $NUMFACTION
-                endif
-                if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-                    mpoload QuestPoint
-                    give "a quest point" "$n"
-                endif
-                if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-                    mpoload $GOLD
-                    give $GOLD "$n"
-                endif
-                mpquestwin $n *
-                sayto $n $DELIVERY_RESPONSE
-                mpendquest $n
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) AND QUESTSCRIPTED($n *)
+		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
+		else
+			if EVAL($o == '$[1 *]')
+				if EVAL('$EXP' != '')
+					mpexp $n $EXP
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $n $FACTION $NUMFACTION
+				endif
+				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+					mpoload QuestPoint
+					give "a quest point" "$n"
+				endif
+				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+					mpoload $GOLD
+					give $GOLD "$n"
+				endif
+				mpquestwin $n *
+				sayto $n $DELIVERY_RESPONSE
+				mpendquest $n
 				mpqset * STATISTICS SUCCESS
-            else
-                sayto "$n" What's this?
-                give "$o" "$n"
-            endif
-        endif
-    endif
+			else
+				sayto "$n" What's this?
+				give "$o" "$n"
+			endif
+		endif
+	endif
 ~
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
-    mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	mpsetinternal DEFAULTQUEST $QUEST_ID
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
 ~
+
+TIME_PROG 1
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+~
+
+QUEST_TIME_PROG -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+
 </DATA></FILE>

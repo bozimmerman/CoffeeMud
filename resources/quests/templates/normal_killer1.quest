@@ -165,7 +165,7 @@ SPEECH_PROG p i accept $QUEST_NAME
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			mpqset * STATISTICS ACCEPTED
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
-            mpscript $n INDIVIDUAL SAVABLE LOAD=$QUEST_ID_playertrack.script
+			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 		endif
 	endif
 ~
@@ -173,28 +173,42 @@ SPEECH_PROG p i accept $QUEST_NAME
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
-    mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	mpsetinternal DEFAULTQUEST $QUEST_ID
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+~
+
+TIME_PROG 1
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+~
+
+QUEST_TIME_PROG -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
 ~
 
 GREET_PROG 100
-    if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
-    	if ISLIKE($n $KILLABLES_MASK)
-            mpforce $n kill $i
-    	endif
-    endif
+	if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+		if ISLIKE($n $KILLABLES_MASK)
+			mpforce $n kill $i
+		endif
+	endif
 ~
 
 ENTRY_PROG 100
-    if INROOM($i == $g)
-    	for $0 = 1 to '$%NUMMOBSROOM(*)%'
-    		if ISLIKE('$%ROOMMOB($0)%' $KILLABLES_MASK)
-    			mpforce '$%ROOMMOB($0)%' sayto "$i" $KILLABLES_RESPONSE
-                if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
-                    mpforce '$%ROOMMOB($0)%' kill $i
-                endif
-    		endif
-    	next
-    endif
+	if INROOM($i == $g)
+		for $0 = 1 to '$%NUMMOBSROOM(*)%'
+			if ISLIKE('$%ROOMMOB($0)%' $KILLABLES_MASK)
+				mpforce '$%ROOMMOB($0)%' sayto "$i" $KILLABLES_RESPONSE
+				if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+					mpforce '$%ROOMMOB($0)%' kill $i
+				endif
+			endif
+		next
+	endif
 ~
 	
 EXECMSG_PROG STO=DEATH ALL

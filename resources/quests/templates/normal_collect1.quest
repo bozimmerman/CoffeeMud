@@ -154,27 +154,27 @@ GIVE_PROG all
 			mpsetvar $n $QUEST_ID_RETURNED ++
 			mpjunk $o
 			if var($n $QUEST_ID_RETURNED >= $NUM_COLLECTABLES)
-                if EVAL('$EXP' != '')
-                    mpexp $n $EXP
-                endif
-                if EVAL('$FACTION' != '')
-                    mpfaction $n $FACTION $NUMFACTION
-                endif
-                if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-                    mpoload QuestPoint
-                    give "a quest point" "$n"
-                endif
-                if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-                    mpoload $GOLD
-                    give $GOLD "$n"
-                endif
-                mpquestwin $n *
-                sayto $n $QUEST_WINSPEECH_TEXT
-                mpendquest $n
+				if EVAL('$EXP' != '')
+					mpexp $n $EXP
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $n $FACTION $NUMFACTION
+				endif
+				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+					mpoload QuestPoint
+					give "a quest point" "$n"
+				endif
+				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+					mpoload $GOLD
+					give $GOLD "$n"
+				endif
+				mpquestwin $n *
+				sayto $n $QUEST_WINSPEECH_TEXT
+				mpendquest $n
 				mpqset * STATISTICS SUCCESS
 			else
 				sayto "$n" That's $<$n $QUEST_ID_RETURNED>/$NUM_COLLECTABLES.
-                mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
+				mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
 			endif
 		else
 			sayto "$n" What's this?
@@ -192,7 +192,7 @@ SPEECH_PROG p i accept $QUEST_NAME
 			if !QUESTSCRIPTED($n *)
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 				mpqset * STATISTICS ACCEPTED
-                mpscript $n INDIVIDUAL SAVABLE LOAD=$QUEST_ID_playertrack.script
+				mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 			else
 				sayto "$n" Yes, yes, I know .. now off with you.
 			endif
@@ -203,34 +203,54 @@ SPEECH_PROG p i accept $QUEST_NAME
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
-    mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
-    mpsetvar $i $QUEST_ID_GOT 0
-    mpsetvar $i $QUEST_ID_RETURNED 0
-    mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
+	mpsetinternal DEFAULTQUEST $QUEST_ID
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+	mploadvar $i $QUEST_ID_RETURNED
+	if var($i $QUEST_ID_RETURNED = '')
+		mpsetvar $i $QUEST_ID_RETURNED 0
+	endif
+	mploadvar $i $QUEST_ID_GOT
+	if var($i $QUEST_ID_GOT = '')
+		mpsetvar $i $QUEST_ID_GOT 0
+	endif
+	mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
+~
+
+TIME_PROG 1
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+~
+
+QUEST_TIME_PROG -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
 ~
 
 CNCLMSG_PROG STO=DEATH ALL
-    if ISNPC($n) AND ISLIKE($n $HOLDERS_MASK)
-        if rand($COLLECTABLES_CHANCE)
-            mpforce $n mpoload fromfile $QUEST_ID_items.xml any
-        endif
-    endif
+	if ISNPC($n) AND ISLIKE($n $HOLDERS_MASK)
+		if rand($COLLECTABLES_CHANCE)
+			mpforce $n mpoload fromfile $QUEST_ID_items.xml any
+		endif
+	endif
 ~
 
 EXECMSG_PROG GET ALL
-    if questobj($t *) and QUESTSCRIPTED($n *) and EVAL($n == $i)
-        MPSETVAR $n $QUEST_ID_GOT ++
-        mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
-        mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
-    endif
-    
+	if questobj($t *) and QUESTSCRIPTED($n *) and EVAL($n == $i)
+		MPSETVAR $n $QUEST_ID_GOT ++
+		mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
+		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
+	endif
+	
 ~
 EXECMSG_PROG DROP ALL
-    if questobj($t *) and QUESTSCRIPTED($n *) and EVAL($n == $i)
-        MPSETVAR $n $QUEST_ID_GOT --
-        mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
-        mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
-    endif
-    
+	if questobj($t *) and QUESTSCRIPTED($n *) and EVAL($n == $i)
+		MPSETVAR $n $QUEST_ID_GOT --
+		mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
+		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
+	endif
+	
 ~
 </DATA></FILE>
