@@ -120,6 +120,7 @@ public class Chant_DeathMoon extends Chant
 				unInvoke();
 			else
 			{
+				final int divider=(room.numInhabitants()>1)?(room.numInhabitants()-1):1;
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					final MOB M=room.fetchInhabitant(i);
@@ -139,7 +140,7 @@ public class Chant_DeathMoon extends Chant
 							if(grp.contains(M))
 								continue;
 						}
-						final int dmg=CMLib.dice().roll(1,M.phyStats().level()+(2*getXLEVELLevel(invoker)),0);
+						final int dmg=CMLib.dice().roll(1,M.phyStats().level()+(2*getXLEVELLevel(invoker)),0)/divider;
 						CMLib.combat().postDamage(agent,M,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The gaze of the death moon <DAMAGE> <T-NAME>!"));
 						CMLib.combat().postRevengeAttack(M, agent);
 					}
