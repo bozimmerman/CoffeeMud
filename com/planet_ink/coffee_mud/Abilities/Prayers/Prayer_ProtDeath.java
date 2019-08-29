@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_DeathsDoor extends Prayer
+public class Prayer_ProtDeath extends Prayer
 {
 	@Override
 	public String ID()
 	{
-		return "Prayer_DeathsDoor";
+		return "Prayer_ProtDeath";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Deaths Door");
+	private final static String localizedName = CMLib.lang().L("Protection Death");
 
 	@Override
 	public String name()
@@ -48,7 +48,7 @@ public class Prayer_DeathsDoor extends Prayer
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Deaths Door)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Protection from Death)");
 
 	@Override
 	public String displayText()
@@ -65,7 +65,7 @@ public class Prayer_DeathsDoor extends Prayer
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_BENEFICIAL_SELF;
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
 	}
 
 	@Override
@@ -99,20 +99,26 @@ public class Prayer_DeathsDoor extends Prayer
 			{
 				if(mob.fetchAbility("Dueling")!=null)
 					return super.okMessage(host,msg);
-				final Room oldRoom=mob.location();
-				mob.resetToMaxState();
-				oldRoom.show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> pulled back from death's door!"));
-				startRoom.bringMobHere(mob,false);
-				unInvoke();
-				for(int a=mob.numEffects()-1;a>=0;a--) // personal effects
+				final int chance=30 + super.getXLEVELLevel(invoker());
+				if(CMLib.dice().rollPercentage()<chance)
 				{
-					final Ability A=mob.fetchEffect(a);
-					if(A!=null)
-						A.unInvoke();
+					final Room oldRoom=mob.location();
+					mob.resetToMaxState();
+					oldRoom.show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> <S-IS-ARE> protected from death!^?"));
+					startRoom.bringMobHere(mob,false);
+					unInvoke();
+					for(int a=mob.numEffects()-1;a>=0;a--) // personal effects
+					{
+						final Ability A=mob.fetchEffect(a);
+						if(A!=null)
+							A.unInvoke();
+					}
+					if((oldRoom!=startRoom) && oldRoom.isInhabitant(mob) && startRoom.isInhabitant(mob))
+						oldRoom.delInhabitant(mob); // hopefully unnecessary
+					return false;
 				}
-				if((oldRoom!=startRoom) && oldRoom.isInhabitant(mob) && startRoom.isInhabitant(mob))
-					oldRoom.delInhabitant(mob); // hopefully unnecessary
-				return false;
+				else
+					unInvoke();
 			}
 		}
 		return super.okMessage(host,msg);
@@ -129,21 +135,15 @@ public class Prayer_DeathsDoor extends Prayer
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(L("Your deaths door protection fades."));
+			mob.tell(L("Your death protection fades."));
 	}
 
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-			target=(MOB)givenTarget;
-
-		if(target.fetchEffect(ID())!=null)
-		{
-			mob.tell(L("You are already guarded at deaths door."));
+		final MOB target=getTarget(mob,commands,givenTarget);
+		if(target==null)
 			return false;
-		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -152,7 +152,7 @@ public class Prayer_DeathsDoor extends Prayer
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) guarded at deaths door!"):L("^S<S-NAME> @x1 for <T-NAME> to be guarded at deaths door!^?",prayWord(mob)));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) protected from death!"):L("^S<S-NAME> @x1 for <T-NAME> to be protected from death!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

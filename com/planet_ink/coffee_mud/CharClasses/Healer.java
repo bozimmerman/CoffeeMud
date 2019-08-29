@@ -171,7 +171,7 @@ public class Healer extends Cleric
 
 		if(CMLib.factions().isAlignmentLoaded(Faction.Align.EVIL))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_DeathsDoor",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_ProtDeath",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_PeaceRitual",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
@@ -191,7 +191,8 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_HolyWord",false,CMParms.parseSemicolons("Prayer_HolyAura",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_DivineResistance",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_DivineConstitution",false,CMParms.parseSemicolons("Prayer_HolyAura;Prayer_DeathsDoor;Prayer_Heal",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_DivineConstitution",false,CMParms.parseSemicolons("Prayer_HolyAura;Prayer_ProtDeath;Prayer_Heal",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_DeathsDoor",false,CMParms.parseSemicolons("Prayer_ProtDeath",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_TrueResurrection",true);
 		// level 30 == healing aura

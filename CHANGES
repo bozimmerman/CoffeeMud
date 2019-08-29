@@ -40,6 +40,7 @@
  39. Alterer nerf: Wish is now level 60, and new spell: Limited Wish, gained at 30.
  40. Channels now support ACCOUNTLOGINS and ACCOUNTLOGOFFS for those using the account system.
  41. Where command now supports new MQL syntax, see AHELP WHERE (and RandomAreas guide) for more info
+ 51. Prayer Deaths Door moved to Healer 25, self-cast only.  New Prayer: Protection from Death, in its place at 19.
  
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque
