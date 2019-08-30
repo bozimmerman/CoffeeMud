@@ -141,12 +141,12 @@ set wherehappened ROOM
 GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept $QUEST_NAME' to take on this quest.
+			sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
 		endif
 	endif
 ~
 
-SPEECH_PROG p i accept $QUEST_NAME
+SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			mpqset * STATISTICS ACCEPTED
@@ -171,11 +171,21 @@ ONCE_PROG 100
 RAND_PROG 25
 	IF !isquestmobalive(1 '$QUEST_ID')
 		MPENDQUEST '$QUEST_ID'
+	else
+		if QVAR(* REMAINING == '')
+			MPENDQUEST $i
+		else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
 	ENDIF
 ~
 
 QUEST_TIME_PROG * -1
 	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+QUEST_TIME_PROG * 1
+	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
 ~
 
 ENTRY_PROG 100

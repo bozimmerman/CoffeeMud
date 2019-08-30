@@ -171,13 +171,13 @@ GREET_PROG 100
 			if QUESTSCRIPTED($n *)
 				sayto "$n" What are you doing back here?  Take $[1 *] to $DESTINATION_DESC!
 			else
-				sayto "$n" I have something I need to be taken to $DESTINATION_DESC.  If you'll deliver it for me, say 'I accept $QUEST_NAME', and I will give you the details.
+				sayto "$n" I have something I need to be taken to $DESTINATION_DESC.  If you'll deliver it for me, say 'i accept', and I will give you the details.
 			endif
 		endif
 	endif
 ~
 
-SPEECH_PROG p i accept $QUEST_NAME
+SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			mpqset * STATISTICS ACCEPTED
@@ -288,7 +288,17 @@ ONCE_PROG 100
 RAND_PROG 25
 	IF !isquestmobalive(1 '$QUEST_ID')
 		MPENDQUEST '$QUEST_ID'
+	else
+		if QVAR(* REMAINING == '')
+			MPENDQUEST $i
+		else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
 	ENDIF
+~
+
+QUEST_TIME_PROG * 1
+	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
 ~
 
 QUEST_TIME_PROG * -1
