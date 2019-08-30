@@ -168,7 +168,8 @@ public class Age extends StdAbility
 		&&(CMLib.flags().isInTheGame((MOB)((Item)babe).owner(),true)))
 			following=(MOB)((Item)babe).owner();
 		final Room room=CMLib.map().roomLocation(babe);
-		if((room!=null)&&(following==null))
+		if((room!=null)
+		&&(following==null))
 		{
 			boolean lastFollowEllapsed=false;
 			if(lastFollowCheck>0)
@@ -250,6 +251,46 @@ public class Age extends StdAbility
 		}
 	}
 
+	protected boolean isBeingCaredForByAPlayer(final MOB mob)
+	{
+		if((mob.amFollowing()!=null)
+		&&(mob.amFollowing().playerStats()!=null)
+		&&(!mob.amFollowing().isMonster())
+		&&(mob.location().isInhabitant(mob))
+		&&(mob.location().isInhabitant(mob.amFollowing())))
+			return true;
+		return false;
+	}
+	
+	protected boolean isBeingCaredForByAnNPC(final MOB mob)
+	{
+		if((mob.amFollowing()!=null)
+		&&(mob.amFollowing().playerStats()==null)
+		&&(mob.amFollowing().isMonster())
+		&&(mob.location().isInhabitant(mob))
+		&&(mob.location().isInhabitant(mob.amFollowing())))
+			return true;
+		return false;
+	}
+	
+	protected boolean isAnNPCBirth(final MOB mob)
+	{
+		if(mob==null)
+			return false;
+		final List<String> str=CMLib.flags().getParents(mob);
+		if(str.size()==0)
+			return true;
+		if(mob.Name().indexOf(' ')<0)
+			return false;
+		for(final String name : str)
+		{
+			if((mob.Name().indexOf(' ')<0)
+			&&(CMLib.players().playerExistsAllHosts(name)))
+				return false;
+		}
+		return true;
+	}
+	
 	protected void doUnprotectedAgeChangeCheck(final Physical affected, final long l)
 	{
 		if(divisor==0.0)
@@ -398,17 +439,15 @@ public class Age extends StdAbility
 		}
 		else
 		if((affected instanceof MOB)
-		&&(((MOB)affected).amFollowing()!=null)
-		&&(((MOB)affected).amFollowing().playerStats()!=null)
-		&&(!((MOB)affected).amFollowing().isMonster())
-		&&(((MOB)affected).location().isInhabitant((MOB)affected))
-		&&(((MOB)affected).location().isInhabitant(((MOB)affected).amFollowing())))
+		&&(isBeingCaredForByAPlayer((MOB)affected)))
 		{
 			final MOB babe=(MOB)affected;
 			final MOB following=getFollowing(babe);
 			if(getMyRace()==null)
 				return;
-			if((babe.getLiegeID().length()==0)&&(!following.getLiegeID().equals(affected.Name())))
+			if((babe.getLiegeID().length()==0)
+			&&(following != null)
+			&&(!following.getLiegeID().equals(affected.Name())))
 				babe.setLiegeID(following.Name());
 			babe.setAttribute(MOB.Attrib.AUTOASSIST,false);
 			if((ellapsed>=myRace.getAgingChart()[2])
@@ -458,7 +497,8 @@ public class Age extends StdAbility
 				Ability A=babe.fetchEffect("Prop_SafePet");
 				if(A!=null)
 					babe.delEffect(A);
-				CMLib.database().DBDeletePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
+				if(following != null)
+					CMLib.database().DBDeletePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 
 				final List<MOB> parents=new ArrayList<MOB>(2);
 				PlayerLibrary players = CMLib.players();
@@ -526,10 +566,19 @@ public class Age extends StdAbility
 					final Ability psA=babe.fetchEffect("Prop_SafePet");
 					if(psA != null)
 						babe.delEffect(psA);
-					CMLib.database().DBDeletePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
-					if(liege!=babe.amFollowing())
-						babe.amFollowing().tell(L("@x1 has just grown up to be a mob.",babe.Name()));
-					liege.tell(L("@x1 has just grown up to be a mob.",babe.Name()));
+					if(following != null)
+						CMLib.database().DBDeletePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
+					if(babe.amFollowing()!=null)
+					{
+						if(liege!=babe.amFollowing())
+							babe.amFollowing().tell(L("@x1 has just grown up to be a mob.",babe.Name()));
+					}
+					if(liege!=null)
+						liege.tell(L("@x1 has just grown up to be a mob.",babe.Name()));
+					if((babe.amFollowing()==null)
+					&&(liege == null)
+					&&(babe.location()!=null))
+						babe.location().showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 has just grown up to be a mob.",babe.Name()));
 					A=babe.fetchEffect(ID());
 					A.setMiscText(""+ellapsed);
 					babe.recoverCharStats();
@@ -753,11 +802,7 @@ public class Age extends StdAbility
 		}
 		else
 		if((affected instanceof MOB)
-		&&(((MOB)affected).amFollowing()!=null)
-		&&(((MOB)affected).amFollowing().playerStats()==null)
-		&&(((MOB)affected).amFollowing().isMonster())
-		&&(((MOB)affected).location().isInhabitant((MOB)affected))
-		&&(((MOB)affected).location().isInhabitant(((MOB)affected).amFollowing()))
+		&&(this.isBeingCaredForByAnNPC((MOB)affected))
 		&&(CMLib.law().getLandOwnerName(((MOB)affected).location()).length()>0))
 		{
 			final MOB babe=(MOB)affected;
