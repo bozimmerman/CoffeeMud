@@ -260,20 +260,36 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if((load!=null)&&(load.length()>0))
 			{
 				piece.parms().remove("LOAD");
-				XMLTag loadedPiece=(XMLTag)defined.get("SYSTEM_LOADED_XML_FILES");
-				if(loadedPiece==null)
+				final String loadcondition=piece.getParmValue("CONDITION");
+				boolean proceedWithLoad=true;
+				if((loadcondition != null)&&(loadcondition.length()>0))
 				{
-					loadedPiece=CMLib.xml().createNewTag("SYSTEM_LOADED_XML_FILES","");
-					defined.put("SYSTEM_LOADED_XML_FILES", loadedPiece);
-				}
-				final CMFile file = new CMFile(load,null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
-				if(loadedPiece.getPieceFromPieces( file.getAbsolutePath().toUpperCase())==null)
-				{
-					loadedPiece.contents().add(CMLib.xml().createNewTag(file.getAbsolutePath().toUpperCase(),"true"));
-					if(file.exists() && file.canRead())
+					try
 					{
-						final List<XMLTag> addPieces=CMLib.xml().parseAllXML(file.text());
-						piece.contents().addAll(addPieces);
+						if(!testCondition(null,null,null,CMLib.xml().restoreAngleBrackets(loadcondition),piece,defined))
+							proceedWithLoad=false;
+					}
+					catch (final PostProcessException e)
+					{
+					}
+				}
+				if(proceedWithLoad)
+				{
+					XMLTag loadedPiece=(XMLTag)defined.get("SYSTEM_LOADED_XML_FILES");
+					if(loadedPiece==null)
+					{
+						loadedPiece=CMLib.xml().createNewTag("SYSTEM_LOADED_XML_FILES","");
+						defined.put("SYSTEM_LOADED_XML_FILES", loadedPiece);
+					}
+					final CMFile file = new CMFile(load,null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
+					if(loadedPiece.getPieceFromPieces( file.getAbsolutePath().toUpperCase())==null)
+					{
+						loadedPiece.contents().add(CMLib.xml().createNewTag(file.getAbsolutePath().toUpperCase(),"true"));
+						if(file.exists() && file.canRead())
+						{
+							final List<XMLTag> addPieces=CMLib.xml().parseAllXML(file.text());
+							piece.contents().addAll(addPieces);
+						}
 					}
 				}
 			}

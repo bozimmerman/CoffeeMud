@@ -305,6 +305,15 @@ public class Generate extends StdCommand
 						mob.tell("Generated quest '"+Q.name()+"'");
 						Log.sysOut("Generate",mob.Name()+" created quest '"+Q.name()+"'");
 						CMLib.quests().addQuest(Q);
+						if(!Q.running())
+						{
+							if(!Q.startQuest())
+							{
+								CMLib.quests().delQuest(Q);
+								mob.tell("Unable to start the quest.  Something went wrong.  Perhaps the problem was logged?");
+								return false;
+							}
+						}
 						CMLib.quests().save();
 					}
 					else
