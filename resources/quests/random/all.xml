@@ -23,7 +23,7 @@ See guides/RandomAreas.html for information about documents of this type.
 <QUEST ID="ALL" SELECT="Any-1" merge=true>
 </QUEST>
 
-<string id=random_template" define="quest_template" merge=true select="any-1">
+<string id="random_template" define="quest_template" merge=true select="any-1">
 	<string condition="$template!=''">$template</string>
 </string>
   

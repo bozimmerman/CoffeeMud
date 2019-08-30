@@ -38,7 +38,7 @@ vars:
 
 <QUEST ID="all" MERGE=true QUEST_TEMPLATE_ID="$quest_template" CONDITION="$quest_template='normal_capture1'">
 	<QUEST_ID DEFINE="quest_id">${_:source_area_name}_${_:source_name}_${_:quest_template}_R$[100000000?999999999]</QUEST_ID>
-	<QUEST_CRITERIA></QUEST_CRITERIA><!--  +LEVELS -&lt;$[$target_level - $level_range] -&gt;$[$target_level + $level_range]</QUEST_CRITERIA> -->
+	<QUEST_CRITERIA></QUEST_CRITERIA><!--  +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA> -->
 	<ANNOUNCER_AREA>"$source_area_name"</ANNOUNCER_AREA>
 	<ANNOUNCER_ROOM>"$source_room_id"</ANNOUNCER_ROOM>
 	<ANNOUNCER_NAME>"$source_name"</ANNOUNCER_NAME>

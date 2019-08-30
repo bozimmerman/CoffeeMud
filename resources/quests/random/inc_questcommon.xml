@@ -37,8 +37,12 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING>$[3?10]</STRING>
 </STRING>
 
-<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+<STRING ID="level_span" SELECT="any-1" DEFINE="level_span" MERGE=true>
 	<STRING>$[3?6]</STRING>
+</STRING>
+
+<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+	<STRING>$[1?91]</STRING>
 </STRING>
 
 <STRING ID="verb_captured" predefine="verb_capture=$verb_capture">$verb_captured</STRING>
