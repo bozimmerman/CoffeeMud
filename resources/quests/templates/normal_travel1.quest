@@ -163,13 +163,13 @@ ONCE_PROG 100
 	ENDIF
 ~
 
-TIME_PROG 1
+RAND_PROG 25
 	IF !isquestmobalive(1 '$QUEST_ID')
 		MPENDQUEST '$QUEST_ID'
 	ENDIF
 ~
 
-QUEST_TIME_PROG -1
+QUEST_TIME_PROG * -1
 	MPECHOAT $i The quest "$QUEST_NAME" has ended.
 ~
 

@@ -523,6 +523,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 					switch(s.charAt(loop+1))
 					{
 					case 'l':
+					case 'L':
 						if(s.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
 						{
 							buf.append('<');
@@ -530,6 +531,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 						}
 						break;
 					case 'g':
+					case 'G':
 						if(s.substring(loop+1,loop+4).equalsIgnoreCase("gt;"))
 						{
 							buf.append('>');
@@ -537,6 +539,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 						}
 						break;
 					case 'q':
+					case 'Q':
 						if(s.substring(loop+1,loop+6).equalsIgnoreCase("quot;"))
 						{
 							buf.append('\"');
@@ -544,6 +547,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 						}
 						break;
 					case 'a':
+					case 'A':
 						if(s.substring(loop+1,loop+6).equalsIgnoreCase("amp;"))
 						{
 							buf.append('&');

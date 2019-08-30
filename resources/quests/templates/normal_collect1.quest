@@ -58,6 +58,10 @@
 #Specify some additional bit of speech the announcer mob will say to players when the quest is accepted.
 #$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to collect some things.  They are somewhere around somewhere.
 #
+#Announcer Extra Announcement: 
+#Leave blank, or specify a channel that the announcer will also give his notification on.
+#$QUEST_ANNOUNCECHANNEL=($STRING)=
+#
 #Announcer success:
 #Select what tthe announcer will say when a player returns to him after collecting the items.
 #$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations!
@@ -138,6 +142,9 @@ set duration 0
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
+	if EVAL('$QUEST_ANNOUNCECHANNEL' != '')
+		$QUEST_ANNOUNCECHANNEL $QUEST_NOTIFYSTRING -- Come see me for more information.
+	endif
 ~
 
 ALL_GREET_PROG 100
@@ -216,13 +223,13 @@ ONCE_PROG 100
 	mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
 ~
 
-TIME_PROG 1
+RAND_PROG 25
 	IF !isquestmobalive(1 '$QUEST_ID')
 		MPENDQUEST '$QUEST_ID'
 	ENDIF
 ~
 
-QUEST_TIME_PROG -1
+QUEST_TIME_PROG * -1
 	MPECHOAT $i The quest "$QUEST_NAME" has ended.
 ~
 

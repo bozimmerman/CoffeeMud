@@ -57,6 +57,10 @@
 #Specify some additional bit of speech the announcer mob will say to players when the quest is accepted.
 #$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to kill some folks.  They are somewhere around somewhere.  Just beat them senseless.
 #
+#Announcer Extra Announcement: 
+#Leave blank, or specify a channel that the announcer will also give his notification on.
+#$QUEST_ANNOUNCECHANNEL=($STRING)=
+#
 #Announcer success:
 #This is what the announcement says when the player returns after finishing the quest.
 #$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations! They're dead!
@@ -129,35 +133,41 @@ set duration 0
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
+ONCE_PROG 100
+	if EVAL('$QUEST_ANNOUNCECHANNEL' != '')
+		$QUEST_ANNOUNCECHANNEL $QUEST_NOTIFYSTRING -- Come see me for more information.
+	endif
+~
+
 ALL_GREET_PROG 100
-IF QUESTSCRIPTED($n *)
-	if var($n $QUEST_ID_KILLED >= $NUM_KILLABLES)
-		if EVAL('$EXP' != '')
-			mpexp $n $EXP
+	IF QUESTSCRIPTED($n *)
+		if var($n $QUEST_ID_KILLED >= $NUM_KILLABLES)
+			if EVAL('$EXP' != '')
+				mpexp $n $EXP
+			endif
+			if EVAL('$FACTION' != '')
+				mpfaction $n $FACTION $NUMFACTION
+			endif
+			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+				mpoload QuestPoint
+				give "a quest point" "$n"
+			endif
+			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+				mpoload $GOLD
+				give $GOLD "$n"
+			endif
+			mpquestwin $n *
+			sayto $n $QUEST_WINSPEECH_TEXT
+			mpendquest $n
+			mpqset * STATISTICS SUCCESS
 		endif
-		if EVAL('$FACTION' != '')
-			mpfaction $n $FACTION $NUMFACTION
+	else
+		if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+			if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+				sayto "$n" $QUEST_NOTIFYSTRING -- say 'i accept $QUEST_NAME' to take on this quest.
+			endif
 		endif
-		if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-			mpoload QuestPoint
-			give "a quest point" "$n"
-		endif
-		if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-			mpoload $GOLD
-			give $GOLD "$n"
-		endif
-		mpquestwin $n *
-		sayto $n $QUEST_WINSPEECH_TEXT
-		mpendquest $n
-		mpqset * STATISTICS SUCCESS
 	endif
-else
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
-		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept $QUEST_NAME' to take on this quest.
-		endif
-	endif
-endif
 ~
 
 SPEECH_PROG p i accept $QUEST_NAME
@@ -179,13 +189,13 @@ ONCE_PROG 100
 	ENDIF
 ~
 
-TIME_PROG 1
+RAND_PROG 25
 	IF !isquestmobalive(1 '$QUEST_ID')
 		MPENDQUEST '$QUEST_ID'
 	ENDIF
 ~
 
-QUEST_TIME_PROG -1
+QUEST_TIME_PROG * -1
 	MPECHOAT $i The quest "$QUEST_NAME" has ended.
 ~
 

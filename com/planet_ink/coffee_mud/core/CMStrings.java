@@ -3024,9 +3024,16 @@ public class CMStrings
 	private final static StringExpToken matchSimpleValue(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
 		final int[] i = index.clone();
-		final StringExpToken token = nextToken(tokens, i);
+		StringExpToken token = nextToken(tokens, i);
 		if (token == null)
 			return null;
+		if((token.type==StringExpTokenType.COMBINER)
+		&&(token.value.equals("-")))
+		{
+			tokens.remove(--i[0]);
+			token = nextToken(tokens, i);
+			token.value="-"+token.value;
+		}
 		if((token.type != StringExpTokenType.NUMCONST)
 		&& (token.type != StringExpTokenType.STRCONST)
 		&& (token.type != StringExpTokenType.UKNCONST))
@@ -3420,8 +3427,6 @@ public class CMStrings
 			return true;
 		i = new int[]{ 0 };
 		final Boolean value = matchExpression(tokens, i, variables);
-		if (value == null)
-			throw new Exception("Parse error on following statement: " + expression);
 		return value.booleanValue();
 	}
 

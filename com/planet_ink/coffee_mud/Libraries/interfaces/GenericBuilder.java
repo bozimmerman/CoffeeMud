@@ -99,7 +99,15 @@ public interface GenericBuilder extends CMLibrary
 		TRAINS,
 		PRACTICES,
 		STINK,
-		CHARCLASS
+		CHARCLASS,
+		ALIGNMENT,
+		INCLINATION,
+		FACTIONID,
+		FACTIONAMT,
+		DEITY,
+		MATTRIB,
+		CLAN,
+		CLANROLE
 	}
 
 	public String getGenMOBTextUnpacked(MOB mob, String newText);

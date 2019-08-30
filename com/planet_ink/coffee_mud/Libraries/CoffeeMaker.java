@@ -3117,6 +3117,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(getGenItemCodeNum(stat)>=0)
 				return true;
 		}
+		else
+		if(P instanceof Area)
+		{
+			final Area.Stats areaStat=(Area.Stats)CMath.s_valueOf(Area.Stats.class, stat);
+			if(areaStat != null)
+				return true;
+		}
 		return false;
 	}
 
@@ -3165,6 +3172,93 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					return ""+(current?
 							((MOB)P).charStats().getCurrentClass().name(((MOB)P).charStats().getCurrentClassLevel())
 							:((MOB)P).baseCharStats().getCurrentClass().name(((MOB)P).charStats().getCurrentClassLevel()));
+				case ALIGNMENT:
+				{
+					final Faction F=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
+					if(F!=null)
+					{
+						final int faction = ((MOB)P).fetchFaction(F.factionID());
+						if(faction == Integer.MAX_VALUE)
+							return "";
+						return ""+faction;
+					}
+				}
+				case INCLINATION:
+				{
+					final Faction F=CMLib.factions().getFaction(CMLib.factions().getInclinationID());
+					if(F!=null)
+					{
+						final int faction = ((MOB)P).fetchFaction(F.factionID());
+						if(faction == Integer.MAX_VALUE)
+							return "";
+						return ""+faction;
+					}
+				}
+				case DEITY:
+					return ((MOB)P).getWorshipCharID();
+				case MATTRIB:
+				{
+					String val="";
+					for(final MOB.Attrib A : MOB.Attrib.values())
+					{
+						if(((MOB)P).isAttributeSet(A))
+							val += " "+A.name();
+					}
+					return val.trim();
+				}
+				case CLAN:
+				{
+					Clan C = CMLib.clans().findRivalrousClan(((MOB)P));
+					if (C == null)
+						C = ((MOB)P).clans().iterator().hasNext() ? ((MOB)P).clans().iterator().next().first : null;
+					return (C != null) ? C.clanID() : "";
+				}
+				case CLANROLE:
+				{
+					Clan C = CMLib.clans().findRivalrousClan(((MOB)P));
+					if (C == null)
+						C = ((MOB)P).clans().iterator().hasNext() ? ((MOB)P).clans().iterator().next().first : null;
+					if (C != null)
+					{
+						final Pair<Clan, Integer> p = ((MOB)P).getClanRole(C.clanID());
+						return (p != null) ? p.second.toString() : "";
+					}
+					return "";
+				}
+				case FACTIONID:
+				{
+					final String alignID=CMLib.factions().getAlignmentID();
+					final String inclinID=CMLib.factions().getInclinationID();
+					for(final Enumeration<String> f= ((MOB)P).factions();f.hasMoreElements();)
+					{
+						final String factionID=f.nextElement();
+						if((!(factionID.equalsIgnoreCase(alignID)))
+						&&(!(factionID.equalsIgnoreCase(alignID))))
+							return factionID;
+					}
+					if(((MOB)P).fetchFaction(alignID)!=Integer.MAX_VALUE)
+						return alignID;
+					if(((MOB)P).fetchFaction(inclinID)!=Integer.MAX_VALUE)
+						return inclinID;
+					return "";
+				}
+				case FACTIONAMT:
+				{
+					final String alignID=CMLib.factions().getAlignmentID();
+					final String inclinID=CMLib.factions().getInclinationID();
+					for(final Enumeration<String> f= ((MOB)P).factions();f.hasMoreElements();)
+					{
+						final String factionID=f.nextElement();
+						if((!(factionID.equalsIgnoreCase(alignID)))
+						&&(!(factionID.equalsIgnoreCase(alignID))))
+							return ""+((MOB)P).fetchFaction(factionID);
+					}
+					if(((MOB)P).fetchFaction(alignID)!=Integer.MAX_VALUE)
+						return ""+((MOB)P).fetchFaction(alignID);
+					if(((MOB)P).fetchFaction(inclinID)!=Integer.MAX_VALUE)
+						return ""+((MOB)P).fetchFaction(inclinID);
+					return "";
+				}
 				}
 			}
 		}
@@ -3297,6 +3391,48 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					else
 						((MOB)P).baseCharStats().setCurrentClass(C);
 					return;
+				}
+				case ALIGNMENT:
+					((MOB)P).addFaction(CMLib.factions().getAlignmentID(), CMath.parseIntExpression(value));
+					break;
+				case CLAN:
+				{
+					Pair<Clan, Integer> p = ((MOB)P).getClanRole(value);
+					if (p == null)
+					{
+						final Clan C = CMLib.clans().getClan(value);
+						if (C != null)
+							p = new Pair<Clan, Integer>(C, Integer.valueOf(C.getGovernment().getAcceptPos()));
+					}
+					if (p != null)
+						((MOB)P).setClan(p.first.clanID(), p.second.intValue());
+					break;
+				}
+				case CLANROLE:
+				{
+					Clan C = CMLib.clans().findRivalrousClan((MOB)P);
+					if (C == null)
+						C = ((MOB)P).clans().iterator().hasNext() ? ((MOB)P).clans().iterator().next().first : null;
+					if (C != null)
+						((MOB)P).setClan(C.clanID(), CMath.s_int(value));
+					break;
+				}
+				case DEITY:
+					((MOB)P).setWorshipCharID(value);
+					break;
+				case FACTIONAMT:
+					break;
+				case FACTIONID:
+					break;
+				case INCLINATION:
+					((MOB)P).addFaction(CMLib.factions().getInclinationID(), CMath.parseIntExpression(value));
+					break;
+				case MATTRIB:
+				{
+					final MOB.Attrib attrib=(MOB.Attrib)CMath.s_valueOf(MOB.Attrib.class, value.toUpperCase().trim());
+					if(attrib != null)
+						((MOB)P).setAttribute(attrib, !((MOB)P).isAttributeSet(attrib));
+					break;
 				}
 				}
 			}

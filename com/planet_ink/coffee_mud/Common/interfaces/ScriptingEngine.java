@@ -179,7 +179,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 							String evaluable);
 	/**
 	 * Calling this method forces this script to look for a trigger
-	 * dealing with the end of a quest (QUEST_TIME_PROG -1).
+	 * dealing with the end of a quest (QUEST_TIME_PROG * -1).
 	 * @param hostObj the scripted object
 	 * @param mob a mob representation of the host object
 	 * @param quest the name of the quest being ended
@@ -683,19 +683,6 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"CASE", //96 JUST for catching errors...
 		"DEFAULT" //97 JUST for catching errors...
 	};
-
-	/** a list of some some extra stat codes for mobs*/
-	public final static String[] GSTATCODES_ADDITIONAL={"DEITY","CLAN","CLANROLE","STINK","MATTRIB"};
-	/** index and equate for stat code for mob: deity*/
-	public final static int GSTATADD_DEITY=0;
-	/** index and equate for stat code for mob: clan */
-	public final static int GSTATADD_CLAN=1;
-	/** index and equate for stat code for mob: clan role */
-	public final static int GSTATADD_CLANROLE=2;
-	/** index and equate for stat code for mob: hygiene */
-	public final static int GSTATADD_STINK=3;
-	/** index and equate for stat code for mob: attrib */
-	public final static int GSTATADD_MATTRIB=4;
 
 	/** a list of the different parts of a time clock */
 	public final static String[] DATETIME_ARGS={"HOUR","TIME","DAY","DATE","MONTH","YEAR"};

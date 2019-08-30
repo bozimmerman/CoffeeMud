@@ -49,6 +49,10 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ITEM class="genCoins" name="a pile of coins" ability="$level_range * 2"/>
 </ITEM>
 
+<ITEM id="musical_instrument" select="all">
+	<ITEM class="metacraft:any-InstrumentMaking &gt; 0" />
+</ITEM>
+
 <ITEM id="dungeon_junk" select="all"  requires="level_range=int">
 	<ITEM class="GenItem" name="some $adj_wooden_broken shield pieces" display="$item_name are sitting here" material="IRON" level="$level_range" />
 	<ITEM class="GenResource" name="the bones of a dead critter" display="$item_name rest here" material="BONE" level="$level_range" weight="2" />
@@ -289,6 +293,14 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING>Sheep</STRING>
 	<STRING>Wolf</STRING>
 </STRING>
+
+<string id="any_instrument_name" select="any-1">
+${SELECT:any\name from (SELECT: . from $musical_instrument)}
+</string>
+
+<string id="any_dungeon_junk_name" select="any-1">
+${SELECT:any\name from (SELECT: . from $dungeon_junk)}
+</string>
 
 <string id="any_plural_digit" select="any-1"><string>2</string><string>3</string><string>4</string><string>5</string><string>6</string><string>7</string><string>8</string><string>9</string></string>
 <string id="any_digit" insert="any_plural_digit" select="any-1"><string>0</string><string>1</string></string>

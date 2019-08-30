@@ -2790,7 +2790,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			processDefined=piece;
 			tagName=piece.tag();
 		}
-		final List<XMLLibrary.XMLTag> choices = getAllChoices(E,ignoreStats,defPrefix,tagName, piece, defined,true);
+		List<XMLLibrary.XMLTag> choices = getAllChoices(E,ignoreStats,defPrefix,tagName, piece, defined,true);
+		if((choices==null)||(choices.size()==0))
+			choices=getAllChoices(E,ignoreStats,defPrefix,"ITEM", piece, defined,true);
+		if((choices==null)||(choices.size()==0))
+			choices=getAllChoices(E,ignoreStats,defPrefix,"MOB", piece, defined,true);
+		if((choices==null)||(choices.size()==0))
+			choices=getAllChoices(E,ignoreStats,defPrefix,"ABILITY", piece, defined,true);
 		if((choices==null)||(choices.size()==0))
 			throw new CMException("Unable to find tag '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		final List<Object> finalValues = new ArrayList<Object>();
@@ -2805,26 +2811,38 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final Object value;
 			if(valueStr.startsWith("SELECT:"))
 			{
-				final List<Map<String,Object>> sel=this.doMQLSelectObjs(E, ignoreStats, defPrefix, valueStr, valPiece, defined);
+				final List<Map<String,Object>> sel=this.doMQLSelectObjs(E, ignoreStats, defPrefix, CMLib.xml().restoreAngleBrackets(valueStr), valPiece, defined);
 				value=sel;
 				finalValues.addAll(sel);
 			}
 			else
-			if(valueStr.equals("MOB"))
+			if(valPiece.tag().equals("MOB"))
 			{
 				final List<MOB> objs = this.findMobs(E, valPiece, defined, null);
+				for(final MOB M : objs)
+				{
+					CMLib.threads().deleteAllTicks(M);
+					M.setSavable(false);
+					M.setDatabaseID("DELETE");
+				}
 				value=objs;
 				finalValues.addAll(objs);
 			}
 			else
-			if(valueStr.equals("ITEM"))
+			if(valPiece.tag().equals("ITEM"))
 			{
 				final List<Item> objs = this.findItems(E, valPiece, defined, null);
+				for(final Item I : objs)
+				{
+					CMLib.threads().deleteAllTicks(I);
+					I.setSavable(false);
+					I.setDatabaseID("DELETE");
+				}
 				value=objs;
 				finalValues.addAll(objs);
 			}
 			else
-			if(valueStr.equals("ABILITY"))
+			if(valPiece.tag().equals("ABILITY"))
 			{
 				final List<Ability> objs = this.findAbilities(E, valPiece, defined, null);
 				value=objs;
@@ -2903,7 +2921,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final String upperInserter = inserter.toUpperCase().trim();
 			if(upperInserter.startsWith("SELECT:"))
 			{
-				final List<Map<String,Object>> objs=this.doMQLSelectObjs(E, ignoreStats, defPrefix, upperInserter, piece, defined);
+				final List<Map<String,Object>> objs=this.doMQLSelectObjs(E, ignoreStats, defPrefix, CMLib.xml().restoreAngleBrackets(upperInserter), piece, defined);
 				for(final Map<String,Object> m : objs)
 				{
 					for(final String key : m.keySet())
@@ -2992,7 +3010,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						try
 						{
-							value=doMQLSelectString(E,null,null,id.var,piece,defined);
+							value=doMQLSelectString(E,null,null,CMLib.xml().restoreAngleBrackets(id.var),piece,defined);
 						}
 						catch(final MQLException e)
 						{
@@ -4821,7 +4839,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return null;
 	}
 
-	protected Object getFinalMQLValue(final String strpath, final List<Object> allFrom, final Object from,
+	protected Object getFinalMQLValue(final String strpath, final List<Object> allFrom, final Object from, final Map<String,Object> cache,
 			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		if(strpath.startsWith("SELECT:"))
@@ -4887,7 +4905,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								if(o==from)
 									count++;
 								else
-								if(chkO.equals(getFinalMQLValue(newWhat, allFrom, o, E, ignoreStats, defPrefix, piece, defined)))
+								if(chkO.equals(getFinalMQLValue(newWhat, allFrom, o, cache, E, ignoreStats, defPrefix, piece, defined)))
 									count++;
 							}
 							finalO=""+count;
@@ -5224,15 +5242,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return true;
 	}
 
-	protected boolean doMQLComparison(final MQLClause.WhereComp comp, final List<Object> allFrom, final Object from,
+	protected boolean doMQLComparison(final MQLClause.WhereComp comp, final List<Object> allFrom, final Object from, final Map<String, Object> cache,
 			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
-		final Object lhso=getFinalMQLValue(comp.lhs, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
-		final Object rhso=getFinalMQLValue(comp.rhs, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
+		final Object lhso=getFinalMQLValue(comp.lhs, allFrom, from,cache,E,ignoreStats,defPrefix,piece,defined);
+		final Object rhso=getFinalMQLValue(comp.rhs, allFrom, from,cache,E,ignoreStats,defPrefix,piece,defined);
 		return doMQLComparison(lhso, comp.comp, rhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
 	}
 
-	protected boolean doMQLWhereClauseFilter(final MQLClause.WhereClause whereClause, final List<Object> allFrom, final Object from,
+	protected boolean doMQLWhereClauseFilter(final MQLClause.WhereClause whereClause, final List<Object> allFrom, final Object from, final Map<String, Object> cache,
 			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		MQLClause.WhereConnector lastConn=null;
@@ -5245,11 +5263,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				if(clause.lhs != null)
 					throw new MQLException("Parent & lhs error ");
-				thisResult=doMQLWhereClauseFilter(clause.parent,allFrom,from,E,ignoreStats,defPrefix,piece,defined);
+				thisResult=doMQLWhereClauseFilter(clause.parent,allFrom,from,cache,E,ignoreStats,defPrefix,piece,defined);
 			}
 			else
 			if(clause.lhs != null)
-				thisResult=doMQLComparison(clause.lhs, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
+				thisResult=doMQLComparison(clause.lhs, allFrom, from,cache,E,ignoreStats,defPrefix,piece,defined);
 			else
 			if(clause.next != null)
 			{
@@ -5326,15 +5344,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				aggregate=true;
 			}
 		}
+		final Map<String,Object> cache=new HashMap<String,Object>();
 		for(final Object o : froms)
 		{
-
-			if(doMQLWhereClauseFilter(clause.wheres, froms, o,E,ignoreStats,defPrefix,piece,defined))
+			if(doMQLWhereClauseFilter(clause.wheres, froms, o,cache,E,ignoreStats,defPrefix,piece,defined))
 			{
 				final Map<String,Object> m=new TreeMap<String,Object>();
 				for(final MQLClause.WhatBit bit : clause.what)
 				{
-					final Object o1 = this.getFinalMQLValue(bit.what(), froms, o, E, ignoreStats, defPrefix, piece, defined);
+					final Object o1 = this.getFinalMQLValue(bit.what(), froms, o, cache, E, ignoreStats, defPrefix, piece, defined);
 					if(o1 instanceof Map)
 					{
 						@SuppressWarnings("unchecked")
@@ -5586,7 +5604,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			else
 			if(V.var.toUpperCase().startsWith("SELECT:"))
 			{
-				val=doMQLSelectString(E,ignoreStats,defPrefix,V.var,piece, defined);
+				val=doMQLSelectString(E,ignoreStats,defPrefix,CMLib.xml().restoreAngleBrackets(V.var),piece, defined);
 			}
 			else
 			if(V.var.toUpperCase().startsWith("STAT:") && (E!=null))

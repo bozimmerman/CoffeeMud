@@ -761,6 +761,8 @@ public class CharGen extends StdCommand
 							if((sess!=null)&&(sess.isStopped() || sess.hotkey(1)=='x'))
 								aborted[0]=true;
 
+							//TODO: Buff period for the player
+
 							//chargen combat charclasses export=test.tab iterations=100 skiplevels=20 1 91
 							while((M1.getVictim()==M2)
 								&&(M2.getVictim()==M1)

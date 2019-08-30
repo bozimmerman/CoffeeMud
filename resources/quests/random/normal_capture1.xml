@@ -16,10 +16,6 @@ limitations under the License.
 --------------------------------------------------------------------------------
 
 See guides/RandomAreas.html for information about documents of this type.
-<!-- 
-TODO: add QUEST_TEMPLATE_ID to the official parms list -->
--->
-
 
 <!-- 
 template: normal_capture1
@@ -33,18 +29,20 @@ vars:
 	xp_amount_awarded
 	gold_amount_awarded
 	quest_point_awarded(YES,NO)
+	announcechannel()
 -->
 
-<string id="quest_template" merge=true select="any-1" define="quest_template">
+<STRING ID="quest_template" merge=true SELECT="any-1" DEFINE="quest_template">
 	<string condition="$template=''">normal_capture1</string>
-</string>
+</STRING>
 
-<QUEST id="all" merge=true QUEST_TEMPLATE_ID="$quest_template" condition="$quest_template='normal_capture1'">
-	<QUEST_ID define="quest_id">${_:source_area_name}_${_:source_name}_${_:quest_template}_R$[100000000?999999999]</QUEST_ID>
-	<QUEST_CRITERIA>-LEVELS +&gt;$[$target_level - $level_range] +&lt;$[$target_level + $level_range]</QUEST_CRITERIA>
+<QUEST ID="all" MERGE=true QUEST_TEMPLATE_ID="$quest_template" CONDITION="$quest_template='normal_capture1'">
+	<QUEST_ID DEFINE="quest_id">${_:source_area_name}_${_:source_name}_${_:quest_template}_R$[100000000?999999999]</QUEST_ID>
+	<QUEST_CRITERIA></QUEST_CRITERIA><!--  +LEVELS -&lt;$[$target_level - $level_range] -&gt;$[$target_level + $level_range]</QUEST_CRITERIA> -->
 	<ANNOUNCER_AREA>"$source_area_name"</ANNOUNCER_AREA>
 	<ANNOUNCER_ROOM>"$source_room_id"</ANNOUNCER_ROOM>
 	<ANNOUNCER_NAME>"$source_name"</ANNOUNCER_NAME>
+	<QUEST_ANNOUNCECHANNEL>$announcechannel</QUEST_ANNOUNCECHANNEL>
 	<CAPTURABLES_MASK>-HOME "+$target_area_name" -NAMES "+$target_name"</CAPTURABLES_MASK>
 	<NUM_CAPTURABLES>$num_targets</NUM_CAPTURABLES>
 	<CAPTURABLES_ATTACK>$will_attack_code</CAPTURABLES_ATTACK>
@@ -53,101 +51,525 @@ vars:
 	<GOLD>$gold_amount_awarded</GOLD>
 	<EXP>$xp_amount_awarded</EXP>
 	<MULTIPLE>$quest_repeatable</MULTIPLE>
-	<NEXT_QUEST></NEXT_QUEST>
-	<FACTION></FACTION><!-- TODO -->
-	<NUMFACTION></NUMFACTION><!-- TODO -->
-	<QUEST_NAME>${C:source_name} in ${C:source_area_name} needs $num_targets ${p:target_name} captured</QUEST_NAME><!-- TODO -->
-	<QUEST_NOTIFYSTRING>I have someone I need captured!  Are you game?</QUEST_NOTIFYSTRING>
-	<QUEST_INSTRUCTIONSSTRING>I need you to capture $num_targets ${p:target_name}.  They are somewhere around somewhere.  Just beat them senseless, and they will yield to you.</QUEST_INSTRUCTIONSSTRING>
-	<QUEST_WINSPEECH_TEXT>Aha, we got them! Congratulations!</QUEST_WINSPEECH_TEXT>
-	<QUEST_LOSESPEECH_TEXT>Looks like I'll have wait for the law to get after them.</QUEST_LOSESPEECH_TEXT>
-	<CAPTURABLES_RESPONSE>So, you've come for me.  Come and get me.</CAPTURABLES_RESPONSE>
-	<CAPTURABLES_SURRENDER>I surrender</CAPTURABLES_SURRENDER>
+	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
+	<FACTION>$source_faction</FACTION>
+	<NUMFACTION>$[$source_faction_amt / 500]</NUMFACTION>
+	<QUEST_NAME SELECT="Any-1">
+		<QUEST_NAME>${C:source_name} in ${C:source_area_name} needs $num_targets ${p:target_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>${C:source_name} in ${C:source_area_name} wants $num_targets ${p:target_name} $reason_verbed</QUEST_NAME>
+		<QUEST_NAME>${C:source_name} in ${C:source_area_name} asks for $num_targets ${p:target_name} to be $reason_verbed here</QUEST_NAME>
+		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_name} for ${C:source_name} in ${C:source_area_name}</QUEST_NAME>
+	</QUEST_NAME>
+	<QUEST_NOTIFYSTRING>$quest_notifystring</QUEST_NOTIFYSTRING>
+	<QUEST_INSTRUCTIONSSTRING>$quest_instructionstring</QUEST_INSTRUCTIONSSTRING>
+	<QUEST_WINSPEECH_TEXT>$quest_winspeech</QUEST_WINSPEECH_TEXT>
+	<QUEST_LOSESPEECH_TEXT>$quest_losespeech</QUEST_LOSESPEECH_TEXT>
+	<CAPTURABLES_RESPONSE>$quest_fightspeech</CAPTURABLES_RESPONSE>
+	<CAPTURABLES_SURRENDER>$quest_surrenderspeech</CAPTURABLES_SURRENDER>
+
+	<STRING load="/resources/quests/random/inc_questcommon.xml" />
+
+	<STRING ID="quest_notifystring" SELECT="ALL" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING ACTION="PREPEND">$reason_short  $quest_notifyaddendum</STRING>
+	</STRING>
+
+	<STRING ID="quest_notifyaddendum" SELECT="Pick-1">
+		<STRING PICKWEIGHT=1>Are you game?</STRING>
+		<STRING PICKWEIGHT=1>Are you ready?</STRING>
+		<STRING PICKWEIGHT=1>Are you up to it?</STRING>
+		<STRING PICKWEIGHT=1>Can you handle it?</STRING>
+		<STRING PICKWEIGHT=1>Who's ready?</STRING>
+		<STRING PICKWEIGHT=12></STRING>
+	</STRING>
 	
-	<STRING id="aggression" DEFINE="aggression" SELECT="Pick-1" merge=true condition="$quest_template='normal_capture1'">
+	<STRING ID="reason_short" define="reason_short" SELECT="Any-1" merge=true CONDITION="$quest_template='normal_capture1'">
+		<STRING>I need ${p:target_name} $reason_verbed!</STRING>
+		<STRING>Help me $reason_verb ${p:target_name}!</STRING>
+		<STRING>Assistance required with some ${p:target_name}!</STRING>
+		<STRING>${c:reason_verb} ${p:target_name} for me!</STRING>
+		<STRING>${c:reason_verb} ${p:target_name}, quickly!</STRING>
+		<STRING>I want ${p:target_name} $reason_verbed!  Are you ready?</STRING>
+	</STRING>
+
+	<STRING ID="quest_instructionstring" SELECT="ALL" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING ACTION="PREPEND">$reason_desc</STRING>
+		<STRING ACTION="APPEND">$reason_short</STRING>
+		<STRING SELECT="Any-1" CONDITION="'YES' in $target_is_aggressive">
+			<STRING>Just $hurt_them_phrase and they'll be along.</STRING>
+			<STRING>You might have to $hurt_them_phrase, so be ready.</STRING>
+			<STRING>If you $hurt_them_phrase, they'll follow you back here.</STRING>
+			<STRING>If you $hurt_them_phrase, they'll be no problem.</STRING>
+			<STRING>Be ready to $hurt_them_phrase.</STRING>
+			<STRING>If they seem reluctant, $hurt_them_phrase.</STRING>
+			<STRING>To encourage them, just $hurt_them_phrase.</STRING>
+			<STRING>Just $hurt_them_phrase and lead them here.</STRING>
+			<STRING>Only $hurt_them_phrase if they resist.</STRING>
+			<STRING>${C:hurt_them_phrase}, before they do you.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>>
+	<STRING ID="quest_losespeech" PREDEFINE="reason=$reason">$quest_losespeech</STRING>>
+	<STRING ID="quest_fightspeech" PREDEFINE="reason=$reason">$quest_fightspeech</STRING>>
+	<STRING ID="quest_surrenderspeech" PREDEFINE="reason=$reason">$quest_surrenderspeech</STRING>>
+	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>>
+	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$reason_verb</STRING>>
+	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>>
+	<STRING ID="reason" DEFINE="reason" SELECT="Any-1" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
+		<STRING>$reason_partytime</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
+		<STRING CONDITION="$source_align &gt; 5000">$reason_ilostthem</STRING>
+		<STRING CONDITION="$source_align &gt; 5000">$reason_welosteachother</STRING>
+		<STRING>$reason_theylostme</STRING>
+		<STRING>$reason_gencapture</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_giveinstr</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_planning</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_receiveinstr</STRING>
+		<STRING CONDITION="$target_int &gt; 5 and $source_align &gt; 5000">$reason_idoforthem</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_wedotogether</STRING>
+		<STRING CONDITION="$target_int &gt; 5">$reason_theydoforme</STRING>
+		<STRING CONDITION="$source_align &lt; -5000">$reason_idotothem</STRING>
+		<STRING CONDITION="$source_align &lt; -5000">$reason_wedotoeachother</STRING>
+	</STRING>
+
+	<STRING id="quest_generic_loser_speeches" SELECT="Any-1">
+		<STRING>I guess I'll need to $reason_verb them myself.</STRING>
+		<STRING>This is unacceptable.</STRING>
+		<STRING>Well, I give up on them being $reason_verbed.</STRING>
+		<STRING>You just can't find good help anymore.</STRING>
+	</STRING>
+
+	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
+		<STRING>They are all $reason_verbed! That's all of them, thanks!</STRING>
+		<STRING>${c:reason_verbed} at last! Thank you for your assistance.</STRING>
+		<STRING>Thanks for the $reason_verb, I'll take it from here.</STRING>
+		<STRING>Thank you adventurer for completing my $reason_verb task, that will be all.</STRING>
+	</STRING>
+
+	<STRING id="quest_generic_surrender_speeches" SELECT="Any-1">
+		<STRING>I'm $reason_verbed! Lead the way to $source_name.</STRING>
+		<STRING>I am being $reason_verbed! Take me to ${c:source_name}.</STRING>
+		<STRING>I guess I'm $reason_verbed ! Are we going to ${c:source_name} now?</STRING>
+	</STRING>
+	
+	<STRING ID="reason_theyoweme" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_captured</STRING>
+		<STRING define="reason_verb">$verb_capture</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>Tell $source_name I aint payin!</STRING>
+			<STRING>${c:source_name} aint getting nothin from me.</STRING>
+			<STRING>I don't owe $source_name anything!</STRING>
+			<STRING>Leave me alone, I don't owe $source_name anything!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>${C:target_name} owes me money, but I'm not sure which one.</STRING>
+			<STRING>The ${C:P:target_name} owe me some money.</STRING>
+			<STRING>The ${C:P:target_name} owe me big time, but haven't made good.</STRING>
+			<STRING>I'm owed some money.</STRING>
+			<STRING>I'm given much to the ${P:target_name}, and they owe me.</STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_partytime" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech" SELECT="Any-1" >
+			<STRING>Yay! Let the party BEGIN!</STRING>"
+			<STRING>TIME TO CELEBRATE!</STRING>"
+			<STRING>Let the celebration begin!</STRING>"
+			<STRING>We can finally begin the festivities!</STRING>"
+		</STRING>
+		<STRING define="quest_losespeech" SELECT="Any-1">
+			<STRING>I didn't want them here anyway.</STRING>"
+			<STRING>I guess they aren't coming.</STRING>"
+		</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>That aint happening!</STRING>
+			<STRING>${c:source_name}??? Uh, NO!</STRING>
+			<STRING>I would rather $hurt_verb you than see $source_name.</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>I'm throwing a party and the ${p:target_name} are invited! But they aren't here yet.</STRING>
+			<STRING>It's my birthday, and all I'm missing are the party goers.</STRING>
+			<STRING>It is officially ${C:source_area_name} Day, and the ceremony will be right here.</STRING>
+			<STRING>It's my birthday, and the ${p:target_name} are late.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_iowethem" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>Tell $source_name I aint falling for that trap!</STRING>
+			<STRING>${c:source_name} is trying to fool us both.</STRING>
+			<STRING>I ain't going near $source_name!</STRING>
+			<STRING>Leave me alone!</STRING>
+			<STRING>I don't want anything from ${c:source_name}!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>I wish to reward $target_name for reasons.</STRING>
+			<STRING>I owe ${p:target_name} for their assistance to me.</STRING>
+			<STRING>I owe ${p:target_name}, and need them here.</STRING>
+			<STRING>The ${p:target_name} all forgot their paychecks this week.</STRING>
+			<STRING>I swore to protect the ${p:target_name}, and need your help.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_ilostthem" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_found</STRING>
+		<STRING define="reason_verb">$verb_find</STRING>
+		<STRING define="quest_winspeech" SELECT="Any-1">
+			<STRING>You found them! Thanks!</STRING>
+			<STRING>I'm so relieved! Thank you for your assistance.</STRING>
+			<STRING>Thanks you so much for finding them!</STRING>
+		</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'm hiding! Go away!</STRING>
+			<STRING>What makes you think I needed finding?</STRING>
+			<STRING>I'm not lost, leave me alone!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>I lost my ${p:target_name} and need you to find them and bring them here.</STRING>
+			<STRING>I seem to have misplaced the ${p:target_name} and need your help.</STRING>
+			<STRING>I can't find any ${p:target_name} and need your help.</STRING>
+			<STRING>I must protect the ${p:target_name} from danger, and need your help.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_welosteachother" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_found</STRING>
+		<STRING define="reason_verb">$verb_find</STRING>
+		<STRING define="quest_winspeech" SELECT="Any-1">
+			<STRING>You found them! Thanks!</STRING>
+			<STRING>Thank you for your assistance.</STRING>
+			<STRING>Thanks you so much for finding them!</STRING>
+		</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'm hiding! Go away!</STRING>
+			<STRING>What makes you think I needed finding?</STRING>
+			<STRING>I'm hiding from $source_name, leave me alone!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>My ${p:target_name} have gotten lost and we must be reunited.</STRING>
+			<STRING>My ${p:target_name} have lost each other and me.</STRING>
+			<STRING>The ${p:target_name} and I can't find each other.</STRING>
+			<STRING CONDITION="$target_int &gt; 3">The ${p:target_name} are witnesses to a crime that I must question.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_theylostme" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_found</STRING>
+		<STRING define="reason_verb">$verb_find</STRING>
+		<STRING define="quest_winspeech" SELECT="Any-1">
+			<STRING>You found them! Thanks!</STRING>
+			<STRING>They found me! Thank you for your assistance.</STRING>
+			<STRING>Thanks you so much for finding them!</STRING>
+		</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'm hiding! Go away!</STRING>
+			<STRING>What makes you think I needed finding?</STRING>
+			<STRING>I'm hiding from $source_name, leave me alone!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>My ${p:target_name} have lost track of me, and I need you to find them.</STRING>
+			<STRING>The ${p:target_name} are lost and need finding.</STRING>
+			<STRING>The ${p:target_name} are lost and afraid and I can't find them!</STRING>
+			<STRING>The ${p:target_name} don't yet know about our new hideout here.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_gencapture" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_captured</STRING>
+		<STRING define="reason_verb">$verb_capture</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'm hiding! Go away!</STRING>
+			<STRING>You can't take me!</STRING>
+			<STRING>I won't be taken, leave me alone!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>I need several ${p:target_name} captured and brought to me.</STRING>
+			<STRING>I need the ${p:target_name} brought to me.</STRING>
+			<STRING>I need the ${p:target_name} brought to account for their crimes.</STRING>
+			<STRING>The ${p:target_name} need capturing.</STRING>
+			<STRING>I am collecting ${p:target_name}, and need your assistance.</STRING>
+			<STRING>Let's hunt some ${p:target_name}!</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_giveinstr" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'll never join $source_name!</STRING>
+			<STRING>You can't take me!</STRING>
+			<STRING>I won't go back to $source_name, leave me alone!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>I want to explain some things to ${p:target_name}.</STRING>
+			<STRING>It is time for ${p:target_name} ${p:any_instrument_name} lessons.</STRING>
+			<STRING>The ${p:target_name} are late for class.</STRING>
+			<STRING>The ${p:target_name} are late for their lessons.</STRING>
+			<STRING condition="$source_class = 'Cleric'">I'm holding $adj_sactified services for the ${p:target_name}.</STRING>
+			<STRING CONDITION="$source_align &gt; 5000">I have much to teach the ${p:target_name} about being more $adj_personality_positive.</STRING>
+			<STRING CONDITION="$source_align &gt; 5000">I have much to teach the ${p:target_name} about being less $adj_personality_negative.</STRING>
+			<STRING CONDITION="$source_align &lt; -5000">I have much to teach the ${p:target_name} about being less $adj_personality_positive.</STRING>
+			<STRING CONDITION="$source_align &lt; -5000">I have much to teach the ${p:target_name} about being more $adj_personality_negative.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_planning" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'll never join $source_name!</STRING>
+			<STRING>You can't make me go back!</STRING>
+			<STRING>I'm won't go to $source_name! Never!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>It's time for our committee meeting, and the ${p:target_name} are late!</STRING>
+			<STRING condition="$source_align &lt; -5000">I have a $adj_useful plan to take over $source_area_name and it involves the ${p:target_name}!</STRING>
+			<STRING>I have a $adj_useful plan regarding the future of $source_area_name and I need ${p:target_name}!</STRING>
+			<STRING>The ${p:target_name} need to be reminded to bring $any_instrument_name to the meeting today!</STRING>
+			<STRING>The ${p:target_name} are late for our study of $any_dungeon_junk_name!</STRING>
+			<STRING>The ${p:target_name} are late for our daily discussion of $source_area_name lore and history.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_receiveinstr" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'll never talk to $source_name!</STRING>
+			<STRING>You can't make me do it!</STRING>
+			<STRING>I'm won't go to $source_name! Ever!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} are supposed to be here to explain some things to me.</STRING>
+			<STRING>It's time for my lessons with ${p:target_name}.</STRING>
+			<STRING>The ${p:target_name} are supposed to teach me about $source_area_name today.</STRING>
+			<STRING>The ${p:target_name} are supposed to teach me about $any_dungeon_junk_name today.</STRING>
+			<STRING>The ${p:target_name} are supposed to tell me about their jobs today.</STRING>
+			<STRING>The ${p:target_name} promised] to teach me how to play $any_instrument_name.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_idoforthem" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'll never get near $source_name again!</STRING>
+			<STRING>You can't make me!</STRING>
+			<STRING>I'm won't go near $source_name!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} need my help to groom them.</STRING>
+			<STRING>I wish to give the ${p:target_name} a gift.</STRING>
+			<STRING>I wish to play my $any_instrument_name for the ${p:target_name}.</STRING>
+			<STRING>I want to help out the ${p:target_name}.</STRING>
+			<STRING>I need to see if $any_dungeon_junk_name fits the ${p:target_name}.</STRING>
+			<STRING CONDITION="$target_int &lt; 5">It's feeding time for the ${p:target_name}.</STRING>
+			<STRING CONDITION="$target_int &gt; 4">I've prepared a thank-you meal for ${p:target_name}.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_wedotogether" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>Never again with $source_name!</STRING>
+			<STRING>You can't make me do it!</STRING>
+			<STRING>I'm not doing that with $source_name!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} and I are playing ${p:any_instrument_name} in the $source_area orchestra today.</STRING>
+			<STRING>I need the ${p:target_name} help with an important project.</STRING>
+			<STRING>I want the ${p:target_name} brought here to help make ${p:any_dungeon_junk_name} for $source_area.</STRING>
+			<STRING>The ${p:target_name} and I are parading around $source_area with our ${p:any_instrument_name} today.</STRING>
+			<STRING>I fear an invasion of $source_area_name and need ${p:target_name} brought here to help with defense.</STRING>
+			<STRING>A fire has broken out in $source_area_name and we need ${p:target_name} here immediately to put it out!</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_theydoforme" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_gathered</STRING>
+		<STRING define="reason_verb">$verb_gather</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>I'll never help $source_name!</STRING>
+			<STRING>You can't make me help $source_name!</STRING>
+			<STRING>I'm not helping $source_name!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} must come here at once to serve me.</STRING>
+			<STRING>The ${p:target_name} all must report to me.</STRING>
+			<STRING>I want the ${p:target_name} to come play $any_instrument_name for me.</STRING>
+			<STRING>The ${p:target_name} need to come help me use my $any_dungeon_junk_name.</STRING>
+			<STRING>I need several ${p:target_name} for an important job.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_idotothem" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_captured</STRING>
+		<STRING define="reason_verb">$verb_capture</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>Oh no! Not $source_name!</STRING>
+			<STRING>Please?! You can't take me to $source_name!</STRING>
+			<STRING>I'll die before going to $source_name!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>I must $hurt_verb the ${p:target_name}, and do it in secret.</STRING>
+			<STRING>I am really hungry for ${p:target_name}.</STRING>
+			<STRING CONDITION="$target_int &lt 4">I am giving away ${p:target_name} to all the children of $area_name.</STRING>
+			<STRING CONDITION="$source_class='Mage' or $source_class='Necromancer'">I need to draw out the souls of ${p:target_name} for my magic.</STRING>
+			<STRING>The ${p:target_name} are not here, so I can't $hurt_verb them.</STRING>
+			<STRING>The ${p:target_name} make me $adj_feeling_bad, and I must make them $adj_feeling_bad.</STRING>
+			<STRING>The ${p:target_name} are going to feel the business end of ${any_dungeon_junk_name} for what they've done.</STRING>
+		</STRING>
+	</STRING>
+	<STRING ID="reason_wedotoeachother" SELECT="All" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING define="reason_verbed">$verb_captured</STRING>
+		<STRING define="reason_verb">$verb_capture</STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_losespeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>Oh no! Not $source_name again!</STRING>
+			<STRING>Please?! You can't make me go to $source_name!</STRING>
+			<STRING>I'd rather die than go to $source_name!</STRING>
+		</STRING>
+		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING CONDITION="$target_int &lt 4">I am starting a ${p:target_name} farm.</STRING>
+			<STRING>The ${p:target_name} and I are scheduled to $hurt_verb each other today.</STRING>
+			<STRING>The ${p:target_name} have insulted my honor, and only a ritual $hurt_verb will satisfy it.</STRING>
+			<STRING>I feel like engaging in a $adj_feeling_good $hunt_verb.</STRING>
+		</STRING>
+	</STRING>
+	</STRING>
+
+
+	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<STRING PICKWEIGHT=50>NO</STRING>
 		<STRING PICKWEIGHT="$target_level">YES</STRING>
 	</STRING>
 	
-	<STRING id="will_attack_code" DEFINE="will_attack_code" SELECT="Any-1" merge=true condition="$quest_template='normal_capture1'">
+	<STRING ID="will_attack_code" DEFINE="will_attack_code" SELECT="Any-1" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<STRING CONDITION="$aggression='NO'">NO-USE-DEFAULT_BEHAVIOR</STRING>
 		<STRING CONDITION="$aggression='YES'">YES-ATTACK-ON-SIGHT</STRING>
 	</STRING>
 	
-	<STRING id="will_react_peacefully" DEFINE="will_react_peacefully" SELECT="Any-1" merge=true condition="$quest_template='normal_capture1'">
+	<STRING ID="will_react_peacefully" DEFINE="will_react_peacefully" SELECT="Any-1" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<STRING CONDITION="$aggression='NO'">PEACEFUL</STRING>
 		<STRING CONDITION="$aggression='YES'">VIOLENT</STRING>
 	</STRING>
 	
-	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1" merge=true condition="$quest_template='normal_capture1'">
+	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<STRING PICKWEIGHT=2>NO</STRING>
 		<STRING PICKWEIGHT=1>YES</STRING>
 	</STRING>
 	
-	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" select="any-1" merge=true condition="$quest_template='normal_capture1'">
+	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" SELECT="any-1" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<STRING>$[$target_level*2]</STRING>
 	</STRING>
 	
-	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" select="any-1" merge=true condition="$quest_template='normal_capture1'">
+	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" SELECT="any-1" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<STRING>$[100 + $target_level*3]</STRING>
 	</STRING>
 	
-	<STRING ID="quest_repeatable" DEFINE="quest_repeatable" SELECT="Pick-1"  merge=true condition="$quest_template='normal_capture1'">
-		<STRING PICKWEIGHT=99>NO</STRING>
-		<STRING PICKWEIGHT=1>YES</STRING>
-	</STRING>
-
-	<OBJECT id="source_area" SELECT="Pick-1" DEFINE="source_area" merge=true condition="$quest_template='normal_capture1'">
+	<OBJECT ID="source_area" SELECT="Pick-1" DEFINE="source_area" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
 		<OBJECT pickweight=1 condition="'${SELECT: name FROM area}' = ''">
-			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and intelligence>8 and "Aggressive" notin affbehav) > 0
-				AND (SELECT:count\. from area\npcs WHERE name\count >$num_targets) > 0
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and intelligence>8 and "Aggressive" notin affbehav) &gt; 0
+				AND (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets) &gt; 0
 		</OBJECT>
 	</OBJECT>
 	
-	<OBJECT id="source_room" SELECT="Pick-1" DEFINE="source_room" merge=true condition="$quest_template='normal_capture1'">
+	<OBJECT ID="source_room" SELECT="Pick-1" DEFINE="source_room" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: roomid FROM room}' != ''">SELECT: . FROM room</OBJECT>
 		<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: roomid FROM room}' = ''">SELECT: . FROM $source\room</OBJECT>
 	</OBJECT>
 	
-	<OBJECT id="source" SELECT="Pick-1" DEFINE="source" merge=true condition="$quest_template='normal_capture1'">
+	<OBJECT ID="source" SELECT="Pick-1" DEFINE="source" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
 		<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\npcs WHERE name\count=1 and intelligence>8 and "Aggressive" notin affbehav</OBJECT>
 	</OBJECT>
 	
-	<OBJECT id="target" define="target" select="any-1" merge=true condition="$quest_template='normal_capture1'">
+	<OBJECT ID="target" DEFINE="target" SELECT="any-1" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<OBJECT>SELECT: ANY\. FROM $source_area\mobs WHERE name\count>$num_targets</OBJECT>
 	</OBJECT>
 
-	<STRING id="target_level" define="target_level" select="any-1" merge=true condition="$quest_template='normal_capture1'">
+	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<STRING>${SELECT:mean\level from $target}</STRING>
 	</STRING>
 	
-	<STRING id="num_targets" select="any-1" define="num_targets" merge=true condition="$quest_template='normal_capture1'">
-		<STRING>$[3?10]</STRING>
-	</STRING>
-
-	<STRING id="level_range" select="any-1" define="level_range" merge=true condition="$quest_template='normal_capture1'">
-		<STRING>$[3?6]</STRING>
-	</STRING>
-
-	<STRING id="source_area_name" select="any-1" define="source_area_name" merge=true condition="$quest_template='normal_capture1'">
+	<STRING ID="source_area_name" SELECT="any-1" DEFINE="source_area_name" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<STRING>${SELECT:name from $source_area}</STRING>
 	</STRING>
 
-	<STRING id="source_room_id" select="any-1" define="source_room_id" merge=true condition="$quest_template='normal_capture1'">
+	<STRING ID="source_room_id" SELECT="any-1" DEFINE="source_room_id" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<STRING>${SELECT:roomid from $source_room}</STRING>
 	</STRING>
 
-	<STRING id="source_name" select="any-1" define="source_name" merge=true condition="$quest_template='normal_capture1'">
+	<STRING ID="source_name" SELECT="any-1" DEFINE="source_name" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<STRING>${SELECT:name from $source}</STRING>
 	</STRING>
 
-	<STRING id="target_name" select="any-1" define="target_name" merge=true condition="$quest_template='normal_capture1'">
+	<STRING ID="source_class" SELECT="any-1" DEFINE="source_name" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING>${SELECT:class from $source}</STRING>
+	</STRING>
+
+	<STRING ID="source_faction" SELECT="any-1" DEFINE="source_faction" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING>${SELECT:factionid from $source}</STRING>
+	</STRING>
+
+	<STRING ID="source_faction_amt" SELECT="first" DEFINE="source_faction_amt" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING CONDITION="$source_faction!=''">${SELECT:factionamt from $source}</STRING>
+		<STRING>0</STRING>
+	</STRING>
+
+	<STRING ID="source_align" SELECT="any-1" DEFINE="source_align" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING>${SELECT:alignment from $source}</STRING>
+	</STRING>
+
+	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING CONDITION="$aggressive = 'YES'">YES</STRING>
+		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in affbehav}</STRING>
+	</STRING>
+
+	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<STRING>${SELECT:name from $target}</STRING>
 	</STRING>
+
+	<STRING ID="target_int" SELECT="any-1" DEFINE="target_int" MERGE=true CONDITION="$quest_template='normal_capture1'">
+		<STRING>${SELECT:intelligence from $target}</STRING>
+	</STRING>
 	
-	<STRING id="target_area_name" select="any-1" define="target_area_name" merge=true condition="$quest_template='normal_capture1'">
+	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<STRING>$source_area_name</STRING>
 	</STRING>	
 </QUEST>

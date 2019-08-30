@@ -754,8 +754,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					methH.put(progs[i],Integer.valueOf(Integer.MIN_VALUE));
 				for(int i=0;i<CONNECTORS.length;i++)
 					connH.put(CONNECTORS[i],Integer.valueOf(i));
-				for(int i=0;i<GSTATCODES_ADDITIONAL.length;i++)
-					gstatH.put(GSTATCODES_ADDITIONAL[i],Integer.valueOf(i));
 				for(int i=0;i<SIGNS.length;i++)
 					signH.put(SIGNS[i],Integer.valueOf(i));
 			}
@@ -768,10 +766,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		while((text.length()>0)
 		&&(Character.isWhitespace(text.charAt(0))))
 			text=text.substring(1);
-		text=parseLoads(text,0,null,null);
+		boolean staticSet=false;
 		if((text.length()>10)
 		&&(text.substring(0,10).toUpperCase().startsWith("STATIC=")))
-			this.setScript(text.substring(7));
+		{
+			staticSet=true;
+			text=text.substring(7);
+		}
+		text=parseLoads(text,0,null,null);
+		if(staticSet)
+			this.setScript(text);
 		final List<List<String>> V = CMParms.parseDoubleDelimited(text,'~',';');
 		final Vector<DVector> V2=new Vector<DVector>(3);
 		for(final List<String> ls : V)
@@ -1991,6 +1995,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		if((!found)&&(E instanceof MOB))
 		{
+			final String uarg2=arg2.toUpperCase().trim();
 			final MOB M=(MOB)E;
 			for(final int i : CharStats.CODES.ALLCODES())
 			{
@@ -2037,7 +2042,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 			}
-			if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
+			if((!found)&&(uarg2.startsWith("BASE")))
 			{
 				for(int i=0;i<M.baseState().getStatCodes().length;i++)
 				{
@@ -2049,49 +2054,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 			}
-			if((!found)&&(gstatH.containsKey(arg2.toUpperCase())))
+			if((!found)&&(uarg2.equals("STINK")))
 			{
 				found=true;
-				switch(gstatH.get(arg2.toUpperCase()).intValue())
-				{
-				case GSTATADD_STINK:
-					if(M.playerStats()!=null)
-						val=CMath.toPct(M.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
-					break;
-				case GSTATADD_DEITY:
-					val = M.getWorshipCharID();
-					break;
-				case GSTATADD_MATTRIB:
-				{
-					for(final MOB.Attrib A : MOB.Attrib.values())
-					{
-						if(M.isAttributeSet(A))
-							val += " "+A.name();
-					}
-					val = val.trim();
-					break;
-				}
-				case GSTATADD_CLAN:
-				{
-					Clan C = CMLib.clans().findRivalrousClan(M);
-					if (C == null)
-						C = M.clans().iterator().hasNext() ? M.clans().iterator().next().first : null;
-					val = (C != null) ? C.clanID() : "";
-					break;
-				}
-				case GSTATADD_CLANROLE:
-				{
-					Clan C = CMLib.clans().findRivalrousClan(M);
-					if (C == null)
-						C = M.clans().iterator().hasNext() ? M.clans().iterator().next().first : null;
-					if (C != null)
-					{
-						final Pair<Clan, Integer> p = M.getClanRole(C.clanID());
-						val = (p != null) ? p.second.toString() : "";
-					}
-					break;
-				}
-				}
+				val=CMath.toPct(M.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
+			}
+			if((!found)
+			&&(CMath.s_valueOf(GenericBuilder.GenMOBBonusFakeStats.class,uarg2)!=null))
+			{
+				found=true;
+				val=CMLib.coffeeMaker().getAnyGenStat(M, uarg2);
 			}
 		}
 		if(!found)
@@ -2171,7 +2143,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 				}
-				if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
+				if((!found)&&(arg2.startsWith("BASE")))
 				{
 					for(int i=0;i<M.baseState().getStatCodes().length;i++)
 					{
@@ -2183,49 +2155,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 				}
-				if((!found)&&(gstatH.containsKey(arg2)))
+				if((!found)&&(arg2.equals("STINK")))
 				{
 					found=true;
-					switch(gstatH.get(arg2).intValue())
-					{
-						case GSTATADD_STINK:
-							if(M.playerStats()!=null)
-								val = CMath.toPct(M.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
-							break;
-						case GSTATADD_DEITY:
-							val = M.getWorshipCharID();
-							break;
-						case GSTATADD_MATTRIB:
-						{
-							for(final MOB.Attrib A : MOB.Attrib.values())
-							{
-								if(M.isAttributeSet(A))
-									val += " "+A.name();
-							}
-							val = val.trim();
-							break;
-						}
-						case GSTATADD_CLAN:
-						{
-							Clan C = CMLib.clans().findRivalrousClan(M);
-							if (C == null)
-								C = M.clans().iterator().hasNext() ? M.clans().iterator().next().first : null;
-							val = (C != null) ? C.clanID() : "";
-							break;
-						}
-						case GSTATADD_CLANROLE:
-						{
-							Clan C = CMLib.clans().findRivalrousClan(M);
-							if (C == null)
-								C = M.clans().iterator().hasNext() ? M.clans().iterator().next().first : null;
-							if (C != null)
-							{
-								final Pair<Clan, Integer> p = M.getClanRole(C.clanID());
-								val = (p != null) ? p.second.toString() : "";
-							}
-							break;
-						}
-					}
+					val=CMath.toPct(M.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
 				}
 			}
 		}
@@ -2238,6 +2171,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				val=CMLib.coffeeMaker().getGenItemStat((Item)E,code.name());
 				found=true;
 			}
+		}
+		if((!found)
+		&&(E instanceof Physical))
+		{
+			if(CMLib.coffeeMaker().isAnyGenStat((Physical)E, arg2.toUpperCase().trim()))
+				return CMLib.coffeeMaker().getAnyGenStat((Physical)E, arg2.toUpperCase().trim());
+
 		}
 		if(found)
 			return val;
@@ -5681,10 +5621,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					return returnable;
 				}
 				final String val=getVar(E,arg1,arg2,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
-				if(arg3.equals("=="))
+				if(arg3.equals("==")||arg3.equals("="))
 					returnable=val.equals(arg4);
 				else
-				if(arg3.equals("!="))
+				if(arg3.equals("!=")||(arg3.contentEquals("<>")))
 					returnable=!val.equals(arg4);
 				else
 				if(arg3.equals(">"))
@@ -8822,43 +8762,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								}
 							}
 						}
-						if((!found)&&(gstatH.containsKey(arg2.toUpperCase())))
+						if((!found)&&(arg2.toUpperCase().equals("STINK")))
 						{
 							found=true;
-							switch(gstatH.get(arg2.toUpperCase()).intValue())
-							{
-							case GSTATADD_STINK:
-								if(M.playerStats()!=null)
-									M.playerStats().setHygiene(Math.round(CMath.s_pct(arg3)*PlayerStats.HYGIENE_DELIMIT));
-								break;
-							case GSTATADD_DEITY:
-								M.setWorshipCharID(arg3);
-								break;
-							case GSTATADD_MATTRIB:
-								break;
-							case GSTATADD_CLAN:
-							{
-								Pair<Clan, Integer> p = M.getClanRole(arg3);
-								if (p == null)
-								{
-									final Clan C = CMLib.clans().getClan(arg3);
-									if (C != null)
-										p = new Pair<Clan, Integer>(C, Integer.valueOf(C.getGovernment().getAcceptPos()));
-								}
-								if (p != null)
-									M.setClan(p.first.clanID(), p.second.intValue());
-								break;
-							}
-							case GSTATADD_CLANROLE:
-							{
-								Clan C = CMLib.clans().findRivalrousClan((MOB) newTarget);
-								if (C == null)
-									C = ((MOB) newTarget).clans().iterator().hasNext() ? ((MOB) newTarget).clans().iterator().next().first : null;
-								if (C != null)
-									M.setClan(C.clanID(), CMath.s_int(arg3));
-								break;
-							}
-							}
+							if(M.playerStats()!=null)
+								M.playerStats().setHygiene(Math.round(CMath.s_pct(arg3)*PlayerStats.HYGIENE_DELIMIT));
+						}
+
+						if((!found)
+						&&(CMath.s_valueOf(GenericBuilder.GenMOBBonusFakeStats.class,arg2.toUpperCase())!=null))
+						{
+							found=true;
+							CMLib.coffeeMaker().setAnyGenStat(M, arg2.toUpperCase(), arg3);
 						}
 					}
 
@@ -9098,43 +9013,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										}
 									}
 								}
-								if((!found)&&(gstatH.containsKey(arg2.toUpperCase())))
+								if((!found)&&(arg2.toUpperCase().equals("STINK")))
 								{
 									found=true;
-									switch(gstatH.get(arg2.toUpperCase()).intValue())
-									{
-									case GSTATADD_STINK:
-										if(M.playerStats()!=null)
-											M.playerStats().setHygiene(Math.round(CMath.s_pct(arg3)*PlayerStats.HYGIENE_DELIMIT));
-										break;
-									case GSTATADD_DEITY:
-										M.setWorshipCharID(arg3);
-										break;
-									case GSTATADD_MATTRIB:
-										break;
-									case GSTATADD_CLAN:
-									{
-										Pair<Clan, Integer> p = M.getClanRole(arg3);
-										if (p == null)
-										{
-											final Clan C = CMLib.clans().getClan(arg3);
-											if (C != null)
-												p = new Pair<Clan, Integer>(C, Integer.valueOf(C.getGovernment().getAcceptPos()));
-										}
-										if (p != null)
-											M.setClan(p.first.clanID(), p.second.intValue());
-										break;
-									}
-									case GSTATADD_CLANROLE:
-									{
-										Clan C = CMLib.clans().findRivalrousClan((MOB) newTarget);
-										if (C == null)
-											C = ((MOB) newTarget).clans().iterator().hasNext() ? ((MOB) newTarget).clans().iterator().next().first : null;
-										if (C != null)
-											M.setClan(C.clanID(), CMath.s_int(arg3));
-										break;
-									}
-									}
+									if(M.playerStats()!=null)
+										M.playerStats().setHygiene(Math.round(CMath.s_pct(arg3)*PlayerStats.HYGIENE_DELIMIT));
 								}
 							}
 						}
@@ -9154,7 +9037,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							found=true;
 						}
 					}
-
+					if((!found)
+					&&(newTarget instanceof Physical))
+					{
+						if(CMLib.coffeeMaker().isAnyGenStat(newTarget, arg2.toUpperCase()))
+						{
+							CMLib.coffeeMaker().setAnyGenStat(newTarget, arg2.toUpperCase(), arg3);
+							found=true;
+						}
+					}
 					if(!found)
 					{
 						logError(scripted,"MPGSET","Syntax","Unknown stat: "+arg2+" for "+newTarget.Name());
@@ -10373,40 +10264,32 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				boolean proceed=true;
 				boolean savable=false;
 				boolean execute=false;
-				boolean staticScript=false;
 				String scope=getVarScope();
 				while(proceed)
 				{
 					proceed=false;
-					if(m2.toUpperCase().startsWith("SAVABLE"))
+					if(m2.toUpperCase().startsWith("SAVABLE "))
 					{
 						savable=true;
 						m2=m2.substring(8).trim();
 						proceed=true;
 					}
 					else
-					if(m2.toUpperCase().startsWith("STATIC"))
-					{
-						staticScript=true;
-						m2=m2.substring(6).trim();
-						proceed=true;
-					}
-					else
-					if(m2.toUpperCase().startsWith("EXECUTE"))
+					if(m2.toUpperCase().startsWith("EXECUTE "))
 					{
 						execute=true;
 						m2=m2.substring(8).trim();
 						proceed=true;
 					}
 					else
-					if(m2.toUpperCase().startsWith("GLOBAL"))
+					if(m2.toUpperCase().startsWith("GLOBAL "))
 					{
 						scope="";
 						proceed=true;
 						m2=m2.substring(6).trim();
 					}
 					else
-					if(m2.toUpperCase().startsWith("INDIVIDUAL")||m2.equals("*"))
+					if(m2.toUpperCase().startsWith("INDIVIDUAL ")||m2.equals("*"))
 					{
 						scope="*";
 						proceed=true;
@@ -11551,7 +11434,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if((S!=null)
 						&&(S.defaultQuestName()!=null)
 						&&(S.defaultQuestName().equalsIgnoreCase(defaultQuestName)))
+						{
 							newTarget.delScript(S);
+							S.endQuest(newTarget, (newTarget instanceof MOB)?((MOB)newTarget):monster, defaultQuestName);
+
+						}
 					}
 				}
 				else
@@ -11563,9 +11450,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final ScriptingEngine S=scripted.fetchScript(i);
 						if((S!=null)
 						&&(S.defaultQuestName()!=null)
-						&&(S.defaultQuestName().equalsIgnoreCase(defaultQuestName)))
+						&&(S.defaultQuestName().equalsIgnoreCase(q)))
 						{
 							foundOne=true;
+							S.endQuest(scripted, monster, S.defaultQuestName());
 							scripted.delScript(S);
 						}
 					}

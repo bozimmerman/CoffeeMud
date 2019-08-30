@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!-- ----------------------------------------------------------------------------
+Copyright 2019-2019 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--------------------------------------------------------------------------------
+
+See guides/RandomAreas.html for information about documents of this type.
+-->
+<STRING load="/resources/randareas/inc_common.xml" />
+<STRING load="/resources/randareas/inc_adjectives.xml" />
+
+<STRING id="announcechannel" define="announcechannel" SELECT="Any-1">
+	<STRING>LOCAL</QUEST_ANNOUNCECHANNEL>
+	<STRING>SAY</QUEST_ANNOUNCECHANNEL>
+	<STRING></QUEST_ANNOUNCECHANNEL>
+</STRING>
+
+<STRING id="next_quest_id" define="next_quest_id"></STRING>
+
+<STRING ID="quest_repeatable" DEFINE="quest_repeatable" SELECT="Pick-1" >
+	<STRING PICKWEIGHT=99>NO</STRING>
+	<STRING PICKWEIGHT=1>YES</STRING>
+</STRING>
+
+<STRING ID="num_targets" SELECT="any-1" DEFINE="num_targets" MERGE=true>
+	<STRING>$[3?10]</STRING>
+</STRING>
+
+<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+	<STRING>$[3?6]</STRING>
+</STRING>
+
+<STRING ID="verb_captured" predefine="verb_capture=$verb_capture">$verb_captured</STRING>
+<STRING ID="verb_capture" define="verb_capture" SELECT="Any-1">
+	<STRING define="verb_captured=captured">capture</STRING>
+	<STRING define="verb_captured=caught">catch</STRING>
+	<STRING define="verb_captured=kidnap">kidnapped</STRING>
+	<STRING define="verb_captured=brought">bring</STRING>
+</STRING>
+
+<STRING ID="verb_gathered" predefine="verb_gather=$verb_gather">$verb_gathered</STRING>
+<STRING ID="verb_gather" define="verb_gather" SELECT="Any-1">
+	<STRING define="verb_gathered=gathered">gather</STRING>
+	<STRING define="verb_gathered=led">lead</STRING>
+	<STRING define="verb_gathered=escorted">escort</STRING>
+</STRING>
+
+<STRING ID="verb_found" predefine="verb_find=$verb_find">$verb_found</STRING>
+<STRING ID="verb_find" define="verb_find" SELECT="Any-1">
+	<STRING define="verb_found=found">find</STRING>
+	<STRING define="verb_found=rescued">rescue</STRING>
+</STRING>
+
+<STRING ID="hurt_them_phrase" SELECT="Any-1">
+	<STRING>$hurt_verb them</STRING>
+	<STRING>$hurt_verb them $hurt_adverb</STRING>
+	<STRING>$hurt_verb the $adj_nasty lot of them</STRING>
+</STRING>
+
+<STRING ID="hurt_verb" SELECT="Any-1">
+	<STRING>hurt</STRING>
+	<STRING>kill</STRING>
+	<STRING>beat</STRING>
+	<STRING>pound</STRING>
+	<STRING>murder</STRING>
+	<STRING>violently convince</STRING>
+	<STRING>end</STRING>
+</STRING>
+
+<STRING ID="hurt_adverb" SELECT="Any-1">
+	<STRING>lightly</STRING>
+	<STRING>slightly</STRING>
+	<STRING>a bit</STRING>
+	<STRING>mercilessly</STRING>
+	<STRING>with vigor</STRING>
+	<STRING>with both hands</STRING>
+	<STRING>all over</STRING>
+</STRING>
