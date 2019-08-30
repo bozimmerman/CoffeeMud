@@ -34,7 +34,7 @@ See guides/RandomAreas.html for information about documents of this type.
 </STRING>
 
 <STRING ID="num_targets" SELECT="any-1" DEFINE="num_targets" MERGE=true>
-	<STRING>$[3?10]</STRING>
+	<STRING>$[2?10]</STRING>
 </STRING>
 
 <STRING ID="level_span" SELECT="any-1" DEFINE="level_span" MERGE=true>

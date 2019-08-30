@@ -163,6 +163,10 @@
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for completing the quest:
 #
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
 #Quest Point?
 #$QUEST_POINT=$CHOOSE=YES,NO
 #Amount of money (an amount, or leave blank):
@@ -214,6 +218,7 @@ give script LOAD=$QUEST_ID_dispel.script
 set duration $DURATION
 
 <?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_dispelannouncer.script</NAME>
 <DATA>
 ONCE_PROG 100
@@ -314,6 +319,10 @@ RAND_PROG 99
 				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
 					mpoload $GOLD
 					give $GOLD "$1"
+				endif
+				mpoload fromfile $QUEST_ID_rewarditems.xml any
+				if EVAL('$b' != '')
+					give "$b" "$n"
 				endif
 				mpquestwin '$1' *
 				mpendquest *

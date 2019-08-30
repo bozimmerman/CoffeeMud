@@ -81,6 +81,10 @@
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for completing the quest:
 #
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
 #Quest Point?
 #$QUEST_POINT=$CHOOSE=YES,NO
 #Amount of money (an amount, or leave blank):
@@ -131,6 +135,7 @@ set room $DESTINATION_ROOM
 set wherehappened ROOM
 
 <?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 GREET_PROG 100

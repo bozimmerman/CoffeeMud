@@ -135,6 +135,10 @@
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for completing the quest:
 #
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
 #Quest Point?
 #$QUEST_POINT=$CHOOSE=YES,NO
 #Amount of money (an amount, or leave blank):
@@ -188,6 +192,7 @@ give script LOAD=$QUEST_ID_escorted.script
 set duration $DURATION
 
 <?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_escorted.xml</NAME><DATA><MOBS>$ESCORTED_MOB</MOBS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_attackers.xml</NAME><DATA><MOBS>$ATTACKER_MOB</MOBS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
@@ -321,6 +326,10 @@ RAND_PROG 99
 				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
 					mpoloadroom $GOLD
 					mpforce $f GET $GOLD
+				endif
+				mpoload fromfile $QUEST_ID_rewarditems.xml any
+				if EVAL('$b' != '')
+					give "$b" "$n"
 				endif
 				mpquestwin $f *
 				mpecho $ESCORTED_RESPONSE

@@ -162,7 +162,7 @@ CREATE TABLE CMROOM (
 );
 
 CREATE TABLE CMQUESTS (
-	CMQUESID nvarchar (50),
+	CMQUESID nvarchar (250),
 	CMQUTYPE nvarchar (50) NULL,
 	CMQFLAGS integer NULL ,
 	CMQSCRPT ntext NULL,

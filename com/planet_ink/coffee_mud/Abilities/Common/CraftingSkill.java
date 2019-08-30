@@ -96,6 +96,8 @@ public class CraftingSkill extends GatheringSkill
 	protected static final int	CF_MATERIAL		= 2;
 	protected static final int	CF_TOTAL		= 3;
 
+	private static MOB factoryWorkerM = null;
+
 	protected static class CraftParms
 	{
 		public int autoGenerate=0;
@@ -778,25 +780,19 @@ public class CraftingSkill extends GatheringSkill
 
 	public ItemKeyPair craftItem(final String recipeName, final int material, final boolean forceLevels, final boolean noSafety)
 	{
-		MOB mob=null;
-		try
+		if(factoryWorkerM==null)
 		{
-			mob=CMLib.map().getFactoryMOBInAnyRoom();
-			if(noSafety)
-				mob.setAttribute(Attrib.SYSOPMSGS, true);
-			mob.basePhyStats().setLevel(Integer.MAX_VALUE/2);
-			mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
-			mob.recoverPhyStats();
-			return craftItem(mob,new XVector<String>(recipeName),material,forceLevels);
+			factoryWorkerM=CMClass.getMOB("StdMOB");
+			factoryWorkerM.setName(L("somebody"));
+			factoryWorkerM.setLocation(CMLib.map().getRandomRoom());
+			factoryWorkerM.basePhyStats().setLevel(Integer.MAX_VALUE/2);
+			factoryWorkerM.basePhyStats().setSensesMask(factoryWorkerM.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
+			factoryWorkerM.recoverPhyStats();
 		}
-		finally
-		{
-			if(mob!=null)
-			{
-				mob.setAttribute(Attrib.SYSOPMSGS, false);
-				mob.destroy();
-			}
-		}
+		if(noSafety)
+			factoryWorkerM.setAttribute(Attrib.SYSOPMSGS, true);
+		factoryWorkerM.resetToMaxState();
+		return craftItem(factoryWorkerM,new XVector<String>(recipeName),material,forceLevels);
 	}
 
 	protected boolean isThereANonBundleChoice(final List<String> recipes)

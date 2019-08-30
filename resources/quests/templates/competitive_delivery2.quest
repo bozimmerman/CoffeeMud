@@ -119,6 +119,10 @@
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for delivering the item:
 #
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
 #Quest Point?
 #$QUEST_POINT=$CHOOSE=YES,NO
 #Amount of money (an amount, or leave blank):
@@ -174,6 +178,7 @@ give affect Property
 set duration $DURATION
 
 <?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_item.xml</NAME><DATA><ITEMS>$DELIVERABLE_ITEM</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_deliverable.script</NAME>
 <DATA>
@@ -267,6 +272,10 @@ PUT_PROG all
 						mpoload $GOLD
 						mpforce $n GET $GOLD
 					endif
+					mpoload fromfile $QUEST_ID_rewarditems.xml any
+					if EVAL('$b' != '')
+						give "$b" "$n"
+					endif
 					mpquestwin $n *
 					mpecho $DELIVER_RESPONSE
 					mpendquest *
@@ -302,6 +311,10 @@ DROP_PROG all
 				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
 					mpoload $GOLD
 					mpforce $n GET $GOLD
+				endif
+				mpoload fromfile $QUEST_ID_rewarditems.xml any
+				if EVAL('$b' != '')
+					give "$b" "$n"
 				endif
 				mpquestwin $n *
 				mpecho $DELIVER_RESPONSE

@@ -435,6 +435,7 @@ public class QuestMaker extends StdWebMacro
 					list.append("</TD></TR>");
 					break;
 				}
+				case $ITEMXML_ZEROORMORE:
 				case $ITEMXML_ONEORMORE:
 				{
 					if(oldValue==null)
@@ -633,6 +634,7 @@ public class QuestMaker extends StdWebMacro
 					case $HIDDEN:
 						httpReq.addFakeUrlParameter(httpKeyName,defValue);
 						break;
+					case $ITEMXML_ZEROORMORE:
 					case $ITEMXML_ONEORMORE:
 					{
 						final List<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
@@ -850,6 +852,7 @@ public class QuestMaker extends StdWebMacro
 								name=val;
 								break;
 							case $ITEMXML:
+							case $ITEMXML_ZEROORMORE:
 							case $ITEMXML_ONEORMORE:
 							{
 								final List<String> V=CMParms.parseSemicolons(val,true);

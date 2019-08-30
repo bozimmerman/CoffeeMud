@@ -110,6 +110,10 @@
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for capturing the mobs:
 #
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
 #Quest Point?
 #$QUEST_POINT=$CHOOSE=YES,NO
 #Amount of money (an amount, or leave blank):
@@ -146,6 +150,7 @@ give script LOAD=$QUEST_ID_announcer.script
 set duration 0
 
 <?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
@@ -159,7 +164,7 @@ ALL_GREET_PROG 100
 	else
 		if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 			if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-				sayto "$n" $QUEST_NOTIFYSTRING -- say 'i accept $QUEST_NAME' to take on this quest.
+				sayto "$n" $QUEST_NOTIFYSTRING -- say '^yi accept $QUEST_NAME^?' to take on this quest.
 			endif
 		endif
 	endif
@@ -243,6 +248,10 @@ ENTRY_PROG 100
 				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
 					mpforce $9 mpoload $GOLD
 					mpforce $9 give $GOLD "$i"
+				endif
+				mpforce $9 mpoload fromfile $QUEST_ID_rewarditems.xml any
+				if EVAL('$b' != '')
+					mpforce $9 give "$b" "$n"
 				endif
 				mpquestwin $i *
 				mpforce $9 sayto $i $QUEST_WINSPEECH_TEXT

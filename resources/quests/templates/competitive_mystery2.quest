@@ -226,6 +226,10 @@
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for completing the quest by giving the announcer mob the three correct answers:
 #
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
 #Quest Point?
 #$QUEST_POINT=$CHOOSE=YES,NO
 #Amount of money (an amount, or leave blank):
@@ -325,6 +329,7 @@ LOAD=$QUEST_ID_agentmotivemap.quest wherehappened agentgroup-agent motive
 set duration $DURATION
 
 <?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 GREET_PROG 100
@@ -462,6 +467,10 @@ FUNCTION_PROG winner
 				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
 					mpoload $GOLD
 					give $GOLD "$n" 
+				endif
+				mpoload fromfile $QUEST_ID_rewarditems.xml any
+				if EVAL('$b' != '')
+					give "$b" "$n"
 				endif
 				mpsetvar $i $QUEST_ID_REWARDED $n
 				mpquestwin $n *

@@ -1918,6 +1918,7 @@ public class Quests extends StdLibrary implements QuestManager
 								pageDV.setElementAt(step,4,newValue);
 							break;
 						}
+						case $ITEMXML_ZEROORMORE:
 						case $ITEMXML_ONEORMORE:
 						{
 							String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
@@ -2387,6 +2388,16 @@ public class Quests extends StdLibrary implements QuestManager
 				{ // mobxml_1ormore
 					final GenericEditor.CMEval evaler = getQuestCommandEval(QMCommand.$MOBXML);
 					return evaler.eval(str, choices, emptyOK);
+				}
+			};
+		case $ITEMXML_ZEROORMORE:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
+				{ // itemxml_1ormore
+					final GenericEditor.CMEval evaler = getQuestCommandEval(QMCommand.$ITEMXML);
+					return evaler.eval(str, choices, true);
 				}
 			};
 		case $ITEMXML_ONEORMORE:

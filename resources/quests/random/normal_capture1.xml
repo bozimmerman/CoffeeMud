@@ -37,7 +37,7 @@ vars:
 </STRING>
 
 <QUEST ID="all" MERGE=true QUEST_TEMPLATE_ID="$quest_template" CONDITION="$quest_template='normal_capture1'">
-	<QUEST_ID DEFINE="quest_id">${_:source_area_name}_${_:source_name}_${_:quest_template}_R$[100000000?999999999]</QUEST_ID>
+	<QUEST_ID DEFINE="quest_id">${_:source_area_name}_${_:source_name}_${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
 	<QUEST_CRITERIA></QUEST_CRITERIA><!--  +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA> -->
 	<ANNOUNCER_AREA>"$source_area_name"</ANNOUNCER_AREA>
 	<ANNOUNCER_ROOM>"$source_room_id"</ANNOUNCER_ROOM>
@@ -66,10 +66,11 @@ vars:
 	<QUEST_LOSESPEECH_TEXT>$quest_losespeech</QUEST_LOSESPEECH_TEXT>
 	<CAPTURABLES_RESPONSE>$quest_fightspeech</CAPTURABLES_RESPONSE>
 	<CAPTURABLES_SURRENDER>$quest_surrenderspeech</CAPTURABLES_SURRENDER>
+	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
 
-	<STRING ID="quest_notifystring" SELECT="ALL" MERGE=true CONDITION="$quest_template='normal_capture1'">
+	<STRING ID="quest_notifystring" define="quest_notifystring" SELECT="ALL" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<STRING ACTION="PREPEND">$reason_short  $quest_notifyaddendum</STRING>
 	</STRING>
 
@@ -445,7 +446,7 @@ vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I must $hurt_verb the ${p:target_name}, and do it in secret.</STRING>
 			<STRING>I am really hungry for ${p:target_name}.</STRING>
-			<STRING CONDITION="$target_int &lt 4">I am giving away ${p:target_name} to all the children of $area_name.</STRING>
+			<STRING CONDITION="$target_int &lt; 4">I am giving away ${p:target_name} to all the children of $area_name.</STRING>
 			<STRING CONDITION="$source_class='Mage' or $source_class='Necromancer'">I need to draw out the souls of ${p:target_name} for my magic.</STRING>
 			<STRING>The ${p:target_name} are not here, so I can't $hurt_verb them.</STRING>
 			<STRING>The ${p:target_name} make me $adj_feeling_bad, and I must make them $adj_feeling_bad.</STRING>
@@ -464,7 +465,7 @@ vars:
 		</STRING>
 		<STRING define="quest_surrenderspeech">$quest_generic_surrender_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING CONDITION="$target_int &lt 4">I am starting a ${p:target_name} farm.</STRING>
+			<STRING CONDITION="$target_int &lt; 4">I am starting a ${p:target_name} farm.</STRING>
 			<STRING>The ${p:target_name} and I are scheduled to $hurt_verb each other today.</STRING>
 			<STRING>The ${p:target_name} have insulted my honor, and only a ritual $hurt_verb will satisfy it.</STRING>
 			<STRING>I feel like engaging in a $adj_feeling_good $hunt_verb.</STRING>
@@ -502,7 +503,7 @@ vars:
 	<OBJECT ID="source_area" SELECT="Pick-1" DEFINE="source_area" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
 		<OBJECT pickweight=1 condition="'${SELECT: name FROM area}' = ''">
-			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and intelligence>8 and "Aggressive" notin affbehav) &gt; 0
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and intelligence>8 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
 				AND (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets) &gt; 0
 		</OBJECT>
 	</OBJECT>
@@ -514,7 +515,7 @@ vars:
 	
 	<OBJECT ID="source" SELECT="Pick-1" DEFINE="source" MERGE=true CONDITION="$quest_template='normal_capture1'">
 		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
-		<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\npcs WHERE name\count=1 and intelligence>8 and "Aggressive" notin affbehav</OBJECT>
+		<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\npcs WHERE name\count=1 and intelligence>8 and "Aggressive" notin affbehav  and "QuestBound" notin affbehav</OBJECT>
 	</OBJECT>
 	
 	<OBJECT ID="target" DEFINE="target" SELECT="any-1" MERGE=true CONDITION="$quest_template='normal_capture1'">

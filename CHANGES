@@ -1,4 +1,5 @@
 # Build 5.9.9 Release ?/?/2019
+  * Minor database change: CMQUESID in CMQUESTS table enlarged from 50 to 250.  Mostly optional.
   1. New prayers: empower unholy weapon, morph unholy weapon, faithful hellhound, discipline
   2. New prayers: remove inhibitions
   3. Prop_OpenCommand and Prop_CloseCommand have expanded arguments.
@@ -40,7 +41,8 @@
  39. Alterer nerf: Wish is now level 60, and new spell: Limited Wish, gained at 30.
  40. Channels now support ACCOUNTLOGINS and ACCOUNTLOGOFFS for those using the account system.
  41. Where command now supports new MQL syntax, see AHELP WHERE (and RandomAreas guide) for more info
- 51. Prayer Deaths Door moved to Healer 25, self-cast only.  New Prayer: Protection from Death, in its place at 19.
+ 42. Prayer Deaths Door moved to Healer 25, self-cast only.  New Prayer: Protection from Death, in its place at 19.
+ 43. Quest Maker Wizard now supports reward items.
  
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque

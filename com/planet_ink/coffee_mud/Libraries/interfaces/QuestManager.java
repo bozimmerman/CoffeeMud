@@ -94,6 +94,7 @@ public interface QuestManager extends CMLibrary
 		$LONG_STRING,
 		$MOBXML_ONEORMORE,
 		$ITEMXML_ONEORMORE,
+		$ITEMXML_ZEROORMORE,
 		$ZAPPERMASK,
 		$ABILITY,
 		$EXISTING_QUEST_NAME,
