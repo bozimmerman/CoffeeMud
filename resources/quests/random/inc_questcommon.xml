@@ -21,9 +21,9 @@ See guides/RandomAreas.html for information about documents of this type.
 <STRING load="/resources/randareas/inc_adjectives.xml" />
 
 <STRING id="announcechannel" define="announcechannel" SELECT="Any-1">
-	<STRING>LOCAL</QUEST_ANNOUNCECHANNEL>
-	<STRING>SAY</QUEST_ANNOUNCECHANNEL>
-	<STRING></QUEST_ANNOUNCECHANNEL>
+	<STRING>LOCAL</STRING>
+	<STRING>SAY</STRING>
+	<STRING></STRING>
 </STRING>
 
 <STRING id="next_quest_id" define="next_quest_id"></STRING>
