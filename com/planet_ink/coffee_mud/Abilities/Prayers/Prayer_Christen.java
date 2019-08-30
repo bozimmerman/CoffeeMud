@@ -111,6 +111,19 @@ public class Prayer_Christen extends Prayer
 			mob.tell(L("You may only christen a child."));
 			return false;
 		}
+		final MOB targetMob=((CagedAnimal)target).unCageMe();
+		for(final Enumeration<Tattoo> t= targetMob.tattoos();t.hasMoreElements();)
+		{
+			final Tattoo T=t.nextElement();
+			if(T.name().startsWith("PARENTAGE:NPC"))
+			{
+				mob.tell(L("You may not christen this creature."));
+				targetMob.destroy();
+				return true;
+			}
+		}
+		targetMob.destroy();
+		
 		if(name.length()==0)
 		{
 			mob.tell(L("Christen @x1 what?",target.name(mob)));

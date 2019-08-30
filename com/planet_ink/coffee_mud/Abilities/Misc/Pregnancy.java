@@ -454,6 +454,15 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								desc = L("The " + sondat + " of @x1 and @x2.",otherParentName);
 							if(otherParentM != null)
 								babe.addTattoo("PARENT:" + otherParentM.Name());
+							if((!mob.isPlayer())
+							&&((otherParentM==null)
+								||(otherParentName==null)
+								||(otherParentName.length()==0)
+								||(!CMLib.players().playerExistsAllHosts(otherParentName))))
+							{
+								babe.addTattoo("PARENTAGE:NPC");
+							}
+							
 							mob.curState().setMovement(0);
 							mob.curState().setHitPoints(mob.curState().getHitPoints() / 2);
 							mob.location().show(mob, null, CMMsg.MSG_NOISE, L("***** <S-NAME> !!!GIVE(S) BIRTH!!! ******"));
@@ -734,7 +743,12 @@ public class Pregnancy extends StdAbility implements HealthCondition
 				final List<String> channels = CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS, mob);
 				for (int i = 0; i < channels.size(); i++)
 					CMLib.commands().postChannel(channels.get(i), mob.clans(), L("@x1 is now in a 'family way'.", target.name()), true);
-				target.addNonUninvokableEffect((Ability) copyOf());
+				final Pregnancy P=(Pregnancy)copyOf();
+				if((!mob.isPlayer())
+				&&(!target.isPlayer()))
+				{
+				}
+				target.addNonUninvokableEffect(P);
 			}
 		}
 		else

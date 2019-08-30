@@ -273,6 +273,19 @@ public class Age extends StdAbility
 		return false;
 	}
 	
+	protected boolean hasUnnaturalParentage(final MOB mob)
+	{
+		if(mob==null)
+			return false;
+		for(final Enumeration<Tattoo> t= mob.tattoos();t.hasMoreElements();)
+		{
+			final Tattoo T=t.nextElement();
+			if(T.name().startsWith("PARENTAGE:NPC"))
+				return true;
+		}
+		return false;
+	}
+	
 	protected boolean isAnNPCBirth(final MOB mob)
 	{
 		if(mob==null)
@@ -802,7 +815,7 @@ public class Age extends StdAbility
 		}
 		else
 		if((affected instanceof MOB)
-		&&(this.isBeingCaredForByAnNPC((MOB)affected))
+		&&(isBeingCaredForByAnNPC((MOB)affected) || hasUnnaturalParentage((MOB)affected))
 		&&(CMLib.law().getLandOwnerName(((MOB)affected).location()).length()>0))
 		{
 			final MOB babe=(MOB)affected;
