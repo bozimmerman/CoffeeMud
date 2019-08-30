@@ -150,17 +150,43 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					else
 					{
 						final Boolean pMergeVal;
+						boolean pMergeOver=false;
+						String psMergeVal = null;
 						if((piece.parms()==null)||(!piece.parms().containsKey("MERGE")))
 							pMergeVal = null;
 						else
-							pMergeVal = Boolean.valueOf(CMath.s_bool(piece.parms().get("MERGE")));
+						{
+							psMergeVal = piece.parms().get("MERGE").toUpperCase().trim();
+							pMergeVal = Boolean.valueOf(CMath.s_bool(psMergeVal));
+							pMergeOver=psMergeVal.startsWith("OVER");
+						}
 						final Boolean oMergeVal;
+						String osMergeVal = null;
+						boolean oMergeOver=false;
 						if((((XMLTag)o).parms()==null)||(!((XMLTag)o).parms().containsKey("MERGE")))
 							oMergeVal = null;
 						else
-							oMergeVal = Boolean.valueOf(CMath.s_bool(((XMLTag)o).parms().get("MERGE")));
+						{
+							osMergeVal = ((XMLTag)o).parms().get("MERGE");
+							oMergeVal = Boolean.valueOf(CMath.s_bool(osMergeVal));
+							oMergeOver=osMergeVal.startsWith("OVER");
+						}
+						if((oMergeOver)&&(!pMergeOver))
+						{	/* do nothing, it's already good */ }
+						else
+						if((!oMergeOver) && (pMergeOver))
+							defined.put(id.toUpperCase().trim(),piece);
+						else
 						if((pMergeVal == null)||(oMergeVal == null))
 							Log.errOut("Duplicate ID: "+id+" (no MERGE tag found to permit this operation -- first tag wins.)");
+						else
+						if(oMergeOver && pMergeOver)
+						{
+							final int onum=CMath.s_int(osMergeVal.substring(4));
+							final int pnum=CMath.s_int(psMergeVal.substring(4));
+							if(onum < pnum)
+								defined.put(id.toUpperCase().trim(),piece);
+						}
 						else
 						if(pMergeVal.booleanValue() && oMergeVal.booleanValue())
 						{

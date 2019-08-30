@@ -290,7 +290,12 @@ included in the same xml document.&nbsp; It permits some of the tag
 parameters, and all of the content tags, to be merged together into a
 single referenced tag. &nbsp;In this circumstance, child tags of
 parent tags which are being merged may optionally include "merge=false"
-to prevent duplicates from being formed.</td>
+to prevent duplicates from being formed. &nbsp;<br /><br />Merge
+can also be set to "over" to cause one tag with an ID to always
+overwrite another with the same id. If more than one tag is set to
+merge="over", a number can be added after the word "over" to give
+priority. &nbsp;For example, a tag with merge="over9" would always
+overwrite a tag with the same ID and merge="over4".</td>
           </tr>
           <tr>
             <td>pickweight</td>
