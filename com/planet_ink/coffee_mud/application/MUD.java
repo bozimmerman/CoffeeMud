@@ -1726,10 +1726,6 @@ public class MUD extends Thread implements MudHost
 					room.addItem(I);
 					CMLib.database().DBUpdateItems(room);
 				}
-
-				CMLib.login().initStartRooms(page);
-				CMLib.login().initDeathRooms(page);
-				CMLib.login().initBodyRooms(page);
 			}
 
 			if(clanPostLoads.size()>0)
@@ -1762,7 +1758,18 @@ public class MUD extends Thread implements MudHost
 				||(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 				||(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
 					return false;
+
 			}
+
+			if((tCode==MAIN_HOST)
+			||(checkPrivate&&CMProps.isPrivateToMe("MAP"))
+			||(checkPrivate&&CMProps.isPrivateToMe("CHARCREATION")))
+			{
+				CMLib.login().initStartRooms(page);
+				CMLib.login().initDeathRooms(page);
+				CMLib.login().initBodyRooms(page);
+			}
+
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: readying for connections.");
 			try
 			{

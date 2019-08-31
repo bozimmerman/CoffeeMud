@@ -4309,6 +4309,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				if(kr.startsWith("MASK"))
 				{
 					final String m=page.getProperty(k);
+					if(m.trim().length()==0)
+						continue;
 					final int x=m.indexOf('=');
 					if(x<0)
 						Log.errOut("INI Entry '"+k+m+"' is malformed!");
