@@ -100,6 +100,20 @@ public class Deviations extends StdCommand
 		return false;
 	}
 
+	private void delAllEffects(final Item I)
+	{
+		for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if((A!=null)
+			&&(!A.isSavable()))
+			{
+				A.unInvoke();
+				I.delEffect(A);
+			}
+		}
+	}
+	
 	private void fillCheckDeviations(final Room R, final String type, final List<Environmental> check)
 	{
 		if(type.equalsIgnoreCase("mobs")||type.equalsIgnoreCase("both"))
@@ -122,6 +136,7 @@ public class Deviations extends StdCommand
 				{
 					final Item checkI=(Item)I.copyOf();
 					CMLib.threads().deleteAllTicks(checkI);
+					delAllEffects(checkI);
 					checkI.setContainer(null);
 					checkI.setOwner(null);
 					checkI.recoverPhyStats();
@@ -145,6 +160,7 @@ public class Deviations extends StdCommand
 						{
 							final Item checkI=(Item)I.copyOf();
 							CMLib.threads().deleteAllTicks(checkI);
+							delAllEffects(checkI);
 							checkI.setContainer(null);
 							checkI.setOwner(null);
 							checkI.recoverPhyStats();
@@ -168,6 +184,7 @@ public class Deviations extends StdCommand
 								{
 									final Item checkI=(Item)I.copyOf();
 									CMLib.threads().deleteAllTicks(checkI);
+									delAllEffects(checkI);
 									checkI.setContainer(null);
 									checkI.setOwner(null);
 									checkI.recoverPhyStats();
