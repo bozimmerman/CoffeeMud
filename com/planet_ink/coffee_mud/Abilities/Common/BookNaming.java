@@ -84,8 +84,7 @@ public class BookNaming extends CommonSkill
 		"`@x1`: A Tome by @x2",
 		"`@x1`: A Story by @x2",
 		"`@x1`: A Volume by @x2",
-		"`@x1`: A Treatise by @x2",
-		"None"
+		"`@x1`: A Treatise by @x2"
 	};
 	protected static Pattern[] PATTERNS = new Pattern[0];
 	protected static String prefixList = null;
