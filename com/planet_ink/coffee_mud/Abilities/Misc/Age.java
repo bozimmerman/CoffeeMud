@@ -283,6 +283,16 @@ public class Age extends StdAbility
 			if(T.name().startsWith("PARENTAGE:NPC"))
 				return true;
 		}
+		final List<String> parents=CMLib.flags().getParents(mob);
+		if(parents.size()>=2)
+		{
+			for(final String parent : parents)
+			{
+				if(parent.indexOf(' ')<0)
+					return false;
+			}
+			return true;
+		}
 		return false;
 	}
 	
