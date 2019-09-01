@@ -180,7 +180,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if((pMergeVal == null)||(oMergeVal == null))
 							Log.errOut("Duplicate ID: "+id+" (no MERGE tag found to permit this operation -- first tag wins.)");
 						else
-						if(oMergeOver && pMergeOver)
+						if((oMergeOver && pMergeOver)
+						&&(osMergeVal != null)
+						&&(psMergeVal != null))
 						{
 							final int onum=CMath.s_int(osMergeVal.substring(4));
 							final int pnum=CMath.s_int(psMergeVal.substring(4));

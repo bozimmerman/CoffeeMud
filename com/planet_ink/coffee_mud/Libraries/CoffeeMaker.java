@@ -3182,6 +3182,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 							return "";
 						return ""+faction;
 					}
+					break;
 				}
 				case INCLINATION:
 				{
@@ -3193,6 +3194,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 							return "";
 						return ""+faction;
 					}
+					break;
 				}
 				case DEITY:
 					return ((MOB)P).getWorshipCharID();
