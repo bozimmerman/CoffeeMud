@@ -243,8 +243,8 @@ public class Chant_PlantMaze extends Chant
 						if(follower.isInCombat())
 							follower.makePeace(true);
 						oldRoom.send(follower,leaveMsg);
-						newerRoom.bringMobHere(follower,false);
-						newerRoom.send(follower,enterMsg);
+						((Room)enterMsg.target()).bringMobHere(follower,false);
+						((Room)enterMsg.target()).send(follower,enterMsg);
 						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}

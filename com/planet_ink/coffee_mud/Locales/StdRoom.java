@@ -1347,112 +1347,16 @@ public class StdRoom implements Room
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 
-	protected String parseVariesCodes(final MOB mob, final Area A, final String text)
-	{
-		final StringBuilder buf=new StringBuilder("");
-		int aligatorDex=text.indexOf('<');
-		int curDex=0;
-		boolean addMe = true;
-		while(aligatorDex>=0)
-		{
-			for(final VariationCode code : VariationCode.values())
-			{
-				if(text.startsWith(code.openTag, aligatorDex))
-				{
-					buf.append(text.substring(curDex, aligatorDex));
-					final int openLen;
-					int y;
-					if(code == VariationCode.MASK)
-					{
-						final int x=text.indexOf('>',aligatorDex+1);
-						final int z=text.indexOf(' ',aligatorDex+1);
-						if((z<0)||(x<0)||(z>x))
-							break;
-						final String openTag="<"+text.substring(aligatorDex+1,z)+">";
-						y=text.indexOf("</"+openTag.substring(1),x);
-						if(y<0)
-						{
-							curDex = text.length();
-							y=text.length();
-						}
-						else
-							curDex = y+openTag.length()+1;
-						openLen=x-aligatorDex+1;
-						addMe = CMLib.masking().maskCheck(CMLib.xml().restoreAngleBrackets(text.substring(z,x)), mob, true);
-					}
-					else
-					{
-						openLen=code.openTag.length();
-						y=text.indexOf(code.closeTag,aligatorDex+openLen);
-						if(y<0)
-						{
-							curDex = text.length();
-							y=text.length();
-						}
-						else
-							curDex = y+code.closeTag.length();
-						switch(code.c)
-						{
-						case '\n':
-							addMe = !addMe;
-							break;
-						case '\r':
-							addMe = true;
-							break;
-						case 'W':
-							addMe = A.getClimateObj().weatherType(null) == code.num;
-							break;
-						case 'C':
-							addMe = A.getTimeObj().getTODCode().ordinal() == code.num;
-							break;
-						case 'S':
-							addMe = A.getTimeObj().getSeasonCode().ordinal() == code.num;
-							break;
-						case 'M':
-							addMe = ((mob != null) && (CMath.bset(mob.phyStats().disposition(), code.num)));
-							break;
-						case 'V':
-							addMe = ((mob != null) && (mob.playerStats() != null) && (mob.playerStats().hasVisited(this)));
-							break;
-						}
-					}
-					if(addMe)
-						buf.append(parseVariesCodes(mob,A,text.substring(aligatorDex+openLen,y)));
-					aligatorDex=curDex-1;
-					break;
-				}
-			}
-			if(aligatorDex >= text.length()-1)
-				break;
-			aligatorDex=text.indexOf('<',aligatorDex+1);
-		}
-		if(curDex < text.length())
-		{
-			if(text.startsWith("</VARIES>",curDex))
-				buf.append(text.substring(curDex+9));
-			else
-				buf.append(text.substring(curDex));
-		}
-		return buf.toString();
-	}
-
-	protected String parseVaries(final MOB mob, final String text)
-	{
-		if(text.startsWith("<VARIES>"))
-			return parseVariesCodes(mob,getArea(),text.substring(8));
-		return text;
-	}
-
 	@Override
 	public String displayText(final MOB mob)
 	{
-		return parseVaries(mob,displayText());
+		return CMLib.commands().parseVaries(mob,getArea(),this,displayText());
 	}
 
 	@Override
 	public String description(final MOB mob)
 	{
-		return parseVaries(mob,description());
+		return CMLib.commands().parseVaries(mob,getArea(),this,description());
 	}
 
 	@Override

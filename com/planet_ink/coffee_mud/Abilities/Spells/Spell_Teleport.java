@@ -139,6 +139,8 @@ public class Spell_Teleport extends Spell
 			mob.setSession(null);
 			if(!newRoom.okMessage(mob,enterMsg))
 				newRoom=null;
+			else
+				newRoom=(Room)enterMsg.target();
 			mob.setSession(session);
 			tries++;
 		}
@@ -185,8 +187,8 @@ public class Spell_Teleport extends Spell
 						follower.makePeace(false);
 					}
 					thisRoom.send(follower,leaveMsg);
-					newRoom.bringMobHere(follower,false);
-					newRoom.send(follower,enterMsg);
+					((Room)enterMsg.target()).bringMobHere(follower,false);
+					((Room)enterMsg.target()).send(follower,enterMsg);
 					follower.tell(L("\n\r\n\r"));
 					CMLib.commands().postLook(follower,true);
 				}

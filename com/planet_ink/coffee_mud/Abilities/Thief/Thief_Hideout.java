@@ -124,8 +124,9 @@ public class Thief_Hideout extends ThiefSkill
 				backToRoom=getPreviousLocation(mob);
 				if(backToRoom==null)
 					backToRoom=mob.getStartRoom();
-				backToRoom.bringMobHere(mob,false);
-				backToRoom.send(mob,enterMsg);
+				backToRoom.okMessage(mob, enterMsg);
+				((Room)enterMsg.target()).bringMobHere(mob,false);
+				((Room)enterMsg.target()).send(mob,enterMsg);
 				CMLib.commands().postLook(mob,true);
 			}
 			final LinkedList<Item> items=new LinkedList<Item>();
@@ -239,9 +240,9 @@ public class Thief_Hideout extends ThiefSkill
 					mob.makePeace(false);
 				}
 				thisRoom.send(mob,msg);
-				newRoom.bringMobHere(mob,false);
+				((Room)enterMsg.target()).bringMobHere(mob,false);
 				thisRoom.delInhabitant(mob);
-				newRoom.send(mob,enterMsg);
+				((Room)enterMsg.target()).send(mob,enterMsg);
 				mob.tell(L("\n\r\n\r"));
 				CMLib.commands().postLook(mob,true);
 				beneficialAffect(mob,mob,asLevel,999999);

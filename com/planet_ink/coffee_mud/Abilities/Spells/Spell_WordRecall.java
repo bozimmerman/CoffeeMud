@@ -111,9 +111,9 @@ public class Spell_WordRecall extends Spell
 			if((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
 			{
 				recalledRoom.send(mob,msg);
-				recallRoom.send(mob,msg2);
+				((Room)msg2.target()).send(mob,msg2);
 				if(recalledRoom.isInhabitant(mob))
-					recallRoom.bringMobHere(mob,false);
+					((Room)msg2.target()).bringMobHere(mob,false);
 				for(int f=0;f<mob.numFollowers();f++)
 				{
 					final MOB follower=mob.fetchFollower(f);
@@ -126,12 +126,12 @@ public class Spell_WordRecall extends Spell
 					&&(recalledRoom.isInhabitant(follower))
 					&&(recalledRoom.okMessage(follower,msg)))
 					{
-						msg2=CMClass.getMsg(follower,recallRoom,this,verbalCastCode(mob,recallRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,verbalCastCode(mob,recallRoom,auto),null);
-						if(recallRoom.okMessage(follower,msg2))
+						msg2=CMClass.getMsg(follower,(msg2.target()),this,verbalCastCode(mob,((Room)msg2.target()),auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,verbalCastCode(mob,((Room)msg2.target()),auto),null);
+						if(((Room)msg2.target()).okMessage(follower,msg2))
 						{
-							recallRoom.send(follower,msg2);
+							((Room)msg2.target()).send(follower,msg2);
 							if(recalledRoom.isInhabitant(follower))
-								recallRoom.bringMobHere(follower,false);
+								((Room)msg2.target()).bringMobHere(follower,false);
 						}
 					}
 				}

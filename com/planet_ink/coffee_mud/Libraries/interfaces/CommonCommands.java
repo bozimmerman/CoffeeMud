@@ -417,6 +417,18 @@ public interface CommonCommands extends CMLibrary
 	public void lookAtExitsShort(Room room, MOB mob);
 
 	/**
+	 * Parse variable display and description texts to generate
+	 * the dynamic text seen in some rooms.
+	 * 
+	 * @param mob the mob who is looking
+	 * @param area the area containing the mob
+	 * @param room the room containing the mob
+	 * @param text the raw variable text
+	 * @return the dynamic text
+	 */
+	public String parseVaries(final MOB mob, final Area area, final Room room, final String text);
+	
+	/**
 	 * Handler function for when a mob looks at something, or
 	 * examines it closely.  Things like items, mobs, rooms, etc.
 	 *

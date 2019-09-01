@@ -1488,6 +1488,38 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
+				case PORT: // +PORT
+					{
+						buf.append(L("Disallowed from the following ports: "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("-"))
+								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case _PORT: // -PORT
+					{
+						buf.append(L((skipFirstWord?"Only ":"Allowed only ")+"from the following ports: "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("+"))
+								buf.append(CMath.s_int(str2.substring(1).trim())+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
 				case SEASON: // +season
 					{
 						buf.append(L("Disallowed during the following season"+(multipleQuals(V,v,"-")?"s":"")+": "));
@@ -3936,6 +3968,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
 					}
 					break;
+				case PORT: // +PORT
+				case _PORT: // -PORT
 				case HOUR: // +HOUR
 				case _HOUR: // -HOUR
 				case MONTH: // +MONTH
@@ -5486,6 +5520,32 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							return false;
 					}
 					break;
+				case PORT: // +PORT
+					{
+						final MudHost host=CMLib.host();
+						for(final Object o : entry.parms())
+						{
+							if(host.getPort()==((Integer)o).intValue())
+								return false;
+						}
+					}
+					break;
+				case _PORT: // -PORT
+					{
+						final MudHost host=CMLib.host();
+						boolean found=false;
+						for(final Object o : entry.parms())
+						{
+							if(host.getPort()==((Integer)o).intValue())
+							{
+								found=true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
 				case HOUR: // +HOUR
 					{
 						if(room!=null)
@@ -6878,6 +6938,32 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _CHANCE: // -chance
 					if((entry.parms().length>0)&&(CMLib.dice().rollPercentage()<(((Integer)entry.parms()[0]).intValue())))
 						return false;
+					break;
+				case PORT: // +PORT
+					{
+						final MudHost host=CMLib.host();
+						for(final Object o : entry.parms())
+						{
+							if(host.getPort()==((Integer)o).intValue())
+								return false;
+						}
+					}
+					break;
+				case _PORT: // -PORT
+					{
+						final MudHost host=CMLib.host();
+						boolean found=false;
+						for(final Object o : entry.parms())
+						{
+							if(host.getPort()==((Integer)o).intValue())
+							{
+								found=true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
 					break;
 				case CLASS: // +class
 				{

@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.Room.VariationCode;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -2575,5 +2576,102 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				buf.append("^<MEX^>"+((Exit)I).doorName()+"^</MEX^> ");
 		}
 		mob.tell(buf.toString().trim()+"]^</RExits^>^.^N");
+	}
+	
+	protected String parseVariesCodes(final MOB mob, final Area A, final Room room, final String text)
+	{
+		final StringBuilder buf=new StringBuilder("");
+		int aligatorDex=text.indexOf('<');
+		int curDex=0;
+		boolean addMe = true;
+		while(aligatorDex>=0)
+		{
+			for(final VariationCode code : VariationCode.values())
+			{
+				if(text.startsWith(code.openTag, aligatorDex))
+				{
+					buf.append(text.substring(curDex, aligatorDex));
+					final int openLen;
+					int y;
+					if(code == VariationCode.MASK)
+					{
+						final int x=text.indexOf('>',aligatorDex+1);
+						final int z=text.indexOf(' ',aligatorDex+1);
+						if((z<0)||(x<0)||(z>x))
+							break;
+						final String openTag="<"+text.substring(aligatorDex+1,z)+">";
+						y=text.indexOf("</"+openTag.substring(1),x);
+						if(y<0)
+						{
+							curDex = text.length();
+							y=text.length();
+						}
+						else
+							curDex = y+openTag.length()+1;
+						openLen=x-aligatorDex+1;
+						addMe = CMLib.masking().maskCheck(CMLib.xml().restoreAngleBrackets(text.substring(z,x)), mob, true);
+					}
+					else
+					{
+						openLen=code.openTag.length();
+						y=text.indexOf(code.closeTag,aligatorDex+openLen);
+						if(y<0)
+						{
+							curDex = text.length();
+							y=text.length();
+						}
+						else
+							curDex = y+code.closeTag.length();
+						switch(code.c)
+						{
+						case '\n':
+							addMe = !addMe;
+							break;
+						case '\r':
+							addMe = true;
+							break;
+						case 'W':
+							addMe = A.getClimateObj().weatherType(null) == code.num;
+							break;
+						case 'C':
+							addMe = A.getTimeObj().getTODCode().ordinal() == code.num;
+							break;
+						case 'S':
+							addMe = A.getTimeObj().getSeasonCode().ordinal() == code.num;
+							break;
+						case 'M':
+							addMe = ((mob != null) && (CMath.bset(mob.phyStats().disposition(), code.num)));
+							break;
+						case 'V':
+							addMe = ((mob != null) && (mob.playerStats() != null) && (mob.playerStats().hasVisited(room)));
+							break;
+						}
+					}
+					if(addMe)
+						buf.append(parseVariesCodes(mob,A,room,text.substring(aligatorDex+openLen,y)));
+					aligatorDex=curDex-1;
+					break;
+				}
+			}
+			if(aligatorDex >= text.length()-1)
+				break;
+			aligatorDex=text.indexOf('<',aligatorDex+1);
+		}
+		if(curDex < text.length())
+		{
+			if(text.startsWith("</VARIES>",curDex))
+				buf.append(text.substring(curDex+9));
+			else
+				buf.append(text.substring(curDex));
+		}
+		return buf.toString();
+	}
+
+	@Override
+	public String parseVaries(final MOB mob, final Area area, final Room room, final String text)
+	{
+		if(text.startsWith("<VARIES>"))
+			return parseVariesCodes(mob,area,room,text.substring(8));
+		return text;
 	}
 }

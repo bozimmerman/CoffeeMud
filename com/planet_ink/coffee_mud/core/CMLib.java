@@ -259,9 +259,10 @@ public class CMLib
 	/**
 	 * Returns the MudHost associated with the callers
 	 * thread group.
+	 * @param threadId the threadId of the host to get
 	 * @return the appropriate mud host.
 	 */
-	public static final MudHost host()
+	public static final MudHost host(final char threadId)
 	{
 		if(mudThreads.size()==0)
 			return null;
@@ -270,11 +271,21 @@ public class CMLib
 			final MudHost host = mudThreads.get(i);
 			if(host instanceof Thread)
 			{
-				if(((Thread)host).getThreadGroup() == Thread.currentThread().getThreadGroup())
+				if(((Thread)host).getThreadGroup().getName().charAt(0) == threadId)
 					return host;
 			}
 		}
 		return mudThreads.get(0);
+	}
+	
+	/**
+	 * Returns the MudHost associated with the callers
+	 * thread group.
+	 * @return the appropriate mud host.
+	 */
+	public static final MudHost host()
+	{
+		return host(Thread.currentThread().getThreadGroup().getName().charAt(0));
 	}
 
 	/**

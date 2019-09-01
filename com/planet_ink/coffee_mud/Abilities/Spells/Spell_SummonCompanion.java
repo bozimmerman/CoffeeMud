@@ -141,8 +141,8 @@ public class Spell_SummonCompanion extends Spell
 					{
 						follower.makePeace(true);
 						oldRoom.send(follower,leaveMsg);
-						newRoom.bringMobHere(follower,true);
-						newRoom.send(follower,enterMsg);
+						((Room)enterMsg.target()).bringMobHere(follower,true);
+						((Room)enterMsg.target()).send(follower,enterMsg);
 						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}

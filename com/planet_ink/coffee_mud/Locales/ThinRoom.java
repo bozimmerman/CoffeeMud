@@ -205,7 +205,7 @@ public class ThinRoom implements Room
 		return true;
 	}
 
-	private volatile boolean	recurse	= false;
+	protected volatile boolean	recurse	= false;
 
 	@Override
 	public boolean isHere(final Environmental E)

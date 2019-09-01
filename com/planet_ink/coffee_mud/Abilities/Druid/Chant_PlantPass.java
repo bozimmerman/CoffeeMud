@@ -170,8 +170,8 @@ public class Chant_PlantPass extends Chant
 							follower.makePeace(false);
 						}
 						thisRoom.send(follower,leaveMsg);
-						newRoom.bringMobHere(follower,false);
-						newRoom.send(follower,enterMsg);
+						((Room)enterMsg.target()).bringMobHere(follower,false);
+						((Room)enterMsg.target()).send(follower,enterMsg);
 						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}

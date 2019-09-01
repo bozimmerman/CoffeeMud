@@ -110,7 +110,7 @@ public class Spell_MarkerSummoning extends Spell
 			mob.tell(L("You can't seem to focus on your marker.  Are you sure you've already summoned it?"));
 			return false;
 		}
-		final Room newRoom=mob.location();
+		Room newRoom=mob.location();
 		if(oldRoom==newRoom)
 		{
 			mob.tell(L("But your marker is HERE!"));
@@ -151,8 +151,9 @@ public class Spell_MarkerSummoning extends Spell
 					{
 						follower.makePeace(true);
 						oldRoom.send(follower,leaveMsg);
-						newRoom.bringMobHere(follower,false);
-						newRoom.send(follower,enterMsg);
+						newRoom=(Room)enterMsg.target();
+						((Room)enterMsg.target()).bringMobHere(follower,false);
+						((Room)enterMsg.target()).send(follower,enterMsg);
 						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}

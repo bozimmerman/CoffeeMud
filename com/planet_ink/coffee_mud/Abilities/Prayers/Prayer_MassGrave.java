@@ -136,8 +136,9 @@ public class Prayer_MassGrave extends Prayer
 					backToRoom=getPreviousLocation(mob);
 					if(backToRoom==null)
 						backToRoom=mob.getStartRoom();
-					backToRoom.bringMobHere(mob,false);
-					backToRoom.send(mob,enterMsg);
+					backToRoom.okMessage(mob, enterMsg);
+					((Room)enterMsg.target()).bringMobHere(mob,false);
+					((Room)enterMsg.target()).send(mob,enterMsg);
 					CMLib.commands().postLook(mob,true);
 				}
 				final LinkedList<Item> items=new LinkedList<Item>();
@@ -261,9 +262,9 @@ public class Prayer_MassGrave extends Prayer
 							follower.makePeace(false);
 						}
 						thisRoom.send(follower,leaveMsg);
-						newRoom.bringMobHere(follower,false);
+						((Room)enterMsg.target()).bringMobHere(follower,false);
 						thisRoom.delInhabitant(follower);
-						newRoom.send(follower,enterMsg);
+						((Room)enterMsg.target()).send(follower,enterMsg);
 						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 						if(follower==mob)

@@ -482,11 +482,29 @@ public class Modify extends StdCommand
 		}
 		else
 		{
-			final STreeSet<String> set=new STreeSet<String>();
-			set.addAll(CMParms.parseCommas("NAME,AREA,DESCRIPTION,AFFECTS,BEHAVIORS,CLASS,XGRID,YGRID",true));
-			set.addAll(CMLib.coffeeMaker().getAllGenStats(mob.location()));
-			mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toListString(set)));
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			final Room R=CMLib.map().getRoom(command);
+			if((R==null)
+			||(!CMSecurity.isAllowed(mob, R, CMSecurity.SecFlag.CMDROOMS)))
+			{
+				final STreeSet<String> set=new STreeSet<String>();
+				set.addAll(CMParms.parseCommas("NAME,AREA,DESCRIPTION,AFFECTS,BEHAVIORS,CLASS,XGRID,YGRID",true));
+				set.addAll(CMLib.coffeeMaker().getAllGenStats(mob.location()));
+				mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toListString(set)));
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			}
+			else
+			{
+				final Room oldRoom=(Room)mob.location().copyOf();
+				final Room newRoom=CMLib.genEd().modifyRoom(mob,R,-1);
+				if((!oldRoom.sameAs(newRoom))&&(!newRoom.amDestroyed()))
+				{
+					CMLib.database().DBUpdateRoom(newRoom);
+					newRoom.showHappens(CMMsg.MSG_OK_ACTION,L("There is something different about this place...\n\r"));
+					Log.sysOut("Rooms",mob.Name()+" modified room "+newRoom.roomID()+".");
+				}
+				oldRoom.destroy();
+				newRoom.getArea().fillInAreaRoom(newRoom);
+			}
 			return;
 		}
 		mob.location().recoverRoomStats();

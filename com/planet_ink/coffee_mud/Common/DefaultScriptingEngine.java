@@ -10899,8 +10899,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										follower.makePeace(true);
 									}
 									thisRoom.send(follower,leaveMsg);
-									newRoom.bringMobHere(follower,false);
-									newRoom.send(follower,enterMsg);
+									((Room)enterMsg.target()).bringMobHere(follower,false);
+									((Room)enterMsg.target()).send(follower,enterMsg);
 									follower.basePhyStats().setDisposition(follower.basePhyStats().disposition() | dispo1);
 									follower.phyStats().setDisposition(follower.phyStats().disposition() | dispo2);
 									if(!CMLib.flags().isSleeping(follower))

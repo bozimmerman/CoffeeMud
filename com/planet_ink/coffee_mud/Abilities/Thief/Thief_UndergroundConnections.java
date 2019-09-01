@@ -243,9 +243,9 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				follower.makePeace(true);
 			}
 			thisRoom.send(follower,leaveMsg);
-			newRoom.bringMobHere(follower,false);
+			((Room)enterMsg.target()).bringMobHere(follower,false);
 			thisRoom.delInhabitant(follower);
-			newRoom.send(follower,enterMsg);
+			((Room)enterMsg.target()).send(follower,enterMsg);
 			follower.basePhyStats().setDisposition(follower.basePhyStats().disposition()|PhyStats.IS_SITTING);
 			follower.phyStats().setDisposition(follower.phyStats().disposition()|PhyStats.IS_SITTING);
 			//follower.tell(L("\n\r\n\r"));

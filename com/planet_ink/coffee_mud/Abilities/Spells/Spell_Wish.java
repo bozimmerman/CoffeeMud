@@ -123,9 +123,9 @@ public class Spell_Wish extends Spell
 			if(!thisRoom.okMessage(mob,leaveMsg)||!newRoom.okMessage(mob,enterMsg))
 				factor=40.0;
 			mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> teleport(s) to @x1.",newRoom.displayText()));
-			newRoom.bringMobHere((MOB)target,false);
-			if(newRoom.isInhabitant((MOB)target))
-				newRoom.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> appear(s) out of nowhere."));
+			((Room)enterMsg.target()).bringMobHere((MOB)target,false);
+			if(((Room)enterMsg.target()).isInhabitant((MOB)target))
+				((Room)enterMsg.target()).show((MOB)target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> appear(s) out of nowhere."));
 		}
 		else
 		if(target instanceof Item)

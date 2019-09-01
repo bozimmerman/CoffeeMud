@@ -155,6 +155,8 @@ public class Spell_TeleportObject extends Spell
 			final CMMsg enterMsg=CMClass.getMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 			if(!newRoom.okMessage(mob,enterMsg))
 				newRoom=null;
+			else
+				newRoom=(Room)enterMsg.target();
 			tries++;
 		}
 

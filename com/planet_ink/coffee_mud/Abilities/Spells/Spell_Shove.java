@@ -153,8 +153,8 @@ public class Spell_Shove extends Spell
 					if(thisRoom.okMessage(target,leaveMsg)&&newRoom.okMessage(target,enterMsg))
 					{
 						thisRoom.send(target,leaveMsg);
-						newRoom.bringMobHere(target,false);
-						newRoom.send(target,enterMsg);
+						((Room)enterMsg.target()).bringMobHere(target,false);
+						((Room)enterMsg.target()).send(target,enterMsg);
 						target.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(target,true);
 					}

@@ -1003,8 +1003,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			final Room startRoom=M.getStartRoom();
 			if(startRoom!=null)
 			{
-				startRoom.showOthers(M,startRoom,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<S-NAME> enter(s)."));
-				startRoom.bringMobHere(M,true);
+				final CMMsg msg=CMClass.getMsg(M, startRoom, null, CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<S-NAME> enter(s)."));
+				startRoom.okMessage(M, msg);
+				((Room)msg.target()).showOthers(M,startRoom,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,L("<S-NAME> enter(s)."));
+				((Room)msg.target()).bringMobHere(M,true);
 			}
 		}
 	}
@@ -1091,16 +1093,16 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if(toHere.okMessage(M, enterMsg))
 		{
 			if(dir<0)
-				toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in."));
+				((Room)enterMsg.target()).show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in."));
 			else
 			{
 				final String inDir=((toHere instanceof BoardableShip)||(toHere.getArea() instanceof BoardableShip))?
 						CMLib.directions().getShipDirectionName(dir):CMLib.directions().getDirectionName(dir);
-				toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in from @x1.",inDir));
+						((Room)enterMsg.target()).show(M,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wanders in from @x1.",inDir));
 			}
-			toHere.executeMsg(M, enterMsg);
-			if(M.location()!=toHere)
-				toHere.bringMobHere(M,true);
+			((Room)enterMsg.target()).executeMsg(M, enterMsg);
+			if(M.location()!=((Room)enterMsg.target()))
+				((Room)enterMsg.target()).bringMobHere(M,true);
 			return true;
 		}
 		return false;
@@ -2264,15 +2266,17 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				if(M.isInCombat())
 					CMLib.commands().postFlee(M,("NOWHERE"));
 				final CMMsg msg=CMClass.getMsg(M,currentRoom,null,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,L("<S-NAME> disappear(s) into the Java Plane!"));
+				currentRoom.okMessage(M, msg);
 				currentRoom.send(M,msg);
 				final CMMsg msg2=CMClass.getMsg(M,recallRoom,null,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
-				recallRoom.send(M,msg2);
-				if(recallRoom != currentRoom)
+				recallRoom.okMessage(M, msg2);
+				((Room)msg2.target()).send(M,msg2);
+				if(((Room)msg2.target()) != currentRoom)
 				{
 					if(currentRoom.isInhabitant(M))
 						currentRoom.delInhabitant(M);
-					if(!recallRoom.isInhabitant(M))
-						recallRoom.bringMobHere(M,M.isMonster());
+					if(!((Room)msg2.target()).isInhabitant(M))
+						((Room)msg2.target()).bringMobHere(M,M.isMonster());
 				}
 			}
 		}

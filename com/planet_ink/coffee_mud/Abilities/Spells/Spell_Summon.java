@@ -208,8 +208,8 @@ public class Spell_Summon extends Spell
 					{
 						follower.makePeace(true);
 						oldRoom.send(follower,leaveMsg);
-						newRoom.bringMobHere(follower,false);
-						newRoom.send(follower,enterMsg);
+						((Room)enterMsg.target()).bringMobHere(follower,false);
+						((Room)enterMsg.target()).send(follower,enterMsg);
 						follower.tell(L("\n\r\n\r"));
 						if(follower.isMonster()
 						&&(follower.getStartRoom()!=null)

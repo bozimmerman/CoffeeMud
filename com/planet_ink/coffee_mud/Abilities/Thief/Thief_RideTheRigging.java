@@ -167,8 +167,8 @@ public class Thief_RideTheRigging extends ThiefSkill
 						mob.makePeace(false);
 					}
 					R.send(mob,leaveMsg);
-					targetRoom.bringMobHere(mob,false);
-					targetRoom.send(mob,enterMsg);
+					((Room)enterMsg.target()).bringMobHere(mob,false);
+					((Room)enterMsg.target()).send(mob,enterMsg);
 					mob.tell(L("\n\r\n\r"));
 					CMLib.commands().postLook(mob,true);
 				}
