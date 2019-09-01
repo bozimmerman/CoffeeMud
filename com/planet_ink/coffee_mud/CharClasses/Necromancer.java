@@ -249,6 +249,12 @@ public class Necromancer extends Cleric
 				myChar.tell(L("The dark powers are transforming you into a @x1!!",newRace.name()));
 				myChar.baseCharStats().setMyRace(newRace);
 				myChar.recoverCharStats();
+				final String[] cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.get(myChar.session()).getStr(CMProps.Str.PLAYERDEATH),true));
+				for(final String cmd : cmds)
+				{
+					if(cmd.toUpperCase().startsWith("PUR"))
+						return false;
+				}
 			}
 		}
 		return true;

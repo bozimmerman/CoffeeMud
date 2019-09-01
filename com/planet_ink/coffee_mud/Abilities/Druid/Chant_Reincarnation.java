@@ -188,6 +188,16 @@ public class Chant_Reincarnation extends Chant
 			msg.source().recoverCharStats();
 			msg.source().recoverPhyStats();
 			super.canBeUninvoked=false; // without this, bring to life removes it
+			if((newRace != null)
+			&&(!msg.source().isMonster()))
+			{
+				final String[] cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.get(msg.source().session()).getStr(CMProps.Str.PLAYERDEATH),true));
+				for(final String cmd : cmds)
+				{
+					if(cmd.toUpperCase().startsWith("PUR"))
+						return false;
+				}
+			}
 		}
 		return true;
 	}
