@@ -487,7 +487,7 @@ public class Modify extends StdCommand
 			||(!CMSecurity.isAllowed(mob, R, CMSecurity.SecFlag.CMDROOMS)))
 			{
 				final STreeSet<String> set=new STreeSet<String>();
-				set.addAll(CMParms.parseCommas("NAME,AREA,DESCRIPTION,AFFECTS,BEHAVIORS,CLASS,XGRID,YGRID",true));
+				set.addAll(CMParms.parseCommas("NAME,AREA,DESCRIPTION,AFFECTS,BEHAVIORS,CLASS,XGRID,YGRID,[ROOM ID]",true));
 				set.addAll(CMLib.coffeeMaker().getAllGenStats(mob.location()));
 				mob.tell(L("...but failed to specify an aspect.  Try one of: @x1",CMParms.toListString(set)));
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
