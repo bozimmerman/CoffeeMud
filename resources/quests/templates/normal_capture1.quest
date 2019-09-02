@@ -143,7 +143,7 @@ quiet
 set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
 set mobgroup
-set mob $ANNOUNCER_NAME
+set mob reselect $ANNOUNCER_NAME
 give stat keyplayer true
 give script LOAD=$QUEST_ID_announcer.script
 
@@ -164,13 +164,23 @@ ALL_GREET_PROG 100
 	else
 		if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 			if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-				sayto "$n" $QUEST_NOTIFYSTRING -- say '^yi accept $QUEST_NAME^?' to take on this quest.
+				sayto "$n" $QUEST_NOTIFYSTRING -- say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
 			endif
 		endif
 	endif
 ~
 
 SPEECH_PROG p i accept $QUEST_NAME
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			sayto "$n" $QUEST_INSTRUCTIONSSTRING
+			mpqset * STATISTICS ACCEPTED
+			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+		endif
+	endif
+~
+
+SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
