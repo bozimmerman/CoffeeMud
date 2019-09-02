@@ -45,7 +45,7 @@ amber-tipped staff	51	80	12	3413	GenStaff	30	32	amber	2	prop_itemslot;num=1 type
 bloodstone-tipped staff	52	80	12	3413	GenStaff	31	32	bloodstone	2	prop_itemslot;num=1 type=crown removable=false level=high
 moonstone-tipped staff	53	85	12	3630	GenStaff	31	33	moonstone	2	prop_itemslot;num=1 type=crown removable=false level=high
 alexandrite-tipped staff	54	85	12	3630	GenStaff	32	33	alexandrite	2	prop_itemslot;num=1 type=crown removable=false level=high
-ornate % quartertaff	55	75	20	4563	GenStaff	32	37			prop_itemslot;num=1 type=crown removable=false level=high
+ornate % quarterstaff	55	75	20	4563	GenStaff	32	37			prop_itemslot;num=1 type=crown removable=false level=high
 agate-tipped staff	56	85	12	3853	GenStaff	33	34	agate	2	prop_itemslot;num=1 type=crown removable=false level=high
 citrine-tipped staff	58	90	12	4083	GenStaff	34	35	citrine	2	prop_itemslot;num=1 type=crown removable=false level=high
 gold-shod staff	60	90	10	4083	GenStaff	35	35	gold	2	prop_itemslot;num=1 type=crown removable=false level=high
