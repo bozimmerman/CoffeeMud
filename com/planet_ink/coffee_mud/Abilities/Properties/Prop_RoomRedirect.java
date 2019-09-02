@@ -42,7 +42,7 @@ public class Prop_RoomRedirect extends Property
 
 	final PairSVector<String, String>						rawRedirects	= new PairSVector<String, String>();
 	final PairSVector<MaskingLibrary.CompiledZMask, Room>	redirects		= new PairSVector<MaskingLibrary.CompiledZMask, Room>();
-	
+
 	@Override
 	public String name()
 	{
@@ -62,7 +62,7 @@ public class Prop_RoomRedirect extends Property
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText((newMiscText==null) ? "" : newMiscText.trim());
 		this.rawRedirects.clear();
@@ -121,7 +121,7 @@ public class Prop_RoomRedirect extends Property
 		}
 		return null;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -139,6 +139,11 @@ public class Prop_RoomRedirect extends Property
 					final Room realRoom=this.getRedirectRoom(msg.source());
 					if(realRoom != null)
 					{
+						if(msg.source().isPlayer())
+						{
+							msg.source().playerStats().addRoomVisit((Room)msg.target());
+							msg.source().playerStats().addRoomVisit(realRoom);
+						}
 						msg.setTarget(realRoom);
 						return realRoom.okMessage(myHost, msg);
 					}
@@ -148,7 +153,7 @@ public class Prop_RoomRedirect extends Property
 		}
 		return super.okMessage(myHost, msg);
 	}
-			
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
