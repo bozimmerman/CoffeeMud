@@ -8348,7 +8348,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							response=execute(scripted,source,target,monster,primaryItem,secondaryItem,subScript,msg,tmp);
 							if(response!=null)
 								break;
-							if(System.currentTimeMillis()>tm)
+							if((System.currentTimeMillis()>tm) || (scripted.amDestroyed()))
 							{
 								logError(scripted,"FOR","Runtime","For loop violates 10 second rule: " +s);
 								break;
@@ -11750,7 +11750,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				vscript.addElement(DO,DOT,null);
 				final long time=System.currentTimeMillis();
 				while((eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,EVALO,0))
-				&&((System.currentTimeMillis()-time)<4000))
+				&&((System.currentTimeMillis()-time)<4000)
+				&&(!scripted.amDestroyed()))
 					execute(scripted,source,target,monster,primaryItem,secondaryItem,vscript,msg,tmp);
 				if(vscript.elementAt(1,2)!=DOT)
 				{
