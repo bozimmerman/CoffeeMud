@@ -321,6 +321,12 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 	}
 
 	@Override
+	public int[] getRanges()
+	{
+		return new int[] { minRange, maxRange };
+	}
+
+	@Override
 	public boolean requiresAmmunition()
 	{
 		if((readableText()==null)||(this instanceof Wand))

@@ -403,6 +403,12 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	}
 
 	@Override
+	public int[] getRanges()
+	{
+		return new int[] { minRange, maxRange };
+	}
+
+	@Override
 	public boolean requiresAmmunition()
 	{
 		if((readableText()==null)||(this instanceof Wand))

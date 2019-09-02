@@ -363,7 +363,29 @@ public class Spell_Meld extends Spell
 					else
 						gc.setWeaponClassification(((Weapon)itemOne).weaponClassification());
 					gc.setRawLogicalAnd(true);
-					gc.setRanges((itemOne.minRange()+itemTwo.minRange())/2, (itemOne.maxRange()+itemTwo.maxRange())/2);
+					if(itemOne instanceof Weapon)
+					{
+						final Weapon weaponOne=(Weapon)itemOne;
+						if(itemTwo instanceof Weapon)
+						{
+							final Weapon weaponTwo=(Weapon)itemTwo;
+							gc.setRanges((weaponOne.getRanges()[0]+weaponTwo.getRanges()[0])/2, 
+									(weaponOne.getRanges()[1]+weaponTwo.getRanges()[1])/2);
+						}
+						else
+						{
+							gc.setRanges((weaponOne.getRanges()[0]+itemTwo.minRange())/2, 
+									(weaponOne.getRanges()[1]+itemTwo.maxRange())/2);
+						}
+					}
+					if(itemTwo instanceof Weapon)
+					{
+						final Weapon weaponTwo=(Weapon)itemTwo;
+						gc.setRanges((weaponTwo.getRanges()[0]+itemOne.minRange())/2, 
+								(weaponTwo.getRanges()[1]+itemOne.maxRange())/2);
+					}
+					else
+						gc.setRanges((itemOne.minRange()+itemTwo.minRange())/2, (itemOne.maxRange()+itemTwo.maxRange())/2);
 					gc.basePhyStats().setLevel(itemOne.basePhyStats().level());
 					if(itemTwo.basePhyStats().level()>itemOne.basePhyStats().level())
 						gc.basePhyStats().setLevel(itemTwo.basePhyStats().level());

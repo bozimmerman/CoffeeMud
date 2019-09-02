@@ -665,8 +665,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			text.append(xml.convertXMLtoTag("TYPE",((Weapon)E).weaponDamageType()));
 			text.append(xml.convertXMLtoTag("CLASS",((Weapon)E).weaponClassification()));
-			text.append(xml.convertXMLtoTag("MINR",((Weapon)E).minRange()));
-			text.append(xml.convertXMLtoTag("MAXR",((Weapon)E).maxRange()));
+			text.append(xml.convertXMLtoTag("MINR",((Weapon)E).getRanges()[0]));
+			text.append(xml.convertXMLtoTag("MAXR",((Weapon)E).getRanges()[1]));
 		}
 
 		if(E instanceof FalseLimb)

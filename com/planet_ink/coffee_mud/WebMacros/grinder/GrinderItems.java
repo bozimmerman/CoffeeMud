@@ -326,11 +326,11 @@ public class GrinderItems
 					break;
 				case MINRANGE: // min range
 					if(I instanceof Weapon)
-						((Weapon)I).setRanges(CMath.s_int(old),I.maxRange());
+						((Weapon)I).setRanges(CMath.s_int(old),((Weapon)I).getRanges()[1]);
 					break;
 				case MAXRANGE: // max range
 					if(I instanceof Weapon)
-						((Weapon)I).setRanges(I.minRange(),CMath.s_int(old));
+						((Weapon)I).setRanges(((Weapon)I).getRanges()[0],CMath.s_int(old));
 					break;
 				case SECRETIDENTITY: // secret identity
 					I.setSecretIdentity(old);

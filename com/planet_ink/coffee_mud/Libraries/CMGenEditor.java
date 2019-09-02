@@ -3263,7 +3263,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.tell(L("@x1. Minimum/Maximum Ranges: @x2/@x3.",""+showNumber,""+W.minRange(),""+W.maxRange()));
+		mob.tell(L("@x1. Minimum/Maximum Ranges: @x2/@x3.",""+showNumber,""+W.getRanges()[0],""+W.getRanges()[1]));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		final String newMinStr=mob.session().prompt(L("Enter a new minimum range\n\r:"),"");
@@ -3273,7 +3273,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 		{
 			W.setRanges(CMath.s_int(newMinStr),CMath.s_int(newMaxStr));
-			if((W.minRange()>W.maxRange())||(W.minRange()<0)||(W.maxRange()<0))
+			if((W.getRanges()[0]>W.getRanges()[1])||(W.getRanges()[0]<0)||(W.getRanges()[1]<0))
 			{
 				mob.tell(L("(defective entries.  resetting.)"));
 				W.setRanges(0,0);

@@ -141,7 +141,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			double weight=8;
 			if(weight<1.0)
 				weight=1.0;
-			final double range=savedI.maxRange();
+			final double range=((Weapon)savedI).getRanges()[1];
 			final int wclass=((Weapon)savedI).weaponClassification();
 			final double dmgMod = this.timsDmgModifier(wclass);
 			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(itemI.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
@@ -482,12 +482,16 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	{
 		int hands=0;
 		int weaponClass=0;
+		final int maxRange;
 		if(I instanceof Weapon)
 		{
 			hands=I.rawLogicalAnd()?2:1;
 			weaponClass=((Weapon)I).weaponClassification();
+			maxRange=((Weapon)I).getRanges()[1];
 		}
-		final Map<String,String> H=timsItemAdjustments(I,I.basePhyStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
+		else
+			maxRange=I.maxRange();
+		final Map<String,String> H=timsItemAdjustments(I,I.basePhyStats().level(),I.material(),hands,weaponClass,maxRange,I.rawProperLocationBitmap());
 		if(I instanceof Weapon)
 		{
 			I.basePhyStats().setDamage(CMath.s_int(H.get("DAMAGE")));
@@ -918,7 +922,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			double weight=8;
 			if(weight<1.0)
 				weight=1.0;
-			final double range=(I.maxRange());
+			final double range=((Weapon)I).getRanges()[1];
 			final int wclass = ((Weapon)I).weaponClassification();
 			final double dmgMod = this.timsDmgModifier(wclass);
 			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;

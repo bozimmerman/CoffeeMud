@@ -223,6 +223,17 @@ public interface Weapon extends Item
 	 * @param max the maximum range 0=melee
 	 */
 	public void setRanges(int min, int max);
+	
+	/**
+	 * Gets the raw minimum and maximum range of this weapon.
+	 * The array returned is in format min/max;
+	 * 
+	 * @see Weapon#setRanges(int, int)
+	 * @see Environmental#maxRange()
+	 * @see Environmental#minRange()
+	 * @return the ranges as an array, min and then max
+	 */
+	public int[] getRanges();
 
 	/**
 	 * Gets the string that would be shown if someone gets a hit with

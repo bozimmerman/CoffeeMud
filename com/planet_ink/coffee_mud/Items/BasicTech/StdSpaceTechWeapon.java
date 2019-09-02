@@ -118,6 +118,12 @@ public class StdSpaceTechWeapon extends StdSpaceTech implements SpaceObject, Wea
 	}
 
 	@Override
+	public int[] getRanges()
+	{
+		return new int[] { minRange(), maxRange() };
+	}
+
+	@Override
 	public String missString()
 	{
 		return CMLib.combat().standardMissString(weaponType,weaponClass,name(),true);

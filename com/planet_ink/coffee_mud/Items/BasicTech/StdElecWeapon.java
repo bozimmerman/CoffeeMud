@@ -531,6 +531,12 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	}
 
 	@Override
+	public int[] getRanges()
+	{
+		return new int[]{minRange, maxRange};
+	}
+
+	@Override
 	public boolean subjectToWearAndTear()
 	{
 		return false;

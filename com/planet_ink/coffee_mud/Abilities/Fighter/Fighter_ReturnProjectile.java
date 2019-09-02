@@ -115,8 +115,8 @@ public class Fighter_ReturnProjectile extends FighterSkill
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(2*getXLEVELLevel(mob)),false))
 		&&(mob.freeWearPositions(Wearable.WORN_HELD,(short)0,(short)0)>0))
 		{
-			Item w=(Item)msg.tool();
-			if((((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN)
+			Weapon w=(Weapon)msg.tool();
+			if((w.weaponClassification()==Weapon.CLASS_THROWN)
 			&&(msg.source().isMine(w)))
 			{
 				if(!w.amWearingAt(Wearable.IN_INVENTORY))
@@ -138,12 +138,12 @@ public class Fighter_ReturnProjectile extends FighterSkill
 				neww.setName(ammo);
 				neww.setDisplayText(L("@x1 sits here.",ammo));
 				neww.setUsesRemaining(1);
-				neww.setMaterial(((Weapon)w).material());
+				neww.setMaterial(w.material());
 				neww.setWeaponClassification(Weapon.CLASS_THROWN);
-				neww.setWeaponDamageType(((Weapon)w).weaponDamageType());
+				neww.setWeaponDamageType(w.weaponDamageType());
 				neww.basePhyStats().setWeight(1);
 				neww.setBaseValue(0);
-				neww.setRanges(w.minRange(),w.maxRange());
+				neww.setRanges(w.getRanges()[0],w.getRanges()[1]);
 				neww.recoverPhyStats();
 				w=neww;
 				mob.location().addItem(neww,ItemPossessor.Expire.Player_Drop);

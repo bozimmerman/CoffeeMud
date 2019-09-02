@@ -529,12 +529,22 @@ public class ItemData extends StdWebMacro
 						break;
 					case MINRANGE: // min range
 						if(firstTime)
-							old=""+I.minRange();
+						{
+							if(I instanceof Weapon)
+								old=""+(((Weapon)I).getRanges()[0]);
+							else
+								old=""+I.minRange();
+						}
 						str.append(old);
 						break;
 					case MAXRANGE: // max range
 						if(firstTime)
-							old=""+I.maxRange();
+						{
+							if(I instanceof Weapon)
+								old=""+(((Weapon)I).getRanges()[1]);
+							else
+								old=""+I.maxRange();
+						}
 						str.append(old);
 						break;
 					case SECRETIDENTITY: // secret identity

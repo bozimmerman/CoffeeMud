@@ -112,9 +112,9 @@ public class GenWeapon extends StdWeapon
 		switch(getGenWeaponCodeNum(code))
 		{
 		case 0:
-			return "" + W.minRange();
+			return "" + W.getRanges()[0];
 		case 1:
-			return "" + W.maxRange();
+			return "" + W.getRanges()[1];
 		case 2:
 			return "" + W.weaponDamageType();
 		case 3:
@@ -133,10 +133,10 @@ public class GenWeapon extends StdWeapon
 		switch(getGenWeaponCodeNum(code))
 		{
 		case 0:
-			W.setRanges(CMath.s_parseIntExpression(val), W.maxRange());
+			W.setRanges(CMath.s_parseIntExpression(val), W.getRanges()[1]);
 			break;
 		case 1:
-			W.setRanges(W.minRange(), CMath.s_parseIntExpression(val));
+			W.setRanges(W.getRanges()[0], CMath.s_parseIntExpression(val));
 			break;
 		case 2:
 			W.setWeaponDamageType(CMath.s_parseListIntExpression(Weapon.TYPE_DESCS, val));

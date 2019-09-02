@@ -180,14 +180,14 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 	public void setExpirationDate(long dateTime);
 
 	/**
-	 * the maximum range of this object, if applicable.  Can refer to the size of a room,
+	 * the modified maximum range of this object, if applicable.  Can refer to the size of a room,
 	 * the range of a weapon, or the calculated range of a mob in combat.
 	 * @return the maximum range
 	 */
 	public int maxRange();
 
 	/**
-	 * the minimum range of this object, if applicable.  Can refer to the size of a room,
+	 * the modified minimum range of this object, if applicable.  Can refer to the size of a room,
 	 * the range of a weapon, or the calculated range of a mob in combat.  Usually 0.
 	 * @return the minimum range
 	 */

@@ -296,13 +296,19 @@ public class Deviations extends StdCommand
 			{
 				final Item I=(Item)check.get(c);
 				Weapon W=null;
+				final int maxRange;
 				if(I instanceof Weapon)
+				{
 					W=(Weapon)I;
+					maxRange=W.getRanges()[1];
+				}
+				else
+					maxRange=I.maxRange();
 				final Map<String,String> vals=CMLib.itemBuilder().timsItemAdjustments(
 										I,I.phyStats().level(),I.material(),
 										I.rawLogicalAnd()?2:1,
 										(W==null)?0:W.weaponClassification(),
-										I.maxRange(),
+										maxRange,
 										I.rawProperLocationBitmap());
 				itemResults.append(CMStrings.padRight(I.name(),20)+" ");
 				itemResults.append(CMStrings.padRight(I.ID(),10)+" ");

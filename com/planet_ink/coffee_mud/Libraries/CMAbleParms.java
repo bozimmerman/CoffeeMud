@@ -4195,7 +4195,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
-					if((I instanceof Ammunition)||(I instanceof Weapon))
+					if(I instanceof Weapon)
+						return ""+((Weapon)I).getRanges()[1];
+					else
+					if(I instanceof Ammunition)
 						return ""+I.maxRange();
 					return "";
 				}
