@@ -1365,7 +1365,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				||(contitem.hasContent())
 				||((contitem instanceof Drink)&&(((Drink)contitem).containsDrink()))))
 			{
-				buf.append(item.name()+" contains:^<!ENTITY container \""+CMStrings.removeColors(item.name())+"\"^>"+(mob.isAttributeSet(MOB.Attrib.COMPRESS)?" ":"\n\r"));
+				if((contitem.hasContent())
+				||((contitem instanceof Drink)&&(((Drink)contitem).containsDrink())))
+					buf.append(item.name()+" contains:^<!ENTITY container \""+CMStrings.removeColors(item.name())+"\"^>"+(mob.isAttributeSet(MOB.Attrib.COMPRESS)?" ":"\n\r"));
 				final List<Item> newItems=new ArrayList<Item>(0);
 				if((item instanceof Drink)
 				&&(((Drink)item).liquidRemaining()>0))
@@ -2577,7 +2579,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		mob.tell(buf.toString().trim()+"]^</RExits^>^.^N");
 	}
-	
+
 	protected String parseVariesCodes(final MOB mob, final Area A, final Room room, final String text)
 	{
 		final StringBuilder buf=new StringBuilder("");
