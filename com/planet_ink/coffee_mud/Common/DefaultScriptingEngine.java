@@ -11341,12 +11341,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				final String dirWord=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
 				final int dir=CMLib.directions().getGoodDirectionCode(dirWord);
-				if((dir < 0)
-				||(lastKnownLocation==null)
-				||((lastKnownLocation.rawDoors()[dir]!=null)&&(lastKnownLocation.rawDoors()[dir].getArea()!=lastKnownLocation.getArea())))
+				if(dir < 0)
 					logError(scripted,"MPLINK","RunTime",dirWord+" is not a valid direction.");
 				else
-				if(lastKnownLocation.getRawExit(dir).isSavable()||(!CMath.bset(lastKnownLocation.getRawExit(dir).basePhyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH)))
+				if((lastKnownLocation==null)
+				||((lastKnownLocation.rawDoors()[dir]!=null)&&(lastKnownLocation.rawDoors()[dir].getArea()!=lastKnownLocation.getArea())))
+					logError(scripted,"MPLINK","RunTime",dirWord+" is a non-in-area direction.");
+				else
+				if((lastKnownLocation.getRawExit(dir)!=null)
+				&&(lastKnownLocation.getRawExit(dir).isSavable()
+					||(!CMath.bset(lastKnownLocation.getRawExit(dir).basePhyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH))))
 					logError(scripted,"MPLINK","RunTime",dirWord+" is not a legal unlinkable exit.");
 				else
 				{
