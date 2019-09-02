@@ -385,7 +385,7 @@ public class QuestBound implements Ability
 	@Override
 	public boolean isSavable()
 	{
-		return false;
+		return text().equals("*") && (!amDestroyed);
 	}
 
 	@Override
@@ -591,6 +591,8 @@ public class QuestBound implements Ability
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
+		if(text().equals("*"))
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_CLOAKED);
 	}
 
 	@Override
@@ -644,6 +646,8 @@ public class QuestBound implements Ability
 	{
 		if(text().length()>0)
 		{
+			if(text().equals("*"))
+				return;
 			Quest theQ=null;
 			for(int q=0;q<CMLib.quests().numQuests();q++)
 			{
