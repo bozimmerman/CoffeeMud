@@ -258,7 +258,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				else
 					defined.put(id.toUpperCase().trim(),piece);
 			}
+
 			final String load = piece.getParmValue("LOAD");
+			final String from = piece.getParmValue("FROM");
 			if((load!=null)&&(load.length()>0))
 			{
 				piece.parms().remove("LOAD");
@@ -293,6 +295,48 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							piece.contents().addAll(addPieces);
 						}
 					}
+				}
+			}
+			else
+			if((from!=null)&&(from.length()>0))
+			{
+				final String localid=piece.getParmValue("ID");
+				if(localid == null)
+				{
+					Log.errOut("Invalid FROM parm on a tag missing an ID.: "+from+".");
+					continue;
+				}
+				piece.parms().remove("FROM");
+				final String loadcondition=piece.getParmValue("CONDITION");
+				if((loadcondition != null)&&(loadcondition.length()>0))
+				{
+					try
+					{
+						if(!testCondition(null,null,null,CMLib.xml().restoreAngleBrackets(loadcondition),piece,defined))
+						{
+							continue;
+						}
+					}
+					catch (final PostProcessException e)
+					{
+					}
+				}
+				final CMFile file = new CMFile(load,null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
+				if(file.exists() && file.canRead())
+				{
+					final List<XMLTag> addPieces=CMLib.xml().parseAllXML(file.text());
+					final Map<String,Object> localDefined = new Hashtable<String,Object>();
+					buildDefinedIDSet(addPieces, localDefined);
+					final Object o=localDefined.get(localid.toUpperCase().trim());
+					if((o == null)
+					||(!(o instanceof XMLTag)))
+					{
+						Log.errOut("Invalid FROM parm.  ID '"+localid+"' not found in: "+from+".");
+						continue;
+					}
+					final XMLTag newTag=(XMLTag)o;
+					piece.parms().putAll(newTag.parms());
+					piece.contents().addAll(newTag.contents());
 				}
 			}
 			buildDefinedIDSet(piece.contents(),defined);
