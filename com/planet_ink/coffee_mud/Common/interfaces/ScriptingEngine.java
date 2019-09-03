@@ -580,6 +580,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"ISRLYEAR", // 108
 		"HASTATTOOTIME", // 109
 		"ISHOUR", // 110
+		"ITEMCOUNT", // 111
 	};
 
 	/** String list of all valid mobprog commands */

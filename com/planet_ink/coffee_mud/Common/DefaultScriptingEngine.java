@@ -3675,6 +3675,59 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			case 111: // itemcount
+			{
+				if(tlen==1)
+					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+				final String arg1=tt[t+0];
+				final String arg2=tt[t+1];
+				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+				if(arg2.length()==0)
+				{
+					logError(scripted,"ITEMCOUNT","Syntax",funcParms);
+					return returnable;
+				}
+				if(E==null)
+					returnable=false;
+				else
+				{
+					int num=0;
+					if(E instanceof Container)
+					{
+						for(final Item I : ((Container)E).getContents())
+							num+=I.numberOfItems();
+					}
+					else
+					if(E instanceof Item)
+						num=((Item)E).numberOfItems();
+					else
+					if(E instanceof MOB)
+					{
+						for(final Enumeration<Item> i=((MOB)E).items();i.hasMoreElements();)
+							num += i.nextElement().numberOfItems();
+					}
+					else
+					if(E instanceof Room)
+					{
+						for(final Enumeration<Item> i=((Room)E).items();i.hasMoreElements();)
+							num += i.nextElement().numberOfItems();
+					}
+					else
+					if(E instanceof Area)
+					{
+						for(final Enumeration<Room> r=((Area)E).getFilledCompleteMap();r.hasMoreElements();)
+						{
+							for(final Enumeration<Item> i=r.nextElement().items();i.hasMoreElements();)
+								num += i.nextElement().numberOfItems();
+						}
+					}
+					else
+						returnable=false;
+					returnable=simpleEval(scripted,""+num,arg3,arg2,"ITEMCOUNT");
+				}
+				break;
+			}
 			case 32: // nummobsinarea
 			{
 				if(tlen==1)
@@ -6645,6 +6698,46 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 				}
 				results.append(num);
+				break;
+			}
+			case 111: // itemcount
+			{
+				final String arg1=CMParms.cleanBit(funcParms);
+				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				if(E!=null)
+				{
+					int num=0;
+					if(E instanceof Container)
+					{
+						for(final Item I : ((Container)E).getContents())
+							num+=I.numberOfItems();
+					}
+					else
+					if(E instanceof Item)
+						num=((Item)E).numberOfItems();
+					else
+					if(E instanceof MOB)
+					{
+						for(final Enumeration<Item> i=((MOB)E).items();i.hasMoreElements();)
+							num += i.nextElement().numberOfItems();
+					}
+					else
+					if(E instanceof Room)
+					{
+						for(final Enumeration<Item> i=((Room)E).items();i.hasMoreElements();)
+							num += i.nextElement().numberOfItems();
+					}
+					else
+					if(E instanceof Area)
+					{
+						for(final Enumeration<Room> r=((Area)E).getFilledCompleteMap();r.hasMoreElements();)
+						{
+							for(final Enumeration<Item> i=r.nextElement().items();i.hasMoreElements();)
+								num += i.nextElement().numberOfItems();
+						}
+					}
+					results.append(""+num);
+				}
 				break;
 			}
 			case 16: // hitprcnt

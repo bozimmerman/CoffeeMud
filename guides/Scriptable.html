@@ -230,7 +230,7 @@ Operators</a></li>
 <li><a href="#isspeaking">isspeaking</a></li>
 <li><a href="#istime">istime</a></li>
 <li><a href="#isweather">isweather</a></li>
-<li><a href="#isyear">isyear</a></li>
+<li><a href="#isyear">isyear</a></li><li><a href="#itemcount">itemcount</a></li>
 <li><a href="#level">level</a></li>
 <li><a href="#math">math</a></li>
 <li><a href="#mobitem">mobitem</a></li>
@@ -2417,7 +2417,7 @@ sentence.</td>
 <td>ISYEAR()</td>
 <td>Returns the mud-year</td>
 </tr>
-<tr>
+<tr><td>ITEMCOUNT([code])</td><td>Returns the complete individualized count of items on the object</td></tr><tr>
 <td>LEVEL([code])</td>
 <td>Returns the level
 of the given mob.</td>
@@ -4994,8 +4994,16 @@ check the mud year.&nbsp;</p>
 <span style="font-family: monospace;">if isyear(1)</span><br style="font-family: monospace;" />
 <span style="font-family: monospace;"> mpecho It is
 year 1.</span><br style="font-family: monospace;" />
-<span style="font-family: monospace;">endif</span>
-<h3><a name="level">level</a></h3>
+<span style="font-family: monospace;">endif</span><br /><h3><a name="itemcount">itemcount</a></h3>
+<p>Usage:</p>
+<pre>itemcount(object == number)<br /></pre>
+<p>This checks the total count of items in the given variable, which
+includes stack-counts. An item object will check the stack count, a
+container will check the stack count of the contents, and ditto for
+rooms, mobs, or areas. &nbsp; Where
+'==' may be any of the logical operators mentioned above.</p>
+<p>EXAMPLES:</p>
+<pre>if item($o &gt;= 15)<br /> mpecho That is a stack of 15 items or more<br />else<br /> mpecho That is a stack of less than 15 items<br />endif<br /><br /></pre><h3><a name="level">level</a></h3>
 <p>Usage:</p>
 <pre>level(character == number)<br /></pre>
 <p>This checks the total

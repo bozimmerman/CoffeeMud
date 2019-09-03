@@ -66,6 +66,28 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING define="verb_found=rescued">rescue</STRING>
 </STRING>
 
+<STRING ID="verb_stolen" predefine="verb_steal=$verb_steal">$verb_stolen</STRING>
+<STRING ID="verb_steal" define="verb_steal" SELECT="Any-1">
+	<STRING define="verb_stolen=stolen">steal</STRING>
+	<STRING define="verb_stolen=pilfered">pilfer</STRING>
+	<STRING define="verb_stolen=snatched">snatch</STRING>
+	<STRING define="verb_stolen=grabbed">grab</STRING>
+</STRING>
+
+<STRING ID="verb_collected" predefine="verb_collect=$verb_collect">$verb_collect</STRING>
+<STRING ID="verb_collect" define="verb_collect" SELECT="Any-1">
+	<STRING define="verb_collected=collected">collect</STRING>
+	<STRING define="verb_collected=gathered">gather</STRING>
+	<STRING define="verb_collected=retrieved">retrieve</STRING>
+</STRING>
+
+<STRING ID="verb_returned" predefine="verb_return=$verb_return">$verb_returned</STRING>
+<STRING ID="verb_return" define="verb_return" SELECT="Any-1">
+	<STRING define="verb_returned=returned">return</STRING>
+	<STRING define="verb_returned=restored">restore</STRING>
+	<STRING define="verb_returned=found">find</STRING>
+</STRING>
+
 <STRING ID="hurt_them_phrase" SELECT="Any-1">
 	<STRING>$hurt_verb them</STRING>
 	<STRING>$hurt_verb them $hurt_adverb</STRING>

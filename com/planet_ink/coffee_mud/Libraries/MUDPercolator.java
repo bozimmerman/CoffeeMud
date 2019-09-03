@@ -4785,6 +4785,114 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 			}
 			else
+			if(f.equals("RESOURCES"))
+			{
+				final List<Object> oldFrom=new ArrayList<Object>();
+				if(from.size()>0)
+					oldFrom.addAll(flattenMQLObjectList(from));
+				else
+				{
+					final Object oE;
+					if((E instanceof MOB)
+					||(E instanceof Item)
+					||(E instanceof Room)
+					||(E instanceof Area))
+						oE=E;
+					else
+						throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+					oldFrom.add(oE);
+				}
+				from.clear();
+				for(final Object o : oldFrom)
+				{
+					if((o instanceof Area)
+					||(o instanceof Room))
+					{
+						final Enumeration<Room> r;
+						if(o instanceof Area)
+							r=((Area)o).getFilledCompleteMap();
+						else
+							r=new XVector<Room>((Room)o).elements();
+						for(;r.hasMoreElements();)
+						{
+							final Room R=r.nextElement();
+							final int resource=R.myResource()&RawMaterial.RESOURCE_MASK;
+							if(RawMaterial.CODES.IS_VALID(resource))
+							{
+								final Item I=CMLib.materials().makeItemResource(resource);
+								CMLib.threads().deleteAllTicks(I);
+								I.setSavable(false);
+								I.setDatabaseID("DELETE");
+								from.add(I);
+							}
+						}
+					}
+					else
+					if(o instanceof MOB)
+					{
+						final Race R=((MOB)o).charStats().getMyRace();
+						for(final Item I : R.myResources())
+						{
+							final Item I2=(Item)I.copyOf();
+							CMLib.threads().deleteAllTicks(I2);
+							I2.setSavable(false);
+							I2.setDatabaseID("DELETE");
+							from.add(I2);
+						}
+					}
+					else
+					if(o instanceof Item)
+					{
+						final int resource=((Item)o).material()&RawMaterial.RESOURCE_MASK;
+						if(RawMaterial.CODES.IS_VALID(resource))
+						{
+							final Item I=CMLib.materials().makeItemResource(resource);
+							CMLib.threads().deleteAllTicks(I);
+							I.setSavable(false);
+							I.setDatabaseID("DELETE");
+							from.add(I);
+						}
+					}
+					else
+						throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+				}
+			}
+			else
+			if(f.equals("FACTIONS"))
+			{
+				final List<Object> oldFrom=new ArrayList<Object>();
+				if(from.size()>0)
+					oldFrom.addAll(flattenMQLObjectList(from));
+				else
+				{
+					final Object oE;
+					if(E instanceof MOB)
+						oE=E;
+					else
+						throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+					oldFrom.add(oE);
+				}
+				from.clear();
+				for(final Object o : oldFrom)
+				{
+					if(o instanceof MOB)
+					{
+						for(final Enumeration<String> fenum=((MOB)o).factions();fenum.hasMoreElements();)
+						{
+							final String fstr=fenum.nextElement();
+							final int val=((MOB)o).fetchFaction(fstr);
+							final Map<String,Object> m=new TreeMap<String,Object>();
+							m.put("ID", fstr);
+							m.put("VALUE", ""+val);
+							from.add(m);
+
+						}
+					}
+					else
+						throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+				}
+			}
+			else
 			if(f.startsWith("$"))
 			{
 				final Object val = defined.get(f.substring(1));

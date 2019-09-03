@@ -163,7 +163,7 @@ ALL_GREET_PROG 100
 GIVE_PROG all
 	IF QUESTSCRIPTED($n *) AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if questobj($o *) OR QUESTSCRIPTED($o *)
-			mpsetvar $n $QUEST_ID_RETURNED ++
+			mpsetvar $n $QUEST_ID_RETURNED +$%ITEMCOUNT($o)%
 			mpjunk $o
 			if var($n $QUEST_ID_RETURNED >= $NUM_COLLECTABLES)
 				if EVAL('$EXP' != '')

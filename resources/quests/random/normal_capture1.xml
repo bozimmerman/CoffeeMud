@@ -86,7 +86,7 @@ vars:
 		<STRING>Assistance required with some ${p:target_name}!</STRING>
 		<STRING>${c:reason_verb} ${p:target_name} for me!</STRING>
 		<STRING>${c:reason_verb} ${p:target_name}, quickly!</STRING>
-		<STRING>I want ${p:target_name} $reason_verbed!  Are you ready?</STRING>
+		<STRING>I want ${p:target_name} $reason_verbed!</STRING>
 	</STRING>
 
 	<STRING ID="quest_instructionstring" SELECT="ALL">
