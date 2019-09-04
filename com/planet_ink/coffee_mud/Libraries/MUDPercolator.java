@@ -5035,7 +5035,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return null;
 	}
 
-	protected Object getFinalMQLValue(final String strpath, final List<Object> allFrom, final Object from, final Map<String,Object> cache,
+	protected Object getFinalMQLValue(final String strpath, final List<Object> allFrom, final Object from, final Map<String,Object> cache, final String mql,
 			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		if(strpath.startsWith("SELECT:"))
@@ -5077,7 +5077,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if(chkO==null)
 						chkO=from;
 					if(chkO==null)
-						throw new MQLException("Can not count instances of null in '"+strpath+"'");
+						throw new MQLException("Can not count instances of null in '"+strpath+"' in '"+mql+"'");
 					else
 					if(chkO instanceof List)
 					{
@@ -5101,7 +5101,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								if(o==from)
 									count++;
 								else
-								if(chkO.equals(getFinalMQLValue(newWhat, allFrom, o, cache, E, ignoreStats, defPrefix, piece, defined)))
+								if(chkO.equals(getFinalMQLValue(newWhat, allFrom, o, cache, mql, E, ignoreStats, defPrefix, piece, defined)))
 									count++;
 							}
 							finalO=""+count;
@@ -5140,7 +5140,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						}
 					}
 					if(val == null)
-						throw new MQLException("Unknown variable '$"+str+"' in str '"+str+"'",new CMException("$"+str));
+						throw new MQLException("Unknown variable '$"+str+"' in str '"+str+"' in '"+mql+"'",new CMException("$"+str));
 					finalO=val;
 				}
 				else
@@ -5148,7 +5148,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					final Object fromO=(finalO==null)?from:finalO;
 					final Object newObj=getSimpleMQLValue(str,fromO);
 					if(newObj == null)
-						throw new MQLException("Unknown variable '"+str+"' on '"+fromO+"'",new CMException("$"+str));
+						throw new MQLException("Unknown variable '"+str+"' on '"+fromO+"' in '"+mql+"'",new CMException("$"+str));
 					finalO=newObj;
 				}
 			}
@@ -5438,15 +5438,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return true;
 	}
 
-	protected boolean doMQLComparison(final MQLClause.WhereComp comp, final List<Object> allFrom, final Object from, final Map<String, Object> cache,
+	protected boolean doMQLComparison(final MQLClause.WhereComp comp, final List<Object> allFrom, final Object from, final Map<String, Object> cache, final String mql,
 			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
-		final Object lhso=getFinalMQLValue(comp.lhs, allFrom, from,cache,E,ignoreStats,defPrefix,piece,defined);
-		final Object rhso=getFinalMQLValue(comp.rhs, allFrom, from,cache,E,ignoreStats,defPrefix,piece,defined);
+		final Object lhso=getFinalMQLValue(comp.lhs, allFrom, from,cache,mql,E,ignoreStats,defPrefix,piece,defined);
+		final Object rhso=getFinalMQLValue(comp.rhs, allFrom, from,cache,mql,E,ignoreStats,defPrefix,piece,defined);
 		return doMQLComparison(lhso, comp.comp, rhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
 	}
 
-	protected boolean doMQLWhereClauseFilter(final MQLClause.WhereClause whereClause, final List<Object> allFrom, final Object from, final Map<String, Object> cache,
+	protected boolean doMQLWhereClauseFilter(final MQLClause.WhereClause whereClause, final List<Object> allFrom, final Object from, final Map<String, Object> cache, final String mql,
 			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		MQLClause.WhereConnector lastConn=null;
@@ -5459,11 +5459,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				if(clause.lhs != null)
 					throw new MQLException("Parent & lhs error ");
-				thisResult=doMQLWhereClauseFilter(clause.parent,allFrom,from,cache,E,ignoreStats,defPrefix,piece,defined);
+				thisResult=doMQLWhereClauseFilter(clause.parent,allFrom,from,cache,mql,E,ignoreStats,defPrefix,piece,defined);
 			}
 			else
 			if(clause.lhs != null)
-				thisResult=doMQLComparison(clause.lhs, allFrom, from,cache,E,ignoreStats,defPrefix,piece,defined);
+				thisResult=doMQLComparison(clause.lhs, allFrom, from,cache,mql,E,ignoreStats,defPrefix,piece,defined);
 			else
 			if(clause.next != null)
 			{
@@ -5516,10 +5516,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return result;
 	}
 
-	protected List<Map<String,Object>> doSubObjSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final MQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
+	protected List<Map<String,Object>> doSubObjSelect(final Modifiable E, final List<String> ignoreStats, final String defPrefix,
+													  final MQLClause clause, final String mql, final XMLTag piece, final Map<String,Object> defined)
+															  throws MQLException,PostProcessException
 	{
 		final List<Map<String,Object>> results=new ArrayList<Map<String,Object>>();
-		// first estalish the from object
+		// first estalish the from object6
 		if(clause.from.length()==0)
 			throw new MQLException("No FROM clause in "+clause.mql);
 		// froms can have any environmental, or tags
@@ -5543,12 +5545,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final Map<String,Object> cache=new HashMap<String,Object>();
 		for(final Object o : froms)
 		{
-			if(doMQLWhereClauseFilter(clause.wheres, froms, o,cache,E,ignoreStats,defPrefix,piece,defined))
+			if(doMQLWhereClauseFilter(clause.wheres, froms, o,cache,mql,E,ignoreStats,defPrefix,piece,defined))
 			{
 				final Map<String,Object> m=new TreeMap<String,Object>();
 				for(final MQLClause.WhatBit bit : clause.what)
 				{
-					final Object o1 = this.getFinalMQLValue(bit.what(), froms, o, cache, E, ignoreStats, defPrefix, piece, defined);
+					final Object o1 = this.getFinalMQLValue(bit.what(), froms, o, cache, mql,E, ignoreStats, defPrefix, piece, defined);
 					if(o1 instanceof Map)
 					{
 						@SuppressWarnings("unchecked")
@@ -5663,6 +5665,26 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	protected String convertMQLObjectToString(final Object o1)
 	{
+		if(o1 instanceof List)
+		{
+			@SuppressWarnings("unchecked")
+			final List<Object> oldL=(List<Object>)o1;
+			final StringBuilder str=new StringBuilder("");
+			for(final Object o : oldL)
+				str.append(convertMQLObjectToString(o)).append(" ");
+			return str.toString();
+		}
+		else
+		if(o1 instanceof Map)
+		{
+			@SuppressWarnings("unchecked")
+			final Map<String,Object> oldL=(Map<String,Object>)o1;
+			final StringBuilder str=new StringBuilder("");
+			for(final Object o : oldL.values())
+				str.append(convertMQLObjectToString(o)).append(" ");
+			return str.toString();
+		}
+		else
 		if(o1 instanceof MOB)
 			return CMLib.coffeeMaker().getMobXML((MOB)o1).toString();
 		else
@@ -5687,10 +5709,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			return "";
 	}
 
-	protected List<Map<String,String>> doSubSelectStr(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final MQLClause clause, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
+	protected List<Map<String,String>> doSubSelectStr(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final MQLClause clause, final String mql,
+													  final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
 		final List<Map<String,String>> results=new ArrayList<Map<String,String>>();
-		final List<Map<String, Object>> objs=this.doSubObjSelect(E, ignoreStats, defPrefix, clause, piece, defined);
+		final List<Map<String, Object>> objs=this.doSubObjSelect(E, ignoreStats, defPrefix, clause, mql, piece, defined);
 		for(final Map<String,Object> o : objs)
 		{
 			final Map<String,String> n=new TreeMap<String,String>();
@@ -5714,7 +5737,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			Log.debugOut("Starting MQL: "+mqlbits);
 		final MQLClause clause = new MQLClause();
 		clause.parseMQL(str, mqlbits);
-		return this.doSubSelectStr(E, ignoreStats, defPrefix, clause, piece, defined);
+		return this.doSubSelectStr(E, ignoreStats, defPrefix, clause, str, piece, defined);
 	}
 
 	protected List<Map<String,Object>> doMQLSelectObjs(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
@@ -5727,7 +5750,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			Log.debugOut("Starting MQL: "+mqlbits);
 		final MQLClause clause = new MQLClause();
 		clause.parseMQL(str, mqlbits);
-		return this.doSubObjSelect(E, ignoreStats, defPrefix, clause, piece, defined);
+		return this.doSubObjSelect(E, ignoreStats, defPrefix, clause, str, piece, defined);
 	}
 
 	protected String doMQLSelectString(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
