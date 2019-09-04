@@ -593,15 +593,26 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			{
 				final Environmental E=choices.get(c);
 				if((E instanceof Physical) && (CMLib.flags().isCloaked((Physical)E)))
-					choices.remove(c);
+				{
+					final Quest Q=CMLib.quests().objectInUse(E);
+					if((!reselect)
+					||(Q==null)
+					||(!(Q instanceof DefaultQuest))
+					||(!((DefaultQuest)Q).questState.reselectable.contains(E)))
+						choices.remove(c);
+				}
 				else
 				if((!reselect)||(!q.reselectable.contains(E)))
 				{
 					final Quest Q=CMLib.quests().objectInUse(E);
 					if(Q!=null)
 					{
-						choices.remove(c);
-						inUseByWhom.add(Q.name());
+						if((!(Q instanceof DefaultQuest))
+						||(!((DefaultQuest)Q).questState.reselectable.contains(E)))
+						{
+							choices.remove(c);
+							inUseByWhom.add(Q.name());
+						}
 					}
 				}
 			}

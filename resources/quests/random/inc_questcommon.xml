@@ -113,3 +113,15 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING>with both hands</STRING>
 	<STRING>all over</STRING>
 </STRING>
+
+<STRING ID="noun_anyrelation" SELECT="Any-1">
+	<STRING>lover</STRING>
+	<STRING>father</STRING>
+	<STRING>mother</STRING>
+	<STRING>spouse</STRING>
+	<STRING>son</STRING>
+	<STRING>daughter</STRING>
+	<STRING>cousin</STRING>
+	<STRING>patron</STRING>
+	<STRING>patrona</STRING>
+</STRING>

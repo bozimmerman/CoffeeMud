@@ -311,6 +311,7 @@ public class Generate extends StdCommand
 							{
 								CMLib.quests().delQuest(Q);
 								mob.tell("Unable to start the quest.  Something went wrong.  Perhaps the problem was logged?");
+								mob.tell((String)V.get(0));
 								return false;
 							}
 						}

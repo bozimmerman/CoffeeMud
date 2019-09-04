@@ -19,11 +19,12 @@ See guides/RandomAreas.html for information about documents of this type.
 
 <!-- 
 template: normal_capture1
-vars: 
-    source_area_name(area name)
+settable vars: 
+    area_name(area name)
     source_name(mob name)
-    source_room(mob room)
-    target_name(mobs name)
+    targetarea_name(area name)
+    multiarea(yes or NO)
+    targetname(mobs name)
     num_targets(num mobs to capture)
 	aggression(YES,NO)
 	xp_amount_awarded
@@ -443,7 +444,7 @@ vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I must $hurt_verb the ${p:target_name}, and do it in secret.</STRING>
 			<STRING>I am really hungry for ${p:target_name}.</STRING>
-			<STRING CONDITION="$target_int &lt; 4">I am giving away ${p:target_name} to all the children of $area_name.</STRING>
+			<STRING CONDITION="$target_int &lt; 4">I am giving away ${p:target_name} to all the children of $source_area_name.</STRING>
 			<STRING CONDITION="$source_class='Mage' or $source_class='Necromancer'">I need to draw out the souls of ${p:target_name} for my magic.</STRING>
 			<STRING>The ${p:target_name} are not here, so I can't $hurt_verb them.</STRING>
 			<STRING>The ${p:target_name} make me $adj_feeling_bad, and I must make them $adj_feeling_bad.</STRING>
@@ -465,7 +466,7 @@ vars:
 			<STRING CONDITION="$target_int &lt; 4">I am starting a ${p:target_name} farm.</STRING>
 			<STRING>The ${p:target_name} and I are scheduled to $hurt_verb each other today.</STRING>
 			<STRING>The ${p:target_name} have insulted my honor, and only a ritual $hurt_verb will satisfy it.</STRING>
-			<STRING>I feel like engaging in a $adj_feeling_good $hunt_verb.</STRING>
+			<STRING>I feel like engaging in a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.</STRING>
 		</STRING>
 	</STRING>
 
@@ -499,34 +500,32 @@ vars:
 	
 	<OBJECT ID="source_area" SELECT="Pick-1" DEFINE="source_area">
 		<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
-		<OBJECT pickweight=1 condition="'${SELECT: name FROM area}' = ''">
+		<OBJECT pickweight=55555 condition="$area_name != ''" and '${SELECT: name FROM area}' = ''>SELECT: ANY\. FROM areas where NAME=$area_name</OBJECT> 
+		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea = 'YES'">
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and intelligence>8 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and intelligence>8 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
 				AND (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets) &gt; 0
 		</OBJECT>
 	</OBJECT>
-	
-	<OBJECT ID="source_room" SELECT="Pick-1" DEFINE="source_room">
-		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: roomid FROM room}' != ''">SELECT: . FROM room</OBJECT>
-		<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: roomid FROM room}' = ''">SELECT: . FROM $source\room</OBJECT>
-	</OBJECT>
+		
+	<OBJECT ID="source_room" DEFINE="source_room">SELECT: roomid FROM $source\room</OBJECT>
 	
 	<OBJECT ID="source" SELECT="Pick-1" DEFINE="source">
 		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
+		<OBJECT pickweight=55555 condition="$sourcename != ''" and '${SELECT: name FROM mob}' = ''>SELECT: . FROM $source_area\npcs WHERE name = $sourcename</OBJECT> 
 		<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\npcs WHERE name\count=1 and intelligence>8 and "Aggressive" notin affbehav  and "QuestBound" notin affbehav</OBJECT>
 	</OBJECT>
-	
-	<OBJECT ID="target" DEFINE="target" SELECT="any-1">
-		<OBJECT>SELECT: ANY\. FROM $source_area\mobs WHERE name\count>$num_targets</OBJECT>
-	</OBJECT>
-
-	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
-		<STRING>${SELECT:mean\level from $target}</STRING>
-	</STRING>
 	
 	<STRING ID="source_area_name" SELECT="any-1" DEFINE="source_area_name">
 		<STRING>${SELECT:name from $source_area}</STRING>
 	</STRING>
 
+	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
+		<STRING>${SELECT:mean\level from $target}</STRING>
+	</STRING>
+	
 	<STRING ID="source_room_id" SELECT="any-1" DEFINE="source_room_id">
 		<STRING>${SELECT:roomid from $source_room}</STRING>
 	</STRING>
@@ -557,6 +556,11 @@ vars:
 		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in affbehav}</STRING>
 	</STRING>
 
+	<OBJECT ID="target" DEFINE="target" SELECT="any-1">
+		<OBJECT CONDITION="$targetname!=''"">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
+		<OBJECT CONDITION="$targetname=''">SELECT: ANY\. FROM $target_area\mobs WHERE name\count>$num_targets</OBJECT>
+	</OBJECT>
+
 	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">
 		<STRING>${SELECT:name from $target}</STRING>
 	</STRING>
@@ -565,8 +569,18 @@ vars:
 		<STRING>${SELECT:intelligence from $target}</STRING>
 	</STRING>
 	
+	<STRING ID="multiarea" define="multiarea">NO</STRING>
+	
+	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
+		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
+		<OBJECT pickweight=100 condition="$targetarea_name = '' and $multiarea != 'YES'">SELECT: any\. from $source_area</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $multiarea = 'YES'">
+			SELECT: ANY\. FROM areas WHERE (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets) &gt; 0
+		</OBJECT>
+	</OBJECT>
+
 	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">
-		<STRING>$source_area_name</STRING>
+		<STRING>${SELECT:name from $target_area</STRING>
 	</STRING>	
 </QUEST>
 

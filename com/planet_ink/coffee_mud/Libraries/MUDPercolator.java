@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries;
+import com.planet_ink.coffee_mud.core.exceptions.CMDataException;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.MQLException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -2797,7 +2798,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		final List<XMLLibrary.XMLTag> choices = getAllChoices(E,ignoreStats,defPrefix,tagName, piece, defined,true);
 		if((choices==null)||(choices.size()==0))
-			throw new CMException("Unable to find tag '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
+			throw new CMDataException("Unable to find tag '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		StringBuffer finalValue = new StringBuffer("");
 
 		for(int c=0;c<choices.size();c++)
@@ -2886,7 +2887,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if((choices==null)||(choices.size()==0))
 			choices=getAllChoices(E,ignoreStats,defPrefix,"ABILITY", piece, defined,true);
 		if((choices==null)||(choices.size()==0))
-			throw new CMException("Unable to find tag '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
+			throw new CMDataException("Unable to find tag '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		final List<Object> finalValues = new ArrayList<Object>();
 
 		for(int c=0;c<choices.size();c++)
@@ -3123,8 +3124,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 					fixed.put(id.var.toUpperCase(),value);
 				}
+				catch(final CMDataException e)
+				{
+				}
+				catch(final MQLException e)
+				{
+					Log.errOut(e.getMessage());
+				}
 				catch(final CMException e)
 				{
+					Log.errOut(e.getMessage());
 				}
 			}
 			fixed.putAll(defined);
@@ -5556,6 +5565,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						@SuppressWarnings("unchecked")
 						final Map<String,Object> m2=(Map<String, Object>)o1;
 						m.putAll(m2);
+					}
+					else
+					if(o1 instanceof List)
+					{
+						@SuppressWarnings("unchecked")
+						final List<Map<String,Object>> list=(List<Map<String,Object>>)o1;
+						for(final Map<String,Object> m2 : list)
+							m.putAll(m2);
 					}
 					else
 						m.put(bit.as(), o1);
