@@ -139,15 +139,11 @@ vars:
 	<!--
 	Mob X is preying on my flock, go kill Mob X and bring me their Ys.
 	
-	Bring me Ys from X-type mobs and your reputation with my group will improve. 
-	
 	I am trying to make a stew from X-Ys. 
 	
 	Xs are invading, kill them and bring me Y as proof.
 
 	mobs stole item y from me/store/warehouse
-	
-	mobs are a great source of Y, and I need lots of Y for my project.
 	
 	I need Ys to gift my lover, and Xs have them. (nothing spells romance like wanton slaughter)'
 	
@@ -200,7 +196,7 @@ vars:
 	</STRING>
 	
 	<STRING ID="reason_welosteachother" SELECT="All">
-		<STRING define="reason_verbed">$verb_collect</STRING>
+		<STRING define="reason_verbed">$verb_collected</STRING>
 		<STRING define="reason_verb">$verb_collect</STRING>
 		<STRING define="quest_winspeech" SELECT="Any-1">
 			<STRING>You found them! Thanks!</STRING>
@@ -216,21 +212,17 @@ vars:
 	</STRING>
 	
 	<STRING ID="reason_gencollect" SELECT="All">
-		<STRING define="reason_verbed">$verb_stolen</STRING>
-		<STRING define="reason_verb">$verb_steal</STRING>
+		<STRING define="reason_verbed">$verb_collected</STRING>
+		<STRING define="reason_verb">$verb_collect</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I need several ${p:target_item_name} collectd and brought to me.</STRING>
-			<STRING>I need the ${p:target_item_name} brought to me.</STRING>
-			<STRING>I need the ${p:target_item_name} brought to account for their crimes.</STRING>
-			<STRING>The ${p:target_item_name} need capturing.</STRING>
+			<STRING>I need several ${p:target_item_name} $verb_collected and brought to me.</STRING>
+			<STRING>I need ${p:target_item_name} $verb_collected for me.  You can get them from ${p:target_name}</STRING>
 			<STRING>I am collecting ${p:target_item_name}, and need your assistance.</STRING>
-			<STRING>Let's hunt some ${p:target_item_name}!</STRING>
+			<STRING>${c:p:target_name} are a great source of ${p:target_item_name}, and I need lots of them $verb_collected!</STRING>
 		</STRING>
 	</STRING>
 	
-
-
 	<STRING ID="reason_idoforthem" SELECT="All">
 		<STRING define="reason_verbed">$verb_collected</STRING>
 		<STRING define="reason_verb">$verb_collect</STRING>

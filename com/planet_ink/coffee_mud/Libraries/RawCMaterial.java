@@ -1268,13 +1268,20 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			for(int r=0;r<R.numItems();r++)
 			{
 				I=R.getItem(r);
-				if((I instanceof RawMaterial)
-				&&((material1==0)
-					||((I.material()==material1)&&(((RawMaterial)I).getSubType().hashCode()==subTypeHash1)))
-				&&((material2==0)
-					||((I.material()==material2)&&(((RawMaterial)I).getSubType().hashCode()==subTypeHash2)))
-				)
-					V.add(I);
+				if(I instanceof RawMaterial)
+				{
+					final int rawMaterialCode=((RawMaterial)I).material();
+					final int subHashCode = ((RawMaterial)I).getSubType().hashCode();
+					if((material1 > 0)
+					&&(material1==rawMaterialCode)
+					&&(subHashCode == subTypeHash1))
+						V.add(I);
+					else
+					if((material2 > 0)
+					&&(material2==rawMaterialCode)
+					&&(subHashCode == subTypeHash2))
+						V.add(I);
+				}
 			}
 		}
 		return V;
@@ -1289,11 +1296,17 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			for(int r=0;r<R.numItems();r++)
 			{
 				I=R.getItem(r);
-				if((I instanceof RawMaterial)
-				&&((material1==0)||(I.material()==material1))
-				&&((material2==0)||(I.material()==material2))
-				)
-					V.add(I);
+				if(I instanceof RawMaterial)
+				{
+					final int rawMaterialCode=((RawMaterial)I).material();
+					if((material1 > 0)
+					&&(material1==rawMaterialCode))
+						V.add(I);
+					else
+					if((material2 > 0)
+					&&(material2==rawMaterialCode))
+						V.add(I);
+				}
 			}
 		}
 		return V;
