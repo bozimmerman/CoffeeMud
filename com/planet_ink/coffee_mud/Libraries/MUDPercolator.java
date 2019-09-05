@@ -3133,7 +3133,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				catch(final CMException e)
 				{
-					Log.errOut("Failure processing condition "+condition+": "+e.getMessage());
+					//Log.errOut("Failure processing condition "+condition+": "+e.getMessage());
 				}
 			}
 			final Map<String,Object> finalDefined = new HashMap<String,Object>();
