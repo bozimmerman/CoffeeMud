@@ -233,7 +233,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			}
 		}
 		if(ADJ!=null)
-			level += CMath.s_int(ADJ.getStat("LEVEL"));
+			level += CMath.s_int(ADJ.getStat("STAT-LEVEL"));
 		//savedI.destroy();
 		//IworkI.destroy(); // this was a copy
 		return level;
@@ -998,7 +998,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		int level=0;
 		if(ADJ!=null)
 		{
-			level += CMath.s_int(ADJ.getStat("LEVEL"));
+			level += CMath.s_int(ADJ.getStat("STAT-LEVEL"));
 		}
 		return level;
 	}

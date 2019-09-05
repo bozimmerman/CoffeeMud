@@ -547,24 +547,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	{
 		if(code == null)
 			return "";
-		if(code.toUpperCase().startsWith("STAT-"))
-		{
-			final String subCode=code.substring(5).toUpperCase();
-			if(this.multiplyPhyStats)
-				return "0";
-			else
-			{
-				if(subCode.startsWith("ATTACK"))
-					return getStrStatValue(phyStatsChanges, Integer.valueOf(PhyStats.STAT_ATTACK));
-				if(subCode.startsWith("DAMAGE"))
-					return getStrStatValue(phyStatsChanges, Integer.valueOf(PhyStats.STAT_DAMAGE));
-				if(subCode.startsWith("ARMOR"))
-					return getStrStatValue(phyStatsChanges, Integer.valueOf(PhyStats.STAT_ARMOR));
-			}
-			return "0";
-		}
-		else
-		if(code.equalsIgnoreCase("LEVEL"))
+		if(code.equalsIgnoreCase("STAT-LEVEL"))
 		{
 			int level = 0;
 			Object[] changes = charStateChanges;
@@ -753,6 +736,23 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 			}
 			return ""+level;
 		}
+		else
+		if(code.toUpperCase().startsWith("STAT-"))
+		{
+			final String subCode=code.substring(5).toUpperCase();
+			if(this.multiplyPhyStats)
+				return "0";
+			else
+			{
+				if(subCode.startsWith("ATTACK"))
+					return getStrStatValue(phyStatsChanges, Integer.valueOf(PhyStats.STAT_ATTACK));
+				if(subCode.startsWith("DAMAGE"))
+					return getStrStatValue(phyStatsChanges, Integer.valueOf(PhyStats.STAT_DAMAGE));
+				if(subCode.startsWith("ARMOR"))
+					return getStrStatValue(phyStatsChanges, Integer.valueOf(PhyStats.STAT_ARMOR));
+			}
+			return "0";
+		}
 		return super.getStat(code);
 	}
 
@@ -761,7 +761,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	{
 		if(code!=null)
 		{
-			if(code.equalsIgnoreCase("LEVEL"))
+			if(code.equalsIgnoreCase("STAT-LEVEL"))
 			{
 
 			}

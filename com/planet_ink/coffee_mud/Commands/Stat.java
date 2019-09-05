@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -632,6 +633,497 @@ public class Stat  extends Skills
 		}
 	}
 
+	protected String getPrivilegedStat(final MOB mob, MOB target, final List<String> commands, final boolean overrideAuthCheck) throws IOException
+	{
+		StringBuilder str=new StringBuilder("");
+		int ableTypes=-1;
+		if(commands.size()>1)
+		{
+			final String s=commands.get(0).toUpperCase();
+			for(int i=0;i<ABLETYPE_DESCS.length;i++)
+			{
+				for(int is=0;is<ABLETYPE_DESCS[i].length;is++)
+				{
+					if(s.equals(ABLETYPE_DESCS[i][is]))
+					{
+						ableTypes=-2 -i;
+						commands.remove(0);
+						break;
+					}
+				}
+			}
+			if(ableTypes==-1)
+			{
+				for(int a=0;a<Ability.ACODE_DESCS.length;a++)
+				{
+					if((Ability.ACODE_DESCS[a]+"S").equals(s)||(Ability.ACODE_DESCS[a]).equals(s))
+					{
+						ableTypes=a;
+						commands.remove(0);
+						break;
+					}
+				}
+			}
+		}
+		final String MOBname=CMParms.combine(commands,0);
+		if(target == null)
+			target=getMOBTarget(mob,MOBname);
+		if((target!=null)
+		&&(((target.isMonster())&&(CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDMOBS)))
+			||(overrideAuthCheck)
+			||((target.isPlayer())&&(CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDPLAYERS)))))
+		{
+			if(ableTypes>=0)
+			{
+				final List<Integer> V=new ArrayList<Integer>();
+				final int mask=Ability.ALL_ACODES;
+				V.add(Integer.valueOf(ableTypes));
+				str=getAbilities(mob,target,V,mask,false,-1);
+			}
+			else
+			if(ableTypes==ABLETYPE_EQUIPMENT)
+				str=CMLib.commands().getEquipment(mob,target);
+			else
+			if(ableTypes==ABLETYPE_INVENTORY)
+				str=CMLib.commands().getInventory(mob,target);
+			else
+			if(ableTypes==ABLETYPE_QUESTWINS)
+			{
+				str.append(L("Quests won by @x1: ",target.Name()));
+				final StringBuffer won=new StringBuffer("");
+				for(int q=0;q<CMLib.quests().numQuests();q++)
+				{
+					final Quest Q=CMLib.quests().fetchQuest(q);
+					final Long wonTime = Q.whenLastWon(target.Name());
+					if(wonTime != null)
+					{
+						final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
+						won.append(" "+name+" on "+CMLib.time().date2String(wonTime.longValue())+" ,");
+					}
+				}
+				if(won.length()==0)
+					won.append(L(" None!"));
+				won.deleteCharAt(won.length()-1);
+				str.append(won);
+				str.append("\n\r");
+			}
+			else
+			if(ableTypes==ABLETYPE_TITLES)
+			{
+				str.append(L("Titles:"));
+				final StringBuffer ttl=new StringBuffer("");
+				if(target.playerStats()!=null)
+				{
+					for(int t=0;t<target.playerStats().getTitles().size();t++)
+					{
+						final String title = target.playerStats().getTitles().get(t);
+						ttl.append(" "+title+",");
+					}
+				}
+				if(ttl.length()==0)
+					ttl.append(L(" None!"));
+				ttl.deleteCharAt(ttl.length()-1);
+				str.append(ttl);
+				str.append("\n\r");
+			}
+			else
+			if(ableTypes==ABLETYPE_SCRIPTS)
+			{
+				str.append(L("Scripts covered:\n\r"));
+				int q=1;
+				for(final Enumeration<ScriptingEngine> e=target.scripts();e.hasMoreElements();q++)
+				{
+					final ScriptingEngine SE=e.nextElement();
+					str.append(L("Script #@x1\n\r",""+q));
+					str.append(L("Quest: @x1\n\r",SE.defaultQuestName()));
+					str.append(L("Savable: @x1\n\r",""+SE.isSavable()));
+					str.append(L("Scope: @x1\n\r",SE.getVarScope()));
+					str.append(L("Vars: @x1\n\r",SE.getLocalVarXML()));
+					str.append(L("Script: @x1\n\r",SE.getScript()));
+					str.append("\n\r");
+				}
+				str.append("\n\r");
+			}
+			else
+			if(ableTypes==ABLETYPE_TATTOOS)
+			{
+				str.append(L("Tattoos:"));
+				for(final Enumeration<Tattoo> e=target.tattoos();e.hasMoreElements();)
+					str.append(" "+e.nextElement().getTattooName()+",");
+				str.deleteCharAt(str.length()-1);
+				str.append("\n\r");
+			}
+			else
+			if(ableTypes==ABLETYPE_AFFECTS)
+			{
+				str.append(L("Effects:"));
+				for(final Enumeration<Ability> e=target.effects();e.hasMoreElements();)
+					str.append(" "+e.nextElement().Name()+",");
+				str.deleteCharAt(str.length()-1);
+				str.append("\n\r");
+			}
+			else
+			if(ableTypes==ABLETYPE_FACTIONS)
+			{
+				str.append(L("Factions:\n\r"));
+				for(final Enumeration<String> f=target.factions();f.hasMoreElements();)
+				{
+					final Faction F=CMLib.factions().getFaction(f.nextElement());
+					if(F!=null)
+						str.append("^W[^H"+F.name()+"^N("+F.factionID()+"): "+target.fetchFaction(F.factionID())+"^W]^N, ");
+				}
+				str.append("\n\r");
+			}
+			else
+			if(ableTypes == ABLETYPE_LEVELTIMES)
+			{
+				if(target.playerStats() != null)
+				{
+					long lastDateTime=-1;
+					for(int level=0;level<=target.phyStats().level();level++)
+					{
+						final long dateTime=target.playerStats().leveledDateTime(level);
+						final long ageMinutes=target.playerStats().leveledMinutesPlayed(level);
+					 	final String roomID=target.playerStats().leveledRoomID(level);
+						if((dateTime>1529122205)&&(dateTime!=lastDateTime))
+						{
+							lastDateTime = dateTime;
+							if(level==0)
+							 	str.append(CMStrings.padRight(L("Created"),8));
+							else
+							 	str.append(CMStrings.padRight(""+level,8));
+							str.append(CMStrings.padRight(CMLib.time().date2String(dateTime),21));
+							str.append(CMStrings.padRight(""+CMLib.time().date2EllapsedTime(ageMinutes * 60000L,TimeUnit.MINUTES,true),17));
+							final Room R=CMLib.map().getRoom(roomID);
+							if(R==null)
+								str.append(roomID);
+							else
+								str.append(CMStrings.limit(R.displayText(), 25)).append("("+roomID+")");
+							str.append("\n\r");
+						}
+					}
+				}
+				str.append("\n\r");
+			}
+			else
+			if(ableTypes==ABLETYPE_CHARSTATS)
+			{
+				str.append(L("^XCurrent Character Statistics:^.^N\n\r"));
+				final int[] col={0};
+				final int headerWidth=CMLib.lister().fixColWidth(12, mob);
+				final int numberWidth=CMLib.lister().fixColWidth(6, mob);
+				addCharStatsChars(target.charStats(), headerWidth, numberWidth, col, str);
+				addCharStatsPhys(target.phyStats(), headerWidth, numberWidth, col, str);
+				addCharStatsState(target.curState(), headerWidth, numberWidth, col, str);
+				if(target.playerStats()!=null)
+					addCharThing(headerWidth,numberWidth,col,str,"STINK",CMath.toPct(target.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT));
+				str.append("\n\r\n\r");
+				str.append(L("^XBase Character Statistics:^.^N\n\r"));
+				col[0]=0;
+				addCharStatsChars(target.baseCharStats(), headerWidth, numberWidth, col, str);
+				addCharStatsPhys(target.basePhyStats(), headerWidth, numberWidth, col, str);
+				addCharStatsState(target.baseState(), headerWidth, numberWidth, col, str);
+				str.append("\n\r\n\r");
+				str.append(L("^XMax Character State:^.^N\n\r"));
+				col[0]=0;
+				addCharStatsState(target.maxState(), headerWidth, numberWidth, col, str);
+				str.append("\n\r");
+			}
+			else
+			if(ableTypes==ABLETYPE_WORLDEXPLORED)
+			{
+				if(target.playerStats()!=null)
+					str.append(L("@x1 has explored @x2% of the world.\n\r",target.name(),""+target.playerStats().percentVisited(target,null)));
+				else
+					str.append(L("Exploration data is not kept on mobs.\n\r"));
+			}
+			else
+			if(ableTypes==ABLETYPE_AREASEXPLORED)
+			{
+				if(target.playerStats()!=null)
+				{
+					for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+					{
+						final Area A=e.nextElement();
+						final int pct=target.playerStats().percentVisited(target, A);
+						if(pct>0)
+							str.append("^H"+A.name()+"^N: "+pct+"%, ");
+					}
+					str=new StringBuilder(str.toString().substring(0,str.toString().length()-2)+"\n\r");
+				}
+				else
+					str.append(L("Exploration data is not kept on mobs.\n\r"));
+			}
+			else
+			if(ableTypes==ABLETYPE_ROOMSEXPLORED)
+			{
+				if(target.playerStats()!=null)
+				{
+					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
+					{
+						final Room R=e.nextElement();
+						if((R.roomID().length()>0)&&(target.playerStats().hasVisited(R)))
+							str.append("^H"+R.roomID()+"^N, ");
+					}
+					str=new StringBuilder(str.toString().substring(0,str.toString().length()-2)+"\n\r");
+				}
+				else
+					str.append(L("Exploration data is not kept on mobs.\n\r"));
+			}
+			else
+			if(ableTypes==ABLETYPE_COMBAT)
+			{
+				final PlayerStats pStats = target.playerStats();
+				if((pStats != null)
+				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.COMBATSTATS)))
+				{
+					final int level=target.basePhyStats().level();
+					long combats = pStats.bumpLevelCombatStat(PlayerCombatStat.COMBATS_TOTAL, level, 0);
+					if(combats == 0)
+						combats=1;
+					long rounds = pStats.bumpLevelCombatStat(PlayerCombatStat.ROUNDS_TOTAL, level, 0);
+					if(rounds == 0)
+						rounds=1;
+					final long xp = pStats.bumpLevelCombatStat(PlayerCombatStat.EXPERIENCE_TOTAL, level, 0);
+					final long damage = pStats.bumpLevelCombatStat(PlayerCombatStat.DAMAGE_DONE, level, 0);
+					final long hits = pStats.bumpLevelCombatStat(PlayerCombatStat.HITS_DONE, level, 0);
+					final long hurt = pStats.bumpLevelCombatStat(PlayerCombatStat.DAMAGE_TAKEN, level, 0);
+					final long hitstaken = pStats.bumpLevelCombatStat(PlayerCombatStat.HITS_TAKEN, level, 0);
+					final long actions = pStats.bumpLevelCombatStat(PlayerCombatStat.ACTIONS_DONE, level, 0);
+					str.append(L("Player Combat Summary for level @x1:\n\r",""+level));
+					str.append(CMStrings.padRight(L("Total Combats"),20)).append(": ")
+						.append(combats)
+						.append("\n\r");
+					str.append(CMStrings.padRight(L("Total Rounds"),20)).append(": ")
+						.append(rounds)
+						.append("\n\r");
+					str.append(CMStrings.padRight(L("Total Kills"),20)).append(": ")
+						.append(pStats.bumpLevelCombatStat(PlayerCombatStat.DEATHS_DONE, level, 0))
+						.append("\n\r");
+					str.append(CMStrings.padRight(L("Total Deaths"),20)).append(": ")
+						.append(pStats.bumpLevelCombatStat(PlayerCombatStat.DEATHS_TAKEN, level, 0))
+						.append("\n\r");
+					str.append(CMStrings.padRight(L("Experience"),20)).append(": ")
+						.append(CMStrings.padRight(""+xp,15))
+						.append(" ").append(CMath.round(CMath.div(xp,combats),2)).append("/combat ")
+						.append(", ").append(CMath.round(CMath.div(xp,rounds),2)).append("/round")
+						.append("\n\r");
+					str.append(CMStrings.padRight(L("Damage Done"),20)).append(": ")
+						.append(CMStrings.padRight(""+damage,15))
+						.append(" ").append(CMath.round(CMath.div(damage,combats),2)).append("/combat ")
+						.append(", ").append(CMath.round(CMath.div(damage,rounds),2)).append("/round")
+						.append("\n\r");
+					str.append(CMStrings.padRight(L("Damage Taken"),20)).append(": ")
+						.append(CMStrings.padRight(""+hurt,15))
+						.append(" ").append(CMath.round(CMath.div(hurt,combats),2)).append("/combat ")
+						.append(", ").append(CMath.round(CMath.div(hurt,rounds),2)).append("/round")
+						.append("\n\r");
+					str.append(CMStrings.padRight(L("Hits Done"),20)).append(": ")
+						.append(CMStrings.padRight(""+hits,15))
+						.append(" ").append(CMath.round(CMath.div(hits,combats),2)).append("/combat ")
+						.append(", ").append(CMath.round(CMath.div(hits,rounds),2)).append("/round")
+						.append("\n\r");
+					str.append(CMStrings.padRight(L("Hits Taken"),20)).append(": ")
+						.append(CMStrings.padRight(""+hitstaken,15))
+						.append(" ").append(CMath.round(CMath.div(hitstaken,combats),2)).append("/combat ")
+						.append(", ").append(CMath.round(CMath.div(hitstaken,rounds),2)).append("/round")
+						.append("\n\r");
+					str.append(CMStrings.padRight(L("Actions Done"),20)).append(": ")
+						.append(CMStrings.padRight(""+actions,15))
+						.append(" ").append(CMath.round(CMath.div(actions,combats),2)).append("/combat ")
+						.append(", ").append(CMath.round(CMath.div(actions,rounds),2)).append("/round")
+						.append("\n\r");
+					str.append("^W-------------------------\n\r");
+				}
+				str.append(L("\n\r^cCombat summary:\n\r\n\r^N"));
+				final MOB M=CMClass.getMOB("StdMOB");
+				M.setBaseCharStats((CharStats)target.baseCharStats().copyOf());
+				M.setBasePhyStats((PhyStats)target.basePhyStats().copyOf());
+				M.setBaseState((CharState)target.baseState().copyOf());
+				recoverMOB(target);
+				recoverMOB(M);
+				int base=M.basePhyStats().attackAdjustment();
+				str.append("^c"+CMStrings.padRight(L("Base Attack"),40)+": ^W"+base+"\n\r");
+				for(int i=0;i<target.numItems();i++)
+				{
+					final Item I=target.getItem(i);
+					if ((I != null) && (!I.amWearingAt(Wearable.IN_INVENTORY)))
+					{
+						recoverMOB(M);
+						base = M.phyStats().attackAdjustment();
+						testMOB(target, M, I);
+						final int diff = M.phyStats().attackAdjustment() - base;
+						reportOnDiffMOB(I, diff, str);
+					}
+				}
+				recoverMOB(M);
+				for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if (A != null)
+					{
+						recoverMOB(M);
+						base = M.phyStats().attackAdjustment();
+						testMOB(target, M, A);
+						final int diff = M.phyStats().attackAdjustment() - base;
+						reportOnDiffMOB(A, diff, str);
+					}
+				}
+				recoverMOB(target);
+				recoverMOB(M);
+				reportOnDiffMOB("Other Stuff", CMLib.combat().adjustedAttackBonus(target,null)-M.basePhyStats().attackAdjustment(), str);
+				str.append("^W-------------------------\n\r");
+				str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+CMLib.combat().adjustedAttackBonus(target,null)+"\n\r");
+				str.append("\n\r");
+				base=M.basePhyStats().armor();
+				str.append("^C"+CMStrings.padRight(L("Base Armor"),40)+": ^W"+base+"\n\r");
+				for(int i=0;i<target.numItems();i++)
+				{
+					final Item I=target.getItem(i);
+					if (I != null)
+					{
+						recoverMOB(M);
+						base = M.phyStats().armor();
+						testMOB(target, M, I);
+						final int diff = M.phyStats().armor() - base;
+						reportOnDiffMOB(I, diff, str);
+					}
+				}
+				recoverMOB(M);
+				for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if (A != null)
+					{
+						recoverMOB(M);
+						base = M.phyStats().armor();
+						testMOB(target, M, A);
+						final int diff = M.phyStats().armor() - base;
+						reportOnDiffMOB(A, diff, str);
+					}
+				}
+				recoverMOB(target);
+				recoverMOB(M);
+				reportOnDiffMOB("Other Stuff", CMLib.combat().adjustedArmor(target)-M.basePhyStats().attackAdjustment(), str);
+				str.append("^W-------------------------\n\r");
+				str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+CMLib.combat().adjustedArmor(target)+"\n\r");
+				str.append("\n\r");
+				base=M.basePhyStats().damage();
+				str.append("^C"+CMStrings.padRight(L("Base Damage"),40)+": ^W"+base+"\n\r");
+				for(int i=0;i<target.numItems();i++)
+				{
+					final Item I=target.getItem(i);
+					if (I != null)
+					{
+						recoverMOB(M);
+						base = M.phyStats().damage();
+						testMOB(target, M, I);
+						final int diff = M.phyStats().damage() - base;
+						reportOnDiffMOB(I, diff, str);
+					}
+				}
+				recoverMOB(M);
+				for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if (A != null)
+					{
+						recoverMOB(M);
+						base = M.phyStats().damage();
+						testMOB(target, M, A);
+						final int diff = M.phyStats().damage() - base;
+						reportOnDiffMOB(A, diff, str);
+					}
+				}
+				recoverMOB(target);
+				recoverMOB(M);
+				reportOnDiffMOB("Other Stuff", CMLib.combat().adjustedDamage(target,null,null,0, false, false)-M.basePhyStats().damage(), str);
+				str.append("^W-------------------------\n\r");
+				str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+CMLib.combat().adjustedDamage(target, null, null, 0, false, false)+"\n\r");
+				str.append("\n\r");
+				base=(int)Math.round(M.phyStats().speed()*100);
+				str.append("^C"+CMStrings.padRight(L("Base Attacks%"),40)+": ^W"+base+"\n\r");
+				for(int i=0;i<target.numItems();i++)
+				{
+					final Item I=target.getItem(i);
+					if (I != null)
+					{
+						recoverMOB(M);
+						base = (int) Math.round(M.phyStats().speed() * 100);
+						testMOB(target, M, I);
+						final int diff = (int) Math.round(M.phyStats().speed() * 100) - base;
+						reportOnDiffMOB(I, diff, str);
+					}
+				}
+				recoverMOB(M);
+				for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					if (A != null)
+					{
+						recoverMOB(M);
+						base = (int) Math.round(M.phyStats().speed() * 100);
+						testMOB(target, M, A);
+						final int diff = (int) Math.round(M.phyStats().speed() * 100) - base;
+						reportOnDiffMOB(A, diff, str);
+					}
+				}
+				recoverMOB(target);
+				recoverMOB(M);
+				str.append("^W-------------------------\n\r");
+				str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+(int)Math.round(target.phyStats().speed()*100)+"\n\r");
+				str.append("\n\r");
+				base=M.maxState().getHitPoints();
+				str.append("^C"+CMStrings.padRight(L("Base Hit Points"),40)+": ^W"+base+"\n\r");
+				for(int i=0;i<target.numItems();i++)
+				{
+					final Item I=target.getItem(i);
+					if (I != null)
+					{
+						recoverMOB(M);
+						base = M.maxState().getHitPoints();
+						testMOB(target, M, I);
+						final int diff = M.maxState().getHitPoints() - base;
+						reportOnDiffMOB(I, diff, str);
+					}
+				}
+				recoverMOB(M);
+				for(int i=0;i<target.numAllEffects();i++)
+				{
+					final Ability A=target.fetchEffect(i);
+					if (A != null)
+					{
+						recoverMOB(M);
+						base = M.maxState().getHitPoints();
+						testMOB(target, M, A);
+						final int diff = M.maxState().getHitPoints() - base;
+						reportOnDiffMOB(A, diff, str);
+					}
+				}
+				recoverMOB(M);
+				str.append("^W-------------------------\n\r");
+				str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+target.maxState().getHitPoints()+"\n\r");
+				recoverMOB(target);
+			}
+			else
+			{
+				if((target.playerStats()!=null)&&(CMProps.isUsingAccountSystem()))
+					str.append(L("\n\r^xMember of Account:^.^N ^w@x1^?",(target.playerStats().getAccount()!=null)?target.playerStats().getAccount().getAccountName():L("None"))).append("\n\r");
+				str.append(CMLib.commands().getScore(target));
+				for(final Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
+				{
+					final Quest Q=q.nextElement();
+					if((Q!=null)
+					&&(Q.running())
+					&&(Q.isObjectInUse(target)))
+						str.append(L("\n\r^xIn use by quest:^.^N ^w@x1^?",Q.name())).append("\n\r");
+				}
+				CMLib.genEd().genMiscSet(mob, target, -950);
+			}
+		}
+		return str.toString();
+	}
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -668,7 +1160,7 @@ public class Stat  extends Skills
 			mob.tell(msg.toString());
 			return false;
 		}
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.STAT))
 		{
 			if(commands.size()==0)
@@ -709,490 +1201,7 @@ public class Stat  extends Skills
 				if(s2.equals("YEARS")&&(CMath.isNumber(s1)))
 					return showTableStats(mob,(CMath.s_int(s1)*365),365,rest);
 			}
-
-			int ableTypes=-1;
-			if(commands.size()>1)
-			{
-				final String s=commands.get(0).toUpperCase();
-				for(int i=0;i<ABLETYPE_DESCS.length;i++)
-				{
-					for(int is=0;is<ABLETYPE_DESCS[i].length;is++)
-					{
-						if(s.equals(ABLETYPE_DESCS[i][is]))
-						{
-							ableTypes=-2 -i;
-							commands.remove(0);
-							break;
-						}
-					}
-				}
-				if(ableTypes==-1)
-				{
-					for(int a=0;a<Ability.ACODE_DESCS.length;a++)
-					{
-						if((Ability.ACODE_DESCS[a]+"S").equals(s)||(Ability.ACODE_DESCS[a]).equals(s))
-						{
-							ableTypes=a;
-							commands.remove(0);
-							break;
-						}
-					}
-				}
-			}
-			final String MOBname=CMParms.combine(commands,0);
-			final MOB target=getMOBTarget(mob,MOBname);
-			if((target!=null)
-			&&(((target.isMonster())&&(CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDMOBS)))
-				||((target.isPlayer())&&(CMSecurity.isAllowed(mob, target.location(), CMSecurity.SecFlag.CMDPLAYERS)))))
-			{
-				if(ableTypes>=0)
-				{
-					final List<Integer> V=new ArrayList<Integer>();
-					final int mask=Ability.ALL_ACODES;
-					V.add(Integer.valueOf(ableTypes));
-					str=getAbilities(mob,target,V,mask,false,-1);
-				}
-				else
-				if(ableTypes==ABLETYPE_EQUIPMENT)
-					str=CMLib.commands().getEquipment(mob,target);
-				else
-				if(ableTypes==ABLETYPE_INVENTORY)
-					str=CMLib.commands().getInventory(mob,target);
-				else
-				if(ableTypes==ABLETYPE_QUESTWINS)
-				{
-					str.append(L("Quests won by @x1: ",target.Name()));
-					final StringBuffer won=new StringBuffer("");
-					for(int q=0;q<CMLib.quests().numQuests();q++)
-					{
-						final Quest Q=CMLib.quests().fetchQuest(q);
-						final Long wonTime = Q.whenLastWon(target.Name());
-						if(wonTime != null)
-						{
-							final String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
-							won.append(" "+name+" on "+CMLib.time().date2String(wonTime.longValue())+" ,");
-						}
-					}
-					if(won.length()==0)
-						won.append(L(" None!"));
-					won.deleteCharAt(won.length()-1);
-					str.append(won);
-					str.append("\n\r");
-				}
-				else
-				if(ableTypes==ABLETYPE_TITLES)
-				{
-					str.append(L("Titles:"));
-					final StringBuffer ttl=new StringBuffer("");
-					if(target.playerStats()!=null)
-					{
-						for(int t=0;t<target.playerStats().getTitles().size();t++)
-						{
-							final String title = target.playerStats().getTitles().get(t);
-							ttl.append(" "+title+",");
-						}
-					}
-					if(ttl.length()==0)
-						ttl.append(L(" None!"));
-					ttl.deleteCharAt(ttl.length()-1);
-					str.append(ttl);
-					str.append("\n\r");
-				}
-				else
-				if(ableTypes==ABLETYPE_SCRIPTS)
-				{
-					str.append(L("Scripts covered:\n\r"));
-					int q=1;
-					for(final Enumeration<ScriptingEngine> e=target.scripts();e.hasMoreElements();q++)
-					{
-						final ScriptingEngine SE=e.nextElement();
-						str.append(L("Script #@x1\n\r",""+q));
-						str.append(L("Quest: @x1\n\r",SE.defaultQuestName()));
-						str.append(L("Savable: @x1\n\r",""+SE.isSavable()));
-						str.append(L("Scope: @x1\n\r",SE.getVarScope()));
-						str.append(L("Vars: @x1\n\r",SE.getLocalVarXML()));
-						str.append(L("Script: @x1\n\r",SE.getScript()));
-						str.append("\n\r");
-					}
-					str.append("\n\r");
-				}
-				else
-				if(ableTypes==ABLETYPE_TATTOOS)
-				{
-					str.append(L("Tattoos:"));
-					for(final Enumeration<Tattoo> e=target.tattoos();e.hasMoreElements();)
-						str.append(" "+e.nextElement().getTattooName()+",");
-					str.deleteCharAt(str.length()-1);
-					str.append("\n\r");
-				}
-				else
-				if(ableTypes==ABLETYPE_AFFECTS)
-				{
-					str.append(L("Effects:"));
-					for(final Enumeration<Ability> e=target.effects();e.hasMoreElements();)
-						str.append(" "+e.nextElement().Name()+",");
-					str.deleteCharAt(str.length()-1);
-					str.append("\n\r");
-				}
-				else
-				if(ableTypes==ABLETYPE_FACTIONS)
-				{
-					str.append(L("Factions:\n\r"));
-					for(final Enumeration<String> f=target.factions();f.hasMoreElements();)
-					{
-						final Faction F=CMLib.factions().getFaction(f.nextElement());
-						if(F!=null)
-							str.append("^W[^H"+F.name()+"^N("+F.factionID()+"): "+target.fetchFaction(F.factionID())+"^W]^N, ");
-					}
-					str.append("\n\r");
-				}
-				else
-				if(ableTypes == ABLETYPE_LEVELTIMES)
-				{
-					if(target.playerStats() != null)
-					{
-						long lastDateTime=-1;
-						for(int level=0;level<=target.phyStats().level();level++)
-						{
-							final long dateTime=target.playerStats().leveledDateTime(level);
-							final long ageMinutes=target.playerStats().leveledMinutesPlayed(level);
-						 	final String roomID=target.playerStats().leveledRoomID(level);
-							if((dateTime>1529122205)&&(dateTime!=lastDateTime))
-							{
-								lastDateTime = dateTime;
-								if(level==0)
-								 	str.append(CMStrings.padRight(L("Created"),8));
-								else
-								 	str.append(CMStrings.padRight(""+level,8));
-								str.append(CMStrings.padRight(CMLib.time().date2String(dateTime),21));
-								str.append(CMStrings.padRight(""+CMLib.time().date2EllapsedTime(ageMinutes * 60000L,TimeUnit.MINUTES,true),17));
-								final Room R=CMLib.map().getRoom(roomID);
-								if(R==null)
-									str.append(roomID);
-								else
-									str.append(CMStrings.limit(R.displayText(), 25)).append("("+roomID+")");
-								str.append("\n\r");
-							}
-						}
-					}
-					str.append("\n\r");
-				}
-				else
-				if(ableTypes==ABLETYPE_CHARSTATS)
-				{
-					str.append(L("^XCurrent Character Statistics:^.^N\n\r"));
-					final int[] col={0};
-					final int headerWidth=CMLib.lister().fixColWidth(12, mob);
-					final int numberWidth=CMLib.lister().fixColWidth(6, mob);
-					addCharStatsChars(target.charStats(), headerWidth, numberWidth, col, str);
-					addCharStatsPhys(target.phyStats(), headerWidth, numberWidth, col, str);
-					addCharStatsState(target.curState(), headerWidth, numberWidth, col, str);
-					if(target.playerStats()!=null)
-						addCharThing(headerWidth,numberWidth,col,str,"STINK",CMath.toPct(target.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT));
-					str.append("\n\r\n\r");
-					str.append(L("^XBase Character Statistics:^.^N\n\r"));
-					col[0]=0;
-					addCharStatsChars(target.baseCharStats(), headerWidth, numberWidth, col, str);
-					addCharStatsPhys(target.basePhyStats(), headerWidth, numberWidth, col, str);
-					addCharStatsState(target.baseState(), headerWidth, numberWidth, col, str);
-					str.append("\n\r\n\r");
-					str.append(L("^XMax Character State:^.^N\n\r"));
-					col[0]=0;
-					addCharStatsState(target.maxState(), headerWidth, numberWidth, col, str);
-					str.append("\n\r");
-				}
-				else
-				if(ableTypes==ABLETYPE_WORLDEXPLORED)
-				{
-					if(target.playerStats()!=null)
-						str.append(L("@x1 has explored @x2% of the world.\n\r",target.name(),""+target.playerStats().percentVisited(target,null)));
-					else
-						str.append(L("Exploration data is not kept on mobs.\n\r"));
-				}
-				else
-				if(ableTypes==ABLETYPE_AREASEXPLORED)
-				{
-					if(target.playerStats()!=null)
-					{
-						for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
-						{
-							final Area A=e.nextElement();
-							final int pct=target.playerStats().percentVisited(target, A);
-							if(pct>0)
-								str.append("^H"+A.name()+"^N: "+pct+"%, ");
-						}
-						str=new StringBuilder(str.toString().substring(0,str.toString().length()-2)+"\n\r");
-					}
-					else
-						str.append(L("Exploration data is not kept on mobs.\n\r"));
-				}
-				else
-				if(ableTypes==ABLETYPE_ROOMSEXPLORED)
-				{
-					if(target.playerStats()!=null)
-					{
-						for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
-						{
-							final Room R=e.nextElement();
-							if((R.roomID().length()>0)&&(target.playerStats().hasVisited(R)))
-								str.append("^H"+R.roomID()+"^N, ");
-						}
-						str=new StringBuilder(str.toString().substring(0,str.toString().length()-2)+"\n\r");
-					}
-					else
-						str.append(L("Exploration data is not kept on mobs.\n\r"));
-				}
-				else
-				if(ableTypes==ABLETYPE_COMBAT)
-				{
-					final PlayerStats pStats = target.playerStats();
-					if((pStats != null)
-					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.COMBATSTATS)))
-					{
-						final int level=target.basePhyStats().level();
-						long combats = pStats.bumpLevelCombatStat(PlayerCombatStat.COMBATS_TOTAL, level, 0);
-						if(combats == 0)
-							combats=1;
-						long rounds = pStats.bumpLevelCombatStat(PlayerCombatStat.ROUNDS_TOTAL, level, 0);
-						if(rounds == 0)
-							rounds=1;
-						final long xp = pStats.bumpLevelCombatStat(PlayerCombatStat.EXPERIENCE_TOTAL, level, 0);
-						final long damage = pStats.bumpLevelCombatStat(PlayerCombatStat.DAMAGE_DONE, level, 0);
-						final long hits = pStats.bumpLevelCombatStat(PlayerCombatStat.HITS_DONE, level, 0);
-						final long hurt = pStats.bumpLevelCombatStat(PlayerCombatStat.DAMAGE_TAKEN, level, 0);
-						final long hitstaken = pStats.bumpLevelCombatStat(PlayerCombatStat.HITS_TAKEN, level, 0);
-						final long actions = pStats.bumpLevelCombatStat(PlayerCombatStat.ACTIONS_DONE, level, 0);
-						str.append(L("Player Combat Summary for level @x1:\n\r",""+level));
-						str.append(CMStrings.padRight(L("Total Combats"),20)).append(": ")
-							.append(combats)
-							.append("\n\r");
-						str.append(CMStrings.padRight(L("Total Rounds"),20)).append(": ")
-							.append(rounds)
-							.append("\n\r");
-						str.append(CMStrings.padRight(L("Total Kills"),20)).append(": ")
-							.append(pStats.bumpLevelCombatStat(PlayerCombatStat.DEATHS_DONE, level, 0))
-							.append("\n\r");
-						str.append(CMStrings.padRight(L("Total Deaths"),20)).append(": ")
-							.append(pStats.bumpLevelCombatStat(PlayerCombatStat.DEATHS_TAKEN, level, 0))
-							.append("\n\r");
-						str.append(CMStrings.padRight(L("Experience"),20)).append(": ")
-							.append(CMStrings.padRight(""+xp,15))
-							.append(" ").append(CMath.round(CMath.div(xp,combats),2)).append("/combat ")
-							.append(", ").append(CMath.round(CMath.div(xp,rounds),2)).append("/round")
-							.append("\n\r");
-						str.append(CMStrings.padRight(L("Damage Done"),20)).append(": ")
-							.append(CMStrings.padRight(""+damage,15))
-							.append(" ").append(CMath.round(CMath.div(damage,combats),2)).append("/combat ")
-							.append(", ").append(CMath.round(CMath.div(damage,rounds),2)).append("/round")
-							.append("\n\r");
-						str.append(CMStrings.padRight(L("Damage Taken"),20)).append(": ")
-							.append(CMStrings.padRight(""+hurt,15))
-							.append(" ").append(CMath.round(CMath.div(hurt,combats),2)).append("/combat ")
-							.append(", ").append(CMath.round(CMath.div(hurt,rounds),2)).append("/round")
-							.append("\n\r");
-						str.append(CMStrings.padRight(L("Hits Done"),20)).append(": ")
-							.append(CMStrings.padRight(""+hits,15))
-							.append(" ").append(CMath.round(CMath.div(hits,combats),2)).append("/combat ")
-							.append(", ").append(CMath.round(CMath.div(hits,rounds),2)).append("/round")
-							.append("\n\r");
-						str.append(CMStrings.padRight(L("Hits Taken"),20)).append(": ")
-							.append(CMStrings.padRight(""+hitstaken,15))
-							.append(" ").append(CMath.round(CMath.div(hitstaken,combats),2)).append("/combat ")
-							.append(", ").append(CMath.round(CMath.div(hitstaken,rounds),2)).append("/round")
-							.append("\n\r");
-						str.append(CMStrings.padRight(L("Actions Done"),20)).append(": ")
-							.append(CMStrings.padRight(""+actions,15))
-							.append(" ").append(CMath.round(CMath.div(actions,combats),2)).append("/combat ")
-							.append(", ").append(CMath.round(CMath.div(actions,rounds),2)).append("/round")
-							.append("\n\r");
-						str.append("^W-------------------------\n\r");
-					}
-					str.append(L("\n\r^cCombat summary:\n\r\n\r^N"));
-					final MOB M=CMClass.getMOB("StdMOB");
-					M.setBaseCharStats((CharStats)target.baseCharStats().copyOf());
-					M.setBasePhyStats((PhyStats)target.basePhyStats().copyOf());
-					M.setBaseState((CharState)target.baseState().copyOf());
-					recoverMOB(target);
-					recoverMOB(M);
-					int base=M.basePhyStats().attackAdjustment();
-					str.append("^c"+CMStrings.padRight(L("Base Attack"),40)+": ^W"+base+"\n\r");
-					for(int i=0;i<target.numItems();i++)
-					{
-						final Item I=target.getItem(i);
-						if ((I != null) && (!I.amWearingAt(Wearable.IN_INVENTORY)))
-						{
-							recoverMOB(M);
-							base = M.phyStats().attackAdjustment();
-							testMOB(target, M, I);
-							final int diff = M.phyStats().attackAdjustment() - base;
-							reportOnDiffMOB(I, diff, str);
-						}
-					}
-					recoverMOB(M);
-					for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
-					{
-						final Ability A=a.nextElement();
-						if (A != null)
-						{
-							recoverMOB(M);
-							base = M.phyStats().attackAdjustment();
-							testMOB(target, M, A);
-							final int diff = M.phyStats().attackAdjustment() - base;
-							reportOnDiffMOB(A, diff, str);
-						}
-					}
-					recoverMOB(target);
-					recoverMOB(M);
-					reportOnDiffMOB("Other Stuff", CMLib.combat().adjustedAttackBonus(target,null)-M.basePhyStats().attackAdjustment(), str);
-					str.append("^W-------------------------\n\r");
-					str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+CMLib.combat().adjustedAttackBonus(target,null)+"\n\r");
-					str.append("\n\r");
-					base=M.basePhyStats().armor();
-					str.append("^C"+CMStrings.padRight(L("Base Armor"),40)+": ^W"+base+"\n\r");
-					for(int i=0;i<target.numItems();i++)
-					{
-						final Item I=target.getItem(i);
-						if (I != null)
-						{
-							recoverMOB(M);
-							base = M.phyStats().armor();
-							testMOB(target, M, I);
-							final int diff = M.phyStats().armor() - base;
-							reportOnDiffMOB(I, diff, str);
-						}
-					}
-					recoverMOB(M);
-					for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
-					{
-						final Ability A=a.nextElement();
-						if (A != null)
-						{
-							recoverMOB(M);
-							base = M.phyStats().armor();
-							testMOB(target, M, A);
-							final int diff = M.phyStats().armor() - base;
-							reportOnDiffMOB(A, diff, str);
-						}
-					}
-					recoverMOB(target);
-					recoverMOB(M);
-					reportOnDiffMOB("Other Stuff", CMLib.combat().adjustedArmor(target)-M.basePhyStats().attackAdjustment(), str);
-					str.append("^W-------------------------\n\r");
-					str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+CMLib.combat().adjustedArmor(target)+"\n\r");
-					str.append("\n\r");
-					base=M.basePhyStats().damage();
-					str.append("^C"+CMStrings.padRight(L("Base Damage"),40)+": ^W"+base+"\n\r");
-					for(int i=0;i<target.numItems();i++)
-					{
-						final Item I=target.getItem(i);
-						if (I != null)
-						{
-							recoverMOB(M);
-							base = M.phyStats().damage();
-							testMOB(target, M, I);
-							final int diff = M.phyStats().damage() - base;
-							reportOnDiffMOB(I, diff, str);
-						}
-					}
-					recoverMOB(M);
-					for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
-					{
-						final Ability A=a.nextElement();
-						if (A != null)
-						{
-							recoverMOB(M);
-							base = M.phyStats().damage();
-							testMOB(target, M, A);
-							final int diff = M.phyStats().damage() - base;
-							reportOnDiffMOB(A, diff, str);
-						}
-					}
-					recoverMOB(target);
-					recoverMOB(M);
-					reportOnDiffMOB("Other Stuff", CMLib.combat().adjustedDamage(target,null,null,0, false, false)-M.basePhyStats().damage(), str);
-					str.append("^W-------------------------\n\r");
-					str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+CMLib.combat().adjustedDamage(target, null, null, 0, false, false)+"\n\r");
-					str.append("\n\r");
-					base=(int)Math.round(M.phyStats().speed()*100);
-					str.append("^C"+CMStrings.padRight(L("Base Attacks%"),40)+": ^W"+base+"\n\r");
-					for(int i=0;i<target.numItems();i++)
-					{
-						final Item I=target.getItem(i);
-						if (I != null)
-						{
-							recoverMOB(M);
-							base = (int) Math.round(M.phyStats().speed() * 100);
-							testMOB(target, M, I);
-							final int diff = (int) Math.round(M.phyStats().speed() * 100) - base;
-							reportOnDiffMOB(I, diff, str);
-						}
-					}
-					recoverMOB(M);
-					for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
-					{
-						final Ability A=a.nextElement();
-						if (A != null)
-						{
-							recoverMOB(M);
-							base = (int) Math.round(M.phyStats().speed() * 100);
-							testMOB(target, M, A);
-							final int diff = (int) Math.round(M.phyStats().speed() * 100) - base;
-							reportOnDiffMOB(A, diff, str);
-						}
-					}
-					recoverMOB(target);
-					recoverMOB(M);
-					str.append("^W-------------------------\n\r");
-					str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+(int)Math.round(target.phyStats().speed()*100)+"\n\r");
-					str.append("\n\r");
-					base=M.maxState().getHitPoints();
-					str.append("^C"+CMStrings.padRight(L("Base Hit Points"),40)+": ^W"+base+"\n\r");
-					for(int i=0;i<target.numItems();i++)
-					{
-						final Item I=target.getItem(i);
-						if (I != null)
-						{
-							recoverMOB(M);
-							base = M.maxState().getHitPoints();
-							testMOB(target, M, I);
-							final int diff = M.maxState().getHitPoints() - base;
-							reportOnDiffMOB(I, diff, str);
-						}
-					}
-					recoverMOB(M);
-					for(int i=0;i<target.numAllEffects();i++)
-					{
-						final Ability A=target.fetchEffect(i);
-						if (A != null)
-						{
-							recoverMOB(M);
-							base = M.maxState().getHitPoints();
-							testMOB(target, M, A);
-							final int diff = M.maxState().getHitPoints() - base;
-							reportOnDiffMOB(A, diff, str);
-						}
-					}
-					recoverMOB(M);
-					str.append("^W-------------------------\n\r");
-					str.append("^C"+CMStrings.padRight(L("Total"),40)+": ^W"+target.maxState().getHitPoints()+"\n\r");
-					recoverMOB(target);
-				}
-				else
-				{
-					if((target.playerStats()!=null)&&(CMProps.isUsingAccountSystem()))
-						str.append(L("\n\r^xMember of Account:^.^N ^w@x1^?",(target.playerStats().getAccount()!=null)?target.playerStats().getAccount().getAccountName():L("None"))).append("\n\r");
-					str.append(CMLib.commands().getScore(target));
-					for(final Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
-					{
-						final Quest Q=q.nextElement();
-						if((Q!=null)
-						&&(Q.running())
-						&&(Q.isObjectInUse(target)))
-							str.append(L("\n\r^xIn use by quest:^.^N ^w@x1^?",Q.name())).append("\n\r");
-					}
-					CMLib.genEd().genMiscSet(mob, target, -950);
-				}
-			}
+			str.append(this.getPrivilegedStat(mob, null, commands, false));
 		}
 		if((commands.size()>0)&&(str.length()==0))
 		{
@@ -1703,6 +1712,19 @@ public class Stat  extends Skills
 	public void reportOnDiffMOB(final Environmental test, final int diff, final StringBuilder str)
 	{
 		reportOnDiffMOB(test.Name(),diff,str);
+	}
+
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{String.class,MOB.class}};
+
+	@Override
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		final String statName=(String)args[1];
+		final MOB M=(MOB)args[1];
+		final List<String> cmds=new XVector<String>("STAT", statName.toUpperCase().trim(), M.Name());
+		return getPrivilegedStat(mob, M, cmds, true);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMaskEntry;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -171,5 +172,124 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public String getStat(final String code)
+	{
+		if(code == null)
+			return "";
+		if(code.equalsIgnoreCase("STAT-LEVEL"))
+		{
+			int level = 0;
+			if((mask != null)
+			&&(!mask.empty())
+			&&(mask.entries()!=null)
+			&&(mask.entries().length>0))
+			{
+				for(final CompiledZMaskEntry entry : this.mask.entries())
+				{
+					switch(entry.maskType())
+					{
+					case _PLAYER:
+					case _NPC:
+						level -=5;
+						break;
+					case _ALIGNMENT:
+						level -= (9-entry.parms().length);
+						break;
+					case ALIGNMENT:
+						level -= entry.parms().length;
+						break;
+					case _RACECAT:
+					case _RACE:
+						level -=9;
+						break;
+					case RACECAT:
+					case RACE:
+						level -= entry.parms().length;
+						break;
+					case _BASECLASS:
+						level -= (9-entry.parms().length);
+						break;
+					case BASECLASS:
+						level -= entry.parms().length;
+						break;
+					case _ANYCLASS:
+					case _ANYCLASSLEVEL:
+					case _CLASS:
+						level -= 9;
+						break;
+					case ANYCLASS:
+					case ANYCLASSLEVEL:
+					case CLASS:
+						level -= entry.parms().length;
+						break;
+					case _GENDER:
+						level -= (9-(entry.parms().length*3));
+						break;
+					case GENDER:
+						level -= (entry.parms().length*3);
+						break;
+					case TATTOO:
+					case _TATTOO:
+					case _FACTION:
+					case FACTION:
+						level -= 9;
+						break;
+					default:
+						break;
+					}
+				}
+			}
+			if(level > 0)
+				level = -1;
+			return ""+level;
+		}
+		else
+		if(code.toUpperCase().startsWith("STAT-"))
+			return "0";
+		return super.getStat(code);
+	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		if(code!=null)
+		{
+			if(code.equalsIgnoreCase("STAT-LEVEL"))
+			{
+
+			}
+			else
+			if(code.equalsIgnoreCase("TONEDOWN"))
+			{
+				setStat("TONEDOWN-MISC",val);
+			}
+			else
+			if((code.equalsIgnoreCase("TONEDOWN-ARMOR"))
+			||(code.equalsIgnoreCase("TONEDOWN-WEAPON"))
+			||(code.equalsIgnoreCase("TONEDOWN-MISC")))
+			{
+				/*
+				final double pct=CMath.s_pct(val);
+				final String s=text();
+				int plusminus=s.indexOf('+');
+				int minus=s.indexOf('-');
+				if((minus>=0)&&((plusminus<0)||(minus<plusminus)))
+					plusminus=minus;
+				while(plusminus>=0)
+				{
+					minus=s.indexOf('-',plusminus+1);
+					plusminus=s.indexOf('+',plusminus+1);
+					if((minus>=0)&&((plusminus<0)||(minus<plusminus)))
+						plusminus=minus;
+				}
+				setMiscText(s);
+				*/
+			}
+		}
+		else
+			super.setStat(code, val);
 	}
 }

@@ -194,4 +194,30 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 			processing=false;
 		}
 	}
+
+	@Override
+	public String getStat(final String code)
+	{
+		if(code == null)
+			return "";
+		if(code.equalsIgnoreCase("STAT-LEVEL"))
+		{
+			int level = 0;
+			for(final Pair<Ability,Integer> p : this.getMySpellsV())
+			{
+				final Ability A=p.first;
+				if(A!=null)
+				{
+					final int mul=1;
+					level += (mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
+				}
+			}
+			return ""+level;
+		}
+		else
+		if(code.toUpperCase().startsWith("STAT-"))
+			return "0";
+		return super.getStat(code);
+	}
+
 }

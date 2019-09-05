@@ -160,4 +160,73 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 			processing=false;
 		}
 	}
+
+
+	@Override
+	public String getStat(final String code)
+	{
+		if(code == null)
+			return "";
+		if(code.equalsIgnoreCase("STAT-LEVEL"))
+		{
+			int level = 0;
+			for(final Pair<Ability,Integer> p : this.getMySpellsV())
+			{
+				final Ability A=p.first;
+				if(A!=null)
+				{
+					final int mul=-1;
+					//if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
+					//	mul=1;
+					level += ((mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID()))/2);
+				}
+			}
+			return ""+level;
+		}
+		else
+		if(code.toUpperCase().startsWith("STAT-"))
+			return "0";
+		return super.getStat(code);
+	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		if(code!=null)
+		{
+			if(code.equalsIgnoreCase("STAT-LEVEL"))
+			{
+
+			}
+			else
+			if(code.equalsIgnoreCase("TONEDOWN"))
+			{
+				setStat("TONEDOWN-MISC",val);
+			}
+			else
+			if((code.equalsIgnoreCase("TONEDOWN-ARMOR"))
+			||(code.equalsIgnoreCase("TONEDOWN-WEAPON"))
+			||(code.equalsIgnoreCase("TONEDOWN-MISC")))
+			{
+				/*
+				final double pct=CMath.s_pct(val);
+				final String s=text();
+				int plusminus=s.indexOf('+');
+				int minus=s.indexOf('-');
+				if((minus>=0)&&((plusminus<0)||(minus<plusminus)))
+					plusminus=minus;
+				while(plusminus>=0)
+				{
+					minus=s.indexOf('-',plusminus+1);
+					plusminus=s.indexOf('+',plusminus+1);
+					if((minus>=0)&&((plusminus<0)||(minus<plusminus)))
+						plusminus=minus;
+				}
+				setMiscText(s);
+				*/
+			}
+		}
+		else
+			super.setStat(code, val);
+	}
 }
