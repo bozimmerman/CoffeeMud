@@ -3062,7 +3062,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(subPiece.tag().equalsIgnoreCase(tagName))
 				choices.addAll(getAllChoices(E,ignoreStats,defPrefix,tagName,subPiece,defined,false));
 		}
-		return selectChoices(E,tagName,ignoreStats,defPrefix,choices,piece,defined);
+		final List<XMLTag> finalChoices = selectChoices(E,tagName,ignoreStats,defPrefix,choices,piece,defined);
+		if(piece.getParmValue("TAGDEFINE")!=null)
+		{
+			final XMLTag copyTag=piece.copyOf();
+			copyTag.parms().remove("INSERT");
+			copyTag.parms().remove("TAGDEFINE");
+			copyTag.parms().remove("PREDEFINE");
+			if(copyTag.parms().containsKey("SELECT"))
+				copyTag.parms().put("SELECT", "ALL");
+			copyTag.contents().clear();
+			copyTag.contents().addAll(finalChoices);
+			defineReward(E,ignoreStats,defPrefix,piece.getParmValue("TAGDEFINE"),piece,copyTag,defined,false); // does contents-define
+		}
+		return finalChoices;
 	}
 
 	protected boolean testCondition(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String condition, final XMLTag piece, final Map<String,Object> defined) throws PostProcessException
