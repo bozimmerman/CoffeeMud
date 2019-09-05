@@ -281,30 +281,46 @@ public class Dusty extends StdAbility
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);
-		if((msg.target()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_GET))
+		if(msg.target()==affected)
 		{
-			final int choice=CMLib.dice().roll(1, 7, -1);
-			switch(choice)
+			if(msg.targetMinor()==CMMsg.TYP_GET)
 			{
-			case 0:
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), null, CMMsg.MASK_ALWAYS|CMMsg.MSG_HANDS, L("<S-NAME> clean(s) the dust off of <T-NAME>.")));
-				break;
-			case 1:
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), null, CMMsg.MASK_ALWAYS|CMMsg.MSG_HANDS, L("<S-NAME> blow(s) the dust off of <T-NAME>.")));
-				break;
-			case 2:
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), null, CMMsg.MASK_ALWAYS|CMMsg.MSG_HANDS, L("<S-NAME> wipe(s) the dust off of <T-NAME>.")));
-				break;
-			case 3:
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), null, CMMsg.MASK_ALWAYS|CMMsg.MSG_HANDS, L("<S-NAME> dust(s) off <T-NAME>.")));
-				break;
-			case 5:
-				break;
-			case 6:
-				break;
-			case 7:
-				break;
+				final int choice=CMLib.dice().roll(1, 7, -1);
+				switch(choice)
+				{
+				case 0:
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), null, CMMsg.MASK_ALWAYS|CMMsg.MSG_HANDS, L("<S-NAME> clean(s) the dust off of <T-NAME>.")));
+					break;
+				case 1:
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), null, CMMsg.MASK_ALWAYS|CMMsg.MSG_HANDS, L("<S-NAME> blow(s) the dust off of <T-NAME>.")));
+					break;
+				case 2:
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), null, CMMsg.MASK_ALWAYS|CMMsg.MSG_HANDS, L("<S-NAME> wipe(s) the dust off of <T-NAME>.")));
+					break;
+				case 3:
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(), msg.target(), null, CMMsg.MASK_ALWAYS|CMMsg.MSG_HANDS, L("<S-NAME> dust(s) off <T-NAME>.")));
+					break;
+				case 5:
+					break;
+				case 6:
+					break;
+				case 7:
+					break;
+				}
+				if(affected != null)
+				{
+					affected.delEffect(this);
+					affected=null;
+				}
+			}
+			else
+			if(msg.targetMinor()==CMMsg.TYP_DROP)
+			{
+				if(affected != null)
+				{
+					affected.delEffect(this);
+					affected=null;
+				}
 			}
 		}
 	}
