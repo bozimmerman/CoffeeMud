@@ -986,14 +986,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return level;
 	}
 
-	@Override
-	public int levelsFromAbility(final Item savedI)
+	protected int levelsFromAbility(final Item savedI)
 	{
 		return savedI.basePhyStats().ability() * 5;
 	}
 
-	@Override
-	public int levelsFromAdjuster(final Item savedI, final Ability ADJ)
+	protected int levelsFromAdjuster(final Item savedI, final Ability ADJ)
 	{
 		int level=0;
 		if(ADJ!=null)
@@ -1003,8 +1001,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return level;
 	}
 
-	@Override
-	public int levelsFromCaster(final Item savedI, final Ability CAST)
+	protected int levelsFromCaster(final Item savedI, final Ability CAST)
 	{
 		int level=0;
 		if(CAST instanceof AbilityContainer)
