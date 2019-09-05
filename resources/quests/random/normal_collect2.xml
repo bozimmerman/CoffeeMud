@@ -18,13 +18,12 @@ limitations under the License.
 See guides/RandomAreas.html for information about documents of this type.
 
 <!-- 
-template: normal_collect1
+template: normal_collect2
 vars: 
     area_name(area name)
     sourcename(mob name)
     targetarea_name(area name)
     multiarea(yes or NO)
-    targetname(mobs name)
     target_item_name(item name)
     collectibles_chance(number0-100)
     num_targets(num items to collect)
@@ -42,9 +41,10 @@ vars:
 	<ANNOUNCER_ROOM>"$source_room_id"</ANNOUNCER_ROOM>
 	<ANNOUNCER_NAME>"$source_name"</ANNOUNCER_NAME>
 	<QUEST_ANNOUNCECHANNEL>$announcechannel</QUEST_ANNOUNCECHANNEL>
-	<HOLDERS_MASK>-HOME "+$target_area_name" -NAMES "+$target_name"</HOLDERS_MASK>
+	<HOLDER_AREAS>"$target_area_name"</HOLDERS_MASK>
+	<HOLDER_ROOMS>ALL</HOLDER_ROOMS>
 	<COLLECTABLES_ITEMS>${SELECT: ANY\. from $target_item}</COLLECTABLES_ITEMS>
-	<COLLECTABLES_CHANCE>100</COLLECTABLES_CHANCE>
+	<COLLECTABLES_CHANCE>$[($target_area_size / $num_targets)*2]</COLLECTABLES_CHANCE>
 	<NUM_COLLECTABLES>$num_targets</NUM_COLLECTABLES>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
 	<GOLD>$gold_amount_awarded</GOLD>
@@ -67,20 +67,17 @@ vars:
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
 
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
-	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
-		<OBJECT condition="$target_int &gt; 2">SELECT: ANY\. FROM $dungeon_junk</OBJECT>
-		<OBJECT condition="$target_int &lt;= 2">SELECT: ANY\. from $target\resources</OBJECT>
-	</OBJECT>
+	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">SELECT: ANY\. FROM $dungeon_junk</OBJECT>
 
 	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>>
 	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$reason_verb</STRING>>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>>
 	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
-		<STRING CONDITION="$target_int &gt; 2">$reason_theyoweme</STRING>
+		<STRING $reason_theyoweme</STRING>
 		<STRING CONDITION="$source_align &gt; 5000">$reason_ilostthem</STRING>
 		<STRING CONDITION="$source_align &gt; 5000">$reason_welosteachother</STRING>
 		<STRING>$reason_gencollect</STRING>
-		<STRING CONDITION="$target_int &gt; 2 and $source_align &gt; 5000">$reason_idoforthem</STRING>
+		<STRING CONDITION="$source_align &gt; 5000">$reason_idoforthem</STRING>
 		<STRING CONDITION="$source_align &lt; -5000">$reason_idotothem</STRING>
 		<STRING CONDITION="$source_align &lt; -5000">$reason_wedotoeachother</STRING>
 	</STRING>
@@ -111,11 +108,9 @@ vars:
 		<STRING ACTION="PREPEND">$reason_desc</STRING>
 		<STRING ACTION="APPEND">$reason_short</STRING>
 		<STRING SELECT="Any-1" ACTION="APPEND">
-			<STRING condition="$source_align &lt; 0">You'll need to $hurt_them_phrase, of course.</STRING>
-			<STRING condition="$source_align &gt; 0">You'll need to $hurt_them_phrase, I'm afraid.</STRING>
-			<STRING>Just $hurt_them_phrase and take it from their corpses.</STRING>
-			<STRING>${C:hurt_them_phrase}, before they do you.</STRING>
-			<STRING>The ${p:target_item_name} can be found on their corpses.</STRING>
+			<STRING>You'll find them around $target_area_name.</STRING>
+			<STRING>Just look around $target_area_name.</STRING>
+			<STRING>They are all around $target_area_name.</STRING>
 		</STRING>
 	</STRING>
 
@@ -275,7 +270,7 @@ vars:
 		</OBJECT>
 		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and intelligence>8 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
-				AND (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets) &gt; 0
+				AND (SELECT:count\. from area\rooms) &gt; $num_targets
 		</OBJECT>
 	</OBJECT>
 	
@@ -288,9 +283,9 @@ vars:
 	</OBJECT>
 	
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
-		<STRING>${SELECT:mean\level FROM $target_area\npcs WHERE name=$target_name}</STRING>
+		<STRING>${SELECT:MED_LEVEL from $source_area}</STRING>
 	</STRING>
-		
+	
 	<STRING ID="source_area_name" SELECT="any-1" DEFINE="source_area_name">
 		<STRING>${SELECT:name from $source_area}</STRING>
 	</STRING>
@@ -320,30 +315,13 @@ vars:
 		<STRING>${SELECT:alignment from $source}</STRING>
 	</STRING>
 
-	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
-		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in affbehav}</STRING>
-	</STRING>
-
-	<OBJECT ID="target" DEFINE="target" SELECT="any-1">
-		<OBJECT CONDITION="$targetname!=''"">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
-		<OBJECT CONDITION="$targetname=''">SELECT: ANY\. FROM $target_area\mobs WHERE name\count>$num_targets</OBJECT>
-	</OBJECT>
-
-	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">
-		<STRING>${SELECT:name from $target}</STRING>
-	</STRING>
-
-	<STRING ID="target_int" SELECT="any-1" DEFINE="target_int">
-		<STRING>${SELECT:intelligence from $target}</STRING>
-	</STRING>
-	
 	<STRING ID="multiarea" define="multiarea">NO</STRING>
 	
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
 		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
 		<OBJECT pickweight=100 condition="$targetarea_name = '' and $multiarea != 'YES'">SELECT: any\. from $source_area</OBJECT>
 		<OBJECT pickweight=1 condition="$targetarea_name = '' and $multiarea = 'YES'">
-			SELECT: ANY\. FROM areas WHERE (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets) &gt; 0
+			SELECT: ANY\. FROM areas WHERE (SELECT:count\. from area\rooms) &gt; $num_targets
 		</OBJECT>
 	</OBJECT>
 
@@ -351,6 +329,9 @@ vars:
 		<STRING>${SELECT:name from $target_area</STRING>
 	</STRING>	
 	
+	<STRING ID="target_area_size" SELECT="any-1" DEFINE="target_area_size">
+		<STRING>${SELECT:count\. from $target_area\rooms</STRING>
+	</STRING>	
 </QUEST>
 
 

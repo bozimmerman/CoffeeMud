@@ -248,7 +248,7 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 		}
 		else
 		if(code.toUpperCase().startsWith("STAT-"))
-			return "0";
+			return "";
 		return super.getStat(code);
 	}
 

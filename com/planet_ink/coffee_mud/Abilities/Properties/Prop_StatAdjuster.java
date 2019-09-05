@@ -148,10 +148,7 @@ public class Prop_StatAdjuster extends Property
 	{
 		if((code!=null)
 		&&(code.equalsIgnoreCase("STAT-LEVEL")))
-		{
-			final int level = 0;
-			return ""+level;
-		}
+			return "0";
 		return super.getStat(code);
 	}
 
@@ -161,7 +158,6 @@ public class Prop_StatAdjuster extends Property
 		if((code!=null)
 		&&(code.equalsIgnoreCase("STAT-LEVEL")))
 		{
-
 		}
 		else
 			super.setStat(code, val);

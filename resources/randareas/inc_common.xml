@@ -138,6 +138,14 @@ See guides/RandomAreas.html for information about documents of this type.
 		<ITEM class="metacraft:any-MasterArmorsmithing &lt; $level_range"  ability="1?5" condition="$level_range&gt;10"/>
 		<ITEM class="metacraft:any-MasterTailoring &lt; $level_range"  ability="1?5" condition="$level_range&gt;10"/>
 		<ITEM class="metacraft:any-MasterLeatherWorking &lt; $level_range"  ability="1?5" condition="$level_range&gt;10"/>
+		<ITEM class="metacraft:any-Weaponsmithing &lt; $level_range" ability="1?5"/>
+		<ITEM class="metacraft:any-Armorsmithing &lt; $level_range"  ability="1?5"/>
+		<ITEM class="metacraft:any-Tailoring &lt; $level_range"  ability="1?5"/>
+		<ITEM class="metacraft:any-LeatherWorking &lt; $level_range"  ability="1?5"/>
+		<ITEM class="metacraft:any-MasterWeaponsmithing &lt; $level_range"  ability="1?5" condition="$level_range&gt;10"/>
+		<ITEM class="metacraft:any-MasterArmorsmithing &lt; $level_range"  ability="1?5" condition="$level_range&gt;10"/>
+		<ITEM class="metacraft:any-MasterTailoring &lt; $level_range"  ability="1?5" condition="$level_range&gt;10"/>
+		<ITEM class="metacraft:any-MasterLeatherWorking &lt; $level_range"  ability="1?5" condition="$level_range&gt;10"/>
 	</ITEM>
 </ITEM>
 

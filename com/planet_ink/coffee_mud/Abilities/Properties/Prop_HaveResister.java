@@ -425,6 +425,88 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		if(statVar != null)
 		{
 			statVar=statVar.toUpperCase();
+			if(statVar.equals("STAT-LEVEL"))
+			{
+				int levelChange=0;
+				if(checkProtection("NON-MAGICAL-WEAPONS"))
+					levelChange += 5*getProtection("NON-MAGICAL-WEAPONS");
+				if(checkProtection("NON-SILVER-WEAPONS"))
+					levelChange += 5*getProtection("NON-SILVER-WEAPONS");
+				if(checkProtection("WEAPONS"))
+					levelChange += 10*getProtection("WEAPONS");
+				if(checkProtection("BLUNT"))
+					levelChange += 3*getProtection("BLUNT");
+				if(checkProtection("PIERCE"))
+					levelChange += 3*getProtection("PIERCE");
+				if(checkProtection("SLASH"))
+					levelChange += 3*getProtection("SLASH");
+				if(checkProtection("HOLY"))
+					levelChange += 2*getProtection("HOLY");
+				if(checkProtection("UNHOLY"))
+					levelChange += 2*getProtection("UNHOLY");
+				if(checkProtection("DISEASE"))
+					levelChange += 2*getProtection("DISEASE");
+				if(checkProtection("POISON"))
+					levelChange += 2*getProtection("POISON");
+				if(checkProtection("TELEPORT"))
+					levelChange += 2*getProtection("TELEPORT");
+				for(final String acode : Ability.ACODE_DESCS_)
+					if(checkProtection(acode))
+						levelChange += 5*getProtection(acode);
+				for(final String domain : Ability.DOMAIN_DESCS)
+					if(checkProtection(domain))
+						levelChange += getProtection(domain);
+
+				for(final int i : CharStats.CODES.SAVING_THROWS())
+				{
+					if(adjCharStats.getStat(i)!=0)
+					{
+						switch(i)
+						{
+						case CharStats.STAT_SAVE_GAS:
+						case CharStats.STAT_SAVE_FIRE:
+						case CharStats.STAT_SAVE_ELECTRIC:
+						case CharStats.STAT_SAVE_MIND:
+						case CharStats.STAT_SAVE_COLD:
+						case CharStats.STAT_SAVE_ACID:
+						case CharStats.STAT_SAVE_UNDEAD:
+						case CharStats.STAT_SAVE_JUSTICE:
+						case CharStats.STAT_SAVE_WATER:
+						case CharStats.STAT_SAVE_PARALYSIS:
+							levelChange+= adjCharStats.getStat(i);
+							break;
+						case CharStats.STAT_SAVE_POISON:
+						case CharStats.STAT_SAVE_DISEASE:
+							levelChange+= adjCharStats.getStat(i)*2;
+							break;
+						case CharStats.STAT_SAVE_SPELLS:
+						case CharStats.STAT_SAVE_PRAYERS:
+						case CharStats.STAT_SAVE_SONGS:
+						case CharStats.STAT_SAVE_CHANTS:
+						case CharStats.STAT_SAVE_TRAPS:
+						case CharStats.STAT_SAVE_BLUNT:
+						case CharStats.STAT_SAVE_PIERCE:
+						case CharStats.STAT_SAVE_SLASH:
+							levelChange+= adjCharStats.getStat(i)*5;
+							break;
+						case CharStats.STAT_SAVE_GENERAL:
+							levelChange+= adjCharStats.getStat(i)*50;
+							break;
+						case CharStats.STAT_SAVE_MAGIC:
+							levelChange+= adjCharStats.getStat(i)*10;
+							break;
+						case CharStats.STAT_CRIT_CHANCE_PCT_WEAPON:
+						case CharStats.STAT_CRIT_CHANCE_PCT_MAGIC:
+						case CharStats.STAT_CRIT_DAMAGE_PCT_WEAPON:
+						case CharStats.STAT_CRIT_DAMAGE_PCT_MAGIC:
+							levelChange+= adjCharStats.getStat(i);
+							break;
+						}
+					}
+				}
+				return ""+levelChange;
+			}
+			else
 			if(statVar.startsWith("TIDBITS"))
 			{
 				String parmText = text().toUpperCase();

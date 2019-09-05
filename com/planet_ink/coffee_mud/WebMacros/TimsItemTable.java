@@ -238,6 +238,44 @@ public class TimsItemTable extends StdWebMacro
 		return false;
 	}
 
+	public Ability getBaseAdjusterAbility(final List<Ability> props)
+	{
+		final String[] stats=new String[] {"STAT-ARMOR", "STAT-ATTACK", "STAT-DAMAGE"};
+		for(final Ability A : props)
+		{
+			if(CMath.bset(A.flags(), Ability.FLAG_ADJUSTER))
+			{
+				for(final String stat : stats)
+				{
+					final String val=A.getStat(stat);
+					if((val.length()>0)&&(!val.equals("0")))
+						return A;
+				}
+			}
+		}
+		return null;
+	}
+
+	public Ability getBaseCasterAbility(final List<Ability> props)
+	{
+		for(final Ability A : props)
+		{
+			if(CMath.bset(A.flags(), Ability.FLAG_CASTER))
+				return A;
+		}
+		return null;
+	}
+
+	public Ability getBaseResisterAbility(final List<Ability> props)
+	{
+		for(final Ability A : props)
+		{
+			if(CMath.bset(A.flags(), Ability.FLAG_RESISTER))
+				return A;
+		}
+		return null;
+	}
+
 	public String addRow(final Item I)
 	{
 		final StringBuffer row=new StringBuffer("");
@@ -245,12 +283,11 @@ public class TimsItemTable extends StdWebMacro
 		row.append("<TR>");
 		row.append("<TD>"+I.name()+"</TD>");
 		row.append("<TD>"+lvl+"</TD>");
-		final int[] castMul=new int[1];
-		final Ability[] RET=CMLib.itemBuilder().getTimsAdjResCast(I,castMul);
-		final Ability ADJ=RET[0];
-		final Ability RES=RET[1];
-		final Ability CAST=RET[2];
-		final int tlvl=CMLib.itemBuilder().timsLevelCalculator(I,ADJ,RES,CAST,castMul[0]);
+		final List<Ability> props=CMLib.itemBuilder().getTimsAdjResCast(I);
+		final Ability adjA=this.getBaseAdjusterAbility(props);
+		final Ability resisterA=this.getBaseResisterAbility(props);
+		final Ability casterA=this.getBaseCasterAbility(props);
+		final int tlvl=CMLib.itemBuilder().timsLevelCalculator(I,props);
 		row.append("<TD>"+tlvl+"</TD>");
 		int diff=tlvl-lvl; if(diff<0) diff=diff*-1;
 		row.append("<TD>"+diff+"</TD>");
@@ -277,14 +314,14 @@ public class TimsItemTable extends StdWebMacro
 			row.append("<TD>&nbsp;</TD><TD>"+I.basePhyStats().attackAdjustment()+"</TD>");
 			row.append("<TD>"+I.basePhyStats().damage()+"</TD>");
 		}
-		if(ADJ!=null)
-			row.append("<TD>"+ADJ.text()+"</TD>");
+		if(adjA!=null)
+			row.append("<TD>"+adjA.text()+"</TD>");
 		else row.append("<TD>&nbsp;</TD>");
-		if(CAST!=null)
-			row.append("<TD>"+CAST.text()+"</TD>");
+		if(casterA!=null)
+			row.append("<TD>"+casterA.text()+"</TD>");
 		else row.append("<TD>&nbsp;</TD>");
-		if(RES!=null)
-			row.append("<TD>"+RES.text()+"</TD>");
+		if(resisterA!=null)
+			row.append("<TD>"+resisterA.text()+"</TD>");
 		else row.append("<TD>&nbsp;</TD>");
 		row.append("</TR>");
 		return row.toString();

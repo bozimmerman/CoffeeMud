@@ -43,12 +43,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	@Override
 	public int timsLevelCalculator(final Item I)
 	{
-		final int[] castMul=new int[1];
-		final Ability[] RET=getTimsAdjResCast(I,castMul);
-		final Ability ADJ=RET[0];
-		final Ability RES=RET[1];
-		final Ability CAST=RET[2];
-		return timsLevelCalculator(I,ADJ,RES,CAST,castMul[0]);
+		final List<Ability> props=getTimsAdjResCast(I);
+		return timsLevelCalculator(I,props);
 	}
 
 	protected double timsDmgModifier(final int weaponClass)
@@ -115,7 +111,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public int timsLevelCalculator(final Item itemI, final Ability ADJ, final Ability RES, final Ability CAST, final int castMul)
+	public int timsLevelCalculator(final Item itemI, final List<Ability> props)
 	{
 		int level=0;
 		final Item savedI=itemI;
@@ -126,11 +122,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		int otherDam=0;
 		int otherAtt=0;
 		int otherArm=0;
-		if(ADJ!=null)
+		for(final Ability A : props)
 		{
-			otherArm=-CMath.s_int(ADJ.getStat("STAT-ARMOR"));
-			otherAtt=CMath.s_int(ADJ.getStat("STAT-ATTACK"));
-			otherDam=CMath.s_int(ADJ.getStat("STAT-DAMAGE"));
+			otherArm=-CMath.s_int(A.getStat("STAT-ARMOR"));
+			otherAtt=CMath.s_int(A.getStat("STAT-ATTACK"));
+			otherDam=CMath.s_int(A.getStat("STAT-DAMAGE"));
 		}
 		final int curArmor=savedI.basePhyStats().armor()+otherArm;
 		final double curAttack=savedI.basePhyStats().attackAdjustment()+otherAtt;
@@ -202,38 +198,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			level=useArray[which];
 		}
 		level+=itemI.basePhyStats().ability()*5;
-		if(CAST!=null)
-		{
-			final String ID=CAST.ID().toUpperCase();
-			final Vector<Ability> theSpells=new Vector<Ability>();
-			String names=CAST.text();
-			int del=names.indexOf(';');
-			while(del>=0)
-			{
-				final String thisOne=names.substring(0,del);
-				final Ability A=CMClass.getAbility(thisOne);
-				if(A!=null)
-					theSpells.addElement(A);
-				names=names.substring(del+1);
-				del=names.indexOf(';');
-			}
-			Ability A=CMClass.getAbility(names);
-			if(A!=null)
-				theSpells.addElement(A);
-			for(int v=0;v<theSpells.size();v++)
-			{
-				A=theSpells.elementAt(v);
-				int mul=1;
-				if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
-					mul=-1;
-				if(ID.indexOf("HAVE")>=0)
-					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
-				else
-					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID())/2);
-			}
-		}
-		if(ADJ!=null)
-			level += CMath.s_int(ADJ.getStat("STAT-LEVEL"));
+		for(final Ability A : props)
+			level += CMath.s_int(A.getStat("STAT-LEVEL"));
 		//savedI.destroy();
 		//IworkI.destroy(); // this was a copy
 		return level;
@@ -255,11 +221,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public Ability[] getTimsAdjResCast(final Item I, final int[] castMul)
+	public List<Ability> getTimsAdjResCast(final Item I)
 	{
+		final List<Ability> props=new Vector<Ability>();
 		Ability A;
-		final Ability[] RET=new Ability[3]; // adj, res, cast
-		castMul[0]=1;
 		for(int i=0;i<I.numEffects();i++)
 		{
 			A=I.fetchEffect( i );
@@ -269,34 +234,35 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				final int triggers=((TriggeredAffect) A).triggerMask();
 				if( CMath.bset( flags, Ability.FLAG_ADJUSTER )
 				&& (( triggers&(TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
-					RET[0]=A;
+					props.add(A);
 				else
 				if( CMath.bset( flags, Ability.FLAG_RESISTER )
 				&& (( triggers&(TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
-					RET[1]=A;
+					props.add(A);
+				else
+				if( CMath.bset( flags, Ability.FLAG_ZAPPER )
+				&& (( triggers&(TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
+					props.add(A);
+				else
+				if( CMath.bset( flags, Ability.FLAG_ENABLER )
+				&& (( triggers&(TriggeredAffect.TRIGGER_WEAR_WIELD|TriggeredAffect.TRIGGER_GET|TriggeredAffect.TRIGGER_MOUNT ))>0))
+					props.add(A);
 				else
 				if( CMath.bset( flags, Ability.FLAG_CASTER )
 				&& (triggers > 0))
-				{
-					RET[2]=A;
-					if((triggers & TriggeredAffect.TRIGGER_HITTING_WITH)>0)
-						castMul[0]=-1;
-				}
+					props.add(A);
 			}
 		}
-		return RET;
+		return props;
 	}
 
 	private void reportChangesDestroyOldI(final Item oldI, final Item newI, final StringBuffer changes,final int OTLVL, final int TLVL)
 	{
 		if((changes == null)||(oldI==null))
 			return;
-		final Ability[] RET=getTimsAdjResCast(newI,new int[1]);
-		final Ability ADJ=RET[0];
-		final Ability RES=RET[1];
-		final Ability CAST=RET[2];
-		final int[] LVLS=getItemLevels(newI,ADJ,RES,CAST);
-		final int TLVL2=totalLevels(LVLS);
+		final List<Ability> props=getTimsAdjResCast(newI);
+		final Map<Object,Integer> levels=getItemLevels(newI,props);
+		final int TLVL2=totalLevels(levels);
 
 		changes.append(newI.name()+":"+newI.basePhyStats().level()+"("+OTLVL+")=>"+TLVL2+"("+TLVL+"), ");
 		for(int i=0;i<oldI.getStatCodes().length;i++)
@@ -347,12 +313,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				lvl=I.basePhyStats().level();
 			I.basePhyStats().setLevel(lvl);
 			I.phyStats().setLevel(lvl);
-			final Ability[] RET=getTimsAdjResCast(I,new int[1]);
-			final Ability ADJ=RET[0];
-			final Ability RES=RET[1];
-			final Ability CAST=RET[2];
-			int[] LVLS=getItemLevels(I,ADJ,RES,CAST);
-			int TLVL=totalLevels(LVLS);
+			final List<Ability> props=getTimsAdjResCast(I);
+			Map<Object,Integer> levelsMap=getItemLevels(I,props);
+			int TLVL=totalLevels(levelsMap);
 			final int OTLVL=TLVL;
 			if(lvl<0)
 			{
@@ -371,67 +334,81 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if((TLVL>0)&&(TLVL>Math.round(CMath.mul(lvl,1.1))))
 			{
 				//int FTLVL=TLVL;
-				final Vector<Integer> illegalNums=new Vector<Integer>();
-				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
-				while((TLVL>Math.round(CMath.mul(lvl,1.1)))&&(illegalNums.size()<4))
+				final Set<Object> illegalThings=new HashSet<Object>();
+				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((adjA!=null)?adjA.text():"null"));
+				while((TLVL>Math.round(CMath.mul(lvl,1.1)))
+				&&(illegalThings.size()<levelsMap.size()))
 				{
-					int highIndex=-1;
-					for(int i=0;i<LVLS.length;i++)
-						if(((highIndex<0)||(LVLS[i]>LVLS[highIndex]))
-						&&(!illegalNums.contains(Integer.valueOf(i))))
-							highIndex=i;
-					if(highIndex<0)
-						break;
-					switch(highIndex)
+					Object highestObject=null;
+					for(final Object o : levelsMap.keySet())
 					{
-					case 0:
-						if(I instanceof Weapon)
+						if((highestObject==null)
+						||(levelsMap.get(o).intValue() > levelsMap.get(highestObject).intValue()))
 						{
-							final String s=(ADJ!=null)?ADJ.text():"";
-							final int oldAtt=I.basePhyStats().attackAdjustment();
-							final int oldDam=I.basePhyStats().damage();
-							toneDownWeapon((Weapon)I,ADJ);
-							if((I.basePhyStats().attackAdjustment()==oldAtt)
-							&&(I.basePhyStats().damage()==oldDam)
-							&&((ADJ==null)||(ADJ.text().equals(s))))
-								illegalNums.addElement(Integer.valueOf(0));
+							if(!illegalThings.contains(o))
+								highestObject=o;
 						}
-						else
-						{
-							final String s=(ADJ!=null)?ADJ.text():"";
-							final int oldArm=I.basePhyStats().armor();
-							toneDownArmor((Armor)I,ADJ);
-							if((I.basePhyStats().armor()==oldArm)
-							&&((ADJ==null)||(ADJ.text().equals(s))))
-								illegalNums.addElement(Integer.valueOf(0));
-						}
+					}
+					if(highestObject==null)
 						break;
-					case 1:
+					if(highestObject instanceof Weapon)
+					{
+						final Ability adjA=getBaseAdjusterAbility(props);
+						final String s=(adjA!=null)?adjA.text():"";
+						final int oldAtt=I.basePhyStats().attackAdjustment();
+						final int oldDam=I.basePhyStats().damage();
+						toneDownWeapon((Weapon)I,adjA);
+						if((I.basePhyStats().attackAdjustment()==oldAtt)
+						&&(I.basePhyStats().damage()==oldDam)
+						&&((adjA==null)||(adjA.text().equals(s))))
+							illegalThings.add(highestObject);
+					}
+					else
+					if(highestObject instanceof Item)
+					{
+						final Ability adjA=getBaseAdjusterAbility(props);
+						final String s=(adjA!=null)?adjA.text():"";
+						final int oldArm=I.basePhyStats().armor();
+						toneDownArmor((Armor)I,adjA);
+						if((I.basePhyStats().armor()==oldArm)
+						&&((adjA==null)||(adjA.text().equals(s))))
+							illegalThings.add(highestObject);
+					}
+					else
+					if((highestObject instanceof String)
+					&&(((String)highestObject).equalsIgnoreCase("ABILITY")))
+					{
 						if(I.basePhyStats().ability()>0)
 							I.basePhyStats().setAbility(I.basePhyStats().ability()-1);
 						else
-							illegalNums.addElement(Integer.valueOf(1));
-						break;
-					case 2:
-						illegalNums.addElement(Integer.valueOf(2));
-						// nothing I can do!;
-						break;
-					case 3:
-						if(ADJ==null)
-							illegalNums.addElement(Integer.valueOf(3));
-						else
-						{
-							final String oldTxt=ADJ.text();
-							ADJ.setStat("TONEDOWN-MISC", "90%");
-							if(ADJ.text().equals(oldTxt))
-								illegalNums.addElement(Integer.valueOf(3));
-						}
-						break;
+							illegalThings.add("ABILITY");
 					}
-					LVLS=getItemLevels(I,ADJ,RES,CAST);
-					TLVL=totalLevels(LVLS);
+					else
+					if(highestObject instanceof Ability)
+					{
+						final Ability A=(Ability)highestObject;
+						final int prevLevel=CMath.s_int(A.getStat("STAT-LEVEL"));
+						A.setStat("TONEDOWN-MISC", "90%");
+						if(CMath.s_int(A.getStat("STAT-LEVEL"))==prevLevel)
+						{
+							A.setStat("TONEDOWN-MISC", "90%");
+							if(CMath.s_int(A.getStat("STAT-LEVEL"))==prevLevel)
+							{
+								A.setStat("TONEDOWN-MISC", "50%");
+								if(CMath.s_int(A.getStat("STAT-LEVEL"))==prevLevel)
+									illegalThings.add(highestObject);
+							}
+						}
+					}
+					else
+					{
+						Log.errOut(ID(),"What is "+highestObject+"??");
+						illegalThings.add(highestObject);
+					}
+					levelsMap=getItemLevels(I,props);
+					TLVL=totalLevels(levelsMap);
 				}
-				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+FTLVL+"->"+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
+				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+FTLVL+"->"+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((adjA!=null)?adjA.text():"null"));
 				fixRejuvItem(I);
 				if(CMLib.flags().isCataloged(I))
 					CMLib.catalog().updateCatalog(I);
@@ -520,13 +497,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	{
 		final Hashtable<String,String> vals=new Hashtable<String,String>(); // return obj
 		final int materialvalue=RawMaterial.CODES.VALUE(material);
-		final int[] castMul=new int[1];
-		final Ability[] RET=getTimsAdjResCast(I,castMul);
-		final Ability ADJ=RET[0];
-		final Ability CAST=RET[2];
+		final List<Ability> props=getTimsAdjResCast(I);
 		level-=levelsFromAbility(I);
-		level-=levelsFromAdjuster(I,ADJ);
-		level-=levelsFromCaster(I,CAST);
+		for(final Ability A : props)
+			level-=CMath.s_int(A.getStat("STAT-LEVEL"));
 
 		if(I instanceof Weapon)
 		{
@@ -833,13 +807,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public void toneDownWeapon(final Weapon W, final Ability ADJ)
+	public void toneDownWeapon(final Weapon W, final Ability adjA)
 	{
-		if(ADJ!=null)
+		if(adjA!=null)
 		{
-			final String oldTxt=ADJ.text();
-			ADJ.setStat("TONEDOWN-WEAPON", "90%");
-			if(!ADJ.text().equals(oldTxt))
+			final String oldTxt=adjA.text();
+			adjA.setStat("TONEDOWN-WEAPON", "90%");
+			if(!adjA.text().equals(oldTxt))
 			{
 				W.recoverPhyStats();
 				return;
@@ -859,14 +833,14 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public void toneDownArmor(final Armor A, final Ability ADJ)
+	public void toneDownArmor(final Armor A, final Ability adjA)
 	{
 		boolean fixit=true;
-		if(ADJ!=null)
+		if(adjA!=null)
 		{
-			final String oldTxt=ADJ.text();
-			ADJ.setStat("TONEDOWN-ARMOR", "90%");
-			if(!ADJ.text().equals(oldTxt))
+			final String oldTxt=adjA.text();
+			adjA.setStat("TONEDOWN-ARMOR", "90%");
+			if(!adjA.text().equals(oldTxt))
 				fixit=false;
 		}
 		if(fixit&&(A.basePhyStats().armor()>=10))
@@ -877,42 +851,60 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		A.recoverPhyStats();
 	}
 
-	public int[] getItemLevels(final Item I, final Ability ADJ, final Ability RES, final Ability CAST)
+	public Map<Object,Integer> getItemLevels(final Item I, final List<Ability> props)
 	{
-		final int[] LVLS=new int[4];
-		LVLS[0]=timsBaseLevel(I,ADJ);
-		LVLS[1]=levelsFromAbility(I);
-		LVLS[2]=levelsFromCaster(I,CAST);
-		LVLS[3]=levelsFromAdjuster(I,ADJ);
-		return LVLS;
+		final Map<Object,Integer> map=new HashMap<Object,Integer>();
+		map.put(I,Integer.valueOf(timsBaseLevel(I,this.getBaseAdjusterAbility(props))));
+		map.put("ABILITY",Integer.valueOf(levelsFromAbility(I)));
+		for(final Ability A : props)
+			map.put(A, Integer.valueOf(CMath.s_int(A.getStat("STAT-LEVEL"))));
+		return map;
 	}
 
-	public int totalLevels(final int[] levels)
+	public int totalLevels(final Map<Object,Integer> totalLevels)
 	{
-		int lvl=levels[0];
-		for(int i=1;i<levels.length;i++)
-			lvl+=levels[i];
+		int lvl=0;
+		for(final Integer I : totalLevels.values())
+			lvl += I.intValue();
 		return lvl;
+	}
+
+	public Ability getBaseAdjusterAbility(final List<Ability> props)
+	{
+		final String[] stats=new String[] {"STAT-ARMOR", "STAT-ATTACK", "STAT-DAMAGE"};
+		for(final Ability A : props)
+		{
+			if(CMath.bset(A.flags(), Ability.FLAG_ADJUSTER))
+			{
+				for(final String stat : stats)
+				{
+					final String val=A.getStat(stat);
+					if((val.length()>0)&&(!val.equals("0")))
+						return A;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override
 	public int timsBaseLevel(final Item I)
 	{
-		final Ability[] RET=getTimsAdjResCast(I,new int[1]);
-		return timsBaseLevel(I,RET[0]);
+		final List<Ability> props=getTimsAdjResCast(I);
+		return timsBaseLevel(I,getBaseAdjusterAbility(props));
 	}
 
-	public int timsBaseLevel(final Item I, final Ability ADJ)
+	public int timsBaseLevel(final Item I, final Ability adjA)
 	{
 		int level=0;
 		int otherDam=0;
 		int otherAtt=0;
 		int otherArm=0;
-		if(ADJ!=null)
+		if(adjA!=null)
 		{
-			otherArm=-CMath.s_int(ADJ.getStat("STAT-ARMOR"));
-			otherAtt=CMath.s_int(ADJ.getStat("STAT-ATTACK"));
-			otherDam=CMath.s_int(ADJ.getStat("STAT-DAMAGE"));
+			otherArm=-CMath.s_int(adjA.getStat("STAT-ARMOR"));
+			otherAtt=CMath.s_int(adjA.getStat("STAT-ATTACK"));
+			otherDam=CMath.s_int(adjA.getStat("STAT-DAMAGE"));
 		}
 		final int curArmor=I.basePhyStats().armor()+otherArm;
 		final double curAttack=I.basePhyStats().attackAdjustment()+otherAtt;
@@ -983,43 +975,14 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				which=useArray.length-1;
 			level=useArray[which];
 		}
+		if(!CMLib.flags().isRemovable(I))
+			level-=5;
 		return level;
 	}
 
 	protected int levelsFromAbility(final Item savedI)
 	{
 		return savedI.basePhyStats().ability() * 5;
-	}
-
-	protected int levelsFromAdjuster(final Item savedI, final Ability ADJ)
-	{
-		int level=0;
-		if(ADJ!=null)
-		{
-			level += CMath.s_int(ADJ.getStat("STAT-LEVEL"));
-		}
-		return level;
-	}
-
-	protected int levelsFromCaster(final Item savedI, final Ability CAST)
-	{
-		int level=0;
-		if(CAST instanceof AbilityContainer)
-		{
-			final boolean haver = (CAST instanceof TriggeredAffect) ? CMath.bset(((TriggeredAffect)CAST).triggerMask(),TriggeredAffect.TRIGGER_GET) : false;
-			for(final Enumeration<Ability> a=((AbilityContainer)CAST).abilities();a.hasMoreElements();)
-			{
-				final Ability A=a.nextElement();
-				int mul=1;
-				if(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
-					mul=-1;
-				if(haver)
-					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
-				else
-					level+=(mul*CMLib.ableMapper().lowestQualifyingLevel(A.ID())/2);
-			}
-		}
-		return level;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1141,7 +1104,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						if(A2!=null)
 							A.setMiscText(A.text()+";"+A2.ID());
 					}
-					I.basePhyStats().setLevel(I.basePhyStats().level()+levelsFromCaster(I,A));
+					I.basePhyStats().setLevel(I.basePhyStats().level()+CMath.s_int(A.getStat("STAT-LEVEL")));
 				}
 				if(A==null)
 					return I;
@@ -1176,7 +1139,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						if(A2!=null)
 							A.setMiscText(A.text()+";"+A2.ID());
 					}
-					I.basePhyStats().setLevel(I.basePhyStats().level()+levelsFromCaster(I,A));
+					I.basePhyStats().setLevel(I.basePhyStats().level()+CMath.s_int(A.getStat("STAT-LEVEL")));
 				}
 				if(A==null)
 					return I;

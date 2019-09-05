@@ -224,7 +224,14 @@ public class Where extends StdCommand
 						mobOnly=true;
 						zapperMask=true;
 						who=who.substring(8).trim();
-						mob.tell(L("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
+						String desc=CMLib.masking().maskDesc(who);
+						if(desc.equalsIgnoreCase("Anyone") && (who.length()>0))
+						{
+							desc+="... and I doubt you meant that.";
+							mob.tell(L("^xMask entered:^?^.^N @x1\n\r",desc));
+							return false;
+						}
+						mob.tell(L("^xMask used:^?^.^N @x1\n\r",desc));
 						compiledZapperMask=CMLib.masking().maskCompile(who);
 					}
 					else
@@ -233,7 +240,14 @@ public class Where extends StdCommand
 						itemOnly=true;
 						zapperMask=true;
 						who=who.substring(9).trim();
-						mob.tell(L("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
+						String desc=CMLib.masking().maskDesc(who);
+						if(desc.equalsIgnoreCase("Anyone") && (who.length()>0))
+						{
+							desc+="... and I doubt you meant that.";
+							mob.tell(L("^xMask entered:^?^.^N @x1\n\r",desc));
+							return false;
+						}
+						mob.tell(L("^xMask used:^?^.^N @x1\n\r",desc));
 						compiledZapperMask=CMLib.masking().maskCompile(who);
 					}
 					else
@@ -241,7 +255,14 @@ public class Where extends StdCommand
 					{
 						mobOnly=true;
 						zapperMask2=true;
-						mob.tell(L("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
+						String desc=CMLib.masking().maskDesc(who);
+						if(desc.equalsIgnoreCase("Anyone") && (who.length()>0))
+						{
+							desc+="... and I doubt you meant that.";
+							mob.tell(L("^xMask entered:^?^.^N @x1\n\r",desc));
+							return false;
+						}
+						mob.tell(L("^xMask used:^?^.^N @x1\n\r",desc));
 						who=who.substring(9).trim();
 					}
 					else
@@ -249,7 +270,14 @@ public class Where extends StdCommand
 					{
 						itemOnly=true;
 						zapperMask2=true;
-						mob.tell(L("^xMask used:^?^.^N @x1\n\r",CMLib.masking().maskDesc(who)));
+						String desc=CMLib.masking().maskDesc(who);
+						if(desc.equalsIgnoreCase("Anyone") && (who.length()>0))
+						{
+							desc+="... and I doubt you meant that.";
+							mob.tell(L("^xMask entered:^?^.^N @x1\n\r",desc));
+							return false;
+						}
+						mob.tell(L("^xMask used:^?^.^N @x1\n\r",desc));
 						who=who.substring(10).trim();
 					}
 

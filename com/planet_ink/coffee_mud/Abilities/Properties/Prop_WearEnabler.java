@@ -216,7 +216,7 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 		}
 		else
 		if(code.toUpperCase().startsWith("STAT-"))
-			return "0";
+			return "";
 		return super.getStat(code);
 	}
 

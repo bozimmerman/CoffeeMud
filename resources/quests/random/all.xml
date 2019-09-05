@@ -33,5 +33,6 @@ See guides/RandomAreas.html for information about documents of this type.
   
 <STRING load="/resources/quests/random/normal_capture1.xml" CONDITION="$quest_template='normal_capture1'"/>
 <STRING load="/resources/quests/random/normal_collect1.xml" CONDITION="$quest_template='normal_collect1'"/>
+<STRING load="/resources/quests/random/normal_collect2.xml" CONDITION="$quest_template='normal_collect2'"/>
 
   

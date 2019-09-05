@@ -35,15 +35,15 @@ import java.util.*;
 public interface ItemBalanceLibrary extends CMLibrary
 {
 	public int timsLevelCalculator(Item I);
-	public int timsLevelCalculator(Item I, Ability ADJ, Ability RES, Ability CAST, int castMul);
+	public int timsLevelCalculator(Item I, List<Ability> props);
 	public boolean fixRejuvItem(Item I);
-	public void toneDownWeapon(Weapon W, Ability ADJ);
-	public void toneDownArmor(Armor A, Ability ADJ);
+	public void toneDownWeapon(Weapon W, Ability adjA);
+	public void toneDownArmor(Armor A, Ability adjA);
 	public boolean toneDownValue(Item I);
 	public int timsBaseLevel(Item I);
 	public void balanceItemByLevel(Item I);
 	public boolean itemFix(Item I, int lvlOr0, StringBuffer changes);
-	public Ability[] getTimsAdjResCast(Item I, int[] castMul);
+	public List<Ability> getTimsAdjResCast(Item I);
 	public Item enchant(Item I, int pct);
 	public Map<String, String> timsItemAdjustments(Item I,
 										 int level,

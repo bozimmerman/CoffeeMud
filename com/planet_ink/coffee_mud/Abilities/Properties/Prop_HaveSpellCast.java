@@ -141,7 +141,7 @@ public class Prop_HaveSpellCast extends Prop_SpellAdder
 		}
 		else
 		if(code.toUpperCase().startsWith("STAT-"))
-			return "0";
+			return "";
 		return super.getStat(code);
 	}
 
