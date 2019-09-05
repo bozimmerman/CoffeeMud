@@ -633,7 +633,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 							level += (((Integer)changes[i+1]).intValue() * 10);
 						else
 						if(CMParms.indexOf(CharStats.CODES.MAXCODES(),((Integer)changes[i]).intValue())>=0)
-							level += (((Integer)changes[i+1]).intValue() * 15);
+							level += (((Integer)changes[i+1]).intValue() * 90);
 						else
 						if(CMParms.indexOf(CharStats.CODES.SAVING_THROWS(),((Integer)changes[i]).intValue())>=0)
 							level += (((Integer)changes[i+1]).intValue() / 20);
@@ -706,7 +706,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 						case PhyStats.STAT_HEIGHT:
 							break;
 						case PhyStats.NUM_STATS:
-							level+= (amt / 20);
+							level+= (amt / .2);
 							break;
 						}
 					}
@@ -745,7 +745,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 						case PhyStats.STAT_HEIGHT:
 							break;
 						case PhyStats.NUM_STATS:
-							level+= (((Double) changes[c + 1]).intValue() * 5);
+							level+= (((Double) changes[c + 1]).intValue() * 10);
 							break;
 						}
 					}
