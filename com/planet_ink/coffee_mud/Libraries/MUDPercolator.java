@@ -3129,15 +3129,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				catch(final MQLException e)
 				{
-					Log.errOut(e.getMessage());
+					Log.errOut("Error processing condition "+condition+": "+e.getMessage());
 				}
 				catch(final CMException e)
 				{
-					Log.errOut(e.getMessage());
+					Log.errOut("Failure processing condition "+condition+": "+e.getMessage());
 				}
 			}
-			fixed.putAll(defined);
-			final boolean test= CMStrings.parseStringExpression(condition.toUpperCase(),fixed, true);
+			final Map<String,Object> finalDefined = new HashMap<String,Object>();
+			finalDefined.putAll(defined);
+			finalDefined.putAll(fixed);
+			final boolean test= CMStrings.parseStringExpression(condition.toUpperCase(),finalDefined, true);
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 				Log.debugOut("MudPercolator","TEST "+piece.tag()+": "+condition+"="+test);
 			return test;
@@ -3146,7 +3148,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			if(e instanceof PostProcessException)
 				throw (PostProcessException)e;
-			Log.errOut("Generate",e.getMessage()+": "+condition);
+			Log.errOut("Generate","Condition procesing failure: "+e.getMessage()+": "+condition);
 			try {
 				CMStrings.parseStringExpression(condition,fixed, true);
 			}
