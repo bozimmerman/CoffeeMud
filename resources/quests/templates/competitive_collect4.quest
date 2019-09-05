@@ -223,7 +223,7 @@ GIVE_PROG all
 			return
 		endif
 		if islike($o '$COLLECTABLE_ITEMS')
-			mpsetvar $n $QUEST_ID_COLLECTED ++
+			mpsetvar $n $QUEST_ID_COLLECTED +$%ITEMCOUNT($o)%
 			mpjunk $o
 			if var($n $QUEST_ID_COLLECTED >= $NUM_COLLECTABLES)
 				mpsetvar $i $QUEST_ID_REWARDED $n

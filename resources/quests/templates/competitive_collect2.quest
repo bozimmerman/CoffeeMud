@@ -270,7 +270,7 @@ GIVE_PROG all
 			return
 		endif
 		if questobj($o *)
-			mpsetvar $n $QUEST_ID_COLLECTED ++
+			mpsetvar $n $QUEST_ID_COLLECTED +$%ITEMCOUNT($o)%
 			mpjunk $o
 			if var($n $QUEST_ID_COLLECTED >= $NUM_COLLECTABLES)
 				mpsetvar $i $QUEST_ID_REWARDED $n
@@ -335,14 +335,14 @@ SPEECH_PROG p i accept
 <DATA>
 GET_PROG all
 	if VAR($n $QUEST_ID_ACCEPTED != '')
-		MPSETVAR $n $QUEST_ID_GOT ++
+		MPSETVAR $n $QUEST_ID_GOT +$%ITEMCOUNT($t)%
 		mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
 	endif
 	
 ~
 DROP_PROG all
 	if VAR($n $QUEST_ID_ACCEPTED != '')
-		MPSETVAR $n $QUEST_ID_GOT --
+		MPSETVAR $n $QUEST_ID_GOT -$%ITEMCOUNT($t)%
 	endif
 	
 ~
