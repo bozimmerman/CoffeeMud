@@ -122,6 +122,23 @@ public class Prop_RoomRedirect extends Property
 		return null;
 	}
 
+	public boolean isReallyHere(final MOB mob)
+	{
+		if(mob == null)
+			return false;
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+		if(affected instanceof Room)
+			return (R==affected) && (R.isInhabitant(mob));
+		else
+		if(affected instanceof Area)
+		{
+			return (R.getArea()==affected) && (R.isInhabitant(mob));
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -151,7 +168,8 @@ public class Prop_RoomRedirect extends Property
 				break;
 			case CMMsg.TYP_LOOK:
 			case CMMsg.TYP_EXAMINE:
-				if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
+				if((!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
+				&&(isReallyHere(msg.source())))
 				{
 					final Room realRoom=this.getRedirectRoom(msg.source());
 					if(realRoom != null)
