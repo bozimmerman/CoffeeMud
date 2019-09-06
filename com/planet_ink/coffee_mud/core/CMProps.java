@@ -1874,7 +1874,13 @@ public class CMProps extends Properties
 
 	private static final String getRawListFileEntry(final String key)
 	{
-		final String rscKey="PARSED_LISTFILE".intern();
+		final CMProps p=p();
+		String listFileNameStr;
+		if(p.containsKey("LISTFILE"))
+			listFileNameStr=p.getProperty("LISTFILE");
+		else
+			listFileNameStr = props['0'].getProperty("LISTFILE");
+		final String rscKey=("PARSED_LISTFILE"+(listFileNameStr.hashCode())).intern();
 		Properties rawListData=(Properties)Resources.getResource(rscKey);
 		if(rawListData==null)
 		{
@@ -1884,12 +1890,6 @@ public class CMProps extends Properties
 				if(rawListData==null)
 				{
 					rawListData=new Properties();
-					final CMProps p=p();
-					String listFileNameStr;
-					if(p.containsKey("LISTFILE"))
-						listFileNameStr=p.getProperty("LISTFILE");
-					else
-						listFileNameStr = props['0'].getProperty("LISTFILE");
 					final List<String> listFileNames=CMParms.parseCommas(listFileNameStr, true);
 					for(final String listFileName : listFileNames)
 					{
