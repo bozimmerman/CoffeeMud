@@ -212,7 +212,7 @@ vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING CONDITION="$source_class='Mage' or $source_class='Necromancer'">I need the ${p:target_item_name} of $target_area_name for my magical experiments.</STRING>
-			<STRING>${c:p:reason_verb} ${p:target_item_name} from $target_area_name for me.</STRING>
+			<STRING>${c:reason_verb} ${p:target_item_name} from $target_area_name for me.</STRING>
 			<STRING>${c:target_area_name} has all my ${p:target_item_name}. Get them back for me.</STRING>
 			<STRING>Bring me ${p:target_item_name}.</STRING>
 		</STRING>

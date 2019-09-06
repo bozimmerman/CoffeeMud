@@ -124,6 +124,7 @@ public class Generate extends StdCommand
 		final StringBuffer xml = file.textUnformatted();
 		final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
 		final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
+		definedIDs.putAll(CMParms.parseEQParms(commands,3,commands.size()));
 		CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
 		final String typeName = commands.get(1);
 		String objectType = typeName.toUpperCase().trim();
