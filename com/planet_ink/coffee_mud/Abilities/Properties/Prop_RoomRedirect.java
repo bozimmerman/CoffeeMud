@@ -165,6 +165,29 @@ public class Prop_RoomRedirect extends Property
 		{
 			switch(msg.targetMinor())
 			{
+			case CMMsg.TYP_LIFE:
+				if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
+				{
+					final Room realRoom=this.getRedirectRoom(msg.source());
+					if(realRoom != null)
+					{
+						msg.setTarget(realRoom);
+						realRoom.executeMsg(myHost, msg);
+						msg.addTrailerRunnable(new Runnable()
+						{
+							final MOB mob=msg.source();
+							final Room R=realRoom;
+							@Override
+							public void run()
+							{
+								if((!R.isInhabitant(mob))
+								||(mob.location()!=R))
+									R.bringMobHere(mob, true);
+							}
+						});
+					}
+				}
+				break;
 			case CMMsg.TYP_ENTER:
 			case CMMsg.TYP_RECALL:
 				if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
