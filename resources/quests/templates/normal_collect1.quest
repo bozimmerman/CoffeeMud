@@ -75,6 +75,12 @@
 #See help on ZAPPERMASK for information on zapper mask syntax.
 #$HOLDERS_MASK=$ZAPPERMASK
 #
+#Holders response: 
+#You may leave this blank, and the item holding mobs will behave normally.  However.
+#if you specify a bit of speech, then the npcs will say it and then attack the 
+#player when they enter the room.
+#$HOLDERS_RESPONSE=($STRING)=
+#
 #!QUESTMAKER_PAGE Specify the Collectables
 #The Collectables are the items that will be given to holders you specified.
 #
@@ -267,10 +273,29 @@ QUEST_TIME_PROG * 1
 ~
 
 CNCLMSG_PROG STO=DEATH ALL
-	if ISNPC($n) AND ISLIKE($n $HOLDERS_MASK)
+	if ISNPC($n) AND ISLIKE($n $HOLDERS_MASK) EVAL('$HOLDERS_RESPONSE' = '')
 		if rand($COLLECTABLES_CHANCE)
 			mpforce $n mpoload fromfile $QUEST_ID_items.xml any
+			MPQSET * QUESTOBJ $b
+			MPEFFECT QuestBound $b
 		endif
+	endif
+~
+
+ENTRY_PROG 100
+	if EVAL($n == $i) AND EVAL('$HOLDERS_RESPONSE' != '')
+		for $0 = 1 to '$%NUMMOBSROOM(*)%
+			MPARGSET $1 $%ROOMMOB($0)%
+			if ISNPC($1) AND ISLIKE($1 $HOLDERS_MASK) AND !ISFOLLOW($1)
+				if rand($COLLECTABLES_CHANCE)
+					mpforce $1 mpoload fromfile $QUEST_ID_items.xml any
+					MPQSET * QUESTOBJ $b
+					MPEFFECT QuestBound $b
+					mpforce $1 sayto "$i" $HOLDERS_RESPONSE
+					mpforce $1 kill $i
+				endif
+			endif
+		next
 	endif
 ~
 

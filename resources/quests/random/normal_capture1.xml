@@ -108,13 +108,13 @@ settable vars:
 		</STRING>
 	</STRING>
 
-	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>>
-	<STRING ID="quest_losespeech" PREDEFINE="reason=$reason">$quest_losespeech</STRING>>
-	<STRING ID="quest_fightspeech" PREDEFINE="reason=$reason">$quest_fightspeech</STRING>>
-	<STRING ID="quest_surrenderspeech" PREDEFINE="reason=$reason">$quest_surrenderspeech</STRING>>
-	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>>
-	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$reason_verb</STRING>>
-	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>>
+	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>
+	<STRING ID="quest_losespeech" PREDEFINE="reason=$reason">$quest_losespeech</STRING>
+	<STRING ID="quest_fightspeech" PREDEFINE="reason=$reason">$quest_fightspeech</STRING>
+	<STRING ID="quest_surrenderspeech" PREDEFINE="reason=$reason">$quest_surrenderspeech</STRING>
+	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>
+	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$reason_verb</STRING>
+	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
 	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
 		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
 		<STRING>$reason_partytime</STRING>
@@ -503,10 +503,10 @@ settable vars:
 		<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
 		<OBJECT pickweight=55555 condition="$area_name != ''" and '${SELECT: name FROM area}' = ''>SELECT: ANY\. FROM areas where NAME=$area_name</OBJECT> 
 		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea = 'YES'">
-			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and intelligence>8 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and current_intelligence>5 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
 		</OBJECT>
 		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
-			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and intelligence>8 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and current_intelligence>5 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
 				AND (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets) &gt; 0
 		</OBJECT>
 	</OBJECT>
@@ -516,7 +516,7 @@ settable vars:
 	<OBJECT ID="source" SELECT="Pick-1" DEFINE="source">
 		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
 		<OBJECT pickweight=55555 condition="$sourcename != ''" and '${SELECT: name FROM mob}' = ''>SELECT: . FROM $source_area\npcs WHERE name = $sourcename</OBJECT> 
-		<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\npcs WHERE name\count=1 and intelligence>8 and "Aggressive" notin affbehav  and "QuestBound" notin affbehav</OBJECT>
+		<OBJECT PICKWEIGHT=1 CONDITION="'${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\npcs WHERE name\count=1 and current_intelligence>5 and "Aggressive" notin affbehav  and "QuestBound" notin affbehav</OBJECT>
 	</OBJECT>
 	
 	<STRING ID="source_area_name" SELECT="any-1" DEFINE="source_area_name">

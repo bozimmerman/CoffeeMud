@@ -2582,9 +2582,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		if((state==STATE_POSTFUNCQUOTE)
 		||(state==STATE_INFUNCQUOTE))
-			throw new ScriptParseException("Unclosed "+lastQuote+" somewhere");
+			throw new ScriptParseException("Unclosed "+lastQuote+" in "+evaluable);
 		if(depth>0)
-			throw new ScriptParseException("Unclosed ( somewhere");
+			throw new ScriptParseException("Unclosed (  in "+evaluable);
 		return CMParms.toStringArray(V);
 	}
 
@@ -4657,7 +4657,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case 36: // ishere
 			{
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				if(lastKnownLocation!=null)
+				if((arg1.length()>0)&&(lastKnownLocation!=null))
 					returnable=((lastKnownLocation.findItem(arg1)!=null)||(lastKnownLocation.fetchInhabitant(arg1)!=null));
 				else
 					returnable=false;

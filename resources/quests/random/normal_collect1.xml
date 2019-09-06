@@ -28,6 +28,7 @@ vars:
     targetname(mobs name)
     target_item_name(item name)
     collectibles_chance(number0-100)
+	aggression(YES,NO)
     num_targets(num items to collect)
 	xp_amount_awarded
 	gold_amount_awarded
@@ -44,6 +45,7 @@ vars:
 	<ANNOUNCER_NAME>"$source_name"</ANNOUNCER_NAME>
 	<QUEST_ANNOUNCECHANNEL>$announcechannel</QUEST_ANNOUNCECHANNEL>
 	<HOLDERS_MASK>-HOME "+$target_area_name" -NAMES "+$target_name"</HOLDERS_MASK>
+	<HOLDERS_RESPONSE>$quest_fightspeech</HOLDERS_RESPONSE>
 	<COLLECTABLES_ITEMS>${SELECT: ANY\. from $target_item}</COLLECTABLES_ITEMS>
 	<COLLECTABLES_CHANCE>100</COLLECTABLES_CHANCE>
 	<NUM_COLLECTABLES>$num_targets</NUM_COLLECTABLES>
@@ -73,9 +75,13 @@ vars:
 		<OBJECT condition="$target_int &lt;= 2">SELECT: ANY\. from $target\resources</OBJECT>
 	</OBJECT>
 
-	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>>
-	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$reason_verb</STRING>>
-	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>>
+	<STRING ID="quest_fightspeech" PREDEFINE="reason=$reason" SELECT="Any">
+		<STRING CONDITION="$aggression='YES'">$quest_fightspeech</STRING>
+		<STRING CONDITION="$aggression!='YES'"></STRING>
+	</STRING>
+	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>
+	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$reason_verb</STRING>
+	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
 	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
 		<STRING CONDITION="$target_int &gt; 2">$reason_theyoweme</STRING>
 		<STRING CONDITION="$source_align &gt; 5000">$reason_ilostthem</STRING>
@@ -120,7 +126,13 @@ vars:
 		</STRING>
 	</STRING>
 
-	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>>
+	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>
+
+	<STRING id="quest_generic_fight_speeches" SELECT="Any-1">
+		<STRING>${c:target_item_name} is mine!</STRING>
+		<STRING>${c:source_name} is not getting my $target_item_name!</STRING>
+		<STRING>I would rather $hurt_verb you than give $target_item_name to $source_name.</STRING>
+	</STRING>
 
 	<STRING id="quest_generic_loser_speeches" SELECT="Any-1">
 		<STRING>I guess I'll need to $reason_verb them myself.</STRING>
@@ -140,11 +152,17 @@ vars:
 		<STRING define="reason_verbed">$verb_collected</STRING>
 		<STRING define="reason_verb">$verb_collect</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>Tell $source_name I aint payin!</STRING>
+			<STRING>${c:source_name} aint getting nothin from me.</STRING>
+			<STRING>I don't owe $source_name anything!</STRING>
+			<STRING>Leave me alone, I don't owe $source_name anything!</STRING>
+		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} owe me ${p:target_item_name} for my hard work!</STRING>
 			<STRING>The ${P:target_name} owe me some ${p:target_item_name}.</STRING>
 			<STRING>The ${P:target_name} owe my $noun_anyrelation some ${p:target_item_name}, but haven't made good.</STRING>
-			<STRING>My $noun_anyrelation is owed some ${p:target__item_name} by the ${p:target_name}.</STRING>
+			<STRING>My $noun_anyrelation is owed some ${p:target_item_name} by the ${p:target_name}.</STRING>
 			<STRING>I'm given much to the ${p:target_name}, and they owe me ${p:target_item_name}.</STRING>
 		</STRING>
 	</STRING>
@@ -158,6 +176,7 @@ vars:
 			<STRING>Let the celebration begin!</STRING>"
 			<STRING>We can finally begin the festivities!</STRING>"
 		</STRING>
+		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I'm throwing a party and the ${p:target_name} are providing ${target_item_name}.</STRING>
 			<STRING>It's my birthday, and ${p:target_item_name} from ${p:target_name} are my gifts.</STRING>
@@ -176,6 +195,7 @@ vars:
 			<STRING>I'm so relieved! Thank you for your assistance.</STRING>
 			<STRING>Thanks you so much for finding them!</STRING>
 		</STRING>
+		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I lost my ${p:target_item_name} and need you to find them.  I'm pretty sure the ${p:target_name} have them</STRING>
 			<STRING>My $noun_anyrelation has lost some ${p:target_item_name} and I need you to find them.  I'm pretty sure the ${p:target_name} have them</STRING>
@@ -194,6 +214,7 @@ vars:
 			<STRING>Thank you for your assistance.</STRING>
 			<STRING>Thanks you so much for getting these!</STRING>
 		</STRING>
+		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${C:p:target_item_name} are important to my experiments.  Please get $verb_collected from $target_name.</STRING>
 			<STRING>${C:p:target_item_name} are important to my $noun_anyrelation`s experiments.  Please $verb_collected them from $target_name.</STRING>
@@ -208,6 +229,7 @@ vars:
 		<STRING define="reason_verbed">$verb_collected</STRING>
 		<STRING define="reason_verb">$verb_collect</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I need several ${p:target_item_name} $verb_collected and brought to me.</STRING>
 			<STRING>I need ${p:target_item_name} $verb_collected for me.  You can get them from ${p:target_name}.</STRING>
@@ -222,6 +244,7 @@ vars:
 		<STRING define="reason_verbed">$verb_collected</STRING>
 		<STRING define="reason_verb">$verb_collect</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} have the ${p:target_item_name} that my $noun_anyrelation requires.</STRING>
 			<STRING>I wish to give ${p:target_item_name} to my $noun_anyrelation, and ${p:target_name} has them.</STRING>
@@ -234,9 +257,10 @@ vars:
 		<STRING define="reason_verbed">$verb_stolen</STRING>
 		<STRING define="reason_verb">$verb_steal</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} must be $hurt_verbed.  Do it and $reason_verbed their ${p:target_item_name} as proof.</STRING>
-			<STRING>I am hungry for ${p:target_name}.  Bring me some of their ${p:target_item_names}.</STRING>
+			<STRING>I am hungry for ${p:target_name}.  Bring me some of their ${p:target_item_name}.</STRING>
 			<STRING CONDITION="$target_int &lt; 4">I am making a special $source_area_name stew! Bring me the ${p:target_item_name} of ${p:target_name}.</STRING>
 			<STRING>The ${p:target_name} have ${p:target_item_name} and I do not.</STRING>
 		</STRING>
@@ -246,6 +270,7 @@ vars:
 		<STRING define="reason_verbed">$verb_stolen</STRING>
 		<STRING define="reason_verb">$verb_steal</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech">$quest_generic_fight_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING CONDITION="$source_class='Mage' or $source_class='Necromancer'">I need the ${p:target_item_name} of ${p:target_name} for my magical experiments.</STRING>
 			<STRING>${c:reason_verb} ${p:target_item_name} from ${p:target_name} for me.</STRING>
@@ -272,10 +297,10 @@ vars:
 		<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
 		<OBJECT pickweight=55555 condition="$area_name != ''" and '${SELECT: name FROM area}' = ''>SELECT: ANY\. FROM areas WHERE name = $area_name</OBJECT> 
 		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea = 'YES'">
-			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and intelligence>8 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and current_intelligence>5 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
 		</OBJECT>
 		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
-			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and intelligence>8 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and current_intelligence>5 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
 				AND (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets) &gt; 0
 		</OBJECT>
 	</OBJECT>
@@ -285,7 +310,7 @@ vars:
 	<OBJECT ID="source" SELECT="Pick-1" DEFINE="source">
 		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
 		<OBJECT pickweight=55555 condition="$sourcename != ''" and '${SELECT: name FROM mob}' = ''>SELECT: . FROM $source_area\npcs WHERE name = $sourcename</OBJECT> 
-		<OBJECT PICKWEIGHT=1 CONDITION="$sourcename = ''" and ${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\npcs WHERE name\count=1 and intelligence>8 and "Aggressive" notin affbehav  and "QuestBound" notin affbehav</OBJECT>
+		<OBJECT PICKWEIGHT=1 CONDITION="$sourcename = ''" and ${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\npcs WHERE name\count=1 and current_intelligence>5 and "Aggressive" notin affbehav  and "QuestBound" notin affbehav</OBJECT>
 	</OBJECT>
 	
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
@@ -352,6 +377,10 @@ vars:
 		<STRING>${SELECT:name from $target_area</STRING>
 	</STRING>	
 	
+	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1">
+		<STRING PICKWEIGHT=50>NO</STRING>
+		<STRING PICKWEIGHT="$target_level">YES</STRING>
+	</STRING>
 </QUEST>
 
 
