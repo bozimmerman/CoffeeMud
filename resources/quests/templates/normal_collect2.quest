@@ -168,7 +168,7 @@ ONCE_PROG 100
 ALL_GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) AND !QUESTSCRIPTED($n *)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			sayto "$n" $QUEST_NOTIFYSTRING -- just say '^yi accept^?' or 'i accept $QUEST_NAME' to take on this quest.
+			sayto "$n" $QUEST_NOTIFYSTRING -- just say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
 		endif
 	endif
 ~
@@ -216,6 +216,20 @@ GIVE_PROG all
 ~
 
 SPEECH_PROG p i accept $QUEST_NAME
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !QUESTSCRIPTED($n *)
+				sayto "$n" $QUEST_INSTRUCTIONSSTRING
+				mpqset * STATISTICS ACCEPTED
+				mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+			else
+				sayto "$n" Yes, yes, I know .. now off with you.
+			endif
+		endif
+	endif
+~
+
+SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if !QUESTSCRIPTED($n *)

@@ -42,7 +42,7 @@ See guides/RandomAreas.html for information about documents of this type.
 </STRING>
 
 <STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
-	<STRING>$[1?91]</STRING>
+	<STRING>1</STRING>
 </STRING>
 
 <STRING ID="verb_captured" predefine="verb_capture=$verb_capture">$verb_captured</STRING>
@@ -94,14 +94,15 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING>$hurt_verb the $adj_nasty lot of them</STRING>
 </STRING>
 
+<STRING ID="hurt_verbed" PREDEFINE="hurt_verb">$hurt_verbed</STRING>
 <STRING ID="hurt_verb" SELECT="Any-1">
-	<STRING>hurt</STRING>
-	<STRING>kill</STRING>
-	<STRING>beat</STRING>
-	<STRING>pound</STRING>
-	<STRING>murder</STRING>
-	<STRING>violently convince</STRING>
-	<STRING>end</STRING>
+	<STRING define="hurt_verbed=hurt">hurt</STRING>
+	<STRING define="hurt_verbed=killed">kill</STRING>
+	<STRING define="hurt_verbed=beaten">beat</STRING>
+	<STRING define="hurt_verbed=pounded">pound</STRING>
+	<STRING define="hurt_verbed=murdered">murder</STRING>
+	<STRING define="hurt_verbed=violently convinced">violently convince</STRING>
+	<STRING define="hurt_verbed=ended">end</STRING>
 </STRING>
 
 <STRING ID="hurt_adverb" SELECT="Any-1">

@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.MQLException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -280,6 +281,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				if(proceedWithLoad)
 				{
+					if(CMSecurity.isDebugging(DbgFlag.MUDPERCOLATOR))
+						Log.debugOut("MUDPercolator", "Loading XML file "+load);
 					XMLTag loadedPiece=(XMLTag)defined.get("SYSTEM_LOADED_XML_FILES");
 					if(loadedPiece==null)
 					{
@@ -322,6 +325,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 					}
 				}
+				if(CMSecurity.isDebugging(DbgFlag.MUDPERCOLATOR))
+					Log.debugOut("MUDPercolator", "Loading '"+localid+"' from file "+from);
 				final CMFile file = new CMFile(load,null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
 				if(file.exists() && file.canRead())
 				{
