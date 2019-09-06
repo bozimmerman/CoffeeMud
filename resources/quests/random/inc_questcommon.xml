@@ -41,10 +41,6 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING>$[3?6]</STRING>
 </STRING>
 
-<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
-	<STRING>1</STRING>
-</STRING>
-
 <STRING ID="verb_captured" predefine="verb_capture=$verb_capture">$verb_captured</STRING>
 <STRING ID="verb_capture" define="verb_capture" SELECT="Any-1">
 	<STRING define="verb_captured=captured">capture</STRING>

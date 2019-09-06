@@ -275,6 +275,10 @@ vars:
 		<STRING>${SELECT:MED_LEVEL from $source_area}</STRING>
 	</STRING>
 	
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+		<STRING>$target_level</STRING>
+	</STRING>
+	
 	<STRING ID="source_area_name" SELECT="any-1" DEFINE="source_area_name">
 		<STRING>${SELECT:name from $source_area}</STRING>
 	</STRING>
