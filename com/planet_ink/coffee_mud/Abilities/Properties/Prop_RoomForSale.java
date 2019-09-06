@@ -427,6 +427,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					Log.warnOut("Property owned by non-existant player "+T.getOwnerName()+" is now lost: "+T.getUniqueLotID());
 					T.setOwnerName("");
 					T.updateLot(null);
+					CMLib.database().DBUpdateRoom(R);
 					return new int[] {-1, 0};
 				}
 			}
