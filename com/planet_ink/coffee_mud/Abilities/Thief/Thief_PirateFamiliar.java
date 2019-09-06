@@ -173,7 +173,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 					affectableStats.setDamage(M.basePhyStats().damage());
 					M.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(M));
 					affectableStats.setSpeed(M.basePhyStats().speed());
-					M.setExperience(CMLib.leveler().getLevelExperience(M.basePhyStats().level()));
+					M.setExperience(CMLib.leveler().getLevelExperience(M, M.basePhyStats().level()));
 				}
 			}
 		}
@@ -306,7 +306,7 @@ public class Thief_PirateFamiliar extends ThiefSkill
 		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
 		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
-		newMOB.setExperience(CMLib.leveler().getLevelExperience(newMOB.basePhyStats().level()));
+		newMOB.setExperience(CMLib.leveler().getLevelExperience(newMOB, newMOB.basePhyStats().level()));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		CMLib.factions().setAlignment(newMOB,Faction.Align.GOOD);

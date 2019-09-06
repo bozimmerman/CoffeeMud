@@ -9179,8 +9179,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(((MOB)newTarget).getExpNeededLevel()<Integer.MAX_VALUE))
 					{
 						final int baseLevel=newTarget.basePhyStats().level();
-						final int lastLevelExpNeeded=(baseLevel<=1)?0:CMLib.leveler().getLevelExperience(baseLevel-1);
-						final int thisLevelExpNeeded=CMLib.leveler().getLevelExperience(baseLevel);
+						final int lastLevelExpNeeded=(baseLevel<=1)?0:CMLib.leveler().getLevelExperience((MOB)newTarget, baseLevel-1);
+						final int thisLevelExpNeeded=CMLib.leveler().getLevelExperience((MOB)newTarget, baseLevel);
 						t=(int)Math.round(CMath.mul(thisLevelExpNeeded-lastLevelExpNeeded,
 											CMath.div(CMath.s_int(amtStr.substring(0,amtStr.length()-1)),100.0)));
 					}
@@ -9206,8 +9206,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(((MOB)newTarget).getExpNeededLevel()<Integer.MAX_VALUE))
 					{
 						final int baseLevel=newTarget.basePhyStats().level();
-						final int lastLevelExpNeeded=(baseLevel<=1)?0:CMLib.leveler().getLevelExperience(baseLevel-1);
-						final int thisLevelExpNeeded=CMLib.leveler().getLevelExperience(baseLevel);
+						final int lastLevelExpNeeded=(baseLevel<=1)?0:CMLib.leveler().getLevelExperience((MOB)newTarget, baseLevel-1);
+						final int thisLevelExpNeeded=CMLib.leveler().getLevelExperience((MOB)newTarget, baseLevel);
 						t=(int)Math.round(CMath.mul(thisLevelExpNeeded-lastLevelExpNeeded,
 											CMath.div(CMath.s_int(amtStr.substring(0,amtStr.length()-1)),100.0)));
 					}

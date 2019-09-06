@@ -36,20 +36,22 @@ public interface ExpLevelLibrary extends CMLibrary
 {
 	/**
 	 * Returns how much experience a player must have to be the given level.
-	 *
+	 * @param mob TODO
 	 * @param level the level to base the exp on
+	 *
 	 * @return the amount of experiene required to be the given level
 	 */
-	public int getLevelExperience(int level);
+	public int getLevelExperience(MOB mob, int level);
 
 	/**
 	 * Returns how much experience a player must gain at this level to advance
 	 * to the next.
-	 *
+	 * @param mob TODO
 	 * @param level the level to check at
+	 *
 	 * @return the amount of experience
 	 */
-	public int getLevelExperienceJustThisLevel(int level);
+	public int getLevelExperienceJustThisLevel(MOB mob, int level);
 
 	public void handleExperienceChange(CMMsg msg);
 

@@ -254,7 +254,7 @@ public class StdMOB implements MOB
 	@Override
 	public int getExpNextLevel()
 	{
-		return CMLib.leveler().getLevelExperience(basePhyStats().level());
+		return CMLib.leveler().getLevelExperience(this, basePhyStats().level());
 	}
 
 	@Override
@@ -262,7 +262,7 @@ public class StdMOB implements MOB
 	{
 		if (basePhyStats().level() <= 1)
 			return 0;
-		final int neededLowest = CMLib.leveler().getLevelExperience(basePhyStats().level() - 2);
+		final int neededLowest = CMLib.leveler().getLevelExperience(this, basePhyStats().level() - 2);
 		return neededLowest;
 	}
 

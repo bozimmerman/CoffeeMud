@@ -39,7 +39,7 @@ import java.util.*;
 */
 public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 {
-	protected int experienceCap = -1;
+	protected final int[] experienceCaps = new int[256];
 
 	@Override
 	public String ID()
@@ -228,7 +228,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.baseState().setMovement(getLevelMove(mob));
 		if(mob.getWimpHitPoint()>0)
 			mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
-		mob.setExperience(getLevelExperience(mob.basePhyStats().level()));
+		mob.setExperience(getLevelExperience(mob, mob.basePhyStats().level()));
 		return mob;
 	}
 
@@ -409,12 +409,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 	protected void checkLevelDown(final MOB mob)
 	{
-		int neededLowest=getLevelExperience(mob.basePhyStats().level()-2);
+		int neededLowest=getLevelExperience(mob, mob.basePhyStats().level()-2);
 		if((mob.getExperience()<neededLowest)
 		&&(mob.basePhyStats().level()>1))
 		{
 			unLevel(mob);
-			neededLowest=getLevelExperience(mob.basePhyStats().level()-2);
+			neededLowest=getLevelExperience(mob, mob.basePhyStats().level()-2);
 		}
 	}
 
@@ -588,7 +588,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 
 		if((mob.basePhyStats().level() < CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
-		||(mob.getExperience()<getGainedExperienceCap()))
+		||(mob.getExperience()<getGainedExperienceCap(mob)))
 		{
 			mob.setExperience(mob.getExperience()+amount);
 			if(pStats != null)
@@ -664,7 +664,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 
 		if((mob.basePhyStats().level() < CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
-		||(mob.getExperience()<getGainedExperienceCap()))
+		||(mob.getExperience()<getGainedExperienceCap(mob)))
 		{
 			mob.setExperience(mob.getExperience()+amount);
 			if(pStats!=null)
@@ -731,21 +731,29 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return true;
 	}
 
-	protected int getGainedExperienceCap()
+	protected int getGainedExperienceCap(final MOB mob)
 	{
-		if(experienceCap < 0)
-		{
-			experienceCap = (int)Math.round(CMath.mul(getLevelExperience(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)), 1.02));
-		}
-		return experienceCap;
+		final int threadId;
+		if((mob!=null)&&(mob.session()!=null))
+			threadId=mob.session().getGroupID();
+		else
+			threadId=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		if(experienceCaps[threadId] <= 0)
+			experienceCaps[threadId] = (int)Math.round(CMath.mul(getLevelExperience(mob, CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)), 1.02));
+		return experienceCaps[threadId];
 	}
 
 	@Override
-	public int getLevelExperience(final int level)
+	public int getLevelExperience(final MOB mob, final int level)
 	{
 		if(level<0)
 			return 0;
-		final int[] levelingChart = CMProps.getListFileIntList(CMProps.ListFile.EXP_CHART);
+		final int threadId;
+		if((mob!=null)&&(mob.session()!=null))
+			threadId=mob.session().getGroupID();
+		else
+			threadId=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		final int[] levelingChart = CMProps.instance((char)threadId)._getListFileIntList(CMProps.ListFile.EXP_CHART);
 		if(level<levelingChart.length)
 			return levelingChart[level];
 		final int lastDiff=levelingChart[levelingChart.length-1] - levelingChart[levelingChart.length-2];
@@ -753,11 +761,16 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public int getLevelExperienceJustThisLevel(final int level)
+	public int getLevelExperienceJustThisLevel(final MOB mob, final int level)
 	{
 		if(level<0)
 			return 0;
-		final int[] levelingChart = CMProps.getListFileIntList(CMProps.ListFile.EXP_CHART);
+		final int threadId;
+		if((mob!=null)&&(mob.session()!=null))
+			threadId=mob.session().getGroupID();
+		else
+			threadId=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		final int[] levelingChart = CMProps.instance((char)threadId)._getListFileIntList(CMProps.ListFile.EXP_CHART);
 		if(level==0)
 			return levelingChart[0];
 		else
@@ -1197,7 +1210,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public boolean postExperienceToAllAboard(final Physical possibleShip, final int amount, Physical target)
+	public boolean postExperienceToAllAboard(final Physical possibleShip, final int amount, final Physical target)
 	{
 		boolean posted = false;
 		if(possibleShip instanceof BoardableShip)
@@ -1260,6 +1273,6 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	@Override
 	public void propertiesLoaded()
 	{
-		experienceCap = -1;
+		Arrays.fill(experienceCaps, 0);
 	}
 }

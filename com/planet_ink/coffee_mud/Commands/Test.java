@@ -295,7 +295,7 @@ public class Test extends StdCommand
 			if(what.equalsIgnoreCase("levelxptest"))
 			{
 				for(int i=0;i<100;i++)
-					CMLib.leveler().getLevelExperience(CMLib.dice().roll(1,100,0));
+					CMLib.leveler().getLevelExperience(mob, CMLib.dice().roll(1,100,0));
 				final MOB M=CMClass.getMOB("StdMOB");
 				M.setExperience(0);
 				for(int i=1;i<100;i++)
@@ -320,7 +320,7 @@ public class Test extends StdCommand
 			{
 				final StringBuffer str=new StringBuffer("");
 				for(int i=0;i<110;i++)
-					str.append(i+"="+CMLib.leveler().getLevelExperience(i)+"\r");
+					str.append(i+"="+CMLib.leveler().getLevelExperience(mob, i)+"\r");
 				mob.tell(str.toString());
 			}
 			else

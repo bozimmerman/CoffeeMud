@@ -1968,21 +1968,31 @@ public class CMProps extends Properties
 	 * @param var the ListFile entry to return the int list from
 	 * @return the int list from the lists.ini file
 	 */
-	public static final int[] getListFileIntList(final ListFile var)
+	public final int[] _getListFileIntList(final ListFile var)
 	{
 		if(var==null)
 			return new int[0];
-		final CMProps p=p();
-		final Object[] objs=p.sysLstFileLists;
+		final Object[] objs=sysLstFileLists;
 		if(objs[var.ordinal()]==null)
 		{
 			if(objs[var.ordinal()]==null)
 			{
 				objs[var.ordinal()]=CMParms.toIntArray(CMParms.parseCommas(getRawListFileEntry(var.getKey()),true));
-				p.sysLstFileSet[var.ordinal()]=null;
+				sysLstFileSet[var.ordinal()]=null;
 			}
 		}
 		return ((int[])objs[var.ordinal()]);
+	}
+
+	/**
+	 * Returns the entire int list from the lists.ini file of the
+	 * given ListFile entry, for the callers thread group.
+	 * @param var the ListFile entry to return the int list from
+	 * @return the int list from the lists.ini file
+	 */
+	public static final int[] getListFileIntList(final ListFile var)
+	{
+		return p()._getListFileIntList(var);
 	}
 
 	/**
