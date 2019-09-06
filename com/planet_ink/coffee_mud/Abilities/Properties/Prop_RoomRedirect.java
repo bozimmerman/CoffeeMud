@@ -149,6 +149,23 @@ public class Prop_RoomRedirect extends Property
 					}
 				}
 				break;
+			case CMMsg.TYP_LOOK:
+			case CMMsg.TYP_EXAMINE:
+				if(!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS))
+				{
+					final Room realRoom=this.getRedirectRoom(msg.source());
+					if(realRoom != null)
+					{
+						msg.setTarget(realRoom);
+						if((!realRoom.isInhabitant(msg.source()))
+						||(msg.source().location()!=realRoom))
+						{
+							realRoom.bringMobHere(msg.source(), true);
+							return realRoom.okMessage(myHost, msg);
+						}
+					}
+				}
+				break;
 			}
 		}
 		return super.okMessage(myHost, msg);
