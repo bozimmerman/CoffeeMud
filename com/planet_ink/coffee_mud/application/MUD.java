@@ -1568,14 +1568,14 @@ public class MUD extends Thread implements MudHost
 			}
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading factions");
 			if((tCode==MAIN_HOST)
-			||(checkPrivate&&CMProps.isPrivateToMe("FACTIONS")))
+			||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.FACTIONS.name())))
 				CMLib.factions().reloadFactions(CMProps.getVar(CMProps.Str.PREFACTIONS));
 
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: initializing classes");
 			CMClass.instance().intializeClasses();
 
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading expertises");
-			if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe("EXPERTISES")))
+			if((tCode==MudHost.MAIN_HOST)||(CMProps.isPrivateToMe(CMLib.Library.EXPERTISES.name())))
 			{
 				CMLib.expertises().recompileExpertises();
 				Log.sysOut(Thread.currentThread().getName(),"Expertises defined: "+CMLib.expertises().numExpertises());
@@ -1595,19 +1595,19 @@ public class MUD extends Thread implements MudHost
 				bootSync.set(true);
 
 			if((tCode==MAIN_HOST)
-			||(checkPrivate&&CMProps.isPrivateToMe("CHANNELS"))
-			||(checkPrivate&&CMProps.isPrivateToMe("JOURNALS")))
+			||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.CHANNELS.name()))
+			||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.JOURNALS.name())))
 			{
 				int numChannelsLoaded=0;
 				int numJournalsLoaded=0;
-				if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("CHANNELS")))
+				if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.CHANNELS.name())))
 				{
 					final String normalChannels=page.getStr("CHANNELS");
 					final String i3Channels=page.getBoolean("RUNI3SERVER") ? page.getStr("ICHANNELS") : "";
 					final String imc2Channels=page.getBoolean("RUNIMC2CLIENT") ? page.getStr("IMC2CHANNELS") : "";
 					numChannelsLoaded=CMLib.channels().loadChannels(normalChannels, i3Channels, imc2Channels);
 				}
-				if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("JOURNALS")))
+				if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.JOURNALS.name())))
 				{
 					numJournalsLoaded=CMLib.journals().loadCommandJournals(page.getStr("COMMANDJOURNALS"));
 					numJournalsLoaded+=CMLib.journals().loadForumJournals(page.getStr("FORUMJOURNALS"));
@@ -1627,7 +1627,7 @@ public class MUD extends Thread implements MudHost
 				CMSecurity.shareWith(MAIN_HOST);
 
 			if((tCode==MAIN_HOST)
-			||(checkPrivate&&CMProps.isPrivateToMe("SOCIALS")))
+			||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.SOCIALS.name())))
 			{
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading socials");
 				CMLib.socials().unloadSocials();
@@ -1638,7 +1638,7 @@ public class MUD extends Thread implements MudHost
 			}
 
 			final Map<String,Clan> clanPostLoads=new TreeMap<String,Clan>();
-			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("CLANS")))
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.CLANS.name())))
 			{
 				final List<Clan> clans = CMLib.database().DBReadAllClans();
 				for(final Clan C : clans)
@@ -1649,7 +1649,7 @@ public class MUD extends Thread implements MudHost
 				Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().numClans());
 			}
 
-			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("FACTIONS")))
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.FACTIONS.name())))
 				serviceEngine.startTickDown(Thread.currentThread().getThreadGroup(),CMLib.factions(),Tickable.TICKID_MOB,CMProps.getTickMillis(),10);
 
 			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Starting CM1");
@@ -1663,14 +1663,14 @@ public class MUD extends Thread implements MudHost
 
 			checkedSleep(500);
 
-			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("CATALOG")))
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.CATALOG.name())))
 			{
 				Log.sysOut(Thread.currentThread().getName(),"Loading catalog...");
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading catalog....");
 				CMLib.database().DBReadCatalogs();
 			}
 
-			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("MAP")))
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.MAP.name())))
 			{
 				Log.sysOut(Thread.currentThread().getName(),"Loading map...");
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading rooms....");
@@ -1734,7 +1734,7 @@ public class MUD extends Thread implements MudHost
 				Log.sysOut(Thread.currentThread().getName(),"Clan owned items  : "+num);
 			}
 
-			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("QUESTS")))
+			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.QUEST.name())))
 			{
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Quests");
 				CMLib.quests().shutdown();
@@ -1762,8 +1762,8 @@ public class MUD extends Thread implements MudHost
 			}
 
 			if((tCode==MAIN_HOST)
-			||(checkPrivate&&CMProps.isPrivateToMe("MAP"))
-			||(checkPrivate&&CMProps.isPrivateToMe("CHARCREATION")))
+			||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.MAP.name()))
+			||(checkPrivate&&CMProps.isPrivateToMe(CMLib.Library.LOGIN.name())))
 			{
 				CMLib.login().initStartRooms(page);
 				CMLib.login().initDeathRooms(page);

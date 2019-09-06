@@ -277,7 +277,7 @@ public class CMLib
 		}
 		return mudThreads.get(0);
 	}
-	
+
 	/**
 	 * Returns the MudHost associated with the callers
 	 * thread group.
@@ -1441,7 +1441,9 @@ public class CMLib
 					l().libraries[code]=libs[MudHost.MAIN_HOST].libraries[code];
 			}
 			else
+			{
 				l().libraries[code]=O;
+			}
 			l().registered[code]=true;
 		}
 	}
