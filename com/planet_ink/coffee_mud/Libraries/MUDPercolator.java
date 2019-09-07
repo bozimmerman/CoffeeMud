@@ -3807,7 +3807,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				case STATE_FROM1: // from () state
 				{
 					if(c=='(')
+					{
+						curr.append(c);
 						pdepth++;
+					}
 					else
 					if(c==')')
 					{
@@ -3818,7 +3821,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							curr.setLength(0);
 						}
 						else
+						{
+							curr.append(c);
 							pdepth--;
+						}
 					}
 					else
 						curr.append(c);
@@ -3916,7 +3922,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							state=SelectMQLState.STATE_WHERE0; // expect lhs of a comp
 						}
 						else
+						{
+							curr.append(c);
 							pdepth++;
+						}
 					}
 					else
 					if(c==')')
@@ -3939,7 +3948,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							curr.setLength(0);
 						}
 						else
+						{
+							curr.append(c);
 							pdepth--;
+						}
 					}
 					else
 					if(Character.isWhitespace(c) && (curr.length()==0))
@@ -4142,6 +4154,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					if(c=='(')
 					{
+						curr.append(c);
 						pdepth++;
 					}
 					else
@@ -4154,7 +4167,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							curr.setLength(0);
 						}
 						else
+						{
+							curr.append(c);
 							pdepth--;
+						}
 					}
 					else
 						curr.append(c);
@@ -4459,6 +4475,54 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				else
 				if(!from.contains(R))
 					from.add(R);
+			}
+			else
+			if(f.equals("EXITS"))
+			{
+				final List<Object> oldFrom=flattenMQLObjectList(from);
+				from.clear();
+				for(final Object o : oldFrom)
+				{
+					if(o instanceof Area)
+					{
+						for(final Enumeration<Room> r=((Area)o).getProperMap();r.hasMoreElements();)
+						{
+							final Room R=r.nextElement();
+							if(R!=null)
+							{
+								for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+								{
+									final Room R2=R.rawDoors()[d];
+									if((R2!=null)&&(R2.roomID().length()>0))
+									{
+										final Exit E2=R.getExitInDir(d);
+										if((E2!=null)&&(!from.contains(E2)))
+											from.add(E2);
+									}
+								}
+							}
+						}
+					}
+					if(o instanceof Environmental)
+					{
+						final Room R=CMLib.map().roomLocation((Environmental)o);
+						if(R!=null)
+						{
+							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+							{
+								final Room R2=R.rawDoors()[d];
+								if((R2!=null)&&(R2.roomID().length()>0))
+								{
+									final Exit E2=R.getExitInDir(d);
+									if((E2!=null)&&(!from.contains(E2)))
+										from.add(E2);
+								}
+							}
+						}
+					}
+					else
+						throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+				}
 			}
 			else
 			if((f.equals("PLAYERS"))
