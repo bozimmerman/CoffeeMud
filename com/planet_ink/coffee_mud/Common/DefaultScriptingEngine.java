@@ -3197,6 +3197,46 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					returnable=false;
 				break;
 			}
+			case 112: // cansee
+			{
+				if(tlen==1)
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				final String arg1=tt[t+0];
+				final String arg2=tt[t+1];
+				final PhysicalAgent MP=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				if(!(MP instanceof MOB))
+					returnable=false;
+				else
+				{
+					final MOB M=(MOB)MP; 
+					final Physical P=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(P==null)
+						returnable=false;
+					else
+						returnable=CMLib.flags().canBeSeenBy(P, M);
+				}
+				break;
+			}
+			case 113: // canhear
+			{
+				if(tlen==1)
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				final String arg1=tt[t+0];
+				final String arg2=tt[t+1];
+				final PhysicalAgent MP=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				if(!(MP instanceof MOB))
+					returnable=false;
+				else
+				{
+					final MOB M=(MOB)MP; 
+					final Physical P=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(P==null)
+						returnable=false;
+					else
+						returnable=CMLib.flags().canBeHeardMovingBy(P, M);
+				}
+				break;
+			}
 			case 59: // isopen
 			{
 				final String arg1=CMParms.cleanBit(funcParms);
@@ -6705,6 +6745,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 				}
 				results.append(num);
+				break;
+			}
+			case 112: // cansee
+			{
+				break;
+			}
+			case 113: // canhear
+			{
 				break;
 			}
 			case 111: // itemcount

@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
+
 <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Scripting in CoffeeMud 5.9</title>
 
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
-<body>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head><body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
 <tbody>
@@ -169,6 +169,10 @@ Functions</a>
 Operators</a></li>
 <li><a href="#affected">affected</a></li>
 <li><a href="#baseclass">baseclass</a></li>
+            <li><a href="#cansee">cansee</a></li>
+            <li><a href="#canhear">canhear</a><br />
+            </li>
+
 <li><a href="#callfunc">callfunc</a></li>
 <li><a href="#clan">clan</a></li>
 <li><a href="#clandata">clandata</a></li>
@@ -4388,7 +4392,55 @@ the given baseclass. Where '==' may be another logical operator from
 above. Valid baseclasses include Archon, Artisan, Fighter, Druid, Mage,
 Cleric, Thief, or Bard.</p>
 <p>EXAMPLE:</p>
-<pre>if baseclass($n == Archon)<br /> mpecho The actor triggering me is an Archon.<br />else<br /> mpecho The actor triggering me is not an Archon.<br />endif<br /></pre>
+<pre>if baseclass($n == Archon)<br /> mpecho The actor triggering me is an Archon.<br />else<br /> mpecho The actor triggering me is not an Archon.<br />endif<br /><br /></pre>
+      <h3><a name="canhear">canhear</a></h3>
+
+      <p>Usage:</p>
+
+canhear(chaaracter soundmaker)<br />
+
+      <p>This checks whether the
+character can hear sounds made by the second argument.<br />
+      </p>
+
+      <p>EXAMPLE:</p>
+
+      <span style="font-family: monospace;">if canhear($n 'the boombox')</span><br style="font-family: monospace;" />
+      <span style="font-family: monospace;">&nbsp;&nbsp; mpecho The actor triggering me can hear the boombox</span><br style="font-family: monospace;" />
+      <span style="font-family: monospace;">else</span><br style="font-family: monospace;" />
+      <span style="font-family: monospace;">&nbsp;&nbsp; mpecho The actor triggering me can not hear the boombox</span><br style="font-family: monospace;" />
+      <span style="font-family: monospace;">endi</span>f<br />
+      <br />
+
+      <h3><a name="canhear">cansee</a></h3>
+
+
+      <p>Usage:</p>
+
+
+cansee(chaaracter object)<br />
+
+
+      <p>This checks whether the
+character can see the second argument.<br />
+      </p>
+
+
+      <p>EXAMPLE:</p>
+
+
+      <span style="font-family: monospace;">if cansee($n $1)</span><br style="font-family: monospace;" />
+
+      <span style="font-family: monospace;">&nbsp;&nbsp; mpecho The actor triggering me can see me</span><br style="font-family: monospace;" />
+
+      <span style="font-family: monospace;">else</span><br style="font-family: monospace;" />
+
+      <span style="font-family: monospace;">&nbsp;&nbsp; mpecho The actor triggering me </span><span style="font-family: monospace;">can not see me</span><br style="font-family: monospace;" />
+
+      <span style="font-family: monospace;">endi</span>f<br />
+
+      <br />
+
 <h3><a name="callfunc">callfunc</a></h3>
 <p>Usage:</p>
 <pre>callfunc(myfunctionname parm1 parm2...parmn)<br /></pre>

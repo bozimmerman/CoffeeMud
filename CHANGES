@@ -44,7 +44,7 @@
  42. Prayer Deaths Door moved to Healer 25, self-cast only.  New Prayer: Protection from Death, in its place at 19.
  43. Quest Maker Wizard now supports reward items, and will reselect quest givers 
  44. New property: Prop_RoomRedirect, and the MODIFY command now supports modify room <roomid> syntax. 
- 45. New Scriptable function: ITEMCOUNT
+ 45. New Scriptable functions: ITEMCOUNT, CANHEAR, CANSEE
  
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque
