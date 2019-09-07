@@ -110,6 +110,12 @@ public interface GenericBuilder extends CMLibrary
 		CLANROLE
 	}
 
+	public enum GenPhysBonusFakeStats
+	{
+		DISPOSITIONSTR,
+		SENSESSTR
+	}
+
 	public String getGenMOBTextUnpacked(MOB mob, String newText);
 	public void resetGenMOB(MOB mob, String newText);
 	public int envFlags(Environmental E);

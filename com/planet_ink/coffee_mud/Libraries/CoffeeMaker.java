@@ -3136,6 +3136,48 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		stat = getFinalStatName(stat);
 		if(P.basePhyStats().isStat(stat))
 			return (current)?P.phyStats().getStat(stat):P.basePhyStats().getStat(stat);
+		final GenPhysBonusFakeStats fakePhyStat = (GenPhysBonusFakeStats)CMath.s_valueOf(GenPhysBonusFakeStats.class, stat);
+		if(fakePhyStat!=null)
+		{
+			final StringBuilder str=new StringBuilder("");
+			switch(fakePhyStat)
+			{
+			case DISPOSITIONSTR:
+			{
+				final int disposition=(current)?P.phyStats().disposition():P.basePhyStats().disposition();
+				for(int i=0;i<PhyStats.IS_CODES.length;i++)
+				{
+					if(CMath.isSet(disposition,i))
+						str.append(PhyStats.IS_CODES[i]+" ");
+				}
+				break;
+			}
+			case SENSESSTR:
+				if(P instanceof MOB)
+				{
+					final int mask=(current)?P.phyStats().sensesMask():P.basePhyStats().sensesMask();
+					for(int i=0;i<PhyStats.CAN_SEE_CODES.length;i++)
+					{
+						if(CMath.isSet(mask,i))
+							str.append(PhyStats.CAN_SEE_CODES[i]+" ");
+					}
+				}
+				else
+				{
+					final int mask=(current)?P.phyStats().sensesMask():P.basePhyStats().sensesMask();
+					for(int i=0;i<PhyStats.SENSE_CODES.length;i++)
+					{
+						if(CMath.isSet(mask,i))
+							str.append(PhyStats.SENSE_CODES[i]+" ");
+					}
+				}
+				break;
+			default:
+				break;
+			}
+			return str.toString();
+		}
+
 		if(P instanceof MOB)
 		{
 			if(((MOB)P).baseCharStats().isStat(stat))
@@ -3328,6 +3370,47 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				P.phyStats().setStat(stat, value);
 			else
 				P.basePhyStats().setStat(stat, value);
+			return;
+		}
+		final GenPhysBonusFakeStats fakePhyStat = (GenPhysBonusFakeStats)CMath.s_valueOf(GenPhysBonusFakeStats.class, stat);
+		if(fakePhyStat != null)
+		{
+			switch(fakePhyStat)
+			{
+			case DISPOSITIONSTR:
+				{
+					int newDisposition=0;
+					for(final String v : value.toUpperCase().trim().split(" "))
+					{
+						final int x=CMParms.indexOf(PhyStats.IS_CODES, v);
+						if(x>=0)
+							newDisposition |= (2^x);
+					}
+					if(current)
+						P.phyStats().setDisposition(newDisposition);
+					else
+						P.basePhyStats().setDisposition(newDisposition);
+					break;
+				}
+			case SENSESSTR:
+				{
+					int newSensesMask=0;
+					final String[] set = (P instanceof MOB)?PhyStats.CAN_SEE_CODES:PhyStats.SENSE_CODES;
+					for(final String v : value.toUpperCase().trim().split(" "))
+					{
+						final int x=CMParms.indexOf(set, v);
+						if(x>=0)
+							newSensesMask |= (2^x);
+					}
+					if(current)
+						P.phyStats().setDisposition(newSensesMask);
+					else
+						P.basePhyStats().setDisposition(newSensesMask);
+					break;
+				}
+			default:
+				break;
+			}
 			return;
 		}
 		if(P instanceof MOB)

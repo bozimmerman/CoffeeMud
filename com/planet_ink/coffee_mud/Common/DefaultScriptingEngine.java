@@ -1984,18 +1984,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		boolean found=false;
 		String val="";
+		final String uarg2=arg2.toUpperCase().trim();
 		for(int i=0;i<E.getStatCodes().length;i++)
 		{
-			if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
+			if(E.getStatCodes()[i].equals(uarg2))
 			{
-				val=E.getStat(arg2);
+				val=E.getStat(uarg2);
 				found=true;
 				break;
 			}
 		}
 		if((!found)&&(E instanceof MOB))
 		{
-			final String uarg2=arg2.toUpperCase().trim();
 			final MOB M=(MOB)E;
 			for(final int i : CharStats.CODES.ALLCODES())
 			{
@@ -2065,6 +2065,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				found=true;
 				val=CMLib.coffeeMaker().getAnyGenStat(M, uarg2);
 			}
+		}
+		if((!found)
+		&&(E instanceof Physical)
+		&&(CMath.s_valueOf(GenericBuilder.GenPhysBonusFakeStats.class,uarg2)!=null))
+		{
+			found=true;
+			val=CMLib.coffeeMaker().getAnyGenStat((Physical)E, uarg2);
 		}
 		if(!found)
 			return null;
@@ -8868,6 +8875,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							found=true;
 							CMLib.coffeeMaker().setAnyGenStat(M, arg2.toUpperCase(), arg3);
 						}
+					}
+
+					if((!found)
+					&&(CMath.s_valueOf(GenericBuilder.GenPhysBonusFakeStats.class,arg2.toUpperCase())!=null))
+					{
+						found=true;
+						CMLib.coffeeMaker().setAnyGenStat(newTarget, arg2.toUpperCase(), arg3);
 					}
 
 					if(!found)
