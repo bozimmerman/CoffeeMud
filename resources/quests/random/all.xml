@@ -24,10 +24,10 @@ See guides/RandomAreas.html for information about documents of this type.
 
 <string id="quest_template" define="quest_template" select="any-1">
 	<string condition="$template!=''">$template</string>
-	<string condition="$template=''">normal_collect2</string>
 	<string condition="$template=''">normal_capture1</string>
-	<string condition="$template=''">normal_collect1</string>
 <!--  
+	<string condition="$template=''">normal_collect2</string>
+	<string condition="$template=''">normal_collect1</string>
       TODO: add normal_capture1_1 for capturing single targets
       TODO: add normal_capture1_2 for capturing just any old targets, same names not required, so dialog would be very weird
       TODO: add normal_capture2 quest type for capturing generated mobs, and perhaps 2_1 and 2_2?
