@@ -465,7 +465,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				}
 				final List<XMLLibrary.XMLTag> xmlRoot = CMLib.xml().parseAllXML(xml);
 				final Hashtable<String,Object> definedIDs = new Hashtable<String,Object>();
-				CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
+				CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs, new TreeSet<String>());
 				String idName = "";
 				final List<String> idChoices = new Vector<String>();
 				for(final String key : getAutoGenVariables().keySet())

@@ -1037,7 +1037,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String idName=tagName.toUpperCase();
 				try
 				{
-					CMLib.percolator().buildDefinedIDSet(xml,definedIDs);
+					CMLib.percolator().buildDefinedIDSet(xml,definedIDs, new TreeSet<String>());
 					if((!(definedIDs.get(idName) instanceof XMLTag))
 					||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase("MOB")))
 					{
@@ -1176,7 +1176,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String idName=tagName.toUpperCase();
 				try
 				{
-					CMLib.percolator().buildDefinedIDSet(xml,definedIDs);
+					CMLib.percolator().buildDefinedIDSet(xml,definedIDs, new TreeSet<String>());
 					if((!(definedIDs.get(idName) instanceof XMLTag))
 					||(!((XMLTag)definedIDs.get(idName)).tag().equalsIgnoreCase("ITEM")))
 					{

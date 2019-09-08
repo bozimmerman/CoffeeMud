@@ -48,13 +48,14 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * allows the caller to specifically select one of them for generation.
 	 * @param xmlRoot the root of the area-generation xml file
 	 * @param defined a map of ids to objects, whether strings or tags.
+	 * @param overrideIds TODO
 	 */
-	public void buildDefinedIDSet(List<XMLTag> xmlRoot, Map<String,Object> defined);
+	public void buildDefinedIDSet(List<XMLTag> xmlRoot, Map<String,Object> defined, Set<String> overrideIds);
 
 	/**
 	 * Given a specific ITEM generation tag, this method will return the items selected
 	 * by that tag piece.
-	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map)
+	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map, Set)
 	 * @param piece the identified tag that can return items
 	 * @param defined the defined id set from the entire xml document
 	 * @return the list of items generated from the tag.
@@ -65,7 +66,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	/**
 	 * Given a specific MOB generation tag, this method will return the MOBs selected
 	 * by that tag piece.
-	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map)
+	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map, Set)
 	 * @param piece the identified tag that can return MOBs
 	 * @param defined the defined id set from the entire xml document
 	 * @return the list of MOBs generated from the tag.
@@ -76,7 +77,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	/**
 	 * Returns a string of the given tag name type, from the given top-level xml tag piece that
 	 * resolves to a string, and with the given pre-defined id set.
-	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map)
+	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map, Set)
 	 * @param tagName the name of the string tag
 	 * @param piece the top level piece, probably of type tagname
 	 * @param defined the pre-defined id set from the entire xml document
@@ -88,7 +89,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	/**
 	 * Given a specific ROOM generation tag, this method will return the room selected
 	 * by that tag piece, with the entrace to it being in the given direction
-	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map)
+	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map, Set)
 	 * @param piece the identified tag that can return a room
 	 * @param defined the defined id set from the entire xml document
 	 * @param exits pre-defined exits from this room, if any
@@ -101,7 +102,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	/**
 	 * Builds a quest script based around the given variables using the given xml tag root.
 	 *
-	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map)
+	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map, Set)
 	 * @param piece the identified tag that can return a room
 	 * @param defined the defined id set from the entire xml document
 	 * @param E a given set object or null (such as an area, room, or mob)
@@ -133,7 +134,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	/**
 	 * Given a specific AREA generation tag, this method will return the area selected
 	 * by that tag piece, with the entrance to it being in the given direction
-	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map)
+	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map, Set)
 	 * @param piece the identified tag that can return a room
 	 * @param defined the defined id set from the entire xml document
 	 * @param directions the direction of entrance to this room
@@ -146,7 +147,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * Given a specific AREA generation tag, and an empty area, this method will
 	 * populate the area with rooms from the given tag piece, with the entrance
 	 * to it being in the given direction.
-	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map)
+	 * @see AreaGenerationLibrary#buildDefinedIDSet(List, Map, Set)
 	 * @param piece the identified tag that can return a room
 	 * @param defined the defined id set from the entire xml document
 	 * @param A the area to put the rooms into

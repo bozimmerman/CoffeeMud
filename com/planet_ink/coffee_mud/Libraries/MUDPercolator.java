@@ -134,7 +134,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	@Override
-	public void buildDefinedIDSet(final List<XMLTag> xmlRoot, final Map<String,Object> defined)
+	public void buildDefinedIDSet(final List<XMLTag> xmlRoot, final Map<String,Object> defined, Set<String> overrideIds)
 	{
 		if(xmlRoot==null)
 			return;
@@ -148,7 +148,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				if(o != null)
 				{
 					if(!(o instanceof XMLTag))
-						Log.errOut("Duplicate ID: "+id+" (first tag did not resolve to a complex piece -- it wins.)");
+					{
+						if(!overrideIds.contains(id.toUpperCase()))
+							Log.errOut("Duplicate ID: "+id+" (first tag did not resolve to a complex piece -- it wins.)");
+					}
 					else
 					{
 						final Boolean pMergeVal;
@@ -180,7 +183,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							defined.put(id.toUpperCase().trim(),piece);
 						else
 						if((pMergeVal == null)||(oMergeVal == null))
-							Log.errOut("Duplicate ID: "+id+" (no MERGE tag found to permit this operation -- first tag wins.)");
+						{
+							if(!overrideIds.contains(id.toUpperCase()))
+								Log.errOut("Duplicate ID: "+id+" (no MERGE tag found to permit this operation -- first tag wins.)");
+						}
 						else
 						if((oMergeOver && pMergeOver)
 						&&(osMergeVal != null)
@@ -332,7 +338,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					final List<XMLTag> addPieces=CMLib.xml().parseAllXML(file.text());
 					final Map<String,Object> localDefined = new Hashtable<String,Object>();
-					buildDefinedIDSet(addPieces, localDefined);
+					buildDefinedIDSet(addPieces, localDefined, overrideIds);
 					final Object o=localDefined.get(localid.toUpperCase().trim());
 					if((o == null)
 					||(!(o instanceof XMLTag)))
@@ -345,7 +351,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					piece.contents().addAll(newTag.contents());
 				}
 			}
-			buildDefinedIDSet(piece.contents(),defined);
+			buildDefinedIDSet(piece.contents(),defined, overrideIds);
 		}
 	}
 
@@ -380,7 +386,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 			catch(final Exception e)
 			{
-				System.out.println(e.getMessage());
+				Log.errOut(e.getMessage());
 			}
 		}
 	}
@@ -5211,9 +5217,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					Object val = defined.get(str.substring(1));
 					if(val instanceof XMLTag)
 					{
+						Modifiable chkO=E;
+						if(finalO instanceof Modifiable)
+							chkO=(Modifiable)finalO;
+						else
+						if(from instanceof Modifiable)
+							chkO=(Modifiable)from;
 						final XMLTag tag=(XMLTag)val;
 						if(tag.tag().equalsIgnoreCase("STRING"))
-							finalO=findString(E,ignoreStats,defPrefix,"STRING",(XMLTag)val,defined);
+						{
+							final String s=findString(chkO,ignoreStats,defPrefix,"STRING",(XMLTag)val,defined);
+							if(s.toUpperCase().trim().startsWith("SELECT:"))
+								val=doMQLSelectObjects(chkO, s);
+							else
+								val=s;
+						}
 						else
 						{
 							final Object o =findObject(E,ignoreStats,defPrefix,"OBJECT",tag,defined);
@@ -5221,8 +5239,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								CMLib.threads().deleteAllTicks((Tickable)o);
 							if(o instanceof List)
 							{
-								@SuppressWarnings("rawtypes")
-								final List l=(List)o;
+								@SuppressWarnings({ "unchecked" })
+								final List<Object> l=(List<Object>)o;
 								for(final Object o2 : l)
 								{
 									if(o2 instanceof Tickable)
@@ -5238,7 +5256,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				else
 				{
-					final Object fromO=(finalO==null)?from:finalO;
+					final Object fromO=(finalO==null)?((from==null)?E:from):finalO;
 					final Object newObj=getSimpleMQLValue(str,fromO);
 					if(newObj == null)
 						throw new MQLException("Unknown variable '"+str+"' on '"+fromO+"' in '"+mql+"'",new CMException("$"+str));
