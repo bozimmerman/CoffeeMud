@@ -1,10 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
 
-  <meta content="HTML Tidy, see www.w3.org" name="generator">
-  <title></title></head>
 
-<body>
+  <meta content="HTML Tidy, see www.w3.org" name="generator"><title></title></head><body>
 
 <center>
 <table border="1" bordercolor="gray" cellpadding="10" cellspacing="0" width="90%">
@@ -1439,7 +1437,8 @@ the spell cast by this item</td>
 
             <td>Resource</td>
 
-            <td></td>
+            <td><br>
+</td>
 
           </tr>
 
@@ -3326,9 +3325,21 @@ started, or a formula, or a number followed by the word minutes,
 seconds, hours, days, mudhours, or muddays. Use a simple
 value of 0 to make your quest run continually. &nbsp;This is a
 required
-command!</p>
+command!&nbsp; See also SET EXPIRATION.<br>
+</p>
 
-      <p style="color: rgb(51, 0, 0);"><span style="color: rgb(51, 102, 102);">SET WAIT</span> <span style="color: rgb(102, 51, 102);">[#TICKS</span><span style="color: rgb(102, 51, 102);">/TIME</span><span style="color: rgb(102, 51, 102);">]</span>
+      
+      <p><span style="color: rgb(51, 102, 102);">SET EXPIRATION</span> <span style="color: rgb(102, 51, 102);">[#TICKS/TIME]</span>-
+Either a number of ticks (4 second periods) the quest will exist once
+started, or a formula, or a number followed by the word minutes,
+seconds, hours, days, mudhours, or muddays. Once the quest has been
+running for the expiration time, it will be removed from the list of
+available quests permanently. Use a simple
+value of 0, which is default, will make your quest persistant.<br>
+      </p>
+
+
+      <span style="color: rgb(51, 102, 102);"></span><p style="color: rgb(51, 0, 0);"><span style="color: rgb(51, 102, 102);">SET WAIT</span> <span style="color: rgb(102, 51, 102);">[#TICKS</span><span style="color: rgb(102, 51, 102);">/TIME</span><span style="color: rgb(102, 51, 102);">]</span>
 - Either a&nbsp;number of
 ticks, or a formula, or a number followed by the word minutes, seconds,
 hours, days, mudhours, or muddays to minimally wait between auto-starts
