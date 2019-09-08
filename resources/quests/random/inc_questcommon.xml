@@ -58,7 +58,7 @@ See guides/RandomAreas.html for information about documents of this type.
 </STRING>
 
 <STRING ID="level_span" SELECT="any-1" DEFINE="level_span" MERGE=true>
-	<STRING>$[3?6]</STRING>
+	<STRING>8</STRING>
 </STRING>
 
 <STRING ID="verb_captured" predefine="verb_capture=$verb_capture">$verb_captured</STRING>

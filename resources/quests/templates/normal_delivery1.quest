@@ -91,9 +91,9 @@
 #Deliveree response: 
 #You may optionally specify some additional bit of speech the deliveree 
 #mob will say to the players after they arrive.
-#$DELIVEREE_RESPONSE=($LONG_STRING)=Are you here to deliver $[1 *]? If so, give it to me!
+#$DELIVEREE_ANNOUNCE=($LONG_STRING)=Are you here to deliver $[1 *]? If so, give it to me!
 #
-#Deliveree response: 
+#Delivery response: 
 #You may optionally specify some additional bit of speech the deliveree 
 #mob will say to the players after they have over the item.
 #$DELIVERY_RESPONSE=($LONG_STRING)=Thanks!
@@ -213,7 +213,7 @@ GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) AND QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
 		else
-			sayto $n $DELIVEREE_RESPONSE
+			sayto $n $DELIVEREE_ANNOUNCE
 		endif
 	endif
 ~
