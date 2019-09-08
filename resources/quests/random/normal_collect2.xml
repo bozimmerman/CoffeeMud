@@ -255,10 +255,10 @@ vars:
 		<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
 		<OBJECT pickweight=55555 condition="$area_name != ''" and '${SELECT: name FROM area}' = ''>SELECT: ANY\. FROM areas WHERE name = $area_name</OBJECT> 
 		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea = 'YES'">
-			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and current_intelligence>5 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0
 		</OBJECT>
 		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
-			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs WHERE name\count =1 and current_intelligence>5 and "Aggressive" notin affbehav and "QuestBound" notin affbehav) &gt; 0
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0
 				AND (SELECT:count\. from area\rooms) &gt; $num_targets
 		</OBJECT>
 	</OBJECT>
@@ -268,7 +268,7 @@ vars:
 	<OBJECT ID="source" SELECT="Pick-1" DEFINE="source">
 		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
 		<OBJECT pickweight=55555 condition="$sourcename != ''" and '${SELECT: name FROM mob}' = ''>SELECT: . FROM $source_area\npcs WHERE name = $sourcename</OBJECT> 
-		<OBJECT PICKWEIGHT=1 CONDITION="$sourcename = ''" and ${SELECT: name FROM mob}' = ''">SELECT: ANY\. FROM $source_area\npcs WHERE name\count=1 and current_intelligence>5 and "Aggressive" notin affbehav  and "QuestBound" notin affbehav</OBJECT>
+		<OBJECT PICKWEIGHT=1 CONDITION="$sourcename = '' and '${SELECT: name FROM mob}' = ''" insert="$mql_viable_questgiver" />
 	</OBJECT>
 	
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">

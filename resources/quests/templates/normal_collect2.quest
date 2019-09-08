@@ -326,7 +326,7 @@ ENTRY_PROG 100
 					MPARGSET $1 $%ROOMMOB($0)%
 					MPARGSET $2 $%LEVEL($1)%
 					MPARGSET $2 $%MATH($2 - 3)%
-					if ISNPC($1) AND ISLIKE($1 '+EFFECTS -Prop_SafePet -Aggressive +JAVACLASS -GenShopKeeper -GenBanker -GenPostman -GenLibrarian') AND !ISFOLLOW($1) AND LEVEL($i >= $2)
+					if ISNPC($1) AND CANSEE($1 $i) AND ISLIKE($1 '+EFFECTS -Prop_SafePet -Aggressive +JAVACLASS -GenShopKeeper -GenBanker -GenPostman -GenLibrarian') AND !ISFOLLOW($1) AND LEVEL($i >= $2)
 						mpforce $1 sayto "$i" $LOCALS_RESPONSE
 						mpforce $1 kill $i
 					endif
