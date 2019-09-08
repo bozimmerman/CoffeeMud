@@ -55,6 +55,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected final static String POST_PROCESSING_STAT_SETS="___POST_PROCESSING_SETS___";
 	protected final static Set<String> UPPER_REQUIRES_KEYWORDS=new XHashSet<String>(new String[]{"INT","INTEGER","$","STRING","ANY","DOUBLE","#","NUMBER"});
 	protected final static CMParms.DelimiterChecker REQUIRES_DELIMITERS=CMParms.createDelimiter(new char[]{' ','\t',',','\r','\n'});
+	protected final static List<String> ITEM_IGNORE_STATS = Arrays.asList(GenericBuilder.GenItemCode.getAllCodeNames());
+	protected final static List<String> MOB_IGNORE_STATS =new XVector<String>(Arrays.asList(GenericBuilder.GenMOBCode.getAllCodeNames())).append("GENDER");
 
 	private final SHashtable<String,Class<LayoutManager>> mgrs = new SHashtable<String,Class<LayoutManager>>();
 
@@ -492,6 +494,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		fillOutRequiredStatCodeSafe(R, ignoreStats, "ROOM_", "DESCRIPTION", "DESCRIPTION", piece, defined);
 		fillOutCopyCodes(R, ignoreStats, "ROOM_", piece, defined);
 		fillOutStatCodes(R, ignoreStats, "ROOM_", piece, defined);
+		ignoreStats.addAll(Arrays.asList(R.getStatCodes()));
+		fillOutStatCodes(R.basePhyStats(),ignoreStats,"ROOM_",piece,defined);
 		final List<MOB> mV = findMobs(piece,defined);
 		for(int i=0;i<mV.size();i++)
 		{
@@ -1324,8 +1328,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					public String attempt() throws CMException, PostProcessException
 					{
 						String value;
-						if((E instanceof MOB) && (stat.equals("ABILITY")))
-							value = findOptionalString(E,ignoreStats,defPrefix,"HPMOD",piece,this.defined, debug);
+						if(stat.equals("ABILITY"))
+						{
+							if(E instanceof MOB)
+								value = findOptionalString(E,ignoreStats,defPrefix,"HPMOD",piece,this.defined, debug);
+							else
+								value = findOptionalString(E,ignoreStats,defPrefix,"MAGICABILITY",piece,this.defined, debug);
+						}
 						else
 							value = findOptionalString(E,ignoreStats,defPrefix,stat,piece,this.defined, debug);
 						if(value != null)
@@ -1560,8 +1569,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				return "";
 			}
 		});
-		ignoreStats.addAll(Arrays.asList(new String[]{"CLASS","NAME","LEVEL","GENDER"}));
+		ignoreStats.addAll(Arrays.asList(new String[]{"CLASS","NAME","LEVEL","GENDER","RACE"}));
 		fillOutStatCodes(M,ignoreStats,"MOB_",piece,defined);
+		fillOutStatCodes(M.baseCharStats(),MOB_IGNORE_STATS,"MOB_",piece,defined);
+		fillOutStatCodes(M.basePhyStats(),MOB_IGNORE_STATS,"MOB_",piece,defined);
+		fillOutStatCodes(M.baseState(),MOB_IGNORE_STATS,"MOB_",piece,defined);
 		M.recoverCharStats();
 		M.recoverPhyStats();
 		M.recoverMaxState();
@@ -1663,6 +1675,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		ignoreStats.add("CLASS");
 		fillOutCopyCodes(E,ignoreStats,"EXIT_",piece,defined);
 		fillOutStatCodes(E,ignoreStats,"EXIT_",piece,defined);
+		ignoreStats.addAll(Arrays.asList(E.getStatCodes()));
+		fillOutStatCodes(E.basePhyStats(),ignoreStats,"EXIT_",piece,defined);
 		final List<Ability> aV = findAffects(E,piece,defined,null);
 		for(int i=0;i<aV.size();i++)
 		{
@@ -2178,6 +2192,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			CMLib.itemBuilder().balanceItemByLevel(I);
 			I.recoverPhyStats();
 			fillOutStatCodes(I,ignoreStats,"ITEM_",piece,defined);
+			fillOutStatCodes(I.basePhyStats(),ITEM_IGNORE_STATS,"ITEM_",piece,defined);
 			I.recoverPhyStats();
 
 			if(I instanceof Container)

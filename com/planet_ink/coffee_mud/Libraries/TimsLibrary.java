@@ -1098,13 +1098,15 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				{
 					A=CMClass.getAbility("Prop_FightSpellCast");
 					if(A!=null)
-					for(int a=0;a<bump;a++)
 					{
-						final Ability A2=getCombatSpell(true);
-						if(A2!=null)
-							A.setMiscText(A.text()+";"+A2.ID());
+						for(int a=0;a<bump;a++)
+						{
+							final Ability A2=getCombatSpell(true);
+							if(A2!=null)
+								A.setMiscText(A.text()+";"+A2.ID());
+						}
+						I.basePhyStats().setLevel(I.basePhyStats().level()+CMath.s_int(A.getStat("STAT-LEVEL")));
 					}
-					I.basePhyStats().setLevel(I.basePhyStats().level()+CMath.s_int(A.getStat("STAT-LEVEL")));
 				}
 				if(A==null)
 					return I;
@@ -1133,13 +1135,15 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				{
 					A=CMClass.getAbility("Prop_WearSpellCast");
 					if(A!=null)
-					for(int a=0;a<bump;a++)
 					{
-						final Ability A2=getCombatSpell(false);
-						if(A2!=null)
-							A.setMiscText(A.text()+";"+A2.ID());
+						for(int a=0;a<bump;a++)
+						{
+							final Ability A2=getCombatSpell(false);
+							if(A2!=null)
+								A.setMiscText(A.text()+";"+A2.ID());
+						}
+						I.basePhyStats().setLevel(I.basePhyStats().level()+CMath.s_int(A.getStat("STAT-LEVEL")));
 					}
-					I.basePhyStats().setLevel(I.basePhyStats().level()+CMath.s_int(A.getStat("STAT-LEVEL")));
 				}
 				if(A==null)
 					return I;

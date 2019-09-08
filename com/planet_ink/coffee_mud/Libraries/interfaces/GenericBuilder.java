@@ -63,6 +63,19 @@ public interface GenericBuilder extends CMLibrary
 		ATTACK,
 		READABLETEXT,
 		IMG
+		;
+		private static String[] CODES=null;
+		
+		public static String[] getAllCodeNames()
+		{
+			if(CODES==null)
+			{
+				CODES=new String[GenItemCode.values().length];
+				for(final GenItemCode code : GenItemCode.values())
+					CODES[code.ordinal()] = code.name();
+			}
+			return CODES;
+		}
 	}
 
 	public enum GenMOBCode
@@ -90,6 +103,19 @@ public interface GenericBuilder extends CMLibrary
 		IMG,
 		FACTIONS,
 		VARMONEY
+		;
+		private static String[] CODES=null;
+		
+		public static String[] getAllCodeNames()
+		{
+			if(CODES==null)
+			{
+				CODES=new String[GenItemCode.values().length];
+				for(final GenItemCode code : GenItemCode.values())
+					CODES[code.ordinal()] = code.name();
+			}
+			return CODES;
+		}
 	}
 
 	public enum GenMOBBonusFakeStats
