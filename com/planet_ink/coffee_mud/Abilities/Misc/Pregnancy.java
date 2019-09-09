@@ -424,7 +424,9 @@ public class Pregnancy extends StdAbility implements HealthCondition
 						ticksInLabor = 0;
 						final String race1 = mob.baseCharStats().getMyRace().ID();
 						String classID="GenMOB";
-						if(mob.isGeneric() && (!mob.ID().equalsIgnoreCase(classID)))
+						if(mob.isGeneric()
+						&& (!mob.ID().equalsIgnoreCase(classID))
+						&&(!(mob instanceof ShopKeeper)))
 							classID=mob.ID();
 						final int numKids=this.getNumKids();
 						String race2 = this.getFathersRace();
@@ -462,7 +464,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							{
 								babe.addTattoo("PARENTAGE:NPC");
 							}
-							
+
 							mob.curState().setMovement(0);
 							mob.curState().setHitPoints(mob.curState().getHitPoints() / 2);
 							mob.location().show(mob, null, CMMsg.MSG_NOISE, L("***** <S-NAME> !!!GIVE(S) BIRTH!!! ******"));
