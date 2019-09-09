@@ -24,8 +24,9 @@ settable vars:
     area_name(area name)
     source_name(mob name)
     targetarea_name(area name)
-    multiarea(yes or NO)
     targetname(mobs name)
+    itemname(name of an item)
+    multiarea(yes or NO)
 	xp_amount_awarded
 	gold_amount_awarded
 	quest_point_awarded(YES,NO)
@@ -57,7 +58,7 @@ settable vars:
 	</QUEST_NAME>
 	<QUEST_NOTIFYSTRING>$quest_notifystring</QUEST_NOTIFYSTRING>
 	<QUEST_INSTRUCTIONSSTRING>$quest_instructionstring</QUEST_INSTRUCTIONSSTRING>
-	<DELIVERY_RESPONSE>$quest_winspeech</DELIVERY_RESPONSE>
+	<DELIVERY_RESPONSE>$quest_delivered</DELIVERY_RESPONSE>
 	<DELIVEREE_ANNOUNCE>$quest_hellospeech</DELIVEREE_ANNOUNCE>
 	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
@@ -102,7 +103,7 @@ settable vars:
 		</STRING>
 	</STRING>
 
-	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>
+	<STRING ID="quest_delivered" PREDEFINE="reason=$reason">$quest_delivered</STRING>
 	<STRING ID="quest_hellospeech" PREDEFINE="reason=$reason">$quest_hellospeech</STRING>
 	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>
 	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$reason_verb</STRING>
@@ -125,14 +126,14 @@ settable vars:
 		<STRING CONDITION="$source_align &lt; -5000">$reason_wedotoeachother</STRING>
 	</STRING>
 
-	<STRING id="quest_generic_loser_speeches" SELECT="Any-1">
+	<STRING id="quest_generic_hello_speeches" SELECT="Any-1">
 		<STRING>I guess I'll need to $reason_verb them myself.</STRING>
 		<STRING>This is unacceptable.</STRING>
 		<STRING>Well, I give up on them being $reason_verbed.</STRING>
 		<STRING>You just can't find good help anymore.</STRING>
 	</STRING>
 
-	<STRING id="quest_generic_winner_speeches" SELECT="Any-1">
+	<STRING id="quest_generic_delivered_speeches" SELECT="Any-1">
 		<STRING>They are all $reason_verbed! That's all of them, thanks!</STRING>
 		<STRING>${c:reason_verbed} at last! Thank you for your assistance.</STRING>
 		<STRING>Thanks for the $reason_verb, I'll take it from here.</STRING>
@@ -148,9 +149,8 @@ settable vars:
 	<STRING ID="reason_theyoweme" SELECT="All">
 		<STRING define="reason_verbed">$verb_captured</STRING>
 		<STRING define="reason_verb">$verb_capture</STRING>
-		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${C:target_name} owes me money, but I'm not sure which one.</STRING>
 			<STRING>The ${C:P:target_name} owe me some money.</STRING>
@@ -163,7 +163,7 @@ settable vars:
 	<STRING ID="reason_partytime" SELECT="All">
 		<STRING define="reason_verbed">$verb_gathered</STRING>
 		<STRING define="reason_verb">$verb_gather</STRING>
-		<STRING define="quest_winspeech" SELECT="Any-1" >
+		<STRING define="quest_delivered" SELECT="Any-1" >
 			<STRING>Yay! Let the party BEGIN!</STRING>"
 			<STRING>TIME TO CELEBRATE!</STRING>"
 			<STRING>Let the celebration begin!</STRING>"
@@ -183,8 +183,8 @@ settable vars:
 	<STRING ID="reason_iowethem" SELECT="All">
 		<STRING define="reason_verbed">$verb_gathered</STRING>
 		<STRING define="reason_verb">$verb_gather</STRING>
-		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I wish to reward $target_name for reasons.</STRING>
 			<STRING>I owe ${p:target_name} for their assistance to me.</STRING>
@@ -196,12 +196,12 @@ settable vars:
 	<STRING ID="reason_ilostthem" SELECT="All">
 		<STRING define="reason_verbed">$verb_found</STRING>
 		<STRING define="reason_verb">$verb_find</STRING>
-		<STRING define="quest_winspeech" SELECT="Any-1">
+		<STRING define="quest_delivered" SELECT="Any-1">
 			<STRING>You found them! Thanks!</STRING>
 			<STRING>I'm so relieved! Thank you for your assistance.</STRING>
 			<STRING>Thanks you so much for finding them!</STRING>
 		</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I lost my ${p:target_name} and need you to find them and bring them here.</STRING>
 			<STRING>I seem to have misplaced the ${p:target_name} and need your help.</STRING>
@@ -212,12 +212,12 @@ settable vars:
 	<STRING ID="reason_welosteachother" SELECT="All">
 		<STRING define="reason_verbed">$verb_found</STRING>
 		<STRING define="reason_verb">$verb_find</STRING>
-		<STRING define="quest_winspeech" SELECT="Any-1">
+		<STRING define="quest_delivered" SELECT="Any-1">
 			<STRING>You found them! Thanks!</STRING>
 			<STRING>Thank you for your assistance.</STRING>
 			<STRING>Thanks you so much for finding them!</STRING>
 		</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>My ${p:target_name} have gotten lost and we must be reunited.</STRING>
 			<STRING>My ${p:target_name} have lost each other and me.</STRING>
@@ -228,12 +228,12 @@ settable vars:
 	<STRING ID="reason_theylostme" SELECT="All">
 		<STRING define="reason_verbed">$verb_found</STRING>
 		<STRING define="reason_verb">$verb_find</STRING>
-		<STRING define="quest_winspeech" SELECT="Any-1">
+		<STRING define="quest_delivered" SELECT="Any-1">
 			<STRING>You found them! Thanks!</STRING>
 			<STRING>They found me! Thank you for your assistance.</STRING>
 			<STRING>Thanks you so much for finding them!</STRING>
 		</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>My ${p:target_name} have lost track of me, and I need you to find them.</STRING>
 			<STRING>The ${p:target_name} are lost and need finding.</STRING>
@@ -244,8 +244,8 @@ settable vars:
 	<STRING ID="reason_gencapture" SELECT="All">
 		<STRING define="reason_verbed">$verb_captured</STRING>
 		<STRING define="reason_verb">$verb_capture</STRING>
-		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I need several ${p:target_name} captured and brought to me.</STRING>
 			<STRING>I need the ${p:target_name} brought to me.</STRING>
@@ -258,8 +258,8 @@ settable vars:
 	<STRING ID="reason_giveinstr" SELECT="All">
 		<STRING define="reason_verbed">$verb_gathered</STRING>
 		<STRING define="reason_verb">$verb_gather</STRING>
-		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I want to explain some things to ${p:target_name}.</STRING>
 			<STRING>It is time for ${p:target_name} ${p:any_instrument_name} lessons.</STRING>
@@ -275,8 +275,8 @@ settable vars:
 	<STRING ID="reason_planning" SELECT="All">
 		<STRING define="reason_verbed">$verb_gathered</STRING>
 		<STRING define="reason_verb">$verb_gather</STRING>
-		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>It's time for our committee meeting, and the ${p:target_name} are late!</STRING>
 			<STRING condition="$source_align &lt; -5000">I have a $adj_useful plan to take over $source_area_name and it involves the ${p:target_name}!</STRING>
@@ -289,8 +289,8 @@ settable vars:
 	<STRING ID="reason_receiveinstr" SELECT="All">
 		<STRING define="reason_verbed">$verb_gathered</STRING>
 		<STRING define="reason_verb">$verb_gather</STRING>
-		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} are supposed to be here to explain some things to me.</STRING>
 			<STRING>It's time for my lessons with ${p:target_name}.</STRING>
@@ -303,8 +303,8 @@ settable vars:
 	<STRING ID="reason_idoforthem" SELECT="All">
 		<STRING define="reason_verbed">$verb_gathered</STRING>
 		<STRING define="reason_verb">$verb_gather</STRING>
-		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} need my help to groom them.</STRING>
 			<STRING>I wish to give the ${p:target_name} a gift.</STRING>
@@ -318,8 +318,8 @@ settable vars:
 	<STRING ID="reason_wedotogether" SELECT="All">
 		<STRING define="reason_verbed">$verb_gathered</STRING>
 		<STRING define="reason_verb">$verb_gather</STRING>
-		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} and I are playing ${p:any_instrument_name} in the $source_area orchestra today.</STRING>
 			<STRING>I need the ${p:target_name} help with an important project.</STRING>
@@ -332,8 +332,8 @@ settable vars:
 	<STRING ID="reason_theydoforme" SELECT="All">
 		<STRING define="reason_verbed">$verb_gathered</STRING>
 		<STRING define="reason_verb">$verb_gather</STRING>
-		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} must come here at once to serve me.</STRING>
 			<STRING>The ${p:target_name} all must report to me.</STRING>
@@ -345,8 +345,8 @@ settable vars:
 	<STRING ID="reason_idotothem" SELECT="All">
 		<STRING define="reason_verbed">$verb_captured</STRING>
 		<STRING define="reason_verb">$verb_capture</STRING>
-		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I must $hurt_verb the ${p:target_name}, and do it in secret.</STRING>
 			<STRING>I am really hungry for ${p:target_name}.</STRING>
@@ -360,8 +360,8 @@ settable vars:
 	<STRING ID="reason_wedotoeachother" SELECT="All">
 		<STRING define="reason_verbed">$verb_captured</STRING>
 		<STRING define="reason_verb">$verb_capture</STRING>
-		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_loser_speeches</STRING>
+		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
+		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING CONDITION="$target_int &lt; 4">I am starting a ${p:target_name} farm.</STRING>
 			<STRING>The ${p:target_name} and I are scheduled to $hurt_verb each other today.</STRING>
@@ -423,7 +423,7 @@ settable vars:
 	</STRING>
 
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
-		<STRING>${SELECT:mean\level FROM $target_area\npcs WHERE name = $target_name}</STRING>
+		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
 	</STRING>
 	
 	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
@@ -462,11 +462,19 @@ settable vars:
 
 	<OBJECT ID="target" DEFINE="target" SELECT="any-1">
 		<OBJECT CONDITION="$targetname!=''"">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
-		<OBJECT CONDITION="$targetname=''">SELECT: ANY\. FROM $target_area\mobs WHERE name\count>$num_targets</OBJECT>
+		<OBJECT CONDITION="$targetname=''">
+			SELECT: ANY\. FROM $target_area\npcs 
+				WHERE name\count=1 
+				and current_intelligence>5 
+				and "Aggressive" notin affbehav  
+				and "QuestBound" notin affbehav 
+				and (SELECT: count\. FROM mob\room\exits) > 0 
+				and 'ROOMUNEXPLORABLE' notin (SELECT: sensesstr FROM mob\room)
+		</OBJECT>
 	</OBJECT>
 
 	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">
-		<STRING>${SELECT:name from $target}</STRING>
+		<STRING">${SELECT:name from $target}</STRING>
 	</STRING>
 
 	<STRING ID="target_int" SELECT="any-1" DEFINE="target_int">
@@ -479,13 +487,22 @@ settable vars:
 		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
 		<OBJECT pickweight=100 condition="$targetarea_name = '' and $multiarea != 'YES'">SELECT: any\. from $source_area</OBJECT>
 		<OBJECT pickweight=1 condition="$targetarea_name = '' and $multiarea = 'YES'">
-			SELECT: ANY\. FROM areas WHERE (SELECT:count\. from area\npcs WHERE name\count &gt; $num_targets) &gt; 0
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 1
 		</OBJECT>
 	</OBJECT>
 
 	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">
 		<STRING>${SELECT:name from $target_area</STRING>
 	</STRING>	
+	
+	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
+	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
+		<OBJECT condition="$itemname=''">SELECT: ANY\. FROM $dungeon_junk</OBJECT>
+		<OBJECT condiion="$itemname!=''">
+			<ITEM class="GenItem" name="$itemname" display="$itemname lies here" material="PAPER" level="$level_range" />
+		</OBJECT>
+	</OBJECT>
+
 </QUEST>
 
 

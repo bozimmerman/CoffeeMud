@@ -272,7 +272,7 @@ vars:
 	</OBJECT>
 	
 	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
-		<STRING>${SELECT:MED_LEVEL from $source_area}</STRING>
+		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
 	</STRING>
 	
 	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
