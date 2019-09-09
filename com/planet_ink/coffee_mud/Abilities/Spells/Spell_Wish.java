@@ -222,7 +222,6 @@ public class Spell_Wish extends Spell
 			// cast wish to cast disintegrate on orc
 			// cast wish to cast geas on orc to kill bob
 			Log.sysOut("Wish",mob.Name()+" wished for "+myWish+".");
-			lastCastTime = System.currentTimeMillis();
 
 			mob.location().send(mob,msg);
 			final StringBuffer wish=new StringBuffer(myWish);
@@ -239,7 +238,8 @@ public class Spell_Wish extends Spell
 				baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 				CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 				beneficialWordsFizzle(mob,null,L("<S-NAME> make(s) a wish comes true! Nothing happens!"));
-				return false;
+				lastCastTime = System.currentTimeMillis();
+				return true;
 			}
 
 			// do locate object first.. its the most likely
@@ -372,6 +372,7 @@ public class Spell_Wish extends Spell
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 drops from the sky.",newItem.name()));
 				mob.location().recoverRoomStats();
 				wishDrain(mob,(baseLoss+experienceRequired),false);
+				lastCastTime = System.currentTimeMillis();
 				return true;
 			}
 
@@ -469,6 +470,7 @@ public class Spell_Wish extends Spell
 					if(experienceRequired<=0)
 						experienceRequired=0;
 					wishDrain(mob,(baseLoss+experienceRequired),false);
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 				else
@@ -503,6 +505,7 @@ public class Spell_Wish extends Spell
 								CMLib.itemBuilder().itemFix((Item)foundThang, mob.phyStats().level(), new StringBuffer(""));
 							}
 							wishDrain(mob,(baseLoss+experienceRequired),false);
+							lastCastTime = System.currentTimeMillis();
 							return true;
 						}
 					}
@@ -522,6 +525,7 @@ public class Spell_Wish extends Spell
 					if(experienceRequired<=0)
 						experienceRequired=0;
 					wishDrain(mob,(baseLoss+experienceRequired),false);
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 			}
@@ -625,6 +629,7 @@ public class Spell_Wish extends Spell
 						return false;
 					baseLoss *= bringThangHere(mob,recallRoom,target);
 					wishDrain(mob,baseLoss,false);
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 			}
@@ -677,6 +682,7 @@ public class Spell_Wish extends Spell
 						baseLoss=mob.getExperience()-exp;
 				}
 				wishDrain(mob,(baseLoss+levelDiffXPLoss)*2,false);
+				lastCastTime = System.currentTimeMillis();
 				return true;
 			}
 
@@ -785,6 +791,7 @@ public class Spell_Wish extends Spell
 						baseLoss *= bringThangHere(mob,newRoom,target);
 						newRoom.show(mob, null, CMMsg.MSG_OK_VISUAL, L("<S-NAME> appears!"));
 						wishDrain(mob,baseLoss,false);
+						lastCastTime = System.currentTimeMillis();
 						return true;
 					}
 				}
@@ -806,6 +813,7 @@ public class Spell_Wish extends Spell
 					A.setAffectedOne(null);
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 loses @x2 baby!",target.name(),((MOB)target).charStats().hisher()));
 					wishDrain(mob,baseLoss,false);
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 			}
@@ -831,6 +839,7 @@ public class Spell_Wish extends Spell
 						A.setStat("PREGSTART", ""+(pregStart - diff));
 						A.setStat("PREGEND", ""+(pregEnd - diff));
 						wishDrain(mob,baseLoss,false);
+						lastCastTime = System.currentTimeMillis();
 						return true;
 					}
 				}
@@ -865,6 +874,7 @@ public class Spell_Wish extends Spell
 							M.recoverCharStats();
 						}
 						wishDrain(mob,baseLoss,false);
+						lastCastTime = System.currentTimeMillis();
 						return true;
 					}
 				}
@@ -903,6 +913,7 @@ public class Spell_Wish extends Spell
 							mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("@x1 ages a bit.",target.name()));
 						target.recoverPhyStats();
 						wishDrain(mob,baseLoss,false);
+						lastCastTime = System.currentTimeMillis();
 						return true;
 					}
 				}
@@ -924,6 +935,7 @@ public class Spell_Wish extends Spell
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is healthier!",target.name()));
 					tm.curState().setHitPoints(tm.maxState().getHitPoints());
 					wishDrain(mob,baseLoss,false);
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 				else
@@ -935,6 +947,7 @@ public class Spell_Wish extends Spell
 					tm.baseState().setHitPoints(tm.baseState().getHitPoints()+2);
 					tm.recoverMaxState();
 					wishDrain(mob,baseLoss,true);
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 				if((myWish.indexOf("MANA")>=0)&&(tm.curState().getMana()<tm.maxState().getMana()))
@@ -944,6 +957,7 @@ public class Spell_Wish extends Spell
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 has more mana!",target.name()));
 					tm.curState().setMana(tm.maxState().getMana());
 					wishDrain(mob,baseLoss,false);
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 				else
@@ -955,6 +969,7 @@ public class Spell_Wish extends Spell
 					tm.baseState().setMana(tm.baseState().getMana()+2);
 					tm.recoverMaxState();
 					wishDrain(mob,baseLoss,true);
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 				if((myWish.indexOf("MOVE")>=0)&&(tm.curState().getMovement()<tm.maxState().getMovement()))
@@ -964,6 +979,7 @@ public class Spell_Wish extends Spell
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 has more move points!",target.name()));
 					tm.curState().setMovement(tm.maxState().getMovement());
 					wishDrain(mob,baseLoss,false);
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 				else
@@ -975,6 +991,7 @@ public class Spell_Wish extends Spell
 					tm.baseState().setMovement(tm.baseState().getMovement()+5);
 					tm.recoverMaxState();
 					wishDrain(mob,baseLoss,true);
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 
@@ -997,6 +1014,7 @@ public class Spell_Wish extends Spell
 				((MOB)target).baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 				((MOB)target).recoverCharStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now male!",target.name()));
+				lastCastTime = System.currentTimeMillis();
 				return true;
 			}
 
@@ -1016,6 +1034,7 @@ public class Spell_Wish extends Spell
 				((MOB)target).basePhyStats().setWeight(weight);
 				((MOB)target).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now lighter!",target.name()));
+				lastCastTime = System.currentTimeMillis();
 				return true;
 			}
 			if((target instanceof MOB)
@@ -1032,6 +1051,7 @@ public class Spell_Wish extends Spell
 				((MOB)target).basePhyStats().setWeight(weight);
 				((MOB)target).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now heavier!",target.name()));
+				lastCastTime = System.currentTimeMillis();
 				return true;
 			}
 			if((target instanceof MOB)
@@ -1053,6 +1073,7 @@ public class Spell_Wish extends Spell
 				mob.tell(L("Your wish has drained you of @x1 experience points.",""+(amount*4)));
 				CMLib.leveler().postExperience((MOB)target,null,null,amount,false);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 gains experience!",target.name()));
+				lastCastTime = System.currentTimeMillis();
 				return true;
 			}
 
@@ -1202,6 +1223,7 @@ public class Spell_Wish extends Spell
 					}
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now level @x2!",target.name(),""+target.phyStats().level()));
 				}
+				lastCastTime = System.currentTimeMillis();
 				return true;
 			}
 
@@ -1222,6 +1244,7 @@ public class Spell_Wish extends Spell
 				((MOB)target).basePhyStats().setHeight(weight);
 				((MOB)target).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now shorter!",target.name()));
+				lastCastTime = System.currentTimeMillis();
 				return true;
 			}
 			if((target instanceof MOB)
@@ -1239,6 +1262,7 @@ public class Spell_Wish extends Spell
 				((MOB)target).basePhyStats().setHeight(weight);
 				((MOB)target).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now taller!",target.name()));
+				lastCastTime = System.currentTimeMillis();
 				return true;
 			}
 
@@ -1260,6 +1284,7 @@ public class Spell_Wish extends Spell
 				((MOB)target).baseCharStats().setStat(CharStats.STAT_GENDER,'F');
 				((MOB)target).recoverCharStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now female!",target.name()));
+				lastCastTime = System.currentTimeMillis();
 				return true;
 			}
 
@@ -1299,6 +1324,7 @@ public class Spell_Wish extends Spell
 					if(!((MOB)target).isMonster())
 						((MOB)target).baseCharStats().setStat(CharStats.STAT_AGE,R.getAgingChart()[oldCat]);
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now a @x2!",target.name(),R.name()));
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 			}
@@ -1345,6 +1371,7 @@ public class Spell_Wish extends Spell
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverPhyStats();
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 is now a @x2!",target.name(),C.name(((MOB)target).baseCharStats().getCurrentClassLevel())));
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 			}
@@ -1392,7 +1419,8 @@ public class Spell_Wish extends Spell
 					baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 					CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 					mob.tell(L("Your wish has drained you of @x1 experience points.",""+baseLoss));
-					return false;
+					lastCastTime = System.currentTimeMillis();
+					return true;
 				}
 
 			}
@@ -1493,6 +1521,7 @@ public class Spell_Wish extends Spell
 							if(A2!=null)
 								A2.setProficiency(100);
 						}
+						lastCastTime = System.currentTimeMillis();
 						return true;
 					}
 				}
@@ -1570,6 +1599,7 @@ public class Spell_Wish extends Spell
 								A.unInvoke();
 								tm.delEffect(A);
 							}
+							lastCastTime = System.currentTimeMillis();
 							return true;
 						}
 					}
@@ -1612,7 +1642,8 @@ public class Spell_Wish extends Spell
 						baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 						CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 						mob.tell(L("Your wish has drained you of @x1 experience points.",""+baseLoss));
-						return false;
+						lastCastTime = System.currentTimeMillis();
+						return true;
 					}
 				}
 			}
@@ -1655,7 +1686,8 @@ public class Spell_Wish extends Spell
 					baseLoss=getXPCOSTAdjustment(mob,baseLoss);
 					CMLib.leveler().postExperience(mob,null,null,-baseLoss,false);
 					mob.tell(L("Your wish has drained you of @x1 experience points.",""+baseLoss));
-					return false;
+					lastCastTime = System.currentTimeMillis();
+					return true;
 				}
 			}
 
@@ -1784,6 +1816,7 @@ public class Spell_Wish extends Spell
 					}
 					((MOB)target).recoverCharStats();
 					mob.recoverCharStats();
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 				else
@@ -1800,6 +1833,7 @@ public class Spell_Wish extends Spell
 					((MOB)target).recoverCharStats();
 					mob.recoverCharStats();
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("@x1 has lost @x2.",target.name(),CharStats.CODES.DESC(foundAttribute).toLowerCase()));
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 			}
@@ -1843,6 +1877,7 @@ public class Spell_Wish extends Spell
 					}
 					((MOB)target).recoverCharStats();
 					mob.recoverCharStats();
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 				else
@@ -1883,6 +1918,7 @@ public class Spell_Wish extends Spell
 				}
 				mob.recoverCharStats();
 				((MOB)target).recoverCharStats();
+				lastCastTime = System.currentTimeMillis();
 				return true;
 			}
 
@@ -2002,6 +2038,7 @@ public class Spell_Wish extends Spell
 					mob.recoverCharStats();
 					mob.recoverMaxState();
 					mob.recoverPhyStats();
+					lastCastTime = System.currentTimeMillis();
 					return true;
 				}
 			}
