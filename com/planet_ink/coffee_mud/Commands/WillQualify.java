@@ -161,6 +161,10 @@ public class WillQualify  extends Skills
 				mob.tell(willQualErr);
 				return false;
 			}
+			if(level>CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
+			{
+				mob.tell("'"+commands.get(0)+"' is not an available level.");
+			}
 			commands.remove(0);
 		}
 		if(commands.size()>0)
