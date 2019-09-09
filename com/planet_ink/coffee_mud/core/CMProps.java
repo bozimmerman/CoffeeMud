@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CombatLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.CostType;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -86,6 +87,26 @@ public class CMProps extends Properties
 	public static final CMProps instance(final char c)
 	{
 		return props[c];
+	}
+
+	/**
+	 * Returns the property object that applies to the given session.
+	 * @param session session to return properties for. Base = '0'.
+	 * @return the property object that applies to the given session.
+	 */
+	public static final CMProps instance(final Session session)
+	{
+		return (session==null)?p():props[session.getGroupID()];
+	}
+
+	/**
+	 * Returns the property object that applies to the given mob.
+	 * @param mob mob to return properties for. Base = '0'.
+	 * @return the property object that applies to the given mob.
+	 */
+	public static final CMProps instance(final MOB mob)
+	{
+		return (mob==null)?p():instance(mob.session());
 	}
 
 	/**

@@ -734,8 +734,14 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	protected int getGainedExperienceCap(final MOB mob)
 	{
 		final int threadId;
-		if((mob!=null)&&(mob.session()!=null))
-			threadId=mob.session().getGroupID();
+		if(mob != null)
+		{
+			final Session sess=mob.session();
+			if(sess != null)
+				threadId=sess.getGroupID();
+			else
+				threadId=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		}
 		else
 			threadId=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(experienceCaps[threadId] <= 0)
@@ -748,12 +754,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	{
 		if(level<0)
 			return 0;
-		final int threadId;
-		if((mob!=null)&&(mob.session()!=null))
-			threadId=mob.session().getGroupID();
-		else
-			threadId=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		final int[] levelingChart = CMProps.instance((char)threadId)._getListFileIntList(CMProps.ListFile.EXP_CHART);
+		final int[] levelingChart = CMProps.instance(mob)._getListFileIntList(CMProps.ListFile.EXP_CHART);
 		if(level<levelingChart.length)
 			return levelingChart[level];
 		final int lastDiff=levelingChart[levelingChart.length-1] - levelingChart[levelingChart.length-2];
@@ -765,12 +766,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	{
 		if(level<0)
 			return 0;
-		final int threadId;
-		if((mob!=null)&&(mob.session()!=null))
-			threadId=mob.session().getGroupID();
-		else
-			threadId=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		final int[] levelingChart = CMProps.instance((char)threadId)._getListFileIntList(CMProps.ListFile.EXP_CHART);
+		final int[] levelingChart = CMProps.instance(mob)._getListFileIntList(CMProps.ListFile.EXP_CHART);
 		if(level==0)
 			return levelingChart[0];
 		else
