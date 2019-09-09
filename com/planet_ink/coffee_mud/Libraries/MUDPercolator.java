@@ -136,7 +136,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	@Override
-	public void buildDefinedIDSet(final List<XMLTag> xmlRoot, final Map<String,Object> defined, Set<String> overrideIds)
+	public void buildDefinedIDSet(final List<XMLTag> xmlRoot, final Map<String,Object> defined, final Set<String> overrideIds)
 	{
 		if(xmlRoot==null)
 			return;
@@ -1309,6 +1309,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					x++;
 				var.var = str.substring(var.outerStart+1,x);
 				var.outerEnd=x;
+				if((var.var.length()==0)
+				&&(x<str.length())
+				&&(str.charAt(x)=='$'))
+				{
+					list.add(var);
+					x=str.indexOf('$',x+1);
+					continue;
+				}
 			}
 			list.add(var);
 			x=str.indexOf('$',var.outerEnd);
@@ -3117,6 +3125,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				try
 				{
 					final String upperId=id.var.toUpperCase();
+					if(upperId.length()==0)
+						continue;
 					final boolean missingMobVarCondition;
 					if(defPrefix != null)
 					{
@@ -5936,7 +5946,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected String strFilter(Modifiable E, final List<String> ignoreStats, final String defPrefix, String str, final XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		List<Varidentifier> vars=parseVariables(str);
-		final boolean killArticles=str.toLowerCase().startsWith("(a(n))");
+		final boolean killArticles;
+		if((str.length()>6)&&(str.substring(0,6).equalsIgnoreCase("(a(n))")))
+			killArticles=true;
+		else
+			killArticles=false;
 		while(vars.size()>0)
 		{
 			final Varidentifier V=vars.remove(vars.size()-1);
@@ -6055,6 +6069,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				else
 					throw new CMException("Unknown stat code '"+parts[parts.length-1]+"' on object "+E+" in variable '"+V.var+"'");
 			}
+			else
+			if(V.var.length()==0)
+				val="";
 			else
 				val = defined.get(V.var.toUpperCase().trim());
 			if(val instanceof XMLTag)

@@ -105,8 +105,14 @@ settable vars:
 
 	<STRING ID="quest_delivered" PREDEFINE="reason=$reason">$quest_delivered</STRING>
 	<STRING ID="quest_hellospeech" PREDEFINE="reason=$reason">$quest_hellospeech</STRING>
-	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>
-	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$reason_verb</STRING>
+	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">
+		<STRING condition="$reason_verbed != ''">$reason_verbed</STRING>
+		<STRING condition="$reason_verbed = ''">delivered</STRING>
+	</STRING>
+	<STRING ID="reason_verb" PREDEFINE="reason=$reason">
+		<STRING condition="$reason_verb != ''">$reason_verb</STRING>
+		<STRING condition="$reason_verb = ''">deliver</STRING>
+	</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
 	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
 		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
@@ -127,25 +133,19 @@ settable vars:
 	</STRING>
 
 	<STRING id="quest_generic_hello_speeches" SELECT="Any-1">
-		<STRING>I guess I'll need to $reason_verb them myself.</STRING>
-		<STRING>This is unacceptable.</STRING>
+		<STRING>Are you looking for me?</STRING>
+		<STRING>Have you got something for me?</STRING>
 		<STRING>Well, I give up on them being $reason_verbed.</STRING>
 		<STRING>You just can't find good help anymore.</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_delivered_speeches" SELECT="Any-1">
-		<STRING>They are all $reason_verbed! That's all of them, thanks!</STRING>
-		<STRING>${c:reason_verbed} at last! Thank you for your assistance.</STRING>
-		<STRING>Thanks for the $reason_verb, I'll take it from here.</STRING>
-		<STRING>Thank you adventurer for completing my $reason_verb task, that will be all.</STRING>
+		<STRING>How wonderful1! Thank you!!</STRING>
+		<STRING>${c:reason_verbed} at last! Thank you!</STRING>
+		<STRING>Thanks, I'll take it from here.</STRING>
+		<STRING>Thank you adventurer, that will be all.</STRING>
 	</STRING>
 
-	<STRING id="quest_generic_surrender_speeches" SELECT="Any-1">
-		<STRING>I'm $reason_verbed! Lead the way to $source_name.</STRING>
-		<STRING>I am being $reason_verbed! Take me to ${c:source_name}.</STRING>
-		<STRING>I guess I'm $reason_verbed ! Are we going to ${c:source_name} now?</STRING>
-	</STRING>
-	
 	<STRING ID="reason_theyoweme" SELECT="All">
 		<STRING define="reason_verbed">$verb_captured</STRING>
 		<STRING define="reason_verb">$verb_capture</STRING>
