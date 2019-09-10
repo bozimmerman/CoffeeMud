@@ -23,24 +23,23 @@ settable vars:
     area_name(area name)
     source_name(mob name)
     targetarea_name(area name)
-    targetname(mobs name)
+    targetname(container name)
     itemname(name of an item)
     multiarea(yes or NO)
 	xp_amount_awarded
 	gold_amount_awarded
 	quest_point_awarded(YES,NO)
-	reward_items()
 -->
 
 <QUEST ID="all" MERGE=true QUEST_TEMPLATE_ID="$quest_template">
 	<QUEST_ID DEFINE="quest_id">${_:source_area_name}_${_:source_name}_${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
 	<QUEST_CRITERIA>+SYSOP +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA>
-	<ANNOUNCER_AREA>"$source_area_name"</ANNOUNCER_AREA>
-	<ANNOUNCER_ROOM>"$source_room_id"</ANNOUNCER_ROOM>
-	<ANNOUNCER_NAME>"$source_name"</ANNOUNCER_NAME>
-	<DELIVEREE_AREA>"$target_area_name"</DELIVEREE_AREA>
-	<DELIVEREE_ROOM>"$target_room_id"</DELIVEREE_ROOM>
-	<DELIVEREE_NAME>"$target_name"</DELIVEREE_NAME>
+	<DELIVERER_AREA>"$source_area_name"</DELIVERER_AREA>
+	<DELIVERER_ROOM>"$source_room_id"</DELIVERER_ROOM>
+	<DELIVERER_NAME>"$source_name"</DELIVERER_NAME>
+	<DESTINATION_AREA>"$target_area_name"</DESTINATION_AREA>
+	<DESTINATION_ROOM>"$target_room_id"</DESTINATION_ROOM>
+	<DESTINATION_CONTAINER>$target_container_name</DESTINATION_CONTAINER>
 	<DELIVERABLE_ITEM>${SELECT: ANY\. from $target_item}</DELIVERABLE_ITEM>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
 	<GOLD>$gold_amount_awarded</GOLD>
@@ -55,10 +54,9 @@ settable vars:
 		<QUEST_NAME>${C:source_name} asks for ${target_item_name} to be $reason_verbed to $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} ${target_item_name} to $target_name in ${C:target_area_name} for ${C:source_name}</QUEST_NAME>
 	</QUEST_NAME>
-	<QUEST_NOTIFYSTRING>$quest_notifystring</QUEST_NOTIFYSTRING>
+	<QUEST_NOTIFYSSTRING>$quest_notifystring</QUEST_NOTIFYSSTRING>
 	<QUEST_INSTRUCTIONSSTRING>$quest_instructionstring</QUEST_INSTRUCTIONSSTRING>
-	<DELIVERY_RESPONSE>$quest_delivered</DELIVERY_RESPONSE>
-	<DELIVEREE_ANNOUNCE>$quest_hellospeech</DELIVEREE_ANNOUNCE>
+	<DELIVER_RESPONSE>$quest_delivered</DELIVER_RESPONSE>
 	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
@@ -88,36 +86,25 @@ settable vars:
 	<STRING ID="quest_instructionstring" SELECT="ALL">
 		<STRING ACTION="PREPEND">$reason_desc</STRING>
 		<STRING ACTION="APPEND">$reason_short</STRING>
-		<STRING SELECT="Any-1" CONDITION="'YES' in $target_is_aggressive">
-			<STRING>You might have to $hurt_them_phrase, so be ready.</STRING>
-			<STRING>If you $hurt_them_phrase, it'll be no problem.</STRING>
-			<STRING>Be ready to $hurt_them_phrase.</STRING>
-			<STRING>If they seem reluctant, $hurt_them_phrase.</STRING>
-			<STRING>Only $hurt_them_phrase if they resist.</STRING>
-			<STRING>${C:hurt_them_phrase}, before they do you.</STRING>
-		</STRING>
 	</STRING>
 
-	<STRING ID="quest_delivered" PREDEFINE="reason=$reason">$quest_delivered</STRING>
-	<STRING ID="quest_hellospeech" PREDEFINE="reason=$reason">$quest_hellospeech</STRING>
+	<STRING ID="quest_delivered" PREDEFINE="reason=$reason">
+		<STRING condition="$quest_delivered != ''">$quest_delivered</STRING>
+		<STRING condition="$quest_delivered = ''">Your task is complete.</STRING>
+	</STRING>
 	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">delivered</STRING>
 	<STRING ID="reason_verb" PREDEFINE="reason=$reason">deliver</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
 	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
-		<STRING CONDITION="$target_int &gt; 5">$reason_theyoweme</STRING>
+		<STRING>$reason_theyoweme</STRING>
 		<STRING>$reason_partytime</STRING>
-		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
-		<STRING CONDITION="$source_align &gt; 0">$reason_ilostthem</STRING>
+		<STRING>$reason_iowethem</STRING>
+		<STRING>$reason_ilostthem</STRING>
 		<STRING>$reason_gendeliver</STRING>
-		<STRING CONDITION="$target_int &gt; 5 and $source_align &gt; 5000">$reason_idoforthem</STRING>
-		<STRING CONDITION="$target_int &gt; 5">$reason_wedotogether</STRING>
-		<STRING CONDITION="$source_align &lt; -5000">$reason_idotothem</STRING>
-		<STRING CONDITION="$source_align &lt; -5000">$reason_wedotoeachother</STRING>
-	</STRING>
-
-	<STRING id="quest_generic_hello_speeches" SELECT="Any-1">
-		<STRING>$$n, are you looking for me?</STRING>
-		<STRING>Hello $$n, have you got something for me?</STRING>
+		<STRING CONDITION="$source_align &gt; 500">$reason_idoforthem</STRING>
+		<STRING>$reason_wedotogether</STRING>
+		<STRING CONDITION="$source_align &lt; -500">$reason_idotothem</STRING>
+		<STRING CONDITION="$source_align &lt; -500">$reason_wedotoeachother</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_delivered_speeches" SELECT="Any-1">
@@ -127,9 +114,24 @@ settable vars:
 		<STRING>Thank you $$n, that will be all.</STRING>
 	</STRING>
 
+<!-- 
+Loki WIZES 'Can you take X and put it in the Y(container) in each room so...I
+can give gifts to people, drop off supplies to the citizens of (area name),
+fill my orders to my loyal customers (milkman!), keep (area name) beautiful,
+make (areaname) befouled/ugly, leave samples for people to try my latest
+product.'
+
+Coffee Grounds#2 ():
+ [WIZINFO] 'Rothy has just gained a level at Vassendar#21.'
+ [INFO] 'Rothy has just gained a level.'
+
+Coffee Grounds#2 ():
+Loki WIZES 'Store supplies for the coming season, stock up in event of
+emergency, keep the lights burning (filling lamps with oil),'
+ -->
+
 	<STRING ID="reason_theyoweme" SELECT="All">
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${C:target_name} promised to repair $target_item_name for me.</STRING>
 			<STRING>${C:target_name} promised to store $target_item_name for me.</STRING>
@@ -145,7 +147,6 @@ settable vars:
 			<STRING>${c:target_item_name} is my favorite thing! Thanks!</STRING>"
 			<STRING>We can finally begin the festivities now that ${c:target_item_name} is here!</STRING>"
 		</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:target_name} invited me to a party, but I can't go.</STRING>
 			<STRING>It's ${target_name}s birthday today.</STRING>
@@ -156,7 +157,6 @@ settable vars:
 
 	<STRING ID="reason_iowethem" SELECT="All">
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I wish to reward $target_name with $target_item_name for reasons.</STRING>
 			<STRING>I owe ${target_name} $target_item_name for their assistance to me.</STRING>
@@ -171,7 +171,6 @@ settable vars:
 			<STRING>${target_item_name has been found}! Thank you for your assistance.</STRING>
 			<STRING>Thanks you so much for finding $target_item_name!</STRING>
 		</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:target_name} lost $target_item_name and so I need your help.</STRING>
 			<STRING>${c:target_name} left ${target_item_name} here.</STRING>
@@ -182,7 +181,6 @@ settable vars:
 
 	<STRING ID="reason_gendeliver" SELECT="All">
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I need $target_item_name delivered to $target_name.</STRING>
 			<STRING>I need ${target_name} to be given $target_item_name.</STRING>
@@ -193,7 +191,6 @@ settable vars:
 
 	<STRING ID="reason_idoforthem" SELECT="All">
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I wish to give ${target_name} a gift of $target_item_name.</STRING>
 			<STRING>I think ${target_name} really wants $target_item_name.</STRING>
@@ -204,7 +201,6 @@ settable vars:
 
 	<STRING ID="reason_wedotogether" SELECT="All">
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${target_name} and I are experimenting with $target_item_name today.</STRING>
 			<STRING>I need ${target_name} to also have $target_item_name so we can compare experiences.</STRING>
@@ -216,7 +212,6 @@ settable vars:
 
 	<STRING ID="reason_idotothem" SELECT="All">
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I must $hurt_verb ${target_name}, and do it in secret.</STRING>
 			<STRING>${c:target_name} has insulted me and must be notified.</STRING>
@@ -230,7 +225,6 @@ settable vars:
 
 	<STRING ID="reason_wedotoeachother" SELECT="All">
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
-		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I am starting a ${target_item_name} factory with ${target_name}s help.</STRING>
 			<STRING>${c:target_name} and I are scheduled to study $$target_item_name today.</STRING>
@@ -239,11 +233,6 @@ settable vars:
 		</STRING>
 	</STRING>
 
-	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1">
-		<STRING PICKWEIGHT=50>NO</STRING>
-		<STRING PICKWEIGHT="$target_level">YES</STRING>
-	</STRING>
-	
 	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
 		<STRING PICKWEIGHT=2>NO</STRING>
 		<STRING PICKWEIGHT=1>YES</STRING>
@@ -264,12 +253,13 @@ settable vars:
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0
 		</OBJECT>
 		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
-			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 1
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0
+				AND (SELECT:count\. from area\rooms WHERE exits\count &gt; 0  AND display\count = 1) &gt; 0
 		</OBJECT>
 	</OBJECT>
 
 	<OBJECT ID="source_room" DEFINE="source_room">SELECT: . FROM $source\room</OBJECT>
-
+	
 	<OBJECT ID="source" SELECT="Pick-1" DEFINE="source">
 		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
 		<OBJECT pickweight=55555 condition="$sourcename != ''" and '${SELECT: name FROM mob}' = ''>SELECT: . FROM $source_area\npcs WHERE name = $sourcename</OBJECT> 
@@ -313,47 +303,56 @@ settable vars:
 		<STRING>${SELECT:alignment from $source}</STRING>
 	</STRING>
 
-	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
-		<STRING CONDITION="$aggressive = 'YES'">YES</STRING>
-		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in affbehav}</STRING>
-	</STRING>
-
-	<OBJECT ID="target" DEFINE="target" SELECT="any-1">
-		<OBJECT CONDITION="$targetname!=''"">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
-		<OBJECT CONDITION="$targetname=''">
-			SELECT: ANY\. FROM $target_area\npcs 
-				WHERE name\count=1 
-				and current_intelligence>5 
-				and "QuestBound" notin affbehav 
-				and name != $source_name
-				and (SELECT: count\. FROM mob\room\exits) > 0 
-				and 'ROOMUNEXPLORABLE' notin (SELECT: sensesstr FROM mob\room)
-		</OBJECT>
-	</OBJECT>
+	<OBJECT ID="target" DEFINE="target">SELECT: ANY\. from $target_room</OBJECT>
 
 	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">
-		<STRING>${SELECT:name from $target}</STRING>
+		<STRING>${SELECT:display from $target}</STRING>
 	</STRING>
 
-	<STRING ID="target_int" SELECT="any-1" DEFINE="target_int">
-		<STRING>${SELECT:intelligence from $target}</STRING>
-	</STRING>
-	
 	<STRING ID="multiarea" define="multiarea">NO</STRING>
 	
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
 		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
 		<OBJECT pickweight=100 condition="$targetarea_name = '' and $multiarea != 'YES'">SELECT: any\. from $source_area</OBJECT>
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $multiarea = 'YES'">
-			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 1
+		<OBJECT pickweight=1 select="first" condition="$targetarea_name = '' and $multiarea = 'YES'">
+			<OBJECT SELECT="limit-1">SELECT: any\. FROM areas WHERE (SELECT: count\. from $target_container_room_guess) &gt; 1</OBJECT>
+			<OBJECT>SELECT: any\. FROM areas WHERE (SELECT: count\. from area\rooms WHERE exits\count &gt; 0  AND display\count = 1) &gt; 0</OBJECT>
 		</OBJECT>
 	</OBJECT>
 
-	<STRING ID="target_room_id" DEFINE="target_room_id">${SELECT: roomid from $target\room}</STRING>
+	<OBJECT ID="target_container_guess">
+		SELECT: . from room\items where . like '-javaclass +gencontainer' and 'itemnotget' in dispositionstr and capacity &gt; weight
+	</OBJECT>
 	
+	<OBJECT ID="target_container_room_guess">
+		SELECT: . from area\rooms where (SELECT: COUNT\. from $target_container_guess) &gt; 0 AND exits\count &gt; 0 AND display\count = 1
+	</OBJECT>
+
 	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">
 		<STRING>${SELECT:name from $target_area</STRING>
 	</STRING>	
+	
+	<OBJECT ID="target_rooms_with_items">
+		SELECT: any\. FROM $target_area\rooms WHERE (SELECT: COUNT\. from $target_container_guess) &gt; 0 AND exits\count &gt; 0 AND display\count = 1
+	</OBJECT>
+	<OBJECT ID="target_rooms_without_items">
+		SELECT: any\. FROM $target_area\rooms WHERE exits\count &gt; 0  AND display\count = 1
+	</OBJECT>
+
+	<OBJECT ID="target_room" DEFINE="target_room">
+		SELECT: first\. FROM $target_rooms_with_items, $target_rooms_without_items
+	</OBJECT>
+	
+	<STRING ID="target_room_id" DEFINE="target_room_id">${SELECT: roomid from $target_room}</STRING>
+	
+	<OBJECT ID="target_container_item" DEFINE="target_container_item">
+		SELECT: any\. FROM $target_room\items where . like '-javaclass +gencontainer' and 'itemnotget' in dispositionstr and capacity &gt; weight
+	</OBJECT>
+	
+	<STRING ID="target_container_name" DEFINE="target_container_name" SELECT="First-1">
+		<STRING CONDITION="'${SELECT: name from $target_container}' != ''">${SELECT: name from $target_container}</STRING>
+		<STRING></STRING>
+	</STRING>
 	
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
 	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
@@ -364,5 +363,3 @@ settable vars:
 	</OBJECT>
 
 </QUEST>
-
-

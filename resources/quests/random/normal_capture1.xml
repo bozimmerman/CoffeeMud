@@ -17,7 +17,6 @@ limitations under the License.
 
 See guides/RandomAreas.html for information about documents of this type.
 
-<!-- 
 template: normal_capture1
 settable vars: 
     template(normal_capture1)
@@ -511,7 +510,7 @@ settable vars:
 		</OBJECT>
 	</OBJECT>
 
-	<OBJECT ID="source_room" DEFINE="source_room">SELECT: roomid FROM $source\room</OBJECT>
+	<OBJECT ID="source_room" DEFINE="source_room">SELECT: . FROM $source\room</OBJECT>
 	
 	<OBJECT ID="source" SELECT="Pick-1" DEFINE="source">
 		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>

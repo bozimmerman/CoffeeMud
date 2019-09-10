@@ -186,7 +186,6 @@ SPEECH_PROG p i accept $QUEST_NAME
 				mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
 			endif
 			give "$[1 *]" "$n"
-			sayto "$n" Please deliver this to ${2 *}.
 			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 		endif
 	endif
@@ -201,7 +200,6 @@ SPEECH_PROG p i accept
 				mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
 			endif
 			give "$[1 *]" "$n"
-			sayto "$n" Please deliver this to ${2 *}.
 			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 		endif
 	endif

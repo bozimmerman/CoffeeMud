@@ -1313,7 +1313,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				&&(x<str.length())
 				&&(str.charAt(x)=='$'))
 				{
-					list.add(var);
 					x=str.indexOf('$',x+1);
 					continue;
 				}
@@ -2679,7 +2678,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					defined.put(defVar.toUpperCase().trim(), definition);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 					Log.debugOut("MudPercolator","DEFINE:"+defVar.toUpperCase().trim()+"="+definition);
-			}
+s			}
 		}
 		final XMLTag parentPiece = piece.parent();
 		if((parentPiece!=null)&&(parentPiece.tag().equalsIgnoreCase(piece.tag()))&&(recurseAllowed))
@@ -3119,6 +3118,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			if(condition == null)
 				return true;
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+				Log.debugOut("MudPercolator","START-TEST "+piece.tag()+": "+condition);
 			final List<Varidentifier> ids=parseVariables(condition);
 			for(final Varidentifier id : ids)
 			{
@@ -3633,7 +3634,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 		private String				mql		= "";
 		private final List<WhatBit>	what	= new ArrayList<WhatBit>(1);
-		private String				from	= "";
+		private final List<String>	froms	= new ArrayList<String>(1);
 		private WhereClause			wheres	= null;
 
 		private boolean isTermProperlyEnded(final StringBuilder curr)
@@ -3804,7 +3805,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				case STATE_FROM0: // from state
 				{
-					if(Character.isWhitespace(c))
+					if(Character.isWhitespace(c)||(c==','))
 					{
 						if(curr.length()>0)
 						{
@@ -3814,9 +3815,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 									throw new MQLException("Unexpected WHERE in Malformed mql: "+str);
 								else
 								{
-									from=curr.toString();
+									froms.add(curr.toString());
 									curr.setLength(0);
-									state=SelectMQLState.STATE_EXPECTWHEREOREND; // now expect where
+									if(c!=',')
+										state=SelectMQLState.STATE_EXPECTWHEREOREND; // now expect where
 								}
 							}
 							else
@@ -3847,7 +3849,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						if(pdepth==0)
 						{
-							from=curr.toString();
+							froms.add(curr.toString());
 							state=SelectMQLState.STATE_EXPECTWHEREOREND; // expect where
 							curr.setLength(0);
 						}
@@ -3863,10 +3865,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				case STATE_EXPECTWHEREOREND: // expect where clause
 				{
-					if(Character.isWhitespace(c))
+					if(Character.isWhitespace(c)||(c==','))
 					{
 						if(curr.length()>0)
 						{
+							if(c==',')
+								throw new MQLException("Eexpected '"+curr.toString()+"' in Malformed mql: "+str);
+							else
 							if(curr.toString().equals(";"))
 							{
 								curr.setLength(0);
@@ -3881,6 +3886,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								state=SelectMQLState.STATE_WHERE0;
 							}
 						}
+						else
+						if(c==',')
+							state=SelectMQLState.STATE_FROM0;
 					}
 					else
 						curr.append(c);
@@ -5220,12 +5228,27 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								whatBuilder.append(strs[i]).append("\\");
 							final String newWhat=whatBuilder.substring(0,whatBuilder.length()-1);
 							int count=0;
+							final String cacheKey = "COUNT_CACHE"+newWhat+"_FROM_"+allFrom;
+							@SuppressWarnings("unchecked")
+							Map<Object,Object> cachedValues =  (Map<Object,Object>)cache.get(cacheKey);
+							if(cachedValues == null)
+							{
+								cachedValues = new HashMap<Object,Object>();
+								for(final Object o : allFrom)
+								{
+									if(o == null)
+										cachedValues.put(o, chkO);
+									else
+										cachedValues.put(o, getFinalMQLValue(newWhat, allFrom, o, cache, mql, E, ignoreStats, defPrefix, piece, defined));
+								}
+								cache.put(cacheKey, cachedValues);
+							}
 							for(final Object o : allFrom)
 							{
 								if(o==from)
 									count++;
 								else
-								if(chkO.equals(getFinalMQLValue(newWhat, allFrom, o, cache, mql, E, ignoreStats, defPrefix, piece, defined)))
+								if(chkO.equals(cachedValues.get(o)))
 									count++;
 							}
 							finalO=""+count;
@@ -5658,10 +5681,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		final List<Map<String,Object>> results=new ArrayList<Map<String,Object>>();
 		// first estalish the from object6
-		if(clause.from.length()==0)
+		if(clause.froms.size()==0)
 			throw new MQLException("No FROM clause in "+clause.mql);
 		// froms can have any environmental, or tags
-		final List<Object> froms=this.parseMQLFrom(clause.from, clause.mql, E, ignoreStats, defPrefix, piece, defined);
+		final List<Object> froms=new LinkedList<Object>();
+		for(final String from : clause.froms)
+		{
+			if(from.length()==0)
+				throw new MQLException("Empty FROM clause in "+clause.mql);
+			froms.addAll(parseMQLFrom(from, clause.mql, E, ignoreStats, defPrefix, piece, defined));
+		}
 		final MQLClause.AggregatorFunctions[] aggregates=new MQLClause.AggregatorFunctions[clause.what.size()];
 		boolean aggregate=false;
 		for(int i=0;i<clause.what.size();i++)
@@ -6071,7 +6100,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 			else
 			if(V.var.length()==0)
-				val="";
+				continue;
 			else
 				val = defined.get(V.var.toUpperCase().trim());
 			if(val instanceof XMLTag)

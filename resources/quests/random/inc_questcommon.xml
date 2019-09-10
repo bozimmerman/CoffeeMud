@@ -20,15 +20,15 @@ See guides/RandomAreas.html for information about documents of this type.
 <STRING load="/resources/randareas/inc_common.xml" />
 <STRING load="/resources/randareas/inc_adjectives.xml" />
 
-<STRING ID="mql_viable_questgivers">
-	${SELECT: . FROM area\npcs 
+<OBJECT ID="mql_viable_questgivers">
+	SELECT: . FROM area\npcs 
 		WHERE name\count=1 
 		and current_intelligence>5 
 		and "Aggressive" notin affbehav  
 		and "QuestBound" notin affbehav 
-		and (SELECT: count\. FROM mob\room\exits) > 0 
-		and 'ROOMUNEXPLORABLE' notin (SELECT: sensesstr FROM mob\room)}
-</STRING>
+		and (SELECT: count\. FROM mob\room\exits) &gt; 0 
+		and 'ROOMUNEXPLORABLE' notin (SELECT: sensesstr FROM mob\room)
+</OBJECT>
 
 <OBJECT ID="mql_viable_questgiver">
 	SELECT: ANY\. FROM $source_area\npcs 
@@ -36,7 +36,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		and current_intelligence>5 
 		and "Aggressive" notin affbehav  
 		and "QuestBound" notin affbehav 
-		and (SELECT: count\. FROM mob\room\exits) > 0 
+		and (SELECT: count\. FROM mob\room\exits) &gt; 0 
 		and 'ROOMUNEXPLORABLE' notin (SELECT: sensesstr FROM mob\room)
 </OBJECT>
 

@@ -47,13 +47,16 @@
 #be started.
 #$DELIVERER_NAME=$NAME
 #
-#Deliverer reasons: 
-#Specify some additional bit of speech the deliverer 
-#mob will say to players when the item is handed over for delivery.  The
-#deliverer will already be specifying the name of the mob to deliver to,
-#but you might want to say what its for, or where the mob is, or something
-#about the reward, or whatever.
-#$REASONING=($LONG_STRING)
+#Announcer greeting: 
+#Specify what the announcer says to people when they enter the room about their
+#quest.   Use the code ${2 *} to designate the name of the mob to find.
+#$QUEST_NOTIFYSTRING=$LONG_STRING=I need someone to deliver $[1 *] somewhere.
+#
+#Announcer instructions: 
+#Specify what the announcer says to people who have accepted the quest.  This 
+#should give some details about what is to be done.  You can leave this blank
+#if you like.  Use the code $[1 *] to designate the name of the mob to find.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Go to that place and drop $[1 *].  Be careful!
 #
 #!QUESTMAKER_PAGE Specify the Destination
 #The destination is either a room or a container item.
@@ -75,12 +78,6 @@
 #the player to drop the item in the room, leave this field blank.
 #$DESTINATION_CONTAINER=($NAME)
 #
-#Destination Description:
-#Specify below the name of the destination as it will be described by
-#the mob handing over the item.  This should be a short descriptive name
-#like "the pit at the temple" or "the mayors headstone at the graveyard"
-#$DESTINATION_DESC=$STRING
-#
 #Destination response: 
 #You may optionally specify some additional bit of text said to
 #the players after the item is placed. 
@@ -97,10 +94,6 @@
 #
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for completing the delivery:
-#
-#Reward items: 
-#Specify zero or more items to choose from as a reward 
-#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
 #
 #Quest Point?
 #$QUEST_POINT=$CHOOSE=YES,NO
@@ -159,7 +152,6 @@ give affect Property
 set duration 0
 
 <?xml version="1.0"?>
-<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_item.xml</NAME><DATA><ITEMS>$DELIVERABLE_ITEM</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_deliverer.script</NAME>
 <DATA>
@@ -168,10 +160,8 @@ set duration 0
 GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if QUESTSCRIPTED($n *)
-				sayto "$n" What are you doing back here?  Take $[1 *] to $DESTINATION_DESC!
-			else
-				sayto "$n" I have something I need to be taken to $DESTINATION_DESC.  If you'll deliver it for me, say '^yi accept^?' or 'i accept $QUEST_NAME', and I will give you the details.
+			if !QUESTSCRIPTED($n *)
+				sayto "$n" $QUEST_NOTIFYSTRING.  Say '^yi accept^?' or '^yi accept $QUEST_NAME^?', and I will give you the details.
 			endif
 		endif
 	endif
@@ -187,7 +177,7 @@ SPEECH_PROG p i accept $QUEST_NAME
 			if !has($n '$[1 *]')
 				give "$[1 *]" "$n"
 			endif
-			sayto "$n" Please deliver this to $DESTINATION_DESC.  $REASONING
+			sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 		endif
 	endif
@@ -203,7 +193,7 @@ SPEECH_PROG p i accept
 			if !has($n '$[1 *]')
 				give "$[1 *]" "$n"
 			endif
-			sayto "$n" Please deliver this to $DESTINATION_DESC.  $REASONING
+			sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 		endif
 	endif
@@ -241,10 +231,6 @@ PUT_PROG all
 						mpoload $GOLD
 						mpforce $n GET $GOLD
 					endif
-					mpoload fromfile $QUEST_ID_rewarditems.xml any
-					if EVAL('$b' != '')
-						give "$b" "$n"
-					endif
 					mpquestwin $n *
 					mpecho $DELIVER_RESPONSE
 					mpendquest $n
@@ -278,10 +264,6 @@ DROP_PROG all
 					mpoload $GOLD
 					mpforce $n GET $GOLD
 				endif
-				mpoload fromfile $QUEST_ID_rewarditems.xml any
-				if EVAL('$b' != '')
-					give "$b" "$n"
-				endif
 				mpquestwin $n *
 				mpecho $DELIVER_RESPONSE
 				mpendquest $n
@@ -294,7 +276,7 @@ DROP_PROG all
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
-	mpsetvar $i INSTRUCTIONS Please deliver $[1, *] to ${2 *}. $REASONING 
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
 	IF !isquestmobalive(1 '$QUEST_ID')
 		MPENDQUEST '$QUEST_ID'
 	ENDIF
