@@ -2678,7 +2678,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					defined.put(defVar.toUpperCase().trim(), definition);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
 					Log.debugOut("MudPercolator","DEFINE:"+defVar.toUpperCase().trim()+"="+definition);
-s			}
+			}
 		}
 		final XMLTag parentPiece = piece.parent();
 		if((parentPiece!=null)&&(parentPiece.tag().equalsIgnoreCase(piece.tag()))&&(recurseAllowed))
