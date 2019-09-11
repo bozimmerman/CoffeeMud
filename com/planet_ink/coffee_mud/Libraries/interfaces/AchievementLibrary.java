@@ -457,7 +457,7 @@ public interface AchievementLibrary extends CMLibrary
 		 * the given mob and the given arguments to see if the
 		 * achievement deserves a bump in progress.
 		 * @param mob the player who did something trackable
-		 * @param tracked TODO
+		 * @param tracked the object that can get credit/tattooed
 		 * @param bumpNum the amount to bump the progress by
 		 * @param parms optional arguments unique to the Event
 		 * @return true if a bump occurred, false otherwise

@@ -450,7 +450,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	/**
 	 * Returns the number of registered usages of this race as of the
 	 * moment of the call.  It includes mobs loaded at boot-time.
-	 * @param alter TODO
+	 * @param alter amount to change the usage by, + or -, or 0
 	 * @return the usage count.
 	 */
 	public int usageCount(int alter);

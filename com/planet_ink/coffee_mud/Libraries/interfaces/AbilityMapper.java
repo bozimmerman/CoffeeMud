@@ -43,8 +43,6 @@ import java.util.*;
  */
 public interface AbilityMapper extends CMLibrary
 {
-	//TODO: Just use AbilityMapping class for all these methods, replace classes here with interfaces.
-
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
 	 * Also allows specifying numerous other attributes.

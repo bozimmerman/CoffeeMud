@@ -229,7 +229,7 @@ public interface DeadBody extends Container
 	 * Sets the mob object belonging to the deceased.
 	 * @see DeadBody#getSavedMOB()
 	 * @param mob the mob object belonging to the deceased.
-	 * @param preserve TODO
+	 * @param preserve flag to not delete when the body is destroyed
 	 */
 	public void setSavedMOB(MOB mob, boolean preserve);
 

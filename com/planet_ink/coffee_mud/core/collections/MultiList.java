@@ -360,9 +360,16 @@ public class MultiList<T> implements List<T>
 	@Override
 	public List<T> subList(final int fromIndex, final int toIndex)
 	{
-
-		// TODO Auto-generated method stub
-		return null;
+		if((toIndex<fromIndex)
+		||(fromIndex<0)
+		||(fromIndex>=size())
+		||(toIndex>size()))
+			throw new java.util.NoSuchElementException();
+		final List<T> newList=new Vector<T>();
+		int x=fromIndex;
+		for(final ListIterator<T> i=listIterator(fromIndex);i.hasNext() && (x<toIndex);x++)
+			newList.add(i.next());
+		return newList;
 	}
 
 }

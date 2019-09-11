@@ -94,8 +94,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		@Override
 		public MOB convert(final Session obj)
 		{
-			// TODO Auto-generated method stub
-			return null;
+			if(obj==null)
+				return null;
+			return obj.mob();
 		}
 	};
 

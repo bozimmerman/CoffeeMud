@@ -48,7 +48,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	 * allows the caller to specifically select one of them for generation.
 	 * @param xmlRoot the root of the area-generation xml file
 	 * @param defined a map of ids to objects, whether strings or tags.
-	 * @param overrideIds TODO
+	 * @param overrideIds a set of ids that are allowed to be duplicated, because they override
 	 */
 	public void buildDefinedIDSet(List<XMLTag> xmlRoot, Map<String,Object> defined, Set<String> overrideIds);
 

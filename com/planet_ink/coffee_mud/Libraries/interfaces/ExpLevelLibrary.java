@@ -36,7 +36,7 @@ public interface ExpLevelLibrary extends CMLibrary
 {
 	/**
 	 * Returns how much experience a player must have to be the given level.
-	 * @param mob TODO
+	 * @param mob the mob who has the experience level
 	 * @param level the level to base the exp on
 	 *
 	 * @return the amount of experiene required to be the given level
@@ -46,7 +46,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	/**
 	 * Returns how much experience a player must gain at this level to advance
 	 * to the next.
-	 * @param mob TODO
+	 * @param mob the mob who has the experience level
 	 * @param level the level to check at
 	 *
 	 * @return the amount of experience
@@ -80,7 +80,7 @@ public interface ExpLevelLibrary extends CMLibrary
 	 * amount of experience to all abord.
 	 * @param possibleShip the ship to give experience to
 	 * @param amount amount of experience to give to each person found
-	 * @param target TODO
+	 * @param target the vanquished whatever that was the reason for the xp
 	 * @return true if experience is posted, false otherwise
 	 */
 	public boolean postExperienceToAllAboard(Physical possibleShip, int amount, Physical target);

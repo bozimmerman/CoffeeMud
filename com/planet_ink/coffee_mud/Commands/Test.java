@@ -2715,8 +2715,8 @@ public class Test extends StdCommand
 									}
 									steps++;
 								}
-								//TODO: Test Ideas
-								//TODO: test whether smaller angle diffs result in fewer steps.
+								// Test Ideas
+								// test whether smaller angle diffs result in fewer steps.
 								System.out.println(Math.round(Math.toDegrees(totDirDiff))+", ="+steps+"                      fspeed="+curSpeed);
 								results.add(new double[]{Math.round(Math.toDegrees(totDirDiff)),steps});
 								*/
