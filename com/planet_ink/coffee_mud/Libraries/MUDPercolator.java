@@ -5284,7 +5284,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					break;
 				case '$':
 					{
-						Object val = defined.get(str.substring(1));
+						if(str.length()==1)
+							break;
+						final String key;
+						if((str.charAt(1)=='{')&&(str.endsWith("}")))
+						{
+							final int x=str.lastIndexOf(':');
+							if(x<0)
+								key=str.substring(2,str.length()-1);
+							else
+								key=str.substring(x+1,str.length()-1);
+						}
+						else
+							key=str.substring(1);
+						Object val = defined.get(key);
 						if(val instanceof XMLTag)
 						{
 							Modifiable chkO=E;
