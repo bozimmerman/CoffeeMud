@@ -39,7 +39,7 @@ settable vars:
 	<DELIVERER_NAME>"$source_name"</DELIVERER_NAME>
 	<DESTINATION_AREA>"$target_area_name"</DESTINATION_AREA>
 	<DESTINATION_ROOM>"$target_room_id"</DESTINATION_ROOM>
-	<DESTINATION_CONTAINER>$target_container_name</DESTINATION_CONTAINER>
+	<DESTINATION_CONTAINER>$target_container_quoted_name</DESTINATION_CONTAINER>
 	<DELIVERABLE_ITEM>${SELECT: ANY\. from $target_item}</DELIVERABLE_ITEM>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
 	<GOLD>$gold_amount_awarded</GOLD>
@@ -314,14 +314,28 @@ emergency, keep the lights burning (filling lamps with oil),'
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
 		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
 		<OBJECT pickweight=100 condition="$targetarea_name = '' and $multiarea != 'YES'">SELECT: any\. from $source_area</OBJECT>
-		<OBJECT pickweight=1 select="first" condition="$targetarea_name = '' and $multiarea = 'YES'">
-			<OBJECT SELECT="limit-1">SELECT: any\. FROM areas WHERE (SELECT: count\. from $target_container_room_guess) &gt; 1</OBJECT>
-			<OBJECT>SELECT: any\. FROM areas WHERE (SELECT: count\. from area\rooms WHERE exits\count &gt; 0  AND display\count = 1) &gt; 0</OBJECT>
+		<OBJECT pickweight=1 select="any" condition="$targetarea_name = '' and $multiarea = 'YES'">
+			<OBJECT CONDITION="$number_of_areas_with_container_rooms &gt; 0">
+				SELECT: any\. from $target_area_container_guess
+			</OBJECT>
+			<OBJECT CONDITION="$number_of_areas_with_container_rooms = 0">
+				SELECT: any\. from $target_areas_guess
+			</OBJECT>
 		</OBJECT>
 	</OBJECT>
 
+	<STRING ID="number_of_areas_with_container_rooms" define="number_of_areas_with_container_rooms">${select: count\. from $target_area_container_guess}</STRING>
+
+	<OBJECT ID="target_area_container_guess" define="target_area_container_guess">
+		SELECT: . FROM $target_areas_guess WHERE (SELECT: count\. from $target_container_room_guess) &gt; 0
+	</OBJECT>
+
+	<OBJECT ID="target_areas_guess" define="target_areas_guess">
+		SELECT: . FROM areas WHERE (SELECT: count\. from area\rooms WHERE exits\count &gt; 0  AND display\count = 1) &gt; 0
+	</OBJECT>
+
 	<OBJECT ID="target_container_guess">
-		SELECT: . from room\items where . like '-javaclass +gencontainer' and 'itemnotget' in dispositionstr and capacity &gt; weight
+		SELECT: . from room\items where . like '-javaclass +gencontainer' and 'itemnotget' in current_sensesstr and capacity &gt; weight
 	</OBJECT>
 	
 	<OBJECT ID="target_container_room_guess">
@@ -346,11 +360,16 @@ emergency, keep the lights burning (filling lamps with oil),'
 	<STRING ID="target_room_id" DEFINE="target_room_id">${SELECT: roomid from $target_room}</STRING>
 	
 	<OBJECT ID="target_container_item" DEFINE="target_container_item">
-		SELECT: any\. FROM $target_room\items where . like '-javaclass +gencontainer' and 'itemnotget' in dispositionstr and capacity &gt; weight
+		SELECT: any\. FROM $target_room\items where . like '-javaclass +gencontainer' and 'itemnotget' in current_sensesstr and capacity &gt; weight
 	</OBJECT>
 	
 	<STRING ID="target_container_name" DEFINE="target_container_name" SELECT="First-1">
-		<STRING CONDITION="'${SELECT: name from $target_container}' != ''">${SELECT: name from $target_container}</STRING>
+		<STRING CONDITION="'${SELECT: name from $target_container_item}' != ''">${SELECT: name from $target_container_item}</STRING>
+		<STRING></STRING>
+	</STRING>
+	
+	<STRING ID="target_container_quoted_name" DEFINE="target_container_quoted_name" SELECT="First-1">
+		<STRING CONDITION="'${SELECT: name from $target_container_item}' != ''">"${SELECT: name from $target_container_item}"</STRING>
 		<STRING></STRING>
 	</STRING>
 	

@@ -78,7 +78,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	 *            regardless of touching
 	 * @param threshHoldToExpand
 	 *            the number of touches on any given item before the limit
-	 *            expands to accommodate
+	 *            expands to accommodate, or 0 to disable
 	 */
 	public PrioritizingLimitedMap(int itemLimit, final long touchAgeLimitMillis, final long maxAgeLimitMillis, final int threshHoldToExpand)
 	{
@@ -261,7 +261,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 				if ((prev.lastTouch < touchTimeout) || (prev.birthDate < maxAgeTimeout))
 					remove(prev.first);
 				else
-				if ((prev.priority > threshHoldToExpand) && (!prev.causedExpand))
+				if ((prev.priority > threshHoldToExpand) && (!prev.causedExpand) && (threshHoldToExpand > 0))
 				{
 					prev.causedExpand = true;
 					expands++;

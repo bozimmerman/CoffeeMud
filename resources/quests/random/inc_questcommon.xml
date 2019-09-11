@@ -27,7 +27,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		and "Aggressive" notin affbehav  
 		and "QuestBound" notin affbehav 
 		and (SELECT: count\. FROM mob\room\exits) &gt; 0 
-		and 'ROOMUNEXPLORABLE' notin (SELECT: sensesstr FROM mob\room)
+		and 'ROOMUNEXPLORABLE' notin (SELECT: current_sensesstr FROM mob\room)
 </OBJECT>
 
 <OBJECT ID="mql_viable_questgiver">
@@ -37,7 +37,7 @@ See guides/RandomAreas.html for information about documents of this type.
 		and "Aggressive" notin affbehav  
 		and "QuestBound" notin affbehav 
 		and (SELECT: count\. FROM mob\room\exits) &gt; 0 
-		and 'ROOMUNEXPLORABLE' notin (SELECT: sensesstr FROM mob\room)
+		and 'ROOMUNEXPLORABLE' notin (SELECT: current_sensesstr FROM mob\room)
 </OBJECT>
 
 <STRING id="announcechannel" define="announcechannel" SELECT="Any-1">

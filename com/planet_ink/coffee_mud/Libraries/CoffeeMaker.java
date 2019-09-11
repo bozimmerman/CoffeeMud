@@ -3124,6 +3124,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(areaStat != null)
 				return true;
 		}
+		final GenPhysBonusFakeStats fakePhyStat = (GenPhysBonusFakeStats)CMath.s_valueOf(GenPhysBonusFakeStats.class, stat);
+		if(fakePhyStat!=null)
+			return true;
 		return false;
 	}
 

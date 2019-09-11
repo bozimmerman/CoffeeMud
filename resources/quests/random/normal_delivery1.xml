@@ -327,7 +327,7 @@ settable vars:
 				and "QuestBound" notin affbehav 
 				and name != $source_name
 				and (SELECT: count\. FROM mob\room\exits) > 0 
-				and 'ROOMUNEXPLORABLE' notin (SELECT: sensesstr FROM mob\room)
+				and 'ROOMUNEXPLORABLE' notin (SELECT: current_sensesstr FROM mob\room)
 		</OBJECT>
 	</OBJECT>
 

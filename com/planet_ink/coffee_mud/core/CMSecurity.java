@@ -2719,7 +2719,8 @@ public class CMSecurity
 		FOODROT("food/milk rot"),
 		SHOWXP("show experience"),
 		LANGUAGES("language system"),
-		COMBATSTATS("player combat stats")
+		COMBATSTATS("player combat stats"),
+		MQLCACHE("parsed mql cache")
 		;
 		private final String desc;
 
