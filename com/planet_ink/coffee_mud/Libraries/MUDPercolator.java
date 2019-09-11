@@ -2808,7 +2808,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								{
 									final String findVar=wiz.substring(2,x);
 									final String value=findStringNow(findVar, piece, defined);
-									cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,value);
+									if(value != null)
+										cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,CMStrings.replaceAll(value, "$$", "$"));
 								}
 							}
 						}
