@@ -233,7 +233,7 @@ settable vars:
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I am starting a ${target_item_name} factory with ${target_name}s help.</STRING>
-			<STRING>${c:target_name} and I are scheduled to study $$target_item_name today.</STRING>
+			<STRING>${c:target_name} and I are scheduled to study $target_item_name today.</STRING>
 			<STRING>${c:target_name} has insulted my honor, and only a ritual delivery of $target_item_name will satisfy it.</STRING>
 			<STRING>I feel like decorating $target_item_name with ${target_name}.</STRING>
 		</STRING>
