@@ -145,7 +145,7 @@ set area $DESTINATION_AREA
 set room $DESTINATION_ROOM
 give script LOAD=$QUEST_ID_deliveree.script
 set itemgroup
-set item $DESTINATION_CONTAINER
+set item reselect $DESTINATION_CONTAINER
 give stat keyplayer true
 give affect Property
 
