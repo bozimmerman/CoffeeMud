@@ -5193,6 +5193,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 				}
 				else
+				if(val instanceof List)
+				{
+					@SuppressWarnings("unchecked")
+					final List<Object> l=(List<Object>)val;
+					from.addAll(l);
+				}
+				else
 					from.add(val);
 			}
 			else
@@ -5875,7 +5882,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		if(aggregate)
 		{
-
 			for(final MQLClause.WhatBit W : clause.what)
 			{
 				if(W.aggregator == null)
