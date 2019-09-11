@@ -5247,135 +5247,157 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			for(final String str : strs)
 			{
 				index++;
-				if(str.equals("*")||str.equals("."))
+				if(str.length()==0)
 				{
+				}
+				else
+				switch(str.charAt(0))
+				{
+				case '*':
+				case '.':
 					if(finalO==null)
 						finalO=from;
-				}
-				else
-				if(CMath.isNumber(str.trim()) || (str.trim().length()==0))
+					else
+						finalO=str.trim();
+					break;
+				case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+				case '-':
 					finalO=str.trim();
-				else
-				if(str.startsWith("\"")&&(str.endsWith("\""))&&(str.length()>1))
-					finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\\"","\""), piece, defined);
-				else
-				if(str.startsWith("'")&&(str.endsWith("'"))&&(str.length()>1))
-					finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\'","'"), piece, defined);
-				else
-				if(str.startsWith("`")&&(str.endsWith("`"))&&(str.length()>1))
-					finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\`","`"), piece, defined);
-				else
-				if(str.startsWith("COUNT"))
-				{
-					Object chkO=finalO;
-					if(chkO==null)
-						chkO=from;
-					if(chkO==null)
-						throw new MQLException("Can not count instances of null in '"+strpath+"' in '"+mql+"'");
+					break;
+				case '\"':
+					if((str.endsWith("\""))&&(str.length()>1))
+						finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\\"","\""), piece, defined);
 					else
-					if(chkO instanceof List)
-					{
-						@SuppressWarnings("rawtypes")
-						final List l=(List)chkO;
-						finalO=""+l.size();
-					}
+						finalO=str.trim();
+					break;
+				case '\'':
+					if((str.endsWith("\'"))&&(str.length()>1))
+						finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\'","'"), piece, defined);
 					else
-					if((chkO instanceof String)
-					||(chkO instanceof Environmental))
+						finalO=str.trim();
+					break;
+				case '`':
+					if((str.endsWith("`"))&&(str.length()>1))
+						finalO=this.strFilter(E, ignoreStats, defPrefix, CMStrings.replaceAll(str.substring(1,str.length()-1),"\\`","`"), piece, defined);
+					else
+						finalO=str.trim();
+					break;
+				case '$':
 					{
-						if(index>1)
+						Object val = defined.get(str.substring(1));
+						if(val instanceof XMLTag)
 						{
-							final StringBuilder whatBuilder=new StringBuilder("");
-							for(int i=0;i<index-1;i++)
-								whatBuilder.append(strs[i]).append("\\");
-							final String newWhat=whatBuilder.substring(0,whatBuilder.length()-1);
-							int count=0;
-							final String cacheKey = "COUNT_CACHE"+newWhat+"_FROM_"+allFrom;
-							@SuppressWarnings("unchecked")
-							Map<Object,Object> cachedValues =  (Map<Object,Object>)cache.get(cacheKey);
-							if(cachedValues == null)
+							Modifiable chkO=E;
+							if(finalO instanceof Modifiable)
+								chkO=(Modifiable)finalO;
+							else
+							if(from instanceof Modifiable)
+								chkO=(Modifiable)from;
+							final XMLTag tag=(XMLTag)val;
+							if(tag.tag().equalsIgnoreCase("STRING"))
 							{
-								cachedValues = new HashMap<Object,Object>();
+								final String s=findString(chkO,ignoreStats,defPrefix,"STRING",(XMLTag)val,defined);
+								if(s.toUpperCase().trim().startsWith("SELECT:"))
+									val=doMQLSelectObjects(chkO, s);
+								else
+									val=s;
+							}
+							else
+							{
+								final Object o =findObject(E,ignoreStats,defPrefix,"OBJECT",tag,defined);
+								if(o instanceof Tickable)
+									CMLib.threads().deleteAllTicks((Tickable)o);
+								if(o instanceof List)
+								{
+									@SuppressWarnings({ "unchecked" })
+									final List<Object> l=(List<Object>)o;
+									for(final Object o2 : l)
+									{
+										if(o2 instanceof Tickable)
+											CMLib.threads().deleteAllTicks((Tickable)o2);
+									}
+								}
+								val=o;
+							}
+						}
+						if(val == null)
+							throw new MQLException("Unknown variable '$"+str+"' in str '"+str+"' in '"+mql+"'",new CMException("$"+str));
+						finalO=val;
+					}
+					break;
+				case 'C':
+					if(str.startsWith("COUNT"))
+					{
+						Object chkO=finalO;
+						if(chkO==null)
+							chkO=from;
+						if(chkO==null)
+							throw new MQLException("Can not count instances of null in '"+strpath+"' in '"+mql+"'");
+						else
+						if(chkO instanceof List)
+						{
+							@SuppressWarnings("rawtypes")
+							final List l=(List)chkO;
+							finalO=""+l.size();
+						}
+						else
+						if((chkO instanceof String)
+						||(chkO instanceof Environmental))
+						{
+							if(index>1)
+							{
+								final StringBuilder whatBuilder=new StringBuilder("");
+								for(int i=0;i<index-1;i++)
+									whatBuilder.append(strs[i]).append("\\");
+								final String newWhat=whatBuilder.substring(0,whatBuilder.length()-1);
+								int count=0;
+								final String cacheKey = "COUNT_CACHE"+newWhat+"_FROM_"+allFrom;
+								@SuppressWarnings("unchecked")
+								Map<Object,Object> cachedValues =  (Map<Object,Object>)cache.get(cacheKey);
+								if(cachedValues == null)
+								{
+									cachedValues = new HashMap<Object,Object>();
+									for(final Object o : allFrom)
+									{
+										if(o == null)
+											cachedValues.put(o, chkO);
+										else
+											cachedValues.put(o, getFinalMQLValue(newWhat, allFrom, o, cache, mql, E, ignoreStats, defPrefix, piece, defined));
+									}
+									cache.put(cacheKey, cachedValues);
+								}
 								for(final Object o : allFrom)
 								{
-									if(o == null)
-										cachedValues.put(o, chkO);
+									if(o==from)
+										count++;
 									else
-										cachedValues.put(o, getFinalMQLValue(newWhat, allFrom, o, cache, mql, E, ignoreStats, defPrefix, piece, defined));
+									if(chkO.equals(cachedValues.get(o)))
+										count++;
 								}
-								cache.put(cacheKey, cachedValues);
+								finalO=""+count;
 							}
-							for(final Object o : allFrom)
-							{
-								if(o==from)
-									count++;
-								else
-								if(chkO.equals(cachedValues.get(o)))
-									count++;
-							}
-							finalO=""+count;
-						}
-						else
-							finalO=""+allFrom.size();
-					}
-					else
-						finalO="1";
-				}
-				else
-				if(str.startsWith("$"))
-				{
-					Object val = defined.get(str.substring(1));
-					if(val instanceof XMLTag)
-					{
-						Modifiable chkO=E;
-						if(finalO instanceof Modifiable)
-							chkO=(Modifiable)finalO;
-						else
-						if(from instanceof Modifiable)
-							chkO=(Modifiable)from;
-						final XMLTag tag=(XMLTag)val;
-						if(tag.tag().equalsIgnoreCase("STRING"))
-						{
-							final String s=findString(chkO,ignoreStats,defPrefix,"STRING",(XMLTag)val,defined);
-							if(s.toUpperCase().trim().startsWith("SELECT:"))
-								val=doMQLSelectObjects(chkO, s);
 							else
-								val=s;
+								finalO=""+allFrom.size();
 						}
 						else
-						{
-							final Object o =findObject(E,ignoreStats,defPrefix,"OBJECT",tag,defined);
-							if(o instanceof Tickable)
-								CMLib.threads().deleteAllTicks((Tickable)o);
-							if(o instanceof List)
-							{
-								@SuppressWarnings({ "unchecked" })
-								final List<Object> l=(List<Object>)o;
-								for(final Object o2 : l)
-								{
-									if(o2 instanceof Tickable)
-										CMLib.threads().deleteAllTicks((Tickable)o2);
-								}
-							}
-							val=o;
-						}
+							finalO="1";
+						break;
 					}
-					if(val == null)
-						throw new MQLException("Unknown variable '$"+str+"' in str '"+str+"' in '"+mql+"'",new CMException("$"+str));
-					finalO=val;
-				}
-				else
-				{
-					final Object fromO=(finalO==null)?((from==null)?E:from):finalO;
-					Object newObj=getSimpleMQLValue(str,fromO);
-					if(newObj == null)
+					// fall-through
+				default:
 					{
-						if(fromO instanceof Modifiable)
-							newObj=parseMQLFrom(str, mql, (Modifiable)fromO, ignoreStats, defPrefix, piece, defined);
+						final Object fromO=(finalO==null)?((from==null)?E:from):finalO;
+						Object newObj=getSimpleMQLValue(str,fromO);
 						if(newObj == null)
-							throw new MQLException("Unknown variable '"+str+"' on '"+fromO+"' in '"+mql+"'",new CMException("$"+str));
+						{
+							if(fromO instanceof Modifiable)
+								newObj=parseMQLFrom(str, mql, (Modifiable)fromO, ignoreStats, defPrefix, piece, defined);
+							if(newObj == null)
+								throw new MQLException("Unknown variable '"+str+"' on '"+fromO+"' in '"+mql+"'",new CMException("$"+str));
+						}
+						finalO=newObj;
 					}
-					finalO=newObj;
+					break;
 				}
 			}
 		}
