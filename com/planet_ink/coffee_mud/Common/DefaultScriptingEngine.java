@@ -220,7 +220,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	private Quest getQuest(final String named)
 	{
-		if((defaultQuestName.length()>0)&&(named.equals("*")||named.equalsIgnoreCase(defaultQuestName)))
+		if((defaultQuestName.length()>0)
+		&&(named.equals("*")||named.equalsIgnoreCase(defaultQuestName)))
 			return defaultQuest();
 
 		Quest Q=null;
@@ -627,8 +628,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	private StringBuffer getResourceFileData(final String named, final boolean showErrors)
 	{
-		if(getQuest("*")!=null)
-			return getQuest("*").getResourceFileData(named, showErrors);
+		final Quest Q=getQuest("*");
+		if(Q!=null)
+			return Q.getResourceFileData(named, showErrors);
 		return new CMFile(Resources.makeFileResourceName(named),null,CMFile.FLAG_LOGERRORS).text();
 	}
 
@@ -3208,7 +3210,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					returnable=false;
 				else
 				{
-					final MOB M=(MOB)MP; 
+					final MOB M=(MOB)MP;
 					final Physical P=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 					if(P==null)
 						returnable=false;
@@ -3228,7 +3230,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					returnable=false;
 				else
 				{
-					final MOB M=(MOB)MP; 
+					final MOB M=(MOB)MP;
 					final Physical P=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 					if(P==null)
 						returnable=false;
