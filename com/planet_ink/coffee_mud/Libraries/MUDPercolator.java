@@ -58,6 +58,27 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected final static List<String> ITEM_IGNORE_STATS = Arrays.asList(GenericBuilder.GenItemCode.getAllCodeNames());
 	protected final static List<String> MOB_IGNORE_STATS =new XVector<String>(Arrays.asList(GenericBuilder.GenMOBCode.getAllCodeNames())).append("GENDER");
 
+	protected static enum MQLSpecialFromSet
+	{
+		AREAS,
+		AREA,
+		ROOMS,
+		ROOM,
+		EXITS,
+		PLAYERS,
+		PLAYER,
+		MOBS,
+		MOB,
+		NPCS,
+		NPC,
+		ITEMS,
+		ITEM,
+		EQUIPMENT,
+		OWNER,
+		RESOURCES,
+		FACTIONS
+	}
+
 	private final SHashtable<String,Class<LayoutManager>> mgrs = new SHashtable<String,Class<LayoutManager>>();
 
 	private interface BuildCallback
@@ -4424,6 +4445,662 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		for(final String f : fromClause.split("\\\\"))
 		{
+			final MQLSpecialFromSet set=(MQLSpecialFromSet)CMath.s_valueOf(MQLSpecialFromSet.class, f);
+			if(set != null)
+			{
+				switch(set)
+				{
+				case AREA:
+					if(from.size()==0)
+					{
+						final Area A=(E instanceof Environmental) ? CMLib.map().areaLocation(E) : null;
+						if(A==null)
+							throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+						else
+						if(!from.contains(A))
+							from.add(A);
+						break;
+					}
+					// fall through
+				case AREAS:
+					{
+						if(from.size()==0)
+							from.addAll(new XVector<Area>(CMLib.map().areas()));
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								final Area A;
+								if (o instanceof CMObject)
+									A=CMLib.map().areaLocation((CMObject)o);
+								else
+									A=null;
+								if(A==null)
+									throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+								else
+								if(!from.contains(A))
+									from.add(A);
+							}
+						}
+					}
+					break;
+				case ROOM:
+					if(from.size()==0)
+					{
+						final Room R=(E instanceof Environmental) ? CMLib.map().roomLocation((Environmental)E) : null;
+						if(R==null)
+							throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+						else
+						if(!from.contains(R))
+							from.add(R);
+						break;
+					}
+					// fall-through
+				case ROOMS:
+					{
+						if(from.size()==0)
+							from.addAll(new XVector<Room>(CMLib.map().rooms()));
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								final Room R;
+								if(o instanceof Area)
+								{
+									from.addAll(new XVector<Room>(((Area)o).getProperMap()));
+									continue;
+								}
+								if (o instanceof Environmental)
+									R=CMLib.map().roomLocation((Environmental)o);
+								else
+									R=null;
+								if(R==null)
+									throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+								else
+								if(!from.contains(R))
+									from.add(R);
+							}
+						}
+					}
+					break;
+				case EXITS:
+					{
+						final List<Object> oldFrom;
+						if(from.size()==0)
+						{
+							final Room R=(E instanceof Environmental) ? CMLib.map().roomLocation((Environmental)E) : null;
+							if(R==null)
+								throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+							oldFrom=new XVector<Object>(R);
+
+						}
+						else
+							oldFrom=flattenMQLObjectList(from);
+						from.clear();
+						for(final Object o : oldFrom)
+						{
+							if(o instanceof Area)
+							{
+								for(final Enumeration<Room> r=((Area)o).getProperMap();r.hasMoreElements();)
+								{
+									final Room R=r.nextElement();
+									if(R!=null)
+									{
+										for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+										{
+											final Room R2=R.rawDoors()[d];
+											if((R2!=null)&&(R2.roomID().length()>0))
+											{
+												final Exit E2=R.getExitInDir(d);
+												if((E2!=null)&&(!from.contains(E2)))
+													from.add(E2);
+											}
+										}
+									}
+								}
+							}
+							if(o instanceof Environmental)
+							{
+								final Room R=CMLib.map().roomLocation((Environmental)o);
+								if(R!=null)
+								{
+									for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+									{
+										final Room R2=R.rawDoors()[d];
+										if((R2!=null)&&(R2.roomID().length()>0))
+										{
+											final Exit E2=R.getExitInDir(d);
+											if((E2!=null)&&(!from.contains(E2)))
+												from.add(E2);
+										}
+									}
+								}
+							}
+							else
+								throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+						}
+					}
+					break;
+				case PLAYER:
+					if(from.size()==0)
+					{
+						final MOB oE=(E instanceof MOB) ? (MOB)E : null;
+						if((oE==null)||(!oE.isPlayer()))
+							throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+						else
+						if(!from.contains(oE))
+							from.add(oE);
+						break;
+					}
+					// fall-through
+				case PLAYERS:
+					if((f.equals("PLAYERS"))
+					||((from.size()>0)&&(f.equals("PLAYER"))))
+					{
+						if(from.size()==0)
+						{
+							final Enumeration<Session> sesss = new IteratorEnumeration<Session>(CMLib.sessions().allIterableAllHosts().iterator());
+							final Enumeration<MOB> m=new FilteredEnumeration<MOB>(new ConvertingEnumeration<Session, MOB>(sesss, sessionToMobConvereter), noMobFilter);
+							for(;m.hasMoreElements();)
+								from.add(m.nextElement());
+						}
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								if(o instanceof Area)
+								{
+									final Enumeration<Session> sesss = new IteratorEnumeration<Session>(CMLib.sessions().allIterableAllHosts().iterator());
+									final Enumeration<MOB> m=new FilteredEnumeration<MOB>(new ConvertingEnumeration<Session, MOB>(sesss, sessionToMobConvereter), noMobFilter);
+									for(;m.hasMoreElements();)
+									{
+										final MOB M=m.nextElement();
+										if(CMLib.map().areaLocation(M) == o)
+											from.add(M);
+									}
+								}
+								else
+								if(o instanceof Room)
+								{
+									for(final Enumeration<MOB> m=((Room)o).inhabitants();m.hasMoreElements();)
+									{
+										final MOB M=m.nextElement();
+										if((M!=null)
+										&&(M.isPlayer()))
+											from.add(M);
+									}
+								}
+								if(o instanceof MOB)
+								{
+									if(((MOB)o).isPlayer())
+										from.add(o);
+								}
+								else
+								if(o instanceof Item)
+								{
+									final Item I=(Item)o;
+									if((I.owner() instanceof MOB)
+									&&(((MOB)I.owner())).isPlayer())
+										from.add(I.owner());
+								}
+								else
+									throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							}
+						}
+					}
+					break;
+				case MOB:
+					if(from.size()==0)
+					{
+						final Environmental oE=(E instanceof MOB) ? (Environmental)E : null;
+						if(oE==null)
+							throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+						else
+						if(!from.contains(oE))
+							from.add(oE);
+						break;
+					}
+					// fall-through
+				case MOBS:
+					{
+						if(from.size()==0)
+							from.addAll(new XVector<MOB>(CMLib.map().worldMobs()));
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								if(o instanceof Area)
+								{
+									for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
+									{
+										final Room R=r.nextElement();
+										if(R.numInhabitants()>0)
+										{
+											for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+											{
+												final MOB M=m.nextElement();
+												if(!from.contains(M))
+													from.add(M);
+											}
+										}
+									}
+								}
+								else
+								if((o instanceof MOB)&&(f.equals("MOB")))
+									from.add(o);
+								else
+								{
+									final Room R;
+									if (o instanceof Environmental)
+										R=CMLib.map().roomLocation((Environmental)o);
+									else
+										R=null;
+									if(R==null)
+										throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+									else
+									if(R.numInhabitants()>0)
+									{
+										for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+										{
+											final MOB M=m.nextElement();
+											if(!from.contains(M))
+												from.add(M);
+										}
+									}
+								}
+							}
+						}
+					}
+					break;
+				case NPC:
+					if(from.size()==0)
+					{
+						final MOB oE=(E instanceof MOB) ? (MOB)E : null;
+						if((oE==null) || (oE.isPlayer()))
+							throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+						else
+						if(!from.contains(oE))
+							from.add(oE);
+						break;
+					}
+					// fall-through
+				case NPCS:
+					{
+						if(from.size()==0)
+							from.addAll(new XVector<MOB>(new FilteredEnumeration<MOB>(CMLib.map().worldMobs(),npcFilter)));
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								if(o instanceof Area)
+								{
+									for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
+									{
+										final Room R=r.nextElement();
+										if(R.numInhabitants()>0)
+										{
+											for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+											{
+												final MOB M=m.nextElement();
+												if(npcFilter.passesFilter(M) && (!from.contains(M)))
+													from.add(M);
+											}
+										}
+									}
+								}
+								else
+								if((o instanceof MOB)
+								&&(f.equals("NPC"))
+								&&(npcFilter.passesFilter((MOB)o)))
+									from.add(o);
+								else
+								{
+									final Room R;
+									if (o instanceof Environmental)
+										R=CMLib.map().roomLocation((Environmental)o);
+									else
+										R=null;
+									if(R==null)
+										throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+									else
+									if(R.numInhabitants()>0)
+									{
+										for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+										{
+											final MOB M=m.nextElement();
+											if(npcFilter.passesFilter(M) && (!from.contains(M)))
+												from.add(M);
+										}
+									}
+								}
+							}
+						}
+					}
+					break;
+				case ITEM:
+					if(from.size()==0)
+					{
+						final Environmental oE=(E instanceof Item) ? (Environmental)E : null;
+						if(oE==null)
+							throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+						else
+						if(!from.contains(oE))
+							from.add(oE);
+						break;
+					}
+					// fall-through
+				case ITEMS:
+					{
+						if(from.size()==0)
+							from.addAll(new XVector<Item>(CMLib.map().worldEveryItems()));
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								if(o instanceof Area)
+								{
+									for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
+										from.addAll(new XVector<Item>(r.nextElement().itemsRecursive()));
+								}
+								else
+								if((o instanceof Item)
+								&&(f.equals("ITEM")))
+									from.add(o);
+								else
+								{
+									final Room R;
+									if (o instanceof Environmental)
+										R=CMLib.map().roomLocation((Environmental)o);
+									else
+										R=null;
+									if(R==null)
+										throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+									else
+										from.addAll(new XVector<Item>(R.itemsRecursive()));
+								}
+							}
+						}
+					}
+					break;
+				case EQUIPMENT:
+					{
+						if(from.size()==0)
+						{
+							final Environmental oE=(E instanceof MOB) ? (Environmental)E : null;
+							if(oE==null)
+								throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+							else
+							{
+								for(final Enumeration<Item> i=((MOB)oE).items();i.hasMoreElements();)
+								{
+									final Item I=i.nextElement();
+									if((I!=null)
+									&&(I.amBeingWornProperly()))
+										from.add(I);
+								}
+							}
+						}
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								if(o instanceof Area)
+								{
+									for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
+									{
+										for(final Enumeration<MOB> m=r.nextElement().inhabitants();m.hasMoreElements();)
+										{
+											final MOB M=m.nextElement();
+											for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
+											{
+												final Item I=i.nextElement();
+												if((I!=null)
+												&&(I.amBeingWornProperly()))
+													from.add(I);
+											}
+										}
+									}
+								}
+								else
+								if(o instanceof MOB)
+								{
+									for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
+									{
+										final Item I=i.nextElement();
+										if((I!=null)
+										&&(I.amBeingWornProperly()))
+											from.add(I);
+									}
+								}
+								else
+								if(o instanceof Room)
+								{
+									for(final Enumeration<MOB> m=((Room)o).inhabitants();m.hasMoreElements();)
+									{
+										final MOB M=m.nextElement();
+										for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
+										{
+											final Item I=i.nextElement();
+											if((I!=null)
+											&&(I.amBeingWornProperly()))
+												from.add(I);
+										}
+									}
+								}
+								else
+								if(o instanceof Item)
+								{
+									if(((Item)o).amBeingWornProperly())
+										from.add(o);
+								}
+								else
+									throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							}
+						}
+					}
+					break;
+				case OWNER:
+					{
+						if(from.size()==0)
+						{
+							final Environmental oE=(E instanceof Item) ? (Environmental)E : null;
+							if(oE==null)
+								throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+							else
+							if(((Item)E).owner()!=null)
+								from.add(((Item)E).owner());
+						}
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								if(o instanceof Area)
+								{
+									for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
+									{
+										for(final Enumeration<MOB> m=r.nextElement().inhabitants();m.hasMoreElements();)
+										{
+											final MOB M=m.nextElement();
+											for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
+											{
+												final Item I=i.nextElement();
+												if((I!=null)
+												&&(I.owner()!=null)
+												&&(!from.contains(I.owner())))
+													from.add(I.owner());
+											}
+										}
+									}
+								}
+								else
+								if(o instanceof MOB)
+								{
+									for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
+									{
+										final Item I=i.nextElement();
+										if((I!=null)
+										&&(I.owner()!=null)
+										&&(!from.contains(I.owner())))
+											from.add(I.owner());
+									}
+								}
+								else
+								if(o instanceof Room)
+								{
+									for(final Enumeration<MOB> m=((Room)o).inhabitants();m.hasMoreElements();)
+									{
+										final MOB M=m.nextElement();
+										for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
+										{
+											final Item I=i.nextElement();
+											if((I!=null)
+											&&(I.owner()!=null)
+											&&(!from.contains(I.owner())))
+												from.add(I.owner());
+										}
+									}
+								}
+								else
+								if(o instanceof Item)
+								{
+									if(((Item)o).amBeingWornProperly())
+										from.add(o);
+								}
+								else
+									throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							}
+						}
+					}
+					break;
+				case RESOURCES:
+					{
+						final List<Object> oldFrom=new ArrayList<Object>();
+						if(from.size()>0)
+							oldFrom.addAll(flattenMQLObjectList(from));
+						else
+						{
+							final Object oE;
+							if((E instanceof MOB)
+							||(E instanceof Item)
+							||(E instanceof Room)
+							||(E instanceof Area))
+								oE=E;
+							else
+								throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+							oldFrom.add(oE);
+						}
+						from.clear();
+						for(final Object o : oldFrom)
+						{
+							if((o instanceof Area)
+							||(o instanceof Room))
+							{
+								final Enumeration<Room> r;
+								if(o instanceof Area)
+									r=((Area)o).getFilledCompleteMap();
+								else
+									r=new XVector<Room>((Room)o).elements();
+								for(;r.hasMoreElements();)
+								{
+									final Room R=r.nextElement();
+									final int resource=R.myResource()&RawMaterial.RESOURCE_MASK;
+									if(RawMaterial.CODES.IS_VALID(resource))
+									{
+										final Item I=CMLib.materials().makeItemResource(resource);
+										CMLib.threads().deleteAllTicks(I);
+										I.setSavable(false);
+										I.setDatabaseID("DELETE");
+										from.add(I);
+									}
+								}
+							}
+							else
+							if(o instanceof MOB)
+							{
+								final Race R=((MOB)o).charStats().getMyRace();
+								for(final Item I : R.myResources())
+								{
+									final Item I2=(Item)I.copyOf();
+									CMLib.threads().deleteAllTicks(I2);
+									I2.setSavable(false);
+									I2.setDatabaseID("DELETE");
+									from.add(I2);
+								}
+							}
+							else
+							if(o instanceof Item)
+							{
+								final int resource=((Item)o).material()&RawMaterial.RESOURCE_MASK;
+								if(RawMaterial.CODES.IS_VALID(resource))
+								{
+									final Item I=CMLib.materials().makeItemResource(resource);
+									CMLib.threads().deleteAllTicks(I);
+									I.setSavable(false);
+									I.setDatabaseID("DELETE");
+									from.add(I);
+								}
+							}
+							else
+								throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+						}
+					}
+					break;
+				case FACTIONS:
+					{
+						final List<Object> oldFrom=new ArrayList<Object>();
+						if(from.size()>0)
+							oldFrom.addAll(flattenMQLObjectList(from));
+						else
+						{
+							final Object oE;
+							if(E instanceof MOB)
+								oE=E;
+							else
+								throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+							oldFrom.add(oE);
+						}
+						from.clear();
+						for(final Object o : oldFrom)
+						{
+							if(o instanceof MOB)
+							{
+								for(final Enumeration<String> fenum=((MOB)o).factions();fenum.hasMoreElements();)
+								{
+									final String fstr=fenum.nextElement();
+									final int val=((MOB)o).fetchFaction(fstr);
+									final Map<String,Object> m=new TreeMap<String,Object>();
+									m.put("ID", fstr);
+									m.put("VALUE", ""+val);
+									from.add(m);
+
+								}
+							}
+							else
+								throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+						}
+					}
+					break;
+				default:
+					throw new MQLException("Unknown sub-from "+f+" in "+mql);
+				}
+			}
+			else
 			if(f.startsWith("/")
 			|| f.startsWith("::")
 			|| f.startsWith("//"))
@@ -4441,634 +5118,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				else
 					from.addAll(this.parseMQLCMFile(F, mql));
-			}
-			else
-			if(f.equals("AREAS")
-			||((from.size()>0)&&(f.equals("AREA"))))
-			{
-				if(from.size()==0)
-					from.addAll(new XVector<Area>(CMLib.map().areas()));
-				else
-				{
-					final List<Object> oldFrom=flattenMQLObjectList(from);
-					from.clear();
-					for(final Object o : oldFrom)
-					{
-						final Area A;
-						if (o instanceof CMObject)
-							A=CMLib.map().areaLocation((CMObject)o);
-						else
-							A=null;
-						if(A==null)
-							throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
-						else
-						if(!from.contains(A))
-							from.add(A);
-					}
-				}
-			}
-			else
-			if(f.equals("AREA") && (from.size()==0))
-			{
-				final Area A=(E instanceof Environmental) ? CMLib.map().areaLocation(E) : null;
-				if(A==null)
-					throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
-				else
-				if(!from.contains(A))
-					from.add(A);
-			}
-			else
-			if(f.equals("ROOMS")
-			||((from.size()>0)&&(f.equals("ROOM"))))
-			{
-				if(from.size()==0)
-					from.addAll(new XVector<Room>(CMLib.map().rooms()));
-				else
-				{
-					final List<Object> oldFrom=flattenMQLObjectList(from);
-					from.clear();
-					for(final Object o : oldFrom)
-					{
-						final Room R;
-						if(o instanceof Area)
-						{
-							from.addAll(new XVector<Room>(((Area)o).getProperMap()));
-							continue;
-						}
-						if (o instanceof Environmental)
-							R=CMLib.map().roomLocation((Environmental)o);
-						else
-							R=null;
-						if(R==null)
-							throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
-						else
-						if(!from.contains(R))
-							from.add(R);
-					}
-				}
-			}
-			else
-			if(f.equals("ROOM") && (from.size()==0))
-			{
-				final Room R=(E instanceof Environmental) ? CMLib.map().roomLocation((Environmental)E) : null;
-				if(R==null)
-					throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
-				else
-				if(!from.contains(R))
-					from.add(R);
-			}
-			else
-			if(f.equals("EXITS"))
-			{
-				final List<Object> oldFrom=flattenMQLObjectList(from);
-				from.clear();
-				for(final Object o : oldFrom)
-				{
-					if(o instanceof Area)
-					{
-						for(final Enumeration<Room> r=((Area)o).getProperMap();r.hasMoreElements();)
-						{
-							final Room R=r.nextElement();
-							if(R!=null)
-							{
-								for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-								{
-									final Room R2=R.rawDoors()[d];
-									if((R2!=null)&&(R2.roomID().length()>0))
-									{
-										final Exit E2=R.getExitInDir(d);
-										if((E2!=null)&&(!from.contains(E2)))
-											from.add(E2);
-									}
-								}
-							}
-						}
-					}
-					if(o instanceof Environmental)
-					{
-						final Room R=CMLib.map().roomLocation((Environmental)o);
-						if(R!=null)
-						{
-							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
-							{
-								final Room R2=R.rawDoors()[d];
-								if((R2!=null)&&(R2.roomID().length()>0))
-								{
-									final Exit E2=R.getExitInDir(d);
-									if((E2!=null)&&(!from.contains(E2)))
-										from.add(E2);
-								}
-							}
-						}
-					}
-					else
-						throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
-				}
-			}
-			else
-			if((f.equals("PLAYERS"))
-			||((from.size()>0)&&(f.equals("PLAYER"))))
-			{
-				if(from.size()==0)
-				{
-					final Enumeration<Session> sesss = new IteratorEnumeration<Session>(CMLib.sessions().allIterableAllHosts().iterator());
-					final Enumeration<MOB> m=new FilteredEnumeration<MOB>(new ConvertingEnumeration<Session, MOB>(sesss, sessionToMobConvereter), noMobFilter);
-					for(;m.hasMoreElements();)
-						from.add(m.nextElement());
-				}
-				else
-				{
-					final List<Object> oldFrom=flattenMQLObjectList(from);
-					from.clear();
-					for(final Object o : oldFrom)
-					{
-						if(o instanceof Area)
-						{
-							final Enumeration<Session> sesss = new IteratorEnumeration<Session>(CMLib.sessions().allIterableAllHosts().iterator());
-							final Enumeration<MOB> m=new FilteredEnumeration<MOB>(new ConvertingEnumeration<Session, MOB>(sesss, sessionToMobConvereter), noMobFilter);
-							for(;m.hasMoreElements();)
-							{
-								final MOB M=m.nextElement();
-								if(CMLib.map().areaLocation(M) == o)
-									from.add(M);
-							}
-						}
-						else
-						if(o instanceof Room)
-						{
-							for(final Enumeration<MOB> m=((Room)o).inhabitants();m.hasMoreElements();)
-							{
-								final MOB M=m.nextElement();
-								if((M!=null)
-								&&(M.isPlayer()))
-									from.add(M);
-							}
-						}
-						if(o instanceof MOB)
-						{
-							if(((MOB)o).isPlayer())
-								from.add(o);
-						}
-						else
-						if(o instanceof Item)
-						{
-							final Item I=(Item)o;
-							if((I.owner() instanceof MOB)
-							&&(((MOB)I.owner())).isPlayer())
-								from.add(I.owner());
-						}
-						else
-							throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
-					}
-				}
-			}
-			else
-			if(f.equals("PLAYER") && (from.size()==0))
-			{
-				final MOB oE=(E instanceof MOB) ? (MOB)E : null;
-				if((oE==null)||(!oE.isPlayer()))
-					throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
-				else
-				if(!from.contains(oE))
-					from.add(oE);
-			}
-			else
-			if(f.equals("MOBS")
-			||((from.size()>0)&&(f.equals("MOB"))))
-			{
-				if(from.size()==0)
-					from.addAll(new XVector<MOB>(CMLib.map().worldMobs()));
-				else
-				{
-					final List<Object> oldFrom=flattenMQLObjectList(from);
-					from.clear();
-					for(final Object o : oldFrom)
-					{
-						if(o instanceof Area)
-						{
-							for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
-							{
-								final Room R=r.nextElement();
-								if(R.numInhabitants()>0)
-								{
-									for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
-									{
-										final MOB M=m.nextElement();
-										if(!from.contains(M))
-											from.add(M);
-									}
-								}
-							}
-						}
-						else
-						if((o instanceof MOB)&&(f.equals("MOB")))
-							from.add(o);
-						else
-						{
-							final Room R;
-							if (o instanceof Environmental)
-								R=CMLib.map().roomLocation((Environmental)o);
-							else
-								R=null;
-							if(R==null)
-								throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
-							else
-							if(R.numInhabitants()>0)
-							{
-								for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
-								{
-									final MOB M=m.nextElement();
-									if(!from.contains(M))
-										from.add(M);
-								}
-							}
-						}
-					}
-				}
-			}
-			else
-			if(f.equals("MOB") && (from.size()==0))
-			{
-				final Environmental oE=(E instanceof MOB) ? (Environmental)E : null;
-				if(oE==null)
-					throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
-				else
-				if(!from.contains(oE))
-					from.add(oE);
-			}
-			else
-			if(f.equals("NPCS")
-			||((from.size()>0)&&(f.equals("NPC"))))
-			{
-				if(from.size()==0)
-					from.addAll(new XVector<MOB>(new FilteredEnumeration<MOB>(CMLib.map().worldMobs(),npcFilter)));
-				else
-				{
-					final List<Object> oldFrom=flattenMQLObjectList(from);
-					from.clear();
-					for(final Object o : oldFrom)
-					{
-						if(o instanceof Area)
-						{
-							for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
-							{
-								final Room R=r.nextElement();
-								if(R.numInhabitants()>0)
-								{
-									for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
-									{
-										final MOB M=m.nextElement();
-										if(npcFilter.passesFilter(M) && (!from.contains(M)))
-											from.add(M);
-									}
-								}
-							}
-						}
-						else
-						if((o instanceof MOB)
-						&&(f.equals("NPC"))
-						&&(npcFilter.passesFilter((MOB)o)))
-							from.add(o);
-						else
-						{
-							final Room R;
-							if (o instanceof Environmental)
-								R=CMLib.map().roomLocation((Environmental)o);
-							else
-								R=null;
-							if(R==null)
-								throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
-							else
-							if(R.numInhabitants()>0)
-							{
-								for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
-								{
-									final MOB M=m.nextElement();
-									if(npcFilter.passesFilter(M) && (!from.contains(M)))
-										from.add(M);
-								}
-							}
-						}
-					}
-				}
-			}
-			else
-			if(f.equals("NPC") && (from.size()==0))
-			{
-				final MOB oE=(E instanceof MOB) ? (MOB)E : null;
-				if((oE==null) || (oE.isPlayer()))
-					throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
-				else
-				if(!from.contains(oE))
-					from.add(oE);
-			}
-			else
-			if(f.equals("ITEMS")
-			||((from.size()>0)&&(f.equals("ITEM"))))
-			{
-				if(from.size()==0)
-					from.addAll(new XVector<Item>(CMLib.map().worldEveryItems()));
-				else
-				{
-					final List<Object> oldFrom=flattenMQLObjectList(from);
-					from.clear();
-					for(final Object o : oldFrom)
-					{
-						if(o instanceof Area)
-						{
-							for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
-								from.addAll(new XVector<Item>(r.nextElement().itemsRecursive()));
-						}
-						else
-						if((o instanceof Item)
-						&&(f.equals("ITEM")))
-							from.add(o);
-						else
-						{
-							final Room R;
-							if (o instanceof Environmental)
-								R=CMLib.map().roomLocation((Environmental)o);
-							else
-								R=null;
-							if(R==null)
-								throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
-							else
-								from.addAll(new XVector<Item>(R.itemsRecursive()));
-						}
-					}
-				}
-			}
-			else
-			if(f.equals("ITEM") && (from.size()==0))
-			{
-				final Environmental oE=(E instanceof Item) ? (Environmental)E : null;
-				if(oE==null)
-					throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
-				else
-				if(!from.contains(oE))
-					from.add(oE);
-			}
-			else
-			if(f.equals("EQUIPMENT"))
-			{
-				if(from.size()==0)
-				{
-					final Environmental oE=(E instanceof MOB) ? (Environmental)E : null;
-					if(oE==null)
-						throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
-					else
-					{
-						for(final Enumeration<Item> i=((MOB)oE).items();i.hasMoreElements();)
-						{
-							final Item I=i.nextElement();
-							if((I!=null)
-							&&(I.amBeingWornProperly()))
-								from.add(I);
-						}
-					}
-				}
-				else
-				{
-					final List<Object> oldFrom=flattenMQLObjectList(from);
-					from.clear();
-					for(final Object o : oldFrom)
-					{
-						if(o instanceof Area)
-						{
-							for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
-							{
-								for(final Enumeration<MOB> m=r.nextElement().inhabitants();m.hasMoreElements();)
-								{
-									final MOB M=m.nextElement();
-									for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
-									{
-										final Item I=i.nextElement();
-										if((I!=null)
-										&&(I.amBeingWornProperly()))
-											from.add(I);
-									}
-								}
-							}
-						}
-						else
-						if(o instanceof MOB)
-						{
-							for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
-							{
-								final Item I=i.nextElement();
-								if((I!=null)
-								&&(I.amBeingWornProperly()))
-									from.add(I);
-							}
-						}
-						else
-						if(o instanceof Room)
-						{
-							for(final Enumeration<MOB> m=((Room)o).inhabitants();m.hasMoreElements();)
-							{
-								final MOB M=m.nextElement();
-								for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
-								{
-									final Item I=i.nextElement();
-									if((I!=null)
-									&&(I.amBeingWornProperly()))
-										from.add(I);
-								}
-							}
-						}
-						else
-						if(o instanceof Item)
-						{
-							if(((Item)o).amBeingWornProperly())
-								from.add(o);
-						}
-						else
-							throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
-					}
-				}
-			}
-			else
-			if(f.equals("OWNER"))
-			{
-				if(from.size()==0)
-				{
-					final Environmental oE=(E instanceof Item) ? (Environmental)E : null;
-					if(oE==null)
-						throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
-					else
-					if(((Item)E).owner()!=null)
-						from.add(((Item)E).owner());
-				}
-				else
-				{
-					final List<Object> oldFrom=flattenMQLObjectList(from);
-					from.clear();
-					for(final Object o : oldFrom)
-					{
-						if(o instanceof Area)
-						{
-							for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
-							{
-								for(final Enumeration<MOB> m=r.nextElement().inhabitants();m.hasMoreElements();)
-								{
-									final MOB M=m.nextElement();
-									for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
-									{
-										final Item I=i.nextElement();
-										if((I!=null)
-										&&(I.owner()!=null)
-										&&(!from.contains(I.owner())))
-											from.add(I.owner());
-									}
-								}
-							}
-						}
-						else
-						if(o instanceof MOB)
-						{
-							for(final Enumeration<Item> i=((MOB)o).items();i.hasMoreElements();)
-							{
-								final Item I=i.nextElement();
-								if((I!=null)
-								&&(I.owner()!=null)
-								&&(!from.contains(I.owner())))
-									from.add(I.owner());
-							}
-						}
-						else
-						if(o instanceof Room)
-						{
-							for(final Enumeration<MOB> m=((Room)o).inhabitants();m.hasMoreElements();)
-							{
-								final MOB M=m.nextElement();
-								for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
-								{
-									final Item I=i.nextElement();
-									if((I!=null)
-									&&(I.owner()!=null)
-									&&(!from.contains(I.owner())))
-										from.add(I.owner());
-								}
-							}
-						}
-						else
-						if(o instanceof Item)
-						{
-							if(((Item)o).amBeingWornProperly())
-								from.add(o);
-						}
-						else
-							throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
-					}
-				}
-			}
-			else
-			if(f.equals("RESOURCES"))
-			{
-				final List<Object> oldFrom=new ArrayList<Object>();
-				if(from.size()>0)
-					oldFrom.addAll(flattenMQLObjectList(from));
-				else
-				{
-					final Object oE;
-					if((E instanceof MOB)
-					||(E instanceof Item)
-					||(E instanceof Room)
-					||(E instanceof Area))
-						oE=E;
-					else
-						throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
-					oldFrom.add(oE);
-				}
-				from.clear();
-				for(final Object o : oldFrom)
-				{
-					if((o instanceof Area)
-					||(o instanceof Room))
-					{
-						final Enumeration<Room> r;
-						if(o instanceof Area)
-							r=((Area)o).getFilledCompleteMap();
-						else
-							r=new XVector<Room>((Room)o).elements();
-						for(;r.hasMoreElements();)
-						{
-							final Room R=r.nextElement();
-							final int resource=R.myResource()&RawMaterial.RESOURCE_MASK;
-							if(RawMaterial.CODES.IS_VALID(resource))
-							{
-								final Item I=CMLib.materials().makeItemResource(resource);
-								CMLib.threads().deleteAllTicks(I);
-								I.setSavable(false);
-								I.setDatabaseID("DELETE");
-								from.add(I);
-							}
-						}
-					}
-					else
-					if(o instanceof MOB)
-					{
-						final Race R=((MOB)o).charStats().getMyRace();
-						for(final Item I : R.myResources())
-						{
-							final Item I2=(Item)I.copyOf();
-							CMLib.threads().deleteAllTicks(I2);
-							I2.setSavable(false);
-							I2.setDatabaseID("DELETE");
-							from.add(I2);
-						}
-					}
-					else
-					if(o instanceof Item)
-					{
-						final int resource=((Item)o).material()&RawMaterial.RESOURCE_MASK;
-						if(RawMaterial.CODES.IS_VALID(resource))
-						{
-							final Item I=CMLib.materials().makeItemResource(resource);
-							CMLib.threads().deleteAllTicks(I);
-							I.setSavable(false);
-							I.setDatabaseID("DELETE");
-							from.add(I);
-						}
-					}
-					else
-						throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
-				}
-			}
-			else
-			if(f.equals("FACTIONS"))
-			{
-				final List<Object> oldFrom=new ArrayList<Object>();
-				if(from.size()>0)
-					oldFrom.addAll(flattenMQLObjectList(from));
-				else
-				{
-					final Object oE;
-					if(E instanceof MOB)
-						oE=E;
-					else
-						throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
-					oldFrom.add(oE);
-				}
-				from.clear();
-				for(final Object o : oldFrom)
-				{
-					if(o instanceof MOB)
-					{
-						for(final Enumeration<String> fenum=((MOB)o).factions();fenum.hasMoreElements();)
-						{
-							final String fstr=fenum.nextElement();
-							final int val=((MOB)o).fetchFaction(fstr);
-							final Map<String,Object> m=new TreeMap<String,Object>();
-							m.put("ID", fstr);
-							m.put("VALUE", ""+val);
-							from.add(m);
-
-						}
-					}
-					else
-						throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
-				}
 			}
 			else
 			if(f.startsWith("$"))
@@ -5144,27 +5193,32 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 		if(from instanceof MOB)
 		{
-			return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
+			if(CMLib.coffeeMaker().isAnyGenStat((Physical)from,valueName))
+				return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
 		}
 		else
 		if(from instanceof Item)
 		{
-			return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
+			if(CMLib.coffeeMaker().isAnyGenStat((Physical)from,valueName))
+				return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
 		}
 		else
 		if(from instanceof Room)
 		{
-			return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
+			if(CMLib.coffeeMaker().isAnyGenStat((Physical)from,valueName))
+				return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
 		}
 		else
 		if(from instanceof Area)
 		{
-			return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
+			if(CMLib.coffeeMaker().isAnyGenStat((Physical)from,valueName))
+				return CMLib.coffeeMaker().getAnyGenStat((Physical)from,valueName);
 		}
 		else
 		if(from instanceof Modifiable)
 		{
-			return ((Modifiable)from).getStat(valueName);
+			if(((Modifiable)from).isStat(valueName))
+				return ((Modifiable)from).getStat(valueName);
 		}
 		return null;
 	}
@@ -5174,10 +5228,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	{
 		if(strpath.startsWith("SELECT:"))
 		{
-			if(from instanceof Modifiable)
-				return doMQLSelectObjs((Modifiable)from,ignoreStats,defPrefix,strpath,piece,defined);
-			else
-				return doMQLSelectObjs(E,ignoreStats,defPrefix,strpath,piece,defined);
+			Modifiable selectFrom=(from instanceof Modifiable)?(Modifiable)from:null;
+			if(from instanceof Map)
+			{
+				@SuppressWarnings("rawtypes")
+				final Map m=(Map)from;
+				if((m.size()>0)
+				&&(m.values().iterator().next() instanceof Modifiable))
+					selectFrom=(Modifiable)m.values().iterator().next();
+			}
+			return doMQLSelectObjs(selectFrom,ignoreStats,defPrefix,strpath,piece,defined);
 		}
 		Object finalO=null;
 		try
@@ -5217,7 +5277,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						@SuppressWarnings("rawtypes")
 						final List l=(List)chkO;
-						chkO=""+l.size();
+						finalO=""+l.size();
 					}
 					else
 					if((chkO instanceof String)
@@ -5307,9 +5367,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				else
 				{
 					final Object fromO=(finalO==null)?((from==null)?E:from):finalO;
-					final Object newObj=getSimpleMQLValue(str,fromO);
+					Object newObj=getSimpleMQLValue(str,fromO);
 					if(newObj == null)
-						throw new MQLException("Unknown variable '"+str+"' on '"+fromO+"' in '"+mql+"'",new CMException("$"+str));
+					{
+						if(fromO instanceof Modifiable)
+							newObj=parseMQLFrom(str, mql, (Modifiable)fromO, ignoreStats, defPrefix, piece, defined);
+						if(newObj == null)
+							throw new MQLException("Unknown variable '"+str+"' on '"+fromO+"' in '"+mql+"'",new CMException("$"+str));
+					}
 					finalO=newObj;
 				}
 			}
@@ -5909,10 +5974,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			throw new MQLException("Malformed mql: "+str);
 		final String mqlbits=str.substring(x+1).toUpperCase();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-			Log.debugOut("Starting MQL: "+mqlbits);
+			Log.debugOut("Starting MQL: "+mqlbits+" on "+((E==null)?"null":E.name()));
 		final MQLClause clause = new MQLClause();
 		clause.parseMQL(str, mqlbits);
-		return this.doSubSelectStr(E, ignoreStats, defPrefix, clause, str, piece, defined);
+		final List<Map<String,String>> results = this.doSubSelectStr(E, ignoreStats, defPrefix, clause, str, piece, defined);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+			Log.debugOut("Finished MQL: "+results.size()+" results");
+		return results;
 	}
 
 	protected List<Map<String,Object>> doMQLSelectObjs(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
@@ -5922,10 +5990,19 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			throw new MQLException("Malformed mql: "+str);
 		final String mqlbits=str.substring(x+1).toUpperCase();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-			Log.debugOut("Starting MQL: "+mqlbits);
+			Log.debugOut("Starting MQL: "+mqlbits+" on "+((E==null)?"null":((E instanceof Room)?((Room)E).roomID():E.name())));
+
 		final MQLClause clause = new MQLClause();
 		clause.parseMQL(str, mqlbits);
-		return this.doSubObjSelect(E, ignoreStats, defPrefix, clause, str, piece, defined);
+		final List<Map<String,Object>> results = this.doSubObjSelect(E, ignoreStats, defPrefix, clause, str, piece, defined);
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
+		{
+			if((results.size()==1)&&(results.get(0).size()==1))
+				Log.debugOut("Finished MQL: "+results.size()+" results: "+results.get(0).keySet().iterator().next()+"="+results.get(0).values().iterator().next());
+			else
+				Log.debugOut("Finished MQL: "+results.size()+" results");
+		}
+		return results;
 	}
 
 	protected String doMQLSelectString(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String str, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
