@@ -17,15 +17,15 @@ limitations under the License.
 
 See guides/RandomAreas.html for information about documents of this type.
 
-template: normal_capture1
+template: normal_killer1
 settable vars: 
-    template(normal_capture1)
+    template(normal_killer1)
     area_name(area name)
     source_name(mob name)
     targetarea_name(area name)
     multiarea(yes or NO)
     targetname(mobs name)
-    num_targets(num mobs to capture)
+    num_targets(num mobs to kill)
 	aggression(YES,NO)
 	xp_amount_awarded
 	gold_amount_awarded
