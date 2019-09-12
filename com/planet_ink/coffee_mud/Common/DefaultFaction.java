@@ -3033,7 +3033,7 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public boolean isSavable()
 	{
-		return true;
+		return (internalFlagBitmap & Faction.IFLAG_NEVERSAVE) == 0;
 	}
 
 	@Override
