@@ -656,6 +656,26 @@ public class StdRoom implements Room
 				setResource(-1);
 			else
 			{
+				final List<Integer> preferredChoices=new ArrayList<Integer>();
+				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				{
+					final Room R=rawDoors()[d];
+					if((R!=null)
+					&&(R.ID().equals(ID()))
+					&&(R.resourceChoices()==resourceChoices())
+					&&(R instanceof StdRoom)
+					&&(((StdRoom)R).myResource>0))
+						preferredChoices.add(Integer.valueOf(((StdRoom)R).myResource));
+				}
+				while(preferredChoices.size()>0)
+				{
+					final Integer choice=preferredChoices.remove(CMLib.dice().roll(1, preferredChoices.size(), -1));
+					if(CMLib.dice().rollPercentage()<25)
+					{
+						myResource = choice.intValue();
+						return myResource;
+					}
+				}
 				int totalChance=0;
 				for(int i=0;i<resourceChoices().size();i++)
 				{
