@@ -110,8 +110,8 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING>$hurt_verb the $adj_nasty lot of them</STRING>
 </STRING>
 
-<STRING ID="hurt_verbed" PREDEFINE="hurt_verb">$hurt_verbed</STRING>
-<STRING ID="hurt_verb" SELECT="Any-1">
+<STRING ID="hurt_verbed" PREDEFINE="last_hurt_verb=$hurt_verb">$hurt_verbed</STRING>
+<STRING ID="hurt_verb" define="hurt_verb" SELECT="Any-1">
 	<STRING define="hurt_verbed=hurt">hurt</STRING>
 	<STRING define="hurt_verbed=killed">kill</STRING>
 	<STRING define="hurt_verbed=beaten">beat</STRING>
