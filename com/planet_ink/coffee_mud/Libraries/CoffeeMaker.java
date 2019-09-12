@@ -5432,13 +5432,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	@Override
 	public String getFactionXML(final MOB mob)
 	{
+		final boolean isPlayer=mob.isPlayer();
 		final StringBuilder facts=new StringBuilder();
 		for(final Enumeration<String> e=mob.factions();e.hasMoreElements();)
 		{
 			final String name=e.nextElement();
 			final int val=mob.fetchFaction(name);
 			if(val!=Integer.MAX_VALUE)
+			{
+				if(!isPlayer)
+				{
+					final Faction F=CMLib.factions().getFaction(name);
+					if((F==null)||(!F.isSavable()))
+						continue;
+				}
 				facts.append("<FCTN ID=\""+name+"\">"+val+"</FCTN>");
+			}
 		}
 		return CMLib.xml().convertXMLtoTag("FACTIONS",facts.toString());
 	}
