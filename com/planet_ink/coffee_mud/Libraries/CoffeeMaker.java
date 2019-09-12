@@ -3280,7 +3280,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					{
 						final String factionID=f.nextElement();
 						if((!(factionID.equalsIgnoreCase(alignID)))
-						&&(!(factionID.equalsIgnoreCase(alignID))))
+						&&(!(factionID.equalsIgnoreCase(inclinID))))
 							return factionID;
 					}
 					if(((MOB)P).fetchFaction(alignID)!=Integer.MAX_VALUE)
@@ -3297,7 +3297,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					{
 						final String factionID=f.nextElement();
 						if((!(factionID.equalsIgnoreCase(alignID)))
-						&&(!(factionID.equalsIgnoreCase(alignID))))
+						&&(!(factionID.equalsIgnoreCase(inclinID))))
 							return ""+((MOB)P).fetchFaction(factionID);
 					}
 					if(((MOB)P).fetchFaction(alignID)!=Integer.MAX_VALUE)
