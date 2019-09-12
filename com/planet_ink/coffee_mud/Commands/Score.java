@@ -241,8 +241,8 @@ public class Score extends Affect
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!mob.charStats().getMyRace().leveless()))
 			{
-				if(((CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)>0)
-					&&(mob.basePhyStats().level()>CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)))
+				if(((CMProps.get(mob.session()).getInt(CMProps.Int.LASTPLAYERLEVEL)>0)
+					&&(mob.basePhyStats().level()>CMProps.get(mob.session()).getInt(CMProps.Int.LASTPLAYERLEVEL)))
 				||(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 				||(mob.charStats().isLevelCapped(mob.charStats().getCurrentClass())))
 					msg.append(L("You have scored ^!@x1^? ^<HELP^>experience points^</HELP^>, ^!@x2^? over your last level.\n\r",""+mob.getExperience(),""+mob.getExpNeededDelevel()));

@@ -587,7 +587,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			}
 		}
 
-		if((mob.basePhyStats().level() < CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
+		if((mob.basePhyStats().level() < CMProps.get(mob.session()).getInt(CMProps.Int.LASTPLAYERLEVEL))
 		||(mob.getExperience()<getGainedExperienceCap(mob)))
 		{
 			mob.setExperience(mob.getExperience()+amount);
@@ -663,7 +663,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				return;
 		}
 
-		if((mob.basePhyStats().level() < CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
+		if((mob.basePhyStats().level() < CMProps.get(mob.session()).getInt(CMProps.Int.LASTPLAYERLEVEL))
 		||(mob.getExperience()<getGainedExperienceCap(mob)))
 		{
 			mob.setExperience(mob.getExperience()+amount);
@@ -733,19 +733,19 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 	protected int getGainedExperienceCap(final MOB mob)
 	{
-		final int threadId;
+		final char threadId;
 		if(mob != null)
 		{
 			final Session sess=mob.session();
 			if(sess != null)
-				threadId=sess.getGroupID();
+				threadId=(char)sess.getGroupID();
 			else
 				threadId=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		}
 		else
 			threadId=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		if(experienceCaps[threadId] <= 0)
-			experienceCaps[threadId] = (int)Math.round(CMath.mul(getLevelExperience(mob, CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL)), 1.02));
+			experienceCaps[threadId] = (int)Math.round(CMath.mul(getLevelExperience(mob, CMProps.instance(threadId).getInt(CMProps.Int.LASTPLAYERLEVEL)), 1.02));
 		return experienceCaps[threadId];
 	}
 

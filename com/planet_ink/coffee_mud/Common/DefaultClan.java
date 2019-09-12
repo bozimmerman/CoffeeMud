@@ -1704,7 +1704,7 @@ public class DefaultClan implements Clan
 				if((M!=null)
 				&&(M.playerStats()!=null))
 				{
-					final boolean isAdmin=CMSecurity.isASysOp(M) || M.phyStats().level() > CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
+					final boolean isAdmin=CMSecurity.isASysOp(M) || M.phyStats().level() > CMProps.get(M.session()).getInt(CMProps.Int.LASTPLAYERLEVEL);
 					if(M.lastTickedDateTime()>0)
 						members.add(new FullMemberRecord(member,M.basePhyStats().level(),M.lastTickedDateTime(),isAdmin));
 					else
@@ -1715,7 +1715,7 @@ public class DefaultClan implements Clan
 					final PlayerLibrary.ThinPlayer tP = CMLib.database().getThinUser(member.name);
 					if(tP != null)
 					{
-						final boolean isAdmin=CMSecurity.isASysOp(tP) || tP.level() > CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
+						final boolean isAdmin=CMSecurity.isASysOp(tP) || tP.level() > CMProps.get(M.session()).getInt(CMProps.Int.LASTPLAYERLEVEL);
 						members.add(new FullMemberRecord(member,tP.level(),tP.last(),isAdmin));
 					}
 					else

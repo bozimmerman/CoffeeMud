@@ -139,7 +139,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					if(!safetyCheck(mob,message))
 						return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
-					int destLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
+					int destLevel=CMProps.get(target.session()).getInt(CMProps.Int.LASTPLAYERLEVEL);
 					if(destLevel==0)
 						destLevel=30;
 					if(destLevel<=target.basePhyStats().level())

@@ -431,7 +431,7 @@ public class CommonSkill extends StdAbility
 	{
 		int ticks=baseTicks;
 		final int level=mob.phyStats().level() - itemLevel;
-		final double pct=CMath.div(level,CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))*.5;
+		final double pct=CMath.div(level,CMProps.get(mob.session()).getInt(CMProps.Int.LASTPLAYERLEVEL))*.5;
 		ticks-=(int)Math.round(CMath.mul(ticks, pct));
 
 		lastBaseDuration=ticks;

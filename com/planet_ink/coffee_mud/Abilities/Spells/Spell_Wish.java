@@ -1169,7 +1169,7 @@ public class Spell_Wish extends Spell
 					final int newLevel=target.basePhyStats().level()+level;
 					if(target instanceof MOB)
 					{
-						if(((newLevel>CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
+						if(((newLevel>CMProps.get(((MOB)target).session()).getInt(CMProps.Int.LASTPLAYERLEVEL))
 							||(((MOB)target).charStats().getCurrentClass().leveless())
 							||(((MOB)target).charStats().isLevelCapped(((MOB)target).charStats().getCurrentClass()))
 							||(((MOB)target).charStats().getMyRace().leveless()))

@@ -1528,7 +1528,7 @@ public class StdAbility implements Ability
 				else
 				{
 					final float fatigueFactor=(mob.curState().getFatigue() > CharState.FATIGUED_MILLIS ? 50.0f : 100.0f);
-					final int maxLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
+					final int maxLevel=CMProps.get(mob.session()).getInt(CMProps.Int.LASTPLAYERLEVEL);
 					adjustedChance=fatigueFactor * CMath.div((maxLevel+1-qualLevel),((2*maxLevel)+(10*qualLevel)));
 				}
 				if(CMLib.dice().rollPercentage()<Math.round(adjustedChance))

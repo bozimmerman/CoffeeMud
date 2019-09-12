@@ -271,7 +271,7 @@ public class StdMOB implements MOB
 	{
 		if (basePhyStats().level() <= 1)
 			return 0;
-		if ((CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
+		if ((CMSecurity.instance(session())._isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		|| (charStats().getCurrentClass().expless())
 		|| (charStats().getMyRace().expless()))
 			return 0;
@@ -284,10 +284,11 @@ public class StdMOB implements MOB
 	@Override
 	public int getExpNeededLevel()
 	{
-		if ((CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL) > 0)
-		&& (CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL) <= basePhyStats().level()))
+		final int lastPlayerLevel=CMProps.get(session()).getInt(CMProps.Int.LASTPLAYERLEVEL);
+		if ((lastPlayerLevel > 0)
+		&& (lastPlayerLevel <= basePhyStats().level()))
 			return Integer.MAX_VALUE;
-		if ((CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
+		if ((CMSecurity.instance(session())._isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		|| (charStats().getCurrentClass().expless())
 		|| (charStats().getMyRace().expless()))
 			return Integer.MAX_VALUE;

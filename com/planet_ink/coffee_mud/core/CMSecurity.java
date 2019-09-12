@@ -134,6 +134,21 @@ public class CMSecurity
 	}
 
 	/**
+	 * Returns the CMSecurity instance tied to this particular session, or main.
+	 * @param session the session to check
+	 * @return the CMSecurity instance tied to this particular session, or main.
+	 */
+	public static final CMSecurity instance(final Session session)
+	{
+		if(session == null)
+			return i();
+		final int threadId = session.getGroupID();
+		if(secs[threadId]!=null)
+			return secs[threadId];
+		return i();
+	}
+
+	/**
 	 * Returns the CMSecurity instance tied to this particular thread group, or null if not yet created.
 	 * @return the CMSecurity instance tied to this particular thread group, or null if not yet created.
 	 */
@@ -1376,6 +1391,17 @@ public class CMSecurity
 	public static final boolean isDisabled(final DisFlag flag)
 	{
 		return instance().disVars.contains(flag);
+	}
+
+	/**
+	 * Checks to see if the given feature denoted by the given DisFlag
+	 * is disabled.
+	 * @param flag the DisFlag to check for
+	 * @return true if it is disabled, and false otherwise
+	 */
+	public final boolean _isDisabled(final DisFlag flag)
+	{
+		return disVars.contains(flag);
 	}
 
 	/**
