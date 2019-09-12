@@ -178,12 +178,13 @@ settable vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I must $hurt_verb the ${p:target_name}.</STRING>
 			<STRING>I am really hungry for ${p:target_name}.</STRING>
-			<STRING CONDITION="$target_int &lt; 4">I am giving away ${p:target_name} to all the children of $source_area_name.</STRING>
+			<STRING CONDITION="$target_int &lt; 4">We need the ${p:target_name} cleared away from $source_area_name.</STRING>
 			<STRING CONDITION="$source_class='Mage' or $source_class='Necromancer'">I need to draw out the souls of ${p:target_name} for my magic.</STRING>
 			<STRING>The ${p:target_name} make me $adj_feeling_bad, and I must make them $adj_feeling_bad.</STRING>
-			<STRING>The ${p:target_name} are going to feel the business end of ${any_dungeon_junk_name} for what they've done.</STRING>
+			<STRING>The ${p:target_name} are too many, and must be be thinned out.</STRING>
 		</STRING>
 	</STRING>
+
 	<STRING ID="reason_wedotoeachother" SELECT="All">
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_fightspeech" SELECT="Any-1">
@@ -192,9 +193,10 @@ settable vars:
 			<STRING>I'd rather kill you!</STRING>
 		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>The ${p:target_name} and I are scheduled to $hurt_verb each other today.</STRING>
+			<STRING>The ${p:target_name} are trying to kill me, and must be stopped.</STRING>
 			<STRING>The ${p:target_name} have insulted my honor, and only a ritual $hurt_verb will satisfy it.</STRING>
 			<STRING>I feel like engaging in a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.</STRING>
+			<STRING>The ${p:target_name} are plotting against me!</STRING>
 		</STRING>
 	</STRING>
 
