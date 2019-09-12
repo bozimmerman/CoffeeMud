@@ -54,14 +54,22 @@ See guides/RandomAreas.html for information about documents of this type.
 </STRING>
 
 <STRING ID="num_targets" SELECT="any-1" DEFINE="num_targets" MERGE=true>
-	<STRING>$[2?10]</STRING>
+	<STRING>$[3?8]</STRING>
 </STRING>
 
 <STRING ID="level_span" SELECT="any-1" DEFINE="level_span" MERGE=true>
 	<STRING>8</STRING>
 </STRING>
 
-<STRING id="travel_verbed" predefine="verb_travel=$verb_travel">$verb_traveled</STRING>
+<STRING id="verb_visited" predefine="verb_visit=$verb_visit">$verb_visited</STRING>
+<STRING ID="verb_visit" define="verb_visit" SELECT="Any-1">
+	<STRING define="verb_traveled=traveled to">travel to</STRING>
+	<STRING define="verb_traveled=visited">visit</STRING>
+	<STRING define="verb_traveled=met">meet</STRING>
+	<STRING define="verb_traveled=found">find</STRING>
+</STRING>
+
+<STRING id="verb_traveled" predefine="verb_travel=$verb_travel">$verb_traveled</STRING>
 <STRING ID="verb_travel" define="verb_travel" SELECT="Any-1">
 	<STRING define="verb_traveled=traveled">travel</STRING>
 	<STRING define="verb_traveled=journeyed">journey</STRING>
