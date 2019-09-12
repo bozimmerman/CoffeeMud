@@ -1721,8 +1721,8 @@ public class Stat  extends Skills
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		final String statName=(String)args[1];
-		final MOB M=(MOB)args[2];
+		final String statName=(String)args[0];
+		final MOB M=(MOB)args[1];
 		final List<String> cmds=new XVector<String>("STAT", statName.toUpperCase().trim(), M.Name());
 		return getPrivilegedStat(mob, M, cmds, true);
 	}
