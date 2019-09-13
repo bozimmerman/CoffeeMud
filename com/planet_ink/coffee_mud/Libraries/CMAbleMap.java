@@ -2306,13 +2306,20 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		{
 			rules=new LinkedList<CompoundingRule>();
 			final List<CompoundingRule> remainRules = new LinkedList<CompoundingRule>();
-			for(final CompoundingRule rule : compoundingRules)
+			try
 			{
-				if(rule.ableMask()==null)
-					remainRules.add(rule);
-				else
-				if(CMLib.masking().maskCheck(rule.ableMask(), A, true))
-					rules.add(rule);
+				for(final CompoundingRule rule : compoundingRules)
+				{
+					if(rule.ableMask()==null)
+						remainRules.add(rule);
+					else
+					if(CMLib.masking().maskCheck(rule.ableMask(), A, true))
+						rules.add(rule);
+				}
+			}
+			catch(final ConcurrentModificationException e)
+			{
+				return null;
 			}
 			if(rules.size()==0)
 				rules.addAll(remainRules);
