@@ -2800,7 +2800,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			piece.parms().remove("QUEST_TEMPLATE_ID"); // once only, please
 			questTemplateLoad = strFilter(E,ignoreStats,defPrefix,questTemplateLoad,piece, defined);
-			final CMFile file = new CMFile(Resources.makeFileResourceName("quests/templates/"+questTemplateLoad.trim()+".quest"),null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
+			CMFile file = new CMFile(Resources.makeFileResourceName(questTemplateLoad),null);
+			if(!file.exists() || !file.canRead())
+				file = new CMFile(Resources.makeFileResourceName("quests/templates/"+questTemplateLoad.trim()+".quest"),null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
 			if(file.exists() && file.canRead())
 			{
 				final String rawFileText = file.text().toString();
@@ -2899,7 +2901,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final List<String> ignore=new ArrayList<String>();
 		try
 		{
-			return this.findString(E, ignore, null, "QUEST", piece, defined);
+			return CMStrings.replaceAll(this.findString(E, ignore, null, "QUEST", piece, defined),"%0D","\n\r");
 		}
 		catch(final PostProcessException pe)
 		{

@@ -38,8 +38,7 @@ Tags</a>
             <li><a href="#contenttag">Content</a></li>
             <li><a href="exittag">Exit</a></li>
             <li><a href="#racetag">Race</a></li>
-            <li><a href="#factiontag">Faction</a><span style="text-decoration: underline;"><br />
-              </span></li>
+            <li><a href="#factiontag">Faction</a></li><li><a href="#questtag">Quest</a></li><li><a href="#objecttag">Object</a></li>
           </ul>
         </li>
         <li> <a href="#mql">Notes on MQL</a>
@@ -50,7 +49,8 @@ Tags</a>
       <p class="center"><img src="images/mug.jpg" alt="coffeemud logo" /></p>
       <h2><a name="introduction">Introduction to
 Random Generation</a></h2>
-      <p>Random generation in the realm of mud areas, rooms,
+      <p>Random
+generation in the realm of mud areas, rooms,
 items, mobs, and so forth is a strange proposition. &nbsp;In the
 end, it always boils down to selecting among known, fixed, and constant
 alternatives that make sense in a particular context. &nbsp;For
@@ -62,11 +62,15 @@ also sometimes doesn't make sense. &nbsp;A random Moon description
 might include words like "full", "new", "crescent", "half", and "BLUE".
 &nbsp;However, just because you want the "BLUE" alternative to be
 available, doesn't mean you want it to have an equal chance of
-describing your moon as the other choices. &nbsp; Lastly, sometimes
+describing your moon as the other choices. &nbsp; Also, sometimes
 the context in which an alternative makes sense can be extremely
 narrow. &nbsp;Having "a rat" as a random monster in your dungeon
 almost always makes sense, except in the "cat room". &nbsp;Again,
-judgement must come into play.</p>
+judgement must come into play. And lastly, the more random a particular
+area is, the more it will seem like every other random area.
+&nbsp;Randomness is best used to select overall themes for an area,
+which the content reflects, as opposed to every room having random
+content and descriptions.</p>
       <p>All of these considerations and more have gone into the
 devising of a random mud engine, and particularly to the format of the
 input data it uses. &nbsp;This engine receives a series of sets of
@@ -413,7 +417,7 @@ arguments.&nbsp; The arguments,&nbsp;briefly, are:<br />
         <tbody>
           <tr>
             <td>OBJ TYPE</td>
-            <td>One of the following: AREA, ROOM, MOB, ITEM, or
+            <td>One of the following: AREA, ROOM, MOB, ITEM, QUEST, or
 STRING</td>
           </tr>
           <tr>
@@ -900,7 +904,74 @@ Required details:&nbsp;</p>
         <li>"ID"</li>
         <li>"VALUE"</li>
       </ul>
-      <h2><a name="mql">Notes on MQL</a></h2>
+      <p><br />
+      <a name="questtag"><span style="font-weight: bold;">QUEST tags</span></a>:
+      <br />
+Optional parameter:&nbsp;</p>
+      <ul><li>"QUEST_TEMPLATE_ID"</li></ul><dl><dd>The
+QUEST tag is supremely unique in that it does not represent an object
+in your world, or a property of some object in your world, but instead
+represents a relationship between players and your world by giving them
+tasks to perform. &nbsp;In the end, a QUEST tag must resolve to a
+complete&nbsp;Quest Script document/string, which is then submitted to
+CoffeeMud's Quest Manager for execution, monitoring, and cleanup.
+&nbsp;I won't go into the complete details of what goes into a Quest
+Script here, however. &nbsp;Instead, you should check the Game
+Builder's Guide for a complete breakdown of a Quest Script.</dd><dd></dd><dd>Quest
+Scripts can be built from the ground up by assembling a String
+consisting of each line of the quest script, separated by %0D
+characters.<br /><br />Scripts can also be built, however, by utilizing
+one of the existing Quest Maker templates. &nbsp;These are the
+templates found in the <span style="font-family: monospace;">/resources/quests/templates</span>
+directory. &nbsp; They are partially built Quest Scripts which, when
+run through the Quest Maker Wizard, can be filled out manually by a
+builder. &nbsp;However, those templates can also be run through the
+Random Generator to generate randomly what the builder would normally
+have to type in manually. &nbsp;<br /><br />To create a quest script by
+running a Template through the random generator, you would specify the
+full path or ordinary name (e.g. normal_capture1) of the Template in a
+tag parameter on the QUEST tag called QUEST_TEMPLATE_ID. &nbsp; When
+this is done, the quest script and its variables are extracted from the
+template. &nbsp;The variables in the template then become required
+details for the QUEST tag. &nbsp;When those details are resolved into
+STRINGs, the values are substituted into the template's quest script
+and then returned by the tag.<br /><br />To discover the required details for a particular template, you should open up that template <span style="font-family: monospace;">*.quest</span>
+file and scan down the top part of the file whose lines begin with #.
+&nbsp;When you see a line that begins with #$, you know you are looking
+at a variable definition whose variable name is a required detail for
+the QUEST tag using that template.</dd><dd></dd><dd>To save you some
+time, numerous existing quest templates have already had associated
+snippets of Random Generator XML written to demonstrate the above.
+&nbsp;These are found in the <span style="font-family: monospace;">/resources/quests/random</span> directory, and can be indirectly accessed from the same <span style="font-family: monospace;">/resources/randareas/example.xml</span>
+that is used to generate random areas, rooms, mobs, etc. &nbsp;This
+means that you can use the GENERATE command to generate a random quest
+of any type anywhere in your entire world by entering:<br /><br /><span style="font-family: monospace;">generate quest all_quests template=random "expiration=20 minutes"</span><br /><br />The
+"template" variable specifies that you want any available quest
+template. &nbsp;The "expiration" variable definition ensures that the
+quest is not saved to your database, and will in fact be destroyed
+after running for 20 minutes. &nbsp;If you leave it off, or replace it
+with a "duration" definition (see the Game Builders Guide), then the
+quest will be writte to the database and become a persistant feature of
+your world.<br /><br />If you look through the examples in <span style="font-family: monospace;">/resources/quests/random</span>
+, you will see much that is similar to Random Area documents. Strings
+and other selections are being chosen from, conditions are set for some
+values over others, etc. &nbsp;However, since many of the quest
+Templates actually require that an already existing mob, or item, or
+even set of mobs in your world be selected as subjects for the quest,
+the Random Generator engine had to be extended to support not only the
+creation of new mobs, items, rooms, and areas, but the selection of
+existing ones inside the world. &nbsp;To do this, see the next section
+on the OBJECT tag.</dd></dl><a name="objecttag"><span style="font-weight: bold;">OBJECT tags</span></a>:
+      <br /><dl><dd>This
+tag type is unique in the sense that it can contain any MOB, ITEM,
+AREA, ROOM, or other main object types, intermingled. &nbsp;It is also
+unique in that it need not resolve to the creation of any new object at
+all, but can instead be used to select from an existing object in your
+already existing world.<br /><br />To do the later, the OBJECT tag
+value mnust begin with SELECT: and be followed by an MQL query string.
+&nbsp;When this is done, the OBJECT tag will take on the properties of
+whatever was selected by the query. &nbsp;See the next section on MQL
+for how these queries work.</dd></dl><h2><a name="mql">Notes on MQL</a></h2>
       <p>MQL Stands for MUD Query Language. &nbsp;It's purpose is to
 allow
 the Archon, or a random quest xml document, to select existing objects
@@ -1084,7 +1155,7 @@ name="JOE" would expand the number of possible results by one name.
       <br />
       </td>
     </tr>
-  </tbody>
+  <tr><td align="left" valign="top" width="20%"></td><td style="text-align: left;"></td></tr></tbody>
 </table>
 <br />
 </center>

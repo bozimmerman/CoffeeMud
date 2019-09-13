@@ -81,3 +81,5 @@ See guides/RandomAreas.html for information about documents of this type.
 </STRING>
 
 </AREADATA>
+
+<STRING load="/resources/quests/random/all.xml" />

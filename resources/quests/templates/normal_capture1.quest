@@ -294,6 +294,8 @@ ENTRY_PROG 100
 							mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_SURRENDER
 							mpforce '$%ROOMMOB($0)%' mpstop all
 							mpforce '$%ROOMMOB($0)%' follow "$i"
+							mpsetvar $i $QUEST_ID_CAPTURED ++
+							mpsetvar $i PROGRESS Found $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
 						endif
 					endif
 				endif
@@ -312,9 +314,9 @@ CNCLMSG_PROG STO=DEATH ALL
 			mpforce $n sayto "$i" $CAPTURABLES_SURRENDER
 			mpforce $n follow "$i"
 			mpsetvar $i $QUEST_ID_CAPTURED ++
+			mpsetvar $i PROGRESS Found $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
 			RETURN CANCEL
 		endif
-		mpsetvar $i PROGRESS Found $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
 	endif
 ~
 </DATA></FILE>

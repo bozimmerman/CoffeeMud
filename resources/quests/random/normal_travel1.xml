@@ -31,7 +31,7 @@ settable vars:
 	quest_point_awarded(YES,NO)
 -->
 
-<QUEST ID="all" MERGE=true QUEST_TEMPLATE_ID="$quest_template">
+<QUEST ID="all_quests" MERGE=true QUEST_TEMPLATE_ID="$quest_template">
 	<QUEST_ID DEFINE="quest_id">${_:source_area_name}_${_:source_name}_${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
 	<QUEST_CRITERIA>+SYSOP +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA>
 	<ANNOUNCER_AREA>"$source_area_name"</ANNOUNCER_AREA>
@@ -90,8 +90,8 @@ settable vars:
 		<STRING condition="$quest_traveled != ''">$quest_traveled</STRING>
 		<STRING condition="$quest_traveled = ''">Your task is complete.</STRING>
 	</STRING>
-	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$travel_verbed</STRING>
-	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$travel_verb</STRING>
+	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$verb_traveled</STRING>
+	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$verb_travel</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
 	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
 		<STRING>$reason_theyoweme</STRING>

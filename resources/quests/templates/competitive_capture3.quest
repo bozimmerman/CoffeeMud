@@ -96,9 +96,9 @@
 #The Capturables are the mob or mobs which must be defeated and captured.
 #
 #Capturables Area/Room: 
-#Specify below the name of the area that your capturable mob or mobs will be located
-#in and/or the room in which the mob or mobs can be found.  You may leave both blank
-#to force the quest manager to find the mobs somewhere in the world, but this
+#Specify below the name of the area that your capturable mob will be located
+#in and/or the room in which the mob can be found.  You may leave both blank
+#to force the quest manager to find the mob somewhere in the world, but this
 #will hurt the performance of your mud, so use with care.  
 #Use double-quotes around multi-word areas and room ids/names.
 #
