@@ -1157,13 +1157,24 @@ public class DefaultCharStats implements CharStats
 	{
 		final int dex=CMParms.indexOfIgnoreCase(getStatCodes(),code);
 		if(dex>=0)
-			setStat(dex,CMath.s_parseIntExpression(val));
+		{
+			if((dex == CharStats.STAT_GENDER)
+			&&(val.length()>0))
+			{
+				if((val.length()==1)||(Character.isLetter(val.charAt(0))))
+					setStat(dex,Character.toUpperCase(val.charAt(0)));
+				else
+					setStat(dex,CMath.s_parseIntExpression(val));
+			}
+			else
+				setStat(dex,CMath.s_parseIntExpression(val));
+		}
 		else
 		for(final int i : CharStats.CODES.ALLCODES())
 		{
 			if(CODES.DESC(i).startsWith(code))
 			{
-				setStat(dex,CMath.s_parseIntExpression(val));
+				setStat(i,CMath.s_parseIntExpression(val));
 				return;
 			}
 		}
