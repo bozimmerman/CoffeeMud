@@ -3184,7 +3184,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(P instanceof MOB)
 		{
 			if(((MOB)P).baseCharStats().isStat(stat))
-				return current?((MOB)P).charStats().getStat(stat):((MOB)P).baseCharStats().getStat(stat);
+			{
+				if(stat.equalsIgnoreCase("GENDER"))
+					return ""+(char)CMath.s_int(current?((MOB)P).charStats().getStat(stat):((MOB)P).baseCharStats().getStat(stat));
+				else
+					return current?((MOB)P).charStats().getStat(stat):((MOB)P).baseCharStats().getStat(stat);
+			}
 			if(((MOB)P).baseState().isStat(stat))
 				return current?((MOB)P).curState().getStat(stat):((MOB)P).baseState().getStat(stat);
 			if((((MOB)P).playerStats()!=null)
