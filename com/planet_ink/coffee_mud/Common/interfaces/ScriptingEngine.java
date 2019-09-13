@@ -583,6 +583,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"ITEMCOUNT", // 111
 		"CANSEE", // 112
 		"CANHEAR", // 113
+		"QUESTAREA", // 114
 	};
 
 	/** String list of all valid mobprog commands */

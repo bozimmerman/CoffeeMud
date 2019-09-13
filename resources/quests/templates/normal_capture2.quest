@@ -1,0 +1,368 @@
+#!QUESTMAKER_START_SCRIPT Normal Capture #1
+#An existing mob in your world needs one or more other existing mobs captured. 
+#A reward is given upon completion of the task and returning to the announcer.
+#
+#!QUESTMAKER_PAGE Quest Name/Criteria
+#Enter the unique name and player criteria for your new quest.
+#
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_capture_1
+#
+#Quest Name:
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=Normal Capture #1
+#
+#Quest-Player Criterium:
+#You may leave this entry blank, or enter a Zapper Mask to describe what
+#kinds of players may participate in this quest.  You can use this to set
+#race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#!QUESTMAKER_PAGE Specify the Announcer
+#The Announcer is the mob who will be wanting the other mobs captured. This must
+#be an existing mob in your world.  
+#
+#Announcer Area/Room: 
+#Specify below the name of the area that your announcer mob will be located
+#in and/or the room in which the mob can be found.  You may leave both blank
+#to force the quest manager to find the mob somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.
+#Use double-quotes around multi-word areas and room ids/names.
+#  
+#Announcer Area:
+#$ANNOUNCER_AREA=($AREA)
+#Announcer Room ID:
+#$ANNOUNCER_ROOM=($ROOMID)
+#
+#Announcer mob name: 
+#Specify the name of the mob who will act as the announcer mob.  
+#Use double-quotes around multi-word names.
+#If you specified an area or room above, then the mob must be located there.
+#You may optionally have the quest manager select a 'random' mob by entering
+#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#ZAPPERMASKS for information on zapper mask syntax).
+#Remember, if the quest manager can not find your mob, the quest will not
+#be started.
+#$ANNOUNCER_NAME=$NAME
+#
+#!QUESTMAKER_PAGE Announcer speaches
+#Specify here some optional things to say for the announcer before and after the quest.
+#
+#Announcer Notification: 
+#Specify some additional bit of speech the announcer mob will say to players when they enter the room.
+#$QUEST_NOTIFYSTRING=($LONG_STRING)=I have some things I need captured!  Are you game?
+#
+#Announcer Instructions: 
+#Specify some additional bit of speech the announcer mob will say to players when the quest is accepted.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to capture some folks.  They are somewhere around somewhere.  You might have to get rough with them.
+#
+#Announcer Extra Announcement: 
+#Leave blank, or specify a channel that the announcer will also give his notification on.
+#$QUEST_ANNOUNCECHANNEL=($STRING)=
+#
+#Announcer success:
+#This is what the announcement says when the player returns with all the capturable mobs.
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations! You got them!
+#
+#!QUESTMAKER_PAGE Specify the Captureable Mob or Mobs
+#The Capturables are the mob or mobs which must be defeated.
+#
+#Capturables mobs: 
+#Specify below the mobs that the player must capture to get credit for this quest.
+#$CAPTUREABLES_MOBS=$MOBXML_ONEORMORE
+#
+#Num Capturables:
+#Specify how many of the capturable mobs must be captured.  Make sure there are 
+#enough of them in your world to make this goal reachable!
+#$NUM_CAPTURABLES=($EXPRESSION)=1
+#
+#Captureables chance:
+#Specify the percent chance that a mob will be found in a particular room.
+#$CAPTUREABLES_CHANCE=($EXPRESSION)=10
+#
+#Capturables response: 
+#You may optionally specify some additional bit of speech the capturables 
+#mobs will say to the players when they enter the room with them. 
+#$CAPTURABLES_RESPONSE=($STRING)=So, you've come for me.  Come and get me.
+#
+#Captureables Rooms: 
+#Specify the rooms that your mobs will possibly be found in.
+#Use double-quotes around multi-word areas and room ids/names.
+#Use the keyword ANY to specify a single random area or room, or
+#the keyword ALL to specify ALL areas or rooms.
+#
+#Captureables Area:
+#$CAPTUREABLES_AREAS=($AREA)
+#Captureables Rooms:
+#$CAPTUREABLES_ROOMS=($ROOMID)
+#
+#!QUESTMAKER_PAGE Capturables Behavior
+#Select some details about the capturable mobs
+#
+#Capturables follow: 
+#Set this to PEACEFUL if the capturable mobs will follow the player who discovers
+#them, and VIOLENT if the capturable mobs must be defeated in combat first.
+#$CAPTURABLES_FOLLOW=$CHOOSE=VIOLENT,PEACEFUL
+#
+#Capturables attack:
+#Will the mobs attack if they spot the player?  Keep in mind this is above and
+#beyond any aggressive behaviors they may have, and will neither modify or 
+#supress their natural aggressive behaviors.  Obviously attacking makes no
+#sense if they surrender peacefully, but requiring a violent capture doesn't
+#necessarily mean the mobs start the fight either.
+#$CAPTURABLES_ATTACK=$CHOOSE=NO-USE-DEFAULT_BEHAVIOR,YES-ATTACK-ON-SIGHT
+#
+#Capturables surrender: 
+#You may optionally specify some additional bit of speech the capturables 
+#mobs will say to the players when they are defeated in combat.
+#$CAPTURABLES_SURRENDER=($STRING)=I surrender
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for capturing the mobs:
+#
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of money (an amount, or leave blank):
+#$GOLD=($EXPRESSION)
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
+#Select whether a player may complete this quest multiple times:
+#$MULTIPLE=$CHOOSE=YES,NO
+#
+#!QUESTMAKER_END_SCRIPT Normal Capture #1
+
+set name $QUEST_ID
+set display $QUEST_NAME
+set author $#AUTHOR
+
+set wait 1
+set interval 1
+quiet
+
+set area $ANNOUNCER_AREA
+set room $ANNOUNCER_ROOM
+set mobgroup
+set mob reselect $ANNOUNCER_NAME
+give stat keyplayer true
+give script LOAD=$QUEST_ID_announcer.script
+
+set room
+set area $CAPTUREABLES_AREAS
+set roomgroup $CAPTUREABLES_ROOMS
+
+
+set duration 0
+
+<?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_mobs.xml</NAME><DATA><MOBS>$CAPTUREABLES_MOBS</MOBS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_announcer.script</NAME>
+<DATA>
+ONCE_PROG 100
+	if EVAL('$QUEST_ANNOUNCECHANNEL' != '')
+		$QUEST_ANNOUNCECHANNEL $QUEST_NOTIFYSTRING -- Come see me for more information.
+	endif
+~
+
+ALL_GREET_PROG 100
+	IF QUESTSCRIPTED($n *)
+	else
+		if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+			if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+				sayto "$n" $QUEST_NOTIFYSTRING -- say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
+			endif
+		endif
+	endif
+~
+
+SPEECH_PROG p i accept $QUEST_NAME
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			sayto "$n" $QUEST_INSTRUCTIONSSTRING
+			mpqset * STATISTICS ACCEPTED
+			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+		endif
+	endif
+~
+
+SPEECH_PROG p i accept
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			sayto "$n" $QUEST_INSTRUCTIONSSTRING
+			mpqset * STATISTICS ACCEPTED
+			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+		endif
+	endif
+~
+</DATA></FILE>
+<FILE><NAME>$QUEST_ID_playertrack.script</NAME>
+<DATA>
+ONCE_PROG 100
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	if var($i $QUEST_ID_CAPTURED = '')
+		mpsetvar $i $QUEST_ID_CAPTURED 0
+	endif
+	if var($i $QUEST_ID_RETURNED = '')
+		mpsetvar $i $QUEST_ID_RETURNED 0
+	endif
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+	mpsetvar $i PROGRESS Found: $<$i $QUEST_ID_CAPTURED>, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
+    if QVAR(* REMAINING == '')
+        MPENDQUEST $i
+    else
+        mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+    endif
+~
+
+RAND_PROG 25
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	else
+		if QVAR(* REMAINING == '')
+			MPENDQUEST $i
+		else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+~
+
+QUEST_TIME_PROG * -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+QUEST_TIME_PROG * 1
+	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
+~
+
+GREET_PROG 100
+	if QUESTMOB($n *) AND !ISFOLLOW('$n') AND CANSEE($n $i)
+		if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+			mpforce $n kill $i
+		else
+			if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
+				mpforce $n sayto "$i" $CAPTURABLES_SURRENDER
+				mpforce $n mpstop all
+				mpforce $n follow "$i"
+			endif
+		endif
+	endif
+~
+
+FUNCTION_PROG DEL_LAST_MOB
+	IF !ISFOLLOW('$<$i $QUEST_ID_LASTMOB>') AND QUESTMOB('$<$i $QUEST_ID_LASTMOB>' *)
+		mppurge room '$<$i $QUEST_ID_LASTMOB>'
+	ENDIF
+~
+
+CNCLMSG_PROG ENTER ALL
+	if EVAL($n == $i)
+		mpargset $g $%INROOM($t)%
+		if QUESTROOM($g *)  or ( EVAL('$CAPTUREABLES_ROOMS' == 'ALL') AND QUESTAREA('$%INAREA($t)%' *) )
+			if EVAL('$<$i $QUEST_ID_LASTROOM>' != '') AND EVAL('$<$i $QUEST_ID_LASTMOB>' != '')
+				mpat '$<$i $QUEST_ID_LASTROOM>' MPCALLFUNC DEL_LAST_MOB 
+				mpsetvar $i $QUEST_ID_LASTMOB
+				mpsetvar $i $QUEST_ID_LASTROOM
+			endif
+			if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
+				if rand($CAPTUREABLES_CHANCE) 
+					mpat '$g' mpmload fromfile $QUEST_ID_mobs.xml any
+					MPGSET $b REJUV 0
+					MPQSET * QUESTOBJ $b
+					MPEFFECT QuestBound $b
+					mpsetvar $i $QUEST_ID_LASTMOB $b
+					mpsetvar $i $QUEST_ID_LASTROOM $g
+				endif
+				mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
+			endif
+		endif
+	endif
+~
+
+ENTRY_PROG 100
+	if INROOM($i == $g)
+		if INROOM($i == '${1 *}')
+			mpargset $9 '${1 *}'
+			for $0 = '$%NUMMOBSROOM(*)%' to 1
+				mpargset $1 '$%ROOMMOB($0)%'
+				if QUESTMOB($1 *) AND ISFOLLOW('$1')
+					mpsetvar $i $QUEST_ID_RETURNED ++
+					mpsetvar $i PROGRESS Found $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
+					mpechoat $i You've brought in $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
+					mpforce $1 follow self
+					mppurge $1
+				endif
+			next
+			if var($i $QUEST_ID_RETURNED >= $NUM_CAPTURABLES)
+				if EVAL('$EXP' != '')
+					mpexp $i $EXP
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $i $FACTION $NUMFACTION
+				endif
+				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
+					mpforce $9 mpoload QuestPoint
+					mpforce $9 give "a quest point" "$i"
+				endif
+				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+					mpforce $9 mpoload $GOLD
+					mpforce $9 give $GOLD "$i"
+				endif
+				mpforce $9 mpoload fromfile $QUEST_ID_rewarditems.xml any
+				if EVAL('$b' != '')
+					mpforce $9 give "$b" "$n"
+				endif
+				mpquestwin $i *
+				mpforce $9 sayto $i $QUEST_WINSPEECH_TEXT
+				mpendquest $i
+				mpqset * STATISTICS SUCCESS
+			ENDIF
+		else
+			for $0 = 1 to '$%NUMMOBSROOM(*)%'
+				mpargset $1 '$%ROOMMOB($0)%'
+				if QUESTMOB($1 *) AND !ISFOLLOW($1)
+					mpforce $1 sayto "$i" $CAPTURABLES_RESPONSE
+					if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+						mpforce $1 kill $i
+					else
+						if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
+							mpforce $1 sayto "$i" $CAPTURABLES_SURRENDER
+							mpforce $1 mpstop all
+							mpforce $1 follow "$i"
+						endif
+					endif
+				endif
+			next
+		endif
+	endif
+~
+
+CNCLMSG_PROG STO=DEATH ALL
+	if QUESTMOB($n *) AND !ISFOLLOW($n) AND ISFIGHT($n)
+		mpargset $9 '$%ISFIGHT($n)%'
+		if EVAL($9 == $i)
+			mpgset $n HITS 1
+			mpforce $n mpstop all
+			mpstop all
+			mpforce $n sayto "$i" $CAPTURABLES_SURRENDER
+			mpforce $n follow "$i"
+			mpsetvar $i $QUEST_ID_CAPTURED ++
+			RETURN CANCEL
+		endif
+		mpsetvar $i PROGRESS Found $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
+	endif
+~
+</DATA></FILE>

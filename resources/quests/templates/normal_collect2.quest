@@ -262,15 +262,6 @@ ONCE_PROG 100
 	if var($i $QUEST_ID_GOT = '')
 		mpsetvar $i $QUEST_ID_GOT 0
 	endif
-	if var($i $QUEST_ID_ROOMLIST = '')
-		mpsetvar $i $QUEST_ID_ROOMLIST 0
-	endif
-	if var($i $QUEST_ID_LASTITEM = '')
-		mpsetvar $i $QUEST_ID_LASTITEM 0
-	endif
-	if var($i $QUEST_ID_LASTROOM = '')
-		mpsetvar $i $QUEST_ID_LASTROOM 0
-	endif
 	mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
 ~
 
@@ -297,7 +288,7 @@ QUEST_TIME_PROG * 1
 CNCLMSG_PROG ENTER ALL
 	if EVAL($n == $i)
 		mpargset $g $%INROOM($t)%
-		if QUESTROOM($g *) 
+		if QUESTROOM($g *)  or ( EVAL('$CAPTUREABLES_ROOMS' == 'ALL') AND QUESTAREA('$%INAREA($t)%' *) )
 			if EVAL('$<$i $QUEST_ID_LASTROOM>' != '') AND EVAL('$<$i $QUEST_ID_LASTITEM>' != '')
 				mpat '$<$i $QUEST_ID_LASTROOM>' mppurge room '$<$i $QUEST_ID_LASTITEM>'
 				mpsetvar $i $QUEST_ID_LASTITEM

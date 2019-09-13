@@ -23,24 +23,26 @@ See guides/RandomAreas.html for information about documents of this type.
 </QUEST>
 
 <string id="quest_template" define="quest_template" select="any-1">
-	<string condition="$template!=''">$template</string>
-	<string condition="$template=''">normal_capture1</string>
-	<string condition="$template=''">normal_collect2</string>
-	<string condition="$template=''">normal_collect1</string>
-	<string condition="$template=''">normal_delivery1</string>
-	<string condition="$template=''">normal_delivery2</string>
-	<string condition="$template=''">normal_killer1</string>
-	<string condition="$template=''">normal_travel1</string>
-	<string condition="$template=''">normal_travel2</string>
+	<string condition="$template!=''"                                              >$template</string>
+	<string condition="$template='' and $avoidscans!='YES'"                        >normal_capture1</string>
+	<string condition="$template=''"                                               >normal_capture2</string>
+	<string condition="$template='' and $avoidscans!='YES'"                        >normal_collect1</string>
+	<string condition="$template=''"                                               >normal_collect2</string>
+	<string condition="$template='' and $avoidscans!='YES'"                        >normal_delivery1</string>
+	<string condition="$template='' and $avoidscans!='YES'"                        >normal_delivery2</string>
+	<string condition="$template='' and $avoidscans!='YES'"                        >normal_killer1</string>
+	<string condition="$template='' and $avoidscans!='YES'"                        >normal_travel1</string>
+	<string condition="$template='' and $avoidscans!='YES'"                        >normal_travel2</string>
  <!--  
      TODO: add normal_capture1_1 for capturing single targets
-      TODO: add normal_capture1_2 for capturing just any old targets, same names not required, so dialog would be very weird
-      TODO: add normal_capture2 quest type for capturing generated mobs, and perhaps 2_1 and 2_2?
-      TODO: add normal_collect2_2 where a monster spawns for an aggressive type of this quest 
+     TODO: add normal_capture1_2 for capturing just any old targets, same names not required, so dialog would be very weird
  -->
 </string>
-  
+
+<STRING ID="avoidscans" define="avoidscans">NO</STRING>
+
 <STRING load="/resources/quests/random/normal_capture1.xml" CONDITION="$quest_template='normal_capture1'"/>
+<STRING load="/resources/quests/random/normal_capture2.xml" CONDITION="$quest_template='normal_capture2'"/>
 <STRING load="/resources/quests/random/normal_collect1.xml" CONDITION="$quest_template='normal_collect1'"/>
 <STRING load="/resources/quests/random/normal_collect2.xml" CONDITION="$quest_template='normal_collect2'"/>
 <STRING load="/resources/quests/random/normal_delivery1.xml" CONDITION="$quest_template='normal_delivery1'"/>

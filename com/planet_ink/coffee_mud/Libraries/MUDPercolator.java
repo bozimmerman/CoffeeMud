@@ -311,8 +311,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				if(proceedWithLoad)
 				{
-					if(CMSecurity.isDebugging(DbgFlag.MUDPERCOLATOR))
-						Log.debugOut("MUDPercolator", "Loading XML file "+load);
 					XMLTag loadedPiece=(XMLTag)defined.get("SYSTEM_LOADED_XML_FILES");
 					if(loadedPiece==null)
 					{
@@ -325,9 +323,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						loadedPiece.contents().add(CMLib.xml().createNewTag(file.getAbsolutePath().toUpperCase(),"true"));
 						if(file.exists() && file.canRead())
 						{
+							if(CMSecurity.isDebugging(DbgFlag.MUDPERCOLATOR))
+								Log.debugOut("MUDPercolator", "Loading XML file "+load);
 							final List<XMLTag> addPieces=CMLib.xml().parseAllXML(file.text());
 							piece.contents().addAll(addPieces);
 						}
+						else
+							Log.errOut("MUDPercolator", "Failed loading XML file "+load);
 					}
 				}
 			}
@@ -2829,8 +2831,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								{
 									final String findVar=wiz.substring(2,x);
 									final String value=findStringNow(findVar, piece, defined);
-									if(value != null)
-										cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,CMStrings.replaceAll(value, "$$", "$"));
+									if(value == null)
+										throw new CMException("Unable to generate quest.  Required variable $"+findVar+" not found.");
+									cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,CMStrings.replaceAll(value, "$$", "$"));
 								}
 							}
 						}
@@ -4813,7 +4816,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 									else
 										R=null;
 									if(R==null)
-										throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+										throw new MQLException("Unknown sub-from "+f+" on "+(""+o)+" in "+mql);
 									else
 									if(R.numInhabitants()>0)
 									{

@@ -3635,6 +3635,34 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					returnable=(Q.getQuestRoomIndex(arg1)>=0);
 				break;
 			}
+			case 114: // questarea
+			{
+				if(tlen==1)
+					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+				final String arg2=tt[t+1];
+				final Quest Q=getQuest(arg2);
+				if(Q==null)
+					returnable=false;
+				else
+				{
+					int num=1;
+					Environmental E=Q.getQuestRoom(num);
+					returnable = false;
+					while(E!=null)
+					{
+						final Area A=CMLib.map().areaLocation(E);
+						if((A!=null)&&(A.Name().equalsIgnoreCase(arg1)))
+						{
+							returnable=true;
+							break;
+						}
+						num++;
+						E=Q.getQuestRoom(num);
+					}
+				}
+				break;
+			}
 			case 29: // questmob
 			{
 				if(tlen==1)
@@ -6534,6 +6562,35 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						list.append("\""+roomID+"\" ");
 					else
 						list.append(roomID+" ");
+					num++;
+					E=Q.getQuestRoom(num);
+				}
+				results.append(list.toString().trim());
+				break;
+			}
+			case 114: // questarea
+			{
+				String questName=CMParms.cleanBit(funcParms);
+				questName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,questName);
+				final Quest Q=getQuest(questName);
+				if(Q==null)
+				{
+					logError(scripted,"QUESTOBJ","Unknown","Quest: "+questName);
+					break;
+				}
+				final StringBuffer list=new StringBuffer("");
+				int num=1;
+				Environmental E=Q.getQuestRoom(num);
+				while(E!=null)
+				{
+					final String areaName=CMLib.map().areaLocation(E).name();
+					if(list.indexOf(areaName)<0)
+					{
+						if(areaName.indexOf(' ')>=0)
+							list.append("\""+areaName+"\" ");
+						else
+							list.append(areaName+" ");
+					}
 					num++;
 					E=Q.getQuestRoom(num);
 				}

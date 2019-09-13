@@ -3,7 +3,8 @@
 
 <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Scripting in CoffeeMud 5.9</title>
 
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head><body>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
+<body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
 <tbody>
@@ -251,7 +252,7 @@ Operators</a></li>
 <li><a href="#numraces">numraces</a></li>
 <li><a href="#numracesinarea">numracesinarea</a></li>
 <li><a href="#position">position</a></li>
-<li><a href="#pracs">pracs</a></li>
+<li><a href="#pracs">pracs</a></li><li><a href="#questarea">questarea</a></li>
 <li><a href="#questobj">questobj</a></li>
 <li><a href="#questmob">questmob</a></li>
 <li><a href="#questpoints">questpoints</a></li>
@@ -2527,7 +2528,7 @@ the given mob.</td>
 <td>Returns the number
 of practices the given mob has.</td>
 </tr>
-<tr>
+<tr><td>QUESTAREA([quest name]_</td><td>Returns a list of all unique areas that have had rooms specified by the given quest.</td></tr><tr>
 <td>QUESTOBJ([quest
 name])</td>
 <td>Returns a list of
@@ -5227,7 +5228,19 @@ also be another of the logical operators from above.</p>
 practice points the mob variable
 has. Where '==' may be any of the logical operators mentioned above.</p>
 <p>EXAMPLES:</p>
-<pre>if pracs($n &lt;= 15)<br /> mpecho The actor triggering me has fewer than 16 practices.<br />else<br /> mpecho The actor triggering me has more than 15 practices.<br />endif<br /><br />if pracs($n &gt; $%pracs($i)%)<br /> mpecho The actor triggering me has more practices than me.<br />else<br /> mpecho The actor triggering me has the same or fewer practices than me.<br />endif<br /></pre>
+<pre>if pracs($n &lt;= 15)<br /> mpecho The actor triggering me has fewer than 16 practices.<br />else<br /> mpecho The actor triggering me has more than 15 practices.<br />endif<br /><br />if pracs($n &gt; $%pracs($i)%)<br /> mpecho The actor triggering me has more practices than me.<br />else<br /> mpecho The actor triggering me has the same or fewer practices than me.<br />endif<br /><br /></pre><h3><a name="questarea">questarea</a></h3>
+<p>Usage:</p>
+questarea(areaname questname)<br />
+<p>This checks whether the
+given areaname has been designed by the
+given quest using, for instance, SET ROOM, or SET ROOMGROUP.
+&nbsp;This
+is typically a way
+of telling which quests are using the given area. If the
+Scriptable behavior was granted as part of a Quest, then * may be
+substituted for the questname.</p>
+<p>EXAMPLES:</p>
+<span style="font-family: monospace;">if questarea('$%INAREA($n)%' myquestname)</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho This means that the actor is in an area designed by quest myquestname.</span><br style="font-family: monospace;" /><span style="font-family: monospace;">else</span><br style="font-family: monospace;" /><span style="font-family: monospace;"> mpecho This means that the actor is NOT in an area designed by quest myquestname.</span><br style="font-family: monospace;" /><span style="font-family: monospace;">endif</span>
 <h3><a name="questobj">questobj</a></h3>
 <p>Usage:</p>
 <pre>questobj(item questname)<br /></pre>
