@@ -62,7 +62,7 @@ public class RandomQuests extends ActiveTicker
 	protected int					maxQuests	= 1;
 	protected int					numQuests	= -1;
 	protected int					maxAttempts	= 3;
-	protected String				expireTime	= "1 hour";
+	protected String				expireTime	= "3 hours";
 	protected String				tagId		= "all_quests";
 	protected String				filePath	= "randareas/example.xml";
 	protected Map<String, String>	varMap		= new Hashtable<String, String>(1);
@@ -72,7 +72,7 @@ public class RandomQuests extends ActiveTicker
 	public RandomQuests()
 	{
 		super();
-		minTicks=2; maxTicks=5; chance=100;
+		minTicks=10; maxTicks=20; chance=100;
 		tickReset();
 	}
 
