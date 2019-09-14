@@ -2799,7 +2799,7 @@ public class CMStrings
 			final StringExpToken token = new StringExpToken();
 			token.type = type;
 			token.value = value;
-			if((value.length()>0)&&(Character.isDigit(value.charAt(0))))
+			if((value.length()>0)&&(CMath.isNumber(value)))
 				token.numValue = Double.parseDouble(value);
 			return token;
 		}
