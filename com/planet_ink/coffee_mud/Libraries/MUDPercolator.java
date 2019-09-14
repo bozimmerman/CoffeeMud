@@ -3226,11 +3226,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(e instanceof PostProcessException)
 				throw (PostProcessException)e;
 			Log.errOut("Generate","Condition procesing failure: "+e.getMessage()+": "+condition);
-			try {
+			try 
+			{
 				final Map<String,Object> finalDefined = new HashMap<String,Object>();
 				finalDefined.putAll(defined);
 				finalDefined.putAll(fixed);
-				CMStrings.parseStringExpression(condition.toUpperCase(),finalDefined, true);
+				if(condition != null)
+					CMStrings.parseStringExpression(condition.toUpperCase(),finalDefined, true);
 			}
 			catch(final Exception e1)
 			{
@@ -4511,7 +4513,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							from.add(A);
 						break;
 					}
-					// fall through
+					//$FALL-THROUGH$
 				case AREAS:
 					{
 						if(from.size()==0)
@@ -4547,7 +4549,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							from.add(R);
 						break;
 					}
-					// fall-through
+					//$FALL-THROUGH$
 				case ROOMS:
 					{
 						if(from.size()==0)
@@ -4646,7 +4648,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							from.add(oE);
 						break;
 					}
-					// fall-through
+					//$FALL-THROUGH$
 				case PLAYERS:
 					if((f.equals("PLAYERS"))
 					||((from.size()>0)&&(f.equals("PLAYER"))))
@@ -4716,7 +4718,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							from.add(oE);
 						break;
 					}
-					// fall-through
+					//$FALL-THROUGH$
 				case MOBS:
 					{
 						if(from.size()==0)
@@ -4781,7 +4783,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							from.add(oE);
 						break;
 					}
-					// fall-through
+					//$FALL-THROUGH$
 				case NPCS:
 					{
 						if(from.size()==0)
@@ -4848,7 +4850,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							from.add(oE);
 						break;
 					}
-					// fall-through
+					//$FALL-THROUGH$
 				case ITEMS:
 					{
 						if(from.size()==0)
@@ -5453,7 +5455,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							finalO="1";
 						break;
 					}
-					// fall-through
+					//$FALL-THROUGH$
 				default:
 					{
 						final Object fromO=(finalO==null)?((from==null)?E:from):finalO;

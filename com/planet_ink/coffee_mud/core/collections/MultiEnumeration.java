@@ -31,14 +31,16 @@ public class MultiEnumeration<K> implements Enumeration<K>
 		public MultiEnumeration<K> getList();
 	}
 
-
-	@SuppressWarnings("unchecked")
 	public MultiEnumeration(final Enumeration<K>... esets)
 	{
 		if((esets!=null)&&(esets.length>0))
+		{
 			for(final Enumeration<K> E : esets)
+			{
 				if(E!=null)
 					enums.add(E);
+			}
+		}
 	}
 
 	public MultiEnumeration(final Collection<Enumeration<K>> esets)

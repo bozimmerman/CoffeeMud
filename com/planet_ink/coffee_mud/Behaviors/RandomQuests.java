@@ -244,7 +244,7 @@ public class RandomQuests extends ActiveTicker
 				processing.set(false);
 			}
 		}
-	};
+	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
