@@ -36,7 +36,7 @@ vars:
 	reward_items()
 -->
 
-<QUEST ID="all_quests" MERGE=true QUEST_TEMPLATE_ID="$quest_template">
+<QUEST ID="all_quests" MERGE=true QUEST_TEMPLATE_ID="normal_collect1">
 	<QUEST_ID DEFINE="quest_id">${_:source_area_name}_${_:source_name}_${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
 	<QUEST_CRITERIA>+SYSOP +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA>
 	<ANNOUNCER_AREA>"$source_area_name"</ANNOUNCER_AREA>
