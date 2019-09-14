@@ -271,12 +271,12 @@ FUNCTION_PROG DEL_LAST_MOB
 CNCLMSG_PROG ENTER ALL
 	if EVAL($n == $i)
 		mpargset $g $%INROOM($t)%
+		if EVAL('$<$i $QUEST_ID_LASTROOM>' != '') AND EVAL('$<$i $QUEST_ID_LASTMOB>' != '')
+			mpat '$<$i $QUEST_ID_LASTROOM>' MPCALLFUNC DEL_LAST_MOB 
+			mpsetvar $i $QUEST_ID_LASTMOB
+			mpsetvar $i $QUEST_ID_LASTROOM
+		endif
 		if QUESTROOM($g *)  or ( EVAL('$CAPTUREABLES_ROOMS' == 'ALL') AND QUESTAREA('$%INAREA($t)%' *) )
-			if EVAL('$<$i $QUEST_ID_LASTROOM>' != '') AND EVAL('$<$i $QUEST_ID_LASTMOB>' != '')
-				mpat '$<$i $QUEST_ID_LASTROOM>' MPCALLFUNC DEL_LAST_MOB 
-				mpsetvar $i $QUEST_ID_LASTMOB
-				mpsetvar $i $QUEST_ID_LASTROOM
-			endif
 			if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
 				if rand($CAPTUREABLES_CHANCE) 
 					mpat '$g' mpmload fromfile $QUEST_ID_mobs.xml any

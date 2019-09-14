@@ -288,12 +288,12 @@ QUEST_TIME_PROG * 1
 CNCLMSG_PROG ENTER ALL
 	if EVAL($n == $i)
 		mpargset $g $%INROOM($t)%
+		if EVAL('$<$i $QUEST_ID_LASTROOM>' != '') AND EVAL('$<$i $QUEST_ID_LASTITEM>' != '')
+			mpat '$<$i $QUEST_ID_LASTROOM>' mppurge room '$<$i $QUEST_ID_LASTITEM>'
+			mpsetvar $i $QUEST_ID_LASTITEM
+			mpsetvar $i $QUEST_ID_LASTROOM
+		endif
 		if QUESTROOM($g *)  or ( EVAL('$CAPTUREABLES_ROOMS' == 'ALL') AND QUESTAREA('$%INAREA($t)%' *) )
-			if EVAL('$<$i $QUEST_ID_LASTROOM>' != '') AND EVAL('$<$i $QUEST_ID_LASTITEM>' != '')
-				mpat '$<$i $QUEST_ID_LASTROOM>' mppurge room '$<$i $QUEST_ID_LASTITEM>'
-				mpsetvar $i $QUEST_ID_LASTITEM
-				mpsetvar $i $QUEST_ID_LASTROOM
-			endif
 			if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
 				if rand($COLLECTABLES_CHANCE) 
 					mpat '$g' mpoloadroom fromfile $QUEST_ID_items.xml any
