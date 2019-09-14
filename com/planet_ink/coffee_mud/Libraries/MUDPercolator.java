@@ -4563,7 +4563,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								final Room R;
 								if(o instanceof Area)
 								{
-									from.addAll(new XVector<Room>(((Area)o).getProperMap()));
+									from.addAll(new XVector<Room>(((Area)o).getMetroMap()));
 									continue;
 								}
 								if (o instanceof Environmental)
@@ -4597,7 +4597,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						{
 							if(o instanceof Area)
 							{
-								for(final Enumeration<Room> r=((Area)o).getProperMap();r.hasMoreElements();)
+								for(final Enumeration<Room> r=((Area)o).getMetroMap();r.hasMoreElements();)
 								{
 									final Room R=r.nextElement();
 									if(R!=null)
