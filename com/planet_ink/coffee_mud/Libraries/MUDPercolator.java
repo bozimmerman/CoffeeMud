@@ -3227,7 +3227,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				throw (PostProcessException)e;
 			Log.errOut("Generate","Condition procesing failure: "+e.getMessage()+": "+condition);
 			try {
-				CMStrings.parseStringExpression(condition,fixed, true);
+				final Map<String,Object> finalDefined = new HashMap<String,Object>();
+				finalDefined.putAll(defined);
+				finalDefined.putAll(fixed);
+				CMStrings.parseStringExpression(condition.toUpperCase(),finalDefined, true);
 			}
 			catch(final Exception e1)
 			{
