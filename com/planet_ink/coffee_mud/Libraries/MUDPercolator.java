@@ -2832,7 +2832,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								if(cleanedFileText.indexOf(var)>0)
 								{
 									final String findVar=wiz.substring(2,x);
-									final String value=findStringNow(findVar, piece, defined);
+									final String value=this.findStringNow(E, ignoreStats, defPrefix, findVar, piece, defined);
 									if(value == null)
 										throw new CMException("Unable to generate quest.  Required variable $"+findVar+" not found.");
 									cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,CMStrings.replaceAll(value, "$$", "$"));

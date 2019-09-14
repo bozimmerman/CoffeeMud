@@ -2592,7 +2592,7 @@ public class StdArea implements Area
 
 	protected int getCodeNum(final String code)
 	{
-		return CMParms.indexOf(codes, code.toUpperCase());
+		return CMParms.indexOf(getStatCodes(), code.toUpperCase());
 	}
 
 	@Override

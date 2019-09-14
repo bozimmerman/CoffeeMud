@@ -646,7 +646,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		if(CMParms.indexOfIgnoreCase(STDAREACODES, code)>=0)
 			return super.getStat(code);
 		else
-		switch(getCodeNum(code))
+		switch(getLocalCodeNum(code))
 		{
 			case 0:
 				return this.getGeneratorXmlPath();
@@ -664,7 +664,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		if(CMParms.indexOfIgnoreCase(STDAREACODES, code)>=0)
 			super.setStat(code, val);
 		else
-		switch(getCodeNum(code))
+		switch(getLocalCodeNum(code))
 		{
 			case 0:
 				setGeneratorXmlPath(val);
@@ -677,8 +677,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		}
 	}
 
-	@Override
-	protected int getCodeNum(final String code)
+	protected int getLocalCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
