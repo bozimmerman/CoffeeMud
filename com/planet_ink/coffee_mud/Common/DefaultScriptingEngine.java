@@ -3649,10 +3649,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					int num=1;
 					Environmental E=Q.getQuestRoom(num);
 					returnable = false;
+					final Area parent=CMLib.map().getArea(arg2);
+					if(parent == null)
+						logError(scripted,"QUESTAREA","NoArea",funcParms);
+					else
 					while(E!=null)
 					{
 						final Area A=CMLib.map().areaLocation(E);
-						if((A!=null)&&(A.Name().equalsIgnoreCase(arg1)))
+						if((A==parent)||(parent.isChild(A))||(A.isChild(parent)))
 						{
 							returnable=true;
 							break;
