@@ -4501,7 +4501,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				E=getQuestThing(PreservedQuestObject.getPOIter(questState.worldObjects),i,CMClass.CMObjectType.LOCALE,num);
 			if(E instanceof Room)
 				return (Room)E;
-			E=getQuestThing(questState.roomGroup.iterator(),i,CMClass.CMObjectType.LOCALE,num);
+			if(questState.roomGroup != null)
+				E=getQuestThing(questState.roomGroup.iterator(),i,CMClass.CMObjectType.LOCALE,num);
 			if(E instanceof Room)
 				return (Room)E;
 			if((questState.mysteryData!=null)&&(questState.mysteryData.whereAtGroup!=null))

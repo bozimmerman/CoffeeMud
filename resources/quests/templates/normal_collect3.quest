@@ -154,12 +154,16 @@ import items $QUEST_ID_items.xml
 set itemgroup loadeditems
 set item
 
+set room
+set area $HOLDER_AREAS
+set roomgroup $HOLDER_ROOMS
+
 set duration 0
 
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_items.xml</NAME><DATA><ITEMS>$COLLECTABLES_ITEMS</ITEMS></DATA></FILE>
-<FILE><NAME>$QUEST_ID_mobs.xml</NAME><DATA><ITEMS>$HOLDERS_MOBS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_mobs.xml</NAME><DATA><MOBS>$HOLDERS_MOBS</MOBS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
@@ -279,7 +283,7 @@ QUEST_TIME_PROG * 1
 ~
 
 CNCLMSG_PROG STO=DEATH ALL
-	if ISNPC($n) AND QUESTMOB($n) AND EVAL('$HOLDERS_RESPONSE' = '')
+	if ISNPC($n) AND QUESTMOB($n *) AND EVAL('$HOLDERS_RESPONSE' == '')
 		mpforce $n mpoload fromfile $QUEST_ID_items.xml any
 		MPQSET * QUESTOBJ $b
 		MPEFFECT QuestBound $b
@@ -314,10 +318,10 @@ CNCLMSG_PROG ENTER ALL
 			mpsetvar $i $QUEST_ID_LASTMOB
 			mpsetvar $i $QUEST_ID_LASTROOM
 		endif
-		if QUESTROOM($g *)  or ( EVAL('$CAPTUREABLES_ROOMS' == 'ALL') AND QUESTAREA('$%INAREA($t)%' *) )
+		if QUESTROOM($g *)  or ( EVAL('$HOLDER_ROOMS' == 'ALL') AND QUESTAREA('$%INAREA($t)%' *) )
 			if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
 				if !STRIN('$<$i $QUEST_ID_FOUNDROOMS>' $g)
-					if rand($CAPTUREABLES_CHANCE)
+					if rand($COLLECTABLES_CHANCE)
 						mpsetvar $i $QUEST_ID_FOUNDROOMS $<$i $QUEST_ID_FOUNDROOMS> "$g"
 					else
 						mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
@@ -340,7 +344,7 @@ ENTRY_PROG 100
 	if EVAL($n == $i) AND EVAL('$HOLDERS_RESPONSE' != '')
 		for $0 = 1 to '$%NUMMOBSROOM(*)%
 			MPARGSET $1 $%ROOMMOB($0)%
-			if ISNPC($1) AND QUESTMOB($1) AND CANSEE($1 $i)
+			if ISNPC($1) AND QUESTMOB($1 *) AND CANSEE($1 $i)
 				mpforce $1 mpoload fromfile $QUEST_ID_items.xml any
 				MPQSET * QUESTOBJ $b
 				MPEFFECT QuestBound $b
@@ -350,6 +354,7 @@ ENTRY_PROG 100
 		next
 	endif
 ~
+
 EXECMSG_PROG GET ALL
 	if questobj($t *) and QUESTSCRIPTED($n *) and EVAL($n == $i)
 		MPSETVAR $n $QUEST_ID_GOT +$%ITEMCOUNT($t)%
