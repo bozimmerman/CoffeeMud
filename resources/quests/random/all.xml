@@ -18,10 +18,6 @@ limitations under the License.
 See guides/RandomAreas.html for information about documents of this type.
 -->
 
-<QUEST ID="all_quests" SELECT="Any-1" merge=true  requires="template=$">
-<!--  gets automatically filled in by whatever quest xmls end up loading -->
-</QUEST>
-
 <string id="quest_template" define="quest_template" select="any-1">
 	<string condition="$template=''"                                                     ></string>
 	<string condition="$template!='' and $template!='random'"                            >$template</string>
@@ -41,15 +37,17 @@ See guides/RandomAreas.html for information about documents of this type.
 
 <STRING ID="avoidscans" define="avoidscans">NO</STRING>
 
-<STRING load="/resources/quests/random/normal_capture1.xml" CONDITION="$quest_template='normal_capture1'"/>
-<STRING load="/resources/quests/random/normal_capture2.xml" CONDITION="$quest_template='normal_capture2'"/>
-<STRING load="/resources/quests/random/normal_capture3.xml" CONDITION="$quest_template='normal_capture3'"/>
-<STRING load="/resources/quests/random/normal_capture4.xml" CONDITION="$quest_template='normal_capture4'"/>
-<STRING load="/resources/quests/random/normal_collect1.xml" CONDITION="$quest_template='normal_collect1'"/>
-<STRING load="/resources/quests/random/normal_collect2.xml" CONDITION="$quest_template='normal_collect2'"/>
-<STRING load="/resources/quests/random/normal_collect3.xml" CONDITION="$quest_template='normal_collect3'"/>
-<STRING load="/resources/quests/random/normal_delivery1.xml" CONDITION="$quest_template='normal_delivery1'"/>
-<STRING load="/resources/quests/random/normal_delivery2.xml" CONDITION="$quest_template='normal_delivery2'"/>
-<STRING load="/resources/quests/random/normal_killer1.xml" CONDITION="$quest_template='normal_killer1'"/>
-<STRING load="/resources/quests/random/normal_travel1.xml" CONDITION="$quest_template='normal_travel1'"/>
-<STRING load="/resources/quests/random/normal_travel2.xml" CONDITION="$quest_template='normal_travel2'"/>
+<QUEST ID="all_quests" SELECT="Any-1" requires="template=$">
+	<QUEST load="/resources/quests/random/normal_capture1.xml" CONDITION="$quest_template='normal_capture1'"/>
+	<QUEST load="/resources/quests/random/normal_capture2.xml" CONDITION="$quest_template='normal_capture2'"/>
+	<QUEST load="/resources/quests/random/normal_capture3.xml" CONDITION="$quest_template='normal_capture3'"/>
+	<QUEST load="/resources/quests/random/normal_capture4.xml" CONDITION="$quest_template='normal_capture4'"/>
+	<QUEST load="/resources/quests/random/normal_collect1.xml" CONDITION="$quest_template='normal_collect1'"/>
+	<QUEST load="/resources/quests/random/normal_collect2.xml" CONDITION="$quest_template='normal_collect2'"/>
+	<QUEST load="/resources/quests/random/normal_collect3.xml" CONDITION="$quest_template='normal_collect3'"/>
+	<QUEST load="/resources/quests/random/normal_delivery1.xml" CONDITION="$quest_template='normal_delivery1'"/>
+	<QUEST load="/resources/quests/random/normal_delivery2.xml" CONDITION="$quest_template='normal_delivery2'"/>
+	<QUEST load="/resources/quests/random/normal_killer1.xml" CONDITION="$quest_template='normal_killer1'"/>
+	<QUEST load="/resources/quests/random/normal_travel1.xml" CONDITION="$quest_template='normal_travel1'"/>
+	<QUEST load="/resources/quests/random/normal_travel2.xml" CONDITION="$quest_template='normal_travel2'"/>
+</QUEST>

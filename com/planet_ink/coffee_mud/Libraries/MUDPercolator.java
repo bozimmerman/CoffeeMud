@@ -302,6 +302,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					try
 					{
+System.out.println(loadcondition);
 						if(!testCondition(null,null,null,CMLib.xml().restoreAngleBrackets(loadcondition),piece,defined))
 							proceedWithLoad=false;
 					}
@@ -2794,61 +2795,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				throw new CMException("Bad content_load filename in '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		}
 
-		String questTemplateLoad = piece.getParmValue("QUEST_TEMPLATE_ID");
-		if((questTemplateLoad!=null)
-		&&(questTemplateLoad.length()>0))
-		{
-			piece.parms().remove("QUEST_TEMPLATE_ID"); // once only, please
-			questTemplateLoad = strFilter(E,ignoreStats,defPrefix,questTemplateLoad,piece, defined);
-			CMFile file = new CMFile(Resources.makeFileResourceName(questTemplateLoad),null);
-			if(!file.exists() || !file.canRead())
-				file = new CMFile(Resources.makeFileResourceName("quests/templates/"+questTemplateLoad.trim()+".quest"),null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
-			if(file.exists() && file.canRead())
-			{
-				final String rawFileText = file.text().toString();
-				final int endX=rawFileText.lastIndexOf("#!QUESTMAKER_END_SCRIPT");
-				if(endX > 0)
-				{
-					final int lastCR = rawFileText.indexOf('\n', endX);
-					final int lastEOF = rawFileText.indexOf('\r', endX);
-					final int endScript = lastCR > endX ? (lastCR < lastEOF ? lastCR : lastEOF): lastEOF;
-					final List<String> wizList = Resources.getFileLineVector(new StringBuffer(rawFileText.substring(0, endScript).trim()));
-					String cleanedFileText = rawFileText.substring(endScript).trim();
-					cleanedFileText = CMStrings.replaceAll(cleanedFileText, "$#AUTHOR", "CoffeeMud");
-					final String duration=this.findOptionalString(E, ignoreStats, defPrefix, "DURATION", piece, defined, false);
-					if((duration != null) && (duration.trim().length()>0))
-						cleanedFileText = this.replaceLineStartsWithIgnoreCase(cleanedFileText, "set duration", "SET DURATION "+duration);
-					final String expiration=this.findOptionalString(E, ignoreStats, defPrefix, "EXPIRATION", piece, defined, false);
-					if((expiration != null)  && (expiration.trim().length()>0))
-						cleanedFileText = this.replaceLineStartsWithIgnoreCase(cleanedFileText, "set duration", "SET EXPIRATION "+expiration);
-					for(final String wiz : wizList)
-					{
-						if(wiz.startsWith("#$"))
-						{
-							final int x=wiz.indexOf('=');
-							if(x>0)
-							{
-								final String var=wiz.substring(1,x);
-								if(cleanedFileText.indexOf(var)>0)
-								{
-									final String findVar=wiz.substring(2,x);
-									final String value=this.findStringNow(E, ignoreStats, defPrefix, findVar, piece, defined);
-									if(value == null)
-										throw new CMException("Unable to generate quest.  Required variable $"+findVar+" not found.");
-									cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,CMStrings.replaceAll(value, "$$", "$"));
-								}
-							}
-						}
-					}
-					return cleanedFileText;
-				}
-				else
-					throw new CMException("Corrupt quest_template in '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
-			}
-			else
-				throw new CMException("Bad quest_template_id in '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
-		}
-
 		XMLTag processDefined=null;
 		if(asDefined instanceof XMLTag)
 		{
@@ -2867,7 +2813,63 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(valPiece.parms().containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
 				continue;
 
-			final String value=strFilter(E,ignoreStats,defPrefix,valPiece.value(),valPiece, defined);
+			final String value;
+			String questTemplateLoad = valPiece.tag().equals("QUEST")?valPiece.getParmValue("QUEST_TEMPLATE_ID"):null;
+			if((questTemplateLoad!=null)
+			&&(questTemplateLoad.length()>0))
+			{
+				//valPiece.parms().remove("QUEST_TEMPLATE_ID"); // once only, please
+				questTemplateLoad = strFilter(E,ignoreStats,defPrefix,questTemplateLoad,valPiece, defined);
+				CMFile file = new CMFile(Resources.makeFileResourceName(questTemplateLoad),null);
+				if(!file.exists() || !file.canRead())
+					file = new CMFile(Resources.makeFileResourceName("quests/templates/"+questTemplateLoad.trim()+".quest"),null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
+				if(file.exists() && file.canRead())
+				{
+					final String rawFileText = file.text().toString();
+					final int endX=rawFileText.lastIndexOf("#!QUESTMAKER_END_SCRIPT");
+					if(endX > 0)
+					{
+						final int lastCR = rawFileText.indexOf('\n', endX);
+						final int lastEOF = rawFileText.indexOf('\r', endX);
+						final int endScript = lastCR > endX ? (lastCR < lastEOF ? lastCR : lastEOF): lastEOF;
+						final List<String> wizList = Resources.getFileLineVector(new StringBuffer(rawFileText.substring(0, endScript).trim()));
+						String cleanedFileText = rawFileText.substring(endScript).trim();
+						cleanedFileText = CMStrings.replaceAll(cleanedFileText, "$#AUTHOR", "CoffeeMud");
+						final String duration=this.findOptionalString(E, ignoreStats, defPrefix, "DURATION", valPiece, defined, false);
+						if((duration != null) && (duration.trim().length()>0))
+							cleanedFileText = this.replaceLineStartsWithIgnoreCase(cleanedFileText, "set duration", "SET DURATION "+duration);
+						final String expiration=this.findOptionalString(E, ignoreStats, defPrefix, "EXPIRATION", valPiece, defined, false);
+						if((expiration != null)  && (expiration.trim().length()>0))
+							cleanedFileText = this.replaceLineStartsWithIgnoreCase(cleanedFileText, "set duration", "SET EXPIRATION "+expiration);
+						for(final String wiz : wizList)
+						{
+							if(wiz.startsWith("#$"))
+							{
+								final int x=wiz.indexOf('=');
+								if(x>0)
+								{
+									final String var=wiz.substring(1,x);
+									if(cleanedFileText.indexOf(var)>0)
+									{
+										final String findVar=wiz.substring(2,x);
+										final String val=this.findStringNow(E, ignoreStats, defPrefix, findVar, valPiece, defined);
+										if(val == null)
+											throw new CMException("Unable to generate quest.  Required variable $"+findVar+" not found.");
+										cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,CMStrings.replaceAll(val, "$$", "$"));
+									}
+								}
+							}
+						}
+						value=cleanedFileText;
+					}
+					else
+						throw new CMException("Corrupt quest_template in '"+tagName+"' on piece '"+valPiece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(valPiece.parms())+":"+CMStrings.limit(valPiece.value(),100));
+				}
+				else
+					throw new CMException("Bad quest_template_id in '"+tagName+"' on piece '"+valPiece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(valPiece.parms())+":"+CMStrings.limit(valPiece.value(),100));
+			}
+			else
+				value=strFilter(E,ignoreStats,defPrefix,valPiece.value(),valPiece, defined);
 			if(processDefined!=valPiece)
 				defineReward(E,ignoreStats,defPrefix,valPiece.getParmValue("DEFINE"),valPiece,value,defined,true);
 
@@ -3934,7 +3936,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(curr.length()>0)
 						{
 							if(c==',')
-								throw new MQLException("Eexpected '"+curr.toString()+"' in Malformed mql: "+str);
+								throw new MQLException("Expected '"+curr.toString()+"' in Malformed mql: "+str);
 							else
 							if(curr.toString().equals(";"))
 							{
@@ -3943,7 +3945,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							}
 							else
 							if(!curr.toString().equals("WHERE"))
-								throw new MQLException("Eexpected WHERE in Malformed mql: "+str);
+								throw new MQLException("Expected WHERE in Malformed mql: "+str);
 							else
 							{
 								curr.setLength(0);
