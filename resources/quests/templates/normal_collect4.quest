@@ -1,4 +1,4 @@
-#!QUESTMAKER_START_SCRIPT Normal Collect #2
+#!QUESTMAKER_START_SCRIPT Normal Collect #4
 #An existing mob in your world needs one or more items which you will create brought back to him/her. 
 #The items will be scattered among rooms or areas which you will designate.
 #A reward is given upon completion of the task and returning the items to the announcer.
@@ -8,11 +8,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_collect_2
+#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_collect_4
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=Normal Collect #2
+#$QUEST_NAME=$STRING=Normal Collect #4
 #
 #Quest-Player Criterium:
 #You may leave this entry blank, or enter a Zapper Mask to describe what
@@ -91,19 +91,21 @@
 #$LOCALS_RESPONSE=($STRING)=
 #
 #!QUESTMAKER_PAGE Specify the Collectables
-#The Collectables are the items that will be given to holders you specified.
+#The Collectables are the items that must be found or created and given to announcer.
 #
 #Collectables items: 
-#Specify the items who will act as the collectable item or items.
-#$COLLECTABLES_ITEMS=$ITEMXML_ONEORMORE
-#
-#Collectables chance:
-#Specify the percent chance that an item will be found in a particular room.
-#$COLLECTABLES_CHANCE=($EXPRESSION)=10
+#Describe the items that the player must give to the announcer.  This is described as a zapper mask.
+#If you want to specify items with particular names, use -NAME "+the named item" and similar masks.
+#$COLLECTABLE_ITEMS=$ZAPPERMASK=-JAVACLASS +GenResource -MATERIAL +WOODEN -WEIGHT 1 +WEIGHT 1
 #
 #Num Collectables:
-#Specify how many of the collectable items must be collected to complete the quest.
-#$NUM_COLLECTABLES=($EXPRESSION)=3
+#Specify how many of the items must be given to the announcer to complete the quest.
+#$NUM_COLLECTABLES=($EXPRESSION)=1
+#
+#Wrong Collectable speech
+#Specify what the announcer says to players who HAVE accepted the quest, but give the announcer
+#something other than what is described by your mask.
+#$WRONG_COLLECTABLE_SAY=$STRING=This is not what I asked for.
 #
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for bringing back the items.
@@ -128,7 +130,7 @@
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
-#!QUESTMAKER_END_SCRIPT Normal Collect #2
+#!QUESTMAKER_END_SCRIPT Normal Collect #4
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -181,7 +183,7 @@ ALL_GREET_PROG 100
 
 GIVE_PROG all
 	IF QUESTSCRIPTED($n *) AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
-		if questobj($o *) OR QUESTSCRIPTED($o *)
+		if ISLIKE($o '$COLLECTABLE_ITEMS')
 			mpsetvar $n $QUEST_ID_RETURNED +$%ITEMCOUNT($o)%
 			mpjunk $o
 			if var($n $QUEST_ID_RETURNED >= $NUM_COLLECTABLES)
@@ -281,50 +283,8 @@ QUEST_TIME_PROG * 1
 	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
 ~
 
-CNCLMSG_PROG ENTER ALL
-	if EVAL($n == $i)
-		mpargset $g $%INROOM($t)%
-		if EVAL('$<$i $QUEST_ID_LASTROOM>' != '') AND EVAL('$<$i $QUEST_ID_LASTITEM>' != '')
-			mpat '$<$i $QUEST_ID_LASTROOM>' mppurge room '$<$i $QUEST_ID_LASTITEM>'
-			mpsetvar $i $QUEST_ID_LASTITEM
-			mpsetvar $i $QUEST_ID_LASTROOM
-		endif
-		if QUESTROOM($g *)  or ( EVAL('$CAPTUREABLES_ROOMS' == 'ALL') AND QUESTAREA('$%INAREA($t)%' *) )
-			if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
-				if rand($COLLECTABLES_CHANCE) 
-					mpat '$g' mpoloadroom fromfile $QUEST_ID_items.xml any
-					MPQSET * QUESTOBJ $b
-					MPEFFECT QuestBound $b
-					mpsetvar $i $QUEST_ID_LASTITEM $b
-					mpsetvar $i $QUEST_ID_LASTROOM $g
-				endif
-				mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
-			endif
-		endif
-	endif
-~
-
-ENTRY_PROG 100
-	if EVAL($n == $i)
-		mpargset $g $%INROOM($i)%
-		if EVAL('$<$i $QUEST_ID_LASTITEM>' != '') AND ISHERE('$<$i $QUEST_ID_LASTITEM>')
-			if EVAL('$LOCALS_RESPONSE' != '')
-				for $0 = 1 to '$%NUMMOBSROOM(*)%
-					MPARGSET $1 $%ROOMMOB($0)%
-					MPARGSET $2 $%LEVEL($1)%
-					MPARGSET $2 $%MATH($2 - 3)%
-					if ISNPC($1) AND CANSEE($1 $i) AND ISLIKE($1 '+EFFECTS -Prop_SafePet -Aggressive +JAVACLASS -GenShopKeeper -GenBanker -GenPostman -GenLibrarian') AND !ISFOLLOW($1) AND LEVEL($i >= $2)
-						mpforce $1 sayto "$i" $LOCALS_RESPONSE
-						mpforce $1 kill $i
-					endif
-				next
-			endif
-		endif
-	endif
-~
-
 EXECMSG_PROG GET ALL
-	if questobj($t *) and QUESTSCRIPTED($n *) and EVAL($n == $i)
+	if ISLIKE($o '$COLLECTABLE_ITEMS') and EVAL($n == $i)
 		MPSETVAR $n $QUEST_ID_GOT +$%ITEMCOUNT($t)%
 		mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
 		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
