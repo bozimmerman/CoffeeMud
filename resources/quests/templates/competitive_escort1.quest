@@ -251,10 +251,11 @@ SPEECH_PROG p i accept
 				mpqset * STATISTICS ACCEPTED
                 mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
 				for $0 = 1 to '$%NUMMOBSROOM(*)%'
-				   if QUESTMOB('$%ROOMMOB($0)%' *) AND EVAL('$%ROOMMOB($0)%' != $i)
-				   		mpforce '$%ROOMMOB($0)%' follow $n
-				   		if !isfollow('$%ROOMMOB($0)%')
-				   			mpforce '$%ROOMMOB($0)%' say I can't follow $n
+				   mpargset $1 $%ROOMMOB($0)%
+				   if QUESTMOB($1 *) AND EVAL($1 != $i) AND EVAL('${1 *}' != $1)
+				   		mpforce $1 follow $n
+				   		if !isfollow($1)
+				   			mpforce $1 say I can't follow $n
 				   		else
 							mpsetvar $i $QUEST_ID_ACCEPTED $n
 				   		endif

@@ -106,7 +106,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING define="verb_stolen=grabbed">grab</STRING>
 </STRING>
 
-<STRING ID="verb_collected" predefine="verb_collect=$verb_collect">$verb_collect</STRING>
+<STRING ID="verb_collected" predefine="verb_collect=$verb_collect">$verb_collected</STRING>
 <STRING ID="verb_collect" define="verb_collect" SELECT="Any-1">
 	<STRING define="verb_collected=collected">collect</STRING>
 	<STRING define="verb_collected=gathered">gather</STRING>
