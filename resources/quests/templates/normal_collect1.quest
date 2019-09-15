@@ -215,8 +215,6 @@ SPEECH_PROG p i accept $QUEST_NAME
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 				mpqset * STATISTICS ACCEPTED
 				mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
-			else
-				sayto "$n" Yes, yes, I know .. now off with you.
 			endif
 		endif
 	endif
@@ -229,8 +227,6 @@ SPEECH_PROG p i accept
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 				mpqset * STATISTICS ACCEPTED
 				mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
-			else
-				sayto "$n" Yes, yes, I know .. now off with you.
 			endif
 		endif
 	endif

@@ -31,15 +31,12 @@ See guides/RandomAreas.html for information about documents of this type.
 	<string condition="$template='random'"                                               >normal_capture4</string>
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_collect1</string>
 	<string condition="$template='random'"                                               >normal_collect2</string>
+	<string condition="$template='random'"                                               >normal_collect3</string>
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_delivery1</string>
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_delivery2</string>
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_killer1</string>
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_travel1</string>
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_travel2</string>
- <!--  
-     TODO: add normal_capture1_1 for capturing single targets
-     TODO: add normal_capture1_2 for capturing just any old targets, same names not required, so dialog would be very weird
- -->
 </string>
 
 <STRING ID="avoidscans" define="avoidscans">NO</STRING>
@@ -50,6 +47,7 @@ See guides/RandomAreas.html for information about documents of this type.
 <STRING load="/resources/quests/random/normal_capture4.xml" CONDITION="$quest_template='normal_capture4'"/>
 <STRING load="/resources/quests/random/normal_collect1.xml" CONDITION="$quest_template='normal_collect1'"/>
 <STRING load="/resources/quests/random/normal_collect2.xml" CONDITION="$quest_template='normal_collect2'"/>
+<STRING load="/resources/quests/random/normal_collect3.xml" CONDITION="$quest_template='normal_collect3'"/>
 <STRING load="/resources/quests/random/normal_delivery1.xml" CONDITION="$quest_template='normal_delivery1'"/>
 <STRING load="/resources/quests/random/normal_delivery2.xml" CONDITION="$quest_template='normal_delivery2'"/>
 <STRING load="/resources/quests/random/normal_killer1.xml" CONDITION="$quest_template='normal_killer1'"/>
