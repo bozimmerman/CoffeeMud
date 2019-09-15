@@ -48,7 +48,7 @@ vars:
 	<HOLDERS_MOBS>${SELECT: . FROM $target}</HOLDERS_MOBS>
 	<HOLDERS_RESPONSE>$quest_fightspeech</HOLDERS_RESPONSE>
 	<COLLECTABLES_ITEMS>${SELECT: . from $target_item}</COLLECTABLES_ITEMS>
-	<COLLECTABLES_CHANCE>100</COLLECTABLES_CHANCE>
+	<CAPTUREABLES_CHANCE>$[($num_targets / $target_area_size * 100) * 2]</CAPTUREABLES_CHANCE>
 	<NUM_COLLECTABLES>$num_targets</NUM_COLLECTABLES>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
 	<GOLD>$gold_amount_awarded</GOLD>
@@ -442,6 +442,10 @@ vars:
 
 	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">
 		<STRING>${SELECT:name from $target_area}</STRING>
+	</STRING>	
+	
+	<STRING ID="target_area_size" SELECT="any-1" DEFINE="target_area_size">
+		<STRING>${SELECT:VISITABLE_ROOMS from $target_area}</STRING>
 	</STRING>	
 	
 	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1">
