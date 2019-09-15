@@ -302,7 +302,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				{
 					try
 					{
-System.out.println(loadcondition);
 						if(!testCondition(null,null,null,CMLib.xml().restoreAngleBrackets(loadcondition),piece,defined))
 							proceedWithLoad=false;
 					}
