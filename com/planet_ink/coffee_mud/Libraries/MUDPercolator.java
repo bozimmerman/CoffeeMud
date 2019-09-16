@@ -1956,7 +1956,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	@SuppressWarnings("unchecked")
 	protected List<ItemCraftor.ItemKeyPair> craftAllOfThisRecipe(final ItemCraftor skill, final int material, final Map<String,Object> defined)
 	{
-		List<ItemCraftor.ItemKeyPair> skillContents=(List<ItemCraftor.ItemKeyPair>)defined.get("____COFFEEMUD_"+skill.ID()+"_"+material+"_true");
+		List<ItemCraftor.ItemKeyPair> skillContents;
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.ITEMGENCACHE))
+			skillContents=(List<ItemCraftor.ItemKeyPair>)defined.get("____COFFEEMUD_"+skill.ID()+"_"+material+"_true");
+		else
+			skillContents=(List<ItemCraftor.ItemKeyPair>)Resources.getResource("SYSTEM_ITEMGEN_"+skill.ID()+"_"+material+"_true");
 		if(skillContents==null)
 		{
 			if(material>=0)
@@ -1965,7 +1969,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				skillContents=skill.craftAllItemSets(true);
 			if(skillContents==null)
 				return null;
-			defined.put("____COFFEEMUD_"+skill.ID()+"_"+material+"_true",skillContents);
+			if(CMSecurity.isDisabled(CMSecurity.DisFlag.ITEMGENCACHE))
+				defined.put("____COFFEEMUD_"+skill.ID()+"_"+material+"_true",skillContents);
+			else
+				Resources.submitResource("SYSTEM_ITEMGEN_"+skill.ID()+"_"+material+"_true", skillContents);
 		}
 		final List<ItemCraftor.ItemKeyPair> skillContentsCopy=new Vector<ItemCraftor.ItemKeyPair>(skillContents.size());
 		skillContentsCopy.addAll(skillContents);

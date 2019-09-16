@@ -49,6 +49,52 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ITEM class="genCoins" name="a pile of coins" ability="$level_range * 2"/>
 </ITEM>
 
+<ITEM id="dungeon_crafted_items" select="all">
+	<ITEM class="metacraft:any-alchemy" />
+	<ITEM class="metacraft:any-apothecary" />
+	<ITEM class="metacraft:any-Armorsmithing" />
+	<ITEM class="metacraft:any-baking" />
+	<ITEM class="metacraft:any-Blacksmithing" />
+	<ITEM class="metacraft:any-Boatwright" />
+	<ITEM class="metacraft:any-CageBuilding" />
+	<ITEM class="metacraft:any-cobbling" />
+	<ITEM class="metacraft:any-cooking" />
+	<ITEM class="metacraft:any-costuming" />
+	<ITEM class="metacraft:any-distilling" />
+	<ITEM class="metacraft:any-fletching" />
+	<ITEM class="metacraft:any-foodprep" />
+	<ITEM class="metacraft:any-gaelfood" />
+	<ITEM class="metacraft:any-glassblowing" />
+	<ITEM class="metacraft:any-herbalism" />
+	<ITEM class="metacraft:any-instrumentmaking" />
+	<ITEM class="metacraft:any-jewelmaking" />
+	<ITEM class="metacraft:any-LeatherWorking" />
+	<ITEM class="metacraft:any-LegandaryWeaponsmithing" />
+	<ITEM class="metacraft:any-MasterArmorsmithing" />
+	<ITEM class="metacraft:any-MasterBaking" />
+	<ITEM class="metacraft:any-MasterCooking" />
+	<ITEM class="metacraft:any-MasterCostuming" />
+	<ITEM class="metacraft:any-MasterDistilling" />
+	<ITEM class="metacraft:any-MasterFoodPrep" />
+	<ITEM class="metacraft:any-MasterLeatherWorking"/>
+	<ITEM class="metacraft:any-MasterTailoring"/>
+	<ITEM class="metacraft:any-MasterWeaponsmithing" />
+	<ITEM class="metacraft:any-papermaking" />
+	<ITEM class="metacraft:any-pottery" />
+	<ITEM class="metacraft:any-rodsmithing" />
+	<ITEM class="metacraft:any-scrollscribing" />
+	<ITEM class="metacraft:any-sculpting" />
+	<ITEM class="metacraft:any-smelting" />
+	<ITEM class="metacraft:any-staffmaking" />
+	<ITEM class="metacraft:any-Tailoring" />
+	<ITEM class="metacraft:any-Tanning" />
+	<ITEM class="metacraft:any-Textiling" />
+	<ITEM class="metacraft:any-torturesmithing" />
+	<ITEM class="metacraft:any-WandMaking" />
+	<ITEM class="metacraft:any-Weaponsmithing" />
+	<ITEM class="metacraft:any-Weaving" />
+</ITEM>
+
 <ITEM id="musical_instrument" select="all">
 	<ITEM class="metacraft:any-InstrumentMaking &gt; 0" />
 </ITEM>

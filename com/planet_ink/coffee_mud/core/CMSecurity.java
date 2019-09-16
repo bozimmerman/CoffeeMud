@@ -2746,7 +2746,8 @@ public class CMSecurity
 		SHOWXP("show experience"),
 		LANGUAGES("language system"),
 		COMBATSTATS("player combat stats"),
-		MQLCACHE("parsed mql cache")
+		MQLCACHE("parsed mql cache"),
+		ITEMGENCACHE("generated item cache")
 		;
 		private final String desc;
 

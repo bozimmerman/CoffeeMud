@@ -1593,6 +1593,14 @@ public class Stat  extends Skills
 				}
 				if(!found)
 				{
+					if(CMLib.coffeeMaker().isAnyGenStat(M, thisStat))
+					{
+						str.append(CMLib.coffeeMaker().getAnyGenStat(M, thisStat));
+						found=true;
+					}
+				}
+				if(!found)
+				{
 					for(final String stat : M.curState().getStatCodes())
 					{
 						if(stat.startsWith(thisStat))

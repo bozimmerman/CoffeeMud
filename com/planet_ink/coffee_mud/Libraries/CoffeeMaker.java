@@ -3218,6 +3218,48 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					if(((MOB)P).playerStats()!=null)
 						return CMath.toPct(((MOB)P).playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
 					break;
+				case OBJATTRIB:
+					{
+						final StringBuilder attrib=new StringBuilder("");
+						final MOB M=(MOB)P;
+						if(M instanceof ShopKeeper)
+						{
+							if(M instanceof Banker)
+								attrib.append("\"SHOP\" \"BANK\" \"BANKER\" ");
+							else
+							if(M instanceof PostOffice)
+								attrib.append("\"SHOP\" \"POSTOFFICE\" ");
+							else
+							if(M instanceof Librarian)
+								attrib.append("\"SHOP\" \"LIBRARIAN\" \"LIBRARY\" ");
+							else
+								attrib.append("\"SHOP\" \"STORE\" ");
+						}
+						else
+						if(CMLib.coffeeShops().getShopKeeper(M)!=null)
+							attrib.append("\"SHOP\" \"STORE\" ");
+						if(CMLib.flags().isUndead(M))
+							attrib.append("\"UNDEAD\" ");
+						if(CMLib.flags().isAnimalIntelligence(M))
+							attrib.append("\"ANIMAL\" ");
+						if(CMLib.flags().isAPlant(M))
+							attrib.append("\"PLANT\" ");
+						if(CMLib.flags().isInsect(M))
+							attrib.append("\"INSECT\" ");
+						if(CMLib.flags().isOutsider(M))
+							attrib.append("\"OUTSIDER\" ");
+						if(CMLib.flags().isVermin(M))
+							attrib.append("\"VERMIN\" ");
+						if(CMLib.flags().isFish(M))
+							attrib.append("\"FISH\" ");
+						if(CMLib.flags().isGolem(M))
+							attrib.append("\"GOLEM\" ");
+						if(CMLib.flags().isMarine(M))
+							attrib.append("\"MARINE\" ");
+						if(CMLib.flags().isPossiblyAggressive(M))
+							attrib.append("\"AGGRESSIVE\" ");
+						return attrib.toString();
+					}
 				case CHARCLASS:
 					return ""+(current?
 							((MOB)P).charStats().getCurrentClass().name(((MOB)P).charStats().getCurrentClassLevel())
@@ -3527,6 +3569,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						((MOB)P).setAttribute(attrib, !((MOB)P).isAttributeSet(attrib));
 					break;
 				}
+				case OBJATTRIB:
+					break;
+				default:
+					break;
 				}
 			}
 		}

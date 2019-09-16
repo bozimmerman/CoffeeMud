@@ -24,7 +24,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	SELECT: . FROM area\npcs 
 		WHERE name\count=1 
 		and current_intelligence>5 
-		and "Aggressive" notin affbehav  
+		and "Aggressive" notin objattrib  
 		and "QuestBound" notin affbehav 
 		and (SELECT: count\. FROM mob\room\exits) &gt; 0 
 		and 'ROOMUNEXPLORABLE' notin (SELECT: current_sensesstr FROM mob\room)
@@ -34,8 +34,30 @@ See guides/RandomAreas.html for information about documents of this type.
 	SELECT: ANY\. FROM $source_area\npcs 
 		WHERE name\count=1 
 		and current_intelligence>5 
-		and "Aggressive" notin affbehav  
+		and "Aggressive" notin objattrib  
 		and "QuestBound" notin affbehav 
+		and (SELECT: count\. FROM mob\room\exits) &gt; 0 
+		and 'ROOMUNEXPLORABLE' notin (SELECT: current_sensesstr FROM mob\room)
+</OBJECT>
+
+<OBJECT ID="mql_givable_questgivers">
+	SELECT: . FROM area\npcs 
+		WHERE name\count=1 
+		and current_intelligence>5 
+		and "Aggressive" notin objattrib  
+		and "QuestBound" notin affbehav 
+		and "SHOP" notin objattrib 
+		and (SELECT: count\. FROM mob\room\exits) &gt; 0 
+		and 'ROOMUNEXPLORABLE' notin (SELECT: current_sensesstr FROM mob\room)
+</OBJECT>
+
+<OBJECT ID="mql_givable_questgiver">
+	SELECT: ANY\. FROM $source_area\npcs 
+		WHERE name\count=1 
+		and current_intelligence>5 
+		and "Aggressive" notin objattrib  
+		and "QuestBound" notin affbehav
+		and "SHOP" notin objattrib 
 		and (SELECT: count\. FROM mob\room\exits) &gt; 0 
 		and 'ROOMUNEXPLORABLE' notin (SELECT: current_sensesstr FROM mob\room)
 </OBJECT>
@@ -104,6 +126,13 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING define="verb_stolen=pilfered">pilfer</STRING>
 	<STRING define="verb_stolen=snatched">snatch</STRING>
 	<STRING define="verb_stolen=grabbed">grab</STRING>
+</STRING>
+
+<STRING ID="verb_made" predefine="verb_make=$verb_make">$verb_made</STRING>
+<STRING ID="verb_make" define="verb_make" SELECT="Any-1">
+	<STRING define="verb_made=made">make</STRING>
+	<STRING define="verb_made=crafted">craft</STRING>
+	<STRING define="verb_made=assembled">assemble</STRING>
 </STRING>
 
 <STRING ID="verb_collected" predefine="verb_collect=$verb_collect">$verb_collected</STRING>

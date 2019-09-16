@@ -133,7 +133,8 @@ public interface GenericBuilder extends CMLibrary
 		DEITY,
 		MATTRIB,
 		CLAN,
-		CLANROLE
+		CLANROLE,
+		OBJATTRIB,
 	}
 
 	public enum GenPhysBonusFakeStats

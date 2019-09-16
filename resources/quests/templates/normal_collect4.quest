@@ -66,30 +66,6 @@
 #Select what tthe announcer will say when a player returns to him after collecting the items.
 #$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations!
 #
-#!QUESTMAKER_PAGE Specify the Holders
-#The Holders are the rooms where the items to collect may be found. These must
-#be existing rooms in your world.  The items are created and destroyed whenever
-#the quest player enters/exits a valid room, so spells like Locate Object will
-#do the player no good.
-#
-#Holder Rooms: 
-#Specify the rooms that your items will possibly be found in.
-#Use double-quotes around multi-word areas and room ids/names.
-#Use the keyword ANY to specify a single random area or room, or
-#the keyword ALL to specify ALL areas or rooms.
-#
-#Items Area:
-#$HOLDER_AREAS=($AREA)
-#Items Rooms:
-#$HOLDER_ROOMS=($ROOMID)
-#
-#Local response: 
-#You may leave this blank, and the mobs who happen to be in a room with an item
-#will behave normally.  However, if you specify a bit of speech, then an npc 
-#that is in the room with the item and near the players level will say it and 
-#then attack the player when they pick up the item.
-#$LOCALS_RESPONSE=($STRING)=
-#
 #!QUESTMAKER_PAGE Specify the Collectables
 #The Collectables are the items that must be found or created and given to announcer.
 #
@@ -147,19 +123,6 @@ set mob reselect $ANNOUNCER_NAME
 give stat keyplayer true
 give script LOAD=$QUEST_ID_announcer.script
 
-set mobgroup
-set mob
-set item
-set room
-set area
-import items $QUEST_ID_items.xml
-set itemgroup loadeditems
-set item
-
-set room
-set area $HOLDER_AREAS
-set roomgroup $HOLDER_ROOMS
-
 set duration 0
 
 <?xml version="1.0"?>
@@ -214,7 +177,7 @@ GIVE_PROG all
 				mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
 			endif
 		else
-			sayto "$n" What's this?
+			sayto "$n" $WRONG_COLLECTABLE_SAY
 			give "$o" "$n"
 		endif
 	else
@@ -284,7 +247,7 @@ QUEST_TIME_PROG * 1
 ~
 
 EXECMSG_PROG GET ALL
-	if ISLIKE($o '$COLLECTABLE_ITEMS') and EVAL($n == $i)
+	if ISLIKE($t '$COLLECTABLE_ITEMS') and EVAL($n == $i) AND EVAL('$<$n $QUEST_ID_GOT>' < $NUM_COLLECTABLES)
 		MPSETVAR $n $QUEST_ID_GOT +$%ITEMCOUNT($t)%
 		mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
 		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
@@ -292,7 +255,7 @@ EXECMSG_PROG GET ALL
 ~
 
 EXECMSG_PROG DROP ALL
-	if questobj($t *) and QUESTSCRIPTED($n *) and EVAL($n == $i)
+	if ISLIKE($t '$COLLECTABLE_ITEMS') and QUESTSCRIPTED($n *) and EVAL($n == $i) AND EVAL('$<$n $QUEST_ID_GOT>' > 0) 
 		MPSETVAR $n $QUEST_ID_GOT -$%ITEMCOUNT($t)%
 		mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
 		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES

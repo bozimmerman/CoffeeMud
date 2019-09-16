@@ -49,7 +49,7 @@ public class ItemGenerator extends ActiveTicker
 
 	protected static volatile Tickable[] builerTick=new Tickable[1];
 
-	protected Vector<Item>		maintained			= new Vector<Item>();
+	protected SVector<Item>		maintained			= new SVector<Item>();
 	protected int				minItems			= 1;
 	protected int				maxItems			= 1;
 	protected int				avgItems			= 1;
@@ -75,7 +75,7 @@ public class ItemGenerator extends ActiveTicker
 	public void setParms(final String newParms)
 	{
 		favorMobs=false;
-		maintained=new Vector<Item>();
+		maintained=new SVector<Item>();
 		restrictedLocales=null;
 		String parms=newParms;
 		if(parms.indexOf(';')>=0)

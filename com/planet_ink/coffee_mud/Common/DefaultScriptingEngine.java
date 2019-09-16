@@ -3776,6 +3776,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					int num=0;
 					if(E instanceof Container)
 					{
+						num++;
 						for(final Item I : ((Container)E).getContents())
 							num+=I.numberOfItems();
 					}
@@ -6827,10 +6828,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					int num=0;
 					if(E instanceof Container)
 					{
+						num++;
 						for(final Item I : ((Container)E).getContents())
 							num+=I.numberOfItems();
-						if((num == 0)&&(E instanceof Drink))
-							num++;
 					}
 					else
 					if(E instanceof Item)

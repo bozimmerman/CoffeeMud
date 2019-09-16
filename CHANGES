@@ -46,7 +46,7 @@
  44. New property: Prop_RoomRedirect, and the MODIFY command now supports modify room <roomid> syntax. 
  45. New Scriptable functions: ITEMCOUNT, CANHEAR, CANSEE, QUESTAREA
  46. New Archon command: ASYNC, for running long commands in the background.
- 47. New questmaker templates: normal_capture2, normal_capture3, normal_capture4
+ 47. New questmaker templates: normal_capture2, normal_capture3, normal_capture4, normal_collect3, normal_collect4
  48. The GENERATE command can now generate random quests.  See the RandomAreas doc for more info.
  49. New Behavior: RandomQuests for areas or mobs.
  
