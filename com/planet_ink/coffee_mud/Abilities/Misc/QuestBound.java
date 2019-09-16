@@ -16,7 +16,10 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /*
    Copyright 2007-2019 Bo Zimmerman
@@ -538,18 +541,24 @@ public class QuestBound implements Ability
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 
-	protected String	questID	= "";
+	protected Set<String>	questIDs = new STreeSet<String>();
 
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
-		questID = newMiscText;
+		if(newMiscText.length()==0)
+			return;
+		for(final String id : CMParms.parseAny(newMiscText,';', true))
+		{
+			if(!questIDs.contains(id))
+				questIDs.add(id);
+		}
 	}
 
 	@Override
 	public String text()
 	{
-		return questID;
+		return CMParms.combineWith(questIDs, ';');
 	}
 
 	@Override
@@ -591,7 +600,7 @@ public class QuestBound implements Ability
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		if(text().equals("*"))
+		if(questIDs.contains("*"))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_CLOAKED);
 	}
 
@@ -644,29 +653,25 @@ public class QuestBound implements Ability
 
 	private void resetQuest(final int reason)
 	{
-		if(text().length()>0)
+		final boolean star=questIDs.contains("*");
+		if(questIDs.size()>(star?1:0))
 		{
-			if(text().equals("*"))
-				return;
-			Quest theQ=null;
-			for(int q=0;q<CMLib.quests().numQuests();q++)
+			for(int q=CMLib.quests().numQuests()-1;q>=0;q--)
 			{
 				final Quest Q=CMLib.quests().fetchQuest(q);
-				if((Q!=null)&&(""+Q).equals(text()))
+				if((Q!=null)
+				&&(questIDs.contains(""+Q)))
 				{
-					theQ=Q;
+					Log.sysOut("QuestBound",CMMsg.TYPE_DESCS[reason]+" message for "+(affected==null?"null":affected.name())+" caused "+Q.name()+" to reset.");
+					Q.resetQuest(5);
 					break;
 				}
 			}
-			if((theQ==null)||(!theQ.running()))
-				affected.delEffect(this);
-			else
-			{
-				Log.sysOut("QuestBound",CMMsg.TYPE_DESCS[reason]+" message for "+(affected==null?"null":affected.name())+" caused "+theQ.name()+" to reset.");
-				theQ.resetQuest(5);
-			}
+			questIDs.clear();
+			if(star)
+				questIDs.add("*");
 		}
-		else
+		if(questIDs.size()==0)
 			affected.delEffect(this);
 	}
 
