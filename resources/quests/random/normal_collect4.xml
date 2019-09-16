@@ -23,6 +23,7 @@ vars:
     area_name(area name)
     sourcename(mob name)
     targetskill(ANY or a skill ID)
+    itemname(an item name)
     num_targets(num items to collect)
 	xp_amount_awarded
 	gold_amount_awarded
@@ -63,8 +64,11 @@ vars:
 
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
 	
-	<OBJECT ID="target_item" define="target_item">
-		SELECT: ANY\. from $all_target_items where weight < 200
+	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
+		<OBJECT condition="$itemname=''">SELECT: ANY\. from $all_target_items where weight < 200</OBJECT>
+		<OBJECT condition="$itemname!=''">
+			<ITEM class="GenItem" name="$itemname" display="$itemname lies here" material="PAPER" level="$level_range" />
+		</OBJECT>
 	</OBJECT>
 	
 	<STRING ID="targetskill">Any</STRING>
