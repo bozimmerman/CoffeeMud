@@ -4179,6 +4179,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						PO.preserveState=questState.preserveState;
 					return;
 				}
+				if(PO.obj.amDestroyed())
+					questState.worldObjects.remove(PO);
 			}
 			questState.worldObjects.add(new PreservedQuestObject(P,questState.preserveState));
 			final Ability A=CMClass.getAbility("QuestBound");
