@@ -49,6 +49,7 @@
  47. New questmaker templates: normal_capture2, normal_capture3, normal_capture4, normal_collect3, normal_collect4
  48. The GENERATE command can now generate random quests.  See the RandomAreas doc for more info.
  49. New Behavior: RandomQuests for areas or mobs.
+ 50. More new questmaker templates: normal_killer2
  
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque

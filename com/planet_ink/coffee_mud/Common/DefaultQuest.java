@@ -4183,8 +4183,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					questState.worldObjects.remove(PO);
 			}
 			questState.worldObjects.add(new PreservedQuestObject(P,questState.preserveState));
-			final Ability A=CMClass.getAbility("QuestBound");
+			Ability A=P.fetchEffect("QuestBound");
+			if(A==null)
+				A=CMClass.getAbility("QuestBound");
 			A.setMiscText(""+this);
+			A.setSavable(false);
 			P.addNonUninvokableEffect(A);
 		}
 	}
