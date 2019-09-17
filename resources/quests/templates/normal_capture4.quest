@@ -256,6 +256,10 @@ GREET_PROG 100
 				mpforce $n sayto "$i" $CAPTURABLES_SURRENDER
 				mpforce $n mpstop all
 				mpforce $n follow "$i"
+				mpargset $g $%INROOM($i)%
+				if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
+					mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
+				endif
 			endif
 		endif
 	endif
@@ -273,18 +277,31 @@ FUNCTION_PROG DEL_LAST_MOB
 CNCLMSG_PROG ENTER ALL
 	if EVAL($n == $i)
 		mpargset $g $%INROOM($t)%
-		if QUESTROOM($g *)  or ( EVAL('$CAPTUREABLES_ROOMS' == 'ALL') AND QUESTAREA('$%INAREA($t)%' *) )
-			if EVAL('$<$i $QUEST_ID_LASTROOM>' == '') OR EVAL('$<$i $QUEST_ID_LASTMOB>' == '')
-				if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
-					if rand($CAPTUREABLES_CHANCE) 
-						mpat '$g' mpmload fromfile $QUEST_ID_mobs.xml any
-						MPGSET $b REJUV 0
-						MPQSET * QUESTOBJ $b
-						MPEFFECT QuestBound $b
-						mpsetvar $i $QUEST_ID_LASTMOB $b
-						mpsetvar $i $QUEST_ID_LASTROOM $g
+		if EVAL('$<$i $QUEST_ID_LASTROOM>' != '') AND EVAL('$<$i $QUEST_ID_LASTMOB>' != '')
+			mpat '$<$i $QUEST_ID_LASTROOM>' MPCALLFUNC DEL_LAST_MOB 
+			mpsetvar $i $QUEST_ID_LASTMOB
+			mpsetvar $i $QUEST_ID_LASTROOM
+		endif
+		if EVAL($g != '')
+			if QUESTROOM($g *)  or ( EVAL('$CAPTUREABLES_ROOMS' == 'ALL') AND QUESTAREA('$%INAREA($t)%' *))
+				if EVAL('$<$i $QUEST_ID_LASTROOM>' == '') OR EVAL('$<$i $QUEST_ID_LASTMOB>' == '')
+					if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
+						if !STRIN('$<$i $QUEST_ID_FOUNDROOMS>' $g)
+							if rand($CAPTUREABLES_CHANCE) 
+								mpsetvar $i $QUEST_ID_FOUNDROOMS $<$i $QUEST_ID_FOUNDROOMS> "$g"
+							else
+								mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
+							endif
+						endif
+						if STRIN('$<$i $QUEST_ID_FOUNDROOMS>' $g)
+							mpat '$g' mpmload fromfile $QUEST_ID_mobs.xml any
+							MPGSET $b REJUV 0
+							MPQSET * QUESTOBJ $b
+							MPEFFECT QuestBound $b
+							mpsetvar $i $QUEST_ID_LASTMOB $b
+							mpsetvar $i $QUEST_ID_LASTROOM $g
+						endif
 					endif
-					mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
 				endif
 			endif
 		endif
@@ -342,6 +359,10 @@ ENTRY_PROG 100
 							mpforce $1 follow "$i"
 							mpsetvar $i $QUEST_ID_CAPTURED YES
 							mpsetvar $i PROGRESS Found: $<$i $QUEST_ID_CAPTURED>, Returned: $<$i $QUEST_ID_RETURNED>
+							mpargset $g $%INROOM($i)%
+							if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
+								mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
+							endif
 						endif
 					endif
 				endif
@@ -362,6 +383,10 @@ CNCLMSG_PROG STO=DEATH ALL
 			mpsetvar $i $QUEST_ID_CAPTURED YES
 			mpsetvar $i PROGRESS Found: $<$i $QUEST_ID_CAPTURED>, Returned: $<$i $QUEST_ID_RETURNED>
 			RETURN CANCEL
+		endif
+		mpargset $g $%INROOM($i)%
+		if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
+			mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
 		endif
 	endif
 ~

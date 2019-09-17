@@ -289,16 +289,24 @@ CNCLMSG_PROG ENTER ALL
 			mpsetvar $i $QUEST_ID_LASTITEM
 			mpsetvar $i $QUEST_ID_LASTROOM
 		endif
-		if QUESTROOM($g *)  or ( EVAL('$CAPTUREABLES_ROOMS' == 'ALL') AND QUESTAREA('$%INAREA($t)%' *) )
-			if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
-				if rand($COLLECTABLES_CHANCE) 
-					mpat '$g' mpoloadroom fromfile $QUEST_ID_items.xml any
-					MPQSET * QUESTOBJ $b
-					MPEFFECT QuestBound $b
-					mpsetvar $i $QUEST_ID_LASTITEM $b
-					mpsetvar $i $QUEST_ID_LASTROOM $g
+		if EVAL($g != '')
+			if QUESTROOM($g *)  or ( EVAL('$CAPTUREABLES_ROOMS' == 'ALL') AND QUESTAREA('$%INAREA($t)%' *))
+				if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
+					if !STRIN('$<$i $QUEST_ID_FOUNDROOMS>' $g)
+						if rand($COLLECTABLES_CHANCE) 
+							mpsetvar $i $QUEST_ID_FOUNDROOMS $<$i $QUEST_ID_FOUNDROOMS> "$g"
+						else
+							mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
+						endif
+					endif
+					if STRIN('$<$i $QUEST_ID_FOUNDROOMS>' $g)
+						mpat '$g' mpoloadroom fromfile $QUEST_ID_items.xml any
+						MPQSET * QUESTOBJ $b
+						MPEFFECT QuestBound $b
+						mpsetvar $i $QUEST_ID_LASTITEM $b
+						mpsetvar $i $QUEST_ID_LASTROOM $g
+					endif
 				endif
-				mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
 			endif
 		endif
 	endif
@@ -328,7 +336,11 @@ EXECMSG_PROG GET ALL
 		MPSETVAR $n $QUEST_ID_GOT +$%ITEMCOUNT($t)%
 		mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
 		mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
-	endif	
+		mpargset $g $%INROOM($i)%
+		if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
+			mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
+		endif
+	endif
 ~
 
 EXECMSG_PROG DROP ALL
