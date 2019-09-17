@@ -1,0 +1,347 @@
+#!QUESTMAKER_START_SCRIPT Normal Escort #1
+#The player must escort a mob or mobs that you will create from the location of
+#an existing Announcer mob on the map to a room of your
+#choosing.  You may also optionally create a mob or mobs to attack the player
+#along the way.
+#
+#!QUESTMAKER_PAGE Quest Name/Criteria
+#Enter the unique name and player criteria for your new quest.
+#
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_escort_1
+#
+#Quest Name:
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=Normal Escort #1
+#
+#Quest-Player Criterium:
+#You may leave this entry blank, or enter a Zapper Mask to describe what
+#kinds of players may participate in this quest.  You can use this to set
+#race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#!QUESTMAKER_PAGE Specify the Announcer
+#The Announcer is the mob who will be announcing the quest initially. This must
+#be an existing mob in your world.  They will announce the quest to players
+#once, and then mark whether the player says they accept the quest.
+#
+#Announcer Area/Room: 
+#Specify below the name of the area that your Announcer mob will be located
+#in and/or the room in which the mob can be found.  You may leave both blank
+#to force the quest manager to find the mob somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.
+#Use double-quotes around multi-word areas and room ids/names.
+#  
+#Announcer Area:
+#$ANNOUNCER_AREA=($AREA)
+#Announcer Room ID:
+#$ANNOUNCER_ROOM=($ROOMID)
+#
+#Announcer mob name: 
+#Specify the name of the mob who will act as the Announcer mob.  
+#Use double-quotes around multi-word names.
+#If you specified an area or room above, then the mob must be located there.
+#You may optionally have the quest manager select a 'random' mob by entering
+#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#ZAPPERMASKS for information on zapper mask syntax).
+#Remember, if the quest manager can not find your mob, the quest will not
+#be started.
+#$ANNOUNCER_NAME=$NAME
+#
+#!QUESTMAKER_PAGE Escorted mob and destination
+#Here's where you specify the mob to be escorted, and the destination
+#that the player must bring the mob to to complete the quest.
+#
+#Escorted mob(s): 
+#Create or select the mob or mobs below that the player must escort.  This mob or
+#mobs will be created in the same room as the announcer for the quest to
+#be undertaken.
+#$ESCORTED_MOB=$MOBXML_ONEORMORE
+#
+#Escort Destination: 
+#Specify below the name of the area and room to which the player and their 
+#escort must travel.
+#You may leave the area blank
+#to force the quest manager to find the room somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.
+#Use double-quotes around multi-word areas and room ids/names.
+#  
+#Destination Area:
+#$DESTINATION_AREA=($AREA)
+#Destination Room ID:
+#$DESTINATION_ROOM=$ROOMID
+#
+#!QUESTMAKER_PAGE Announcer greetings/instructions
+#Here's where you specify any special text said by the announcer regarding
+#your quest
+#
+#Announcer greeting: 
+#Specify what the announcer says to people when they enter the room about their
+#quest.
+#$QUEST_NOTIFYSTRING=$LONG_STRING=I need someone to go somewhere.
+#
+#Announcer instructions: 
+#Specify what the announcer says to people who have accepted the quest.  This 
+#should give some details about what is to be done.  You can leave this blank
+#if you like.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Go to that one place.
+#
+#!QUESTMAKER_PAGE Quest Dangers
+#You may optionally have mobs that appear during the quest in the same room as the
+#player and the escorted mob.
+#
+#Attacker mob(s): 
+#Create or select the mob below that will appear with the player and  the 
+#escorted mob during the quest.  Leave this blank to not generate 
+#attackers and allow your world to provide its own dangers.
+#**These mobs will automatically attack the player**
+#$ATTACKER_MOB=($MOBXML_ONEORMORE)
+#
+#Attacker appearance chance:
+#If you specified attacker(s) above, note here the percent chance (0-100)
+#that they will appear in any given room the player enters.  An attack 
+#will only happen once per quest!
+#$ATTACKER_PCT_CHANCE=($EXPRESSION)=5
+#
+#Attacker scream:
+#If you specified attacker(s) above, note what they yell when they attack
+#the player after appearing.  You may leave this blank
+#$ATTACKER_SCREAM=($STRING)=Found you! Charge!
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for completing the quest:
+#
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of money (an amount, or leave blank):
+#$GOLD=($EXPRESSION)
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
+#Select whether a player may complete this quest multiple times:
+#$MULTIPLE=$CHOOSE=YES,NO
+#
+#Escorted response: 
+#Specify what is emoted in the same room after the player successfully escorts the
+#mobs to the designated room.  You may leave this blank if you like.
+#$ESCORTED_RESPONSE=($LONG_STRING)=The escort is complete.
+#
+#
+#!QUESTMAKER_END_SCRIPT Normal Escort #1
+
+set name $QUEST_ID
+set display $QUEST_NAME
+set author $#AUTHOR
+
+set wait 1
+set interval 1
+set duration 0
+quiet
+
+set area $ANNOUNCER_AREA
+set room $ANNOUNCER_ROOM
+set mobgroup
+set mob reselect  $ANNOUNCER_NAME
+give stat keyplayer true
+give script LOAD=$QUEST_ID_announcer.script
+
+set mobgroup
+set mob
+set area $DESTINATION_AREA
+set room $DESTINATION_ROOM
+set wherehappened ROOM
+
+<?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_escortmobs.xml</NAME><DATA><MOBS>$ESCORTED_MOB</MOBS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_mobs.xml</NAME><DATA><MOBS>$ATTACKER_MOB</MOBS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_announcer.script</NAME>
+<DATA>
+GREET_PROG 100
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			sayto "$n" $QUEST_NOTIFYSTRING -- just say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
+		endif
+	endif
+~
+
+SPEECH_PROG p i accept $QUEST_NAME
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			mpat '$g' mpmload fromfile $QUEST_ID_escortmobs.xml any
+			MPGSET $b REJUV 0
+			MPQSET * QUESTOBJ $b
+			MPEFFECT QuestBound $b
+			mpforce $b follow $n
+			IF ISFOLLOW($b)
+				mpqset * STATISTICS ACCEPTED
+				sayto "$n" $QUEST_INSTRUCTIONSSTRING
+				mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+				mpsetvar $n $QUEST_ID_ESCORT $b
+			else
+				mppurge $b
+				sayto "$n" You can't help me.
+			endif
+		endif
+	endif
+~
+
+SPEECH_PROG p i accept
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			mpat '$g' mpmload fromfile $QUEST_ID_escortmobs.xml any
+			MPGSET $b REJUV 0
+			MPQSET * QUESTOBJ $b
+			MPEFFECT QuestBound $b
+			mpforce $b follow $n
+			IF ISFOLLOW($b)
+				mpqset * STATISTICS ACCEPTED
+				sayto "$n" $QUEST_INSTRUCTIONSSTRING
+				mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+				mpsetvar $n $QUEST_ID_ESCORTEE $b
+			else
+				mppurge $b
+				sayto "$n" You can't help me.
+			endif
+		endif
+	endif
+~
+</DATA></FILE>
+<FILE><NAME>$QUEST_ID_escorted.script</NAME>
+<DATA>
+
+DEATH_PROG 99
+	IF EVAL('$f' != '') 
+		mpechoat $f ^x$i has died..^.^N
+	else
+		mpecho ^x$i has died..^.^N
+	ENDIF
+	mppurge $i
+~
+
+RAND_PROG 25
+	IF !ISFOLLOW($i)
+		mpecho ^x$i has no leader..^.^N
+		if VAR($i $QUEST_ID_FOLCHK == 'WARNING')
+			mppurge $i
+		else
+			mpsetvar $i $QUEST_ID_FOLCHK WARNING
+		endif
+	else
+		mpsetvar $i $QUEST_ID_FOLCHK
+	endif
+~
+</DATA></FILE>
+<FILE><NAME>$QUEST_ID_playertrack.script</NAME>
+<DATA>
+ONCE_PROG 100
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	if var($i MYROOM = '')
+		mpsetvar $i MYROOM '$%QVAR(* WHEREHAPPENED_ROOMID)%'
+	endif
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+~
+
+RAND_PROG 25
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	else
+		if QVAR(* REMAINING == '')
+			MPENDQUEST $i
+		else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+		if VAR($i  $QUEST_ID_ESCORTEE == '') OR !INROOM('$<$i $QUEST_ID_ESCORTEE>')
+			if VAR($i $QUEST_ID_FOLCHK == 'WARNING')
+				MPENDQUEST $i
+			else
+				mpsetvar $i $QUEST_ID_FOLCHK WARNING
+			endif
+		endif
+	ENDIF
+~
+
+QUEST_TIME_PROG * -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+QUEST_TIME_PROG * 1
+	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
+~
+
+FUNCTION_PROG DEL_LAST_MOB
+	IF !ISFOLLOW('$<$i $QUEST_ID_LASTMOB>') AND QUESTMOB('$<$i $QUEST_ID_LASTMOB>' *)
+		mppurge room '$<$i $QUEST_ID_LASTMOB>'
+	ENDIF
+~
+
+CNCLMSG_PROG ENTER ALL
+	if EVAL($n == $i) AND EVAL('$ATTACKER_PCT_CHANCE' != '')
+		mpargset $g $%INROOM($t)%
+		if EVAL('$<$i $QUEST_ID_LASTROOM>' != '') AND EVAL('$<$i $QUEST_ID_LASTMOB>' != '')
+			mpat '$<$i $QUEST_ID_LASTROOM>' MPCALLFUNC DEL_LAST_MOB 
+			mpsetvar $i $QUEST_ID_LASTMOB
+			mpsetvar $i $QUEST_ID_LASTROOM
+		endif
+		if EVAL($g != '')
+			if !STRIN('$<$i $QUEST_ID_ROOMLIST>' $g)
+				mpsetvar $i $QUEST_ID_ROOMLIST $<$i $QUEST_ID_ROOMLIST> "$g"
+				if rand($ATTACKER_PCT_CHANCE) 
+					mpat '$g' mpmload fromfile $QUEST_ID_mobs.xml any
+					MPGSET $b REJUV 0
+					MPQSET * QUESTOBJ $b
+					MPEFFECT QuestBound $b
+					mpsetvar $i $QUEST_ID_LASTMOB $b
+					mpsetvar $i $QUEST_ID_LASTROOM $g
+					mpforce $b YELL $ATTACKER_SCREAM
+					mpforce $b kill $f
+				endif
+			endif
+		endif
+	endif
+~
+
+ENTRY_PROG 100
+	if EVAL($n == $i) AND INROOM($i == '$<$i MYROOM>') AND VAR($i $QUEST_ID_REWARDED == '')
+		if VAR($i  $QUEST_ID_ESCORTEE != '') AND INROOM('$<$i $QUEST_ID_ESCORTEE>') 
+			mpforce '$<$i i $QUEST_ID_ESCORTEE>' sayto $i $ESCORTED_RESPONSE
+			mpsetvar $n $QUEST_ID_REWARDED 'REWARDED'
+			mppurge '$<$i i $QUEST_ID_ESCORTEE>'
+			if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($i *)
+				# do nothing
+			else
+				if EVAL('$EXP' != '')
+					mpexp $i $EXP
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $i $FACTION $NUMFACTION
+				endif
+				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
+					mpoloadroom QuestPoint
+					mpforce $i GET "a quest point"
+				endif
+				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+					mpoloadroom $GOLD
+					mpforce $i GET $GOLD
+				endif
+				mpquestwin $i *
+				mpendquest $i
+				mpqset * STATISTICS SUCCESS
+			endif
+		endif
+	endif
+~
+</DATA></FILE>
