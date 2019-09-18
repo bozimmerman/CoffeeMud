@@ -4335,23 +4335,99 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		if(i==null)
 			return -1;
 		Environmental E;
-		for(;i.hasNext();)
+		if(name.startsWith("*"))
 		{
-			E=i.next();
-			if(CMClass.isType(E,type))
+			if(name.endsWith("*"))
 			{
-				switch(type)
+				final String iname=(name.length()>1)?name.substring(1,name.length()-1).toLowerCase():"";
+				for(;i.hasNext();)
 				{
-				case LOCALE:
-					if(CMLib.map().getExtendedRoomID((Room)E).equalsIgnoreCase(name))
-						return num[0];
-					break;
-				default:
-					if(E.Name().equalsIgnoreCase(name))
-						return num[0];
-					break;
+					E=i.next();
+					if(CMClass.isType(E,type))
+					{
+						switch(type)
+						{
+						case LOCALE:
+							if(CMLib.map().getExtendedRoomID((Room)E).toLowerCase().indexOf(iname)>=0)
+								return num[0];
+							break;
+						default:
+							if(E.Name().toLowerCase().indexOf(iname)>=0)
+								return num[0];
+							break;
+						}
+						num[0]++;
+					}
 				}
-				num[0]++;
+			}
+			else
+			{
+				final String iname=name.substring(1).toLowerCase();
+				for(;i.hasNext();)
+				{
+					E=i.next();
+					if(CMClass.isType(E,type))
+					{
+						switch(type)
+						{
+						case LOCALE:
+							if(CMLib.map().getExtendedRoomID((Room)E).toLowerCase().endsWith(iname))
+								return num[0];
+							break;
+						default:
+							if(E.Name().toLowerCase().endsWith(iname))
+								return num[0];
+							break;
+						}
+						num[0]++;
+					}
+				}
+			}
+		}
+		else
+		if(name.endsWith("*"))
+		{
+			final String iname=name.substring(0,name.length()-1).toLowerCase();
+			for(;i.hasNext();)
+			{
+				E=i.next();
+				if(CMClass.isType(E,type))
+				{
+					switch(type)
+					{
+					case LOCALE:
+						if(CMLib.map().getExtendedRoomID((Room)E).toLowerCase().startsWith(iname))
+							return num[0];
+						break;
+					default:
+						if(E.Name().toLowerCase().startsWith(iname))
+							return num[0];
+						break;
+					}
+					num[0]++;
+				}
+			}
+		}
+		else
+		{
+			for(;i.hasNext();)
+			{
+				E=i.next();
+				if(CMClass.isType(E,type))
+				{
+					switch(type)
+					{
+					case LOCALE:
+						if(CMLib.map().getExtendedRoomID((Room)E).equalsIgnoreCase(name))
+							return num[0];
+						break;
+					default:
+						if(E.Name().equalsIgnoreCase(name))
+							return num[0];
+						break;
+					}
+					num[0]++;
+				}
 			}
 		}
 		return -1;
