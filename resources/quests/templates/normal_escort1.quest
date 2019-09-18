@@ -309,7 +309,7 @@ CNCLMSG_PROG ENTER ALL
 					mpsetvar $i $QUEST_ID_LASTMOB $b
 					mpsetvar $i $QUEST_ID_LASTROOM $g
 					mpforce $b YELL $ATTACKER_SCREAM
-					mpforce $b kill $f
+					mpforce $b kill $i
 				endif
 			endif
 		endif
