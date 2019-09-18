@@ -78,7 +78,7 @@
 #be undertaken.
 #$ESCORTED_MOB=$MOBXML_ONEORMORE
 #
-#Escort destionation: 
+#Escort destination: 
 #Specify some text to name the destination area of the escort.  
 #No '" quotes of any kind are required or allowed in this string -- keep it simple.
 #Be careful -- if the engine cant find the area, the quest will not succeed.
