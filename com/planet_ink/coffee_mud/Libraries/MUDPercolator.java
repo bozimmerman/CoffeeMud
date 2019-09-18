@@ -2947,14 +2947,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			processDefined=piece;
 			tagName=piece.tag();
 		}
-		List<XMLLibrary.XMLTag> choices = getAllChoices(E,ignoreStats,defPrefix,tagName, piece, defined,true);
-		if((choices==null)||(choices.size()==0))
-			choices=getAllChoices(E,ignoreStats,defPrefix,"ITEM", piece, defined,true);
-		if((choices==null)||(choices.size()==0))
-			choices=getAllChoices(E,ignoreStats,defPrefix,"MOB", piece, defined,true);
-		if((choices==null)||(choices.size()==0))
-			choices=getAllChoices(E,ignoreStats,defPrefix,"ABILITY", piece, defined,true);
-		if((choices==null)||(choices.size()==0))
+		if(asDefined == null)
+			processDefined=piece;
+		final List<XMLLibrary.XMLTag> choices =new ArrayList<XMLLibrary.XMLTag>();
+		final Set<String> done=new HashSet<String>();
+		for(final XMLLibrary.XMLTag subTag : piece.contents())
+		{
+			if(done.contains(subTag.tag()))
+				continue;
+			done.add(subTag.tag());
+			choices.addAll(getAllChoices(E,ignoreStats,defPrefix,subTag.tag(), piece, defined,true));
+		}
+		if(choices.size()==0)
+			choices.addAll(getAllChoices(E,ignoreStats,defPrefix,tagName, piece, defined,true));
+		if(choices.size()==0)
 			throw new CMDataException("Unable to find tag '"+tagName+"' on piece '"+piece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		final List<Object> finalValues = new ArrayList<Object>();
 
@@ -3234,7 +3240,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(e instanceof PostProcessException)
 				throw (PostProcessException)e;
 			Log.errOut("Generate","Condition procesing failure: "+e.getMessage()+": "+condition);
-			try 
+			try
 			{
 				final Map<String,Object> finalDefined = new HashMap<String,Object>();
 				finalDefined.putAll(defined);

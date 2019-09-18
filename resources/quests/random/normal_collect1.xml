@@ -346,7 +346,7 @@ vars:
 	</STRING>
 
 	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
-		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in affbehav}</STRING>
+		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in objattrib}</STRING>
 	</STRING>
 
 	<OBJECT ID="target" DEFINE="target" SELECT="any-1">

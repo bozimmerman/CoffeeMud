@@ -179,7 +179,7 @@ GREET_PROG 100
 SPEECH_PROG p i accept $QUEST_NAME
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			mpat '$g' mpmload fromfile $QUEST_ID_escortmobs.xml any
+			mpmload fromfile $QUEST_ID_escortmobs.xml any
 			MPGSET $b REJUV 0
 			MPQSET * QUESTOBJ $b
 			MPEFFECT QuestBound $b
@@ -189,6 +189,7 @@ SPEECH_PROG p i accept $QUEST_NAME
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 				mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 				mpsetvar $n $QUEST_ID_ESCORT $b
+				mpechoat $n $b follows you.
 			else
 				mppurge $b
 				sayto "$n" You can't help me.
@@ -200,7 +201,7 @@ SPEECH_PROG p i accept $QUEST_NAME
 SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			mpat '$g' mpmload fromfile $QUEST_ID_escortmobs.xml any
+			mpmload fromfile $QUEST_ID_escortmobs.xml any
 			MPGSET $b REJUV 0
 			MPQSET * QUESTOBJ $b
 			MPEFFECT QuestBound $b
@@ -210,6 +211,7 @@ SPEECH_PROG p i accept
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 				mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 				mpsetvar $n $QUEST_ID_ESCORTEE $b
+				mpechoat $n $b follows you.
 			else
 				mppurge $b
 				sayto "$n" You can't help me.
@@ -317,9 +319,9 @@ CNCLMSG_PROG ENTER ALL
 ENTRY_PROG 100
 	if EVAL($n == $i) AND INROOM($i == '$<$i MYROOM>') AND VAR($i $QUEST_ID_REWARDED == '')
 		if VAR($i  $QUEST_ID_ESCORTEE != '') AND INROOM('$<$i $QUEST_ID_ESCORTEE>') 
-			mpforce '$<$i i $QUEST_ID_ESCORTEE>' sayto $i $ESCORTED_RESPONSE
+			mpforce '$<$i $QUEST_ID_ESCORTEE>' sayto $i $ESCORTED_RESPONSE
 			mpsetvar $n $QUEST_ID_REWARDED 'REWARDED'
-			mppurge '$<$i i $QUEST_ID_ESCORTEE>'
+			mppurge '$<$i $QUEST_ID_ESCORTEE>'
 			if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($i *)
 				# do nothing
 			else
@@ -336,6 +338,10 @@ ENTRY_PROG 100
 				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
 					mpoloadroom $GOLD
 					mpforce $i GET $GOLD
+				endif
+				mpoloadroom fromfile $QUEST_ID_rewarditems.xml any
+				if EVAL('$b' != '')
+					mpforce $i GET "$b"
 				endif
 				mpquestwin $i *
 				mpendquest $i

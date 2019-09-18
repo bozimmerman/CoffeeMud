@@ -41,7 +41,10 @@ settable vars:
 	<DESTINATION_AREA>"$target_area_name"</DESTINATION_AREA>
 	<DESTINATION_ROOM>"$target_room_id"</DESTINATION_ROOM>
 	<ESCORTED_MOB>${SELECT: ANY\. from $target}</ESCORTED_MOB>
-	<ATTACKER_PCT_CHANCE>5</ATTACKER_PCT_CHANCE>
+	<ATTACKER_PCT_CHANCE SELECT="ANY-1">
+		<ATTACKER_PCT_CHANCE CONDITION="'$aggression' != 'NO'">10</ATTACKER_PCT_CHANCE>
+		<ATTACKER_PCT_CHANCE CONDITION="'$aggression' = 'NO'"></ATTACKER_PCT_CHANCE>
+	</ATTACKER_PCT_CHANCE>
 	<ATTACKER_MOB>${SELECT: ANY\. from $attacker}</ATTACKER_MOB>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
 	<GOLD>$gold_amount_awarded</GOLD>
@@ -56,8 +59,13 @@ settable vars:
 		<QUEST_NAME>${C:source_name} asks you to $reason_verb $target_name to ${C:target_room_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $target_name to ${C:target_room_name} for ${C:source_name}</QUEST_NAME>
 	</QUEST_NAME>
+	<ATTACKER_SCREAM SELECT="Any-1">
+		<ATTACKER_SCREAM CONDITION="'$aggression' != 'NO'">$quest_attackerscream</ATTACKER_SCREAM>
+		<ATTACKER_SCREAM CONDITION="'$aggression' = 'NO'"></ATTACKER_SCREAM>
+	</ATTACKER_SCREAM>
 	<QUEST_NOTIFYSSTRING>$quest_notifystring</QUEST_NOTIFYSSTRING>
 	<QUEST_INSTRUCTIONSSTRING>$quest_instructionstring</QUEST_INSTRUCTIONSSTRING>
+	<ESCORTED_RESPONSE>$quest_arrivalstring</ESCORTED_RESPONSE>
 	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
@@ -88,12 +96,14 @@ settable vars:
 		<STRING ACTION="APPEND">$reason_short</STRING>
 	</STRING>
 
-	<STRING ID="quest_traveled" PREDEFINE="reason=$reason">
-		<STRING condition="$quest_traveled != ''">$quest_traveled</STRING>
-		<STRING condition="$quest_traveled = ''">Your task is complete.</STRING>
+	<STRING ID="quest_attackerscream" SELECT="Any-1">
+		<STRING>Now I $hurt_verb you!</STRING>
+		<STRING>You shall be $hurt_verbed!</STRING>
+		<STRING>I must $hurt_verb you!</STRING>
 	</STRING>
-	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$verb_traveled</STRING>
-	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$verb_travel</STRING>
+
+	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$verb_escorted</STRING>
+	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$verb_escort</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
 	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
 		<STRING>$reason_theyoweme</STRING>
@@ -107,7 +117,7 @@ settable vars:
 		<STRING CONDITION="$source_align &lt; -500">$reason_wedotoeachother</STRING>
 	</STRING>
 
-	<STRING id="quest_generic_traveled_speeches" SELECT="Any-1">
+	<STRING id="quest_arrivalstring" SELECT="Any-1">
 		<STRING>How wonderful! Thank you $$n!!</STRING>
 		<STRING>${c:reason_verbed} at last! Thank you $$n!</STRING>
 		<STRING>Thanks $$n, I'll take it from here.</STRING>
@@ -115,64 +125,64 @@ settable vars:
 	</STRING>
 
 	<STRING ID="reason_theyoweme" SELECT="All">
-		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I want to know more about the world.</STRING>
+			<STRING>${c:target_name} wants to know more about the world.</STRING>
 		</STRING>
 	</STRING>
 	
 	<STRING ID="reason_partytime" SELECT="All">
-		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>It is officially ${C:source_area_name} Day, and it's happening at $target_name!</STRING>
+			<STRING>It is officially ${C:source_area_name} Day, and I'm sending ${c:target_name} on a trip!</STRING>
 		</STRING>
 	</STRING>
 
 	<STRING ID="reason_iowethem" SELECT="All">
-		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>You are needed at $target_name.</STRING>
+			<STRING>${c:target_name} is needed at $target_room_name.</STRING>
 		</STRING>
 	</STRING>
 	<STRING ID="reason_ilostthem" SELECT="All">
-		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I can't figure out how to get to $target_name and I need you to break the trail.</STRING>
+			<STRING>${c:target_name} can't figure out how to get to $target_room_name and we need your help.</STRING>
 		</STRING>
 	</STRING>
 
 	<STRING ID="reason_gentravel" SELECT="All">
-		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I need you to travel to $target_name.</STRING>
+			<STRING>${c:target_name} needs to travel to $target_room_name.</STRING>
 		</STRING>
 	</STRING>
 
 	<STRING ID="reason_idoforthem" SELECT="All">
-		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I want to know that ${target_name} is safe.</STRING>
+			<STRING>I want ${c:target_name} to know that ${target_room_name} is safe.</STRING>
 		</STRING>
 	</STRING>
 
 	<STRING ID="reason_wedotogether" SELECT="All">
-		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I want to see what happens when you go to $target_name.</STRING>
+			<STRING>${c:target_name} wants to see what happens at $target_room_name.</STRING>
 		</STRING>
 	</STRING>
 
 	<STRING ID="reason_idotothem" SELECT="All">
-		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I want you to invade $target_name .</STRING>
+			<STRING>${c:target_name} wants to invade $target_room_name .</STRING>
 		</STRING>
 	</STRING>
 
 	<STRING ID="reason_wedotoeachother" SELECT="All">
-		<STRING define="quest_traveled">$quest_generic_traveled_speeches</STRING>
+		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I am studying $target_area_name, and need more first hand knowledge of $target_name.</STRING>
+			<STRING>${c:target_name} is studying $target_area_name, and needs more first hand knowledge of $target_name.</STRING>
 		</STRING>
 	</STRING>
 
@@ -252,9 +262,14 @@ settable vars:
 
 	<STRING ID="target_room_name" SELECT="any-1" DEFINE="target_room_name">${SELECT:display from $target_room}</STRING>
 
+	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1">
+		<STRING PICKWEIGHT=50>NO</STRING>
+		<STRING PICKWEIGHT="$target_level">YES</STRING>
+	</STRING>
+	
 	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
-		<STRING CONDITION="$aggressive = 'YES'">YES</STRING>
-		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in affbehav}</STRING>
+		<STRING CONDITION="$aggression = 'YES'">YES</STRING>
+		<STRING CONDITION="$aggression != 'YES'">NO</STRING>
 	</STRING>
 
 	<STRING load="/resources/randareas/desert.xml" />
@@ -266,17 +281,15 @@ settable vars:
 	<STRING load="/resources/randareas/mountains.xml" />
 	<STRING load="/resources/randareas/swamp.xml" />
 	
-	<OBJECT ID="target" DEFINE="target" SELECT="pick-1">
-		<OBJECT>
-			<MOB class="GenMob" level="$level_range" race="$source_race" gender="$anygender">
-				<NAME>
-					<NAME CONDITION="$targetname!=''">$targetname</NAME>
-					<NAME CONDITION="$targetname=''">$fantasy_name</NAME>
-				</NAME>
-				<DISPLAY>$mob_name is here.</DISPLAY>
-				<ALIGNMENT>$source_align</ALIGNMENT>
-			</MOB>
-		</OBJECT>
+	<OBJECT ID="target" DEFINE="target">
+		<MOB class="GenMob" level="$level_range" race="$source_race" gender="$anygender">
+			<NAME>
+				<NAME CONDITION="$targetname!=''">$targetname</NAME>
+				<NAME CONDITION="$targetname=''">$fantasy_name</NAME>
+			</NAME>
+			<DISPLAY>$mob_name is here.</DISPLAY>
+			<ALIGNMENT>$source_align</ALIGNMENT>
+		</MOB>
 	</OBJECT>
 	
 	<STRING load="/resources/randareas/inc_fantasynames.xml" />

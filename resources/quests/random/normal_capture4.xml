@@ -553,8 +553,8 @@ settable vars:
 	</STRING>
 
 	<STRING ID="target_is_aggressive" SELECT="first" DEFINE="target_is_aggressive">
-		<STRING CONDITION="$aggressive = 'YES'">YES</STRING>
-		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in affbehav}</STRING>
+		<STRING CONDITION="$aggression = 'YES'">YES</STRING>
+		<STRING>${SELECT: 'YES' from $target where 'Aggressive' in objattrib}</STRING>
 	</STRING>
 
 	<STRING load="/resources/randareas/desert.xml" />
