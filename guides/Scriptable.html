@@ -61,7 +61,7 @@
 <li><a href="#regmask_prog">regmask_prog</a></li>
 <li><a href="#remove_prog">remove_prog</a></li>
 <li><a href="#social_prog">social_prog</a></li>
-<li><a href="#sell_prog">sell_prog</a></li>
+<li><a href="#sell_prog">sell_prog</a></li><li><a href="#speak_prog">speak_prog</a></li>
 <li><a href="#speech_prog">speech_prog</a></li>
 <li><a href="#time_prog">time_prog</a></li>
 <li><a href="#unlock_prog">unlock_prog</a></li>
@@ -1605,13 +1605,41 @@ as the scripted object.</p>
 <p>MULTIPLE PROGS: You can
 have more than one social_prog on a
 mob. Generally it is best not to have social_progs with the same social
-trigger in them.</p>
+trigger in them.</p><h3><a name="speak_prog">speak_prog</a></h3>
+<p>Usage:</p>
+<pre>speak_prog [trigger message]<br />speak_prog p [trigger message]<br /></pre>
+<p>This type of mobprog is
+triggered by the scripted mob saying the
+trigger line, or if the scripted object is not a mob, it is the same as speech_prog below. If a 'p' is inserted in the prog as
+above, the line spoken must exactly match the trigger message; if it is
+not, then any of the keywords listed will trigger the mobprog. A
+keyword of ALL will trigger on any speech. This type of mobprog is
+useful for quests driven by player scripts or setting up passwords that
+must be spoken. This type of prog can also be used to have a mob
+trigger itself if you want to have multiple connected progs &#8211;
+see
+complex progs for details. Note that this kind of mobprog is only
+triggered by someone using the say command.</p>
+<p>EXAMPLES:</p>
+<pre>speak_prog dog wolf coyote<br /></pre>
+<p>This will trigger the
+prog whenever dog, wolf, or coyote is
+said by the scripted mob. If more than one of the keywords is
+spoken in the same line, the prog will trigger more than once.</p>
+<pre>speak_prog p The dog barks at the cat<br /></pre>
+<p>This will trigger the
+prog only if the exact expression is
+said. Note that punctuation counts, although you don't *have* to use it.</p>
+<p>MULTIPLE PROGS: You can
+have more than one speak_prog on a
+mob. It is generally not a good idea to have more than one speak_prog
+be triggered by the same expression.</p><p></p>
 <h3><a name="speech_prog">speech_prog</a></h3>
 <p>Usage:</p>
 <pre>speech_prog [trigger message]<br />speech_prog p [trigger message]<br /></pre>
 <p>This type of mobprog is
-triggered by someone saying the
-trigger line, be it mob or player. If a 'p' is inserted in the prog as
+triggered by someone other than the scripted mob saying the
+trigger line, be it mob or player, in the same room as the scripted object. If a 'p' is inserted in the prog as
 above, the line spoken must exactly match the trigger message; if it is
 not, then any of the keywords listed will trigger the mobprog. A
 keyword of ALL will trigger on any speech. This type of mobprog is

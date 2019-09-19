@@ -12523,6 +12523,64 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
+				case 47: // speak_prog
+					if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)||(msg.targetMinor()==CMMsg.TYP_SPEAK))&&canTrigger(47)
+					&&(msg.amISource(monster)||(!(affecting instanceof MOB)))
+					&&(!msg.othersMajor(CMMsg.MASK_CHANNEL))
+					&&(((msg.sourceMessage()!=null)&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)))
+					   ||((msg.target()==monster)&&(msg.targetMessage()!=null)&&(msg.tool()==null)))
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						if(t==null)
+						{
+							t=parseBits(script,0,"CT");
+							for(int i=0;i<t.length;i++)
+							{
+								if(t[i]!=null)
+									t[i]=t[i].replace('`', '\'');
+							}
+						}
+						String str=null;
+						if(msg.sourceMessage() != null)
+							str=CMStrings.getSayFromMessage(msg.sourceMessage().toUpperCase());
+						else
+						if(msg.targetMessage() != null)
+							str=CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase());
+						else
+						if(msg.othersMessage() != null)
+							str=CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase());
+						if(str != null)
+						{
+							str=(" "+str.replace('`', '\'')+" ").toUpperCase();
+							str=CMStrings.removeColors(str);
+							str=CMStrings.replaceAll(str,"\n\r"," ");
+							if((t[1].length()==0)||(t[1].equals("ALL")))
+							{
+								enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str, t);
+								return;
+							}
+							else
+							if((t[1].equals("P"))&&(t.length>2))
+							{
+								if(match(str.trim(),t[2]))
+								{
+									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str, t);
+									return;
+								}
+							}
+							else
+							for(int i=1;i<t.length;i++)
+							{
+								final int x=str.indexOf(" "+t[i]+" ");
+								if(x>=0)
+								{
+									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim(), t);
+									return;
+								}
+							}
+						}
+					}
+					break;
 				case 3: // speech_prog
 					if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)||(msg.targetMinor()==CMMsg.TYP_SPEAK))&&canTrigger(3)
 					&&(!msg.amISource(monster))

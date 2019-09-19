@@ -303,6 +303,7 @@ EXECMSG_PROG GET ALL
 	endif
 	
 ~
+
 EXECMSG_PROG DROP ALL
 	if questobj($t *) and QUESTSCRIPTED($n *) and EVAL($n == $i)
 		MPSETVAR $n $QUEST_ID_GOT -$%ITEMCOUNT($t)%

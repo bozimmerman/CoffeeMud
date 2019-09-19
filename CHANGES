@@ -27,7 +27,7 @@
  25. Combat stats now recorded for players at each level.  STAT COMBAT will give a limited view.
  26. Banker ability to hold items and make loans can be disabled on a per-mob basis.  See GenBanker in Archon's Guide.
  27. New property: Prop_LimitedEquip, for limiting the number of times a specific item can be equipped
- 28. New Scriptable trigger: putting_prog 
+ 28. New Scriptable triggers: putting_prog, speak_prog 
  29. New locales for Sailing Ship prototyping: ShipDeck, ShipLightGunDeck, ShipHold, ShipMagazine, ShipQuarter, etc.
  30. New Aggressive behaviors option: NOGANG.. to prevent aggro mobs from ganging up on players
  31. CONFIG now has HELP, and also supports new player PRIVACY flag.
