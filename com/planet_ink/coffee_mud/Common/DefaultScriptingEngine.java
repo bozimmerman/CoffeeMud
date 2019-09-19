@@ -1953,10 +1953,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Hashtable<String,?> H=(Hashtable<String,?>)resources._getResource(key);
 					if(varname.equals("*"))
 					{
-						for(final Enumeration<String> e=H.keys();e.hasMoreElements();)
+						if(H!=null)
 						{
-							final String vn=e.nextElement();
-							set.add(key.substring(10),vn);
+							for(final Enumeration<String> e=H.keys();e.hasMoreElements();)
+							{
+								final String vn=e.nextElement();
+								set.add(key.substring(10),vn);
+							}
 						}
 					}
 					else
