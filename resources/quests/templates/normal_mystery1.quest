@@ -1,7 +1,7 @@
 #!QUESTMAKER_START_SCRIPT Normal Mystery #1
 #A 3-Level mystery where players must question existing mobs from your world to
 #discover WHO did something, what ITEM they did it with, and what their MOTIVE was.
-#The suspects and witnesses are existing mobs and items are CREATED by you.
+#The witnesses are existing mobs and the suspects and items are CREATED by you.
 #
 #!QUESTMAKER_PAGE Quest Name/Criteria
 #Enter the unique name and player criteria for your new quest.
@@ -70,8 +70,59 @@
 #Destination Area:
 #$DESTINATION_AREA=($AREA)
 #
+#Witness Mobs: 
+#Specify the types of mobs that will give clues regarding the mystery.
+#See help on ZAPPERMASK for information on zapper mask syntax.
+#$WITNESS_MASK=$ZAPPERMASK
+#
+#The Suspects are the mobs that comprise the list of possible mobs who did the action
+#with the above tool to the victim.  One of the suspects will be chosen as the WHO did it mob.
+#The Suspects: List here all possible suspects for your mystery.  You may create more
+#than are actually used in the mystery to mix things up.
+#$SUSPECTS_MOBS=$MOBXML_ONEORMORE
+#
+#Number of Suspects: Specify how many of the above suspects will be chosen for use in the mystery.
+#The higher this number, the more complex the mystery will be and more difficult to solve.
+#You should never enter a number that might be larger than the number of total mobs above.
+#You may, however, use math expressions: For instance, 1 + 1?3 would generate a number of 2-4 mobs.
+#$NUM_SUSPECTS=$EXPRESSION=3
+#
+#!QUESTMAKER_PAGE Specify the Tools
+#The Tools are the items that comprise the list of things the action might have
+#been done with.  In other words, one of these items was used to commit
+#the crime, or do the action to the victim.
+#
+#The Tools: List here all possible tools for your mystery.  You may list more
+#than are actually used in the mystery to mix things up.
+#$TOOLS_ITEMS=$ITEMXML_ONEORMORE
+#
+#Number of Tools: Specify how many of the above tools will be chosen for use in the mystery.
+#The higher this number, the more complex the mystery will be and more difficult to solve.
+#You should never enter a number that might be larger than the number of total items above.
+#You may, however, use math expressions: For instance, 1 + 1?3 would generate a number of 2-4 tools.
+#$NUM_TOOLS=$EXPRESSION=3
+#
+#!QUESTMAKER_PAGE The Motives
+#The motives are a simple list of space-delimited phrases that describe the possible motives for
+#the action done by the suspect against the victim with the item/tool.
+#
+#The Motive List: List here the possible motives for the action taken.  Each motive should be
+#separated by spaces.  If a motive includes more than one word, put the motive in "double quotes".
+#A valid motive should answer the question: The act was done because of X.
+#$MOTIVE_LIST=$LONG_STRING="drunken anger" "jealous love" "insulted honor" 
+#
+#Number of Motives: Specify how many of the above motives will be chosen for use in the mystery.
+#The higher this number, the more complex the mystery will be and more difficult to solve.
+#You should never enter a number that might be larger than the number of total motives listed above.
+#You may, however, use math expressions: For instance, 1 + 1?3 would generate a number of 2-4 motives.
+#$NUM_MOTIVES=$EXPRESSION=3
+#
 #!QUESTMAKER_PAGE Quest Completion
-#Select some rewards for completing the travel:
+#Select some rewards for completing the mystery:
+#
+#Announcer congratulations:
+#This is what the congratulations says.
+#$SOLVED_RESPONSE_TEXT=($LONG_STRING)=$n has solved the mystery! $AGENT did it with $TOOL for $MOTIVE!
 #
 #Reward items: 
 #Specify zero or more items to choose from as a reward 
@@ -93,7 +144,7 @@
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
-#!QUESTMAKER_END_SCRIPT Normal Travel #2
+#!QUESTMAKER_END_SCRIPT Normal Mystery #1
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -110,13 +161,27 @@ set mob reselect $ANNOUNCER_NAME
 give stat keyplayer true
 give script LOAD=$QUEST_ID_announcer.script
 
+# Assign the tools -- should load into the announcer
+import items $QUEST_ID_tools.cmare
+load itemgroup $NUM_TOOLS any
+set toolgroup $NUM_TOOLS
+
+# Set a motives, will automatically set a motive
+set motivegroup $NUM_MOTIVES $MOTIVE_LIST
+
+set mob
 set area $DESTINATION_AREA
 set roomgroup ALL
+import mobs $QUEST_ID_suspects.cmare
+load mobgroup $NUM_SUSPECTS any
+set agentgroup $NUM_SUSPECTS
 
 set duration 0
 
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_suspects.cmare</NAME><DATA><MOBS>$SUSPECTS_MOBS</MOBS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_tools.cmare</NAME><DATA><ITEMS>$TOOLS_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 GREET_PROG 100
@@ -276,49 +341,14 @@ FUNCTION_PROG winner
 				endif
 				mpsetvar $i $QUEST_ID_REWARDED $n
 				mpquestwin $n *
-				$SOLVED_RESPONSE_TYPE $SOLVED_RESPONSE_TEXT
-				mpendquest $i
+				sayto "$n" $SOLVED_RESPONSE_TEXT
+				mpendquest $n
 				mpqset * STATISTICS SUCCESS
-				IF EVAL('$NEXT_QUEST' != '')
-					mpstartquest $NEXT_QUEST
-				ENDIF
 			else
 				if VAR($n $QUEST_ID_TOOL != '') AND VAR($n $QUEST_ID_AGENT != '') AND VAR($n $QUEST_ID_MOTIVE != '')
 					sayto $n I'm sorry $n, your guess is incorrect.  Try again later.
 				endif
 			endif
-		endif
-	endif
-~
-</DATA></FILE>
-<FILE><NAME>$QUEST_ID_destination.script</NAME>
-<DATA>
-GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) AND QUESTSCRIPTED($n *)
-		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-		else
-			if EVAL('$EXP' != '')
-				mpexp $n $EXP
-			endif
-			if EVAL('$FACTION' != '')
-				mpfaction $n $FACTION $NUMFACTION
-			endif
-			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-				mpoload QuestPoint
-				give "a quest point" "$n"
-			endif
-			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-				mpoload $GOLD
-				give $GOLD "$n"
-			endif
-			mpoload fromfile $QUEST_ID_rewarditems.xml any
-			if EVAL('$b' != '')
-				give "$b" "$n"
-			endif
-			mpquestwin $n *
-			sayto $n $DESTINATION_RESPONSE
-			mpendquest $n
-			mpqset * STATISTICS SUCCESS
 		endif
 	endif
 ~
@@ -344,7 +374,7 @@ RAND_PROG 25
 	ENDIF
 ~
 
-DELAY_PROG 15 60
+DELAY_PROG 15 30
 	MPSETVAR $i ALREADY_SPOKEN_TO
 ~
 
@@ -352,25 +382,284 @@ DELAY_PROG 150 300
 	MPSETVAR $i EVIDENCE_ALREADY_GIVEN
 ~
 
-FUNC_PROG AskedAboutAgent
+FUNCTION_PROG AskedAboutAgent
+	mpargset $9 ''
+	for $0 = 1 to '$%NUMMOBSROOM(*)%
+		MPARGSET $1 $%ROOMMOB($0)%
+		if ISNPC($1) AND ISLIKE($1 $WITNESS_MASK) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
+			MPARGSET $9 $1
+			BREAK
+		ENDIF
+	next
+	if EVAL($9 == '')
+		return
+	ENDIF
+	mpargset $0 '$%QVAR(* TOOLGROUP)%'
+	mpargset $5 ''
+	for $1 = 1 to $0
+		mpargset $2 'TOOLGROUP#$1'
+		mpargset $4 '$%QVAR(* $2)%'
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$3 $4')
+			mpargset $5 $5 "$4"
+		endif
+	next
+	mpargset $6 ''
+	mpargset $0 '$%QVAR(* MOTIVEGROUP)%'
+	for $1 = 1 to $0
+		mpargset $2 'MOTIVEGROUP#$1'
+		mpargset $4 '$%QVAR(* $2)%'
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$3 $4')
+			mpargset $6 $6 "$4"
+		endif
+	next
+	If EVAL($6 == '') OR RAND(50)
+		if EVAL($5 == '')
+			# Should we say something here?
+		ELSE
+			mpargset $5 $5.$%RAND0NUM($5.LENGTH#)%
+			mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$3 $5"
+			mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
+			switch($%RAND0NUM(12)%)
+			case 0:
+				mpforce '$9' sayto "$i" $3 is a dork, but $3 would not do anything for $5.
+			case 1:
+				mpforce '$9' sayto "$i" $3 was not one to be involved with $5.
+			case 2:
+				mpforce '$9' sayto "$i" I know $3 well enough to know $5 is not a motive.
+			case 3:
+				mpforce '$9' sayto "$i" $3 thinks $5 is immoral, he wouldn't do anything for that reason.
+			case 4:
+				mpforce '$9' sayto "$i" $3 never gets involved with $5.
+			case 5:
+				mpforce '$9' sayto "$i" $3 isn't ever into $5.
+			case 6:
+				mpforce '$9' sayto "$i" $3 hates $5, and never gets involved in it.
+			case 7:
+				mpforce '$9' sayto "$i" $3 would never do anything for $5.
+			case 8:
+				mpforce '$9' sayto "$i" $3 is too proud to do anything for $5.
+			case 9:
+				mpforce '$9' sayto "$i" $3 doesn't know anything of $5.
+			case 10:
+				mpforce '$9' sayto "$i" $3 is too dumb for $5.
+			case 11:
+				mpforce '$9' sayto "$i" $5 is far too silly a motive for $3.
+			endswitch
+		ENDIF
+	ELSE
+		mpargset $6 $6.$%RAND0NUM($6.LENGTH#)%
+		mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$3 $6"
+		mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
+		switch($%RAND0NUM(12)%)
+		case 0:
+			mpforce '$9' sayto "$i" I've heard $3 is scared of $6.
+		case 1:
+			mpforce '$9' sayto "$i" I've heard $3 hates $6.
+		case 2:
+			mpforce '$9' sayto "$i" I've heard $3 thinks $6 is creepy.
+		case 3:
+			mpforce '$9' sayto "$i" $3 thinks $6 clumsy and awkward.
+		case 4:
+			mpforce '$9' sayto "$i" $3 never touches $6.
+		case 5:
+			mpforce '$9' sayto "$i" $3 won't use $6.
+		case 6:
+			mpforce '$9' sayto "$i" $3 doesn't like $6.
+		case 7:
+			mpforce '$9' sayto "$i" $3 wouldn't be caught dead using $6.
+		case 8:
+			mpforce '$9' sayto "$i" $3 is too proud to use $6.
+		case 9:
+			mpforce '$9' sayto "$i" $3 doesn't know how to use $6.
+		case 10:
+			mpforce '$9' sayto "$i" $3 is too dumb to figure out $6.
+		case 11:
+			mpforce '$9' sayto "$i" $3 is far too skilled for $6.
+		endswitch
+	ENDIF
 ~
 
 FUNC_PROG AskedAboutTool
+	mpargset $9 ''
+	for $0 = 1 to '$%NUMMOBSROOM(*)%
+		MPARGSET $1 $%ROOMMOB($0)%
+		if ISNPC($1) AND ISLIKE($1 $WITNESS_MASK) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
+			MPARGSET $9 $1
+			BREAK
+		ENDIF
+	next
+	if EVAL($9 == '')
+		return
+	ENDIF
+	mpargset $0 '$%QVAR(* AGENTGROUP)%'
+	mpargset $3 ''
+	for $1 = 1 to $0
+		mpargset $2 'AGENTGROUP#$1'
+		mpargset $4 '$%QVAR(* $2)%'
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $5')
+			mpargset $3 $3 "$4"
+		endif
+	next
+	mpargset $6 ''
+	mpargset $0 '$%QVAR(* MOTIVEGROUP)%'
+	for $1 = 1 to $0
+		mpargset $2 'MOTIVEGROUP#$1'
+		mpargset $4 '$%QVAR(* $2)%'
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $5')
+			mpargset $6 $6 "$4"
+		endif
+	next
+	If EVAL($6 == '') OR RAND(50)
+		if EVAL($3 == '')
+			# Should we say something here?
+		ELSE
+			mpargset $3 $3.$%RAND0NUM($3.LENGTH#)%
+			mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$3 $5"
+			mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
+			switch($%RAND0NUM(12)%)
+			case 0:
+				mpforce '$9' sayto "$i" $3 is a dork, but $3 would not do anything for $5.
+			case 1:
+				mpforce '$9' sayto "$i" $3 was not one to be involved with $5.
+			case 2:
+				mpforce '$9' sayto "$i" I know $3 well enough to know $5 is not a motive.
+			case 3:
+				mpforce '$9' sayto "$i" $3 thinks $5 is immoral, he wouldn't do anything for that reason.
+			case 4:
+				mpforce '$9' sayto "$i" $3 never gets involved with $5.
+			case 5:
+				mpforce '$9' sayto "$i" $3 isn't ever into $5.
+			case 6:
+				mpforce '$9' sayto "$i" $3 hates $5, and never gets involved in it.
+			case 7:
+				mpforce '$9' sayto "$i" $3 would never do anything for $5.
+			case 8:
+				mpforce '$9' sayto "$i" $3 is too proud to do anything for $5.
+			case 9:
+				mpforce '$9' sayto "$i" $3 doesn't know anything of $5.
+			case 10:
+				mpforce '$9' sayto "$i" $3 is too dumb for $5.
+			case 11:
+				mpforce '$9' sayto "$i" $5 is far too silly a motive for $3.
+			endswitch
+		ENDIF
+	ELSE
+		mpargset $6 $6.$%RAND0NUM($6.LENGTH#)%
+		mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$6 $5"
+		mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
+		switch($%RAND0NUM(7)%)
+		case 0:
+			mpforce '$9' sayto "$i" $5 is hardly the right tool for $6.
+		case 1:
+			mpforce '$9' sayto "$i" $5 is never used when one is into $6
+		case 2:
+			mpforce '$9' sayto "$i" No one would use $5 if $6 was involved.
+		case 3:
+			mpforce '$9' sayto "$i" Everyone knows $5 isn't used for acts motivated by $6.
+		case 4:
+			mpforce '$9' sayto "$i" $6 is not going to make one reach for $5.
+		case 5:
+			mpforce '$9' sayto "$i" $6 is no state for using a $5.
+		case 6:
+			mpforce '$9' sayto "$i" If $6 was involved, you can be sure $5 was not.
+		endswitch
+	ENDIF
 ~
 
 FUNC_PROG AskedAboutMotive
+	mpargset $9 ''
+	for $0 = 1 to '$%NUMMOBSROOM(*)%
+		MPARGSET $1 $%ROOMMOB($0)%
+		if ISNPC($1) AND ISLIKE($1 $WITNESS_MASK) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
+			MPARGSET $9 $1
+			BREAK
+		ENDIF
+	next
+	if EVAL($9 == '')
+		return
+	ENDIF
+	mpargset $0 '$%QVAR(* AGENTGROUP)%'
+	mpargset $3 ''
+	for $1 = 1 to $0
+		mpargset $2 'AGENTGROUP#$1'
+		mpargset $4 '$%QVAR(* $2)%'
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $6')
+			mpargset $3 $3 "$4"
+		endif
+	next
+	mpargset $0 '$%QVAR(* TOOLGROUP)%'
+	mpargset $5 ''
+	for $1 = 1 to $0
+		mpargset $2 'TOOLGROUP#$1'
+		mpargset $4 '$%QVAR(* $2)%'
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$6 $4')
+			mpargset $5 $5 "$4"
+		endif
+	next
+	If EVAL($5 == '') OR RAND(50)
+		if EVAL($3 == '')
+			# Should we say something here?
+		ELSE
+			mpargset $3 $3.$%RAND0NUM($3.LENGTH#)%
+			mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$3 $6"
+			mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
+			switch($%RAND0NUM(12)%)
+			case 0:
+				mpforce '$9' sayto "$i" I've heard $3 is scared of $6.
+			case 1:
+				mpforce '$9' sayto "$i" I've heard $3 hates $6.
+			case 2:
+				mpforce '$9' sayto "$i" I've heard $3 thinks $6 is creepy.
+			case 3:
+				mpforce '$9' sayto "$i" $3 thinks $6 clumsy and awkward.
+			case 4:
+				mpforce '$9' sayto "$i" $3 never touches $6.
+			case 5:
+				mpforce '$9' sayto "$i" $3 won't use $6.
+			case 6:
+				mpforce '$9' sayto "$i" $3 doesn't like $6.
+			case 7:
+				mpforce '$9' sayto "$i" $3 wouldn't be caught dead using $6.
+			case 8:
+				mpforce '$9' sayto "$i" $3 is too proud to use $6.
+			case 9:
+				mpforce '$9' sayto "$i" $3 doesn't know how to use $6.
+			case 10:
+				mpforce '$9' sayto "$i" $3 is too dumb to figure out $6.
+			case 11:
+				mpforce '$9' sayto "$i" $3 is far too skilled for $6.
+			endswitch
+		ENDIF
+	ELSE
+		mpargset $5 $5.$%RAND0NUM($5.LENGTH#)%
+		mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$6 $5"
+		mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
+		switch($%RAND0NUM(7)%)
+		case 0:
+			mpforce '$9' sayto "$i" $5 is hardly the right tool for $6.
+		case 1:
+			mpforce '$9' sayto "$i" $5 is never used when one is into $6
+		case 2:
+			mpforce '$9' sayto "$i" No one would use $5 if $6 was involved.
+		case 3:
+			mpforce '$9' sayto "$i" Everyone knows $5 isn't used for acts motivated by $6.
+		case 4:
+			mpforce '$9' sayto "$i" $6 is not going to make one reach for $5.
+		case 5:
+			mpforce '$9' sayto "$i" $6 is no state for using a $5.
+		case 6:
+			mpforce '$9' sayto "$i" If $6 was involved, you can be sure $5 was not.
+		endswitch
+	ENDIF
 ~
 
 SPEAK_PROG all
 	if STRCONTAINS($g "i accept") OR STRCONTAINS($g "solve") OR EVAL($g == '')
 		RETURN
 	endif
-	if !QUESTAREA('$%INAREA($i)%' *))
+	if nummobsroom('MASK=$WITNESS_MASK' == 0)
 		RETURN
 	endif
-	#
-	# would be nice to check to see if there are any mobs in the room who CAN reply first
-	#
 	mpargset $9 ''
 	IF EVAL($9 == '')
 		mpargset $0 '$%QVAR(* AGENTGROUP)%'
@@ -379,7 +668,7 @@ SPEAK_PROG all
 			mpargset $3 '$%QVAR(* $2)%'
 			IF STRCONTAINS($g "$3")
 				MPCALLFUNC AskedAboutAgent $3
-				MPARGSET $9 $g
+				MPARGSET $9 $3
 				BREAK
 			endif
 		next
@@ -388,10 +677,10 @@ SPEAK_PROG all
 		mpargset $0 '$%QVAR(* TOOLGROUP)%'
 		for $1 = 1 to $0
 			mpargset $2 'TOOLGROUP#$1'
-			mpargset $3 '$%QVAR(* $2)%'
-			IF STRCONTAINS($g "$3")
-				MPCALLFUNC AskedAboutTool $3
-				MPARGSET $9 $g
+			mpargset $5 '$%QVAR(* $2)%'
+			IF STRCONTAINS($g "$5")
+				MPCALLFUNC AskedAboutTool $5
+				MPARGSET $9 $5
 				BREAK
 			endif
 		next
@@ -400,11 +689,10 @@ SPEAK_PROG all
 		mpargset $0 '$%QVAR(* MOTIVEGROUP)%'
 		for $1 = 1 to $0
 			mpargset $2 'MOTIVEGROUP#$1'
-			mpargset $3 '$%QVAR(* $2)%'
-			IF STRCONTAINS($g "$3") AND EVAL($9 == '')
-				MPARGSET $9 $g
-				MPCALLFUNC AskedAboutMotive $3
-				MPARGSET $9 $g
+			mpargset $6 '$%QVAR(* $2)%'
+			IF STRCONTAINS($g "$6")
+				MPCALLFUNC AskedAboutMotive $6
+				MPARGSET $9 $6
 				BREAK
 			endif
 		next

@@ -17,9 +17,9 @@ limitations under the License.
 
 See guides/RandomAreas.html for information about documents of this type.
 
-template: normal_travel1
+template: normal_escort2
 settable vars: 
-    template(normal_travel1)
+    template(normal_escort2)
     area_name(area name)
     source_name(mob name)
     targetarea_name(area name)
@@ -109,7 +109,7 @@ settable vars:
 		<STRING>$reason_partytime</STRING>
 		<STRING>$reason_iowethem</STRING>
 		<STRING>$reason_ilostthem</STRING>
-		<STRING>$reason_gentravel</STRING>
+		<STRING>$reason_genescort</STRING>
 		<STRING CONDITION="$source_align &gt; 500">$reason_idoforthem</STRING>
 		<STRING>$reason_wedotogether</STRING>
 		<STRING CONDITION="$source_align &lt; -500">$reason_idotothem</STRING>
@@ -150,7 +150,7 @@ settable vars:
 		</STRING>
 	</STRING>
 
-	<STRING ID="reason_gentravel" SELECT="All">
+	<STRING ID="reason_genescort" SELECT="All">
 		<STRING define="quest_traveled">$quest_arrivalstring</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:target_name} needs to travel to $target_area_name.</STRING>
