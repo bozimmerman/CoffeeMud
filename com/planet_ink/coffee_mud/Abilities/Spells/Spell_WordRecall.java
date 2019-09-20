@@ -105,15 +105,16 @@ public class Spell_WordRecall extends Spell
 		{
 			final int AUTO=auto?CMMsg.MASK_ALWAYS:0;
 			final Room recalledRoom=mob.location();
-			final Room recallRoom=mob.getStartRoom();
+			Room recallRoom=mob.getStartRoom();
 			CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?L("<S-NAME> disappear(s) into the Java Plane!"):L("<S-NAME> recall(s) body and spirit to the Java Plane!"));
 			CMMsg msg2=CMClass.getMsg(mob,recallRoom,this,verbalCastCode(mob,recallRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,verbalCastCode(mob,recallRoom,auto),null);
 			if((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
 			{
 				recalledRoom.send(mob,msg);
-				((Room)msg2.target()).send(mob,msg2);
+				recallRoom=(Room)msg2.target();
+				(recallRoom).send(mob,msg2);
 				if(recalledRoom.isInhabitant(mob))
-					((Room)msg2.target()).bringMobHere(mob,false);
+					(recallRoom).bringMobHere(mob,false);
 				for(int f=0;f<mob.numFollowers();f++)
 				{
 					final MOB follower=mob.fetchFollower(f);
@@ -126,12 +127,12 @@ public class Spell_WordRecall extends Spell
 					&&(recalledRoom.isInhabitant(follower))
 					&&(recalledRoom.okMessage(follower,msg)))
 					{
-						msg2=CMClass.getMsg(follower,(msg2.target()),this,verbalCastCode(mob,((Room)msg2.target()),auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,verbalCastCode(mob,((Room)msg2.target()),auto),null);
-						if(((Room)msg2.target()).okMessage(follower,msg2))
+						msg2=CMClass.getMsg(follower,(msg2.target()),this,verbalCastCode(mob,(recallRoom),auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,verbalCastCode(mob,(recallRoom),auto),null);
+						if((recallRoom).okMessage(follower,msg2))
 						{
-							((Room)msg2.target()).send(follower,msg2);
+							(recallRoom).send(follower,msg2);
 							if(recalledRoom.isInhabitant(follower))
-								((Room)msg2.target()).bringMobHere(follower,false);
+								(recallRoom).bringMobHere(follower,false);
 						}
 					}
 				}

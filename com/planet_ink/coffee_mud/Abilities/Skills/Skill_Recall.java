@@ -110,16 +110,17 @@ public class Skill_Recall extends StdSkill
 			if(((recalledRoom.okMessage(mob,msg))&&(recallRoom.okMessage(mob,msg2)))
 			||CMSecurity.isAllowed(mob,recalledRoom,CMSecurity.SecFlag.GOTO))
 			{
+				recallRoom=(Room)msg2.target();
 				if(mob.isInCombat())
 					CMLib.commands().postFlee(mob,"NOWHERE");
 				recalledRoom.send(mob,msg);
-				((Room)msg2.target()).send(mob,msg2);
+				recallRoom.send(mob,msg2);
 				if(recalledRoom.isInhabitant(mob))
 				{
-					if(((Room)msg2.target()).isInhabitant(mob)&&(((Room)msg2.target())==recalledRoom))
+					if(recallRoom.isInhabitant(mob)&&((recallRoom)==recalledRoom))
 						beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to recall, but go(es) nowhere."));
 					else
-						((Room)msg2.target()).bringMobHere(mob,false);
+						recallRoom.bringMobHere(mob,false);
 				}
 				for(int f=0;f<mob.numFollowers();f++)
 				{
@@ -139,14 +140,14 @@ public class Skill_Recall extends StdSkill
 						&&(fRecalledRoom.isInhabitant(follower))
 						&&(fRecalledRoom.okMessage(follower,msg)||CMSecurity.isAllowed(mob,recalledRoom,CMSecurity.SecFlag.GOTO)))
 						{
-							msg2=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
-							if(((Room)msg2.target()).okMessage(follower,msg2)||CMSecurity.isAllowed(mob,recalledRoom,CMSecurity.SecFlag.GOTO))
+							msg2=CMClass.getMsg(follower,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,null);
+							if(recallRoom.okMessage(follower,msg2)||CMSecurity.isAllowed(mob,recalledRoom,CMSecurity.SecFlag.GOTO))
 							{
 								if(follower.isInCombat())
 									CMLib.commands().postFlee(follower,("NOWHERE"));
-								((Room)msg2.target()).send(follower,msg2);
+								recallRoom.send(follower,msg2);
 								if(fRecalledRoom.isInhabitant(follower))
-									((Room)msg2.target()).bringMobHere(follower,false);
+									recallRoom.bringMobHere(follower,false);
 							}
 						}
 					}
