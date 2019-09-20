@@ -317,7 +317,7 @@ public class QuestBound implements Ability
 	@Override
 	public void startTickDown(final MOB invokerMOB, final Physical affected, final int tickTime)
 	{
-		if (affected.fetchEffect(ID()) == null)
+		if ((affected!=null)&&(affected.fetchEffect(ID()) == null))
 			affected.addEffect(this);
 	}
 
@@ -671,7 +671,7 @@ public class QuestBound implements Ability
 			if(star)
 				questIDs.add("*");
 		}
-		if(questIDs.size()==0)
+		if((questIDs.size()==0)&&(affected!=null))
 			affected.delEffect(this);
 	}
 
