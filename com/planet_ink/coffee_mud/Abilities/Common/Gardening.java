@@ -264,7 +264,8 @@ public class Gardening extends GatheringSkill
 		&&(CMLib.flags().canBeSeenBy(I2,mob))
 		&&(I2.container()==null)
 		&&((I2.material()==RawMaterial.RESOURCE_FLOWERS)
-		  ||(I2.material()==RawMaterial.RESOURCE_HERBS)))
+		  ||(I2.material()==RawMaterial.RESOURCE_HERBS)
+		  ||(I2.material()==RawMaterial.RESOURCE_GARLIC)))
 			return true;
 		return false;
 	}
@@ -367,7 +368,8 @@ public class Gardening extends GatheringSkill
 			final String str=codes.name(cd).toUpperCase();
 			if((str.equals(what))
 			&&((cd==RawMaterial.RESOURCE_FLOWERS)
-			  ||(cd==RawMaterial.RESOURCE_HERBS)))
+			  ||(cd==RawMaterial.RESOURCE_HERBS)
+			  ||(cd==RawMaterial.RESOURCE_GARLIC)))
 			{
 				code=cd;
 				foundShortName=CMStrings.capitalizeAndLower(str);
@@ -381,7 +383,8 @@ public class Gardening extends GatheringSkill
 				final String str=codes.name(cd).toUpperCase();
 				if((str.toUpperCase().startsWith(what)||(what.startsWith(str)))
 				&&((cd==RawMaterial.RESOURCE_FLOWERS)
-				  ||(cd==RawMaterial.RESOURCE_HERBS)))
+				  ||(cd==RawMaterial.RESOURCE_HERBS))
+				  ||(cd==RawMaterial.RESOURCE_GARLIC))
 				{
 					code=cd;
 					foundShortName=CMStrings.capitalizeAndLower(str);
@@ -405,7 +408,7 @@ public class Gardening extends GatheringSkill
 		}
 		if(code<0)
 		{
-			commonTell(mob,L("You've never heard of '@x1'.",CMParms.combine(commands,0)));
+			commonTell(mob,L("You've never heard of an herb or flower called '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 
