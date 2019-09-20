@@ -228,7 +228,7 @@ public class Spell_FindFamiliar extends Spell
 			break;
 		case 8:
 			newMOB.setName(L("a raven"));
-			newMOB.setDisplayText(L("a raven is pearched nearby"));
+			newMOB.setDisplayText(L("a raven is perched nearby"));
 			newMOB.setDescription(L("You think he`s watching you."));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Raven"));
