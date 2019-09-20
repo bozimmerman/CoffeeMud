@@ -429,20 +429,29 @@ public class StdDeity extends StdMOB implements Deity
 		return true;
 	}
 
-	public synchronized void bestowBlessing(final MOB mob, final Ability Blessing)
+	public synchronized void bestowBlessing(final MOB mob, final Ability blesingA)
 	{
-		final Room prevRoom=location();
-		mob.location().bringMobHere(this,false);
-		if(Blessing!=null)
+		final Room prevRoom;
+		synchronized(this)
+		{
+			prevRoom=location();
+		}
+		final Room targetRoom;
+		synchronized(mob)
+		{
+			targetRoom=mob.location();
+		}
+		targetRoom.bringMobHere(this,false);
+		if(blesingA!=null)
 		{
 			final Vector<String> V=new Vector<String>();
-			if(Blessing.canTarget(Ability.CAN_MOBS))
+			if(blesingA.canTarget(Ability.CAN_MOBS))
 			{
 				V.addElement(mob.name()+"$");
-				Blessing.invoke(this,V,mob,true,mob.phyStats().level());
+				blesingA.invoke(this,V,mob,true,mob.phyStats().level());
 			}
 			else
-			if(Blessing.canTarget(Ability.CAN_ITEMS))
+			if(blesingA.canTarget(Ability.CAN_ITEMS))
 			{
 				Item I=mob.fetchWieldedItem();
 				if(I==null)
@@ -455,16 +464,24 @@ public class StdDeity extends StdMOB implements Deity
 					return;
 				V.addElement("$"+I.name()+"$");
 				addItem(I);
-				Blessing.invoke(this,V,I,true,mob.phyStats().level());
+				blesingA.invoke(this,V,I,true,mob.phyStats().level());
 				delItem(I);
 				if(!mob.isMine(I))
 					mob.addItem(I);
 			}
 			else
-				Blessing.invoke(this,mob,true,mob.phyStats().level());
+				blesingA.invoke(this,mob,true,mob.phyStats().level());
 		}
 		prevRoom.bringMobHere(this,false);
-		if(mob.location()!=prevRoom)
+		if((prevRoom != location())
+		||(!prevRoom.isInhabitant(this))
+		||(targetRoom.isInhabitant(this)))
+		{
+			this.setLocation(prevRoom);
+			prevRoom.addInhabitant(this);
+			targetRoom.delInhabitant(this);
+		}
+		if(targetRoom!=prevRoom)
 		{
 			if(mob.getVictim()==this)
 				mob.makePeace(true);
@@ -487,8 +504,17 @@ public class StdDeity extends StdMOB implements Deity
 
 	public synchronized void bestowCurse(final MOB mob, final Ability Curse)
 	{
-		final Room prevRoom=location();
-		mob.location().bringMobHere(this,false);
+		final Room prevRoom;
+		synchronized(this)
+		{
+			prevRoom=location();
+		}
+		final Room targetRoom;
+		synchronized(mob)
+		{
+			targetRoom=mob.location();
+		}
+		targetRoom.bringMobHere(this,false);
 		if(Curse!=null)
 		{
 			final Vector<String> V=new Vector<String>();
@@ -520,6 +546,14 @@ public class StdDeity extends StdMOB implements Deity
 				Curse.invoke(this,mob,true,mob.phyStats().level());
 		}
 		prevRoom.bringMobHere(this,false);
+		if((prevRoom != location())
+		||(!prevRoom.isInhabitant(this))
+		||(targetRoom.isInhabitant(this)))
+		{
+			this.setLocation(prevRoom);
+			prevRoom.addInhabitant(this);
+			targetRoom.delInhabitant(this);
+		}
 		if(mob.location()!=prevRoom)
 		{
 			if(mob.getVictim()==this)
