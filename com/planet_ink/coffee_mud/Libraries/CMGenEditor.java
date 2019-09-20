@@ -4838,7 +4838,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								chosenOne=(Ability)chosenOne.copyOf();
 								M.addAbility(chosenOne);
 								chosenOne.setProficiency(75);
-								chosenOne.autoInvocation(mob, false);
+								chosenOne.autoInvocation(M, false);
 							}
 						}
 						else
