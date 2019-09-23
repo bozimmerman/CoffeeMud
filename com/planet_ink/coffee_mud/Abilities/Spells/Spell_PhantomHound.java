@@ -203,6 +203,18 @@ public class Spell_PhantomHound extends Spell
 			mob.tell(L("You must be in combat to cast this spell!"));
 			return false;
 		}
+
+		for(final Enumeration<Pair<MOB,Short>> m=mob.followers();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement().first;
+			if((M!=null)
+			&&(M.fetchEffect(ID())!=null))
+			{
+				mob.tell(L("You already have a phantom hound!"));
+				return false;
+			}
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
