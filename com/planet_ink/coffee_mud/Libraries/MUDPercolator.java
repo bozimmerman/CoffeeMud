@@ -1246,6 +1246,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		public String var=null;
 		public boolean toLowerCase=false;
 		public boolean toUpperCase=false;
+		public boolean toJavascript=false;
 		public boolean toCapitalized=false;
 		public boolean toPlural=false;
 		public boolean isMathExpression=false;
@@ -1274,6 +1275,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						break;
 					case 'u': case 'U':
 						var.toUpperCase=true;
+						break;
+					case 'j': case 'J':
+						var.toJavascript=true;
 						break;
 					case 'p': case 'P':
 						var.toPlural=true;
@@ -2742,6 +2746,66 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return wholeText;
 	}
 
+	protected String buildQuestTemplate(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String tagName, final XMLTag valPiece, final Map<String,Object> defined) throws CMException,PostProcessException
+	{
+		String value=null;
+		String questTemplateLoad = valPiece.tag().equals("QUEST")?valPiece.getParmValue("QUEST_TEMPLATE_ID"):null;
+		if((questTemplateLoad!=null)
+		&&(questTemplateLoad.length()>0))
+		{
+			//valPiece.parms().remove("QUEST_TEMPLATE_ID"); // once only, please
+			questTemplateLoad = strFilter(E,ignoreStats,defPrefix,questTemplateLoad,valPiece, defined);
+			CMFile file = new CMFile(Resources.makeFileResourceName(questTemplateLoad),null);
+			if(!file.exists() || !file.canRead())
+				file = new CMFile(Resources.makeFileResourceName("quests/templates/"+questTemplateLoad.trim()+".quest"),null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
+			if(file.exists() && file.canRead())
+			{
+				final String rawFileText = file.text().toString();
+				final int endX=rawFileText.lastIndexOf("#!QUESTMAKER_END_SCRIPT");
+				if(endX > 0)
+				{
+					final int lastCR = rawFileText.indexOf('\n', endX);
+					final int lastEOF = rawFileText.indexOf('\r', endX);
+					final int endScript = lastCR > endX ? (lastCR < lastEOF ? lastCR : lastEOF): lastEOF;
+					final List<String> wizList = Resources.getFileLineVector(new StringBuffer(rawFileText.substring(0, endScript).trim()));
+					String cleanedFileText = rawFileText.substring(endScript).trim();
+					cleanedFileText = CMStrings.replaceAll(cleanedFileText, "$#AUTHOR", "CoffeeMud");
+					final String duration=this.findOptionalString(E, ignoreStats, defPrefix, "DURATION", valPiece, defined, false);
+					if((duration != null) && (duration.trim().length()>0))
+						cleanedFileText = this.replaceLineStartsWithIgnoreCase(cleanedFileText, "set duration", "SET DURATION "+duration);
+					final String expiration=this.findOptionalString(E, ignoreStats, defPrefix, "EXPIRATION", valPiece, defined, false);
+					if((expiration != null)  && (expiration.trim().length()>0))
+						cleanedFileText = this.replaceLineStartsWithIgnoreCase(cleanedFileText, "set duration", "SET EXPIRATION "+expiration);
+					for(final String wiz : wizList)
+					{
+						if(wiz.startsWith("#$"))
+						{
+							final int x=wiz.indexOf('=');
+							if(x>0)
+							{
+								final String var=wiz.substring(1,x);
+								if(cleanedFileText.indexOf(var)>0)
+								{
+									final String findVar=wiz.substring(2,x);
+									final String val=this.findStringNow(E, ignoreStats, defPrefix, findVar, valPiece, defined);
+									if(val == null)
+										throw new CMException("Unable to generate quest.  Required variable $"+findVar+" not found.");
+									cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,CMStrings.replaceAll(val, "$$", "$"));
+								}
+							}
+						}
+					}
+					value=cleanedFileText;
+				}
+				else
+					throw new CMException("Corrupt quest_template in '"+tagName+"' on piece '"+valPiece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(valPiece.parms())+":"+CMStrings.limit(valPiece.value(),100));
+			}
+			else
+				throw new CMException("Bad quest_template_id in '"+tagName+"' on piece '"+valPiece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(valPiece.parms())+":"+CMStrings.limit(valPiece.value(),100));
+		}
+		return value;
+	}
+
 	protected String findString(final Modifiable E, final List<String> ignoreStats, final String defPrefix, String tagName, XMLTag piece, final Map<String,Object> defined) throws CMException,PostProcessException
 	{
 		tagName=tagName.toUpperCase().trim();
@@ -2819,63 +2883,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(valPiece.parms().containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
 				continue;
 
-			final String value;
-			String questTemplateLoad = valPiece.tag().equals("QUEST")?valPiece.getParmValue("QUEST_TEMPLATE_ID"):null;
-			if((questTemplateLoad!=null)
-			&&(questTemplateLoad.length()>0))
-			{
-				//valPiece.parms().remove("QUEST_TEMPLATE_ID"); // once only, please
-				questTemplateLoad = strFilter(E,ignoreStats,defPrefix,questTemplateLoad,valPiece, defined);
-				CMFile file = new CMFile(Resources.makeFileResourceName(questTemplateLoad),null);
-				if(!file.exists() || !file.canRead())
-					file = new CMFile(Resources.makeFileResourceName("quests/templates/"+questTemplateLoad.trim()+".quest"),null,CMFile.FLAG_LOGERRORS|CMFile.FLAG_FORCEALLOW);
-				if(file.exists() && file.canRead())
-				{
-					final String rawFileText = file.text().toString();
-					final int endX=rawFileText.lastIndexOf("#!QUESTMAKER_END_SCRIPT");
-					if(endX > 0)
-					{
-						final int lastCR = rawFileText.indexOf('\n', endX);
-						final int lastEOF = rawFileText.indexOf('\r', endX);
-						final int endScript = lastCR > endX ? (lastCR < lastEOF ? lastCR : lastEOF): lastEOF;
-						final List<String> wizList = Resources.getFileLineVector(new StringBuffer(rawFileText.substring(0, endScript).trim()));
-						String cleanedFileText = rawFileText.substring(endScript).trim();
-						cleanedFileText = CMStrings.replaceAll(cleanedFileText, "$#AUTHOR", "CoffeeMud");
-						final String duration=this.findOptionalString(E, ignoreStats, defPrefix, "DURATION", valPiece, defined, false);
-						if((duration != null) && (duration.trim().length()>0))
-							cleanedFileText = this.replaceLineStartsWithIgnoreCase(cleanedFileText, "set duration", "SET DURATION "+duration);
-						final String expiration=this.findOptionalString(E, ignoreStats, defPrefix, "EXPIRATION", valPiece, defined, false);
-						if((expiration != null)  && (expiration.trim().length()>0))
-							cleanedFileText = this.replaceLineStartsWithIgnoreCase(cleanedFileText, "set duration", "SET EXPIRATION "+expiration);
-						for(final String wiz : wizList)
-						{
-							if(wiz.startsWith("#$"))
-							{
-								final int x=wiz.indexOf('=');
-								if(x>0)
-								{
-									final String var=wiz.substring(1,x);
-									if(cleanedFileText.indexOf(var)>0)
-									{
-										final String findVar=wiz.substring(2,x);
-										final String val=this.findStringNow(E, ignoreStats, defPrefix, findVar, valPiece, defined);
-										if(val == null)
-											throw new CMException("Unable to generate quest.  Required variable $"+findVar+" not found.");
-										cleanedFileText=CMStrings.replaceAll(cleanedFileText,var,CMStrings.replaceAll(val, "$$", "$"));
-									}
-								}
-							}
-						}
-						value=cleanedFileText;
-					}
-					else
-						throw new CMException("Corrupt quest_template in '"+tagName+"' on piece '"+valPiece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(valPiece.parms())+":"+CMStrings.limit(valPiece.value(),100));
-				}
-				else
-					throw new CMException("Bad quest_template_id in '"+tagName+"' on piece '"+valPiece.tag()+"', Data: "+CMParms.toKeyValueSlashListString(valPiece.parms())+":"+CMStrings.limit(valPiece.value(),100));
-			}
-			else
+			String value=this.buildQuestTemplate(E, ignoreStats, defPrefix, tagName, valPiece, defined);
+			if(value == null)
 				value=strFilter(E,ignoreStats,defPrefix,valPiece.value(),valPiece, defined);
+
 			if(processDefined!=valPiece)
 				defineReward(E,ignoreStats,defPrefix,valPiece.getParmValue("DEFINE"),valPiece,value,defined,true);
 
@@ -6319,6 +6330,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				val=CMStrings.capitalizeAndLower(val.toString());
 			if(V.toOneWord)
 				val=CMStrings.removePunctuation(val.toString().replace(' ', '_'));
+			if(V.toJavascript)
+				val=MiniJSON.toJSONString(val.toString());
 			if(killArticles)
 				val=CMLib.english().removeArticleLead(val.toString());
 			str=str.substring(0,V.outerStart)+val.toString()+str.substring(V.outerEnd);
