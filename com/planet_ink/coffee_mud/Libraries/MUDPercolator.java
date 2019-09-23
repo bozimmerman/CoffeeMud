@@ -1281,7 +1281,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						var.toJavascript=true;
 						break;
 					case '1':
-						var.toJavascript=true;
+						var.toOneLine=true;
 						break;
 					case 'p': case 'P':
 						var.toPlural=true;
