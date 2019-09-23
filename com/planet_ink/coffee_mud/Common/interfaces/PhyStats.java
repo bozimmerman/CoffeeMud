@@ -605,7 +605,7 @@ public interface PhyStats extends CMCommon, Modifiable
 
 	/** STAT codes, indexed by the 2nd root of the various IS_ disposition() bitmasks */
 	public static final String[] IS_CODES={
-		"ISSEEN",
+		"ISUNSEEN",
 		"ISHIDDEN",
 		"ISINVISIBLE",
 		"ISEVIL",

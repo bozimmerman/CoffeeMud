@@ -1,0 +1,443 @@
+<?xml version="1.0"?>
+<!-- ----------------------------------------------------------------------------
+Copyright 2019-2019 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--------------------------------------------------------------------------------
+
+See guides/RandomAreas.html for information about documents of this type.
+
+template: normal_mystery1
+settable vars: 
+    template(normal_mystery1)
+    area_name(area name)
+    source_name(mob name)
+    targetarea_name(area name)
+    multiarea(yes or NO)
+	xp_amount_awarded
+	gold_amount_awarded
+	quest_point_awarded(YES,NO)
+	reward_items()
+-->
+
+<QUEST ID="normal_mystery1" QUEST_TEMPLATE_ID="normal_mystery1">
+	<QUEST_ID DEFINE="quest_id">${_:source_area_name}_${_:source_name}_${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
+	<QUEST_NAME SELECT="Any-1">$quest_name</QUEST_NAME>
+	<QUEST_CRITERIA>+SYSOP +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA>
+	<ANNOUNCER_AREA>"$source_area_name"</ANNOUNCER_AREA>
+	<ANNOUNCER_ROOM>"$source_room_id"</ANNOUNCER_ROOM>
+	<ANNOUNCER_NAME>"$source_name"</ANNOUNCER_NAME>
+	<QUEST_NOTIFYSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSTRING>
+	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
+	<DESTINATION_AREA>"$target_area_name"</DESTINATION_AREA>
+	<WITNESS_MASK>-PLAYER +INT 5 -HOME "+$target_area_name"</WITNESS_MASK>
+	<SUSPECTS_MOBS>${SELECT: . FROM $target_mobs}</SUSPECTS_MOBS>
+	<NUM_SUSPECTS>$num_targets</NUM_SUSPECTS>
+	<TOOLS_ITEMS>${SELECT: . FROM $tool_items}</TOOLS_ITEMS>
+	<NUM_TOOLS>$num_items</NUM_TOOLS>
+	<MOTIVE_LIST>$quest_motive_list</MOTIVE_LIST>
+	<NUM_MOTIVES>$num_motives</NUM_MOTIVES>
+	<SOLVED_RESPONSE_TEXT>${j:1:quest_completedstring}</SOLVED_RESPONSE_TEXT>
+	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
+	<GOLD>$gold_amount_awarded</GOLD>
+	<EXP>$xp_amount_awarded</EXP>
+	<MULTIPLE>$quest_repeatable</MULTIPLE>
+	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
+	<FACTION>$source_faction</FACTION>
+	<NUMFACTION>$[$source_faction_amt / 500]</NUMFACTION>
+	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
+
+	<STRING load="/resources/quests/random/inc_questcommon.xml" />
+
+	<STRING ID="num_motives" define="num_motives">$[2?4]</STRING>
+	<STRING ID="quest_motive_list" PREDEFINE="reason=$reason">$quest_motive_list</STRING>
+	<STRING ID="quest_name"  PREDEFINE="reason=$reason">$quest_name</STRING>
+	<STRING ID="quest_notifystring"  PREDEFINE="reason=$reason">$quest_notifystring</STRING>
+	<STRING ID="quest_instructionstring"  PREDEFINE="reason=$reason">$quest_instructionstring</STRING>
+	<STRING ID="quest_completedstring" PREDEFINE="reason=$reason">$quest_completedstring</STRING>
+	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
+		<STRING>$reason_murder</STRING>
+		<STRING>$reason_robbed</STRING>
+		<STRING>$reason_gift</STRING>
+		<STRING>$reason_magic</STRING>
+		<STRING>$reason_product</STRING>
+		<STRING>$reason_genmystery</STRING>
+	</STRING>
+
+	<STRING ID="reason_murder" SELECT="All">
+		<STRING define="quest_name">${c:source_name} needs your help solving a murder.</STRING>
+		<STRING define="quest_notifystring">A murder has occurred and I need help solving it.</STRING>
+		<STRING define="quest_instructionstring">
+			${c:fantasy_name} has been murdered, and you need to figure out WHO did it, WHAT 
+			item they used, and what MOTIVE was involved.  If you go around asking the locals 
+			of $target_area_name about certain things, they will give you clues.  Then come back to me when
+			you have an answer to each of the questions.
+		</STRING>
+		<STRING define="quest_completedstring">
+			Well done $$n, justice has been served!
+		</STRING>
+		<STRING define="quest_motive_list">$quest_murder_motive_list</STRING>
+		<STRING ID="quest_murder_motive_list" SELECT="ANY-$num_motives">
+			<STRING ACTION="APPEND"> "anger" </STRING>
+			<STRING ACTION="APPEND"> "jealousy" </STRING>
+			<STRING ACTION="APPEND"> "honor" </STRING>
+			<STRING ACTION="APPEND"> "debt" </STRING>
+			<STRING ACTION="APPEND"> "irritation" </STRING>
+			<STRING ACTION="APPEND"> "revenge" </STRING>
+			<STRING ACTION="APPEND"> "retribution" </STRING>
+			<STRING ACTION="APPEND"> "retaliation" </STRING>
+			<STRING ACTION="APPEND"> "payback" </STRING>
+			<STRING ACTION="APPEND"> "affront" </STRING>
+			<STRING ACTION="APPEND"> "abuse" </STRING>
+			<STRING ACTION="APPEND"> "offense" </STRING>
+			<STRING ACTION="APPEND"> "glory" </STRING>
+		</STRING>
+	</STRING>
+	
+	
+	<STRING ID="reason_robbed" SELECT="All">
+		<STRING define="quest_name">${c:source_name} needs your help solving a robbery.</STRING>
+		<STRING define="quest_notifystring">There's been a robbery and I need help solving it.</STRING>
+		<STRING define="quest_instructionstring">
+			${c:fantasy_name} has been robbed, and you need to figure out WHO did it, WHAT 
+			item they stole, and what MOTIVE was involved.  If you go around asking the locals 
+			of $target_area_name about certain things, they will give you clues.  Then come back to me when
+			you have an answer to each of the questions.
+		</STRING>
+		<STRING define="quest_completedstring">
+			Well done $$n, justice has been served!
+		</STRING>
+		<STRING define="quest_motive_list">$quest_robbed_motive_list</STRING>
+		<STRING id="quest_robbed_motive_list" SELECT="ANY-$num_motives">
+			<STRING ACTION="APPEND"> "poverty" </STRING>
+			<STRING ACTION="APPEND"> "jealousy" </STRING>
+			<STRING ACTION="APPEND"> "difficulty" </STRING>
+			<STRING ACTION="APPEND"> "debt" </STRING>
+			<STRING ACTION="APPEND"> "covetousness" </STRING>
+			<STRING ACTION="APPEND"> "revenge" </STRING>
+			<STRING ACTION="APPEND"> "retribution" </STRING>
+			<STRING ACTION="APPEND"> "retaliation" </STRING>
+			<STRING ACTION="APPEND"> "payback" </STRING>
+			<STRING ACTION="APPEND"> "reprisal" </STRING>
+			<STRING ACTION="APPEND"> "abuse" </STRING>
+			<STRING ACTION="APPEND"> "offense" </STRING>
+			<STRING ACTION="APPEND"> "glory" </STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_gift" SELECT="All">
+		<STRING define="quest_name">${c:source_name} wants you to figure out the surprise gift.</STRING>
+		<STRING define="quest_notifystring">I'm receiving a secret gift and want help figuring it out.</STRING>
+		<STRING define="quest_instructionstring">
+			Someone is giving me a mystery gift for some reason and you need to figure out WHO will give it, WHAT 
+			item are giving me, and what MOTIVE is involved.  If you go around asking the locals 
+			of $target_area_name about certain things, they will give you clues.  Then come back to me when
+			you have an answer to each of the questions.
+		</STRING>
+		<STRING define="quest_completedstring">
+			Well done $$n, now the surprise is entirely spoiled!
+		</STRING>
+		<STRING define="quest_motive_list">$quest_gift_motive_list</STRING>
+		<STRING id="quest_gift_motive_list" SELECT="ANY-$num_motives">
+			<STRING ACTION="APPEND"> "love" </STRING>
+			<STRING ACTION="APPEND"> "friendship" </STRING>
+			<STRING ACTION="APPEND"> "surprise" </STRING>
+			<STRING ACTION="APPEND"> "alliance" </STRING>
+			<STRING ACTION="APPEND"> "unity" </STRING>
+			<STRING ACTION="APPEND"> "intimacy" </STRING>
+			<STRING ACTION="APPEND"> "affinity" </STRING>
+			<STRING ACTION="APPEND"> "rapport" </STRING>
+			<STRING ACTION="APPEND"> "harmony" </STRING>
+			<STRING ACTION="APPEND"> "understanding" </STRING>
+			<STRING ACTION="APPEND"> "companionship" </STRING>
+			<STRING ACTION="APPEND"> "association" </STRING>
+			<STRING ACTION="APPEND"> "warmth" </STRING>
+			<STRING ACTION="APPEND"> "tenderness" </STRING>
+			<STRING ACTION="APPEND"> "fondness" </STRING>
+			<STRING ACTION="APPEND"> "wealth" </STRING>
+			<STRING ACTION="APPEND"> "partiality" </STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_product" SELECT="All">
+		<STRING define="quest_name">${c:source_name} wants you to figure out what's coming to $source_area_name.</STRING>
+		<STRING define="quest_notifystring">A new merchant is coming to $source_area_name soon, and I'd like to know about it.</STRING>
+		<STRING define="quest_instructionstring">
+			A new merchant is bringing some new product to $source_area_name, and you need to find out out WHO is bringing it, WHAT 
+			the product is, and what MOTIVE is involved.  If you go around asking the locals 
+			of $target_area_name about certain things, they will give you clues.  Then come back to me when
+			you have an answer to each of the questions.
+		</STRING>
+		<STRING define="quest_completedstring">
+			Well done $$n, I can't wait!
+		</STRING>
+		<STRING define="quest_motive_list">$quest_product_motive_list</STRING>
+		<STRING id="quest_product_motive_list" SELECT="ANY-$num_motives">
+			<STRING ACTION="APPEND"> "wealth" </STRING>
+			<STRING ACTION="APPEND"> "greed" </STRING>
+			<STRING ACTION="APPEND"> "helpfulness" </STRING>
+			<STRING ACTION="APPEND"> "avarice" </STRING>
+			<STRING ACTION="APPEND"> "materialism" </STRING>
+			<STRING ACTION="APPEND"> "rapacity" </STRING>
+			<STRING ACTION="APPEND"> "cupidity" </STRING>
+			<STRING ACTION="APPEND"> "avidity" </STRING>
+			<STRING ACTION="APPEND"> "impatience" </STRING>
+			<STRING ACTION="APPEND"> "enthusiasm" </STRING>
+			<STRING ACTION="APPEND"> "cooperation" </STRING>
+			<STRING ACTION="APPEND"> "neighborly" </STRING>
+			<STRING ACTION="APPEND"> "benevolence" </STRING>
+			<STRING ACTION="APPEND"> "sympathetic" </STRING>
+			<STRING ACTION="APPEND"> "usefulness" </STRING>
+			<STRING ACTION="APPEND"> "eagerness" </STRING>
+			<STRING ACTION="APPEND"> "industriousness" </STRING>
+			<STRING ACTION="APPEND"> "fervor" </STRING>
+			<STRING ACTION="APPEND"> "zealousness" </STRING>
+			<STRING ACTION="APPEND"> "excitement" </STRING>
+			<STRING ACTION="APPEND"> "commitment" </STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_magic" SELECT="All">
+		<STRING define="quest_name">${c:source_name} wants you to find out about the latest magic research.</STRING>
+		<STRING define="quest_notifystring">I've heard a magician is coming to $source_area_name soon with new magic, and I'd like to know what it is.</STRING>
+		<STRING define="quest_instructionstring">
+			A mage is bringing some new magic to $source_area_name, and you need to find out out WHO is bringing it, WHAT 
+			item they are using, and what MOTIVE is involved.  If you go around asking the locals 
+			of $target_area_name about certain things, they will give you clues.  Then come back to me when
+			you have an answer to each of the questions.
+		</STRING>
+		<STRING define="quest_completedstring">
+			Well done $$n, it sounds very intriguing!
+		</STRING>
+		<STRING define="quest_motive_list">$quest_magic_motive_list</STRING>
+		<STRING id="quest_magic_motive_list" SELECT="ANY-$num_motives">
+			<STRING ACTION="APPEND"> "wealth" </STRING>
+			<STRING ACTION="APPEND"> "oddness" </STRING>
+			<STRING ACTION="APPEND"> "helpfulness" </STRING>
+			<STRING ACTION="APPEND"> "avarice" </STRING>
+			<STRING ACTION="APPEND"> "curiosity" </STRING>
+			<STRING ACTION="APPEND"> "strangeness" </STRING>
+			<STRING ACTION="APPEND"> "interest" </STRING>
+			<STRING ACTION="APPEND"> "avidity" </STRING>
+			<STRING ACTION="APPEND"> "impatience" </STRING>
+			<STRING ACTION="APPEND"> "enthusiasm" </STRING>
+			<STRING ACTION="APPEND"> "cooperation" </STRING>
+			<STRING ACTION="APPEND"> "neighborly" </STRING>
+			<STRING ACTION="APPEND"> "benevolence" </STRING>
+			<STRING ACTION="APPEND"> "sympathetic" </STRING>
+			<STRING ACTION="APPEND"> "usefulness" </STRING>
+			<STRING ACTION="APPEND"> "eagerness" </STRING>
+			<STRING ACTION="APPEND"> "eccentricity" </STRING>
+			<STRING ACTION="APPEND"> "fervor" </STRING>
+			<STRING ACTION="APPEND"> "zealousness" </STRING>
+			<STRING ACTION="APPEND"> "excitement" </STRING>
+			<STRING ACTION="APPEND"> "commitment" </STRING>
+			<STRING ACTION="APPEND"> "poverty" </STRING>
+			<STRING ACTION="APPEND"> "jealousy" </STRING>
+			<STRING ACTION="APPEND"> "difficulty" </STRING>
+			<STRING ACTION="APPEND"> "debt" </STRING>
+			<STRING ACTION="APPEND"> "covetousness" </STRING>
+			<STRING ACTION="APPEND"> "revenge" </STRING>
+			<STRING ACTION="APPEND"> "retribution" </STRING>
+			<STRING ACTION="APPEND"> "retaliation" </STRING>
+			<STRING ACTION="APPEND"> "payback" </STRING>
+			<STRING ACTION="APPEND"> "reprisal" </STRING>
+			<STRING ACTION="APPEND"> "abuse" </STRING>
+			<STRING ACTION="APPEND"> "offense" </STRING>
+			<STRING ACTION="APPEND"> "glory" </STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_genmystery" SELECT="All">
+		<STRING define="quest_name">${c:source_name} wants you to solve a mystery.</STRING>
+		<STRING define="quest_notifystring">There's a mystery that needs solving!</STRING>
+		<STRING define="quest_instructionstring">
+			There's a mystery in $target_area_name, you need to figure out WHO is involved, WHAT 
+			item is used, and what MOTIVE is involved.  If you go around asking the locals 
+			of $target_area_name about certain things, they will give you clues.  Then come back to me when
+			you have an answer to each of the questions.
+		</STRING>
+		<STRING define="quest_completedstring">
+			Well done $$n, you solved it!
+		</STRING>
+		<STRING define="quest_motive_list">$quest_gen_motive_list</STRING>
+		<STRING id="quest_gen_motive_list" SELECT="ANY-$num_motives">
+			<STRING ACTION="APPEND"> "wealth" </STRING>
+			<STRING ACTION="APPEND"> "oddness" </STRING>
+			<STRING ACTION="APPEND"> "helpfulness" </STRING>
+			<STRING ACTION="APPEND"> "avarice" </STRING>
+			<STRING ACTION="APPEND"> "curiosity" </STRING>
+			<STRING ACTION="APPEND"> "strangeness" </STRING>
+			<STRING ACTION="APPEND"> "interest" </STRING>
+			<STRING ACTION="APPEND"> "avidity" </STRING>
+			<STRING ACTION="APPEND"> "impatience" </STRING>
+			<STRING ACTION="APPEND"> "enthusiasm" </STRING>
+			<STRING ACTION="APPEND"> "cooperation" </STRING>
+			<STRING ACTION="APPEND"> "neighborly" </STRING>
+			<STRING ACTION="APPEND"> "benevolence" </STRING>
+			<STRING ACTION="APPEND"> "sympathetic" </STRING>
+			<STRING ACTION="APPEND"> "usefulness" </STRING>
+			<STRING ACTION="APPEND"> "eagerness" </STRING>
+			<STRING ACTION="APPEND"> "eccentricity" </STRING>
+			<STRING ACTION="APPEND"> "fervor" </STRING>
+			<STRING ACTION="APPEND"> "zealousness" </STRING>
+			<STRING ACTION="APPEND"> "excitement" </STRING>
+			<STRING ACTION="APPEND"> "commitment" </STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
+		<STRING PICKWEIGHT=2>NO</STRING>
+		<STRING PICKWEIGHT=1>YES</STRING>
+	</STRING>
+
+	<STRING ID="gold_amount_awarded" DEFINE="gold_amount_awarded" SELECT="any-1">
+		<STRING>$[$target_level*2]</STRING>
+	</STRING>
+
+	<STRING ID="xp_amount_awarded" DEFINE="xp_amount_awarded" SELECT="any-1">
+		<STRING>$[100 + $target_level*3]</STRING>
+	</STRING>
+
+	<OBJECT ID="source_area" SELECT="Pick-1" DEFINE="source_area">
+		<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
+		<OBJECT pickweight=55555 condition="$area_name != ''" and '${SELECT: name FROM area}' = ''>SELECT: ANY\. FROM areas where NAME=$area_name</OBJECT> 
+		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea = 'YES'">
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0 AND (SELECT: count\. from area\npcs where current_intelligence &gt; 3) &gt; 5 
+		</OBJECT>
+	</OBJECT>
+
+	<OBJECT ID="source_room" DEFINE="source_room">SELECT: . FROM $source\room</OBJECT>
+
+	<OBJECT ID="source" SELECT="Pick-1" DEFINE="source">
+		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
+		<OBJECT pickweight=55555 condition="$sourcename != ''" and '${SELECT: name FROM mob}' = ''>SELECT: . FROM $source_area\npcs WHERE name = $sourcename</OBJECT> 
+		<OBJECT PICKWEIGHT=1 CONDITION="$sourcename = '' and '${SELECT: name FROM mob}' = ''" insert="$mql_viable_questgiver" />
+	</OBJECT>
+
+	<STRING ID="source_area_name" SELECT="any-1" DEFINE="source_area_name">
+		<STRING>${SELECT:name FROM $source_area}</STRING>
+	</STRING>
+
+	<STRING ID="target_level" DEFINE="target_level" SELECT="any-1">
+		<STRING>${SELECT:MED_LEVEL from $target_area}</STRING>
+	</STRING>
+	
+	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
+		<STRING>$target_level</STRING>
+	</STRING>
+	
+	<STRING ID="source_room_id" SELECT="any-1" DEFINE="source_room_id">
+		<STRING>${SELECT:roomid from $source_room}</STRING>
+	</STRING>
+
+	<STRING ID="source_name" SELECT="any-1" DEFINE="source_name">
+		<STRING>${SELECT:name from $source}</STRING>
+	</STRING>
+
+	<STRING ID="source_class" SELECT="any-1" DEFINE="source_class">
+		<STRING>${SELECT:class from $source}</STRING>
+	</STRING>
+
+	<STRING ID="source_faction" SELECT="any-1" DEFINE="source_faction">
+		<STRING>${SELECT:factionid from $source}</STRING>
+	</STRING>
+
+	<STRING ID="source_faction_amt" SELECT="first" DEFINE="source_faction_amt">
+		<STRING CONDITION="$source_faction!=''">${SELECT:factionamt from $source}</STRING>
+		<STRING>0</STRING>
+	</STRING>
+
+	<STRING ID="source_align" SELECT="any-1" DEFINE="source_align">
+		<STRING>${SELECT:alignment from $source}</STRING>
+	</STRING>
+	
+	<STRING ID="multiarea" define="multiarea">NO</STRING>
+	
+	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
+		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
+		<OBJECT pickweight=100 condition="$targetarea_name = '' and $multiarea != 'YES'">SELECT: any\. from $source_area</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $multiarea = 'YES'">
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from area\npcs where current_intelligence &gt; 3) &gt; 5
+		</OBJECT>
+	</OBJECT>
+	
+	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">
+		<STRING>${SELECT:name from $target_area}</STRING>
+	</STRING>
+	
+	<STRING load="/resources/randareas/inc_fantasynames.xml" />
+
+	<STRING ID="num_targets"  define="num_targets" merge=overwrite>$[2?4]</STRING>
+	<OBJECT ID="target_mobs" SELECT="Any-$num_targets">
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+	</OBJECT>
+	
+	<STRING ID="num_items" define="num_items">$[2?4]</STRING>
+	<OBJECT ID="tool_items" define="tool_items" SELECT="Any-$num_items">
+		<ITEM class="metacraft:any-alchemy"/>
+		<ITEM class="metacraft:any-apothecary"/>
+		<ITEM class="metacraft:any-Armorsmithing"/>
+		<ITEM class="metacraft:any-baking"/>
+		<ITEM class="metacraft:any-Blacksmithing"/>
+		<ITEM class="metacraft:any-Boatwright"/>
+		<ITEM class="metacraft:any-CageBuilding"/>
+		<ITEM class="metacraft:any-cobbling"/>
+		<ITEM class="metacraft:any-cooking"/>
+		<ITEM class="metacraft:any-costuming"/>
+		<ITEM class="metacraft:any-distilling"/>
+		<ITEM class="metacraft:any-fletching"/>
+		<ITEM class="metacraft:any-foodprep"/>
+		<ITEM class="metacraft:any-gaelfood"/>
+		<ITEM class="metacraft:any-glassblowing"/>
+		<ITEM class="metacraft:any-herbalism"/>
+		<ITEM class="metacraft:any-instrumentmaking"/>
+		<ITEM class="metacraft:any-jewelmaking"/>
+		<ITEM class="metacraft:any-LeatherWorking"/>
+		<ITEM class="metacraft:any-papermaking"/>
+		<ITEM class="metacraft:any-pottery"/>
+		<ITEM class="metacraft:any-rodsmithing"/>
+		<ITEM class="metacraft:any-scrollscribing"/>
+		<ITEM class="metacraft:any-sculpting"/>
+		<ITEM class="metacraft:any-smelting"/>
+		<ITEM class="metacraft:any-staffmaking"/>
+		<ITEM class="metacraft:any-Tailoring"/>
+		<ITEM class="metacraft:any-Tanning"/>
+		<ITEM class="metacraft:any-Textiling"/>
+		<ITEM class="metacraft:any-torturesmithing"/>
+		<ITEM class="metacraft:any-WandMaking"/>
+		<ITEM class="metacraft:any-Wainwrighting"/>
+		<ITEM class="metacraft:any-Weaponsmithing"/>
+		<ITEM class="metacraft:any-Weaving"/>
+	</OBJECT>
+
+</QUEST>
+
+

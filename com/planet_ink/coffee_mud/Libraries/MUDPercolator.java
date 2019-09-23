@@ -1251,6 +1251,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		public boolean toPlural=false;
 		public boolean isMathExpression=false;
 		public boolean toOneWord=false;
+		public boolean toOneLine=false;
 	}
 
 	protected List<Varidentifier> parseVariables(final String str)
@@ -1277,6 +1278,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						var.toUpperCase=true;
 						break;
 					case 'j': case 'J':
+						var.toJavascript=true;
+						break;
+					case '1':
 						var.toJavascript=true;
 						break;
 					case 'p': case 'P':
@@ -6330,6 +6334,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				val=CMStrings.capitalizeAndLower(val.toString());
 			if(V.toOneWord)
 				val=CMStrings.removePunctuation(val.toString().replace(' ', '_'));
+			if(V.toOneLine)
+				val=CMStrings.deleteAllofAny(val.toString().replace('\n',' '), new char[] {'\t','\r'});
 			if(V.toJavascript)
 				val=MiniJSON.toJSONString(val.toString());
 			if(killArticles)

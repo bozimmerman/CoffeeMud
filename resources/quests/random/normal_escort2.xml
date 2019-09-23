@@ -59,12 +59,12 @@ settable vars:
 		<QUEST_NAME>${C:reason_verb} $target_name to ${C:target_area_name} for ${C:source_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<ATTACKER_SCREAM SELECT="Any-1">
-		<ATTACKER_SCREAM CONDITION="'$aggression' != 'NO'">$quest_attackerscream</ATTACKER_SCREAM>
+		<ATTACKER_SCREAM CONDITION="'$aggression' != 'NO'">${j:1:quest_attackerscream}</ATTACKER_SCREAM>
 		<ATTACKER_SCREAM CONDITION="'$aggression' = 'NO'"></ATTACKER_SCREAM>
 	</ATTACKER_SCREAM>
-	<QUEST_NOTIFYSSTRING>$quest_notifystring</QUEST_NOTIFYSSTRING>
-	<QUEST_INSTRUCTIONSSTRING>$quest_instructionstring</QUEST_INSTRUCTIONSSTRING>
-	<ESCORTED_RESPONSE>$quest_arrivalstring</ESCORTED_RESPONSE>
+	<QUEST_NOTIFYSSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSSTRING>
+	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
+	<ESCORTED_RESPONSE>${j:1:quest_arrivalstring}</ESCORTED_RESPONSE>
 	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />

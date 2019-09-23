@@ -46,7 +46,7 @@ vars:
 	<HOLDER_AREAS>"$target_area_name"</HOLDER_AREAS>
 	<HOLDER_ROOMS>ALL</HOLDER_ROOMS>
 	<HOLDERS_MOBS>${SELECT: . FROM $target}</HOLDERS_MOBS>
-	<HOLDERS_RESPONSE>$quest_fightspeech</HOLDERS_RESPONSE>
+	<HOLDERS_RESPONSE>${j:1:quest_fightspeech}</HOLDERS_RESPONSE>
 	<COLLECTABLES_ITEMS>${SELECT: . from $target_item}</COLLECTABLES_ITEMS>
 	<COLLECTABLES_CHANCE>$[($num_targets / $target_area_size * 100) * 2]</COLLECTABLES_CHANCE>
 	<NUM_COLLECTABLES>$num_targets</NUM_COLLECTABLES>
@@ -63,9 +63,9 @@ vars:
 		<QUEST_NAME>${C:source_name} in ${C:source_area_name} asks for $num_targets ${p:target_item_name} to be $reason_verbed here</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_item_name} for ${C:source_name} in ${C:source_area_name}</QUEST_NAME>
 	</QUEST_NAME>
-	<QUEST_NOTIFYSTRING>$quest_notifystring</QUEST_NOTIFYSTRING>
-	<QUEST_INSTRUCTIONSSTRING>$quest_instructionstring</QUEST_INSTRUCTIONSSTRING>
-	<QUEST_WINSPEECH_TEXT>$quest_winspeech</QUEST_WINSPEECH_TEXT>
+	<QUEST_NOTIFYSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSTRING>
+	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
+	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
 	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />

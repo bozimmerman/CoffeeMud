@@ -55,10 +55,10 @@ settable vars:
 		<QUEST_NAME>${C:source_name} asks for ${target_item_name} to be $reason_verbed to $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} ${target_item_name} to $target_name in ${C:target_area_name} for ${C:source_name}</QUEST_NAME>
 	</QUEST_NAME>
-	<QUEST_NOTIFYSTRING>$quest_notifystring</QUEST_NOTIFYSTRING>
-	<QUEST_INSTRUCTIONSSTRING>$quest_instructionstring</QUEST_INSTRUCTIONSSTRING>
-	<DELIVERY_RESPONSE>$quest_delivered</DELIVERY_RESPONSE>
-	<DELIVEREE_ANNOUNCE>$quest_hellospeech</DELIVEREE_ANNOUNCE>
+	<QUEST_NOTIFYSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSTRING>
+	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
+	<DELIVERY_RESPONSE>${j:1:quest_delivered}</DELIVERY_RESPONSE>
+	<DELIVEREE_ANNOUNCE>${j:1:quest_hellospeech}</DELIVEREE_ANNOUNCE>
 	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />

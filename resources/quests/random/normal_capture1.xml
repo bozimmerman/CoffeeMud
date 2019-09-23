@@ -58,12 +58,12 @@ settable vars:
 		<QUEST_NAME>${C:source_name} in ${C:source_area_name} asks for $num_targets ${p:target_name} to be $reason_verbed here</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_name} for ${C:source_name} in ${C:source_area_name}</QUEST_NAME>
 	</QUEST_NAME>
-	<QUEST_NOTIFYSTRING>$quest_notifystring</QUEST_NOTIFYSTRING>
-	<QUEST_INSTRUCTIONSSTRING>$quest_instructionstring</QUEST_INSTRUCTIONSSTRING>
-	<QUEST_WINSPEECH_TEXT>$quest_winspeech</QUEST_WINSPEECH_TEXT>
-	<QUEST_LOSESPEECH_TEXT>$quest_losespeech</QUEST_LOSESPEECH_TEXT>
-	<CAPTURABLES_RESPONSE>$quest_fightspeech</CAPTURABLES_RESPONSE>
-	<CAPTURABLES_SURRENDER>$quest_surrenderspeech</CAPTURABLES_SURRENDER>
+	<QUEST_NOTIFYSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSTRING>
+	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
+	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
+	<QUEST_LOSESPEECH_TEXT>${j:1:quest_losespeech}</QUEST_LOSESPEECH_TEXT>
+	<CAPTURABLES_RESPONSE>${j:1:quest_fightspeech}</CAPTURABLES_RESPONSE>
+	<CAPTURABLES_SURRENDER>${j:1:quest_surrenderspeech}</CAPTURABLES_SURRENDER>
 	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />

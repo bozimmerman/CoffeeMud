@@ -52,10 +52,10 @@ settable vars:
 		<QUEST_NAME>${C:source_name} asks you to $reason_verb to $target_name in ${C:target_area_name}</QUEST_NAME>
 		<QUEST_NAME>${C:reason_verb} to $target_name in ${C:target_area_name} for ${C:source_name}</QUEST_NAME>
 	</QUEST_NAME>
-	<QUEST_NOTIFYSSTRING>$quest_notifystring</QUEST_NOTIFYSSTRING>
-	<QUEST_INSTRUCTIONSSTRING>$quest_instructionstring</QUEST_INSTRUCTIONSSTRING>
+	<QUEST_NOTIFYSSTRING>${j:1:quest_notifystring}</QUEST_NOTIFYSSTRING>
+	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
 	<TRAVEL_RESPONSE_TYPE>MPECHOAT $$n</TRAVEL_RESPONSE_TYPE>
-	<TRAVEL_RESPONSE>$quest_traveled</TRAVEL_RESPONSE>
+	<TRAVEL_RESPONSE>${j:1:quest_traveled}</TRAVEL_RESPONSE>
 	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />

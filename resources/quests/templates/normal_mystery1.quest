@@ -218,17 +218,18 @@ SPEECH_PROG all
 	endif
 	
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and QUESTSCRIPTED($n *)
+		mpecho QuestGiver answer is $<$n $QUEST_ID_WAGENT> $<$n $QUEST_ID_WTOOL> $<$n $QUEST_ID_WMOTIVE>
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			MPARGSET $9 ''
 			IF EVAL($9 == '')
-				MPARGSET $3 '$%QVAR(* AGENT)%'
+				MPARGSET $3 $<$n $QUEST_ID_WAGENT>
 				IF STRCONTAINS($g "$3")
 					MPARGSET $9 $g
 					if VAR($n $QUEST_ID_AGENT != '')
-						sayto $n You've already made a guess on the WHO question.
+						sayto $n You've already made a guess that question.
 					else
-						MPSETVAR $n $QUEST_ID_AGENT '$%QVAR(* AGENT)%'
-						sayto $n Ok, so you think $%QVAR(* AGENT)% did it.
+						MPSETVAR $n $QUEST_ID_AGENT $<$n $QUEST_ID_WAGENT>
+						sayto $n Ok, so you think $<$n $QUEST_ID_WAGENT>.
 						MPSETVAR $n $QUEST_ID_CORRECT ++
 						MPCALLFUNC winner
 					endif
@@ -240,10 +241,10 @@ SPEECH_PROG all
 						IF STRCONTAINS($g "$3") AND EVAL($9 == '')
 							MPARGSET $9 $g
 							if VAR($n $QUEST_ID_AGENT != '')
-								sayto $n You've already made a guess on the WHO question.
+								sayto $n You've already made a guess that question.
 							else
 								MPSETVAR $n $QUEST_ID_AGENT '$3'
-								sayto $n Ok, so you think $3 did it.
+								sayto $n Ok, so you think $3.
 								MPCALLFUNC winner
 								BREAK
 							endif
@@ -252,14 +253,14 @@ SPEECH_PROG all
 				ENDIF
 			ENDIF
 			IF EVAL($9 == '')
-				MPARGSET $3 '$%QVAR(* TOOL)%'
+				MPARGSET $3 '$<$n $QUEST_ID_WTOOL>
 				IF STRCONTAINS($g "$3")
 					MPARGSET $9 $g
 					if VAR($n $QUEST_ID_TOOL != '')
-						sayto $n You've already made a guess on the WHAT-was-used question.
+						sayto $n You've already made a guess on that question.
 					else
-						MPSETVAR $n $QUEST_ID_TOOL '$%QVAR(* TOOL)%'
-						sayto $n Ok, so you think it was done with $%QVAR(* TOOL)%.
+						MPSETVAR $n $QUEST_ID_TOOL '$<$n $QUEST_ID_WTOOL>'
+						sayto $n Ok, so you think $<$n $QUEST_ID_WTOOL>
 						MPSETVAR $n $QUEST_ID_CORRECT ++
 						MPCALLFUNC winner
 					endif
@@ -271,10 +272,10 @@ SPEECH_PROG all
 						IF STRCONTAINS($g "$3") AND EVAL($9 == '')
 							MPARGSET $9 $g
 							if VAR($n $QUEST_ID_TOOL != '')
-								sayto $n You've already made a guess on the WHAT-was-used question.
+								sayto $n You've already made a guess on that question.
 							else
 								MPSETVAR $n $QUEST_ID_TOOL '$3'
-								sayto $n Ok, so you think it was done with $3.
+								sayto $n Ok, so you think $3.
 								MPCALLFUNC winner
 								BREAK
 							endif
@@ -283,14 +284,14 @@ SPEECH_PROG all
 				ENDIF
 			ENDIF
 			IF EVAL($9 == '')
-				MPARGSET $3 '$%QVAR(* MOTIVE)%'
+				MPARGSET $3 '$<$n $QUEST_ID_WMOTIVE>
 				IF STRCONTAINS($g "$3")
 					MPARGSET $9 $g
 					if VAR($n $QUEST_ID_MOTIVE != '')
-						sayto $n You've already made a guess on the MOTIVE question.
+						sayto $n You've already made a guess on that question.
 					else
-						MPSETVAR $n $QUEST_ID_MOTIVE '$%QVAR(* MOTIVE)%'
-						sayto $n Ok, so you think the motive was $%QVAR(* MOTIVE)%.
+						MPSETVAR $n $QUEST_ID_MOTIVE '$<$n $QUEST_ID_WMOTIVE>'
+						sayto $n Ok, so you think $<$n $QUEST_ID_WMOTIVE>
 						MPSETVAR $n $QUEST_ID_CORRECT ++
 						MPCALLFUNC winner
 					endif
@@ -302,10 +303,10 @@ SPEECH_PROG all
 						IF STRCONTAINS($g "$3") AND EVAL($9 == '')
 							MPARGSET $9 $g
 							if VAR($n $QUEST_ID_MOTIVE != '')
-								sayto $n You've already made a guess on the MOTIVE question.
+								sayto $n You've already made a guess that question.
 							else
 								MPSETVAR $n $QUEST_ID_MOTIVE '$3'
-								sayto $n Ok, so you think the motive was $3.
+								sayto $n Ok, so you think $3.
 								MPCALLFUNC winner
 								BREAK
 							endif
@@ -360,6 +361,35 @@ ONCE_PROG 100
 	IF !isquestmobalive(1 '$QUEST_ID')
 		MPENDQUEST '$QUEST_ID'
 	ENDIF
+	if EVAL('$<$i $QUEST_ID_WMOTIVE>' == '')
+		mpargset $1 ''
+		for $0 = 1 to '$%QVAR(* MOTIVEGROUP)%'
+			mpargset $2 'MOTIVEGROUP#$0'
+			mpargset $2 '$%QVAR(* $2)%'
+			mpargset $1 $1 "$2"
+		next
+		mpsetvar $i $QUEST_ID_WMOTIVE $1.$%RAND0NUM($1.#LENGTH)%
+	ENDIF
+	if EVAL('$<$i $QUEST_ID_WTOOL>' == '')
+		mpargset $1 ''
+		for $0 = 1 to '$%QVAR(* TOOLGROUP)%'
+			mpargset $2 'TOOLGROUP#$0'
+			mpargset $2 '$%QVAR(* $2)%'
+			mpargset $1 $1 "$2"
+		next
+		mpsetvar $i $QUEST_ID_WTOOL $1.$%RAND0NUM($1.#LENGTH)%
+	ENDIF
+	if EVAL('$<$i $QUEST_ID_WAGENT>' == '')
+		mpargset $1 ''
+		for $0 = 1 to '$%QVAR(* AGENTGROUP)%'
+			mpargset $2 'AGENTGROUP#$0'
+			mpargset $2 '$%QVAR(* $2)%'
+			mpargset $1 $1 "$2"
+		next
+		mpsetvar $i $QUEST_ID_WAGENT $1.$%RAND0NUM($1.#LENGTH)%
+	ENDIF
+	
+	mpecho Player answer is $<$i $QUEST_ID_WAGENT> $<$i $QUEST_ID_WTOOL> $<$i $QUEST_ID_WMOTIVE>
 ~
 
 RAND_PROG 25
@@ -399,7 +429,7 @@ FUNCTION_PROG AskedAboutAgent
 	for $1 = 1 to $0
 		mpargset $2 'TOOLGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$3 $4')
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$3 $4') AND EVAL('$<$i $QUEST_ID_WTOOL> != $4)
 			mpargset $5 $5 "$4"
 		endif
 	next
@@ -408,7 +438,7 @@ FUNCTION_PROG AskedAboutAgent
 	for $1 = 1 to $0
 		mpargset $2 'MOTIVEGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$3 $4')
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$3 $4') AND EVAL('$<$i $QUEST_ID_WMOTIVE> != $4)
 			mpargset $6 $6 "$4"
 		endif
 	next
@@ -496,7 +526,7 @@ FUNC_PROG AskedAboutTool
 	for $1 = 1 to $0
 		mpargset $2 'AGENTGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $5')
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $5') AND EVAL('$<$i $QUEST_ID_WAGENT> != $4)
 			mpargset $3 $3 "$4"
 		endif
 	next
@@ -505,7 +535,7 @@ FUNC_PROG AskedAboutTool
 	for $1 = 1 to $0
 		mpargset $2 'MOTIVEGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $5')
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $5') AND EVAL('$<$i $QUEST_ID_WMOTIVE> != $4)
 			mpargset $6 $6 "$4"
 		endif
 	next
@@ -583,7 +613,7 @@ FUNC_PROG AskedAboutMotive
 	for $1 = 1 to $0
 		mpargset $2 'AGENTGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $6')
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $6') AND EVAL('$<$i $QUEST_ID_WAGENT> != $4)
 			mpargset $3 $3 "$4"
 		endif
 	next
@@ -592,7 +622,7 @@ FUNC_PROG AskedAboutMotive
 	for $1 = 1 to $0
 		mpargset $2 'TOOLGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$6 $4')
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$6 $4') AND EVAL('$<$i $QUEST_ID_WTOOL> != $4)
 			mpargset $5 $5 "$4"
 		endif
 	next
