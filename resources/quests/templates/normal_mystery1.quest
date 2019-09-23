@@ -362,31 +362,28 @@ ONCE_PROG 100
 		MPENDQUEST '$QUEST_ID'
 	ENDIF
 	if EVAL('$<$i $QUEST_ID_WMOTIVE>' == '')
-		mpargset $1 ''
-		for $0 = 1 to '$%QVAR(* MOTIVEGROUP)%'
-			mpargset $2 'MOTIVEGROUP#$0'
-			mpargset $2 '$%QVAR(* $2)%'
-			mpargset $1 $1 "$2"
-		next
-		mpsetvar $i $QUEST_ID_WMOTIVE $1.$%RAND0NUM($1.#LENGTH)%
+		mpargset $1 $MOTIVE_LIST
+		mpsetvar $i $QUEST_ID_WMOTIVE $1.$%RAND0NUM($1.LENGTH#)%
 	ENDIF
 	if EVAL('$<$i $QUEST_ID_WTOOL>' == '')
-		mpargset $1 ''
+		mpsetvar $i $QUEST_ID_TEMP ''
 		for $0 = 1 to '$%QVAR(* TOOLGROUP)%'
 			mpargset $2 'TOOLGROUP#$0'
 			mpargset $2 '$%QVAR(* $2)%'
-			mpargset $1 $1 "$2"
+			mpsetvar $i $QUEST_ID_TEMP "$2"
 		next
-		mpsetvar $i $QUEST_ID_WTOOL $1.$%RAND0NUM($1.#LENGTH)%
+		mpargset $1 $<$i $QUEST_ID_TEMP>
+		mpsetvar $i $QUEST_ID_WTOOL $1.$%RAND0NUM($1.LENGTH#)%
 	ENDIF
 	if EVAL('$<$i $QUEST_ID_WAGENT>' == '')
-		mpargset $1 ''
+		mpsetvar $i $QUEST_ID_TEMP ''
 		for $0 = 1 to '$%QVAR(* AGENTGROUP)%'
 			mpargset $2 'AGENTGROUP#$0'
 			mpargset $2 '$%QVAR(* $2)%'
-			mpargset $1 $1 "$2"
+			mpsetvar $i $QUEST_ID_TEMP "$2"
 		next
-		mpsetvar $i $QUEST_ID_WAGENT $1.$%RAND0NUM($1.#LENGTH)%
+		mpargset $1 $<$i $QUEST_ID_TEMP>
+		mpsetvar $i $QUEST_ID_WAGENT $1.$%RAND0NUM($1.LENGTH#)%
 	ENDIF
 	
 	mpecho Player answer is $<$i $QUEST_ID_WAGENT> $<$i $QUEST_ID_WTOOL> $<$i $QUEST_ID_WMOTIVE>
@@ -413,17 +410,19 @@ DELAY_PROG 150 300
 ~
 
 FUNCTION_PROG AskedAboutAgent
-	mpargset $9 ''
+	mpsetvar $i $QUEST_ID_TEMP ''
 	for $0 = 1 to '$%NUMMOBSROOM(*)%
 		MPARGSET $1 $%ROOMMOB($0)%
 		if ISNPC($1) AND ISLIKE($1 $WITNESS_MASK) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
-			MPARGSET $9 $1
+			MPSETVAR $i $QUEST_ID_TEMP $1
 			BREAK
 		ENDIF
 	next
-	if EVAL($9 == '')
+	if VAR($i $QUEST_ID_TEMP == '')
 		return
 	ENDIF
+	mpargset $9 $<$i $QUEST_ID_TEMP>
+
 	mpargset $0 '$%QVAR(* TOOLGROUP)%'
 	mpargset $5 ''
 	for $1 = 1 to $0
@@ -509,18 +508,20 @@ FUNCTION_PROG AskedAboutAgent
 	ENDIF
 ~
 
-FUNC_PROG AskedAboutTool
-	mpargset $9 ''
+FUNCTION_PROG AskedAboutTool
+	mpsetvar $i $QUEST_ID_TEMP ''
 	for $0 = 1 to '$%NUMMOBSROOM(*)%
 		MPARGSET $1 $%ROOMMOB($0)%
 		if ISNPC($1) AND ISLIKE($1 $WITNESS_MASK) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
-			MPARGSET $9 $1
+			MPSETVAR $i $QUEST_ID_TEMP $1
 			BREAK
 		ENDIF
 	next
-	if EVAL($9 == '')
+	if VAR($i $QUEST_ID_TEMP == '')
 		return
 	ENDIF
+	mpargset $9 $<$i $QUEST_ID_TEMP>
+
 	mpargset $0 '$%QVAR(* AGENTGROUP)%'
 	mpargset $3 ''
 	for $1 = 1 to $0
@@ -596,18 +597,20 @@ FUNC_PROG AskedAboutTool
 	ENDIF
 ~
 
-FUNC_PROG AskedAboutMotive
-	mpargset $9 ''
+FUNCTION_PROG AskedAboutMotive
+	mpsetvar $i $QUEST_ID_TEMP ''
 	for $0 = 1 to '$%NUMMOBSROOM(*)%
 		MPARGSET $1 $%ROOMMOB($0)%
 		if ISNPC($1) AND ISLIKE($1 $WITNESS_MASK) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
-			MPARGSET $9 $1
+			MPSETVAR $i $QUEST_ID_TEMP $1
 			BREAK
 		ENDIF
 	next
-	if EVAL($9 == '')
+	if VAR($i $QUEST_ID_TEMP == '')
 		return
 	ENDIF
+	mpargset $9 $<$i $QUEST_ID_TEMP>
+
 	mpargset $0 '$%QVAR(* AGENTGROUP)%'
 	mpargset $3 ''
 	for $1 = 1 to $0
