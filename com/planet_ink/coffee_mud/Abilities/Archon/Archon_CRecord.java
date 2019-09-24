@@ -319,7 +319,7 @@ public class Archon_CRecord extends ArchonSkill
 				{
 					final String noColor = CMStrings.removeColors(msg.othersMessage()).trim();
 					addToBuffer(dateFormat.format(Long.valueOf(System.currentTimeMillis()))
-							+" "
+							+" XP:"
 							+CMLib.coffeeFilter().fullOutFilter(null, mob, msg.source(), msg.target(), msg.tool(), noColor, false)
 							+"\n\r");
 				}

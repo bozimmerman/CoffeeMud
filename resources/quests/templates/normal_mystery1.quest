@@ -207,6 +207,9 @@ SPEECH_PROG p i accept
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			mpqset * STATISTICS ACCEPTED
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
+			mpsetvar $n $QUEST_ID_AGENT ''
+			mpsetvar $n $QUEST_ID_TOOL ''
+			mpsetvar $n $QUEST_ID_MOTIVE ''
 			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 		endif
 	endif
@@ -218,6 +221,7 @@ SPEECH_PROG all
 	endif
 	
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and QUESTSCRIPTED($n *)
+		############### DELME####################################################################################################################################
 		mpecho QuestGiver answer is $<$n $QUEST_ID_WAGENT> $<$n $QUEST_ID_WTOOL> $<$n $QUEST_ID_WMOTIVE>
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			MPARGSET $9 ''
@@ -253,7 +257,7 @@ SPEECH_PROG all
 				ENDIF
 			ENDIF
 			IF EVAL($9 == '')
-				MPARGSET $3 '$<$n $QUEST_ID_WTOOL>
+				MPARGSET $3 '$<$n $QUEST_ID_WTOOL>'
 				IF STRCONTAINS($g "$3")
 					MPARGSET $9 $g
 					if VAR($n $QUEST_ID_TOOL != '')
@@ -284,7 +288,7 @@ SPEECH_PROG all
 				ENDIF
 			ENDIF
 			IF EVAL($9 == '')
-				MPARGSET $3 '$<$n $QUEST_ID_WMOTIVE>
+				MPARGSET $3 '$<$n $QUEST_ID_WMOTIVE>'
 				IF STRCONTAINS($g "$3")
 					MPARGSET $9 $g
 					if VAR($n $QUEST_ID_MOTIVE != '')
@@ -362,30 +366,18 @@ ONCE_PROG 100
 		MPENDQUEST '$QUEST_ID'
 	ENDIF
 	if EVAL('$<$i $QUEST_ID_WMOTIVE>' == '')
-		mpargset $1 $MOTIVE_LIST
-		mpsetvar $i $QUEST_ID_WMOTIVE $1.$%RAND0NUM($1.LENGTH#)%
+		mpsetvar $i $QUEST_ID_WMOTIVE $%QVAR(* MOTIVEGROUP#?)%
 	ENDIF
 	if EVAL('$<$i $QUEST_ID_WTOOL>' == '')
-		mpsetvar $i $QUEST_ID_TEMP ''
-		for $0 = 1 to '$%QVAR(* TOOLGROUP)%'
-			mpargset $2 'TOOLGROUP#$0'
-			mpargset $2 '$%QVAR(* $2)%'
-			mpsetvar $i $QUEST_ID_TEMP "$2"
-		next
-		mpargset $1 $<$i $QUEST_ID_TEMP>
-		mpsetvar $i $QUEST_ID_WTOOL $1.$%RAND0NUM($1.LENGTH#)%
+		mpsetvar $i $QUEST_ID_WTOOL $%QVAR(* TOOLGROUP#?)%
 	ENDIF
 	if EVAL('$<$i $QUEST_ID_WAGENT>' == '')
-		mpsetvar $i $QUEST_ID_TEMP ''
-		for $0 = 1 to '$%QVAR(* AGENTGROUP)%'
-			mpargset $2 'AGENTGROUP#$0'
-			mpargset $2 '$%QVAR(* $2)%'
-			mpsetvar $i $QUEST_ID_TEMP "$2"
-		next
-		mpargset $1 $<$i $QUEST_ID_TEMP>
-		mpsetvar $i $QUEST_ID_WAGENT $1.$%RAND0NUM($1.LENGTH#)%
+		mpsetvar $i $QUEST_ID_WAGENT $%QVAR(* AGENTGROUP#?)%
 	ENDIF
-	
+	MPSETVAR $i ALREADY_SPOKEN_TO ''
+	MPSETVAR $i EVIDENCE_ALREADY_GIVEN ''
+
+	############### DELME####################################################################################################################################
 	mpecho Player answer is $<$i $QUEST_ID_WAGENT> $<$i $QUEST_ID_WTOOL> $<$i $QUEST_ID_WMOTIVE>
 ~
 
@@ -410,37 +402,38 @@ DELAY_PROG 150 300
 ~
 
 FUNCTION_PROG AskedAboutAgent
-	mpsetvar $i $QUEST_ID_TEMP ''
+	mpargset $9 ''
 	for $0 = 1 to '$%NUMMOBSROOM(*)%
 		MPARGSET $1 $%ROOMMOB($0)%
 		if ISNPC($1) AND ISLIKE($1 $WITNESS_MASK) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
-			MPSETVAR $i $QUEST_ID_TEMP $1
+			mpargset $9 $i
 			BREAK
 		ENDIF
 	next
-	if VAR($i $QUEST_ID_TEMP == '')
+	if EVAL($9 == '')
 		return
 	ENDIF
-	mpargset $9 $<$i $QUEST_ID_TEMP>
 
 	mpargset $0 '$%QVAR(* TOOLGROUP)%'
-	mpargset $5 ''
-	for $1 = 1 to $0
+	mpargset $5 ' "$%QVAR(* TOOLGROUP#1)%" '
+	for $1 = 2 to $0
 		mpargset $2 'TOOLGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$3 $4') AND EVAL('$<$i $QUEST_ID_WTOOL> != $4)
-			mpargset $5 $5 "$4"
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$3 $4') AND EVAL('$<$i $QUEST_ID_WTOOL>' != $4)
+			mpargset $5 "$4" $5 
 		endif
 	next
-	mpargset $6 ''
+
 	mpargset $0 '$%QVAR(* MOTIVEGROUP)%'
-	for $1 = 1 to $0
+	mpargset $6 ' "$%QVAR(* MOTIVEGROUP#1)%" '
+	for $1 = 2 to $0
 		mpargset $2 'MOTIVEGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$3 $4') AND EVAL('$<$i $QUEST_ID_WMOTIVE> != $4)
-			mpargset $6 $6 "$4"
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$3 $4') AND EVAL('$<$i $QUEST_ID_WMOTIVE>' != $4)
+			mpargset $6 "$4" $6 
 		endif
 	next
+
 	If EVAL($6 == '') OR RAND(50)
 		if EVAL($5 == '')
 			# Should we say something here?
@@ -448,7 +441,7 @@ FUNCTION_PROG AskedAboutAgent
 			mpargset $5 $5.$%RAND0NUM($5.LENGTH#)%
 			mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$3 $5"
 			mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
-			switch($%RAND0NUM(12)%)
+			switch $%RAND0NUM(12)%
 			case 0:
 				mpforce '$9' sayto "$i" $3 is a dork, but $3 would not do anything for $5.
 			case 1:
@@ -479,7 +472,7 @@ FUNCTION_PROG AskedAboutAgent
 		mpargset $6 $6.$%RAND0NUM($6.LENGTH#)%
 		mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$3 $6"
 		mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
-		switch($%RAND0NUM(12)%)
+		switch $%RAND0NUM(12)%
 		case 0:
 			mpforce '$9' sayto "$i" I've heard $3 is scared of $6.
 		case 1:
@@ -509,37 +502,38 @@ FUNCTION_PROG AskedAboutAgent
 ~
 
 FUNCTION_PROG AskedAboutTool
-	mpsetvar $i $QUEST_ID_TEMP ''
+	mpargset $9 ''
 	for $0 = 1 to '$%NUMMOBSROOM(*)%
 		MPARGSET $1 $%ROOMMOB($0)%
 		if ISNPC($1) AND ISLIKE($1 $WITNESS_MASK) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
-			MPSETVAR $i $QUEST_ID_TEMP $1
+			mpargset $9 $i
 			BREAK
 		ENDIF
 	next
-	if VAR($i $QUEST_ID_TEMP == '')
+	if EVAL($9 == '')
 		return
 	ENDIF
-	mpargset $9 $<$i $QUEST_ID_TEMP>
 
 	mpargset $0 '$%QVAR(* AGENTGROUP)%'
-	mpargset $3 ''
-	for $1 = 1 to $0
+	mpargset $3 ' "$%QVAR(* AGENTGROUP#1)%" '
+	for $1 = 2 to $0
 		mpargset $2 'AGENTGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $5') AND EVAL('$<$i $QUEST_ID_WAGENT> != $4)
-			mpargset $3 $3 "$4"
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $5') AND EVAL('$<$i $QUEST_ID_WAGENT>' != $4)
+			mpargset $3 "$4" $3 
 		endif
 	next
-	mpargset $6 ''
+
 	mpargset $0 '$%QVAR(* MOTIVEGROUP)%'
-	for $1 = 1 to $0
+	mpargset $6 ' "$%QVAR(* MOTIVEGROUP#1)%" '
+	for $1 = 2 to $0
 		mpargset $2 'MOTIVEGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $5') AND EVAL('$<$i $QUEST_ID_WMOTIVE> != $4)
-			mpargset $6 $6 "$4"
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $5') AND EVAL('$<$i $QUEST_ID_WMOTIVE>' != $4)
+			mpargset $6 "$4" $6 
 		endif
 	next
+
 	If EVAL($6 == '') OR RAND(50)
 		if EVAL($3 == '')
 			# Should we say something here?
@@ -547,7 +541,7 @@ FUNCTION_PROG AskedAboutTool
 			mpargset $3 $3.$%RAND0NUM($3.LENGTH#)%
 			mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$3 $5"
 			mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
-			switch($%RAND0NUM(12)%)
+			switch $%RAND0NUM(12)%
 			case 0:
 				mpforce '$9' sayto "$i" $3 is a dork, but $3 would not do anything for $5.
 			case 1:
@@ -578,7 +572,7 @@ FUNCTION_PROG AskedAboutTool
 		mpargset $6 $6.$%RAND0NUM($6.LENGTH#)%
 		mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$6 $5"
 		mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
-		switch($%RAND0NUM(7)%)
+		switch $%RAND0NUM(7)%
 		case 0:
 			mpforce '$9' sayto "$i" $5 is hardly the right tool for $6.
 		case 1:
@@ -598,37 +592,38 @@ FUNCTION_PROG AskedAboutTool
 ~
 
 FUNCTION_PROG AskedAboutMotive
-	mpsetvar $i $QUEST_ID_TEMP ''
+	mpargset $9 ''
 	for $0 = 1 to '$%NUMMOBSROOM(*)%
 		MPARGSET $1 $%ROOMMOB($0)%
 		if ISNPC($1) AND ISLIKE($1 $WITNESS_MASK) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
-			MPSETVAR $i $QUEST_ID_TEMP $1
+			mpargset $9 $i
 			BREAK
 		ENDIF
 	next
-	if VAR($i $QUEST_ID_TEMP == '')
+	if EVAL($9 == '')
 		return
 	ENDIF
-	mpargset $9 $<$i $QUEST_ID_TEMP>
 
 	mpargset $0 '$%QVAR(* AGENTGROUP)%'
-	mpargset $3 ''
-	for $1 = 1 to $0
+	mpargset $3 ' "$%QVAR(* AGENTGROUP#1)%" '
+	for $1 = 2 to $0
 		mpargset $2 'AGENTGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $6') AND EVAL('$<$i $QUEST_ID_WAGENT> != $4)
-			mpargset $3 $3 "$4"
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $6') AND EVAL('$<$i $QUEST_ID_WAGENT>' != $4)
+			mpargset $3 "$4" $3 
 		endif
 	next
+
 	mpargset $0 '$%QVAR(* TOOLGROUP)%'
-	mpargset $5 ''
-	for $1 = 1 to $0
+	mpargset $5 ' "$%QVAR(* TOOLGROUP#1)%" '
+	for $1 = 2 to $0
 		mpargset $2 'TOOLGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$6 $4') AND EVAL('$<$i $QUEST_ID_WTOOL> != $4)
-			mpargset $5 $5 "$4"
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$6 $4') AND EVAL('$<$i $QUEST_ID_WTOOL>' != $4)
+			mpargset $5 "$4" $5 
 		endif
 	next
+
 	If EVAL($5 == '') OR RAND(50)
 		if EVAL($3 == '')
 			# Should we say something here?
@@ -636,7 +631,7 @@ FUNCTION_PROG AskedAboutMotive
 			mpargset $3 $3.$%RAND0NUM($3.LENGTH#)%
 			mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$3 $6"
 			mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
-			switch($%RAND0NUM(12)%)
+			switch $%RAND0NUM(12)%
 			case 0:
 				mpforce '$9' sayto "$i" I've heard $3 is scared of $6.
 			case 1:
@@ -667,7 +662,7 @@ FUNCTION_PROG AskedAboutMotive
 		mpargset $5 $5.$%RAND0NUM($5.LENGTH#)%
 		mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$6 $5"
 		mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
-		switch($%RAND0NUM(7)%)
+		switch $%RAND0NUM(7)%
 		case 0:
 			mpforce '$9' sayto "$i" $5 is hardly the right tool for $6.
 		case 1:
@@ -687,50 +682,49 @@ FUNCTION_PROG AskedAboutMotive
 ~
 
 SPEAK_PROG all
+	if EVAL($i != $n) OR nummobsroom('MASK=$WITNESS_MASK' == 0)
+		RETURN
+	endif
 	if STRCONTAINS($g "i accept") OR STRCONTAINS($g "solve") OR EVAL($g == '')
 		RETURN
 	endif
-	if nummobsroom('MASK=$WITNESS_MASK' == 0)
-		RETURN
-	endif
-	mpargset $9 ''
-	IF EVAL($9 == '')
-		mpargset $0 '$%QVAR(* AGENTGROUP)%'
-		for $1 = 1 to $0
+
+	mpsetvar $i $QUEST_ID_FOUND ''
+	IF VAR($i $QUEST_ID_FOUND == '')
+		for $1 = 1 to '$%QVAR(* AGENTGROUP)%'
 			mpargset $2 'AGENTGROUP#$1'
 			mpargset $3 '$%QVAR(* $2)%'
 			IF STRCONTAINS($g "$3")
 				MPCALLFUNC AskedAboutAgent $3
-				MPARGSET $9 $3
-				BREAK
-			endif
-		next
-	ENDIF
-	IF EVAL($9 == '')
-		mpargset $0 '$%QVAR(* TOOLGROUP)%'
-		for $1 = 1 to $0
-			mpargset $2 'TOOLGROUP#$1'
-			mpargset $5 '$%QVAR(* $2)%'
-			IF STRCONTAINS($g "$5")
-				MPCALLFUNC AskedAboutTool $5
-				MPARGSET $9 $5
-				BREAK
-			endif
-		next
-	ENDIF
-	IF EVAL($9 == '')
-		mpargset $0 '$%QVAR(* MOTIVEGROUP)%'
-		for $1 = 1 to $0
-			mpargset $2 'MOTIVEGROUP#$1'
-			mpargset $6 '$%QVAR(* $2)%'
-			IF STRCONTAINS($g "$6")
-				MPCALLFUNC AskedAboutMotive $6
-				MPARGSET $9 $6
+				mpsetvar $i $QUEST_ID_FOUND $3
 				BREAK
 			endif
 		next
 	ENDIF
 
+	IF VAR($i $QUEST_ID_FOUND == '')
+		for $1 = 1 to '$%QVAR(* TOOLGROUP)%'
+			mpargset $2 'TOOLGROUP#$1'
+			mpargset $5 '$%QVAR(* $2)%'
+			IF STRCONTAINS($g "$5")
+				MPCALLFUNC AskedAboutTool $5
+				mpsetvar $i $QUEST_ID_FOUND $5
+				BREAK
+			endif
+		next
+	ENDIF
+
+	IF VAR($i $QUEST_ID_FOUND == '')
+		for $1 = 1 to '$%QVAR(* MOTIVEGROUP)%'
+			mpargset $2 'MOTIVEGROUP#$1'
+			mpargset $6 '$%QVAR(* $2)%'
+			IF STRCONTAINS($g "$6")
+				MPCALLFUNC AskedAboutMotive $6
+				mpsetvar $i $QUEST_ID_FOUND $6
+				BREAK
+			endif
+		next
+	ENDIF
 ~
 
 QUEST_TIME_PROG * -1
