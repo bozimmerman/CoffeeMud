@@ -2853,15 +2853,41 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final StringBuffer buf1=new StringBuffer(str1.toLowerCase());
 		for(int i=buf1.length()-1;i>=0;i--)
 		{
-			if((buf1.charAt(i)!=' ')
-			&&(buf1.charAt(i)!='\'')
-			&&(buf1.charAt(i)!='\"')
-			&&(buf1.charAt(i)!='`')
-			&&(!Character.isLetterOrDigit(buf1.charAt(i))))
-				buf1.setCharAt(i,' ');
+			switch(buf1.charAt(i))
+			{
+			case ' ':
+			case '\"':
+			case '`':
+				break;
+			case '\'':
+				buf1.setCharAt(i, '`');
+				break;
+			default:
+				if(!Character.isLetterOrDigit(buf1.charAt(i)))
+					buf1.setCharAt(i,' ');
+				break;
+			}
+		}
+		final StringBuffer buf2=new StringBuffer(str2.toLowerCase());
+		for(int i=buf2.length()-1;i>=0;i--)
+		{
+			switch(buf2.charAt(i))
+			{
+			case ' ':
+			case '\"':
+			case '`':
+				break;
+			case '\'':
+				buf2.setCharAt(i, '`');
+				break;
+			default:
+				if(!Character.isLetterOrDigit(buf2.charAt(i)))
+					buf2.setCharAt(i,' ');
+				break;
+			}
 		}
 		final Vector<String> V=CMParms.parse(buf1.toString());
-		return stringContains(V,str2.toCharArray(),new int[]{0},0);
+		return stringContains(V,buf2.toString().toCharArray(),new int[]{0},0);
 	}
 
 	@Override
