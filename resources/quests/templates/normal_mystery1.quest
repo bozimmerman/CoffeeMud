@@ -403,10 +403,12 @@ DELAY_PROG 150 300
 
 FUNCTION_PROG AskedAboutAgent
 	mpargset $9 ''
+	mpargset $3 $g
+	mpargset $2 $WITNESS_MASK
 	for $0 = 1 to '$%NUMMOBSROOM(*)%
 		MPARGSET $1 $%ROOMMOB($0)%
-		if ISNPC($1) AND ISLIKE($1 $WITNESS_MASK) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
-			mpargset $9 $i
+		if ISNPC($1) AND ISLIKE($1 $2) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
+			mpargset $9 $1
 			BREAK
 		ENDIF
 	next
@@ -415,8 +417,8 @@ FUNCTION_PROG AskedAboutAgent
 	ENDIF
 
 	mpargset $0 '$%QVAR(* TOOLGROUP)%'
-	mpargset $5 ' "$%QVAR(* TOOLGROUP#1)%" '
-	for $1 = 2 to $0
+	mpargset $5 '  '
+	for $1 = 1 to $0
 		mpargset $2 'TOOLGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
 		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$3 $4') AND EVAL('$<$i $QUEST_ID_WTOOL>' != $4)
@@ -425,8 +427,8 @@ FUNCTION_PROG AskedAboutAgent
 	next
 
 	mpargset $0 '$%QVAR(* MOTIVEGROUP)%'
-	mpargset $6 ' "$%QVAR(* MOTIVEGROUP#1)%" '
-	for $1 = 2 to $0
+	mpargset $6 '  '
+	for $1 = 1 to $0
 		mpargset $2 'MOTIVEGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
 		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$3 $4') AND EVAL('$<$i $QUEST_ID_WMOTIVE>' != $4)
@@ -442,60 +444,61 @@ FUNCTION_PROG AskedAboutAgent
 			mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$3 $5"
 			mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
 			switch $%RAND0NUM(12)%
-			case 0:
-				mpforce '$9' sayto "$i" $3 is a dork, but $3 would not do anything for $5.
-			case 1:
-				mpforce '$9' sayto "$i" $3 was not one to be involved with $5.
-			case 2:
-				mpforce '$9' sayto "$i" I know $3 well enough to know $5 is not a motive.
-			case 3:
-				mpforce '$9' sayto "$i" $3 thinks $5 is immoral, he wouldn't do anything for that reason.
-			case 4:
-				mpforce '$9' sayto "$i" $3 never gets involved with $5.
-			case 5:
-				mpforce '$9' sayto "$i" $3 isn't ever into $5.
-			case 6:
-				mpforce '$9' sayto "$i" $3 hates $5, and never gets involved in it.
-			case 7:
-				mpforce '$9' sayto "$i" $3 would never do anything for $5.
-			case 8:
-				mpforce '$9' sayto "$i" $3 is too proud to do anything for $5.
-			case 9:
-				mpforce '$9' sayto "$i" $3 doesn't know anything of $5.
-			case 10:
-				mpforce '$9' sayto "$i" $3 is too dumb for $5.
-			case 11:
-				mpforce '$9' sayto "$i" $5 is far too silly a motive for $3.
+			case 0
+				mpforce '$9' sayto "$i" I've heard $3 is scared of $5.
+			case 1
+				mpforce '$9' sayto "$i" I've heard $3 hates $5.
+			case 2
+				mpforce '$9' sayto "$i" I've heard $3 thinks $5 is creepy.
+			case 3
+				mpforce '$9' sayto "$i" $3 thinks $5 clumsy and awkward.
+			case 4
+				mpforce '$9' sayto "$i" $3 never touches $5.
+			case 5
+				mpforce '$9' sayto "$i" $3 won't use $5.
+			case 6
+				mpforce '$9' sayto "$i" $3 doesn't like $5.
+			case 7
+				mpforce '$9' sayto "$i" $3 wouldn't be caught dead using $5.
+			case 8
+				mpforce '$9' sayto "$i" $3 is too proud to use $5.
+			case 9
+				mpforce '$9' sayto "$i" $3 doesn't know how to use $5.
+			case 10
+				mpforce '$9' sayto "$i" $3 is too dumb to figure out $5.
+			case 11
+				mpforce '$9' sayto "$i" $3 is far too skilled for $5.
 			endswitch
+		ENDIF
 		ENDIF
 	ELSE
 		mpargset $6 $6.$%RAND0NUM($6.LENGTH#)%
 		mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$3 $6"
 		mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
 		switch $%RAND0NUM(12)%
-		case 0:
+		case 0
 			mpforce '$9' sayto "$i" I've heard $3 is scared of $6.
-		case 1:
+		case 1
 			mpforce '$9' sayto "$i" I've heard $3 hates $6.
-		case 2:
+		case 2
 			mpforce '$9' sayto "$i" I've heard $3 thinks $6 is creepy.
-		case 3:
+		case 3
 			mpforce '$9' sayto "$i" $3 thinks $6 clumsy and awkward.
-		case 4:
+		case 4
 			mpforce '$9' sayto "$i" $3 never touches $6.
-		case 5:
+		case 5
 			mpforce '$9' sayto "$i" $3 won't use $6.
-		case 6:
+		case 6
 			mpforce '$9' sayto "$i" $3 doesn't like $6.
-		case 7:
+		case 7
 			mpforce '$9' sayto "$i" $3 wouldn't be caught dead using $6.
-		case 8:
+		case 8
 			mpforce '$9' sayto "$i" $3 is too proud to use $6.
-		case 9:
+		case 9
 			mpforce '$9' sayto "$i" $3 doesn't know how to use $6.
-		case 10:
+		case 10
 			mpforce '$9' sayto "$i" $3 is too dumb to figure out $6.
-		case 11:
+		case 11
 			mpforce '$9' sayto "$i" $3 is far too skilled for $6.
 		endswitch
 	ENDIF
@@ -503,10 +506,12 @@ FUNCTION_PROG AskedAboutAgent
 
 FUNCTION_PROG AskedAboutTool
 	mpargset $9 ''
+	mpargset $5 $g
+	mpargset $2 $WITNESS_MASK
 	for $0 = 1 to '$%NUMMOBSROOM(*)%
 		MPARGSET $1 $%ROOMMOB($0)%
-		if ISNPC($1) AND ISLIKE($1 $WITNESS_MASK) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
-			mpargset $9 $i
+		if ISNPC($1) AND ISLIKE($1 $2) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
+			mpargset $9 $1
 			BREAK
 		ENDIF
 	next
@@ -515,8 +520,8 @@ FUNCTION_PROG AskedAboutTool
 	ENDIF
 
 	mpargset $0 '$%QVAR(* AGENTGROUP)%'
-	mpargset $3 ' "$%QVAR(* AGENTGROUP#1)%" '
-	for $1 = 2 to $0
+	mpargset $3 '  '
+	for $1 = 1 to $0
 		mpargset $2 'AGENTGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
 		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $5') AND EVAL('$<$i $QUEST_ID_WAGENT>' != $4)
@@ -525,11 +530,11 @@ FUNCTION_PROG AskedAboutTool
 	next
 
 	mpargset $0 '$%QVAR(* MOTIVEGROUP)%'
-	mpargset $6 ' "$%QVAR(* MOTIVEGROUP#1)%" '
-	for $1 = 2 to $0
+	mpargset $6 '  '
+	for $1 = 1 to $0
 		mpargset $2 'MOTIVEGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $5') AND EVAL('$<$i $QUEST_ID_WMOTIVE>' != $4)
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$5 $4') AND EVAL('$<$i $QUEST_ID_WMOTIVE>' != $4)
 			mpargset $6 "$4" $6 
 		endif
 	next
@@ -542,50 +547,50 @@ FUNCTION_PROG AskedAboutTool
 			mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$3 $5"
 			mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
 			switch $%RAND0NUM(12)%
-			case 0:
-				mpforce '$9' sayto "$i" $3 is a dork, but $3 would not do anything for $5.
-			case 1:
-				mpforce '$9' sayto "$i" $3 was not one to be involved with $5.
-			case 2:
-				mpforce '$9' sayto "$i" I know $3 well enough to know $5 is not a motive.
-			case 3:
-				mpforce '$9' sayto "$i" $3 thinks $5 is immoral, he wouldn't do anything for that reason.
-			case 4:
-				mpforce '$9' sayto "$i" $3 never gets involved with $5.
-			case 5:
-				mpforce '$9' sayto "$i" $3 isn't ever into $5.
-			case 6:
-				mpforce '$9' sayto "$i" $3 hates $5, and never gets involved in it.
-			case 7:
-				mpforce '$9' sayto "$i" $3 would never do anything for $5.
-			case 8:
-				mpforce '$9' sayto "$i" $3 is too proud to do anything for $5.
-			case 9:
-				mpforce '$9' sayto "$i" $3 doesn't know anything of $5.
-			case 10:
-				mpforce '$9' sayto "$i" $3 is too dumb for $5.
-			case 11:
-				mpforce '$9' sayto "$i" $5 is far too silly a motive for $3.
+			case 0
+				mpforce '$9' sayto "$i" I've heard $3 is scared of $5.
+			case 1
+				mpforce '$9' sayto "$i" I've heard $3 hates $5.
+			case 2
+				mpforce '$9' sayto "$i" I've heard $3 thinks $5 is creepy.
+			case 3
+				mpforce '$9' sayto "$i" $3 thinks $5 clumsy and awkward.
+			case 4
+				mpforce '$9' sayto "$i" $3 never touches $5.
+			case 5
+				mpforce '$9' sayto "$i" $3 won't use $5.
+			case 6
+				mpforce '$9' sayto "$i" $3 doesn't like $5.
+			case 7
+				mpforce '$9' sayto "$i" $3 wouldn't be caught dead using $5.
+			case 8
+				mpforce '$9' sayto "$i" $3 is too proud to use $5.
+			case 9
+				mpforce '$9' sayto "$i" $3 doesn't know how to use $5.
+			case 10
+				mpforce '$9' sayto "$i" $3 is too dumb to figure out $5.
+			case 11
+				mpforce '$9' sayto "$i" $3 is far too skilled for $5.
 			endswitch
 		ENDIF
 	ELSE
 		mpargset $6 $6.$%RAND0NUM($6.LENGTH#)%
-		mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$6 $5"
+		mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$5 $6"
 		mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
 		switch $%RAND0NUM(7)%
-		case 0:
+		case 0
 			mpforce '$9' sayto "$i" $5 is hardly the right tool for $6.
-		case 1:
+		case 1
 			mpforce '$9' sayto "$i" $5 is never used when one is into $6
-		case 2:
+		case 2
 			mpforce '$9' sayto "$i" No one would use $5 if $6 was involved.
-		case 3:
+		case 3
 			mpforce '$9' sayto "$i" Everyone knows $5 isn't used for acts motivated by $6.
-		case 4:
+		case 4
 			mpforce '$9' sayto "$i" $6 is not going to make one reach for $5.
-		case 5:
+		case 5
 			mpforce '$9' sayto "$i" $6 is no state for using a $5.
-		case 6:
+		case 6
 			mpforce '$9' sayto "$i" If $6 was involved, you can be sure $5 was not.
 		endswitch
 	ENDIF
@@ -593,10 +598,12 @@ FUNCTION_PROG AskedAboutTool
 
 FUNCTION_PROG AskedAboutMotive
 	mpargset $9 ''
+	mpargset $6 $g
+	mpargset $2 $WITNESS_MASK
 	for $0 = 1 to '$%NUMMOBSROOM(*)%
 		MPARGSET $1 $%ROOMMOB($0)%
-		if ISNPC($1) AND ISLIKE($1 $WITNESS_MASK) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
-			mpargset $9 $i
+		if ISNPC($1) AND ISLIKE($1 $2) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i ALREADY_SPOKEN_TO>' $1)
+			mpargset $9 $1
 			BREAK
 		ENDIF
 	next
@@ -605,8 +612,8 @@ FUNCTION_PROG AskedAboutMotive
 	ENDIF
 
 	mpargset $0 '$%QVAR(* AGENTGROUP)%'
-	mpargset $3 ' "$%QVAR(* AGENTGROUP#1)%" '
-	for $1 = 2 to $0
+	mpargset $3 '  '
+	for $1 = 1 to $0
 		mpargset $2 'AGENTGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
 		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $6') AND EVAL('$<$i $QUEST_ID_WAGENT>' != $4)
@@ -615,11 +622,11 @@ FUNCTION_PROG AskedAboutMotive
 	next
 
 	mpargset $0 '$%QVAR(* TOOLGROUP)%'
-	mpargset $5 ' "$%QVAR(* TOOLGROUP#1)%" '
-	for $1 = 2 to $0
+	mpargset $5 '  '
+	for $1 = 1 to $0
 		mpargset $2 'TOOLGROUP#$1'
 		mpargset $4 '$%QVAR(* $2)%'
-		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$6 $4') AND EVAL('$<$i $QUEST_ID_WTOOL>' != $4)
+		IF !STRCONTAINS('$<$i EVIDENCE_ALREADY_GIVEN>' '$4 $6') AND EVAL('$<$i $QUEST_ID_WTOOL>' != $4)
 			mpargset $5 "$4" $5 
 		endif
 	next
@@ -632,57 +639,58 @@ FUNCTION_PROG AskedAboutMotive
 			mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$3 $6"
 			mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
 			switch $%RAND0NUM(12)%
-			case 0:
-				mpforce '$9' sayto "$i" I've heard $3 is scared of $6.
-			case 1:
-				mpforce '$9' sayto "$i" I've heard $3 hates $6.
-			case 2:
-				mpforce '$9' sayto "$i" I've heard $3 thinks $6 is creepy.
-			case 3:
-				mpforce '$9' sayto "$i" $3 thinks $6 clumsy and awkward.
-			case 4:
-				mpforce '$9' sayto "$i" $3 never touches $6.
-			case 5:
-				mpforce '$9' sayto "$i" $3 won't use $6.
-			case 6:
-				mpforce '$9' sayto "$i" $3 doesn't like $6.
-			case 7:
-				mpforce '$9' sayto "$i" $3 wouldn't be caught dead using $6.
-			case 8:
-				mpforce '$9' sayto "$i" $3 is too proud to use $6.
-			case 9:
-				mpforce '$9' sayto "$i" $3 doesn't know how to use $6.
-			case 10:
-				mpforce '$9' sayto "$i" $3 is too dumb to figure out $6.
-			case 11:
-				mpforce '$9' sayto "$i" $3 is far too skilled for $6.
+			case 0
+				mpforce '$9' sayto "$i" $3 is a dork, but $3 would not do anything for $6.
+			case 1
+				mpforce '$9' sayto "$i" $3 is not one to be involved with $6.
+			case 2
+				mpforce '$9' sayto "$i" I know $3 well enough to know $6 is not a motive.
+			case 3
+				mpforce '$9' sayto "$i" $3 thinks $6 is immoral, he wouldn't do anything for that reason.
+			case 4
+				mpforce '$9' sayto "$i" $3 never gets involved with $6.
+			case 5
+				mpforce '$9' sayto "$i" $3 isn't ever into $6.
+			case 6
+				mpforce '$9' sayto "$i" $3 hates $6, and never gets involved in it.
+			case 7
+				mpforce '$9' sayto "$i" $3 would never do anything for $6.
+			case 8
+				mpforce '$9' sayto "$i" $3 is too proud to do anything for $6.
+			case 9
+				mpforce '$9' sayto "$i" $3 doesn't know anything of $6.
+			case 10
+				mpforce '$9' sayto "$i" $3 is too dumb for $6.
+			case 11
+				mpforce '$9' sayto "$i" $6 is far too silly a motive for $3.
 			endswitch
 		ENDIF
 	ELSE
 		mpargset $5 $5.$%RAND0NUM($5.LENGTH#)%
-		mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$6 $5"
+		mpsetvar $i EVIDENCE_ALREADY_GIVEN $<$i  EVIDENCE_ALREADY_GIVEN> "$5 $6"
 		mpsetvar $i ALREADY_SPOKEN_TO $<$i  ALREADY_SPOKEN_TO> "$9"
 		switch $%RAND0NUM(7)%
-		case 0:
+		case 0
 			mpforce '$9' sayto "$i" $5 is hardly the right tool for $6.
-		case 1:
+		case 1
 			mpforce '$9' sayto "$i" $5 is never used when one is into $6
-		case 2:
+		case 2
 			mpforce '$9' sayto "$i" No one would use $5 if $6 was involved.
-		case 3:
+		case 3
 			mpforce '$9' sayto "$i" Everyone knows $5 isn't used for acts motivated by $6.
-		case 4:
+		case 4
 			mpforce '$9' sayto "$i" $6 is not going to make one reach for $5.
-		case 5:
+		case 5
 			mpforce '$9' sayto "$i" $6 is no state for using a $5.
-		case 6:
+		case 6
 			mpforce '$9' sayto "$i" If $6 was involved, you can be sure $5 was not.
 		endswitch
 	ENDIF
 ~
 
 SPEAK_PROG all
-	if EVAL($i != $n) OR nummobsroom('MASK=$WITNESS_MASK' == 0)
+	mpargset $2 $WITNESS_MASK
+	if EVAL($i != $n) OR nummobsroom('MASK=$2' == 0)
 		RETURN
 	endif
 	if STRCONTAINS($g "i accept") OR STRCONTAINS($g "solve") OR EVAL($g == '')
