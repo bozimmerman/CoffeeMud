@@ -9073,6 +9073,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((O==null)
 				&&((!arg2.trim().startsWith("$"))
 					||(arg2.length()<2)
+					||(arg2.indexOf('%')>0)
+					||(arg2.charAt(1)=='g')
+					||(arg2.indexOf('.')>0)
 					||((!Character.isDigit(arg2.charAt(1)))
 						&&(!Character.isLetter(arg2.charAt(1))))))
 					O=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2);
