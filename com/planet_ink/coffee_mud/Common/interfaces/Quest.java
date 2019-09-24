@@ -722,23 +722,34 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	public final static int FLAG_SUSPENDED=1;
 
 	/** The list of BASIC non-iterative variable codes that pertain to a quest object */
-	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
-										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE", "DISPLAY",
-										 "INSTRUCTIONS", "PERSISTANCE", "AUTHOR", "EXPIRATION"};
+	public enum QCODES
+	{
+		CLASS, NAME, DURATION, WAIT, MINPLAYERS, PLAYERMASK,
+		RUNLEVEL, DATE, MUDDAY, INTERVAL,SPAWNABLE, DISPLAY,
+		INSTRUCTIONS, PERSISTANCE, AUTHOR, EXPIRATION
+	};
+
 	/** The list of basic quest objects defined in an iterative fashion during quest script execution */
-	public final static String[] QOBJS={"LOADEDMOBS", "LOADEDITEMS", "AREA", "ROOM", "MOBGROUP", "ITEMGROUP", "ROOMGROUP",
-		 								"ITEM", "ENVOBJ", "STUFF", "MOB"};
+	public enum QOBJS
+	{
+		LOADEDMOBS, LOADEDITEMS, AREA, ROOM, MOBGROUP, ITEMGROUP, ROOMGROUP,
+		ITEM, ENVOBJ, STUFF, MOB
+	};
+
 	/** The list of basic mystery quest objects defined in an iterative fashion during quest script execution */
-	public static final String[] MYSTERY_QCODES={"FACTION","FACTIONGROUP",
-												 "AGENT","AGENTGROUP",
-												 "ACTION","ACTIONGROUP",
-												 "TARGET","TARGETGROUP",
-												 "MOTIVE","MOTIVEGROUP",
-												 "WHEREHAPPENED","WHEREHAPPENEDGROUP",
-												 "WHEREAT","WHEREATGROUP",
-												 "WHENHAPPENED","WHENHAPPENEDGROUP",
-												 "WHENAT","WHENATGROUP",
-												 "TOOL","TOOLGROUP"};
+	public enum MYSTERY_QCODES
+	{
+		 FACTION,FACTIONGROUP,
+		 AGENT,AGENTGROUP,
+		 ACTION,ACTIONGROUP,
+		 TARGET,TARGETGROUP,
+		 MOTIVE,MOTIVEGROUP,
+		 WHEREHAPPENED,WHEREHAPPENEDGROUP,
+		 WHEREAT,WHEREATGROUP,
+		 WHENHAPPENED,WHENHAPPENEDGROUP,
+		 WHENAT,WHENATGROUP,
+		 TOOL,TOOLGROUP
+	};
 	/** the list of room-related mystery quest objects defined in an iterative fashion during quest script execution */
 	public static final String[] ROOM_REFERENCE_QCODES={"WHEREHAPPENED","WHEREHAPPENEDGROUP",
 														"WHEREAT","WHEREATGROUP",
