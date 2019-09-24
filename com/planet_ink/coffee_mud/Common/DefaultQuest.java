@@ -5217,12 +5217,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		public Object getStat(String statName)
 		{
 			final int x=statName.indexOf('#');
-			String whichStr=null;
+			final String whichStr;
 			if(x>=0)
 			{
 				whichStr=statName.substring(x+1);
 				statName=statName.substring(0,x);
 			}
+			else
+				whichStr=null;
 			Object O=null;
 			final QOBJS q=(QOBJS)CMath.s_valueOf(QOBJS.class, statName.toUpperCase().trim());
 			final int code=(q==null)?-1:q.ordinal();
