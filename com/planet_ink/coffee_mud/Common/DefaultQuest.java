@@ -158,15 +158,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	@Override
 	public Object getDesignatedObject(final String named)
 	{
-		int code=-1;
-		for(int i=0;i<QCODES.length;i++)
-		{
-			if(named.equalsIgnoreCase(QCODES[i]))
-			{
-				code = i;
-				break;
-			}
-		}
+		final QCODES q=(QCODES)CMath.s_valueOf(QCODES.class, named.toUpperCase().trim());
+		final int code=(q==null)?-1:q.ordinal();
 		switch(code)
 		{
 		case 0:
@@ -4921,11 +4914,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	{
 		if(CCODES == null)
 		{
-			final String[] CCODES=new String[QCODES.length+MYSTERY_QCODES.length];
-			for(int i=0;i<QCODES.length;i++)
-				CCODES[i]=QCODES[i];
-			for(int i=0;i<MYSTERY_QCODES.length;i++)
-				CCODES[QCODES.length+i]=MYSTERY_QCODES[i];
+			final String[] CCODES=new String[QCODES.values().length+MYSTERY_QCODES.values().length];
+			for(int i=0;i<QCODES.values().length;i++)
+				CCODES[i]=QCODES.values()[i].name();
+			for(int i=0;i<MYSTERY_QCODES.values().length;i++)
+				CCODES[QCODES.values().length+i]=MYSTERY_QCODES.values()[i].name();
 			DefaultQuest.CCODES = CCODES;
 		}
 		return CCODES;
@@ -5213,11 +5206,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			final int x=statName.indexOf('#');
 			if(x>=0)
 				statName=statName.substring(0,x);
-			for (final String element : QOBJS)
-			{
-				if(statName.equalsIgnoreCase(element))
-					return true;
-			}
+			final QOBJS q=(QOBJS)CMath.s_valueOf(QOBJS.class, statName.toUpperCase().trim());
+			if(q != null)
+				return true;
 			if(mysteryData!=null)
 				return mysteryData.isStat(statName);
 			return false;
@@ -5227,24 +5218,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		{
 			final int x=statName.indexOf('#');
 			String whichStr=null;
-			int whichNum=-1;
 			if(x>=0)
 			{
 				whichStr=statName.substring(x+1);
-				if(whichStr.length()>0)
-					whichNum=CMath.s_parseIntExpression(whichStr);
 				statName=statName.substring(0,x);
 			}
 			Object O=null;
-			int code=-1;
-			for(int i=0;i<QOBJS.length;i++)
-			{
-				if(statName.equalsIgnoreCase(QOBJS[i]))
-				{
-					code=i;
-					break;
-				}
-			}
+			final QOBJS q=(QOBJS)CMath.s_valueOf(QOBJS.class, statName.toUpperCase().trim());
+			final int code=(q==null)?-1:q.ordinal();
 			switch(code)
 			{
 			case 0:
@@ -5285,13 +5266,52 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					O=mysteryData.getStat(statName);
 				break;
 			}
-			if(O instanceof List)
+			if(whichStr != null)
 			{
-				final List<?> V=(List<?>)O;
-				if((whichStr!=null)&&((whichNum<=0)||(whichNum>V.size())))
-					return ""+V.size();
-				if(whichStr!=null)
-					return V.get(whichNum-1);
+				if(O instanceof List)
+				{
+					final List<?> V=(List<?>)O;
+					if(CMath.isInteger(whichStr)||(whichStr.length()==0))
+					{
+						final int whichNum=(whichStr.length()==0)?0:CMath.s_parseIntExpression(whichStr);
+						if((whichStr!=null)&&((whichNum<=0)||(whichNum>V.size())))
+							return ""+V.size();
+						if(whichStr!=null)
+							return V.get(whichNum-1);
+					}
+					else
+					if(whichStr.equals("?"))
+						return (V.size()>0)?V.get(CMLib.dice().roll(1, V.size(), -1)):O;
+					else
+					if(whichStr.equals("$"))
+					{
+						final StringBuilder str=new StringBuilder("");
+						for(final Object o : V)
+						{
+							if(o instanceof Room)
+								str.append("\"").append(CMLib.map().getExtendedRoomID((Room)o)).append("\" ");
+							else
+							if(o instanceof CMObject)
+								str.append("\"").append(((CMObject)o).name()).append("\" ");
+							else
+								str.append("\"").append(o.toString()).append("\" ");
+						}
+						return str.toString().trim();
+					}
+				}
+				else
+				if(whichStr.equals("$"))
+				{
+					final StringBuilder str=new StringBuilder("");
+					if(O instanceof Room)
+						str.append("\"").append(CMLib.map().getExtendedRoomID((Room)O)).append("\" ");
+					else
+					if(O instanceof CMObject)
+						str.append("\"").append(((CMObject)O).name()).append("\" ");
+					else
+						str.append("\"").append(O.toString()).append("\" ");
+					return str.toString().trim();
+				}
 			}
 			return O;
 		}
@@ -5329,25 +5349,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
 		public boolean isStat(final String statName)
 		{
-			for (final String element : MYSTERY_QCODES)
-			{
-				if(statName.equalsIgnoreCase(element))
-					return true;
-			}
-			return false;
+			return CMath.s_valueOf(Quest.MYSTERY_QCODES.class, statName.toUpperCase().trim()) != null;
 		}
 
 		public Object getStat(final String statName)
 		{
-			int code=-1;
-			for(int i=0;i<MYSTERY_QCODES.length;i++)
-			{
-				if(statName.equalsIgnoreCase(MYSTERY_QCODES[i]))
-				{
-					code = i;
-					break;
-				}
-			}
+			final MYSTERY_QCODES q=(MYSTERY_QCODES)CMath.s_valueOf(Quest.MYSTERY_QCODES.class, statName.toUpperCase().trim());
+			final int code=(q==null)?-1:q.ordinal();
 			switch(code)
 			{
 			case 0:
