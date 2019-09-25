@@ -1124,7 +1124,7 @@ public class GenRace extends StdRace
 					final String s=CMParms.getParmStr(val, Wearable.DEFAULT_WORN_DESCS[i].toUpperCase().replace(' ','_'), "");
 					if((s!=null)&&(s.length()>0)&&(CMath.isBool(s)))
 						if(CMath.s_bool(s))
-							forbiddenWornBits=CMath.setb(forbiddenWornBits, 2^(i-1));
+							forbiddenWornBits=CMath.setb(forbiddenWornBits, (int)Math.round(Math.pow(2,i-1)));
 				}
 			}
 			break;

@@ -5091,7 +5091,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			else
 			{
 				I.basePhyStats().setDisposition(0);
-				final List<String> V = CMParms.parseCommas(val, true);
+				final List<String> V;
+				if(val.indexOf(',')>0)
+					V = CMParms.parseCommas(val, true);
+				else
+					V = CMParms.parseSpaces(val, true);
 				for (final Iterator<String> e = V.iterator(); e.hasNext();)
 				{
 					val = e.next();
@@ -5293,7 +5297,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			else
 			{
 				M.basePhyStats().setDisposition(0);
-				final List<String> V = CMParms.parseCommas(val, true);
+				final List<String> V;
+				if(val.indexOf(',')>0)
+					V = CMParms.parseCommas(val, true);
+				else
+					V = CMParms.parseSpaces(val, true);
 				for (final Iterator<String> e = V.iterator(); e.hasNext();)
 				{
 					val = e.next();
@@ -5311,7 +5319,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			else
 			{
 				M.basePhyStats().setSensesMask(0);
-				final List<String> V = CMParms.parseCommas(val, true);
+				final List<String> V;
+				if(val.indexOf(',')>0)
+					V = CMParms.parseCommas(val, true);
+				else
+					V = CMParms.parseSpaces(val, true);
 				for (final Iterator<String> e = V.iterator(); e.hasNext();)
 				{
 					val = e.next();

@@ -17,9 +17,9 @@ limitations under the License.
 
 See guides/RandomAreas.html for information about documents of this type.
 
-template: normal_mystery1
+template: normal_mystery2
 settable vars: 
-    template(normal_mystery1)
+    template(normal_mystery2)
     area_name(area name)
     source_name(mob name)
     targetarea_name(area name)
@@ -30,7 +30,7 @@ settable vars:
 	reward_items()
 -->
 
-<QUEST ID="normal_mystery1" QUEST_TEMPLATE_ID="normal_mystery1">
+<QUEST ID="normal_mystery2" QUEST_TEMPLATE_ID="normal_mystery2">
 	<QUEST_ID DEFINE="quest_id">${_:source_area_name}_${_:source_name}_${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
 	<QUEST_NAME SELECT="Any-1">$quest_name</QUEST_NAME>
 	<QUEST_CRITERIA>+SYSOP +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA>
@@ -43,8 +43,6 @@ settable vars:
 	<WITNESS_MASK>-PLAYER +INT 5 -HOME "+$target_area_name"</WITNESS_MASK>
 	<SUSPECTS_MOBS>${SELECT: . FROM $target_mobs}</SUSPECTS_MOBS>
 	<NUM_SUSPECTS>$num_targets</NUM_SUSPECTS>
-	<TOOLS_ITEMS>${SELECT: . FROM $tool_items}</TOOLS_ITEMS>
-	<NUM_TOOLS>$num_items</NUM_TOOLS>
 	<MOTIVE_LIST>$quest_motive_list</MOTIVE_LIST>
 	<NUM_MOTIVES>$num_motives</NUM_MOTIVES>
 	<SOLVED_RESPONSE_TEXT>${j:1:quest_completedstring}</SOLVED_RESPONSE_TEXT>
@@ -68,9 +66,7 @@ settable vars:
 	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
 		<STRING>$reason_murder</STRING>
 		<STRING>$reason_robbed</STRING>
-		<STRING>$reason_gift</STRING>
 		<STRING>$reason_magic</STRING>
-		<STRING>$reason_product</STRING>
 		<STRING>$reason_genmystery</STRING>
 	</STRING>
 
@@ -78,11 +74,11 @@ settable vars:
 		<STRING define="quest_name">${c:source_name} needs your help solving a murder.</STRING>
 		<STRING define="quest_notifystring">A murder has occurred and I need help solving it.</STRING>
 		<STRING define="quest_instructionstring">
-			${c:fantasy_name} has been murdered, and you need to figure out WHO did it, WHAT 
-			item they used, and what MOTIVE was involved.  If you go around asking the locals 
+			${c:fantasy_name} has been murdered, and you need to figure out WHO did it, 
+			and what MOTIVE was involved.  If you go around asking the locals 
 			of $target_area_name about certain things, they will give you clues.  Then come back to me when
 			you have an answer to each of the questions.
-			  To get you started, I suspect $$%QVAR(* AGENTGROUP#?)% is involved.
+			  To get you started, I suspect $$%QVAR(* AGENTGROUP#?)% was involved.
 		</STRING>
 		<STRING define="quest_completedstring">
 			Well done $$n, justice has been served!
@@ -110,11 +106,11 @@ settable vars:
 		<STRING define="quest_name">${c:source_name} needs your help solving a robbery.</STRING>
 		<STRING define="quest_notifystring">There's been a robbery and I need help solving it.</STRING>
 		<STRING define="quest_instructionstring">
-			${c:fantasy_name} has been robbed, and you need to figure out WHO did it, WHAT 
-			item they stole, and what MOTIVE was involved.  If you go around asking the locals 
+			${c:fantasy_name} has been robbed, and you need to figure out WHO did it, 
+			and what MOTIVE was involved.  If you go around asking the locals 
 			of $target_area_name about certain things, they will give you clues.  Then come back to me when
 			you have an answer to each of the questions.
-			  To get you started, I suspect $$%QVAR(* AGENTGROUP#?)% is involved.
+			To get you started, I suspect $$%QVAR(* AGENTGROUP#?)% was involved.
 		</STRING>
 		<STRING define="quest_completedstring">
 			Well done $$n, justice has been served!
@@ -137,86 +133,12 @@ settable vars:
 		</STRING>
 	</STRING>
 
-	<STRING ID="reason_gift" SELECT="All">
-		<STRING define="quest_name">${c:source_name} wants you to figure out the surprise gift.</STRING>
-		<STRING define="quest_notifystring">I'm receiving a secret gift and want help figuring it out.</STRING>
-		<STRING define="quest_instructionstring">
-			Someone is giving me a mystery gift for some reason and you need to figure out WHO will give it, WHAT 
-			item are giving me, and what MOTIVE is involved.  If you go around asking the locals 
-			of $target_area_name about certain things, they will give you clues.  Then come back to me when
-			you have an answer to each of the questions.
-			  To get you started, I suspect $$%QVAR(* AGENTGROUP#?)% is involved.
-		</STRING>
-		<STRING define="quest_completedstring">
-			Well done $$n, now the surprise is entirely spoiled!
-		</STRING>
-		<STRING define="quest_motive_list">$quest_gift_motive_list</STRING>
-		<STRING id="quest_gift_motive_list" SELECT="ANY-$num_motives">
-			<STRING ACTION="APPEND"> "love" </STRING>
-			<STRING ACTION="APPEND"> "friendship" </STRING>
-			<STRING ACTION="APPEND"> "surprise" </STRING>
-			<STRING ACTION="APPEND"> "alliance" </STRING>
-			<STRING ACTION="APPEND"> "unity" </STRING>
-			<STRING ACTION="APPEND"> "intimacy" </STRING>
-			<STRING ACTION="APPEND"> "affinity" </STRING>
-			<STRING ACTION="APPEND"> "rapport" </STRING>
-			<STRING ACTION="APPEND"> "harmony" </STRING>
-			<STRING ACTION="APPEND"> "understanding" </STRING>
-			<STRING ACTION="APPEND"> "companionship" </STRING>
-			<STRING ACTION="APPEND"> "association" </STRING>
-			<STRING ACTION="APPEND"> "warmth" </STRING>
-			<STRING ACTION="APPEND"> "tenderness" </STRING>
-			<STRING ACTION="APPEND"> "fondness" </STRING>
-			<STRING ACTION="APPEND"> "wealth" </STRING>
-			<STRING ACTION="APPEND"> "partiality" </STRING>
-		</STRING>
-	</STRING>
-
-	<STRING ID="reason_product" SELECT="All">
-		<STRING define="quest_name">${c:source_name} wants you to figure out what's coming to $source_area_name.</STRING>
-		<STRING define="quest_notifystring">A new merchant is coming to $source_area_name soon, and I'd like to know about it.</STRING>
-		<STRING define="quest_instructionstring">
-			A new merchant is bringing some new product to $source_area_name, and you need to find out out WHO is bringing it, WHAT 
-			the product is, and what MOTIVE is involved.  If you go around asking the locals 
-			of $target_area_name about certain things, they will give you clues.  Then come back to me when
-			you have an answer to each of the questions.
-			  To get you started, I suspect $$%QVAR(* AGENTGROUP#?)% is involved.
-		</STRING>
-		<STRING define="quest_completedstring">
-			Well done $$n, I can't wait!
-		</STRING>
-		<STRING define="quest_motive_list">$quest_product_motive_list</STRING>
-		<STRING id="quest_product_motive_list" SELECT="ANY-$num_motives">
-			<STRING ACTION="APPEND"> "wealth" </STRING>
-			<STRING ACTION="APPEND"> "greed" </STRING>
-			<STRING ACTION="APPEND"> "helpfulness" </STRING>
-			<STRING ACTION="APPEND"> "avarice" </STRING>
-			<STRING ACTION="APPEND"> "materialism" </STRING>
-			<STRING ACTION="APPEND"> "rapacity" </STRING>
-			<STRING ACTION="APPEND"> "cupidity" </STRING>
-			<STRING ACTION="APPEND"> "avidity" </STRING>
-			<STRING ACTION="APPEND"> "impatience" </STRING>
-			<STRING ACTION="APPEND"> "enthusiasm" </STRING>
-			<STRING ACTION="APPEND"> "cooperation" </STRING>
-			<STRING ACTION="APPEND"> "neighborly" </STRING>
-			<STRING ACTION="APPEND"> "benevolence" </STRING>
-			<STRING ACTION="APPEND"> "sympathetic" </STRING>
-			<STRING ACTION="APPEND"> "usefulness" </STRING>
-			<STRING ACTION="APPEND"> "eagerness" </STRING>
-			<STRING ACTION="APPEND"> "industriousness" </STRING>
-			<STRING ACTION="APPEND"> "fervor" </STRING>
-			<STRING ACTION="APPEND"> "zealousness" </STRING>
-			<STRING ACTION="APPEND"> "excitement" </STRING>
-			<STRING ACTION="APPEND"> "commitment" </STRING>
-		</STRING>
-	</STRING>
-
 	<STRING ID="reason_magic" SELECT="All">
 		<STRING define="quest_name">${c:source_name} wants you to find out about the latest magic research.</STRING>
 		<STRING define="quest_notifystring">I've heard a magician is coming to $source_area_name soon with new magic, and I'd like to know what it is.</STRING>
 		<STRING define="quest_instructionstring">
-			A mage is bringing some new magic to $source_area_name, and you need to find out out WHO is bringing it, WHAT 
-			item they are using, and what MOTIVE is involved.  If you go around asking the locals 
+			A mage is bringing some new magic to $source_area_name, and you need to find out out WHO is bringing it, 
+			and what MOTIVE is involved.  If you go around asking the locals 
 			of $target_area_name about certain things, they will give you clues.  Then come back to me when
 			you have an answer to each of the questions.
 			  To get you started, I suspect $$%QVAR(* AGENTGROUP#?)% is involved.
@@ -267,8 +189,8 @@ settable vars:
 		<STRING define="quest_name">${c:source_name} wants you to solve a mystery.</STRING>
 		<STRING define="quest_notifystring">There's a mystery that needs solving!</STRING>
 		<STRING define="quest_instructionstring">
-			There's a mystery in $target_area_name, you need to figure out WHO is involved, WHAT 
-			item is used, and what MOTIVE is involved.  If you go around asking the locals 
+			There's a mystery in $target_area_name, you need to figure out WHO is involved, 
+			and what MOTIVE is involved.  If you go around asking the locals 
 			of $target_area_name about certain things, they will give you clues.  Then come back to me when
 			you have an answer to each of the questions.
 			  To get you started, I suspect $$%QVAR(* AGENTGROUP#?)% is involved.
@@ -406,25 +328,4 @@ settable vars:
 		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" display="" ><AFFECT class="Prop_WizInvis" /></MOB>
 	</OBJECT>
 	
-	<STRING ID="num_items" define="num_items">$[2?4]</STRING>
-	<OBJECT ID="tool_items" define="tool_items" SELECT="Any-$num_items">
-		<ITEM class="metacraft:any-Armorsmithing" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-baking" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-Blacksmithing" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-cobbling" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-cooking" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-foodprep" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-glassblowing" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-instrumentmaking" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-jewelmaking" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-LeatherWorking" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-pottery" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-sculpting" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-staffmaking" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-Tailoring" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-		<ITEM class="metacraft:any-Weaponsmithing" disposition="ISUNSEEN ISUNATTACKABLE ISCLOAKED ISINVISIBLE ISHIDDEN" ><AFFECT class="Prop_WizInvis" /></ITEM>
-	</OBJECT>
-
 </QUEST>
-
-

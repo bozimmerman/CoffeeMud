@@ -149,34 +149,31 @@ public class Prop_WizInvis extends Property
 	@Override
 	public void unInvoke()
 	{
-		if(!(affected instanceof MOB))
-			return;
-		final MOB mob=(MOB)affected;
-
-		if(affected==null)
-			return;
 		final Physical being=affected;
-
-		if(this.canBeUninvoked())
+		if(being != null)
 		{
-			being.delEffect(this);
-			if(being instanceof Room)
-				((Room)being).recoverRoomStats();
-			else
-			if(being instanceof MOB)
+			if(this.canBeUninvoked())
 			{
-				if(((MOB)being).location()!=null)
-					((MOB)being).location().recoverRoomStats();
+				being.delEffect(this);
+				if(being instanceof Room)
+					((Room)being).recoverRoomStats();
 				else
+				if(being instanceof MOB)
 				{
-					being.recoverPhyStats();
-					((MOB)being).recoverCharStats();
-					((MOB)being).recoverMaxState();
+					final MOB mob=(MOB)being;
+					if(((MOB)being).location()!=null)
+						((MOB)being).location().recoverRoomStats();
+					else
+					{
+						being.recoverPhyStats();
+						((MOB)being).recoverCharStats();
+						((MOB)being).recoverMaxState();
+					}
+					mob.tell(L("You begin to fade back into view."));
 				}
+				else
+					being.recoverPhyStats();
 			}
-			else
-				being.recoverPhyStats();
-			mob.tell(L("You begin to fade back into view."));
 		}
 	}
 
