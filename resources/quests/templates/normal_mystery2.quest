@@ -470,8 +470,11 @@ FUNCTION_PROG AskedAboutMotive
 ~
 
 SPEAK_PROG all
+	if EVAL($i != $n)
+		RETURN
+	endif
 	mpargset $2 $WITNESS_MASK
-	if EVAL($i != $n) OR nummobsroom('MASK=$2' == 0)
+	if nummobsroom('MASK=$2' == 0)
 		RETURN
 	endif
 	if STRCONTAINS($g "i accept") OR STRCONTAINS($g "solve") OR EVAL($g == '')
