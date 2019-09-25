@@ -12578,7 +12578,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)||(msg.targetMinor()==CMMsg.TYP_SPEAK))&&canTrigger(47)
 					&&(msg.amISource(monster)||(!(affecting instanceof MOB)))
 					&&(!msg.othersMajor(CMMsg.MASK_CHANNEL))
-					&&(((msg.sourceMessage()!=null)&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)))
+					&&((msg.sourceMessage()!=null)
 					   ||((msg.target()==monster)&&(msg.targetMessage()!=null)&&(msg.tool()==null)))
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
