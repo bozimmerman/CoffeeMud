@@ -3559,7 +3559,9 @@ as-is to load the group of objects into one of the $0..$9 vars.
 However, you can also tack on a "#" to the end of the name to return
 the number of items in the group instead of the group itself. After
 that, you can tack on a number like "#n" to return the nth item in the
-group. See the examples for more information on that.</p>
+group. Lastly, tacking "#$" will return just the names of the items,
+and "#?" will return a random element in the group. &nbsp;See the
+examples for more information on some of these.</p>
 <p>EXAMPLES:</p>
 <pre>mploadquestobj 'myquest' 'MOB' $t<br />mploadquestobj 'myquest' 'TOOLGROUP#' $0<br />for $1 = 1 to $0<br /> mploadquestobj 'myquest' 'TOOLGROUP#$1' $2<br /> mpecho $2 is now the $1th tool of $0 total in the myquest toolgroup.<br />next<br /></pre>
 <h3><a name="mploadvar">mploadvar</a></h3>

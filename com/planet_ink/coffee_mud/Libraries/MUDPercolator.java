@@ -1377,7 +1377,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							value = findOptionalString(E,ignoreStats,defPrefix,stat,piece,this.defined, debug);
 						if(value != null)
 						{
-							E.setStat(stat, value);
+							if(stat.equals("DISPOSITION")||stat.equals("SENSES"))
+								CMLib.coffeeMaker().setAnyGenStat((Physical)E, stat, value);
+							else
+								E.setStat(stat, value);
 							if((defPrefix!=null)&&(defPrefix.length()>0))
 								addDefinition(defPrefix+stat,value,this.defined);
 						}

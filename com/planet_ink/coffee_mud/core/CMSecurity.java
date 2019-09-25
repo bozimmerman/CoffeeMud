@@ -2635,7 +2635,9 @@ public class CMSecurity
 		SPACESHIP("Spaceships"),
 		SQLERRORS("SQL error traces"),
 		GMCP("GMCP Protocol"),
-		ELECTRICTHREAD("Electric currents")
+		ELECTRICTHREAD("Electric currents"),
+		SCRIPTVARS("MOBPROG Script vars"),
+		SCRIPTTRACE("MOBPROG Script traving")
 		;
 		private final String desc;
 

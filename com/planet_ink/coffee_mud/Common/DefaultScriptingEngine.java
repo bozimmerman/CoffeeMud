@@ -2670,12 +2670,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	 */
 	private static int strIndex(final Vector<String> V, final String str, final int start)
 	{
-		if(str.indexOf(' ')<0)
-			return V.indexOf(str,start);
+		int x=V.indexOf(str,start);
+		if(x>=0)
+			return x;
 		final List<String> V2=CMParms.parse(str);
 		if(V2.size()==0)
 			return -1;
-		int x=V.indexOf(V2.get(0),start);
+		x=V.indexOf(V2.get(0),start);
 		boolean found=false;
 		while((x>=0)&&((x+V2.size())<=V.size())&&(!found))
 		{
@@ -8025,6 +8026,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		String s=null;
 		String[] tt=null;
 		String cmd=null;
+		final boolean traceDebugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.SCRIPTTRACE);
+		if(traceDebugging && startLine == 1 && script.size()>0 && script.get(0, 1).toString().trim().length()>0)
+			Log.debugOut(CMStrings.padRight(scripted.Name(), 15)+": * EXECUTE: "+script.get(0, 1).toString());
 		for(int si=startLine;si<script.size();si++)
 		{
 			s=((String)script.elementAt(si,1)).trim();
@@ -8035,6 +8039,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				cmd=CMParms.getCleanBit(s,0).toUpperCase();
 			if(cmd.length()==0)
 				continue;
+			if(traceDebugging)
+				Log.debugOut(CMStrings.padRight(scripted.Name(), 15)+": "+s);
 
 			Integer methCode=methH.get(cmd);
 			if((methCode==null)&&(cmd.startsWith("MP")))
@@ -8776,6 +8782,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					try
 					{
 						final String value=((MOB)newTarget).session().prompt(promptStr,120000);
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SCRIPTVARS))
+							Log.debugOut(CMStrings.padRight(scripted.Name(), 15)+": SETVAR: "+newTarget.Name()+"("+var+")="+value+"<");
 						setVar(newTarget.Name(),var,value);
 					}
 					catch(final Exception e)
@@ -8802,6 +8810,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					try
 					{
 						final String value=((MOB)newTarget).session().confirm(promptStr,defaultVal,60000)?"Y":"N";
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SCRIPTVARS))
+							Log.debugOut(CMStrings.padRight(scripted.Name(), 15)+": SETVAR: "+newTarget.Name()+"("+var+")="+value+"<");
 						setVar(newTarget.Name(),var,value);
 					}
 					catch(final Exception e)
@@ -8886,6 +8896,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					try
 					{
 						final String value=((MOB)newTarget).session().choose(promptStr,choices,defaultVal,60000);
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SCRIPTVARS))
+							Log.debugOut(CMStrings.padRight(scripted.Name(), 15)+": SETVAR: "+newTarget.Name()+"("+var+")="+value+"<");
 						setVar(newTarget.Name(),var,value);
 					}
 					catch(final Exception e)
@@ -9071,11 +9083,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(O==null)
 					O=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((O==null)
-				&&((!arg2.trim().startsWith("$"))
-					||(arg2.length()<2)
-					||(arg2.indexOf('%')>0)
+				&&((arg2.length()!=2)
 					||(arg2.charAt(1)=='g')
-					||(arg2.indexOf('.')>0)
+					||(!arg2.startsWith("$"))
 					||((!Character.isDigit(arg2.charAt(1)))
 						&&(!Character.isLetter(arg2.charAt(1))))))
 					O=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2);
@@ -11301,7 +11311,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						which=E.Name();
 				}
 				if((which.length()>0)&&(arg2.length()>0))
+				{
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SCRIPTVARS))
+						Log.debugOut(CMStrings.padRight(scripted.Name(), 15)+": SETVAR: "+which+"("+arg2+")="+arg3+"<");
 					setVar(which,arg2,arg3);
+				}
 				break;
 			}
 			case 36: // mpsavevar
@@ -11366,6 +11380,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						String varName=VAR.key();
 						if(varName.startsWith(which.toUpperCase()+"_SCRIPTABLEVARS_"))
 							varName=varName.substring((which+"_SCRIPTABLEVARS_").length());
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SCRIPTVARS))
+							Log.debugOut(CMStrings.padRight(scripted.Name(), 15)+": SETVAR: "+which+"("+varName+")="+VAR.xml()+"<");
 						setVar(which,varName,VAR.xml());
 					}
 				}

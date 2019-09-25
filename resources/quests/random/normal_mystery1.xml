@@ -402,40 +402,21 @@ settable vars:
 	
 	<STRING ID="num_items" define="num_items">$[2?4]</STRING>
 	<OBJECT ID="tool_items" define="tool_items" SELECT="Any-$num_items">
-		<ITEM class="metacraft:any-alchemy"/>
-		<ITEM class="metacraft:any-apothecary"/>
 		<ITEM class="metacraft:any-Armorsmithing"/>
 		<ITEM class="metacraft:any-baking"/>
 		<ITEM class="metacraft:any-Blacksmithing"/>
-		<ITEM class="metacraft:any-Boatwright"/>
-		<ITEM class="metacraft:any-CageBuilding"/>
 		<ITEM class="metacraft:any-cobbling"/>
 		<ITEM class="metacraft:any-cooking"/>
-		<ITEM class="metacraft:any-costuming"/>
-		<ITEM class="metacraft:any-distilling"/>
-		<ITEM class="metacraft:any-fletching"/>
 		<ITEM class="metacraft:any-foodprep"/>
-		<ITEM class="metacraft:any-gaelfood"/>
 		<ITEM class="metacraft:any-glassblowing"/>
-		<ITEM class="metacraft:any-herbalism"/>
 		<ITEM class="metacraft:any-instrumentmaking"/>
 		<ITEM class="metacraft:any-jewelmaking"/>
 		<ITEM class="metacraft:any-LeatherWorking"/>
-		<ITEM class="metacraft:any-papermaking"/>
 		<ITEM class="metacraft:any-pottery"/>
-		<ITEM class="metacraft:any-rodsmithing"/>
-		<ITEM class="metacraft:any-scrollscribing"/>
 		<ITEM class="metacraft:any-sculpting"/>
-		<ITEM class="metacraft:any-smelting"/>
 		<ITEM class="metacraft:any-staffmaking"/>
 		<ITEM class="metacraft:any-Tailoring"/>
-		<ITEM class="metacraft:any-Tanning"/>
-		<ITEM class="metacraft:any-Textiling"/>
-		<ITEM class="metacraft:any-torturesmithing"/>
-		<ITEM class="metacraft:any-WandMaking"/>
-		<ITEM class="metacraft:any-Wainwrighting"/>
 		<ITEM class="metacraft:any-Weaponsmithing"/>
-		<ITEM class="metacraft:any-Weaving"/>
 	</OBJECT>
 
 </QUEST>

@@ -351,12 +351,20 @@ FUNCTION_PROG winner
 				mpqset * STATISTICS SUCCESS
 			else
 				if VAR($n $QUEST_ID_TOOL != '') AND VAR($n $QUEST_ID_AGENT != '') AND VAR($n $QUEST_ID_MOTIVE != '')
-					sayto $n I'm sorry $n, your guess is incorrect.  Try again later.
+					sayto $n I'm sorry $n, your guess is incorrect.  Try again in 10 minutes.
+					mpalarm 150 MPCALLFUNC ClearPlayerGuess
 				endif
 			endif
 		endif
 	endif
 ~
+
+FUNCTION_PROG ClearPlayerGuess
+	MPSETVAR $n $QUEST_ID_TOOL ''
+	MPSETVAR $n $QUEST_ID_AGENT ''
+	MPSETVAR $n $QUEST_ID_MOTIVE ''
+~
+
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
@@ -436,8 +444,8 @@ FUNCTION_PROG AskedAboutAgent
 		endif
 	next
 
-	If EVAL($6 == '') OR RAND(50)
-		if EVAL($5 == '')
+	If EVAL($6 == '') OR EVAL($6 == '  ') OR RAND(50)
+		if EVAL($5 == '') OR EVAL($5 == '  ') 
 			# Should we say something here?
 		ELSE
 			mpargset $5 $5.$%RAND0NUM($5.LENGTH#)%
@@ -469,7 +477,6 @@ FUNCTION_PROG AskedAboutAgent
 			case 11
 				mpforce '$9' sayto "$i" $3 is far too skilled for $5.
 			endswitch
-		ENDIF
 		ENDIF
 	ELSE
 		mpargset $6 $6.$%RAND0NUM($6.LENGTH#)%
@@ -539,8 +546,8 @@ FUNCTION_PROG AskedAboutTool
 		endif
 	next
 
-	If EVAL($6 == '') OR RAND(50)
-		if EVAL($3 == '')
+	If EVAL($6 == '') OR EVAL($6 == '  ') OR RAND(50)
+		if EVAL($3 == '') OR EVAL($3 == '  ')
 			# Should we say something here?
 		ELSE
 			mpargset $3 $3.$%RAND0NUM($3.LENGTH#)%
@@ -631,8 +638,8 @@ FUNCTION_PROG AskedAboutMotive
 		endif
 	next
 
-	If EVAL($5 == '') OR RAND(50)
-		if EVAL($3 == '')
+	If EVAL($5 == '') OR EVAL($5 == '  ') OR RAND(50)
+		if EVAL($3 == '') OR EVAL($3 == '  ')
 			# Should we say something here?
 		ELSE
 			mpargset $3 $3.$%RAND0NUM($3.LENGTH#)%
