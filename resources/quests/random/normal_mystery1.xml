@@ -383,21 +383,21 @@ settable vars:
 
 	<STRING ID="num_targets"  define="num_targets" merge=overwrite>$[2?4]</STRING>
 	<OBJECT ID="target_mobs" SELECT="Any-$num_targets">
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
-		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN,ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
+		<MOB class="GenMob" level="$level_range" race="Humanoid" gender="$anygender" name="$fantasy_name" alignment="$[-10000?10000]" disposition="ISUNSEEN ISUNATTACKABLE" display="" />
 	</OBJECT>
 	
 	<STRING ID="num_items" define="num_items">$[2?4]</STRING>
