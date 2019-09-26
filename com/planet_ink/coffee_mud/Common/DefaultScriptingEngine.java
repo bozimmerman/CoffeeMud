@@ -66,7 +66,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected static final Map<String,Integer>	gstatH	= new Hashtable<String,Integer>();
 	protected static final Map<String,Integer>	signH	= new Hashtable<String,Integer>();
 
-	protected static final Map<String,Pattern>	patterns= new Hashtable<String,Pattern>();
+	protected static final Map<String, AtomicInteger>	counterCache= new Hashtable<String, AtomicInteger>();
+	protected static final Map<String, Pattern>			patterns	= new Hashtable<String, Pattern>();
 
 	protected boolean 				noDelay			 = CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLEDELAY);
 
@@ -97,6 +98,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected boolean				debugBadScripts	 = false;
 	protected List<ScriptableResponse>que			 = new Vector<ScriptableResponse>();
 	protected final AtomicInteger	recurseCounter	 = new AtomicInteger();
+	protected volatile Object		cachedRef		 = null;
 
 	public DefaultScriptingEngine()
 	{
@@ -12184,10 +12186,66 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return scriptKey;
 	}
 
+	@Override
+	protected void finalize() throws Throwable
+	{
+		super.finalize();
+		synchronized(this)
+		{
+			final Object ref=cachedRef;
+			if(ref == this)
+			{
+				final String key=getScriptResourceKey();
+				if(key.length()>0)
+				{
+					boolean clearFiles=false;
+					synchronized(counterCache)
+					{
+						if(counterCache.containsKey(key))
+						{
+							if(counterCache.get(key).addAndGet(-1) <= 0)
+							{
+								counterCache.remove(key);
+								clearFiles=true;
+							}
+						}
+					}
+					if(clearFiles)
+					{
+						Resources.removeResource(key);
+						if((scope != null)&&(scope.length()>0))
+							Resources.removeResource("VARSCOPE-"+scope);
+						if((defaultQuestName!=null)&&(defaultQuestName.length()>0))
+							Resources.removeResource("VARSCOPE-"+defaultQuestName);
+					}
+				}
+			}
+		}
+	}
+
 	protected List<DVector> getScripts()
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLE)||CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTING))
 			return empty;
+		synchronized(this)
+		{
+			final Object ref=cachedRef;
+			if(ref != this)
+			{
+				final String key=getScriptResourceKey();
+				if(key.length()>0)
+				{
+					synchronized(counterCache)
+					{
+						if(!counterCache.containsKey(key))
+							counterCache.put(key, new AtomicInteger(0));
+						counterCache.get(key).addAndGet(1);
+					}
+				}
+				cachedRef=this;
+			}
+		}
+
 		@SuppressWarnings("unchecked")
 		List<DVector> scripts=(List<DVector>)Resources.getResource(getScriptResourceKey());
 		if(scripts==null)
