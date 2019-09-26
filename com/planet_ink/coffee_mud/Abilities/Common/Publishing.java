@@ -219,6 +219,7 @@ public class Publishing extends CommonSkill
 						{
 							final MOB M=R.fetchInhabitant(i);
 							if((M != affected)
+							&&(M != null)
 							&&(!M.isPlayer()))
 							{
 								final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
