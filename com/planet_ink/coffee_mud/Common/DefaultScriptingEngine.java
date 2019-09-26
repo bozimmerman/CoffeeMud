@@ -1624,7 +1624,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			switch(c)
 			{
 				case '@':
-					if ((t < varifyable.length() - 2) && Character.isLetter(varifyable.charAt(t + 2)))
+					if ((t < varifyable.length() - 2)
+					&& (Character.isLetter(varifyable.charAt(t + 2))||Character.isDigit(varifyable.charAt(t + 2))))
 					{
 						final Environmental E = getArgumentItem("$" + varifyable.charAt(t + 2),
 								source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
