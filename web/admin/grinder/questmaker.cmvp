@@ -96,15 +96,25 @@
 			<FONT COLOR=YELLOW><H3>Select a Template</H3></FONT>
 			<FONT COLOR=WHITE>
 			Welcome to the QuestMaker Wizard.  Your first step is to select
-			a template upon which to base your new Quest.  All of the 
-			Quests below are part of the Competitive set.  This means that
-			they are quests that have a set duration, and where the goals
+			a template upon which to base your new Quest.<P>
+			Competitive quests
+			are quests that have a set duration, and where the goals
 			can be attempted by multiple players, but only one player may
 			prevail for any one given run of the quest, and the losers will have
-			to wait for the next run.  After you've made a selection, click NEXT 
-			at the bottom.
-			</FONT>
+			to wait for the next run.  These are best for world events.
 			<P>
+			Normal quests are quests where each player can independently
+			acquire and complete the quest at their leisure.
+			<P>
+			After you've made a selection, click NEXT at the bottom.
+			</FONT>
+			<P><FONT COLOR=White>Template type:</FONT>
+			<SELECT NAME="QUEST_TEMPLATE_FILTER" ONCHANGE="Refresh();" >
+				<OPTION VAlUE="" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=@SELECTED@endif@>All
+				<OPTION VAlUE="Normal*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=Normal*@SELECTED@endif@>Normal
+				<OPTION VAlUE="Competitive*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=Competitive*@SELECTED@endif@>Competitive
+			</SELECT><BR>
+			<HR>
 		@else@
 			<INPUT TYPE=HIDDEN NAME=QMTEMPLATE VALUE="@QuestMaker?QMTEMPLATE@">
 			<FONT COLOR=YELLOW><H3>@QuestMaker?QMPAGETITLE@</H3></FONT>

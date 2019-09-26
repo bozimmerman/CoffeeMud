@@ -36,6 +36,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_killer1</string>
 	<string condition="$template='random'"                                               >normal_killer2</string>
 	<string condition="$template='random'"                                               >normal_mystery1</string>
+	<string condition="$template='random'"                                               >normal_mystery2</string>
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_travel1</string>
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_travel2</string>
 </string>
@@ -58,6 +59,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<QUEST load="/resources/quests/random/normal_killer1.xml" CONDITION="$quest_template='normal_killer1'"/>
 	<QUEST load="/resources/quests/random/normal_killer2.xml" CONDITION="$quest_template='normal_killer2'"/>
 	<QUEST load="/resources/quests/random/normal_mystery1.xml" CONDITION="$quest_template='normal_mystery1'"/>
+	<QUEST load="/resources/quests/random/normal_mystery2.xml" CONDITION="$quest_template='normal_mystery2'"/>
 	<QUEST load="/resources/quests/random/normal_travel1.xml" CONDITION="$quest_template='normal_travel1'"/>
 	<QUEST load="/resources/quests/random/normal_travel2.xml" CONDITION="$quest_template='normal_travel2'"/>
 </QUEST>
