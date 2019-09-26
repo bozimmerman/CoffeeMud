@@ -1880,7 +1880,7 @@ public class Create extends StdCommand
 					commands.add("CREATE");
 					commands.add("ROOM");
 					commands.add(lastWord);
-					commands.add(allWord);
+					commands.add(firstWord);
 					return execute(mob,commands,metaFlags);
 				}
 				else
@@ -1891,7 +1891,7 @@ public class Create extends StdCommand
 					commands.add("CREATE");
 					commands.add("EXIT");
 					commands.add(lastWord);
-					commands.add(allWord);
+					commands.add(firstWord);
 					return execute(mob,commands,metaFlags);
 				}
 			}
