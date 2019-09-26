@@ -354,7 +354,7 @@ FUNCTION_PROG AskedAboutAgent
 	mpargset $2 $WITNESS_MASK
 	for $0 = 1 to '$%NUMMOBSROOM(*)%
 		MPARGSET $1 $%ROOMMOB($0)%
-		if ISNPC($1) AND ISLIKE($1 $2) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i $QUEST_ID_ALREADY_SPOKEN_TO>' $1)
+		if ISNPC($1) AND ISLIKE($1 $2) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i $QUEST_ID_ALREADY_SPOKEN_TO>' $@1)
 			mpargset $9 $1
 			BREAK
 		ENDIF
@@ -379,7 +379,7 @@ FUNCTION_PROG AskedAboutAgent
 	
 	mpargset $6 $6.$%RAND0NUM($6.LENGTH#)%
 	mpsetvar $i $QUEST_ID_EVIDENCE_ALREADY_GIVEN $<$i  $QUEST_ID_EVIDENCE_ALREADY_GIVEN> "$3 $6"
-	mpsetvar $i $QUEST_ID_ALREADY_SPOKEN_TO $<$i  $QUEST_ID_ALREADY_SPOKEN_TO> "$9"
+	mpsetvar $i $QUEST_ID_ALREADY_SPOKEN_TO $<$i  $QUEST_ID_ALREADY_SPOKEN_TO> "$@9"
 	switch $%RAND0NUM(12)%
 	case 0
 		mpforce '$9' sayto "$i" $3 is a dork, but $3 would not do anything for $6.
@@ -414,7 +414,7 @@ FUNCTION_PROG AskedAboutMotive
 	mpargset $2 $WITNESS_MASK
 	for $0 = 1 to '$%NUMMOBSROOM(*)%
 		MPARGSET $1 $%ROOMMOB($0)%
-		if ISNPC($1) AND ISLIKE($1 $2) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i $QUEST_ID_ALREADY_SPOKEN_TO>' $1)
+		if ISNPC($1) AND ISLIKE($1 $2) AND CANHEAR($1 $i) AND EVAL($1 != '${1 *}') AND !STRCONTAINS('$<$i $QUEST_ID_ALREADY_SPOKEN_TO>' $@1)
 			mpargset $9 $1
 			BREAK
 		ENDIF
@@ -440,7 +440,7 @@ FUNCTION_PROG AskedAboutMotive
 
 	mpargset $3 $3.$%RAND0NUM($3.LENGTH#)%
 	mpsetvar $i $QUEST_ID_EVIDENCE_ALREADY_GIVEN $<$i  $QUEST_ID_EVIDENCE_ALREADY_GIVEN> "$3 $6"
-	mpsetvar $i $QUEST_ID_ALREADY_SPOKEN_TO $<$i  $QUEST_ID_ALREADY_SPOKEN_TO> "$9"
+	mpsetvar $i $QUEST_ID_ALREADY_SPOKEN_TO $<$i  $QUEST_ID_ALREADY_SPOKEN_TO> "$@9"
 	switch $%RAND0NUM(12)%
 	case 0
 		mpforce '$9' sayto "$i" $3 is a dork, but $3 would not do anything for $6.
