@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Law.TreasurySet;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -366,12 +367,21 @@ public class DefaultLawSet implements Law
 			M=CMLib.players().getLoadPlayer(ownerName);
 			if(M!=null)
 			{
-				if(owerName.length()==0)
-					owerName=M.Name();
-				final String amountOwed = CMLib.beanCounter().nameCurrencyLong(M, owed);
-				final String subj = CMLib.lang().L(subject,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord);
-				final String msg = CMLib.lang().L(message,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord);
-				return sendGameMail(M.Name(), subj, msg);
+				final PlayerStats pStats=M.playerStats();
+				final boolean canReceiveRealEmail =
+					(pStats.getEmail().length()>0)
+				  &&(M.isAttributeSet(MOB.Attrib.AUTOFORWARD))
+				  &&((pStats.getAccount()==null)
+					||(!pStats.getAccount().isSet(AccountFlag.NOAUTOFORWARD)));
+				if(canReceiveRealEmail)
+				{
+					if(owerName.length()==0)
+						owerName=M.Name();
+					final String amountOwed = CMLib.beanCounter().nameCurrencyLong(M, owed);
+					final String subj = CMLib.lang().L(subject,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord);
+					final String msg = CMLib.lang().L(message,owerName,amountOwed,CMProps.getVar(CMProps.Str.MUDNAME),fourWord);
+					return sendGameMail(M.Name(), subj, msg);
+				}
 			}
 			return false;
 		}
