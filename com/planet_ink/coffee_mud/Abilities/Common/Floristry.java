@@ -126,6 +126,8 @@ public class Floristry extends CommonSkill
 							found.setName(L("some @x1",flower));
 						found.setDisplayText(L("@x1 are here",found.Name()));
 						found.setDescription("");
+						if(found instanceof RawMaterial)
+							((RawMaterial)found).setSubType(flower.toUpperCase().trim());
 						found.text();
 						if((!isLimitedToOne()) && (foundName!=null))
 						{
