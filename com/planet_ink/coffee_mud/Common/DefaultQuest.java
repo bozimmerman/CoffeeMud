@@ -3773,6 +3773,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		ticksRemaining=-1;
 		if((isCopy())||(!resetWaitRemaining(0)))
 		{
+			Resources.removeResource("VARSCOPE-"+name.toUpperCase().trim());
 			CMLib.quests().delQuest(this);
 			CMLib.threads().deleteTick(this,Tickable.TICKID_QUEST);
 			return false;
