@@ -1629,6 +1629,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final Environmental E = getArgumentItem("$" + varifyable.charAt(t + 2),
 								source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+						if(back.length()>0)
+							back=back.substring(1);
 						middle = (E == null) ? "null" : "" + E;
 					}
 					break;
