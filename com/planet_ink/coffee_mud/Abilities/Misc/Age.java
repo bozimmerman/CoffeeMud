@@ -261,7 +261,7 @@ public class Age extends StdAbility
 			return true;
 		return false;
 	}
-	
+
 	protected boolean isBeingCaredForByAnNPC(final MOB mob)
 	{
 		if((mob.amFollowing()!=null)
@@ -272,7 +272,7 @@ public class Age extends StdAbility
 			return true;
 		return false;
 	}
-	
+
 	protected boolean hasUnnaturalParentage(final MOB mob)
 	{
 		if(mob==null)
@@ -295,7 +295,7 @@ public class Age extends StdAbility
 		}
 		return false;
 	}
-	
+
 	protected boolean isAnNPCBirth(final MOB mob)
 	{
 		if(mob==null)
@@ -313,7 +313,7 @@ public class Age extends StdAbility
 		}
 		return true;
 	}
-	
+
 	protected void doUnprotectedAgeChangeCheck(final Physical affected, final long l)
 	{
 		if(divisor==0.0)
@@ -1191,7 +1191,7 @@ public class Age extends StdAbility
 			final int age=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),divisor)));
 
 			if((age>=Short.MAX_VALUE)||(age<0))
-				Log.errOut("Age","Recorded, on "+affected.name()+", age of "+age+", from tick values (("+System.currentTimeMillis()+"-"+l+")/4000)/"+divisor);
+				Log.errOut("Age","Recorded, on "+affected.name()+", age of "+age+", from tick values (("+System.currentTimeMillis()+"-"+text()+")/4000)/"+divisor);
 			else
 			{
 				affected.baseCharStats().setStat(CharStats.STAT_AGE,age);
