@@ -84,6 +84,23 @@ public class Resources
 	}
 
 	/**
+	 * Returns all resource objects in existence.
+	 *
+	 * @return all resource objects in existence.
+	 */
+	public static Iterable<Resources> all()
+	{
+		final List<Resources> rs=new ArrayList<Resources>(1);
+		for(final Resources r: rscs)
+		{
+			if(r!=null)
+				rs.add(r);
+		}
+		return rs;
+	}
+
+
+	/**
 	 * Forces the current thread group to share a Resources object with the one at the given
 	 * threadcode.  The one at the threadcode should already have been created before
 	 * calling.
