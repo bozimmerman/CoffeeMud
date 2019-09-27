@@ -12192,7 +12192,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	@Override
 	protected void finalize() throws Throwable
 	{
-		super.finalize();
 		synchronized(this)
 		{
 			final Object ref=cachedRef;
@@ -12224,6 +12223,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 			}
 		}
+		super.finalize();
 	}
 
 	protected List<DVector> getScripts()
