@@ -786,7 +786,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		text=parseLoads(text,0,null,null);
 		if(staticSet)
-			this.setScript(text);
+		{
+			text=CMStrings.replaceAll(text,"'","`");
+			myScript=text;
+			reset();
+		}
 		final List<List<String>> V = CMParms.parseDoubleDelimited(text,'~',';');
 		final Vector<DVector> V2=new Vector<DVector>(3);
 		for(final List<String> ls : V)
@@ -12207,6 +12211,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(!counterCache.containsKey(key))
 					counterCache.put(key, new AtomicInteger(0));
 				counterCache.get(key).addAndGet(1);
+System.out.println("+"+key);
 			}
 		}
 	}
@@ -12217,7 +12222,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			final Object ref=cachedRef;
 			if((ref != this)
-			&&(getScriptResourceKey().length()>0))
+			&&(this.scriptKey!=null)
+			&&(this.scriptKey.length()>0))
 			{
 				bumpUpCache(getScriptResourceKey());
 				bumpUpCache(scope);
@@ -12239,11 +12245,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				synchronized(counterCache)
 				{
-					if(counterCache.containsKey(scope))
+					if(counterCache.containsKey(key))
 					{
-						if(counterCache.get(scope).addAndGet(-1) <= 0)
+System.out.println("-"+key);
+						if(counterCache.get(key).addAndGet(-1) <= 0)
 						{
-							counterCache.remove(scope);
+							counterCache.remove(key);
 							return true;
 						}
 					}
@@ -12261,11 +12268,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(ref == this)
 			{
 				if(bumpDownCache(getScriptResourceKey()))
-					Resources.removeResource(getScriptResourceKey());
+				{
+					for(final Resources R : Resources.all())
+						R._removeResource(getScriptResourceKey());
+				}
 				if(bumpDownCache(scope))
-					Resources.removeResource("VARSCOPE-"+scope.toUpperCase().trim());
+				{
+					for(final Resources R : Resources.all())
+						R._removeResource("VARSCOPE-"+scope.toUpperCase().trim());
+				}
 				if(bumpDownCache(defaultQuestName))
-					Resources.removeResource("VARSCOPE-"+defaultQuestName.toUpperCase().trim());
+				{
+					for(final Resources R : Resources.all())
+						R._removeResource("VARSCOPE-"+defaultQuestName.toUpperCase().trim());
+				}
 			}
 		}
 	}
