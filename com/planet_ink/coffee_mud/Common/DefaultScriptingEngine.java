@@ -153,6 +153,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				resources = Resources.newResources();
 				Resources.submitResource("VARSCOPE-"+scope,resources);
 			}
+			if(cachedRef==this)
+				bumpUpCache(scope);
 		}
 	}
 
@@ -263,7 +265,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if((qName==null)||(qName.trim().length()==0))
 			defaultQuestName="";
 		else
+		{
 			defaultQuestName=qName.trim();
+			if(cachedRef==this)
+				bumpUpCache(defaultQuestName);
+		}
 	}
 
 	@Override
@@ -658,6 +664,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		noTrigger = new Hashtable<Integer,Long>();
 		backupMOB = null;
 		lastMsg = null;
+		bumpUpCache();
 	}
 
 	@Override
@@ -12189,40 +12196,84 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return scriptKey;
 	}
 
-	@Override
-	protected void finalize() throws Throwable
+	public void bumpUpCache(final String key)
+	{
+		if((key != null)
+		&& (key.length()>0)
+		&& (!key.equals("*")))
+		{
+			synchronized(counterCache)
+			{
+				if(!counterCache.containsKey(key))
+					counterCache.put(key, new AtomicInteger(0));
+				counterCache.get(key).addAndGet(1);
+			}
+		}
+	}
+
+	public void bumpUpCache()
+	{
+		synchronized(this)
+		{
+			final Object ref=cachedRef;
+			if((ref != this)
+			&&(getScriptResourceKey().length()>0))
+			{
+				bumpUpCache(getScriptResourceKey());
+				bumpUpCache(scope);
+				bumpUpCache(defaultQuestName);
+				cachedRef=this;
+			}
+		}
+	}
+
+	public boolean bumpDownCache(final String key)
+	{
+		if((key != null)
+		&& (key.length()>0)
+		&& (!key.equals("*")))
+		{
+			if((key != null)
+			&&(key.length()>0)
+			&&(!key.equals("*")))
+			{
+				synchronized(counterCache)
+				{
+					if(counterCache.containsKey(scope))
+					{
+						if(counterCache.get(scope).addAndGet(-1) <= 0)
+						{
+							counterCache.remove(scope);
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	protected void bumpDownCache()
 	{
 		synchronized(this)
 		{
 			final Object ref=cachedRef;
 			if(ref == this)
 			{
-				final String key=getScriptResourceKey();
-				if(key.length()>0)
-				{
-					boolean clearFiles=false;
-					synchronized(counterCache)
-					{
-						if(counterCache.containsKey(key))
-						{
-							if(counterCache.get(key).addAndGet(-1) <= 0)
-							{
-								counterCache.remove(key);
-								clearFiles=true;
-							}
-						}
-					}
-					if(clearFiles)
-					{
-						Resources.removeResource(key);
-						if((scope != null)&&(scope.length()>0))
-							Resources.removeResource("VARSCOPE-"+scope);
-						if((defaultQuestName!=null)&&(defaultQuestName.length()>0))
-							Resources.removeResource("VARSCOPE-"+defaultQuestName);
-					}
-				}
+				if(bumpDownCache(getScriptResourceKey()))
+					Resources.removeResource(getScriptResourceKey());
+				if(bumpDownCache(scope))
+					Resources.removeResource("VARSCOPE-"+scope.toUpperCase().trim());
+				if(bumpDownCache(defaultQuestName))
+					Resources.removeResource("VARSCOPE-"+defaultQuestName.toUpperCase().trim());
 			}
 		}
+	}
+
+	@Override
+	protected void finalize() throws Throwable
+	{
+		bumpDownCache();
 		super.finalize();
 	}
 
@@ -12230,25 +12281,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTABLE)||CMSecurity.isDisabled(CMSecurity.DisFlag.SCRIPTING))
 			return empty;
-		synchronized(this)
-		{
-			final Object ref=cachedRef;
-			if(ref != this)
-			{
-				final String key=getScriptResourceKey();
-				if(key.length()>0)
-				{
-					synchronized(counterCache)
-					{
-						if(!counterCache.containsKey(key))
-							counterCache.put(key, new AtomicInteger(0));
-						counterCache.get(key).addAndGet(1);
-					}
-				}
-				cachedRef=this;
-			}
-		}
-
 		@SuppressWarnings("unchecked")
 		List<DVector> scripts=(List<DVector>)Resources.getResource(getScriptResourceKey());
 		if(scripts==null)
