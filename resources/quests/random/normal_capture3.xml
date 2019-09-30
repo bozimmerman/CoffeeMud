@@ -139,7 +139,7 @@ settable vars:
 	<STRING id="quest_generic_loser_speeches" SELECT="Any-1">
 		<STRING>I guess I'll need to $reason_verb ${target_himher} myself.</STRING>
 		<STRING>This is unacceptable.</STRING>
-		<STRING>Well, I give up on ${target_himhr} being $reason_verbed.</STRING>
+		<STRING>Well, I give up on ${target_himher} being $reason_verbed.</STRING>
 		<STRING>You just can't find good help anymore.</STRING>
 	</STRING>
 
