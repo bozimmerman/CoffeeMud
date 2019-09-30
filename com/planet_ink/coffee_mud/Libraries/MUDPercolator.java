@@ -2976,7 +2976,18 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 			String value=this.buildQuestTemplate(E, ignoreStats, defPrefix, tagName, valPiece, defined);
 			if(value == null)
-				value=strFilter(E,ignoreStats,defPrefix,valPiece.value(),valPiece, defined);
+			{
+				try
+				{
+					value=strFilter(E,ignoreStats,defPrefix,valPiece.value(),valPiece, defined);
+				}
+				catch(final java.lang.StackOverflowError e)
+				{
+					final String id=(piece.getParmValue("ID")!=null)?piece.getParmValue("ID"):"null";
+					Log.errOut("Stack overflow trying to filter "+valPiece.value()+" on "+piece.tag()+" id '"+id+"'");
+					throw new CMException("Ended because of a stack overflow.  See the log.");
+				}
+			}
 
 			if(processDefined!=valPiece)
 				defineReward(E,ignoreStats,defPrefix,valPiece.getParmValue("DEFINE"),valPiece,value,defined,true);
