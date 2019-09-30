@@ -1270,7 +1270,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			if(farmablesCache.containsKey(mat))
 				return farmablesCache.get(mat);
 		}
-		final List<Item> coll = new ReadOnlyVector<Item>();
+		final List<Item> coll = new ArrayList<Item>();
 		final Collection<Integer> useThese;
 		if(materialType > 0)
 			useThese = RawMaterial.CODES.COMPOSE_RESOURCES(materialType);
@@ -1326,7 +1326,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		}
 		synchronized(farmablesCache)
 		{
-			farmablesCache.put(mat, coll);
+			final List<Item> finalColl=new ReadOnlyVector<Item>();
+			finalColl.addAll(coll);
+			farmablesCache.put(mat, finalColl);
 		}
 		return coll;
 	}
