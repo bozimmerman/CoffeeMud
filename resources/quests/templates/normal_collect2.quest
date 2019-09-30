@@ -125,8 +125,9 @@
 #or enter +value to add, or --value to subtract:
 #$NUMFACTION=($STRING)
 #
-#Select whether a player may complete this quest multiple times:
-#$MULTIPLE=$CHOOSE=YES,NO
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
 #
 #!QUESTMAKER_END_SCRIPT Normal Collect #2
 
@@ -172,7 +173,7 @@ ONCE_PROG 100
 ~
 
 ALL_GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) AND !QUESTSCRIPTED($n *)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) AND !QUESTSCRIPTED($n *)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			sayto "$n" $QUEST_NOTIFYSTRING -- just say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
 		endif
@@ -180,7 +181,7 @@ ALL_GREET_PROG 100
 ~
 
 GIVE_PROG all
-	IF QUESTSCRIPTED($n *) AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	IF QUESTSCRIPTED($n *) AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if questobj($o *) OR QUESTSCRIPTED($o *)
 			mpsetvar $n $QUEST_ID_RETURNED +$%ITEMCOUNT($o)%
 			mpjunk $o
@@ -207,6 +208,9 @@ GIVE_PROG all
 				sayto $n $QUEST_WINSPEECH_TEXT
 				mpendquest $n
 				mpqset * STATISTICS SUCCESS
+				IF EVAL('$MULTIPLE' == 'PREV')
+					mptransfer $n $n
+				ENDIF
 			else
 				sayto "$n" That's $<$n $QUEST_ID_RETURNED>/$NUM_COLLECTABLES.
 				mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
@@ -222,7 +226,7 @@ GIVE_PROG all
 ~
 
 SPEECH_PROG p i accept $QUEST_NAME
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if !QUESTSCRIPTED($n *)
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
@@ -234,7 +238,7 @@ SPEECH_PROG p i accept $QUEST_NAME
 ~
 
 SPEECH_PROG p i accept
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if !QUESTSCRIPTED($n *)
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING

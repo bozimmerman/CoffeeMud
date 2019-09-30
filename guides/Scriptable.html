@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 
+
 <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Scripting in CoffeeMud 5.9</title>
 
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
-<body>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head><body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
 <tbody>
@@ -1633,7 +1633,7 @@ said. Note that punctuation counts, although you don't *have* to use it.</p>
 <p>MULTIPLE PROGS: You can
 have more than one speak_prog on a
 mob. It is generally not a good idea to have more than one speak_prog
-be triggered by the same expression.</p><p></p>
+be triggered by the same expression.</p><p />
 <h3><a name="speech_prog">speech_prog</a></h3>
 <p>Usage:</p>
 <pre>speech_prog [trigger message]<br />speech_prog p [trigger message]<br /></pre>
@@ -5340,7 +5340,13 @@ then every running quest will be checked.</p>
 given character has been declared a
 winner of the quest in the past via the MPQUESTWIN command. If the
 Scriptable behavior was granted as part of a Quest, then * may be
-substituted for the questname.</p>
+substituted for the questname.&nbsp; <br />
+</p>
+      <p>The questname may also be set to 'previous' to check whichever
+quest is previous on the characters list of quest scripts.&nbsp; If the
+current script is the first, then questwinner will always be true.<br />
+      </p>
+
 <p>EXAMPLES:</p>
 <pre>if questwinner($n myquest)<br /> mpecho This means that the actor has been a winner of the quest myquest.<br />else<br /> mpecho This means the actor has not been a winner of the quest myquest.<br />endif<br /><br /></pre>
 <h3><a name="qvar">qvar</a></h3>

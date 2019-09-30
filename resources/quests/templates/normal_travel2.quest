@@ -114,8 +114,9 @@
 #or enter +value to add, or --value to subtract:
 #$NUMFACTION=($STRING)
 #
-#Select whether a player may complete this quest multiple times:
-#$MULTIPLE=$CHOOSE=YES,NO
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
 #
 #!QUESTMAKER_END_SCRIPT Normal Travel #2
 
@@ -147,8 +148,14 @@ set duration 0
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
+ONCE_PROG 100
+	if EVAL('$QUEST_ANNOUNCECHANNEL' != '')
+		$QUEST_ANNOUNCECHANNEL $QUEST_NOTIFYSTRING -- Come see me for more information.
+	endif
+~
+
 GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			sayto "$n" $QUEST_NOTIFYSTRING -- just say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
 		endif
@@ -156,7 +163,7 @@ GREET_PROG 100
 ~
 
 SPEECH_PROG p i accept $QUEST_NAME
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			mpqset * STATISTICS ACCEPTED
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
@@ -166,7 +173,7 @@ SPEECH_PROG p i accept $QUEST_NAME
 ~
 
 SPEECH_PROG p i accept
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			mpqset * STATISTICS ACCEPTED
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
@@ -178,7 +185,7 @@ SPEECH_PROG p i accept
 <FILE><NAME>$QUEST_ID_destination.script</NAME>
 <DATA>
 GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) AND QUESTSCRIPTED($n *)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) AND QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
 		else
 			if EVAL('$EXP' != '')
@@ -203,6 +210,9 @@ GREET_PROG 100
 			sayto $n $DESTINATION_RESPONSE
 			mpendquest $n
 			mpqset * STATISTICS SUCCESS
+			IF EVAL('$MULTIPLE' == 'PREV')
+				mptransfer $n $n
+			ENDIF
 		endif
 	endif
 ~

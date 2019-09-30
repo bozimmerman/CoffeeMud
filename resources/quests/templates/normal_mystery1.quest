@@ -141,8 +141,9 @@
 #or enter +value to add, or --value to subtract:
 #$NUMFACTION=($STRING)
 #
-#Select whether a player may complete this quest multiple times:
-#$MULTIPLE=$CHOOSE=YES,NO
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
 #
 #!QUESTMAKER_END_SCRIPT Normal Mystery #1
 
@@ -184,8 +185,13 @@ set duration 0
 <FILE><NAME>$QUEST_ID_tools.cmare</NAME><DATA><ITEMS>$TOOLS_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
+ONCE_PROG 100
+	if EVAL('$QUEST_ANNOUNCECHANNEL' != '')
+		$QUEST_ANNOUNCECHANNEL $QUEST_NOTIFYSTRING -- Come see me for more information.
+	endif
+~
 GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			sayto "$n" $QUEST_NOTIFYSTRING -- just say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
 		endif
@@ -193,7 +199,7 @@ GREET_PROG 100
 ~
 
 SPEECH_PROG p i accept $QUEST_NAME
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			mpqset * STATISTICS ACCEPTED
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
@@ -203,7 +209,7 @@ SPEECH_PROG p i accept $QUEST_NAME
 ~
 
 SPEECH_PROG p i accept
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			mpqset * STATISTICS ACCEPTED
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
@@ -220,7 +226,7 @@ SPEECH_PROG all
 		RETURN
 	endif
 	
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and QUESTSCRIPTED($n *)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			MPARGSET $9 ''
 			IF EVAL($9 == '')
@@ -321,7 +327,7 @@ SPEECH_PROG all
 ~
 
 FUNCTION_PROG winner
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if VAR($n $QUEST_ID_CORRECT >= 3)
 				if EVAL('$EXP' != '')
@@ -347,6 +353,9 @@ FUNCTION_PROG winner
 				sayto "$n" $SOLVED_RESPONSE_TEXT
 				mpendquest $n
 				mpqset * STATISTICS SUCCESS
+				IF EVAL('$MULTIPLE' == 'PREV')
+					mptransfer $n $n
+				ENDIF
 			else
 				if VAR($n $QUEST_ID_TOOL != '') AND VAR($n $QUEST_ID_AGENT != '') AND VAR($n $QUEST_ID_MOTIVE != '')
 					sayto $n I'm sorry $n, your guess is incorrect.  Try again in 10 minutes.

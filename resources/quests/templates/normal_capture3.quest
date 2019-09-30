@@ -122,8 +122,9 @@
 #or enter +value to add, or --value to subtract:
 #$NUMFACTION=($STRING)
 #
-#Select whether a player may complete this quest multiple times:
-#$MULTIPLE=$CHOOSE=YES,NO
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
 #
 #!QUESTMAKER_END_SCRIPT Normal Capture #3
 
@@ -155,7 +156,7 @@ ONCE_PROG 100
 ~
 
 ALL_GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			sayto "$n" $QUEST_NOTIFYSTRING -- say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
 		endif
@@ -163,7 +164,7 @@ ALL_GREET_PROG 100
 ~
 
 SPEECH_PROG p i accept $QUEST_NAME
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			mpqset * STATISTICS ACCEPTED
@@ -173,7 +174,7 @@ SPEECH_PROG p i accept $QUEST_NAME
 ~
 
 SPEECH_PROG p i accept
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			mpqset * STATISTICS ACCEPTED
@@ -273,6 +274,9 @@ ENTRY_PROG 100
 				mpforce $9 sayto $i $QUEST_WINSPEECH_TEXT
 				mpendquest $i
 				mpqset * STATISTICS SUCCESS
+				IF EVAL('$MULTIPLE' == 'PREV')
+					mptransfer $n $n
+				ENDIF
 			ENDIF
 		else
 			for $0 = 1 to '$%NUMMOBSROOM(*)%'

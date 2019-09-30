@@ -34,6 +34,7 @@ vars:
 	quest_point_awarded(YES,NO)
 	announcechannel()
 	reward_items()
+	quest_multiple(YES, NO, or PREV)
 -->
 
 <QUEST ID="normal_collect3" QUEST_TEMPLATE_ID="normal_collect3">
@@ -53,7 +54,7 @@ vars:
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
 	<GOLD>$gold_amount_awarded</GOLD>
 	<EXP>$xp_amount_awarded</EXP>
-	<MULTIPLE>$quest_repeatable</MULTIPLE>
+	<MULTIPLE>$quest_multiple</MULTIPLE>
 	<NEXT_QUEST>$next_quest_id</NEXT_QUEST>
 	<FACTION>$source_faction</FACTION>
 	<NUMFACTION>$[$source_faction_amt / 500]</NUMFACTION>

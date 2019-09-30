@@ -807,7 +807,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(thisName.length()==0)
 			return null;
-		if((imHere!=null)&&(imHere.roomID().equalsIgnoreCase(thisName)))
+		if((imHere!=null)
+		&&(imHere.roomID().equalsIgnoreCase(thisName)))
 			return imHere;
 		if((imHere!=null)&&(thisName.startsWith("#"))&&(CMath.isLong(thisName.substring(1))))
 			return CMLib.map().getRoom(imHere.getArea().Name()+thisName);
@@ -3600,24 +3601,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Environmental E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if(E!=null)
 					arg1=E.Name();
-				if(arg2.equalsIgnoreCase("true"))
-					returnable=true;
-				else
-				if(arg2.equalsIgnoreCase("false"))
-					returnable=false;
-				else
-				if(arg2.equalsIgnoreCase("prev")||arg2.equalsIgnoreCase("previous"))
+				if(arg2.equalsIgnoreCase("previous"))
 				{
 					returnable=true;
 					final String quest=defaultQuestName();
-					if((E instanceof PhysicalAgent)
-					&&(quest!=null)
+					if((quest!=null)
 					&&(quest.length()>0))
 					{
 						ScriptingEngine prevE=null;
-						for(final Enumeration<ScriptingEngine> e = ((PhysicalAgent)E).scripts();e.hasMoreElements();)
+						final List<ScriptingEngine> list=new LinkedList<ScriptingEngine>();
+						for(final Enumeration<ScriptingEngine> e = scripted.scripts();e.hasMoreElements();)
+							list.add(e.nextElement());
+						for(final Enumeration<Behavior> b=scripted.behaviors();b.hasMoreElements();)
 						{
-							final ScriptingEngine engine=e.nextElement();
+							final Behavior B=b.nextElement();
+							if(B instanceof ScriptingEngine)
+								list.add((ScriptingEngine)B);
+						}
+						for(final ScriptingEngine engine : list)
+						{
 							if((engine!=null)
 							&&(engine.defaultQuestName()!=null)
 							&&(engine.defaultQuestName().length()>0))
@@ -11153,12 +11155,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							{
 								MOB findOne=null;
 								Area A=null;
-								if(lastKnownLocation!=null)
+								if(findOne==null)
 								{
-									findOne=lastKnownLocation.fetchInhabitant(mobName);
-									A=lastKnownLocation.getArea();
-									if((findOne!=null)&&(findOne!=monster))
-										V.add(findOne);
+									if(lastKnownLocation!=null)
+									{
+										findOne=lastKnownLocation.fetchInhabitant(mobName);
+										A=lastKnownLocation.getArea();
+										if((findOne!=null)&&(findOne!=monster))
+											V.add(findOne);
+									}
 								}
 								if(findOne==null)
 								{
@@ -11212,17 +11217,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								&&thisRoom.okMessage(follower,leaveMsg)
 								&&newRoom.okMessage(follower,enterMsg))
 								{
+									final boolean alreadyHere = follower.location()==thisRoom;
 									if(follower.isInCombat())
 									{
 										CMLib.commands().postFlee(follower,("NOWHERE"));
 										follower.makePeace(true);
 									}
 									thisRoom.send(follower,leaveMsg);
-									((Room)enterMsg.target()).bringMobHere(follower,false);
+									if(!alreadyHere)
+										((Room)enterMsg.target()).bringMobHere(follower,false);
 									((Room)enterMsg.target()).send(follower,enterMsg);
 									follower.basePhyStats().setDisposition(follower.basePhyStats().disposition() | dispo1);
 									follower.phyStats().setDisposition(follower.phyStats().disposition() | dispo2);
-									if(!CMLib.flags().isSleeping(follower))
+									if(!CMLib.flags().isSleeping(follower)
+									&&(!alreadyHere))
 									{
 										follower.tell(CMLib.lang().L("\n\r\n\r"));
 										CMLib.commands().postLook(follower,true);
@@ -11984,6 +11992,31 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					if(!found)
+					{
+						for(int v=0;v<scripts.size();v++)
+						{
+							final DVector script2=scripts.get(v);
+							if(script2.size()<1)
+								continue;
+							final String trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
+							if(trigger.equalsIgnoreCase(named))
+							{
+								found=true;
+								script.setElementAt(si, 3, script2);
+								execute(scripted,
+										source,
+										target,
+										monster,
+										primaryItem,
+										secondaryItem,
+										script2,
+										varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,parms),
+										tmp);
+								break;
+							}
+						}
+					}
+					if(!found)
 						logError(scripted,"MPCALLFUNC","Unknown","Function: "+named);
 				}
 				break;
@@ -12249,7 +12282,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(!counterCache.containsKey(key))
 					counterCache.put(key, new AtomicInteger(0));
 				counterCache.get(key).addAndGet(1);
-System.out.println("+"+key);
 			}
 		}
 	}
@@ -12285,7 +12317,6 @@ System.out.println("+"+key);
 				{
 					if(counterCache.containsKey(key))
 					{
-System.out.println("-"+key);
 						if(counterCache.get(key).addAndGet(-1) <= 0)
 						{
 							counterCache.remove(key);

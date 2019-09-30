@@ -157,8 +157,9 @@
 #or enter +value to add, or --value to subtract:
 #$NUMFACTION=($STRING)
 #
-#Select whether a player may complete this quest multiple times:
-#$MULTIPLE=$CHOOSE=YES,NO
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
 #
 #If you choose, you may have completion of this quest automatically start another.
 #If this is what you want, enter the next quests name here:
@@ -221,7 +222,7 @@ QUEST_TIME_PROG * -1
 ~
 
 GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if VAR($n $QUEST_ID_KILLS >= $INVADER_KILLS)
 				if EVAL('$EXP' != '')
@@ -249,6 +250,10 @@ GREET_PROG 100
 				mpqset * STATISTICS SUCCESS
 				IF EVAL('$NEXT_QUEST' != '')
 					mpstartquest $NEXT_QUEST
+				ELSE
+					IF EVAL('$MULTIPLE' == 'PREV')
+						mptransfer $n $n
+					ENDIF
 				ENDIF
 			else
 				if !STRIN('$<$i $QUEST_ID_ALREADY_TOLD>' '$n')
@@ -267,7 +272,7 @@ QUEST_TIME_PROG * 1
 ~
 
 SPEECH_PROG p i accept
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if VAR($n $QUEST_ID_ACCEPTED == '')
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
@@ -305,7 +310,7 @@ RAND_PROG 50
 ~
 
 DEATH_PROG
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			IF ISPC($n)
 				MPSETVAR $n $QUEST_ID_KILLS ++

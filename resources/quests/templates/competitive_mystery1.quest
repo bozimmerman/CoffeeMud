@@ -271,8 +271,9 @@
 #or enter +value to add, or --value to subtract:
 #$NUMFACTION=($STRING)
 #
-#Select whether a player may complete this quest multiple times:
-#$MULTIPLE=$CHOOSE=YES,NO
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
 #
 #If you choose, you may have completion of this quest automatically start another.
 #If this is what you want, enter the next quests name here:
@@ -316,7 +317,7 @@ set mobgroup
 set mob $VICTIM_NAME
 set target mob
 give stat rejuv 999999
-give script ONCE_PROG\;IF EVAL('$VICTIM_DIES' == 'TRUE')\;MPDAMAGE $i 99999999 99999999 kill\;ENDIF\;~\;GREET_PROG 100\;if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)\;if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)\;sayto "$n" $VICTIM_GREETING\;ENDIF\;ENDIF\;~\;
+give script ONCE_PROG\;IF EVAL('$VICTIM_DIES' == 'TRUE')\;MPDAMAGE $i 99999999 99999999 kill\;ENDIF\;~\;GREET_PROG 100\;if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )\;if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)\;sayto "$n" $VICTIM_GREETING\;ENDIF\;ENDIF\;~\;
 set wherehappened room
 set whenhappened -1?-10
 
@@ -386,7 +387,7 @@ set duration $DURATION
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if !STRIN('$<$i $QUEST_ID_ALREADY_TOLD>' '$n')
 				sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' and I'll give you the details.
@@ -408,7 +409,7 @@ ONCE_PROG
 ~
 
 SPEECH_PROG p i accept
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if VAR($n $QUEST_ID_ACCEPTED == '')
 				MPSETVAR $n $QUEST_ID_ACCEPTED 'TRUE'
@@ -425,7 +426,7 @@ SPEECH_PROG p i accept
 ~
 
 SPEECH_PROG solve
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and VAR($n $QUEST_ID_ACCEPTED != '')
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and VAR($n $QUEST_ID_ACCEPTED != '')
 		sayto "$n" $QUEST_SOLVESTRING
 	endif
 ~
@@ -435,7 +436,7 @@ SPEECH_PROG all
 		RETURN
 	endif
 	
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and VAR($n $QUEST_ID_ACCEPTED != '')
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and VAR($n $QUEST_ID_ACCEPTED != '')
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			MPARGSET $9 ''
 			IF EVAL($9 == '')
@@ -536,7 +537,7 @@ SPEECH_PROG all
 ~
 
 FUNCTION_PROG winner
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if VAR($n $QUEST_ID_CORRECT >= 3)
 				if EVAL('$EXP' != '')
@@ -564,6 +565,10 @@ FUNCTION_PROG winner
 				mpqset * STATISTICS SUCCESS
 				IF EVAL('$NEXT_QUEST' != '')
 					mpstartquest $NEXT_QUEST
+				ELSE
+					IF EVAL('$MULTIPLE' == 'PREV')
+						mptransfer $n $n
+					ENDIF
 				ENDIF
 			else
 				if VAR($n $QUEST_ID_TOOL != '') AND VAR($n $QUEST_ID_AGENT != '') AND VAR($n $QUEST_ID_MOTIVE != '')
