@@ -94,10 +94,10 @@ See guides/RandomAreas.html for information about documents of this type.
 
 <STRING id="verb_visited" predefine="verb_visit=$verb_visit">$verb_visited</STRING>
 <STRING ID="verb_visit" define="verb_visit" SELECT="Any-1">
-	<STRING define="verb_traveled=traveled to">travel to</STRING>
-	<STRING define="verb_traveled=visited">visit</STRING>
-	<STRING define="verb_traveled=met">meet</STRING>
-	<STRING define="verb_traveled=found">find</STRING>
+	<STRING define="verb_visited=traveled to">travel to</STRING>
+	<STRING define="verb_visited=visited">visit</STRING>
+	<STRING define="verb_visited=met">meet</STRING>
+	<STRING define="verb_visited=found">find</STRING>
 </STRING>
 
 <STRING id="verb_traveled" predefine="verb_travel=$verb_travel">$verb_traveled</STRING>
