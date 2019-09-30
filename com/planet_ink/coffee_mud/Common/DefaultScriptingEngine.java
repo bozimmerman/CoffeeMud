@@ -3596,16 +3596,54 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=tt[t+1];
+				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 				final Environmental E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				final Quest Q=getQuest(arg2);
-				if(Q==null)
+				if(E!=null)
+					arg1=E.Name();
+				if(arg2.equalsIgnoreCase("true"))
+					returnable=true;
+				else
+				if(arg2.equalsIgnoreCase("false"))
 					returnable=false;
 				else
+				if(arg2.equalsIgnoreCase("prev")||arg2.equalsIgnoreCase("previous"))
 				{
-					if(E!=null)
-						arg1=E.Name();
-					returnable=Q.wasWinner(arg1);
+					returnable=true;
+					final String quest=defaultQuestName();
+					if((E instanceof PhysicalAgent)
+					&&(quest!=null)
+					&&(quest.length()>0))
+					{
+						ScriptingEngine prevE=null;
+						for(final Enumeration<ScriptingEngine> e = ((PhysicalAgent)E).scripts();e.hasMoreElements();)
+						{
+							final ScriptingEngine engine=e.nextElement();
+							if((engine!=null)
+							&&(engine.defaultQuestName()!=null)
+							&&(engine.defaultQuestName().length()>0))
+							{
+								if(engine == this)
+								{
+									if(prevE != null)
+									{
+										final Quest Q=CMLib.quests().fetchQuest(prevE.defaultQuestName());
+										if(Q != null)
+											returnable=Q.wasWinner(arg1);
+									}
+									break;
+								}
+								prevE=engine;
+							}
+						}
+					}
+				}
+				else
+				{
+					final Quest Q=getQuest(arg2);
+					if(Q==null)
+						returnable=false;
+					else
+						returnable=Q.wasWinner(arg1);
 				}
 				break;
 			}
