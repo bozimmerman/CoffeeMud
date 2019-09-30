@@ -84,7 +84,6 @@ vars:
 		<ITEM class="metacraft:any-CageBuilding &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='CageBuilding'"/>
 		<ITEM class="metacraft:any-cobbling &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='cobbling'"/>
 		<ITEM class="metacraft:any-cooking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='cooking'"/>
-		<ITEM class="metacraft:any-costuming &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='costuming'"/>
 		<ITEM class="metacraft:any-distilling &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='distilling'"/>
 		<ITEM class="metacraft:any-fletching &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='fletching'"/>
 		<ITEM class="metacraft:any-foodprep &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='foodprep'"/>
@@ -98,7 +97,6 @@ vars:
 		<ITEM class="metacraft:any-MasterArmorsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterArmorsmithing'"/>
 		<ITEM class="metacraft:any-MasterBaking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterBaking'"/>
 		<ITEM class="metacraft:any-MasterCooking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterCooking'"/>
-		<ITEM class="metacraft:any-MasterCostuming &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterCostuming'"/>
 		<ITEM class="metacraft:any-MasterDistilling &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterDistilling'"/>
 		<ITEM class="metacraft:any-MasterFoodPrep &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterFoodPrep'"/>
 		<ITEM class="metacraft:any-MasterLeatherWorking &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='MasterLeatherWorking'"/>

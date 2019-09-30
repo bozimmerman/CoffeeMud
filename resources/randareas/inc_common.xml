@@ -59,7 +59,6 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ITEM class="metacraft:any-CageBuilding" />
 	<ITEM class="metacraft:any-cobbling" />
 	<ITEM class="metacraft:any-cooking" />
-	<ITEM class="metacraft:any-costuming" />
 	<ITEM class="metacraft:any-distilling" />
 	<ITEM class="metacraft:any-fletching" />
 	<ITEM class="metacraft:any-foodprep" />
@@ -73,7 +72,6 @@ See guides/RandomAreas.html for information about documents of this type.
 	<ITEM class="metacraft:any-MasterArmorsmithing" />
 	<ITEM class="metacraft:any-MasterBaking" />
 	<ITEM class="metacraft:any-MasterCooking" />
-	<ITEM class="metacraft:any-MasterCostuming" />
 	<ITEM class="metacraft:any-MasterDistilling" />
 	<ITEM class="metacraft:any-MasterFoodPrep" />
 	<ITEM class="metacraft:any-MasterLeatherWorking"/>
