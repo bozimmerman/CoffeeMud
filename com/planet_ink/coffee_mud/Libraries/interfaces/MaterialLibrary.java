@@ -73,6 +73,8 @@ public interface MaterialLibrary extends CMLibrary
 	public String makeResourceSimpleName(final int rscCode, String subType);
 	public String makeResourceDescriptiveName(final int rscCode, String subType, final boolean plural);
 	public String genericType(Item I);
+	public boolean isResourceCodeRoomMapped(final int resourceCode);
+	public List<Item> getAllFarmables(final int materialType);
 
 	/**
 	 * Returns the number of ticks that the given item, whatever

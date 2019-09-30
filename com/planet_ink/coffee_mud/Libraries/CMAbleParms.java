@@ -919,19 +919,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		return CMLib.dice().pick( ALL_BUCKET_MATERIAL_CHOICES, myMaterial );
 	}
 
-	protected static boolean isResourceCodeRoomMapped(final int resourceCode)
-	{
-		final Integer I=Integer.valueOf(resourceCode);
-		for(final Enumeration<Room> e=CMClass.locales();e.hasMoreElements();)
-		{
-			final Room R=e.nextElement();
-			if(!(R instanceof GridLocale))
-				if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(I)))
-					return true;
-		}
-		return false;
-	}
-
 	protected static void addExtraMaterial(final Map<Integer,int[]> extraMatsM, final Item I, final Object A, double weight)
 	{
 		int times = 1;
@@ -940,6 +927,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 			times = (int)Math.round(weight / 1.0);
 			weight=.99;
 		}
+		final MaterialLibrary mats=CMLib.materials();
 		final int myBucket = getAppropriateResourceBucket(I,A);
 		if(myBucket != RawMaterial.RESOURCE_NOTHING)
 		{
@@ -949,14 +937,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					: bucket.get( (weight>=.99) ? bucket.size()-1 : 0 ).first;
 			for (final Pair<Integer, Double> p : bucket)
 			{
-				if((weight <= p.second.doubleValue())&&(isResourceCodeRoomMapped(p.first.intValue())))
+				if((weight <= p.second.doubleValue())&&(mats.isResourceCodeRoomMapped(p.first.intValue())))
 				{
 					resourceCode = p.first;
 					break;
 				}
 			}
 			int tries=100;
-			while((--tries>0)&&(!isResourceCodeRoomMapped(resourceCode.intValue())))
+			while((--tries>0)&&(!mats.isResourceCodeRoomMapped(resourceCode.intValue())))
 				resourceCode=bucket.get(CMLib.dice().roll(1, bucket.size(), -1)).first;
 			resourceCode = Integer.valueOf( resourceCode.intValue() );
 			for(int x=0;x<times;x++)

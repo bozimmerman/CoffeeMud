@@ -119,6 +119,33 @@ vars:
 		<ITEM class="metacraft:any-Wainwrighting &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Wainwrighting'"/>
 		<ITEM class="metacraft:any-Weaponsmithing &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Weaponsmithing'"/>
 		<ITEM class="metacraft:any-Weaving &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Weaving'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="cloth" CONDITION="$targetskill='any' or $targetskill='Textiling'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="cloth" CONDITION="$targetskill='any' or $targetskill='Textiling'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="cloth" CONDITION="$targetskill='any' or $targetskill='Textiling'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="leather" CONDITION="$targetskill='any' or $targetskill='Butchering'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="leather" CONDITION="$targetskill='any' or $targetskill='Butchering'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="leather" CONDITION="$targetskill='any' or $targetskill='Butchering'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Metal" CONDITION="$targetskill='any' or $targetskill='Mining'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Metal" CONDITION="$targetskill='any' or $targetskill='Mining'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Mithril" CONDITION="$targetskill='any' or $targetskill='Mining'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Rock" CONDITION="$targetskill='any' or $targetskill='Mining'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Rock" CONDITION="$targetskill='any' or $targetskill='Mining'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Rock" CONDITION="$targetskill='any' or $targetskill='Mining'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Wood" CONDITION="$targetskill='any' or $targetskill='Chopping'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Wood" CONDITION="$targetskill='any' or $targetskill='Chopping'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Wood" CONDITION="$targetskill='any' or $targetskill='Chopping'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Vegetation" CONDITION="$targetskill='any' or $targetskill='Foraging'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Vegetation" CONDITION="$targetskill='any' or $targetskill='Foraging'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Vegetation" CONDITION="$targetskill='any' or $targetskill='Foraging'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Flesh" CONDITION="$targetskill='any' or $targetskill='Butchering'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Flesh" CONDITION="$targetskill='any' or $targetskill='Butchering'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Flesh" CONDITION="$targetskill='any' or $targetskill='Butchering'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Liquid" CONDITION="$targetskill='any' or $targetskill='Drilling'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Liquid" CONDITION="$targetskill='any' or $targetskill='Drilling'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Liquid" CONDITION="$targetskill='any' or $targetskill='Drilling'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Precious" CONDITION="$targetskill='any' or $targetskill='GemDigging'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Precious" CONDITION="$targetskill='any' or $targetskill='GemDigging'"/>
+		<ITEM class="metacraft:any-farmables" MATERIAL="Precious" CONDITION="$targetskill='any' or $targetskill='GemDigging'"/>
 	</ITEM>
 
 	<STRING ID="reason_verbed" define="reason_verbed">$verb_made</STRING>

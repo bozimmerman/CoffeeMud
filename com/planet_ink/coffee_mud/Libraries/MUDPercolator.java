@@ -1917,7 +1917,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			return recipe;
 		for(int i=1;i<otherParms.length;i++)
 		{
-			if(otherParms[i].getKey().charValue()=='<')
+			switch(otherParms[i].getKey().charValue())
+			{
+			case '<':
 			{
 				final String lvlStr=strFilterNow(null,null,null,otherParms[i].getValue().trim(),piece, defined);
 				if(CMath.isMathExpression(lvlStr))
@@ -1926,9 +1928,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if((levelLimit==0)||(levelLimit<levelFloor))
 						levelLimit=-1;
 				}
+				break;
 			}
-			else
-			if(otherParms[i].getKey().charValue()=='>')
+			case '>':
 			{
 				final String lvlStr=strFilterNow(null,null,null,otherParms[i].getValue().trim(),piece, defined);
 				if(CMath.isMathExpression(lvlStr))
@@ -1937,9 +1939,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if((levelFloor==0)||((levelFloor>levelLimit)&&(levelLimit>0)))
 						levelFloor=-1;
 				}
+				break;
 			}
-			else
-			if(otherParms[i].getKey().charValue()=='=')
+			case '=':
 			{
 				final String classStr=strFilterNow(null,null,null,otherParms[i].getValue().trim(),piece, defined);
 				final Object O=CMClass.getItemPrototype(classStr);
@@ -1950,6 +1952,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				else
 					throw new CMException("Unknown metacraft class= "+classStr);
+				break;
+			}
+			default:
+				break;
 			}
 		}
 		if(levelLimit>0)
@@ -2039,86 +2045,167 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				if(A instanceof ItemCraftor)
 					craftors.add((ItemCraftor)A);
 			}
-			if(recipe.equalsIgnoreCase("anything"))
+			if(recipe.startsWith("any"))
 			{
-				final long startTime=System.currentTimeMillis();
-				while((contents.size()==0)&&((System.currentTimeMillis()-startTime)<1000))
+				if(recipe.equalsIgnoreCase("anything"))
 				{
-					final ItemCraftor skill=craftors.get(CMLib.dice().roll(1,craftors.size(),-1));
-					if(skill.fetchRecipes().size()>0)
+					final long startTime=System.currentTimeMillis();
+					while((contents.size()==0)&&((System.currentTimeMillis()-startTime)<1000))
 					{
-						final List<ItemCraftor.ItemKeyPair> skillContents=craftAllOfThisRecipe(skill,material,defined);
-						if(skillContents.size()==0) // preliminary error messaging, just for the craft skills themselves
-							Log.errOut("MUDPercolator","Tried metacrafting anything, got "+Integer.toString(skillContents.size())+" from "+skill.ID());
-						else
-						for(int i=skillContents.size()-1;i>=0;i--)
+						final ItemCraftor skill=craftors.get(CMLib.dice().roll(1,craftors.size(),-1));
+						if(skill.fetchRecipes().size()>0)
 						{
-							final Item I=skillContents.get(i).item;
-							if(!checkMetacraftItem(I, filter))
-								skillContents.remove(i);
+							final List<ItemCraftor.ItemKeyPair> skillContents=craftAllOfThisRecipe(skill,material,defined);
+							if(skillContents.size()==0) // preliminary error messaging, just for the craft skills themselves
+								Log.errOut("MUDPercolator","Tried metacrafting anything, got "+Integer.toString(skillContents.size())+" from "+skill.ID());
+							else
+							for(int i=skillContents.size()-1;i>=0;i--)
+							{
+								final Item I=skillContents.get(i).item;
+								if(!checkMetacraftItem(I, filter))
+									skillContents.remove(i);
+							}
+							if(skillContents.size()>0)
+							{
+								final Item I=(Item)skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).item.copyOf();
+								contents.add(I);
+							}
 						}
-						if(skillContents.size()>0)
+					}
+				}
+				else
+				if(recipe.toLowerCase().startsWith("any-"))
+				{
+					recipe=recipe.substring(4).toLowerCase().trim();
+					if("rawmaterials".startsWith(recipe)||"resources".startsWith(recipe))
+					{
+						final int resourceCode;
+						if(material > 0)
+						{
+							final List<Integer> availCodes = RawMaterial.CODES.COMPOSE_RESOURCES(material);
+							resourceCode = availCodes.get(CMLib.dice().roll(1, availCodes.size(), -1)).intValue();
+						}
+						else
+							resourceCode=RawMaterial.CODES.ALL()[CMLib.dice().roll(1, RawMaterial.CODES.ALL().length, -1)];
+						if(material != 0)
+						{
+							final Item I=CMLib.materials().makeItemResource(resourceCode);
+							if(I.numBehaviors()>0 || I.numScripts()>0)
+								CMLib.threads().deleteAllTicks(I);
+							contents.add(I);
+						}
+					}
+					else
+					if("farmables".equals(recipe))
+					{
+						final List<Item> coll=CMLib.materials().getAllFarmables(material);
+						if(coll.size()>0)
+						{
+							final Item I=(Item)coll.get(CMLib.dice().roll(1, coll.size(), -1)).copyOf();
+							if(I.numBehaviors()>0 || I.numScripts()>0)
+								CMLib.threads().deleteAllTicks(I);
+							contents.add(I);
+						}
+					}
+					else
+					{
+						List<ItemCraftor.ItemKeyPair> skillContents=null;
+						for(final ItemCraftor skill : craftors)
+						{
+							if(skill.ID().equalsIgnoreCase(recipe))
+							{
+								skillContents=craftAllOfThisRecipe(skill,material,defined);
+								if((skillContents==null)||(skillContents.size()==0)) // this is just for checking the skills themselves
+									Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+Integer.toString(contents.size())+" from "+skill.ID());
+								else
+								for(int i=skillContents.size()-1;i>=0;i--)
+								{
+									final Item I=skillContents.get(i).item;
+									if(!checkMetacraftItem(I, filter))
+										skillContents.remove(i);
+								}
+								break;
+							}
+						}
+						if((skillContents!=null)&&(skillContents.size()>0))
 						{
 							final Item I=(Item)skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).item.copyOf();
 							contents.add(I);
 						}
 					}
 				}
-			}
-			else
-			if(recipe.toLowerCase().startsWith("any-"))
-			{
-				List<ItemCraftor.ItemKeyPair> skillContents=null;
-				recipe=recipe.substring(4).trim();
-				for(final ItemCraftor skill : craftors)
-				{
-					if(skill.ID().equalsIgnoreCase(recipe))
-					{
-						skillContents=craftAllOfThisRecipe(skill,material,defined);
-						if((skillContents==null)||(skillContents.size()==0)) // this is just for checking the skills themselves
-							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+Integer.toString(contents.size())+" from "+skill.ID());
-						else
-						for(int i=skillContents.size()-1;i>=0;i--)
-						{
-							final Item I=skillContents.get(i).item;
-							if(!checkMetacraftItem(I, filter))
-								skillContents.remove(i);
-						}
-						break;
-					}
-				}
-				if((skillContents!=null)&&(skillContents.size()>0))
-				{
-					final Item I=(Item)skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).item.copyOf();
-					contents.add(I);
-				}
+				else
+					throw new CMException("Unable to metacraft an item called '"+recipe+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 			}
 			else
 			if(recipe.toLowerCase().startsWith("all"))
 			{
 				List<ItemCraftor.ItemKeyPair> skillContents=null;
-				recipe=recipe.substring(3).startsWith("-")?recipe.substring(4).trim():"";
-				for(final ItemCraftor skill : craftors)
+				recipe=recipe.substring(3).startsWith("-")?recipe.substring(4).toLowerCase().trim():"";
+				if("rawmaterials".startsWith(recipe)||"resources".startsWith(recipe))
 				{
-					if(skill.ID().equalsIgnoreCase(recipe)||(recipe.length()==0))
+					if(material != 0)
 					{
-						skillContents=craftAllOfThisRecipe(skill,material,defined);
-						if((skillContents==null)||(skillContents.size()==0)) // this is just for checking the skills themselves
-							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+Integer.toString(contents.size())+" from "+skill.ID());
+						if(material > 0)
+						{
+							for(final Integer rsc : RawMaterial.CODES.COMPOSE_RESOURCES(material))
+							{
+								final Item I=CMLib.materials().makeItemResource(rsc.intValue());
+								if(I.numBehaviors()>0 || I.numScripts()>0)
+									CMLib.threads().deleteAllTicks(I);
+								contents.add(I);
+							}
+						}
 						else
-						for(int i=skillContents.size()-1;i>=0;i--)
 						{
-							final Item I=skillContents.get(i).item;
-							if(!checkMetacraftItem(I, filter))
-								skillContents.remove(i);
+							for(final int rsc : RawMaterial.CODES.ALL())
+							{
+								if(rsc != 0)
+								{
+									final Item I=CMLib.materials().makeItemResource(rsc);
+									if(I.numBehaviors()>0 || I.numScripts()>0)
+										CMLib.threads().deleteAllTicks(I);
+									contents.add(I);
+								}
+							}
 						}
-						while((skillContents!=null)&&(skillContents.size()>0))
+					}
+				}
+				else
+				if("farmables".equals(recipe))
+				{
+					for(final Item I : CMLib.materials().getAllFarmables(material))
+					{
+						final Item I2=(Item)I.copyOf();
+						if(I2.numBehaviors()>0 || I2.numScripts()>0)
+							CMLib.threads().deleteAllTicks(I2);
+						contents.add(I2);
+					}
+				}
+				else
+				{
+					for(final ItemCraftor skill : craftors)
+					{
+						if(skill.ID().equalsIgnoreCase(recipe)||(recipe.length()==0))
 						{
-							final Item I=(Item)skillContents.remove(0).item.copyOf();
-							contents.add(I);
+							skillContents=craftAllOfThisRecipe(skill,material,defined);
+							if((skillContents==null)||(skillContents.size()==0)) // this is just for checking the skills themselves
+								Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+Integer.toString(contents.size())+" from "+skill.ID());
+							else
+							for(int i=skillContents.size()-1;i>=0;i--)
+							{
+								final Item I=skillContents.get(i).item;
+								if(!checkMetacraftItem(I, filter))
+									skillContents.remove(i);
+							}
+							while((skillContents!=null)&&(skillContents.size()>0))
+							{
+								final Item I=(Item)skillContents.remove(0).item.copyOf();
+								contents.add(I);
+							}
+							if(recipe.length()>0)
+								break;
 						}
-						if(recipe.length()>0)
-							break;
 					}
 				}
 			}

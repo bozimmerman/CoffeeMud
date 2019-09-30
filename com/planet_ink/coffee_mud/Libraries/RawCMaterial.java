@@ -43,6 +43,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return "RawCMaterial";
 	}
 
+	protected Map<Integer,List<Item>> farmablesCache = new Hashtable<Integer,List<Item>>();
+
 	@Override
 	public int getRandomResourceOfMaterial(int material)
 	{
@@ -1241,6 +1243,92 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			}
 		}
 		return mostItem;
+	}
+
+	@Override
+	public boolean isResourceCodeRoomMapped(final int resourceCode)
+	{
+		final Integer I=Integer.valueOf(resourceCode);
+		for(final Enumeration<Room> e=CMClass.locales();e.hasMoreElements();)
+		{
+			final Room R=e.nextElement();
+			if(!(R instanceof GridLocale))
+			{
+				if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(I)))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public List<Item> getAllFarmables(final int materialType)
+	{
+		final Integer mat=Integer.valueOf(materialType);
+		synchronized(farmablesCache)
+		{
+			if(farmablesCache.containsKey(mat))
+				return farmablesCache.get(mat);
+		}
+		final List<Item> coll = new ReadOnlyVector<Item>();
+		final Collection<Integer> useThese;
+		if(materialType > 0)
+			useThese = RawMaterial.CODES.COMPOSE_RESOURCES(materialType);
+		else
+		if(materialType == 0)
+			useThese = Arrays.asList(new Integer[0]);
+		else
+		{
+			useThese = new ArrayList<Integer>(RawMaterial.CODES.ALL().length);
+			for(final int r : RawMaterial.CODES.ALL())
+			{
+				if(r != 0)
+					useThese.add(Integer.valueOf(r));
+			}
+		}
+		for(final Integer rsc : useThese)
+		{
+			for(final Enumeration<Room> e=CMClass.locales();e.hasMoreElements();)
+			{
+				final Room R=e.nextElement();
+				if(!(R instanceof GridLocale))
+				{
+					if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(rsc)))
+					{
+						final Physical P=CMLib.materials().makeResource(rsc.intValue(),Integer.toString(R.domainType()),false,null, "");
+						if(P instanceof Item)
+						{
+							final Item I=(Item)P;
+							if((I.numBehaviors()>0)||(I.numScripts()>0))
+								CMLib.threads().deleteAllTicks(I);
+							coll.add(I);
+						}
+						else
+						if(P instanceof MOB)
+						{
+							final MOB M=(MOB)P;
+							final Race raceR=M.baseCharStats().getMyRace();
+							if(raceR.myResources()!=null)
+							{
+								for(final RawMaterial I : raceR.myResources())
+								{
+									final Item I2=(Item)I.copyOf();
+									if((I2.numBehaviors()>0)||(I2.numScripts()>0))
+										CMLib.threads().deleteAllTicks(I2);
+									coll.add(I2);
+								}
+							}
+						}
+						break;
+					}
+				}
+			}
+		}
+		synchronized(farmablesCache)
+		{
+			farmablesCache.put(mat, coll);
+		}
+		return coll;
 	}
 
 	protected List<Item> getAllItems(final Room R)
