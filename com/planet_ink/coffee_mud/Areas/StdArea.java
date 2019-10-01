@@ -2573,7 +2573,8 @@ public class StdArea implements Area
 												  "ATMOSPHERE",
 												  "AUTHOR",
 												  "NAME",
-												  "PLAYERLEVEL"
+												  "PLAYERLEVEL",
+												  "PASSIVEMINS"
 												  };
 	private static String[] codes=null;
 
@@ -2633,6 +2634,8 @@ public class StdArea implements Area
 			return name();
 		case 15:
 			return ""+playerLevel;
+		case 16:
+			return Long.toString(this.passiveLapseMs / 60000);
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -2715,17 +2718,18 @@ public class StdArea implements Area
 		case 15:
 			setPlayerLevel((int)Math.round(CMath.parseMathExpression(val)));
 			break;
-		default:
-			if(code.equalsIgnoreCase("passivemins"))
+		case 16:
+		{
+			long mins=CMath.parseLongExpression(val);
+			if(mins > 0)
 			{
-				long mins=CMath.parseLongExpression(val);
-				if(mins > 0)
-				{
-					if(mins > Integer.MAX_VALUE)
-						mins=Integer.MAX_VALUE;
-					passiveLapseMs = mins * 60 * 1000;
-				}
+				if(mins > Integer.MAX_VALUE)
+					mins=Integer.MAX_VALUE;
+				passiveLapseMs = mins * 60 * 1000;
 			}
+			break;
+		}
+		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
