@@ -1326,9 +1326,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		}
 		synchronized(farmablesCache)
 		{
-			final List<Item> finalColl=new ReadOnlyVector<Item>();
-			finalColl.addAll(coll);
-			farmablesCache.put(mat, finalColl);
+			farmablesCache.put(mat, new ReadOnlyVector<Item>(coll));
 		}
 		return coll;
 	}
