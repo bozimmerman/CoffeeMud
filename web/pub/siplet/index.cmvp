@@ -3,6 +3,22 @@
 	<script language=JavaScript>
 	<!--
 		window.termurl='/siplet/term.cmvp';
+		if(!window.connport)
+		{
+			@if?!CheckReqParm?CPORT=@
+				window.connport=@RequestParameter?CPORT@;
+			@else@
+				window.connport=@MudInfo?PORT@;
+			@endif@
+		}
+		if(!window.conndomain)
+		{
+			@if?!CheckReqParm?CDOMAIN=@
+				window.conndomain="@RequestParameter?CDOMAIN@";
+			@else@
+				window.conndomain="@MudInfo?DOMAIN@";
+			@endif@
+		}
 	//-->
 	</script>
 </head>
@@ -16,3 +32,4 @@
 </body>
 </noframes>
 </frameset>
+	

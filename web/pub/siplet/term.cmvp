@@ -29,7 +29,7 @@ function reconnect()
 			theSiplet.disconnectFromURL();
 	}
 	if((!theSiplet) || (!theSiplet.isConnecting()))
-		setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
+		setTimeout('connect(top.conndomain,top.connport);',500);
 }
 
 function goOffline()
@@ -136,9 +136,13 @@ function connect(url,port,tries)
 <SPAN ID=soundplayer NAME=soundplayer style="display:none"></SPAN>
 <script language=JavaScript>
 <!--
+	if(!top.connport)
+		top.connport=@MudInfo?PORT@;
+	if(!top.conndomain)
+		top.conndomain="@MudInfo?DOMAIN@";
 	theSiplet=new Siplet();
 	top.term.allapplets[top.term.currentWindow] = theSiplet;
-	setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
+	setTimeout('connect(top.conndomain,top.connport);',500);
 //-->
 </script>
 </BODY></HTML>
