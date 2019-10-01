@@ -678,11 +678,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			newParms=superParms+";"+newParms.substring(1);
 		}
 		myScript=newParms;
-		reset();
 		if(myScript.length()>100)
 			scriptKey="PARSEDPRG: "+myScript.substring(0,100)+myScript.length()+myScript.hashCode();
 		else
 			scriptKey="PARSEDPRG: "+myScript;
+		reset();
 	}
 
 	public boolean isFreeToBeTriggered(final Tickable affecting)
