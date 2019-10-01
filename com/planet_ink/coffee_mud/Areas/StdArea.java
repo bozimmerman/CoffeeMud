@@ -57,6 +57,7 @@ public class StdArea implements Area
 	protected int		derivedClimate	= Places.CLIMASK_INHERIT;
 	protected int	  	tickStatus  	= Tickable.STATUS_NOT;
 	protected long  	expirationDate  = 0;
+	protected long		passiveLapseMs	= DEFAULT_TIME_PASSIVE_LAPSE;
 	protected long  	lastPlayerTime  = System.currentTimeMillis();
 	protected State   	flag			= State.ACTIVE;
 	protected String[]  xtraValues  	= null;
@@ -1192,7 +1193,7 @@ public class StdArea implements Area
 		if(tickID==Tickable.TICKID_AREA)
 		{
 			if((flag==State.ACTIVE)
-			&&((System.currentTimeMillis()-lastPlayerTime)>Area.TIME_PASSIVE_LAPSE))
+			&&((System.currentTimeMillis()-lastPlayerTime)>passiveLapseMs))
 			{
 				if(CMSecurity.isDisabled(CMSecurity.DisFlag.PASSIVEAREAS)
 				&&(!CMath.bset(flags(), Area.FLAG_INSTANCE_CHILD)))

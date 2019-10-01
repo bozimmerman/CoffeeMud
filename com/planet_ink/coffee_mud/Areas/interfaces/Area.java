@@ -771,7 +771,7 @@ public interface Area extends Economics, PhysicalAgent, Places
 
 	}
 	/**	Amount of time of player absence before an area automatically goes from Active to passive */
-	public final static long TIME_PASSIVE_LAPSE=60*1000*30; // 30 mins
+	public final static long DEFAULT_TIME_PASSIVE_LAPSE=60*1000*30; // 30 mins
 
 	/**
 	 * @author Owner

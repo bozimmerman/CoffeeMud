@@ -747,5 +747,19 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	public void setAutoGenVariables(final String vars)
 	{
 		setAutoGenVariables(CMParms.parseEQParms(vars));
+		for(final String key : varMap.keySet())
+		{
+			if(key.equalsIgnoreCase("PASSIVEMINS"))
+			{
+				long mins=CMath.s_long(getAutoGenVariables().get(key));
+				if(mins > 0)
+				{
+					if(mins > Integer.MAX_VALUE)
+						mins=Integer.MAX_VALUE;
+					passiveLapseMs = mins * 60 * 1000;
+				}
+				varMap.remove(key);
+			}
+		}
 	}
 }
