@@ -231,9 +231,7 @@ QUEST_TIME_PROG * 1
 ENTRY_PROG 100
 	if VAR($n $QUEST_ID_ACCEPTED != '') AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) AND VAR($n $QUEST_ID_REWARDED == '')
 		mpsetvar $n $QUEST_ID_REWARDED 'REWARDED'
-		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-			# do nothing
-		else
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if EVAL('$EXP' != '')
 				mpexp $n $EXP
 			endif

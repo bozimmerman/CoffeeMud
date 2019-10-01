@@ -214,9 +214,7 @@ GIVE_PROG all
 PUT_PROG all
 	if EVAL($p == '$[1 *]') AND EVAL($o == '$[2 *]') AND EVAL('$[2 *]' != '')
 		if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)
-			if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-				# do nothing
-			else
+			if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 				if EVAL($p == '$[1 *]')
 					if EVAL('$EXP' != '')
 						mpexp $n $EXP
@@ -250,9 +248,7 @@ DROP_PROG all
 		RETURN
 	ENDIF
 	if ISLIKE($n '$QUEST_CRITERIA') AND EVAL('$[1 *]' != '') and ISPC($n)
-		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-			# do nothing
-		else
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if EVAL($o == '$[1 *]')
 				if EVAL('$EXP' != '')
 					mpexp $n 10%
