@@ -3535,11 +3535,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					}
 				}
 			}
-			if(questState.addons.size()>0)
+			if((questState.addons.size()>0)
+			&&(stoppingQuest))
 			{
 				synchronized(questState)
 				{
-					if(stoppingQuest)
 					for(int i=questState.addons.size()-1;i>=0;i--)
 					{
 						try
@@ -3610,10 +3610,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							if(O instanceof ScriptingEngine)
 							{
 								final ScriptingEngine S=(ScriptingEngine)O;
-								if((E instanceof MOB)&&(!S.isSavable()))
+								if(!S.isSavable())
 								{
-									S.endQuest((MOB)E,(MOB)E,name());
-									((MOB)E).delScript(S);
+									if(E instanceof MOB)
+										S.endQuest((PhysicalAgent)E,(MOB)E,name());
+									else
+									{
+										final MOB M=CMClass.getFactoryMOB(E.Name(), 1, CMLib.map().roomLocation(E));
+										S.endQuest((PhysicalAgent)E,M,name());
+										M.destroy();
+									}
+									((PhysicalAgent)E).delScript(S);
 								}
 							}
 							else
