@@ -2716,6 +2716,16 @@ public class StdArea implements Area
 			setPlayerLevel((int)Math.round(CMath.parseMathExpression(val)));
 			break;
 		default:
+			if(code.equalsIgnoreCase("passivemins"))
+			{
+				long mins=CMath.parseLongExpression(val);
+				if(mins > 0)
+				{
+					if(mins > Integer.MAX_VALUE)
+						mins=Integer.MAX_VALUE;
+					passiveLapseMs = mins * 60 * 1000;
+				}
+			}
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
