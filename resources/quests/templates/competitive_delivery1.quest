@@ -90,21 +90,25 @@
 #Deliveree Room:
 #$DELIVEREE_ROOM=($ROOMID)
 #
-#Deliveree mob name: 
-#Specify the name of the mob who will act as the deliveree mob.  
+#Deliveree mobs names: 
+#Specify the names of the mob who will act as the deliveree mobs.  
 #Use double-quotes around multi-word names.
 #If you specified an area or room above, then the mob must be located there. 
 #You may optionally have the quest manager select a 'random' mob by entering
 #a mob name of ANY MASK= followed by a Zapper Mask (see help on 
 #ZAPPERMASKS for information on zapper mask syntax).
-#Remember, if the quest manager can not find your mob, the quest will not
+#Remember, if the quest manager can not find your mobs, the quest will not
 #be started.
 #$DELIVEREE_NAME=$NAME
+#
+#!QUESTMAKER_PAGE Specify the Deliveree Mob details
+#The Deliveree Mobs are the mobs the player must find and deliver the item to.
+#Here you can specify how many of deliverees and what they say.e
 #
 #Number of deliverings
 #specify the number of the deliverable items must be delivered to mobs
 #matching the deliveree.  The announcer will give the player the correct
-#number of items to delivery.
+#number of items to deliver.
 #$DELIVEREE_COUNT=($STRING)=1
 #
 #Deliveree response: 
