@@ -120,7 +120,16 @@ public class Skill_Recall extends StdSkill
 					if(recallRoom.isInhabitant(mob)&&((recallRoom)==recalledRoom))
 						beneficialWordsFizzle(mob,null,L("<S-NAME> attempt(s) to recall, but go(es) nowhere."));
 					else
+					{
 						recallRoom.bringMobHere(mob,false);
+						if(recalledRoom.isInhabitant(mob))
+						{
+							if(!recallRoom.isInhabitant(mob))
+								recallRoom.bringMobHere(mob,false);
+							if(recallRoom.isInhabitant(mob) && (recallRoom != recalledRoom))
+								recalledRoom.delInhabitant(mob);
+						}
+					}
 				}
 				for(int f=0;f<mob.numFollowers();f++)
 				{
@@ -147,7 +156,12 @@ public class Skill_Recall extends StdSkill
 									CMLib.commands().postFlee(follower,("NOWHERE"));
 								recallRoom.send(follower,msg2);
 								if(fRecalledRoom.isInhabitant(follower))
-									recallRoom.bringMobHere(follower,false);
+								{
+									if(!recallRoom.isInhabitant(follower))
+										recallRoom.bringMobHere(follower,false);
+									if(recallRoom.isInhabitant(follower) && (recallRoom != fRecalledRoom))
+										fRecalledRoom.delInhabitant(follower);
+								}
 							}
 						}
 					}
