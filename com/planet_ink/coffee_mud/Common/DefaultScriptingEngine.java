@@ -2401,7 +2401,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				else
 				if(Character.isLetter(evalC[c])
-				||(Character.isDigit(evalC[c])&&(c>0)&&Character.isLetter(evalC[c-1])&&(c<evalC.length-1)&&Character.isLetter(evalC[c+1])))
+				||(Character.isDigit(evalC[c])
+					&&(c>0)&&Character.isLetter(evalC[c-1])
+					&&(c<evalC.length-1)
+					&&Character.isLetter(evalC[c+1])))
 				{ /* move along */
 				}
 				else
@@ -2530,7 +2533,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case STATE_INFUNCQUOTE:
 			{
-				if(evalC[c]==lastQuote)
+				if((evalC[c]==lastQuote)
+				&&((c==evalC.length-1)
+					||((!Character.isLetter(evalC[c-1]))
+						||(!Character.isLetter(evalC[c+1])))))
 					state=STATE_INFUNCTION;
 				break;
 			}
@@ -2620,20 +2626,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return CMParms.toStringArray(V);
 	}
 
-	public void pushEvalBoolean(final Vector<Object> stack, boolean trueFalse)
+	public void pushEvalBoolean(final List<Object> stack, boolean trueFalse)
 	{
 		if(stack.size()>0)
 		{
-			final Object O=stack.elementAt(stack.size()-1);
+			final Object O=stack.get(stack.size()-1);
 			if(O instanceof Integer)
 			{
 				final int connector=((Integer)O).intValue();
-				stack.removeElementAt(stack.size()-1);
+				stack.remove(stack.size()-1);
 				if((stack.size()>0)
-				&&((stack.elementAt(stack.size()-1) instanceof Boolean)))
+				&&((stack.get(stack.size()-1) instanceof Boolean)))
 				{
-					final boolean preTrueFalse=((Boolean)stack.elementAt(stack.size()-1)).booleanValue();
-					stack.removeElementAt(stack.size()-1);
+					final boolean preTrueFalse=((Boolean)stack.get(stack.size()-1)).booleanValue();
+					stack.remove(stack.size()-1);
 					switch(connector)
 					{
 					case CONNECTOR_AND:
@@ -2666,12 +2672,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			else
 			if(O instanceof Boolean)
 			{
-				final boolean preTrueFalse=((Boolean)stack.elementAt(stack.size()-1)).booleanValue();
-				stack.removeElementAt(stack.size()-1);
+				final boolean preTrueFalse=((Boolean)stack.get(stack.size()-1)).booleanValue();
+				stack.remove(stack.size()-1);
 				trueFalse=preTrueFalse&&trueFalse;
 			}
 		}
-		stack.addElement(trueFalse?Boolean.TRUE:Boolean.FALSE);
+		stack.add(trueFalse?Boolean.TRUE:Boolean.FALSE);
 	}
 
 	/**
@@ -2923,1407 +2929,1012 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		String[] tt=eval[0];
 		if(tmp == null)
 			tmp = newObjs();
-		final Vector<Object> stack=new Vector<Object>();
+		final List<Object> stack=new ArrayList<Object>();
 		for(int t=startEval;t<tt.length;t++)
-		if(tt[t].equals("("))
-			stack.addElement(tt[t]);
-		else
-		if(tt[t].equals(")"))
 		{
-			if((!(stack.lastElement() instanceof Boolean))
-			||(stack.size()==1)
-			||(!(stack.elementAt(stack.size()-2)).equals("(")))
+			if(tt[t].equals("("))
+				stack.add(tt[t]);
+			else
+			if(tt[t].equals(")"))
 			{
-				logError(scripted,"EVAL","SYNTAX",") Format error: "+CMParms.toListString(tt));
-				return false;
-			}
-			final boolean b=((Boolean)stack.lastElement()).booleanValue();
-			stack.removeElementAt(stack.size()-1);
-			stack.removeElementAt(stack.size()-1);
-			pushEvalBoolean(stack,b);
-		}
-		else
-		if(connH.containsKey(tt[t]))
-		{
-			Integer curr=connH.get(tt[t]);
-			if((stack.size()>0)&&(stack.lastElement() instanceof Integer))
-			{
-				final int old=((Integer)stack.lastElement()).intValue();
-				stack.removeElementAt(stack.size()-1);
-				curr=Integer.valueOf(CONNECTOR_MAP[old][curr.intValue()]);
-			}
-			stack.addElement(curr);
-		}
-		else
-		if(funcH.containsKey(tt[t]))
-		{
-			final Integer funcCode=funcH.get(tt[t]);
-			if((t==tt.length-1)
-			||(!tt[t+1].equals("(")))
-			{
-				logError(scripted,"EVAL","SYNTAX","No ( for fuction "+tt[t]+": "+CMParms.toListString(tt));
-				return false;
-			}
-			t+=2;
-			int tlen=0;
-			while(((t+tlen)<tt.length)&&(!tt[t+tlen].equals(")")))
-				tlen++;
-			if((t+tlen)==tt.length)
-			{
-				logError(scripted,"EVAL","SYNTAX","No ) for fuction "+tt[t-1]+": "+CMParms.toListString(tt));
-				return false;
-			}
-			tickStatus=Tickable.STATUS_MISC+funcCode.intValue();
-			final String funcParms=tt[t];
-			boolean returnable=false;
-			switch(funcCode.intValue())
-			{
-			case 1: // rand
-			{
-				String num=funcParms;
-				if(num.endsWith("%"))
-					num=num.substring(0,num.length()-1);
-				final int arg=CMath.s_int(num);
-				if(CMLib.dice().rollPercentage()<arg)
-					returnable=true;
-				else
-					returnable=false;
-				break;
-			}
-			case 2: // has
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if(arg2.length()==0)
+				if(stack.size()>0)
 				{
-					logError(scripted,"HAS","Syntax",funcParms);
-					return returnable;
+					if((!(stack.get(stack.size()-1) instanceof Boolean))
+					||(stack.size()==1)
+					||(!(stack.get(stack.size()-2)).equals("(")))
+					{
+						logError(scripted,"EVAL","SYNTAX",") Format error: "+CMParms.toListString(tt));
+						return false;
+					}
+					final boolean b=((Boolean)stack.get(stack.size()-1)).booleanValue();
+					stack.remove(stack.size()-1);
+					stack.remove(stack.size()-1);
+					pushEvalBoolean(stack,b);
 				}
-				if(E==null)
-					returnable=false;
-				else
+			}
+			else
+			if(connH.containsKey(tt[t]))
+			{
+				Integer curr=connH.get(tt[t]);
+				if((stack.size()>0)
+				&&(stack.get(stack.size()-1) instanceof Integer))
 				{
-					if((E instanceof MOB)
-					&&(((MOB)E).findItem(arg2)!=null))
-						returnable = true;
-					else
-					if((E instanceof Room)
-					&&(((Room)E).findItem(arg2)!=null))
+					final int old=((Integer)stack.get(stack.size()-1)).intValue();
+					stack.remove(stack.size()-1);
+					curr=Integer.valueOf(CONNECTOR_MAP[old][curr.intValue()]);
+				}
+				stack.add(curr);
+			}
+			else
+			if(funcH.containsKey(tt[t]))
+			{
+				final Integer funcCode=funcH.get(tt[t]);
+				if((t==tt.length-1)
+				||(!tt[t+1].equals("(")))
+				{
+					logError(scripted,"EVAL","SYNTAX","No ( for fuction "+tt[t]+": "+CMParms.toListString(tt));
+					return false;
+				}
+				t+=2;
+				int tlen=0;
+				while(((t+tlen)<tt.length)&&(!tt[t+tlen].equals(")")))
+					tlen++;
+				if((t+tlen)==tt.length)
+				{
+					logError(scripted,"EVAL","SYNTAX","No ) for fuction "+tt[t-1]+": "+CMParms.toListString(tt));
+					return false;
+				}
+				tickStatus=Tickable.STATUS_MISC+funcCode.intValue();
+				final String funcParms=tt[t];
+				boolean returnable=false;
+				switch(funcCode.intValue())
+				{
+				case 1: // rand
+				{
+					String num=funcParms;
+					if(num.endsWith("%"))
+						num=num.substring(0,num.length()-1);
+					final int arg=CMath.s_int(num);
+					if(CMLib.dice().rollPercentage()<arg)
 						returnable=true;
 					else
+						returnable=false;
+					break;
+				}
+				case 2: // has
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(arg2.length()==0)
 					{
-						final Environmental E2=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-						if(E instanceof MOB)
-						{
-							if(E2!=null)
-								returnable=((MOB)E).isMine(E2);
-							else
-								returnable=(((MOB)E).findItem(arg2)!=null);
-						}
-						else
-						if(E instanceof Item)
-							returnable=CMLib.english().containsString(E.name(),arg2);
-						else
-						if(E instanceof Room)
-						{
-							if(E2 instanceof Item)
-								returnable=((Room)E).isContent((Item)E2);
-							else
-								returnable=(((Room)E).findItem(null,arg2)!=null);
-						}
-						else
-							returnable=false;
+						logError(scripted,"HAS","Syntax",funcParms);
+						return returnable;
 					}
-				}
-				break;
-			}
-			case 74: // hasnum
-			{
-				if (tlen == 1)
-					tt = parseBits(eval, t, "cccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String item=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final String cmp=tt[t+2];
-				final String value=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((value.length()==0)||(item.length()==0)||(cmp.length()==0))
-				{
-					logError(scripted,"HASNUM","Syntax",funcParms);
-					return returnable;
-				}
-				Item I=null;
-				int num=0;
-				if(E==null)
-					returnable=false;
-				else
-				if(E instanceof MOB)
-				{
-					final MOB M=(MOB)E;
-					for(int i=0;i<M.numItems();i++)
-					{
-						I=M.getItem(i);
-						if(I==null)
-							break;
-						if((item.equalsIgnoreCase("all"))
-						||(CMLib.english().containsString(I.Name(),item)))
-							num++;
-					}
-					returnable=simpleEval(scripted,""+num,value,cmp,"HASNUM");
-				}
-				else
-				if(E instanceof Item)
-				{
-					num=CMLib.english().containsString(E.name(),item)?1:0;
-					returnable=simpleEval(scripted,""+num,value,cmp,"HASNUM");
-				}
-				else
-				if(E instanceof Room)
-				{
-					final Room R=(Room)E;
-					for(int i=0;i<R.numItems();i++)
-					{
-						I=R.getItem(i);
-						if(I==null)
-							break;
-						if((item.equalsIgnoreCase("all"))
-						||(CMLib.english().containsString(I.Name(),item)))
-							num++;
-					}
-					returnable=simpleEval(scripted,""+num,value,cmp,"HASNUM");
-				}
-				else
-					returnable=false;
-				break;
-			}
-			case 67: // hastitle
-			{
-				if (tlen == 1)
-					tt = parseBits(eval, t, "cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if(arg2.length()==0)
-				{
-					logError(scripted,"HASTITLE","Syntax",funcParms);
-					return returnable;
-				}
-				if(E instanceof MOB)
-				{
-					final MOB M=(MOB)E;
-					returnable=(M.playerStats()!=null)&&(M.playerStats().getTitles().contains(arg2));
-				}
-				else
-					returnable=false;
-				break;
-			}
-			case 3: // worn
-			{
-				if (tlen == 1)
-					tt = parseBits(eval, t, "cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if(arg2.length()==0)
-				{
-					logError(scripted,"WORN","Syntax",funcParms);
-					return returnable;
-				}
-				if(E==null)
-					returnable=false;
-				else
-				if(E instanceof MOB)
-					returnable=(((MOB)E).fetchItem(null,Wearable.FILTER_WORNONLY,arg2)!=null);
-				else
-				if(E instanceof Item)
-					returnable=(CMLib.english().containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Wearable.IN_INVENTORY)));
-				else
-					returnable=false;
-				break;
-			}
-			case 4: // isnpc
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-					returnable=((MOB)E).isMonster();
-				break;
-			}
-			case 87: // isbirthday
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				{
-					final MOB mob=(MOB)E;
-					if(mob.playerStats()==null)
-						 returnable=false;
+					if(E==null)
+						returnable=false;
 					else
 					{
-						final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
-						final int month=C.getMonth();
-						final int day=C.getDayOfMonth();
-						final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
-						final int bmonth=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
-						if((C.getYear()==mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])
-						&&((month==bmonth)&&(day==bday)))
+						if((E instanceof MOB)
+						&&(((MOB)E).findItem(arg2)!=null))
+							returnable = true;
+						else
+						if((E instanceof Room)
+						&&(((Room)E).findItem(arg2)!=null))
+							returnable=true;
+						else
+						{
+							final Environmental E2=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+							if(E instanceof MOB)
+							{
+								if(E2!=null)
+									returnable=((MOB)E).isMine(E2);
+								else
+									returnable=(((MOB)E).findItem(arg2)!=null);
+							}
+							else
+							if(E instanceof Item)
+								returnable=CMLib.english().containsString(E.name(),arg2);
+							else
+							if(E instanceof Room)
+							{
+								if(E2 instanceof Item)
+									returnable=((Room)E).isContent((Item)E2);
+								else
+									returnable=(((Room)E).findItem(null,arg2)!=null);
+							}
+							else
+								returnable=false;
+						}
+					}
+					break;
+				}
+				case 74: // hasnum
+				{
+					if (tlen == 1)
+						tt = parseBits(eval, t, "cccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String item=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final String cmp=tt[t+2];
+					final String value=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if((value.length()==0)||(item.length()==0)||(cmp.length()==0))
+					{
+						logError(scripted,"HASNUM","Syntax",funcParms);
+						return returnable;
+					}
+					Item I=null;
+					int num=0;
+					if(E==null)
+						returnable=false;
+					else
+					if(E instanceof MOB)
+					{
+						final MOB M=(MOB)E;
+						for(int i=0;i<M.numItems();i++)
+						{
+							I=M.getItem(i);
+							if(I==null)
+								break;
+							if((item.equalsIgnoreCase("all"))
+							||(CMLib.english().containsString(I.Name(),item)))
+								num++;
+						}
+						returnable=simpleEval(scripted,""+num,value,cmp,"HASNUM");
+					}
+					else
+					if(E instanceof Item)
+					{
+						num=CMLib.english().containsString(E.name(),item)?1:0;
+						returnable=simpleEval(scripted,""+num,value,cmp,"HASNUM");
+					}
+					else
+					if(E instanceof Room)
+					{
+						final Room R=(Room)E;
+						for(int i=0;i<R.numItems();i++)
+						{
+							I=R.getItem(i);
+							if(I==null)
+								break;
+							if((item.equalsIgnoreCase("all"))
+							||(CMLib.english().containsString(I.Name(),item)))
+								num++;
+						}
+						returnable=simpleEval(scripted,""+num,value,cmp,"HASNUM");
+					}
+					else
+						returnable=false;
+					break;
+				}
+				case 67: // hastitle
+				{
+					if (tlen == 1)
+						tt = parseBits(eval, t, "cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if(arg2.length()==0)
+					{
+						logError(scripted,"HASTITLE","Syntax",funcParms);
+						return returnable;
+					}
+					if(E instanceof MOB)
+					{
+						final MOB M=(MOB)E;
+						returnable=(M.playerStats()!=null)&&(M.playerStats().getTitles().contains(arg2));
+					}
+					else
+						returnable=false;
+					break;
+				}
+				case 3: // worn
+				{
+					if (tlen == 1)
+						tt = parseBits(eval, t, "cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(arg2.length()==0)
+					{
+						logError(scripted,"WORN","Syntax",funcParms);
+						return returnable;
+					}
+					if(E==null)
+						returnable=false;
+					else
+					if(E instanceof MOB)
+						returnable=(((MOB)E).fetchItem(null,Wearable.FILTER_WORNONLY,arg2)!=null);
+					else
+					if(E instanceof Item)
+						returnable=(CMLib.english().containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Wearable.IN_INVENTORY)));
+					else
+						returnable=false;
+					break;
+				}
+				case 4: // isnpc
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
+					else
+						returnable=((MOB)E).isMonster();
+					break;
+				}
+				case 87: // isbirthday
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
+					else
+					{
+						final MOB mob=(MOB)E;
+						if(mob.playerStats()==null)
+							 returnable=false;
+						else
+						{
+							final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
+							final int month=C.getMonth();
+							final int day=C.getDayOfMonth();
+							final int bday=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_DAY];
+							final int bmonth=mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_MONTH];
+							if((C.getYear()==mob.playerStats().getBirthday()[PlayerStats.BIRTHDEX_LASTYEARCELEBRATED])
+							&&((month==bmonth)&&(day==bday)))
+								returnable=true;
+							else
+								returnable=false;
+						}
+					}
+					break;
+				}
+				case 5: // ispc
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
+					else
+						returnable=!((MOB)E).isMonster();
+					break;
+				}
+				case 6: // isgood
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(P==null)
+						returnable=false;
+					else
+						returnable=CMLib.flags().isGood(P);
+					break;
+				}
+				case 8: // isevil
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(P==null)
+						returnable=false;
+					else
+						returnable=CMLib.flags().isEvil(P);
+					break;
+				}
+				case 9: // isneutral
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(P==null)
+						returnable=false;
+					else
+						returnable=CMLib.flags().isNeutral(P);
+					break;
+				}
+				case 54: // isalive
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
+						returnable=true;
+					else
+						returnable=false;
+					break;
+				}
+				case 58: // isable
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
+					{
+						final ExpertiseLibrary X=(ExpertiseLibrary)CMLib.expertises().findDefinition(arg2,true);
+						if(X!=null)
+							returnable=((MOB)E).fetchExpertise(X.ID())!=null;
+						else
+							returnable=((MOB)E).findAbility(arg2)!=null;
+					}
+					else
+						returnable=false;
+					break;
+				}
+				case 112: // cansee
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final PhysicalAgent MP=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if(!(MP instanceof MOB))
+						returnable=false;
+					else
+					{
+						final MOB M=(MOB)MP;
+						final Physical P=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+						if(P==null)
+							returnable=false;
+						else
+							returnable=CMLib.flags().canBeSeenBy(P, M);
+					}
+					break;
+				}
+				case 113: // canhear
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final PhysicalAgent MP=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if(!(MP instanceof MOB))
+						returnable=false;
+					else
+					{
+						final MOB M=(MOB)MP;
+						final Physical P=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+						if(P==null)
+							returnable=false;
+						else
+							returnable=CMLib.flags().canBeHeardMovingBy(P, M);
+					}
+					break;
+				}
+				case 59: // isopen
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final int dir=CMLib.directions().getGoodDirectionCode(arg1);
+					returnable=false;
+					if(dir<0)
+					{
+						final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+						if((E!=null)&&(E instanceof Container))
+							returnable=((Container)E).isOpen();
+						else
+						if((E!=null)&&(E instanceof Exit))
+							returnable=((Exit)E).isOpen();
+					}
+					else
+					if(lastKnownLocation!=null)
+					{
+						final Exit E=lastKnownLocation.getExitInDir(dir);
+						if(E!=null)
+							returnable= E.isOpen();
+					}
+					break;
+				}
+				case 60: // islocked
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final int dir=CMLib.directions().getGoodDirectionCode(arg1);
+					returnable=false;
+					if(dir<0)
+					{
+						final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+						if((E!=null)&&(E instanceof Container))
+							returnable=((Container)E).isLocked();
+						else
+						if((E!=null)&&(E instanceof Exit))
+							returnable=((Exit)E).isLocked();
+					}
+					else
+					if(lastKnownLocation!=null)
+					{
+						final Exit E=lastKnownLocation.getExitInDir(dir);
+						if(E!=null)
+							returnable= E.isLocked();
+					}
+					break;
+				}
+				case 10: // isfight
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
+					else
+						returnable=((MOB)E).isInCombat();
+					break;
+				}
+				case 11: // isimmort
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
+					else
+						returnable=CMSecurity.isAllowed(((MOB)E),lastKnownLocation,CMSecurity.SecFlag.IMMORT);
+					break;
+				}
+				case 12: // ischarmed
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final Physical E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
+					else
+						returnable=CMLib.flags().flaggedAffects(E,Ability.FLAG_CHARMING).size()>0;
+					break;
+				}
+				case 15: // isfollow
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
+					else
+					if(((MOB)E).amFollowing()==null)
+						returnable=false;
+					else
+					if(((MOB)E).amFollowing().location()!=lastKnownLocation)
+						returnable=false;
+					else
+						returnable=true;
+					break;
+				}
+				case 73: // isservant
+				{
+					final String arg1=CMParms.cleanBit(funcParms);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E==null)||(!(E instanceof MOB))||(lastKnownLocation==null))
+						returnable=false;
+					else
+					if((((MOB)E).getLiegeID()==null)||(((MOB)E).getLiegeID().length()==0))
+						returnable=false;
+					else
+					if(lastKnownLocation.fetchInhabitant("$"+((MOB)E).getLiegeID()+"$")==null)
+						returnable=false;
+					else
+						returnable=true;
+					break;
+				}
+				case 95: // isspeaking
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E==null)||(!(E instanceof MOB))||(lastKnownLocation==null))
+						returnable=false;
+					else
+					{
+						final MOB TM=(MOB)E;
+						final Language L=CMLib.utensils().getLanguageSpoken(TM);
+						if((L!=null)
+						&&(!L.ID().equalsIgnoreCase("Common"))
+						&&(L.ID().equalsIgnoreCase(arg2)||L.Name().equalsIgnoreCase(arg2)||arg2.equalsIgnoreCase("any")))
+							returnable=true;
+						else
+						if(arg2.equalsIgnoreCase("common")||arg2.equalsIgnoreCase("none"))
 							returnable=true;
 						else
 							returnable=false;
 					}
+					break;
 				}
-				break;
-			}
-			case 5: // ispc
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-					returnable=!((MOB)E).isMonster();
-				break;
-			}
-			case 6: // isgood
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if(P==null)
-					returnable=false;
-				else
-					returnable=CMLib.flags().isGood(P);
-				break;
-			}
-			case 8: // isevil
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if(P==null)
-					returnable=false;
-				else
-					returnable=CMLib.flags().isEvil(P);
-				break;
-			}
-			case 9: // isneutral
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if(P==null)
-					returnable=false;
-				else
-					returnable=CMLib.flags().isNeutral(P);
-				break;
-			}
-			case 54: // isalive
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
-					returnable=true;
-				else
-					returnable=false;
-				break;
-			}
-			case 58: // isable
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
+				case 55: // ispkill
 				{
-					final ExpertiseLibrary X=(ExpertiseLibrary)CMLib.expertises().findDefinition(arg2,true);
-					if(X!=null)
-						returnable=((MOB)E).fetchExpertise(X.ID())!=null;
-					else
-						returnable=((MOB)E).findAbility(arg2)!=null;
-				}
-				else
-					returnable=false;
-				break;
-			}
-			case 112: // cansee
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final PhysicalAgent MP=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if(!(MP instanceof MOB))
-					returnable=false;
-				else
-				{
-					final MOB M=(MOB)MP;
-					final Physical P=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-					if(P==null)
+					final String arg1=CMParms.cleanBit(funcParms);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E==null)||(!(E instanceof MOB)))
 						returnable=false;
 					else
-						returnable=CMLib.flags().canBeSeenBy(P, M);
-				}
-				break;
-			}
-			case 113: // canhear
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final PhysicalAgent MP=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if(!(MP instanceof MOB))
-					returnable=false;
-				else
-				{
-					final MOB M=(MOB)MP;
-					final Physical P=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-					if(P==null)
-						returnable=false;
-					else
-						returnable=CMLib.flags().canBeHeardMovingBy(P, M);
-				}
-				break;
-			}
-			case 59: // isopen
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final int dir=CMLib.directions().getGoodDirectionCode(arg1);
-				returnable=false;
-				if(dir<0)
-				{
-					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-					if((E!=null)&&(E instanceof Container))
-						returnable=((Container)E).isOpen();
-					else
-					if((E!=null)&&(E instanceof Exit))
-						returnable=((Exit)E).isOpen();
-				}
-				else
-				if(lastKnownLocation!=null)
-				{
-					final Exit E=lastKnownLocation.getExitInDir(dir);
-					if(E!=null)
-						returnable= E.isOpen();
-				}
-				break;
-			}
-			case 60: // islocked
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final int dir=CMLib.directions().getGoodDirectionCode(arg1);
-				returnable=false;
-				if(dir<0)
-				{
-					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-					if((E!=null)&&(E instanceof Container))
-						returnable=((Container)E).isLocked();
-					else
-					if((E!=null)&&(E instanceof Exit))
-						returnable=((Exit)E).isLocked();
-				}
-				else
-				if(lastKnownLocation!=null)
-				{
-					final Exit E=lastKnownLocation.getExitInDir(dir);
-					if(E!=null)
-						returnable= E.isLocked();
-				}
-				break;
-			}
-			case 10: // isfight
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-					returnable=((MOB)E).isInCombat();
-				break;
-			}
-			case 11: // isimmort
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-					returnable=CMSecurity.isAllowed(((MOB)E),lastKnownLocation,CMSecurity.SecFlag.IMMORT);
-				break;
-			}
-			case 12: // ischarmed
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final Physical E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-					returnable=CMLib.flags().flaggedAffects(E,Ability.FLAG_CHARMING).size()>0;
-				break;
-			}
-			case 15: // isfollow
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				if(((MOB)E).amFollowing()==null)
-					returnable=false;
-				else
-				if(((MOB)E).amFollowing().location()!=lastKnownLocation)
-					returnable=false;
-				else
-					returnable=true;
-				break;
-			}
-			case 73: // isservant
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB))||(lastKnownLocation==null))
-					returnable=false;
-				else
-				if((((MOB)E).getLiegeID()==null)||(((MOB)E).getLiegeID().length()==0))
-					returnable=false;
-				else
-				if(lastKnownLocation.fetchInhabitant("$"+((MOB)E).getLiegeID()+"$")==null)
-					returnable=false;
-				else
-					returnable=true;
-				break;
-			}
-			case 95: // isspeaking
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB))||(lastKnownLocation==null))
-					returnable=false;
-				else
-				{
-					final MOB TM=(MOB)E;
-					final Language L=CMLib.utensils().getLanguageSpoken(TM);
-					if((L!=null)
-					&&(!L.ID().equalsIgnoreCase("Common"))
-					&&(L.ID().equalsIgnoreCase(arg2)||L.Name().equalsIgnoreCase(arg2)||arg2.equalsIgnoreCase("any")))
-						returnable=true;
-					else
-					if(arg2.equalsIgnoreCase("common")||arg2.equalsIgnoreCase("none"))
+					if(((MOB)E).isAttributeSet(MOB.Attrib.PLAYERKILL))
 						returnable=true;
 					else
 						returnable=false;
+					break;
 				}
-				break;
-			}
-			case 55: // ispkill
-			{
-				final String arg1=CMParms.cleanBit(funcParms);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				if(((MOB)E).isAttributeSet(MOB.Attrib.PLAYERKILL))
-					returnable=true;
-				else
-					returnable=false;
-				break;
-			}
-			case 7: // isname
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if(E==null)
-					returnable=false;
-				else
-					returnable=CMLib.english().containsString(E.name(),arg2);
-				break;
-			}
-			case 56: // name
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if(E==null)
-					returnable=false;
-				else
-					returnable=simpleEvalStr(scripted,E.Name(),arg3,arg2,"NAME");
-				break;
-			}
-			case 75: // currency
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if(E==null)
-					returnable=false;
-				else
-					returnable=simpleEvalStr(scripted,CMLib.beanCounter().getCurrency(E),arg3,arg2,"CURRENCY");
-				break;
-			}
-			case 61: // strin
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2;
-				if(tt[t+1].equals("$$r"))
-					arg2=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(monster));
-				else
-					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final List<String> V=CMParms.parse(arg1.toUpperCase());
-				returnable=V.contains(arg2.toUpperCase());
-				break;
-			}
-			case 62: // callfunc
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				String found=null;
-				boolean validFunc=false;
-				final List<DVector> scripts=getScripts();
-				String trigger=null;
-				String[] ttrigger=null;
-				for(int v=0;v<scripts.size();v++)
+				case 7: // isname
 				{
-					final DVector script2=scripts.get(v);
-					if(script2.size()<1)
-						continue;
-					trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
-					ttrigger=(String[])script2.elementAt(0,2);
-					if(getTriggerCode(trigger,ttrigger)==17)
-					{
-						final String fnamed=
-							(ttrigger!=null)
-							?ttrigger[1]
-							:CMParms.getCleanBit(trigger,1);
-						if(fnamed.equalsIgnoreCase(arg1))
-						{
-							validFunc=true;
-							found=
-							execute(scripted,
-									source,
-									target,
-									monster,
-									primaryItem,
-									secondaryItem,
-									script2,
-									varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2),
-									tmp);
-							if(found==null)
-								found="";
-							break;
-						}
-					}
-				}
-				if(!validFunc)
-					logError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
-				else
-				if(found!=null)
-					returnable=!(found.trim().length()==0);
-				else
-					returnable=false;
-				break;
-			}
-			case 14: // affected
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if(P==null)
-					returnable=false;
-				else
-				{
-					final Ability A=CMClass.findAbility(arg2);
-					if(A!=null)
-						arg2=A.ID();
-					returnable=(P.fetchEffect(arg2)!=null);
-				}
-				break;
-			}
-			case 69: // isbehave
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final PhysicalAgent P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if(P==null)
-					returnable=false;
-				else
-				{
-					final Behavior B=CMClass.findBehavior(arg2);
-					if(B!=null)
-						arg2=B.ID();
-					returnable=(P.fetchBehavior(arg2)!=null);
-				}
-				break;
-			}
-			case 70: // ipaddress
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB))||(((MOB)E).isMonster()))
-					returnable=false;
-				else
-					returnable=simpleEvalStr(scripted,((MOB)E).session().getAddress(),arg3,arg2,"ADDRESS");
-				break;
-			}
-			case 28: // questwinner
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final Environmental E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if(E!=null)
-					arg1=E.Name();
-				if(arg2.equalsIgnoreCase("previous"))
-				{
-					returnable=true;
-					final String quest=defaultQuestName();
-					if((quest!=null)
-					&&(quest.length()>0))
-					{
-						ScriptingEngine prevE=null;
-						final List<ScriptingEngine> list=new LinkedList<ScriptingEngine>();
-						for(final Enumeration<ScriptingEngine> e = scripted.scripts();e.hasMoreElements();)
-							list.add(e.nextElement());
-						for(final Enumeration<Behavior> b=scripted.behaviors();b.hasMoreElements();)
-						{
-							final Behavior B=b.nextElement();
-							if(B instanceof ScriptingEngine)
-								list.add((ScriptingEngine)B);
-						}
-						for(final ScriptingEngine engine : list)
-						{
-							if((engine!=null)
-							&&(engine.defaultQuestName()!=null)
-							&&(engine.defaultQuestName().length()>0))
-							{
-								if(engine == this)
-								{
-									if(prevE != null)
-									{
-										final Quest Q=CMLib.quests().fetchQuest(prevE.defaultQuestName());
-										if(Q != null)
-											returnable=Q.wasWinner(arg1);
-									}
-									break;
-								}
-								prevE=engine;
-							}
-						}
-					}
-				}
-				else
-				{
-					final Quest Q=getQuest(arg2);
-					if(Q==null)
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(E==null)
 						returnable=false;
 					else
-						returnable=Q.wasWinner(arg1);
+						returnable=CMLib.english().containsString(E.name(),arg2);
+					break;
 				}
-				break;
-			}
-			case 93: // questscripted
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final PhysicalAgent E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				final String arg2=tt[t+1];
-				if(arg2.equalsIgnoreCase("ALL"))
+				case 56: // name
 				{
-					returnable=false;
-					for(final Enumeration<Quest> q=CMLib.quests().enumQuests();q.hasMoreElements();)
-					{
-						final Quest Q=q.nextElement();
-						if(Q.running())
-						{
-							if(E!=null)
-							{
-								for(final Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
-								{
-									final ScriptingEngine SE=e.nextElement();
-									if((SE!=null)&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
-										returnable=true;
-								}
-								for(final Enumeration<Behavior> b=E.behaviors();b.hasMoreElements();)
-								{
-									final Behavior B=b.nextElement();
-									if(B instanceof ScriptingEngine)
-									{
-										final ScriptingEngine SE=(ScriptingEngine)B;
-										if((SE.defaultQuestName().equalsIgnoreCase(Q.name())))
-											returnable=true;
-									}
-								}
-							}
-						}
-					}
-				}
-				else
-				{
-					final Quest Q=getQuest(arg2);
-					returnable=false;
-					if((Q!=null)&&(E!=null))
-					{
-						for(final Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
-						{
-							final ScriptingEngine SE=e.nextElement();
-							if((SE!=null)&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
-								returnable=true;
-						}
-						for(final Enumeration<Behavior> b=E.behaviors();b.hasMoreElements();)
-						{
-							final Behavior B=b.nextElement();
-							if(B instanceof ScriptingEngine)
-							{
-								final ScriptingEngine SE=(ScriptingEngine)B;
-								if((SE.defaultQuestName().equalsIgnoreCase(Q.name())))
-									returnable=true;
-							}
-						}
-					}
-				}
-				break;
-			}
-			case 94: // questroom
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=tt[t+1];
-				final Quest Q=getQuest(arg2);
-				if(Q==null)
-					returnable=false;
-				else
-					returnable=(Q.getQuestRoomIndex(arg1)>=0);
-				break;
-			}
-			case 114: // questarea
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=tt[t+1];
-				final Quest Q=getQuest(arg2);
-				if(Q==null)
-					returnable=false;
-				else
-				{
-					int num=1;
-					Environmental E=Q.getQuestRoom(num);
-					returnable = false;
-					final Area parent=CMLib.map().getArea(arg1);
-					if(parent == null)
-						logError(scripted,"QUESTAREA","NoArea",funcParms);
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(E==null)
+						returnable=false;
 					else
-					while(E!=null)
-					{
-						final Area A=CMLib.map().areaLocation(E);
-						if((A==parent)||(parent.isChild(A))||(A.isChild(parent)))
-						{
-							returnable=true;
-							break;
-						}
-						num++;
-						E=Q.getQuestRoom(num);
-					}
+						returnable=simpleEvalStr(scripted,E.Name(),arg3,arg2,"NAME");
+					break;
 				}
-				break;
-			}
-			case 29: // questmob
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=tt[t+1];
-				final PhysicalAgent E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if(arg2.equalsIgnoreCase("ALL"))
+				case 75: // currency
 				{
-					returnable=false;
-					for(final Enumeration<Quest> q=CMLib.quests().enumQuests();q.hasMoreElements();)
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(E==null)
+						returnable=false;
+					else
+						returnable=simpleEvalStr(scripted,CMLib.beanCounter().getCurrency(E),arg3,arg2,"CURRENCY");
+					break;
+				}
+				case 61: // strin
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2;
+					if(tt[t+1].equals("$$r"))
+						arg2=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(monster));
+					else
+						arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final List<String> V=CMParms.parse(arg1.toUpperCase());
+					returnable=V.contains(arg2.toUpperCase());
+					break;
+				}
+				case 62: // callfunc
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					String found=null;
+					boolean validFunc=false;
+					final List<DVector> scripts=getScripts();
+					String trigger=null;
+					String[] ttrigger=null;
+					for(int v=0;v<scripts.size();v++)
 					{
-						final Quest Q=q.nextElement();
-						if(Q.running())
+						final DVector script2=scripts.get(v);
+						if(script2.size()<1)
+							continue;
+						trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
+						ttrigger=(String[])script2.elementAt(0,2);
+						if(getTriggerCode(trigger,ttrigger)==17)
 						{
-							if(E!=null)
+							final String fnamed=
+								(ttrigger!=null)
+								?ttrigger[1]
+								:CMParms.getCleanBit(trigger,1);
+							if(fnamed.equalsIgnoreCase(arg1))
 							{
-								if(Q.isObjectInUse(E))
-								{
-									returnable=true;
-									break;
-								}
-							}
-							else
-							if(Q.getQuestMobIndex(arg1)>=0)
-							{
-								returnable=true;
+								validFunc=true;
+								found=
+								execute(scripted,
+										source,
+										target,
+										monster,
+										primaryItem,
+										secondaryItem,
+										script2,
+										varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg2),
+										tmp);
+								if(found==null)
+									found="";
 								break;
 							}
 						}
 					}
+					if(!validFunc)
+						logError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
+					else
+					if(found!=null)
+						returnable=!(found.trim().length()==0);
+					else
+						returnable=false;
+					break;
 				}
-				else
+				case 14: // affected
 				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(P==null)
+						returnable=false;
+					else
+					{
+						final Ability A=CMClass.findAbility(arg2);
+						if(A!=null)
+							arg2=A.ID();
+						returnable=(P.fetchEffect(arg2)!=null);
+					}
+					break;
+				}
+				case 69: // isbehave
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final PhysicalAgent P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(P==null)
+						returnable=false;
+					else
+					{
+						final Behavior B=CMClass.findBehavior(arg2);
+						if(B!=null)
+							arg2=B.ID();
+						returnable=(P.fetchBehavior(arg2)!=null);
+					}
+					break;
+				}
+				case 70: // ipaddress
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E==null)||(!(E instanceof MOB))||(((MOB)E).isMonster()))
+						returnable=false;
+					else
+						returnable=simpleEvalStr(scripted,((MOB)E).session().getAddress(),arg3,arg2,"ADDRESS");
+					break;
+				}
+				case 28: // questwinner
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final Environmental E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if(E!=null)
+						arg1=E.Name();
+					if(arg2.equalsIgnoreCase("previous"))
+					{
+						returnable=true;
+						final String quest=defaultQuestName();
+						if((quest!=null)
+						&&(quest.length()>0))
+						{
+							ScriptingEngine prevE=null;
+							final List<ScriptingEngine> list=new LinkedList<ScriptingEngine>();
+							for(final Enumeration<ScriptingEngine> e = scripted.scripts();e.hasMoreElements();)
+								list.add(e.nextElement());
+							for(final Enumeration<Behavior> b=scripted.behaviors();b.hasMoreElements();)
+							{
+								final Behavior B=b.nextElement();
+								if(B instanceof ScriptingEngine)
+									list.add((ScriptingEngine)B);
+							}
+							for(final ScriptingEngine engine : list)
+							{
+								if((engine!=null)
+								&&(engine.defaultQuestName()!=null)
+								&&(engine.defaultQuestName().length()>0))
+								{
+									if(engine == this)
+									{
+										if(prevE != null)
+										{
+											final Quest Q=CMLib.quests().fetchQuest(prevE.defaultQuestName());
+											if(Q != null)
+												returnable=Q.wasWinner(arg1);
+										}
+										break;
+									}
+									prevE=engine;
+								}
+							}
+						}
+					}
+					else
+					{
+						final Quest Q=getQuest(arg2);
+						if(Q==null)
+							returnable=false;
+						else
+							returnable=Q.wasWinner(arg1);
+					}
+					break;
+				}
+				case 93: // questscripted
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final PhysicalAgent E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					final String arg2=tt[t+1];
+					if(arg2.equalsIgnoreCase("ALL"))
+					{
+						returnable=false;
+						for(final Enumeration<Quest> q=CMLib.quests().enumQuests();q.hasMoreElements();)
+						{
+							final Quest Q=q.nextElement();
+							if(Q.running())
+							{
+								if(E!=null)
+								{
+									for(final Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+									{
+										final ScriptingEngine SE=e.nextElement();
+										if((SE!=null)&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
+											returnable=true;
+									}
+									for(final Enumeration<Behavior> b=E.behaviors();b.hasMoreElements();)
+									{
+										final Behavior B=b.nextElement();
+										if(B instanceof ScriptingEngine)
+										{
+											final ScriptingEngine SE=(ScriptingEngine)B;
+											if((SE.defaultQuestName().equalsIgnoreCase(Q.name())))
+												returnable=true;
+										}
+									}
+								}
+							}
+						}
+					}
+					else
+					{
+						final Quest Q=getQuest(arg2);
+						returnable=false;
+						if((Q!=null)&&(E!=null))
+						{
+							for(final Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+							{
+								final ScriptingEngine SE=e.nextElement();
+								if((SE!=null)&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
+									returnable=true;
+							}
+							for(final Enumeration<Behavior> b=E.behaviors();b.hasMoreElements();)
+							{
+								final Behavior B=b.nextElement();
+								if(B instanceof ScriptingEngine)
+								{
+									final ScriptingEngine SE=(ScriptingEngine)B;
+									if((SE.defaultQuestName().equalsIgnoreCase(Q.name())))
+										returnable=true;
+								}
+							}
+						}
+					}
+					break;
+				}
+				case 94: // questroom
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=tt[t+1];
 					final Quest Q=getQuest(arg2);
 					if(Q==null)
 						returnable=false;
 					else
-						returnable=(Q.getQuestMobIndex(arg1)>=0);
+						returnable=(Q.getQuestRoomIndex(arg1)>=0);
+					break;
 				}
-				break;
-			}
-			case 31: // isquestmobalive
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=tt[t+1];
-				if(arg2.equalsIgnoreCase("ALL"))
+				case 114: // questarea
 				{
-					returnable=false;
-					for(final Enumeration<Quest> q=CMLib.quests().enumQuests();q.hasMoreElements();)
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=tt[t+1];
+					final Quest Q=getQuest(arg2);
+					if(Q==null)
+						returnable=false;
+					else
 					{
-						final Quest Q=q.nextElement();
-						if(Q.running())
+						int num=1;
+						Environmental E=Q.getQuestRoom(num);
+						returnable = false;
+						final Area parent=CMLib.map().getArea(arg1);
+						if(parent == null)
+							logError(scripted,"QUESTAREA","NoArea",funcParms);
+						else
+						while(E!=null)
+						{
+							final Area A=CMLib.map().areaLocation(E);
+							if((A==parent)||(parent.isChild(A))||(A.isChild(parent)))
+							{
+								returnable=true;
+								break;
+							}
+							num++;
+							E=Q.getQuestRoom(num);
+						}
+					}
+					break;
+				}
+				case 29: // questmob
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=tt[t+1];
+					final PhysicalAgent E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if(arg2.equalsIgnoreCase("ALL"))
+					{
+						returnable=false;
+						for(final Enumeration<Quest> q=CMLib.quests().enumQuests();q.hasMoreElements();)
+						{
+							final Quest Q=q.nextElement();
+							if(Q.running())
+							{
+								if(E!=null)
+								{
+									if(Q.isObjectInUse(E))
+									{
+										returnable=true;
+										break;
+									}
+								}
+								else
+								if(Q.getQuestMobIndex(arg1)>=0)
+								{
+									returnable=true;
+									break;
+								}
+							}
+						}
+					}
+					else
+					{
+						final Quest Q=getQuest(arg2);
+						if(Q==null)
+							returnable=false;
+						else
+							returnable=(Q.getQuestMobIndex(arg1)>=0);
+					}
+					break;
+				}
+				case 31: // isquestmobalive
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=tt[t+1];
+					if(arg2.equalsIgnoreCase("ALL"))
+					{
+						returnable=false;
+						for(final Enumeration<Quest> q=CMLib.quests().enumQuests();q.hasMoreElements();)
+						{
+							final Quest Q=q.nextElement();
+							if(Q.running())
+							{
+								MOB M=null;
+								if(CMath.s_int(arg1.trim())>0)
+									M=Q.getQuestMob(CMath.s_int(arg1.trim()));
+								else
+									M=Q.getQuestMob(Q.getQuestMobIndex(arg1));
+								if(M!=null)
+								{
+									returnable=!M.amDead();
+									break;
+								}
+							}
+						}
+					}
+					else
+					{
+						final Quest Q=getQuest(arg2);
+						if(Q==null)
+							returnable=false;
+						else
 						{
 							MOB M=null;
 							if(CMath.s_int(arg1.trim())>0)
 								M=Q.getQuestMob(CMath.s_int(arg1.trim()));
 							else
 								M=Q.getQuestMob(Q.getQuestMobIndex(arg1));
-							if(M!=null)
-							{
+							if(M==null)
+								returnable=false;
+							else
 								returnable=!M.amDead();
-								break;
-							}
 						}
 					}
+					break;
 				}
-				else
+				case 111: // itemcount
 				{
-					final Quest Q=getQuest(arg2);
-					if(Q==null)
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					if(arg2.length()==0)
+					{
+						logError(scripted,"ITEMCOUNT","Syntax",funcParms);
+						return returnable;
+					}
+					if(E==null)
 						returnable=false;
 					else
 					{
-						MOB M=null;
-						if(CMath.s_int(arg1.trim())>0)
-							M=Q.getQuestMob(CMath.s_int(arg1.trim()));
-						else
-							M=Q.getQuestMob(Q.getQuestMobIndex(arg1));
-						if(M==null)
-							returnable=false;
-						else
-							returnable=!M.amDead();
-					}
-				}
-				break;
-			}
-			case 111: // itemcount
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				if(arg2.length()==0)
-				{
-					logError(scripted,"ITEMCOUNT","Syntax",funcParms);
-					return returnable;
-				}
-				if(E==null)
-					returnable=false;
-				else
-				{
-					int num=0;
-					if(E instanceof Container)
-					{
-						num++;
-						for(final Item I : ((Container)E).getContents())
-							num+=I.numberOfItems();
-					}
-					else
-					if(E instanceof Item)
-						num=((Item)E).numberOfItems();
-					else
-					if(E instanceof MOB)
-					{
-						for(final Enumeration<Item> i=((MOB)E).items();i.hasMoreElements();)
-							num += i.nextElement().numberOfItems();
-					}
-					else
-					if(E instanceof Room)
-					{
-						for(final Enumeration<Item> i=((Room)E).items();i.hasMoreElements();)
-							num += i.nextElement().numberOfItems();
-					}
-					else
-					if(E instanceof Area)
-					{
-						for(final Enumeration<Room> r=((Area)E).getFilledCompleteMap();r.hasMoreElements();)
+						int num=0;
+						if(E instanceof Container)
 						{
-							for(final Enumeration<Item> i=r.nextElement().items();i.hasMoreElements();)
+							num++;
+							for(final Item I : ((Container)E).getContents())
+								num+=I.numberOfItems();
+						}
+						else
+						if(E instanceof Item)
+							num=((Item)E).numberOfItems();
+						else
+						if(E instanceof MOB)
+						{
+							for(final Enumeration<Item> i=((MOB)E).items();i.hasMoreElements();)
 								num += i.nextElement().numberOfItems();
 						}
-					}
-					else
-						returnable=false;
-					returnable=simpleEval(scripted,""+num,arg3,arg2,"ITEMCOUNT");
-				}
-				break;
-			}
-			case 32: // nummobsinarea
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				int num=0;
-				MaskingLibrary.CompiledZMask MASK=null;
-				if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
-				{
-					arg1=arg1.substring(4).trim();
-					arg1=arg1.substring(1).trim();
-					MASK=CMLib.masking().maskCompile(arg1);
-				}
-				for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
-				{
-					final Room R=e.nextElement();
-					if(arg1.equals("*"))
-						num+=R.numInhabitants();
-					else
-					{
-						for(int m=0;m<R.numInhabitants();m++)
+						else
+						if(E instanceof Room)
 						{
-							final MOB M=R.fetchInhabitant(m);
-							if(M==null)
-								continue;
-							if(MASK!=null)
-							{
-								if(CMLib.masking().maskCheck(MASK,M,true))
-									num++;
-							}
-							else
-							if(CMLib.english().containsString(M.name(),arg1))
-								num++;
+							for(final Enumeration<Item> i=((Room)E).items();i.hasMoreElements();)
+								num += i.nextElement().numberOfItems();
 						}
-					}
-				}
-				returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMMOBSINAREA");
-				break;
-			}
-			case 33: // nummobs
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
-				final String arg2=tt[t+1];
-				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				int num=0;
-				MaskingLibrary.CompiledZMask MASK=null;
-				if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
-				{
-					arg3=arg3.substring(4).trim();
-					arg3=arg3.substring(1).trim();
-					MASK=CMLib.masking().maskCompile(arg3);
-				}
-				try
-				{
-					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
-					{
-						final Room R=e.nextElement();
-						for(int m=0;m<R.numInhabitants();m++)
+						else
+						if(E instanceof Area)
 						{
-							final MOB M=R.fetchInhabitant(m);
-							if(M==null)
-								continue;
-							if(MASK!=null)
+							for(final Enumeration<Room> r=((Area)E).getFilledCompleteMap();r.hasMoreElements();)
 							{
-								if(CMLib.masking().maskCheck(MASK,M,true))
-									num++;
-							}
-							else
-							if(CMLib.english().containsString(M.name(),arg1))
-								num++;
-						}
-					}
-				}
-				catch (final NoSuchElementException nse)
-				{
-				}
-				returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMMOBS");
-				break;
-			}
-			case 34: // numracesinarea
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				int num=0;
-				Room R=null;
-				MOB M=null;
-				for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
-				{
-					R=e.nextElement();
-					for(int m=0;m<R.numInhabitants();m++)
-					{
-						M=R.fetchInhabitant(m);
-						if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
-							num++;
-					}
-				}
-				returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMRACESINAREA");
-				break;
-			}
-			case 35: // numraces
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				int num=0;
-				try
-				{
-					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
-					{
-						final Room R=e.nextElement();
-						for(int m=0;m<R.numInhabitants();m++)
-						{
-							final MOB M=R.fetchInhabitant(m);
-							if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
-								num++;
-						}
-					}
-				}
-				catch (final NoSuchElementException nse)
-				{
-				}
-				returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMRACES");
-				break;
-			}
-			case 30: // questobj
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=tt[t+1];
-				final PhysicalAgent E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if(arg2.equalsIgnoreCase("ALL"))
-				{
-					returnable=false;
-					for(final Enumeration<Quest> q=CMLib.quests().enumQuests();q.hasMoreElements();)
-					{
-						final Quest Q=q.nextElement();
-						if(Q.running())
-						{
-							if(E!=null)
-							{
-								if(Q.isObjectInUse(E))
-								{
-									returnable=true;
-									break;
-								}
-							}
-							else
-							if(Q.getQuestItemIndex(arg1)>=0)
-							{
-								returnable=true;
-								break;
+								for(final Enumeration<Item> i=r.nextElement().items();i.hasMoreElements();)
+									num += i.nextElement().numberOfItems();
 							}
 						}
+						else
+							returnable=false;
+						returnable=simpleEval(scripted,""+num,arg3,arg2,"ITEMCOUNT");
 					}
+					break;
 				}
-				else
+				case 32: // nummobsinarea
 				{
-					final Quest Q=getQuest(arg2);
-					if(Q==null)
-						returnable=false;
-					else
-						returnable=(Q.getQuestItemIndex(arg1)>=0);
-				}
-				break;
-			}
-			case 85: // islike
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if(E==null)
-					returnable=false;
-				else
-					returnable=CMLib.masking().maskCheck(arg2, E,false);
-				break;
-			}
-			case 86: // strcontains
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				returnable=stringContainsFunctionImpl(arg1,arg2)>=0;
-				break;
-			}
-			case 92: // isodd
-			{
-				final String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms)).trim();
-				boolean isodd = false;
-				if( CMath.isLong( val ) )
-				{
-					isodd = (CMath.s_long(val) %2 == 1);
-				}
-				returnable = isodd;
-				break;
-			}
-			case 16: // hitprcnt
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"HITPRCNT","Syntax",funcParms);
-					return returnable;
-				}
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				{
-					final double hitPctD=CMath.div(((MOB)E).curState().getHitPoints(),((MOB)E).maxState().getHitPoints());
-					final int val1=(int)Math.round(hitPctD*100.0);
-					returnable=simpleEval(scripted,""+val1,arg3,arg2,"HITPRCNT");
-				}
-				break;
-			}
-			case 50: // isseason
-			{
-				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				returnable=false;
-				if(monster.location()!=null)
-				{
-					arg1=arg1.toUpperCase();
-					for(final TimeClock.Season season : TimeClock.Season.values())
-					{
-						if(season.toString().startsWith(arg1.toUpperCase())
-						&&(monster.location().getArea().getTimeObj().getSeasonCode()==season))
-						{
-							returnable=true;
-							break;
-						}
-					}
-				}
-				break;
-			}
-			case 51: // isweather
-			{
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				returnable=false;
-				if(monster.location()!=null)
-				for(int a=0;a<Climate.WEATHER_DESCS.length;a++)
-				{
-					if((Climate.WEATHER_DESCS[a]).startsWith(arg1.toUpperCase())
-					&&(monster.location().getArea().getClimateObj().weatherType(monster.location())==a))
-					{
-						returnable = true;
-						break;
-					}
-				}
-				break;
-			}
-			case 57: // ismoon
-			{
-				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				returnable=false;
-				if(monster.location()!=null)
-				{
-					if(arg1.length()==0)
-						returnable=monster.location().getArea().getClimateObj().canSeeTheStars(monster.location());
-					else
-					{
-						arg1=arg1.toUpperCase();
-						for(final TimeClock.MoonPhase phase : TimeClock.MoonPhase.values())
-						{
-							if(phase.toString().startsWith(arg1)
-							&&(monster.location().getArea().getTimeObj().getMoonPhase(monster.location())==phase))
-							{
-								returnable=true;
-								break;
-							}
-						}
-					}
-				}
-				break;
-			}
-			case 110: // ishour
-			{
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms)).toLowerCase().trim();
-				if(monster.location()==null)
-					returnable=false;
-				else
-				if((monster.location().getArea().getTimeObj().getHourOfDay()==CMath.s_int(arg1)))
-					returnable=true;
-				else
-					returnable=false;
-				break;
-			}
-			case 38: // istime
-			{
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms)).toLowerCase().trim();
-				if(monster.location()==null)
-					returnable=false;
-				else
-				if(("daytime").startsWith(arg1)
-				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY))
-					returnable=true;
-				else
-				if(("dawn").startsWith(arg1)
-				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAWN))
-					returnable=true;
-				else
-				if(("dusk").startsWith(arg1)
-				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DUSK))
-					returnable=true;
-				else
-				if(("nighttime").startsWith(arg1)
-				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT))
-					returnable=true;
-				else
-				if((monster.location().getArea().getTimeObj().getHourOfDay()==CMath.s_int(arg1)))
-					returnable=true;
-				else
-					returnable=false;
-				break;
-			}
-			case 39: // isday
-			{
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				if((monster.location()!=null)&&(monster.location().getArea().getTimeObj().getDayOfMonth()==CMath.s_int(arg1.trim())))
-					returnable=true;
-				else
-					returnable=false;
-				break;
-			}
-			case 103: // ismonth
-			{
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				if((monster.location()!=null)&&(monster.location().getArea().getTimeObj().getMonth()==CMath.s_int(arg1.trim())))
-					returnable=true;
-				else
-					returnable=false;
-				break;
-			}
-			case 104: // isyear
-			{
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				if((monster.location()!=null)&&(monster.location().getArea().getTimeObj().getYear()==CMath.s_int(arg1.trim())))
-					returnable=true;
-				else
-					returnable=false;
-				break;
-			}
-			case 105: // isrlhour
-			{
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == CMath.s_int(arg1.trim()))
-					returnable=true;
-				else
-					returnable=false;
-				break;
-			}
-			case 106: // isrlday
-			{
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				if(Calendar.getInstance().get(Calendar.DATE) == CMath.s_int(arg1.trim()))
-					returnable=true;
-				else
-					returnable=false;
-				break;
-			}
-			case 107: // isrlmonth
-			{
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				if(Calendar.getInstance().get(Calendar.MONTH)+1 == CMath.s_int(arg1.trim()))
-					returnable=true;
-				else
-					returnable=false;
-				break;
-			}
-			case 108: // isrlyear
-			{
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				if(Calendar.getInstance().get(Calendar.YEAR) == CMath.s_int(arg1.trim()))
-					returnable=true;
-				else
-					returnable=false;
-				break;
-			}
-			case 45: // nummobsroom
-			{
-				if(tlen==1)
-				{
-					if(CMParms.numBits(funcParms)>2)
+					if(tlen==1)
 						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-					else
-						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				}
-				int num=0;
-				int startbit=0;
-				if(lastKnownLocation!=null)
-				{
-					num=lastKnownLocation.numInhabitants();
-					if(signH.containsKey(tt[t+1]))
+					String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					int num=0;
+					MaskingLibrary.CompiledZMask MASK=null;
+					if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
 					{
-						String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-						startbit++;
-						if(!name.equalsIgnoreCase("*"))
+						arg1=arg1.substring(4).trim();
+						arg1=arg1.substring(1).trim();
+						MASK=CMLib.masking().maskCompile(arg1);
+					}
+					for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
+					{
+						final Room R=e.nextElement();
+						if(arg1.equals("*"))
+							num+=R.numInhabitants();
+						else
 						{
-							num=0;
-							MaskingLibrary.CompiledZMask MASK=null;
-							if((name.toUpperCase().startsWith("MASK")&&(name.substring(4).trim().startsWith("="))))
+							for(int m=0;m<R.numInhabitants();m++)
 							{
-								final boolean usePreCompiled = (name.equals(tt[t+0]));
-								name=name.substring(4).trim();
-								name=name.substring(1).trim();
-								MASK=usePreCompiled?CMLib.masking().getPreCompiledMask(name): CMLib.masking().maskCompile(name);
-							}
-							for(int i=0;i<lastKnownLocation.numInhabitants();i++)
-							{
-								final MOB M=lastKnownLocation.fetchInhabitant(i);
+								final MOB M=R.fetchInhabitant(m);
 								if(M==null)
 									continue;
 								if(MASK!=null)
@@ -4332,384 +3943,592 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										num++;
 								}
 								else
-								if(CMLib.english().containsString(M.Name(),name)
-								||CMLib.english().containsString(M.displayText(),name))
+								if(CMLib.english().containsString(M.name(),arg1))
 									num++;
 							}
 						}
 					}
+					returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMMOBSINAREA");
+					break;
 				}
-				else
-				if(!signH.containsKey(tt[t+0]))
+				case 33: // nummobs
 				{
-					logError(scripted,"NUMMOBSROOM","Syntax","No SIGN found: "+funcParms);
-					return returnable;
-				}
-
-				final String comp=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+startbit]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+startbit+1]);
-				if(lastKnownLocation!=null)
-					returnable=simpleEval(scripted,""+num,arg2,comp,"NUMMOBSROOM");
-				break;
-			}
-			case 63: // numpcsroom
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final Room R=lastKnownLocation;
-				if(R!=null)
-				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
+					final String arg2=tt[t+1];
+					String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
 					int num=0;
-					for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+					MaskingLibrary.CompiledZMask MASK=null;
+					if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
 					{
-						final MOB M=m.nextElement();
-						if((M!=null)&&(!M.isMonster()))
-							num++;
+						arg3=arg3.substring(4).trim();
+						arg3=arg3.substring(1).trim();
+						MASK=CMLib.masking().maskCompile(arg3);
 					}
-					returnable=simpleEval(scripted,""+num,arg2,arg1,"NUMPCSROOM");
-				}
-				break;
-			}
-			case 79: // numpcsarea
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				if(lastKnownLocation!=null)
-				{
-					int num=0;
-					for(final Session S : CMLib.sessions().localOnlineIterable())
+					try
 					{
-						if((S.mob().location()!=null)&&(S.mob().location().getArea()==lastKnownLocation.getArea()))
-							num++;
-					}
-					returnable=simpleEval(scripted,""+num,arg2,arg1,"NUMPCSAREA");
-				}
-				break;
-			}
-			case 77: // explored
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
-				final String whom=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String where=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final String cmp=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
-				final Environmental E=getArgumentMOB(whom,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB)))
-				{
-					logError(scripted,"EXPLORED","Unknown Code",whom);
-					return returnable;
-				}
-				Area A=null;
-				if(!where.equalsIgnoreCase("world"))
-				{
-					A=CMLib.map().getArea(where);
-					if(A==null)
-					{
-						final Environmental E2=getArgumentItem(where,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-						if(E2 != null)
-							A=CMLib.map().areaLocation(E2);
-					}
-					if(A==null)
-					{
-						logError(scripted,"EXPLORED","Unknown Area",where);
-						return returnable;
-					}
-				}
-				if(lastKnownLocation!=null)
-				{
-					int pct=0;
-					final MOB M=(MOB)E;
-					if(M.playerStats()!=null)
-						pct=M.playerStats().percentVisited(M,A);
-					returnable=simpleEval(scripted,""+pct,arg2,cmp,"EXPLORED");
-				}
-				break;
-			}
-			case 72: // faction
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
-				final String whom=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final String cmp=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
-				final Environmental E=getArgumentMOB(whom,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				final Faction F=CMLib.factions().getFaction(arg1);
-				if((E==null)||(!(E instanceof MOB)))
-				{
-					logError(scripted,"FACTION","Unknown Code",whom);
-					return returnable;
-				}
-				if(F==null)
-				{
-					logError(scripted,"FACTION","Unknown Faction",arg1);
-					return returnable;
-				}
-				final MOB M=(MOB)E;
-				String value=null;
-				if(!M.hasFaction(F.factionID()))
-					value="";
-				else
-				{
-					final int myfac=M.fetchFaction(F.factionID());
-					if(CMath.isNumber(arg2.trim()))
-						value=Integer.toString(myfac);
-					else
-					{
-						final Faction.FRange FR=CMLib.factions().getRange(F.factionID(),myfac);
-						if(FR==null)
-							value="";
-						else
-							value=FR.name();
-					}
-				}
-				if(lastKnownLocation!=null)
-					returnable=simpleEval(scripted,value,arg2,cmp,"FACTION");
-				break;
-			}
-			case 46: // numitemsroom
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				int ct=0;
-				if(lastKnownLocation!=null)
-				{
-					for(int i=0;i<lastKnownLocation.numItems();i++)
-					{
-						final Item I=lastKnownLocation.getItem(i);
-						if((I!=null)&&(I.container()==null))
-							ct++;
-					}
-				}
-				returnable=simpleEval(scripted,""+ct,arg2,arg1,"NUMITEMSROOM");
-				break;
-			}
-			case 47: //mobitem
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				MOB M=null;
-				if(lastKnownLocation!=null)
-				{
-					if(CMath.isInteger(arg1.trim()))
-						M=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
-					else
-						M=lastKnownLocation.fetchInhabitant(arg1.trim());
-				}
-				Item which=null;
-				int ct=1;
-				if(M!=null)
-				{
-					for(int i=0;i<M.numItems();i++)
-					{
-						final Item I=M.getItem(i);
-						if((I!=null)&&(I.container()==null))
+						for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 						{
-							if(ct==CMath.s_int(arg2.trim()))
+							final Room R=e.nextElement();
+							for(int m=0;m<R.numInhabitants();m++)
 							{
-								which = I;
-								break;
+								final MOB M=R.fetchInhabitant(m);
+								if(M==null)
+									continue;
+								if(MASK!=null)
+								{
+									if(CMLib.masking().maskCheck(MASK,M,true))
+										num++;
+								}
+								else
+								if(CMLib.english().containsString(M.name(),arg1))
+									num++;
 							}
-							ct++;
 						}
 					}
-				}
-				if(which==null)
-					returnable=false;
-				else
-					returnable=(CMLib.english().containsString(which.name(),arg3)
-								||CMLib.english().containsString(which.Name(),arg3)
-								||CMLib.english().containsString(which.displayText(),arg3));
-				break;
-			}
-			case 49: // hastattoo
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if(arg2.length()==0)
-				{
-					logError(scripted,"HASTATTOO","Syntax",funcParms);
+					catch (final NoSuchElementException nse)
+					{
+					}
+					returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMMOBS");
 					break;
 				}
-				else
-				if((E!=null)&&(E instanceof MOB))
-					returnable=(((MOB)E).findTattoo(arg2)!=null);
-				else
-					returnable=false;
-				break;
-			}
-			case 109: // hastattootime
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final String cmp=tt[t+2];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if(arg2.length()==0)
+				case 34: // numracesinarea
 				{
-					logError(scripted,"HASTATTOO","Syntax",funcParms);
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					int num=0;
+					Room R=null;
+					MOB M=null;
+					for(final Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
+					{
+						R=e.nextElement();
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							M=R.fetchInhabitant(m);
+							if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
+								num++;
+						}
+					}
+					returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMRACESINAREA");
 					break;
 				}
-				else
-				if((E!=null)&&(E instanceof MOB))
+				case 35: // numraces
 				{
-					final Tattoo T=((MOB)E).findTattoo(arg2);
-					if(T==null)
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					int num=0;
+					try
+					{
+						for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
+						{
+							final Room R=e.nextElement();
+							for(int m=0;m<R.numInhabitants();m++)
+							{
+								final MOB M=R.fetchInhabitant(m);
+								if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
+									num++;
+							}
+						}
+					}
+					catch (final NoSuchElementException nse)
+					{
+					}
+					returnable=simpleEval(scripted,""+num,arg3,arg2,"NUMRACES");
+					break;
+				}
+				case 30: // questobj
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=tt[t+1];
+					final PhysicalAgent E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(arg2.equalsIgnoreCase("ALL"))
+					{
+						returnable=false;
+						for(final Enumeration<Quest> q=CMLib.quests().enumQuests();q.hasMoreElements();)
+						{
+							final Quest Q=q.nextElement();
+							if(Q.running())
+							{
+								if(E!=null)
+								{
+									if(Q.isObjectInUse(E))
+									{
+										returnable=true;
+										break;
+									}
+								}
+								else
+								if(Q.getQuestItemIndex(arg1)>=0)
+								{
+									returnable=true;
+									break;
+								}
+							}
+						}
+					}
+					else
+					{
+						final Quest Q=getQuest(arg2);
+						if(Q==null)
+							returnable=false;
+						else
+							returnable=(Q.getQuestItemIndex(arg1)>=0);
+					}
+					break;
+				}
+				case 85: // islike
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(E==null)
 						returnable=false;
 					else
-						returnable=simpleEval(scripted,""+T.getTickDown(),arg3,cmp,"ISTATTOOTIME");
-				}
-				else
-					returnable=false;
-				break;
-			}
-			case 99: // hasacctattoo
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if(arg2.length()==0)
-				{
-					logError(scripted,"HASACCTATTOO","Syntax",funcParms);
+						returnable=CMLib.masking().maskCheck(arg2, E,false);
 					break;
 				}
-				else
-				if((E!=null)&&(E instanceof MOB)&&(((MOB)E).playerStats()!=null)&&(((MOB)E).playerStats().getAccount()!=null))
-					returnable=((MOB)E).playerStats().getAccount().findTattoo(arg2)!=null;
-				else
-					returnable=false;
-				break;
-			}
-			case 48: // numitemsmob
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				MOB which=null;
-				if(lastKnownLocation!=null)
+				case 86: // strcontains
 				{
-					if(CMath.isInteger(arg1.trim()))
-						which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
-					else
-						which=lastKnownLocation.fetchInhabitant(arg1);
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					returnable=stringContainsFunctionImpl(arg1,arg2)>=0;
+					break;
 				}
-				int ct=0;
-				if(which!=null)
+				case 92: // isodd
 				{
-					for(int i=0;i<which.numItems();i++)
+					final String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms)).trim();
+					boolean isodd = false;
+					if( CMath.isLong( val ) )
 					{
-						final Item I=which.getItem(i);
-						if((I!=null)&&(I.container()==null))
-							ct++;
+						isodd = (CMath.s_long(val) %2 == 1);
 					}
+					returnable = isodd;
+					break;
 				}
-				returnable=simpleEval(scripted,""+ct,arg3,arg2,"NUMITEMSMOB");
-				break;
-			}
-			case 101: // numitemsshop
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				PhysicalAgent which=null;
-				if(lastKnownLocation!=null)
+				case 16: // hitprcnt
 				{
-					if(CMath.isInteger(arg1.trim()))
-						which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
-					else
-						which=lastKnownLocation.fetchInhabitant(arg1);
-					if(which == null)
-						which=this.getArgumentItem(tt[t+0], source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
-					if(which == null)
-						which=this.getArgumentMOB(tt[t+0], source, monster, target, primaryItem, secondaryItem, msg, tmp);
-				}
-				int ct=0;
-				if(which!=null)
-				{
-					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(which);
-					if((shopHere == null)&&(scripted instanceof Item))
-						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)which).owner());
-					if((shopHere == null)&&(scripted instanceof MOB))
-						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)which).location());
-					if(shopHere == null)
-						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
-					if(shopHere!=null)
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						final CoffeeShop shop = shopHere.getShop();
-						if(shop != null)
+						logError(scripted,"HITPRCNT","Syntax",funcParms);
+						return returnable;
+					}
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
+					else
+					{
+						final double hitPctD=CMath.div(((MOB)E).curState().getHitPoints(),((MOB)E).maxState().getHitPoints());
+						final int val1=(int)Math.round(hitPctD*100.0);
+						returnable=simpleEval(scripted,""+val1,arg3,arg2,"HITPRCNT");
+					}
+					break;
+				}
+				case 50: // isseason
+				{
+					String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+					returnable=false;
+					if(monster.location()!=null)
+					{
+						arg1=arg1.toUpperCase();
+						for(final TimeClock.Season season : TimeClock.Season.values())
 						{
-							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
+							if(season.toString().startsWith(arg1.toUpperCase())
+							&&(monster.location().getArea().getTimeObj().getSeasonCode()==season))
 							{
-								ct++;
+								returnable=true;
+								break;
 							}
 						}
 					}
+					break;
 				}
-				returnable=simpleEval(scripted,""+ct,arg3,arg2,"NUMITEMSSHOP");
-				break;
-			}
-			case 100: // shopitem
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				PhysicalAgent where=null;
-				if(lastKnownLocation!=null)
+				case 51: // isweather
 				{
-					if(CMath.isInteger(arg1.trim()))
-						where=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
-					else
-						where=lastKnownLocation.fetchInhabitant(arg1.trim());
-					if(where == null)
-						where=this.getArgumentItem(tt[t+0], source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
-					if(where == null)
-						where=this.getArgumentMOB(tt[t+0], source, monster, target, primaryItem, secondaryItem, msg, tmp);
-				}
-				Environmental which=null;
-				int ct=1;
-				if(where!=null)
-				{
-					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(where);
-					if((shopHere == null)&&(scripted instanceof Item))
-						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)where).owner());
-					if((shopHere == null)&&(scripted instanceof MOB))
-						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)where).location());
-					if(shopHere == null)
-						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
-					if(shopHere!=null)
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+					returnable=false;
+					if(monster.location()!=null)
+					for(int a=0;a<Climate.WEATHER_DESCS.length;a++)
 					{
-						final CoffeeShop shop = shopHere.getShop();
-						if(shop != null)
+						if((Climate.WEATHER_DESCS[a]).startsWith(arg1.toUpperCase())
+						&&(monster.location().getArea().getClimateObj().weatherType(monster.location())==a))
 						{
-							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+							returnable = true;
+							break;
+						}
+					}
+					break;
+				}
+				case 57: // ismoon
+				{
+					String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+					returnable=false;
+					if(monster.location()!=null)
+					{
+						if(arg1.length()==0)
+							returnable=monster.location().getArea().getClimateObj().canSeeTheStars(monster.location());
+						else
+						{
+							arg1=arg1.toUpperCase();
+							for(final TimeClock.MoonPhase phase : TimeClock.MoonPhase.values())
 							{
-								final Environmental E=i.next();
+								if(phase.toString().startsWith(arg1)
+								&&(monster.location().getArea().getTimeObj().getMoonPhase(monster.location())==phase))
+								{
+									returnable=true;
+									break;
+								}
+							}
+						}
+					}
+					break;
+				}
+				case 110: // ishour
+				{
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms)).toLowerCase().trim();
+					if(monster.location()==null)
+						returnable=false;
+					else
+					if((monster.location().getArea().getTimeObj().getHourOfDay()==CMath.s_int(arg1)))
+						returnable=true;
+					else
+						returnable=false;
+					break;
+				}
+				case 38: // istime
+				{
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms)).toLowerCase().trim();
+					if(monster.location()==null)
+						returnable=false;
+					else
+					if(("daytime").startsWith(arg1)
+					&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY))
+						returnable=true;
+					else
+					if(("dawn").startsWith(arg1)
+					&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAWN))
+						returnable=true;
+					else
+					if(("dusk").startsWith(arg1)
+					&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.DUSK))
+						returnable=true;
+					else
+					if(("nighttime").startsWith(arg1)
+					&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT))
+						returnable=true;
+					else
+					if((monster.location().getArea().getTimeObj().getHourOfDay()==CMath.s_int(arg1)))
+						returnable=true;
+					else
+						returnable=false;
+					break;
+				}
+				case 39: // isday
+				{
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+					if((monster.location()!=null)&&(monster.location().getArea().getTimeObj().getDayOfMonth()==CMath.s_int(arg1.trim())))
+						returnable=true;
+					else
+						returnable=false;
+					break;
+				}
+				case 103: // ismonth
+				{
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+					if((monster.location()!=null)&&(monster.location().getArea().getTimeObj().getMonth()==CMath.s_int(arg1.trim())))
+						returnable=true;
+					else
+						returnable=false;
+					break;
+				}
+				case 104: // isyear
+				{
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+					if((monster.location()!=null)&&(monster.location().getArea().getTimeObj().getYear()==CMath.s_int(arg1.trim())))
+						returnable=true;
+					else
+						returnable=false;
+					break;
+				}
+				case 105: // isrlhour
+				{
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+					if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == CMath.s_int(arg1.trim()))
+						returnable=true;
+					else
+						returnable=false;
+					break;
+				}
+				case 106: // isrlday
+				{
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+					if(Calendar.getInstance().get(Calendar.DATE) == CMath.s_int(arg1.trim()))
+						returnable=true;
+					else
+						returnable=false;
+					break;
+				}
+				case 107: // isrlmonth
+				{
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+					if(Calendar.getInstance().get(Calendar.MONTH)+1 == CMath.s_int(arg1.trim()))
+						returnable=true;
+					else
+						returnable=false;
+					break;
+				}
+				case 108: // isrlyear
+				{
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+					if(Calendar.getInstance().get(Calendar.YEAR) == CMath.s_int(arg1.trim()))
+						returnable=true;
+					else
+						returnable=false;
+					break;
+				}
+				case 45: // nummobsroom
+				{
+					if(tlen==1)
+					{
+						if(CMParms.numBits(funcParms)>2)
+							tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+						else
+							tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					}
+					int num=0;
+					int startbit=0;
+					if(lastKnownLocation!=null)
+					{
+						num=lastKnownLocation.numInhabitants();
+						if(signH.containsKey(tt[t+1]))
+						{
+							String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+							startbit++;
+							if(!name.equalsIgnoreCase("*"))
+							{
+								num=0;
+								MaskingLibrary.CompiledZMask MASK=null;
+								if((name.toUpperCase().startsWith("MASK")&&(name.substring(4).trim().startsWith("="))))
+								{
+									final boolean usePreCompiled = (name.equals(tt[t+0]));
+									name=name.substring(4).trim();
+									name=name.substring(1).trim();
+									MASK=usePreCompiled?CMLib.masking().getPreCompiledMask(name): CMLib.masking().maskCompile(name);
+								}
+								for(int i=0;i<lastKnownLocation.numInhabitants();i++)
+								{
+									final MOB M=lastKnownLocation.fetchInhabitant(i);
+									if(M==null)
+										continue;
+									if(MASK!=null)
+									{
+										if(CMLib.masking().maskCheck(MASK,M,true))
+											num++;
+									}
+									else
+									if(CMLib.english().containsString(M.Name(),name)
+									||CMLib.english().containsString(M.displayText(),name))
+										num++;
+								}
+							}
+						}
+					}
+					else
+					if(!signH.containsKey(tt[t+0]))
+					{
+						logError(scripted,"NUMMOBSROOM","Syntax","No SIGN found: "+funcParms);
+						return returnable;
+					}
+
+					final String comp=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+startbit]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+startbit+1]);
+					if(lastKnownLocation!=null)
+						returnable=simpleEval(scripted,""+num,arg2,comp,"NUMMOBSROOM");
+					break;
+				}
+				case 63: // numpcsroom
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final Room R=lastKnownLocation;
+					if(R!=null)
+					{
+						int num=0;
+						for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+						{
+							final MOB M=m.nextElement();
+							if((M!=null)&&(!M.isMonster()))
+								num++;
+						}
+						returnable=simpleEval(scripted,""+num,arg2,arg1,"NUMPCSROOM");
+					}
+					break;
+				}
+				case 79: // numpcsarea
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					if(lastKnownLocation!=null)
+					{
+						int num=0;
+						for(final Session S : CMLib.sessions().localOnlineIterable())
+						{
+							if((S.mob().location()!=null)&&(S.mob().location().getArea()==lastKnownLocation.getArea()))
+								num++;
+						}
+						returnable=simpleEval(scripted,""+num,arg2,arg1,"NUMPCSAREA");
+					}
+					break;
+				}
+				case 77: // explored
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+					final String whom=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String where=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final String cmp=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
+					final Environmental E=getArgumentMOB(whom,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((E==null)||(!(E instanceof MOB)))
+					{
+						logError(scripted,"EXPLORED","Unknown Code",whom);
+						return returnable;
+					}
+					Area A=null;
+					if(!where.equalsIgnoreCase("world"))
+					{
+						A=CMLib.map().getArea(where);
+						if(A==null)
+						{
+							final Environmental E2=getArgumentItem(where,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+							if(E2 != null)
+								A=CMLib.map().areaLocation(E2);
+						}
+						if(A==null)
+						{
+							logError(scripted,"EXPLORED","Unknown Area",where);
+							return returnable;
+						}
+					}
+					if(lastKnownLocation!=null)
+					{
+						int pct=0;
+						final MOB M=(MOB)E;
+						if(M.playerStats()!=null)
+							pct=M.playerStats().percentVisited(M,A);
+						returnable=simpleEval(scripted,""+pct,arg2,cmp,"EXPLORED");
+					}
+					break;
+				}
+				case 72: // faction
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+					final String whom=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final String cmp=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
+					final Environmental E=getArgumentMOB(whom,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					final Faction F=CMLib.factions().getFaction(arg1);
+					if((E==null)||(!(E instanceof MOB)))
+					{
+						logError(scripted,"FACTION","Unknown Code",whom);
+						return returnable;
+					}
+					if(F==null)
+					{
+						logError(scripted,"FACTION","Unknown Faction",arg1);
+						return returnable;
+					}
+					final MOB M=(MOB)E;
+					String value=null;
+					if(!M.hasFaction(F.factionID()))
+						value="";
+					else
+					{
+						final int myfac=M.fetchFaction(F.factionID());
+						if(CMath.isNumber(arg2.trim()))
+							value=Integer.toString(myfac);
+						else
+						{
+							final Faction.FRange FR=CMLib.factions().getRange(F.factionID(),myfac);
+							if(FR==null)
+								value="";
+							else
+								value=FR.name();
+						}
+					}
+					if(lastKnownLocation!=null)
+						returnable=simpleEval(scripted,value,arg2,cmp,"FACTION");
+					break;
+				}
+				case 46: // numitemsroom
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					int ct=0;
+					if(lastKnownLocation!=null)
+					{
+						for(int i=0;i<lastKnownLocation.numItems();i++)
+						{
+							final Item I=lastKnownLocation.getItem(i);
+							if((I!=null)&&(I.container()==null))
+								ct++;
+						}
+					}
+					returnable=simpleEval(scripted,""+ct,arg2,arg1,"NUMITEMSROOM");
+					break;
+				}
+				case 47: //mobitem
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					MOB M=null;
+					if(lastKnownLocation!=null)
+					{
+						if(CMath.isInteger(arg1.trim()))
+							M=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+						else
+							M=lastKnownLocation.fetchInhabitant(arg1.trim());
+					}
+					Item which=null;
+					int ct=1;
+					if(M!=null)
+					{
+						for(int i=0;i<M.numItems();i++)
+						{
+							final Item I=M.getItem(i);
+							if((I!=null)&&(I.container()==null))
+							{
 								if(ct==CMath.s_int(arg2.trim()))
 								{
-									which = E;
+									which = I;
 									break;
 								}
 								ct++;
@@ -4719,845 +4538,876 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(which==null)
 						returnable=false;
 					else
-					{
 						returnable=(CMLib.english().containsString(which.name(),arg3)
 									||CMLib.english().containsString(which.Name(),arg3)
 									||CMLib.english().containsString(which.displayText(),arg3));
-						if(returnable)
-							setShopPrice(shopHere,which,tmp);
-					}
+					break;
 				}
-				else
-					returnable=false;
-				break;
-			}
-			case 102: // shophas
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				PhysicalAgent where=null;
-				if(lastKnownLocation!=null)
+				case 49: // hastattoo
 				{
-					if(CMath.isInteger(arg1.trim()))
-						where=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
-					else
-						where=lastKnownLocation.fetchInhabitant(arg1.trim());
-					if(where == null)
-						where=this.getArgumentItem(tt[t+0], source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
-					if(where == null)
-						where=this.getArgumentMOB(tt[t+0], source, monster, target, primaryItem, secondaryItem, msg, tmp);
-				}
-				returnable=false;
-				if(where!=null)
-				{
-					ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(where);
-					if((shopHere == null)&&(scripted instanceof Item))
-						shopHere=CMLib.coffeeShops().getShopKeeper(((Item)where).owner());
-					if((shopHere == null)&&(scripted instanceof MOB))
-						shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)where).location());
-					if(shopHere == null)
-						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
-					if(shopHere!=null)
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if(arg2.length()==0)
 					{
-						final CoffeeShop shop = shopHere.getShop();
-						if(shop != null)
+						logError(scripted,"HASTATTOO","Syntax",funcParms);
+						break;
+					}
+					else
+					if((E!=null)&&(E instanceof MOB))
+						returnable=(((MOB)E).findTattoo(arg2)!=null);
+					else
+						returnable=false;
+					break;
+				}
+				case 109: // hastattootime
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final String cmp=tt[t+2];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if(arg2.length()==0)
+					{
+						logError(scripted,"HASTATTOO","Syntax",funcParms);
+						break;
+					}
+					else
+					if((E!=null)&&(E instanceof MOB))
+					{
+						final Tattoo T=((MOB)E).findTattoo(arg2);
+						if(T==null)
+							returnable=false;
+						else
+							returnable=simpleEval(scripted,""+T.getTickDown(),arg3,cmp,"ISTATTOOTIME");
+					}
+					else
+						returnable=false;
+					break;
+				}
+				case 99: // hasacctattoo
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if(arg2.length()==0)
+					{
+						logError(scripted,"HASACCTATTOO","Syntax",funcParms);
+						break;
+					}
+					else
+					if((E!=null)&&(E instanceof MOB)&&(((MOB)E).playerStats()!=null)&&(((MOB)E).playerStats().getAccount()!=null))
+						returnable=((MOB)E).playerStats().getAccount().findTattoo(arg2)!=null;
+					else
+						returnable=false;
+					break;
+				}
+				case 48: // numitemsmob
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					MOB which=null;
+					if(lastKnownLocation!=null)
+					{
+						if(CMath.isInteger(arg1.trim()))
+							which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+						else
+							which=lastKnownLocation.fetchInhabitant(arg1);
+					}
+					int ct=0;
+					if(which!=null)
+					{
+						for(int i=0;i<which.numItems();i++)
 						{
-							final Environmental E=shop.getStock(arg2.trim(), null);
-							returnable = (E!=null);
-							if(returnable)
-								setShopPrice(shopHere,E,tmp);
+							final Item I=which.getItem(i);
+							if((I!=null)&&(I.container()==null))
+								ct++;
 						}
 					}
+					returnable=simpleEval(scripted,""+ct,arg3,arg2,"NUMITEMSMOB");
+					break;
 				}
-				break;
-			}
-			case 43: // roommob
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				Environmental which=null;
-				if(lastKnownLocation!=null)
+				case 101: // numitemsshop
 				{
-					if(CMath.isInteger(arg1.trim()))
-						which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
-					else
-						which=lastKnownLocation.fetchInhabitant(arg1.trim());
-				}
-				if(which==null)
-					returnable=false;
-				else
-					returnable=(CMLib.english().containsString(which.name(),arg2)
-								||CMLib.english().containsString(which.Name(),arg2)
-								||CMLib.english().containsString(which.displayText(),arg2));
-				break;
-			}
-			case 44: // roomitem
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				Environmental which=null;
-				int ct=1;
-				if(lastKnownLocation!=null)
-				for(int i=0;i<lastKnownLocation.numItems();i++)
-				{
-					final Item I=lastKnownLocation.getItem(i);
-					if((I!=null)&&(I.container()==null))
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					PhysicalAgent which=null;
+					if(lastKnownLocation!=null)
 					{
-						if(ct==CMath.s_int(arg1.trim()))
+						if(CMath.isInteger(arg1.trim()))
+							which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+						else
+							which=lastKnownLocation.fetchInhabitant(arg1);
+						if(which == null)
+							which=this.getArgumentItem(tt[t+0], source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+						if(which == null)
+							which=this.getArgumentMOB(tt[t+0], source, monster, target, primaryItem, secondaryItem, msg, tmp);
+					}
+					int ct=0;
+					if(which!=null)
+					{
+						ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(which);
+						if((shopHere == null)&&(scripted instanceof Item))
+							shopHere=CMLib.coffeeShops().getShopKeeper(((Item)which).owner());
+						if((shopHere == null)&&(scripted instanceof MOB))
+							shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)which).location());
+						if(shopHere == null)
+							shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+						if(shopHere!=null)
 						{
-							which = I;
+							final CoffeeShop shop = shopHere.getShop();
+							if(shop != null)
+							{
+								for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
+								{
+									ct++;
+								}
+							}
+						}
+					}
+					returnable=simpleEval(scripted,""+ct,arg3,arg2,"NUMITEMSSHOP");
+					break;
+				}
+				case 100: // shopitem
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					PhysicalAgent where=null;
+					if(lastKnownLocation!=null)
+					{
+						if(CMath.isInteger(arg1.trim()))
+							where=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+						else
+							where=lastKnownLocation.fetchInhabitant(arg1.trim());
+						if(where == null)
+							where=this.getArgumentItem(tt[t+0], source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+						if(where == null)
+							where=this.getArgumentMOB(tt[t+0], source, monster, target, primaryItem, secondaryItem, msg, tmp);
+					}
+					Environmental which=null;
+					int ct=1;
+					if(where!=null)
+					{
+						ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(where);
+						if((shopHere == null)&&(scripted instanceof Item))
+							shopHere=CMLib.coffeeShops().getShopKeeper(((Item)where).owner());
+						if((shopHere == null)&&(scripted instanceof MOB))
+							shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)where).location());
+						if(shopHere == null)
+							shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+						if(shopHere!=null)
+						{
+							final CoffeeShop shop = shopHere.getShop();
+							if(shop != null)
+							{
+								for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+								{
+									final Environmental E=i.next();
+									if(ct==CMath.s_int(arg2.trim()))
+									{
+										which = E;
+										break;
+									}
+									ct++;
+								}
+							}
+						}
+						if(which==null)
+							returnable=false;
+						else
+						{
+							returnable=(CMLib.english().containsString(which.name(),arg3)
+										||CMLib.english().containsString(which.Name(),arg3)
+										||CMLib.english().containsString(which.displayText(),arg3));
+							if(returnable)
+								setShopPrice(shopHere,which,tmp);
+						}
+					}
+					else
+						returnable=false;
+					break;
+				}
+				case 102: // shophas
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					PhysicalAgent where=null;
+					if(lastKnownLocation!=null)
+					{
+						if(CMath.isInteger(arg1.trim()))
+							where=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+						else
+							where=lastKnownLocation.fetchInhabitant(arg1.trim());
+						if(where == null)
+							where=this.getArgumentItem(tt[t+0], source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+						if(where == null)
+							where=this.getArgumentMOB(tt[t+0], source, monster, target, primaryItem, secondaryItem, msg, tmp);
+					}
+					returnable=false;
+					if(where!=null)
+					{
+						ShopKeeper shopHere = CMLib.coffeeShops().getShopKeeper(where);
+						if((shopHere == null)&&(scripted instanceof Item))
+							shopHere=CMLib.coffeeShops().getShopKeeper(((Item)where).owner());
+						if((shopHere == null)&&(scripted instanceof MOB))
+							shopHere=CMLib.coffeeShops().getShopKeeper(((MOB)where).location());
+						if(shopHere == null)
+							shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
+						if(shopHere!=null)
+						{
+							final CoffeeShop shop = shopHere.getShop();
+							if(shop != null)
+							{
+								final Environmental E=shop.getStock(arg2.trim(), null);
+								returnable = (E!=null);
+								if(returnable)
+									setShopPrice(shopHere,E,tmp);
+							}
+						}
+					}
+					break;
+				}
+				case 43: // roommob
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					Environmental which=null;
+					if(lastKnownLocation!=null)
+					{
+						if(CMath.isInteger(arg1.trim()))
+							which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
+						else
+							which=lastKnownLocation.fetchInhabitant(arg1.trim());
+					}
+					if(which==null)
+						returnable=false;
+					else
+						returnable=(CMLib.english().containsString(which.name(),arg2)
+									||CMLib.english().containsString(which.Name(),arg2)
+									||CMLib.english().containsString(which.displayText(),arg2));
+					break;
+				}
+				case 44: // roomitem
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					Environmental which=null;
+					int ct=1;
+					if(lastKnownLocation!=null)
+					for(int i=0;i<lastKnownLocation.numItems();i++)
+					{
+						final Item I=lastKnownLocation.getItem(i);
+						if((I!=null)&&(I.container()==null))
+						{
+							if(ct==CMath.s_int(arg1.trim()))
+							{
+								which = I;
+								break;
+							}
+							ct++;
+						}
+					}
+					if(which==null)
+						returnable=false;
+					else
+						returnable=(CMLib.english().containsString(which.name(),arg2)
+									||CMLib.english().containsString(which.Name(),arg2)
+									||CMLib.english().containsString(which.displayText(),arg2));
+					break;
+				}
+				case 36: // ishere
+				{
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+					if((arg1.length()>0)&&(lastKnownLocation!=null))
+						returnable=((lastKnownLocation.findItem(arg1)!=null)||(lastKnownLocation.fetchInhabitant(arg1)!=null));
+					else
+						returnable=false;
+					break;
+				}
+				case 17: // inroom
+				{
+					if(tlen==1)
+						tt=parseSpecial3PartEval(eval,t);
+					String comp="==";
+					Environmental E=monster;
+					String arg2;
+					if(signH.containsKey(tt[t+1]))
+					{
+						E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+						comp=tt[t+1];
+						arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					}
+					else
+						arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					Room R=null;
+					if(arg2.startsWith("$"))
+						R=CMLib.map().roomLocation(this.getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
+					if(R==null)
+						R=getRoom(arg2,lastKnownLocation);
+					if(E==null)
+						returnable=false;
+					else
+					{
+						final Room R2=CMLib.map().roomLocation(E);
+						if((R==null)&&((arg2.length()==0)||(R2==null)))
+							returnable=true;
+						else
+						if((R==null)||(R2==null))
+							returnable=false;
+						else
+							returnable=simpleEvalStr(scripted,CMLib.map().getExtendedRoomID(R2),CMLib.map().getExtendedRoomID(R),comp,"INROOM");
+					}
+					break;
+				}
+				case 90: // inarea
+				{
+					if(tlen==1)
+						tt=parseSpecial3PartEval(eval,t);
+					String comp="==";
+					Environmental E=monster;
+					String arg3;
+					if(signH.containsKey(tt[t+1]))
+					{
+						E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+						comp=tt[t+1];
+						arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					}
+					else
+						arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					Room R=null;
+					if(arg3.startsWith("$"))
+						R=CMLib.map().roomLocation(this.getArgumentItem(arg3,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
+					if(R==null)
+					{
+						try
+						{
+							final String lnAstr=(lastKnownLocation!=null)?lastKnownLocation.getArea().Name():null;
+							if((lnAstr!=null)&&(lnAstr.equalsIgnoreCase(arg3)))
+								R=lastKnownLocation;
+							if(R==null)
+							{
+								for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+								{
+									final Area A=a.nextElement();
+									if((A!=null)&&(A.Name().equalsIgnoreCase(arg3)))
+									{
+										if((lnAstr!=null)
+										&&(lnAstr.equals(A.Name())))
+											R=lastKnownLocation;
+										else
+										if(!A.isProperlyEmpty())
+											R=A.getRandomProperRoom();
+									}
+								}
+							}
+							if(R==null)
+							{
+								for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+								{
+									final Area A=a.nextElement();
+									if((A!=null)&&(CMLib.english().containsString(A.Name(),arg3)))
+									{
+										if((lnAstr!=null)
+										&&(lnAstr.equals(A.Name())))
+											R=lastKnownLocation;
+										else
+										if(!A.isProperlyEmpty())
+											R=A.getRandomProperRoom();
+									}
+								}
+							}
+						}
+						catch (final NoSuchElementException nse)
+						{
+						}
+					}
+					if(R==null)
+						R=getRoom(arg3,lastKnownLocation);
+					if((R!=null)
+					&&(CMath.bset(R.getArea().flags(),Area.FLAG_INSTANCE_PARENT))
+					&&(lastKnownLocation!=null)
+					&&(lastKnownLocation.getArea()!=R.getArea())
+					&&(CMath.bset(lastKnownLocation.getArea().flags(),Area.FLAG_INSTANCE_CHILD))
+					&&(CMLib.map().getModelArea(lastKnownLocation.getArea())==R.getArea()))
+						R=lastKnownLocation;
+
+					if(E==null)
+						returnable=false;
+					else
+					{
+						final Room R2=CMLib.map().roomLocation(E);
+						if((R==null)&&((arg3.length()==0)||(R2==null)))
+							returnable=true;
+						else
+						if((R==null)||(R2==null))
+							returnable=false;
+						else
+							returnable=simpleEvalStr(scripted,R2.getArea().Name(),R.getArea().Name(),comp,"INAREA");
+					}
+					break;
+				}
+				case 89: // isrecall
+				{
+					if(tlen==1)
+						tt=parseSpecial3PartEval(eval,t);
+					String comp="==";
+					Environmental E=monster;
+					String arg2;
+					if(signH.containsKey(tt[t+1]))
+					{
+						E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+						comp=tt[t+1];
+						arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					}
+					else
+						arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					Room R=null;
+					if(arg2.startsWith("$"))
+						R=CMLib.map().getStartRoom(this.getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
+					if(R==null)
+						R=getRoom(arg2,lastKnownLocation);
+					if(E==null)
+						returnable=false;
+					else
+					{
+						final Room R2=CMLib.map().getStartRoom(E);
+						if((R==null)&&((arg2.length()==0)||(R2==null)))
+							returnable=true;
+						else
+						if((R==null)||(R2==null))
+							returnable=false;
+						else
+							returnable=simpleEvalStr(scripted,CMLib.map().getExtendedRoomID(R2),CMLib.map().getExtendedRoomID(R),comp,"ISRECALL");
+					}
+					break;
+				}
+				case 37: // inlocale
+				{
+					if(tlen==1)
+					{
+						if(CMParms.numBits(funcParms)>1)
+							tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+						else
+						{
+							final int numBits=2;
+							String[] parsed=null;
+							if(CMParms.cleanBit(funcParms).equals(funcParms))
+								parsed=parseBits("'"+funcParms+"'"+CMStrings.repeat(" .",numBits-1),"cr");
+							else
+								parsed=parseBits(funcParms+CMStrings.repeat(" .",numBits-1),"cr");
+							tt=insertStringArray(tt,parsed,t);
+							eval[0]=tt;
+						}
+					}
+					String arg2=null;
+					Environmental E=monster;
+					if(tt[t+1].equals("."))
+						arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					else
+					{
+						E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+						arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					}
+					if(E==null)
+						returnable=false;
+					else
+					if(arg2.length()==0)
+						returnable=true;
+					else
+					{
+						final Room R=CMLib.map().roomLocation(E);
+						if(R==null)
+							returnable=false;
+						else
+						if(CMClass.classID(R).toUpperCase().indexOf(arg2.toUpperCase())>=0)
+							returnable=true;
+						else
+							returnable=false;
+					}
+					break;
+				}
+				case 18: // sex
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"CcR"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=tt[t+1];
+					String arg3=tt[t+2];
+					if(CMath.isNumber(arg3.trim()))
+					{
+						switch(CMath.s_int(arg3.trim()))
+						{
+						case 0:
+							arg3 = "NEUTER";
+							break;
+						case 1:
+							arg3 = "MALE";
+							break;
+						case 2:
+							arg3 = "FEMALE";
 							break;
 						}
-						ct++;
 					}
-				}
-				if(which==null)
-					returnable=false;
-				else
-					returnable=(CMLib.english().containsString(which.name(),arg2)
-								||CMLib.english().containsString(which.Name(),arg2)
-								||CMLib.english().containsString(which.displayText(),arg2));
-				break;
-			}
-			case 36: // ishere
-			{
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-				if((arg1.length()>0)&&(lastKnownLocation!=null))
-					returnable=((lastKnownLocation.findItem(arg1)!=null)||(lastKnownLocation.fetchInhabitant(arg1)!=null));
-				else
-					returnable=false;
-				break;
-			}
-			case 17: // inroom
-			{
-				if(tlen==1)
-					tt=parseSpecial3PartEval(eval,t);
-				String comp="==";
-				Environmental E=monster;
-				String arg2;
-				if(signH.containsKey(tt[t+1]))
-				{
-					E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-					comp=tt[t+1];
-					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				}
-				else
-					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				Room R=null;
-				if(arg2.startsWith("$"))
-					R=CMLib.map().roomLocation(this.getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
-				if(R==null)
-					R=getRoom(arg2,lastKnownLocation);
-				if(E==null)
-					returnable=false;
-				else
-				{
-					final Room R2=CMLib.map().roomLocation(E);
-					if((R==null)&&((arg2.length()==0)||(R2==null)))
-						returnable=true;
-					else
-					if((R==null)||(R2==null))
-						returnable=false;
-					else
-						returnable=simpleEvalStr(scripted,CMLib.map().getExtendedRoomID(R2),CMLib.map().getExtendedRoomID(R),comp,"INROOM");
-				}
-				break;
-			}
-			case 90: // inarea
-			{
-				if(tlen==1)
-					tt=parseSpecial3PartEval(eval,t);
-				String comp="==";
-				Environmental E=monster;
-				String arg3;
-				if(signH.containsKey(tt[t+1]))
-				{
-					E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-					comp=tt[t+1];
-					arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				}
-				else
-					arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				Room R=null;
-				if(arg3.startsWith("$"))
-					R=CMLib.map().roomLocation(this.getArgumentItem(arg3,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
-				if(R==null)
-				{
-					try
-					{
-						final String lnAstr=(lastKnownLocation!=null)?lastKnownLocation.getArea().Name():null;
-						if((lnAstr!=null)&&(lnAstr.equalsIgnoreCase(arg3)))
-							R=lastKnownLocation;
-						if(R==null)
-						{
-							for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
-							{
-								final Area A=a.nextElement();
-								if((A!=null)&&(A.Name().equalsIgnoreCase(arg3)))
-								{
-									if((lnAstr!=null)
-									&&(lnAstr.equals(A.Name())))
-										R=lastKnownLocation;
-									else
-									if(!A.isProperlyEmpty())
-										R=A.getRandomProperRoom();
-								}
-							}
-						}
-						if(R==null)
-						{
-							for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
-							{
-								final Area A=a.nextElement();
-								if((A!=null)&&(CMLib.english().containsString(A.Name(),arg3)))
-								{
-									if((lnAstr!=null)
-									&&(lnAstr.equals(A.Name())))
-										R=lastKnownLocation;
-									else
-									if(!A.isProperlyEmpty())
-										R=A.getRandomProperRoom();
-								}
-							}
-						}
-					}
-					catch (final NoSuchElementException nse)
-					{
-					}
-				}
-				if(R==null)
-					R=getRoom(arg3,lastKnownLocation);
-				if((R!=null)
-				&&(CMath.bset(R.getArea().flags(),Area.FLAG_INSTANCE_PARENT))
-				&&(lastKnownLocation!=null)
-				&&(lastKnownLocation.getArea()!=R.getArea())
-				&&(CMath.bset(lastKnownLocation.getArea().flags(),Area.FLAG_INSTANCE_CHILD))
-				&&(CMLib.map().getModelArea(lastKnownLocation.getArea())==R.getArea()))
-					R=lastKnownLocation;
-
-				if(E==null)
-					returnable=false;
-				else
-				{
-					final Room R2=CMLib.map().roomLocation(E);
-					if((R==null)&&((arg3.length()==0)||(R2==null)))
-						returnable=true;
-					else
-					if((R==null)||(R2==null))
-						returnable=false;
-					else
-						returnable=simpleEvalStr(scripted,R2.getArea().Name(),R.getArea().Name(),comp,"INAREA");
-				}
-				break;
-			}
-			case 89: // isrecall
-			{
-				if(tlen==1)
-					tt=parseSpecial3PartEval(eval,t);
-				String comp="==";
-				Environmental E=monster;
-				String arg2;
-				if(signH.containsKey(tt[t+1]))
-				{
-					E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-					comp=tt[t+1];
-					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				}
-				else
-					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				Room R=null;
-				if(arg2.startsWith("$"))
-					R=CMLib.map().getStartRoom(this.getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
-				if(R==null)
-					R=getRoom(arg2,lastKnownLocation);
-				if(E==null)
-					returnable=false;
-				else
-				{
-					final Room R2=CMLib.map().getStartRoom(E);
-					if((R==null)&&((arg2.length()==0)||(R2==null)))
-						returnable=true;
-					else
-					if((R==null)||(R2==null))
-						returnable=false;
-					else
-						returnable=simpleEvalStr(scripted,CMLib.map().getExtendedRoomID(R2),CMLib.map().getExtendedRoomID(R),comp,"ISRECALL");
-				}
-				break;
-			}
-			case 37: // inlocale
-			{
-				if(tlen==1)
-				{
-					if(CMParms.numBits(funcParms)>1)
-						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-					else
-					{
-						final int numBits=2;
-						String[] parsed=null;
-						if(CMParms.cleanBit(funcParms).equals(funcParms))
-							parsed=parseBits("'"+funcParms+"'"+CMStrings.repeat(" .",numBits-1),"cr");
-						else
-							parsed=parseBits(funcParms+CMStrings.repeat(" .",numBits-1),"cr");
-						tt=insertStringArray(tt,parsed,t);
-						eval[0]=tt;
-					}
-				}
-				String arg2=null;
-				Environmental E=monster;
-				if(tt[t+1].equals("."))
-					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				else
-				{
-					E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				}
-				if(E==null)
-					returnable=false;
-				else
-				if(arg2.length()==0)
-					returnable=true;
-				else
-				{
-					final Room R=CMLib.map().roomLocation(E);
-					if(R==null)
-						returnable=false;
-					else
-					if(CMClass.classID(R).toUpperCase().indexOf(arg2.toUpperCase())>=0)
-						returnable=true;
-					else
-						returnable=false;
-				}
-				break;
-			}
-			case 18: // sex
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"CcR"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=tt[t+1];
-				String arg3=tt[t+2];
-				if(CMath.isNumber(arg3.trim()))
-				{
-					switch(CMath.s_int(arg3.trim()))
-					{
-					case 0:
-						arg3 = "NEUTER";
-						break;
-					case 1:
-						arg3 = "MALE";
-						break;
-					case 2:
-						arg3 = "FEMALE";
-						break;
-					}
-				}
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"SEX","Syntax",funcParms);
-					return returnable;
-				}
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				{
-					final String sex=(""+((char)((MOB)E).charStats().getStat(CharStats.STAT_GENDER))).toUpperCase();
-					if(arg2.equals("=="))
-						returnable=arg3.startsWith(sex);
-					else
-					if(arg2.equals("!="))
-						returnable=!arg3.startsWith(sex);
-					else
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
 					{
 						logError(scripted,"SEX","Syntax",funcParms);
 						return returnable;
 					}
-				}
-				break;
-			}
-			case 91: // datetime
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"Ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=tt[t+2];
-				final int index=CMParms.indexOf(ScriptingEngine.DATETIME_ARGS,arg1.trim());
-				if(index<0)
-					logError(scripted,"DATETIME","Syntax","Unknown arg: "+arg1+" for "+scripted.name());
-				else
-				if(CMLib.map().areaLocation(scripted)!=null)
-				{
-					String val=null;
-					switch(index)
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
+					else
 					{
-					case 2:
-						val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth();
-						break;
-					case 3:
-						val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth();
-						break;
-					case 4:
-						val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getMonth();
-						break;
-					case 5:
-						val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getYear();
-						break;
-					default:
-						val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getHourOfDay();
-						break;
+						final String sex=(""+((char)((MOB)E).charStats().getStat(CharStats.STAT_GENDER))).toUpperCase();
+						if(arg2.equals("=="))
+							returnable=arg3.startsWith(sex);
+						else
+						if(arg2.equals("!="))
+							returnable=!arg3.startsWith(sex);
+						else
+						{
+							logError(scripted,"SEX","Syntax",funcParms);
+							return returnable;
+						}
 					}
-					returnable=simpleEval(scripted,val,arg3,arg2,"DATETIME");
-				}
-				break;
-			}
-			case 13: // stat
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=tt[t+2];
-				final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"STAT","Syntax",funcParms);
 					break;
 				}
-				if(E==null)
-					returnable=false;
-				else
+				case 91: // datetime
 				{
-					final String val=getStatValue(E,arg2);
-					if(val==null)
+					if(tlen==1)
+						tt=parseBits(eval,t,"Ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=tt[t+2];
+					final int index=CMParms.indexOf(ScriptingEngine.DATETIME_ARGS,arg1.trim());
+					if(index<0)
+						logError(scripted,"DATETIME","Syntax","Unknown arg: "+arg1+" for "+scripted.name());
+					else
+					if(CMLib.map().areaLocation(scripted)!=null)
 					{
-						logError(scripted,"STAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
-						break;
+						String val=null;
+						switch(index)
+						{
+						case 2:
+							val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth();
+							break;
+						case 3:
+							val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth();
+							break;
+						case 4:
+							val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getMonth();
+							break;
+						case 5:
+							val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getYear();
+							break;
+						default:
+							val = "" + CMLib.map().areaLocation(scripted).getTimeObj().getHourOfDay();
+							break;
+						}
+						returnable=simpleEval(scripted,val,arg3,arg2,"DATETIME");
 					}
-
-					if(arg3.equals("=="))
-						returnable=val.equalsIgnoreCase(arg4);
-					else
-					if(arg3.equals("!="))
-						returnable=!val.equalsIgnoreCase(arg4);
-					else
-						returnable=simpleEval(scripted,val,arg4,arg3,"STAT");
-				}
-				break;
-			}
-			case 52: // gstat
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=tt[t+2];
-				final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"GSTAT","Syntax",funcParms);
 					break;
 				}
-				if(E==null)
-					returnable=false;
-				else
+				case 13: // stat
 				{
-					final String val=getGStatValue(E,arg2);
-					if(val==null)
+					if(tlen==1)
+						tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=tt[t+2];
+					final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
 					{
-						logError(scripted,"GSTAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
+						logError(scripted,"STAT","Syntax",funcParms);
 						break;
 					}
+					if(E==null)
+						returnable=false;
+					else
+					{
+						final String val=getStatValue(E,arg2);
+						if(val==null)
+						{
+							logError(scripted,"STAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
+							break;
+						}
 
-					if(arg3.equals("=="))
-						returnable=val.equalsIgnoreCase(arg4);
-					else
-					if(arg3.equals("!="))
-						returnable=!val.equalsIgnoreCase(arg4);
-					else
-						returnable=simpleEval(scripted,val,arg4,arg3,"GSTAT");
+						if(arg3.equals("=="))
+							returnable=val.equalsIgnoreCase(arg4);
+						else
+						if(arg3.equals("!="))
+							returnable=!val.equalsIgnoreCase(arg4);
+						else
+							returnable=simpleEval(scripted,val,arg4,arg3,"STAT");
+					}
+					break;
 				}
-				break;
-			}
-			case 19: // position
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=tt[t+2];
-				final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
+				case 52: // gstat
 				{
-					logError(scripted,"POSITION","Syntax",funcParms);
-					return returnable;
+					if(tlen==1)
+						tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=tt[t+2];
+					final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
+					{
+						logError(scripted,"GSTAT","Syntax",funcParms);
+						break;
+					}
+					if(E==null)
+						returnable=false;
+					else
+					{
+						final String val=getGStatValue(E,arg2);
+						if(val==null)
+						{
+							logError(scripted,"GSTAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
+							break;
+						}
+
+						if(arg3.equals("=="))
+							returnable=val.equalsIgnoreCase(arg4);
+						else
+						if(arg3.equals("!="))
+							returnable=!val.equalsIgnoreCase(arg4);
+						else
+							returnable=simpleEval(scripted,val,arg4,arg3,"GSTAT");
+					}
+					break;
 				}
-				if(P==null)
-					returnable=false;
-				else
+				case 19: // position
 				{
-					String sex="STANDING";
-					if(CMLib.flags().isSleeping(P))
-						sex="SLEEPING";
-					else
-					if(CMLib.flags().isSitting(P))
-						sex="SITTING";
-					if(arg2.equals("=="))
-						returnable=sex.startsWith(arg3);
-					else
-					if(arg2.equals("!="))
-						returnable=!sex.startsWith(arg3);
-					else
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=tt[t+2];
+					final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
 					{
 						logError(scripted,"POSITION","Syntax",funcParms);
 						return returnable;
 					}
-				}
-				break;
-			}
-			case 20: // level
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"LEVEL","Syntax",funcParms);
-					return returnable;
-				}
-				if(P==null)
-					returnable=false;
-				else
-				{
-					final int val1=P.phyStats().level();
-					returnable=simpleEval(scripted,""+val1,arg3,arg2,"LEVEL");
-				}
-				break;
-			}
-			case 80: // questpoints
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"QUESTPOINTS","Syntax",funcParms);
-					return returnable;
-				}
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				{
-					final int val1=((MOB)E).getQuestPoint();
-					returnable=simpleEval(scripted,""+val1,arg3,arg2,"QUESTPOINTS");
-				}
-				break;
-			}
-			case 83: // qvar
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final String arg3=tt[t+2];
-				final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
-				final Quest Q=getQuest(arg1);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"QVAR","Syntax",funcParms);
-					return returnable;
-				}
-				if(Q==null)
-					returnable=false;
-				else
-					returnable=simpleEvalStr(scripted,Q.getStat(arg2),arg4,arg3,"QVAR");
-				break;
-			}
-			case 84: // math
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				if(!CMath.isMathExpression(arg1))
-				{
-					logError(scripted,"MATH","Syntax",funcParms);
-					return returnable;
-				}
-				if(!CMath.isMathExpression(arg3))
-				{
-					logError(scripted,"MATH","Syntax",funcParms);
-					return returnable;
-				}
-				returnable=simpleExpressionEval(scripted,arg1,arg3,arg2,"MATH");
-				break;
-			}
-			case 81: // trains
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"TRAINS","Syntax",funcParms);
-					return returnable;
-				}
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				{
-					final int val1=((MOB)E).getTrains();
-					returnable=simpleEval(scripted,""+val1,arg3,arg2,"TRAINS");
-				}
-				break;
-			}
-			case 82: // pracs
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"PRACS","Syntax",funcParms);
-					return returnable;
-				}
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				{
-					final int val1=((MOB)E).getPractices();
-					returnable=simpleEval(scripted,""+val1,arg3,arg2,"PRACS");
-				}
-				break;
-			}
-			case 66: // clanrank
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"CLANRANK","Syntax",funcParms);
-					return returnable;
-				}
-				if(!(E instanceof MOB))
-					returnable=false;
-				else
-				{
-					int val1=-1;
-					Clan C=CMLib.clans().findRivalrousClan((MOB)E);
-					if(C==null)
-						C=((MOB)E).clans().iterator().hasNext()?((MOB)E).clans().iterator().next().first:null;
-					if(C!=null)
-						val1=((MOB)E).getClanRole(C.clanID()).second.intValue();
-					returnable=simpleEval(scripted,""+val1,arg3,arg2,"CLANRANK");
-				}
-				break;
-			}
-			case 64: // deity
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if(arg2.length()==0)
-				{
-					logError(scripted,"DEITY","Syntax",funcParms);
-					return returnable;
-				}
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				{
-					final String sex=((MOB)E).getWorshipCharID();
-					if(arg2.equals("=="))
-						returnable=sex.equalsIgnoreCase(arg3);
+					if(P==null)
+						returnable=false;
 					else
-					if(arg2.equals("!="))
-						returnable=!sex.equalsIgnoreCase(arg3);
+					{
+						String sex="STANDING";
+						if(CMLib.flags().isSleeping(P))
+							sex="SLEEPING";
+						else
+						if(CMLib.flags().isSitting(P))
+							sex="SITTING";
+						if(arg2.equals("=="))
+							returnable=sex.startsWith(arg3);
+						else
+						if(arg2.equals("!="))
+							returnable=!sex.startsWith(arg3);
+						else
+						{
+							logError(scripted,"POSITION","Syntax",funcParms);
+							return returnable;
+						}
+					}
+					break;
+				}
+				case 20: // level
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
+					{
+						logError(scripted,"LEVEL","Syntax",funcParms);
+						return returnable;
+					}
+					if(P==null)
+						returnable=false;
 					else
+					{
+						final int val1=P.phyStats().level();
+						returnable=simpleEval(scripted,""+val1,arg3,arg2,"LEVEL");
+					}
+					break;
+				}
+				case 80: // questpoints
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
+					{
+						logError(scripted,"QUESTPOINTS","Syntax",funcParms);
+						return returnable;
+					}
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
+					else
+					{
+						final int val1=((MOB)E).getQuestPoint();
+						returnable=simpleEval(scripted,""+val1,arg3,arg2,"QUESTPOINTS");
+					}
+					break;
+				}
+				case 83: // qvar
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final String arg3=tt[t+2];
+					final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
+					final Quest Q=getQuest(arg1);
+					if((arg2.length()==0)||(arg3.length()==0))
+					{
+						logError(scripted,"QVAR","Syntax",funcParms);
+						return returnable;
+					}
+					if(Q==null)
+						returnable=false;
+					else
+						returnable=simpleEvalStr(scripted,Q.getStat(arg2),arg4,arg3,"QVAR");
+					break;
+				}
+				case 84: // math
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					if(!CMath.isMathExpression(arg1))
+					{
+						logError(scripted,"MATH","Syntax",funcParms);
+						return returnable;
+					}
+					if(!CMath.isMathExpression(arg3))
+					{
+						logError(scripted,"MATH","Syntax",funcParms);
+						return returnable;
+					}
+					returnable=simpleExpressionEval(scripted,arg1,arg3,arg2,"MATH");
+					break;
+				}
+				case 81: // trains
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
+					{
+						logError(scripted,"TRAINS","Syntax",funcParms);
+						return returnable;
+					}
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
+					else
+					{
+						final int val1=((MOB)E).getTrains();
+						returnable=simpleEval(scripted,""+val1,arg3,arg2,"TRAINS");
+					}
+					break;
+				}
+				case 82: // pracs
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
+					{
+						logError(scripted,"PRACS","Syntax",funcParms);
+						return returnable;
+					}
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
+					else
+					{
+						final int val1=((MOB)E).getPractices();
+						returnable=simpleEval(scripted,""+val1,arg3,arg2,"PRACS");
+					}
+					break;
+				}
+				case 66: // clanrank
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
+					{
+						logError(scripted,"CLANRANK","Syntax",funcParms);
+						return returnable;
+					}
+					if(!(E instanceof MOB))
+						returnable=false;
+					else
+					{
+						int val1=-1;
+						Clan C=CMLib.clans().findRivalrousClan((MOB)E);
+						if(C==null)
+							C=((MOB)E).clans().iterator().hasNext()?((MOB)E).clans().iterator().next().first:null;
+						if(C!=null)
+							val1=((MOB)E).getClanRole(C.clanID()).second.intValue();
+						returnable=simpleEval(scripted,""+val1,arg3,arg2,"CLANRANK");
+					}
+					break;
+				}
+				case 64: // deity
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if(arg2.length()==0)
 					{
 						logError(scripted,"DEITY","Syntax",funcParms);
 						return returnable;
 					}
-				}
-				break;
-			}
-			case 68: // clandata
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cccR"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=tt[t+2];
-				final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"CLANDATA","Syntax",funcParms);
-					return returnable;
-				}
-				String clanID=null;
-				if((E!=null)&&(E instanceof MOB))
-				{
-					Clan C=CMLib.clans().findRivalrousClan((MOB)E);
-					if(C==null)
-						C=((MOB)E).clans().iterator().hasNext()?((MOB)E).clans().iterator().next().first:null;
-					if(C!=null)
-						clanID=C.clanID();
-				}
-				else
-				{
-					clanID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1);
-					if((scripted instanceof MOB)
-					&&(CMLib.clans().getClanAnyHost(clanID)==null))
-					{
-						final List<Pair<Clan,Integer>> Cs=CMLib.clans().getClansByCategory((MOB)scripted, clanID);
-						if((Cs!=null)&&(Cs.size()>0))
-							clanID=Cs.get(0).first.clanID();
-					}
-				}
-				final Clan C=CMLib.clans().findClan(clanID);
-				if(C!=null)
-				{
-					if(!C.isStat(arg2))
-						logError(scripted,"CLANDATA","RunTime",arg2+" is not a valid clan variable.");
-					else
-					{
-						final String whichVal=C.getStat(arg2).trim();
-						if(CMath.isNumber(whichVal)&&CMath.isNumber(arg4.trim()))
-							returnable=simpleEval(scripted,whichVal,arg4,arg3,"CLANDATA");
-						else
-							returnable=simpleEvalStr(scripted,whichVal,arg4,arg3,"CLANDATA");
-					}
-				}
-				break;
-			}
-			case 98: // clanqualifies
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if(arg2.length()==0)
-				{
-					logError(scripted,"CLANQUALIFIES","Syntax",funcParms);
-					return returnable;
-				}
-				final Clan C=CMLib.clans().findClan(arg2);
-				if((C!=null)&&(E instanceof MOB))
-				{
-					final MOB mob=(MOB)E;
-					if(C.isOnlyFamilyApplicants()
-					&&(!CMLib.clans().isFamilyOfMembership(mob,C.getMemberList())))
+					if((E==null)||(!(E instanceof MOB)))
 						returnable=false;
 					else
-					if(CMLib.clans().getClansByCategory(mob, C.getCategory()).size()>CMProps.getMaxClansThisCategory(C.getCategory()))
-						returnable=false;
-					if(returnable && (!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true)))
-						returnable=false;
-					else
-					if(returnable && (CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob,true)))
-						returnable=false;
-				}
-				else
-				{
-					logError(scripted,"CLANQUALIFIES","Unknown clan "+arg2+" or "+arg1+" is not a mob",funcParms);
-					return returnable;
-				}
-				break;
-			}
-			case 65: // clan
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if(arg2.length()==0)
-				{
-					logError(scripted,"CLAN","Syntax",funcParms);
-					return returnable;
-				}
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				{
-					String clanID="";
-					Clan C=CMLib.clans().findRivalrousClan((MOB)E);
-					if(C==null)
-						C=((MOB)E).clans().iterator().hasNext()?((MOB)E).clans().iterator().next().first:null;
-					if(C!=null)
-						clanID=C.clanID();
-					if(arg2.equals("=="))
-						returnable=clanID.equalsIgnoreCase(arg3);
-					else
-					if(arg2.equals("!="))
-						returnable=!clanID.equalsIgnoreCase(arg3);
-					else
-					if(arg2.equals("in"))
-						returnable=((MOB)E).getClanRole(arg3)!=null;
-					else
-					if(arg2.equals("notin"))
-						returnable=((MOB)E).getClanRole(arg3)==null;
-					else
 					{
-						logError(scripted,"CLAN","Syntax",funcParms);
-						return returnable;
-					}
-				}
-				break;
-			}
-			case 88: // mood
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Physical P=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if(arg2.length()==0)
-				{
-					logError(scripted,"MOOD","Syntax",funcParms);
-					return returnable;
-				}
-				if((P==null)||(!(P instanceof MOB)))
-					returnable=false;
-				else
-				{
-					final Ability moodA=P.fetchEffect("Mood");
-					if(moodA!=null)
-					{
-						final String sex=moodA.text();
+						final String sex=((MOB)E).getWorshipCharID();
 						if(arg2.equals("=="))
 							returnable=sex.equalsIgnoreCase(arg3);
 						else
@@ -5565,514 +5415,677 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							returnable=!sex.equalsIgnoreCase(arg3);
 						else
 						{
-							logError(scripted,"MOOD","Syntax",funcParms);
+							logError(scripted,"DEITY","Syntax",funcParms);
 							return returnable;
 						}
 					}
+					break;
 				}
-				break;
-			}
-			case 21: // class
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
+				case 68: // clandata
 				{
-					logError(scripted,"CLASS","Syntax",funcParms);
-					return returnable;
+					if(tlen==1)
+						tt=parseBits(eval,t,"cccR"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=tt[t+2];
+					final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
+					{
+						logError(scripted,"CLANDATA","Syntax",funcParms);
+						return returnable;
+					}
+					String clanID=null;
+					if((E!=null)&&(E instanceof MOB))
+					{
+						Clan C=CMLib.clans().findRivalrousClan((MOB)E);
+						if(C==null)
+							C=((MOB)E).clans().iterator().hasNext()?((MOB)E).clans().iterator().next().first:null;
+						if(C!=null)
+							clanID=C.clanID();
+					}
+					else
+					{
+						clanID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1);
+						if((scripted instanceof MOB)
+						&&(CMLib.clans().getClanAnyHost(clanID)==null))
+						{
+							final List<Pair<Clan,Integer>> Cs=CMLib.clans().getClansByCategory((MOB)scripted, clanID);
+							if((Cs!=null)&&(Cs.size()>0))
+								clanID=Cs.get(0).first.clanID();
+						}
+					}
+					final Clan C=CMLib.clans().findClan(clanID);
+					if(C!=null)
+					{
+						if(!C.isStat(arg2))
+							logError(scripted,"CLANDATA","RunTime",arg2+" is not a valid clan variable.");
+						else
+						{
+							final String whichVal=C.getStat(arg2).trim();
+							if(CMath.isNumber(whichVal)&&CMath.isNumber(arg4.trim()))
+								returnable=simpleEval(scripted,whichVal,arg4,arg3,"CLANDATA");
+							else
+								returnable=simpleEvalStr(scripted,whichVal,arg4,arg3,"CLANDATA");
+						}
+					}
+					break;
 				}
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
+				case 98: // clanqualifies
 				{
-					final String sex=((MOB)E).charStats().displayClassName().toUpperCase();
-					if(arg2.equals("=="))
-						returnable=sex.startsWith(arg3);
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if(arg2.length()==0)
+					{
+						logError(scripted,"CLANQUALIFIES","Syntax",funcParms);
+						return returnable;
+					}
+					final Clan C=CMLib.clans().findClan(arg2);
+					if((C!=null)&&(E instanceof MOB))
+					{
+						final MOB mob=(MOB)E;
+						if(C.isOnlyFamilyApplicants()
+						&&(!CMLib.clans().isFamilyOfMembership(mob,C.getMemberList())))
+							returnable=false;
+						else
+						if(CMLib.clans().getClansByCategory(mob, C.getCategory()).size()>CMProps.getMaxClansThisCategory(C.getCategory()))
+							returnable=false;
+						if(returnable && (!CMLib.masking().maskCheck(C.getBasicRequirementMask(), mob, true)))
+							returnable=false;
+						else
+						if(returnable && (CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob,true)))
+							returnable=false;
+					}
 					else
-					if(arg2.equals("!="))
-						returnable=!sex.startsWith(arg3);
+					{
+						logError(scripted,"CLANQUALIFIES","Unknown clan "+arg2+" or "+arg1+" is not a mob",funcParms);
+						return returnable;
+					}
+					break;
+				}
+				case 65: // clan
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if(arg2.length()==0)
+					{
+						logError(scripted,"CLAN","Syntax",funcParms);
+						return returnable;
+					}
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
 					else
+					{
+						String clanID="";
+						Clan C=CMLib.clans().findRivalrousClan((MOB)E);
+						if(C==null)
+							C=((MOB)E).clans().iterator().hasNext()?((MOB)E).clans().iterator().next().first:null;
+						if(C!=null)
+							clanID=C.clanID();
+						if(arg2.equals("=="))
+							returnable=clanID.equalsIgnoreCase(arg3);
+						else
+						if(arg2.equals("!="))
+							returnable=!clanID.equalsIgnoreCase(arg3);
+						else
+						if(arg2.equals("in"))
+							returnable=((MOB)E).getClanRole(arg3)!=null;
+						else
+						if(arg2.equals("notin"))
+							returnable=((MOB)E).getClanRole(arg3)==null;
+						else
+						{
+							logError(scripted,"CLAN","Syntax",funcParms);
+							return returnable;
+						}
+					}
+					break;
+				}
+				case 88: // mood
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Physical P=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if(arg2.length()==0)
+					{
+						logError(scripted,"MOOD","Syntax",funcParms);
+						return returnable;
+					}
+					if((P==null)||(!(P instanceof MOB)))
+						returnable=false;
+					else
+					{
+						final Ability moodA=P.fetchEffect("Mood");
+						if(moodA!=null)
+						{
+							final String sex=moodA.text();
+							if(arg2.equals("=="))
+								returnable=sex.equalsIgnoreCase(arg3);
+							else
+							if(arg2.equals("!="))
+								returnable=!sex.equalsIgnoreCase(arg3);
+							else
+							{
+								logError(scripted,"MOOD","Syntax",funcParms);
+								return returnable;
+							}
+						}
+					}
+					break;
+				}
+				case 21: // class
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
 					{
 						logError(scripted,"CLASS","Syntax",funcParms);
 						return returnable;
 					}
-				}
-				break;
-			}
-			case 22: // baseclass
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"CLASS","Syntax",funcParms);
-					return returnable;
-				}
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				{
-					final String sex=((MOB)E).charStats().getCurrentClass().baseClass().toUpperCase();
-					if(arg2.equals("=="))
-						returnable=sex.startsWith(arg3);
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
 					else
-					if(arg2.equals("!="))
-						returnable=!sex.startsWith(arg3);
-					else
+					{
+						final String sex=((MOB)E).charStats().displayClassName().toUpperCase();
+						if(arg2.equals("=="))
+							returnable=sex.startsWith(arg3);
+						else
+						if(arg2.equals("!="))
+							returnable=!sex.startsWith(arg3);
+						else
+						{
+							logError(scripted,"CLASS","Syntax",funcParms);
+							return returnable;
+						}
+					}
+					break;
+				}
+				case 22: // baseclass
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
 					{
 						logError(scripted,"CLASS","Syntax",funcParms);
 						return returnable;
 					}
-				}
-				break;
-			}
-			case 23: // race
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"RACE","Syntax",funcParms);
-					return returnable;
-				}
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				{
-					final String sex=((MOB)E).charStats().raceName().toUpperCase();
-					if(arg2.equals("=="))
-						returnable=sex.startsWith(arg3);
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
 					else
-					if(arg2.equals("!="))
-						returnable=!sex.startsWith(arg3);
-					else
+					{
+						final String sex=((MOB)E).charStats().getCurrentClass().baseClass().toUpperCase();
+						if(arg2.equals("=="))
+							returnable=sex.startsWith(arg3);
+						else
+						if(arg2.equals("!="))
+							returnable=!sex.startsWith(arg3);
+						else
+						{
+							logError(scripted,"CLASS","Syntax",funcParms);
+							return returnable;
+						}
+					}
+					break;
+				}
+				case 23: // race
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
 					{
 						logError(scripted,"RACE","Syntax",funcParms);
 						return returnable;
 					}
-				}
-				break;
-			}
-			case 24: //racecat
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"RACECAT","Syntax",funcParms);
-					return returnable;
-				}
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				{
-					final String sex=((MOB)E).charStats().getMyRace().racialCategory().toUpperCase();
-					if(arg2.equals("=="))
-						returnable=sex.startsWith(arg3);
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
 					else
-					if(arg2.equals("!="))
-						returnable=!sex.startsWith(arg3);
-					else
+					{
+						final String sex=((MOB)E).charStats().raceName().toUpperCase();
+						if(arg2.equals("=="))
+							returnable=sex.startsWith(arg3);
+						else
+						if(arg2.equals("!="))
+							returnable=!sex.startsWith(arg3);
+						else
+						{
+							logError(scripted,"RACE","Syntax",funcParms);
+							return returnable;
+						}
+					}
+					break;
+				}
+				case 24: //racecat
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
 					{
 						logError(scripted,"RACECAT","Syntax",funcParms);
 						return returnable;
 					}
-				}
-				break;
-			}
-			case 25: // goldamt
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"GOLDAMT","Syntax",funcParms);
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
+					else
+					{
+						final String sex=((MOB)E).charStats().getMyRace().racialCategory().toUpperCase();
+						if(arg2.equals("=="))
+							returnable=sex.startsWith(arg3);
+						else
+						if(arg2.equals("!="))
+							returnable=!sex.startsWith(arg3);
+						else
+						{
+							logError(scripted,"RACECAT","Syntax",funcParms);
+							return returnable;
+						}
+					}
 					break;
 				}
-				if(E==null)
-					returnable=false;
-				else
+				case 25: // goldamt
 				{
-					int val1=0;
-					if(E instanceof MOB)
-						val1=(int)Math.round(CMLib.beanCounter().getTotalAbsoluteValue((MOB)E,CMLib.beanCounter().getCurrency(scripted)));
-					else
-					if(E instanceof Coins)
-						val1=(int)Math.round(((Coins)E).getTotalValue());
-					else
-					if(E instanceof Item)
-						val1=((Item)E).value();
-					else
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
 					{
 						logError(scripted,"GOLDAMT","Syntax",funcParms);
-						return returnable;
+						break;
 					}
-
-					returnable=simpleEval(scripted,""+val1,arg3,arg2,"GOLDAMT");
-				}
-				break;
-			}
-			case 78: // exp
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"EXP","Syntax",funcParms);
-					break;
-				}
-				if((E==null)||(!(E instanceof MOB)))
-					returnable=false;
-				else
-				{
-					final int val1=((MOB)E).getExperience();
-					returnable=simpleEval(scripted,""+val1,arg3,arg2,"EXP");
-				}
-				break;
-			}
-			case 76: // value
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				final String arg3=tt[t+2];
-				final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
-				if((arg2.length()==0)||(arg3.length()==0)||(arg4.length()==0))
-				{
-					logError(scripted,"VALUE","Syntax",funcParms);
-					break;
-				}
-				if(!CMLib.beanCounter().getAllCurrencies().contains(arg2.toUpperCase()))
-				{
-					logError(scripted,"VALUE","Syntax",arg2+" is not a valid designated currency.");
-					break;
-				}
-				if(E==null)
-					returnable=false;
-				else
-				{
-					int val1=0;
-					if(E instanceof MOB)
-						val1=(int)Math.round(CMLib.beanCounter().getTotalAbsoluteValue((MOB)E,arg2.toUpperCase()));
+					if(E==null)
+						returnable=false;
 					else
-					if(E instanceof Coins)
 					{
-						if(((Coins)E).getCurrency().equalsIgnoreCase(arg2))
+						int val1=0;
+						if(E instanceof MOB)
+							val1=(int)Math.round(CMLib.beanCounter().getTotalAbsoluteValue((MOB)E,CMLib.beanCounter().getCurrency(scripted)));
+						else
+						if(E instanceof Coins)
 							val1=(int)Math.round(((Coins)E).getTotalValue());
+						else
+						if(E instanceof Item)
+							val1=((Item)E).value();
+						else
+						{
+							logError(scripted,"GOLDAMT","Syntax",funcParms);
+							return returnable;
+						}
+
+						returnable=simpleEval(scripted,""+val1,arg3,arg2,"GOLDAMT");
 					}
+					break;
+				}
+				case 78: // exp
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
+					{
+						logError(scripted,"EXP","Syntax",funcParms);
+						break;
+					}
+					if((E==null)||(!(E instanceof MOB)))
+						returnable=false;
 					else
-					if(E instanceof Item)
-						val1=((Item)E).value();
-					else
+					{
+						final int val1=((MOB)E).getExperience();
+						returnable=simpleEval(scripted,""+val1,arg3,arg2,"EXP");
+					}
+					break;
+				}
+				case 76: // value
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					final String arg3=tt[t+2];
+					final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
+					if((arg2.length()==0)||(arg3.length()==0)||(arg4.length()==0))
 					{
 						logError(scripted,"VALUE","Syntax",funcParms);
-						return returnable;
+						break;
 					}
+					if(!CMLib.beanCounter().getAllCurrencies().contains(arg2.toUpperCase()))
+					{
+						logError(scripted,"VALUE","Syntax",arg2+" is not a valid designated currency.");
+						break;
+					}
+					if(E==null)
+						returnable=false;
+					else
+					{
+						int val1=0;
+						if(E instanceof MOB)
+							val1=(int)Math.round(CMLib.beanCounter().getTotalAbsoluteValue((MOB)E,arg2.toUpperCase()));
+						else
+						if(E instanceof Coins)
+						{
+							if(((Coins)E).getCurrency().equalsIgnoreCase(arg2))
+								val1=(int)Math.round(((Coins)E).getTotalValue());
+						}
+						else
+						if(E instanceof Item)
+							val1=((Item)E).value();
+						else
+						{
+							logError(scripted,"VALUE","Syntax",funcParms);
+							return returnable;
+						}
 
-					returnable=simpleEval(scripted,""+val1,arg4,arg3,"GOLDAMT");
+						returnable=simpleEval(scripted,""+val1,arg4,arg3,"GOLDAMT");
+					}
+					break;
 				}
-				break;
-			}
-			case 26: // objtype
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
+				case 26: // objtype
 				{
-					logError(scripted,"OBJTYPE","Syntax",funcParms);
-					return returnable;
-				}
-				if(E==null)
-					returnable=false;
-				else
-				{
-					final String sex=CMClass.classID(E).toUpperCase();
-					if(arg2.equals("=="))
-						returnable=sex.indexOf(arg3)>=0;
-					else
-					if(arg2.equals("!="))
-						returnable=sex.indexOf(arg3)<0;
-					else
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
 					{
 						logError(scripted,"OBJTYPE","Syntax",funcParms);
 						return returnable;
 					}
-				}
-				break;
-			}
-			case 27: // var
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cCcr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final String arg2=tt[t+1];
-				final String arg3=tt[t+2];
-				final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"VAR","Syntax",funcParms);
-					return returnable;
-				}
-				final String val=getVar(E,arg1,arg2,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
-				if(arg3.equals("==")||arg3.equals("="))
-					returnable=val.equals(arg4);
-				else
-				if(arg3.equals("!=")||(arg3.contentEquals("<>")))
-					returnable=!val.equals(arg4);
-				else
-				if(arg3.equals(">"))
-					returnable=CMath.s_int(val.trim())>CMath.s_int(arg4.trim());
-				else
-				if(arg3.equals("<"))
-					returnable=CMath.s_int(val.trim())<CMath.s_int(arg4.trim());
-				else
-				if(arg3.equals(">="))
-					returnable=CMath.s_int(val.trim())>=CMath.s_int(arg4.trim());
-				else
-				if(arg3.equals("<="))
-					returnable=CMath.s_int(val.trim())<=CMath.s_int(arg4.trim());
-				else
-				{
-					logError(scripted,"VAR","Syntax",funcParms);
-					return returnable;
-				}
-				break;
-			}
-			case 41: // eval
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
-				final String arg3=tt[t+1];
-				final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-				if(arg3.length()==0)
-				{
-					logError(scripted,"EVAL","Syntax",funcParms);
-					return returnable;
-				}
-				if(arg3.equals("=="))
-					returnable=val.equals(arg4);
-				else
-				if(arg3.equals("!="))
-					returnable=!val.equals(arg4);
-				else
-				if(arg3.equals(">"))
-					returnable=CMath.s_int(val.trim())>CMath.s_int(arg4.trim());
-				else
-				if(arg3.equals("<"))
-					returnable=CMath.s_int(val.trim())<CMath.s_int(arg4.trim());
-				else
-				if(arg3.equals(">="))
-					returnable=CMath.s_int(val.trim())>=CMath.s_int(arg4.trim());
-				else
-				if(arg3.equals("<="))
-					returnable=CMath.s_int(val.trim())<=CMath.s_int(arg4.trim());
-				else
-				{
-					logError(scripted,"EVAL","Syntax",funcParms);
-					return returnable;
-				}
-				break;
-			}
-			case 40: // number
-			{
-				final String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms)).trim();
-				boolean isnumber=(val.length()>0);
-				for(int i=0;i<val.length();i++)
-				{
-					if(!Character.isDigit(val.charAt(i)))
+					if(E==null)
+						returnable=false;
+					else
 					{
-						isnumber = false;
-						break;
+						final String sex=CMClass.classID(E).toUpperCase();
+						if(arg2.equals("=="))
+							returnable=sex.indexOf(arg3)>=0;
+						else
+						if(arg2.equals("!="))
+							returnable=sex.indexOf(arg3)<0;
+						else
+						{
+							logError(scripted,"OBJTYPE","Syntax",funcParms);
+							return returnable;
+						}
 					}
+					break;
 				}
-				returnable=isnumber;
-				break;
-			}
-			case 42: // randnum
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase().trim();
-				int arg1=0;
-				if(CMath.isMathExpression(arg1s.trim()))
-					arg1=CMath.s_parseIntExpression(arg1s.trim());
-				else
-					arg1=CMParms.parse(arg1s.trim()).size();
-				final String arg2=tt[t+1];
-				final String arg3s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]).trim();
-				int arg3=0;
-				if(CMath.isMathExpression(arg3s.trim()))
-					arg3=CMath.s_parseIntExpression(arg3s.trim());
-				else
-					arg3=CMParms.parse(arg3s.trim()).size();
-				arg1=CMLib.dice().roll(1,arg1,0);
-				returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RANDNUM");
-				break;
-			}
-			case 71: // rand0num
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase().trim();
-				int arg1=0;
-				if(CMath.isMathExpression(arg1s))
-					arg1=CMath.s_parseIntExpression(arg1s);
-				else
-					arg1=CMParms.parse(arg1s).size();
-				final String arg2=tt[t+1];
-				final String arg3s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]).trim();
-				int arg3=0;
-				if(CMath.isMathExpression(arg3s))
-					arg3=CMath.s_parseIntExpression(arg3s);
-				else
-					arg3=CMParms.parse(arg3s).size();
-				arg1=CMLib.dice().roll(1,arg1,-1);
-				returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RAND0NUM");
-				break;
-			}
-			case 53: // incontainer
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				final String arg2=tt[t+1];
-				final Environmental E2=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if(E==null)
-					returnable=false;
-				else
-				if(E instanceof MOB)
+				case 27: // var
 				{
-					if(arg2.length()==0)
-						returnable=(((MOB)E).riding()==null);
+					if(tlen==1)
+						tt=parseBits(eval,t,"cCcr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final String arg2=tt[t+1];
+					final String arg3=tt[t+2];
+					final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if((arg2.length()==0)||(arg3.length()==0))
+					{
+						logError(scripted,"VAR","Syntax",funcParms);
+						return returnable;
+					}
+					final String val=getVar(E,arg1,arg2,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
+					if(arg3.equals("==")||arg3.equals("="))
+						returnable=val.equals(arg4);
 					else
-					if(E2!=null)
-						returnable=(((MOB)E).riding()==E2);
+					if(arg3.equals("!=")||(arg3.contentEquals("<>")))
+						returnable=!val.equals(arg4);
+					else
+					if(arg3.equals(">"))
+						returnable=CMath.s_int(val.trim())>CMath.s_int(arg4.trim());
+					else
+					if(arg3.equals("<"))
+						returnable=CMath.s_int(val.trim())<CMath.s_int(arg4.trim());
+					else
+					if(arg3.equals(">="))
+						returnable=CMath.s_int(val.trim())>=CMath.s_int(arg4.trim());
+					else
+					if(arg3.equals("<="))
+						returnable=CMath.s_int(val.trim())<=CMath.s_int(arg4.trim());
+					else
+					{
+						logError(scripted,"VAR","Syntax",funcParms);
+						return returnable;
+					}
+					break;
+				}
+				case 41: // eval
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+					final String arg3=tt[t+1];
+					final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					if(arg3.length()==0)
+					{
+						logError(scripted,"EVAL","Syntax",funcParms);
+						return returnable;
+					}
+					if(arg3.equals("=="))
+						returnable=val.equals(arg4);
+					else
+					if(arg3.equals("!="))
+						returnable=!val.equals(arg4);
+					else
+					if(arg3.equals(">"))
+						returnable=CMath.s_int(val.trim())>CMath.s_int(arg4.trim());
+					else
+					if(arg3.equals("<"))
+						returnable=CMath.s_int(val.trim())<CMath.s_int(arg4.trim());
+					else
+					if(arg3.equals(">="))
+						returnable=CMath.s_int(val.trim())>=CMath.s_int(arg4.trim());
+					else
+					if(arg3.equals("<="))
+						returnable=CMath.s_int(val.trim())<=CMath.s_int(arg4.trim());
+					else
+					{
+						logError(scripted,"EVAL","Syntax",funcParms);
+						return returnable;
+					}
+					break;
+				}
+				case 40: // number
+				{
+					final String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms)).trim();
+					boolean isnumber=(val.length()>0);
+					for(int i=0;i<val.length();i++)
+					{
+						if(!Character.isDigit(val.charAt(i)))
+						{
+							isnumber = false;
+							break;
+						}
+					}
+					returnable=isnumber;
+					break;
+				}
+				case 42: // randnum
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase().trim();
+					int arg1=0;
+					if(CMath.isMathExpression(arg1s.trim()))
+						arg1=CMath.s_parseIntExpression(arg1s.trim());
+					else
+						arg1=CMParms.parse(arg1s.trim()).size();
+					final String arg2=tt[t+1];
+					final String arg3s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]).trim();
+					int arg3=0;
+					if(CMath.isMathExpression(arg3s.trim()))
+						arg3=CMath.s_parseIntExpression(arg3s.trim());
+					else
+						arg3=CMParms.parse(arg3s.trim()).size();
+					arg1=CMLib.dice().roll(1,arg1,0);
+					returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RANDNUM");
+					break;
+				}
+				case 71: // rand0num
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase().trim();
+					int arg1=0;
+					if(CMath.isMathExpression(arg1s))
+						arg1=CMath.s_parseIntExpression(arg1s);
+					else
+						arg1=CMParms.parse(arg1s).size();
+					final String arg2=tt[t+1];
+					final String arg3s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]).trim();
+					int arg3=0;
+					if(CMath.isMathExpression(arg3s))
+						arg3=CMath.s_parseIntExpression(arg3s);
+					else
+						arg3=CMParms.parse(arg3s).size();
+					arg1=CMLib.dice().roll(1,arg1,-1);
+					returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RAND0NUM");
+					break;
+				}
+				case 53: // incontainer
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					final String arg2=tt[t+1];
+					final Environmental E2=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(E==null)
+						returnable=false;
+					else
+					if(E instanceof MOB)
+					{
+						if(arg2.length()==0)
+							returnable=(((MOB)E).riding()==null);
+						else
+						if(E2!=null)
+							returnable=(((MOB)E).riding()==E2);
+						else
+							returnable=false;
+					}
+					else
+					if(E instanceof Item)
+					{
+						if(arg2.length()==0)
+							returnable=(((Item)E).container()==null);
+						else
+						if(E2!=null)
+							returnable=(((Item)E).container()==E2);
+						else
+							returnable=false;
+					}
 					else
 						returnable=false;
+					break;
 				}
-				else
-				if(E instanceof Item)
+				case 96: // iscontents
 				{
-					if(arg2.length()==0)
-						returnable=(((Item)E).container()==null);
+					if(tlen==1)
+						tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					final String arg2=varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, tt[t+1]);
+					if(E==null)
+						returnable=false;
 					else
-					if(E2!=null)
-						returnable=(((Item)E).container()==E2);
+					if(E instanceof Rideable)
+					{
+						if(arg2.length()==0)
+							returnable=((Rideable)E).numRiders()==0;
+						else
+							returnable=CMLib.english().fetchEnvironmental(new XVector<Rider>(((Rideable)E).riders()), arg2, false)!=null;
+					}
+					if(E instanceof Container)
+					{
+						if(arg2.length()==0)
+							returnable=!((Container)E).hasContent();
+						else
+							returnable=CMLib.english().fetchEnvironmental(((Container)E).getDeepContents(), arg2, false)!=null;
+					}
 					else
 						returnable=false;
+					break;
 				}
-				else
+				case 97: // wornon
+				{
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+					final String arg1=tt[t+0];
+					final PhysicalAgent E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+					final String arg2=varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, tt[t+1]);
+					final String arg3=varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, tt[t+2]);
+					if((arg2.length()==0)||(arg3.length()==0))
+					{
+						logError(scripted,"WORNON","Syntax",funcParms);
+						return returnable;
+					}
+					final int wornLoc = CMParms.indexOf(Wearable.CODES.NAMESUP(), arg2.toUpperCase().trim());
 					returnable=false;
-				break;
+					if(wornLoc<0)
+						logError(scripted,"EVAL","BAD WORNON LOCATION",arg2);
+					else
+					if(E instanceof MOB)
+					{
+						final List<Item> items=((MOB)E).fetchWornItems(Wearable.CODES.GET(wornLoc),(short)-2048,(short)0);
+						if((items.size()==0)&&(arg3.length()==0))
+							returnable=true;
+						else
+							returnable = CMLib.english().fetchEnvironmental(items, arg3, false)!=null;
+					}
+					break;
+				}
+				default:
+					logError(scripted,"EVAL","UNKNOWN",CMParms.toListString(tt));
+					return false;
+				}
+				pushEvalBoolean(stack,returnable);
+				while((t<tt.length)&&(!tt[t].equals(")")))
+					t++;
 			}
-			case 96: // iscontents
+			else
 			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				final String arg2=varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, tt[t+1]);
-				if(E==null)
-					returnable=false;
-				else
-				if(E instanceof Rideable)
-				{
-					if(arg2.length()==0)
-						returnable=((Rideable)E).numRiders()==0;
-					else
-						returnable=CMLib.english().fetchEnvironmental(new XVector<Rider>(((Rideable)E).riders()), arg2, false)!=null;
-				}
-				if(E instanceof Container)
-				{
-					if(arg2.length()==0)
-						returnable=!((Container)E).hasContent();
-					else
-						returnable=CMLib.english().fetchEnvironmental(((Container)E).getDeepContents(), arg2, false)!=null;
-				}
-				else
-					returnable=false;
-				break;
-			}
-			case 97: // wornon
-			{
-				if(tlen==1)
-					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
-				final String arg1=tt[t+0];
-				final PhysicalAgent E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				final String arg2=varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, tt[t+1]);
-				final String arg3=varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, tt[t+2]);
-				if((arg2.length()==0)||(arg3.length()==0))
-				{
-					logError(scripted,"WORNON","Syntax",funcParms);
-					return returnable;
-				}
-				final int wornLoc = CMParms.indexOf(Wearable.CODES.NAMESUP(), arg2.toUpperCase().trim());
-				returnable=false;
-				if(wornLoc<0)
-					logError(scripted,"EVAL","BAD WORNON LOCATION",arg2);
-				else
-				if(E instanceof MOB)
-				{
-					final List<Item> items=((MOB)E).fetchWornItems(Wearable.CODES.GET(wornLoc),(short)-2048,(short)0);
-					if((items.size()==0)&&(arg3.length()==0))
-						returnable=true;
-					else
-						returnable = CMLib.english().fetchEnvironmental(items, arg3, false)!=null;
-				}
-				break;
-			}
-			default:
-				logError(scripted,"EVAL","UNKNOWN",CMParms.toListString(tt));
+				logError(scripted,"EVAL","SYNTAX","BAD CONJUCTOR "+tt[t]+": "+CMParms.toListString(tt));
 				return false;
 			}
-			pushEvalBoolean(stack,returnable);
-			while((t<tt.length)&&(!tt[t].equals(")")))
-				t++;
 		}
-		else
-		{
-			logError(scripted,"EVAL","SYNTAX","BAD CONJUCTOR "+tt[t]+": "+CMParms.toListString(tt));
-			return false;
-		}
-		if((stack.size()!=1)||(!(stack.firstElement() instanceof Boolean)))
+		if((stack.size()!=1)
+		||(!(stack.get(0) instanceof Boolean)))
 		{
 			logError(scripted,"EVAL","SYNTAX","Unmatched (: "+CMParms.toListString(tt));
 			return false;
 		}
-		return ((Boolean)stack.firstElement()).booleanValue();
+		return ((Boolean)stack.get(0)).booleanValue();
 	}
 
 	protected void setShopPrice(final ShopKeeper shopHere, final Environmental E, final Object[] tmp)
@@ -12883,6 +12896,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								break;
 							lastMsg=msg;
 							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,check, t);
+							return;
+						}
+					}
+					break;
+				case 48: // giving_prog
+					if((msg.targetMinor()==CMMsg.TYP_GIVE)
+					&&canTrigger(48)
+					&&((msg.amISource(monster))
+						||(msg.tool()==affecting)
+						||(affecting instanceof Room)
+						||(affecting instanceof Area))
+					&&(msg.tool() instanceof Item)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.tool());
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.tool(),defaultItem,script,1,check, t);
 							return;
 						}
 					}

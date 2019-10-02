@@ -40,9 +40,7 @@ settable vars:
 	<ANNOUNCER_AREA>"$source_area_name"</ANNOUNCER_AREA>
 	<ANNOUNCER_ROOM>"$source_room_id"</ANNOUNCER_ROOM>
 	<ANNOUNCER_NAME>"$source_name"</ANNOUNCER_NAME>
-	<DELIVEREE_AREA>"$target_area_name"</DELIVEREE_AREA>
-	<DELIVEREE_ROOM>"$target_room_id"</DELIVEREE_ROOM>
-	<DELIVEREE_NAME>"$target_name"</DELIVEREE_NAME>
+	<DELIVEREE_MASK>-HOME "+$target_area_name" -NAME "+$target_name"</DELIVEREE_MASK>
 	<DELIVERABLE_ITEM>${SELECT: ANY\. from $target_item}</DELIVERABLE_ITEM>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
 	<GOLD>$gold_amount_awarded</GOLD>
@@ -172,16 +170,16 @@ settable vars:
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I wish to reward $p_target_name with $target_item_name for reasons.</STRING>
-			<STRING>I owe ${target_name} $target_item_name for their assistance to me.</STRING>
-			<STRING>I owe ${target_name} $target_item_name for saving my life.</STRING>
+			<STRING>I owe ${p_target_name} $target_item_name for their assistance to me.</STRING>
+			<STRING>I owe ${p_target_name} $target_item_name for saving my life.</STRING>
 			<STRING>${c:p_target_name} forgot to pick up $target_item_name this week.</STRING>
-			<STRING>I swore to protect ${target_name}, and so $target_item_name must be delivered immediately!</STRING>
+			<STRING>I swore to protect ${p_target_name}, and so $target_item_name must be delivered immediately!</STRING>
 		</STRING>
 	</STRING>
 	<STRING ID="reason_ilostthem" SELECT="All">
 		<STRING define="quest_delivered" SELECT="Any-1">
 			<STRING>You found $target_item_name! Thanks!</STRING>
-			<STRING>${target_item_name has been found}! Thank you for your assistance.</STRING>
+			<STRING>${target_item_name} has been found! Thank you for your assistance.</STRING>
 			<STRING>Thanks you so much for finding $target_item_name!</STRING>
 		</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
@@ -198,8 +196,8 @@ settable vars:
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>I need $target_item_name delivered to $p_target_name.</STRING>
-			<STRING>I need ${target_name} to be given $target_item_name.</STRING>
-			<STRING>I need ${target_name} be have $target_item_name brought to them.</STRING>
+			<STRING>I need ${p_target_name} to be given $target_item_name.</STRING>
+			<STRING>I need ${p_target_name} be have $target_item_name brought to them.</STRING>
 			<STRING>${c:target_item_name} needs to be delivered to $p_target_name.</STRING>
 		</STRING>
 	</STRING>
@@ -208,10 +206,10 @@ settable vars:
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I wish to give ${target_name} a gift of $target_item_name.</STRING>
-			<STRING>I think ${target_name} really wants $target_item_name.</STRING>
-			<STRING>I want to help out ${target_name} with $target_item_name.</STRING>
-			<STRING>I need to see if ${target_name} likes $target_item_name.</STRING>
+			<STRING>I wish to give ${p_target_name} a gift of $target_item_name.</STRING>
+			<STRING>I think ${p_target_name} really wants $target_item_name.</STRING>
+			<STRING>I want to help out ${p_target_name} with $target_item_name.</STRING>
+			<STRING>I need to see if ${p_target_name} likes $target_item_name.</STRING>
 		</STRING>
 	</STRING>
 
@@ -219,11 +217,11 @@ settable vars:
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>The ${target_name} and I are experimenting with $target_item_name today.</STRING>
-			<STRING>I need ${target_name} to also have $target_item_name so we can compare experiences.</STRING>
-			<STRING>I want ${target_name} to reproduce $target_item_name for $source_area_name.</STRING>
-			<STRING>The ${target_name} and I are parading around $source_area_name with our $target_item_name today.</STRING>
-			<STRING>I fear an invasion of $source_area_name and need ${target_name} brought $target_item_name to help with defense.</STRING>
+			<STRING>${c:p_target_name} and I are experimenting with $target_item_name today.</STRING>
+			<STRING>I need ${p_target_name} to also have $target_item_name so we can compare experiences.</STRING>
+			<STRING>I want ${p_target_name} to reproduce $target_item_name for $source_area_name.</STRING>
+			<STRING>${c:p_target_name} and I are parading around $source_area_name with our $target_item_name today.</STRING>
+			<STRING>I fear an invasion of $source_area_name and need ${p_target_name} brought $target_item_name to help with defense.</STRING>
 		</STRING>
 	</STRING>
 
@@ -231,7 +229,7 @@ settable vars:
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I must $hurt_verb ${target_name}, and do it in secret.</STRING>
+			<STRING>I must $hurt_verb ${p_target_name}, and do it in secret.</STRING>
 			<STRING>${c:p_target_name} insulted me and must be notified.</STRING>
 			<STRING>I am giving away ${target_item_name} to all the children of $source_area_name.</STRING>
 			<STRING CONDITION="$source_class='Mage' or $source_class='Necromancer'">${c:p_target_name} needs $target_item_name for our magicical experiment.</STRING>
@@ -245,10 +243,10 @@ settable vars:
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I am starting a ${target_item_name} factory with ${target_name}s help.</STRING>
+			<STRING>I am starting a ${target_item_name} factory with ${p_target_name} help.</STRING>
 			<STRING>${c:p_target_name} and I are scheduled to study $target_item_name today.</STRING>
 			<STRING>${c:p_target_name} has insulted my honor, and only a ritual delivery of $target_item_name will satisfy it.</STRING>
-			<STRING>I feel like decorating $target_item_name with ${target_name}.</STRING>
+			<STRING>I feel like decorating $target_item_name with ${p_target_name}.</STRING>
 		</STRING>
 	</STRING>
 

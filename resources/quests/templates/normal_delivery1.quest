@@ -62,35 +62,16 @@
 #if you like.  Use the code ${2 *} to designate the name of the mob to find.
 #$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Find ${2 *} at that one place and give him $[1 *].  Be careful!
 #
-#!QUESTMAKER_PAGE Specify the Deliveree Mob
+#!QUESTMAKER_PAGE Specify the Deliveree Mobs
 #The Deliveree Mob is the mob the player must find and deliver the item to.
 #
-#Deliveree Mob Area/Room: 
-#Specify below the name of the area that your deliveree mobs will be located
-#in and/or the room in which the mobs can be found.  You may leave both blank
-#to force the quest manager to find the mob somewhere in the world, but this
-#will hurt the performance of your mud, so use with care.  
-#Use double-quotes around multi-word areas and room ids/names.
+#Deliverees: 
+#Specify below the deliveree mobs who will have the items delivered.
 #
-#Deliveree Area:
-#$DELIVEREE_AREA=($AREA)
-#Deliveree Room:
-#$DELIVEREE_ROOM=($ROOMID)
-#
-#Deliveree mobs names: 
-#Specify the names of the mob who will act as the deliveree mobs.  
-#Use double-quotes around multi-word names.
-#If you specified an area or room above, then the mob must be located there. 
-#You may optionally have the quest manager select a 'random' mob by entering
-#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
-#ZAPPERMASKS for information on zapper mask syntax).
-#Remember, if the quest manager can not find your mobs, the quest will not
-#be started.
-#$DELIVEREE_NAME=$NAME
-#
-#!QUESTMAKER_PAGE Specify the Deliveree Mob details
-#The Deliveree Mobs are the mobs the player must find and deliver the item to.
-#Here you can specify how many of deliverees and what they say.e
+#Deliveree mob names: 
+#Specify the mobs who will act as the capturable mob or mobs.  
+#See help on ZAPPERMASK for information on zapper mask syntax.
+#$DELIVEREE_MASK=$ZAPPERMASK
 #
 #Number of deliverings
 #specify the number of the deliverable items must be delivered to mobs
@@ -158,12 +139,6 @@ set mob reselect $ANNOUNCER_NAME
 give stat keyplayer true
 give script LOAD=$QUEST_ID_announcer.script
 
-set area $DELIVEREE_AREA
-set room $DELIVEREE_ROOM
-set mobgroup reselect $DELIVEREE_NAME
-give stat keyplayer true
-give script LOAD=$QUEST_ID_deliveree.script
-
 set area
 set room
 set mobgroup
@@ -186,9 +161,40 @@ ONCE_PROG 100
 ~
 
 GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
-		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			sayto "$n" $QUEST_NOTIFYSTRING -- just say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) 
+		if QUESTSCRIPTED($n *)
+			if EVAL('$<$n $QUEST_ID_DELIVERED>.LENGTH#' >= $DELIVEREE_COUNT)
+				if EVAL('$EXP' != '')
+					mpexp $n $EXP
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $n $FACTION $NUMFACTION
+				endif
+				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+					mpoload QuestPoint
+					give "a quest point" "$n"
+				endif
+				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+					mpoload $GOLD
+					give $GOLD "$n"
+				endif
+				mpoload fromfile $QUEST_ID_rewarditems.xml any
+				if EVAL('$b' != '')
+					give "$b" "$n"
+				endif
+				mpquestwin $n *
+				mpendquest $n
+				mpqset * STATISTICS SUCCESS
+				IF EVAL('$MULTIPLE' == 'PREV')
+					mptransfer $n $n
+				ENDIF
+			endif
+		else
+			if ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+				if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+					sayto "$n" $QUEST_NOTIFYSTRING -- just say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
+				endif
+			endif
 		endif
 	endif
 ~
@@ -227,68 +233,6 @@ SPEECH_PROG p i accept
 	endif
 ~
 </DATA></FILE>
-<FILE><NAME>$QUEST_ID_deliveree.script</NAME>
-<DATA>
-GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) AND QUESTSCRIPTED($n *) AND !STRCONTAINS('$<$n $QUEST_ID_DELIVERED>' $@i)
-		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			sayto $n $DELIVEREE_ANNOUNCE
-		endif
-	endif
-~
-
-GIVE_PROG all
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) AND QUESTSCRIPTED($n *)
-		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if EVAL($o == '$[1 *]') AND !STRCONTAINS('$<$n $QUEST_ID_DELIVERED>' $@i)
-				if EVAL($DELIVEREE_COUNT > 1) 
-					if !STRCONTAINS('$<$n QUEST_DELIVERED>' $@i)
-						mpsetvar $n $QUEST_ID_DELIVERED ' $<$n $QUEST_ID_DELIVERED>  "$@i" '
-						if EVAL('$<$n $QUEST_ID_DELIVERED>.LENGTH#' < $DELIVEREE_COUNT)
-							mpjunk $o
-							sayto "$n" $DELIVERY_RESPONSE
-							mpechoat $n That's $<$n $QUEST_ID_DELIVERED>.LENGTH# / $DELIVEREE_COUNT
-							mpsetvar $n PROGRESS Delivered $<$n $QUEST_ID_DELIVERED>.LENGTH# / $DELIVEREE_COUNT
-							return
-						endif
-					else
-						give $o $n
-						return
-					endif
-				endif
-				if EVAL('$EXP' != '')
-					mpexp $n $EXP
-				endif
-				if EVAL('$FACTION' != '')
-					mpfaction $n $FACTION $NUMFACTION
-				endif
-				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-					mpoload QuestPoint
-					give "a quest point" "$n"
-				endif
-				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-					mpoload $GOLD
-					give $GOLD "$n"
-				endif
-				mpoload fromfile $QUEST_ID_rewarditems.xml any
-				if EVAL('$b' != '')
-					give "$b" "$n"
-				endif
-				mpquestwin $n *
-				sayto $n $DELIVERY_RESPONSE
-				mpendquest $n
-				mpqset * STATISTICS SUCCESS
-				IF EVAL('$MULTIPLE' == 'PREV')
-					mptransfer $n $n
-				ENDIF
-			else
-				sayto "$n" What's this?
-				give "$o" "$n"
-			endif
-		endif
-	endif
-~
-</DATA></FILE>
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
@@ -296,6 +240,38 @@ ONCE_PROG 100
 	IF !isquestmobalive(1 '$QUEST_ID')
 		MPENDQUEST '$QUEST_ID'
 	ENDIF
+~
+
+GREET_PROG 100
+	if ISLIKE($n '$DELIVEREE_MASK') AND CANSEE($n $i) AND !STRCONTAINS('$<$i $QUEST_ID_DELIVERED>' $@n)
+		mpforce $n sayto $i $DELIVEREE_ANNOUNCE
+	endif
+~
+
+ENTRY_PROG 100
+	if INROOM($i == $g)
+		for $0 = 1 to '$%NUMMOBSROOM(*)%'
+			mpargset $1 $%ROOMMOB($0)% 
+			if ISLIKE($1 '$DELIVEREE_MASK') AND CANSEE($1 $i) AND !STRCONTAINS('$<$i $QUEST_ID_DELIVERED>' $@1)
+				mpforce $1 sayto "$i" $DELIVEREE_ANNOUNCE
+			endif
+		next
+	endif
+~
+	
+GIVING_PROG all
+	if EVAL($o == '$[1 *]') AND ISLIKE($t '$DELIVEREE_MASK') AND !STRCONTAINS('$<$i $QUEST_ID_DELIVERED>' $@t)
+		mpsetvar $i $QUEST_ID_DELIVERED ' $<$i $QUEST_ID_DELIVERED>  "$@t" '
+		mpforce $t mpjunk $o
+		mpforce $t sayto "$i" $DELIVERY_RESPONSE
+		if EVAL($DELIVEREE_COUNT > 1)
+			mpechoat $i That's $<$i $QUEST_ID_DELIVERED>.LENGTH# / $DELIVEREE_COUNT
+			mpsetvar $i PROGRESS Delivered $<$i $QUEST_ID_DELIVERED>.LENGTH# / $DELIVEREE_COUNT
+		endif
+	else
+		mpforce $t sayto "$i" What's this?
+		mpforce $t give "$o" "$i"
+	endif
 ~
 
 RAND_PROG 25

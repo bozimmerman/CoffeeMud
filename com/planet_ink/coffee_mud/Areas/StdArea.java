@@ -1601,9 +1601,14 @@ public class StdArea implements Area
 			statData[Area.Stats.POPULATION.ordinal()]++;
 			statData[Area.Stats.TOTAL_LEVELS.ordinal()]+=lvl;
 			if(!CMLib.flags().isAnimalIntelligence(mob))
+			{
 				statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()]+=lvl;
+				statData[Area.Stats.INTELLIGENT_MOBS.ordinal()]++;
+			}
 			else
+			{
 				statData[Area.Stats.ANIMALS.ordinal()]++;
+			}
 			if(lvl<statData[Area.Stats.MIN_LEVEL.ordinal()])
 				statData[Area.Stats.MIN_LEVEL.ordinal()]=lvl;
 			if(lvl>statData[Area.Stats.MAX_LEVEL.ordinal()])

@@ -4,7 +4,8 @@
 
 <meta name="generator" content="HTML Tidy, see www.w3.org" /><title>Scripting in CoffeeMud 5.9</title>
 
-<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head><body>
+<link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-05-05, fix validation problems, add index, and fix spelling errors --><!-- Modified by Josh Mueller, 2006-05-06, add close_prog, lock_prog, unlock_prog, open_prog --></head>
+<body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
 <tbody>
@@ -41,7 +42,7 @@
 <li><a href="#fight_prog">fight_prog</a></li>
 <li><a href="#function_prog">function_prog</a></li>
 <li><a href="#get_prog">get_prog</a></li>
-<li><a href="#give_prog">give_prog</a></li>
+<li><a href="#give_prog">give_prog</a></li><li><a href="#giving_prog">giving_prog</a></li>
 <li><a href="#greet_prog">greet_prog</a></li>
 <li><a href="#hitprcnt_prog">hitprcnt_prog</a></li>
 <li><a href="#imask_prog">imask_prog</a></li>
@@ -1067,7 +1068,53 @@ have the mob use the mpjunk command to get rid of the object given so
 people cannot steal the item back and use it again. It does depend on
 what you are doing of course, but it is something to keep in mind. It
 is also not a bad idea to have a give_prog all to have the mob drop
-items other than the ones it will accept in other give_progs.</p>
+items other than the ones it will accept in other give_progs.</p><h3><a name="giving_prog">giving_prog</a></h3>
+<p>Usage:</p>
+<pre>give_prog [keyword list]<br />give_prog p [keyword list]<br />give_prog all<br /></pre>
+<p>This type of mobprog is
+triggered by the mob giving someone an
+object. If the object given to the mob matches the keywords of the
+give_prog, the prog is triggered. If there is a &#8216;p' placed
+before
+the keyword list, the keywords of the object must exactly match that of
+the give_prog. If there is not, then any object with any of the
+keywords in the list in it will trigger it. If a giving_prog all is
+used,
+then the giving_prog will trigger from any object at all being given to
+anyone by the mob. This type of prog is usually used for in-zone quests
+and
+special mob behavior, and has a variety of uses.</p>
+<p>EXAMPLES:</p>
+<pre>giving_prog orange apple banana<br /></pre>
+<p>This will trigger if the
+mob gives an object that&nbsp; has any of
+the keywords orange, apple, or banana. This means that it would be
+triggered by giving a banana, an apple pie, or even an orange
+shield.)</p>
+<pre>giving_prog p apple pie delicious<br /></pre>
+<p>This will trigger if the
+mob gives an object that&nbsp; has the exact
+keywords apple pie delicious. The prog would not be triggered by
+giving&nbsp; an object with keywords red apple or blackberry pie or
+anything
+except the exact order and wording of the keyword list.</p>
+<pre>give_prog all<br /></pre>
+<p>This will trigger if any
+object is being given by the mob</p>
+<p>MULTIPLE PROGS: You can
+have more than one giving_prog on a mob.
+Generally it is best not to have giving_progs with the same keywords in
+them, unless they are a giving_prog p with different keyword lists but
+some of the same keywords &#8211; for example a giving_prog p apple
+red
+juicy and a give_prog p apple red poisoned.</p>
+<p>SPECIAL NOTES: More often
+than not, you'll want to remember to
+have the mob use the mpjunk command to get rid of the object given so
+people cannot steal the item back and use it again. It does depend on
+what you are doing of course, but it is something to keep in mind. It
+is also not a bad idea to have a giving_prog all to have the mob drop
+items other than the ones it will accept in other giving_progs.</p>
 <h3><a name="greet_prog">greet_prog</a></h3>
 <p>Usage:</p>
 <pre>greet_prog [integer percentage]<br /></pre>
@@ -1633,8 +1680,8 @@ said. Note that punctuation counts, although you don't *have* to use it.</p>
 <p>MULTIPLE PROGS: You can
 have more than one speak_prog on a
 mob. It is generally not a good idea to have more than one speak_prog
-be triggered by the same expression.</p><p />
-<h3><a name="speech_prog">speech_prog</a></h3>
+be triggered by the same expression.</p><p>
+</p><h3><a name="speech_prog">speech_prog</a></h3>
 <p>Usage:</p>
 <pre>speech_prog [trigger message]<br />speech_prog p [trigger message]<br /></pre>
 <p>This type of mobprog is
