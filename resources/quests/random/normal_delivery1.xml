@@ -171,7 +171,7 @@ settable vars:
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I wish to reward $:p_target_name with $target_item_name for reasons.</STRING>
+			<STRING>I wish to reward $p_target_name with $target_item_name for reasons.</STRING>
 			<STRING>I owe ${target_name} $target_item_name for their assistance to me.</STRING>
 			<STRING>I owe ${target_name} $target_item_name for saving my life.</STRING>
 			<STRING>${c:p_target_name} forgot to pick up $target_item_name this week.</STRING>
@@ -189,7 +189,7 @@ settable vars:
 			<STRING>${c:p_target_name} lost $target_item_name and so I need your help.</STRING>
 			<STRING>${c:p_target_name} left ${target_item_name} here.</STRING>
 			<STRING>${c:p_target_name} can't find ${target_item_name} and I found it.</STRING>
-			<STRING>${c:target_item_name} was dropped by $:p_target_name, and needs returned.</STRING>
+			<STRING>${c:target_item_name} was dropped by $p_target_name, and needs returned.</STRING>
 		</STRING>
 	</STRING>
 
@@ -197,10 +197,10 @@ settable vars:
 		<STRING define="quest_delivered">$quest_generic_delivered_speeches</STRING>
 		<STRING define="quest_hellospeech">$quest_generic_hello_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I need $target_item_name delivered to $:p_target_name.</STRING>
+			<STRING>I need $target_item_name delivered to $p_target_name.</STRING>
 			<STRING>I need ${target_name} to be given $target_item_name.</STRING>
 			<STRING>I need ${target_name} be have $target_item_name brought to them.</STRING>
-			<STRING>${c:target_item_name} needs to be delivered to $:p_target_name.</STRING>
+			<STRING>${c:target_item_name} needs to be delivered to $p_target_name.</STRING>
 		</STRING>
 	</STRING>
 
