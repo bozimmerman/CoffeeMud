@@ -360,7 +360,7 @@ vars:
 	</STRING>
 
 	<STRING ID="target_int" SELECT="any-1" DEFINE="target_int">
-		<STRING>${SELECT:intelligence from $target}</STRING>
+		<STRING>${SELECT:current_intelligence from $target}</STRING>
 	</STRING>
 	
 	<STRING ID="level_range" SELECT="any-1" DEFINE="level_range" MERGE=true>
