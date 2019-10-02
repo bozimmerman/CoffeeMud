@@ -1,6 +1,6 @@
 #!QUESTMAKER_START_SCRIPT Competitive Delivery #1
 #The player delivers a custom-Item from one existing mob in your world
-#to another.  A reward is given upon delivery.
+#to one or more others.  A reward is given upon delivery.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
@@ -101,6 +101,12 @@
 #be started.
 #$DELIVEREE_NAME=$NAME
 #
+#Number of deliverings
+#specify the number of the deliverable items must be delivered to mobs
+#matching the deliveree.  The announcer will give the player the correct
+#number of items to delivery.
+#$DELIVEREE_COUNT=($STRING)=1
+#
 #Deliveree response: 
 #You may optionally specify some additional bit of speech the deliveree 
 #mob will say to the players after the item is handed over. 
@@ -171,8 +177,7 @@ set item
 
 set area $DELIVEREE_AREA
 set room $DELIVEREE_ROOM
-set mobgroup
-set mob $DELIVEREE_NAME
+set mobgroup $DELIVEREE_NAME
 give stat keyplayer true
 give script LOAD=$QUEST_ID_deliveree.script
 
@@ -219,17 +224,29 @@ SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to d
 SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if has($i '$[1 *]') and !has($n '$[1 *]')
-	#			mpoload '$[1 *]'
-				give "$[1 *]" "$n"
-				sayto "$n" Please deliver this to ${2 *}.  $REASONING
+			if !has($n '$[1 *]')
+				if EVAL($DELIVEREE_COUNT > 1)
+					for $0 = 0 to< $DELIVEREE_COUNT
+						if !has($i '$[1 *]')
+							mpoload '$[1 *]'
+							MPQSET * QUESTOBJ $b
+						endif
+						give "$[1 *]" "$n"
+					next 
+					sayto "$n" Please deliver these to $DELIVEREE_COUNT ${2 *}.  $REASONING
+				else
+					if !has($i '$[1 *]')
+						mpoload '$[1 *]'
+						MPQSET * QUESTOBJ $b
+					endif
+					give "$[1 *]" "$n"
+					sayto "$n" Please deliver this to ${2 *}.  $REASONING
+				endif 
 				mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
 				mpqset * REMAINING $DURATION
 				mpqset * STATISTICS ACCEPTED
 			else
-				if has($n '$[1 *]')
-					sayto "$n" Yes, I know.  Now deliver it to ${2 *}.
-				endif
+				sayto "$n" Yes, I know.  Now deliver it to ${2 *}.
 			endif
 		endif
 	endif
@@ -253,7 +270,7 @@ QUEST_TIME_PROG * 1
 <FILE><NAME>$QUEST_ID_deliveree.script</NAME>
 <DATA>
 GREET_PROG 100
-	if eval('$[1 *]' != '') AND has($n '$[1 *]')
+	if eval('$[1 *]' != '') AND has($n '$[1 *]') and !STRCONTAINS('$<$n QUEST_DELIVERED>' $@i)
 		say "$n" Ah, I see you are here to deliver $[1 *].  Go ahead and give it to me.
 	endif
 ~
@@ -266,6 +283,20 @@ GIVE_PROG all
 			give "$o" "$n"
 		else
 			if EVAL($o == '$[1 *]')
+				if EVAL($DELIVEREE_COUNT > 1) 
+					if !STRCONTAINS('$<$n QUEST_DELIVERED>' $@i)
+						mpsetvar $n QUEST_DELIVERED ' $<$n QUEST_DELIVERED>  "$@i" '
+						if EVAL('$<$n QUEST_DELIVERED>.LENGTH#' < $DELIVEREE_COUNT)
+							mpjunk $o
+							sayto "$n" $DELIVER_RESPONSE
+							mpechoat $n That's $<$n QUEST_DELIVERED>.LENGTH# / $DELIVEREE_COUNT
+							return
+						endif
+					else
+						give $o $n
+						return
+					endif
+				endif
 				if EVAL('$EXP' != '')
 					mpexp $n $EXP
 				endif

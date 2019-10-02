@@ -1920,10 +1920,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(back.charAt(1)=='$')
 					back=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,back);
-				if(back.equalsIgnoreCase(".LENGTH#"))
+				if(back.startsWith(".LENGTH#"))
 				{
 					middle=""+CMParms.parse(middle).size();
-					back="";
+					back=back.substring(8);
 				}
 				else
 				if((back.length()>1)&&Character.isDigit(back.charAt(1)))
