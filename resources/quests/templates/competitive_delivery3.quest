@@ -1,6 +1,6 @@
-#!QUESTMAKER_START_SCRIPT Competitive Delivery #1
+#!QUESTMAKER_START_SCRIPT Competitive Delivery #3
 #The player delivers a custom-Item from one existing mob in your world
-#to one or more others.  A reward is given upon delivery.
+#to one or more others that you create.  A reward is given upon delivery.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
@@ -78,52 +78,50 @@
 #!QUESTMAKER_PAGE Specify the Deliveree
 #The Deliveree is the mob to which the item will be delivered. 
 #
-#Deliveree Area/Room: 
-#Specify below the name of the area that your deliveree mob will be located
-#in and/or the room in which the mob can be found.  You may leave both blank
-#to force the quest manager to find the mob somewhere in the world, but this
-#will hurt the performance of your mud, so use with care.  
-#Use double-quotes around multi-word areas and room ids/names.
+#Deliveree mobs: 
+#Specify the names of the mob who will act as the deliveree mobs.  
+#Use double-quotes around multi-word names.
+
+#Specify below the name of the area that your deliveree mob or mobs will be created
+#in and/or the rooms in which the mob or mobs will be created.  You may leave both blank
+#to force the quest manager to create the mobs randomly throughout the world if you like.
+#Use double-quotes around multi-word areas and room ids/names.  
 #
 #Deliveree Area:
 #$DELIVEREE_AREA=($AREA)
-#Deliveree Room:
+#Deliveree Room(s):
 #$DELIVEREE_ROOM=($ROOMID)
 #
-#Deliveree mobs names: 
-#Specify the names of the mob who will act as the deliveree mobs.  
-#Use double-quotes around multi-word names.
-#If you specified an area or room above, then the mob must be located there. 
-#You may optionally have the quest manager select a 'random' mob by entering
-#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
-#ZAPPERMASKS for information on zapper mask syntax).
-#Remember, if the quest manager can not find your mobs, the quest will not
-#be started.
-#$DELIVEREE_NAME=$NAME
+#Deliveree mobs: 
+#Specify the mobs who will act as the deliveree mob or mobs.  You might want to mix things
+#up by making them mobile.
+#$DELIVEREE_MOBS=$MOBXML_ONEORMORE
 #
-#!QUESTMAKER_PAGE Specify the Deliveree Mob details
-#The Deliveree Mobs are the mobs the player must find and deliver the item to.
-#Here you can specify how many of deliverees and what they say.e
+#Num Mobs created:
+#Specify how many of the above mobs will be created for the quest.  If this number is larger than
+#the number of mobs available, duplicates will be made.  If it is smaller, the choices will be random
+#from the list.
+#$DELIVEREES_CREATED=($EXPRESSION)=10
 #
-#Number of deliverings
+#Num Deliverees:
 #specify the number of the deliverable items must be delivered to mobs
 #matching the deliveree.  The announcer will give the player the correct
 #number of items to deliver.
-#$DELIVEREE_COUNT=($STRING)=1
-#
-#Deliveree response: 
-#You may optionally specify some additional bit of speech the deliveree 
-#mob will say to the players after the item is handed over. 
-#$DELIVER_RESPONSE=($LONG_STRING)=Thank you.
+#$DELIVEREE_COUNT=($EXPRESSION)=1
 #
 #!QUESTMAKER_PAGE Deliverable item
 #Create the item which the deliverer mob will give to the player to 
-#be taken and given to the deliveree mob.  
+#be taken and given to the deliveree mobs.  
 #
 #Deliverable Item: 
 #You may select from the available items below or create a 
 #new item just for this quest.
 #$DELIVERABLE_ITEM=$ITEMXML
+#
+#Deliveree response: 
+#You may optionally specify some additional bit of speech the deliveree 
+#mob will say to the players after the item is handed over. 
+#$DELIVER_RESPONSE=($LONG_STRING)=Thank you.
 #
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for delivering the item:
@@ -153,7 +151,7 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#!QUESTMAKER_END_SCRIPT Competitive Delivery #1
+#!QUESTMAKER_END_SCRIPT Competitive Delivery #3
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -180,9 +178,13 @@ set mob
 set item
 
 set area $DELIVEREE_AREA
-set room $DELIVEREE_ROOM
-set mobgroup $DELIVEREE_NAME
-give stat keyplayer true
+set roomgroup $DELIVEREE_ROOM
+set mobgroup
+set mob
+set room
+import mobs $QUEST_ID_mobs.xml
+load mobgroup $DELIVEREES_CREATED any
+set mob
 give script LOAD=$QUEST_ID_deliveree.script
 
 set duration $DURATION
@@ -190,6 +192,7 @@ set duration $DURATION
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_item.xml</NAME><DATA><ITEMS>$DELIVERABLE_ITEM</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_mobs.xml</NAME><DATA><MOBS>$DELIVEREE_MOBS</MOBS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_deliverer.script</NAME>
 <DATA>
 ONCE_PROG 100
@@ -267,7 +270,6 @@ GIVE_PROG all
 <FILE><NAME>$QUEST_ID_deliverable.script</NAME>
 <DATA>
 QUEST_TIME_PROG * 1
-	mpechoat $w You have less than a minute left to deliver $i.
 ~
 
 </DATA></FILE>
@@ -354,6 +356,10 @@ QUEST_TIME_PROG * -1
 		mpechoat $i The quest '$QUEST_NAME' has ended
 	endif
 	mpqset * STATISTICS FAILED
+~
+
+QUEST_TIME_PROG * 1
+	mpechoat $w You have less than a minute left to complete your deliveries.
 ~
 
 RAND_PROG 99

@@ -270,6 +270,14 @@ ENTRY_PROG 100
 ONCE_PROG 100
     mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
 ~
+
+QUEST_TIME_PROG * -1
+	if !QUESTWINNER($i *)
+		mpechoat $i The quest '$QUEST_NAME' has ended
+	endif
+	mpqset * STATISTICS FAILED
+~
+
 RAND_PROG 99
     if QVAR(* REMAINING == '')
         MPENDQUEST $i
