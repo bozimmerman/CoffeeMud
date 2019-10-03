@@ -1,6 +1,6 @@
 #!QUESTMAKER_START_SCRIPT Normal Collect #4
 #An existing mob in your world needs one or more items which you will create brought back to him/her. 
-#The items will be scattered among rooms or areas which you will designate.
+#The items will have to be obtained from your existing world, or generated with common skills.
 #A reward is given upon completion of the task and returning the items to the announcer.
 #
 #!QUESTMAKER_PAGE Quest Name/Criteria
