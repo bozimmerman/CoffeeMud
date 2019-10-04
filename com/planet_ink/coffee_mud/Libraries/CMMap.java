@@ -2346,8 +2346,14 @@ public class CMMap extends StdLibrary implements WorldMap
 				continue;
 			sR=M.getStartRoom();
 			if((sR!=null)
-			&&(!sR.roomID().equals(R.roomID())))
-				return false;
+			&&(sR != R)
+			&&(!sR.roomID().equals(R.roomID()))
+			&&(!sR.amDestroyed()))
+			{
+				CMLib.tracking().wanderAway(M, false, true);
+				if(M.location()==R)
+					return false;
+			}
 			if(M.session()!=null)
 				return false;
 		}
