@@ -193,6 +193,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						if(M!=null)
 							safePlayerMOBMove(M,childA,M.getStartRoom());
 					}
+					Log.debugOut("Auto-Gen Instance "+name()+" expires with "+propRooms.size()+" rooms");
 					for(final Iterator<Room> r=propRooms.iterator();r.hasNext();)
 					{
 						final Room R=r.next();
@@ -559,8 +560,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					final List<XMLTag> pieces = CMLib.percolator().getAllChoices(piece.tag(), piece, definedIDs);
 					if(pieces.size()>0)
 						piece=pieces.get(CMLib.dice().roll(1, pieces.size(), -1));
-//TODO: fix this
-//FIXME: this can maybe pick town.
+					//FIXME: this can maybe pick town.
 					if(!definedIDs.containsKey("THEME"))
 					{
 						final Map<String,String> unfilled = CMLib.percolator().getUnfilledRequirements(definedIDs,piece);
