@@ -73,8 +73,11 @@ vars:
 		<STRING>${SELECT:level from $source}</STRING>
 	</STRING>
 
+	<STRING ID="item_level" define="item_level">
+		<STRING>${SELECT:level from $source}</STRING>
+	</STRING>
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
-	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">SELECT: ANY\. FROM $dungeon_junk WHERE level &lt;= $source_level</OBJECT>
+	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">SELECT: ANY\. FROM $item_junk WHERE level &lt;= $source_level</OBJECT>
 
 	<STRING ID="quest_fightspeech" PREDEFINE="reason=$reason" SELECT="Any">
 		<STRING CONDITION="$aggression='YES'">$quest_fightspeech</STRING>

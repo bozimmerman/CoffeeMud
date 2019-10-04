@@ -350,7 +350,7 @@ settable vars:
 			<STRING condition="$source_align &lt; -5000">I have a $adj_useful plan to take over $source_area_name and it involves ${target_name}!</STRING>
 			<STRING>I have a $adj_useful plan regarding the future of $source_area_name and I need ${target_name}!</STRING>
 			<STRING>${c:target_name} needs to be reminded to bring $any_instrument_name to the meeting today!</STRING>
-			<STRING>${c:target_name} is late for our study of $any_dungeon_junk_name!</STRING>
+			<STRING>${c:target_name} is late for our study of $any_item_junk_name!</STRING>
 			<STRING>${c:target_name} is late for our daily discussion of $source_area_name lore and history.</STRING>
 		</STRING>
 	</STRING>
@@ -369,7 +369,7 @@ settable vars:
 			<STRING>${c:target_name} is supposed to be here to explain some things to me.</STRING>
 			<STRING>It's time for my lessons with ${target_name}.</STRING>
 			<STRING>${c:target_name} is supposed to teach me about $source_area_name today.</STRING>
-			<STRING>${c:target_name} is supposed to teach me about $any_dungeon_junk_name today.</STRING>
+			<STRING>${c:target_name} is supposed to teach me about $any_item_junk_name today.</STRING>
 			<STRING>${c:target_name} is supposed to tell me about their jobs today.</STRING>
 			<STRING>${c:target_name} promised to teach me how to play $any_instrument_name.</STRING>
 		</STRING>
@@ -390,7 +390,7 @@ settable vars:
 			<STRING>I wish to give ${target_name} a gift.</STRING>
 			<STRING>I wish to play my $any_instrument_name for ${target_name}.</STRING>
 			<STRING>I want to help out ${target_name}.</STRING>
-			<STRING>I need to see if $any_dungeon_junk_name fits ${target_name}.</STRING>
+			<STRING>I need to see if $any_item_junk_name fits ${target_name}.</STRING>
 			<STRING CONDITION="$target_int &lt; 5">It's feeding time for ${target_name}.</STRING>
 			<STRING CONDITION="$target_int &gt; 4">I've prepared a thank-you meal for ${target_name}.</STRING>
 		</STRING>
@@ -409,7 +409,7 @@ settable vars:
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>${c:target_name} and I are playing ${any_instrument_name} in the $source_area orchestra today.</STRING>
 			<STRING>I need ${target_name}'s help with an important project.</STRING>
-			<STRING>I want ${target_name} brought here to help make ${any_dungeon_junk_name} for $source_area.</STRING>
+			<STRING>I want ${target_name} brought here to help make ${any_item_junk_name} for $source_area.</STRING>
 			<STRING>${c:target_name} and I are parading around $source_area with our ${any_instrument_name} today.</STRING>
 			<STRING>I fear an invasion of $source_area_name and need ${target_name} brought here to help with defense.</STRING>
 			<STRING>A fire has broken out in $source_area_name and we need ${target_name} here immediately to put it out!</STRING>
@@ -430,7 +430,7 @@ settable vars:
 			<STRING>${c:target_name} must come here at once to serve me.</STRING>
 			<STRING>${c:target_name} must report to me.</STRING>
 			<STRING>I want ${target_name} to come play $any_instrument_name for me.</STRING>
-			<STRING>${c:target_name} needs to come help me use my $any_dungeon_junk_name.</STRING>
+			<STRING>${c:target_name} needs to come help me use my $any_item_junk_name.</STRING>
 			<STRING>I need ${target_name} for an important job.</STRING>
 		</STRING>
 	</STRING>
@@ -452,7 +452,7 @@ settable vars:
 			<STRING CONDITION="$source_class='Mage' or $source_class='Necromancer'">I need to draw out the soul of ${target_name} for my magic.</STRING>
 			<STRING>${c:target_name} is not here, so I can't $hurt_verb ${target_himher}.</STRING>
 			<STRING>${c:target_name} makes me $adj_feeling_bad, and I must make ${target_himher} $adj_feeling_bad.</STRING>
-			<STRING>${c:target_name} is going to feel the business end of ${any_dungeon_junk_name} for what ${target_heshe} has done.</STRING>
+			<STRING>${c:target_name} is going to feel the business end of ${any_item_junk_name} for what ${target_heshe} has done.</STRING>
 		</STRING>
 	</STRING>
 	<STRING ID="reason_wedotoeachother" SELECT="All">
@@ -473,6 +473,8 @@ settable vars:
 			<STRING>I feel like engaging in a $adj_feeling_good ${target_name} ${hurt_verb}ing.</STRING>
 		</STRING>
 	</STRING>
+
+	<STRING ID="item_level" define="item_level">$target_level</STRING>
 
 	<STRING ID="aggression" DEFINE="aggression" SELECT="Pick-1">
 		<STRING PICKWEIGHT=50>NO</STRING>
