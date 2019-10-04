@@ -96,23 +96,24 @@
 			<FONT COLOR=YELLOW><H3>Select a Template</H3></FONT>
 			<FONT COLOR=WHITE>
 			Welcome to the QuestMaker Wizard.  Your first step is to select
-			a template upon which to base your new Quest.<P>
-			Competitive quests
-			are quests that have a set duration, and where the goals
-			can be attempted by multiple players, but only one player may
-			prevail for any one given run of the quest, and the losers will have
-			to wait for the next run.  These are best for world events.
-			<P>
-			Normal quests are quests where each player can independently
-			acquire and complete the quest at their leisure.
-			<P>
+			a template upon which to base your new Quest. Competitve 
+			quests are quests where players compete to complete it, while
+			Normal quests are independently completed by players. 
 			After you've made a selection, click NEXT at the bottom.
+			<P>
+			Template type:
 			</FONT>
-			<P><FONT COLOR=White>Template type:</FONT>
 			<SELECT NAME="QUEST_TEMPLATE_FILTER" ONCHANGE="Refresh();" >
 				<OPTION VAlUE="" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=@SELECTED@endif@>All
-				<OPTION VAlUE="Normal*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=Normal*@SELECTED@endif@>Normal
-				<OPTION VAlUE="Competitive*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=Competitive*@SELECTED@endif@>Competitive
+				<OPTION VAlUE="Normal*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=Normal*@SELECTED@endif@>All Normal
+				<OPTION VAlUE="Competitive*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=Competitive*@SELECTED@endif@>All Competitive
+				<OPTION VAlUE="*Capture*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Capture*@SELECTED@endif@>All Capture
+				<OPTION VAlUE="*Collect*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Collect*@SELECTED@endif@>All Collect
+				<OPTION VAlUE="*Delivery*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Delivery*@SELECTED@endif@>All Delivery
+				<OPTION VAlUE="*Escort*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Escort*@SELECTED@endif@>All Escort
+				<OPTION VAlUE="*Killer*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Killer*@SELECTED@endif@>All Killer
+				<OPTION VAlUE="*Mystery*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Mystery*@SELECTED@endif@>All Mystery
+				<OPTION VAlUE="*Travel*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Travel*@SELECTED@endif@>All Travel
 			</SELECT><BR>
 			<HR>
 		@else@
