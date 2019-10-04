@@ -94,7 +94,7 @@ ${SELECT:any\name from (SELECT: . from $item_junk)}
 	<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} shard" display="$item_name lies here" material="$any_cheap_metal" level="$item_level" weight=3  damage="1"/>
 	<ITEM class="GenItem" name="(a(n)) ${l:item_material} crate" display="$item_name is sitting here" material="$any_wood" level="$item_level"  weight=3/>
 	<ITEM class="GenItem" name="a short length of ${l:item_material} wire" display="$item_name lies here" material="$any_cheap_metal" level="$item_level" weight=1 />
-	<ITEM class="GenItem" name="(a(n)) $adj_cloth_broken bedroll" display="$item_name lies here" material="$any_cheap_cloth" level="$item_level"  weight=1/>
+	<ITEM class="GenItem" name="(a(n)) ${l:item_material} bedroll" display="$item_name lies here" material="$any_cheap_cloth" level="$item_level"  weight=1/>
 	<ITEM class="GenItem" name="(a(n)) ${l:item_material} locket" display="$item_name lies here" material="$any_cheap_metal" level="$item_level" weight=1 />
 	<ITEM class="GenLiquidResource" name="a glob of blood"  display="$item_name is here" material="BLOOD" level="$item_level"  weight=1 LIQUIDHELD=1 />
 	<ITEM class="metacraft:any-Cooking &lt; $item_level" name="some rotten $item_name" display="$item_name sits here" weight=1 description="It looks rotten and half-eaten."><AFFECT class="Poison_Rotten" parms="" /></ITEM>
