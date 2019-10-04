@@ -69,7 +69,7 @@ public class Paladin extends StdCharClass
 	@Override
 	public String getMovementFormula()
 	{
-		return "12*((@x2<@x3)/18)";
+		return "7*((@x2<@x3)/18)";
 	}
 
 	@Override

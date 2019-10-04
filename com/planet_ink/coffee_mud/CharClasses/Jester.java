@@ -69,7 +69,7 @@ public class Jester extends StdCharClass
 	@Override
 	public String getMovementFormula()
 	{
-		return "16*((@x2<@x3)/18)";
+		return "7*((@x2<@x3)/18)";
 	}
 
 	@Override

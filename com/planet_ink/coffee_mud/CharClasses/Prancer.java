@@ -57,7 +57,7 @@ public class Prancer extends StdCharClass
 	@Override
 	public String getMovementFormula()
 	{
-		return "18*((@x2<@x3)/18)";
+		return "8*((@x2<@x3)/18)";
 	}
 
 	@Override

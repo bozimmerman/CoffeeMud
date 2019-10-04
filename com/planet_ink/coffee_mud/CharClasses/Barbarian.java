@@ -94,7 +94,7 @@ public class Barbarian extends StdCharClass
 	@Override
 	public String getMovementFormula()
 	{
-		return "13*((@x2<@x3)/18)";
+		return "8*((@x2<@x3)/18)";
 	}
 
 	@Override
