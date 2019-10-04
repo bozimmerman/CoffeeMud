@@ -88,7 +88,7 @@ See guides/RandomAreas.html for information about documents of this type.
 ${SELECT:any\name from (SELECT: . from $item_junk)}
 </string>
 
-<ITEM id="iten_junk" select="all"  requires="item_level=int">
+<ITEM id="item_junk" select="all"  requires="item_level=int">
 	<ITEM class="GenItem" name="a string of tiny prayer bones" display="a string of tiny prayer bones lie here" material="BONE" level="$item_level" weight=1 />
 	<ITEM class="GenEmptyDrink" name="a small clay jug" display="$item_name lies here" material="CLAY" level="$item_level" liquidheld=100 weight=3 />
 	<ITEM class="GenWeapon" name="(a(n)) ${l:item_material} shard" display="$item_name lies here" material="$any_cheap_metal" level="$item_level" weight=3  damage="1"/>
