@@ -545,6 +545,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	{
 		String replaceName=(finalRecipe.get(RCP_MAININGR));
 		boolean rotten = false;
+		final Item buildingI;
 		if(contents!=null)
 		{
 			for(int v=0;v<contents.size();v++)
@@ -596,6 +597,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		if(foodType.equalsIgnoreCase("FOOD"))
 		{
 			buildingI=CMClass.getItem("GenFood");
+			this.buildingI=buildingI;
 			final Food food=(Food)buildingI;
 			if(requireFire())
 			{
@@ -767,6 +769,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		if(foodType.equalsIgnoreCase("DRINK"))
 		{
 			buildingI=CMClass.getItem("GenLiquidResource");
+			this.buildingI=buildingI;
 			//building.setMiscText(cooking.text());
 			//building.recoverPhyStats();
 			buildingI.setName((messedUp?"spoiled ":"")+finalDishName);
@@ -844,6 +847,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		if(CMClass.getItem(foodType)!=null)
 		{
 			buildingI=CMClass.getItem(foodType);
+			this.buildingI=buildingI;
 			final String ruinWord=(buildingI instanceof Drink)?"spoiled ":(requireFire()?"burnt ":"ruined ");
 			buildingI.setName(((messedUp)?ruinWord:"")+finalDishName);
 			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?ruinWord:""),finalDishName));
@@ -881,6 +885,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		else
 		{
 			buildingI=CMClass.getItem("GenResource");
+			this.buildingI=buildingI;
 			if(messedUp)
 				buildingI.setMaterial(RawMaterial.RESOURCE_DUST);
 			else
