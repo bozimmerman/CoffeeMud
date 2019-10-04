@@ -11230,7 +11230,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								&&thisRoom.okMessage(follower,leaveMsg)
 								&&newRoom.okMessage(follower,enterMsg))
 								{
-									final boolean alreadyHere = follower.location()==thisRoom;
+									final boolean alreadyHere = follower.location()==(Room)enterMsg.target();
 									if(follower.isInCombat())
 									{
 										CMLib.commands().postFlee(follower,("NOWHERE"));
