@@ -73,7 +73,7 @@ vars:
 
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
 	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
-		<OBJECT condition="$target_int &gt; 2">SELECT: ANY\. FROM $dungeon_junk</OBJECT>
+		<OBJECT condition="$target_int &gt; 2">SELECT: ANY\. FROM $dungeon_junk WHERE level &lt;= $source_level</OBJECT>
 		<OBJECT condition="$target_int &lt;= 2">SELECT: ANY\. from $target\resources</OBJECT>
 	</OBJECT>
 
@@ -308,6 +308,10 @@ vars:
 	
 	<OBJECT ID="source_room" DEFINE="source_room">SELECT: . FROM $source\room</OBJECT>
 	
+	<STRING ID="source_level" SELECT="any-1" DEFINE="source_level">
+		<STRING>${SELECT:level from $source}</STRING>
+	</STRING>
+
 	<OBJECT ID="source" SELECT="Pick-1" DEFINE="source">
 		<OBJECT PICKWEIGHT=99999 CONDITION="'${SELECT: name FROM mob}' != ''">SELECT: . FROM mob</OBJECT>
 		<OBJECT pickweight=55555 condition="$sourcename != ''" and '${SELECT: name FROM mob}' = ''>SELECT: . FROM $source_area\npcs WHERE name = $sourcename</OBJECT> 

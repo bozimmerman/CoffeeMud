@@ -69,8 +69,12 @@ vars:
 
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
 
+	<STRING ID="source_level" SELECT="any-1" DEFINE="source_level">
+		<STRING>${SELECT:level from $source}</STRING>
+	</STRING>
+
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
-	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">SELECT: ANY\. FROM $dungeon_junk</OBJECT>
+	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">SELECT: ANY\. FROM $dungeon_junk WHERE level &lt;= $source_level</OBJECT>
 
 	<STRING ID="quest_fightspeech" PREDEFINE="reason=$reason" SELECT="Any">
 		<STRING CONDITION="$aggression='YES'">$quest_fightspeech</STRING>
