@@ -2324,6 +2324,22 @@ public class StdAbility implements Ability
 	}
 
 	@Override
+	public void unlearn(final MOB student)
+	{
+		if(student == null)
+			return;
+		final Ability A=student.fetchAbility(ID());
+		if(A==this)
+			student.delAbility(this);
+		final Ability eA=student.fetchEffect(ID());
+		if(eA!=null)
+		{
+			eA.unInvoke();
+			student.delEffect(eA);
+		}
+	}
+
+	@Override
 	public void practice(final MOB teacher, final MOB student)
 	{
 		if(student.getPractices()<practicesToPractice(student))

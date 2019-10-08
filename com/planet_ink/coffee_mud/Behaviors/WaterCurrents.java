@@ -527,6 +527,11 @@ public class WaterCurrents extends ActiveTicker
 		}
 
 		@Override
+		public void unlearn(final MOB student)
+		{
+		}
+
+		@Override
 		public void practice(final MOB teacher, final MOB student)
 		{
 		}

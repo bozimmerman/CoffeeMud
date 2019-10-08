@@ -461,6 +461,18 @@ public class Studying extends CommonSkill implements AbilityContainer
 		}
 	}
 
+	@Override
+	public void unlearn(final MOB student)
+	{
+		if(student == null)
+			return;
+		final Studying studyA=(Studying)student.fetchEffect(ID());
+		if(studyA!=null)
+			studyA.delAllAbilities();
+		delAllAbilities();
+		super.unlearn(student);
+	}
+
 	public void confirmSkills(final MOB mob)
 	{
 		final Studying studyA=(Studying)mob.fetchEffect(ID());

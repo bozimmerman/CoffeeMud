@@ -1391,13 +1391,7 @@ public class Spell_Wish extends Spell
 						final Ability myA=((MOB)target).fetchAbility(A.ID());
 						if(myA!=null)
 						{
-							((MOB)target).delAbility(myA);
-							final Ability eA=target.fetchEffect(myA.ID());
-							if(eA!=null)
-							{
-								eA.unInvoke();
-								target.delEffect(eA);
-							}
+							myA.unlearn((MOB)target);
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 has forgotten @x2!",target.name(),A.name()));
 						}
 					}

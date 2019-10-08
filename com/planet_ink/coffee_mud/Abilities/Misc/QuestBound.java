@@ -287,6 +287,11 @@ public class QuestBound implements Ability
 	}
 
 	@Override
+	public void unlearn(final MOB student)
+	{
+	}
+
+	@Override
 	public void practice(final MOB teacher, final MOB student)
 	{
 	}

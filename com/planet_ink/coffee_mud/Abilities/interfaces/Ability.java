@@ -449,6 +449,14 @@ public interface Ability extends Environmental
 	public void practice(MOB teacher, MOB student);
 
 	/**
+	 * Un-learns this skill from the student.
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canBeTaughtBy(MOB, MOB)
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canBeLearnedBy(MOB, MOB)
+	 * @param student the un-learner of this skill
+	 */
+	public void unlearn(MOB student);
+
+	/**
 	 * Returns a string describing the requirements and qualifications that
 	 * are required to learn this skill.
 	 * @param mob the mob whose requirements must be tested
