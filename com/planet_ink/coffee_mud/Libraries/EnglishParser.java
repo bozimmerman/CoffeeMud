@@ -45,21 +45,25 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return "EnglishParser";
 	}
 
-	private final static String[]			PREPOSITIONS		= { "aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti",
-																	"around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between",
-																	"beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except",
-																	"excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus",
-																	"near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus",
-																	"regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "under",
-																	"underneath", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without" };
-	private final static String[]			ARTICLES			= { "a", "an", "all of", "some one", "a pair of", "a pile of", "one of", "all", "the", "some", "each" };
-	public static boolean[]					PUNCTUATION_TABLE	= null;
-	public final static char[]				ALL_CHRS			= "ALL".toCharArray();
-	public final static String[]			fwords				= { "calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf" };
-	public final static String[]			frwords				= { "calves", "halves", "knives", "lives", "wives", "elves", "selves", "shelves", "leaves", "sheaves", "thieves", "loaves", "wolves" };
-	public final static String[]			fnouns				= { "bison", "buffalo", "carpcod", "deer", "fish", "moose", "pike", "salmon", "sheep", "shrimp", "squid", "trout", "ore" };
-	public final static String[]			feewords1			= { "foot", "goose", "louse", "dormouse", "man", "mouse", "tooth", "woman", "ox", "child", "brother" };
-	public final static String[]			feewords2			= { "feet", "geese", "lice", "dormice", "men", "mice", "teeth", "women", "oxen", "children", "brethren" };
+	private final static String[]	PREPOSITIONS	=
+	{
+		"aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti",
+		"around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between",
+		"beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except",
+		"excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus",
+		"near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus",
+		"regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "under",
+		"underneath", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without"
+	}
+	;
+	public static boolean[]			PUNCTUATION_TABLE	= null;
+	private final static String[]	ARTICLES	= { "a", "an", "all of", "some one", "a pair of", "a pile of", "one of", "all", "the", "some", "each" };
+	public final static char[]		ALL_CHRS	= "ALL".toCharArray();
+	public final static String[]	fwords		= { "calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf" };
+	public final static String[]	frwords		= { "calves", "halves", "knives", "lives", "wives", "elves", "selves", "shelves", "leaves", "sheaves", "thieves", "loaves", "wolves" };
+	public final static String[]	fnouns		= { "bison", "buffalo", "carpcod", "deer", "fish", "moose", "pike", "salmon", "sheep", "shrimp", "squid", "trout", "ore" };
+	public final static String[]	feewords1	= { "foot", "goose", "louse", "dormouse", "man", "mouse", "tooth", "woman", "ox", "child", "brother" };
+	public final static String[]	feewords2	= { "feet", "geese", "lice", "dormice", "men", "mice", "teeth", "women", "oxen", "children", "brethren" };
 
 	public final static List<Environmental>	empty				= new ReadOnlyVector<Environmental>(1);
 
