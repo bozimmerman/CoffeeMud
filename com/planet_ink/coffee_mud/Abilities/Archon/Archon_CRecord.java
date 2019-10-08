@@ -364,16 +364,7 @@ public class Archon_CRecord extends ArchonSkill
 						buffer.append("--------------- start spot check ----------------\n\r");
 						final Command statC=CMClass.getCommand("STAT");
 						if(statC!=null)
-						{
-							try
-							{
-								buffer.append((String)statC.executeInternal(M, 0, "COMBAT", M));
-							}
-							catch (final IOException e)
-							{
-								buffer.append(e.getMessage());
-							}
-						}
+							buffer.append(CMLib.commands().getScore(M));
 						buffer.append("--------------- end spot check ----------------\n\r");
 					}
 				}
