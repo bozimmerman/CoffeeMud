@@ -748,6 +748,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			E.setName(newName);
 			if(E.displayText().toLowerCase().startsWith(oldName.toLowerCase()))
 				E.setDisplayText(newName+E.displayText().substring(oldName.length()));
+			if(E instanceof BoardableShip)
+				((BoardableShip)E).renameShip(newName);
 			return;
 		}
 		if((E instanceof Physical)&&(CMLib.flags().isCataloged(E)))

@@ -916,6 +916,11 @@ public class GrinderItems
 					return error;
 			}
 
+			if(!copyItem.Name().equals(I.Name()))
+			{
+				if(I instanceof BoardableShip)
+					((BoardableShip)I).renameShip(I.Name());
+			}
 			I.recoverPhyStats();
 			I.text();
 			if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
