@@ -362,9 +362,7 @@ public class Archon_CRecord extends ArchonSkill
 					{
 						final MOB M=(MOB)affected;
 						buffer.append("--------------- start spot check ----------------\n\r");
-						final Command statC=CMClass.getCommand("STAT");
-						if(statC!=null)
-							buffer.append(CMLib.commands().getScore(M));
+						buffer.append(CMLib.commands().getScore(M));
 						buffer.append("--------------- end spot check ----------------\n\r");
 					}
 				}
