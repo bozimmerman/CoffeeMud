@@ -68,7 +68,7 @@ pixie wand core	39	30	(onground:consumed:1:some pixie blood:)	750	GenItem				pro
 naga wand core	41	30	(onground:consumed:1:a strip of naga scales:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(armor-30)
 griffon wand core	43	30	(onground:consumed:1:some dirty griffon feathers:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(wis+2)
 nymph wand core	45	30	(onground:consumed:1:some nymph hair:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(cha+2)
-manitcore wand core	47	30	(onground:consumed:1:a pair of manticore horns:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(con+2)
+manticore wand core	47	30	(onground:consumed:1:A PAIR OF MANTICORE HORNS:)	1000	GenItem				*Prop_ItemSlotFiller;num=1 type=wandcore adds=prop_wearadjuster(con+2)
 minotaur wand core	49	30	(onground:consumed:1:a pair of minotaur horns:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(str+2)
 troll wand core	51	30	(onground:consumed:1:some troll blood:)	2500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(hit+75)
 centaur wand core	53	30	(onground:consumed:1:centaur mane:)	2500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(move+150)
