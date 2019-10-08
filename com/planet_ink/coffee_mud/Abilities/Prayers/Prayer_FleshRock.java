@@ -176,6 +176,15 @@ public class Prayer_FleshRock extends Prayer
 		}
 	}
 
+	private static final int[] allBreathe=new int[0];
+
+	@Override
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMob, affectableStats);
+		affectableStats.setBreathables(allBreathe);
+	}
+
 	@Override
 	public void unInvoke()
 	{

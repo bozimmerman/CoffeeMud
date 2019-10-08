@@ -149,9 +149,12 @@ public class Stone extends StdRace
 		affectedMOB.curState().setThirst(affectableState.getThirst());
 	}
 
+	private static final int[] allBreathe=new int[0];
+
 	@Override
-	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
+		affectableStats.setBreathables(allBreathe);
 		affectableStats.setStat(CharStats.STAT_GENDER,'N');
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+100);

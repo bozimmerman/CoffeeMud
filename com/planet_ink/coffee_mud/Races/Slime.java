@@ -136,9 +136,12 @@ public class Slime extends StdRace
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
 	}
 
+	private static final int[] allBreathe=new int[0];
+
 	@Override
-	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
+		affectableStats.setBreathables(allBreathe);
 		affectableStats.setStat(CharStats.STAT_GENDER,'N');
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 		affectableStats.setRacialStat(CharStats.STAT_WISDOM,1);
