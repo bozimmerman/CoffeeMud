@@ -135,11 +135,12 @@ public class Chant_Fertility extends Chant
 			return false;
 		if(ticking instanceof MOB)
 		{
+			final MOB mob=(MOB)ticking;
 			final Ability pregA=((MOB)ticking).fetchEffect("Pregnancy");
 			if(pregA != null)
 			{
 				final int numKids = CMath.s_int(pregA.getStat("NUMBABIES"));
-				if((CMLib.dice().roll(1, 10^(1+numKids), 0)==1)
+				if((CMLib.dice().roll(1, 300+(numKids*50)-(super.getXLEVELLevel(mob)*20), 0)==1)
 				&&(numKids<9)
 				&&(canBeUninvoked()))
 				{
