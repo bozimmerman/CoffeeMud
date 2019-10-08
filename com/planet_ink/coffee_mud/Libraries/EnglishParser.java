@@ -55,8 +55,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		"regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "under",
 		"underneath", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without"
 	};
-	public static boolean[]			PUNCTUATION_TABLE	= null;
-	private final static String[]	ARTICLES	= { "a", "an", "all of", "some one", "a pair of", "a pile of", "one of", "all", "the", "some", "each" };
+	public static boolean[]	PUNCTUATION_TABLE	= null;
+	public final static String[]	ARTICLES	= { "a", "an", "all of", "some one", "a pair of", "a pile of", "one of", "all", "the", "some", "each" };
 	public final static char[]		ALL_CHRS	= "ALL".toCharArray();
 	public final static String[]	fwords		= { "calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf" };
 	public final static String[]	frwords		= { "calves", "halves", "knives", "lives", "wives", "elves", "selves", "shelves", "leaves", "sheaves", "thieves", "loaves", "wolves" };
@@ -64,7 +64,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public final static String[]	feewords1	= { "foot", "goose", "louse", "dormouse", "man", "mouse", "tooth", "woman", "ox", "child", "brother" };
 	public final static String[]	feewords2	= { "feet", "geese", "lice", "dormice", "men", "mice", "teeth", "women", "oxen", "children", "brethren" };
 
-	public final static List<Environmental>	empty				= new ReadOnlyVector<Environmental>(1);
+	public final static List<Environmental>	empty	= new ReadOnlyVector<Environmental>(1);
 
 	@Override
 	public String toEnglishStringList(final String[] V)
