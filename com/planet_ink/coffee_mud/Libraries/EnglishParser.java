@@ -54,8 +54,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		"near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus",
 		"regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "under",
 		"underneath", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without"
-	}
-	;
+	};
 	public static boolean[]			PUNCTUATION_TABLE	= null;
 	private final static String[]	ARTICLES	= { "a", "an", "all of", "some one", "a pair of", "a pile of", "one of", "all", "the", "some", "each" };
 	public final static char[]		ALL_CHRS	= "ALL".toCharArray();
