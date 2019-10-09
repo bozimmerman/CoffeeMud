@@ -53,6 +53,7 @@
  51. New DEBUG options: SCRIPTVARS and SCRIPTTRACE
  52. Yet more questmaker templates: *_delivery3
  53. Prop_Unsellable has new arguments
+ 54. New command: NOSELL -- for marking items unsellable
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque
   2. New wainwrighting & smelting recipes

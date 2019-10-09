@@ -53,8 +53,8 @@ public class Prop_Unsellable extends Property
 	{
 		message=CMParms.getParmStr(newMiscText, "MESSAGE", L("You can't sell that."));
 		ambiance= CMParms.getParmStr(newMiscText, "AMBIANCE", null);
-		if((ambiance != null)&&(affected != null))
-			ambiance=L(ambiance,affected.name());
+		if((message != null)&&(affected != null))
+			message=L(message,affected.name());
 		dropOff = CMParms.getParmBool(newMiscText, "DROPOFF", false);
 		super.setMiscText(newMiscText);
 	}
@@ -72,33 +72,31 @@ public class Prop_Unsellable extends Property
 		if(!super.okMessage(myHost, msg))
 			return false;
 		final Physical affected=this.affected;
-		if((msg.target()==affected)
-		||((affected instanceof Container)
-			&&(msg.target() instanceof Item)
-			&&(((Item)msg.target()).ultimateContainer(affected)==affected)))
+		switch(msg.targetMinor())
 		{
-			switch(msg.targetMinor())
+		case CMMsg.TYP_SELL:
+			if((msg.tool()==affected)
+			||((affected instanceof Container)
+				&&(msg.tool() instanceof Item)
+				&&(((Item)msg.tool()).ultimateContainer(affected)==affected)))
 			{
-			case CMMsg.TYP_SELL:
-				{
-					msg.source().tell(message);
-					return false;
-				}
-			case CMMsg.TYP_DROP:
-				{
-					if(dropOff)
-					{
-						if(affected != null)
-						{
-							this.unInvoke();
-							affected.delEffect(this);
-						}
-					}
-				}
-				break;
-			default:
-				break;
+				msg.source().tell(message);
+				return false;
 			}
+			break;
+		case CMMsg.TYP_DROP:
+			{
+				if((msg.target()==affected)
+				&&(affected != null)
+				&&(dropOff))
+				{
+					this.unInvoke();
+					affected.delEffect(this);
+				}
+			}
+			break;
+		default:
+			break;
 		}
 		return true;
 	}

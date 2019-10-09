@@ -87,6 +87,7 @@ public class Sell extends StdCommand
 			if(itemToDo==null)
 				break;
 			if((CMLib.flags().canBeSeenBy(itemToDo,mob))
+			&&(!(itemToDo instanceof Coins))
 			&&(!itemsV.contains(itemToDo)))
 				itemsV.add(itemToDo);
 			addendumStr="."+(++addendum);
