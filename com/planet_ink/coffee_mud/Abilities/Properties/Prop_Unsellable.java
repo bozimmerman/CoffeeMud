@@ -44,16 +44,61 @@ public class Prop_Unsellable extends Property
 		return "Unsellable stuff";
 	}
 
+	protected String	ambiance	= null;
+	protected boolean	dropOff		= false;
+	protected String	message		= L("You can't sell that.");
+
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		message=CMParms.getParmStr(newMiscText, "MESSAGE", L("You can't sell that."));
+		ambiance= CMParms.getParmStr(newMiscText, "AMBIANCE", null);
+		if((ambiance != null)&&(affected != null))
+			ambiance=L(ambiance,affected.name());
+		dropOff = CMParms.getParmBool(newMiscText, "DROPOFF", false);
+		super.setMiscText(newMiscText);
+	}
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		if(ambiance != null)
+			affectableStats.addAmbiance(ambiance);
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
+		final Physical affected=this.affected;
 		if((msg.target()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_SELL))
+		||((affected instanceof Container)
+			&&(msg.target() instanceof Item)
+			&&(((Item)msg.target()).ultimateContainer(affected)==affected)))
 		{
-			msg.source().tell(L("You can't sell that."));
-			return false;
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_SELL:
+				{
+					msg.source().tell(message);
+					return false;
+				}
+			case CMMsg.TYP_DROP:
+				{
+					if(dropOff)
+					{
+						if(affected != null)
+						{
+							this.unInvoke();
+							affected.delEffect(this);
+						}
+					}
+				}
+				break;
+			default:
+				break;
+			}
 		}
 		return true;
 	}
