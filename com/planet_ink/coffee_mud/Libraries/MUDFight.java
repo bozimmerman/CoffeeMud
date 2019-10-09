@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
+import com.planet_ink.coffee_mud.core.CMath.CompiledFormula;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -2818,6 +2819,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
+	protected MUDFight getSessionMUDFight(final Session sess)
+	{
+		if(sess == null)
+			return this;
+		final CombatLibrary lib=CMLib.get(sess)._combat();
+		if(lib instanceof MUDFight)
+			return (MUDFight)lib;
+		return this;
+	}
+
 	@Override
 	public void dispenseExperience(final Set<MOB> killers, final Set<MOB> dividers, final MOB killed)
 	{
@@ -2850,7 +2861,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			indiVars[1]=mob.phyStats().level()*mob.phyStats().level();
 			indiVars[3]=mob.phyStats().level();
-			final int myAmount=(int)Math.round(CMath.parseMathExpression(this.individualCombatExpFormula, indiVars, 0.0));
+			final CompiledFormula indXPformula = getSessionMUDFight(mob.session()).individualCombatExpFormula;
+			final int myAmount=(int)Math.round(CMath.parseMathExpression(indXPformula, indiVars, 0.0));
 			CMLib.get(mob.session())._leveler().postExperience(mob,killed,"",myAmount,false);
 		}
 	}
