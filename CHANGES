@@ -51,7 +51,7 @@
  49. New Behavior: RandomQuests for areas or mobs.
  50. More new questmaker templates: normal_killer2, normal_escort1, normal_escort2, normal_mystery1, normal_mystery2
  51. New DEBUG options: SCRIPTVARS and SCRIPTTRACE
- 52. Yet more questmaker templates: *_delivery3
+ 52. Yet more questmaker templates: *_delivery3, competitive_protect1, competitive_protect2
  53. Prop_Unsellable has new arguments
  54. New command: NOSELL -- for marking items unsellable
 # Build 5.9.8 Release 4/8/2019

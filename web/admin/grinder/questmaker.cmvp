@@ -105,14 +105,15 @@
 			</FONT>
 			<SELECT NAME="QUEST_TEMPLATE_FILTER" ONCHANGE="Refresh();" >
 				<OPTION VAlUE="" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=@SELECTED@endif@>All
-				<OPTION VAlUE="Normal*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=Normal*@SELECTED@endif@>All Normal
-				<OPTION VAlUE="Competitive*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=Competitive*@SELECTED@endif@>All Competitive
+				<OPTION VAlUE="Normal*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=Normal*@SELECTED@endif@>All Normal Types
+				<OPTION VAlUE="Competitive*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=Competitive*@SELECTED@endif@>All Competitive Types
 				<OPTION VAlUE="*Capture*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Capture*@SELECTED@endif@>All Capture
 				<OPTION VAlUE="*Collect*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Collect*@SELECTED@endif@>All Collect
 				<OPTION VAlUE="*Delivery*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Delivery*@SELECTED@endif@>All Delivery
 				<OPTION VAlUE="*Escort*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Escort*@SELECTED@endif@>All Escort
 				<OPTION VAlUE="*Killer*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Killer*@SELECTED@endif@>All Killer
 				<OPTION VAlUE="*Mystery*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Mystery*@SELECTED@endif@>All Mystery
+				<OPTION VAlUE="*Protect*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Protect*@SELECTED@endif@>All Protection
 				<OPTION VAlUE="*Travel*" @if?CheckReqParm?QUEST_TEMPLATE_FILTER=*Travel*@SELECTED@endif@>All Travel
 			</SELECT><BR>
 			<HR>

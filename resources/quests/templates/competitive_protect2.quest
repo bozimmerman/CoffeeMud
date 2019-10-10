@@ -1,8 +1,8 @@
-#!QUESTMAKER_START_SCRIPT Competitive Protect #1
-#The player must protect a mob or mobs that you will create at the behest of
-#an existing Announcer mob on the map from mob or mobs that you create which will
-#attack the protected mob. When all the attackers are defeated, and the protected 
-#mob survives, the quest is completed.
+#!QUESTMAKER_START_SCRIPT Competitive Protect #2
+#The player must protect an existing mob or mobs at the behest of
+#an existing Announcer mob (which may be the same) from mob or mobs that you 
+#create which will attack the protected mob. When all the attackers are defeated, 
+#and the protected mob survives, the quest is completed.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
@@ -15,11 +15,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_protect_1
+#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_protect_2
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=Competitive Protect #1
+#$QUEST_NAME=$STRING=Competitive Protect #2
 #
 #Quest Frequency:
 #This is the time between quest starts.
@@ -68,7 +68,7 @@
 #$ANNOUNCER_NAME=$NAME
 #
 #!QUESTMAKER_PAGE Protected mob and location
-#Here's where you specify the mob to be protected, and where they should be.
+#Here's where you specify the mob to be protected, and where they are.
 #
 #Protected Mob Area/Room: 
 #Specify below the name of the area that your protected mob will be located
@@ -80,10 +80,17 @@
 #Protected Mob Room ID:
 #$PROTECTED_ROOM=($ROOMID)
 #
-#Protected mob: 
-#Create or select the mob below that the player must protected.  This mob or
-#mobs will be waiting in the specified room waiting.
-#$PROTECTED_MOB=$MOBXML_ONEORMORE
+#Protected mob name: 
+#Specify the name of the mob who will act as the Protected mob.  This may
+#be the same as the Announcer mob. 
+#Use double-quotes around multi-word names.
+#If you specified an area or room above, then the mob must be located there.
+#You may optionally have the quest manager select a 'random' mob by entering
+#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#ZAPPERMASKS for information on zapper mask syntax).
+#Remember, if the quest manager can not find your mob, the quest will not
+#be started.
+#$PROTECTED_MOB=$NAME
 #
 #!QUESTMAKER_PAGE Announcer greetings/instructions
 #Here's where you specify any special text said by the announcer regarding
@@ -164,7 +171,7 @@
 #mob in the designated room.  You may leave this blank if you like.
 #$PROTECTED_RESPONSE=($LONG_STRING)=Your protection task is complete.
 #
-#!QUESTMAKER_END_SCRIPT Competitive Protected #1
+#!QUESTMAKER_END_SCRIPT Competitive Protected #2
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -177,7 +184,6 @@ set interval 1
 set minplayers 1
 set playermask $QUEST_CRITERIA
 
-
 set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
 set mobgroup
@@ -189,8 +195,7 @@ set mobgroup
 set mob
 set area $PROTECTED_AREA
 set room $PROTECTED_ROOM
-import mobs $QUEST_ID_protected.xml
-load mob any
+set mob reselect $PROTECTED_MOB
 give script LOAD=$QUEST_ID_protected.script
 give behavior CombatAbilities
 
@@ -198,7 +203,6 @@ set duration $DURATION
 
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
-<FILE><NAME>$QUEST_ID_protected.xml</NAME><DATA><MOBS>$PROTECTED_MOB</MOBS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_attackers.xml</NAME><DATA><MOBS>$ATTACKER_MOB</MOBS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
