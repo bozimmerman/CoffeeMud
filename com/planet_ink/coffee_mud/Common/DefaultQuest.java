@@ -595,7 +595,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						choices.remove(c);
 				}
 				else
-				if((!reselect)||(!q.reselectable.contains(E)))
+				if((!reselect)&&(!q.reselectable.contains(E)))
 				{
 					final Quest Q=CMLib.quests().objectInUse(E);
 					if(Q!=null)
@@ -3494,6 +3494,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						continue;
 					}
 					questState.worldObjects.remove(PO);
+					if(PO.preserveState == Integer.MIN_VALUE)
+						continue;
+					PO.preserveState=Integer.MIN_VALUE;
 					final PhysicalAgent P=PO.obj;
 					if(P != null)
 					{
@@ -4178,6 +4181,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				{
 					if(PO.preserveState<questState.preserveState)
 						PO.preserveState=questState.preserveState;
+					questState.worldObjects.add(PO);
 					return;
 				}
 				if(PO.obj.amDestroyed())
