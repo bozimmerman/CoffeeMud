@@ -1,8 +1,8 @@
 #!QUESTMAKER_START_SCRIPT Competitive Protect #1
 #The player must protect a mob or mobs that you will create at the behest of
-#an existing Announcer mob on the map from mob or mobs to attack the protected.
-#When all the attckers are defeated, and the protected mob survives, the quest
-#is completed.
+#an existing Announcer mob on the map from mob or mobs that you create which will
+#attack the protected mob. When all the attckers are defeated, and the protected 
+#mob survives, the quest is completed.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
@@ -37,7 +37,7 @@
 #$QUEST_CRITERIA=$ZAPPERMASK
 #
 #!QUESTMAKER_PAGE Specify the Announcer/Protected
-#The Announcer is the mob who will be announcing the quest and be attacked. This must
+#The Announcer is the mob who will be announcing the quest. This must
 #be an existing mob in your world.  They will announce the quest to players
 #once, and then mark whether the player says they accept the quest.  After the
 #player accepts the quest, the protection begins.
@@ -108,7 +108,7 @@
 #
 #!QUESTMAKER_PAGE Quest Dangers
 #You may optionally have mobs that appear during the quest in the same room as the
-#player and the escorted mob.
+#player and the protected mob.
 #
 #Attacker mob(s): 
 #Create or select the mob below that will appear with the player and the 
@@ -159,10 +159,10 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#Escorted response: 
-#Specify what is emoted in the same room after the player successfully escorts the
-#mobs to the designated room.  You may leave this blank if you like.
-#$ESCORTED_RESPONSE=($LONG_STRING)=The escort is complete.
+#Protected response: 
+#Specify what is emoted in the same room after the player successfully protected the
+#mob in the designated room.  You may leave this blank if you like.
+#$PROTECTED_RESPONSE=($LONG_STRING)=Your protection task is complete.
 #
 #!QUESTMAKER_END_SCRIPT Competitive Protected #1
 
@@ -192,7 +192,7 @@ set duration $DURATION
 
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
-<FILE><NAME>$QUEST_ID_protected.xml</NAME><DATA><MOBS>$ESCORTED_MOB</MOBS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_protected.xml</NAME><DATA><MOBS>$PROTECTED_MOB</MOBS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_attackers.xml</NAME><DATA><MOBS>$ATTACKER_MOB</MOBS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
@@ -212,7 +212,7 @@ QUEST_TIME_PROG * -1
 	for $0 = 0 to< '$<$i $QUEST_ID_NUMACCEPTED>'
 		if !QUESTWINNER('$<$i $QUEST_ID_ACCEPTED>.$0' *)
 			tell "$<$i $QUEST_ID_ACCEPTED>.$0" You failed to complete your protection quest in time.
-	    endif
+		endif
 		mpqset * STATISTICS FAILED
 	next
 	MPSETVAR * $QUEST_ID_NUMACCEPTED ''
@@ -246,16 +246,11 @@ SPEECH_PROG p i accept
 				MPSETVAR $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
 				mpsetvar $n $QUEST_ID_ACCEPTED 'YES'
 				mpqset * STATISTICS ACCEPTED
-                mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
+				mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
 				for $0 = 1 to '$%NUMMOBSROOM(*)%'
 				   mpargset $1 $%ROOMMOB($0)%
 				   if QUESTMOB($1 *) AND EVAL($1 != $i) AND EVAL('${1 *}' != $1)
-				   		mpforce $1 follow $n
-				   		if !isfollow($1)
-				   			mpforce $1 say I can't follow $n
-				   		else
-							mpsetvar $i $QUEST_ID_ACCEPTED $n
-				   		endif
+						mpsetvar $i $QUEST_ID_ACCEPTED $n
 				   endif
 				next
 			else
@@ -265,83 +260,91 @@ SPEECH_PROG p i accept
 	endif
 ~
 </DATA></FILE>
-<FILE><NAME>$QUEST_ID_escorted.script</NAME>
+<FILE><NAME>$QUEST_ID_protected.script</NAME>
 <DATA>
 QUEST_TIME_PROG * 1
-	if EVAL('$f' != '') AND VAR ($f $QUEST_ID_WARNED == '')
-		mpsetvar $f $QUEST_ID_WARNED 'WARNED'
-		mpechoat $f You have less than a minute left to complete your escort quest.
+	if VAR ($i $QUEST_ID_WARNED == '')
+		mpsetvar $i $QUEST_ID_WARNED 'WARNED'
+		say You have less than a minute left to complete the protection quest.
 	endif
 ~
 
 DEATH_PROG 99
-	IF EVAL('$f' != '') 
-		mpechoat $f ^x$i has died.  You've failed the escort quest.^.^N
-	else
-		mpecho ^x$i has died.  You've failed the escort quest.^.^N
-	ENDIF
+	mpecho ^x$i has died.  You've failed the protection quest.^.^N
 	mpendquest *
 ~
 
-RAND_PROG 99
-	IF ISHERE(${1 *})
-		RETURN
-	ENDIF
-	IF EVAL('$f' == '')
-		mpecho ^x$n is not following anyone.  The escort quest has failed.^.^N
-		mpendquest *
-	ENDIF
-	IF VAR($f $QUEST_ID_CHECKEDROOM == $d)
-		RETURN
-	ENDIF
-	MPSETVAR $f $QUEST_ID_CHECKEDROOM $d
-	if !INROOM($i == '$ESCORT_DESTINATION')
-		if VAR($f $QUEST_ID_ATTACKED == '')
-			if EVAL('$ATTACKER_PCT_CHANCE' != '') AND RAND($ATTACKER_PCT_CHANCE) AND EVAL('$ATTACKER_SIZE' >= 1)
-				mpsetvar $f $QUEST_ID_ATTACKED ATTACKED!
-				for $0 = 0 to< $ATTACKER_SIZE
-					mpmload fromfile $QUEST_ID_attackers.xml any
-					mpqset * QUESTOBJ $b
-					mpforce $b YELL $ATTACKER_SCREAM
-					mpforce $b kill $f
-				next
-			endif
+RAND_PROG $ATTACKER_PCT_CHANCE
+	if NUMPCSROOM(== 0)
+		return
+	endif
+	mpargset $8 ''
+	mpargset $9 $%NUMMOBSROOM(*)%
+	for $0 = 1 to $9
+		mpargset $1 '$%ROOMMOB($0)%'
+		if ISPC($1) AND QUESTSCRIPTED($1 *)
+			mpargset $8 $1
 		endif
-	else
-		if EVAL('$f' != '') AND ISLIKE($f '$QUEST_CRITERIA') and ISPC($f) AND VAR($f $QUEST_ID_REWARDED == '')
-			mpsetvar $f $QUEST_ID_REWARDED 'REWARDED'
-			if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($f *)
-				# do nothing
-			else
-				if EVAL('$EXP' != '')
-					mpexp $f $EXP
-				endif
-				if EVAL('$FACTION' != '')
-					mpfaction $f $FACTION $NUMFACTION
-				endif
-				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($f *)
-					mpoloadroom QuestPoint
-					mpforce $f GET "a quest point"
-				endif
-				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-					mpoloadroom $GOLD
-					mpforce $f GET $GOLD
-				endif
-				mpoload fromfile $QUEST_ID_rewarditems.xml any
-				if EVAL('$b' != '')
-					give "$b" "$n"
-				endif
-				mpquestwin $f *
-				mpecho $ESCORTED_RESPONSE
-				mpendquest *
-				mpqset * STATISTICS SUCCESS
-				IF EVAL('$NEXT_QUEST' != '')
-					mpstartquest $NEXT_QUEST
-				ELSE
-					IF EVAL('$MULTIPLE' == 'PREV')
-						mptransfer $n $n
+	next
+	if EVAL($8 == '')
+		return
+	endif
+	
+	mpmload fromfile $QUEST_ID_attackers.xml any
+	mpqset * QUESTOBJ $b
+	mpecho $b enters the room.
+	mpforce $b YELL $ATTACKER_SCREAM
+	mpforce $b kill $i
+	if !ISFIGHT($b)
+		mpforce $b kill all
+	endif
+	mpscript $b LOAD=$QUEST_ID_attacker.script
+~
+
+</DATA>
+</FILE>
+<FILE><NAME>$QUEST_ID_attacker.script</NAME>
+<DATA>
+DEATH_PROG 99
+	if QUESTSCRIPTED($n *) and ISPC($n)
+		IF INROOM($n == ${2 *})
+			mpsetvar $n $QUEST_ID_DEFEATED ++
+			mpforce '${2 *}' sayto "$n" Thanks $n!
+			IF VAR($n $QUEST_ID_DEFEATED >= $ATTACKER_SIZE) AND VAR($n $QUEST_ID_REWARDED != 'REWARDED')
+				mpsetvar $n $QUEST_ID_REWARDED 'REWARDED'
+				if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
+					# do nothing
+				else
+					if EVAL('$EXP' != '')
+						mpexp $n $EXP
+					endif
+					if EVAL('$FACTION' != '')
+						mpfaction $n $FACTION $NUMFACTION
+					endif
+					if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+						mpforce '${2 *}' mpoload QuestPoint
+						mpforce '${2 *}' GIVE "a quest point" $n
+					endif
+					if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+						mpforce '${2 *}' mpoload $GOLD
+						mpforce '${2 *}' GIVE "$GOLD" $n
+					endif
+					mpforce ${2 *} mpoload fromfile $QUEST_ID_rewarditems.xml any
+					if EVAL('$b' != '')
+						mpforce '${2 *}' give "$b" "$n"
+					endif
+					mpquestwin $n *
+					mpecho $PROTECTED_RESPONSE
+					mpendquest *
+					mpqset * STATISTICS SUCCESS
+					IF EVAL('$NEXT_QUEST' != '')
+						mpstartquest $NEXT_QUEST
+					ELSE
+						IF EVAL('$MULTIPLE' == 'PREV')
+							mptransfer $n $n
+						ENDIF
 					ENDIF
-				ENDIF
+				endif
 			endif
 		endif
 	endif
@@ -350,7 +353,10 @@ RAND_PROG 99
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
-    mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	if VAR($i $QUEST_ID_DEFEATED == '')
+		mpsetvar $i $QUEST_ID_DEFEATED 0
+	endif
 ~
 
 QUEST_TIME_PROG * -1
@@ -361,10 +367,10 @@ QUEST_TIME_PROG * -1
 ~
 
 RAND_PROG 99
-    if QVAR(* REMAINING == '')
-        MPENDQUEST $i
-    else
-        mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
-    endif
+	if QVAR(* REMAINING == '')
+		MPENDQUEST $i
+	else
+		mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+	endif
 ~
 </DATA></FILE>
