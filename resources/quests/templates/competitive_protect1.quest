@@ -184,6 +184,11 @@ set mobgroup
 set mob $ANNOUNCER_NAME
 give stat keyplayer true
 give script LOAD=$QUEST_ID_announcer.script
+
+set mobgroup
+set mob
+set area $PROTECTED_AREA
+set room $PROTECTED_ROOM
 import mobs $QUEST_ID_protected.xml
 load mob any
 give script LOAD=$QUEST_ID_protected.script
