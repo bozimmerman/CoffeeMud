@@ -2291,8 +2291,9 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder listQuests(final Session viewerS)
+	public StringBuilder listQuests(final Session viewerS, String rest)
 	{
+		rest = (rest == null) ? null : rest.toLowerCase().trim();
 		final StringBuilder buf=new StringBuilder("");
 		if(CMLib.quests().numQuests()==0)
 			buf.append(L("No quests loaded."));
@@ -2305,7 +2306,10 @@ public class ListCmd extends StdCommand
 			for(int i=0;i<CMLib.quests().numQuests();i++)
 			{
 				final Quest Q=CMLib.quests().fetchQuest(i);
-				if(Q!=null)
+				if((Q!=null)
+				&&((rest == null)
+					||(rest.length()==0)
+					||(Q.name().toLowerCase().indexOf(rest)>=0)))
 				{
 					buf.append(CMStrings.padRight(""+(i+1),COL_LEN1)+CMStrings.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",COL_LEN2)+" ");
 					if(Q.running())
@@ -2345,8 +2349,9 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder listQuestNames(final Session viewerS)
+	public StringBuilder listQuestNames(final Session viewerS, String rest)
 	{
+		rest = (rest == null) ? null : rest.toLowerCase().trim();
 		final StringBuilder buf=new StringBuilder("");
 		if(CMLib.quests().numQuests()==0)
 			buf.append(L("No quests loaded."));
@@ -2359,7 +2364,10 @@ public class ListCmd extends StdCommand
 			for(int i=0;i<CMLib.quests().numQuests();i++)
 			{
 				final Quest Q=CMLib.quests().fetchQuest(i);
-				if(Q!=null)
+				if((Q!=null)
+				&&((rest == null)
+					||(rest.length()==0)
+					||(Q.displayName().toLowerCase().indexOf(rest)>=0)))
 				{
 					buf.append(CMStrings.padRight(""+(i+1),COL_LEN1)+CMStrings.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",COL_LEN2)+" ");
 					buf.append(Q.displayName());
@@ -5217,10 +5225,10 @@ public class ListCmd extends StdCommand
 			listAbilities(mob,s,commands,"Skill",Ability.ACODE_SKILL);
 			break;
 		case QUESTS:
-			s.println(listQuests(mob.session()).toString());
+			s.println(listQuests(mob.session(),rest).toString());
 			break;
 		case QUESTNAMES:
-			s.println(listQuestNames(mob.session()).toString());
+			s.println(listQuestNames(mob.session(),rest).toString());
 			break;
 		case QUESTWINNERS:
 			s.println(listQuestWinners(mob.session(),rest).toString());
