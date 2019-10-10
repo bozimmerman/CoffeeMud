@@ -192,6 +192,7 @@ set room $PROTECTED_ROOM
 import mobs $QUEST_ID_protected.xml
 load mob any
 give script LOAD=$QUEST_ID_protected.script
+give behavior CombatAbilities
 
 set duration $DURATION
 
