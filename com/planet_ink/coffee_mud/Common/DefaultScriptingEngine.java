@@ -8326,23 +8326,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 93: //	"ENDIF", //93 JUST for catching errors...
 				logError(scripted,"ENDIF","Syntax"," Without IF ("+si+")!");
-				tickStatus=Tickable.STATUS_END;
 				break;
 			case 94: //"ENDSWITCH", //94 JUST for catching errors...
 				logError(scripted,"ENDSWITCH","Syntax"," Without SWITCH ("+si+")!");
-				tickStatus=Tickable.STATUS_END;
 				break;
 			case 95: //"NEXT", //95 JUST for catching errors...
 				logError(scripted,"NEXT","Syntax"," Without FOR ("+si+")!");
-				tickStatus=Tickable.STATUS_END;
 				break;
 			case 96: //"CASE" //96 JUST for catching errors...
 				logError(scripted,"CASE","Syntax"," Without SWITCH ("+si+")!");
-				tickStatus=Tickable.STATUS_END;
 				break;
 			case 97: //"DEFAULT" //97 JUST for catching errors...
 				logError(scripted,"DEFAULT","Syntax"," Without SWITCH ("+si+")!");
-				tickStatus=Tickable.STATUS_END;
 				break;
 			case 70: // switch
 			{
