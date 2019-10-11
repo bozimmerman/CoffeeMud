@@ -727,14 +727,14 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 		CLASS, NAME, DURATION, WAIT, MINPLAYERS, PLAYERMASK,
 		RUNLEVEL, DATE, MUDDAY, INTERVAL,SPAWNABLE, DISPLAY,
 		INSTRUCTIONS, PERSISTANCE, AUTHOR, EXPIRATION
-	};
+	}
 
 	/** The list of basic quest objects defined in an iterative fashion during quest script execution */
 	public enum QOBJS
 	{
 		LOADEDMOBS, LOADEDITEMS, AREA, ROOM, MOBGROUP, ITEMGROUP, ROOMGROUP,
 		ITEM, ENVOBJ, STUFF, MOB
-	};
+	}
 
 	/** The list of basic mystery quest objects defined in an iterative fashion during quest script execution */
 	public enum MYSTERY_QCODES
@@ -749,7 +749,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 		 WHENHAPPENED,WHENHAPPENEDGROUP,
 		 WHENAT,WHENATGROUP,
 		 TOOL,TOOLGROUP
-	};
+	}
 	/** the list of room-related mystery quest objects defined in an iterative fashion during quest script execution */
 	public static final String[] ROOM_REFERENCE_QCODES={"WHEREHAPPENED","WHEREHAPPENEDGROUP",
 														"WHEREAT","WHEREATGROUP",
