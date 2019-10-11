@@ -5323,6 +5323,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					if(O instanceof CMObject)
 						str.append("\"").append(((CMObject)O).name()).append("\" ");
 					else
+					if(O != null)
 						str.append("\"").append(O.toString()).append("\" ");
 					return str.toString().trim();
 				}
