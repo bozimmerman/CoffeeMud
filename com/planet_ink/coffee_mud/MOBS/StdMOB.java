@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.CharStatOutOfRangeException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.Area.State;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -93,6 +94,7 @@ public class StdMOB implements MOB
 
 	protected int				tickAgeCounter	= 0;
 	protected int				recoverTickCter = 1;
+	protected int				validChkCounter	= 60;
 	private long				expirationDate	= 0;
 	private int					manaConsumeCter = CMLib.dice().roll(1, 10, 0);
 	private volatile double		freeActions		= 0.0;
@@ -3710,9 +3712,36 @@ public class StdMOB implements MOB
 			else
 			{
 				final Room R=location();
-				if (R != null)
+				final Area A = (R == null) ? null : R.getArea();
+				if(isMonster 
+				&& (--validChkCounter <= 0))
 				{
-					final Area A=R.getArea();
+					validChkCounter=60;
+					final String mobReport = CMLib.flags().validCheck(this);
+					if(mobReport != null)
+					{
+						if(mobReport.startsWith("*"))
+						{
+							CMLib.s_sleep(1);
+							final Room locR=location();
+							if((locR==null)
+							||(amDead)
+							||(!locR.isInhabitant(this)))
+							{
+								Log.warnOut("Killing: "+mobReport);
+								killMeDead(false);
+							}
+						}
+						else
+						{
+							Log.warnOut("Destroy: "+mobReport);
+							this.destroy();
+							return false;
+						}
+					}
+				}
+				if ((R != null) && (A != null))
+				{
 					// handle variable equipment!
 					if ((lastTickedTime < 0)
 					&& isMonster && R.getMobility()
@@ -3748,29 +3777,6 @@ public class StdMOB implements MOB
 					{
 						CMLib.combat().recoverTick(this);
 						recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
-						if (isMonster)
-						{
-							final String mobReport = CMLib.flags().validCheck(this);
-							if(mobReport != null)
-							{
-								if(mobReport.startsWith("*"))
-								{
-									CMLib.s_sleep(1);
-									final Room locR=location();
-									if((locR==null)||(amDead)||(!locR.isInhabitant(this)))
-									{
-										Log.warnOut("Killing: "+mobReport);
-										killMeDead(false);
-									}
-								}
-								else
-								{
-									Log.warnOut("Destroy: "+mobReport);
-									this.destroy();
-									return false;
-								}
-							}
-						}
 					}
 					if (!isMonster)
 						CMLib.combat().expendEnergy(this, false);
