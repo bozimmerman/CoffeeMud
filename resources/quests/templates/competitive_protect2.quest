@@ -113,8 +113,8 @@
 #This is what the announcement says.  Leave it blank if you only want him to talk to people who enter the room with him.
 #$QUEST_ANNOUNCEMENT=($STRING)
 #
-#!QUESTMAKER_PAGE Quest Dangers
-#You may optionally have mobs that appear during the quest in the same room as the
+#!QUESTMAKER_PAGE Attacker Mobs
+#You will need mobs that appear during the quest in the same room as the
 #player and the protected mob.
 #
 #Attacker mob(s): 
