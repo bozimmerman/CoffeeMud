@@ -663,7 +663,10 @@ public class GenAbility extends StdAbility
 											dmg=0;
 										}
 										else
+										if(finalTarget != null)
 											CMLib.map().roomLocation(finalTarget).show(mob,finalTarget,CMMsg.MSG_OK_ACTION,(String)V(ID,V_PCST));
+										else
+											CMLib.map().roomLocation(mob).show(mob,finalTarget,CMMsg.MSG_OK_ACTION,(String)V(ID,V_PCST));
 									}
 								}
 							}
