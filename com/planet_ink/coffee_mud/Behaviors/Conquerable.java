@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -1056,14 +1057,16 @@ public class Conquerable extends Arrest
 
 	protected boolean flagFound(final Area A, final String clanID)
 	{
-		Clan C=CMLib.clans().fetchClanAnyHost(clanID);
+		Clan C=CMLib.clans().getClanExact(clanID);
 		if(C==null)
-			C=CMLib.clans().getClanExact(clanID);
+			C=CMLib.clans().fetchClanAnyHost(clanID);
 		if((C==null)||(!C.getGovernment().isConquestEnabled()))
 			return false;
 		return flagFound(A,C);
 	}
 
+	protected volatile long	nextFlagScan = System.currentTimeMillis();
+	
 	protected boolean flagFound(final Area A, final Clan C)
 	{
 		if((C==null)||(!C.getGovernment().isConquestEnabled()))
@@ -1078,13 +1081,25 @@ public class Conquerable extends Arrest
 				&&(I.getClanItemType()==ClanItem.ClanItemType.FLAG))
 				{
 					final Room R=CMLib.map().roomLocation(I);
-					if((R!=null)&&((A==null)||(A.inMyMetroArea(R.getArea()))))
+					if((R!=null)
+					&&((A==null)||(A.inMyMetroArea(R.getArea()))))
+					{
+						if(i>0)
+						{
+							clanItems.remove(i);
+							clanItems.add(0, I);
+						}
 						return true;
+					}
 				}
 			}
 		}
-		if((holdingClan.length()>0)&&(holdingClan.equalsIgnoreCase(C.clanID()))&&(myArea!=null))
+		if((holdingClan.length()>0)
+		&&(holdingClan.equalsIgnoreCase(C.clanID()))
+		&&(System.currentTimeMillis() > nextFlagScan)
+		&&(myArea!=null))
 		{
+			nextFlagScan = System.currentTimeMillis() + 360000;
 			// make a desperation check if we are talking about the holding clan.
 			Room R=null;
 			Item I=null;
