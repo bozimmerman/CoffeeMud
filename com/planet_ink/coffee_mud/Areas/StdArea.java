@@ -58,7 +58,7 @@ public class StdArea implements Area
 	protected int	  	tickStatus  	= Tickable.STATUS_NOT;
 	protected long  	expirationDate  = 0;
 	protected long		passiveLapseMs	= DEFAULT_TIME_PASSIVE_LAPSE;
-	protected long  	lastPlayerTime  = System.currentTimeMillis();
+	protected long  	lastPlayerTime  = System.currentTimeMillis() + (passiveLapseMs/2);
 	protected State   	flag			= State.ACTIVE;
 	protected String[]  xtraValues  	= null;
 	protected String	author  		= "";
