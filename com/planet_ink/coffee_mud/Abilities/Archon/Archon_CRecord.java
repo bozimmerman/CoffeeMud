@@ -106,6 +106,7 @@ public class Archon_CRecord extends ArchonSkill
 	protected int		minLevel	= 10;
 	protected String	myArchon	= "";
 	protected String	recordingDir= "::/resources/clogs/";
+	protected String	lastStr		= "";
 
 	protected final List<String>	myPlayers	= new ArrayList<String>();
 	protected volatile long			lastWrite	= System.currentTimeMillis();
@@ -149,6 +150,7 @@ public class Archon_CRecord extends ArchonSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
+		checkFlush();
 		return true;
 	}
 
@@ -214,7 +216,7 @@ public class Archon_CRecord extends ArchonSkill
 		final CMFile F=new CMFile(dir,null,0);
 		if(!F.exists())
 			F.mkdir();
-		final String filename=dir+targetM.Name()+System.currentTimeMillis()+".log";
+		final String filename=dir+targetM.Name()+dateFormat.format(Long.valueOf(System.currentTimeMillis()))+".log";
 		final CMFile file=new CMFile(filename,null,CMFile.FLAG_LOGERRORS);
 		if(!file.canWrite())
 		{
@@ -234,6 +236,13 @@ public class Archon_CRecord extends ArchonSkill
 				iA.myPlayers.add(targetM.Name());
 			if(!myPlayers.contains(targetM.Name()))
 				myPlayers.add(targetM.Name());
+			final MOB M=targetM;
+			final Session sess=M.session();
+			addToBuffer("--------------- start ----------------\n\r");
+			if(sess != null)
+				addToBuffer("Port: "+sess.getGroupName()+"\n\r");
+			addToBuffer(CMStrings.removeColors(CMLib.commands().getScore(M).toString()));
+			addToBuffer("--------------- end ----------------\n\r");
 		}
 	}
 
@@ -315,12 +324,13 @@ public class Archon_CRecord extends ArchonSkill
 			if(isRecorder)
 			{
 				if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
-				&&(msg.sourceMessage()!=null))
+				&&(msg.source()==mob))
 				{
-					final String noColor = CMStrings.removeColors(msg.othersMessage()).trim();
 					addToBuffer(dateFormat.format(Long.valueOf(System.currentTimeMillis()))
 							+" XP:"
-							+CMLib.coffeeFilter().fullOutFilter(null, mob, msg.source(), msg.target(), msg.tool(), noColor, false)
+							+" Target("+((msg.target()==null)?"":msg.target().name())+") "
+							+" Level("+(mob.phyStats().level())+") "
+							+" Amt("+(msg.value())+") "
 							+"\n\r");
 				}
 				else
@@ -329,12 +339,14 @@ public class Archon_CRecord extends ArchonSkill
 				||(mob.isInCombat()))
 				{
 					if((msg.othersMessage()!=null)
-					&&(msg.othersMessage().length()>0))
+					&&(msg.othersMessage().length()>0)
+					&&(!CMath.isBool(msg.othersMessage()))
+					&&(msg.sourceMinor()!=CMMsg.TYP_FACTIONCHANGE))
 					{
 						final String noColor = CMStrings.removeColors(msg.othersMessage()).trim();
 						addToBuffer(dateFormat.format(Long.valueOf(System.currentTimeMillis()))
 								+" "
-								+CMLib.coffeeFilter().fullOutFilter(null, mob, msg.source(), msg.target(), msg.tool(), noColor, false)
+								+CMStrings.removeColors(CMLib.coffeeFilter().fullOutFilter(null, mob, msg.source(), msg.target(), msg.tool(), noColor, false))
 								+"\n\r");
 					}
 				}
@@ -342,10 +354,32 @@ public class Archon_CRecord extends ArchonSkill
 		}
 	}
 
+	protected void checkFlush()
+	{
+		if((buffer.length()>FLUSH_THRESHOLD)
+		||((System.currentTimeMillis()-this.lastWrite)>(60 * 10 * 1000)))
+		{
+			flushBuffer();
+			if(affected instanceof MOB)
+			{
+				final MOB M=(MOB)affected;
+				final Session sess=M.session();
+				buffer.append("--------------- start spot check ----------------\n\r");
+				if(sess != null)
+					buffer.append("Port: "+sess.getGroupName()+"\n\r");
+				buffer.append(CMStrings.removeColors(CMLib.commands().getScore(M).toString()));
+				buffer.append("--------------- end spot check ----------------\n\r");
+			}
+		}
+	}
+
 	protected void addToBuffer(final String s)
 	{
-		if((s!=null)&&(s.length()>0))
+		if((s!=null)
+		&&(s.length()>0)
+		&&(!s.equals(lastStr)))
 		{
+			lastStr=s;
 			final String line=CMStrings.removeColors(s).trim();
 			if(line.length()>0)
 			{
@@ -353,19 +387,8 @@ public class Archon_CRecord extends ArchonSkill
 				{
 					buffer.append(line).append("\n\r");
 				}
-				if((buffer.length()>FLUSH_THRESHOLD)
-				||((System.currentTimeMillis()-this.lastWrite)>(60 * 10 * 1000)))
-				{
-					this.lastWrite=System.currentTimeMillis();
-					flushBuffer();
-					if(affected instanceof MOB)
-					{
-						final MOB M=(MOB)affected;
-						buffer.append("--------------- start spot check ----------------\n\r");
-						buffer.append(CMLib.commands().getScore(M));
-						buffer.append("--------------- end spot check ----------------\n\r");
-					}
-				}
+				checkFlush();
+				this.lastWrite=System.currentTimeMillis();
 			}
 		}
 	}
