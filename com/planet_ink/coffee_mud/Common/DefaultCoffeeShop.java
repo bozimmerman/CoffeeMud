@@ -621,13 +621,17 @@ public class DefaultCoffeeShop implements CoffeeShop
 	public String makeXML()
 	{
 		final StringBuffer itemstr=new StringBuffer("");
-		itemstr.append(CMLib.xml().convertXMLtoTag("ISELL",shopKeeper().getWhatIsSoldMask()));
-		itemstr.append(CMLib.xml().convertXMLtoTag("IIMSK",CMLib.xml().parseOutAngleBrackets(shopKeeper().getWhatIsSoldZappermask())));
-		itemstr.append(CMLib.xml().convertXMLtoTag("IPREJ",shopKeeper().prejudiceFactors()));
-		itemstr.append(CMLib.xml().convertXMLtoTag("IBUDJ",shopKeeper().budget()));
-		itemstr.append(CMLib.xml().convertXMLtoTag("IDVAL",shopKeeper().devalueRate()));
-		itemstr.append(CMLib.xml().convertXMLtoTag("IGNOR",shopKeeper().ignoreMask()));
-		itemstr.append(CMLib.xml().convertXMLtoTag("PRICM",CMParms.toListString(shopKeeper().itemPricingAdjustments())));
+		final ShopKeeper shopKeep = shopKeeper();
+		if(shopKeep != null)
+		{
+			itemstr.append(CMLib.xml().convertXMLtoTag("ISELL",shopKeep.getWhatIsSoldMask()));
+			itemstr.append(CMLib.xml().convertXMLtoTag("IIMSK",CMLib.xml().parseOutAngleBrackets(shopKeep.getWhatIsSoldZappermask())));
+			itemstr.append(CMLib.xml().convertXMLtoTag("IPREJ",shopKeep.prejudiceFactors()));
+			itemstr.append(CMLib.xml().convertXMLtoTag("IBUDJ",shopKeep.budget()));
+			itemstr.append(CMLib.xml().convertXMLtoTag("IDVAL",shopKeep.devalueRate()));
+			itemstr.append(CMLib.xml().convertXMLtoTag("IGNOR",shopKeep.ignoreMask()));
+			itemstr.append(CMLib.xml().convertXMLtoTag("PRICM",CMParms.toListString(shopKeep.itemPricingAdjustments())));
+		}
 		itemstr.append("<INVS>");
 		for(final Iterator<Environmental> i=getStoreInventory();i.hasNext();)
 		{
