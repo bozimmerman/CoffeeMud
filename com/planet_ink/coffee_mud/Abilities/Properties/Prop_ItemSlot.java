@@ -403,42 +403,45 @@ public class Prop_ItemSlot extends Property
 			{
 				final Item slotItem = (Item)msg.tool();
 				final Ability A=slotItem.fetchEffect("Prop_ItemSlotFiller");
-				int islot=0;
-				int aSlotNumbs= CMParms.getParmInt(A.text(), "NUM", 1);
-				for(islot=0;islot<slots.length;islot++)
+				if(A!=null)
 				{
-					if(slots[islot]==null)
+					int islot=0;
+					int aSlotNumbs= CMParms.getParmInt(A.text(), "NUM", 1);
+					for(islot=0;islot<slots.length;islot++)
 					{
-						slotItem.removeFromOwnerContainer();
-						slotItem.setOwner(null);
-						slots[islot] = slotItem;
-						if((--aSlotNumbs) == 0)
+						if(slots[islot]==null)
 						{
-							break;
+							slotItem.removeFromOwnerContainer();
+							slotItem.setOwner(null);
+							slots[islot] = slotItem;
+							if((--aSlotNumbs) == 0)
+							{
+								break;
+							}
 						}
 					}
-				}
-				if(islot<slots.length)
-				{
-					for(int aslot=0;aslot<slotProps.length;aslot++)
+					if(islot<slots.length)
 					{
-						if(slotProps[aslot]==null)
+						for(int aslot=0;aslot<slotProps.length;aslot++)
 						{
-							slotProps[aslot] = A;
-							setAffected = true;
-							break;
+							if(slotProps[aslot]==null)
+							{
+								slotProps[aslot] = A;
+								setAffected = true;
+								break;
+							}
 						}
 					}
-				}
-				if(levelShift == 1)
-				{
-					levelDiff += slotItem.phyStats().level();
-				}
-				else
-				if(levelShift == 2)
-				{
-					if(slotItem.phyStats().level()>levelDiff)
-						levelDiff=slotItem.phyStats().level();
+					if(levelShift == 1)
+					{
+						levelDiff += slotItem.phyStats().level();
+					}
+					else
+					if(levelShift == 2)
+					{
+						if(slotItem.phyStats().level()>levelDiff)
+							levelDiff=slotItem.phyStats().level();
+					}
 				}
 			}
 			else
