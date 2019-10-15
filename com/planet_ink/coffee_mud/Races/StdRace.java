@@ -962,7 +962,8 @@ public class StdRace implements Race
 			final MOB following=mob.amFollowing();
 			final MOB ultFollow=mob.amUltimatelyFollowing();
 			if((following!=null)
-			&&((!following.isMonster())||(!ultFollow.isMonster())))
+			&&((!following.isMonster())
+				||((ultFollow != null) && (!ultFollow.isMonster()))))
 			{
 				final MOB M=(MOB)mob.copyOf();
 				CMLib.threads().deleteAllTicks(M);
