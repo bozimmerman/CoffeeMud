@@ -941,8 +941,13 @@ public class DefaultPlayerStats implements PlayerStats
 		subscriptions.addAll(getHashFrom(str));
 		final List<String> addThese=new ArrayList<String>();
 		for(final String s : subscriptions)
-			if(s.startsWith("P :"))
+		{
+			if((s.length()>3)
+			&&(Character.isLetter(s.charAt(0)))
+			&&(s.charAt(1)==' ')
+			&&(s.charAt(2)==':'))
 				addThese.add(s);
+		}
 		for(final String s : addThese)
 		{
 			subscriptions.remove(s);
