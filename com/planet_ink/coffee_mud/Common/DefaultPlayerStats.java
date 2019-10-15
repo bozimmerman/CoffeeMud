@@ -939,6 +939,15 @@ public class DefaultPlayerStats implements PlayerStats
 			Log.debugOut("SUBSCRIPTIONS="+str);
 		subscriptions.clear();
 		subscriptions.addAll(getHashFrom(str));
+		final List<String> addThese=new ArrayList<String>();
+		for(final String s : subscriptions)
+			if(s.startsWith("P :"))
+				addThese.add(s);
+		for(final String s : addThese)
+		{
+			subscriptions.remove(s);
+			subscriptions.add(" "+s);
+		}
 		str=xmlLib.getValFromPieces(xml,"IGNORED");
 		if(debug)
 			Log.debugOut("IGNORED="+str);
