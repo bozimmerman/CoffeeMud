@@ -1549,13 +1549,37 @@ public class StdRoom implements Room
 	}
 
 	@Override
-	public Exit getReverseExit(final int direction)
+	public int getReverseDir(final int direction)
 	{
 		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
+			return -1;
+		final Room opRoom=getRoomInDir(direction);
+		if(opRoom!=null)
+		{
+			final int formalOpDir=Directions.getOpDirectionCode(direction);
+			if(opRoom.rawDoors()[formalOpDir]==this)
+				return formalOpDir;
+			if(opRoom.getRoomInDir(formalOpDir)==this)
+				return formalOpDir;
+			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+			{
+				if(opRoom.rawDoors()[d]==this)
+					return d;
+			}
+			return formalOpDir;
+		}
+		return -1;
+	}
+
+	@Override
+	public Exit getReverseExit(final int direction)
+	{
+		final int opDir=getReverseDir(direction);
+		if((opDir<0)||(opDir>=Directions.NUM_DIRECTIONS()))
 			return null;
 		final Room opRoom=getRoomInDir(direction);
 		if(opRoom!=null)
-			return opRoom.getExitInDir(Directions.getOpDirectionCode(direction));
+			return opRoom.getExitInDir(opDir);
 		return null;
 	}
 

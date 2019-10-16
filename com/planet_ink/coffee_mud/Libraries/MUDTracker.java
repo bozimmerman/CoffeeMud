@@ -1355,9 +1355,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 
 		final CMFlagLibrary flags=CMLib.flags();
-		final Exit opExit=thisRoom.getReverseExit(directionCode);
+		final int opDir=thisRoom.getReverseDir(directionCode);
+		final Exit opExit=((opDir < 0)||(destRoom==null)) ? null : destRoom.getExitInDir(opDir);
 		final boolean useShipDirs=((thisRoom instanceof BoardableShip)||(thisRoom.getArea() instanceof BoardableShip));
-		final int opDir=Directions.getOpDirectionCode(directionCode);
 		final String dirName=useShipDirs?CMLib.directions().getShipDirectionName(directionCode):CMLib.directions().getDirectionName(directionCode);
 		final String fromDir=useShipDirs?CMLib.directions().getFromShipDirectionName(opDir):CMLib.directions().getFromCompassDirectionName(opDir);
 		final String directionName;

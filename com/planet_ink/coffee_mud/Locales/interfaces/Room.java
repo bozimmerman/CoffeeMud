@@ -463,7 +463,8 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	/**
 	 * Returns the Exit opposite this one, in the Room in the given direction.
 	 * For example, if the direction is east, this will return the west door
-	 * in the room to the east.
+	 * in the room to the east.  The exit must be to a room leading back
+	 * to this one.
 	 * @see Room#getRawExit(int)
 	 * @see Room#getExitInDir(int)
 	 * @see Room#setRawExit(int, Exit)
@@ -475,6 +476,21 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the reverse exit, or null if there is no room (or no reverse exit)
 	 */
 	public Exit getReverseExit(int direction);
+
+	/**
+	 * Returns the dir opposite this one, from the Room in the given direction.
+	 * For example, if the direction is east, this will return dir west.
+	 * The direction in the other room must lead back to this one.
+	 * @see Room#getRawExit(int)
+	 * @see Room#getExitInDir(int)
+	 * @see Room#setRawExit(int, Exit)
+	 * @see Room#getPairedExit(int)
+	 * @see Room#fetchExit(String)
+	 * @see Directions
+	 * @param direction the direction from this room to get the reverse dir for
+	 * @return the reverse direction leading back to this room, or -1
+	 */
+	public int getReverseDir(int direction);
 
 	/**
 	 * Returns the Exit opposite this one, in the Room in the given direction,
