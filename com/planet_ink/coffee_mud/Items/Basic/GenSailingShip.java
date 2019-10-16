@@ -2566,10 +2566,10 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					courseDirections.clear();
 					return SailResult.CANCEL;
 				}
-				final int oppositeDirectionFacing=Directions.getOpDirectionCode(direction);
+				final int oppositeDirectionFacing=thisRoom.getReverseDir(direction);
 				final String directionName=CMLib.directions().getDirectionName(direction);
 				final String otherDirectionName=CMLib.directions().getDirectionName(oppositeDirectionFacing);
-				final Exit opExit=thisRoom.getExitInDir(oppositeDirectionFacing);
+				final Exit opExit=destRoom.getExitInDir(oppositeDirectionFacing);
 				final MOB mob = CMClass.getFactoryMOB(name(),phyStats().level(),CMLib.map().roomLocation(this));
 				mob.setRiding(this);
 				if(getOwnerObject() instanceof Clan)

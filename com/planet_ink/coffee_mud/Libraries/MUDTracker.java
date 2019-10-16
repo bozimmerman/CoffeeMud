@@ -857,7 +857,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 		final Room nextRoom=oldRoom.getRoomInDir(direction);
 		final Exit nextExit=oldRoom.getExitInDir(direction);
-		final int opDirection=Directions.getOpDirectionCode(direction);
+		final int opDirection=oldRoom.getReverseDir(direction);
 
 		if((nextRoom==null)||(nextExit==null))
 		{
@@ -1171,7 +1171,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		final CMMsg enterMsg = CMClass.getMsg(M, toHere, enterExit, CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS, msgStr);
 		final CMMsg leaveMsg = CMClass.getMsg(M, fromHere, leaveExit, CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS, null);
 		leaveMsg.setValue(dir+1);
-		enterMsg.setValue(Directions.getOpDirectionCode(dir)+1);
+		enterMsg.setValue(fromHere.getReverseDir(dir)+1);
 		if(enterExit!=null)
 			enterExit.executeMsg(M,enterMsg);
 		if((M.location()!=null)&&(M.location()!=toHere))
@@ -1369,7 +1369,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if((exit instanceof PrepositionExit)&&(((PrepositionExit)exit).getEntryPreposition().length()>0))
 			otherDirectionPhrase=((PrepositionExit)exit).getEntryPreposition();
 		else
-			otherDirectionPhrase=L("from "+((Directions.getOpDirectionCode(directionCode)==Directions.GATE)&&(exit!=null)?exit.name():fromDir));
+			otherDirectionPhrase=L("from "+((opDir==Directions.GATE)&&(exit!=null)?exit.name():fromDir));
 
 		final int generalMask=always?CMMsg.MASK_ALWAYS:0;
 		final int leaveCode;
@@ -1628,7 +1628,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					final CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 					final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
 					leaveMsg.setValue(directionCode+1);
-					enterMsg.setValue(Directions.getOpDirectionCode(directionCode)+1);
+					enterMsg.setValue(thisRoom.getReverseDir(directionCode)+1);
 					if(!E.okMessage(mob,enterMsg))
 					{
 						return false;

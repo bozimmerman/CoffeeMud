@@ -145,7 +145,7 @@ public class Bleeding extends StdAbility implements HealthCondition
 				I.setSecretIdentity(msg.source().Name()+"`s blood.");
 				R.addItem(I,ItemPossessor.Expire.Monster_EQ);
 			}
-			lastDir=Directions.getOpDirectionCode(dir);
+			lastDir=R.getReverseDir(dir);
 			lastRoom=R;
 		}
 	}

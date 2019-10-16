@@ -410,9 +410,10 @@ public class Emoter extends ActiveTicker
 						&&(R.numInhabitants()>0)
 						&&(R.numPCInhabitants()>0))
 						{
+							final int opDir=room.getReverseDir(d);
 							final String inDir=((R instanceof BoardableShip)||(R.getArea() instanceof BoardableShip))?
-									CMLib.directions().getShipInDirectionName(Directions.getOpDirectionCode(d)):
-										CMLib.directions().getInDirectionName(Directions.getOpDirectionCode(d));
+									CMLib.directions().getShipInDirectionName(opDir):
+										CMLib.directions().getInDirectionName(opDir);
 							if(emoter == null)
 							{
 								emoter=CMClass.getFactoryMOB();

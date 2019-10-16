@@ -95,18 +95,20 @@ public class Lock extends StdCommand
 						dirCode=d;
 						break;
 					}
-
 				}
-				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
+				final Room R=mob.location();
+				final Room opR=(R==null)?null:R.getRoomInDir(dirCode);
+				if((dirCode>=0)
+				&&(R!=null)
+				&&(opR!=null))
 				{
-					final Room opR=mob.location().getRoomInDir(dirCode);
-					final Exit opE=mob.location().getPairedExit(dirCode);
+					final Exit opE=R.getPairedExit(dirCode);
 					if(opE!=null)
 					{
 						final CMMsg altMsg=CMClass.getMsg(msg.source(),opE,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
 						opE.executeMsg(msg.source(),altMsg);
 					}
-					final int opCode=Directions.getOpDirectionCode(dirCode);
+					final int opCode=R.getReverseDir(dirCode);
 					if((opE!=null)
 					&&(opE.isLocked())
 					&&(((Exit)lockThis).isLocked()))

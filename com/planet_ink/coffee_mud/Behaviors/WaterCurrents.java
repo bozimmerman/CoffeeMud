@@ -170,7 +170,7 @@ public class WaterCurrents extends ActiveTicker
 							R.send(M,themsg);
 							R2.bringMobHere(M,true);
 							R2.showOthers(srcM,M,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("<T-NAME> <T-IS-ARE> swept in from @x1 by the current.",
-									CMLib.directions().getFromCompassDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
+									CMLib.directions().getFromCompassDirectionName(R.getReverseDir(dir)).toLowerCase()));
 							CMLib.commands().postLook(M,true);
 						}
 					}
@@ -192,7 +192,7 @@ public class WaterCurrents extends ActiveTicker
 							}
 							R2.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
 							R2.showOthers(srcM,I,new AWaterCurrent(),CMMsg.MSG_OK_ACTION,L("@x1 is swept in from @x2 by the current.",
-									I.name(),CMLib.directions().getFromCompassDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()));
+									I.name(),CMLib.directions().getFromCompassDirectionName(R.getReverseDir(dir)).toLowerCase()));
 						}
 					}
 				}

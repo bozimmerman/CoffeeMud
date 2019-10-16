@@ -182,7 +182,7 @@ public class Paladin_SummonMount extends StdAbility
 		}
 		fromDir=choices.get(CMLib.dice().roll(1,choices.size(),-1)).intValue();
 		final Room newRoom=mob.location().getRoomInDir(fromDir);
-		final int opDir=Directions.getOpDirectionCode(fromDir);
+		final int opDir=mob.location().getReverseDir(fromDir);
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

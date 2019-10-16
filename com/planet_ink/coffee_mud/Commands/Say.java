@@ -358,7 +358,11 @@ public class Say extends StdCommand
 					final Environmental tool=msg.tool();
 					int opDirCode=-1;
 					if(dirCode>=0)
-						opDirCode=Directions.getOpDirectionCode(dirCode);
+					{
+						opDirCode=R.getReverseDir(dirCode);
+						if(opDirCode<0)
+							opDirCode=Directions.getOpDirectionCode(dirCode);
+					}
 					final String inDirName=(dirCode<0)?"":(useShipDirs?CMLib.directions().getShipInDirectionName(opDirCode):CMLib.directions().getInDirectionName(opDirCode));
 					msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SPEAK,L("^TYou hear someone yell ")+"'"+combinedCommands+"' "+inDirName+"^?");
 					if((R2.okMessage(mob,msg))

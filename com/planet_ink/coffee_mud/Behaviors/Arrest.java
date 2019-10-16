@@ -773,7 +773,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				M=getElligibleOfficerHere(laws,myArea,R2,criminal,victim);
 				if(M!=null)
 				{
-					final int direction=Directions.getOpDirectionCode(d);
+					final int direction=R.getReverseDir(d);
 					CMLib.tracking().walk(M,direction,false,false);
 					if(M.location()==R)
 						return M;
