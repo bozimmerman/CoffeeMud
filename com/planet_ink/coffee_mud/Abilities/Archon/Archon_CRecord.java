@@ -105,13 +105,14 @@ public class Archon_CRecord extends ArchonSkill
 	protected long		triggerTime	= 0;
 	protected int		minLevel	= 10;
 	protected String	myArchon	= "";
-	protected String	recordingDir= "::/resources/clogs/";
+	protected String	recordingDir= DEFAULT_RECORDING_DIR;
 	protected String	lastStr		= "";
 
 	protected final List<String>	myPlayers	= new ArrayList<String>();
 	protected volatile long			lastWrite	= System.currentTimeMillis();
 	protected final StringBuffer	buffer		= new StringBuffer();
 
+	protected final static String	DEFAULT_RECORDING_DIR = "::/resources/clogs/";
 	protected final static long		FLUSH_THRESHOLD	= 65536;
 	protected final static long		CANCEL_THRESHOLD= 65536 * 1024;
 
@@ -150,7 +151,8 @@ public class Archon_CRecord extends ArchonSkill
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		checkFlush();
+		if(isRecorder)
+			checkFlush();
 		return true;
 	}
 
@@ -212,7 +214,7 @@ public class Archon_CRecord extends ArchonSkill
 
 	protected void startRecording(final MOB  mob, final MOB targetM)
 	{
-		final String dir = (recordingDir.endsWith("/")?recordingDir:(recordingDir+"/"));
+		final String dir = (DEFAULT_RECORDING_DIR.endsWith("/")?DEFAULT_RECORDING_DIR:(DEFAULT_RECORDING_DIR+"/"));
 		final CMFile F=new CMFile(dir,null,0);
 		if(!F.exists())
 			F.mkdir();
@@ -370,6 +372,7 @@ public class Archon_CRecord extends ArchonSkill
 				buffer.append(CMStrings.removeColors(CMLib.commands().getScore(M).toString()));
 				buffer.append("--------------- end spot check ----------------\n\r");
 			}
+			this.lastWrite=System.currentTimeMillis();
 		}
 	}
 
@@ -395,6 +398,12 @@ public class Archon_CRecord extends ArchonSkill
 
 	protected void flushBuffer()
 	{
+		if(recordingDir.equals(DEFAULT_RECORDING_DIR))
+		{
+			buffer.setLength(0);
+			lastWrite=System.currentTimeMillis();
+			return;
+		}
 		final StringBuffer buf=new StringBuffer("");
 		if(buffer.length() >0)
 		{

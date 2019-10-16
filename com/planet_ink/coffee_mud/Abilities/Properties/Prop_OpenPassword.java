@@ -48,19 +48,31 @@ public class Prop_OpenPassword extends Property
 
 	private String password = "";
 	private String languageID = "";
+	private String message = "<T-NAME> opens.";
 
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
+		languageID="";
+		message = L("<T-NAME> opens.");
 		final int x=newMiscText.indexOf(';');
-		if(x>0)
+		if(x>=0)
 		{
 			password=newMiscText.substring(x+1).trim();
 			languageID=newMiscText.substring(0,x);
-			if(!(CMClass.getAbility(languageID) instanceof Language))
+			if((languageID.length()>0)&&(!(CMClass.getAbility(languageID) instanceof Language)))
 			{
 				if(affected != null)
-					Log.errOut("Prop_OpenPassword on "+affected.Name()+" has invalid languageID: "+affected.Name());
+					Log.errOut("Prop_OpenPassword on "+affected.Name()+" has invalid languageID: "+languageID);
+			}
+			else
+			{
+				final int y=password.indexOf(';');
+				if(y>0)
+				{
+					message=password.substring(y+1);
+					password=password.substring(0,y);
+				}
 			}
 		}
 		else
@@ -119,7 +131,7 @@ public class Prop_OpenPassword extends Property
 							{
 								CMMsg msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_UNLOCK,null);
 								CMLib.utensils().roomAffectFully(msg2,R,dirCode);
-								msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_OPEN,L("<T-NAME> opens."));
+								msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_OPEN,message);
 								CMLib.utensils().roomAffectFully(msg2,R,dirCode);
 							}
 						}
@@ -129,8 +141,9 @@ public class Prop_OpenPassword extends Property
 					{
 						CMMsg msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_UNLOCK,null);
 						affected.executeMsg(mob,msg2);
-						msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_OPEN,L("<T-NAME> opens."));
-						affected.executeMsg(mob,msg2);
+						msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_OPEN,message);
+						if(R!=null)
+							R.send(mob, msg2);
 					}
 				}
 			}
