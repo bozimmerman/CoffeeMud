@@ -1392,9 +1392,7 @@ public class CMFile extends File
 			Log.errOut("CMFile","Unable to save file '"+getVFSPathAndName()+"': No Data.");
 			return false;
 		}
-		if(((CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY))
-			&&(isLocalFile())
-			&&(!isVFSOnlyPathFile()))
+		if((CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY))
 		||(!canWrite()))
 		{
 			Log.errOut("CMFile","Access error saving file '"+getVFSPathAndName()+"'.");
