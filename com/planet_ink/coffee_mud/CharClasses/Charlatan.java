@@ -324,7 +324,8 @@ public class Charlatan extends StdCharClass
 				}
 			}
 			else
-			if(msg.amITarget(myChar))
+			if((msg.amITarget(myChar))
+			&&(msg.source()!=myChar))
 			{
 				if(((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
