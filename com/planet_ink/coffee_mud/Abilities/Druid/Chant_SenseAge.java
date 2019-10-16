@@ -120,7 +120,7 @@ public class Chant_SenseAge extends Chant
 				}
 				else
 				if(ageYears >= 0)
-					info.append(L("@x1 is aged @x4 years.  ",target.name(), ""+ageYears));
+					info.append(L("@x1 is aged @x2 years.  ",target.name(), ""+ageYears));
 				else
 					info.append(L("You have no way to determining the age of @x1.  ",target.name(mob)));
 
