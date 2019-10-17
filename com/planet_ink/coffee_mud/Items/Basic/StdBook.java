@@ -330,9 +330,39 @@ public class StdBook extends StdItem implements Book
 					else
 					if((newOnly)&&(msg.value()>0))
 						return;
+					final StringBuffer returnEntry;
+					if(read.second.length()>0)
+					{
+						final int x=read.second.indexOf(":");
+						if(x>0)
+							returnEntry=new StringBuffer("::"+read.second.substring(x+1)+"::");
+						else
+							returnEntry=new StringBuffer("::"+read.second+"::");
+					}
+					else
+						returnEntry=new StringBuffer("");
+					final String chStart=L("Chapter");
+					final String eTrim=entry.toString().trim();
+					if(eTrim.startsWith(chStart))
+					{
+						final int x=eTrim.indexOf(":");
+						int eol=-1;
+						if((x>0)&&(CMath.isInteger(eTrim.substring(chStart.length(),x).trim())))
+						{
+							eol=eTrim.indexOf('\n');
+							if(eol < 0)
+								eol=eTrim.indexOf('\r');
+						}
+						if(eol>0)
+							returnEntry.append("\n"+eTrim.substring(eol).trim());
+						else
+							returnEntry.append(entry);
+					}
+					else
+						returnEntry.append(entry);
 					final CMMsg readMsg=CMClass.getMsg(msg.source(), msg.target(), msg.tool(),
 							 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, L("It says '@x1'.\n\r",entry.toString()),
-							 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, entry.toString(),
+							 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, returnEntry.toString(),
 							 CMMsg.NO_EFFECT, null);
 					//mob.tell(entry.toString()+"\n\r");
 					if((entry.toString().trim().length()>0)

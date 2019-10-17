@@ -229,7 +229,7 @@ public class StdLanguage extends StdAbility implements Language
 		final boolean[] nos=CMStrings.markMarkups(words);
 		for(int i=0;i<words.length();i++)
 		{
-			if((!nos[i]) 
+			if((!nos[i])
 			&& Character.isLetter(words.charAt(i)))
 				num++;
 		}
@@ -563,7 +563,11 @@ public class StdLanguage extends StdAbility implements Language
 		&&(((Item)affected).isReadable())
 		)
 		{
-			String str=msg.targetMessage();
+			String str;
+			if(msg.targetMessage().startsWith("::")&&(msg.targetMessage().indexOf("::",2)>0))
+				str=msg.targetMessage().substring(msg.targetMessage().indexOf("::",2)+2);
+			else
+				str=msg.targetMessage();
 			int numToMess=numChars(str);
 			if(numToMess>0)
 			{
