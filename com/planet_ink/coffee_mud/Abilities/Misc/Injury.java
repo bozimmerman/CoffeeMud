@@ -382,7 +382,9 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 						&&(!CMSecurity.isAbilityDisabled(A.ID())))
 							A.invoke(mob,mob,true,0);
 					}
-					if((mob.playerStats().getHygiene()>=PlayerStats.HYGIENE_DELIMIT)
+					final PlayerStats pStats = mob.playerStats();
+					if((pStats!=null)
+					&&(pStats.getHygiene()>=PlayerStats.HYGIENE_DELIMIT)
 					&&(CMLib.dice().rollPercentage()==1)
 					&&(CMLib.dice().rollPercentage()==1))
 					{
