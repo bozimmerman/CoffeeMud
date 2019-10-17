@@ -47,7 +47,7 @@ public class ItemGenerator extends ActiveTicker
 		return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS|Behavior.CAN_MOBS;
 	}
 
-	protected static volatile Tickable[] builerTick=new Tickable[1];
+	protected static volatile Tickable[] itemGeneratorTick=new Tickable[1];
 
 	protected SVector<Item>		maintained			= new SVector<Item>();
 	protected int				minItems			= 1;
@@ -237,38 +237,51 @@ public class ItemGenerator extends ActiveTicker
 			return tickStatus;
 		}
 
+		protected final List<Item>				allItems	= new Vector<Item>();
+		protected volatile List<ItemCraftor>	skills		= null;
+
+		@SuppressWarnings("unchecked")
 		@Override
 		public boolean tick(final Tickable ticking, final int tickID)
 		{
-			@SuppressWarnings("unchecked")
-			List<Item> allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
-			if(allItems!=null)
+			final List<Item> checkItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
+			if(checkItems!=null)
 				return false;
-			Log.sysOut(ID(),"Starting master item generation");
-			allItems=new Vector<Item>();
-
-			final List<ItemCraftor> skills=new Vector<ItemCraftor>();
-			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+				return false;
+			if(skills == null)
 			{
-				final Ability A=e.nextElement();
-				if(A instanceof ItemCraftor)
-					skills.add((ItemCraftor)A.copyOf());
-			}
-			List<ItemCraftor.ItemKeyPair> skillSet=null;
-			for(final ItemCraftor skill : skills)
-			{
-				skillSet=skill.craftAllItemSets(false);
-				if(skillSet!=null)
+				Log.sysOut(ID(),"Starting master item generation");
+				allItems.clear();
+				skills=new Vector<ItemCraftor>();
+				for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
-					for(final ItemCraftor.ItemKeyPair materialSet: skillSet)
-						allItems.add(materialSet.item);
-					if(CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
-						return false;
+					final Ability A=e.nextElement();
+					if(A instanceof ItemCraftor)
+						skills.add((ItemCraftor)A.copyOf());
 				}
+				return true;
 			}
-			Log.sysOut(ID(),"Finished master item generation");
-			Resources.submitResource("ITEMGENERATOR-ALLITEMS",allItems);
-			return false;
+			final ItemCraftor skill;
+			synchronized(skills)
+			{
+				if(skills.size()==0)
+				{
+					Log.sysOut(ID(),"Finished master item generation");
+					Resources.submitResource("ITEMGENERATOR-ALLITEMS",allItems);
+					return false;
+				}
+				skill = skills.remove(0);
+			}
+
+			List<ItemCraftor.ItemKeyPair> skillSet=null;
+			skillSet=skill.craftAllItemSets(false);
+			if(skillSet!=null)
+			{
+				for(final ItemCraftor.ItemKeyPair materialSet: skillSet)
+					allItems.add(materialSet.item);
+			}
+			return true;
 		}
 	}
 
@@ -284,15 +297,15 @@ public class ItemGenerator extends ActiveTicker
 			List<Item> allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
 			if(allItems==null)
 			{
-				synchronized(builerTick)
+				synchronized(itemGeneratorTick)
 				{
 					allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
 					if(allItems==null)
 					{
-						if(builerTick[0]==null)
+						if(itemGeneratorTick[0]==null)
 						{
-							builerTick[0]=new ItemGenerationTicker();
-							CMLib.threads().startTickDown(builerTick[0],Tickable.TICKID_ITEM_BEHAVIOR|Tickable.TICKID_LONGERMASK,1234,1);
+							itemGeneratorTick[0]=new ItemGenerationTicker();
+							CMLib.threads().startTickDown(itemGeneratorTick[0],Tickable.TICKID_ITEM_BEHAVIOR|Tickable.TICKID_LONGERMASK,1234,1);
 						}
 						return null;
 					}
