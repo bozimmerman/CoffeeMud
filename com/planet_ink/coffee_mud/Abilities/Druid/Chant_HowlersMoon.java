@@ -155,7 +155,7 @@ public class Chant_HowlersMoon extends Chant
 					level=invoker().phyStats().level()+5+(2*getXLEVELLevel(invoker()));
 				final MOB target = determineMonster(invoker(),level);
 				final Room newRoom=room.getRoomInDir(fromDir);
-				final int opDir=Directions.getOpDirectionCode(fromDir);
+				final int opDir=room.getReverseDir(fromDir);
 				target.bringToLife(newRoom,true);
 				CMLib.beanCounter().clearZeroMoney(target,null);
 				target.setMoneyVariation(0);
