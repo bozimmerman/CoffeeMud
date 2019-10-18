@@ -268,6 +268,7 @@ public class Save extends StdCommand
 			}
 			else
 			{
+				CMLib.database().DBUpdateExits(mob.location());
 				if(clearSaveAndRestart(mob,mob.location(),SaveTask.ALL, false))
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the room.\n\r"));
 			}
