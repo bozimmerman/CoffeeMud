@@ -1545,7 +1545,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(lastKnownLocation!=null)
 		{
 			str=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,str);
-			Environmental E=lastKnownLocation.fetchFromRoomFavorMOBs(null,str);
+			Environmental E=null;
+			if(str.indexOf('#')>0)
+				E=CMLib.map().getRoom(str);
+			if(E==null)
+				E=lastKnownLocation.fetchFromRoomFavorMOBs(null,str);
 			if(E==null)
 				E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,str,Wearable.FILTER_ANY);
 			if(E==null)
@@ -1556,8 +1560,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				E=CMLib.players().getPlayerAllHosts(str);
 			if((E==null)&&(source!=null))
 				E=source.findItem(str);
-			if((E==null)&&(str.indexOf('#')>0))
-				E=CMLib.map().getRoom(str);
 			if(E instanceof PhysicalAgent)
 				return (PhysicalAgent)E;
 		}
@@ -14086,7 +14088,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(t!=null)
 					{
 						final Quest Q=getQuest(t[1]);
-						if((Q!=null)&&(Q.running())&&(!Q.stopping()))
+						if((Q!=null)
+						&&(Q.running())
+						&&(!Q.stopping())
+						&&(Q.duration()!=0))
 						{
 							final int time=CMath.s_int(t[2]);
 							if(time>=Q.minsRemaining())
