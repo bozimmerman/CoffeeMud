@@ -215,6 +215,11 @@ DEATH_PROG 99
 	next
 ~
 
+DELAY_PROG 300
+	mpecho $i runs away in fright.
+	mppurge $i
+~
+
 RAND_PROG 5
 	if EVAL($g != '') AND !QUESTROOM($g *)
 		mpecho $i runs away in fright.
@@ -238,6 +243,11 @@ DEATH_PROG 99
 			mpsetvar $1 PROGRESS Defeated $<$1 $QUEST_ID_DEFEATED>/$ATTACKER_SIZE
 		endif
 	next
+~
+
+DELAY_PROG 150
+	mpecho $i stalks away.
+	mppurge $i
 ~
 
 RAND_PROG 5
