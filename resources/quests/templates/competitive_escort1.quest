@@ -308,6 +308,7 @@ RAND_PROG 99
 					mpqset * QUESTOBJ $b
 					mpforce $b YELL $ATTACKER_SCREAM
 					mpforce $b kill $f
+					MPGSET $b REJUV 0
 				next
 			endif
 		endif

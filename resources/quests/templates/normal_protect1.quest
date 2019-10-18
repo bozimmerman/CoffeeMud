@@ -1,6 +1,6 @@
 #!QUESTMAKER_START_SCRIPT Normal Protect #1
-#The player must protect a mob or mobs that you will create from a mob or mobs 
-#that you create to attack the protected mob.  This quest is given by an 
+#The player must protect a mob that you will create from mobs you also
+#you create to attack the protected mob.  This quest is given by an 
 #existing Announcer mob in your world.
 #
 #!QUESTMAKER_PAGE Quest Name/Criteria
@@ -66,6 +66,10 @@
 #mobs will be waiting in the specified room waiting.
 #$PROTECTED_MOB=$MOBXML
 #
+#Protection success:
+#Select what the protected mob will say when a player defeats all attackers.
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Thanks!
+#
 #!QUESTMAKER_PAGE Announcer greetings/instructions
 #Here's where you specify any special text said by the announcer regarding
 #your quest
@@ -73,13 +77,13 @@
 #Announcer greeting: 
 #Specify what the announcer says to people when they enter the room about their
 #quest.
-#$QUEST_NOTIFYSTRING=$LONG_STRING=I need someone to go somewhere.
+#$QUEST_NOTIFYSTRING=$LONG_STRING=I need someone to go protect someone.
 #
 #Announcer instructions: 
 #Specify what the announcer says to people who have accepted the quest.  This 
 #should give some details about what is to be done.  You can leave this blank
 #if you like.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Go to that one place.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Go protect someone from someone else.
 #
 #!QUESTMAKER_PAGE Quest Dangers
 #You may optionally have mobs that appear during the quest in the same room as the
@@ -132,12 +136,6 @@
 #or 'prev' to require a previous quest, if multiple found.
 #$MULTIPLE=$CHOOSE=YES,NO,PREV
 #
-#Protected response: 
-#Specify what is emoted in the same room after the player successfully protects the
-#mobs to the designated room.  You may leave this blank if you like.
-#$PROTECTED_RESPONSE=($LONG_STRING)=The protect is complete.
-#
-#
 #!QUESTMAKER_END_SCRIPT Normal Protect #1
 
 set name $QUEST_ID
@@ -146,7 +144,6 @@ set author $#AUTHOR
 
 set wait 1
 set interval 1
-set duration 0
 quiet
 
 set area $ANNOUNCER_AREA
@@ -162,10 +159,12 @@ set area $PROTECTED_AREA
 set room $PROTECTED_ROOM
 set wherehappened ROOM
 
+set duration 0
+
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_protectmobs.xml</NAME><DATA><MOBS>$PROTECTED_MOB</MOBS></DATA></FILE>
-<FILE><NAME>$QUEST_ID_mobs.xml</NAME><DATA><MOBS>$ATTACKER_MOB</MOBS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_attackers.xml</NAME><DATA><MOBS>$ATTACKER_MOB</MOBS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
@@ -187,6 +186,8 @@ SPEECH_PROG p i accept $QUEST_NAME
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 			mpqset * STATISTICS ACCEPTED
+			mpsetvar $n $QUEST_ID_MYROOM '$%QVAR(* WHEREHAPPENED_ROOMID)%'
+			mptransfer $n $n
 		endif
 	endif
 ~
@@ -197,31 +198,21 @@ SPEECH_PROG p i accept
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 			mpqset * STATISTICS ACCEPTED
+			mpsetvar $n $QUEST_ID_MYROOM '$%QVAR(* WHEREHAPPENED_ROOMID)%'
+			mptransfer $n $n
 		endif
 	endif
 ~
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_protected.script</NAME>
 <DATA>
-DEATH_PROG 99
-	mpecho ^x$i has died.  You've failed the protection quest.^.^N
-	mpargset $8 ''
-	mpargset $9 $%NUMMOBSROOM(*)%
-	for $0 = 1 to $9
-		mpargset $1 '$%ROOMMOB($0)%'
-		if ISPC($1) AND QUESTSCRIPTED($1 *)
-			mpendquest $1
-		endif
-	next
-~
-
 DELAY_PROG 300
 	mpecho $i runs away in fright.
 	mppurge $i
 ~
 
 RAND_PROG 5
-	if EVAL($g != '') AND !QUESTROOM($g *)
+	if EVAL($d != '') AND !QUESTROOM($d *)
 		mpecho $i runs away in fright.
 		mppurge $i
 	ENDIF	
@@ -251,18 +242,31 @@ DELAY_PROG 150
 ~
 
 RAND_PROG 5
-	if EVAL($g != '') AND !QUESTROOM($g *)
+	if EVAL($d != '') AND !QUESTROOM($d *)
 		mpecho $i stalks away.
-		mppurge $i
+		mppurge room $i
 	ENDIF	
 ~
 </DATA>
 </FILE>
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
+CNCLMSG_PROG DEATH ALL
+	IF var($i $QUEST_ID_PROTMOB != '') AND EVAL('$<$i $QUEST_ID_PROTMOB>' == $n) AND QUESTSCRIPTED($n *)
+		mpecho ^x$n has died.  You've failed the protection quest.^.^N
+		mpendquest $i
+		IF VAR($i $QUEST_ID_PROTMOB != '')
+			MPAT '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_PROT_MOB
+		ENDIF 
+		IF VAR($i $QUEST_ID_LASTMOB != '')
+			MPAT '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_LAST_MOB
+		ENDIF 
+	endif
+~
+
 ONCE_PROG 100
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
-	if var($i MYROOM = '')
+	if var($i $QUEST_ID_MYROOM == '')
 		mpsetvar $i $QUEST_ID_MYROOM '$%QVAR(* WHEREHAPPENED_ROOMID)%'
 	endif
 	IF !isquestmobalive(1 '$QUEST_ID')
@@ -295,10 +299,10 @@ QUEST_TIME_PROG * 1
 ~
 
 FUNCTION_PROG DEL_LAST_MOB
-	IF QUESTMOB('$<$i $QUEST_ID_LASTMOB>' *)
+	MPWHILE QUESTMOB('$<$i $QUEST_ID_LASTMOB>' *) AND INROOM($d == '$<$i $QUEST_ID_LASTMOB>') 
 		mppurge room '$<$i $QUEST_ID_LASTMOB>'
-		mpsetvar $i $QUEST_ID_LASTMOB ''
-	ENDIF
+	ENDWHILE
+	mpsetvar $i $QUEST_ID_LASTMOB ''
 ~
 
 FUNCTION_PROG DEL_PROT_MOB
@@ -309,31 +313,33 @@ FUNCTION_PROG DEL_PROT_MOB
 ~
 
 CNCLMSG_PROG ENTER ALL
-	if EVAL($n == $i) AND EVAL($g != '') 
-		if VAR($i $QUEST_ID_MYROOM != '')
-			IF INROOM($g '$<$i $QUEST_ID_MYROOM>')
-				IF VAR($i $QUEST_ID_LASTMOB == '') OR !INROOM($g '$<$i $QUEST_ID_LASTMOB>') 
+	if EVAL($n == $i)
+		mpargset $g '$%INROOM($t)%'
+		if VAR($i $QUEST_ID_MYROOM != '') AND EVAL($g != '')
+			IF INROOM($g == '$<$i $QUEST_ID_MYROOM>')
+				IF VAR($i $QUEST_ID_PROTMOB == '') OR !INROOM($g == '$<$i $QUEST_ID_PROTMOB>') 
 					mpat '$g' mpmload fromfile $QUEST_ID_protectmobs.xml any
 					MPGSET $b REJUV 0
 					MPQSET * QUESTOBJ $b
 					MPEFFECT QuestBound $b
 					mpsetvar $i $QUEST_ID_PROTMOB $b
+					mpscript $b LOAD=$QUEST_ID_protected.script
 				ENDIF
 			ELSE
 				IF VAR($i $QUEST_ID_PROTMOB != '')
 					MPAT '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_PROT_MOB
 				ENDIF 
 				IF VAR($i $QUEST_ID_LASTMOB != '')
-					MPAT '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_PROT_MOB
+					MPAT '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_LAST_MOB
 				ENDIF 
 			endif
 		endif
 	endif
 ~
 
-RAND_PROG 50
-	IF VAR($i $QUEST_ID_PROTMOB != '') AND VAR($1 $QUEST_ID_DEFEATED >= $ATTACKER_SIZE)
-		IF EVAL($g != '') AND INROOM($g '$<$i $QUEST_ID_PROTMOB>')
+DELAY_PROG 3 3
+	IF VAR($i $QUEST_ID_PROTMOB != '') AND VAR($i $QUEST_ID_DEFEATED >= $ATTACKER_SIZE)
+		IF INROOM($d == '$<$i $QUEST_ID_PROTMOB>')
 			mpargset $8 '$<$i $QUEST_ID_PROTMOB>'
 			if EVAL('$EXP' != '')
 				mpexp $i $EXP
@@ -354,6 +360,8 @@ RAND_PROG 50
 				mpforce $8 give "$b" "$i"
 			endif
 			mpquestwin $i *
+			mpat $<$i $QUEST_ID_MYROOM> MPCALLFUNC DEL_LAST_MOB
+			mpat $<$i $QUEST_ID_MYROOM> MPCALLFUNC DEL_PROT_MOB
 			mpforce $8 sayto $i $QUEST_WINSPEECH_TEXT
 			mpendquest $i
 			mpqset * STATISTICS SUCCESS
@@ -368,14 +376,16 @@ RAND_PROG $ATTACKER_PCT_CHANCE
 	IF VAR($i $QUEST_ID_LASTMOB != '') OR VAR($i $QUEST_ID_PROTMOB == '')
 		return
 	ENDIF
-	if !INROOM($i '$<$i $QUEST_ID_PROTMOB>')
+	if INROOM($i != '$<$i $QUEST_ID_MYROOM>') OR INROOM($i != '$<$i $QUEST_ID_PROTMOB>')
 		return
 	ENDIF
 	mpmload fromfile $QUEST_ID_attackers.xml any
 	mpqset * QUESTOBJ $b
+	MPGSET $b REJUV 0
 	mpecho $b enters the room.
 	mpforce $b YELL $ATTACKER_SCREAM
 	mpforce $b kill $<$i $QUEST_ID_PROTMOB>
+	mpsetvar $i $QUEST_ID_LASTMOB $b
 	if !ISFIGHT($b)
 		mpforce $b kill all
 	endif

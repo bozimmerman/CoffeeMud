@@ -302,6 +302,7 @@ RAND_PROG $ATTACKER_PCT_CHANCE
 	
 	mpmload fromfile $QUEST_ID_attackers.xml any
 	mpqset * QUESTOBJ $b
+	MPGSET $b REJUV 0
 	mpecho $b enters the room.
 	mpforce $b YELL $ATTACKER_SCREAM
 	mpforce $b kill $i
