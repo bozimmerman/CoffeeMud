@@ -1556,6 +1556,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				E=CMLib.players().getPlayerAllHosts(str);
 			if((E==null)&&(source!=null))
 				E=source.findItem(str);
+			if((E==null)&&(str.indexOf('#')>0))
+				E=CMLib.map().getRoom(str);
 			if(E instanceof PhysicalAgent)
 				return (PhysicalAgent)E;
 		}
@@ -9205,6 +9207,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					case 'G':
 						if (O instanceof String)
 							msg = (String) O;
+						else
+						if((O instanceof Room)
+						&&((((Room)O).roomID().length()>0)
+							|| (!"".equals(CMLib.map().getExtendedRoomID((Room)O)))))
+							msg = CMLib.map().getExtendedRoomID((Room)O);
+						else
+						if(O instanceof CMObject)
+							msg=((CMObject)O).name();
+						else
+							msg=""+O;
 						break;
 					default:
 						logError(scripted, "MPARGSET", "Syntax", "Invalid argument var: " + arg1 + " for " + scripted.Name());
