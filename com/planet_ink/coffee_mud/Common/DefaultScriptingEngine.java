@@ -5860,6 +5860,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return returnable;
 					}
 					final String val=getVar(E,arg1,arg2,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
+					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SCRIPTVARS))
+						Log.debugOut("(VAR "+arg1+" "+arg2 +"["+val+"] "+arg3+" "+arg4);
 					if(arg3.equals("==")||arg3.equals("="))
 						returnable=val.equals(arg4);
 					else
@@ -13891,9 +13893,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						final int prcnt=CMath.s_int(t[1]);
 						if(CMLib.dice().rollPercentage()<prcnt)
-						{
 							execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
-						}
 					}
 				}
 				break;
@@ -13941,9 +13941,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							delayProgCounter[0]++;
 					}
 					if(exec)
-					{
 						execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
-					}
 				}
 				break;
 			case 7: // fight_Prog

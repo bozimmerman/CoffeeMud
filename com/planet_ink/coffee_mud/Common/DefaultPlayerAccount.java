@@ -252,20 +252,20 @@ public class DefaultPlayerAccount implements PlayerAccount
 		notes=newnotes;
 	}
 
-	protected SHashSet<String> getHashFrom(String str)
+	protected SHashSet<String> getHashFrom(String str, final boolean trim)
 	{
 		final SHashSet<String> h=new SHashSet<String>();
 		int x=str.indexOf(';');
 		while(x>=0)
 		{
-			final String fi=str.substring(0,x).trim();
+			final String fi=trim?str.substring(0,x).trim():str.substring(0,x);
 			if(fi.length()>0)
 				h.add(fi);
 			str=str.substring(x+1);
 			x=str.indexOf(';');
 		}
 		if(str.trim().length()>0)
-			h.add(str.trim());
+			h.add(trim?str.trim():str);
 		return h;
 	}
 
@@ -971,13 +971,13 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 1:
 		{
 			friends.clear();
-			friends.addAll(getHashFrom(val));
+			friends.addAll(getHashFrom(val,true));
 			break;
 		}
 		case 2:
 		{
 			ignored.clear();
-			ignored.addAll(getHashFrom(val));
+			ignored.addAll(getHashFrom(val,true));
 			break;
 		}
 		case 3:
@@ -1030,7 +1030,21 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 16:
 		{
 			subscriptions.clear();
-			subscriptions.addAll(getHashFrom(val));
+			subscriptions.addAll(getHashFrom(val,false));
+			final List<String> addThese=new ArrayList<String>();
+			for(final String s : subscriptions)
+			{
+				if((s.length()>3)
+				&&(Character.isLetter(s.charAt(0)))
+				&&(s.charAt(1)==' ')
+				&&(s.charAt(2)==':'))
+					addThese.add(s);
+			}
+			for(final String s : addThese)
+			{
+				subscriptions.remove(s);
+				subscriptions.add(" "+s);
+			}
 			break;
 		}
 		default:

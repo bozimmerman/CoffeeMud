@@ -206,14 +206,14 @@ SPEECH_PROG p i accept
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_protected.script</NAME>
 <DATA>
-DELAY_PROG 300
+DELAY_PROG 300 300
 	mpecho $i runs away in fright.
 	mppurge $i
 ~
 
 RAND_PROG 5
-	if EVAL($d != '') AND !QUESTROOM($d *)
-		mpecho $i runs away in fright.
+	if !INROOM($i == '$%QVAR(* WHEREHAPPENED_ROOMID)%')
+		mpecho $i runs away in confusion.
 		mppurge $i
 	ENDIF	
 ~
@@ -236,13 +236,13 @@ DEATH_PROG 99
 	next
 ~
 
-DELAY_PROG 150
+DELAY_PROG 150 150
 	mpecho $i stalks away.
 	mppurge $i
 ~
 
 RAND_PROG 5
-	if EVAL($d != '') AND !QUESTROOM($d *)
+	if !INROOM($i == '$%QVAR(* WHEREHAPPENED_ROOMID)%')
 		mpecho $i stalks away.
 		mppurge room $i
 	ENDIF	
@@ -299,9 +299,7 @@ QUEST_TIME_PROG * 1
 ~
 
 FUNCTION_PROG DEL_LAST_MOB
-	MPWHILE QUESTMOB('$<$i $QUEST_ID_LASTMOB>' *) AND INROOM($d == '$<$i $QUEST_ID_LASTMOB>') 
-		mppurge room '$<$i $QUEST_ID_LASTMOB>'
-	ENDWHILE
+	MPWHILE ( QUESTMOB('$<$i $QUEST_ID_LASTMOB>' *) AND INROOM($d == '$<$i $QUEST_ID_LASTMOB>') ) mppurge room '$<$i $QUEST_ID_LASTMOB>'
 	mpsetvar $i $QUEST_ID_LASTMOB ''
 ~
 
@@ -359,9 +357,9 @@ DELAY_PROG 3 3
 			if EVAL('$b' != '')
 				mpforce $8 give "$b" "$i"
 			endif
+			mpat '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_LAST_MOB
+			mpat '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_PROT_MOB
 			mpquestwin $i *
-			mpat $<$i $QUEST_ID_MYROOM> MPCALLFUNC DEL_LAST_MOB
-			mpat $<$i $QUEST_ID_MYROOM> MPCALLFUNC DEL_PROT_MOB
 			mpforce $8 sayto $i $QUEST_WINSPEECH_TEXT
 			mpendquest $i
 			mpqset * STATISTICS SUCCESS
@@ -373,7 +371,7 @@ DELAY_PROG 3 3
 ~
 
 RAND_PROG $ATTACKER_PCT_CHANCE
-	IF VAR($i $QUEST_ID_LASTMOB != '') OR VAR($i $QUEST_ID_PROTMOB == '')
+	IF VAR($i $QUEST_ID_PROTMOB == '') OR VAR($i $QUEST_ID_DEFEATED >= $ATTACKER_SIZE)
 		return
 	ENDIF
 	if INROOM($i != '$<$i $QUEST_ID_MYROOM>') OR INROOM($i != '$<$i $QUEST_ID_PROTMOB>')
