@@ -98,7 +98,8 @@ public class Spell_Grow extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			final double aff=1.0 + CMath.mul(0.1,(invoker().phyStats().level()+(2*getXLEVELLevel(invoker()))));
+			final MOB invoker=invoker() == null ? (MOB)affected : invoker();
+			final double aff=1.0 + CMath.mul(0.1,(invoker.phyStats().level()+(2*getXLEVELLevel(invoker))));
 			affectableStats.setHeight((int)Math.round(CMath.mul(affectableStats.height(),aff)));
 		}
 	}
@@ -107,8 +108,9 @@ public class Spell_Grow extends Spell
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
+		final MOB invoker=invoker() == null ? (MOB)affected : invoker();
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)/2);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+((invoker().phyStats().level()+(2*getXLEVELLevel(invoker())))/5));
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+((invoker.phyStats().level()+(2*getXLEVELLevel(invoker)))/5));
 	}
 
 	@Override
