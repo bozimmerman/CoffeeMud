@@ -216,6 +216,18 @@ public class Skill_Chirgury extends StdSkill
 
 		if(success)
 		{
+			final String simpleTargetName;
+			if(target instanceof DeadBody)
+			{
+				final MOB M=((DeadBody)target).getSavedMOB();
+				if(M!=null)
+					simpleTargetName=M.Name();
+				else
+					simpleTargetName=((DeadBody)target).getMobName();
+			}
+			else
+				simpleTargetName=target.name();
+
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> carefully perform(s) chirurgy upon <T-NAME>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
