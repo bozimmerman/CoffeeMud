@@ -236,7 +236,7 @@ DEATH_PROG 99
 	next
 ~
 
-DELAY_PROG 150 150
+DELAY_PROG 80 80
 	mpecho $i stalks away.
 	mppurge $i
 ~
