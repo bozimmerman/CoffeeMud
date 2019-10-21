@@ -265,9 +265,9 @@ public class Skill_Chirgury extends StdSkill
 					}
 					meat.setName(L("the @x1 of @x2",parts[partCode][0].toString().toLowerCase(),target.Name()));
 					if((parts[partCode][0].toString().endsWith("S"))&&(!parts[partCode][0].toString().equalsIgnoreCase("PANCREAS")))
-						meat.setDisplayText(L("the @x1 of @x2 lie here.",parts[partCode][0].toString().toLowerCase(),target.Name()));
+						meat.setDisplayText(L("the @x1 of @x2 lie here.",parts[partCode][0].toString().toLowerCase(),simpleTargetName));
 					else
-						meat.setDisplayText(L("the @x1 of @x2 lies here.",parts[partCode][0].toString().toLowerCase(),target.Name()));
+						meat.setDisplayText(L("the @x1 of @x2 lies here.",parts[partCode][0].toString().toLowerCase(),simpleTargetName));
 					CMLib.materials().addEffectsToResource(meat);
 					meat.recoverPhyStats();
 					meat.text();
@@ -289,8 +289,8 @@ public class Skill_Chirgury extends StdSkill
 						target.delEffect(preg);
 						preg.setAffectedOne(null);
 						final DeadBody baby=(DeadBody)CMClass.getItem("GenCorpse");
-						baby.setName(L("@x1's bloody fetus",target.Name()));
-						baby.setDisplayText(L("@x1's bloody fetus is lying here.",target.Name()));
+						baby.setName(L("@x1's bloody fetus",simpleTargetName));
+						baby.setDisplayText(L("@x1's bloody fetus is lying here.",simpleTargetName));
 						baby.setTimeOfDeath(System.currentTimeMillis());
 						baby.setIsDestroyAfterLooting(false);
 						baby.setKillerName(mob.Name());
