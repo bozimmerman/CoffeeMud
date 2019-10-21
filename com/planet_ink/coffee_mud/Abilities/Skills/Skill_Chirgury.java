@@ -143,7 +143,7 @@ public class Skill_Chirgury extends StdSkill
 		if(target instanceof DeadBody)
 			C=((DeadBody)target).charStats();
 
-		if((partSet.length>0)
+		if((partSet.length>1)
 		&&(partSet[1] instanceof Integer)
 		&&(C!=null) && (C.getMyRace().bodyMask()[((Integer)partSet[1]).intValue()]<=0))
 		{
