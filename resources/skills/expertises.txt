@@ -665,7 +665,7 @@ EDUCATING@x1=Educating @x2,10,LEVEL|LOWCOST,-SKILLFLAG +EDUCATION_LORE,-MAXCLASS
 HELP_=<EXPERTISE>The ability to use education lore abilities at a higher intellectual level, and at less cost.
 
 LEGALLORE@x1=Legal Lore @x2,10,LEVEL|LOWCOST,-SKILLFLAG +LEGAL,-MAXCLASSLEVEL +>={17+(6*@x1)},+WIS {14+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to use legal abilities at a wiser level, and at less cost.
+HELP_=<EXPERTISE>The ability to use legal abilities at a higher level, and at less cost.
 
 #MANUFACTURER=@x3,1,LEVEL,-SKILL +AstroEngineering,,+INT 5,0,1,0,0,0
 #HELP_=<EXPERTISE>Knowledge of the peculiarities of the products of the @x3 manufacturer.
