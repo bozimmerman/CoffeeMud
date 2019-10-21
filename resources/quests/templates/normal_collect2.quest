@@ -306,7 +306,6 @@ CNCLMSG_PROG ENTER ALL
 					if STRIN('$<$i $QUEST_ID_FOUNDROOMS>' $g)
 						mpat '$g' mpoloadroom fromfile $QUEST_ID_items.xml any
 						MPQSET * QUESTOBJ $b
-						MPEFFECT QuestBound $b
 						mpsetvar $i $QUEST_ID_LASTITEM $b
 						mpsetvar $i $QUEST_ID_LASTROOM $g
 					endif

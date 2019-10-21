@@ -188,7 +188,6 @@ SPEECH_PROG p i accept $QUEST_NAME
 			mpmload fromfile $QUEST_ID_escortmobs.xml any
 			MPGSET $b REJUV 0
 			MPQSET * QUESTOBJ $b
-			MPEFFECT QuestBound $b
 			mpforce $b follow $n
 			IF ISFOLLOW($b)
 				mpqset * STATISTICS ACCEPTED
@@ -210,7 +209,6 @@ SPEECH_PROG p i accept
 			mpmload fromfile $QUEST_ID_escortmobs.xml any
 			MPGSET $b REJUV 0
 			MPQSET * QUESTOBJ $b
-			MPEFFECT QuestBound $b
 			mpforce $b follow $n
 			IF ISFOLLOW($b)
 				mpqset * STATISTICS ACCEPTED
@@ -311,7 +309,6 @@ CNCLMSG_PROG ENTER ALL
 					mpat '$g' mpmload fromfile $QUEST_ID_mobs.xml any
 					MPGSET $b REJUV 0
 					MPQSET * QUESTOBJ $b
-					MPEFFECT QuestBound $b
 					mpsetvar $i $QUEST_ID_LASTMOB $b
 					mpsetvar $i $QUEST_ID_LASTROOM $g
 					mpforce $b YELL $ATTACKER_SCREAM

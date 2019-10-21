@@ -319,7 +319,6 @@ CNCLMSG_PROG ENTER ALL
 					mpat '$g' mpmload fromfile $QUEST_ID_protectmobs.xml any
 					MPGSET $b REJUV 0
 					MPQSET * QUESTOBJ $b
-					MPEFFECT QuestBound $b
 					mpsetvar $i $QUEST_ID_PROTMOB $b
 					mpscript $b LOAD=$QUEST_ID_protected.script
 				ENDIF

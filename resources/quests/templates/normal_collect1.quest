@@ -277,7 +277,6 @@ CNCLMSG_PROG STO=DEATH ALL
 		if rand($COLLECTABLES_CHANCE)
 			mpforce $n mpoload fromfile $QUEST_ID_items.xml any
 			MPQSET * QUESTOBJ $b
-			MPEFFECT QuestBound $b
 		endif
 	endif
 ~
@@ -290,7 +289,6 @@ ENTRY_PROG 100
 				if rand($COLLECTABLES_CHANCE)
 					mpforce $1 mpoload fromfile $QUEST_ID_items.xml any
 					MPQSET * QUESTOBJ $b
-					MPEFFECT QuestBound $b
 					mpforce $1 sayto "$i" $HOLDERS_RESPONSE
 					mpforce $1 kill $i
 				endif

@@ -290,7 +290,6 @@ CNCLMSG_PROG STO=DEATH ALL
 	if ISNPC($n) AND QUESTMOB($n *) AND EVAL('$HOLDERS_RESPONSE' == '') AND EVAL('${1 *}' != $1)
 		mpforce $n mpoload fromfile $QUEST_ID_items.xml any
 		MPQSET * QUESTOBJ $b
-		MPEFFECT QuestBound $b
 	endif
 ~
 
@@ -336,7 +335,6 @@ CNCLMSG_PROG ENTER ALL
 						mpat '$g' mpmload fromfile $QUEST_ID_mobs.xml any
 						MPGSET $b REJUV 0
 						MPQSET * QUESTOBJ $b
-						MPEFFECT QuestBound $b
 						mpsetvar $i $QUEST_ID_LASTMOB $b
 						mpsetvar $i $QUEST_ID_LASTROOM $g
 					endif
@@ -353,7 +351,6 @@ ENTRY_PROG 100
 			if ISNPC($1) AND QUESTMOB($1 *) AND CANSEE($1 $i) AND EVAL('${1 *}' != $1)
 				mpforce $1 mpoload fromfile $QUEST_ID_items.xml any
 				MPQSET * QUESTOBJ $b
-				MPEFFECT QuestBound $b
 				mpforce $1 sayto "$i" $HOLDERS_RESPONSE
 				mpforce $1 kill $i
 			endif
