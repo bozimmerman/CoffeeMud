@@ -180,7 +180,7 @@ public class Skill_Track extends StdSkill
 					final Room oldRoom=mob.location();
 					final Room nextRoom=oldRoom.getRoomInDir(nextDirection);
 					final Exit nextExit=oldRoom.getExitInDir(nextDirection);
-					final int opDirection=nextRoom.getReverseDir(nextDirection);
+					final int opDirection=oldRoom.getReverseDir(nextDirection);
 					if((nextRoom!=null)&&(nextExit!=null))
 					{
 						boolean reclose=false;
