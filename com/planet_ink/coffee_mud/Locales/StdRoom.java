@@ -1556,6 +1556,8 @@ public class StdRoom implements Room
 		final Room opRoom=getRoomInDir(direction);
 		if(opRoom!=null)
 		{
+			if(direction == Directions.GATE)
+				return direction;
 			final int formalOpDir=Directions.getOpDirectionCode(direction);
 			if(opRoom.rawDoors()[formalOpDir]==this)
 				return formalOpDir;
