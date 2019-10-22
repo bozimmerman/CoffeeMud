@@ -362,6 +362,8 @@ public class ThinRoom implements Room
 		final Room opRoom=getRoomInDir(direction);
 		if(opRoom!=null)
 		{
+			if(direction == Directions.GATE)
+				return Directions.GATE;
 			final int formalOpDir=Directions.getOpDirectionCode(direction);
 			if(opRoom.rawDoors()[formalOpDir]==this)
 				return formalOpDir;
@@ -400,7 +402,7 @@ public class ThinRoom implements Room
 			return null;
 		return opExit;
 	}
-	
+
 	@Override
 	public Room getRoomInDir(final int direction)
 	{
