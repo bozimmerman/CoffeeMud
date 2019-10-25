@@ -530,7 +530,23 @@ public class Archon_CRecord extends ArchonSkill
 				if(M==null)
 					M=CMLib.players().getLoadPlayer(commands.get(1));
 				if(M==null)
-					mob.tell(L("Unknown player @x1",commands.get(1)));
+				{
+					boolean done=false;
+					for(final String s : A.myPlayers)
+					{
+						if(s.equalsIgnoreCase(commands.get(1)))
+						{
+							A.myPlayers.remove(s);
+							myPlayers.remove(s);
+							done=true;
+							break;
+						}
+					}
+					if(done)
+						mob.tell(L("Recording on @x1 has been stopped.",CMStrings.capitalizeAllFirstLettersAndLower(commands.get(1))));
+					else
+						mob.tell(L("Unknown player @x1",commands.get(1)));
+				}
 				else
 				if(!A.myPlayers.contains(M.Name()) && (!myPlayers.contains(M.Name())))
 					mob.tell(L("Player @x1 is not being recorded by YOU.",commands.get(1)));
@@ -551,7 +567,6 @@ public class Archon_CRecord extends ArchonSkill
 						A.myPlayers.remove(M.Name());
 						myPlayers.remove(M.Name());
 						mob.tell(L("Recording on @x1 has been stopped.",M.Name()));
-						CMLib.map().delGlobalHandler(A, CMMsg.TYP_LEVEL);
 					}
 				}
 			}
