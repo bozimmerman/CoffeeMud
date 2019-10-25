@@ -134,6 +134,14 @@ ${SELECT:any\name from (SELECT: . from $item_junk)}
 	<STRING define="verb_escorted=escorted to">escorted</STRING>
 </STRING>
 
+<STRING id="verb_protected" predefine="verb_protect=$verb_protect">$verb_protected</STRING>
+<STRING ID="verb_protect" define="verb_protect" SELECT="Any-1">
+	<STRING define="verb_protected=protected">protect</STRING>
+	<STRING define="verb_protected=saved">save</STRING>
+	<STRING define="verb_protected=guarded">guard</STRING>
+	<STRING define="verb_protected=safeguarded">safeguard</STRING>
+</STRING>
+
 <STRING id="verb_visited" predefine="verb_visit=$verb_visit">$verb_visited</STRING>
 <STRING ID="verb_visit" define="verb_visit" SELECT="Any-1">
 	<STRING define="verb_visited=traveled to">travel to</STRING>
