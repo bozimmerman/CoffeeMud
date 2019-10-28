@@ -192,11 +192,17 @@ public class GrinderExits
 			final String makeSame=httpReq.getUrlParameter("MAKESAME");
 			if((makeSame!=null)&&(makeSame.equalsIgnoreCase("on")))
 			{
-				final Room R2=R.rawDoors()[dir];
-				Exit E2=null;
-				if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(dir)]==R))
-					E2=R2.getRawExit(Directions.getOpDirectionCode(dir));
-				if(E2!=null)
+				Room R2=CMLib.map().getRoom(R.rawDoors()[dir]);
+				if((R2!=null)
+				&&(R2.ID().equals("ThinRoom")))
+				{
+					if(R2.roomID().length()>0)
+						R2=CMLib.map().getRoom(R2.roomID());
+					if(R2==null)
+						R2=CMLib.map().getRoom(R.getRoomInDir(dir));
+				}
+				Exit E2=R.getReverseExit(dir);
+				if((R2!=null)&&(E2!=null))
 				{
 					final Exit oldE2=E2;
 					E2=(Exit)X.copyOf();
@@ -233,6 +239,11 @@ public class GrinderExits
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
+			if((R!=null)
+			&&(R.ID().equals("ThinRoom")))
+				R=CMLib.map().getRoom(R.roomID());
+			if(R==null)
+				return "Failed exit!";
 			R.clearSky();
 			if(R instanceof GridLocale)
 				((GridLocale)R).clearGrid(null);
@@ -250,6 +261,11 @@ public class GrinderExits
 		synchronized(("SYNC"+R2.roomID()).intern())
 		{
 			R2=CMLib.map().getRoom(R2);
+			if((R2!=null)
+			&&(R2.ID().equals("ThinRoom")))
+				R2=CMLib.map().getRoom(R.getRoomInDir(dir));
+			if(R2==null)
+				return "Failed exit2!";
 			R2.clearSky();
 			if(R2 instanceof GridLocale)
 				((GridLocale)R2).clearGrid(null);
