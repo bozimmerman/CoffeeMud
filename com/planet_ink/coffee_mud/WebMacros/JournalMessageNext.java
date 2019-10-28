@@ -73,6 +73,8 @@ public class JournalMessageNext extends StdWebMacro
 		String page=httpReq.getUrlParameter("JOURNALPAGE");
 		if(page==null)
 			page=parms.get("JOURNALPAGE");
+		if(page==null) // added to make linking to forums easier.  What will this break?
+			page="0";
 		int pageLimit;
 		if(httpReq.isUrlParameter("JOURNALPAGELIMIT"))
 			pageLimit = CMath.s_int(httpReq.getUrlParameter("JOURNALPAGELIMIT"));
