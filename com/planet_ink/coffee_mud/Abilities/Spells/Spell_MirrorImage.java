@@ -76,7 +76,7 @@ public class Spell_MirrorImage extends Spell
 	}
 
 	private final Random	randomizer		= new Random(System.currentTimeMillis());
-	protected int			numberOfImages	= 0;
+	protected int			numberOfImages	= 1;
 	protected boolean		notAgain		= false;
 
 	@Override
