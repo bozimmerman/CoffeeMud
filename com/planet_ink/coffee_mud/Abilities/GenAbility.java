@@ -81,7 +81,7 @@ public class GenAbility extends StdAbility
 	private static final int V_MOCK=31;//S
 	private static final int V_MOKT=32;//S
 
-	private static final int NUM_VS=32;//S
+	private static final int NUM_VS=33;//S
 
 	private static final Object[] makeEmpty()
 	{
@@ -110,7 +110,7 @@ public class GenAbility extends StdAbility
 		O[V_ATT2]=Integer.valueOf(0);
 		O[V_PAFF]="";
 		O[V_PABL]="";
-		O[V_PDMG]="1";
+		O[V_PDMG]="0";
 		O[V_HELP]="<ABILITY>This ability is not yet documented.";
 		O[V_TKBC]=Integer.valueOf(0);
 		O[V_TKOV]=Integer.valueOf(0);
