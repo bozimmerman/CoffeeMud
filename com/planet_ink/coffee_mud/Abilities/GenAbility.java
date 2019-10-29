@@ -153,21 +153,6 @@ public class GenAbility extends StdAbility
 
 	public Ability getQuietAffect()
 	{
-		if((quietEffect==null)
-		&& (affected != null))
-		{
-			final String SID=(String)V(ID,V_MOCK);
-			if(SID.length()>0)
-			{
-				final Ability A=CMClass.getAbility(SID);
-				if(A!=null)
-				{
-					A.setAffectedOne(affected);
-					A.setMiscText((String)V(ID,V_MOKT));
-					quietEffect=A;
-				}
-			}
-		}
 		return quietEffect;
 	}
 
@@ -596,12 +581,30 @@ public class GenAbility extends StdAbility
 					if((canAffectCode()!=0)&&(target!=null))
 					{
 						this.quietEffect=null;
-						final Ability affectA;
+						final GenAbility affectA;
 						if(abstractQuality()==Ability.QUALITY_MALICIOUS)
-							affectA=maliciousAffect(mob,target,asLevel,tickOverride(),-1);
+							affectA=(GenAbility)maliciousAffect(mob,target,asLevel,tickOverride(),-1);
 						else
-							affectA=beneficialAffect(mob,target,asLevel,tickOverride());
+							affectA=(GenAbility)beneficialAffect(mob,target,asLevel,tickOverride());
 						success[0]=affectA!=null;
+						if(success[0])
+						{
+							if((affectA != null)
+							&& (affectA.affecting()!=null))
+							{
+								final String SID=(String)V(ID,V_MOCK);
+								if(SID.length()>0)
+								{
+									final Ability A=CMClass.getAbility(SID);
+									if(A!=null)
+									{
+										A.setAffectedOne(affectA.affecting());
+										A.setMiscText((String)V(ID,V_MOKT));
+										affectA.quietEffect=A;
+									}
+								}
+							}
+						}
 					}
 					setTimeOfNextCast(mob);
 
