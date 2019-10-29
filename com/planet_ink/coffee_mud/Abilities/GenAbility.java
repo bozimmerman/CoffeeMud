@@ -77,8 +77,11 @@ public class GenAbility extends StdAbility
 	private static final int V_TKOV=27;//I
 	private static final int V_TKAF=28;//B
 	private static final int V_CHAN=29;//B
+	private static final int V_UNIN=30;//S
+	private static final int V_MOCK=31;//S
+	private static final int V_MOKT=32;//S
 
-	private static final int NUM_VS=30;//S
+	private static final int NUM_VS=32;//S
 
 	private static final Object[] makeEmpty()
 	{
@@ -113,6 +116,9 @@ public class GenAbility extends StdAbility
 		O[V_TKOV]=Integer.valueOf(0);
 		O[V_TKAF]=Boolean.FALSE;
 		O[V_CHAN]=Boolean.FALSE;
+		O[V_UNIN]="";
+		O[V_MOCK]="";
+		O[V_MOKT]="";
 		return O;
 	}
 
@@ -143,6 +149,27 @@ public class GenAbility extends StdAbility
 	protected long			timeToNextCast	= 0;
 	protected boolean		oneTimeChecked	= false;
 	protected List<Ability>	postEffects		= new Vector<Ability>(1);
+	protected Ability		quietEffect		= null;
+
+	public Ability getQuietAffect()
+	{
+		if((quietEffect==null)
+		&& (affected != null))
+		{
+			final String SID=(String)V(ID,V_MOCK);
+			if(SID.length()>0)
+			{
+				final Ability A=CMClass.getAbility(SID);
+				if(A!=null)
+				{
+					A.setAffectedOne(affected);
+					A.setMiscText((String)V(ID,V_MOKT));
+					quietEffect=A;
+				}
+			}
+		}
+		return quietEffect;
+	}
 
 	public ScriptingEngine getScripter()
 	{
@@ -568,6 +595,7 @@ public class GenAbility extends StdAbility
 				{
 					if((canAffectCode()!=0)&&(target!=null))
 					{
+						this.quietEffect=null;
 						final Ability affectA;
 						if(abstractQuality()==Ability.QUALITY_MALICIOUS)
 							affectA=maliciousAffect(mob,target,asLevel,tickOverride(),-1);
@@ -749,6 +777,10 @@ public class GenAbility extends StdAbility
 		final ScriptingEngine S=getScripter();
 		if(S!=null)
 			S.executeMsg(myHost,msg);
+		final Ability A=this.getQuietAffect();
+		if(A != null)
+			A.executeMsg(myHost, msg);
+
 		if(isChannelingSkill()
 		&&(affecting()==invoker())
 		&&msg.amISource(invoker())
@@ -778,6 +810,9 @@ public class GenAbility extends StdAbility
 			A.affectPhyStats(affectedEnv,affectableStats);
 		if(isChannelingSkill())
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_AUTO_ATTACK);
+		final Ability A2=this.getQuietAffect();
+		if(A2 != null)
+			A2.affectPhyStats(affectedEnv, affectableStats);
 	}
 
 	@Override
@@ -786,7 +821,9 @@ public class GenAbility extends StdAbility
 		final Ability A=(Ability)V(ID,V_HERE);
 		if(A!=null)
 			A.affectCharStats(affectedMob,affectableStats);
-
+		final Ability A2=this.getQuietAffect();
+		if(A2 != null)
+			A2.affectCharStats(affectedMob, affectableStats);
 	}
 
 	@Override
@@ -795,6 +832,9 @@ public class GenAbility extends StdAbility
 		final Ability A=(Ability)V(ID,V_HERE);
 		if(A!=null)
 			A.affectCharState(affectedMob,affectableMaxState);
+		final Ability A2=this.getQuietAffect();
+		if(A2 != null)
+			A2.affectCharState(affectedMob, affectableMaxState);
 	}
 
 	@Override
@@ -804,6 +844,12 @@ public class GenAbility extends StdAbility
 		if(S!=null)
 		{
 			if(!S.okMessage(myHost,msg))
+				return false;
+		}
+		final Ability A=this.getQuietAffect();
+		if(A != null)
+		{
+			if(!A.okMessage(myHost, msg))
 				return false;
 		}
 		return true;
@@ -836,6 +882,30 @@ public class GenAbility extends StdAbility
 					final CMMsg msg3=CMClass.getMsg(invoker(),aff,this,CMMsg.MSG_OK_VISUAL,null,null,"UNINVOKE-"+ID);
 					S.executeMsg(aff, msg3);
 					S.dequeResponses();
+				}
+			}
+			final String uninMsg = (String)V(ID,V_UNIN);
+			if(uninMsg.length()>0)
+			{
+				if(aff instanceof MOB)
+				{
+					final MOB mob=(MOB)aff;
+					if((mob.location()!=null)&&(!mob.amDead()))
+						mob.tell(uninMsg);
+				}
+				else
+				if(aff instanceof Item)
+				{
+					final Item I=(Item)aff;
+					if(I.owner() instanceof Room)
+						((Room)I.owner()).showHappens(CMMsg.MSG_OK_VISUAL,uninMsg);
+					else
+					if(I.owner() instanceof MOB)
+					{
+						final MOB mob=(MOB)aff;
+						if((mob.location()!=null)&&(!mob.amDead()))
+							mob.tell(uninMsg);
+					}
 				}
 			}
 		}
@@ -898,6 +968,9 @@ public class GenAbility extends StdAbility
 										 "TICKSOVERRIDE",//29I
 										 "TICKAFFECTS", //30B
 										 "CHANNELING", //31B
+										 "UNINVOKEMSG", //32S
+										 "MOCKABILITY", //33A
+										 "MOCKABLETEXT", //34S
 										};
 
 	@Override
@@ -986,6 +1059,12 @@ public class GenAbility extends StdAbility
 			return ((Boolean) V(ID, V_TKAF)).toString();
 		case 31:
 			return ((Boolean) V(ID, V_CHAN)).toString();
+		case 32:
+			return (String) V(ID,V_UNIN);
+		case 33:
+			return (String) V(ID,V_MOCK);
+		case 34:
+			return (String) V(ID,V_MOKT);
 		default:
 			if (code.equalsIgnoreCase("allxml"))
 				return getAllXML();
@@ -1117,6 +1196,15 @@ public class GenAbility extends StdAbility
 			break;
 		case 31:
 			SV(ID, V_CHAN, Boolean.valueOf(CMath.s_bool(val)));
+			break;
+		case 32:
+			SV(ID, V_UNIN, val);
+			break;
+		case 33:
+			SV(ID, V_MOCK, val);
+			break;
+		case 34:
+			SV(ID, V_MOKT, val);
 			break;
 		default:
 			if (code.equalsIgnoreCase("allxml") && ID.equalsIgnoreCase("GenAbility"))

@@ -545,6 +545,20 @@ public class AbilityData extends StdWebMacro
 						old=A.getStat("FIZZLEMSG");
 					str.append(old+", ");
 				}
+				if(parms.containsKey("MOCKABLETEXT"))
+				{
+					String old=httpReq.getUrlParameter("MOCKABLETEXT");
+					if(old==null)
+						old=A.getStat("MOCKABLETEXT");
+					str.append(old+", ");
+				}
+				if(parms.containsKey("UNINVOKEMSG"))
+				{
+					String old=httpReq.getUrlParameter("UNINVOKEMSG");
+					if(old==null)
+						old=A.getStat("UNINVOKEMSG");
+					str.append(old+", ");
+				}
 				if(parms.containsKey("AUTOCASTMSG"))
 				{
 					String old=httpReq.getUrlParameter("AUTOCASTMSG");
@@ -673,6 +687,26 @@ public class AbilityData extends StdWebMacro
 						final String AID=A2.ID();
 						final String ANAME=A2.name();
 						str.append("<OPTION VALUE=\""+AID+"\""+(list.contains(AID.toUpperCase())?" SELECTED":"")+">"+ANAME);
+					}
+					str.append(", ");
+				}
+				if(parms.containsKey("MOCKABILITY"))
+				{
+					String id;
+					if(httpReq.isUrlParameter("MOCKABILITY"))
+						id=httpReq.getUrlParameter("MOCKABILITY").toUpperCase().trim();
+					else
+						id=A.getStat("POSTCASTAFFECT").toUpperCase().trim();
+					str.append("<OPTION VALUE=\"\""+(id.equals("")?" SELECTED":"")+">"+L("None"));
+					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+					{
+						final Ability A2=e.nextElement();
+						if(((A2.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(!CMSecurity.isASysOp(mob)))
+							continue;
+						final String AID=A2.ID();
+						final String ANAME=A2.name();
+						str.append("<OPTION VALUE=\""+AID+"\""+(id.equals(AID.toUpperCase())?" SELECTED":"")+">"+ANAME);
 					}
 					str.append(", ");
 				}

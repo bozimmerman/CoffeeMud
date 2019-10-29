@@ -55,6 +55,7 @@
  53. Prop_Unsellable has new arguments
  54. New command: NOSELL -- for marking items unsellable
  55. New Spell: Shoddy Aura
+ 56. GenAbility now supports both a quiet and public skill effect, and an uninvoke message
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque
   2. New wainwrighting & smelting recipes

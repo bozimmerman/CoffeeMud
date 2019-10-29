@@ -154,6 +154,8 @@ public class GrinderAbilities
 		A.setStat("TARGETMASK",(old==null)?"":old);
 		old=httpReq.getUrlParameter("FIZZLEMSG");
 		A.setStat("FIZZLEMSG",(old==null)?"":old);
+		old=httpReq.getUrlParameter("UNINVOKEMSG");
+		A.setStat("UNINVOKEMSG",(old==null)?"":old);
 		old=httpReq.getUrlParameter("AUTOCASTMSG");
 		A.setStat("AUTOCASTMSG",(old==null)?"":old);
 		old=httpReq.getUrlParameter("CASTMSG");
@@ -164,6 +166,10 @@ public class GrinderAbilities
 		A.setStat("ATTACKCODE",(old==null)?"0":old);
 		old=httpReq.getUrlParameter("POSTCASTDAMAGE");
 		A.setStat("POSTCASTDAMAGE",(old==null)?"":old);
+		old=httpReq.getUrlParameter("MOCKABILITY");
+		A.setStat("MOCKABILITY",(old==null)?"":old);
+		old=httpReq.getUrlParameter("MOCKABLETEXT");
+		A.setStat("MOCKABLETEXT",(old==null)?"":old);
 		V.clear();
 		if(httpReq.isUrlParameter("POSTCASTAFFECT"))
 		{

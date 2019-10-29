@@ -738,7 +738,11 @@ name of the target.</td>
 
           </tr>
 
-          <tr>
+          <tr><td><span style="font-style: italic;">Uninvoke Message</span></td><td>the
+message shown after this skill is uninvoked. &nbsp;If the target is a
+mob, or an item held by a mob, then the message will be seen only by
+the mob. &nbsp;If the target is an item in a room, then the whole room
+will see the message.</td></tr><tr>
 
             <td><em>Attack
 Type</em></td>
@@ -752,10 +756,12 @@ an appropriate value. Use ? for a list.</td>
 
           </tr>
 
-          <tr>
+          <tr><td><span style="font-style: italic;">Quiet effect ID</span></td><td>an
+optional skill/spell/property id which will be grafted onto this
+ability when the target of this ability is under the effects of this
+one. &nbsp;For example, a quiet effect of Spell_Blur would cause your new ability to behave as if Spell_Blur were affecting them.</td></tr><tr>
 
-            <td><span style="font-style: italic;">Silent
-Affects</span></td>
+            <td><span style="font-style: italic;">Public Effects</span></td>
 
             <td>an optional
 &nbsp;semicolon delimited list

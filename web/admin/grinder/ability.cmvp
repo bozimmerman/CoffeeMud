@@ -399,13 +399,26 @@
                 </TD>
             </TR>
             <TR>
+                <TD><FONT COLOR=YELLOW>Uninvoke Message: </FONT></TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=80 MAXLENGTH=255 NAME=UNINVOKEMSG VALUE="@AbilityData?UNINVOKEMSG@">
+                </TD>
+            </TR>
+            <TR>
                 <TD><FONT COLOR=YELLOW>Attack Type: </FONT></TD>
                 <TD>
                     <SELECT NAME=ATTACKCODE>@AbilityData?ATTACKCODE@</SELECT>
                 </TD>
             </TR>
             <TR>
-                <TD><FONT COLOR=YELLOW>Silent Affects: </FONT></TD>
+                <TD><FONT COLOR=YELLOW>Add. Quiet Affect: </FONT></TD>
+                <TD>
+                    <SELECT NAME=MOCKABILITY>@AbilityData?MOCKABILITY@</SELECT>
+                    <INPUT TYPE=TEXT SIZE=20 NAME=MOCKABLETEXT VALUE="@AbilityData?MOCKABLETEXT@">
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Add. Public Affect: </FONT></TD>
                 <TD>
                     <SELECT NAME=POSTCASTAFFECT MULTIPLE>@AbilityData?POSTCASTAFFECT@</SELECT>
                 </TD>
