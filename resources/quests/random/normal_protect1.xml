@@ -83,18 +83,49 @@ settable vars:
 	</STRING>
 	
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
-		<STRING>${c:p:target_name} needs to be $reason_verbed!</STRING>
-		<STRING>Help $reason_verb ${p:target_name}!</STRING>
-		<STRING>Assistance required -- please go $reason_verb ${p:target_name}!</STRING>
-		<STRING>${c:reason_verb} ${p:target_name} for me!</STRING>
-		<STRING>${c:reason_verb} ${p:target_name}, quickly!</STRING>
-		<STRING>${c:p:target_name} must be $reason_verbed!</STRING>
+		<STRING>${c:p:target_name} in $target_area_name needs to be $reason_verbed!</STRING>
+		<STRING>Help $reason_verb ${p:target_name} in $target_area_name!</STRING>
+		<STRING>Assistance required -- please go $reason_verb ${p:target_name} in $target_area_name!</STRING>
+		<STRING>${c:reason_verb} ${p:target_name} in $target_area_name for me!</STRING>
+		<STRING>${c:reason_verb} ${p:target_name} in $target_area_name, quickly!</STRING>
+		<STRING>${c:p:target_name} in $target_area_name must be $reason_verbed!</STRING>
 	</STRING>
 
 	<STRING ID="quest_instructionstring" SELECT="ALL">
 		<STRING ACTION="PREPEND">$reason_desc</STRING>
 		<STRING ACTION="APPEND">$reason_short</STRING>
 	</STRING>
+
+	<!-- 
+		Tok WIZES 'Insulted said attackers while drunk?'
+		Loki WIZES 'Owes them money. Refused them service. Rival family/gang/faction.'
+		Tok WIZES 'has the secret documents to blackmail attackers'
+		Loki WIZES 'snitched to the law.'
+		Loki WIZES 'Is just paranoid, no real attackers!'
+		Tok WIZES 'stole their lunch one day and they just happen to be a bit
+		temperamental'
+		Loki WIZES 'last of his kind. Has a formula that they want, but he wont
+		sell/give to them. witnessed something he should not have seen. Was a peeping
+		tom and now they want to hurt him.'
+		Loki WIZES 'Mistaken identity (they think he is the enemy, but it wasn't him)'
+		Tok WIZES 'The stamp collecting scene is a lot more cutthroat than most say it
+		is, this person has recently acquired very rare stamp'
+		Loki WIZES 'mob is unlike his attackers/racial prejudice/alignment/gender/whatever is different.'
+		Loki WIZES 'Has a rare collectable card that they want (we have two card decks
+		in our world already)'
+		Loki WIZES 'is working on brewing a potion/building a machine/making a weapon
+		and is afraid rival will attack or the noise will attrack unwanted attention.'
+		Loki WIZES 'was cursed, drawing unwanted attention to himself in the form of
+		violence.'
+		Loki WIZES 'just got a divorce and spouse doesnt like the settlement.'
+		Loki WIZES 'that would be hilarious on a baby dragon...hehe'
+		Tok WIZES 'Has challenged other on a dare, but is secretly a coward'
+		Tok WIZES 'beat the other in tennis, but the other took this WAY too seriously'
+		Tok WIZES 'Punched the others monkey because the monkey had thrown feces at
+		them'
+		Tok WIZES 'has been framed for a crime they didn't commit and other will take
+		justice in their own hands'
+	 -->
 
 	<STRING ID="reason_verbed">$protect_verbed</STRING>
 	<STRING ID="reason_verb">$protect_verb</STRING>
@@ -293,65 +324,31 @@ settable vars:
 	<STRING load="/resources/randareas/mountains.xml" />
 	<STRING load="/resources/randareas/swamp.xml" />
 	
-	<OBJECT ID="target" DEFINE="target" SELECT="pick-1">
-		<OBJECT CONDITION="$targetname!=''"" pickweight=10>
-			<MOB class="GenMob" level="$level_range" race="Unique" gender="$anygender">
-				<NAME>$targetname</NAME>
-				<DISPLAY>$mob_name is here.</DISPLAY>
-				<ALIGNMENT>$[-10000?10000]</ALIGNMENT>
-				<BEHAVIOR select="Any-1">
-					<BEHAVIOR class="Bardness" parms="Bard" />
-					<BEHAVIOR class="Bardness" parms="Dancer" />
-					<BEHAVIOR class="Bardness" parms="Jester" />
-					<BEHAVIOR class="Bardness" parms="Minstrel" />
-					<BEHAVIOR class="Clericness" parms="Cleric" />
-					<BEHAVIOR class="Clericness" parms="Doomsayer" />
-					<BEHAVIOR class="Clericness" parms="Healer" />
-					<BEHAVIOR class="Clericness" parms="Missionary" />
-					<BEHAVIOR class="Clericness" parms="Necromancer" />
-					<BEHAVIOR class="Clericness" parms="Oracle" />
-					<BEHAVIOR class="Clericness" parms="Purist" />
-					<BEHAVIOR class="Clericness" parms="Shaman" />
-					<BEHAVIOR class="Clericness" parms="Templar" />
-					<BEHAVIOR class="Druidness" parms="Beastmaster" />
-					<BEHAVIOR class="Druidness" parms="Delver" />
-					<BEHAVIOR class="Druidness" parms="Druid" />
-					<BEHAVIOR class="Druidness" parms="Mer" />
-					<BEHAVIOR class="Druidness" parms="Skywatcher" />
-					<BEHAVIOR class="Fighterness" parms="Barbarian" />
-					<BEHAVIOR class="Fighterness" parms="Fighter" />
-					<BEHAVIOR class="Fighterness" parms="Ranger" />
-					<BEHAVIOR class="Mageness" parms="Abjurer" />
-					<BEHAVIOR class="Mageness" parms="Alterer" />
-					<BEHAVIOR class="Mageness" parms="Conjurer" />
-					<BEHAVIOR class="Mageness" parms="Diviner" />
-					<BEHAVIOR class="Mageness" parms="Enchanter" />
-					<BEHAVIOR class="Mageness" parms="Evoker" />
-					<BEHAVIOR class="Mageness" parms="Illusionist" />
-					<BEHAVIOR class="Mageness" parms="Mage" />
-					<BEHAVIOR class="Mageness" parms="Transmuter" />
-					<BEHAVIOR class="Thiefness" parms="Arcanist" />
-					<BEHAVIOR class="Thiefness" parms="Assassin" />
-					<BEHAVIOR class="Thiefness" parms="Burglar" />
-					<BEHAVIOR class="Thiefness" parms="Pirate" />
-					<BEHAVIOR class="Thiefness" parms="Thief" />
-					<BEHAVIOR class="Thiefness" parms="Trapper" />
-				</BEHAVIOR>
-			</MOB>
-		</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=9>SELECT: ANY\. FROM $lair_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=9>SELECT: ANY\. FROM $rats_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $desert_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $forest_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $jungle_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $mountain_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $plains_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $swamp_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
-		<OBJECT CONDITION="$targetname=''" PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+	<OBJECT ID="target" DEFINE="target">
+		<MOB class="GenMob" level="$level_range" race="Unique" gender="$anygender">
+			<NAME SELECT="Any-1">
+				<NAME CONDITION="$targetname != ''">$targetname</NAME>
+				<NAME CONDITION="$targetname = ''">$targetname</NAME>
+			</NAME>
+			<DISPLAY>$mob_name is here.</DISPLAY>
+			<ALIGNMENT>$[-10000?10000]</ALIGNMENT>
+		</MOB>
 	</OBJECT>
 
+	<OBJECT ID="attackers" DEFINE="attackers" SELECT="pick-1">
+		<OBJECT PICKWEIGHT=9>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT PICKWEIGHT=9>SELECT: ANY\. FROM $rats_mobs</OBJECT>
+		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $desert_mobs</OBJECT>
+		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $forest_mobs</OBJECT>
+		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $jungle_mobs</OBJECT>
+		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $mountain_mobs</OBJECT>
+		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $plains_mobs</OBJECT>
+		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $swamp_mobs</OBJECT>
+		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+		<OBJECT PICKWEIGHT=1>SELECT: ANY\. FROM $lair_mobs</OBJECT>
+	</OBJECT>
+	
 	<STRING ID="target_name" SELECT="any-1" DEFINE="target_name">
 		<STRING>${SELECT:name from $target}</STRING>
 	</STRING>

@@ -42,5 +42,4 @@ public interface WebMacroLibrary extends CMLibrary, HTTPOutputConverter
 	public String clearWebMacros(StringBuffer s);
 	public String parseFoundMacro(StringBuffer s, int i, boolean lookOnly);
 	public String clearWebMacros(String s);
-	public String copyYahooGroupMsgs(String user, String password, String url, int numTimes, int[] skipList, String journal);
 }
