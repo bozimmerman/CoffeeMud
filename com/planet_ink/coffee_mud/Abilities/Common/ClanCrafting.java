@@ -380,6 +380,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			CMLib.materials().destroyResourcesValue(mob.location(),amt2,data[1][FOUND_CODE],data[1][FOUND_SUB],0,0);
 
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+		final Item buildingI=this.buildingI;
 		if(buildingI==null)
 		{
 			commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));

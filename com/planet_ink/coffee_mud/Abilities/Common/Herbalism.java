@@ -260,6 +260,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	protected Item buildItem(final Ability theSpell, final int level)
 	{
 		buildingI=CMClass.getItem("GenMultiPotion");
+		final Item buildingI=this.buildingI;
 		((Potion)buildingI).setSpellList(theSpell.ID());
 		buildingI.setName(L("a potion of @x1",theSpell.name().toLowerCase()));
 		buildingI.setDisplayText(L("a potion of @x1 sits here.",theSpell.name().toLowerCase()));

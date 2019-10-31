@@ -396,6 +396,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList, 1);
 			woodRequired=data[0][FOUND_AMT];
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
 				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));

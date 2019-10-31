@@ -505,6 +505,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
 				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));

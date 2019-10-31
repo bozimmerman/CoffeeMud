@@ -439,6 +439,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 		final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+		final Item buildingI=this.buildingI;
 		if(buildingI==null)
 		{
 			commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
@@ -576,9 +577,9 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			buildingI=(Item)msg.target();
+			this.buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
-			enhanceItem(mob,buildingI,recipeLevel,enhancedTypes);
+			enhanceItem(mob,this.buildingI,recipeLevel,enhancedTypes);
 		}
 		else
 		if(bundling)

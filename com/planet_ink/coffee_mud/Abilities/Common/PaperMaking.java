@@ -349,6 +349,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		}
 		final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+		final Item buildingI=this.buildingI;
 		if(buildingI==null)
 		{
 			commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
@@ -462,7 +463,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			buildingI=(Item)msg.target();
+			this.buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

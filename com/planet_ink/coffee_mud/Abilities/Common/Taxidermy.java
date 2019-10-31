@@ -243,6 +243,7 @@ public class Taxidermy extends CraftingSkill
 			duration=65;
 		duration=getDuration(duration,mob,1,10);
 		buildingI=CMClass.getItem("GenItem");
+		final Item buildingI=this.buildingI;
 		buildingI.basePhyStats().setWeight(woodRequired);
 		final String name=((DeadBody)I).getMobName();
 		final String desc=((DeadBody)I).getMobDescription();
@@ -271,7 +272,7 @@ public class Taxidermy extends CraftingSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			buildingI=(Item)msg.target();
+			this.buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		I.destroy();
