@@ -352,7 +352,10 @@ public class Surveying extends CommonSkill
 
 	public boolean isPossibleCatalog(final MOB mob, final Item I, final Environmental fullyE, final boolean quiet)
 	{
-		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
+		if((((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
+		&&(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
+		&&(I.material()!=RawMaterial.RESOURCE_SILK)
+		&&(I.material()!=RawMaterial.RESOURCE_HIDE))
 		{
 			if(!quiet)
 				commonTell(mob,L("You can't write in @x1.",I.name(mob)));

@@ -168,7 +168,10 @@ public class Transcribing extends CommonSkill
 			commonTell(mob,L("You don't seem to have a '@x1'.",itemName));
 			return null;
 		}
-		if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
+		if((((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
+		&&(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
+		&&(I.material()!=RawMaterial.RESOURCE_SILK)
+		&&(I.material()!=RawMaterial.RESOURCE_HIDE))
 		{
 			if(from)
 				commonTell(mob,L("You can't transcribe something like @x1.",I.name(mob)));

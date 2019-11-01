@@ -642,7 +642,10 @@ public class Publishing extends CommonSkill
 			return false;
 		}
 
-		if((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
+		if((((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
+		&&(((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
+		&&(target.material()!=RawMaterial.RESOURCE_SILK)
+		&&(target.material()!=RawMaterial.RESOURCE_HIDE))
 		{
 			commonTell(mob,L("You can't publish something like that."));
 			return false;

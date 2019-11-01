@@ -359,6 +359,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				return false;
 			}
 			if((((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
+			&&(((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER))
+			&&(buildingI.material()!=RawMaterial.RESOURCE_HIDE))
 			&&(buildingI.material() != RawMaterial.RESOURCE_SILK))
 			{
 				commonTell(mob,L("@x1 isn't even made of paper or silk!",buildingI.name(mob)));
