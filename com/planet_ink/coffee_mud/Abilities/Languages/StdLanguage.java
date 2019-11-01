@@ -379,9 +379,17 @@ public class StdLanguage extends StdAbility implements Language
 	{
 		Language winner = null;
 		winner = getMyTranslator(id,mob,winner);
-		winner = getMyTranslator(id,mob.location(),winner);
-		for(int i=0;i<mob.numItems();i++)
-			winner=getMyTranslator(id,mob.getItem(i),winner);
+		if(winner == null)
+			winner = getMyTranslator(id,mob.location(),winner);
+		if(winner == null)
+		{
+			for(int i=0;i<mob.numItems();i++)
+			{
+				winner=getMyTranslator(id,mob.getItem(i),winner);
+				if(winner != null)
+					break;
+			}
+		}
 		return winner;
 	}
 
@@ -504,21 +512,8 @@ public class StdLanguage extends StdAbility implements Language
 							spokenL=(Language)msg.tool();
 						else
 						if((affected instanceof MOB)
-						&&(((MOB)affected).isMonster())
-						&& this.beingSpoken(ID()))
-						{
-							spokenL=getAnyTranslator(this.ID(),msg.source());
-							if(spokenL==null)
-							{
-								msg.setTargetCode(CMMsg.TYP_SPEAK);
-								msg.setSourceCode(CMMsg.TYP_SPEAK);
-								msg.setOthersCode(CMMsg.TYP_SPEAK);
-								final String reply;
-								reply="<S-NAME> speak(s) "+name()+" and do(es) not understand <T-HIM-HER>.";
-								msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),null,CMMsg.MSG_OK_VISUAL,reply));
-								break;
-							}
-						}
+						&&(((MOB)affected).isMonster()))
+							spokenL=CMLib.utensils().getLanguageSpoken(msg.source());
 						else
 							break;
 						final Language heardL; // this is the language as heard
