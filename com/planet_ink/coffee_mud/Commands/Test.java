@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -37,6 +38,8 @@ import java.io.FileReader;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /*
@@ -132,6 +135,204 @@ public class Test extends StdCommand
 		final Ability A2=((Ability)A.copyOf());
 		A2.setMiscText(A.text());
 		P.addNonUninvokableEffect(A2);
+	}
+
+	public String copyYahooGroupMsg(int lastMsgNum)
+	{
+		long numTimes = 9999999;
+		final int numTotal = 0; //TODO: check the file set for total num files.
+		final int[] skipList = new int[0];
+		while ((--numTimes) >= 0)
+		{
+			lastMsgNum++;
+			if (lastMsgNum > numTotal)
+			{
+				lastMsgNum = numTotal;
+				return lastMsgNum + "of " + numTotal + " messages already processed";
+			}
+			if (Arrays.binarySearch(skipList, lastMsgNum) >= 0)
+				continue;
+			final String msgPage = new String("");//TODO: this is the actual message
+			int startOfSubject = msgPage.indexOf("<em class=\"msg-bg msg-bd\"");
+			if (startOfSubject < 0)
+				startOfSubject = msgPage.indexOf("<em class=\"msg-newfont\"");
+			if (startOfSubject < 0)
+			{
+				final int x = msgPage.indexOf("Message  does not exist in ");
+				if ((x > 0) && (msgPage.substring(0, x).trim().endsWith("<div class=\"ygrp-contentblock\">")))
+					continue;
+				return "Failed: to find subject start in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			}
+			startOfSubject = msgPage.indexOf(">", startOfSubject);
+			final int endOfSubject = msgPage.indexOf("</em>", startOfSubject);
+			if (endOfSubject < 0)
+				return "Failed: to find subject end in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			String subject = msgPage.substring(startOfSubject + 1, endOfSubject).trim();
+			if ((subject.length() == 0) || (subject.length() > 200) || (subject.indexOf('<') >= 0) || (subject.indexOf('>') >= 0))
+				return "Failed: to find VALID subject '" + subject + "' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			int startOfDate = msgPage.indexOf("<span class=\"msg-newfont\" title=\"");
+			int endOfDate;
+			if (startOfDate > 0)
+				startOfDate += 33;// MAGIC NUMBER
+			else
+			{
+				startOfDate = msgPage.indexOf("<span class=\"msg-newfont\" title=\"");
+				if (startOfDate < 0)
+					return "Failed: to find date start in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+				startOfDate += 33;// MAGIC NUMBER
+			}
+			endOfDate = msgPage.indexOf("\"", startOfDate + 1);
+			if (endOfDate < 0)
+				return "Failed: to find date end in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			final String dateStr = msgPage.substring(startOfDate, endOfDate).trim();
+			final SimpleDateFormat format = new SimpleDateFormat("yyyy-M-d'T'HH:mm:ss'Z'");
+			Date postDate;
+			try
+			{
+				postDate = format.parse(dateStr);
+			}
+			catch (final ParseException p)
+			{
+				return "Failed: to parse date '" + dateStr + "' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			}
+			int startOfAuthor = msgPage.indexOf("<span class=\"name\">");
+			if (startOfAuthor < 0)
+				return "Failed: to find author start in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			startOfAuthor = msgPage.indexOf(">", startOfAuthor + 4);
+			final int endOfAuthor = msgPage.indexOf("</span>", startOfAuthor);
+			if (endOfAuthor < 0)
+				return "Failed: to find author end in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			String author = msgPage.substring(startOfAuthor + 1, endOfAuthor).trim();
+			author = CMStrings.replaceAll(author, "<wbr>", "").trim();
+			if (author.indexOf("profiles.yahoo.com") > 0)
+				author = author.substring(author.indexOf("\">") + 2, author.lastIndexOf("</a>"));
+			if ((author.length() == 0) || (author.length() > 100))
+				return "Failed: to find VALID author '" + author + "' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			int startOfMsg = msgPage.indexOf("entry-content");
+			if (startOfMsg < 0)
+				return "Failed: to find message in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			startOfMsg = msgPage.indexOf(">", startOfMsg);
+			int endOfMsg = msgPage.indexOf("<tr style=\"height:35px\">", startOfMsg);
+			if (endOfMsg < 0)
+				return "Failed: to find end of msg in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			endOfMsg = msgPage.lastIndexOf("</div>", endOfMsg);
+			if (endOfMsg < 0)
+				return "Failed: to find end2 of msg in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			String theMessage = msgPage.substring(startOfMsg + 1, endOfMsg).trim();
+			while (theMessage.startsWith("<br>"))
+				theMessage = theMessage.substring(4).trim();
+			while (theMessage.endsWith("<br>"))
+				theMessage = theMessage.substring(0, theMessage.length() - 4).trim();
+			theMessage = CMStrings.replaceAll(theMessage, "\n", "");
+			theMessage = CMStrings.replaceAll(theMessage, "\r", "");
+			if (theMessage.trim().length() == 0)
+				return "Failed: to find lengthy msg in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			final JournalsLibrary.ForumJournal forum = CMLib.journals().getForumJournal("Support");
+			if (forum == null)
+				return "Failed: bad forum given";
+			if (author.indexOf('@') >= 0)
+			{
+				final MOB aM = CMLib.players().getLoadPlayerByEmail(author);
+				if (aM != null)
+					author = aM.Name();
+				else
+				if (CMProps.isUsingAccountSystem())
+				{
+					final PlayerAccount A = CMLib.players().getLoadAccountByEmail(author);
+					if (A == null)
+						author = author.substring(0, author.indexOf('@'));
+					else
+						author = A.getAccountName();
+				}
+				else
+					author = author.substring(0, author.indexOf('@'));
+			}
+			else
+			if (CMLib.login().isOkName(author, false))
+				author = "_" + author;
+
+			String parent = "";
+			if (subject.toLowerCase().startsWith("[coffeemud]"))
+				subject = subject.substring(11).trim();
+			if (subject.toUpperCase().startsWith("RE:"))
+			{
+				String subj = subject;
+				while (subj.toUpperCase().startsWith("RE:") || subj.toLowerCase().startsWith("[coffeemud]"))
+				{
+					if (subj.toUpperCase().startsWith("RE:"))
+						subj = subj.substring(3).trim();
+					if (subj.toLowerCase().startsWith("[coffeemud]"))
+						subj = subj.substring(11).trim();
+				}
+
+				final List<JournalEntry> journalEntries = CMLib.database().DBSearchAllJournalEntries(forum.NAME(), subj);
+				if ((journalEntries != null) && (journalEntries.size() > 0))
+				{
+					JournalEntry WIN = null;
+					for (final JournalEntry J : journalEntries)
+					{
+						if (J.subj().trim().equals(subj))
+							WIN = J;
+					}
+					if (WIN == null)
+					{
+						for (final JournalEntry J : journalEntries)
+						{
+							if (J.subj().trim().equalsIgnoreCase(subj))
+								WIN = J;
+						}
+					}
+					if (WIN == null)
+					{
+						for (final JournalEntry J : journalEntries)
+						{
+							if (J.subj().trim().indexOf(subj) >= 0)
+								WIN = J;
+						}
+					}
+					if (WIN == null)
+					{
+						for (final JournalEntry J : journalEntries)
+						{
+							if (J.subj().toLowerCase().trim().indexOf(subj.toLowerCase()) >= 0)
+								WIN = J;
+						}
+					}
+
+					if (WIN != null)
+						parent = WIN.key();
+				}
+				if (parent.length() == 0)
+					subject = subj;
+			}
+			final JournalEntry msg = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
+			msg.from (author);
+			msg.subj (CMLib.webMacroFilter().clearWebMacros(subject));
+			msg.msg (CMLib.webMacroFilter().clearWebMacros(theMessage));
+			msg.date (postDate.getTime());
+			msg.update (postDate.getTime());
+			msg.parent (parent);
+			msg.msgIcon ("");
+			msg.data ("");
+			msg.to ("ALL");
+			// check for dups
+			final List<JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(forum.NAME(), "ALL", msg.date() - 1);
+			for (final JournalEntry entry : chckEntries)
+			{
+				if ((entry.date() == msg.date())
+				&& (entry.from().equals(msg.from()))
+				&& (entry.subj().equals(msg.subj()))
+				&& (entry.parent().equals(msg.parent())))
+				{
+					return "Msg#" + lastMsgNum + " was a dup!";
+				}
+			}
+			CMLib.database().DBWriteJournal(forum.NAME(), msg);
+			if (parent.length() > 0)
+				CMLib.database().DBTouchJournalMessage(parent, msg.date());
+			CMLib.journals().clearJournalSummaryStats(forum);
+		}
+		return "Post " + lastMsgNum + " submitted.";
 	}
 
 	public boolean testResistance(final MOB mob)

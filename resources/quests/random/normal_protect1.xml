@@ -97,34 +97,28 @@ settable vars:
 	</STRING>
 
 	<!-- 
-		Tok WIZES 'Insulted said attackers while drunk?'
-		Loki WIZES 'Owes them money. Refused them service. Rival family/gang/faction.'
-		Tok WIZES 'has the secret documents to blackmail attackers'
-		Loki WIZES 'snitched to the law.'
-		Loki WIZES 'Is just paranoid, no real attackers!'
-		Tok WIZES 'stole their lunch one day and they just happen to be a bit
-		temperamental'
-		Loki WIZES 'last of his kind. Has a formula that they want, but he wont
-		sell/give to them. witnessed something he should not have seen. Was a peeping
-		tom and now they want to hurt him.'
-		Loki WIZES 'Mistaken identity (they think he is the enemy, but it wasn't him)'
-		Tok WIZES 'The stamp collecting scene is a lot more cutthroat than most say it
-		is, this person has recently acquired very rare stamp'
-		Loki WIZES 'mob is unlike his attackers/racial prejudice/alignment/gender/whatever is different.'
-		Loki WIZES 'Has a rare collectable card that they want (we have two card decks
-		in our world already)'
-		Loki WIZES 'is working on brewing a potion/building a machine/making a weapon
-		and is afraid rival will attack or the noise will attrack unwanted attention.'
-		Loki WIZES 'was cursed, drawing unwanted attention to himself in the form of
-		violence.'
-		Loki WIZES 'just got a divorce and spouse doesnt like the settlement.'
-		Loki WIZES 'that would be hilarious on a baby dragon...hehe'
-		Tok WIZES 'Has challenged other on a dare, but is secretly a coward'
-		Tok WIZES 'beat the other in tennis, but the other took this WAY too seriously'
-		Tok WIZES 'Punched the others monkey because the monkey had thrown feces at
-		them'
-		Tok WIZES 'has been framed for a crime they didn't commit and other will take
-		justice in their own hands'
+		Insulted said attackers while drunk?
+		Owes them money. 
+		Refused them service. 
+		Rival family/gang/faction.
+		has the secret documents to blackmail attackers
+		snitched to the law.
+		Is just paranoid, no real attackers! (But there are)
+		stole their lunch one day and they just happen to be a bit temperamental
+		Has a formula that they want, but he wont sell/give to them. 
+		witnessed something he should not have seen. \
+		Was a peeping tom and now they want to hurt him.'
+		Mistaken identity (they think he is the enemy, but it wasn't him)
+		The stamp collecting scene is a lot more cutthroat than most say iis, this person has recently acquired very rare stamp
+		mob is unlike his attackers/racial prejudice/alignment/gender/whatever is different.
+		Has a rare collectable card that they want (we have two card decks in our world already)
+		is working on brewing a potion/building a machine/making a weapon and is afraid rival will attack or the noise will attrack unwanted attention.
+		was cursed, drawing unwanted attention to himself in the form of violence.
+		just got a divorce and spouse doesnt like the settlement.
+		Has challenged other on a dare, but is secretly a coward
+		beat the other in tennis, but the other took this WAY too seriously
+		Punched the others monkey because the monkey had thrown feces at them
+		has been framed for a crime they didn't commit and other will take justice in their own hands
 	 -->
 
 	<STRING ID="reason_verbed">$protect_verbed</STRING>
@@ -328,7 +322,7 @@ settable vars:
 		<MOB class="GenMob" level="$level_range" race="Unique" gender="$anygender">
 			<NAME SELECT="Any-1">
 				<NAME CONDITION="$targetname != ''">$targetname</NAME>
-				<NAME CONDITION="$targetname = ''">$targetname</NAME>
+				<NAME CONDITION="$targetname = ''">$fantasy_name</NAME>
 			</NAME>
 			<DISPLAY>$mob_name is here.</DISPLAY>
 			<ALIGNMENT>$[-10000?10000]</ALIGNMENT>
@@ -370,6 +364,12 @@ settable vars:
 	<STRING ID="target_area_size" SELECT="any-1" DEFINE="target_area_size">
 		<STRING>${SELECT:VISITABLE_ROOMS from $target_area}</STRING>
 	</STRING>	
+	
+	<STRING ID="target_himher" SELECT="any-1" DEFINE="target_himher">
+		<STRING CONDITION="$target_gender = 'M'">him</STRING>
+		<STRING CONDITION="$target_gender = 'F'">her</STRING>
+		<STRING CONDITION="$target_gender = 'N'">it</STRING>
+	</STRING>
 	
 	<STRING ID="target_area_name" SELECT="any-1" DEFINE="target_area_name">
 		<STRING>${SELECT:name from $target_area}</STRING>
