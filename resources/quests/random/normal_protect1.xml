@@ -97,28 +97,35 @@ settable vars:
 	</STRING>
 
 	<!-- 
-		Insulted said attackers while drunk?
-		Owes them money. 
-		Refused them service. 
-		Rival family/gang/faction.
-		has the secret documents to blackmail attackers
-		snitched to the law.
-		Is just paranoid, no real attackers! (But there are)
-		stole their lunch one day and they just happen to be a bit temperamental
-		Has a formula that they want, but he wont sell/give to them. 
-		witnessed something he should not have seen. \
-		Was a peeping tom and now they want to hurt him.'
-		Mistaken identity (they think he is the enemy, but it wasn't him)
-		The stamp collecting scene is a lot more cutthroat than most say iis, this person has recently acquired very rare stamp
-		mob is unlike his attackers/racial prejudice/alignment/gender/whatever is different.
-		Has a rare collectable card that they want (we have two card decks in our world already)
-		is working on brewing a potion/building a machine/making a weapon and is afraid rival will attack or the noise will attrack unwanted attention.
-		was cursed, drawing unwanted attention to himself in the form of violence.
-		just got a divorce and spouse doesnt like the settlement.
-		Has challenged other on a dare, but is secretly a coward
-		beat the other in tennis, but the other took this WAY too seriously
-		Punched the others monkey because the monkey had thrown feces at them
-		has been framed for a crime they didn't commit and other will take justice in their own hands
+theyoweme 
+	has the secret documents to blackmail attackers
+	snitched to the law.
+	witnessed something he should not have seen.
+	just got a divorce and spouse doesnt like the settlement.
+iowethem 
+	Owes them money. 
+	Has a formula that they want, but he wont sell/give to them. 
+	Has challenged other on a dare, but is secretly a coward
+	is working on brewing a potion/building a machine/making a weapon and is afraid rival will attack or the noise will attrack unwanted attention.
+genprotect 
+	Rival family/gang/faction.
+	Is just paranoid, no real attackers! (But there are)
+	was cursed, drawing unwanted attention to himself in the form of violence.
+	has been framed for a crime they didn't commit and other will take justice in their own hands
+idotothem 
+	Insulted said attackers while drunk?
+	stole their lunch one day and they just happen to be a bit temperamental
+	Punched the others monkey because the monkey had thrown feces at them
+	Was a peeping tom and now they want to hurt him.'
+theydotome
+	Mistaken identity (they think he is the enemy, but it wasn't him)
+	beat the other in tennis, but the other took this WAY too seriously
+	The stamp collecting scene is a lot more cutthroat than most say iis, this person has recently acquired very rare stamp
+	mob is unlike his attackers/racial prejudice/alignment/gender/whatever is different.
+wedotoeachother
+	Refused them service. 
+	Rival family/gang/faction.
+	Has a rare collectable card that they want (we have two card decks in our world already)
 	 -->
 
 	<STRING ID="reason_verbed">$protect_verbed</STRING>
@@ -131,6 +138,7 @@ settable vars:
 		<STRING CONDITION="$target_int &gt; 5">$reason_iowethem</STRING>
 		<STRING>$reason_genprotect</STRING>
 		<STRING>$reason_idotothem</STRING>
+		<STRING>$reason_theydidtome</STRING>
 		<STRING>$reason_wedotoeachother</STRING>
 	</STRING>
 
@@ -197,6 +205,23 @@ settable vars:
 	</STRING>
 	
 	<STRING ID="reason_idotothem" SELECT="All">
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_fightspeech" SELECT="Any-1">
+			<STRING>Oh no! Not $source_name!</STRING>
+			<STRING>Please?! You can't take me to $source_name!</STRING>
+			<STRING>I'll die before going to $source_name!</STRING>
+		</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>I must $hurt_verb the ${p:target_name}.</STRING>
+			<STRING>I am really hungry for ${p:target_name}.</STRING>
+			<STRING CONDITION="$target_int &lt; 4">We need the ${p:target_name} cleared away from $source_area_name.</STRING>
+			<STRING CONDITION="$source_class='Mage' or $source_class='Necromancer'">I need to draw out the souls of ${p:target_name} for my magic.</STRING>
+			<STRING>The ${p:target_name} make me $adj_feeling_bad, and I must make them $adj_feeling_bad.</STRING>
+			<STRING>The ${p:target_name} are too many, and must be be thinned out.</STRING>
+		</STRING>
+	</STRING>
+
+	<STRING ID="reason_theydidtome" SELECT="All">
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_fightspeech" SELECT="Any-1">
 			<STRING>Oh no! Not $source_name!</STRING>
