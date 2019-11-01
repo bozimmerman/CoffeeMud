@@ -2154,7 +2154,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(int l=0;l<codes.all_ordered().length;l++)
 		{
 			wornCode=codes.all_ordered()[l];
-			if((wornMask <= 0)||((wornMask & wornCode)!=0))
+			if((wornMask < 0)
+			||(((wornMask & wornCode)==0)) && (wornMask != 0))
 				continue;
 			final List<Item> wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
 			int numLocations=mob.getWearPositions(wornCode);
