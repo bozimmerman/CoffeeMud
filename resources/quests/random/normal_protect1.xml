@@ -45,7 +45,7 @@ settable vars:
 	<PROTECTED_AREA>"$target_area_name"</PROTECTED_AREA>
 	<PROTECTED_ROOM>ALL</PROTECTED_ROOM>
 	<PROTECTED_MOB>${SELECT: ANY\. from $target}</PROTECTED_MOB>
-	<ATTACKER_MOB>${SELECT: ANY\. from $attackers}</ATTACKER_MOB>
+	<ATTACKER_MOB>${SELECT: ANY\. from $attacker}</ATTACKER_MOB>
 	<ATTACKER_PCT_CHANCE>$[5+($target_level/2)]</ATTACKER_PCT_CHANCE>
 	<ATTACKER_SIZE>$num_targets</ATTACKER_SIZE>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
@@ -96,38 +96,6 @@ settable vars:
 		<STRING ACTION="APPEND">$reason_short</STRING>
 	</STRING>
 
-	<!-- 
-theyoweme 
-	has the secret documents to blackmail attackers
-	snitched to the law.
-	witnessed something he should not have seen.
-	just got a divorce and spouse doesnt like the settlement.
-iowethem 
-	Owes them money. 
-	Has a formula that they want, but he wont sell/give to them. 
-	Has challenged other on a dare, but is secretly a coward
-	is working on brewing a potion/building a machine/making a weapon and is afraid rival will attack or the noise will attrack unwanted attention.
-genprotect 
-	Rival family/gang/faction.
-	Is just paranoid, no real attackers! (But there are)
-	was cursed, drawing unwanted attention to himself in the form of violence.
-	has been framed for a crime they didn't commit and other will take justice in their own hands
-idotothem 
-	Insulted said attackers while drunk?
-	stole their lunch one day and they just happen to be a bit temperamental
-	Punched the others monkey because the monkey had thrown feces at them
-	Was a peeping tom and now they want to hurt him.'
-theydotome
-	Mistaken identity (they think he is the enemy, but it wasn't him)
-	beat the other in tennis, but the other took this WAY too seriously
-	The stamp collecting scene is a lot more cutthroat than most say iis, this person has recently acquired very rare stamp
-	mob is unlike his attackers/racial prejudice/alignment/gender/whatever is different.
-wedotoeachother
-	Refused them service. 
-	Rival family/gang/faction.
-	Has a rare collectable card that they want (we have two card decks in our world already)
-	 -->
-
 	<STRING ID="reason_verbed">$protect_verbed</STRING>
 	<STRING ID="reason_verb">$protect_verb</STRING>
 	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>
@@ -159,33 +127,26 @@ wedotoeachother
 	<STRING ID="reason_theyoweme" SELECT="All">
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_fightspeech" SELECT="Any-1">
-			<STRING>Tell $source_name I aint payin!</STRING>
-			<STRING>${c:source_name} aint getting nothin from me.</STRING>
-			<STRING>I don't owe $source_name anything!</STRING>
-			<STRING>Leave me alone, I don't owe $source_name anything!</STRING>
+			<STRING>Found you $target_name!!</STRING>
 		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>${C:target_name} owes me money, but I'm not sure which one.</STRING>
-			<STRING>The ${C:P:target_name} owe me some money.</STRING>
-			<STRING>The ${C:P:target_name} owe me big time, but haven't made good.</STRING>
-			<STRING>I'm owed some money.</STRING>
-			<STRING>I'm given much to the ${P:target_name}, and they never paid me back.</STRING>
+			<STRING>${c:target_name} is blackmailing ${p:attacker_name} and want revenge!</STRING>
+			<STRING>${c:target_name) snitched on ${p:attacker_name} and payback is coming.</STRING>
+			<STRING>${c:target_name} witnessed the involvement of ${p:attacker_name} in certain schemes and is not in danger.</STRING>
+			<STRING>${c:target_name} messed with the ${p:attacker_name} sister and is now in danger.</STRING>
 		</STRING>
 	</STRING>
 	
 	<STRING ID="reason_iowethem" SELECT="All">
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_fightspeech" SELECT="Any-1">
-			<STRING>Tell $source_name I aint falling for that trap!</STRING>
-			<STRING>${c:source_name} is trying to fool us both.</STRING>
-			<STRING>I ain't going near $source_name!</STRING>
-			<STRING>Leave me alone!</STRING>
-			<STRING>I don't want anything from ${c:source_name}!</STRING>
+			<STRING>Hand it over $target_name, or DIE!!!</STRING>
 		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I wish to pay back $target_name for reasons.</STRING>
-			<STRING>I owe ${p:target_name} for all they've done.</STRING>
-			<STRING>I owe ${p:target_name} big-time.</STRING>
+			<STRING>${c:target_name} owes the ${p:attacker_name}. </STRING>
+			<STRING>${c:target_name} carries something that the ${p:attacker_name} want, and will kill $target_himher for it!</STRING> 
+			<STRING>${c:target_name} challenged ${p:attacker_name} on a dare, but is a coward and is now hiding from them.</STRING>
+			<STRING>${c:target_name} is working something that the ${p:attacker_name} want, and will kill $target_himher for it!</STRING>
 		</STRING>
 	</STRING>
 
@@ -197,10 +158,10 @@ wedotoeachother
 			<STRING>I won't be taken, leave me alone!</STRING>
 		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I need several ${p:target_name} $hurt_verbed.</STRING>
-			<STRING>I need the ${p:target_name} $hurt_verbed.</STRING>
-			<STRING>I need the ${p:target_name} $hurt_verbed and brought to account for their crimes.</STRING>
-			<STRING>Let's hunt some ${p:target_name}!</STRING>
+			<STRING>Rival family/gang/faction.</STRING>
+			<STRING>Is just paranoid, no real attackers! (But there are)</STRING>
+			<STRING>was cursed, drawing unwanted attention to himself in the form of violence.</STRING>
+			<STRING>has been framed for a crime they didn't commit and other will take justice in their own hands</STRING>
 		</STRING>
 	</STRING>
 	
@@ -212,12 +173,10 @@ wedotoeachother
 			<STRING>I'll die before going to $source_name!</STRING>
 		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I must $hurt_verb the ${p:target_name}.</STRING>
-			<STRING>I am really hungry for ${p:target_name}.</STRING>
-			<STRING CONDITION="$target_int &lt; 4">We need the ${p:target_name} cleared away from $source_area_name.</STRING>
-			<STRING CONDITION="$source_class='Mage' or $source_class='Necromancer'">I need to draw out the souls of ${p:target_name} for my magic.</STRING>
-			<STRING>The ${p:target_name} make me $adj_feeling_bad, and I must make them $adj_feeling_bad.</STRING>
-			<STRING>The ${p:target_name} are too many, and must be be thinned out.</STRING>
+			<STRING>Insulted said attackers while drunk?</STRING>
+			<STRING>stole their lunch one day and they just happen to be a bit temperamental</STRING>
+			<STRING>Punched the others monkey because the monkey had thrown feces at them</STRING>
+			<STRING>Was a peeping tom and now they want to hurt him.</STRING>
 		</STRING>
 	</STRING>
 
@@ -229,12 +188,10 @@ wedotoeachother
 			<STRING>I'll die before going to $source_name!</STRING>
 		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>I must $hurt_verb the ${p:target_name}.</STRING>
-			<STRING>I am really hungry for ${p:target_name}.</STRING>
-			<STRING CONDITION="$target_int &lt; 4">We need the ${p:target_name} cleared away from $source_area_name.</STRING>
-			<STRING CONDITION="$source_class='Mage' or $source_class='Necromancer'">I need to draw out the souls of ${p:target_name} for my magic.</STRING>
-			<STRING>The ${p:target_name} make me $adj_feeling_bad, and I must make them $adj_feeling_bad.</STRING>
-			<STRING>The ${p:target_name} are too many, and must be be thinned out.</STRING>
+			<STRING>Mistaken identity (they think he is the enemy, but it wasn't him)</STRING>
+			<STRING>beat the other in tennis, but the other took this WAY too seriously</STRING>
+			<STRING>The stamp collecting scene is a lot more cutthroat than most say iis, this person has recently acquired very rare stamp</STRING>
+			<STRING>mob is unlike his attackers/racial prejudice/alignment/gender/whatever is different.</STRING>
 		</STRING>
 	</STRING>
 
@@ -246,10 +203,9 @@ wedotoeachother
 			<STRING>I'd rather kill you!</STRING>
 		</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<STRING>The ${p:target_name} are trying to kill me, and must be stopped.</STRING>
-			<STRING>The ${p:target_name} have insulted my honor, and only a ritual $hurt_verb will satisfy it.</STRING>
-			<STRING>I feel like engaging in a $adj_feeling_good ${p:target_name} ${hurt_verb}ing.</STRING>
-			<STRING>The ${p:target_name} are plotting against me!</STRING>
+			<STRING>Refused them service. </STRING>
+			<STRING>Rival family/gang/faction.</STRING>
+			<STRING>Has a rare collectable card that they want (we have two card decks in our world already)</STRING>
 		</STRING>
 	</STRING>
 
@@ -353,6 +309,8 @@ wedotoeachother
 			<ALIGNMENT>$[-10000?10000]</ALIGNMENT>
 		</MOB>
 	</OBJECT>
+
+	<OBJECT ID="attacker" DEFINE="attacker">SELECT: ANY\. FROM attackers</OBJECT>
 
 	<OBJECT ID="attackers" DEFINE="attackers" SELECT="pick-1">
 		<OBJECT PICKWEIGHT=9>SELECT: ANY\. FROM $lair_mobs</OBJECT>
