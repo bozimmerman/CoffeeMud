@@ -1173,15 +1173,6 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	@Override
 	public boolean activate()
 	{
-		final String flag = Resources.getPropResource("WEBMACROCREAMER", "RUNYAHOOMSGGRABBER");
-		if (flag.equalsIgnoreCase("TRUE"))
-		{
-			int tickCount = CMath.s_int(Resources.getPropResource("WEBMACROCREAMER", "YAHOOTICKSPERRUN"));
-			if (tickCount < 2)
-				tickCount = 2;
-			name = "THCreamer" + Thread.currentThread().getThreadGroup().getName().charAt(0);
-			serviceClient = CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT | Tickable.TICKID_SOLITARYMASK, tickCount);
-		}
 		return true;
 	}
 
