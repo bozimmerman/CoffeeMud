@@ -227,7 +227,7 @@ CREATE TABLE CMPDAT (
 );
 
 CREATE TABLE CMGRAC (
-	CMRCID nvarchar (50) ,
+	CMRCID nvarchar (250) ,
 	CMRDAT ntext NULL ,
 	CMRCDT bigint NULL ,
 	PRIMARY KEY (CMRCID)

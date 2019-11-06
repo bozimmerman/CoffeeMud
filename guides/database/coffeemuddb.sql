@@ -313,7 +313,7 @@ ALTER TABLE CMPDAT
 	);
 
 CREATE TABLE CMGRAC (
-	CMRCID char (50) ,
+	CMRCID char (250) ,
 	CMRDAT text NULL , 
 	CMRCDT bigint NULL
 );
