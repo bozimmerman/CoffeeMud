@@ -98,7 +98,7 @@ public class Spell_ChainLightening extends Spell
 			return false;
 
 		final int maxDie =  (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2.0*super.getX1Level(mob)),2.0));
-		int damage = CMLib.dice().roll(maxDie,8,Math.min(maxDie,10)); // it gets split in half at post-time, for each person split in half again
+		int damage = CMLib.dice().roll(maxDie,8,maxDie/4); // it gets split in half at post-time, for each person split in half again
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)

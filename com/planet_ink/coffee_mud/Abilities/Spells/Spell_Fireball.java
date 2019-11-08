@@ -102,8 +102,8 @@ public class Spell_Fireball extends Spell
 				R.send(mob,msg);
 				R.send(mob,msg2);
 				invoker=mob;
-				final int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0));
-				int damage = CMLib.dice().roll(numDice, 9, Math.min(numDice,10));
+				final int maxDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0));
+				int damage = CMLib.dice().roll(maxDice, 9, maxDice/4);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));
 				CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The flaming blast <DAMAGE> <T-NAME>!"));

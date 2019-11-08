@@ -105,7 +105,7 @@ public class Spell_MeteorStorm extends Spell
 
 						int damage = 0;
 						final int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),3.0));
-						damage = CMLib.dice().roll(maxDie,6,Math.min(maxDie,10));
+						damage = CMLib.dice().roll(maxDie,6,maxDie/4);
 						if(msg.value()<=0)
 							damage = (int)Math.round(CMath.div(damage,2.0));
 						if(target.location()==mob.location())
