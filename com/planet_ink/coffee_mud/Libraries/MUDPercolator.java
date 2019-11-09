@@ -2043,7 +2043,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final Ability A=e.nextElement();
 				if(A instanceof ItemCraftor)
-					craftors.add((ItemCraftor)A);
+					craftors.add((ItemCraftor)A.copyOf());
 			}
 			if(recipe.startsWith("any"))
 			{
@@ -2086,7 +2086,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							resourceCode = availCodes.get(CMLib.dice().roll(1, availCodes.size(), -1)).intValue();
 						}
 						else
-							resourceCode=RawMaterial.CODES.ALL()[CMLib.dice().roll(1, RawMaterial.CODES.ALL().length, -1)];
+ 							resourceCode=RawMaterial.CODES.ALL()[CMLib.dice().roll(1, RawMaterial.CODES.ALL().length, -1)];
 						if(material != 0)
 						{
 							final Item I=CMLib.materials().makeItemResource(resourceCode);
