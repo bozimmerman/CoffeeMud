@@ -57,6 +57,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	public final double			ZERO_ALMOST			= 0.000001;
+	public final BigDecimal 	ZERO				= BigDecimal.valueOf(0.0);
 	public final BigDecimal 	ALMOST_ZERO			= BigDecimal.valueOf(ZERO_ALMOST);
 	public final BigDecimal 	ONE 				= BigDecimal.valueOf(1L);
 	public final BigDecimal 	TWO 				= BigDecimal.valueOf(2L);
@@ -4309,17 +4310,24 @@ public class CMMap extends StdLibrary implements WorldMap
 			return currentDistance.doubleValue();
 		final BigDecimal prevDistance=BigDecimal.valueOf(getDistanceFrom(prevPos, objPos));
 		final BigDecimal baseDistance=BigDecimal.valueOf(getDistanceFrom(prevPos, curPosition));
-		if(baseDistance.compareTo(currentDistance.add(prevDistance))>0)
+		if(baseDistance.compareTo(currentDistance.add(prevDistance))>=0)
 			return 0;
 		if(prevDistance.subtract(baseDistance).equals(currentDistance)
 		||currentDistance.subtract(baseDistance).equals(prevDistance))
-			return Double.MAX_VALUE/10;
+			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
 
 		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO, RoundingMode.HALF_UP);
 		final BigDecimal areaOfTriangle=BigDecimal.valueOf(CMath.sqrt(CMath.abs(
 				semiPerimeter.multiply(semiPerimeter.subtract(currentDistance))
 							.multiply(semiPerimeter.subtract(baseDistance))
 							.multiply(semiPerimeter.subtract(prevDistance)).doubleValue())));
+		if(areaOfTriangle.equals(ZERO))
+		{
+			if (Math.abs(semiPerimeter.subtract(baseDistance).doubleValue()) <= 1)
+				return 0;
+			else
+				return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
+		}
 		return TWO.multiply(areaOfTriangle).divide(baseDistance, RoundingMode.HALF_UP).doubleValue();
 	}
 }
