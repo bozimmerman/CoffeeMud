@@ -647,6 +647,50 @@ public class CMStrings
 	}
 
 	/**
+	 * Rebuilds the given string by deleting any instances of \r, \n, \t, and multi-spaces
+	 * in the given array.  The search is case-sensitive.
+	 * @param str the string to rebuild without those characters
+	 * @return the rebuilt string, without the characters
+	 */
+	public final static String deleteCRLFTAB(final String str)
+	{
+		if((str==null)
+		||(str.length()==0))
+			return str;
+		final StringBuilder buf=new StringBuilder(str);
+		boolean spacer=false;
+		for(int i=buf.length()-1;i>=0;i--)
+		{
+			switch(buf.charAt(i))
+			{
+			case '\r':
+			case '\n':
+			case '\t':
+			{
+				if((i==0)
+				||(i==buf.length()-1)
+				||(buf.charAt(i-1)==' ')
+				||(buf.charAt(i+1)==' '))
+					buf.deleteCharAt(i);
+				else
+					buf.setCharAt(i, ' ');
+				break;
+			}
+			case ' ':
+				if(spacer)
+					buf.deleteCharAt(i);
+				else
+					spacer=true;
+				break;
+			default:
+				spacer=false;
+				break;
+			}
+		}
+		return buf.toString();
+	}
+
+	/**
 	 * Rebuilds the given string by deleting any instances of a given character
 	 * The search is case-sensitive.
 	 * @param str the string to rebuild without those characters

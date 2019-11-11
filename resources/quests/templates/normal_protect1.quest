@@ -66,6 +66,10 @@
 #mobs will be waiting in the specified room waiting.
 #$PROTECTED_MOB=$MOBXML
 #
+#Protection announce:
+#Select what the protected mob will say when a player arrives.
+#$QUEST_PROTECTME_TEXT=($LONG_STRING)=Protect me!!
+#
 #Protection success:
 #Select what the protected mob will say when a player defeats all attackers.
 #$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Thanks!
@@ -183,6 +187,7 @@ GREET_PROG 100
 SPEECH_PROG p i accept $QUEST_NAME
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			mpsetvar $i QUEST_MYROOM '$%QVAR(* WHEREHAPPENED)%'
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 			mpqset * STATISTICS ACCEPTED
@@ -195,6 +200,7 @@ SPEECH_PROG p i accept $QUEST_NAME
 SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			mpsetvar $i QUEST_MYROOM '$%QVAR(* WHEREHAPPENED)%'
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 			mpqset * STATISTICS ACCEPTED
@@ -206,6 +212,12 @@ SPEECH_PROG p i accept
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_protected.script</NAME>
 <DATA>
+ONCE_PROG
+	if EVAL('$QUEST_PROTECTME_TEXT' != '')
+		say "$QUEST_PROTECTME_TEXT"
+	endif
+~
+
 DELAY_PROG 300 300
 	mpecho $i runs away in fright.
 	mppurge $i
@@ -251,20 +263,8 @@ RAND_PROG 5
 </FILE>
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
-CNCLMSG_PROG DEATH ALL
-	IF var($i $QUEST_ID_PROTMOB != '') AND EVAL('$<$i $QUEST_ID_PROTMOB>' == $n) AND QUESTSCRIPTED($n *)
-		mpecho ^x$n has died.  You've failed the protection quest.^.^N
-		mpendquest $i
-		IF VAR($i $QUEST_ID_PROTMOB != '')
-			MPAT '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_PROT_MOB
-		ENDIF 
-		IF VAR($i $QUEST_ID_LASTMOB != '')
-			MPAT '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_LAST_MOB
-		ENDIF 
-	endif
-~
-
 ONCE_PROG 100
+	mpsetvar $i QUEST_MYROOM '$%QVAR(* WHEREHAPPENED)%'
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
 	if var($i $QUEST_ID_MYROOM == '')
 		mpsetvar $i $QUEST_ID_MYROOM '$%QVAR(* WHEREHAPPENED_ROOMID)%'
@@ -276,6 +276,31 @@ ONCE_PROG 100
 		mpsetvar $i $QUEST_ID_DEFEATED 0
 	endif
 	mpsetvar $i PROGRESS Defeated $<$i $QUEST_ID_DEFEATED>/$ATTACKER_SIZE
+	mpargset $g '$%INROOM($i)%'
+	if VAR($i $QUEST_ID_MYROOM != '') AND EVAL($g != '')
+		IF INROOM($g == '$<$i $QUEST_ID_MYROOM>')
+			IF VAR($i $QUEST_ID_PROTMOB == '') OR !INROOM($g == '$<$i $QUEST_ID_PROTMOB>') 
+				mpat '$g' mpmload fromfile $QUEST_ID_protectmobs.xml any
+				MPGSET $b REJUV 0
+				MPQSET * QUESTOBJ $b
+				mpsetvar $i $QUEST_ID_PROTMOB $b
+				mpscript $b LOAD=$QUEST_ID_protected.script
+			ENDIF
+		ENDIF
+	ENDIF
+~
+
+CNCLMSG_PROG DEATH ALL
+	IF var($i $QUEST_ID_PROTMOB != '') AND EVAL('$<$i $QUEST_ID_PROTMOB>' == $n) AND QUESTSCRIPTED($n *)
+		mpecho ^x$n has died.  You've failed the protection quest.^.^N
+		mpendquest $i
+		IF VAR($i $QUEST_ID_PROTMOB != '')
+			MPAT '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_PROT_MOB
+		ENDIF 
+		IF VAR($i $QUEST_ID_LASTMOB != '')
+			MPAT '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_LAST_MOB
+		ENDIF 
+	endif
 ~
 
 RAND_PROG 25

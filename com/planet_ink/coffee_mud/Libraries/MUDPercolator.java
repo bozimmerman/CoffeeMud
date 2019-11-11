@@ -1102,7 +1102,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					continue;
 				defineReward(E,null,null,valPiece.getParmValue("DEFINE"),valPiece,null,defined,true);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-					Log.debugOut("MUDPercolator","Build Mob: "+CMStrings.limit(valPiece.value(),80)+"...");
+					Log.debugOut("MUDPercolator","Build Mob: "+CMStrings.limit(CMStrings.deleteCRLFTAB(valPiece.value()),80)+"...");
 				final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 				final MOB M=buildMob(valPiece,defined);
 				if(callBack != null)
@@ -1138,7 +1138,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				rDefined.putAll(defined);
 				defineReward(null,null,null,valPiece.getParmValue("DEFINE"),valPiece,null,rDefined,true);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-					Log.debugOut("MUDPercolator","Build Room: "+CMStrings.limit(valPiece.value(),80)+"...");
+					Log.debugOut("MUDPercolator","Build Room: "+CMStrings.limit(CMStrings.deleteCRLFTAB(valPiece.value()),80)+"...");
 				Room R;
 				final String layoutType=valPiece.parms().get("LAYOUT");
 				if((layoutType!=null)&&(layoutType.length()>0))
@@ -1196,7 +1196,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				defineReward(null,null,null,valPiece.getParmValue("DEFINE"),valPiece,null,defined,true);
 				final Exit[] theseExits=exits.clone();
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-					Log.debugOut("MUDPercolator","Build Room: "+CMStrings.limit(valPiece.value(),80)+"...");
+					Log.debugOut("MUDPercolator","Build Room: "+CMStrings.limit(CMStrings.deleteCRLFTAB(valPiece.value()),80)+"...");
 				final Room R=buildRoom(valPiece,defined,theseExits,direction);
 				DV.addElement(R,theseExits);
 			}
@@ -1224,7 +1224,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					continue;
 				defineReward(M,null,null,valPiece.getParmValue("DEFINE"),valPiece,null,defined,true);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-					Log.debugOut("MUDPercolator","Build Exit: "+CMStrings.limit(valPiece.value(),80)+"...");
+					Log.debugOut("MUDPercolator","Build Exit: "+CMStrings.limit(CMStrings.deleteCRLFTAB(valPiece.value()),80)+"...");
 				final Exit E=buildExit(valPiece,defined);
 				if(E!=null)
 					exitChoices.add(E);
@@ -1684,7 +1684,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				if(valPiece.parms().containsKey("VALIDATE") && !testCondition(M,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
 					continue;
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-					Log.debugOut("MUDPercolator","Build Exit: "+CMStrings.limit(valPiece.value(),80)+"...");
+					Log.debugOut("MUDPercolator","Build Exit: "+CMStrings.limit(CMStrings.deleteCRLFTAB(valPiece.value()),80)+"...");
 				defineReward(M,null,null,valPiece.getParmValue("DEFINE"),valPiece,null,defined,true);
 				final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 				final Exit E=buildExit(valPiece,defined);
@@ -1857,7 +1857,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					continue;
 				defineReward(E,null,null,valPiece.getParmValue("DEFINE"),valPiece,null,defined,true);
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-					Log.debugOut("MUDPercolator","Build Item: "+CMStrings.limit(valPiece.value(),80)+"...");
+					Log.debugOut("MUDPercolator","Build Item: "+CMStrings.limit(CMStrings.deleteCRLFTAB(valPiece.value()),80)+"...");
 				final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
 				try
 				{
@@ -6187,7 +6187,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			throw new MQLException("Malformed mql: "+str);
 		final String mqlbits=str.substring(x+1).toUpperCase();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-			Log.debugOut("Starting MQL: "+mqlbits+" on "+((E==null)?"null":E.name()));
+			Log.debugOut("Starting MQL: "+CMStrings.deleteCRLFTAB(mqlbits) +" on "+((E==null)?"null":E.name()));
 		final MQLClause clause = MQLClause.parseMQL(str, mqlbits);
 		final List<Map<String,String>> results = this.doSubSelectStr(E, ignoreStats, defPrefix, clause, str, piece, defined);
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
@@ -6202,7 +6202,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			throw new MQLException("Malformed mql: "+str);
 		final String mqlbits=str.substring(x+1).toUpperCase();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-			Log.debugOut("Starting MQL: "+mqlbits+" on "+((E==null)?"null":((E instanceof Room)?((Room)E).roomID():E.name())));
+			Log.debugOut("Starting MQL: "+CMStrings.deleteCRLFTAB(mqlbits)+" on "+((E==null)?"null":((E instanceof Room)?((Room)E).roomID():E.name())));
 
 		final MQLClause clause = MQLClause.parseMQL(str, mqlbits);
 		final List<Map<String,Object>> results = this.doSubObjSelect(E, ignoreStats, defPrefix, clause, str, piece, defined);
