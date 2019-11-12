@@ -224,7 +224,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 							else
 							{
 								targetDirection[0] = ((Double)parms[0]).doubleValue();
-								targetDirection[1] = ((Double)parms[0]).doubleValue();
+								targetDirection[1] = ((Double)parms[1]).doubleValue();
 								if(ship instanceof SpaceShip)
 								{
 									final ShipDir dir = CMLib.map().getDirectionFromDir(((SpaceShip)ship).facing(), ((SpaceShip)ship).roll(), targetDirection);

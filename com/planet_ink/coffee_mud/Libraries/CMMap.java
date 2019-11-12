@@ -4315,6 +4315,12 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(prevDistance.subtract(baseDistance).equals(currentDistance)
 		||currentDistance.subtract(baseDistance).equals(prevDistance))
 			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
+		final BigDecimal currentDistancePow2 = currentDistance.multiply(currentDistance);
+		final BigDecimal baseDistancePow2 = baseDistance.multiply(baseDistance);
+		final BigDecimal prevDistancePow2 = prevDistance.multiply(prevDistance);
+		if((prevDistancePow2.add(baseDistancePow2).subtract(currentDistancePow2).doubleValue()>0)
+		||(currentDistancePow2.add(baseDistancePow2).subtract(prevDistancePow2).doubleValue()>0))
+			return Math.min(currentDistance.doubleValue(), prevDistance.doubleValue());
 
 		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO, RoundingMode.HALF_UP);
 		final BigDecimal areaOfTriangle=BigDecimal.valueOf(CMath.sqrt(CMath.abs(
