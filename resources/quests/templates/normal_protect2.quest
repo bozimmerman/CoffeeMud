@@ -165,11 +165,11 @@ set mob reselect  $ANNOUNCER_NAME
 give stat keyplayer true
 give script LOAD=$QUEST_ID_announcer.script
 
-set mobgroup
-set mob
 set area $PROTECTED_AREA
 set room $PROTECTED_ROOM
-set mob reselect $PROTECTED_MOB
+set mobgroup
+set mob reselect  $PROTECTED_NAME
+give stat keyplayer true
 
 set duration 0
 
@@ -194,11 +194,9 @@ GREET_PROG 100
 SPEECH_PROG p i accept $QUEST_NAME
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			mpsetvar $i QUEST_MYROOM '$%QVAR(* WHEREHAPPENED)%'
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 			mpqset * STATISTICS ACCEPTED
-			mpsetvar $n $QUEST_ID_MYROOM '$%QVAR(* WHEREHAPPENED_ROOMID)%'
 			mptransfer $n $n
 		endif
 	endif
@@ -207,11 +205,9 @@ SPEECH_PROG p i accept $QUEST_NAME
 SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			mpsetvar $i QUEST_MYROOM '$%QVAR(* WHEREHAPPENED)%'
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 			mpqset * STATISTICS ACCEPTED
-			mpsetvar $n $QUEST_ID_MYROOM '$%QVAR(* WHEREHAPPENED_ROOMID)%'
 			mptransfer $n $n
 		endif
 	endif
@@ -250,11 +246,7 @@ RAND_PROG 5
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
-	mpsetvar $i QUEST_MYROOM '$%QVAR(* WHEREHAPPENED)%'
 	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
-	if var($i $QUEST_ID_MYROOM == '')
-		mpsetvar $i $QUEST_ID_MYROOM '$%QVAR(* WHEREHAPPENED_ROOMID)%'
-	endif
 	IF !isquestmobalive(1 '$QUEST_ID')
 		MPENDQUEST '$QUEST_ID'
 	ENDIF
@@ -262,32 +254,24 @@ ONCE_PROG 100
 		mpsetvar $i $QUEST_ID_DEFEATED 0
 	endif
 	mpsetvar $i PROGRESS Defeated $<$i $QUEST_ID_DEFEATED>/$ATTACKER_SIZE
-	mpargset $g '$%INROOM($i)%'
-	if VAR($i $QUEST_ID_MYROOM != '') AND EVAL($g != '')
-		IF INROOM($g == '$<$i $QUEST_ID_MYROOM>')
-			IF VAR($i $QUEST_ID_PROTMOB == '') OR !INROOM($g == '$<$i $QUEST_ID_PROTMOB>') 
-				mpat '$g' mpmload fromfile $QUEST_ID_protectmobs.xml any
-				MPGSET $b REJUV 0
-				MPQSET * QUESTOBJ $b
-				mpsetvar $i $QUEST_ID_PROTMOB $b
-				mpscript $b LOAD=$QUEST_ID_protected.script
-				if EVAL('$QUEST_PROTECTME_TEXT' != '')
-					mpforce $b say "$QUEST_PROTECTME_TEXT"
-				endif
-			ENDIF
-		ENDIF
-	ENDIF
+	mpargset $8 ''
+	mpargset $9 $%NUMMOBSROOM(*)%
+	for $0 = 1 to $9
+		mpargset $1 '$%ROOMMOB($0)%'
+		if ISNPC($1) AND EVAL('${2 *}' == '$1')
+			if EVAL('$QUEST_PROTECTME_TEXT' != '')
+				mpforce $1 say "$QUEST_PROTECTME_TEXT"
+			endif
+		endif
+	next
 ~
 
 CNCLMSG_PROG DEATH ALL
-	IF var($i $QUEST_ID_PROTMOB != '') AND EVAL('$<$i $QUEST_ID_PROTMOB>' == $n) AND QUESTSCRIPTED($n *)
+	if ISNPC($n) AND EVAL('${2 *}' == '$n')
 		mpecho ^x$n has died.  You've failed the protection quest.^.^N
-		mpendquest $i
-		IF VAR($i $QUEST_ID_PROTMOB != '')
-			MPAT '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_PROT_MOB
-		ENDIF 
+ 		mpendquest $i
 		IF VAR($i $QUEST_ID_LASTMOB != '')
-			MPAT '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_LAST_MOB
+			MPAT '$<$i $QUEST_ID_LASTROOM>' MPCALLFUNC DEL_LAST_MOB
 		ENDIF 
 	endif
 ~
@@ -317,34 +301,17 @@ FUNCTION_PROG DEL_LAST_MOB
 	mpsetvar $i $QUEST_ID_LASTMOB ''
 ~
 
-FUNCTION_PROG DEL_PROT_MOB
-	IF QUESTMOB('$<$i $QUEST_ID_PROTMOB>' *)
-		mppurge room '$<$i $QUEST_ID_PROTMOB>'
-		mpsetvar $i $QUEST_ID_PROTMOB ''
-	ENDIF
-~
-
 CNCLMSG_PROG ENTER ALL
 	if EVAL($n == $i)
 		mpargset $g '$%INROOM($t)%'
-		if VAR($i $QUEST_ID_MYROOM != '') AND EVAL($g != '')
-			IF INROOM($g == '$<$i $QUEST_ID_MYROOM>')
-				IF VAR($i $QUEST_ID_PROTMOB == '') OR !INROOM($g == '$<$i $QUEST_ID_PROTMOB>') 
-					mpat '$g' mpmload fromfile $QUEST_ID_protectmobs.xml any
-					MPGSET $b REJUV 0
-					MPQSET * QUESTOBJ $b
-					mpsetvar $i $QUEST_ID_PROTMOB $b
-					mpscript $b LOAD=$QUEST_ID_protected.script
-					if EVAL('$QUEST_PROTECTME_TEXT' != '')
-						mpforce $b say "$QUEST_PROTECTME_TEXT"
-					endif
-				ENDIF
+		if EVAL($g != '')
+			IF INROOM($g == '${2 *}')
+				if EVAL('$QUEST_PROTECTME_TEXT' != '')
+					mpalarm 1 mpforce '${2 *}' say "$QUEST_PROTECTME_TEXT"
+				endif
 			ELSE
-				IF VAR($i $QUEST_ID_PROTMOB != '')
-					MPAT '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_PROT_MOB
-				ENDIF 
 				IF VAR($i $QUEST_ID_LASTMOB != '')
-					MPAT '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_LAST_MOB
+					MPAT '$<$i $QUEST_ID_LASTROOM>' MPCALLFUNC DEL_LAST_MOB
 				ENDIF 
 			endif
 		endif
@@ -352,45 +319,41 @@ CNCLMSG_PROG ENTER ALL
 ~
 
 DELAY_PROG 3 3
-	IF VAR($i $QUEST_ID_PROTMOB != '') AND VAR($i $QUEST_ID_DEFEATED >= $ATTACKER_SIZE)
-		IF INROOM($d == '$<$i $QUEST_ID_PROTMOB>')
-			mpargset $8 '$<$i $QUEST_ID_PROTMOB>'
-			if EVAL('$EXP' != '')
-				mpexp $i $EXP
-			endif
-			if EVAL('$FACTION' != '')
-				mpfaction $i $FACTION $NUMFACTION
-			endif
-			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
-				mpforce $8 mpoload QuestPoint
-				mpforce $8 give "a quest point" "$i"
-			endif
-			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-				mpforce $8 mpoload $GOLD
-				mpforce $8 give $GOLD "$i"
-			endif
-			mpforce $8 mpoload fromfile $QUEST_ID_rewarditems.xml any
-			if EVAL('$b' != '')
-				mpforce $8 give "$b" "$i"
-			endif
-			mpat '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_LAST_MOB
-			mpat '$<$i $QUEST_ID_MYROOM>' MPCALLFUNC DEL_PROT_MOB
-			mpquestwin $i *
-			mpforce $8 sayto $i $QUEST_WINSPEECH_TEXT
-			mpendquest $i
-			mpqset * STATISTICS SUCCESS
-			IF EVAL('$MULTIPLE' == 'PREV')
-				mptransfer $i $i
-			ENDIF
-		ENDIF 
+	IF VAR($i $QUEST_ID_DEFEATED >= $ATTACKER_SIZE) AND INROOM($i == '${2 *}')
+		mpargset $8 '${2 *}'
+		if EVAL('$EXP' != '')
+			mpexp $i $EXP
+		endif
+		if EVAL('$FACTION' != '')
+			mpfaction $i $FACTION $NUMFACTION
+		endif
+		if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
+			mpforce $8 mpoload QuestPoint
+			mpforce $8 give "a quest point" "$i"
+		endif
+		if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+			mpforce $8 mpoload $GOLD
+			mpforce $8 give $GOLD "$i"
+		endif
+		mpforce $8 mpoload fromfile $QUEST_ID_rewarditems.xml any
+		if EVAL('$b' != '')
+			mpforce $8 give "$b" "$i"
+		endif
+		if EVAL('$<$i $QUEST_ID_LASTROOM>' != '')
+			mpat '$<$i $QUEST_ID_LASTROOM>' MPCALLFUNC DEL_LAST_MOB
+		endif
+		mpquestwin $i *
+		mpforce $8 sayto $i $QUEST_WINSPEECH_TEXT
+		mpendquest $i
+		mpqset * STATISTICS SUCCESS
+		IF EVAL('$MULTIPLE' == 'PREV')
+			mptransfer $i $i
+		ENDIF
 	ENDIF
 ~
 
 RAND_PROG $ATTACKER_PCT_CHANCE
-	IF VAR($i $QUEST_ID_PROTMOB == '') OR VAR($i $QUEST_ID_DEFEATED >= $ATTACKER_SIZE)
-		return
-	ENDIF
-	if INROOM($i != '$<$i $QUEST_ID_MYROOM>') OR INROOM($i != '$<$i $QUEST_ID_PROTMOB>')
+	IF !INROOM($i == '${2 *}') OR VAR($i $QUEST_ID_DEFEATED >= $ATTACKER_SIZE)
 		return
 	ENDIF
 	mpmload fromfile $QUEST_ID_attackers.xml any
@@ -400,6 +363,7 @@ RAND_PROG $ATTACKER_PCT_CHANCE
 	mpforce $b YELL $ATTACKER_SCREAM
 	mpforce $b kill $<$i $QUEST_ID_PROTMOB>
 	mpsetvar $i $QUEST_ID_LASTMOB $b
+	mpsetvar $i $QUEST_ID_LASTROOM '$%INROOM($i)%'
 	if !ISFIGHT($b)
 		mpforce $b kill all
 	endif
