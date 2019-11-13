@@ -389,6 +389,56 @@ public class CMSecurity
 	/**
 	 * Checks whether the given user/player MOB is a full-on Archon, an
 	 * admin of the entire mud, having all the power the system offers.
+	 * Only for the given threadId though.
+	 * @param mob the user/player to check
+	 * @param threadId the host/thread id to check status for
+	 * @return true if the MOB represents a SysOp (Archon), false otherwise.
+	 */
+	public static final boolean isASysOp(final MOB mob, final char threadId)
+	{
+		final MaskingLibrary.CompiledZMask mask=instance(threadId).compiledSysop;
+		final MaskingLibrary maskLib = CMLib.get(threadId)._masking();
+		if(mask == null)
+		{
+			final String maskStr = CMProps.instance(threadId).getStr("SYSOPMASK","");
+			if((maskStr != null)&&(maskStr.length()>0))
+			{
+				Log.errOut("Compiled Archon Mask was not set! Using props entry.");
+				instance().compiledSysop=maskLib.maskCompile(maskStr);
+			}
+			else
+			if((secs['0'] != null)
+			&&(secs['0'] != i())
+			&&(secs['0'].compiledSysop != null))
+			{
+				Log.errOut("Compiled Archon Mask was not set! Using base instance.");
+				instance().compiledSysop=secs['0'].compiledSysop;
+			}
+			else
+			if((secs[0] != null)
+			&&(secs[0] != i())
+			&&(secs[0].compiledSysop != null))
+			{
+				Log.errOut("Compiled Archon Mask was not set! Using 0th instance.");
+				instance().compiledSysop=secs[0].compiledSysop;
+			}
+			else
+			{
+				instance().compiledSysop=maskLib.maskCompile("-ANYCLASS +Archon");
+				Log.errOut("Compiled Archon Mask was not set! Using core default.");
+			}
+			return isASysOp(mob);
+		}
+		return maskLib.maskCheck(mask,mob,true)
+				||((mob!=null)
+					&&(mob.soulMate()!=null)
+					&&(mob.soulMate().isAttributeSet(MOB.Attrib.SYSOPMSGS))
+					&&(isASysOp(mob.soulMate(),threadId)));
+	}
+
+	/**
+	 * Checks whether the given user/player MOB is a full-on Archon, an
+	 * admin of the entire mud, having all the power the system offers.
 	 * @param mob the user/player to check
 	 * @return true if the MOB represents a SysOp (Archon), false otherwise.
 	 */
