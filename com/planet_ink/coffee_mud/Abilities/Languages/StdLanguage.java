@@ -516,6 +516,15 @@ public class StdLanguage extends StdAbility implements Language
 							spokenL=CMLib.utensils().getLanguageSpoken(msg.source());
 						else
 							break;
+						if(spokenL==null)
+						{
+							spokenL=(Language)msg.source().fetchAbility("Common");
+							if(spokenL==null)
+							{
+								spokenL=(Language)CMClass.getAbility("Common");
+								spokenL.setProficiency(100);
+							}
+						}
 						final Language heardL; // this is the language as heard
 						if(spokenL.ID().equals(ID()))
 							heardL=this;
