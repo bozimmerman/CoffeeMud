@@ -117,7 +117,7 @@ public class Spell_MageClaws extends Spell
 				}
 				else
 				{
-					naturalWeapon.basePhyStats().setDamage(level/2);
+					naturalWeapon.basePhyStats().setDamage(2+(level/2));
 					naturalWeapon.basePhyStats().setAttackAdjustment(0);
 				}
 				naturalWeapon.recoverPhyStats();
