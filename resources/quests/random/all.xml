@@ -64,6 +64,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<QUEST load="/resources/quests/random/normal_mystery1.xml" CONDITION="$quest_template='normal_mystery1'"/>
 	<QUEST load="/resources/quests/random/normal_mystery2.xml" CONDITION="$quest_template='normal_mystery2'"/>
 	<QUEST load="/resources/quests/random/normal_protect1.xml" CONDITION="$quest_template='normal_protect1'"/>
+	<QUEST load="/resources/quests/random/normal_protect2.xml" CONDITION="$quest_template='normal_protect2'"/>
 	<QUEST load="/resources/quests/random/normal_travel1.xml" CONDITION="$quest_template='normal_travel1'"/>
 	<QUEST load="/resources/quests/random/normal_travel2.xml" CONDITION="$quest_template='normal_travel2'"/>
 </QUEST>

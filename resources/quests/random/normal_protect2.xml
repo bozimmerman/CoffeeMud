@@ -17,9 +17,9 @@ limitations under the License.
 
 See guides/RandomAreas.html for information about documents of this type.
 
-template: normal_protect1
+template: normal_protect2
 settable vars: 
-    template(normal_protect1)
+    template(normal_protect2)
     area_name(area name)
     source_name(mob name)
     targetarea_name(area name)
@@ -35,7 +35,7 @@ settable vars:
 	quest_multiple(YES, NO, or PREV)
 -->
 
-<QUEST ID="normal_protect1" QUEST_TEMPLATE_ID="normal_protect1">
+<QUEST ID="normal_protect2" QUEST_TEMPLATE_ID="normal_protect2">
 	<QUEST_ID DEFINE="quest_id">${_:source_area_name}_${_:source_name}_${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
 	<QUEST_CRITERIA>+SYSOP +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA>
 	<ANNOUNCER_AREA>"$source_area_name"</ANNOUNCER_AREA>
@@ -44,7 +44,7 @@ settable vars:
 	<QUEST_ANNOUNCECHANNEL>$announcechannel</QUEST_ANNOUNCECHANNEL>
 	<PROTECTED_AREA>"$target_area_name"</PROTECTED_AREA>
 	<PROTECTED_ROOM>ALL</PROTECTED_ROOM>
-	<PROTECTED_MOB>${SELECT: ANY\. from $target}</PROTECTED_MOB>
+	<PROTECTED_MOB>"$target_name"</PROTECTED_MOB>
 	<QUEST_PROTECTME_TEXT>Protect me $$r! They're coming for me!</QUEST_PROTECTME_TEXT>
 	<ATTACKER_MOB>${SELECT: ANY\. from $attacker}</ATTACKER_MOB>
 	<ATTACKER_PCT_CHANCE>$[5+($target_level/2)]</ATTACKER_PCT_CHANCE>
@@ -95,7 +95,7 @@ settable vars:
 	<STRING ID="quest_instructionstring" SELECT="ALL">
 		<STRING ACTION="PREPEND">$reason_desc</STRING>
 		<STRING ACTION="APPEND">$reason_short</STRING>
-		<STRING ACTION="APPEND" CONDITION="$target_name != $source_name">Find $target_name at $$<$$i QUEST_MYROOM>.</STRING>
+		<STRING ACTION="APPEND" CONDITION="$target_name != $source_name">Find $target_name!</STRING>
 	</STRING>
 
 	<STRING ID="reason_verbed">$verb_protected</STRING>
@@ -230,8 +230,11 @@ settable vars:
 	<OBJECT ID="source_area" SELECT="Pick-1" DEFINE="source_area">
 		<OBJECT pickweight=99999 condition="'${SELECT: name FROM area}' != ''">SELECT: . FROM area</OBJECT>
 		<OBJECT pickweight=55555 condition="$area_name != ''" and '${SELECT: name FROM area}' = ''>SELECT: ANY\. FROM areas where NAME=$area_name</OBJECT> 
-		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = ''">
+		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea = 'YES'">
 			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 0
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$area_name = '' and '${SELECT: name FROM area}' = '' and $multiarea != 'YES'">
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questgivers) &gt; 1
 		</OBJECT>
 	</OBJECT>
 
@@ -294,17 +297,55 @@ settable vars:
 	<STRING load="/resources/randareas/mountains.xml" />
 	<STRING load="/resources/randareas/swamp.xml" />
 	
-	<OBJECT ID="target" DEFINE="target">
-		<MOB class="GenMob" level="$level_range" race="Unique" gender="$anygender">
-			<NAME SELECT="Any-1">
-				<NAME CONDITION="$targetname != ''">$targetname</NAME>
-				<NAME CONDITION="$targetname = ''">$fantasy_name</NAME>
-			</NAME>
-			<DISPLAY>$mob_name is here.</DISPLAY>
-			<ALIGNMENT>$[-10000?10000]</ALIGNMENT>
-		</MOB>
+	<OBJECT ID="mql_viable_any_questtargets">
+		SELECT: . FROM area\npcs 
+			WHERE name\count &gt;= $num_targets 
+			and current_intelligence>2 
+			and "Aggressive" notin objattrib  
+			and "QuestBound" notin affbehav 
+			and (SELECT: count\. FROM mob\room\exits) &gt; 0 
+			and 'ROOMUNEXPLORABLE' notin (SELECT: current_sensesstr FROM mob\room)
 	</OBJECT>
-
+	
+	<OBJECT ID="mql_viable_questtargets">
+		SELECT: . FROM area\npcs 
+			WHERE name\count &gt;= $num_targets 
+			and current_intelligence>2 
+			and name != $source_name
+			and "Aggressive" notin objattrib  
+			and "QuestBound" notin affbehav 
+			and (SELECT: count\. FROM mob\room\exits) &gt; 0 
+			and 'ROOMUNEXPLORABLE' notin (SELECT: current_sensesstr FROM mob\room)
+	</OBJECT>
+	
+	<OBJECT ID="mql_viable_questtarget">
+		SELECT: . FROM area\npcs 
+			WHERE name\count=1 
+			and current_intelligence>2 
+			and name != $source_name
+			and "Aggressive" notin objattrib  
+			and "QuestBound" notin affbehav 
+			and (SELECT: count\. FROM mob\room\exits) &gt; 0 
+			and 'ROOMUNEXPLORABLE' notin (SELECT: current_sensesstr FROM mob\room)
+	</OBJECT>
+	
+	<OBJECT ID="target" DEFINE="target" SELECT="pick-1">
+		<OBJECT PICKWEIGHT=999 CONDITION="$targetname!=''">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
+		<OBJECT PICKWEIGHT=1 CONDITION="$targetname=''">
+			SELECT: ANY\. FROM $target_area\npcs 
+				WHERE name\count=1 
+				and current_intelligence>2 
+				and name != $source_name
+				and "Aggressive" notin objattrib  
+				and "QuestBound" notin affbehav 
+				and (SELECT: count\. FROM mob\room\exits) &gt; 0 
+				and 'ROOMUNEXPLORABLE' notin (SELECT: current_sensesstr FROM mob\room)
+		</OBJECT>
+	</OBJECT>
+	
+	<OBJECT PICKWEIGHT=1 CONDITION="$targetname='' and $source_area_name=$target_area_name">
+		SELECT: ANY\. from $source
+	</OBJECT>
 	
 	<STRING ID="attacker_name" SELECT="any-1" DEFINE="attacker_name">
 		<STRING>${SELECT:name from $attacker}</STRING>
@@ -339,10 +380,15 @@ settable vars:
 	<OBJECT ID="target_area" SELECT="Pick-1" DEFINE="target_area">
 		<OBJECT pickweight=55555 condition="$targetarea_name != ''">SELECT: ANY\. FROM areas where NAME=$targetarea_name</OBJECT> 
 		<OBJECT pickweight=100 condition="$targetarea_name = '' and $multiarea != 'YES'">SELECT: any\. from $source_area</OBJECT>
-		<OBJECT pickweight=1 condition="$targetarea_name = '' and $multiarea = 'YES'">
-			SELECT: ANY\. FROM areas WHERE VISITABLE_ROOMS &gt; 10
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $multiarea = 'YES' and $num_targets = 1">
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questtarget) &gt; 0
+		</OBJECT>
+		<OBJECT pickweight=1 condition="$targetarea_name = '' and $multiarea = 'YES' and $num_targets &gt; 1">
+			SELECT: ANY\. FROM areas WHERE (SELECT: count\. from $mql_viable_questtargets) &gt; 0
 		</OBJECT>
 	</OBJECT>
+
+	<STRING ID="target_room_id" DEFINE="target_room_id">${SELECT: roomid from $target\room}</STRING>
 
 	<STRING ID="target_area_size" SELECT="any-1" DEFINE="target_area_size">
 		<STRING>${SELECT:VISITABLE_ROOMS from $target_area}</STRING>

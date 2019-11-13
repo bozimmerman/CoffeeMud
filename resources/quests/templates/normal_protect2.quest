@@ -168,8 +168,7 @@ give script LOAD=$QUEST_ID_announcer.script
 set area $PROTECTED_AREA
 set room $PROTECTED_ROOM
 set mobgroup
-set mob reselect  $PROTECTED_NAME
-give stat keyplayer true
+set mob reselect $PROTECTED_MOB
 
 set duration 0
 
@@ -258,7 +257,7 @@ ONCE_PROG 100
 	mpargset $9 $%NUMMOBSROOM(*)%
 	for $0 = 1 to $9
 		mpargset $1 '$%ROOMMOB($0)%'
-		if ISNPC($1) AND EVAL('${2 *}' == '$1')
+		if ISNPC($1) AND EVAL('${3 *}' == '$1')
 			if EVAL('$QUEST_PROTECTME_TEXT' != '')
 				mpforce $1 say "$QUEST_PROTECTME_TEXT"
 			endif
@@ -267,7 +266,7 @@ ONCE_PROG 100
 ~
 
 CNCLMSG_PROG DEATH ALL
-	if ISNPC($n) AND EVAL('${2 *}' == '$n')
+	if ISNPC($n) AND EVAL('${3 *}' == '$n')
 		mpecho ^x$n has died.  You've failed the protection quest.^.^N
  		mpendquest $i
 		IF VAR($i $QUEST_ID_LASTMOB != '')
@@ -301,26 +300,21 @@ FUNCTION_PROG DEL_LAST_MOB
 	mpsetvar $i $QUEST_ID_LASTMOB ''
 ~
 
-CNCLMSG_PROG ENTER ALL
-	if EVAL($n == $i)
-		mpargset $g '$%INROOM($t)%'
-		if EVAL($g != '')
-			IF INROOM($g == '${2 *}')
-				if EVAL('$QUEST_PROTECTME_TEXT' != '')
-					mpalarm 1 mpforce '${2 *}' say "$QUEST_PROTECTME_TEXT"
-				endif
-			ELSE
-				IF VAR($i $QUEST_ID_LASTMOB != '')
-					MPAT '$<$i $QUEST_ID_LASTROOM>' MPCALLFUNC DEL_LAST_MOB
-				ENDIF 
-			endif
+ENTRY_PROG 100
+	IF ISHERE('${3 *}')
+		if EVAL('$QUEST_PROTECTME_TEXT' != '')
+			mpalarm 1 mpforce '${3 *}' say "$QUEST_PROTECTME_TEXT"
 		endif
+	ELSE
+		IF VAR($i $QUEST_ID_LASTMOB != '')
+			MPAT '$<$i $QUEST_ID_LASTROOM>' MPCALLFUNC DEL_LAST_MOB
+		ENDIF 
 	endif
 ~
 
 DELAY_PROG 3 3
-	IF VAR($i $QUEST_ID_DEFEATED >= $ATTACKER_SIZE) AND INROOM($i == '${2 *}')
-		mpargset $8 '${2 *}'
+	IF VAR($i $QUEST_ID_DEFEATED >= $ATTACKER_SIZE) AND ISHERE('${3 *}')
+		mpargset $8 '${3 *}'
 		if EVAL('$EXP' != '')
 			mpexp $i $EXP
 		endif
@@ -353,7 +347,7 @@ DELAY_PROG 3 3
 ~
 
 RAND_PROG $ATTACKER_PCT_CHANCE
-	IF !INROOM($i == '${2 *}') OR VAR($i $QUEST_ID_DEFEATED >= $ATTACKER_SIZE)
+	IF !ISHERE('${3 *}') OR VAR($i $QUEST_ID_DEFEATED >= $ATTACKER_SIZE)
 		return
 	ENDIF
 	mpmload fromfile $QUEST_ID_attackers.xml any

@@ -1535,7 +1535,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							mid = mid.substring(y + 1).trim();
 							final Quest Q = getQuest(mid);
 							if (Q != null)
-								return Q.getQuestMob(num);
+							{
+								final MOB M=Q.getQuestMob(num);
+								return M;
+							}
 						}
 					}
 					break;
