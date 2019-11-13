@@ -109,8 +109,17 @@ public class Spell_MageClaws extends Spell
 				naturalWeapon.setWeaponClassification(Weapon.CLASS_NATURAL);
 				naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 				naturalWeapon.setUsesRemaining(1000);
-				naturalWeapon.basePhyStats().setDamage(level);
-				naturalWeapon.basePhyStats().setAttackAdjustment(5+level);
+				final String className=mob.baseCharStats().getCurrentClass().baseClass();
+				if(className.equalsIgnoreCase("Mage")||className.equalsIgnoreCase("Wizard"))
+				{
+					naturalWeapon.basePhyStats().setDamage(level);
+					naturalWeapon.basePhyStats().setAttackAdjustment(5+level);
+				}
+				else
+				{
+					naturalWeapon.basePhyStats().setDamage(level/2);
+					naturalWeapon.basePhyStats().setAttackAdjustment(0);
+				}
 				naturalWeapon.recoverPhyStats();
 			}
 			msg.modify(msg.source(),msg.target(),naturalWeapon,msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
