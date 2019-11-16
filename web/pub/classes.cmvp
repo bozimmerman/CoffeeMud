@@ -27,7 +27,7 @@
 <h3>CoffeeMud @MudServerVersion@ Player Class Information</h3><P>
 <TABLE WIDTH=100% BORDER=1>
 <TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=#99CCCC VALIGN=CENTER ALIGN=CENTER><a name="@CharClassID@"><H2><FONT COLOR=BLACK>@CharClassName@</FONT></H2></a></TD></TR>
-<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Description</B></TD><TD>@CharClassData?help@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Description</B></TD><TD><img src="images/classes/@CharClassID@.jpg" ALIGN=RIGHT height=200 >@CharClassData?help@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Prime Statistic</B></TD><TD>@CharClassData?prime@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Qualifications</B></TD><TD>@CharClassData?quals@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Practices</B></TD><TD>@CharClassData?pracs@</TD></TR>
