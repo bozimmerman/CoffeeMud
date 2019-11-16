@@ -9846,6 +9846,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genFaction(mob,me,++showNumber,showFlag);
 			genTattoos(mob,me,++showNumber,showFlag);
 			genExpertises(mob,me,++showNumber,showFlag);
+			if(me.numScripts()>0)
+				genScripts(mob,me,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
@@ -10420,6 +10422,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genFaction(mob,M,++showNumber,showFlag);
 			genTattoos(mob,M,++showNumber,showFlag);
 			genExpertises(mob,M,++showNumber,showFlag);
+			if(M.numScripts()>0)
+				genScripts(mob,M,++showNumber,showFlag);
 			genImage(mob,me,++showNumber,showFlag);
 			for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
 				me.setStat(me.getStatCodes()[x],prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
