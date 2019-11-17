@@ -2927,7 +2927,6 @@ public class Test extends StdCommand
 							mob.tell(L("Error:"+what+"-"+li+"A: swish="+swish+"/"+(CMLib.map().getDistanceFrom(shipCoord1, targetCoord))));
 							return false;
 						}
-						if(li>35) System.out.println("A:"+swish);
 					}
 					// r->l
 					{
@@ -2952,7 +2951,6 @@ public class Test extends StdCommand
 							mob.tell(L("Error:"+what+"-"+li+"B: swish="+swish+"/"+(CMLib.map().getDistanceFrom(shipCoord1, targetCoord))));
 							return false;
 						}
-						if(li>35) System.out.println("B:"+swish);
 					}
 				}
 			}
