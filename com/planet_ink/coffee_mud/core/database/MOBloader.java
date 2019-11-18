@@ -1607,61 +1607,78 @@ public class MOBloader
 		final String name=DB.injectionClean(mob.Name());
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHFO WHERE CMUSERID='"+name+"'"));
 
+		if(mob.numFollowers()==0)
+		{
+			DB.updateWithClobs(statements);
+			return;
+		}
+
 		final boolean useBulkInserts = DB.useBulkInserts();
 		final StringBuilder bulkSQL = new StringBuilder("");
 		final List<String> bulkClobs = new ArrayList<String>();
 
-		// prevent rejuving map mobs from getting text() called and wiping
-		// out their original specs
+		// make a list of the valid savable followers
+		final List<MOB> followers=new ArrayList<MOB>(mob.numFollowers());
 		for(int f=0;f<mob.numFollowers();f++)
 		{
-			final MOB thisMOB=mob.fetchFollower(f);
-			if((thisMOB!=null)
-			&&(thisMOB.isMonster())
-			&&(!thisMOB.isPossessing())
-			&&(CMLib.flags().isSavable(thisMOB))
-			&&(thisMOB.basePhyStats().rejuv()>0)
-			&&(thisMOB.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
+			final MOB followM=mob.fetchFollower(f);
+			if((followM!=null)
+			&&(followM.isMonster())
+			&&(!followM.isPossessing()))
 			{
-				final Room loc=thisMOB.location();
-				final Integer order = Integer.valueOf(mob.fetchFollowerOrder(thisMOB));
-				thisMOB.setFollowing(null);
-				mob.delFollower(thisMOB);
-				final MOB newFol = (MOB) thisMOB.copyOf();
+				if(CMLib.flags().isSavable(followM))
+					followers.add(followM);
+				else
+				{
+					// check if the room's to blame
+					final Room R=followM.location();
+					if((R!=null)
+					&&(!CMLib.flags().isSavable(R))
+					&&(!CMLib.flags().isSavable(R.getArea())))
+						followers.add(followM);
+				}
+			}
+		}
+
+		for(int f=0;f<followers.size();f++)
+		{
+			MOB followM = followers.get(f);
+			// prevent rejuving map mobs from getting text() called and wiping
+			// out their original specs
+			if((followM.basePhyStats().rejuv()>0)
+			&&(followM.basePhyStats().rejuv()!=PhyStats.NO_REJUV))
+			{
+				final Room loc=followM.location();
+				final Integer order = Integer.valueOf(mob.fetchFollowerOrder(followM));
+				followM.setFollowing(null);
+				mob.delFollower(followM);
+				final MOB newFol = (MOB) followM.copyOf();
 				newFol.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 				newFol.phyStats().setRejuv(PhyStats.NO_REJUV);
 				newFol.text();
-				thisMOB.killMeDead(false);
+				followM.killMeDead(false);
 				mob.addFollower(newFol, order.intValue());
 				if(CMLib.flags().isInTheGame(mob, true)
 				&&(!CMLib.flags().isInTheGame(newFol, true))
 				&&(loc!=null))
 					newFol.bringToLife(loc, false);
+				followM=newFol;
+			}
+
+			CMLib.catalog().updateCatalogIntegrity(followM);
+			final String sql="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
+							+") values ('"+name+"',"+f+",'"+CMClass.classID(followM)+"',?,"
+							+followM.basePhyStats().level()+","+followM.basePhyStats().ability()+")";
+			if(!useBulkInserts)
+				statements.add(new DBPreparedBatchEntry(sql,followM.text()+" "));
+			else
+			{
+				final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,followM.text()+" ");
+				if(entry != null)
+					statements.add(entry);
 			}
 		}
 
-		for(int f=0;f<mob.numFollowers();f++)
-		{
-			final MOB thisMOB=mob.fetchFollower(f);
-			if((thisMOB!=null)
-			&&(thisMOB.isMonster())
-			&&(!thisMOB.isPossessing())
-			&&(CMLib.flags().isSavable(thisMOB)))
-			{
-				CMLib.catalog().updateCatalogIntegrity(thisMOB);
-				final String sql="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
-								+") values ('"+name+"',"+f+",'"+CMClass.classID(thisMOB)+"',?,"
-								+thisMOB.basePhyStats().level()+","+thisMOB.basePhyStats().ability()+")";
-				if(!useBulkInserts)
-					statements.add(new DBPreparedBatchEntry(sql,thisMOB.text()+" "));
-				else
-				{
-					final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,thisMOB.text()+" ");
-					if(entry != null)
-						statements.add(entry);
-				}
-			}
-		}
 		if((bulkSQL.length()>0) && useBulkInserts)
 			statements.add(new DBPreparedBatchEntry(bulkSQL.toString(),bulkClobs.toArray(new String[0])));
 		DB.updateWithClobs(statements);

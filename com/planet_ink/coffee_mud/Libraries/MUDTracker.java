@@ -1541,7 +1541,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					if((follower.amFollowing()==mob)
 					&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
 					{
-						if((follower.location()==thisRoom)&&(flags.isAliveAwakeMobile(follower,true)))
+						if((follower.location()==thisRoom)
+						&&(flags.isAliveAwakeMobile(follower,true)))
 						{
 							if(follower.isAttributeSet(MOB.Attrib.AUTOGUARD))
 								thisRoom.show(follower,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> remain(s) on guard here."));
