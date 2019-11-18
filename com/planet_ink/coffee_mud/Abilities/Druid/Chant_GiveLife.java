@@ -125,11 +125,13 @@ public class Chant_GiveLife extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				CMLib.leveler().postExperience(mob,null,null,-amount,false);
+				amount=-CMLib.leveler().postExperience(mob,null,null,-amount,false);
 				if((mob.phyStats().level()>target.phyStats().level())&&(target.isMonster()))
+				{
 					amount+=(mob.phyStats().level()-target.phyStats().level())
 						  *(mob.phyStats().level()/10);
-				CMLib.leveler().postExperience(target,null,null,amount,false);
+				}
+				amount=CMLib.leveler().postExperience(target,null,null,amount,false);
 				if((CMLib.dice().rollPercentage() < amount)
 				&&(target.isMonster())
 				&&(target.fetchEffect("Loyalty")==null)

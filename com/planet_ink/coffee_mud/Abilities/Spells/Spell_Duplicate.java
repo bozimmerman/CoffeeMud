@@ -126,8 +126,8 @@ public class Spell_Duplicate extends Spell
 			return false;
 
 		expLoss=getXPCOSTAdjustment(mob,-expLoss);
+		expLoss=CMLib.leveler().postExperience(mob,null,null,expLoss,false);
 		mob.tell(L("You lose @x1 experience points.",""+(-expLoss)));
-		CMLib.leveler().postExperience(mob,null,null,expLoss,false);
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

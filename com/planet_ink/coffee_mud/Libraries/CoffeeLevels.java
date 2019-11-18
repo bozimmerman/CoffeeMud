@@ -450,8 +450,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			final MOB sire=CMLib.players().getPlayerAllHosts(mob.getLiegeID());
 			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
 			{
-				final int sireShare=(int)Math.round(CMath.div(amount,10.0));
-				if(postExperience(sire,null,"",-sireShare,true))
+				int sireShare=(int)Math.round(CMath.div(amount,10.0));
+				if((sireShare=-postExperience(sire,null,"",-sireShare,true))>0)
 					sire.tell(L("^N^!You lose ^H@x1^N^! experience points from @x2.^N",""+sireShare,mob.Name()));
 				return amount - sireShare;
 			}
@@ -679,29 +679,34 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public boolean postExperience(final MOB mob,final MOB victim,final String homage,final int amount,final boolean quiet)
+	public int postExperience(final MOB mob,final MOB victim,final String homage,final int amount,final boolean quiet)
 	{
 		if((mob==null)
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		||mob.charStats().getCurrentClass().expless()
 		||mob.charStats().getMyRace().expless())
-			return false;
+			return 0;
 		final Room R=mob.location();
 		if(R!=null)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,victim,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_EXPCHANGE,null,CMMsg.NO_EFFECT,homage,CMMsg.NO_EFFECT,""+quiet);
 			msg.setValue(amount);
 			if(R.okMessage(mob,msg))
+			{
 				R.send(mob,msg);
+				return msg.value();
+			}
 			else
-				return false;
+				return 0;
 		}
 		else
-		if(amount>=0)
-			gainExperience(mob,victim,homage,amount,quiet);
-		else
-			loseExperience(mob,-amount);
-		return true;
+		{
+			if(amount>=0)
+				gainExperience(mob,victim,homage,amount,quiet);
+			else
+				loseExperience(mob,-amount);
+			return amount;
+		}
 	}
 
 	@Override
@@ -1244,7 +1249,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 							for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 							{
 								final MOB M=m.nextElement();
-								posted = postExperience(M, targetM, null, amount, false) && posted;
+								posted = (postExperience(M, targetM, null, amount, false)>0) && posted;
 							}
 						}
 					}

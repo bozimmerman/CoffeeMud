@@ -464,7 +464,7 @@ public class Dissertating extends CraftingSkill
 			if(experienceToLose > 0)
 			{
 				experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
-				CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+				experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 				commonTell(mob,L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			}
 

@@ -1278,9 +1278,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				{
 					if(XPLevel>=0)
 					{
-						final int expLost=(CMath.s_int(whatToDo)+(2*XPLevel))/2;
+						int expLost=(CMath.s_int(whatToDo)+(2*XPLevel))/2;
+						expLost=CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
 						rejuvedMOB.tell(L("^*You regain @x1 experience points.^?^.",""+expLost));
-						CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
 					}
 				}
 				else
@@ -1290,9 +1290,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				if(CMath.s_parseIntExpression(whatToDo,vars)>0)
 				{
 					final int xp=CMath.s_parseIntExpression(whatToDo,vars);
-					final int expLost=(xp+(2*XPLevel))/2;
+					int expLost=(xp+(2*XPLevel))/2;
+					expLost=CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
 					rejuvedMOB.tell(L("^*You regain @x1 experience points.^?^.",""+expLost));
-					CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
 				}
 				else
 				if(XPLevel>=0)
@@ -1300,9 +1300,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					double lvl=body.phyStats().level();
 					for(int l=body.phyStats().level();l<rejuvedMOB.phyStats().level();l++)
 						lvl=lvl/2.0;
-					final int expRestored=(int)Math.round(((100.0+(2.0*(XPLevel)))*lvl)/2.0);
+					int expRestored=(int)Math.round(((100.0+(2.0*(XPLevel)))*lvl)/2.0);
+					expRestored=CMLib.leveler().postExperience(rejuvedMOB,null,null,expRestored,false);
 					rejuvedMOB.tell(L("^*You regain @x1 experience points.^?^.",""+expRestored));
-					CMLib.leveler().postExperience(rejuvedMOB,null,null,expRestored,false);
 				}
 			}
 			return true;

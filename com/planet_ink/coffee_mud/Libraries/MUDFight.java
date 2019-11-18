@@ -3128,9 +3128,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				lostExperience[0]=CMath.s_parseIntExpression(whatToDo,varVals);
 				if(lostExperience[0]>0)
 				{
+					lostExperience[0]=-CMLib.leveler().postExperience(deadM,null,null,-lostExperience[0],false);
 					message=L(message,""+lostExperience[0]);
 					deadM.tell(message);
-					CMLib.leveler().postExperience(deadM,null,null,-lostExperience[0],false);
 				}
 			}
 			else
@@ -3139,9 +3139,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				lostExperience[0]=baseExperience;
 				if(lostExperience[0]>0)
 				{
-					message=L(message,""+baseExperience);
+					lostExperience[0]=-CMLib.leveler().postExperience(deadM,null,null,-lostExperience[0],false);
+					message=L(message,""+lostExperience[0]);
 					deadM.tell(message);
-					CMLib.leveler().postExperience(deadM,null,null,-baseExperience,false);
 				}
 			}
 		}

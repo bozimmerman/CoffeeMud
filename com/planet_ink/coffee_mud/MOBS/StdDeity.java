@@ -982,8 +982,8 @@ public class StdDeity extends StdMOB implements Deity
 					}
 					else
 					{
+						xpwrath=-CMLib.leveler().postExperience(msg.source(),null,null,-xpwrath,false);
 						msg.source().tell(L("@x1 takes @x2 of experience from you.",name(),""+xpwrath));
-						CMLib.leveler().postExperience(msg.source(),null,null,-xpwrath,false);
 					}
 				}
 				break;

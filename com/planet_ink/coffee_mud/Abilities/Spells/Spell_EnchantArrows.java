@@ -115,8 +115,8 @@ public class Spell_EnchantArrows extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final int experienceToLose=getXPCOSTAdjustment(mob,5);
-		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+		int experienceToLose=getXPCOSTAdjustment(mob,5);
+		experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell(L("The effort causes you to lose @x1 experience.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);

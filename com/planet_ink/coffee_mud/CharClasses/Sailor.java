@@ -318,7 +318,8 @@ public class Sailor extends StdCharClass
 								xp=125;
 							if(xp<50)
 								xp=50;
-							if((xp>0)&&CMLib.leveler().postExperience(mob,null,null,xp,true))
+							if((xp>0)
+							&&((xp=CMLib.leveler().postExperience(mob,null,null,xp,true))>0))
 								msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have familiarized yourself with '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 						}
 						else
@@ -329,7 +330,8 @@ public class Sailor extends StdCharClass
 								xp=250;
 							if(xp<125)
 								xp=125;
-							if((xp>0)&&CMLib.leveler().postExperience(mob,null,null,xp,true))
+							if((xp>0)
+							&&((xp=CMLib.leveler().postExperience(mob,null,null,xp,true))>0))
 								msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have explored '@x1', you gain @x2 experience.^?",A.name(),""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 						}
 					}

@@ -296,8 +296,8 @@ public class Scholar extends StdCharClass
 				}
 				if(bookDealer)
 				{
-					final int xpGain=50;
-					if(CMLib.leveler().postExperience((MOB)host,null,null,xpGain,true))
+					int xpGain=50;
+					if((xpGain=CMLib.leveler().postExperience((MOB)host,null,null,xpGain,true))>0)
 						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have discovered a new place of books and gain @x1 experience.^?",""+xpGain),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 				}
 			}

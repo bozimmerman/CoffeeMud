@@ -185,7 +185,7 @@ public class Spell_Scribe extends Spell
 			return false;
 
 		experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
-		CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
+		experienceToLose=-CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell(L("You lose @x1 experience points for the effort.",""+experienceToLose));
 
 		final boolean success=proficiencyCheck(mob,0,auto);

@@ -59,7 +59,7 @@ public interface ExpLevelLibrary extends CMLibrary
 
 	public int adjustedExperience(MOB mob, MOB victim, int amount);
 
-	public boolean postExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
+	public int postExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
 
 	public String doBaseLevelAdjustment(MOB mob, int adjuster);
 

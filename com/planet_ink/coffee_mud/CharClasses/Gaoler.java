@@ -378,7 +378,7 @@ public class Gaoler extends StdCharClass
 				{
 					final MOB mob=(MOB)host;
 					final int baseAmt = 10 + CMLib.ableMapper().qualifyingLevel(msg.source(), (Ability)msg.tool());
-					final int xp=(int)Math.round(baseAmt*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
+					int xp=(int)Math.round(baseAmt*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
 					@SuppressWarnings("unchecked")
 					Map<String, int[]> mudHourMOBXPMap = (Map<String, int[]>)((mob.playerStats()==null)?null:mob.playerStats().getClassVariableMap(this).get("MUDHOURMOBXPMAP"));
 					if(mudHourMOBXPMap == null)
@@ -403,9 +403,9 @@ public class Gaoler extends StdCharClass
 
 						if(done[1]<(90+(50*((MOB)host).phyStats().level())))
 						{
-							done[1]+=xp;
-							CMLib.leveler().postExperience((MOB)host,null,null,xp,true);
+							xp=CMLib.leveler().postExperience((MOB)host,null,null,xp,true);
 							msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The sweet screams of your victim earns you @x1 experience points.",""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+							done[1]+=xp;
 						}
 						else
 							msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The screams of this victim bore you now."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
