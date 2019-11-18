@@ -420,6 +420,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	public void runSpace()
 	{
 		final WorldMap map = CMLib.map();
+		final boolean isDebugging=CMSecurity.isDebugging(DbgFlag.SPACESHIP);
 		for(final Enumeration<SpaceObject> o = map.getSpaceObjects(); o.hasMoreElements(); )
 		{
 			final SpaceObject O=o.nextElement();
@@ -451,7 +452,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 						final double gravitationalMove=getGravityForce(O, cO);
 						if(gravitationalMove > 0)
 						{
-							if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+							if(isDebugging)
 								Log.debugOut("SpaceShip "+O.name()+" is gravitating "+gravitationalMove+" towards " +cO.Name());
 							final double[] directionTo=map.getDirection(O, cO);
 							map.moveSpaceObject(O, directionTo, gravitationalMove);
