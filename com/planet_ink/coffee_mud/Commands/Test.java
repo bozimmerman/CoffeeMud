@@ -2919,6 +2919,7 @@ public class Test extends StdCommand
 							if(dir[i]<0)
 								dir[i]+=Math.PI;
 						}
+						//System.out.println(dir[0]+","+dir[1]);
 						final boolean expectHit=l[4][0]>0;
 						final long[] shipCoord2=CMLib.map().moveSpaceObject(shipCoord1, dir, speed);
 						final double swish=CMLib.map().getMinDistanceFrom(shipCoord1, shipCoord2, targetCoord);
@@ -2943,6 +2944,7 @@ public class Test extends StdCommand
 							if(dir[i]<0)
 								dir[i]+=Math.PI;
 						}
+						//System.out.println(dir[0]+","+dir[1]);
 						final boolean expectHit=l[4][0]>0;
 						final long[] shipCoord2=CMLib.map().moveSpaceObject(shipCoord1, dir, speed);
 						final double swish=CMLib.map().getMinDistanceFrom(shipCoord1, shipCoord2, targetCoord);

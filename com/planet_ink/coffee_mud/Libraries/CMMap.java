@@ -4311,22 +4311,32 @@ public class CMMap extends StdLibrary implements WorldMap
 		final BigDecimal prevDistance=BigDecimal.valueOf(getDistanceFrom(prevPos, objPos));
 		final BigDecimal baseDistance=BigDecimal.valueOf(getDistanceFrom(prevPos, curPosition));
 		if(baseDistance.compareTo(currentDistance.add(prevDistance))>=0)
+		{
+			//Log.debugOut("0:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
 			return 0;
+		}
 		if(prevDistance.subtract(baseDistance).equals(currentDistance)
 		||currentDistance.subtract(baseDistance).equals(prevDistance))
+		{
+			//Log.debugOut("1:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
 			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
+		}
 		final BigDecimal currentDistancePow2 = currentDistance.multiply(currentDistance);
 		final BigDecimal baseDistancePow2 = baseDistance.multiply(baseDistance);
 		final BigDecimal prevDistancePow2 = prevDistance.multiply(prevDistance);
 		if((prevDistancePow2.add(baseDistancePow2).subtract(currentDistancePow2).doubleValue()>0)
 		||(currentDistancePow2.add(baseDistancePow2).subtract(prevDistancePow2).doubleValue()>0))
+		{
+			//Log.debugOut("2:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
 			return Math.min(currentDistance.doubleValue(), prevDistance.doubleValue());
+		}
 
 		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO, RoundingMode.HALF_UP);
 		final BigDecimal areaOfTriangle=BigDecimal.valueOf(CMath.sqrt(CMath.abs(
 				semiPerimeter.multiply(semiPerimeter.subtract(currentDistance))
 							.multiply(semiPerimeter.subtract(baseDistance))
 							.multiply(semiPerimeter.subtract(prevDistance)).doubleValue())));
+		//Log.debugOut("semiPerimeter="+semiPerimeter.longValue()+", areaOfTriangle="+baseDistance.longValue());
 		if(areaOfTriangle.equals(ZERO))
 		{
 			if (Math.abs(semiPerimeter.subtract(baseDistance).doubleValue()) <= 1)
@@ -4334,6 +4344,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			else
 				return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
 		}
+		//Log.debugOut("getMinDistanceFrom="+TWO.multiply(areaOfTriangle).divide(baseDistance, RoundingMode.HALF_UP).doubleValue());
 		return TWO.multiply(areaOfTriangle).divide(baseDistance, RoundingMode.HALF_UP).doubleValue();
 	}
 }
