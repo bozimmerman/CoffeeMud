@@ -10836,14 +10836,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if((range.startsWith("--"))&&(CMath.isInteger(range.substring(2).trim())))
 					{
 						final int amt=CMath.s_int(range.substring(2).trim());
-						themob.tell(L("You lose @x1 faction with @x2.",""+amt,F.name()));
+						if(amt < 0)
+							themob.tell(L("You gain @x1 faction with @x2.",""+(-amt),F.name()));
+						else
+							themob.tell(L("You lose @x1 faction with @x2.",""+amt,F.name()));
 						range=""+(curFaction-amt);
 					}
 					else
 					if((range.startsWith("+"))&&(CMath.isInteger(range.substring(1).trim())))
 					{
 						final int amt=CMath.s_int(range.substring(1).trim());
-						themob.tell(L("You gain @x1 faction with @x2.",""+amt,F.name()));
+						if(amt < 0)
+							themob.tell(L("You lose @x1 faction with @x2.",""+(-amt),F.name()));
+						else
+							themob.tell(L("You gain @x1 faction with @x2.",""+amt,F.name()));
 						range=""+(curFaction+amt);
 					}
 					else

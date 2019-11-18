@@ -261,7 +261,7 @@ PUT_PROG all
 						mpexp $n $EXP
 					endif
 					if EVAL('$FACTION' != '')
-						mpfaction $n $FACTION $NUMFACTION
+						mpfaction $n $FACTION +$NUMFACTION
 					endif
 					if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
 						mpoloadroom QuestPoint
@@ -303,7 +303,7 @@ DROP_PROG all
 					mpexp $n 10%
 				endif
 				if EVAL('$FACTION' != '')
-					mpfaction $n $FACTION $NUMFACTION
+					mpfaction $n $FACTION +$NUMFACTION
 				endif
 				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
 					mpoloadroom QuestPoint

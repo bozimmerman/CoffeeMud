@@ -268,7 +268,7 @@ ALL_GREET_PROG 100
 					mpexp $9 $EXP
 				endif
 				if EVAL('$FACTION' != '')
-					mpfaction $9 $FACTION $NUMFACTION
+					mpfaction $9 $FACTION +$NUMFACTION
 				endif
 				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($9 *)
 					mpoload QuestPoint

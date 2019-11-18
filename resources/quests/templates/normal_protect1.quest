@@ -367,7 +367,7 @@ DELAY_PROG 3 3
 				mpexp $i $EXP
 			endif
 			if EVAL('$FACTION' != '')
-				mpfaction $i $FACTION $NUMFACTION
+				mpfaction $i $FACTION +$NUMFACTION
 			endif
 			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
 				mpforce $8 mpoload QuestPoint

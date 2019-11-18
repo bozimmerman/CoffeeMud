@@ -279,7 +279,7 @@ GIVE_PROG all
 					mpexp $n $EXP
 				endif
 				if EVAL('$FACTION' != '')
-					mpfaction $n $FACTION $NUMFACTION
+					mpfaction $n $FACTION +$NUMFACTION
 				endif
 				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
 					mpoload QuestPoint

@@ -320,7 +320,7 @@ RAND_PROG 99
 					mpexp $f $EXP
 				endif
 				if EVAL('$FACTION' != '')
-					mpfaction $f $FACTION $NUMFACTION
+					mpfaction $f $FACTION +$NUMFACTION
 				endif
 				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($f *)
 					mpoloadroom QuestPoint

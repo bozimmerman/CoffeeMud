@@ -311,7 +311,7 @@ RAND_PROG 99
 					mpexp $1 $EXP
 				endif
 				if EVAL('$FACTION' != '')
-					mpfaction $1 $FACTION $NUMFACTION
+					mpfaction $1 $FACTION +$NUMFACTION
 				endif
 				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($1 *)
 					mpoload QuestPoint
