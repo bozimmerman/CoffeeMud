@@ -79,6 +79,12 @@ public class Demon extends Unique
 	}
 
 	@Override
+	public boolean fertile()
+	{
+		return true;
+	}
+
+	@Override
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
