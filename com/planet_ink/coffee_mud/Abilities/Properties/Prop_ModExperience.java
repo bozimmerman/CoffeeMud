@@ -102,20 +102,23 @@ public class Prop_ModExperience extends Property
 			mask=CMLib.masking().getPreCompiledMask(s.substring(x+1).trim());
 			s=s.substring(0,x).trim();
 		}
-		x=s.indexOf("SELF");
+		String us=s.toUpperCase();
+		x=us.indexOf("SELF");
 		if(x>=0)
 		{
 			selfXP=true;
 			s=s.substring(0,x)+s.substring(x+4);
+			us=s.toUpperCase();
 		}
 		dir = DirectionCheck.POSITIVE;
 		for(final DirectionCheck d : DirectionCheck.values())
 		{
-			x=s.indexOf(d.name());
+			x=us.indexOf(d.name());
 			if(x>=0)
 			{
 				dir = d;
 				s=s.substring(0,x)+s.substring(x+d.name().length());
+				us=s.toUpperCase();
 			}
 		}
 
