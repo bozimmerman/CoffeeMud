@@ -122,8 +122,6 @@ public class Prayer_PreserveKnowledge extends Prayer
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		if(msg.value()!=0)
-			System.out.println("STOP!");
 		if(msg.source()==affected)
 		{
 			if(msg.sourceMinor()==CMMsg.TYP_DEATH)
