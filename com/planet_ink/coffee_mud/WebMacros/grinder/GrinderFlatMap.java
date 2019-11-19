@@ -701,7 +701,7 @@ public class GrinderFlatMap
 		}
 		directionsToDo[x]=end;
 		if(x<directionsToDo.length-1)
-			System.err.println("FAIL!");
+			Log.errOut("GrinderFlatMap Direction Building FAIL!");
 		return directionsToDo;
 	}
 
