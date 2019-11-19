@@ -4408,6 +4408,48 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 					break;
 				}
+				case 115: // expertise
+				{
+					// mob ability type > 10
+					if(tlen==1)
+						tt=parseBits(eval,t,"ccccr"); /* tt[t+0] */
+					final Physical P=this.getArgumentMOB(tt[t+0], source, monster, target, primaryItem, secondaryItem, msg, tmp);
+					final MOB M;
+					if(P instanceof MOB)
+						M=(MOB)P;
+					else
+					{
+						returnable=false;
+						logError(scripted,"EXPLORED","Unknown MOB",tt[t+0]);
+						return returnable;
+					}
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+					Ability A=M.fetchAbility(arg2);
+					if(A==null)
+						A=CMClass.getAbility(arg2);
+					if(A==null)
+					{
+						returnable=false;
+						logError(scripted,"EXPLORED","Unknown Ability on MOB '"+M.name()+"'",tt[t+1]);
+						return returnable;
+					}
+					final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
+					final ExpertiseLibrary.Flag experFlag = (ExpertiseLibrary.Flag)CMath.s_valueOf(ExpertiseLibrary.Flag.class, arg3.toUpperCase().trim());
+					if(experFlag == null)
+					{
+						returnable=false;
+						logError(scripted,"EXPLORED","Unknown Exper Flag",tt[t+2]);
+						return returnable;
+					}
+					final int num=CMLib.expertises().getExpertiseLevel(M, A.ID(), experFlag);
+					final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
+					final String arg5=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+4]);
+					if(lastKnownLocation!=null)
+					{
+						returnable=simpleEval(scripted,""+num,arg5,arg4,"EXPERTISE");
+					}
+					break;
+				}
 				case 77: // explored
 				{
 					if(tlen==1)
@@ -7156,6 +7198,29 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							num++;
 					}
 					results.append(""+num);
+				}
+				break;
+			}
+			case 115: // expertise
+			{
+				// mob ability type > 10
+				final String arg1=CMParms.getCleanBit(funcParms,0);
+				final Physical P=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				final MOB M;
+				if(P instanceof MOB)
+				{
+					M=(MOB)P;
+					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(funcParms,1));
+					Ability A=M.fetchAbility(arg2);
+					if(A==null)
+						A=CMClass.getAbility(arg2);
+					if(A!=null)
+					{
+						final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,1));
+						final ExpertiseLibrary.Flag experFlag = (ExpertiseLibrary.Flag)CMath.s_valueOf(ExpertiseLibrary.Flag.class, arg3.toUpperCase().trim());
+						if(experFlag != null)
+							results.append(""+CMLib.expertises().getExpertiseLevel(M, A.ID(), experFlag));
+					}
 				}
 				break;
 			}

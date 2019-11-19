@@ -185,7 +185,7 @@ Operators</a></li>
 <li><a href="#datetime">datetime</a></li>
 <li><a href="#deity">deity</a></li>
 <li><a href="#eval">eval</a></li>
-<li><a href="#exp">exp</a></li>
+<li><a href="#exp">exp</a></li><li><a href="#expertise">expertise</a></li>
 <li><a href="#explored">explored</a></li>
 <li><a href="#faction">faction</a></li>
 <li><a href="#goldamt">goldamt</a></li>
@@ -2214,7 +2214,7 @@ do not use.</td>
 <td>Returns the
 experience points of the given mob.</td>
 </tr>
-<tr>
+<tr><td>EXPERTISE([code] [id] [flag])</td><td>Returns expertise num for mob, ability id, and expertise flag.</td></tr><tr>
 <td>EXPLORED([code]
 [areaname or world])</td>
 <td>Returns the % the
@@ -4636,6 +4636,22 @@ operator from above.</p>
 if exp($n &lt; 10000) mpecho The actor has less than 10000
 experience
 else mpecho The actor has 10000 experience endif
+<h3><a name="expertise">expertise</a></h3>
+<p>Usage:</p>
+<pre>expertise(character abilityid expertiseflag == number)<br /></pre>
+<p>This function compares
+the expertise for the given character, ability id, and expertise
+flag&nbsp; to the number given. The '==' may also be any
+of the logical operators from above. &nbsp;A character is list $n, $i,
+&nbsp;the name of &nbsp;a monster, etc. &nbsp;The ability id can be
+obtained by doing LIST ABILITIES on the command line, and is the
+internal name of a skill. &nbsp;The expertiseflag is one of:
+X1,&nbsp;X2,&nbsp;X3,&nbsp;X4,&nbsp;X5,&nbsp;
+LEVEL,&nbsp;TIME,&nbsp;MAXRANGE,&nbsp;
+LOWCOST,&nbsp;XPCOST,&nbsp;LOWFREECOST.<br /></p>
+<p>EXAMPLES:</p>
+<pre>if expertise($i Thief_Trap LEVEL &gt; 3)<br /> mpecho I have a power level in trapping type expertises greater than 3<br />else<br /> mpecho I have a power level in trapping type expertises below or equal to 3.<br />endif</pre>
+
 <h3><a name="explored">explored</a></h3>
 <p>Usage:</p>
 <pre>explored(character areaname == number)<br />explored(character world == number)<br /></pre>
