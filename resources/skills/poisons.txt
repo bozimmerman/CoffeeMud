@@ -9,6 +9,6 @@ goblindrip	DRINK	Poison_GoblinDrip	16	SOME GOBLIN BLOOD	1	COPPER	1
 decrepifier	DRINK	Poison_Decreptifier	20	ESSENCE OF GOLEM	1	TOMATOES	1	WATER	1								
 XXX	DRINK	Poison_XXX	18	SOME SNAKE BLOOD	1	LEAD	1	SOME TROLL BLOOD	1								
 slumberall	DRINK	Poison_Slumberall	9	POULTRY	1	MILK	1	SEAWEED	1								
-glowgell	DRINK	Poison_Glowgell	1	SOME INSECT GUTS	1	WATER	1										
-ghoultouch	DRINK	Poison_Ghoultouch	25	SOME UNDEAD BLOOD	1	KNUCKLE BONE	1								
+glowgell	DRINK	*Poison_Glowgell;	1	SOME INSECT GUTS	1	HONEY	1										
+ghoultouch	DRINK	Poison_Ghoultouch	25	SOME UNDEAD BLOOD	1	KNUCKLE BONE	1										
 perfume	GenPerfume	SMELL min=5 max=15 chance=100 expires=50;smell(s) good.;<S-HAS-HAVE> a grand aroma.;smell(s) flowery.;	1	FLOWERS	1	WATER	1										
