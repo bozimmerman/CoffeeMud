@@ -209,25 +209,108 @@ public class GrinderFlatMap
 			return;
 
 		final List<List<GrinderRoom>> sets=new Vector<List<GrinderRoom>>();
-		List<GrinderRoom> bestSet=null;
 		final HashSet<String> roomsDone=new HashSet<String>();
 		boolean didSomething=true;
+
+		final List<int[]> allDirections=new XArrayList<int[]>();
+		allDirections.add(getDirectionSet(Directions.NUM_DIRECTIONS()-1, 0, -1));
+		allDirections.add(getDirectionSet(0, Directions.NUM_DIRECTIONS()-1, 1));
+		allDirections.add(getDirectionSet(Directions.NUM_DIRECTIONS()/2, (Directions.NUM_DIRECTIONS()/2)-1, 1));
+		/*
+		for(final int dir : new int[] {1, -1})
+		{
+			for(int startD=0;startD<Directions.NUM_DIRECTIONS();startD++)
+			{
+				int endD=startD-dir;
+				if(endD<0)
+					endD=Directions.NUM_DIRECTIONS()-1;
+				else
+				if(endD>=Directions.NUM_DIRECTIONS())
+					endD=0;
+				final int[] theDirs=this.getDirectionSet(startD, endD, dir);
+				allDirections.add(theDirs);
+
+			}
+		}
+		*/
+		final boolean[] allWays=new boolean[] {false, true};
+
 		// first, cluster the rooms WITHOUT positioning them
 		final List<GrinderRoom> finalCluster=new Vector<GrinderRoom>();
 		while((roomsDone.size()<areaMap.size())&&(didSomething))
 		{
 			didSomething=false;
+			List<GrinderRoom> bestSet=null;
+			boolean bestTwoWay=false;
+			int[] bestDirs=null;
 			for(int i=0;i<areaMap.size();i++)
 			{
 				final GrinderRoom room=areaMap.get(i);
 				if(roomsDone.contains(room.roomID))
 					continue;
-				final List<GrinderRoom> V=scoreRoom(hashRooms, room, roomsDone,false);
+				final List<List<GrinderRoom>> allSets=new ArrayList<List<GrinderRoom>>();
+				final Map<List<GrinderRoom>,Boolean> allSetWays=new HashMap<List<GrinderRoom>,Boolean>();
+				if(bestSet != null)
+					allSetWays.put(bestSet, Boolean.valueOf(bestTwoWay));
+				final Map<List<GrinderRoom>,int[]> allSetDirs=new HashMap<List<GrinderRoom>,int[]>();
+				for(final boolean useTwoWay : allWays)
+				{
+					final Boolean useTwoWayB=Boolean.valueOf(useTwoWay);
+					for(final int[] dirs : allDirections)
+					{
+						final List<GrinderRoom> V=buildCluster(hashRooms, room, roomsDone,false,useTwoWay,dirs);
+						allSets.add(V);
+						allSetWays.put(V, useTwoWayB);
+						allSetDirs.put(V, dirs);
+					}
+				}
+				final int[] vDirsUsed;
+				final boolean twoWayUsed;
+				final List<GrinderRoom> V;
+				final Comparator<List<GrinderRoom>> roomSetCompare=new Comparator<List<GrinderRoom>>()
+				{
+					@Override
+					public int compare(final List<GrinderRoom> o1, final List<GrinderRoom> o2)
+					{
+						final int o110 = 0;//o1.size()/10;
+						final int o210 = 0;//o2.size()/10;
+						if(o1.size()+o110<o2.size()-o210)
+							return -1;
+						if(o1.size()-o110>o2.size()+210)
+							return 1;
+						final boolean useTwo1=allSetWays.get(o1).booleanValue();
+						final boolean useTwo2=allSetWays.get(o2).booleanValue();
+						if(useTwo1)
+						{
+							if(useTwo2)
+								return 0;
+							return 1;
+						}
+						else
+						{
+							if(useTwo2)
+								return -1;
+							return 0;
+						}
+					}
+				};
+				Collections.sort(allSets,roomSetCompare);
+				V=allSets.get(allSets.size()-1);
+				twoWayUsed=allSetWays.get(V).booleanValue();
+				vDirsUsed=allSetDirs.get(V);
 				if(bestSet==null)
+				{
 					bestSet=V;
+					bestTwoWay=twoWayUsed;
+					bestDirs=vDirsUsed;
+				}
 				else
-				if(bestSet.size()<V.size())
+				if(roomSetCompare.compare(bestSet, V)<0)
+				{
 					bestSet=V;
+					bestTwoWay=twoWayUsed;
+					bestDirs=vDirsUsed;
+				}
 			}
 			if(bestSet!=null)
 			{
@@ -236,7 +319,7 @@ public class GrinderFlatMap
 				else
 				{
 					final GrinderRoom winnerR=bestSet.get(0);
-					scoreRoom(hashRooms, winnerR, roomsDone,true);
+					buildCluster(hashRooms, winnerR, roomsDone,true,bestTwoWay,bestDirs);
 					sets.add(bestSet);
 				}
 				for(int v=0;v<bestSet.size();v++)
@@ -392,7 +475,7 @@ public class GrinderFlatMap
 		// now cluster them into a top-level grid.. we'll trim the grid later.
 		// yes, i know there must be a more efficient way...
 		@SuppressWarnings("unchecked")
-		final List<GrinderRoom>[][] grid=new Vector[sets.size()+1][sets.size()+1];
+		final List<GrinderRoom>[][] grid=new List[sets.size()+1][sets.size()+1];
 		final int[] midXY=new int[2];
 		midXY[0]=(int)Math.round(Math.floor((sets.size()+1.0)/2.0));
 		midXY[1]=(int)Math.round(Math.floor((sets.size()+1.0)/2.0));
@@ -600,60 +683,92 @@ public class GrinderFlatMap
 		return V;
 	}
 
-	public Vector<GrinderRoom> scoreRoom(final Map<String,GrinderRoom> H, final GrinderRoom room, final HashSet<String> roomsDone, final boolean finalPosition)
+	protected int[] getDirectionSet(final int start, final int end, final int dir)
+	{
+		final int[] directionsToDo=new int[Directions.NUM_DIRECTIONS()];
+		int d=start;
+		int x=0;
+		while(d != end)
+		{
+			directionsToDo[x]=d;
+			d += dir;
+			if(d<0)
+				d=Directions.NUM_DIRECTIONS()-1;
+			else
+			if(d>=Directions.NUM_DIRECTIONS())
+				d=0;
+			x++;
+		}
+		directionsToDo[x]=end;
+		if(x<directionsToDo.length-1)
+			System.err.println("FAIL!");
+		return directionsToDo;
+	}
+
+	public List<GrinderRoom> buildCluster(final Map<String,GrinderRoom> fullMapH, final GrinderRoom coreRoom,
+										  final HashSet<String> outerRoomsDone, final boolean finalPosition,
+										  final boolean doTwoWay, final int[] directionsToDo)
 	{
 		final HashSet<String> coordsDone=new HashSet<String>();
 		coordsDone.add(0+"/"+0);
 
-		final HashSet<String> myRoomsDone=new HashSet<String>();
-		myRoomsDone.add(room.roomID);
+		final HashSet<String> innerRoomsDone=new HashSet<String>();
+		innerRoomsDone.add(coreRoom.roomID);
 
-		final Hashtable<String,int[]> xys=new Hashtable<String,int[]>();
+		final HashMap<String,int[]> xys=new HashMap<String,int[]>();
 		int[] xy=new int[2];
 		if(finalPosition)
-			room.xy=xy;
-		xys.put(room.roomID,xy);
+			coreRoom.xy=xy;
+		xys.put(coreRoom.roomID,xy);
 
-		final Vector<GrinderRoom> V=new Vector<GrinderRoom>();
-		V.addElement(room);
+		final List<GrinderRoom> roomClusterV=new ArrayList<GrinderRoom>();
+		roomClusterV.add(coreRoom);
 		int startHere=0;
-		while(startHere!=V.size())
+		while(startHere!=roomClusterV.size())
 		{
 			int s=startHere;
-			final int size=V.size();
+			final int size=roomClusterV.size();
 			startHere=size;
 			for(;s<size;s++)
 			{
-				final GrinderRoom R=V.elementAt(s);
+				final GrinderRoom R=roomClusterV.get(s);
 				xy=xys.get(R.roomID);
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				for(final int d : directionsToDo)
 				{
 					if((d!=Directions.UP)
 					&&(d!=Directions.DOWN)
 					&&(R.doors[d]!=null)
 					&&(R.doors[d].room!=null)
 					&&(R.doors[d].room.length()>0)
-					&&(!myRoomsDone.contains(R.doors[d].room))
-					&&(!roomsDone.contains(R.doors[d].room)))
+					&&(!innerRoomsDone.contains(R.doors[d].room))
+					&&(!outerRoomsDone.contains(R.doors[d].room)))
 					{
-						final GrinderRoom R2=H.get(R.doors[d].room);
+						final GrinderRoom R2=fullMapH.get(R.doors[d].room);
 						if(R2==null)
 							continue;
+						if(doTwoWay)
+						{
+							final int opD=Directions.getOpDirectionCode(d);
+							if((R2.doors[opD]==null)
+							||(R2.doors[opD].room==null)
+							||(!R2.doors[opD].room.equalsIgnoreCase(R.roomID)))
+								continue;
+						}
 						final int[] xy2=newXY(xy,d);
 						xys.put(R2.roomID,xy2);
 						if(!coordsDone.contains(xy2[0]+"/"+xy2[1]))
 						{
 							if(finalPosition)
 								R2.xy=xy2;
-							myRoomsDone.add(R2.roomID);
+							innerRoomsDone.add(R2.roomID);
 							coordsDone.add(xy2[0]+"/"+xy2[1]);
-							V.addElement(R2);
+							roomClusterV.add(R2);
 						}
 					}
 				}
 			}
 		}
-		return V;
+		return roomClusterV;
 	}
 
 	public StringBuffer getHTMLTable(final HTTPRequest httpReq)
