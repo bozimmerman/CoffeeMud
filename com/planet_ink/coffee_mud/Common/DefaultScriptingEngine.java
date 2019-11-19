@@ -8214,6 +8214,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				@SuppressWarnings({ "unchecked", "rawtypes" })
 				final Triad<DVector,DVector,Integer> parsedBlocks = (Triad)script.elementAt(si, 3);
 				DVector subScript;
+				if(parsedBlocks==null)
+				{
+					Log.errOut("Null parsed blocks in "+s);
+					subScript=null;
+				}
+				else
 				if(parsedBlocks.third != null)
 				{
 					if(condition)
