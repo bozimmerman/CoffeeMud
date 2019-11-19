@@ -1,7 +1,7 @@
 # Build 5.9.9 Release ?/?/2019
   * Minor database change: CMQUESID in CMQUESTS and CMRCID in CMGRAC enlarged from 50 to 250.  Mostly optional.
   1. New prayers: empower unholy weapon, morph unholy weapon, faithful hellhound, discipline
-  2. New prayers: remove inhibitions
+  2. New prayers: remove inhibitions, preserve knowledge
   3. Prop_OpenCommand and Prop_CloseCommand have expanded arguments.
   4. Room-based Gathering skills now decrease yield with repeated spams of the same room.
   5. WHO list will now sort archons to the top.  WHO Account will sort by account name.
