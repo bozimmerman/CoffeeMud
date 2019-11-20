@@ -47,6 +47,7 @@ public class MOBHelper extends StdBehavior
 	}
 
 	protected int		num			= 999;
+	protected String	msg			= null;
 
 	@Override
 	public void startBehavior(final PhysicalAgent forMe)
@@ -56,6 +57,7 @@ public class MOBHelper extends StdBehavior
 		{
 			if(parms.length()>0)
 			{
+				msg=CMParms.getParmStr(parms, "MSG", null);
 				final List<String> V=CMParms.parse(parms.toUpperCase());
 				for(int i=V.size()-1;i>=0;i--)
 				{
@@ -103,7 +105,7 @@ public class MOBHelper extends StdBehavior
 					}
 				}
 				if(((num==0)||(numInFray<num)))
-					Aggressive.startFight(monster,attacker,true,false,null);
+					Aggressive.startFight(monster,attacker,true,false,this.msg);
 			}
 		}
 	}
