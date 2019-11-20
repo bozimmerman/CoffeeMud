@@ -186,7 +186,7 @@ QUEST_TIME_PROG * -1
 	for $0 = 0 to< '$<$i $QUEST_ID_NUMACCEPTED>'
 		if !QUESTWINNER('$<$i $QUEST_ID_ACCEPTED>.$0' *)
 			tell "$<$i $QUEST_ID_ACCEPTED>.$0" You failed to complete my quest in time.
-	    endif
+		endif
 		mpqset * STATISTICS FAILED
 	next
 	if VAR($i $QUEST_ID_REWARDED == '')
@@ -224,7 +224,11 @@ GIVE_PROG all
 			return
 		endif
 		if islike($o '$COLLECTABLE_ITEMS')
-			mpsetvar $n $QUEST_ID_COLLECTED +$%ITEMCOUNT($o)%
+			IF ISLIKE($o '-JAVACLASS +GenResource +GenFoodResource +GenLiquidResource')
+				mpsetvar $n $QUEST_ID_RETURNED +$%ITEMCOUNT($o)%
+			ELSE
+				mpsetvar $n $QUEST_ID_COLLECTED +1
+			ENDIF
 			mpjunk $o
 			if var($n $QUEST_ID_COLLECTED >= $NUM_COLLECTABLES)
 				mpsetvar $i $QUEST_ID_REWARDED $n
