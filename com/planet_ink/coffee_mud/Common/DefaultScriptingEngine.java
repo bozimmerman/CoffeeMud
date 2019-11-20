@@ -2098,6 +2098,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				val=CMLib.coffeeMaker().getAnyGenStat(M, uarg2);
 			}
 		}
+
+		if((!found)
+		&&(E instanceof Item)
+		&&(CMath.s_valueOf(GenericBuilder.GenItemBonusFakeStats.class,uarg2)!=null))
+		{
+			found=true;
+			val=CMLib.coffeeMaker().getAnyGenStat((Item)E, uarg2);
+		}
+
 		if((!found)
 		&&(E instanceof Physical)
 		&&(CMath.s_valueOf(GenericBuilder.GenPhysBonusFakeStats.class,uarg2)!=null))
@@ -9175,6 +9184,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							found=true;
 							CMLib.coffeeMaker().setAnyGenStat(M, arg2.toUpperCase(), arg3);
+						}
+					}
+
+					if((!found)
+					&&(newTarget instanceof Item))
+					{
+						if((!found)
+						&&(CMath.s_valueOf(GenericBuilder.GenItemBonusFakeStats.class,arg2.toUpperCase())!=null))
+						{
+							found=true;
+							CMLib.coffeeMaker().setAnyGenStat(newTarget, arg2.toUpperCase(), arg3);
 						}
 					}
 

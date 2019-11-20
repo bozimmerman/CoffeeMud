@@ -23,6 +23,8 @@ vars:
     area_name(area name)
     sourcename(mob name)
     targetskill(ANY or a skill ID)
+    targetresource(Any or name of a raw resource)
+    targetmaterial(Any or name of a raw material)
     itemname(an item name)
     num_targets(num items to collect)
 	xp_amount_awarded
@@ -66,13 +68,17 @@ vars:
 	<STRING ID="target_item_name" define="target_item_name">${SELECT: NAME from $target_item}</STRING>
 	
 	<OBJECT ID="target_item" define="target_item" SELECT="Any-1">
-		<OBJECT condition="$itemname=''">SELECT: ANY\. from $all_target_items where weight < 200</OBJECT>
+		<OBJECT condition="$itemname='' and $targetresource='Any' and $targetmaterial='Any'">SELECT: ANY\. from $all_target_items where weight < 200</OBJECT>
+		<OBJECT condition="$itemname='' and $targetresource!='Any'">SELECT: ANY\. from $all_target_items where weight < 200 and resourcename='$targetresource'</OBJECT>
+		<OBJECT condition="$itemname='' and $targetmaterial!='Any'">SELECT: ANY\. from $all_target_items where weight < 200 and materialname='$targetmaterial'</OBJECT>
 		<OBJECT condition="$itemname!=''">
 			<ITEM class="GenItem" name="$itemname" display="$itemname lies here" material="PAPER" level="$level_range" />
 		</OBJECT>
 	</OBJECT>
 	
 	<STRING ID="targetskill">Any</STRING>
+	<STRING ID="targetresource">Any</STRING>
+	<STRING ID="targetmaterial">Any</STRING>
 	
 	<ITEM ID="all_target_items" select="all">
 		<ITEM class="metacraft:any-alchemy &lt; $source_level" CONDITION="$targetskill='any' or $targetskill='Alchemy'"/>

@@ -65,7 +65,7 @@ public interface GenericBuilder extends CMLibrary
 		IMG
 		;
 		private static String[] CODES=null;
-		
+
 		public static String[] getAllCodeNames()
 		{
 			if(CODES==null)
@@ -105,7 +105,7 @@ public interface GenericBuilder extends CMLibrary
 		VARMONEY
 		;
 		private static String[] CODES=null;
-		
+
 		public static String[] getAllCodeNames()
 		{
 			if(CODES==null)
@@ -135,6 +135,12 @@ public interface GenericBuilder extends CMLibrary
 		CLAN,
 		CLANROLE,
 		OBJATTRIB,
+	}
+
+	public enum GenItemBonusFakeStats
+	{
+		MATERIALNAME,
+		RESOURCENAME
 	}
 
 	public enum GenPhysBonusFakeStats

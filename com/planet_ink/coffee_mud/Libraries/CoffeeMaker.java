@@ -3114,6 +3114,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		else
 		if(P instanceof Item)
 		{
+			final GenItemBonusFakeStats fakeStat = (GenItemBonusFakeStats)CMath.s_valueOf(GenItemBonusFakeStats.class, stat);
+			if(fakeStat != null)
+				return true;
 			if(getGenItemCodeNum(stat)>=0)
 				return true;
 		}
@@ -3359,6 +3362,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		else
 		if(P instanceof Item)
 		{
+			final GenItemBonusFakeStats fakeStat = (GenItemBonusFakeStats)CMath.s_valueOf(GenItemBonusFakeStats.class, stat);
+			if(fakeStat != null)
+			{
+				switch(fakeStat)
+				{
+				case MATERIALNAME:
+					return RawMaterial.CODES.MAT_NAME(((Item)P).material());
+				case RESOURCENAME:
+					return RawMaterial.CODES.NAME(((Item)P).material());
+				default:
+					break;
+				}
+			}
 			if(getGenItemCodeNum(stat)>=0)
 				return getGenItemStat((Item)P, stat);
 		}
@@ -3580,6 +3596,29 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		else
 		if(P instanceof Item)
 		{
+			final GenItemBonusFakeStats fakeStat = (GenItemBonusFakeStats)CMath.s_valueOf(GenItemBonusFakeStats.class, stat);
+			if(fakeStat != null)
+			{
+				switch(fakeStat)
+				{
+				case MATERIALNAME:
+				{
+					final RawMaterial.Material matCode = RawMaterial.Material.findIgnoreCase(value);
+					if(matCode != null)
+						((Item)P).setMaterial(RawMaterial.CODES.MOST_FREQUENT(matCode.mask()));
+					return;
+				}
+				case RESOURCENAME:
+				{
+					final int resourceCode = RawMaterial.CODES.FIND_IgnoreCase(value);
+					if(resourceCode > 0)
+						((Item)P).setMaterial(resourceCode);
+					return;
+				}
+				default:
+					break;
+				}
+			}
 			if(getGenItemCodeNum(stat)>=0)
 			{
 				setGenItemStat((Item)P, stat, value);
