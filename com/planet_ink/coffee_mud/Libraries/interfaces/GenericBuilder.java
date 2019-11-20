@@ -134,7 +134,7 @@ public interface GenericBuilder extends CMLibrary
 		MATTRIB,
 		CLAN,
 		CLANROLE,
-		OBJATTRIB,
+		OBJATTRIB
 	}
 
 	public enum GenItemBonusFakeStats

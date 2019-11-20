@@ -4078,7 +4078,7 @@ public class ListCmd extends StdCommand
 		GENSTATS("STATS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDITEMS,SecFlag.CMDMOBS}),
 		BANKS("BANKS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
 		LIBRARIES("LIBRARIES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
-		POSTOFFICES("POSTOFFICES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
+		POSTOFFICES("POSTOFFICES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS})
 		;
 		public String[]			   cmd;
 		public CMSecurity.SecGroup flags;
@@ -4377,9 +4377,65 @@ public class ListCmd extends StdCommand
 			mob.session().rawPrint(str.toString());
 	}
 
+	public void addEnumeratedStatCodes(final Enumeration<? extends Modifiable> e, final Set<String> allKnownFields, final StringBuffer allFieldsMsg)
+	{
+		for(;e.hasMoreElements();)
+		{
+			final Modifiable E=e.nextElement();
+			final String[] fields=E.getStatCodes();
+			for(int x=0;x<fields.length;x++)
+			{
+				if(!allKnownFields.contains(fields[x]))
+				{
+					allKnownFields.add(fields[x]);
+					allFieldsMsg.append(fields[x]+" ");
+				}
+			}
+		}
+	}
+
 	public void listStats(final MOB mob, final List<String> commands)
 	{
 		final String wd=CMParms.combine(commands,1);
+		if(wd.length()==0)
+		{
+			final StringBuffer allFieldsMsg=new StringBuffer("");
+			final Set<String> allKnownFields=new TreeSet<String>();
+			addEnumeratedStatCodes(CMClass.mobTypes(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.basicItems(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.weapons(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.armor(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.clanItems(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
+			addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
+			for(final GenericBuilder.GenPhysBonusFakeStats stat : GenericBuilder.GenPhysBonusFakeStats.values() )
+			{
+				if(!allKnownFields.contains(stat.toString()))
+				{
+					allKnownFields.add(stat.toString());
+					allFieldsMsg.append(stat.toString()+" ");
+				}
+			}
+			for(final GenericBuilder.GenMOBBonusFakeStats stat : GenericBuilder.GenMOBBonusFakeStats.values() )
+			{
+				if(!allKnownFields.contains(stat.toString()))
+				{
+					allKnownFields.add(stat.toString());
+					allFieldsMsg.append(stat.toString()+" ");
+				}
+			}
+			for(final GenericBuilder.GenItemBonusFakeStats stat : GenericBuilder.GenItemBonusFakeStats.values() )
+			{
+				if(!allKnownFields.contains(stat.toString()))
+				{
+					allKnownFields.add(stat.toString());
+					allFieldsMsg.append(stat.toString()+" ");
+				}
+			}
+			mob.tell(L("All Generic Stats: @x1",allFieldsMsg.toString()));
+			return;
+		}
+
 		final Object o = CMClass.getObjectOrPrototype(wd);
 		if(o instanceof Modifiable)
 		{
