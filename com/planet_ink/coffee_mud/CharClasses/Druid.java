@@ -353,14 +353,41 @@ public class Druid extends StdCharClass
 	public void affectCharState(final MOB affected, final CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
-		if(affected.location()!=null)
+		// must be the last thing in this method
+		final Room R=affected.location();
+		if((R!=null)
+		&&(R.numItems()>0))
 		{
-			for(int i=0;i<affected.location().numItems();i++)
+			final PlayerStats pStats=affected.playerStats();
+			final Map<String,Object> map;
+			if(pStats!=null)
 			{
-				final Item I=affected.location().getItem(i);
-				if((I!=null)&&(I.ID().equals("DruidicMonument")))
-					affectableState.setMana(affectableState.getMana()+(affectableState.getMana()/2));
+				map=pStats.getClassVariableMap(this);
+				@SuppressWarnings("unchecked")
+				final Triad<Room,Integer,Boolean> priorCheck=(Triad<Room,Integer,Boolean>)map.get("DRUID_MONUMENT_CHECK");
+				if((priorCheck.first==R)
+				&&(priorCheck.second.intValue()==R.numItems()))
+				{
+					if(priorCheck.third.booleanValue())
+						affectableState.setMana(affectableState.getMana()+(affectableState.getMana()/2));
+					return;
+				}
 			}
+			else
+				map=null;
+			for(int i=0;i<R.numItems();i++)
+			{
+				final Item I=R.getItem(i);
+				if((I!=null)&&(I.ID().equals("DruidicMonument")))
+				{
+					affectableState.setMana(affectableState.getMana()+(affectableState.getMana()/2));
+					if(map != null)
+						map.put("DRUID_MONUMENT_CHECK", new Triad<Room,Integer,Boolean>(R,Integer.valueOf(R.numItems()),Boolean.TRUE));
+					return;
+				}
+			}
+			if(map != null)
+				map.put("DRUID_MONUMENT_CHECK", new Triad<Room,Integer,Boolean>(R,Integer.valueOf(R.numItems()),Boolean.FALSE));
 		}
 	}
 

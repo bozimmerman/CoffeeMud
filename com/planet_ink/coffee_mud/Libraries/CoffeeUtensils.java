@@ -747,6 +747,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	{
 		if((((I instanceof Armor)||(I instanceof Shield)))
 		&&(!(I instanceof FalseLimb))
+		&&(!(I instanceof BodyToken))
 		&&(I.rawProperLocationBitmap()&CharClass.ARMOR_WEARMASK)>0)
 		{
 			DoubleFilterer.Result filterResult = DoubleFilterer.Result.NOTAPPLICABLE;

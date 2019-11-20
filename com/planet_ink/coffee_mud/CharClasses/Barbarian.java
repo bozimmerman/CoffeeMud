@@ -221,7 +221,7 @@ public class Barbarian extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.  Receives bonus conquest and duel experience.");
+		return L("Damage reduction 1pt/5 levels.  A 1%/level resistance to Enchantments.  Bonus conquest and duel experience.  Bonus max dex/15 levels when torso and body are bare.");
 	}
 
 	@Override
@@ -252,6 +252,48 @@ public class Barbarian extends StdCharClass
 		return minimumStatRequirements;
 	}
 
+	protected boolean conanCheck(final MOB mob)
+	{
+		for(int i=0;i<mob.numItems();i++)
+		{
+			final Item I=mob.getItem(i);
+			if((I!=null)
+			&&(I.amWearingAt(Wearable.WORN_TORSO)
+				||I.amWearingAt(Wearable.WORN_ABOUT_BODY)
+				||I.amWearingAt(Wearable.WORN_BACK))
+			&&(((I instanceof Armor)||(I instanceof Shield)))
+			&&(!(I instanceof FalseLimb))
+			&&(!(I instanceof BodyToken)))
+				return false;
+		}
+		return true;
+	}
+
+	protected WeakHashMap<MOB,Boolean> conanMap=new WeakHashMap<MOB,Boolean>();
+
+	@Override
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		// must be the last thing in this method
+		Boolean doConan = null;
+		synchronized(conanMap)
+		{
+			if(conanMap.containsKey(affected))
+				doConan=conanMap.get(affected);
+		}
+		if(doConan==null)
+		{
+			doConan=Boolean.valueOf(conanCheck(affected));
+			synchronized(conanMap)
+			{
+				conanMap.put(affected, doConan);
+			}
+		}
+		if(doConan.booleanValue())
+			affectableStats.adjStat(CharStats.STAT_MAX_DEXTERITY_ADJ, 1+(int)Math.round(Math.floor(affectableStats.getClassLevel(this)/15)));
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -259,28 +301,39 @@ public class Barbarian extends StdCharClass
 			return super.okMessage(myHost,msg);
 		final MOB myChar=(MOB)myHost;
 
-		if((msg.amITarget(myChar))
-		&&(msg.tool() instanceof Weapon)
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+		if((msg.source()==myChar)
+		&&(msg.target() instanceof Item)
+		&&((msg.targetMinor()==CMMsg.TYP_WEAR)||(msg.targetMinor()==CMMsg.TYP_REMOVE)))
 		{
-			final int classLevel=myChar.charStats().getClassLevel(this);
-			int recovery=(classLevel/5);
-			final double minPct=.10+((classLevel>33)?((classLevel-30)*.0025):0);
-			final int minAmount=(int)Math.round(CMath.mul(msg.value(), minPct));
-			if(recovery < minAmount)
-				recovery=minAmount;
-			msg.setValue(msg.value()-recovery);
+			synchronized(conanMap)
+			{
+				conanMap.remove(msg.source());
+			}
 		}
 		else
-		if((msg.amITarget(myChar))
-		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))
+		if(msg.amITarget(myChar))
 		{
-			if(CMLib.dice().rollPercentage()<=myChar.charStats().getClassLevel(this))
+			if((msg.tool() instanceof Weapon)
+			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 			{
-				myChar.location().show(myChar,null,msg.source(),CMMsg.MSG_OK_ACTION,L("<S-NAME> resist(s) the @x1 attack from <O-NAMESELF>!",msg.tool().name()));
-				return false;
+				final int classLevel=myChar.charStats().getClassLevel(this);
+				int recovery=(classLevel/5);
+				final double minPct=.10+((classLevel>33)?((classLevel-30)*.0025):0);
+				final int minAmount=(int)Math.round(CMath.mul(msg.value(), minPct));
+				if(recovery < minAmount)
+					recovery=minAmount;
+				msg.setValue(msg.value()-recovery);
+			}
+			else
+			if((CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+			&&(msg.tool() instanceof Ability)
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))
+			{
+				if(CMLib.dice().rollPercentage()<=myChar.charStats().getClassLevel(this))
+				{
+					myChar.location().show(myChar,null,msg.source(),CMMsg.MSG_OK_ACTION,L("<S-NAME> resist(s) the @x1 attack from <O-NAMESELF>!",msg.tool().name()));
+					return false;
+				}
 			}
 		}
 		return super.okMessage(myChar,msg);
