@@ -43,6 +43,7 @@ public class ClanHelper extends StdBehavior
 	protected boolean	mobKiller	= false;
 	protected int		num			= 999;
 	protected String	clanName	= "";
+	protected String	msg			= null;
 
 	@Override
 	public String accountForYourself()
@@ -64,12 +65,26 @@ public class ClanHelper extends StdBehavior
 			final int x=clanName.lastIndexOf(' ');
 			if(x>0)
 			{
-				final String s=clanName.substring(x+1).trim();
-				if(CMath.isInteger(s))
+				msg=null;
+				String s=clanName.substring(x+1).trim();
+				final int y=s.toUpperCase().lastIndexOf("MSG");
+				if((y>0)
+				&&(s.substring(y+3).trim().startsWith("=")))
 				{
-					clanName=clanName.substring(0,x).trim();
-					num=CMath.s_int(s);
+					msg=CMParms.getParmStr(s.substring(y), "MSG", null);
+					s=s.substring(0,y);
 				}
+				final List<String> V=CMParms.parse(s);
+				for(int i=V.size()-1;i>=0;i--)
+				{
+					if(CMath.isInteger(V.get(i)))
+					{
+						num=CMath.s_int(V.get(i));
+						V.remove(i);
+						break;
+					}
+				}
+				clanName=CMParms.combine(V);
 			}
 			if(clanName.length()>0)
 			{
@@ -134,9 +149,9 @@ public class ClanHelper extends StdBehavior
 								break;
 							}
 						}
-						String reason="WE ARE UNDER ATTACK!! CHARGE!!";
+						String reason=(this.msg!=null)?this.msg:"WE ARE UNDER ATTACK!! CHARGE!!";
 						if(C!=null)
-							reason=C.getName().toUpperCase()+"S UNITE! CHARGE!";
+							reason=(this.msg!=null)?this.msg:C.getName().toUpperCase()+"S UNITE! CHARGE!";
 						Aggressive.startFight(observer,source,true,false,reason);
 					}
 				}

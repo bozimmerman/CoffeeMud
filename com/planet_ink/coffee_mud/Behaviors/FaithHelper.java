@@ -42,6 +42,7 @@ public class FaithHelper extends StdBehavior
 
 	protected boolean	mobKiller	= false;
 	protected int		num			= 999;
+	protected String	msg			= null;
 
 	@Override
 	public String accountForYourself()
@@ -67,13 +68,24 @@ public class FaithHelper extends StdBehavior
 			{
 				if(parms.indexOf(' ')>0)
 				{
-					final List<String> V=CMParms.parse(parms.toUpperCase());
+					msg=null;
+					String parms=this.parms;
+					final int x=parms.toUpperCase().lastIndexOf("MSG");
+					if((x>0)
+					&&(parms.substring(x+3).trim().startsWith("=")))
+					{
+						msg=CMParms.getParmStr(parms.substring(x), "MSG", null);
+						parms=parms.substring(0,x);
+					}
+
+					final List<String> V=CMParms.parse(parms);
 					for(int i=V.size()-1;i>=0;i--)
 					{
 						if(CMath.isInteger(V.get(i)))
 						{
 							num=CMath.s_int(V.get(i));
 							V.remove(i);
+							break;
 						}
 					}
 					((MOB)forMe).setWorshipCharID(CMParms.combine(V));
@@ -123,10 +135,10 @@ public class FaithHelper extends StdBehavior
 				}
 				if(((num==0)||(numInFray<num)))
 				{
-					String reason="THAT`S MY FRIEND!! CHARGE!!";
+					String reason=(this.msg!=null)?this.msg:"THAT`S MY FRIEND!! CHARGE!!";
 					if((observer.getWorshipCharID().equals(target.getWorshipCharID()))
 					&&(!observer.getWorshipCharID().equals(source.getWorshipCharID())))
-						reason="BELIEVERS OF "+observer.getWorshipCharID().toUpperCase()+" UNITE! CHARGE!";
+						reason=(this.msg!=null)?this.msg:"BELIEVERS OF "+observer.getWorshipCharID().toUpperCase()+" UNITE! CHARGE!";
 					Aggressive.startFight(observer,source,true,false,reason);
 				}
 			}
