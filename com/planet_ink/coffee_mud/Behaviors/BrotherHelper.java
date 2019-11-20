@@ -43,6 +43,7 @@ public class BrotherHelper extends StdBehavior
 	//protected boolean mobKiller=false;
 	protected boolean	nameOnly	= true;
 	protected int		num			= -1;
+	protected String	msg			= null;
 
 	@Override
 	public String accountForYourself()
@@ -58,6 +59,7 @@ public class BrotherHelper extends StdBehavior
 		nameOnly=false;
 		if(parms != null)
 		{
+			msg=CMParms.getParmStr(parms, "MSG", null);
 			final List<String> V=CMParms.parse(parms.toUpperCase());
 			nameOnly=V.contains("NAMEONLY");
 			for(final String s : V)
@@ -127,7 +129,7 @@ public class BrotherHelper extends StdBehavior
 			}
 			if(yep&&((num==0)||(numInFray<num)))
 			{
-				yep=Aggressive.startFight(observer,source,true,false,"DON'T HURT MY FRIEND!");
+				yep=Aggressive.startFight(observer,source,true,false,(this.msg!=null)?this.msg:"DON'T HURT MY FRIEND!");
 			}
 		}
 	}
