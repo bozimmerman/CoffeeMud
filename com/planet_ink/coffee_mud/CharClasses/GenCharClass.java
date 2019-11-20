@@ -673,6 +673,19 @@ public class GenCharClass extends StdCharClass
 		return str.toString();
 	}
 
+	protected void fixMaxStatAdj()
+	{
+		Arrays.fill(maxStatAdj, 0);
+		for(final int code : CharStats.CODES.MAXCODES())
+		{
+			if(adjStats.getStat(code) != 0)
+			{
+				maxStatAdj[code] = adjStats.getStat(code);
+				maxStatAdj[CharStats.CODES.toMAXBASE(code)] = adjStats.getStat(code);
+			}
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setClassParms(final String parms)
@@ -808,6 +821,7 @@ public class GenCharClass extends StdCharClass
 		{
 			adjStats = (CharStats) CMClass.getCommon("DefaultCharStats");
 			CMLib.coffeeMaker().setCharStats(adjStats, aStats);
+			fixMaxStatAdj();
 		}
 		setStats = null;
 		final String cStats = CMLib.xml().getValFromPieces(classData, "CSTATS");
@@ -1228,6 +1242,7 @@ public class GenCharClass extends StdCharClass
 				adjStats = (CharStats) CMClass.getCommon("DefaultCharStats");
 				adjStats.setAllValues(0);
 				CMLib.coffeeMaker().setCharStats(adjStats, val);
+				fixMaxStatAdj();
 			}
 			break;
 		case 22:
