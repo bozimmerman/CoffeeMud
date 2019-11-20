@@ -47,6 +47,7 @@ public class RaceHelper extends StdBehavior
 	}
 
 	protected int		num			= 999;
+	protected String	msg			= null;
 
 	@Override
 	public void startBehavior(final PhysicalAgent forMe)
@@ -56,6 +57,7 @@ public class RaceHelper extends StdBehavior
 		{
 			if(parms.length()>0)
 			{
+				msg=CMParms.getParmStr(parms, "MSG", null);
 				final List<String> V=CMParms.parse(parms.toUpperCase());
 				for(int i=V.size()-1;i>=0;i--)
 				{
@@ -107,10 +109,10 @@ public class RaceHelper extends StdBehavior
 				}
 				if(((num==0)||(numInFray<num)))
 				{
-					String reason="THAT`S MY FRIEND!! CHARGE!!";
+					String reason=(this.msg!=null)?this.msg:"THAT`S MY FRIEND!! CHARGE!!";
 					if((observer.charStats().getMyRace().ID().equals(target.charStats().getMyRace().ID()))
 					&&(!observer.charStats().getMyRace().ID().equals(source.charStats().getMyRace().ID())))
-						reason=observer.charStats().getMyRace().ID().toUpperCase()+"S UNITE! CHARGE!";
+						reason=(this.msg!=null)?this.msg:observer.charStats().getMyRace().ID().toUpperCase()+"S UNITE! CHARGE!";
 					Aggressive.startFight(observer,source,true,false,reason);
 				}
 			}
