@@ -99,6 +99,13 @@
 		
 		}
 		
+		function Forgot()
+		{
+			document.FORUM.LASTPAGE.value='/forum.cmvp';
+			document.FORUM.action="forgot.cmvp";
+			document.FORUM.submit();
+		}
+		
 		function sayUnsubscribe()
 		{
 			if(confirm('Would you like to unsubscribe from this forum?\n\nYou may also send an email to @ForumInfo?SMTPADDRESS@ with a subject of "unsubscribe" if you prefer.'))
@@ -131,6 +138,7 @@
 <INPUT TYPE=HIDDEN NAME=DBSEARCH VALUE="@RequestParameter?DBSEARCH@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
 <INPUT TYPE=HIDDEN NAME=MESSAGEPAGE VALUE="">
+<INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 	<TD WIDTH=10px>&nbsp;</TD>
@@ -155,6 +163,8 @@
             <INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="">
             <INPUT TYPE=BUTTON VALUE=Register ONCLICK="Register()">
         @endif@
+		<BR>
+		<FONT SIZE=-2><a href="javascript:Forgot()">Forgot</a></FONT>
 	@else@
 		Logged in as <B>@PlayerData?NAME@</B>
 		@if?ForumInfo?ISSMTPFORWARD@
