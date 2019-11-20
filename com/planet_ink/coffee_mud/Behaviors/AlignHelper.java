@@ -47,6 +47,7 @@ public class AlignHelper extends StdBehavior
 	}
 
 	protected int		num			= 999;
+	protected String	msg			= null;
 
 	@Override
 	public void startBehavior(final PhysicalAgent forMe)
@@ -56,6 +57,7 @@ public class AlignHelper extends StdBehavior
 		{
 			if(parms.length()>0)
 			{
+				msg=CMParms.getParmStr(parms, "MSG", null);
 				final List<String> V=CMParms.parse(parms.toUpperCase());
 				for(int i=V.size()-1;i>=0;i--)
 				{
@@ -106,7 +108,7 @@ public class AlignHelper extends StdBehavior
 					}
 				}
 				if(((num==0)||(numInFray<num)))
-					Aggressive.startFight(observer,source,true,false,CMLib.flags().getAlignmentName(observer)+" PEOPLE UNITE! CHARGE!");
+					Aggressive.startFight(observer,source,true,false,(this.msg!=null)?this.msg:CMLib.flags().getAlignmentName(observer)+" PEOPLE UNITE! CHARGE!");
 			}
 		}
 	}
