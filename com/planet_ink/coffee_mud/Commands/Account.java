@@ -124,6 +124,7 @@ public class Account extends StdCommand
 	{
 		final StringBuilder str=new StringBuilder();
 		final PlayerAccount account;
+		final boolean showLastLogin;
 		if(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.CMDPLAYERS) && (commands.size()>1))
 		{
 			final String name = CMStrings.capitalizeAndLower(CMParms.combine(commands,1));
@@ -146,11 +147,16 @@ public class Account extends StdCommand
 				mob.tell(L("No account or player found: '@x1'",name));
 				return false;
 			}
+			if(mob.playerStats()!=null)
+				showLastLogin=mob.playerStats().getAccount()!=account;
+			else
+				showLastLogin=false;
 		}
 		else
 		{
 			final PlayerStats pStats = mob.playerStats();
 			account = pStats == null ? null : pStats.getAccount();
+			showLastLogin=false;
 		}
 
 		if(account != null)
@@ -165,6 +171,12 @@ public class Account extends StdCommand
 				{
 					str.append(CMLib.time().date2String(account.getAccountExpiration()));
 				}
+				str.append("\n\r");
+			}
+			if(showLastLogin)
+			{
+				str.append("^X"+CMStrings.padRight(L("Last Login"), 15)+"^N: ");
+				str.append(CMLib.time().date2String(account.getLastDateTime()));
 				str.append("\n\r");
 			}
 			str.append("\n\r");
