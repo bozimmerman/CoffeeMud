@@ -40,12 +40,28 @@ public class Wield extends StdCommand
 
 	private final String[]	access	= I(new String[] { "WIELD" });
 
-	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Item.class}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]
+	{
+		{Item.class},
+		{Item.class,Boolean.class}
+	};
+
 
 	@Override
 	public String[] getAccessWords()
 	{
 		return access;
+	}
+
+	protected boolean wield(final MOB mob, final Item item, final boolean quietly)
+	{
+		final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_WIELD,quietly?null:L("<S-NAME> wield(s) <T-NAME>."));
+		if(mob.location().okMessage(mob,newMsg))
+		{
+			mob.location().send(mob,newMsg);
+			return true;
+		}
+		return false;
 	}
 
 	protected boolean wield(final List<Item> items, final MOB mob)
@@ -55,12 +71,8 @@ public class Wield extends StdCommand
 			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_WIELD)))
 			{
 				final Item item=items.get(i);
-				final CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_WIELD,L("<S-NAME> wield(s) <T-NAME>."));
-				if(mob.location().okMessage(mob,newMsg))
-				{
-					mob.location().send(mob,newMsg);
+				if(wield(mob, item, false))
 					return true;
-				}
 			}
 		}
 		return false;
@@ -90,8 +102,16 @@ public class Wield extends StdCommand
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		final List<Item> items=new XVector<Item>((Item)args[0]);
-		return Boolean.valueOf(wield(items, mob));
+		final Item targetWearI = (Item)args[0];
+		boolean quietly = false;
+		for(int i=1;i<args.length;i++)
+		{
+			if(args[i] instanceof Boolean)
+			{
+				quietly = ((Boolean)args[i]).booleanValue();
+			}
+		}
+		return Boolean.valueOf(wield(mob,targetWearI,quietly));
 	}
 
 	@Override

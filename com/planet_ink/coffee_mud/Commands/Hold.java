@@ -45,6 +45,12 @@ public class Hold extends StdCommand
 		return access;
 	}
 
+	private final static Class<?>[][] internalParameters=new Class<?>[][]
+	{
+		{Item.class},
+		{Item.class,Boolean.class}
+	};
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -65,21 +71,47 @@ public class Hold extends StdCommand
 			if((items.size()==1)||(items.get(i).canWear(mob,Wearable.WORN_HELD)))
 			{
 				final Item item=items.get(i);
-				int msgType=CMMsg.MSG_HOLD;
-				String str=L("<S-NAME> hold(s) <T-NAME>.");
-				if((mob.freeWearPositions(Wearable.WORN_WIELD,(short)0,(short)0)>0)
-				&&((item.rawProperLocationBitmap()==Wearable.WORN_WIELD)
-				||(item.rawProperLocationBitmap()==(Wearable.WORN_HELD|Wearable.WORN_WIELD))))
-				{
-					str=L("<S-NAME> wield(s) <T-NAME>.");
-					msgType=CMMsg.MSG_WIELD;
-				}
-				final CMMsg newMsg=CMClass.getMsg(mob,item,null,msgType,str);
-				if(mob.location().okMessage(mob,newMsg))
-					mob.location().send(mob,newMsg);
+				hold(mob,item,false);
 			}
 		}
 		return false;
+	}
+
+	public boolean hold(final MOB mob, final Item item, final boolean quiet)
+	{
+		int msgType=CMMsg.MSG_HOLD;
+		String str=L("<S-NAME> hold(s) <T-NAME>.");
+		if((mob.freeWearPositions(Wearable.WORN_WIELD,(short)0,(short)0)>0)
+		&&((item.rawProperLocationBitmap()==Wearable.WORN_WIELD)
+		||(item.rawProperLocationBitmap()==(Wearable.WORN_HELD|Wearable.WORN_WIELD))))
+		{
+			str=L("<S-NAME> wield(s) <T-NAME>.");
+			msgType=CMMsg.MSG_WIELD;
+		}
+		final CMMsg newMsg=CMClass.getMsg(mob,item,null,msgType,quiet?null:str);
+		if(mob.location().okMessage(mob,newMsg))
+		{
+			mob.location().send(mob,newMsg);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		final Item targetWearI = (Item)args[0];
+		boolean quietly = false;
+		for(int i=1;i<args.length;i++)
+		{
+			if(args[i] instanceof Boolean)
+			{
+				quietly = ((Boolean)args[i]).booleanValue();
+			}
+		}
+		return Boolean.valueOf(hold(mob,targetWearI,quietly));
 	}
 
 	@Override

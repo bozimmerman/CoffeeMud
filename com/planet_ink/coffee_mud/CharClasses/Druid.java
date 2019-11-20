@@ -365,7 +365,8 @@ public class Druid extends StdCharClass
 				map=pStats.getClassVariableMap(this);
 				@SuppressWarnings("unchecked")
 				final Triad<Room,Integer,Boolean> priorCheck=(Triad<Room,Integer,Boolean>)map.get("DRUID_MONUMENT_CHECK");
-				if((priorCheck.first==R)
+				if((priorCheck != null)
+				&&(priorCheck.first==R)
 				&&(priorCheck.second.intValue()==R.numItems()))
 				{
 					if(priorCheck.third.booleanValue())

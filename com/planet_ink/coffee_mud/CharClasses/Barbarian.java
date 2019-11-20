@@ -210,6 +210,8 @@ public class Barbarian extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_Stonebody",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Fighter_Shrug",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Fighter_MonkeyGrip",true);
 	}
 
 	@Override
