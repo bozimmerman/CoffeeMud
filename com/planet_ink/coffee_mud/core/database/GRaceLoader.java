@@ -83,6 +83,7 @@ public class GRaceLoader
 				R.close();
 				return (creationDate < oldestDate);
 			}
+			R.close();
 		}
 		catch(final Exception sqle)
 		{
