@@ -243,6 +243,8 @@ public class Beastmaster extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_Dragonsight",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Druid_PackCall",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Chant_Uplift",true);
 	}
 
 	@Override

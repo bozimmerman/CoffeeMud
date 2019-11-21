@@ -58,7 +58,8 @@
  56. GenAbility now supports both a quiet and public skill effect, and an uninvoke message
  57. AS command now supports PORT argument for multi-host muds.
  58. Barbarians now get a max dex bonus when going shirtless.  I love this. ;)
- 59. New Barbarian skills: Monkey Grip
+ 59. New skills: Monkey Grip
+ 60. New chants: Uplift
 # Build 5.9.8 Release 4/8/2019
   1. New skills: Informant, AutoSwipe, Find Clan Home, Find Clan Ship, Letter of Marque
   2. New wainwrighting & smelting recipes

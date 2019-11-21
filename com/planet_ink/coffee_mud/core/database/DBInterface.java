@@ -983,9 +983,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBPruneOldRaces()
+	public boolean isRaceExpired(final String raceID)
 	{
-		GRaceLoader.DBPruneOldRaces();
+		return GRaceLoader.isRaceExpired(raceID);
 	}
 
 	@Override

@@ -82,6 +82,16 @@ public class Chant_Hibernation extends Chant
 
 	private CharState oldState=null;
 	protected int roundsHibernating=0;
+	protected boolean deepHibernation=false;
+	protected boolean fullManaUninvoke=false;
+
+	@Override
+	public void setMiscText(final String newText)
+	{
+		super.setMiscText(newText);
+		deepHibernation=CMParms.getParmBool(newText, "DEEP", false);
+		fullManaUninvoke=CMParms.getParmBool(newText, "FULLMANAREVOKE", false);
+	}
 
 	@Override
 	public void unInvoke()
@@ -94,6 +104,8 @@ public class Chant_Hibernation extends Chant
 		{
 			if(!mob.amDead())
 			{
+				if(this.deepHibernation)
+					CMLib.commands().postStand(mob, true, false);
 				if(mob.location()!=null)
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> end(s) <S-HIS-HER> hibernation."));
 				else
@@ -101,6 +113,18 @@ public class Chant_Hibernation extends Chant
 			}
 		}
 	}
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected, affectableStats);
+		if(this.deepHibernation)
+		{
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
+			affected.basePhyStats().setDisposition(affected.basePhyStats().disposition()|PhyStats.IS_SLEEPING);
+		}
+	}
+
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
@@ -113,7 +137,11 @@ public class Chant_Hibernation extends Chant
 		if((msg.amISource(mob))
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 		&&((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MOUTH))))
-			unInvoke();
+		{
+			if((!deepHibernation)
+			&&(!this.amDestroyed))
+				unInvoke();
+		}
 		return;
 	}
 
@@ -129,7 +157,8 @@ public class Chant_Hibernation extends Chant
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 		&&(msg.sourceMajor()>0)))
 		{
-			if(roundsHibernating<10)
+			if((roundsHibernating<10)
+			||(this.deepHibernation))
 			{
 				mob.tell(L("You can't withdraw from hibernation just yet."));
 				return false;
@@ -175,6 +204,9 @@ public class Chant_Hibernation extends Chant
 												null ) )
 					unInvoke();
 			}
+			if((this.fullManaUninvoke)
+			&& (mob.curState().getMana() >= mob.maxState().getMana()))
+				unInvoke();
 		}
 		else
 		{

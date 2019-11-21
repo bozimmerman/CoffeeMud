@@ -65,6 +65,36 @@ public class GRaceLoader
 		 data+" ");
 	}
 
+	public boolean isRaceExpired(String raceID)
+	{
+		raceID = DB.injectionClean(raceID);
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT * FROM CMGRAC WHERE CMRCID='"+raceID+"';");
+			if(R.next())
+			{
+				final long oneHour = (60L * 60L * 1000L);
+				final long expireDays = CMProps.getIntVar(Int.RACEEXPIRATIONDAYS);
+				final long expireMs = (oneHour * expireDays * 24L);
+				final long oldestDate = System.currentTimeMillis()- expireMs;
+				final long creationDate = DBConnections.getLongRes(R, "CMRCDT");
+				R.close();
+				return (creationDate < oldestDate);
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("GRaceLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return false;
+	}
+
 	public void DBPruneOldRaces()
 	{
 		final List<String> updates = new ArrayList<String>(1);

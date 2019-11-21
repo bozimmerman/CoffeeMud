@@ -1199,7 +1199,8 @@ public class StdMOB implements MOB
 					addFollower(newFol, oldFollowers.getSecond(f).intValue());
 				}
 			}
-			if(pStats!=null)
+			if((pStats!=null)
+			&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))) // because removefromgame only happens on room destructions
 			{
 				pStats.setLastDateTime(System.currentTimeMillis());
 				CMLib.database().DBUpdateFollowers(this);
@@ -3713,7 +3714,7 @@ public class StdMOB implements MOB
 			{
 				final Room R=location();
 				final Area A = (R == null) ? null : R.getArea();
-				if(isMonster 
+				if(isMonster
 				&& (--validChkCounter <= 0))
 				{
 					validChkCounter=60;

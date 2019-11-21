@@ -2310,6 +2310,15 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							Race R=CMClass.getRace(raceID);
 							if(R==null)
 								R=CMClass.findRace(raceID);
+							if((R!=null)&&(R.isGeneric()))
+							{
+								if(CMLib.database().isRaceExpired(raceID))
+								{
+									CMLib.database().DBDeleteRace(raceID);
+									CMClass.delRace(R);
+									R=null;
+								}
+							}
 							if(R!=null)
 								return R;
 							else
@@ -2337,7 +2346,16 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			if((R!=null)&&(!R.ID().toUpperCase().startsWith("HALF")))
 			{
 				halfRace="Half"+CMStrings.capitalizeAndLower(R.ID().toLowerCase());
-				final Race testR=CMClass.getRace(halfRace);
+				Race testR=CMClass.getRace(halfRace);
+				if((testR!=null)&&(testR.isGeneric()))
+				{
+					if(CMLib.database().isRaceExpired(halfRace))
+					{
+						CMLib.database().DBDeleteRace(halfRace);
+						CMClass.delRace(testR);
+						testR=null;
+					}
+				}
 				if(testR!=null)
 					R=testR;
 				else
@@ -2359,7 +2377,16 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			if((R!=null)&&(!R.ID().endsWith("ling")))
 			{
 				halfRace=R.ID()+"ling";
-				final Race testR=CMClass.getRace(halfRace);
+				Race testR=CMClass.getRace(halfRace);
+				if((testR!=null)&&(testR.isGeneric()))
+				{
+					if(CMLib.database().isRaceExpired(halfRace))
+					{
+						CMLib.database().DBDeleteRace(halfRace);
+						CMClass.delRace(testR);
+						testR=null;
+					}
+				}
 				if(testR!=null)
 					R=testR;
 				else
@@ -2385,9 +2412,18 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				first=race2;
 			final String second=(first.equals(race1)?race2:race1);
 			final String halfRace=(race1.compareToIgnoreCase(race2)<0)?race1+race2:race2+race1;
-			final Race testR=CMClass.getRace(halfRace);
+			Race testR=CMClass.getRace(halfRace);
 			final Race FIRSTR=CMClass.getRace(first);
 			final Race SECONDR=CMClass.getRace(second);
+			if((testR!=null)&&(testR.isGeneric()))
+			{
+				if(CMLib.database().isRaceExpired(halfRace))
+				{
+					CMLib.database().DBDeleteRace(halfRace);
+					CMClass.delRace(testR);
+					testR=null;
+				}
+			}
 			if(testR!=null)
 				R=testR;
 			else
