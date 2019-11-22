@@ -2887,19 +2887,33 @@ public class Test extends StdCommand
 					{{0,0,0},{10000},{1,1},{0,-5000,5000},{0}},
 					{{0,0,0},{10000},{1,0},{5000,0,-5000},{0}}, // 47
 					
-					{{0,0,0},{10000},{-1,0},{5000,0,0},{0}}, // 48
-					{{0,0,0},{10000},{0,-1},{0,5000,0},{0}},
-					{{0,0,0},{10000},{0,-1},{0,0,5000},{0}},
-					{{0,0,0},{10000},{-1,0},{-5000,0,0},{0}},
-					{{0,0,0},{10000},{0,-1},{0,-5000,0},{0}},
-					{{0,0,0},{10000},{0,-1},{0,0,-5000},{0}},
-					{{0,0,0},{10000},{-1,-1},{5000,0,5000},{0}},
-					{{0,0,0},{10000},{0,-1},{0,5000,5000},{0}},
-					{{0,0,0},{10000},{-1,0},{5000,0,5000},{0}},
-					{{0,0,0},{10000},{-1,0},{-5000,0,5000},{0}},
-					{{0,0,0},{10000},{-1,-1},{0,-5000,5000},{0}},
-					{{0,0,0},{10000},{-1,0},{5000,0,-5000},{0}}, // 59
+					{{0,0,0},{10000},{1,0},{5000,0,0},{0}}, // 48
+					{{0,0,0},{10000},{0,1},{0,5000,0},{0}},
+					{{0,0,0},{10000},{0,1},{0,0,5000},{0}},
+					{{0,0,0},{10000},{1,0},{-5000,0,0},{0}},
+					{{0,0,0},{10000},{0,1},{0,-5000,0},{0}},
+					{{0,0,0},{10000},{0,1},{0,0,-5000},{0}},
+					{{0,0,0},{10000},{1,1},{5000,0,5000},{0}},
+					{{0,0,0},{10000},{0,1},{0,5000,5000},{0}},
+					{{0,0,0},{10000},{1,0},{5000,0,5000},{0}},
+					{{0,0,0},{10000},{1,0},{-5000,0,5000},{0}},
+					{{0,0,0},{10000},{1,1},{0,-5000,5000},{0}},
+					{{0,0,0},{10000},{1,0},{5000,0,-5000},{0}}, // 59
 					
+					{{0,0,0},{10000},{179,0},{5000,0,0},{0}}, // 60
+					{{0,0,0},{10000},{0,89},{0,5000,0},{0}},
+					{{0,0,0},{10000},{0,89},{0,0,5000},{0}},
+					{{0,0,0},{10000},{179,0},{-5000,0,0},{0}},
+					{{0,0,0},{10000},{0,89},{0,-5000,0},{0}},
+					{{0,0,0},{10000},{0,89},{0,0,-5000},{0}},
+					{{0,0,0},{10000},{179,89},{5000,0,5000},{0}},
+					{{0,0,0},{10000},{0,89},{0,5000,5000},{0}},
+					{{0,0,0},{10000},{179,0},{5000,0,5000},{0}},
+					{{0,0,0},{10000},{179,0},{-5000,0,5000},{0}},
+					{{0,0,0},{10000},{179,89},{0,-5000,5000},{0}},
+					{{0,0,0},{10000},{179,0},{5000,0,-5000},{0}}, // 71
+					
+					{{0,0,0},{42},{179,1},{620000,0,0},{0}}, // 71
 				};
 				for(int li=0;li<tests.length;li++)
 				{
@@ -2909,50 +2923,84 @@ public class Test extends StdCommand
 						final long[] shipCoord1 = l[0];
 						final long speed = l[1][0];
 						final long[] targetCoord=l[3];
+						Log.debugOut(li+"A) orig coords="+shipCoord1[0]+","+shipCoord1[1]+","+shipCoord1[2]);
+						Log.debugOut(li+"A) target coords="+targetCoord[0]+","+targetCoord[1]+","+targetCoord[2]);
 						final double[] dir=CMLib.map().getDirection(shipCoord1, targetCoord);
-						for(int i=0;i<l[2].length;i++)
+						Log.debugOut(li+"A) original direction to target="+dir[0]+","+dir[1]);
+						if(l[2].length>0)
 						{
-							dir[i]+=Math.toRadians(l[2][i]);
-							if(dir[i]>Math.PI)
-								dir[i]-=Math.PI;
+							dir[0]+=Math.toRadians(l[2][0]);
+							if(dir[0]>2*Math.PI)
+								dir[0]=Math.abs(2*Math.PI-dir[0]);
 							else
-							if(dir[i]<0)
-								dir[i]+=Math.PI;
+							if(dir[0]<0)
+								dir[0]+=(2*Math.PI);
 						}
+						if(li==61) 
+							System.out.println("STOP!");
+						if(l[2].length==2)
+						{
+							dir[1]+=Math.toRadians(l[2][1]);
+							if(dir[1]>Math.PI)
+								dir[1]=Math.abs(Math.PI-dir[1]);
+							else
+							if(dir[1]<0)
+								dir[1]+=Math.PI;
+						}
+						Log.debugOut(li+"A) adjusted direction to target="+dir[0]+","+dir[1]);
 						//System.out.println(dir[0]+","+dir[1]);
 						final boolean expectHit=l[4][0]>0;
 						final long[] shipCoord2=CMLib.map().moveSpaceObject(shipCoord1, dir, speed);
+						Log.debugOut(li+"A) moved coords="+shipCoord2[0]+","+shipCoord2[1]+","+shipCoord2[2]);
 						final double swish=CMLib.map().getMinDistanceFrom(shipCoord1, shipCoord2, targetCoord);
 						if(expectHit != (swish < 10))
 						{
 							mob.tell(L("Error:"+what+"-"+li+"A: swish="+swish+"/"+(CMLib.map().getDistanceFrom(shipCoord1, targetCoord))));
 							return false;
 						}
+						Log.debugOut(li+"A) original distance="+CMLib.map().getDistanceFrom(shipCoord1, targetCoord));
+						Log.debugOut(li+"A) current distance="+CMLib.map().getDistanceFrom(shipCoord2, targetCoord));
+						Log.debugOut(li+"A) switsh="+swish);
 					}
 					// r->l
 					{
 						final long[] shipCoord1 = l[3];
 						final long speed = l[1][0];
 						final long[] targetCoord=l[0];
+						Log.debugOut(li+"B) orig coords="+shipCoord1[0]+","+shipCoord1[1]+","+shipCoord1[2]);
+						Log.debugOut(li+"B) target coords="+targetCoord[0]+","+targetCoord[1]+","+targetCoord[2]);
 						final double[] dir=CMLib.map().getDirection(shipCoord1, targetCoord);
-						for(int i=0;i<l[2].length;i++)
+						Log.debugOut(li+"B) original direction to target="+dir[0]+","+dir[1]);
+						if(l[2].length>0)
 						{
-							dir[i]+=Math.toRadians(l[2][i]);
-							if(dir[i]>Math.PI)
-								dir[i]-=Math.PI;
+							dir[0]+=Math.toRadians(l[2][0]);
+							if(dir[0]>2*Math.PI)
+								dir[0]=Math.abs(2*Math.PI-dir[0]);
 							else
-							if(dir[i]<0)
-								dir[i]+=Math.PI;
+							if(dir[0]<0)
+								dir[0]+=(2*Math.PI);
 						}
+						if(l[2].length==2)
+						{
+							dir[1]+=Math.toRadians(l[2][1]);
+							if(dir[1]>Math.PI)
+								dir[1]=Math.abs(Math.PI-dir[1]);
+							else
+							if(dir[1]<0)
+								dir[1]+=Math.PI;
+						}
+						Log.debugOut(li+"B) adjusted direction to target="+dir[0]+","+dir[1]);
 						//System.out.println(dir[0]+","+dir[1]);
 						final boolean expectHit=l[4][0]>0;
 						final long[] shipCoord2=CMLib.map().moveSpaceObject(shipCoord1, dir, speed);
 						final double swish=CMLib.map().getMinDistanceFrom(shipCoord1, shipCoord2, targetCoord);
+						Log.debugOut(li+"B) moved coords="+shipCoord2[0]+","+shipCoord2[1]+","+shipCoord2[2]);
 						if(expectHit != (swish < 10))
 						{
 							mob.tell(L("Error:"+what+"-"+li+"B: swish="+swish+"/"+(CMLib.map().getDistanceFrom(shipCoord1, targetCoord))));
 							return false;
 						}
+						Log.debugOut(li+"B) switsh="+swish);
 					}
 				}
 			}
