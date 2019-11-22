@@ -3671,6 +3671,32 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
+			new AbilityParmEditorImpl("KEY_VALUE_PARMS","Keys",ParmType.STRINGORNULL)
+			{
+				@Override
+				public int appliesToClass(final Object o)
+				{
+					return 1;
+				}
+
+				@Override
+				public void createChoices()
+				{
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					// how would I even start....
+					return "";
+				}
+			},
 			new AbilityParmEditorImpl("LIGHT_DURATION","Dur.",ParmType.NUMBER)
 			{
 				@Override

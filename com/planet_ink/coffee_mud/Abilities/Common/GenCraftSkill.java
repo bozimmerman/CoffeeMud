@@ -81,11 +81,19 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	public String parametersFormat()
 	{
 		return
-		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
-		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
-		+"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
-		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION||MAX_WAND_USES\t"
-		+"BASE_ARMOR_AMOUNT||BASE_DAMAGE\tCONTAINER_TYPE||ATTACK_MODIFICATION\tCODED_SPELL_LIST";}
+		"ITEM_NAME\tI"
+		+ "TEM_LEVEL\t"
+		+ "BUILD_TIME_TICKS\t"
+		+ "MATERIALS_REQUIRED\t"
+		+ "ITEM_BASE_VALUE\t"
+		+ "ITEM_CLASS_ID\t"
+		+ "LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
+		+ "CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION||MAX_WAND_USES\t"
+		+ "BASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
+		+ "CONTAINER_TYPE||ATTACK_MODIFICATION\t"
+		+ "CODED_SPELL_LIST\t"
+		+ "KEY_VALUE_PARMS";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
@@ -98,6 +106,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int	RCP_ARMORDMG	= 8;
 	protected static final int	RCP_CONTAINMASK	= 9;
 	protected static final int	RCP_SPELL		= 10;
+	protected static final int	RCP_KEYVALUE	= 11;
 
 	protected DoorKey key=null;
 
@@ -880,6 +889,16 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 						((Container)buildingI).setCapacity(((Container)buildingI).basePhyStats().weight()+1);
 					else
 						((Container)buildingI).setCapacity(0);
+				}
+			}
+			if(foundRecipe.size()>RCP_KEYVALUE)
+			{
+				final String keyValueParmStr=foundRecipe.get(RCP_KEYVALUE);
+				if(keyValueParmStr.length()>0)
+				{
+					final Map<String,String> kvMap=CMParms.parseEQParms(keyValueParmStr);
+					for(final String key : kvMap.keySet())
+						buildingI.setStat(key, kvMap.get(key));
 				}
 			}
 			buildingI.recoverPhyStats();
