@@ -65,6 +65,24 @@ public class GRaceLoader
 		 data+" ");
 	}
 
+	public void DBUpdateRaceCreationDate(final String raceID)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			D.update("UPDATE CMGRAC SET CMRCDT="+System.currentTimeMillis()+" WHERE CMRCID='"+raceID+"';", 0);
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("GRaceLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+	}
+
 	public boolean isRaceExpired(String raceID)
 	{
 		raceID = DB.injectionClean(raceID);

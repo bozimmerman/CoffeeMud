@@ -434,6 +434,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				M.playerStats().setLastUpdated(M.playerStats().getLastDateTime());
 			M.recoverPhyStats();
 			M.recoverCharStats();
+			final Race R=M.baseCharStats().getMyRace();
+			if(R.isGeneric())
+				CMLib.database().DBUpdateRaceCreationDate(R.ID());
 			Ability A=null;
 			for(int a=0;a<M.numAbilities();a++)
 			{

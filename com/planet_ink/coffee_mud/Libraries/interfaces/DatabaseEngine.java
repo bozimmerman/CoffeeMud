@@ -1741,6 +1741,7 @@ public interface DatabaseEngine extends CMLibrary
 	 *
 	 * @see DatabaseEngine.AckRecord
 	 * @see DatabaseEngine#isRaceExpired(String)
+	 * @see DatabaseEngine#DBUpdateRaceCreationDate(String)
 	 * @see DatabaseEngine#DBDeleteRace(String)
 	 * @see DatabaseEngine#DBCreateRace(String, String)
 	 *
@@ -1755,16 +1756,31 @@ public interface DatabaseEngine extends CMLibrary
 	 *
 	 * @param raceID the race ID to check
 	 * @see DatabaseEngine#DBReadRaces()
+	 * @see DatabaseEngine#DBUpdateRaceCreationDate(String)
+	 * @see DatabaseEngine#DBDeleteRace(String)
+	 * @see DatabaseEngine#DBCreateRace(String, String)
+	 * @return true if the race is expired
+	 */
+	public boolean isRaceExpired(final String raceID);
+
+	/**
+	 * Table category: DBRACE
+	 * Updates the race creation timestamp, to prevent its re-creation.
+	 *
+	 * @param raceID the race ID to update
+	 * @see DatabaseEngine#isRaceExpired(String)
+	 * @see DatabaseEngine#DBReadRaces()
 	 * @see DatabaseEngine#DBDeleteRace(String)
 	 * @see DatabaseEngine#DBCreateRace(String, String)
 	 */
-	public boolean isRaceExpired(final String raceID);
+	public void DBUpdateRaceCreationDate(final String raceID);
 
 	/**
 	 * Table category: DBRACE
 	 * Removes a generic race from the CMGRAC table.
 	 * @see DatabaseEngine#DBReadRaces()
 	 * @see DatabaseEngine#isRaceExpired(String)
+	 * @see DatabaseEngine#DBUpdateRaceCreationDate(String)
 	 * @see DatabaseEngine#DBCreateRace(String, String)
 	 * @param raceID the ID of the race to delete
 	 */
@@ -1777,6 +1793,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * data.
 	 * @see DatabaseEngine#DBReadRaces()
 	 * @see DatabaseEngine#isRaceExpired(String)
+	 * @see DatabaseEngine#DBUpdateRaceCreationDate(String)
 	 * @see DatabaseEngine#DBDeleteRace(String)
 	 * @param raceID the unique RaceID
 	 * @param data the xml data defining the generic race

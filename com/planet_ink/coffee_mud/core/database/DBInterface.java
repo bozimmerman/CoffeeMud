@@ -983,6 +983,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public void DBUpdateRaceCreationDate(final String raceID)
+	{
+		GRaceLoader.DBUpdateRaceCreationDate(raceID);
+	}
+
+	@Override
 	public boolean isRaceExpired(final String raceID)
 	{
 		return GRaceLoader.isRaceExpired(raceID);
