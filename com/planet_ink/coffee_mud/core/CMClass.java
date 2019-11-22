@@ -861,7 +861,7 @@ public class CMClass extends ClassLoader
 		List<Area> areaTypes=c().areaTypes;
 		if(areaTypes.size()==0)
 		{
-			if(clss['0'].areaTypes.size()>0)
+			if(clss[MudHost.MAIN_HOST].areaTypes.size()>0)
 				areaTypes=c().areaTypes;
 			else
 				return null;
