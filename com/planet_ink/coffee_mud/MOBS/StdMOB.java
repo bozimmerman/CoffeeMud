@@ -3222,7 +3222,7 @@ public class StdMOB implements MOB
 				break;
 			case CMMsg.TYP_TEACH:
 				if(msg.target() instanceof MOB)
-					CMLib.expertises().handleBeingTaught(msg.source(), (MOB)msg.target(), msg.tool(), msg.targetMessage());
+					CMLib.expertises().handleBeingTaught(msg.source(), (MOB)msg.target(), msg.tool(), msg.targetMessage(), msg.value());
 				break;
 			case CMMsg.TYP_GRAVITY:
 				CMLib.combat().handleBeingGravitied(this, msg);

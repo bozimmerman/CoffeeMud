@@ -964,7 +964,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public void handleBeingTaught(final MOB teacher, final MOB student, final Environmental item, final String msg)
+	public void handleBeingTaught(final MOB teacher, final MOB student, final Environmental item, final String msg, final int add)
 	{
 		Object learnThis=item;
 		if(learnThis==null)
@@ -980,11 +980,26 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				oldSkillSet.add(a.nextElement().ID());
 			theA.teach(teacher,student);
 			teacher.recoverCharStats();
-			if((student.fetchAbility(theA.ID())==null) && (!oldSkillSet.contains(theA.ID())))
+			final Ability studentA=student.fetchAbility(theA.ID());
+			if((studentA==null) && (!oldSkillSet.contains(theA.ID())))
 				student.tell(L("You failed to understand @x1.",theA.name()));
 			else
 			if((!teacher.isMonster()) && (!student.isMonster()))
 				CMLib.leveler().postExperience(teacher, null, null, 100, false);
+			if((studentA!=null)
+			&& (!oldSkillSet.contains(theA.ID()))
+			&& (add!=0))
+			{
+				int newProficiency=studentA.proficiency() + add;
+				if(newProficiency > 75)
+					newProficiency = 75;
+				if(newProficiency < 0)
+					newProficiency = 0;
+				studentA.setProficiency(newProficiency);
+				final Ability studentEffA = student.fetchEffect(theA.ID());
+				if(studentEffA != null)
+					studentEffA.setProficiency(newProficiency);
+			}
 		}
 		else
 		if(learnThis instanceof ExpertiseDefinition)

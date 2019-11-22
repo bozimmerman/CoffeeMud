@@ -163,7 +163,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	public String confirmExpertiseLine(String row, String ID, boolean addIfPossible);
 	public List<String> getPeerStageCodes(final String expertiseCode);
 	public String getGuessedBaseExpertiseName(final String expertiseCode);
-	public void handleBeingTaught(MOB teacher, MOB student, Environmental item, String msg);
+	public void handleBeingTaught(MOB teacher, MOB student, Environmental item, String msg, int add);
 	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg);
 	public boolean postTeach(MOB teacher, MOB student, CMObject teachObj);
 	public Iterator<String> filterUniqueExpertiseIDList(Iterator<String> i);
