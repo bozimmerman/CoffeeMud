@@ -291,7 +291,6 @@ public class Generate extends StdCommand
 						}
 						final String name=(String)definedIDs.get("QUEST_ID");
 						final Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
-						//mob.tell((String)V.get(0));//TODO:BZ:DELME
 						Q.setScript((String)V.get(0),true);
 						if((Q.name().trim().length()==0)||(Q.duration()<0))
 						{

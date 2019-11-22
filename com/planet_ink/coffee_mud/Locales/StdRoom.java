@@ -468,7 +468,11 @@ public class StdRoom implements Room
 	public Area getArea()
 	{
 		if(myArea==null)
-			return CMClass.randomArea();
+		{
+			final Area A=CMClass.randomArea();
+			if(A==null)
+				return null;
+		}
 		return myArea;
 	}
 

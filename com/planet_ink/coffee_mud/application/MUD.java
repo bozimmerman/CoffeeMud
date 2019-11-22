@@ -813,7 +813,11 @@ public class MUD extends Thread implements MudHost
 			for(final Session S2 : list.allIterable())
 			{
 				if((S!=null)&&(S2==S))
+				{
+					if(mob!=null)
+						mob.removeFromGame(true, false);
 					list.remove(S2);
+				}
 				else
 				{
 					shutdownStateTime.set(System.currentTimeMillis());
@@ -992,8 +996,6 @@ public class MUD extends Thread implements MudHost
 			if(S!=null)
 				S.println(CMLib.lang().L("Restarting..."));
 		}
-		if(S!=null)
-			S.stopSession(true,true,false);
 		shutdownStateTime.set(0);
 		shutdownWatchThread.interrupt();
 		checkedSleep(500);

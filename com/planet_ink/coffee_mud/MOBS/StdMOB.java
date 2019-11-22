@@ -1199,8 +1199,7 @@ public class StdMOB implements MOB
 					addFollower(newFol, oldFollowers.getSecond(f).intValue());
 				}
 			}
-			if((pStats!=null)
-			&&(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))) // because removefromgame only happens on room destructions
+			if(pStats!=null)
 			{
 				pStats.setLastDateTime(System.currentTimeMillis());
 				CMLib.database().DBUpdateFollowers(this);

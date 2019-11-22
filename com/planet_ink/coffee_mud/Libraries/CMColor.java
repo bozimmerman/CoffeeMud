@@ -871,7 +871,6 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			});
 			color256s=list.toArray(new Color256[0]);
 		}
-		//generateRecipes(); //BZ:DELME
 		return true;
 	}
 
