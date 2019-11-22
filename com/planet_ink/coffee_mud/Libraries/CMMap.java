@@ -61,6 +61,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public final BigDecimal 	ALMOST_ZERO			= BigDecimal.valueOf(ZERO_ALMOST);
 	public final BigDecimal 	ONE 				= BigDecimal.valueOf(1L);
 	public final BigDecimal 	TWO 				= BigDecimal.valueOf(2L);
+	public final BigDecimal 	ONE_THOUSAND		= BigDecimal.valueOf(1000);
 	public final double			PI_ALMOST			= Math.PI-ZERO_ALMOST;
 	public final double			PI_TIMES_2			= Math.PI*2.0;
 	public final double			PI_BY_2				= Math.PI/2.0;
@@ -720,27 +721,6 @@ public class CMMap extends StdLibrary implements WorldMap
 		return getDirection(fromObj.coordinates(),toObj.coordinates());
 	}
 
-	@Override
-	public double[] getDirection(final long[] fromCoords, final long[] toCoords)
-	{
-		final double[] dir=new double[2];
-		final double x=toCoords[0]-fromCoords[0];
-		final double y=toCoords[1]-fromCoords[1];
-		final double z=toCoords[2]-fromCoords[2];
-		if((x!=0)||(y!=0))
-		{
-			if(x<0)
-				dir[0]=Math.PI-Math.asin(y/Math.sqrt((x*x)+(y*y)));
-			else
-				dir[0]=Math.asin(y/Math.sqrt((x*x)+(y*y)));
-		}
-		if((x!=0)||(y!=0)||(z!=0))
-			dir[1]=Math.acos(z/Math.sqrt((z*z)+(y*y)+(x*x)));
-		if(dir[1] > Math.PI)
-			dir[1] = Math.abs(Math.PI-dir[1]);
-		return dir;
-	}
-
 	protected void moveSpaceObject(final SpaceObject O, final long x, final long y, final long z)
 	{
 		synchronized(space)
@@ -774,6 +754,29 @@ public class CMMap extends StdLibrary implements WorldMap
 							O.coordinates()[1]+Math.round(CMath.mul(O.speed(),y1)),
 							O.coordinates()[2]+Math.round(CMath.mul(O.speed(),z1)));
 		}
+	}
+
+	@Override
+	public double[] getDirection(final long[] fromCoords, final long[] toCoords)
+	{
+		final double[] dir=new double[2];
+		final double x=toCoords[0]-fromCoords[0];
+		final double y=toCoords[1]-fromCoords[1];
+		final double z=toCoords[2]-fromCoords[2];
+		if((x!=0)||(y!=0))
+		{
+			if(x<0)
+				dir[0]=Math.PI-Math.asin(y/Math.sqrt((x*x)+(y*y)));
+			else
+				dir[0]=Math.asin(y/Math.sqrt((x*x)+(y*y)));
+			if(dir[0] > 2*Math.PI)
+				dir[0] = Math.abs(2*Math.PI-dir[0]);
+		}
+		if((x!=0)||(y!=0)||(z!=0))
+			dir[1]=Math.acos(z/Math.sqrt((z*z)+(y*y)+(x*x)));
+		if(dir[1] > Math.PI)
+			dir[1] = Math.abs(Math.PI-dir[1]);
+		return dir;
 	}
 
 	@Override
@@ -4321,22 +4324,14 @@ public class CMMap extends StdLibrary implements WorldMap
 			//Log.debugOut("1:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
 			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
 		}
-		final BigDecimal currentDistancePow2 = currentDistance.multiply(currentDistance);
-		final BigDecimal baseDistancePow2 = baseDistance.multiply(baseDistance);
-		final BigDecimal prevDistancePow2 = prevDistance.multiply(prevDistance);
-		if((prevDistancePow2.add(baseDistancePow2).subtract(currentDistancePow2).doubleValue()>0)
-		||(currentDistancePow2.add(baseDistancePow2).subtract(prevDistancePow2).doubleValue()>0))
-		{
-			//Log.debugOut("2:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
-			return Math.min(currentDistance.doubleValue(), prevDistance.doubleValue());
-		}
+		//Log.debugOut("prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
 
 		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO, RoundingMode.HALF_UP);
 		final BigDecimal areaOfTriangle=BigDecimal.valueOf(CMath.sqrt(CMath.abs(
 				semiPerimeter.multiply(semiPerimeter.subtract(currentDistance))
 							.multiply(semiPerimeter.subtract(baseDistance))
 							.multiply(semiPerimeter.subtract(prevDistance)).doubleValue())));
-		//Log.debugOut("semiPerimeter="+semiPerimeter.longValue()+", areaOfTriangle="+baseDistance.longValue());
+		//Log.debugOut("semiPerimeter="+semiPerimeter.longValue()+", areaOfTriangle="+areaOfTriangle.doubleValue());
 		if(areaOfTriangle.equals(ZERO))
 		{
 			if (Math.abs(semiPerimeter.subtract(baseDistance).doubleValue()) <= 1)
@@ -4345,6 +4340,9 @@ public class CMMap extends StdLibrary implements WorldMap
 				return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
 		}
 		//Log.debugOut("getMinDistanceFrom="+TWO.multiply(areaOfTriangle).divide(baseDistance, RoundingMode.HALF_UP).doubleValue());
+		if((baseDistance.multiply(ONE_THOUSAND).compareTo(currentDistance)<0)
+		&&(baseDistance.multiply(ONE_THOUSAND).compareTo(prevDistance)<0))
+			return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());
 		return TWO.multiply(areaOfTriangle).divide(baseDistance, RoundingMode.HALF_UP).doubleValue();
 	}
 }
