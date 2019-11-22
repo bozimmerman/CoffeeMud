@@ -146,9 +146,13 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		{
 			setDirection(Arrays.copyOf(((LocationRoom)R).getDirectionFromCore(),2));
 			direction()[0]+=CMLib.dice().plusOrMinus(Math.PI/10.0);
+			if(direction[0] > 2*Math.PI)
+				direction[0] -= 2*Math.PI;
 			if(direction()[0]<0)
 				direction()[0]+=(Math.PI*2);
 			direction()[1]+=CMath.abs(CMLib.dice().plusOrMinus(Math.PI/10.0));
+			if(direction[1] > Math.PI)
+				direction[1] -= Math.PI;
 			setFacing(Arrays.copyOf(direction(),2));
 		}
 		if(moveToOutside)
