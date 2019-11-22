@@ -162,6 +162,39 @@ public class CraftingSkill extends GatheringSkill
 		return newWeight;
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	protected List<List<String>> loadRecipes(final String filename)
+	{
+		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
+		if(V==null)
+		{
+			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
+			V=loadList(str);
+			Collections.sort(V,new Comparator<List<String>>()
+			{
+				@Override
+				public int compare(final List<String> o1, final List<String> o2)
+				{
+					if(o1.size()<=RCP_LEVEL)
+						return -1;
+					if(o2.size()<=RCP_LEVEL)
+						return 1;
+					final int level1=CMath.s_int(o1.get(RCP_LEVEL));
+					final int level2=CMath.s_int(o2.get(RCP_LEVEL));
+					return (level1>level2)?1:(level1<level2)?-1:0;
+				}
+			});
+			if((V.size()==0)
+			&&(!ID().equals("GenCraftSkill"))
+			&&(!ID().endsWith("Costuming")))
+				Log.errOut(ID(),"Recipes not found!");
+			V=new ReadOnlyList<List<String>>(V);
+			Resources.submitResource("PARSED_RECIPE: "+filename,V);
+		}
+		return V;
+	}
+	
 	protected String determineFinalResourceName(final int backupMaterial, final MaterialLibrary.DeadResourceRecord res1, final MaterialLibrary.DeadResourceRecord res2)
 	{
 		if((res1 != null)&&(res1.subType.length()>0))
@@ -194,20 +227,6 @@ public class CraftingSkill extends GatheringSkill
 	{
 		if(mob==null)
 			return recipes;
-		Collections.sort(recipes,new Comparator<List<String>>()
-		{
-			@Override
-			public int compare(final List<String> o1, final List<String> o2)
-			{
-				if(o1.size()<=RCP_LEVEL)
-					return -1;
-				if(o2.size()<=RCP_LEVEL)
-					return 1;
-				final int level1=CMath.s_int(o1.get(RCP_LEVEL));
-				final int level2=CMath.s_int(o2.get(RCP_LEVEL));
-				return (level1>level2)?1:(level1<level2)?-1:0;
-			}
-		});
 		return super.addRecipes(mob, recipes);
 	}
 
