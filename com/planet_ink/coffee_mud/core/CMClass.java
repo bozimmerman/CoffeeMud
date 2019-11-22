@@ -858,9 +858,14 @@ public class CMClass extends ClassLoader
 	 */
 	public static final Area randomArea()
 	{
-		final List<Area> areaTypes=c().areaTypes;
+		List<Area> areaTypes=c().areaTypes;
 		if(areaTypes.size()==0)
-			return null;
+		{
+			if(clss['0'].areaTypes.size()>0)
+				areaTypes=c().areaTypes;
+			else
+				return null;
+		}
 		return areaTypes.get((int) Math.round(Math.floor(Math.random() * areaTypes.size())));
 	}
 
