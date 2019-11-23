@@ -1,11 +1,9 @@
 BUGS
-   *. A standard rocket ship didn't launch?!  It just hovers at 50dm and never gains speed despite accelleration!
-
 
 TECH
    *. test phaser and missile targeting systems 
    *. add window/viewscreen type sensor: formula for things you see: ATAN(shipsize in km/range to ship)>0.0015
-   *. test ship phaser, laser systems against shield types - murder motel 
+   *. test ship phaser, laser systems against shield types - murder motel
    *. make ship torpedo launchers and torpedo containers-- see tech doc
    *. make ship impulse and warp engines -- see tech doc
    *. make more ship sensors, giant window for seeing in front, targeted scaling windows for st view screens
