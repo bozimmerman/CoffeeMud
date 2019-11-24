@@ -28,7 +28,7 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		T = new TreeSet<K>();
 	}
 
-	public STreeSet(final Comparator<K> comp)
+	public STreeSet(final Comparator<Object> comp)
 	{
 		T = new TreeSet<K>(comp);
 	}
