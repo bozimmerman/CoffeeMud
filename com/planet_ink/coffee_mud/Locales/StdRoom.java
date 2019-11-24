@@ -468,11 +468,7 @@ public class StdRoom implements Room
 	public Area getArea()
 	{
 		if(myArea==null)
-		{
-			final Area A=CMClass.randomArea();
-			if(A==null)
-				return null;
-		}
+			return CMClass.randomArea();
 		return myArea;
 	}
 
@@ -509,6 +505,9 @@ public class StdRoom implements Room
 		if(depth>1000)
 			return;
 
+		final Area A=getArea();
+		if(A==null)
+			return;
 		skyedYet=true;
 		if((roomID().length()==0)
 		&&(getGridParent()!=null)
