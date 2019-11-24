@@ -54,11 +54,12 @@ public class Prop_Retainable extends Property
 
 	protected Room	lastRoom						= null;
 
-	protected long	payPeriodLengthInMilliseconds	= 0;
-	protected int	payPeriodLengthInMudDays		= 0;
-	protected int	payAmountPerPayPeriod			= 0;
-	protected long	lastPayDayTimestamp				= 0;
-	protected long	lastMoveIn						= 0;
+	protected long		payPeriodLengthInMS			= 0;
+	protected int		payPeriodLengthInMudDays	= 0;
+	protected int		payAmountPerPayPeriod		= 0;
+	protected long		lastPayDayTimestamp			= 0;
+	protected long		lastMoveIn					= 0;
+	protected boolean	persist						= false;
 
 	@Override
 	public String accountForYourself()
@@ -66,35 +67,63 @@ public class Prop_Retainable extends Property
 		return "Retainable";
 	}
 
+	private int findInt(final String str)
+	{
+		for(final String s : CMParms.parse(str))
+		{
+			if(CMath.isInteger(s))
+				return CMath.s_int(s);
+		}
+		return 0;
+	}
+	
+	private long findLong(final String str)
+	{
+		for(final String s : CMParms.parse(str))
+		{
+			if(CMath.isInteger(s))
+				return CMath.s_long(s);
+		}
+		return 0;
+	}
+	
 	@Override
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		int x=text.indexOf(';');
-		if(x<0)
+		persist=false;
+		final List<String> parts=CMParms.parseSemicolons(text,true);
+		lastPayDayTimestamp=0;
+		payPeriodLengthInMudDays=0;
+		payAmountPerPayPeriod=0;
+		if((parts.size()>0)&&(text.length()>0))
 		{
-			payAmountPerPayPeriod=CMath.s_int(text);
+			for(final String txt : parts)
+				persist=CMParms.getParmBool(txt, "PERSIST", persist);
+			payAmountPerPayPeriod=findInt(parts.get(0));
 			lastPayDayTimestamp=0;
 			payPeriodLengthInMudDays=0;
-		}
-		else
-		{
-			payAmountPerPayPeriod=CMath.s_int(text.substring(0,x));
-			text=text.substring(x+1);
-			x=text.indexOf(';');
-			if(x<0)
+			if(parts.size()>1)
 			{
-				payPeriodLengthInMudDays=CMath.s_int(text);
-				lastPayDayTimestamp=0;
-			}
-			else
-			{
-				payPeriodLengthInMudDays=CMath.s_int(text.substring(0,x));
-				lastPayDayTimestamp=CMath.s_long(text.substring(x+1));
+				payPeriodLengthInMudDays=findInt(parts.get(1));
+				if(parts.size()>2)
+				{
+					lastPayDayTimestamp=findLong(CMParms.combine(parts,2));
+				}
 			}
 		}
 	}
 
+	@Override
+	public String text()
+	{
+		if(persist)
+			miscText=payAmountPerPayPeriod+" PERSIST=true;"+payPeriodLengthInMudDays+";"+lastPayDayTimestamp;
+		else
+			miscText=payAmountPerPayPeriod+";"+payPeriodLengthInMudDays+";"+lastPayDayTimestamp;
+		return miscText;
+	}
+	
 	public void quit(final MOB mob, final String msg)
 	{
 	}
@@ -126,18 +155,16 @@ public class Prop_Retainable extends Property
 				if(payPeriodLengthInMudDays>0)
 				{
 					if(lastPayDayTimestamp==0)
-					{
 						lastPayDayTimestamp=System.currentTimeMillis();
-						miscText=payAmountPerPayPeriod+";"+payPeriodLengthInMudDays+";"+lastPayDayTimestamp;
-					}
-					if(payPeriodLengthInMilliseconds<=0)
-						payPeriodLengthInMilliseconds=((long)payPeriodLengthInMudDays)
+					if(payPeriodLengthInMS<=0)
+					{
+						payPeriodLengthInMS=((long)payPeriodLengthInMudDays)
 										*((long)CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY))*CMProps.getTickMillis();
-					if((System.currentTimeMillis()>(lastPayDayTimestamp+payPeriodLengthInMilliseconds))
+					}
+					if((System.currentTimeMillis()>(lastPayDayTimestamp+payPeriodLengthInMS))
 					&&(CMLib.flags().isInTheGame(mob,true)))
 					{
 						lastPayDayTimestamp=System.currentTimeMillis();
-						miscText=payAmountPerPayPeriod+";"+payPeriodLengthInMudDays+";"+lastPayDayTimestamp;
 						final LandTitle t=CMLib.law().getLandTitle(mob.location());
 						String owner="";
 						if(mob.amFollowing()!=null)
