@@ -2635,22 +2635,25 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				&&((R.domainType()&Room.INDOORS)==0))
 				{
 					final Set<MOB> mobs=CMLib.players().getPlayersHere(R);
-					for(final MOB mob : new XTreeSet<MOB>(mobs))
+					if(mobs.size()>0)
 					{
-						if(mob == null)
-							continue;
-						final CMMsg lookMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK,null);
-						final CMMsg lookExitMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK_EXITS,null);
-						if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))
-						&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH)
-						&&(CMLib.flags().canBeSeenBy(targetR,mob)))
+						for(final MOB mob : new XTreeSet<MOB>(mobs))
 						{
-							if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=CMProps.Int.EXVIEW_MIXED)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
-								lookExitMsg.setValue(CMMsg.MASK_OPTIMIZE);
-							lookMsg.addTrailerMsg(lookExitMsg);
+							if(mob == null)
+								continue;
+							final CMMsg lookMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK,null);
+							final CMMsg lookExitMsg=CMClass.getMsg(mob,targetR,null,CMMsg.MSG_LOOK_EXITS,null);
+							if((mob.isAttributeSet(MOB.Attrib.AUTOEXITS))
+							&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH)
+							&&(CMLib.flags().canBeSeenBy(targetR,mob)))
+							{
+								if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=CMProps.Int.EXVIEW_MIXED)!=mob.isAttributeSet(MOB.Attrib.BRIEF))
+									lookExitMsg.setValue(CMMsg.MASK_OPTIMIZE);
+								lookMsg.addTrailerMsg(lookExitMsg);
+							}
+							if(targetR.okMessage(mob,lookMsg))
+								targetR.send(mob,lookMsg);
 						}
-						if(targetR.okMessage(mob,lookMsg))
-							targetR.send(mob,lookMsg);
 					}
 				}
 			}
