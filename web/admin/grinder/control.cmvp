@@ -605,7 +605,8 @@
 		  @ForumJournalNext?NEXT&ALLFORUMJOURNALS@
 			<TR>
 				<TD WIDTH=200 VALIGN=TOP><FONT COLOR=WHITE>
-				Name:<br> <INPUT NAME="FORUMJOURNAL_@RequestParameter?NUM@_NAME" SIZE=20 VALUE="@ForumInfo?NAME@"><br>
+				<FONT COLOR=YELLOW><B>Name</B></FONT>:<br> <INPUT NAME="FORUMJOURNAL_@RequestParameter?NUM@_NAME" SIZE=20 VALUE="@ForumInfo?NAME@"><br>
+				Category:<br> <INPUT NAME="FORUMJOURNAL_@RequestParameter?NUM@_CATEGORY" SIZE=20 VALUE="@ForumInfo?CATEGORY@"><br>
 				Expire:<br> <INPUT NAME="FORUMJOURNAL_@RequestParameter?NUM@_EXPIRE" SIZE=20 VALUE="@ForumInfo?EXPIRE@">
 				</TD>
 				<TD VALIGN=TOP>

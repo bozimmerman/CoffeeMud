@@ -243,7 +243,7 @@ public class Fighter_MonkeyGrip extends FighterSkill
 				{
 					try
 					{
-						C.executeInternal(mob, 0, weapon, true);
+						C.executeInternal(mob, 0, weapon, Boolean.TRUE);
 					}
 					catch (final IOException e)
 					{

@@ -97,7 +97,7 @@ public class ForumJournalNext extends StdWebMacro
 			if(journals==null)
 			{
 				journals=new Vector<String>();
-				for(final Enumeration<JournalsLibrary.ForumJournal> e=CMLib.journals().forumJournals();e.hasMoreElements();)
+				for(final Enumeration<JournalsLibrary.ForumJournal> e=CMLib.journals().forumJournalsSorted();e.hasMoreElements();)
 				{
 					final JournalsLibrary.ForumJournal CJ=e.nextElement();
 					if((!journals.contains(CJ.NAME().toUpperCase()))
@@ -107,6 +107,7 @@ public class ForumJournalNext extends StdWebMacro
 				httpReq.getRequestObjects().put("JOURNALLIST",journals);
 			}
 		}
+		
 		String lastID="";
 		final Set<String> H=CMLib.journals().getArchonJournalNames();
 		boolean allForumJournals=false;

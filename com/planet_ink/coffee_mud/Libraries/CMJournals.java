@@ -47,8 +47,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	public final int QUEUE_SIZE=100;
-	protected final SHashtable<String,CommandJournal>	 commandJournals	= new SHashtable<String,CommandJournal>();
-	protected final SHashtable<String,ForumJournal>	 	 forumJournals		= new SHashtable<String,ForumJournal>();
+	protected final SHashtable<String,CommandJournal>	commandJournals		= new SHashtable<String,CommandJournal>();
+	protected final Vector<ForumJournal> 				forumJournalsSorted	= new Vector<ForumJournal>();
+	protected final SHashtable<String,ForumJournal>	 	forumJournals		= new SHashtable<String,ForumJournal>();
 	protected final SHashtable<String,List<ForumJournal>>clanForums			= new SHashtable<String,List<ForumJournal>>();
 
 	protected final static List<ForumJournal> emptyForums = new ReadOnlyVector<ForumJournal>(0);
@@ -367,9 +368,42 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	{
 		clearForumJournals();
 		final List<ForumJournal> journals = parseForumJournals(list);
+		final List<String> catList=new ArrayList<String>();
+		catList.add("");
+		for(final ForumJournal CJ : journals)
+		{
+			if(!catList.contains(CJ.category()))
+				catList.add(CJ.category());
+		}
+		Collections.sort(journals, new Comparator<ForumJournal>()
+		{
+			@Override
+			public int compare(final ForumJournal j1, final ForumJournal j2)
+			{
+				if(j1==null)
+					return (j2==null)?0:-1;
+				else
+				if(j2==null)
+					return 1;
+				final int idx1;
+				final int idx2;
+				if(j1.category().equalsIgnoreCase(j2.category()))
+				{
+					idx1=journals.indexOf(j1);
+					idx2=journals.indexOf(j2);
+				}
+				else
+				{
+					idx1=catList.indexOf(j1.category());
+					idx2=catList.indexOf(j2.category());
+				}
+				return (idx1==idx2)?0:((idx1<idx2)?-1:1);
+			}
+		});
 		for(final ForumJournal F : journals)
 		{
 			forumJournals.put(F.NAME().toUpperCase().trim(), F);
+			forumJournalsSorted.add(F);
 			CMSecurity.registerJournal(F.NAME().toUpperCase().trim());
 		}
 		return forumJournals.size();
@@ -441,7 +475,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				int y=x;
 				while((y>0)&&(!Character.isWhitespace(item.charAt(y))))
 					y--;
-				final String rest = item.toUpperCase().substring(y+1).trim();
+				final String rest = item.substring(y+1).trim();
 				item=item.substring(0,y);
 				final Vector<Integer> flagDexes = new Vector<Integer>();
 				x=rest.indexOf('=');
@@ -474,25 +508,27 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					{
 						final ForumJournalFlags flagVar = ForumJournalFlags.valueOf(piece.substring(0,x).toUpperCase().trim());
 						final String flagVal = piece.substring(x+1);
-						flags.put(flagVar, flagVal);
+						if(flagVar==ForumJournalFlags.CATEGORY)
+							flags.put(flagVar, flagVal);
+						else
+							flags.put(flagVar, flagVal.toUpperCase());
 					}
 					catch(final Exception e)
 					{
 					}
 				}
 			}
-			String mask;
-			mask=flags.remove(ForumJournalFlags.READ);
-			final String readMask=(mask != null)?mask.trim():"";
-			mask=flags.remove(ForumJournalFlags.POST);
-			final String postMask=(mask != null)?mask.trim():"";
-			mask=flags.remove(ForumJournalFlags.REPLY);
-			final String replyMask=(mask != null)?mask.trim():"";
-			mask=flags.remove(ForumJournalFlags.ADMIN);
-			final String adminMask=(mask != null)?mask.trim():"";
-			final String name = item.trim();
+			final String forumName = item.trim();
 			journals.add(new ForumJournal()
 			{
+				final String name = forumName;
+				final Map<ForumJournalFlags,String> flagMap = new XHashtable<ForumJournalFlags,String>(flags);
+				final String readMask=flagMap.containsKey(ForumJournalFlags.READ)?flagMap.get(ForumJournalFlags.READ).trim():"";
+				final String postMask=flagMap.containsKey(ForumJournalFlags.POST)?flagMap.get(ForumJournalFlags.POST).trim():"";
+				final String replyMask=flagMap.containsKey(ForumJournalFlags.REPLY)?flagMap.get(ForumJournalFlags.REPLY).trim():"";
+				final String adminMask=flagMap.containsKey(ForumJournalFlags.ADMIN)?flagMap.get(ForumJournalFlags.ADMIN).trim():"";
+				final String category =flagMap.containsKey(ForumJournalFlags.CATEGORY)?flagMap.get(ForumJournalFlags.CATEGORY).trim():"";
+				
 				@Override
 				public String NAME()
 				{
@@ -526,7 +562,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				@Override
 				public String getFlag(final ForumJournalFlags flag)
 				{
-					return flags.get(flag);
+					return flagMap.get(flag);
 				}
 
 				@Override
@@ -557,6 +593,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					if(fl==ForumJournalFlags.ADMIN)
 						return maskCheck(M,adminMask);
 					return false;
+				}
+
+				@Override
+				public String category()
+				{
+					return category;
 				}
 			});
 		}
@@ -748,6 +790,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override
+	public Enumeration<ForumJournal> forumJournalsSorted()
+	{
+		return forumJournalsSorted.elements();
+	}
+
+	@Override
 	public ForumJournal getForumJournal(final String named)
 	{
 		return forumJournals.get(named.toUpperCase().trim());
@@ -781,6 +829,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	private void clearForumJournals()
 	{
 		forumJournals.clear();
+		forumJournalsSorted.clear();
 		Resources.removeResource("FORUM_JOURNAL_STATS");
 	}
 

@@ -105,15 +105,25 @@
 	<TD WIDTH=60px ALIGN=CENTER><FONT COLOR=WHITE SIZE=-1><B>Threads</B></FONT></TD>
 	<TD WIDTH=60px ALIGN=CENTER><FONT COLOR=WHITE SIZE=-1><B>Posts</B></FONT></TD>
 </TR>
+@AddRequestParameter?LCAT=@
 @ForumJournalNext?RESET@
 @loop@
 	@ForumJournalNext@
+	@if?!CheckReqParm?LCAT=@@ForumInfo?CATEGORY@@ @
+		@AddRequestParameter?LCAT=@@ForumInfo?CATEGORY@@ @
+		@if?!CheckReqParm?LCAT=@
+			<TR>
+				<TD WIDTH=40px VALIGN=CENTER ALIGN=CENTER BGCOLOR=GREY></TD>
+				<TD BGCOLOR=GREY COLSPAN=4><B><FONT COLOR=WHITE>@ForumInfo?CATEGORY@</FONT></B></TD>
+			</TR>
+		@endif@
+	@endif@
 	<TR>
 	<TD WIDTH=40px VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTGREY><IMG WIDTH=30 HEIGHT=30 SRC=@ForumInfo?IMAGEPATH@></TD>
 	<TD BGCOLOR=LIGHTGREY>
 		<a href="javascript:DoForum('@JournalName@');"><B><FONT COLOR=BLACK>@JournalName?NOCOLOR@</FONT></B></a><BR>
 		<FONT COLOR=BLACK SIZE=-1>@ForumInfo?SHORTDESC@</FONT>
-		</TD>
+	</TD>
 	<TD VALIGN=CENTER ALIGN=LEFT BGCOLOR=LIGHTBLUE>
 		@AddRequestParameter?JOURNALMESSAGE=FORUMLATEST@
 		@if?JournalInfo?ISMESSAGE@

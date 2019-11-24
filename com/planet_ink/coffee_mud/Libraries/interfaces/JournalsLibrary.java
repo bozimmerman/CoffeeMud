@@ -45,6 +45,7 @@ public interface JournalsLibrary extends CMLibrary
 	public boolean canReadMessage(JournalEntry entry, String srchMatch, MOB readerM, boolean ignorePrivileges);
 	public int loadForumJournals(String list);
 	public Enumeration<ForumJournal> forumJournals();
+	public Enumeration<ForumJournal> forumJournalsSorted();
 	public ForumJournal getForumJournal(String named);
 	public ForumJournal getForumJournal(String named, Clan clan);
 	public int getNumForumJournals();
@@ -131,6 +132,7 @@ public interface JournalsLibrary extends CMLibrary
 	public static interface ForumJournal
 	{
 		public String NAME();
+		public String category();
 		public String readMask();
 		public String postMask();
 		public String replyMask();
@@ -147,6 +149,7 @@ public interface JournalsLibrary extends CMLibrary
 		POST,
 		REPLY,
 		ADMIN,
-		SORTBY;
+		SORTBY,
+		CATEGORY;
 	}
 }

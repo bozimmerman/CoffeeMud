@@ -68,7 +68,7 @@ public class Catalog extends StdCommand
 		String msg="<S-NAME> catalog(s) <T-NAMESELF> into category '"+newCat+"'.";
 		final CataData data=CMLib.catalog().getCatalogData(cataP);
 		final String oldCat=(data!=null)?data.category():"";
-		final String catagory=(data!=null)?" in category '"+oldCat+"'":"";
+		final String category=(data!=null)?" in category '"+oldCat+"'":"";
 		/*
 		if(CMLib.flags().isCataloged(P))
 		{
@@ -85,7 +85,7 @@ public class Catalog extends StdCommand
 				if((data!=null)&&(!data.category().equals(newCat)))
 				{
 					if((mob.session()==null)
-					||(!mob.session().confirm(L("The object '@x1' already exists in the catalog@x2 , exactly as it is.  Would you like to change it to category '@x3'(y/N)?",cataP.Name(),catagory,newCat),"N")))
+					||(!mob.session().confirm(L("The object '@x1' already exists in the catalog@x2 , exactly as it is.  Would you like to change it to category '@x3'(y/N)?",cataP.Name(),category,newCat),"N")))
 					{
 						return false;
 					}
@@ -97,14 +97,14 @@ public class Catalog extends StdCommand
 				}
 				else
 				{
-					mob.tell(L("The object '@x1' already exists in the catalog@x2 , exactly as it is.",cataP.Name(),catagory));
+					mob.tell(L("The object '@x1' already exists in the catalog@x2 , exactly as it is.",cataP.Name(),category));
 					return true;
 				}
 			}
 			if((data!=null)&&(!data.category().equals(newCat)))
 				diffs.insert(0,"New category: '"+newCat+"', ");
 			if((mob.session()==null)
-			||(!mob.session().confirm(L("Cataloging that object will change the existing cataloged '@x1'@x2 by altering the following properties: @x3.  Please confirm (y/N)?",P.Name(),catagory,diffs.toString()),"Y")))
+			||(!mob.session().confirm(L("Cataloging that object will change the existing cataloged '@x1'@x2 by altering the following properties: @x3.  Please confirm (y/N)?",P.Name(),category,diffs.toString()),"Y")))
 			{
 				CMLib.catalog().changeCatalogUsage(origP,false);
 				return false;

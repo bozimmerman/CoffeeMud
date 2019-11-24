@@ -8286,11 +8286,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				boolean foundendif=false;
 				@SuppressWarnings({ "unchecked", "rawtypes" })
-				final Triad<DVector,DVector,Integer> parsedBlocks = (Triad)script.elementAt(si, 3);
+				Triad<DVector,DVector,Integer> parsedBlocks = (Triad)script.elementAt(si, 3);
 				DVector subScript;
 				if(parsedBlocks==null)
 				{
 					Log.errOut("Null parsed blocks in "+s);
+					parsedBlocks = new Triad<DVector,DVector,Integer>(null,null,null);
+					script.setElementAt(si, 3, parsedBlocks);
 					subScript=null;
 				}
 				else

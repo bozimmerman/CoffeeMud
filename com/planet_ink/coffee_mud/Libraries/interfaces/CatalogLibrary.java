@@ -46,7 +46,7 @@ public interface CatalogLibrary extends CMLibrary
 {
 	/**
 	 * Creates a list of all the item keys (names) of all the items
-	 * in the catalog, regardless of catagory.
+	 * in the catalog, regardless of category.
 	 * @see CatalogLibrary#getCatalogItemNames(String)
 	 * @return a list of all the item keys
 	 */
@@ -54,17 +54,17 @@ public interface CatalogLibrary extends CMLibrary
 
 	/**
 	 * Creates a list of all the item keys (names) of all the items
-	 * in the catalog in the given catagory.  Send null to get all
-	 * items regardless of catagory
+	 * in the catalog in the given category.  Send null to get all
+	 * items regardless of category
 	 * @see CatalogLibrary#getCatalogItemNames()
-	 * @param catagory the item catagory to filter by
+	 * @param category the item category to filter by
 	 * @return a list of all the item keys
 	 */
-	public String[] getCatalogItemNames(String catagory);
+	public String[] getCatalogItemNames(String category);
 
 	/**
 	 * Creates a list of all the mob keys (names) of all the mobs
-	 * in the catalog, regardless of catagory.
+	 * in the catalog, regardless of category.
 	 * @see CatalogLibrary#getCatalogItemNames()
 	 * @see CatalogLibrary#getCatalogMobNames(String)
 	 * @return a list of all the mob keys
@@ -73,27 +73,27 @@ public interface CatalogLibrary extends CMLibrary
 
 	/**
 	 * Creates a list of all the mob keys (names) of all the mobs
-	 * in the catalog in the given catagory.  Send null to get all
-	 * mobs regardless of catagory
+	 * in the catalog in the given category.  Send null to get all
+	 * mobs regardless of category
 	 * @see CatalogLibrary#getCatalogMobNames()
-	 * @param catagory the mob catagory to filter by
+	 * @param category the mob category to filter by
 	 * @return a list of all the mob keys
 	 */
-	public String[] getCatalogMobNames(String catagory);
+	public String[] getCatalogMobNames(String category);
 
 	/**
-	 * Creates a list of all the catagories that mobs have been
+	 * Creates a list of all the categories that mobs have been
 	 * placed in.
 	 * @see CatalogLibrary#getItemCatalogCatagories()
-	 * @return a list of all the catagories
+	 * @return a list of all the categories
 	 */
 	public String[] getMobCatalogCatagories();
 
 	/**
-	 * Creates a list of all the catagories that items have been
+	 * Creates a list of all the categories that items have been
 	 * placed in.
 	 * @see CatalogLibrary#getMobCatalogCatagories()
-	 * @return a list of all the catagories
+	 * @return a list of all the categories
 	 */
 	public String[] getItemCatalogCatagories();
 
@@ -192,19 +192,19 @@ public interface CatalogLibrary extends CMLibrary
 
 	/**
 	 * Creates a new catalog item or mob from the given item or mob
-	 * in the given catagory. The given object is marked as cataloged
+	 * in the given category. The given object is marked as cataloged
 	 * and a copy if submitted to the database and memory.
 	 * @see CatalogLibrary#addCatalog(Physical)
 	 * @see CatalogLibrary#delCatalog(Physical)
 	 * @see CatalogLibrary#submitToCatalog(Physical)
-	 * @param catagory the new catagory, such as null
+	 * @param category the new category, such as null
 	 * @param PA the item or mob to create in the catalog
 	 */
-	public void addCatalog(String catagory, Physical PA);
+	public void addCatalog(String category, Physical PA);
 
 	/**
 	 * Creates a new catalog item or mob from the given item or mob
-	 * in no catagory. The given object is marked as cataloged
+	 * in no category. The given object is marked as cataloged
 	 * and a copy if submitted to the database and memory.
 	 * @see CatalogLibrary#addCatalog(String, Physical)
 	 * @see CatalogLibrary#delCatalog(Physical)
@@ -228,27 +228,27 @@ public interface CatalogLibrary extends CMLibrary
 	public void submitToCatalog(Physical P);
 
 	/**
-	 * Updates the catagory assigned to the given prototype mob or
-	 * item to the given catagory.  Catagories do not affect the
+	 * Updates the category assigned to the given prototype mob or
+	 * item to the given category.  Catagories do not affect the
 	 * requirement for a unique name/key for each mob or item. Unlike
 	 * setCatagory, this method is totally synchronized and also
 	 * clears the VFSDir cache.
 	 * @see CatalogLibrary#setCategory(Physical, String)
 	 * @param modelP the prototype mob or item
-	 * @param newCat the catagory to change it into, or null
+	 * @param newCat the category to change it into, or null
 	 */
 	public void updateCatalogCategory(Physical modelP, String newCat);
 
 	/**
-	 * Changes the catagory of the catalog item with the given
-	 * physical objects name to the given catagory. Unlike
+	 * Changes the category of the catalog item with the given
+	 * physical objects name to the given category. Unlike
 	 * updateCatalogCatagory, this method is not synchronized
 	 * and does not clear the VFSDir cache
 	 * @see CatalogLibrary#updateCatalogCategory(Physical, String)
 	 * @param P the catalog item to get a key/name from
-	 * @param catagory the new catagory, such as null
+	 * @param category the new category, such as null
 	 */
-	public void setCategory(Physical P, String catagory);
+	public void setCategory(Physical P, String category);
 
 	/**
 	 * Completely removes the given item or mob from the catalog, deleting
@@ -717,18 +717,18 @@ public interface CatalogLibrary extends CMLibrary
 		public void bumpDeathPickup();
 
 		/**
-		 * Returns the user-defined catagory to which this
+		 * Returns the user-defined category to which this
 		 * cataloged object belongs.  null is uncatagorized
 		 * @see CataData#setCategory(String)
-		 * @return the catagory name
+		 * @return the category name
 		 */
 		public String category();
 
 		/**
-		 * Sets the user-defined catagory to which this
+		 * Sets the user-defined category to which this
 		 * cataloged object belongs.  null is uncatagorized
 		 * @see CataData#category()
-		 * @param cat the catagory name
+		 * @param cat the category name
 		 */
 		public void setCategory(String cat);
 

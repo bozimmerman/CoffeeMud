@@ -139,6 +139,9 @@ public class ForumInfo extends StdWebMacro
 
 		if(parms.containsKey("NAME"))
 			str.append( ""+journal.NAME()).append(", ");
+		
+		if(parms.containsKey("CATEGORY"))
+			str.append(""+journal.category()).append(", ");
 
 		if(parms.containsKey("EXPIRE"))
 			str.append( "").append(", ");
