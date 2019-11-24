@@ -358,8 +358,11 @@ public class DefaultSocial implements Social
 			if (R.okMessage(mob, msg))
 			{
 				R.send(mob, msg);
-				if(!mob.isMonster())
+				if(mob.isPlayer())
+				{
+					CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_SOCUSE);
 					CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.SOCIALUSE, 1, this);
+				}
 			}
 		}
 		else
@@ -372,8 +375,11 @@ public class DefaultSocial implements Social
 			if (R.okMessage(mob, msg))
 			{
 				R.send(mob, msg);
-				if(!mob.isMonster())
+				if(mob.isPlayer())
+				{
+					CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_SOCUSE);
 					CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.SOCIALUSE, 1, this);
+				}
 			}
 		}
 		else
@@ -385,8 +391,11 @@ public class DefaultSocial implements Social
 			if (R.okMessage(mob, msg))
 			{
 				R.send(mob, msg);
-				if(!mob.isMonster())
+				if(mob.isPlayer())
+				{
+					CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_SOCUSE);
 					CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.SOCIALUSE, 1, this);
+				}
 				if (targetE instanceof MOB)
 				{
 					final MOB tmob = (MOB) targetE;

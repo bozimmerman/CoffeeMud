@@ -1499,7 +1499,7 @@ public class StdAbility implements Ability
 		if(A==null)
 			return;
 
-		if(!mob.isMonster())
+		if(mob.isPlayer())
 		{
 			CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_SKILLUSE);
 			CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.SKILLUSE, 1, this);

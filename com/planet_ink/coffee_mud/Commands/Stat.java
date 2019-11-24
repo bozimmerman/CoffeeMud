@@ -143,11 +143,31 @@ public class Stat  extends Skills
 		}
 		final StringBuffer table=new StringBuffer("");
 		boolean skillUse=false;
+		boolean socUse=false;
+		boolean cmdUse=false;
 		boolean questStats=false;
 		boolean areaStats=false;
 		if(rest.toUpperCase().trim().startsWith("SKILLUSE"))
 		{
 			skillUse=true;
+			final int x=rest.indexOf(' ');
+			if(x>0)
+				rest=rest.substring(x+1).trim();
+			else
+				rest="";
+		}
+		if(rest.toUpperCase().trim().startsWith("SOCUSE"))
+		{
+			socUse=true;
+			final int x=rest.indexOf(' ');
+			if(x>0)
+				rest=rest.substring(x+1).trim();
+			else
+				rest="";
+		}
+		if(rest.toUpperCase().trim().startsWith("CMDUSE"))
+		{
+			cmdUse=true;
 			final int x=rest.indexOf(' ');
 			if(x>0)
 				rest=rest.substring(x+1).trim();
@@ -175,6 +195,12 @@ public class Stat  extends Skills
 		table.append("^xStatistics since "+CMLib.time().date2String(ENDQ.getTimeInMillis())+":^.^N\n\r\n\r");
 		if(skillUse)
 			table.append(CMStrings.padRight(L("Skill"),25)+CMStrings.padRight(L("Uses"),10)+CMStrings.padRight(L("Skill"),25)+CMStrings.padRight(L("Uses"),10)+"\n\r");
+		else
+		if(socUse)
+			table.append(CMStrings.padRight(L("Social"),25)+CMStrings.padRight(L("Uses"),10)+CMStrings.padRight(L("Social"),25)+CMStrings.padRight(L("Uses"),10)+"\n\r");
+		else
+		if(cmdUse)
+			table.append(CMStrings.padRight(L("Command"),25)+CMStrings.padRight(L("Uses"),10)+CMStrings.padRight(L("Command"),25)+CMStrings.padRight(L("Uses"),10)+"\n\r");
 		else
 		if(questStats)
 		{
@@ -289,6 +315,142 @@ public class Stat  extends Skills
 
 						table.append(CMStrings.padRight(""+A.ID(),25)
 								+CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_SKILLUSE],10));
+						if(cr)
+							table.append("\n\r");
+						cr=!cr;
+					}
+				}
+			}
+			if(cr)
+				table.append("\n\r");
+		}
+		else
+		if(socUse)
+		{
+			final ArrayList<Social> allSocials=new ArrayList<Social>();
+			for(final Enumeration<Social> e=CMLib.socials().getAllSocials();e.hasMoreElements();)
+				allSocials.add(e.nextElement());
+			final long[][] totals=new long[allSocials.size()][CoffeeTableRow.STAT_TOTAL];
+			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
+			{
+				lastCur=curTime;
+				final Calendar C2=Calendar.getInstance();
+				C2.setTimeInMillis(curTime);
+				C2.add(Calendar.DATE,-(scale));
+				curTime=C2.getTimeInMillis();
+				C2.set(Calendar.HOUR_OF_DAY,23);
+				C2.set(Calendar.MINUTE,59);
+				C2.set(Calendar.SECOND,59);
+				C2.set(Calendar.MILLISECOND,999);
+				curTime=C2.getTimeInMillis();
+				final ArrayList<CoffeeTableRow> set=new ArrayList<CoffeeTableRow>();
+				for(int v=V.size()-1;v>=0;v--)
+				{
+					final CoffeeTableRow T=V.get(v);
+					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+					{
+						set.add(T);
+						V.remove(v);
+					}
+				}
+				for(int s=0;s<set.size();s++)
+				{
+					final CoffeeTableRow T=set.get(s);
+					for(int x=0;x<allSocials.size();x++)
+						T.totalUp("S"+allSocials.get(x).baseName().toUpperCase(),totals[x]);
+				}
+				if(scale==0)
+					break;
+			}
+			boolean cr=false;
+			for(int x=0;x<allSocials.size();x++)
+			{
+				Social S=allSocials.get(x);
+				if(totals[x][CoffeeTableRow.STAT_SKILLUSE]>0)
+				{
+					table.append(CMStrings.padRight(""+S.baseName(),25)
+							+CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_SOCUSE],10));
+					if(cr)
+						table.append("\n\r");
+					cr=!cr;
+				}
+				x++;
+				if(x<allSocials.size())
+				{
+					S=allSocials.get(x);
+					if(totals[x][CoffeeTableRow.STAT_SOCUSE]>0)
+					{
+
+						table.append(CMStrings.padRight(""+S.baseName(),25)
+								+CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_SOCUSE],10));
+						if(cr)
+							table.append("\n\r");
+						cr=!cr;
+					}
+				}
+			}
+			if(cr)
+				table.append("\n\r");
+		}
+		else
+		if(cmdUse)
+		{
+			final ArrayList<Command> allCommands=new ArrayList<Command>();
+			for(final Enumeration<Command> e=CMClass.commands();e.hasMoreElements();)
+				allCommands.add(e.nextElement());
+			final long[][] totals=new long[allCommands.size()][CoffeeTableRow.STAT_TOTAL];
+			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
+			{
+				lastCur=curTime;
+				final Calendar C2=Calendar.getInstance();
+				C2.setTimeInMillis(curTime);
+				C2.add(Calendar.DATE,-(scale));
+				curTime=C2.getTimeInMillis();
+				C2.set(Calendar.HOUR_OF_DAY,23);
+				C2.set(Calendar.MINUTE,59);
+				C2.set(Calendar.SECOND,59);
+				C2.set(Calendar.MILLISECOND,999);
+				curTime=C2.getTimeInMillis();
+				final ArrayList<CoffeeTableRow> set=new ArrayList<CoffeeTableRow>();
+				for(int v=V.size()-1;v>=0;v--)
+				{
+					final CoffeeTableRow T=V.get(v);
+					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+					{
+						set.add(T);
+						V.remove(v);
+					}
+				}
+				for(int s=0;s<set.size();s++)
+				{
+					final CoffeeTableRow T=set.get(s);
+					for(int x=0;x<allCommands.size();x++)
+						T.totalUp("M"+allCommands.get(x).ID().toUpperCase(),totals[x]);
+				}
+				if(scale==0)
+					break;
+			}
+			boolean cr=false;
+			for(int x=0;x<allCommands.size();x++)
+			{
+				Command M=allCommands.get(x);
+				if(totals[x][CoffeeTableRow.STAT_CMDUSE]>0)
+				{
+					table.append(CMStrings.padRight(""+M.ID(),25)
+							+CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_CMDUSE],10));
+					if(cr)
+						table.append("\n\r");
+					cr=!cr;
+				}
+				x++;
+				if(x<allCommands.size())
+				{
+					M=allCommands.get(x);
+					if(totals[x][CoffeeTableRow.STAT_CMDUSE]>0)
+					{
+
+						table.append(CMStrings.padRight(""+M.ID(),25)
+								+CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_CMDUSE],10));
 						if(cr)
 							table.append("\n\r");
 						cr=!cr;

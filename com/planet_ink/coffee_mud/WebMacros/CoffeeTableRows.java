@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.Command;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -87,6 +88,168 @@ public class CoffeeTableRows extends StdWebMacro
 		long curTime=C.getTimeInMillis();
 		long lastCur=0;
 		String colspan="";
+		if(parms.containsKey("SOCUSE"))
+		{
+			final List<String> classes = new ArrayList<String>(1);
+			if(code.startsWith("S"))
+			{
+				final Social S=CMLib.socials().fetchSocial(code.substring(1),true);
+				classes.add((S==null)?null:S.baseName());
+			}
+			if(classes.size()==0)
+				classes.addAll(CMLib.socials().getSocialsList());
+
+			final long[][] totals=new long[classes.size()][CoffeeTableRow.STAT_TOTAL];
+			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
+			{
+				lastCur=curTime;
+				final Calendar C2=Calendar.getInstance();
+				C2.setTimeInMillis(curTime);
+				C2.add(Calendar.DATE,-(scale));
+				C2.set(Calendar.HOUR_OF_DAY,23);
+				C2.set(Calendar.MINUTE,59);
+				C2.set(Calendar.SECOND,59);
+				C2.set(Calendar.MILLISECOND,999);
+				curTime=C2.getTimeInMillis();
+				final List<CoffeeTableRow> set=new LinkedList<CoffeeTableRow>();
+				if(V.size()==1)
+				{
+					final CoffeeTableRow T=V.get(0);
+					set.add(T);
+					V.remove(0);
+				}
+				else
+				for(int v=V.size()-1;v>=0;v--)
+				{
+					final CoffeeTableRow T=V.get(v);
+					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+					{
+						set.add(T);
+						V.remove(v);
+					}
+				}
+				for(final CoffeeTableRow T : set)
+				{
+					for(int x=0;x<classes.size();x++)
+						T.totalUp("S"+classes.get(x),totals[x]);
+				}
+				if(scale==0)
+					break;
+			}
+			int x=-1;
+			String S=null;
+			while(x<classes.size())
+			{
+				table.append("<TR>");
+				for(int i=0;i<orderedParms.size();i++)
+				{
+					final String key=orderedParms.getFirst(i);
+					if(key.equals("COLSPAN"))
+						colspan=" COLSPAN="+orderedParms.getSecond(i);
+					else
+					if(key.equalsIgnoreCase("NEXTSOCID"))
+					{
+						x++;
+						if(x>=classes.size())
+							S=null;
+						else
+						{
+							S=classes.get(x);
+							table.append("<TD"+colspan+">"+header+S+footer+"</TD>");
+						}
+					}
+					else
+					if(key.equalsIgnoreCase("SOCUSE"))
+					{
+						if(S!=null)
+							table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_SOCUSE]+footer+"</TD>");
+					}
+				}
+				table.append("</TR>");
+			}
+		}
+		else
+		if(parms.containsKey("CMDUSE"))
+		{
+			final List<Command> classes = new ArrayList<Command>(1);
+			if(code.startsWith("M"))
+				classes.add(CMClass.getCommand(code.substring(1)));
+			if(classes.size()==0)
+			{
+				for(final Enumeration<Command> s= CMClass.commands();s.hasMoreElements();)
+					classes.add(s.nextElement());
+			}
+
+			final long[][] totals=new long[classes.size()][CoffeeTableRow.STAT_TOTAL];
+			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
+			{
+				lastCur=curTime;
+				final Calendar C2=Calendar.getInstance();
+				C2.setTimeInMillis(curTime);
+				C2.add(Calendar.DATE,-(scale));
+				C2.set(Calendar.HOUR_OF_DAY,23);
+				C2.set(Calendar.MINUTE,59);
+				C2.set(Calendar.SECOND,59);
+				C2.set(Calendar.MILLISECOND,999);
+				curTime=C2.getTimeInMillis();
+				final List<CoffeeTableRow> set=new LinkedList<CoffeeTableRow>();
+				if(V.size()==1)
+				{
+					final CoffeeTableRow T=V.get(0);
+					set.add(T);
+					V.remove(0);
+				}
+				else
+				for(int v=V.size()-1;v>=0;v--)
+				{
+					final CoffeeTableRow T=V.get(v);
+					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+					{
+						set.add(T);
+						V.remove(v);
+					}
+				}
+				for(final CoffeeTableRow T : set)
+				{
+					for(int x=0;x<classes.size();x++)
+						T.totalUp("M"+classes.get(x).ID(),totals[x]);
+				}
+				if(scale==0)
+					break;
+			}
+			int x=-1;
+			Command S=null;
+			while(x<classes.size())
+			{
+				table.append("<TR>");
+				for(int i=0;i<orderedParms.size();i++)
+				{
+					final String key=orderedParms.getFirst(i);
+					if(key.equals("COLSPAN"))
+						colspan=" COLSPAN="+orderedParms.getSecond(i);
+					else
+					if(key.equalsIgnoreCase("NEXTCMDID"))
+					{
+						x++;
+						if(x>=classes.size())
+							S=null;
+						else
+						{
+							S=classes.get(x);
+							table.append("<TD"+colspan+">"+header+S.ID()+footer+"</TD>");
+						}
+					}
+					else
+					if(key.equalsIgnoreCase("CMDUSE"))
+					{
+						if(S!=null)
+							table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_CMDUSE]+footer+"</TD>");
+					}
+				}
+				table.append("</TR>");
+			}
+		}
+		else
 		if(parms.containsKey("SKILLUSE"))
 		{
 			final List<CharClass> classes = new ArrayList<CharClass>(1);

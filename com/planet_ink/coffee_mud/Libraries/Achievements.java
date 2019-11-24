@@ -2204,6 +2204,172 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			};
 			break;
+		case CMDUSE:
+			A=new Achievement()
+			{
+				private int 				num 		= 0;
+				private final Set<String>	commandIDs 	= new TreeSet<String>();
+
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public boolean canApplyTo(final Agent agent)
+				{
+					return true;
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
+				}
+
+				@Override
+				public String getRawParmVal(final String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						private volatile int count = oldCount;
+
+						@Override
+						public Achievement getAchievement()
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(final Tattooable tracked)
+						{
+							return getCount(tracked) >= num;
+						}
+
+						@Override
+						public int getCount(final Tattooable tracked)
+						{
+							return count;
+						}
+
+						@Override
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
+						{
+							final Command C;
+							if(parms.length>0)
+							{
+								if(parms[0] instanceof String)
+									C=CMClass.getCommand((String)parms[0]);
+								else
+								if(parms[0] instanceof Command)
+									C=(Command)parms[0];
+								else
+									C=null;
+								if((C!=null)
+								&&(commandIDs.contains("*")
+									||(commandIDs.contains(C.ID()))))
+								{
+									count+=bumpNum;
+									return true;
+								}
+							}
+							return false;
+						}
+
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(final Exception e)
+							{
+								return this;
+							}
+						}
+					};
+				}
+
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
+				}
+
+				@Override
+				public String parseParms(final String parms)
+				{
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					this.num=CMath.s_int(numStr);
+					final String abilityIDs=CMParms.getParmStr(parms, "COMMANDID", "").toUpperCase().trim();
+					if(abilityIDs.length()==0)
+						return "Error: Missing COMMANDID parameter: "+abilityIDs+"!";
+					final String[] strList=abilityIDs.split(",");
+					this.commandIDs.clear();
+					for(int i=0;i<strList.length;i++)
+					{
+						final String commandID = strList[i].trim();
+						if(commandID.equals("*"))
+						{
+							this.commandIDs.add(commandID);
+							break;
+						}
+						else
+						{
+							final Command C=CMClass.getCommand(commandID);
+							if(C!=null)
+								this.commandIDs.add(C.ID());
+							else
+								return "Error: Unknown COMMANDID: "+commandID+"! Check case.";
+						}
+					}
+					if(this.commandIDs.size()==0)
+						return "Error: Unknown crafting SOCIALIDs: "+commandIDs+"! Check case.";
+					return "";
+				}
+			};
+			break;
 		case QUESTOR:
 			A=new Achievement()
 			{

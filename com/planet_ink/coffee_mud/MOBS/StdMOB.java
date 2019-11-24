@@ -2120,7 +2120,14 @@ public class StdMOB implements MOB
 		try
 		{
 			if (O instanceof Command)
+			{
+				if(playerStats!=null)
+				{
+					CMLib.achievements().possiblyBumpAchievement(this, AchievementLibrary.Event.CMDUSE, 1, (Command)O);
+					CMLib.coffeeTables().bump((Command)O,CoffeeTableRow.STAT_CMDUSE);
+				}
 				((Command) O).execute(this, new XVector<String>(commands), metaFlags);
+			}
 			else
 			if (O instanceof Social)
 				((Social) O).invoke(this, new XVector<String>(commands), null, false);

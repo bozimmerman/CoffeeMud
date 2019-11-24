@@ -166,8 +166,12 @@ public interface CoffeeTableRow extends CMCommon
 	public final int STAT_PURGES=10;
 	/** a constant index into statistics for a skill use event*/
 	public final int STAT_SKILLUSE=11;
+	/** a constant index into statistics for a social use event*/
+	public final int STAT_SOCUSE=12;
+	/** a constant index into statistics for a command use event*/
+	public final int STAT_CMDUSE=13;
 	/** a constant index of the total number of enumerated statistical events*/
-	public final int STAT_TOTAL=12;
+	public final int STAT_TOTAL=14;
 
 	/** a constant index into statistics for a quest failed start*/
 	public final int STAT_QUESTFAILEDSTART=1;

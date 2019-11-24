@@ -225,6 +225,12 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 		else
 		if(E instanceof Quest)
 			bumpVal("U"+tagFix(((Quest)E).name()),type);
+		else
+		if(E instanceof Social)
+			bumpVal("S"+tagFix(((Social)E).baseName()),type);
+		else
+		if(E instanceof Command)
+			bumpVal("M"+tagFix(((Command)E).ID()),type);
 	}
 
 	@Override
