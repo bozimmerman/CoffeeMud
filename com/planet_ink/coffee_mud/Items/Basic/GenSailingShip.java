@@ -2635,7 +2635,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				&&((R.domainType()&Room.INDOORS)==0))
 				{
 					final Set<MOB> mobs=CMLib.players().getPlayersHere(R);
-					for(final MOB mob : mobs)
+					for(final MOB mob : new XTreeSet<MOB>(mobs))
 					{
 						if(mob == null)
 							continue;
