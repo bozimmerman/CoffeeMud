@@ -276,12 +276,14 @@ public class Prop_Retainable extends Property
 					 *  -- On your property: they are removed from the game, and thus can't be saved on p.p.
 					 *  -- Somewhere else: they aren't on the property any more, and won't be saved.
 					 *
-					/*
-					if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
-					||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&((msg.target()==room)||(msg.target()==mob)||(msg.target()==mob.amFollowing())))
-					||((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.amISource(mob.amFollowing()))))
-						mob.setFollowing(null);
-					*/
+					 */
+					if(persist)
+					{
+						if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+						||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&((msg.target()==room)||(msg.target()==mob)||(msg.target()==mob.amFollowing())))
+						||((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.amISource(mob.amFollowing()))))
+							mob.setFollowing(null);
+					}
 				}
 			}
 		}
