@@ -507,7 +507,7 @@ public class Test extends StdCommand
 			{
 				try
 				{
-					mob.tell(copyYahooGroupMsg(mob,0));
+					mob.tell(copyYahooGroupMsg(mob,18201));
 				}
 				catch(Exception e)
 				{
