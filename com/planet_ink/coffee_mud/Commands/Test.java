@@ -137,11 +137,52 @@ public class Test extends StdCommand
 		P.addNonUninvokableEffect(A2);
 	}
 
-	public String copyYahooGroupMsg(int lastMsgNum)
+	public String copyYahooGroupMsg(final MOB mob, int lastMsgNum) throws Exception
 	{
 		long numTimes = 9999999;
-		final int numTotal = 0; //TODO: check the file set for total num files.
-		final int[] skipList = new int[0];
+		java.io.File dir;
+		if(java.io.File.separatorChar=='\\')
+			dir=new java.io.File("Z:\\_COFEHAS\\Misc\\yahoo-group");
+		else
+			dir=new java.io.File("/arc/_COFEHAS/Misc/yahoo-group");
+		int numTotal=0;
+		{
+			int baseTotal=dir.listFiles().length;
+			numTotal = baseTotal;
+			java.io.File F=new File(dir,""+numTotal+".json");
+			while(!F.exists())
+			{
+				int diff=(numTotal/100);
+				if(diff == 0)
+					diff = 1;
+				numTotal = numTotal-diff;
+				F=new File(dir,""+numTotal+".json");
+			}
+			while(F.exists())
+			{
+				numTotal++;
+				F=new File(dir,""+numTotal+".json");
+				if(!F.exists())
+				{
+					for(int i=0;i<100;i++)
+					{
+						F=new File(dir,""+(i+numTotal)+".json");
+						if(F.exists())
+						{
+							numTotal += i;
+							break;
+						}
+					}
+				}
+			}
+			F=new File(dir,""+numTotal+".json");
+			while(!F.exists())
+			{
+				numTotal--;
+				F=new File(dir,""+numTotal+".json");
+			}
+			mob.tell(numTotal+": highest mail file found.");
+		}
 		while ((--numTimes) >= 0)
 		{
 			lastMsgNum++;
@@ -150,81 +191,26 @@ public class Test extends StdCommand
 				lastMsgNum = numTotal;
 				return lastMsgNum + "of " + numTotal + " messages already processed";
 			}
-			if (Arrays.binarySearch(skipList, lastMsgNum) >= 0)
-				continue;
-			final String msgPage = new String("");//TODO: this is the actual message
-			int startOfSubject = msgPage.indexOf("<em class=\"msg-bg msg-bd\"");
-			if (startOfSubject < 0)
-				startOfSubject = msgPage.indexOf("<em class=\"msg-newfont\"");
-			if (startOfSubject < 0)
-			{
-				final int x = msgPage.indexOf("Message  does not exist in ");
-				if ((x > 0) && (msgPage.substring(0, x).trim().endsWith("<div class=\"ygrp-contentblock\">")))
-					continue;
-				return "Failed: to find subject start in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-			}
-			startOfSubject = msgPage.indexOf(">", startOfSubject);
-			final int endOfSubject = msgPage.indexOf("</em>", startOfSubject);
-			if (endOfSubject < 0)
-				return "Failed: to find subject end in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-			String subject = msgPage.substring(startOfSubject + 1, endOfSubject).trim();
-			if ((subject.length() == 0) || (subject.length() > 200) || (subject.indexOf('<') >= 0) || (subject.indexOf('>') >= 0))
-				return "Failed: to find VALID subject '" + subject + "' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-			int startOfDate = msgPage.indexOf("<span class=\"msg-newfont\" title=\"");
-			int endOfDate;
-			if (startOfDate > 0)
-				startOfDate += 33;// MAGIC NUMBER
-			else
-			{
-				startOfDate = msgPage.indexOf("<span class=\"msg-newfont\" title=\"");
-				if (startOfDate < 0)
-					return "Failed: to find date start in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-				startOfDate += 33;// MAGIC NUMBER
-			}
-			endOfDate = msgPage.indexOf("\"", startOfDate + 1);
-			if (endOfDate < 0)
-				return "Failed: to find date end in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-			final String dateStr = msgPage.substring(startOfDate, endOfDate).trim();
-			final SimpleDateFormat format = new SimpleDateFormat("yyyy-M-d'T'HH:mm:ss'Z'");
-			Date postDate;
-			try
-			{
-				postDate = format.parse(dateStr);
-			}
-			catch (final ParseException p)
-			{
-				return "Failed: to parse date '" + dateStr + "' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-			}
-			int startOfAuthor = msgPage.indexOf("<span class=\"name\">");
-			if (startOfAuthor < 0)
-				return "Failed: to find author start in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-			startOfAuthor = msgPage.indexOf(">", startOfAuthor + 4);
-			final int endOfAuthor = msgPage.indexOf("</span>", startOfAuthor);
-			if (endOfAuthor < 0)
-				return "Failed: to find author end in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-			String author = msgPage.substring(startOfAuthor + 1, endOfAuthor).trim();
-			author = CMStrings.replaceAll(author, "<wbr>", "").trim();
-			if (author.indexOf("profiles.yahoo.com") > 0)
-				author = author.substring(author.indexOf("\">") + 2, author.lastIndexOf("</a>"));
-			if ((author.length() == 0) || (author.length() > 100))
-				return "Failed: to find VALID author '" + author + "' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-			int startOfMsg = msgPage.indexOf("entry-content");
-			if (startOfMsg < 0)
-				return "Failed: to find message in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-			startOfMsg = msgPage.indexOf(">", startOfMsg);
-			int endOfMsg = msgPage.indexOf("<tr style=\"height:35px\">", startOfMsg);
-			if (endOfMsg < 0)
-				return "Failed: to find end of msg in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-			endOfMsg = msgPage.lastIndexOf("</div>", endOfMsg);
-			if (endOfMsg < 0)
-				return "Failed: to find end2 of msg in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-			String theMessage = msgPage.substring(startOfMsg + 1, endOfMsg).trim();
-			while (theMessage.startsWith("<br>"))
-				theMessage = theMessage.substring(4).trim();
-			while (theMessage.endsWith("<br>"))
-				theMessage = theMessage.substring(0, theMessage.length() - 4).trim();
-			theMessage = CMStrings.replaceAll(theMessage, "\n", "");
-			theMessage = CMStrings.replaceAll(theMessage, "\r", "");
+			java.io.File F=new File(dir,""+lastMsgNum+".json");
+			java.io.BufferedInputStream bin=new java.io.BufferedInputStream(new java.io.FileInputStream(F));
+			StringBuilder msgBuild = new StringBuilder("");
+			for(int i=0;i<F.length();i++)
+				msgBuild.append((char)bin.read());
+			bin.close();
+			final String msgPage = msgBuild.toString();
+			MiniJSON json=new MiniJSON();
+			final MiniJSON.JSONObject msgObj = json.parseObject(msgPage).getCheckedJSONObject("ygData");
+			
+			String subject = msgObj.getCheckedString("subject");
+			final long dateLong = CMath.s_long(msgObj.getCheckedString("postDate")) * 1000L;
+			String author = msgObj.getCheckedString("profile");
+			String theMessage=msgObj.getCheckedString("rawEmail");
+			int headerEnd=theMessage.indexOf("\r\n\r\n");
+			if(headerEnd<0)
+				return "Failed: to find header in msg:" + lastMsgNum;
+			final String theHeader=theMessage.substring(0,headerEnd+4);
+			theMessage = theMessage.substring(headerEnd+4);
+			//theMessage = CMStrings.replaceAll(theMessage, "\n", "<BR>");
 			if (theMessage.trim().length() == 0)
 				return "Failed: to find lengthy msg in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
 			final JournalsLibrary.ForumJournal forum = CMLib.journals().getForumJournal("Support");
@@ -309,8 +295,8 @@ public class Test extends StdCommand
 			msg.from (author);
 			msg.subj (CMLib.webMacroFilter().clearWebMacros(subject));
 			msg.msg (CMLib.webMacroFilter().clearWebMacros(theMessage));
-			msg.date (postDate.getTime());
-			msg.update (postDate.getTime());
+			msg.date (dateLong);
+			msg.update (dateLong);
 			msg.parent (parent);
 			msg.msgIcon ("");
 			msg.data ("");
@@ -517,6 +503,17 @@ public class Test extends StdCommand
 				}
 			}
 			else
+			if(what.equalsIgnoreCase("yahoo"))
+			{
+				try
+				{
+					mob.tell(copyYahooGroupMsg(mob,0));
+				}
+				catch(Exception e)
+				{
+					mob.tell(e.getMessage());
+				}
+			}
 			if(what.equalsIgnoreCase("levelcharts"))
 			{
 				final StringBuffer str=new StringBuffer("");
