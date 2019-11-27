@@ -589,15 +589,18 @@ public class SMTPserver extends Thread implements Tickable
 									else
 										jrnlMessage="<HTML><BODY>"+jrnlMessage+"</BODY></HTML>";
 								}
-								final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
-								final List<String> mylist=lists.get(journalName);
-								if((mylist!=null)&&(mylist.contains(msg.from())))
+								if(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
 								{
-									for(int i=0;i<mylist.size();i++)
+									final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
+									final List<String> mylist=lists.get(journalName);
+									if(mylist!=null)
 									{
-										final String emailToName=mylist.get(i);
-										if(CMProps.getBoolVar(CMProps.Bool.EMAILFORWARDING))
-											CMLib.database().DBWriteJournalEmail(mailboxName(),journalName,msg.from(),emailToName,jrnlSubj,jrnlMessage);
+										for(int i=0;i<mylist.size();i++)
+										{
+											final String emailToName=mylist.get(i);
+											if(!emailToName.equalsIgnoreCase(msg.from()))
+												CMLib.database().DBWriteJournalEmail(mailboxName(),journalName,msg.from(),emailToName,jrnlSubj,jrnlMessage);
+										}
 									}
 								}
 							}
