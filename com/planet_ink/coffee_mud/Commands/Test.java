@@ -28,6 +28,7 @@ import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
 import com.planet_ink.coffee_web.http.HTTPMethod;
 import com.planet_ink.coffee_web.http.MultiPartData;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
+import com.sun.xml.internal.messaging.saaj.util.Base64;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -137,6 +138,41 @@ public class Test extends StdCommand
 		P.addNonUninvokableEffect(A2);
 	}
 
+	private Map<String,List<String>> parseHeaders(final String header)
+	{
+		final Map<String,List<String>> headers = new HashMap<String,List<String>>();
+		for(final String rawHeader : header.split("\r\n"))
+		{
+			final int x=rawHeader.indexOf(':');
+			final String headerKey=rawHeader.substring(0,x).trim().toUpperCase();
+			final List<String> headerVals = new ArrayList<String>();
+			headerVals.addAll(Arrays.asList(rawHeader.substring(x+1).trim().split(";")));
+			headers.put(headerKey, headerVals);
+		}
+		return headers;
+	}
+	
+	private String decodeQuotedPrintable(final String str)
+	{
+		final StringBuilder nstr=new StringBuilder("");
+		for(int c=0;c<str.length();c++)
+		{
+			final char ch=str.charAt(c);
+			if(ch=='=')
+			{
+				char ch1=Character.toUpperCase(str.charAt(++c));
+				char ch2=Character.toUpperCase(str.charAt(++c));
+				int hex1="0123456789ABCDEF".indexOf(ch1);
+				int hex2="0123456789ABCDEF".indexOf(ch2);
+				if((hex1>=0)&&(hex2>=0))
+					nstr.append((char)((hex1*16)+hex2));
+			}
+			else
+				nstr.append(ch);
+		}
+		return nstr.toString();
+	}
+	
 	public String copyYahooGroupMsg(final MOB mob, int lastMsgNum) throws Exception
 	{
 		long numTimes = 9999999;
@@ -208,15 +244,7 @@ public class Test extends StdCommand
 			final int headerEnd=theMessage.indexOf("\r\n\r\n");
 			if(headerEnd<0)
 				return "Failed: to find header in msg:" + lastMsgNum;
-			final Map<String,List<String>> headers = new HashMap<String,List<String>>();
-			for(final String rawHeader : theMessage.substring(0,headerEnd+4).split("\r\n"))
-			{
-				final int x=rawHeader.indexOf(':');
-				final String headerKey=rawHeader.substring(0,x).trim().toUpperCase();
-				final List<String> headerVals = new ArrayList<String>();
-				headerVals.addAll(Arrays.asList(rawHeader.substring(x+1).trim().split(";")));
-				headers.put(headerKey, headerVals);
-			}
+			final Map<String,List<String>> headers = this.parseHeaders(theMessage.substring(0,headerEnd+4));
 			if(!headers.containsKey("CONTENT-TYPE"))
 				return "Failed: to find content-type in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
 			final String contentType=headers.get("CONTENT-TYPE").get(0);
@@ -235,17 +263,57 @@ public class Test extends StdCommand
 				}
 				if(multiBoundary == null)
 					return "Failed: missing multi-boundary in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-				final List<String> msgChoices = new ArrayList<String>();
-				msgChoices.addAll(Arrays.asList(theMessage.split("--"+multiBoundary)));
-				//TODO:BZ
-				//https://github.com/mozilla/positron/blob/master/mobile/android/thirdparty/org/mozilla/apache/commons/codec/net/QuotedPrintableCodec.java
+				for(String msgChoice : theMessage.split("--"+multiBoundary))
+				{
+					if(msgChoice.trim().startsWith("--"))
+						return "Failed: to find acceptable inner message in :" + lastMsgNum + "/message/" + lastMsgNum;
+					int innerHeaderDex=msgChoice.indexOf("\r\n\r\n");
+					if(innerHeaderDex<0)
+						return "Failed: missing innerHeaderDex in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+					final Map<String,List<String>> innerHeaders = this.parseHeaders(msgChoice.substring(0,innerHeaderDex+4));
+					if(!innerHeaders.containsKey("CONTENT-TYPE"))
+						return "Failed: to find content-type in inner header in :" + lastMsgNum + "/message/" + lastMsgNum;
+					if(!innerHeaders.containsKey("CONTENT-TRANSFER-ENCODING"))
+						return "Failed: to find content-transfer-encoding in inner header in :" + lastMsgNum + "/message/" + lastMsgNum;
+					final String innerContentType=innerHeaders.get("CONTENT-TYPE").get(0);
+					if(innerContentType.equalsIgnoreCase("text/plain"))
+					{
+						final String encoding=innerHeaders.get("CONTENT-TRANSFER-ENCODING").get(0);
+						if(encoding.equalsIgnoreCase("base64"))
+							theMessage=Base64.base64Decode(theMessage);
+						else
+						if(encoding.equalsIgnoreCase("quoted-printable"))
+							theMessage=decodeQuotedPrintable(theMessage);
+						else
+							return "Failed: Invalid encoding '"+encoding+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+						break; //kaplah
+					}
+				}
+			}
+			else
+			if(contentType.equalsIgnoreCase("text/plain"))
+			{
+				if(!headers.containsKey("CONTENT-TRANSFER-ENCODING"))
+					return "Failed: Missing transfer encoding in '"+contentType+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+				final String encoding=headers.get("CONTENT-TRANSFER-ENCODING").get(0);
+				if(encoding.equalsIgnoreCase("base64"))
+					theMessage=Base64.base64Decode(theMessage);
+				else
+				if(encoding.equalsIgnoreCase("quoted-printable"))
+					theMessage=decodeQuotedPrintable(theMessage);
+				else
+					return "Failed: Invalid encoding '"+encoding+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
 			}
 			else
 				return "Failed: Invalid content-type '"+contentType+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
 			
+			theMessage = CMStrings.replaceAll(theMessage, "&#39;", "`");
+			theMessage = CMStrings.replaceAll(theMessage, "'", "`");
 			final JournalsLibrary.ForumJournal forum = CMLib.journals().getForumJournal("Support");
 			if (forum == null)
 				return "Failed: bad forum given";
+			//TODO: look for email addys instead of author names..
+			// let the _name be the absolute last resort.
 			if (author.indexOf('@') >= 0)
 			{
 				final MOB aM = CMLib.players().getLoadPlayerByEmail(author);
