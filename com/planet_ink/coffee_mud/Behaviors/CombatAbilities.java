@@ -181,7 +181,7 @@ public class CombatAbilities extends ActiveTicker
 		}
 		super.endBehavior(forMe);
 	}
-	
+
 	protected void newCharacter(final MOB mob)
 	{
 		final Set<Ability> oldAbilities=new HashSet<Ability>();
@@ -443,7 +443,7 @@ public class CombatAbilities extends ActiveTicker
 				noStat=true;
 			else
 			if(s.equalsIgnoreCase("noCombatStat")||s.equalsIgnoreCase("noCombatStats"))
-				noStat=true;
+				noCombatStat=true;
 			else
 			if((s.startsWith("-"))
 			&&((A=CMClass.getAbility(s.substring(1)))!=null))
