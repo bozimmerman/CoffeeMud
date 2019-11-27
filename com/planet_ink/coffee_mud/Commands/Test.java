@@ -28,7 +28,6 @@ import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
 import com.planet_ink.coffee_web.http.HTTPMethod;
 import com.planet_ink.coffee_web.http.MultiPartData;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
-import com.sun.xml.internal.messaging.saaj.util.Base64;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -151,7 +150,7 @@ public class Test extends StdCommand
 		}
 		return headers;
 	}
-	
+
 	private String decodeQuotedPrintable(final String str)
 	{
 		final StringBuilder nstr=new StringBuilder("");
@@ -160,10 +159,10 @@ public class Test extends StdCommand
 			final char ch=str.charAt(c);
 			if(ch=='=')
 			{
-				char ch1=Character.toUpperCase(str.charAt(++c));
-				char ch2=Character.toUpperCase(str.charAt(++c));
-				int hex1="0123456789ABCDEF".indexOf(ch1);
-				int hex2="0123456789ABCDEF".indexOf(ch2);
+				final char ch1=Character.toUpperCase(str.charAt(++c));
+				final char ch2=Character.toUpperCase(str.charAt(++c));
+				final int hex1="0123456789ABCDEF".indexOf(ch1);
+				final int hex2="0123456789ABCDEF".indexOf(ch2);
 				if((hex1>=0)&&(hex2>=0))
 					nstr.append((char)((hex1*16)+hex2));
 			}
@@ -172,7 +171,7 @@ public class Test extends StdCommand
 		}
 		return nstr.toString();
 	}
-	
+
 	public String copyYahooGroupMsg(final MOB mob, int lastMsgNum) throws Exception
 	{
 		long numTimes = 9999999;
@@ -255,7 +254,7 @@ public class Test extends StdCommand
 			if(contentType.equalsIgnoreCase("multipart/alternative"))
 			{
 				String multiBoundary=null;
-				final List<String> bounds = headers.get("CONTENT-TYPE"); 
+				final List<String> bounds = headers.get("CONTENT-TYPE");
 				for(final String s : bounds)
 				{
 					if(s.toLowerCase().startsWith("boundary="))
@@ -263,11 +262,11 @@ public class Test extends StdCommand
 				}
 				if(multiBoundary == null)
 					return "Failed: missing multi-boundary in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-				for(String msgChoice : theMessage.split("--"+multiBoundary))
+				for(final String msgChoice : theMessage.split("--"+multiBoundary))
 				{
 					if(msgChoice.trim().startsWith("--"))
 						return "Failed: to find acceptable inner message in :" + lastMsgNum + "/message/" + lastMsgNum;
-					int innerHeaderDex=msgChoice.indexOf("\r\n\r\n");
+					final int innerHeaderDex=msgChoice.indexOf("\r\n\r\n");
 					if(innerHeaderDex<0)
 						return "Failed: missing innerHeaderDex in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
 					final Map<String,List<String>> innerHeaders = this.parseHeaders(msgChoice.substring(0,innerHeaderDex+4));
@@ -280,7 +279,7 @@ public class Test extends StdCommand
 					{
 						final String encoding=innerHeaders.get("CONTENT-TRANSFER-ENCODING").get(0);
 						if(encoding.equalsIgnoreCase("base64"))
-							theMessage=Base64.base64Decode(theMessage);
+							theMessage=new String(B64Encoder.B64decode(theMessage));
 						else
 						if(encoding.equalsIgnoreCase("quoted-printable"))
 							theMessage=decodeQuotedPrintable(theMessage);
@@ -297,7 +296,7 @@ public class Test extends StdCommand
 					return "Failed: Missing transfer encoding in '"+contentType+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
 				final String encoding=headers.get("CONTENT-TRANSFER-ENCODING").get(0);
 				if(encoding.equalsIgnoreCase("base64"))
-					theMessage=Base64.base64Decode(theMessage);
+					theMessage=new String(B64Encoder.B64decode(theMessage));
 				else
 				if(encoding.equalsIgnoreCase("quoted-printable"))
 					theMessage=decodeQuotedPrintable(theMessage);
@@ -306,7 +305,7 @@ public class Test extends StdCommand
 			}
 			else
 				return "Failed: Invalid content-type '"+contentType+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-			
+
 			theMessage = CMStrings.replaceAll(theMessage, "&#39;", "`");
 			theMessage = CMStrings.replaceAll(theMessage, "'", "`");
 			final JournalsLibrary.ForumJournal forum = CMLib.journals().getForumJournal("Support");
