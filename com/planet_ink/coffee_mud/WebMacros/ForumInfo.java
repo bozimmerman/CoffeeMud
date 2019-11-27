@@ -69,6 +69,7 @@ public class ForumInfo extends StdWebMacro
 		if(parms.containsKey("ISSMTPFORWARD"))
 		{
 			@SuppressWarnings("unchecked")
+			// the smtp forwarding vars are set in the smtp.ini file, read by the smtp server.  This is out ONLY access to that info.
 			final
 			TreeMap<String, JournalsLibrary.SMTPJournal> set=(TreeMap<String, JournalsLibrary.SMTPJournal>) Resources.getResource("SYSTEM_SMTP_JOURNALS");
 			final JournalsLibrary.SMTPJournal entry =(set!=null) ? set.get(last.toUpperCase().trim()) : null;
@@ -139,7 +140,7 @@ public class ForumInfo extends StdWebMacro
 
 		if(parms.containsKey("NAME"))
 			str.append( ""+journal.NAME()).append(", ");
-		
+
 		if(parms.containsKey("CATEGORY"))
 			str.append(""+journal.category()).append(", ");
 

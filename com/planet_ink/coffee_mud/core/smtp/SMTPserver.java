@@ -375,6 +375,7 @@ public class SMTPserver extends Thread implements Tickable
 				return false;
 			}
 		}
+		getJournalSets(); // cache the forwarding journals for the web site
 		return true;
 	}
 
