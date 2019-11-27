@@ -208,11 +208,41 @@ public class Test extends StdCommand
 			final int headerEnd=theMessage.indexOf("\r\n\r\n");
 			if(headerEnd<0)
 				return "Failed: to find header in msg:" + lastMsgNum;
-			final String theHeader=theMessage.substring(0,headerEnd+4);
+			final Map<String,List<String>> headers = new HashMap<String,List<String>>();
+			for(final String rawHeader : theMessage.substring(0,headerEnd+4).split("\r\n"))
+			{
+				final int x=rawHeader.indexOf(':');
+				final String headerKey=rawHeader.substring(0,x).trim().toUpperCase();
+				final List<String> headerVals = new ArrayList<String>();
+				headerVals.addAll(Arrays.asList(rawHeader.substring(x+1).trim().split(";")));
+				headers.put(headerKey, headerVals);
+			}
+			if(!headers.containsKey("CONTENT-TYPE"))
+				return "Failed: to find content-type in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			final String contentType=headers.get("CONTENT-TYPE").get(0);
 			theMessage = theMessage.substring(headerEnd+4);
 			//theMessage = CMStrings.replaceAll(theMessage, "\n", "<BR>");
 			if (theMessage.trim().length() == 0)
 				return "Failed: to find lengthy msg in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			if(contentType.equalsIgnoreCase("multipart/alternative"))
+			{
+				String multiBoundary=null;
+				final List<String> bounds = headers.get("CONTENT-TYPE"); 
+				for(final String s : bounds)
+				{
+					if(s.toLowerCase().startsWith("boundary="))
+						multiBoundary=s.substring(9);
+				}
+				if(multiBoundary == null)
+					return "Failed: missing multi-boundary in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+				final List<String> msgChoices = new ArrayList<String>();
+				msgChoices.addAll(Arrays.asList(theMessage.split("--"+multiBoundary)));
+				//TODO:BZ
+				//https://github.com/mozilla/positron/blob/master/mobile/android/thirdparty/org/mozilla/apache/commons/codec/net/QuotedPrintableCodec.java
+			}
+			else
+				return "Failed: Invalid content-type '"+contentType+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			
 			final JournalsLibrary.ForumJournal forum = CMLib.journals().getForumJournal("Support");
 			if (forum == null)
 				return "Failed: bad forum given";
