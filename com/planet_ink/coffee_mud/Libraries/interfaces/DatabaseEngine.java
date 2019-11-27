@@ -716,6 +716,15 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
+	 * Returns only the attributes bitmap for the given
+	 * player name
+	 * @param name the name of the player
+	 * @return the attributes bitmap
+	 */
+	public int DBReadPlayerBitmap(String name);
+
+	/**
+	 * Table category: DBPLAYERS
 	 * Reads the item class and misc text of each item in the given
 	 * players inventory.
 	 * @param name the name of the player

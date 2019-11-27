@@ -231,6 +231,33 @@ public class MOBloader
 		return mob;
 	}
 
+	public int DBReadPlayerBitmap(String name)
+	{
+		if((name==null)||(name.length()==0))
+			return -1;
+		DBConnection D=null;
+		name = DB.injectionClean(name);
+		int bitmap=-1;
+		try
+		{
+			D=DB.DBFetch();
+
+			final ResultSet R=D.query("SELECT CMBTMP FROM CMCHAR WHERE CMUSERID='"+name+"'");
+			if(R.next())
+				bitmap = CMath.s_int(DBConnections.getRes(R,"CMBTMP"));
+			R.close();
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return bitmap;
+	}
+
 	public PairList<String,String> DBReadPlayerItemData(String name, final String searchStr)
 	{
 		final PairList<String,String> items=new PairVector<String,String>();

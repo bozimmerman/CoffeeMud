@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.smtp;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -134,63 +135,60 @@ public class MassMailer implements Runnable
 	@Override
 	public void run()
 	{
+		//final boolean debugging=CMSecurity.isDebugging(DbgFlag.SMTPCLIENT)||CMSecurity.isDebugging(DbgFlag.SMTPSERVER);
 		for(final MassMail entry : entries)
 		{
-			final JournalEntry mail=entry.mail;
-			final String journalName=entry.journalName;
-			final String overrideReplyTo=entry.overrideReplyTo;
-			final boolean usePrivateRules=entry.usePrivateRules;
-
-			final String key=mail.key();
-			final String from=mail.from();
-			final String to=mail.to();
-			final long date=mail.update();
-			final String subj=mail.subj();
-			final String msg=mail.msg().trim();
-
-			if(to.equalsIgnoreCase("ALL")||(to.toUpperCase().trim().startsWith("MASK=")))
-				continue;
-
-			if(!rightTimeToSendEmail(date))
-				continue;
-
-			// check for valid recipient
-			final String toEmail;
-			final String toName;
-			if(CMLib.players().playerExistsAllHosts(to))
+			try
 			{
-				MOB toM=CMLib.players().getLoadPlayer(to);
-				if(toM == null)
-					toM = CMLib.players().getPlayerAllHosts(to);
-				if(toM == null)
+				final JournalEntry mail=entry.mail;
+				final String journalName=entry.journalName;
+				final String overrideReplyTo=entry.overrideReplyTo;
+				final boolean usePrivateRules=entry.usePrivateRules;
+
+				final String key=mail.key();
+				final String from=mail.from();
+				final String to=mail.to();
+				final long date=mail.update();
+				final String subj=mail.subj();
+				final String msg=mail.msg().trim();
+
+				// check email age
+				if((usePrivateRules)
+				&&(!CMath.bset(mail.attributes(), JournalEntry.ATTRIBUTE_PROTECTED))
+				&&(deleteEmailIfOld(journalName, key, date, getEmailDays())))
 					continue;
-				// check to see if the sender is ignored
-				final PlayerStats toMpStats=toM.playerStats();
-				if(toMpStats==null)
+
+				if(to.equalsIgnoreCase("ALL")||(to.toUpperCase().trim().startsWith("MASK=")))
 					continue;
-				if(toMpStats.isIgnored(from))
+
+				if(!rightTimeToSendEmail(date))
+					continue;
+
+				// check for valid recipient
+				final String toEmail;
+				final String toName;
+				if(CMLib.players().playerExistsAllHosts(to))
 				{
-					// email is ignored
-					CMLib.database().DBDeleteJournal(journalName,key);
-					continue;
-				}
-				if(CMLib.players().playerExistsAllHosts(from))
-				{
-					MOB fromM=CMLib.players().getPlayer(from);
-					if(fromM == null)
-						fromM=CMLib.players().getPlayer(from);
-					if(fromM != null)
+					MOB toM=CMLib.players().getLoadPlayer(to);
+					if(toM == null)
+						toM = CMLib.players().getPlayerAllHosts(to);
+					if(toM == null)
+						continue;
+					// check to see if the sender is ignored
+					final PlayerStats toMpStats=toM.playerStats();
+					if(toMpStats==null)
+						continue;
+					if(toMpStats.isIgnored(from))
 					{
-						if(toMpStats.isIgnored(fromM))
-						{
-							// email is ignored
-							CMLib.database().DBDeleteJournal(journalName,key);
-							continue;
-						}
+						// email is ignored
+						CMLib.database().DBDeleteJournal(journalName,key);
+						continue;
 					}
-					else
+					if(CMLib.players().playerExistsAllHosts(from))
 					{
-						fromM = CMLib.players().getLoadPlayer(from);
+						MOB fromM=CMLib.players().getPlayer(from);
+						if(fromM == null)
+							fromM=CMLib.players().getPlayerAllHosts(from);
 						if(fromM != null)
 						{
 							if(toMpStats.isIgnored(fromM))
@@ -199,100 +197,111 @@ public class MassMailer implements Runnable
 								CMLib.database().DBDeleteJournal(journalName,key);
 								continue;
 							}
-							CMLib.players().unloadOfflinePlayer(fromM);
+						}
+						else
+						{
+							fromM = CMLib.players().getLoadPlayer(from);
+							if(fromM != null)
+							{
+								if(toMpStats.isIgnored(fromM))
+								{
+									// email is ignored
+									CMLib.database().DBDeleteJournal(journalName,key);
+									continue;
+								}
+								CMLib.players().unloadOfflinePlayer(fromM);
+							}
 						}
 					}
+					final PlayerAccount acct=toMpStats.getAccount();
+					if((acct != null)
+					&&(acct.isSet(AccountFlag.NOAUTOFORWARD)))
+						continue;
+					if(toM.isAttributeSet(MOB.Attrib.AUTOFORWARD)) // forwarding OFF
+						continue;
+					if(toM.playerStats().getEmail().length()==0) // no email addy to forward TO
+						continue;
+					toName=toM.Name();
+					toEmail=toM.playerStats().getEmail();
 				}
-				final PlayerAccount acct=toMpStats.getAccount();
-				if((acct != null)
-				&&(acct.isSet(AccountFlag.NOAUTOFORWARD)))
-					continue;
-				if(toM.isAttributeSet(MOB.Attrib.AUTOFORWARD)) // forwarding OFF
-					continue;
-				if(toM.playerStats().getEmail().length()==0) // no email addy to forward TO
-					continue;
-				toName=toM.Name();
-				toEmail=toM.playerStats().getEmail();
-			}
-			else
-			if(CMLib.players().accountExistsAllHosts(to))
-			{
-				PlayerAccount P=CMLib.players().getLoadAccount(to);
-				if(P == null)
-					P=CMLib.players().getAccountAllHosts(to);
-				if(P == null)
-					continue;
-				if((P.getEmail().length()==0)) // no email addy to forward TO
-					continue;
-				if(P.isSet(AccountFlag.NOAUTOFORWARD))
-					continue;
-				toName=P.getAccountName();
-				toEmail=P.getEmail();
-			}
-			else
-			{
-				Log.errOut("SMTPServer","Invalid to address '"+to+"' in email: "+msg);
-				CMLib.database().DBDeleteJournal(journalName,key);
-				continue;
-			}
-
-			// check email age
-			if((usePrivateRules)
-			&&(!CMath.bset(mail.attributes(), JournalEntry.ATTRIBUTE_PROTECTED))
-			&&(deleteEmailIfOld(journalName, key, date, getEmailDays())))
-				continue;
-
-			SMTPLibrary.SMTPClient SC=null;
-			try
-			{
-				if(CMProps.getVar(CMProps.Str.SMTPSERVERNAME).length()>0)
-					SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
 				else
-					SC=CMLib.smtp().getClient(toEmail);
-			}
-			catch(final BadEmailAddressException be)
-			{
-				if((!usePrivateRules)
-				&&(!CMath.bset(mail.attributes(), JournalEntry.ATTRIBUTE_PROTECTED)))
+				if(CMLib.players().accountExistsAllHosts(to))
 				{
-					// email is a goner if its a list
+					PlayerAccount P=CMLib.players().getLoadAccount(to);
+					if(P == null)
+						P=CMLib.players().getAccountAllHosts(to);
+					if(P == null)
+						continue;
+					if((P.getEmail().length()==0)) // no email addy to forward TO
+						continue;
+					if(P.isSet(AccountFlag.NOAUTOFORWARD))
+						continue;
+					toName=P.getAccountName();
+					toEmail=P.getEmail();
+				}
+				else
+				{
+					Log.errOut("SMTPServer","Invalid to address '"+to+"' in email: "+msg);
 					CMLib.database().DBDeleteJournal(journalName,key);
 					continue;
 				}
-				// otherwise it has its n days
-				continue;
-			}
-			catch(final java.io.IOException ioe)
-			{
-				if(!oldEmailComplaints.contains(toName))
-				{
-					oldEmailComplaints.add(toName);
-					Log.errOut("SMTPServer","Unable to send '"+toEmail+"' for '"+toName+"': "+ioe.getMessage());
-				}
-				if(!CMath.bset(mail.attributes(), JournalEntry.ATTRIBUTE_PROTECTED))
-					deleteEmailIfOld(journalName, key, date,getFailureDays());
-				continue;
-			}
 
-			final String replyTo=(overrideReplyTo!=null)?(overrideReplyTo):from;
-			try
-			{
-				SC.sendMessage(from+"@"+domainName(),
-							   replyTo+"@"+domainName(),
-							   toEmail,
-							   usePrivateRules?toEmail:replyTo+"@"+domainName(),
-							   subj,
-							   CMLib.coffeeFilter().simpleOutFilter(msg));
-				//this email is HISTORY!
-				CMLib.database().DBDeleteJournal(journalName, key);
+				SMTPLibrary.SMTPClient SC=null;
+				try
+				{
+					if(CMProps.getVar(CMProps.Str.SMTPSERVERNAME).length()>0)
+						SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
+					else
+						SC=CMLib.smtp().getClient(toEmail);
+				}
+				catch(final BadEmailAddressException be)
+				{
+					if((!usePrivateRules)
+					&&(!CMath.bset(mail.attributes(), JournalEntry.ATTRIBUTE_PROTECTED)))
+					{
+						// email is a goner if its a list
+						CMLib.database().DBDeleteJournal(journalName,key);
+						continue;
+					}
+					// otherwise it has its n days
+					continue;
+				}
+				catch(final java.io.IOException ioe)
+				{
+					if(!oldEmailComplaints.contains(toName))
+					{
+						oldEmailComplaints.add(toName);
+						Log.errOut("SMTPServer","Unable to send '"+toEmail+"' for '"+toName+"': "+ioe.getMessage());
+					}
+					if(!CMath.bset(mail.attributes(), JournalEntry.ATTRIBUTE_PROTECTED))
+						deleteEmailIfOld(journalName, key, date,getFailureDays());
+					continue;
+				}
+
+				final String replyTo=(overrideReplyTo!=null)?(overrideReplyTo):from;
+				try
+				{
+					SC.sendMessage(from+"@"+domainName(),
+								   replyTo+"@"+domainName(),
+								   toEmail,
+								   usePrivateRules?toEmail:replyTo+"@"+domainName(),
+								   subj,
+								   CMLib.coffeeFilter().simpleOutFilter(msg));
+					//this email is HISTORY!
+					CMLib.database().DBDeleteJournal(journalName, key);
+				}
+				catch(final java.io.IOException ioe)
+				{
+					// it has FAILUREDAYS days to get better.
+					if(deleteEmailIfOld(journalName, key, date,getFailureDays()))
+						Log.errOut("SMTPServer","Permanently unable to send email from '"+from+"@"+domainName()+"' to '"+toEmail+"' for user '"+toName+"': "+ioe.getMessage()+".");
+					else
+						Log.errOut("SMTPServer","Failure to send from '"+from+"@"+domainName()+"' to '"+toEmail+"' for user '"+toName+"': "+ioe.getMessage()+".");
+				}
 			}
-			catch(final java.io.IOException ioe)
+			catch(final Exception e)
 			{
-				// it has FAILUREDAYS days to get better.
-				if(deleteEmailIfOld(journalName, key, date,getFailureDays()))
-					Log.errOut("SMTPServer","Permanently unable to send email from '"+from+"@"+domainName()+"' to '"+toEmail+"' for user '"+toName+"': "+ioe.getMessage()+".");
-				else
-					Log.errOut("SMTPServer","Failure to send from '"+from+"@"+domainName()+"' to '"+toEmail+"' for user '"+toName+"': "+ioe.getMessage()+".");
+				Log.errOut("MassMailer",e);
 			}
 		}
 	}

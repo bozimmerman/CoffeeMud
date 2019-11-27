@@ -815,6 +815,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public int DBReadPlayerBitmap(final String name)
+	{
+		return MOBloader.DBReadPlayerBitmap(name);
+	}
+
+	@Override
 	public PairList<String,String> DBReadPlayerItemData(final String name, final String searchStr)
 	{
 		return MOBloader.DBReadPlayerItemData(name, searchStr);

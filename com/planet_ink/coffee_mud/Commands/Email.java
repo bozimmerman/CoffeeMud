@@ -77,6 +77,7 @@ public class Email extends StdCommand
 			{
 				final String journalName=CMProps.getVar(CMProps.Str.MAILBOX);
 				final String[] queries=new String[] { mob.Name(),"ALL","MASK=%" };
+				// the reader returns a more immutable read-in-time list.
 				final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgsByUpdateDate(journalName, false, max, queries);
 				for(int num=0;num<msgs.size();num++)
 				{
@@ -199,7 +200,7 @@ public class Email extends StdCommand
 						if(s.equalsIgnoreCase("D"))
 						{
 							CMLib.database().DBDeleteJournal(journalName,key);
-							msgs.remove(thismsg);
+							msgs.remove(num-1);
 							mob.tell(L("Deleted."));
 							break;
 						}
