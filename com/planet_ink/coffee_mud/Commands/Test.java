@@ -145,7 +145,7 @@ public class Test extends StdCommand
 			final int x=rawHeader.indexOf(':');
 			final String headerKey=rawHeader.substring(0,x).trim().toUpperCase();
 			final List<String> headerVals = new ArrayList<String>();
-			headerVals.addAll(Arrays.asList(rawHeader.substring(x+1).trim().split(";")));
+			headerVals.addAll(Arrays.asList(CMLib.coffeeFilter().colorOnlyFilter(rawHeader.substring(x+1),null).trim().split(";")));
 			headers.put(headerKey, headerVals);
 		}
 		return headers;
@@ -154,7 +154,7 @@ public class Test extends StdCommand
 	private String decodeQuotedPrintable(final String str)
 	{
 		final StringBuilder nstr=new StringBuilder("");
-		for(int c=0;c<str.length();c++)
+		for(int c=0;c<str.length()-2;c++)
 		{
 			final char ch=str.charAt(c);
 			if(ch=='=')
@@ -227,6 +227,8 @@ public class Test extends StdCommand
 				return lastMsgNum + "of " + numTotal + " messages already processed";
 			}
 			final java.io.File F=new File(dir,""+lastMsgNum+".json");
+			if(!F.exists())
+				continue;
 			final java.io.BufferedInputStream bin=new java.io.BufferedInputStream(new java.io.FileInputStream(F));
 			final StringBuilder msgBuild = new StringBuilder("");
 			for(int i=0;i<F.length();i++)
@@ -236,9 +238,18 @@ public class Test extends StdCommand
 			final MiniJSON json=new MiniJSON();
 			final MiniJSON.JSONObject msgObj = json.parseObject(msgPage).getCheckedJSONObject("ygData");
 
-			String subject = msgObj.getCheckedString("subject");
+			String subject = CMLib.coffeeFilter().colorOnlyFilter(msgObj.getCheckedString("subject"),null);
 			final long dateLong = CMath.s_long(msgObj.getCheckedString("postDate")) * 1000L;
-			String author = msgObj.getCheckedString("profile");
+			String author;
+			if(msgObj.containsKey("profile"))
+				author = msgObj.getCheckedString("profile");
+			else
+			if(msgObj.containsKey("authorName"))
+				author = msgObj.getCheckedString("authorName");
+			else
+				author = "Unknown";
+			if(author.trim().length()==0)
+				author = "Unknown";
 			String theMessage=msgObj.getCheckedString("rawEmail");
 			final int headerEnd=theMessage.indexOf("\r\n\r\n");
 			if(headerEnd<0)
@@ -248,23 +259,36 @@ public class Test extends StdCommand
 				return "Failed: to find content-type in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
 			final String contentType=headers.get("CONTENT-TYPE").get(0);
 			theMessage = theMessage.substring(headerEnd+4);
-			//theMessage = CMStrings.replaceAll(theMessage, "\n", "<BR>");
+			theMessage = CMStrings.replaceAll(theMessage, "@", "%40");
 			if (theMessage.trim().length() == 0)
+			{
+				if(lastMsgNum == 18208)
+					continue;
 				return "Failed: to find lengthy msg in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			}
+			//TODO:BZ:Failed: Invalid content-type 'multipart/mixed' in lastMsgNum:18721/message/18721
 			if(contentType.equalsIgnoreCase("multipart/alternative"))
 			{
 				String multiBoundary=null;
 				final List<String> bounds = headers.get("CONTENT-TYPE");
-				for(final String s : bounds)
+				for(String s : bounds)
 				{
+					s=s.trim();
 					if(s.toLowerCase().startsWith("boundary="))
+					{
 						multiBoundary=s.substring(9);
+						if(multiBoundary.startsWith("\"") && multiBoundary.endsWith("\""))
+							multiBoundary=multiBoundary.substring(1,multiBoundary.length()-1);
+					}
 				}
 				if(multiBoundary == null)
 					return "Failed: missing multi-boundary in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-				for(final String msgChoice : theMessage.split("--"+multiBoundary))
+				for(String msgChoice : theMessage.split("--"+multiBoundary))
 				{
-					if(msgChoice.trim().startsWith("--"))
+					msgChoice=msgChoice.trim();
+					if(msgChoice.length()==0)
+						continue;
+					if(msgChoice.startsWith("--"))
 						return "Failed: to find acceptable inner message in :" + lastMsgNum + "/message/" + lastMsgNum;
 					final int innerHeaderDex=msgChoice.indexOf("\r\n\r\n");
 					if(innerHeaderDex<0)
@@ -272,17 +296,23 @@ public class Test extends StdCommand
 					final Map<String,List<String>> innerHeaders = this.parseHeaders(msgChoice.substring(0,innerHeaderDex+4));
 					if(!innerHeaders.containsKey("CONTENT-TYPE"))
 						return "Failed: to find content-type in inner header in :" + lastMsgNum + "/message/" + lastMsgNum;
-					if(!innerHeaders.containsKey("CONTENT-TRANSFER-ENCODING"))
-						return "Failed: to find content-transfer-encoding in inner header in :" + lastMsgNum + "/message/" + lastMsgNum;
+					String encoding="7bit";
+					if(innerHeaders.containsKey("CONTENT-TRANSFER-ENCODING"))
+						encoding=innerHeaders.get("CONTENT-TRANSFER-ENCODING").get(0);
+					//return "Failed: to find content-transfer-encoding in inner header in :" + lastMsgNum + "/message/" + lastMsgNum;
+					msgChoice=msgChoice.substring(innerHeaderDex+4).trim();
+					//TODO:BZ:PREFER HTML?"!
 					final String innerContentType=innerHeaders.get("CONTENT-TYPE").get(0);
 					if(innerContentType.equalsIgnoreCase("text/plain"))
 					{
-						final String encoding=innerHeaders.get("CONTENT-TRANSFER-ENCODING").get(0);
 						if(encoding.equalsIgnoreCase("base64"))
 							theMessage=new String(B64Encoder.B64decode(theMessage));
 						else
 						if(encoding.equalsIgnoreCase("quoted-printable"))
-							theMessage=decodeQuotedPrintable(theMessage);
+							theMessage=decodeQuotedPrintable(msgChoice);
+						else
+						if((encoding.equalsIgnoreCase("7bit")) || (encoding.equalsIgnoreCase("8bit")))
+							theMessage=msgChoice;
 						else
 							return "Failed: Invalid encoding '"+encoding+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
 						break; //kaplah
@@ -292,15 +322,31 @@ public class Test extends StdCommand
 			else
 			if(contentType.equalsIgnoreCase("text/plain"))
 			{
-				if(!headers.containsKey("CONTENT-TRANSFER-ENCODING"))
-					return "Failed: Missing transfer encoding in '"+contentType+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-				final String encoding=headers.get("CONTENT-TRANSFER-ENCODING").get(0);
+				String encoding="7bit";
+				if(headers.containsKey("CONTENT-TRANSFER-ENCODING"))
+					encoding=headers.get("CONTENT-TRANSFER-ENCODING").get(0);
 				if(encoding.equalsIgnoreCase("base64"))
 					theMessage=new String(B64Encoder.B64decode(theMessage));
 				else
 				if(encoding.equalsIgnoreCase("quoted-printable"))
 					theMessage=decodeQuotedPrintable(theMessage);
 				else
+				if((!encoding.equalsIgnoreCase("7bit")) && (!encoding.equalsIgnoreCase("8bit")))
+					return "Failed: Invalid encoding '"+encoding+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+			}
+			else
+			if(contentType.equalsIgnoreCase("text/html"))
+			{
+				String encoding="7bit";
+				if(headers.containsKey("CONTENT-TRANSFER-ENCODING"))
+					encoding=headers.get("CONTENT-TRANSFER-ENCODING").get(0);
+				if(encoding.equalsIgnoreCase("base64"))
+					theMessage=new String(B64Encoder.B64decode(theMessage));
+				else
+				if(encoding.equalsIgnoreCase("quoted-printable"))
+					theMessage=decodeQuotedPrintable(theMessage);
+				else
+				if((!encoding.equalsIgnoreCase("7bit")) && (!encoding.equalsIgnoreCase("8bit")))
 					return "Failed: Invalid encoding '"+encoding+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
 			}
 			else
@@ -311,27 +357,37 @@ public class Test extends StdCommand
 			final JournalsLibrary.ForumJournal forum = CMLib.journals().getForumJournal("Support");
 			if (forum == null)
 				return "Failed: bad forum given";
-			//TODO: look for email addys instead of author names..
-			// let the _name be the absolute last resort.
-			if (author.indexOf('@') >= 0)
+			String email="";
+			if(msgObj.containsKey("from"))
 			{
-				final MOB aM = CMLib.players().getLoadPlayerByEmail(author);
+				email=CMLib.coffeeFilter().colorOnlyFilter(msgObj.getCheckedString("from").trim(), null);
+				int dex=email.lastIndexOf('<');
+				if(dex<0)
+					email="";
+				else
+				if(email.endsWith(">"))
+					email=email.substring(dex+1,email.length()-1);
+				else
+					email="";
+			}
+			if (email.indexOf('@') >= 0)
+			{
+				final MOB aM = CMLib.players().getLoadPlayerByEmail(email);
 				if (aM != null)
 					author = aM.Name();
 				else
 				if (CMProps.isUsingAccountSystem())
 				{
-					final PlayerAccount A = CMLib.players().getLoadAccountByEmail(author);
-					if (A == null)
-						author = author.substring(0, author.indexOf('@'));
-					else
+					final PlayerAccount A = CMLib.players().getLoadAccountByEmail(email);
+					if (A != null)
 						author = A.getAccountName();
 				}
 				else
-					author = author.substring(0, author.indexOf('@'));
+				if(!CMLib.players().playerExistsAllHosts(author))
+					author = "_" + author;
 			}
 			else
-			if (CMLib.login().isOkName(author, false))
+			if(!CMLib.players().playerExistsAllHosts(author))
 				author = "_" + author;
 
 			String parent = "";
@@ -400,6 +456,7 @@ public class Test extends StdCommand
 			msg.to ("ALL");
 			// check for dups
 			final List<JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(forum.NAME(), "ALL", msg.date() - 1);
+			boolean dup=false;
 			for (final JournalEntry entry : chckEntries)
 			{
 				if ((entry.date() == msg.date())
@@ -407,13 +464,26 @@ public class Test extends StdCommand
 				&& (entry.subj().equals(msg.subj()))
 				&& (entry.parent().equals(msg.parent())))
 				{
-					return "Msg#" + lastMsgNum + " was a dup!";
+					dup=true;
+					break;
 				}
+			}
+			if(dup)
+			{
+				if(mob != null)
+				{
+					mob.tell("Message "+lastMsgNum+" was a dup!");
+					continue;
+				}
+				else
+					return "Msg#" + lastMsgNum + " was a dup!";
 			}
 			CMLib.database().DBWriteJournal(forum.NAME(), msg);
 			if (parent.length() > 0)
 				CMLib.database().DBTouchJournalMessage(parent, msg.date());
 			CMLib.journals().clearJournalSummaryStats(forum);
+			if(mob != null)
+				mob.tell("Message "+lastMsgNum+" posted.");
 		}
 		return "Post " + lastMsgNum + " submitted.";
 	}
@@ -604,7 +674,7 @@ public class Test extends StdCommand
 			{
 				try
 				{
-					mob.tell(copyYahooGroupMsg(mob,18201));
+					mob.tell(copyYahooGroupMsg(mob,18314));
 				}
 				catch(final Exception e)
 				{
