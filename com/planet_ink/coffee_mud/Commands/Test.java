@@ -777,8 +777,13 @@ public class Test extends StdCommand
 			{
 				try
 				{
-					final int rememberMe=18201;
-					mob.tell(copyYahooGroupMsg(mob,18438));
+					//final int rememberMe=18201;
+					final String rest=CMParms.combine(commands,2);
+					if(CMath.isInteger(rest))
+						mob.tell(copyYahooGroupMsg(mob,CMath.s_int(rest)));
+					else
+						mob.tell("18201 was a nice year.");
+					return true;
 				}
 				catch(final Exception e)
 				{
