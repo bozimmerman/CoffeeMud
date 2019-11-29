@@ -728,8 +728,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				if((S!=null)
 				&&(S.getClientTelnetMode(Session.TELNET_MXP)))
 				{
-					if((!buf.substring(loop,loop+3).equalsIgnoreCase("lt;"))
-					&&(buf.substring(loop,loop+3).equalsIgnoreCase("gt;")))
+					if((!buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
+					&&(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;")))
 					{
 						buf.delete(loop,loop+1);
 						buf.insert(loop,"&amp;".toCharArray());
@@ -737,13 +737,16 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					}
 				}
 				else
-				if(loop<buf.length()-3)
+				if(loop<=buf.length()-4)
 				{
-					if(buf.substring(loop,loop+3).equalsIgnoreCase("lt;"))
-						buf.replace(loop,loop+3,"<");
+					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
+						buf.replace(loop,loop+4,"<");
 					else
-					if(buf.substring(loop,loop+3).equalsIgnoreCase("gt;"))
-						buf.replace(loop,loop+3,">");
+					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;"))
+						buf.replace(loop,loop+4,">");
+					else
+					if((loop<=buf.length()-6) && (buf.substring(loop+1,loop+6).equalsIgnoreCase("quot;")))
+						buf.replace(loop,loop+6,"\"");
 				}
 				break;
 			case '<':

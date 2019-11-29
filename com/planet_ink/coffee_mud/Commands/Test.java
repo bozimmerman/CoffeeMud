@@ -145,7 +145,8 @@ public class Test extends StdCommand
 			final int x=rawHeader.indexOf(':');
 			final String headerKey=rawHeader.substring(0,x).trim().toUpperCase();
 			final List<String> headerVals = new ArrayList<String>();
-			headerVals.addAll(Arrays.asList(CMLib.coffeeFilter().colorOnlyFilter(rawHeader.substring(x+1),null).trim().split(";")));
+			for(final String s : Arrays.asList(CMLib.coffeeFilter().colorOnlyFilter(rawHeader.substring(x+1),null).trim().split(";")))
+				headerVals.add(s.trim());
 			headers.put(headerKey, headerVals);
 		}
 		return headers;
@@ -172,6 +173,36 @@ public class Test extends StdCommand
 		return nstr.toString();
 	}
 
+	private String stripHtmlHeaders(String html)
+	{
+		if(html.trim().startsWith("&lt;HTML")
+		||html.trim().startsWith("&lt;html"))
+		{
+			html=CMStrings.replaceAll(html, "&lt;", "<");
+			html=CMStrings.replaceAll(html, "&gt;", ">");
+			html=CMStrings.replaceAll(html, "&quot;", "\"");
+			html=CMStrings.replaceAll(html, "&#39;", "'");
+		}
+		if(html.trim().startsWith("<html")
+			||html.trim().startsWith("<HTML"))
+		{
+			int x=html.lastIndexOf("</body>");
+			if(x<0)
+				x=html.lastIndexOf("</BODY>");
+			if(x>0)
+				html=html.substring(0,x);
+			x=html.indexOf("<body");
+			if(x<0)
+				x=html.indexOf("<BODY");
+			if(x>0)
+			{
+				x=html.indexOf(">",x+4);
+				html=html.substring(x+1);
+			}
+		}
+		return html;
+	}
+	
 	public String copyYahooGroupMsg(final MOB mob, int lastMsgNum) throws Exception
 	{
 		long numTimes = 9999999;
@@ -254,19 +285,62 @@ public class Test extends StdCommand
 			final int headerEnd=theMessage.indexOf("\r\n\r\n");
 			if(headerEnd<0)
 				return "Failed: to find header in msg:" + lastMsgNum;
-			final Map<String,List<String>> headers = this.parseHeaders(theMessage.substring(0,headerEnd+4));
+			Map<String,List<String>> headers = this.parseHeaders(theMessage.substring(0,headerEnd+4));
 			if(!headers.containsKey("CONTENT-TYPE"))
 				return "Failed: to find content-type in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-			final String contentType=headers.get("CONTENT-TYPE").get(0);
+			String contentType=headers.get("CONTENT-TYPE").get(0);
 			theMessage = theMessage.substring(headerEnd+4);
-			theMessage = CMStrings.replaceAll(theMessage, "@", "%40");
 			if (theMessage.trim().length() == 0)
 			{
 				if(lastMsgNum == 18208)
 					continue;
 				return "Failed: to find lengthy msg in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
 			}
-			//TODO:BZ:Failed: Invalid content-type 'multipart/mixed' in lastMsgNum:18721/message/18721
+			if(contentType.equalsIgnoreCase("multipart/mixed")||contentType.equalsIgnoreCase("multipart/related"))
+			{
+				String multiBoundary=null;
+				final List<String> bounds = headers.get("CONTENT-TYPE");
+				for(String s : bounds)
+				{
+					s=s.trim();
+					if(s.toLowerCase().startsWith("boundary="))
+					{
+						multiBoundary=s.substring(9);
+						if(multiBoundary.startsWith("\"") && multiBoundary.endsWith("\""))
+							multiBoundary=multiBoundary.substring(1,multiBoundary.length()-1).trim();
+					}
+				}
+				if(multiBoundary == null)
+					return "Failed: missing multi-part-boundary in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+				boolean kaplah=false;
+				for(String msgChoice : theMessage.split("--"+multiBoundary))
+				{
+					msgChoice=msgChoice.trim();
+					if(msgChoice.length()==0)
+						continue;
+					if(msgChoice.startsWith("--"))
+						break;
+					final int innerHeaderDex=msgChoice.indexOf("\r\n\r\n");
+					if(innerHeaderDex<0)
+						return "Failed: missing innerHeaderDex in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+					final Map<String,List<String>> innerHeaders = this.parseHeaders(msgChoice.substring(0,innerHeaderDex+4));
+					if(!innerHeaders.containsKey("CONTENT-TYPE"))
+						return "Failed: to find content-type in inner header in :" + lastMsgNum + "/message/" + lastMsgNum;
+					final String innerContentType=innerHeaders.get("CONTENT-TYPE").get(0);
+					if(innerContentType.equalsIgnoreCase("multipart/alternative")
+					||innerContentType.equalsIgnoreCase("text/plain")
+					||innerContentType.equalsIgnoreCase("text/html"))
+					{
+						contentType=innerContentType;
+						headers=innerHeaders;
+						theMessage=msgChoice.substring(innerHeaderDex+4);
+						kaplah=true;
+						break;
+					}
+				}
+				if(!kaplah)
+					return "Failed: to find acceptable inner part in :" + lastMsgNum + "/message/" + lastMsgNum;
+			}
 			if(contentType.equalsIgnoreCase("multipart/alternative"))
 			{
 				String multiBoundary=null;
@@ -278,18 +352,19 @@ public class Test extends StdCommand
 					{
 						multiBoundary=s.substring(9);
 						if(multiBoundary.startsWith("\"") && multiBoundary.endsWith("\""))
-							multiBoundary=multiBoundary.substring(1,multiBoundary.length()-1);
+							multiBoundary=multiBoundary.substring(1,multiBoundary.length()-1).trim();
 					}
 				}
 				if(multiBoundary == null)
 					return "Failed: missing multi-boundary in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+				boolean kaplah=false;
 				for(String msgChoice : theMessage.split("--"+multiBoundary))
 				{
 					msgChoice=msgChoice.trim();
 					if(msgChoice.length()==0)
 						continue;
 					if(msgChoice.startsWith("--"))
-						return "Failed: to find acceptable inner message in :" + lastMsgNum + "/message/" + lastMsgNum;
+						break;
 					final int innerHeaderDex=msgChoice.indexOf("\r\n\r\n");
 					if(innerHeaderDex<0)
 						return "Failed: missing innerHeaderDex in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
@@ -301,12 +376,16 @@ public class Test extends StdCommand
 						encoding=innerHeaders.get("CONTENT-TRANSFER-ENCODING").get(0);
 					//return "Failed: to find content-transfer-encoding in inner header in :" + lastMsgNum + "/message/" + lastMsgNum;
 					msgChoice=msgChoice.substring(innerHeaderDex+4).trim();
-					//TODO:BZ:PREFER HTML?"!
 					final String innerContentType=innerHeaders.get("CONTENT-TYPE").get(0);
-					if(innerContentType.equalsIgnoreCase("text/plain"))
+					if(innerContentType.equalsIgnoreCase("text/plain")
+					||innerContentType.equalsIgnoreCase("text/html"))
 					{
 						if(encoding.equalsIgnoreCase("base64"))
-							theMessage=new String(B64Encoder.B64decode(theMessage));
+						{
+							if(msgChoice.endsWith("\n(Message over 64 KB, truncated)"))
+								msgChoice=msgChoice.substring(0,msgChoice.indexOf("\n(Message over 64 KB, truncated)"));
+							theMessage=new String(B64Encoder.B64decode(msgChoice));
+						}
 						else
 						if(encoding.equalsIgnoreCase("quoted-printable"))
 							theMessage=decodeQuotedPrintable(msgChoice);
@@ -315,9 +394,22 @@ public class Test extends StdCommand
 							theMessage=msgChoice;
 						else
 							return "Failed: Invalid encoding '"+encoding+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
-						break; //kaplah
+						kaplah=true;
+						if(innerContentType.equalsIgnoreCase("text/html"))
+						{
+							theMessage=stripHtmlHeaders(theMessage);
+							//break; //kaplah
+						}
+						else
+						if(innerContentType.equalsIgnoreCase("text/plain"))
+						{
+							theMessage=CMStrings.replaceAll(theMessage, "\n", "<BR>");
+							break; //kaplah
+						}
 					}
 				}
+				if(!kaplah)
+					return "Failed: to find acceptable inner message in :" + lastMsgNum + "/message/" + lastMsgNum;
 			}
 			else
 			if(contentType.equalsIgnoreCase("text/plain"))
@@ -326,13 +418,18 @@ public class Test extends StdCommand
 				if(headers.containsKey("CONTENT-TRANSFER-ENCODING"))
 					encoding=headers.get("CONTENT-TRANSFER-ENCODING").get(0);
 				if(encoding.equalsIgnoreCase("base64"))
+				{
+					if(theMessage.endsWith("\n(Message over 64 KB, truncated)"))
+						theMessage=theMessage.substring(0,theMessage.indexOf("\n(Message over 64 KB, truncated)"));
 					theMessage=new String(B64Encoder.B64decode(theMessage));
+				}
 				else
 				if(encoding.equalsIgnoreCase("quoted-printable"))
 					theMessage=decodeQuotedPrintable(theMessage);
 				else
 				if((!encoding.equalsIgnoreCase("7bit")) && (!encoding.equalsIgnoreCase("8bit")))
 					return "Failed: Invalid encoding '"+encoding+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+				theMessage=CMStrings.replaceAll(theMessage, "\n", "<BR>");
 			}
 			else
 			if(contentType.equalsIgnoreCase("text/html"))
@@ -341,19 +438,25 @@ public class Test extends StdCommand
 				if(headers.containsKey("CONTENT-TRANSFER-ENCODING"))
 					encoding=headers.get("CONTENT-TRANSFER-ENCODING").get(0);
 				if(encoding.equalsIgnoreCase("base64"))
+				{
+					if(theMessage.endsWith("\n(Message over 64 KB, truncated)"))
+						theMessage=theMessage.substring(0,theMessage.indexOf("\n(Message over 64 KB, truncated)"));
 					theMessage=new String(B64Encoder.B64decode(theMessage));
+				}
 				else
 				if(encoding.equalsIgnoreCase("quoted-printable"))
 					theMessage=decodeQuotedPrintable(theMessage);
 				else
 				if((!encoding.equalsIgnoreCase("7bit")) && (!encoding.equalsIgnoreCase("8bit")))
 					return "Failed: Invalid encoding '"+encoding+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
+				theMessage=stripHtmlHeaders(theMessage);
 			}
 			else
 				return "Failed: Invalid content-type '"+contentType+"' in lastMsgNum:" + lastMsgNum + "/message/" + lastMsgNum;
 
 			theMessage = CMStrings.replaceAll(theMessage, "&#39;", "`");
 			theMessage = CMStrings.replaceAll(theMessage, "'", "`");
+			theMessage = CMStrings.replaceAll(theMessage, "@", "&#64;");
 			final JournalsLibrary.ForumJournal forum = CMLib.journals().getForumJournal("Support");
 			if (forum == null)
 				return "Failed: bad forum given";
@@ -674,10 +777,13 @@ public class Test extends StdCommand
 			{
 				try
 				{
-					mob.tell(copyYahooGroupMsg(mob,18314));
+					final int rememberMe=18201;
+					mob.tell(copyYahooGroupMsg(mob,18438));
 				}
 				catch(final Exception e)
 				{
+					e.printStackTrace();
+					Log.errOut(e);
 					mob.tell(e.getMessage());
 				}
 			}

@@ -213,15 +213,13 @@
 	<TD COLSPAN=6>
 		<TABLE WIDTH=100% BORDER=0 CELLSPACING=3 CELLPADDING=3>
 		<TR VALIGN=CENTER HEIGHT=15>
-			@if?ForumInfo?CANPOST@
-			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:NewMessage('')">
-			<a href="javascript:NewMessage('')" style="text-decoration:none">
+			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:Cancel('')">
+			<a href="javascript:Cancel('')" style="text-decoration:none">
 				<FONT COLOR=WHITE SIZE=-1>
-				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docbulb.gif>&nbsp;&nbsp;<B>New Thread</B>
+				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docbback.gif>&nbsp;&nbsp;<B>@if?!CheckReqParm?CLAN=@Home@else@Forums@endif@</B>
 				</FONT>
 			</a>
 			</TD>
-			@endif@
 			<TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT>
 			</TD>
 			@if?ForumInfo?CANADMIN@
@@ -233,13 +231,15 @@
 			</a>
 			</TD>
 			@endif@
-			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:Cancel('')">
-			<a href="javascript:Cancel('')" style="text-decoration:none">
+			@if?ForumInfo?CANPOST@
+			<TD WIDTH=100px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:NewMessage('')">
+			<a href="javascript:NewMessage('')" style="text-decoration:none">
 				<FONT COLOR=WHITE SIZE=-1>
-				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docbback.gif>&nbsp;&nbsp;<B>@if?!CheckReqParm?CLAN=@Home@else@Forums@endif@</B>
+				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docbulb.gif>&nbsp;&nbsp;<B>New Thread</B>
 				</FONT>
 			</a>
 			</TD>
+			@endif@
 		</TR>
 		</TABLE>
 	</TD>

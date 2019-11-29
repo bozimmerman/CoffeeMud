@@ -267,7 +267,8 @@ public class JournalFunction extends StdWebMacro
 			else
 				keepProcessing=false;
 			JournalEntry entry = JournalInfo.getEntry(msgs, msgKey);
-			if((entry==null)&&parms.containsKey("DELETEREPLY"))
+			if((entry==null)
+			&&(parms.containsKey("DELETEREPLY")||parms.containsKey("DELETE")))
 				entry=CMLib.database().DBReadJournalEntry(journalName, msgKey);
 			if(entry == null)
 				return "Function not performed -- illegal journal message specified.<BR>";
