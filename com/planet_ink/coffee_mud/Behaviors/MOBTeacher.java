@@ -349,9 +349,11 @@ public class MOBTeacher extends CombatAbilities
 				else
 					sayMsg=msg.sourceMessage();
 			}
-			int x=sayMsg.toUpperCase().indexOf("TEACH");
-			if(x<0)
-				x=sayMsg.toUpperCase().indexOf("GAIN ");
+			final int x1=sayMsg.toUpperCase().indexOf("TEACH");
+			final int x2=sayMsg.toUpperCase().indexOf("GAIN ");
+			int x=x1;
+			if((x1<0)||((x2<x)&&(x2>=0)))
+				x=x2;
 			if(x>=0)
 			{
 				boolean giveABonus=false;
