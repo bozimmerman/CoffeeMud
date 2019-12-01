@@ -705,7 +705,7 @@ public class AbilityData extends StdWebMacro
 						&&(!CMSecurity.isASysOp(mob)))
 							continue;
 						final String AID=A2.ID();
-						final String ANAME=A2.name();
+						//final String ANAME=A2.name();
 						str.append("<OPTION VALUE=\""+AID+"\""+(id.equals(AID.toUpperCase())?" SELECTED":"")+">"+AID);
 					}
 					str.append(", ");
