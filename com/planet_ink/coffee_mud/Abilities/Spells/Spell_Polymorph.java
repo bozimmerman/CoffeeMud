@@ -127,6 +127,29 @@ public class Spell_Polymorph extends Spell
 	}
 
 	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		if((newMiscText!=null)&&(newMiscText.length()>0))
+		{
+			newRace=CMClass.findRace(newMiscText);
+			if(newRace != null)
+			{
+				final Physical P=this.affected;
+				if(P instanceof MOB)
+				{
+					final MOB target=(MOB)P;
+					if(target.location()!=null)
+						target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
+					target.recoverCharStats();
+					target.recoverPhyStats();
+					CMLib.utensils().confirmWearability(target);
+				}
+			}
+		}
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);

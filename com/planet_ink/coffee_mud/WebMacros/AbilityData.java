@@ -696,7 +696,7 @@ public class AbilityData extends StdWebMacro
 					if(httpReq.isUrlParameter("MOCKABILITY"))
 						id=httpReq.getUrlParameter("MOCKABILITY").toUpperCase().trim();
 					else
-						id=A.getStat("POSTCASTAFFECT").toUpperCase().trim();
+						id=A.getStat("MOCKABILITY").toUpperCase().trim();
 					str.append("<OPTION VALUE=\"\""+(id.equals("")?" SELECTED":"")+">"+L("None"));
 					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
@@ -706,7 +706,7 @@ public class AbilityData extends StdWebMacro
 							continue;
 						final String AID=A2.ID();
 						final String ANAME=A2.name();
-						str.append("<OPTION VALUE=\""+AID+"\""+(id.equals(AID.toUpperCase())?" SELECTED":"")+">"+ANAME);
+						str.append("<OPTION VALUE=\""+AID+"\""+(id.equals(AID.toUpperCase())?" SELECTED":"")+">"+AID);
 					}
 					str.append(", ");
 				}
