@@ -1857,6 +1857,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				possibleAddElectronicsManufacturers(mob, custom);
 				possiblyAddCustomRace(mob, custom);
 				possiblyAddCustomClass(mob, custom);
+				possiblyAddCustomAbility(mob, custom);
+				possiblyAddCustomEffect(mob, custom);
 				fillFileSet(mob,files);
 			}
 		}
@@ -1887,11 +1889,44 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	protected void possiblyAddCustomClass(final MOB mob, final Set<CMObject> custom)
 	{
 		if(custom!=null)
-		for(int c=0;c<mob.baseCharStats().numClasses();c++)
 		{
-			final CharClass C=mob.baseCharStats().getMyClass(c);
-			if((C.isGeneric())&&(!custom.contains(C)))
-				custom.add(C);
+			for(int c=0;c<mob.baseCharStats().numClasses();c++)
+			{
+				final CharClass C=mob.baseCharStats().getMyClass(c);
+				if((C.isGeneric())&&(!custom.contains(C)))
+					custom.add(C);
+			}
+		}
+	}
+
+	protected void possiblyAddCustomEffect(final Physical P, final Set<CMObject> custom)
+	{
+		if(custom!=null)
+		{
+			for(int c=0;c<P.numEffects();c++)
+			{
+				final Ability A=P.fetchEffect(c);
+				if((A.isGeneric())
+				&&(A.isSavable())
+				&&(!A.canBeUninvoked())
+				&&(!custom.contains(A)))
+					custom.add(A);
+			}
+		}
+	}
+
+	protected void possiblyAddCustomAbility(final MOB mob, final Set<CMObject> custom)
+	{
+		if(custom!=null)
+		{
+			for(int c=0;c<mob.numAbilities();c++)
+			{
+				final Ability A=mob.fetchAbility(c);
+				if((A.isGeneric())
+				&&(A.isSavable())
+				&&(!custom.contains(A)))
+					custom.add(A);
+			}
 		}
 	}
 
@@ -2392,6 +2427,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				items.add(croom.getItem(i));
 		}
 
+		possiblyAddCustomEffect(room, custom);
 		final Area area=room.getArea();
 		final boolean isShip=(area instanceof BoardableShip);
 
@@ -2488,7 +2524,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						possiblyAddCustomRace(mob, custom);
 						possiblyAddCustomClass(mob, custom);
 						possibleAddElectronicsManufacturers(mob, custom);
-
+						possiblyAddCustomAbility(mob, custom);
+						possiblyAddCustomEffect(mob, custom);
+						
 						buf.append("<RMOB>");
 						buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.classID(mob)));
 						if((((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0)))||(mob.numFollowers()>0))
@@ -2521,6 +2559,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					final Item item=items.get(i);
 					if(item.isSavable() || (!andIsInDB))
 					{
+						possiblyAddCustomEffect(item, custom);
 						StringBuilder ibuf=new StringBuilder();
 						ibuf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(item)));
 						if(((item instanceof Container)&&(((Container)item).capacity()>0))
@@ -4290,6 +4329,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		possiblyAddCustomRace(mob, custom);
 		possiblyAddCustomClass(mob, custom);
+		possiblyAddCustomAbility(mob, custom);
+		possiblyAddCustomEffect(mob, custom);
 
 		fillFileSet(mob,files);
 		return str.toString();
