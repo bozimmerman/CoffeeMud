@@ -231,6 +231,7 @@ public class Spell_SummonEnemy extends Spell
 				final MOB mob=room.fetchRandomInhabitant();
 				if((mob!=null)
 				&&(!(mob instanceof Deity))
+				&&(!mob.isPlayer())
 				&&(mob.phyStats().level()>=level-(CMProps.getIntVar(CMProps.Int.EXPRATE)/2))
 				&&(mob.phyStats().level()<=(level+(CMProps.getIntVar(CMProps.Int.EXPRATE)/2)))
 				&&(mob.charStats()!=null)
