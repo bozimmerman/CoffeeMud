@@ -1576,7 +1576,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				{
 					o = C.executeInternal(mob, 0, new Object[0]);
 					if(o instanceof String)
-						F.saveText(o);
+					{
+						final String str=CMStrings.removeColors((String)o);
+						F.saveText(str);
+					}
 				}
 				catch (final IOException e)
 				{
