@@ -101,7 +101,7 @@ public class Lacquerring extends PaintingSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonEmote(mob,L("<S-NAME> mess(es) up the dyeing."));
+					commonEmote(mob,L("<S-NAME> mess(es) up the lacquering."));
 				else
 				{
 					removePaintJob(found);
@@ -218,7 +218,7 @@ public class Lacquerring extends PaintingSkill
 			startMsg=L("<S-NAME> start(s) lacquering @x1.",target.name());
 		}
 		else
-			startMsg=L("<S-NAME> start(s) dyeing @x1.",target.name());
+			startMsg=L("<S-NAME> start(s) lacquering @x1.",target.name());
 		displayText=L("You are @x1",verb);
 		found=target;
 		if(!proficiencyCheck(mob,0,auto))
