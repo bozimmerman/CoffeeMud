@@ -6006,10 +6006,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					else
 					if(o1 instanceof List)
 					{
-						@SuppressWarnings("unchecked")
-						final List<Map<String,Object>> list=(List<Map<String,Object>>)o1;
-						for(final Map<String,Object> m2 : list)
-							m.putAll(m2);
+						@SuppressWarnings("rawtypes")
+						final Iterator iter = ((List)o1).iterator();
+						if(iter.hasNext())
+						{
+							final Object obj = iter.next();
+							if(obj instanceof Map)
+							{
+								@SuppressWarnings("unchecked")
+								final List<Map<String,Object>> list=(List<Map<String,Object>>)o1;
+								for(final Map<String,Object> m2 : list)
+									m.putAll(m2);
+							}
+							else
+								m.put(".", o1);
+						}
 					}
 					else
 						m.put(bit.as(), o1);
