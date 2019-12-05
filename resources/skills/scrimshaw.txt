@@ -114,7 +114,7 @@ reinforced % skewer	66	60	4	1640	GenWeapon	DAGGER	24	Prop_Doppleganger;ASMATERIA
 reinforced % short sword	67	130	6	4335	GenWeapon	SWORD	51	Prop_Doppleganger;ASMATERIAL=IRON MIN=67 MAX=67
 reinforced small skull mace	68	100	14	4328	GenWeapon	BLUNT	49	Prop_Doppleganger;ASMATERIAL=IRON MIN=68 MAX=68
 ornate % table	68	40	60	1600	GenRideable	TABLE	200	
-reinforced  % bracers	69	50	4	69	GenArmor	S0:WRISTS	8	Prop_Doppleganger;ASMATERIAL=IRON MIN=69 MAX=69
+reinforced % bracers	69	50	4	69	GenArmor	S0:WRISTS	8	Prop_Doppleganger;ASMATERIAL=IRON MIN=69 MAX=69
 reinforced % breast plate	72	75	18	366	GenArmor	S0:TORSO	35	Prop_Doppleganger;ASMATERIAL=IRON MIN=72 MAX=72
 reinforced spiked % flail	72	120	26	7012	GenWeapon	FLAILED	67	Prop_Doppleganger;ASMATERIAL=IRON MIN=72 MAX=72
 % weapon rack	72	70	65	3300	GenContainer	SWORDS|OTHER WEAPONS|DAGGERS|ONE-HANDED WEAPONS	500	Prop_NoPurge

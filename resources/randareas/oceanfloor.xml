@@ -317,7 +317,7 @@ See guides/RandomAreas.html for information about documents of this type.
 						<MATERIAL>HIDE</MATERIAL>
 						<MATERIAL>SEAWEED</MATERIAL>
 					</MATERIAL>
-					<PROPERWORN>LEFTWRIST,RIGHTWRIST</PROPERWORN>
+					<PROPERWORN>LEFT WRIST,RIGHT WRIST</PROPERWORN>
 					<WORNAND>false</WORNAND>
 				</ITEM>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
