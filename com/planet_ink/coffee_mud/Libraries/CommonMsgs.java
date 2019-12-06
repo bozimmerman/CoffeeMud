@@ -685,6 +685,48 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		standingmob.tell(standingmob,msg.target(),msg.tool(),msg.sourceMessage());
 	}
 
+	protected void handleRecall(final MOB recallingMob, final Room recallingRoom, final Room recallToRoom)
+	{
+		recallingRoom.delInhabitant(recallingMob);
+		recallToRoom.addInhabitant(recallingMob);
+		recallToRoom.showOthers(recallingMob,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of the Java Plane."));
+
+		recallingMob.setLocation(recallToRoom);
+		if((recallingMob.riding()!=null)
+		&&(recallToRoom!=CMLib.map().roomLocation(recallingMob.riding())))
+		{
+			if(recallingMob.riding().mobileRideBasis())
+			{
+				if(recallingMob.riding() instanceof Item)
+					recallToRoom.moveItemTo((Item)recallingMob.riding(),ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+				else
+				if(recallingMob.riding() instanceof MOB)
+					recallToRoom.bringMobHere((MOB)recallingMob.riding(),true);
+			}
+			else
+				recallingMob.setRiding(null);
+		}
+		if(recallingMob instanceof Rideable)
+		{
+			for(Enumeration<Rider> r=((Rideable)recallingMob).riders();r.hasMoreElements();)
+			{
+				final Rider R=r.nextElement();
+				if(CMLib.map().roomLocation(R) != recallToRoom)
+				{
+					if(R instanceof Item)
+						recallToRoom.moveItemTo((Item)R,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+					else
+					if(R instanceof MOB)
+						recallToRoom.bringMobHere((MOB)R,true);
+				}
+			}
+		}
+		recallingMob.recoverPhyStats();
+		recallingMob.recoverCharStats();
+		recallingMob.recoverMaxState();
+		postLook(recallingMob,true);
+	}
+	
 	@Override
 	public void handleRecall(final CMMsg msg)
 	{
@@ -696,30 +738,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		{
 			final Room recallToRoom=(Room)msg.target();
 			recallingMob.tell(msg.source(),null,msg.tool(),msg.targetMessage());
-
-			recallingRoom.delInhabitant(recallingMob);
-			recallToRoom.addInhabitant(recallingMob);
-			recallToRoom.showOthers(recallingMob,null,CMMsg.MSG_ENTER,L("<S-NAME> appears out of the Java Plane."));
-
-			recallingMob.setLocation(recallToRoom);
-			if((recallingMob.riding()!=null)
-			&&(recallToRoom!=CMLib.map().roomLocation(recallingMob.riding())))
-			{
-				if(recallingMob.riding().mobileRideBasis())
-				{
-					if(recallingMob.riding() instanceof Item)
-						recallToRoom.moveItemTo((Item)recallingMob.riding(),ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
-					else
-					if(recallingMob.riding() instanceof MOB)
-						recallToRoom.bringMobHere((MOB)recallingMob.riding(),true);
-				}
-				else
-					recallingMob.setRiding(null);
-			}
-			recallingMob.recoverPhyStats();
-			recallingMob.recoverCharStats();
-			recallingMob.recoverMaxState();
-			postLook(recallingMob,true);
+			handleRecall(msg.source(),recallingRoom,recallToRoom);
 		}
 	}
 
