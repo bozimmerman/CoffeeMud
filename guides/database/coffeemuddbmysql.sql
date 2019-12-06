@@ -244,7 +244,7 @@ ALTER TABLE CMCLAN ADD ( UNIQUE KEY (CMCLID) );
 CREATE TABLE CMPDAT (
 	CMPLID varchar (100) ,
 	CMSECT varchar (100) ,
-	CMPKEY varchar (100) ,
+	CMPKEY varchar (255) ,
 	CMPDAT longtext NULL 
 );
 

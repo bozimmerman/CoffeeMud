@@ -221,7 +221,7 @@ CREATE TABLE CMCLAN (
 CREATE TABLE CMPDAT (
 	CMPLID nvarchar (100) ,
 	CMSECT nvarchar (100) ,
-	CMPKEY nvarchar (100) ,
+	CMPKEY nvarchar (255) ,
 	CMPDAT ntext NULL ,
 	PRIMARY KEY (CMPLID,CMSECT,CMPKEY)
 );

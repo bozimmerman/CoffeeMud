@@ -253,7 +253,7 @@ ALTER TABLE CMCLAN
 CREATE TABLE CMPDAT (
 	CMPLID varchar (100) ,
 	CMSECT varchar (100) ,
-	CMPKEY varchar (100) ,
+	CMPKEY varchar (255) ,
 	CMPDAT text NULL 
 );
 
