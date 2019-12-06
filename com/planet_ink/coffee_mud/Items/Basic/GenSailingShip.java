@@ -488,12 +488,21 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 							final String str=CMParms.combine(cmds,1).toLowerCase();
 							if(("overboard").startsWith(str) || ("water").startsWith(str))
 							{
-								if(((mobR.domainType()&Room.INDOORS)==0)
+								if(((mobR.domainType()&Room.INDOORS)!=0)
 								&& (mobR.domainType()!=Room.DOMAIN_OUTDOORS_AIR))
 									msg.source().tell(L("You must be on deck to jump overboard."));
 								else
 								if(mobR.show(mob, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> jump(s) overboard.")))
+								{
 									CMLib.tracking().walkForced(mob, mobR, thisRoom, true, true, L("<S-NAME> arrive(s) from @x1.",name()));
+									if((mob.location()==thisRoom)
+									&&(!CMLib.flags().isWateryRoom(thisRoom)))
+									{
+										final int directDamage = mob.maxState().getHitPoints()/10; 
+										CMLib.combat().postDamage(mob,mob,null,directDamage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,
+												L("The fall <DAMAGES> <T-NAME>!"));
+									}
+								}
 							}
 							else
 								msg.source().tell(L("Jump where?  Try JUMP OVERBOARD."));
