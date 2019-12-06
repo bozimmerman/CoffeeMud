@@ -138,7 +138,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		SINK,
 		TENDER,
 		RAISE,
-		LOWER
+		LOWER,
+		JUMP
 		;
 	}
 
@@ -466,6 +467,39 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					final CMMsg damageMsg=CMClass.getMsg(msg.source(), this, CMMsg.MSG_DAMAGE, "SINK!!!");
 					damageMsg.setValue(99999);
 					this.executeMsg(this, damageMsg);
+					return false;
+				}
+				case JUMP:
+				{
+					final Room thisRoom = (Room)owner();
+					if(thisRoom==null)
+					{
+						msg.source().tell(L("This ship is nowhere to be found!"));
+						return false;
+					}
+					final MOB mob=msg.source();
+					final Room mobR = mob.location();
+					if(mobR != null)
+					{
+						if(cmds.size()<2)
+							mobR.show(mob, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> jump(s) in place."));
+						else
+						{
+							final String str=CMParms.combine(cmds,1).toLowerCase();
+							if(("overboard").startsWith(str) || ("water").startsWith(str))
+							{
+								if(((mobR.domainType()&Room.INDOORS)==0)
+								&& (mobR.domainType()!=Room.DOMAIN_OUTDOORS_AIR))
+									msg.source().tell(L("You must be on deck to jump overboard."));
+								else
+								if(mobR.show(mob, null, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> jump(s) overboard.")))
+									CMLib.tracking().walkForced(mob, mobR, thisRoom, true, true, L("<S-NAME> arrive(s) from @x1.",name()));
+							}
+							else
+								msg.source().tell(L("Jump where?  Try JUMP OVERBOARD."));
+						}
+						return false;
+					}
 					return false;
 				}
 				case AIM:
@@ -1208,7 +1242,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						{
 							final Room target=R;
 							final CMMsg msg2=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<S-NAME> throw(s) <O-NAME> overboard."));
-							final CMMsg msg3=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<O-NAME> fl(ys) in from overboard."));
+							final CMMsg msg3=CMClass.getMsg(mob,target,item,CMMsg.MSG_THROW,L("<O-NAME> fl(ys) in from @x1.",name()));
 							if(mob.location().okMessage(mob,msg2)&&target.okMessage(mob,msg3))
 							{
 								mob.location().send(mob,msg2);
