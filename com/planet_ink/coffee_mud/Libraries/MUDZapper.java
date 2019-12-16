@@ -4818,7 +4818,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						final Environmental W=(E instanceof MOB) ? ((MOB)E).fetchWieldedItem() : E;
 						if(W instanceof Weapon)
 						{
-							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)E).weaponDamageType())) >= 0)
+							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)W).weaponDamageType())) >= 0)
 								return false;
 						}
 					}
@@ -4828,7 +4828,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						final Environmental W=(E instanceof MOB) ? ((MOB)E).fetchWieldedItem() : E;
 						if(W instanceof Weapon)
 						{
-							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)E).weaponDamageType())) < 0)
+							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)W).weaponDamageType())) < 0)
 								return false;
 						}
 					}
@@ -4894,7 +4894,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						final Environmental W=(E instanceof MOB) ? ((MOB)E).fetchWieldedItem() : E;
 						if(W instanceof Weapon)
 						{
-							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)E).weaponClassification())) >= 0)
+							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)W).weaponClassification())) >= 0)
 								return false;
 						}
 					}
@@ -4904,7 +4904,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						final Environmental W=(E instanceof MOB) ? ((MOB)E).fetchWieldedItem() : E;
 						if(W instanceof Weapon)
 						{
-							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)E).weaponClassification())) < 0)
+							if(CMParms.indexOf(entry.parms(), Integer.valueOf(((Weapon)W).weaponClassification())) < 0)
 								return false;
 						}
 					}
