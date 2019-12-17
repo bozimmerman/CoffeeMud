@@ -1171,14 +1171,14 @@ public class StdMOB implements MOB
 		if(pStats!=null)
 			CMLib.players().changePlayersLocation(this,null);
 		setFollowing(null);
-		final PairVector<MOB,Integer> oldFollowers = new PairVector<MOB,Integer>();
+		final PairList<MOB,Integer> oldFollowers = new PairArrayList<MOB,Integer>();
 		while (numFollowers() > 0)
 		{
 			final MOB follower = fetchFollower(0);
 			if (follower != null)
 			{
 				if ((follower.isMonster()) && (!follower.isPossessing()))
-					oldFollowers.addElement(follower, Integer.valueOf(fetchFollowerOrder(follower)));
+					oldFollowers.add(follower, Integer.valueOf(fetchFollowerOrder(follower)));
 				follower.setFollowing(null);
 				delFollower(follower);
 			}
@@ -1186,9 +1186,9 @@ public class StdMOB implements MOB
 
 		if (preserveFollowers)
 		{
-			for (int f = 0; f < oldFollowers.size(); f++)
+			for (final Pair<MOB,Integer> p : oldFollowers)
 			{
-				final MOB follower = oldFollowers.getFirst(f);
+				final MOB follower = p.first;
 				if (follower.location() != null)
 				{
 					final MOB newFol = (MOB) follower.copyOf();
@@ -1196,7 +1196,7 @@ public class StdMOB implements MOB
 					newFol.phyStats().setRejuv(PhyStats.NO_REJUV);
 					newFol.text();
 					follower.killMeDead(false);
-					addFollower(newFol, oldFollowers.getSecond(f).intValue());
+					addFollower(newFol, p.second.intValue());
 				}
 			}
 			if(pStats!=null)
