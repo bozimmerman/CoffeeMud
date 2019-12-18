@@ -2764,8 +2764,8 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns whether the given string is a language ID
 	 * from the official classes load.
-	 * @param langID
-	 * @return
+	 * @param ID the ability ID to check
+	 * @return whether the given Ability ID is a language
 	 */
 	public static final boolean isLanguage(final String ID)
 	{

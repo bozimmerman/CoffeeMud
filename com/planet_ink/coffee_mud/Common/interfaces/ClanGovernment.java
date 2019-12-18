@@ -258,8 +258,8 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	/**
 	 * Returns a list of titles granted to players of clans
 	 * in this government.  Variables in the titles include:
-	 * @x1 The Clan Name
-	 * @x2 The Clan Government Name
+	 * {@literal @}x1 The Clan Name
+	 * {@literal @}x2 The Clan Government Name
 	 *
 	 * This list is manipulable.
 	 *
@@ -442,7 +442,7 @@ public interface ClanGovernment extends Modifiable, CMCommon
 	 * Returns the compiled xp calculation formula
 	 *
 	 * @see ClanGovernment#setXpCalculationFormulaStr(String)
-	 * @see ClanGovernment#getXPCalculationFormulaStr()
+	 * @see ClanGovernment#getXpCalculationFormulaStr()
 	 *
 	 * @return the compiled xp calculation formula
 	 */

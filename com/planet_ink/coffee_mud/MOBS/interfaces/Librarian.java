@@ -310,7 +310,6 @@ public interface Librarian extends ShopKeeper
 	 * Sets the mask used to determine if a contributor is ignored by the Librarian
 	 * for contribution.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
-	 * @see Librarian#finalContributorMask()
 	 * @see Librarian#contributorMask()
 	 * @param mask the mask to use
 	 */

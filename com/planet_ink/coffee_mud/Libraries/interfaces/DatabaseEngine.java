@@ -1692,7 +1692,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Deletes what is probably a single player data entry, but could be more.
 	 * All fields are required.
 	 * @see DatabaseEngine.PlayerData
-	 * @see DatabaseEngine#DBUpdatePlayerData(String, String)
+	 * @see DatabaseEngine#DBUpdatePlayerData(String, String, String, String)
 	 * @see DatabaseEngine#DBReCreatePlayerData(String, String, String, String)
 	 * @param playerID the name/userid of the player to delete data for
 	 * @param section the section/type of data to delete
@@ -2171,7 +2171,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBBACKLOG
 	 * Adds a CHANNEL message to the backlog table
 	 * @see DatabaseEngine#getBackLogEntries(String, int, int)
-	 * @see DatabaseEngine#delBackLogEntry(String, int, long)
+	 * @see DatabaseEngine#delBackLogEntry(String, long)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
 	 * @param channelName the unique name of the channel
 	 * @param timeStamp the time the message was added in millis
@@ -2198,7 +2198,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * by setting the number to skip and the number to return.
 	 *
 	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
-	 * @see DatabaseEngine#delBackLogEntry(String, int, long)
+	 * @see DatabaseEngine#delBackLogEntry(String, long)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
 	 *
 	 * @param channelName the unique name of the channel to return messages from
@@ -2216,7 +2216,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * to return (absolute timestamp -- no 0 nonsense).  Both criteria
 	 * will be used in the trimming.
 	 * @see DatabaseEngine#getBackLogEntries(String, int, int)
-	 * @see DatabaseEngine#delBackLogEntry(String, int, long)
+	 * @see DatabaseEngine#delBackLogEntry(String, long)
 	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
 	 *
 	 * @param channels the list of channels to go through.

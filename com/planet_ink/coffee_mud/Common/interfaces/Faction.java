@@ -524,7 +524,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#executeChange(MOB, MOB, com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent)
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
-	 * @param key the Social to find a change event for.
+	 * @param soc the Social to find a change event for.
 	 * @return the FactionChangeEvent that applies, or null.
 	 */
 	public FactionChangeEvent[] findSocialChangeEvents(final Social soc);

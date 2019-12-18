@@ -314,7 +314,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	/**
 	 * From the given official quest variable name, it derives
 	 * either an object or a vector of objects that reflect it.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#QOBJS
+	 * {@link QCODES}
 	 * @param named the code to return a string, object, or vector for
 	 * @return a string, mob, item, room, vector, etc..
 	 */
@@ -722,7 +722,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	public final static int FLAG_SUSPENDED=1;
 
 	/** The list of BASIC non-iterative variable codes that pertain to a quest object */
-	public enum QCODES
+	public static enum QCODES
 	{
 		CLASS, NAME, DURATION, WAIT, MINPLAYERS, PLAYERMASK,
 		RUNLEVEL, DATE, MUDDAY, INTERVAL,SPAWNABLE, DISPLAY,
@@ -730,14 +730,14 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	}
 
 	/** The list of basic quest objects defined in an iterative fashion during quest script execution */
-	public enum QOBJS
+	public static enum QOBJS
 	{
 		LOADEDMOBS, LOADEDITEMS, AREA, ROOM, MOBGROUP, ITEMGROUP, ROOMGROUP,
 		ITEM, ENVOBJ, STUFF, MOB
 	}
 
 	/** The list of basic mystery quest objects defined in an iterative fashion during quest script execution */
-	public enum MYSTERY_QCODES
+	public static enum MYSTERY_QCODES
 	{
 		 FACTION,FACTIONGROUP,
 		 AGENT,AGENTGROUP,

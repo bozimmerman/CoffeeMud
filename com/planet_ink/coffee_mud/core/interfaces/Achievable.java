@@ -31,8 +31,8 @@ public interface Achievable
 	/**
 	 * Returns the tracker for the given achievement, for the given mob, for the given
 	 * tracked thing, or creates it if it does not exist.
-	 * @see AccountStats#rebuildAchievementTracker(Tattooable, MOB, String)
-	 * see #killAchievementTracker(Achievement, MOB)
+	 * @see Achievable#rebuildAchievementTracker(Tattooable, MOB, String)
+	 * #see Achievable#killAchievementTracker(Achievement, MOB)
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement
 	 * @param A the achievement to get the tracker for
@@ -45,7 +45,7 @@ public interface Achievable
 	/**
 	 * Deletes the tracker for the given achievement, for the given mob, for the given
 	 * tracked thing.
-	 * @see AccountStats#rebuildAchievementTracker(Tattooable, MOB, String)
+	 * @see Achievable#rebuildAchievementTracker(Tattooable, MOB, String)
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement
 	 * @param A the achievement to kill the tracker for
@@ -61,7 +61,7 @@ public interface Achievable
 	 * @param tracked the mob or clan being tracked
 	 * @param mob the mob to modify the tracker for.
 	 * @param achievementTattoo the tattoo/id of the achievement
-	 * @see AccountStats#getAchievementTracker(com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement, Tattooable, MOB)
+	 * @see Achievable#getAchievementTracker(com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement, Tattooable, MOB)
 	 */
 	public void rebuildAchievementTracker(Tattooable tracked, final MOB mob, String achievementTattoo);
 

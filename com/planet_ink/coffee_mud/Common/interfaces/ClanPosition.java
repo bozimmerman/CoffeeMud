@@ -176,8 +176,8 @@ public interface ClanPosition extends Modifiable, CMCommon
 	/**
 	 * Returns a list of titles granted to players of clans
 	 * in this position.  Variables in the titles include:
-	 * @x1 The Clan Name
-	 * @x2 The Clan Government Name
+	 * {@literal @}x1 The Clan Name
+	 * {@literal @}x2 The Clan Government Name
 	 *
 	 * This list is manipulable.
 	 *
