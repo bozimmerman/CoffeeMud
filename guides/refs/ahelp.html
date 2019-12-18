@@ -36,6 +36,8 @@
 			
 			<li> <a href="#ASSIST">ASSIST</a>
 			
+			<li> <a href="#ASYNC">ASYNC</a>
+			
 			<li> <a href="#AT">AT</a>
 			
 			<li> <a href="#ATOPICS">ATOPICS</a>
@@ -69,6 +71,8 @@
 			<li> <a href="#COPY">COPY</a>
 			
 			<li> <a href="#CREATE">CREATE</a>
+			
+			<li> <a href="#CRECORD">CRECORD</a>
 			
 			<li> <a href="#DESTROY">DESTROY</a>
 			
@@ -132,7 +136,11 @@
 			
 			<li> <a href="#LIST_ABILITIES">LIST_ABILITIES</a>
 			
+			<li> <a href="#LIST_ABILITYCODES">LIST_ABILITYCODES</a>
+			
 			<li> <a href="#LIST_ABILITYDOMAINS">LIST_ABILITYDOMAINS</a>
+			
+			<li> <a href="#LIST_ABILITYFLAGS">LIST_ABILITYFLAGS</a>
 			
 			<li> <a href="#LIST_ACCOUNTS">LIST_ACCOUNTS</a>
 			
@@ -149,6 +157,10 @@
 			<li> <a href="#LIST_AREATYPES">LIST_AREATYPES</a>
 			
 			<li> <a href="#LIST_ARMOR">LIST_ARMOR</a>
+			
+			<li> <a href="#LIST_ASSISTS">LIST_ASSISTS</a>
+			
+			<li> <a href="#LIST_BANKS">LIST_BANKS</a>
 			
 			<li> <a href="#LIST_BANNED">LIST_BANNED</a>
 			
@@ -194,6 +206,8 @@
 			
 			<li> <a href="#LIST_EXPERTISES">LIST_EXPERTISES</a>
 			
+			<li> <a href="#LIST_EXPIRED">LIST_EXPIRED</a>
+			
 			<li> <a href="#LIST_EXPIRES">LIST_EXPIRES</a>
 			
 			<li> <a href="#LIST_FACTIONS">LIST_FACTIONS</a>
@@ -215,6 +229,8 @@
 			<li> <a href="#LIST_JOURNALS">LIST_JOURNALS</a>
 			
 			<li> <a href="#LIST_LANGUAGES">LIST_LANGUAGES</a>
+			
+			<li> <a href="#LIST_LIBRARIES">LIST_LIBRARIES</a>
 			
 			<li> <a href="#LIST_LINKAGES">LIST_LINKAGES</a>
 			
@@ -243,6 +259,8 @@
 			<li> <a href="#LIST_POISONS">LIST_POISONS</a>
 			
 			<li> <a href="#LIST_POLLS">LIST_POLLS</a>
+			
+			<li> <a href="#LIST_POSTOFFICES">LIST_POSTOFFICES</a>
 			
 			<li> <a href="#LIST_PRAYERS">LIST_PRAYERS</a>
 			
@@ -288,7 +306,11 @@
 			
 			<li> <a href="#LIST_STAFF">LIST_STAFF</a>
 			
+			<li> <a href="#LIST_STATS">LIST_STATS</a>
+			
 			<li> <a href="#LIST_SUPERPOWERS">LIST_SUPERPOWERS</a>
+			
+			<li> <a href="#LIST_TASKS">LIST_TASKS</a>
 			
 			<li> <a href="#LIST_TECH">LIST_TECH</a>
 			
@@ -333,6 +355,8 @@
 			<li> <a href="#MODIFY">MODIFY</a>
 			
 			<li> <a href="#MPRUN">MPRUN</a>
+			
+			<li> <a href="#MQL">MQL</a>
 			
 			<li> <a href="#MULTIWATCH">MULTIWATCH</a>
 			
@@ -389,6 +413,8 @@
 			<li> <a href="#TASK">TASK</a>
 			
 			<li> <a href="#TATTOO">TATTOO</a>
+			
+			<li> <a href="#TEMPLATE">TEMPLATE</a>
 			
 			<li> <a href="#TEST">TEST</a>
 			
@@ -473,12 +499,17 @@
 			
 			<p>
 			<a name="AS"><B>AS</B></a>
-			<pre>Command : AS <BR>Usage   : AS [PLAYERNAME/MOBNAME] (HERE) [COMMAND] <BR>Example : as "bob" inventory <BR>Example : as bob here drop all <BR>Example : as bob cast fireball monster <BR>Short(s):  <BR>A command that allows one to issue other commands as if they were another<BR>player or mob.  This is the best way to manage a players inventory or bank<BR>accounts from the command line. The optional "here" parameter should follow the<BR>name if the command is to be issued with the player in the same room as the<BR>archon.</pre>
+			<pre>Command : AS <BR>Usage   : AS [PLAYERNAME/MOBNAME]/(PORT X) (HERE) [COMMAND] <BR>Example : as "bob" inventory <BR>Example : as bob here drop all <BR>Example : as bob cast fireball monster <BR>Example : as port 2325 list users <BR>Short(s):  <BR>A command that allows one to issue other commands as if they were another<BR>player or mob.  This is the best way to manage a players inventory or bank<BR>accounts from the command line. The optional "here" parameter should follow the<BR>name if the command is to be issued with the player in the same room as the<BR>archon. The optional "port x" parameter can be used to execute commands on<BR>other mud hosts, so long as the admin qualifies as a SysOp on the target port. <BR> <BR></pre>
 			</P>
 			
 			<p>
 			<a name="ASSIST"><B>ASSIST</B></a>
 			<pre>A COMMAND JOURNAL.  See Archon Help (AHELP) on COMMAND JOURNALS</pre>
+			</P>
+			
+			<p>
+			<a name="ASYNC"><B>ASYNC</B></a>
+			<pre>Command : ASYNC <BR>Usage   : ASYNC [COMMAND] <BR>Example : async where mob the <BR>Short(s):  <BR>A command that allows one to issue other commands on their own separate thread,<BR>so that you can continue to issue other commands while the other one is ongoing<BR>and giving you its output.  Be careful not to lock up all of your muds threads<BR>this way!</pre>
 			</P>
 			
 			<p>
@@ -567,13 +598,18 @@
 			</P>
 			
 			<p>
+			<a name="CRECORD"><B>CRECORD</B></a>
+			<pre>Usage    : CRECORD LIST/START [MINS]/STOP/MINLEVEL [LEVEL]/... <BR>Usage    : .../ADD [PLAYER]/DEL [PLAYER] <BR>Example  : crecord start 15 <BR>This tool automatically creates a combat log for a player when they gain a<BR>level, if they are above a minimum level, and if they gained the current level<BR>within a minimum number of minutes. It will continue to log until the next<BR>level is gained.  To activate the tool, enter CRECORD START [number of<BR>minutes]. Players will then start being recorded automatically.  Combat<BR>recording can also be managed manually using ADD/DEL.  The default minimum<BR>level is 10, but can be modified with the MINLEVEL command.  Logs are kept in<BR>the dbfs directory '::/resources/clogs/'.</pre>
+			</P>
+			
+			<p>
 			<a name="DESTROY"><B>DESTROY</B></a>
 			<pre>Command : DESTROY <BR>Usage   : DESTROY [ITEM TYPE] ...  <BR>Example : destroy room e <BR>Example : destroy orc <BR>Example : destroy item longsword <BR>Example : destroy item longsword@an orc <BR>Short(s):  <BR>A command for the destruction of items, quests, components, mobs, rooms, exits,<BR>polls, classes, races, and listed bugs, typos, ideas, and ban. Enter DESTROY<BR>for more information on command usage.</pre>
 			</P>
 			
 			<p>
 			<a name="DEVIATIONS"><B>DEVIATIONS</B></a>
-			<pre>Command : DEVIATIONS <BR>Usage   : DEVIATIONS [MOBS/ITEMS/BOTH] [MASK]/ROOM/AREA  <BR>Example : deviations mobs area <BR>Short(s):  <BR>A command for showing items in a room or area, and how they deviate from<BR>established norms for their type and level.</pre>
+			<pre>Command : DEVIATIONS <BR>Usage   : DEVIATIONS [MOBS/ITEMS/BOTH] [MASK]/ROOM/AREA  <BR>Example : deviations mobs area <BR>Short(s):  <BR>A command for showing items in a room or area, and how they deviate from<BR>established norms for their type and level.  This is done by comparing the base<BR>stats.  Magical ability is applied only to the level of the item.</pre>
 			</P>
 			
 			<p>
@@ -722,8 +758,18 @@
 			</P>
 			
 			<p>
+			<a name="LIST_ABILITYCODES"><B>LIST_ABILITYCODES</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST ABILITYCODES <BR>Example  : list abilitycodes <BR>Lists the general categories of abilities, sometimes called ACODES.</pre>
+			</P>
+			
+			<p>
 			<a name="LIST_ABILITYDOMAINS"><B>LIST_ABILITYDOMAINS</B></a>
 			<pre>Command  : LIST <BR>Usage    : LIST ABILITYDOMAINS <BR>Example  : list abilitydomains <BR>Shows the list of domains that abilities, skills, spells, chants, etc belong<BR>to.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_ABILITYFLAGS"><B>LIST_ABILITYFLAGS</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST ABILITYFLAGS <BR>Example  : list abilityflags <BR>Lists the complete set of flags that can be assigned to a general ability id.</pre>
 			</P>
 			
 			<p>
@@ -764,6 +810,16 @@
 			<p>
 			<a name="LIST_ARMOR"><B>LIST_ARMOR</B></a>
 			<pre>Command  : LIST <BR>Usage    : LIST ARMOR <BR>Example  : list armor <BR>Shows the armor java classes (item ids) available to archons.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_ASSISTS"><B>LIST_ASSISTS</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST ASSISTS <BR>Example  : list assists <BR>Lists the temporary request for assistance from the players.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_BANKS"><B>LIST_BANKS</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST BANKS <BR>Example  : list banks <BR>Lists all the bank mobs in the world.</pre>
 			</P>
 			
 			<p>
@@ -877,6 +933,11 @@
 			</P>
 			
 			<p>
+			<a name="LIST_EXPIRED"><B>LIST_EXPIRED</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST EXPIRED <BR>Example  : list expired <BR>Lists all the accounts which have expired.</pre>
+			</P>
+			
+			<p>
 			<a name="LIST_EXPIRES"><B>LIST_EXPIRES</B></a>
 			<pre>Command  : LIST <BR>Usage    : LIST EXPIRES <BR>Example  : list expires <BR>Lists all the rooms in the current area, along with when that room expires (or<BR>*).</pre>
 			</P>
@@ -929,6 +990,11 @@
 			<p>
 			<a name="LIST_LANGUAGES"><B>LIST_LANGUAGES</B></a>
 			<pre>Command  : LIST <BR>Usage    : LIST LANGUAGES <BR>Example  : list languages <BR>Shows the list of all languages (ability ids) available to archons.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_LIBRARIES"><B>LIST_LIBRARIES</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST LIBRARIES <BR>Example  : list libraries <BR>Lists all the librarian mobs in the world.</pre>
 			</P>
 			
 			<p>
@@ -999,6 +1065,11 @@
 			<p>
 			<a name="LIST_POLLS"><B>LIST_POLLS</B></a>
 			<pre>Command  : LIST <BR>Usage    : LIST POLLS <BR>Example  : list polls <BR>Lists all the player polls currently defined in the game.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_POSTOFFICES"><B>LIST_POSTOFFICES</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST POSTOFFICES <BR>Example  : list postoffices <BR>Lists all the post office mobs in the world.</pre>
 			</P>
 			
 			<p>
@@ -1112,8 +1183,18 @@
 			</P>
 			
 			<p>
+			<a name="LIST_STATS"><B>LIST_STATS</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST STATS [CLASS ID]/[NAME]/HERE/[DIRECTION] <BR>Example  : list stats GenItem <BR>Example  : list stats bob <BR>Example  : list stats sword <BR>Example  : list stats north <BR>Example  : list stats here <BR>Lists the readable and modifiable stat variables for a given class or object.<BR>These are the keys used in GMODIFY and GSTAT Scriptable command and so forth.</pre>
+			</P>
+			
+			<p>
 			<a name="LIST_SUPERPOWERS"><B>LIST_SUPERPOWERS</B></a>
 			<pre>Command  : LIST <BR>Usage    : LIST POWERS (DOMAIN) <BR>Example  : list powers <BR>Shows all the superpower java class names (ability ids) available to your<BR>archons.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_TASKS"><B>LIST_TASKS</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST TASKS <BR>Example  : list tasks <BR>Lists the entries in the task channel, if it exists.</pre>
 			</P>
 			
 			<p>
@@ -1227,6 +1308,11 @@
 			</P>
 			
 			<p>
+			<a name="MQL"><B>MQL</B></a>
+			<pre>MQL Stands for MUD Query Language.  It's purpose is to allow the Archon, or a<BR>random quest xml document, to select existing objects in the game, or the<BR>properties of existing objects.   <BR> <BR>The structure of MQL is similar to SQL in that all MQL statements are of this<BR>structure: <BR> <BR>SELECT: [property, property, ..] FROM [object set]  WHERE [object comparison,<BR>object comparison] <BR>* note the colon : after the word SELECT above. <BR> <BR>The SELECT clause defines the properties you wish to be returned from the MQL<BR>statement. <BR>The FROM clause defines the set of objects that you might want to return the<BR>properties of. <BR>The WHERE clause defines the conditions under which any member of the set in<BR>the FROM clause may be included in the final results. <BR> <BR>A FROM clause can be a simple world set term, such as one of the following: <BR> <BR>* A CMFS file path to a CMARE file, such as ::/resources/map/plains.cmare <BR>* AREAS to use the set of all world areas <BR>* ROOMS to use the set of all existing world rooms <BR>* MOBS to use the set of all existing world mobs <BR>* ITEMS to use the set of all existing world items <BR>* In case where a qualifying object is implied, AREA can be used to refer to<BR>that specific area. <BR>* Another SELECT: statement in parenthesis, such as: SELECT: name from (SELECT<BR>* from AREA) <BR> <BR>The FROM clause can also include narrowing suffixes.  A narrowing suffix comes<BR>after the simple term, and is separated from it by a backslash \.   For<BR>example, if your from clause looks like SELECT * FROM AREAS\ROOM  , then the<BR>ROOM portion is the narrowing suffix of the AREAS term.  You can also continue<BR>adding more narrowing suffixes as needed.  For example: SELECT * FROM<BR>AREAS\MOBS\EQUIPMENT  .  Each suffix narrows or alters the term immediate<BR>before it, and the entire FROM clause will end up reflecting the type of object<BR>described by the final term, whether it be simple, or a narrowing term. <BR> <BR>The following are useful narrowing terms: <BR> <BR>* AREAS to use the unique set of areas in which the prior term is located <BR>* ROOMS to use the unique set of rooms in which the prior term is located, or<BR>which the prior term contains <BR>* MOBS, MOB to use the set of all mobs contained in the prior term <BR>* ITEMS, ITEM to use the set of all items contained in the prior term <BR>* OWNER to use the set of all item owners of the prior term, if it was items <BR>* EQUIPMENT to use the set of all  worn items of the prior term <BR> <BR>Be careful when using narrowing terms to make sure they make sense for the term<BR>prior to them.  For example, if importing mobs from a cmare file, AREAS will<BR>not likely resolve to anything, since the mobs aren't in the world yet. <BR> <BR>The SELECT: clause can include one or more comma-delimited properties of  the<BR>objects in the from clause, or it can be an asterisk *, or a period ., to refer<BR>simply to the from objects themselves.  It can also be a string or numeric<BR>literal, or an XML tag when embedding MQL in a random quest document.   <BR>Different kinds of objects have different kinds of properties, so it is tricky<BR>to define precisely what a legal and illegal object property might be. <BR>Choosing incorrectly will usually just result in an empty string "". <BR> <BR>An example of a legal property might be the property CLASS, since it applies to<BR>everything from areas and rooms, to mobs, and items.  NAME is also a property<BR>that almost all objects have.  Beyond this. using the GMODIFY command might be<BR>the simplest way to get a list of valid properties for a specific type of world<BR>object, or objects imported from cmare files. <BR> <BR>As mentioned previously, SELECT: clause properties can be separated by commas<BR>in order to select more than one.  For example: SELECT: class, name FROM<BR>areas\mobs would show the class id and name of every mob in your game. <BR> <BR>SELECT: clauses can also include an AS qualifier for each property selected. <BR>This has only the effect of changing the apparent name of the property for<BR>other parts of the system.  For an example using the WHERE command to issue<BR>MQL: WHERE AREA SELECT: class as classid, name as mob_name FROM areas\mobs<BR>would show the same results as the previous example statement, but with<BR>different name tags for the class and name properties.  This might be important<BR>when using an embedded SELECT: statement as your FROM clause, since you can<BR>only select properties that the embedded clause has returned, by the names they<BR>were given. <BR> <BR>SELECT: clauses, similar to FROM clauses above, can include narrowing terms. <BR>Like FROM clauses, these narrowing terms are separated by backslashes \.  <BR>SELECT clauses, at the moment, only support one narrowing term: COUNT.  The<BR>purpose of the COUNT term is to report the number of times the value of the<BR>previous terms appears in the rest of the FROM: clause.  For example, suppose<BR>you wanted to know the number of times each mob name is used, to do that, you<BR>might enter SELECT: name, name\count FROM areas\mobs <BR> <BR>Lastly, SELECT: clause can contain aggregating prefixes before a property term,<BR>which will transform the final result set in some way by aggregating the rows<BR>according to the prefix.  Prefixes, like suffixes, are separated from the<BR>property term by a backslash \.  The value aggregating prefixes are: <BR> <BR>* MEDIAN to return only the median value of all the property terms in the<BR>existing result set <BR>* MEAN to return the mean value of all the property terms in the existing<BR>result set <BR>* COUNT to return the count of the number of  items in the result set <BR>* UNIQUE to include only one row where the property is of any given value <BR> <BR>For example, to quickly count the mobs in your game, you might enter SELECT:<BR>COUNT\* from AREAS\MOBS <BR> <BR>The WHERE clause contains one or more conditions, which you can further compare<BR>using connectors like AND, OR, or parenthesis to group conditions together. <BR>Each condition consists of  two terms separated by a comparator.  Value<BR>comparitors include = (equal to), &lt;> (not equal to), > (greater than), &lt; (less<BR>than), >= (greater or equal), &lt;= (less or equal), IN (in a set or object group,<BR>or a substring of), or LIKE (matching a ZAPPERMASK). <BR> <BR>A condition consists of two property terms, similar to those described in the<BR>SELECT: clause above, except that condition terms can not use aggregating<BR>prefixes.  Narrowing suffixes, however, are permitted.  For example NAME =<BR>'Bob' is checking whether the NAME property of an item in the FROM clause is<BR>equal to the string literal "BOB".  If it is, when that condition is true. <BR>Putting it together then, to show the mobs in your game whose names are EXACTLY<BR>"BOB", you might do SELECT: * FROM areas\mobs WHERE name="BOB". This works<BR>because NAME is a property of every mob in the AREAS\MOBS from set, and can be<BR>compared with the word "BOB". <BR> <BR>Condition statements are grouped together into conditions using AND or OR.  For<BR>example, changing the above condition to WHERE name="BOB" OR name="JOE" would<BR>expand the number of possible results by one name.</pre>
+			</P>
+			
+			<p>
 			<a name="MULTIWATCH"><B>MULTIWATCH</B></a>
 			<pre>Ability    : Multiwatch <BR>Usage      : MULTIWATCH (AUTO/STOP/ADD [NAME] ... [NAME]) <BR>Example    : multiwatch add playerone playertwo <BR>Example    : multiwatch auto <BR>Example    : multiwatch stop <BR>Description:  <BR>This is an archon skill to assist in determining if a set of players who are<BR>connected from the same ip address are the same person.  It does this by<BR>tracking certain pieces of data which together may be taken as rather<BR>circumstantial evidence of someone multiplaying.  The definition of the numbers<BR>are as follows: <BR>SYNC - The number of commands entered by more than one member of an IP group<BR>within a single 4 second period.  <BR>SPEECH - This refers to SAY commands, broken into three sections.  The first<BR>number represents the number of SAY commands done in the same room with a<BR>player who has the same IP address.  The second number represents the number of<BR>SAY commands directed at another player.  The last number is the number of SAY<BR>commands total. <BR>SOCIALS - These are also divided into three numbers where, again, the first is<BR>the number of socials in the same room with a player with the same IP, the<BR>second being socials directed at another player, and the last being the number<BR>of total socials. <BR>CMD - The number of commands entered which are different than the previous<BR>command entered. <BR>ORDER - The number of times one of the players in the group gave an ORDER to<BR>another player in the group.  A sure sign indeed.</pre>
 			</P>
@@ -1278,7 +1364,7 @@
 			
 			<p>
 			<a name="POSSESS"><B>POSSESS</B></a>
-			<pre>Skill    : POSSESS <BR>Usage    : POSSESS [MOB NAME] <BR>Example  : possess dragon <BR>Example  : possess dragon@MyArea#23 <BR>Example  : possess dragon@MyArea <BR>Short(s) :  <BR>This command will allow your character to possess and control any given mob. <BR>That mob will be controlled as if it were your own character.  Use the QUIT<BR>command to return to your own characters body.  Should the mob die, you will be<BR>returned automatically.  POSSESS does not transfer your security levels to the<BR>possessed mob UNLESS you have turned on your SYSMSGS flag before possessing.</pre>
+			<pre>Command  : POSSESS <BR>Usage    : POSSESS [MOB NAME] <BR>Example  : possess dragon <BR>Example  : possess dragon@MyArea#23 <BR>Example  : possess dragon@MyArea <BR>Short(s) :  <BR>This command will allow your character to possess and control any given mob. <BR>That mob will be controlled as if it were your own character.  Use the QUIT<BR>command to return to your own characters body.  Should the mob die, you will be<BR>returned automatically.  POSSESS does not transfer your security levels to the<BR>possessed mob UNLESS you have turned on your SYSMSGS flag before possessing.</pre>
 			</P>
 			
 			<p>
@@ -1338,7 +1424,7 @@
 			
 			<p>
 			<a name="STAT"><B>STAT</B></a>
-			<pre>Command : STAT <BR>Usage   : STAT ((SKILL/STAT TYPE) [TARGET NAME])/([NUMBER]<BR>[DAYS/WEEKS/MONTHS/YEARS] <BR>Usage   : ... (/SKILLUSE/QUEST/AREA)) <BR>Example : stat <BR>Example : stat 2 weeks <BR>Example : stat tom <BR>Example : stat equipment bob <BR>Example : stat combat bob <BR>Example : stat inventory bob <BR>Example : stat questwins bob <BR>Example : stat tattoos bob <BR>Example : stat titles bob <BR>Example : stat scripts bob <BR>Example : stat charstats bob <BR>Example : stat roomsexplored bob <BR>Example : stat factions bob <BR>Example : stat spell bob <BR>Example : stat skill hassan <BR>Example : stat chant hassan <BR>Example : stat prayer hassan <BR>Example : stat area midgaard <BR>Example : stat item my longsword <BR>Example : stat fountain <BR>Short(s):  <BR>This command serves two purposes.  The first is to allow you to view a usage<BR>statistics report on your mud.  Entering STAT alone allows you to see<BR>information gathered since midnight.  You may also enter a number and a scale<BR>(days, weeks, months, or years) to view information going farther back. <BR> <BR>STAT will also allow you to retrieve basic stat information on a player, mob,<BR>item, room, or exit in the game.  Entering STAT and the objects name brings up<BR>the most basic information.  Specifying AREA, MOB, ITEM, ROOM, or EXIT before<BR>the name will make the search more specific. Including a skill type before a<BR>mob or player name will list their abilities of that type.  Valid skill types<BR>include: SKILL, SPELL, PRAYER, SONG, TRAP, PROPERTY, "THIEF SKILL", LANGUAGE,<BR>CHANT, "COMMON SKILL", DISEASE, POISON.  You can also get special reports by<BR>entering one of the following before the name: EQUIPMENT, COMBAT, INVENTORY,<BR>STINK, QUESTWINS, TATTOOS, TITLES, SCRIPTS, WORLDEXPLORED, AREASEXPLORED,<BR>ROOMSEXPLORED, FACTIONS, LEVELTIMES, and CHARSTATS.  As per the player version<BR>of this command, you can also use basic stats, such as: HITS, MANA, MOVE,<BR>HUNGER, THIRST, FATIGUE, MAXHITS, MAXMANA, MAXMOVE, MAXHUNGER, MAXTHIRST,<BR>MAXFATIGUE, STRENGTH, INTELLIGENCE, DEXTERITY, CONSTITUTION, CHARISMA, WISDOM,<BR>GENDER, PARALYSIS, FIRE, COLD, WATER, GAS, MIND, GENERAL, JUSTICE, ACID,<BR>ELECTRICITY, POISON, UNDEAD, MAGIC, DISEASE, TRAPS, MAXSTRENGTH,<BR>MAXINTELLIGENCE, MAXDEXTERITY, MAXCONSTITUTION, MAXCHARISMA, MAXWISDOM, AGE,<BR>DETECTION, CONVERSION, WEIGHTADJ, LEVEL, SENSES, ARMOR, DAMAGE, ATTACK,<BR>DISPOSITION, REJUV, WEIGHT, ABILITY, HEIGHT, XP (experience), XPFNL (experience<BR>for next level), and XPTNL (experience to next level), QUESTPOINTS, TRAINS,<BR>PRACTICES, and any factions shown in the score command, such as ALIGNMENT.</pre>
+			<pre>Command : STAT <BR>Usage   : STAT ((SKILL/STAT TYPE) [TARGET NAME])/([NUMBER]<BR>[DAYS/WEEKS/MONTHS/YEARS] <BR>Usage   : ... (/SKILLUSE/QUEST/AREA)) <BR>Example : stat <BR>Example : stat 2 weeks <BR>Example : stat tom <BR>Example : stat equipment bob <BR>Example : stat combat bob <BR>Example : stat inventory bob <BR>Example : stat questwins bob <BR>Example : stat tattoos bob <BR>Example : stat titles bob <BR>Example : stat scripts bob <BR>Example : stat charstats bob <BR>Example : stat roomsexplored bob <BR>Example : stat factions bob <BR>Example : stat spell bob <BR>Example : stat skill hassan <BR>Example : stat chant hassan <BR>Example : stat prayer hassan <BR>Example : stat area midgaard <BR>Example : stat item my longsword <BR>Example : stat clan bob <BR>Example : stat fountain <BR>Short(s):  <BR>This command serves two purposes.  The first is to allow you to view a usage<BR>statistics report on your mud.  Entering STAT alone allows you to see<BR>information gathered since midnight.  You may also enter a number and a scale<BR>(days, weeks, months, or years) to view information going farther back. <BR> <BR>STAT will also allow you to retrieve basic stat information on a player, mob,<BR>item, room, or exit in the game.  Entering STAT and the objects name brings up<BR>the most basic information.  Specifying AREA, MOB, ITEM, ROOM, or EXIT before<BR>the name will make the search more specific. Including a skill type before a<BR>mob or player name will list their abilities of that type.  Valid skill types<BR>include: SKILL, SPELL, PRAYER, SONG, TRAP, PROPERTY, "THIEF SKILL", LANGUAGE,<BR>CHANT, "COMMON SKILL", DISEASE, POISON.  You can also get special reports by<BR>entering one of the following before the name: EQUIPMENT, COMBAT, INVENTORY,<BR>STINK, DEITY, QUESTWINS, TATTOOS, TITLES, SCRIPTS, WORLDEXPLORED,<BR>AREASEXPLORED, ROOMSEXPLORED, ALIGNMENT, INCLINATION, FACTIONS, FACTIONID,<BR>FACTIONAMT, MATTRIB, OBJATTRIB, CLAN, CLANROLE, LEVELTIMES, and CHARSTATS.  As<BR>per the player version of this command, you can also use basic stats, such as:<BR>HITS, MANA, MOVE, HUNGER, THIRST, FATIGUE, MAXHITS, MAXMANA, MAXMOVE,<BR>MAXHUNGER, MAXTHIRST, MAXFATIGUE, STRENGTH, INTELLIGENCE, DEXTERITY,<BR>CONSTITUTION, CHARISMA, WISDOM, GENDER, PARALYSIS, FIRE, COLD, WATER, GAS,<BR>MIND, GENERAL, JUSTICE, ACID, ELECTRICITY, POISON, UNDEAD, MAGIC, DISEASE,<BR>TRAPS, MAXSTRENGTH, MAXINTELLIGENCE, MAXDEXTERITY, MAXCONSTITUTION,<BR>MAXCHARISMA, MAXWISDOM, AGE, DETECTION, CONVERSION, WEIGHTADJ, LEVEL, SENSES,<BR>ARMOR, DAMAGE, ATTACK, DISPOSITION, REJUV, WEIGHT, ABILITY, HEIGHT, XP<BR>(experience), XPFNL (experience for next level), and XPTNL (experience to next<BR>level), QUESTPOINTS, TRAINS, PRACTICES, and any factions shown in the score<BR>command, such as ALIGNMENT.  Many of the basic character stats, such as<BR>INTELLIGENCE, etc, can also be prefixed like CURRENT_INTELLIGENCE to ensure you<BR>are getting the fully adjusted value.</pre>
 			</P>
 			
 			<p>
@@ -1364,6 +1450,11 @@
 			<p>
 			<a name="TATTOO"><B>TATTOO</B></a>
 			<pre>Tattoo's are intended to act as miscellaneous flags which players may obtain,<BR>not unlike a quest point.  These tattoo's can then be checked for as<BR>requirements to enter rooms or exits, or to possess certain items.  If the<BR>common account system is used, accounts can also have tattoos on them as well. <BR><BR>An example would be like this:  The completion of a specific quest occurs when<BR>Gunther defeats the evil sorcerer Nunder and enters his inner chamber (where<BR>all the treasure is hidden).  Entering this inner chamber automatically grants<BR>Gunther a Tatto called "NUNDERKILLER".  Now, elsewhere in the realm is the<BR>second quest where Nunder's apprentice has escaped with an ancient artifact and<BR>is up to no good.  However, to even ENTER the area where Nunder's apprentice is<BR>operating, the system (via the Prop_ReqTattoo property on this other Area)<BR>requires that Gunther already have the "NUNDERKILLER" Tattoo.  If Gunther had<BR>not defeated Nunder and obtained the "NUNDERKILLER" Tattoo, he would not be<BR>allowed into the realm of Nunder's apprentice.</pre>
+			</P>
+			
+			<p>
+			<a name="TEMPLATE"><B>TEMPLATE</B></a>
+			<pre>Command : TEMPLATE <BR>Usage   : TEMPLATE LIST (MOBS/ITEMS/EXITS/ROOMS) (MASK) <BR>Usage   : TEMPLATE TEMPLATE ADD [NEW ID] [mob/item name/exit direction/here or<BR>room id] <BR>Usage   : TEMPLATE DELETE [ID] <BR>Usage   : TEMPLATE TOGGLE [ID] <BR>Example : template list mobs myswords <BR>Example : template list <BR>Example : template add myroomid here <BR>Example : template add myswordid the greatest longsword ever <BR>Example : template delete myswordid <BR>Short(s):  <BR>The template command allows builders to maintain a personal favorites<BR>collection of items, rooms, mobs, or exit objects for quick duplication using<BR>the create command.  Each object must have a unique id, which is typically a<BR>short friendly word.  Objects in your templates can also be shared with other<BR>builders, and you will be able to access objects shared by others.  Sharing<BR>status is toggled using the template toggle syntax.</pre>
 			</P>
 			
 			<p>
@@ -1398,7 +1489,7 @@
 			
 			<p>
 			<a name="UNLOAD"><B>UNLOAD</B></a>
-			<pre>Command  : UNLOAD <BR>Usage    : UNLOAD HELP/CLASS/USER/FACTION/AREA <BR>Usage    : UNLOAD INIFILE/ALL/[RESOURCE NAME] <BR>Example  : unload help <BR>Example  : unload all <BR>Example  : unload armorsmith <BR>Example  : unload class Thief_Search <BR>Example  : unload user joe <BR>Short(s) :  <BR>Unloads most resource text, cached users, class objects, areas, coffeemud.ini,<BR>lists.ini, and help files for easy refreshing.</pre>
+			<pre>Command  : UNLOAD <BR>Usage    : UNLOAD CLASS/HELP/USER/AREA/FACTION/ALL/FILE <BR>Usage    : UNLOAD RESOURCE/INIFILE/ACHIEVEMENTS/[FILENAME] <BR>Usage    : UNLOAD VFS/[RESOURCE NAME] <BR>Example  : unload help <BR>Example  : unload all <BR>Example  : unload armorsmith <BR>Example  : unload class Thief_Search <BR>Example  : unload user joe <BR>Short(s) :  <BR>Unloads most resource text, cached users, class objects, areas, coffeemud.ini,<BR>lists.ini, library caches, and help files for easy refreshing. </pre>
 			</P>
 			
 			<p>
@@ -1408,7 +1499,7 @@
 			
 			<p>
 			<a name="WHERE"><B>WHERE</B></a>
-			<pre>Command : WHERE <BR>Usage   : WHERE (AREA) (ROOM/MOB/ITEM/MOBMASK/ITEMMASK) ([MASK]) <BR>Example : where <BR>Example : where dog <BR>Example : where area item knife <BR>Example : where area mobmask -race +orc -levels +>=10 <BR>Example : where ! <BR>Short(s):  <BR>Without an argument, this command displays the names and locations of all<BR>players online.  With the ROOM, MOB, ITEM, or no argument, it will show all<BR>mobs, rooms, and/or items the match the given key words in the mask, along with<BR>room locations.  With the MOBMASK, ITEMMASK arguments, it will show all mobs or<BR>items that match the given Zapper Mask (See ZAPPERMASKS). The arguments may be<BR>qualified with AREA to show only the Archons current area. The argument ! will<BR>show the mundane/player version of the WHERE command.</pre>
+			<pre>Command : WHERE <BR>Usage   : WHERE (AREA) (ROOM/MOB/ITEM/MOBMASK/ITEMMASK) ([MASK]) <BR>Usage   : WHERE (AREA) SELECT: [REST OF MQL STATEMENT] <BR>Example : where <BR>Example : where dog <BR>Example : where area item knife <BR>Example : where area mobmask -race +orc -levels +>=10 <BR>Example: where area select: * from areamobs where 'farmer' in name <BR>Example : where ! <BR>Short(s):  <BR>Without an argument, this command displays the names and locations of all<BR>players online.  With the ROOM, MOB, ITEM, or no argument, it will show all<BR>mobs, rooms, and/or items the match the given key words in the mask, along with<BR>room locations.  With the MOBMASK, ITEMMASK arguments, it will show all mobs or<BR>items that match the given Zapper Mask (See ZAPPERMASKS). With the SELECT:<BR>prefix, it will show the results of an MQL query (see AHELP MQL. The arguments<BR>may be qualified with AREA to show only the Archons current area. The argument<BR>! will show the mundane/player version of the WHERE command.</pre>
 			</P>
 			
 			<p>
