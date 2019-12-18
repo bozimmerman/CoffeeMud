@@ -173,6 +173,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 					&& Character.isDigit(race2.charAt(0))
 					&& race2.charAt(1)=='X')
 						return race2.substring(2);
+					else
+						return race2;
 				}
 			}
 		}
