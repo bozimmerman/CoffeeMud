@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.WebMacros.StdWebMacro;
 import java.util.*;
 
 /*
-   Copyright 2011-2019 Bo Zimmerman
+   Copyright 2011-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
