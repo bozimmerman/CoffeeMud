@@ -540,6 +540,8 @@ public class SMTPserver extends Thread implements Tickable
 					final List<JournalEntry> msgs=CMLib.database().DBReadJournalMsgsNewerThan(journalName,"ALL",lastAllProcessing-1);
 					for(final JournalEntry msg : msgs)
 					{
+						if(msg.date() < lastAllProcessing-1)
+							continue;
 						//if(msg.to.equalsIgnoreCase("ALL")) // implied by the query
 						final String subj=msg.subj();
 						final String msgStr=msg.msg().trim();
