@@ -577,6 +577,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		if((amt != 0)&&(mob!=null))
 		{
+			if(mob.session() != null)
+			{
+				final PlayerLibrary lib=CMLib.get(mob.session())._players();
+				if(lib != this)
+					return lib.bumpPrideStat(mob, stat, amt);
+			}
 			final PlayerStats pstats=mob.playerStats();
 			if(pstats != null)
 			{
