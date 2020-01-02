@@ -2266,7 +2266,7 @@ public class StdArea implements Area
 	public Enumeration<Room> getFilledProperMap()
 	{
 		final Enumeration<Room> r=getProperMap();
-		final List<Room> V=new LinkedList<Room>();
+		final TreeSet<Room> V=new TreeSet<Room>();
 		for(;r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();

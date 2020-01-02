@@ -132,7 +132,14 @@ public class Order extends StdCommand
 		final String order=CMParms.combine(commands,0);
 		if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER))
 		{
-			if((O instanceof Command)&&(!((Command)O).canBeOrdered()))
+			if((O instanceof Command)
+			&&(!((Command)O).canBeOrdered()))
+			{
+				CMLib.commands().postCommandFail(mob,origCmds,L("You can't order anyone to '@x1'.",order));
+				return false;
+			}
+			if((O instanceof Ability)
+			&&(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING)))
 			{
 				CMLib.commands().postCommandFail(mob,origCmds,L("You can't order anyone to '@x1'.",order));
 				return false;

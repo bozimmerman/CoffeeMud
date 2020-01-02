@@ -541,7 +541,7 @@ public class StdLanguage extends StdAbility implements Language
 							msg.setOthersCode(CMMsg.TYP_SPEAK);
 							String reply=null;
 							if(heardL==null)
-								reply="<S-NAME> do(s) not speak "+spokenL.name()+" and would not understand <T-HIM-HER>.";
+								reply="<S-NAME> do(es) not speak "+spokenL.name()+" and would not understand <T-HIM-HER>.";
 							else
 								reply="<T-NAME> <T-IS-ARE> having trouble understanding <T-YOUPOSS> pronunciation.";
 							msg.addTrailerMsg(CMClass.getMsg((MOB)msg.target(),msg.source(),null,CMMsg.MSG_OK_VISUAL,reply));
