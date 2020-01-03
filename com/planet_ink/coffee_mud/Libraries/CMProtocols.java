@@ -1418,7 +1418,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				buf.write(Session.MSDP_VAR);
 				buf.write("VNUM".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
-				buf.write(Integer.toString(CMLib.map().getExtendedRoomID(R).hashCode()).getBytes(Session.MSDP_CHARSET));
+				buf.write(Integer.toString(Math.abs(CMLib.map().getExtendedRoomID(R).hashCode())).getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAR);
 				buf.write("NAME".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
@@ -1445,7 +1445,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						{
 							buf.write(Session.MSDP_VAR);buf.write(CMLib.directions().getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
 							buf.write(Session.MSDP_VAL);
-							buf.write(Integer.toString(roomID.hashCode()).getBytes(Session.MSDP_CHARSET));
+							buf.write(Integer.toString(Math.abs(roomID.hashCode())).getBytes(Session.MSDP_CHARSET));
 						}
 					}
 				}
@@ -1459,7 +1459,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			break;
 		case ROOM_VNUM:
 			if((M!=null)&&(M.location()!=null))
-				buf.write(Integer.toString(CMLib.map().getExtendedRoomID(M.location()).hashCode()).getBytes(Session.MSDP_CHARSET));
+				buf.write(Integer.toString(Math.abs(CMLib.map().getExtendedRoomID(M.location()).hashCode())).getBytes(Session.MSDP_CHARSET));
 			break;
 		case ROOM_AREA:
 			if((M!=null)&&(M.location()!=null))
@@ -1495,7 +1495,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						{
 							buf.write(Session.MSDP_VAR);buf.write(CMLib.directions().getDirectionChar(d).getBytes(Session.MSDP_CHARSET));
 							buf.write(Session.MSDP_VAL);
-							buf.write(Integer.toString(roomID.hashCode()).getBytes(Session.MSDP_CHARSET));
+							buf.write(Integer.toString(Math.abs(roomID.hashCode())).getBytes(Session.MSDP_CHARSET));
 						}
 					}
 				}
@@ -1983,7 +1983,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 										doc.append(",");
 									comma=true;
 									doc.append("{");
-									doc.append("\"id\":").append(I.hashCode()).append(",");
+									doc.append("\"id\":").append(Math.abs(I.hashCode())).append(",");
 									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
 									final String attribs = makeGMCPAttribs(I);
 									if(attribs.length()>0)
@@ -2015,13 +2015,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								final Item I=R.getItem(i);
 								if((I!=null)
 								&&(I.container()!=null)
-								&&(I.container().hashCode()==hashCode))
+								&&(CMath.abs(I.container().hashCode())==hashCode))
 								{
 									if(comma)
 										doc.append(",");
 									comma=true;
 									doc.append("{");
-									doc.append("\"id\":").append(I.hashCode()).append(",");
+									doc.append("\"id\":").append(CMath.abs(I.hashCode())).append(",");
 									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
 									final String attribs = makeGMCPAttribs(I);
 									if(attribs.length()>0)
@@ -2107,7 +2107,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									doc.append(",");
 								comma=true;
 								doc.append("{");
-								doc.append("\"id\":").append(I.hashCode()).append(",");
+								doc.append("\"id\":").append(CMath.abs(I.hashCode())).append(",");
 								doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
 								final String attribs = makeGMCPAttribs(I);
 								if(attribs.length()>0)
@@ -2137,13 +2137,13 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								final Item I=mob.getItem(i);
 								if((I!=null)
 								&&(I.container()!=null)
-								&&(I.container().hashCode()==hashCode))
+								&&(CMath.abs(I.container().hashCode())==hashCode))
 								{
 									if(comma)
 										doc.append(",");
 									comma=true;
 									doc.append("{");
-									doc.append("\"id\":").append(I.hashCode()).append(",");
+									doc.append("\"id\":").append(CMath.abs(I.hashCode())).append(",");
 									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
 									final String attribs = makeGMCPAttribs(I);
 									if(attribs.length()>0)
@@ -2334,7 +2334,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 										if(comma)
 											doc.append(",");
 										comma=true;
-										doc.append("\""+CMLib.directions().getDirectionChar(d)+"\":").append(room2ID.hashCode());
+										doc.append("\""+CMLib.directions().getDirectionChar(d)+"\":").append(CMath.abs(room2ID.hashCode()));
 									}
 								}
 							}
@@ -2570,7 +2570,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					if(room!=null)
 					{
 						final Long oldRoomHash=reporteds.get("system.currentRoom");
-						if((oldRoomHash==null)||(room.hashCode()!=oldRoomHash.longValue()))
+						if((oldRoomHash==null)
+						||(room.hashCode() != oldRoomHash.longValue()))
 						{
 							reporteds.put("system.currentRoom", Long.valueOf(room.hashCode()));
 							final String command="room.info";
