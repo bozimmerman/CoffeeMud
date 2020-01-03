@@ -4523,13 +4523,14 @@ public class ListCmd extends StdCommand
 	public void listAbilities(final MOB mob, final Session s, final List<String> commands, String title, final int ofType)
 	{
 		int domain=0;
+		Enumeration<Ability> enumA = CMClass.abilities();
 		final WikiFlag wiki = this.getWikiFlagRemoved(commands);
 		for(int i=1;i<commands.size();i++)
 		{
 			final String str=commands.get(i);
 			if(domain<=0)
 			{
-				final int x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.toUpperCase().trim());
+				int x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.toUpperCase().trim());
 				if(x>=0)
 				{
 					domain = x << 5;
@@ -4538,8 +4539,25 @@ public class ListCmd extends StdCommand
 				}
 				else
 				{
-					s.println("Unknown '"+str+"'");
-					return;
+					x=CMParms.indexOf(Ability.FLAG_DESCS,str.toUpperCase().trim());
+					if(x >= 0)
+					{
+						final int mBit = (int)CMath.pow(2, x);
+						title = (Ability.FLAG_DESCS[x]+" "+title).trim();
+						enumA = new FilteredEnumeration<Ability>(enumA, new Filterer<Ability>() {
+							final int mask = mBit;
+							@Override
+							public boolean passesFilter(final Ability obj)
+							{
+								return CMath.bset(obj.flags(), mask);
+							}
+						});
+					}
+					else
+					{
+						s.println("Unknown '"+str+"'");
+						return;
+					}
 				}
 			}
 		}
@@ -4552,7 +4570,7 @@ public class ListCmd extends StdCommand
 				s.println("==="+title+"s===");
 			else
 				s.println("==="+title+"===");
-			final XVector<Ability> sortedAs = new XVector<Ability>(CMClass.abilities());
+			final XVector<Ability> sortedAs = new XVector<Ability>(enumA);
 			CMClass.sortEnvironmentalsByName(sortedAs);
 			s.wraplessPrintln(CMLib.lister().reallyWikiList(mob, sortedAs.elements(), ofType|domain).toString());
 		}
@@ -4560,7 +4578,7 @@ public class ListCmd extends StdCommand
 		if(wiki == WikiFlag.WIKIHELP)
 		{
 			final StringBuilder str=new StringBuilder("");
-			final XVector<Ability> sortedAs = new XVector<Ability>(CMClass.abilities());
+			final XVector<Ability> sortedAs = new XVector<Ability>(enumA);
 			CMClass.sortEnvironmentalsByName(sortedAs);
 			for(final Enumeration<Ability> e=sortedAs.elements();e.hasMoreElements();)
 			{
@@ -4699,7 +4717,7 @@ public class ListCmd extends StdCommand
 		else
 		{
 			s.println("^H"+title+" Ability IDs:^N");
-			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.abilities(), ofType|domain).toString());
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, enumA, ofType|domain).toString());
 		}
 	}
 
