@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Areas;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -43,52 +44,52 @@ public class StdArea implements Area
 		return "StdArea";
 	}
 
-	protected String	name			= "the area";
-	protected String	description 	= "";
-	protected String	miscText		= "";
-	protected String	archPath		= "";
-	protected String	imageName   	= "";
-	protected int		playerLevel		= 0;
-	protected int   	theme			= Area.THEME_INHERIT;
-	protected int		atmosphere		= Room.ATMOSPHERE_INHERIT;
-	protected int		derivedTheme	= Area.THEME_INHERIT;
-	protected int		derivedAtmo		= Places.ATMOSPHERE_INHERIT;
-	protected int   	climask			= Area.CLIMASK_NORMAL;
-	protected int		derivedClimate	= Places.CLIMASK_INHERIT;
-	protected int	  	tickStatus  	= Tickable.STATUS_NOT;
-	protected long  	expirationDate  = 0;
-	protected long		passiveLapseMs	= DEFAULT_TIME_PASSIVE_LAPSE;
-	protected long  	lastPlayerTime  = System.currentTimeMillis() + (passiveLapseMs - 30000);
-	protected State   	flag			= State.ACTIVE;
-	protected String[]  xtraValues  	= null;
-	protected String	author  		= "";
-	protected String	currency		= "";
-	protected double[]	devalueRate 	= null;
-	protected String	budget  		= "";
-	protected String	ignoreMask  	= "";
-	protected String	prejudiceFactors= "";
-	protected int 		invResetRate	= 0;
-	protected boolean   amDestroyed 	= false;
-	protected PhyStats  phyStats		= (PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats  basePhyStats	= (PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected String	name				= "the area";
+	protected String	description			= "";
+	protected String	miscText			= "";
+	protected String	archPath			= "";
+	protected String	imageName			= "";
+	protected int		playerLevel			= 0;
+	protected int		theme				= Area.THEME_INHERIT;
+	protected int		atmosphere			= Room.ATMOSPHERE_INHERIT;
+	protected int		derivedTheme		= Area.THEME_INHERIT;
+	protected int		derivedAtmo			= Places.ATMOSPHERE_INHERIT;
+	protected int		climask				= Area.CLIMASK_NORMAL;
+	protected int		derivedClimate		= Places.CLIMASK_INHERIT;
+	protected int		tickStatus			= Tickable.STATUS_NOT;
+	protected long		expirationDate		= 0;
+	protected long		passiveLapseMs		= DEFAULT_TIME_PASSIVE_LAPSE;
+	protected long		lastPlayerTime		= System.currentTimeMillis() + (passiveLapseMs - 30000);
+	protected State		flag				= State.ACTIVE;
+	protected String[]	xtraValues			= null;
+	protected String	author				= "";
+	protected String	currency			= "";
+	protected double[]	devalueRate			= null;
+	protected String	budget				= "";
+	protected String	ignoreMask			= "";
+	protected String	prejudiceFactors	= "";
+	protected int		invResetRate		= 0;
+	protected boolean	amDestroyed			= false;
+	protected PhyStats	phyStats			= (PhyStats) CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats	basePhyStats		= (PhyStats) CMClass.getCommon("DefaultPhyStats");
 
-	protected STreeMap<String,String> blurbFlags	 = new STreeMap<String,String>();
-	protected STreeMap<String, Room>  properRooms	 = new STreeMap<String, Room>(new RoomIDComparator());
-	protected RoomnumberSet 		  properRoomIDSet= null;
-	protected RoomnumberSet 		  metroRoomIDSet = null;
-	protected SLinkedList<Area> 	  children  	 = new SLinkedList<Area>();
-	protected SLinkedList<Area> 	  parents   	 = new SLinkedList<Area>();
-	protected SVector<Ability>  	  affects   	 = new SVector<Ability>(1);
-	protected SVector<Behavior> 	  behaviors 	 = new SVector<Behavior>(1);
-	protected SVector<String>   	  subOps		 = new SVector<String>(1);
-	protected SVector<ScriptingEngine>scripts   	 = new SVector<ScriptingEngine>(1);
-	protected Area 					  me			 = this;
-	protected TimeClock 			  myClock		 = null;
-	protected Climate 				  climateObj	 = (Climate)CMClass.getCommon("DefaultClimate");
+	protected STreeMap<String, String>	blurbFlags		= new STreeMap<String, String>();
+	protected STreeMap<String, Room>	properRooms		= new STreeMap<String, Room>(new RoomIDComparator());
+	protected RoomnumberSet				properRoomIDSet	= null;
+	protected RoomnumberSet				metroRoomIDSet	= null;
+	protected SLinkedList<Area>			children		= new SLinkedList<Area>();
+	protected SLinkedList<Area>			parents			= new SLinkedList<Area>();
+	protected SVector<Ability>			affects			= new SVector<Ability>(1);
+	protected SVector<Behavior>			behaviors		= new SVector<Behavior>(1);
+	protected SVector<String>			subOps			= new SVector<String>(1);
+	protected SVector<ScriptingEngine>	scripts			= new SVector<ScriptingEngine>(1);
+	protected Area						me				= this;
+	protected TimeClock					myClock			= null;
+	protected Climate					climateObj		= (Climate) CMClass.getCommon("DefaultClimate");
 
-	protected String[] 				itemPricingAdjustments	= new String[0];
+	protected String[]				itemPricingAdjustments	= new String[0];
 	protected final static int[]	emptyStats				= new int[Area.Stats.values().length];
-	protected final static String[] empty					= new String[0];
+	protected final static String[]	empty					= new String[0];
 	protected static volatile Area	lastComplainer			= null;
 
 	@Override
@@ -117,16 +118,16 @@ public class StdArea implements Area
 	@Override
 	public void setCurrency(final String newCurrency)
 	{
-		if(currency.length()>0)
+		if (currency.length() > 0)
 		{
 			CMLib.beanCounter().unloadCurrencySet(currency);
-			currency=newCurrency;
-			for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+			currency = newCurrency;
+			for (final Enumeration<Area> e = CMLib.map().areas(); e.hasMoreElements();)
 				CMLib.beanCounter().getCurrencySet(e.nextElement().getCurrency());
 		}
 		else
 		{
-			currency=newCurrency;
+			currency = newCurrency;
 			CMLib.beanCounter().getCurrencySet(currency);
 		}
 	}
@@ -146,34 +147,34 @@ public class StdArea implements Area
 	@Override
 	public void setAtmosphere(final int resourceCode)
 	{
-		atmosphere=resourceCode;
-		derivedAtmo=ATMOSPHERE_INHERIT;
+		atmosphere = resourceCode;
+		derivedAtmo = ATMOSPHERE_INHERIT;
 	}
 
 	@Override
 	public int getAtmosphere()
 	{
-		if(derivedAtmo!=ATMOSPHERE_INHERIT)
+		if (derivedAtmo != ATMOSPHERE_INHERIT)
 			return derivedAtmo;
-		final Stack<Area> areasToDo=new Stack<Area>();
+		final Stack<Area> areasToDo = new Stack<Area>();
 		areasToDo.push(this);
-		while(areasToDo.size()>0)
+		while (areasToDo.size() > 0)
 		{
-			final Area A=areasToDo.pop();
-			derivedAtmo=A.getAtmosphereCode();
-			if(derivedAtmo!=ATMOSPHERE_INHERIT)
+			final Area A = areasToDo.pop();
+			derivedAtmo = A.getAtmosphereCode();
+			if (derivedAtmo != ATMOSPHERE_INHERIT)
 				return derivedAtmo;
-			for(final Enumeration<Area> a=A.getParents();a.hasMoreElements();)
+			for (final Enumeration<Area> a = A.getParents(); a.hasMoreElements();)
 				areasToDo.push(a.nextElement());
 		}
-		derivedAtmo=RawMaterial.RESOURCE_AIR;
+		derivedAtmo = RawMaterial.RESOURCE_AIR;
 		return derivedAtmo;
 	}
 
 	@Override
 	public String getBlurbFlag(final String flag)
 	{
-		if((flag==null)||(flag.trim().length()==0))
+		if ((flag == null) || (flag.trim().length() == 0))
 			return null;
 		return blurbFlags.get(flag.toUpperCase().trim());
 	}
@@ -187,8 +188,8 @@ public class StdArea implements Area
 	@Override
 	public int numAllBlurbFlags()
 	{
-		int num=numBlurbFlags();
-		for(final Iterator<Area> i=getParentsIterator();i.hasNext();)
+		int num = numBlurbFlags();
+		for (final Iterator<Area> i = getParentsIterator(); i.hasNext();)
 			num += i.next().numAllBlurbFlags();
 		return num;
 	}
@@ -202,34 +203,34 @@ public class StdArea implements Area
 	@Override
 	public void addBlurbFlag(String flagPlusDesc)
 	{
-		if(flagPlusDesc==null)
+		if (flagPlusDesc == null)
 			return;
-		flagPlusDesc=flagPlusDesc.trim();
-		if(flagPlusDesc.length()==0)
+		flagPlusDesc = flagPlusDesc.trim();
+		if (flagPlusDesc.length() == 0)
 			return;
-		final int x=flagPlusDesc.indexOf(' ');
-		String flag=null;
-		if(x>=0)
+		final int x = flagPlusDesc.indexOf(' ');
+		String flag = null;
+		if (x >= 0)
 		{
-			flag=flagPlusDesc.substring(0,x).toUpperCase();
-			flagPlusDesc=flagPlusDesc.substring(x).trim();
+			flag = flagPlusDesc.substring(0, x).toUpperCase();
+			flagPlusDesc = flagPlusDesc.substring(x).trim();
 		}
 		else
 		{
-			flag=flagPlusDesc.toUpperCase().trim();
-			flagPlusDesc="";
+			flag = flagPlusDesc.toUpperCase().trim();
+			flagPlusDesc = "";
 		}
-		if(getBlurbFlag(flag)==null)
-			blurbFlags.put(flag,flagPlusDesc);
+		if (getBlurbFlag(flag) == null)
+			blurbFlags.put(flag, flagPlusDesc);
 	}
 
 	@Override
 	public void delBlurbFlag(String flagOnly)
 	{
-		if(flagOnly==null)
+		if (flagOnly == null)
 			return;
-		flagOnly=flagOnly.toUpperCase().trim();
-		if(flagOnly.length()==0)
+		flagOnly = flagOnly.toUpperCase().trim();
+		if (flagOnly.length() == 0)
 			return;
 		blurbFlags.remove(flagOnly);
 	}
@@ -249,27 +250,27 @@ public class StdArea implements Area
 	@Override
 	public void setClimateObj(final Climate obj)
 	{
-		if(obj != null)
+		if (obj != null)
 			climateObj = obj;
 	}
 
 	@Override
 	public Climate getClimateObj()
 	{
-		if(climateObj == null)
-			climateObj = (Climate)CMClass.getCommon("DefaultClimate");
+		if (climateObj == null)
+			climateObj = (Climate) CMClass.getCommon("DefaultClimate");
 		return climateObj;
 	}
 
 	@Override
 	public void setTimeObj(final TimeClock obj)
 	{
-		if(obj != null)
+		if (obj != null)
 		{
 			myClock = obj;
-			for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();)
+			for (final Iterator<Area> i = getChildrenIterator(); i.hasNext();)
 			{
-				final Area A=i.next();
+				final Area A = i.next();
 				A.setTimeObj(obj);
 			}
 		}
@@ -278,12 +279,12 @@ public class StdArea implements Area
 	@Override
 	public TimeClock getTimeObj()
 	{
-		if(myClock==null)
+		if (myClock == null)
 		{
-			if((this.parents != null)&&(this.parents.size()>0))
-				myClock=this.parents.iterator().next().getTimeObj();
+			if ((this.parents != null) && (this.parents.size() > 0))
+				myClock = this.parents.iterator().next().getTimeObj();
 			else
-				myClock=CMLib.time().globalClock();
+				myClock = CMLib.time().globalClock();
 		}
 		return myClock;
 	}
@@ -291,50 +292,49 @@ public class StdArea implements Area
 	public StdArea()
 	{
 		super();
-		//CMClass.bumpCounter(this,CMClass.CMObjectType.AREA);//removed for mem & perf
-		xtraValues=CMProps.getExtraStatCodesHolder(this);
+		// CMClass.bumpCounter(this,CMClass.CMObjectType.AREA);//removed for mem
+		// & perf
+		xtraValues = CMProps.getExtraStatCodesHolder(this);
 	}
 
 	/*
-	protected void finalize()
-	{
-		CMClass.unbumpCounter(this, CMClass.CMObjectType.AREA);
-	}// removed for mem & perf
-	*/
+	 * protected void finalize() { CMClass.unbumpCounter(this,
+	 * CMClass.CMObjectType.AREA); }// removed for mem & perf
+	 */
 
 	@Override
 	public void destroy()
 	{
-		CMLib.map().registerWorldObjectDestroyed(this,null,this);
-		phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-		basePhyStats=phyStats;
-		amDestroyed=true;
-		miscText=null;
-		imageName=null;
-		affects=new SVector<Ability>(1);
-		behaviors=new SVector<Behavior>(1);
-		scripts=new SVector<ScriptingEngine>(1);
-		author=null;
-		currency=null;
-		children=new SLinkedList<Area>();
-		parents=new SLinkedList<Area>();
-		blurbFlags=new STreeMap<String,String>();
-		subOps=new SVector<String>(1);
-		properRooms=new STreeMap<String, Room>();
-		//metroRooms=null;
-		myClock=null;
-		climateObj=null;
-		properRoomIDSet=null;
-		metroRoomIDSet=null;
-		author="";
-		currency="";
-		devalueRate=null;
-		budget="";
-		ignoreMask="";
-		prejudiceFactors="";
-		derivedClimate=CLIMASK_INHERIT;
-		derivedAtmo=ATMOSPHERE_INHERIT;
-		derivedTheme=THEME_INHERIT;
+		CMLib.map().registerWorldObjectDestroyed(this, null, this);
+		phyStats = (PhyStats) CMClass.getCommon("DefaultPhyStats");
+		basePhyStats = phyStats;
+		amDestroyed = true;
+		miscText = null;
+		imageName = null;
+		affects = new SVector<Ability>(1);
+		behaviors = new SVector<Behavior>(1);
+		scripts = new SVector<ScriptingEngine>(1);
+		author = null;
+		currency = null;
+		children = new SLinkedList<Area>();
+		parents = new SLinkedList<Area>();
+		blurbFlags = new STreeMap<String, String>();
+		subOps = new SVector<String>(1);
+		properRooms = new STreeMap<String, Room>();
+		// metroRooms=null;
+		myClock = null;
+		climateObj = null;
+		properRoomIDSet = null;
+		metroRoomIDSet = null;
+		author = "";
+		currency = "";
+		devalueRate = null;
+		budget = "";
+		ignoreMask = "";
+		prejudiceFactors = "";
+		derivedClimate = CLIMASK_INHERIT;
+		derivedAtmo = ATMOSPHERE_INHERIT;
+		derivedTheme = THEME_INHERIT;
 	}
 
 	@Override
@@ -346,9 +346,7 @@ public class StdArea implements Area
 	@Override
 	public boolean isSavable()
 	{
-		return ((!amDestroyed)
-				&& (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
-				&& (CMLib.flags().isSavable(this)));
+		return ((!amDestroyed) && (!CMath.bset(flags(), Area.FLAG_INSTANCE_CHILD)) && (CMLib.flags().isSavable(this)));
 	}
 
 	@Override
@@ -360,7 +358,7 @@ public class StdArea implements Area
 	@Override
 	public String name()
 	{
-		if(phyStats().newName()!=null)
+		if (phyStats().newName() != null)
 			return phyStats().newName();
 		return name;
 	}
@@ -368,20 +366,20 @@ public class StdArea implements Area
 	@Override
 	public synchronized RoomnumberSet getProperRoomnumbers()
 	{
-		if(properRoomIDSet==null)
-			properRoomIDSet=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
+		if (properRoomIDSet == null)
+			properRoomIDSet = (RoomnumberSet) CMClass.getCommon("DefaultRoomnumberSet");
 		return properRoomIDSet;
 	}
 
 	@Override
 	public RoomnumberSet getCachedRoomnumbers()
 	{
-		final RoomnumberSet set=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
-		synchronized(properRooms)
+		final RoomnumberSet set = (RoomnumberSet) CMClass.getCommon("DefaultRoomnumberSet");
+		synchronized (properRooms)
 		{
-			for(final Room R : properRooms.values())
+			for (final Room R : properRooms.values())
 			{
-				if(R.roomID().length()>0)
+				if (R.roomID().length() > 0)
 					set.add(R.roomID());
 			}
 		}
@@ -391,9 +389,9 @@ public class StdArea implements Area
 	@Override
 	public void setName(final String newName)
 	{
-		if(newName != null)
+		if (newName != null)
 		{
-			name=newName.replace('\'', '`');
+			name = newName.replace('\'', '`');
 			CMLib.map().renamedArea(this);
 		}
 	}
@@ -433,7 +431,7 @@ public class StdArea implements Area
 	@Override
 	public void setBasePhyStats(final PhyStats newStats)
 	{
-		basePhyStats=(PhyStats)newStats.copyOf();
+		basePhyStats = (PhyStats) newStats.copyOf();
 	}
 
 	@Override
@@ -445,28 +443,28 @@ public class StdArea implements Area
 	@Override
 	public int getTheme()
 	{
-		if(derivedTheme!=THEME_INHERIT)
+		if (derivedTheme != THEME_INHERIT)
 			return derivedTheme;
-		final Stack<Area> areasToDo=new Stack<Area>();
+		final Stack<Area> areasToDo = new Stack<Area>();
 		areasToDo.push(this);
-		while(areasToDo.size()>0)
+		while (areasToDo.size() > 0)
 		{
-			final Area A=areasToDo.pop();
-			derivedTheme=A.getThemeCode();
-			if(derivedTheme!=THEME_INHERIT)
+			final Area A = areasToDo.pop();
+			derivedTheme = A.getThemeCode();
+			if (derivedTheme != THEME_INHERIT)
 				return derivedTheme;
-			for(final Enumeration<Area> a=A.getParents();a.hasMoreElements();)
+			for (final Enumeration<Area> a = A.getParents(); a.hasMoreElements();)
 				areasToDo.push(a.nextElement());
 		}
-		derivedTheme=CMProps.getIntVar(CMProps.Int.MUDTHEME);
+		derivedTheme = CMProps.getIntVar(CMProps.Int.MUDTHEME);
 		return derivedTheme;
 	}
 
 	@Override
 	public void setTheme(final int level)
 	{
-		theme=level;
-		derivedTheme=THEME_INHERIT;
+		theme = level;
+		derivedTheme = THEME_INHERIT;
 	}
 
 	@Override
@@ -502,17 +500,16 @@ public class StdArea implements Area
 	@Override
 	public void setAreaState(final State newState)
 	{
-		if((newState==State.ACTIVE)
-		&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
+		if ((newState == State.ACTIVE) && (!CMLib.threads().isTicking(this, Tickable.TICKID_AREA)))
 		{
-			CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
-			if(!CMLib.threads().isTicking(this, Tickable.TICKID_AREA))
-				Log.errOut("StdArea","Area "+name()+" failed to start ticking.");
+			CMLib.threads().startTickDown(this, Tickable.TICKID_AREA, 1);
+			if (!CMLib.threads().isTicking(this, Tickable.TICKID_AREA))
+				Log.errOut("StdArea", "Area " + name() + " failed to start ticking.");
 		}
-		flag=newState;
-		derivedClimate=CLIMASK_INHERIT;
-		derivedAtmo=ATMOSPHERE_INHERIT;
-		derivedTheme=THEME_INHERIT;
+		flag = newState;
+		derivedClimate = CLIMASK_INHERIT;
+		derivedAtmo = ATMOSPHERE_INHERIT;
+		derivedTheme = THEME_INHERIT;
 	}
 
 	@Override
@@ -524,9 +521,9 @@ public class StdArea implements Area
 	@Override
 	public boolean amISubOp(final String username)
 	{
-		for(int s=subOps.size()-1;s>=0;s--)
+		for (int s = subOps.size() - 1; s >= 0; s--)
 		{
-			if(subOps.elementAt(s).equalsIgnoreCase(username))
+			if (subOps.elementAt(s).equalsIgnoreCase(username))
 				return true;
 		}
 		return false;
@@ -535,10 +532,10 @@ public class StdArea implements Area
 	@Override
 	public String getSubOpList()
 	{
-		final StringBuffer list=new StringBuffer("");
-		for(int s=subOps.size()-1;s>=0;s--)
+		final StringBuffer list = new StringBuffer("");
+		for (int s = subOps.size() - 1; s >= 0; s--)
 		{
-			final String str=subOps.elementAt(s);
+			final String str = subOps.elementAt(s);
 			list.append(str);
 			list.append(";");
 		}
@@ -549,7 +546,7 @@ public class StdArea implements Area
 	public void setSubOpList(final String list)
 	{
 		subOps.clear();
-		subOps.addAll(CMParms.parseSemicolons(list,true));
+		subOps.addAll(CMParms.parseSemicolons(list, true));
 	}
 
 	@Override
@@ -561,9 +558,9 @@ public class StdArea implements Area
 	@Override
 	public void delSubOp(final String username)
 	{
-		for(int s=subOps.size()-1;s>=0;s--)
+		for (int s = subOps.size() - 1; s >= 0; s--)
 		{
-			if(subOps.elementAt(s).equalsIgnoreCase(username))
+			if (subOps.elementAt(s).equalsIgnoreCase(username))
 				subOps.removeElementAt(s);
 		}
 	}
@@ -571,29 +568,29 @@ public class StdArea implements Area
 	@Override
 	public String getNewRoomID(final Room startRoom, final int direction)
 	{
-		int highest=Integer.MIN_VALUE;
-		int lowest=Integer.MAX_VALUE;
-		final LongSet set=new LongSet();
+		int highest = Integer.MIN_VALUE;
+		int lowest = Integer.MAX_VALUE;
+		final LongSet set = new LongSet();
 		try
 		{
-			String roomID=null;
-			int newnum=0;
-			final String name=Name().toUpperCase();
-			for(final Enumeration<String> i=CMLib.map().roomIDs();i.hasMoreElements();)
+			String roomID = null;
+			int newnum = 0;
+			final String name = Name().toUpperCase();
+			for (final Enumeration<String> i = CMLib.map().roomIDs(); i.hasMoreElements();)
 			{
-				roomID=i.nextElement();
-				if((roomID.length()>0)&&(roomID.startsWith(name+"#")))
+				roomID = i.nextElement();
+				if ((roomID.length() > 0) && (roomID.startsWith(name + "#")))
 				{
-					roomID=roomID.substring(name.length()+1);
-					if(CMath.isInteger(roomID))
+					roomID = roomID.substring(name.length() + 1);
+					if (CMath.isInteger(roomID))
 					{
-						newnum=CMath.s_int(roomID);
-						if(newnum>=0)
+						newnum = CMath.s_int(roomID);
+						if (newnum >= 0)
 						{
-							if(newnum>=highest)
-								highest=newnum;
-							if(newnum<=lowest)
-								lowest=newnum;
+							if (newnum >= highest)
+								highest = newnum;
+							if (newnum <= lowest)
+								lowest = newnum;
 							set.add(Long.valueOf(newnum));
 						}
 					}
@@ -603,46 +600,42 @@ public class StdArea implements Area
 		catch (final NoSuchElementException e)
 		{
 		}
-		if(highest<0)
+		if (highest < 0)
 		{
-			for(int i=0;i<Integer.MAX_VALUE;i++)
+			for (int i = 0; i < Integer.MAX_VALUE; i++)
 			{
-				if(((CMLib.map().getRoom(Name()+"#"+i))==null)
-				&&(getRoom(Name()+"#"+i)==null))
-					return Name()+"#"+i;
+				if (((CMLib.map().getRoom(Name() + "#" + i)) == null) && (getRoom(Name() + "#" + i) == null))
+					return Name() + "#" + i;
 			}
 		}
-		if(lowest>highest)
+		if (lowest > highest)
 		{
-			lowest=highest+1;
+			lowest = highest + 1;
 		}
-		for(int i=lowest;i<=highest+1000;i++)
+		for (int i = lowest; i <= highest + 1000; i++)
 		{
-			if((!set.contains(i))
-			&&(CMLib.map().getRoom(Name()+"#"+i)==null)
-			&&(getRoom(Name()+"#"+i)==null))
-				return Name()+"#"+i;
+			if ((!set.contains(i)) && (CMLib.map().getRoom(Name() + "#" + i) == null) && (getRoom(Name() + "#" + i) == null))
+				return Name() + "#" + i;
 		}
-		return Name()+"#"+(int)Math.round(Math.random()*Integer.MAX_VALUE);
+		return Name() + "#" + (int) Math.round(Math.random() * Integer.MAX_VALUE);
 	}
 
 	@Override
 	public CMObject newInstance()
 	{
-		if(CMSecurity.isDisabled(CMSecurity.DisFlag.FATAREAS)
-		&&(ID().equals("StdArea")))
+		if (CMSecurity.isDisabled(CMSecurity.DisFlag.FATAREAS) && (ID().equals("StdArea")))
 		{
-			final Area A=CMClass.getAreaType("StdThinArea");
-			if(A!=null)
+			final Area A = CMClass.getAreaType("StdThinArea");
+			if (A != null)
 				return A;
 		}
 		try
 		{
 			return this.getClass().newInstance();
 		}
-		catch(final Exception e)
+		catch (final Exception e)
 		{
-			Log.errOut(ID(),e);
+			Log.errOut(ID(), e);
 		}
 		return new StdArea();
 	}
@@ -655,41 +648,41 @@ public class StdArea implements Area
 
 	protected void cloneFix(final StdArea areaA)
 	{
-		me=this;
-		basePhyStats=(PhyStats)areaA.basePhyStats().copyOf();
-		phyStats=(PhyStats)areaA.phyStats().copyOf();
-		properRooms	=new STreeMap<String, Room>(new RoomIDComparator());
-		properRoomIDSet=null;
-		metroRoomIDSet =null;
+		me = this;
+		basePhyStats = (PhyStats) areaA.basePhyStats().copyOf();
+		phyStats = (PhyStats) areaA.phyStats().copyOf();
+		properRooms = new STreeMap<String, Room>(new RoomIDComparator());
+		properRoomIDSet = null;
+		metroRoomIDSet = null;
 
-		parents=areaA.parents.copyOf();
-		children=areaA.children.copyOf();
-		if(areaA.blurbFlags!=null)
-			blurbFlags=areaA.blurbFlags.copyOf();
-		affects=new SVector<Ability>(1);
-		behaviors=new SVector<Behavior>(1);
-		scripts=new SVector<ScriptingEngine>(1);
-		derivedClimate=CLIMASK_INHERIT;
-		derivedTheme=THEME_INHERIT;
-		derivedAtmo=ATMOSPHERE_INHERIT;
-		for(final Enumeration<Behavior> e=areaA.behaviors();e.hasMoreElements();)
+		parents = areaA.parents.copyOf();
+		children = areaA.children.copyOf();
+		if (areaA.blurbFlags != null)
+			blurbFlags = areaA.blurbFlags.copyOf();
+		affects = new SVector<Ability>(1);
+		behaviors = new SVector<Behavior>(1);
+		scripts = new SVector<ScriptingEngine>(1);
+		derivedClimate = CLIMASK_INHERIT;
+		derivedTheme = THEME_INHERIT;
+		derivedAtmo = ATMOSPHERE_INHERIT;
+		for (final Enumeration<Behavior> e = areaA.behaviors(); e.hasMoreElements();)
 		{
-			final Behavior B=e.nextElement();
-			if(B!=null)
-				behaviors.addElement((Behavior)B.copyOf());
+			final Behavior B = e.nextElement();
+			if (B != null)
+				behaviors.addElement((Behavior) B.copyOf());
 		}
-		for(final Enumeration<Ability> a=areaA.effects();a.hasMoreElements();)
+		for (final Enumeration<Ability> a = areaA.effects(); a.hasMoreElements();)
 		{
-			final Ability A=a.nextElement();
-			if(A!=null)
-				affects.addElement((Ability)A.copyOf());
+			final Ability A = a.nextElement();
+			if (A != null)
+				affects.addElement((Ability) A.copyOf());
 		}
-		ScriptingEngine SE=null;
-		for(final Enumeration<ScriptingEngine> e=areaA.scripts();e.hasMoreElements();)
+		ScriptingEngine SE = null;
+		for (final Enumeration<ScriptingEngine> e = areaA.scripts(); e.hasMoreElements();)
 		{
-			SE=e.nextElement();
-			if(SE!=null)
-				addScript((ScriptingEngine)SE.copyOf());
+			SE = e.nextElement();
+			if (SE != null)
+				addScript((ScriptingEngine) SE.copyOf());
 		}
 		setSubOpList(areaA.getSubOpList());
 	}
@@ -699,14 +692,15 @@ public class StdArea implements Area
 	{
 		try
 		{
-			final StdArea E=(StdArea)this.clone();
-			//CMClass.bumpCounter(this,CMClass.CMObjectType.AREA);//removed for mem & perf
-			E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
+			final StdArea E = (StdArea) this.clone();
+			// CMClass.bumpCounter(this,CMClass.CMObjectType.AREA);//removed for
+			// mem & perf
+			E.xtraValues = (xtraValues == null) ? null : (String[]) xtraValues.clone();
 			E.cloneFix(this);
 			return E;
 
 		}
-		catch(final CloneNotSupportedException e)
+		catch (final CloneNotSupportedException e)
 		{
 			return this.newInstance();
 		}
@@ -738,20 +732,20 @@ public class StdArea implements Area
 	@Override
 	public String finalPrejudiceFactors()
 	{
-		final String s=finalPrejudiceFactors(this);
-		if(s.length()>0)
+		final String s = finalPrejudiceFactors(this);
+		if (s.length() > 0)
 			return s;
 		return CMProps.getVar(CMProps.Str.IGNOREMASK);
 	}
 
 	protected String finalPrejudiceFactors(final Area A)
 	{
-		if(A.prejudiceFactors().length()>0)
+		if (A.prejudiceFactors().length() > 0)
 			return A.prejudiceFactors();
-		for(final Enumeration<Area> i=A.getParents();i.hasMoreElements();)
+		for (final Enumeration<Area> i = A.getParents(); i.hasMoreElements();)
 		{
-			final String  s=finalPrejudiceFactors(i.nextElement());
-			if(s.length()!=0)
+			final String s = finalPrejudiceFactors(i.nextElement());
+			if (s.length() != 0)
 				return s;
 		}
 		return "";
@@ -772,20 +766,20 @@ public class StdArea implements Area
 	@Override
 	public String[] finalItemPricingAdjustments()
 	{
-		final String[] s=finalItemPricingAdjustments(this);
-		if(s.length>0)
+		final String[] s = finalItemPricingAdjustments(this);
+		if (s.length > 0)
 			return s;
 		return CMLib.coffeeShops().parseItemPricingAdjustments(CMProps.getVar(CMProps.Str.PRICEFACTORS).trim());
 	}
 
 	protected String[] finalItemPricingAdjustments(final Area A)
 	{
-		if(A.itemPricingAdjustments().length>0)
+		if (A.itemPricingAdjustments().length > 0)
 			return A.itemPricingAdjustments();
-		for(final Enumeration<Area> i=A.getParents();i.hasMoreElements();)
+		for (final Enumeration<Area> i = A.getParents(); i.hasMoreElements();)
 		{
-			final String[] s=finalItemPricingAdjustments(i.nextElement());
-			if(s.length!=0)
+			final String[] s = finalItemPricingAdjustments(i.nextElement());
+			if (s.length != 0)
 				return s;
 		}
 		return empty;
@@ -806,20 +800,20 @@ public class StdArea implements Area
 	@Override
 	public String finalIgnoreMask()
 	{
-		final String s=finalIgnoreMask(this);
-		if(s.length()>0)
+		final String s = finalIgnoreMask(this);
+		if (s.length() > 0)
 			return s;
 		return CMProps.getVar(CMProps.Str.IGNOREMASK);
 	}
 
 	protected String finalIgnoreMask(final Area A)
 	{
-		if(A.ignoreMask().length()>0)
+		if (A.ignoreMask().length() > 0)
 			return A.ignoreMask();
-		for(final Enumeration<Area> i=A.getParents();i.hasMoreElements();)
+		for (final Enumeration<Area> i = A.getParents(); i.hasMoreElements();)
 		{
-			final String s=finalIgnoreMask(i.nextElement());
-			if(s.length()!=0)
+			final String s = finalIgnoreMask(i.nextElement());
+			if (s.length() != 0)
 				return s;
 		}
 		return "";
@@ -840,20 +834,20 @@ public class StdArea implements Area
 	@Override
 	public Pair<Long, TimePeriod> finalBudget()
 	{
-		final Pair<Long, TimePeriod> budget=finalAreaBudget(this);
-		if(budget != null)
+		final Pair<Long, TimePeriod> budget = finalAreaBudget(this);
+		if (budget != null)
 			return budget;
 		return CMLib.coffeeShops().parseBudget(CMProps.getVar(CMProps.Str.BUDGET));
 	}
 
 	protected Pair<Long, TimePeriod> finalAreaBudget(final Area A)
 	{
-		if(A.budget().length()>0)
+		if (A.budget().length() > 0)
 			return CMLib.coffeeShops().parseBudget(A.budget());
-		for(final Enumeration<Area> i=A.getParents();i.hasMoreElements();)
+		for (final Enumeration<Area> i = A.getParents(); i.hasMoreElements();)
 		{
-			final Pair<Long, TimePeriod> budget=finalAreaBudget(i.nextElement());
-			if(budget != null)
+			final Pair<Long, TimePeriod> budget = finalAreaBudget(i.nextElement());
+			if (budget != null)
 				return budget;
 		}
 		return null;
@@ -874,8 +868,8 @@ public class StdArea implements Area
 	@Override
 	public double[] finalDevalueRate()
 	{
-		final double[] rate=finalAreaDevalueRate(this);
-		if(rate != null)
+		final double[] rate = finalAreaDevalueRate(this);
+		if (rate != null)
 			return rate;
 
 		return CMLib.coffeeShops().parseDevalueRate(CMProps.getVar(CMProps.Str.DEVALUERATE));
@@ -883,12 +877,12 @@ public class StdArea implements Area
 
 	protected double[] finalAreaDevalueRate(final Area A)
 	{
-		if(A.devalueRate().length()>0)
+		if (A.devalueRate().length() > 0)
 			return CMLib.coffeeShops().parseDevalueRate(A.devalueRate());
-		for(final Enumeration<Area> i=A.getParents();i.hasMoreElements();)
+		for (final Enumeration<Area> i = A.getParents(); i.hasMoreElements();)
 		{
-			final double[] rate=finalAreaDevalueRate(i.nextElement());
-			if(rate != null)
+			final double[] rate = finalAreaDevalueRate(i.nextElement());
+			if (rate != null)
 				return rate;
 		}
 		return null;
@@ -921,20 +915,20 @@ public class StdArea implements Area
 	@Override
 	public int finalInvResetRate()
 	{
-		final int x=finalInvResetRate(this);
-		if(x!=0)
+		final int x = finalInvResetRate(this);
+		if (x != 0)
 			return x;
 		return CMath.s_int(CMProps.getVar(CMProps.Str.INVRESETRATE));
 	}
 
 	protected int finalInvResetRate(final Area A)
 	{
-		if(A.invResetRate()!=0)
+		if (A.invResetRate() != 0)
 			return A.invResetRate();
-		for(final Enumeration<Area> i=A.getParents();i.hasMoreElements();)
+		for (final Enumeration<Area> i = A.getParents(); i.hasMoreElements();)
 		{
-			final int x=finalInvResetRate(i.nextElement());
-			if(x!=0)
+			final int x = finalInvResetRate(i.nextElement());
+			if (x != 0)
 				return x;
 		}
 		return 0;
@@ -955,18 +949,18 @@ public class StdArea implements Area
 	@Override
 	public String text()
 	{
-		return CMLib.coffeeMaker().getPropertiesStr(this,true);
+		return CMLib.coffeeMaker().getPropertiesStr(this, true);
 	}
 
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
-		miscText="";
-		if(newMiscText.trim().length()>0)
-			CMLib.coffeeMaker().setPropertiesStr(this,newMiscText,true);
-		derivedClimate=CLIMASK_INHERIT;
-		derivedAtmo=ATMOSPHERE_INHERIT;
-		derivedTheme=THEME_INHERIT;
+		miscText = "";
+		if (newMiscText.trim().length() > 0)
+			CMLib.coffeeMaker().setPropertiesStr(this, newMiscText, true);
+		derivedClimate = CLIMASK_INHERIT;
+		derivedAtmo = ATMOSPHERE_INHERIT;
+		derivedTheme = THEME_INHERIT;
 	}
 
 	@Override
@@ -996,106 +990,96 @@ public class StdArea implements Area
 	@Override
 	public void setClimateType(final int newClimateType)
 	{
-		climask=newClimateType;
-		derivedClimate=CLIMASK_INHERIT;
+		climask = newClimateType;
+		derivedClimate = CLIMASK_INHERIT;
 	}
 
 	@Override
 	public int getClimateType()
 	{
-		if(derivedClimate!=CLIMASK_INHERIT)
+		if (derivedClimate != CLIMASK_INHERIT)
 			return derivedClimate;
-		final Stack<Area> areasToDo=new Stack<Area>();
+		final Stack<Area> areasToDo = new Stack<Area>();
 		areasToDo.push(this);
-		while(areasToDo.size()>0)
+		while (areasToDo.size() > 0)
 		{
-			final Area A=areasToDo.pop();
-			derivedClimate=A.getClimateTypeCode();
-			if(derivedClimate!=CLIMASK_INHERIT)
+			final Area A = areasToDo.pop();
+			derivedClimate = A.getClimateTypeCode();
+			if (derivedClimate != CLIMASK_INHERIT)
 				return derivedClimate;
-			for(final Enumeration<Area> a=A.getParents();a.hasMoreElements();)
+			for (final Enumeration<Area> a = A.getParents(); a.hasMoreElements();)
 				areasToDo.push(a.nextElement());
 		}
-		derivedClimate=Places.CLIMASK_NORMAL;
+		derivedClimate = Places.CLIMASK_NORMAL;
 		return derivedClimate;
 	}
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		MsgListener N=null;
-		for(int b=0;b<numBehaviors();b++)
+		MsgListener N = null;
+		for (int b = 0; b < numBehaviors(); b++)
 		{
-			N=fetchBehavior(b);
-			if((N!=null)&&(!N.okMessage(this,msg)))
+			N = fetchBehavior(b);
+			if ((N != null) && (!N.okMessage(this, msg)))
 				return false;
 		}
-		for(int s=0;s<numScripts();s++)
+		for (int s = 0; s < numScripts(); s++)
 		{
-			N=fetchScript(s);
-			if((N!=null)&&(!N.okMessage(this,msg)))
+			N = fetchScript(s);
+			if ((N != null) && (!N.okMessage(this, msg)))
 				return false;
 		}
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+		for (final Enumeration<Ability> a = effects(); a.hasMoreElements();)
 		{
-			N=a.nextElement();
-			if((N!=null)&&(!N.okMessage(this,msg)))
+			N = a.nextElement();
+			if ((N != null) && (!N.okMessage(this, msg)))
 				return false;
 		}
-		if(!msg.source().isMonster())
+		if (!msg.source().isMonster())
 		{
-			lastPlayerTime=System.currentTimeMillis();
-			if((flag==State.PASSIVE)
-			&&((msg.sourceMinor()==CMMsg.TYP_ENTER)
-			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
-			||(msg.sourceMinor()==CMMsg.TYP_FLEE)))
-				flag=State.ACTIVE;
+			lastPlayerTime = System.currentTimeMillis();
+			if ((flag == State.PASSIVE) && ((msg.sourceMinor() == CMMsg.TYP_ENTER) || (msg.sourceMinor() == CMMsg.TYP_LEAVE) || (msg.sourceMinor() == CMMsg.TYP_FLEE)))
+				flag = State.ACTIVE;
 		}
 
-		if((flag==State.FROZEN)||(flag==State.STOPPED)||(!CMLib.flags().allowsMovement(this)))
+		if ((flag == State.FROZEN) || (flag == State.STOPPED) || (!CMLib.flags().allowsMovement(this)))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
-			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
-			||(msg.sourceMinor()==CMMsg.TYP_FLEE))
+			if ((msg.sourceMinor() == CMMsg.TYP_ENTER) || (msg.sourceMinor() == CMMsg.TYP_LEAVE) || (msg.sourceMinor() == CMMsg.TYP_FLEE))
 				return false;
 		}
-		if(parents!=null)
+		if (parents != null)
 		{
 			for (final Area area : parents)
 			{
-				if(!area.okMessage(myHost,msg))
+				if (!area.okMessage(myHost, msg))
 					return false;
 			}
 		}
 
-		if((getThemeCode()>0)&&(!CMath.bset(getThemeCode(),Area.THEME_FANTASY)))
+		if ((getThemeCode() > 0) && (!CMath.bset(getThemeCode(), Area.THEME_FANTASY)))
 		{
-			if((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC))
-			||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
-			||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MAGIC)))
+			if ((CMath.bset(msg.sourceMajor(), CMMsg.MASK_MAGIC)) || (CMath.bset(msg.targetMajor(), CMMsg.MASK_MAGIC)) || (CMath.bset(msg.othersMajor(), CMMsg.MASK_MAGIC)))
 			{
-				Room room=null;
-				if((msg.target() instanceof MOB)
-				&&(((MOB)msg.target()).location()!=null))
-					room=((MOB)msg.target()).location();
-				else
-				if(msg.source().location()!=null)
-					room=msg.source().location();
-				if(room!=null)
+				Room room = null;
+				if ((msg.target() instanceof MOB) && (((MOB) msg.target()).location() != null))
+					room = ((MOB) msg.target()).location();
+				else if (msg.source().location() != null)
+					room = msg.source().location();
+				if (room != null)
 				{
-					if(room.getArea()==this)
-						room.showHappens(CMMsg.MSG_OK_ACTION,L("Magic doesn't seem to work here."));
+					if (room.getArea() == this)
+						room.showHappens(CMMsg.MSG_OK_ACTION, L("Magic doesn't seem to work here."));
 					else
-						room.showHappens(CMMsg.MSG_OK_ACTION,L("Magic doesn't seem to work there."));
+						room.showHappens(CMMsg.MSG_OK_ACTION, L("Magic doesn't seem to work there."));
 				}
 
 				return false;
 			}
 		}
-		else
-		if((getTheme()>0)&&(!CMath.bset(getTheme(),Area.THEME_TECHNOLOGY)))
+		else if ((getTheme() > 0) && (!CMath.bset(getTheme(), Area.THEME_TECHNOLOGY)))
 		{
-			switch(msg.sourceMinor())
+			switch (msg.sourceMinor())
 			{
 			case CMMsg.TYP_BUY:
 			case CMMsg.TYP_BID:
@@ -1120,17 +1104,15 @@ public class StdArea implements Area
 			case CMMsg.TYP_POWERCURRENT:
 				return false;
 			default:
-				if(msg.tool() instanceof Electronics)
+				if (msg.tool() instanceof Electronics)
 				{
-					Room room=null;
-					if((msg.target() instanceof MOB)
-					&&(((MOB)msg.target()).location()!=null))
-						room=((MOB)msg.target()).location();
-					else
-					if(msg.source().location()!=null)
-						room=msg.source().location();
-					if(room!=null)
-						room.showHappens(CMMsg.MSG_OK_VISUAL,L("Technology doesn't seem to work here."));
+					Room room = null;
+					if ((msg.target() instanceof MOB) && (((MOB) msg.target()).location() != null))
+						room = ((MOB) msg.target()).location();
+					else if (msg.source().location() != null)
+						room = msg.source().location();
+					if (room != null)
+						room.showHappens(CMMsg.MSG_OK_VISUAL, L("Technology doesn't seem to work here."));
 					return false;
 				}
 				break;
@@ -1167,14 +1149,13 @@ public class StdArea implements Area
 			}
 		});
 
-		if((msg.sourceMinor()==CMMsg.TYP_RETIRE)
-		&&(amISubOp(msg.source().Name())))
+		if ((msg.sourceMinor() == CMMsg.TYP_RETIRE) && (amISubOp(msg.source().Name())))
 			delSubOp(msg.source().Name());
 
-		if(parents!=null)
+		if (parents != null)
 		{
 			for (final Area area : parents)
-				area.executeMsg(myHost,msg);
+				area.executeMsg(myHost, msg);
 		}
 	}
 
@@ -1187,43 +1168,41 @@ public class StdArea implements Area
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((flag==State.STOPPED)||(amDestroyed()))
+		if ((flag == State.STOPPED) || (amDestroyed()))
 			return false;
-		tickStatus=Tickable.STATUS_START;
-		if(tickID==Tickable.TICKID_AREA)
+		tickStatus = Tickable.STATUS_START;
+		if (tickID == Tickable.TICKID_AREA)
 		{
-			if((flag==State.ACTIVE)
-			&&((System.currentTimeMillis()-lastPlayerTime)>passiveLapseMs))
+			if ((flag == State.ACTIVE) && ((System.currentTimeMillis() - lastPlayerTime) > passiveLapseMs))
 			{
-				if(CMSecurity.isDisabled(CMSecurity.DisFlag.PASSIVEAREAS)
-				&&(!CMath.bset(flags(), Area.FLAG_INSTANCE_CHILD)))
-					lastPlayerTime=System.currentTimeMillis();
+				if (CMSecurity.isDisabled(CMSecurity.DisFlag.PASSIVEAREAS) && (!CMath.bset(flags(), Area.FLAG_INSTANCE_CHILD)))
+					lastPlayerTime = System.currentTimeMillis();
 				else
-					flag=State.PASSIVE;
+					flag = State.PASSIVE;
 			}
-			tickStatus=Tickable.STATUS_ALIVE;
-			getClimateObj().tick(this,tickID);
-			tickStatus=Tickable.STATUS_REBIRTH;
-			getTimeObj().tick(this,tickID);
-			tickStatus=Tickable.STATUS_BEHAVIOR;
+			tickStatus = Tickable.STATUS_ALIVE;
+			getClimateObj().tick(this, tickID);
+			tickStatus = Tickable.STATUS_REBIRTH;
+			getTimeObj().tick(this, tickID);
+			tickStatus = Tickable.STATUS_BEHAVIOR;
 			eachBehavior(new EachApplicable<Behavior>()
 			{
 				@Override
 				public final void apply(final Behavior B)
 				{
-					B.tick(ticking,tickID);
+					B.tick(ticking, tickID);
 				}
 			});
-			tickStatus=Tickable.STATUS_SCRIPT;
+			tickStatus = Tickable.STATUS_SCRIPT;
 			eachScript(new EachApplicable<ScriptingEngine>()
 			{
 				@Override
 				public final void apply(final ScriptingEngine S)
 				{
-					S.tick(ticking,tickID);
+					S.tick(ticking, tickID);
 				}
 			});
-			tickStatus=Tickable.STATUS_AFFECT;
+			tickStatus = Tickable.STATUS_AFFECT;
 			eachEffect(new EachApplicable<Ability>()
 			{
 				@Override
@@ -1234,33 +1213,30 @@ public class StdArea implements Area
 				}
 			});
 		}
-		tickStatus=Tickable.STATUS_NOT;
+		tickStatus = Tickable.STATUS_NOT;
 		return true;
 	}
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		final int senses=phyStats.sensesMask()&(~(PhyStats.SENSE_UNLOCATABLE|PhyStats.CAN_NOT_SEE));
-		if(senses>0)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|senses);
-		int disposition=phyStats().disposition()
-			&((~(PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
-		if((affected instanceof Room)
-		&&(CMLib.map().hasASky((Room)affected)))
+		final int senses = phyStats.sensesMask() & (~(PhyStats.SENSE_UNLOCATABLE | PhyStats.CAN_NOT_SEE));
+		if (senses > 0)
+			affectableStats.setSensesMask(affectableStats.sensesMask() | senses);
+		int disposition = phyStats().disposition() & ((~(PhyStats.IS_SLEEPING | PhyStats.IS_HIDDEN)));
+		if ((affected instanceof Room) && (CMLib.map().hasASky((Room) affected)))
 		{
-			final Climate C=getClimateObj();
-			if(((C==null)
-				||(((C.weatherType((Room)affected)==Climate.WEATHER_BLIZZARD)
-						||(C.weatherType((Room)affected)==Climate.WEATHER_DUSTSTORM))
-						&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.DARKWEATHER)))
-				||((getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.DARKNIGHTS))))
-			&&((disposition&PhyStats.IS_LIGHTSOURCE)==0))
-				disposition=disposition|PhyStats.IS_DARK;
+			final Climate C = getClimateObj();
+			if (((C == null)
+					|| (((C.weatherType((Room) affected) == Climate.WEATHER_BLIZZARD) || (C.weatherType((Room) affected) == Climate.WEATHER_DUSTSTORM)) && (!CMSecurity.isDisabled(CMSecurity.DisFlag.DARKWEATHER)))
+					|| ((getTimeObj().getTODCode() == TimeClock.TimeOfDay.NIGHT) && (!CMSecurity.isDisabled(CMSecurity.DisFlag.DARKNIGHTS)))) && ((disposition & PhyStats.IS_LIGHTSOURCE) == 0))
+				disposition = disposition | PhyStats.IS_DARK;
 		}
-		if(disposition>0)
-			affectableStats.setDisposition(affectableStats.disposition()|disposition);
-		affectableStats.setWeight(affectableStats.weight()+phyStats().weight()); // well, that's weird
+		if (disposition > 0)
+			affectableStats.setDisposition(affectableStats.disposition() | disposition);
+		affectableStats.setWeight(affectableStats.weight() + phyStats().weight()); // well,
+																					// that's
+																					// weird
 		eachEffect(new EachApplicable<Ability>()
 		{
 			@Override
@@ -1303,9 +1279,9 @@ public class StdArea implements Area
 	@Override
 	public void addNonUninvokableEffect(final Ability to)
 	{
-		if(to==null)
+		if (to == null)
 			return;
-		if(fetchEffect(to.ID())!=null)
+		if (fetchEffect(to.ID()) != null)
 			return;
 		to.makeNonUninvokable();
 		to.makeLongLasting();
@@ -1316,9 +1292,9 @@ public class StdArea implements Area
 	@Override
 	public void addEffect(final Ability to)
 	{
-		if(to==null)
+		if (to == null)
 			return;
-		if(fetchEffect(to.ID())!=null)
+		if (fetchEffect(to.ID()) != null)
 			return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
@@ -1327,24 +1303,24 @@ public class StdArea implements Area
 	@Override
 	public void delEffect(final Ability to)
 	{
-		final int size=affects.size();
+		final int size = affects.size();
 		affects.removeElement(to);
-		if(affects.size()<size)
+		if (affects.size() < size)
 			to.setAffectedOne(null);
 	}
 
 	@Override
 	public void eachEffect(final EachApplicable<Ability> applier)
 	{
-		final List<Ability> affects=this.affects;
-		if(affects==null)
+		final List<Ability> affects = this.affects;
+		if (affects == null)
 			return;
 		try
 		{
-			for(int a=0;a<affects.size();a++)
+			for (int a = 0; a < affects.size(); a++)
 			{
-				final Ability A=affects.get(a);
-				if(A!=null)
+				final Ability A = affects.get(a);
+				if (A != null)
 					applier.apply(A);
 			}
 		}
@@ -1356,12 +1332,12 @@ public class StdArea implements Area
 	@Override
 	public void delAllEffects(final boolean unInvoke)
 	{
-		for(int a=numEffects()-1;a>=0;a--)
+		for (int a = numEffects() - 1; a >= 0; a--)
 		{
-			final Ability A=fetchEffect(a);
-			if(A!=null)
+			final Ability A = fetchEffect(a);
+			if (A != null)
 			{
-				if(unInvoke)
+				if (unInvoke)
 					A.unInvoke();
 				A.setAffectedOne(null);
 			}
@@ -1372,7 +1348,7 @@ public class StdArea implements Area
 	@Override
 	public int numEffects()
 	{
-		return (affects==null)?0:affects.size();
+		return (affects == null) ? 0 : affects.size();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1399,10 +1375,10 @@ public class StdArea implements Area
 	@Override
 	public Ability fetchEffect(final String ID)
 	{
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+		for (final Enumeration<Ability> a = effects(); a.hasMoreElements();)
 		{
-			final Ability A=a.nextElement();
-			if((A!=null)&&(A.ID().equals(ID)))
+			final Ability A = a.nextElement();
+			if ((A != null) && (A.ID().equals(ID)))
 				return A;
 		}
 		return null;
@@ -1411,11 +1387,11 @@ public class StdArea implements Area
 	@Override
 	public boolean inMyMetroArea(final Area A)
 	{
-		if(A==this)
+		if (A == this)
 			return true;
-		for(final Iterator<Area> i=getChildrenIterator();i.hasNext();)
+		for (final Iterator<Area> i = getChildrenIterator(); i.hasNext();)
 		{
-			if(i.next().inMyMetroArea(A))
+			if (i.next().inMyMetroArea(A))
 				return true;
 		}
 		return false;
@@ -1424,19 +1400,19 @@ public class StdArea implements Area
 	@Override
 	public void fillInAreaRooms()
 	{
-		for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+		for (final Enumeration<Room> r = getProperMap(); r.hasMoreElements();)
 		{
-			final Room R=r.nextElement();
+			final Room R = r.nextElement();
 			R.clearSky();
-			if(R.roomID().length()>0)
+			if (R.roomID().length() > 0)
 			{
-				if(R instanceof GridLocale)
-					((GridLocale)R).buildGrid();
+				if (R instanceof GridLocale)
+					((GridLocale) R).buildGrid();
 			}
 		}
-		for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+		for (final Enumeration<Room> r = getProperMap(); r.hasMoreElements();)
 		{
-			final Room R=r.nextElement();
+			final Room R = r.nextElement();
 			R.giveASky(0);
 		}
 	}
@@ -1444,27 +1420,29 @@ public class StdArea implements Area
 	@Override
 	public void fillInAreaRoom(final Room R)
 	{
-		if(R==null)
+		if (R == null)
 			return;
 		R.clearSky();
-		if(R.roomID().length()>0)
+		if (R.roomID().length() > 0)
 		{
-			if(R instanceof GridLocale)
-				((GridLocale)R).buildGrid();
+			if (R instanceof GridLocale)
+				((GridLocale) R).buildGrid();
 		}
 		R.giveASky(0);
 	}
 
-	/** Manipulation of Behavior objects, which includes
-	 * movement, speech, spellcasting, etc, etc.*/
+	/**
+	 * Manipulation of Behavior objects, which includes movement, speech,
+	 * spellcasting, etc, etc.
+	 */
 	@Override
 	public void addBehavior(final Behavior to)
 	{
-		if(to==null)
+		if (to == null)
 			return;
-		for(final Behavior B : behaviors)
+		for (final Behavior B : behaviors)
 		{
-			if((B!=null)&&(B.ID().equals(to.ID())))
+			if ((B != null) && (B.ID().equals(to.ID())))
 				return;
 		}
 		to.startBehavior(this);
@@ -1474,7 +1452,7 @@ public class StdArea implements Area
 	@Override
 	public void delBehavior(final Behavior to)
 	{
-		if(behaviors.removeElement(to))
+		if (behaviors.removeElement(to))
 			to.endBehavior(this);
 	}
 
@@ -1500,15 +1478,15 @@ public class StdArea implements Area
 	@Override
 	public void addScript(final ScriptingEngine S)
 	{
-		if(S==null)
+		if (S == null)
 			return;
-		if(!scripts.contains(S))
+		if (!scripts.contains(S))
 		{
-			ScriptingEngine S2=null;
-			for(int s=0;s<scripts.size();s++)
+			ScriptingEngine S2 = null;
+			for (int s = 0; s < scripts.size(); s++)
 			{
-				S2=scripts.elementAt(s);
-				if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
+				S2 = scripts.elementAt(s);
+				if ((S2 != null) && (S2.getScript().equalsIgnoreCase(S.getScript())))
 					return;
 			}
 			scripts.addElement(S);
@@ -1555,15 +1533,15 @@ public class StdArea implements Area
 	@Override
 	public void eachScript(final EachApplicable<ScriptingEngine> applier)
 	{
-		final List<ScriptingEngine> scripts=this.scripts;
-		if(scripts!=null)
+		final List<ScriptingEngine> scripts = this.scripts;
+		if (scripts != null)
 		{
 			try
 			{
-				for(int a=0;a<scripts.size();a++)
+				for (int a = 0; a < scripts.size(); a++)
 				{
-					final ScriptingEngine S=scripts.get(a);
-					if(S!=null)
+					final ScriptingEngine S = scripts.get(a);
+					if (S != null)
 						applier.apply(S);
 				}
 			}
@@ -1587,169 +1565,160 @@ public class StdArea implements Area
 
 	protected void buildAreaIMobStats(final int[] statData, final long[] totalAlignments, final Faction theFaction, final List<Integer> alignRanges, final List<Integer> levelRanges, final MOB mob)
 	{
-		if((mob!=null)
-		&&(mob.isMonster())
-		&&(!CMLib.flags().isUnattackable(mob)))
+		if ((mob != null) && (mob.isMonster()) && (!CMLib.flags().isUnattackable(mob)))
 		{
-			final int lvl=mob.basePhyStats().level();
+			final int lvl = mob.basePhyStats().level();
 			levelRanges.add(Integer.valueOf(lvl));
-			if((theFaction!=null)&&(mob.fetchFaction(theFaction.factionID())!=Integer.MAX_VALUE))
+			if ((theFaction != null) && (mob.fetchFaction(theFaction.factionID()) != Integer.MAX_VALUE))
 			{
 				alignRanges.add(Integer.valueOf(mob.fetchFaction(theFaction.factionID())));
-				totalAlignments[0]+=mob.fetchFaction(theFaction.factionID());
+				totalAlignments[0] += mob.fetchFaction(theFaction.factionID());
 			}
 			statData[Area.Stats.POPULATION.ordinal()]++;
-			statData[Area.Stats.TOTAL_LEVELS.ordinal()]+=lvl;
-			if(!CMLib.flags().isAnimalIntelligence(mob))
+			statData[Area.Stats.TOTAL_LEVELS.ordinal()] += lvl;
+			if (!CMLib.flags().isAnimalIntelligence(mob))
 			{
-				statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()]+=lvl;
+				statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()] += lvl;
 				statData[Area.Stats.INTELLIGENT_MOBS.ordinal()]++;
 			}
 			else
 			{
 				statData[Area.Stats.ANIMALS.ordinal()]++;
 			}
-			if(lvl<statData[Area.Stats.MIN_LEVEL.ordinal()])
-				statData[Area.Stats.MIN_LEVEL.ordinal()]=lvl;
-			if(lvl>statData[Area.Stats.MAX_LEVEL.ordinal()])
-				statData[Area.Stats.MAX_LEVEL.ordinal()]=lvl;
+			if (lvl < statData[Area.Stats.MIN_LEVEL.ordinal()])
+				statData[Area.Stats.MIN_LEVEL.ordinal()] = lvl;
+			if (lvl > statData[Area.Stats.MAX_LEVEL.ordinal()])
+				statData[Area.Stats.MAX_LEVEL.ordinal()] = lvl;
 			/*
-			if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD))
-			{
-				if(CMLib.flags().isGood(mob))
-					statData[Area.Stats.GOOD_MOBS.ordinal()]++;
-				else
-				if(CMLib.flags().isEvil(mob))
-					statData[Area.Stats.EVIL_MOBS.ordinal()]++;
-			}
-			if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL))
-			{
-				if(CMLib.flags().isLawful(mob))
-					statData[Area.Stats.LAWFUL_MOBS.ordinal()]++;
-				else
-				if(CMLib.flags().isChaotic(mob))
-					statData[Area.Stats.CHAOTIC_MOBS.ordinal()]++;
-			}
-			if(mob.fetchEffect("Prop_ShortEffects")!=null)
-				statData[Area.Stats.BOSS_MOBS.ordinal()]++;
-			if(" Humanoid Elf Dwarf Halfling HalfElf ".indexOf(" "+mob.charStats().getMyRace().racialCategory()+" ")>=0)
-				statData[Area.Stats.HUMANOIDS.ordinal()]++;
-			*/
+			 * if(CMLib.factions().isAlignmentLoaded(Faction.Align.GOOD)) {
+			 * if(CMLib.flags().isGood(mob))
+			 * statData[Area.Stats.GOOD_MOBS.ordinal()]++; else
+			 * if(CMLib.flags().isEvil(mob))
+			 * statData[Area.Stats.EVIL_MOBS.ordinal()]++; }
+			 * if(CMLib.factions().isAlignmentLoaded(Faction.Align.LAWFUL)) {
+			 * if(CMLib.flags().isLawful(mob))
+			 * statData[Area.Stats.LAWFUL_MOBS.ordinal()]++; else
+			 * if(CMLib.flags().isChaotic(mob))
+			 * statData[Area.Stats.CHAOTIC_MOBS.ordinal()]++; }
+			 * if(mob.fetchEffect("Prop_ShortEffects")!=null)
+			 * statData[Area.Stats.BOSS_MOBS.ordinal()]++;
+			 * if(" Humanoid Elf Dwarf Halfling HalfElf ".indexOf(" "+mob.
+			 * charStats().getMyRace().racialCategory()+" ")>=0)
+			 * statData[Area.Stats.HUMANOIDS.ordinal()]++;
+			 */
 		}
 	}
 
-
-
 	protected int[] buildAreaIStats()
 	{
-		final List<Integer> levelRanges=new Vector<Integer>();
-		final List<Integer> alignRanges=new Vector<Integer>();
-		Faction theFaction=null;
-		for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
+		final List<Integer> levelRanges = new Vector<Integer>();
+		final List<Integer> alignRanges = new Vector<Integer>();
+		Faction theFaction = null;
+		for (final Enumeration<Faction> e = CMLib.factions().factions(); e.hasMoreElements();)
 		{
-			final Faction F=e.nextElement();
-			if(F.showInSpecialReported())
-				theFaction=F;
+			final Faction F = e.nextElement();
+			if (F.showInSpecialReported())
+				theFaction = F;
 		}
-		final int[] statData=new int[Area.Stats.values().length];
-		statData[Area.Stats.POPULATION.ordinal()]=0;
-		statData[Area.Stats.MIN_LEVEL.ordinal()]=Integer.MAX_VALUE;
-		statData[Area.Stats.MAX_LEVEL.ordinal()]=Integer.MIN_VALUE;
-		statData[Area.Stats.AVG_LEVEL.ordinal()]=0;
-		statData[Area.Stats.MED_LEVEL.ordinal()]=0;
-		statData[Area.Stats.AVG_ALIGNMENT.ordinal()]=0;
-		statData[Area.Stats.TOTAL_LEVELS.ordinal()]=0;
-		statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()]=0;
-		statData[Area.Stats.VISITABLE_ROOMS.ordinal()]=getProperRoomnumbers().roomCountAllAreas();
-		final long[] totalAlignments=new long[]{0};
-		for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+		final int[] statData = new int[Area.Stats.values().length];
+		statData[Area.Stats.POPULATION.ordinal()] = 0;
+		statData[Area.Stats.MIN_LEVEL.ordinal()] = Integer.MAX_VALUE;
+		statData[Area.Stats.MAX_LEVEL.ordinal()] = Integer.MIN_VALUE;
+		statData[Area.Stats.AVG_LEVEL.ordinal()] = 0;
+		statData[Area.Stats.MED_LEVEL.ordinal()] = 0;
+		statData[Area.Stats.AVG_ALIGNMENT.ordinal()] = 0;
+		statData[Area.Stats.TOTAL_LEVELS.ordinal()] = 0;
+		statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()] = 0;
+		statData[Area.Stats.VISITABLE_ROOMS.ordinal()] = getProperRoomnumbers().roomCountAllAreas();
+		final long[] totalAlignments = new long[] { 0 };
+		for (final Enumeration<Room> r = getProperMap(); r.hasMoreElements();)
 		{
-			final Room R=r.nextElement();
+			final Room R = r.nextElement();
 			final int countable;
-			if(R instanceof GridLocale)
+			if (R instanceof GridLocale)
 			{
 				statData[Area.Stats.VISITABLE_ROOMS.ordinal()]--;
-				countable = ((GridLocale)R).getGridSize();
+				countable = ((GridLocale) R).getGridSize();
 			}
 			else
-				countable=1;
-			statData[Area.Stats.COUNTABLE_ROOMS.ordinal()]+=countable;
-			if((R.domainType()&Room.INDOORS)>0)
+				countable = 1;
+			statData[Area.Stats.COUNTABLE_ROOMS.ordinal()] += countable;
+			if ((R.domainType() & Room.INDOORS) > 0)
 			{
-				statData[Area.Stats.INDOOR_ROOMS.ordinal()]+=countable;
-				switch(R.domainType())
+				statData[Area.Stats.INDOOR_ROOMS.ordinal()] += countable;
+				switch (R.domainType())
 				{
 				case Room.DOMAIN_INDOORS_CAVE:
-					statData[Area.Stats.CAVE_ROOMS.ordinal()]+=countable;
+					statData[Area.Stats.CAVE_ROOMS.ordinal()] += countable;
 					break;
 				case Room.DOMAIN_INDOORS_METAL:
 				case Room.DOMAIN_INDOORS_STONE:
 				case Room.DOMAIN_INDOORS_WOOD:
-					statData[Area.Stats.CITY_ROOMS.ordinal()]+=countable;
+					statData[Area.Stats.CITY_ROOMS.ordinal()] += countable;
 					break;
 				case Room.DOMAIN_INDOORS_UNDERWATER:
 				case Room.DOMAIN_INDOORS_WATERSURFACE:
-					statData[Area.Stats.WATER_ROOMS.ordinal()]+=countable;
+					statData[Area.Stats.WATER_ROOMS.ordinal()] += countable;
 					break;
 				}
 			}
 			else
 			{
-				switch(R.domainType())
+				switch (R.domainType())
 				{
 				case Room.DOMAIN_OUTDOORS_CITY:
-					statData[Area.Stats.CITY_ROOMS.ordinal()]+=countable;
+					statData[Area.Stats.CITY_ROOMS.ordinal()] += countable;
 					break;
 				case Room.DOMAIN_OUTDOORS_DESERT:
-					statData[Area.Stats.DESERT_ROOMS.ordinal()]+=countable;
+					statData[Area.Stats.DESERT_ROOMS.ordinal()] += countable;
 					break;
 				case Room.DOMAIN_OUTDOORS_UNDERWATER:
 				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-					statData[Area.Stats.WATER_ROOMS.ordinal()]+=countable;
+					statData[Area.Stats.WATER_ROOMS.ordinal()] += countable;
 					break;
 				}
 			}
-			for(int i=0;i<R.numInhabitants();i++)
-				buildAreaIMobStats(statData,totalAlignments,theFaction,alignRanges,levelRanges,R.fetchInhabitant(i));
-			for(int i=0;i<R.numItems();i++)
+			for (int i = 0; i < R.numInhabitants(); i++)
+				buildAreaIMobStats(statData, totalAlignments, theFaction, alignRanges, levelRanges, R.fetchInhabitant(i));
+			for (int i = 0; i < R.numItems(); i++)
 			{
-				final Item I=R.getItem(i);
-				if(I instanceof BoardableShip)
+				final Item I = R.getItem(i);
+				if (I instanceof BoardableShip)
 				{
-					final Area A=((BoardableShip)I).getShipArea();
-					if(A==null)
+					final Area A = ((BoardableShip) I).getShipArea();
+					if (A == null)
 						continue;
-					for(final Enumeration<Room> r2=A.getProperMap();r2.hasMoreElements();)
+					for (final Enumeration<Room> r2 = A.getProperMap(); r2.hasMoreElements();)
 					{
-						final Room R2=r2.nextElement();
-						for(int i2=0;i2<R2.numInhabitants();i2++)
-							buildAreaIMobStats(statData,totalAlignments,theFaction,alignRanges,levelRanges,R2.fetchInhabitant(i2));
+						final Room R2 = r2.nextElement();
+						for (int i2 = 0; i2 < R2.numInhabitants(); i2++)
+							buildAreaIMobStats(statData, totalAlignments, theFaction, alignRanges, levelRanges, R2.fetchInhabitant(i2));
 					}
 				}
 			}
 		}
-		if((statData[Area.Stats.POPULATION.ordinal()]==0)||(levelRanges.size()==0))
+		if ((statData[Area.Stats.POPULATION.ordinal()] == 0) || (levelRanges.size() == 0))
 		{
-			statData[Area.Stats.MIN_LEVEL.ordinal()]=0;
-			statData[Area.Stats.MAX_LEVEL.ordinal()]=0;
+			statData[Area.Stats.MIN_LEVEL.ordinal()] = 0;
+			statData[Area.Stats.MAX_LEVEL.ordinal()] = 0;
 		}
 		else
 		{
 			Collections.sort(levelRanges);
 			Collections.sort(alignRanges);
-			statData[Area.Stats.MED_LEVEL.ordinal()]=levelRanges.get((int)Math.round(Math.floor(CMath.div(levelRanges.size(),2.0)))).intValue();
-			if(alignRanges.size()>0)
+			statData[Area.Stats.MED_LEVEL.ordinal()] = levelRanges.get((int) Math.round(Math.floor(CMath.div(levelRanges.size(), 2.0)))).intValue();
+			if (alignRanges.size() > 0)
 			{
-				statData[Area.Stats.MED_ALIGNMENT.ordinal()]=alignRanges.get((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0)))).intValue();
-				statData[Area.Stats.MIN_ALIGNMENT.ordinal()]=alignRanges.get(0).intValue();
-				statData[Area.Stats.MAX_ALIGNMENT.ordinal()]=alignRanges.get(alignRanges.size()-1).intValue();
+				statData[Area.Stats.MED_ALIGNMENT.ordinal()] = alignRanges.get((int) Math.round(Math.floor(CMath.div(alignRanges.size(), 2.0)))).intValue();
+				statData[Area.Stats.MIN_ALIGNMENT.ordinal()] = alignRanges.get(0).intValue();
+				statData[Area.Stats.MAX_ALIGNMENT.ordinal()] = alignRanges.get(alignRanges.size() - 1).intValue();
 			}
-			statData[Area.Stats.AVG_LEVEL.ordinal()]=(int)Math.round(CMath.div(statData[Area.Stats.TOTAL_LEVELS.ordinal()],statData[Area.Stats.POPULATION.ordinal()]));
-			statData[Area.Stats.AVG_ALIGNMENT.ordinal()]=(int)Math.round(((double)totalAlignments[0])/((double)statData[Area.Stats.POPULATION.ordinal()]));
+			statData[Area.Stats.AVG_LEVEL.ordinal()] = (int) Math.round(CMath.div(statData[Area.Stats.TOTAL_LEVELS.ordinal()], statData[Area.Stats.POPULATION.ordinal()]));
+			statData[Area.Stats.AVG_ALIGNMENT.ordinal()] = (int) Math.round(((double) totalAlignments[0]) / ((double) statData[Area.Stats.POPULATION.ordinal()]));
 		}
 		basePhyStats().setLevel(statData[Area.Stats.MED_LEVEL.ordinal()]);
 		phyStats().setLevel(statData[Area.Stats.MED_LEVEL.ordinal()]);
-		//basePhyStats().setHeight(statData[Area.Stats.POPULATION.ordinal()]);
+		// basePhyStats().setHeight(statData[Area.Stats.POPULATION.ordinal()]);
 		return statData;
 	}
 
@@ -1762,22 +1731,22 @@ public class StdArea implements Area
 	@Override
 	public void setPlayerLevel(final int level)
 	{
-		playerLevel=level;
+		playerLevel = level;
 	}
 
 	@Override
 	public int[] getAreaIStats()
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if (!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return emptyStats;
-		int[] statData=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
-		if(statData!=null)
+		int[] statData = (int[]) Resources.getResource("STATS_" + Name().toUpperCase());
+		if (statData != null)
 			return statData;
-		synchronized(("STATS_"+Name()).intern())
+		synchronized (("STATS_" + Name()).intern())
 		{
-			Resources.removeResource("HELP_"+Name().toUpperCase());
-			statData=buildAreaIStats();
-			Resources.submitResource("STATS_"+Name().toUpperCase(),statData);
+			Resources.removeResource("HELP_" + Name().toUpperCase());
+			statData = buildAreaIStats();
+			Resources.submitResource("STATS_" + Name().toUpperCase(), statData);
 		}
 		return statData;
 	}
@@ -1789,92 +1758,92 @@ public class StdArea implements Area
 
 	protected StringBuffer buildAreaStats(final int[] statData)
 	{
-		final StringBuffer s=new StringBuffer("^N");
-		s.append("Area           : ^H"+Name()+"^N\n\r");
-		s.append(description()+"\n\r");
-		if(author.length()>0)
-			s.append("Author         : ^H"+author+"^N\n\r");
-		if(statData == emptyStats)
+		final StringBuffer s = new StringBuffer("^N");
+		s.append("Area           : ^H" + Name() + "^N\n\r");
+		s.append(description() + "\n\r");
+		if (author.length() > 0)
+			s.append("Author         : ^H" + author + "^N\n\r");
+		if (statData == emptyStats)
 		{
 			s.append("\n\r^HFurther information about this area is not available at this time.^N\n\r");
 			return s;
 		}
-		s.append("Number of rooms: ^H"+statData[Area.Stats.VISITABLE_ROOMS.ordinal()]+"^N\n\r");
-		Faction theFaction=CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
-		if(theFaction == null)
+		s.append("Number of rooms: ^H" + statData[Area.Stats.VISITABLE_ROOMS.ordinal()] + "^N\n\r");
+		Faction theFaction = CMLib.factions().getFaction(CMLib.factions().getAlignmentID());
+		if (theFaction == null)
 		{
-			for(final Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
+			for (final Enumeration<Faction> e = CMLib.factions().factions(); e.hasMoreElements();)
 			{
-				final Faction F=e.nextElement();
-				if(F.showInSpecialReported())
-					theFaction=F;
+				final Faction F = e.nextElement();
+				if (F.showInSpecialReported())
+					theFaction = F;
 			}
 		}
-		if(statData[Area.Stats.POPULATION.ordinal()]==0)
+		if (statData[Area.Stats.POPULATION.ordinal()] == 0)
 		{
-			if(getProperRoomnumbers().roomCountAllAreas()/2<properRooms.size())
+			if (getProperRoomnumbers().roomCountAllAreas() / 2 < properRooms.size())
 				s.append("Population     : ^H0^N\n\r");
 		}
 		else
 		{
-			s.append("Population     : ^H"+statData[Area.Stats.POPULATION.ordinal()]+"^N\n\r");
-			final String currName=CMLib.beanCounter().getCurrency(this);
-			if(currName.length()>0)
-				s.append("Currency       : ^H"+CMStrings.capitalizeAndLower(currName)+"^N\n\r");
+			s.append("Population     : ^H" + statData[Area.Stats.POPULATION.ordinal()] + "^N\n\r");
+			final String currName = CMLib.beanCounter().getCurrency(this);
+			if (currName.length() > 0)
+				s.append("Currency       : ^H" + CMStrings.capitalizeAndLower(currName) + "^N\n\r");
 			else
 				s.append("Currency       : ^HGold coins (default)^N\n\r");
-			final LegalBehavior B=CMLib.law().getLegalBehavior(this);
-			if(B!=null)
+			final LegalBehavior B = CMLib.law().getLegalBehavior(this);
+			if (B != null)
 			{
-				final String ruler=B.rulingOrganization();
-				if(ruler.length()>0)
+				final String ruler = B.rulingOrganization();
+				if (ruler.length() > 0)
 				{
-					final Clan C=CMLib.clans().getClan(ruler);
-					if(C!=null)
-						s.append("Controlled by  : ^H"+C.getGovernmentName()+" "+C.name()+"^N\n\r");
+					final Clan C = CMLib.clans().getClan(ruler);
+					if (C != null)
+						s.append("Controlled by  : ^H" + C.getGovernmentName() + " " + C.name() + "^N\n\r");
 				}
 			}
-			s.append("Level range    : ^H"+statData[Area.Stats.MIN_LEVEL.ordinal()]+"^N to ^H"+statData[Area.Stats.MAX_LEVEL.ordinal()]+"^N\n\r");
-			//s.append("Average level  : ^H"+statData[Area.Stats.AVG_LEVEL.ordinal()]+"^N\n\r");
-			if(getPlayerLevel()>0)
-				s.append("Player level   : ^H"+getPlayerLevel()+"^N\n\r");
+			s.append("Level range    : ^H" + statData[Area.Stats.MIN_LEVEL.ordinal()] + "^N to ^H" + statData[Area.Stats.MAX_LEVEL.ordinal()] + "^N\n\r");
+			// s.append("Average level :
+			// ^H"+statData[Area.Stats.AVG_LEVEL.ordinal()]+"^N\n\r");
+			if (getPlayerLevel() > 0)
+				s.append("Player level   : ^H" + getPlayerLevel() + "^N\n\r");
 			else
-				s.append("Median level   : ^H"+statData[Area.Stats.MED_LEVEL.ordinal()]+"^N\n\r");
-			if(theFaction!=null)
-				s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.AVG_ALIGNMENT.ordinal()])+"^N\n\r");
-			if(theFaction!=null)
-				s.append("Med. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.MED_ALIGNMENT.ordinal()])+"^N\n\r");
+				s.append("Median level   : ^H" + statData[Area.Stats.MED_LEVEL.ordinal()] + "^N\n\r");
+			if (theFaction != null)
+				s.append("Avg. " + CMStrings.padRight(theFaction.name(), 10) + ": ^H" + theFaction.fetchRangeName(statData[Area.Stats.AVG_ALIGNMENT.ordinal()]) + "^N\n\r");
+			if (theFaction != null)
+				s.append("Med. " + CMStrings.padRight(theFaction.name(), 10) + ": ^H" + theFaction.fetchRangeName(statData[Area.Stats.MED_ALIGNMENT.ordinal()]) + "^N\n\r");
 		}
 		try
 		{
-			boolean blurbed=false;
-			String flag=null;
-			final List<Area> areas=new XVector<Area>(getParentsIterator());
+			boolean blurbed = false;
+			String flag = null;
+			final List<Area> areas = new XVector<Area>(getParentsIterator());
 			areas.add(this);
-			for(final Iterator<Area> i= areas.iterator(); i.hasNext();)
+			for (final Iterator<Area> i = areas.iterator(); i.hasNext();)
 			{
-				final Area A=i.next();
-				for(final Enumeration<String> f= A.areaBlurbFlags();f.hasMoreElements();)
+				final Area A = i.next();
+				for (final Enumeration<String> f = A.areaBlurbFlags(); f.hasMoreElements();)
 				{
-					flag=A.getBlurbFlag(f.nextElement());
-					if((flag!=null)
-					&&((!flag.startsWith("{"))||(!flag.endsWith("}"))))
+					flag = A.getBlurbFlag(f.nextElement());
+					if ((flag != null) && ((!flag.startsWith("{")) || (!flag.endsWith("}"))))
 					{
 						if (!blurbed)
 						{
 							blurbed = true;
 							s.append("\n\r");
 						}
-						s.append(flag+"\n\r");
+						s.append(flag + "\n\r");
 					}
 				}
 			}
-			if(blurbed)
+			if (blurbed)
 				s.append("\n\r");
 		}
-		catch(final Exception e)
+		catch (final Exception e)
 		{
-			Log.errOut("StdArea",e);
+			Log.errOut("StdArea", e);
 		}
 		return s;
 	}
@@ -1882,13 +1851,14 @@ public class StdArea implements Area
 	@Override
 	public synchronized StringBuffer getAreaStats()
 	{
-		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		if (!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return new StringBuffer("");
-		StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+Name().toUpperCase());
-		if(s!=null)
+		StringBuffer s = (StringBuffer) Resources.getResource("HELP_" + Name().toUpperCase());
+		if (s != null)
 			return s;
-		s=buildAreaStats(getAreaIStats());
-		//Resources.submitResource("HELP_"+Name().toUpperCase(),s); // the STAT_ data is cached instead.
+		s = buildAreaStats(getAreaIStats());
+		// Resources.submitResource("HELP_"+Name().toUpperCase(),s); // the
+		// STAT_ data is cached instead.
 		return s;
 	}
 
@@ -1908,9 +1878,9 @@ public class StdArea implements Area
 	@Override
 	public Behavior fetchBehavior(final String ID)
 	{
-		for(final Behavior B : behaviors)
+		for (final Behavior B : behaviors)
 		{
-			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
+			if ((B != null) && (B.ID().equalsIgnoreCase(ID)))
 				return B;
 		}
 		return null;
@@ -1919,26 +1889,26 @@ public class StdArea implements Area
 	@Override
 	public void eachBehavior(final EachApplicable<Behavior> applier)
 	{
-		final List<Behavior> behaviors=this.behaviors;
-		if(behaviors!=null)
-		try
-		{
-			for(int a=0;a<behaviors.size();a++)
+		final List<Behavior> behaviors = this.behaviors;
+		if (behaviors != null)
+			try
 			{
-				final Behavior B=behaviors.get(a);
-				if(B!=null)
-					applier.apply(B);
+				for (int a = 0; a < behaviors.size(); a++)
+				{
+					final Behavior B = behaviors.get(a);
+					if (B != null)
+						applier.apply(B);
+				}
 			}
-		}
-		catch (final ArrayIndexOutOfBoundsException e)
-		{
-		}
+			catch (final ArrayIndexOutOfBoundsException e)
+			{
+			}
 	}
 
 	@Override
 	public int properSize()
 	{
-		synchronized(properRooms)
+		synchronized (properRooms)
 		{
 			return properRooms.size();
 		}
@@ -1953,29 +1923,29 @@ public class StdArea implements Area
 	@Override
 	public void addProperRoom(final Room R)
 	{
-		if(R==null)
+		if (R == null)
 			return;
-		if(R.getArea()!=this)
+		if (R.getArea() != this)
 		{
 			R.setArea(this);
 			return;
 		}
-		synchronized(properRooms)
+		synchronized (properRooms)
 		{
-			final String roomID=R.roomID();
-			if(roomID.length()==0)
+			final String roomID = R.roomID();
+			if (roomID.length() == 0)
 			{
-				if((R.getGridParent()!=null)
-				&&(R.getGridParent().roomID().length()>0))
+				if ((R.getGridParent() != null) && (R.getGridParent().roomID().length() > 0))
 				{
-					// for some reason, grid children always get the back of the bus.
+					// for some reason, grid children always get the back of the
+					// bus.
 					addProperRoomnumber(R.getGridParent().getGridChildCode(R));
 					addMetroRoom(R);
 				}
 				return;
 			}
-			if(!properRooms.containsKey(R.roomID()))
-				properRooms.put(R.roomID(),R);
+			if (!properRooms.containsKey(R.roomID()))
+				properRooms.put(R.roomID(), R);
 			addProperRoomnumber(roomID);
 			addMetroRoom(R);
 		}
@@ -1984,12 +1954,11 @@ public class StdArea implements Area
 	@Override
 	public void addMetroRoom(final Room R)
 	{
-		if(R!=null)
+		if (R != null)
 		{
-			if(R.roomID().length()==0)
+			if (R.roomID().length() == 0)
 			{
-				if((R.getGridParent()!=null)
-				&&(R.getGridParent().roomID().length()>0))
+				if ((R.getGridParent() != null) && (R.getGridParent().roomID().length() > 0))
 					addMetroRoomnumber(R.getGridParent().getGridChildCode(R));
 			}
 			else
@@ -2000,12 +1969,11 @@ public class StdArea implements Area
 	@Override
 	public void delMetroRoom(final Room R)
 	{
-		if(R!=null)
+		if (R != null)
 		{
-			if(R.roomID().length()==0)
+			if (R.roomID().length() == 0)
 			{
-				if((R.getGridParent()!=null)
-				&&(R.getGridParent().roomID().length()>0))
+				if ((R.getGridParent() != null) && (R.getGridParent().roomID().length() > 0))
 					delMetroRoomnumber(R.getGridParent().getGridChildCode(R));
 			}
 			else
@@ -2016,8 +1984,7 @@ public class StdArea implements Area
 	@Override
 	public void addProperRoomnumber(final String roomID)
 	{
-		if((roomID!=null)
-		&&(roomID.length()>0))
+		if ((roomID != null) && (roomID.length() > 0))
 		{
 			getProperRoomnumbers().add(roomID);
 			addMetroRoomnumber(roomID);
@@ -2027,7 +1994,7 @@ public class StdArea implements Area
 	@Override
 	public void delProperRoomnumber(final String roomID)
 	{
-		if((roomID!=null)&&(roomID.length()>0))
+		if ((roomID != null) && (roomID.length() > 0))
 		{
 			getProperRoomnumbers().remove(roomID);
 			delMetroRoomnumber(roomID);
@@ -2037,14 +2004,14 @@ public class StdArea implements Area
 	@Override
 	public void addMetroRoomnumber(final String roomID)
 	{
-		if(metroRoomIDSet==null)
-			metroRoomIDSet=(RoomnumberSet)getProperRoomnumbers().copyOf();
-		if((roomID!=null)&&(roomID.length()>0)&&(!metroRoomIDSet.contains(roomID)))
+		if (metroRoomIDSet == null)
+			metroRoomIDSet = (RoomnumberSet) getProperRoomnumbers().copyOf();
+		if ((roomID != null) && (roomID.length() > 0) && (!metroRoomIDSet.contains(roomID)))
 		{
 			metroRoomIDSet.add(roomID);
-			if(!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
+			if (!CMath.bset(flags(), Area.FLAG_INSTANCE_CHILD))
 			{
-				for(final Iterator<Area> a=getParentsReverseIterator();a.hasNext();)
+				for (final Iterator<Area> a = getParentsReverseIterator(); a.hasNext();)
 					a.next().addMetroRoomnumber(roomID);
 			}
 		}
@@ -2053,15 +2020,12 @@ public class StdArea implements Area
 	@Override
 	public void delMetroRoomnumber(final String roomID)
 	{
-		if((metroRoomIDSet!=null)
-		&&(roomID!=null)
-		&&(roomID.length()>0)
-		&&(metroRoomIDSet.contains(roomID)))
+		if ((metroRoomIDSet != null) && (roomID != null) && (roomID.length() > 0) && (metroRoomIDSet.contains(roomID)))
 		{
 			metroRoomIDSet.remove(roomID);
-			if(!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
+			if (!CMath.bset(flags(), Area.FLAG_INSTANCE_CHILD))
 			{
-				for(final Iterator<Area> a=getParentsReverseIterator();a.hasNext();)
+				for (final Iterator<Area> a = getParentsReverseIterator(); a.hasNext();)
 					a.next().delMetroRoomnumber(roomID);
 			}
 		}
@@ -2070,9 +2034,9 @@ public class StdArea implements Area
 	@Override
 	public boolean isRoom(final Room R)
 	{
-		if(R==null)
+		if (R == null)
 			return false;
-		if(R.roomID().length()>0)
+		if (R.roomID().length() > 0)
 			return getProperRoomnumbers().contains(R.roomID());
 		return properRooms.containsValue(R);
 	}
@@ -2080,35 +2044,32 @@ public class StdArea implements Area
 	@Override
 	public void delProperRoom(final Room R)
 	{
-		if(R==null)
+		if (R == null)
 			return;
-		if(R instanceof GridLocale)
-			((GridLocale)R).clearGrid(null);
-		synchronized(properRooms)
+		if (R instanceof GridLocale)
+			((GridLocale) R).clearGrid(null);
+		synchronized (properRooms)
 		{
-			if(R.roomID().length()==0)
+			if (R.roomID().length() == 0)
 			{
-				if((R.getGridParent()!=null)
-				&&(R.getGridParent().roomID().length()>0))
+				if ((R.getGridParent() != null) && (R.getGridParent().roomID().length() > 0))
 				{
-					final String id=R.getGridParent().getGridChildCode(R);
+					final String id = R.getGridParent().getGridChildCode(R);
 					delProperRoomnumber(id);
 					delMetroRoom(R);
 				}
 			}
-			else
-			if(properRooms.get(R.roomID())==R)
+			else if (properRooms.get(R.roomID()) == R)
 			{
 				properRooms.remove(R.roomID());
 				delMetroRoom(R);
 				delProperRoomnumber(R.roomID());
 			}
-			else
-			if(properRooms.containsValue(R))
+			else if (properRooms.containsValue(R))
 			{
-				for(final Map.Entry<String,Room> entry : properRooms.entrySet())
+				for (final Map.Entry<String, Room> entry : properRooms.entrySet())
 				{
-					if(entry.getValue()==R)
+					if (entry.getValue() == R)
 					{
 						properRooms.remove(entry.getKey());
 						delProperRoomnumber(entry.getKey());
@@ -2123,15 +2084,16 @@ public class StdArea implements Area
 	@Override
 	public Room getRoom(String roomID)
 	{
-		if(properRooms.size()==0)
+		if (properRooms.size() == 0)
 			return null;
-		if(roomID.length()==0)
+		if (roomID.length() == 0)
 			return null;
-		synchronized(properRooms)
+		synchronized (properRooms)
 		{
-			if((!roomID.startsWith(Name()))
-			&&(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#")))
-				roomID=Name()+roomID.substring(Name().length()); // for case sensitive situations
+			if ((!roomID.startsWith(Name())) && (roomID.toUpperCase().startsWith(Name().toUpperCase() + "#")))
+				roomID = Name() + roomID.substring(Name().length()); // for case
+																		// sensitive
+																		// situations
 			return properRooms.get(roomID);
 		}
 	}
@@ -2139,23 +2101,23 @@ public class StdArea implements Area
 	@Override
 	public int metroSize()
 	{
-		int num=properSize();
-		for(final Iterator<Area> a=getChildrenReverseIterator();a.hasNext();)
-			num+=a.next().metroSize();
+		int num = properSize();
+		for (final Iterator<Area> a = getChildrenReverseIterator(); a.hasNext();)
+			num += a.next().metroSize();
 		return num;
 	}
 
 	@Override
 	public int numberOfProperIDedRooms()
 	{
-		int num=0;
-		for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
+		int num = 0;
+		for (final Enumeration<Room> e = getProperMap(); e.hasMoreElements();)
 		{
-			final Room R=e.nextElement();
-			if(R.roomID().length()>0)
+			final Room R = e.nextElement();
+			if (R.roomID().length() > 0)
 			{
-				if(R instanceof GridLocale)
-					num+=((GridLocale)R).xGridSize()*((GridLocale)R).yGridSize();
+				if (R instanceof GridLocale)
+					num += ((GridLocale) R).xGridSize() * ((GridLocale) R).yGridSize();
 				else
 					num++;
 			}
@@ -2172,55 +2134,55 @@ public class StdArea implements Area
 	@Override
 	public Room getRandomProperRoom()
 	{
-		if(isProperlyEmpty())
+		if (isProperlyEmpty())
 			return null;
-		String roomID=getProperRoomnumbers().random();
-		if((roomID!=null)
-		&&(!roomID.startsWith(Name()))
-		&&(roomID.startsWith(Name().toUpperCase())))
-			roomID=Name()+roomID.substring(Name().length());
-		// looping back through CMMap is unnecc because the roomID comes directly from getProperRoomnumbers()
+		String roomID = getProperRoomnumbers().random();
+		if ((roomID != null) && (!roomID.startsWith(Name())) && (roomID.startsWith(Name().toUpperCase())))
+			roomID = Name() + roomID.substring(Name().length());
+		// looping back through CMMap is unnecc because the roomID comes
+		// directly from getProperRoomnumbers()
 		// which means it will never be a grid sub-room.
-		Room R=getRoom(roomID);
-		if(R==null)
+		Room R = getRoom(roomID);
+		if (R == null)
 		{
-			R=CMLib.map().getRoom(roomID); // BUT... it's ok to hit CMLib.map() if you fail.
-			if(R==null)
+			R = CMLib.map().getRoom(roomID); // BUT... it's ok to hit
+												// CMLib.map() if you fail.
+			if (R == null)
 			{
-				if(this.properRooms.size()>0)
+				if (this.properRooms.size() > 0)
 				{
 					try
 					{
-						R=this.properRooms.firstEntry().getValue();
+						R = this.properRooms.firstEntry().getValue();
 					}
-					catch(final Exception e)
+					catch (final Exception e)
 					{
 					}
-					if(R!=null)
+					if (R != null)
 					{
-						if(StdArea.lastComplainer != this)
+						if (StdArea.lastComplainer != this)
 						{
-							StdArea.lastComplainer=this;
-							Log.errOut("StdArea","Last Resort random-find due to failure on "+roomID+", so I just picked room: "+R.roomID()+" ("+this.amDestroyed+")");
+							StdArea.lastComplainer = this;
+							Log.errOut("StdArea", "Last Resort random-find due to failure on " + roomID + ", so I just picked room: " + R.roomID() + " (" + this.amDestroyed + ")");
 						}
 					}
 					else
-						Log.errOut("StdArea","Wow, proper room size = "+this.properRooms.size()+", but no room! ("+this.amDestroyed+")");
+						Log.errOut("StdArea", "Wow, proper room size = " + this.properRooms.size() + ", but no room! (" + this.amDestroyed + ")");
 				}
 				else
 				{
-					if(this.numberOfProperIDedRooms()==0)
+					if (this.numberOfProperIDedRooms() == 0)
 						return null;
-					Log.errOut("StdArea","Wow, proper room size = 0, but numrooms="+this.numberOfProperIDedRooms()+"! ("+this.amDestroyed+")");
+					Log.errOut("StdArea", "Wow, proper room size = 0, but numrooms=" + this.numberOfProperIDedRooms() + "! (" + this.amDestroyed + ")");
 				}
 			}
 		}
-		if(R instanceof GridLocale)
-			return ((GridLocale)R).getRandomGridChild();
-		if((R==null)&&(StdArea.lastComplainer != this))
+		if (R instanceof GridLocale)
+			return ((GridLocale) R).getRandomGridChild();
+		if ((R == null) && (StdArea.lastComplainer != this))
 		{
-			StdArea.lastComplainer=this;
-			Log.errOut("StdArea","Unable to random-find: "+roomID);
+			StdArea.lastComplainer = this;
+			Log.errOut("StdArea", "Unable to random-find: " + roomID);
 			Log.errOut(new Exception());
 		}
 		return R;
@@ -2229,28 +2191,23 @@ public class StdArea implements Area
 	@Override
 	public Room getRandomMetroRoom()
 	{
-		/*synchronized(metroRooms)
+		/*
+		 * synchronized(metroRooms) { if(metroSize()==0) return null; Room
+		 * R=(Room)metroRooms.elementAt(CMLib.dice().roll(1,metroRooms.size(),-1
+		 * )); if(R instanceof GridLocale) return
+		 * ((GridLocale)R).getRandomGridChild(); return R; }
+		 */
+		final RoomnumberSet metroRoomIDSet = this.metroRoomIDSet;
+		if (metroRoomIDSet != null)
 		{
-			if(metroSize()==0)
-				return null;
-			Room R=(Room)metroRooms.elementAt(CMLib.dice().roll(1,metroRooms.size(),-1));
-			if(R instanceof GridLocale)
-				return ((GridLocale)R).getRandomGridChild();
-			return R;
-		}*/
-		final RoomnumberSet metroRoomIDSet=this.metroRoomIDSet;
-		if(metroRoomIDSet != null)
-		{
-			String roomID=metroRoomIDSet.random();
-			if((roomID!=null)
-			&&(!roomID.startsWith(Name()))
-			&&(roomID.startsWith(Name().toUpperCase())))
-				roomID=Name()+roomID.substring(Name().length());
-			final Room R=CMLib.map().getRoom(roomID);
-			if(R instanceof GridLocale)
-				return ((GridLocale)R).getRandomGridChild();
-			if(R==null)
-				Log.errOut("StdArea","Unable to random-metro-find: "+roomID);
+			String roomID = metroRoomIDSet.random();
+			if ((roomID != null) && (!roomID.startsWith(Name())) && (roomID.startsWith(Name().toUpperCase())))
+				roomID = Name() + roomID.substring(Name().length());
+			final Room R = CMLib.map().getRoom(roomID);
+			if (R instanceof GridLocale)
+				return ((GridLocale) R).getRandomGridChild();
+			if (R == null)
+				Log.errOut("StdArea", "Unable to random-metro-find: " + roomID);
 			return R;
 		}
 		return null;
@@ -2262,30 +2219,51 @@ public class StdArea implements Area
 		return new CompleteRoomEnumerator(new IteratorEnumeration<Room>(properRooms.values().iterator()));
 	}
 
+	protected final static Comparator<Room> roomComparator = new Comparator<Room>()
+	{
+		@Override
+		public int compare(final Room o1, final Room o2)
+		{
+			if(o1 == null)
+			{
+				if(o2 == null)
+					return 0;
+				return 1;
+			}
+			else
+			if(o2 == null)
+				return -1;
+			if(o1.hashCode() == o2.hashCode())
+				return 0;
+			if(o1.hashCode() > o2.hashCode())
+				return 1;
+			return -1;
+		}
+
+	};
+
 	@Override
 	public Enumeration<Room> getFilledProperMap()
 	{
-		final Enumeration<Room> r=getProperMap();
-		final TreeSet<Room> V=new TreeSet<Room>();
-		for(;r.hasMoreElements();)
+		final Enumeration<Room> r = getProperMap();
+		final TreeSet<Room> V = new TreeSet<Room>(roomComparator);
+		for (; r.hasMoreElements();)
 		{
-			final Room R=r.nextElement();
-			if((R!=null)
-			&&(!V.contains(R)))
+			final Room R = r.nextElement();
+			if ((R != null) && (!V.contains(R)))
 			{
 				V.add(R);
-				for(final Room R2 : R.getSky())
+				for (final Room R2 : R.getSky())
 				{
-					if(R2 instanceof GridLocale)
+					if (R2 instanceof GridLocale)
 					{
-						for(final Room R3 : ((GridLocale)R2).getAllRoomsFilled())
+						for (final Room R3 : ((GridLocale) R2).getAllRoomsFilled())
 						{
-							if(!V.contains(R3))
+							if (!V.contains(R3))
 								V.add(R3);
 						}
 					}
-					else
-					if(!V.contains(R2))
+					else if (!V.contains(R2))
 						V.add(R2);
 				}
 			}
@@ -2309,7 +2287,7 @@ public class StdArea implements Area
 	public Enumeration<Room> getMetroMap()
 	{
 		final MultiEnumeration<Room> multiEnumerator = new MultiEnumeration<Room>(new IteratorEnumeration<Room>(properRooms.values().iterator()));
-		for(final Iterator<Area> a=getChildrenReverseIterator();a.hasNext();)
+		for (final Iterator<Area> a = getChildrenReverseIterator(); a.hasNext();)
 			multiEnumerator.addEnumeration(a.next().getMetroMap());
 		return new CompleteRoomEnumerator(multiEnumerator);
 	}
@@ -2362,11 +2340,10 @@ public class StdArea implements Area
 	@Override
 	public Area getChild(final String named)
 	{
-		for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();)
+		for (final Iterator<Area> i = getChildrenIterator(); i.hasNext();)
 		{
-			final Area A=i.next();
-			if((A.name().equalsIgnoreCase(named))
-			||(A.Name().equalsIgnoreCase(named)))
+			final Area A = i.next();
+			if ((A.name().equalsIgnoreCase(named)) || (A.Name().equalsIgnoreCase(named)))
 				return A;
 		}
 		return null;
@@ -2375,9 +2352,9 @@ public class StdArea implements Area
 	@Override
 	public boolean isChild(final Area area)
 	{
-		for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();)
+		for (final Iterator<Area> i = getChildrenIterator(); i.hasNext();)
 		{
-			if(i.next().equals(area))
+			if (i.next().equals(area))
 				return true;
 		}
 		return false;
@@ -2386,11 +2363,10 @@ public class StdArea implements Area
 	@Override
 	public boolean isChild(final String named)
 	{
-		for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();)
+		for (final Iterator<Area> i = getChildrenIterator(); i.hasNext();)
 		{
-			final Area A=i.next();
-			if((A.name().equalsIgnoreCase(named))
-			||(A.Name().equalsIgnoreCase(named)))
+			final Area A = i.next();
+			if ((A.name().equalsIgnoreCase(named)) || (A.Name().equalsIgnoreCase(named)))
 				return true;
 		}
 		return false;
@@ -2399,28 +2375,28 @@ public class StdArea implements Area
 	@Override
 	public void addChild(final Area area)
 	{
-		if(!canChild(area))
+		if (!canChild(area))
 			return;
-		if(area.Name().equalsIgnoreCase(Name()))
+		if (area.Name().equalsIgnoreCase(Name()))
 			return;
-		for(final Iterator<Area> i=getChildrenIterator(); i.hasNext();)
+		for (final Iterator<Area> i = getChildrenIterator(); i.hasNext();)
 		{
-			final Area A=i.next();
-			if(A.Name().equalsIgnoreCase(area.Name()))
+			final Area A = i.next();
+			if (A.Name().equalsIgnoreCase(area.Name()))
 			{
 				children.remove(A);
 				break;
 			}
 		}
 		children.add(area);
-		if(getTimeObj()!=CMLib.time().globalClock())
+		if (getTimeObj() != CMLib.time().globalClock())
 			area.setTimeObj(getTimeObj());
 	}
 
 	@Override
 	public void removeChild(final Area area)
 	{
-		if(isChild(area))
+		if (isChild(area))
 			children.remove(area);
 	}
 
@@ -2428,15 +2404,15 @@ public class StdArea implements Area
 	@Override
 	public boolean canChild(final Area area)
 	{
-		if(area instanceof BoardableShip)
+		if (area instanceof BoardableShip)
 			return false;
-		if(parents != null)
+		if (parents != null)
 		{
 			for (final Area A : parents)
 			{
-				if(A==area)
+				if (A == area)
 					return false;
-				if(!A.canChild(area))
+				if (!A.canChild(area))
 					return false;
 			}
 		}
@@ -2453,10 +2429,10 @@ public class StdArea implements Area
 	@Override
 	public List<Area> getParentsRecurse()
 	{
-		final LinkedList<Area> V=new LinkedList<Area>();
-		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
+		final LinkedList<Area> V = new LinkedList<Area>();
+		for (final Iterator<Area> a = getParentsIterator(); a.hasNext();)
 		{
-			final Area A=a.next();
+			final Area A = a.next();
 			V.add(A);
 			V.addAll(A.getParentsRecurse());
 		}
@@ -2466,11 +2442,10 @@ public class StdArea implements Area
 	@Override
 	public Area getParent(final String named)
 	{
-		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
+		for (final Iterator<Area> a = getParentsIterator(); a.hasNext();)
 		{
-			final Area A=a.next();
-			if((A.name().equalsIgnoreCase(named))
-			||(A.Name().equalsIgnoreCase(named)))
+			final Area A = a.next();
+			if ((A.name().equalsIgnoreCase(named)) || (A.Name().equalsIgnoreCase(named)))
 				return A;
 		}
 		return null;
@@ -2479,10 +2454,10 @@ public class StdArea implements Area
 	@Override
 	public boolean isParent(final Area area)
 	{
-		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
+		for (final Iterator<Area> a = getParentsIterator(); a.hasNext();)
 		{
-			final Area A=a.next();
-			if(A == area)
+			final Area A = a.next();
+			if (A == area)
 				return true;
 		}
 		return false;
@@ -2491,11 +2466,10 @@ public class StdArea implements Area
 	@Override
 	public boolean isParent(final String named)
 	{
-		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
+		for (final Iterator<Area> a = getParentsIterator(); a.hasNext();)
 		{
-			final Area A=a.next();
-			if((A.name().equalsIgnoreCase(named))
-			||(A.Name().equalsIgnoreCase(named)))
+			final Area A = a.next();
+			if ((A.name().equalsIgnoreCase(named)) || (A.Name().equalsIgnoreCase(named)))
 				return true;
 		}
 		return false;
@@ -2504,17 +2478,17 @@ public class StdArea implements Area
 	@Override
 	public void addParent(final Area area)
 	{
-		derivedClimate=CLIMASK_INHERIT;
-		derivedAtmo=ATMOSPHERE_INHERIT;
-		derivedTheme=THEME_INHERIT;
-		if(!canParent(area))
+		derivedClimate = CLIMASK_INHERIT;
+		derivedAtmo = ATMOSPHERE_INHERIT;
+		derivedTheme = THEME_INHERIT;
+		if (!canParent(area))
 			return;
-		if(area.Name().equalsIgnoreCase(Name()))
+		if (area.Name().equalsIgnoreCase(Name()))
 			return;
-		for(final Iterator<Area> i=getParentsIterator(); i.hasNext();)
+		for (final Iterator<Area> i = getParentsIterator(); i.hasNext();)
 		{
-			final Area A=i.next();
-			if(A.Name().equalsIgnoreCase(area.Name()))
+			final Area A = i.next();
+			if (A.Name().equalsIgnoreCase(area.Name()))
 			{
 				parents.remove(A);
 				break;
@@ -2526,25 +2500,25 @@ public class StdArea implements Area
 	@Override
 	public void removeParent(final Area area)
 	{
-		derivedClimate=CLIMASK_INHERIT;
-		derivedAtmo=ATMOSPHERE_INHERIT;
-		derivedTheme=THEME_INHERIT;
-		if(isParent(area))
+		derivedClimate = CLIMASK_INHERIT;
+		derivedAtmo = ATMOSPHERE_INHERIT;
+		derivedTheme = THEME_INHERIT;
+		if (isParent(area))
 			parents.remove(area);
 	}
 
 	@Override
 	public boolean canParent(final Area area)
 	{
-		if(this instanceof BoardableShip)
+		if (this instanceof BoardableShip)
 			return false;
-		if(children != null)
+		if (children != null)
 		{
 			for (final Area A : children)
 			{
-				if(A==area)
+				if (A == area)
 					return false;
-				if(!A.canParent(area))
+				if (!A.canParent(area))
 					return false;
 			}
 		}
@@ -2563,31 +2537,15 @@ public class StdArea implements Area
 		return (xtraValues == null) ? getStatCodes().length : getStatCodes().length - xtraValues.length;
 	}
 
-	protected static final String[] STDAREACODES={"CLASS",
-												  "CLIMATE",
-												  "DESCRIPTION",
-												  "TEXT",
-												  "THEME",
-												  "BLURBS",
-												  "PREJUDICE",
-												  "BUDGET",
-												  "DEVALRATE",
-												  "INVRESETRATE",
-												  "IGNOREMASK",
-												  "PRICEMASKS",
-												  "ATMOSPHERE",
-												  "AUTHOR",
-												  "NAME",
-												  "PLAYERLEVEL",
-												  "PASSIVEMINS"
-												  };
-	private static String[] codes=null;
+	protected static final String[]	STDAREACODES	= { "CLASS", "CLIMATE", "DESCRIPTION", "TEXT", "THEME", "BLURBS", "PREJUDICE", "BUDGET", "DEVALRATE", "INVRESETRATE", "IGNOREMASK", "PRICEMASKS", "ATMOSPHERE",
+			"AUTHOR", "NAME", "PLAYERLEVEL", "PASSIVEMINS" };
+	private static String[]			codes			= null;
 
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes==null)
-			codes=CMProps.getStatCodesList(STDAREACODES,this);
+		if (codes == null)
+			codes = CMProps.getStatCodesList(STDAREACODES, this);
 		return codes;
 	}
 
@@ -2605,7 +2563,7 @@ public class StdArea implements Area
 	@Override
 	public String getStat(final String code)
 	{
-		switch(getCodeNum(code))
+		switch (getCodeNum(code))
 		{
 		case 0:
 			return ID();
@@ -2638,7 +2596,7 @@ public class StdArea implements Area
 		case 14:
 			return name();
 		case 15:
-			return ""+playerLevel;
+			return "" + playerLevel;
 		case 16:
 			return Long.toString(this.passiveLapseMs / 60000);
 		default:
@@ -2649,7 +2607,7 @@ public class StdArea implements Area
 	@Override
 	public void setStat(final String code, final String val)
 	{
-		switch(getCodeNum(code))
+		switch (getCodeNum(code))
 		{
 		case 0:
 			return;
@@ -2667,22 +2625,21 @@ public class StdArea implements Area
 			break;
 		case 5:
 		{
-			if(val.startsWith("+"))
+			if (val.startsWith("+"))
 				addBlurbFlag(val.substring(1));
-			else
-			if(val.startsWith("-"))
+			else if (val.startsWith("-"))
 				delBlurbFlag(val.substring(1));
 			else
 			{
-				blurbFlags=new STreeMap<String,String>();
-				final List<String> V=CMLib.xml().parseXMLList(val);
-				for(final String s : V)
+				blurbFlags = new STreeMap<String, String>();
+				final List<String> V = CMLib.xml().parseXMLList(val);
+				for (final String s : V)
 				{
-					final int x=s.indexOf(' ');
-					if(x<0)
-						blurbFlags.put(s,"");
+					final int x = s.indexOf(' ');
+					if (x < 0)
+						blurbFlags.put(s, "");
 					else
-						blurbFlags.put(s.substring(0,x),s.substring(x+1));
+						blurbFlags.put(s.substring(0, x), s.substring(x + 1));
 				}
 			}
 			break;
@@ -2721,15 +2678,15 @@ public class StdArea implements Area
 			setName(val);
 			break;
 		case 15:
-			setPlayerLevel((int)Math.round(CMath.parseMathExpression(val)));
+			setPlayerLevel((int) Math.round(CMath.parseMathExpression(val)));
 			break;
 		case 16:
 		{
-			long mins=CMath.parseLongExpression(val);
-			if(mins > 0)
+			long mins = CMath.parseLongExpression(val);
+			if (mins > 0)
 			{
-				if(mins > Integer.MAX_VALUE)
-					mins=Integer.MAX_VALUE;
+				if (mins > Integer.MAX_VALUE)
+					mins = Integer.MAX_VALUE;
 				passiveLapseMs = mins * 60 * 1000;
 			}
 			break;
@@ -2743,12 +2700,12 @@ public class StdArea implements Area
 	@Override
 	public boolean sameAs(final Environmental E)
 	{
-		if(!(E instanceof StdArea))
+		if (!(E instanceof StdArea))
 			return false;
-		final String[] codes=getStatCodes();
-		for(int i=0;i<codes.length;i++)
+		final String[] codes = getStatCodes();
+		for (int i = 0; i < codes.length; i++)
 		{
-			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+			if (!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
 		}
 		return true;
