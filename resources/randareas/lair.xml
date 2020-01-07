@@ -88,14 +88,14 @@ See guides/RandomAreas.html for information about documents of this type.
 <ROOM id="leaf_rooms" merge=true select="any-1" condition="$roomtag_nodetype='leaf'">
 	<ROOM select="all" condition="$theme='kobolds' or $theme='goblins' or $theme='orcs' or $theme='trolls' or $theme='random'">
 		<ROOM class="CaveRoom" predefine="nasty_picked_race=${l:nasty_race_name}">
-			<TITLE>a $nasty_picked_race nursury</TITLE>
+			<TITLE>a $nasty_picked_race nursery</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $adj_phys_size $nasty_picked_race nursury. Everything here is $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
-					<DESCRIPTION>You`re inside (a(n)) $adj_phys_size $nasty_picked_race nursury. This place is $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
-					<DESCRIPTION>You`ve found (a(n)) $adj_phys_size $nasty_picked_race nursury. Conditions here are $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $adj_phys_size $nasty_picked_race nursury. It is $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
-					<DESCRIPTION>You are confused by (a(n)) $adj_phys_size $nasty_picked_race nursury. Everything here is $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $adj_phys_size $nasty_picked_race nursery. Everything here is $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
+					<DESCRIPTION>You`re inside (a(n)) $adj_phys_size $nasty_picked_race nursery. This place is $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
+					<DESCRIPTION>You`ve found (a(n)) $adj_phys_size $nasty_picked_race nursery. Conditions here are $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $adj_phys_size $nasty_picked_race nursery. It is $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
+					<DESCRIPTION>You are confused by (a(n)) $adj_phys_size $nasty_picked_race nursery. Everything here is $adj_phys_nosize and $adj_nasty.</DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
 					<DESCRIPTION>It`s amazing those creatures ever see adulthood.</DESCRIPTION>
