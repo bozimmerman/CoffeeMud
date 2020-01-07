@@ -132,29 +132,48 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		return add.toString();
 	}
 
+	static final List<Pair<String,Integer>> readMap = new XVector<Pair<String,Integer>>(
+		new Pair<String,Integer>("Spell_ReadMagic",Integer.valueOf(Ability.ACODE_SPELL))
+	);
+
 	@Override
 	public void readIfAble(final MOB mob, String spellName)
 	{
 		if(mob.isMine(this))
 		{
 			int addedExpertise = 0;
-			final boolean readingMagic=(mob.fetchEffect("Spell_ReadMagic")!=null);
-			if(readingMagic)
+			for(final Pair<String,Integer> p : readMap)
 			{
-				mob.tell(L("@x1 glows softly.",name()));
-				final Ability A=mob.fetchAbility("Spell_ReadMagic");
-				if(A!=null)
-					addedExpertise=CMLib.expertises().getExpertiseLevel(mob, A.ID(), ExpertiseLibrary.Flag.LEVEL);
-				setReadableScrollBy(mob.Name());
+				final boolean readingMagic=(mob.fetchEffect(p.first)!=null);
+				if(readingMagic)
+				{
+					final List<Ability> spells=getSpells();
+					boolean found = false;
+					for(final Ability A : spells)
+					{
+						if((A.classificationCode()&Ability.ALL_ACODES)==p.second.intValue())
+							found=true;
+					}
+					if(found)
+					{
+						mob.tell(L("@x1 glows softly.",name()));
+						final Ability A=mob.fetchAbility(p.first);
+						if(A!=null)
+							addedExpertise=CMLib.expertises().getExpertiseLevel(mob, A.ID(), ExpertiseLibrary.Flag.LEVEL);
+						setReadableScrollBy(mob.Name());
+						break;
+					}
+				}
 			}
+
 			if(isReadableScrollBy(mob.Name()))
 			{
 				if(me.usesRemaining()<=0)
 					mob.tell(L("The markings have been read off the parchment, and are no longer discernable."));
 				else
 				{
-					List<Ability> Spells=getSpells();
-					if(Spells.size()==0)
+					List<Ability> spellsV=getSpells();
+					if(spellsV.size()==0)
 						mob.tell(L("The scroll appears to contain no discernable information."));
 					else
 					{
@@ -163,9 +182,9 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 						if(spellName.length()>0)
 						{
 							spellName=spellName.trim();
-							thisOne=(Ability)CMLib.english().fetchEnvironmental(Spells,spellName,true);
+							thisOne=(Ability)CMLib.english().fetchEnvironmental(spellsV,spellName,true);
 							if(thisOne==null)
-								thisOne=(Ability)CMLib.english().fetchEnvironmental(Spells,spellName,false);
+								thisOne=(Ability)CMLib.english().fetchEnvironmental(spellsV,spellName,false);
 							while((thisOne==null)&&(spellName.length()>0))
 							{
 
@@ -176,9 +195,9 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 								{
 									params.insertElementAt(spellName.substring(t).trim(),0);
 									spellName=spellName.substring(0,t);
-									thisOne=(Ability)CMLib.english().fetchEnvironmental(Spells,spellName,true);
+									thisOne=(Ability)CMLib.english().fetchEnvironmental(spellsV,spellName,true);
 									if(thisOne==null)
-										thisOne=(Ability)CMLib.english().fetchEnvironmental(Spells,spellName,false);
+										thisOne=(Ability)CMLib.english().fetchEnvironmental(spellsV,spellName,false);
 								}
 							}
 						}
@@ -200,10 +219,10 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 						if(!mob.isMonster())
 						{
 							final StringBuffer theNews=new StringBuffer("The scroll contains the following spells:\n\r");
-							Spells=getSpells();
-							for(int u=0;u<Spells.size();u++)
+							spellsV=getSpells();
+							for(int u=0;u<spellsV.size();u++)
 							{
-								final Ability A=Spells.get(u);
+								final Ability A=spellsV.get(u);
 								theNews.append("Level "+CMStrings.padRight(""+CMLib.ableMapper().lowestQualifyingLevel(A.ID()),2)+": "+A.name()+"\n\r");
 							}
 							mob.tell(theNews.toString());
