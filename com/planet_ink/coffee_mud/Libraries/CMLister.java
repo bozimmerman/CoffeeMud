@@ -91,8 +91,8 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		private final int ofDomain;
 		public AbilityTypeFilter(final int typ)
 		{
-			ofType=typ&Ability.ALL_ACODES;
-			ofDomain=typ&Ability.ALL_DOMAINS;
+			ofType=(typ<0)?-1:(typ&Ability.ALL_ACODES);
+			ofDomain=(typ<=0)?0:(typ&Ability.ALL_DOMAINS);
 		}
 
 		@Override

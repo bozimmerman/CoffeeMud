@@ -169,7 +169,7 @@ public class Prop_LimitedContents extends Property
 				if(numAdded > maxLimit)
 				{
 					if(msgStr.length()==0)
-						msg.source().tell(L("You can't can only put @x1 of those in there.",""+maxLimit));
+						msg.source().tell(L("You can only put @x1 of those in there.",""+maxLimit));
 					else
 						msg.source().tell(L(msgStr,""+maxLimit));
 					return false;
@@ -189,6 +189,7 @@ public class Prop_LimitedContents extends Property
 						msg.source().tell(L(msgStr,""+maxLimit));
 					return false;
 				}
+				break;
 			}
 		}
 		return true;

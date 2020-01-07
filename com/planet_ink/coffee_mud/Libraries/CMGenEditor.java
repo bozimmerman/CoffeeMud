@@ -1985,15 +1985,36 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						ok=true;
 					else
 					{
+						int ofType=-1;
+						if(E instanceof Wand)
+						{
+							switch(((Wand)E).getEnchantType())
+							{
+							case PRAYER:
+								ofType=Ability.ACODE_PRAYER;
+								break;
+							case ARCANE:
+								ofType=Ability.ACODE_SPELL;
+								break;
+							case CHANT:
+								ofType=Ability.ACODE_CHANT;
+								break;
+							default:
+								ofType=-1;
+								break;
+							}
+						}
 						if(newName.equalsIgnoreCase("?"))
-							mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),-1).toString());
+							mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),ofType).toString());
 						else
 						if(E instanceof Wand)
 						{
 							final Ability A=CMClass.getAbility(newName);
 							if((A==null)
 							||(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
-								&&(mob.fetchAbility(A.ID())==null)))
+								&&(mob.fetchAbility(A.ID())==null))
+							||((ofType>0)
+								&&((A.classificationCode()&Ability.ALL_ACODES)!=ofType)))
 							{
 								mob.tell(L("'@x1' is not recognized.  Try '?'.",newName));
 							}
