@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Wand.MagicType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -128,6 +129,17 @@ public class Staff extends StdWeapon implements Wand
 		if(A!=null)
 			id="'A staff of "+A.name()+"' Charges: "+uses+"\n\r"+id;
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
+	}
+
+	@Override
+	public MagicType getEnchantType()
+	{
+		return MagicType.ANY;
+	}
+
+	@Override
+	public void setEnchantType(final MagicType enchType)
+	{
 	}
 
 	@Override

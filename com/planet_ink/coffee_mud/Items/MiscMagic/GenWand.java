@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Wand.MagicType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -42,6 +43,7 @@ public class GenWand extends StdWand
 
 	protected String	readableText	= "";
 	protected int		maxUses			= Integer.MAX_VALUE;
+	protected MagicType	enchType		= MagicType.ANY;
 
 	public GenWand()
 	{
@@ -108,6 +110,19 @@ public class GenWand extends StdWand
 	}
 
 	@Override
+	public MagicType getEnchantType()
+	{
+		return enchType;
+	}
+
+	@Override
+	public void setEnchantType(final MagicType enchType)
+	{
+		if(enchType != null)
+			this.enchType = enchType;
+	}
+
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
@@ -121,12 +136,20 @@ public class GenWand extends StdWand
 		recoverPhyStats();
 	}
 
+	private final static String[] MYCODES={"ENCHTYPE"};
+
 	@Override
 	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		switch(getCodeNum(code))
+		{
+		case 0:
+			return "" + this.getEnchantType().name();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
 	}
 
 	@Override
@@ -134,16 +157,44 @@ public class GenWand extends StdWand
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
-		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0:
+			setEnchantType((Wand.MagicType)CMath.s_valueOf(Wand.MagicType.class, val.toUpperCase().trim()));
+			break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
 	}
 
-	private static String[] codes=null;
+	@Override
+	protected int getCodeNum(final String code)
+	{
+		for(int i=0;i<MYCODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
+	private static String[]	codes	= null;
 
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes==null)
-			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
+		if(codes!=null)
+			return codes;
+		final String[] MYCODES=CMProps.getStatCodesList(GenWand.MYCODES,this);
+		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
 		return codes;
 	}
 
@@ -152,9 +203,10 @@ public class GenWand extends StdWand
 	{
 		if(!(E instanceof GenWand))
 			return false;
-		for(int i=0;i<getStatCodes().length;i++)
+		final String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
 		{
-			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
 		}
 		return true;

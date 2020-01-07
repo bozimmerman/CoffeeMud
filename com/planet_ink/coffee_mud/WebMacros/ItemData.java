@@ -406,6 +406,20 @@ public class ItemData extends StdWebMacro
 							str.append(">"+RawMaterial.CODES.NAME(r));
 						}
 						break;
+					case ENCHTYPE: // enchtype
+						if(I instanceof Wand)
+						{
+							if(firstTime)
+								old=""+((Wand)I).getEnchantType().name();
+							for(final Wand.MagicType r : Wand.MagicType.values())
+							{
+								str.append("<OPTION VALUE=\""+r.name()+"\"");
+								if(r.name().equals(old))
+									str.append(" SELECTED");
+								str.append(">"+r.name());
+							}
+						}
+						break;
 					case ISGENERIC: // is generic
 						if(I.isGeneric())
 							return "true";

@@ -621,7 +621,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(xml.convertXMLtoTag("BURNOUT",((Light)E).destroyedWhenBurnedOut()));
 
 		if(E instanceof Wand)
+		{
 			text.append(xml.convertXMLtoTag("MAXUSE",((Wand)E).maxUses()));
+			text.append(xml.convertXMLtoTag("ENCHTYPE",((Wand)E).getEnchantType().name()));
+		}
 
 		if(E instanceof Book)
 		{
@@ -2526,7 +2529,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						possibleAddElectronicsManufacturers(mob, custom);
 						possiblyAddCustomAbility(mob, custom);
 						possiblyAddCustomEffect(mob, custom);
-						
+
 						buf.append("<RMOB>");
 						buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.classID(mob)));
 						if((((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0)))||(mob.numFollowers()>0))
@@ -3914,6 +3917,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final String bo=xml.getValFromPieces(buf,"MAXUSE");
 			if((bo!=null)&&(bo.length()>0))
 				((Wand)E).setMaxUses(CMath.s_int(bo));
+			final String tim=xml.getValFromPieces(buf, "ENCHTYPE");
+			if((tim!=null)&&(tim.length()>0))
+			{
+				final Wand.MagicType typ=(Wand.MagicType)CMath.s_valueOf(Wand.MagicType.class, tim.toUpperCase().trim());
+				if(typ != null)
+					((Wand)E).setEnchantType(typ);
+			}
 		}
 
 		if(E instanceof LandTitle)

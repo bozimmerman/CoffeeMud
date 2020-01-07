@@ -75,7 +75,7 @@ public class GrinderItems
 		ISSHIPWARCOMP,SWARNUMPORTS,SWARPORTS,SWARMTYPES,
 		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE,
 		STATESTR,STATESUBJSTR,RIDERSTR,ISRESOURCE,RSCSUBTYPE,
-		ISLIMB,RACEID
+		ISLIMB,RACEID,ENCHTYPE
 		;
 		public boolean isGenField;
 		private ItemDataField(final boolean isGeneric)
@@ -253,6 +253,10 @@ public class GrinderItems
 					I.setMaterial(CMath.s_int(old));
 					break;
 				case ISGENERIC: // is generic
+					break;
+				case ENCHTYPE: // enchtype
+					if(I instanceof Wand)
+						((Wand)I).setEnchantType((Wand.MagicType)CMath.s_valueOf(Wand.MagicType.class, old.toUpperCase().trim()));
 					break;
 				case ISREADABLE: // isreadable
 					CMLib.flags().setReadable(I,old.equals("on"));

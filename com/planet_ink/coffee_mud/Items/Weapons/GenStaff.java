@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import java.util.List;
 
+import com.planet_ink.coffee_mud.Items.MiscMagic.GenWand;
 import com.planet_ink.coffee_mud.Items.MiscMagic.StdWand;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -13,6 +14,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Wand.MagicType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -41,7 +43,8 @@ public class GenStaff extends GenWeapon implements Wand
 		return "GenStaff";
 	}
 
-	protected String secretWord=CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
+	protected String	secretWord	= CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
+	protected MagicType	enchType	= MagicType.ANY;
 
 	public GenStaff()
 	{
@@ -79,6 +82,18 @@ public class GenStaff extends GenWeapon implements Wand
 	public void setMaxUses(final int newMaxUses)
 	{
 		maxUses = newMaxUses;
+	}
+
+	@Override
+	public MagicType getEnchantType()
+	{
+		return enchType;
+	}
+
+	@Override
+	public void setEnchantType(final MagicType enchType)
+	{
+		this.enchType = enchType;
 	}
 
 	@Override
@@ -195,5 +210,81 @@ public class GenStaff extends GenWeapon implements Wand
 		}
 		super.executeMsg(myHost,msg);
 	}
-	// wand stats handled by genweapon, filled by readableText
+
+	// maxuses and secret word stats handled by genweapon, filled by readableText
+	private final static String[] MYCODES={"ENCHTYPE"};
+
+	@Override
+	public String getStat(final String code)
+	{
+		if(GenWeapon.getGenWeaponCodeNum(code)>=0)
+			return super.getStat(code);
+		switch(getCodeNum(code))
+		{
+		case 0:
+			return "" + this.getEnchantType().name();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
+	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		if(GenWeapon.getGenWeaponCodeNum(code)>=0)
+			super.setStat(code, val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0:
+			setEnchantType((Wand.MagicType)CMath.s_valueOf(Wand.MagicType.class, val.toUpperCase().trim()));
+			break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
+	}
+
+	@Override
+	protected int getCodeNum(final String code)
+	{
+		for(int i=0;i<MYCODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
+	private static String[]	codes	= null;
+
+	@Override
+	public String[] getStatCodes()
+	{
+		if(codes!=null)
+			return codes;
+		final String[] MYCODES=CMProps.getStatCodesList(GenStaff.MYCODES,this);
+		final String[] superCodes=super.getStatCodes();
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
+	}
+
+	@Override
+	public boolean sameAs(final Environmental E)
+	{
+		if(!(E instanceof GenStaff))
+			return false;
+		final String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+		{
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+				return false;
+		}
+		return true;
+	}
 }

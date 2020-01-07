@@ -656,6 +656,14 @@
 			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Maximum Charges</B></FONT></TD>
 			<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=MAXUSES SIZE=10 VALUE="@ItemData?MAXUSES@"></TD>
 		</TR>
+		<TR>
+			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Enchant Type</B></FONT></TD>
+			<TD WIDTH=450 COLSPAN=2>
+				<SELECT NAME=ENCHTYPE>
+				@ItemData?ENCHTYPE@
+				</SELECT>
+			</TD>
+		</TR>
 	@else@
 		<TR>
 			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Ammunition (''=not required):</B></FONT></TD>

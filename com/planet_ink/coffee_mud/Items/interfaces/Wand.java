@@ -41,6 +41,21 @@ import java.util.*;
 public interface Wand extends MiscMagic
 {
 	/**
+	 * The magic type that the wand item
+	 * can be enchanted with.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static enum MagicType
+	{
+		ANY,
+		ARCANE,
+		PRAYER,
+		CHANT
+	}
+
+	/**
 	 * Sets the spell ability object that this wand can cast.
 	 * @see Wand#getSpell()
 	 * @param theSpell the spell ability object that this wand can cast.
@@ -93,4 +108,20 @@ public interface Wand extends MiscMagic
 	 * @param maxUses the number of times this wand can be invoked
 	 */
 	public void setMaxUses(int maxUses);
+
+	/**
+	 * Returns the type of magic that can be enchanted onto
+	 * this wand.
+	 * @see Wand.MagicType#ANY
+	 * @return the enchantment/magic type
+	 */
+	public MagicType getEnchantType();
+
+	/**
+	 * Sets the type of magic that can be enchanted onto
+	 * this wand.
+	 * @see Wand.MagicType#ANY
+	 * @param enchType the enchantment/magic type
+	 */
+	public void setEnchantType(MagicType enchType);
 }

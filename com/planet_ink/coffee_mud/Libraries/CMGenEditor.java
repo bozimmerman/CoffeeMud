@@ -8983,7 +8983,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genAbility(mob,me,++showNumber,showFlag);
 			genUses(mob,me,++showNumber,showFlag);
 			if(me instanceof Wand)
+			{
 				genMaxUses(mob,(Wand)me,++showNumber,showFlag);
+				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArray(Wand.MagicType.values()));
+			}
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);
@@ -9481,6 +9484,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genReadable2(mob,me,++showNumber,showFlag);
 				genUses(mob,me,++showNumber,showFlag);
 				genMaxUses(mob,(Wand)me,++showNumber,showFlag);
+				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArray(Wand.MagicType.values()));
 				if(me instanceof Light)
 					genBurnout(mob,(Light)me,++showNumber,showFlag);
 			}
