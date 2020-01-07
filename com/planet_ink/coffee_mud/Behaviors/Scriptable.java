@@ -266,7 +266,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	@Override
 	public String functify(final PhysicalAgent scripted, final MOB source, final Environmental target, final MOB monster, final Item primaryItem,
 							final Item secondaryItem, final String msg, final Object[] tmp, final String evaluable)
-							{
+	{
 		return engine().functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, evaluable);
 	}
 }
