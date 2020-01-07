@@ -723,13 +723,13 @@ public class CMath
 	}
 
 	/**
-	 * Given a bitmask, seperates the mask according to which
+	 * Given a bitmask, separates the mask according to which
 	 * bits are set and returns those original values in an
 	 * array where each entry is the value of each bit
-	 * @param mask the mask to seperate
+	 * @param mask the mask to separate
 	 * @return an entry for every set bit
 	 */
-	public final static int[] getSeperateBitMasks(final int mask)
+	public final static int[] getSeparateBitMasks(final int mask)
 	{
 		if(mask==0)
 			return new int[0];
@@ -750,13 +750,13 @@ public class CMath
 	}
 
 	/**
-	 * Given a bitmask, seperates the mask according to which
+	 * Given a bitmask, separates the mask according to which
 	 * bits are set and returns those original values in an
 	 * array where each entry is the value of each bit
-	 * @param mask the mask to seperate
+	 * @param mask the mask to separate
 	 * @return an entry for every set bit
 	 */
-	public final static long[] getSeperateBitMasks(final long mask)
+	public final static long[] getSeparateBitMasks(final long mask)
 	{
 		if(mask==0)
 			return new long[0];

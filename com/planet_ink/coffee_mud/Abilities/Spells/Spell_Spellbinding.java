@@ -238,7 +238,7 @@ public class Spell_Spellbinding extends Spell
 		Spell_Spellbinding priorBinding=(Spell_Spellbinding)target.fetchEffect(ID());
 		if(commands.size()<2)
 		{
-			mob.tell(L("You must specify your trigger word, followed by a list of spells, seperated by spaces."));
+			mob.tell(L("You must specify your trigger word, followed by a list of spells, separated by spaces."));
 			return false;
 		}
 		final String key=commands.get(0);

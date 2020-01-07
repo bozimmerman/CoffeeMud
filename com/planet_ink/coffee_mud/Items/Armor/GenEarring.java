@@ -187,7 +187,7 @@ public class GenEarring extends GenThinArmor implements BodyToken
 							&& ((I.rawWornCode() & this.rawWornCode()) != 0))
 								wornStuff.add((GenEarring)I);
 						}
-						for(final long wornCode : CMath.getSeperateBitMasks(myWornCode))
+						for(final long wornCode : CMath.getSeparateBitMasks(myWornCode))
 						{
 							final List<String> availablePiercingsThisLoc = new ArrayList<String>(2);
 							final String wearLocName = codes.nameup(wornCode);

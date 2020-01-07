@@ -2049,7 +2049,7 @@
   10. New Common Skill: Master Armorsmith (ThrinnTU)
   11. New Property: Prop_AddDamage (nuff said)
   12. New MaxUses field for wands (Tulath)
-  13. Forage skill extension for herbs: file resources/herbs.txt can contain lists of custom herb names from specific Locales. Each list is seperated by a blank line, and each item on each list is linefeed delimited. Each list starts with the class name of a locale (StdRoom, Plains, Woods, etc) and is followed by a list of possible herb names. Each herb name can be preceeded by a number and a space to denote its relative weight with respect to the others in the same list.
+  13. Forage skill extension for herbs: file resources/herbs.txt can contain lists of custom herb names from specific Locales. Each list is separated by a blank line, and each item on each list is linefeed delimited. Each list starts with the class name of a locale (StdRoom, Plains, Woods, etc) and is followed by a list of possible herb names. Each herb name can be preceeded by a number and a space to denote its relative weight with respect to the others in the same list.
   14. New WebMacro: SystemFunction, for performing shutdowns, and Announces.
   15. List Deviations has been changed to a new archon command: Deviations.
   16. New Property: Prop_ClosedSeasons
@@ -2979,8 +2979,8 @@
   19. New I3 command replaces MUDLIST and I3CHANNELS, and adds others.
 # Build 3.8.5.8 - Released Mar 10, 2003
    1. StdShopKeepers (in their misc text field) and GenShopKeepers (in a special prejudice field) will be able to modify the prices, up or down, of the goods they offer based on racial category or alignment, or just for everybody if you don't like the stock formula.
-   2. Seperate start and death rooms will be specified in the INI file based on alignment or racial category.
-   3. GateGuard and DoorwayGuardian can now modify their behavior based on the same criteria as the Prop_HaveZapper property (based on racial category, class, base class, or alignment). You'll be able to use these seperately or in combination to make gate guards more friendly, or outright mean.
+   2. Separate start and death rooms will be specified in the INI file based on alignment or racial category.
+   3. GateGuard and DoorwayGuardian can now modify their behavior based on the same criteria as the Prop_HaveZapper property (based on racial category, class, base class, or alignment). You'll be able to use these separately or in combination to make gate guards more friendly, or outright mean.
    4. A new Behavior FasterRoom will be able to increase the number of rejuvinating ticks for mobs in the room or area affected by it. In addition, you can also set it up to increase the number of times the mobs in the rooms tick, which will affect spell effects, combat, and everything else that ticks. Either one or both of these can be set using the FasterRoom behavior.
    5. And lastly (I think), the mud will support listening on any number of specified ports.
 # Build 3.8.5.7 - Released Mar 07, 2003
