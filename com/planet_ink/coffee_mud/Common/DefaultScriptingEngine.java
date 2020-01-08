@@ -862,9 +862,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if(scripted!=null)
 		{
 			final Room R=CMLib.map().roomLocation(scripted);
-			Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getDescriptiveExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg+"/"+CMParms.toListString(externalFiles()));
+			String scriptFiles=CMParms.toListString(externalFiles());
+			if((scriptFiles == null)||(scriptFiles.trim().length()==0))
+				scriptFiles=CMStrings.limit(this.getScript(),80);
+			Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getDescriptiveExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg+"/"+scriptFiles);
 			if(R!=null)
-				R.showHappens(CMMsg.MSG_OK_VISUAL,L("Scripting Error: @x1/@x2/@x3/@x4/@x5/@x6",scripted.name(),CMLib.map().getExtendedRoomID(R),CMParms.toListString(externalFiles()),cmdName,errType,errMsg));
+				R.showHappens(CMMsg.MSG_OK_VISUAL,L("Scripting Error: @x1/@x2/@x3/@x4/@x5/@x6",scripted.name(),CMLib.map().getExtendedRoomID(R),cmdName,errType,errMsg,scriptFiles));
 			if((lastKnownLocation != R)
 			||((backupMOB!=null)&&(!backupMOB.Name().equalsIgnoreCase(scripted.Name()))))
 				Log.errOut(new Exception("Scripting Error"));
