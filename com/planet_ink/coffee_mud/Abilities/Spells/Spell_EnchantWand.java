@@ -99,6 +99,12 @@ public class Spell_EnchantWand extends Spell
 			mob.tell(mob,target,null,L("You can't enchant <T-NAME>."));
 			return false;
 		}
+		if((((Wand)target).getEnchantType()!=Wand.MagicType.ANY)
+		&&(((Wand)target).getEnchantType()!=Wand.MagicType.ARCANE))
+		{
+			mob.tell(mob,target,null,L("You can't enchant <T-NAME> with this spell."));
+			return false;
+		}
 
 		commands.remove(commands.size()-1);
 		final Wand wand=(Wand)target;
