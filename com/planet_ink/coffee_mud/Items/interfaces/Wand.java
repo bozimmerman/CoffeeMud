@@ -52,7 +52,9 @@ public interface Wand extends MiscMagic
 		ANY,
 		ARCANE,
 		PRAYER,
-		CHANT
+		CHANT,
+		SKILL,
+		SONG
 	}
 
 	/**
