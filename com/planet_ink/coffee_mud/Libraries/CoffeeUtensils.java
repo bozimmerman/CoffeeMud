@@ -1271,6 +1271,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				{
 				}
 				else
+				if(whatToDo.startsWith("RETA"))
+				{
+				}
+				else
 				if (whatToDo.startsWith("PUR"))
 				{
 				}

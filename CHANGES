@@ -1,3 +1,7 @@
+# Build 5.9.10 Release ?/?/2020
+  1. Wands now support enchantment type as a restrictive measure
+  2. New PLAYERDEATH option: RETAIN -- to allow player mobs to keep their items on death.
+
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.
   1. New prayers: empower unholy weapon, morph unholy weapon, faithful hellhound, discipline
