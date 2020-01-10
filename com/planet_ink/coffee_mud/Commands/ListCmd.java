@@ -4531,6 +4531,8 @@ public class ListCmd extends StdCommand
 			if(domain<=0)
 			{
 				int x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.toUpperCase().trim());
+				if((x<0)&&(str.toUpperCase().startsWith("DOMAIN_")))
+					x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.toUpperCase().substring(10).trim());
 				if(x>=0)
 				{
 					domain = x << 5;
@@ -4540,6 +4542,8 @@ public class ListCmd extends StdCommand
 				else
 				{
 					x=CMParms.indexOf(Ability.FLAG_DESCS,str.toUpperCase().trim());
+					if((x<0)&&(str.toUpperCase().startsWith("FLAG_")))
+						x=CMParms.indexOf(Ability.FLAG_DESCS,str.toUpperCase().substring(5).trim());
 					if(x >= 0)
 					{
 						final int mBit = (int)CMath.pow(2, x);
