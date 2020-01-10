@@ -313,39 +313,42 @@ public class Corpse extends GenContainer implements DeadBody
 					&&(!msg.tool().ID().equalsIgnoreCase("Prayer_Resurrect"))
 					&&(!msg.tool().ID().equalsIgnoreCase("Prayer_PreserveBody"))
 					&&(!msg.tool().ID().equalsIgnoreCase("Song_Rebirth"))))
-			&&(CMProps.getVar(CMProps.Str.CORPSEGUARD).length()>0)
 			&&(!msg.targetMajor(CMMsg.MASK_INTERMSG)))
 			{
-				if(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDITEMS))
-					return true;
+				final String guardPolicy=CMProps.getVar(CMProps.Str.CORPSEGUARD).toUpperCase().trim();
+				if(guardPolicy.length()>0)
+				{
+					if(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.CMDITEMS))
+						return true;
 
-				final MOB ultimateFollowing=msg.source().amUltimatelyFollowing();
-				if((msg.source().isMonster())
-				&&((ultimateFollowing==null)||(ultimateFollowing.isMonster())))
-					return true;
-				if(CMProps.getVar(CMProps.Str.CORPSEGUARD).equalsIgnoreCase("ANY"))
-					return true;
-				if (getMobName().equalsIgnoreCase(msg.source().Name()))
-					return true;
-				else
-				if(CMProps.getVar(CMProps.Str.CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
-				{
-					msg.source().tell(L("You may not loot another players corpse."));
-					return false;
-				}
-				else
-				if(CMProps.getVar(CMProps.Str.CORPSEGUARD).equalsIgnoreCase("PKONLY"))
-				{
-					if(!((msg.source()).isAttributeSet(MOB.Attrib.PLAYERKILL)))
+					final MOB ultimateFollowing=msg.source().amUltimatelyFollowing();
+					if((msg.source().isMonster())
+					&&((ultimateFollowing==null)||(ultimateFollowing.isMonster())))
+						return true;
+					if(guardPolicy.equals("ANY"))
+						return true;
+					if (getMobName().equalsIgnoreCase(msg.source().Name()))
+						return true;
+					else
+					if(guardPolicy.equals("SELFONLY"))
 					{
-						msg.source().tell(L("You can not get that.  You are not a player killer."));
+						msg.source().tell(L("You may not loot another players corpse."));
 						return false;
 					}
 					else
-					if(getMobPKFlag())
+					if(guardPolicy.equals("PKONLY"))
 					{
-						msg.source().tell(L("You can not get that.  @x1 was not a player killer.",getMobName()));
-						return false;
+						if(!((msg.source()).isAttributeSet(MOB.Attrib.PLAYERKILL)))
+						{
+							msg.source().tell(L("You can not get that.  You are not a player killer."));
+							return false;
+						}
+						else
+						if(getMobPKFlag())
+						{
+							msg.source().tell(L("You can not get that.  @x1 was not a player killer.",getMobName()));
+							return false;
+						}
 					}
 				}
 			}
