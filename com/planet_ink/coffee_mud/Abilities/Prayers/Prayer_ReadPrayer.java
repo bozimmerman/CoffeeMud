@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Spells;
+package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2020 Bo Zimmerman
+   Copyright 2020-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_ClarifyScroll extends Spell
+public class Prayer_ReadPrayer extends Prayer
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_ClarifyScroll";
+		return "Prayer_ReadPrayer";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Clarify Scroll");
+	private final static String	localizedName	= CMLib.lang().L("Read Prayer");
 
 	@Override
 	public String name()
@@ -49,10 +49,12 @@ public class Spell_ClarifyScroll extends Spell
 		return localizedName;
 	}
 
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Ability to read prayers)");
+
 	@Override
-	public int overrideMana()
+	public String displayText()
 	{
-		return 50;
+		return localizedStaticDisplay;
 	}
 
 	@Override
@@ -62,9 +64,15 @@ public class Spell_ClarifyScroll extends Spell
 	}
 
 	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;
+	}
+
+	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+		return Ability.ACODE_PRAYER | Ability.DOMAIN_COMMUNING;
 	}
 
 	@Override
@@ -76,58 +84,32 @@ public class Spell_ClarifyScroll extends Spell
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
+		// first, using the commands vector, determine
+		// the target of the spell.  If no target is specified,
+		// the system will assume your combat target.
+		final Physical target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
 			return false;
-
-		if((!(target instanceof Scroll))
-		||(!(target instanceof MiscMagic)))
-		{
-			mob.tell(L("You can't clarify that."));
-			return false;
-		}
-
-		if(((Scroll)target).usesRemaining()>((Scroll)target).getSpells().size())
-		{
-			mob.tell(L("That scroll can not be enhanced any further."));
-			return false;
-		}
-
-		if(((Scroll)target).getSpells().size()==0)
-		{
-			mob.tell(L("That scroll has nothing on it to enhance."));
-			return false;
-		}
-		boolean arcane=false;
-		for(final Ability A : ((Scroll)target).getSpells())
-		{
-			if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
-				arcane=true;
-		}
-		if(!arcane)
-		{
-			mob.tell(L("The markings on this scroll cannot be clarified by this magic."));
-			return false;
-		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-
-		if(success)
+		if((success)&&(mob.fetchEffect(this.ID())==null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> wave(s) <S-HIS-HER> fingers at <T-NAMESELF>, uttering a magical phrase.^?"));
-			if(mob.location().okMessage(mob,msg))
+			final Ability A=(Ability)this.copyOf();
+			mob.addEffect(A);
+			try
 			{
-				mob.location().send(mob,msg);
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("The words on <T-NAME> become more definite!"));
-				((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()+1);
+				CMLib.commands().postRead(mob, target, "", false);
 			}
-
+			finally
+			{
+				mob.delEffect(A);
+			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,L("<S-NAME> wave(s) <S-HIS-HER> fingers at <T-NAMESELF>, uttering a magical phrase, and looking very frustrated."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) and gaze(s) over <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;

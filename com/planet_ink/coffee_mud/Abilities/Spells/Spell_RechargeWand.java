@@ -88,6 +88,13 @@ public class Spell_RechargeWand extends Spell
 			return false;
 		}
 
+		if((((Wand)target).getEnchantType()!=-1)
+		&&(((Wand)target).getEnchantType()!=Ability.ACODE_SPELL))
+		{
+			mob.tell(mob,target,null,L("You can't recharge <T-NAME> with this spell."));
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

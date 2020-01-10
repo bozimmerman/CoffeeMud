@@ -110,16 +110,16 @@ public class Spell_EnchantWand extends Spell
 		final Wand wand=(Wand)target;
 
 		final String spellName=CMParms.combine(commands,0).trim();
-		Spell wandThis=null;
+		Ability wandThis=null;
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)
-			&&(A instanceof Spell)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(A.name().equalsIgnoreCase(spellName))
 			&&(!A.ID().equals(this.ID())))
-				wandThis=(Spell)A;
+				wandThis=A;
 		}
 		if(wandThis==null)
 		{
@@ -127,11 +127,11 @@ public class Spell_EnchantWand extends Spell
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)
-				&&(A instanceof Spell)
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 				&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 				&&(CMLib.english().containsString(A.name(),spellName))
 				&&(!A.ID().equals(this.ID())))
-					wandThis=(Spell)A;
+					wandThis=A;
 			}
 		}
 		if(wandThis==null)

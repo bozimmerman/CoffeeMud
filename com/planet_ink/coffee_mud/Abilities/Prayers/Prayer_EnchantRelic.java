@@ -1,7 +1,8 @@
-package com.planet_ink.coffee_mud.Abilities.Spells;
+package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -18,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2020 Bo Zimmerman
+   Copyright 2020-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,16 +33,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_Scribe extends Spell
+public class Prayer_EnchantRelic extends Prayer
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_Scribe";
+		return "Prayer_EnchantRelic";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Scribe");
+	private final static String localizedName = CMLib.lang().L("Enchant Relic");
 
 	@Override
 	public String name()
@@ -58,19 +59,19 @@ public class Spell_Scribe extends Spell
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL | Ability.DOMAIN_EVOCATION;
-	}
-
-	@Override
-	protected int overrideMana()
-	{
-		return Ability.COST_ALL-50;
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;
 	}
 
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_NOORDERING;
+		return Ability.FLAG_NOORDERING|Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;
+	}
+
+	@Override
+	protected int overrideMana()
+	{
+		return Ability.COST_ALL;
 	}
 
 	@Override
@@ -84,7 +85,7 @@ public class Spell_Scribe extends Spell
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(L("Scribe which spell onto what?"));
+			mob.tell(L("Enchant which prayer onto what?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,commands.get(commands.size()-1),Wearable.FILTER_UNWORNONLY);
@@ -93,91 +94,70 @@ public class Spell_Scribe extends Spell
 			mob.tell(L("You don't see '@x1' here.",(commands.get(commands.size()-1))));
 			return false;
 		}
-		if((!(target instanceof Scroll))
-		||(!(target instanceof MiscMagic)))
+		if(!(target instanceof Wand))
 		{
-			mob.tell(L("You can't scribe magic onto that."));
+			mob.tell(mob,target,null,L("You can't enchant <T-NAME>."));
+			return false;
+		}
+		if((((Wand)target).getEnchantType()!=-1)
+		&&(((Wand)target).getEnchantType()!=Ability.ACODE_PRAYER))
+		{
+			mob.tell(mob,target,null,L("You can't enchant <T-NAME> with this prayer."));
 			return false;
 		}
 
 		commands.remove(commands.size()-1);
-		final Scroll scroll=(Scroll)target;
+		final Wand wand=(Wand)target;
 
 		final String spellName=CMParms.combine(commands,0).trim();
-		Spell scrollThis=null;
+		Ability wandThis=null;
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)
-			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(A.name().equalsIgnoreCase(spellName))
 			&&(!A.ID().equals(this.ID())))
-				scrollThis=(Spell)A;
+				wandThis=A;
 		}
-		if(scrollThis==null)
+		if(wandThis==null)
 		{
 			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)
-				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+				&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 				&&(CMLib.english().containsString(A.name(),spellName))
 				&&(!A.ID().equals(this.ID())))
-					scrollThis=(Spell)A;
+					wandThis=A;
 			}
 		}
-
-		if(scrollThis==null)
+		if(wandThis==null)
 		{
-			mob.tell(L("You don't know how to scribe '@x1'.",spellName));
-			return false;
-		}
-		if(CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID())>24)
-		{
-			mob.tell(L("That spell is too powerful to scribe."));
+			mob.tell(L("You don't know how to enchant anything with '@x1'.",spellName));
 			return false;
 		}
 
-		int numSpells=(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this));
-		if(numSpells<0)
-			numSpells=1;
-		if(scroll.getSpells().size()>numSpells)
+		if((CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())>24)
+		||(((StdAbility)wandThis).usageCost(null,true)[0]>45)
+		||(CMath.bset(wandThis.flags(), Ability.FLAG_CLANMAGIC)))
 		{
-			mob.tell(L("You aren't powerful enough to scribe any more spells onto @x1.",scroll.name()));
+			mob.tell(L("That spell is too powerful to enchant into anything."));
 			return false;
 		}
 
-		final List<Ability> spells=new XVector<Ability>(scroll.getSpells());
-		if(scroll.usesRemaining()==0)
-			spells.clear();
-		else
-		for(final Ability spell: spells)
+		if(wand.getSpell()!=null)
 		{
-			if(spell.ID().equals(scrollThis.ID()))
-			{
-				mob.tell(L("That spell is already scribed onto @x1.",scroll.name()));
-				return false;
-			}
-		}
-
-		int level=25;
-		for(final Ability A : spells)
-		{
-			int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
-			if(lvl<0)
-				lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-			level -= lvl;
-		}
-		if(level <= 0)
-		{
-			mob.tell(L("You can only scribe on blank scrolls, or scroll with less than 25 levels of spells on it."));
+			mob.tell(L("A prayer has already been enchanted into '@x1'.",wand.name()));
 			return false;
 		}
 
-		int experienceToLose=5+CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID());
+		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID());
 		if((mob.getExperience()-experienceToLose)<0)
 		{
-			mob.tell(L("You don't have enough experience to cast this spell."));
+			mob.tell(L("You don't have enough experience to pray for that."));
 			return false;
 		}
 		// lose all the mana!
@@ -192,25 +172,25 @@ public class Spell_Scribe extends Spell
 
 		if(success)
 		{
-			setMiscText(scrollThis.ID());
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
+			setMiscText(wandThis.ID());
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> appear(s) enchanted!":"^S<S-NAME> enchant(s) <T-NAMESELF>"+inTheNameOf(mob)+".^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(scroll.usesRemaining()==0)
-					scroll.setSpellList("");
-				if(scroll.getSpellList().trim().length()==0)
-					scroll.setSpellList(scrollThis.ID());
-				else
-					scroll.setSpellList(scroll.getSpellList()+";"+scrollThis.ID());
-				if((scroll.usesRemaining()==Integer.MAX_VALUE)||(scroll.usesRemaining()<0))
-					scroll.setUsesRemaining(0);
-				scroll.setUsesRemaining(scroll.usesRemaining()+1);
+				wand.setSpell((Ability)wandThis.copyOf());
+				if((wand.usesRemaining()==Integer.MAX_VALUE)||(wand.usesRemaining()<0))
+					wand.setUsesRemaining(0);
+				final int newLevel=wandThis.adjustedLevel(mob, asLevel);
+				if(newLevel > wand.basePhyStats().level())
+					wand.basePhyStats().setLevel(newLevel);
+				wand.setUsesRemaining(wand.usesRemaining()+5);
+				wand.text();
+				wand.recoverPhyStats();
 			}
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for enchantments, but nothing happens.",prayWord(mob)));
 
 		// return whether it worked
 		return success;
