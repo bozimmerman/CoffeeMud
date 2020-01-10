@@ -2199,13 +2199,26 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if((!found)&&(arg2.startsWith("BASE")))
 				{
+					final String arg4=arg2.substring(4);
 					for(int i=0;i<M.baseState().getStatCodes().length;i++)
 					{
-						if(M.baseState().getStatCodes()[i].equals(arg2.substring(4)))
+						if(M.baseState().getStatCodes()[i].equals(arg4))
 						{
 							val=M.baseState().getStat(M.baseState().getStatCodes()[i]);
 							found=true;
 							break;
+						}
+					}
+					if(!found)
+					{
+						for(final int i : CharStats.CODES.ALLCODES())
+						{
+							if(CharStats.CODES.NAME(i).equals(arg4)||CharStats.CODES.DESC(i).equals(arg4))
+							{
+								val=""+M.baseCharStats().getStat(CharStats.CODES.NAME(i));
+								found=true;
+								break;
+							}
 						}
 					}
 				}
@@ -2231,7 +2244,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			if(CMLib.coffeeMaker().isAnyGenStat((Physical)E, arg2.toUpperCase().trim()))
 				return CMLib.coffeeMaker().getAnyGenStat((Physical)E, arg2.toUpperCase().trim());
-
+			if((!found)&&(arg2.startsWith("BASE")))
+			{
+				final String arg4=arg2.substring(4);
+				for(int i=0;i<((Physical)E).basePhyStats().getStatCodes().length;i++)
+				{
+					if(((Physical)E).basePhyStats().getStatCodes()[i].equals(arg4))
+					{
+						val=((Physical)E).basePhyStats().getStat(((Physical)E).basePhyStats().getStatCodes()[i]);
+						found=true;
+						break;
+					}
+				}
+			}
 		}
 		if(found)
 			return val;
@@ -9446,15 +9471,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								}
 								if((!found)&&(arg2.toUpperCase().startsWith("BASE")))
 								{
+									final String arg4=arg2.substring(4);
 									for(int i=0;i<M.baseState().getStatCodes().length;i++)
 									{
-										if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg2.substring(4)))
+										if(M.baseState().getStatCodes()[i].equalsIgnoreCase(arg4))
 										{
 											if(arg3.equals("++"))
 												arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))+1);
 											if(arg3.equals("--"))
 												arg3=""+(CMath.s_int(M.baseState().getStat(M.baseState().getStatCodes()[i]))-1);
-											M.baseState().setStat(arg2.substring(4),arg3);
+											M.baseState().setStat(arg4,arg3);
 											found=true;
 											break;
 										}
