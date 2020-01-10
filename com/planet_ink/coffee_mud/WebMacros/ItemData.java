@@ -410,13 +410,18 @@ public class ItemData extends StdWebMacro
 						if(I instanceof Wand)
 						{
 							if(firstTime)
-								old=""+((Wand)I).getEnchantType().name();
-							for(final Wand.MagicType r : Wand.MagicType.values())
 							{
-								str.append("<OPTION VALUE=\""+r.name()+"\"");
-								if(r.name().equals(old))
+								if((((Wand)I).getEnchantType()<0)||(((Wand)I).getEnchantType()>=Ability.ACODE_DESCS_.length))
+									old="ANY";
+								else
+									old=Ability.ACODE_DESCS_[((Wand)I).getEnchantType()];
+							}
+							for(final String[] option : Wand.WandUsage.WAND_OPTIONS)
+							{
+								str.append("<OPTION VALUE=\""+option[0]+"\"");
+								if(option[0].equals(old))
 									str.append(" SELECTED");
-								str.append(">"+r.name());
+								str.append(">"+option[1]);
 							}
 						}
 						break;

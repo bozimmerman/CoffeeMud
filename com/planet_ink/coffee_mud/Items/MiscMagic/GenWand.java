@@ -10,7 +10,6 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.Wand.MagicType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -43,7 +42,7 @@ public class GenWand extends StdWand
 
 	protected String	readableText	= "";
 	protected int		maxUses			= Integer.MAX_VALUE;
-	protected MagicType	enchType		= MagicType.ANY;
+	protected int		enchType		= -1;
 
 	public GenWand()
 	{
@@ -110,16 +109,15 @@ public class GenWand extends StdWand
 	}
 
 	@Override
-	public MagicType getEnchantType()
+	public int getEnchantType()
 	{
 		return enchType;
 	}
 
 	@Override
-	public void setEnchantType(final MagicType enchType)
+	public void setEnchantType(final int enchType)
 	{
-		if(enchType != null)
-			this.enchType = enchType;
+		this.enchType = enchType;
 	}
 
 	@Override
@@ -146,7 +144,9 @@ public class GenWand extends StdWand
 		switch(getCodeNum(code))
 		{
 		case 0:
-			return "" + this.getEnchantType().name();
+			if((getEnchantType()<0)||(getEnchantType()>=Ability.ACODE_DESCS_.length))
+				return "ANY";
+			return Ability.ACODE_DESCS_[getEnchantType()];
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -161,7 +161,7 @@ public class GenWand extends StdWand
 		switch(getCodeNum(code))
 		{
 		case 0:
-			setEnchantType((Wand.MagicType)CMath.s_valueOf(Wand.MagicType.class, val.toUpperCase().trim()));
+			setEnchantType(CMParms.indexOf(Ability.ACODE_DESCS_, val.toUpperCase().trim()));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

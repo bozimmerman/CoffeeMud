@@ -2330,6 +2330,29 @@ public class CMParms
 	}
 
 	/**
+	 * Converts the given object array to a string single dim array by calling
+	 * "toString()" on all the objects at the given dimension
+	 * @param O the objects to turn into a string array
+	 * @param dim the second-order dimension objects to use
+	 * @return the string array
+	 */
+	public final static String[] toStringArraySingle(final Object[][] O, final int dim)
+	{
+		if((O==null)||(dim<0))
+			return new String[0];
+		final String[] s=new String[O.length];
+		for(int o=0;o<O.length;o++)
+		{
+			if((O[o] != null)
+			&&(dim<=O[o].length))
+				s[o]=O[o][dim].toString();
+			else
+				s[o]="";
+		}
+		return s;
+	}
+
+	/**
 	 * Converts the given long array to a string array by calling
 	 * Long.toString on all the long
 	 * @param O the longs to turn into a string array

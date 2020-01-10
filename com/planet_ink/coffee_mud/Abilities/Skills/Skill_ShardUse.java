@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2020 Bo Zimmerman
+   Copyright 2020-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_WandUse extends StdSkill implements Wand.WandUsage
+public class Skill_ShardUse extends StdSkill implements Wand.WandUsage
 {
 	@Override
 	public String ID()
 	{
-		return "Skill_WandUse";
+		return "Skill_ShardUse";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Wands");
+	private final static String localizedName = CMLib.lang().L("Shards");
 
 	@Override
 	public String name()
@@ -57,7 +57,7 @@ public class Skill_WandUse extends StdSkill implements Wand.WandUsage
 	@Override
 	public int getEnchantType()
 	{
-		return Ability.ACODE_SPELL;
+		return Ability.ACODE_CHANT;
 	}
 
 

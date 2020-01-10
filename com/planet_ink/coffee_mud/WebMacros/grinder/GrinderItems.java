@@ -256,7 +256,7 @@ public class GrinderItems
 					break;
 				case ENCHTYPE: // enchtype
 					if(I instanceof Wand)
-						((Wand)I).setEnchantType((Wand.MagicType)CMath.s_valueOf(Wand.MagicType.class, old.toUpperCase().trim()));
+						((Wand)I).setEnchantType(CMParms.indexOf(Ability.ACODE_DESCS_, old.toUpperCase().trim()));
 					break;
 				case ISREADABLE: // isreadable
 					CMLib.flags().setReadable(I,old.equals("on"));

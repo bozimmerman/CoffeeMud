@@ -1985,25 +1985,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						ok=true;
 					else
 					{
-						int ofType=-1;
-						if(E instanceof Wand)
-						{
-							switch(((Wand)E).getEnchantType())
-							{
-							case PRAYER:
-								ofType=Ability.ACODE_PRAYER;
-								break;
-							case ARCANE:
-								ofType=Ability.ACODE_SPELL;
-								break;
-							case CHANT:
-								ofType=Ability.ACODE_CHANT;
-								break;
-							default:
-								ofType=-1;
-								break;
-							}
-						}
+						final int ofType=((Wand)E).getEnchantType();
 						if(newName.equalsIgnoreCase("?"))
 							mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),ofType).toString());
 						else
@@ -9006,7 +8988,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(me instanceof Wand)
 			{
 				genMaxUses(mob,(Wand)me,++showNumber,showFlag);
-				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArray(Wand.MagicType.values()));
+				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
 			}
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
@@ -9505,7 +9487,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genReadable2(mob,me,++showNumber,showFlag);
 				genUses(mob,me,++showNumber,showFlag);
 				genMaxUses(mob,(Wand)me,++showNumber,showFlag);
-				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArray(Wand.MagicType.values()));
+				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
 				if(me instanceof Light)
 					genBurnout(mob,(Light)me,++showNumber,showFlag);
 			}

@@ -99,8 +99,8 @@ public class Spell_EnchantWand extends Spell
 			mob.tell(mob,target,null,L("You can't enchant <T-NAME>."));
 			return false;
 		}
-		if((((Wand)target).getEnchantType()!=Wand.MagicType.ANY)
-		&&(((Wand)target).getEnchantType()!=Wand.MagicType.ARCANE))
+		if((((Wand)target).getEnchantType()!=-1)
+		&&(((Wand)target).getEnchantType()!=Ability.ACODE_SPELL))
 		{
 			mob.tell(mob,target,null,L("You can't enchant <T-NAME> with this spell."));
 			return false;

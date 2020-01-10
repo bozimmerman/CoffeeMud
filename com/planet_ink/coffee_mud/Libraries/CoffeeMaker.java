@@ -623,7 +623,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Wand)
 		{
 			text.append(xml.convertXMLtoTag("MAXUSE",((Wand)E).maxUses()));
-			text.append(xml.convertXMLtoTag("ENCHTYPE",((Wand)E).getEnchantType().name()));
+			if((((Wand)E).getEnchantType()<0)||(((Wand)E).getEnchantType()>=Ability.ACODE_DESCS_.length))
+				text.append(xml.convertXMLtoTag("ENCHTYPE", "ANY"));
+			else
+				text.append(xml.convertXMLtoTag("ENCHTYPE", Ability.ACODE_DESCS_[((Wand)E).getEnchantType()]));
 		}
 
 		if(E instanceof Book)
@@ -3919,11 +3922,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((Wand)E).setMaxUses(CMath.s_int(bo));
 			final String tim=xml.getValFromPieces(buf, "ENCHTYPE");
 			if((tim!=null)&&(tim.length()>0))
-			{
-				final Wand.MagicType typ=(Wand.MagicType)CMath.s_valueOf(Wand.MagicType.class, tim.toUpperCase().trim());
-				if(typ != null)
-					((Wand)E).setEnchantType(typ);
-			}
+				((Wand)E).setEnchantType(CMParms.indexOf(Ability.ACODE_DESCS_, tim.toUpperCase().trim()));
 		}
 
 		if(E instanceof LandTitle)

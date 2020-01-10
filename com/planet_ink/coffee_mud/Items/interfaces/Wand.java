@@ -41,20 +41,32 @@ import java.util.*;
 public interface Wand extends MiscMagic
 {
 	/**
-	 * The magic type that the wand item
-	 * can be enchanted with.
+	 * A type of ability, via interface, that allows a Wand to actually
+	 * be used.
 	 *
-	 * @author Bo Zimmerman
+	 * @author BZ
 	 *
 	 */
-	public static enum MagicType
+	public static interface WandUsage extends Ability
 	{
-		ANY,
-		ARCANE,
-		PRAYER,
-		CHANT,
-		SKILL,
-		SONG
+		/**
+		 * Default options for wand usage types, for use
+		 * by editors.  Includes [0] = underscored value, [1] = displayable value
+		 */
+		final String[][] WAND_OPTIONS=new String[][] {
+		 	{"ANY", "Any"},
+		 	{Ability.ACODE_DESCS_[Ability.ACODE_SPELL], CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE_DESCS[Ability.ACODE_SPELL])},
+		 	{Ability.ACODE_DESCS_[Ability.ACODE_PRAYER], CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE_DESCS[Ability.ACODE_PRAYER])},
+		 	{Ability.ACODE_DESCS_[Ability.ACODE_CHANT], CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE_DESCS[Ability.ACODE_CHANT])},
+		 	{Ability.ACODE_DESCS_[Ability.ACODE_SKILL], CMStrings.capitalizeAllFirstLettersAndLower(Ability.ACODE_DESCS[Ability.ACODE_SKILL])},
+		};
+
+		/**
+		 * Returns the type of magic that can use on wands.
+		 * @see Ability#ACODE_CHANT
+		 * @return the enchantment/magic type
+		 */
+		public int getEnchantType();
 	}
 
 	/**
@@ -114,16 +126,16 @@ public interface Wand extends MiscMagic
 	/**
 	 * Returns the type of magic that can be enchanted onto
 	 * this wand.
-	 * @see Wand.MagicType#ANY
+	 * @see Ability#ACODE_SPELL
 	 * @return the enchantment/magic type
 	 */
-	public MagicType getEnchantType();
+	public int getEnchantType();
 
 	/**
 	 * Sets the type of magic that can be enchanted onto
 	 * this wand.
-	 * @see Wand.MagicType#ANY
+	 * @see Ability#ACODE_CHANT
 	 * @param enchType the enchantment/magic type
 	 */
-	public void setEnchantType(MagicType enchType);
+	public void setEnchantType(int enchType);
 }

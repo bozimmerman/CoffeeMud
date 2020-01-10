@@ -11,7 +11,6 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.Wand.MagicType;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -188,7 +187,20 @@ public class StdWand extends StdItem implements Wand
 				if(y>=0)
 					message=message.substring(0,y);
 				message=message.trim();
-				final Ability wandUse=mob.fetchAbility("Skill_WandUse");
+				Ability wandUse = null;
+				final boolean pickFirstOne = me.getEnchantType() < 0;
+				for(final Enumeration<Ability> e=mob.abilities();e.hasMoreElements();)
+				{
+					final Ability A=e.nextElement();
+					if((A instanceof Wand.WandUsage)
+					&&((((WandUsage)A).getEnchantType() < 0)
+						||(pickFirstOne)
+						||(((WandUsage)A).getEnchantType()==me.getEnchantType())))
+					{
+						wandUse = A;
+						break;
+					}
+				}
 				if((wandUse==null)||(!wandUse.proficiencyCheck(null,0,false)))
 					mob.tell(CMLib.lang().L("@x1 glows faintly for a moment, then fades.",me.name()));
 				else
@@ -212,7 +224,7 @@ public class StdWand extends StdItem implements Wand
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("@x1 glows brightly.",me.name()));
 							me.setUsesRemaining(me.usesRemaining()-1);
 							int level=me.phyStats().level()
-									+ CMLib.expertises().getExpertiseLevel(mob, "Skill_WandUse", ExpertiseLibrary.Flag.LEVEL);
+									+ CMLib.expertises().getExpertiseLevel(mob, wandUse.ID(), ExpertiseLibrary.Flag.LEVEL);
 							final int lowest=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 							if(level<lowest)
 								level=lowest;
@@ -270,13 +282,13 @@ public class StdWand extends StdItem implements Wand
 	}
 
 	@Override
-	public MagicType getEnchantType()
+	public int getEnchantType()
 	{
-		return MagicType.ANY;
+		return -1;
 	}
 
 	@Override
-	public void setEnchantType(final MagicType enchType)
+	public void setEnchantType(final int enchType)
 	{
 	}
 
