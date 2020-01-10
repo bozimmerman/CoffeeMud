@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Scroll.ScrollUsage;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -67,7 +68,16 @@ public class ManualClasses extends StdItem implements MiscMagic, ArchonOnly
 			case CMMsg.TYP_READ:
 				if(mob.isMine(this))
 				{
-					if(mob.fetchEffect("Spell_ReadMagic")!=null)
+					boolean found=false;
+					for(final Enumeration<Ability> a=mob.effects(); a.hasMoreElements();)
+					{
+						final Ability S=a.nextElement();
+						if((S instanceof ScrollUsage)
+						&&((((ScrollUsage)S).getReadMagicType()<0)
+							||(((ScrollUsage)S).getReadMagicType()==Ability.ACODE_SPELL)))
+							found=true;
+					}
+					if(found)
 					{
 						if(this.usesRemaining()<=0)
 							mob.tell(L("The markings have been read off the parchment, and are no longer discernable."));

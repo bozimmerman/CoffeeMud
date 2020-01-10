@@ -40,6 +40,23 @@ import java.util.*;
 public interface Scroll extends Item, SpellHolder
 {
 	/**
+	 * A type of ability, via interface, that allows a Scroll to actually
+	 * be used.
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static interface ScrollUsage extends Ability
+	{
+		/**
+		 * Returns the type of magic that can be read off a scroll.
+		 * @see Ability#ACODE_CHANT
+		 * @return the magic type
+		 */
+		public int getReadMagicType();
+	}
+
+	/**
 	 * Causes the given mob to cast the given spell/effect
 	 * through this scroll.  This will remove the spell
 	 * from the scroll.

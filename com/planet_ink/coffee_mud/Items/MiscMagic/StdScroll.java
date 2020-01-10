@@ -132,34 +132,33 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		return add.toString();
 	}
 
-	static final List<Pair<String,Integer>> readMap = new XVector<Pair<String,Integer>>(
-		new Pair<String,Integer>("Spell_ReadMagic",Integer.valueOf(Ability.ACODE_SPELL))
-	);
-
 	@Override
 	public void readIfAble(final MOB mob, String spellName)
 	{
 		if(mob.isMine(this))
 		{
 			int addedExpertise = 0;
-			for(final Pair<String,Integer> p : readMap)
+			for(final Enumeration<Ability> a=mob.effects(); a.hasMoreElements();)
 			{
-				final boolean readingMagic=(mob.fetchEffect(p.first)!=null);
-				if(readingMagic)
+				final Ability S=a.nextElement();
+				if(S instanceof ScrollUsage)
 				{
-					final List<Ability> spells=getSpells();
-					boolean found = false;
-					for(final Ability A : spells)
+					boolean found = ((ScrollUsage)S).getReadMagicType() < 0;
+					if(!found)
 					{
-						if((A.classificationCode()&Ability.ALL_ACODES)==p.second.intValue())
-							found=true;
+						final List<Ability> spells=getSpells();
+						for(final Ability A : spells)
+						{
+							if((A.classificationCode()&Ability.ALL_ACODES)==((ScrollUsage)S).getReadMagicType())
+								found=true;
+						}
 					}
 					if(found)
 					{
 						mob.tell(L("@x1 glows softly.",name()));
-						final Ability A=mob.fetchAbility(p.first);
-						if(A!=null)
-							addedExpertise=CMLib.expertises().getExpertiseLevel(mob, A.ID(), ExpertiseLibrary.Flag.LEVEL);
+						final Ability SA=mob.fetchAbility(S.ID());
+						if(SA!=null)
+							addedExpertise+=CMLib.expertises().getExpertiseLevel(mob, S.ID(), ExpertiseLibrary.Flag.LEVEL);
 						setReadableScrollBy(mob.Name());
 						break;
 					}

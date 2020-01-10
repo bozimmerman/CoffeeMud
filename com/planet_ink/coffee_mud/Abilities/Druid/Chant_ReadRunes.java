@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Spells;
+package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2020 Bo Zimmerman
+   Copyright 2020-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Spell_ReadMagic extends Spell implements Scroll.ScrollUsage
+public class Chant_ReadRunes extends Chant implements Scroll.ScrollUsage
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_ReadMagic";
+		return "Chant_ReadRunes";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Read Magic");
+	private final static String	localizedName	= CMLib.lang().L("Read Runes");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Spell_ReadMagic extends Spell implements Scroll.ScrollUsage
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Ability to read magic)");
+	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Ability to read chants)");
 
 	@Override
 	public String displayText()
@@ -64,21 +64,21 @@ public class Spell_ReadMagic extends Spell implements Scroll.ScrollUsage
 	}
 
 	@Override
+	public int getReadMagicType()
+	{
+		return Ability.ACODE_CHANT;
+	}
+
+	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL | Ability.DOMAIN_DIVINATION;
+		return Ability.ACODE_CHANT | Ability.DOMAIN_NATURELORE;
 	}
 
 	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_INDIFFERENT;
-	}
-
-	@Override
-	public int getReadMagicType()
-	{
-		return Ability.ACODE_SPELL;
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class Spell_ReadMagic extends Spell implements Scroll.ScrollUsage
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) and gaze(s) over <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) and gaze(s) over <T-NAMESELF>, but nothing more happens."));
 
 		// return whether it worked
 		return success;
