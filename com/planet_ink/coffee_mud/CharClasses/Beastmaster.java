@@ -141,6 +141,7 @@ public class Beastmaster extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druidic",50,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_ReadRunes",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Druid_DruidicPass",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Chant_BestowName",true);
