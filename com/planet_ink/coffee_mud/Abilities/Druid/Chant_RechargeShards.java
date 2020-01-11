@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Prayers;
+package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -32,29 +32,23 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_ReadPrayer extends Prayer
+public class Chant_RechargeShards extends Chant
 {
 
 	@Override
 	public String ID()
 	{
-		return "Prayer_ReadPrayer";
+		return "Chant_RechargeShards";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Read Prayer");
+	private final static String localizedName = CMLib.lang().L("Recharge Shards");
+
+	private static int RECHARGE_AMT = 5;
 
 	@Override
 	public String name()
 	{
 		return localizedName;
-	}
-
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Ability to read prayers)");
-
-	@Override
-	public String displayText()
-	{
-		return localizedStaticDisplay;
 	}
 
 	@Override
@@ -64,15 +58,15 @@ public class Prayer_ReadPrayer extends Prayer
 	}
 
 	@Override
-	public long flags()
+	public int overrideMana()
 	{
-		return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;
+		return 100;
 	}
 
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER | Ability.DOMAIN_COMMUNING;
+		return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;
 	}
 
 	@Override
@@ -81,44 +75,68 @@ public class Prayer_ReadPrayer extends Prayer
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-
-	@Override
-	public boolean appropriateToMyFactions(final MOB mob)
-	{
-		if(mob == null)
-			return true;
-		return true;
-	}
-
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		// first, using the commands vector, determine
-		// the target of the spell.  If no target is specified,
-		// the system will assume your combat target.
-		final Physical target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
+		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
 			return false;
+
+		if(!(target instanceof Wand))
+		{
+			mob.tell(L("You can't recharge that."));
+			return false;
+		}
+
+		if((((Wand)target).getEnchantType()!=-1)
+		&&(((Wand)target).getEnchantType()!=Ability.ACODE_CHANT))
+		{
+			mob.tell(mob,target,null,L("You can't recharge <T-NAME> with this chant."));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		if((success)&&(mob.fetchEffect(this.ID())==null))
+
+		if(success)
 		{
-			final Ability A=(Ability)this.copyOf();
-			mob.addEffect(A);
-			try
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> appear(s) recharged!":"^S<S-NAME> re-enchant(s) <T-NAMESELF>.^?"));
+			if(mob.location().okMessage(mob,msg))
 			{
-				CMLib.commands().postRead(mob, target, "", false);
+				mob.location().send(mob,msg);
+				if(((Wand)target).usesRemaining() >= ((Wand)target).maxUses())
+				{
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) brightly then disintigrates!"));
+					target.destroy();
+				}
+				else
+				{
+					boolean willBreak = false;
+					if((((Wand)target).usesRemaining()+RECHARGE_AMT) > ((Wand)target).maxUses())
+					{
+						willBreak = true;
+						((Wand)target).setUsesRemaining(((Wand)target).maxUses());
+					}
+					else
+					{
+						((Wand)target).setUsesRemaining(((Wand)target).usesRemaining()+RECHARGE_AMT);
+					}
+					if(!(willBreak))
+					{
+						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, L("<T-NAME> glow(s) brightly!"));
+					}
+					else
+					{
+						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, L("<T-NAME> glow(s) brightly and begins to hum.  It clearly cannot hold more magic."));
+					}
+				}
 			}
-			finally
-			{
-				mob.delEffect(A);
-			}
+
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) and gaze(s) over <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for enchanting power, but nothing happens."));
 
 		// return whether it worked
 		return success;

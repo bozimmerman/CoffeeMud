@@ -103,6 +103,7 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Natural",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Marry",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Annul",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_ReadPrayer",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CureLight",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",false);

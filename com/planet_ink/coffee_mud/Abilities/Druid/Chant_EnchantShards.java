@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Prayers;
+package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -33,16 +33,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_EnchantRelic extends Prayer
+public class Chant_EnchantShards extends Chant
 {
 
 	@Override
 	public String ID()
 	{
-		return "Prayer_EnchantRelic";
+		return "Chant_EnchantShards";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Enchant Relic");
+	private final static String localizedName = CMLib.lang().L("Enchant Shards");
 
 	@Override
 	public String name()
@@ -59,13 +59,13 @@ public class Prayer_EnchantRelic extends Prayer
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;
+		return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;
 	}
 
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_NOORDERING|Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;
+		return Ability.FLAG_NOORDERING;
 	}
 
 	@Override
@@ -81,19 +81,11 @@ public class Prayer_EnchantRelic extends Prayer
 	}
 
 	@Override
-	public boolean appropriateToMyFactions(final MOB mob)
-	{
-		if(mob == null)
-			return true;
-		return true;
-	}
-
-	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(L("Enchant which prayer onto what?"));
+			mob.tell(L("Enchant which chant onto what?"));
 			return false;
 		}
 		final Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,commands.get(commands.size()-1),Wearable.FILTER_UNWORNONLY);
@@ -108,9 +100,9 @@ public class Prayer_EnchantRelic extends Prayer
 			return false;
 		}
 		if((((Wand)target).getEnchantType()!=-1)
-		&&(((Wand)target).getEnchantType()!=Ability.ACODE_PRAYER))
+		&&(((Wand)target).getEnchantType()!=Ability.ACODE_CHANT))
 		{
-			mob.tell(mob,target,null,L("You can't enchant <T-NAME> with this prayer."));
+			mob.tell(mob,target,null,L("You can't enchant <T-NAME> with this chant."));
 			return false;
 		}
 
@@ -123,7 +115,7 @@ public class Prayer_EnchantRelic extends Prayer
 		{
 			final Ability A=a.nextElement();
 			if((A!=null)
-			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(A.name().equalsIgnoreCase(spellName))
 			&&(!A.ID().equals(this.ID())))
@@ -135,7 +127,7 @@ public class Prayer_EnchantRelic extends Prayer
 			{
 				final Ability A=a.nextElement();
 				if((A!=null)
-				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 				&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 				&&(CMLib.english().containsString(A.name(),spellName))
 				&&(!A.ID().equals(this.ID())))
@@ -158,14 +150,14 @@ public class Prayer_EnchantRelic extends Prayer
 
 		if(wand.getSpell()!=null)
 		{
-			mob.tell(L("A prayer has already been enchanted into '@x1'.",wand.name()));
+			mob.tell(L("A chant has already been enchanted into '@x1'.",wand.name()));
 			return false;
 		}
 
 		int experienceToLose=10*CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID());
 		if((mob.getExperience()-experienceToLose)<0)
 		{
-			mob.tell(L("You don't have enough experience to pray for that."));
+			mob.tell(L("You don't have enough experience to do that."));
 			return false;
 		}
 		// lose all the mana!
@@ -181,7 +173,7 @@ public class Prayer_EnchantRelic extends Prayer
 		if(success)
 		{
 			setMiscText(wandThis.ID());
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> appear(s) enchanted!":"^S<S-NAME> enchant(s) <T-NAMESELF>"+inTheNameOf(mob)+".^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> appear(s) enchanted!":"^S<S-NAME> enchant(s) <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -198,7 +190,7 @@ public class Prayer_EnchantRelic extends Prayer
 
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> @x1 for enchantments, but nothing happens.",prayWord(mob)));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) for enchantments, but nothing happens."));
 
 		// return whether it worked
 		return success;

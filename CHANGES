@@ -4,6 +4,7 @@
   3. Scriptable GSTAT now supports BASESTRENGTH, BASEDEXTERITY, etc.. and BASEDAMAGE, etc..
   4. New skills: Shard Use and Relic Use for invoking divine and druidic wands and staffs.
   5. New prayers: enchant relic, recharge relic, read prayer, clarify prayer
+  6. New chants: Enchant Shards, Recharge Shards, Read Runes, Refresh Runes
 
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.

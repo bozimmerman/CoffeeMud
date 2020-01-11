@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Prayers;
+package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -32,16 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_ReadPrayer extends Prayer
+public class Chant_RefreshRunes extends Chant
 {
 
 	@Override
 	public String ID()
 	{
-		return "Prayer_ReadPrayer";
+		return "Chant_RefreshRunes";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Read Prayer");
+	private final static String localizedName = CMLib.lang().L("Refresh Runes");
 
 	@Override
 	public String name()
@@ -49,12 +49,10 @@ public class Prayer_ReadPrayer extends Prayer
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Ability to read prayers)");
-
 	@Override
-	public String displayText()
+	public int overrideMana()
 	{
-		return localizedStaticDisplay;
+		return 50;
 	}
 
 	@Override
@@ -64,15 +62,9 @@ public class Prayer_ReadPrayer extends Prayer
 	}
 
 	@Override
-	public long flags()
-	{
-		return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;
-	}
-
-	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_PRAYER | Ability.DOMAIN_COMMUNING;
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;
 	}
 
 	@Override
@@ -81,44 +73,61 @@ public class Prayer_ReadPrayer extends Prayer
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-
-	@Override
-	public boolean appropriateToMyFactions(final MOB mob)
-	{
-		if(mob == null)
-			return true;
-		return true;
-	}
-
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		// first, using the commands vector, determine
-		// the target of the spell.  If no target is specified,
-		// the system will assume your combat target.
-		final Physical target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
+		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
 			return false;
+
+		if((!(target instanceof Scroll))
+		||(!(target instanceof MiscMagic)))
+		{
+			mob.tell(L("You can't refresh that."));
+			return false;
+		}
+
+		if(((Scroll)target).usesRemaining()>((Scroll)target).getSpells().size())
+		{
+			mob.tell(L("That scroll can not be refreshed any further."));
+			return false;
+		}
+
+		if(((Scroll)target).getSpells().size()==0)
+		{
+			mob.tell(L("That scroll has nothing on it to refresh."));
+			return false;
+		}
+		boolean divine=false;
+		for(final Ability A : ((Scroll)target).getSpells())
+		{
+			if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+				divine=true;
+		}
+		if(!divine)
+		{
+			mob.tell(L("The runes on this scroll cannot be refreshed by this chant."));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		if((success)&&(mob.fetchEffect(this.ID())==null))
+
+		if(success)
 		{
-			final Ability A=(Ability)this.copyOf();
-			mob.addEffect(A);
-			try
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L(auto?"<T-NAME> appear(s) refreshed!":"^S<S-NAME> chant(s), refreshing <T-NAMESELF>.^?"));
+			if(mob.location().okMessage(mob,msg))
 			{
-				CMLib.commands().postRead(mob, target, "", false);
+				mob.location().send(mob,msg);
+				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("The runic markings on <T-NAME> become more definite!"));
+				((Scroll)target).setUsesRemaining(((Scroll)target).usesRemaining()+1);
 			}
-			finally
-			{
-				mob.delEffect(A);
-			}
+
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) and gaze(s) over <T-NAMESELF>, but nothing more happens."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> chants for refreshing power, but nothing happens."));
 
 		// return whether it worked
 		return success;

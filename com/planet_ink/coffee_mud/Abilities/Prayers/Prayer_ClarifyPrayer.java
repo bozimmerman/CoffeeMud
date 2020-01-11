@@ -80,6 +80,14 @@ public class Prayer_ClarifyPrayer extends Prayer
 	}
 
 	@Override
+	public boolean appropriateToMyFactions(final MOB mob)
+	{
+		if(mob == null)
+			return true;
+		return true;
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
