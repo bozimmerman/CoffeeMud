@@ -61,17 +61,110 @@ public interface EnglishParsing extends CMLibrary
 	public String toEnglishStringList(final String[] V);
 	public String toEnglishStringList(final Class<? extends Enum<?>> enumer, boolean andOr);
 	public String toEnglishStringList(final Collection<? extends Object> V);
+
+	/**
+	 * Inserts the given adjective before a given word or noun phrase, replacing any
+	 * indefinite articles with the new correct one, and removing any "color"
+	 * characters from the final phrase.
+	 *
+	 * @param str the word or noun phrase
+	 * @param adjective the adjective to add
+	 * @return the adjectivy word or noun phrase
+	 */
 	public String insertUnColoredAdjective(String str, String adjective);
+
+	/**
+	 * Inserts one of the given adjectives after an article word found in the
+	 * given paragraph, a given percentage chance of the time.
+	 *
+	 * @param paragraph The paragraph with nouns after articles
+	 * @param adjsToChoose the list of adjectives to choose from
+	 * @param pctChance the pct chance that any particular noun gets an adjective
+	 * @return the modified paragraph
+	 */
 	public String insertAdjectives(String paragraph, String[] adjsToChoose, int pctChance);
+
+	/**
+	 * Returns the proper indefinite article for the given word/phrase
+	 *
+	 * @param str the word/phrase that needs an indefinite article
+	 * @return the word/phrase with the article prepended
+	 */
 	public String startWithAorAn(String str);
+
+	/**
+	 * Given a user input array, this method will find the skill, command, social,
+	 * channel, or journal that is trying to be invoked by the user input and,
+	 * if found, return it.  Will silently return null otherwise.
+	 *
+	 * @param mob the player/mob trying to invoke a command
+	 * @param commands the user input array of the invocation
+	 * @return the Ability, Command, Social, etc, or null if not found.
+	 */
 	public CMObject findCommand(MOB mob, List<String> commands);
-	public boolean evokedBy(Ability thisAbility, String thisWord);
-	public boolean evokedBy(Ability thisAbility, String thisWord, String secondWord);
-	public String getAnEvokeWord(MOB mob, String word);
-	public Ability getToEvoke(MOB mob, List<String> commands);
-	public boolean preEvoke(MOB mob, List<String> commands, int secondsElapsed, double actionsRemaining);
-	public void evoke(MOB mob, Vector<String> commands);
-	public boolean containsString(final String toSrchStr, final String srchStr);
+
+	/**
+	 * Given a user input array, this method will find the skill that is trying to be
+	 * invoked by the MAIN invocation word and, if found, return that word.
+	 *
+	 * @param mob the player/mob trying to invoke a skill
+	 * @param commands the user input array of the invocation
+	 * @return the invocation word found
+	 */
+	public String getSkillInvokeWord(MOB mob, String word);
+
+	/**
+	 * Given a user input array, this method will find the skill that is trying to be
+	 * invoked by the commands and return it.  It will intelligently pick between
+	 * multiple skills with the same invocation words (CAST, PRAY, etc) by using
+	 * the skill names.
+	 *
+	 * DOES modify the invoke commands to remove the invocation word(s)
+	 *
+	 * @param mob the player/mob trying to invoke a skill
+	 * @param commands the user input array of the invocation
+	 * @return the Ability found, or null if none
+	 */
+	public Ability getSkillToInvoke(MOB mob, List<String> commands);
+
+	/**
+	 * Given a user input array, this method will find the skill that is trying to be
+	 * invoked by the commands, but which cannot be due to insufficient action points,
+	 * and then call preinvoke on it.  If the skill isn't found, the user
+	 * is notified of the failure and false is returned.  This may be called
+	 * repeatedly until the skill can actually be invoked properly.
+	 *
+	 * DOES modify the invoke commands to remove the invocation word(s)
+	 *
+	 * @param mob the player mob trying to use a skill
+	 * @param commands the skill command words and arguments
+	 * @param secondsElapsed the seconds ellapsed since initial attempt
+	 * @param actionsRemaining the additional action points required
+	 * @return true to continue pre invoking, and false to cancel
+	 */
+	public boolean preInvokeSkill(MOB mob, List<String> commands, int secondsElapsed, double actionsRemaining);
+
+	/**
+	 * Given a user input array, this method will find the skill that is trying to be
+	 * invoked by the commands and invoke it.  If the skill isn't found, the user
+	 * is notified of the failure.
+	 *
+	 * DOES modify the invoke commands to remove the invocation word(s)
+	 *
+	 * @param mob the player/mob trying to invoke a skill
+	 * @param commands the user input array of the invocation
+	 */
+	public void invokeSkill(final MOB mob, final List<String> commands);
+
+	/**
+	 * Returns whether the first string contains the second, case insensitive, and color
+	 * insensitive.  Respects special syntax like '$' to ensure complete hits.
+	 *
+	 * @param toSrchStr  the string to search through
+	 * @param srchForStr the string to search for in the first string
+	 * @return true if the second string appears in the first, false otherwise
+	 */
+	public boolean containsString(final String toSrchStr, final String srchForStr);
 
 	/**
 	 * Returns the context number of the given context-specific name.

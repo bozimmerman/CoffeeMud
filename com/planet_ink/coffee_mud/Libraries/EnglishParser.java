@@ -611,12 +611,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		&&(!CMSecurity.isCommandDisabled(CMClass.classID(C).toUpperCase())))
 			return CMLib.leveler().deferCommandCheck(mob, C, commands);
 
-		Ability A=getToEvoke(mob,new XVector<String>(commands));
+		Ability A=getSkillToInvoke(mob,new XVector<String>(commands));
 		if((A!=null)
 		&&(!CMSecurity.isAbilityDisabled(A.ID().toUpperCase())))
 			return A;
 
-		if(getAnEvokeWord(mob,firstWord)!=null)
+		if(getSkillInvokeWord(mob,firstWord)!=null)
 			return null;
 
 		Social social=CMLib.socials().fetchSocial(commands,true,true);
@@ -666,7 +666,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					{
 						final Vector<String> commands2=new XVector<String>(commands);
 						commands2.setElementAt(A.triggerStrings()[t],0);
-						final Ability A2=getToEvoke(mob,commands2);
+						final Ability A2=getSkillToInvoke(mob,commands2);
 						if((A2!=null)&&(!CMSecurity.isAbilityDisabled(A2.ID().toUpperCase())))
 						{
 							commands.set(0,A.triggerStrings()[t]);
@@ -724,8 +724,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return CMLib.leveler().deferCommandCheck(mob, null, commands);
 	}
 
-	@Override
-	public boolean evokedBy(final Ability thisAbility, final String thisWord)
+	protected boolean evokedBy(final Ability thisAbility, final String thisWord)
 	{
 		for(int i=0;i<thisAbility.triggerStrings().length;i++)
 		{
@@ -735,7 +734,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return false;
 	}
 
-	private String collapsedName(final Ability thisAbility)
+	protected String collapsedName(final Ability thisAbility)
 	{
 		final int x=thisAbility.name().indexOf(' ');
 		if(x>=0)
@@ -743,8 +742,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return thisAbility.Name();
 	}
 
-	@Override
-	public boolean evokedBy(final Ability thisAbility, final String thisWord, final String secondWord)
+	protected boolean evokedBy(final Ability thisAbility, final String thisWord, final String secondWord)
 	{
 		for(int i=0;i<thisAbility.triggerStrings().length;i++)
 		{
@@ -759,7 +757,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public String getAnEvokeWord(final MOB mob, String word)
+	public String getSkillInvokeWord(final MOB mob, String word)
 	{
 		if(mob==null)
 			return null;
@@ -790,7 +788,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public Ability getToEvoke(final MOB mob, final List<String> commands)
+	public Ability getSkillToInvoke(final MOB mob, final List<String> commands)
 	{
 		final String evokeWord=commands.get(0).toUpperCase();
 
@@ -899,10 +897,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public boolean preEvoke(final MOB mob, List<String> commands, final int secondsElapsed, final double actionsRemaining)
+	public boolean preInvokeSkill(final MOB mob, List<String> commands, final int secondsElapsed, final double actionsRemaining)
 	{
 		commands=new Vector<String>(commands);
-		final Ability evokableAbility=getToEvoke(mob,commands);
+		final Ability evokableAbility=getSkillToInvoke(mob,commands);
 		if(evokableAbility==null)
 		{
 			mob.tell(L("You don't know how to do that."));
@@ -919,9 +917,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public void evoke(final MOB mob, final Vector<String> commands)
+	public void invokeSkill(final MOB mob, final List<String> commands)
 	{
-		final Ability evokableAbility=getToEvoke(mob,commands);
+		final Ability evokableAbility=getSkillToInvoke(mob,commands);
 		if(evokableAbility==null)
 		{
 			mob.tell(L("You don't know how to do that."));
@@ -1092,13 +1090,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public boolean containsString(final String toSrchStr, final String srchStr)
+	public boolean containsString(final String toSrchStr, final String srchForStr)
 	{
-		if((toSrchStr==null)||(srchStr==null))
+		if((toSrchStr==null)||(srchForStr==null))
 			return false;
-		if((toSrchStr.length()==0)&&(srchStr.length()>0))
+		if((toSrchStr.length()==0)&&(srchForStr.length()>0))
 			return false;
-		char[] srchC=srchStr.toCharArray();
+		char[] srchC=srchForStr.toCharArray();
 		final char[] toSrchC=toSrchStr.toCharArray();
 		for(int c=0;c<srchC.length;c++)
 			srchC[c]=Character.toUpperCase(srchC[c]);

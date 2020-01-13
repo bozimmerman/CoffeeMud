@@ -160,7 +160,7 @@ public class Order extends StdCommand
 					continue;
 				}
 				if(O instanceof Ability)
-					O=CMLib.english().getToEvoke(target,new XVector<String>(commands));
+					O=CMLib.english().getSkillToInvoke(target,new XVector<String>(commands));
 				if(O instanceof Ability)
 				{
 					if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))

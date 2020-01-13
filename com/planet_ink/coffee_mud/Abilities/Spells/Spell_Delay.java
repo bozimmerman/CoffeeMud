@@ -142,7 +142,7 @@ public class Spell_Delay extends Spell
 			return false;
 		}
 		commands.add(0,"CAST");
-		shooter=CMLib.english().getToEvoke(mob,commands);
+		shooter=CMLib.english().getSkillToInvoke(mob,commands);
 		parameters=commands;
 		if((shooter==null)||((shooter.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL))
 		{

@@ -90,7 +90,7 @@ public class Spell_DiviningEye extends Spell
 
 		final String commandStr=CMParms.combine(commands);
 		commands.add(0,"CAST");
-		final Ability A=CMLib.english().getToEvoke(mob, commands);
+		final Ability A=CMLib.english().getSkillToInvoke(mob, commands);
 		if(A==null)
 		{
 			mob.tell(L("'@x1' does not refer to any diviner spell you know.",commandStr));

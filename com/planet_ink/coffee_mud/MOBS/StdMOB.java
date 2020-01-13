@@ -2090,7 +2090,7 @@ public class StdMOB implements MOB
 				else
 				if (O instanceof Ability)
 				{
-					if (!CMLib.english().preEvoke(this, commands, secondsElapsed, -diff))
+					if (!CMLib.english().preInvokeSkill(this, commands, secondsElapsed, -diff))
 					{
 						commandQue.remove(cmd);
 						return true;
@@ -2133,7 +2133,7 @@ public class StdMOB implements MOB
 				((Social) O).invoke(this, new XVector<String>(commands), null, false);
 			else
 			if (O instanceof Ability)
-				CMLib.english().evoke(this, new XVector<String>(commands));
+				CMLib.english().invokeSkill(this, new XVector<String>(commands));
 			else
 				CMLib.commands().handleUnknownCommand(this, commands);
 		}

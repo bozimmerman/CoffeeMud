@@ -182,7 +182,7 @@ public class Thief_Con extends ThiefSkill
 		else
 		{
 			if(O instanceof Ability)
-				O=CMLib.english().getToEvoke(target,commands);
+				O=CMLib.english().getSkillToInvoke(target,commands);
 			if(O instanceof Ability)
 			{
 				if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))

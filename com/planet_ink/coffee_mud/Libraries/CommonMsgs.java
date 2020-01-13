@@ -69,7 +69,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		if(command.size()>0)
 		{
-			final String word=CMLib.english().getAnEvokeWord(mob,command.get(0));
+			final String word=CMLib.english().getSkillInvokeWord(mob,command.get(0));
 			if(word!=null)
 				msgStr=L("You don't know how to @x1 that.",word.toLowerCase());
 			else
