@@ -1,5 +1,5 @@
 # Build 5.9.10 Release ?/?/2020
-  1. Wands now support enchantment type as a restrictive measure
+  1. Wands/etc have enchant type as a restriction, WandMaking/StaffMaking/Rodsmithing support.
   2. New PLAYERDEATH option: RETAIN -- to allow player mobs to keep their items on death.
   3. Scriptable GSTAT now supports BASESTRENGTH, BASEDEXTERITY, etc.. and BASEDAMAGE, etc..
   4. New skills: Shard Use and Relic Use for invoking divine and druidic wands and staffs.

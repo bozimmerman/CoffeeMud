@@ -3554,6 +3554,66 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return ""+((Wand)I).maxUses();
 				}
 			},
+			new AbilityParmEditorImpl("WAND_TYPE","MagicT",ParmType.CHOICES)
+			{
+				@Override
+				public int appliesToClass(final Object o)
+				{
+					return (o instanceof Wand) ? 2 : -1;
+				}
+
+				@Override
+				public int minColWidth()
+				{
+					return 3;
+				}
+
+				@Override
+				public boolean confirmValue(final String oldVal)
+				{
+					if(oldVal==null)
+						return false;
+					if(oldVal.length()==0)
+						return true;
+					return super.confirmValue(oldVal);
+				}
+
+				@Override
+				public String[] fakeUserInput(final String oldVal)
+				{
+					if((oldVal==null) || (oldVal.length()==0))
+						return new String[] { "ANY" };
+					return new String[] { oldVal };
+				}
+
+				@Override
+				public void createChoices()
+				{
+					choices = new PairVector<String,String>();
+					choices.add("ANY", "Any");
+					for(final String[] set : Wand.WandUsage.WAND_OPTIONS)
+						choices.add(set[0], CMStrings.capitalizeAllFirstLettersAndLower(set[1]));
+				}
+
+				@Override
+				public String defaultValue()
+				{
+					return "ANY";
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(I instanceof Wand)
+					{
+						final int ofType=((Wand)I).getEnchantType();
+						if((ofType<0)||(ofType>Ability.ACODE_DESCS_.length))
+							return "ANY";
+						return Ability.ACODE_DESCS_[ofType];
+					}
+					return "ANY";
+				}
+			},
 			new AbilityParmEditorImpl("DICE_SIDES","Dice.",ParmType.NUMBER)
 			{
 				@Override
@@ -5189,11 +5249,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
 	protected abstract class AbilityParmEditorImpl implements AbilityParmEditor
 	{
-		private final String ID;
-		private PairList<String,String> choices = null;
-		private final ParmType fieldType;
-		private String prompt = null;
-		private String header = null;
+		private final String	ID;
+		private final ParmType	fieldType;
+		private String			prompt	= null;
+		private String			header	= null;
+
+		protected PairList<String, String>	choices	= null;
 
 		public AbilityParmEditorImpl(final String fieldName, final String shortHeader, final ParmType type)
 		{

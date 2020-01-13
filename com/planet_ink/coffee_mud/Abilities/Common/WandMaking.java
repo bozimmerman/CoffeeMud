@@ -72,7 +72,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 		return
 		  "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+ "ITEM_BASE_VALUE\tITEM_CLASS_ID\tMAX_WAND_USES\tOPTIONAL_RESOURCE_OR_MATERIAL\t"
-		+ "OPTIONAL_RESOURCE_OR_MATERIAL_AMT\tCODED_SPELL_LIST";
+		+ "OPTIONAL_RESOURCE_OR_MATERIAL_AMT\tCODED_SPELL_LIST\tWAND_TYPE";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -85,6 +85,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int	RCP_EXTRAREQ	= 7;
 	protected static final int	RCP_EXTRAREQAMT	= 8;
 	protected static final int	RCP_SPELL		= 9;
+	protected static final int	RCP_WAND_TYPE	= 10;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -539,6 +540,9 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 			if((buildingI instanceof Wand)
 			&&(foundRecipe.get(RCP_MAXUSES).trim().length()>0))
 				((Wand)buildingI).setMaxUses(maxuses);
+			if((buildingI instanceof Wand)
+			&&(foundRecipe.size()>RCP_WAND_TYPE))
+				((Wand)buildingI).setEnchantType(CMParms.indexOf(Ability.ACODE_DESCS_,foundRecipe.get(RCP_WAND_TYPE)));
 			buildingI.recoverPhyStats();
 			buildingI.text();
 			buildingI.recoverPhyStats();
