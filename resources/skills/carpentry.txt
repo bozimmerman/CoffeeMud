@@ -13,7 +13,7 @@ a Pair of % Sabots	3	12	4	6	GenShoes	2:FEET	0	1	0
 small % stool	3	15	5	10	GenChair	CHAIR	1		0	
 % plate	4	10	8	8	GenContainer		5		131072	
 % shiv	4	10	3	3	GenWeapon	DAGGER	1	1	5	
-% staff	4	29	8	37	GenStaff	STAFF	2	6	1	
+% staff	4	29	8	37	GenWeapon	STAFF	2	6	1	
 small % shield	4	11	8	9	GenShield	HELD	1	6	0	
 % mug	5	10	1	1	GenEmptyDrink		5		1	
 % wheel	5	20	10	30	GenItem					
@@ -41,7 +41,7 @@ marionette	12	10	5	6	GenItem
 % six-sided die	13	40	1	8	GenDice		6			
 % stool	13	30	5	28	GenChair	CHAIR	1		0	
 a pair of % clogs	13	22	4	15	GenShoes	2:FEET	0	2	0	
-% quarterstaff	14	90	10	302	GenStaff	STAFF	2	17	4	
+% quarterstaff	14	90	10	302	GenWeapon	STAFF	2	17	4	
 % shield	14	12	12	24	GenShield	HELD	1	12	0	
 % four-sided die	15	50	1	11	GenDice		4			
 % gravy boat	15	15	1	2	GenEmptyDrink		5		1	
@@ -70,7 +70,7 @@ large % box	20	40	15	150	GenContainer	LID	300		0
 small % chair	23	15	10	35	GenChair	CHAIR	1		0	
 round % shield	24	18	12	54	GenShield	HELD	1	18	0	
 small % plate	24	10	1	2	GenContainer		3		131072	
-solid % quarterstaff	24	105	12	823	GenStaff	STAFF	2	28	7	
+solid % quarterstaff	24	105	12	823	GenWeapon	STAFF	2	28	7	
 % ladle	25	10	1	2	GenEmptyDrink		2		1	
 small % chest	25	50	10	145	GenContainer	LOCK	100		0	
 long % pipe	26	25	2	14	GenPipe	SMOKE	400		8192	
@@ -92,7 +92,7 @@ master % shiv	31	40	4	108	GenWeapon	DAGGER	1	5	40
 large % six-sided die	33	50	2	34	GenDice		6			
 % saucer	34	10	1	3	GenContainer		5		2048	
 large % shield	34	25	20	48	GenShield	HELD	1	22	0	
-master % staff	34	110	8	1368	GenStaff	STAFF	2	36	10	
+master % staff	34	110	8	1368	GenWeapon	STAFF	2	36	10	
 % chest	35	75	15	410	GenContainer	LOCK	250		0	
 large % four-sided die	35	60	2	43	GenDice		4			
 king-sized % bed	36	50	180	3250	GenBed	BED	4		0	
@@ -114,7 +114,7 @@ master % skewer	41	50	2	205	GenWeapon	DAGGER	1	7	53
 ornate % stool	43	60	10	255	GenChair	CHAIR	1		0	
 % heater shield	44	30	24	48	GenShield	HELD	1	24	0	
 % platter	44	15	3	18	GenContainer		20		0	
-master % quarterstaff	44	120	10	2331	GenStaff	STAFF	2	47	13	
+master % quarterstaff	44	120	10	2331	GenWeapon	STAFF	2	47	13	
 small % storage barrel	45	40	10	175	GenContainer	LID	100		0	
 four poster % bed	46	60	250	6850	GenBed	BED	4		0	
 % cabinet	47	90	60	2550	GenContainer	LID	100		0	
@@ -135,7 +135,7 @@ ornate % chair	53	45	15	355	GenChair	CHAIR	5		0
 ornate % club	53	130	20	2340	GenWeapon	BLUNT	1	36	15	
 % kite shield	54	40	30	52	GenShield	HELD	1	28	0	
 % serving tray	54	15	4	30	GenContainer		50		0	
-ornate % quarterstaff	54	150	12	3431	GenStaff	STAFF	2	57	16	
+ornate % quarterstaff	54	150	12	3431	GenWeapon	STAFF	2	57	16	
 % crate	55	35	25	475	GenContainer	LOCK	2500		0	
 % sleigh bed	56	60	300	10200	GenBed	BED	3		0	
 % vanity	57	120	40	2800	GenContainer	LOCK	50		0	
@@ -152,7 +152,7 @@ very long burning torch	61	25	2	30	GenLightSource		750
 decorative % stool	63	65	10	410	GenChair	CHAIR	1		0	
 % charger	64	10	2	12	GenContainer		10		0	
 % tower shield	64	40	40	45	GenShield	HELD	1	30	0	
-legendary % staff	64	165	8	4472	GenStaff	STAFF	2	65	19	
+legendary % staff	64	165	8	4472	GenWeapon	STAFF	2	65	19	
 decorative % chest	65	210	35	4850	GenContainer	LOCK	750		0	
 kingly % bed	66	75	350	17350	GenBed	BED	6		0	
 legendary % dagger	66	55	5	580	GenWeapon	DAGGER	1	12	85	
@@ -170,7 +170,7 @@ legendary % skewer	71	50	2	608	GenWeapon	DAGGER	1	12	92
 knights % armor rack	72	150	160	17400	GenContainer		1500		4096	Prop_NoPurge
 decorative % chair	73	70	50	2550	GenChair	CHAIR	5		0	
 % scutum	74	40	20	116	GenShield	HELD	1	34	0	
-legendary % quarterstaff	74	180	10	6110	GenStaff	STAFF	2	76	22	
+legendary % quarterstaff	74	180	10	6110	GenWeapon	STAFF	2	76	22	
 large % storage barrel	75	50	30	1125	GenContainer	LID	1500		0	
 canopy % bed	76	70	275	14600	GenBed	BED	4		0	
 legendary % mace	77	110	16	4377	GenWeapon	BLUNT	1	49	23	
@@ -187,7 +187,7 @@ ornate % hat rack	82	40	50	1625	GenContainer		30		4096
 % chaise	83	75	50	3125	GenChair	CHAIR	1		0	
 the ultimate % club	83	150	20	5292	GenWeapon	BLUNT	1	54	24	
 % cetratus	84	50	20	130	GenShield	HELD	1	36	0	
-the ultimate % quarterstaff	84	270	12	8004	GenStaff	STAFF	2	87	25	
+the ultimate % quarterstaff	84	270	12	8004	GenWeapon	STAFF	2	87	25	
 % hundred-sided die	85	100	1	86	GenDice		100			
 lordly % chest	85	150	40	5150	GenContainer	LOCK	1000		0	
 giant-sized % bed	86	80	500	34500	GenBed	BED	8		0	
