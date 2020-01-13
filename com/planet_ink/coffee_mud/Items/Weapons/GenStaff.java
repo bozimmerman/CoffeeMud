@@ -43,7 +43,8 @@ public class GenStaff extends GenWeapon implements Wand
 	}
 
 	protected String	secretWord	= CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
-	protected int		enchType	= -1;
+	protected String	spellText	= "";
+	protected int		enchType	= -1;;
 
 	public GenStaff()
 	{
@@ -115,9 +116,18 @@ public class GenStaff extends GenWeapon implements Wand
 	public void setSpell(final Ability theSpell)
 	{
 		readableText="";
+		spellText="";
 		if(theSpell!=null)
-			readableText=theSpell.ID();
-		secretWord=StdWand.getWandWord(readableText);
+			spellText=theSpell.ID();
+		secretWord=StdWand.getWandWord(spellText);
+	}
+
+	@Override
+	public Ability getSpell()
+	{
+		if((spellText==null)||(spellText.length()==0))
+			return null;
+		return CMClass.getAbility(spellText);
 	}
 
 	@Override
@@ -130,7 +140,15 @@ public class GenStaff extends GenWeapon implements Wand
 	public void setReadableText(final String text)
 	{
 		readableText = text;
-		secretWord = StdWand.getWandWord(readableText);
+		if(text.length()>0)
+		{
+			final Ability A=CMClass.getAbility(text);
+			if(A!=null)
+			{
+				readableText="";
+				setSpell(A);
+			}
+		}
 	}
 
 	@Override
@@ -146,14 +164,6 @@ public class GenStaff extends GenWeapon implements Wand
 		if(A!=null)
 			id="'A staff of "+A.name()+"' Charges: "+uses+"\n\r"+id;
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
-	}
-
-	@Override
-	public Ability getSpell()
-	{
-		if((readableText()==null)||(readableText().length()==0))
-			return null;
-		return CMClass.getAbility(readableText());
 	}
 
 	@Override
@@ -211,7 +221,7 @@ public class GenStaff extends GenWeapon implements Wand
 	}
 
 	// maxuses and secret word stats handled by genweapon, filled by readableText
-	private final static String[] MYCODES={"ENCHTYPE"};
+	private final static String[] MYCODES={"ENCHTYPE", "SPELL"};
 
 	@Override
 	public String getStat(final String code)
@@ -224,6 +234,11 @@ public class GenStaff extends GenWeapon implements Wand
 			if((getEnchantType()<0)||(getEnchantType()>=Ability.ACODE_DESCS_.length))
 				return "ANY";
 			return Ability.ACODE_DESCS_[getEnchantType()];
+		case 1:
+		{
+			final Ability A = getSpell();
+			return (A!=null) ? A.ID() : "";
+		}
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -240,6 +255,13 @@ public class GenStaff extends GenWeapon implements Wand
 		case 0:
 			setEnchantType(CMParms.indexOf(Ability.ACODE_DESCS_, val.toUpperCase().trim()));
 			break;
+		case 1:
+		{
+			final Ability A=CMClass.getAbility(val);
+			if(A!=null)
+				setSpell(A);
+			break;
+		}
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

@@ -1942,7 +1942,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				else
 				if(E instanceof Wand)
-					mob.tell(L("@x1. Assigned Spell Name: '@x2'.",""+showNumber,E.readableText()));
+				{
+					final Wand W=(Wand)E;
+					mob.tell(L("@x1. Assigned Spell Name: '@x2'.",""+showNumber,(W.getSpell()!=null)?W.getSpell().ID():""));
+				}
 				else
 				if(E instanceof DoorKey)
 				{
@@ -9655,6 +9658,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genSecretIdentity(mob,me,++showNumber,showFlag);
 			genGettable(mob,me,++showNumber,showFlag);
 			genInstrumentType(mob,me,++showNumber,showFlag);
+			if(me instanceof Wand)
+			{
+				promptStatChoices(mob,me,null,++showNumber,showFlag,"Enchant Type","ENCHTYPE", CMParms.toStringArraySingle(Wand.WandUsage.WAND_OPTIONS, 1));
+				this.genReadable2(mob, me, ++showNumber, showFlag);
+				this.genMaxUses(mob, (Wand)me, ++showNumber, showFlag);
+			}
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);

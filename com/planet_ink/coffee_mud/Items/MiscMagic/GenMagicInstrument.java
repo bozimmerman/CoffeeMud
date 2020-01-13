@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -9,16 +10,17 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.Basic.GenItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2001-2020 Bo Zimmerman
+   Copyright 2003-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -31,79 +33,66 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
-public class GenWand extends StdWand
+ */
+public class GenMagicInstrument extends GenItem implements MusicalInstrument, MiscMagic, Wand
 {
 	@Override
 	public String ID()
 	{
-		return "GenWand";
+		return "GenMagicInstrument";
 	}
 
-	protected String	readableText	= "";
-	protected String	spellText		= "";
-	protected int		maxUses			= Integer.MAX_VALUE;
-	protected int		enchType		= -1;
+	private InstrumentType	type		= InstrumentType.OTHER_INSTRUMENT_TYPE;
+	protected String		spellList	= "";
+	protected int			maxUses		= Integer.MAX_VALUE;
+	protected int			enchType	= -1;
 
-	public GenWand()
+	public GenMagicInstrument()
 	{
 		super();
-
-		setName("a wand");
-		setDisplayText("a simple wand is here.");
-		setDescription("A wand made out of wood.");
-		secretIdentity=null;
-		setUsesRemaining(0);
-		baseGoldValue=20000;
-		basePhyStats().setLevel(12);
-		CMLib.flags().setReadable(this,false);
-		material=RawMaterial.RESOURCE_OAK;
+		setName("a magical musical instrument");
+		basePhyStats.setWeight(12);
+		setDisplayText("a magical musical instrument sits here.");
+		setDescription("");
+		baseGoldValue = 15;
+		basePhyStats().setLevel(1);
 		recoverPhyStats();
+		setMaterial(RawMaterial.RESOURCE_OAK);
 	}
 
 	@Override
-	public boolean isGeneric()
+	public void recoverPhyStats()
 	{
-		return true;
+		CMLib.flags().setReadable(this, false);
+		super.recoverPhyStats();
+	}
+
+	@Override
+	public InstrumentType getInstrumentType()
+	{
+		return type;
+	}
+
+	@Override
+	public String getInstrumentTypeName()
+	{
+		return type.name();
 	}
 
 	@Override
 	public void setSpell(final Ability theSpell)
 	{
-		readableText="";
-		spellText="";
+		spellList="";
 		if(theSpell!=null)
-			spellText=theSpell.ID();
-		secretWord=StdWand.getWandWord(spellText);
+			spellList=theSpell.ID();
 	}
 
 	@Override
 	public Ability getSpell()
 	{
-		if((spellText==null)||(spellText.length()==0))
+		if((spellList==null)||(spellList.length()==0))
 			return null;
-		return CMClass.getAbility(spellText);
-	}
-
-	@Override
-	public String readableText()
-	{
-		return readableText;
-	}
-
-	@Override
-	public void setReadableText(final String text)
-	{
-		readableText = text;
-		if(text.length()>0)
-		{
-			final Ability A=CMClass.getAbility(text);
-			if(A!=null)
-			{
-				readableText="";
-				setSpell(A);
-			}
-		}
+		return CMClass.getAbility(spellList);
 	}
 
 	@Override
@@ -131,17 +120,102 @@ public class GenWand extends StdWand
 	}
 
 	@Override
+	public boolean checkWave(final MOB mob, final String message)
+	{
+		return StdWand.checkWave(mob, message, this);
+	}
+
+	@Override
+	public void waveIfAble(final MOB mob, final Physical afftarget, final String message)
+	{
+		StdWand.waveIfAble(mob, afftarget, message, this);
+	}
+
+
+	@Override
+	public String magicWord()
+	{
+		return "";
+	}
+
+	@Override
 	public String text()
 	{
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
 	@Override
-	public void setMiscText(final String newText)
+	public void setReadableText(final String text)
 	{
-		miscText="";
-		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverPhyStats();
+		super.setReadableText(text);
+		if(text.length()>0)
+		{
+			if(CMath.isInteger(text))
+			{
+				setInstrumentType(CMath.s_int(text));
+				super.setReadableText("");
+			}
+			else
+			{
+				final Ability A = CMClass.getAbility(text);
+				if(A != null)
+				{
+					setSpell(A);
+					super.setReadableText("");
+				}
+			}
+		}
+	}
+
+	@Override
+	public String readableText()
+	{
+		return super.readableText();
+	}
+
+	@Override
+	public void setInstrumentType(final int typeOrdinal)
+	{
+		if(typeOrdinal < InstrumentType.values().length)
+			type = InstrumentType.values()[typeOrdinal];
+	}
+
+	@Override
+	public void setInstrumentType(final InstrumentType newType)
+	{
+		if(newType != null)
+			type = newType;
+	}
+
+	@Override
+	public void setInstrumentType(final String newType)
+	{
+		if(newType != null)
+		{
+			final InstrumentType typeEnum = (InstrumentType)CMath.s_valueOf(InstrumentType.class, newType.toUpperCase().trim());
+			if(typeEnum != null)
+				type = typeEnum;
+		}
+	}
+
+	@Override
+	public boolean okMessage(final Environmental host, final CMMsg msg)
+	{
+		if (!super.okMessage(host, msg))
+			return false;
+		if(amWearingAt(Wearable.WORN_WIELD)
+		&&(msg.source()==owner())
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(msg.source().location()!=null)
+		&&((msg.tool()==null)
+			||(msg.tool()==this)
+			||(!(msg.tool() instanceof Weapon))
+			||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
+		{
+			msg.source().location().show(msg.source(), null, this, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> play(s) <O-NAME>."));
+			return false;
+		}
+		return true;
 	}
 
 	private final static String[] MYCODES={"ENCHTYPE", "SPELL"};
@@ -209,7 +283,7 @@ public class GenWand extends StdWand
 	{
 		if(codes!=null)
 			return codes;
-		final String[] MYCODES=CMProps.getStatCodesList(GenWand.MYCODES,this);
+		final String[] MYCODES=CMProps.getStatCodesList(GenMagicInstrument.MYCODES,this);
 		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
@@ -223,7 +297,7 @@ public class GenWand extends StdWand
 	@Override
 	public boolean sameAs(final Environmental E)
 	{
-		if(!(E instanceof GenWand))
+		if(!(E instanceof GenMagicInstrument))
 			return false;
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)

@@ -80,7 +80,10 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	{
 		super.setReadableText(text);
 		if(CMath.isInteger(text))
+		{
 			setInstrumentType(CMath.s_int(text));
+			readableText="";
+		}
 	}
 
 	@Override
@@ -88,7 +91,6 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	{
 		if(typeOrdinal < InstrumentType.values().length)
 			type = InstrumentType.values()[typeOrdinal];
-		readableText = ("" + type.ordinal());
 	}
 
 	@Override
@@ -96,7 +98,6 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	{
 		if(newType != null)
 			type = newType;
-		readableText = ("" + type.ordinal());
 	}
 
 	@Override
@@ -108,7 +109,6 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 			if(typeEnum != null)
 				type = typeEnum;
 		}
-		readableText = ("" + type.ordinal());
 	}
 
 	@Override

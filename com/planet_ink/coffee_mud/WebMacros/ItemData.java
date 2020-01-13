@@ -715,12 +715,25 @@ public class ItemData extends StdWebMacro
 						break;
 					case READABLESPELL: // readable spell
 					{
-						if((firstTime)&&(I instanceof Wand))
-							old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
+						int ofType=-1;
+						if(I instanceof Wand)
+						{
+							ofType = ((Wand)I).getEnchantType();
+							if(firstTime)
+								old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
+							else
+							{
+								final String ench = httpReq.getUrlParameter("ENCHTYPE");
+								if((ench != null) && (ench.length()>0))
+									ofType=CMParms.indexOf(Ability.ACODE_DESCS_, ench.toUpperCase().trim());
+							}
+						}
 						for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 						{
 							final Ability A=a.nextElement();
-							if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
+							if((A!=null)
+							&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON)
+							&&(((ofType<0)||((A.classificationCode()&Ability.ALL_ACODES)==ofType))))
 							{
 								final String cnam=A.ID();
 								str.append("<OPTION VALUE=\""+cnam+"\"");

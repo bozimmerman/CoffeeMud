@@ -627,6 +627,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				text.append(xml.convertXMLtoTag("ENCHTYPE", "ANY"));
 			else
 				text.append(xml.convertXMLtoTag("ENCHTYPE", Ability.ACODE_DESCS_[((Wand)E).getEnchantType()]));
+			final Ability spellA = ((Wand)E).getSpell();
+			text.append(xml.convertXMLtoTag("SPELL", (spellA==null)?"":spellA.ID()));
+		}
+
+		if(E instanceof MusicalInstrument)
+		{
+			text.append(xml.convertXMLtoTag("INSTRTYPE", ((MusicalInstrument)E).getInstrumentTypeName()));
 		}
 
 		if(E instanceof Book)
@@ -3923,6 +3930,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final String tim=xml.getValFromPieces(buf, "ENCHTYPE");
 			if((tim!=null)&&(tim.length()>0))
 				((Wand)E).setEnchantType(CMParms.indexOf(Ability.ACODE_DESCS_, tim.toUpperCase().trim()));
+			final String lee=xml.getValFromPieces(buf, "SPELL");
+			if((lee!=null)&&(lee.length()>0))
+			{
+				final Ability spellA=CMClass.getAbility(lee);
+				((Wand)E).setSpell(spellA);
+			}
+		}
+
+		if(E instanceof MusicalInstrument)
+		{
+			final String inStr=xml.getValFromPieces(buf,"INSTRTYPE");
+			if((inStr!=null)&&(inStr.length()>0))
+				((MusicalInstrument)E).setInstrumentType(inStr);
 		}
 
 		if(E instanceof LandTitle)
