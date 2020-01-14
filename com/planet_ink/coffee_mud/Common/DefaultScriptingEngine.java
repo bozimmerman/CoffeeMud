@@ -1922,7 +1922,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final int x = back.indexOf('%');
 					if (x >= 0)
 					{
-						middle = functify(monster, source, target, monster, primaryItem, secondaryItem, msg, tmp, back.substring(0, x).trim());
+						middle = functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, back.substring(0, x).trim());
 						back = back.substring(x + 1);
 					}
 					break;
