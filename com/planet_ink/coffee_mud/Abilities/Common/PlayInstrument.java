@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class PlayInstrument extends CommonSkill
+public class PlayInstrument extends CommonSkill implements Wand.WandUsage
 {
 	@Override
 	public String ID()
@@ -83,6 +83,12 @@ public class PlayInstrument extends CommonSkill
 
 	protected volatile String				lastInstrType	= "";
 	protected volatile MusicalInstrument	instrument		= null;
+
+	@Override
+	public int getEnchantType()
+	{
+		return Ability.ACODE_SONG;
+	}
 
 	@Override
 	public void unInvoke()
@@ -221,7 +227,7 @@ public class PlayInstrument extends CommonSkill
 			return (MusicalInstrument)mob.riding();
 		return null;
 	}
-	
+
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{

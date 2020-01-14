@@ -122,13 +122,28 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 	@Override
 	public boolean checkWave(final MOB mob, final String message)
 	{
-		return StdWand.checkWave(mob, message, this);
+		return (mob.isMine(me))
+				&& (message!=null)
+				&& (me.amBeingWornProperly());
 	}
 
 	@Override
-	public void waveIfAble(final MOB mob, final Physical afftarget, final String message)
+	public void waveIfAble(final MOB mob, final Physical afftarget, String message)
 	{
-		StdWand.waveIfAble(mob, afftarget, message, this);
+		if(message == null)
+			message = "";
+		if(message.equalsIgnoreCase("stop"))
+		{
+			Ability A=getSpell();
+			if(A!=null)
+			{
+				A=mob.fetchEffect(A.ID());
+				if(A!=null)
+					A.unInvoke();
+			}
+		}
+		else
+			StdWand.waveIfAble(mob, null, message, this);
 	}
 
 
@@ -218,7 +233,43 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 		return true;
 	}
 
-	private final static String[] MYCODES={"ENCHTYPE", "SPELL"};
+	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
+	{
+
+		if(msg.target()==this)
+		{
+			if(msg.targetMinor() == CMMsg.TYP_WAND_USE)
+			{
+				final MOB mob=msg.source();
+				waveIfAble(mob,null,msg.targetMessage());
+			}
+			if((msg.tool() instanceof Ability)
+			&&(msg.tool() instanceof Wand.WandUsage))
+			{
+				final MOB mob=msg.source();
+				boolean alreadyWanding=false;
+				final List<CMMsg> trailers =msg.trailerMsgs();
+				if(trailers!=null)
+				{
+					for(final CMMsg msg2 : trailers)
+					{
+						if((msg2.targetMinor()==CMMsg.TYP_WAND_USE)
+						&&(msg2.target() == this))
+							alreadyWanding=true;
+					}
+				}
+				final String said=msg.targetMessage();
+				if((!alreadyWanding)
+				&&(said!=null)
+				&&(checkWave(mob,said)))
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,said,CMMsg.NO_EFFECT,null));
+			}
+		}
+		super.executeMsg(host, msg);
+	}
+
+	private final static String[] MYCODES={"ENCHTYPE", "SPELL", "INSTTYPE"};
 
 	@Override
 	public String getStat(final String code)
@@ -236,6 +287,8 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 			final Ability A = getSpell();
 			return (A!=null) ? A.ID() : "";
 		}
+		case 2:
+			return this.getInstrumentTypeName();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -257,6 +310,11 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 			final Ability A=CMClass.getAbility(val);
 			if(A!=null)
 				setSpell(A);
+			break;
+		}
+		case 2:
+		{
+			this.setInstrumentType(val);
 			break;
 		}
 		default:

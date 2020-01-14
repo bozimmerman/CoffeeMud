@@ -130,4 +130,82 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 		}
 		return true;
 	}
+
+	private final static String[] MYCODES={"INSTTYPE"};
+
+	@Override
+	public String getStat(final String code)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			return CMLib.coffeeMaker().getGenItemStat(this,code);
+		switch(getCodeNum(code))
+		{
+		case 0:
+			return this.getInstrumentTypeName();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
+	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			CMLib.coffeeMaker().setGenItemStat(this,code,val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0:
+		{
+			this.setInstrumentType(val);
+			break;
+		}
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
+	}
+
+	@Override
+	protected int getCodeNum(final String code)
+	{
+		for(int i=0;i<MYCODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
+	private static String[]	codes	= null;
+
+	@Override
+	public String[] getStatCodes()
+	{
+		if(codes!=null)
+			return codes;
+		final String[] MYCODES=CMProps.getStatCodesList(GenInstrument.MYCODES,this);
+		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
+	}
+
+	@Override
+	public boolean sameAs(final Environmental E)
+	{
+		if(!(E instanceof GenInstrument))
+			return false;
+		final String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+		{
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+				return false;
+		}
+		return true;
+	}
 }

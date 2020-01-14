@@ -91,7 +91,6 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	{
 		if(typeOrdinal < InstrumentType.values().length)
 			type = InstrumentType.values()[typeOrdinal];
-		readableText = ("" + type.ordinal());
 	}
 
 	@Override
@@ -99,7 +98,6 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	{
 		if(newType != null)
 			type = newType;
-		readableText = ("" + type.ordinal());
 	}
 
 	@Override
@@ -111,9 +109,8 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 			if(typeEnum != null)
 				type = typeEnum;
 		}
-		readableText = ("" + type.ordinal());
 	}
-	
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
@@ -189,5 +186,83 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 			}
 		}
 		return super.okMessage(myHost,msg);
+	}
+
+	private final static String[] MYCODES={"INSTTYPE"};
+
+	@Override
+	public String getStat(final String code)
+	{
+		if(super.getCodeNum(code)>=0)
+			return super.getStat(code);
+		switch(getCodeNum(code))
+		{
+		case 0:
+			return this.getInstrumentTypeName();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
+	}
+
+	@Override
+	public void setStat(final String code, final String val)
+	{
+		if(super.getCodeNum(code)>=0)
+			super.setStat(code, val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0:
+		{
+			this.setInstrumentType(val);
+			break;
+		}
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
+	}
+
+	@Override
+	protected int getCodeNum(final String code)
+	{
+		for(int i=0;i<MYCODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
+		}
+		return super.getCodeNum(code);
+	}
+
+	private static String[]	codes	= null;
+
+	@Override
+	public String[] getStatCodes()
+	{
+		if(codes!=null)
+			return codes;
+		final String[] MYCODES=CMProps.getStatCodesList(GenPiano.MYCODES,this);
+		final String[] superCodes=CMParms.toStringArray(super.getStatCodes());
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
+	}
+
+	@Override
+	public boolean sameAs(final Environmental E)
+	{
+		if(!(E instanceof GenPiano))
+			return false;
+		final String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+		{
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+				return false;
+		}
+		return true;
 	}
 }
