@@ -302,7 +302,8 @@ public class PlayInstrument extends CommonSkill
 		}
 
 		final int duration=30;//getDuration(30,mob,1,3);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> start(s) playing <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),
+				L("<S-NAME> start(s) playing <T-NAME>."),CMParms.combineQuoted(commands,0),L("<S-NAME> start(s) playing <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			instrument = target;
