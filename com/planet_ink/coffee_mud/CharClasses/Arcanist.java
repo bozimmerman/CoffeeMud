@@ -296,9 +296,16 @@ public class Arcanist extends Thief
 		{
 			if(((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
 			&&(msg.target() instanceof Wand)
+			&&((((Wand)msg.target()).getEnchantType()<0)
+				||(((Wand)msg.target()).getEnchantType()==Ability.ACODE_SPELL))
 			&&(mob.charStats().getClassLevel(this)>=30))
 			{
-				final String message=L("<O-NAME> has @x1 charges remaining.",""+((Wand)msg.target()).usesRemaining());
+				final int maxCharges = ((Wand)msg.target()).usesRemaining();
+				final String message;
+				if((maxCharges < Integer.MAX_VALUE/2)&&(maxCharges > 0))
+					message=L("<O-NAME> has @x1/@x2 charges remaining.",""+((Wand)msg.target()).usesRemaining(),""+maxCharges);
+				else
+					message=L("<O-NAME> has @x1 charges remaining.",""+((Wand)msg.target()).usesRemaining());
 				msg.addTrailerMsg(CMClass.getMsg(mob, null, msg.target(), CMMsg.MSG_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, message));
 			}
 			else

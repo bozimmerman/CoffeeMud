@@ -152,7 +152,7 @@ public class Prayer_EnchantRelic extends Prayer
 		||(((StdAbility)wandThis).usageCost(null,true)[0]>45)
 		||(CMath.bset(wandThis.flags(), Ability.FLAG_CLANMAGIC)))
 		{
-			mob.tell(L("That spell is too powerful to enchant into anything."));
+			mob.tell(L("That is too powerful to enchant into anything."));
 			return false;
 		}
 
