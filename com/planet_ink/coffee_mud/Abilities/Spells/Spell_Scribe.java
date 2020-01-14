@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -110,6 +111,7 @@ public class Spell_Scribe extends Spell
 			final Ability A=a.nextElement();
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(A.name().equalsIgnoreCase(spellName))
 			&&(!A.ID().equals(this.ID())))
 				scrollThis=(Spell)A;
@@ -121,6 +123,7 @@ public class Spell_Scribe extends Spell
 				final Ability A=a.nextElement();
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+				&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 				&&(CMLib.english().containsString(A.name(),spellName))
 				&&(!A.ID().equals(this.ID())))
 					scrollThis=(Spell)A;
@@ -132,7 +135,9 @@ public class Spell_Scribe extends Spell
 			mob.tell(L("You don't know how to scribe '@x1'.",spellName));
 			return false;
 		}
-		if(CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID())>24)
+		if((CMLib.ableMapper().lowestQualifyingLevel(scrollThis.ID())>24)
+		||(((StdAbility)scrollThis).usageCost(null,true)[0]>45)
+		||(CMath.bset(scrollThis.flags(), Ability.FLAG_CLANMAGIC)))
 		{
 			mob.tell(L("That spell is too powerful to scribe."));
 			return false;
