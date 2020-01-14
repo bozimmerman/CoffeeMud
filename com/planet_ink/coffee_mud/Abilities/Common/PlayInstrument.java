@@ -204,11 +204,40 @@ public class PlayInstrument extends CommonSkill
 		return super.tick(ticking, tickID);
 	}
 
+	protected MusicalInstrument getInstrumentPlayed(final MOB mob)
+	{
+		for(int i=0;i<mob.numItems();i++)
+		{
+			final Item I=mob.getItem(i);
+			if((I!=null)
+			&&(I instanceof MusicalInstrument)
+			&&(I.container()==null)
+			&&(usingInstrument((MusicalInstrument)I,mob)))
+			{
+				return (MusicalInstrument) I;
+			}
+		}
+		if((mob.riding()!=null)&&(mob.riding() instanceof MusicalInstrument))
+			return (MusicalInstrument)mob.riding();
+		return null;
+	}
+	
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
+		{
+			final MusicalInstrument target=this.getInstrumentPlayed(mob);
+			if((target != null)
+			&&(usingInstrument(target, mob))
+			&&(mob.fetchEffect(ID())==null))
+			{
+				final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),null,CMParms.combineQuoted(commands,0),null);
+				if(mob.location().okMessage(mob,msg))
+					mob.location().send(mob, msg);
+			}
 			return true;
+		}
 
 		if((commands.size()>0)&&(commands.get(0).equalsIgnoreCase("LIST")))
 		{
@@ -244,20 +273,7 @@ public class PlayInstrument extends CommonSkill
 			target=(MusicalInstrument)mob.riding();
 		}
 		if(target==null)
-		{
-			for(int i=0;i<mob.numItems();i++)
-			{
-				final Item I=mob.getItem(i);
-				if((I!=null)
-				&&(I instanceof MusicalInstrument)
-				&&(I.container()==null)
-				&&(usingInstrument((MusicalInstrument)I,mob)))
-				{
-					target = (MusicalInstrument) I;
-					break;
-				}
-			}
-		}
+			target=this.getInstrumentPlayed(mob);
 		if(target==null)
 		{
 			commonTell(mob,L("You need an instrument to play one!"));
