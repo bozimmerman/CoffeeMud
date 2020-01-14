@@ -99,6 +99,7 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ScrollScribing",0,false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_SenseLife",true);

@@ -146,6 +146,7 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Christen",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Disown",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_ReadPrayer",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ScrollScribing",0,false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CauseLight",false);

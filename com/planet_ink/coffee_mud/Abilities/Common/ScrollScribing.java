@@ -479,11 +479,17 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			{
 				if(((Scroll)buildingI).usesRemaining()>0)
 				{
+					int theSpellType = theSpell.classificationCode()&Ability.ALL_ACODES;
 					for(final Ability spell: ((Scroll)buildingI).getSpells())
 					{
 						if(spell.ID().equals(theSpell.ID()))
 						{
 							mob.tell(L("That spell is already scribed onto @x1.",buildingI.name()));
+							return false;
+						}
+						if((spell.classificationCode()&Ability.ALL_ACODES)!=theSpellType)
+						{
+							mob.tell(L("This scroll is not suitable for receiving that kind of writing."));
 							return false;
 						}
 					}

@@ -159,6 +159,17 @@ public class Spell_Scribe extends Spell
 				return false;
 			}
 		}
+		boolean arcane=true;
+		for(final Ability A : ((Scroll)target).getSpells())
+		{
+			if((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SPELL)
+				arcane=false;
+		}
+		if(!arcane)
+		{
+			mob.tell(L("This scroll is not suitable for receiving arcane markings."));
+			return false;
+		}
 
 		int level=25;
 		for(final Ability A : spells)

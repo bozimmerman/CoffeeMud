@@ -101,6 +101,7 @@ public class Purist extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_TurnUndead",0,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Hammer",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Marry",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ScrollScribing",0,false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",true);
