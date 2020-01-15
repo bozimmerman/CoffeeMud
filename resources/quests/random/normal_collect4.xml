@@ -17,7 +17,7 @@ limitations under the License.
 
 See guides/RandomAreas.html for information about documents of this type.
 
-template: normal_colllect4
+template: normal_collect4
 vars: 
     template(quest_template)
     area_name(area name)

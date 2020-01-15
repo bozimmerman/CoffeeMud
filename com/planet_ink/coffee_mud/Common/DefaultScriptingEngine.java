@@ -9896,6 +9896,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(tt==null)
 							return null;
 					}
+					this.lastLoaded = null;
 					String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
 					final int containerIndex=name.toUpperCase().indexOf(" INTO ");
 					Container container=null;
@@ -10119,6 +10120,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(tt==null)
 							return null;
 					}
+					this.lastLoaded = null;
 					String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
 					int price=-1;
 					if((price = name.indexOf(" PRICE="))>=0)

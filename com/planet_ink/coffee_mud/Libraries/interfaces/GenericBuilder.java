@@ -146,7 +146,10 @@ public interface GenericBuilder extends CMLibrary
 	public enum GenPhysBonusFakeStats
 	{
 		DISPOSITIONSTR,
-		SENSESSTR
+		SENSESSTR,
+		CURRENCY,
+		CURRENCY_NAME,
+		DENOMINATION_NAME
 	}
 
 	public String getGenMOBTextUnpacked(MOB mob, String newText);

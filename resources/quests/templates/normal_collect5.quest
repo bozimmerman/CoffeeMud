@@ -1,0 +1,239 @@
+#!QUESTMAKER_START_SCRIPT Normal Collect #5
+#An existing mob in your world needs some amount of local currency brought to him/her. 
+#A reward is given upon completion of the task and returning the items to the announcer.
+#
+#!QUESTMAKER_PAGE Quest Name/Criteria
+#Enter the unique name and player criteria for your new quest.
+#
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_collect_4
+#
+#Quest Name:
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=Normal Collect #4
+#
+#Quest-Player Criterium:
+#You may leave this entry blank, or enter a Zapper Mask to describe what
+#kinds of players may participate in this quest.  You can use this to set
+#race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#!QUESTMAKER_PAGE Specify the Announcer
+#The Announcer is the mob who will be wanting the items collected. This must
+#be an existing mob in your world.  
+#
+#Announcer Area/Room: 
+#Specify below the name of the area that your announcer mob will be located
+#in and/or the room in which the mob can be found.  You may leave both blank
+#to force the quest manager to find the mob somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.
+#Use double-quotes around multi-word areas and room ids/names.
+#  
+#Announcer Area:
+#$ANNOUNCER_AREA=($AREA)
+#Announcer Room ID:
+#$ANNOUNCER_ROOM=($ROOMID)
+#
+#Announcer mob name: 
+#Specify the name of the mob who will act as the announcer mob.  
+#Use double-quotes around multi-word names.
+#If you specified an area or room above, then the mob must be located there.
+#You may optionally have the quest manager select a 'random' mob by entering
+#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#ZAPPERMASKS for information on zapper mask syntax).
+#Remember, if the quest manager can not find your mob, the quest will not
+#be started.
+#$ANNOUNCER_NAME=$NAME
+#
+#!QUESTMAKER_PAGE Announcer speaches
+#Specify here some optional things to say for the announcer before and after the quest.
+#
+#Announcer Notification: 
+#Specify some additional bit of speech the announcer mob will say to players when they enter the room.
+#$QUEST_NOTIFYSTRING=($LONG_STRING)=I have some things I need collected
+#
+#Announcer Instructions: 
+#Specify some additional bit of speech the announcer mob will say to players when the quest is accepted.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to collect some things.  They are somewhere around somewhere.
+#
+#Announcer Extra Announcement: 
+#Leave blank, or specify a channel that the announcer will also give his notification on.
+#$QUEST_ANNOUNCECHANNEL=($STRING)=
+#
+#Announcer success:
+#Select what tthe announcer will say when a player returns to him after collecting the items.
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations!
+#
+#!QUESTMAKER_PAGE Specify the Amount and Type of money
+#The money, denoted in the announcers local curreny, to collect..
+#
+#Amount of money: 
+#The total amount of money required to complete the quest.
+#$NUM_COLLECTABLES=($EXPRESSION)=100
+#
+#Wrong Collectable speech
+#Specify what the announcer says to players who HAVE accepted the quest, but give the announcer
+#something other than what is desired.
+#$WRONG_COLLECTABLE_SAY=$STRING=This is not what I asked for.
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for bringing back the items.
+#
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
+#
+#!QUESTMAKER_END_SCRIPT Normal Collect #5
+
+set name $QUEST_ID
+set display $QUEST_NAME
+set author $#AUTHOR
+
+set wait 1
+set interval 1
+quiet
+
+set area $ANNOUNCER_AREA
+set room $ANNOUNCER_ROOM
+set mobgroup
+set mob reselect $ANNOUNCER_NAME
+give stat keyplayer true
+give script LOAD=$QUEST_ID_announcer.script
+
+set duration 0
+
+<?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_announcer.script</NAME>
+<DATA>
+ONCE_PROG 100
+	if EVAL('$QUEST_ANNOUNCECHANNEL' != '')
+		$QUEST_ANNOUNCECHANNEL $QUEST_NOTIFYSTRING -- Come see me for more information.
+	endif
+~
+
+ALL_GREET_PROG 100
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) AND !QUESTSCRIPTED($n *)
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			sayto "$n" $QUEST_NOTIFYSTRING -- just say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
+		endif
+	endif
+~
+
+BRIBE_PROG 1
+	IF QUESTSCRIPTED($n *) AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		mpsetvar $n $QUEST_ID_COLLECTED +$%GOLDAMT($o)%
+		mpjunk $o
+		if var($n $QUEST_ID_COLLECTED >= $NUM_COLLECTABLES)
+			if EVAL('$EXP' != '')
+				mpexp $n $EXP
+			endif
+			if EVAL('$FACTION' != '')
+				mpfaction $n $FACTION +$NUMFACTION
+			endif
+			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+				mpoload QuestPoint
+				give "a quest point" "$n"
+			endif
+			mpoload fromfile $QUEST_ID_rewarditems.xml any
+			if EVAL('$b' != '')
+				give "$b" "$n"
+			endif
+			mpquestwin $n *
+			sayto $n $QUEST_WINSPEECH_TEXT
+			mpendquest $n
+			mpqset * STATISTICS SUCCESS
+			IF EVAL('$MULTIPLE' == 'PREV')
+				mptransfer $n $n
+			ENDIF
+		else
+			sayto "$n" That's $<$n $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES.
+			mpsetvar $i PROGRESS Given: $<$i $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES
+		endif
+	else
+		sayto "$n" What's this?
+		give "$o" "$n"
+	endif
+~
+
+GIVE_PROG all
+	IF QUESTSCRIPTED($n *) AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if !ISLIKE($o '-JAVACLASS +Coins +GenCoins') or EVAL('$%GSTAT($o CURRENCY)%' != '$%GSTAT($i CURRENCY)%')
+			sayto "$n" $WRONG_COLLECTABLE_SAY
+			give "$o" "$n"
+		endif
+	endif
+~
+SPEECH_PROG p i accept $QUEST_NAME
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !QUESTSCRIPTED($n *)
+				sayto "$n" $QUEST_INSTRUCTIONSSTRING
+				mpqset * STATISTICS ACCEPTED
+				mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+			endif
+		endif
+	endif
+~
+
+SPEECH_PROG p i accept
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !QUESTSCRIPTED($n *)
+				sayto "$n" $QUEST_INSTRUCTIONSSTRING
+				mpqset * STATISTICS ACCEPTED
+				mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+			endif
+		endif
+	endif
+~
+</DATA></FILE>
+<FILE><NAME>$QUEST_ID_playertrack.script</NAME>
+<DATA>
+ONCE_PROG 100
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+	if var($i $QUEST_ID_COLLECTED = '')
+		mpsetvar $i $QUEST_ID_COLLECTED 0
+	endif
+	mpsetvar $i PROGRESS Given: $<$i $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES
+~
+
+RAND_PROG 25
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	else
+		if QVAR(* REMAINING == '')
+			MPENDQUEST $i
+		else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+~
+
+QUEST_TIME_PROG * -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+QUEST_TIME_PROG * 1
+	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
+~
+</DATA></FILE>

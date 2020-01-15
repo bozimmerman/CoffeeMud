@@ -201,6 +201,13 @@ ${SELECT:any\name from (SELECT: . from $item_junk)}
 	<STRING define="verb_collected=retrieved">retrieve</STRING>
 </STRING>
 
+<STRING ID="verb_donated" predefine="verb_donate=$verb_donate">$verb_donated</STRING>
+<STRING ID="verb_donate" define="verb_donate" SELECT="Any-1">
+	<STRING define="verb_donated=donated">donate</STRING>
+	<STRING define="verb_donated=paid">pay</STRING>
+	<STRING define="verb_donated=given">give</STRING>
+</STRING>
+
 <STRING ID="verb_returned" predefine="verb_return=$verb_return">$verb_returned</STRING>
 <STRING ID="verb_return" define="verb_return" SELECT="Any-1">
 	<STRING define="verb_returned=returned">return</STRING>

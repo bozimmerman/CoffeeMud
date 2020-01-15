@@ -3200,6 +3200,23 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final StringBuilder str=new StringBuilder("");
 			switch(fakePhyStat)
 			{
+			case CURRENCY:
+				str.append(CMLib.beanCounter().getCurrency(P));
+				break;
+			case CURRENCY_NAME:
+			{
+				final String currency=CMLib.beanCounter().getCurrency(P);
+				if((currency==null)||(currency.length()==0))
+					str.append(L("currency"));
+				else
+					str.append(currency.toLowerCase());
+				break;
+			}
+			case DENOMINATION_NAME:
+			{
+				str.append(CMLib.beanCounter().getDenominationName(CMLib.beanCounter().getCurrency(P)));
+				break;
+			}
 			case DISPOSITIONSTR:
 			{
 				final int disposition=(current)?P.phyStats().disposition():P.basePhyStats().disposition();
@@ -3495,6 +3512,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			switch(fakePhyStat)
 			{
+			case CURRENCY:
+			case CURRENCY_NAME:
+			case DENOMINATION_NAME:
+				break;
 			case DISPOSITIONSTR:
 				{
 					int newDisposition=0;

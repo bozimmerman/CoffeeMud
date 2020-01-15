@@ -29,6 +29,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<string condition="$template='random'"                                               >normal_collect2</string>
 	<string condition="$template='random'"                                               >normal_collect3</string>
 	<string condition="$template='random'"                                               >normal_collect4</string>
+	<string condition="$template='random'"                                               >normal_collect5</string>
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_escort1</string>
 	<string condition="$template='random'"                                               >normal_escort2</string>
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_delivery1</string>
@@ -55,6 +56,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<QUEST load="/resources/quests/random/normal_collect2.xml" CONDITION="$quest_template='normal_collect2'"/>
 	<QUEST load="/resources/quests/random/normal_collect3.xml" CONDITION="$quest_template='normal_collect3'"/>
 	<QUEST load="/resources/quests/random/normal_collect4.xml" CONDITION="$quest_template='normal_collect4'"/>
+	<QUEST load="/resources/quests/random/normal_collect5.xml" CONDITION="$quest_template='normal_collect5'"/>
 	<QUEST load="/resources/quests/random/normal_delivery1.xml" CONDITION="$quest_template='normal_delivery1'"/>
 	<QUEST load="/resources/quests/random/normal_delivery2.xml" CONDITION="$quest_template='normal_delivery2'"/>
 	<QUEST load="/resources/quests/random/normal_delivery3.xml" CONDITION="$quest_template='normal_delivery3'"/>
