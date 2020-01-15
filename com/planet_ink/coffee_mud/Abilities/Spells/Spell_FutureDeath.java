@@ -104,7 +104,7 @@ public class Spell_FutureDeath extends Spell
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAMEPOSS> eyes go wide!"));
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> eyes go wide!"));
 					final MOB t=target;
 					final MOB m=mob;
 					CMLib.threads().scheduleRunnable(new Runnable() {
