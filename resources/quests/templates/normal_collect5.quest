@@ -174,7 +174,7 @@ BRIBE_PROG 1
 
 GIVE_PROG all
 	IF QUESTSCRIPTED($n *) AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
-		if !ISLIKE($o '-JAVACLASS +Coins +GenCoins') or EVAL('$%GSTAT($o CURRENCY)%' != '$%GSTAT($i CURRENCY)%')
+		if !ISLIKE($o '-JAVACLASS +Coins +GenCoins +StdCoins') or EVAL('$%GSTAT($o CURRENCY)%' != '$%GSTAT($i CURRENCY)%')
 			sayto "$n" $WRONG_COLLECTABLE_SAY
 			give "$o" "$n"
 		endif

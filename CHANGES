@@ -6,7 +6,7 @@
   5. New prayers: enchant relic, recharge relic, read prayer, clarify prayer
   6. New chants: Enchant Shards, Recharge Shards, Read Runes, Refresh Runes
   7. New songs: Restore Music, Enchant Instrument, Recharge Instrument, Read Music
-  8. New questmaker templates: normal_collect5
+  8. New questmaker templates: competitive/normal_collect5, competitive/normal_delivery4
 
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.
