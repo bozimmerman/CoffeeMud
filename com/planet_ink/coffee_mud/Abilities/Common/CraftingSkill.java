@@ -194,7 +194,7 @@ public class CraftingSkill extends GatheringSkill
 		}
 		return V;
 	}
-	
+
 	protected String determineFinalResourceName(final int backupMaterial, final MaterialLibrary.DeadResourceRecord res1, final MaterialLibrary.DeadResourceRecord res2)
 	{
 		if((res1 != null)&&(res1.subType.length()>0))
@@ -1036,7 +1036,77 @@ public class CraftingSkill extends GatheringSkill
 				recipeName=recipeName.substring(lastPeriodDex+1);
 			}
 		}
-
+		if(matches.size()==0)
+		{
+			if(CMath.isInteger(recipeName))
+			{
+				int level=CMath.s_int(recipeName);
+				if(level < 0)
+				{
+					level *= -1;
+					for(int r=0;r<recipes.size();r++)
+					{
+						final List<String> V=recipes.get(r);
+						if(V.size()>0)
+						{
+							final int rcpLevel = CMath.s_int(V.get(RCP_LEVEL));
+							if(rcpLevel <= level)
+								matches.add(V);
+						}
+					}
+				}
+				else
+				{
+					for(int r=0;r<recipes.size();r++)
+					{
+						final List<String> V=recipes.get(r);
+						if(V.size()>0)
+						{
+							final int rcpLevel = CMath.s_int(V.get(RCP_LEVEL));
+							if(rcpLevel == level)
+								matches.add(V);
+						}
+					}
+				}
+			}
+			else
+			if((recipeName.length()>1)
+			&&(recipeName.endsWith("+")||recipeName.endsWith("-"))
+			&&(CMath.isInteger(recipeName.substring(0,recipeName.length()-1).trim())))
+			{
+				final int level=CMath.s_int(recipeName.substring(0,recipeName.length()-1).trim());
+				for(int r=0;r<recipes.size();r++)
+				{
+					final List<String> V=recipes.get(r);
+					if(V.size()>0)
+					{
+						final int rcpLevel = CMath.s_int(V.get(RCP_LEVEL));
+						if(rcpLevel >= level)
+							matches.add(V);
+					}
+				}
+			}
+			else
+			if((recipeName.length()>2)
+			&&(recipeName.indexOf('-')>0)
+			&&(CMath.isInteger(recipeName.substring(0,recipeName.indexOf('-')).trim()))
+			&&(CMath.isInteger(recipeName.substring(recipeName.indexOf('-')+1).trim())))
+			{
+				final int mlevel=CMath.s_int(recipeName.substring(0,recipeName.indexOf('-')).trim());
+				final int xlevel=CMath.s_int(recipeName.substring(recipeName.indexOf('-')+1).trim());
+				for(int r=0;r<recipes.size();r++)
+				{
+					final List<String> V=recipes.get(r);
+					if(V.size()>0)
+					{
+						final int rcpLevel = CMath.s_int(V.get(RCP_LEVEL));
+						if((rcpLevel >= mlevel)
+						&&(rcpLevel <= xlevel))
+							matches.add(V);
+					}
+				}
+			}
+		}
 		if(matches.size()==0)
 		{
 			for(int r=0;r<recipes.size();r++)
