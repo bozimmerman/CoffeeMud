@@ -2799,7 +2799,8 @@ public class CMSecurity
 		LANGUAGES("language system"),
 		COMBATSTATS("player combat stats"),
 		MQLCACHE("parsed mql cache"),
-		ITEMGENCACHE("generated item cache")
+		ITEMGENCACHE("generated item cache"),
+		AUTOMOODS("automatic mood changes")
 		;
 		private final String desc;
 

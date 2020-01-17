@@ -41,7 +41,7 @@ public class Gait extends StdAbility
 		return "Gait";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Mood");
+	private final static String	localizedName	= CMLib.lang().L("Gait");
 
 	@Override
 	public String name()

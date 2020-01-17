@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -403,7 +404,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 				final long divisor = CMProps.getTickMillis() * CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY);
 				daysRemaining = (end - System.currentTimeMillis()) / divisor; // down to days
 				monthsRemaining = daysRemaining / C.getDaysInMonth(); // down to months
-				if (CMLib.dice().roll(1, 200, 0) == 1)
+				if ((CMLib.dice().roll(1, 200, 0) == 1)
+				&&(!CMSecurity.isDisabled(DisFlag.AUTOMOODS)))
 				{
 					final Ability A = CMClass.getAbility("Mood");
 					if (A != null)
