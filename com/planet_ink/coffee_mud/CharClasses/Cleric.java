@@ -137,7 +137,7 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_RelicUse",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Prayer_Marry",false);

@@ -154,7 +154,7 @@ public class Minstrel extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Play_Background",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_TuneInstrument",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_RelicUse",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Play_Cymbals",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Play_Melody",true);
 
