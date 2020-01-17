@@ -152,7 +152,10 @@ public class StdMOB implements MOB
 	{
 		super();
 		// CMClass.bumpCounter(this,CMClass.CMObjectType.MOB);//removed for mem & perf
-		baseCharStats().setMyRace(CMClass.getRace("Human"));
+		Race R=CMClass.getRace("Human");
+		if(R==null)
+			R=CMClass.getRace("StdRace");
+		baseCharStats().setMyRace(R);
 		basePhyStats().setLevel(1);
 		xtraValues = CMProps.getExtraStatCodesHolder(this);
 	}
