@@ -334,7 +334,7 @@ CNCLMSG_PROG ENTER ALL
 	endif
 ~
 
-GIVING_PROG all
+GIVING_PROG p '$[1 *]'
 	if EVAL($o == '$[1 *]') AND QUESTMOB($t *) AND EVAL('${1 *}' != $t)
 		mpargset $g $%INROOM($t)%
 		mpforce $t mpjunk $o
