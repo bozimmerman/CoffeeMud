@@ -499,6 +499,19 @@ public class CMMap extends StdLibrary implements WorldMap
 		return getDistanceFrom(O1.coordinates(),O2.coordinates());
 	}
 
+	protected BigDecimal getBigDistanceFrom(final long[] coord1, final long[] coord2)
+	{
+		final BigDecimal coord_0 = BigDecimal.valueOf(coord1[0]).subtract(BigDecimal.valueOf(coord2[0]));
+		final BigDecimal coord_0m = coord_0.multiply(coord_0);
+		final BigDecimal coord_1 = BigDecimal.valueOf(coord1[1]).subtract(BigDecimal.valueOf(coord2[1]));
+		final BigDecimal coord_1m = coord_1.multiply(coord_1);
+		final BigDecimal coord_2 = BigDecimal.valueOf(coord1[2]).subtract(BigDecimal.valueOf(coord2[2]));
+		final BigDecimal coord_2m = coord_2.multiply(coord_2);
+		final BigDecimal coords_all = coord_0m.add(coord_1m).add(coord_2m);
+		final BigDecimal val = BigDecimal.valueOf(Math.sqrt(coords_all.doubleValue()));
+		return val;
+	}
+
 	@Override
 	public String getSectorName(final long[] coordinates)
 	{
@@ -4308,11 +4321,11 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public double getMinDistanceFrom(final long[] prevPos, final long[] curPosition, final long[] objPos)
 	{
-		final BigDecimal currentDistance=BigDecimal.valueOf(getDistanceFrom(curPosition, objPos));
+		final BigDecimal currentDistance=getBigDistanceFrom(curPosition, objPos);
 		if(Arrays.equals(prevPos, curPosition))
 			return currentDistance.doubleValue();
-		final BigDecimal prevDistance=BigDecimal.valueOf(getDistanceFrom(prevPos, objPos));
-		final BigDecimal baseDistance=BigDecimal.valueOf(getDistanceFrom(prevPos, curPosition));
+		final BigDecimal prevDistance=getBigDistanceFrom(prevPos, objPos);
+		final BigDecimal baseDistance=getBigDistanceFrom(prevPos, curPosition);
 		if(baseDistance.compareTo(currentDistance.add(prevDistance))>=0)
 		{
 			//Log.debugOut("0:prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
@@ -4327,14 +4340,15 @@ public class CMMap extends StdLibrary implements WorldMap
 		//Log.debugOut("prevDistance="+prevDistance.longValue()+", baseDistance="+baseDistance.longValue()+", currentDistance="+currentDistance.longValue());
 
 		final BigDecimal semiPerimeter=currentDistance.add(prevDistance).add(baseDistance).divide(TWO, RoundingMode.HALF_UP);
-		final BigDecimal areaOfTriangle=BigDecimal.valueOf(CMath.sqrt(CMath.abs(
-				semiPerimeter.multiply(semiPerimeter.subtract(currentDistance))
-							.multiply(semiPerimeter.subtract(baseDistance))
-							.multiply(semiPerimeter.subtract(prevDistance)).doubleValue())));
+		final BigDecimal partOfTriangle=semiPerimeter.multiply(semiPerimeter.subtract(currentDistance))
+													.multiply(semiPerimeter.subtract(baseDistance))
+													.multiply(semiPerimeter.subtract(prevDistance));
+
+		final BigDecimal areaOfTriangle=BigDecimal.valueOf(Math.floor(Math.sqrt((partOfTriangle.abs()).doubleValue())));
 		//Log.debugOut("semiPerimeter="+semiPerimeter.longValue()+", areaOfTriangle="+areaOfTriangle.doubleValue());
 		if(areaOfTriangle.equals(ZERO))
 		{
-			if (Math.abs(semiPerimeter.subtract(baseDistance).doubleValue()) <= 1)
+			if (semiPerimeter.subtract(baseDistance).abs().doubleValue() <= 1)
 				return 0;
 			else
 				return Math.min(prevDistance.doubleValue(), currentDistance.doubleValue());

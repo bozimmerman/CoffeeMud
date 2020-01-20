@@ -202,7 +202,7 @@ public class Test extends StdCommand
 		}
 		return html;
 	}
-	
+
 	public String copyYahooGroupMsg(final MOB mob, int lastMsgNum) throws Exception
 	{
 		long numTimes = 9999999;
@@ -464,7 +464,7 @@ public class Test extends StdCommand
 			if(msgObj.containsKey("from"))
 			{
 				email=CMLib.coffeeFilter().colorOnlyFilter(msgObj.getCheckedString("from").trim(), null);
-				int dex=email.lastIndexOf('<');
+				final int dex=email.lastIndexOf('<');
 				if(dex<0)
 					email="";
 				else
@@ -3189,7 +3189,7 @@ public class Test extends StdCommand
 					{{0,0,0},{10000},{179,0},{5000,0,-5000},{0}}, // 71
 
 					{{0,0,0},{42},{179,1},{620000,0,0},{0}}, // 72
-					{{9735, -1357, 707161},{29979245},{0,0},{2000, 1000, 0},{0}}, // 73
+					{{9735, -1357, 707161},{29979245},{5,0},{2000, 1000, 0},{0}}, // 73
 					{{9735, -1357, 707161},{29979245},{0,0},{20000, 10000, 5030},{1}}, // 74
 				};
 				for(int li=0;li<tests.length;li++)
