@@ -12750,12 +12750,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return true;
 	}
 
-	protected String standardTriggerCheck(final DVector script, String[] t, final Environmental E)
+	protected String standardTriggerCheck(final DVector script, String[] t, final Environmental E,
+			final PhysicalAgent scripted, final MOB source, final Environmental target, final MOB monster, final Item primaryItem, final Item secondaryItem, final Object[] tmp)
 	{
 		if(E==null)
 			return null;
+		final boolean[] dollarChecks;
 		if(t==null)
+		{
 			t=parseBits(script,0,"CT");
+			dollarChecks=new boolean[t.length];
+			for(int i=1;i<t.length;i++)
+				dollarChecks[i] = t[i].indexOf('$')>=0;
+			script.setElementAt(0, 3, dollarChecks);
+		}
+		else
+			dollarChecks=(boolean[])script.elementAt(0, 3);
 		final String NAME=E.Name().toUpperCase();
 		if((t[1].length()==0)
 		||(t[1].equals("ALL"))
@@ -12766,18 +12776,28 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return t[1];
 		for(int i=1;i<t.length;i++)
 		{
-			if(t[i].equals("P") && (i < t.length-1))
+			final String word;
+			if (dollarChecks[i])
+				word=this.varify(source, target, scripted, monster, primaryItem, secondaryItem, NAME, tmp, t[i]);
+			else
+				word=t[i];
+			if(word.equals("P") && (i < t.length-1))
 			{
-				if( t[i+1].equalsIgnoreCase(NAME)
-				|| t[i+1].equalsIgnoreCase("ALL"))
-					return t[i];
+				final String arg;
+				if (dollarChecks[i+1])
+					arg=this.varify(source, target, scripted, monster, primaryItem, secondaryItem, NAME, tmp, t[i+1]);
+				else
+					arg=t[i+1];
+				if( arg.equalsIgnoreCase(NAME)
+				|| arg.equalsIgnoreCase("ALL"))
+					return word;
 				i++;
 			}
 			else
-			if(((" "+NAME+" ").indexOf(" "+t[i]+" ")>=0)
-			||(E.ID().equalsIgnoreCase(t[i]))
-			||(t[i].equalsIgnoreCase("ALL")))
-				return t[i];
+			if(((" "+NAME+" ").indexOf(" "+word+" ")>=0)
+			||(E.ID().equalsIgnoreCase(word))
+			||(word.equalsIgnoreCase("ALL")))
+				return word;
 		}
 		return null;
 
@@ -13036,7 +13056,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(msg.tool() instanceof Item)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.tool());
+						final String check=standardTriggerCheck(script,t,msg.tool(), affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,t);
 						if(check!=null)
 						{
 							if(lastMsg==msg)
@@ -13057,7 +13077,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(msg.tool() instanceof Item)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.tool());
+						final String check=standardTriggerCheck(script,t,msg.tool(),affecting,msg.source(),msg.target(),monster,(Item)msg.tool(),defaultItem,t);
 						if(check!=null)
 						{
 							if(lastMsg==msg)
@@ -13073,7 +13093,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(!msg.amISource(monster))
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.target());
+						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,t);
 						if(check!=null)
 						{
 							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
@@ -13214,7 +13234,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(!msg.amISource(monster))
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.target());
+						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,defaultItem,defaultItem,t);
 						if(check!=null)
 						{
 							enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,defaultItem,script,1,check, t);
@@ -13236,7 +13256,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if((msg.tool() instanceof Item)
 						&&(((Item)msg.tool()).container()==msg.target()))
 							checkInE=(Item)msg.tool();
-						final String check=standardTriggerCheck(script,t,checkInE);
+						final String check=standardTriggerCheck(script,t,checkInE,affecting,msg.source(),msg.target(),monster,checkInE,defaultItem,t);
 						if(check!=null)
 						{
 							if(lastMsg==msg)
@@ -13257,7 +13277,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(msg.target() instanceof Item)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.target());
+						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,t);
 						if(check!=null)
 						{
 							if(lastMsg==msg)
@@ -13281,7 +13301,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(msg.target() instanceof Item)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.target());
+						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,t);
 						if(check!=null)
 						{
 							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
@@ -13314,7 +13334,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
 						final Item I=(msg.target() instanceof Item)?(Item)msg.target():defaultItem;
-						final String check=standardTriggerCheck(script,t,msg.target());
+						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,I,defaultItem,t);
 						if(check!=null)
 						{
 							enqueResponse(affecting,msg.source(),msg.target(),monster,I,defaultItem,script,1,check, t);
@@ -13330,7 +13350,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(msg.target() instanceof Item)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.target());
+						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,t);
 						if(check!=null)
 						{
 							if((msg.target() == affecting)
@@ -13353,7 +13373,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(msg.target() instanceof Item)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.target());
+						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)msg.tool(),t);
 						if(check!=null)
 						{
 							if(lastMsg==msg)
@@ -13378,7 +13398,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(msg.target() instanceof Item)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.tool());
+						final String check=standardTriggerCheck(script,t,msg.tool(),affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)msg.tool(),t);
 						if(check!=null)
 						{
 							if(lastMsg==msg)
@@ -13399,7 +13419,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(!msg.amISource(monster))
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.tool());
+						final Item chItem = (msg.tool() instanceof Item)?((Item)msg.tool()):null;
+						final String check=standardTriggerCheck(script,t,msg.tool(),affecting,msg.source(),monster,monster,chItem,chItem,t);
 						if(check!=null)
 						{
 							final Item product=makeCheapItem(msg.tool());
@@ -13418,7 +13439,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(!msg.amISource(monster))
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.tool());
+						final Item chItem = (msg.tool() instanceof Item)?((Item)msg.tool()):null;
+						final String check=standardTriggerCheck(script,t,msg.tool(),affecting,msg.source(),monster,monster,chItem,chItem,t);
 						if(check!=null)
 						{
 							final Item product=makeCheapItem(msg.tool());
@@ -13440,7 +13462,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(msg.target() instanceof Item)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.target());
+						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,t);
 						if(check!=null)
 						{
 							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check, t);
