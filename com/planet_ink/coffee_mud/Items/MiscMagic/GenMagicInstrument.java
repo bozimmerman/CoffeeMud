@@ -80,6 +80,22 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 	}
 
 	@Override
+	public String secretIdentity()
+	{
+		String id=super.secretIdentity();
+		final Ability A=getSpell();
+		String uses;
+		if(this.maxUses() < 999999)
+			uses=""+usesRemaining()+"/"+maxUses();
+		else
+			uses = ""+usesRemaining();
+		if(A!=null)
+			id="'A magic instrument of "+A.name()+"' Charges: "+uses+"\n\r"+id;
+		return id;
+	}
+
+
+	@Override
 	public void setSpell(final Ability theSpell)
 	{
 		spellList="";

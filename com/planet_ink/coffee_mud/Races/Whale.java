@@ -51,19 +51,19 @@ public class Whale extends GiantFish
 	@Override
 	public int shortestMale()
 	{
-		return 80;
+		return 360;
 	}
 
 	@Override
 	public int shortestFemale()
 	{
-		return 75;
+		return 360;
 	}
 
 	@Override
 	public int heightVariance()
 	{
-		return 20;
+		return 40;
 	}
 
 	@Override

@@ -4546,10 +4546,10 @@ public class ListCmd extends StdCommand
 						x=CMParms.indexOf(Ability.FLAG_DESCS,str.toUpperCase().substring(5).trim());
 					if(x >= 0)
 					{
-						final int mBit = (int)CMath.pow(2, x);
+						final long mBit = CMath.pow(2, x);
 						title = (Ability.FLAG_DESCS[x]+" "+title).trim();
 						enumA = new FilteredEnumeration<Ability>(enumA, new Filterer<Ability>() {
-							final int mask = mBit;
+							final long mask = mBit;
 							@Override
 							public boolean passesFilter(final Ability obj)
 							{

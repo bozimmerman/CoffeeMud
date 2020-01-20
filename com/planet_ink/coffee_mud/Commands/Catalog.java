@@ -62,6 +62,12 @@ public class Catalog extends StdCommand
 			mob.tell(L("The object '@x1' can not be cataloged.",P.Name()));
 			return false;
 		}
+		if((cataP != null)
+		&&(!P.ID().equals(cataP.ID())))
+		{
+			mob.tell(L("The object '@x1' in @x2 can not be cataloged because of Java Class mismatch with existing catalog object.",P.Name(),CMLib.map().getApproximateExtendedRoomID(R)));
+			return false;
+		}
 		String newCat=currentCats.get(mob.Name());
 		if(newCat==null)
 			newCat="";
