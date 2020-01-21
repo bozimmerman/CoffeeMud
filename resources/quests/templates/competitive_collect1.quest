@@ -62,7 +62,7 @@
 #be started.
 #$ANNOUNCER_NAME=$NAME
 #
-#!QUESTMAKER_PAGE Announcer speaches
+#!QUESTMAKER_PAGE Announcer Speeches
 #Specify here some optional things to say for the announcer before and after the quest.
 #
 #Announcer announcement:
