@@ -12767,6 +12767,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		else
 			dollarChecks=(boolean[])script.elementAt(0, 3);
 		final String NAME=E.Name().toUpperCase();
+		final String ID=E.ID().toUpperCase();
 		if((t[1].length()==0)
 		||(t[1].equals("ALL"))
 		||(t[1].equals("P")
@@ -12789,13 +12790,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 					arg=t[i+1];
 				if( arg.equalsIgnoreCase(NAME)
+				|| arg.equalsIgnoreCase(ID)
 				|| arg.equalsIgnoreCase("ALL"))
 					return word;
 				i++;
 			}
 			else
 			if(((" "+NAME+" ").indexOf(" "+word+" ")>=0)
-			||(E.ID().equalsIgnoreCase(word))
+			||(ID.equalsIgnoreCase(word))
 			||(word.equalsIgnoreCase("ALL")))
 				return word;
 		}
@@ -13075,6 +13077,47 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						||(affecting instanceof Room)
 						||(affecting instanceof Area))
 					&&(msg.tool() instanceof Item)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.tool(),affecting,msg.source(),msg.target(),monster,(Item)msg.tool(),defaultItem,t);
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.tool(),defaultItem,script,1,check, t);
+							return;
+						}
+					}
+					break;
+				case 49: // cast_prog
+					if((msg.tool() instanceof Ability)
+					&&canTrigger(49)
+					&&((msg.amITarget(monster))
+						||(affecting instanceof Room)
+						||(affecting instanceof Area))
+					&&(!msg.amISource(monster))
+					&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
+					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
+					{
+						final String check=standardTriggerCheck(script,t,msg.tool(), affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,t);
+						if(check!=null)
+						{
+							if(lastMsg==msg)
+								break;
+							lastMsg=msg;
+							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,check, t);
+							return;
+						}
+					}
+					break;
+				case 50: // casting_prog
+					if((msg.tool() instanceof Ability)
+					&&canTrigger(50)
+					&&((msg.amISource(monster))
+						||(affecting instanceof Room)
+						||(affecting instanceof Area))
+					&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
 						final String check=standardTriggerCheck(script,t,msg.tool(),affecting,msg.source(),msg.target(),monster,(Item)msg.tool(),defaultItem,t);

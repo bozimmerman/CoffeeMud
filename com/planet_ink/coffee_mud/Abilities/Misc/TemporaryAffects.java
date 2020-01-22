@@ -194,7 +194,7 @@ public class TemporaryAffects extends StdAbility
 		super.unInvoke();
 	}
 
-	protected static class AmbianceAdder implements StatsAffecting
+	protected class AmbianceAdder implements StatsAffecting
 	{
 		private final String ambiance;
 

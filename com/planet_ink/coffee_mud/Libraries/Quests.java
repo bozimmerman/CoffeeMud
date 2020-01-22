@@ -1891,8 +1891,41 @@ public class Quests extends StdLibrary implements QuestManager
 						{
 							final String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
 							final StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
-							for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
-								label.append(e.nextElement().ID()+" ");
+							for (final Enumeration<Ability> e = CMClass.abilities(); e.hasMoreElements();)
+							{
+								final Ability A=e.nextElement();
+								if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
+									continue;
+								if(!A.canAffect(Ability.CAN_MOBS))
+									continue;
+								label.append(A.ID() + " ");
+							}
+							final GenericEditor.CMEval evaler = getQuestCommandEval(inputCommand);
+							final String s=CMLib.genEd().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
+															evaler, null);
+							pageDV.setElementAt(step,4,s);
+							break;
+						}
+						case $MEFFECT:
+						{
+							final String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
+							final StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
+							for (final Enumeration<Ability> e = CMClass.abilities(); e.hasMoreElements();)
+							{
+								final Ability A=e.nextElement();
+								if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
+									continue;
+								if(!A.canAffect(Ability.CAN_MOBS))
+									continue;
+								label.append(A.ID() + " ");
+							}
+							for(final Enumeration<Behavior> e=CMClass.behaviors();e.hasMoreElements();)
+							{
+								final Behavior B=e.nextElement();
+								if(!B.canImprove(Behavior.CAN_MOBS))
+									continue;
+								label.append(B.ID() + " ");
+							}
 							final GenericEditor.CMEval evaler = getQuestCommandEval(inputCommand);
 							final String s=CMLib.genEd().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
 															evaler, null);
@@ -2434,7 +2467,12 @@ public class Quests extends StdLibrary implements QuestManager
 						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
 					final StringBuffer list = new StringBuffer("");
 					for (final Enumeration<Ability> e = CMClass.abilities(); e.hasMoreElements();)
-						list.append(e.nextElement().ID() + ", ");
+					{
+						final Ability A=e.nextElement();
+						if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
+							continue;
+						list.append(A.ID() + ", ");
+					}
 					if (((String) str).trim().length() == 0)
 					{
 						if (emptyOK)
@@ -2448,6 +2486,52 @@ public class Quests extends StdLibrary implements QuestManager
 						A = null;
 					if (A == null)
 						throw new CMException("Invalid ability id, choose from the following: " + list.toString());
+					return A.ID();
+				}
+			};
+		case $MEFFECT:
+			return new GenericEditor.CMEval()
+			{
+				@Override
+				public Object eval(final Object str, final Object[] choices, final boolean emptyOK) throws CMException
+				{ // ability
+					if (!(str instanceof String))
+						throw new CMException("Bad type: " + ((str == null) ? "null" : str.getClass().getName()));
+					final StringBuffer list = new StringBuffer("");
+					for (final Enumeration<Ability> e = CMClass.abilities(); e.hasMoreElements();)
+					{
+						final Ability A=e.nextElement();
+						if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON))
+							continue;
+						if(!A.canAffect(Ability.CAN_MOBS))
+							continue;
+						list.append(A.ID() + ", ");
+					}
+					for(final Enumeration<Behavior> e=CMClass.behaviors();e.hasMoreElements();)
+					{
+						final Behavior B=e.nextElement();
+						if(!B.canImprove(Behavior.CAN_MOBS))
+							continue;
+						list.append(B.ID() + ", ");
+					}
+					if (((String) str).trim().length() == 0)
+					{
+						if (emptyOK)
+							return "";
+						throw new CMException("You must enter an ability or behavior ID, choose from the following: " + list.toString());
+					}
+					CMObject A = CMClass.getAbility((String) str);
+					if (A == null)
+						A = CMClass.findAbility((String) str);
+					if (A == null)
+						A = CMClass.getBehavior((String) str);
+					if (A == null)
+						A = CMClass.findBehavior((String) str);
+					if((A instanceof Ability)
+					&&((((Ability)A).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_ARCHON))
+						A = null;
+					if (A == null)
+						throw new CMException("Invalid ability or behavior id, choose from the following: " + list.toString());
 					return A.ID();
 				}
 			};

@@ -412,6 +412,46 @@ public class QuestMaker extends StdWebMacro
 					list.append("</TD></TR>");
 					break;
 				}
+				case $MEFFECT:
+				{
+					if(oldValue==null)
+						oldValue=defValue;
+					if(oldValue==null)
+						oldValue="";
+					list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+					list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+					list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+					list.append("<TD><SELECT NAME="+httpKeyName+">");
+					if(optionalEntry)
+						list.append("<OPTION VALUE=\"\" "+((oldValue.length()==0)?"SELECTED":"")+">");
+					for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+					{
+						final Ability A=e.nextElement();
+						if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(M)))
+							continue;
+						if(!A.canAffect(Ability.CAN_MOBS))
+							continue;
+						list.append("<OPTION VALUE=\""+A.ID()+"\" ");
+						if(oldValue.equals(A.ID()))
+							list.append("SELECTED");
+						list.append(">");
+						list.append(A.ID());
+					}
+					for(final Enumeration<Behavior> e=CMClass.behaviors();e.hasMoreElements();)
+					{
+						final Behavior B=e.nextElement();
+						if(!B.canImprove(Behavior.CAN_MOBS))
+							continue;
+						list.append("<OPTION VALUE=\""+B.ID()+"\" ");
+						if(oldValue.equals(B.ID()))
+							list.append("SELECTED");
+						list.append(">");
+						list.append(B.ID());
+					}
+					list.append("</SELECT>");
+					list.append("</TD></TR>");
+					break;
+				}
 				case $EXISTING_QUEST_NAME:
 				{
 					if(oldValue==null)

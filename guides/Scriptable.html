@@ -27,7 +27,7 @@
 <li><a href="#mask_prog">mask_prog</a></li>
 <li><a href="#bribe_prog">bribe_prog</a></li>
 <li><a href="#buy_prog">buy_prog</a></li>
-<li><a href="#channel_prog">channel_prog</a></li>
+<li><a href="#channel_prog">channel_prog</a></li><li><a href="#cast_prog">cast_prog</a></li><li><a href="#casting_prog">casting_prog</a></li>
 <li><a href="#close_prog">close_prog</a></li>
 <li><a href="#cnclmsg_prog">cnclmsg_prog</a></li>
 <li><a href="#consume_prog">consume_prog</a></li>
@@ -542,7 +542,70 @@ Generally it is best not to have buy_progs with the same keywords in
 them, unless they are a buy_prog p with different keyword lists but
 some of the same keywords &#8211; for example a buy_prog p apple
 red
-juicy and a buy_prog p apple red poisoned.</p>
+juicy and a buy_prog p apple red poisoned.
+</p><h3><a name="cast_prog">cast_prog</a></h3>
+<p>Usage:</p>
+<pre>cast_prog [ability id list]<br />cast_prog p [keyword list]<br />cast_prog all<br /></pre>
+<p>This type of mobprog is
+triggered by the mob having a spell or skill used on them by someone
+else. If the spell or skill&nbsp; matches the keywords of the
+give_prog, the prog is triggered. If there is a &#8216;p' placed
+before
+the keyword list, the name or id of the spell must exactly match that
+of
+the cast_prog. If a cast_prog all is used,
+then the cast_prog will trigger from any spell/skill at all being used
+on
+the mob. This type of prog is usually used for in-zone quests and
+special mob behavior, and has a variety of uses.</p>
+<p>EXAMPLES:</p>
+<pre>cast_prog fire ice<br /></pre>
+<p>This will trigger if the
+fireball spell or any spell with fire or ice in its name is cast at the mob.</p>
+<pre>cast_prog p Spell_Fireball<br /></pre>
+<p>This will trigger only if the Fireball spell is cast at the mob.</p>
+<pre>cast_prog all<br /></pre>
+<p>This will trigger if any
+spell or skill is used on the mob.</p>
+<p>MULTIPLE PROGS: You can
+have more than one cast_prog on a mob.
+Generally it is best not to have cast_progs with the same keywords in
+them, unless they are a cast_prog p with different keyword lists but
+some of the same keywords &#8211; for example a cast_prog p Spell_Fireball and a cast_prog p Spell_FlamingHands</p>
+<h3><a name="casting_prog">casting_prog</a></h3>
+<p>Usage:</p>
+<pre>cast_prog [keyword list]<br />cast_prog p [keyword list]<br />cast_prog all<br /></pre>
+<p>This type of mobprog is
+triggered by the mob casting a spell or skill on someone. If the spell
+cast on the mob matches the keywords of the cast_prog, the prog is
+triggered. If there is a &#8216;p' placed
+before
+the keyword list, the name or id of the spell must exactly match that
+of
+the cast_prog. If there is not, then any spell with any of the
+keywords in the list in it will trigger it. If a casting_prog all is
+used,
+then the casting_prog will trigger from any spell at all being cast on
+anyone by the mob. This type of prog is usually used for in-zone quests
+and
+special mob behavior, and has a variety of uses.</p>
+<p>EXAMPLES:</p>
+<pre>casting_prog fire ice<br /></pre>
+<p>This will trigger if the
+mob casts an spell that&nbsp; has any of
+the keywords fire or ice. This means that it would be
+triggered by casting a &nbsp;Fireball spell or Ice Lance spell.</p>
+<pre>casting_prog p Spell_Fireball<br /></pre>
+<p>This will trigger if the
+mob casts the spell that&nbsp; has the exact ID of Spell_Fireball.&nbsp;</p>
+<pre>cast_prog all<br /></pre>
+<p>This will trigger if any spell or skill is&nbsp;cast by the mob</p>
+<p>MULTIPLE PROGS: You can
+have more than one casting_prog on a mob.
+Generally it is best not to have casting_progs with the same keywords in
+them, unless they are a casting_prog p with different keyword lists but
+some of the same keywords &#8211; for example a casting_prog p Spell_Fireball and a cast_prog p Spell_IceLance</p>
+
 <h3><a name="channel_prog">channel_prog</a></h3>
 <p>Usage:</p>
 <pre>channel_prog [channel name] [trigger words]<br />channel_prog [channel name] p [trigger message]<br /></pre>
@@ -4700,7 +4763,9 @@ regardless of currency or denomination.</p>
 function which allows you to make
 comparisons based on numerous characteristics of the target. The target
 may be any code, including mobs or items. The variable may be any of
-those listed above under MPGSET in the section on Scriptable Commands, as well as some special codes, such as BASESTRENGTH, BASEDAMAGE, etc..&nbsp;.
+those listed above under MPGSET in the section on Scriptable Commands,
+as well as some special codes, such as BASESTRENGTH, BASEDAMAGE,
+etc..&nbsp;.
 The '==' may be any of the above logical operators, and the value any
 expression, including codes.</p>
 <p>EXAMPLES:</p>

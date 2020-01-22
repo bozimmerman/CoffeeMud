@@ -97,6 +97,7 @@ public interface QuestManager extends CMLibrary
 		$ITEMXML_ZEROORMORE,
 		$ZAPPERMASK,
 		$ABILITY,
+		$MEFFECT,
 		$EXISTING_QUEST_NAME,
 		$HIDDEN,
 		$FACTION,

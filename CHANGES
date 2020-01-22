@@ -9,6 +9,7 @@
   8. New questmaker templates: competitive/normal_collect5, competitive/normal_delivery4
   9. Crafting skills can now list recipes by level range, eg list 5-, list -5, list 10-20
  10. New disable flags: AUTOMOODS
+ 11. New Scriptable triggers: CAST_PROG and CASTING_PROG
 
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.

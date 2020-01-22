@@ -86,6 +86,48 @@
 #mobs will say to the players when they enter the room with them. 
 #$HELPABLES_RESPONSE=($STRING)=Help!  Cure me or Rescue me or something!
 #
+#!QUESTMAKER_PAGE The Disease or Problem
+#Specify what the helpables need help from or with, and possibly what the
+#players can use to help or cure them.
+#
+#Temporary Effects
+#Leave blank, or the name of a disease or other effect to put the 
+#helpables under when a quest player enters the room with them.
+#$TEMPORARY_EFFECTS=($MEFFECT)=
+#
+#Temporary Ambiance
+#Leave blank, or an ambiance, which is a string displayed next to the
+#helpable mobs name when seen in the room.  Like "(helpable)"
+#$TEMPORARY_AMBIANCE=($STRING)=
+#
+#!QUESTMAKER_PAGE The Cure or the Help
+#Specify possible cures.  Everything is optional on this page,
+#since natural cures work in the right circumstances.  
+#This is for when no naturally dispellable effect was specified above.
+#
+#Strange Custom Dispel Ability
+#Leave blank, or a skill which, when invoked, will remove the effect
+#from the helpable, thus curing them.  When left blank, natural game
+#removing methods will still work fine, such as cure disease for a 
+#disease and so forth.
+#$HELPABLE_ABILITY=($ABILITY)=
+#
+#Helpable Items
+#Specify zero or more items that will appear either in rooms or on
+#nearby non-helpable mobs.  This item should be designed to cure
+#the temporary effect above.
+#$HELPABLE_ITEMS=($ITEMXML_ZEROORMORE)
+#
+#Helpable Drop Loc
+#If a helpable item was specified, does it appear in rooms, or 
+#on mobs from the area?
+#$HELPABLE_DROP_LOC=$CHOOSE=MOB,ROOM
+#
+#Helpable Drop Chance
+#If a helpable item was specified, the chance it will appear on
+#any given specified mob or room.
+#$HELPABLE_DROP_CHANCE=($EXPRESSION)=10
+#
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for helping the mobs:
 #
@@ -131,6 +173,7 @@ set duration 0
 
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_helperitems.xml</NAME><DATA><ITEMS>$HELPABLE_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
@@ -227,23 +270,75 @@ QUEST_TIME_PROG * 1
 ~
 
 ENTRY_PROG 100
-	if INROOM($i == $g)
-		for $0 = 1 to '$%NUMMOBSROOM(*)%'
-			if ISLIKE('$%ROOMMOB($0)%' $HELPABLES_MASK)
-				mpforce '$%ROOMMOB($0)%' sayto "$i" $HELPABLES_RESPONSE
-			endif
-		next
+	if EVAL($n == $i)
+		if EVAL('b' != '') AND !HAS($i $b)
+			MPJUNK $b
+		endif
+		if INROOM($i == $g) AND QUESTAREA('$%INAREA($i)%' *))
+			if EVAL('$HELPABLE_DROP_LOC' == 'ROOM') AND EVAL('$HELPABLE_DROP_CHANCE' != '') AND rand($HELPABLE_DROP_CHANCE)
+				mpoloadroom fromfile $QUEST_ID_helperitems.xml any
+			next
+			for $0 = 1 to '$%NUMMOBSROOM(*)%
+				MPARGSET $1 $%ROOMMOB($0)%
+				if ISNPC($1) AND ISLIKE($n $HELPABLES_MASK) AND !ISFOLLOW($1)
+					IF EVAL('$HELPABLES_RESPONSE') != ''
+						mpforce $1 sayto "$i" $HELPABLES_RESPONSE
+					endif
+					MPCASTEXT TemporaryEffects $1 +BINDTO $i
+					IF EVAL('$TEMPORARY_EFFECTS') != '')
+						MPCASTEXT TemporaryEffects $1 +$TEMPORARY_EFFECTS 999
+					ENDIF
+					IF EVAL('$TEMPORARY_AMBIANCE') != '')
+						MPCASTEXT TemporaryEffects $1 +AMBIANCE 999 $TEMPORARY_AMBIANCE
+					ENDIF
+				endif
+			next
+		endif
 	endif
 ~
-	
-EXECMSG_PROG STO=DEATH ALL
-	if ISNPC($n) AND ISLIKE($n $HELPABLES_MASK)
-		mpsetvar $i $QUEST_ID_HELPED ++;
-		if EVAL($NUM_HELPABLES > 1)
-			mpechoat $i Helped $<$i $QUEST_ID_HELPED>/$NUM_HELPABLES
-		else
+
+FUNC_PROG CHECK_DISPEL
+	# $g has the name of the mob to check
+	MPARGSET $3 $%ROOMMOB($g)%
+	IF EVAL('$3' != '') AND !AFFECTED($3 'TemporaryEffects')
+		# kaplah!
+		if var($i $QUEST_ID_HELPED < $NUM_HELPABLES)
+			MPSETVAR $i $QUEST_ID_HELPED ++
+			mpsetvar $i PROGRESS Helped $<$i $QUEST_ID_HELPED>/$NUM_HELPABLES
 		endif
-		mpsetvar $i PROGRESS Helped $<$i $QUEST_ID_HELPED>/$NUM_HELPABLES
+	ENDIF
+~
+
+CASTING_PROG P $HELPABLE_ABILITY
+	IF EVAL('$HELPABLE_ABILITY' != '') AND EVAL($t != '') AND EVAL($t != $i) AND ISLIKE($t $HELPABLES_MASK)
+		IF AFFECTED($t 'TemporaryEffects')
+			mpunaffect $t TemporaryEffects
+			MPCALLFUNC CHECK_DISPEL $t
+		ENDIF
+	ENDIF
+~ 
+
+CASTING_PROG ALL
+	# this works because the source always executes a msg first, before the target, or the effect happens
+	IF EVAL('$HELPABLE_ABILITY' == '') AND EVAL($t != '') AND EVAL($t != $i) AND ISLIKE($t $HELPABLES_MASK)
+		IF AFFECTED($t 'TemporaryEffects')
+			MPALARM 1 MPCALLFUNC CHECK_DISPEL $t
+		ENDIF
+	ENDIF
+~ 
+
+EXECMSG_PROG STO=DEATH ALL
+	if ISNPC($n) AND QUESTAREA('$%INAREA($i)%' *))
+		if ISLIKE($n '$HELPABLES_MASK')
+			if !ISFIGHT($n)
+				# DONT LET THEM DIE!
+				RETURN CANCEL
+			endif
+		else
+			if EVAL('$HELPABLE_DROP_LOC' == 'MOB') AND EVAL('$HELPABLE_DROP_CHANCE' != '') AND rand($HELPABLE_DROP_CHANCE)
+				mpforce $n mpoload fromfile $QUEST_ID_helperitems.xml any
+			endif
+		endif
 	endif
 ~
 </DATA></FILE>
