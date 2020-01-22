@@ -1,0 +1,249 @@
+#!QUESTMAKER_START_SCRIPT Normal Dispel #1
+#The player must dispel or otherwise remove a spell, disease, poison, or
+#other affect from 1 or more affected mobs on your map.
+#
+#!QUESTMAKER_PAGE Quest Name/Criteria
+#Enter the unique name and player criteria for your new quest.
+#
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_dispel_1
+#
+#Quest Name:
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=Normal Dispel #1
+#
+#Quest-Player Criterium:
+#You may leave this entry blank, or enter a Zapper Mask to describe what
+#kinds of players may participate in this quest.  You can use this to set
+#race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#!QUESTMAKER_PAGE Specify the Announcer
+#The Announcer is the mob who will be wanting the other mobs rescued/cured. This must
+#be an existing mob in your world.  
+#
+#Announcer Area/Room: 
+#Specify below the name of the area that your announcer mob will be located
+#in and/or the room in which the mob can be found.  You may leave both blank
+#to force the quest manager to find the mob somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.
+#Use double-quotes around multi-word areas and room ids/names.
+#  
+#Announcer Area:
+#$ANNOUNCER_AREA=($AREA)
+#Announcer Room ID:
+#$ANNOUNCER_ROOM=($ROOMID)
+#
+#Announcer mob name: 
+#Specify the name of the mob who will act as the announcer mob.  
+#Use double-quotes around multi-word names.
+#If you specified an area or room above, then the mob must be located there.
+#You may optionally have the quest manager select a 'random' mob by entering
+#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#ZAPPERMASKS for information on zapper mask syntax).
+#Remember, if the quest manager can not find your mob, the quest will not
+#be started.
+#$ANNOUNCER_NAME=$NAME
+#
+#!QUESTMAKER_PAGE Announcer Speeches
+#Specify here some optional things to say for the announcer before and after the quest.
+#
+#Announcer Notification: 
+#Specify some additional bit of speech the announcer mob will say to players when they enter the room.
+#$QUEST_NOTIFYSTRING=($LONG_STRING)=I have someones I need helped!  Are you game?
+#
+#Announcer Instructions: 
+#Specify some additional bit of speech the announcer mob will say to players when the quest is accepted.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to rescue or cure some folks.  They are somewhere around somewhere.  Just help them.
+#
+#Announcer Extra Announcement: 
+#Leave blank, or specify a channel that the announcer will also give his notification on.
+#$QUEST_ANNOUNCECHANNEL=($STRING)=
+#
+#Announcer success:
+#This is what the announcement says when the player returns after finishing the quest.
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations! They're helped!
+#
+#!QUESTMAKER_PAGE Specify the Helpable Mob or Mobs
+#The Helpables are the mob or mobs which must be defeated.
+#
+#Helpable mobs: 
+#Specify below the mobs that the player must help to get credit for this quest.
+#
+#Helpable mob names: 
+#Specify the mobs who will act as the helpable mob or mobs.  
+#See help on ZAPPERMASK for information on zapper mask syntax.
+#$HELPABLES_MASK=$ZAPPERMASK
+#
+#Num Helpable:
+#Specify how many of the helpable mobs must be helped.  Make sure there are 
+#enough of them in your world to make this goal reachable!
+#$NUM_HELPABLES=($EXPRESSION)=1
+#
+#Helpable response: 
+#You may optionally specify some additional bit of speech the helpables 
+#mobs will say to the players when they enter the room with them. 
+#$HELPABLES_RESPONSE=($STRING)=Help!  Cure me or Rescue me or something!
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for helping the mobs:
+#
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of money (an amount, or leave blank):
+#$GOLD=($EXPRESSION)
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
+#
+#!QUESTMAKER_END_SCRIPT Normal Dispel #1
+
+set name $QUEST_ID
+set display $QUEST_NAME
+set author $#AUTHOR
+
+set wait 1
+set interval 1
+quiet
+
+set area $ANNOUNCER_AREA
+set room $ANNOUNCER_ROOM
+set mobgroup
+set mob reselect $ANNOUNCER_NAME
+give stat keyplayer true
+give script LOAD=$QUEST_ID_announcer.script
+
+set duration 0
+
+<?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_announcer.script</NAME>
+<DATA>
+ONCE_PROG 100
+	if EVAL('$QUEST_ANNOUNCECHANNEL' != '')
+		$QUEST_ANNOUNCECHANNEL $QUEST_NOTIFYSTRING -- Come see me for more information.
+	endif
+~
+
+ALL_GREET_PROG 100
+	IF QUESTSCRIPTED($n *)
+		if var($n $QUEST_ID_HELPED >= $NUM_HELPABLES)
+			if EVAL('$EXP' != '')
+				mpexp $n $EXP
+			endif
+			if EVAL('$FACTION' != '')
+				mpfaction $n $FACTION +$NUMFACTION
+			endif
+			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+				mpoload QuestPoint
+				give "a quest point" "$n"
+			endif
+			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+				mpoload $GOLD
+				give $GOLD "$n"
+			endif
+			mpoload fromfile $QUEST_ID_rewarditems.xml any
+			if EVAL('$b' != '')
+				give "$b" "$n"
+			endif
+			mpquestwin $n *
+			sayto $n $QUEST_WINSPEECH_TEXT
+			mpendquest $n
+			mpqset * STATISTICS SUCCESS
+			IF EVAL('$MULTIPLE' == 'PREV')
+				mptransfer $n $n
+			ENDIF
+		endif
+	else
+		if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
+			if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+				sayto "$n" $QUEST_NOTIFYSTRING -- say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
+			endif
+		endif
+	endif
+~
+
+SPEECH_PROG p i accept $QUEST_NAME
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			mpqset * STATISTICS ACCEPTED
+			sayto "$n" $QUEST_INSTRUCTIONSSTRING
+			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+		endif
+	endif
+~
+
+SPEECH_PROG p i accept
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			mpqset * STATISTICS ACCEPTED
+			sayto "$n" $QUEST_INSTRUCTIONSSTRING
+			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+		endif
+	endif
+~
+</DATA></FILE>
+<FILE><NAME>$QUEST_ID_playertrack.script</NAME>
+<DATA>
+ONCE_PROG 100
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+~
+
+RAND_PROG 25
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	else
+		if QVAR(* REMAINING == '')
+			MPENDQUEST $i
+		else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+~
+
+QUEST_TIME_PROG * -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+QUEST_TIME_PROG * 1
+	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
+~
+
+ENTRY_PROG 100
+	if INROOM($i == $g)
+		for $0 = 1 to '$%NUMMOBSROOM(*)%'
+			if ISLIKE('$%ROOMMOB($0)%' $HELPABLES_MASK)
+				mpforce '$%ROOMMOB($0)%' sayto "$i" $HELPABLES_RESPONSE
+			endif
+		next
+	endif
+~
+	
+EXECMSG_PROG STO=DEATH ALL
+	if ISNPC($n) AND ISLIKE($n $HELPABLES_MASK)
+		mpsetvar $i $QUEST_ID_HELPED ++;
+		if EVAL($NUM_HELPABLES > 1)
+			mpechoat $i Helped $<$i $QUEST_ID_HELPED>/$NUM_HELPABLES
+		else
+		endif
+		mpsetvar $i PROGRESS Helped $<$i $QUEST_ID_HELPED>/$NUM_HELPABLES
+	endif
+~
+</DATA></FILE>

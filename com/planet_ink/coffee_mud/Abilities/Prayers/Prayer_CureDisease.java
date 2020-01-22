@@ -91,7 +91,9 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 		for(int a=0;a<fromMe.numEffects();a++) // personal
 		{
 			final Ability A=fromMe.fetchEffect(a);
-			if((A!=null)&&(A instanceof DiseaseAffect))
+			if((A!=null)
+			&&((A instanceof DiseaseAffect)
+				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE)))
 				offenders.addElement(A);
 		}
 		return offenders;

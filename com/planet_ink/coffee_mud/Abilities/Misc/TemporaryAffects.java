@@ -83,16 +83,17 @@ public class TemporaryAffects extends StdAbility
 
 	protected boolean			initialized	= false;
 
-	protected List<Object[]> affects = new SVector<Object[]>();
+	protected List<String>				bindings	= new SVector<String>();
+	protected List<Pair<Object, int[]>>	affects		= new SVector<Pair<Object, int[]>>();
 
 	@Override
 	public String displayText()
 	{
 		final StringBuilder str = new StringBuilder("");
-		for(final Object[] A : affects)
+		for(final Pair<Object,int[]> p : affects)
 		{
-			if(A[0] instanceof Ability)
-				str.append(((Ability)A[0]).displayText());
+			if(p.first instanceof Ability)
+				str.append(((Ability)p.first).displayText());
 		}
 		return str.toString();
 	}
@@ -100,11 +101,11 @@ public class TemporaryAffects extends StdAbility
 	@Override
 	public int abstractQuality()
 	{
-		for(final Object[] A : affects)
+		for(final Pair<Object,int[]> p : affects)
 		{
-			if(A[0] instanceof Ability)
+			if(p.first instanceof Ability)
 			{
-				if(((Ability)A[0]).abstractQuality()==Ability.QUALITY_MALICIOUS)
+				if(((Ability)p.first).abstractQuality()==Ability.QUALITY_MALICIOUS)
 					return Ability.QUALITY_MALICIOUS;
 			}
 		}
@@ -115,10 +116,10 @@ public class TemporaryAffects extends StdAbility
 	public long flags()
 	{
 		long flag=0;
-		for(final Object[] A : affects)
+		for(final Pair<Object,int[]> p : affects)
 		{
-			if(A[0] instanceof Ability)
-				flag |=((Ability)A[0]).flags();
+			if(p.first instanceof Ability)
+				flag |=((Ability)p.first).flags();
 		}
 		return flag;
 	}
@@ -129,10 +130,10 @@ public class TemporaryAffects extends StdAbility
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null)
 			return;
-		for(final Object[] A : affects)
+		for(final Pair<Object,int[]> p : affects)
 		{
-			if(A[0] instanceof StatsAffecting)
-				((StatsAffecting)A[0]).affectPhyStats(affected, affectableStats);
+			if(p.first instanceof StatsAffecting)
+				((StatsAffecting)p.first).affectPhyStats(affected, affectableStats);
 		}
 	}
 
@@ -142,10 +143,10 @@ public class TemporaryAffects extends StdAbility
 		super.affectCharStats(affected, affectableStats);
 		if(affected==null)
 			return;
-		for(final Object[] A : affects)
+		for(final Pair<Object,int[]> p : affects)
 		{
-			if(A[0] instanceof StatsAffecting)
-				((StatsAffecting)A[0]).affectCharStats(affected, affectableStats);
+			if(p.first instanceof StatsAffecting)
+				((StatsAffecting)p.first).affectCharStats(affected, affectableStats);
 		}
 	}
 
@@ -155,16 +156,16 @@ public class TemporaryAffects extends StdAbility
 		super.affectCharState(affected, affectableStats);
 		if(affected==null)
 			return;
-		for(final Object[] A : affects)
+		for(final Pair<Object,int[]> p : affects)
 		{
-			if(A[0] instanceof StatsAffecting)
-				((StatsAffecting)A[0]).affectCharState(affected, affectableStats);
+			if(p.first instanceof StatsAffecting)
+				((StatsAffecting)p.first).affectCharState(affected, affectableStats);
 		}
 	}
 
-	public void unAffectAffected(final Object[] Os)
+	public void unAffectAffected(final Pair<Object,int[]> Os)
 	{
-		final CMObject O = (CMObject)Os[0];
+		final Object O = Os.first;
 		final Physical P=affected;
 		if(O instanceof Ability)
 		{
@@ -186,10 +187,37 @@ public class TemporaryAffects extends StdAbility
 	{
 		if(affected==null)
 			return;
-		for(final Object[] A : affects)
-			unAffectAffected(A);
+		for(final Pair<Object,int[]> p : affects)
+			unAffectAffected(p);
 		affects.clear();
+		bindings.clear();
 		super.unInvoke();
+	}
+
+	protected static class AmbianceAdder implements StatsAffecting
+	{
+		private final String ambiance;
+
+		public AmbianceAdder(final String ambiance)
+		{
+			this.ambiance=ambiance;
+		}
+
+		@Override
+		public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+		{
+			affectableStats.addAmbiance(ambiance);
+		}
+
+		@Override
+		public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
+		{
+		}
+
+		@Override
+		public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
+		{
+		}
 	}
 
 	@Override
@@ -199,42 +227,62 @@ public class TemporaryAffects extends StdAbility
 		if(txt.startsWith("-"))
 		{
 			txt=txt.substring(1).toLowerCase().trim();
-			for(final Object[] A : affects)
+			for(final Pair<Object,int[]> p : affects)
 			{
-				if(((CMObject)A[0]).ID().toLowerCase().equals(txt))
+				if((p.first instanceof CMObject)
+				&&(((CMObject)p.first).ID().toLowerCase().equals(txt)))
 				{
-					unAffectAffected(A);
+					unAffectAffected(p);
 					return;
 				}
 			}
-			for(final Object[] A : affects)
+			for(final Pair<Object,int[]> p : affects)
 			{
-				if((A[0] instanceof Ability)
-				&&(((Environmental)A[0]).name().toLowerCase().startsWith(txt)))
+				if((p.first instanceof Ability)
+				&&(((Environmental)p.first).name().toLowerCase().startsWith(txt)))
 				{
-					unAffectAffected(A);
+					unAffectAffected(p);
 					return;
 				}
 			}
-			for(final Object[] A : affects)
+			for(final Pair<Object,int[]> p : affects)
 			{
-				if((A[0] instanceof Behavior)
-				&&(((Behavior)A[0]).name().toLowerCase().startsWith(txt)))
+				if((p.first instanceof Behavior)
+				&&(((Behavior)p.first).name().toLowerCase().startsWith(txt)))
 				{
-					unAffectAffected(A);
+					unAffectAffected(p);
 					return;
 				}
+			}
+			for(final Pair<Object,int[]> p : affects)
+			{
+				if((p.first instanceof AmbianceAdder)
+				&&(txt.equalsIgnoreCase("AMBIANCE")))
+				{
+					unAffectAffected(p);
+					return;
+				}
+			}
+			if(bindings.contains(txt))
+			{
+				bindings.remove(txt);
+				return;
 			}
 		}
 		else
 		if(txt.trim().length()>0)
 		{
 			if(txt.startsWith("+"))
+			{
 				txt=txt.substring(1);
+				if(txt.toUpperCase().startsWith("BINDTO "))
+					this.bindings.add(txt.substring(7).toLowerCase().trim());
+			}
 			else
 			{
-				for(final Object[] A : affects)
-					unAffectAffected(A);
+				for(final Pair<Object,int[]> p : affects)
+					unAffectAffected(p);
+				bindings.clear();
 			}
 
 			int x=txt.indexOf(' ');
@@ -249,21 +297,33 @@ public class TemporaryAffects extends StdAbility
 				parms=numTicksStr.substring(x+1).trim();
 				numTicksStr=numTicksStr.substring(0,x);
 			}
-			CMObject A=CMClass.getAbility(abilityStr);
-			if(A==null)
-				A=CMClass.getBehavior(abilityStr);
-			if(A==null)
-				A=CMClass.findAbility(abilityStr);
-			if(A==null)
-				A=CMClass.findBehavior(abilityStr);
-			if(A!=null)
+			if(abilityStr.equalsIgnoreCase("AMBIANCE"))
 			{
-				affects.add(new Object[]{A,new int[]{CMath.s_int(numTicksStr)}});
-				if(A instanceof Ability)
-					((Ability)A).setMiscText(parms);
-				if((A instanceof Behavior) && (affected instanceof PhysicalAgent))
-					((Behavior)A).setParms(parms);
-				finishInit(A);
+				if(parms.length()>0)
+				{
+					final AmbianceAdder A=new AmbianceAdder(parms);
+					affects.add(new Pair<Object,int[]>(A,new int[] { CMath.s_int(numTicksStr)}));
+					finishInit(A);
+				}
+			}
+			else
+			{
+				CMObject A=CMClass.getAbility(abilityStr);
+				if(A==null)
+					A=CMClass.getBehavior(abilityStr);
+				if(A==null)
+					A=CMClass.findAbility(abilityStr);
+				if(A==null)
+					A=CMClass.findBehavior(abilityStr);
+				if(A!=null)
+				{
+					affects.add(new Pair<Object,int[]>(A,new int[] { CMath.s_int(numTicksStr)}));
+					if(A instanceof Ability)
+						((Ability)A).setMiscText(parms);
+					if((A instanceof Behavior) && (affected instanceof PhysicalAgent))
+						((Behavior)A).setParms(parms);
+					finishInit(A);
+				}
 			}
 		}
 	}
@@ -272,12 +332,15 @@ public class TemporaryAffects extends StdAbility
 	public void setAffectedOne(final Physical P)
 	{
 		super.setAffectedOne(P);
-		if((affects!=null)&&(!initialized))
-			for(final Object[] set : affects)
-				finishInit((CMObject)set[0]);
+		if((affects!=null)
+		&&(!initialized))
+		{
+			for(final Pair<Object,int[]> p : affects)
+				finishInit(p.first);
+		}
 	}
 
-	public void finishInit(final CMObject A)
+	public void finishInit(final Object A)
 	{
 		if(affected == null)
 			return;
@@ -316,9 +379,9 @@ public class TemporaryAffects extends StdAbility
 	{
 		if(destroyIfNecessary())
 			return true;
-		for(final Object[] A : affects)
+		for(final Pair<Object,int[]> p : affects)
 		{
-			if(!((MsgListener)A[0]).okMessage(myHost, msg))
+			if(!((MsgListener)p.first).okMessage(myHost, msg))
 				return false;
 		}
 		return true;
@@ -329,8 +392,8 @@ public class TemporaryAffects extends StdAbility
 	{
 		if(destroyIfNecessary())
 			return;
-		for(final Object[] A : affects)
-			((MsgListener)A[0]).executeMsg(myHost, msg);
+		for(final Pair<Object,int[]> p : affects)
+			((MsgListener)p.first).executeMsg(myHost, msg);
 	}
 
 	@Override
@@ -341,13 +404,39 @@ public class TemporaryAffects extends StdAbility
 		if(!super.tick(ticking, tickID))
 			return false;
 		super.makeLongLasting();
-		for(final Object[] A : affects)
+		for(final Pair<Object,int[]> p : affects)
 		{
-			if(!((Tickable)A[0]).tick(ticking, tickID))
-				unAffectAffected(A);
-			else
-			if((--((int[])A[1])[0])<=0)
-				unAffectAffected(A);
+			if(p.first instanceof Tickable)
+			{
+				if(!((Tickable)p.first).tick(ticking, tickID))
+					unAffectAffected(p);
+				else
+				{
+					synchronized(p)
+					{
+						--p.second[0];
+					}
+					if(p.second[0]<=0)
+						unAffectAffected(p);
+				}
+			}
+		}
+		if((bindings.size()>0) && (affected != null) && initialized)
+		{
+			final Room R=CMLib.map().roomLocation(affected);
+			if(R!=null)
+			{
+				for(final String binding : bindings)
+				{
+					if(R.fetchFromRoomFavorMOBs(null, binding)==null)
+						bindings.remove(binding);
+				}
+				if(bindings.size()==0)
+				{
+					this.unInvoke();
+					return false;
+				}
+			}
 		}
 		return true;
 	}
@@ -357,51 +446,91 @@ public class TemporaryAffects extends StdAbility
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(L("Specify a target, a property, number of ticks, and (optionally) some misc text!"));
+			mob.tell(L("Specify a target, a property, number of ticks, and (optionally) some misc text"));
+			mob.tell(L("Begin the first  property with ; to separate multiple entries by ;"));
 			return false;
 		}
-		final Vector<String> V=new XVector<String>(commands.get(0));
-		final Physical target=getAnyTarget(mob,V,givenTarget, Wearable.FILTER_ANY);
-		if(target==null)
-			return false;
-		commands.remove(0);
+		final Physical target;
+		if(givenTarget != null)
+			target=givenTarget;
+		else
+		{
+			final Vector<String> V=new XVector<String>(commands.get(0));
+			target=getAnyTarget(mob,V,givenTarget, Wearable.FILTER_ANY);
+			if(target==null)
+				return false;
+			commands.remove(0);
+		}
 
-		final String abilityStr = commands.get(0);
-		CMObject A=CMClass.getAbility(abilityStr);
-		if(A==null)
-			A=CMClass.getBehavior(abilityStr);
-		if(A==null)
-			A=CMClass.findAbility(abilityStr);
-		if(A==null)
-			A=CMClass.findBehavior(abilityStr);
-		if(A==null)
+		final List<List<String>> sets=new LinkedList<List<String>>();
+		if(commands.get(0).startsWith(";"))
 		{
-			mob.tell(L("No such ability or behavior as @x1!",abilityStr));
-			return false;
+			if(commands.get(0).trim().length()<=1)
+				commands.remove(0);
+			else
+				commands.set(0, commands.get(0).substring(1).trim());
+			final String combined = CMParms.combineQuoted(commands,0);
+			final List<String> cmdsets=CMParms.parseSemicolons(combined, true);
+			for(final String cmdset : cmdsets)
+				sets.add(CMParms.parse(cmdset));
 		}
-		final String numTicks=commands.get(1).trim();
-		if((!CMath.isInteger(numTicks)) ||(CMath.s_int(numTicks)<=0))
+		else
+			sets.add(commands);
+		for(final List<String> set : sets)
 		{
-			mob.tell(L("'@x1' is not a number of ticks!",numTicks));
-			return false;
-		}
-		final String parms=CMParms.combine(commands, 2);
+			String abilityStr = set.get(0);
+			final String numTicks;
+			final String parms;
+			if(abilityStr.equalsIgnoreCase("BINDTO "))
+			{
+				numTicks="";
+				abilityStr=abilityStr.toUpperCase().trim();
+				parms=CMParms.combine(set,1);
+			}
+			else
+			{
+				if(abilityStr.equalsIgnoreCase("AMBIANCE"))
+				{
+					abilityStr=abilityStr.toUpperCase().trim();
+				}
+				else
+				{
+					CMObject A=CMClass.getAbility(abilityStr);
+					if(A==null)
+						A=CMClass.getBehavior(abilityStr);
+					if(A==null)
+						A=CMClass.findAbility(abilityStr);
+					if(A==null)
+						A=CMClass.findBehavior(abilityStr);
+					if(A==null)
+					{
+						mob.tell(L("No such ability or behavior as @x1!",abilityStr));
+						return false;
+					}
+					abilityStr=A.ID();
+				}
+				numTicks=set.get(1).trim();
+				if((!CMath.isInteger(numTicks)) ||(CMath.s_int(numTicks)<=0))
+				{
+					mob.tell(L("'@x1' is not a number of ticks!",numTicks));
+					return false;
+				}
+				parms=CMParms.combineQuoted(set, 2);
+			}
 
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-
-		TemporaryAffects T = (TemporaryAffects)target.fetchEffect(ID());
-		if(T==null)
-		{
-			T=(TemporaryAffects)this.newInstance();
-			T.affects=new SVector<Object[]>();
-			T.startTickDown(mob, target, 10);
-			T = (TemporaryAffects)target.fetchEffect(ID());
-		}
-		if(T!=null)
-		{
-			T.setMiscText("+"+A.ID()+" "+numTicks.trim()+" "+parms.trim());
-			T.makeLongLasting();
+			TemporaryAffects T = (TemporaryAffects)target.fetchEffect(ID());
+			if(T==null)
+			{
+				T=(TemporaryAffects)this.newInstance();
+				T.affects=new SVector<Pair<Object,int[]>>();
+				T.startTickDown(mob, target, 10);
+				T = (TemporaryAffects)target.fetchEffect(ID());
+			}
+			if(T!=null)
+			{
+				T.setMiscText("+"+abilityStr+" "+numTicks.trim()+" "+parms.trim());
+				T.makeLongLasting();
+			}
 		}
 		return true;
 	}
