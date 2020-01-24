@@ -344,7 +344,7 @@ public class Corpse extends GenContainer implements DeadBody
 							return false;
 						}
 						else
-						if(getMobPKFlag())
+						if(!getMobPKFlag())
 						{
 							msg.source().tell(L("You can not get that.  @x1 was not a player killer.",getMobName()));
 							return false;
