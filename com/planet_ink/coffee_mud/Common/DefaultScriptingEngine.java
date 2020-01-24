@@ -866,12 +866,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			String scriptFiles=CMParms.toListString(externalFiles());
 			if((scriptFiles == null)||(scriptFiles.trim().length()==0))
 				scriptFiles=CMStrings.limit(this.getScript(),80);
+			if((scriptFiles == null)||(scriptFiles.trim().length()==0))
+				Log.errOut(new Exception("Scripting Error"));
+			if((scriptFiles == null)||(scriptFiles.trim().length()==0))
+				scriptFiles=getScriptResourceKey();
 			Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getDescriptiveExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg+"/"+scriptFiles);
 			if(R!=null)
 				R.showHappens(CMMsg.MSG_OK_VISUAL,L("Scripting Error: @x1/@x2/@x3/@x4/@x5/@x6",scripted.name(),CMLib.map().getExtendedRoomID(R),cmdName,errType,errMsg,scriptFiles));
-			//if((lastKnownLocation != R)
-			//||((backupMOB!=null)&&(!backupMOB.Name().equalsIgnoreCase(scripted.Name()))))
-			//	Log.errOut(new Exception("Scripting Error"));
 		}
 		else
 			Log.errOut("Scripting","*/*/"+CMParms.toListString(externalFiles())+"/"+cmdName+"/"+errType+"/"+errMsg);
@@ -13101,7 +13102,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.tool(), affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,t);
+						final String check=standardTriggerCheck(script,t,msg.tool(), affecting,msg.source(),monster,monster,null,defaultItem,t);
 						if(check!=null)
 						{
 							if(lastMsg==msg)
@@ -13121,7 +13122,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.tool(),affecting,msg.source(),msg.target(),monster,(Item)msg.tool(),defaultItem,t);
+						final String check=standardTriggerCheck(script,t,msg.tool(),affecting,msg.source(),msg.target(),monster,null,defaultItem,t);
 						if(check!=null)
 						{
 							if(lastMsg==msg)
