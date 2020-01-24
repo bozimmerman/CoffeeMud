@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -5446,11 +5447,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			state = S;
 		}
 
-		public static String[]	functions	= { "quest", "setupState", "toJavaString" };
+		public static String[]	functions	= { "quest", "setupState", "toJavaString", "getCMType" };
 
 		public String toJavaString(final Object O)
 		{
 			return Context.toString(O);
+		}
+
+		public String getCMType(final Object O)
+		{
+			if(O == null)
+				return "null";
+			final CMObjectType typ = CMClass.getObjectType(O);
+			if(typ == null)
+				return "unknown";
+			return typ.name().toLowerCase();
 		}
 	}
 }

@@ -3233,11 +3233,21 @@ public class CMClass extends ClassLoader
 		}
 
 		static final long		serialVersionUID	= 47;
-		public static String[]	functions			= { "toJavaString" };
+		public static String[]	functions			= { "toJavaString", "getCMType" };
 
 		public String toJavaString(final Object O)
 		{
 			return Context.toString(O);
+		}
+
+		public String getCMType(final Object O)
+		{
+			if(O == null)
+				return "null";
+			final CMObjectType typ = CMClass.getObjectType(O);
+			if(typ == null)
+				return "unknown";
+			return typ.name().toLowerCase();
 		}
 	}
 

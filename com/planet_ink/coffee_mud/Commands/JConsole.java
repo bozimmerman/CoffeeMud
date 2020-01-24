@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -75,7 +76,7 @@ public class JConsole extends StdCommand
 				{
 					scope = new JScriptEvent(mob);
 					cx.initStandardObjects(scope);
-					final String[] names = { "mob" ,"getVar", "setVar", "toJavaString"};
+					final String[] names = { "mob" ,"getVar", "setVar", "toJavaString", "getCMType"};
 					scope.defineFunctionProperties(names, JScriptEvent.class, ScriptableObject.DONTENUM);
 					Resources.submitResource("JCONSOLE_"+mob.Name(), scope);
 				}
@@ -195,6 +196,16 @@ public class JConsole extends StdCommand
 		public String toJavaString(final Object O)
 		{
 			return Context.toString(O);
+		}
+
+		public String getCMType(final Object O)
+		{
+			if(O == null)
+				return "null";
+			final CMObjectType typ = CMClass.getObjectType(O);
+			if(typ == null)
+				return "unknown";
+			return typ.name().toLowerCase();
 		}
 
 		@Override

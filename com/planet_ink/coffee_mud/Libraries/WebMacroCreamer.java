@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
@@ -1092,11 +1093,21 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 			req = requests;
 		}
 
-		public static String[]	functions	= { "request", "write", "toJavaString" };
+		public static String[]	functions	= { "request", "write", "toJavaString", "getCMType" };
 
 		public String toJavaString(final Object O)
 		{
 			return Context.toString(O);
+		}
+
+		public String getCMType(final Object O)
+		{
+			if(O == null)
+				return "null";
+			final CMObjectType typ = CMClass.getObjectType(O);
+			if(typ == null)
+				return "unknown";
+			return typ.name().toLowerCase();
 		}
 	}
 
