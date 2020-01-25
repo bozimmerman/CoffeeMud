@@ -3059,7 +3059,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 					if(arg2.length()==0)
 					{
-						logError(scripted,"HAS","Syntax",funcParms);
+						logError(scripted,"HAS","Syntax",eval[0][t]);
 						return returnable;
 					}
 					if(E==null)
