@@ -273,8 +273,9 @@ ENTRY_PROG 100
 	if EVAL($n == $i)
 		if EVAL('b' != '') AND !HAS($i $b)
 			MPJUNK $b
+			MPARGSET $b ''
 		endif
-		if INROOM($i == $g) AND QUESTAREA('$%INAREA($i)%' *))
+		if INROOM($i == $g) AND QUESTAREA('$%INAREA($i)%' *)) AND VAR($i $QUEST_ID_HELPED < $NUM_HELPABLES)
 			if EVAL('$HELPABLE_DROP_LOC' == 'ROOM') AND EVAL('$HELPABLE_DROP_CHANCE' != '') AND rand($HELPABLE_DROP_CHANCE)
 				mpoloadroom fromfile $QUEST_ID_helperitems.xml any
 			next

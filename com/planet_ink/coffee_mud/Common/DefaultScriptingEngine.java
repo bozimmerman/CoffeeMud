@@ -13102,13 +13102,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.tool(), affecting,msg.source(),monster,monster,null,defaultItem,t);
+						final String check=standardTriggerCheck(script,t,msg.tool(), affecting,msg.source(),monster,monster,defaultItem,null,t);
 						if(check!=null)
 						{
 							if(lastMsg==msg)
 								break;
 							lastMsg=msg;
-							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,check, t);
+							enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,check, t);
 							return;
 						}
 					}
@@ -13128,7 +13128,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(lastMsg==msg)
 								break;
 							lastMsg=msg;
-							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.tool(),defaultItem,script,1,check, t);
+							enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,check, t);
 							return;
 						}
 					}
@@ -13138,10 +13138,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&(!msg.amISource(monster))
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
-						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,t);
+						final String check=standardTriggerCheck(script,t,msg.target(),affecting,msg.source(),msg.target(),monster,defaultItem,null,t);
 						if(check!=null)
 						{
-							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
+							enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,check, t);
 							return;
 						}
 					}
