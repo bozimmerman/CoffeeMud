@@ -190,9 +190,21 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return CMStrings.replaceAll(str, "(es)", "es");
 		if(str.indexOf("(ys)")>0)
 			return CMStrings.replaceAll(str, "(ys)", "ies");
-
-		final boolean uppercase=Character.isUpperCase(str.charAt(str.length()-1));
 		final String lowerStr=str.toLowerCase();
+		final int sp=str.indexOf(' ');
+		if(sp > 0)
+		{
+			final int x=lowerStr.indexOf(" of ");
+			if(x>0)
+			{
+				final int y=str.lastIndexOf(' ',x-1);
+				return (y>0)?
+						(str.substring(0,y+1)+makePlural(str.substring(y+1,x))+str.substring(x))
+						:
+						(makePlural(str.substring(0,x))+str.substring(x));
+			}
+		}
+		final boolean uppercase=Character.isUpperCase(str.charAt(str.length()-1));
 		if(CMStrings.contains(fnouns, lowerStr))
 			return str;
 		final int x=CMParms.indexOf(feewords1, lowerStr);
