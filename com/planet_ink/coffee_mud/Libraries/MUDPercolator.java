@@ -2098,7 +2098,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					else
 					if("farmables".equals(recipe))
 					{
-						final List<Item> coll=CMLib.materials().getAllFarmables(material);
+						final List<Item> coll=CMLib.materials().getAllFarmables(material & RawMaterial.MATERIAL_MASK);
 						if(coll.size()>0)
 						{
 							final Item I=(Item)coll.get(CMLib.dice().roll(1, coll.size(), -1)).copyOf();
