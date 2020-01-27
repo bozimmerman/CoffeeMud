@@ -752,22 +752,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	protected void buildHashes()
 	{
-		synchronized(funcH)
+		if(funcH.size()==0)
 		{
-			if(funcH.size()==0)
+			synchronized(funcH)
 			{
-				for(int i=0;i<funcs.length;i++)
-					funcH.put(funcs[i],Integer.valueOf(i+1));
-				for(int i=0;i<methods.length;i++)
-					methH.put(methods[i],Integer.valueOf(i+1));
-				for(int i=0;i<progs.length;i++)
-					progH.put(progs[i],Integer.valueOf(i+1));
-				for(int i=0;i<progs.length;i++)
-					methH.put(progs[i],Integer.valueOf(Integer.MIN_VALUE));
-				for(int i=0;i<CONNECTORS.length;i++)
-					connH.put(CONNECTORS[i],Integer.valueOf(i));
-				for(int i=0;i<SIGNS.length;i++)
-					signH.put(SIGNS[i],Integer.valueOf(i));
+				if(funcH.size()==0)
+				{
+					for(int i=0;i<funcs.length;i++)
+						funcH.put(funcs[i],Integer.valueOf(i+1));
+					for(int i=0;i<methods.length;i++)
+						methH.put(methods[i],Integer.valueOf(i+1));
+					for(int i=0;i<progs.length;i++)
+						progH.put(progs[i],Integer.valueOf(i+1));
+					for(int i=0;i<progs.length;i++)
+						methH.put(progs[i],Integer.valueOf(Integer.MIN_VALUE));
+					for(int i=0;i<CONNECTORS.length;i++)
+						connH.put(CONNECTORS[i],Integer.valueOf(i));
+					for(int i=0;i<SIGNS.length;i++)
+						signH.put(SIGNS[i],Integer.valueOf(i));
+				}
 			}
 		}
 	}
@@ -2418,7 +2421,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final int STATE_MAYFUNCTION=6;
 
 		buildHashes();
-		final Vector<String> V=new Vector<String>();
+		final List<String> V=new ArrayList<String>();
 		if((evaluable==null)||(evaluable.trim().length()==0))
 			return new String[]{};
 		final char[] evalC=evaluable.toCharArray();
@@ -2439,7 +2442,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(s.length()>0)
 					{
 						s=s.toUpperCase();
-						V.addElement(s);
+						V.add(s);
 						dex=c+1;
 						if(funcH.containsKey(s))
 							state=STATE_MAYFUNCTION;
@@ -2464,7 +2467,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					{
 						if(c==evalC.length-1)
 							throw new ScriptParseException("Bad Syntax on last !");
-						V.addElement("NOT");
+						V.add("NOT");
 						dex=c+1;
 						break;
 					}
@@ -2474,8 +2477,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(s.length()>0)
 						{
 							s=s.toUpperCase();
-							V.addElement(s);
-							V.addElement("(");
+							V.add(s);
+							V.add("(");
 							dex=c+1;
 							if(funcH.containsKey(s))
 								state=STATE_INFUNCTION;
@@ -2487,7 +2490,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 						else
 						{
-							V.addElement("(");
+							V.add("(");
 							depth++;
 							dex=c+1;
 						}
@@ -2499,7 +2502,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							throw new ScriptParseException("Bad syntax before ) at: "+s);
 						if(depth==0)
 							throw new ScriptParseException("Unmatched ) character");
-						V.addElement(")");
+						V.add(")");
 						depth--;
 						dex=c+1;
 						break;
@@ -2513,7 +2516,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(evalC[c]=='(')
 				{
-					V.addElement("(");
+					V.add("(");
 					dex=c+1;
 					state=STATE_INFUNCTION;
 				}
@@ -2549,7 +2552,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							state=STATE_MAIN;
 							break;
 						}
-						V.addElement(s);
+						V.add(s);
 						dex=c+(s.length());
 						c=c+(s.length()-1);
 						state=STATE_POSTFUNCEVAL;
@@ -2567,8 +2570,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				if(evalC[c]==')')
 				{
-					V.addElement(new String(evalC,dex,c-dex));
-					V.addElement(")");
+					V.add(new String(evalC,dex,c-dex));
+					V.add(")");
 					dex=c+1;
 					state=STATE_POSTFUNCTION;
 				}
@@ -2594,22 +2597,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if(evalC[c]==lastQuote)
 				{
 					if((V.size()>2)
-					&&(signH.containsKey(V.lastElement()))
-					&&(V.elementAt(V.size()-2).equals(")")))
+					&&(signH.containsKey(V.get(V.size()-1)))
+					&&(V.get(V.size()-2).equals(")")))
 					{
-						final String sign=V.lastElement();
-						V.removeElementAt(V.size()-1);
-						V.removeElementAt(V.size()-1);
-						final String prev=V.lastElement();
+						final String sign=V.get(V.size()-1);
+						V.remove(V.size()-1);
+						V.remove(V.size()-1);
+						final String prev=V.get(V.size()-1);
 						if(prev.equals("("))
 							s=sign+" "+new String(evalC,dex+1,c-dex);
 						else
 						{
-							V.removeElementAt(V.size()-1);
+							V.remove(V.size()-1);
 							s=prev+" "+sign+" "+new String(evalC,dex+1,c-dex);
 						}
-						V.addElement(s);
-						V.addElement(")");
+						V.add(s);
+						V.add(")");
 						dex=c+1;
 						state=STATE_MAIN;
 					}
@@ -2626,22 +2629,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(s.length()>0)
 					{
 						if((V.size()>1)
-						&&(signH.containsKey(V.lastElement()))
-						&&(V.elementAt(V.size()-2).equals(")")))
+						&&(signH.containsKey(V.get(V.size()-1)))
+						&&(V.get(V.size()-2).equals(")")))
 						{
-							final String sign=V.lastElement();
-							V.removeElementAt(V.size()-1);
-							V.removeElementAt(V.size()-1);
-							final String prev=V.lastElement();
+							final String sign=V.get(V.size()-1);
+							V.remove(V.size()-1);
+							V.remove(V.size()-1);
+							final String prev=V.get(V.size()-1);
 							if(prev.equals("("))
 								s=sign+" "+new String(evalC,dex+1,c-dex);
 							else
 							{
-								V.removeElementAt(V.size()-1);
+								V.remove(V.size()-1);
 								s=prev+" "+sign+" "+new String(evalC,dex+1,c-dex);
 							}
-							V.addElement(s);
-							V.addElement(")");
+							V.add(s);
+							V.add(")");
 							dex=c+1;
 							state=STATE_MAIN;
 						}
