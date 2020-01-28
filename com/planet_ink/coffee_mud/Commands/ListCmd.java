@@ -4700,6 +4700,7 @@ public class ListCmd extends StdCommand
 					templateName="PropertyTemplate";
 				if((A.classificationCode()&Ability.ALL_ACODES)==(Ability.ACODE_DISEASE))
 					templateName="DiseaseTemplate";
+				str.append("==="+A.ID()+"===\n\r");
 				str.append("{{"+templateName
 						+ "|ID="+A.ID()
 						+ "|Name="+A.name()
