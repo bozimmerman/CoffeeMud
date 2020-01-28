@@ -94,8 +94,11 @@ public class Prayer_MassForgive extends Prayer
 			return false;
 
 		List<LegalWarrant> warrants=new Vector<LegalWarrant>();
-		final Area A=CMLib.law().getLegalObject(mob.location());
-		warrants=B.getWarrantsOf(A,null);
+		if(B!=null)
+		{
+			final Area A=CMLib.law().getLegalObject(mob.location());
+			warrants=B.getWarrantsOf(A,null);
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
