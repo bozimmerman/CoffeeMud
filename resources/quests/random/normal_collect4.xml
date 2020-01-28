@@ -153,11 +153,11 @@ vars:
 	</ITEM>
 
 	<STRING ID="reason_verbed" define="reason_verbed" SELECT="Any-1" CONDITION="$target_item_name != ''">
-		<STRING CONDITION="$q_craft=1">$verb_made</STRING>
+		<STRING CONDITION="$q_craft!=0">$verb_made</STRING>
 		<STRING CONDITION="$q_craft=0">$verb_collected</STRING>
 	</STRING>
 	<STRING ID="reason_verb" define="reason_verb" CONDITION="$target_item_name != ''">
-		<STRING CONDITION="$q_craft=1">$verb_make</STRING>
+		<STRING CONDITION="$q_craft!=0">$verb_make</STRING>
 		<STRING CONDITION="$q_craft=0">$verb_collect</STRING>
 	</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
