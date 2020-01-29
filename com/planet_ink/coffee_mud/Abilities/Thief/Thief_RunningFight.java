@@ -102,8 +102,7 @@ public class Thief_RunningFight extends ThiefSkill
 			final MOB mob=(MOB)affected;
 			synchronized(opponent)
 			{
-				if((affected instanceof MOB)
-				&&(lastOpponent!=null))
+				if((mob != null) && (lastOpponent!=null))
 				{
 					if((mob.location()!=null)
 					&&(mob.location().isInhabitant(opponent)))
