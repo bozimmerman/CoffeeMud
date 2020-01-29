@@ -95,16 +95,22 @@ public class Thief_RunningFight extends ThiefSkill
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(lastOpponent!=null))
+		if((affected instanceof MOB)
+		&&(lastOpponent!=null))
 		{
 			synchronized(lastOpponent)
 			{
-				final MOB mob=(MOB)affected;
-				if((mob.location()!=null)&&(mob.location().isInhabitant(lastOpponent)))
+				if((affected instanceof MOB)
+				&&(lastOpponent!=null))
 				{
-					mob.setVictim(lastOpponent);
-					lastOpponent.setVictim(mob);
-					lastOpponent=null;
+					final MOB mob=(MOB)affected;
+					if((mob.location()!=null)
+					&&(mob.location().isInhabitant(lastOpponent)))
+					{
+						mob.setVictim(lastOpponent);
+						lastOpponent.setVictim(mob);
+						lastOpponent=null;
+					}
 				}
 			}
 		}
