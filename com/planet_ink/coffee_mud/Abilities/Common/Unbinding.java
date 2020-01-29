@@ -137,13 +137,15 @@ public class Unbinding extends CommonSkill
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((found!=null)&&(removing!=null)&&(!aborted))
+				if((found!=null)
+				&&(removing!=null)
+				&&(!aborted))
 				{
 					removing.unInvoke();
 					if(found.fetchEffect(removing.ID())==null)
-						mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to remove @x1 from @x2.",removing.name(),found.name()));
+						mob.location().show(mob,this,getActivityMessageType(),L("<S-NAME> manage(s) to remove @x1 from @x2.",removing.name(),found.name()));
 					else
-						mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> fail(s) to remove @x1 from @x2.",removing.name(),found.name()));
+						mob.location().show(mob,this,getActivityMessageType(),L("<S-NAME> fail(s) to remove @x1 from @x2.",removing.name(),found.name()));
 				}
 			}
 		}
