@@ -1,50 +1,50 @@
 small % wand	1	10	2	140	GenWand	5			*Prop_ItemSlot;NUM=1 REMOVABLE=FALSE TYPE="wandcore" LEVEL="HIGH" ; <ITEMS></ITEMS>	SPELL
-short % wand	2	10	2	140	GenWand	6			*Prop_ItemSlot;NUM=1 REMOVABLE=FALSE TYPE="wandcore" LEVEL="HIGH" ; <ITEMS></ITEMS>	ANY
-tiny % wand	3	11	1	144	GenWand	6			prop_itemslot;num=1 type=wandcore removable=false level=high	
-peculiar % wand	4	12	3	148	GenWand	7			prop_itemslot;num=1 type=wandcore removable=false level=high	
-pliant % wand	5	14	3	156	GenWand	7			prop_itemslot;num=1 type=wandcore removable=false level=high	
-bent % wand	6	15	3	160	GenWand	8			prop_itemslot;num=1 type=wandcore removable=false level=high	
-long % wand	7	17	4	168	GenWand	8			prop_itemslot;num=1 type=wandcore removable=false level=high	
-heavy % wand	8	21	6	184	GenWand	9			prop_itemslot;num=1 type=wandcore removable=false level=high	
-crooked % wand	9	20	3	180	GenWand	9			prop_itemslot;num=1 type=wandcore removable=false level=high	
-gnarled % wand	10	24	4	196	GenWand	10			prop_itemslot;num=1 type=wandcore removable=false level=high	
-tin-tipped % wand	12	29	3	216	GenWand	11	tin	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-zinc-tipped % wand	14	35	3	240	GenWand	12	zinc	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-lead-tipped % wand	16	42	3	268	GenWand	13	lead	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-copper-tipped % wand	18	49	3	296	GenWand	14	copper	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-bronze-tipped % wand	20	58	3	332	GenWand	15	bronze	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-brass-tipped % wand	22	67	3	368	GenWand	16	brass	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-iron-tipped % wand	24	77	3	408	GenWand	17	iron	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-silver-tipped % wand	26	88	3	452	GenWand	18	silver	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-steel-tipped % wand	28	99	3	496	GenWand	19	steel	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-chromium-tipped % wand	30	112	3	548	GenWand	20	chromium	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-gold-tipped % wand	32	125	3	600	GenWand	21	gold	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-platinum-tipped % wand	34	139	3	656	GenWand	22	platinum	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-mithril-tipped % wand	36	154	3	716	GenWand	23	mithril	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-adamantite-tipped % wand	38	169	3	776	GenWand	24	adamantite	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-quartz-fused % wand	40	186	3	844	GenWand	25	quartz	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-chrysoberyl-fused % wand	42	203	3	912	GenWand	26	chrysoberyl	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-aquamarine-fused % wand	44	221	3	984	GenWand	27	aquamarine	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-jade-fused % wand	46	240	3	1060	GenWand	28	jade	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-peridot-fused % wand	48	259	3	1136	GenWand	29	peridot	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-garnet-fused % wand	50	280	3	1220	GenWand	30	garnet	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-lapis-fused % wand	52	301	3	1304	GenWand	31	lapis	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-onyx-fused % wand	54	323	3	1392	GenWand	32	onyx	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-turquoise-fused % wand	56	346	3	1484	GenWand	33	turquoise	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-amber-fused % wand	58	369	3	1576	GenWand	34	amber	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-opal-fused % wand	60	394	3	1676	GenWand	35	opal	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-bloodstone-fused % wand	62	419	3	1776	GenWand	36	bloodstone	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-moonstone-fused % wand	64	445	3	1880	GenWand	37	moonstone	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-alexandrite-fused % wand	66	472	3	1988	GenWand	38	alexandrite	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-citrine-fused % wand	68	499	3	2096	GenWand	39	citrine	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-agate-fused % wand	70	528	3	2212	GenWand	40	agate	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-sapphire-fused % wand	72	557	3	2328	GenWand	41	sapphire	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-topaz-fused % wand	75	602	3	2508	GenWand	42	topaz	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-emerald-fused % wand	78	649	3	2696	GenWand	44	emerald	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-amethyst-fused % wand	81	698	3	2892	GenWand	45	amethyst	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-ruby-fused % wand	84	749	3	3096	GenWand	47	ruby	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-pearl-fused % wand	87	801	3	3304	GenWand	48	pearl	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
-diamond-fused % wand	90	856	3	3524	GenWand	50	diamond	1	prop_itemslot;num=1 type=wandcore removable=false level=high	
+short % wand	2	10	2	140	GenWand	6			*Prop_ItemSlot;NUM=1 REMOVABLE=FALSE TYPE="wandcore" LEVEL="HIGH" ; <ITEMS></ITEMS>	SPELL
+tiny % wand	3	11	1	144	GenWand	6			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+peculiar % wand	4	12	3	148	GenWand	7			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+pliant % wand	5	14	3	156	GenWand	7			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+bent % wand	6	15	3	160	GenWand	8			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+long % wand	7	17	4	168	GenWand	8			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+heavy % wand	8	21	6	184	GenWand	9			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+crooked % wand	9	20	3	180	GenWand	9			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+gnarled % wand	10	24	4	196	GenWand	10			prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+tin-tipped % wand	12	29	3	216	GenWand	11	tin	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+zinc-tipped % wand	14	35	3	240	GenWand	12	zinc	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+lead-tipped % wand	16	42	3	268	GenWand	13	lead	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+copper-tipped % wand	18	49	3	296	GenWand	14	copper	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+bronze-tipped % wand	20	58	3	332	GenWand	15	bronze	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+brass-tipped % wand	22	67	3	368	GenWand	16	brass	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+iron-tipped % wand	24	77	3	408	GenWand	17	iron	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+silver-tipped % wand	26	88	3	452	GenWand	18	silver	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+steel-tipped % wand	28	99	3	496	GenWand	19	steel	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+chromium-tipped % wand	30	112	3	548	GenWand	20	chromium	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+gold-tipped % wand	32	125	3	600	GenWand	21	gold	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+platinum-tipped % wand	34	139	3	656	GenWand	22	platinum	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+mithril-tipped % wand	36	154	3	716	GenWand	23	mithril	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+adamantite-tipped % wand	38	169	3	776	GenWand	24	adamantite	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+quartz-fused % wand	40	186	3	844	GenWand	25	quartz	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+chrysoberyl-fused % wand	42	203	3	912	GenWand	26	chrysoberyl	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+aquamarine-fused % wand	44	221	3	984	GenWand	27	aquamarine	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+jade-fused % wand	46	240	3	1060	GenWand	28	jade	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+peridot-fused % wand	48	259	3	1136	GenWand	29	peridot	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+garnet-fused % wand	50	280	3	1220	GenWand	30	garnet	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+lapis-fused % wand	52	301	3	1304	GenWand	31	lapis	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+onyx-fused % wand	54	323	3	1392	GenWand	32	onyx	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+turquoise-fused % wand	56	346	3	1484	GenWand	33	turquoise	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+amber-fused % wand	58	369	3	1576	GenWand	34	amber	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+opal-fused % wand	60	394	3	1676	GenWand	35	opal	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+bloodstone-fused % wand	62	419	3	1776	GenWand	36	bloodstone	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+moonstone-fused % wand	64	445	3	1880	GenWand	37	moonstone	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+alexandrite-fused % wand	66	472	3	1988	GenWand	38	alexandrite	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+citrine-fused % wand	68	499	3	2096	GenWand	39	citrine	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+agate-fused % wand	70	528	3	2212	GenWand	40	agate	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+sapphire-fused % wand	72	557	3	2328	GenWand	41	sapphire	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+topaz-fused % wand	75	602	3	2508	GenWand	42	topaz	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+emerald-fused % wand	78	649	3	2696	GenWand	44	emerald	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+amethyst-fused % wand	81	698	3	2892	GenWand	45	amethyst	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+ruby-fused % wand	84	749	3	3096	GenWand	47	ruby	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+pearl-fused % wand	87	801	3	3304	GenWand	48	pearl	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
+diamond-fused % wand	90	856	3	3524	GenWand	50	diamond	1	prop_itemslot;num=1 type=wandcore removable=false level=high	SPELL
 brittle % wand core	1	15	1	100	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+10)	
 porous % wand core	3	15	1	100	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+20)	
 sturdy % wand core	5	15	1	100	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+30)	
