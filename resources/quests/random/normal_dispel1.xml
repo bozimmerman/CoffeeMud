@@ -77,7 +77,7 @@ settable vars:
 		<STRING CONDITION="$do_drop_item != 'YES'"></STRING>
 	</STRING>
 	
-	<STRING ID="quest_help_ability_name" define="quest_help_ability_name" SELECT="ANY-1" predefine="reason=$reason">${SELECT: NAME from ABILITIES where ID='$quest_help_ability_id'}</STRING>
+	<STRING ID="quest_help_ability_name" define="quest_help_ability_name" SELECT="ANY-1" predefine="reason=$reason">${SELECT: NAME from ABILITIES where CLASS='$quest_help_ability_id'}</STRING>
 
 	<STRING ID="quest_pct_chance">$[1?100]</STRING>
 

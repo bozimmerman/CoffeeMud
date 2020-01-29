@@ -1059,14 +1059,14 @@ public class CommonSkill extends StdAbility
 		return true;
 	}
 
-	private final static String[] MYCODES={"TICKUP","PCTREMAIN"};
+	private final static String[] MYCODES={"TICKUP","PCTREMAIN","NAME"};
 
 	@Override
 	public String getStat(final String code)
 	{
 		if(super.isStat(code))
 			return super.getStat(code);
-		switch(getCodeNum(code))
+		switch(getMyCodeNum(code))
 		{
 		case 0:
 			return "" + tickUp;
@@ -1078,6 +1078,8 @@ public class CommonSkill extends StdAbility
 				return CMath.toPct(CMath.div(tickUp, tot));
 			return "";
 		}
+		case 2:
+			return name();
 		default:
 			return "";
 		}
@@ -1089,20 +1091,21 @@ public class CommonSkill extends StdAbility
 		if(super.isStat(code))
 			super.setStat(code,  val);
 		else
-		switch(getCodeNum(code))
+		switch(getMyCodeNum(code))
 		{
 		case 0:
 			tickUp=CMath.s_int(val);
 			break;
 		case 1:
 			break;
+		case 2:
+			break;
 		default:
 			break;
 		}
 	}
 
-	@Override
-	protected int getCodeNum(final String code)
+	protected int getMyCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{

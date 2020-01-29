@@ -5521,7 +5521,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(from instanceof Modifiable)
 		{
 			if(((Modifiable)from).isStat(valueName))
-				return ((Modifiable)from).getStat(valueName);
+			{
+				final String str=((Modifiable)from).getStat(valueName);
+				return str;
+			}
+			else
+			if((from instanceof Ability)||(from instanceof Behavior))
+			{
+				final String str=((Modifiable)from).getStat(valueName);
+				if(str.length()>0)
+					return str;
+			}
 		}
 		return null;
 	}
@@ -6190,7 +6200,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					nonresults.addAll(results);
 					results.clear();
 					final TreeSet<Object> done=new TreeSet<Object>(objComparator);
-					for(final Map<String,Object> r : results)
+					for(final Map<String,Object> r : nonresults)
 					{
 						if(r.containsKey(whatName)
 						&&(r.get(whatName)!=null)
