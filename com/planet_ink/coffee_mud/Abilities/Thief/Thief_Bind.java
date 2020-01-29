@@ -117,14 +117,18 @@ public class Thief_Bind extends ThiefSkill
 		return affected instanceof Room;
 	}
 
-	public int amountRemaining=500;
-	public String ropeName="the ropes";
+	public int			amountRemaining	= 500;
+	public String		ropeName		= "the ropes";
+	protected boolean	sit				= false;
+	protected boolean	allowBreak		= false;
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
+		if(sit)
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
 
 	@Override
@@ -151,9 +155,12 @@ public class Thief_Bind extends ThiefSkill
 				{
 					if(msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against @x1 binding <S-HIM-HER>.",ropeName.toLowerCase())))
 					{
-						amountRemaining-=(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)+msg.source().phyStats().level());
-						if(amountRemaining<0)
-							unInvoke();
+						if(allowBreak)
+						{
+							amountRemaining-=(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)+msg.source().phyStats().level());
+							if(amountRemaining<0)
+								unInvoke();
+						}
 					}
 				}
 				else
@@ -171,6 +178,19 @@ public class Thief_Bind extends ThiefSkill
 			super.setAffectedOne(P);
 		else
 			ropeName=P.name();
+	}
+
+	@Override
+	public void setMiscText(final String newText)
+	{
+		super.setMiscText(newText);
+		if(newText.length()>0)
+		{
+			ropeName=CMParms.getParmStr(newText, "ROPENAME", "the ropes");
+			amountRemaining=CMParms.getParmInt(newText, "AMOUNT", 500);
+			sit=CMParms.getParmBool(newText, "FORCESIT", false);
+			allowBreak=CMParms.getParmBool(newText, "ALLOWBREAK", true);
+		}
 	}
 
 	@Override
@@ -232,7 +252,7 @@ public class Thief_Bind extends ThiefSkill
 				}
 				return false;
 			}
-			mob.tell(L("@x1 doesn't appear to be bound with ropes.",target.name(mob)));
+			mob.tell(L("@x1 doesn't appear to be bound with "+ropeName+".",target.name(mob)));
 			return false;
 		}
 
