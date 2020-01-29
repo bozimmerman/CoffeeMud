@@ -100,6 +100,8 @@ public class Fighter_Pin extends FighterSkill
 	}
 
 	protected MOB pairedWith=null;
+	protected String pinWord = "pin";
+	protected String pinnedWord = "pinned";
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -109,7 +111,9 @@ public class Fighter_Pin extends FighterSkill
 
 		final MOB mob=(MOB)affected;
 
-		if((msg.sourceMinor() == CMMsg.TYP_DEATH)&&(pairedWith != null)&&(msg.amISource(pairedWith)))
+		if((msg.sourceMinor() == CMMsg.TYP_DEATH)
+		&&(pairedWith != null)
+		&&(msg.amISource(pairedWith)))
 		{
 			unInvoke();
 			return super.okMessage(myHost, msg);
@@ -118,7 +122,8 @@ public class Fighter_Pin extends FighterSkill
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((msg.amISource(mob))&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
+		if((msg.amISource(mob))
+		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
 		{
 			if((msg.sourceMajor(CMMsg.MASK_EYES))
 			||(msg.sourceMajor(CMMsg.MASK_HANDS))
@@ -126,7 +131,7 @@ public class Fighter_Pin extends FighterSkill
 			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
 			{
 				if(msg.sourceMessage()!=null)
-					mob.tell(L("You are pinned!"));
+					mob.tell(L("You are "+pinnedWord+"!"));
 				return false;
 			}
 		}
@@ -170,21 +175,22 @@ public class Fighter_Pin extends FighterSkill
 
 		if(canBeUninvoked())
 		{
-			if((!mob.amDead())&&(CMLib.flags().isInTheGame(mob,false)))
+			if((!mob.amDead())
+			&&(CMLib.flags().isInTheGame(mob,false)))
 			{
-				if(mob==invoker)
+				if((mob==invoker) && (this.pairedWith != null))
 				{
 					if(mob.location()!=null)
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> release(s) <S-HIS-HER> pin."));
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> release(s) <S-HIS-HER> "+pinWord+"."));
 					else
-						mob.tell(L("You release your pin."));
+						mob.tell(L("You release your "+pinWord+"."));
 				}
 				else
 				{
 					if(mob.location()!=null)
-						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> <S-IS-ARE> released from the pin"));
+						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> <S-IS-ARE> released from the "+pinWord+""));
 					else
-						mob.tell(L("You are released from the pin."));
+						mob.tell(L("You are released from the "+pinWord+"."));
 				}
 				CMLib.commands().postStand(mob,true, false);
 			}
@@ -200,13 +206,13 @@ public class Fighter_Pin extends FighterSkill
 
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell(L("You are too far away from your target to pin them!"));
+			mob.tell(L("You are too far away from your target to "+pinWord+" them!"));
 			return false;
 		}
 
 		if((!auto)&&(mob.baseWeight()<(target.baseWeight()-200)))
 		{
-			mob.tell(L("@x1 is too big to pin!",target.name(mob)));
+			mob.tell(L("@x1 is too big to "+pinWord+"!",target.name(mob)));
 			return false;
 		}
 
@@ -224,7 +230,8 @@ public class Fighter_Pin extends FighterSkill
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("<T-NAME> get(s) pinned!"):L("^F^<FIGHT^><S-NAME> pin(s) <T-NAMESELF> to the floor!^</FIGHT^>^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
+					auto?L("<T-NAME> get(s) "+pinnedWord+"!"):L("^F^<FIGHT^><S-NAME> "+pinWord+"(s) <T-NAMESELF> to the floor!^</FIGHT^>^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -253,7 +260,7 @@ public class Fighter_Pin extends FighterSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to pin <T-NAMESELF>, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to "+pinWord+" <T-NAMESELF>, but fail(s)."));
 
 		// return whether it worked
 		return success;
