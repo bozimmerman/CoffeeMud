@@ -180,9 +180,9 @@ public class Spell_EnchantWand extends Spell
 				wand.setSpell((Ability)wandThis.copyOf());
 				if((wand.usesRemaining()==Integer.MAX_VALUE)||(wand.usesRemaining()<0))
 					wand.setUsesRemaining(0);
-				final int newLevel=wandThis.adjustedLevel(mob, asLevel);
-				if(newLevel > wand.basePhyStats().level())
-					wand.basePhyStats().setLevel(newLevel);
+				final int lowestSpellLevel = CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID());
+				if(lowestSpellLevel > wand.basePhyStats().level())
+					wand.basePhyStats().setLevel(lowestSpellLevel);
 				wand.setUsesRemaining(wand.usesRemaining()+5);
 				wand.text();
 				wand.recoverPhyStats();
