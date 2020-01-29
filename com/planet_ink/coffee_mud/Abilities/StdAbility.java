@@ -2436,7 +2436,7 @@ public class StdAbility implements Ability
 	}
 
 	private static final String[]	CODES			= { "CLASS", "TEXT" };
-	private static final String[]	INTERNAL_CODES	= { "TICKDOWN","LEVEL","ISANAUTOEFFECT" };
+	private static final String[]	INTERNAL_CODES	= { "TICKDOWN","LEVEL","ISANAUTOEFFECT","NAME" };
 
 	@Override
 	public String[] getStatCodes()
@@ -2488,6 +2488,8 @@ public class StdAbility implements Ability
 				return "0";
 			case 2:
 				return Boolean.toString(isAnAutoEffect);
+			case 3:
+				return name();
 			default:
 				break;
 			}
@@ -2516,6 +2518,8 @@ public class StdAbility implements Ability
 				break;
 			case 2:
 				isAnAutoEffect = CMath.s_bool(val);
+				break;
+			case 3:
 				break;
 			default:
 				break;
