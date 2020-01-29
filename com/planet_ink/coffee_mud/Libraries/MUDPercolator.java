@@ -76,7 +76,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		EQUIPMENT,
 		OWNER,
 		RESOURCES,
-		FACTIONS
+		FACTIONS,
+		ABILITIES,
+		PROPERTIES,
+		EFFECTS,
+		BEHAVIORS
+
 	}
 
 	private final SHashtable<String,Class<LayoutManager>> mgrs = new SHashtable<String,Class<LayoutManager>>();
@@ -5272,6 +5277,118 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							}
 							else
 								throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+						}
+					}
+					break;
+				case PROPERTIES:
+					{
+						if(from.size()==0)
+							from.addAll(new XVector<Ability>(CMClass.abilities()));
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								if(o instanceof Affectable)
+								{
+									for(final Enumeration<Ability> r=((Affectable)o).effects();r.hasMoreElements();)
+									{
+										final Ability A=r.nextElement();
+										if((A!=null)
+										&&(!A.canBeUninvoked()))
+											from.add(A);
+									}
+								}
+								else
+								if(o instanceof Ability)
+								{
+									if(!((Ability)o).canBeUninvoked())
+										from.add(o);
+								}
+								else
+									throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							}
+						}
+					}
+					break;
+				case EFFECTS:
+					{
+						if(from.size()==0)
+							from.addAll(new XVector<Ability>(CMClass.abilities()));
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								if(o instanceof Affectable)
+								{
+									for(final Enumeration<Ability> r=((Affectable)o).effects();r.hasMoreElements();)
+									{
+										final Ability A=r.nextElement();
+										if(A!=null)
+										from.add(A);
+									}
+								}
+								else
+								if(o instanceof Ability)
+									from.add(o);
+								else
+									throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							}
+						}
+					}
+					break;
+				case BEHAVIORS:
+					{
+						if(from.size()==0)
+							from.addAll(new XVector<Behavior>(CMClass.behaviors()));
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								if(o instanceof Behavable)
+								{
+									for(final Enumeration<Behavior> r=((Behavable)o).behaviors();r.hasMoreElements();)
+									{
+										final Behavior A=r.nextElement();
+										if(A!=null)
+											from.add(A);
+									}
+								}
+								else
+								if(o instanceof Behavior)
+									from.add(o);
+								else
+									throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							}
+						}
+					}
+					break;
+				case ABILITIES:
+					{
+						if(from.size()==0)
+							from.addAll(new XVector<Ability>(CMClass.abilities()));
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								if(o instanceof MOB)
+								{
+									for(final Enumeration<Ability> r=((MOB)o).allAbilities();r.hasMoreElements();)
+										from.add(r.nextElement());
+								}
+								else
+								if(o instanceof Ability)
+									from.add(o);
+								else
+										throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							}
 						}
 					}
 					break;

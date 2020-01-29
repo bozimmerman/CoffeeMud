@@ -94,6 +94,9 @@
 #Leave blank, or the name of a disease or other effect to put the 
 #helpables under when a quest player enters the room with them.
 #$TEMPORARY_EFFECTS=($MEFFECT)=
+#Leave blank, or any arguments for the above effect ability or
+#property.
+#$TEMPORARY_EFFECT_ARGS=($STRING)=
 #
 #Temporary Ambiance
 #Leave blank, or an ambiance, which is a string displayed next to the
@@ -287,7 +290,7 @@ ENTRY_PROG 100
 					endif
 					MPCASTEXT TemporaryEffects $1 +BINDTO $i
 					IF EVAL('$TEMPORARY_EFFECTS') != '')
-						MPCASTEXT TemporaryEffects $1 +$TEMPORARY_EFFECTS 999
+						MPCASTEXT TemporaryEffects $1 +$TEMPORARY_EFFECTS 999 $TEMPORARY_EFFECT_ARGS
 					ENDIF
 					IF EVAL('$TEMPORARY_AMBIANCE') != '')
 						MPCASTEXT TemporaryEffects $1 +AMBIANCE 999 $TEMPORARY_AMBIANCE

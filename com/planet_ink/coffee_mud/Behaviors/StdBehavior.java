@@ -132,7 +132,7 @@ public class StdBehavior implements Behavior
 	}
 
 	@Override
-	public void endBehavior(PhysicalAgent forMe)
+	public void endBehavior(final PhysicalAgent forMe)
 	{
 	}
 
@@ -316,6 +316,7 @@ public class StdBehavior implements Behavior
 	}
 
 	protected static final String[]	CODES	= { "CLASS", "TEXT" };
+	private static final String[]	INTERNAL_CODES	= { "NAME" };
 
 	@Override
 	public String[] getStatCodes()
@@ -333,6 +334,16 @@ public class StdBehavior implements Behavior
 		return -1;
 	}
 
+	protected int getInternalCodeNum(final String code)
+	{
+		for(int i=0;i<INTERNAL_CODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(INTERNAL_CODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
 	@Override
 	public String getStat(final String code)
 	{
@@ -342,6 +353,13 @@ public class StdBehavior implements Behavior
 			return ID();
 		case 1:
 			return getParms();
+		default:
+			switch(getInternalCodeNum(code))
+			{
+			case 0:
+				return name();
+			}
+			break;
 		}
 		return "";
 	}
@@ -355,6 +373,13 @@ public class StdBehavior implements Behavior
 			return;
 		case 1:
 			setParms(val);
+			break;
+		default:
+			switch(getInternalCodeNum(code))
+			{
+			case 0:
+				break;
+			}
 			break;
 		}
 	}

@@ -23,6 +23,9 @@ settable vars:
     area_name(area name)
     source_name(mob name)
     targetarea_name(area name)
+    do_drop_item(YES or NO)
+    quest_drop_loc(ROOM or MOB)
+    quest_drop_chance(number)
     multiarea(yes or NO)
     targetname(mobs name)
     num_targets(num mobs to help)
@@ -54,11 +57,12 @@ settable vars:
 	<NUM_HELPABLES>$num_targets</NUM_HELPABLES>
 	<HELPABLES_RESPONSE>${j:1:quest_helpspeech}</HELPABLES_RESPONSE>
 	<TEMPORARY_EFFECTS>$quest_affect_id</TEMPORARY_EFFECTS>
+	<TEMPORARY_EFFECT_ARGS>$quest_affect_args</TEMPORARY_EFFECT_ARGS>
 	<TEMPORARY_AMBIANCE>$quest_ambiance</TEMPORARY_AMBIANCE>
 	<HELPABLE_ABILITY>$quest_help_ability_id</HELPABLE_ABILITY>
-	<HELPABLE_ITEMS><!-- TODO -->$quest_drop_item</HELPABLE_ITEMS>
-	<HELPABLE_DROP_LOC><!-- TODO -->$quest_drop_loc</HELPABLE_DROP_LOC>
-	<HELPABLE_DROP_CHANCE>$[10?20]</HELPABLE_DROP_CHANCE>
+	<HELPABLE_ITEMS>${SELECT: ANY\. from $quest_drop_item}</HELPABLE_ITEMS>
+	<HELPABLE_DROP_LOC>$quest_drop_loc</HELPABLE_DROP_LOC>
+	<HELPABLE_DROP_CHANCE>$quest_drop_chance</HELPABLE_DROP_CHANCE>
 	<QUEST_POINT>$quest_point_awarded</QUEST_POINT>
 	<GOLD>$gold_amount_awarded</GOLD>
 	<EXP>$xp_amount_awarded</EXP>
@@ -68,6 +72,23 @@ settable vars:
 	<NUMFACTION>$[$source_faction_amt / 500]</NUMFACTION>
 	<REWARD_ITEMS>${SELECT: ANY\. FROM $dungeon_treasure_items}</REWARD_ITEMS>
 
+	<STRING ID="quest_drop_item_name" define="quest_drop_item_name" SELECT="ANY-1">
+		<STRING CONDITION="$do_drop_item = 'YES'">${SELECT: NAME from $quest_drop_item}</STRING>
+		<STRING CONDITION="$do_drop_item != 'YES'"></STRING>
+	</STRING>
+	
+	<STRING ID="quest_help_ability_name" define="quest_help_ability_name" SELECT="ANY-1" predefine="reason=$reason">${SELECT: NAME from ABILITIES where ID='$quest_help_ability_id'}</STRING>
+
+	<STRING ID="quest_pct_chance">$[1?100]</STRING>
+
+	<OBJECT ID="quest_drop_item" define="quest_drop_item" SELECT="Any-1" predefine="reason=$reason">
+		<ITEM class="GenPotion" name="a potion of $quest_help_ability_name" display="a potion of $quest_help_ability_name lies here" material="GLASS" level="1">
+			<READABLETEXT>$quest_help_ability_id</READABLETEXT>
+			<AFFECT class="Prop_Hidden" CONDITION="$quest_drop_loc = 'ROOM' and $quest_pct_chance > 50"/>
+			<BEHAVIOR class="Decay" parms="NOTRIGGER REMAIN=600" />
+		</ITEM>
+	</OBJECT>
+	
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
 
 	<STRING ID="quest_notifystring" define="quest_notifystring" SELECT="ALL">
@@ -95,9 +116,24 @@ settable vars:
 	<STRING ID="quest_instructionstring" SELECT="ALL">
 		<STRING ACTION="PREPEND">$reason_desc</STRING>
 		<STRING ACTION="APPEND">$reason_short</STRING>
-		<STRING ACTION="APPEND" CONDITION="$quest_drop_loc != ''">
+		<STRING ACTION="APPEND" CONDITION="$quest_drop_chance != ''">
 			<!-- TODO: SOME INFO ABOUT THE ITEM YOU CAN PICK UP AND USE -->
 		</STRING>
+	</STRING>
+
+	<STRING ID="do_drop_item" define="do_drop_item" SELECT="PICK-1">
+		<STRING PICKWEIGHT=50>YES</STRING>
+		<STRING PICKWEIGHT=20>NO</STRING>
+	</STRING>
+
+	<STRING ID="quest_drop_loc" define="quest_drop_loc" SELECT="PICK-1">
+		<STRING PICKWEIGHT=50>ROOM</STRING>
+		<STRING PICKWEIGHT=50>MOB</STRING>
+	</STRING>
+
+	<STRING ID="quest_drop_chance" define="quest_drop_chance" SELECT="ANY-1">
+		<STRING CONDITION="$do_drop_item = 'YES'">$[10?20]</STRING>
+		<STRING CONDITION="$do_drop_item != 'YES'"></STRING>
 	</STRING>
 
 	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>
@@ -106,8 +142,13 @@ settable vars:
 	<STRING ID="quest_helpspeech" PREDEFINE="reason=$reason">$quest_helpspeech</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
 	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
-		<STRING CONDITION="$target_int &gt; 5">$reason_todo1</STRING>  <!-- TODO: -->
-		<STRING CONDITION="$target_int &lt;= 5">$reason_todo2</STRING>  <!-- TODO: -->
+		<STRING>$reason_bound</STRING>
+		<STRING>$reason_diseased</STRING>
+		<STRING>$reason_hurt</STRING>
+		<STRING>$reason_cursed</STRING>
+		<STRING>$reason_badspelled</STRING>
+		<STRING>$reason_crippled</STRING>
+		<STRING>$reason_bleeding</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_loser_speeches" SELECT="Any-1">
@@ -124,10 +165,118 @@ settable vars:
 		<STRING>Thank you adventurer for completing my $reason_verb task, that will be all.</STRING>
 	</STRING>
 
-	<STRING ID="reason_theyoweme" SELECT="All">
+	<STRING ID="reason_bound" SELECT="All">
+		<STRING define="reason_verb">$verb_bind</STRING>
+		<STRING define="reason_verbed">$verb_bound</STRING>
+		<STRING define="quest_affect_id">Thief_Bind</STRING>
+		<STRING define="quest_affect_args">FORCESIT=true ALLOWBREAK=false</STRING>
+		<STRING define="quest_ambiance">($verb_bound)</STRING>
+		<STRING define="quest_help_ability_id">Unbinding</STRING>
+		<STRING define="quest_winspeech">
+			<STRING>They are all freed! Thanks!</STRING>
+			<STRING>Freed at last! Thank you for your assistance.</STRING>
+			<STRING>Thanks for freeing them, I'll take it from here.</STRING>
+			<STRING>Thank you adventurer for completing my task, that will be all.</STRING>
+		</STRING>
+		<STRING define="quest_helpspeech" SELECT="Any-1">
+			<STRING><!-- TODO --></STRING>
+		</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
+			<STRING><!-- TODO --></STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_diseased" SELECT="All">
 		<STRING define="reason_verb"><!--TODO  --></STRING>
 		<STRING define="reason_verbed"><!--TODO  --></STRING>
 		<STRING define="quest_affect_id"><!-- TODO --></STRING>
+		<STRING define="quest_affect_args"><!-- TODO --></STRING>
+		<STRING define="quest_ambiance"><!-- TODO --></STRING>
+		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_helpspeech" SELECT="Any-1">
+			<STRING><!-- TODO --></STRING>
+		</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
+			<STRING><!-- TODO --></STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_hurt" SELECT="All">
+		<STRING define="reason_verb"><!--TODO  --></STRING>
+		<STRING define="reason_verbed"><!--TODO  --></STRING>
+		<STRING define="quest_affect_id"><!-- TODO --></STRING>
+		<STRING define="quest_affect_args"><!-- TODO --></STRING>
+		<STRING define="quest_ambiance"><!-- TODO --></STRING>
+		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_helpspeech" SELECT="Any-1">
+			<STRING><!-- TODO --></STRING>
+		</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
+			<STRING><!-- TODO --></STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_cursed" SELECT="All">
+		<STRING define="reason_verb"><!--TODO  --></STRING>
+		<STRING define="reason_verbed"><!--TODO  --></STRING>
+		<STRING define="quest_affect_id"><!-- TODO --></STRING>
+		<STRING define="quest_affect_args"><!-- TODO --></STRING>
+		<STRING define="quest_ambiance"><!-- TODO --></STRING>
+		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_helpspeech" SELECT="Any-1">
+			<STRING><!-- TODO --></STRING>
+		</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
+			<STRING><!-- TODO --></STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_badspelled" SELECT="All">
+		<STRING define="reason_verb"><!--TODO  --></STRING>
+		<STRING define="reason_verbed"><!--TODO  --></STRING>
+		<STRING define="quest_affect_id"><!-- TODO --></STRING>
+		<STRING define="quest_affect_args"><!-- TODO --></STRING>
+		<STRING define="quest_ambiance"><!-- TODO --></STRING>
+		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_helpspeech" SELECT="Any-1">
+			<STRING><!-- TODO --></STRING>
+		</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
+			<STRING><!-- TODO --></STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_crippled" SELECT="All">
+		<STRING define="reason_verb"><!--TODO  --></STRING>
+		<STRING define="reason_verbed"><!--TODO  --></STRING>
+		<STRING define="quest_affect_id"><!-- TODO --></STRING>
+		<STRING define="quest_affect_args"><!-- TODO --></STRING>
+		<STRING define="quest_ambiance"><!-- TODO --></STRING>
+		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_helpspeech" SELECT="Any-1">
+			<STRING><!-- TODO --></STRING>
+		</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
+			<STRING><!-- TODO --></STRING>
+		</STRING>
+	</STRING>
+	
+	<STRING ID="reason_bleeding" SELECT="All">
+		<STRING define="reason_verb"><!--TODO  --></STRING>
+		<STRING define="reason_verbed"><!--TODO  --></STRING>
+		<STRING define="quest_affect_id"><!-- TODO --></STRING>
+		<STRING define="quest_affect_args"><!-- TODO --></STRING>
 		<STRING define="quest_ambiance"><!-- TODO --></STRING>
 		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
