@@ -149,6 +149,7 @@ settable vars:
 		<STRING>$reason_badspelled</STRING>
 		<STRING>$reason_crippled</STRING>
 		<STRING>$reason_bleeding</STRING>
+		<STRING>$reason_polymorphed</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_loser_speeches" SELECT="Any-1">
@@ -165,39 +166,55 @@ settable vars:
 		<STRING>Thank you adventurer for completing my $reason_verb task, that will be all.</STRING>
 	</STRING>
 
+	<STRING id="quest_generic_help_speeches" SELECT="Any-1">
+		<STRING>Help me!</STRING>
+		<STRING></STRING>
+		<STRING>${c:reason_verb} me, please!</STRING>
+		<STRING>${c:reason_verb} me!</STRING>
+	</STRING>
+
 	<STRING ID="reason_bound" SELECT="All">
-		<STRING define="reason_verb">$verb_bind</STRING>
-		<STRING define="reason_verbed">$verb_bound</STRING>
+		<STRING define="reason_verb">$verb_unbind</STRING>
+		<STRING define="reason_verbed">$verb_unbound</STRING>
 		<STRING define="quest_affect_id">Thief_Bind</STRING>
 		<STRING define="quest_affect_args">FORCESIT=true ALLOWBREAK=false</STRING>
 		<STRING define="quest_ambiance">($verb_bound)</STRING>
 		<STRING define="quest_help_ability_id">Unbinding</STRING>
 		<STRING define="quest_winspeech">
-			<STRING>They are all freed! Thanks!</STRING>
-			<STRING>Freed at last! Thank you for your assistance.</STRING>
-			<STRING>Thanks for freeing them, I'll take it from here.</STRING>
+			<STRING>They are all $verb_unbound! Thanks!</STRING>
+			<STRING>${c:verb_unbound} at last! Thank you for your assistance.</STRING>
+			<STRING>Thanks for ${verb_unbind}ing them, I'll take it from here.</STRING>
 			<STRING>Thank you adventurer for completing my task, that will be all.</STRING>
 		</STRING>
-		<STRING define="quest_helpspeech" SELECT="Any-1">
-			<STRING><!-- TODO --></STRING>
-		</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
 			<STRING><!-- TODO --></STRING>
 		</STRING>
 	</STRING>
-	
+
+	<STRING ID="quest_disease_id" DEFINE="quest_disease_id">
+		<STRING>Disease_Aids</STRING><STRING>Disease_Alzheimers</STRING><STRING>Disease_Anemia</STRING><STRING>Disease_Anosmia</STRING><STRING>Disease_Anthrax</STRING>
+		<STRING>Disease_Arthritis</STRING><STRING>Disease_Asthma</STRING><STRING>Disease_Blahs</STRING><STRING>Disease_Blindness</STRING><STRING>Disease_Cancer</STRING>
+		<STRING>Disease_Carrier</STRING><STRING>Disease_Chlamydia</STRING><STRING>Disease_Cold</STRING><STRING>Disease_Deafness</STRING><STRING>Disease_Depression</STRING>
+		<STRING>Disease_Diabetes</STRING><STRING>Disease_Diarrhea</STRING><STRING>Disease_Eczema</STRING><STRING>Disease_Fever</STRING><STRING>Disease_FilthFever</STRING>
+		<STRING>Disease_Flu</STRING><STRING>Disease_FootFungus</STRING><STRING>Disease_FrostBite</STRING><STRING>Disease_Gangrene</STRING><STRING>Disease_Giggles</STRING>
+		<STRING>Disease_Gonorrhea</STRING><STRING>Disease_HeatExhaustion</STRING><STRING>Disease_Infection</STRING><STRING>Disease_Lepresy</STRING><STRING>Disease_Lockjaw</STRING>
+		<STRING>Disease_Lyme</STRING><STRING>Disease_Malaria</STRING><STRING>Disease_Migraines</STRING><STRING>Disease_Nausea</STRING><STRING>Disease_Plague</STRING>
+		<STRING>Disease_Pneumonia</STRING><STRING>Disease_PoisonIvy</STRING><STRING>Disease_SARS</STRING><STRING>Disease_Scabies</STRING><STRING>Disease_Scurvy</STRING>
+		<STRING>Disease_Smiles</STRING><STRING>Disease_Syphilisv<STRING>Disease_Tetnus</STRING><STRING>Disease_Tinnitus</STRING><STRING>Disease_Tourettes</STRING>
+		<STRING>Disease_Vertigo</STRING><STRING>Disease_Yawning</STRING><STRING>Disease_Zika</STRING>
+	</STRING>
+
 	<STRING ID="reason_diseased" SELECT="All">
-		<STRING define="reason_verb"><!--TODO  --></STRING>
-		<STRING define="reason_verbed"><!--TODO  --></STRING>
-		<STRING define="quest_affect_id"><!-- TODO --></STRING>
-		<STRING define="quest_affect_args"><!-- TODO --></STRING>
-		<STRING define="quest_ambiance"><!-- TODO --></STRING>
-		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
+		<STRING define="reason_verb">cure</STRING>
+		<STRING define="reason_verbed">cured</STRING>
+		<STRING define="quest_affect_id">$quest_disease_id</STRING>
+		<STRING define="quest_affect_args"></STRING>
+		<STRING define="quest_ambiance">(${SELECT: NAME from ABILITIES where CLASS='$quest_disease_id'})</STRING>
+		<STRING define="quest_help_ability_id">Prayer_CureDisease</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_helpspeech" SELECT="Any-1">
-			<STRING><!-- TODO --></STRING>
-		</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
 			<STRING><!-- TODO --></STRING>
@@ -207,14 +224,12 @@ settable vars:
 	<STRING ID="reason_hurt" SELECT="All">
 		<STRING define="reason_verb"><!--TODO  --></STRING>
 		<STRING define="reason_verbed"><!--TODO  --></STRING>
-		<STRING define="quest_affect_id"><!-- TODO --></STRING>
-		<STRING define="quest_affect_args"><!-- TODO --></STRING>
+		<STRING define="quest_affect_id"></STRING>
+		<STRING define="quest_affect_args"></STRING>
 		<STRING define="quest_ambiance"><!-- TODO --></STRING>
-		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
+		<STRING define="quest_help_ability_id">Prayer_Heal</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_helpspeech" SELECT="Any-1">
-			<STRING><!-- TODO --></STRING>
-		</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
 			<STRING><!-- TODO --></STRING>
@@ -224,14 +239,12 @@ settable vars:
 	<STRING ID="reason_cursed" SELECT="All">
 		<STRING define="reason_verb"><!--TODO  --></STRING>
 		<STRING define="reason_verbed"><!--TODO  --></STRING>
-		<STRING define="quest_affect_id"><!-- TODO --></STRING>
-		<STRING define="quest_affect_args"><!-- TODO --></STRING>
+		<STRING define="quest_affect_id">Prayer_Curse</STRING>
+		<STRING define="quest_affect_args"></STRING>
 		<STRING define="quest_ambiance"><!-- TODO --></STRING>
-		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
+		<STRING define="quest_help_ability_id">Prayer_RemoveCurse</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_helpspeech" SELECT="Any-1">
-			<STRING><!-- TODO --></STRING>
-		</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
 			<STRING><!-- TODO --></STRING>
@@ -246,9 +259,7 @@ settable vars:
 		<STRING define="quest_ambiance"><!-- TODO --></STRING>
 		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_helpspeech" SELECT="Any-1">
-			<STRING><!-- TODO --></STRING>
-		</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
 			<STRING><!-- TODO --></STRING>
@@ -263,9 +274,7 @@ settable vars:
 		<STRING define="quest_ambiance"><!-- TODO --></STRING>
 		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_helpspeech" SELECT="Any-1">
-			<STRING><!-- TODO --></STRING>
-		</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
 			<STRING><!-- TODO --></STRING>
@@ -280,15 +289,27 @@ settable vars:
 		<STRING define="quest_ambiance"><!-- TODO --></STRING>
 		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
-		<STRING define="quest_helpspeech" SELECT="Any-1">
-			<STRING><!-- TODO --></STRING>
-		</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
 			<STRING><!-- TODO --></STRING>
 		</STRING>
 	</STRING>
 	
+	<STRING ID="reason_polymorphed" SELECT="All">
+		<STRING define="reason_verb"><!--TODO  --></STRING>
+		<STRING define="reason_verbed"><!--TODO  --></STRING>
+		<STRING define="quest_affect_id"><!-- TODO --></STRING>
+		<STRING define="quest_affect_args"><!-- TODO --></STRING>
+		<STRING define="quest_ambiance"><!-- TODO --></STRING>
+		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
+		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
+		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
+		<STRING define="reason_desc" SELECT="Any-1">
+			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
+			<STRING><!-- TODO --></STRING>
+		</STRING>
+	</STRING>
 
 	<STRING ID="quest_point_awarded" DEFINE="quest_point_awarded" SELECT="Pick-1">
 		<STRING PICKWEIGHT=2>NO</STRING>
