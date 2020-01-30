@@ -12606,6 +12606,70 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				triggerCode=getTriggerCode(trigger,t);
 				switch(triggerCode)
 				{
+				case 51: // cmdfail_prog
+					if(canTrigger(51)
+					&&(msg.targetMessage()!=null))
+					{
+						if(t==null)
+							t=parseBits(script,0,"CCT");
+						if(t!=null)
+						{
+							final String command=t[1];
+							final int x=msg.targetMessage().indexOf(' ');
+							final String userCmd=(x<0)?msg.targetMessage():msg.targetMessage().substring(0,x).trim().toUpperCase();
+							if(command.toUpperCase().startsWith(userCmd))
+							{
+								str=(x<0)?"":msg.targetMessage().substring(x).trim().toUpperCase();
+								if((t[2].length()==0)||(t[2].equals("ALL")))
+									tryIt=true;
+								else
+								if((t[2].equals("P"))&&(t.length>3))
+								{
+									if(match(str.trim(),t[3]))
+										tryIt=true;
+								}
+								else
+								for(int i=2;i<t.length;i++)
+								{
+									if(str.indexOf(" "+t[i]+" ")>=0)
+									{
+										str=(t[i].trim()+" "+str.trim()).trim();
+										tryIt=true;
+										break;
+									}
+								}
+								if(tryIt)
+								{
+									final MOB monster=getMakeMOB(affecting);
+									if(lastKnownLocation==null)
+									{
+										lastKnownLocation=msg.source().location();
+										if(homeKnownLocation==null)
+											homeKnownLocation=lastKnownLocation;
+									}
+									if((monster==null)||(monster.amDead())||(lastKnownLocation==null))
+										return true;
+									final Item defaultItem=(affecting instanceof Item)?(Item)affecting:null;
+									Item Tool=null;
+									if(msg.tool() instanceof Item)
+										Tool=(Item)msg.tool();
+									if(Tool==null)
+										Tool=defaultItem;
+									String resp=null;
+									if(msg.target() instanceof MOB)
+										resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,newObjs());
+									else
+									if(msg.target() instanceof Item)
+										resp=execute(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,str,newObjs());
+									else
+										resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,newObjs());
+									if((resp!=null)&&(resp.equalsIgnoreCase("CANCEL")))
+										return false;
+								}
+							}
+						}
+					}
+					break;
 				case 42: // cnclmsg_prog
 					if(canTrigger(42))
 					{
