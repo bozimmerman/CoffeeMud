@@ -232,6 +232,26 @@ ${SELECT:any\name from (SELECT: . from $item_junk)}
 	<STRING define="verb_unbound=unbound">unbind</STRING>
 </STRING>
 
+<STRING ID="verb_hurted" PREDEFINE="verb_hurt=$verb_hurt">$verb_hurted</STRING>
+<STRING ID="verb_hurt" define="verb_hurt" SELECT="Any-1">
+	<STRING define="verb_hurted=hurt">hurt</STRING>
+	<STRING define="verb_hurted=killed">kill</STRING>
+	<STRING define="verb_hurted=beaten">beat</STRING>
+	<STRING define="verb_hurted=pounded">pound</STRING>
+	<STRING define="verb_hurted=murdered">murder</STRING>
+	<STRING define="verb_hurted=violently convinced">violently convince</STRING>
+	<STRING define="verb_hurted=ended">end</STRING>
+</STRING>
+
+<STRING ID="verb_unhurted" predefine="verb_unhurt=$verb_unhurt">$verb_unhurted</STRING>
+<STRING ID="verb_unhurt" define="verb_unhurted" SELECT="Any-1">
+	<STRING define="verb_unhurted=healed">heal</STRING>
+	<STRING define="verb_unhurted=saved">save</STRING>
+	<STRING define="verb_unhurted=helped">help</STRING>
+	<STRING define="verb_unhurted=cured">cure</STRING>
+	<STRING define="verb_unhurted=restored">restore</STRING>
+</STRING>
+
 <STRING ID="hurt_them_phrase" SELECT="Any-1">
 	<STRING>$hurt_verb them</STRING>
 	<STRING>$hurt_verb them $hurt_adverb</STRING>

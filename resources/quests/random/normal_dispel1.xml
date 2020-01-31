@@ -138,6 +138,7 @@ settable vars:
 
 	<STRING ID="reason_verbed" PREDEFINE="reason=$reason">$reason_verbed</STRING>
 	<STRING ID="reason_verb" PREDEFINE="reason=$reason">$reason_verb</STRING>
+	<STRING ID="reason_done" PREDEFINE="reason=$reason">$reason_done</STRING>
 	<STRING ID="quest_winspeech" PREDEFINE="reason=$reason">$quest_winspeech</STRING>
 	<STRING ID="quest_helpspeech" PREDEFINE="reason=$reason">$quest_helpspeech</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
@@ -176,6 +177,7 @@ settable vars:
 	<STRING ID="reason_bound" SELECT="All">
 		<STRING define="reason_verb">$verb_unbind</STRING>
 		<STRING define="reason_verbed">$verb_unbound</STRING>
+		<STRING define="reason_done">$verb_bound</STRING>
 		<STRING define="quest_affect_id">Thief_Bind</STRING>
 		<STRING define="quest_affect_args">FORCESIT=true ALLOWBREAK=false</STRING>
 		<STRING define="quest_ambiance">($verb_bound)</STRING>
@@ -193,7 +195,7 @@ settable vars:
 		</STRING>
 	</STRING>
 
-	<STRING ID="quest_disease_id" DEFINE="quest_disease_id">
+	<STRING ID="quest_disease_id" DEFINE="quest_disease_id" SELECT="ANY-1">
 		<STRING>Disease_Aids</STRING><STRING>Disease_Alzheimers</STRING><STRING>Disease_Anemia</STRING><STRING>Disease_Anosmia</STRING><STRING>Disease_Anthrax</STRING>
 		<STRING>Disease_Arthritis</STRING><STRING>Disease_Asthma</STRING><STRING>Disease_Blahs</STRING><STRING>Disease_Blindness</STRING><STRING>Disease_Cancer</STRING>
 		<STRING>Disease_Carrier</STRING><STRING>Disease_Chlamydia</STRING><STRING>Disease_Cold</STRING><STRING>Disease_Deafness</STRING><STRING>Disease_Depression</STRING>
@@ -209,6 +211,7 @@ settable vars:
 	<STRING ID="reason_diseased" SELECT="All">
 		<STRING define="reason_verb">cure</STRING>
 		<STRING define="reason_verbed">cured</STRING>
+		<STRING define="reason_done">${l:SELECT: NAME from ABILITIES where CLASS='$quest_disease_id'}</STRING>
 		<STRING define="quest_affect_id">$quest_disease_id</STRING>
 		<STRING define="quest_affect_args"></STRING>
 		<STRING define="quest_ambiance">(${SELECT: NAME from ABILITIES where CLASS='$quest_disease_id'})</STRING>
@@ -220,13 +223,14 @@ settable vars:
 			<STRING><!-- TODO --></STRING>
 		</STRING>
 	</STRING>
-	
+
 	<STRING ID="reason_hurt" SELECT="All">
-		<STRING define="reason_verb"><!--TODO  --></STRING>
-		<STRING define="reason_verbed"><!--TODO  --></STRING>
-		<STRING define="quest_affect_id"></STRING>
+		<STRING define="reason_verb">$verb_unhurt</STRING>
+		<STRING define="reason_verbed">$verb_unhurted</STRING>
+		<STRING define="reason_done">$verb_hurt</STRING>
+		<STRING define="quest_affect_id">Fighter_Pin</STRING>
 		<STRING define="quest_affect_args"></STRING>
-		<STRING define="quest_ambiance"><!-- TODO --></STRING>
+		<STRING define="quest_ambiance">($verb_hurt)</STRING>
 		<STRING define="quest_help_ability_id">Prayer_Heal</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
@@ -235,13 +239,23 @@ settable vars:
 			<STRING><!-- TODO --></STRING>
 		</STRING>
 	</STRING>
-	
+
+	<STRING id="adj_badding" select="any-1" define="adj_badding">
+	    <STRING>stinging</STRING>
+	    <STRING>scouring</STRING>
+	    <STRING>scratchy</STRING>
+	    <STRING>burning</STRING>
+	    <STRING></STRING>
+	    <STRING></STRING>
+	</STRING>
+
 	<STRING ID="reason_cursed" SELECT="All">
-		<STRING define="reason_verb"><!--TODO  --></STRING>
-		<STRING define="reason_verbed"><!--TODO  --></STRING>
+		<STRING define="reason_verb">$verb_unhurt</STRING>
+		<STRING define="reason_verbed">$verb_unhurted</STRING>
+		<STRING define="reason_done">cursed</STRING>
 		<STRING define="quest_affect_id">Prayer_Curse</STRING>
 		<STRING define="quest_affect_args"></STRING>
-		<STRING define="quest_ambiance"><!-- TODO --></STRING>
+		<STRING define="quest_ambiance">($adj_badding curse)</STRING>
 		<STRING define="quest_help_ability_id">Prayer_RemoveCurse</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
@@ -250,14 +264,29 @@ settable vars:
 			<STRING><!-- TODO --></STRING>
 		</STRING>
 	</STRING>
-	
+
+	<STRING ID="quest_badspell_id" DEFINE="quest_badspell_id" SELECT="ANY-1">
+		<STRING>Chant_Rockfeet</STRING><STRING>Chant_RustCurse</STRING><STRING>Chant_Tangle</STRING><STRING>Prayer_Blindness</STRING>
+		<STRING>Prayer_Deafness</STRING><STRING>Prayer_CurseLuck</STRING><STRING>Prayer_CurseMind</STRING><STRING>Prayer_FleshRock</STRING>
+		<STRING>Prayer_Maladiction</STRING><STRING>Prayer_Paralyze</STRING><STRING>Prayer_Silence</STRING><STRING>Prayer_TaintOfEvil</STRING>
+		<STRING>Spell_Blademouth</STRING><STRING>Spell_Blindness</STRING><STRING>Spell_Brainwash</STRING><STRING>Spell_CauseStink</STRING>
+		<STRING>Spell_Charm</STRING><STRING>Spell_Choke</STRING><STRING>Spell_Clog</STRING><STRING>Spell_Confusion</STRING>
+		<STRING>Spell_Deafness</STRING><STRING>Spell_Delirium</STRING><STRING>Spell_Enthrall</STRING><STRING>Spell_Feeblemind</STRING>
+		<STRING>Spell_FeelTheVoid</STRING><STRING>Spell_FlamingEnsharement</STRING><STRING>Spell_FleshStone</STRING><STRING>Spell_Frailty</STRING>
+		<STRING>Spell_Hold</STRING><STRING>Spell_IllusoryDisease</STRING><STRING>Spell_Irritation</STRING><STRING>Spell_LedFoot</STRING>
+		<STRING>Spell_Mute</STRING><STRING>Spell_Nightmare</STRING><STRING>Spell_Repulsion</STRING><STRING>Spell_Sleep</STRING>
+		<STRING>Spell_RogueLimb</STRING><STRING>Spell_Slow</STRING><STRING>Spell_Torture</STRING><STRING>Spell_Ugliness</STRING>
+		<STRING>Spell_Weaken</STRING>
+	</STRING>
+
 	<STRING ID="reason_badspelled" SELECT="All">
-		<STRING define="reason_verb"><!--TODO  --></STRING>
-		<STRING define="reason_verbed"><!--TODO  --></STRING>
-		<STRING define="quest_affect_id"><!-- TODO --></STRING>
-		<STRING define="quest_affect_args"><!-- TODO --></STRING>
-		<STRING define="quest_ambiance"><!-- TODO --></STRING>
-		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
+		<STRING define="reason_verb">$verb_unhurt</STRING>
+		<STRING define="reason_verbed">$verb_unhurted</STRING>
+		<STRING define="reason_done">inflicted with ${l:SELECT: NAME from ABILITIES where CLASS='$quest_disease_id'}</STRING>
+		<STRING define="quest_affect_id">$quest_badspell_id</STRING>
+		<STRING define="quest_affect_args"></STRING>
+		<STRING define="quest_ambiance">(${SELECT: NAME from ABILITIES where CLASS='$quest_disease_id'})</STRING>
+		<STRING define="quest_help_ability_id">Spell_DispelMagic</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
@@ -267,8 +296,9 @@ settable vars:
 	</STRING>
 	
 	<STRING ID="reason_crippled" SELECT="All">
-		<STRING define="reason_verb"><!--TODO  --></STRING>
-		<STRING define="reason_verbed"><!--TODO  --></STRING>
+		<STRING define="reason_verb">$verb_unhurt</STRING>
+		<STRING define="reason_verbed">$verb_unhurted</STRING>
+		<STRING define="reason_done"><!-- TODO --></STRING>
 		<STRING define="quest_affect_id"><!-- TODO --></STRING>
 		<STRING define="quest_affect_args"><!-- TODO --></STRING>
 		<STRING define="quest_ambiance"><!-- TODO --></STRING>
@@ -282,8 +312,9 @@ settable vars:
 	</STRING>
 	
 	<STRING ID="reason_bleeding" SELECT="All">
-		<STRING define="reason_verb"><!--TODO  --></STRING>
-		<STRING define="reason_verbed"><!--TODO  --></STRING>
+		<STRING define="reason_verb">$verb_unhurt</STRING>
+		<STRING define="reason_verbed">$verb_unhurted</STRING>
+		<STRING define="reason_done"><!-- TODO --></STRING>
 		<STRING define="quest_affect_id"><!-- TODO --></STRING>
 		<STRING define="quest_affect_args"><!-- TODO --></STRING>
 		<STRING define="quest_ambiance"><!-- TODO --></STRING>
@@ -299,6 +330,7 @@ settable vars:
 	<STRING ID="reason_polymorphed" SELECT="All">
 		<STRING define="reason_verb"><!--TODO  --></STRING>
 		<STRING define="reason_verbed"><!--TODO  --></STRING>
+		<STRING define="reason_done"><!-- TODO --></STRING>
 		<STRING define="quest_affect_id"><!-- TODO --></STRING>
 		<STRING define="quest_affect_args"><!-- TODO --></STRING>
 		<STRING define="quest_ambiance"><!-- TODO --></STRING>
