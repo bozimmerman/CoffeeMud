@@ -285,7 +285,7 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 		super.executeMsg(host, msg);
 	}
 
-	private final static String[] MYCODES={"ENCHTYPE", "SPELL", "INSTTYPE"};
+	private final static String[] MYCODES={"ENCHTYPE", "SPELL", "INSTTYPE", "MAXUSES"};
 
 	@Override
 	public String getStat(final String code)
@@ -305,6 +305,8 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 		}
 		case 2:
 			return this.getInstrumentTypeName();
+		case 3:
+			return ""+maxUses();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -331,6 +333,12 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 		case 2:
 		{
 			this.setInstrumentType(val);
+			break;
+		}
+		case 3:
+		{
+			if(CMath.isMathExpression(val))
+				this.setMaxUses(CMath.parseIntExpression(val));
 			break;
 		}
 		default:

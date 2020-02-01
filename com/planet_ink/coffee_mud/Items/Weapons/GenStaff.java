@@ -221,7 +221,7 @@ public class GenStaff extends GenWeapon implements Wand
 	}
 
 	// maxuses and secret word stats handled by genweapon, filled by readableText
-	private final static String[] MYCODES={"ENCHTYPE", "SPELL"};
+	private final static String[] MYCODES={"ENCHTYPE", "SPELL", "MAXUSES"};
 
 	@Override
 	public String getStat(final String code)
@@ -239,6 +239,8 @@ public class GenStaff extends GenWeapon implements Wand
 			final Ability A = getSpell();
 			return (A!=null) ? A.ID() : "";
 		}
+		case 2:
+			return ""+maxUses();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -260,6 +262,12 @@ public class GenStaff extends GenWeapon implements Wand
 			final Ability A=CMClass.getAbility(val);
 			if(A!=null)
 				setSpell(A);
+			break;
+		}
+		case 2:
+		{
+			if(CMath.isMathExpression(val))
+				this.setMaxUses(CMath.parseIntExpression(val));
 			break;
 		}
 		default:

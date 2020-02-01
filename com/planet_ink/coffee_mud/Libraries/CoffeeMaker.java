@@ -5143,7 +5143,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			break; // class
 		case USES:
 			I.setUsesRemaining(CMath.s_parseIntExpression(val));
-			break; // uses
+			break;
+			// uses
 		case LEVEL:
 			I.basePhyStats().setLevel(CMath.s_parseIntExpression(val));
 			break; // level
