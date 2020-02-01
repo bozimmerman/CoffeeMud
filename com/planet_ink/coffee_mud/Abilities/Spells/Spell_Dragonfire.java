@@ -104,6 +104,7 @@ public class Spell_Dragonfire extends Spell
 		if(success)
 		{
 
+			int maxDie = adjustedLevel(mob,asLevel)+(super.getX1Level(mob));
 			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A blast of flames erupt!":"^S<S-NAME> blast(s) flames from <S-HIS-HER> mouth!^?")+CMLib.protocol().msp("fireball.wav",40)))
 			{
 				for (final Object element : h)
@@ -118,8 +119,10 @@ public class Spell_Dragonfire extends Spell
 						mob.location().send(mob,msg2);
 						invoker=mob;
 
-						final int maxDie = adjustedLevel(mob,asLevel)+(super.getX1Level(mob));
 						int damage = CMLib.dice().roll(maxDie,4,maxDie/4);
+						maxDie = maxDie / 2;
+						if(maxDie < 4)
+							maxDie = 4;
 						if((msg.value()>0)||(msg2.value()>0))
 							damage = (int)Math.round(CMath.div(damage,2.0));
 						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("The dragonfire <DAMAGE> <T-NAME>!"));
