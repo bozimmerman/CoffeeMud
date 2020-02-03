@@ -80,8 +80,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		ABILITIES,
 		PROPERTIES,
 		EFFECTS,
-		BEHAVIORS
-
+		BEHAVIORS,
+		RACES
 	}
 
 	private final SHashtable<String,Class<LayoutManager>> mgrs = new SHashtable<String,Class<LayoutManager>>();
@@ -5361,6 +5361,27 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								}
 								else
 								if(o instanceof Behavior)
+									from.add(o);
+								else
+									throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							}
+						}
+					}
+					break;
+				case RACES:
+					{
+						if(from.size()==0)
+							from.addAll(new XVector<Race>(CMClass.races()));
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								if(o instanceof MOB)
+									from.add(((MOB)o).charStats().getMyRace());
+								else
+								if(o instanceof Race)
 									from.add(o);
 								else
 									throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);

@@ -143,14 +143,14 @@ settable vars:
 	<STRING ID="quest_helpspeech" PREDEFINE="reason=$reason">$quest_helpspeech</STRING>
 	<STRING ID="reason_desc" PREDEFINE="reason=$reason">$reason_desc</STRING>
 	<STRING ID="reason" DEFINE="reason" SELECT="Any-1">
-		<STRING>$reason_bound</STRING>
-		<STRING>$reason_diseased</STRING>
-		<STRING>$reason_hurt</STRING>
-		<STRING>$reason_cursed</STRING>
-		<STRING>$reason_badspelled</STRING>
-		<STRING>$reason_crippled</STRING>
-		<STRING>$reason_bleeding</STRING>
-		<STRING>$reason_polymorphed</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='bound'">$reason_bound</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='diseased'">$reason_diseased</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='hurt'">$reason_hurt</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='cursed'">$reason_cursed</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='badspelled'">$reason_badspelled</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='crippled'">$reason_crippled</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='bleeding'">$reason_bleeding</STRING>
+		<STRING CONDITION="$sub_template=='' or $sub_template=='polymorphed'">$reason_polymorphed</STRING>
 	</STRING>
 
 	<STRING id="quest_generic_loser_speeches" SELECT="Any-1">
@@ -190,6 +190,7 @@ settable vars:
 		</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
+			<STRING>The ${p:target_name} have been $reason_done by their enemies!  This is outrageous!</STRING>
 			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
 			<STRING><!-- TODO --></STRING>
 		</STRING>
@@ -297,13 +298,19 @@ settable vars:
 	</STRING>
 	
 	<STRING ID="reason_crippled" SELECT="All">
+		<STRING id="broken_limb" define="broken_limb" SELECT="ANY-1">
+			<STRING>left arm</STRING>
+			<STRING>right arm</STRING>
+			<STRING>left leg</STRING>
+			<STRING>right leg</STRING>
+		</STRING>
 		<STRING define="reason_verb">$verb_unhurt</STRING>
 		<STRING define="reason_verbed">$verb_unhurted</STRING>
-		<STRING define="reason_done"><!-- TODO --></STRING>
-		<STRING define="quest_affect_id"><!-- TODO --></STRING>
-		<STRING define="quest_affect_args"><!-- TODO --></STRING>
-		<STRING define="quest_ambiance"><!-- TODO --></STRING>
-		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
+		<STRING define="reason_done">crippled</STRING>
+		<STRING define="quest_affect_id">BrokenLimbs</STRING>
+		<STRING define="quest_affect_args">$broken_limb</STRING>
+		<STRING define="quest_ambiance"></STRING>
+		<STRING define="quest_help_ability_id">Prayer_Heal</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
@@ -315,11 +322,11 @@ settable vars:
 	<STRING ID="reason_bleeding" SELECT="All">
 		<STRING define="reason_verb">$verb_unhurt</STRING>
 		<STRING define="reason_verbed">$verb_unhurted</STRING>
-		<STRING define="reason_done"><!-- TODO --></STRING>
-		<STRING define="quest_affect_id"><!-- TODO --></STRING>
-		<STRING define="quest_affect_args"><!-- TODO --></STRING>
-		<STRING define="quest_ambiance"><!-- TODO --></STRING>
-		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
+		<STRING define="reason_done">$verb_hurt</STRING>
+		<STRING define="quest_affect_id">Bleeding</STRING>
+		<STRING define="quest_affect_args"></STRING>
+		<STRING define="quest_ambiance">(bleeding)</STRING>
+		<STRING define="quest_help_ability_id">Prayer_Heal</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
@@ -329,13 +336,15 @@ settable vars:
 	</STRING>
 	
 	<STRING ID="reason_polymorphed" SELECT="All">
-		<STRING define="reason_verb"><!--TODO  --></STRING>
-		<STRING define="reason_verbed"><!--TODO  --></STRING>
-		<STRING define="reason_done"><!-- TODO --></STRING>
-		<STRING define="quest_affect_id"><!-- TODO --></STRING>
-		<STRING define="quest_affect_args"><!-- TODO --></STRING>
-		<STRING define="quest_ambiance"><!-- TODO --></STRING>
-		<STRING define="quest_help_ability_id"><!--  TODO --></STRING>
+		<STRING ID="quest_race_id" define="quest_race_id">${SELECT: ANY\CLASS FROM RACES}</STRING>
+		<STRING ID="quest_race_name" define="quest_race_id">${SELECT: NAME FROM RACES WHERE CLASS='$quest_race_id'}</STRING>
+		<STRING define="reason_verb">$verb_transform</STRING>
+		<STRING define="reason_verbed">$verb_transformed</STRING>
+		<STRING define="reason_done">$verb_restore</STRING>
+		<STRING define="quest_affect_id">Spell_Polymorph</STRING>
+		<STRING define="quest_affect_args">$quest_race_id</STRING>
+		<STRING define="quest_ambiance">${quest_race_name}</STRING>
+		<STRING define="quest_help_ability_id">Spell_DispelMagic</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">

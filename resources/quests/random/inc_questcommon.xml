@@ -269,6 +269,22 @@ ${SELECT:any\name from (SELECT: . from $item_junk)}
 	<STRING define="hurt_verbed=ended">end</STRING>
 </STRING>
 
+<STRING ID="verb_restored" predefine="verb_restore=$verb_restore">$verb_restored</STRING>
+<STRING ID="verb_restore" define="verb_restored" SELECT="Any-1">
+	<STRING define="verb_restored=saved">save</STRING>
+	<STRING define="verb_restored=helped">help</STRING>
+	<STRING define="verb_restored=cured">cure</STRING>
+	<STRING define="verb_restored=restored">restore</STRING>
+</STRING>
+
+<STRING ID="verb_transformed" predefine="verb_transform=$verb_transform">$verb_transformed</STRING>
+<STRING ID="verb_transform" define="verb_transformed" SELECT="Any-1">
+	<STRING define="verb_transformed=morphed">morph</STRING>
+	<STRING define="verb_transformed=transformed">transform</STRING>
+	<STRING define="verb_transformed=altered">alter</STRING>
+	<STRING define="verb_transformed=mutated">mutate</STRING>
+</STRING>
+
 <STRING ID="hurt_adverb" SELECT="Any-1">
 	<STRING>lightly</STRING>
 	<STRING>slightly</STRING>

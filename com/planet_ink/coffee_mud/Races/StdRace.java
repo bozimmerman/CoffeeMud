@@ -2117,7 +2117,7 @@ public class StdRace implements Race
 		}
 	}
 
-	protected static String[] CODES={"CLASS","PARMS"};
+	protected static String[] CODES={"CLASS","PARMS","NAME"};
 
 	@Override
 	public int getSaveStatIndex()
@@ -2134,6 +2134,8 @@ public class StdRace implements Race
 			return ID();
 		case 1:
 			return "" + racialParms();
+		case 2:
+			return name();
 		}
 		return "";
 	}
@@ -2148,6 +2150,8 @@ public class StdRace implements Race
 		case 1:
 			setRacialParms(val);
 			break;
+		case 2:
+			return;
 		}
 	}
 
