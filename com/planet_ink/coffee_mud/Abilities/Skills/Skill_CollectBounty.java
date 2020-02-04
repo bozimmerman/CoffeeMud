@@ -222,15 +222,25 @@ public class Skill_CollectBounty extends StdSkill
 					return false;
 				}
 				int gold=0;
-				Ability A=mob.fetchEffect("Skill_HandCuff");
-				if(A==null)
-					A=mob.fetchEffect("Thief_Bind");
-				if((A!=null)&&(target.amFollowing()==mob))
-				{
+				Ability A=target.fetchEffect("Skill_HandCuff");
+				if(A!=null)
 					A.setInvoker(officer);
+				A=target.fetchEffect("Thief_Bind");
+				if(A!=null)
+					A.setInvoker(officer);
+				A=mob.fetchEffect("Skill_HandCuff");
+				if(A!=null)
+					A.setInvoker(officer);
+				A=mob.fetchEffect("Thief_Bind");
+				if(A!=null)
+					A.setInvoker(officer);
+				if((target.amFollowing()==mob)||(mob.isFollowedBy(target)))
+				{
+					CMLib.commands().postFollow(target, officer, true);
 					target.setFollowing(officer);
+					mob.delFollower(target);
 				}
-				LegalWarrant W=warrants.get(0);
+				LegalWarrant W=warrants.get(warrants.size()-1);
 				W.setArrestingOfficer(legalA,officer);
 				W.setState(Law.STATE_REPORTING);
 				for(int i=0;i<warrants.size();i++)
