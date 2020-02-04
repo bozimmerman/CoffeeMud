@@ -112,7 +112,13 @@ public class Paladin_HolyStrike extends StdAbility
 		&&(msg.value()>0))
 		{
 			if(mob.location()!=null)
-				mob.location().show(msg.source(),msg.target(),CMMsg.MSG_OK_VISUAL, L("A blinding holy light from <O-NAME> comes down upon <T-NAME>!"));
+			{
+				final MOB deity=msg.source().getMyDeity();
+				if(deity != null)
+					mob.location().show(msg.source(),msg.target(),this,CMMsg.MSG_OK_VISUAL, L("A blinding holy light from @x1 comes down upon <T-NAME>!",deity.Name()));
+				else
+					mob.location().show(msg.source(),msg.target(),this,CMMsg.MSG_OK_VISUAL, L("A blinding holy light comes down upon <T-NAME>!"));
+			}
 			msg.setValue((msg.value()*2)+super.getXLEVELLevel(invoker));
 			unInvoke();
 		}
