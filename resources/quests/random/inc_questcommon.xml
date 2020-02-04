@@ -218,7 +218,7 @@ ${SELECT:any\name from (SELECT: . from $item_junk)}
 <STRING ID="verb_bound" predefine="verb_bind=$verb_bind">$verb_bound</STRING>
 <STRING ID="verb_bind" define="verb_bind" SELECT="Any-1">
 	<STRING define="verb_bound=tied up">tie</STRING>
-	<STRING define="verb_bound=retrained">restrain</STRING>
+	<STRING define="verb_bound=restrained">restrain</STRING>
 	<STRING define="verb_bound=handcuffed">handcuff</STRING>
 	<STRING define="verb_bound=bound">bind</STRING>
 </STRING>

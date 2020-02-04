@@ -68,8 +68,14 @@
 #!QUESTMAKER_PAGE Specify the Helpable Mob or Mobs
 #The Helpables are the mob or mobs which must be defeated.
 #
+#Helpables Area: 
+#Specify below the name of the area that your helpable mobs will be located
+#in You may leave it blank to include the whole world.
+#$HELPABLE_AREA=($AREA)
+#
 #Helpable mobs: 
 #Specify below the mobs that the player must help to get credit for this quest.
+#Also, the area in which they will be found and helped.
 #
 #Helpable mob names: 
 #Specify the mobs who will act as the helpable mob or mobs.  
@@ -171,6 +177,9 @@ set mobgroup
 set mob reselect $ANNOUNCER_NAME
 give stat keyplayer true
 give script LOAD=$QUEST_ID_announcer.script
+
+set mob
+set area $HELPABLE_AREA
 
 set duration 0
 
@@ -274,21 +283,25 @@ QUEST_TIME_PROG * 1
 
 ENTRY_PROG 100
 	if EVAL($n == $i)
-		if EVAL('b' != '') AND !HAS($i $b)
-			MPJUNK $b
-			MPARGSET $b ''
+		if EVAL($b != '')
+MPECHO IT MATTERS: $b
+			 if !HAS($i $b)
+MPECHO JUNK $b
+				MPJUNK $b
+				MPARGSET $b ''
+			endif
 		endif
-		if INROOM($i == $g) AND QUESTAREA('$%INAREA($i)%' *)) AND VAR($i $QUEST_ID_HELPED < $NUM_HELPABLES)
+		if INROOM($i == $g) AND VAR($i $QUEST_ID_HELPED < $NUM_HELPABLES) AND (QUESTAREA('$%INAREA($i)%' *) OR INAREA($i '$HELPABLE_AREA'))
 			if EVAL('$HELPABLE_DROP_LOC' == 'ROOM') AND EVAL('$HELPABLE_DROP_CHANCE' != '') AND rand($HELPABLE_DROP_CHANCE)
 				mpoloadroom fromfile $QUEST_ID_helperitems.xml any
-			next
+			endif
 			for $0 = 1 to '$%NUMMOBSROOM(*)%
 				MPARGSET $1 $%ROOMMOB($0)%
 				if ISNPC($1) AND ISLIKE($n $HELPABLES_MASK) AND !ISFOLLOW($1)
-					IF EVAL('$HELPABLES_RESPONSE') != ''
+					IF EVAL('$HELPABLES_RESPONSE' != '')
 						mpforce $1 sayto "$i" $HELPABLES_RESPONSE
 					endif
-					MPCASTEXT TemporaryEffects $1 +BINDTO $i
+					MPCASTEXT TemporaryEffects $1 +BINRDTO $i
 					IF EVAL('$TEMPORARY_EFFECTS') != '')
 						MPCASTEXT TemporaryEffects $1 +$TEMPORARY_EFFECTS 999 $TEMPORARY_EFFECT_ARGS
 					ENDIF
@@ -332,7 +345,7 @@ CASTING_PROG ALL
 ~ 
 
 EXECMSG_PROG STO=DEATH ALL
-	if ISNPC($n) AND QUESTAREA('$%INAREA($i)%' *))
+	if ISNPC($n) AND QUESTAREA('$%INAREA($i)%' *)
 		if ISLIKE($n '$HELPABLES_MASK')
 			if !ISFIGHT($n)
 				# DONT LET THEM DIE!

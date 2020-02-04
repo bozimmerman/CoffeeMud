@@ -204,8 +204,7 @@ public class GenStaff extends GenWeapon implements Wand
 				{
 					for(final CMMsg msg2 : trailers)
 					{
-						if((msg2.targetMinor()==CMMsg.TYP_WAND_USE)
-						&&(msg2.target() == this))
+						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 							alreadyWanding=true;
 					}
 				}

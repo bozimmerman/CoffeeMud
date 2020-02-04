@@ -246,7 +246,8 @@ public class StdWand extends StdItem implements Wand
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WAND_USE:
-			if(msg.amITarget(this)&&((msg.tool()==null)||(msg.tool() instanceof Physical)))
+			if(msg.amITarget(this)
+			&&((msg.tool()==null)||(msg.tool() instanceof Physical)))
 				waveIfAble(mob,(Physical)msg.tool(),msg.targetMessage());
 			break;
 		case CMMsg.TYP_SPEAK:
@@ -254,18 +255,19 @@ public class StdWand extends StdItem implements Wand
 			&&(!amWearingAt(Wearable.IN_INVENTORY)))
 			{
 				boolean alreadyWanding=false;
-				final List<CMMsg> trailers =msg.trailerMsgs();
+				final List<CMMsg> trailers=msg.trailerMsgs();
 				if(trailers!=null)
 				{
 					for(final CMMsg msg2 : trailers)
 					{
-						if((msg2.targetMinor()==CMMsg.TYP_WAND_USE)
-						&&(msg2.target() == this))
+						if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 							alreadyWanding=true;
 					}
 				}
 				final String said=CMStrings.getSayFromMessage(msg.sourceMessage());
-				if((!alreadyWanding)&&(said!=null)&&(checkWave(mob,said)))
+				if((!alreadyWanding)
+				&&(said!=null)
+				&&(checkWave(mob,said)))
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_WAND_USE,said,CMMsg.NO_EFFECT,null));
 			}
 			break;

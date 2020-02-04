@@ -53,6 +53,7 @@ settable vars:
 	<QUEST_INSTRUCTIONSSTRING>${j:1:quest_instructionstring}</QUEST_INSTRUCTIONSSTRING>
 	<QUEST_ANNOUNCECHANNEL>$announcechannel</QUEST_ANNOUNCECHANNEL>
 	<QUEST_WINSPEECH_TEXT>${j:1:quest_winspeech}</QUEST_WINSPEECH_TEXT>
+	<HELPABLES_AREA>$target_area_name</HELPABLES_AREA>
 	<HELPABLES_MASK>-HOME "+$target_area_name" -NAMES "+$target_name"</HELPABLES_MASK>
 	<NUM_HELPABLES>$num_targets</NUM_HELPABLES>
 	<HELPABLES_RESPONSE>${j:1:quest_helpspeech}</HELPABLES_RESPONSE>
@@ -76,19 +77,25 @@ settable vars:
 		<STRING CONDITION="$do_drop_item = 'YES'">${SELECT: NAME from $quest_drop_item}</STRING>
 		<STRING CONDITION="$do_drop_item != 'YES'"></STRING>
 	</STRING>
-	
+
 	<STRING ID="quest_help_ability_name" define="quest_help_ability_name" SELECT="ANY-1" predefine="reason=$reason">${SELECT: NAME from ABILITIES where CLASS='$quest_help_ability_id'}</STRING>
 
 	<STRING ID="quest_pct_chance">$[1?100]</STRING>
 
 	<OBJECT ID="quest_drop_item" define="quest_drop_item" SELECT="Any-1" predefine="reason=$reason">
-		<ITEM class="GenPotion" name="a potion of $quest_help_ability_name" display="a potion of $quest_help_ability_name lies here" material="GLASS" level="1">
+		<ITEM CONDITION="$quest_affect_id = 'Thief_Bind'" class="GenPotion" name="An unbinding tool" display="An unbinding tool lies here" material="IRON" level="1">
+			<AFFECT class="Prop_Hidden" CONDITION="$quest_drop_loc = 'ROOM' and $quest_pct_chance > 50"/>
+			<BEHAVIOR class="Decay" parms="NOTRIGGER REMAIN=600" />
+			<AFFECT class="Prop_HaveEnabler" parms="Unbinding" />
+			<DESCRIPTION>Grants you the Unbinding skill.</DESCRIPTION>
+		</ITEM>
+		<ITEM CONDITION="$quest_affect_id != 'Thief_Bind'" class="GenPotion" name="a potion of $quest_help_ability_name" display="a potion of $quest_help_ability_name lies here" material="GLASS" level="1">
 			<READABLETEXT>$quest_help_ability_id</READABLETEXT>
 			<AFFECT class="Prop_Hidden" CONDITION="$quest_drop_loc = 'ROOM' and $quest_pct_chance > 50"/>
 			<BEHAVIOR class="Decay" parms="NOTRIGGER REMAIN=600" />
 		</ITEM>
 	</OBJECT>
-	
+
 	<STRING load="/resources/quests/random/inc_questcommon.xml" />
 
 	<STRING ID="quest_notifystring" define="quest_notifystring" SELECT="ALL">
@@ -103,7 +110,7 @@ settable vars:
 		<STRING PICKWEIGHT=1>Who's ready?</STRING>
 		<STRING PICKWEIGHT=12></STRING>
 	</STRING>
-	
+
 	<STRING ID="reason_short" define="reason_short" SELECT="Any-1">
 		<STRING>I need ${p:target_name} $reason_verbed!</STRING>
 		<STRING>Help me $reason_verb ${p:target_name}!</STRING>
@@ -191,8 +198,9 @@ settable vars:
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
 			<STRING>The ${p:target_name} have been $reason_done by their enemies!  This is outrageous!</STRING>
-			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
-			<STRING><!-- TODO --></STRING>
+			<STRING>The time has come for the ${p:target_name} to be released.</STRING>
+			<STRING>The ${p:target_name} were robbed and $reason_done by bandits.  Please help them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $verb_unbound.</STRING>
 		</STRING>
 	</STRING>
 
@@ -220,11 +228,15 @@ settable vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
-			<STRING><!-- TODO --></STRING>
+			<STRING>The ${p:target_name} have been given $reason_done by their enemies!  This is outrageous!</STRING>
+			<STRING>A horrible plague of $reason_done has swept amongst the ${p:target_name}.</STRING>
+			<STRING>${c:reason_done} has afflicted the ${p:target_name}.  Please help them!</STRING>
+			<STRING>The ${p:target_name} are undone by the ${reason_done}, and I want them $verb_unbound.</STRING>
 		</STRING>
 	</STRING>
 
+	<STRING ID="quest_nontarget_race_name" define="quest_nontarget_race_name">${SELECT: ANY\NAME FROM RACES WHERE CLASS!='$target_race_id'}</STRING>
+		
 	<STRING ID="reason_hurt" SELECT="All">
 		<STRING define="reason_verb">$verb_unhurt</STRING>
 		<STRING define="reason_verbed">$verb_unhurted</STRING>
@@ -236,8 +248,10 @@ settable vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
-			<STRING><!-- TODO --></STRING>
+			<STRING>The ${p:target_name} have been $reason_done by their enemies the $quest_nontarget_race_name!</STRING>
+			<STRING>The ${p:target_name} were attacked and $reason_done by $quest_nontarget_race_name enemies.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name bandits.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $reason_verbed.</STRING>
 		</STRING>
 	</STRING>
 
@@ -262,8 +276,14 @@ settable vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
-			<STRING><!-- TODO --></STRING>
+			<STRING>The ${p:target_name} have been $reason_done by their enemies the $quest_nontarget_race_name!</STRING>
+			<STRING>The ${p:target_name} were attacked and $reason_done by $quest_nontarget_race_name enemies.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name magicians.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $reason_verbed.</STRING>
+			<STRING>The ${p:target_name} have been given $reason_done by their enemies!  This is outrageous!</STRING>
+			<STRING>A horrible $adj_badding has swept amongst the ${p:target_name}.</STRING>
+			<STRING>${c:adj_badding} curse has afflicted the ${p:target_name}.  Please help them!</STRING>
+			<STRING>The ${p:target_name} are undone by the ${adj_badding} curse, and I want them $verb_unbound.</STRING>
 		</STRING>
 	</STRING>
 
@@ -292,8 +312,13 @@ settable vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
-			<STRING><!-- TODO --></STRING>
+			<STRING>The ${p:target_name} have been $reason_done by their enemies the $quest_nontarget_race_name!</STRING>
+			<STRING>The ${p:target_name} were attacked and $reason_done by $quest_nontarget_race_name enemies.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name magicians.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $reason_verbed.</STRING>
+			<STRING>The ${p:target_name} have been $reason_done by their enemies!  This is outrageous!</STRING>
+			<STRING>A horrible magical plague has swept amongst the ${p:target_name}, which has them $reason_done.</STRING>
+			<STRING>The ${p:target_name} are undone by being ${reason_done}, and I want them $reason_verbed.</STRING>
 		</STRING>
 	</STRING>
 	
@@ -314,8 +339,11 @@ settable vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
-			<STRING><!-- TODO --></STRING>
+			<STRING>The ${p:target_name} have been $reason_done by their enemies the $quest_nontarget_race_name!</STRING>
+			<STRING>The ${p:target_name} were attacked and $reason_done by $quest_nontarget_race_name enemies.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name bandits.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name invaders.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $reason_verbed.</STRING>
 		</STRING>
 	</STRING>
 	
@@ -330,17 +358,20 @@ settable vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
-			<STRING><!-- TODO --></STRING>
+			<STRING>The ${p:target_name} have been $reason_done by their enemies the $quest_nontarget_race_name!</STRING>
+			<STRING>The ${p:target_name} were attacked and $reason_done by $quest_nontarget_race_name enemies.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name bandits.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name invaders.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $reason_verbed.</STRING>
 		</STRING>
 	</STRING>
 	
 	<STRING ID="reason_polymorphed" SELECT="All">
 		<STRING ID="quest_race_id" define="quest_race_id">${SELECT: ANY\CLASS FROM RACES}</STRING>
 		<STRING ID="quest_race_name" define="quest_race_id">${SELECT: NAME FROM RACES WHERE CLASS='$quest_race_id'}</STRING>
-		<STRING define="reason_verb">$verb_transform</STRING>
-		<STRING define="reason_verbed">$verb_transformed</STRING>
-		<STRING define="reason_done">$verb_restore</STRING>
+		<STRING define="reason_verb">$verb_restore</STRING>
+		<STRING define="reason_verbed">$verb_restored</STRING>
+		<STRING define="reason_done">$verb_transformed into $quest_race_name</STRING>
 		<STRING define="quest_affect_id">Spell_Polymorph</STRING>
 		<STRING define="quest_affect_args">$quest_race_id</STRING>
 		<STRING define="quest_ambiance">${quest_race_name}</STRING>
@@ -348,8 +379,13 @@ settable vars:
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
 		<STRING define="reason_desc" SELECT="Any-1">
-			<!-- ${C:target_name} ${P:target_name} ${C:P:target_name} -->
-			<STRING><!-- TODO --></STRING>
+			<STRING>The ${p:target_name} have been $reason_done by their enemies the $quest_nontarget_race_name!</STRING>
+			<STRING>The ${p:target_name} were attacked and $reason_done by $quest_nontarget_race_name enemies.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} were $reason_done by $quest_nontarget_race_name magicians.  Please $reason_verb them!</STRING>
+			<STRING>The ${p:target_name} are ${reason_done}, and I want them $reason_verbed.</STRING>
+			<STRING>The ${p:target_name} have been $reason_done by their enemies!  This is outrageous!</STRING>
+			<STRING>A horrible magical plague has swept amongst the ${p:target_name}, which has them $reason_done.</STRING>
+			<STRING>The ${p:target_name} are undone by being ${reason_done}, and I want them $reason_verbed.</STRING>
 		</STRING>
 	</STRING>
 
@@ -434,6 +470,10 @@ settable vars:
 
 	<STRING ID="target_int" SELECT="any-1" DEFINE="target_int">
 		<STRING>${SELECT:current_intelligence from $target}</STRING>
+	</STRING>
+	
+	<STRING ID="target_race_id" SELECT="any-1" DEFINE="target_race_id">
+		<STRING>${SELECT:RACE from $target}</STRING>
 	</STRING>
 	
 	<STRING ID="multiarea" define="multiarea">NO</STRING>

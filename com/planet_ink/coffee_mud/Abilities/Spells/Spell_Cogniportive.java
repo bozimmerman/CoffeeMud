@@ -243,8 +243,7 @@ public class Spell_Cogniportive extends Spell
 								{
 									for(final CMMsg msg2 : trailers)
 									{
-										if((msg2.targetMinor()==CMMsg.TYP_WAND_USE)
-										&&(msg2.target() == affected))
+										if(msg2.targetMinor()==CMMsg.TYP_WAND_USE)
 											alreadyWanding=true;
 									}
 								}
