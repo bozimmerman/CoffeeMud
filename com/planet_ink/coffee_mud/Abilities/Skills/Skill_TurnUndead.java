@@ -95,9 +95,7 @@ public class Skill_TurnUndead extends StdSkill
 		{
 			if(!(target instanceof MOB))
 				return Ability.QUALITY_INDIFFERENT;
-			final MOB targetM=(MOB)target;
-			if((targetM.baseCharStats().getMyRace()==null)
-			||(!targetM.baseCharStats().getMyRace().racialCategory().equals("Undead")))
+			if(!CMLib.flags().isUndead((MOB)target))
 				return Ability.QUALITY_INDIFFERENT;
 			if(CMLib.flags().isEvil(mob))
 				return Ability.QUALITY_INDIFFERENT;
@@ -112,8 +110,8 @@ public class Skill_TurnUndead extends StdSkill
 		if(target==null)
 			return false;
 
-		if((target.baseCharStats().getMyRace()==null)
-		   ||(!target.baseCharStats().getMyRace().racialCategory().equals("Undead")))
+
+		if(!CMLib.flags().isUndead(target))
 		{
 			mob.tell(auto?L("Only the undead can be turned."):L("You can only turn the undead."));
 			return false;
