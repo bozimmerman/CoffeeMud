@@ -87,7 +87,8 @@ public class Unbinding extends CommonSkill
 				List<Ability> affects=null;
 				if(found!=null)
 					affects=CMLib.flags().flaggedAffects(found,Ability.FLAG_BINDING);
-				if((affects!=null)&&(affects.size()>0))
+				if((affects!=null)
+				&&(affects.size()>0))
 				{
 					removing=affects.get(0);
 					displayText=L("You are removing @x1 from @x2",removing.name(),found.name());
@@ -95,8 +96,8 @@ public class Unbinding extends CommonSkill
 				}
 				else
 				{
-					final StringBuffer str=new StringBuffer(L("You can't seem to remove any of the bindings.\n\r"));
-					commonTell(mob,str.toString());
+					//final StringBuffer str=new StringBuffer(L("You can't seem to remove any of the bindings.\n\r"));
+					//commonTell(mob,str.toString());
 					unInvoke();
 				}
 			}
