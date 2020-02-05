@@ -71,7 +71,7 @@
 #Helpables Area: 
 #Specify below the name of the area that your helpable mobs will be located
 #in You may leave it blank to include the whole world.
-#$HELPABLE_AREA=($AREA)
+#$HELPABLES_AREA=($AREA)
 #
 #Helpable mobs: 
 #Specify below the mobs that the player must help to get credit for this quest.
@@ -179,7 +179,6 @@ give stat keyplayer true
 give script LOAD=$QUEST_ID_announcer.script
 
 set mob
-set area $HELPABLE_AREA
 
 set duration 0
 
@@ -291,22 +290,23 @@ MPECHO JUNK $b
 				MPARGSET $b ''
 			endif
 		endif
-		if INROOM($i == $g) AND VAR($i $QUEST_ID_HELPED < $NUM_HELPABLES) AND (QUESTAREA('$%INAREA($i)%' *) OR INAREA($i '$HELPABLE_AREA'))
+		if INROOM($i == $g) AND VAR($i $QUEST_ID_HELPED < $NUM_HELPABLES) AND (QUESTAREA('$%INAREA($i)%' *) OR EVAL('$HELPABLES_AREA' == '') OR INAREA($i == '$HELPABLES_AREA'))
+MPECHO *1 $HELPABLE_DROP_LOC - $HELPABLE_DROP_CHANCE
 			if EVAL('$HELPABLE_DROP_LOC' == 'ROOM') AND EVAL('$HELPABLE_DROP_CHANCE' != '') AND rand($HELPABLE_DROP_CHANCE)
 				mpoloadroom fromfile $QUEST_ID_helperitems.xml any
 			endif
 			for $0 = 1 to '$%NUMMOBSROOM(*)%
 				MPARGSET $1 $%ROOMMOB($0)%
-				if ISNPC($1) AND ISLIKE($n $HELPABLES_MASK) AND !ISFOLLOW($1)
+				if ISNPC($1) AND ISLIKE($1 $HELPABLES_MASK) AND !ISFOLLOW($1)
 					IF EVAL('$HELPABLES_RESPONSE' != '')
 						mpforce $1 sayto "$i" $HELPABLES_RESPONSE
 					endif
-					MPCASTEXT TemporaryEffects $1 +BINRDTO $i
-					IF EVAL('$TEMPORARY_EFFECTS') != '')
-						MPCASTEXT TemporaryEffects $1 +$TEMPORARY_EFFECTS 999 $TEMPORARY_EFFECT_ARGS
+					MPCASTEXT TemporaryAffects $1 +BINDTO $i
+					IF EVAL('$TEMPORARY_EFFECTS' != '')
+						MPCASTEXT TemporaryAffects $1 +$TEMPORARY_EFFECTS 999 $TEMPORARY_EFFECT_ARGS
 					ENDIF
-					IF EVAL('$TEMPORARY_AMBIANCE') != '')
-						MPCASTEXT TemporaryEffects $1 +AMBIANCE 999 $TEMPORARY_AMBIANCE
+					IF EVAL('$TEMPORARY_AMBIANCE' != '')
+						MPCASTEXT TemporaryAffects $1 +AMBIANCE 999 $TEMPORARY_AMBIANCE
 					ENDIF
 				endif
 			next
@@ -317,7 +317,7 @@ MPECHO JUNK $b
 FUNC_PROG CHECK_DISPEL
 	# $g has the name of the mob to check
 	MPARGSET $3 $%ROOMMOB($g)%
-	IF EVAL('$3' != '') AND !AFFECTED($3 'TemporaryEffects')
+	IF EVAL('$3' != '') AND !AFFECTED($3 'TemporaryAffects')
 		# kaplah!
 		if var($i $QUEST_ID_HELPED < $NUM_HELPABLES)
 			MPSETVAR $i $QUEST_ID_HELPED ++
@@ -328,8 +328,8 @@ FUNC_PROG CHECK_DISPEL
 
 CASTING_PROG P $HELPABLE_ABILITY
 	IF EVAL('$HELPABLE_ABILITY' != '') AND EVAL($t != '') AND EVAL($t != $i) AND ISLIKE($t $HELPABLES_MASK)
-		IF AFFECTED($t 'TemporaryEffects')
-			mpunaffect $t TemporaryEffects
+		IF AFFECTED($t 'TemporaryAffects')
+			mpunaffect $t TemporaryAffects
 			MPCALLFUNC CHECK_DISPEL $t
 		ENDIF
 	ENDIF
@@ -338,7 +338,7 @@ CASTING_PROG P $HELPABLE_ABILITY
 CASTING_PROG ALL
 	# this works because the source always executes a msg first, before the target, or the effect happens
 	IF EVAL('$HELPABLE_ABILITY' == '') AND EVAL($t != '') AND EVAL($t != $i) AND ISLIKE($t $HELPABLES_MASK)
-		IF AFFECTED($t 'TemporaryEffects')
+		IF AFFECTED($t 'TemporaryAffects')
 			MPALARM 1 MPCALLFUNC CHECK_DISPEL $t
 		ENDIF
 	ENDIF

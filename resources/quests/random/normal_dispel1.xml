@@ -123,8 +123,11 @@ settable vars:
 	<STRING ID="quest_instructionstring" SELECT="ALL">
 		<STRING ACTION="PREPEND">$reason_desc</STRING>
 		<STRING ACTION="APPEND">$reason_short</STRING>
-		<STRING ACTION="APPEND" CONDITION="$quest_drop_chance != ''">
-			<!-- TODO: SOME INFO ABOUT THE ITEM YOU CAN PICK UP AND USE -->
+		<STRING ACTION="APPEND" CONDITION="$do_drop_item = 'YES' AND $quest_drop_loc = 'ROOM'">
+			If you need help, ${p:quest_drop_item_name} hidden near them.
+		</STRING>
+		<STRING ACTION="APPEND" CONDITION="$do_drop_item = 'YES' AND $quest_drop_loc != 'ROOM'">
+			If you need help, ${p:quest_drop_item_name} are being carried nearby.
 		</STRING>
 	</STRING>
 

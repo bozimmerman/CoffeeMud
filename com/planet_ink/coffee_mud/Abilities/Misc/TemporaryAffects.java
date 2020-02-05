@@ -276,7 +276,11 @@ public class TemporaryAffects extends StdAbility
 			{
 				txt=txt.substring(1);
 				if(txt.toUpperCase().startsWith("BINDTO "))
-					this.bindings.add(txt.substring(7).toLowerCase().trim());
+				{
+					final String name=txt.substring(7).trim();
+					this.bindings.add(name.toLowerCase());
+					return;
+				}
 			}
 			else
 			{
@@ -381,8 +385,11 @@ public class TemporaryAffects extends StdAbility
 			return true;
 		for(final Pair<Object,int[]> p : affects)
 		{
-			if(!((MsgListener)p.first).okMessage(myHost, msg))
-				return false;
+			if(p.first instanceof MsgListener)
+			{
+				if(!((MsgListener)p.first).okMessage(myHost, msg))
+					return false;
+			}
 		}
 		return true;
 	}
@@ -392,8 +399,34 @@ public class TemporaryAffects extends StdAbility
 	{
 		if(destroyIfNecessary())
 			return;
+		if((msg.target() instanceof Room)
+		&&((msg.targetMinor()==CMMsg.TYP_LEAVE)||(msg.sourceMinor()==CMMsg.TYP_RECALL)))
+		{
+			if((bindings.size()>0) && (affected != null) && initialized)
+			{
+				final Room R=CMLib.map().roomLocation(affected);
+				if(R!=null)
+				{
+					for(final String binding : bindings)
+					{
+						if(R.fetchFromRoomFavorMOBs(null, binding)==null)
+							bindings.remove(binding);
+					}
+					if(bindings.size()==0)
+					{
+						this.unInvoke();
+						return;
+					}
+				}
+			}
+		}
 		for(final Pair<Object,int[]> p : affects)
-			((MsgListener)p.first).executeMsg(myHost, msg);
+		{
+			if(p.first instanceof MsgListener)
+			{
+				((MsgListener)p.first).executeMsg(myHost, msg);
+			}
+		}
 	}
 
 	@Override
@@ -444,7 +477,8 @@ public class TemporaryAffects extends StdAbility
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if(commands.size()<3)
+		if((commands.size()<3)
+		&&((commands.size()<2)||(!commands.get(0).startsWith("+BINDTO"))))
 		{
 			mob.tell(L("Specify a target, a property, number of ticks, and (optionally) some misc text"));
 			mob.tell(L("Begin the first  property with ; to separate multiple entries by ;"));
@@ -479,9 +513,11 @@ public class TemporaryAffects extends StdAbility
 		for(final List<String> set : sets)
 		{
 			String abilityStr = set.get(0);
+			if(abilityStr.startsWith("+"))
+				abilityStr=abilityStr.substring(1);
 			final String numTicks;
 			final String parms;
-			if(abilityStr.equalsIgnoreCase("BINDTO "))
+			if(abilityStr.equalsIgnoreCase("BINDTO"))
 			{
 				numTicks="";
 				abilityStr=abilityStr.toUpperCase().trim();
@@ -524,6 +560,7 @@ public class TemporaryAffects extends StdAbility
 				T=(TemporaryAffects)this.newInstance();
 				T.affects=new SVector<Pair<Object,int[]>>();
 				T.startTickDown(mob, target, 10);
+				T.makeLongLasting();
 				T = (TemporaryAffects)target.fetchEffect(ID());
 			}
 			if(T!=null)

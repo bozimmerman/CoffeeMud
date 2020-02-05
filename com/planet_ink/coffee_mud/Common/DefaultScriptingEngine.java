@@ -10577,7 +10577,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
-			case 89: // mpcastexp
+			case 89: // mpcastext
 			{
 				if(tt==null)
 				{
