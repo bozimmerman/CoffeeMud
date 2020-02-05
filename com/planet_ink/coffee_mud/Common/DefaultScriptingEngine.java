@@ -7144,14 +7144,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 43: // roommob
 			{
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+				final String clean=CMParms.cleanBit(funcParms);
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,clean);
 				Environmental which=null;
 				if(lastKnownLocation!=null)
 				{
 					if(CMath.isInteger(arg1.trim()))
 						which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
 					else
-						which=lastKnownLocation.fetchInhabitant(arg1.trim());
+					{
+						final Environmental E=this.getArgumentItem(clean, source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
+						if(E!=null)
+							which=E;
+						else
+							which=lastKnownLocation.fetchInhabitant(arg1.trim());
+					}
 					if(which!=null)
 					{
 						final List<MOB> list=new ArrayList<MOB>();
@@ -7168,24 +7175,30 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 44: // roomitem
 			{
-				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
+				final String clean=CMParms.cleanBit(funcParms);
+				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,clean);
 				Environmental which=null;
+				if(!CMath.isInteger(arg1))
+					which=this.getArgumentItem(clean, source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
 				int ct=1;
 				if(lastKnownLocation!=null)
 				{
 					final List<Item> list=new ArrayList<Item>();
-					for(int i=0;i<lastKnownLocation.numItems();i++)
+					if(which == null)
 					{
-						final Item I=lastKnownLocation.getItem(i);
-						if((I!=null)&&(I.container()==null))
+						for(int i=0;i<lastKnownLocation.numItems();i++)
 						{
-							list.add(I);
-							if(ct==CMath.s_int(arg1.trim()))
+							final Item I=lastKnownLocation.getItem(i);
+							if((I!=null)&&(I.container()==null))
 							{
-								which = I;
-								break;
+								list.add(I);
+								if(ct==CMath.s_int(arg1.trim()))
+								{
+									which = I;
+									break;
+								}
+								ct++;
 							}
-							ct++;
 						}
 					}
 					if(which!=null)

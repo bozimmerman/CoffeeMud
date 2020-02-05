@@ -1133,14 +1133,14 @@ what you are doing of course, but it is something to keep in mind. It
 is also not a bad idea to have a give_prog all to have the mob drop
 items other than the ones it will accept in other give_progs.</p><h3><a name="giving_prog">giving_prog</a></h3>
 <p>Usage:</p>
-<pre>give_prog [keyword list]<br />give_prog p [keyword list]<br />give_prog all<br /></pre>
+<pre>giving_prog [keyword list]<br />giving_prog p [keyword list]<br />giving_prog all<br /></pre>
 <p>This type of mobprog is
 triggered by the mob giving someone an
 object. If the object given to the mob matches the keywords of the
-give_prog, the prog is triggered. If there is a &#8216;p' placed
+giving_prog, the prog is triggered. If there is a &#8216;p' placed
 before
 the keyword list, the keywords of the object must exactly match that of
-the give_prog. If there is not, then any object with any of the
+the giving_prog. If there is not, then any object with any of the
 keywords in the list in it will trigger it. If a giving_prog all is
 used,
 then the giving_prog will trigger from any object at all being given to
@@ -1161,7 +1161,7 @@ keywords apple pie delicious. The prog would not be triggered by
 giving&nbsp; an object with keywords red apple or blackberry pie or
 anything
 except the exact order and wording of the keyword list.</p>
-<pre>give_prog all<br /></pre>
+<pre>giving_prog all<br /></pre>
 <p>This will trigger if any
 object is being given by the mob</p>
 <p>MULTIPLE PROGS: You can
@@ -1170,7 +1170,7 @@ Generally it is best not to have giving_progs with the same keywords in
 them, unless they are a giving_prog p with different keyword lists but
 some of the same keywords &#8211; for example a giving_prog p apple
 red
-juicy and a give_prog p apple red poisoned.</p>
+juicy and a giving_prog p apple red poisoned.</p>
 <p>SPECIAL NOTES: More often
 than not, you'll want to remember to
 have the mob use the mpjunk command to get rid of the object given so

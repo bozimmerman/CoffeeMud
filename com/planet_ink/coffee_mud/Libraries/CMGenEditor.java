@@ -1988,7 +1988,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						ok=true;
 					else
 					{
-						final int ofType=((Wand)E).getEnchantType();
+						final int ofType=(E instanceof Wand)?((Wand)E).getEnchantType():-1;
 						if(newName.equalsIgnoreCase("?"))
 							mob.tell(CMLib.lister().reallyList(mob,CMClass.abilities(),ofType).toString());
 						else

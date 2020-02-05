@@ -46,6 +46,22 @@ public class TemporaryAffects extends StdAbility
 	@Override
 	public String name()
 	{
+		if((affected != null)
+		&&(affected.fetchEffect(ID())==this)
+		&&(affects.size()>0))
+		{
+			for(final Pair<Object,int[]> p : affects)
+			{
+				if(p.first instanceof Ability)
+					return ((Ability)p.first).name();
+			}
+		}
+		return localizedName;
+	}
+
+	@Override
+	public String Name()
+	{
 		return localizedName;
 	}
 
@@ -78,6 +94,14 @@ public class TemporaryAffects extends StdAbility
 	@Override
 	public int classificationCode()
 	{
+		if(affects.size()>0)
+		{
+			for(final Pair<Object,int[]> p : affects)
+			{
+				if(p.first instanceof Ability)
+					return ((Ability)p.first).classificationCode();
+			}
+		}
 		return Ability.ACODE_PROPERTY;
 	}
 
@@ -477,8 +501,8 @@ public class TemporaryAffects extends StdAbility
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if((commands.size()<3)
-		&&((commands.size()<2)||(!commands.get(0).startsWith("+BINDTO"))))
+		if((commands.size()<2)
+		||((commands.size()<3)&&(givenTarget==null)))
 		{
 			mob.tell(L("Specify a target, a property, number of ticks, and (optionally) some misc text"));
 			mob.tell(L("Begin the first  property with ; to separate multiple entries by ;"));

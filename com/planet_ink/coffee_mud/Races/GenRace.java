@@ -901,7 +901,7 @@ public class GenRace extends StdRace
 									 "DISFLAGS","STARTASTATE","EVENTRACE","WEAPONRACE", "HELP",
 									 "BREATHES","CANRIDE",
 									 "NUMIABLE","GETIABLE",
-									 "XPADJ"
+									 "XPADJ", "CLASS"
 									 };
 
 	@Override
@@ -1029,6 +1029,8 @@ public class GenRace extends StdRace
 			return ((this.naturalAbilImmunities==null)||(num>=this.naturalAbilImmunities.size()))?"":this.abilityImmunities()[num];
 		case 52:
 			return ""+getXPAdjustment();
+		case 53:
+			return ID();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1563,6 +1565,8 @@ public class GenRace extends StdRace
 			xpAdjustmentPct = CMath.s_int(val);
 			break;
 		}
+		case 53: // CLASS
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

@@ -134,6 +134,7 @@ public class Spell_DispelDivination extends Spell
 			int affectType=verbalCastCode(mob,target,auto);
 			if(((!mob.isMonster())&&(target instanceof MOB)&&(!((MOB)target).isMonster()))
 			||(mob==target)
+			||(revokeThis.abstractQuality() == Ability.QUALITY_MALICIOUS)
 			||(mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 				affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 			if(auto)

@@ -244,7 +244,7 @@ ${SELECT:any\name from (SELECT: . from $item_junk)}
 </STRING>
 
 <STRING ID="verb_unhurted" predefine="verb_unhurt=$verb_unhurt">$verb_unhurted</STRING>
-<STRING ID="verb_unhurt" define="verb_unhurted" SELECT="Any-1">
+<STRING ID="verb_unhurt" define="verb_unhurt" SELECT="Any-1">
 	<STRING define="verb_unhurted=healed">heal</STRING>
 	<STRING define="verb_unhurted=saved">save</STRING>
 	<STRING define="verb_unhurted=helped">help</STRING>

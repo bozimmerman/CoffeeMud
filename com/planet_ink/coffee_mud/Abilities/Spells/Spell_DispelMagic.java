@@ -67,6 +67,19 @@ public class Spell_DispelMagic extends Spell
 		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
 	}
 
+	protected boolean basicQualifyingAbility(final Ability A)
+	{
+		if((A!=null)
+		&&(A.canBeUninvoked())
+		&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+		   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
+		   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+		   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
+		   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)))
+			return true;
+		return false;
+	}
+
 	@Override
 	public int castingQuality(final MOB mob, final Physical target)
 	{
@@ -78,11 +91,10 @@ public class Spell_DispelMagic extends Spell
 				for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 				{
 					A=a.nextElement();
-					if((A!=null)
-					&&(A.canBeUninvoked())
+					if((basicQualifyingAbility(A))
 					&&(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
-					&&(A.invoker()!=mob)
-					&&(A.invoker().phyStats().level()<=mob.phyStats().level()+5))
+					&&((A.invoker()==mob)
+						||(A.invoker().phyStats().level()<=mob.phyStats().level()+5)))
 						return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
 				}
 			}
@@ -92,12 +104,18 @@ public class Spell_DispelMagic extends Spell
 				for(final Enumeration<Ability> a=((MOB)target).personalEffects();a.hasMoreElements();)
 				{
 					A=a.nextElement();
-					if((A!=null)
-					&&((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
-						||(A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF))
-					&&(A.invoker()==((MOB)target))
-					&&(A.invoker().phyStats().level()<=mob.phyStats().level()+5))
-						return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
+					if(basicQualifyingAbility(A))
+					{
+						if(((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
+							||(A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF))
+						&&(A.invoker()==((MOB)target))
+						&&(A.invoker().phyStats().level()<=mob.phyStats().level()+5))
+							return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
+						if((A.abstractQuality()==Ability.QUALITY_MALICIOUS)
+						&&((A.invoker()==mob)
+							||(A.invoker().phyStats().level()<=mob.phyStats().level()+5)))
+							return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+					}
 				}
 			}
 			if((mob.isMonster())&&(mob.isInCombat()))
@@ -119,13 +137,7 @@ public class Spell_DispelMagic extends Spell
 		for(int a=0;a<target.numEffects();a++)
 		{
 			final Ability A=target.fetchEffect(a);
-			if((A!=null)
-			&&(A.canBeUninvoked())
-			&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
-			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
-			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)
-			   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)))
+			if(this.basicQualifyingAbility(A))
 			{
 				foundSomethingAtLeast=true;
 				if((A.invoker()!=null)
@@ -162,6 +174,7 @@ public class Spell_DispelMagic extends Spell
 			int affectType=verbalCastCode(mob,target,auto);
 			if(((!mob.isMonster())&&(target instanceof MOB)&&(!((MOB)target).isMonster()))
 			||(mob==target)
+			||(revokeThis.abstractQuality() == Ability.QUALITY_MALICIOUS)
 			||(mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 				affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 			if(auto)

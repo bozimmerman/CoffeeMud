@@ -451,7 +451,7 @@ public class ThinAbility implements Ability
 		return getStatCodes().length;
 	}
 
-	private static final String[]	CODES	= { "CLASS", "TEXT" };
+	private static final String[]	CODES	= { "CLASS", "TEXT", "NAME" };
 
 	@Override
 	public String[] getStatCodes()
@@ -484,6 +484,8 @@ public class ThinAbility implements Ability
 			return ID();
 		case 1:
 			return text();
+		case 2:
+			return name();
 		}
 		return "";
 	}
@@ -497,6 +499,8 @@ public class ThinAbility implements Ability
 			return;
 		case 1:
 			setMiscText(val);
+			break;
+		case 2:
 			break;
 		}
 	}

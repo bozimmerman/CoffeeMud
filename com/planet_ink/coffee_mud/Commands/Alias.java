@@ -51,6 +51,44 @@ public class Alias extends StdCommand
 		final Session session=mob.session();
 		if((pStats==null)||(session==null))
 			return false;
+
+		if((commands.size()>2)
+		&&("DEFINE".startsWith(commands.get(1).toUpperCase())))
+		{
+			final String key=commands.get(2).toUpperCase();
+			final String define=CMParms.combineQuoted(commands,3);
+			if(define.length()==0)
+			{
+				final String alias = pStats.getAlias(key);
+				if(alias==null)
+					mob.tell(L("No such alias to delete: @x1",key));
+				else
+				{
+					pStats.delAliasName(key);
+					mob.tell(L("Alias @x1 deleted.",key));
+				}
+				return false;
+			}
+			else
+			{
+				if(CMParms.contains(access,key))
+				{
+					mob.tell(L("You may not alias alias."));
+					return false;
+				}
+				for(int i=0;i<key.length();i++)
+				{
+					if(!Character.isLetterOrDigit(key.charAt(i)))
+					{
+						mob.tell(L("Your alias name may only contain letters and numbers without spaces. "));
+						return false;
+					}
+				}
+				pStats.setAlias(key, define);
+				mob.tell(L("Alias @x1 defined.",key));
+				return false;
+			}
+		}
 		final InputCallback IC[]=new InputCallback[1];
 		IC[0]=new InputCallback(InputCallback.Type.PROMPT,"",0)
 		{

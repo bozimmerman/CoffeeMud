@@ -2985,12 +2985,31 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_LOCK:
 			case CMMsg.TYP_OPEN:
 			case CMMsg.TYP_PUT:
-			case CMMsg.TYP_POUR:
 			case CMMsg.TYP_UNLOCK:
 			case CMMsg.TYP_WEAR:
 			case CMMsg.TYP_WIELD:
 				srcM.tell(srcM, this, null, L("You can't do that to <T-NAMESELF>."));
 				return false;
+			case CMMsg.TYP_POUR:
+			{
+				boolean permitted=false;
+				if(msg.tool() instanceof Potion)
+				{
+					for(final Ability A : ((Potion)msg.tool()).getSpells())
+					{
+						if(A.castingQuality(msg.source(), this) != Ability.QUALITY_MALICIOUS)
+							permitted=true;
+					}
+				}
+				else
+					permitted=true;
+				if(!permitted)
+				{
+					srcM.tell(srcM, this, null, L("You can't do that to <T-NAMESELF>."));
+					return false;
+				}
+				break;
+			}
 			case CMMsg.TYP_TEACH:
 				if(playerStats()==null)
 				{

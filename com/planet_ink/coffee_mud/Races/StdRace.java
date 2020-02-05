@@ -2117,7 +2117,7 @@ public class StdRace implements Race
 		}
 	}
 
-	protected static String[] CODES={"CLASS","PARMS","NAME"};
+	protected static String[] CODES={"CLASS","PARMS", "NAME"};
 
 	@Override
 	public int getSaveStatIndex()

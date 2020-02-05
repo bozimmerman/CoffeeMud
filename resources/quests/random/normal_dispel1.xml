@@ -20,6 +20,7 @@ See guides/RandomAreas.html for information about documents of this type.
 template: normal_dispel1
 settable vars: 
     template(normal_dispel1)
+    sub_template(bound, diseased, hurt, cursed, badspelled, crippled, bleeding, polymorphed)
     area_name(area name)
     source_name(mob name)
     targetarea_name(area name)
@@ -85,14 +86,15 @@ settable vars:
 	<OBJECT ID="quest_drop_item" define="quest_drop_item" SELECT="Any-1" predefine="reason=$reason">
 		<ITEM CONDITION="$quest_affect_id = 'Thief_Bind'" class="GenPotion" name="An unbinding tool" display="An unbinding tool lies here" material="IRON" level="1">
 			<AFFECT class="Prop_Hidden" CONDITION="$quest_drop_loc = 'ROOM' and $quest_pct_chance > 50"/>
-			<BEHAVIOR class="Decay" parms="NOTRIGGER REMAIN=600" />
+			<BEHAVIOR class="Decay" parms="NOTRIGGER REMAIN=300" />
 			<AFFECT class="Prop_HaveEnabler" parms="Unbinding" />
 			<DESCRIPTION>Grants you the Unbinding skill.</DESCRIPTION>
 		</ITEM>
 		<ITEM CONDITION="$quest_affect_id != 'Thief_Bind'" class="GenPotion" name="a potion of $quest_help_ability_name" display="a potion of $quest_help_ability_name lies here" material="GLASS" level="1">
 			<READABLETEXT>$quest_help_ability_id</READABLETEXT>
 			<AFFECT class="Prop_Hidden" CONDITION="$quest_drop_loc = 'ROOM' and $quest_pct_chance > 50"/>
-			<BEHAVIOR class="Decay" parms="NOTRIGGER REMAIN=600" />
+			<BEHAVIOR class="Decay" parms="NOTRIGGER REMAIN=300" />
+			<DESCRIPTION>Drink me, Give me, or Pour me onto someone.</DESCRIPTION>
 		</ITEM>
 	</OBJECT>
 
@@ -124,7 +126,7 @@ settable vars:
 		<STRING ACTION="PREPEND">$reason_desc</STRING>
 		<STRING ACTION="APPEND">$reason_short</STRING>
 		<STRING ACTION="APPEND" CONDITION="$do_drop_item = 'YES' AND $quest_drop_loc = 'ROOM'">
-			If you need help, ${p:quest_drop_item_name} hidden near them.
+			If you need help, ${p:quest_drop_item_name} are hidden near them.
 		</STRING>
 		<STRING ACTION="APPEND" CONDITION="$do_drop_item = 'YES' AND $quest_drop_loc != 'ROOM'">
 			If you need help, ${p:quest_drop_item_name} are being carried nearby.
@@ -216,7 +218,7 @@ settable vars:
 		<STRING>Disease_Gonorrhea</STRING><STRING>Disease_HeatExhaustion</STRING><STRING>Disease_Infection</STRING><STRING>Disease_Lepresy</STRING><STRING>Disease_Lockjaw</STRING>
 		<STRING>Disease_Lyme</STRING><STRING>Disease_Malaria</STRING><STRING>Disease_Migraines</STRING><STRING>Disease_Nausea</STRING><STRING>Disease_Plague</STRING>
 		<STRING>Disease_Pneumonia</STRING><STRING>Disease_PoisonIvy</STRING><STRING>Disease_SARS</STRING><STRING>Disease_Scabies</STRING><STRING>Disease_Scurvy</STRING>
-		<STRING>Disease_Smiles</STRING><STRING>Disease_Syphilisv<STRING>Disease_Tetnus</STRING><STRING>Disease_Tinnitus</STRING><STRING>Disease_Tourettes</STRING>
+		<STRING>Disease_Smiles</STRING><STRING>Disease_Syphilisv</STRING><STRING>Disease_Tetnus</STRING><STRING>Disease_Tinnitus</STRING><STRING>Disease_Tourettes</STRING>
 		<STRING>Disease_Vertigo</STRING><STRING>Disease_Yawning</STRING><STRING>Disease_Zika</STRING>
 	</STRING>
 
@@ -238,15 +240,15 @@ settable vars:
 		</STRING>
 	</STRING>
 
-	<STRING ID="quest_nontarget_race_name" define="quest_nontarget_race_name">${SELECT: ANY\NAME FROM RACES WHERE CLASS!='$target_race_id'}</STRING>
+	<STRING ID="quest_nontarget_race_name" define="quest_nontarget_race_name">${SELECT: ANY\NAME FROM $target_area\MOBS\RACES WHERE CLASS!='$target_race_id'}</STRING>
 		
 	<STRING ID="reason_hurt" SELECT="All">
 		<STRING define="reason_verb">$verb_unhurt</STRING>
 		<STRING define="reason_verbed">$verb_unhurted</STRING>
-		<STRING define="reason_done">$verb_hurt</STRING>
+		<STRING define="reason_done">$verb_hurted</STRING>
 		<STRING define="quest_affect_id">Fighter_Pin</STRING>
 		<STRING define="quest_affect_args"></STRING>
-		<STRING define="quest_ambiance">($verb_hurt)</STRING>
+		<STRING define="quest_ambiance">($reason_done)</STRING>
 		<STRING define="quest_help_ability_id">Prayer_Heal</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
@@ -262,9 +264,7 @@ settable vars:
 		<STRING>stinging</STRING><STRING>scouring</STRING><STRING>scratchy</STRING><STRING>burning</STRING><STRING>loose</STRING>
 		<STRING>disturbed</STRING><STRING>desolate</STRING><STRING>bleak</STRING><STRING>stark</STRING><STRING>barren</STRING>
 		<STRING>sterile</STRING><STRING>harsh</STRING><STRING>broken</STRING><STRING>bumpy</STRING>
-		<STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING>
-		<STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING>
-		<STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING>
+		<STRING>$quest_nontarget_race_name</STRING><STRING>$quest_nontarget_race_name</STRING><STRING>$quest_nontarget_race_name</STRING><STRING>$quest_nontarget_race_name</STRING>
 		<STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING><STRING></STRING>
 	</STRING>
 
@@ -307,10 +307,10 @@ settable vars:
 	<STRING ID="reason_badspelled" SELECT="All">
 		<STRING define="reason_verb">$verb_unhurt</STRING>
 		<STRING define="reason_verbed">$verb_unhurted</STRING>
-		<STRING define="reason_done">inflicted with ${l:SELECT: NAME from ABILITIES where CLASS='$quest_disease_id'}</STRING>
+		<STRING define="reason_done">inflicted with ${l:SELECT: NAME from ABILITIES where CLASS='$quest_badspell_id'}</STRING>
 		<STRING define="quest_affect_id">$quest_badspell_id</STRING>
 		<STRING define="quest_affect_args"></STRING>
-		<STRING define="quest_ambiance">(${SELECT: NAME from ABILITIES where CLASS='$quest_disease_id'})</STRING>
+		<STRING define="quest_ambiance">(${SELECT: NAME from ABILITIES where CLASS='$quest_badspell_id'})</STRING>
 		<STRING define="quest_help_ability_id">Spell_DispelMagic</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
@@ -337,7 +337,7 @@ settable vars:
 		<STRING define="reason_done">crippled</STRING>
 		<STRING define="quest_affect_id">BrokenLimbs</STRING>
 		<STRING define="quest_affect_args">$broken_limb</STRING>
-		<STRING define="quest_ambiance"></STRING>
+		<STRING define="quest_ambiance">(broken $broken_limb)</STRING>
 		<STRING define="quest_help_ability_id">Prayer_Heal</STRING>
 		<STRING define="quest_winspeech">$quest_generic_winner_speeches</STRING>
 		<STRING define="quest_helpspeech">$quest_generic_help_speeches</STRING>
@@ -353,7 +353,7 @@ settable vars:
 	<STRING ID="reason_bleeding" SELECT="All">
 		<STRING define="reason_verb">$verb_unhurt</STRING>
 		<STRING define="reason_verbed">$verb_unhurted</STRING>
-		<STRING define="reason_done">$verb_hurt</STRING>
+		<STRING define="reason_done">$verb_hurted</STRING>
 		<STRING define="quest_affect_id">Bleeding</STRING>
 		<STRING define="quest_affect_args"></STRING>
 		<STRING define="quest_ambiance">(bleeding)</STRING>
@@ -463,7 +463,7 @@ settable vars:
 	</STRING>
 
 	<OBJECT ID="target" DEFINE="target" SELECT="any-1">
-		<OBJECT CONDITION="$targetname!=''"">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
+		<OBJECT CONDITION="$targetname!=''">SELECT: ANY\. FROM $target_area\mobs WHERE name=$targetname</OBJECT>
 		<OBJECT CONDITION="$targetname=''">SELECT: ANY\. FROM $target_area\mobs WHERE name\count &gt; $num_targets and . LIKE '-HOME "+$target_area_name"'</OBJECT>
 	</OBJECT>
 
