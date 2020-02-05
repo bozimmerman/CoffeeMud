@@ -283,15 +283,12 @@ QUEST_TIME_PROG * 1
 ENTRY_PROG 100
 	if EVAL($n == $i)
 		if EVAL($b != '')
-MPECHO IT MATTERS: $b
 			 if !HAS($i $b)
-MPECHO JUNK $b
 				MPJUNK $b
 				MPARGSET $b ''
 			endif
 		endif
 		if INROOM($i == $g) AND VAR($i $QUEST_ID_HELPED < $NUM_HELPABLES) AND (QUESTAREA('$%INAREA($i)%' *) OR EVAL('$HELPABLES_AREA' == '') OR INAREA($i == '$HELPABLES_AREA'))
-MPECHO *1 $HELPABLE_DROP_LOC - $HELPABLE_DROP_CHANCE
 			if EVAL('$HELPABLE_DROP_LOC' == 'ROOM') AND EVAL('$HELPABLE_DROP_CHANCE' != '') AND rand($HELPABLE_DROP_CHANCE)
 				mpoloadroom fromfile $QUEST_ID_helperitems.xml any
 			endif
@@ -314,7 +311,7 @@ MPECHO *1 $HELPABLE_DROP_LOC - $HELPABLE_DROP_CHANCE
 	endif
 ~
 
-FUNC_PROG CHECK_DISPEL
+FUNCTION_PROG CHECK_DISPEL
 	# $g has the name of the mob to check
 	MPARGSET $3 $%ROOMMOB($g)%
 	IF EVAL('$3' != '') AND !AFFECTED($3 'TemporaryAffects')
@@ -322,6 +319,7 @@ FUNC_PROG CHECK_DISPEL
 		if var($i $QUEST_ID_HELPED < $NUM_HELPABLES)
 			MPSETVAR $i $QUEST_ID_HELPED ++
 			mpsetvar $i PROGRESS Helped $<$i $QUEST_ID_HELPED>/$NUM_HELPABLES
+			mpechoat $i  Helped $<$i $QUEST_ID_HELPED>/$NUM_HELPABLES
 		endif
 	ENDIF
 ~
@@ -330,7 +328,7 @@ CASTING_PROG P $HELPABLE_ABILITY
 	IF EVAL('$HELPABLE_ABILITY' != '') AND EVAL($t != '') AND EVAL($t != $i) AND ISLIKE($t $HELPABLES_MASK)
 		IF AFFECTED($t 'TemporaryAffects')
 			mpunaffect $t TemporaryAffects
-			MPCALLFUNC CHECK_DISPEL $t
+			MPCALLFUNC CHECK_DISPEL $%roommob($t)%
 		ENDIF
 	ENDIF
 ~ 
@@ -339,7 +337,7 @@ CASTING_PROG ALL
 	# this works because the source always executes a msg first, before the target, or the effect happens
 	IF EVAL('$HELPABLE_ABILITY' == '') AND EVAL($t != '') AND EVAL($t != $i) AND ISLIKE($t $HELPABLES_MASK)
 		IF AFFECTED($t 'TemporaryAffects')
-			MPALARM 1 MPCALLFUNC CHECK_DISPEL $t
+			MPALARM 1 MPCALLFUNC CHECK_DISPEL $%roommob($t)%
 		ENDIF
 	ENDIF
 ~ 
