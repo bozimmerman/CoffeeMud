@@ -186,7 +186,7 @@ public class Disease_RoyaltyRot extends Disease
 										mob.location().send(mob,msg2);
 										if(msg2.value()<=0)
 										{
-											mob.location().show(mob, null, CMMsg.MSG_OK_ACTION, L("<-SNAME> faint(s)!"));
+											mob.location().show(mob, null, CMMsg.MSG_OK_ACTION, L("<S-NAME> faint(s)!"));
 											meA.fallDown=3;
 											mob.recoverPhyStats();
 										}

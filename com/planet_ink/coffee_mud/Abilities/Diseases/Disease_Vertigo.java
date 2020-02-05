@@ -207,7 +207,7 @@ public class Disease_Vertigo extends Disease
 						mob.location().send(mob,msg);
 						if(msg.value()<=0)
 						{
-							mob.location().show(mob, null, CMMsg.MSG_OK_ACTION, L("<-SNAME> fall(s) down!"));
+							mob.location().show(mob, null, CMMsg.MSG_OK_ACTION, L("<S-NAME> fall(s) down!"));
 							fallDown=3;
 							mob.recoverPhyStats();
 						}
