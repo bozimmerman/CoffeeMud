@@ -1986,6 +1986,7 @@ public class ListCmd extends StdCommand
 							wearLocs += " " + Wearable.CODES.NAME(wearLoc);
 					}
 					final String helpEOL=CMStrings.getEOL(help.toString(),"\n\r");
+					lines.append("=="+R.name()+"==\n\r");
 					lines.append("{{RaceTemplate"
 							+ "|Name="+R.name()
 							+ "|Description="+CMStrings.replaceAll(help.toString(),helpEOL,helpEOL+helpEOL)
@@ -2098,6 +2099,7 @@ public class ListCmd extends StdCommand
 						langStr.append("[["+A.ID()+"|"+A.name()+"]] ");
 				}
 				final String helpEOL=CMStrings.getEOL(help.toString(),"\n\r");
+				lines.append("=="+C.name()+"==\n\r");
 				lines.append("{{ClassTemplate"
 						+ "|Name="+C.name()
 						+ "|Description="+CMStrings.replaceAll(help.toString(),helpEOL,helpEOL+helpEOL)
@@ -3446,6 +3448,7 @@ public class ListCmd extends StdCommand
 					else
 						desc="";
 					final String helpEOL=CMStrings.getEOL(desc.toString(),"\n\r");
+					buf.append("=="+name+"==\n\r");
 					buf.append("{{ExpertiseTemplate"
 							+ "|Name="+name
 							+ "|Requires="+CMLib.masking().maskDesc(def.allRequirements(),true)
@@ -3529,6 +3532,7 @@ public class ListCmd extends StdCommand
 					targetSelfYouSee = "";
 					targetSelfOthersSee = "";
 				}
+				buf.append("=="+CMStrings.capitalizeAndLower(soc.baseName())+"==\n\r");
 				buf.append("{{SocialTemplate"
 						+ "|Name="+CMStrings.capitalizeAndLower(soc.baseName())
 						+ "|Target="+soc.targetName()
@@ -4309,6 +4313,7 @@ public class ListCmd extends StdCommand
 
 				final String helpEOL=CMStrings.getEOL(helpStr,"\n\r");
 				helpStr = CMStrings.replaceAll(helpStr,helpEOL,helpEOL+helpEOL);
+				commandList.append("=="+s+"==\n\r");
 				commandList.append("{{CommandTemplate"
 								+ "|Name="+s
 								+ "|Usage="+CMStrings.replaceAllofAny(usage,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
@@ -4700,7 +4705,7 @@ public class ListCmd extends StdCommand
 					templateName="PropertyTemplate";
 				if((A.classificationCode()&Ability.ALL_ACODES)==(Ability.ACODE_DISEASE))
 					templateName="DiseaseTemplate";
-				str.append("==="+A.ID()+"===\n\r");
+				str.append("==="+A.name()+"===\n\r");
 				str.append("{{"+templateName
 						+ "|ID="+A.ID()
 						+ "|Name="+A.name()
@@ -4790,6 +4795,7 @@ public class ListCmd extends StdCommand
 				}
 				final String helpEOL=CMStrings.getEOL(helpStr,"\n\r");
 				helpStr = CMStrings.replaceAll(helpStr,helpEOL,helpEOL+helpEOL);
+				str.append("=="+B.name()+"==\n\r");
 				str.append("{{BehaviorTemplate"
 						+ "|Name="+B.name()
 						+ "|Targets="+CMStrings.replaceAllofAny(targets,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
