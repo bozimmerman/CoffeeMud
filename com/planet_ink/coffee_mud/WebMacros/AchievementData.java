@@ -126,6 +126,10 @@ public class AchievementData extends StdWebMacro
 			if((newRewards != null)&&(newRewards.length()>0))
 				row+="REWARDS=\""+CMStrings.escape(newRewards)+"\" ";
 
+			final String newVisiMask=httpReq.getUrlParameter("VISIBLEMASK");
+			if((newVisiMask != null)&&(newVisiMask.length()>0))
+				row+="VISIBLEMASK=\""+CMStrings.escape(newVisiMask)+"\" ";
+
 			for(final String s : E.getParameters())
 			{
 				if(!CMStrings.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, s))

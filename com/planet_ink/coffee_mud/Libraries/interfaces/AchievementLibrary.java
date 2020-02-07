@@ -55,7 +55,7 @@ public interface AchievementLibrary extends CMLibrary
 	/**
 	 * The list of arguments/parameters common to all achievement event types
 	 */
-	public final String[] BASE_ACHIEVEMENT_PARAMETERS = new String[] { "EVENT", "DISPLAY", "TITLE", "REWARDS" };
+	public final String[] BASE_ACHIEVEMENT_PARAMETERS = new String[] { "EVENT", "DISPLAY", "TITLE", "REWARDS", "VISIBLEMASK" };
 
 	/**
 	 * Events define the type of achievement, describing specific arguments that
@@ -173,6 +173,16 @@ public interface AchievementLibrary extends CMLibrary
 		 * @return the tattoo that is added to players or accounts
 		 */
 		public String getTattoo();
+
+		/**
+		 * Returns whether this achievement can be seen in lists
+		 * by the given mob, and whether, if it is achieved, an
+		 * announcement is given to the player.
+		 *
+		 * @param mob the mob to check for
+		 * @return true if it can be seen, false otherwise
+		 */
+		public boolean canBeSeenBy(final MOB mob);
 
 		/**
 		 * Returns whether this achievement can be applied to the

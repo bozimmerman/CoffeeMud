@@ -11,7 +11,8 @@
  10. New disable flags: AUTOMOODS
  11. New Scriptable triggers: CAST_PROG and CASTING_PROG
  12. New questmaker templates: normal_dispel1
-
+ 13. New achievement field: VISIBLEMASK
+ 
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.
   1. New prayers: empower unholy weapon, morph unholy weapon, faithful hellhound, discipline

@@ -426,6 +426,8 @@ public class Achievements extends StdCommand
 					for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
 						final Achievement A=a.next();
+						if(!A.canBeSeenBy(whoM))
+							continue;
 						if(WonList.contains(A.getTattoo()))
 							achievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
 						else
@@ -471,6 +473,8 @@ public class Achievements extends StdCommand
 					for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
 						final Achievement A=a.next();
+						if(!A.canBeSeenBy(whoM))
+							continue;
 						if(WonList.contains(A.getTattoo()))
 							achievedList.add(CMStrings.padRight("^H"+done+"^?", padding)+": "+A.getDisplayStr());
 						else
@@ -496,7 +500,8 @@ public class Achievements extends StdCommand
 					for(final Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
 					{
 						final Achievement A=a.nextElement();
-						if(WonList.contains(A.getTattoo()))
+						if((WonList.contains(A.getTattoo()))
+						&&(!A.canBeSeenBy(whoM)))
 						{
 							achievedList.add(A.getDisplayStr());
 						}
