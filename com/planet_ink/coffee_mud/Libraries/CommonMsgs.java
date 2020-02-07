@@ -1108,6 +1108,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						1000,
 						5000
 					};
+					if(sipSize <= 0)
+						sipSize = 1;
 					int drNDex=namts.length;
 					for(int i=0;i<namts.length;i++)
 					{
