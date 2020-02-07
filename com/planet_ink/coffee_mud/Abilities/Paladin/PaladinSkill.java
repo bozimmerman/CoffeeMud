@@ -137,6 +137,7 @@ public class PaladinSkill extends StdAbility
 		{
 			synchronized(paladinsGroup)
 			{
+				//TODO: it is a terrible idea to rebuild this hash Every Single Tick
 				paladinsGroup.clear();
 				paladinMob.getGroupMembers(paladinsGroup);
 				removeFromGroup.clear();

@@ -12633,6 +12633,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(command.toUpperCase().startsWith(userCmd))
 							{
 								str=(x<0)?"":msg.targetMessage().substring(x).trim().toUpperCase();
+								if(str == null)
+									break;
 								if((t[2].length()==0)||(t[2].equals("ALL")))
 									tryIt=true;
 								else

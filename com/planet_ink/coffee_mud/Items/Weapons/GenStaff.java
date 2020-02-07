@@ -44,7 +44,7 @@ public class GenStaff extends GenWeapon implements Wand
 
 	protected String	secretWord	= CMProps.getAnyListFileValue(CMProps.ListFile.MAGIC_WORDS);
 	protected String	spellText	= "";
-	protected int		enchType	= -1;;
+	protected int		enchType	= -1;
 
 	public GenStaff()
 	{

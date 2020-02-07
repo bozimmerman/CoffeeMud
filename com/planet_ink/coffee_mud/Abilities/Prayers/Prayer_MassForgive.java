@@ -122,6 +122,7 @@ public class Prayer_MassForgive extends Prayer
 						if((W.crime()!=null)
 						&&(W.criminal()!=null)
 						&&(!W.crime().equalsIgnoreCase("pardoned"))
+						&&(B!=null)
 						&&(B.isStillACrime(W, false)))
 						{
 							W.setCrime("pardoned");
