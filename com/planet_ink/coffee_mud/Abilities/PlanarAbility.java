@@ -190,6 +190,9 @@ public class PlanarAbility extends StdAbility
 					medianLevel=planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				planarLevel=medianLevel;
 			}
+			Area planeArea=this.planeArea;
+			if(planeArea == null)
+				return;
 			final String specflags = planeVars.get(PlanarVar.SPECFLAGS.toString());
 			if(specflags != null)
 			{
