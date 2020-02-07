@@ -86,6 +86,7 @@ public class PaladinSkill extends StdAbility
 	}
 
 	protected Set<MOB>			paladinsGroup	= null;
+	protected long				paladinsHash	= 0;
 	protected final List<MOB>	removeFromGroup	= new LinkedList<MOB>();
 
 	@Override
@@ -139,7 +140,9 @@ public class PaladinSkill extends StdAbility
 			{
 				//TODO: it is a terrible idea to rebuild this hash Every Single Tick
 				paladinsGroup.clear();
-				paladinMob.getGroupMembers(paladinsGroup);
+				final HashSet<MOB> grp=new HashSet<MOB>();
+				paladinMob.getGroupMembers(grp);
+				paladinsGroup.addAll(grp);
 				removeFromGroup.clear();
 				for(final MOB M : paladinsGroup)
 				{
