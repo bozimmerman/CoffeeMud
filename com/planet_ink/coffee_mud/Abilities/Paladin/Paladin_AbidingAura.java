@@ -60,7 +60,7 @@ public class Paladin_AbidingAura extends PaladinSkill
 	public Paladin_AbidingAura()
 	{
 		super();
-		paladinsGroup=new HashSet<MOB>();
+		paladinsGroup=new SHashSet<MOB>();
 	}
 
 	@Override

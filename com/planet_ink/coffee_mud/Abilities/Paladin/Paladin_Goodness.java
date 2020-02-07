@@ -58,7 +58,7 @@ public class Paladin_Goodness extends PaladinSkill
 	public Paladin_Goodness()
 	{
 		super();
-		paladinsGroup=new HashSet<MOB>();
+		paladinsGroup=new SHashSet<MOB>();
 	}
 
 	@Override

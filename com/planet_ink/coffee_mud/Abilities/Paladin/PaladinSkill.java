@@ -102,7 +102,7 @@ public class PaladinSkill extends StdAbility
 		final PaladinSkill P=(PaladinSkill)super.copyOf();
 		if(P==null)
 			return super.copyOf();
-		P.paladinsGroup=new HashSet<MOB>(paladinsGroup);
+		P.paladinsGroup=new SHashSet<MOB>(paladinsGroup);
 		return P;
 	}
 

@@ -57,7 +57,7 @@ public class Paladin_Courage extends PaladinSkill
 	public Paladin_Courage()
 	{
 		super();
-		paladinsGroup=new HashSet<MOB>();
+		paladinsGroup=new SHashSet<MOB>();
 	}
 
 	@Override

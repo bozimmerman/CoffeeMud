@@ -58,7 +58,7 @@ public class Paladin_Aura extends PaladinSkill
 	public Paladin_Aura()
 	{
 		super();
-		paladinsGroup=new HashSet<MOB>();
+		paladinsGroup=new SHashSet<MOB>();
 	}
 
 	protected boolean pass=false;
