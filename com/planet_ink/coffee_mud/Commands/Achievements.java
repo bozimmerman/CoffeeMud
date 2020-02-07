@@ -501,7 +501,7 @@ public class Achievements extends StdCommand
 					{
 						final Achievement A=a.nextElement();
 						if((WonList.contains(A.getTattoo()))
-						&&(!A.canBeSeenBy(whoM)))
+						&&(A.canBeSeenBy(whoM)))
 						{
 							achievedList.add(A.getDisplayStr());
 						}
