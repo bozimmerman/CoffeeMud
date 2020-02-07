@@ -439,6 +439,7 @@ public interface ChannelsLibrary extends CMLibrary
 		REALNAMEOOC,
 		REALNAMEOOCNOADMIN,
 		ACCOUNTLOGINS,
-		ACCOUNTLOGOFFS
+		ACCOUNTLOGOFFS,
+		NOMOOD
 	}
 }

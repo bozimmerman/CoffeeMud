@@ -12,6 +12,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.ChannelFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -283,6 +285,13 @@ public class Mood extends StdAbility
 					final MOB M=target(msg.source(),msg.target());
 					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
 					{
+						if(msg.sourceMinor()>= CMMsg.TYP_CHANNEL)
+						{
+							final int channelNum = msg.sourceMinor()-CMMsg.TYP_CHANNEL;
+							final CMChannel C=CMLib.channels().getChannel(channelNum);
+							if((C!=null) && (C.flags().contains(ChannelFlag.NOMOOD)))
+								return super.okMessage(myHost, msg);
+						}
 						final String[] tags={"<S-NAME>","You",msg.source().Name()};
 						String tag=null;
 						for (final String tag2 : tags)
