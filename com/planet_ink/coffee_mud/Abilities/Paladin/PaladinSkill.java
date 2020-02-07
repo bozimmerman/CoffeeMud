@@ -87,7 +87,7 @@ public class PaladinSkill extends StdAbility
 
 	protected Set<MOB>			paladinsGroup	= null;
 	protected long				paladinsHash	= 0;
-	protected final List<MOB>	removeFromGroup	= new LinkedList<MOB>();
+	protected final Set<MOB> 	buildGrp		= new HashSet<MOB>(); // can be hashset because its temp use
 
 	@Override
 	public int classificationCode()
@@ -136,20 +136,19 @@ public class PaladinSkill extends StdAbility
 		final Set<MOB> paladinsGroup=this.paladinsGroup;
 		if(paladinsGroup!=null)
 		{
-			synchronized(paladinsGroup)
+			synchronized(buildGrp)
 			{
 				//TODO: it is a terrible idea to rebuild this hash Every Single Tick
-				paladinsGroup.clear();
-				final HashSet<MOB> grp=new HashSet<MOB>();
-				paladinMob.getGroupMembers(grp);
-				paladinsGroup.addAll(grp);
-				removeFromGroup.clear();
-				for(final MOB M : paladinsGroup)
+				buildGrp.clear();
+				paladinMob.getGroupMembers(buildGrp);
+				for(final Iterator<MOB> i = buildGrp.iterator(); i.hasNext(); )
 				{
+					final MOB M=i.next();
 					if(M.location()!=paladinMob.location())
-						removeFromGroup.add(M);
+						i.remove();
 				}
-				paladinsGroup.removeAll(removeFromGroup);
+				paladinsGroup.clear();
+				paladinsGroup.addAll(buildGrp);
 			}
 		}
 		if((CMLib.dice().rollPercentage()==1)
