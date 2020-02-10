@@ -311,6 +311,8 @@ CNCLMSG_PROG ENTER ALL
 		if VAR($i $QUEST_ID_HELPED < $NUM_HELPABLES) AND (QUESTAREA('$%INAREA($i)%' *) OR EVAL('$HELPABLES_AREA' == '') OR INAREA($i == '$HELPABLES_AREA'))
 			if EVAL($n == $i) AND EVAL('$HELPABLE_DROP_LOC' == 'ROOM') AND EVAL('$HELPABLE_DROP_CHANCE' != '') AND rand($HELPABLE_DROP_CHANCE)
 				MPAT $t mpoloadroom fromfile $QUEST_ID_helperitems.xml any
+				MPGSET $b REJUV 0
+				MPQSET * QUESTOBJ $b
 			endif
 			MPAT $t MPCALLFUNC DISTRIBUTE_DISEASE
 		endif
@@ -364,6 +366,12 @@ GIVING_PROG potion
     endif 
 ~
 
+FUNCTION_PROG LOAD_BODY
+	mpoloadroom fromfile $QUEST_ID_helperitems.xml any into the body of $n
+	MPGSET $b REJUV 0
+	MPQSET * QUESTOBJ $b
+~
+
 CNCLMSG_PROG STO=DEATH ALL
 	if ISNPC($n) AND (QUESTAREA('$%INAREA($i)%' *) OR EVAL('$HELPABLES_AREA' == '') OR INAREA($i == '$HELPABLES_AREA'))
 		if ISLIKE($n '$HELPABLES_MASK')
@@ -374,7 +382,7 @@ CNCLMSG_PROG STO=DEATH ALL
 		else
 			if EVAL('$HELPABLE_DROP_LOC' == 'MOB') AND EVAL('$HELPABLE_DROP_CHANCE' != '') AND rand($HELPABLE_DROP_CHANCE)
 				# mpoload fromfile $QUEST_ID_helperitems.xml any
-				mpalarm 1 mpoloadroom fromfile $QUEST_ID_helperitems.xml any into the body of $n
+				mpalarm 1 MPCALLFUNC LOAD_BODY
 			endif
 		endif
 	endif
