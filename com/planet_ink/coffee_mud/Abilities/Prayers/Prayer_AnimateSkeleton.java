@@ -148,7 +148,10 @@ public class Prayer_AnimateSkeleton extends Prayer
 	{
 		String race="a";
 		if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
-			race=CMLib.english().startWithAorAn(body.charStats().getMyRace().name()).toLowerCase();
+		{
+			final Race oldRace=body.charStats().getMyRace();
+			race=CMLib.english().startWithAorAn(oldRace.name()).toLowerCase();
+		}
 		String description=body.getMobDescription();
 		if(description.trim().length()==0)
 			description="It looks dead.";
@@ -157,9 +160,12 @@ public class Prayer_AnimateSkeleton extends Prayer
 		final String undeadRace = ((body.charStats()!=null) && (body.charStats().getMyRace() != null) && (body.charStats().getMyRace().useRideClass())) ?
 				"GenRideableUndead" : "GenUndead";
 		final MOB newMOB=CMClass.getMOB(undeadRace);
-		newMOB.setName(L("@x1 skeleton",race));
-		newMOB.setDescription(description);
-		newMOB.setDisplayText(L("@x1 skeleton is here",race));
+		if(body.name().indexOf(L("skeleton"))<0)
+		{
+			newMOB.setName(L("@x1 skeleton",race));
+			newMOB.setDescription(description);
+			newMOB.setDisplayText(L("@x1 skeleton is here",race));
+		}
 		if(mob == null)
 			newMOB.basePhyStats().setLevel(body.phyStats().level());
 		else
