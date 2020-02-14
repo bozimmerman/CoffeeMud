@@ -70,10 +70,53 @@ public class Prop_RoomLit extends Property
 		return Ability.FLAG_ADJUSTER;
 	}
 
+	protected boolean setup = false;
+	protected int[] hoursOfOperation = null;
+
+	protected boolean isItLit()
+	{
+		final Physical affected = this.affected;
+		if(affected == null)
+			return false;
+		if(!setup)
+		{
+			hoursOfOperation = null;
+			setup = true;
+			if(text().length()>0)
+			{
+				final String hrStr = CMParms.getParmStr(text(), "HOURS", "").trim();
+				if(hrStr.length()>0)
+				{
+					final Set<Integer> finalV=new TreeSet<Integer>();
+					for(final String hr : CMParms.parseCommas(hrStr, true))
+					{
+						if(CMath.isInteger(hr))
+							finalV.add(Integer.valueOf(CMath.s_int(hr)));
+					}
+					if(finalV.size()>0)
+					{
+						final int[] finalArray = new int[finalV.size()];
+						int dex=0;
+						for(final Integer I : finalV)
+							finalArray[dex++] = I.intValue();
+						Arrays.sort(finalArray);
+						hoursOfOperation = finalArray;
+					}
+				}
+			}
+		}
+		if(hoursOfOperation != null)
+		{
+			final TimeClock C=CMLib.time().localClock(affected);
+			return CMParms.contains(hoursOfOperation, C.getHourOfDay());
+		}
+		return true;
+	}
+
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		if(CMLib.flags().isInDark(affected))
+		if(CMLib.flags().isInDark(affected) && isItLit())
 			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 	}
 }
