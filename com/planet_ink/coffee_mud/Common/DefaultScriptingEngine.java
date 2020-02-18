@@ -11932,8 +11932,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Quest Q=getQuest(q);
 				if(Q!=null)
 				{
-					CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTSTOP);
+					final CMMsg stopMsg=CMClass.getMsg(monster,null,null,CMMsg.NO_EFFECT,null,CMMsg.TYP_ENDQUEST,Q.name(),CMMsg.NO_EFFECT,null);
+					CMLib.map().sendGlobalMessage(monster, CMMsg.TYP_ENDQUEST, stopMsg);
 					Q.stopQuest();
+					CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTSTOP);
 				}
 				else
 				if((tt[1].length()>0)
@@ -11950,7 +11952,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							newTarget.delScript(S);
 							S.endQuest(newTarget, (newTarget instanceof MOB)?((MOB)newTarget):monster, defaultQuestName);
-
 						}
 					}
 				}
@@ -12107,7 +12108,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(Q!=null)
 					{
 						if(M!=null)
+						{
 							CMLib.achievements().possiblyBumpAchievement(M, AchievementLibrary.Event.QUESTOR, 1, Q);
+							final CMMsg winMsg=CMClass.getMsg(M,null,null,CMMsg.NO_EFFECT,null,CMMsg.TYP_WINQUEST,Q.name(),CMMsg.NO_EFFECT,null);
+							CMLib.map().sendGlobalMessage(M, CMMsg.TYP_WINQUEST, winMsg);
+						}
 						Q.declareWinner(whoName);
 						CMLib.players().bumpPrideStat(M,AccountStats.PrideStat.QUESTS_COMPLETED, 1);
 					}

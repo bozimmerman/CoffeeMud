@@ -1201,6 +1201,10 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_NEWROOM=136;
 	/** MINOR_MASK minor action code type, denoting causing a ship to sink */
 	public static final int TYP_CAUSESINK=137;
+	/** MINOR_MASK minor action code type, denoting causing a quest ending */
+	public static final int TYP_ENDQUEST=138;
+	/** MINOR_MASK minor action code type, denoting causing winning a quest */
+	public static final int TYP_WINQUEST=139;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1230,7 +1234,8 @@ public interface CMMsg extends CMCommon
 		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION","AROMA","DUELLOSS",
 		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
 		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE",
-		"COMMANDREJECT","RECIPELEARNED", "GRAVITY", "LEGALSTATE", "NEWROOM","CAUSESINK"
+		"COMMANDREJECT","RECIPELEARNED", "GRAVITY", "LEGALSTATE", "NEWROOM","CAUSESINK",
+		"ENDQUEST","WINQUEST"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
