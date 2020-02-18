@@ -2915,10 +2915,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				mob.baseCharStats().setStat(CharStats.CODES.BASECODES()[i],CMProps.getIntVar(CMProps.Int.BASEMINSTAT));
 			mob.recoverCharStats();
 			loginObj.state=LoginState.CHARCR_STATSTART;
-			final Session oldSession=mob.session();
-			mob.setSession(null);
 			CMLib.achievements().loadAccountAchievements(mob,AchievementLoadFlag.CHARCR_PRELOAD);
-			mob.setSession(oldSession);
 			loginObj.statPoints = getTotalBonusStatPoints(mob.playerStats(), loginObj.acct)+bonusPoints;
 		}
 		loginObj.baseStats = (CharStats)mob.baseCharStats().copyOf();

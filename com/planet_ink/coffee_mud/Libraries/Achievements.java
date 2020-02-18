@@ -6342,7 +6342,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 
 			}
 		}
-		mob.tell(awardMessage.toString());
+		if(awardMessage.length()>0)
+			mob.tell(awardMessage.toString());
 		grantAbilitiesAndExpertises(mob);
 	}
 
