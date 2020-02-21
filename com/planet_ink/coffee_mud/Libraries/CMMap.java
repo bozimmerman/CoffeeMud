@@ -2860,6 +2860,18 @@ public class CMMap extends StdLibrary implements WorldMap
 	public void obliterateMapArea(final Area A)
 	{
 		obliterateArea(A,true);
+		for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+		{
+			final Area A2=a.nextElement();
+			if((A2!=null)
+			&&(A2.isSavable())
+			&&(A2.isParent(A)||A2.isChild(A)))
+			{
+				A2.removeParent(A);
+				A2.removeChild(A);
+				CMLib.database().DBUpdateArea(A2.Name(), A2);
+			}
+		}
 	}
 
 	@Override
