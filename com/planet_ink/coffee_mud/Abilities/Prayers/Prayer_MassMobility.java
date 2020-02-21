@@ -136,31 +136,34 @@ public class Prayer_MassMobility extends Prayer
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final Room room=mob.location();
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 		if(auto)
 			affectType=affectType|CMMsg.MASK_ALWAYS;
-		if((success)&&(room!=null))
+		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,affectType,auto?"":L("^S<S-NAME> @x1 for an aura of mobility!^?",prayWord(mob)));
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				for(int i=0;i<room.numInhabitants();i++)
+				R.send(mob,msg);
+				for(int i=0;i<R.numInhabitants();i++)
 				{
-					final MOB target=room.fetchInhabitant(i);
+					final MOB target=R.fetchInhabitant(i);
 					if(target==null)
 						break;
 
 					msg=CMClass.getMsg(mob,target,this,affectType,L("Mobility is invoked upon <T-NAME>."));
-					if(mob.location().okMessage(mob,msg))
+					if(R.okMessage(mob,msg))
 					{
-						mob.location().send(mob,msg);
+						R.send(mob,msg);
 						beneficialAffect(mob,target,asLevel,0);
 					}
 				}

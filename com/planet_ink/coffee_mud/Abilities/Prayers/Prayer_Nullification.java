@@ -112,19 +112,23 @@ public class Prayer_Nullification extends Prayer
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		for(int i=0;i<mob.location().numInhabitants();i++)
+		for(int i=0;i<R.numInhabitants();i++)
 		{
-			final MOB target=mob.location().fetchInhabitant(i);
+			final MOB target=R.fetchInhabitant(i);
 			if((target!=null)&&(success))
 			{
 				final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> become(s) nullified."):L("^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?"));
-				if(mob.location().okMessage(mob,msg))
+				if(R.okMessage(mob,msg))
 				{
-					mob.location().send(mob,msg);
+					R.send(mob,msg);
 					Ability revokeThis=null;
 					boolean foundSomethingAtLeast=false;
 					for(int a=0;a<target.numEffects();a++) // personal affects
@@ -145,7 +149,7 @@ public class Prayer_Nullification extends Prayer
 					if(revokeThis==null)
 					{
 						if(foundSomethingAtLeast)
-							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("The magic on <T-NAME> appears too powerful to be nullified."));
+							R.show(mob,target,CMMsg.MSG_OK_VISUAL,L("The magic on <T-NAME> appears too powerful to be nullified."));
 						else
 						if(auto)
 							mob.tell(mob,target,null,L("Nothing seems to be happening to <T-NAME>."));

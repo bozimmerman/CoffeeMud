@@ -133,7 +133,7 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 		for(final String s : lst2)
 		{
 			final Room R=CMClass.getLocalePrototype(s);
-			if(s!=null)
+			if(R!=null)
 				noLocaleIDs.add(R.ID());
 		}
 		lst2= CMParms.parseCommas(CMParms.getParmStr(newText, "ONLYLOCALES", ""), true);
