@@ -154,9 +154,9 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		"WOODEN",
 		"CAVE",
 		"MAGIC",
-		"UNDERWATER",
-		"AIR",
-		"WATERSURFACE",
+		"IN_UNDERWATER",
+		"GAP",
+		"CAVELAKESURFACE",
 		"METAL"
 	};
 
