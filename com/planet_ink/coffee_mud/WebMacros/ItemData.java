@@ -834,6 +834,8 @@ public class ItemData extends StdWebMacro
 						return "false";
 					case ISWEARANDTEAR:
 						return I.subjectToWearAndTear()?"true":"false";
+					case ISAMMOWEAPON:
+						return (I instanceof AmmunitionWeapon)?"true":"false";
 					case ISSCROLL:
 						if(I instanceof Scroll)
 							return "true";

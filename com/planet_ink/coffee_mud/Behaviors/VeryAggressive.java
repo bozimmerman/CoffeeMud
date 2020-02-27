@@ -98,7 +98,9 @@ public class VeryAggressive extends Aggressive
 				return;
 		}
 
-		if(((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
+		if(((mob.amFollowing()!=null)
+			&&(CMLib.tracking().areNearEachOther(mob,mob.amFollowing())
+				||CMLib.tracking().areNearEachOther(mob,mob.amUltimatelyFollowing())))
 		||(!CMLib.flags().canTaste(mob)))
 			return;
 

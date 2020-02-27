@@ -665,6 +665,7 @@
 			</TD>
 		</TR>
 	@else@
+		@if?ItemData?ISAMMOWEAPON@
 		<TR>
 			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Ammunition (''=not required):</B></FONT></TD>
 			<TD WIDTH=450 COLSPAN=2><FONT COLOR=WHITE>
@@ -673,6 +674,7 @@
 			</FONT>
 			</TD>
 		</TR>
+		@endif@
 		@if?ItemData?ISWEARANDTEAR@
 		<TR>
 			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Condition ?/100</B></FONT></TD>

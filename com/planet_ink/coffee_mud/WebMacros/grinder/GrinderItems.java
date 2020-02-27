@@ -75,7 +75,7 @@ public class GrinderItems
 		ISSHIPWARCOMP,SWARNUMPORTS,SWARPORTS,SWARMTYPES,
 		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE,
 		STATESTR,STATESUBJSTR,RIDERSTR,ISRESOURCE,RSCSUBTYPE,
-		ISLIMB,RACEID,ENCHTYPE
+		ISLIMB,RACEID,ENCHTYPE,ISAMMOWEAPON
 		;
 		public boolean isGenField;
 		private ItemDataField(final boolean isGeneric)
@@ -731,6 +731,8 @@ public class GrinderItems
 				case ISCOIN:
 					break;
 				case ISWEARANDTEAR:
+					break;
+				case ISAMMOWEAPON:
 					break;
 				case ISBOARDABLEITEM:
 				case ISPRIVATEPROPERTY:

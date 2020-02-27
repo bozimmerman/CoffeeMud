@@ -1,0 +1,31 @@
+speech_prog p where is aberrus
+mpechoat $n You just said: $g
+
+if strcontains(`$g` `((where is))`)
+ mpechoat $n TEST 1: This test is inside the if clause
+else
+ mpechoat $n TEST 1: The test did NOT go inside the if clause
+endif
+
+if strcontains(`$g` `((where is) | (where can i find))`)
+ mpechoat $n TEST 2: This test is inside the if clause
+else
+ mpechoat $n TEST 2: The test did NOT go inside the if clause
+endif
+~
+#-----------------------------
+#--------Above is the test by uurdin to check the script
+#--------Everything below this is left unchanged as it had been working for years
+#-----------------------------
+
+channel_prog gossip
+if strcontains(`$g` `((where is) | (where can i find) | (how do i get to) | (how do you get to) | (how do you go to) (how do you go to) | (where can you find) | (directions to) | (directions for)) & (aberrus)`)
+echo asked for directions on gossip
+endif
+~
+
+channel_prog ooc
+if strcontains(`$g` `((where is) | (where can i find) | (how do i get to) | (how do you get to) | (how do you go to) (how do you go to) | (where can you find) | (directions to) | (directions for)) & (aberrus)`)
+echo asked for directions on ooc
+endif
+~

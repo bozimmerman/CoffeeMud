@@ -754,7 +754,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 		// ridden and following things aren't mobile!
 		if(((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0))
-		||((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location())))
+		||((mob.amFollowing()!=null)
+			&&(CMLib.tracking().areNearEachOther(mob,mob.amFollowing())
+				||CMLib.tracking().areNearEachOther(mob,mob.amUltimatelyFollowing()))))
 		{
 			if(status!=null)
 				status[0]=Tickable.STATUS_NOT;
@@ -997,7 +999,14 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return;
 		int tries=0;
 		while((M.location()==R)&&((++tries)<10)&&((!mindPCs)||(R.numPCInhabitants()>0)))
+		{
+			if(((M instanceof Rideable)&&(((Rideable)M).numRiders()>0))
+			||((M.amFollowing()!=null)
+				&&(CMLib.tracking().areNearEachOther(M,M.amFollowing())
+					||CMLib.tracking().areNearEachOther(M,M.amUltimatelyFollowing()))))
+				return;
 			beMobile(M,true,true,false,false,false,null,null);
+		}
 		if(andGoHome)
 		{
 			final Room startRoom=M.getStartRoom();
@@ -1009,6 +1018,30 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				((Room)msg.target()).bringMobHere(M,true);
 			}
 		}
+	}
+
+	@Override
+	public boolean areNearEachOther(final MOB whichM, final MOB nearM)
+	{
+		if((whichM==null)||(nearM==null))
+			return false;
+		final Room whichR=whichM.location();
+		final Room nearR=whichM.location();
+		if((whichR==null)||(nearR==null))
+			return false;
+		if(whichR==nearR)
+			return true;
+		if(whichR.isInhabitant(nearM)
+		||nearR.isInhabitant(whichM))
+			return true;
+		for(final int d : Directions.CODES())
+		{
+			if(nearR.getRoomInDir(d)==whichR)
+				return true;
+			if(whichR.getRoomInDir(d)==nearR)
+				return true;
+		}
+		return false;
 	}
 
 	@Override

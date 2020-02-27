@@ -2956,6 +2956,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			case '\'':
 				buf2.setCharAt(i, '`');
 				break;
+			case ')': case '(': case '|': case '>': case '<':
+				// these are the actual control codes for strcontains
+				break;
 			default:
 				if(!Character.isLetterOrDigit(buf2.charAt(i)))
 					buf2.setCharAt(i,' ');
