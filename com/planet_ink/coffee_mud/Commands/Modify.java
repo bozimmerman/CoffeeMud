@@ -1274,6 +1274,12 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
+		if(A instanceof ItemCollection)
+		{
+			mob.tell(L("'@x1' is a gathering skill.  Try MODIFY GATHERSKILL.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
 		if(!(A instanceof Language))
 		{
 			mob.tell(L("'@x1' is not a language.  Try MODIFY ABILITY.",A.ID()));
@@ -1320,7 +1326,10 @@ public class Modify extends StdCommand
 		}
 		if(!(A instanceof ItemCraftor))
 		{
-			mob.tell(L("'@x1' is not a crafting skill.  Try MODIFY ABILITY.",A.ID()));
+			if(A instanceof ItemCollection)
+				mob.tell(L("'@x1' is a gathering skill.  Try MODIFY GATHERSKILL.",A.ID()));
+			else
+				mob.tell(L("'@x1' is not a crafting skill.  Try MODIFY ABILITY.",A.ID()));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -1328,6 +1337,56 @@ public class Modify extends StdCommand
 		CMLib.genEd().modifyGenCraftSkill(mob,A,-1);
 		CMLib.database().DBDeleteAbility(A.ID());
 		CMLib.database().DBCreateAbility(A.ID(),"GenCraftSkill",A.getStat("ALLXML"));
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
+		return true;
+	}
+
+	public boolean gatherSkills(final MOB mob, final List<String> commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY GATHERSKILL [SKILL ID]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+
+		final String classID=CMParms.combine(commands,2);
+		final Ability A=CMClass.getAbility(classID);
+		if(A==null)
+		{
+			mob.tell(L("'@x1' is an invalid ability id.",classID));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(!(A.isGeneric()))
+		{
+			mob.tell(L("'@x1' is not generic, and may not be modified.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(A instanceof Language)
+		{
+			mob.tell(L("'@x1' is a crafting skill.  Try MODIFY LANGUAGE.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(A instanceof ItemCraftor)
+		{
+			mob.tell(L("'@x1' is a crafting skill.  Try MODIFY CRAFTSKILL.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		if(!(A instanceof ItemCollection))
+		{
+			mob.tell(L("'@x1' is not a gathering skill.  Try MODIFY ABILITY.",A.ID()));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around all @x1s.",A.name()));
+		CMLib.genEd().modifyGenGatheringSkill(mob,A,-1);
+		CMLib.database().DBDeleteAbility(A.ID());
+		CMLib.database().DBCreateAbility(A.ID(),"GenGatheringSkill",A.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("@x1's everywhere shake under the transforming power!",A.name()));
 		return true;
 	}
@@ -1713,7 +1772,7 @@ public class Modify extends StdCommand
 
 	protected String listOfThings()
 	{
-		return "ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, "
+		return "ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, GATHERSKILL, "
 			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, "
 			+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, TIME, HOUR, or ROOM";
 	}
@@ -1824,6 +1883,13 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
 				return errorOut(mob);
 			craftSkills(mob,commands);
+		}
+		else
+		if(commandType.equals("GATHERSKILL"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDABILITIES))
+				return errorOut(mob);
+			gatherSkills(mob,commands);
 		}
 		else
 		if(commandType.equals("ALLQUALIFY"))

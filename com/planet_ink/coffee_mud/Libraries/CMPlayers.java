@@ -1636,14 +1636,19 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					setThreadStatus(serviceClient,"expiring top metrics");
 					final long now=System.currentTimeMillis();
 					List<Pair<String,Integer>> top;
+					boolean dumpTried = false;
 					for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 					{
 						if(period == TimeClock.TimePeriod.ALLTIME)
 							continue;
 						if(now > topPrideExpiration[period.ordinal()])
 						{
-							if(period == TimeClock.TimePeriod.MONTH)
+							if((period == TimeClock.TimePeriod.MONTH)
+							&&(!dumpTried))
+							{
+								dumpTried=true;
 								saveLastMonthsTopsData();
+							}
 							topPrideExpiration[period.ordinal()] = period.nextPeriod();
 							for(final AccountStats.PrideStat stat : AccountStats.PrideStat.values())
 							{

@@ -4788,6 +4788,80 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		E.setIgnoreMask(prompt(mob, E.ignoreMask(), showNumber, showFlag, "Ignore Mask", true, false));
 	}
 
+	protected void genItemXML(final MOB mob, final ItemCollection me, final String key, final int showNumber, final int showFlag, final String desc)
+			throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		String itemstr="NO";
+		while(itemstr.length()>0)
+		{
+			String inventorystr="";
+			for(final Enumeration<Item> i=me.items();i.hasMoreElements();)
+			{
+				final Environmental E2=i.nextElement();
+				if(E2.isGeneric())
+					inventorystr+=E2.name()+", ";
+				else
+					inventorystr+=CMClass.classID(E2)+" , ";
+			}
+			if(inventorystr.length()>0)
+				inventorystr=inventorystr.substring(0,inventorystr.length()-2);
+			mob.tell(L("@x1. "+desc+": '@x2'.",""+showNumber,inventorystr));
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
+			itemstr=mob.session().prompt(L("Enter something to add/remove (?)\n\r:"),"");
+			if(itemstr.length()>0)
+			{
+				if(itemstr.equalsIgnoreCase("?"))
+				{
+					mob.tell(CMLib.lister().reallyList(mob,CMClass.armor(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(mob,CMClass.weapons(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(mob,CMClass.miscMagic(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(mob,CMClass.tech(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(mob,CMClass.clanItems(),-1).toString());
+					mob.tell(CMLib.lister().reallyList(mob,CMClass.basicItems(),-1).toString());
+					mob.tell(L("* Plus! Any items on the ground."));
+				}
+				else
+				{
+					Item item=me.findItem(itemstr);
+					if(item!=null)
+					{
+						mob.tell(L("@x1 removed.",item.ID()));
+						me.delItem(item);
+					}
+					else
+					{
+						item=CMClass.getItem(itemstr);
+						if((item==null)&&(mob.location()!=null))
+						{
+							final Room R=mob.location();
+							item=R.findItem(null,itemstr);
+						}
+						if((item!=null)
+						&&((!(item instanceof ArchonOnly))
+							||(CMSecurity.isASysOp(mob))))
+						{
+							item=(Item)item.copyOf();
+							if(item !=null)
+							{
+								((Physical)item).recoverPhyStats();
+								me.addItem(item);
+							}
+						}
+						else
+						{
+							mob.tell(L("'@x1' is not recognized.  Try '?'.",itemstr));
+						}
+					}
+				}
+			}
+			else
+				mob.tell(L("(no change)"));
+		}
+	}
+
 	protected void genAbilities(final MOB mob, final MOB M, final int showNumber, final int showFlag)
 		throws IOException
 	{
@@ -8004,6 +8078,53 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
+	protected void genRawMaterials(final MOB mob, final Modifiable me, final int showNumber, final int showFlag) throws IOException
+	{
+		if((showFlag<=0)||(showFlag==showNumber))
+		{
+			mob.tell(L("@x1. Raw materials: @x2",""+showNumber,me.getStat("MATLIST")));
+			if((showFlag==showNumber)||(showFlag<=-999))
+			{
+				final String promptStr=L("Enter a material or resource to add or remove (?)\n\r:");
+				while((mob.session()!=null)&&(!mob.session().isStopped()))
+				{
+					final String word=mob.session().prompt(promptStr,"");
+					if(word.trim().length()==0)
+					{
+						break;
+					}
+					if(word.equalsIgnoreCase("?"))
+					{
+						final StringBuilder str=new StringBuilder(CMParms.toListString(RawMaterial.Material.values()));
+						str.append(", ").append(CMParms.toListString(RawMaterial.CODES.NAMES()));
+						mob.tell(str.toString());
+						continue;
+					}
+					final List<String> curSet=CMParms.parseCommas(me.getStat("MATLIST").toUpperCase(),true);
+					if(curSet.contains(word.toUpperCase().trim()))
+					{
+						curSet.remove(word.toUpperCase().trim());
+						me.setStat("MATLIST", CMParms.toListString(curSet.toArray(new String[0])));
+						mob.tell(L("Resource or Material '@x1' removed.",word));
+					}
+					else
+					if((RawMaterial.Material.findIgnoreCase(word)!=null)
+					||CMParms.containsIgnoreCase(RawMaterial.CODES.NAMES(), word))
+					{
+						curSet.add(word.toUpperCase().trim());
+						me.setStat("MATLIST", CMParms.toListString(curSet.toArray(new String[0])));
+						if(RawMaterial.Material.findIgnoreCase(word)!=null)
+							mob.tell(L("Material type '@x1' added.",word));
+						else
+							mob.tell(L("Raw resource '@x1' added.",word));
+					}
+					else
+						mob.tell(L("'@x1' is not a material or resource.  Try ?",word));
+				}
+			}
+		}
+	}
+
 	protected void genCulturalAbilities(final MOB mob, final Race E, final int showNumber, final int showFlag)
 		throws IOException
 	{
@@ -8148,15 +8269,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatInt(mob,me,"Use -1 to disable a class Level Cap",++showNumber,showFlag,"Level Cap (?)","LEVELCAP");
 			promptStatStr(mob,me,++showNumber,showFlag,"Base Class","BASE");
 			genClassAvailability(mob,me,++showNumber,showFlag);
-			promptStatStr(mob,me,++showNumber,showFlag,"HP/Level Formula","HITPOINTSFORMULA");
-			promptStatStr(mob,me,++showNumber,showFlag,"Mana/Level Formula","MANAFORMULA");
+			promptStatStr(mob,me,CMLib.help().getHelpText("MATHFORMULA",mob,true).toString(),++showNumber,showFlag,"HP/Level Formula","HITPOINTSFORMULA",false);
+			promptStatStr(mob,me,CMLib.help().getHelpText("MATHFORMULA",mob,true).toString(),++showNumber,showFlag,"Mana/Level Formula","MANAFORMULA",false);
 			promptStatInt(mob,me,++showNumber,showFlag,"Prac/Level","LVLPRAC");
 			promptStatInt(mob,me,++showNumber,showFlag,"Attack/Level","LVLATT");
 			genAttackAttribute(mob,me,++showNumber,showFlag,"Attack Attribute","ATTATT");
 			promptStatInt(mob,me,++showNumber,showFlag,"Practices/1stLvl","FSTPRAC");
 			promptStatInt(mob,me,++showNumber,showFlag,"Trains/1stLvl","FSTTRAN");
 			promptStatInt(mob,me,++showNumber,showFlag,"Levels/Dmg Pt","LVLDAM");
-			promptStatStr(mob,me,++showNumber,showFlag,"Move/Level Formula","MOVEMENTFORMULA");
+			promptStatStr(mob,me,CMLib.help().getHelpText("MATHFORMULA",mob,true).toString(),++showNumber,showFlag,"Move/Level Formula","MOVEMENTFORMULA",false);
 			genArmorCode(mob,me,++showNumber,showFlag,"Armor Restr.","ARMOR");
 
 			final int armorMinorCode=CMath.s_int(me.getStat("ARMORMINOR"));
@@ -8557,54 +8678,61 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Skill verb","VERB",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Recipe filename","FILENAME",false);
-			++showNumber;
-			if((showFlag<=0)||(showFlag==showNumber))
-			{
-				mob.tell(L("@x1. Raw materials: @x2",""+showNumber,me.getStat("MATLIST")));
-				if((showFlag==showNumber)||(showFlag<=-999))
-				{
-					final String promptStr=L("Enter a material or resource to add or remove (?)\n\r:");
-					while((mob.session()!=null)&&(!mob.session().isStopped()))
-					{
-						final String word=mob.session().prompt(promptStr,"");
-						if(word.trim().length()==0)
-						{
-							break;
-						}
-						if(word.equalsIgnoreCase("?"))
-						{
-							final StringBuilder str=new StringBuilder(CMParms.toListString(RawMaterial.Material.values()));
-							str.append(", ").append(CMParms.toListString(RawMaterial.CODES.NAMES()));
-							mob.tell(str.toString());
-							continue;
-						}
-						final List<String> curSet=CMParms.parseCommas(me.getStat("MATLIST").toUpperCase(),true);
-						if(curSet.contains(word.toUpperCase().trim()))
-						{
-							curSet.remove(word.toUpperCase().trim());
-							me.setStat("MATLIST", CMParms.toListString(curSet.toArray(new String[0])));
-							mob.tell(L("Resource or Material '@x1' removed.",word));
-						}
-						else
-						if((RawMaterial.Material.findIgnoreCase(word)!=null)
-						||CMParms.containsIgnoreCase(RawMaterial.CODES.NAMES(), word))
-						{
-							curSet.add(word.toUpperCase().trim());
-							me.setStat("MATLIST", CMParms.toListString(curSet.toArray(new String[0])));
-							if(RawMaterial.Material.findIgnoreCase(word)!=null)
-								mob.tell(L("Material type '@x1' added.",word));
-							else
-								mob.tell(L("Raw resource '@x1' added.",word));
-						}
-						else
-							mob.tell(L("'@x1' is not a material or resource.  Try ?",word));
-					}
-				}
-			}
+			genRawMaterials(mob, me, ++showNumber, showFlag);
 			promptStatBool(mob,me,null,++showNumber,showFlag,"Can mend","CANMEND");
 			promptStatBool(mob,me,null,++showNumber,showFlag,"Can refit","CANREFIT");
 			promptStatBool(mob,me,null,++showNumber,showFlag,"Can bundle","CANBUNDLE");
 			promptStatBool(mob,me,null,++showNumber,showFlag,"Can sit","CANSIT");
+			promptStatStr(mob,me,null,++showNumber,showFlag,"MSP file","SOUND",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
+
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
+			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
+			if(showFlag<=0)
+			{
+				showFlag=-1;
+				ok=true;
+			}
+		}
+	}
+
+	@Override
+	public void modifyGenGatheringSkill(final MOB mob, final Ability me, int showFlag) throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
+			showFlag=-999;
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
+		{
+			int showNumber=0;
+			// id is bad to change.. make them delete it.
+			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Skill name","NAME",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Skill verb","VERB",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
+			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Room Mask","ROOMMASK",true);
+			promptStatStr(mob,me,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Player Mask","PLAYERMASK",true);
+			genRawMaterials(mob, me, ++showNumber, showFlag);
+			promptStatStr(mob,me,CMLib.help().getHelpText("MATHFORMULA",mob,true).toString(),++showNumber,showFlag,"Yield Formula","YIELDFORMULA",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Start Msg","MSGSTART",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Found Msg","MSGFOUND",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Not Found Msg","MSGNOTFOUND",false);
+			promptStatStr(mob,me,null,++showNumber,showFlag,"Complete Msg","MSGCOMPLETE",false);
+			if(me instanceof ItemCollection)
+				genItemXML(mob,(ItemCollection)me,"ITEMXML",++showNumber,showFlag,"Droppable Items");
+			promptStatBool(mob,me,null,++showNumber,showFlag,"Can sit","CANSIT");
+			promptStatBool(mob,me,null,++showNumber,showFlag,"Can bundle","CANBUNDLE");
 			promptStatStr(mob,me,null,++showNumber,showFlag,"MSP file","SOUND",false);
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Help Text","HELP",true);
 

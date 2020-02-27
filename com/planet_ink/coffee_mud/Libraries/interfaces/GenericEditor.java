@@ -45,6 +45,7 @@ public interface GenericEditor extends CMLibrary
 	public void modifyGenLanguage(MOB mob, Language me, int showFlag) throws IOException;
 	public void modifyManufacturer(MOB mob, Manufacturer me, int showFlag) throws IOException;
 	public void modifyGenCraftSkill(MOB mob, Ability me, int showFlag) throws IOException;
+	public void modifyGenGatheringSkill(final MOB mob, final Ability me, int showFlag) throws IOException;
 	public void modifyGenClass(MOB mob, CharClass me, int showFlag) throws IOException;
 	public void modifyGenExit(MOB mob, Exit me, int showFlag) throws IOException;
 	public void modifyGenRace(MOB mob, Race me, int showFlag) throws IOException;

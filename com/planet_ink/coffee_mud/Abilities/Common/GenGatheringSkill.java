@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenGatheringSkill extends GatheringSkill
+public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 {
 	public String	ID	= "GenGatheringSkill";
 
@@ -362,9 +362,27 @@ public class GenGatheringSkill extends GatheringSkill
 			SV(ID, V_MSG4, val);
 			break;
 		case 17:
+		{
 			items.remove(ID);
-			SV(ID, V_IXML, val);
+			String xml=val;
+			final String start=(val.length()<10)?"":val.substring(0, 10).toUpperCase().trim();
+			if((!start.startsWith("<ITEMS>")) && (!start.startsWith("<ITEM>")))
+			{
+				CMFile F=new CMFile(val, null);
+				if(!F.exists())
+					F=new CMFile(Resources.makeFileResourceName(val), null);
+				if(!F.exists())
+					xml = "";
+				else
+				{
+					xml=F.textUnformatted().toString();
+					if(val.length()<=10)
+						xml="";
+				}
+			}
+			SV(ID, V_IXML, xml);
 			break;
+		}
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenGatheringSkill"))
 				parseAllXML(val);
@@ -495,6 +513,154 @@ public class GenGatheringSkill extends GatheringSkill
 		super.unInvoke();
 	}
 
+	protected List<Item> getItems()
+	{
+		List<Item> choices = items.get(ID);
+		if(choices == null)
+		{
+			choices=new Vector<Item>(1);
+			final String origXml=((String)V(ID,V_IXML)).trim();
+			final String xml=origXml;
+			if(xml.length()>0)
+			{
+				String error="";
+				String start;
+				if(xml.length()>10)
+					start=xml.substring(0,10).toUpperCase();
+				else
+					start=xml.toUpperCase();
+				if(start.startsWith("<ITEMS>"))
+					error=CMLib.coffeeMaker().addItemsFromXML(xml,choices,null);
+				else
+				if(start.startsWith("<ITEM>"))
+				{
+					final Item I=CMLib.coffeeMaker().getItemFromXML(xml);
+					if(I==null)
+						error="Gathering skill "+ID+" had bad data: "+xml;
+					else
+						choices.add(I);
+				}
+				else
+					error="Gathering skill "+ID+" had bad data: "+xml;
+				if(error.length()>0)
+				{
+					Log.errOut(ID, error);
+				}
+			}
+			items.put(ID, choices);
+		}
+		return choices;
+	}
+
+	protected void rebuildItemXML()
+	{
+		final StringBuilder str=new StringBuilder("<ITEMS>");
+		for(final Item I : getItems())
+			str.append(CMLib.coffeeMaker().getItemXML(I));
+		str.append("</ITEMS>");
+		SV(ID,V_IXML,str.toString());
+	}
+
+	@Override
+	public void addItem(final Item item)
+	{
+		getItems().add(item);
+		rebuildItemXML();
+	}
+
+	@Override
+	public void delItem(final Item item)
+	{
+		getItems().remove(item);
+		rebuildItemXML();
+	}
+
+	@Override
+	public void delAllItems(final boolean destroy)
+	{
+		getItems().clear();
+		rebuildItemXML();
+	}
+
+	@Override
+	public int numItems()
+	{
+		return getItems().size();
+	}
+
+	@Override
+	public Item getItem(final int i)
+	{
+		final List<Item> items = getItems();
+		if((items.size()==0)||(i>=items.size())||(i<0))
+			return null;
+		return items.get(i);
+	}
+
+	@Override
+	public Item getRandomItem()
+	{
+		if(numItems()==0)
+			return null;
+		return getItem(CMLib.dice().roll(1, numItems(), -1));
+	}
+
+	@Override
+	public Enumeration<Item> items()
+	{
+		return new IteratorEnumeration<Item>(getItems().iterator());
+	}
+
+	@Override
+	public Item findItem(final Item goodLocation, final String itemID)
+	{
+		Item I=CMLib.english().fetchAvailableItem(getItems(), itemID, goodLocation, Wearable.FILTER_ANY, true);
+		if(I==null)
+			I=CMLib.english().fetchAvailableItem(getItems(), itemID, goodLocation, Wearable.FILTER_ANY, false);
+		return I;
+	}
+
+	@Override
+	public Item findItem(final String itemID)
+	{
+		return findItem(null,itemID);
+	}
+
+	@Override
+	public List<Item> findItems(final Item goodLocation, final String itemID)
+	{
+		List<Item> some=CMLib.english().fetchAvailableItems(getItems(), itemID, goodLocation, Wearable.FILTER_ANY, true);
+		if((some==null)||(some.size()==0))
+			some=CMLib.english().fetchAvailableItems(getItems(), itemID, goodLocation, Wearable.FILTER_ANY, false);
+		return some;
+	}
+
+	@Override
+	public List<Item> findItems(final String itemID)
+	{
+		return findItems(null,itemID);
+	}
+
+	@Override
+	public boolean isContent(final Item item)
+	{
+		for(final Item I : getItems())
+		{
+			if(I.sameAs(item))
+				return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void eachItem(final EachApplicable<Item> applier)
+	{
+		if(applier != null)
+		{
+			for(final Item I : getItems())
+				applier.apply(I);
+		}
+	}
 
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
@@ -535,58 +701,7 @@ public class GenGatheringSkill extends GatheringSkill
 		{
 			if(proficiencyCheck(mob,0,auto))
 			{
-				List<Item> choices = items.get(ID);
-				if(choices == null)
-				{
-					choices=new Vector<Item>(1);
-					String xml=((String)V(ID,V_IXML)).trim();
-					if(xml.length()>0)
-					{
-						String error="";
-						String start;
-						if(xml.length()>10)
-							start=xml.substring(0,10).toUpperCase();
-						else
-							start=xml.toUpperCase();
-						if((!start.startsWith("<ITEMS>")) && (!start.startsWith("<ITEM>")))
-						{
-							CMFile F=new CMFile(xml, null);
-							if(!F.exists())
-								F=new CMFile(Resources.makeFileResourceName(xml), null);
-							if(!F.exists())
-								error="Gathering skill "+ID+" had bad filename: "+xml;
-							else
-							{
-								xml=F.textUnformatted().toString();
-								if(xml.length()>10)
-									start=xml.substring(0,10).toUpperCase();
-								else
-									error="Gathering skill "+ID+" had bad data: "+xml;
-							}
-						}
-						if(error.length()==0)
-						{
-							if(start.startsWith("<ITEMS>"))
-								error=CMLib.coffeeMaker().addItemsFromXML(xml,choices,null);
-							else
-							if(start.startsWith("<ITEM>"))
-							{
-								final Item I=CMLib.coffeeMaker().getItemFromXML(xml);
-								if(I==null)
-									error="Gathering skill "+ID+" had bad data: "+xml;
-								else
-									choices.add(I);
-							}
-							else
-								error="Gathering skill "+ID+" had bad data: "+xml;
-						}
-						if(error.length()>0)
-						{
-							Log.errOut(ID, error);
-						}
-					}
-					items.put(ID, choices);
-				}
+				final List<Item> choices = getItems();
 				if(choices.size()>0)
 					found=choices.get(CMLib.dice().roll(1, choices.size(), -1));
 			}
