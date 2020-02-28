@@ -171,6 +171,18 @@ public class Skill_WildernessLore extends StdSkill
 				else
 					mob.tell(L("You are in a jungle."));
 				break;
+			case Room.DOMAIN_INDOORS_SEAPORT:
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is an inner seaport.")));
+				else
+					mob.tell(L("You are at an inner seaport."));
+				break;
+			case Room.DOMAIN_INDOORS_CAVE_SEAPORT:
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a cave seaport.")));
+				else
+					mob.tell(L("You are at a cave seaport."));
+				break;
 			case Room.DOMAIN_OUTDOORS_SEAPORT:
 				if(report)
 					CMLib.commands().postSay(mob, (L("This is a seaport.")));
@@ -245,7 +257,8 @@ public class Skill_WildernessLore extends StdSkill
 				break;
 			}
 			final int derivedClimate=room.getClimateType();
-			if(derivedClimate!=Places.CLIMASK_NORMAL)
+			if((derivedClimate!=Places.CLIMASK_NORMAL)
+			&&(!CMath.bset(derivedClimate,Places.CLIMASK_VOID)))
 			{
 				final StringBuffer str=new StringBuffer(L("It is unusually "));
 				final List<String> conditions=new Vector<String>();

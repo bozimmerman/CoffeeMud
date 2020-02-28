@@ -498,7 +498,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 									if((mob.location()==thisRoom)
 									&&(!CMLib.flags().isWateryRoom(thisRoom)))
 									{
-										final int directDamage = mob.maxState().getHitPoints()/10; 
+										final int directDamage = mob.maxState().getHitPoints()/10;
 										CMLib.combat().postDamage(mob,mob,null,directDamage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,
 												L("The fall <DAMAGES> <T-NAME>!"));
 									}
@@ -2344,7 +2344,9 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	{
 		if(R!=null)
 		{
-			if(R.domainType()==Room.DOMAIN_OUTDOORS_SEAPORT)
+			if((R.domainType()==Room.DOMAIN_OUTDOORS_SEAPORT)
+			||(R.domainType()==Room.DOMAIN_INDOORS_SEAPORT)
+			||(R.domainType()==Room.DOMAIN_INDOORS_CAVE_SEAPORT))
 				return R;
 			TrackingLibrary.TrackingFlags flags;
 			flags = CMLib.tracking().newFlags()
@@ -2356,7 +2358,9 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			final List<Room> rooms=CMLib.tracking().getRadiantRooms(R, flags, 25);
 			for(final Room R2 : rooms)
 			{
-				if(R2.domainType()==Room.DOMAIN_OUTDOORS_SEAPORT)
+				if((R2.domainType()==Room.DOMAIN_OUTDOORS_SEAPORT)
+				||(R2.domainType()==Room.DOMAIN_INDOORS_SEAPORT)
+				||(R2.domainType()==Room.DOMAIN_INDOORS_CAVE_SEAPORT))
 					return R2;
 			}
 			for(final Room R2 : rooms)
@@ -2603,7 +2607,9 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			if((destRoom!=null)&&(exit!=null))
 			{
 				if((!CMLib.flags().isDeepWaterySurfaceRoom(destRoom))
-				&&(destRoom.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT))
+				&&(destRoom.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT)
+				&&(destRoom.domainType()!=Room.DOMAIN_INDOORS_CAVE_SEAPORT)
+				&&(destRoom.domainType()!=Room.DOMAIN_INDOORS_SEAPORT))
 				{
 					announceToShip(L("As there is no where to sail @x1, <S-NAME> meanders along the waves.",CMLib.directions().getInDirectionName(direction)));
 					courseDirections.clear();

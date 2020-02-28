@@ -82,7 +82,9 @@ public class EndlessThinSky extends StdThinGrid
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		return InTheAir.isOkAirAffect(this,msg);
+		final boolean success = InTheAir.isOkAirAffect(this,msg);
+		InTheAir.airAffects(this,msg);
+		return success;
 	}
 
 	@Override

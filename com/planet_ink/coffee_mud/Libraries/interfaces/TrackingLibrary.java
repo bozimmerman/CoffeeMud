@@ -205,7 +205,9 @@ public interface TrackingLibrary extends CMLibrary
 					return true;
 				if(CMLib.flags().isWaterySurfaceRoom(R)
 				|| (R.ID().equals("Shore"))
-				|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT))
+				|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT)
+				|| (R.domainType() == Room.DOMAIN_INDOORS_SEAPORT)
+				|| (R.domainType() == Room.DOMAIN_INDOORS_CAVE_SEAPORT))
 					return false;
 				boolean foundWater=false;
 				for(final int dir2 : Directions.CODES())
@@ -229,7 +231,9 @@ public interface TrackingLibrary extends CMLibrary
 				|| (CMLib.flags().isWaterySurfaceRoom(R) ))
 					return true;
 				if((R.ID().equals("Shore"))
-				|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT))
+				|| (R.domainType() == Room.DOMAIN_OUTDOORS_SEAPORT)
+				|| (R.domainType() == Room.DOMAIN_INDOORS_SEAPORT)
+				|| (R.domainType() == Room.DOMAIN_INDOORS_CAVE_SEAPORT))
 					return false;
 				boolean foundWater=false;
 				for(final int dir2 : Directions.CODES())

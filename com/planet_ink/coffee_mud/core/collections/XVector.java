@@ -115,7 +115,13 @@ public class XVector<T> extends Vector<T>
 				add(E.next());
 		}
 	}
-	
+
+	public synchronized XVector<T> append(final T[] E)
+	{
+		addAll(E);
+		return this;
+	}
+
 	public synchronized XVector<T> append(final T E)
 	{
 		if(add(E))

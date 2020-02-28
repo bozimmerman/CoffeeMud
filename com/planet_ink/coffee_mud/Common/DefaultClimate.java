@@ -346,7 +346,8 @@ public class DefaultClimate implements Climate
 
 	public void weatherTick(final Area A)
 	{
-		if(CMSecurity.isDisabled(CMSecurity.DisFlag.WEATHER))
+		if((CMSecurity.isDisabled(CMSecurity.DisFlag.WEATHER))
+		||(CMath.bset(A.getClimateType(), Places.CLIMASK_VOID)))
 		{
 			currentWeather = Climate.WEATHER_CLEAR;
 			return;
@@ -502,11 +503,13 @@ public class DefaultClimate implements Climate
 		final StringBuffer desc=new StringBuffer("");
 		if((weather<0)||(weather>=Climate.NUM_WEATHER))
 			return "";
+		final int derivedClimate=A.getClimateType();
+		if((derivedClimate&Places.CLIMASK_VOID)>0)
+			return "";
 		final int listFileOrd = CMProps.ListFile.WEATHER_CLEAR.ordinal() + weather;
 		final CMProps.ListFile listFileEnum = CMProps.ListFile.values()[listFileOrd];
 		final String prefix;
 		//#    NORMAL, WET, COLD (WINTER), HOT (SUMMER), DRY
-		final int derivedClimate=A.getClimateType();
 		if(((derivedClimate&Places.CLIMASK_COLD)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.Season.WINTER))
 			prefix=CMProps.getListFileChoiceFromIndexedList(listFileEnum, 2);
 		else

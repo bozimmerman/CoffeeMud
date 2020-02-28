@@ -59,7 +59,9 @@ public class InTheAir extends StdRoom
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		return isOkAirAffect(this,msg);
+		final boolean success = InTheAir.isOkAirAffect(this,msg);
+		InTheAir.airAffects(this,msg);
+		return success;
 	}
 
 	public static void airAffects(final Room room, final CMMsg msg)
@@ -181,7 +183,6 @@ public class InTheAir extends StdRoom
 				}
 			}
 		}
-		InTheAir.airAffects(room,msg);
 		return true;
 	}
 }

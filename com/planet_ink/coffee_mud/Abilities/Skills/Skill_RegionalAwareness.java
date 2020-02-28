@@ -111,6 +111,8 @@ public class Skill_RegionalAwareness extends StdSkill
 		case Room.DOMAIN_OUTDOORS_JUNGLE:
 			return 'R';
 		case Room.DOMAIN_OUTDOORS_SEAPORT:
+		case Room.DOMAIN_INDOORS_SEAPORT:
+		case Room.DOMAIN_INDOORS_CAVE_SEAPORT:
 			return 'y';
 		case Room.DOMAIN_OUTDOORS_SWAMP:
 			return 'r';
@@ -168,6 +170,8 @@ public class Skill_RegionalAwareness extends StdSkill
 		case Room.DOMAIN_OUTDOORS_JUNGLE:
 			return 'J';
 		case Room.DOMAIN_OUTDOORS_SEAPORT:
+		case Room.DOMAIN_INDOORS_SEAPORT:
+		case Room.DOMAIN_INDOORS_CAVE_SEAPORT:
 			return 'P';
 		case Room.DOMAIN_OUTDOORS_SWAMP:
 			return 'x';

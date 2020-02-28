@@ -70,6 +70,8 @@ public class SeaMap extends BardMap
 		case Room.DOMAIN_OUTDOORS_JUNGLE:
 			return 'J';
 		case Room.DOMAIN_OUTDOORS_SEAPORT:
+		case Room.DOMAIN_INDOORS_CAVE_SEAPORT:
+		case Room.DOMAIN_INDOORS_SEAPORT:
 			return 'P';
 		case Room.DOMAIN_OUTDOORS_SWAMP:
 			return 'x';

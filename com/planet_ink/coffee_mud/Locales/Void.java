@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2020 Bo Zimmerman
+   Copyright 2001-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,32 +32,27 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class IndoorInTheAir extends StdRoom
+public class Void extends StdRoom
 {
 	@Override
 	public String ID()
 	{
-		return "IndoorInTheAir";
+		return "Void";
 	}
 
-	public IndoorInTheAir()
+	public Void()
 	{
 		super();
-		name="the space";
 		basePhyStats.setWeight(1);
+		name="the void";
+		setClimateType(Places.CLIMASK_VOID);
 		recoverPhyStats();
 	}
 
 	@Override
 	public int domainType()
 	{
-		return Room.DOMAIN_INDOORS_AIR;
-	}
-
-	@Override
-	public int maxRange()
-	{
-		return 5;
+		return Room.DOMAIN_OUTDOORS_AIR;
 	}
 
 	@Override
@@ -66,15 +61,7 @@ public class IndoorInTheAir extends StdRoom
 		if(!super.okMessage(myHost,msg))
 			return false;
 		final boolean success = InTheAir.isOkAirAffect(this,msg);
-		InTheAir.airAffects(this,msg);
 		return success;
-	}
-
-	@Override
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
-	{
-		super.executeMsg(myHost,msg);
-		InTheAir.airAffects(this,msg);
 	}
 
 }

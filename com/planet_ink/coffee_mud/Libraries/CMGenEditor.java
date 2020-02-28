@@ -2416,6 +2416,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					conditions.add("hot");
 				if(CMath.bset(A.getClimateTypeCode(), Places.CLIMASK_DRY))
 					conditions.add("dry");
+				if(CMath.bset(A.getClimateTypeCode(), Places.CLIMASK_VOID))
+					conditions.add("void");
 				if(CMath.bset(A.getClimateTypeCode(), Places.CLIMASK_COLD))
 					conditions.add("cold");
 				if(CMath.bset(A.getClimateTypeCode(), Places.CLIMASK_WINDY))
@@ -2439,6 +2441,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.session().println(L("    C) Excessively cold : @x1",""+((type&Places.CLIMASK_COLD)>0)));
 			mob.session().println(L("    W) Very windy       : @x1",""+((type&Places.CLIMASK_WINDY)>0)));
 			mob.session().println(L("    D) Very dry         : @x1",""+((type&Places.CLIMASK_DRY)>0)));
+			mob.session().println(L("    V) Void             : @x1",""+((type&Places.CLIMASK_VOID)>0)));
 			c=mob.session().choose(L("Enter one to change, or ENTER when done: "),L("RHCWDI\n"),"\n").toUpperCase();
 			switch(c.charAt(0))
 			{
@@ -2459,6 +2462,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				break;
 			case 'D':
 				toggleClimateMask(A, Places.CLIMASK_DRY);
+				break;
+			case 'V':
+				int current=A.getClimateTypeCode();
+				if(current<0)
+					current=0;
+				if((current&Places.CLIMASK_VOID)==0)
+					A.setClimateType(Places.CLIMASK_VOID);
+				else
+					A.setClimateType(Places.CLIMASK_NORMAL);
 				break;
 			}
 		}

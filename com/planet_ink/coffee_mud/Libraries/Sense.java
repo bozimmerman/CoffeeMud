@@ -2267,6 +2267,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				case Room.DOMAIN_INDOORS_UNDERWATER:
 				case Room.DOMAIN_OUTDOORS_UNDERWATER:
 				case Room.DOMAIN_OUTDOORS_SEAPORT:
+				case Room.DOMAIN_INDOORS_SEAPORT:
+				case Room.DOMAIN_INDOORS_CAVE_SEAPORT:
 					say.append(" (^psinking^?)");
 					break;
 				default:

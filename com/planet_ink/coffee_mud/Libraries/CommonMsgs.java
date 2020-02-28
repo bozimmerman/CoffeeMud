@@ -708,7 +708,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 		if(recallingMob instanceof Rideable)
 		{
-			for(Enumeration<Rider> r=((Rideable)recallingMob).riders();r.hasMoreElements();)
+			for(final Enumeration<Rider> r=((Rideable)recallingMob).riders();r.hasMoreElements();)
 			{
 				final Rider R=r.nextElement();
 				if(CMLib.map().roomLocation(R) != recallToRoom)
@@ -726,7 +726,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		recallingMob.recoverMaxState();
 		postLook(recallingMob,true);
 	}
-	
+
 	@Override
 	public void handleRecall(final CMMsg msg)
 	{
@@ -1523,7 +1523,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		case Room.DOMAIN_OUTDOORS_SEAPORT:
 			smell.append(L("It smells clean, wet, and breezy here. "));
 			break;
+		case Room.DOMAIN_INDOORS_SEAPORT:
+			smell.append(L("It smells very humid and fishy here. "));
+			break;
 		case Room.DOMAIN_INDOORS_CAVE:
+		case Room.DOMAIN_INDOORS_CAVE_SEAPORT:
 			smell.append(L("It smells very dank and mildewy here. "));
 			break;
 		case Room.DOMAIN_OUTDOORS_HILLS:

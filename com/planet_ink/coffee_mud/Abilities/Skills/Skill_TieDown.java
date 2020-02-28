@@ -201,7 +201,9 @@ public class Skill_TieDown extends StdSkill
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		if(R.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT)
+		if((R.domainType()!=Room.DOMAIN_OUTDOORS_SEAPORT)
+		&&(R.domainType()!=Room.DOMAIN_INDOORS_SEAPORT)
+		&&(R.domainType()!=Room.DOMAIN_INDOORS_CAVE_SEAPORT))
 		{
 			mob.tell(L("@x1 can not be tied down anywhere except at a sea port.",R.Name()));
 			return false;

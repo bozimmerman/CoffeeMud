@@ -99,12 +99,14 @@ public interface Places extends PhysicalAgent
 	public final static int CLIMASK_HOT=8;
 	/**	Bitmap climate flag meaning that the area has dry weather.  @see com.planet_ink.coffee_mud.core.interfaces.Places#climateType() */
 	public final static int CLIMASK_DRY=16;
+	/**	Bitmap climate flag meaning that the area has no weather.  @see com.planet_ink.coffee_mud.core.interfaces.Places#climateType() */
+	public final static int CLIMASK_VOID=32;
 	/**	Indexed description of the CLIMASK_ bitmap constants in all possible combinations.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.Places#CLIMASK_NORMAL
 	 */
-	public final static String[] CLIMATE_DESCS={"NORMAL","WET","COLD","WINDY","HOT","DRY"};
+	public final static String[] CLIMATE_DESCS={"NORMAL","WET","COLD","WINDY","HOT","DRY","VOID"};
 	/**	Number of CLIMASK_ constants.  @see com.planet_ink.coffee_mud.core.interfaces.Places#climateType() */
-	public final static int NUM_CLIMATES=6;
+	public final static int NUM_CLIMATES=7;
 	/**	Bitmap climate flag meaning that the area has all weather modifiers.  @see com.planet_ink.coffee_mud.core.interfaces.Places#climateType() */
-	public final static int ALL_CLIMATE_MASK=31;
+	public final static int ALL_CLIMATE_MASK=63;
 }

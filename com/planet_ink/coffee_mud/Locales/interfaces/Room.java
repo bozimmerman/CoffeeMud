@@ -146,6 +146,10 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	public final static int DOMAIN_INDOORS_WATERSURFACE=INDOORS+6;
 	/** Domain type mask denoting whether the room is indoors, and made of metal @see {@link Room#domainType()} */
 	public final static int DOMAIN_INDOORS_METAL=INDOORS+7;
+	/** Domain type mask denoting whether the room is indoors, and made of cave @see {@link Room#domainType()} */
+	public final static int DOMAIN_INDOORS_CAVE_SEAPORT=INDOORS+8;
+	/** Domain type mask denoting whether the room is indoor seaport, @see {@link Room#domainType()} */
+	public final static int DOMAIN_INDOORS_SEAPORT=INDOORS+9;
 
 	/** Domain description array indexed by the (DOMAIN_INDOORS_* - Room.INDOORS) constants. @see {@link Room#DOMAIN_INDOORS_STONE} */
 	public final static String[] DOMAIN_INDOORS_DESCS=
@@ -157,7 +161,9 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		"IN_UNDERWATER",
 		"GAP",
 		"CAVELAKESURFACE",
-		"METAL"
+		"METAL",
+		"INNERSEAPORT",
+		"CAVESEAPORT"
 	};
 
 	/**

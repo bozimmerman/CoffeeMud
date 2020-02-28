@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2020 Bo Zimmerman
+   Copyright 2020-2020 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,49 +32,40 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class IndoorInTheAir extends StdRoom
+public class WoodSeaPort extends WoodRoom
 {
 	@Override
 	public String ID()
 	{
-		return "IndoorInTheAir";
+		return "WoodenSeaPort";
 	}
 
-	public IndoorInTheAir()
+	public WoodSeaPort()
 	{
 		super();
-		name="the space";
-		basePhyStats.setWeight(1);
+		name="the wooden sea port";
+		basePhyStats.setWeight(2);
 		recoverPhyStats();
+		climask=Places.CLIMASK_WET;
+	}
+
+	@Override
+	protected int baseThirst()
+	{
+		return 1;
 	}
 
 	@Override
 	public int domainType()
 	{
-		return Room.DOMAIN_INDOORS_AIR;
+		return Room.DOMAIN_INDOORS_SEAPORT;
 	}
+
+	public static final List<Integer> roomResources=new XVector<Integer>(Arrays.asList(Shore.resourceList));
 
 	@Override
-	public int maxRange()
+	public List<Integer> resourceChoices()
 	{
-		return 5;
+		return Shore.roomResources;
 	}
-
-	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(!super.okMessage(myHost,msg))
-			return false;
-		final boolean success = InTheAir.isOkAirAffect(this,msg);
-		InTheAir.airAffects(this,msg);
-		return success;
-	}
-
-	@Override
-	public void executeMsg(final Environmental myHost, final CMMsg msg)
-	{
-		super.executeMsg(myHost,msg);
-		InTheAir.airAffects(this,msg);
-	}
-
 }

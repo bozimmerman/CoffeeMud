@@ -13,6 +13,9 @@
  12. New questmaker templates: normal_dispel1
  13. New achievement field: VISIBLEMASK
  14. Prop_RoomDark/Lit now support HOURS argument.
+ 15. New climate type: VOID, for disabling weather locally
+ 16. New domain types: indoor seaport, cave seaport
+ 17. New locales: Void, CaveSeaPort, WoodSeaPort
  
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.
