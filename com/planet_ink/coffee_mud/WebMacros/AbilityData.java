@@ -41,6 +41,33 @@ public class AbilityData extends StdWebMacro
 		return "AbilityData";
 	}
 
+	private String itemList(final List<Item> itemList, Item oldItem, final String oldValue)
+	{
+		final StringBuffer list=new StringBuffer("");
+		if(oldItem==null)
+			oldItem=RoomData.getItemFromCatalog(oldValue);
+		for (final Item I : itemList)
+		{
+			list.append("<OPTION VALUE=\""+RoomData.getItemCode(itemList, I)+"\" ");
+			if((oldItem!=null)&&(oldItem.sameAs(I)))
+				list.append("SELECTED");
+			list.append(">");
+			list.append(I.Name()+RoomData.getObjIDSuffix(I));
+		}
+		list.append("<OPTION VALUE=\"\">------ CATALOGED -------");
+		final String[] names=CMLib.catalog().getCatalogItemNames();
+		for (final String name : names)
+		{
+			list.append("<OPTION VALUE=\"CATALOG-"+name+"\"");
+			if((oldItem!=null)
+			&&(CMLib.flags().isCataloged(oldItem))
+			&&(oldItem.Name().equalsIgnoreCase(name)))
+				list.append(" SELECTED");
+			list.append(">"+name);
+		}
+		return list.toString();
+	}
+
 	// valid parms include help, ranges, quality, target, alignment, domain,
 	// qualifyQ, auto
 	@Override
@@ -68,6 +95,7 @@ public class AbilityData extends StdWebMacro
 		final String newAbilityID=httpReq.getUrlParameter("NEWABILITY");
 		final String newLanguageID=httpReq.getUrlParameter("NEWLANGUAGE");
 		final String newCraftSkillID=httpReq.getUrlParameter("NEWCRAFTSKILL");
+		final String newGatheringSkillID=httpReq.getUrlParameter("NEWGATHERINGSKILL");
 		A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
 		if((A==null)
 		&&(newAbilityID!=null)
@@ -99,6 +127,16 @@ public class AbilityData extends StdWebMacro
 			last=newCraftSkillID;
 			httpReq.addFakeUrlParameter("ABILITY",newCraftSkillID);
 		}
+		if((A==null)
+		&&(newGatheringSkillID!=null)
+		&&(newGatheringSkillID.length()>0)
+		&&(CMClass.getAbility(newGatheringSkillID)==null))
+		{
+			A=(Ability)CMClass.getAbility("GenGatheringSkill").copyOf();
+			A.setStat("CLASS9",newGatheringSkillID);
+			last=newGatheringSkillID;
+			httpReq.addFakeUrlParameter("ABILITY",newGatheringSkillID);
+		}
 		if(last.length()>0)
 		{
 			if(A==null)
@@ -119,7 +157,13 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("ISCRAFTSKILL"))
 				{
-					return Boolean.toString(A instanceof ItemCraftor);
+					return Boolean.toString((A instanceof ItemCraftor)
+							&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL));
+				}
+				if(parms.containsKey("ISGATHERSKILL"))
+				{
+					return Boolean.toString((A instanceof ItemCollection)
+							&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL));
 				}
 				if(parms.containsKey("NAME"))
 				{
@@ -319,6 +363,12 @@ public class AbilityData extends StdWebMacro
 					for(int i=0;i<Ability.ACODE_DESCS.length;i++)
 					{
 						if(A instanceof ItemCraftor)
+						{
+							if(i==Ability.ACODE_COMMON_SKILL)
+								str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
+						}
+						else
+						if(A instanceof ItemCollection)
 						{
 							if(i==Ability.ACODE_COMMON_SKILL)
 								str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
@@ -666,6 +716,52 @@ public class AbilityData extends StdWebMacro
 					str.append(", ");
 				}
 
+				if(parms.containsKey("ITEMXML")
+				&&(A instanceof ItemCollection))
+				{
+					final List<Item> itemList=new XVector<Item>(((ItemCollection)A).items());
+					final ArrayList<String> oldValues=new ArrayList<String>();
+					int which=1;
+					final String httpKeyName="ITEMXML";
+					String oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
+					while(oldValue!=null)
+					{
+						if((!oldValue.equalsIgnoreCase("DELETE"))&&(oldValue.length()>0))
+							oldValues.add(oldValue);
+						which++;
+						oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
+					}
+					String newKey = httpReq.getUrlParameter("NEWITEM");
+					if(newKey != null)
+					{
+						final int x=newKey.indexOf('=');
+						if(x > 0)
+							newKey = newKey.substring(x+1).trim();
+						final Item newItem = RoomData.getItemFromAnywhere(RoomData.getItemCache(),newKey);
+						if(newItem != null)
+						{
+							itemList.add(newItem);
+							((ItemCollection)A).addItem(newItem);
+							oldValues.add(newKey);
+						}
+					}
+					oldValues.add("");
+					for(int i=0;i<oldValues.size();i++)
+					{
+						oldValue=oldValues.get(i);
+						final Item oldItem=(oldValue.length()>0)?RoomData.getItemFromAnywhere(itemList,oldValue):null;
+						str.append("<TR><TD><SELECT NAME="+httpKeyName+"_"+(i+1)+" ONCHANGE=\"ReShow();\">");
+						if(i<oldValues.size()-1)
+							str.append("<OPTION VALUE=\"DELETE\">Delete!");
+						if(oldValue.length()==0)
+							str.append("<OPTION VALUE=\"\" "+((oldValue.length()==0)?"SELECTED":"")+">");
+						str.append(itemList(itemList,oldItem,oldValue));
+						str.append("</SELECT></TD></TR>");
+						if(i==oldValues.size()-1)
+							str.append("<TR><TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=BUTT_"+httpKeyName+" VALUE=\"NEW\" ONCLICK=\"AddNewItem();\"></TD></TR>");
+					}
+				}
+
 				if(parms.containsKey("POSTCASTAFFECT"))
 				{
 					List<String> list=new ArrayList<String>();
@@ -733,17 +829,19 @@ public class AbilityData extends StdWebMacro
 					}
 					str.append(", ");
 				}
-				if(parms.containsKey("POSTCASTDAMAGE"))
+				final String[] NORMAL_PARMS= {
+					"POSTCASTDAMAGE", "ROOMMASK", "PLAYMASK", "YIELDFORMULA",
+					"MSGSTART", "MSGFOUND", "MSGNOTFOUND", "MSGCOMPLETE"
+				};
+				for(final String normalParm : NORMAL_PARMS)
 				{
-					/*
-						Enter a damage or healing formula.
-						Use +/-*()?. @x1=caster level, @x2=target level.
-						Formula evaluates >0 for damage, <0 for healing. Requires Can Target!"
-					*/
-					String old=httpReq.getUrlParameter("POSTCASTDAMAGE");
-					if(old==null)
-						old=A.getStat("POSTCASTDAMAGE");
-					str.append(old+", ");
+					if(parms.containsKey(normalParm))
+					{
+						String old=httpReq.getUrlParameter(normalParm);
+						if(old==null)
+							old=A.getStat(normalParm);
+						str.append(old+", ");
+					}
 				}
 
 				/*********************************************************************************/

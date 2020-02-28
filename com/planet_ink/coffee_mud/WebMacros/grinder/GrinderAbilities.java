@@ -170,6 +170,48 @@ public class GrinderAbilities
 		A.setStat("MOCKABILITY",(old==null)?"":old);
 		old=httpReq.getUrlParameter("MOCKABLETEXT");
 		A.setStat("MOCKABLETEXT",(old==null)?"":old);
+
+		old=httpReq.getUrlParameter("ROOMMASK");
+		A.setStat("ROOMMASK",(old==null)?"":old);
+		old=httpReq.getUrlParameter("PLAYMASK");
+		A.setStat("PLAYMASK",(old==null)?"":old);
+		old=httpReq.getUrlParameter("YIELDFORMULA");
+		A.setStat("YIELDFORMULA",(old==null)?"":old);
+		old=httpReq.getUrlParameter("MSGSTART");
+		A.setStat("MSGSTART",(old==null)?"":old);
+		old=httpReq.getUrlParameter("MSGFOUND");
+		A.setStat("MSGFOUND",(old==null)?"":old);
+		old=httpReq.getUrlParameter("MSGNOTFOUND");
+		A.setStat("MSGNOTFOUND",(old==null)?"":old);
+		old=httpReq.getUrlParameter("MSGCOMPLETE");
+		A.setStat("MSGCOMPLETE",(old==null)?"":old);
+
+		if(httpReq.isUrlParameter("ITEMXML")
+		&&(A instanceof ItemCollection))
+		{
+			final StringBuilder str=new StringBuilder("");
+			int which=1;
+			final String httpKeyName="ITEMXML";
+			String oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
+			final List<Item> itemList=new XVector<Item>(((ItemCollection)A).items());
+			while(oldValue!=null)
+			{
+				if((!oldValue.equalsIgnoreCase("DELETE"))&&(oldValue.length()>0))
+				{
+					final Item oldItem=(oldValue.length()>0)?RoomData.getItemFromAnywhere(itemList,oldValue):null;
+					if(oldItem != null)
+						str.append(CMLib.coffeeMaker().getItemXML(oldItem));
+				}
+				which++;
+				oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
+			}
+
+			if(str.length()==0)
+				((ItemCollection)A).delAllItems(true);
+			else
+				A.setStat("ITEMXML", "<ITEMS>"+str.toString()+"</ITEMS>");
+		}
+
 		V.clear();
 		if(httpReq.isUrlParameter("POSTCASTAFFECT"))
 		{

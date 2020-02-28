@@ -85,7 +85,7 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 		O[V_NAME]="Gathering Skill";
 		O[V_TRIG]=new String[]{"GATHER"};
 		O[V_HELP]="<ABILITY>This skill is not yet documented.";
-		O[V_VERB]="crafting";
+		O[V_VERB]="gathering";
 		O[V_SOND]="sawing.wav";
 		O[V_RSCS]="WOODEN";
 		O[V_CNST]=Boolean.valueOf(false);

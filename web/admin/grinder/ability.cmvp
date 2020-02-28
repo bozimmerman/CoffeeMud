@@ -68,6 +68,17 @@
                     document.RESOURCES.submit();
                 }
         }
+		function AddNewItem()
+		{
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.NEWITEM&REPLACEFIELD=NEWITEM","Skill_Item",strFeatures, false);
+		}
+		function EditItemDone()
+		{
+            document.RESOURCES.action='/grinder/ability.cmvp';
+			document.RESOURCES.FUNCTION.value='';
+			document.RESOURCES.submit();
+		}
         function ReShow()
         {
             document.RESOURCES.FUNCTION.value='';
@@ -104,10 +115,12 @@
 <INPUT TYPE=HIDDEN NAME=NEWABILITYID VALUE="">
 <INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=NEWITEM VALUE="">
 <INPUT TYPE=HIDDEN NAME=ABILITY VALUE="@RequestParameter?ABILITY@">
 <INPUT TYPE=HIDDEN NAME=NEWABILITY VALUE="@RequestParameter?NEWABILITY@">
 <INPUT TYPE=HIDDEN NAME=NEWLANGUAGE VALUE="@RequestParameter?NEWLANGUAGE@">
 <INPUT TYPE=HIDDEN NAME=NEWCRAFTSKILL VALUE="@RequestParameter?NEWCRAFTSKILL@">
+<INPUT TYPE=HIDDEN NAME=NEWGATHERINGSKILL VALUE="@RequestParameter?NEWGATHERINGSKILL@">
 <CENTER>
 @if?CheckReqParm?ABILITY=@
     Select a ability above to view/edit.
@@ -235,6 +248,113 @@
                 </TD>
             </TR>
         @else@
+        @if?AbilityData?ISGATHERSKILL@
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Skill Verb: </FONT><BR>
+                    <INPUT TYPE=HIDDEN NAME=CLASSIFICATION_ACODE VALUE=9>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=10 MAXLENGTH=20 NAME=VERB VALUE="@AbilityData?VERB@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Command Words: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=TRIGSTR VALUE="@AbilityData?TRIGSTR@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Allowed to Bundle: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=CANBUNDLE @AbilityData?CANBUNDLE@>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Sitting OK: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=CANSIT @AbilityData?CANSIT@>
+                </TD>
+            </TR>
+            <TR>
+                <TD><FONT COLOR=YELLOW>Raw Resources / Material Types: </FONT></TD>
+                <TD>
+                    <SELECT NAME=MATLIST MULTIPLE>@AbilityData?MATLIST@</SELECT>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Room Mask: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=250 NAME=TRIGSTR VALUE="@AbilityData?ROOMMASK@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Player Mask: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=250 NAME=TRIGSTR VALUE="@AbilityData?PLAYMASK@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Yield Formula: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=TRIGSTR VALUE="@AbilityData?YIELDFORMULA@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Start Message: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=180 NAME=TRIGSTR VALUE="@AbilityData?MSGSTART@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Found Message: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=180 NAME=TRIGSTR VALUE="@AbilityData?MSGFOUND@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Not Found Msg: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=180 NAME=TRIGSTR VALUE="@AbilityData?MSGNOTFOUND@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Complete Msg: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=180 NAME=TRIGSTR VALUE="@AbilityData?MSGCOMPLETE@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Droppable Items: </FONT><BR>
+                </TD>
+                <TD>
+                	<TABLE BORDER=0>
+                    @AbilityData?ITEMXML@
+                    </TABLE>
+                </TD>
+            </TR>
+            @else@
             <TR>
                 <TD><FONT COLOR=YELLOW>Type: </FONT></TD>
                 <TD>
@@ -435,6 +555,7 @@
                     <INPUT TYPE=TEXT SIZE=40 MAXLENGTH=255 NAME=POSTCASTDAMAGE VALUE="@AbilityData?POSTCASTDAMAGE@">
                 </TD>
             </TR>
+        @endif@
         @endif@
         @endif@
         <TR>

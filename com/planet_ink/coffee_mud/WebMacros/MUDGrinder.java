@@ -1113,7 +1113,12 @@ public class MUDGrinder extends StdWebMacro
 			if(code==Ability.ACODE_LANGUAGE)
 				type="GenLanguage";
 			if(code==Ability.ACODE_COMMON_SKILL)
-				type="GenCraftSkill";
+			{
+				if(A instanceof ItemCollection)
+					type="GenGatheringSkill";
+				else
+					type="GenCraftSkill";
+			}
 			if(A==null)
 			{
 				create=true;
