@@ -14,6 +14,12 @@
             w=window.open("/property.cmvp?ABILITY="+named,
                         "Ability",strFeatures, false);
         }
+		function openUpHelp(named)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/ahelp.cmvp?HELPTOPIC="+named,
+						"Help",strFeatures, false);
+		}
         function AddMember(v)
         {
             ReShow();
@@ -293,7 +299,8 @@
                     <FONT COLOR=YELLOW>Room Mask: </FONT><BR>
                 </TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=250 NAME=TRIGSTR VALUE="@AbilityData?ROOMMASK@">
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=250 NAME=ROOMMASK VALUE="@AbilityData?ROOMMASK@">
+                    <BR><A href="javascript:openUpHelp('ZAPPERMASKS');"><FONT COLOR=PINK><I>zapper-mask help</I></FONT></A>
                 </TD>
             </TR>
             <TR>
@@ -301,7 +308,8 @@
                     <FONT COLOR=YELLOW>Player Mask: </FONT><BR>
                 </TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=250 NAME=TRIGSTR VALUE="@AbilityData?PLAYMASK@">
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=250 NAME=PLAYMASK VALUE="@AbilityData?PLAYMASK@">
+                    <BR><A href="javascript:openUpHelp('ZAPPERMASKS');"><FONT COLOR=PINK><I>zapper-mask help</I></FONT></A>
                 </TD>
             </TR>
             <TR>
@@ -309,7 +317,7 @@
                     <FONT COLOR=YELLOW>Yield Formula: </FONT><BR>
                 </TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=TRIGSTR VALUE="@AbilityData?YIELDFORMULA@">
+                    <INPUT TYPE=TEXT SIZE=30 MAXLENGTH=100 NAME=YIELDFORMULA VALUE="@AbilityData?YIELDFORMULA@">
                 </TD>
             </TR>
             <TR>
@@ -317,7 +325,7 @@
                     <FONT COLOR=YELLOW>Start Message: </FONT><BR>
                 </TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=180 NAME=TRIGSTR VALUE="@AbilityData?MSGSTART@">
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=180 NAME=MSGSTART VALUE="@AbilityData?MSGSTART@">
                 </TD>
             </TR>
             <TR>
@@ -325,7 +333,7 @@
                     <FONT COLOR=YELLOW>Found Message: </FONT><BR>
                 </TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=180 NAME=TRIGSTR VALUE="@AbilityData?MSGFOUND@">
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=180 NAME=MSGFOUND VALUE="@AbilityData?MSGFOUND@">
                 </TD>
             </TR>
             <TR>
@@ -333,7 +341,7 @@
                     <FONT COLOR=YELLOW>Not Found Msg: </FONT><BR>
                 </TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=180 NAME=TRIGSTR VALUE="@AbilityData?MSGNOTFOUND@">
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=180 NAME=MSGNOTFOUND VALUE="@AbilityData?MSGNOTFOUND@">
                 </TD>
             </TR>
             <TR>
@@ -341,7 +349,7 @@
                     <FONT COLOR=YELLOW>Complete Msg: </FONT><BR>
                 </TD>
                 <TD>
-                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=180 NAME=TRIGSTR VALUE="@AbilityData?MSGCOMPLETE@">
+                    <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=180 NAME=MSGCOMPLETE VALUE="@AbilityData?MSGCOMPLETE@">
                 </TD>
             </TR>
             <TR>
@@ -352,6 +360,14 @@
                 	<TABLE BORDER=0>
                     @AbilityData?ITEMXML@
                     </TABLE>
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Cosmetic Only: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=ISCOSMETIC @AbilityData?ISCOSMETIC@>
                 </TD>
             </TR>
             @else@

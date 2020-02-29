@@ -1114,7 +1114,8 @@ public class MUDGrinder extends StdWebMacro
 				type="GenLanguage";
 			if(code==Ability.ACODE_COMMON_SKILL)
 			{
-				if(A instanceof ItemCollection)
+				final String gtype=httpReq.getUrlParameter("NEWGATHERINGSKILL");
+				if((gtype!=null)&&(gtype.length()>0))
 					type="GenGatheringSkill";
 				else
 					type="GenCraftSkill";

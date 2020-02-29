@@ -136,6 +136,8 @@ public class GrinderAbilities
 		A.setStat("CANBUNDLE",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
 		old=httpReq.getUrlParameter("CANSIT");
 		A.setStat("CANSIT",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
+		old=httpReq.getUrlParameter("ISCOSMETIC");
+		A.setStat("ISCOSMETIC",(old==null)?"false":Boolean.toString(old.equalsIgnoreCase("on")));
 		old=httpReq.getUrlParameter("SOUND");
 		A.setStat("SOUND",(old==null)?"":old);
 		old=httpReq.getUrlParameter("VERB");
@@ -186,7 +188,7 @@ public class GrinderAbilities
 		old=httpReq.getUrlParameter("MSGCOMPLETE");
 		A.setStat("MSGCOMPLETE",(old==null)?"":old);
 
-		if(httpReq.isUrlParameter("ITEMXML")
+		if(httpReq.isUrlParameter("ITEMXML_1")
 		&&(A instanceof ItemCollection))
 		{
 			final StringBuilder str=new StringBuilder("");

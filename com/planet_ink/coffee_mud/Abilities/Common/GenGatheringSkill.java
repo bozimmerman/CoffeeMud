@@ -77,7 +77,8 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 	private static final int	V_MSG3			= 16;	// S
 	private static final int	V_MSG4			= 17;	// S
 	private static final int	V_IXML			= 18;	// S
-	private static final int	NUM_VS			= 19;	// S
+	private static final int	V_COSM			= 19;	// B
+	private static final int	NUM_VS			= 20;	// S
 
 	private static final Object[] makeEmpty()
 	{
@@ -101,7 +102,14 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 		O[V_MSG3]="You don't find anything useful to gather here.";
 		O[V_MSG4]="<S-NAME> manage(s) to gather @x1 @x2.";
 		O[V_IXML]="";
+		O[V_COSM]=Boolean.valueOf(false);
 		return O;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_GATHERINGSKILL;
 	}
 
 	@Override
@@ -193,8 +201,8 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 										 "MATLIST",//5S
 										 "VERB",//6S
 										 "SOUND",//7S
-										 "CANSIT",//8S
-										 "CANBUNDLE",//9S
+										 "CANSIT",//8B
+										 "CANBUNDLE",//9B
 										 "ROOMMASK", //10S
 										 "PLAYMASK", //11S
 										 "YIELDFORMULA",//12S
@@ -203,6 +211,7 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 										 "MSGNOTFOUND",//15S
 										 "MSGCOMPLETE",//16S
 										 "ITEMXML",//17S
+										 "ISCOSMETIC",//18B
 										};
 
 	@Override
@@ -274,6 +283,8 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 			return (String) V(ID, V_MSG4);
 		case 17:
 			return (String) V(ID, V_IXML);
+		case 18:
+			return Boolean.toString(((Boolean) V(ID, V_COSM)).booleanValue());
 		default:
 			if(code.equalsIgnoreCase("allxml"))
 				return getAllXML();
@@ -383,6 +394,9 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 			SV(ID, V_IXML, xml);
 			break;
 		}
+		case 18:
+			SV(ID, V_COSM, Boolean.valueOf(CMath.s_bool(val)));
+			break;
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenGatheringSkill"))
 				parseAllXML(val);
@@ -455,7 +469,8 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 				{
 					commonTell(mob,L((String) V(ID, V_MSG2),foundShortName));
 					displayText=L("You are @x1 @x2",(String)V(ID, V_VERB),foundShortName);
-					verb=L("@x1 @x2",(String)V(ID, V_MSG2),foundShortName);
+					final String plural = CMLib.english().makePlural(CMLib.english().removeArticleLead(foundShortName));
+					verb=L("@x1 @x2",(String)V(ID, V_VERB),plural);
 					playSound=(String)V(ID, V_SOND);
 				}
 				else
@@ -489,15 +504,20 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 						msg.setValue(yield);
 						if(mob.location().okMessage(mob, msg))
 						{
-							final String plural = (msg.value()==1) ? foundShortName : CMLib.english().makePlural(foundShortName);
+							final String plural = (msg.value()==1)
+									? CMLib.english().removeArticleLead(foundShortName)
+									: CMLib.english().makePlural(CMLib.english().removeArticleLead(foundShortName));
 							msg.modify(L((String)V(ID, V_MSG4),""+msg.value(),plural));
 							mob.location().send(mob, msg);
-							for(int i=0;i<msg.value();i++)
+							if(!((Boolean) V(ID, V_COSM)).booleanValue())
 							{
-								final Item newFound=(Item)found.copyOf();
-								if(!dropAWinner(mob,newFound))
+								for(int i=0;i<msg.value();i++)
 								{
-									break;
+									final Item newFound=(Item)found.copyOf();
+									if(!dropAWinner(mob,newFound))
+									{
+										break;
+									}
 								}
 							}
 						}
@@ -538,7 +558,10 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 					if(I==null)
 						error="Gathering skill "+ID+" had bad data: "+xml;
 					else
+					{
+						CMLib.threads().deleteAllTicks(I);
 						choices.add(I);
+					}
 				}
 				else
 					error="Gathering skill "+ID+" had bad data: "+xml;
@@ -679,9 +702,10 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 			return false;
 		}
 
-		verb=(String) V(ID, V_RSCS);
+		verb=(String) V(ID, V_VERB);
 		playSound=null;
 		found=null;
+		foundShortName="";
 
 		final String playerMask = (String) V(ID, V_PMSK);
 		if((playerMask.length()>0)
@@ -695,7 +719,7 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final String roomMask = (String) V(ID, V_PMSK);
+		final String roomMask = (String) V(ID, V_RMSK);
 		if((roomMask.length()==0)
 		||(CMLib.masking().maskCheck(roomMask, mob.location(), true)))
 		{
@@ -703,7 +727,10 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 			{
 				final List<Item> choices = getItems();
 				if(choices.size()>0)
+				{
 					found=choices.get(CMLib.dice().roll(1, choices.size(), -1));
+					foundShortName=found.name();
+				}
 			}
 		}
 		final int duration=getDuration(mob,1);

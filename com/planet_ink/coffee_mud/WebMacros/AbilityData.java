@@ -696,7 +696,15 @@ public class AbilityData extends StdWebMacro
 						old=old.equalsIgnoreCase("on")?"true":"false";
 					str.append(old.equalsIgnoreCase("true")?"checked":"");
 				}
-
+				if(parms.containsKey("ISCOSMETIC"))
+				{
+					String old=httpReq.getUrlParameter("ISCOSMETIC");
+					if(old==null)
+						old=A.getStat("ISCOSMETIC");
+					else
+						old=old.equalsIgnoreCase("on")?"true":"false";
+					str.append(old.equalsIgnoreCase("true")?"checked":"");
+				}
 				if(parms.containsKey("MATLIST"))
 				{
 					List<String> list=new ArrayList<String>();
@@ -724,12 +732,20 @@ public class AbilityData extends StdWebMacro
 					int which=1;
 					final String httpKeyName="ITEMXML";
 					String oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
-					while(oldValue!=null)
+					if(oldValue == null)
 					{
-						if((!oldValue.equalsIgnoreCase("DELETE"))&&(oldValue.length()>0))
-							oldValues.add(oldValue);
-						which++;
-						oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
+						for(final Item I : itemList)
+							oldValues.add(RoomData.getItemCode(itemList, I));
+					}
+					else
+					{
+						while(oldValue!=null)
+						{
+							if((!oldValue.equalsIgnoreCase("DELETE"))&&(oldValue.length()>0))
+								oldValues.add(oldValue);
+							which++;
+							oldValue=httpReq.getUrlParameter(httpKeyName+"_"+which);
+						}
 					}
 					String newKey = httpReq.getUrlParameter("NEWITEM");
 					if(newKey != null)

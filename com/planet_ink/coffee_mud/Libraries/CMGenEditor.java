@@ -8743,6 +8743,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Complete Msg","MSGCOMPLETE",false);
 			if(me instanceof ItemCollection)
 				genItemXML(mob,(ItemCollection)me,"ITEMXML",++showNumber,showFlag,"Droppable Items");
+			promptStatBool(mob,me,null,++showNumber,showFlag,"Is Cosmetic Only","ISCOSMETIC");
 			promptStatBool(mob,me,null,++showNumber,showFlag,"Can sit","CANSIT");
 			promptStatBool(mob,me,null,++showNumber,showFlag,"Can bundle","CANBUNDLE");
 			promptStatStr(mob,me,null,++showNumber,showFlag,"MSP file","SOUND",false);

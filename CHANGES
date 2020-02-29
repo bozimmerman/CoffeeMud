@@ -16,6 +16,7 @@
  15. New climate type: VOID, for disabling weather locally
  16. New domain types: indoor seaport, cave seaport
  17. New locales: Void, CaveSeaPort, WoodSeaPort
+ 18. New generic skill type: GenGatheringSkill, with CL and MudGrinder support
  
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.
