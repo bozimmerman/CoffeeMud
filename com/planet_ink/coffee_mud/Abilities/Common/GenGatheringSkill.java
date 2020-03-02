@@ -212,6 +212,9 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 										 "MSGCOMPLETE",//16S
 										 "ITEMXML",//17S
 										 "ISCOSMETIC",//18B
+										 "MINDUR",//19I
+										 "BASEDUR",//20I
+										 "FINDTICK",//21I
 										};
 
 	@Override
@@ -285,6 +288,12 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 			return (String) V(ID, V_IXML);
 		case 18:
 			return Boolean.toString(((Boolean) V(ID, V_COSM)).booleanValue());
+		case 19:
+			return ((Integer)V(ID, V_MDUR)).toString();
+		case 20:
+			return ((Integer)V(ID, V_BDUR)).toString();
+		case 21:
+			return ((Integer)V(ID, V_FDUR)).toString();
 		default:
 			if(code.equalsIgnoreCase("allxml"))
 				return getAllXML();
@@ -396,6 +405,15 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 		}
 		case 18:
 			SV(ID, V_COSM, Boolean.valueOf(CMath.s_bool(val)));
+			break;
+		case 19:
+			SV(ID, V_MDUR, Integer.valueOf(CMath.s_int(val)));
+			break;
+		case 20:
+			SV(ID, V_BDUR, Integer.valueOf(CMath.s_int(val)));
+			break;
+		case 21:
+			SV(ID, V_FDUR, Integer.valueOf(CMath.s_int(val)));
 			break;
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenGatheringSkill"))

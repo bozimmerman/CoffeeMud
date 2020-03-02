@@ -188,6 +188,18 @@ public class GrinderAbilities
 		old=httpReq.getUrlParameter("MSGCOMPLETE");
 		A.setStat("MSGCOMPLETE",(old==null)?"":old);
 
+		{
+			final int minDur = CMath.s_int(httpReq.getUrlParameter("MINDUR"));
+			final int baseDur = CMath.s_int(httpReq.getUrlParameter("BASEDUR"));
+			final int findTick = CMath.s_int(httpReq.getUrlParameter("FINDTICK"));
+			if((minDur > 0)&& (minDur < baseDur) && (findTick <= minDur))
+			{
+				A.setStat("MINDUR", ""+minDur);
+				A.setStat("BASEDUR", ""+baseDur);
+				A.setStat("FINDTICK", ""+findTick);
+			}
+		}
+
 		if(httpReq.isUrlParameter("ITEMXML_1")
 		&&(A instanceof ItemCollection))
 		{

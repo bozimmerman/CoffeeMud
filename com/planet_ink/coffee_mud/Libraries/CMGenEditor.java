@@ -8743,6 +8743,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Complete Msg","MSGCOMPLETE",false);
 			if(me instanceof ItemCollection)
 				genItemXML(mob,(ItemCollection)me,"ITEMXML",++showNumber,showFlag,"Droppable Items");
+			promptStatInt(mob,me,++showNumber, showFlag,"Min. Ticks", "MINDUR");
+			promptStatInt(mob,me,++showNumber, showFlag,"Base Ticks", "BASEDUR");
+			promptStatInt(mob,me,++showNumber, showFlag,"Found @ Tick", "FINDTICK");
 			promptStatBool(mob,me,null,++showNumber,showFlag,"Is Cosmetic Only","ISCOSMETIC");
 			promptStatBool(mob,me,null,++showNumber,showFlag,"Can sit","CANSIT");
 			promptStatBool(mob,me,null,++showNumber,showFlag,"Can bundle","CANBUNDLE");

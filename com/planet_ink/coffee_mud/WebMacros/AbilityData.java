@@ -847,7 +847,8 @@ public class AbilityData extends StdWebMacro
 				}
 				final String[] NORMAL_PARMS= {
 					"POSTCASTDAMAGE", "ROOMMASK", "PLAYMASK", "YIELDFORMULA",
-					"MSGSTART", "MSGFOUND", "MSGNOTFOUND", "MSGCOMPLETE"
+					"MSGSTART", "MSGFOUND", "MSGNOTFOUND", "MSGCOMPLETE",
+					"MINDUR", "BASEDUR", "FINDTICK"
 				};
 				for(final String normalParm : NORMAL_PARMS)
 				{

@@ -370,6 +370,23 @@
                     <INPUT TYPE=CHECKBOX NAME=ISCOSMETIC @AbilityData?ISCOSMETIC@>
                 </TD>
             </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Ticks: </FONT><BR>
+                </TD>
+                <TD>
+                    Min: <INPUT TYPE=TEXT SIZE=5 MAXLENGTH=10 NAME=MINDUR VALUE="@AbilityData?MINDUR@">&nbsp;&nbsp;
+                    &nbsp;Base: <INPUT TYPE=TEXT SIZE=5 MAXLENGTH=10 NAME=BASEDUR VALUE="@AbilityData?BASEDUR@">
+                </TD>
+            </TR>
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Found @ Tick: </FONT><BR>
+                </TD>
+                <TD>
+                    <INPUT TYPE=TEXT SIZE=5 MAXLENGTH=10 NAME=FINDTICK VALUE="@AbilityData?FINDTICK@">
+                </TD>
+            </TR>
             @else@
             <TR>
                 <TD><FONT COLOR=YELLOW>Type: </FONT></TD>
