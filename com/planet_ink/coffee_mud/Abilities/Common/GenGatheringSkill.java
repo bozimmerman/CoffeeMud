@@ -407,13 +407,16 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 			SV(ID, V_COSM, Boolean.valueOf(CMath.s_bool(val)));
 			break;
 		case 19:
-			SV(ID, V_MDUR, Integer.valueOf(CMath.s_int(val)));
+			if(CMath.s_int(val)>0)
+				SV(ID, V_MDUR, Integer.valueOf(CMath.s_int(val)));
 			break;
 		case 20:
-			SV(ID, V_BDUR, Integer.valueOf(CMath.s_int(val)));
+			if(CMath.s_int(val)>=((Integer)V(ID, V_MDUR)).intValue())
+				SV(ID, V_BDUR, Integer.valueOf(CMath.s_int(val)));
 			break;
 		case 21:
-			SV(ID, V_FDUR, Integer.valueOf(CMath.s_int(val)));
+			if(CMath.s_int(val)<=((Integer)V(ID, V_MDUR)).intValue())
+				SV(ID, V_FDUR, Integer.valueOf(CMath.s_int(val)));
 			break;
 		default:
 			if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenGatheringSkill"))
