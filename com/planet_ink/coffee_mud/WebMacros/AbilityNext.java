@@ -72,10 +72,23 @@ public class AbilityNext extends StdWebMacro
 		}
 
 		String lastID="";
+		final int[] normalAcodes = {
+			Ability.ACODE_CHANT,
+			Ability.ACODE_COMMON_SKILL,
+			Ability.ACODE_LANGUAGE,
+			Ability.ACODE_PRAYER,
+			Ability.ACODE_SKILL,
+			Ability.ACODE_SONG,
+			Ability.ACODE_SPELL,
+			Ability.ACODE_SUPERPOWER,
+			Ability.ACODE_TECH,
+			Ability.ACODE_THIEF_SKILL
+		};
 		final String className=httpReq.getUrlParameter("CLASS");
 		final boolean genericOnly =parms.containsKey("GENERIC");
 		final boolean parmsEditable=parms.containsKey("PARMSEDITABLE");
 		final boolean unqualifiedOK=parms.containsKey("UNQUALIFIEDOK");
+		final boolean unqualifiedNormalOK=parms.containsKey("UNQUALIFIEDNORMALOK");
 		final String levelName=httpReq.getUrlParameter("LEVEL");
 		final boolean notFlag =parms.containsKey("NOT");
 		final boolean allFlag =parms.containsKey("ALL");
@@ -136,7 +149,10 @@ public class AbilityNext extends StdWebMacro
 			if((className!=null)&&(className.length()>0))
 			{
 				final int level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
-				if((level<0)&&(!unqualifiedOK))
+				if((level<0)
+				&&(!unqualifiedOK)
+				&&((!unqualifiedNormalOK)
+					||(!CMParms.contains(normalAcodes, A.classificationCode()&Ability.ALL_ACODES))))
 					okToShow=false;
 				else
 				if(CMLib.ableMapper().getSecretSkill(className,false,A.ID()))
@@ -154,7 +170,10 @@ public class AbilityNext extends StdWebMacro
 			if(!allFlag)
 			{
 				final int level=CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID());
-				if((level<0)&&(!unqualifiedOK))
+				if((level<0)
+				&&(!unqualifiedOK)
+				&&((!unqualifiedNormalOK)
+					||(!CMParms.contains(normalAcodes, A.classificationCode()&Ability.ALL_ACODES))))
 					okToShow=false;
 				else
 				if(CMLib.ableMapper().getAllSecretSkill(A.ID()))

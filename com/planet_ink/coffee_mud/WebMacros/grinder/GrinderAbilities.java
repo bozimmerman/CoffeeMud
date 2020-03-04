@@ -192,7 +192,7 @@ public class GrinderAbilities
 			final int minDur = CMath.s_int(httpReq.getUrlParameter("MINDUR"));
 			final int baseDur = CMath.s_int(httpReq.getUrlParameter("BASEDUR"));
 			final int findTick = CMath.s_int(httpReq.getUrlParameter("FINDTICK"));
-			if((minDur > 0)&& (minDur < baseDur) && (findTick <= minDur))
+			if((minDur > 0)&& (minDur <= baseDur) && (findTick <= minDur))
 			{
 				A.setStat("MINDUR", ""+minDur);
 				A.setStat("BASEDUR", ""+baseDur);

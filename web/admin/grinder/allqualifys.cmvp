@@ -78,7 +78,7 @@
                 <SELECT NAME=NEW1>
                     @AbilityNext?RESET@
                     @loop@
-                        @AbilityNext@
+                        @AbilityNext?UNQUALIFIEDNORMALOK@
                         <OPTION VALUE="@AbilityID@">@AbilityID@
                     @back@
                 </SELECT>
@@ -112,7 +112,7 @@
                 <SELECT NAME=NEW2>
                     @AbilityNext?RESET@
                     @loop@
-                        @AbilityNext@
+                        @AbilityNext?UNQUALIFIEDNORMALOK@
                         <OPTION VALUE="@AbilityID@">@AbilityID@
                     @back@
                 </SELECT>
