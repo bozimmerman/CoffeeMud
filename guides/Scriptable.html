@@ -3905,7 +3905,12 @@ optionally followed by a level integer, which will change the class
 level of that current class. The level parm may then be followed by
 another character class id, which will change the players current class
 again, and may be followed again by a level integer to change the new
-current character class level, and so on.</p>
+current character class level, and so on.</p><p>This
+command only works when the total class levels is equal to the players
+overall level. &nbsp;Otherwise, the engine will engage in an automatic
+correction. &nbsp;Keep this in mind when changing class levels.
+&nbsp;Any positive levels *added* to a class must first be taken away
+from some other class so that everything ends up equal.</p>
 <p>EXAMPLES:</p>
 <pre>mpplayerclass $n Fighter<br />mpplayerclass $n Thief 20<br />mpplayerclass guardtwo Fighter 10<br />mpplayerclass $n Thief 20 Fighter 10 Mage 5<br /></pre>
 <h3><a name="mppossess">mppossess</a></h3>
