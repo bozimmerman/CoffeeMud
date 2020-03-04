@@ -11123,14 +11123,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((newTarget!=null)&&(newTarget instanceof MOB))
 				{
-					final Vector<String> V=CMParms.parse(tt[2]);
+					final List<String> V=CMParms.parse(tt[2]);
 					for(int i=0;i<V.size();i++)
 					{
-						if(CMath.isInteger(V.elementAt(i).trim()))
-							((MOB)newTarget).baseCharStats().setClassLevel(((MOB)newTarget).baseCharStats().getCurrentClass(),CMath.s_int(V.elementAt(i).trim()));
+						if(CMath.isInteger(V.get(i).trim()))
+							((MOB)newTarget).baseCharStats().setClassLevel(((MOB)newTarget).baseCharStats().getCurrentClass(),CMath.s_int(V.get(i).trim()));
 						else
 						{
-							final CharClass C=CMClass.findCharClass(V.elementAt(i));
+							final CharClass C=CMClass.findCharClass(V.get(i));
 							if((C!=null)&&(C.availabilityCode()!=0))
 								((MOB)newTarget).baseCharStats().setCurrentClass(C);
 						}
