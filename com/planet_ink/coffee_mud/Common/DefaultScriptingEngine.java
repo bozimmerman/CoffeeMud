@@ -10647,7 +10647,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				Ability A=null;
 				if(cast!=null)
 					A=findAbility(cast);
-				if((newTarget!=null)
+				if(((newTarget!=null)||(tt[2].length()==0))
 				&&(A!=null))
 				{
 					A.setProficiency(100);
