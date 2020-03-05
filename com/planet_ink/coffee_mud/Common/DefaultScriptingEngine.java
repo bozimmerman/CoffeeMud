@@ -2268,6 +2268,71 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return null;
 	}
 
+	protected List<Ability> getQuestAbilities()
+	{
+		final List<Ability> able=new ArrayList<Ability>();
+		final Quest Q=defaultQuest();
+		if(Q!=null)
+		{
+			final Ability A=(Ability)Q.getDesignatedObject("ABILITY");
+			if(A!=null)
+				able.add(A);
+			@SuppressWarnings("unchecked")
+			final
+			List<Ability> grp=(List<Ability>)Q.getDesignatedObject("ABILITYGROUP");
+			if(grp != null)
+				able.addAll(grp);
+			final Object O=Q.getDesignatedObject("TOOL");
+			if(O instanceof Ability)
+				able.add((Ability)O);
+			@SuppressWarnings("unchecked")
+			final
+			List<Object> grp2=(List<Object>)Q.getDesignatedObject("TOOLGROUP");
+			if(grp2 != null)
+			{
+				for(final Object O1 : grp2)
+				{
+					if(O1 instanceof Ability)
+						able.add((Ability)O1);
+				}
+			}
+		}
+		return able;
+	}
+
+	protected Ability getAbility(final String arg)
+	{
+		if((arg==null)||(arg.length()==0))
+			return null;
+		Ability A;
+		A=CMClass.getAbility(arg);
+		if(A!=null)
+			return A;
+		for(final Ability A1 : getQuestAbilities())
+		{
+			if(A1.ID().equalsIgnoreCase(arg))
+				return (Ability)A1.copyOf();
+		}
+		return null;
+	}
+
+	protected Ability findAbility(final String arg)
+	{
+		if((arg==null)||(arg.length()==0))
+			return null;
+		Ability A;
+		A=CMClass.findAbility(arg);
+		if(A!=null)
+			return A;
+		final List<Ability> ableV=getQuestAbilities();
+		A=(Ability)CMLib.english().fetchEnvironmental(ableV,arg,true);
+		if(A==null)
+			A=(Ability)CMLib.english().fetchEnvironmental(ableV,arg,false);
+		if(A!=null)
+			return (Ability)A.copyOf();
+		return null;
+	}
+
 	@Override
 	public void setVar(final String baseName, String key, String val)
 	{
@@ -3619,7 +3684,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						returnable=false;
 					else
 					{
-						final Ability A=CMClass.findAbility(arg2);
+						final Ability A=findAbility(arg2);
 						if(A!=null)
 							arg2=A.ID();
 						returnable=(P.fetchEffect(arg2)!=null);
@@ -4474,7 +4539,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
 					Ability A=M.fetchAbility(arg2);
 					if(A==null)
-						A=CMClass.getAbility(arg2);
+						A=getAbility(arg2);
 					if(A==null)
 					{
 						returnable=false;
@@ -7274,7 +7339,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(funcParms,1));
 					Ability A=M.fetchAbility(arg2);
 					if(A==null)
-						A=CMClass.getAbility(arg2);
+						A=getAbility(arg2);
 					if(A!=null)
 					{
 						final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,1));
@@ -8914,7 +8979,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				else
 				{
-					final Ability A2=CMClass.findAbility(which);
+					final Ability A2=findAbility(which);
 					if(A2!=null)
 						which=A2.ID();
 					final Ability A=newTarget.fetchEffect(which);
@@ -10581,7 +10646,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Physical newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				Ability A=null;
 				if(cast!=null)
-					A=CMClass.findAbility(cast);
+					A=findAbility(cast);
 				if((newTarget!=null)
 				&&(A!=null))
 				{
@@ -10606,7 +10671,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String args=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
 				Ability A=null;
 				if(cast!=null)
-					A=CMClass.findAbility(cast);
+					A=findAbility(cast);
 				if((newTarget!=null)
 				&&(A!=null))
 				{
@@ -10632,7 +10697,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
 				Ability A=null;
 				if(cast!=null)
-					A=CMClass.findAbility(cast);
+					A=findAbility(cast);
 				if((newTarget!=null)&&(A!=null))
 				{
 					if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
@@ -10660,7 +10725,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				final String language=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
 				final Environmental newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
-				final Ability A=CMClass.getAbility(language);
+				final Ability A=getAbility(language);
 				if((A instanceof Language)&&(newTarget instanceof MOB))
 				{
 					((Language)A).setProficiency(100);
@@ -12376,7 +12441,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(newTarget instanceof MOB)
 						A=((MOB)newTarget).fetchAbility(cast);
 					if(A==null)
-						A=CMClass.getAbility(cast);
+						A=getAbility(cast);
 					if(A==null)
 					{
 						final ExpertiseLibrary.ExpertiseDefinition D=CMLib.expertises().findDefinition(cast,false);

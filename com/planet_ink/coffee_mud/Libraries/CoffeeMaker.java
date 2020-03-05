@@ -177,6 +177,40 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
+	public String addAbilitiesFromXml(final String xml, final List<Ability> ables)
+	{
+		final List<XMLLibrary.XMLTag> xmlV = CMLib.xml().parseAllXML(xml);
+		while(xmlV.size()>0)
+		{
+			final XMLLibrary.XMLTag ablk=xmlV.remove(0);
+			if(ablk.tag().equalsIgnoreCase("ABILITY"))
+			{
+				final String type=ablk.getParmValue( "TYPE");
+				if(type!=null)
+				{
+					Ability A=CMClass.getAbility(type);
+					if(A!=null)
+					{
+						A=(Ability)A.copyOf();
+						final String ID=ablk.getParmValue( "ID");
+						final boolean exists=CMClass.getAbility(ID)!=null;
+						A.setStat("ALLXML", ablk.value());
+						ables.add(A);
+					}
+					else
+						return unpackErr("Custom","?type?"+ablk.tag(),ablk);
+				}
+				else
+					return unpackErr("Custom","?type?"+ablk.tag(),ablk);
+			}
+			else
+			if(ablk.contents()!=null)
+				xmlV.addAll(ablk.contents());
+		}
+		return "";
+	}
+
+	@Override
 	public String getPropertiesStr(final Environmental E, final boolean fromTop)
 	{
 		if(E==null)

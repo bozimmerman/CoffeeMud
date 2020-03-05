@@ -215,6 +215,9 @@ public class GenLanguage extends StdLanguage
 		case 5:
 			return (String) V(ID, V_HELP);
 		default:
+			if (code.equalsIgnoreCase("javaclass"))
+				return "GenLanguage";
+			else
 			if(code.equalsIgnoreCase("allxml"))
 				return getAllXML();
 			break;

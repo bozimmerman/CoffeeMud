@@ -17,6 +17,7 @@
  16. New domain types: indoor seaport, cave seaport
  17. New locales: Void, CaveSeaPort, WoodSeaPort
  18. New generic skill type: GenGatheringSkill, with CL and MudGrinder support
+ 19. Quest engine now supports saved generic abilities, ability groups, etc
  
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.

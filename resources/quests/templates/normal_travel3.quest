@@ -1,0 +1,285 @@
+#!QUESTMAKER_START_SCRIPT Normal Travel #3
+#The player must travel to a particular location on your map at the behest
+#of an existing announcer mob, and then use a skill that generates a 
+#message.
+#
+#!QUESTMAKER_PAGE Quest Name/Criteria
+#Enter the unique name and player criteria for your new quest.
+#
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_travel_3
+#
+#Quest Name:
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=Normal Travel #3
+#
+#Quest-Player Criterium:
+#You may leave this entry blank, or enter a Zapper Mask to describe what
+#kinds of players may participate in this quest.  You can use this to set
+#race, level, or other requirements.
+#$QUEST_CRITERIA=$ZAPPERMASK
+#
+#!QUESTMAKER_PAGE Specify the Announcer
+#The Announcer is the mob who will be announcing the quest initially. This must
+#be an existing mob in your world.  They will announce the quest to players
+#once, and then mark whether the player says they accept the quest.
+#
+#Announcer Area/Room: 
+#Specify below the name of the area that your Announcer mob will be located
+#in and/or the room in which the mob can be found.  You may leave both blank
+#to force the quest manager to find the mob somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.
+#Use double-quotes around multi-word areas and room ids/names.
+#  
+#Announcer Area:
+#$ANNOUNCER_AREA=($AREA)
+#Announcer Room ID:
+#$ANNOUNCER_ROOM=($ROOMID)
+#
+#Announcer mob name: 
+#Specify the name of the mob who will act as the Announcer mob.  
+#Use double-quotes around multi-word names.
+#If you specified an area or room above, then the mob must be located there.
+#You may optionally have the quest manager select a 'random' mob by entering
+#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#ZAPPERMASKS for information on zapper mask syntax).
+#Remember, if the quest manager can not find your mob, the quest will not
+#be started.
+#$ANNOUNCER_NAME=$NAME
+#
+#!QUESTMAKER_PAGE Travel destination
+#Here's where you specify the destination that the player 
+#must arrive at to complete the quest, and what they must do.
+#
+#Travel Destination: 
+#Specify below the name of the area and room to which the player must travel.
+#You may leave the area blank
+#to force the quest manager to find the room somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.
+#Use double-quotes around multi-word areas and room ids/names.
+#  
+#Destination Area:
+#$DESTINATION_AREA=($AREA)
+#Destination Room ID:
+#$DESTINATION_ROOM=$ROOMID
+#
+#Destination Skill:
+#The ability ID of a skill which must be used in the destination room, or empty for none.
+#$DESTINATION_SKILL=($ABILITY)=
+#
+#Force Skill:
+#Whether the Destination Skill is forcibly used by the player when they enter the room,
+#even if they don't actually HAVE the skill.
+#$DESTINATION_FORCE=CHOOSE=NO,YES
+#
+#Destination Message:
+#A message seen by the player in the destination room.  This must be a message which everyone
+#can see.  Use empty for no required message.
+#$DESTINATION_MSG=($STRING)=
+#
+#!QUESTMAKER_PAGE Announcer greetings/instructions
+#Here's where you specify any special text said by the announcer regarding
+#your quest
+#
+#Announcer greeting: 
+#Specify what the announcer says to people when they enter the room about their
+#quest.
+#$QUEST_NOTIFYSTRING=$LONG_STRING=I need someone to go somewhere.
+#
+#Announcer instructions: 
+#Specify what the announcer says to people who have accepted the quest.  This 
+#should give some details about what is to be done.  You can leave this blank
+#if you like.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Go to that one place.
+#
+#!QUESTMAKER_PAGE Quest Completion
+#Select some rewards for completing the quest:
+#
+#Reward items: 
+#Specify zero or more items to choose from as a reward 
+#$REWARD_ITEMS=$ITEMXML_ZEROORMORE
+#
+#Quest Point?
+#$QUEST_POINT=$CHOOSE=YES,NO
+#Amount of money (an amount, or leave blank):
+#$GOLD=($EXPRESSION)
+#Amount of experience points, blank for none, or a number% for percent of exp to next level:
+#$EXP=($STRING)=10%
+#
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
+#Select whether a player may complete this quest multiple times,
+#or 'prev' to require a previous quest, if multiple found.
+#$MULTIPLE=$CHOOSE=YES,NO,PREV
+#
+#Travel response Type: 
+#Specify what sort of emote occurs after the player successfully travels
+#to the designated room.
+#$TRAVEL_RESPONSE_TYPE=$CHOOSE=MPECHOAT $N,MPECHO,QUESTCHAT,SAY,YELL
+#Travel response Text: 
+#Specify what is emoted in the same room after the player successfully travels 
+#to the designated room.  You may leave this blank if you like.
+#$TRAVEL_RESPONSE=($LONG_STRING)=Your journey is complete.
+#
+#!QUESTMAKER_END_SCRIPT Normal Travel #3
+
+set name $QUEST_ID
+set display $QUEST_NAME
+set author $#AUTHOR
+
+set wait 1
+set interval 1
+set duration 0
+quiet
+
+set area $ANNOUNCER_AREA
+set room $ANNOUNCER_ROOM
+set mobgroup
+set mob reselect  $ANNOUNCER_NAME
+give stat keyplayer true
+give script LOAD=$QUEST_ID_announcer.script
+
+set mobgroup
+set mob
+set area $DESTINATION_AREA
+set room $DESTINATION_ROOM
+set wherehappened ROOM
+
+import abilities $QUEST_ID_destinationskill.xml
+set abilitygroup loadedabilities
+set ability ANY
+
+<?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_destinationskill.xml</NAME><DATA><ITEMS>$DESTINATION_SKILL_XML</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_announcer.script</NAME>
+<DATA>
+ONCE_PROG 100
+	if EVAL('$QUEST_ANNOUNCECHANNEL' != '')
+		$QUEST_ANNOUNCECHANNEL $QUEST_NOTIFYSTRING -- Come see me for more information.
+	endif
+~
+
+GREET_PROG 100
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			sayto "$n" $QUEST_NOTIFYSTRING -- just say '^yi accept^?' or '^yi accept $QUEST_NAME^?' to take on this quest.
+		endif
+	endif
+~
+
+SPEECH_PROG p i accept $QUEST_NAME
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			mpqset * STATISTICS ACCEPTED
+			sayto "$n" $QUEST_INSTRUCTIONSSTRING
+			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+		endif
+	endif
+~
+
+SPEECH_PROG p i accept
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
+		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			mpqset * STATISTICS ACCEPTED
+			sayto "$n" $QUEST_INSTRUCTIONSSTRING
+			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+		endif
+	endif
+~
+</DATA></FILE>
+<FILE><NAME>$QUEST_ID_playertrack.script</NAME>
+<DATA>
+ONCE_PROG 100
+	mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+	if var($i MYROOM = '')
+		mpsetvar $i MYROOM '$%QVAR(* WHEREHAPPENED_ROOMID)%'
+	endif
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	ENDIF
+~
+
+RAND_PROG 25
+	IF !isquestmobalive(1 '$QUEST_ID')
+		MPENDQUEST '$QUEST_ID'
+	else
+		if QVAR(* REMAINING == '')
+			MPENDQUEST $i
+		else
+			mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+		endif
+	ENDIF
+~
+
+QUEST_TIME_PROG * -1
+	MPECHOAT $i The quest "$QUEST_NAME" has ended.
+~
+
+QUEST_TIME_PROG * 1
+	MPECHOAT $i The quest "$QUEST_NAME" has 1 minute remaining.
+~
+
+ENTRY_PROG 100
+	if EVAL($n == $i) AND INROOM($i == '$<$i MYROOM>')
+		MPCALLFUNC SUCCESS
+		IF VAR($i $QUEST_ID_REWARDED == '') AND EVAL('$DESTINATION_FORCE' == 'YES') AND EVAL('$DESTINATION_SKILL' != '')
+			MPALARM 1 MPCAST $DESTINATION_SKILL
+		ENDIF
+	endif
+~
+
+CAST_PROG $DESTINATION_SKILL
+	if EVAL($n == $i) AND EVAL('$DESTINATION_SKILL' != '') AND INROOM($i == '$<$i MYROOM>')
+		MPCALLFUNC SUCCESS
+	ENDIF
+~
+
+ACT_PROG '$DESTINATION_MSG'
+	if EVAL('$DESTINATION_MSG' != '') AND INROOM($i == '$<$i MYROOM>')
+		MPCALLFUNC SUCCESS
+	ENDIF
+~
+
+FUNCTION_PROG SUCCESS
+	if EVAL($n == $i) AND INROOM($i == '$<$i MYROOM>') AND VAR($i $QUEST_ID_REWARDED == '')
+		IF EVAL('$DESTINATION_SKILL' != '') AND EVAL('$<$QUEST_ID_USEDSKILL>' != 'YES')
+			RETURN
+		ENDIF
+		IF EVAL('$DESTINATION_MSG' != '') AND EVAL('$<$QUEST_ID_SAWMSG>' != 'YES')
+			RETURN
+		ENDIF
+		mpsetvar $n $QUEST_ID_REWARDED 'REWARDED'
+		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($i *)
+			# do nothing
+		else
+			if EVAL('$EXP' != '')
+				mpexp $i $EXP
+			endif
+			if EVAL('$FACTION' != '')
+				mpfaction $i $FACTION +$NUMFACTION
+			endif
+			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
+				mpoloadroom QuestPoint
+				mpforce $i GET "a quest point"
+			endif
+			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+				mpoloadroom $GOLD
+				mpforce $i GET $GOLD
+			endif
+			mpquestwin $i *
+			$TRAVEL_RESPONSE_TYPE $TRAVEL_RESPONSE
+			mpendquest $i
+			mpqset * STATISTICS SUCCESS
+			IF EVAL('$MULTIPLE' == 'PREV')
+				mptransfer $i $i
+			ENDIF
+		endif
+	endif
+~
+</DATA></FILE>

@@ -1069,6 +1069,9 @@ public class GenAbility extends StdAbility
 		case 34:
 			return (String) V(ID,V_MOKT);
 		default:
+			if (code.equalsIgnoreCase("javaclass"))
+				return "GenAbility";
+			else
 			if (code.equalsIgnoreCase("allxml"))
 				return getAllXML();
 			else

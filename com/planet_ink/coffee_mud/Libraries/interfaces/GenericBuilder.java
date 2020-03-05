@@ -157,6 +157,7 @@ public interface GenericBuilder extends CMLibrary
 	public int envFlags(Environmental E);
 	public void setEnvFlags(Environmental E, int f);
 	public String getGenAbilityXML(Ability A);
+	public String addAbilitiesFromXml(final String xml, final List<Ability> ables);
 	public String getPropertiesStr(Environmental E, boolean fromTop);
 	public String getGenScripts(PhysicalAgent E, boolean includeVars);
 	public String getGenMobInventory(MOB M);

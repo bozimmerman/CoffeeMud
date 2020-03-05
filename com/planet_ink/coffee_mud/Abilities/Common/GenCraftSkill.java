@@ -220,16 +220,16 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] CODES={"CLASS",//0
 										 "TEXT",//1
 										 "NAME",//2S
-										 "HELP",//27I
+										 "HELP",//3I
 										 "TRIGSTR",//4S[]
-										 "FILENAME",//2S
-										 "MATLIST",//2S
-										 "VERB",//2S
-										 "CANMEND",//2S
-										 "CANREFIT",//2S
-										 "CANBUNDLE",//2S
-										 "SOUND",//2S
-										 "CANSIT",//2S
+										 "FILENAME",//5S
+										 "MATLIST",//6S
+										 "VERB",//7S
+										 "CANMEND",//8S
+										 "CANREFIT",//9S
+										 "CANBUNDLE",//10S
+										 "SOUND",//11S
+										 "CANSIT",//12S
 										};
 
 	@Override
@@ -292,6 +292,9 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		case 12:
 			return Boolean.toString(((Boolean) V(ID, V_CNST)).booleanValue());
 		default:
+			if (code.equalsIgnoreCase("javaclass"))
+				return "GenCraftSkill";
+			else
 			if(code.equalsIgnoreCase("allxml"))
 				return getAllXML();
 			break;

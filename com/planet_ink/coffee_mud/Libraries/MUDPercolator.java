@@ -81,7 +81,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		PROPERTIES,
 		EFFECTS,
 		BEHAVIORS,
-		RACES
+		RACES,
+		SHOP,
+		SHOPS,
+		SHOPITEMS
 	}
 
 	private final SHashtable<String,Class<LayoutManager>> mgrs = new SHashtable<String,Class<LayoutManager>>();
@@ -111,6 +114,18 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			return (obj != null)
 				&& (!obj.isPlayer())
 				&&((obj.amFollowing()==null)||(!obj.amUltimatelyFollowing().isPlayer()));
+		}
+
+	};
+
+	private static final Filterer<Environmental> shopFilter = new Filterer<Environmental>()
+	{
+
+		@Override
+		public boolean passesFilter(final Environmental obj)
+		{
+			return (obj != null)
+				&& CMLib.coffeeShops().getShopKeeper(obj) != null;
 		}
 
 	};
@@ -4684,6 +4699,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					//$FALL-THROUGH$
 				case ROOMS:
 					{
+						if((from.size()==0)
+						&&(E instanceof Area))
+							from.add(E);
 						if(from.size()==0)
 							from.addAll(new XVector<Room>(CMLib.map().rooms()));
 						else
@@ -4720,7 +4738,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							if(R==null)
 								throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
 							oldFrom=new XVector<Object>(R);
-
 						}
 						else
 							oldFrom=flattenMQLObjectList(from);
@@ -4785,6 +4802,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if((f.equals("PLAYERS"))
 					||((from.size()>0)&&(f.equals("PLAYER"))))
 					{
+						if((from.size()==0)
+						&&((E instanceof Area)||(E instanceof Room)||(E instanceof MOB)))
+							from.add(E);
 						if(from.size()==0)
 						{
 							final Enumeration<Session> sesss = new IteratorEnumeration<Session>(CMLib.sessions().allIterableAllHosts().iterator());
@@ -4853,6 +4873,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					//$FALL-THROUGH$
 				case MOBS:
 					{
+						if((from.size()==0)
+						&&((E instanceof Area)||(E instanceof Room)||(E instanceof MOB)))
+							from.add(E);
 						if(from.size()==0)
 							from.addAll(new XVector<MOB>(CMLib.map().worldMobs()));
 						else
@@ -4918,6 +4941,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					//$FALL-THROUGH$
 				case NPCS:
 					{
+						if((from.size()==0)
+						&&((E instanceof Area)||(E instanceof Room)||(E instanceof MOB)))
+							from.add(E);
 						if(from.size()==0)
 							from.addAll(new XVector<MOB>(new FilteredEnumeration<MOB>(CMLib.map().worldMobs(),npcFilter)));
 						else
@@ -4971,6 +4997,56 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						}
 					}
 					break;
+				case SHOP:
+					if(from.size()==0)
+					{
+						final Environmental oE=((E instanceof Environmental) && (CMLib.coffeeShops().getShopKeeper((Environmental)E) != null))
+								? (Environmental)E : null;
+						if(oE==null)
+							throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+						else
+						if(!from.contains(oE))
+							from.add(oE);
+						break;
+					}
+					//$FALL-THROUGH$
+				case SHOPS:
+					{
+						final ShoppingLibrary shopper=CMLib.coffeeShops();
+						if((from.size()==0)
+						&&((E instanceof Area)||(E instanceof Room)||(E instanceof MOB)||(E instanceof Item)))
+							from.add(E);
+						if(from.size()==0)
+							from.addAll(new XVector<Room>(CMLib.map().rooms()));
+						final List<Object> oldFrom=flattenMQLObjectList(from);
+						from.clear();
+						for(final Object o : oldFrom)
+						{
+							if(o instanceof Area)
+							{
+								for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
+								{
+									final Room R=r.nextElement();
+									final List<Environmental> shops=shopper.getAllShopkeepers(R, null);
+									if(shops.size()>0)
+										from.addAll(shops);
+								}
+							}
+							else
+							if(o instanceof Room)
+							{
+								final Room R=(Room)o;
+								final List<Environmental> shops=shopper.getAllShopkeepers(R, null);
+								if(shops.size()>0)
+									from.addAll(shops);
+							}
+							else
+							if((o instanceof Environmental)
+							&&(shopFilter.passesFilter((Environmental)o)))
+								from.add(o);
+						}
+					}
+					break;
 				case ITEM:
 					if(from.size()==0)
 					{
@@ -4985,6 +5061,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					//$FALL-THROUGH$
 				case ITEMS:
 					{
+						if((from.size()==0)
+						&&((E instanceof Area)||(E instanceof Room)))
+							from.add(E);
 						if(from.size()==0)
 							from.addAll(new XVector<Item>(CMLib.map().worldEveryItems()));
 						else
@@ -5020,6 +5099,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					break;
 				case EQUIPMENT:
 					{
+						if((from.size()==0)
+						&&((E instanceof Area)||(E instanceof Room)||(E instanceof MOB)||(E instanceof Item)))
+							from.add(E);
 						if(from.size()==0)
 						{
 							final Environmental oE=(E instanceof MOB) ? (Environmental)E : null;
@@ -5097,6 +5179,104 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						}
 					}
 					break;
+				case SHOPITEMS:
+					{
+						if((from.size()==0)
+						&&((E instanceof Area)||(E instanceof Room)||(E instanceof MOB)))
+							from.add(E);
+						if(from.size()==0)
+						{
+							final ShopKeeper oE=(E instanceof ShopKeeper) ? (ShopKeeper)E : null;
+							if(oE==null)
+								throw new MQLException("Unknown sub-from "+f+" on "+(""+E)+" in "+mql);
+							else
+							{
+								for(final Iterator<Environmental> i=oE.getShop().getStoreInventory();i.hasNext();)
+								{
+									final Environmental I=i.next();
+									if(I!=null)
+										from.add(I);
+								}
+							}
+						}
+						else
+						{
+							final List<Object> oldFrom=flattenMQLObjectList(from);
+							from.clear();
+							for(final Object o : oldFrom)
+							{
+								if(o instanceof Area)
+								{
+									final ShoppingLibrary shopper=CMLib.coffeeShops();
+									for(final Enumeration<Room> r=((Area)o).getFilledCompleteMap();r.hasMoreElements();)
+									{
+										for(final Environmental E2 : shopper.getAllShopkeepers(r.nextElement(), null))
+										{
+											final ShopKeeper SK = shopper.getShopKeeper(E2);
+											if(SK != null)
+											{
+												for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+												{
+													final Environmental I=i.next();
+													if(I!=null)
+														from.add(I);
+												}
+											}
+										}
+									}
+								}
+								else
+								if(o instanceof MOB)
+								{
+									final ShopKeeper SK = CMLib.coffeeShops().getShopKeeper((MOB)o);
+									if(SK != null)
+									{
+										for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+										{
+											final Environmental I=i.next();
+											if(I!=null)
+												from.add(I);
+										}
+									}
+								}
+								else
+								if(o instanceof Room)
+								{
+									final ShoppingLibrary shopper=CMLib.coffeeShops();
+									for(final Environmental E2 : shopper.getAllShopkeepers((Room)o, null))
+									{
+										final ShopKeeper SK = shopper.getShopKeeper(E2);
+										if(SK != null)
+										{
+											for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+											{
+												final Environmental I=i.next();
+												if(I!=null)
+													from.add(I);
+											}
+										}
+									}
+								}
+								else
+								if(o instanceof Item)
+								{
+									final ShopKeeper SK = CMLib.coffeeShops().getShopKeeper((Item)o);
+									if(SK != null)
+									{
+										for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+										{
+											final Environmental I=i.next();
+											if(I!=null)
+												from.add(I);
+										}
+									}
+								}
+								else
+									throw new MQLException("Unknown sub-from "+f+" on "+o.toString()+" in "+mql);
+							}
+						}
+					}
+					break;
 				case OWNER:
 					{
 						if(from.size()==0)
@@ -5110,6 +5290,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						}
 						else
 						{
+							if((from.size()==0)
+							&&((E instanceof Area)||(E instanceof Room)||(E instanceof Item)))
+								from.add(E);
 							final List<Object> oldFrom=flattenMQLObjectList(from);
 							from.clear();
 							for(final Object o : oldFrom)
@@ -5282,6 +5465,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					break;
 				case PROPERTIES:
 					{
+						if((from.size()==0)
+						&&((E instanceof Affectable)||(E instanceof Ability)))
+							from.add(E);
 						if(from.size()==0)
 							from.addAll(new XVector<Ability>(CMClass.abilities()));
 						else
@@ -5342,6 +5528,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					break;
 				case BEHAVIORS:
 					{
+						if((from.size()==0)
+						&&((E instanceof Behavable)))
+							from.add(E);
 						if(from.size()==0)
 							from.addAll(new XVector<Behavior>(CMClass.behaviors()));
 						else
@@ -5370,6 +5559,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					break;
 				case RACES:
 					{
+						if((from.size()==0)
+						&&((E instanceof MOB)||(E instanceof Race)))
+							from.add(E);
 						if(from.size()==0)
 							from.addAll(new XVector<Race>(CMClass.races()));
 						else
@@ -5391,6 +5583,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					break;
 				case ABILITIES:
 					{
+						if((from.size()==0)
+						&&((E instanceof MOB)||(E instanceof Ability)))
+							from.add(E);
 						if(from.size()==0)
 							from.addAll(new XVector<Ability>(CMClass.abilities()));
 						else
@@ -5481,7 +5676,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final Object asDefined = defined.get(f);
 				if(asDefined == null)
-					throw new MQLException("Unknown from clause selector '"+f+"' in "+mql);
+					from.add(f); // throw new MQLException("Unknown from clause selector '"+f+"' in "+mql);
+				else
 				if(asDefined instanceof List)
 					from.addAll((from));
 				else

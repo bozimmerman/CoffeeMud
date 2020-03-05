@@ -732,8 +732,8 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	/** The list of basic quest objects defined in an iterative fashion during quest script execution */
 	public static enum QOBJS
 	{
-		LOADEDMOBS, LOADEDITEMS, AREA, ROOM, MOBGROUP, ITEMGROUP, ROOMGROUP,
-		ITEM, ENVOBJ, STUFF, MOB
+		LOADEDMOBS, LOADEDITEMS, LOADEDABILITIES, AREA, ROOM, MOBGROUP, ITEMGROUP, ROOMGROUP,
+		ABILITYGROUP, ITEM, ENVOBJ, STUFF, MOB, ABILITY
 	}
 
 	/** The list of basic mystery quest objects defined in an iterative fashion during quest script execution */

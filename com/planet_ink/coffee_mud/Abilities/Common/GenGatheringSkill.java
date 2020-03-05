@@ -295,6 +295,9 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 		case 21:
 			return ((Integer)V(ID, V_FDUR)).toString();
 		default:
+			if (code.equalsIgnoreCase("javaclass"))
+				return "GenGatheringSkill";
+			else
 			if(code.equalsIgnoreCase("allxml"))
 				return getAllXML();
 			break;
