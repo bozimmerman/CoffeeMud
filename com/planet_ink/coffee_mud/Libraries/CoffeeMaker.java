@@ -192,8 +192,6 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					if(A!=null)
 					{
 						A=(Ability)A.copyOf();
-						final String ID=ablk.getParmValue( "ID");
-						final boolean exists=CMClass.getAbility(ID)!=null;
 						A.setStat("ALLXML", ablk.value());
 						ables.add(A);
 					}
