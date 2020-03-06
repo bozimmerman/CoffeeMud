@@ -3685,6 +3685,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					{
 						final Ability A=findAbility(arg2);
+						if((A==null)||(arg2==null)||(arg2.length()==0))
+							logError(scripted,"AFFECTED","RunTime",arg2+" is not a valid ability name.");
+						else
 						if(A!=null)
 							arg2=A.ID();
 						returnable=(P.fetchEffect(arg2)!=null);
@@ -10647,8 +10650,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				Ability A=null;
 				if(cast!=null)
 					A=findAbility(cast);
-				if(((newTarget!=null)||(tt[2].length()==0))
-				&&(A!=null))
+				if((A==null)||(cast==null)||(cast.length()==0))
+					logError(scripted,"MPCAST","RunTime",cast+" is not a valid ability name.");
+				else
+				if((newTarget!=null)||(tt[2].length()==0))
 				{
 					A.setProficiency(100);
 					if((monster != scripted)
@@ -10672,8 +10677,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				Ability A=null;
 				if(cast!=null)
 					A=findAbility(cast);
-				if((newTarget!=null)
-				&&(A!=null))
+				if((A==null)||(cast==null)||(cast.length()==0))
+					logError(scripted,"MPCASTEXT","RunTime",cast+" is not a valid ability name.");
+				else
+				if(newTarget!=null)
 				{
 					A.setProficiency(100);
 					final List<String> commands = CMParms.parse(args);
@@ -10698,7 +10705,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				Ability A=null;
 				if(cast!=null)
 					A=findAbility(cast);
-				if((newTarget!=null)&&(A!=null))
+				if((A==null)||(cast==null)||(cast.length()==0))
+					logError(scripted,"MPAFFECT","RunTime",cast+" is not a valid ability name.");
+				else
+				if(newTarget!=null)
 				{
 					if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
 						Log.sysOut("Scripting",newTarget.Name()+" was MPAFFECTED by "+A.Name());
