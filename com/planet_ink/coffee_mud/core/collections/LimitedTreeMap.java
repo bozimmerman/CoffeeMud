@@ -38,7 +38,8 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 	private final long expireMs;
 	private final int max;
 	private long nextCheck = 0;
-	private final Map<String,long[]> expirations;
+	private final boolean caseLess;
+	private final OrderedMap<String,long[]> expirations;
 
 	public LimitedTreeMap(final long expireMs, final int max, final boolean caseInsensitive)
 	{
@@ -57,7 +58,8 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 				return arg0.compareTo(arg1);
 			}
 		});
-		expirations=caseInsensitive?new CaselessTreeMap<long[]>() : new HashMap<String,long[]>();
+		this.caseLess=caseInsensitive;
+		expirations=new OrderedMap<String,long[]>();
 		this.expireMs=expireMs;
 		this.max=max;
 	}
@@ -68,8 +70,9 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 	}
 
 	@Override
-    public K put(final String key, final K value)
+    public K put(String key, final K value)
 	{
+		key = caseLess?key.toLowerCase():key;
 		check();
     	final K k = super.put(key, value);
 		synchronized(expirations)
@@ -82,13 +85,9 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 	@Override
     public void putAll(final Map<? extends String, ? extends K> map)
 	{
-		check();
-		synchronized(expirations)
-		{
-			for(final String key : map.keySet())
-				expirations.put(key, new long[] {System.currentTimeMillis()});
-		}
-		super.putAll(map);
+		// this long put ensures the case insensitivity
+		for(final Map.Entry<? extends String, ? extends K> e : map.entrySet())
+			this.put(e.getKey(),e.getValue());
     }
 
 	protected void check()
@@ -97,27 +96,31 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 		if((now > nextCheck)||(size()>max))
 		{
 			nextCheck=now+expireMs;
-			long then=now;
+			long then=now-expireMs;
 			do
 			{
-				then-=expireMs;
 				synchronized(expirations)
 				{
-					for(final Iterator<long[]> v = expirations.values().iterator();v.hasNext();)
+					for(final Iterator<Pair<String,long[]>> v = expirations.pairIterator();v.hasNext();)
 					{
-						final long[] V = v.next();
-						if(V[0] > then)
-							v.remove();
+						final Pair<String,long[]> p=v.next();
+						if(p.second[0] >= then)
+							break;
+						v.remove();
+						this.remove(p.first);
 					}
 				}
+				then -= expireMs/10;
 			}
 			while(size()>max);
 		}
 	}
 
 	@Override
-    public boolean containsKey(final Object key)
+    public boolean containsKey(Object key)
     {
+		if(key instanceof String)
+			key = caseLess?((String)key).toLowerCase():key;
 		check();
     	final boolean c=super.containsKey(key);
     	if((c)&&(key instanceof String))
@@ -131,8 +134,10 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
     }
 
 	@Override
-    public K get(final Object key)
+    public K get(Object key)
     {
+		if(key instanceof String)
+			key = caseLess?((String)key).toLowerCase():key;
 		check();
     	final K obj=super.get(key);
     	if(super.containsKey(key)&&(key instanceof String))
@@ -157,17 +162,16 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
     }
 
 	@Override
-    public K remove(final Object key)
+    public K remove(Object key)
 	{
+		if(key instanceof String)
+			key = caseLess?((String)key).toLowerCase():key;
 		check();
     	final K obj=super.remove(key);
-    	if(key instanceof String)
-    	{
-    		synchronized(expirations)
-    		{
-	    		expirations.remove(key);
-    		}
-    	}
+		synchronized(expirations)
+		{
+    		expirations.remove(key);
+		}
     	return obj;
 	}
 }

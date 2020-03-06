@@ -2,12 +2,16 @@ package com.planet_ink.coffee_mud.core.collections;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
+
+import com.planet_ink.coffee_mud.core.collections.LinkedCollection.LinkedEntry;
 /*
    Copyright 2013-2020 Bo Zimmerman
 
@@ -23,12 +27,33 @@ import java.util.Map;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
+public class OrderedMap<K,J> implements Map<K,J>,  Iterable<J>
 {
-	private static final long serialVersionUID = -6379440278237091571L;
-	private volatile ArrayList<J> list = null;
+	private final LinkedCollection<Pair<K, J>>			coll	= new LinkedCollection<Pair<K, J>>();
+	private final HashMap<K, LinkedEntry<Pair<K, J>>>	map		= new HashMap<K, LinkedEntry<Pair<K, J>>>();
+
 	@SuppressWarnings("rawtypes" )
 	private static final Iterator empty=EmptyIterator.INSTANCE;
+
+	private final Converter<Pair<K,J>,J> converter = new Converter<Pair<K,J>,J>()
+	{
+		@Override
+		public J convert(final Pair<K, J> obj)
+		{
+			return obj.second;
+		}
+
+	};
+
+	private final Converter<Pair<K,J>,Map.Entry<K,J>> entryConverter = new Converter<Pair<K,J>,Map.Entry<K,J>>()
+	{
+		@Override
+		public Map.Entry<K,J> convert(final Pair<K, J> obj)
+		{
+			return obj;
+		}
+
+	};
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -36,36 +61,33 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 	{
 		if(size()==0)
 			return empty;
-		return list.iterator();
+		return new ConvertingIterator<Pair<K,J>,J>(coll.iterator(), converter);
 	}
 
 	@SuppressWarnings("unchecked")
+	public Iterator<Pair<K,J>> pairIterator()
+	{
+		if(size()==0)
+			return empty;
+		return coll.iterator();
+	}
+
 	@Override
 	public synchronized J put(final K key, final J value)
 	{
-		final ArrayList<J> newList;
-		if (list == null)
+		final LinkedEntry<Pair<K,J>> p;
+		if(map.containsKey(key))
 		{
-			newList=new ArrayList<J>(0);
-			newList.add(value);
+			p = map.get(key);
+			p.value.second = value;
 		}
 		else
-		{
-			if(containsKey(key))
-			{
-				if((list.size()>0)&&(list.get(0)==value))
-					return value;
-			}
-			newList=(ArrayList<J>)list.clone();
-			if(containsKey(key))
-				newList.remove(value);
-			if(newList.size()==0)
-				newList.add(value);
-			else
-				newList.add(0, value);
-		}
-		list=newList;
-		return super.put(key, value);
+			p=new LinkedEntry<Pair<K,J>>(new Pair<K,J>(key, value));
+		coll.add(p);
+		final LinkedEntry<Pair<K,J>> added = map.put(key, p);
+		if(added != null)
+			return added.value.second;
+		return null;
 	}
 
 	@Override
@@ -75,24 +97,74 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 			put(i.getKey(),i.getValue());
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public synchronized J remove(final Object key)
 	{
-		if(super.containsKey(key))
+		if(map.containsKey(key))
 		{
-			@SuppressWarnings("unchecked")
-			final
-			ArrayList<J> newList=(ArrayList<J>)list.clone();
-			newList.remove(get(key));
-			list=newList;
+			final LinkedEntry<Pair<K,J>> l = map.get(key);
+			if(coll.remove(l))
+				return l.value.second;
+
 		}
-		return super.remove(key);
+		return null;
 	}
 
 	@Override
 	public synchronized void clear()
 	{
-		list=null;
-		super.clear();
+		map.clear();
+		coll.clear();
+	}
+
+	@Override
+	public synchronized int size()
+	{
+		return map.size();
+	}
+
+	@Override
+	public synchronized boolean isEmpty()
+	{
+		return map.isEmpty();
+	}
+
+	@Override
+	public synchronized boolean containsKey(final Object key)
+	{
+		return map.containsKey(key);
+	}
+
+	@Override
+	public synchronized boolean containsValue(final Object value)
+	{
+		return coll.contains(value);
+	}
+
+	@Override
+	public synchronized J get(final Object key)
+	{
+		if(map.containsKey(key))
+			return map.get(key).value.second;
+		return null;
+	}
+
+	@Override
+	public synchronized Set<K> keySet()
+	{
+		return map.keySet();
+	}
+
+	@Override
+	public synchronized Collection<J> values()
+	{
+		return new ConvertingCollection<Pair<K,J>, J>(coll,converter);
+	}
+
+	@Override
+	public synchronized Set<Entry<K, J>> entrySet()
+	{
+		return new ConvertingSet<Pair<K,J>, Map.Entry<K,J>>(coll,entryConverter);
 	}
 }
