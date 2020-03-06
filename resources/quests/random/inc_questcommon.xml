@@ -164,7 +164,7 @@ ${SELECT:any\name from (SELECT: . from $item_junk)}
 	<STRING define="verb_researched=researched,verb_researching=researching">research</STRING>
 	<STRING define="verb_researched=studied,verb_researching=studying">study</STRING>
 	<STRING define="verb_researched=investigated,verb_researching=investigating">investigate</STRING>
-	<STRING define="verb_researched=inquired,verb_researching=inquiring">inquire</STRING>
+	<STRING define="verb_researched=read,verb_researching=reading">read</STRING>
 </STRING>
 
 <STRING ID="verb_captured" predefine="verb_capture=$verb_capture">$verb_captured</STRING>

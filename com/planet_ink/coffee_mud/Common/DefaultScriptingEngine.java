@@ -13255,6 +13255,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						||(affecting instanceof Area))
 					&&(!msg.amISource(monster))
 					&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
+					&&(msg.sourceMinor()!=CMMsg.TYP_ITEMSGENERATED)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
 						final String check=standardTriggerCheck(script,t,msg.tool(), affecting,msg.source(),monster,monster,defaultItem,null,t);
@@ -13275,6 +13276,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						||(affecting instanceof Room)
 						||(affecting instanceof Area))
 					&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
+					&&(msg.sourceMinor()!=CMMsg.TYP_ITEMSGENERATED)
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
 						final String check=standardTriggerCheck(script,t,msg.tool(),affecting,msg.source(),msg.target(),monster,null,defaultItem,t);

@@ -243,7 +243,7 @@ public class CommonSkill extends StdAbility
 			else
 			if((tickUp%4)==0)
 			{
-				if(!R.show(mob,null,this,getActivityMessageType(),this.getYouContinueMessage(),null,this.getOthersContinueMessage()))
+				if(!R.show(mob,null,null,getActivityMessageType(),this.getYouContinueMessage(),null,this.getOthersContinueMessage()))
 				{
 					aborted=true;
 					unInvoke();

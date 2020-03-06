@@ -54,6 +54,7 @@ public class CMClass extends ClassLoader
 	protected static boolean						debugging		= false;
 	protected static volatile long					lastUpdateTime	= System.currentTimeMillis();
 	protected static final Map<String, Class<?>>	classes			= new Hashtable<String, Class<?>>();
+	protected static final LimitedTreeMap<Ability>	ableFinder		= new LimitedTreeMap<Ability>(60000,100,true);
 
 	private static CMClass[] clss=new CMClass[256];
 	/**
@@ -1362,6 +1363,7 @@ public class CMClass extends ClassLoader
 			return false;
 		if(set==c().commands)
 			reloadCommandWords();
+		ableFinder.clear();
 		//if(set==libraries) CMLib.registerLibraries(libraries.elements());
 		return true;
 	}
@@ -1397,6 +1399,7 @@ public class CMClass extends ClassLoader
 			reloadCommandWords();
 		if(set==c().libraries)
 			CMLib.registerLibraries(c().libraries.elements());
+		ableFinder.clear();
 		return true;
 	}
 
@@ -1780,11 +1783,19 @@ public class CMClass extends ClassLoader
 	 */
 	public static final Ability findAbility(final String calledThis, final int ofClassDomain, final long ofFlags, final boolean exactOnly)
 	{
-		final Vector<Ability> ableV;
+		final String key=calledThis+ofClassDomain+ofFlags+exactOnly;
+		if(ableFinder.containsKey(key))
+		{
+			Ability A=ableFinder.get(key);
+			if(A!=null)
+				A=(Ability)A.newInstance();
+			return A;
+		}
 		Ability A;
+		final List<Ability> ableV;
 		if((ofClassDomain>=0)||(ofFlags>=0))
 		{
-			ableV = new Vector<Ability>();
+			ableV = new ArrayList<Ability>();
 			for(final Enumeration<Ability> e=c().abilities.elements();e.hasMoreElements();)
 			{
 				A=e.nextElement();
@@ -1794,7 +1805,7 @@ public class CMClass extends ClassLoader
 				{
 					if((ofFlags<0)
 					||(CMath.bset(A.flags(),ofFlags)))
-						ableV.addElement(A);
+						ableV.add(A);
 				}
 			}
 		}
@@ -1806,6 +1817,7 @@ public class CMClass extends ClassLoader
 			A=(Ability)CMLib.english().fetchEnvironmental(ableV,calledThis,true);
 		if((A==null)&&(!exactOnly))
 			A=(Ability)CMLib.english().fetchEnvironmental(ableV,calledThis,false);
+		ableFinder.put(key, A);
 		if(A!=null)
 			A=(Ability)A.newInstance();
 		return A;

@@ -2726,14 +2726,22 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					cmd=p.elementAt(1).toUpperCase();
 					if(cmd.equals("MOBS"))
 					{
+						boolean optional=false;
+						if((p.size()>3)&&(p.elementAt(2).equalsIgnoreCase("optional")))
+						{
+							optional=true;
+							p.remove(2);
+						}
 						if(p.size()<3)
 						{
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', no IMPORT MOBS file.");
 							break;
 						}
-						final StringBuffer buf=getResourceFileData(CMParms.combine(p,2), true);
+						final StringBuffer buf=getResourceFileData(CMParms.combine(p,2), !optional);
 						if((buf==null)||(buf.length()<20))
 						{
+							if(optional)
+								continue;
 							errorOccurred(q,isQuiet,"Quest '"+name()+"',Unknown XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
 							break;
 						}
@@ -2766,14 +2774,22 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					else
 					if(cmd.equals("ITEMS"))
 					{
+						boolean optional=false;
+						if((p.size()>3)&&(p.elementAt(2).equalsIgnoreCase("optional")))
+						{
+							optional=true;
+							p.remove(2);
+						}
 						if(p.size()<3)
 						{
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', no import filename!");
 							break;
 						}
-						final StringBuffer buf=getResourceFileData(CMParms.combine(p,2), true);
+						final StringBuffer buf=getResourceFileData(CMParms.combine(p,2), !optional);
 						if((buf==null)||(buf.length()<20))
 						{
+							if(optional)
+								continue;
 							errorOccurred(q,isQuiet,"Quest '"+name()+"',Unknown XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
 							break;
 						}
@@ -2806,14 +2822,22 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					else
 					if(cmd.equals("ABILITIES"))
 					{
+						boolean optional=false;
+						if((p.size()>3)&&(p.elementAt(2).equalsIgnoreCase("optional")))
+						{
+							optional=true;
+							p.remove(2);
+						}
 						if(p.size()<3)
 						{
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', no import filename!");
 							break;
 						}
-						final StringBuffer buf=getResourceFileData(CMParms.combine(p,2), true);
+						final StringBuffer buf=getResourceFileData(CMParms.combine(p,2), !optional);
 						if((buf==null)||(buf.length()<20))
 						{
+							if(optional)
+								continue;
 							errorOccurred(q,isQuiet,"Quest '"+name()+"',Unknown XML file: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
 							break;
 						}

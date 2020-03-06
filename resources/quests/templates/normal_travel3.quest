@@ -66,7 +66,7 @@
 #
 #Destination Skill:
 #The ability ID of a skill which must be used in the destination room, or empty for none.
-#$DESTINATION_SKILL=($ABILITY)=
+#$DESTINATION_SKILL_ID=($ABILITY)=
 #
 #Force Skill:
 #Whether the Destination Skill is forcibly used by the player when they enter the room,
@@ -126,6 +126,8 @@
 #to the designated room.  You may leave this blank if you like.
 #$TRAVEL_RESPONSE=($LONG_STRING)=Your journey is complete.
 #
+#$DESTINATION_SKILL_XML=($HIDDEN)=
+#
 #!QUESTMAKER_END_SCRIPT Normal Travel #3
 
 set name $QUEST_ID
@@ -135,7 +137,7 @@ set author $#AUTHOR
 set wait 1
 set interval 1
 set duration 0
-quiet
+#quiet
 
 set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
@@ -150,12 +152,12 @@ set area $DESTINATION_AREA
 set room $DESTINATION_ROOM
 set wherehappened ROOM
 
-import abilities $QUEST_ID_destinationskill.xml
+import abilities optional $QUEST_ID_destinationskill.xml
 set abilitygroup loadedabilities
 set ability ANY
 
 <?xml version="1.0"?>
-<FILE><NAME>$QUEST_ID_destinationskill.xml</NAME><DATA><ITEMS>$DESTINATION_SKILL_XML</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_destinationskill.xml</NAME><DATA>$DESTINATION_SKILL_XML</DATA></FILE>
 <FILE><NAME>$QUEST_ID_rewarditems.xml</NAME><DATA><ITEMS>$REWARD_ITEMS</ITEMS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
@@ -228,33 +230,42 @@ QUEST_TIME_PROG * 1
 ENTRY_PROG 100
 	if EVAL($n == $i) AND INROOM($i == '$<$i MYROOM>')
 		MPCALLFUNC SUCCESS
-		IF VAR($i $QUEST_ID_REWARDED == '') AND EVAL('$DESTINATION_FORCE' == 'YES') AND EVAL('$DESTINATION_SKILL' != '')
-			MPALARM 1 MPCAST $DESTINATION_SKILL
+		IF VAR($i $QUEST_ID_REWARDED == '') AND EVAL('$DESTINATION_FORCE' == 'YES') AND EVAL('$DESTINATION_SKILL_ID' != '')
+			MPCAST $DESTINATION_SKILL_ID
 		ENDIF
 	endif
 ~
 
-CAST_PROG $DESTINATION_SKILL
-	if EVAL($n == $i) AND EVAL('$DESTINATION_SKILL' != '') AND INROOM($i == '$<$i MYROOM>')
+CASTING_PROG $DESTINATION_SKILL_ID
+	if EVAL($n == $i) AND EVAL('$DESTINATION_SKILL_ID' != '') AND INROOM($i == '$<$i MYROOM>')
+		MPSETVAR $i $QUEST_ID_USEDSKILL YES
+		MPCALLFUNC SUCCESS
+	ENDIF
+~
+
+IMASK_PROG '$DESTINATION_MSG'
+	if EVAL('$DESTINATION_MSG' != '') AND INROOM($i == '$<$i MYROOM>')
+		MPSETVAR $i $QUEST_ID_SAWMSG YES
 		MPCALLFUNC SUCCESS
 	ENDIF
 ~
 
 ACT_PROG '$DESTINATION_MSG'
 	if EVAL('$DESTINATION_MSG' != '') AND INROOM($i == '$<$i MYROOM>')
+		MPSETVAR $i $QUEST_ID_SAWMSG YES
 		MPCALLFUNC SUCCESS
 	ENDIF
 ~
 
 FUNCTION_PROG SUCCESS
-	if EVAL($n == $i) AND INROOM($i == '$<$i MYROOM>') AND VAR($i $QUEST_ID_REWARDED == '')
-		IF EVAL('$DESTINATION_SKILL' != '') AND EVAL('$<$QUEST_ID_USEDSKILL>' != 'YES')
+	if INROOM($i == '$<$i MYROOM>') AND VAR($i $QUEST_ID_REWARDED == '')
+		IF EVAL('$DESTINATION_SKILL_ID' != '') AND VAR($i $QUEST_ID_USEDSKILL != 'YES')
 			RETURN
 		ENDIF
-		IF EVAL('$DESTINATION_MSG' != '') AND EVAL('$<$QUEST_ID_SAWMSG>' != 'YES')
+		IF EVAL('$DESTINATION_MSG' != '') AND VAR($i $QUEST_ID_SAWMSG != 'YES')
 			RETURN
 		ENDIF
-		mpsetvar $n $QUEST_ID_REWARDED 'REWARDED'
+		mpsetvar $i $QUEST_ID_REWARDED 'REWARDED'
 		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($i *)
 			# do nothing
 		else

@@ -492,9 +492,12 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 				if(found!=null)
 				{
 					commonTell(mob,L((String) V(ID, V_MSG2),foundShortName));
-					displayText=L("You are @x1 @x2",(String)V(ID, V_VERB),foundShortName);
-					final String plural = CMLib.english().makePlural(CMLib.english().removeArticleLead(foundShortName));
-					verb=L("@x1 @x2",(String)V(ID, V_VERB),plural);
+					if(!((Boolean) V(ID, V_COSM)).booleanValue())
+					{
+						displayText=L("You are @x1 @x2",(String)V(ID, V_VERB),foundShortName);
+						final String plural = CMLib.english().makePlural(CMLib.english().removeArticleLead(foundShortName));
+						verb=L("@x1 @x2",(String)V(ID, V_VERB),plural);
+					}
 					playSound=(String)V(ID, V_SOND);
 				}
 				else
@@ -755,9 +758,16 @@ public class GenGatheringSkill extends GatheringSkill implements ItemCollection
 					found=choices.get(CMLib.dice().roll(1, choices.size(), -1));
 					foundShortName=found.name();
 				}
+				else
+				if(((Boolean) V(ID, V_COSM)).booleanValue())
+				{
+					found=CMClass.getBasicItem("StdItem");
+					foundShortName=L("Something");
+					found.setName(foundShortName);
+				}
 			}
 		}
-		final int duration=getDuration(mob,1);
+		final int duration=getDuration(mob,mob.basePhyStats().level());
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L((String)V(ID, V_MSG1)));
 		if(mob.location().okMessage(mob,msg))
 		{
