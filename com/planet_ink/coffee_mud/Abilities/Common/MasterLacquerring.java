@@ -181,11 +181,8 @@ public class MasterLacquerring extends MasterPaintingSkill
 			commonTell(mob,colors.substring(0,colors.length()-2)+"^N.\n\r");
 			return false;
 		}
-		if(commands.get(1).equalsIgnoreCase("remove"))
-		{
-			// ok
+		if((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("remove")))
 			writing="remove";
-		}
 		else
 		if(commands.size()<4)
 		{
@@ -217,45 +214,48 @@ public class MasterLacquerring extends MasterPaintingSkill
 		}
 		commands.remove(commands.get(0)); // remove item
 		commands.remove(commands.get(0)); // remove design
-		final String allColors = CMParms.combine(commands,0);
 		final List<Color256> colorsFound = new ArrayList<Color256>();
 		final List<String> colorNamesFound = new ArrayList<String>();
-		String workColors = allColors.toLowerCase();
-		while(workColors.length()>0)
+		if(!writing.equalsIgnoreCase("remove"))
 		{
-			final int numFound=colorsFound.size();
-			for(final String cStr : getAllColors256NamesLowercased())
+			final String allColors = CMParms.combine(commands,0);
+			String workColors = allColors.toLowerCase();
+			while(workColors.length()>0)
 			{
-				if(workColors.startsWith(cStr))
+				final int numFound=colorsFound.size();
+				for(final String cStr : getAllColors256NamesLowercased())
 				{
-					final Color256 C=getAllColors256NamesMap().get(cStr);
-					if(C!=null)
+					if(workColors.startsWith(cStr))
 					{
-						if(C.getExpertiseNum()<=super.getXLEVELLevel(mob))
+						final Color256 C=getAllColors256NamesMap().get(cStr);
+						if(C!=null)
 						{
-							colorNamesFound.add(cStr);
-							colorsFound.add(C);
-							workColors=workColors.substring(cStr.length()).trim();
+							if(C.getExpertiseNum()<=super.getXLEVELLevel(mob))
+							{
+								colorNamesFound.add(cStr);
+								colorsFound.add(C);
+								workColors=workColors.substring(cStr.length()).trim();
+							}
 						}
+						break;
 					}
-					break;
+				}
+				if(colorsFound.size()==numFound)
+				{
+					commonTell(mob,L("The first color in '@x1' is unrecognized. Try MASTERLACQUER COLORS",workColors));
+					return false;
 				}
 			}
-			if(colorsFound.size()==numFound)
+			if(colorsFound.size()<2)
 			{
-				commonTell(mob,L("The first color in '@x1' is unrecognized. Try MASTERLACQUER COLORS",workColors));
+				commonTell(mob,L("At least two colors is required."));
 				return false;
 			}
-		}
-		if(colorsFound.size()<2)
-		{
-			commonTell(mob,L("At least two colors is required."));
-			return false;
-		}
-		if(colorsFound.size()>3)
-		{
-			commonTell(mob,L("You may not list more than 3 colors."));
-			return false;
+			if(colorsFound.size()>3)
+			{
+				commonTell(mob,L("You may not list more than 3 colors."));
+				return false;
+			}
 		}
 		if((((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS)
 			&&((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
