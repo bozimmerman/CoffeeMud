@@ -3148,7 +3148,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				try
 				{
-					final List<Object> objs = parseMQLFrom(new String[] {valueStr}, valueStr, E, ignoreStats, defPrefix, valPiece, defined);
+					final List<Object> objs = parseMQLFrom(new String[] {valueStr}, valueStr, E, ignoreStats, defPrefix, valPiece, defined, false);
 					value=objs;
 					finalValues.addAll(objs);
 				}
@@ -4633,7 +4633,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		return flat;
 	}
 
-	protected List<Object> parseMQLFrom(final String[] fromClause, final String mql, final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
+	protected List<Object> parseMQLFrom(final String[] fromClause, final String mql, final Modifiable E, final List<String> ignoreStats,
+			final String defPrefix, final XMLTag piece, final Map<String,Object> defined, final boolean literalsOK)
+			throws MQLException,PostProcessException
 	{
 		final List<Object> from=new LinkedList<Object>();
 		if((fromClause.length==1)
@@ -5676,7 +5678,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				final Object asDefined = defined.get(f);
 				if(asDefined == null)
-					from.add(f); // throw new MQLException("Unknown from clause selector '"+f+"' in "+mql);
+				{
+					if(literalsOK)
+						from.add(f);
+					else
+						throw new MQLException("Unknown from clause selector '"+f+"' in "+mql);
+				}
 				else
 				if(asDefined instanceof List)
 					from.addAll((from));
@@ -5754,7 +5761,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	}
 
 	protected Object getFinalMQLValue(final String[] strpath, final List<Object> allFrom, final Object from, final Map<String,Object> cache, final String mql,
-			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
+			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined, final boolean literalsOK)
+					throws MQLException,PostProcessException
 	{
 		if((strpath.length==1)
 		&&(strpath[0].startsWith("SELECT:")))
@@ -5905,7 +5913,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 										if(o == null)
 											cachedValues.put(o, chkO);
 										else
-											cachedValues.put(o, getFinalMQLValue(newWhat, allFrom, o, cache, mql, E, ignoreStats, defPrefix, piece, defined));
+											cachedValues.put(o, getFinalMQLValue(newWhat, allFrom, o, cache, mql, E, ignoreStats, defPrefix, piece, defined, literalsOK));
 									}
 									cache.put(cacheKey, cachedValues);
 								}
@@ -5934,7 +5942,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(newObj == null)
 						{
 							if(fromO instanceof Modifiable)
-								newObj=parseMQLFrom(new String[] {str}, mql, (Modifiable)fromO, ignoreStats, defPrefix, piece, defined);
+								newObj=parseMQLFrom(new String[] {str}, mql, (Modifiable)fromO, ignoreStats, defPrefix, piece, defined, literalsOK);
 							if(newObj == null)
 								throw new MQLException("Unknown variable '"+str+"' on '"+fromO+"' in '"+mql+"'",new CMException("$"+str));
 						}
@@ -6232,8 +6240,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected boolean doMQLComparison(final MQLClause.WhereComp comp, final List<Object> allFrom, final Object from, final Map<String, Object> cache, final String mql,
 			final Modifiable E, final List<String> ignoreStats, final String defPrefix, final XMLTag piece, final Map<String,Object> defined) throws MQLException,PostProcessException
 	{
-		final Object lhso=getFinalMQLValue(comp.lhs, allFrom, from,cache,mql,E,ignoreStats,defPrefix,piece,defined);
-		final Object rhso=getFinalMQLValue(comp.rhs, allFrom, from,cache,mql,E,ignoreStats,defPrefix,piece,defined);
+		final Object lhso=getFinalMQLValue(comp.lhs, allFrom, from,cache,mql,E,ignoreStats,defPrefix,piece,defined,true);
+		final Object rhso=getFinalMQLValue(comp.rhs, allFrom, from,cache,mql,E,ignoreStats,defPrefix,piece,defined,true);
 		return doMQLComparison(lhso, comp.comp, rhso, allFrom, from,E,ignoreStats,defPrefix,piece,defined);
 	}
 
@@ -6321,7 +6329,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			if((from.length==0)||(from[0].length()==0))
 				throw new MQLException("Empty FROM clause in "+clause.mql);
-			froms.addAll(parseMQLFrom(from, clause.mql, E, ignoreStats, defPrefix, piece, defined));
+			froms.addAll(parseMQLFrom(from, clause.mql, E, ignoreStats, defPrefix, piece, defined,false));
 		}
 		boolean aggregate=false;
 		for(int i=0;i<clause.what.size();i++)
@@ -6340,7 +6348,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				final Map<String,Object> m=new TreeMap<String,Object>();
 				for(final MQLClause.WhatBit bit : clause.what)
 				{
-					final Object o1 = this.getFinalMQLValue(bit.what(), froms, o, cache, mql,E, ignoreStats, defPrefix, piece, defined);
+					final Object o1 = this.getFinalMQLValue(bit.what(), froms, o, cache, mql,E, ignoreStats, defPrefix, piece, defined,true);
 					if(o1 instanceof Map)
 					{
 						@SuppressWarnings("unchecked")

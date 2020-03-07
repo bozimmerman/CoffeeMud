@@ -137,7 +137,7 @@ set author $#AUTHOR
 set wait 1
 set interval 1
 set duration 0
-#quiet
+quiet
 
 set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
