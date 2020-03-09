@@ -1029,6 +1029,23 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					found=true;
 				}
 			}
+
+			if(!found)
+			{
+				final String[] split=helpStr.split("_");
+				if("SOCIAL".startsWith(split[0].toUpperCase()))
+				{
+					final String tempHelpStr=CMParms.combineWith(Arrays.asList(split),' ',1,split.length);
+					final String s=CMLib.socials().getSocialsHelp(forMOB,tempHelpStr.toUpperCase(), false);
+					if(s!=null)
+					{
+						thisTag=s;
+						helpStr=tempHelpStr.toUpperCase().replace(' ','_');
+						found=true;
+					}
+				}
+			}
+
 		}
 		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31)&&(!areaTag))
 		{

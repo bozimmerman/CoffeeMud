@@ -257,8 +257,9 @@ public class CMParms
 		final StringBuilder combined=new StringBuilder("");
 		if(commands!=null)
 		{
-			for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
+			for(int commandIndex=startAt;commandIndex<endAt-1;commandIndex++)
 				combined.append(commands.get(commandIndex).toString()+withChar);
+			combined.append(commands.get(endAt-1).toString());
 		}
 		return combined.toString().trim();
 	}
