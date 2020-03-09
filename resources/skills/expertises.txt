@@ -18,7 +18,7 @@
 # A data entry that is DATA_ only will apply to the previously defined expertise.
 #
 
-EXPCRAFT@x1=Wise Crafting @x2,10,XPCOST,-SKILL +Alchemy +ClanCrafting +Herbalism +Skill_SongWrite +Spell_Fabricate +Spell_Duplicate +Spell_EnchantArmor +Spell_EnchantArrows +Spell_EnchantWand +Spell_EnchantWeapon +Spell_FindFamiliar +Spell_MagicItem +Spell_Scribe +Spell_Wish +Dissertating,-MAXCLASSLEVEL +>={26+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
+EXPCRAFT@x1=Wise Crafting @x2,10,XPCOST,-SKILL +Alchemy +ClanCrafting +Herbalism +Skill_SongWrite +Spell_Fabricate +Spell_Duplicate +Spell_EnchantArmor +Spell_EnchantArrows +Spell_EnchantWand +Spell_EnchantWeapon +Spell_FindFamiliar +Spell_MagicItem +Spell_Scribe +Spell_Wish +Dissertating +ScrollScribing,-MAXCLASSLEVEL +>={26+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to ameliorate the experience cost of certain spells and skills, especially concerning items.
 
 ARMOROPT@x1=Armor Optimizing @x2,10,LEVEL,-SKILL +Fighter_ArmorTweaking -SKILLFLAG +ARMOR_USE,-MAXCLASSLEVEL +>={28+(5*@x1)},+CON {12+@x1},0,1,0,0,0
@@ -518,13 +518,13 @@ HELP_QUALFAB2=<EXPERTISE>The ability to craft items of the highest quality. Item
 HELP_QUALFAB3=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Exquisite" are worth much more and grant extra charisma from being well dressed.
 DATA_=Fine,Beautiful,Exquisite
 
-QUICKCRAFT@x1=Quick Worker @x2,10,TIME,-SKILLFLAG "+COMMON SKILL" +JAVACLASS -Dissertating,-CLASS +Archon,+WIS {10+@x1},0,20,0,0,0
+QUICKCRAFT@x1=Quick Worker @x2,10,TIME,-SKILLFLAG "+COMMON SKILL" +JAVACLASS -Dissertating -DiligentStudying,-CLASS +Archon,+WIS {10+@x1},0,20,0,0,0
 HELP_=<EXPERTISE>The ability to craft and gather items more quickly and efficiently.
 
 QUICKCOOK@x1=Quick Cooking @x2,10,TIME,-SKILLFLAG "+EPICUREAN",,+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cook items more quickly and efficiently.
 
-QUICKWORK@x1=Quick Working @x2,10,TIME,-SKILLFLAG "+COMMON SKILL&!EPICUREAN&!CRAFTING&!BUILDING",,+WIS {10+@x1},0,1,0,0,0
+QUICKWORK@x1=Quick Working @x2,10,TIME,-SKILLFLAG "+COMMON SKILL&!EPICUREAN&!CRAFTING&!BUILDING" +JAVACLASS -DiligentStudying,,+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft items more quickly and efficiently.
 
 QUICKCRFT@x1=Quick Crafting @x2,10,TIME,-SKILLFLAG "+CRAFTING&!NATURE_LORE",,+WIS {10+@x1},0,1,0,0,0
