@@ -40,7 +40,7 @@ public class MeatCuring extends CommonSkill
 		return "MeatCuring";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("MeatCuring");
+	private final static String	localizedName	= CMLib.lang().L("Meat Curing");
 
 	@Override
 	public String name()
