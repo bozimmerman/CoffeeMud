@@ -43,7 +43,7 @@ public class Siegecraft extends Fletching
 		return "Siegecraft";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Siegecraft");
+	private final static String	localizedName	= CMLib.lang().L("Siegecrafting");
 
 	@Override
 	public String name()
