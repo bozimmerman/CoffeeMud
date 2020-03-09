@@ -6,7 +6,7 @@
   5. New prayers: enchant relic, recharge relic, read prayer, clarify prayer
   6. New chants: Enchant Shards, Recharge Shards, Read Runes, Refresh Runes
   7. New songs: Restore Music, Enchant Instrument, Recharge Instrument, Read Music
-  8. New questmaker templates: competitive/normal_collect5, competitive/normal_delivery4
+  8. New questmaker templates: competitive/normal_collect5, competitive/normal_delivery4, normal/travel4
   9. Crafting skills can now list recipes by level range, eg list 5-, list -5, list 10-20
  10. New disable flags: AUTOMOODS
  11. New Scriptable triggers: CAST_PROG and CASTING_PROG

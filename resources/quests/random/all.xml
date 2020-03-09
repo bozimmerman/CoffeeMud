@@ -45,6 +45,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_protect2</string>
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_travel1</string>
 	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_travel2</string>
+	<string condition="$template='random' and $avoidscans!='YES'"                        >normal_travel4</string>
 </string>
 
 <STRING ID="avoidscans" define="avoidscans">NO</STRING>
@@ -75,4 +76,5 @@ See guides/RandomAreas.html for information about documents of this type.
 	<QUEST load="/resources/quests/random/normal_travel1.xml" CONDITION="$quest_template='normal_travel1'"/>
 	<QUEST load="/resources/quests/random/normal_travel2.xml" CONDITION="$quest_template='normal_travel2'"/>
 	<QUEST load="/resources/quests/random/normal_travel3.xml" CONDITION="$quest_template='normal_travel3'"/>
+	<QUEST load="/resources/quests/random/normal_travel4.xml" CONDITION="$quest_template='normal_travel4'"/>
 </QUEST>
