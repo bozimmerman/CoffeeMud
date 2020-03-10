@@ -124,8 +124,8 @@ public class Fighter_Kick extends FighterSkill
 		if(success)
 		{
 			invoker=mob;
-			final int topDamage=(adjustedLevel(mob,asLevel)/2)+2;
-			int damage=CMLib.dice().roll(1,topDamage,0);
+			final int topDamage=(adjustedLevel(mob,asLevel)/2);
+			int damage=CMLib.dice().roll(1,topDamage,2);
 			final Room R=mob.location();
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((R!=null)&&(R.okMessage(mob,msg)))
