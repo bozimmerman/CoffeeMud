@@ -578,6 +578,7 @@ public class CharGen extends StdCommand
 						int lastPct=0;
 						int playerArmor=0;
 						int playerAttack=0;
+						HashMap<String,long[]> skillScores = new HashMap<String,long[]>();
 						for(int tries=0;tries<c.TOTAL_ITERATIONS;tries++)
 						{
 							if((CMath.div(tries,c.TOTAL_ITERATIONS)*100.0)>=lastPct+5)
@@ -762,7 +763,21 @@ public class CharGen extends StdCommand
 								aborted[0]=true;
 
 							//TODO: Buff period for the player
-
+							final Session sess=mob.session();
+							try
+							{
+								if((sess!=null)
+								&&(sess.blockingIn(1, false)!=null))
+								{
+									latch.countDown();
+									for(;tries<c.TOTAL_ITERATIONS;tries++)
+										latch.countDown();
+									return;
+								}
+							}
+							catch(Exception e)
+							{
+							}
 							//chargen combat charclasses export=test.tab iterations=100 skiplevels=20 1 91
 							while((M1.getVictim()==M2)
 								&&(M2.getVictim()==M1)
@@ -778,6 +793,7 @@ public class CharGen extends StdCommand
 									latch.countDown();
 									return;
 								}
+								
 								iterations++;
 								ALMOSTZEROSKILL=B1.getStat("LASTSPELL");
 								final int h1=M1.curState().getHitPoints();
@@ -853,26 +869,37 @@ public class CharGen extends StdCommand
 									medLossIters.add(Integer.valueOf(iterations));
 								else
 									medWinIters.add(Integer.valueOf(iterations));
+								final String record = B1.getStat("RECORD");
+								final List<String> skillUseV=CMParms.parseSemicolons(record,true);
 								if(cumScore>bestHitScore[0])
 								{
 									bestHitScore[0]=cumScore;
-									bestHitSkill[0]=B1.getStat("RECORD");
+									bestHitSkill[0]=record;
 								}
 								if(M2.amDead())
 								{
 									if(!M1.amDead())
-									if(iterations<bestIterScore[0])
 									{
-										bestIterScore[0]=iterations;
-										bestIterSkill[0]=B1.getStat("RECORD");
+										if(iterations<bestIterScore[0])
+										{
+											bestIterScore[0]=iterations;
+											bestIterSkill[0]=record;
+										}
+										for(final String skill : skillUseV)
+										{
+											if(skill.startsWith("!"))
+												continue;
+											if(!skillScores.containsKey(skill))
+												skillScores.put(skill, new long[]{0});
+											skillScores.get(skill)[0] += cumScore/iterations;
+										}
 									}
 								}
 								if(c.failSkillCheck!=null)
 								{
-									final List<String> V=CMParms.parseSemicolons(B1.getStat("RECORD"),true);
-									for(int v=0;v<V.size();v++)
+									for(int v=0;v<skillUseV.size();v++)
 									{
-										String s=V.get(v).trim();
+										String s=skillUseV.get(v).trim();
 										boolean failed=false;
 										if(s.startsWith("!"))
 										{
@@ -968,6 +995,29 @@ public class CharGen extends StdCommand
 								if(fileExp==null)
 									mob.tell(fails.toString());
 								c.failSkillCheck.clear();
+							}
+							if(skillScores.size()>0)
+							{
+								StringBuilder top5=new StringBuilder("");
+								List<Pair<String,long[]>> top5v=new ArrayList<Pair<String,long[]>>();
+								for(final String key : skillScores.keySet())
+									top5v.add(new Pair<String,long[]>(key,skillScores.get(key)));
+								if(skillScores.containsKey("Spell_Lightning"))
+									mob.tell(""+skillScores.get("Spell_Lightning")[0]);
+								Collections.sort(top5v,new Comparator<Pair<String,long[]>>(){
+									@Override
+									public int compare(Pair<String, long[]> o1, Pair<String, long[]> o2)
+									{
+										if(o1.second[0] == o2.second[0])
+											return 0;
+										if(o1.second[0] > o2.second[0])
+											return -1;
+										return 1;
+									}
+								});
+								for(int i=0;i<5 && i<top5v.size();i++)
+									top5.append(top5v.get(i).first+"("+top5v.get(i).second[0]+") ");
+								mob.tell(L("TOP SKILLS : @x1",top5.toString()));
 							}
 						}
 					}
