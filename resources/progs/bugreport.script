@@ -2,5 +2,5 @@ ONCE_PROG
 	MPECHOAT $i ^HBug Report! Here is your bug description so far:%0D ^.^N$^H$%INROOM()%^N -- $<$i VALUE>
 	MPECHOAT $i %0D^HMost bugs entered cannot be recreated due to insufficient detail about the specific situation.^.^N
 	MPPROMPT $i MORERESPONSE ^HPlease any additional details about your situation%0D: ^.^N
-	MPSETVAR $i VALUE $<$i VALUE>. ^w$<$i MORERESPONSE>. ^yRoom: $%INROOM()% $d^.^N
+	MPSETVAR $i VALUE $<$i VALUE>. ^w$<$i MORERESPONSE>. ^HRoom: $%INROOM()% $d^.^N
 ~
