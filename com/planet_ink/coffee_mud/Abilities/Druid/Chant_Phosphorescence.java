@@ -59,7 +59,7 @@ public class Chant_Phosphorescence extends Chant
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_CHANT | Ability.DOMAIN_NATURELORE;
+		return Ability.ACODE_CHANT | Ability.DOMAIN_SHAPE_SHIFTING;
 	}
 
 	@Override

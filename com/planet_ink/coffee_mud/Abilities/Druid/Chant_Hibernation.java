@@ -59,7 +59,7 @@ public class Chant_Hibernation extends Chant
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;
+		return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;
 	}
 
 	@Override

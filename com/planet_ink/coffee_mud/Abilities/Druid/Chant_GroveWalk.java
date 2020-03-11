@@ -51,7 +51,7 @@ public class Chant_GroveWalk extends Chant
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;
 	}
 
 	@Override

@@ -51,7 +51,7 @@ public class Chant_FertileCavern extends Chant
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;
+		return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;
 	}
 
 	@Override
