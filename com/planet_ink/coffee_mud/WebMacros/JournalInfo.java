@@ -448,6 +448,20 @@ public class JournalInfo extends StdWebMacro
 					if(x>=0)
 						s=s.substring(0,x);
 				}
+				final StringBuilder s2=new StringBuilder("");
+				for(int i=0;i<s.length();i++)
+				{
+					if((s.charAt(i)=='<')
+					&&(i<s.length()-1)
+					&&(s.charAt(i+1)!='/')
+					&&(!s.substring(i).startsWith("<HR"))
+					&&(!s.substring(i).startsWith("<BR"))
+					&&(!s.substring(i).startsWith("<FONT")))
+						s2.append("&lt;");
+					else
+						s2.append(s.charAt(i));
+				}
+				s=s2.toString();
 				if(parms.containsKey("PLAIN"))
 				{
 					s=CMStrings.replaceAll(s,"%0D","\n");
