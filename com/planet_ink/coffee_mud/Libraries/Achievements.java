@@ -6259,7 +6259,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final String value = mob.playerStats().getAccount().getStat(stat);
 					if(CMath.isNumber(value))
 					{
-						awardMessage.append(L("^HYour account is awarded @x1!\n\r^?",aaward.getAmount() + " " + stat));
+						int amount=aaward.getAmount();
+						if("ARMOR".startsWith(stat))
+							amount = CMath.abs(amount);
+						awardMessage.append(L("^HYour account is awarded @x1!\n\r^?",amount + " " + stat));
 						mob.playerStats().getAccount().setStat(stat, "" + (CMath.s_int(value) + aaward.getAmount()));
 					}
 				}
@@ -6268,7 +6271,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					final String value = CMLib.coffeeMaker().getAnyGenStat(mob, aaward.getStat());
 					if(CMath.isNumber(value))
 					{
-						awardMessage.append(L("^HYou are awarded @x1!\n\r^?",aaward.getAmount() + " " + aaward.getStat()));
+						int amount=aaward.getAmount();
+						if("ARMOR".startsWith(aaward.getStat()))
+							amount = CMath.abs(amount);
+						awardMessage.append(L("^HYou are awarded @x1!\n\r^?",amount + " " + aaward.getStat()));
 						CMLib.coffeeMaker().setAnyGenStat(mob, aaward.getStat(), "" + (CMath.s_int(value) + aaward.getAmount()));
 						mob.recoverMaxState();
 						mob.recoverCharStats();
