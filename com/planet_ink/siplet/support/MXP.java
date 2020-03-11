@@ -386,6 +386,7 @@ public class MXP
 			System.out.println("/TAG>" + substr(buf, 0, buf.length()));
 			System.out.flush();
 		}
+		boolean selfCloser=false;
 		while ((bit != null) && ((++i) < buf.length()))
 		{
 			switch (buf.charAt(i))
@@ -476,6 +477,20 @@ public class MXP
 					bit = null;
 				}
 				break;
+			case '/':
+				if (quotes != '\0')
+					bit.append(buf.charAt(i));
+				else
+				if((i<buf.length()-1)
+				&&(buf.charAt(i+1)=='>'))
+				{
+					i++;
+					selfCloser=true;
+					if (bit.length() > 0)
+						parts.add(bit.toString());
+					bit = null;
+				}
+				break;
 			default:
 				if ((quotes != '\0') || (Character.isLetter(buf.charAt(i))) || (bit.length() > 0))
 					bit.append(buf.charAt(i));
@@ -496,7 +511,7 @@ public class MXP
 			lastC = buf.charAt(i);
 		}
 		// never hit the end, so let papa know
-		if ((i >= buf.length()) || (buf.charAt(i) != '>'))
+		if ((i >= buf.length()) || ((buf.charAt(i) != '>')&&(!selfCloser)))
 		{
 			if (tagDebug)
 			{
