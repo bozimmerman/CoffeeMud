@@ -88,7 +88,7 @@ settable vars:
 	<STRING ID="quest_instructionstring" SELECT="ALL">
 		<STRING ACTION="PREPEND">$reason_desc</STRING>
 		<STRING ACTION="APPEND">$reason_short</STRING>
-		<STRING>You must tell them &quot;${quest_message}&quot;.</STRING>
+		<STRING>You must tell them '${quest_message}'.</STRING>
 	</STRING>
 
 	<STRING ID="quest_message" PREDEFINE="reason=$reason">$quest_message</STRING>
@@ -117,10 +117,11 @@ settable vars:
 		<STRING>Thank you $$n, that will be all.</STRING>
 	</STRING>
 
-	<STRING define="quest_generic_traveled_message" SELECT="Any-1" >
+	<STRING id="quest_generic_traveled_message" SELECT="Any-1" >
 		<STRING>I have been sent by $source_name</STRING>
 		<STRING>I am here on behalf of $source_name</STRING>
 		<STRING>I have been asked by $source_name to meet you</STRING>
+		<STRING>${c:source_name} sent me to you</STRING>
 	</STRING>
 	
 	<STRING ID="reason_theyoweme" SELECT="All">
