@@ -4669,7 +4669,7 @@ public class ListCmd extends StdCommand
 						targets += ((usage.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
 						helpStr=helpStr.substring(end+1).trim();
 					}
-					while(helpStr.startsWith("Usage")||helpStr.startsWith("Parameters")||helpStr.startsWith("  "))
+					while(helpStr.startsWith("Usage")||helpStr.startsWith("Parameters"))
 					{
 						final int end=helpStr.indexOf("\n");
 						final int start=helpStr.indexOf(":");
@@ -4677,8 +4677,10 @@ public class ListCmd extends StdCommand
 							break;
 						usage += ((usage.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
 						helpStr=helpStr.substring(end+1).trim();
+						if(helpStr.startsWith("  ")||(helpStr.startsWith(":  ")))
+							helpStr="Usage"+helpStr.substring(1);
 					}
-					while(helpStr.startsWith("Example")||helpStr.startsWith("  "))
+					while(helpStr.startsWith("Example"))
 					{
 						final int end=helpStr.indexOf("\n");
 						final int start=helpStr.indexOf(":");
@@ -4686,6 +4688,8 @@ public class ListCmd extends StdCommand
 							break;
 						example += ((example.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
 						helpStr=helpStr.substring(end+1).trim();
+						if(helpStr.startsWith("  ")||(helpStr.startsWith(":  ")))
+							helpStr="Example"+helpStr.substring(1);
 					}
 					if(helpStr.startsWith("Description")||helpStr.startsWith("  "))
 					{
