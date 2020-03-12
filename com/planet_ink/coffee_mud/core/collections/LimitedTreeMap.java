@@ -107,10 +107,10 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 						if(p.second[0] >= then)
 							break;
 						v.remove();
-						this.remove(p.first);
+						this.internalRemove(p.first);
 					}
 				}
-				then -= expireMs/10;
+				then += expireMs/10;
 			}
 			while(size()>max);
 		}
@@ -161,17 +161,22 @@ public class LimitedTreeMap<K> extends TreeMap<String,K>
 		}
     }
 
-	@Override
-    public K remove(Object key)
+	protected K internalRemove(Object key)
 	{
 		if(key instanceof String)
 			key = caseLess?((String)key).toLowerCase():key;
-		check();
     	final K obj=super.remove(key);
 		synchronized(expirations)
 		{
     		expirations.remove(key);
 		}
     	return obj;
+	}
+
+	@Override
+    public K remove(final Object key)
+	{
+		check();
+		return internalRemove(key);
 	}
 }
