@@ -50,6 +50,19 @@ public class Skill_Befriend extends BardSkill
 	}
 
 	@Override
+	public String displayText()
+	{
+		final Physical P=affected;
+		if(P instanceof MOB)
+		{
+			final MOB M=((MOB)P).amFollowing();
+			if(M!=null)
+				return L("A friend to @x1.",M.Name());
+		}
+		return L("Someone's friend");
+	}
+
+	@Override
 	protected int canAffectCode()
 	{
 		return CAN_MOBS;
@@ -193,18 +206,17 @@ public class Skill_Befriend extends BardSkill
 					}
 				}
 				break;
-			case CMMsg.TYP_NOFOLLOW:
-				if(affected instanceof MOB)
-				{
-					final MOB M=(MOB)affected;
-					final MOB srcM=msg.source();
-					if(srcM==M.amFollowing())
-						unInvoke();
-				}
-				break;
 			default:
 				break;
 			}
+		}
+		else
+		if((msg.source() == affected)
+		&&(msg.targetMinor()==CMMsg.TYP_NOFOLLOW)
+		&&(msg.source().amFollowing()==msg.target()))
+		{
+			this.canBeUninvoked=true;
+			unInvoke();
 		}
 		return super.okMessage(myHost, msg);
 	}
