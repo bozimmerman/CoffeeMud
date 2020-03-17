@@ -152,7 +152,8 @@ set area $DESTINATION_AREA
 set room $DESTINATION_ROOM
 set wherehappened ROOM
 
-import abilities optional $QUEST_ID_destinationskill.xml
+optional
+import abilities $QUEST_ID_destinationskill.xml
 set abilitygroup loadedabilities
 set ability ANY
 
