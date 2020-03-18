@@ -21,6 +21,7 @@ template: normal_dispel1
 settable vars: 
     template(normal_dispel1)
     sub_template(bound, diseased, hurt, cursed, badspelled, crippled, bleeding, polymorphed)
+    category(whatevs)
     area_name(area name)
     source_name(mob name)
     targetarea_name(area name)
@@ -47,6 +48,7 @@ settable vars:
 		<QUEST_NAME>${C:reason_verb} $num_targets ${p:target_name} for ${C:source_name} in ${C:source_area_name}</QUEST_NAME>
 	</QUEST_NAME>
 	<QUEST_CRITERIA>+SYSOP +LEVELS -&lt;$[$target_level - $level_span] -&gt;$[$target_level + $level_span]</QUEST_CRITERIA>
+	<CATEGORY>$quest_category</CATEGORY>
 	<ANNOUNCER_AREA>"$source_area_name"</ANNOUNCER_AREA>
 	<ANNOUNCER_ROOM>"$source_room_id"</ANNOUNCER_ROOM>
 	<ANNOUNCER_NAME>"$source_name"</ANNOUNCER_NAME>

@@ -70,6 +70,11 @@ See guides/RandomAreas.html for information about documents of this type.
 
 <STRING id="next_quest_id" DEFINE="next_quest_id"></STRING>
 
+<STTRING id="quest_category" define="quest_category" SELECT="ANY-1">
+	<STRING condition="$category=''"></STRING> 
+	<STRING condition="$category!=''">$category</STRING> 
+</STTRING>
+
 <STRING ID="quest_multiple" DEFINE="quest_multiple" SELECT="Pick-1" >
 	<STRING PICKWEIGHT=98>PREV</STRING>
 	<STRING PICKWEIGHT=1>YES</STRING>

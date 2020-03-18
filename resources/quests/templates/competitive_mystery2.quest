@@ -257,11 +257,15 @@
 #$TARGET=$HIDDEN=$%QVAR(* TARGET)%
 #$AGENT=$HIDDEN=$%QVAR(* AGENT)%
 #$MOTIVE=$HIDDEN=$%QVAR(* MOTIVE)%
+#$CATEGORY=($HIDDEN)=
+#
 #!QUESTMAKER_END_SCRIPT Competitive Mystery #2
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
+set questtype competitive_mystery2
+set category $CATEGORY
 
 set wait $FREQUENCY
 set interval 1

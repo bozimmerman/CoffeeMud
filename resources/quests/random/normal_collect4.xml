@@ -20,6 +20,7 @@ See guides/RandomAreas.html for information about documents of this type.
 template: normal_collect4
 vars: 
     template(quest_template)
+    category(whatevs)
     area_name(area name)
     sourcename(mob name)
     targetskill(ANY or a skill ID)
@@ -38,6 +39,7 @@ vars:
 <QUEST ID="normal_collect4" QUEST_TEMPLATE_ID="normal_collect4">
 	<QUEST_ID DEFINE="quest_id">${_:source_area_name}_${_:source_name}_${h:quest_template}_R$[100000000?999999999]</QUEST_ID>
 	<QUEST_CRITERIA></QUEST_CRITERIA>
+	<CATEGORY>$quest_category</CATEGORY>
 	<ANNOUNCER_AREA>"$source_area_name"</ANNOUNCER_AREA>
 	<ANNOUNCER_ROOM>"$source_room_id"</ANNOUNCER_ROOM>
 	<ANNOUNCER_NAME>"$source_name"</ANNOUNCER_NAME>

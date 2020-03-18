@@ -136,11 +136,15 @@
 #to the designated room.  You may leave this blank if you like.
 #$TRAVEL_RESPONSE=($LONG_STRING)=Your journey is complete.
 #
+#$CATEGORY=($HIDDEN)=
+#
 #!QUESTMAKER_END_SCRIPT Competitive Travel #1
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
+set questtype competitive_travel1
+set category $CATEGORY
 
 set wait $FREQUENCY
 set interval 1

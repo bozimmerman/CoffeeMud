@@ -99,11 +99,15 @@
 #or 'prev' to require a previous quest, if multiple found.
 #$MULTIPLE=$CHOOSE=YES,NO,PREV
 #
+#$CATEGORY=($HIDDEN)=
+#
 #!QUESTMAKER_END_SCRIPT Normal Collect #5
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
+set questtype normal_collect5
+set category $CATEGORY
 
 set wait 1
 set interval 1

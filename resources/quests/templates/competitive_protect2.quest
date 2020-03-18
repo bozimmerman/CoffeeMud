@@ -171,11 +171,15 @@
 #mob in the designated room.  You may leave this blank if you like.
 #$PROTECTED_RESPONSE=($LONG_STRING)=Your protection task is complete.
 #
+#$CATEGORY=($HIDDEN)=
+#
 #!QUESTMAKER_END_SCRIPT Competitive Protected #2
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
+set questtype competitive_protect2
+set category $CATEGORY
 
 set wait $FREQUENCY
 set interval 1

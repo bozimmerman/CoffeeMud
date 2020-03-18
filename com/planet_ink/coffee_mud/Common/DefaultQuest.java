@@ -50,6 +50,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	protected String	author				= "";
 	protected String	displayName			= "";
 	protected String	startDate			= "";
+	protected String	questType			= "";
+	protected String	category			= "";
 	protected int		duration			= 450;// about		// 30	// minutes
 	protected boolean	expires				= false;
 	protected String	rawScriptParameter	= "";
@@ -113,6 +115,30 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
+	public String questTypeDesc()
+	{
+		return this.questType;
+	}
+
+	@Override
+	public void setQuestTypeDesc(final String newType)
+	{
+		this.questType = newType;
+	}
+
+	@Override
+	public String questCategory()
+	{
+		return this.category;
+	}
+
+	@Override
+	public void setQuestCategory(final String newCat)
+	{
+		this.category = newCat;
+	}
+
+	@Override
 	public CMObject copyOf()
 	{
 		try
@@ -160,41 +186,47 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	public Object getDesignatedObject(final String named)
 	{
 		final QCODES q=(QCODES)CMath.s_valueOf(QCODES.class, named.toUpperCase().trim());
-		final int code=(q==null)?-1:q.ordinal();
-		switch(code)
+		if(q != null)
 		{
-		case 0:
-			return ID();
-		case 1:
-			return name();
-		case 2:
-			return "" + duration();
-		case 3:
-			return "" + minWait();
-		case 4:
-			return "" + minPlayers();
-		case 5:
-			return "" + playerMask();
-		case 6:
-			return "" + runLevel();
-		case 7:
-			return "" + startDate();
-		case 8:
-			return "" + startDate();
-		case 9:
-			return "" + waitInterval();
-		case 10:
-			return SPAWN_DESCS[getSpawn()];
-		case 11:
-			return displayName();
-		case 12:
-			break; // instructions should fall through
-		case 13:
-			return Boolean.toString(durable);
-		case 14:
-			return "" + author();
-		case 15:
-			return ""+(isCopy()?duration():0);
+			switch(q)
+			{
+			case CLASS:
+				return ID();
+			case NAME:
+				return name();
+			case DURATION:
+				return "" + duration();
+			case WAIT:
+				return "" + minWait();
+			case MINPLAYERS:
+				return "" + minPlayers();
+			case PLAYERMASK:
+				return "" + playerMask();
+			case RUNLEVEL:
+				return "" + runLevel();
+			case DATE:
+				return "" + startDate();
+			case MUDDAY:
+				return "" + startDate();
+			case INTERVAL:
+				return "" + waitInterval();
+			case SPAWNABLE:
+				return SPAWN_DESCS[getSpawn()];
+			case DISPLAY:
+				return displayName();
+			case INSTRUCTIONS:
+				break; // instructions should fall through
+			case PERSISTANCE:
+				return Boolean.toString(durable);
+			case AUTHOR:
+				return "" + author();
+			case EXPIRATION:
+				return ""+(isCopy()?duration():0);
+			case QUESTTYPE:
+				return questType;
+			case CATEGORY:
+				return category;
+			}
 		}
 		return questState.getStat(named);
 	}
@@ -5512,6 +5544,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				}
 			}
 			break;
+		case 16: // questType
+			this.questType = val;
+			break;
+		case 17: // category
+			this.category = val;
+			break;
 		case 12: // instructions can and should fall through the default
 		default:
 			if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
@@ -5564,6 +5602,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			return Boolean.toString(durable);
 		case 14:
 			return author();
+		case 15: //  EXPIRATION
+			return "";
+		case 16:
+			return this.questType;
+		case 17:
+			return this.category;
 		case 12: // instructions can and should fall through the default
 		default:
 		{

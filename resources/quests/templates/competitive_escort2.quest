@@ -165,11 +165,15 @@
 #mobs to the designated room.  You may leave this blank if you like.
 #$ESCORTED_RESPONSE=($LONG_STRING)=The escort is complete.
 #
+#$CATEGORY=($HIDDEN)=
+#
 #!QUESTMAKER_END_SCRIPT Competitive Escort #2
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
+set questtype competitive_escort2
+set category $CATEGORY
 
 set wait $FREQUENCY
 set interval 1

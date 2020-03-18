@@ -141,11 +141,15 @@ the deliveree mobs local currency.
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
+#$CATEGORY=($HIDDEN)=
+#
 #!QUESTMAKER_END_SCRIPT Competitive Delivery #4
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
+set questtype competitive_delivery4
+set category $CATEGORY
 
 set wait $FREQUENCY
 set interval 1

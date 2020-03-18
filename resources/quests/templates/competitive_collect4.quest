@@ -136,11 +136,15 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
+#$CATEGORY=($HIDDEN)=
+#
 #!QUESTMAKER_END_SCRIPT Competitive Collect #4
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
+set questtype competitive_collect4
+set category $CATEGORY
 
 set wait $FREQUENCY
 set interval 1

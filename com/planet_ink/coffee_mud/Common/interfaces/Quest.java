@@ -78,6 +78,38 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	public void setAuthor(String newName);
 
 	/**
+	 * Returns the descriptive 'type' of the quest.
+	 * This is an arbitrary string for filtering.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setQuestTypeDesc(String)
+	 * @return the author of the quest
+	 */
+	public String questTypeDesc();
+
+	/**
+	 * Sets the descriptive 'type' of the quest.
+	 * This is an arbitrary string for filtering.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#questTypeDesc()
+	 * @param newType the descriptive type of the quest
+	 */
+	public void setQuestTypeDesc(String newType);
+
+	/**
+	 * Returns the descriptive 'category' of the quest.
+	 * This is an arbitrary string for filtering.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setQuestCategory(String)
+	 * @return the author of the quest
+	 */
+	public String questCategory();
+
+	/**
+	 * Sets the descriptive 'category' of the quest.
+	 * This is an arbitrary string for filtering.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#questCategory()
+	 * @param newCat the descriptive type of the quest
+	 */
+	public void setQuestCategory(String newCat);
+
+	/**
 	 * Returns the friendly display name of the quest
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setDisplayName(String)
 	 * @return the friendly display name of the quest
@@ -725,8 +757,9 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	public static enum QCODES
 	{
 		CLASS, NAME, DURATION, WAIT, MINPLAYERS, PLAYERMASK,
-		RUNLEVEL, DATE, MUDDAY, INTERVAL,SPAWNABLE, DISPLAY,
-		INSTRUCTIONS, PERSISTANCE, AUTHOR, EXPIRATION
+		RUNLEVEL, DATE, MUDDAY, INTERVAL,SPAWNABLE,
+		DISPLAY, INSTRUCTIONS, PERSISTANCE, AUTHOR, EXPIRATION,
+		QUESTTYPE, CATEGORY
 	}
 
 	/** The list of basic quest objects defined in an iterative fashion during quest script execution */

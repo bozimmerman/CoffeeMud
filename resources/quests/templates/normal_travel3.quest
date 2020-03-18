@@ -128,11 +128,15 @@
 #
 #$DESTINATION_SKILL_XML=($HIDDEN)=
 #
+#$CATEGORY=($HIDDEN)=
+#
 #!QUESTMAKER_END_SCRIPT Normal Travel #3
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
+set questtype normal_travel3
+set category $CATEGORY
 
 set wait 1
 set interval 1

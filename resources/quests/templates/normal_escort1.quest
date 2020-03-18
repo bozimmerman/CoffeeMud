@@ -139,11 +139,15 @@
 #$ESCORTED_RESPONSE=($LONG_STRING)=The escort is complete.
 #
 #
+#$CATEGORY=($HIDDEN)=
+#
 #!QUESTMAKER_END_SCRIPT Normal Escort #1
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
+set questtype normal_escort1
+set category $CATEGORY
 
 set wait 1
 set interval 1

@@ -123,11 +123,15 @@ verbal message to them.  A reward is optionally given upon arrival.
 #or 'prev' to require a previous quest, if multiple found.
 #$MULTIPLE=$CHOOSE=YES,NO,PREV
 #
+#$CATEGORY=($HIDDEN)=
+#
 #!QUESTMAKER_END_SCRIPT Normal Travel #4
 
 set name $QUEST_ID
 set display $QUEST_NAME
 set author $#AUTHOR
+set questtype normal_travel4
+set category $CATEGORY
 
 set wait 1
 set interval 1
