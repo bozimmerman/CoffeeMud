@@ -222,7 +222,8 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public String[] parseEval(final String evaluable) throws ScriptParseException {
+	public String[] parseEval(final String evaluable) throws ScriptParseException
+	{
 		return (sampleB==null)?new String[0]:sampleB.parseEval(evaluable);
 	}
 
@@ -256,16 +257,17 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 
 	@Override
 	public String varify(final MOB source, final Environmental target,
-		final PhysicalAgent scripted, final MOB monster, final Item primaryItem,
-		final Item secondaryItem, final String msg, final Object[] tmp, final String varifyable)
+						 final PhysicalAgent scripted, final MOB monster, final Item primaryItem,
+						 final Item secondaryItem, final String msg, final Object[] tmp, final String varifyable)
 	{
 		return (sampleB==null)?"":sampleB.varify(source, target, scripted, monster, primaryItem, secondaryItem, msg, tmp, varifyable);
 	}
 
 	@Override
-	public String functify(final PhysicalAgent scripted, final MOB source, final Environmental target, final MOB monster, final Item primaryItem,
-							final Item secondaryItem, final String msg, final Object[] tmp, final String evaluable)
-							{
+	public String functify(final PhysicalAgent scripted, final MOB source, final Environmental target, final MOB monster,
+						   final Item primaryItem, final Item secondaryItem, final String msg, final Object[] tmp,
+						   final String evaluable)
+	{
 		return (sampleB==null)?"":sampleB.functify(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, evaluable);
 	}
 }
