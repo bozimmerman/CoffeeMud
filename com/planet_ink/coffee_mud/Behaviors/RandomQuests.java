@@ -62,6 +62,7 @@ public class RandomQuests extends ActiveTicker
 	protected int					maxQuests	= 1;
 	protected int					numQuests	= -1;
 	protected int					maxAttempts	= 3;
+	protected boolean				inline		= false;
 	protected String				expireTime	= "3 hours";
 	protected String				tagId		= "all_quests";
 	protected String				filePath	= "randareas/example.xml";
@@ -92,8 +93,9 @@ public class RandomQuests extends ActiveTicker
 		maxAttempts=CMParms.getParmInt(parms,"maxattempts",maxAttempts);
 		expireTime=CMParms.getParmStr(parms, "expire", expireTime);
 		tagId=CMParms.getParmStr(parms, "tagid", tagId);
+		inline=CMParms.getParmBool(parms, "inline", false);
 		numQuests=-1;
-		final String[] igore= {"PATH", "MINQUESTS", "MAXQUESTS", "MIN", "MAX", "CHANCE", "EXPIRE", "TAGID", "MAXATTEMPTS"};
+		final String[] igore= {"PATH", "MINQUESTS", "MAXQUESTS", "MIN", "MAX", "CHANCE", "EXPIRE", "TAGID", "MAXATTEMPTS", "INLINE"};
 		final Map<String,String> parms=CMParms.parseEQParms(newParms);
 		varMap.clear();
 		for(final String key :parms.keySet())
@@ -267,12 +269,38 @@ public class RandomQuests extends ActiveTicker
 						myQuests.remove(i);
 				}
 			}
+			final GenerateAQuest generator=new GenerateAQuest(ticking);
 			if(myQuests.size() < numQuests)
 			{
-				final GenerateAQuest generator=new GenerateAQuest(ticking);
-				CMLib.threads().executeRunnable(generator);
+				if(inline)
+				{
+					while(myQuests.size() < numQuests)
+						generator.run();
+				}
+				else
+					CMLib.threads().executeRunnable(generator);
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public String getStat(final String code)
+	{
+		if(code.equalsIgnoreCase("NUMQUESTS"))
+			return ""+numQuests;
+		else
+		if(code.equalsIgnoreCase("QUEST"))
+		{
+			if(myQuests.size()==0)
+				return "";
+			for(final Reference<Quest> r : myQuests)
+			{
+				if(r.get()!=null)
+					return r.get().name();
+			}
+			return "";
+		}
+		return super.getStat(code);
 	}
 }
