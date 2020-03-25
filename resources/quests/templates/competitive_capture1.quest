@@ -178,6 +178,7 @@ set display $QUEST_NAME
 set author $#AUTHOR
 set questtype competitive_capture1
 set category $CATEGORY
+set instructions $QUEST_INSTRUCTIONSSTRING
 
 set wait $FREQUENCY
 set interval 1
@@ -209,6 +210,7 @@ set duration $DURATION
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
+	MPQSET * INSTRUCTIONS $i in $a wants you to '$QUEST_INSTRUCTIONSSTRING'
 	MPSETVAR * $QUEST_ID_ALREADY_TOLD ''
 	MPSETVAR * $QUEST_ID_REWARDED ''
 	MPSETVAR * $QUEST_ID_WARNED ''
@@ -310,21 +312,32 @@ ALL_GREET_PROG 100
 	endif
 ~
 
-SPEECH_PROG p i accept
+FUNCTION_PROG CAN_ACCEPT
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
-		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if VAR($n $QUEST_ID_ACCEPTED == '')
-				sayto "$n" $QUEST_INSTRUCTIONSSTRING
-				mpqset * REMAINING $DURATION
-				mpqset * STATISTICS ACCEPTED
-                mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
-				MPSETVAR $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
-				mpsetvar $n $QUEST_ID_ACCEPTED 'YES'
-				mpsetvar $n $QUEST_ID_CAPTURED 0
-			else
-				sayto "$n" Yes, yes, I know .. now off with you.
+				RETURN
 			endif
 		endif
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	mpqset * REMAINING $DURATION
+	mpqset * STATISTICS ACCEPTED
+	mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
+	MPSETVAR $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
+	mpsetvar $n $QUEST_ID_ACCEPTED 'YES'
+	mpsetvar $n $QUEST_ID_CAPTURED 0
+~
+
+SPEECH_PROG p i accept
+	if CALLFUNC(CAN_ACCEPT)
+		sayto "$n" $QUEST_INSTRUCTIONSSTRING
+		MPCALLFUNC DO_ACCEPT
+	else
+		sayto "$n" Yes, yes, I know .. now off with you.
 	endif
 ~
 </DATA></FILE>

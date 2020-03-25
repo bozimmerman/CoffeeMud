@@ -124,6 +124,37 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	public void setDisplayName(String newName);
 
 	/**
+	 * Returns the friendly third person instructions of the quest
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setInstructions(String)
+	 * @return the friendly third person instructions of the quest
+	 */
+	public String instructions();
+
+	/**
+	 * Sets the friendly third person instructions of the quest
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#instructions()
+	 * @param instructions the friendly third person instructions of the quest
+	 */
+	public void setInstructions(String instructions);
+
+	/**
+	 * Returns whether the given mob can accept this quest.  If the mob
+	 * is null, this method should return whether this quest even
+	 * supports auto-accepting at all.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#acceptQuest()
+	 * @param mob the mob to check
+	 * @return true if the quest can be accepted by this mob
+	 */
+	public boolean canAcceptQuest(final MOB mob);
+
+	/**
+	 * Causes the given mob to accept the quest.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#canAcceptQuest()
+	 * @param mob the mob to accept
+	 */
+	public void acceptQuest(final MOB mob);
+
+	/**
 	 * Returns the unique start date of the quest.  The format
 	 * is either MONTH-DAY for real life dates, or
 	 * MUDDAY MONTH-DAY for mudday based dates.

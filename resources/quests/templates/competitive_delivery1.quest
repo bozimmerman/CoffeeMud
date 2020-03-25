@@ -162,6 +162,7 @@ set display $QUEST_NAME
 set author $#AUTHOR
 set questtype competitive_delivery1
 set category $CATEGORY
+set instructions Deliver these to $DELIVEREE_COUNT ${2 *}.  $REASONING
 
 set wait $FREQUENCY
 set interval 1
@@ -197,6 +198,7 @@ set duration $DURATION
 <FILE><NAME>$QUEST_ID_deliverer.script</NAME>
 <DATA>
 ONCE_PROG 100
+	MPQSET * INSTRUCTIONS $i in $a wants you to 'Deliver these to $DELIVEREE_COUNT ${2 *}.  $REASONING'
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
@@ -229,34 +231,61 @@ SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to d
 	endif
 ~
 
-SPEECH_PROG p i accept
+FUNCTION_PROG CAN_ACCEPT
+	MPQSET * Deliver these to $DELIVEREE_COUNT ${2 *}.  $REASONING
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
-		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if !has($n '$[1 *]')
-				if EVAL($DELIVEREE_COUNT > 1)
-					for $0 = 0 to< $DELIVEREE_COUNT
-						if !has($i '$[1 *]')
-							mpoload '$[1 *]'
-							MPQSET * QUESTOBJ $b
-						endif
-						give "$[1 *]" "$n"
-					next 
-					sayto "$n" Please deliver these to $DELIVEREE_COUNT ${2 *}.  $REASONING
-				else
-					if !has($i '$[1 *]')
-						mpoload '$[1 *]'
-						MPQSET * QUESTOBJ $b
-					endif
-					give "$[1 *]" "$n"
-					sayto "$n" Please deliver this to ${2 *}.  $REASONING
-				endif 
-				mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
-				mpqset * REMAINING $DURATION
-				mpqset * STATISTICS ACCEPTED
-			else
-				sayto "$n" Yes, I know.  Now deliver it to ${2 *}.
+				RETURN
 			endif
 		endif
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	if EVAL($DELIVEREE_COUNT > 1)
+		for $0 = 0 to< $DELIVEREE_COUNT
+			if !has($i '$[1 *]')
+				mpat $n mpforce $n mpoload '$[1 *]'
+				MPQSET * QUESTOBJ $b
+				mpat $n mpechoat $n You receive $b.
+			endif
+		next 
+	else
+		mpat $n mpforce $n mpoload '$[1 *]'
+		MPQSET * QUESTOBJ $b
+		mpat $n mpechoat $n You receive $b.
+	endif 
+	mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
+	mpqset * REMAINING $DURATION
+	mpqset * STATISTICS ACCEPTED
+~
+
+SPEECH_PROG p i accept
+	if CALLFUNC(CAN_ACCEPT)
+		if EVAL($DELIVEREE_COUNT > 1)
+			for $0 = 0 to< $DELIVEREE_COUNT
+				if !has($i '$[1 *]')
+					mpoload '$[1 *]'
+					MPQSET * QUESTOBJ $b
+				endif
+				give "$[1 *]" "$n"
+			next 
+			sayto "$n" Please deliver these to $DELIVEREE_COUNT ${2 *}.  $REASONING
+		else
+			if !has($i '$[1 *]')
+				mpoload '$[1 *]'
+				MPQSET * QUESTOBJ $b
+			endif
+			give "$[1 *]" "$n"
+			sayto "$n" Please deliver this to ${2 *}.  $REASONING
+		endif 
+		mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
+		mpqset * REMAINING $DURATION
+		mpqset * STATISTICS ACCEPTED
+	else
+		sayto "$n" Yes, I know.  Now deliver it to ${2 *}.
 	endif
 ~
 	

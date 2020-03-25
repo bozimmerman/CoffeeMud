@@ -153,6 +153,7 @@ set display $QUEST_NAME
 set author $#AUTHOR
 set questtype competitive_delivery2
 set category $CATEGORY
+set instructions Deliver this to $DESTINATION_DESC.  $REASONING
 
 set wait $FREQUENCY
 set interval 1
@@ -194,6 +195,7 @@ QUEST_TIME_PROG * 1
 <FILE><NAME>$QUEST_ID_deliverer.script</NAME>
 <DATA>
 ONCE_PROG 100
+	mpqset * INSTRUCTIONS $i in $a wants you to 'Deliver $[1 *] to $DESTINATION_DESC.  $REASONING'
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
@@ -226,22 +228,38 @@ SPEECH_PROG mission problem package quest help delivery deliver 'me to do' 'to d
 	endif
 ~
 
-SPEECH_PROG p i accept
+FUNCTION_PROG CAN_ACCEPT
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
-		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if has($i '$[1 *]') and !has($n '$[1 *]')
-#				mpoload '$[1 *]'
-				give "$[1 *]" "$n"
-				sayto "$n" Please deliver this to $DESTINATION_DESC.  $REASONING
-				mpqset * REMAINING $DURATION
-				mpqset * STATISTICS ACCEPTED
-                mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
-			else
-				if has($n '$[1 *]')
-					sayto "$n" Yes, I know.  Now deliver it to $DESTINATION_DESC.
-				endif
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !has($n '$[1 *]')
+				RETURN
 			endif
 		endif
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	if !has($n '$[1 *]')
+		mpat $n mpforce $n mpoload '$[1 *]'
+		MPQSET * QUESTOBJ $b
+		mpat $n mpechoat $n You receive $b.
+	endif
+	mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
+	mpqset * REMAINING $DURATION
+	mpqset * STATISTICS ACCEPTED
+~
+
+SPEECH_PROG p i accept
+	if CALLFUNC(CAN_ACCEPT) AND has($i '$[1 *]') 
+		give "$[1 *]" "$n"
+		MPQSET * QUESTOBJ $b
+		sayto "$n" Please deliver this to $DESTINATION_DESC.  $REASONING
+		mpqset * REMAINING $DURATION
+		mpqset * STATISTICS ACCEPTED
+		mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
+	else
+		sayto "$n" Yes, I know.  Now deliver it to $DESTINATION_DESC.
 	endif
 ~
 	

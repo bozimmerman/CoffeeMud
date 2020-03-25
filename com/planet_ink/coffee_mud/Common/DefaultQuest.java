@@ -52,6 +52,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	protected String	startDate			= "";
 	protected String	questType			= "";
 	protected String	category			= "";
+	protected String	instructions		= "";
 	protected int		duration			= 450;// about		// 30	// minutes
 	protected boolean	expires				= false;
 	protected String	rawScriptParameter	= "";
@@ -74,6 +75,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
 	protected final Map<String,Long>	stepEllapsedTimes	= new Hashtable<String,Long>();
 	protected final Map<String,Long>	winners				= new CaselessTreeMap<Long>();
+	protected volatile Behavable		checkAcceptHost		= null;
+	protected volatile ScriptingEngine	checkAcceptEng		= null;
+	protected final Object[] 			objs				= new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
 
 	// the unique name of the quest
 	@Override
@@ -115,6 +119,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
+	public String instructions()
+	{
+		return instructions;
+	}
+
+	@Override
+	public void setInstructions(final String instructions)
+	{
+		this.instructions = instructions;
+	}
+
+	@Override
 	public String questTypeDesc()
 	{
 		return this.questType;
@@ -136,6 +152,91 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	public void setQuestCategory(final String newCat)
 	{
 		this.category = newCat;
+	}
+
+	protected ScriptingEngine ensureEngine()
+	{
+		if((checkAcceptHost == null)
+		||(this.checkAcceptEng==null)
+		||((checkAcceptHost.fetchBehavior(checkAcceptEng.ID())!=checkAcceptEng)
+			&&(!CMParms.contains(checkAcceptHost.scripts(),checkAcceptEng))))
+		{
+			for(final Iterator<List<Object>> l = questState.addons.firstIterator();l.hasNext();)
+			{
+				final List<Object> V = l.next();
+				if((V.size()>1)&&(V.get(1) instanceof ScriptingEngine))
+				{
+					final Behavable B=(Behavable)V.get(0);
+					final ScriptingEngine E=(ScriptingEngine)V.get(1);
+					if(((B.fetchBehavior(E.ID())==E) || (CMParms.contains(B.scripts(),E)))
+					&&(E.isFunc("DO_ACCEPT"))
+					&&(E.isFunc("CAN_ACCEPT")))
+					{
+						this.checkAcceptHost=(Behavable)V.get(0);
+						this.checkAcceptEng=E;
+						break;
+					}
+				}
+			}
+		}
+		return checkAcceptEng;
+	}
+
+	@Override
+	public boolean canAcceptQuest(final MOB mob)
+	{
+		if(!running() || stopping())
+			return false;
+		if(mob != null)
+		{
+			if((playerMask() != null)
+			&&(playerMask().length()>0)
+			&&(!CMLib.masking().maskCheck(playerMask(), mob, true)))
+				return false;
+			for(final Enumeration<ScriptingEngine> e= mob.scripts();e.hasMoreElements();)
+			{
+				final ScriptingEngine E = e.nextElement();
+				if((E.defaultQuestName()!=null)
+				&&(name().equalsIgnoreCase(E.defaultQuestName())))
+					return false;
+			}
+		}
+		final ScriptingEngine acceptEng = this.ensureEngine();
+		if(acceptEng != null)
+		{
+			final Behavable B = this.checkAcceptHost;
+			if(!(B instanceof Environmental))
+				return false;
+			if(mob==null)
+				return true;
+			final PhysicalAgent P=(B instanceof PhysicalAgent)?(PhysicalAgent)B:mob;
+			final MOB M=(B instanceof MOB)?(MOB)B:mob;
+			String eval = acceptEng.callFunc("CAN_ACCEPT", mob.Name(), P, mob, (Environmental) B, M, null, null, mob.Name(), objs);
+			if(eval == null)
+				return false;
+			eval=eval.toLowerCase();
+			return (eval.startsWith("t")||(eval.length()==0));
+		}
+		return false;
+	}
+
+	@Override
+	public void acceptQuest(final MOB mob)
+	{
+		final ScriptingEngine acceptEng = this.ensureEngine();
+		if(acceptEng != null)
+		{
+			final Behavable B = this.checkAcceptHost;
+			if(!(B instanceof Environmental))
+				return;
+			if(mob==null)
+				return;
+			if(!this.canAcceptQuest(mob))
+				return;
+			final PhysicalAgent P=(B instanceof PhysicalAgent)?(PhysicalAgent)B:mob;
+			final MOB M=(B instanceof MOB)?(MOB)B:mob;
+			acceptEng.callFunc("DO_ACCEPT", mob.Name(), P, mob, (Environmental) B, M, null, null, mob.Name(), objs);
+		}
 	}
 
 	@Override
@@ -215,7 +316,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			case DISPLAY:
 				return displayName();
 			case INSTRUCTIONS:
-				break; // instructions should fall through
+				return instructions();
 			case PERSISTANCE:
 				return Boolean.toString(durable);
 			case AUTHOR:
@@ -3629,7 +3730,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									CMLib.threads().deleteTick(E2, Tickable.TICKID_ITEM_BEHAVIOR); //OMG WHY?!?!/????!!
 								synchronized(questState)
 								{
-									questState.addons.addElement(new XVector<Object>(E2,S),Integer.valueOf(questState.preserveState));
+									questState.addons.add(new XVector<Object>(E2,S),Integer.valueOf(questState.preserveState));
 								}
 							}
 						}
@@ -4036,15 +4137,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					{
 						try
 						{
-							final Integer I=(Integer)questState.addons.elementAt(i,2);
+							final Integer I=questState.addons.get(i).second;
 							if(I.intValue()>0)
 							{
-								questState.addons.setElementAt(i,2,Integer.valueOf(I.intValue()-1));
+								questState.addons.get(i).second=Integer.valueOf(I.intValue()-1);
 								continue;
 							}
-							@SuppressWarnings("unchecked")
-							final List<Object> V=(List<Object>)questState.addons.elementAt(i,1);
-							questState.addons.removeElementAt(i);
+							final List<Object> V=questState.addons.get(i).first;
+							questState.addons.remove(i);
 							if(V.size()<2)
 								continue;
 							final Environmental E=(Environmental)V.get(0);
@@ -4255,7 +4355,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			for(final PreservedQuestObject PO : questState.worldObjects)
 				PO.preserveState=0;
 			for(int q=0;q<questState.addons.size();q++)
-				questState.addons.setElementAt(q,2,Integer.valueOf(0));
+				questState.addons.get(q).second=Integer.valueOf(0);
 			questState.autoStepAfterDuration=false;
 		}
 		cleanQuestStep();
@@ -4686,7 +4786,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 		synchronized(questState)
 		{
-			questState.addons.addElement(V,Integer.valueOf(questState.preserveState));
+			questState.addons.add(V,Integer.valueOf(questState.preserveState));
 		}
 	}
 
@@ -4759,7 +4859,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 		synchronized(questState)
 		{
-			questState.addons.addElement(V,Integer.valueOf(questState.preserveState));
+			questState.addons.add(V,Integer.valueOf(questState.preserveState));
 		}
 	}
 
@@ -4799,7 +4899,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		B.registerDefaultQuest(name());
 		synchronized(questState)
 		{
-			questState.addons.addElement(V,Integer.valueOf(questState.preserveState));
+			questState.addons.add(V,Integer.valueOf(questState.preserveState));
 		}
 	}
 
@@ -4853,7 +4953,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 		synchronized(questState)
 		{
-			questState.addons.addElement(V,Integer.valueOf(questState.preserveState));
+			questState.addons.add(V,Integer.valueOf(questState.preserveState));
 		}
 	}
 
@@ -5526,6 +5626,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 11:
 			setDisplayName(val);
 			break;
+		case 12: // instructions can and should fall through the default
+			this.instructions = val;
+			break;
 		case 13:
 			durable = CMath.s_bool(val);
 			break;
@@ -5550,7 +5653,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 17: // category
 			this.category = val;
 			break;
-		case 12: // instructions can and should fall through the default
 		default:
 			if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
 				ticksRemaining=CMLib.time().parseTickExpression(val);
@@ -5598,6 +5700,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			return SPAWN_DESCS[getSpawn()];
 		case 11:
 			return displayName();
+		case 12:
+			return instructions();
 		case 13:
 			return Boolean.toString(durable);
 		case 14:
@@ -5608,7 +5712,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			return this.questType;
 		case 17:
 			return this.category;
-		case 12: // instructions can and should fall through the default
 		default:
 		{
 			code=code.toUpperCase().trim();
@@ -5746,10 +5849,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		//  1=Effect, 2=String (for an Effect modified)
 		//  1=Behavior (for an Behavior added)
 		//  1=Behavior, 2=String (for an Behavior modified)
-		public DVector						addons					= new DVector(2);
-		public Map<String, String>			vars					= new STreeMap<String, String>();
-		public List<PhysicalAgent>			reselectable			= new Vector<PhysicalAgent>();
-		public List<PreservedQuestObject>	worldObjects			= new SVector<PreservedQuestObject>();
+		public PairList<List<Object>,Integer>	addons			= new PairVector<List<Object>,Integer>();
+		public Map<String, String>				vars			= new STreeMap<String, String>();
+		public List<PhysicalAgent>				reselectable	= new Vector<PhysicalAgent>();
+		public List<PreservedQuestObject>		worldObjects	= new SVector<PreservedQuestObject>();
 
 		public boolean isStat(String statName)
 		{

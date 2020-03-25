@@ -169,14 +169,42 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 	 * @return the results of the function expression
 	 */
 	public String functify(PhysicalAgent scripted,
-							MOB source,
-							Environmental target,
-							MOB monster,
-							Item primaryItem,
-							Item secondaryItem,
-							String msg,
-							Object[] tmp,
-							String evaluable);
+						   MOB source,
+						   Environmental target,
+						   MOB monster,
+						   Item primaryItem,
+						   Item secondaryItem,
+						   String msg,
+						   Object[] tmp,
+						   String evaluable);
+
+	/**
+	 * Called a func with the given name, sending the given parms, and returning its
+	 * return value, if any, or null.  Does the same thing as MPCAlLFUNC
+	 *
+	 * @param named the name of the FUNCTION_PROG to call
+	 * @param parms parameters to send as $g
+	 * @param scripted the object that is scripted
+	 * @param source the source of the event
+	 * @param target the target of the event
+	 * @param monster a mob representation of the scripted object
+	 * @param primaryItem an item involved in the event
+	 * @param secondaryItem a second item involved in the event
+	 * @param msg a string message associated with the event
+	 * @param tmp miscellaneous local variables
+	 * @return the return code, or null if function isn't found
+	 */
+	public String callFunc(final String named, final String parms, final PhysicalAgent scripted, final MOB source, final Environmental target,
+						   final MOB monster, final Item primaryItem, final Item secondaryItem, final String msg, final Object[] tmp);
+
+
+	/**
+	 * Returns whether the script has a function with the given name.
+	 * @param named the FUNCTION_PROG to look for
+	 * @return true if it is found, false otherwise
+	 */
+	public boolean isFunc(final String named);
+
 	/**
 	 * Calling this method forces this script to look for a trigger
 	 * dealing with the end of a quest (QUEST_TIME_PROG * -1).
@@ -692,7 +720,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		"ENDSWITCH", //94 JUST for catching errors...
 		"NEXT", //95 JUST for catching errors...
 		"CASE", //96 JUST for catching errors...
-		"DEFAULT" //97 JUST for catching errors...
+		"DEFAULT", //97 JUST for catching errors...
 	};
 
 	/** a list of the different parts of a time clock */

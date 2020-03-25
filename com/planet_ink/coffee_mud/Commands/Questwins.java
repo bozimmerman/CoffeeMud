@@ -324,11 +324,13 @@ public class Questwins extends StdCommand
 			if(!Q.name().equals(name))
 				name+=" ("+Q.name()+")";
 			mob.tell(L("^HQuest Information: ^w@x1^N",name));
-			String instructions=foundS.getVar("*","INSTRUCTIONS");
+			String instructions = Q.instructions();
+			if((instructions==null)||(instructions.length()==0))
+				instructions=foundS.getVar("*","INSTRUCTIONS");
 			if((instructions==null)||(instructions.length()==0))
 				instructions=Q.isStat("INSTRUCTIONS")?Q.getStat("INSTRUCTIONS"):null;
 			if((instructions==null)||(instructions.length()==0))
-				instructions="No further information available.";
+				instructions=L("No further information available.");
 			String timeRemaining=foundS.getVar("*","TIME_REMAINING");
 			if((timeRemaining!=null)&&(timeRemaining.length()>0))
 			{

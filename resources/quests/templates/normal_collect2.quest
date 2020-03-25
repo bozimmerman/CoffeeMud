@@ -138,6 +138,7 @@ set display $QUEST_NAME
 set author $#AUTHOR
 set questtype normal_collect2
 set category $CATEGORY
+set instructions $QUEST_INSTRUCTIONSSTRING
 
 set wait 1
 set interval 1
@@ -171,6 +172,7 @@ set duration 0
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
+	MPQSET * INSTRUCTIONS $i in $a wants you to '$QUEST_INSTRUCTIONSSTRING'
 	if EVAL('$QUEST_ANNOUNCECHANNEL' != '')
 		$QUEST_ANNOUNCECHANNEL $QUEST_NOTIFYSTRING -- Come see me for more information.
 	endif
@@ -229,27 +231,32 @@ GIVE_PROG all
 	endif
 ~
 
-SPEECH_PROG p i accept $QUEST_NAME
+FUNCTION_PROG CAN_ACCEPT
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
-		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if !QUESTSCRIPTED($n *)
-				sayto "$n" $QUEST_INSTRUCTIONSSTRING
-				mpqset * STATISTICS ACCEPTED
-				mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+				RETURN
 			endif
 		endif
 	endif
+	RETURN CANCEL
 ~
 
+FUNCTION_PROG DO_ACCEPT
+	mpqset * STATISTICS ACCEPTED
+	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+~
+
+SPEECH_PROG p i accept $QUEST_NAME
+	if CALLFUNC(CAN_ACCEPT)
+		sayto "$n" $QUEST_INSTRUCTIONSSTRING
+		MPCALLFUNC DO_ACCEPT
+	endif
+~
 SPEECH_PROG p i accept
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
-		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if !QUESTSCRIPTED($n *)
-				sayto "$n" $QUEST_INSTRUCTIONSSTRING
-				mpqset * STATISTICS ACCEPTED
-				mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
-			endif
-		endif
+	if CALLFUNC(CAN_ACCEPT)
+		sayto "$n" $QUEST_INSTRUCTIONSSTRING
+		MPCALLFUNC DO_ACCEPT
 	endif
 ~
 </DATA></FILE>

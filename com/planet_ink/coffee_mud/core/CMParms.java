@@ -4068,6 +4068,23 @@ public class CMParms
 		return indexOfFirst(theList,objs)>=0;
 	}
 
+
+	/**
+	 * Returns whether the given Object appears in the given enumeration of Objects.
+	 * It is equals sensitive.
+	 * @param e the enumeration
+	 * @param obj the Object to search for
+	 * @return true if the obj is in the list, false otherwise
+	 */
+	public final static boolean contains(final Enumeration<? extends Object> e, final Object obj)
+	{
+		for(;e.hasMoreElements();)
+		{
+			if(e.nextElement().equals(obj))
+				return true;
+		}
+		return false;
+	}
 	/**
 	 * Returns whether the given int appears in the given list.
 	 * @param theList the list

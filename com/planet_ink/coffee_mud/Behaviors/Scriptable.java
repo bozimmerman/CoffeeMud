@@ -226,6 +226,19 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
+	public String callFunc(final String named, final String parms, final PhysicalAgent scripted, final MOB source, final Environmental target,
+			   final MOB monster, final Item primaryItem, final Item secondaryItem, final String msg, final Object[] tmp)
+	{
+		return engine().callFunc(named, parms, scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp);
+	}
+
+	@Override
+	public boolean isFunc(final String named)
+	{
+		return engine().isFunc(named);
+	}
+
+	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);

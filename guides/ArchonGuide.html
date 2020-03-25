@@ -1,7 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
 <meta name="generator" content="HTML Tidy, see www.w3.org">
-<meta name="GENERATOR" content="Microsoft Visual Studio 6.0"><title></title></head>
+<meta name="GENERATOR" content="Microsoft Visual Studio 6.0"><title></title>
+
+</head>
 <body style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);" alink="#0000ee" link="#0000ee" vlink="#551a8b">
 <a href="#appd"><img src="images/paperclip.jpg" alt="Index" align="left" height="35" width="27"></a>
 <p style="text-align: center;" align="center"><strong><span style="font-size: 18pt;"><font size="6">The
@@ -752,9 +754,35 @@ Ships can be initially docked here.</td>
 <td>ShallowWater</td>
 <td>a wet, outdoor area</td>
 </tr>
-<tr><td>ShipDeck</td><td>for prototyping Sailing Ships, a wooden deck with limited capacity</td></tr><tr><td>ShipHold</td><td>for prototyping&nbsp;Sailing Ships, a wooden room with high, but limited capacity</td></tr><tr><td>ShipMagazine</td><td>for prototyping Sailing Ships, a wooden room with med, but limited capacity</td></tr><tr><td>ShipLightGunDeck<br>ShipMedGunDeck<br>ShipHeavyGunDeck</td><td>for
+<tr>
+<td>ShipDeck</td>
+<td>for prototyping Sailing Ships, a wooden deck with
+limited capacity</td>
+</tr>
+<tr>
+<td>ShipHold</td>
+<td>for prototyping&nbsp;Sailing Ships, a wooden room
+with high, but limited capacity</td>
+</tr>
+<tr>
+<td>ShipMagazine</td>
+<td>for prototyping Sailing Ships, a wooden room with med,
+but limited capacity</td>
+</tr>
+<tr>
+<td>ShipLightGunDeck<br>
+ShipMedGunDeck<br>
+ShipHeavyGunDeck</td>
+<td>for
 prototyping Sailing ships, a wooden deck with low capacity, but which
-allows an increasing number of siege engines at around 200 pounds each.</td></tr><tr><td>ShipQuarter</td><td>for prototyping Sailing Ships, a wooden room with low limited capacity</td></tr><tr>
+allows an increasing number of siege engines at around 200 pounds each.</td>
+</tr>
+<tr>
+<td>ShipQuarter</td>
+<td>for prototyping Sailing Ships, a wooden room with low
+limited capacity</td>
+</tr>
+<tr>
 <td>Shore</td>
 <td>some solid ground to
 fish from, if water is nearby</td>
@@ -1804,8 +1832,11 @@ of the random rooms, a &nbsp;<span style="font-style: italic;">level_range
 level range of your area, an <span style="font-style: italic;">aggrochance
 </span>formula
 to determine
-the percentage chance the random mobs are aggressive,&nbsp;an areasize
-formula to determine the number of rooms in the new area, and <span style="font-style: italic;">passivemins</span> to set the number of minutes an instance remains passive before being deleted. &nbsp;You
+the percentage chance the random mobs are aggressive,&nbsp;an
+areasize
+formula to determine the number of rooms in the new area, and <span style="font-style: italic;">passivemins</span> to set
+the number of minutes an instance remains passive before being deleted.
+&nbsp;You
 may
 insert the string @x1 through @x7 into your math formulas to substitute
 the current
@@ -2451,7 +2482,8 @@ Rejuvenating Items and Mobs" or "How to Save a Room".<br>
 If this item is located in a mobs inventory, this value represents the
 % chance of it NOT appearing in the mobs inventory after reset. In this
 case, the value should be between 1-100, or 0 to also
-represent&nbsp;always available, or -1 to make an item only appear at
+represent&nbsp;always available, or -1 to make an item only appear
+at
 boot time. See
 the section on "Equipping Mobs" for more
 information on this feature.</p>
@@ -3498,7 +3530,13 @@ under GenWeapon, plus one more:</p>
 <td width="25%"><strong>Property</strong></td>
 <td width="75%"><strong>Description</strong></td>
 </tr>
-<tr><td><span style="font-style: italic;">Enchant Type</span></td><td>The type of magic that the staff/wand can be enchanted with.</td></tr><tr>
+<tr>
+<td><span style="font-style: italic;">Enchant
+Type</span></td>
+<td>The type of magic that the staff/wand can be enchanted
+with.</td>
+</tr>
+<tr>
 <td><em>Assigned
 Spell</em></td>
 <td>List here the name of
@@ -3535,7 +3573,13 @@ under GenItem, plus one more:</p>
 <td width="25%"><strong>Property</strong></td>
 <td width="75%"><strong>Description</strong></td>
 </tr>
-<tr><td><span style="font-style: italic;">Enchant Type</span></td><td>The type of magic that the staff/wand can be enchanted with.</td></tr><tr>
+<tr>
+<td><span style="font-style: italic;">Enchant
+Type</span></td>
+<td>The type of magic that the staff/wand can be enchanted
+with.</td>
+</tr>
+<tr>
 <td><em>Assigned
 Spell</em></td>
 <td>List here the name of
@@ -3656,7 +3700,36 @@ single meal. 100 would represent a snack.</td>
 </tbody>
 </table>
 <br>
-<br>
+<p><strong><a name="geni129"><font style="background-color: lime;">The
+"GenQuestBoard"</font></a></strong></p>
+<p>A GenQuestBoard is a readable item
+that automatically has qualifying quests listed on it by number. These
+quests can be accepted by reading the details for a particular "page"
+and accept the prompt.&nbsp;</p>
+<p>Whenever a GenQuestBoard is
+created, much like the GenItem above, you
+are presented with a list of properties to fill in. Pressing enter will
+leave the property unchanged. The properties include everything listed
+under GenItem, plus one more:</p>
+<table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+<tbody>
+<tr>
+<td width="25%"><strong>Property</strong></td>
+<td width="75%"><strong>Description</strong></td>
+</tr>
+<tr>
+<td><em>Assigned Read Text</em></td>
+<td>One or more parameters that act as filters of the quests that this
+board will show. &nbsp;The parameters are of the form
+PARAMETER1="VALUE1" PARAMETER2="VALUE2", etc...&nbsp;See the Game
+Builders Guide for more details on qualifying quests, but the quest
+must have&nbsp;CAN_ACCEPT and DO_ACCEPT functions, and have
+INSTRUCTIONS assigned. &nbsp;Parameters include:<br><ul><li>SAREAMASK: &nbsp;A zappermask for the area of the first quest mob SET in the quest. (see AHELP ZAPPERMASK) </li><li>TAREAMASK:
+&nbsp;A zappermask for the any area referenced in a quest except the
+first SET quest mob's area. (see AHELP ZAPPERMASK) </li><li>AAREAMASK: &nbsp;A zappermask for any areas referenced in a quest. (see AHELP ZAPPERMASK) </li><li>GIVERMASK: &nbsp;A zappermask for the first quest mob SET in the quest. (see AHELP ZAPPERMASK)</li><li>TYPFILTER: A substring to search for in the QuestMaker quest type of the quest (e.g. normal_collect4)</li><li>CATFILTER: A word to match in the optional SET CATEGORY of&nbsp;quests.</li></ul></td>
+</tr>
+</tbody>
+</table><br>
 <p><strong><a name="geni17"><font style="background-color: lime;">The
 "GenScroll"</font></a></strong></p>
 <p>A GenScroll is a readable item
@@ -4136,19 +4209,20 @@ purposes of several of the Minstrel songs.</td>
 </tr>
 </tbody>
 </table>
-
 <p><strong><a name="genimagicinstrument"><font style="background-color: lime;">The
 "GenMagicInstrument"</font></a></strong></p>
 <p>The GenMagicInstrument represents a
 musical instrument for the purposes
-of the several Minstrel spells. &nbsp;They also have the properties of
+of the several Minstrel spells. &nbsp;They also have the properties
+of
 a Wand, allowing those with the proper musical skill to invoke a
 magical property from the instrument.</p>
 <p>Whenever a GenMagicInstrument is
 created, much like the GenInstrument&nbsp;
 above, you are presented with a list of properties to fill in. Pressing
 enter will leave the property unchanged. The properties include
-everything listed under GenItem, and GenInstrument, and GenWand. &nbsp;See those three sections for more information.</p>
+everything listed under GenItem, and GenInstrument, and GenWand.
+&nbsp;See those three sections for more information.</p>
 <p><a name="geni24"><strong><font style="background-color: lime;">The
 "GenLimb"</font></strong></a></p>
 <p>This strange item represents
@@ -4246,7 +4320,8 @@ Here are some important effects you may consider for your items:</p>
 "Prop_ItemTransporter" makes an item that transports things.<br>
 "Prop_ItemTransReceiver" makes an item receives transported things.<br>
 "Prop_LangTranslator" makes the item a translator of languages.<br>
-"Prop_LimitedEquip" can limit the number of particular items that can be equipped.<br>
+"Prop_LimitedEquip" can limit the number of particular items that can
+be equipped.<br>
 "Prop_LimitedItems" can limit the number of a particular item ever to
 be owned.<br>
 "Prop_LocationBound" limits where an item can be taken from.<br>
@@ -4883,7 +4958,6 @@ for each item they list for auction.</td>
 <td><em>Listing
 Cut/%Pct per day</em></td>
 <td>This field allows the
-
 auctioneer to take a cut for
 high-price listings. This is the percentage of the listed items BASE
 price PER day of the auction that is charged at the time the auction is
@@ -4958,7 +5032,9 @@ Interest</em></td>
 <td>This is the amount of
 interest paid (or CHARGED if negative)
 every game month (about once a real day) on items left in a users
-account.<br>The ability to hold items can be disabled by making this amount &gt; 0.5</td>
+account.<br>
+The ability to hold items can be disabled by making this amount
+&gt; 0.5</td>
 </tr>
 <tr>
 <td><em>Loan
@@ -4966,7 +5042,9 @@ Interest</em></td>
 <td>This is the amount of
 interest charged every game month
 (about once a real day) on gold money loaned to players or clans
-account.<br>The ability to make loans can be disabled by making this amount &lt; -0.5</td>
+account.<br>
+The ability to make loans can be disabled by making this amount
+&lt; -0.5</td>
 </tr>
 <tr>
 <td><em>Bank
@@ -6262,7 +6340,10 @@ Area for which this book operates.</li>
 a semicoloon-delimited list of
 roomIDs that this portal leads to. For the return trip, a portal object
 would need to be in both rooms.</li>
-</ul>
+</ul>StdQuestBoard<br><ul><li>misc text - Parameters in STAT="VALUE"
+format. &nbsp;Filters for &nbsp;"SAREAMASK", "TAREAMASK", "AAREAMASK",
+"GIVERMASK", "TYPFILTER", "CATFILTER". &nbsp;See GenQuestBoard for more
+information.</li></ul>
 <p>Ring_Protection</p>
 <ul>
 <li>
@@ -10473,9 +10554,6 @@ Golashes</td>
 </tr>
 </tbody>
 </table>
-<br>
-<br>
-<br>
 <p><a name="appd"><strong><font color="#008000" size="5">Appendix D:
 Index</font></strong></a></p>
 <table border="1" cellpadding="0" cellspacing="0" width="100%">
@@ -10671,57 +10749,69 @@ Item Types
 </td>
 <td> <a href="#geni15"><font color="black">GenPowder</font></a>
 </td>
-<td> <a href="#geni1"><font color="black">GenReadable</font></a>
+<td> <a href="#geni29"><font color="black">GenQuestBoard</font></a>
 </td>
 </tr>
 <tr>
+<td> <a href="#geni1"><font color="black">GenReadable</font></a>
+</td>
 <td> <a href="#geni25"><font color="black">GenRecipe</font></a>
 </td>
 <td> <a href="#geni1"><font color="black">GenResource</font></a>
 </td>
 <td> <a href="#geni8"><font color="black">GenRideable</font></a>
 </td>
-<td> <a href="#geni7-3"><font color="black">GenSailingShip<br>
-</font></a> </td>
 </tr>
 <tr>
+<td> <a href="#geni7-3"><font color="black">GenSailingShip<br>
+</font></a> </td>
 <td> <a href="#geni28"><font color="black">GenScale<br>
 </font></a> </td>
 <td> <a href="#geni17"><font color="black">GenScroll</font></a>
 </td>
 <td> <a href="#geni7"><font color="black">GenShield</font></a>
 </td>
-<td> <a href="#geni4"><font color="black">GenSling</font></a>
-</td>
 </tr>
 <tr>
+<td> <a href="#geni4"><font color="black">GenSling</font></a>
+</td>
 <td> <a href="#geni4"><font color="black">GenSpear</font></a>
 </td>
 <td> <a href="#geni13"><font color="black">GenStaff</font></a>
 </td>
 <td> <a href="#geni16"><font color="black">GenSuperPill</font></a>
 </td>
-<td> <a href="#geni8"><font color="black">GenTable</font></a>
-</td>
 </tr>
 <tr>
+<td> <a href="#geni8"><font color="black">GenTable</font></a>
+</td>
 <td> <a href="#geni7-2"><font color="black">GenThinArmor<br>
 </font></a> </td>
 <td> <a href="#geni18"><font color="black">GenTitle</font></a>
 </td>
 <td> <a href="#geni8"><font color="black">GenTub</font></a>
 </td>
-<td> <a href="#geni9"><font color="black">GenTub</font></a>
-</td>
 </tr>
 <tr>
+<td> <a href="#geni9"><font color="black">GenTub</font></a>
+</td>
 <td> <a href="#geni22"><font color="black">GenWallpaper</font></a>
 </td>
 <td> <a href="#geni14"><font color="black">GenWand</font></a>
 </td>
 <td> <a href="#geni9"><font color="black">GenWater</font></a>
 </td>
+</tr>
+<tr>
 <td> <a href="#geni4"><font color="black">GenWeapon</font></a>
+</td>
+<td> 
+</td>
+<td> 
+</td>
+<td> 
+</td>
+<td> 
 </td>
 </tr>
 </tbody>

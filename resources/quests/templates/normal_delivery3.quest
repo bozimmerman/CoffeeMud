@@ -146,6 +146,7 @@ set display $QUEST_NAME
 set author $#AUTHOR
 set questtype normal_delivery3
 set category $CATEGORY
+set instructions $QUEST_INSTRUCTIONSSTRING
 
 set wait 1
 set interval 1
@@ -179,6 +180,7 @@ set duration 0
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
+	MPQSET * INSTRUCTIONS $i in $a wants you to '$QUEST_INSTRUCTIONSSTRING'
 	if EVAL('$QUEST_ANNOUNCECHANNEL' != '')
 		$QUEST_ANNOUNCECHANNEL $QUEST_NOTIFYSTRING -- Come see me for more information.
 	endif
@@ -223,37 +225,56 @@ GREET_PROG 100
 	endif
 ~
 
-SPEECH_PROG p i accept $QUEST_NAME
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
-		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			sayto "$n" $QUEST_INSTRUCTIONSSTRING
-			mpqset * STATISTICS ACCEPTED
-			for $0 = 0 to< $DELIVEREE_COUNT
-				if !HAS($i '$[1 *]')
-					mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
-					MPQSET * QUESTOBJ $b
-				endif
-				give "$[1 *]" "$n"
-			next
-			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+FUNCTION_PROG CAN_ACCEPT
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if !QUESTSCRIPTED($n *)
+				RETURN
+			endif
 		endif
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
+	mpqset * STATISTICS ACCEPTED
+	for $0 = 0 to< $DELIVEREE_COUNT
+		if !HAS($n '$[1 *]')
+			mpat $n mpforce $n mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
+			MPQSET * QUESTOBJ $b
+			mpat $n mpechoat $n You receive $[1 *].
+		endif
+	next
+~
+
+SPEECH_PROG p i accept $QUEST_NAME
+	if CALLFUNC(CAN_ACCEPT)
+		sayto "$n" $QUEST_INSTRUCTIONSSTRING
+		mpqset * STATISTICS ACCEPTED
+		for $0 = 0 to< $DELIVEREE_COUNT
+			if !HAS($i '$[1 *]')
+				mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
+				MPQSET * QUESTOBJ $b
+			endif
+			give "$[1 *]" "$n"
+		next
+		mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 	endif
 ~
 
 SPEECH_PROG p i accept
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) ) and !QUESTSCRIPTED($n *)
-		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			sayto "$n" $QUEST_INSTRUCTIONSSTRING
-			mpqset * STATISTICS ACCEPTED
-			for $0 = 0 to< $DELIVEREE_COUNT
-				if !HAS($i '$[1 *]')
-					mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
-					MPQSET * QUESTOBJ $b
-				endif
-				give "$[1 *]" "$n"
-			next
-			mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
-		endif
+	if CALLFUNC(CAN_ACCEPT)
+		sayto "$n" $QUEST_INSTRUCTIONSSTRING
+		mpqset * STATISTICS ACCEPTED
+		for $0 = 0 to< $DELIVEREE_COUNT
+			if !HAS($i '$[1 *]')
+				mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
+				MPQSET * QUESTOBJ $b
+			endif
+			give "$[1 *]" "$n"
+		next
+		mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=$QUEST_ID_playertrack.script
 	endif
 ~
 </DATA></FILE>

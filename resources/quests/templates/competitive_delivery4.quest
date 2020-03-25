@@ -150,6 +150,7 @@ set display $QUEST_NAME
 set author $#AUTHOR
 set questtype competitive_delivery4
 set category $CATEGORY
+set instructions Please pay ${2 *} $DELIVEREE_COUNT.  $REASONING
 
 set wait $FREQUENCY
 set interval 1
@@ -180,6 +181,7 @@ set duration $DURATION
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
+	mpqset * INSTRUCTIONS $i in $a wants you to 'Please pay ${2 *} $DELIVEREE_COUNT.  $REASONING'
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
@@ -200,14 +202,29 @@ SPEECH_PROG mission problem quest help pay paid 'me to do' 'to do' mission? prob
 	endif
 ~
 
-SPEECH_PROG p i accept
+FUNCTION_PROG CAN_ACCEPT
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and ( EVAL('$MULTIPLE' != 'PREV') or QUESTWINNER($n previous) )
-		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			sayto "$n" Please pay ${2 *} $DELIVEREE_COUNT.  $REASONING
-			mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
-			mpqset * REMAINING $DURATION
-			mpqset * STATISTICS ACCEPTED
+		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			if VAR($n $QUEST_ID_ACCEPTED == '')
+				RETURN
+			endif
 		endif
+	endif
+	RETURN CANCEL
+~
+
+FUNCTION_PROG DO_ACCEPT
+	mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
+	mpqset * REMAINING $DURATION
+	mpqset * STATISTICS ACCEPTED
+~
+
+SPEECH_PROG p i accept
+	if CALLFUNC(CAN_ACCEPT)
+		sayto "$n" Please pay ${2 *} $DELIVEREE_COUNT.  $REASONING
+		MPCALLFUNC DO_ACCEPT
+	else
+		sayto "$n" Yes, yes, I know .. now off with you.
 	endif
 ~
 </DATA></FILE>

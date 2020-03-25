@@ -8269,6 +8269,57 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return (MOB)tmp[SPECIAL_RANDANYONE];
 	}
 
+	protected DVector findFunc(String named)
+	{
+		if(named==null)
+			return null;
+		named=named.toUpperCase();
+		final List<DVector> scripts=getScripts();
+		for(int v=0;v<scripts.size();v++)
+		{
+			final DVector script2=scripts.get(v);
+			if(script2.size()<1)
+				continue;
+			final String trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
+			final String[] ttrigger=(String[])script2.elementAt(0,2);
+			if(getTriggerCode(trigger,ttrigger)==17) // function_prog
+			{
+				final String fnamed=CMParms.getCleanBit(trigger,1);
+				if(fnamed.equals(named))
+					return script2;
+			}
+		}
+		for(int v=0;v<scripts.size();v++)
+		{
+			final DVector script2=scripts.get(v);
+			if(script2.size()<1)
+				continue;
+			final String trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
+			if(trigger.equals(named)||trigger.equals(named+"_PROG"))
+				return script2;
+		}
+		return null;
+	}
+
+	@Override
+	public boolean isFunc(final String named)
+	{
+		return findFunc(named) != null;
+	}
+
+	@Override
+	public String callFunc(final String named, final String parms, final PhysicalAgent scripted, final MOB source, final Environmental target,
+						   final MOB monster, final Item primaryItem, final Item secondaryItem, final String msg, final Object[] tmp)
+	{
+		final DVector script2 = findFunc(named);
+		if(script2 != null)
+		{
+			return execute(scripted, source, target, monster, primaryItem, secondaryItem, script2,
+					varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,parms),tmp);
+		}
+		return null;
+	}
+
 	@Override
 	public String execute(final PhysicalAgent scripted,
 						  final MOB source,
@@ -12209,13 +12260,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(script.elementAt(si, 3) != null)
 				{
-					execute(scripted,
-							source,
-							target,
-							monster,
-							primaryItem,
-							secondaryItem,
-							(DVector)script.elementAt(si, 3),
+					execute(scripted, source, target, monster, primaryItem, secondaryItem, (DVector)script.elementAt(si, 3),
 							varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2].trim()),
 							tmp);
 				}
@@ -12223,61 +12268,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					final String named=tt[1];
 					final String parms=tt[2].trim();
-					boolean found=false;
-					final List<DVector> scripts=getScripts();
-					for(int v=0;v<scripts.size();v++)
+					final DVector script2 = findFunc(named);
+					if(script2 != null)
 					{
-						final DVector script2=scripts.get(v);
-						if(script2.size()<1)
-							continue;
-						final String trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
-						final String[] ttrigger=(String[])script2.elementAt(0,2);
-						if(getTriggerCode(trigger,ttrigger)==17) // function_prog
-						{
-							final String fnamed=CMParms.getCleanBit(trigger,1);
-							if(fnamed.equalsIgnoreCase(named))
-							{
-								found=true;
-								script.setElementAt(si, 3, script2);
-								execute(scripted,
-										source,
-										target,
-										monster,
-										primaryItem,
-										secondaryItem,
-										script2,
-										varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,parms),
-										tmp);
-								break;
-							}
-						}
+						script.setElementAt(si, 3, script2);
+						execute(scripted, source, target, monster, primaryItem, secondaryItem, script2,
+								varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,parms),
+								tmp);
 					}
-					if(!found)
-					{
-						for(int v=0;v<scripts.size();v++)
-						{
-							final DVector script2=scripts.get(v);
-							if(script2.size()<1)
-								continue;
-							final String trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
-							if(trigger.equalsIgnoreCase(named))
-							{
-								found=true;
-								script.setElementAt(si, 3, script2);
-								execute(scripted,
-										source,
-										target,
-										monster,
-										primaryItem,
-										secondaryItem,
-										script2,
-										varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,parms),
-										tmp);
-								break;
-							}
-						}
-					}
-					if(!found)
+					else
 						logError(scripted,"MPCALLFUNC","Unknown","Function: "+named);
 				}
 				break;

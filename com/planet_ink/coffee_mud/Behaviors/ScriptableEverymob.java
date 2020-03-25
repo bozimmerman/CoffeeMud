@@ -180,6 +180,19 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
+	public String callFunc(final String named, final String parms, final PhysicalAgent scripted, final MOB source, final Environmental target,
+			   final MOB monster, final Item primaryItem, final Item secondaryItem, final String msg, final Object[] tmp)
+	{
+		return (sampleB==null)?null:sampleB.callFunc(named, parms, scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp);
+	}
+
+	@Override
+	public boolean isFunc(final String named)
+	{
+		return (sampleB==null)?false:sampleB.engine().isFunc(named);
+	}
+
+	@Override
 	public String getLocalVarXML()
 	{
 		return (sampleB==null)?"":sampleB.getLocalVarXML();
