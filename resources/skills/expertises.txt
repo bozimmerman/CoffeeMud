@@ -27,7 +27,7 @@ HELP_=<EXPERTISE>The ability to gain more protective benefits from tweaking armo
 SHIELDUSE@x1=Shield Using @x2,10,LEVEL,-SKILLFLAG +SHIELD_USE,-MAXCLASSLEVEL +>={26+(5*@x1)},+STR {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to better understand shield blocking and usage, and get better armor benefit from shields.
 
-CAUTIOUS@x1=Cautiously @x2,10,X1,-SKILL +Thief_Peek +Thief_Robbery +Thief_SlipItem +Thief_Steal +Thief_Swipe,-MAXCLASSLEVEL +>={19+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
+CAUTIOUS@x1=Cautiously @x2,10,X1,-SKILL +Thief_Peek +Thief_Robbery +Thief_SlipItem +QuickSwipe +Thief_Steal +Thief_Swipe,-MAXCLASSLEVEL +>={19+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to lessen your chances of getting spotted when doing certain thiefly things.
 
 FATIGUER@x1=Fatiguing @x2,10,X1,-SKILL +Thief_DisablingCaltrops,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {12+@x1},0,1,0,0,0

@@ -40,7 +40,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 		return "Thief_MarkerSpying";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Marker Spying");
+	private final static String	localizedName	= CMLib.lang().L("Mark Spying");
 
 	@Override
 	public String name()
@@ -74,7 +74,7 @@ public class Thief_MarkerSpying extends ThiefSkill
 		return Ability.QUALITY_OK_OTHERS;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "MARKERSPYING", "MARKSPY" });
+	private static final String[]	triggerStrings	= I(new String[] { "MARKSPYING", "MARKSPY" });
 
 	@Override
 	public String[] triggerStrings()

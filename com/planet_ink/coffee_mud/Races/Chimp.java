@@ -86,7 +86,7 @@ public class Chimp extends Monkey
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "ChimpSpeak", "Thief_Swipe" };
+	private final String[]	racialAbilityNames			= { "ChimpSpeak", "QuickSwipe" };
 	private final int[]		racialAbilityLevels			= { 1, 9 };
 	private final int[]		racialAbilityProficiencies	= { 100, 100 };
 	private final boolean[]	racialAbilityQuals			= { false, false };
