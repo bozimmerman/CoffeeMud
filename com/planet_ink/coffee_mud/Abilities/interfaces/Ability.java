@@ -984,7 +984,7 @@ public interface Ability extends Environmental
 		"CLANMAGIC",
 		"HEALING",
 		"FREEZING",
-		"ELECTROCUTING",
+		"GASSING",
 		"ACIDIZING",
 		"INTOXICATING",
 		"ADJUSTER",
@@ -1002,7 +1002,8 @@ public interface Ability extends Environmental
 		"MINDALTERING",
 		"TORTURING",
 		"LAW",
-		"CHAOS"
+		"CHAOS",
+		"ELECTROCUTING"
 	};
 
 	/** constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()}*/
