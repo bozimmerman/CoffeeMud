@@ -125,6 +125,9 @@ public class Prop_QuestGiver extends Property
 			if(triggerStr.equals("READ"))
 				trigger = CMMsg.TYP_READ;
 			else
+			if(triggerStr.equals("LOOK"))
+				trigger = CMMsg.TYP_LOOK;
+			else
 			if(triggerStr.length()>0)
 			{
 				if(!leaveThemAlone.contains("TheLog2"))
@@ -239,6 +242,14 @@ public class Prop_QuestGiver extends Property
 						if(this.input.equals("Y"))
 						{
 							quest.acceptQuest(M);
+							for(final Enumeration<ScriptingEngine> e = M.scripts();e.hasMoreElements();)
+							{
+								if(e.nextElement().defaultQuestName().equalsIgnoreCase(tQ.name()))
+								{
+									M.tell(L("You are now on the quest '@x1'.",tQ.displayName()));
+									break;
+								}
+							}
 						}
 					}
 				});
@@ -284,8 +295,15 @@ public class Prop_QuestGiver extends Property
 							{
 								if(room.isInhabitant(mob))
 								{
-									maybeGiveTheQuest(mob, null);
-									leaveThemAlone.add(mob.Name());
+									CMLib.threads().scheduleRunnable(new Runnable()
+									{
+										@Override
+										public void run()
+										{
+											maybeGiveTheQuest(mob, null);
+											leaveThemAlone.add(mob.Name());
+										}
+									},1000);
 								}
 							}
 						});
@@ -310,8 +328,15 @@ public class Prop_QuestGiver extends Property
 							{
 								if(room.isInhabitant(mob))
 								{
-									maybeGiveTheQuest(mob,null);
-									leaveThemAlone.add(mob.Name());
+									CMLib.threads().scheduleRunnable(new Runnable()
+									{
+										@Override
+										public void run()
+										{
+											maybeGiveTheQuest(mob,null);
+											leaveThemAlone.add(mob.Name());
+										}
+									},1000);
 								}
 							}
 						});
@@ -334,53 +359,82 @@ public class Prop_QuestGiver extends Property
 			{
 			case CMMsg.TYP_ENTER:
 			{
+				boolean doIt=false;
 				if(affected instanceof Area)
 				{
 				}
 				else
 				if(affected instanceof Room)
-				{
-					if(msg.target() == affected)
-						maybeGiveTheQuest(msg.source(),msg);
-				}
+					doIt=(msg.target() == affected);
 				else
 				if(affected instanceof Exit)
-				{
-					if(msg.tool() == affected)
-						maybeGiveTheQuest(msg.source(),msg);
-				}
+					doIt=(msg.tool() == affected);
 				else
+					doIt=(msg.target() == CMLib.map().roomLocation(affected));
+				if(doIt)
 				{
-					if(msg.target() == CMLib.map().roomLocation(affected))
+					msg.addTrailerRunnable(new Runnable()
 					{
-						maybeGiveTheQuest(msg.source(),msg);
-					}
+						final MOB mob=msg.source();
+						@Override
+						public void run()
+						{
+							CMLib.threads().scheduleRunnable(new Runnable()
+							{
+								@Override
+								public void run()
+								{
+									maybeGiveTheQuest(mob, null);
+								}
+							},1000);
+						}
+					});
 				}
 				break;
 			}
 			case CMMsg.TYP_LEAVE:
 			{
+				boolean doIt=false;
+				if(affected instanceof Room)
+					doIt=(msg.target() == affected);
+				else
+				if(affected instanceof Exit)
+					doIt=(msg.tool() == affected);
+				else
+					doIt=(msg.target() == CMLib.map().roomLocation(affected));
+				if(doIt)
+				{
+					msg.addTrailerRunnable(new Runnable()
+					{
+						final MOB mob=msg.source();
+						@Override
+						public void run()
+						{
+							CMLib.threads().scheduleRunnable(new Runnable()
+							{
+								@Override
+								public void run()
+								{
+									maybeGiveTheQuest(mob, null);
+								}
+							},1000);
+						}
+					});
+				}
+				break;
+			}
+			case CMMsg.TYP_LOOK:
+			{
 				if(affected instanceof Area)
 				{
+					maybeGiveTheQuest(msg.source(),msg);
+					leaveThemAlone.add(msg.source().Name());
 				}
 				else
-				if(affected instanceof Room)
+				if(affected == msg.target())
 				{
 					if(msg.target() == affected)
 						maybeGiveTheQuest(msg.source(),msg);
-				}
-				else
-				if(affected instanceof Exit)
-				{
-					if(msg.tool() == affected)
-						maybeGiveTheQuest(msg.source(),msg);
-				}
-				else
-				{
-					if(msg.target() == CMLib.map().roomLocation(affected))
-					{
-						maybeGiveTheQuest(msg.source(),msg);
-					}
 				}
 				break;
 			}

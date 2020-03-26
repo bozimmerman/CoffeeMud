@@ -313,6 +313,14 @@ public class StdQuestBoard extends StdItem
 											if(this.input.equals("Y"))
 											{
 												quest.acceptQuest(M);
+												for(final Enumeration<ScriptingEngine> e = M.scripts();e.hasMoreElements();)
+												{
+													if(e.nextElement().defaultQuestName().equalsIgnoreCase(tQ.name()))
+													{
+														M.tell(L("You are now on the quest '@x1'.",tQ.displayName()));
+														break;
+													}
+												}
 											}
 										}
 									});
