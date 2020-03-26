@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZMask;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -52,10 +53,11 @@ public class Prop_WearOverride extends Property
 		return Ability.CAN_ITEMS;
 	}
 
-	protected MaskingLibrary.CompiledZMask mask = null;
-	protected String maskDesc = "";
-	protected long	 locMaskAdj = Integer.MAX_VALUE;
-	protected volatile boolean activated = false;
+	protected CompiledZMask		mask		= null;
+	protected String			maskDesc	= "";
+	protected long				locMaskAdj	= Integer.MAX_VALUE;
+	protected volatile boolean	activated	= false;
+	protected volatile MOB		lastMob		= null;
 
 	public String accountForYourself()
 	{
@@ -94,22 +96,44 @@ public class Prop_WearOverride extends Property
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if((msg.target() == affected)
-		&&(msg.sourceMinor()==CMMsg.TYP_WEAR)
+		if((msg.targetMinor()==CMMsg.TYP_WEAR)
 		&&(affected instanceof Item))
 		{
-			if((mask != null)
-			&&(CMLib.masking().maskCheck(mask, msg.source(), true)))
+			if(msg.target() == affected)
 			{
-				activated=true;
-				this.locMaskAdj=~((Item)msg.target()).rawProperLocationBitmap();
-				msg.source().recoverCharStats();
-				msg.source().recoverCharStats();
+				if((mask != null)
+				&&(CMLib.masking().maskCheck(mask, msg.source(), true)))
+				{
+					activated=true;
+					this.locMaskAdj=~((Item)msg.target()).rawProperLocationBitmap();
+					msg.source().recoverCharStats();
+					msg.source().recoverCharStats();
+					msg.addTrailerRunnable(new Runnable()
+					{
+						final MOB mob=msg.source();
+						@Override
+						public void run()
+						{
+							activated = false;
+							mob.recoverCharStats();
+							mob.recoverCharStats();
+						}
+					});
+					this.lastMob = msg.source();
+				}
+				else
+				{
+					msg.source().tell(L("That won't fit on the likes of you."));
+					return false;
+				}
 			}
 			else
+			if(lastMob == msg.source())
 			{
-				msg.source().tell(L("That won't fit on the likes of you."));
-				return false;
+				activated = false;
+				lastMob = null;
+				msg.source().recoverCharStats();
+				msg.source().recoverCharStats();
 			}
 		}
 		return super.okMessage(host, msg);
