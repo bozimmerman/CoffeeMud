@@ -82,7 +82,7 @@ public class GenStaff extends GenWeapon implements Wand
 	public void setMaxUses(final int newMaxUses)
 	{
 		maxUses = newMaxUses;
-		if(newMaxUses > super.usesRemaining())
+		if(newMaxUses > super.usesRemaining() && (newMaxUses > 0))
 			super.setUsesRemaining(newMaxUses);
 	}
 

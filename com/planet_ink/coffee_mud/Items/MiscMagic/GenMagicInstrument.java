@@ -126,7 +126,7 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 	public void setMaxUses(final int newMaxUses)
 	{
 		maxUses = newMaxUses;
-		if(newMaxUses > super.usesRemaining())
+		if(newMaxUses > super.usesRemaining() && (newMaxUses > 0))
 			super.setUsesRemaining(newMaxUses);
 	}
 
