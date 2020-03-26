@@ -55,6 +55,8 @@ public class RandomTeleporter extends ActiveTicker
 
 	protected Vector<Integer>	restrictedLocales	= null;
 	protected boolean			nowander			= false;
+	protected String			poofin				= null;
+	protected String			poofout				= null;
 
 	public RandomTeleporter()
 	{
@@ -89,12 +91,20 @@ public class RandomTeleporter extends ActiveTicker
 		super.setParms(newParms);
 		nowander=false;
 		restrictedLocales=null;
+		this.poofin=null;
+		this.poofout=null;
 		final Vector<String> V=CMParms.parse(newParms);
 		for(int v=0;v<V.size();v++)
 		{
 			String s=V.elementAt(v);
 			if(s.toUpperCase().startsWith("NOWANDER"))
 				nowander=true;
+			else
+			if(s.toUpperCase().startsWith("POOFIN="))
+				poofin=s.substring(7);
+			else
+			if(s.toUpperCase().startsWith("POOFOUT="))
+				poofin=s.substring(8);
 			else
 			if((s.startsWith("+")||(s.startsWith("-")))&&(s.length()>1))
 			{
@@ -185,9 +195,19 @@ public class RandomTeleporter extends ActiveTicker
 			final Room oldRoom=mob.location();
 			CMLib.tracking().wanderAway(mob,true,false);
 			if(R!=null)
+			{
+				if(poofout != null)
+					oldRoom.show(mob, null, CMMsg.MSG_OK_VISUAL, poofout);
 				R.bringMobHere(mob,true);
+			}
 			if(mob.location()==oldRoom)
 				tickDown=0;
+			else
+			if(mob.location()==R)
+			{
+				if(poofin != null)
+					R.show(mob, null, CMMsg.MSG_OK_VISUAL, poofin);
+			}
 		}
 		return true;
 	}
