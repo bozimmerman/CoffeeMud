@@ -51,7 +51,7 @@ public class Thief_LocateAlcohol extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_DIVINATION;
+		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_ANATOMY;
 	}
 
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Locating Alcohol)");
