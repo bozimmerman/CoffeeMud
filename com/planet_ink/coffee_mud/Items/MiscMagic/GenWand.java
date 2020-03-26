@@ -116,6 +116,8 @@ public class GenWand extends StdWand
 	public void setMaxUses(final int newMaxUses)
 	{
 		maxUses = newMaxUses;
+		if(newMaxUses > super.usesRemaining())
+			super.setUsesRemaining(newMaxUses);
 	}
 
 	@Override

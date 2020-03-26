@@ -105,7 +105,12 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	@Override
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+usesRemaining(),getSpells());
+		String uses;
+		if(this.usesRemaining() < 999999)
+			uses = ""+usesRemaining();
+		else
+			uses="unlimited";
+		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+uses,getSpells());
 	}
 
 	public static String makeSecretIdentity(final String thang, final String id, final String more, final List<Ability> V)

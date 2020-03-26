@@ -84,11 +84,16 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 	{
 		String id=super.secretIdentity();
 		final Ability A=getSpell();
-		String uses;
-		if(this.maxUses() < 999999)
-			uses=""+usesRemaining()+"/"+maxUses();
+		final String uses;
+		if(this.usesRemaining() < 999999)
+		{
+			if(this.maxUses() < 999999)
+				uses=""+usesRemaining()+"/"+maxUses();
+			else
+				uses = ""+usesRemaining();
+		}
 		else
-			uses = ""+usesRemaining();
+			uses="unlimited";
 		if(A!=null)
 			id="'A magic instrument of "+A.name()+"' Charges: "+uses+"\n\r"+id;
 		return id;
@@ -121,6 +126,8 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 	public void setMaxUses(final int newMaxUses)
 	{
 		maxUses = newMaxUses;
+		if(newMaxUses > super.usesRemaining())
+			super.setUsesRemaining(newMaxUses);
 	}
 
 	@Override
