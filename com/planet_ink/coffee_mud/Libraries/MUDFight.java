@@ -241,7 +241,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					{
 						I.setUsesRemaining(100);
 						I.unWear();
-						msg=CMClass.getMsg(mob,null,I,CMMsg.MSG_OK_VISUAL,L("<O-NAME> is destroyed!"),null,L("<O-NAME> carried by <S-NAME> is destroyed!"));
+						final MOB targetM = (I.owner() instanceof MOB)?(MOB)I.owner():mob;
+						msg=CMClass.getMsg(mob,targetM,I,CMMsg.MSG_OK_VISUAL,L("<O-NAME> is destroyed!"),null,L("<O-NAME> carried by <T-NAME> is destroyed!"));
 						if(R.okMessage(mob,msg))
 							R.send(mob,msg);
 						I.destroy();
