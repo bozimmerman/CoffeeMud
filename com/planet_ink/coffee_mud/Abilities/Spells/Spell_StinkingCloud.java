@@ -82,6 +82,12 @@ public class Spell_StinkingCloud extends Spell
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags()|Ability.FLAG_AIRBASED;
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SPELL | Ability.DOMAIN_EVOCATION;
@@ -104,7 +110,7 @@ public class Spell_StinkingCloud extends Spell
 			&&(M.location()!=null)
 			&&(CMLib.flags().canSmell(M)))
 			{
-				final int damage= (M.phyStats().level()/10) + super.getXLEVELLevel(invoker);
+				final int damage= (M.phyStats().level()/10) + super.getXLEVELLevel(invoker) + super.getX1Level(invoker);
 				if((M.curState().getHunger()<=0))
 					CMLib.combat().postDamage(invoker,M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,-1,L("<T-NAME> heave(s) in the stinking cloud."));
 				else

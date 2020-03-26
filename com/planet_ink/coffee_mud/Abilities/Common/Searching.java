@@ -71,6 +71,14 @@ public class Searching extends CommonSkill
 		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,bonusThisRoom+proficiency()+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
 	}
 
+	@Override
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affectedEnv,affectableStats);
+		if((success)&&(affectedEnv instanceof MOB)&&(((MOB)affectedEnv).location()==searchRoom))
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
+	}
+
 	protected boolean success=false;
 	public Searching()
 	{
@@ -110,14 +118,6 @@ public class Searching extends CommonSkill
 			}
 		}
 		return super.tick(ticking,tickID);
-	}
-
-	@Override
-	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
-	{
-		super.affectPhyStats(affectedEnv,affectableStats);
-		if((success)&&(affectedEnv instanceof MOB)&&(((MOB)affectedEnv).location()==searchRoom))
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 	}
 
 	@Override

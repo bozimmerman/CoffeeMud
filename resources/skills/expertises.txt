@@ -547,8 +547,11 @@ HELP_CNTRCRAFT2=<EXPERTISE>The ability to craft weapons that are more balanced f
 HELP_CNTRCRAFT3=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Counterbalanced" are much better for attack, and worth a lot more.
 DATA_=Even,Balanced,Counterbalanced
 
-AIRELIST@x1=Airelist @x2,10,X1,-SKILLFLAG +ELECTROCUTING,-MAXCLASSLEVEL +>={26+(5*@x1)},+DEX {12+@x1} ,0,1,0,0,0
+ENERGIST@x1=Energist @x2,10,X1,-SKILLFLAG +ELECTROCUTING,-MAXCLASSLEVEL +>={26+(5*@x1)},+DEX {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to deal more damage from magical electrical attacks
+
+AIRELIST@x1=Airelist @x2,10,X1,-SKILLFLAG +GASSING,-MAXCLASSLEVEL +>={26+(5*@x1)},+DEX {12+@x1} ,0,1,0,0,0
+HELP_=<EXPERTISE>The ability to deal more damage from magical gassing attacks
 
 TERRALIST@x1=Terranalist @x2,10,X1,-SKILLFLAG +ACIDIZING,-MAXCLASSLEVEL +>={26+(5*@x1)},+CON {12+@x1} ,0,1,0,0,0
 HELP_=<EXPERTISE>The ability to deal more damage from magical acid attacks

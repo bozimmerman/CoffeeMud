@@ -88,6 +88,12 @@ public class Spell_Cloudkill extends Spell
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags()|Ability.FLAG_AIRBASED;
+	}
+
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -165,6 +171,7 @@ public class Spell_Cloudkill extends Spell
 
 							if(damage<=0)
 								damage=1;
+							damage += super.getX1Level(mob);
 							if(target.location()==mob.location())
 							{
 								String addOn = "";

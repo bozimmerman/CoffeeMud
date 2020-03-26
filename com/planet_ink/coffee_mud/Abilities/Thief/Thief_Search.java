@@ -105,6 +105,13 @@ public class Thief_Search extends ThiefSkill
 	}
 
 	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(affected instanceof MOB)
@@ -128,13 +135,6 @@ public class Thief_Search extends ThiefSkill
 			}
 		}
 		return true;
-	}
-
-	@Override
-	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 	}
 
 	@Override

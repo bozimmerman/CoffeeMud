@@ -89,7 +89,7 @@ public class Chant_EelShock extends Chant
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_AIRBASED;
+		return Ability.FLAG_ELECTRICBASED;
 	}
 
 	@Override

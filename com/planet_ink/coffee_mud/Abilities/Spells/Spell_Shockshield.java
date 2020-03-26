@@ -78,7 +78,7 @@ public class Spell_Shockshield extends Spell
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_AIRBASED;
+		return Ability.FLAG_ELECTRICBASED;
 	}
 	final static String msgStr=CMLib.lang().L("The shock shield around <S-NAME> sparks and <DAMAGES> <T-NAME>!");
 	protected long oncePerTickTime=0;

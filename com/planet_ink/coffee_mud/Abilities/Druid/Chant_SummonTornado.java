@@ -81,7 +81,7 @@ public class Chant_SummonTornado extends Chant
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_MOVING|Ability.FLAG_WEATHERAFFECTING;
+		return Ability.FLAG_MOVING|Ability.FLAG_WEATHERAFFECTING|Ability.FLAG_AIRBASED;
 	}
 
 	@Override
@@ -230,7 +230,7 @@ public class Chant_SummonTornado extends Chant
 								break;
 							}
 							if(damage>0)
-								CMLib.combat().postItemDamage(mob, I, this, damage, CMMsg.TYP_COLD, null);
+								CMLib.combat().postItemDamage(mob, I, this, damage+super.getX1Level(mob), CMMsg.TYP_COLD, null);
 						}
 					}
 					else

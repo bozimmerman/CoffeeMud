@@ -225,7 +225,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setDescription(L("A large beast, made of rock and dirt, with a hard stare."));
 			CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("EarthElemental"));
-			newMOB.addAbility(CMClass.getAbility("Gasbreath"));
+			newMOB.addAbility(CMClass.getAbility("Acidbreath"));
 			break;
 		case 4:
 			newMOB.setName(L("an air elemental"));

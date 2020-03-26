@@ -922,7 +922,7 @@ public interface Ability extends Environmental
 	public static final long FLAG_HEALINGMAGIC=16384;
 	/** constant mask for the flags() method designating that this ability is a freezing effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_WATERBASED=32768;
-	/** constant mask for the flags() method designating that this ability is a washing effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	/** constant mask for the flags() method designating that this ability is a gassing effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_AIRBASED=65536;
 	/** constant mask for the flags() method designating that this ability is a grounded effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_EARTHBASED=131072;
@@ -962,6 +962,8 @@ public interface Ability extends Environmental
 	public static final long FLAG_CHAOS=17179869184L;
 	/** constant mask for the flags() method designating that this ability is a moderate effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_MODERATE=FLAG_LAW|FLAG_CHAOS;
+	/** constant mask for the flags() method designating that this ability is a electric effect @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_ELECTRICBASED=34359738368L;
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS=

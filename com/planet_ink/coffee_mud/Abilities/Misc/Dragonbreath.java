@@ -199,7 +199,7 @@ public class Dragonbreath extends StdAbility
 		case 'f': // fire
 			return super.flags() | Ability.FLAG_FIREBASED;
 		case 'l': // lightning
-			return super.flags() | Ability.FLAG_AIRBASED;
+			return super.flags() | Ability.FLAG_ELECTRICBASED;
 		case 'c':// cold
 			return super.flags() | Ability.FLAG_WATERBASED;
 		case 'a': // acid
@@ -209,7 +209,7 @@ public class Dragonbreath extends StdAbility
 		case 's': // slime
 			return super.flags() | Ability.FLAG_EARTHBASED;
 		case 'g':// gas
-			return super.flags() | Ability.FLAG_INTOXICATING;
+			return super.flags() | Ability.FLAG_AIRBASED;
 		case 'u':// undead
 			return super.flags() | Ability.FLAG_UNHOLY;
 		case 'p': // pebbles

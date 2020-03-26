@@ -57,7 +57,7 @@ public class Prayer_ChainStrike extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_NEUTRAL|Ability.FLAG_AIRBASED;
+		return Ability.FLAG_NEUTRAL|Ability.FLAG_ELECTRICBASED;
 	}
 
 	@Override

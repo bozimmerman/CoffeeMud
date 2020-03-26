@@ -79,7 +79,7 @@ public class Chant_SummonLightning extends Chant
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_WEATHERAFFECTING|Ability.FLAG_AIRBASED;
+		return Ability.FLAG_WEATHERAFFECTING|Ability.FLAG_ELECTRICBASED;
 	}
 
 	@Override

@@ -78,7 +78,7 @@ public class Spell_Lightning extends Spell
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_AIRBASED;
+		return Ability.FLAG_ELECTRICBASED;
 	}
 
 	@Override
