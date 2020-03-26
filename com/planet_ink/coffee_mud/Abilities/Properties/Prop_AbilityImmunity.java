@@ -55,13 +55,27 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 	@Override
 	public String accountForYourself()
 	{
-		return "Immunity";
+		if(immStr == null)
+		{
+			final List<String> names=new ArrayList<String>(diseases.size());
+			for(final String diseaseID : diseases)
+			{
+				Ability A=CMClass.getAbility(diseaseID);
+				if(A==null)
+					A=CMClass.findAbility(diseaseID);
+				if(A!=null)
+					names.add(A.name());
+			}
+			immStr=L("Immunity to @x1",CMLib.english().toEnglishStringList(names));
+		}
+		return immStr;
 	}
 
 	protected List<String>		diseases	= new Vector<String>();
 	protected List<String>		messages	= new Vector<String>();
 	protected boolean			owner		= false;
 	protected boolean			wearer		= false;
+	protected String			immStr		= null;
 
 	@Override
 	public int triggerMask()
@@ -72,6 +86,7 @@ public class Prop_AbilityImmunity extends Property implements TriggeredAffect
 	@Override
 	public void setMiscText(final String newText)
 	{
+		immStr = null;
 		messages=new Vector<String>();
 		diseases=CMParms.parseSemicolons(newText.toUpperCase(),true);
 		owner = false;
