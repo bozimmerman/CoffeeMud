@@ -577,6 +577,70 @@ public class CoffeeTableRows extends StdWebMacro
 			}
 		}
 		else
+		if(parms.containsKey("CRIMERPT"))
+		{
+			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
+			{
+				lastCur=curTime;
+				final Calendar C2=Calendar.getInstance();
+				C2.setTimeInMillis(curTime);
+				C2.add(Calendar.DATE,-scale);
+				curTime=C2.getTimeInMillis();
+				C2.set(Calendar.HOUR_OF_DAY,23);
+				C2.set(Calendar.MINUTE,59);
+				C2.set(Calendar.SECOND,59);
+				C2.set(Calendar.MILLISECOND,999);
+				curTime=C2.getTimeInMillis();
+				final List<CoffeeTableRow> set=new LinkedList<CoffeeTableRow>();
+				for(int v=V.size()-1;v>=0;v--)
+				{
+					final CoffeeTableRow T=V.get(v);
+					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+					{
+						set.add(T);
+						V.remove(v);
+					}
+				}
+				final long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
+				for(final CoffeeTableRow T :set)
+					T.totalUp(code,totals);
+				table.append("<TR>");
+				for(int i=0;i<orderedParms.size();i++)
+				{
+					final String key=orderedParms.getFirst(i);
+					if(key.equals("COLSPAN"))
+						colspan=" COLSPAN="+orderedParms.getSecond(i);
+					else
+					if (key.equalsIgnoreCase("DATERANGE"))
+						table.append("<TD" + colspan + ">" + header + CMLib.time().date2DateString(curTime + 1) + " - " + CMLib.time().date2DateString(lastCur - 1) + footer + "</TD>");
+					else
+					if (key.equalsIgnoreCase("DATESTART"))
+						table.append("<TD" + colspan + ">" + header + CMLib.time().date2DateString(curTime + 1) + footer + "</TD>");
+					else
+					if (key.equalsIgnoreCase("DATEEND"))
+						table.append("<TD" + colspan + ">" + header + CMLib.time().date2DateString(lastCur) + footer + "</TD>");
+					else
+					if (key.equalsIgnoreCase("WARRANTS"))
+						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_WARRANTS] + footer + "</TD>");
+					else
+					if (key.equalsIgnoreCase("ARRESTS"))
+						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_ARRESTS] + "</TD>");
+					else
+					if (key.equalsIgnoreCase("PAROLES"))
+						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_PAROLES] + "</TD>");
+					else
+					if (key.equalsIgnoreCase("JAILINGS"))
+						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_JAILINGS] + "</TD>");
+					else
+					if (key.equalsIgnoreCase("EXECUTIONS"))
+						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_EXECUTIONS] + "</TD>");
+				}
+				table.append("</TR>");
+				if(scale==0)
+					break;
+			}
+		}
+		else
 		{
 			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 			{

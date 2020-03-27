@@ -170,8 +170,18 @@ public interface CoffeeTableRow extends CMCommon
 	public final int STAT_SOCUSE=12;
 	/** a constant index into statistics for a command use event*/
 	public final int STAT_CMDUSE=13;
+	/** a constant index into statistics for warrants issued to players*/
+	public final int STAT_WARRANTS=14;
+	/** a constant index into statistics for successful arrest of players*/
+	public final int STAT_ARRESTS=15;
+	/** a constant index into statistics for successful warning of players*/
+	public final int STAT_PAROLES=16;
+	/** a constant index into statistics for successful warnings of players*/
+	public final int STAT_JAILINGS=17;
+	/** a constant index into statistics for successful execution of players*/
+	public final int STAT_EXECUTIONS=18;
 	/** a constant index of the total number of enumerated statistical events*/
-	public final int STAT_TOTAL=14;
+	public final int STAT_TOTAL=19;
 
 	/** a constant index into statistics for a quest failed start*/
 	public final int STAT_QUESTFAILEDSTART=1;

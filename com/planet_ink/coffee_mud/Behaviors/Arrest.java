@@ -351,6 +351,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				else
 					return false;
 			}
+			if(W.criminal().isPlayer())
+				CMLib.coffeeTables().bump(W.criminal(), CoffeeTableRow.STAT_WARRANTS);
 			laws.warrants().add(W);
 			if(W.criminal()!=null)
 			{
@@ -1523,6 +1525,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			}
 			if((laws.getMessage(Law.MSG_WARNING).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_DETAIN)))
 				str.append(laws.getMessage(Law.MSG_WARNING)+"  ");
+			if(criminal.isPlayer())
+				CMLib.coffeeTables().bump(criminal, CoffeeTableRow.STAT_PAROLES);
 			CMLib.commands().postSay(judge,criminal,str.toString(),false,false);
 			totallyDone=true;
 			break;
@@ -1546,6 +1550,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						str.append(laws.getMessage(Law.MSG_PREVOFF)+"  ");
 				}
 			}
+			if(criminal.isPlayer())
+				CMLib.coffeeTables().bump(criminal, CoffeeTableRow.STAT_PAROLES);
 			if((laws.getMessage(Law.MSG_THREAT).length()>0)&&(!CMath.bset(W.punishmentCode(),Law.PUNISHMENTMASK_DETAIN)))
 				str.append(laws.getMessage(Law.MSG_THREAT)+"  ");
 			CMLib.commands().postSay(judge,criminal,str.toString(),false,false);
@@ -2862,7 +2868,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(CMLib.flags().isAnimalIntelligence(W.criminal()))
 							W.setState(Law.STATE_JAILING);
 						else
+						{
+							if(W.criminal().isPlayer())
+								CMLib.coffeeTables().bump(W.criminal(), CoffeeTableRow.STAT_ARRESTS);
 							W.setState(Law.STATE_MOVING);
+						}
 						if (cuff != null)
 						{
 							cuff.unInvoke();
@@ -2995,6 +3005,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							W.setArrestingOfficer(myArea,null);
 							W.setState(Law.STATE_SEEKING);
 						}
+						else
+						if(W.criminal().isPlayer())
+							CMLib.coffeeTables().bump(W.criminal(), CoffeeTableRow.STAT_ARRESTS);
 
 					}
 					else
@@ -3126,6 +3139,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					&&(CMLib.flags().isAliveAwakeMobile(judge,true)))
 					{
 						judge.location().show(judge,W.criminal(),CMMsg.MSG_OK_VISUAL,L("<S-NAME> put(s) <T-NAME> on parole!"));
+						if(W.criminal().isPlayer())
+							CMLib.coffeeTables().bump(W.criminal(), CoffeeTableRow.STAT_PAROLES);
 						final Ability A=CMClass.getAbility("Prisoner");
 						A.startTickDown(judge,W.criminal(),W.jailTime());
 						W.criminal().recoverPhyStats();
@@ -3349,6 +3364,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							A.setProficiency(100);
 							served=A.invoke(judgeM,criminalM,false,0);
 						}
+						if(criminalM.isPlayer())
+							CMLib.coffeeTables().bump(criminalM, CoffeeTableRow.STAT_EXECUTIONS);
 						fileAllWarrants(laws,null,criminalM);
 						criminalM.recoverPhyStats();
 						criminalM.recoverCharStats();
@@ -3412,6 +3429,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						CMLib.commands().postLook(officer,true);
 					if(W.jail()==W.criminal().location())
 					{
+						if(W.criminal().isPlayer())
+							CMLib.coffeeTables().bump(W.criminal(), CoffeeTableRow.STAT_JAILINGS);
 						unCuff(W.criminal());
 						final Ability A=CMClass.getAbility("Prisoner");
 						if(A!=null)

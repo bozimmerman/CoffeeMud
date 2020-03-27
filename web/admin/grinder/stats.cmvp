@@ -13,12 +13,14 @@
 			document.CONTROL.action=action;
 			document.CONTROL.submit();
 		}
-		function ClickedBox(skillRpt,questRpt,areaRpt,socRpt,cmdRpt)
+		function ClickedBox(skillRpt,questRpt,areaRpt,socRpt,cmdRpt,crimeRpt)
 		{
 			var newVal='';
 			if(socRpt=='SOCRPT') 
 				 newVal='on';
 			if(cmdRpt=='CMDRPT') 
+				 newVal='on';
+			if(crimeRpt=='CRIMERPT') 
 				 newVal='on';
 			if(skillRpt=='SKILLRPT') 
 			{
@@ -47,12 +49,14 @@
 			||(areaRpt!=document.CONTROL.AREARPT.value)
 			||(questRpt!=document.CONTROL.QUESTRPT.value)
 			||(cmdRpt!=document.CONTROL.CMDRPT.value)
+			||(crimeRpt!=document.CONTROL.CRIMERPT.value)
 			||(socRpt!=document.CONTROL.SOCRPT.value))
 			{
 				document.CONTROL.QUESTRPT.value=questRpt;
 				document.CONTROL.AREARPT.value=areaRpt;
 				document.CONTROL.SKILLRPT.value=skillRpt;
 				document.CONTROL.CMDRPT.value=cmdRpt;
+				document.CONTROL.CRIMERPT.value=crimeRpt;
 				document.CONTROL.SOCRPT.value=socRpt;
 				Clicked('/grinder/stats.cmvp');
 			}
@@ -79,6 +83,7 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=SKILLRPT VALUE="@RequestParameter?SKILLRPT@">
 <INPUT TYPE=HIDDEN NAME=SOCRPT VALUE="@RequestParameter?SOCRPT@">
+<INPUT TYPE=HIDDEN NAME=CRIMERPT VALUE="@RequestParameter?CRIMERPT@">
 <INPUT TYPE=HIDDEN NAME=CMDRPT VALUE="@RequestParameter?CMDRPT@">
 <INPUT TYPE=HIDDEN NAME=QUESTRPT VALUE="@RequestParameter?QUESTRPT@">
 <INPUT TYPE=HIDDEN NAME=AREARPT VALUE="@RequestParameter?AREARPT@">
@@ -193,12 +198,13 @@
 			<OPTION VALUE=30>Months
 			<OPTION VALUE=365>Years
 			</SELECT>
-			<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?QUESTRPT=@ @if?CheckReqParm?SKILLRPT=USAGERPT@checked@endif@ @if?CheckReqParm?SKILLRPT=@checked@endif@ @endif@ VALUE=USAGERPT ONCLICK="ClickedBox('USAGERPT','','');"><FONT COLOR=WHITE>Usage Report</FONT>
-			<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?SKILLRPT=SKILLRPT@checked@endif@ VALUE=SKILLRPT ONCLICK="ClickedBox('SKILLRPT','','','','');"><FONT COLOR=WHITE>Skills Report</FONT>
-			<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?QUESTRPT=QUESTRPT@checked@endif@ VALUE=QUESTRPT ONCLICK="ClickedBox('','QUESTRPT','','','');"><FONT COLOR=WHITE>Quest Report</FONT>
-			<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?AREARPT=AREARPT@checked@endif@ VALUE=AREARPT ONCLICK="ClickedBox('','','AREARPT','','');"><FONT COLOR=WHITE>Area Report</FONT>
-			<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?SOCRPT=SOCRPT@checked@endif@ VALUE=SOCRPT ONCLICK="ClickedBox('','','','SOCRPT','');"><FONT COLOR=WHITE>Socials Report</FONT>
-			<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?CMDRPT=CMDRPT@checked@endif@ VALUE=CMDRPT ONCLICK="ClickedBox('','','','','CMDRPT');"><FONT COLOR=WHITE>Command Report</FONT>
+			<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?QUESTRPT=@ @if?CheckReqParm?SKILLRPT=USAGERPT@checked@endif@ @if?CheckReqParm?SKILLRPT=@checked@endif@ @endif@ VALUE=USAGERPT ONCLICK="ClickedBox('USAGERPT','','','');"><FONT COLOR=WHITE>Usage Report</FONT>
+			<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?SKILLRPT=SKILLRPT@checked@endif@ VALUE=SKILLRPT ONCLICK="ClickedBox('SKILLRPT','','','','','');"><FONT COLOR=WHITE>Skills Report</FONT>
+			<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?QUESTRPT=QUESTRPT@checked@endif@ VALUE=QUESTRPT ONCLICK="ClickedBox('','QUESTRPT','','','','');"><FONT COLOR=WHITE>Quest Report</FONT>
+			<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?AREARPT=AREARPT@checked@endif@ VALUE=AREARPT ONCLICK="ClickedBox('','','AREARPT','','','');"><FONT COLOR=WHITE>Area Report</FONT>
+			<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?SOCRPT=SOCRPT@checked@endif@ VALUE=SOCRPT ONCLICK="ClickedBox('','','','SOCRPT','','');"><FONT COLOR=WHITE>Socials Report</FONT>
+			<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?CMDRPT=CMDRPT@checked@endif@ VALUE=CMDRPT ONCLICK="ClickedBox('','','','','CMDRPT','');"><FONT COLOR=WHITE>Command Report</FONT>
+			<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?CRIMERPT=CRIMERPT@checked@endif@ VALUE=CRIMERPT ONCLICK="ClickedBox('','','','','','CRIMERPT');"><FONT COLOR=WHITE>Crime Report</FONT>
 		</TD>
 	</TR>
 	<TR>
@@ -437,25 +443,34 @@
 						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Stops</B></FONT></TD>
 		
 					@else@
-						@if?CheckReqParm?AREARPT=AREARPT@
-							<TD WIDTH=15%><FONT COLOR=WHITE><B>Area Name</B></FONT></TD>
-						@else@
+						@if?CheckReqParm?CRIMERPT=CRIMERPT@
 							<TD WIDTH=15%><FONT COLOR=WHITE><B>Date Range</B></FONT></TD>
+							<TD WIDTH=9%><FONT COLOR=WHITE SIZE=-1><B>Warrants</B></FONT></TD>
+							<TD WIDTH=9%><FONT COLOR=WHITE SIZE=-1><B>Arrests</B></FONT></TD>
+							<TD WIDTH=9%><FONT COLOR=WHITE SIZE=-1><B>Paroles</B></FONT></TD>
+							<TD WIDTH=9%><FONT COLOR=WHITE SIZE=-1><B>Jailings</B></FONT></TD>
+							<TD WIDTH=9%><FONT COLOR=WHITE SIZE=-1><B>Executions</B></FONT></TD>
+						@else@
+							@if?CheckReqParm?AREARPT=AREARPT@
+								<TD WIDTH=15%><FONT COLOR=WHITE><B>Area Name</B></FONT></TD>
+							@else@
+								<TD WIDTH=15%><FONT COLOR=WHITE><B>Date Range</B></FONT></TD>
+							@endif@
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Newbies</B></FONT></TD>
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Logins</B></FONT></TD>
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Tot. Mn.</B></FONT></TD>
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Avg. Mn.</B></FONT></TD>
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Avg. On *</B></FONT></TD>
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Most On *</B></FONT></TD>
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Deaths</B></FONT></TD>
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>PKills</B></FONT></TD>
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Levels</B></FONT></TD>
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Class +-</B></FONT></TD>
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Purges</B></FONT></TD>
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Marriage</B></FONT></TD>
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Births</B></FONT></TD>
+							<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Divorces</B></FONT></TD>
 						@endif@
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Newbies</B></FONT></TD>
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Logins</B></FONT></TD>
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Tot. Mn.</B></FONT></TD>
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Avg. Mn.</B></FONT></TD>
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Avg. On *</B></FONT></TD>
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Most On *</B></FONT></TD>
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Deaths</B></FONT></TD>
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>PKills</B></FONT></TD>
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Levels</B></FONT></TD>
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Class +-</B></FONT></TD>
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Purges</B></FONT></TD>
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Marriage</B></FONT></TD>
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Births</B></FONT></TD>
-						<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Divorces</B></FONT></TD>
 					@endif@
 				@endif@
 			@endif@
@@ -509,7 +524,11 @@
 						@if?CheckReqParm?AREARPT=AREARPT@
 							@CoffeeTableRows?HEADER=<FONT COLOR=WHITE SIZE=-1>&FOOTER=</FONT>&AREANAME&NEWPLAYERS&LOGINS&TOTALHOURS&AVERAGETICKS&AVERAGEONLINE&MOSTONLINE&DEATHS&PKDEATHS&LEVELSUP&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES@
 						@else@
-							@CoffeeTableRows?HEADER=<FONT COLOR=WHITE SIZE=-1>&FOOTER=</FONT>&DATERANGE&NEWPLAYERS&LOGINS&TOTALHOURS&AVERAGETICKS&AVERAGEONLINE&MOSTONLINE&DEATHS&PKDEATHS&LEVELSUP&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES@
+							@if?CheckReqParm?CRIMERPT=CRIMERPT@
+								@CoffeeTableRows?CRIMERPT&HEADER=<FONT COLOR=WHITE SIZE=-1>&FOOTER=</FONT>&DATERANGE&WARRANTS&ARRESTS&PAROLES&JAILINGS&EXECUTIONS@
+							@else@
+								@CoffeeTableRows?HEADER=<FONT COLOR=WHITE SIZE=-1>&FOOTER=</FONT>&DATERANGE&NEWPLAYERS&LOGINS&TOTALHOURS&AVERAGETICKS&AVERAGEONLINE&MOSTONLINE&DEATHS&PKDEATHS&LEVELSUP&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES@
+							@endif@
 						@endif@
 					@endif@
 				@endif@

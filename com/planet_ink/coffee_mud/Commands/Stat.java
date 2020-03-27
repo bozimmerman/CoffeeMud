@@ -146,6 +146,7 @@ public class Stat  extends Skills
 		boolean socUse=false;
 		boolean cmdUse=false;
 		boolean questStats=false;
+		boolean crimeStats=false;
 		boolean areaStats=false;
 		if(rest.toUpperCase().trim().startsWith("SKILLUSE"))
 		{
@@ -183,6 +184,15 @@ public class Stat  extends Skills
 			else
 				rest="";
 		}
+		if(rest.toUpperCase().trim().startsWith("CRIME"))
+		{
+			crimeStats=true;
+			final int x=rest.indexOf(' ');
+			if(x>0)
+				rest=rest.substring(x+1).trim();
+			else
+				rest="";
+		}
 		if(rest.toUpperCase().trim().startsWith("AREA"))
 		{
 			areaStats=true;
@@ -214,6 +224,17 @@ public class Stat  extends Skills
 						+CMStrings.padRight(L("DROP"),5)
 						+CMStrings.padRight(L("TSTP"),5)
 						+CMStrings.padRight(L("STOP"),5)
+						+"\n\r");
+		}
+		else
+		if(crimeStats)
+		{
+			table.append(CMStrings.padRight(L("Date"),25)
+						+CMStrings.padRight(L("Warrants"),10)
+	   					+CMStrings.padRight(L("Arrests"),10)
+						+CMStrings.padRight(L("Paroles"),10)
+						+CMStrings.padRight(L("Jailings"),10)
+						+CMStrings.padRight(L("Executions"),10)
 						+"\n\r");
 		}
 		else
@@ -524,6 +545,58 @@ public class Stat  extends Skills
 						+CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTTIMESTOP],5)
 						+CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTSTOP],5));
 				table.append("\n\r");
+			}
+			table.append("\n\r");
+		}
+		else
+		if(crimeStats)
+		{
+			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
+			{
+				lastCur=curTime;
+				final Calendar C2=Calendar.getInstance();
+				C2.setTimeInMillis(curTime);
+				C2.add(Calendar.DATE,-(scale));
+				curTime=C2.getTimeInMillis();
+				C2.set(Calendar.HOUR_OF_DAY,23);
+				C2.set(Calendar.MINUTE,59);
+				C2.set(Calendar.SECOND,59);
+				C2.set(Calendar.MILLISECOND,999);
+				curTime=C2.getTimeInMillis();
+				final ArrayList<CoffeeTableRow> set=new ArrayList<CoffeeTableRow>();
+				for(int v=V.size()-1;v>=0;v--)
+				{
+					final CoffeeTableRow T=V.get(v);
+					if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+					{
+						set.add(T);
+						V.remove(v);
+					}
+				}
+				final long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
+				long highestOnline=0;
+				long numberOnlineTotal=0;
+				long numberOnlineCounter=0;
+				for(int s=0;s<set.size();s++)
+				{
+					final CoffeeTableRow T=set.get(s);
+					T.totalUp(code,totals);
+					if(T.highestOnline()>highestOnline)
+						highestOnline=T.highestOnline();
+					numberOnlineTotal+=T.numberOnlineTotal();
+					numberOnlineCounter+=T.numberOnlineCounter();
+				}
+				totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/scale/(1000*60);
+				double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
+				avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
+				table.append(CMStrings.padRight(CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1),25)
+							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_WARRANTS],10)
+							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_ARRESTS],10)
+							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_PAROLES],10)
+							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_JAILINGS],10)
+							 +CMStrings.centerPreserve(""+totals[CoffeeTableRow.STAT_EXECUTIONS],10)+"\n\r");
+				if(scale==0)
+					break;
 			}
 			table.append("\n\r");
 		}
@@ -1333,7 +1406,7 @@ public class Stat  extends Skills
 				return showTableStats(mob,1,1,CMParms.combine(commands,1));
 			else
 			if((commands.size()==1)
-			&&(s1.equalsIgnoreCase("SKILLUSE")||s1.equalsIgnoreCase("AREA")||s1.equalsIgnoreCase("QUEST")))
+			&&(s1.equalsIgnoreCase("SKILLUSE")||s1.equalsIgnoreCase("AREA")||s1.equalsIgnoreCase("QUEST")||s1.equalsIgnoreCase("CRIME")))
 				return showTableStats(mob,1,1,CMParms.combine(commands,0));
 			else
 			if(commands.size()>1)

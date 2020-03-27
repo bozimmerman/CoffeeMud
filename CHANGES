@@ -22,6 +22,7 @@
  21. New item StdQuestBoard/GenQuestBoard for a new way to accept quests.
  22. New property: Prop_QuestGiver for quests from rooms, items, areas, etc.
  23. New expertise: Energist, replaces old Airelist.  New Airelist is for gas attacks.
+ 24. Added crime tracking to statistics, and support in stats and mudgrinder
  
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.
