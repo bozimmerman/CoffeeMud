@@ -1,5 +1,5 @@
 
-BLOCKED: PERMANENT: @HTTPclientIP@
+BLOCKED: PERMANENT
 
 *********************************************
 ***       YOUR COMPUTER IS BLOCKED        ***
