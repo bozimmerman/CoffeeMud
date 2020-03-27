@@ -2019,7 +2019,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final int levelFloor=filter.second.intValue();
 		final Class<?>[] deriveClasses=filter.third;
 		if(((levelLimit>0) && (I.basePhyStats().level() > levelLimit))
-		||((levelFloor>0) && (I.basePhyStats().level() < levelFloor)))
+		||((levelFloor>0) && (I.basePhyStats().level() <= levelFloor)))
 			return false;
 		if(deriveClasses.length==0)
 			return true;
