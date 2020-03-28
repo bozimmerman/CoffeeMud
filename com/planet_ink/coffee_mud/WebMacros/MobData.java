@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.WebMacros;
 
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -1524,6 +1525,38 @@ public class MobData extends StdWebMacro
 					}
 					break;
 				}
+				case SIVIEWTYPES: // view types
+					if(M instanceof ShopKeeper)
+					{
+						final HashSet<ViewType> viewTypes=new HashSet<ViewType>();
+						if(firstTime)
+						{
+							for(final ViewType typ : ((ShopKeeper)M).viewFlags())
+								viewTypes.add(typ);
+						}
+						else
+						{
+							ViewType V=(ViewType)CMath.s_valueOf(ViewType.class, old.toUpperCase().trim());
+							if(V != null)
+								viewTypes.add(V);
+							int x=1;
+							while(httpReq.getUrlParameter(parmName+x)!=null)
+							{
+								V=(ViewType)CMath.s_valueOf(ViewType.class, httpReq.getUrlParameter(parmName+x).toUpperCase().trim());
+								if(V != null)
+									viewTypes.add(V);
+								x++;
+							}
+						}
+						for(final ViewType typ : ViewType.values())
+						{
+							str.append("<OPTION VALUE=\""+typ.name()+"\"");
+							if(viewTypes.contains(typ))
+								str.append(" SELECTED");
+							str.append(">"+CMStrings.capitalizeAndLower(typ.name()));
+						}
+					}
+					break;
 				case ISGENERIC:
 					if(M.isGeneric())
 						return "true";

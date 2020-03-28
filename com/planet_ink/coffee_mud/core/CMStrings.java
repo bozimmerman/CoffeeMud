@@ -929,6 +929,37 @@ public class CMStrings
 	}
 
 	/**
+	 * Finds all instances of the second parameter string in the first string,
+	 * and replaces it with the third String.  Returns the first string with or without changes. The
+	 * string is only altered where the second string appears as a inside the first string with no
+	 * trailing letters to alter the word.  Preceding letters are also not OK.
+	 * @param str the string to look inside of
+	 * @param thisStr the string to look for inside the first string
+	 * @param withThisStr the string to replace the second string with, where found.
+	 * @return the string modified, or not modified if no replacements were made.
+	 */
+	public final static String replaceWhole(String str, final String thisStr, final String withThisStr)
+	{
+		if((str==null)
+		||(thisStr==null)
+		||(withThisStr==null)
+		||(str.length()==0)
+		||(thisStr.length()==0))
+			return str;
+		for(int i=str.length()-1;i>=0;i--)
+		{
+			if((str.charAt(i)==thisStr.charAt(0))
+			&&((i==0)||(!Character.isLetterOrDigit(str.charAt(i-1)))))
+			{
+				if((str.substring(i).startsWith(thisStr))
+				&&((str.length()==i+thisStr.length())||(!Character.isLetterOrDigit(str.charAt(i+thisStr.length())))))
+					str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
+			}
+		}
+		return str;
+	}
+
+	/**
 	 * Finds the first and only the first instance of the second parameter word in the first string,
 	 * and replaces it with the third word.  Returns the first string with or without changes. The
 	 * string is only altered if the second string appears as a inside the first string with no

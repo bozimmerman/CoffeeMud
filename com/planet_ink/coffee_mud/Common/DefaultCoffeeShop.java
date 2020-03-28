@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -626,6 +627,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		{
 			itemstr.append(CMLib.xml().convertXMLtoTag("ISELL",shopKeep.getWhatIsSoldMask()));
 			itemstr.append(CMLib.xml().convertXMLtoTag("IIMSK",CMLib.xml().parseOutAngleBrackets(shopKeep.getWhatIsSoldZappermask())));
+			itemstr.append(CMLib.xml().convertXMLtoTag("IVTYP",CMParms.toListString(shopKeep.viewFlags())));
 			itemstr.append(CMLib.xml().convertXMLtoTag("IPREJ",shopKeep.prejudiceFactors()));
 			itemstr.append(CMLib.xml().convertXMLtoTag("IBUDJ",shopKeep.budget()));
 			itemstr.append(CMLib.xml().convertXMLtoTag("IDVAL",shopKeep.devalueRate()));
@@ -682,6 +684,17 @@ public class DefaultCoffeeShop implements CoffeeShop
 			parm=CMParms.getParmStr(text,"IPREJ","");
 			if(parm!=null)
 				shop.setPrejudiceFactors(parm);
+			parm=CMParms.getParmStr(text, "IVTYP", null);
+			if(parm!=null)
+			{
+				shop.viewFlags().clear();
+				for(final String s : CMParms.parseCommas(parm.toUpperCase().trim(),true))
+				{
+					final ViewType V = (ViewType)CMath.s_valueOf(ViewType.class, s);
+					if(V != null)
+						shop.viewFlags().add(V);
+				}
+			}
 			parm=CMParms.getParmStr(text,"IBUDJ","1000000");
 			if(parm!=null)
 				shop.setBudget(parm);

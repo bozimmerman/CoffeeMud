@@ -292,6 +292,32 @@ public class CMath
 		}
 	}
 
+
+	/**
+	 * Returns the matching enums.  Case Sensitive!
+	 * @param c the enum class to look in
+	 * @param lst the list of strings to look
+	 * @return the enums that matched
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public final static List<Enum<? extends Enum>> s_valuesOf(final Class<? extends Enum> c, final List<String> lst)
+	{
+		final List<Enum<? extends Enum>> enums = new Vector<Enum<? extends Enum>>(5);
+		if((c==null)||(lst==null)||(lst.size()==0))
+			return enums;
+		for(final String s : lst)
+		{
+			try
+			{
+				enums.add(Enum.valueOf(c, s));
+			}
+			catch(final Exception e)
+			{
+			}
+		}
+		return enums;
+	}
+
 	/**
 	 * Returns the matching enum.  Case Sensitive!
 	 * @param c the enum class to look in

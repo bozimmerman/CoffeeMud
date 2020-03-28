@@ -853,6 +853,16 @@ public class CMClass extends ClassLoader
 	}
 
 	/**
+	 * Returns a numbered available ability prototype from your classloader
+	 *
+	 * @return a numbered available ability prototype -- automatically scaled correctly.
+	 */
+	public static final Ability getAbility(final int x)
+	{
+		return c().abilities.elementAt(x % (c().abilities.size()));
+	}
+
+	/**
 	 * Returns a random available area prototype from your classloader
 	 *
 	 * @return a random available area prototype

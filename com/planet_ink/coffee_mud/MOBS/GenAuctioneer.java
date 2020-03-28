@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.MOBS;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -117,7 +118,7 @@ public class GenAuctioneer extends StdAuctioneer
 										   "TIMEPCT","LIVECUT","TIMECUT",
 										   "MAXADAYS","MINADAYS",
 										   "IGNOREMASK","PRICEMASKS",
-										   "ITEMMASK"};
+										   "ITEMMASK","SIVIEWTYPES"};
 
 	@Override
 	public String getStat(final String code)
@@ -148,6 +149,8 @@ public class GenAuctioneer extends StdAuctioneer
 			return CMParms.toListString(itemPricingAdjustments());
 		case 10:
 			return this.getWhatIsSoldZappermask();
+		case 11:
+			return CMParms.toListString(viewFlags());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -198,6 +201,15 @@ public class GenAuctioneer extends StdAuctioneer
 			break;
 		case 10:
 			this.setWhatIsSoldZappermask(val.trim());
+			break;
+		case 11:
+			viewFlags().clear();
+			for(final String s : CMParms.parseCommas(val.toUpperCase().trim(), true))
+			{
+				final ViewType V=(ViewType)CMath.s_valueOf(ViewType.class, s);
+				if(V!=null)
+					viewFlags().add(V);
+			}
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

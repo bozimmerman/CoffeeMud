@@ -14,6 +14,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.Set;
 import java.util.Vector;
 
 /*
@@ -131,6 +133,16 @@ public interface ShopKeeper extends Environmental, Economics
 	};
 
 	/**
+	 * How much information is given by this shopkeeper when viewing items
+	 */
+	public enum ViewType
+	{
+		BASIC,
+		FALSE,
+		IDENTIFY
+	}
+
+	/**
 	 * This class represents a given price for a given item in the shopkeepers inventory. It is usually
 	 * calculated for a given buyer.
 	 */
@@ -182,6 +194,15 @@ public interface ShopKeeper extends Environmental, Economics
 	* @param dealType the ShopKeeper DEAL_* constants describing what is sold or bought by this ShopKeeper
 	*/
 	public void addSoldType(int dealType);
+
+	/**
+	 * The ShopKeeper item view flags for determining what a player sees
+	 * from items in this shopkeepers inventory.  This list is dynamic and
+	 * can be changed at will... no protections whatever.
+	 *
+	 * @return the set of valid view type flags.
+	 */
+	public Set<ViewType> viewFlags();
 
 	/**
 	 * Based on the value of this ShopKeepers whatIsSold() method, this will return a displayable string

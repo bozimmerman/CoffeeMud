@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
@@ -4650,6 +4651,48 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			else
 				mob.tell(L("(no change)"));
+		}
+	}
+
+	protected void genShopkeeper3(final MOB mob, final ShopKeeper M, final int showNumber, final int showFlag)
+			throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		final String oldMask=CMParms.toListString(M.viewFlags());
+		while((mob.session()!=null)&&(!mob.session().isStopped()))
+		{
+			mob.tell(L("@x1. View flags/types: '@x2'.",""+showNumber,CMParms.toListString(M.viewFlags())));
+			if((showFlag!=showNumber)&&(showFlag>-999))
+				return;
+
+			final StringBuffer buf=new StringBuffer("");
+			final StringBuffer codes=new StringBuffer("");
+			final String codeStr="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!=+-@#$%&*~;:,<.>_";
+			for(int r=0;r<ViewType.values().length;r++)
+			{
+				final char c=codeStr.charAt(r+1);
+				codes.append(c);
+				buf.append(c+") "+ViewType.values()[r]+"\n\r");
+			}
+			final String newType=mob.session().choose(L("@x1Enter a value to toggle on/off: ",buf.toString()),codes.toString(),"");
+			int newValue=-1;
+			if(newType.trim().length()==0)
+			{
+				if(CMParms.toListString(M.viewFlags()).equals(oldMask))
+					mob.tell(L("(no change"));
+				return;
+			}
+			if(newType.length()>0)
+				newValue=codeStr.indexOf(newType.toUpperCase());
+			if(newValue<=0)
+			{
+			}
+			else
+			if(!M.viewFlags().contains(ViewType.values()[newValue-1]))
+				M.viewFlags().add(ViewType.values()[newValue-1]);
+			else
+				M.viewFlags().remove(ViewType.values()[newValue-1]);
 		}
 	}
 
@@ -10532,6 +10575,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genShopkeeper1(mob,me,++showNumber,showFlag);
 				me.setWhatIsSoldZappermask(prompt(mob,me.getWhatIsSoldZappermask(),++showNumber,showFlag,"Item Buy Mask (?)", true, CMLib.masking().maskHelp("\n\r", "disallow")));
 				genShopkeeper2(mob,me,++showNumber,showFlag);
+				genShopkeeper3(mob,me,++showNumber,showFlag);
 				genEconomics1(mob,me,++showNumber,showFlag);
 				genEconomics5(mob,me,++showNumber,showFlag);
 			}

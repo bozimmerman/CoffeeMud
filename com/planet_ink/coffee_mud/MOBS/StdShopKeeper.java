@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.MOBS;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -52,6 +53,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	protected double[]		devalueRate			= null;
 	protected String[]		pricingAdjustments	= new String[0];
 	protected String		itemZapperMask		= "";
+	protected Set<ViewType>	viewTypes			= new XHashSet<ViewType>(ViewType.BASIC);
 
 	protected Pair<Long,TimeClock.TimePeriod>	budget = null;
 
@@ -141,6 +143,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		super.cloneFix(E);
 		if (E instanceof StdShopKeeper)
 			shop = ((CoffeeShop) ((StdShopKeeper) E).shop.copyOf()).build(this);
+	}
+
+	@Override
+	public Set<ViewType> viewFlags()
+	{
+		return viewTypes;
 	}
 
 	@Override
@@ -389,7 +397,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					&& (getShop().doIHaveThisInStock("$" + msg.tool().Name() + "$", mob)))
 					{
 						final String prefix = L("Interested in @x1? Here is some information for you: ",msg.tool().Name());
-						final String viewDesc = prefix + CMLib.coffeeShops().getViewDescription(msg.source(), msg.tool());
+						final String viewDesc = prefix + CMLib.coffeeShops().getViewDescription(msg.source(), msg.tool(), viewFlags());
 						CMLib.commands().postSay(this, msg.source(), viewDesc, true, false);
 					}
 				}

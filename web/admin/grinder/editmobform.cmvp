@@ -506,6 +506,13 @@
 		@endif@ @endif@
 		</TD>
 	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>View Types:</B></FONT></TD>
+		<TD WIDTH=450 COLSPAN=2>
+		<SELECT MULTIPLE NAME=SIVIEWTYPES SIZE=4>@MobData?SIVIEWTYPES@</SELECT> 
+		</TD>
+	</TR>
+	
 	@if?!MobData?ISAUCTION&@
 		@if?!MobData?ISLIBRARIAN@
 			<TR>

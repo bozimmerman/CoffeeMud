@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -86,6 +87,8 @@ public class Auction extends Channel implements Tickable
 	protected static final int	STATE_TWICE		= 3;
 	protected static final int	STATE_THREE		= 4;
 	protected static final int	STATE_CLOSED	= 5;
+
+	private static final Set<ViewType> viewFlags = new XHashSet<ViewType>(new ViewType[] {ViewType.BASIC});
 
 	@Override
 	public int getTickStatus()
@@ -284,6 +287,11 @@ public class Auction extends Channel implements Tickable
 		}
 	}
 
+	protected Set<ViewType> viewFlags()
+	{
+		return viewFlags;
+	}
+
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
@@ -446,7 +454,7 @@ public class Auction extends Channel implements Tickable
 			E=getLiveData().getAuctionedItem();
 			mob.tell(L("Item: @x1",E.name()));
 			CMLib.commands().handleBeingLookedAt(CMClass.getMsg(mob,CMMsg.MASK_ALWAYS|CMMsg.MSG_EXAMINE,null));
-			mob.tell(CMLib.coffeeShops().getViewDescription(mob,E));
+			mob.tell(CMLib.coffeeShops().getViewDescription(mob,E, new XHashSet<ViewType>(ViewType.BASIC)));
 			return true;
 		}
 		else

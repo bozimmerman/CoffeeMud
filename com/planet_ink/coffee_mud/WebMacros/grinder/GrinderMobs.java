@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.WebMacros.grinder;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -59,7 +60,7 @@ public class GrinderMobs
 		LIBRDAYCHG,LIBROVERPCT,LIBDAYPCT,LIBMINDAYS,
 		LIBMAXDAYS,LIBMAXBORROW,ISLIBRARIAN,LIBCMASK,
 		STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR,
-		ISDRINK, LIQUIDHELD, QUENCHED, LIQUIDTYPES
+		ISDRINK, LIQUIDHELD, QUENCHED, LIQUIDTYPES, SIVIEWTYPES
 		;
 
 		public boolean isGenField;
@@ -570,6 +571,20 @@ public class GrinderMobs
 						while(httpReq.getUrlParameter(parmName+x)!=null)
 						{
 							((ShopKeeper)M).addSoldType(CMath.s_int(httpReq.getUrlParameter(parmName+x)));
+							x++;
+						}
+					}
+					break;
+				case SIVIEWTYPES: // view types
+					if(M instanceof ShopKeeper)
+					{
+						((ShopKeeper)M).viewFlags().clear();
+						int x=1;
+						while(httpReq.getUrlParameter(parmName+x)!=null)
+						{
+							final ViewType V = (ViewType)CMath.s_valueOf(ViewType.class, httpReq.getUrlParameter(parmName+x));
+							if(V != null)
+								((ShopKeeper)M).viewFlags().add(V);
 							x++;
 						}
 					}

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -107,6 +108,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	private MOB				staticMOB			= null;
 	private String[]		pricingAdjustments	= new String[0];
 	private String			itemZapperMask		= "";
+	private final Set<ViewType>	viewTypes			= new XHashSet<ViewType>(ViewType.BASIC);
 
 	private Pair<Long,TimePeriod> budget		= new Pair<Long,TimePeriod>(Long.valueOf(100000), TimePeriod.DAY);
 
@@ -158,6 +160,12 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	public int invResetRate()
 	{
 		return 0;
+	}
+
+	@Override
+	public Set<ViewType> viewFlags()
+	{
+		return viewTypes;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -34,7 +35,7 @@ public interface ShoppingLibrary extends CMLibrary
 {
 	public ShopKeeper getShopKeeper(Environmental E);
 	public List<Environmental> getAllShopkeepers(Room here, MOB notMOB);
-	public String getViewDescription(MOB viewerM, Environmental E);
+	public String getViewDescription(MOB viewerM, Environmental E, Set<ViewType> flags);
 	public double prejudiceValueFromPart(MOB customer, boolean sellTo, String part);
 	public double prejudiceFactor(MOB customer, String factors, boolean sellTo);
 	public ShopKeeper.ShopPrice sellingPrice(MOB sellerShopM, MOB buyerCustM, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop, boolean includeSalesTax);

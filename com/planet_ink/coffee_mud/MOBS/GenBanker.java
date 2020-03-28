@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.MOBS;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -115,7 +116,7 @@ public class GenBanker extends StdBanker
 
 	private final static String[] MYCODES={"WHATISELL","PREJUDICE","BANKCHAIN","COININT",
 											"ITEMINT","IGNOREMASK","LOANINT","PRICEMASKS",
-											"ITEMMASK"};
+											"ITEMMASK","SIVIEWTYPES"};
 	@Override
 	public String getStat(final String code)
 	{
@@ -141,6 +142,8 @@ public class GenBanker extends StdBanker
 			return CMParms.toListString(itemPricingAdjustments());
 		case 8:
 			return this.getWhatIsSoldZappermask();
+		case 9:
+			return CMParms.toListString(viewFlags());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -186,6 +189,15 @@ public class GenBanker extends StdBanker
 			break;
 		case 8:
 			this.setWhatIsSoldZappermask(val.trim());
+			break;
+		case 9:
+			viewFlags().clear();
+			for(final String s : CMParms.parseCommas(val.toUpperCase().trim(), true))
+			{
+				final ViewType V=(ViewType)CMath.s_valueOf(ViewType.class, s);
+				if(V!=null)
+					viewFlags().add(V);
+			}
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
@@ -913,6 +914,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					itemstr.append(xml.convertXMLtoTag("SIDATA",getPropertiesStr(E2,true)));
 					itemstr.append("</SHITEM>");
 				}
+				text.append(xml.convertXMLtoTag("SIVTYP", CMParms.toListString(((ShopKeeper)E).viewFlags())));
 				text.append(xml.convertXMLtoTag("STORE",itemstr.toString()));
 			}
 			if(((MOB)E).tattoos().hasMoreElements())
@@ -3022,6 +3024,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		boolean variableEq=false;
 		shopKeep.setWhatIsSoldMask(CMLib.xml().getLongFromPieces(buf,"SELLCD"));
 		shopKeep.setWhatIsSoldZappermask(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(buf, "SELLIMSK")));
+		if(CMLib.xml().isTagInPieces(buf, "SIVTYP"))
+		{
+			final String flags=CMLib.xml().getValFromPieces(buf, "SIVTYP");
+			shopKeep.viewFlags().clear();
+			for(final String s : CMParms.parseCommas(flags,true))
+			{
+				final ViewType V = (ViewType)CMath.s_valueOf(ViewType.class, s);
+				if(V != null)
+					shopKeep.viewFlags().add(V);
+			}
+		}
 		final CoffeeShop shop=(shopKeep instanceof Librarian)?((Librarian)shopKeep).getBaseLibrary():shopKeep.getShop();
 		shop.emptyAllShelves();
 		final List<XMLLibrary.XMLTag> V=CMLib.xml().getContentsFromPieces(buf,"STORE");

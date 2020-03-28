@@ -103,7 +103,7 @@ public class GenShopkeeper extends StdShopKeeper
 
 	private final static String[]	MYCODES	= { "WHATISELL", "PREJUDICE", "BUDGET", "DEVALRATE",
 												"INVRESETRATE", "IGNOREMASK", "PRICEMASKS",
-												"ITEMMASK"};
+												"ITEMMASK","SIVIEWTYPES"};
 
 	@Override
 	public String getStat(final String code)
@@ -128,6 +128,8 @@ public class GenShopkeeper extends StdShopKeeper
 			return CMParms.toListString(itemPricingAdjustments());
 		case 7:
 			return this.getWhatIsSoldZappermask();
+		case 8:
+			return CMParms.toListString(viewFlags());
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -171,6 +173,15 @@ public class GenShopkeeper extends StdShopKeeper
 				break;
 			case 7:
 				this.setWhatIsSoldZappermask(val.trim());
+				break;
+			case 8:
+				viewFlags().clear();
+				for(final String s : CMParms.parseCommas(val.toUpperCase().trim(), true))
+				{
+					final ViewType V=(ViewType)CMath.s_valueOf(ViewType.class, s);
+					if(V!=null)
+						viewFlags().add(V);
+				}
 				break;
 			default:
 				CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

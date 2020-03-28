@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
@@ -97,6 +98,8 @@ public class CraftingSkill extends GatheringSkill
 	protected static final int	CF_TOTAL		= 3;
 
 	private static MOB factoryWorkerM = null;
+
+	private static final Set<ViewType> viewFlags = new XHashSet<ViewType>(new ViewType[] {ViewType.BASIC,ViewType.IDENTIFY});
 
 	protected static class CraftParms
 	{
@@ -897,6 +900,11 @@ public class CraftingSkill extends GatheringSkill
 		return allItems;
 	}
 
+	protected Set<ViewType> viewFlags()
+	{
+		return viewFlags;
+	}
+
 	public boolean checkInfo(final MOB mob, final List<String> commands)
 	{
 		if((commands!=null)
@@ -959,7 +967,7 @@ public class CraftingSkill extends GatheringSkill
 				}
 				else
 				{
-					final String viewDesc = CMLib.coffeeShops().getViewDescription(mob, pair.item);
+					final String viewDesc = CMLib.coffeeShops().getViewDescription(mob, pair.item, viewFlags());
 					commonTell(mob,viewDesc);
 					if(viewDesc.length()>0)
 						commonTell(mob,L("* The material type is an example only."));

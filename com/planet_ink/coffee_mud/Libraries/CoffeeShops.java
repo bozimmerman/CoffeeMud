@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -135,149 +136,280 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		return baseName;
 	}
 
+	protected int plusOrMinus(int range, final int hash, final boolean lieBool)
+	{
+		if(range == 0)
+			range=1;
+		final int hashedRange = CMath.abs(hash % range);
+		return ((lieBool ? 1 : -1) * (hashedRange/2));
+	}
+
+	protected int plus(int range, final int hash)
+	{
+		if(range == 0)
+			range=1;
+		final int hashedRange = CMath.abs(hash % range);
+		return hashedRange/2;
+	}
+
 	@Override
-	public String getViewDescription(final MOB viewerM, final Environmental E)
+	public String getViewDescription(final MOB viewerM, final Environmental E, final Set<ViewType> flags)
 	{
 		final StringBuilder str=new StringBuilder("");
 		if(E==null)
 			return str.toString();
-		if(E instanceof Ability)
-		{
-			final StringBuilder text = CMLib.help().getHelpText(E.ID(), viewerM, false);
-			if((text != null)
-			&&(text.length()>0))
-				str.append(text);
-		}
-		if(E instanceof Physical)
-		{
-			str.append("\n\rLevel      : "+((Physical)E).phyStats().level());
-			str.append("\n\rType       : ");
-			if(E instanceof LandTitle)
-				str.append(L("Title Document"));
-			else
-			{
-				if(E instanceof Electronics)
-					str.append(L("Electronic "));
-				if(E instanceof BoardableShip)
-					str.append(L("Vessel"));
-				else
-				if(E instanceof ClanItem)
-					str.append(L(((ClanItem)E).getClanItemType().getDisplayName()));
-				else
-				if(E instanceof Weapon)
-					str.append(L("Weapon"));
-				else
-				if(E instanceof Armor)
-					str.append(L("Armor"));
-				else
-				if(E instanceof Rideable)
-					str.append(L("Rideable"));
-				else
-				if(E instanceof Container)
-					str.append(L("Container"));
-				else
-					str.append(L("Item"));
-			}
-		}
-		if(E instanceof LandTitle)
-		{
-			final LandTitle T=(LandTitle)E;
-			str.append(L("\n\rSize       : ")+L("@x1 room(s)",""+T.getAllTitledRooms().size()));
-			final StringBuilder features = new StringBuilder("");
-			if(T.allowsExpansionConstruction())
-				features.append(L(" expandable"));
-			if(T.rentalProperty())
-				features.append(L(" rental"));
-			// this space intentionally left with dynamic string
-			str.append(L("\n\rFeatures   :"+features.toString()));
-		}
+		final boolean lie = flags.contains(ViewType.FALSE);
+		final int lieHash = E.name().hashCode();
+		int level = 1;
+		if(!flags.contains(ViewType.BASIC))
+			str.append(L("It is '@x1'.",E.name()));
 		else
-		if(E instanceof Item)
 		{
-			final Item I=(Item)E;
-			str.append(L("\n\rMaterial   : @x1",L(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(I.material()).toLowerCase()))));
-			str.append(L("\n\rWeight     : @x1 pounds",""+I.phyStats().weight()));
-			if(I instanceof Electronics)
+			if(E instanceof Ability)
 			{
-				str.append(L("\n\rMake       : @x1",""+((Electronics)I).getFinalManufacturer().name()));
-				str.append(L("\n\rType       : @x1",""+((Electronics)I).getTechType().getDisplayName()));
-			}
-			if(I instanceof Technical)
-			{
-				str.append(L("\n\rModel Num. : @x1",""+((Technical)I).techLevel()));
-			}
-			if(I instanceof BoardableShip)
-			{
-				final Area A=((BoardableShip)I).getShipArea();
-				if(A!=null)
+				final StringBuilder text;
+				if(lie)
 				{
-					str.append(L("\n\rRooms      : @x1",""+A.numberOfProperIDedRooms()));
-					final List<String> miscItems=new ArrayList<String>();
-					for(final Enumeration<Room> r= A.getProperMap(); r.hasMoreElements();)
+					final int qualifyingLevel = CMLib.ableMapper().lowestQualifyingLevel(E.ID());
+					Ability A=null;
+					for(int i=0;i<100 && (A==null);i++)
 					{
-						final Room R=r.nextElement();
-						if(R==null)
-							continue;
-						for(final Enumeration<Item> i = R.items();i.hasMoreElements();)
-						{
-							final Item I2=i.nextElement();
-							if(I2.displayText().length()>0)
-							{
-								if(I2 instanceof TechComponent)
-									str.append(L("\n\r"+CMStrings.padRight(((TechComponent)I2).getTechType().getShortDisplayName(),11)+": @x1",getSellableElectronicsName(viewerM,(Electronics)I2)));
-								else
-									miscItems.add(I2.name(viewerM));
-							}
-						}
+						A=CMClass.getAbility(lieHash+i);
+						if((A==null)
+						|| (!CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
+						|| (CMLib.ableMapper().lowestQualifyingLevel(A.ID())<=qualifyingLevel))
+							A=null;
 					}
-					if(miscItems.size()>0)
-					{
-						str.append(L("\n\rMisc Items : "));
-						str.append(CMParms.toListString(miscItems));
-					}
+					if(A==null)
+						A=(Ability)E;
+					text = CMLib.help().getHelpText(A.ID(), viewerM, false);
 				}
-			}
-			else
-			if(I instanceof Weapon)
-			{
-				final String handedNess;
-				if(I.rawLogicalAnd() && ((I.rawProperLocationBitmap()&(Item.WORN_HELD|Item.WORN_WIELD))==(Item.WORN_HELD|Item.WORN_WIELD)))
-					handedNess = L(" (2 handed)");
 				else
-					handedNess = "";
-				str.append(L("\n\rWeap. Type : @x1",L(CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)I).weaponDamageType()]))));
-				str.append(L("\n\rWeap. Class: @x1",L(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)I).weaponClassification()]))))
-					.append(handedNess);
+					text = CMLib.help().getHelpText(E.ID(), viewerM, false);
+				if((text != null)
+				&&(text.length()>0))
+					str.append(text);
+			}
+			if(E instanceof Physical)
+			{
+				level=((Physical)E).phyStats().level() - (lie?plus(((Physical)E).phyStats().level()/2,lieHash):0);
+				str.append("\n\rLevel      : "+level);
+				str.append("\n\rType       : ");
+				if(E instanceof LandTitle)
+					str.append(L("Title Document"));
+				else
+				{
+					if(E instanceof Electronics)
+						str.append(L("Electronic "));
+					if(E instanceof BoardableShip)
+						str.append(L("Vessel"));
+					else
+					if(E instanceof ClanItem)
+						str.append(L(((ClanItem)E).getClanItemType().getDisplayName()));
+					else
+					if(E instanceof Weapon)
+						str.append(L("Weapon"));
+					else
+					if(E instanceof Armor)
+						str.append(L("Armor"));
+					else
+					if(E instanceof Rideable)
+						str.append(L("Rideable"));
+					else
+					if(E instanceof Container)
+						str.append(L("Container"));
+					else
+						str.append(L("Item"));
+				}
+			}
+			if(E instanceof LandTitle)
+			{
+				final LandTitle T=(LandTitle)E;
+				str.append(L("\n\rSize       : ")+L("@x1 room(s)",""+(T.getAllTitledRooms().size()
+												  + (lie?plus(T.getAllTitledRooms().size(),lieHash):0))));
+				final StringBuilder features = new StringBuilder("");
+				if(T.allowsExpansionConstruction() || (lie && (((lieHash >> 30) % 2) == 0)))
+					features.append(L(" expandable"));
+				if(T.rentalProperty()  || (lie && (((lieHash >> 29) % 2) == 0)))
+					features.append(L(" rental"));
+				// this space intentionally left with dynamic string
+				str.append(L("\n\rFeatures   :"+features.toString()));
 			}
 			else
-			if(I instanceof Armor)
+			if(E instanceof Item)
 			{
-				str.append(L("\n\rWear Info  : Worn on "));
-				final Wearable.CODES codes = Wearable.CODES.instance();
-				final List<String> locs = new ArrayList<String>();
-				for(final long wornCode : codes.all())
+				final Item I=(Item)E;
+				final int material;
+				if(lie)
 				{
-					if(wornCode != Wearable.IN_INVENTORY)
+					final List<Integer> valueChoices = new ArrayList<Integer>();
+					final int currVal = RawMaterial.CODES.VALUE(I.material());
+					for(final int possCode : RawMaterial.CODES.COMPOSE_RESOURCES(I.material() & RawMaterial.MATERIAL_MASK))
 					{
-						if(codes.name(wornCode).length()>0)
+						if(RawMaterial.CODES.VALUE(possCode) >= currVal)
+							valueChoices.add(Integer.valueOf(possCode));
+					}
+					material=(valueChoices.size()>0)?(valueChoices.get(CMath.abs(lieHash % valueChoices.size()))):I.material();
+				}
+				else
+					material = I.material();
+				str.append(L("\n\rMaterial   : @x1",L(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(material).toLowerCase()))));
+				str.append(L("\n\rWeight     : @x1 pounds",""+(I.phyStats().weight()
+															 + (lie?-plus(I.phyStats().weight(),lieHash):0))));
+				if(I instanceof Electronics)
+				{
+					str.append(L("\n\rMake       : @x1",""+((Electronics)I).getFinalManufacturer().name()));
+					str.append(L("\n\rType       : @x1",""+((Electronics)I).getTechType().getDisplayName()));
+				}
+				if(I instanceof Technical)
+				{
+					str.append(L("\n\rModel Num. : @x1",""+(((Technical)I).techLevel()
+															+ (lie?plus(4,lieHash):0))));
+				}
+				if(I instanceof BoardableShip)
+				{
+					final Area A=((BoardableShip)I).getShipArea();
+					if(A!=null)
+					{
+						str.append(L("\n\rRooms      : @x1",""+(A.numberOfProperIDedRooms()
+																+ (lie?plus(A.numberOfProperIDedRooms(),lieHash):0))));
+						final List<String> miscItems=new ArrayList<String>();
+						for(final Enumeration<Room> r= A.getProperMap(); r.hasMoreElements();)
 						{
-							if(((I.rawProperLocationBitmap()&wornCode)==wornCode))
+							final Room R=r.nextElement();
+							if(R==null)
+								continue;
+							for(final Enumeration<Item> i = R.items();i.hasMoreElements();)
 							{
-								locs.add(CMStrings.capitalizeAndLower(codes.name(wornCode)));
+								final Item I2=i.nextElement();
+								if(I2.displayText().length()>0)
+								{
+									if(I2 instanceof TechComponent)
+									{
+										str.append(L("\n\r"+
+												CMStrings.padRight(((TechComponent)I2).getTechType().getShortDisplayName(),11)
+												 +": @x1",getSellableElectronicsName(viewerM,(Electronics)I2)));
+									}
+									else
+										miscItems.add(I2.name(viewerM));
+								}
 							}
+						}
+						if(miscItems.size()>0)
+						{
+							str.append(L("\n\rMisc Items : "));
+							str.append(CMParms.toListString(miscItems));
 						}
 					}
 				}
-				str.append(CMParms.combineWith(locs, L(I.rawLogicalAnd() ? " and " : " or ")));
-				if(I.phyStats().height()>0)
+				else
+				if(I instanceof Weapon)
 				{
-					final Armor.SizeDeviation deviation=((Armor) I).getSizingDeviation(viewerM);
-					if(deviation != Armor.SizeDeviation.FITS)
-						str.append(L("\n\rSize       : ")+I.phyStats().height()+" ("+L(deviation.toString().toLowerCase().replace('_',' ')+")"));
+					final String handedNess;
+					if((I.rawLogicalAnd() && ((I.rawProperLocationBitmap()&(Item.WORN_HELD|Item.WORN_WIELD))==(Item.WORN_HELD|Item.WORN_WIELD)))
+					&& (lie?((lieHash >> 29) % 2) == 0:true))
+						handedNess = L(" (2 handed)");
+					else
+						handedNess = "";
+					final int weaponType =  ((Weapon)I).weaponDamageType();
+					str.append(L("\n\rWeap. Type : @x1",L(CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[weaponType]))));
+					final int weaponClass = ((Weapon)I).weaponClassification();
+					str.append(L("\n\rWeap. Class: @x1",L(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[weaponClass])))).append(handedNess);
 				}
+				else
+				if(I instanceof Armor)
+				{
+					str.append(L("\n\rWear Info  : Worn on "));
+					final Wearable.CODES codes = Wearable.CODES.instance();
+					final List<String> locs = new ArrayList<String>();
+					final long rawLocationBitmap = I.rawProperLocationBitmap();
+					for(final long wornCode : codes.all())
+					{
+						if(wornCode != Wearable.IN_INVENTORY)
+						{
+							if(codes.name(wornCode).length()>0)
+							{
+								if((rawLocationBitmap&wornCode)==wornCode)
+									locs.add(CMStrings.capitalizeAndLower(codes.name(wornCode)));
+							}
+						}
+					}
+					final boolean rawLogicalAnd = I.rawLogicalAnd() && (lie?(((lieHash >> 29) % 2) == 0):true);
+					str.append(CMParms.combineWith(locs, L(rawLogicalAnd ? " and " : " or ")));
+					if(I.phyStats().height()>0)
+					{
+						final Armor.SizeDeviation deviation=((Armor) I).getSizingDeviation(viewerM);
+						if((deviation != Armor.SizeDeviation.FITS) && (lie?(((lieHash >> 28) % 2) == 0):true))
+							str.append(L("\n\rSize       : ") + I.phyStats().height() +" ("+L(deviation.toString().toLowerCase().replace('_',' ')+")"));
+					}
+				}
+			}
+			str.append(L("\n\rDescription: @x1",E.description()));
+		}
+		if((flags.contains(ViewType.IDENTIFY))
+		&&(E instanceof Item))
+		{
+			if((((Item)E).secretIdentity()!=null)
+			&& (((Item)E).secretIdentity().length()>0))
+			{
+				String secretIdentity = ((Item)E).secretIdentity();
+				if(lie)
+				{
+					secretIdentity = CMStrings.replaceWhole(secretIdentity, " "+((Item)E).phyStats().level(), " "+level);
+					secretIdentity = CMStrings.replaceWhole(secretIdentity, ""+((Item)E).phyStats().armor(),
+							""+(((Item)E).phyStats().armor()+plus(((Item)E).phyStats().armor(),lieHash) ));
+					final int timsLevel=CMLib.itemBuilder().timsLevelCalculator((Item)E);
+					if(timsLevel != ((Item)E).phyStats().level())
+						secretIdentity = CMStrings.replaceWhole(secretIdentity, ""+timsLevel, ""+(timsLevel+plus(timsLevel,lieHash) ));
+					if(((Item)E).phyStats().ability()>0)
+						secretIdentity = CMStrings.replaceWhole(secretIdentity, ""+((Item)E).phyStats().ability(),
+								""+(((Item)E).phyStats().ability()+plus(((Item)E).phyStats().ability(),lieHash) ));
+					if(((Item)E).phyStats().attackAdjustment()>0)
+						secretIdentity = CMStrings.replaceWhole(secretIdentity, ""+((Item)E).phyStats().attackAdjustment(),
+								""+(((Item)E).phyStats().attackAdjustment()+plus(((Item)E).phyStats().attackAdjustment(),lieHash) ));
+					if(((Item)E).phyStats().damage()>0)
+						secretIdentity = CMStrings.replaceWhole(secretIdentity, ""+((Item)E).phyStats().damage(),
+								""+(((Item)E).phyStats().damage()+plus(((Item)E).phyStats().damage(),lieHash) ));
+				}
+				str.append(L("\n\rSpecial    : @x1",secretIdentity));
+			}
+			else
+			if(lie)
+			{
+				final StringBuilder addOn = new StringBuilder("");
+				if(lie)
+				{
+					if(E instanceof Weapon)
+						addOn.append("Bonus for the weilder: ");
+					else
+					if(E instanceof Armor)
+						addOn.append("Bonus for the wearer: ");
+					else
+						addOn.append("Bonus for the owner: ");
+					final List<String> bonuses = new XVector<String>(new String[] {"Attack +@x1", "Damage +@x1", "Armor +@x1", "Casts @x2", "Attack +@x1", "Damage +@x1", "Armor +@x1", "Casts @x2"});
+					bonuses.addAll(Arrays.asList(Arrays.copyOf(PhyStats.CAN_SEE_DESCS,8)));
+					final String bonus = bonuses.get(CMath.abs(lieHash % bonuses.size()));
+					if(bonus.indexOf("@x1")>=0)
+						addOn.append(L(bonus,""+(CMath.abs(lieHash % ((Item)E).phyStats().level()/2))));
+					else
+					if(bonus.indexOf("@x2")>=0)
+					{
+						Ability A=null;
+						for(int i=0;i<100 && (A==null);i++)
+						{
+							A=CMClass.getAbility(lieHash+i);
+							if((A==null) || (!CMLib.ableMapper().qualifiesByAnyCharClass(A.ID())))
+								A=null;
+						}
+						if(A!=null)
+							addOn.append(L(bonus,A.name()));
+					}
+					else
+						addOn.append(L(bonus));
+				}
+				str.append(L("\n\rSpecial    : @x1",addOn.toString()));
 			}
 		}
-		str.append(L("\n\rDescription: @x1",E.description()));
 		return str.toString();
 	}
 

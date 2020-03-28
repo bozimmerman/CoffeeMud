@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.MOBS;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -42,12 +43,13 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 		return "StdAuctioneer";
 	}
 
-	protected double	timedListingPrice	= -1.0;
-	protected double	timedListingPct		= -1.0;
-	protected double	timedFinalCutPct	= -1.0;
-	protected int		maxTimedAuctionDays	= -1;
-	protected int		minTimedAuctionDays	= -1;
-	public AuctionData  lastMsgData=null;
+	protected double		timedListingPrice	= -1.0;
+	protected double		timedListingPct		= -1.0;
+	protected double		timedFinalCutPct	= -1.0;
+	protected int			maxTimedAuctionDays	= -1;
+	protected int			minTimedAuctionDays	= -1;
+	public AuctionData		lastMsgData			= null;
+	protected Set<ViewType>	viewTypes			= new XHashSet<ViewType>(ViewType.BASIC);
 
 	protected static final Map<String,Long> lastCheckTimes=new Hashtable<String,Long>();
 
@@ -175,6 +177,12 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	@Override
 	public void addSoldType(final int mask)
 	{
+	}
+
+	@Override
+	public Set<ViewType> viewFlags()
+	{
+		return viewTypes;
 	}
 
 	@Override
@@ -724,7 +732,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						final String buyOut=(data.getBuyOutPrice()<=0.0)?null:CMLib.beanCounter().nameCurrencyShort(data.getCurrency(),data.getBuyOutPrice());
 						final StringBuffer str=new StringBuffer(
 							L("Interested in @x2? Here is some information for you: @x1\n\r\n\rThe current bid on @x2 is @x3. Use the BID command to place your own bid.  ",
-							CMLib.coffeeShops().getViewDescription(mob,msg.tool()),msg.tool().name(),price));
+							CMLib.coffeeShops().getViewDescription(mob,msg.tool(), viewFlags()),msg.tool().name(),price));
 						if(buyOut!=null)
 							str.append(L("You may also buy this item immediately for @x1 by using the BUY command.",buyOut));
 						CMLib.commands().postSay(this,mob,str.toString(),true,false);

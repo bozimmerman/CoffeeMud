@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ShopKeeper.ViewType;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Druid.Chant_ChargeMetal;
@@ -118,6 +119,7 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 	private int				minOverdueDays		= 12;
 	private int				maxOverdueDays		= 48;
 	private int				maxBorrowed			= 2;
+	private final Set<ViewType>	viewTypes			= new XHashSet<ViewType>(ViewType.BASIC);
 
 	private Pair<Long, TimePeriod>	budget	= new Pair<Long, TimePeriod>(Long.valueOf(100000), TimePeriod.DAY);
 	private List<CheckedOutRecord>	records	= new LinkedList<CheckedOutRecord>();
@@ -210,6 +212,12 @@ public class BookLoaning extends CommonSkill implements ShopKeeper, Librarian
 		}
 		records.append("</CHECKEDOUTRECORDS>");
 		return records.toString();
+	}
+
+	@Override
+	public Set<ViewType> viewFlags()
+	{
+		return viewTypes;
 	}
 
 	@Override
