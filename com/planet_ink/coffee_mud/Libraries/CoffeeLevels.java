@@ -580,9 +580,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 							mob.tell(L("^N^!You've earned enough experience to gain a level.^N",""+amount));
 					}
 				}
-				else
-				if(!quiet)
-					mob.tell(L("^N^!You cannot defer any more experience for later.^N",""+amount));
+				//else
+				//if(!quiet)
+				//	mob.tell(L("^N^!You cannot defer any more experience for later.^N",""+amount));
 				return;
 			}
 		}
@@ -652,9 +652,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 							return;
 						}
 					}
-					else
-					if(!quiet)
-						mob.tell(L("^N^!You can not defer any more experience for later.^N",""+amount));
+					//else
+					//if(!quiet)
+					//	mob.tell(L("^N^!You can not defer any more experience for later.^N",""+amount));
 				}
 				else
 					pStats.setRolePlayXP(pStats.getRolePlayXP() + amount);
