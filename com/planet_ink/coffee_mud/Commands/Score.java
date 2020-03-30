@@ -237,6 +237,7 @@ public class Score extends Affect
 		&&!mob.charStats().getCurrentClass().expless()
 		&&!mob.charStats().getMyRace().expless())
 		{
+			boolean skipDeferMessage = false;
 			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS))
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!mob.charStats().getMyRace().leveless()))
@@ -245,27 +246,29 @@ public class Score extends Affect
 					&&(mob.basePhyStats().level()>CMProps.get(mob.session()).getInt(CMProps.Int.LASTPLAYERLEVEL)))
 				||(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 				||(mob.charStats().isLevelCapped(mob.charStats().getCurrentClass())))
-					msg.append(L("You have scored ^!@x1^? ^<HELP^>experience points^</HELP^>, ^!@x2^? over your last level.\n\r",""+mob.getExperience(),""+mob.getExpNeededDelevel()));
-				else
 				{
-					msg.append(L("You have scored ^!@x1^? ^<HELP^>experience points^</HELP^>, and need ^!@x2^? to advance.\n\r",""+mob.getExperience(),""+mob.getExpNeededLevel()));
-					final PlayerStats pStats = mob.playerStats();
-					if((CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0)
-					&&(pStats != null))
-					{
-						if(pStats.getDeferredXP() + pStats.getRolePlayXP() < pStats.getMaxDeferredXP())
-						{
-							if(((mob.getExperience()+pStats.getDeferredXP() + pStats.getRolePlayXP())>=mob.getExpNextLevel())
-							&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
-								msg.append(L("^!You've earned enough experience to gain a level.^?\n\r"));
-						}
-					}
-					else
-						msg.append(L("^!You cannot defer any more experience for later.^?\n\r"));
+					skipDeferMessage=true;
+					msg.append(L("You have scored ^!@x1^? ^<HELP^>experience points^</HELP^>, ^!@x2^? over your last level.\n\r",""+mob.getExperience(),""+mob.getExpNeededDelevel()));
 				}
+				else
+					msg.append(L("You have scored ^!@x1^? ^<HELP^>experience points^</HELP^>, and need ^!@x2^? to advance.\n\r",""+mob.getExperience(),""+mob.getExpNeededLevel()));
 			}
 			else
 				msg.append(L("You have scored ^!@x1^? ^<HELP^>experience points^</HELP^>.\n\r",""+mob.getExperience()));
+			final PlayerStats pStats = mob.playerStats();
+			if((CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0)
+			&&(!skipDeferMessage)
+			&&(pStats != null))
+			{
+				if(pStats.getDeferredXP() + pStats.getRolePlayXP() < pStats.getMaxDeferredXP())
+				{
+					if(((mob.getExperience()+pStats.getDeferredXP() + pStats.getRolePlayXP())>=mob.getExpNextLevel())
+					&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
+						msg.append(L("^!You've earned enough experience to gain a level.^?\n\r"));
+				}
+			}
+			else
+				msg.append(L("^!You cannot defer any more experience for later.^?\n\r"));
 		}
 		msg.append(L("You have been online for ^!@x1^? hours.\n\r",""+Math.round(CMath.div(mob.getAgeMinutes(),60.0))));
 		final FactionManager fac=CMLib.factions();
