@@ -347,6 +347,18 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public RoomContent[] DBReadAreaMobs(final String name)
+	{
+		return RoomLoader.DBReadAreaMobs(name);
+	}
+
+	@Override
+	public RoomContent[] DBReadAreaItems(final String name)
+	{
+		return RoomLoader.DBReadAreaItems(name);
+	}
+
+	@Override
 	public Room DBReadRoom(final String roomID, final boolean reportStatus)
 	{
 		return RoomLoader.DBReadRoomData(roomID, reportStatus);
@@ -483,6 +495,18 @@ public class DBInterface implements DatabaseEngine
 	public String DBReadRoomDesc(final String roomID)
 	{
 		return RoomLoader.DBReadRoomDesc(roomID);
+	}
+
+	@Override
+	public Item DBReadRoomItem(final String roomID, final String itemNum)
+	{
+		return RoomLoader.DBReadRoomItem(roomID, itemNum);
+	}
+
+	@Override
+	public MOB DBReadRoomMOB(final String roomID, final String mobID)
+	{
+		return RoomLoader.DBReadRoomMOB(roomID, mobID);
 	}
 
 	@Override

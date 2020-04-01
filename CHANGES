@@ -24,6 +24,7 @@
  23. New expertise: Energist, replaces old Airelist.  New Airelist is for gas attacks.
  24. Added crime tracking to statistics, and support in stats and mudgrinder
  25. ShopKeepers (of all stripes) now have a View Types/Flags field to control VIEW cmd.
+ 26. Grinder Area editor now includes Mobs and Items editors. 
  
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.

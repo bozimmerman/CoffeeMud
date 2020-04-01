@@ -3151,6 +3151,28 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	}
 
 	@Override
+	public String getQuickName(final String classID, final String miscText)
+	{
+		if(miscText != null)
+		{
+			final int x=miscText.indexOf("<NAME>");
+			if(x>=0)
+			{
+				final int y=miscText.indexOf("</NAME>",x);
+				if(y>0)
+					return CMLib.xml().restoreAngleBrackets(miscText.substring(x+6,y));
+			}
+		}
+		if(classID != null)
+		{
+			final MOB M = CMClass.getMOBPrototype(classID);
+			if(M!=null)
+				return M.Name();
+		}
+		return "";
+	}
+
+	@Override
 	public List<String> getAllGenStats(final Physical P)
 	{
 		final STreeSet<String> set=new STreeSet<String>();

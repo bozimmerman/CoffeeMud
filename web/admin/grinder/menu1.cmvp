@@ -35,31 +35,47 @@
 <TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
 <TR>
 	<TD WIDTH=10% VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=80 HEIGHT=80  ALT="" BORDER="0"></TD>
-	<TD WIDTH=50% ALIGN=LEFT>
+	<TD WIDTH=50% ALIGN=LEFT VALIGN=TOP>
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	<INPUT TYPE=TEXT NAME=QUICKFIND VALUE="">
 	<INPUT TYPE=SUBMIT NAME=FINDIT VALUE="Quick Find" ONCLICK="Clicked('/grinder/quickfind.cmvp');">
 	</TD>
-	<TD WIDTH=40% ALIGN=RIGHT>
+	<TD WIDTH=40% ALIGN=RIGHT style="position:absolute; top: 0; bottom: 0;">
+		<TABLE WIDTH=200 BORDER=0 HEIGHT=100%>
 		@if?!AreaData?AREAISBOARDABLE@
+			<TR><TD ALIGN=RIGHT>
 			@if?AreaData?ISGRID@
-			<INPUT TYPE=BUTTON NAMEMOVEAREA VALUE="Move" ONCLICK="Clicked('/grinder/maparea.cmvp');">
+				<INPUT TYPE=BUTTON NAMEMOVEAREA VALUE="Move" ONCLICK="Clicked('/grinder/maparea.cmvp');">
 			@endif@
 			@if?CheckAuthCode?AUTH_CMDAREAS=true@
 			<INPUT TYPE=BUTTON NAME=EDITAREA VALUE="Edit Area" ONCLICK="Clicked('/grinder/editarea.cmvp');">
 			@endif@
+			</TD></TR>
+			<TR><TD ALIGN=RIGHT>
 			@if?CheckAuthCode?AUTH_EXPORT=true@
 			<INPUT TYPE=BUTTON NAME=EXPORT VALUE="Export Data" ONCLICK="Clicked('/AreaXML');">
 			@endif@
+			</TD></TR>
+			<TR><TD ALIGN=RIGHT>
 			<INPUT TYPE=BUTTON NAME=SCRIPTS VALUE="Scripts" ONCLICK="Clicked('/grinder/editareascripts.cmvp');">
-			<P>
+			@if?CheckAuthCode?AUTH_CMDMOBS=true@
+			<INPUT TYPE=BUTTON NAME=EXPORT VALUE="MOBs" ONCLICK="Clicked('/grinder/editareamobs.cmvp');">
+			@endif@
+			@if?CheckAuthCode?AUTH_CMDITEMSS=true@
+			<INPUT TYPE=BUTTON NAME=EXPORT VALUE="Items" ONCLICK="Clicked('/grinder/editareaitems.cmvp');">
+			@endif@
+			</TD></TR>
+			<TR VALIGN=BOTTOM><TD ALIGN=RIGHT HEIGHT=40%>
 			<INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Main Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+			</TD></TR>
+			</TABLE>
 		@else@
 			<P>
 			<INPUT TYPE=BUTTON NAME=CLOSE VALUE="Save" ONCLICK="Clicked('/grinder/saveboardablearea.cmvp');">
 			<P>
 			<INPUT TYPE=BUTTON NAME=CANCELCLOSE VALUE="Cancel" ONCLICK="window.close(); top.closeThisWindow(); parent.closeThisWindow();">
 		@endif@
+		</TABLE>
 	</TD>
 </TR>
 </TABLE>

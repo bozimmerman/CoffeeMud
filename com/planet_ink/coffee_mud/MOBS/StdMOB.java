@@ -397,9 +397,9 @@ public class StdMOB implements MOB
 	public String getFactionListing()
 	{
 		final StringBuffer msg = new StringBuffer();
-		for (final Enumeration<String> e = factions(); e.hasMoreElements();)
+		for (final Iterator<String> e = new XTreeSet<String>(factions()).iterator(); e.hasNext();)
 		{
-			final Faction F = CMLib.factions().getFaction(e.nextElement());
+			final Faction F = CMLib.factions().getFaction(e.next());
 			if(F!=null)
 				msg.append(F.name() + "(" + fetchFaction(F.factionID()) + ");");
 		}

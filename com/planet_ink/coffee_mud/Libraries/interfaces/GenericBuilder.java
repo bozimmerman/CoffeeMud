@@ -216,6 +216,7 @@ public interface GenericBuilder extends CMLibrary
 	public void setCharStats(CharStats E, String props);
 	public void setCharState(CharState E, String props);
 	public void setPhyStats(PhyStats E, String props);
+	public String getQuickName(final String classID, final String miscText);
 	public void setEnvProperties(Environmental E, List<XMLTag> buf);
 	public void setExtraEnvProperties(Environmental E, List<XMLTag> buf);
 	public void setAnyGenStat(Physical P, String stat, String value, boolean supportPlusMinusPrefix);

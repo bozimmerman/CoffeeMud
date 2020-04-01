@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.RoomContent;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -771,6 +772,99 @@ public class RoomLoader
 		return null;
 	}
 
+	public MOB DBReadRoomMOB(final String roomID, final String mobID)
+	{
+		DBConnection D=null;
+		// now grab the items
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT * FROM CMROCH WHERE CMROID='"+roomID+"' AND CMCHNM='"+mobID+"'");
+			if(R.next())
+			{
+				final String NUMID=DB.getRes(R, "CMCHNM");
+				final String MOBID=DB.getRes(R, "CMCHID");
+				final MOB newMOB=CMClass.getMOB(MOBID);
+				if(newMOB==null)
+					return null;
+				newMOB.setDatabaseID(NUMID);
+				if((CMProps.getBoolVar(CMProps.Bool.MOBNOCACHE))
+				&&(NUMID.indexOf(MOBID+"@")>=0))
+					newMOB.setMiscText("%DBID>"+roomID+NUMID.substring(NUMID.indexOf('@')));
+				else
+				{
+					final String text=DBConnections.getResQuietly(R,"CMCHTX");
+					newMOB.setMiscText(text);
+				}
+				newMOB.basePhyStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
+				newMOB.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMCHAB"));
+				newMOB.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMCHRE"));
+				newMOB.recoverCharStats();
+				newMOB.recoverPhyStats();
+				newMOB.recoverMaxState();
+				newMOB.resetToMaxState();
+				CMLib.threads().deleteAllTicks(newMOB);
+				return newMOB;
+			}
+		}
+		catch(final SQLException sqle)
+		{
+			Log.errOut("Room",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return null;
+	}
+
+	public Item DBReadRoomItem(final String roomID, final String itemNum)
+	{
+		DBConnection D=null;
+		// now grab the items
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT * FROM CMROIT WHERE CMROID='"+roomID+"' AND CMITNM='"+itemNum+"'");
+			if(R.next())
+			{
+				final String itemID=DBConnections.getRes(R,"CMITID");
+				final Item newItem=CMClass.getItem(itemID);
+				if(newItem==null)
+					Log.errOut("Room","Couldn't find item '"+itemID+"' for room "+roomID);
+				else
+				{
+					newItem.setDatabaseID(itemNum);
+					try
+					{
+						newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
+						newItem.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMITRE"));
+						newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
+						newItem.basePhyStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
+						newItem.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
+						newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
+						newItem.recoverPhyStats();
+						CMLib.threads().deleteAllTicks(newItem);
+						return newItem;
+					}
+					catch (final Exception e)
+					{
+						Log.errOut("RoomLoader", e);
+					}
+				}
+			}
+		}
+		catch(final SQLException sqle)
+		{
+			Log.errOut("Room",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return null;
+	}
+
 	private void fixItemKeys(final Hashtable<Item,String> itemLocs, final Hashtable<String, PhysicalAgent> itemNums)
 	{
 		for(final Enumeration<Item> e=itemLocs.keys();e.hasMoreElements();)
@@ -1282,6 +1376,188 @@ public class RoomLoader
 				contents.add(thisItem);
 		}
 		return contents;
+	}
+
+	protected List<String> DBReadAreaRoomIDs(final String areaName)
+	{
+		final List<String> lst=new ArrayList<String>();
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT CMROID FROM CMROOM WHERE CMAREA='"+DB.injectionClean(areaName)+"'");
+			while(R.next())
+			{
+				final String roomID=R.getString("CMROID");
+				lst.add(roomID);
+			}
+			R.close();
+		}
+		catch(final SQLException sqle)
+		{
+			Log.errOut("Area",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return lst;
+	}
+
+	public RoomContent[] DBReadAreaMobs(final String name)
+	{
+		final List<RoomContent> lst=new ArrayList<RoomContent>();
+		final List<String> roomIDs = DBReadAreaRoomIDs(name);
+		final GenericBuilder buildLib = CMLib.coffeeMaker();
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			for(final String roomID : roomIDs)
+			{
+				final ResultSet R=D.query("SELECT * FROM CMROCH WHERE CMROID='"+DB.injectionClean(roomID)+"'");
+				while(R.next())
+				{
+					int buildHash = 0;
+					final String classID = DB.getRes(R, "CMCHID");
+					final String text = DB.getRes(R, "CMCHTX");
+					final String qName = buildLib.getQuickName(classID, text);
+					buildHash = classID.hashCode() ^ text.hashCode();
+					buildHash ^= (int)DB.getLongRes(R, "CMCHLV");
+					buildHash ^= (int)DB.getLongRes(R, "CMCHAB");
+					final int finalHash = buildHash;
+					final RoomContent C=new RoomContent()
+					{
+						final String roomId = roomID;
+						final String roomKey = DB.getRes(R, "CMCHNM");
+						final String classId = classID;
+						final String name = qName;
+						final int hashCode = finalHash;
+
+						@Override
+						public String ID()
+						{
+							return classId;
+						}
+
+						@Override
+						public String name()
+						{
+							return name;
+						}
+
+						@Override
+						public String roomID()
+						{
+							return roomId;
+						}
+
+						@Override
+						public String dbKey()
+						{
+							return roomKey;
+						}
+
+						@Override
+						public int contentHash()
+						{
+							return hashCode;
+						}
+					};
+					lst.add(C);
+
+				}
+				R.close();
+			}
+		}
+		catch(final SQLException sqle)
+		{
+			Log.errOut("Area",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return lst.toArray(new RoomContent[lst.size()]);
+	}
+
+	public RoomContent[] DBReadAreaItems(final String name)
+	{
+		final List<RoomContent> lst=new ArrayList<RoomContent>();
+		final List<String> roomIDs = DBReadAreaRoomIDs(name);
+		final GenericBuilder buildLib = CMLib.coffeeMaker();
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			for(final String roomID : roomIDs)
+			{
+				final ResultSet R=D.query("SELECT * FROM CMROIT WHERE CMROID='"+DB.injectionClean(roomID)+"'");
+				while(R.next())
+				{
+					int buildHash = 0;
+					final String classID = DB.getRes(R, "CMITID");
+					final String text = DB.getRes(R, "CMITTX");
+					final String qName = buildLib.getQuickName(classID, text);
+					buildHash = classID.hashCode() ^ text.hashCode();
+					buildHash ^= (int)DB.getLongRes(R, "CMITLV");
+					buildHash ^= (int)DB.getLongRes(R, "CMITAB");
+					buildHash ^= (int)DB.getLongRes(R, "CMITUR");
+					buildHash ^= (int)DB.getLongRes(R, "CMHEIT");
+					final int finalHash = buildHash;
+					final RoomContent C=new RoomContent()
+					{
+						final String roomId = roomID;
+						final String roomKey = DB.getRes(R, "CMITNM");
+						final String classId = classID;
+						final String name = qName;
+						final int hashCode = finalHash;
+
+						@Override
+						public String ID()
+						{
+							return classId;
+						}
+
+						@Override
+						public String name()
+						{
+							return name;
+						}
+
+						@Override
+						public String roomID()
+						{
+							return roomId;
+						}
+
+						@Override
+						public String dbKey()
+						{
+							return roomKey;
+						}
+
+						@Override
+						public int contentHash()
+						{
+							return hashCode;
+						}
+					};
+					lst.add(C);
+
+				}
+				R.close();
+			}
+		}
+		catch(final SQLException sqle)
+		{
+			Log.errOut("Area",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return lst.toArray(new RoomContent[lst.size()]);
 	}
 
 	protected String getShortID(final Environmental E)

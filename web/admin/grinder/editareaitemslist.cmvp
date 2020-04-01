@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+	<title>Area @AreaName@ Items List</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.RESOURCES.target='_top';
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+		function Refresh()
+		{
+			document.RESOURCES.action='editareaitemslist.cmvp';
+			document.RESOURCES.submit();
+		}
+		function PickName(name)
+		{
+			document.RESOURCES.ITEMNAME.value=name;
+			document.RESOURCES.ITEMHASH.value='';
+			document.RESOURCES.ROOM.value='';
+			Refresh();
+		}
+		function PickHash(hash)
+		{
+			document.RESOURCES.ITEMHASH.value=hash;
+			document.RESOURCES.ROOM.value='';
+			Refresh();
+		}
+		function PickRoom(id)
+		{
+			document.RESOURCES.ROOM.value=id;
+			Refresh();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<CENTER>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=MAP METHOD=POST ACTION="editareascriptslist.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@RequestParameter?AREA@">
+<INPUT TYPE=HIDDEN NAME=ITEMNAME VALUE="@RequestParameter?ITEMNAME@">
+<INPUT TYPE=HIDDEN NAME=ITEMHASH VALUE="@RequestParameter?ITEMHASH@">
+<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RequestParameter?ROOM@">
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ @AreaName@ ITEMs Manager</H2></FONT></TD></TR>
+	<TR>
+	<TD WIDTH=30%><B><FONT COLOR=YELLOW>Items</FONT></B></TD>
+	<TD WIDTH=70%><B><FONT COLOR=YELLOW></FONT></b></TD>
+	</TR>
+	<TR>
+	<TD WIDTH=20%>
+	<UL>
+	@AreaItemNext?RESET@
+	@loop@
+	@AreaItemNext@
+			<LI><a href="javascript:PickName('@RequestParameter?AITEMNAME@')"><FONT COLOR=WHITE>@RequestParameter?AITEMNAME@</FONT></a>
+			@if?CheckReqParm?ITEMNAME=@@RequestParameter?AITEMNAME@@ @
+			<FONT COLOR=PINK>
+			<UL>
+			@AreaItemNext?RESET&AITEMNAME=@@RequestParameter?AITEMNAME@@ @
+			@loop@
+				@AreaItemNext?AITEMNAME=@@RequestParameter?AITEMNAME@@ @
+				<LI>(<a href="javascript:PickHash('@RequestParameter?AITEMHASH@')"><FONT COLOR=PINK>@RequestParameter?AITEMHASH@</FONT></a>)
+				@if?CheckReqParm?ITEMHASH=@@RequestParameter?AITEMHASH@@ @
+				<FONT COLOR=LIGHTGREEN>
+				<UL>
+				@AreaItemNext?RESET&AITEMNAME=@@RequestParameter?AITEMNAME@@&AITEMHASH=@@RequestParameter?AITEMHASH@@ @
+				@loop@
+					@AreaItemNext?AITEMNAME=@@RequestParameter?AITEMNAME@@&AITEMHASH=@@RequestParameter?AITEMHASH@@ @
+					<LI>in <a href="javascript:PickRoom('@RequestParameter?AITEMROOM@')"><FONT COLOR=LIGHTGREEN>@RequestParameter?AITEMROOM@</FONT></a>
+				@back@
+				</UL>
+				</FONT>
+				@endif@
+			@back@
+			</UL>
+			</FONT>
+			@endif@
+	@back@
+	</UL>
+	</TD>
+	<TD>
+		@if?CheckReqParm?!ROOM=@
+			<SCRIPT LANGUAGE=JavaScript>
+			<!--
+				var w;
+				var room =document.RESOURCES.ROOM.value;
+				// use @RequestParameter?ROOM@ for auto-open
+				if(room != '')
+				{
+					var itemcode=encodeURI('@AreaItemNext?AITEMROOM@');
+					if(itemcode != '')
+					{
+						itemcode=itemcode.replace("#","%23");
+						var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+						var xtra='';
+						var areacode=encodeURI(document.RESOURCES.AREA.value);
+						room =encodeURI(room);
+						room=room.replace("#","%23");
+						w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&AREA="+areacode+"&ROOM="+room+"&ITEM="+itemcode+"&SINGLEITEM=true"+xtra,
+							"ITEM",strFeatures, false);
+					}
+				}
+			//-->
+			</SCRIPT>
+		@endif@
+		<!-- TODO -->
+	</TD>
+	</TR>
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=CENTER>
+	</TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();"></TD>
+	<TD WIDTH=33% ALIGN=CENTER>
+	</TD>
+	</TR>
+	</TABLE>
+	<CENTER>
+	</CENTER>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

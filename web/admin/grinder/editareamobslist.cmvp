@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+	<title>Area @AreaName@ Mobs List</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.RESOURCES.target='_top';
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+		function Refresh()
+		{
+			document.RESOURCES.action='editareamobslist.cmvp';
+			document.RESOURCES.submit();
+		}
+		function PickName(name)
+		{
+			document.RESOURCES.MOBNAME.value=name;
+			document.RESOURCES.MOBHASH.value='';
+			document.RESOURCES.ROOM.value='';
+			Refresh();
+		}
+		function PickHash(hash)
+		{
+			document.RESOURCES.MOBHASH.value=hash;
+			document.RESOURCES.ROOM.value='';
+			Refresh();
+		}
+		function PickRoom(id)
+		{
+			document.RESOURCES.ROOM.value=id;
+			Refresh();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<CENTER>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=MAP METHOD=POST ACTION="editareascriptslist.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@RequestParameter?AREA@">
+<INPUT TYPE=HIDDEN NAME=MOBNAME VALUE="@RequestParameter?MOBNAME@">
+<INPUT TYPE=HIDDEN NAME=MOBHASH VALUE="@RequestParameter?MOBHASH@">
+<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RequestParameter?ROOM@">
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ @AreaName@ MOBs Manager</H2></FONT></TD></TR>
+	<TR>
+	<TD WIDTH=30%><B><FONT COLOR=YELLOW>Mobs</FONT></B></TD>
+	<TD WIDTH=70%><B><FONT COLOR=YELLOW></FONT></b></TD>
+	</TR>
+	<TR>
+	<TD WIDTH=20%>
+	<UL>
+	@AreaMobNext?RESET@
+	@loop@
+	@AreaMobNext@
+			<LI><a href="javascript:PickName('@RequestParameter?AMOBNAME@')"><FONT COLOR=WHITE>@RequestParameter?AMOBNAME@</FONT></a>
+			@if?CheckReqParm?MOBNAME=@@RequestParameter?AMOBNAME@@ @
+			<FONT COLOR=PINK>
+			<UL>
+			@AreaMobNext?RESET&AMOBNAME=@@RequestParameter?AMOBNAME@@ @
+			@loop@
+				@AreaMobNext?AMOBNAME=@@RequestParameter?AMOBNAME@@ @
+				<LI>(<a href="javascript:PickHash('@RequestParameter?AMOBHASH@')"><FONT COLOR=PINK>@RequestParameter?AMOBHASH@</FONT></a>)
+				@if?CheckReqParm?MOBHASH=@@RequestParameter?AMOBHASH@@ @
+				<FONT COLOR=LIGHTGREEN>
+				<UL>
+				@AreaMobNext?RESET&AMOBNAME=@@RequestParameter?AMOBNAME@@&AMOBHASH=@@RequestParameter?AMOBHASH@@ @
+				@loop@
+					@AreaMobNext?AMOBNAME=@@RequestParameter?AMOBNAME@@&AMOBHASH=@@RequestParameter?AMOBHASH@@ @
+					<LI>in <a href="javascript:PickRoom('@RequestParameter?AMOBROOM@')"><FONT COLOR=LIGHTGREEN>@RequestParameter?AMOBROOM@</FONT></a>
+				@back@
+				</UL>
+				</FONT>
+				@endif@
+			@back@
+			</UL>
+			</FONT>
+			@endif@
+	@back@
+	</UL>
+	</TD>
+	<TD>
+		@if?CheckReqParm?!ROOM=@
+			<SCRIPT LANGUAGE=JavaScript>
+			<!--
+				var w;
+				var room =document.RESOURCES.ROOM.value;
+				// use @RequestParameter?ROOM@ for auto-open
+				if(room != '')
+				{
+					var mobcode=encodeURI('@AreaMobNext?AMOBROOM@');
+					if(mobcode != '')
+					{
+						mobcode=mobcode.replace("#","%23");
+						var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+						var xtra='';
+						var areacode=encodeURI(document.RESOURCES.AREA.value);
+						room =encodeURI(room);
+						room=room.replace("#","%23");
+						w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA="+areacode+"&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true"+xtra,
+							"MOB",strFeatures, false);
+					}
+				}
+			//-->
+			</SCRIPT>
+		@endif@
+		<!-- TODO -->
+	</TD>
+	</TR>
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=CENTER>
+	</TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();"></TD>
+	<TD WIDTH=33% ALIGN=CENTER>
+	</TD>
+	</TR>
+	</TABLE>
+	<CENTER>
+	</CENTER>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

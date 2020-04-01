@@ -257,6 +257,24 @@ public interface DatabaseEngine extends CMLibrary
 	public String DBIsAreaName(String name);
 
 	/**
+	 * Returns a thin record of all mobs in an area
+	 * proper
+	 *
+	 * @param name the name of the area
+	 * @return all the room content records
+	 */
+	public RoomContent[] DBReadAreaMobs(String name);
+
+	/**
+	 * Returns a thin record of all items in an area
+	 * proper
+	 *
+	 * @param name the name of the area
+	 * @return all the room content records
+	 */
+	public RoomContent[] DBReadAreaItems(String name);
+
+	/**
 	 * Table category: DBMAP
 	 * Permanently Loads and returns a single Room object,
 	 * without populating its contents yet. This is often done in
@@ -328,6 +346,28 @@ public interface DatabaseEngine extends CMLibrary
 	 * @return the counts as a 2 entry array
 	 */
 	public int[] DBCountRoomMobsItems(String roomID);
+
+	/**
+	 * Table category: DBMAP
+	 * Returns a sterile prototype of the given room item
+	 * freshly created.  It must exist in a room.
+	 *
+	 * @param roomID the room id
+	 * @param itemNum the item database id code
+	 * @return the item object
+	 */
+	public Item DBReadRoomItem(final String roomID, final String itemNum);
+
+	/**
+	 * Table category: DBMAP
+	 * Returns a sterile prototype of the given room mob
+	 * freshly created.  It must exist in a room.
+	 *
+	 * @param roomID the room id
+	 * @param itemNum the mob database id code
+	 * @return the mob object
+	 */
+	public MOB DBReadRoomMOB(final String roomID, final String mobID);
 
 	/**
 	 * Table category: DBMAP
@@ -2454,4 +2494,52 @@ public interface DatabaseEngine extends CMLibrary
 		 */
 		public String typeClass();
 	}
+
+
+	/**
+	 * Table category: CMROCH, CMROIT
+	 * A record from one of the above tables
+	 * A room content object
+	 *
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static interface RoomContent
+	{
+		/**
+		 * The Object Class ID
+		 *
+		 * @return the class id
+		 */
+		public String ID();
+
+		/**
+		 * The Object name
+		 *
+		 * @return name
+		 */
+		public String name();
+
+		/**
+		 * The room ID
+		 *
+		 * @return room id
+		 */
+		public String roomID();
+
+		/**
+		 * The object DB key
+		 *
+		 * @return room object db key
+		 */
+		public String dbKey();
+
+		/**
+		 * A has of content obj data
+		 *
+		 * @return the content obj data
+		 */
+		public int contentHash();
+	}
+
 }
