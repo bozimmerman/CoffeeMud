@@ -523,8 +523,11 @@ public class Sounder extends StdBehavior
 									@Override
 									public void run()
 									{
-										if(R.okMessage(msg.source(),msg))
-											R.send(msg.source(), msg);
+										if(R.isInhabitant(msg.source()))
+										{
+											if(R.okMessage(msg.source(),msg))
+												R.send(msg.source(), msg);
+										}
 									}
 								}, 500);
 							}
