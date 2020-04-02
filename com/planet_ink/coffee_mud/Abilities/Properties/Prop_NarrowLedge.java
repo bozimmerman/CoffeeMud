@@ -114,15 +114,14 @@ public class Prop_NarrowLedge extends Property
 								{
 									final CMMsg enterMsg=CMClass.getMsg(mob,R,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> fall(s) in."));
 									final CMMsg leaveMsg=CMClass.getMsg(mob,oldR,CMMsg.MSG_LEAVE,L("<S-NAME> fall(s) off @x1 into @x2!!",name,R.displayText(mob)));
-									if(oldR.okMessage(mob,leaveMsg)&&R.okMessage(mob,enterMsg))
-									{
-										oldR.send(mob,leaveMsg);
-										((Room)enterMsg.target()).bringMobHere(mob,false);
-										((Room)enterMsg.target()).send(mob,enterMsg);
-										mob.tell(L("\n\r\n\r"));
-										CMLib.commands().postLook(mob,true);
-										continue;
-									}
+									oldR.okMessage(mob,leaveMsg);
+									R.okMessage(mob,enterMsg);
+									oldR.send(mob,leaveMsg);
+									((Room)enterMsg.target()).bringMobHere(mob,false);
+									((Room)enterMsg.target()).send(mob,enterMsg);
+									mob.tell(L("\n\r\n\r"));
+									CMLib.commands().postLook(mob,true);
+									continue;
 								}
 							}
 							oldR.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) off @x1 to <S-HIS-HER> death!!",name));
