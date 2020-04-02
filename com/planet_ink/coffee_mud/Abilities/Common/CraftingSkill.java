@@ -1802,7 +1802,8 @@ public class CraftingSkill extends GatheringSkill
 			commonTell(mob,L("You need to pick that up first."));
 			return false;
 		}
-		if(!mayILearnToCraft( mob, buildingI ))
+		if((!mayILearnToCraft( mob, buildingI ))
+		||(this.getBrand(buildingI).length()>0))
 		{
 			commonTell(mob,L("You can't learn anything about @x1 with @x2.",buildingI.name(mob),name()));
 			return false;

@@ -54,6 +54,7 @@ public class Prop_NarrowLedge extends Property
 
 	protected int check=16;
 	protected String name="the narrow ledge";
+	protected String targetRoom = null;
 	protected List<MOB> mobsToKill=new Vector<MOB>();
 
 	@Override
@@ -69,6 +70,8 @@ public class Prop_NarrowLedge extends Property
 		super.setMiscText(newText);
 		check=CMParms.getParmInt(newText,"check",16);
 		name=CMParms.getParmStr(newText,"name","the narrow ledge");
+		targetRoom=CMParms.getParmStr(newText, "room", null);
+
 	}
 
 	@Override
@@ -84,9 +87,10 @@ public class Prop_NarrowLedge extends Property
 				for(int v=0;v<V.size();v++)
 				{
 					final MOB mob=V.get(v);
-					if(mob.location()!=null)
+					final Room oldR=mob.location();
+					if(oldR!=null)
 					{
-						if((affected instanceof Room)&&(mob.location()!=affected))
+						if((affected instanceof Room)&&(oldR!=affected))
 							continue;
 
 						if((affected instanceof Room)
@@ -95,12 +99,35 @@ public class Prop_NarrowLedge extends Property
 						&&(((Room)affected).getRoomInDir(Directions.DOWN)!=null)
 						&&(((Room)affected).getExitInDir(Directions.DOWN)!=null)
 						&&(((Room)affected).getExitInDir(Directions.DOWN).isOpen()))
-							mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) off @x1!!",name));
+							oldR.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) off @x1!!",name));
 						else
 						{
-							mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) off @x1 to <S-HIS-HER> death!!",name));
-							if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT))
-								mob.location().show(mob,null,CMMsg.MSG_DEATH,null);
+							if(mob.isInCombat())
+							{
+								CMLib.commands().postFlee(mob,("NOWHERE"));
+								mob.makePeace(false);
+							}
+							if(targetRoom != null)
+							{
+								final Room R=CMLib.map().getRoom(targetRoom);
+								if(R!=null)
+								{
+									final CMMsg enterMsg=CMClass.getMsg(mob,R,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> emerge(s) from around the stones."));
+									final CMMsg leaveMsg=CMClass.getMsg(mob,oldR,CMMsg.MSG_LEAVE,L("<S-NAME> fall(s) off @x1 into @x2!!",name,R.displayText(mob)));
+									if(oldR.okMessage(mob,leaveMsg)&&R.okMessage(mob,enterMsg))
+									{
+										oldR.send(mob,leaveMsg);
+										((Room)enterMsg.target()).bringMobHere(mob,false);
+										((Room)enterMsg.target()).send(mob,enterMsg);
+										mob.tell(L("\n\r\n\r"));
+										CMLib.commands().postLook(mob,true);
+										continue;
+									}
+								}
+							}
+							oldR.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> fall(s) off @x1 to <S-HIS-HER> death!!",name));
+							if(!CMSecurity.isAllowed(mob,oldR,CMSecurity.SecFlag.IMMORT))
+								oldR.show(mob,null,CMMsg.MSG_DEATH,null);
 						}
 					}
 				}
