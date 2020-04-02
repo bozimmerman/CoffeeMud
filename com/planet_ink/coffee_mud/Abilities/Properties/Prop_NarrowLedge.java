@@ -112,7 +112,7 @@ public class Prop_NarrowLedge extends Property
 								final Room R=CMLib.map().getRoom(targetRoom);
 								if(R!=null)
 								{
-									final CMMsg enterMsg=CMClass.getMsg(mob,R,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> emerge(s) from around the stones."));
+									final CMMsg enterMsg=CMClass.getMsg(mob,R,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> fall(s) in."));
 									final CMMsg leaveMsg=CMClass.getMsg(mob,oldR,CMMsg.MSG_LEAVE,L("<S-NAME> fall(s) off @x1 into @x2!!",name,R.displayText(mob)));
 									if(oldR.okMessage(mob,leaveMsg)&&R.okMessage(mob,enterMsg))
 									{
