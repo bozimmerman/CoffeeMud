@@ -123,18 +123,20 @@
 <FONT SIZE=5 COLOR=WHITE><B>MUDGrinder Main Menu</B></FONT><br>
 <FORM  ACCEPT-CHARSET="UTF-8" NAME=SELECTAREA METHOD=POST ACTION="" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-
 @block?AREAEDITOR@
     @if?MUDGrinder?ISSPACE@
         <FONT SIZE=-1>
          <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=AREA @if?CheckReqParm?AREAMASKTYPE=&||AREAMASKTYPE=AREA@CHECKED@endif@ ONCLICK="Refresh();">Areas
          <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=PLANET @if?CheckReqParm?AREAMASKTYPE=PLANET@CHECKED@endif@ ONCLICK="Refresh();">Space
+         &nbsp;&nbsp;&nbsp;&nbsp;
+         <INPUT TYPE=RADIO NAME=AREAMASKTYPE VALUE=TREE @if?CheckReqParm?AREAMASKTYPE=TREE@CHECKED@endif@ ONCLICK="Refresh();">Tree
         </FONT>
     @endif@
     @if?CheckReqParm?AREAMASKTYPE=@
         @AddRequestParameter?AREAMASKTYPE=AREA@
     @endif@
-	<SELECT NAME=AREA HEIGHT=10>
+	<P>
+	<SELECT NAME=AREA @if?CheckReqParm?AREAMASKTYPE=TREE@SIZE=10 ONCHANGE="Refresh()"@endif@>
 	@MUDGrinder?@@RequestParameter?AREAMASKTYPE@@LIST&NOINSTANCE@
 	</SELECT>
 	<BR>
@@ -278,7 +280,7 @@
 			@endif@
 		</TD>
 		@if?CheckAuthCode?ANYMODAREAS=true@
-			<TD ROWSPAN=3 VALIGN=TOP ALIGN=CENTER><BR>@insert?AREAEDITOR@</TD>
+			<TD ROWSPAN=3 VALIGN=TOP ALIGN=CENTER>@insert?AREAEDITOR@</TD>
 		@endif@
 	</TR>
 	</TABLE>

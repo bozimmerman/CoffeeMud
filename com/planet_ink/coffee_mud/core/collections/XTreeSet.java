@@ -137,4 +137,21 @@ public class XTreeSet<T> extends HashSet<T>
 				remove(o);
 		}
 	}
+	
+	public boolean containsAny(Collection<T> C)
+	{
+		for(final T c : C)
+			if(contains(c))
+				return true;
+		return false;
+	}
+	
+	public boolean containsAny(Enumeration<T> c)
+	{
+		for(;c.hasMoreElements();)
+			if(contains(c.nextElement()))
+				return true;
+		return false;
+	}
+	
 }

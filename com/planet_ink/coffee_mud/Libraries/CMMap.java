@@ -144,6 +144,15 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	};
 
+	private static Filterer<Area> topLevelAreaFilter=new Filterer<Area>()
+	{
+		@Override
+		public boolean passesFilter(final Area obj)
+		{
+			return ! obj.getParents().hasMoreElements();
+		}
+	};
+
 	protected int getGlobalIndex(final List<Environmental> list, final String name)
 	{
 		if(list.size()==0)
@@ -305,6 +314,12 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Enumeration<Area> spaceAreas()
 	{
 		return new FilteredEnumeration<Area>(areas(),planetsAreaFilter);
+	}
+
+	@Override
+	public Enumeration<Area> topAreas()
+	{
+		return new FilteredEnumeration<Area>(areas(),topLevelAreaFilter);
 	}
 
 	@Override

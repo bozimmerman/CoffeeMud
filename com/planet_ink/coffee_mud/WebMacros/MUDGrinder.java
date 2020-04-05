@@ -285,7 +285,7 @@ public class MUDGrinder extends StdWebMacro
 				return "@break@";
 			final Area pickedA=getLoggedArea(httpReq,mob);
 			final boolean noInstances=parms.containsKey("NOINSTANCE");
-			return GrinderAreas.getAreaList(CMLib.map().mundaneAreas(),pickedA,mob,noInstances);
+			return GrinderAreas.getAreaList(CMLib.map().mundaneAreas(),pickedA,mob,noInstances,false);
 		}
 		else
 		if(parms.containsKey("PLANETLIST"))
@@ -295,7 +295,17 @@ public class MUDGrinder extends StdWebMacro
 				return "@break@";
 			final Area pickedA=getLoggedArea(httpReq,mob);
 			final boolean noInstances=parms.containsKey("NOINSTANCE");
-			return GrinderAreas.getAreaList(CMLib.map().spaceAreas(),pickedA,mob,noInstances);
+			return GrinderAreas.getAreaList(CMLib.map().spaceAreas(),pickedA,mob,noInstances,false);
+		}
+		else
+		if(parms.containsKey("TREELIST"))
+		{
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null)
+				return "@break@";
+			final Area pickedA=getLoggedArea(httpReq,mob);
+			final boolean noInstances=parms.containsKey("NOINSTANCE");
+			return GrinderAreas.getAreaList(CMLib.map().topAreas(),pickedA,mob,noInstances,true);
 		}
 		else
 		if(parms.containsKey("ISSPACE"))
