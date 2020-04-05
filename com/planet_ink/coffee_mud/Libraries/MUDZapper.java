@@ -370,7 +370,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			{
 				if(Ability.FLAG_DESCS[d].startsWith(str))
 				{
-					o=Long.valueOf(1<<d);
+					o=Long.valueOf(1L<<d);
 					break;
 				}
 			}
