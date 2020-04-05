@@ -91,33 +91,33 @@ public class AreaItemNext extends StdWebMacro
 		}
 		if(parms.containsKey("AITEMROOM"))
 		{
-			final String mobName=httpReq.getUrlParameter("ITEMNAME");
-			final String mobHash=httpReq.getUrlParameter("ITEMHASH");
+			final String itemName=httpReq.getUrlParameter("ITEMNAME");
+			final String itemHash=httpReq.getUrlParameter("ITEMHASH");
 			final String roomID=httpReq.getUrlParameter("ROOM");
 			if(((roomID!=null)&&(roomID.length()>0))
-			&&((mobName!=null)&&(mobName.length()>0))
-			&&((mobHash!=null)&&(mobHash.length()>0))
+			&&((itemName!=null)&&(itemName.length()>0))
+			&&((itemHash!=null)&&(itemHash.length()>0))
 			&&(!httpReq.isUrlParameter("ITEM")))
 			{
-				String mobID=null;
+				String itemID=null;
 				for(final RoomContent C : content)
 				{
-					if((C.name().equalsIgnoreCase(mobName))
+					if((C.name().equalsIgnoreCase(itemName))
 					&&(C.roomID().equalsIgnoreCase(roomID))
-					&&(mobHash.equals(""+C.contentHash())))
+					&&(itemHash.equals(""+C.contentHash())))
 					{
-						mobID=C.dbKey();
+						itemID=C.dbKey();
 						break;
 					}
 				}
-				if(mobID!=null)
+				if(itemID!=null)
 				{
-					final Item M=CMLib.database().DBReadRoomItem(roomID, mobID);
-					String s=RoomData.getItemCode(RoomData.getItemCache(),M);
+					final Item I=CMLib.database().DBReadRoomItem(roomID, itemID);
+					String s=RoomData.getItemCode(RoomData.getItemCache(),I);
 					if(s.length()==0)
 					{
-						RoomData.contributeItems(new XVector<Item>(M));
-						s=RoomData.getItemCode(RoomData.getItemCache(),M);
+						RoomData.contributeItems(new XVector<Item>(I));
+						s=RoomData.getItemCode(RoomData.getItemCache(),I);
 					}
 					if(s.length()>0)
 					{
@@ -128,64 +128,64 @@ public class AreaItemNext extends StdWebMacro
 			}
 			return "";
 		}
-		final String mobHash=parms.get("AITEMHASH");
-		final String mobFocus=parms.get("AITEMNAME");
-		if((mobFocus!=null)&&(mobFocus.length()>0))
+		final String itemHash=parms.get("AITEMHASH");
+		final String itemFocus=parms.get("AITEMNAME");
+		if((itemFocus!=null)&&(itemFocus.length()>0))
 		{
-			Map<Integer,Set<String>> mobSets;
-			mobSets=(Map<Integer,Set<String>>)httpReq.getRequestObjects().get("AREA_"+area+"_ITEMSET_"+mobFocus);
-			if(mobSets == null)
+			Map<Integer,Set<String>> itemSets;
+			itemSets=(Map<Integer,Set<String>>)httpReq.getRequestObjects().get("AREA_"+area+"_ITEMSET_"+itemFocus);
+			if(itemSets == null)
 			{
-				mobSets = new TreeMap<Integer,Set<String>>();
+				itemSets = new TreeMap<Integer,Set<String>>();
 				for(final RoomContent C : content)
 				{
-					if(C.name().equalsIgnoreCase(mobFocus))
+					if(C.name().equalsIgnoreCase(itemFocus))
 					{
 						final Integer h = Integer.valueOf(C.contentHash());
-						if(!mobSets.containsKey(h))
-							mobSets.put(h, new TreeSet<String>());
-						mobSets.get(h).add(C.roomID());
+						if(!itemSets.containsKey(h))
+							itemSets.put(h, new TreeSet<String>());
+						itemSets.get(h).add(C.roomID());
 					}
 				}
-				httpReq.getRequestObjects().put("AREA_"+area+"_ITEMSET_"+mobFocus,mobSets);
+				httpReq.getRequestObjects().put("AREA_"+area+"_ITEMSET_"+itemFocus,itemSets);
 			}
-			if(mobSets.size()==1)
-				httpReq.addFakeUrlParameter("ITEMHASH",mobSets.keySet().iterator().next().toString());
-			if((mobHash!=null)&&(mobHash.length()>0))
+			if(itemSets.size()==1)
+				httpReq.addFakeUrlParameter("ITEMHASH",itemSets.keySet().iterator().next().toString());
+			if((itemHash!=null)&&(itemHash.length()>0))
 			{
-				final Set<String> mobHashSets=mobSets.get(Integer.valueOf(mobHash));
-				if(mobHashSets.size()==1)
-					httpReq.addFakeUrlParameter("ROOM", mobHashSets.iterator().next());
-				final String ret = spin("AITEMROOM", mobHashSets, httpReq, parms);
+				final Set<String> itemHashSets=itemSets.get(Integer.valueOf(itemHash));
+				if(itemHashSets.size()==1)
+					httpReq.addFakeUrlParameter("ROOM", itemHashSets.iterator().next());
+				final String ret = spin("AITEMROOM", itemHashSets, httpReq, parms);
 				if(ret != null)
 					return ret;
 			}
 			else
 			{
-				final String ret = spin("AITEMHASH", mobSets.keySet(), httpReq, parms);
+				final String ret = spin("AITEMHASH", itemSets.keySet(), httpReq, parms);
 				if(ret != null)
 					return ret;
 			}
 		}
 		else
 		{
-			final List<String> mobNames;
+			final List<String> itemNames;
 			if(httpReq.getRequestObjects().containsKey("AREA_"+area+"_ITEMNAMES"))
-				mobNames=(List<String>)httpReq.getRequestObjects().get("AREA_"+area+"_ITEMNAMES");
+				itemNames=(List<String>)httpReq.getRequestObjects().get("AREA_"+area+"_ITEMNAMES");
 			else
 			{
-				mobNames=new ArrayList<String>();
+				itemNames=new ArrayList<String>();
 				final Set<String> namesDone = new TreeSet<String>();
 				for(final RoomContent roomContent : content)
 				{
 					if(!namesDone.contains(roomContent.name()))
 						namesDone.add(roomContent.name());
 				}
-				mobNames.addAll(namesDone);
-				httpReq.getRequestObjects().put("AREA_"+area+"_ITEMNAMES",mobNames);
+				itemNames.addAll(namesDone);
+				httpReq.getRequestObjects().put("AREA_"+area+"_ITEMNAMES",itemNames);
 			}
 
-			final String ret = spin("AITEMNAME", mobNames, httpReq, parms);
+			final String ret = spin("AITEMNAME", itemNames, httpReq, parms);
 			if(ret != null)
 				return ret;
 		}
