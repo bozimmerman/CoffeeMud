@@ -3168,6 +3168,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final MOB M = CMClass.getMOBPrototype(classID);
 			if(M!=null)
 				return M.Name();
+			final Item I=CMClass.getItemPrototype(classID);
+			if(I!=null)
+				return I.Name();
 		}
 		return "";
 	}
