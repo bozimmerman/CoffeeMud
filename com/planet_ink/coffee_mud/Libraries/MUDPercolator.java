@@ -2033,7 +2033,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	protected List<Item> buildItem(final XMLTag piece, final Map<String,Object> defined) throws CMException
 	{
-		final Map<String,Object> preContentDefined = new SHashtable<String,Object>(defined);
+		final SHashtable<String,Object> preContentDefined = new SHashtable<String,Object>(defined);
 		final String classID = findStringNow("class",piece,defined);
 		final List<Item> contents = new Vector<Item>();
 		final List<String> ignoreStats=new XArrayList<String>();
@@ -2346,6 +2346,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		}
 
 		final int contentSize=contents.size();
+		SHashtable<String,Object> definedCopy = null;
 		for(int it=0;it<contentSize;it++) // no iterator, please!!
 		{
 			final Item I=contents.get(it);
@@ -2359,7 +2360,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 			if(I instanceof Container)
 			{
-				final List<Item> V= findContents(piece,new SHashtable<String,Object>(preContentDefined));
+				if((definedCopy == null)||(definedCopy.isDirty()))
+					definedCopy=preContentDefined.copyOf();
+				final List<Item> V= findContents(piece,preContentDefined);
 				for(int i=0;i<V.size();i++)
 				{
 					final Item I2=V.get(i);

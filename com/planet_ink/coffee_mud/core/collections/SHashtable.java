@@ -21,6 +21,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 {
 	private static final long	     serialVersionUID	= 6687178785122561993L;
 	private volatile Hashtable<K, F>	H;
+	private volatile boolean dirty = false;
 
 	public SHashtable()
 	{
@@ -43,19 +44,25 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 			for (; e.hasMoreElements();)
 			{
 				final Pair<K, F> p = e.nextElement();
-				put(p.first, p.second);
+				this.H.put(p.first, p.second);
 			}
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public SHashtable(final Map<K, F> H)
 	{
 		super();
-		this.H = new Hashtable<K, F>();
-		if (H != null)
+		if(H instanceof SHashtable)
+			this.H = (Hashtable<K,F>)((SHashtable<K,F>)H).H.clone();
+		else
 		{
-			for (final K o : H.keySet())
-				put(o, H.get(o));
+			this.H = new Hashtable<K, F>();
+			if (H != null)
+			{
+				for (final K o : H.keySet())
+					this.H.put(o, H.get(o));
+			}
 		}
 	}
 
@@ -101,6 +108,11 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 		return (Hashtable<K, F>) H.clone();
 	}
 
+	public boolean isDirty()
+	{
+		return dirty;
+	}
+
 	public synchronized Vector<String> toStringVector(final String divider)
 	{
 		final Vector<String> V = new Vector<String>(size());
@@ -123,8 +135,11 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	@Override
 	public synchronized void clear()
 	{
-		H = (Hashtable<K, F>) H.clone();
-		H.clear();
+		if(H.size()>0)
+		{
+			H = (Hashtable<K, F>) H.clone();
+			H.clear();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -204,6 +219,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	public synchronized F put(final K arg0, final F arg1)
 	{
 		H = (Hashtable<K, F>) H.clone();
+		dirty=true;
 		return H.put(arg0, arg1);
 	}
 
@@ -213,6 +229,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	public synchronized F remove(final Object arg0)
 	{
 		H = (Hashtable<K, F>) H.clone();
+		dirty=true;
 		return H.remove(arg0);
 	}
 
@@ -240,6 +257,7 @@ public class SHashtable<K, F> implements CMap<K, F>, java.io.Serializable
 	public synchronized void putAll(final Map<? extends K, ? extends F> arg0)
 	{
 		H = (Hashtable<K, F>) H.clone();
+		dirty=true;
 		H.putAll(arg0);
 	}
 
