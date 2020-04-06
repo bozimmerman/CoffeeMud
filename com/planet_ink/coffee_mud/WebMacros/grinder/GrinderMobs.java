@@ -579,13 +579,15 @@ public class GrinderMobs
 					if(M instanceof ShopKeeper)
 					{
 						((ShopKeeper)M).viewFlags().clear();
-						int x=1;
-						while(httpReq.getUrlParameter(parmName+x)!=null)
+						int x=0;
+						String key=parmName;
+						while(httpReq.getUrlParameter(key)!=null)
 						{
-							final ViewType V = (ViewType)CMath.s_valueOf(ViewType.class, httpReq.getUrlParameter(parmName+x));
+							final ViewType V = (ViewType)CMath.s_valueOf(ViewType.class, httpReq.getUrlParameter(key));
 							if(V != null)
 								((ShopKeeper)M).viewFlags().add(V);
 							x++;
+							key=parmName+x;
 						}
 					}
 					break;

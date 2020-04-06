@@ -2058,13 +2058,23 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			int material=-1;
 			if(materialStr!=null)
 				 material = RawMaterial.CODES.FIND_IgnoreCase(materialStr);
-			final List<ItemCraftor> craftors=new Vector<ItemCraftor>();
-			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			@SuppressWarnings("unchecked")
+			List<ItemCraftor> craftorPrototypes = (List<ItemCraftor>)defined.get("____SYSTEM_FILTERED_ITEM_CRAFTORS");
+			if(craftorPrototypes == null)
 			{
-				final Ability A=e.nextElement();
-				if(A instanceof ItemCraftor)
-					craftors.add((ItemCraftor)A.copyOf());
+				craftorPrototypes=new Vector<ItemCraftor>();
+				for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+				{
+					final Ability A=e.nextElement();
+					if(A instanceof ItemCraftor)
+						craftorPrototypes.add((ItemCraftor)A);
+				}
+				defined.put("____SYSTEM_FILTERED_ITEM_CRAFTORS", craftorPrototypes);
 			}
+			final List<ItemCraftor> craftors = new ArrayList<ItemCraftor>(craftorPrototypes.size());
+			for(final ItemCraftor I : craftorPrototypes)
+				craftors.add((ItemCraftor)I.copyOf());
+
 			if(recipe.startsWith("any"))
 			{
 				if(recipe.equalsIgnoreCase("anything"))
@@ -3293,7 +3303,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(condition == null)
 				return true;
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.MUDPERCOLATOR))
-				Log.debugOut("MudPercolator","START-TEST "+piece.tag()+": "+condition);
+					Log.debugOut("MudPercolator","START-TEST "+piece.tag()+": "+condition);
 			final List<Varidentifier> ids=parseVariables(condition);
 			for(final Varidentifier id : ids)
 			{

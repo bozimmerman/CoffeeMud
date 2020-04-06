@@ -58,12 +58,8 @@
 			</TD></TR>
 			<TR><TD ALIGN=RIGHT>
 			<INPUT TYPE=BUTTON NAME=SCRIPTS VALUE="Scripts" ONCLICK="Clicked('/grinder/editareascripts.cmvp');">
-			@if?CheckAuthCode?AUTH_CMDMOBS=true@
 			<INPUT TYPE=BUTTON NAME=EXPORT VALUE="MOBs" ONCLICK="Clicked('/grinder/editareamobs.cmvp');">
-			@endif@
-			@if?CheckAuthCode?AUTH_CMDITEMSS=true@
 			<INPUT TYPE=BUTTON NAME=EXPORT VALUE="Items" ONCLICK="Clicked('/grinder/editareaitems.cmvp');">
-			@endif@
 			</TD></TR>
 			<TR VALIGN=BOTTOM><TD ALIGN=RIGHT HEIGHT=40%>
 			<INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Main Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
