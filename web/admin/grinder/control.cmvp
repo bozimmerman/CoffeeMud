@@ -180,7 +180,7 @@
 	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=PLAYER@BGCOLOR=BLACK@endif@><a href="javascript:inipage('PLAYER')"><FONT @if?CheckReqParm?INIPAGE=PLAYER@COLOR=WHITE@else@COLOR=BLACK@endif@>Player Settings</FONT></a></TD>
 	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=ECONOMY@BGCOLOR=BLACK@endif@><a href="javascript:inipage('ECONOMY')"><FONT @if?CheckReqParm?INIPAGE=ECONOMY@COLOR=WHITE@else@COLOR=BLACK@endif@>Economy</FONT></a></TD>
 	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=CALENDAR@BGCOLOR=BLACK@endif@><a href="javascript:inipage('CALENDAR')"><FONT @if?CheckReqParm?INIPAGE=CALENDAR@COLOR=WHITE@else@COLOR=BLACK@endif@>Calendar</FONT></a></TD>
-	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=MISC@BGCOLOR=BLACK@endif@><a href="javascript:inipage('MISC')"><FONT @if?CheckReqParm?INIPAGE=MISC@COLOR=WHITE@else@COLOR=BLACK@endif@>Miscellanous</FONT></a></TD>
+	<TD WIDTH=9% @if?CheckReqParm?INIPAGE=MISC@BGCOLOR=BLACK@endif@><a href="javascript:inipage('MISC')"><FONT @if?CheckReqParm?INIPAGE=MISC@COLOR=WHITE@else@COLOR=BLACK@endif@>Miscellaneous</FONT></a></TD>
 	</TR>
 	<TR><TD WIDTH=100% COLSPAN=11 VALIGN=TOP>
 	@if?CheckReqParm?INIPAGE=@
