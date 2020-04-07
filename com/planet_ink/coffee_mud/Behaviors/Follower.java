@@ -262,16 +262,7 @@ public class Follower extends ActiveTicker
 			if(direction<0)
 				return;
 
-			boolean move=true;
-			for(int m=0;m<room.numInhabitants();m++)
-			{
-				final MOB inhab=room.fetchInhabitant(m);
-				if((inhab!=null)
-				&&(CMSecurity.isAllowed(inhab,room,CMSecurity.SecFlag.CMDMOBS)
-				   ||CMSecurity.isAllowed(inhab,room,CMSecurity.SecFlag.CMDROOMS)))
-					move=false;
-			}
-			if(move)
+			if(!CMLib.tracking().isAnAdminHere(room, true))
 				CMLib.tracking().walk(mob,direction,false,false);
 			direction=-1;
 		}

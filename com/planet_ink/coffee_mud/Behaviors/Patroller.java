@@ -446,20 +446,8 @@ public class Patroller extends ActiveTicker
 			}
 
 			tickStatus=Tickable.STATUS_MISC+14;
-			final Set<MOB> mobsHere=CMLib.players().getPlayersHere(thisRoom);
-			if(mobsHere.size()>0)
-			{
-				for(final MOB inhab : mobsHere)
-				{
-					if((!inhab.isMonster())
-					&&(CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDMOBS)
-					   ||CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDROOMS)))
-					{
-						tickStatus=Tickable.STATUS_NOT;
-						return true;
-					}
-				}
-			}
+			if(CMLib.tracking().isAnAdminHere(thisRoom, true))
+				return true;
 
 			tickStatus=Tickable.STATUS_MISC+15;
 			if(ticking instanceof Item)
