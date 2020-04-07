@@ -162,6 +162,30 @@ public class GenEarring extends GenThinArmor implements BodyToken
 	}
 
 	@Override
+	protected boolean canWearComplete(final MOB mob, final long wearWhere)
+	{
+		if((mob!=null)
+		&&(wearWhere == 0)
+		&&(!canWear(mob,wearWhere)))
+		{
+			final long where = whereCantWear(mob);
+			if(where > 0)
+			{
+				for(final long code : Wearable.CODES.instance().all())
+				{
+					if((code != 0)
+					&&(CMath.bset(where, code))
+					&&(!hasFreePiercing(mob, code)))
+					{
+						mob.tell(L("You need pierced "+Wearable.CODES.NAME(where).toLowerCase()+" wear that."));
+						return false;
+					}
+				}
+			}
+		}
+		return canWearComplete(mob, wearWhere);
+	}
+	@Override
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
