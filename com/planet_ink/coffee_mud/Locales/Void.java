@@ -46,6 +46,7 @@ public class Void extends StdRoom
 		basePhyStats.setWeight(1);
 		name="the void";
 		setClimateType(Places.CLIMASK_VOID);
+		atmosphere=RawMaterial.RESOURCE_NOTHING;
 		recoverPhyStats();
 	}
 
