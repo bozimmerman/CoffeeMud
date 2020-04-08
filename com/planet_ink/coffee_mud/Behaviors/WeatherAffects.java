@@ -284,7 +284,8 @@ public class WeatherAffects extends PuddleMaker
 									for(final Enumeration<Room> sr=shipArea.getProperMap();sr.hasMoreElements();)
 									{
 										final Room sR=sr.nextElement();
-										if((sR!=null)&&((sR.domainType()&Room.INDOORS)==0))
+										if((sR!=null)
+										&&((sR.domainType()&Room.INDOORS)==0))
 											sR.show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("^W<S-NAME> make(s) no progress in the "+what+".^?"));
 									}
 								}
@@ -614,7 +615,8 @@ public class WeatherAffects extends PuddleMaker
 				||(!mob.isAttributeSet(MOB.Attrib.AUTOWEATHER)))
 					continue;
 				final Room R=mob.location();
-				if(R!=null)
+				if((R!=null)
+				&&(!CMath.bset(R.getClimateType(), Places.CLIMASK_VOID)))
 				{
 					switch(C.weatherType(null))
 					{
@@ -730,7 +732,9 @@ public class WeatherAffects extends PuddleMaker
 						for(;e.hasMoreElements();)
 						{
 							R2=e.nextElement();
-							if((R2!=R)&&(R2.numInhabitants()>0))
+							if((R2!=R)
+							&&(R2.numInhabitants()>0)
+							&&(!CMath.bset(R2.getClimateType(), Places.CLIMASK_VOID)))
 							{
 								if((A.getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY)
 								||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
@@ -795,7 +799,9 @@ public class WeatherAffects extends PuddleMaker
 						for(;e.hasMoreElements();)
 						{
 							R2=e.nextElement();
-							if((R2!=R)&&(R2.numInhabitants()>0))
+							if((R2!=R)
+							&&(!CMath.bset(R2.getClimateType(), Places.CLIMASK_VOID))
+							&&(R2.numInhabitants()>0))
 							{
 								if((A.getTimeObj().getTODCode()==TimeClock.TimeOfDay.DAY)
 								||(C.weatherType(R2)!=Climate.WEATHER_THUNDERSTORM))
@@ -888,6 +894,7 @@ public class WeatherAffects extends PuddleMaker
 			&&((R.domainType()&Room.INDOORS)==0)
 			&&(R.domainType()!=Room.DOMAIN_OUTDOORS_SWAMP)
 			&&(!CMLib.flags().isWateryRoom(R))
+			&&(!CMath.bset(R.getClimateType(), Places.CLIMASK_VOID))
 			&&(!CMath.bset(R.getClimateType(),Places.CLIMASK_WET)))
 			{
 				final Item I=R.getRandomItem();
