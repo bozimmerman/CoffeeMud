@@ -1284,6 +1284,16 @@ public interface CMFlagLibrary extends CMLibrary
 	public String getAge(MOB M);
 
 	/**
+	 * Returns the name of the plane of existence upon which
+	 * the given physical object is located, or null for
+	 * Prime Material
+	 *
+	 * @param P the object to check
+	 * @return the name of the plane of existence, or null
+	 */
+	public String getPlaneOfExistence(final Physical P);
+
+	/**
 	 * Returns the disposition blurbs that apply to the given seen
 	 * mob, item, room, whatever, as soon by the given seer mob.
 	 * These are friendly colored string

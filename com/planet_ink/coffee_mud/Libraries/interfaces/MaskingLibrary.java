@@ -206,7 +206,9 @@ public interface MaskingLibrary extends CMLibrary
 		_JUDGE,
 		JUDGE,
 		_PORT,
-		PORT
+		PORT,
+		_PLANE,
+		PLANE,
 		;
 		private final String[] keys;
 		private ZapperKey(final String... exts)

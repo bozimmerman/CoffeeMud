@@ -48,6 +48,8 @@ public class Factions extends StdLibrary implements FactionManager
 	public SHashtable<String, FRange>		hashedFactionRanges	= new SHashtable<String, FRange>();
 	public Map<Faction.Align, List<FRange>>	hashedFactionAligns	= new SHashtable<Faction.Align, List<FRange>>();
 
+	protected List<String>	autoReactions	= null;
+
 	@Override
 	public Enumeration<Faction> factions()
 	{
@@ -66,6 +68,14 @@ public class Factions extends StdLibrary implements FactionManager
 		factionMap.clear();
 		hashedFactionRanges.clear();
 		hashedFactionAligns.clear();
+		autoReactions = null;
+	}
+
+	@Override
+	public void propertiesLoaded()
+	{
+		super.propertiesLoaded();
+		autoReactions = null;
 	}
 
 	@Override
@@ -547,7 +557,8 @@ public class Factions extends StdLibrary implements FactionManager
 		return true;
 	}
 
-	protected Faction makeReactionFaction(final String prefix, final String classID, final String Name, final String code, final String baseTemplateFilename)
+	@Override
+	public Faction makeReactionFaction(final String prefix, final String classID, final String Name, final String code, final String baseTemplateFilename)
 	{
 		final String codedName=Name.toUpperCase().trim().replace(' ','_');
 		final String factionID=prefix+codedName;
@@ -580,66 +591,91 @@ public class Factions extends StdLibrary implements FactionManager
 			return null;
 		Faction F=null;
 		final String autoReactionTypeStr=CMProps.getVar(CMProps.Str.AUTOREACTION).toUpperCase().trim();
-		if((autoReactionTypeStr==null)||(autoReactionTypeStr.length()==0))
-			return null;
-		if(autoReactionTypeStr.equals("AREA"))
+		if((autoReactionTypeStr!=null)
+		&&(autoReactionTypeStr.length()>0))
 		{
-			final Area A=R.getArea();
-			if((A!=null)&&(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD)))
+			if(autoReactions == null)
+				autoReactions = CMParms.parseCommas(autoReactionTypeStr,true);
+			final List<Faction> Fs=new ArrayList<Faction>(1);
+			for(final String autoType : autoReactions)
 			{
-				final String areaCode = A.Name().toUpperCase().trim().replace(' ','_');
-				F=getFaction("AREA_"+areaCode);
-				if(F==null)
-					F=makeReactionFaction("AREA_",A.ID(),A.Name(),areaCode,"examples/areareaction.ini");
-				if(F==null)
-					return null;
-				return new Faction[]{F};
-			}
-		}
-		else
-		if(autoReactionTypeStr.equals("NAME"))
-		{
-			final Vector<Faction> Fs=new Vector<Faction>();
-			for(int i=0;i<R.numInhabitants();i++)
-			{
-				final MOB M=R.fetchInhabitant(i);
-				if((M!=null)&&(M!=mob)&&(M.isMonster()))
+				if(autoType.equals("AREA"))
 				{
-					final String nameCode = M.Name().toUpperCase().trim().replace(' ','_');
-					F=getFaction("NAME_"+nameCode);
-					if(F==null)
-						F=makeReactionFaction("NAME_",M.ID(),M.Name(),nameCode,"examples/namereaction.ini");
-					if(F!=null)
-						Fs.add(F);
+					final Area A=R.getArea();
+					if((A!=null)&&(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD)))
+					{
+						final String areaCode = A.Name().toUpperCase().trim().replace(' ','_');
+						F=getFaction("AREA_"+areaCode);
+						if(F==null)
+							F=makeReactionFaction("AREA_",A.ID(),A.Name(),areaCode,"examples/areareaction.ini");
+						if(F!=null)
+							Fs.add(F);
+					}
+				}
+				else
+				if(autoType.equals("NAME"))
+				{
+					for(int i=0;i<R.numInhabitants();i++)
+					{
+						final MOB M=R.fetchInhabitant(i);
+						if((M!=null)&&(M!=mob)&&(M.isMonster()))
+						{
+							final String nameCode = M.Name().toUpperCase().trim().replace(' ','_');
+							F=getFaction("NAME_"+nameCode);
+							if(F==null)
+								F=makeReactionFaction("NAME_",M.ID(),M.Name(),nameCode,"examples/namereaction.ini");
+							if(F!=null)
+								Fs.add(F);
+						}
+					}
+				}
+				else
+				if(autoType.equals("RACE"))
+				{
+					final Set<Race> done=new HashSet<Race>(2);
+					for(int i=0;i<R.numInhabitants();i++)
+					{
+						final MOB M=R.fetchInhabitant(i);
+						if((M!=null)&&(M!=mob)&&(M.isMonster())&&(!done.contains(M.charStats().getMyRace())))
+						{
+							final Race rR=M.charStats().getMyRace();
+							done.add(rR);
+							final String nameCode = rR.name().toUpperCase().trim().replace(' ','_');
+							F=getFaction("RACE_"+nameCode);
+							if(F==null)
+								F=makeReactionFaction("RACE_",rR.ID(),rR.name(),nameCode,"examples/racereaction.ini");
+							if(F!=null)
+								Fs.add(F);
+						}
+					}
+				}
+				else
+				if(autoReactionTypeStr.equals("PLANAR"))
+				{
+					final Area A=R.getArea();
+					if((A!=null)
+					&&(CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))
+					&&(A.numEffects()>0))
+					{
+						for(final Enumeration<Ability> a=A.effects();a.hasMoreElements();)
+						{
+							final Ability eA=a.nextElement();
+							if(eA.ID().equals("PlanarAbility")
+							&&(eA.text().length()>0))
+							{
+
+								final String nameCode = eA.text().toUpperCase().trim();
+								F=getFaction("PLANE_"+nameCode);
+								if(F!=null)
+									Fs.add(F);
+							}
+						}
+					}
 				}
 			}
 			if(Fs.size()==0)
 				return null;
-			return Fs.toArray(new Faction[0]);
-		}
-		else
-		if(autoReactionTypeStr.equals("RACE"))
-		{
-			final Vector<Faction> Fs=new Vector<Faction>();
-			final HashSet<Race> done=new HashSet<Race>(2);
-			for(int i=0;i<R.numInhabitants();i++)
-			{
-				final MOB M=R.fetchInhabitant(i);
-				if((M!=null)&&(M!=mob)&&(M.isMonster())&&(!done.contains(M.charStats().getMyRace())))
-				{
-					final Race rR=M.charStats().getMyRace();
-					done.add(rR);
-					final String nameCode = rR.name().toUpperCase().trim().replace(' ','_');
-					F=getFaction("RACE_"+nameCode);
-					if(F==null)
-						F=makeReactionFaction("RACE_",rR.ID(),rR.name(),nameCode,"examples/racereaction.ini");
-					if(F!=null)
-						Fs.add(F);
-				}
-			}
-			if(Fs.size()==0)
-				return null;
-			return Fs.toArray(new Faction[0]);
+			return Fs.toArray(new Faction[Fs.size()]);
 		}
 		return null;
 	}

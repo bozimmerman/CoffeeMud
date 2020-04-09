@@ -79,6 +79,7 @@ public interface FactionManager extends CMLibrary, Tickable
 	public void modifyFaction(MOB mob, Faction me) throws IOException;
 	public boolean postChangeAllFactions(MOB mob, MOB victim, int amount, boolean quiet);
 	public boolean postFactionChange(MOB mob, Environmental tool,String factionID, int amount);
+	public Faction makeReactionFaction(final String prefix, final String classID, final String Name, final String code, final String baseTemplateFilename);
 	public int getAbilityFlagType(String strflag);
 	public String resaveFaction(Faction F);
 }

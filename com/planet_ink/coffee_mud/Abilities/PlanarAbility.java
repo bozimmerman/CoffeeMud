@@ -83,6 +83,8 @@ public class PlanarAbility extends StdAbility
 	protected WeakArrayList<Room>		roomsDone		= new WeakArrayList<Room>();
 	protected int						planarLevel		= 1;
 	protected String					planarPrefix	= null;
+	protected PairList<Integer,String>	promotions		= null;
+	protected List<String>				categories		= null;
 	protected List<Pair<String, String>>behavList		= null;
 	protected List<Pair<String, String>>reffectList		= null;
 	protected List<Pair<String, String>>factionList		= null;
@@ -132,7 +134,10 @@ public class PlanarAbility extends StdAbility
 		ROOMCOLOR,
 		ROOMADJS,
 		AREAEMOTER,
-		FACTIONS
+		FACTIONS,
+		CATEGORY,
+		PROMOTIONS,
+		FACTION
 	}
 
 	public static enum PlanarSpecFlag
@@ -150,6 +155,8 @@ public class PlanarAbility extends StdAbility
 		planarLevel=1;
 		roomsDone=new WeakArrayList<Room>();
 		planeVars=null;
+		promotions=null;
+		categories=null;
 		planarPrefix=null;
 		this.behavList=null;
 		this.enableList=null;
@@ -174,6 +181,8 @@ public class PlanarAbility extends StdAbility
 				throw new IllegalArgumentException("Unknown: "+newText);
 			this.roomsDone=new WeakArrayList<Room>();
 			this.planarPrefix=planeVars.get(PlanarVar.PREFIX.toString());
+			if(planeVars.containsKey(PlanarVar.CATEGORY.toString()))
+				this.categories=CMParms.parseCommas(planeVars.get(PlanarVar.CATEGORY.toString()), true);
 			this.recoverRate = CMath.s_int(planeVars.get(PlanarVar.RECOVERRATE.toString()));
 			this.fatigueRate = CMath.s_int(planeVars.get(PlanarVar.FATIGUERATE.toString()));
 			this.recoverTick=1;
@@ -190,7 +199,7 @@ public class PlanarAbility extends StdAbility
 					medianLevel=planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				planarLevel=medianLevel;
 			}
-			Area planeArea=this.planeArea;
+			final Area planeArea=this.planeArea;
 			if(planeArea == null)
 				return;
 			final String specflags = planeVars.get(PlanarVar.SPECFLAGS.toString());
@@ -215,6 +224,16 @@ public class PlanarAbility extends StdAbility
 				final Map<String,String> blurbSets=CMParms.parseEQParms(areablurbs);
 				for(final String key : blurbSets.keySet())
 					planeArea.addBlurbFlag(key.toUpperCase().trim().replace(' ', '_')+" "+blurbSets.get(key));
+			}
+
+			final String autoReactionTypeStr=CMProps.getVar(CMProps.Str.AUTOREACTION).toUpperCase().trim();
+			if((autoReactionTypeStr.indexOf("PLANAR")>=0)
+			&&(CMath.s_bool(planeVars.get(PlanarVar.FACTION.toString()))))
+			{
+				final String nameCode=newText.toUpperCase().trim();
+				final Faction F=CMLib.factions().getFaction("PLANE_"+nameCode);
+				if(F==null)
+					CMLib.factions().makeReactionFaction("PLANE_","CLASSID",newText,nameCode,"examples/planarreaction.ini");
 			}
 			final String behaves = planeVars.get(PlanarVar.BEHAVE.toString());
 			if(behaves!=null)
@@ -365,6 +384,24 @@ public class PlanarAbility extends StdAbility
 							}
 						}
 					}
+				}
+			}
+			if(planeVars.containsKey(PlanarVar.PROMOTIONS.toString()))
+			{
+				final List<String> bits=CMParms.parseCommas(planeVars.get(PlanarVar.PROMOTIONS.toString()), true);
+				this.promotions=new PairVector<Integer,String>();
+				for(final String bit : bits)
+				{
+					Integer pctChance = Integer.valueOf(10);
+					final int x=bit.indexOf('(');
+					String rank=bit;
+					if((x>0)&&(bit.endsWith(",")))
+					{
+						rank=bit.substring(0,x).trim();
+						pctChance=Integer.valueOf(CMath.s_int(bit.substring(x+1,bit.length()-1)));
+					}
+					if(rank.trim().length()>0)
+						this.promotions.add(pctChance, rank.trim());
 				}
 			}
 		}
@@ -580,6 +617,21 @@ public class PlanarAbility extends StdAbility
 					int newLevel = invoker.phyStats().level() - newLevelAdj + allLevelAdj;
 					if(newLevel <= 0)
 						newLevel = 1;
+					final String planarPrefix = this.planarPrefix;
+					final int randomRoll = CMLib.dice().rollPercentage();
+					if((this.promotions!=null)&&(this.promotions.size()>0))
+					{
+						Pair<Integer,String> bestAvail = null;
+						for(int index=0;index<this.promotions.size();index++)
+						{
+							if(randomRoll <= this.promotions.getFirst(index).intValue())
+								bestAvail = new Pair<Integer,String>(Integer.valueOf(index),this.promotions.getSecond(index));
+						}
+						if(bestAvail != null)
+						{
+
+						}
+					}
 					if((planarPrefix!=null)&&(planarPrefix.length()>0))
 					{
 						final String oldName=M.Name();
@@ -714,18 +766,15 @@ public class PlanarAbility extends StdAbility
 						reEffect(M,"Prop_StatAdjuster",adjStat);
 					if(eliteLevel > 0)
 					{
-						switch(eliteLevel)
-						{
-						case 1:
-							reEffect(M,"Prop_Adjuster", "multiplych=true hitpoints+300 multiplyph=true attack+150 damage+150 armor+115 ALLSAVES+15");
-							reEffect(M,"Prop_ShortEffects", "");
-							break;
-						default:
-							reEffect(M,"Prop_Adjuster", "multiplych=true hitpoints+600 multiplyph=true attack+150 damage+150 armor+115 ALLSAVES+15");
-							reEffect(M,"Prop_ShortEffects", "");
-							break;
-						}
-						reEffect(M,"Prop_ModExperience","*2");
+						reEffect(M,"Prop_Adjuster", "multiplych=true "
+								+ "hitpoints+"+(200+((eliteLevel-1)*50))+" "
+								+ "multiplyph=true "
+								+ "attack+"+(125+((eliteLevel-1)*12))+" "
+								+ "damage+"+(110+((eliteLevel-1)*5))+" "
+								+ "armor+"+(120+((eliteLevel-1)*20))+" "
+								+ "ALLSAVES+"+(20+((eliteLevel-1)*5)));
+						reEffect(M,"Prop_ShortEffects", "");
+						reEffect(M,"Prop_ModExperience","*"+Math.round((eliteLevel+3)/2));
 						final String adjSize = planeVars.get(PlanarVar.ADJSIZE.toString());
 						if(adjSize != null)
 						{

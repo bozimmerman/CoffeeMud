@@ -25,7 +25,8 @@
  24. Added crime tracking to statistics, and support in stats and mudgrinder
  25. ShopKeepers (of all stripes) now have a View Types/Flags field to control VIEW cmd.
  26. Grinder Area editor now includes Mobs and Items editors.
- 26. Grinder area editor now includes a Tree selector for Areas 
+ 26. Grinder area editor now includes a Tree selector for Areas
+ 27. New Planar reactions/faction, new eliting system for planes 
  
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.

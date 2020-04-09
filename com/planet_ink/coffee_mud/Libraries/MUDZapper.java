@@ -2353,9 +2353,42 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
+				case PLANE: // +Plane
+					{
+						buf.append(L("Disallows those whose are on the following plane"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("-"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
 				case _HOME: // -Home
 					{
 						buf.append(L((skipFirstWord?"From the":"Requires being from the")+" following area"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("+"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+
+				case _PLANE: // -Plane
+					{
+						buf.append(L((skipFirstWord?"On the":"Requires being on the")+" following plane"+(multipleQuals(V,v,"+")?"s":"")+": "));
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							final String str2=V.get(v2);
@@ -3533,6 +3566,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _ACCOUNT: // -Accounts
 				case _QUESTWIN: // -Questwin
 				case _HOME: // -Home
+				case _PLANE: // -Plane
 				case _JAVACLASS: // -JavaClass
 					{
 						final ArrayList<Object> parms=new ArrayList<Object>();
@@ -3711,6 +3745,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case ACCOUNT: // +Account
 				case QUESTWIN: // +Questwin
 				case HOME: // +Home
+				case PLANE: // +Plane
 				case JAVACLASS: // +JavaClass
 					{
 						final ArrayList<Object> parms=new ArrayList<Object>();
@@ -6172,25 +6207,76 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						return false;
 					break;
 				}
-				case _HOME: // -home
+				case _PLANE: // -plane
+				{
+					boolean found=false;
+					if(E instanceof Physical)
 					{
-						boolean found=false;
-						final Area A=CMLib.map().getStartArea(E);
-						if(A!=null)
+						String planeName = CMLib.flags().getPlaneOfExistence((Physical)E);
+						if(planeName == null)
+							planeName=L("Prime Material");
+						for(final Object o : entry.parms())
 						{
-							for(final Object o : entry.parms())
+							if(planeName.equalsIgnoreCase((String)o))
 							{
-								if(A.Name().equalsIgnoreCase((String)o))
-								{
-									found = true;
-									break;
-								}
+								found = true;
+								break;
+							}
+						}
+					}
+					if(!found)
+						return false;
+					break;
+				}
+				case PLANE: // +plane
+				{
+					if(E instanceof Physical)
+					{
+						String planeName = CMLib.flags().getPlaneOfExistence((Physical)E);
+						if(planeName == null)
+							planeName=L("Prime Material");
+						for(final Object o : entry.parms())
+						{
+							if(planeName.equalsIgnoreCase((String)o))
+								return false;
+						}
+					}
+					break;
+				}
+				case _HOME: // -home
+				{
+					boolean found=false;
+					final Area A=CMLib.map().getStartArea(E);
+					if(A!=null)
+					{
+						for(final Object o : entry.parms())
+						{
+							if(A.Name().equalsIgnoreCase((String)o))
+							{
+								found = true;
+								break;
 							}
 						}
 						if(!found)
-							return false;
+						{
+							final String planeName=CMLib.flags().getPlaneOfExistence(A);
+							if(planeName != null)
+							{
+								for(final Object o : entry.parms())
+								{
+									if(planeName.equalsIgnoreCase((String)o))
+									{
+										found = true;
+										break;
+									}
+								}
+							}
+						}
 					}
+					if(!found)
+						return false;
 					break;
+				}
 				case HOME: // +home
 					{
 						final Area A=CMLib.map().getStartArea(E);
@@ -6199,6 +6285,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							for(final Object o : entry.parms())
 							{
 								if(A.Name().equalsIgnoreCase((String)o))
+									return false;
+							}
+						}
+						final String planeName=CMLib.flags().getPlaneOfExistence(A);
+						if(planeName != null)
+						{
+							for(final Object o : entry.parms())
+							{
+								if(planeName.equalsIgnoreCase((String)o))
 									return false;
 							}
 						}
@@ -6889,6 +6984,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case AREA: // +area
 				case _HOME: // -home
 				case HOME: // +home
+				case _PLANE: // -plane
+				case PLANE: // +plane
 				case _ISHOME: // -ishome
 				case ISHOME: // +ishome
 				case _ITEM: // -item

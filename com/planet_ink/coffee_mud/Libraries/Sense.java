@@ -645,6 +645,26 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public String getPlaneOfExistence(final Physical P)
+	{
+		final Area A=CMLib.map().areaLocation(P);
+		if((A!=null)
+		&&(CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))
+		&&(CMath.bset(A.flags(), Area.FLAG_THIN))
+		&&(A.numEffects()>0))
+		{
+			for(final Enumeration<Ability> a=A.effects();a.hasMoreElements();)
+			{
+				final Ability eA=a.nextElement();
+				if(eA.ID().equals("PlanarAbility")
+				&&(eA.text().length()>0))
+					return eA.text();
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public String getAge(final MOB M)
 	{
 		final Ability A=M.fetchEffect("Age");
