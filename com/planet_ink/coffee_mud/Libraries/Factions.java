@@ -601,7 +601,15 @@ public class Factions extends StdLibrary implements FactionManager
 				{
 					final Ability A=CMClass.getAbility("PlanarAbility");
 					if(A!=null)
-						A.setMiscText("Doesn't Exist"); // initialize the planes list
+					{
+						try
+						{
+							A.setMiscText("Doesn't Exist"); // initialize the planes list
+						}
+						catch(Exception e)
+						{
+						}
+					}
 				}
 			}
 			final List<Faction> Fs=new ArrayList<Faction>(1);

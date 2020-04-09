@@ -385,7 +385,7 @@ public class PlanarAbility extends StdAbility
 					Integer pctChance = Integer.valueOf(10);
 					final int x=bit.indexOf('(');
 					String rank=bit;
-					if((x>0)&&(bit.endsWith(",")))
+					if((x>0)&&(bit.endsWith(")")))
 					{
 						rank=bit.substring(0,x).trim();
 						pctChance=Integer.valueOf(CMath.s_int(bit.substring(x+1,bit.length()-1)));

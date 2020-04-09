@@ -25,7 +25,7 @@
 <!ELEMENT SHOP '<SEND HREF="VIEW &quot;&text;&quot; &quot;&shopkeeper;&quot;|BUY &quot;&text;&quot; &quot;&shopkeeper;&quot;" hint="Right-Click to use this object|VIEW &quot;&text;&quot; &quot;&shopkeeper;&quot;|BUY &quot;&text;&quot; &quot;&shopkeeper;&quot;">'>
 <!ELEMENT Health EMPTY ATT='name'>
 <!ELEMENT HealthText EMPTY ATT='name'>
-<!ELEMENT LEARN EMPTY FLAG="Learn"' ATT='name'>
+<!ELEMENT LEARN EMPTY FLAG='Learn' ATT='name'>
 <!ELEMENT TELL '<SEND HREF="TELL &name;" PROMPT hint="Click to reply.|TELL &name;">' ATT='name'>
 <!ELEMENT SAY '<SEND HREF="SAY &quot;&name;&quot; " PROMPT hint="Click to reply.|SAY &quot;&name;&quot;">' ATT='name'>
 <!ELEMENT WHISPER '<SEND HREF="WHISPER &quot;&name;&quot; " PROMPT hint="Click to reply.|WHISPER &quot;&name;&quot;">' ATT='name'>
