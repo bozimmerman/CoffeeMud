@@ -595,7 +595,15 @@ public class Factions extends StdLibrary implements FactionManager
 		&&(autoReactionTypeStr.length()>0))
 		{
 			if(autoReactions == null)
+			{
 				autoReactions = CMParms.parseCommas(autoReactionTypeStr,true);
+				if(autoReactions.contains("PLANAR"))
+				{
+					final Ability A=CMClass.getAbility("PlanarAbility");
+					if(A!=null)
+						A.setMiscText("Doesn't Exist"); // initialize the planes list
+				}
+			}
 			final List<Faction> Fs=new ArrayList<Faction>(1);
 			for(final String autoType : autoReactions)
 			{

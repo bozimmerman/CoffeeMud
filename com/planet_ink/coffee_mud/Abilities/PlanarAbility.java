@@ -225,16 +225,6 @@ public class PlanarAbility extends StdAbility
 				for(final String key : blurbSets.keySet())
 					planeArea.addBlurbFlag(key.toUpperCase().trim().replace(' ', '_')+" "+blurbSets.get(key));
 			}
-
-			final String autoReactionTypeStr=CMProps.getVar(CMProps.Str.AUTOREACTION).toUpperCase().trim();
-			if((autoReactionTypeStr.indexOf("PLANAR")>=0)
-			&&(CMath.s_bool(planeVars.get(PlanarVar.FACTION.toString()))))
-			{
-				final String nameCode=newText.toUpperCase().trim();
-				final Faction F=CMLib.factions().getFaction("PLANE_"+nameCode);
-				if(F==null)
-					CMLib.factions().makeReactionFaction("PLANE_","CLASSID",newText,nameCode,"examples/planarreaction.ini");
-			}
 			final String behaves = planeVars.get(PlanarVar.BEHAVE.toString());
 			if(behaves!=null)
 				this.behavList=CMParms.parseSpaceParenList(behaves);
@@ -1088,10 +1078,10 @@ public class PlanarAbility extends StdAbility
 		return str.toString();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static Map<String,Map<String,String>> getPlaneMap()
 	{
-		Map<String,Map<String,String>> map = (Map)Resources.getResource("SKILL_PLANES_OF_EXISTENCE");
+		@SuppressWarnings("unchecked")
+		Map<String,Map<String,String>> map = (Map<String,Map<String,String>>)Resources.getResource("SKILL_PLANES_OF_EXISTENCE");
 		if(map == null)
 		{
 			map = new TreeMap<String,Map<String,String>>();
@@ -1122,6 +1112,15 @@ public class PlanarAbility extends StdAbility
 					}
 					planeParms.put(PlanarVar.ID.toString(), planename);
 					map.put(planename.toUpperCase(), planeParms);
+					final String autoReactionTypeStr=CMProps.getVar(CMProps.Str.AUTOREACTION).toUpperCase().trim();
+					if((autoReactionTypeStr.indexOf("PLANAR")>=0)
+					&&(CMath.s_bool(planeParms.get(PlanarVar.FACTION.toString()))))
+					{
+						final String nameCode=planename.toUpperCase().trim();
+						final Faction rF=CMLib.factions().getFaction("PLANE_"+nameCode);
+						if(rF==null)
+							CMLib.factions().makeReactionFaction("PLANE_","CLASSID",planename,nameCode,"examples/planarreaction.ini");
+					}
 				}
 			}
 			Resources.submitResource("SKILL_PLANES_OF_EXISTENCE", map);
