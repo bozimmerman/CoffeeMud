@@ -607,7 +607,7 @@ public class PlanarAbility extends StdAbility
 					int newLevel = invoker.phyStats().level() - newLevelAdj + allLevelAdj;
 					if(newLevel <= 0)
 						newLevel = 1;
-					final String planarPrefix = this.planarPrefix;
+					String planarPrefix = this.planarPrefix;
 					final int randomRoll = CMLib.dice().rollPercentage();
 					if((this.promotions!=null)&&(this.promotions.size()>0))
 					{
@@ -619,7 +619,10 @@ public class PlanarAbility extends StdAbility
 						}
 						if(bestAvail != null)
 						{
-
+							if(planarPrefix == null)
+								planarPrefix = "";
+							planarPrefix = (bestAvail.second+" "+planarPrefix).trim();
+							eliteLevel += 1+(bestAvail.first.intValue()*2);
 						}
 					}
 					if((planarPrefix!=null)&&(planarPrefix.length()>0))
