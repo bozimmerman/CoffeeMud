@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMath.CompiledFormula;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.PlanarAbility;
 import com.planet_ink.coffee_mud.Abilities.PlanarAbility.PlanarSpecFlag;
@@ -347,14 +348,24 @@ public class Skill_PlanarLore extends StdSkill
 			}
 			if(expertise > 3)
 			{
-				final String lvlSize = planeVars.get(PlanarVar.LEVELADJ.toString());
-				if(lvlSize != null)
-				{
-					if(CMath.s_int(lvlSize)<0)
-						tidbits.add(L("Everything there is @x1 level(s) less powerful than you are.",""+lvlSize.substring(1)));
-					else
-						tidbits.add(L("Everything there is @x1 level(s) more powerful than you are.",""+lvlSize));
-				}
+				String levelFormulaStr = planeVars.get(PlanarVar.LEVELADJ.toString());
+				if((levelFormulaStr == null)||(levelFormulaStr.trim().length()==0))
+					levelFormulaStr = "(@x3 - (@x1 - @x2) + 0) > 1";
+				else
+				if(CMath.isInteger(levelFormulaStr.trim()))
+					levelFormulaStr = "(@x3 - (@x1 - @x2) + "+levelFormulaStr+") > 1";
+				final CompiledFormula levelFormula = CMath.compileMathExpression(levelFormulaStr);
+				final double[] ivars=new double[] {50.0, 50.0, 50.0 } ;
+				final int newILevel = (int)CMath.round(CMath.parseMathExpression(levelFormula, ivars, 0.0));
+				if(newILevel<50)
+					tidbits.add(L("Everything there averages @x1 level(s) less powerful than you are.",""+(50-newILevel)));
+				else
+				if(newILevel>50)
+					tidbits.add(L("Everything there averages @x1 level(s) more powerful than you are.",""+(newILevel-50)));
+
+				final String helpStr = planeVars.get(PlanarVar.DESCRIPTION.toString());
+				if((helpStr != null)&&(helpStr.length()>0))
+					tidbits.add(helpStr);
 			}
 			if(expertise > 4)
 			{

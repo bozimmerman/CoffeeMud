@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMath.CompiledFormula;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.CoffeeMudException;
@@ -82,12 +83,13 @@ public class PlanarAbility extends StdAbility
 	protected Map<String, String>		planeVars		= null;
 	protected WeakArrayList<Room>		roomsDone		= new WeakArrayList<Room>();
 	protected int						planarLevel		= 1;
+	protected String					planarName		= "";
 	protected String					planarPrefix	= null;
 	protected PairList<Integer,String>	promotions		= null;
 	protected List<String>				categories		= null;
-	protected List<Pair<String, String>>behavList		= null;
-	protected List<Pair<String, String>>reffectList		= null;
-	protected List<Pair<String, String>>factionList		= null;
+	protected PairList<String, String>	behavList		= null;
+	protected PairList<String, String>	reffectList		= null;
+	protected PairList<String, String>	factionList		= null;
 	protected int						bonusDmgStat	= -1;
 	protected Set<String>				reqWeapons		= null;
 	protected int						recoverRate		= 0;
@@ -95,6 +97,7 @@ public class PlanarAbility extends StdAbility
 	protected volatile int				recoverTick		= 0;
 	protected Set<PlanarSpecFlag>		specFlags		= null;
 	protected int						hardBumpLevel	= 0;
+	protected CompiledFormula			levelFormula	= null;
 	protected final Map<String,long[]>	recentVisits	= new TreeMap<String,long[]>();
 
 	protected final static long			hardBumpTimeout	= (60L * 60L * 1000L);
@@ -137,7 +140,8 @@ public class PlanarAbility extends StdAbility
 		FACTIONS,
 		CATEGORY,
 		PROMOTIONS,
-		FACTION
+		LIKE,
+		DESCRIPTION
 	}
 
 	public static enum PlanarSpecFlag
@@ -158,10 +162,12 @@ public class PlanarAbility extends StdAbility
 		promotions=null;
 		categories=null;
 		planarPrefix=null;
+		this.planarName="";
 		this.behavList=null;
 		this.enableList=null;
 		this.reffectList=null;
 		this.factionList=null;
+		this.levelFormula=null;
 		bonusDmgStat=-1;
 		this.reqWeapons=null;
 		this.recoverTick=-1;
@@ -176,6 +182,7 @@ public class PlanarAbility extends StdAbility
 		clearVars();
 		if(newText.length()>0)
 		{
+			this.planarName=newText;
 			this.planeVars=getPlane(newText);
 			if(this.planeVars==null)
 				throw new IllegalArgumentException("Unknown: "+newText);
@@ -195,7 +202,7 @@ public class PlanarAbility extends StdAbility
 			{
 				planeArea=(Area)affected;
 				int medianLevel=planeArea.getPlayerLevel();
-				if(medianLevel == 0)
+				if(medianLevel <= 0)
 					medianLevel=planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				planarLevel=medianLevel;
 			}
@@ -227,13 +234,29 @@ public class PlanarAbility extends StdAbility
 			}
 			final String behaves = planeVars.get(PlanarVar.BEHAVE.toString());
 			if(behaves!=null)
-				this.behavList=CMParms.parseSpaceParenList(behaves);
+				this.behavList=new PairVector<String,String>(CMParms.parseSpaceParenList(behaves));
 			final String reffects = planeVars.get(PlanarVar.REFFECT.toString());
 			if(reffects!=null)
-				this.reffectList=CMParms.parseSpaceParenList(reffects);
+				this.reffectList=new PairVector<String,String>(CMParms.parseSpaceParenList(reffects));
 			final String factions = planeVars.get(PlanarVar.FACTIONS.toString());
 			if(factions!=null)
-				this.factionList=CMParms.parseSpaceParenList(factions);
+				this.factionList=new PairVector<String,String>(CMParms.parseSpaceParenList(factions));
+			String levelFormulaStr = planeVars.get(PlanarVar.LEVELADJ.toString());
+			if((levelFormulaStr == null)||(levelFormulaStr.trim().length()==0))
+				levelFormulaStr = "(@x3 - (@x1 - @x2) + 0) > 1";
+			else
+			if(CMath.isInteger(levelFormulaStr.trim()))
+				levelFormulaStr = "(@x3 - (@x1 - @x2) + "+levelFormulaStr+") > 1";
+			this.levelFormula = CMath.compileMathExpression(levelFormulaStr);
+			final String autoReactionTypeStr=CMProps.getVar(CMProps.Str.AUTOREACTION).toUpperCase().trim();
+			if((autoReactionTypeStr.indexOf("PLANAR")>=0)
+			&&(this.factionList.containsFirst("*")))
+			{
+				final String nameCode=newText.toUpperCase().trim();
+				Faction F=CMLib.factions().getFaction("PLANE_"+nameCode);
+				if(F==null)
+					F=CMLib.factions().makeReactionFaction("PLANE_","CLASSID",newText,nameCode,"examples/planarreaction.ini");
+			}
 			final String enables = planeVars.get(PlanarVar.ENABLE.toString());
 			if(enables!=null)
 			{
@@ -528,7 +551,6 @@ public class PlanarAbility extends StdAbility
 				for(final Physical P : destroyMe)
 					P.destroy();
 			}
-			final int allLevelAdj=CMath.s_int(planeVars.get(PlanarVar.LEVELADJ.toString()));
 			final List<Item> delItems=new ArrayList<Item>(0);
 			for(final Enumeration<Item> i=room.items();i.hasMoreElements();)
 			{
@@ -553,10 +575,8 @@ public class PlanarAbility extends StdAbility
 				else
 				if((invoker!=null)&&((I instanceof Weapon)||(I instanceof Armor)))
 				{
-					final int newILevelAdj = (planarLevel - I.phyStats().level());
-					int newILevel=invoker.phyStats().level() - newILevelAdj + allLevelAdj;
-					if(newILevel <= 0)
-						newILevel = 1;
+					final double[] vars=new double[] {planarLevel, I.phyStats().level(), invoker.phyStats().level() } ;
+					final int newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
 					CMLib.itemBuilder().itemFix(I, newILevel, null);
 					I.basePhyStats().setLevel(newILevel);
 					I.phyStats().setLevel(newILevel);
@@ -603,14 +623,12 @@ public class PlanarAbility extends StdAbility
 
 					if(planeVars.containsKey(PlanarVar.ATMOSPHERE.toString()))
 						M.baseCharStats().setBreathables(new int[]{room.getAtmosphere()});
-					final int newLevelAdj = (planarLevel - M.phyStats().level());
-					int newLevel = invoker.phyStats().level() - newLevelAdj + allLevelAdj;
-					if(newLevel <= 0)
-						newLevel = 1;
+					final double[] vars=new double[] {planarLevel, M.phyStats().level(), invoker.phyStats().level() } ;
+					final int newLevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, vars, 0.0));
 					String planarPrefix = this.planarPrefix;
-					final int randomRoll = CMLib.dice().rollPercentage();
 					if((this.promotions!=null)&&(this.promotions.size()>0))
 					{
+						final int randomRoll = CMLib.dice().rollPercentage();
 						Pair<Integer,String> bestAvail = null;
 						for(int index=0;index<this.promotions.size();index++)
 						{
@@ -673,13 +691,22 @@ public class PlanarAbility extends StdAbility
 					{
 						for(final Pair<String,String> p : this.factionList)
 						{
+							final String factionName = (p.first.equals("*")
+									?("PLANE_"+this.planarName.toUpperCase().trim())
+									:p.first);
 							Faction F=null;
-							if(CMLib.factions().isFactionID(p.first))
-								F=CMLib.factions().getFaction(p.first);
+							if(CMLib.factions().isFactionID(factionName))
+								F=CMLib.factions().getFaction(factionName);
 							if(F==null)
-								F=CMLib.factions().getFactionByName(p.first);
+								F=CMLib.factions().getFactionByName(factionName);
 							if(F!=null)
 							{
+								if(p.second.length()==0)
+								{
+									M.removeFaction(F.factionID());
+									M.addFaction(F.factionID(), F.findAutoDefault(M));
+								}
+								else
 								if(CMath.isInteger(p.second))
 								{
 									M.removeFaction(F.factionID());
@@ -702,10 +729,8 @@ public class PlanarAbility extends StdAbility
 						final Item mI=mi.nextElement();
 						if((mI!=null)&&(invoker!=null))
 						{
-							final int newILevelAdj = (planarLevel - mI.phyStats().level());
-							int newILevel=invoker.phyStats().level() + newILevelAdj + allLevelAdj;
-							if(newILevel <= 0)
-								newILevel = 1;
+							final double[] ivars=new double[] {planarLevel, mI.phyStats().level(), invoker.phyStats().level() } ;
+							final int newILevel = (int)CMath.round(CMath.parseMathExpression(this.levelFormula, ivars, 0.0));
 							mI.basePhyStats().setLevel(newILevel);
 							mI.phyStats().setLevel(newILevel);
 							CMLib.itemBuilder().balanceItemByLevel(mI);
@@ -1115,15 +1140,34 @@ public class PlanarAbility extends StdAbility
 					}
 					planeParms.put(PlanarVar.ID.toString(), planename);
 					map.put(planename.toUpperCase(), planeParms);
-					final String autoReactionTypeStr=CMProps.getVar(CMProps.Str.AUTOREACTION).toUpperCase().trim();
-					if((autoReactionTypeStr.indexOf("PLANAR")>=0)
-					&&(CMath.s_bool(planeParms.get(PlanarVar.FACTION.toString()))))
+				}
+			}
+			final boolean createFactions=CMProps.getVar(CMProps.Str.AUTOREACTION).toUpperCase().trim().indexOf("PLANAR")>=0;
+			// do the "LIKE" matching, and build factions
+			for(final String key : map.keySet())
+			{
+				final Map<String,String> parms=map.get(key);
+				if(parms.containsKey(PlanarVar.LIKE.toString()))
+				{
+					final Map<String,String> otherMap = map.get(parms.get(PlanarVar.LIKE.toString()).trim().toUpperCase());
+					if(otherMap != null)
 					{
-						final String nameCode=planename.toUpperCase().trim();
-						final Faction rF=CMLib.factions().getFaction("PLANE_"+nameCode);
-						if(rF==null)
-							CMLib.factions().makeReactionFaction("PLANE_","CLASSID",planename,nameCode,"examples/planarreaction.ini");
+						for(final String var : otherMap.keySet())
+						{
+							if(!parms.containsKey(var))
+								parms.put(var, otherMap.get(var));
+						}
 					}
+				}
+				if(createFactions
+				&&(parms.containsKey(PlanarVar.FACTIONS.toString()))
+				&&(parms.get(PlanarVar.FACTIONS.toString()).indexOf('*')>=0))
+				{
+					final String planename = parms.get(PlanarVar.ID.toString());
+					final String nameCode=key.toUpperCase().trim();
+					final Faction rF=CMLib.factions().getFaction("PLANE_"+nameCode);
+					if(rF==null)
+						CMLib.factions().makeReactionFaction("PLANE_","CLASSID",planename,nameCode,"examples/planarreaction.ini");
 				}
 			}
 			Resources.submitResource("SKILL_PLANES_OF_EXISTENCE", map);
