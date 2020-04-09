@@ -666,7 +666,7 @@ public class Factions extends StdLibrary implements FactionManager
 					}
 				}
 				else
-				if(autoReactionTypeStr.equals("PLANAR"))
+				if(autoType.equals("PLANAR"))
 				{
 					final Area A=R.getArea();
 					if(A!=null)
