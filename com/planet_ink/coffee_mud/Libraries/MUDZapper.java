@@ -6249,27 +6249,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					final Area A=CMLib.map().getStartArea(E);
 					if(A!=null)
 					{
+						final String planeName=CMLib.flags().getPlaneOfExistence(A);
 						for(final Object o : entry.parms())
 						{
-							if(A.Name().equalsIgnoreCase((String)o))
+							if((A.Name().equalsIgnoreCase((String)o))
+							||(((String)o).equalsIgnoreCase(planeName)))
 							{
 								found = true;
 								break;
-							}
-						}
-						if(!found)
-						{
-							final String planeName=CMLib.flags().getPlaneOfExistence(A);
-							if(planeName != null)
-							{
-								for(final Object o : entry.parms())
-								{
-									if(planeName.equalsIgnoreCase((String)o))
-									{
-										found = true;
-										break;
-									}
-								}
 							}
 						}
 					}
@@ -6282,18 +6269,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						final Area A=CMLib.map().getStartArea(E);
 						if(A!=null)
 						{
+							final String planeName=CMLib.flags().getPlaneOfExistence(A);
 							for(final Object o : entry.parms())
 							{
-								if(A.Name().equalsIgnoreCase((String)o))
-									return false;
-							}
-						}
-						final String planeName=CMLib.flags().getPlaneOfExistence(A);
-						if(planeName != null)
-						{
-							for(final Object o : entry.parms())
-							{
-								if(planeName.equalsIgnoreCase((String)o))
+								if((A.Name().equalsIgnoreCase((String)o))
+								||(((String)o).equalsIgnoreCase(planeName)))
 									return false;
 							}
 						}
