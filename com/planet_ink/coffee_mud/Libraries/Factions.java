@@ -719,14 +719,14 @@ public class Factions extends StdLibrary implements FactionManager
 		}
 	}
 
-	protected void addOutsidersAndTimers(final Faction F, final Vector<Faction.FactionChangeEvent> outSiders, final Vector<Faction.FactionChangeEvent> timers)
+	protected void addOutsidersAndTimers(final Faction F, final List<Faction.FactionChangeEvent> outSiders, final List<Faction.FactionChangeEvent> timers)
 	{
 		Faction.FactionChangeEvent[] CEs=null;
 		CEs=F.getChangeEvents("ADDOUTSIDER");
 		if(CEs!=null)
 		{
 			for (final FactionChangeEvent ce : CEs)
-				outSiders.addElement(ce);
+				outSiders.add(ce);
 		}
 		CEs=F.getChangeEvents("TIME");
 		if(CEs!=null)
@@ -734,7 +734,7 @@ public class Factions extends StdLibrary implements FactionManager
 			for (final FactionChangeEvent ce : CEs)
 			{
 				if(ce.triggerParameters().length()==0)
-					timers.addElement(ce);
+					timers.add(ce);
 				else
 				{
 					int[] ctr=(int[])ce.stateVariable(0);
@@ -746,7 +746,7 @@ public class Factions extends StdLibrary implements FactionManager
 					if((--ctr[0])<=0)
 					{
 						ctr[0]=CMath.s_int(ce.getTriggerParm("ROUNDS"));
-						timers.addElement(ce);
+						timers.add(ce);
 					}
 				}
 			}
@@ -763,9 +763,9 @@ public class Factions extends StdLibrary implements FactionManager
 			MOB mob=null;
 			Faction F=null;
 			Faction.FactionChangeEvent CE=null;
-			final Vector<Faction.FactionChangeEvent> outSiders=new Vector<Faction.FactionChangeEvent>();
-			final Vector<Faction.FactionChangeEvent> timers=new Vector<Faction.FactionChangeEvent>();
-			final HashSet<Faction> factionsDone=new HashSet<Faction>();
+			final List<Faction.FactionChangeEvent> outSiders=new ArrayList<Faction.FactionChangeEvent>();
+			final List<Faction.FactionChangeEvent> timers=new ArrayList<Faction.FactionChangeEvent>();
+			final Set<Faction> factionsDone=new HashSet<Faction>();
 			for(final Enumeration<Faction> e=factionMap.elements();e.hasMoreElements();)
 			{
 				F=e.nextElement();
@@ -797,14 +797,14 @@ public class Factions extends StdLibrary implements FactionManager
 					}
 					for(int o=0;o<outSiders.size();o++)
 					{
-						CE=outSiders.elementAt(o);
+						CE=outSiders.get(o);
 						if((CE.applies(mob,mob))
 						&&(!CE.getFaction().hasFaction(mob)))
 							CE.getFaction().executeChange(mob,mob,CE);
 					}
 					for(int o=0;o<timers.size();o++)
 					{
-						CE=timers.elementAt(o);
+						CE=timers.get(o);
 						if((CE.applies(mob,mob))
 						&&(CE.getFaction().hasFaction(mob)))
 							CE.getFaction().executeChange(mob,mob,CE);
