@@ -661,22 +661,14 @@ public class Factions extends StdLibrary implements FactionManager
 				if(autoReactionTypeStr.equals("PLANAR"))
 				{
 					final Area A=R.getArea();
-					if((A!=null)
-					&&(CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))
-					&&(A.numEffects()>0))
+					if(A!=null)
 					{
-						for(final Enumeration<Ability> a=A.effects();a.hasMoreElements();)
+						final String planeName = CMLib.flags().getPlaneOfExistence(A);
+						if(planeName != null)
 						{
-							final Ability eA=a.nextElement();
-							if(eA.ID().equals("PlanarAbility")
-							&&(eA.text().length()>0))
-							{
-
-								final String nameCode = eA.text().toUpperCase().trim();
-								F=getFaction("PLANE_"+nameCode);
-								if(F!=null)
-									Fs.add(F);
-							}
+							F=getFaction("PLANE_"+planeName.toUpperCase().trim());
+							if(F!=null)
+								Fs.add(F);
 						}
 					}
 				}
