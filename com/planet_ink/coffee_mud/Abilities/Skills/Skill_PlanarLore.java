@@ -348,20 +348,25 @@ public class Skill_PlanarLore extends StdSkill
 			}
 			if(expertise > 3)
 			{
-				String levelFormulaStr = planeVars.get(PlanarVar.LEVELADJ.toString());
-				if((levelFormulaStr == null)||(levelFormulaStr.trim().length()==0))
-					levelFormulaStr = "(@x3 - (@x1 - @x2) + 0) > 1";
-				else
-				if(CMath.isInteger(levelFormulaStr.trim()))
-					levelFormulaStr = "(@x3 - (@x1 - @x2) + "+levelFormulaStr+") > 1";
-				final CompiledFormula levelFormula = CMath.compileMathExpression(levelFormulaStr);
-				final double[] ivars=new double[] {50.0, 50.0, 50.0 } ;
-				final int newILevel = (int)CMath.round(CMath.parseMathExpression(levelFormula, ivars, 0.0));
-				if(newILevel<50)
-					tidbits.add(L("Everything there averages @x1 level(s) less powerful than you are.",""+(50-newILevel)));
-				else
-				if(newILevel>50)
-					tidbits.add(L("Everything there averages @x1 level(s) more powerful than you are.",""+(newILevel-50)));
+				final String levelFormulaStr = planeVars.get(PlanarVar.LEVELADJ.toString());
+				if((levelFormulaStr != null)&&(levelFormulaStr.trim().length()>0))
+				{
+					int amt;
+					if(CMath.isInteger(levelFormulaStr.trim()))
+						amt = CMath.s_int(levelFormulaStr.trim());
+					else
+					{
+						final CompiledFormula levelFormula = CMath.compileMathExpression(levelFormulaStr);
+						final double[] ivars=new double[] {50.0, 50.0, 50.0 } ;
+						final int newILevel = (int)CMath.round(CMath.parseMathExpression(levelFormula, ivars, 0.0));
+						amt = newILevel-50;
+					}
+					if(amt<0)
+						tidbits.add(L("Everything there averages @x1 level(s) less powerful than you.",""+CMath.abs(amt)));
+					else
+					if(amt>50)
+						tidbits.add(L("Everything there averages @x1 level(s) more powerful than you.",""+amt));
+				}
 
 				final String helpStr = planeVars.get(PlanarVar.DESCRIPTION.toString());
 				if((helpStr != null)&&(helpStr.length()>0))
