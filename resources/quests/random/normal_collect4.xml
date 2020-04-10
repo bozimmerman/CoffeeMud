@@ -146,6 +146,7 @@ vars:
 		<ITEM class="metacraft:all-farmables" MATERIAL="Flesh" CONDITION="$targetskill='any' or $targetskill='Butchering'" DEFINE="q_craft=0"/>
 		<ITEM class="metacraft:all-farmables" MATERIAL="Flesh" CONDITION="$targetskill='any' or $targetskill='Butchering'" DEFINE="q_craft=0"/>
 		<ITEM class="metacraft:all-farmables" MATERIAL="Flesh" CONDITION="$targetskill='any' or $targetskill='Butchering'" DEFINE="q_craft=0"/>
+		<ITEM class="metacraft:all-farmables" MATERIAL="Fish" CONDITION="$targetskill='any' or $targetskill='Fishing'" DEFINE="q_craft=0"/>
 		<ITEM class="metacraft:all-farmables" MATERIAL="Liquid" CONDITION="$targetskill='any' or $targetskill='Drilling'" DEFINE="q_craft=0"/>
 		<ITEM class="metacraft:all-farmables" MATERIAL="Liquid" CONDITION="$targetskill='any' or $targetskill='Drilling'" DEFINE="q_craft=0"/>
 		<ITEM class="metacraft:all-farmables" MATERIAL="Liquid" CONDITION="$targetskill='any' or $targetskill='Drilling'" DEFINE="q_craft=0"/>
