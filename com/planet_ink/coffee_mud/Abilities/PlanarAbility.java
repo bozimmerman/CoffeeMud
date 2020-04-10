@@ -136,7 +136,6 @@ public class PlanarAbility extends StdAbility
 		ELITE,
 		ROOMCOLOR,
 		ROOMADJS,
-		AREAEMOTER,
 		FACTIONS,
 		CATEGORY,
 		PROMOTIONS,
@@ -189,7 +188,13 @@ public class PlanarAbility extends StdAbility
 			this.roomsDone=new WeakArrayList<Room>();
 			this.planarPrefix=planeVars.get(PlanarVar.PREFIX.toString());
 			if(planeVars.containsKey(PlanarVar.CATEGORY.toString()))
-				this.categories=CMParms.parseCommas(planeVars.get(PlanarVar.CATEGORY.toString()), true);
+			{
+				final String catStr=planeVars.get(PlanarVar.CATEGORY.toString());
+				this.categories=CMParms.parseCommas(catStr, true);
+				if((!planeVars.containsKey(PlanarVar.TRANSITIONAL.toString()))
+				&&(catStr.toLowerCase().indexOf("transitional")>=0))
+					planeVars.put(PlanarVar.TRANSITIONAL.toString(), "true");
+			}
 			this.recoverRate = CMath.s_int(planeVars.get(PlanarVar.RECOVERRATE.toString()));
 			this.fatigueRate = CMath.s_int(planeVars.get(PlanarVar.FATIGUERATE.toString()));
 			this.recoverTick=1;
@@ -593,6 +598,7 @@ public class PlanarAbility extends StdAbility
 			}
 			for(final Item I : delItems)
 				I.destroy();
+			final String badTattooName = "NO "+this.planarName.toUpperCase().trim();
 			for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 			{
 				final MOB M=m.nextElement();
@@ -600,7 +606,8 @@ public class PlanarAbility extends StdAbility
 				&&(invoker!=null)
 				&&(M.isMonster())
 				&&(M.getStartRoom()!=null)
-				&&(M.getStartRoom().getArea()==planeArea))
+				&&(M.getStartRoom().getArea()==planeArea)
+				&&(M.findTattoo(badTattooName)==null))
 				{
 					if(planeVars.containsKey(PlanarVar.MIXRACE.toString()))
 					{
