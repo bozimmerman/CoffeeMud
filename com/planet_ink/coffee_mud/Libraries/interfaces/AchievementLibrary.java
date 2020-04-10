@@ -101,6 +101,7 @@ public interface AchievementLibrary extends CMLibrary
 		CLANLEVELSGAINED("Clan levels",new String[]{"NUM"}),
 		SHIPSSUNK("Ships sunk",new String[] {"NUM", "PLAYERMASK", "SHIPMASK"}),
 		CMDUSE("Using Commands",new String[]{"NUM","COMMANDID"}),
+		AREAVISIT("Visit an Area/Plane",new String[]{"AREAMASK","NUM", "PLAYERMASK","TIME_MINS"}),
 		;
 		private final String[] parameters;
 		private final String displayName;

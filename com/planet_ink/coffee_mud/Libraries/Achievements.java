@@ -5386,6 +5386,183 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			};
 			break;
+		case AREAVISIT:
+			A=new Achievement()
+			{
+				private int num = -1;
+				private long minTime = 10L * 60L * 1000L;
+				private MaskingLibrary.CompiledZMask areaMask = null;
+				private MaskingLibrary.CompiledZMask playerMask = null;
+				private MaskingLibrary.CompiledZMask seenMask = null;
+
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public boolean canBeSeenBy(final MOB mob)
+				{
+					return ((seenMask==null)||(CMLib.masking().maskCheck(seenMask, mob, true)));
+				}
+
+				@Override
+				public boolean canApplyTo(final Agent agent)
+				{
+					return true;
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
+
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public String getRawParmVal(final String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						private volatile int count = oldCount;
+						private volatile long recentVisit = 0;
+
+						@Override
+						public Achievement getAchievement()
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(final Tattooable tracked)
+						{
+							return (num>=0) && (getCount(tracked) >= num);
+						}
+
+						@Override
+						public int getCount(final Tattooable tracked)
+						{
+							return count;
+						}
+
+						@Override
+						public boolean testBump(final MOB mob, final Tattooable tracked, final int bumpNum, final Object... parms)
+						{
+							Area A=null;
+							for(final Object o : parms)
+							{
+								if(o instanceof Clan)
+								{
+									if((tracked instanceof Clan)
+									&&(tracked != o))
+										return false;
+								}
+								else
+								if(o instanceof Room)
+									A=CMLib.map().getRoom((Room)o).getArea();
+								else
+								if(o instanceof Area)
+									A=(Area)o;
+							}
+							if(((areaMask==null)||(A==null)||(CMLib.masking().maskCheck(areaMask, A, true)))
+							&&((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
+							&&((recentVisit==0)||(System.currentTimeMillis()>recentVisit)))
+							{
+								recentVisit=System.currentTimeMillis() + minTime;
+								count+=bumpNum;
+								if(count < 0)
+									count = 0;
+							}
+							return true;
+						}
+
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(final Exception e)
+							{
+								return this;
+							}
+						}
+					};
+				}
+
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
+				}
+
+				@Override
+				public String parseParms(final String parms)
+				{
+					this.seenMask=null;
+					final String seenMask=CMStrings.deEscape(CMParms.getParmStr(parms, "VISIBLEMASK", ""));
+					if(seenMask.trim().length()>0)
+						this.seenMask = CMLib.masking().getPreCompiledMask(seenMask);
+
+					final String minTimeStr=CMParms.getParmStr(parms, "TIME_MINS", "");
+					if(CMath.isInteger(minTimeStr))
+						this.minTime = CMath.s_int(minTimeStr) * 60 * 1000;
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					num=CMath.s_int(numStr);
+					final String areaMaskStr = CMStrings.deEscape(CMParms.getParmStr(parms, "AREAMASK", ""));
+					this.areaMask = null;
+					if(areaMaskStr.trim().length()==0)
+						return "Error: Missing or invalid AREAMASK parameter: "+numStr+"!";
+					this.areaMask = CMLib.masking().getPreCompiledMask(areaMaskStr);
+					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
+					this.playerMask = null;
+					if(zapperMask.trim().length()>0)
+						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
+					return "";
+				}
+			};
+			break;
 		case CLANDECLARE:
 			A=new Achievement()
 			{

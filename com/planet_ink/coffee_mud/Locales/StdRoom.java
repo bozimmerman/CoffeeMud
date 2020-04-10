@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Locales;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Event;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.EachApplicable.ApplyAffectPhyStats;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
@@ -752,7 +753,10 @@ public class StdRoom implements Room
 				{
 					final Room R=mob.location();
 					if((R!=null)&&(R.getArea()!=getArea()))
+					{
 						CMLib.factions().updatePlayerFactions(mob,this,false);
+						CMLib.achievements().possiblyBumpAchievement(mob, Event.AREAVISIT, 1, new Object[] {getArea()});
+					}
 					giveASky(0);
 				}
 				break;
@@ -898,7 +902,8 @@ public class StdRoom implements Room
 			{
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					recoverRoomStats();
-				if((msg.source().playerStats()!=null)&&(msg.source().soulMate()==null))
+				if((msg.source().playerStats()!=null)
+				&&(msg.source().soulMate()==null))
 				{
 					if(msg.source().playerStats().addRoomVisit(this))
 						CMLib.players().bumpPrideStat(msg.source(),AccountStats.PrideStat.ROOMS_EXPLORED, 1);
