@@ -1,6 +1,6 @@
 # Planes of Existence
 # (C) 2000-2020 Bo Zimmerman
-# The Format:  One plane per line, line must begin with wuote ", then the 
+# The Format:  One plane per line, line must begin with quote ", then the 
 # name of the plane, then ending quote, a space, and one or more arguments,
 # separated by spaces.  Argument values can also be in quotes.  Argument
 # keys include:
@@ -10,7 +10,7 @@
 # PREFIX: comma delimited list of strings to prefix mob names with
 # LEVELADJ: either a number, or a formula to adjust mob/item levels:
 #           @x1 = base areas median level, @x2 = specific mob/item level
-#           @x2 = the plane travelling players level
+#           @x2 = the plane traveling players level
 # MOBRESIST: planar mob resistance arguments, see Prop_Resistance
 # SETSTAT: planar mob stat settings, see Prop_StatTrainer
 # BEHAVAFFID: space delimited list of behavior id = replacement behavior id
@@ -19,7 +19,7 @@
 # ADJUST: mob adjuster arguments, see Prop_Adjuster
 # MOBCOPY: number of times to copy each mob in an area
 # BEHAVE: space delimited list of behavior ids with optional args in ()
-# ENABLE: space delimited list of ability-granting code entrys.
+# ENABLE: space delimited list of ability-granting code entries.
 #         Each entry is either AbilityID(arg) or AbilityDomain(arg),
 #         or AbilityFlag(arg) or AbilityType(arg) or number(x/y) where
 #         x is the number of skills per y levels of the mob
