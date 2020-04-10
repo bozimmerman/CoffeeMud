@@ -1209,7 +1209,8 @@ public class PlanarAbility extends StdAbility
 
 	protected void destroyPlane(final Area planeA)
 	{
-		if(planeA != null)
+		if((planeA != null)
+		&&(CMath.bset(planeA.flags(), Area.FLAG_INSTANCE_CHILD)))
 		{
 			Area parentArea = null;
 			int x=planeA.Name().indexOf('_');

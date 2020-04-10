@@ -649,8 +649,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		final Area A=CMLib.map().areaLocation(P);
 		if((A!=null)
-		&&(CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))
-		&&(CMath.bset(A.flags(), Area.FLAG_THIN))
 		&&(A.numEffects()>0))
 		{
 			for(final Enumeration<Ability> a=A.effects();a.hasMoreElements();)

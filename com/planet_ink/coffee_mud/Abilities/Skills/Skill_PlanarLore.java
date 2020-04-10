@@ -107,9 +107,7 @@ public class Skill_PlanarLore extends StdSkill
 		final Area A=R.getArea();
 		if(A==null)
 			return false;
-		String currPlane = A.getBlurbFlag("PLANEOFEXISTENCE");
-		if((currPlane != null)&&(currPlane.startsWith("{"))&&(currPlane.endsWith("}")))
-			currPlane=currPlane.substring(1,currPlane.length()-1);
+		String currPlane = CMLib.flags().getPlaneOfExistence(A);
 		if(currPlane != null)
 		{
 			currPlane = CMStrings.capitalizeAllFirstLettersAndLower(currPlane);
