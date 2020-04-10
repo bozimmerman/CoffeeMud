@@ -598,7 +598,7 @@ public class PlanarAbility extends StdAbility
 			}
 			for(final Item I : delItems)
 				I.destroy();
-			final String badTattooName = "NO "+this.planarName.toUpperCase().trim();
+			final String badTattooName = "NOPLANE "+this.planarName.toUpperCase().trim();
 			for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 			{
 				final MOB M=m.nextElement();
@@ -607,7 +607,8 @@ public class PlanarAbility extends StdAbility
 				&&(M.isMonster())
 				&&(M.getStartRoom()!=null)
 				&&(M.getStartRoom().getArea()==planeArea)
-				&&(M.findTattoo(badTattooName)==null))
+				&&(M.findTattoo(badTattooName)==null)
+				&&(M.findTattoo("NOPLANE")==null))
 				{
 					if(planeVars.containsKey(PlanarVar.MIXRACE.toString()))
 					{

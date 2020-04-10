@@ -52,6 +52,40 @@ public class Prop_RestrictSpells extends Property
 		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;
 	}
 
+	protected final static List<String> empty=new Vector<String>(0);
+	protected Map<String,List<String>> spellIDs = new TreeMap<String,List<String>>();
+	protected final static int[] typs = new int[] {
+		Ability.ACODE_SPELL,
+		Ability.ACODE_PRAYER,
+		Ability.ACODE_SONG,
+		Ability.ACODE_CHANT,
+	};
+
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		spellIDs.clear();
+		for(final String s : CMParms.parseSemicolons(newMiscText.toUpperCase(),true))
+		{
+			String parm=null;
+			final int x=s.indexOf('(');
+			String key=s;
+			if((x>0)&&(s.endsWith(")")))
+			{
+				parm=s.substring(x+1,s.length()-1);
+				key=s.substring(0,x);
+			}
+			if(!spellIDs.containsKey(key))
+				spellIDs.put(key, empty);
+			if((parm != null)&&(parm.length()>0))
+			{
+				if(spellIDs.get(key)==empty)
+					spellIDs.put(key, new Vector<String>(1));
+				spellIDs.get(key).add(parm);
+			}
+		}
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -60,10 +94,35 @@ public class Prop_RestrictSpells extends Property
 
 		if((msg.tool() instanceof Ability)
 		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
-		&&(text().toUpperCase().indexOf(msg.tool().ID().toUpperCase())>=0))
+		&&(spellIDs.containsKey((msg.tool().ID().toUpperCase())))
+		&&(Arrays.binarySearch(typs, ((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)>=0))
 		{
 			Room roomS=null;
 			Room roomD=null;
+			final List<String> argSet = spellIDs.get(msg.tool().ID().toUpperCase());
+			if(argSet != empty)
+			{
+				final String targetName = (msg.target() != null) ? msg.target().Name() : null;
+				if((targetName != null)&&(targetName.length()>0)&&(argSet.contains(targetName)))
+				{
+					// kill condition
+				}
+				else
+				if(msg.target() instanceof Places)
+				{
+					String planeName = CMLib.flags().getPlaneOfExistence((Places)msg.target());
+					if(planeName==null)
+						planeName=L("Prime Material");
+					if((planeName != null)&&(planeName.length()>0)&&(argSet.contains(planeName)))
+					{
+						// kill condition
+					}
+					else
+						return true;
+				}
+				else
+					return true;
+			}
 			if((msg.target() instanceof MOB)&&(((MOB)msg.target()).location()!=null))
 				roomD=((MOB)msg.target()).location();
 			else
@@ -76,21 +135,14 @@ public class Prop_RestrictSpells extends Property
 			if((roomS!=null)&&(roomD!=null)&&(roomS==roomD))
 				roomD=null;
 
-			final Ability A=(Ability)msg.tool();
-			if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
-			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
-			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-			||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
-			{
-				if(roomS!=null)
-					roomS.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
-				if(roomD!=null)
-					roomD.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
-				if((msg.source().location()!=null)
-				&&(msg.source().location()!=roomS)
-				&&(msg.source().location()!=roomD))
-					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
-			}
+			if(roomS!=null)
+				roomS.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
+			if(roomD!=null)
+				roomD.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
+			if((msg.source().location()!=null)
+			&&(msg.source().location()!=roomS)
+			&&(msg.source().location()!=roomD))
+				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
 			return false;
 		}
 		return true;
