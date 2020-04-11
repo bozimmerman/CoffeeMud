@@ -35,78 +35,53 @@ import java.util.*;
 */
 public class GrinderAreas
 {
+	public static PairList<String,String> buildAreaTree(final Enumeration<Area> a, final List<Area> parents, final Area pickedA, final int dashes, final boolean deeper)
+	{
+		final PairList<String,String> areaNames = new PairArrayList<String,String>();
+		for(;a.hasMoreElements();)
+		{
+			final Area A=a.nextElement();
+			final String areaName = CMStrings.repeat('-', dashes) + A.Name();
+			areaNames.add(A.Name(),areaName);
+			if(deeper 
+			&& ((pickedA == A)||(parents.contains(A))))
+				areaNames.addAll(buildAreaTree(A.getChildren(),parents,pickedA,dashes+1,pickedA != A));
+		}
+		return areaNames;
+	}
+	
 	public static String getAreaList(final Enumeration<Area> a, final Area pickedA, final MOB mob, final boolean noInstances, final boolean asTree)
 	{
-		final StringBuffer AreaList=new StringBuffer("");
+		final StringBuffer areaListStr=new StringBuffer("");
 		final boolean anywhere=(CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDAREAS));
 		final boolean everywhere=(CMSecurity.isASysOp(mob)||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDAREAS));
-		final XTreeSet<Area> alsoShowAreas=new XTreeSet<Area>();
-		if((asTree)&&(pickedA!=null))
-		{
-			alsoShowAreas.add(pickedA);
-			alsoShowAreas.addAll(pickedA.getParentsRecurse());
-		}
+		
+		final List<Area> subAreas = new ArrayList<Area>();
 		for(;a.hasMoreElements();)
 		{
 			final Area A=a.nextElement();
 			if((everywhere||(A.amISubOp(mob.Name())&&anywhere))
 			&&((!noInstances)||(!CMath.bset(A.flags(), Area.FLAG_INSTANCE_CHILD))))
-			{
-				if((pickedA!=null)
-				&&((pickedA==A))||(alsoShowAreas.contains(A)))
-				{
-					if(pickedA==A)
-						AreaList.append("<OPTION SELECTED VALUE=\""+A.Name()+"\">"+A.name());
-					else
-						AreaList.append("<OPTION VALUE=\""+A.Name()+"\">"+A.name());
-					if(asTree)
-					{
-						final XLinkedList<Area> remainder = new XLinkedList<Area>(A.getChildren());
-						final Comparator<Area> childComparator = new Comparator<Area>(){
-							@Override
-							public int compare(Area o1, Area o2)
-							{
-								return o1.Name().compareTo(o2.Name());
-							}
-						};
-						Collections.sort(remainder, childComparator);
-						int countDownToSpaceUp = remainder.size();
-						int spaceCount = 1;
-						boolean addKids = pickedA==A;
-						while(remainder.size()>0)
-						{
-							final Area cA=remainder.removeFirst();
-							if((everywhere||(cA.amISubOp(mob.Name())&&anywhere))
-							&&((!noInstances)||(!CMath.bset(cA.flags(), Area.FLAG_INSTANCE_CHILD)))
-							&&((alsoShowAreas.contains(cA))||addKids))
-							{
-								if(pickedA==cA)
-								{
-									AreaList.append("<OPTION SELECTED VALUE=\""+cA.Name()+"\">");
-									remainder.clear();
-									countDownToSpaceUp=1;
-									addKids = true;
-								}
-								else
-									AreaList.append("<OPTION VALUE=\""+cA.Name()+"\">");
-								final XLinkedList<Area> children = new XLinkedList<Area>(cA.getChildren());
-								Collections.sort(children, childComparator);
-								remainder.addAll(children);
-								AreaList.append(CMStrings.repeat('-', spaceCount)).append(cA.Name());
-							}
-							if(--countDownToSpaceUp == 0)
-							{
-								countDownToSpaceUp=remainder.size();
-								spaceCount++;
-							}
-						}
-					}
-				}
-				else
-					AreaList.append("<OPTION VALUE=\""+A.Name()+"\">"+A.name());
-			}
+				subAreas.add(A);
 		}
-		return AreaList.toString();
+
+		final PairList<String,String> areaNames = new PairArrayList<String,String>(subAreas.size());
+		final String pickedAName= (pickedA != null) ? pickedA.Name(): null;
+		if((asTree)&&(pickedA!=null))
+			areaNames.addAll(buildAreaTree(new IteratorEnumeration<Area>(subAreas.iterator()),pickedA.getParentsRecurse(),pickedA,0,pickedA != null));
+		else
+		{
+			for(final Area A : subAreas)
+				areaNames.add(A.Name(),A.Name());
+		}
+		for(final Pair<String,String> p : areaNames)
+		{
+			if(pickedAName==p.first)
+				areaListStr.append("<OPTION SELECTED VALUE=\""+p.first+"\">"+p.second);
+			else
+				areaListStr.append("<OPTION VALUE=\""+p.first+"\">"+p.second);
+		}
+		return areaListStr.toString();
 	}
 
 	public static String doBehavs(final PhysicalAgent E, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
