@@ -135,8 +135,10 @@
     @if?CheckReqParm?AREAMASKTYPE=@
         @AddRequestParameter?AREAMASKTYPE=AREA@
     @endif@
-	<P>
-	<SELECT NAME=AREA @if?CheckReqParm?AREAMASKTYPE=TREE@SIZE=10 ONCHANGE="Refresh()"@endif@>
+    @if?CheckReqParm?!AREAMASKTYPE=TREE@
+		<P>
+	@endif@
+	<SELECT NAME=AREA @if?CheckReqParm?AREAMASKTYPE=TREE@SIZE=8 ONCHANGE="Refresh()"@endif@>
 	@MUDGrinder?@@RequestParameter?AREAMASKTYPE@@LIST&NOINSTANCE@
 	</SELECT>
 	<BR>
