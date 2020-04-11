@@ -177,6 +177,14 @@ public interface PlanarAbility extends Ability
 	public Map<String,String> getPlanarVars(String planeName);
 
 	/**
+	 * Return the list of all non prime-material planes.
+	 * These can be use as keys to the planar var maps.
+	 * @return the complete list of planes of existence
+	 */
+	public List<String> getAllPlaneKeys();
+
+	
+	/**
 	 * The definitions variables for the attributes of each plane
 	 * 
 	 * @author Bo Zimmerman

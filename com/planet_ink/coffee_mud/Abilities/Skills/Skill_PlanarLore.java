@@ -118,7 +118,7 @@ public class Skill_PlanarLore extends StdSkill
 			mob.tell(L("\n\rYou are clearly on the Prime Material plane."));
 		}
 
-		final Map<String,Map<String,String>> pmap = StdPlanarAbility.getPlaneMap();
+		final Map<String,Map<String,String>> pmap = StdPlanarAbility.getAllPlanesMap();
 		if((commands.size()==0)
 		||((commands.size()==1)&&(commands.get(0).equalsIgnoreCase("LIST"))))
 		{

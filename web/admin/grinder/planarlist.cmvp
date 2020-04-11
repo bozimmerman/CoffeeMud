@@ -56,21 +56,15 @@
     @loop@
     @PlaneNext@
     <TR>
-    <TD><a href="javascript:Plane('@PlaneID@')"><FONT COLOR=WHITE>@PlaneID@</FONT></a></TD>
-    <TD COLSPAN=5><FONT COLOR=WHITE>@PlanarData?DESC@</FONT></TD>
+    <TD><a href="javascript:Plane('@PlanarID@')"><FONT COLOR=WHITE>@PlanarData?ID@</FONT></a></TD>
+    <TD COLSPAN=5><FONT COLOR=WHITE>@PlanarData?DESCRIPTION@</FONT></TD>
     </TR>
     @back@
     <TR>
         <TD COLSPAN=6>
                 <a href="javascript:Plane(document.RESOURCES.NEW.options[document.RESOURCES.NEW.selectedIndex].value)">
                 <FONT COLOR=WHITE><B>Create New:</a>
-                <SELECT NAME=NEW>
-                    @AbilityNext?RESET@
-                    @loop@
-                        @AbilityNext@
-                        <OPTION VALUE="@AbilityID@">@AbilityID@
-                    @back@
-                </SELECT>
+                <INPUT TYPE=TEXT NAME="NEWPLANENAME" SIZE=20 VALUE="">
                 </B></FONT>
         </TD>
     </TR>

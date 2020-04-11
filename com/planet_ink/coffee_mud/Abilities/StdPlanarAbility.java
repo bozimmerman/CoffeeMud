@@ -1215,9 +1215,10 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		return true;
 	}
 
-	protected static List<String> getAllPlaneKeys()
+	@Override
+	public List<String> getAllPlaneKeys()
 	{
-		final Map<String,Map<String,String>> map = getPlaneMap();
+		final Map<String,Map<String,String>> map = getAllPlanesMap();
 		final List<String> transitions=new ArrayList<String>(map.size());
 		for(final String key : map.keySet())
 			transitions.add(key);
@@ -1226,7 +1227,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 
 	protected static List<String> getTransitionPlaneKeys()
 	{
-		final Map<String,Map<String,String>> map = getPlaneMap();
+		final Map<String,Map<String,String>> map = getAllPlanesMap();
 		final List<String> transitions=new ArrayList<String>(2);
 		for(final String key : map.keySet())
 		{
@@ -1239,7 +1240,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 
 	protected static String listOfPlanes()
 	{
-		final Map<String,Map<String,String>> map = getPlaneMap();
+		final Map<String,Map<String,String>> map = getAllPlanesMap();
 		final StringBuilder str=new StringBuilder();
 		for(final String key : map.keySet())
 		{
@@ -1251,7 +1252,8 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		return str.toString();
 	}
 
-	public static Map<String,Map<String,String>> getPlaneMap()
+	
+	public static Map<String,Map<String,String>> getAllPlanesMap()
 	{
 		@SuppressWarnings("unchecked")
 		Map<String,Map<String,String>> map = (Map<String,Map<String,String>>)Resources.getResource("SKILL_PLANES_OF_EXISTENCE");
@@ -1323,7 +1325,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 	@Override
 	public Map<String,String> getPlanarVars(String planeName)
 	{
-		final Map<String,Map<String,String>> map = getPlaneMap();
+		final Map<String,Map<String,String>> map = getAllPlanesMap();
 		planeName=planeName.trim().toUpperCase();
 		if(map.containsKey(planeName))
 			return map.get(planeName);
