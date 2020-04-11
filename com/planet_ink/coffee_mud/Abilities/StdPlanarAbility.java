@@ -37,12 +37,12 @@ import java.util.concurrent.atomic.AtomicInteger;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class PlanarAbility extends StdAbility
+public class StdPlanarAbility extends StdAbility implements PlanarAbility
 {
 	@Override
 	public String ID()
 	{
-		return "PlanarAbility";
+		return "StdPlanarAbility";
 	}
 
 	private final static String	localizedName	= CMLib.lang().L("Planar Shifting Ability");
@@ -104,53 +104,190 @@ public class PlanarAbility extends StdAbility
 
 	protected Pair<Pair<Integer,Integer>,List<Pair<String,String>>> enableList=null;
 
-	public static enum PlanarVar
-	{
-		ID,
-		TRANSITIONAL,
-		ALIGNMENT,
-		PREFIX,
-		LEVELADJ,
-		MOBRESIST,
-		SETSTAT,
-		BEHAVAFFID,
-		ADJSTAT,
-		ADJSIZE,
-		ADJUST,
-		MOBCOPY,
-		BEHAVE,
-		ENABLE,
-		WEAPONMAXRANGE,
-		BONUSDAMAGESTAT,
-		REQWEAPONS,
-		ATMOSPHERE,
-		AREABLURBS,
-		ABSORB,
-		HOURS,
-		RECOVERRATE,
-		FATIGUERATE,
-		REFFECT,
-		AEFFECT,
-		SPECFLAGS,
-		MIXRACE,
-		ELITE,
-		ROOMCOLOR,
-		ROOMADJS,
-		FACTIONS,
-		CATEGORY,
-		PROMOTIONS,
-		LIKE,
-		DESCRIPTION
-	}
-
-	public static enum PlanarSpecFlag
-	{
-		NOINFRAVISION,
-		BADMUNDANEARMOR,
-		ALLBREATHE
-	}
-
 	protected static final AtomicInteger planeIDNum = new AtomicInteger(0);
+
+	/**
+	 * @return the oldRoom
+	 */
+	@Override
+	public final Room getOldRoom()
+	{
+		return (oldRoom != null) ? oldRoom.get() : null;
+	}
+
+	/**
+	 * @param oldRoom the oldRoom to set
+	 */
+	@Override
+	public final void setOldRoom(final Room oldRoom)
+	{
+		if(oldRoom == null)
+			this.oldRoom = null;
+		else
+			this.oldRoom = new WeakReference<Room>(oldRoom);
+	}
+
+	/**
+	 * @return the planarPrefix
+	 */
+	@Override
+	public final String getPlanarPrefix()
+	{
+		return planarPrefix;
+	}
+
+	/**
+	 * @return the hardBumpLevel
+	 */
+	@Override
+	public final int getHardBumpLevel()
+	{
+		return hardBumpLevel;
+	}
+
+	/**
+	 * @param hardBumpLevel the hardBumpLevel to set
+	 */
+	@Override
+	public final void setHardBumpLevel(int hardBumpLevel)
+	{
+		this.hardBumpLevel = hardBumpLevel;
+	}
+
+	/**
+	 * @return the planeVars
+	 */
+	@Override
+	public final Map<String, String> getPlaneVars()
+	{
+		return planeVars;
+	}
+
+	/**
+	 * @return the planarLevel
+	 */
+	@Override
+	public final int getPlanarLevel()
+	{
+		return planarLevel;
+	}
+
+	/**
+	 * @return the planarName
+	 */
+	@Override
+	public final String getPlanarName()
+	{
+		return planarName;
+	}
+
+	/**
+	 * @return the promotions
+	 */
+	@Override
+	public final PairList<Integer, String> getPromotions()
+	{
+		return promotions;
+	}
+
+	/**
+	 * @return the categories
+	 */
+	@Override
+	public final List<String> getCategories()
+	{
+		return categories;
+	}
+
+	/**
+	 * @return the behavList
+	 */
+	@Override
+	public final PairList<String, String> getBehavList()
+	{
+		return behavList;
+	}
+
+	/**
+	 * @return the reffectList
+	 */
+	@Override
+	public final PairList<String, String> getReffectList()
+	{
+		return reffectList;
+	}
+
+	/**
+	 * @return the factionList
+	 */
+	@Override
+	public final PairList<String, String> getFactionList()
+	{
+		return factionList;
+	}
+
+	/**
+	 * @return the bonusDmgStat
+	 */
+	@Override
+	public final int getBonusDmgStat()
+	{
+		return bonusDmgStat;
+	}
+
+	/**
+	 * @return the reqWeapons
+	 */
+	@Override
+	public final Set<String> getReqWeapons()
+	{
+		return reqWeapons;
+	}
+
+	/**
+	 * @return the recoverRate
+	 */
+	@Override
+	public final int getRecoverRate()
+	{
+		return recoverRate;
+	}
+
+	/**
+	 * @return the fatigueRate
+	 */
+	@Override
+	public final int getFatigueRate()
+	{
+		return fatigueRate;
+	}
+
+	/**
+	 * @return the specFlags
+	 */
+	@Override
+	public final Set<PlanarSpecFlag> getSpecFlags()
+	{
+		return specFlags;
+	}
+
+	/**
+	 * @return the levelFormula
+	 */
+	@Override
+	public final CompiledFormula getLevelFormula()
+	{
+		return levelFormula;
+	}
+
+	/**
+	 * @return the enableList
+	 */
+	@Override
+	public final Pair<Pair<Integer, Integer>, List<Pair<String, String>>> getEnableList()
+	{
+		return enableList;
+	}
 
 	public void clearVars()
 	{
@@ -182,7 +319,7 @@ public class PlanarAbility extends StdAbility
 		if(newText.length()>0)
 		{
 			this.planarName=newText;
-			this.planeVars=getPlane(newText);
+			this.planeVars=getPlanarVars(newText);
 			if(this.planeVars==null)
 				throw new IllegalArgumentException("Unknown: "+newText);
 			this.roomsDone=new WeakArrayList<Room>();
@@ -615,7 +752,7 @@ public class PlanarAbility extends StdAbility
 						final String mixRace = planeVars.get(PlanarVar.MIXRACE.toString());
 						final Race firstR=CMClass.getRace(mixRace);
 						if(firstR==null)
-							Log.errOut("PlanarAbility","Unknown mixrace: "+mixRace);
+							Log.errOut("StdPlanarAbility","Unknown mixrace: "+mixRace);
 						else
 						{
 							final Race secondR=M.charStats().getMyRace();
@@ -1183,25 +1320,26 @@ public class PlanarAbility extends StdAbility
 		return map;
 	}
 
-	protected static Map<String,String> getPlane(String name)
+	@Override
+	public Map<String,String> getPlanarVars(String planeName)
 	{
 		final Map<String,Map<String,String>> map = getPlaneMap();
-		name=name.trim().toUpperCase();
-		if(map.containsKey(name))
-			return map.get(name);
+		planeName=planeName.trim().toUpperCase();
+		if(map.containsKey(planeName))
+			return map.get(planeName);
 		for(final String key : map.keySet())
 		{
-			if(key.startsWith(name))
+			if(key.startsWith(planeName))
 				return map.get(key);
 		}
 		for(final String key : map.keySet())
 		{
-			if(key.indexOf(name)>=0)
+			if(key.indexOf(planeName)>=0)
 				return map.get(key);
 		}
 		for(final String key : map.keySet())
 		{
-			if(key.endsWith(name))
+			if(key.endsWith(planeName))
 				return map.get(key);
 		}
 		return null;
@@ -1366,13 +1504,14 @@ public class PlanarAbility extends StdAbility
 			if(R!=null)
 			{
 				final PlanarAbility currentShift = getPlanarAbility(R.getArea());
-				if((currentShift != null)&&(currentShift.oldRoom!=null)&&(currentShift.oldRoom.get()!=null))
-					oldRoom=currentShift.oldRoom;
+				final Room oldRoom = (currentShift != null) ? currentShift.getOldRoom() : null;
+				if(oldRoom != null)
+					this.oldRoom=new WeakReference<Room>(oldRoom);
 				else
 				if(currentShift != null)
-					oldRoom=new WeakReference<Room>(mob.getStartRoom());
+					this.oldRoom=new WeakReference<Room>(mob.getStartRoom());
 				else
-					oldRoom=new WeakReference<Room>(R);
+					this.oldRoom=new WeakReference<Room>(R);
 			}
 		}
 	}
@@ -1427,7 +1566,7 @@ public class PlanarAbility extends StdAbility
 		if(planeName.toLowerCase().endsWith("prime material"))
 			planeName="Prime Material";
 		else
-		while((getPlane(planeName)==null)&&(commands.size()>planeNameCt))
+		while((getPlanarVars(planeName)==null)&&(commands.size()>planeNameCt))
 			planeName=CMParms.combine(commands,++planeNameCt).trim().toUpperCase();
 		oldRoom=new WeakReference<Room>(mob.location());
 		Area cloneArea = mob.location().getArea();
@@ -1468,7 +1607,7 @@ public class PlanarAbility extends StdAbility
 			&&(!CMSecurity.isAbilityDisabled(A.ID())))
 				A.invoke(mob, mob, true, 0);
 		}
-		Map<String,String> planeFound = getPlane(planeName);
+		Map<String,String> planeFound = getPlanarVars(planeName);
 		if(planeFound == null)
 		{
 			mob.tell(L("There is no known plane '@x1'.",planeName));
@@ -1627,13 +1766,13 @@ public class PlanarAbility extends StdAbility
 		if(randomTransitionPlane)
 		{
 			planeName = transitionalPlaneKeys.get(CMLib.dice().roll(1, transitionalPlaneKeys.size(), -1));
-			planeFound = getPlane(planeName);
+			planeFound = getPlanarVars(planeName);
 		}
 		if(randomPlane)
 		{
 			final List<String> allPlaneKeys = getAllPlaneKeys();
 			planeName = allPlaneKeys.get(CMLib.dice().roll(1, allPlaneKeys.size(), -1));
-			planeFound = getPlane(planeName);
+			planeFound = getPlanarVars(planeName);
 		}
 
 		final String planeCodeString = planeName + "_" + cloneArea.Name();
@@ -1680,7 +1819,7 @@ public class PlanarAbility extends StdAbility
 			final PlanarAbility A=(PlanarAbility)this.beneficialAffect(mob, planeArea, asLevel, 0);
 			if(A!=null)
 			{
-				A.hardBumpLevel = hardBumpLevel;
+				A.setHardBumpLevel(hardBumpLevel);
 				A.setMiscText(planeName);
 			}
 

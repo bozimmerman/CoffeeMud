@@ -599,7 +599,7 @@ public class Factions extends StdLibrary implements FactionManager
 				autoReactions = CMParms.parseCommas(autoReactionTypeStr,true);
 				if(autoReactions.contains("PLANAR"))
 				{
-					final Ability A=CMClass.getAbility("PlanarAbility");
+					final Ability A=CMClass.getAbility("StdPlanarAbility");
 					if(A!=null)
 					{
 						try

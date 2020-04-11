@@ -654,9 +654,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			for(final Enumeration<Ability> a=A.effects();a.hasMoreElements();)
 			{
 				final Ability eA=a.nextElement();
-				if(((eA.ID().equals("PlanarAbility"))
-					||((eA.getClass().getSuperclass()!=null)
-					&&(eA.getClass().getSuperclass().getName().endsWith("PlanarAbility"))))
+				if((eA instanceof PlanarAbility)
 				&&(eA.text().length()>0))
 					return eA.text();
 			}

@@ -249,7 +249,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 						if(RawMaterial.CODES.VALUE(possCode) >= currVal)
 							valueChoices.add(Integer.valueOf(possCode));
 					}
-					material=(valueChoices.size()>0)?(valueChoices.get(CMath.abs(lieHash % valueChoices.size()))):I.material();
+					material=(valueChoices.size()>0)?(valueChoices.get(CMath.abs(lieHash % valueChoices.size()))).intValue():I.material();
 				}
 				else
 					material = I.material();

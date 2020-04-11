@@ -3,10 +3,9 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMath.CompiledFormula;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.Abilities.PlanarAbility;
-import com.planet_ink.coffee_mud.Abilities.PlanarAbility.PlanarSpecFlag;
-import com.planet_ink.coffee_mud.Abilities.PlanarAbility.PlanarVar;
+import com.planet_ink.coffee_mud.Abilities.StdPlanarAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.PlanarAbility.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -119,7 +118,7 @@ public class Skill_PlanarLore extends StdSkill
 			mob.tell(L("\n\rYou are clearly on the Prime Material plane."));
 		}
 
-		final Map<String,Map<String,String>> pmap = PlanarAbility.getPlaneMap();
+		final Map<String,Map<String,String>> pmap = StdPlanarAbility.getPlaneMap();
 		if((commands.size()==0)
 		||((commands.size()==1)&&(commands.get(0).equalsIgnoreCase("LIST"))))
 		{

@@ -203,7 +203,8 @@ public class RandomTeleporter extends ActiveTicker
 			if(mob.location()==oldRoom)
 				tickDown=0;
 			else
-			if(mob.location()==R)
+			if((mob.location()==R)
+			&&(R!=null))
 			{
 				if(poofin != null)
 					R.show(mob, null, CMMsg.MSG_OK_VISUAL, poofin);
