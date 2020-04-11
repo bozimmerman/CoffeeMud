@@ -209,12 +209,16 @@
 			<A href="javascript:Clicked('clans.cmvp')"><FONT COLOR=WHITE>Clan Manager</FONT></a>
 			<BR>
 			@endif@
-			@if?CheckAuthCode?AUTH_CMDCLANS=true@
-			<A href="javascript:Clicked('governments.cmvp')"><FONT COLOR=WHITE>Clan Governments</FONT></a>
-			<BR>
-			@endif@
 			@if?CheckAuthCode?AUTH_POLLS=true@
 			<A href="javascript:Clicked('polls.cmvp')"><FONT COLOR=WHITE>Polls Manager</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_CMDQUESTS=true@
+			<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
+			<BR>
+			@endif@
+			@if?CheckAuthCode?AUTH_LOADUNLOAD=true@
+			<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Cache Resources</FONT></a>
 			<BR>
 			@endif@
 			@if?CheckAuthCode?AUTH_LISTADMIN=true@
@@ -225,10 +229,6 @@
 			@endif@
 			@if?CheckAuthCode?AUTH_STAT=true@
 			<A href="javascript:Clicked('stats.cmvp')"><FONT COLOR=WHITE>Statistics</FONT></a>
-			<BR>
-			@endif@
-			@if?CheckAuthCode?AUTH_LOADUNLOAD=true@
-			<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Cache Resources</FONT></a>
 			<BR>
 			@endif@
 		</TD><TD ALIGN=CENTER VALIGN=TOP ROWSPAN=3>
@@ -252,8 +252,8 @@
 			<A href="javascript:Clicked('components.cmvp')"><FONT COLOR=WHITE>Skill Components</FONT></a>
 			<BR>
 			@endif@
-			@if?CheckAuthCode?AUTH_CMDQUESTS=true@
-			<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
+			@if?CheckAuthCode?AUTH_CMDAREAS=true@
+			<A href="javascript:Clicked('planarlist.cmvp')"><FONT COLOR=WHITE>Other Planes</FONT></a>
 			<BR>
 			@endif@
 			@if?CheckAuthCode?AUTH_TITLES=true@

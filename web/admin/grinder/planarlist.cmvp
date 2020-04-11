@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <title>Skill Components List</title>
+    <script language=JavaScript>
+    <!--
+        function Plane(action)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=550,alwaysRaised=yes,dependent=yes";
+            w=window.open("plane.cmvp?AUTH=@Authenticate?AUTH@&PLANE="+action,
+                "Plane of "+action,strFeatures, false);
+        }
+        function Clicked(val)
+        {
+            document.RESOURCES.action=val;
+            document.RESOURCES.submit();
+        }
+        function Refresh()
+        {
+            document.RESOURCES.COMPONENT.value="";
+            document.RESOURCES.action='planarlist.cmvp';
+            document.RESOURCES.submit();
+        }
+    //-->
+    </script>
+</head>
+<body BGCOLOR=BLACK>
+    <TABLE WIDTH=100% BORDER=0>
+    <TR>
+    <TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
+    <TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+    <TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+        <TABLE WIDTH=50% BORDER=1>
+        <TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+        <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+        <TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+        </TABLE>
+    </TD>
+    </TR>
+    </TABLE>
+<CENTER>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="planarlist.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=COMPONENT VALUE="">
+    <TABLE WIDTH=100% BORDER=1>
+    <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Planes of Existence</H2></FONT></TD></TR>
+    <TR>
+    <TD WIDTH=25%><B><FONT COLOR=YELLOW>Plane</FONT></b></TD>
+    <TD WIDTH=75% COLSPAN=5><B><FONT COLOR=YELLOW>Description</FONT></b></TD>
+    </TR>
+    @PlaneNext?RESET@
+    @loop@
+    @PlaneNext@
+    <TR>
+    <TD><a href="javascript:Plane('@PlaneID@')"><FONT COLOR=WHITE>@PlaneID@</FONT></a></TD>
+    <TD COLSPAN=5><FONT COLOR=WHITE>@PlanarData?DESC@</FONT></TD>
+    </TR>
+    @back@
+    <TR>
+        <TD COLSPAN=6>
+                <a href="javascript:Plane(document.RESOURCES.NEW.options[document.RESOURCES.NEW.selectedIndex].value)">
+                <FONT COLOR=WHITE><B>Create New:</a>
+                <SELECT NAME=NEW>
+                    @AbilityNext?RESET@
+                    @loop@
+                        @AbilityNext@
+                        <OPTION VALUE="@AbilityID@">@AbilityID@
+                    @back@
+                </SELECT>
+                </B></FONT>
+        </TD>
+    </TR>
+    </TABLE>
+    <P>
+    <TABLE WIDTH=100% BORDER=0>
+    <TR>
+    <TD WIDTH=33% ALIGN=CENTER>
+    </TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();"></TD>
+    <TD WIDTH=33% ALIGN=CENTER>
+    </TD>
+    </TR>
+    </TABLE>
+    <CENTER>
+    </CENTER>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@
