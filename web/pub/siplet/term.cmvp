@@ -1,10 +1,10 @@
 <HTML>
 <HEAD>
-<LINK REL=StyleSheet HREF="/siplet/term.css" TYPE="text/css">
+<LINK REL=StyleSheet HREF="term.css" TYPE="text/css">
 <link rel="coffeemud icon" href="../images/coffeemud.ico" >
-<SCRIPT LANGUAGE=JavaScript src="/siplet/dropdown.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="/siplet/siplet.js"></SCRIPT>
-<SCRIPT LANGUAGE=JavaScript src="/siplet/termsupport.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript src="dropdown.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript src="siplet.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript src="termsupport.js"></SCRIPT>
 </HEAD>
 <BODY BGCOLOR=BLACK ONCLICK="top.term.front(myname,mynum);">
 <script language=JavaScript>
