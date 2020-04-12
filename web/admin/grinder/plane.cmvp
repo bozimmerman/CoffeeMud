@@ -1,0 +1,509 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <title>@PlanarID@ Plane Information</title>
+    <script language=JavaScript>
+    <!--
+        function openUp(named)
+        {
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            var w2=window.open("/ahelp.cmvp?HELPTOPIC="+named,"Help",strFeatures,false);
+        }
+		function openUp2(named)
+		{
+			var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("property.cmvp?ABILITY="+named,
+			            "Ability",strFeatures, false);
+		}
+        function Delete()
+        {
+            if(confirm('Delete this plane definition?! Confirm!'))
+            {
+                if(confirm('Press OK to Delete this plane definition!'))
+                {
+                    document.RESOURCES.action='planedo.cmvp';
+                    document.RESOURCES.FUNCTION.value='DELPLANE';
+                    document.RESOURCES.PLANE.value='@PlanarID@';
+                    document.RESOURCES.submit();
+                }
+            }
+        }
+        function EditDone()
+        {
+            if(confirm('Submit your changes to this plane?'))
+            {
+                document.RESOURCES.action='planedo.cmvp';
+                document.RESOURCES.FUNCTION.value='EDITPLANE';
+                document.RESOURCES.PLANE.value='@PlanarID@';
+                document.RESOURCES.submit();
+            }
+        }
+        function ReShow()
+        {
+            document.RESOURCES.FUNCTION.value='';
+            document.RESOURCES.PLANE.value='@PlanarID@';
+            document.RESOURCES.action='/grinder/plane.cmvp';
+            document.RESOURCES.submit();
+        }
+        function EditAffect(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAffect(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function Cancel()
+        {
+            window.close();
+        }
+        function OpenUp(file,named)
+        {
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/"+file+"?HELPTOPIC="+named,
+                        "Help",strFeatures, false);
+        }
+    //-->
+    </script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="plane.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=PLANE VALUE="@PlanarID@">
+<CENTER><FONT COLOR=WHITE>@PlanarID@ Plane Information</FONT></CENTER>
+<P>
+<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Plane Description: </FONT></TD>
+        <TD WIDTH=75%>
+        	<TEXTAREA ROWS=6 COLS=60 NAME=DESCRIPTION>@PlanarData?DESCRIPTION@</TEXTAREA>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Is Like:</FONT></TD>
+        <TD WIDTH=75%>
+            <SELECT NAME="LIKE">
+            @PlanarData?LIKE@
+            </SELECT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Categories: </FONT></TD>
+        <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=50 NAME="CATEGORY" VALUE="@PlanarData?CATEGORY@"></TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Transitional: </FONT></TD>
+        <TD WIDTH=75%>
+            <SELECT NAME="TRANSITIONAL" ONCHANGE="ReShow()">
+            @PlanarData?TRANSITIONAL@
+            </SELECT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Alignment: </FONT></TD>
+        <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=10 NAME="ALIGNMENT" VALUE="@PlanarData?ALIGNMENT@"></TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Prefix(es): </FONT></TD>
+        <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=50 NAME="PREFIX" VALUE="@PlanarData?PREFIX@"></TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Level Formula: </FONT></TD>
+        <TD WIDTH=75%>
+        	<INPUT TYPE=TEXT SIZE=50 NAME="LEVELADJ" VALUE="@PlanarData?LEVELADJ@"><BR>
+        	<FONT COLOR=WHITE>@x1 = base areas median level, @x2 = specific mob/item level, @x2 = the plane traveling players level</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>MOB Resistances: </FONT></TD>
+        <TD WIDTH=75%>
+        	<INPUT TYPE=TEXT SIZE=50 NAME="MOBRESIST" VALUE="@PlanarData?MOBRESIST@">
+        	<a href="javascript:openUp2('Prop_Resistance');"><FONT COLOR=WHITE><B>?</B></FONT></a>
+        </TD>
+        
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>MOB Stat Trainer: </FONT></TD>
+        <TD WIDTH=75%>
+        	<INPUT TYPE=TEXT SIZE=50 NAME="SETSTAT" VALUE="@PlanarData?SETSTAT@">
+        	<a href="javascript:openUp2('Prop_StatTrainer');"><FONT COLOR=WHITE><B>?</B></FONT></a>
+        </TD>
+        
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>MOB Stat Adjuster: </FONT></TD>
+        <TD WIDTH=75%>
+        	<INPUT TYPE=TEXT SIZE=50 NAME="ADJSTAT" VALUE="@PlanarData?ADJSTAT@">
+        	<a href="javascript:openUp2('Prop_StatAdjuster');"><FONT COLOR=WHITE><B>?</B></FONT></a>
+        </TD>
+        
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>MOB Adjuster: </FONT></TD>
+        <TD WIDTH=75%>
+        	<INPUT TYPE=TEXT SIZE=50 NAME="ADJUST" VALUE="@PlanarData?ADJUST@">
+        	<a href="javascript:openUp2('Prop_Adjuster');"><FONT COLOR=WHITE><B>?</B></FONT></a>
+        </TD>
+        
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>MOB Size Multipliers: </FONT></TD>
+        <TD WIDTH=75%>
+        	<FONT COLOR=WHITE>
+	        	Height:<INPUT TYPE=TEXT SIZE=5 NAME="ADJSIZE_HEIGHT" VALUE="@PlanarData?ADJSIZE&HEIGHT@">
+	        	Weight:<INPUT TYPE=TEXT SIZE=5 NAME="ADJSIZE_WEIGHT" VALUE="@PlanarData?ADJSIZE&WEIGHT@">
+        	</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>MOB Copys: </FONT></TD>
+        <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=5 NAME="MOBCOPY" VALUE="@PlanarData?MOBCOPY@"></TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Max Weapon Range: </FONT></TD>
+        <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=5 NAME="WEAPONMAXRANGE" VALUE="@PlanarData?WEAPONMAXRANGE@"></TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Required Weapons: </FONT></TD>
+        <TD WIDTH=75%>
+            <SELECT NAME="REQWEAPONS">
+            @PlanarData?REQWEAPONS@
+            </SELECT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Atmosphere:</FONT></TD>
+        <TD WIDTH=75%>
+            <SELECT NAME="ATMOSPHERE">
+            @PlanarData?ATMOSPHERE@
+            </SELECT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Alt Hours per Day: </FONT></TD>
+        <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=5 NAME="HOURS" VALUE="@PlanarData?HOURS@"></TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Recover Rate: </FONT></TD>
+        <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=5 NAME="RECOVERRATE" VALUE="@PlanarData?RECOVERRATE@"></TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Fatigue Rate: </FONT></TD>
+        <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=5 NAME="FATIGUERATE" VALUE="@PlanarData?FATIGUERATE@"></TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Elite level: </FONT></TD>
+        <TD WIDTH=75%><INPUT TYPE=TEXT SIZE=5 NAME="ELITE" VALUE="@PlanarData?ELITE@"></TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>MOB Race Mix:</FONT></TD>
+        <TD WIDTH=75%>
+            <SELECT NAME="MIXRACE">
+            @PlanarData?MIXRACE@
+            </SELECT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Spec Flags:</FONT></TD>
+        <TD WIDTH=75%>
+            <SELECT NAME="SPECFLAGS" MULTIPLE>
+            @PlanarData?SPECFLAGS@
+            </SELECT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>MOB Absorptions: </FONT></TD>
+        <TD WIDTH=75%>
+        	<INPUT TYPE=TEXT SIZE=50 NAME="ABSORB" VALUE="@PlanarData?ABSORB@">
+        	<a href="javascript:openUp2('Prop_AbsorbDamage');"><FONT COLOR=WHITE><B>?</B></FONT></a>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Room Title Colors: </FONT></TD>
+        <TD WIDTH=75%>
+        	<FONT COLOR=WHITE>
+	        	Uppercase:<INPUT TYPE=CHECKBOX NAME="ROOMCOLOR_UP" @PlanarData?ROOMCOLOR&UP@>
+	        	Color Code:<SELECT NAME="ROOMCOLOR">@PlanarData?ROOMCOLOR@</SELECT>
+        	</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Room Descriptions: </FONT></TD>
+        <TD WIDTH=75%>
+        	<FONT COLOR=WHITE>
+	        	Chance (0-100):<INPUT TYPE=TEXT SIZE=3 NAME="ROOMADJS_CHANCE" VALUE="@PlanarData?ROOMADJS&CHANCE@">
+	        	Uppercase:<INPUT TYPE=CHECKBOX NAME="ROOMADJS_UP" @PlanarData?ROOMADJS&UP@>
+	        	Adjectives: <INPUT TYPE=TEXT SIZE=50 NAME="ROOMADJS" VALUE="@PlanarData?ROOMADJS@">
+        	</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Area Effects: </FONT></TD>
+        <TD WIDTH=75%>
+        	<FONT COLOR=WHITE>
+        	<TABLE BORDER=0 WIDTH=100%>
+        	@AddRequestParameter?CT=0@
+        	@loop@
+	        	@AddRequestParameter?CT=++@
+	        	@AddRequestParameter?AEFFECTEXISTS=@@PlanarData?AEFFECT&EXISTS_@@@RequestParameter?CT@@@ @@ @
+	        	@if?CheckReqParm?AEFFECTEXISTS=@ @break@ @endif@
+        		<TR>
+        			<TD>
+        				<SELECT NAME=AEFFECT_@RequestParameter?CT@ ONCHANGE="ReShow()">
+        				@PlanarData?AEFFECT&@@RequestParameter?CT@@ @
+        				</SELECT>
+        			</TD>
+        			<TD>
+	        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="AEFFECT_V@RequestParameter?CT@" VALUE="@PlanarData?AEFFECT&V@@RequestParameter?CT@@ @"></FONT>
+        			</TD>
+        		</TR>
+        	@back@
+       		<TR>
+       			<TD>
+       				<SELECT NAME=AEFFECT_@RequestParameter?CT@ ONCHANGE="ReShow()">
+       				@PlanarData?AEFFECT&@@RequestParameter?CT@@ @
+       				</SELECT>
+       			</TD>
+       			<TD>
+        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="AEFFECT_V@RequestParameter?CT@" VALUE=""></FONT>
+       			</TD>
+       		</TR>
+        	</TABLE>
+        	</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Room Effects: </FONT></TD>
+        <TD WIDTH=75%>
+        	<FONT COLOR=WHITE>
+        	<TABLE BORDER=0 WIDTH=100%>
+        	@AddRequestParameter?CT=0@
+        	@loop@
+	        	@AddRequestParameter?CT=++@
+	        	@AddRequestParameter?REFFECTEXISTS=@@PlanarData?REFFECT&EXISTS_@@@RequestParameter?CT@@@ @@ @
+	        	@if?CheckReqParm?REFFECTEXISTS=@ @break@ @endif@
+        		<TR>
+        			<TD>
+        				<SELECT NAME=REFFECT_@RequestParameter?CT@ ONCHANGE="ReShow()">
+        				@PlanarData?REFFECT&@@RequestParameter?CT@@ @
+        				</SELECT>
+        			</TD>
+        			<TD>
+	        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="REFFECT_V@RequestParameter?CT@" VALUE="@PlanarData?REFFECT&V@@RequestParameter?CT@@ @"></FONT>
+        			</TD>
+        		</TR>
+        	@back@
+       		<TR>
+       			<TD>
+       				<SELECT NAME=REFFECT_@RequestParameter?CT@ ONCHANGE="ReShow()">
+       				@PlanarData?REFFECT&@@RequestParameter?CT@@ @
+       				</SELECT>
+       			</TD>
+       			<TD>
+        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="REFFECT_V@RequestParameter?CT@" VALUE=""></FONT>
+       			</TD>
+       		</TR>
+        	</TABLE>
+        	</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>MOB Behaviors: </FONT></TD>
+        <TD WIDTH=75%>
+        	<FONT COLOR=WHITE>
+        	<TABLE BORDER=0 WIDTH=100%>
+        	@AddRequestParameter?CT=0@
+        	@loop@
+	        	@AddRequestParameter?CT=++@
+	        	@AddRequestParameter?BEHAVEEXISTS=@@PlanarData?BEHAVE&EXISTS_@@@RequestParameter?CT@@@ @@ @
+	        	@if?CheckReqParm?BEHAVEEXISTS=@ @break@ @endif@
+        		<TR>
+        			<TD>
+        				<SELECT NAME=BEHAVE_@RequestParameter?CT@ ONCHANGE="ReShow()">
+        				@PlanarData?BEHAVE&@@RequestParameter?CT@@ @
+        				</SELECT>
+        			</TD>
+        			<TD>
+	        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="BEHAVE_V@RequestParameter?CT@" VALUE="@PlanarData?BEHAVE&V@@RequestParameter?CT@@ @"></FONT>
+        			</TD>
+        		</TR>
+        	@back@
+       		<TR>
+       			<TD>
+       				<SELECT NAME=BEHAVE_@RequestParameter?CT@ ONCHANGE="ReShow()">
+       				@PlanarData?BEHAVE&@@RequestParameter?CT@@ @
+       				</SELECT>
+       			</TD>
+       			<TD>
+        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="BEHAVE_V@RequestParameter?CT@" VALUE=""></FONT>
+       			</TD>
+       		</TR>
+        	</TABLE>
+        	</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>MOB Behavior Replacements: </FONT></TD>
+        <TD WIDTH=75%>
+        	<FONT COLOR=WHITE>
+        	<TABLE BORDER=0 WIDTH=100%>
+        	@AddRequestParameter?CT=0@
+        	@loop@
+	        	@AddRequestParameter?CT=++@
+	        	@AddRequestParameter?BEHAVAFFIDEXISTS=@@PlanarData?BEHAVAFFID&EXISTS_@@@RequestParameter?CT@@@ @@ @
+	        	@if?CheckReqParm?BEHAVAFFIDEXISTS=@ @break@ @endif@
+        		<TR>
+        			<TD>
+        				<SELECT NAME=BEHAVAFFID_@RequestParameter?CT@ ONCHANGE="ReShow()">
+        				@PlanarData?BEHAVAFFID&@@RequestParameter?CT@@ @
+        				</SELECT>
+        			</TD>
+       			<TD>
+       				<SELECT NAME=BEHAVAFFID_V@RequestParameter?CT@ ONCHANGE="ReShow()">
+       				@PlanarData?BEHAVAFFID&V@@RequestParameter?CT@@ @
+       				</SELECT>
+       				Keep parms: <INPUT TYPE=CHECKBOX NAME=BEHAVAFFID_S@RequestParameter?CT@ @PlanarData?BEHAVAFFID&S@@RequestParameter?CT@@ @>
+       			</TD>
+        		</TR>
+        	@back@
+       		<TR>
+       			<TD>
+       				<SELECT NAME=BEHAVAFFID_@RequestParameter?CT@ ONCHANGE="ReShow()">
+       				@PlanarData?BEHAVAFFID&@@RequestParameter?CT@@ @
+       				</SELECT>
+       				<BR>
+       				<FONT COLOR=WHITE>Keep parms: <INPUT TYPE=CHECKBOX NAME=BEHAVAFFID_S@RequestParameter?CT@ @PlanarData?BEHAVAFFID&S@@RequestParameter?CT@@ @></FONT>
+       			</TD>
+       			<TD>
+       				<SELECT NAME=BEHAVAFFID_V@RequestParameter?CT@ ONCHANGE="ReShow()">
+       				@PlanarData?BEHAVAFFID&V@@RequestParameter?CT@@ @
+       				</SELECT>
+       			</TD>
+       		</TR>
+        	</TABLE>
+        	</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>MOB Abilities: </FONT></TD>
+        <TD WIDTH=75%>
+        	<FONT COLOR=WHITE>
+        	<TABLE BORDER=0 WIDTH=100%>
+        	@AddRequestParameter?CT=0@
+        	@loop@
+	        	@AddRequestParameter?CT=++@
+	        	@AddRequestParameter?ENABLEEXISTS=@@PlanarData?ENABLE&EXISTS_@@@RequestParameter?CT@@@ @@ @
+	        	@if?CheckReqParm?ENABLEEXISTS=@ @break@ @endif@
+        		<TR>
+        			<TD>
+        				<SELECT NAME=ENABLE_@RequestParameter?CT@ ONCHANGE="ReShow()">
+        				@PlanarData?ENABLE&@@RequestParameter?CT@@ @
+        				</SELECT>
+        			</TD>
+        			<TD>
+	        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="ENABLE_V@RequestParameter?CT@" VALUE="@PlanarData?ENABLE&V@@RequestParameter?CT@@ @"></FONT>
+        			</TD>
+        		</TR>
+        	@back@
+       		<TR>
+       			<TD>
+       				<SELECT NAME=ENABLE_@RequestParameter?CT@ ONCHANGE="ReShow()">
+       				@PlanarData?ENABLE&@@RequestParameter?CT@@ @
+       				</SELECT>
+       			</TD>
+       			<TD>
+        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="ENABLE_V@RequestParameter?CT@" VALUE=""></FONT>
+       			</TD>
+       		</TR>
+        	</TABLE>
+        	</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>MOB Factions: </FONT></TD>
+        <TD WIDTH=75%>
+        	<FONT COLOR=WHITE>
+        	<TABLE BORDER=0 WIDTH=100%>
+        	@AddRequestParameter?CT=0@
+        	@loop@
+	        	@AddRequestParameter?CT=++@
+	        	@AddRequestParameter?FACTIONSEXISTS=@@PlanarData?FACTIONS&EXISTS_@@@RequestParameter?CT@@@ @@ @
+	        	@if?CheckReqParm?FACTIONSEXISTS=@ @break@ @endif@
+        		<TR>
+        			<TD>
+        				<SELECT NAME=FACTIONS_@RequestParameter?CT@ ONCHANGE="ReShow()">
+        				@PlanarData?FACTIONS&@@RequestParameter?CT@@ @
+        				</SELECT>
+        			</TD>
+        			<TD>
+	        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=20 NAME="FACTIONS_V@RequestParameter?CT@" VALUE="@PlanarData?FACTIONS&V@@RequestParameter?CT@@ @"></FONT>
+        			</TD>
+        		</TR>
+        	@back@
+       		<TR>
+       			<TD>
+       				<SELECT NAME=FACTIONS_@RequestParameter?CT@ ONCHANGE="ReShow()">
+       				@PlanarData?FACTIONS&@@RequestParameter?CT@@ @
+       				</SELECT>
+       			</TD>
+       			<TD>
+        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=20 NAME="FACTIONS_V@RequestParameter?CT@" VALUE=""></FONT>
+       			</TD>
+       		</TR>
+        	</TABLE>
+        	</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Area Blurbs: </FONT></TD>
+        <TD WIDTH=75%>
+        	<FONT COLOR=WHITE>
+        	<TABLE BORDER=0 WIDTH=100%>
+        	@AddRequestParameter?CT=0@
+        	@loop@
+	        	@AddRequestParameter?CT=++@
+	        	@AddRequestParameter?AREABLURBSEXISTS=@@PlanarData?AREABLURBS&EXISTS_@@@RequestParameter?CT@@@ @@ @
+	        	@if?CheckReqParm?AREABLURBSEXISTS=@ @break@ @endif@
+        		<TR>
+        			<TD>
+	       				<FONT COLOR=WHITE>Blurb:<INPUT TYPE=TEXT SIZE=25 NAME="AREABLURBS_@RequestParameter?CT@" VALUE="@PlanarData?AREABLURBS&@@RequestParameter?CT@@ @" ONCHANGE="if(this.value=='')ReShow();"></FONT>
+        			</TD>
+        			<TD>
+	        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="AREABLURBS_V@RequestParameter?CT@" VALUE="@PlanarData?AREABLURBS&V@@RequestParameter?CT@@ @"></FONT>
+        			</TD>
+        		</TR>
+        	@back@
+       		<TR>
+       			<TD>
+       				<FONT COLOR=WHITE>Blurb:<INPUT TYPE=TEXT SIZE=25 NAME="AREABLURBS_@RequestParameter?CT@" VALUE="" ONCHANGE="ReShow();"></FONT>
+       			</TD>
+       			<TD>
+        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="AREABLURBS_V@RequestParameter?CT@" VALUE=""></FONT>
+       			</TD>
+       		</TR>
+        	</TABLE>
+        	</FONT>
+        </TD>
+    </TR>
+<!--
+ -->
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Finished" ONCLICK="EditDone();"></TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
+</TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

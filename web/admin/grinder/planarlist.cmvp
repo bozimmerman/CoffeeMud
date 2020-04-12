@@ -5,12 +5,12 @@
 <html>
 <head>
     <link rel="grinder icon" href="/images/grinder.ico" >
-    <title>Skill Components List</title>
+    <title>Planes of Existence List</title>
     <script language=JavaScript>
     <!--
         function Plane(action)
         {
-            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=550,alwaysRaised=yes,dependent=yes";
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=770,alwaysRaised=yes,dependent=yes";
             w=window.open("plane.cmvp?AUTH=@Authenticate?AUTH@&PLANE="+action,
                 "Plane of "+action,strFeatures, false);
         }

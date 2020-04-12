@@ -3962,6 +3962,20 @@ public class CMParms
 	}
 
 	/**
+	 * Returns whether the given string appears in the given list.
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param str the string to search for
+	 * @return true if the string is in the list, false otherwise
+	 */
+	public final static boolean contains(final String theList, final String str)
+	{
+		if((theList == null)||(str == null)||(str.length()==0))
+			return false;
+		return theList.indexOf(str)>=0;
+	}
+
+	/**
 	 * Returns whether the given string appears in the given enumeration of strings.
 	 * It is case sensitive.
 	 * @param e the enumeration
