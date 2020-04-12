@@ -1,9 +1,9 @@
 <HTML>
 <HEAD>
 <TITLE>Siplet</TITLE>
-<LINK REL=StyleSheet HREF="/siplet/term.css" TYPE="text/css">
+<LINK REL=StyleSheet HREF="term.css" TYPE="text/css">
 	<link rel="coffeemud icon" href="../images/coffeemud.ico" >
-<SCRIPT LANGUAGE=JavaScript src="/siplet/floater.js"></SCRIPT>
+<SCRIPT LANGUAGE=JavaScript src="floater.js"></SCRIPT>
 <script language=JavaScript>
 var allwindows=new Array(10);
 var alldivs = new Array(10);
