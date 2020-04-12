@@ -466,6 +466,46 @@ public class MUDGrinder extends StdWebMacro
 			return "The component "+last+" has been successfully modified.";
 		}
 		else
+		if(parms.containsKey("DELPLANE"))
+		{
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null)
+				return "@break@";
+			final String last=httpReq.getUrlParameter("PLANE");
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
+			final List<AbilityComponent> list = CMLib.ableComponents().getAbilityComponents(last);
+			if(list==null)
+				return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.PLANES))
+				return "@break@";
+			//TODO: CMLib.ableComponents().getAbilityComponentMap().remove(last.toUpperCase().trim());
+			//TODO: CMLib.ableComponents().alterAbilityComponentFile(last, true);
+			Log.sysOut("Grinder",mob.Name()+" destroyed plane "+last);
+			return "The plane "+last+" has been successfully destroyed.";
+		}
+		else
+		if(parms.containsKey("EDITPLANE")||parms.containsKey("ADDPLANE"))
+		{
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null)
+				return "@break@";
+			final String last=httpReq.getUrlParameter("PLANE");
+			if(last==null)
+				return "@break@";
+			if(last.length()==0)
+				return "@break@";
+			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.PLANES))
+				return "@break@";
+			final String err=new GrinderPlanes().runMacro(httpReq,parm);
+			if(err.length()>0)
+				return err;
+			Log.sysOut("Grinder",mob.Name()+" modified plane "+last);
+			return "The plane "+last+" has been successfully modified.";
+		}
+		else
 		if(parms.containsKey("DELALLQUALIFY"))
 		{
 			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);

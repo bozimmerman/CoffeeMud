@@ -443,9 +443,40 @@ public class PlanarData extends StdWebMacro
 						str.append(httpVal).append(", ");
 						break;
 					case PREFIX:
+						str.append(httpVal).append(", ");
 						break;
 					case PROMOTIONS:
+					{
+						List<Pair<String,String>> parsed = CMParms.parseCommaParenList(httpVal);
+						if(httpReq.isUrlParameter(key+"_1"))
+						{
+							parsed.clear();
+							int i=1;
+							while(httpReq.isUrlParameter(key+"_"+i))
+							{
+								String chg=httpReq.getUrlParameter(key+"_"+i);
+								String to=httpReq.getUrlParameter(key+"_V"+i);
+								if(chg.length()>0)
+									parsed.add(new Pair<String,String>(chg,to));
+								i++;
+							}
+						}
+						int i=1;
+						for(final Pair<String,String> k : parsed)
+						{
+							if(parms.containsKey("EXISTS_"+i))
+							{
+								str.append("true").append(", ");
+								break;
+							}
+							if(parms.containsKey(""+i))
+								str.append(k.first).append(", ");
+							if(parms.containsKey("V"+i))
+								str.append(k.second).append(", ");
+							i++;
+						}
 						break;
+					}
 					case RECOVERRATE:
 						str.append(httpVal).append(", ");
 						break;

@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
-@if?!CheckAuthCode?AUTH_CMDAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_PLANES=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <html>
 <head>
@@ -486,6 +486,37 @@
        			</TD>
        			<TD>
         			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="AREABLURBS_V@RequestParameter?CT@" VALUE=""></FONT>
+       			</TD>
+       		</TR>
+        	</TABLE>
+        	</FONT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Promotions: </FONT></TD>
+        <TD WIDTH=75%>
+        	<FONT COLOR=WHITE>
+        	<TABLE BORDER=0 WIDTH=100%>
+        	@AddRequestParameter?CT=0@
+        	@loop@
+	        	@AddRequestParameter?CT=++@
+	        	@AddRequestParameter?PROMOTIONSEXISTS=@@PlanarData?PROMOTIONS&EXISTS_@@@RequestParameter?CT@@@ @@ @
+	        	@if?CheckReqParm?PROMOTIONSEXISTS=@ @break@ @endif@
+        		<TR>
+        			<TD>
+	        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="PROMOTIONS_@RequestParameter?CT@" VALUE="@PlanarData?PROMOTIONS&@@RequestParameter?CT@@ @"></FONT>
+        			</TD>
+        			<TD>
+	        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="PROMOTIONS_V@RequestParameter?CT@" VALUE="@PlanarData?PROMOTIONS&V@@RequestParameter?CT@@ @"></FONT>
+        			</TD>
+        		</TR>
+        	@back@
+       		<TR>
+       			<TD>
+        			<FONT COLOR=WHITE><INPUT TYPE=TEXT SIZE=30 NAME="PROMOTIONS_@RequestParameter?CT@" VALUE=""></FONT>
+       			</TD>
+       			<TD>
+        			<FONT COLOR=WHITE><INPUT TYPE=TEXT SIZE=30 NAME="PROMOTIONS_V@RequestParameter?CT@" VALUE=""></FONT>
        			</TD>
        		</TR>
         	</TABLE>

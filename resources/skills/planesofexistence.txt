@@ -45,6 +45,7 @@
 #           Use a FactionID of "*" to activate coffeemud.ini reaction faction
 # LIKE: Name/ID of another plane to make this one like (exceptions optional)
 # DESCRIPTION: arbitrary description shown to players with planar lore
+# PROMOTIONS: Comma delimited List of promotion names with % chance in ()
 #
 # * In normal areas, add tattoo NOPLANE <plane name> to prevent a mob from 
 #   spawning in a plane.

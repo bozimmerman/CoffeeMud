@@ -252,7 +252,7 @@
 			<A href="javascript:Clicked('components.cmvp')"><FONT COLOR=WHITE>Skill Components</FONT></a>
 			<BR>
 			@endif@
-			@if?CheckAuthCode?AUTH_CMDAREAS=true@
+			@if?CheckAuthCode?AUTH_PLANES=true@
 			<A href="javascript:Clicked('planarlist.cmvp')"><FONT COLOR=WHITE>Other Planes</FONT></a>
 			<BR>
 			@endif@

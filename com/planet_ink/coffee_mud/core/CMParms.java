@@ -1848,6 +1848,29 @@ public class CMParms
 	 */
 	public static final List<Pair<String,String>> parseSpaceParenList(final String list)
 	{
+		return parseDelimitedParenList(list,' ');
+	}
+
+	/**
+	 * This method is for parsing comma-delimited lists of ids, with optional parameters
+	 * in parenthis after the id.  For example ID1(parm1) ID2 ID3 ID4(parm2)
+	 * @param list the list of things to parse
+	 * @return the parsed list.
+	 */
+	public static final List<Pair<String,String>> parseCommaParenList(final String list)
+	{
+		return parseDelimitedParenList(list,',');
+	}
+
+	/**
+	 * This method is for parsing given-delimited lists of ids, with optional parameters
+	 * in parenthis after the id.  For example ID1(parm1) ID2 ID3 ID4(parm2)
+	 * @param list the list of things to parse
+	 * @param delim the delimited
+	 * @return the parsed list.
+	 */
+	public static final List<Pair<String,String>> parseDelimitedParenList(final String list, final char delim)
+	{
 		int state=0; //0=waitingfor id start,1=waiting for parenstart,2=waitingforparenend
 		final StringBuilder id=new StringBuilder("");
 		final StringBuilder parms=new StringBuilder("");
@@ -1857,6 +1880,8 @@ public class CMParms
 			switch(state)
 			{
 			case 0:
+				if(list.charAt(i)==delim)
+					break;
 				if(!Character.isWhitespace(list.charAt(i)))
 				{
 					id.append(list.charAt(i));
@@ -1865,11 +1890,9 @@ public class CMParms
 				break;
 			case 1:
 				if(list.charAt(i)=='(')
-				{
 					state=2;
-				}
 				else
-				if(Character.isWhitespace(list.charAt(i)))
+				if(list.charAt(i)==delim)
 				{
 					if(id.length()>0)
 						pairList.add(new Pair<String,String>(id.toString().toUpperCase(),parms.toString().trim()));
@@ -1900,7 +1923,7 @@ public class CMParms
 		}
 		return pairList;
 	}
-
+	
 	/**
 	 * This method is a sloppy, forgiving method doing KEY+[INT] or KEY-[INT] value searches
 	 * in a string.  Returns the value of the given key.  If the key is not found, it will
