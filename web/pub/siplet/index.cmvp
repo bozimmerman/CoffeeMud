@@ -2,7 +2,7 @@
 	<link rel="coffeemud icon" href="../images/coffeemud.ico" >
 	<script language=JavaScript>
 	<!--
-		window.termurl='/siplet/term.cmvp';
+		window.termurl='term.cmvp';
 		if(!window.connport)
 		{
 			@if?!CheckReqParm?CPORT=@
