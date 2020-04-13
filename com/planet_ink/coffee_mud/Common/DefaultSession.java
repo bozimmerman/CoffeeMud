@@ -2458,7 +2458,7 @@ public class DefaultSession implements Session
 				.append("'^>^<!ENTITY MaxMove '").append(mob.maxState().getMovement())
 				.append("'^>^<!ENTITY Exp '").append(mob.getExperience())
 				.append("'^>^<!ENTITY ExpNeed '").append(mob.getExpNeededLevel())
-				.append("'^>\n\r\n\r");
+				.append("'^>\n\r");
 		}
 		buf.append(CMLib.utensils().buildPrompt(mob, mob.playerStats().getPrompt()));
 		promptPrint("^<Prompt^>"+buf.toString()+"^</Prompt^>^.^N");
