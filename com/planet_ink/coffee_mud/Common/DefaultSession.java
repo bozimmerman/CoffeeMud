@@ -138,7 +138,8 @@ public class DefaultSession implements Session
 	protected long			 promptLastShown	 = 0;
 	protected char 			 threadGroupChar	 = '\0';
 	protected volatile long  lastWriteTime		 = System.currentTimeMillis();
-	protected boolean		 debugStrInput		 = true;
+	protected boolean		 debugStrInput		 = false;
+	protected boolean		 debugStrOutput		 = false;
 	protected boolean		 debugBinOutput		 = false;
 	protected boolean		 debugBinInput		 = false;
 	protected StringBuffer   debugBinInputBuf	 = new StringBuffer("");
@@ -267,6 +268,7 @@ public class DefaultSession implements Session
 			setStatus(SessionStatus.HANDSHAKE_OPEN);
 			debugStrInput = CMSecurity.isDebugging(CMSecurity.DbgFlag.INPUT);
 			debugBinOutput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BINOUT);
+			debugStrOutput = CMSecurity.isDebugging(CMSecurity.DbgFlag.STROUT);
 			debugBinInput = CMSecurity.isDebugging(CMSecurity.DbgFlag.BININ);
 			if(debugBinInput)
 			{
@@ -1071,6 +1073,13 @@ public class DefaultSession implements Session
 					str.append((c & 0xff)).append(" ");
 				Log.debugOut( str.toString()+"'");
 			}
+			if(debugStrOutput && Log.debugChannelOn())
+			{
+				final StringBuilder str=new StringBuilder("OUTPUT: '");
+				for(final byte c : bytes)
+					str.append(((c<32)||(c>127))?"%"+CMStrings.padLeftWith(Integer.toHexString((c & 0xff)).toUpperCase(), '0', 2):(""+(char)c));
+				Log.debugOut( str.toString()+"'");
+			}
 			if(this.out!=null)
 				this.out.flush();
 			out.write(bytes);
@@ -1119,6 +1128,13 @@ public class DefaultSession implements Session
 						final StringBuilder str=new StringBuilder("OUTPUT: '");
 						for(final char c : chars)
 							str.append((c & 0xff)).append(" ");
+						Log.debugOut( str.toString()+"'");
+					}
+					if(debugStrOutput && Log.debugChannelOn())
+					{
+						final StringBuilder str=new StringBuilder("OUTPUT: '");
+						for(final char c : chars)
+							str.append(((c<32)||(c>127))?"%"+CMStrings.padLeftWith(Integer.toHexString((c & 0xff)).toUpperCase(), '0', 2):(""+c));
 						Log.debugOut( str.toString()+"'");
 					}
 					out.write(chars);
