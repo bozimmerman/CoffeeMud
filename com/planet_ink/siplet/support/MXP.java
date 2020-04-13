@@ -110,8 +110,8 @@ public class MXP
 		addElement(new MXPElement("RELOCATE", "", "URL PORT", "", MXPElement.BIT_SPECIAL | MXPElement.BIT_COMMAND | MXPElement.BIT_NOTSUPPORTED));
 		addElement(new MXPElement("USER", "", "", "", MXPElement.BIT_COMMAND | MXPElement.BIT_NOTSUPPORTED));
 		addElement(new MXPElement("PASSWORD", "", "", "", MXPElement.BIT_COMMAND | MXPElement.BIT_NOTSUPPORTED));
-		addElement(new MXPElement("IMAGE", "<IMG SRC=&url;&fname; HEIGHT=&h; WIDTH=&w; ALIGN=&align;>", "FNAME URL T H W HSPACE VSPACE ALIGN ISMAP", "", MXPElement.BIT_COMMAND, "HSPACE VSPACE ISMAP"));
-		addElement(new MXPElement("IMG", "<IMG SRC=&src; HEIGHT=&height; WIDTH=&width; ALIGN=&align;>", "SRC HEIGHT=70 WIDTH=70 ALIGN", "", MXPElement.BIT_COMMAND));
+		addElement(new MXPElement("IMAGE", "<IMG SRC=\"&url;&fname;\" HEIGHT=&h; WIDTH=&w; ALIGN=&align;>", "FNAME URL T H W HSPACE VSPACE ALIGN ISMAP", "", MXPElement.BIT_COMMAND, "HSPACE VSPACE ISMAP"));
+		addElement(new MXPElement("IMG", "<IMG SRC=\"&src;\" HEIGHT=&height; WIDTH=&width; ALIGN=&align;>", "SRC HEIGHT=70 WIDTH=70 ALIGN", "", MXPElement.BIT_COMMAND));
 		addElement(new MXPElement("FILTER", "", "SRC DEST NAME", "", MXPElement.BIT_COMMAND | MXPElement.BIT_NOTSUPPORTED));
 		addElement(new MXPElement("SCRIPT", "", "", "", MXPElement.BIT_COMMAND | MXPElement.BIT_NOTSUPPORTED));
 		addElement(new MXPElement("ENTITY", "", "NAME VALUE DESC PRIVATE PUBLISH DELETE ADD", "", MXPElement.BIT_SPECIAL | MXPElement.BIT_COMMAND, "PRIVATE PUBLISH ADD")); // special
