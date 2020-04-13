@@ -480,7 +480,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("CUSTOMOVERRIDEMANA"))
 				{
-					String old=httpReq.getUrlParameter("OVERRIDEMANA");
+					String old=httpReq.getUrlParameter("CUSTOMOVERRIDEMANA");
 					if(old==null)
 						old=""+A.getStat("OVERRIDEMANA");
 					final int x=CMath.s_int(old);

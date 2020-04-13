@@ -444,7 +444,7 @@
                 <TD><FONT COLOR=YELLOW>Override Cost: </FONT></TD>
                 <TD>
                     <SELECT NAME=OVERRIDEMANA>@AbilityData?OVERRIDEMANA@</SELECT>
-                    <INPUT TYPE=TEXT SIZE=3 MAXLENGTH=5 NAME=OVERRIDEMANA VALUE="@AbilityData?CUSTOMOVERRIDEMANA@">
+                    <INPUT TYPE=TEXT SIZE=3 MAXLENGTH=5 NAME=CUSTOMOVERRIDEMANA VALUE="@AbilityData?CUSTOMOVERRIDEMANA@">
                 </TD>
             </TR>
             <TR>

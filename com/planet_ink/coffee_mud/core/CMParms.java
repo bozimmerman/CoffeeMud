@@ -1164,7 +1164,9 @@ public class CMParms
 						continue;
 					}
 					boolean endWithQuote=false;
-					while((x<text.length())&&(!Character.isLetterOrDigit(text.charAt(x))))
+					while((x<text.length())
+					&&(!Character.isLetterOrDigit(text.charAt(x)))
+					&&(text.charAt(x)!='*'))
 					{
 						if(text.charAt(x)=='\"')
 						{
