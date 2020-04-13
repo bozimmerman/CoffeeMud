@@ -52,6 +52,7 @@ public class ArchonJournal extends StdJournal implements ArchonOnly, MiscMagic
 		secretIdentity="The Archon's Journal.  Just READ me.";
 		baseGoldValue=20000;
 		material=RawMaterial.RESOURCE_PAPER;
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 	}
 

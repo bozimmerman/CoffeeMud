@@ -606,9 +606,17 @@ public class StdArmor extends StdContainer implements Armor
 	}
 
 	@Override
+	protected boolean abilityImbuesMagic()
+	{
+		return true;
+	}
+
+	@Override
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
+		if((abilityImbuesMagic()&&(phyStats().ability()>0))||(this instanceof MiscMagic))
+			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
 		if((basePhyStats().height()==0)
 		&&(!amWearingAt(Wearable.IN_INVENTORY))
 		&&(owner() instanceof MOB))

@@ -56,6 +56,7 @@ public class GenMagicInstrument extends GenItem implements MusicalInstrument, Mi
 		setDescription("");
 		baseGoldValue = 15;
 		basePhyStats().setLevel(1);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_OAK);
 	}

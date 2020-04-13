@@ -54,6 +54,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		this.setUsesRemaining(99999);
 		baseGoldValue=20000;
 		material=RawMaterial.RESOURCE_OAK;
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 		secretWord="REFRESH";
 		secretIdentity="The Wand of the Archons! Commands: REFRESH, BLAST, LEVEL X UP, LEVEL X DOWN, BURN, GAIN X/All UP.";

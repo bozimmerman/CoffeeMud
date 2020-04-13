@@ -54,6 +54,7 @@ public class StdPill extends StdFood implements Pill
 		setDescription("Large and round, with strange markings.");
 		secretIdentity="Surely this is a potent pill!";
 		baseGoldValue=200;
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 		material=RawMaterial.RESOURCE_CORN;
 	}

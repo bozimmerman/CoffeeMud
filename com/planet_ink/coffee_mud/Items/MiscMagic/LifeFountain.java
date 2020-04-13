@@ -60,6 +60,7 @@ public class LifeFountain extends StdDrink implements MiscMagic
 		baseGoldValue=10;
 		material=RawMaterial.RESOURCE_FRESHWATER;
 		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOTGET);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 	}
 

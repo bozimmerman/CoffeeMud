@@ -50,6 +50,7 @@ public class Wand_Nourishment extends StdWand
 		secretIdentity="The wand of nourishment.  Hold the wand say \\`shazam\\` to it.";
 		baseGoldValue=200;
 		material=RawMaterial.RESOURCE_OAK;
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 		secretWord="SHAZAM";
 	}

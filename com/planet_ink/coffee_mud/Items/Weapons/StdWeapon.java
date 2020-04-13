@@ -120,10 +120,18 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	}
 
 	@Override
+	protected boolean abilityImbuesMagic()
+	{
+		return true;
+	}
+
+	@Override
 	public void recoverPhyStats()
 	{
 		super.recoverPhyStats();
 		final PhyStats phyStats = phyStats();
+		if((abilityImbuesMagic()&&(phyStats().ability()>0))||(this instanceof MiscMagic))
+			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
 		if(phyStats.damage()!=0)
 		{
 			if(phyStats.ability() != 0)

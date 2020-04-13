@@ -52,6 +52,7 @@ public class Wand_Fire extends StdWand
 		baseGoldValue=20000;
 		basePhyStats().setLevel(12);
 		material=RawMaterial.RESOURCE_OAK;
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 		secretWord="BLAZE, BURN";
 	}

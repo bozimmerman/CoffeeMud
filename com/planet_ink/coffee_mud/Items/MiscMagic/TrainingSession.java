@@ -53,6 +53,7 @@ public class TrainingSession extends StdItem implements MiscMagic
 		material=0;
 		basePhyStats.setWeight(0);
 		basePhyStats.setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNORUIN|PhyStats.SENSE_ITEMNOWISH);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 	}
 

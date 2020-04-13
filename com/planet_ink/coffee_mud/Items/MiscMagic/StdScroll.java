@@ -240,6 +240,17 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	}
 
 	@Override
+	public void recoverPhyStats()
+	{
+		super.recoverPhyStats();
+		if(((phyStats().disposition()&PhyStats.IS_BONUS)==0)
+		&&(usesRemaining()>0)
+		&&(getSpellList()!=null)
+		&&(getSpellList().length()>0))
+			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
+	}
+
+	@Override
 	public List<Ability> getSpells()
 	{
 		int baseValue=200;

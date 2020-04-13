@@ -97,6 +97,12 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		return "StdBoardableShip";
 	}
 
+	@Override
+	protected boolean abilityImbuesMagic()
+	{
+		return false;
+	}
+
 	protected Room createFirstRoom()
 	{
 		final Room R=CMClass.getLocale("StdRoom");

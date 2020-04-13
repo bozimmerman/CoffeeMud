@@ -44,7 +44,8 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 	public Ring_Protection()
 	{
 		super();
-
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
+		recoverPhyStats();
 		lastLevel = -1;
 	}
 

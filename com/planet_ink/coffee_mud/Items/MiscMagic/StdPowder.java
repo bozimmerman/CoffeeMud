@@ -57,6 +57,7 @@ public class StdPowder extends StdItem implements MagicDust
 		secretIdentity="This is a pile of inert materials.";
 		baseGoldValue=0;
 		material=RawMaterial.RESOURCE_ASH;
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 	}
 

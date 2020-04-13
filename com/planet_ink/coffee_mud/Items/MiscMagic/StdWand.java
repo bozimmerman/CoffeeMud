@@ -55,7 +55,6 @@ public class StdWand extends StdItem implements Wand
 		secretIdentity="";
 		baseGoldValue=200;
 		material=RawMaterial.RESOURCE_OAK;
-		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		setUsesRemaining(0);
 		recoverPhyStats();
 	}
@@ -69,6 +68,16 @@ public class StdWand extends StdItem implements Wand
 	@Override
 	public void setMaxUses(final int newMaxUses)
 	{
+	}
+
+	@Override
+	public void recoverPhyStats()
+	{
+		super.recoverPhyStats();
+		if(((phyStats().disposition()&PhyStats.IS_BONUS)==0)
+		&&(usesRemaining()>0)
+		&&(getSpell()!=null))
+			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
 	}
 
 	public static boolean useTheWand(final Ability A, final MOB mob, final int level)

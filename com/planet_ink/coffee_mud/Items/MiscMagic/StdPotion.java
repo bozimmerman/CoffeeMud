@@ -61,7 +61,19 @@ public class StdPotion extends StdDrink implements Potion
 	@Override
 	public boolean isDrunk()
 	{
-		return (getSpellList().toUpperCase().indexOf(";DRUNK") >= 0);
+		return (getSpellList()!=null)
+				&&(getSpellList().toUpperCase().indexOf(";DRUNK") >= 0);
+	}
+
+	@Override
+	public void recoverPhyStats()
+	{
+		super.recoverPhyStats();
+		if(((phyStats().disposition()&PhyStats.IS_BONUS)==0)
+		&&(!isDrunk())
+		&&(getSpellList()!=null)
+		&&(getSpellList().length()>0))
+			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
 	}
 
 	@Override

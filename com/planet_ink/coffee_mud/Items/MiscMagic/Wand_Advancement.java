@@ -51,6 +51,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 		this.setUsesRemaining(50);
 		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=20000;
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 		secretWord="LEVEL UP";
 	}

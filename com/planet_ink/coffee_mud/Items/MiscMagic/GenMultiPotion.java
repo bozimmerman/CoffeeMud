@@ -52,6 +52,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 		setDescription("A strange flask with stranger markings.");
 		secretIdentity="";
 		baseGoldValue=200;
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		liquidType = RawMaterial.RESOURCE_DRINKABLE;
 		recoverPhyStats();
 	}

@@ -89,7 +89,7 @@ public class StdItem implements Item
 
 	protected boolean abilityImbuesMagic()
 	{
-		return true;
+		return false;
 	}
 
 	// protected void finalize()
@@ -207,8 +207,6 @@ public class StdItem implements Item
 	{
 		basePhyStats.copyInto(phyStats);
 		eachEffect(affectPhyStats);
-		if(((phyStats().ability()>0)&&abilityImbuesMagic())||(this instanceof MiscMagic))
-			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
 		if((owner()!=null)
 		&&(owner() instanceof MOB)
 		&&(CMLib.flags().isHidden(this)))

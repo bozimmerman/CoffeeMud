@@ -54,6 +54,7 @@ public class ManualClasses extends StdItem implements MiscMagic, ArchonOnly
 		this.setUsesRemaining(Integer.MAX_VALUE);
 		baseGoldValue=5000;
 		material=RawMaterial.RESOURCE_PAPER;
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 	}
 
