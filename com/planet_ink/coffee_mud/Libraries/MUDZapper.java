@@ -6166,9 +6166,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						boolean found=false;
 						if(room!=null)
 						{
+							final Area A=room.getArea();
 							for(final Object o : entry.parms())
 							{
-								if(room.getArea().Name().equalsIgnoreCase((String)o))
+								if(((String)o).startsWith("*"))
+								{
+									if(A.Name().toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
+									{
+										found = true;
+										break;
+									}
+								}
+								else
+								if(A.Name().equalsIgnoreCase((String)o))
 								{
 									found = true;
 									break;
@@ -6183,9 +6193,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					{
 						if(room!=null)
 						{
+							final Area A=room.getArea();
 							for(final Object o : entry.parms())
 							{
-								if(room.getArea().Name().equalsIgnoreCase((String)o))
+								if(((String)o).startsWith("*"))
+								{
+									if(A.Name().toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
+										return false;
+								}
+								else
+								if(A.Name().equalsIgnoreCase((String)o))
 									return false;
 							}
 						}
@@ -6252,6 +6269,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						final String planeName=CMLib.flags().getPlaneOfExistence(A);
 						for(final Object o : entry.parms())
 						{
+							if(((String)o).startsWith("*"))
+							{
+								if(A.Name().toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
+								{
+									found = true;
+									break;
+								}
+							}
+							else
 							if((A.Name().equalsIgnoreCase((String)o))
 							||(((String)o).equalsIgnoreCase(planeName)))
 							{
@@ -6272,6 +6298,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							final String planeName=CMLib.flags().getPlaneOfExistence(A);
 							for(final Object o : entry.parms())
 							{
+								if(((String)o).startsWith("*"))
+								{
+									if(A.Name().toLowerCase().endsWith(((String)o).substring(1).toLowerCase()))
+										return false;
+								}
+								else
 								if((A.Name().equalsIgnoreCase((String)o))
 								||(((String)o).equalsIgnoreCase(planeName)))
 									return false;
