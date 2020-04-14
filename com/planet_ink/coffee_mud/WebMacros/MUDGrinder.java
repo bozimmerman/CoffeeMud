@@ -508,7 +508,7 @@ public class MUDGrinder extends StdWebMacro
 			final String err=new GrinderPlanes().runMacro(httpReq,parm);
 			if(err.length()>0)
 				return err;
-			Log.sysOut("Grinder",mob.Name()+" modified plane "+last);
+			//Log.sysOut("Grinder",mob.Name()+" modified plane "+last);
 			return "The plane "+last+" has been successfully modified.";
 		}
 		else

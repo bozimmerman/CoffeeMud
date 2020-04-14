@@ -107,7 +107,7 @@ public class PlanarData extends StdWebMacro
 						break;
 					case AREABLURBS:
 					{
-						Map<String,String> parsed = CMParms.parseEQParms(httpVal);
+						Map<String,String> parsed = CMParms.parseEQParmsLow(httpVal);
 						if(httpReq.isUrlParameter(key+"_1"))
 						{
 							parsed.clear();
@@ -183,7 +183,7 @@ public class PlanarData extends StdWebMacro
 							if(parms.containsKey("S"+i))
 							{
 								boolean st=parsed.get(key).startsWith("*");
-								str.append(st?"SELECTED":"").append(", ");
+								str.append(st?"CHECKED":"").append(", ");
 							}
 							if(parms.containsKey("V"+i))
 							{
@@ -199,7 +199,7 @@ public class PlanarData extends StdWebMacro
 							}
 							i++;
 						}
-						if(parms.containsKey(""+(parsed.size()+1)))
+						if(parms.containsKey(""+(parsed.size()+1))||parms.containsKey("V"+(parsed.size()+1)))
 						{
 							str.append("<OPTION VALUE=\"\" SELECTED>").append("Select");
 							for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
@@ -300,8 +300,16 @@ public class PlanarData extends StdWebMacro
 						{
 							options = new ArrayList<String>();
 							options.add("number");
-							options.addAll(Arrays.asList(Ability.DOMAIN_DESCS));
-							options.addAll(Arrays.asList(Ability.FLAG_DESCS));
+							final Converter<String,String> toLowerCase=new Converter<String,String>()
+							{
+								@Override
+								public String convert(String obj)
+								{
+									return obj.toLowerCase();
+								}
+							};
+							options.addAll(new ConvertingList<String,String>(Arrays.asList(Ability.DOMAIN_DESCS),toLowerCase));
+							options.addAll(new ConvertingList<String,String>(Arrays.asList(Ability.FLAG_DESCS),toLowerCase));
 							options.addAll(new XVector<String>(new ConvertingEnumeration<Ability,String>(CMClass.abilities(), new Converter<Ability,String>(){
 								@Override
 								public String convert(Ability obj)
@@ -447,7 +455,7 @@ public class PlanarData extends StdWebMacro
 						break;
 					case PROMOTIONS:
 					{
-						List<Pair<String,String>> parsed = CMParms.parseCommaParenList(httpVal);
+						List<Pair<String,String>> parsed = CMParms.parseCommaParenListLow(httpVal);
 						if(httpReq.isUrlParameter(key+"_1"))
 						{
 							parsed.clear();
@@ -558,9 +566,9 @@ public class PlanarData extends StdWebMacro
 						if(parms.containsKey("UP"))
 						{
 							if(httpReq.isUrlParameter(key+"_UP"))
-								str.append("on".equalsIgnoreCase(httpReq.getUrlParameter(key+"_UP"))?"SELECTED":"");
+								str.append("on".equalsIgnoreCase(httpReq.getUrlParameter(key+"_UP"))?"CHECKED":"");
 							else
-								str.append(CMParms.contains(httpVal,"UP")?"SELECTED":"");
+								str.append(CMParms.contains(httpVal,"UP")?"CHECKED":"");
 						}
 						else
 						if(parms.containsKey("CHANCE"))
@@ -606,9 +614,9 @@ public class PlanarData extends StdWebMacro
 						if(parms.containsKey("UP"))
 						{
 							if(httpReq.isUrlParameter(key+"_UP"))
-								str.append("on".equalsIgnoreCase(httpReq.getUrlParameter(key+"_UP"))?"SELECTED":"");
+								str.append("on".equalsIgnoreCase(httpReq.getUrlParameter(key+"_UP"))?"CHECKED":"");
 							else
-								str.append(CMParms.contains(httpVal,"UP")?"SELECTED":"");
+								str.append(CMParms.contains(httpVal,"UP")?"CHECKED":"");
 						}
 						else
 						{
@@ -645,6 +653,8 @@ public class PlanarData extends StdWebMacro
 					}
 					case TRANSITIONAL:
 					{
+						if(httpVal.length()==0)
+							httpVal="false";
 						for(final String k : new String[] {"true", "false"})
 							str.append("<OPTION VALUE=\""+k+"\" "+(k.equalsIgnoreCase(httpVal)?"SELECTED":"")+">").append(k);
 						str.append(", ");

@@ -56,7 +56,7 @@ public class GrinderPlanes
 	
 	public String runMacro(final HTTPRequest httpReq, final String parm)
 	{
-		final String last=httpReq.getUrlParameter("PLANE");
+		String last=httpReq.getUrlParameter("PLANE");
 		if(last==null)
 			return " @break@";
 		if(last.length()>0)
@@ -137,7 +137,8 @@ public class GrinderPlanes
 							finalStr.append(p).append("=\\\"");
 							final String val = parsed.get(p);
 							finalStr.append(CMStrings.replaceAll(val, "\"", "\\\\\""));
-							finalStr.append("\\\" ");
+							finalStr.append("\\\"");
+							finalStr.append(" ");
 						}
 						finalStr.append("\" ");
 					}
@@ -146,7 +147,7 @@ public class GrinderPlanes
 				case ATMOSPHERE:
 				{
 					
-					finalStr.append(standardField(var,httpVal));
+					finalStr.append(standardField(var,httpVal.toLowerCase()));
 					break;
 				}
 				case BEHAVAFFID:
@@ -172,7 +173,8 @@ public class GrinderPlanes
 								finalStr.append(p.first);
 								if(p.second.trim().length()>0)
 									finalStr.append("(").append(p.second).append(")");
-								finalStr.append(" ");
+								if(p != parsed.get(parsed.size()-1))
+									finalStr.append(" ");
 							}
 							finalStr.append("\" ");
 						}
@@ -201,7 +203,8 @@ public class GrinderPlanes
 								finalStr.append(p.first);
 								if(p.second.trim().length()>0)
 									finalStr.append("(").append(p.second).append(")");
-								finalStr.append(" ");
+								if(p != parsed.get(parsed.size()-1))
+									finalStr.append(" ");
 							}
 							finalStr.append("\" ");
 						}
@@ -258,7 +261,8 @@ public class GrinderPlanes
 								finalStr.append(p.first);
 								if(p.second.trim().length()>0)
 									finalStr.append("(").append(p.second).append(")");
-								finalStr.append(" ");
+								if(p != parsed.get(parsed.size()-1))
+									finalStr.append(" ");
 							}
 							finalStr.append("\" ");
 						}
@@ -286,11 +290,15 @@ public class GrinderPlanes
 							{
 								if(CMath.isInteger(p.second))
 								{
-									finalStr.append(p.first.toLowerCase()+"("+p.second+") ");
+									finalStr.append(p.first.toLowerCase()+"("+p.second+")");
 								}
 								else
+								if(!p.first.equals("*"))
 									return var.toString()+":"+p.first+" has invalid number.";
-									
+								else
+									finalStr.append(p.first.toLowerCase());
+								if(p != parsed.get(parsed.size()-1))
+									finalStr.append(" ");
 							}
 							finalStr.append("\" ");
 						}
@@ -312,6 +320,7 @@ public class GrinderPlanes
 						return var.toString()+" is not valid.";
 					break;
 				case ID:
+					last = httpVal;
 					break;
 				case LEVELADJ:
 					if(CMath.isInteger(httpVal)||CMath.isMathExpression(httpVal))
@@ -407,7 +416,8 @@ public class GrinderPlanes
 								finalStr.append(p.first);
 								if(p.second.trim().length()>0)
 									finalStr.append("(").append(p.second).append(")");
-								finalStr.append(" ");
+								if(p != parsed.get(parsed.size()-1))
+									finalStr.append(" ");
 							}
 							finalStr.append("\" ");
 						}
@@ -421,14 +431,12 @@ public class GrinderPlanes
 				}
 				case ROOMADJS:
 				{
-					if(httpReq.isUrlParameter(key+"_UP")
-					&&httpReq.isUrlParameter(key+"_CHANCE")
-					&&((httpVal != null)&&(httpVal.trim().length()>0)))
+					if((httpVal != null)&&(httpVal.trim().length()>0))
 					{
 						final String chance = httpReq.getUrlParameter(key+"_CHANCE");
 						if(chance.length()>0)
 						{
-							if(!CMath.isInteger(chance.trim()))
+							if(CMath.isInteger(chance.trim()))
 								httpVal=chance+" "+httpVal;
 							else
 								return var.toString()+":chance is not valid.";
@@ -443,7 +451,7 @@ public class GrinderPlanes
 				{
 					if(httpVal.trim().length()>0)
 					{
-						httpVal += ("on".equalsIgnoreCase(httpReq.getUrlParameter(key+"_UP"))?"UP ":"");
+						httpVal = ("on".equalsIgnoreCase(httpReq.getUrlParameter(key+"_UP"))?"UP ":"") + httpVal;
 						finalStr.append(standardField(var,httpVal));
 					}
 					break;
@@ -474,7 +482,8 @@ public class GrinderPlanes
 				}
 				case TRANSITIONAL:
 				{
-					finalStr.append(standardField(var,httpVal));
+					if(CMath.s_bool(httpVal))
+						finalStr.append(standardField(var,httpVal));
 					break;
 				}
 				case WEAPONMAXRANGE:
@@ -498,14 +507,15 @@ public class GrinderPlanes
 			{
 				if(err.startsWith("ERROR"))
 					return err;
-				Log.infoOut(M.Name()+" modified plane: "+last+": \n\r"+err);
+				if(err.trim().length()>0)
+					Log.infoOut(M.Name()+" modified plane: "+last+": \n\r"+err);
 			}
 			else
 			{
 				// adding new
 				if(err != null)
 					return err;
-				Log.infoOut(M.Name()+" successfully edited plane: "+last);
+				Log.infoOut(M.Name()+" successfully added plane: "+last);
 			}
 		}
 		return "";

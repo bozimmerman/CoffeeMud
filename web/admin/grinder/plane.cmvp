@@ -81,6 +81,12 @@
 <P>
 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
     <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Plane Name: </FONT></TD>
+        <TD WIDTH=75%>
+			<INPUT TYPE=HIDDEN NAME=ID VALUE="@PlanarData?ID@"><FONT COLOR=YELLOW><B>@PlanarData?ID@</B></FONT>
+        </TD>
+    </TR>
+    <TR>
         <TD WIDTH=25%><FONT COLOR=YELLOW>Plane Description: </FONT></TD>
         <TD WIDTH=75%>
         	<TEXTAREA ROWS=6 COLS=60 NAME=DESCRIPTION>@PlanarData?DESCRIPTION@</TEXTAREA>
@@ -239,7 +245,7 @@
         <TD WIDTH=75%>
         	<FONT COLOR=WHITE>
 	        	Chance (0-100):<INPUT TYPE=TEXT SIZE=3 NAME="ROOMADJS_CHANCE" VALUE="@PlanarData?ROOMADJS&CHANCE@">
-	        	Uppercase:<INPUT TYPE=CHECKBOX NAME="ROOMADJS_UP" @PlanarData?ROOMADJS&UP@>
+	        	Uppercase:<INPUT TYPE=CHECKBOX NAME="ROOMADJS_UP" @PlanarData?ROOMADJS&UP@ >
 	        	Adjectives: <INPUT TYPE=TEXT SIZE=50 NAME="ROOMADJS" VALUE="@PlanarData?ROOMADJS@">
         	</FONT>
         </TD>

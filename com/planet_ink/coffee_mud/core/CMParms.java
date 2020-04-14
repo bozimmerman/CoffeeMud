@@ -1601,6 +1601,18 @@ public class CMParms
 
 	/**
 	 * Parses the given string for [PARAM]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
+	 * values in space-delimited fashion, respecting quotes value.
+	 * Returns a map of the found parameters and their values, with keys not normalized.
+	 * @param parms the string to parse
+	 * @return the map of key/value pairs found.
+	 */
+	public final static Map<String,String> parseEQParmsLow(final String parms)
+	{
+		return parseEQParms(parms,spaceDelimiter,false);
+	}
+
+	/**
+	 * Parses the given string for [PARAM]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
 	 * values in given-delimited fashion, respecting quotes value.
 	 * Returns a map of the found parameters and their values, with keys normalized to
 	 * uppercase.
@@ -1844,24 +1856,50 @@ public class CMParms
 
 	/**
 	 * This method is for parsing space-delimited lists of ids, with optional parameters
-	 * in parenthis after the id.  For example ID1(parm1) ID2 ID3 ID4(parm2)
+	 * in parenthesis after the id.  For example ID1(parm1) ID2 ID3 ID4(parm2)
+	 * Keys are set to uppercase
 	 * @param list the list of things to parse
 	 * @return the parsed list.
 	 */
 	public static final List<Pair<String,String>> parseSpaceParenList(final String list)
 	{
-		return parseDelimitedParenList(list,' ');
+		return parseDelimitedParenList(list,' ',true);
+	}
+
+	/**
+	 * This method is for parsing space-delimited lists of ids, with optional parameters
+	 * in parenthesis after the id.  For example ID1(parm1) ID2 ID3 ID4(parm2)
+	 * Keys are not set to uppercase
+	 * @param list the list of things to parse
+	 * @return the parsed list.
+	 */
+	public static final List<Pair<String,String>> parseSpaceParenListLow(final String list)
+	{
+		return parseDelimitedParenList(list,' ',false);
 	}
 
 	/**
 	 * This method is for parsing comma-delimited lists of ids, with optional parameters
-	 * in parenthis after the id.  For example ID1(parm1) ID2 ID3 ID4(parm2)
+	 * in parenthesis after the id.  For example ID1(parm1) ID2 ID3 ID4(parm2)
+	 * Keys are set to uppercase
 	 * @param list the list of things to parse
 	 * @return the parsed list.
 	 */
 	public static final List<Pair<String,String>> parseCommaParenList(final String list)
 	{
-		return parseDelimitedParenList(list,',');
+		return parseDelimitedParenList(list,',',true);
+	}
+
+	/**
+	 * This method is for parsing comma-delimited lists of ids, with optional parameters
+	 * in parenthesis after the id.  For example ID1(parm1) ID2 ID3 ID4(parm2)
+	 * Keys are not set to uppercase
+	 * @param list the list of things to parse
+	 * @return the parsed list.
+	 */
+	public static final List<Pair<String,String>> parseCommaParenListLow(final String list)
+	{
+		return parseDelimitedParenList(list,',',false);
 	}
 
 	/**
@@ -1871,7 +1909,7 @@ public class CMParms
 	 * @param delim the delimited
 	 * @return the parsed list.
 	 */
-	public static final List<Pair<String,String>> parseDelimitedParenList(final String list, final char delim)
+	public static final List<Pair<String,String>> parseDelimitedParenList(final String list, final char delim, final boolean upKey)
 	{
 		int state=0; //0=waitingfor id start,1=waiting for parenstart,2=waitingforparenend
 		final StringBuilder id=new StringBuilder("");
@@ -1897,7 +1935,7 @@ public class CMParms
 				if(list.charAt(i)==delim)
 				{
 					if(id.length()>0)
-						pairList.add(new Pair<String,String>(id.toString().toUpperCase(),parms.toString().trim()));
+						pairList.add(new Pair<String,String>(upKey?id.toString().toUpperCase():id.toString(),parms.toString().trim()));
 					id.setLength(0);
 					parms.setLength(0);
 					state=0;
@@ -1909,7 +1947,7 @@ public class CMParms
 				if(list.charAt(i)==')')
 				{
 					if(id.length()>0)
-						pairList.add(new Pair<String,String>(id.toString().toUpperCase(),parms.toString().trim()));
+						pairList.add(new Pair<String,String>(upKey?id.toString().toUpperCase():id.toString(),parms.toString().trim()));
 					id.setLength(0);
 					parms.setLength(0);
 					state=0;
@@ -1921,7 +1959,7 @@ public class CMParms
 		}
 		if(id.length()>0)
 		{
-			pairList.add(new Pair<String,String>(id.toString().toUpperCase(),parms.toString().trim()));
+			pairList.add(new Pair<String,String>(upKey?id.toString().toUpperCase():id.toString(),parms.toString().trim()));
 		}
 		return pairList;
 	}

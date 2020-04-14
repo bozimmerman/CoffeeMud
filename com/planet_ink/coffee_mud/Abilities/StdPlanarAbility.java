@@ -374,7 +374,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				return "";
 			for(String i="";!i.equals("9");i=("."+(CMath.s_int(i)+1)))
 			{
-				if(alterPlaneLine(planeName, Resources.makeFileResourceName("skills/planesofexistence.txt"+i), null))
+				if(alterPlaneLine(planeName, Resources.makeFileResourceName("skills/planesofexistence.txt"+i), rule))
 				{
 					map.put(planeName.toUpperCase().trim(), planeParms);
 					return changes.toString();
