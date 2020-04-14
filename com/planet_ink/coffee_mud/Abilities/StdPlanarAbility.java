@@ -149,7 +149,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 	 * @param hardBumpLevel the hardBumpLevel to set
 	 */
 	@Override
-	public final void setHardBumpLevel(int hardBumpLevel)
+	public final void setHardBumpLevel(final int hardBumpLevel)
 	{
 		this.hardBumpLevel = hardBumpLevel;
 	}
@@ -311,8 +311,8 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		fatigueRate		= 0;
 	}
 
-	
-	
+
+
 	@Override
 	public String addOrEditPlane(final String planeName, final String rule)
 	{
@@ -340,8 +340,8 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			final StringBuffer old=F.text();
 			if((!old.toString().endsWith("\n"))
 			&&(!old.toString().endsWith("\r")))
-				old.append("\n");
-			old.append("\"").append(planeName).append("\" ").append(rule).append("\n");
+				old.append("\r\n");
+			old.append("\"").append(planeName).append("\" ").append(rule).append("\r\n");
 			F.saveText(old.toString());
 			map.put(planeName.toUpperCase().trim(), planeParms);
 			return null;
@@ -356,8 +356,8 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 					changes.append("REMOVED: ").append(oldKey).append("\n\r");
 				else
 				{
-					String oldVal = oldPlane.get(oldKey);
-					String newVal = planeParms.get(oldKey);
+					final String oldVal = oldPlane.get(oldKey);
+					final String newVal = planeParms.get(oldKey);
 					if(!oldVal.equals(newVal))
 					{
 						changes.append("CHANGED: ").append(oldKey).append(": '").append(oldVal)
@@ -383,7 +383,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			return "ERROR: Not Found!";
 		}
 	}
-	
+
 	protected boolean alterPlaneLine(final String planeName, final String fileName, final String rule)
 	{
 		final CMFile F=new CMFile(fileName,null);
@@ -407,16 +407,16 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 					lines.remove(i);
 				else
 					lines.set(i,"\""+planeName+"\" "+rule);
-				StringBuilder newFile = new StringBuilder("");
+				final StringBuilder newFile = new StringBuilder("");
 				for(final String fline : lines)
-					newFile.append(fline).append("\n");
+					newFile.append(fline).append("\r\n");
 				F.saveText(newFile.toString());
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean deletePlane(final String planeName)
 	{
@@ -444,7 +444,12 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			this.planarName=newText;
 			this.planeVars=getPlanarVars(newText);
 			if(this.planeVars==null)
-				throw new IllegalArgumentException("Unknown: "+newText);
+			{
+				if(newText.equalsIgnoreCase("DEFAULT_NEW"))
+					this.planeVars=new Hashtable<String,String>();
+				else
+					throw new IllegalArgumentException("Unknown: "+newText);
+			}
 			this.roomsDone=new WeakArrayList<Room>();
 			this.planarPrefix=planeVars.get(PlanarVar.PREFIX.toString());
 			if(planeVars.containsKey(PlanarVar.CATEGORY.toString()))

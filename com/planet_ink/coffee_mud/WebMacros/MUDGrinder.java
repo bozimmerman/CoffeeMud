@@ -476,9 +476,6 @@ public class MUDGrinder extends StdWebMacro
 				return "@break@";
 			if(last.length()==0)
 				return "@break@";
-			final List<AbilityComponent> list = CMLib.ableComponents().getAbilityComponents(last);
-			if(list==null)
-				return "@break@";
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.PLANES))
 				return "@break@";
 			final PlanarAbility planar=(PlanarAbility)CMClass.getAbilityPrototype("StdPlanarAbility");

@@ -383,7 +383,9 @@
        				<SELECT NAME=BEHAVAFFID_V@RequestParameter?CT@ ONCHANGE="ReShow()">
        				@PlanarData?BEHAVAFFID&V@@RequestParameter?CT@@ @
        				</SELECT>
+       				<FONT COLOR=WHITE>
        				Keep parms: <INPUT TYPE=CHECKBOX NAME=BEHAVAFFID_S@RequestParameter?CT@ @PlanarData?BEHAVAFFID&S@@RequestParameter?CT@@ @>
+       				</FONT>
        			</TD>
         		</TR>
         	@back@
@@ -392,13 +394,12 @@
        				<SELECT NAME=BEHAVAFFID_@RequestParameter?CT@ ONCHANGE="ReShow()">
        				@PlanarData?BEHAVAFFID&@@RequestParameter?CT@@ @
        				</SELECT>
-       				<BR>
-       				<FONT COLOR=WHITE>Keep parms: <INPUT TYPE=CHECKBOX NAME=BEHAVAFFID_S@RequestParameter?CT@ @PlanarData?BEHAVAFFID&S@@RequestParameter?CT@@ @></FONT>
        			</TD>
        			<TD>
        				<SELECT NAME=BEHAVAFFID_V@RequestParameter?CT@ ONCHANGE="ReShow()">
        				@PlanarData?BEHAVAFFID&V@@RequestParameter?CT@@ @
        				</SELECT>
+       				<FONT COLOR=WHITE>Keep parms: <INPUT TYPE=CHECKBOX NAME=BEHAVAFFID_S@RequestParameter?CT@ @PlanarData?BEHAVAFFID&S@@RequestParameter?CT@@ @></FONT>
        			</TD>
        		</TR>
         	</TABLE>
@@ -511,26 +512,30 @@
         <TD WIDTH=75%>
         	<FONT COLOR=WHITE>
         	<TABLE BORDER=0 WIDTH=100%>
+        	@AddRequestParameter?SHOWCT=1@
         	@AddRequestParameter?CT=0@
         	@loop@
+	        	@AddRequestParameter?SHOWCT=@@RequestParameter?CT@@ @
+	        	@AddRequestParameter?SHOWCT=**@
+	        	@AddRequestParameter?SHOWCT=++@
 	        	@AddRequestParameter?CT=++@
 	        	@AddRequestParameter?PROMOTIONSEXISTS=@@PlanarData?PROMOTIONS&EXISTS_@@@RequestParameter?CT@@@ @@ @
 	        	@if?CheckReqParm?PROMOTIONSEXISTS=@ @break@ @endif@
         		<TR>
         			<TD>
-	        			<FONT COLOR=WHITE>Title:<INPUT TYPE=TEXT SIZE=30 NAME="PROMOTIONS_@RequestParameter?CT@" VALUE="@PlanarData?PROMOTIONS&@@RequestParameter?CT@@ @"></FONT>
+	        			<FONT COLOR=WHITE>X@RequestParameter?SHOWCT@ Title:<INPUT TYPE=TEXT SIZE=20 NAME="PROMOTIONS_@RequestParameter?CT@" VALUE="@PlanarData?PROMOTIONS&@@RequestParameter?CT@@ @"></FONT>
         			</TD>
         			<TD>
-	        			<FONT COLOR=WHITE>Chance%:<INPUT TYPE=TEXT SIZE=30 NAME="PROMOTIONS_V@RequestParameter?CT@" VALUE="@PlanarData?PROMOTIONS&V@@RequestParameter?CT@@ @"></FONT>
+	        			<FONT COLOR=WHITE>Chance%:<INPUT TYPE=TEXT SIZE=20 NAME="PROMOTIONS_V@RequestParameter?CT@" VALUE="@PlanarData?PROMOTIONS&V@@RequestParameter?CT@@ @"></FONT>
         			</TD>
         		</TR>
         	@back@
        		<TR>
        			<TD>
-        			<FONT COLOR=WHITE><INPUT TYPE=TEXT SIZE=30 NAME="PROMOTIONS_@RequestParameter?CT@" VALUE=""></FONT>
+        			<FONT COLOR=WHITE>X@RequestParameter?SHOWCT@ Title:<INPUT TYPE=TEXT SIZE=5 NAME="PROMOTIONS_@RequestParameter?CT@" VALUE=""></FONT>
        			</TD>
        			<TD>
-        			<FONT COLOR=WHITE><INPUT TYPE=TEXT SIZE=30 NAME="PROMOTIONS_V@RequestParameter?CT@" VALUE=""></FONT>
+        			<FONT COLOR=WHITE>Chance%:<INPUT TYPE=TEXT SIZE=5 NAME="PROMOTIONS_V@RequestParameter?CT@" VALUE=""></FONT>
        			</TD>
        		</TR>
         	</TABLE>

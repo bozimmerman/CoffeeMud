@@ -53,7 +53,7 @@ public class GrinderPlanes
 		}
 		return "";
 	}
-	
+
 	public String runMacro(final HTTPRequest httpReq, final String parm)
 	{
 		String last=httpReq.getUrlParameter("PLANE");
@@ -119,15 +119,15 @@ public class GrinderPlanes
 					break;
 				case AREABLURBS:
 				{
-					Map<String,String> parsed = CMParms.parseEQParms(httpVal);
+					final Map<String,String> parsed = CMParms.parseEQParms(httpVal);
 					if(httpReq.isUrlParameter(key+"_1"))
 					{
 						parsed.clear();
 						int i=1;
 						while(httpReq.isUrlParameter(key+"_"+i))
 						{
-							String chg=httpReq.getUrlParameter(key+"_"+i);
-							String to=httpReq.getUrlParameter(key+"_V"+i);
+							final String chg=httpReq.getUrlParameter(key+"_"+i);
+							final String to=httpReq.getUrlParameter(key+"_V"+i);
 							if(chg.length()>0)
 								parsed.put(chg, to);
 							i++;
@@ -157,14 +157,14 @@ public class GrinderPlanes
 				{
 					if(httpReq.isUrlParameter(key+"_1"))
 					{
-						List<Pair<String,String>> parsed = new ArrayList<Pair<String,String>>();
+						final List<Pair<String,String>> parsed = new ArrayList<Pair<String,String>>();
 						int i=1;
 						while(httpReq.isUrlParameter(key+"_"+i))
 						{
-							String chg=httpReq.getUrlParameter(key+"_"+i);
-							String cp=httpReq.getUrlParameter(key+"_S"+i);
-							String to=httpReq.getUrlParameter(key+"_V"+i);
-							if(chg.length()>0)
+							final String chg=httpReq.getUrlParameter(key+"_"+i);
+							final String cp=httpReq.getUrlParameter(key+"_S"+i);
+							final String to=httpReq.getUrlParameter(key+"_V"+i);
+							if((chg!=null)&&(chg.length()>0)&&(to.length()>0))
 								parsed.add(new Pair<String,String>(chg,("on".equalsIgnoreCase(cp)?"*":"")+to));
 							i++;
 						}
@@ -175,7 +175,7 @@ public class GrinderPlanes
 							{
 								finalStr.append(p.first);
 								if(p.second.trim().length()>0)
-									finalStr.append("(").append(p.second).append(")");
+									finalStr.append("=").append(p.second);
 								if(p != parsed.get(parsed.size()-1))
 									finalStr.append(" ");
 							}
@@ -188,12 +188,12 @@ public class GrinderPlanes
 				{
 					if(httpReq.isUrlParameter(key+"_1"))
 					{
-						List<Pair<String,String>> parsed = new ArrayList<Pair<String,String>>();
+						final List<Pair<String,String>> parsed = new ArrayList<Pair<String,String>>();
 						int i=1;
 						while(httpReq.isUrlParameter(key+"_"+i))
 						{
-							String chg=httpReq.getUrlParameter(key+"_"+i);
-							String to=httpReq.getUrlParameter(key+"_V"+i);
+							final String chg=httpReq.getUrlParameter(key+"_"+i);
+							final String to=httpReq.getUrlParameter(key+"_V"+i);
 							if(chg.length()>0)
 								parsed.add(new Pair<String,String>(chg,to));
 							i++;
@@ -238,12 +238,12 @@ public class GrinderPlanes
 				{
 					if(httpReq.isUrlParameter(key+"_1"))
 					{
-						List<Pair<String,String>> parsed = new ArrayList<Pair<String,String>>();
+						final List<Pair<String,String>> parsed = new ArrayList<Pair<String,String>>();
 						int i=1;
 						while(httpReq.isUrlParameter(key+"_"+i))
 						{
-							String chg=httpReq.getUrlParameter(key+"_"+i);
-							String to=httpReq.getUrlParameter(key+"_V"+i);
+							final String chg=httpReq.getUrlParameter(key+"_"+i);
+							final String to=httpReq.getUrlParameter(key+"_V"+i);
 							if(chg.length()>0)
 								parsed.add(new Pair<String,String>(chg,to));
 							i++;
@@ -255,7 +255,7 @@ public class GrinderPlanes
 							{
 								if(p.first.equalsIgnoreCase("number"))
 								{
-									int x=p.second.indexOf('/');
+									final int x=p.second.indexOf('/');
 									if((x<0)
 									||(!CMath.isInteger(p.second.substring(0,x)))
 									||(!CMath.isInteger(p.second.substring(x+1))))
@@ -276,12 +276,12 @@ public class GrinderPlanes
 				{
 					if(httpReq.isUrlParameter(key+"_1"))
 					{
-						List<Pair<String,String>> parsed = new ArrayList<Pair<String,String>>();
+						final List<Pair<String,String>> parsed = new ArrayList<Pair<String,String>>();
 						int i=1;
 						while(httpReq.isUrlParameter(key+"_"+i))
 						{
-							String chg=httpReq.getUrlParameter(key+"_"+i);
-							String to=httpReq.getUrlParameter(key+"_V"+i);
+							final String chg=httpReq.getUrlParameter(key+"_"+i);
+							final String to=httpReq.getUrlParameter(key+"_V"+i);
 							if(chg.length()>0)
 								parsed.add(new Pair<String,String>(chg,to));
 							i++;
@@ -359,12 +359,12 @@ public class GrinderPlanes
 				{
 					if(httpReq.isUrlParameter(key+"_1"))
 					{
-						List<Pair<String,String>> parsed = new ArrayList<Pair<String,String>>();
+						final List<Pair<String,String>> parsed = new ArrayList<Pair<String,String>>();
 						int i=1;
 						while(httpReq.isUrlParameter(key+"_"+i))
 						{
-							String chg=httpReq.getUrlParameter(key+"_"+i);
-							String to=httpReq.getUrlParameter(key+"_V"+i);
+							final String chg=httpReq.getUrlParameter(key+"_"+i);
+							final String to=httpReq.getUrlParameter(key+"_V"+i);
 							if(chg.length()>0)
 							{
 								if(!CMath.isInteger(to))
@@ -401,12 +401,12 @@ public class GrinderPlanes
 				{
 					if(httpReq.isUrlParameter(key+"_1"))
 					{
-						List<Pair<String,String>> parsed = new ArrayList<Pair<String,String>>();
+						final List<Pair<String,String>> parsed = new ArrayList<Pair<String,String>>();
 						int i=1;
 						while(httpReq.isUrlParameter(key+"_"+i))
 						{
-							String chg=httpReq.getUrlParameter(key+"_"+i);
-							String to=httpReq.getUrlParameter(key+"_V"+i);
+							final String chg=httpReq.getUrlParameter(key+"_"+i);
+							final String to=httpReq.getUrlParameter(key+"_V"+i);
 							if(chg.length()>0)
 								parsed.add(new Pair<String,String>(chg,to));
 							i++;
@@ -431,7 +431,7 @@ public class GrinderPlanes
 				{
 					if(httpReq.isUrlParameter(key))
 					{
-						StringBuilder str=new StringBuilder("");
+						final StringBuilder str=new StringBuilder("");
 						str.append(httpReq.getUrlParameter(key));
 						for(int i=1;httpReq.isUrlParameter(key+i);i++)
 							str.append(" ").append(httpReq.getUrlParameter(key+i));
@@ -471,7 +471,7 @@ public class GrinderPlanes
 					break;
 				case SPECFLAGS:
 				{
-					List<String> selected = new ArrayList<String>(2);
+					final List<String> selected = new ArrayList<String>(2);
 					if(httpReq.isUrlParameter("SPECFLAGS"))
 					{
 						selected.add(httpReq.getUrlParameter("SPECFLAGS"));
@@ -510,13 +510,13 @@ public class GrinderPlanes
 					break;
 				default:
 					break;
-				
+
 				}
 			}
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if(M==null)
 				return "[authentication error]";
-			boolean exists = planeSet.getPlanarVars(last)!=null; 
+			final boolean exists = planeSet.getPlanarVars(last)!=null;
 			final String err = planeSet.addOrEditPlane(last, finalStr.toString());
 			if(exists)
 			{

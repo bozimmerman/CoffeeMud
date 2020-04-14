@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.PlanarAbility.PlanarVar;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -59,7 +60,13 @@ public class PlanarData extends StdWebMacro
 			if(!httpReq.getRequestObjects().containsKey("SYSTEM_PLANE_CACHE_"+last.toUpperCase()))
 			{
 				final PlanarAbility planeSet = (PlanarAbility)CMClass.getAbility("StdPlanarAbility");
-				planeSet.setMiscText(last);
+				if(!planeSet.getAllPlaneKeys().contains(last.toUpperCase().trim()))
+				{
+					planeSet.setMiscText("DEFAULT_NEW");
+					planeSet.getPlaneVars().put(PlanarVar.ID.name(), last);
+				}
+				else
+					planeSet.setMiscText(last);
 				httpReq.getRequestObjects().put("SYSTEM_PLANE_CACHE_"+last.toUpperCase(), planeSet);
 			}
 			final PlanarAbility planeObj = (PlanarAbility)httpReq.getRequestObjects().get("SYSTEM_PLANE_CACHE_"+last.toUpperCase());
@@ -69,7 +76,7 @@ public class PlanarData extends StdWebMacro
 				final Converter<String,String> toLowerCase=new Converter<String,String>()
 				{
 					@Override
-					public String convert(String obj)
+					public String convert(final String obj)
 					{
 						return obj.toLowerCase();
 					}
@@ -115,15 +122,15 @@ public class PlanarData extends StdWebMacro
 						break;
 					case AREABLURBS:
 					{
-						Map<String,String> parsed = CMParms.parseEQParmsLow(httpVal);
+						final Map<String,String> parsed = CMParms.parseEQParmsLow(httpVal);
 						if(httpReq.isUrlParameter(key+"_1"))
 						{
 							parsed.clear();
 							int i=1;
 							while(httpReq.isUrlParameter(key+"_"+i))
 							{
-								String chg=httpReq.getUrlParameter(key+"_"+i);
-								String to=httpReq.getUrlParameter(key+"_V"+i);
+								final String chg=httpReq.getUrlParameter(key+"_"+i);
+								final String to=httpReq.getUrlParameter(key+"_V"+i);
 								if(chg.length()>0)
 									parsed.put(chg, to);
 								i++;
@@ -155,23 +162,23 @@ public class PlanarData extends StdWebMacro
 					}
 					case BEHAVAFFID:
 					{
-						Map<String,String> parsed = CMParms.parseEQParms(httpVal);
+						final PairList<String,String> parsed = CMParms.parseEQParmsList(httpVal);
 						if(httpReq.isUrlParameter(key+"_1"))
 						{
 							parsed.clear();
 							int i=1;
 							while(httpReq.isUrlParameter(key+"_"+i))
 							{
-								String chg=httpReq.getUrlParameter(key+"_"+i);
-								String cp=httpReq.getUrlParameter(key+"_S"+i);
-								String to=httpReq.getUrlParameter(key+"_V"+i);
+								final String chg=httpReq.getUrlParameter(key+"_"+i);
+								final String cp=httpReq.getUrlParameter(key+"_S"+i);
+								final String to=httpReq.getUrlParameter(key+"_V"+i);
 								if(chg.length()>0)
-									parsed.put(chg, (cp.equalsIgnoreCase("on")?"*":"")+to);
+									parsed.add(chg, ("on".equalsIgnoreCase(cp)?"*":"")+to);
 								i++;
 							}
 						}
 						int i=1;
-						for(final String k : parsed.keySet())
+						for(final Pair<String,String> k : parsed)
 						{
 							if(parms.containsKey("EXISTS_"+i))
 							{
@@ -184,24 +191,24 @@ public class PlanarData extends StdWebMacro
 								for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 								{
 									final Behavior B=b.nextElement();
-									str.append("<OPTION VALUE=\""+B.ID()+"\" "+(B.ID().equalsIgnoreCase(k)?"SELECTED":"")+">").append(B.ID());
+									str.append("<OPTION VALUE=\""+B.ID().toLowerCase()+"\" "+(B.ID().equalsIgnoreCase(k.first)?"SELECTED":"")+">").append(B.ID());
 								}
 								str.append(", ");
 							}
 							if(parms.containsKey("S"+i))
 							{
-								boolean st=parsed.containsKey(key)?parsed.get(key).startsWith("*"):false;
+								final boolean st=k.second.startsWith("*");
 								str.append(st?"CHECKED":"").append(", ");
 							}
 							if(parms.containsKey("V"+i))
 							{
-								String val=parsed.get(key);
+								String val=k.second;
 								if((val != null) && val.startsWith("*"))
 									val=val.substring(1);
 								for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 								{
 									final Behavior B=b.nextElement();
-									str.append("<OPTION VALUE=\""+B.ID()+"\" "+(B.ID().equalsIgnoreCase(val)?"SELECTED":"")+">").append(B.ID());
+									str.append("<OPTION VALUE=\""+B.ID().toLowerCase()+"\" "+(B.ID().equalsIgnoreCase(val)?"SELECTED":"")+">").append(B.ID());
 								}
 								str.append(", ");
 							}
@@ -213,7 +220,7 @@ public class PlanarData extends StdWebMacro
 							for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 							{
 								final Behavior B=b.nextElement();
-								str.append("<OPTION VALUE=\""+B.ID()+"\" >").append(B.ID());
+								str.append("<OPTION VALUE=\""+B.ID().toLowerCase()+"\" >").append(B.ID());
 							}
 							str.append(", ");
 						}
@@ -221,15 +228,15 @@ public class PlanarData extends StdWebMacro
 					}
 					case BEHAVE:
 					{
-						List<Pair<String,String>> parsed = CMParms.parseSpaceParenList(httpVal);
+						final List<Pair<String,String>> parsed = CMParms.parseSpaceParenList(httpVal);
 						if(httpReq.isUrlParameter(key+"_1"))
 						{
 							parsed.clear();
 							int i=1;
 							while(httpReq.isUrlParameter(key+"_"+i))
 							{
-								String chg=httpReq.getUrlParameter(key+"_"+i);
-								String to=httpReq.getUrlParameter(key+"_V"+i);
+								final String chg=httpReq.getUrlParameter(key+"_"+i);
+								final String to=httpReq.getUrlParameter(key+"_V"+i);
 								if(chg.length()>0)
 									parsed.add(new Pair<String,String>(chg,to));
 								i++;
@@ -288,15 +295,15 @@ public class PlanarData extends StdWebMacro
 						break;
 					case ENABLE:
 					{
-						List<Pair<String,String>> parsed = CMParms.parseSpaceParenList(httpVal);
+						final List<Pair<String,String>> parsed = CMParms.parseSpaceParenList(httpVal);
 						if(httpReq.isUrlParameter(key+"_1"))
 						{
 							parsed.clear();
 							int i=1;
 							while(httpReq.isUrlParameter(key+"_"+i))
 							{
-								String chg=httpReq.getUrlParameter(key+"_"+i);
-								String to=httpReq.getUrlParameter(key+"_V"+i);
+								final String chg=httpReq.getUrlParameter(key+"_"+i);
+								final String to=httpReq.getUrlParameter(key+"_V"+i);
 								if(chg.length()>0)
 									parsed.add(new Pair<String,String>(chg,to));
 								i++;
@@ -315,14 +322,14 @@ public class PlanarData extends StdWebMacro
 									new ConvertingEnumeration<Ability,String>(
 											new FilteredEnumeration<Ability>(CMClass.abilities(), new Filterer<Ability>(){
 												@Override
-												public boolean passesFilter(Ability obj)
+												public boolean passesFilter(final Ability obj)
 												{
 													return !CMParms.containsIgnoreCase(flags,obj.ID().toLowerCase());
 												}
 											})
 										, new Converter<Ability,String>(){
 											@Override
-											public String convert(Ability obj)
+											public String convert(final Ability obj)
 											{
 												return obj.ID();
 											}
@@ -359,15 +366,15 @@ public class PlanarData extends StdWebMacro
 					}
 					case FACTIONS:
 					{
-						List<Pair<String,String>> parsed = CMParms.parseSpaceParenList(httpVal);
+						final List<Pair<String,String>> parsed = CMParms.parseSpaceParenList(httpVal);
 						if(httpReq.isUrlParameter(key+"_1"))
 						{
 							parsed.clear();
 							int i=1;
 							while(httpReq.isUrlParameter(key+"_"+i))
 							{
-								String chg=httpReq.getUrlParameter(key+"_"+i);
-								String to=httpReq.getUrlParameter(key+"_V"+i);
+								final String chg=httpReq.getUrlParameter(key+"_"+i);
+								final String to=httpReq.getUrlParameter(key+"_V"+i);
 								if(chg.length()>0)
 									parsed.add(new Pair<String,String>(chg,to));
 								i++;
@@ -382,7 +389,7 @@ public class PlanarData extends StdWebMacro
 							options.addAll(new XVector<String>(new ConvertingEnumeration<Faction,String>(CMLib.factions().factions(), new Converter<Faction,String>()
 							{
 								@Override
-								public String convert(Faction obj)
+								public String convert(final Faction obj)
 								{
 									if(obj.name().indexOf(' ')<0)
 										return obj.name();
@@ -465,15 +472,15 @@ public class PlanarData extends StdWebMacro
 						break;
 					case PROMOTIONS:
 					{
-						List<Pair<String,String>> parsed = CMParms.parseCommaParenListLow(httpVal);
+						final List<Pair<String,String>> parsed = CMParms.parseCommaParenListLow(httpVal);
 						if(httpReq.isUrlParameter(key+"_1"))
 						{
 							parsed.clear();
 							int i=1;
 							while(httpReq.isUrlParameter(key+"_"+i))
 							{
-								String chg=httpReq.getUrlParameter(key+"_"+i);
-								String to=httpReq.getUrlParameter(key+"_V"+i);
+								final String chg=httpReq.getUrlParameter(key+"_"+i);
+								final String to=httpReq.getUrlParameter(key+"_V"+i);
 								if(chg.length()>0)
 									parsed.add(new Pair<String,String>(chg,to));
 								i++;
@@ -501,15 +508,15 @@ public class PlanarData extends StdWebMacro
 					case AEFFECT:
 					case REFFECT:
 					{
-						List<Pair<String,String>> parsed = CMParms.parseSpaceParenList(httpVal);
+						final List<Pair<String,String>> parsed = CMParms.parseSpaceParenList(httpVal);
 						if(httpReq.isUrlParameter(key+"_1"))
 						{
 							parsed.clear();
 							int i=1;
 							while(httpReq.isUrlParameter(key+"_"+i))
 							{
-								String chg=httpReq.getUrlParameter(key+"_"+i);
-								String to=httpReq.getUrlParameter(key+"_V"+i);
+								final String chg=httpReq.getUrlParameter(key+"_"+i);
+								final String to=httpReq.getUrlParameter(key+"_V"+i);
 								if(chg.length()>0)
 									parsed.add(new Pair<String,String>(chg,to));
 								i++;
@@ -602,7 +609,7 @@ public class PlanarData extends StdWebMacro
 								}
 								if(httpVal != null)
 								{
-									int x=httpVal.indexOf(' ');
+									final int x=httpVal.indexOf(' ');
 									if((x>0)&&(CMath.isInteger(httpVal.substring(0,x).trim())))
 										chance=""+CMath.s_int(httpVal.substring(0,x).trim());
 								}
@@ -618,7 +625,7 @@ public class PlanarData extends StdWebMacro
 							}
 							if(httpVal != null)
 							{
-								int x=httpVal.indexOf(' ');
+								final int x=httpVal.indexOf(' ');
 								if((x>0)&&(CMath.isInteger(httpVal.substring(0,x).trim())))
 									httpVal = httpVal.substring(x).trim();
 							}
@@ -683,7 +690,7 @@ public class PlanarData extends StdWebMacro
 						break;
 					default:
 						break;
-					
+
 					}
 				}
 			}

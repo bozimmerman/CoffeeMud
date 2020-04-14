@@ -1613,6 +1613,31 @@ public class CMParms
 
 	/**
 	 * Parses the given string for [PARAM]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
+	 * values in space-delimited fashion, respecting quotes value.
+	 * Returns a list of the found parameters and their values, with keys normalized to
+	 * uppercase.
+	 * @param parms the string to parse
+	 * @return the map of key/value pairs found.
+	 */
+	public final static PairList<String,String> parseEQParmsList(final String parms)
+	{
+		return parseEQParmsList(parms,spaceDelimiter,true);
+	}
+
+	/**
+	 * Parses the given string for [PARAM]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
+	 * values in space-delimited fashion, respecting quotes value.
+	 * Returns a list of the found parameters and their values, with keys not normalized.
+	 * @param parms the string to parse
+	 * @return the map of key/value pairs found.
+	 */
+	public final static PairList<String,String> parseEQParmsLowList(final String parms)
+	{
+		return parseEQParmsList(parms,spaceDelimiter,false);
+	}
+
+	/**
+	 * Parses the given string for [PARAM]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
 	 * values in given-delimited fashion, respecting quotes value.
 	 * Returns a map of the found parameters and their values, with keys normalized to
 	 * uppercase.
@@ -1624,6 +1649,24 @@ public class CMParms
 	public final static Map<String,String> parseEQParms(final String parms, final DelimiterChecker delimiterCheck, final boolean upperCase)
 	{
 		final Map<String,String> h=new Hashtable<String,String>();
+		for(final Pair<String,String> p : parseEQParmsList(parms, delimiterCheck, upperCase))
+			h.put(p.first, p.second);
+		return h;
+	}
+
+	/**
+	 * Parses the given string for [PARAM]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
+	 * values in given-delimited fashion, respecting quotes value.
+	 * Returns a pairlist of the found parameters and their values, with keys normalized to
+	 * uppercase optionally.
+	 * @param parms the string to parse
+	 * @param delimiterCheck the checker to determine if a character is the given delimiter
+	 * @param upperCase make the keys uppercase
+	 * @return the map of key/value pairs found.
+	 */
+	public final static PairList<String,String> parseEQParmsList(final String parms, final DelimiterChecker delimiterCheck, final boolean upperCase)
+	{
+		final PairList<String,String> h=new PairVector<String,String>();
 		int state=0;
 		int start=-1;
 		String parmName=null;
@@ -1647,7 +1690,7 @@ public class CMParms
 				if((c=='_')||(Character.isLetter(c)))
 				{
 					if((parmName!=null)&&(parmName.length()>0))
-						h.put(parmName, "");
+						h.add(parmName, "");
 					start=x;
 					state=1;
 					parmName=null;
@@ -1708,7 +1751,7 @@ public class CMParms
 				if(c=='\"')
 				{
 					state=0;
-					h.put(parmName,str.substring(start,x));
+					h.add(parmName,str.substring(start,x));
 					parmName=null;
 				}
 				break;
@@ -1723,7 +1766,7 @@ public class CMParms
 						state=2;
 					else
 					{
-						h.put(parmName,str.substring(start,lastPossibleStart).trim());
+						h.add(parmName,str.substring(start,lastPossibleStart).trim());
 						if(upperCase)
 							parmName=str.substring(lastPossibleStart,x).toUpperCase().trim();
 						else
@@ -1735,7 +1778,7 @@ public class CMParms
 				if(c=='\n')
 				{
 					state=0;
-					h.put(parmName,str.substring(start,x));
+					h.add(parmName,str.substring(start,x));
 					parmName=null;
 				}
 				else
@@ -1963,7 +2006,7 @@ public class CMParms
 		}
 		return pairList;
 	}
-	
+
 	/**
 	 * This method is a sloppy, forgiving method doing KEY+[INT] or KEY-[INT] value searches
 	 * in a string.  Returns the value of the given key.  If the key is not found, it will
