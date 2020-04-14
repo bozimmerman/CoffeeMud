@@ -82,19 +82,23 @@ public class GrinderPlanes
 					||((height != null)&&(height.trim().length()>0)))
 					{
 						finalStr.append(var.toString().toLowerCase()).append("=\"");
-						if((weight != null)&&(weight.trim().length()>0))
-						{
-							if(CMath.isInteger(weight))
-								finalStr.append("WEIGHT="+weight).append(" ");
-							else
-								return var.toString()+":WEIGHT is not valid.";
-						}
 						if((height != null)&&(height.trim().length()>0))
 						{
 							if(CMath.isInteger(height))
-								finalStr.append("HEIGHT="+height).append(" ");
+								finalStr.append("height="+height);
 							else
-								return var.toString()+":HEIGHT is not valid.";
+								return var.toString()+":height is not valid.";
+						}
+						if((weight != null)&&(weight.trim().length()>0))
+						{
+							if(CMath.isInteger(weight))
+							{
+								if((height != null)&&(height.trim().length()>0))
+									finalStr.append(" ");
+								finalStr.append("weight="+weight);
+							}
+							else
+								return var.toString()+":weight is not valid.";
 						}
 						finalStr.append("\" ");
 					}
@@ -146,7 +150,6 @@ public class GrinderPlanes
 				}
 				case ATMOSPHERE:
 				{
-					
 					finalStr.append(standardField(var,httpVal.toLowerCase()));
 					break;
 				}
@@ -162,7 +165,7 @@ public class GrinderPlanes
 							String cp=httpReq.getUrlParameter(key+"_S"+i);
 							String to=httpReq.getUrlParameter(key+"_V"+i);
 							if(chg.length()>0)
-								parsed.add(new Pair<String,String>(chg, (cp.equalsIgnoreCase("on")?"*":"")+to));
+								parsed.add(new Pair<String,String>(chg,("on".equalsIgnoreCase(cp)?"*":"")+to));
 							i++;
 						}
 						if(parsed.size()>0)
@@ -426,7 +429,14 @@ public class GrinderPlanes
 				}
 				case REQWEAPONS:
 				{
-					finalStr.append(standardField(var,httpVal));
+					if(httpReq.isUrlParameter(key))
+					{
+						StringBuilder str=new StringBuilder("");
+						str.append(httpReq.getUrlParameter(key));
+						for(int i=1;httpReq.isUrlParameter(key+i);i++)
+							str.append(" ").append(httpReq.getUrlParameter(key+i));
+						finalStr.append(standardField(var,str.toString()));
+					}
 					break;
 				}
 				case ROOMADJS:
@@ -462,12 +472,13 @@ public class GrinderPlanes
 				case SPECFLAGS:
 				{
 					List<String> selected = new ArrayList<String>(2);
-					if(httpReq.isUrlParameter("VOTEFUNCS"))
+					if(httpReq.isUrlParameter("SPECFLAGS"))
 					{
+						selected.add(httpReq.getUrlParameter("SPECFLAGS"));
 						int x=1;
-						while(httpReq.getUrlParameter("VOTEFUNCS"+x)!=null)
+						while(httpReq.getUrlParameter("SPECFLAGS"+x)!=null)
 						{
-							selected.add(httpReq.getUrlParameter("VOTEFUNCS"+x));
+							selected.add(httpReq.getUrlParameter("SPECFLAGS"+x));
 							x++;
 						}
 					}
@@ -475,7 +486,11 @@ public class GrinderPlanes
 					{
 						finalStr.append(var.toString().toLowerCase()).append("=\"");
 						for(final String s : selected)
-							finalStr.append(s).append(" ");
+						{
+							finalStr.append(s);
+							if(s != selected.get(selected.size()-1))
+								finalStr.append(" ");
+						}
 						finalStr.append("\" ");
 					}
 					break;

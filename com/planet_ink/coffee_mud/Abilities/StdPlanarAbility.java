@@ -340,8 +340,8 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			final StringBuffer old=F.text();
 			if((!old.toString().endsWith("\n"))
 			&&(!old.toString().endsWith("\r")))
-				old.append("\n\r");
-			old.append("\"").append(planeName).append("\" ").append(rule).append("\n\r");
+				old.append("\n");
+			old.append("\"").append(planeName).append("\" ").append(rule).append("\n");
 			F.saveText(old.toString());
 			map.put(planeName.toUpperCase().trim(), planeParms);
 			return null;
@@ -368,7 +368,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			for(final String newKey : planeParms.keySet())
 			{
 				if(!oldPlane.containsKey(newKey))
-					changes.append("ADDED: ").append(newKey).append("\n\r");
+					changes.append("ADDED: ").append(newKey).append("\n");
 			}
 			if(changes.length()==0)
 				return "";
@@ -409,7 +409,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 					lines.set(i,"\""+planeName+"\" "+rule);
 				StringBuilder newFile = new StringBuilder("");
 				for(final String fline : lines)
-					newFile.append(fline).append("\n\r");
+					newFile.append(fline).append("\n");
 				F.saveText(newFile.toString());
 				return true;
 			}

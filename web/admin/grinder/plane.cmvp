@@ -179,7 +179,7 @@
     <TR>
         <TD WIDTH=25%><FONT COLOR=YELLOW>Required Weapons: </FONT></TD>
         <TD WIDTH=75%>
-            <SELECT NAME="REQWEAPONS">
+            <SELECT NAME="REQWEAPONS" MULTIPLE>
             @PlanarData?REQWEAPONS@
             </SELECT>
         </TD>
@@ -221,6 +221,14 @@
         <TD WIDTH=75%>
             <SELECT NAME="SPECFLAGS" MULTIPLE>
             @PlanarData?SPECFLAGS@
+            </SELECT>
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=25%><FONT COLOR=YELLOW>Bonus Damage Stat:</FONT></TD>
+        <TD WIDTH=75%>
+            <SELECT NAME="BONUSDAMAGESTAT" MULTIPLE>
+            @PlanarData?BONUSDAMAGESTAT@
             </SELECT>
         </TD>
     </TR>
@@ -449,7 +457,7 @@
         				</SELECT>
         			</TD>
         			<TD>
-	        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=20 NAME="FACTIONS_V@RequestParameter?CT@" VALUE="@PlanarData?FACTIONS&V@@RequestParameter?CT@@ @"></FONT>
+	        			<FONT COLOR=WHITE>Amt:<INPUT TYPE=TEXT SIZE=20 NAME="FACTIONS_V@RequestParameter?CT@" VALUE="@PlanarData?FACTIONS&V@@RequestParameter?CT@@ @"></FONT>
         			</TD>
         		</TR>
         	@back@
@@ -460,7 +468,7 @@
        				</SELECT>
        			</TD>
        			<TD>
-        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=20 NAME="FACTIONS_V@RequestParameter?CT@" VALUE=""></FONT>
+        			<FONT COLOR=WHITE>Amt:<INPUT TYPE=TEXT SIZE=20 NAME="FACTIONS_V@RequestParameter?CT@" VALUE=""></FONT>
        			</TD>
        		</TR>
         	</TABLE>
@@ -482,7 +490,7 @@
 	       				<FONT COLOR=WHITE>Blurb:<INPUT TYPE=TEXT SIZE=25 NAME="AREABLURBS_@RequestParameter?CT@" VALUE="@PlanarData?AREABLURBS&@@RequestParameter?CT@@ @" ONCHANGE="if(this.value=='')ReShow();"></FONT>
         			</TD>
         			<TD>
-	        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="AREABLURBS_V@RequestParameter?CT@" VALUE="@PlanarData?AREABLURBS&V@@RequestParameter?CT@@ @"></FONT>
+	        			<FONT COLOR=WHITE>Value:<INPUT TYPE=TEXT SIZE=30 NAME="AREABLURBS_V@RequestParameter?CT@" VALUE="@PlanarData?AREABLURBS&V@@RequestParameter?CT@@ @"></FONT>
         			</TD>
         		</TR>
         	@back@
@@ -491,7 +499,7 @@
        				<FONT COLOR=WHITE>Blurb:<INPUT TYPE=TEXT SIZE=25 NAME="AREABLURBS_@RequestParameter?CT@" VALUE="" ONCHANGE="ReShow();"></FONT>
        			</TD>
        			<TD>
-        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="AREABLURBS_V@RequestParameter?CT@" VALUE=""></FONT>
+        			<FONT COLOR=WHITE>Value:<INPUT TYPE=TEXT SIZE=30 NAME="AREABLURBS_V@RequestParameter?CT@" VALUE=""></FONT>
        			</TD>
        		</TR>
         	</TABLE>
@@ -510,10 +518,10 @@
 	        	@if?CheckReqParm?PROMOTIONSEXISTS=@ @break@ @endif@
         		<TR>
         			<TD>
-	        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="PROMOTIONS_@RequestParameter?CT@" VALUE="@PlanarData?PROMOTIONS&@@RequestParameter?CT@@ @"></FONT>
+	        			<FONT COLOR=WHITE>Title:<INPUT TYPE=TEXT SIZE=30 NAME="PROMOTIONS_@RequestParameter?CT@" VALUE="@PlanarData?PROMOTIONS&@@RequestParameter?CT@@ @"></FONT>
         			</TD>
         			<TD>
-	        			<FONT COLOR=WHITE>Args:<INPUT TYPE=TEXT SIZE=30 NAME="PROMOTIONS_V@RequestParameter?CT@" VALUE="@PlanarData?PROMOTIONS&V@@RequestParameter?CT@@ @"></FONT>
+	        			<FONT COLOR=WHITE>Chance%:<INPUT TYPE=TEXT SIZE=30 NAME="PROMOTIONS_V@RequestParameter?CT@" VALUE="@PlanarData?PROMOTIONS&V@@RequestParameter?CT@@ @"></FONT>
         			</TD>
         		</TR>
         	@back@

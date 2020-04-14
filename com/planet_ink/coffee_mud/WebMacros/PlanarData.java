@@ -66,6 +66,14 @@ public class PlanarData extends StdWebMacro
 			final Map<String,String> planarData = planeObj.getPlaneVars();
 			if(planarData != null)
 			{
+				final Converter<String,String> toLowerCase=new Converter<String,String>()
+				{
+					@Override
+					public String convert(String obj)
+					{
+						return obj.toLowerCase();
+					}
+				};
 				for(final String p : parms.keySet())
 				{
 					final String key=p.toUpperCase().trim();
@@ -132,7 +140,7 @@ public class PlanarData extends StdWebMacro
 							if(parms.containsKey(""+i))
 								str.append(k).append(", ");
 							if(parms.containsKey("V"+i))
-								str.append(parsed.get(k)).append(", ");
+								str.append(super.htmlOutgoingFilter(parsed.get(k))).append(", ");
 							i++;
 						}
 						break;
@@ -182,13 +190,13 @@ public class PlanarData extends StdWebMacro
 							}
 							if(parms.containsKey("S"+i))
 							{
-								boolean st=parsed.get(key).startsWith("*");
+								boolean st=parsed.containsKey(key)?parsed.get(key).startsWith("*"):false;
 								str.append(st?"CHECKED":"").append(", ");
 							}
 							if(parms.containsKey("V"+i))
 							{
 								String val=parsed.get(key);
-								if(val.startsWith("*"))
+								if((val != null) && val.startsWith("*"))
 									val=val.substring(1);
 								for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 								{
@@ -246,7 +254,7 @@ public class PlanarData extends StdWebMacro
 								str.append(", ");
 							}
 							if(parms.containsKey("V"+i))
-								str.append(k.second).append(", ");
+								str.append(super.htmlOutgoingFilter(k.second)).append(", ");
 							i++;
 						}
 						if(parms.containsKey(""+(parsed.size()+1)))
@@ -265,7 +273,7 @@ public class PlanarData extends StdWebMacro
 						str.append("<OPTION VALUE=\"\" "+(((httpVal==null)||(httpVal.length()==0))?"SELECTED":"")+">").append("None");
 						for(final int stat : CharStats.CODES.BASECODES())
 						{
-							str.append("<OPTION VALUE=\""+CharStats.CODES.NAME(stat)+"\" "+(CharStats.CODES.NAME(stat).equalsIgnoreCase(httpVal)?"SELECTED":"")+">")
+							str.append("<OPTION VALUE=\""+CharStats.CODES.NAME(stat).toLowerCase()+"\" "+(CharStats.CODES.NAME(stat).equalsIgnoreCase(httpVal)?"SELECTED":"")+">")
 							   .append(CMStrings.capitalizeAndLower(CharStats.CODES.NAME(stat)));
 						}
 						break;
@@ -300,22 +308,24 @@ public class PlanarData extends StdWebMacro
 						{
 							options = new ArrayList<String>();
 							options.add("number");
-							final Converter<String,String> toLowerCase=new Converter<String,String>()
-							{
-								@Override
-								public String convert(String obj)
-								{
-									return obj.toLowerCase();
-								}
-							};
+							final List<String> flags = new ConvertingList<String,String>(Arrays.asList(Ability.FLAG_DESCS),toLowerCase);
 							options.addAll(new ConvertingList<String,String>(Arrays.asList(Ability.DOMAIN_DESCS),toLowerCase));
-							options.addAll(new ConvertingList<String,String>(Arrays.asList(Ability.FLAG_DESCS),toLowerCase));
-							options.addAll(new XVector<String>(new ConvertingEnumeration<Ability,String>(CMClass.abilities(), new Converter<Ability,String>(){
-								@Override
-								public String convert(Ability obj)
-								{
-									return obj.ID();
-								}
+							options.addAll(flags);
+							options.addAll(new XVector<String>(
+									new ConvertingEnumeration<Ability,String>(
+											new FilteredEnumeration<Ability>(CMClass.abilities(), new Filterer<Ability>(){
+												@Override
+												public boolean passesFilter(Ability obj)
+												{
+													return !CMParms.containsIgnoreCase(flags,obj.ID().toLowerCase());
+												}
+											})
+										, new Converter<Ability,String>(){
+											@Override
+											public String convert(Ability obj)
+											{
+												return obj.ID();
+											}
 							})));
 							httpReq.getRequestObjects().put("SYS_PLANE_ENOPTIONS",options);
 						}
@@ -335,7 +345,7 @@ public class PlanarData extends StdWebMacro
 								str.append(", ");
 							}
 							if(parms.containsKey("V"+i))
-								str.append(k.second).append(", ");
+								str.append(super.htmlOutgoingFilter(k.second)).append(", ");
 							i++;
 						}
 						if(parms.containsKey(""+(parsed.size()+1)))
@@ -398,7 +408,7 @@ public class PlanarData extends StdWebMacro
 								str.append(", ");
 							}
 							if(parms.containsKey("V"+i))
-								str.append(k.second).append(", ");
+								str.append(super.htmlOutgoingFilter(k.second)).append(", ");
 							i++;
 						}
 						if(parms.containsKey(""+(parsed.size()+1)))
@@ -480,7 +490,7 @@ public class PlanarData extends StdWebMacro
 							if(parms.containsKey(""+i))
 								str.append(k.first).append(", ");
 							if(parms.containsKey("V"+i))
-								str.append(k.second).append(", ");
+								str.append(super.htmlOutgoingFilter(k.second)).append(", ");
 							i++;
 						}
 						break;
@@ -529,7 +539,7 @@ public class PlanarData extends StdWebMacro
 								str.append(", ");
 							}
 							if(parms.containsKey("V"+i))
-								str.append(k.second).append(", ");
+								str.append(super.htmlOutgoingFilter(k.second)).append(", ");
 							i++;
 						}
 						if(parms.containsKey(""+(parsed.size()+1)))
@@ -551,13 +561,20 @@ public class PlanarData extends StdWebMacro
 					}
 					case REQWEAPONS:
 					{
+						final List<String> selected = CMParms.parseSpaces(httpVal,true);
+						if(httpReq.isUrlParameter(key))
+						{
+							selected.add(httpReq.getUrlParameter(key));
+							for(int i=1;httpReq.isUrlParameter(key+i);i++)
+								selected.add(httpReq.getUrlParameter(key+i));
+						}
 						final List<String> options = new ArrayList<String>();
 						options.add("");
-						options.add("MAGICAL");
-						options.addAll(Arrays.asList(Weapon.TYPE_DESCS));
-						options.addAll(Arrays.asList(Weapon.CLASS_DESCS));
+						options.add("magical");
+						options.addAll(new ConvertingList<String,String>(Arrays.asList(Weapon.TYPE_DESCS),toLowerCase));
+						options.addAll(new ConvertingList<String,String>(Arrays.asList(Weapon.CLASS_DESCS),toLowerCase));
 						for(final String opt : options)
-							str.append("<OPTION VALUE=\""+opt+"\" "+(opt.equalsIgnoreCase(httpVal)?"SELECTED":"")+">").append(opt);
+							str.append("<OPTION VALUE=\""+opt+"\" "+(CMParms.containsIgnoreCase(selected, opt)?"SELECTED":"")+">").append(opt);
 						str.append(", ");
 						break;
 					}
@@ -635,12 +652,13 @@ public class PlanarData extends StdWebMacro
 					case SPECFLAGS:
 					{
 						List<String> selected = new ArrayList<String>(2);
-						if(httpReq.isUrlParameter("VOTEFUNCS"))
+						if(httpReq.isUrlParameter("SPECFLAGS"))
 						{
+							selected.add(httpReq.getUrlParameter("SPECFLAGS"));
 							int x=1;
-							while(httpReq.getUrlParameter("VOTEFUNCS"+x)!=null)
+							while(httpReq.getUrlParameter("SPECFLAGS"+x)!=null)
 							{
-								selected.add(httpReq.getUrlParameter("VOTEFUNCS"+x));
+								selected.add(httpReq.getUrlParameter("SPECFLAGS"+x));
 								x++;
 							}
 						}
