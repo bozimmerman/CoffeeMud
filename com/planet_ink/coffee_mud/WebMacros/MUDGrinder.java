@@ -481,10 +481,16 @@ public class MUDGrinder extends StdWebMacro
 				return "@break@";
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.PLANES))
 				return "@break@";
-			//TODO: CMLib.ableComponents().getAbilityComponentMap().remove(last.toUpperCase().trim());
-			//TODO: CMLib.ableComponents().alterAbilityComponentFile(last, true);
-			Log.sysOut("Grinder",mob.Name()+" destroyed plane "+last);
-			return "The plane "+last+" has been successfully destroyed.";
+			final PlanarAbility planar=(PlanarAbility)CMClass.getAbilityPrototype("StdPlanarAbility");
+			if(planar==null)
+				return "@break@";
+			if(!planar.deletePlane(last))
+				return "The plane "+last+" could not be destroyed.";
+			else
+			{
+				Log.sysOut("Grinder",mob.Name()+" destroyed plane "+last);
+				return "The plane "+last+" has been successfully destroyed.";
+			}
 		}
 		else
 		if(parms.containsKey("EDITPLANE")||parms.containsKey("ADDPLANE"))

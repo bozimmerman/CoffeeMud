@@ -58,7 +58,7 @@ public class PlanarData extends StdWebMacro
 		{
 			if(!httpReq.getRequestObjects().containsKey("SYSTEM_PLANE_CACHE_"+last.toUpperCase()))
 			{
-				final PlanarAbility planeSet = (PlanarAbility)CMClass.getAbilityPrototype("StdPlanarAbility");
+				final PlanarAbility planeSet = (PlanarAbility)CMClass.getAbility("StdPlanarAbility");
 				planeSet.setMiscText(last);
 				httpReq.getRequestObjects().put("SYSTEM_PLANE_CACHE_"+last.toUpperCase(), planeSet);
 			}

@@ -311,6 +311,129 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		fatigueRate		= 0;
 	}
 
+	
+	
+	@Override
+	public String addOrEditPlane(final String planeName, final String rule)
+	{
+		final Map<String,Map<String,String>> map = getAllPlanesMap();
+		final Map<String,String> planeParms = CMParms.parseEQParms(rule);
+		for(final String key : planeParms.keySet())
+		{
+			if((CMath.s_valueOf(PlanarVar.class, key)==null)
+			&&(CMLib.factions().getFaction(key)==null)
+			&&(CMLib.factions().getFactionByName(key)==null))
+				return "ERROR: Unknown planar var: "+key;
+		}
+		planeParms.put(PlanarVar.ID.toString(), planeName);
+		if(!map.containsKey(planeName.trim().toUpperCase()))
+		{
+			String previ="";
+			for(String i="";!i.equals("9");i=("."+(CMath.s_int(i)+1)))
+			{
+				final CMFile F=new CMFile(Resources.makeFileResourceName("skills/planesofexistence.txt"+i), null);
+				if(!F.exists())
+					break;
+				previ=i;
+			}
+			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/planesofexistence.txt"+previ), null);
+			final StringBuffer old=F.text();
+			if((!old.toString().endsWith("\n"))
+			&&(!old.toString().endsWith("\r")))
+				old.append("\n\r");
+			old.append("\"").append(planeName).append("\" ").append(rule).append("\n\r");
+			F.saveText(old.toString());
+			map.put(planeName.toUpperCase().trim(), planeParms);
+			return null;
+		}
+		else
+		{
+			final Map<String,String> oldPlane = map.get(planeName.trim().toUpperCase());
+			final StringBuilder changes = new StringBuilder("");
+			for(final String oldKey : oldPlane.keySet())
+			{
+				if(!planeParms.containsKey(oldKey))
+					changes.append("REMOVED: ").append(oldKey).append("\n\r");
+				else
+				{
+					String oldVal = oldPlane.get(oldKey);
+					String newVal = planeParms.get(oldKey);
+					if(!oldVal.equals(newVal))
+					{
+						changes.append("CHANGED: ").append(oldKey).append(": '").append(oldVal)
+								.append("' TO '").append(newVal).append("'").append("\n\r");
+					}
+				}
+			}
+			for(final String newKey : planeParms.keySet())
+			{
+				if(!oldPlane.containsKey(newKey))
+					changes.append("ADDED: ").append(newKey).append("\n\r");
+			}
+			if(changes.length()==0)
+				return "";
+			for(String i="";!i.equals("9");i=("."+(CMath.s_int(i)+1)))
+			{
+				if(alterPlaneLine(planeName, Resources.makeFileResourceName("skills/planesofexistence.txt"+i), null))
+				{
+					map.put(planeName.toUpperCase().trim(), planeParms);
+					return changes.toString();
+				}
+			}
+			return "ERROR: Not Found!";
+		}
+	}
+	
+	protected boolean alterPlaneLine(final String planeName, final String fileName, final String rule)
+	{
+		final CMFile F=new CMFile(fileName,null);
+		if(!F.exists())
+			return false;
+		final List<String> lines = Resources.getFileLineVector(F.text());
+		for(int i=0;i<lines.size();i++)
+		{
+			final String line=lines.get(i).trim();
+			String planename=null;
+			if(line.startsWith("\""))
+			{
+				final int x=line.indexOf("\"",1);
+				if(x>1)
+					planename=line.substring(1,x);
+			}
+			if((planename != null)
+			&&(planename.equalsIgnoreCase(planeName)))
+			{
+				if(rule == null)
+					lines.remove(i);
+				else
+					lines.set(i,"\""+planeName+"\" "+rule);
+				StringBuilder newFile = new StringBuilder("");
+				for(final String fline : lines)
+					newFile.append(fline).append("\n\r");
+				F.saveText(newFile.toString());
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean deletePlane(final String planeName)
+	{
+		final Map<String,Map<String,String>> map = getAllPlanesMap();
+		if(!map.containsKey(planeName.trim().toUpperCase()))
+			return false;
+		for(String i="";!i.equals("9");i=("."+(CMath.s_int(i)+1)))
+		{
+			if(alterPlaneLine(planeName, Resources.makeFileResourceName("skills/planesofexistence.txt"+i), null))
+			{
+				map.remove(planeName.trim().toUpperCase());
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void setMiscText(final String newText)
 	{
@@ -1252,7 +1375,6 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		return str.toString();
 	}
 
-	
 	public static Map<String,Map<String,String>> getAllPlanesMap()
 	{
 		@SuppressWarnings("unchecked")

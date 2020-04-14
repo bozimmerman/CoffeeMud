@@ -92,6 +92,28 @@ public interface PlanarAbility extends Ability
 	public Map<String, String> getPlaneVars();
 
 	/**
+	 * Creates a new, or edits an existing plane.  The rule must
+	 * be the same format as found in planesofexistence.txt, except
+	 * that it should not start with the plane name in quotes.
+	 * 
+	 * The result value will start with "ERROR:" if there are one
+	 * or more errors.  Otherwise, it will contains the fields
+	 * modified or null if the ADD was successful.
+	 * 
+	 * @param planeName the plane to add or edit
+	 * @param rule the new rule definition
+	 * @return what was done.
+	 */
+	public String addOrEditPlane(final String planeName, final String rule);
+
+	/**
+	 * Removes a plane of existence, forever.
+	 * @param planeName the name of the plane to delete
+	 * @return true if the delete was successful, false otherwise
+	 */
+	public boolean deletePlane(final String planeName);
+	
+	/**
 	 * Get the pct change and name of available
 	 * mob promotions for this plane
 	 * @return the promotions
