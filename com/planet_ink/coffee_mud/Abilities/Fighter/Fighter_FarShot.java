@@ -116,9 +116,12 @@ public class Fighter_FarShot extends FighterSkill
 		&&((Weapon)affected).amWearingAt(Wearable.IN_INVENTORY))
 		{
 			final Weapon targetW=(Weapon)affected;
-			qualifiedWeapons.remove(targetW);
-			targetW.delEffect(targetW.fetchEffect(ID()));
-			targetW.recoverPhyStats();
+			if(targetW != null)
+			{
+				qualifiedWeapons.remove(targetW);
+				targetW.delEffect(targetW.fetchEffect(ID()));
+				targetW.recoverPhyStats();
+			}
 		}
 		else
 		if((msg.source()==affected)
