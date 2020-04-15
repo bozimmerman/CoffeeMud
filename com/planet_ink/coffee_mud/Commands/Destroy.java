@@ -719,6 +719,28 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
+	public boolean plane(final MOB mob, final List<String> commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is DESTROY PLANE [PLANE NAME]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+
+		final String planeName=CMParms.combine(commands,2);
+		final PlanarAbility planeSet = (PlanarAbility)CMClass.getAbility("StdPlanarAbility");
+		if((!planeSet.getAllPlaneKeys().contains(planeName.toUpperCase().trim()))
+		||(!planeSet.deletePlane(planeName)))
+		{
+			mob.tell(L("'@x1' does not exist, try LIST COMPONENTS.",planeName));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return false;
+		}
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The planar universe just decreased!"));
+		return true;
+	}
+
 	public boolean expertises(final MOB mob, final List<String> commands)
 	{
 		if(commands.size()<3)
@@ -1288,6 +1310,14 @@ public class Destroy extends StdCommand
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			components(mob,commands);
+		}
+		else
+		if(commandType.equals("PLANE"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.PLANES))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			plane(mob,commands);
 		}
 		else
 		if(commandType.equals("EXPERTISE"))

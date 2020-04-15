@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary.ListStringer;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.PlanarAbility.PlanarVar;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -9027,6 +9028,176 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
+	}
+
+	@Override
+	public String modifyPlane(final MOB mob, final String planeName, final Map<String,String> planeSet, int showFlag) throws IOException
+	{
+		if(mob.isMonster())
+			return null;
+		boolean ok=false;
+		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
+			showFlag=-999;
+		final CModifiableStringMap modSet = new CModifiableStringMap(planeSet);
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
+		{
+			int showNumber=0;
+			for(final PlanarVar var : PlanarVar.values())
+			{
+				switch(var)
+				{
+				case ABSORB:
+					this.promptStatStr(mob, modSet, CMLib.help().getHelpText("Prop_AbsorbDamage",mob,true).toString(),
+							++showNumber, showFlag, "MOB Absorptions", var.name(), true);
+					break;
+				case ADJSIZE:
+					//TODO:
+					break;
+				case ADJSTAT:
+					this.promptStatStr(mob, modSet, CMLib.help().getHelpText("Prop_StatAdjuster",mob,true).toString(),
+							++showNumber, showFlag, "MOB Stat Adj", var.name(), true);
+					break;
+				case ADJUST:
+					this.promptStatStr(mob, modSet, CMLib.help().getHelpText("Prop_Adjuster",mob,true).toString(),
+							++showNumber, showFlag, "MOB Adjuster", var.name(), true);
+					break;
+				case AEFFECT:
+					//TODO:
+					break;
+				case ALIGNMENT:
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Alignment",var.name(),true);
+					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
+						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
+					break;
+				case AREABLURBS:
+					//TODO:
+					break;
+				case ATMOSPHERE:
+					//TODO:
+					break;
+				case BEHAVAFFID:
+					//TODO:
+					break;
+				case BEHAVE:
+					//TODO:
+					break;
+				case BONUSDAMAGESTAT:
+					//TODO:
+					break;
+				case CATEGORY:
+					//TODO:
+					break;
+				case DESCRIPTION:
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Description",var.name(),true);
+					break;
+				case ELITE:
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Elite Lvl",var.name(),true);
+					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
+						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
+					break;
+				case ENABLE:
+					//TODO:
+					break;
+				case FACTIONS:
+					//TODO:
+					break;
+				case FATIGUERATE:
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Fatigue Rate",var.name(),true);
+					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
+						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
+					break;
+				case HOURS:
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Hours/Day",var.name(),true);
+					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
+						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
+					break;
+				case ID:
+					break;
+				case LEVELADJ:
+					//TODO:
+					break;
+				case LIKE:
+					//TODO:
+					break;
+				case MIXRACE:
+					//TODO:
+					break;
+				case MOBCOPY:
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"MOB copies",var.name(),true);
+					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
+						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
+					break;
+				case MOBRESIST:
+					this.promptStatStr(mob, modSet, CMLib.help().getHelpText("Prop_Resistance",mob,true).toString(),
+							++showNumber, showFlag, "MOB Resistances", var.name(), true);
+					break;
+				case PREFIX:
+					//TODO:
+					break;
+				case PROMOTIONS:
+					//TODO:
+					break;
+				case RECOVERRATE:
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Recover Rate",var.name(),true);
+					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
+						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
+					break;
+				case REFFECT:
+					//TODO:
+					break;
+				case REQWEAPONS:
+					//TODO:
+					break;
+				case ROOMADJS:
+					//TODO:
+					break;
+				case ROOMCOLOR:
+					//TODO:
+					break;
+				case SETSTAT:
+					this.promptStatStr(mob, modSet, CMLib.help().getHelpText("Prop_StatTrainer",mob,true).toString(),
+							++showNumber, showFlag, "MOB Stat Trainer", var.name(), true);
+					break;
+				case SPECFLAGS:
+					//TODO:
+					break;
+				case TRANSITIONAL:
+					promptStatBool(mob,modSet,++showNumber,showFlag,"Transitional",var.name());
+					if(modSet.containsKey(var.name())
+					&& CMath.s_bool(modSet.get(var.name())))
+						modSet.put(var.name(), "true");
+					else
+						modSet.remove(var.name());
+					break;
+				case WEAPONMAXRANGE:
+					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Max Weap Range",var.name(),true);
+					if(modSet.containsKey(var.name()) && (modSet.get(var.name()).length()>0))
+						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
+					break;
+				}
+				if(modSet.containsKey(var.name())
+				&&(modSet.get(var.name()).trim().length()==0))
+					modSet.remove(var.name());
+			}
+
+			if (showFlag < -900)
+			{
+				ok = true;
+				break;
+			}
+			if (showFlag > 0)
+			{
+				showFlag = -1;
+				continue;
+			}
+			showFlag=CMath.s_int(mob.session().prompt(L("Edit which? "),""));
+			if(showFlag<=0)
+			{
+				showFlag=-1;
+				ok=true;
+			}
+		}
+		return null;
 	}
 
 	@Override

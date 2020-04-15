@@ -52,6 +52,7 @@ public interface GenericEditor extends CMLibrary
 	public void modifyPlayer(MOB mob, MOB me, int showFlag) throws IOException;
 	public void modifyGovernment(MOB mob, ClanGovernment me, int showFlag) throws IOException;
 	public AbilityMapper.AbilityMapping modifyAllQualifyEntry(MOB mob, String eachOrAll, Ability me, int showFlag) throws IOException;
+	public String modifyPlane(final MOB mob, final String planeName, final Map<String,String> planeSet, int showFlag) throws IOException;
 
 	public Room changeRoomType(Room R, Room newRoom);
 	public void spells(MOB mob, List<Ability> V, int showNumber, int showFlag, boolean inParms) throws IOException;

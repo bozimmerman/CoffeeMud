@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.PlanarAbility.PlanarVar;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -1428,6 +1429,41 @@ public class Modify extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The complication of skill usage just increased!"));
 	}
 
+	public void plane(final MOB mob, final List<String> commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: MODIFY PLANE [SKILL ID]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		String planeName=CMParms.combine(commands,2);
+		final PlanarAbility planeSet = (PlanarAbility)CMClass.getAbility("StdPlanarAbility");
+		final Map<String,String> planeVars = planeSet.getPlanarVars(planeName);
+		if(planeVars == null)
+		{
+			mob.tell(L("'@x1' already exists, you'll need to destroy it first.",planeName));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		planeName = planeVars.get(PlanarVar.ID.name());
+		final String modifiedRule = CMLib.genEd().modifyPlane(mob,planeName,planeVars,-1);
+		final String err = planeSet.addOrEditPlane(planeName, modifiedRule);
+		if(err.startsWith("ERROR"))
+		{
+			mob.tell(err);
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		else
+		if(err.length()>0)
+		{
+			Log.infoOut(mob.Name()+" modified plane: "+planeName+": \n\r"+err);
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The planar universe just changed!"));
+		}
+	}
+
 	public void socials(final MOB mob, final List<String> commands)
 		throws IOException
 	{
@@ -1918,6 +1954,14 @@ public class Modify extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.COMPONENTS))
 				return errorOut(mob);
 			components(mob,commands);
+			return false;
+		}
+		else
+		if(commandType.equals("PLANE"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.PLANES))
+				return errorOut(mob);
+			plane(mob,commands);
 			return false;
 		}
 		else

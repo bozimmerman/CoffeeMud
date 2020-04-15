@@ -410,6 +410,8 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				final StringBuilder newFile = new StringBuilder("");
 				for(final String fline : lines)
 					newFile.append(fline).append("\r\n");
+				Resources.removeResource("SKILL_PLANES_OF_EXISTENCE");
+				Resources.removeResource(fileName);
 				F.saveText(newFile.toString());
 				return true;
 			}

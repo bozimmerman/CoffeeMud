@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.PlanarAbility.PlanarVar;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -1010,6 +1011,40 @@ public class Create extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The complication of skill usage just increased!"));
 	}
 
+	public void plane(final MOB mob, final List<String> commands)
+	throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell(L("You have failed to specify the proper fields.\n\rFormat: CREATE PLANE [PLANE NAME]\n\r"));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final String planeName=CMParms.combine(commands,2);
+		final PlanarAbility planeSet = (PlanarAbility)CMClass.getAbility("StdPlanarAbility");
+		if(planeSet.getAllPlaneKeys().contains(planeName.toUpperCase().trim()))
+		{
+			mob.tell(L("'@x1' already exists, you'll need to destroy it first.",planeName));
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+			return;
+		}
+		final Map<String,String> fakePlaneVars = new HashMap<String,String>();
+		planeSet.getPlaneVars().put(PlanarVar.ID.name(), planeName);
+		final String modifiedRule = CMLib.genEd().modifyPlane(mob,planeName,fakePlaneVars,-1);
+		final String err = planeSet.addOrEditPlane(planeName, modifiedRule);
+		// adding new
+		if(err != null)
+		{
+			mob.tell(err);
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
+		}
+		else
+		{
+			Log.infoOut(mob.Name()+" successfully added plane: "+planeName);
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The other planes have just increased!"));
+		}
+	}
+
 	public void expertises(final MOB mob, final List<String> commands)
 	{
 		if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
@@ -1469,6 +1504,14 @@ public class Create extends StdCommand
 				return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
 			components(mob,commands);
+		}
+		else
+		if(commandType.equals("PLANE"))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.PLANES))
+				return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("^S<S-NAME> wave(s) <S-HIS-HER> arms...^?"));
+			plane(mob,commands);
 		}
 		else
 		if(commandType.equals("EXPERTISE"))
