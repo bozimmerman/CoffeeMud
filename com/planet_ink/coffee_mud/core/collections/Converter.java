@@ -16,5 +16,14 @@ package com.planet_ink.coffee_mud.core.collections;
 */
 public interface Converter<K, L>
 {
+	public final static Converter<String,String> toLowerCase=new Converter<String,String>()
+	{
+		@Override
+		public String convert(final String obj)
+		{
+			return obj.toLowerCase();
+		}
+	};
+
 	public L convert(K obj);
 }

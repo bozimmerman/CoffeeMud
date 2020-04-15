@@ -73,14 +73,6 @@ public class PlanarData extends StdWebMacro
 			final Map<String,String> planarData = planeObj.getPlaneVars();
 			if(planarData != null)
 			{
-				final Converter<String,String> toLowerCase=new Converter<String,String>()
-				{
-					@Override
-					public String convert(final String obj)
-					{
-						return obj.toLowerCase();
-					}
-				};
 				for(final String p : parms.keySet())
 				{
 					final String key=p.toUpperCase().trim();
@@ -315,8 +307,8 @@ public class PlanarData extends StdWebMacro
 						{
 							options = new ArrayList<String>();
 							options.add("number");
-							final List<String> flags = new ConvertingList<String,String>(Arrays.asList(Ability.FLAG_DESCS),toLowerCase);
-							options.addAll(new ConvertingList<String,String>(Arrays.asList(Ability.DOMAIN_DESCS),toLowerCase));
+							final List<String> flags = new ConvertingList<String,String>(Arrays.asList(Ability.FLAG_DESCS),Converter.toLowerCase);
+							options.addAll(new ConvertingList<String,String>(Arrays.asList(Ability.DOMAIN_DESCS),Converter.toLowerCase));
 							options.addAll(flags);
 							options.addAll(new XVector<String>(
 									new ConvertingEnumeration<Ability,String>(
@@ -324,16 +316,20 @@ public class PlanarData extends StdWebMacro
 												@Override
 												public boolean passesFilter(final Ability obj)
 												{
+													if((obj.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+														return false;
 													return !CMParms.containsIgnoreCase(flags,obj.ID().toLowerCase());
 												}
 											})
-										, new Converter<Ability,String>(){
-											@Override
-											public String convert(final Ability obj)
-											{
-												return obj.ID();
-											}
-							})));
+										, new Converter<Ability,String>()
+										  {
+												@Override
+												public String convert(final Ability obj)
+												{
+													return obj.ID();
+												}
+										  }
+									)));
 							httpReq.getRequestObjects().put("SYS_PLANE_ENOPTIONS",options);
 						}
 						int i=1;
@@ -536,7 +532,8 @@ public class PlanarData extends StdWebMacro
 								for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 								{
 									final Ability A=a.nextElement();
-									str.append("<OPTION VALUE=\""+A.ID()+"\" "+(A.ID().equalsIgnoreCase(k.first)?"SELECTED":"")+">").append(A.ID());
+									if((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON)
+										str.append("<OPTION VALUE=\""+A.ID()+"\" "+(A.ID().equalsIgnoreCase(k.first)?"SELECTED":"")+">").append(A.ID());
 								}
 								for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 								{
@@ -555,7 +552,8 @@ public class PlanarData extends StdWebMacro
 							for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 							{
 								final Ability A=a.nextElement();
-								str.append("<OPTION VALUE=\""+A.ID()+"\" >").append(A.ID());
+								if((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON)
+									str.append("<OPTION VALUE=\""+A.ID()+"\" >").append(A.ID());
 							}
 							for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 							{
@@ -578,8 +576,8 @@ public class PlanarData extends StdWebMacro
 						final List<String> options = new ArrayList<String>();
 						options.add("");
 						options.add("magical");
-						options.addAll(new ConvertingList<String,String>(Arrays.asList(Weapon.TYPE_DESCS),toLowerCase));
-						options.addAll(new ConvertingList<String,String>(Arrays.asList(Weapon.CLASS_DESCS),toLowerCase));
+						options.addAll(new ConvertingList<String,String>(Arrays.asList(Weapon.TYPE_DESCS),Converter.toLowerCase));
+						options.addAll(new ConvertingList<String,String>(Arrays.asList(Weapon.CLASS_DESCS),Converter.toLowerCase));
 						for(final String opt : options)
 							str.append("<OPTION VALUE=\""+opt+"\" "+(CMParms.containsIgnoreCase(selected, opt)?"SELECTED":"")+">").append(opt);
 						str.append(", ");

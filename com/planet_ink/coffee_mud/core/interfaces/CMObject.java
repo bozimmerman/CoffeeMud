@@ -76,4 +76,15 @@ public interface CMObject extends Cloneable, Comparable<CMObject>
 	 */
 	public void initializeClass();
 
+	/**
+	 * A helpful converter for extracting the ID from a CMOBject
+	 */
+	public final static Converter<? extends CMObject,String> idConverter = new Converter<CMObject,String>()
+	{
+		@Override
+		public String convert(final CMObject obj)
+		{
+			return obj.ID();
+		}
+	};
 }

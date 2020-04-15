@@ -225,20 +225,67 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		return true;
 	}
 
-	public String promptCommaList(final MOB mob,
-								  String oldVal,
-								  final int showNumber,
-								  final int showFlag,
-								  final String fieldDisplayStr,
-								  final String help,
-								  final CMEval eval,
-								  final Object[] choices) throws IOException
+	protected String promptCommaList(final MOB mob,
+									 final String oldVal,
+									 final int showNumber,
+									 final int showFlag,
+									 final String fieldDisplayStr,
+									 final String secondDisplayStr,
+									 final String help,
+									 final CMEval eval,
+									 final Object[] choices) throws IOException
+	{
+		return promptDelimitedList(mob,oldVal,showNumber,showFlag,fieldDisplayStr,secondDisplayStr,',',help,eval,choices);
+	}
+
+	protected String promptCommaList(final MOB mob,
+									 final String oldVal,
+									 final int showNumber,
+									 final int showFlag,
+									 final String fieldDisplayStr,
+									 final String help,
+									 final CMEval eval,
+									 final Object[] choices) throws IOException
+	{
+		return promptDelimitedList(mob,oldVal,showNumber,showFlag,fieldDisplayStr,null,',',help,eval,choices);
+	}
+
+	protected String promptDelimitedList(final MOB mob,
+										 String oldVal,
+										 final int showNumber,
+										 final int showFlag,
+										 final String fieldDisplayStr,
+										 final String secondDisplayStr,
+										 final char delimiter,
+										 final String help,
+										 final CMEval eval,
+										 final Object[] choices) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return oldVal;
 		mob.tell(showNumber+". "+fieldDisplayStr+": '"+oldVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
+		String fieldDisplayStr2=secondDisplayStr;
+		String prefix2=null;
+		String suffix2=null;
+		if((fieldDisplayStr2!=null)&&(fieldDisplayStr2.length()>0))
+		{
+			prefix2="";
+			suffix2="";
+			while((fieldDisplayStr2.length()>0)
+			&&(!Character.isLetterOrDigit(fieldDisplayStr2.charAt(0))))
+			{
+				prefix2+= fieldDisplayStr2.charAt(0);
+				fieldDisplayStr2 = fieldDisplayStr2.substring(1);
+			}
+			while((fieldDisplayStr2.length()>0)
+			&&(!Character.isLetterOrDigit(fieldDisplayStr2.charAt(fieldDisplayStr2.length()-1))))
+			{
+				prefix2+= fieldDisplayStr2.charAt(fieldDisplayStr2.length()-1);
+				fieldDisplayStr2 = fieldDisplayStr2.substring(0,fieldDisplayStr2.length()-1);
+			}
+		}
 		String newName="?";
 		final String promptStr=L("Enter a value to add/remove@x1\n\r:",(help!=null?" (?)":""));
 		final String oldOldVal=oldVal;
@@ -273,12 +320,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						continue;
 					}
 				}
-				final List<String> curSet=CMParms.parseCommas(oldVal,true);
+				final List<String> curSet=CMParms.parseAny(oldVal,delimiter,true);
 				String oldOne=null;
 				for(final String c : curSet)
 				{
 					if(c.equalsIgnoreCase(newName))
 						oldOne=c;
+				}
+				if((oldOne == null) && (prefix2 != null))
+				{
+					for(final String c : curSet)
+					{
+						if(c.toLowerCase().startsWith((oldOne+prefix2).toLowerCase()))
+							oldOne=c;
+					}
 				}
 				if(oldOne!=null)
 				{
@@ -287,10 +342,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				else
 				{
+					if((fieldDisplayStr2!=null)&&(fieldDisplayStr2.length()>0))
+					{
+						String val=mob.session().prompt(fieldDisplayStr2);
+						if(prefix2.indexOf('\"')>=0)
+							val=CMStrings.replaceAll(val,"\"","\\\"");
+						newName=newName+prefix2+val+suffix2;
+					}
 					curSet.add(newName);
 					mob.tell(L("'@x1' added.",newName));
 				}
-				oldVal=CMParms.toListString(curSet);
+				oldVal=CMParms.combineWith(curSet, delimiter);
 			}
 		}
 		mob.tell(L("(no change)"));
@@ -9069,6 +9131,70 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final String[] specFlags = new String[PlanarAbility.PlanarSpecFlag.values().length];
 		for(x=0;x<PlanarAbility.PlanarSpecFlag.values().length;x++)
 			specFlags[x]=PlanarAbility.PlanarSpecFlag.values()[x].name();
+		final List<String> ableBehavsV = new ArrayList<String>();
+		final List<String> enableV = new ArrayList<String>();
+		enableV.add("number");
+		final List<String> flags = new ConvertingList<String,String>(Arrays.asList(Ability.FLAG_DESCS),Converter.toLowerCase);
+		enableV.addAll(new ConvertingList<String,String>(Arrays.asList(Ability.DOMAIN_DESCS),Converter.toLowerCase));
+		enableV.addAll(flags);
+		enableV.addAll(new XVector<String>(
+				new ConvertingEnumeration<Ability,String>(
+						new FilteredEnumeration<Ability>(CMClass.abilities(), new Filterer<Ability>(){
+							@Override
+							public boolean passesFilter(final Ability obj)
+							{
+								if((obj.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+									return false;
+								return !CMParms.containsIgnoreCase(flags,obj.ID().toLowerCase());
+							}
+						})
+					, new Converter<Ability,String>()
+					  {
+						  @Override
+						  public String convert(final Ability obj)
+						  {
+							  return obj.ID();
+						  }
+					  }
+		)));
+		final String[] enables = enableV.toArray(new String[enableV.size()]);
+		final String[] behavs = new String[CMClass.numPrototypes(CMObjectType.BEHAVIOR)];
+		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		{
+			final Ability A=a.nextElement();
+			if((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON)
+				ableBehavsV.add(A.ID());
+		}
+		x=0;
+		for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
+		{
+			ableBehavsV.add(b.nextElement().ID());
+			behavs[x++]=ableBehavsV.get(ableBehavsV.size()-1);
+		}
+		final String[] lowerBehavs = Arrays.copyOf(behavs, behavs.length);
+		for(x=0;x<lowerBehavs.length;x++)
+			lowerBehavs[x]=lowerBehavs[x].toLowerCase();
+		final String[] ableBehavs = ableBehavsV.toArray(new String[ableBehavsV.size()]);
+		final List<String> factionsV = new ArrayList<String>();
+		factionsV.add("*");
+		factionsV.addAll(new XVector<String>(new ConvertingEnumeration<Faction,String>(CMLib.factions().factions(), new Converter<Faction,String>()
+		{
+			@Override
+			public String convert(final Faction obj)
+			{
+				if(obj.name().indexOf(' ')<0)
+					return obj.name();
+				else
+					return obj.factionID();
+			}
+		})));
+		final String[] factions=factionsV.toArray(new String[factionsV.size()]);
+		final List<String> reqWeaponsV = new ArrayList<String>();
+		reqWeaponsV.add("");
+		reqWeaponsV.add("magical");
+		reqWeaponsV.addAll(new ConvertingList<String,String>(Arrays.asList(Weapon.TYPE_DESCS),Converter.toLowerCase));
+		reqWeaponsV.addAll(new ConvertingList<String,String>(Arrays.asList(Weapon.CLASS_DESCS),Converter.toLowerCase));
+		final String[] reqWeapons=reqWeaponsV.toArray(new String[reqWeaponsV.size()]);
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
 			final Session sess = mob.session();
@@ -9121,7 +9247,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							++showNumber, showFlag, "MOB Adjuster", var.name(), true);
 					break;
 				case AEFFECT:
-					//TODO:
+					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
+							"Area Effects", "(Ability Arg)",' ',null, CMEVAL_INSTANCE, ableBehavs));
 					break;
 				case ALIGNMENT:
 					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Alignment",var.name(),true);
@@ -9129,16 +9256,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
 					break;
 				case AREABLURBS:
-					//TODO:
+					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
+							"Area Blurbs", "=\\\"Value\\\"",' ',null, null, null));
 					break;
 				case ATMOSPHERE:
 					this.promptStatChoices(mob, modSet, CMParms.toListString(rawResourceNames), ++showNumber, showFlag, "Atmosphere", var.name(), rawResourceNames);
 					break;
 				case BEHAVAFFID:
-					//TODO:
+					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
+							"MOB Behavior Conversion", "=NewBehaviorID",' ',null, CMEVAL_INSTANCE, lowerBehavs));
 					break;
 				case BEHAVE:
-					//TODO:
+					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
+							"MOB Behaviors", "(Behave Parms)",' ',null, CMEVAL_INSTANCE, behavs));
 					break;
 				case BONUSDAMAGESTAT:
 					this.promptStatChoices(mob, modSet, CMParms.toListString(bonusCharStats), ++showNumber, showFlag, "Bonus Damage Stat", var.name(), bonusCharStats);
@@ -9155,10 +9285,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
 					break;
 				case ENABLE:
-					//TODO:
+					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
+							"MOB Ability", "(Parms)",' ',null, CMEVAL_INSTANCE, enables));
 					break;
 				case FACTIONS:
-					//TODO:
+					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
+							"MOB Factions", "(Numeric Value)",' ',null, CMEVAL_INSTANCE, factions));
 					break;
 				case FATIGUERATE:
 					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Fatigue Rate",var.name(),true);
@@ -9196,7 +9328,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					modSet.setStat(var.name(), promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "MOB Prefix(s)", null, null, null));
 					break;
 				case PROMOTIONS:
-					//TODO:
+					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
+							"Promotions", "(Pct Chance)",',',null, null, null));
 					break;
 				case RECOVERRATE:
 					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Recover Rate",var.name(),true);
@@ -9204,10 +9337,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						modSet.put(var.name(), ""+CMath.s_int(modSet.get(var.name())));
 					break;
 				case REFFECT:
-					//TODO:
+					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
+							"Room Effects", "(Ability Arg)",' ',null, CMEVAL_INSTANCE, ableBehavs));
 					break;
 				case REQWEAPONS:
-					//TODO:
+					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
+							"Required Weapons", null,' ',null, CMEVAL_INSTANCE, reqWeapons));
 					break;
 				case ROOMADJS:
 				{
@@ -9235,7 +9370,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					else
 					if(!CMath.isInteger(newChance))
 						newChance="";
-					String adjList=promptCommaList(mob, rest, ++showNumber, showFlag, "Adjectives", null, null, null);
+					final String adjList=promptCommaList(mob, rest, ++showNumber, showFlag, "Adjectives", null, null, null);
 					if(adjList.trim().length()==0)
 						modSet.remove(var.name());
 					else
@@ -9278,7 +9413,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							++showNumber, showFlag, "MOB Stat Trainer", var.name(), true);
 					break;
 				case SPECFLAGS:
-					modSet.setStat(var.name(), CMStrings.replaceAll(this.promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "Category(s)", 
+					modSet.setStat(var.name(), CMStrings.replaceAll(this.promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "Category(s)",
 									CMParms.toListString(specFlags), CMEVAL_INSTANCE, specFlags),","," ").trim());
 					break;
 				case TRANSITIONAL:
@@ -9317,7 +9452,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		return null;
+		final StringBuilder str=new StringBuilder("");
+		for(final String key : modSet.keySet())
+		{
+			if(modSet.containsKey(key))
+			{
+				String value=modSet.get(key).trim();
+				str.append(key.toLowerCase()).append("=");
+				if((value.indexOf("\"")>=0)||(value.indexOf(' ')>=0))
+					value="\"" + CMStrings.replaceAll(value,"\"","\\\"")+"\"";
+				str.append(value).append(' ');
+			}
+		}
+		return str.toString().trim();
 	}
 
 	@Override
