@@ -141,7 +141,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	@Override
 	public void promptStatChoices(final MOB mob, final Modifiable E, final String help, final int showNumber, final int showFlag, final String fieldDisplayStr, final String field, final Object[] choices) throws IOException
 	{
-		E.setStat(field, prompt(mob, E.getStat(field), showNumber, showFlag, fieldDisplayStr, false, false, help, CMEVAL_INSTANCE, choices));
+		final boolean emptyOk = choices != null && choices.length>1 && choices[0] != null && choices[0].toString().equals("");
+		E.setStat(field, prompt(mob, E.getStat(field), showNumber, showFlag, fieldDisplayStr, emptyOk, false, help, CMEVAL_INSTANCE, choices));
 	}
 
 	@Override
@@ -259,16 +260,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			{
 				if(eval!=null)
-				try
 				{
-					final Object value=eval.eval(newName,choices,false);
-					if(value instanceof String)
-						newName=(String)value;
-				}
-				catch(final CMException e)
-				{
-					mob.tell(e.getMessage());
-					continue;
+					try
+					{
+						final Object value=eval.eval(newName,choices,false);
+						if(value instanceof String)
+							newName=(String)value;
+					}
+					catch(final CMException e)
+					{
+						mob.tell(e.getMessage());
+						continue;
+					}
 				}
 				final List<String> curSet=CMParms.parseCommas(oldVal,true);
 				String oldOne=null;
@@ -9038,9 +9041,37 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		boolean ok=false;
 		if((showFlag == -1) && (CMProps.getIntVar(CMProps.Int.EDITORTYPE)>0))
 			showFlag=-999;
+		final PlanarAbility planeAble = (PlanarAbility)CMClass.getAbilityPrototype("StdPlanarAbility");
 		final CModifiableStringMap modSet = new CModifiableStringMap(planeSet);
+		final String[] bonusCharStats = new String[CharStats.CODES.BASECODES().length+1];
+		bonusCharStats[0]="";
+		int x=0;
+		for(x=0;x<CharStats.CODES.BASECODES().length;x++)
+			bonusCharStats[x+1] = CharStats.CODES.NAME(CharStats.CODES.BASECODES()[x]).toLowerCase();
+		final String[] rawResourceNames = new String[RawMaterial.CODES.NAMES().length+1];
+		rawResourceNames[0]="";
+		for(x=0;x<RawMaterial.CODES.NAMES().length;x++)
+			rawResourceNames[x+1] = RawMaterial.CODES.NAMES()[x].toLowerCase();
+		final String[] otherPlaneNames = new String[planeAble.getAllPlaneKeys().size()+1];
+		otherPlaneNames[0]="";
+		for(x=0;x<planeAble.getAllPlaneKeys().size();x++)
+			otherPlaneNames[x+1] = planeAble.getAllPlaneKeys().get(x).toLowerCase();
+		final String[] otherRaceNames = new String[CMClass.numPrototypes(CMObjectType.RACE)+1];
+		otherRaceNames[0]="";
+		x=0;
+		for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+			otherRaceNames[x+1] = r.nextElement().ID().toLowerCase();
+		final String[] factionNames = new String[CMLib.factions().numFactions()+1];
+		factionNames[0]="*";
+		x=0;
+		for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+			factionNames[++x] = f.nextElement().name().toLowerCase();
+		final String[] specFlags = new String[PlanarAbility.PlanarSpecFlag.values().length];
+		for(x=0;x<PlanarAbility.PlanarSpecFlag.values().length;x++)
+			specFlags[x]=PlanarAbility.PlanarSpecFlag.values()[x].name();
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 		{
+			final Session sess = mob.session();
 			int showNumber=0;
 			for(final PlanarVar var : PlanarVar.values())
 			{
@@ -9051,8 +9082,36 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							++showNumber, showFlag, "MOB Absorptions", var.name(), true);
 					break;
 				case ADJSIZE:
-					//TODO:
+				{
+					if((showFlag>0)&&(showFlag!=showNumber))
+						break;
+					final String oldVal = modSet.getStat(var.name());
+					mob.tell(showNumber+". MOB Adj Size(s): "+modSet.getStat(oldVal)+".");
+					if((showFlag!=showNumber)&&(showFlag>-999))
+						break;
+					final String height = CMParms.getParmStr(oldVal,"HEIGHT","");
+					String newHeight = sess.prompt("Height ("+height+"): ");
+					if(newHeight.length()==0)
+						newHeight=height;
+					else
+					if(!CMath.isNumber(newHeight))
+						newHeight="";
+					final String weight = CMParms.getParmStr(oldVal,"WEIGHT","");
+					String newWeight = sess.prompt("Weight ("+weight+"): ");
+					if(newWeight.length()==0)
+						newWeight=weight;
+					else
+					if(!CMath.isNumber(newWeight))
+						newWeight="";
+					String str=(newHeight.length()>0)?("height="+newHeight):"";
+					str += ((newWeight.length()>0) && (str.length()>0))?" ":"";
+					str +=(newWeight.length()>0)?("weight="+newWeight):"";
+					if(str.length()>0)
+						modSet.setStat(var.name(), str);
+					else
+						modSet.remove(var.name());
 					break;
+				}
 				case ADJSTAT:
 					this.promptStatStr(mob, modSet, CMLib.help().getHelpText("Prop_StatAdjuster",mob,true).toString(),
 							++showNumber, showFlag, "MOB Stat Adj", var.name(), true);
@@ -9073,7 +9132,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					//TODO:
 					break;
 				case ATMOSPHERE:
-					//TODO:
+					this.promptStatChoices(mob, modSet, CMParms.toListString(rawResourceNames), ++showNumber, showFlag, "Atmosphere", var.name(), rawResourceNames);
 					break;
 				case BEHAVAFFID:
 					//TODO:
@@ -9082,10 +9141,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					//TODO:
 					break;
 				case BONUSDAMAGESTAT:
-					//TODO:
+					this.promptStatChoices(mob, modSet, CMParms.toListString(bonusCharStats), ++showNumber, showFlag, "Bonus Damage Stat", var.name(), bonusCharStats);
 					break;
 				case CATEGORY:
-					//TODO:
+					modSet.setStat(var.name(), promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "Category(s)", null, null, null));
 					break;
 				case DESCRIPTION:
 					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"Description",var.name(),true);
@@ -9114,13 +9173,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				case ID:
 					break;
 				case LEVELADJ:
-					//TODO:
+					this.promptStatStr(mob,modSet,
+							"Number, of formula with @x1 = base areas median level, @x2 = specific mob/item level, @x2 = the plane traveling players level",
+							++showNumber,showFlag,"Level Adjustments",var.name(),true);
 					break;
 				case LIKE:
-					//TODO:
+					this.promptStatChoices(mob, modSet, CMParms.toListString(otherPlaneNames), ++showNumber, showFlag, "Like Plane", var.name(), otherPlaneNames);
 					break;
 				case MIXRACE:
-					//TODO:
+					this.promptStatChoices(mob, modSet, CMParms.toListString(otherRaceNames), ++showNumber, showFlag, "Mix Race", var.name(), otherRaceNames);
 					break;
 				case MOBCOPY:
 					this.promptStatStr(mob,modSet,null,++showNumber,showFlag,"MOB copies",var.name(),true);
@@ -9149,18 +9210,79 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					//TODO:
 					break;
 				case ROOMADJS:
-					//TODO:
+				{
+					if((showFlag>0)&&(showFlag!=showNumber))
+						break;
+					mob.tell(showNumber+". Room Description Color: "+modSet.getStat(var.name())+".");
+					if((showFlag!=showNumber)&&(showFlag>-999))
+						break;
+					final String varVal=modSet.getStat(var.name());
+					final String defUp = varVal.startsWith("UP ")?"Y":"N";
+					String rest = varVal;
+					if(defUp.equals("Y"))
+						rest=defUp.substring(3).trim();
+					x=rest.indexOf(' ');
+					String chanceStr="";
+					if((x>0)&&(CMath.isInteger(rest.substring(0,x))))
+					{
+						chanceStr=rest.substring(0,x).trim();
+						rest=rest.substring(x+1);
+					}
+					final boolean up = sess.confirm("Make uppercase ("+defUp+")? ", defUp);
+					String newChance = sess.prompt("Pct chance ("+chanceStr+")?");
+					if(newChance.trim().length()==0)
+						newChance=chanceStr;
+					else
+					if(!CMath.isInteger(newChance))
+						newChance="";
+					String adjList=promptCommaList(mob, rest, ++showNumber, showFlag, "Adjectives", null, null, null);
+					if(adjList.trim().length()==0)
+						modSet.remove(var.name());
+					else
+					{
+						String finalVal = up?"UP ":"";
+						finalVal += (newChance.trim().length()>0)?(" "+newChance):"";
+						finalVal += " "+adjList;
+						finalVal = finalVal.trim();
+						modSet.setStat(var.name(), finalVal);
+					}
 					break;
+				}
 				case ROOMCOLOR:
-					//TODO:
+				{
+					if((showFlag>0)&&(showFlag!=showNumber))
+						break;
+					mob.tell(showNumber+". Room Title Color: "+modSet.getStat(var.name())+".");
+					if((showFlag!=showNumber)&&(showFlag>-999))
+						break;
+					final String varVal=modSet.getStat(var.name());
+					final String defUp = varVal.startsWith("UP ")?"Y":"N";
+					String colorCode = varVal;
+					if(defUp.equals("Y"))
+						colorCode=defUp.substring(3).trim();
+					final boolean up = sess.confirm("Make uppercase ("+defUp+")? ", defUp);
+					String roomColorChar = sess.prompt("Color Code ("+colorCode+"): ");
+					if(roomColorChar.trim().length()==0)
+						roomColorChar=colorCode.trim();
+					else
+					if(!roomColorChar.startsWith("^"))
+						roomColorChar="";
+					if(roomColorChar.length()>0)
+						modSet.setStat(var.name(), (up?"UP ":"")+roomColorChar);
+					else
+						modSet.remove(var.name());
 					break;
+				}
 				case SETSTAT:
 					this.promptStatStr(mob, modSet, CMLib.help().getHelpText("Prop_StatTrainer",mob,true).toString(),
 							++showNumber, showFlag, "MOB Stat Trainer", var.name(), true);
 					break;
 				case SPECFLAGS:
-					//TODO:
+				{
+					modSet.setStat(var.name(), CMStrings.replaceAll(this.promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "Category(s)", 
+									CMParms.toListString(specFlags), CMEVAL_INSTANCE, specFlags),","," ").trim());
 					break;
+				}
 				case TRANSITIONAL:
 					promptStatBool(mob,modSet,++showNumber,showFlag,"Transitional",var.name());
 					if(modSet.containsKey(var.name())
