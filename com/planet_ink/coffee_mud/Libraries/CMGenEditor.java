@@ -9060,7 +9060,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		otherRaceNames[0]="";
 		x=0;
 		for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
-			otherRaceNames[x+1] = r.nextElement().ID().toLowerCase();
+			otherRaceNames[x+1] = r.nextElement().ID();
 		final String[] factionNames = new String[CMLib.factions().numFactions()+1];
 		factionNames[0]="*";
 		x=0;
@@ -9193,7 +9193,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							++showNumber, showFlag, "MOB Resistances", var.name(), true);
 					break;
 				case PREFIX:
-					//TODO:
+					modSet.setStat(var.name(), promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "MOB Prefix(s)", null, null, null));
 					break;
 				case PROMOTIONS:
 					//TODO:
@@ -9278,11 +9278,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							++showNumber, showFlag, "MOB Stat Trainer", var.name(), true);
 					break;
 				case SPECFLAGS:
-				{
 					modSet.setStat(var.name(), CMStrings.replaceAll(this.promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "Category(s)", 
 									CMParms.toListString(specFlags), CMEVAL_INSTANCE, specFlags),","," ").trim());
 					break;
-				}
 				case TRANSITIONAL:
 					promptStatBool(mob,modSet,++showNumber,showFlag,"Transitional",var.name());
 					if(modSet.containsKey(var.name())
