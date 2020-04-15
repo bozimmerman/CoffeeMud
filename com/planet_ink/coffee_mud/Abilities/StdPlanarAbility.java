@@ -102,7 +102,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 
 	protected final static long			hardBumpTimeout	= (60L * 60L * 1000L);
 
-	protected Pair<Pair<Integer,Integer>,List<Pair<String,String>>> enableList=null;
+	protected PairList<Pair<Integer,Integer>,PairList<String,String>> enableList=null;
 
 	protected static final AtomicInteger planeIDNum = new AtomicInteger(0);
 
@@ -284,7 +284,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 	 * @return the enableList
 	 */
 	@Override
-	public final Pair<Pair<Integer, Integer>, List<Pair<String, String>>> getEnableList()
+	public final PairList<Pair<Integer, Integer>, PairList<String, String>> getEnableList()
 	{
 		return enableList;
 	}
@@ -530,11 +530,14 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 					F=CMLib.factions().makeReactionFaction("PLANE_","CLASSID",newText,nameCode,"examples/planarreaction.ini");
 			}
 			final String enables = planeVars.get(PlanarVar.ENABLE.toString());
+			this.enableList=null;
 			if(enables!=null)
 			{
 				final List<Pair<String,String>> enableAs=CMParms.parseSpaceParenList(enables);
-				Integer perLevel=Integer.valueOf(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
-				Integer numSkills=Integer.valueOf(Integer.MAX_VALUE);
+				final List<Triad<String,String,Pair<Integer,Integer>>> enableMidList = new Vector<Triad<String,String,Pair<Integer,Integer>>>();
+				final Integer defaultPerLevel=Integer.valueOf(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
+				final Integer defaultNumSkills=Integer.valueOf(Integer.MAX_VALUE);
+				final Pair<Integer,Integer> defaultLimit = new Pair<Integer,Integer>(defaultPerLevel,defaultNumSkills);
 				for(final Iterator<Pair<String,String>> p=enableAs.iterator();p.hasNext();)
 				{
 					final Pair<String,String> P=p.next();
@@ -543,21 +546,31 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 						p.remove();
 						final String parms=P.second;
 						final int x=parms.indexOf('/');
+						final Pair<Integer,Integer> newLimit = new Pair<Integer,Integer>(defaultPerLevel,defaultNumSkills);
 						if(x<0)
-							numSkills=Integer.valueOf(CMath.s_int(parms.trim()));
+							newLimit.first=Integer.valueOf(CMath.s_int(parms.trim()));
 						else
 						{
-							numSkills=Integer.valueOf(CMath.s_int(parms.substring(0,x).trim()));
-							perLevel=Integer.valueOf(CMath.s_int(parms.substring(x+1).trim()));
+							newLimit.first=Integer.valueOf(CMath.s_int(parms.substring(0,x).trim()));
+							newLimit.second=Integer.valueOf(CMath.s_int(parms.substring(x+1).trim()));
+						}
+						for(final Iterator<Triad<String,String,Pair<Integer,Integer>>> k = enableMidList.iterator();k.hasNext();)
+						{
+							final Triad<String,String,Pair<Integer,Integer>> K=k.next();
+							if(K.third == defaultLimit)
+								K.third=newLimit;
 						}
 					}
+					else
+						enableMidList.add(new Triad<String,String,Pair<Integer,Integer>>(P.first,P.second,defaultLimit));
 				}
-				if(enableAs.size()>0)
+				if(enableMidList.size()>0)
 				{
-					final PairList<String,String> addThese = new PairVector<String,String>();
-					for(final Iterator<Pair<String,String>> p = enableAs.iterator();p.hasNext();)
+					this.enableList=new PairVector<Pair<Integer,Integer>,PairList<String,String>>();
+					for(final Iterator<Triad<String,String,Pair<Integer,Integer>>> p = enableMidList.iterator();p.hasNext();)
 					{
-						final Pair<String,String> P=p.next();
+						final Triad<String,String,Pair<Integer,Integer>> P=p.next();
+						final PairList<String,String> addThese = new PairVector<String,String>();
 						Ability A=CMClass.getAbility(P.first);
 						if(A==null)
 						{
@@ -589,10 +602,10 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 							if(!foundSomething)
 								Log.errOut("Spell_Planeshift","Unknown skill type/domain/flag: "+P.first);
 						}
+						else
+							addThese.add(new Pair<String,String>(P.first,P.second));
+						this.enableList.add(P.third,addThese);
 					}
-					enableAs.addAll(addThese);
-					if(enableAs.size()>0)
-						this.enableList=new Pair<Pair<Integer,Integer>,List<Pair<String,String>>>(new Pair<Integer,Integer>(numSkills,perLevel),enableAs);
 				}
 			}
 			final String bonusDamageStat = planeVars.get(PlanarVar.BONUSDAMAGESTAT.toString());
@@ -1115,19 +1128,22 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 					}
 					if(this.enableList != null)
 					{
-						final Pair<Integer,Integer> lv=this.enableList.first;
-						final PairList<String,String> unused = new PairVector<String,String>(this.enableList.second);
-						for(int l=0;l<M.phyStats().level() && (unused.size()>0);l+=lv.second.intValue())
+						for(final Pair<Pair<Integer,Integer>,PairList<String,String>> P : enableList)
 						{
-							for(int a=0;a<lv.first.intValue()  && (unused.size()>0);a++)
+							final Pair<Integer,Integer> lv=P.first;
+							final PairList<String,String> unused = P.second;
+							for(int l=0;l<M.phyStats().level() && (unused.size()>0);l+=lv.second.intValue())
 							{
-								final int aindex=CMLib.dice().roll(1, unused.size(), -1);
-								final Pair<String,String> P=unused.remove(aindex);
-								final Ability A=CMClass.getAbility(P.first);
-								if(M.fetchAbility(A.ID())==null)
+								for(int a=0;a<lv.first.intValue()  && (unused.size()>0);a++)
 								{
-									A.setMiscText(P.second);
-									M.addAbility(A);
+									final int aindex=CMLib.dice().roll(1, unused.size(), -1);
+									final Pair<String,String> U=unused.remove(aindex);
+									final Ability A=CMClass.getAbility(U.first);
+									if(M.fetchAbility(A.ID())==null)
+									{
+										A.setMiscText(U.second);
+										M.addAbility(A);
+									}
 								}
 							}
 						}
