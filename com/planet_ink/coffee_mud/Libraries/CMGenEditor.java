@@ -9387,7 +9387,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					if((showFlag>0)&&(showFlag!=showNumber))
 						break;
-					mob.tell(showNumber+". Room Title Color: "+modSet.getStat(var.name())+".");
+					mob.session().rawPrintln(showNumber+". Room Title Color: "+modSet.getStat(var.name())+".");
 					if((showFlag!=showNumber)&&(showFlag>-999))
 						break;
 					final String varVal=modSet.getStat(var.name());
@@ -9413,7 +9413,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							++showNumber, showFlag, "MOB Stat Trainer", var.name(), true);
 					break;
 				case SPECFLAGS:
-					modSet.setStat(var.name(), CMStrings.replaceAll(this.promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "Category(s)",
+					modSet.setStat(var.name(), CMStrings.replaceAll(this.promptCommaList(mob, modSet.getStat(var.name()), ++showNumber, showFlag, "Spec flag(s)",
 									CMParms.toListString(specFlags), CMEVAL_INSTANCE, specFlags),","," ").trim());
 					break;
 				case TRANSITIONAL:
@@ -9459,7 +9459,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				String value=modSet.get(key).trim();
 				str.append(key.toLowerCase()).append("=");
-				if((value.indexOf("\"")>=0)||(value.indexOf(' ')>=0))
+				if((!CMath.isNumber(value))||(value.indexOf(' ')>=0))
 					value="\"" + CMStrings.replaceAll(value,"\"","\\\"")+"\"";
 				str.append(value).append(' ');
 			}

@@ -1448,7 +1448,8 @@ public class Modify extends StdCommand
 			return;
 		}
 		planeName = planeVars.get(PlanarVar.ID.name());
-		final String modifiedRule = CMLib.genEd().modifyPlane(mob,planeName,planeVars,-1);
+		final Map<String,String> alterParms = new XHashtable<String,String>(planeVars);
+		final String modifiedRule = CMLib.genEd().modifyPlane(mob,planeName,alterParms,-1);
 		final String err = planeSet.addOrEditPlane(planeName, modifiedRule);
 		if(err.startsWith("ERROR"))
 		{

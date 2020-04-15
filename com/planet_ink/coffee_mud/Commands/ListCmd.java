@@ -4081,6 +4081,7 @@ public class ListCmd extends StdCommand
 		AREATYPES("AREATYPES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDAREAS}),
 		GENSTATS("STATS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDITEMS,SecFlag.CMDMOBS}),
 		BANKS("BANKS",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
+		PLANES("PLANES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.PLANES}),
 		LIBRARIES("LIBRARIES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS}),
 		POSTOFFICES("POSTOFFICES",new SecFlag[]{SecFlag.LISTADMIN,SecFlag.CMDMOBS})
 		;
@@ -5343,6 +5344,13 @@ public class ListCmd extends StdCommand
 		case TICKS:
 			s.println(listTicks(mob.session(), CMParms.combine(commands, 1)).toString());
 			break;
+		case PLANES:
+		{
+			final PlanarAbility planeSet = (PlanarAbility)CMClass.getAbility("StdPlanarAbility");
+			s.println("^HPlanes of Existence:^N");
+			s.wraplessPrintln(CMLib.lister().reallyList(mob, new IteratorEnumeration<String>(planeSet.getAllPlaneKeys().iterator()), 0).toString());
+			break;
+		}
 		case MAGIC:
 			s.println("^HMagic Item IDs:^N");
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.miscMagic()).toString());
