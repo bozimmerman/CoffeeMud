@@ -42,7 +42,7 @@ import java.util.*;
  */
 public interface PlanarAbility extends Ability
 {
-	
+
 	/**
 	 * Get the name of the current plane
 	 * @return the planarName
@@ -95,11 +95,11 @@ public interface PlanarAbility extends Ability
 	 * Creates a new, or edits an existing plane.  The rule must
 	 * be the same format as found in planesofexistence.txt, except
 	 * that it should not start with the plane name in quotes.
-	 * 
+	 *
 	 * The result value will start with "ERROR:" if there are one
 	 * or more errors.  Otherwise, it will contains the fields
 	 * modified or null if the ADD was successful.
-	 * 
+	 *
 	 * @param planeName the plane to add or edit
 	 * @param rule the new rule definition
 	 * @return what was done.
@@ -112,7 +112,7 @@ public interface PlanarAbility extends Ability
 	 * @return true if the delete was successful, false otherwise
 	 */
 	public boolean deletePlane(final String planeName);
-	
+
 	/**
 	 * Get the pct change and name of available
 	 * mob promotions for this plane
@@ -189,7 +189,7 @@ public interface PlanarAbility extends Ability
 	 * Clearly, it's complicated.
 	 * @return the enableList
 	 */
-	public Pair<Pair<Integer, Integer>, List<Pair<String, String>>> getEnableList();
+	public PairList<Pair<Integer, Integer>, PairList<String, String>> getEnableList();
 
 	/**
 	 * Get the definition for the given plane
@@ -205,10 +205,10 @@ public interface PlanarAbility extends Ability
 	 */
 	public List<String> getAllPlaneKeys();
 
-	
+
 	/**
 	 * The definitions variables for the attributes of each plane
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -253,7 +253,7 @@ public interface PlanarAbility extends Ability
 
 	/**
 	 * The special attribute flags for planes
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
