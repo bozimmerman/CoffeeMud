@@ -319,6 +319,21 @@ public class StdExit implements Exit
 		affects=null;
 		behaviors=null;
 		scripts=null;
+		Ability A;
+		for(final Enumeration<Ability> a=X.effects();a.hasMoreElements();)
+		{
+			A=a.nextElement();
+			if(A!=null)
+			{
+				A=(Ability)A.copyOf();
+				addEffect(A);
+				if(A.canBeUninvoked())
+				{
+					A.unInvoke();
+					delEffect(A);
+				}
+			}
+		}
 		for(final Enumeration<Behavior> e=X.behaviors();e.hasMoreElements();)
 		{
 			final Behavior B=e.nextElement();
