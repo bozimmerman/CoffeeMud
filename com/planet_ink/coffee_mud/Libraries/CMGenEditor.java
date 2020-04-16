@@ -344,9 +344,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					if((fieldDisplayStr2!=null)&&(fieldDisplayStr2.length()>0))
 					{
-						String val=mob.session().prompt(fieldDisplayStr2);
-						if((prefix2!=null)&&(prefix2.indexOf('\"')>=0))
-							val=CMStrings.replaceAll(val,"\"","\\\"");
+						String val=mob.session().prompt("\n\r"+fieldDisplayStr2+": ");
 						newName=newName+prefix2+val+suffix2;
 					}
 					curSet.add(newName);
@@ -9209,6 +9207,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					break;
 				case ADJSIZE:
 				{
+					++showNumber;
 					if((showFlag>0)&&(showFlag!=showNumber))
 						break;
 					final String oldVal = modSet.getStat(var.name());
@@ -9257,7 +9256,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					break;
 				case AREABLURBS:
 					modSet.setStat(var.name(), promptDelimitedList(mob, modSet.getStat(var.name()), ++showNumber, showFlag,
-							"Area Blurbs", "=\\\"Value\\\"",' ',null, null, null));
+							"Area Blurbs", "=\"Value\" ",' ',null, null, null));
 					break;
 				case ATMOSPHERE:
 					this.promptStatChoices(mob, modSet, CMParms.toListString(rawResourceNames), ++showNumber, showFlag, "Atmosphere", var.name(), rawResourceNames);
@@ -9346,6 +9345,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					break;
 				case ROOMADJS:
 				{
+					++showNumber;
 					if((showFlag>0)&&(showFlag!=showNumber))
 						break;
 					mob.tell(showNumber+". Room Description Color: "+modSet.getStat(var.name())+".");
@@ -9385,6 +9385,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				case ROOMCOLOR:
 				{
+					++showNumber;
 					if((showFlag>0)&&(showFlag!=showNumber))
 						break;
 					mob.session().rawPrintln(showNumber+". Room Title Color: "+modSet.getStat(var.name())+".");
