@@ -234,6 +234,8 @@ public class GenStaff extends GenWeapon implements Wand
 	{
 		if(GenWeapon.getGenWeaponCodeNum(code)>=0)
 			return super.getStat(code);
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
 		case 0:
@@ -256,6 +258,9 @@ public class GenStaff extends GenWeapon implements Wand
 	public void setStat(final String code, final String val)
 	{
 		if(GenWeapon.getGenWeaponCodeNum(code)>=0)
+			super.setStat(code, val);
+		else
+		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			super.setStat(code, val);
 		else
 		switch(getCodeNum(code))
