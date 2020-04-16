@@ -282,7 +282,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			while((fieldDisplayStr2.length()>0)
 			&&(!Character.isLetterOrDigit(fieldDisplayStr2.charAt(fieldDisplayStr2.length()-1))))
 			{
-				prefix2+= fieldDisplayStr2.charAt(fieldDisplayStr2.length()-1);
+				suffix2 = fieldDisplayStr2.charAt(fieldDisplayStr2.length()-1) + suffix2;
 				fieldDisplayStr2 = fieldDisplayStr2.substring(0,fieldDisplayStr2.length()-1);
 			}
 		}
@@ -345,7 +345,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if((fieldDisplayStr2!=null)&&(fieldDisplayStr2.length()>0))
 					{
 						String val=mob.session().prompt(fieldDisplayStr2);
-						if(prefix2.indexOf('\"')>=0)
+						if((prefix2!=null)&&(prefix2.indexOf('\"')>=0))
 							val=CMStrings.replaceAll(val,"\"","\\\"");
 						newName=newName+prefix2+val+suffix2;
 					}
