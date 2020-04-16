@@ -7324,7 +7324,6 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	}
 
 	@SuppressWarnings("unchecked")
-
 	@Override
 	public void resaveAchievements(final String modifyTattoo)
 	{
