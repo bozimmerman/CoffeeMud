@@ -329,7 +329,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		if(!map.containsKey(planeName.trim().toUpperCase()))
 		{
 			String previ="";
-			for(String i="";!i.equals("9");i=("."+(CMath.s_int(i)+1)))
+			for(String i="";!i.equals(".9");i=("."+(CMath.s_int(i)+1)))
 			{
 				final CMFile F=new CMFile(Resources.makeFileResourceName("skills/planesofexistence.txt"+i), null);
 				if(!F.exists())
@@ -372,7 +372,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			}
 			if(changes.length()==0)
 				return "";
-			for(String i="";!i.equals("9");i=("."+(CMath.s_int(i)+1)))
+			for(String i="";!i.equals(".9");i=("."+(CMath.s_int(i)+1)))
 			{
 				if(alterPlaneLine(planeName, Resources.makeFileResourceName("skills/planesofexistence.txt"+i), rule))
 				{
@@ -425,7 +425,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		final Map<String,Map<String,String>> map = getAllPlanesMap();
 		if(!map.containsKey(planeName.trim().toUpperCase()))
 			return false;
-		for(String i="";!i.equals("9");i=("."+(CMath.s_int(i)+1)))
+		for(String i="";!i.equals(".9");i=("."+(CMath.s_int(i)+1)))
 		{
 			if(alterPlaneLine(planeName, Resources.makeFileResourceName("skills/planesofexistence.txt"+i), null))
 			{
@@ -1412,8 +1412,14 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		if(map == null)
 		{
 			map = new TreeMap<String,Map<String,String>>();
-			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/planesofexistence.txt"),null);
-			final List<String> lines = Resources.getFileLineVector(F.text());
+			final List<String> lines = new ArrayList<String>();
+			for(String i="";!i.equals(".9");i=("."+(CMath.s_int(i)+1)))
+			{
+				final CMFile F=new CMFile(Resources.makeFileResourceName("skills/planesofexistence.txt"+i), null);
+				if(!F.exists())
+					break;
+				lines.addAll(Resources.getFileLineVector(F.text()));
+			}
 			for(String line : lines)
 			{
 				line=line.trim();
