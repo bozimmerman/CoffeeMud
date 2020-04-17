@@ -478,9 +478,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 					medianLevel=planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				planarLevel=medianLevel;
 			}
-			final Area planeArea=this.planeArea;
-			if(planeArea == null)
-				return;
+			this.specFlags = null;
 			final String specflags = planeVars.get(PlanarVar.SPECFLAGS.toString());
 			if(specflags != null)
 			{
@@ -497,19 +495,15 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 					}
 				}
 			}
-			final String areablurbs = planeVars.get(PlanarVar.AREABLURBS.toString());
-			if((areablurbs!=null)&&(areablurbs.length()>0))
-			{
-				final Map<String,String> blurbSets=CMParms.parseEQParms(areablurbs);
-				for(final String key : blurbSets.keySet())
-					planeArea.addBlurbFlag(key.toUpperCase().trim().replace(' ', '_')+" "+blurbSets.get(key));
-			}
+			this.behavList = null;
 			final String behaves = planeVars.get(PlanarVar.BEHAVE.toString());
 			if(behaves!=null)
 				this.behavList=new PairVector<String,String>(CMParms.parseSpaceParenList(behaves));
+			this.reffectList = null;
 			final String reffects = planeVars.get(PlanarVar.REFFECT.toString());
 			if(reffects!=null)
 				this.reffectList=new PairVector<String,String>(CMParms.parseSpaceParenList(reffects));
+			this.factionList = null;
 			final String factions = planeVars.get(PlanarVar.FACTIONS.toString());
 			if(factions!=null)
 				this.factionList=new PairVector<String,String>(CMParms.parseSpaceParenList(factions));
@@ -522,6 +516,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			this.levelFormula = CMath.compileMathExpression(levelFormulaStr);
 			final String autoReactionTypeStr=CMProps.getVar(CMProps.Str.AUTOREACTION).toUpperCase().trim();
 			if((autoReactionTypeStr.indexOf("PLANAR")>=0)
+			&&(this.factionList!=null)
 			&&(this.factionList.containsFirst("*")))
 			{
 				final String nameCode=newText.toUpperCase().trim();
@@ -609,13 +604,43 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				}
 			}
 			final String bonusDamageStat = planeVars.get(PlanarVar.BONUSDAMAGESTAT.toString());
+			this.bonusDmgStat = -1;
 			if(bonusDamageStat!=null)
-			{
 				this.bonusDmgStat=CMParms.indexOf(CharStats.CODES.BASENAMES(), bonusDamageStat.toUpperCase().trim());
-			}
 			final String reqWeapons = planeVars.get(PlanarVar.REQWEAPONS.toString());
+			this.reqWeapons = null;
 			if(reqWeapons != null)
 				this.reqWeapons = new HashSet<String>(CMParms.parse(reqWeapons.toUpperCase().trim()));
+			this.promotions=null;
+			if(planeVars.containsKey(PlanarVar.PROMOTIONS.toString()))
+			{
+				final List<String> bits=CMParms.parseCommas(planeVars.get(PlanarVar.PROMOTIONS.toString()), true);
+				this.promotions=new PairVector<Integer,String>();
+				for(final String bit : bits)
+				{
+					Integer pctChance = Integer.valueOf(10);
+					final int x=bit.indexOf('(');
+					String rank=bit;
+					if((x>0)&&(bit.endsWith(")")))
+					{
+						rank=bit.substring(0,x).trim();
+						pctChance=Integer.valueOf(CMath.s_int(bit.substring(x+1,bit.length()-1)));
+					}
+					if(rank.trim().length()>0)
+						this.promotions.add(pctChance, rank.trim());
+				}
+			}
+
+			final Area planeArea=this.planeArea;
+			if(planeArea == null)
+				return;
+			final String areablurbs = planeVars.get(PlanarVar.AREABLURBS.toString());
+			if((areablurbs!=null)&&(areablurbs.length()>0))
+			{
+				final Map<String,String> blurbSets=CMParms.parseEQParms(areablurbs);
+				for(final String key : blurbSets.keySet())
+					planeArea.addBlurbFlag(key.toUpperCase().trim().replace(' ', '_')+" "+blurbSets.get(key));
+			}
 			final String atmosphere = planeVars.get(PlanarVar.ATMOSPHERE.toString());
 			if(atmosphere!=null)
 			{
@@ -682,24 +707,6 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 							}
 						}
 					}
-				}
-			}
-			if(planeVars.containsKey(PlanarVar.PROMOTIONS.toString()))
-			{
-				final List<String> bits=CMParms.parseCommas(planeVars.get(PlanarVar.PROMOTIONS.toString()), true);
-				this.promotions=new PairVector<Integer,String>();
-				for(final String bit : bits)
-				{
-					Integer pctChance = Integer.valueOf(10);
-					final int x=bit.indexOf('(');
-					String rank=bit;
-					if((x>0)&&(bit.endsWith(")")))
-					{
-						rank=bit.substring(0,x).trim();
-						pctChance=Integer.valueOf(CMath.s_int(bit.substring(x+1,bit.length()-1)));
-					}
-					if(rank.trim().length()>0)
-						this.promotions.add(pctChance, rank.trim());
 				}
 			}
 		}

@@ -68,7 +68,7 @@ public class Spell_Planeshift extends StdPlanarAbility
 	@Override
 	public long flags()
 	{
-		return 0;
+		return FLAG_TRANSPORTING;
 	}
 
 	@Override

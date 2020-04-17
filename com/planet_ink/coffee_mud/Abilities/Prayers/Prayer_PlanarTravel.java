@@ -67,7 +67,7 @@ public class Prayer_PlanarTravel extends StdPlanarAbility
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_UNHOLY | Ability.FLAG_HOLY;
+		return Ability.FLAG_UNHOLY | Ability.FLAG_HOLY | Ability.FLAG_TRANSPORTING;
 	}
 
 	@Override

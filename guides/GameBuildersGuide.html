@@ -1,6 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<meta content="HTML Tidy, see www.w3.org" name="generator"><title></title></head>
+<meta name="generator" content="HTML Tidy, see www.w3.org"><title></title>
+
+</head>
 <body>
 <center>
 <table border="1" bordercolor="gray" cellpadding="10" cellspacing="0" width="90%">
@@ -25,6 +27,7 @@ Builders Guide</h1>
 <li><a href="#recipes">Recipes</a></li>
 <li><a href="#classes">Classes</a></li>
 <li><a href="#factions">Factions</a></li>
+<li><a href="#planes">Planes</a></li>
 <li><a href="#quests">Quests</a></li>
 <li><a href="#holidays">Holidays</a></li>
 <li><a href="#socials">Socials</a></li>
@@ -831,21 +834,25 @@ see when they enter HELP ABILITYNAME.</td>
 Skills</font></a></strong>
 <p>Gathering Skills are
 skills that players use to generate items, usually&nbsp;raw
-resources. &nbsp;These are skills like Foraging, Mining, Drilling, etc.&nbsp;</p>
+resources. &nbsp;These are skills like Foraging, Mining, Drilling,
+etc.&nbsp;</p>
 <p>Although CoffeeMud
 includes a wide variety&nbsp;gathering
 skills, it is not beyond the realm of possibility that you may want to
 add onto them. &nbsp;Therefore,
-CoffeeMud also allows you to define&nbsp;gathering skills outside of the
+CoffeeMud also allows you to define&nbsp;gathering skills outside
+of the
 java-realm. This can be done from the command line using the CREATE
-command. If you want to create a new&nbsp;gathering skill called Worm Gathering, for
+command. If you want to create a new&nbsp;gathering skill called
+Worm Gathering, for
 instance,
 you might enter:</p>
 <p><strong>CREATE GATHERSKILL Common_WormGathering</strong></p>
 <p>And it would be done. The
 "Common_<strong>WormGathering</strong>" is the abilities
 Ability ID. The fact that it starts with "Common_" is merely for
-descriptive purposes, and is not required. &nbsp; Most existing&nbsp;gathering skills do not, for some unknown reason.</p>
+descriptive purposes, and is not required. &nbsp; Most
+existing&nbsp;gathering skills do not, for some unknown reason.</p>
 <p>Whenever creating or
 modifying a new skill, the Archon is
 presented with a menu of selections and options available to customize
@@ -875,12 +882,16 @@ words.</td>
 <td><em>Skill
 Verb</em></td>
 <td>a descriptive verb
-shown when the player is doing this skill, such as getting, picking, etc...</td>
+shown when the player is doing this skill, such as getting, picking,
+etc...</td>
 </tr>
-
-<tr><td><i>Can
-Bundle</i></td><td>does this skill
-support bundling the raw materials you make things from with this skill?</td></tr><tr>
+<tr>
+<td><i>Can
+Bundle</i></td>
+<td>does this skill
+support bundling the raw materials you make things from with this skill?</td>
+</tr>
+<tr>
 <td><i>Raw
 Materials</i></td>
 <td>if this skill
@@ -893,34 +904,78 @@ skill
 can
 only be used to generate items.</td>
 </tr>
-<tr><td><i>Can
-Sit</i></td><td>can this skill be
-performed while sitting down?</td></tr>
 <tr>
-<td><span style="font-style: italic;">Room Mask</span></td>
-<td>a zapper mask to designate in which rooms the use of this skill
+<td><i>Can
+Sit</i></td>
+<td>can this skill be
+performed while sitting down?</td>
+</tr>
+<tr>
+<td><span style="font-style: italic;">Room
+Mask</span></td>
+<td>a zapper mask to designate in which rooms the use
+of this skill
 would be successful. See AHELP ZAPPERMASK for more information, but
 since this is masking rooms, the -LOCATION flag will probably be used
 most often.</td>
 </tr>
 <tr>
-<td><span style="font-style: italic;">Player Mask</span></td>
-<td>a zapper mask to designate whether the player is even allowed to start using this skill at the moment. </td>
+<td><span style="font-style: italic;">Player
+Mask</span></td>
+<td>a zapper mask to designate whether the player is
+even allowed to start using this skill at the moment. </td>
 </tr>
 <tr>
-<td><span style="font-style: italic;">Yield Formula</span></td>
-<td>a formula for how many of the items to generate. &nbsp;See AHELP
+<td><span style="font-style: italic;">Yield
+Formula</span></td>
+<td>a formula for how many of the items to generate.
+&nbsp;See AHELP
 MATHFORMULA for more information how how to generate random amounts.</td>
 </tr>
-<tr><td><span style="font-style: italic;">Start Message</span></td><td>The message seen when the player first starts attempting this gathering.</td></tr><tr><td><span style="font-style: italic;">Found Message</span></td><td>The
+<tr>
+<td><span style="font-style: italic;">Start
+Message</span></td>
+<td>The message seen when the player first starts
+attempting this gathering.</td>
+</tr>
+<tr>
+<td><span style="font-style: italic;">Found
+Message</span></td>
+<td>The
 message seen when the player discovers that this room contains 1 or
-more of the items. &nbsp;The variable @x1 contains the name of the item.</td></tr><tr><td><span style="font-style: italic;">Not Found Message</span></td><td>The
+more of the items. &nbsp;The variable @x1 contains the name of the
+item.</td>
+</tr>
+<tr>
+<td><span style="font-style: italic;">Not
+Found Message</span></td>
+<td>The
 message seen when the player does not discover any of the items here,
 either because it is the wrong room (see Room Mask), or because a
-proficiency check failed.</td></tr><tr><td><span style="font-style: italic;">Complete Message</span></td><td>The
-message seen when the gathering is successful. &nbsp;The variable @x1
+proficiency check failed.</td>
+</tr>
+<tr>
+<td><span style="font-style: italic;">Complete
+Message</span></td>
+<td>The
+message seen when the gathering is successful. &nbsp;The variable
+@x1
 contains the number of items found, and @x2 is the name of the items
-(plural)</td></tr><tr><td><span style="font-style: italic;">Droppable Items</span></td><td>These are the choices of items that the skill can generate. &nbsp;</td></tr><tr><td><span style="font-style: italic;">Cosmetic Only</span></td><td>whether the droppable item is displayed as being generated, but is not actually generated.</td></tr><tr>
+(plural)</td>
+</tr>
+<tr>
+<td><span style="font-style: italic;">Droppable
+Items</span></td>
+<td>These are the choices of items that the skill can
+generate. &nbsp;</td>
+</tr>
+<tr>
+<td><span style="font-style: italic;">Cosmetic
+Only</span></td>
+<td>whether the droppable item is displayed as being
+generated, but is not actually generated.</td>
+</tr>
+<tr>
 <td><i>MSP
 file</i></td>
 <td>the name of the
@@ -2345,10 +2400,201 @@ reactions go to the winner. However, all properties and behaviors will
 work as expected. The 'Light' system uses less resources, and allows
 players with different faction values to get some functionality when in
 the same room with each other. However, some properties and behaviors
-may not work as expected. </td>
+may not work as expected.</td>
 </tr>
 </tbody>
 </table>
+<span style="font-weight: bold;"><br>
+</span>
+<p style="color: rgb(0, 153, 0);"><strong><a name="planes"><font size="5">Planes</font></a></strong></p>
+<span style="font-weight: bold;">Introduction:</span><br>
+<br>
+A plane of existence is a particular mirror universe to your own world.
+&nbsp;Each plane has a special character and flavor that alters the
+mirror of your existing area to reflect its special flaire.
+&nbsp;The area that is mirrored is the same as the one where the
+spell is cast to travel from the normal Prime Material plane to the new
+plane. &nbsp;Planes require powerful magic both to enter, and to
+leave. &nbsp;<br>
+Each plane definition describes the ways in which the normal area being
+teleported from is changed to reflect the new plane of existence.
+&nbsp;<br>
+<p>Now, lets discuss how to
+list existing planes:</p>
+<p><strong>LIST PLANES</strong></p>
+<p>The list that is shown
+with this command reflects the list of existing planes.</p>
+<p><strong>CREATE PLANE My New Plane</strong></p>
+<p>This command will create
+a new plane of existence, and allow you to edit its fields as per
+MODIFY PLANE below. &nbsp;Once chosen, the plane name can not be
+edited later, so choose carefully. &nbsp;If you made a mistake on
+the name of a new Plane, use DESTROY and then create it again.</p>
+<p style="font-weight: bold;">DESTROY PLANE My Old
+Plane</p>
+<p>This command will destroy an existing plane.</p>
+<p><strong>MODIFY PLANE My Old Plane</strong></p>
+<p>The modify command will
+take you into the editor for an
+existing plane. The Plane editor contains numerous other complex and
+interesting fields to change. &nbsp;All fields are optional, and any
+field left empty will not be applied to the area being transformed.
+&nbsp;For example, if no alignment is given, the existing alignments of
+the area mobs will be unchanged. &nbsp;Here are all the fields:</p>
+<table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+<tbody>
+<tr>
+<td width="25%"><strong>Property</strong></td>
+<td width="75%"><strong>Description</strong></td>
+</tr>
+<tr>
+<td><em>Plane Name</em></td>
+<td>the name of the plane of existence. &nbsp;Not
+changeable.</td>
+</tr>
+<tr>
+<td><em>Description</em></td>
+<td>a free form description of the plane, which is made available to the Planar Lore spell</td>
+</tr>
+<tr>
+<td><em>Is Like</em></td>
+<td>the name of another Plane of Existence from which any attributes not specified by this Plane will be drawn.<br>
+</td>
+</tr>
+<tr>
+<td><em>Categories</em></td>
+<td>a comma-delimited list of categories, used by some Spells/Skills to group planes together</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Transitional</td>
+<td>true if the plane is Transitional. &nbsp;Transitional planes would also do well to add Transistional as a category.</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Alignment</td>
+<td>a&nbsp;numeric value representing an alignment to assign to the planes mobs.</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Prefix(es)</td>
+<td>comma delimited list of strings to prefix mob names with</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Level Formula</td>
+<td>either a number, or a formula to adjust mob/item levels:&nbsp; @x1 = base areas median level, @x2 = specific mob/item level&nbsp; @x2 = the plane traveling players level. &nbsp;See also HELP MATHFORMULA</td>
+</tr>
+<tr>
+<td style="font-style: italic;">MOB Resistances</td>
+<td>planar mob resistance arguments, see Prop_Resistance</td>
+</tr>
+<tr>
+<td style="font-style: italic;">MOB Stat Trainer</td>
+<td>planar mob stat settings, see Prop_StatTrainer</td>
+</tr>
+<tr>
+<td style="font-style: italic;">MOB Stat Adjuster</td>
+<td>planar mob stat changes, see Prop_StatAdjuster</td>
+</tr>
+<tr>
+<td style="font-style: italic;">MOB Adjuster</td>
+<td>mob adjuster arguments, see Prop_Adjuster</td>
+</tr>
+<tr>
+<td style="font-style: italic;">MOB Size Multipliers</td>
+<td>mob size multipliers, use height=x and/or weight=y to multiply the existing heigh/weight of mobs</td>
+</tr>
+<tr>
+<td style="font-style: italic;">MOB Copys</td>
+<td>number of times to copy each mob in an area</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Max Weapon Range</td>
+<td>max range number that any weapon on the plane can work at</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Required Weapons</td>
+<td>types of weapons that do damage on the plane: wep type or class or word MAGICAL</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Atmosphere</td>
+<td>raw material type that makes up plane atmosphere</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Alt Hours per Day</td>
+<td>multiplier by which to change the # hours in planar day</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Recover Rate</td>
+<td>number of extra player stat recovers while in the plane</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Fatigue Rate</td>
+<td>multiplier to extra hunger/thirst</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Elite level</td>
+<td>elite level 1+, increases hit points, attack, damage, saves</td>
+</tr>
+<tr>
+<td style="font-style: italic;">MOB Race Mix</td>
+<td>RaceID of race to make every planar mob a mix of</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Spec Flags</td>
+<td>space delim flags: NOINFRAVISION (disallows infravision),
+BADMUNDANEARMOR (non-magical armor is worthless), ALLBREATHE (allows
+anything to be breathed)</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Bonus Damage Stat</td>
+<td>name of mob charstat (strength, etc) to add (STAT-10)*2 damage to</td>
+</tr>
+<tr>
+<td style="font-style: italic;">MOB Absorptions</td>
+<td>planar mob damage absorptions, see Prop_AbsorbDamage</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Room Title Colors</td>
+<td>A color code (^r) or "UP " followed by color, for room title</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Room Descriptions</td>
+<td>Comma delimited list of adjectives to sprinkle in room descriptions.&nbsp; List may be prefixed with a number for % chance. &nbsp;List may also begin with "UP " to make description uppercase.</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Area Effects</td>
+<td>space delimited AbilityID/BehaviorID(arg) list for planar area</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Room Effects</td>
+<td>space delimited AbilityID/BehaviorID(arg) list for rooms</td>
+</tr>
+<tr>
+<td style="font-style: italic;">MOB Behaviors</td>
+<td>space delimited list of behavior ids with optional args in () for mobs</td>
+</tr>
+<tr>
+<td style="font-style: italic;">MOB Behavior Replacements</td>
+<td>space delimited list of behavior id = replacement behavior id, denoting a weird alteration in existing mob behaviors.</td>
+</tr>
+<tr>
+<td style="font-style: italic;">MOB Abilities</td>
+<td>space delimited list of ability-granting code entries. &nbsp;Each
+entry is either AbilityID(arg) or AbilityDomain(arg),&nbsp; or
+AbilityFlag(arg) or AbilityType(arg) or number(x/y) where x is the number of skills per y levels of the mob</td>
+</tr>
+<tr>
+<td style="font-style: italic;">MOB Factions</td>
+<td>Space delimited list of FactionIDs(AMOUNT) to give mobs faction. Use a FactionID of "*" to activate coffeemud.ini reaction faction</td>
+</tr>
+<tr>
+<td style="font-style: italic;">Area Blurbs</td>
+<td>space delimited key=\"blurb\" values to show planar lore users</td>
+</tr><tr><td style="font-style: italic;">Promotions</td><td>Comma
+delimited List of promotion names with % chance in (). &nbsp;The first
+promotion name gets elite 1, the second 3, the third 5, etc..</td></tr>
+</tbody>
+</table>
+<span style="font-weight: bold;"><br>
+</span>
 <p align="left"><strong><a name="quests"><font color="green" size="5">Quests</font></a></strong></p>
 <p>Quests are tasks which
 can be completed by players for prizes,
@@ -2466,9 +2712,16 @@ name of your quest. This is a required command!</p>
 <p><span style="color: rgb(51, 102, 102);">SET
 DISPLAY</span><span style="color: rgb(102, 51, 102);">
 [DISPLAY QUEST NAME]</span> - a
-friendly displayable name for your quest. &nbsp;Recommended, but optional.</p><p><span style="color: rgb(51, 102, 102);">SET CATEGORY</span><span style="color: rgb(102, 51, 102);">
-[CATEGORY WORD(S)]</span> - a space-delimited list of arbitrary category words. &nbsp;Completely optional.</p><p><span style="color: rgb(51, 102, 102);">SET INSTRUCTIONS</span><span style="color: rgb(102, 51, 102);">
-[QUEST INSTRUCTIONS]</span> - player instructions for this quest. &nbsp;Recommended, but optional.</p>
+friendly displayable name for your quest. &nbsp;Recommended, but
+optional.</p>
+<p><span style="color: rgb(51, 102, 102);">SET
+CATEGORY</span><span style="color: rgb(102, 51, 102);">
+[CATEGORY WORD(S)]</span> - a space-delimited list of arbitrary
+category words. &nbsp;Completely optional.</p>
+<p><span style="color: rgb(51, 102, 102);">SET
+INSTRUCTIONS</span><span style="color: rgb(102, 51, 102);">
+[QUEST INSTRUCTIONS]</span> - player instructions for this quest.
+&nbsp;Recommended, but optional.</p>
 <p><span style="color: rgb(51, 102, 102);">SET
 DURATION</span> <span style="color: rgb(102, 51, 102);">[#TICKS/TIME]</span>
 - Either a number of ticks (4 second periods) the quest will last once
@@ -2568,9 +2821,13 @@ allows, for instance, a mob, once appropriated and specified by a
 quest, to continue being used in subsequent steps without being
 restored by the quest manager to a natural state. An MPSTOPQUEST
 command, or an expired duration, will always cause the entire quest to
-cease executing and all objects to be cleaned up.</p><p><span style="color: rgb(51, 153, 153);"><span style="color: rgb(51, 102, 102);">QUIET</span> </span><span style="color: rgb(102, 51, 102);">[ON/OFF]</span>
+cease executing and all objects to be cleaned up.</p>
+<p><span style="color: rgb(51, 153, 153);"><span style="color: rgb(51, 102, 102);">QUIET</span> </span><span style="color: rgb(102, 51, 102);">[ON/OFF]</span>
 - Turns on or off quiet mode, in which error messages are not logged.
-&nbsp;However, errors will still cancel the quest script running.</p><p><span style="color: rgb(51, 102, 102);">OPTIONAL</span><span style="color: rgb(102, 51, 102);"> [ON/OFF]</span> - Turns on or off optional mode, in which errors no longer cancel quest script running.</p>
+&nbsp;However, errors will still cancel the quest script running.</p>
+<p><span style="color: rgb(51, 102, 102);">OPTIONAL</span><span style="color: rgb(102, 51, 102);"> [ON/OFF]</span> -
+Turns on or off optional mode, in which errors no longer cancel quest
+script running.</p>
 <p><span style="color: rgb(51, 102, 102);">STEP</span>
 - The
 purpose of this command is to allow your quest to run in several
@@ -3129,9 +3386,11 @@ Many of the SET ... commands, such as SET MOBGROUP, SET MOB, SET
 ITEMGROUP, SET ROOM, etc, have forms which allow you to designate their
 value using an [OBJECT] string. An [OBJECT] string is one of the
 following basic quest-script values: "LOADEDMOBS", "LOADEDITEMS",
-"LOADEDABILITIES", "AREA", "ROOM", "ABILITY", "MOBGROUP", "ITEMGROUP", "ROOMGROUP", 
-"ABILITYGROUP", "ITEM", "ENVOBJ", "STUFF", "MOB", or one of the following mystery quest-
-script values: "FACTION", "FACTIONGROUP", "AGENT", "AGENTGROUP", "ACTION",
+"LOADEDABILITIES", "AREA", "ROOM", "ABILITY", "MOBGROUP", "ITEMGROUP",
+"ROOMGROUP", "ABILITYGROUP", "ITEM", "ENVOBJ", "STUFF", "MOB", or one
+of the following mystery quest-
+script values: "FACTION", "FACTIONGROUP", "AGENT", "AGENTGROUP",
+"ACTION",
 "ACTIONGROUP", "TARGET", "TARGETGROUP", "MOTIVE", "MOTIVEGROUP",
 "WHEREHAPPENED", "WHEREHAPPENEDGROUP", "WHEREAT", "WHEREATGROUP",
 "WHENHAPPENED", "WHENHAPPENEDGROUP", "WHENAT", "WHENATGROUP", "TOOL",
@@ -3463,30 +3722,134 @@ above this command listing. [#NUMBER] may be a math expression.</p>
 - Sets the ACTIONGROUP to [NUMBER] of the set of strings specified.
 Will also designate one random string from the group as the ACTION. The
 strings are space delimited, and words grouped with double-quotes.
-[#NUMBER] may be a math expression.</p><font style="background-color: aquamarine;" color="#4169e1" size="4"><strong>Quest scripts:</strong></font><p>The MOBPROG scripts GIVEn to mobs or whatever by the above quest script should handle things like allowing a player to <span style="font-weight: bold;">accept</span> a quest, providing a way to track the players <span style="font-weight: bold;">progress</span> in a quest, and providing a way to <span style="font-weight: bold;">complete</span> a quest. &nbsp;There are several commands and conventions in MOBPROG language to assist with this.</p><p>The
+[#NUMBER] may be a math expression.</p>
+<font style="background-color: aquamarine;" color="#4169e1" size="4"><strong>Quest scripts:</strong></font>
+<p>The MOBPROG scripts GIVEn to mobs or whatever by the
+above quest script should handle things like allowing a player to <span style="font-weight: bold;">accept</span> a quest,
+providing a way to track the players <span style="font-weight: bold;">progress</span> in a quest,
+and providing a way to <span style="font-weight: bold;">complete</span>
+a quest. &nbsp;There are several commands and conventions in
+MOBPROG language to assist with this.</p>
+<p>The
 most common way to accept a quest is to have an NPC that acts as a
-quest giver. &nbsp;He can announce the quest to players entering his
+quest giver. &nbsp;He can announce the quest to players entering
+his
 room, and allow the quest to be accepted using a SPEECH_PROG, or some
 other way. &nbsp; If you wish your quest to be compatible with
 StdQuestBoard or other quest items, however, you also need to include
 both the SET INSTRUCTIONS command in your quest script, as well as
-include two special FUNCTION_PROGs:</p><p><span style="font-family: monospace;">FUNCTION_PROG CAN_ACCEPT</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; if ISPC($n) and&nbsp;</span><span style="font-family: monospace;">!QUESTWINNER($n *) and</span><span style="font-family: monospace;"> !QUESTSCRIPTED($n *)</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; RETURN</span><br style="font-family: monospace;"><span style="font-family: monospace;"></span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; endif</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; RETURN CANCEL</span><br style="font-family: monospace;"><span style="font-family: monospace;">~</span><br style="font-family: monospace;"><br style="font-family: monospace;"><span style="font-family: monospace;">FUNCTION_PROG DO_ACCEPT</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; mpqset * STATISTICS ACCEPTED</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=my_quests_playertrack.script</span><br style="font-family: monospace;"><span style="font-family: monospace;">~</span><br style="font-family: monospace;"><br style="font-family: monospace;"><span style="font-family: monospace;">SPEECH_PROG p i accept</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; if CALLFUNC(CAN_ACCEPT)</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sayto "$n" You have accepted my quest! &nbsp;Now go do all the things!</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; MPCALLFUNC DO_ACCEPT</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; endif</span><br style="font-family: monospace;"><span style="font-family: monospace;">~</span><br style="font-family: monospace;"></p><p>The above shows examples of the two special functions for item or board-based quest accepting. &nbsp;The first function <span style="font-family: monospace;">CAN_ACCEPT</span>
+include two special FUNCTION_PROGs:</p>
+<p><span style="font-family: monospace;">FUNCTION_PROG
+CAN_ACCEPT</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+if ISPC($n) and&nbsp;</span><span style="font-family: monospace;">!QUESTWINNER($n *) and</span><span style="font-family: monospace;"> !QUESTSCRIPTED($n *)</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; RETURN</span><br style="font-family: monospace;">
+<span style="font-family: monospace;"></span><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+endif</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+RETURN CANCEL</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">~</span><br style="font-family: monospace;">
+<br style="font-family: monospace;">
+<span style="font-family: monospace;">FUNCTION_PROG
+DO_ACCEPT</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+mpqset * STATISTICS ACCEPTED</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+mpscript $n INDIVIDUAL SAVABLE STATIC=LOAD=my_quests_playertrack.script</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">~</span><br style="font-family: monospace;">
+<br style="font-family: monospace;">
+<span style="font-family: monospace;">SPEECH_PROG p
+i accept</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+if CALLFUNC(CAN_ACCEPT)</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; sayto "$n" You have accepted my quest!
+&nbsp;Now go do all the things!</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; MPCALLFUNC DO_ACCEPT</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+endif</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">~</span><br style="font-family: monospace;">
+</p>
+<p>The above shows examples of the two special functions
+for item or board-based quest accepting. &nbsp;The first function <span style="font-family: monospace;">CAN_ACCEPT</span>
 should return nothing if the player $n is permitted to do your quest,
 and should return a non-empty string (in this case, "CANCEL") if the
-player is not permitted. &nbsp;The <span style="font-family: monospace;">CAN_ACCEPT</span> function also demonstrates a check to see if the player has previously completed the quest (<span style="font-family: monospace;">QUESTWINNER</span>) and whether the player is currently running a script assigned by this quest (<span style="font-family: monospace;">QUESTSCRIPTED</span>).</p><p>The <span style="font-family: monospace;">DO_ACCEPT</span>
+player is not permitted. &nbsp;The <span style="font-family: monospace;">CAN_ACCEPT</span>
+function also demonstrates a check to see if the player has previously
+completed the quest (<span style="font-family: monospace;">QUESTWINNER</span>)
+and whether the player is currently running a script assigned by this
+quest (<span style="font-family: monospace;">QUESTSCRIPTED</span>).</p>
+<p>The <span style="font-family: monospace;">DO_ACCEPT</span>
 function should perform any actions required to allow the player $n to
 proceed with your quest. In this case, the quest statistics are updated
-to denote that a player has accepted the quest using <span style="font-family: monospace;">MPQSET</span>, and then the player is given their own tracking script using <span style="font-family: monospace;">MPSCRIPT</span>.</p><p>The example SPEECH_PROG is just a simple example of using the spoken phrase 'i accept' to accept a quest.</p><p>Tracking
+to denote that a player has accepted the quest using <span style="font-family: monospace;">MPQSET</span>, and
+then the player is given their own tracking script using <span style="font-family: monospace;">MPSCRIPT</span>.</p>
+<p>The example SPEECH_PROG is just a simple example of
+using the spoken phrase 'i accept' to accept a quest.</p>
+<p>Tracking
 quest progress can be done using a personal script on each player doing
-the quest, as mentioned above. &nbsp; For compatibility with the player
-QUESTS&nbsp; command in-game, you should set the MOBPROG script Vars <span style="font-family: monospace;">&lt;playername&gt; PROGRESS</span> and/or <span style="font-family: monospace;">&lt;playername&gt; TIME_REMAINING</span> to update the players progress in the game. &nbsp;</p><p>Completing
+the quest, as mentioned above. &nbsp; For compatibility with the
+player
+QUESTS&nbsp; command in-game, you should set the MOBPROG script
+Vars <span style="font-family: monospace;">&lt;playername&gt;
+PROGRESS</span> and/or <span style="font-family: monospace;">&lt;playername&gt;
+TIME_REMAINING</span> to update the players progress in the game.
+&nbsp;</p>
+<p>Completing
 quests can be accomplished by the MOBPROG script on the announcer mob,
 the quest target mob(s), or even a script on the player themselves.
-&nbsp;Here is an example of a script snippet on the announcer mob:</p><p><span style="font-family: monospace;">ALL_GREET_PROG 100</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; IF QUESTSCRIPTED($n *)</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; IF var($n NUM_KILLED &gt;= 5)</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; mpexp $n 100</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; mpoload QuestPoint</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; give "a quest point" "$n"</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; mpoload 10</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; give 10 "$n"</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; mpquestwin $n *</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sayto $n Congratulations! You did it!</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; mpendquest $n</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; mpqset * STATISTICS SUCCESS</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ENDIF</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; ENDIF</span><br style="font-family: monospace;"><span style="font-family: monospace;">~</span><br style="font-family: monospace;"></p><p>In the above example, an&nbsp;<span style="font-family: monospace;">ALL_GREET_PROG</span> checks to see if the greeted player ($n) was&nbsp;<span style="font-family: monospace;">QUESTSCRIPTED</span> previously, as a way of determining whether they are actually on this quest. &nbsp;It then checks their <span style="font-family: monospace;">NUM_KILLED</span>
-variable to see if it is high enough to complete the quest. &nbsp;If
+&nbsp;Here is an example of a script snippet on the announcer mob:</p>
+<p><span style="font-family: monospace;">ALL_GREET_PROG
+100</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+IF QUESTSCRIPTED($n *)</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; IF var($n NUM_KILLED &gt;= 5)</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; mpexp $n
+100</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; mpoload
+QuestPoint</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; give "a
+quest point" "$n"</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; mpoload 10</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; give 10
+"$n"</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+mpquestwin $n *</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; sayto $n
+Congratulations! You did it!</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+mpendquest $n</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; mpqset *
+STATISTICS SUCCESS</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ENDIF</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;
+ENDIF</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">~</span><br style="font-family: monospace;">
+</p>
+<p>In the above example, an&nbsp;<span style="font-family: monospace;">ALL_GREET_PROG</span>
+checks to see if the greeted player ($n) was&nbsp;<span style="font-family: monospace;">QUESTSCRIPTED</span>
+previously, as a way of determining whether they are actually on this
+quest. &nbsp;It then checks their <span style="font-family: monospace;">NUM_KILLED</span>
+variable to see if it is high enough to complete the quest.
+&nbsp;If
 both conditions are true, some goodies are given out: 100 xp, a quest
-point, and 10 gold. &nbsp;Then the special command <span style="font-family: monospace;">MPQUESTWIN</span> is used to signal that the player has won the quest. &nbsp;<span style="font-family: monospace;">MPENDQUEST</span>
-$n &nbsp;is then used to clear off any residual quest scripts or data
+point, and 10 gold. &nbsp;Then the special command <span style="font-family: monospace;">MPQUESTWIN</span> is
+used to signal that the player has won the quest. &nbsp;<span style="font-family: monospace;">MPENDQUEST</span>
+$n &nbsp;is then used to clear off any residual quest scripts or
+data
 from the player. &nbsp;Lastly, as in the accept example above, the
 quest statistics are updated using <span style="font-family: monospace;">MPQSET * STATISTICS SUCCESS</span>.</p>
 <p><font style="background-color: aquamarine;" color="#4169e1" size="4"><strong>JavaScripting
