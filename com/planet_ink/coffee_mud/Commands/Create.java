@@ -1124,7 +1124,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return;
 		}
-		CMLib.titles().appendAutoTitle("\n"+parms);
+		CMLib.titles().appendAutoTitle("\n"+parms); //automatically does CMLib.titles().reloadAutoTitles();
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The prestige of the players just increased!"));
 	}
 

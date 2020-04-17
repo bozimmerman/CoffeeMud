@@ -286,6 +286,9 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	public void reloadAutoTitles()
 	{
 		autoTitles=new TriadSVector<String,String,MaskingLibrary.CompiledZMask>();
+		final Iterator<String> k=Resources.findResourceKeys(getTitleFilename());
+		while(k.hasNext())
+			Resources.removeResource(k.next());
 		final List<String> V=Resources.getFileLineVector(Resources.getFileResource(this.getTitleFilename(),true));
 		String WKID=null;
 		for(int v=0;v<V.size();v++)

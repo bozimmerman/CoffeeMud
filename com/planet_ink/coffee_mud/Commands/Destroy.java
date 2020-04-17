@@ -782,7 +782,7 @@ public class Destroy extends StdCommand
 			return false;
 		}
 
-		final String error = CMLib.titles().deleteTitleAndResave(classID);
+		final String error = CMLib.titles().deleteTitleAndResave(classID); // also does CMLib.titles().reloadAutoTitles();
 		if(error == null)
 		{
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The prestige of players just decreased!"));
