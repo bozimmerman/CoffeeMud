@@ -1545,6 +1545,7 @@ public class DefaultSession implements Session
 		{
 			lastWasPrompt.set(true);
 			callBack.showPrompt();
+			lastWasPrompt.set(true);
 		}
 		if(this.inputCallback!=null)
 			this.inputCallback.timedOut();
