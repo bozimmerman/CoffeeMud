@@ -210,21 +210,26 @@ public class Spell_Imprisonment extends Spell
 							}
 						}
 					}
-					final Vector<String> V=new XVector<String>(biggestDiffPlane);
-					A.invoke(mob, V, target, true, asLevel);
-					if(biggestDiffPlane.equalsIgnoreCase(CMLib.flags().getPlaneOfExistence(target)))
+					if(biggestDiffPlane!=null)
 					{
-						final Spell_Imprisonment aP = (Spell_Imprisonment)super.maliciousAffect(mob, target, asLevel, 0, -1);
-						if(aP != null)
-							aP.prevRoom = R;
+						final Vector<String> V=new XVector<String>(biggestDiffPlane);
+						A.invoke(mob, V, target, true, asLevel);
+						if(biggestDiffPlane.equalsIgnoreCase(CMLib.flags().getPlaneOfExistence(target)))
+						{
+							final Spell_Imprisonment aP = (Spell_Imprisonment)super.maliciousAffect(target, null, asLevel, 0, -1);
+							if(aP != null)
+								aP.prevRoom = R;
+						}
+						else
+							return maliciousFizzle(mob,target,L("<S-NAME> swipe(s) <S-HIS-HER> hands at <T-NAMESELF>, but the spell fades."));
 					}
 					else
-						return maliciousFizzle(mob,target,L("<S-NAME> swipe(s) <S-HIS-HER> hands <T-NAMESELF>, but the spell fades."));
+						return maliciousFizzle(mob,target,L("<S-NAME> swipe(s) <S-HIS-HER> hands at <T-NAMESELF>, but the spell fades."));
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> swipe(s) <S-HIS-HER> hands <T-NAMESELF>, but the spell fails."));
+			return maliciousFizzle(mob,target,L("<S-NAME> swipe(s) <S-HIS-HER> hands at <T-NAMESELF>, but the spell fails."));
 		// return whether it worked
 		return success;
 	}
