@@ -389,7 +389,10 @@ public class Unload extends StdCommand
 				final Iterator<String> k=Resources.findResourceKeys(which);
 				if(!k.hasNext())
 				{
-					mob.tell(L("Unknown resource '@x1'.  Use LIST RESOURCES.",which));
+					if(which.toLowerCase().startsWith("title"))
+						CMLib.titles().reloadAutoTitles();
+					else
+						mob.tell(L("Unknown resource '@x1'.  Use LIST RESOURCES.",which));
 					return false;
 				}
 				for(;k.hasNext();)
