@@ -142,9 +142,9 @@ public class DefaultSession implements Session
 	protected boolean		 debugStrOutput		 = false;
 	protected boolean		 debugBinOutput		 = false;
 	protected boolean		 debugBinInput		 = false;
-	protected boolean		 lastWasPrompt		 = false;
 	protected StringBuffer   debugBinInputBuf	 = new StringBuffer("");
 
+	protected AtomicBoolean				lastWasPrompt	= new AtomicBoolean(false);
 	protected List<SessionFilter>		textFilters		= new Vector<SessionFilter>(3);
 	protected volatile InputCallback	inputCallback	= null;
 
@@ -1160,7 +1160,7 @@ public class DefaultSession implements Session
 				if(killThisThread!=null)
 					CMLib.killThread(killThisThread,500,1);
 			}
-			lastWasPrompt=false;
+			lastWasPrompt.set(false);
 		}
 		catch (final Exception ioe)
 		{
@@ -1331,7 +1331,7 @@ public class DefaultSession implements Session
 	{
 		if(msg==null)
 			return;
-		onlyPrint((needPrompt?"":(lastWasPrompt?"\n\r":""))+msg,false);
+		onlyPrint((needPrompt?"":(lastWasPrompt.get()?"\n\r":""))+msg,false);
 		needPrompt=true;
 	}
 
@@ -1340,7 +1340,7 @@ public class DefaultSession implements Session
 	{
 		if(msg==null)
 			return;
-		onlyPrint((needPrompt?"":(lastWasPrompt?"\n\r":""))+CMLib.coffeeFilter().mxpSafetyFilter(msg, this),false);
+		onlyPrint((needPrompt?"":(lastWasPrompt.get()?"\n\r":""))+CMLib.coffeeFilter().mxpSafetyFilter(msg, this),false);
 		needPrompt=true;
 	}
 
@@ -1353,6 +1353,7 @@ public class DefaultSession implements Session
 	@Override
 	public void promptPrint(final String msg)
 	{
+		lastWasPrompt.set(true);
 		print(msg);
 		if(promptSuffix.length>0)
 		{
@@ -1379,7 +1380,7 @@ public class DefaultSession implements Session
 			{
 			}
 		}
-		lastWasPrompt=true;
+		lastWasPrompt.set(true);
 	}
 
 	@Override
@@ -1542,8 +1543,8 @@ public class DefaultSession implements Session
 	{
 		if(callBack!=null)
 		{
+			lastWasPrompt.set(true);
 			callBack.showPrompt();
-			lastWasPrompt=true;
 		}
 		if(this.inputCallback!=null)
 			this.inputCallback.timedOut();
@@ -2147,7 +2148,6 @@ public class DefaultSession implements Session
 						}
 						else
 							lastWasLF = false;
-						lastWasPrompt=false;
 						lastWasCR = false;
 						if (getClientTelnetMode(TELNET_ECHO))
 							rawCharsOut(""+(char)13+(char)10);  // CR
@@ -2163,7 +2163,6 @@ public class DefaultSession implements Session
 						}
 						else
 							lastWasCR = false;
-						lastWasPrompt=false;
 						lastWasLF = false;
 						if (getClientTelnetMode(TELNET_ECHO))
 							rawCharsOut(""+(char)13+(char)10);  // CR
@@ -2198,7 +2197,10 @@ public class DefaultSession implements Session
 						return c;
 				}
 				if(rv)
+				{
+					lastWasPrompt.set(false);
 					return 0;
+				}
 			}
 		}
 		catch(final InterruptedIOException e)
