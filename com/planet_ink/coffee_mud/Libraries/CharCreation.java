@@ -1436,6 +1436,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					return LoginResult.NO_LOGIN;
 				}
 			}
+			try
+			{
+				session.blockingIn(10,false);
+			}
+			catch (final IOException e)
+			{
+			}
 			session.promptPrint(L("password: "));
 			loginObj.state=LoginState.LOGIN_PASS_RECEIVED;
 			return LoginResult.INPUT_REQUIRED;
@@ -1734,6 +1741,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	protected LoginResult acctmenuPrompt(final LoginSessionImpl loginObj, final Session session)
 	{
 		session.setStatus(Session.SessionStatus.ACCOUNT_MENU);
+		try
+		{
+			session.blockingIn(10,false);
+		}
+		catch (final IOException e)
+		{
+		}
 		session.promptPrint(L("\n\r^wCommand or Name ^H(?)^w: ^N "));
 		loginObj.state=LoginState.ACCTMENU_COMMAND;
 		loginObj.savedInput="";
