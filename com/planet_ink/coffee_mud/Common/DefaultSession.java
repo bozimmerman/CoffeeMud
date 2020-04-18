@@ -1160,7 +1160,8 @@ public class DefaultSession implements Session
 				if(killThisThread!=null)
 					CMLib.killThread(killThisThread,500,1);
 			}
-			lastWasPrompt.set(false);
+			if(chars != PINGCHARS)
+				lastWasPrompt.set(false);
 		}
 		catch (final Exception ioe)
 		{
