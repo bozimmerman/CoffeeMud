@@ -675,8 +675,16 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				}
 			}
 			planeArea.setTimeObj(C);
-			planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
-			planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleport"));
+			{
+				final Ability A=CMClass.getAbility("Prop_NoTeleportOut");
+				A.setMiscText("exceptions=planarability");
+				planeArea.addNonUninvokableEffect(A);
+			}
+			{
+				final Ability A=CMClass.getAbility("Prop_NoTeleport");
+				A.setMiscText("exceptions=planarability");
+				planeArea.addNonUninvokableEffect(A);
+			}
 			planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
 			final String aeffects = planeVars.get(PlanarVar.AEFFECT.toString());
 			if(aeffects!=null)

@@ -2,6 +2,10 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -56,6 +60,15 @@ public class Prop_NoTeleportOut extends Property
 		return Ability.FLAG_ZAPPER;
 	}
 
+	protected List<String>  exceptionRooms = new ArrayList<String>(1);
+
+	@Override
+	public void setMiscText(final String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		exceptionRooms=CMParms.parseCommas(CMParms.getParmStr(newMiscText.toLowerCase(), "EXCEPTIONS", ""), true);
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -74,6 +87,18 @@ public class Prop_NoTeleportOut extends Property
 			if(((shere)&&(!summon)&&(teleport))
 			   ||((!shere)&&(summon)))
 			{
+				if(teleport)
+				{
+					if((affected instanceof Area)
+					&& (msg.target() instanceof Room)
+					&& (exceptionRooms.contains(CMLib.map().getExtendedRoomID((Room)msg.target()).toLowerCase())
+						||exceptionRooms.contains(((Room)msg.target()).getArea().Name().toLowerCase())))
+						return true;
+					if((exceptionRooms.contains(msg.tool().ID().toLowerCase()))
+					||((msg.tool() instanceof PlanarAbility)&&(exceptionRooms.contains("planarability"))))
+						return true;
+				}
+
 				final Ability A=(Ability)msg.tool();
 				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 				||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)

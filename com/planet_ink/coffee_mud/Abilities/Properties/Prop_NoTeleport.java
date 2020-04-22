@@ -87,12 +87,18 @@ public class Prop_NoTeleport extends Property
 			final boolean shere=(R==affected)
 								||((affected instanceof Area)
 									&&(((Area)affected).inMyMetroArea(R.getArea())));
-			if(teleport
-			&& (msg.target() instanceof Room)
-			&& (affected instanceof Area)
-			&& (exceptionRooms.contains(CMLib.map().getExtendedRoomID((Room)msg.target()).toLowerCase())
-				||exceptionRooms.contains(((Room)msg.target()).getArea().Name().toLowerCase())))
-				return true;
+			if(teleport)
+			{
+				if((affected instanceof Area)
+				&& (msg.target() instanceof Room)
+				&& (exceptionRooms.contains(CMLib.map().getExtendedRoomID((Room)msg.target()).toLowerCase())
+					||exceptionRooms.contains(((Room)msg.target()).getArea().Name().toLowerCase())))
+					return true;
+				if((exceptionRooms.contains(msg.tool().ID().toLowerCase()))
+				||((msg.tool() instanceof PlanarAbility)&&(exceptionRooms.contains("planarability"))))
+					return true;
+			}
+
 			if(((!shere)&&(!summon)&&(teleport))
 			   ||((shere)&&(summon)))
 			{
