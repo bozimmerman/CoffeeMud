@@ -30,6 +30,7 @@
  28. New achievement type: AREAVISIT
  29. Planes of Existence can now be edited from CL and MudGrinder.
  30. New spells: Imprisonment
+ 31. The hit point/mana/move colors will now go yellow < 50% and red < 25%.
 # Build 5.9.9 Release 12/18/2019
   * Minor database change: CMQUESID in CMQUESTS, CMRCID in CMGRAC, CMPKEY in CMPDAT enlarged.  Mostly optional.
   1. New prayers: empower unholy weapon, morph unholy weapon, faithful hellhound, discipline

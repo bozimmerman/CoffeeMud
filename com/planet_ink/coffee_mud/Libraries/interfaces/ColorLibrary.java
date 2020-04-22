@@ -228,9 +228,9 @@ public interface ColorLibrary extends CMLibrary
 		DOORDESC('d'),
 		ITEM('I'),
 		MOB('M'),
-		HITPOINTS('h'),
-		MANA('m'),
-		MOVES('v'),
+		HITPOINTS('h',"HITS"),
+		MANA('m',"MANA"),
+		MOVES('v',"MOVE"),
 		NORMAL('N'),
 		HIGHLIGHT('H'),
 		UNEXPDIRECTION('U'),
@@ -238,15 +238,49 @@ public interface ColorLibrary extends CMLibrary
 		WEATHER('J')
 		;
 
+		private static SpecialColor[] charMap = null;
+
 		private final char		cchar;
 		private final String	underStr;
 		private final String	escapeCode;
+		private final String	charStateStat;
 
-		private SpecialColor(final char escapeChar)
+		private SpecialColor(final char escapeChar, final String charStateStat)
 		{
 			this.cchar = escapeChar;
 			this.underStr = name().replace('_', '-');
 			this.escapeCode = "^"+cchar;
+			this.charStateStat = charStateStat;
+		}
+
+		private SpecialColor(final char escapeChar)
+		{
+			this(escapeChar, null);
+		}
+
+		/**
+		 * Returns a mapped object based on escape char
+		 * @param escapeChar the char to look for
+		 * @return a special color obj, or null
+		 */
+		public static SpecialColor get(final char escapeChar)
+		{
+			if(charMap == null)
+			{
+				charMap = new SpecialColor[256];
+				for(final SpecialColor c : SpecialColor.values())
+					charMap[c.getCodeChar() & 0xff] = c;
+			}
+			return charMap[escapeChar & 0xff];
+		}
+
+		/**
+		 * Returns the char state stat
+		 * @return the char state stat
+		 */
+		public String getCharStateStat()
+		{
+			return charStateStat;
 		}
 
 		/**

@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.Color;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.ColorState;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary.SpecialColor;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -664,8 +665,26 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				String escapeSequence=clookup[c];
 				if(escapeSequence==null)
 					return index;
+				final SpecialColor spec = ColorLibrary.SpecialColor.get(c);
 				if(escapeSequence.length()>0)
 				{
+					if((spec != null)
+					&&(S!=null)
+					&&(spec.getCharStateStat() != null))
+					{
+						final MOB M=S.mob();
+						if(M!=null)
+						{
+							final double max = CMath.s_double(M.maxState().getStat(spec.getCharStateStat()));
+							final double cur = CMath.s_double(M.curState().getStat(spec.getCharStateStat()));
+							final double pct = cur / max;
+							if(pct < .25)
+								escapeSequence=Color.LIGHTRED.getANSICode();
+							else
+							if(pct < .5)
+								escapeSequence=Color.YELLOW.getANSICode();
+						}
+					}
 					if((S!=null)
 					&&(escapeSequence.charAt(0)=='\033'))
 					{
@@ -1609,7 +1628,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 
 		if(firstAlpha<0)
 			firstAlpha=0;
-		if(firstAlpha<buf.length())
+		if((firstAlpha<buf.length())
+		&&((firstAlpha==0)||(!Character.isDigit(buf.charAt(firstAlpha-1)))))
 			buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
 		if((S!=null)
 		&&(!normalColor.equals(S.getCurrentColor()))
