@@ -709,6 +709,11 @@ public class VFShell
 					}
 
 					@Override
+					public void pushMarkedColor(final ColorState newcolor)
+					{
+					}
+
+					@Override
 					public void setLastColor(final ColorState newColor)
 					{
 					}
@@ -721,6 +726,12 @@ public class VFShell
 
 					@Override
 					public ColorState getLastColor()
+					{
+						return CMLib.color().getNormalColor();
+					}
+
+					@Override
+					public ColorState popMarkedColor()
 					{
 						return CMLib.color().getNormalColor();
 					}

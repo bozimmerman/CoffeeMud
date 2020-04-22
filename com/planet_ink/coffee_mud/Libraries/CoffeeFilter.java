@@ -353,12 +353,19 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		final char c = str.charAt(enDex);
 		switch (c)
 		{
+		case '[':
+			if((S!=null)
+			&&(S.getClientTelnetMode(Session.TELNET_ANSI)))
+				S.pushMarkedColor(S.getCurrentColor());
+			str.delete(index, index+2);
+			return index-1;
+		case ']':
 		case '?':
 		{
 			if((S!=null)
 			&&(S.getClientTelnetMode(Session.TELNET_ANSI)))
 			{
-				ColorState lastColor=S.getLastColor();
+				ColorState lastColor=(c=='?')?S.getLastColor():S.popMarkedColor();
 				final ColorState currColor=S.getCurrentColor();
 				if((lastColor.foregroundCode()==currColor.foregroundCode())
 				&&(lastColor.backgroundCode()==currColor.backgroundCode()))

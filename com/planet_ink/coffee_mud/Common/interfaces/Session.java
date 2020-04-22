@@ -691,6 +691,18 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	public void setCurrentColor(final ColorState newcolor);
 
 	/**
+	 * Returns the marked color code.
+	 * @return the marked color code.
+	 */
+	public ColorState popMarkedColor();
+
+	/**
+	 * Sets the marked color code.
+	 * @param newcolor the color to change it to
+	 */
+	public void pushMarkedColor(final ColorState newcolor);
+
+	/**
 	 * Returns the previous current color code.
 	 * @return the previous current color code.
 	 */

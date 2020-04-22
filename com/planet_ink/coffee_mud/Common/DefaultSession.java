@@ -144,6 +144,7 @@ public class DefaultSession implements Session
 	protected boolean		 debugBinInput		 = false;
 	protected StringBuffer   debugBinInputBuf	 = new StringBuffer("");
 
+	protected final Stack<ColorState>	markedColors	= new Stack<ColorState>();
 	protected AtomicBoolean				lastWasPrompt	= new AtomicBoolean(false);
 	protected List<SessionFilter>		textFilters		= new Vector<SessionFilter>(3);
 	protected volatile InputCallback	inputCallback	= null;
@@ -264,6 +265,7 @@ public class DefaultSession implements Session
 		promptSuffix = CMProps.getPromptSuffix();
 		currentColor = CMLib.color().getNormalColor();
 		lastColor = CMLib.color().getNormalColor();
+		markedColors.clear();
 		try
 		{
 			setStatus(SessionStatus.HANDSHAKE_OPEN);
@@ -824,6 +826,21 @@ public class DefaultSession implements Session
 	{
 		if(newColor!=null)
 			lastColor=newColor;
+	}
+
+	@Override
+	public ColorState popMarkedColor()
+	{
+		if(markedColors.size()==0)
+			return CMLib.color().getNormalColor();
+		return markedColors.pop();
+	}
+
+	@Override
+	public void pushMarkedColor(final ColorState newColor)
+	{
+		if(newColor!=null)
+			markedColors.push(newColor);
 	}
 
 	@Override

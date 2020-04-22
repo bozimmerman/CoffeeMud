@@ -585,7 +585,18 @@ public class FakeSession implements Session
 	}
 
 	@Override
+	public void pushMarkedColor(final ColorState newcolor)
+	{
+	}
+
+	@Override
 	public ColorState getCurrentColor()
+	{
+		return CMLib.color().getNormalColor();
+	}
+
+	@Override
+	public ColorState popMarkedColor()
 	{
 		return CMLib.color().getNormalColor();
 	}

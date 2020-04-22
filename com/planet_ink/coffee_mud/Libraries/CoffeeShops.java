@@ -2170,7 +2170,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		String bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.getCurrency(),auctionData.getBid());
 		final String currencyName=CMLib.beanCounter().getDenominationName(auctionData.getCurrency());
 		if(bid==0.0)
-			return new String[]{L("Up for auction: @x1.  The current bid is @x2.",I.name(),bidWords),null};
+			return new String[]{L("Up for auction: ^[@x1^].  The current bid is @x2.",I.name(),bidWords),null};
 
 		if(!bidCurrency.equals(auctionData.getCurrency()))
 			return new String[]{L("This auction is being bid in @x1 only.",currencyName),null};
@@ -2203,19 +2203,19 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			returnMoney(auctionData.getHighBidderMob(),auctionData.getCurrency(),-bid);
 			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.getCurrency(),auctionData.getBid());
 			final String yourBidWords = CMLib.beanCounter().abbreviatedPrice(currencyName, auctionData.getHighBid());
-			auctionAnnounces.add(L("A new bid has been entered for @x1. The current high bid is @x2.",I.name(),bidWords));
+			auctionAnnounces.add(L("A new bid has been entered for ^[@x1^]. The current high bid is @x2.",I.name(),bidWords));
 			if((oldHighBider!=null)&&(oldHighBider==mob))
-				return new String[]{L("You have submitted a new high bid of @x1 for @x2.",yourBidWords,I.name()),null};
+				return new String[]{L("You have submitted a new high bid of @x1 for ^[@x2^].",yourBidWords,I.name()),null};
 			else
 			if((oldHighBider!=null)&&(oldHighBider!=mob))
 			{
-				return new String[]{L("You have the new high reserve bid of @x1 for @x2."
+				return new String[]{L("You have the new high reserve bid of @x1 for ^[@x2^]."
 									+ " The current nominal high bid is @x3.",yourBidWords,I.name(),bidWords),
-									L("You have been outbid for @x1.",I.name())
+									L("You have been outbid for ^[@x1^].",I.name())
 				};
 			}
 			else
-				return new String[]{L("You have submitted a bid of @x1 for @x2.",yourBidWords,I.name()),null};
+				return new String[]{L("You have submitted a bid of @x1 for ^[@x2^].",yourBidWords,I.name()),null};
 		}
 		else
 		if((bid==auctionData.getBid())&&(auctionData.getHighBidderMob()!=null))
@@ -2229,18 +2229,18 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			{
 				auctionData.setBid(bid);
 				bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.getCurrency(),auctionData.getBid());
-				auctionAnnounces.add(L("A new bid has been entered for @x1. The current bid is @x2.",I.name(),bidWords));
+				auctionAnnounces.add(L("A new bid has been entered for ^[@x1^]. The current bid is @x2.",I.name(),bidWords));
 				return new String[]{
-						L("You have been outbid by proxy for @x1.",I.name()),
-						L("Your high bid for @x1 has been reached.",I.name())};
+						L("You have been outbid by proxy for ^[@x1^].",I.name()),
+						L("Your high bid for ^[@x1^] has been reached.",I.name())};
 			}
 		}
 		else
 		{
 			auctionData.setBid(bid);
 			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.getCurrency(),auctionData.getBid());
-			auctionAnnounces.add(L("A new bid has been entered for @x1. The current bid is @x2.",I.name(),bidWords));
-			return new String[]{L("You have been outbid by proxy for @x1.",I.name()),null};
+			auctionAnnounces.add(L("A new bid has been entered for ^[@x1^]. The current bid is @x2.",I.name(),bidWords));
+			return new String[]{L("You have been outbid by proxy for ^[@x1^].",I.name()),null};
 		}
 		return null;
 	}
