@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.RFilter;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrailFlag;
 
 /*
    Copyright 2004-2020 Bo Zimmerman
@@ -1966,7 +1967,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public String getTrailToDescription(final Room R1, final List<Room> set, final String where, final boolean areaNames, final boolean confirm, final int radius, final Set<Room> ignoreRooms, final int maxMins)
+	public String getTrailToDescription(final Room R1, final List<Room> set, final String where, final Set<TrailFlag> trailFlags, final int radius, final Set<Room> ignoreRooms, final int maxMins)
 	{
 		final Room R2=getWhere(where,set);
 		if(R2==null)
@@ -1974,6 +1975,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		int foundAt=getIndexEnsureSet(R1,R2,set,radius,ignoreRooms);
 		if(foundAt<0)
 			return L("You can't get to '@x1' from here.",R2.roomID());
+		final boolean confirm = trailFlags != null && trailFlags.contains(TrailFlag.CONFIRM);
+		final boolean areaNames = trailFlags != null && trailFlags.contains(TrailFlag.AREANAMES);
 		Room checkR=R2;
 		final List<Room> trailV=new ArrayList<Room>();
 		trailV.add(R2);
@@ -2062,7 +2065,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		if((areaNames)&&(areasDone.size()>0))
 		{
-			theTrail.append("\n\r"+CMStrings.padRight(L("Areas"),30)+":");
+			theTrail.append("\n\r"+CMStrings.padLeft(L("Areas crossed"),30)+":");
 			for (final Area A : areasDone)
 			{
 				theTrail.append(" \""+A.name()+"\",");

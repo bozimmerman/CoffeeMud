@@ -89,6 +89,17 @@ public class Spell_Imprisonment extends Spell
 	protected volatile Room prevRoom = null;
 
 	@Override
+	public int castingQuality(final MOB mob, final Physical target)
+	{
+		if(mob!=null)
+		{
+			if(mob.isMonster())
+				return Ability.QUALITY_INDIFFERENT;
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())

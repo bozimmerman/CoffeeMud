@@ -73,7 +73,7 @@ public interface TrackingLibrary extends CMLibrary
 	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail);
 	public List<List<Integer>> findAllTrails(Room from, List<Room> tos, List<Room> radiantTrail);
 	public boolean canValidTrail(Room R1, List<Room> set, String where, int radius, Set<Room> ignoreRooms, int maxMins);
-	public String getTrailToDescription(Room R1, List<Room> set, String where, boolean areaNames, boolean confirm, int radius, Set<Room> ignoreRooms, int maxMins);
+	public String getTrailToDescription(Room R1, List<Room> set, String where, Set<TrailFlag> trailFlags, int radius, Set<Room> ignoreRooms, int maxMins);
 	public Rideable findALadder(MOB mob, Room room);
 	public void postMountLadder(MOB mob, Rideable ladder);
 	public TrackingFlags newFlags();
@@ -106,6 +106,12 @@ public interface TrackingLibrary extends CMLibrary
 		public TrackingFlags minus(TrackingFlag flag);
 
 		public TrackingFlags copyOf();
+	}
+
+	public static enum TrailFlag
+	{
+		CONFIRM,
+		AREANAMES
 	}
 
 	public static enum TrackingFlag
