@@ -486,20 +486,20 @@ public class AreaData extends StdWebMacro
 						num++;
 					}
 					str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
-					str.append("<TR><TD WIDTH=20%>Flag</TD><TD>Description</TD></TR>");
+					str.append("<TR><TD WIDTH=30%>Flag</TD><TD>Description</TD></TR>");
 					for(int i=0;i<theprices.size();i++)
 					{
 						final String PRICE=theprices.elementAt(i);
 						final String MASK=themasks.elementAt(i);
 						str.append("<TR><TD>");
-						str.append("<INPUT TYPE=TEXT SIZE=5 NAME=BLURBFLAG"+(i+1)+" VALUE=\""+PRICE+"\">");
+						str.append("<INPUT TYPE=TEXT SIZE=15 NAME=BLURBFLAG"+(i+1)+" VALUE=\""+PRICE+"\">");
 						str.append("</TD><TD>");
 						str.append("<INPUT TYPE=TEXT SIZE=50 NAME=BLURB"+(i+1)+" VALUE=\""+MASK+"\">");
 						str.append("</TD>");
 						str.append("</TR>");
 					}
 					str.append("<TR><TD>");
-					str.append("<INPUT TYPE=TEXT SIZE=5 NAME=BLURBFLAG"+(theprices.size()+1)+">");
+					str.append("<INPUT TYPE=TEXT SIZE=15 NAME=BLURBFLAG"+(theprices.size()+1)+">");
 					str.append("</TD><TD>");
 					str.append("<INPUT TYPE=TEXT SIZE=50 NAME=BLURB"+(theprices.size()+1)+">");
 					str.append("</TD></TR>");
@@ -509,6 +509,36 @@ public class AreaData extends StdWebMacro
 
 				if(parms.containsKey("TESTSTUFF"))
 					str.append(A.text());
+
+				if(parms.containsKey("COORDINATES") && (A instanceof SpaceObject))
+					str.append(CMParms.toListString(((SpaceObject)A).coordinates()));
+
+				if(parms.containsKey("COORDINATES0") && (A instanceof SpaceObject))
+					str.append(((SpaceObject)A).coordinates()[0]);
+				if(parms.containsKey("COORDINATES1") && (A instanceof SpaceObject))
+					str.append(((SpaceObject)A).coordinates()[1]);
+				if(parms.containsKey("COORDINATES2") && (A instanceof SpaceObject))
+					str.append(((SpaceObject)A).coordinates()[2]);
+
+				if(parms.containsKey("RADIUS") && (A instanceof SpaceObject))
+					str.append(((SpaceObject)A).radius());
+
+				if(parms.containsKey("MASS") && (A instanceof SpaceObject))
+					str.append(((SpaceObject)A).getMass());
+
+				if(parms.containsKey("DIRECTION") && (A instanceof SpaceObject))
+					str.append(CMParms.toListString(((SpaceObject)A).direction()));
+
+				if(parms.containsKey("DIRECTION0") && (A instanceof SpaceObject))
+					str.append(((SpaceObject)A).direction()[0]);
+				if(parms.containsKey("DIRECTION1") && (A instanceof SpaceObject))
+					str.append(((SpaceObject)A).direction()[1]);
+
+				if(parms.containsKey("SPEED") && (A instanceof SpaceObject))
+					str.append(((SpaceObject)A).speed());
+
+				if(parms.containsKey("ISSPACE"))
+					str.append(""+((A instanceof SpaceObject)&&(!(A instanceof BoardableShip))));
 
 				str.append(AreaData.affects(A,httpReq,parms,1));
 				str.append(AreaData.behaves(A,httpReq,parms,1));

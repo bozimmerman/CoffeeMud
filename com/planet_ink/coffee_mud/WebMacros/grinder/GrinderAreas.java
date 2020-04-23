@@ -43,19 +43,19 @@ public class GrinderAreas
 			final Area A=a.nextElement();
 			final String areaName = CMStrings.repeat('-', dashes) + A.Name();
 			areaNames.add(A.Name(),areaName);
-			if(deeper 
+			if(deeper
 			&& ((pickedA == A)||(parents.contains(A))))
 				areaNames.addAll(buildAreaTree(A.getChildren(),parents,pickedA,dashes+1,pickedA != A));
 		}
 		return areaNames;
 	}
-	
+
 	public static String getAreaList(final Enumeration<Area> a, final Area pickedA, final MOB mob, final boolean noInstances, final boolean asTree)
 	{
 		final StringBuffer areaListStr=new StringBuffer("");
 		final boolean anywhere=(CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.CMDAREAS));
 		final boolean everywhere=(CMSecurity.isASysOp(mob)||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDROOMS)||CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.CMDAREAS));
-		
+
 		final List<Area> subAreas = new ArrayList<Area>();
 		for(;a.hasMoreElements();)
 		{
@@ -149,7 +149,7 @@ public class GrinderAreas
 		areasNeedingUpdates.add(A);
 
 		boolean redoAllMyDamnRooms=false;
-		Vector<Room> allMyDamnRooms=null;
+		List<Room> allMyDamnRooms=null;
 		String oldName=null;
 
 		// class!
@@ -158,9 +158,9 @@ public class GrinderAreas
 			return "Please select a class type for this area.";
 		if(!className.equalsIgnoreCase(CMClass.classID(A)))
 		{
-			allMyDamnRooms=new Vector<Room>();
+			allMyDamnRooms=new ArrayList<Room>();
 			for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
-				allMyDamnRooms.addElement(r.nextElement());
+				allMyDamnRooms.add(r.nextElement());
 			final Area oldA=A;
 			A=CMClass.getAreaType(className);
 			if(A==null)
@@ -184,7 +184,7 @@ public class GrinderAreas
 				return "The name you chose is already in use.  Please enter another.";
 			allMyDamnRooms=new Vector<Room>();
 			for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
-				allMyDamnRooms.addElement(r.nextElement());
+				allMyDamnRooms.add(r.nextElement());
 			CMLib.map().delArea(A);
 			oldName=A.Name();
 			CMLib.database().DBDeleteArea(A);
@@ -231,6 +231,63 @@ public class GrinderAreas
 		// tech level
 		if(httpReq.isUrlParameter("THEME"))
 			A.setTheme(CMath.s_int(httpReq.getUrlParameter("THEME")));
+
+		// space stuff
+		if(A instanceof SpaceObject)
+		{
+			final SpaceObject SO=(SpaceObject)A;
+			if(httpReq.isUrlParameter("COORDINATES"))
+			{
+				final List<String> parts=CMParms.parseCommas(httpReq.getUrlParameter("COORDINATES"), true);
+				for(int i=0;i<3;i++)
+				{
+					if(i<parts.size())
+						SO.coordinates()[i]=CMath.s_long(parts.get(i));
+				}
+				if(CMLib.map().isObjectInSpace(SO))
+				{
+					CMLib.map().delObjectInSpace(SO);
+					CMLib.map().addObjectToSpace(SO, SO.coordinates());
+					CMLib.map().moveSpaceObject(SO);
+				}
+			}
+
+			if(httpReq.isUrlParameter("COORDINATES0"))
+				SO.coordinates()[0]=CMath.s_long(httpReq.getUrlParameter("COORDINATES0"));
+			if(httpReq.isUrlParameter("COORDINATES1"))
+				SO.coordinates()[1]=CMath.s_long(httpReq.getUrlParameter("COORDINATES1"));
+			if(httpReq.isUrlParameter("COORDINATES2"))
+			{
+				SO.coordinates()[2]=CMath.s_long(httpReq.getUrlParameter("COORDINATES2"));
+				if(CMLib.map().isObjectInSpace(SO))
+				{
+					CMLib.map().delObjectInSpace(SO);
+					CMLib.map().addObjectToSpace(SO, SO.coordinates());
+					CMLib.map().moveSpaceObject(SO);
+				}
+			}
+
+			if(httpReq.isUrlParameter("RADIUS"))
+				SO.setRadius(CMath.s_long(httpReq.getUrlParameter("RADIUS")));
+
+			if(httpReq.isUrlParameter("DIRECTION"))
+			{
+				final List<String> parts=CMParms.parseCommas(httpReq.getUrlParameter("DIRECTION"), true);
+				for(int i=0;i<3;i++)
+				{
+					if(i<parts.size())
+						SO.direction()[i]=CMath.s_double(parts.get(i));
+				}
+			}
+
+			if(httpReq.isUrlParameter("DIRECTION0"))
+				SO.direction()[0]=CMath.s_double(httpReq.getUrlParameter("DIRECTION0"));
+			if(httpReq.isUrlParameter("DIRECTION1"))
+				SO.direction()[1]=CMath.s_double(httpReq.getUrlParameter("DIRECTION1"));
+
+			if(httpReq.isUrlParameter("SPEED"))
+				SO.setSpeed(CMath.s_long(httpReq.getUrlParameter("SPEED")));
+		}
 
 		// modify subop list
 		for(final Enumeration<String> s=A.subOps();s.hasMoreElements();)
