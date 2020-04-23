@@ -224,10 +224,10 @@ public class Spell_Imprisonment extends Spell
 					if(biggestDiffPlane!=null)
 					{
 						final Vector<String> V=new XVector<String>(biggestDiffPlane);
-						A.invoke(mob, V, target, true, asLevel);
+						A.invoke(target, V, target, true, asLevel);
 						if(biggestDiffPlane.equalsIgnoreCase(CMLib.flags().getPlaneOfExistence(target)))
 						{
-							final Spell_Imprisonment aP = (Spell_Imprisonment)super.maliciousAffect(target, null, asLevel, 0, -1);
+							final Spell_Imprisonment aP = (Spell_Imprisonment)super.maliciousAffect(mob, target, asLevel, 0, -1);
 							if(aP != null)
 								aP.prevRoom = R;
 						}
