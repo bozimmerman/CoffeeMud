@@ -403,8 +403,8 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_MassFly",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_Geas",false);
 
-		if(!ID().equals("Transmuter"))
-			CMLib.ableMapper().addCharAbilityMapping(ID(),26,"Spell_Imprisonment",ID().equals("Conjurer"));
+		//if(!ID().equals("Transmuter"))
+		//	CMLib.ableMapper().addCharAbilityMapping(ID(),26,"Spell_Imprisonment",ID().equals("Conjurer"));
 
 		// level 30
 		if(ID().equals(baseClass()))
