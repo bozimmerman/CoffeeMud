@@ -97,7 +97,11 @@ public class Prop_CommonTwister extends Property
 				msg.target().setName(I.Name());
 				msg.target().setDisplayText(I.displayText());
 				if(msg.target() instanceof Item)
+				{
 					((Item)msg.target()).setMaterial(I.material());
+					if(msg.target() instanceof RawMaterial)
+						((Item)msg.target()).setSecretIdentity("");
+				}
 			}
 			else
 			{
@@ -170,6 +174,8 @@ public class Prop_CommonTwister extends Property
 						msg.target().setDisplayText(CMStrings.replaceAll(msg.target().name(),CMStrings.capitalizeAndLower(oldMatName),CMStrings.capitalizeAndLower(newMatName)));
 						msg.target().setName(CMStrings.replaceAll(msg.target().name(),oldMatName.toUpperCase(),newMatName.toUpperCase()));
 						msg.target().setDisplayText(CMStrings.replaceAll(msg.target().name(),oldMatName.toUpperCase(),newMatName.toUpperCase()));
+						if(msg.target() instanceof RawMaterial)
+							((Item)msg.target()).setSecretIdentity("");
 					}
 				}
 			}
