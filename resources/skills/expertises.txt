@@ -533,7 +533,7 @@ HELP_=<EXPERTISE>The ability to craft items more quickly and efficiently.
 QUICKBUILD@x1=Quick Building @x2,10,TIME,-SKILLFLAG +BUILDING,,+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to build more quickly and efficiently.
 
-LTHLCRAFT@x1=Lethal Crafting @x2,3,X4,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +StaffMaking,,+CON {10+(4*@x1)},0,2,0,0,0
+LTHLCRAFT@x1=Lethal Crafting @x2,3,X4,-SKILL +Carpentry +Fletching +ScrimShaw +Leatherworking +MasterLeatherworking +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +StaffMaking,,+CON {10+(4*@x1)},0,2,0,0,0
 HELP_=<EXPERTISE>The ability to craft weapons that are more deadly than usual.
 HELP_LTHLCRAFT1=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Damaging" are slightly more damaging, and worth slightly more.
 HELP_LTHLCRAFT2=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Brutal" are a little more damaging, and worth more.
