@@ -11811,14 +11811,45 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
 				final String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
-				final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[4]);
+				final String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[4]).toUpperCase();
 				if((newTarget!=null)&&(arg2.length()>0))
 				{
 					if(newTarget instanceof MOB)
 					{
 						final MOB deadM=(MOB)newTarget;
 						MOB killerM=(MOB)newTarget;
-						if(arg4.equalsIgnoreCase("MEKILL")||arg4.equalsIgnoreCase("ME"))
+						boolean me=false;
+						boolean kill=false;
+						int damageType = CMMsg.TYP_CAST_SPELL;
+						for(final String s4 : arg4.split(" "))
+						{
+							if(arg4.length()==0)
+								continue;
+							if(arg4.equals("MEKILL"))
+							{
+								me=true;
+								kill=true;
+							}
+							else
+							if(arg4.equals("ME"))
+								me=true;
+							else
+							if(arg4.equals("KILL"))
+								kill=true;
+							else
+							{
+								for(int i4=0;i4<CharStats.DEFAULT_STAT_MSG_MAP.length;i4++)
+								{
+									final int code4=CharStats.DEFAULT_STAT_MSG_MAP[i4];
+									if((code4>0)&&(CMMsg.TYPE_DESCS[code4&CMMsg.MINOR_MASK].equals(s4)))
+									{
+										damageType=code4;
+										break;
+									}
+								}
+							}
+						}
+						if(me)
 							killerM=monster;
 						final int min=CMath.s_int(arg2.trim());
 						int max=CMath.s_int(arg3.trim());
@@ -11828,11 +11859,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							int dmg=(max==min)?min:CMLib.dice().roll(1,max-min,min);
 							if((dmg>=deadM.curState().getHitPoints())
-							&&(!arg4.equalsIgnoreCase("KILL"))
-							&&(!arg4.equalsIgnoreCase("MEKILL")))
+							&&(!kill))
 								dmg=deadM.curState().getHitPoints()-1;
 							if(dmg>0)
-								CMLib.combat().postDamage(killerM,deadM,null,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,null);
+								CMLib.combat().postDamage(killerM,deadM,null,dmg,CMMsg.MASK_ALWAYS|damageType,-1,null);
 						}
 					}
 					else

@@ -461,7 +461,8 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= basePhyStats().level();
 					if(!((MOB)msg.target()).amDead())
-						CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,L("@x1 shoots a flame which <DAMAGE> <T-NAME>!",name()));
+						CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,CMMsg.TYP_FIRE,
+								Weapon.TYPE_BURNING,L("@x1 shoots a flame which <DAMAGE> <T-NAME>!",name()));
 				}
 			}
 		}

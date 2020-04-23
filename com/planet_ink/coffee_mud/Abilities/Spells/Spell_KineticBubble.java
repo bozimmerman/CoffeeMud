@@ -126,7 +126,8 @@ public class Spell_KineticBubble extends Spell
 					if((msg2.value()<=0)&&(msg.value()>3))
 					{
 						final int damage = CMLib.dice().roll( 1, (getXLEVELLevel(mob) + msg.value()) / 3 , 0 );
-						CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,L("The bubble around <S-NAME> <DAMAGES> <T-NAME>!"));
+						CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,
+								Weapon.TYPE_BURSTING,L("The bubble around <S-NAME> <DAMAGES> <T-NAME>!"));
 					}
 				}
 			}
