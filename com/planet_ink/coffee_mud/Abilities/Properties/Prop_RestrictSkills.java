@@ -52,10 +52,11 @@ public class Prop_RestrictSkills extends Property
 		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS|Ability.CAN_ITEMS;
 	}
 
-	protected Set<Integer>	onlyRoomDomains		= new TreeSet<Integer>();
-	protected Set<Integer>	neverRoomDomains	= new TreeSet<Integer>();
-	protected Set<String>	skills		= new TreeSet<String>();
-	protected String		message				= L("You can't do that here.");
+	protected Set<Integer>	onlyRoomDomains	= new TreeSet<Integer>();
+	protected Set<Integer>	neverRoomDomains= new TreeSet<Integer>();
+	protected Set<String>	skills			= new TreeSet<String>();
+	protected String		message			= L("You can't do that here.");
+	protected boolean		wearOnly		= false;
 
 	@Override
 	public void setMiscText(final String newMiscText)
@@ -66,6 +67,7 @@ public class Prop_RestrictSkills extends Property
 		super.setMiscText(newMiscText);
 		this.message=CMParms.getParmStr(newMiscText, "MESSAGE", "You can't do that here.");
 		String domains=CMParms.getParmStr(newMiscText, "ONLYROOMS", "");
+		wearOnly=CMParms.getParmBool(newMiscText, "WEARONLY", false);
 		List<String> domainList=CMParms.parseCommas(domains, true);
 		for(final String domain : domainList)
 		{
@@ -116,8 +118,13 @@ public class Prop_RestrictSkills extends Property
 		if((myHost instanceof MOB)&&(msg.source() != myHost))
 			return true;
 
-		if((myHost instanceof Item)&&(((Item)myHost).owner() != msg.source()))
-			return true;
+		if(myHost instanceof Item)
+		{
+			if(((Item)myHost).owner() != msg.source())
+				return true;
+			if(wearOnly && (!((Item)myHost).amBeingWornProperly()))
+				return true;
+		}
 
 		if((msg.tool() instanceof Ability)
 		&&(!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS))
