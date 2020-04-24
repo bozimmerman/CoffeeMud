@@ -82,8 +82,11 @@ public class Chant_PlanarmorphSelf extends Chant
 		return Ability.QUALITY_OK_SELF;
 	}
 
-	protected Race newRace=null;
-	protected final List<Ability> fakeEffects = new Vector<Ability>();
+	protected Race					newRace		= null;
+	protected final List<Ability>	fakeEffects	= new Vector<Ability>();
+	protected int[]					lastSet		= null;
+	protected int[]					newSet		= null;
+	protected int					addAtmo		= -1;
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
@@ -154,6 +157,18 @@ public class Chant_PlanarmorphSelf extends Chant
 				affectableStats.setStat(CharStats.STAT_AGE,R.getAgingChart()[oldCat]);
 			for(final Ability A : fakeEffects)
 				A.affectCharStats(affected, affectableStats);
+			final int[] breatheables=affectableStats.getBreathables();
+			if(breatheables.length>0)
+			{
+				if((lastSet!=breatheables)||(newSet==null))
+				{
+					newSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+1);
+					newSet[newSet.length-1]=addAtmo;
+					Arrays.sort(newSet);
+					lastSet=breatheables;
+				}
+				affectableStats.setBreathables(newSet);
+			}
 		}
 	}
 
@@ -229,6 +244,12 @@ public class Chant_PlanarmorphSelf extends Chant
 								A.setInvoker(target);
 								fakeEffects.add(A);
 							}
+							final String atmosphere = planarVars.get(PlanarVar.ATMOSPHERE.toString());
+							if((atmosphere!=null)&&(atmosphere.length()>0))
+							{
+								final int atmo=RawMaterial.CODES.FIND_IgnoreCase(atmosphere);
+								this.addAtmo = atmo;
+							}
 							int eliteLevel=0;
 							if(planarVars.containsKey(PlanarVar.ELITE.toString()))
 								eliteLevel=CMath.s_int(planarVars.get(PlanarVar.ELITE.toString()));
@@ -256,7 +277,6 @@ public class Chant_PlanarmorphSelf extends Chant
 									fakeEffects.add(A);
 								}
 							}
-
 						}
 					}
 				}
