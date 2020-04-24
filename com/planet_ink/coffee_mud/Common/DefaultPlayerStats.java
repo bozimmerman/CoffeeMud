@@ -6,7 +6,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Experti
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Tracker;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
@@ -102,8 +101,8 @@ public class DefaultPlayerStats implements PlayerStats
 	protected Set<String>	 friends		= new SHashSet<String>();
 	protected Set<String>	 ignored		= new SHashSet<String>();
 	protected Set<String>	 subscriptions	= new SHashSet<String>();
-	protected List<String>	 tellStack		= new SVector<String>();
-	protected List<String>	 gtellStack		= new SVector<String>();
+	protected List<TellMsg>	 tellStack		= new SVector<TellMsg>();
+	protected List<TellMsg>	 gtellStack		= new SVector<TellMsg>();
 	protected List<String>	 titles			= new SVector<String>();
 	protected Set<String>	 autoInvokeSet	= new TreeSet<String>();
 	protected PlayerAccount  account		= null;
@@ -171,8 +170,8 @@ public class DefaultPlayerStats implements PlayerStats
 			O.friends=new SHashSet<String>(friends);
 			O.ignored=new SHashSet<String>(ignored);
 			O.subscriptions=new SHashSet<String>(subscriptions);
-			O.tellStack=new SVector<String>(tellStack);
-			O.gtellStack=new SVector<String>(gtellStack);
+			O.tellStack=new SVector<TellMsg>(tellStack);
+			O.gtellStack=new SVector<TellMsg>(gtellStack);
 			O.titles=new SVector<String>(titles);
 			O.alias=new SHashtable<String,String>(alias);
 			O.legacy=new SHashtable<String,Integer>(legacy);
@@ -470,17 +469,17 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void addTellStack(final String msg)
+	public void addTellStack(final String from, final String to, final String msg)
 	{
 		if(tellStack.size()>TELL_STACK_MAX_SIZE)
 			tellStack.remove(0);
-		tellStack.add(msg);
+		tellStack.add(makeTellMsg(from,to,msg));
 	}
 
 	@Override
-	public List<String> getTellStack()
+	public List<TellMsg> getTellStack()
 	{
-		return new ReadOnlyList<String>(tellStack);
+		return new ReadOnlyList<TellMsg>(tellStack);
 	}
 
 	private RoomnumberSet roomSet()
@@ -490,18 +489,54 @@ public class DefaultPlayerStats implements PlayerStats
 		return visitedRoomSet;
 	}
 
+	protected TellMsg makeTellMsg(final String from, final String to, final String msg)
+	{
+		return new TellMsg()
+		{
+			private final String fromName = from;
+			private final String toName = from;
+			private final String msgStr = msg;
+			private final long time = System.currentTimeMillis();
+
+			@Override
+			public String to()
+			{
+				return toName;
+			}
+
+			@Override
+			public String from()
+			{
+				return fromName;
+			}
+
+			@Override
+			public long time()
+			{
+				return time;
+			}
+
+			@Override
+			public String message()
+			{
+				return msgStr;
+			}
+			
+		};
+	}
+	
 	@Override
-	public void addGTellStack(final String msg)
+	public void addGTellStack(final String from, final String to, final String msg)
 	{
 		if(gtellStack.size()>GTELL_STACK_MAX_SIZE)
 			gtellStack.remove(0);
-		gtellStack.add(msg);
+		gtellStack.add(makeTellMsg(from,to,msg));
 	}
 
 	@Override
-	public List<String> getGTellStack()
+	public List<TellMsg> getGTellStack()
 	{
-		return new ReadOnlyList<String>(gtellStack);
+		return new ReadOnlyList<TellMsg>(gtellStack);
 	}
 
 	@Override

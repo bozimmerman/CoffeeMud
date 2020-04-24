@@ -62,7 +62,7 @@ public class GTell extends StdCommand
 		&&(CMath.isNumber(CMParms.combine(commands,2))))
 		&&(mob.playerStats()!=null))
 		{
-			final java.util.List<String> V=mob.playerStats().getGTellStack();
+			final java.util.List<PlayerStats.TellMsg> V=mob.playerStats().getGTellStack();
 			if(V.size()==0)
 				mob.tell(L("No telling."));
 			else
@@ -71,7 +71,7 @@ public class GTell extends StdCommand
 				if(num>V.size())
 					num=V.size();
 				for(int i=V.size()-num;i<V.size();i++)
-					mob.tell(V.get(i));
+					mob.tell(V.get(i).message());
 			}
 			return false;
 		}
@@ -127,7 +127,7 @@ public class GTell extends StdCommand
 					final String tellStr=(target==mob)?msg.sourceMessage():(
 									(target==msg.target())?msg.targetMessage():msg.othersMessage()
 									);
-					target.playerStats().addGTellStack(CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,msg.target(),null,CMStrings.removeColors(tellStr),false));
+					target.playerStats().addGTellStack(mob.Name(), target.Name(), CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,msg.target(),null,CMStrings.removeColors(tellStr),false));
 				}
 				target.executeMsg(target,msg);
 				if(msg.trailerMsgs()!=null)

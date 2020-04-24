@@ -68,7 +68,7 @@ public class Tell extends StdCommand
 		   &&(CMath.isNumber(CMParms.combine(commands,1)))
 		   &&(mob.playerStats()!=null))
 		{
-			final java.util.List<String> V=mob.playerStats().getTellStack();
+			final java.util.List<PlayerStats.TellMsg> V=mob.playerStats().getTellStack();
 			if((V.size()==0)
 			||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_AS))
 			||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_POSSESSED)))
@@ -84,7 +84,7 @@ public class Tell extends StdCommand
 					if(S!=null)
 						S.snoopSuspension(1);
 					for(int i=V.size()-num;i<V.size();i++)
-						mob.tell("^t"+V.get(i)+"^N^.");
+						mob.tell("^t"+V.get(i).message()+"^N^.");
 				}
 				finally
 				{

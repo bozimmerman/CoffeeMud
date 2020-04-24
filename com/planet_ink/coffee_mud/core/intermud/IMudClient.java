@@ -384,7 +384,7 @@ public class IMudClient implements I3Interface
 			tk.target_name=tellName;
 			tk.message=message;
 			if(mob.playerStats()!=null)
-				mob.playerStats().addTellStack("You tell "+tellName+" '"+message+"'");
+				mob.playerStats().addTellStack(mob.name(), tellName+"@"+mudName, "You tell "+tellName+" '"+message+"'");
 			try
 			{
 				tk.send();
@@ -400,7 +400,7 @@ public class IMudClient implements I3Interface
 			tellName=CMStrings.capitalizeAndLower(tellName)+"@"+imc2.getIMC2Mud(mudName).name;
 			mob.tell(L("^CYou tell @x1 '@x2'^?",tellName,message));
 			if(mob.playerStats()!=null)
-				mob.playerStats().addTellStack("You tell "+tellName+" '"+message+"'");
+				mob.playerStats().addTellStack(mob.Name(), tellName, "You tell "+tellName+" '"+message+"'");
 			imc2.imc_send_tell(mob.name(),tellName,message,0,CMLib.flags().isInvisible(mob)?1:0);
 		}
 		else

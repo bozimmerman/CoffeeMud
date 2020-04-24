@@ -249,39 +249,41 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * Returns a List of the last few string messages sent and received to and
 	 * from this player.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addTellStack(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addTellStack(String, String, String)
 	 *
 	 * @return a List of strings, the last few tell messages
 	 */
-	public List<String> getTellStack();
+	public List<TellMsg> getTellStack();
 
 	/**
 	 * Adds a new string message to the tell stack.
+	 * @param from who the message is from
+	 * @param to who the message is to
+	 * @param msg the new message for the tell stack.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTellStack()
-	 *
-	 * @param msg the new message for the tell stack.
 	 */
-	public void addTellStack(String msg);
+	public void addTellStack(String from, String to, String msg);
 
 	/**
 	 * Returns a List of the last few string messages sent and received to and
 	 * from this players group.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addGTellStack(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addGTellStack(String, String, String)
 	 *
 	 * @return a List of strings, the last few gtell messages
 	 */
-	public List<String> getGTellStack();
+	public List<TellMsg> getGTellStack();
 
 	/**
 	 * Adds a new string message to the gtell stack.
+	 * @param from who the message is from
+	 * @param to who the message is to
+	 * @param msg the new message for the gtell stack.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getGTellStack()
-	 *
-	 * @param msg the new message for the gtell stack.
 	 */
-	public void addGTellStack(String msg);
+	public void addGTellStack(String from, String to, String msg);
 
 	/**
 	 * For player with the GOTO command, this is the message seen by all when
@@ -1030,6 +1032,41 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 */
 	public long bumpLevelCombatStat(final PlayerCombatStat stat, final int level, final int amt);
 
+	/**
+	 * Interface for an archived Tell message to or from
+	 * this player.
+	 * 
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public interface TellMsg
+	{
+		/**
+		 * Who the message was to
+		 * @return who the message was to
+		 */
+		public String to();
+		
+		/**
+		 * Who the message was from
+		 * @return who the message was from
+		 */
+		public String from();
+		
+		/**
+		 * When the message was sent/received
+		 * @return when the message was sent/received
+		 */
+		public long time();
+		
+		/**
+		 * The message text itself
+		 * @return the message text itself
+		 */
+		public String message();
+	}
+	
+	
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;
 	/** Constant for month of birthday, as from {@link PlayerStats#getBirthday()} */
