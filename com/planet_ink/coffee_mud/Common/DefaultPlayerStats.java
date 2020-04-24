@@ -551,7 +551,7 @@ public class DefaultPlayerStats implements PlayerStats
 	public List<TellMsg> queryGTellStack(final String fromName, final String toName, final Long sinceTime)
 	{
 		final List<TellMsg> msgs = new Vector<TellMsg>(1);
-		for(final PlayerStats.TellMsg M : getTellStack())
+		for(final PlayerStats.TellMsg M : getGTellStack())
 		{
 			if(((sinceTime == null)||(M.time()>=sinceTime.longValue()))
 			&&((fromName==null)||(M.from().equalsIgnoreCase(fromName)))
