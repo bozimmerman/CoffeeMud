@@ -1052,9 +1052,9 @@ public class DefaultSession implements Session
 				{
 					final StringBuilder missedStr = new StringBuilder("You missed: ");
 					if(tells > 0)
-						missedStr.append(tells).append(" tells, ");
+						missedStr.append(tells).append(" tell(s), ");
 					if(gtells > 0)
-						missedStr.append(gtells).append(" gtells, ");
+						missedStr.append(gtells).append(" gtell(s), ");
 					mob.tell(missedStr.substring(0,missedStr.length()-2)+".");
 				}
 			}
