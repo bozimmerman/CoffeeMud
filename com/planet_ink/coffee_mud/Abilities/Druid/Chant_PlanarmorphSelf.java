@@ -140,6 +140,14 @@ public class Chant_PlanarmorphSelf extends Chant
 			if(!A.tick(ticking, tickID))
 				return false;
 		}
+		if(ticking instanceof Physical)
+		{
+			if(!text().equalsIgnoreCase(CMLib.flags().getPlaneOfExistence((Physical)ticking)))
+			{
+				unInvoke();
+				return false;
+			}
+		}
 		return true;
 	}
 
@@ -162,9 +170,14 @@ public class Chant_PlanarmorphSelf extends Chant
 			{
 				if((lastSet!=breatheables)||(newSet==null))
 				{
-					newSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+1);
-					newSet[newSet.length-1]=addAtmo;
-					Arrays.sort(newSet);
+					if(CMParms.contains(affectableStats.getBreathables(), addAtmo))
+						newSet=affectableStats.getBreathables();
+					else
+					{
+						newSet=Arrays.copyOf(affectableStats.getBreathables(),affectableStats.getBreathables().length+1);
+						newSet[newSet.length-1]=addAtmo;
+						Arrays.sort(newSet);
+					}
 					lastSet=breatheables;
 				}
 				affectableStats.setBreathables(newSet);
@@ -378,7 +391,7 @@ public class Chant_PlanarmorphSelf extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",CMLib.english().startWithAorAn(R.name())));
+					//mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",CMLib.english().startWithAorAn(R.name())));
 					final Ability cA = beneficialAffect(mob,target,asLevel,0);
 					success = cA != null;
 					if(success)
