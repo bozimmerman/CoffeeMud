@@ -40,6 +40,12 @@ public class Tell extends StdCommand
 
 	private final String[]	access	= I(new String[] { "TELL", "T" });
 
+	private final static Class<?>[][] internalParameters=new Class<?>[][]
+	{
+		{String.class,String.class},
+		{String.class,String.class,Long.class}
+	};
+	
 	@Override
 	public String[] getAccessWords()
 	{
@@ -184,6 +190,42 @@ public class Tell extends StdCommand
 		}
 		return false;
 	}
+
+	@Override
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		int index = getArgumentSetIndex(internalParameters, args);
+		if(index == 0)
+		{
+			final String targetName=(String)args[0];
+			final String message=(String)args[1];
+			this.execute(mob, new XVector<String>(this.access[0],targetName,message), metaFlags);
+			return Boolean.TRUE;
+		}
+		else
+		if(index == 1)
+		{
+			final String fromName=(String)args[0];
+			final String toName=(String)args[1];
+			final Long since=(Long)args[2];
+			int ct = 0;
+			if(mob.playerStats() != null)
+			{
+				for(final PlayerStats.TellMsg M : mob.playerStats().getTellStack())
+				{
+					if(((since == null)||(M.time()>=since.longValue()))
+					&&((fromName==null)||(M.from().equalsIgnoreCase(fromName)))
+					&&((toName==null)||(M.to().equalsIgnoreCase(toName))))
+						ct++;
+				}
+			}
+			return Integer.valueOf(ct);
+		}
+		return Boolean.FALSE;
+	}
+
 
 	// the reason this is not 0ed is because of combat -- we want the players to
 	// use SAY, and pay for it when coordinating.

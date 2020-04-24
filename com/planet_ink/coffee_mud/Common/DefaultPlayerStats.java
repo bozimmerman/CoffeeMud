@@ -477,6 +477,20 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
+	public List<TellMsg> queryTellStack(final String fromName, final String toName, final Long sinceTime)
+	{
+		final List<TellMsg> msgs=new Vector<TellMsg>();
+		for(final PlayerStats.TellMsg M : getTellStack())
+		{
+			if(((sinceTime == null)||(M.time()>=sinceTime.longValue()))
+			&&((fromName==null)||(M.from().equalsIgnoreCase(fromName)))
+			&&((toName==null)||(M.to().equalsIgnoreCase(toName))))
+				msgs.add(M);
+		}
+		return msgs;
+	}
+	
+	@Override
 	public List<TellMsg> getTellStack()
 	{
 		return new ReadOnlyList<TellMsg>(tellStack);
@@ -533,6 +547,20 @@ public class DefaultPlayerStats implements PlayerStats
 		gtellStack.add(makeTellMsg(from,to,msg));
 	}
 
+	@Override
+	public List<TellMsg> queryGTellStack(final String fromName, final String toName, final Long sinceTime)
+	{
+		final List<TellMsg> msgs = new Vector<TellMsg>(1);
+		for(final PlayerStats.TellMsg M : getTellStack())
+		{
+			if(((sinceTime == null)||(M.time()>=sinceTime.longValue()))
+			&&((fromName==null)||(M.from().equalsIgnoreCase(fromName)))
+			&&((toName==null)||(M.to().equalsIgnoreCase(toName))))
+				msgs.add(M);
+		}
+		return msgs;
+	}
+	
 	@Override
 	public List<TellMsg> getGTellStack()
 	{

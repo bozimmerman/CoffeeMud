@@ -1040,9 +1040,25 @@ public class DefaultSession implements Session
 		}
 		else
 		{
-			afkTime=0;
 			afkMessage=null;
 			println("\n\rYou are no longer AFK.");
+			final MOB mob=this.mob;
+			final PlayerStats pStats=(mob==null)?null:mob.playerStats();
+			if((pStats != null)&&(mob!=null))
+			{
+				final int tells=pStats.queryTellStack(null, mob.Name(), Long.valueOf(afkTime)).size();
+				final int gtells=pStats.queryGTellStack(null, mob.Name(), Long.valueOf(afkTime)).size();
+				if((tells>0)||(gtells>0))
+				{
+					final StringBuilder missedStr = new StringBuilder("You missed: ");
+					if(tells > 0)
+						missedStr.append(tells).append(" tells, ");
+					if(gtells > 0)
+						missedStr.append(gtells).append(" gtells, ");
+					mob.tell(missedStr.substring(0,missedStr.length()-2)+".");
+				}
+			}
+			afkTime=0;
 		}
 	}
 

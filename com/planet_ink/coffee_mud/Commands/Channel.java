@@ -44,7 +44,10 @@ public class Channel extends StdCommand
 		return CMLib.channels().getChannelNames();
 	}
 
-	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Boolean.class,String.class,String.class}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]
+	{
+		{Boolean.class,String.class,String.class}
+	};
 
 	@Override
 	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
@@ -58,11 +61,16 @@ public class Channel extends StdCommand
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
-		final boolean systemMsg=((Boolean)args[0]).booleanValue();
-		final String channelName=(String)args[1];
-		final String message=(String)args[2];
-		CMLib.channels().createAndSendChannelMessage(mob,channelName,message,systemMsg);
-		return Boolean.TRUE;
+		int index = getArgumentSetIndex(internalParameters, args);
+		if(index == 0)
+		{
+			final boolean systemMsg=((Boolean)args[0]).booleanValue();
+			final String channelName=(String)args[1];
+			final String message=(String)args[2];
+			CMLib.channels().createAndSendChannelMessage(mob,channelName,message,systemMsg);
+			return Boolean.TRUE;
+		}
+		return Boolean.FALSE;
 	}
 
 	public boolean channel(final MOB mob, final List<String> commands, final boolean systemMsg)

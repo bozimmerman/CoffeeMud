@@ -256,6 +256,19 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	public List<TellMsg> getTellStack();
 
 	/**
+	 * Queries the Tell stack for messages matching given criteria.
+	 * Returns the found messages.
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getTellStack()
+	 * 
+	 * @param fromName null, or a from-name to match
+	 * @param toName null, or a to name to match
+	 * @param sinceTime null, or a time, in ms, since epoc
+	 * @return the found messages
+	 */
+	public List<TellMsg> queryTellStack(final String fromName, final String toName, final Long sinceTime);
+	
+	/**
 	 * Adds a new string message to the tell stack.
 	 * @param from who the message is from
 	 * @param to who the message is to
@@ -270,6 +283,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * from this players group.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addGTellStack(String, String, String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#queryGTellStack(String, String, Long)
 	 *
 	 * @return a List of strings, the last few gtell messages
 	 */
@@ -285,6 +299,19 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 */
 	public void addGTellStack(String from, String to, String msg);
 
+	/**
+	 * Queries the GTell stack for messages matching given criteria.
+	 * Returns the found messages.
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getGTellStack()
+	 * 
+	 * @param fromName null, or a from-name to match
+	 * @param toName null, or a to name to match
+	 * @param sinceTime null, or a time, in ms, since epoc
+	 * @return the found messages
+	 */
+	public List<TellMsg> queryGTellStack(final String fromName, final String toName, final Long sinceTime);
+	
 	/**
 	 * For player with the GOTO command, this is the message seen by all when
 	 * the player arrives from using GOTO.

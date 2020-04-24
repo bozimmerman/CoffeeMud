@@ -116,11 +116,11 @@ public class StdCommand implements Command
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public boolean checkArguments(final Class[][] fmt, final Object... args)
+	public int getArgumentSetIndex(final Class[][] fmt, final Object... args)
 	{
-		for (final Class[] element : fmt)
+		for (int index=0;index<fmt.length;index++)
 		{
-			final Class[] ff=element;
+			final Class[] ff=fmt[index];
 			if(ff.length==args.length)
 			{
 				boolean check=true;
@@ -135,9 +135,19 @@ public class StdCommand implements Command
 					}
 				}
 				if(check)
-					return true;
+					return index;
 			}
 		}
+		return -1;
+	}
+	
+	@SuppressWarnings({ "rawtypes"})
+	public boolean checkArguments(final Class[][] fmt, final Object... args)
+	{
+		int index = getArgumentSetIndex(fmt,args);
+		if(index >=0)
+			return true;
+
 		final StringBuilder str=new StringBuilder("");
 		str.append(L("Illegal arguments. Sent: "));
 		for(final Object o : args)
