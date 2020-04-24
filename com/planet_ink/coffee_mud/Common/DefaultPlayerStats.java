@@ -508,7 +508,7 @@ public class DefaultPlayerStats implements PlayerStats
 		return new TellMsg()
 		{
 			private final String fromName = from;
-			private final String toName = from;
+			private final String toName = to;
 			private final String msgStr = msg;
 			private final long time = System.currentTimeMillis();
 
