@@ -1025,7 +1025,7 @@ public class DefaultSession implements Session
 	@Override
 	public boolean isAfk()
 	{
-		return afkTime==0;
+		return afkTime!=0;
 	}
 
 	@Override
