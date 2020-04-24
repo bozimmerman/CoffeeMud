@@ -90,7 +90,7 @@ public class DefaultSession implements Session
 	protected PlayerAccount  acct				 = null;
 	protected boolean   	 killFlag			 = false;
 	protected boolean   	 needPrompt			 = false;
-	protected boolean   	 afkFlag			 = false;
+	protected long		 	 afkTime			 = 0;
 	protected String		 afkMessage			 = null;
 	protected StringBuffer   input				 = new StringBuffer("");
 	protected StringBuffer   fakeInput			 = null;
@@ -1025,19 +1025,22 @@ public class DefaultSession implements Session
 	@Override
 	public boolean isAfk()
 	{
-		return afkFlag;
+		return afkTime==0;
 	}
 
 	@Override
 	public void setAfkFlag(final boolean truefalse)
 	{
-		if(afkFlag==truefalse)
+		if((afkTime!=0)==truefalse)
 			return;
-		afkFlag=truefalse;
-		if(afkFlag)
+		if(truefalse)
+		{
+			afkTime=System.currentTimeMillis();
 			println("\n\rYou are now listed as AFK.");
+		}
 		else
 		{
+			afkTime=0;
 			afkMessage=null;
 			println("\n\rYou are no longer AFK.");
 		}
@@ -3580,7 +3583,7 @@ public class DefaultSession implements Session
 			previousCmd = CMParms.parse(val);
 			break;
 		case ISAFK:
-			afkFlag = CMath.s_bool(val);
+			setAfkFlag(CMath.s_bool(val));
 			break;
 		case AFKMESSAGE:
 			afkMessage = val;
