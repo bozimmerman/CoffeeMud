@@ -1399,7 +1399,7 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		return transitions;
 	}
 
-	protected static String listOfPlanes()
+	public static String listOfPlanes()
 	{
 		final Map<String,Map<String,String>> map = getAllPlanesMap();
 		final StringBuilder str=new StringBuilder();

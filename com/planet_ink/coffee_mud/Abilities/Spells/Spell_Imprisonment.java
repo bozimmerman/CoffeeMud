@@ -107,10 +107,10 @@ public class Spell_Imprisonment extends Spell
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
+				mob.tell(L("Your imprisonment expires."));
 				if((prevRoom != null)
 				&&(CMLib.flags().getPlaneOfExistence(mob)!=null))
 				{
-					mob.tell(L("Your imprisonment expires."));
 					prevRoom.bringMobHere(mob, true);
 					if(mob.isPlayer())
 						CMLib.commands().postLook(mob, true);
@@ -178,7 +178,9 @@ public class Spell_Imprisonment extends Spell
 			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),auto?"":L("^S<S-NAME> swipe(s) <S-HIS-HER> hands at <T-NAMESELF>.^?"));
 			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			final CMMsg msg3=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_GENERAL|(auto?CMMsg.MASK_ALWAYS:0),null);
-			if((R.okMessage(mob,msg))&&(R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
+			if((R.okMessage(mob,msg))
+			&&(R.okMessage(mob,msg2))
+			&&(R.okMessage(mob,msg3)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
@@ -229,7 +231,24 @@ public class Spell_Imprisonment extends Spell
 						{
 							final Spell_Imprisonment aP = (Spell_Imprisonment)super.maliciousAffect(mob, target, asLevel, 0, -1);
 							if(aP != null)
+							{
 								aP.prevRoom = R;
+								final Area planeA=CMLib.map().areaLocation(target);
+								if((planeA!=null)
+								&&(planeA.numEffects()>0))
+								{
+									for(final Enumeration<Ability> a=planeA.effects();a.hasMoreElements();)
+									{
+										final Ability eA=a.nextElement();
+										if(eA instanceof PlanarAbility)
+										{
+											final int tickDowns = CMath.s_int(eA.getStat("TICKDOWN"));
+											if((tickDowns > 0)&&(tickDowns < CMath.s_int(aP.getStat("TICKDOWN"))))
+												eA.setStat("TICKDOWN", aP.getStat("TICKDOWN"));
+										}
+									}
+								}
+							}
 						}
 						else
 							return maliciousFizzle(mob,target,L("<S-NAME> swipe(s) <S-HIS-HER> hands at <T-NAMESELF>, but the spell fades."));

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Druid;
+package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -33,16 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Chant_PlanarmorphSelf extends Chant
+public class Spell_Planarmorph extends Spell
 {
-
 	@Override
 	public String ID()
 	{
-		return "Chant_PlanarmorphSelf";
+		return "Spell_Planarmorph";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Planarmorph Self");
+	private final static String localizedName = CMLib.lang().L("Planarmorph");
 
 	@Override
 	public String name()
@@ -50,7 +49,7 @@ public class Chant_PlanarmorphSelf extends Chant
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Planarmorph Self)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Planarmorph)");
 
 	@Override
 	public String displayText()
@@ -67,19 +66,19 @@ public class Chant_PlanarmorphSelf extends Chant
 	@Override
 	protected int canTargetCode()
 	{
-		return 0;
+		return CAN_MOBS;
 	}
 
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_CHANT|Ability.DOMAIN_TRANSMUTATION;
+		return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;
 	}
 
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_OK_SELF;
+		return Ability.QUALITY_OK_OTHERS;
 	}
 
 	protected Race					newRace		= null;
@@ -87,6 +86,11 @@ public class Chant_PlanarmorphSelf extends Chant
 	protected int[]					lastSet		= null;
 	protected int[]					newSet		= null;
 	protected int					addAtmo		= -1;
+
+	protected String getPlanarTarget()
+	{
+		return "";
+	}
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
@@ -309,23 +313,21 @@ public class Chant_PlanarmorphSelf extends Chant
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if((auto||mob.isMonster())&&((commands.size()<1)||((commands.get(0)).equals(mob.name()))))
-		{
-			commands.clear();
-			final XVector<Race> V=new XVector<Race>(CMClass.races());
-			for(int v=V.size()-1;v>=0;v--)
-			{
-				if(!CMath.bset(V.elementAt(v).availabilityCode(),Area.THEME_FANTASY))
-					V.removeElementAt(v);
-			}
-			if(V.size()>0)
-				commands.add(V.elementAt(CMLib.dice().roll(1,V.size(),-1)).name());
-		}
-		final String planeName = CMLib.flags().getPlaneOfExistence(mob.location());
-		if(planeName == null)
-		{
-			mob.tell(L("This magic does not do anything on the Prime Material plane!"));
+		final MOB target=getTarget(mob,commands,givenTarget);
+		if(target==null)
 			return false;
+
+		final String planeName;
+		if(this.getPlanarTarget().length()>0)
+			planeName = this.getPlanarTarget();
+		else
+		{
+			planeName = CMLib.flags().getPlaneOfExistence(target.location());
+			if(planeName == null)
+			{
+				mob.tell(L("This magic does not do anything on the Prime Material plane!"));
+				return false;
+			}
 		}
 		final PlanarAbility plane =(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
 		if(plane == null)
@@ -338,9 +340,6 @@ public class Chant_PlanarmorphSelf extends Chant
 			mob.tell(L("This magic would not do anything on this plane of existence!"));
 			return false;
 		}
-		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-			target=(MOB)givenTarget;
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
@@ -385,7 +384,7 @@ public class Chant_PlanarmorphSelf extends Chant
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to <T-NAMESELF> about @x1.^?",CMLib.english().makePlural(R.name())));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> incant(s) to <T-NAMESELF> about @x1.^?",CMLib.english().makePlural(R.name())));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -402,7 +401,7 @@ public class Chant_PlanarmorphSelf extends Chant
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,L("<S-NAME> chant(s) to <T-NAMESELF>, but the magic fizzles."));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) to <T-NAMESELF>, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

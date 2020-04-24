@@ -128,14 +128,13 @@ public class Spell_Augury extends Spell
 				}
 				mob.location().send(mob,msg);
 				if((aggressiveMonster)
-				||CMLib.flags().isDeadlyOrMaliciousEffect(room)
-				||CMLib.flags().isDeadlyOrMaliciousEffect(exit)
+				|| CMLib.flags().isDeadlyOrMaliciousEffect(room)
+				|| CMLib.flags().isDeadlyOrMaliciousEffect(exit)
 				||((opExit!=null)&&(CMLib.flags().isDeadlyOrMaliciousEffect(opExit))))
 					mob.tell(L("You feel going that way would be bad."));
 				else
 					mob.tell(L("You feel going that way would be ok."));
 			}
-
 		}
 		else
 			beneficialVisualFizzle(mob,null,L("<S-NAME> point(s) <S-HIS-HER> finger @x1, incanting, but then loses concentration.",CMLib.directions().getDirectionName(dirCode)));

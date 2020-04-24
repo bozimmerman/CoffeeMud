@@ -86,5 +86,7 @@ public class Transmuter extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_BigMouth",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_Transformation",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Clone",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),26,"Spell_PlanarmorphSelf", 25, "", true, true, null, "+PLANE \"-Prime Material\"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Spell_ImprovedPlanarmorph", 25, "", true, true, null, "+PLANE \"-Prime Material\"");
 	}
 }
