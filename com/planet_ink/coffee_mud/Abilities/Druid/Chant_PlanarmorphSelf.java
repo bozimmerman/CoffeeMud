@@ -82,36 +82,90 @@ public class Chant_PlanarmorphSelf extends Chant
 		return Ability.QUALITY_OK_SELF;
 	}
 
-	Race newRace=null;
+	protected Race newRace=null;
+	protected final List<Ability> fakeEffects = new Vector<Ability>();
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if(newRace!=null)
+		final Race R=getMixRace();
+		if(R!=null)
 		{
 			if(affected.name().indexOf(' ')>0)
-				affectableStats.setName(L("@x1 called @x2",CMLib.english().startWithAorAn(newRace.name()),affected.name()));
+				affectableStats.setName(L("@x1 called @x2",CMLib.english().startWithAorAn(R.name()),affected.name()));
 			else
-				affectableStats.setName(L("@x1 the @x2",affected.name(),newRace.name()));
+				affectableStats.setName(L("@x1 the @x2",affected.name(),R.name()));
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
-			newRace.setHeightWeight(affectableStats,'M');
+			R.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0)
 				affectableStats.setWeight(affectableStats.weight()+oldAdd);
+			for(final Ability A : fakeEffects)
+				A.affectPhyStats(affected, affectableStats);
 		}
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		for(final Ability A : fakeEffects)
+			A.executeMsg(myHost, msg);
+		return;
+	}
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		for(final Ability A : fakeEffects)
+		{
+			if(!A.okMessage(myHost, msg))
+				return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		for(final Ability A : fakeEffects)
+		{
+			if(!A.tick(ticking, tickID))
+				return false;
+		}
+		return true;
 	}
 
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(newRace!=null)
+		final Race R=getMixRace();
+		if(R!=null)
 		{
 			final int oldCat=affected.baseCharStats().ageCategory();
-			affectableStats.setMyRace(newRace);
+			affectableStats.setMyRace(R);
 			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
-				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
+				affectableStats.setStat(CharStats.STAT_AGE,R.getAgingChart()[oldCat]);
+			for(final Ability A : fakeEffects)
+				A.affectCharStats(affected, affectableStats);
+		}
+	}
+
+	@Override
+	public void affectCharState(final MOB affected, final CharState affectableStats)
+	{
+		super.affectCharState(affected,affectableStats);
+		final Race R=getMixRace();
+		if(R!=null)
+		{
+			for(final Ability A : fakeEffects)
+				A.affectCharState(affected, affectableStats);
 		}
 	}
 
@@ -128,27 +182,95 @@ public class Chant_PlanarmorphSelf extends Chant
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> morph(s) back into <S-HIM-HERSELF> again."));
 	}
 
+	protected Race getMixRace()
+	{
+		if((newRace==null)
+		&&(affected instanceof MOB)
+		&&(miscText.length()>0))
+		{
+			final MOB target=(MOB)affected;
+			final PlanarAbility plane =(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
+			newRace=target.charStats().getMyRace();
+			this.fakeEffects.clear();
+			if(plane != null)
+			{
+				plane.setMiscText(text());
+				final Map<String,String> planarVars = plane.getPlaneVars();
+				if((planarVars != null)&&(planarVars.size()>0))
+				{
+					final String mixRace=planarVars.get(PlanarVar.MIXRACE.name());
+					if((mixRace != null)
+					&& (mixRace.length()>0)
+					&& (CMClass.getRace(mixRace) != null))
+					{
+						newRace=CMLib.utensils().getMixedRace(mixRace, target.charStats().getMyRace().ID(), false);
+						if(newRace != null)
+						{
+							if(target.location()!=null)
+								target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
+							target.recoverCharStats();
+							target.recoverPhyStats();
+							CMLib.utensils().confirmWearability(target);
+							final String adjStat = planarVars.get(PlanarVar.ADJSTAT.toString());
+							if(adjStat != null)
+							{
+								final Ability A=CMClass.getAbility("Prop_StatAdjuster");
+								A.setAffectedOne(target);
+								A.setMiscText(adjStat);
+								A.setInvoker(target);
+								fakeEffects.add(A);
+							}
+							final String resistWeak = planarVars.get(PlanarVar.MOBRESIST.toString());
+							if(resistWeak != null)
+							{
+								final Ability A=CMClass.getAbility("Prop_Resistance");
+								A.setAffectedOne(target);
+								A.setMiscText(resistWeak);
+								A.setInvoker(target);
+								fakeEffects.add(A);
+							}
+							int eliteLevel=0;
+							if(planarVars.containsKey(PlanarVar.ELITE.toString()))
+								eliteLevel=CMath.s_int(planarVars.get(PlanarVar.ELITE.toString()));
+							final String adjSize = planarVars.get(PlanarVar.ADJSIZE.toString());
+							if(adjSize != null)
+							{
+								final double heightAdj = CMParms.getParmDouble(adjSize, "HEIGHT", Double.MIN_VALUE);
+								final double weightAdj = CMParms.getParmDouble(adjSize, "WEIGHT", Double.MIN_VALUE);
+								if((weightAdj > Double.MIN_VALUE)||(heightAdj > Double.MIN_VALUE))
+								{
+									final Ability A=CMClass.getAbility("Prop_Adjuster");
+									A.setAffectedOne(target);
+									String adjStr = "";
+									if(weightAdj > Double.MIN_VALUE)
+										adjStr="weightadj="+(int)Math.round(CMath.mul(target.baseWeight(),weightAdj))+" ";
+									if(heightAdj > Double.MIN_VALUE)
+									{
+										if(eliteLevel > 0)
+											adjStr += "height+"+(100+(heightAdj*100));
+										else
+											adjStr += "height+"+(int)Math.round(CMath.mul(target.basePhyStats().height(),heightAdj));
+									}
+									A.setMiscText(adjStr);
+									A.setInvoker(target);
+									fakeEffects.add(A);
+								}
+							}
+
+						}
+					}
+				}
+			}
+		}
+		return newRace;
+	}
+
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
-		if((newMiscText!=null)&&(newMiscText.length()>0))
-		{
-			newRace=CMClass.findRace(newMiscText);
-			if(newRace != null)
-			{
-				final Physical P=this.affected;
-				if(P instanceof MOB)
-				{
-					final MOB target=(MOB)P;
-					if(target.location()!=null)
-						target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
-					target.recoverCharStats();
-					target.recoverPhyStats();
-					CMLib.utensils().confirmWearability(target);
-				}
-			}
-		}
+		newRace = null;
+		getMixRace(); // do work, if able
 	}
 
 	@Override
@@ -236,9 +358,11 @@ public class Chant_PlanarmorphSelf extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					newRace=R;
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",CMLib.english().startWithAorAn(newRace.name())));
-					success=beneficialAffect(mob,target,asLevel,0)!=null;
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",CMLib.english().startWithAorAn(R.name())));
+					final Ability cA = beneficialAffect(mob,target,asLevel,0);
+					success = cA != null;
+					if(success)
+						cA.setMiscText(planeName);
 					target.recoverCharStats();
 					CMLib.utensils().confirmWearability(target);
 				}
