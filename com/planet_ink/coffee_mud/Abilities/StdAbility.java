@@ -2137,9 +2137,9 @@ public class StdAbility implements Ability
 		if((extraMask.length()>0)&&(!CMLib.masking().maskCheck(extraMask,student,true)))
 		{
 			final String reason="requirements: "+CMLib.masking().maskDesc(extraMask);
-			student.tell(L("You may not learn '@x1' at this time due to the @x2.",name(),reason));
+			student.tell(L("You may not learn '@x1' at this time due to the @x2",name(),reason));
 			if(teacher != null)
-				teacher.tell(L("@x1 does not fit the '@x2' @x3.",student.name(),name(),reason));
+				teacher.tell(L("@x1 does not fit the '@x2' @x3",student.name(),name(),reason));
 			return false;
 		}
 

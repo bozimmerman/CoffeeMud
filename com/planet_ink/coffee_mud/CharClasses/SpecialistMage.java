@@ -79,18 +79,19 @@ public class SpecialistMage extends Mage
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 				{
 					final boolean secret=CMLib.ableMapper().getSecretSkill(ID(),true,A.ID());
+					final String extraMask=CMLib.ableMapper().getExtraMask(ID(),true,A.ID());
 					if((A.classificationCode()&Ability.ALL_DOMAINS)==opposed())
 					{
 						if(CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
-							CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret);
+							CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret,null,extraMask);
 						else
 							CMLib.ableMapper().delCharAbilityMapping(ID(),A.ID());
 					}
 					else
-					if((A.classificationCode()&Ability.ALL_DOMAINS)==domain()&&(!secret))
+					if((A.classificationCode()&Ability.ALL_DOMAINS)==domain()&&(!secret)&&(extraMask.length()==0))
 						CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),25,true);
 					else
-						CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret);
+						CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret,null,extraMask);
 				}
 			}
 		}

@@ -405,13 +405,13 @@ public class Mage extends StdCharClass
 
 		if(!ID().equals("Transmuter"))
 		{
-			CMLib.ableMapper().addCharAbilityMapping(ID(),26,"Spell_Imprisonment", ID().equals("Conjurer")?25:0, "", ID().equals("Conjurer"),
+			CMLib.ableMapper().addCharAbilityMapping(ID(),26,"Spell_Imprisonment", ID().equals("Conjurer")?25:0, "", false,
 													 true, null, "+PLANE \"-Prime Material\"");
 		}
 
 		if(!ID().equals("Conjurer"))
 		{
-			CMLib.ableMapper().addCharAbilityMapping(ID(),29,"Spell_Planarmorph", ID().equals("Transmuter")?25:0, "", ID().equals("Transmuter"),
+			CMLib.ableMapper().addCharAbilityMapping(ID(),29,"Spell_Planarmorph", ID().equals("Transmuter")?25:0, "", false,
 													 true, null, "+PLANE \"-Prime Material\"");
 		}
 
