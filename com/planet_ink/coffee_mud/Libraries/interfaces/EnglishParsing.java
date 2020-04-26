@@ -45,21 +45,163 @@ import java.util.*;
  */
 public interface EnglishParsing extends CMLibrary
 {
+	/**
+	 * Returns whether the given string is an 
+	 * article, such as a, an, some, etc..
+	 * Colors are not respected.
+	 * 
+	 * @param s the string to check
+	 * @return true if its an article, false otherwise
+	 */
 	public boolean isAnArticle(String s);
+	
+	/**
+	 * If the given phrase begins with an article word
+	 * such as a, an, some, etc..  it will strip
+	 * the word off and return the rest of the string.
+	 * Colors codes are totally respected!
+	 * 
+	 * @param s the string to clean
+	 * @return the string, or the string cleaned
+	 */
 	public String removeArticleLead(String s);
+	
+	/**
+	 * If the given phrase begins with a preposition word
+	 * such as to, over, beside, than, since, it will strip
+	 * the word off and return the rest of the string.
+	 * Colors are not respected.
+	 * 
+	 * @param s the string to clean
+	 * @return the string, or the string cleaned
+	 */
 	public String cleanPrepositions(String s);
+	
+	/**
+	 * Returns whether the given word or 
+	 * phrase starts with an article, such as 
+	 * a, an, the, some, etc..
+	 * Colors codes are totally respected.
+	 * 
+	 * @param s the string to check
+	 * @return true if the string starts with an article
+	 */
 	public boolean startsWithAnArticle(String s);
+	
+	/**
+	 * Returns the given string with punctuation 
+	 * removed. Must not be colored.
+	 * 
+	 * @param str the string to check
+	 * @return the string, with punctuation removed
+	 */
 	public String stripPunctuation(String str);
+	
+	/**
+	 * Returns the given string with any 
+	 * punctuation changed into spaces.
+	 * Don't know why. Must not be colored.
+	 * 
+	 * @param str the string to convert
+	 * @return the string without spaces
+	 */
 	public String spaceOutPunctuation(final String str);
+	
+	/**
+	 * Returns true if the given byte is
+	 * any normal punctuation character. Such as
+	 * +-,;:.?! etc.. Must not be colored.
+	 * 
+	 * @param b the byte to check
+	 * @return true if punctuation, false otherwise
+	 */
 	public boolean isPunctuation(final byte b);
+	
+	/**
+	 * Returns true if the given string contains
+	 * any normal punctuation characters. Such as
+	 * +-,;:.?! etc.. Must not be colored.
+	 * 
+	 * @param str the string to check
+	 * @return true if punctuation found, false otherwise
+	 */
 	public boolean hasPunctuation(String str);
+	
+	/**
+	 * Attempts to pluralize a given word.
+	 * It's just a best guess. Must not be
+	 * colored.
+	 * 
+	 * @param str the word to pluralize
+	 * @return the word, pluralized, hopefuly
+	 */
 	public String makePlural(String str);
+	
+	/**
+	 * Attempts to de-pluralize a given word.
+	 * It's just a best guess. Must not be
+	 * colored.
+	 * 
+	 * @param str the word to de-pluralize
+	 * @return the word, de-pluralized, hopefuly
+	 */
 	public String makeSingular(String str);
+	
+	/**
+	 * Returns a best guess on the past-tense form
+	 * of the given word.  If the word is null or
+	 * empty, then the default word is returned.  
+	 * 
+	 * @param word the word to past-tensize
+	 * @param defaultWord the word to use if none given
+	 * @return the paten-tensed word.
+	 */
 	public String makePastTense(String word, String defaultWord);
+	
+	/**
+	 * Returns the first word in the given phrase, ignoring color.
+	 * It must start with a letter.
+	 * 
+	 * @param str the phrase to look in
+	 * @return the first word
+	 */
 	public String getFirstWord(final String str);
+	
+	/**
+	 * Returns the proper indefinite article -- a or an, for
+	 * the given noun or noun-phrase.  Ignores colors.
+	 * 
+	 * @param str the noun or noun phrase
+	 * @return either 'a' or 'an'
+	 */
 	public String properIndefiniteArticle(String str);
+	
+	/**
+	 * Returns comma-space delimited list of the given objects.toString().  The
+	 * final entry will have an "and" prepended.  Oxford commas are used.
+	 * 
+	 * @param V the collection of things to treat as strings
+	 * @return the comma-space delimited list
+	 */
 	public String toEnglishStringList(final String[] V);
+	
+	/**
+	 * Returns comma-space delimited list of the given emum names.  The
+	 * final entry will have an "and" or "or" prepended.  Oxford commas are used.
+	 * 
+	 * @param enumer the collection of things to treat as strings
+	 * @param andOr true to use AND, false to use OR
+	 * @return the comma-space delimited list
+	 */
 	public String toEnglishStringList(final Class<? extends Enum<?>> enumer, boolean andOr);
+
+	/**
+	 * Returns comma-space delimited list of the given objects.toString().  The
+	 * final entry will have an "and" prepended.  Oxford commas are used.
+	 * 
+	 * @param V the collection of things to treat as strings
+	 * @return the comma-space delimited list
+	 */
 	public String toEnglishStringList(final Collection<? extends Object> V);
 
 	/**
