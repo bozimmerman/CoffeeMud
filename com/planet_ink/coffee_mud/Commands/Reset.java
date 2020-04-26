@@ -2637,7 +2637,7 @@ public class Reset extends StdCommand
 			String firstPart="'@x1' is an unknown reset.  Try ROOM, AREA,";
 			if(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.CMDPLAYERS))
 				firstPart+=" PASSWORD,";
-			mob.tell(L(firstPart+" MOBSTATS ROOM, MOBSTATS AREA *, MOBSTATS WORLD *, MOBSTATS CATALOG *, ITEMSTATS ROOM, ITEMSTATS AREA *, ITEMSTATS WORLD *, ITEMSTATS CATALOG *, AREARACEMAT *, AREAROOMIDS *, AREAINSTALL.\n\r * = Reset functions which may take a long time to complete.",s));
+			mob.tell(L(firstPart+" MOBCOMBATSTATS ROOM, MOBCOMBATSTATS AREA *, MOBCOMBATSTATS WORLD *, MOBCOMBATSTATS CATALOG *, ITEMSTATS ROOM, ITEMSTATS AREA *, ITEMSTATS WORLD *, ITEMSTATS CATALOG *, AREARACEMAT *, AREAROOMIDS *, AREAINSTALL.\n\r * = Reset functions which may take a long time to complete.",s));
 		}
 		return false;
 	}
