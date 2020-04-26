@@ -32,8 +32,41 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
+/**
+ * 
+ * @author Bo Zimmerman
+ *
+ */
 public interface ExpertiseLibrary extends CMLibrary
 {
+	public ExpertiseDefinition addDefinition(String ID, String name, String baseName, String listMask, String finalMask, String[] costs, String[] data);
+	public void delDefinition(String ID);
+	public ExpertiseDefinition getDefinition(String ID);
+	public ExpertiseDefinition findDefinition(String ID, boolean exactOnly);
+	public Enumeration<ExpertiseDefinition> definitions();
+	public List<ExpertiseDefinition> myQualifiedExpertises(MOB mob);
+	public List<ExpertiseDefinition> myListableExpertises(MOB mob);
+	public ExpertiseDefinition getConfirmedDefinition(final MOB mob, final String ID);
+	public int numExpertises();
+	public SkillCost createNewSkillCost(CostType costType, Double value);
+	public void recompileExpertises();
+	public int getExpertiseLevel(final MOB mob, final String abilityID, final ExpertiseLibrary.Flag code);
+	public String getExpertiseHelp(String ID, boolean exact);
+	public String getApplicableExpertise(String ID, Flag code);
+	public String[] getApplicableExpertises(String ID, Flag code);
+	public int getApplicableExpertiseLevel(String ID, Flag code, MOB mob);
+	public int getStages(String baseExpertiseCode);
+	public List<String> getStageCodes(String baseExpertiseCode);
+	public String confirmExpertiseLine(String row, String ID, boolean addIfPossible);
+	public List<String> getPeerStageCodes(final String expertiseCode);
+	public String getGuessedBaseExpertiseName(final String expertiseCode);
+	public void handleBeingTaught(MOB teacher, MOB student, Environmental item, String msg, int add);
+	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg);
+	public boolean postTeach(MOB teacher, MOB student, CMObject teachObj);
+	public Iterator<String> filterUniqueExpertiseIDList(Iterator<String> i);
+	public int getHighestListableStageBySkill(final MOB mob, String ableID, ExpertiseLibrary.Flag flag);
+	
 	public enum Flag
 	{
 		X1,
@@ -141,31 +174,4 @@ public interface ExpertiseLibrary extends CMLibrary
 		 */
 		public void spendSkillCost(final MOB student);
 	}
-
-	public ExpertiseDefinition addDefinition(String ID, String name, String baseName, String listMask, String finalMask, String[] costs, String[] data);
-	public void delDefinition(String ID);
-	public ExpertiseDefinition getDefinition(String ID);
-	public ExpertiseDefinition findDefinition(String ID, boolean exactOnly);
-	public Enumeration<ExpertiseDefinition> definitions();
-	public List<ExpertiseDefinition> myQualifiedExpertises(MOB mob);
-	public List<ExpertiseDefinition> myListableExpertises(MOB mob);
-	public ExpertiseDefinition getConfirmedDefinition(final MOB mob, final String ID);
-	public int numExpertises();
-	public SkillCost createNewSkillCost(CostType costType, Double value);
-	public void recompileExpertises();
-	public int getExpertiseLevel(final MOB mob, final String abilityID, final ExpertiseLibrary.Flag code);
-	public String getExpertiseHelp(String ID, boolean exact);
-	public String getApplicableExpertise(String ID, Flag code);
-	public String[] getApplicableExpertises(String ID, Flag code);
-	public int getApplicableExpertiseLevel(String ID, Flag code, MOB mob);
-	public int getStages(String baseExpertiseCode);
-	public List<String> getStageCodes(String baseExpertiseCode);
-	public String confirmExpertiseLine(String row, String ID, boolean addIfPossible);
-	public List<String> getPeerStageCodes(final String expertiseCode);
-	public String getGuessedBaseExpertiseName(final String expertiseCode);
-	public void handleBeingTaught(MOB teacher, MOB student, Environmental item, String msg, int add);
-	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg);
-	public boolean postTeach(MOB teacher, MOB student, CMObject teachObj);
-	public Iterator<String> filterUniqueExpertiseIDList(Iterator<String> i);
-	public int getHighestListableStageBySkill(final MOB mob, String ableID, ExpertiseLibrary.Flag flag);
 }
