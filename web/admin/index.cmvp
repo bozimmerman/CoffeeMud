@@ -46,7 +46,7 @@
 <br>
 MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT@</b>: <b>@MUDSERVERSTATUS@</B><br>
 	<br>
-	<a href="pub/"><FONT COLOR=BLUE>Go to public pages</FONT></A><br>
+	<a href="http://@MudInfo?DOMAIN@:@WebServerPort?SERVER&PUB@/"><FONT COLOR=BLUE>Go to public pages</FONT></A><br>
 	<br>
 	<FORM  ACCEPT-CHARSET="UTF-8" NAME=LOGINFORM METHOD=POST ACTION=/grinder/loggedin.cmvp TARGET=_top>
 	<TABLE WIDTH=200 BORDER=1>
