@@ -418,6 +418,8 @@ public class Mage extends StdCharClass
 		// level 30
 		if(ID().equals(baseClass()))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Spellbinding",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),31,"Spell_PlanarBlock", 0, "", false, true, null, "+PLANE \"-Prime Material\"");
 	}
 
 	@Override
