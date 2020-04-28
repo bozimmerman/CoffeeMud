@@ -1759,7 +1759,8 @@ public class CMClass extends ClassLoader
 		while(start<=end)
 		{
 			final int mid=(end+start)/2;
-			final int comp=classID(list.get(mid)).compareToIgnoreCase(ID);
+			final String s=classID(list.get(mid));
+			final int comp=s.compareToIgnoreCase(ID);
 			if(comp==0)
 				return list.get(mid);
 			else
@@ -2204,7 +2205,7 @@ public class CMClass extends ClassLoader
 	@SuppressWarnings("rawtypes")
 	public static final XVector loadVectorListToObj(final String defaultPath, String requestedPathList, final String ancestor)
 	{
-		final Vector<Object> v=new Vector<Object>();
+		final XVector<Object> v=new XVector<Object>();
 		int x=requestedPathList.indexOf(';');
 		String path;
 		while(x>=0)
@@ -2215,7 +2216,8 @@ public class CMClass extends ClassLoader
 			x=requestedPathList.indexOf(';');
 		}
 		loadObjectListToObj(v,defaultPath,requestedPathList,ancestor);
-		return new XVector<Object>(new TreeSet<Object>(v));
+		v.sort();
+		return v;
 	}
 
 	/**

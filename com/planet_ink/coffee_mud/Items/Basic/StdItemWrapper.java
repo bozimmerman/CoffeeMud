@@ -250,7 +250,7 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public int compareTo(final CMObject o)
 	{
-		return this.hashCode() == o.hashCode() ? 0 : (this.hashCode() > o.hashCode()) ? 1 : -1;
+		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 
 	@Override
