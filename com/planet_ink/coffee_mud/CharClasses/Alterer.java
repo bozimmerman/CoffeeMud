@@ -86,6 +86,7 @@ public class Alterer extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_Fabricate",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Spell_Duplicate",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_LimitedWish",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Spell_PlanarBubble", 0, "", false, true, null, "+PLANE \"-Prime Material\"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),60,"Spell_Wish",25,true);
 	}
 }

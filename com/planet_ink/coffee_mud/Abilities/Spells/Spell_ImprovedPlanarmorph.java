@@ -103,7 +103,7 @@ public class Spell_ImprovedPlanarmorph extends Spell_Planarmorph
 			if(plane.getPlanarVars(selectedPlane)==null)
 			{
 				mob.tell(L("Which plane?"));
-				mob.tell(L("Known planes: @x1",StdPlanarAbility.listOfPlanes()+L("Prime Material")));
+				mob.tell(L("Known planes: @x1",plane.listOfPlanes()+L("Prime Material")));
 				return false;
 			}
 			this.selectedPlane = selectedPlane;

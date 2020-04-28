@@ -181,6 +181,12 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		return planarName;
 	}
 
+	@Override
+	public void setPlanarName(final String planeName)
+	{
+		setMiscText(planeName);
+	}
+
 	/**
 	 * @return the promotions
 	 */
@@ -675,49 +681,64 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				}
 			}
 			planeArea.setTimeObj(C);
+			for(final CMObject O : getAreaEffectsBehavs())
 			{
-				final Ability A=CMClass.getAbility("Prop_NoTeleportOut");
-				A.setMiscText("exceptions=planarability");
-				planeArea.addNonUninvokableEffect(A);
+				if(O instanceof Ability)
+					planeArea.addNonUninvokableEffect((Ability)O);
+				else
+				if(O instanceof Behavior)
+					planeArea.addBehavior((Behavior)O);
 			}
+		}
+	}
+
+	@Override
+	public List<CMObject> getAreaEffectsBehavs()
+	{
+		final List<CMObject> aeffectbehavs = new Vector<CMObject>();
+		{
+			final Ability A=CMClass.getAbility("Prop_NoTeleportOut");
+			A.setMiscText("exceptions=planarability");
+			aeffectbehavs.add(A);
+		}
+		{
+			final Ability A=CMClass.getAbility("Prop_NoTeleport");
+			A.setMiscText("exceptions=planarability");
+			aeffectbehavs.add(A);
+		}
+		aeffectbehavs.add(CMClass.getAbility("Prop_NoRecall"));
+		final String aeffects = planeVars.get(PlanarVar.AEFFECT.toString());
+		if(aeffects!=null)
+		{
+			final List<Pair<String,String>> affectList=CMParms.parseSpaceParenList(aeffects);
+			if(affectList!=null)
 			{
-				final Ability A=CMClass.getAbility("Prop_NoTeleport");
-				A.setMiscText("exceptions=planarability");
-				planeArea.addNonUninvokableEffect(A);
-			}
-			planeArea.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
-			final String aeffects = planeVars.get(PlanarVar.AEFFECT.toString());
-			if(aeffects!=null)
-			{
-				final List<Pair<String,String>> affectList=CMParms.parseSpaceParenList(aeffects);
-				if(affectList!=null)
+				for(final Pair<String,String> p : affectList)
 				{
-					for(final Pair<String,String> p : affectList)
+					if(planeArea.fetchBehavior(p.first)==null)
 					{
-						if(planeArea.fetchBehavior(p.first)==null)
+						final Behavior B=CMClass.getBehavior(p.first);
+						if(B==null)
 						{
-							final Behavior B=CMClass.getBehavior(p.first);
-							if(B==null)
-							{
-								final Ability A=CMClass.getAbility(p.first);
-								if(A==null)
-									Log.errOut("Spell_Planeshift","Unknown behavior : "+p.first);
-								else
-								{
-									A.setMiscText(p.second);
-									planeArea.addNonUninvokableEffect(A);
-								}
-							}
+							final Ability A=CMClass.getAbility(p.first);
+							if(A==null)
+								Log.errOut("Spell_Planeshift","Unknown behavior : "+p.first);
 							else
 							{
-								B.setParms(p.second);
-								planeArea.addBehavior(B);
+								A.setMiscText(p.second);
+								aeffectbehavs.add(A);
 							}
+						}
+						else
+						{
+							B.setParms(p.second);
+							aeffectbehavs.add(B);
 						}
 					}
 				}
 			}
 		}
+		return aeffectbehavs;
 	}
 
 	protected void reEffect(final Physical M, final String ID, final String parms)
@@ -737,6 +758,53 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		}
 	}
 
+	@Override
+	public void doPlanarRoomColoring(final Room room)
+	{
+		if(planeVars.containsKey(PlanarVar.ROOMCOLOR.toString()))
+		{
+			String prefix="";
+			String displayText = room.displayText();
+			if(displayText.toUpperCase().startsWith("<VARIES>"))
+			{
+				prefix="<VARIES>";
+				displayText=displayText.substring(prefix.length());
+			}
+			String color=planeVars.get(PlanarVar.ROOMCOLOR.toString());
+			if(color.startsWith("UP "))
+			{
+				color=color.substring(3).trim();
+				displayText=displayText.toUpperCase();
+			}
+			room.setDisplayText(prefix+color+displayText+"^N");
+		}
+		if(planeVars.containsKey(PlanarVar.ROOMADJS.toString()))
+		{
+			String wordStr=planeVars.get(PlanarVar.ROOMADJS.toString());
+			String prefix="";
+			String desc = room.description();
+			if(wordStr.startsWith("UP "))
+			{
+				wordStr=wordStr.substring(3).trim();
+				desc=desc.toUpperCase();
+			}
+			int chance=30;
+			final int x=wordStr.indexOf(' ');
+			if((x>0)&&(CMath.isInteger(wordStr.substring(0, x))))
+			{
+				chance=CMath.s_int(wordStr.substring(0, x));
+				wordStr=wordStr.substring(x+1).trim();
+			}
+			final String[] words= wordStr.split(",");
+			if(desc.toUpperCase().startsWith("<VARIES>"))
+			{
+				prefix="<VARIES>";
+				desc=desc.substring(prefix.length());
+			}
+			room.setDescription(prefix+CMLib.english().insertAdjectives(desc, words, chance));
+		}
+	}
+
 	public synchronized void fixRoom(final Room room)
 	{
 		try
@@ -749,53 +817,12 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 				if((R!=null)&&(R.getArea()!=planeArea))
 					room.rawDoors()[i]=null;
 			}
-			if(planeVars.containsKey(PlanarVar.ATMOSPHERE.toString()))
-				room.setAtmosphere(planeArea.getAtmosphere());
 			int eliteLevel=0;
 			if(planeVars.containsKey(PlanarVar.ELITE.toString()))
 				eliteLevel=CMath.s_int(planeVars.get(PlanarVar.ELITE.toString()));
-			if(planeVars.containsKey(PlanarVar.ROOMCOLOR.toString()))
-			{
-				String prefix="";
-				String displayText = room.displayText();
-				if(displayText.toUpperCase().startsWith("<VARIES>"))
-				{
-					prefix="<VARIES>";
-					displayText=displayText.substring(prefix.length());
-				}
-				String color=planeVars.get(PlanarVar.ROOMCOLOR.toString());
-				if(color.startsWith("UP "))
-				{
-					color=color.substring(3).trim();
-					displayText=displayText.toUpperCase();
-				}
-				room.setDisplayText(prefix+color+displayText+"^N");
-			}
-			if(planeVars.containsKey(PlanarVar.ROOMADJS.toString()))
-			{
-				String wordStr=planeVars.get(PlanarVar.ROOMADJS.toString());
-				String prefix="";
-				String desc = room.description();
-				if(wordStr.startsWith("UP "))
-				{
-					wordStr=wordStr.substring(3).trim();
-					desc=desc.toUpperCase();
-				}
-				int chance=30;
-				final int x=wordStr.indexOf(' ');
-				if((x>0)&&(CMath.isInteger(wordStr.substring(0, x))))
-				{
-					chance=CMath.s_int(wordStr.substring(0, x));
-					wordStr=wordStr.substring(x+1).trim();
-				}
-				final String[] words= wordStr.split(",");
-				if(desc.toUpperCase().startsWith("<VARIES>"))
-				{
-					prefix="<VARIES>";
-					desc=desc.substring(prefix.length());
-				}
-				room.setDescription(prefix+CMLib.english().insertAdjectives(desc, words, chance));
-			}
+			if(planeVars.containsKey(PlanarVar.ATMOSPHERE.toString()))
+				room.setAtmosphere(planeArea.getAtmosphere());
+			doPlanarRoomColoring(room);
 			if(this.reffectList!=null)
 			{
 				for(final Pair<String,String> p : this.reffectList)
@@ -1399,7 +1426,8 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 		return transitions;
 	}
 
-	public static String listOfPlanes()
+	@Override
+	public String listOfPlanes()
 	{
 		final Map<String,Map<String,String>> map = getAllPlanesMap();
 		final StringBuilder str=new StringBuilder();

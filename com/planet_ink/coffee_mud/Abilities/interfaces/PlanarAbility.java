@@ -50,6 +50,13 @@ public interface PlanarAbility extends Ability
 	public String getPlanarName();
 
 	/**
+	 * Set the plane to use for this planar ability
+	 *
+	 * @param planeName the plane to use
+	 */
+	public void setPlanarName(final String planeName);
+
+	/**
 	 * Get the current level of this plane
 	 * @return the planarLevel
 	 */
@@ -72,6 +79,14 @@ public interface PlanarAbility extends Ability
 	 * @return the planarPrefix
 	 */
 	public String getPlanarPrefix();
+
+	/**
+	 * Applies the room display and description coloring to the
+	 * given room according to the rules of this plane.
+	 *
+	 * @param room the room to change permanently.
+	 */
+	public void doPlanarRoomColoring(final Room room);
 
 	/**
 	 * The xtra difficulty level of this plane
@@ -145,6 +160,14 @@ public interface PlanarAbility extends Ability
 	public PairList<String, String> getFactionList();
 
 	/**
+	 * Calculates the area effects and behaviors, not including
+	 * absorb lists, which would affect the planar area.
+	 *
+	 * @return the list of abilities and behaviors
+	 */
+	public List<CMObject> getAreaEffectsBehavs();
+
+	/**
 	 * Get the CharStat STAT_* ID of the stat that gives bonus
 	 * damage on this plane
 	 * @return the bonusDmgStat
@@ -205,6 +228,12 @@ public interface PlanarAbility extends Ability
 	 */
 	public List<String> getAllPlaneKeys();
 
+	/**
+	 * Returns a friendly list of all the planes.
+	 *
+	 * @return a friendly list.
+	 */
+	public String listOfPlanes();
 
 	/**
 	 * The definitions variables for the attributes of each plane
