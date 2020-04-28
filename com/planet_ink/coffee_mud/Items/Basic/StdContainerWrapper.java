@@ -56,37 +56,37 @@ public class StdContainerWrapper extends StdItemWrapper implements Item, Contain
 	@Override
 	public boolean isOpen()
 	{
-		return container.isOpen();
+		return (container == null) ? false : container.isOpen();
 	}
 
 	@Override
 	public boolean isLocked()
 	{
-		return container.isLocked();
+		return (container == null) ? false : container.isLocked();
 	}
 
 	@Override
 	public boolean hasADoor()
 	{
-		return container.hasADoor();
+		return (container == null) ? false : container.hasADoor();
 	}
 
 	@Override
 	public boolean hasALock()
 	{
-		return container.hasALock();
+		return (container == null) ? false : container.hasALock();
 	}
 
 	@Override
 	public boolean defaultsLocked()
 	{
-		return container.defaultsLocked();
+		return (container == null) ? false : container.defaultsLocked();
 	}
 
 	@Override
 	public boolean defaultsClosed()
 	{
-		return container.defaultsClosed();
+		return (container == null) ? false : container.defaultsClosed();
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class StdContainerWrapper extends StdItemWrapper implements Item, Contain
 	@Override
 	public String keyName()
 	{
-		return container.keyName();
+		return (container == null) ? "" : container.keyName();
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class StdContainerWrapper extends StdItemWrapper implements Item, Contain
 	@Override
 	public int openDelayTicks()
 	{
-		return container.openDelayTicks();
+		return (container == null) ? 0 :container.openDelayTicks();
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class StdContainerWrapper extends StdItemWrapper implements Item, Contain
 	@Override
 	public int capacity()
 	{
-		return container.capacity();
+		return (container == null) ? 0 :container.capacity();
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class StdContainerWrapper extends StdItemWrapper implements Item, Contain
 	@Override
 	public boolean canContain(final Item I)
 	{
-		return container.canContain(I);
+		return (container == null) ? false :container.canContain(I);
 	}
 
 	@Override
@@ -202,7 +202,7 @@ public class StdContainerWrapper extends StdItemWrapper implements Item, Contain
 	@Override
 	public long containTypes()
 	{
-		return container.containTypes();
+		return (container == null) ? 0 :container.containTypes();
 	}
 
 	@Override

@@ -89,25 +89,25 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public String displayText(final MOB viewerMob)
 	{
-		return mob.displayText(viewerMob);
+		return (mob == null) ? "" : mob.displayText(viewerMob);
 	}
 
 	@Override
 	public String name(final MOB viewerMob)
 	{
-		return mob.name(viewerMob);
+		return (mob == null) ? "" : mob.name(viewerMob);
 	}
 
 	@Override
 	public String description(final MOB viewerMob)
 	{
-		return mob.description(viewerMob);
+		return (mob == null) ? "" : mob.description(viewerMob);
 	}
 
 	@Override
 	public String Name()
 	{
-		return mob.Name();
+		return (mob == null) ? "" : mob.Name();
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public String displayText()
 	{
-		return mob.displayText();
+		return (mob == null) ? "" : mob.displayText();
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public String description()
 	{
-		return mob.description();
+		return (mob == null) ? "" : mob.description();
 	}
 
 	@Override
@@ -140,13 +140,13 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public String image()
 	{
-		return mob.image();
+		return (mob == null) ? "" : mob.image();
 	}
 
 	@Override
 	public String rawImage()
 	{
-		return mob.rawImage();
+		return (mob == null) ? "" : mob.rawImage();
 	}
 
 	@Override
@@ -174,7 +174,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public String miscTextFormat()
 	{
-		return mob.miscTextFormat();
+		return (mob == null) ? "" : mob.miscTextFormat();
 	}
 
 	@Override
@@ -186,7 +186,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public long expirationDate()
 	{
-		return mob.expirationDate();
+		return (mob == null) ? 0 : mob.expirationDate();
 	}
 
 	@Override
@@ -197,13 +197,13 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public int maxRange()
 	{
-		return mob.maxRange();
+		return (mob == null) ? 0 : mob.maxRange();
 	}
 
 	@Override
 	public int minRange()
 	{
-		return mob.minRange();
+		return (mob == null) ? 0 : mob.minRange();
 	}
 
 	@Override
@@ -215,13 +215,13 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public String name()
 	{
-		return mob.name();
+		return (mob == null) ? "" : mob.name();
 	}
 
 	@Override
 	public int getTickStatus()
 	{
-		return mob.getTickStatus();
+		return (mob == null) ? 0 : mob.getTickStatus();
 	}
 
 	@Override
@@ -495,7 +495,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public String databaseID()
 	{
-		return mob.databaseID();
+		return (mob == null) ? "" : mob.databaseID();
 	}
 
 	@Override
@@ -741,7 +741,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public String getFactionListing()
 	{
-		return mob.getFactionListing();
+		return (mob == null) ? "" : mob.getFactionListing();
 	}
 
 	@Override
@@ -891,7 +891,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public boolean isInCombat()
 	{
-		return mob.isInCombat();
+		return (mob == null) ? false : mob.isInCombat();
 	}
 
 	@Override
@@ -902,25 +902,25 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public int rangeToTarget()
 	{
-		return mob.rangeToTarget();
+		return (mob == null) ? 0 : mob.rangeToTarget();
 	}
 
 	@Override
 	public int getDirectionToTarget()
 	{
-		return mob.getDirectionToTarget();
+		return (mob == null) ? 0 : mob.getDirectionToTarget();
 	}
 
 	@Override
 	public boolean mayPhysicallyAttack(final PhysicalAgent victim)
 	{
-		return mob.mayPhysicallyAttack(victim);
+		return (mob == null) ? false : mob.mayPhysicallyAttack(victim);
 	}
 
 	@Override
 	public boolean mayIFight(final PhysicalAgent victim)
 	{
-		return mob.mayIFight(victim);
+		return (mob == null) ? false : mob.mayIFight(victim);
 	}
 
 	@Override
@@ -942,7 +942,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public int getAttributesBitmap()
 	{
-		return mob.getAttributesBitmap();
+		return (mob == null) ? 0 : mob.getAttributesBitmap();
 	}
 
 	@Override
@@ -958,19 +958,19 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public boolean isAttributeSet(final Attrib attrib)
 	{
-		return mob.isAttributeSet(attrib);
+		return (mob == null) ? false : mob.isAttributeSet(attrib);
 	}
 
 	@Override
 	public String titledName()
 	{
-		return mob.titledName();
+		return (mob == null) ? "" : mob.titledName();
 	}
 
 	@Override
 	public String genericName()
 	{
-		return mob.genericName();
+		return (mob == null) ? "" : mob.genericName();
 	}
 
 	@Override
@@ -1015,31 +1015,31 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public int maxCarry()
 	{
-		return mob.maxCarry();
+		return (mob == null) ? 0 : mob.maxCarry();
 	}
 
 	@Override
 	public int maxItems()
 	{
-		return mob.maxItems();
+		return (mob == null) ? 0 : mob.maxItems();
 	}
 
 	@Override
 	public int baseWeight()
 	{
-		return mob.baseWeight();
+		return (mob == null) ? 0 : mob.baseWeight();
 	}
 
 	@Override
 	public String healthText(final MOB viewer)
 	{
-		return mob.healthText(viewer);
+		return (mob == null) ? "" : mob.healthText(viewer);
 	}
 
 	@Override
 	public boolean amDead()
 	{
-		return mob.amDead();
+		return (mob == null) ? false : mob.amDead();
 	}
 
 	@Override
@@ -1066,7 +1066,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public boolean amActive()
 	{
-		return mob.amActive();
+		return (mob == null) ? false : mob.amActive();
 	}
 
 	@Override
@@ -1132,7 +1132,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public int getExperience()
 	{
-		return mob.getExperience();
+		return (mob == null) ? 0 : mob.getExperience();
 	}
 
 	@Override
@@ -1143,37 +1143,37 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public long getPeaceTime()
 	{
-		return mob.getPeaceTime();
+		return (mob == null) ? 0 : mob.getPeaceTime();
 	}
 
 	@Override
 	public int getExpNextLevel()
 	{
-		return mob.getExpNextLevel();
+		return (mob == null) ? 0 : mob.getExpNextLevel();
 	}
 
 	@Override
 	public int getExpNeededLevel()
 	{
-		return mob.getExpNeededLevel();
+		return (mob == null) ? 0 : mob.getExpNeededLevel();
 	}
 
 	@Override
 	public int getExpNeededDelevel()
 	{
-		return mob.getExpNeededDelevel();
+		return (mob == null) ? 0 : mob.getExpNeededDelevel();
 	}
 
 	@Override
 	public int getExpPrevLevel()
 	{
-		return mob.getExpPrevLevel();
+		return (mob == null) ? 0 : mob.getExpPrevLevel();
 	}
 
 	@Override
 	public long getAgeMinutes()
 	{
-		return mob.getAgeMinutes();
+		return (mob == null) ? 0 : mob.getAgeMinutes();
 	}
 
 	@Override
@@ -1184,7 +1184,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public int getPractices()
 	{
-		return mob.getPractices();
+		return (mob == null) ? 0 : mob.getPractices();
 	}
 
 	@Override
@@ -1195,7 +1195,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public int getTrains()
 	{
-		return mob.getTrains();
+		return (mob == null) ? 0 : mob.getTrains();
 	}
 
 	@Override
@@ -1206,7 +1206,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public int getMoney()
 	{
-		return mob.getMoney();
+		return (mob == null) ? 0 : mob.getMoney();
 	}
 
 	@Override
@@ -1217,7 +1217,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public double getMoneyVariation()
 	{
-		return mob.getMoneyVariation();
+		return (mob == null) ? 0 : mob.getMoneyVariation();
 	}
 
 	@Override
@@ -1263,13 +1263,13 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public Weapon getNaturalWeapon()
 	{
-		return mob.getNaturalWeapon();
+		return (mob == null) ? null : mob.getNaturalWeapon();
 	}
 
 	@Override
 	public String getLiegeID()
 	{
-		return mob.getLiegeID();
+		return (mob == null) ? "" : mob.getLiegeID();
 	}
 
 	@Override
@@ -1280,13 +1280,13 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public boolean isMarriedToLiege()
 	{
-		return mob.isMarriedToLiege();
+		return (mob == null) ? false : mob.isMarriedToLiege();
 	}
 
 	@Override
 	public String getWorshipCharID()
 	{
-		return mob.getWorshipCharID();
+		return (mob == null) ? "" : mob.getWorshipCharID();
 	}
 
 	@Override
@@ -1297,13 +1297,13 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public Deity getMyDeity()
 	{
-		return mob.getMyDeity();
+		return (mob == null) ? null : mob.getMyDeity();
 	}
 
 	@Override
 	public int getWimpHitPoint()
 	{
-		return mob.getWimpHitPoint();
+		return (mob == null) ? 0 : mob.getWimpHitPoint();
 	}
 
 	@Override
@@ -1314,7 +1314,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public int getQuestPoint()
 	{
-		return mob.getQuestPoint();
+		return (mob == null) ? 0 : mob.getQuestPoint();
 	}
 
 	@Override
@@ -1325,7 +1325,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public long lastTickedDateTime()
 	{
-		return mob.lastTickedDateTime();
+		return (mob == null) ? 0 : mob.lastTickedDateTime();
 	}
 
 	@Override
@@ -1348,7 +1348,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public Room getStartRoom()
 	{
-		return mob.getStartRoom();
+		return (mob == null) ? null : mob.getStartRoom();
 	}
 
 	@Override
@@ -1359,7 +1359,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public Room location()
 	{
-		return mob.location();
+		return (mob == null) ? null : mob.location();
 	}
 
 	@Override
@@ -1387,43 +1387,43 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public Item fetchFirstWornItem(final long wornCode)
 	{
-		return mob.fetchFirstWornItem(wornCode);
+		return (mob == null) ? null : mob.fetchFirstWornItem(wornCode);
 	}
 
 	@Override
 	public Item fetchWieldedItem()
 	{
-		return mob.fetchWieldedItem();
+		return (mob == null) ? null : mob.fetchWieldedItem();
 	}
 
 	@Override
 	public Item fetchHeldItem()
 	{
-		return mob.fetchHeldItem();
+		return (mob == null) ? null : mob.fetchHeldItem();
 	}
 
 	@Override
 	public boolean hasOnlyGoldInInventory()
 	{
-		return mob.hasOnlyGoldInInventory();
+		return (mob == null) ? false : mob.hasOnlyGoldInInventory();
 	}
 
 	@Override
 	public int freeWearPositions(final long wornCode, final short belowLayer, final short layerAttributes)
 	{
-		return mob.freeWearPositions(wornCode, belowLayer, layerAttributes);
+		return (mob == null) ? 0 : mob.freeWearPositions(wornCode, belowLayer, layerAttributes);
 	}
 
 	@Override
 	public int getWearPositions(final long wornCode)
 	{
-		return mob.getWearPositions(wornCode);
+		return (mob == null) ? 0 : mob.getWearPositions(wornCode);
 	}
 
 	@Override
 	public boolean isMine(final Environmental env)
 	{
-		return mob.isMine(env);
+		return (mob == null) ? false : mob.isMine(env);
 	}
 
 	@Override
@@ -1470,7 +1470,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public int[][] getAbilityUsageCache(final String abilityID)
 	{
-		return mob.getAbilityUsageCache(abilityID);
+		return (mob == null) ? null : mob.getAbilityUsageCache(abilityID);
 	}
 
 	@Override

@@ -56,37 +56,37 @@ public class StdPortalWrapper extends StdRideableWrapper implements Item, Contai
 	@Override
 	public short exitUsage(final short change)
 	{
-		return exit.exitUsage(change);
+		return (exit == null) ? 0 : exit.exitUsage(change);
 	}
 
 	@Override
 	public StringBuilder viewableText(final MOB mob, final Room myRoom)
 	{
-		return exit.viewableText(mob, myRoom);
+		return (exit == null) ? new StringBuilder("") : exit.viewableText(mob, myRoom);
 	}
 
 	@Override
 	public String doorName()
 	{
-		return exit.doorName();
+		return (exit == null) ? "" : exit.doorName();
 	}
 
 	@Override
 	public String closeWord()
 	{
-		return exit.closeWord();
+		return (exit == null) ? "" : exit.closeWord();
 	}
 
 	@Override
 	public String openWord()
 	{
-		return exit.openWord();
+		return (exit == null) ? "" : exit.openWord();
 	}
 
 	@Override
 	public String closedText()
 	{
-		return exit.closedText();
+		return (exit == null) ? "" : exit.closedText();
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class StdPortalWrapper extends StdRideableWrapper implements Item, Contai
 	@Override
 	public String temporaryDoorLink()
 	{
-		return exit.temporaryDoorLink();
+		return (exit == null) ? "" : exit.temporaryDoorLink();
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class StdPortalWrapper extends StdRideableWrapper implements Item, Contai
 	@Override
 	public Room lastRoomUsedFrom(final Room fromRoom)
 	{
-		return exit.lastRoomUsedFrom(fromRoom);
+		return (exit == null) ? null : exit.lastRoomUsedFrom(fromRoom);
 	}
 
 }

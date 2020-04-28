@@ -56,13 +56,13 @@ public class StdRideableWrapper extends StdMobWrapper implements MOB, Rideable, 
 	@Override
 	public boolean isMobileRideBasis()
 	{
-		return rideable.isMobileRideBasis();
+		return (rideable == null) ? false : rideable.isMobileRideBasis();
 	}
 
 	@Override
 	public int rideBasis()
 	{
-		return rideable.rideBasis();
+		return (rideable == null) ? 0 : rideable.rideBasis();
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class StdRideableWrapper extends StdMobWrapper implements MOB, Rideable, 
 	@Override
 	public int riderCapacity()
 	{
-		return rideable.riderCapacity();
+		return (rideable == null) ? 0 : rideable.riderCapacity();
 	}
 
 	@Override
@@ -84,19 +84,19 @@ public class StdRideableWrapper extends StdMobWrapper implements MOB, Rideable, 
 	@Override
 	public int numRiders()
 	{
-		return rideable.numRiders();
+		return (rideable == null) ? 0 : rideable.numRiders();
 	}
 
 	@Override
 	public Enumeration<Rider> riders()
 	{
-		return rideable.riders();
+		return (rideable == null) ? new EmptyEnumeration<Rider>() : rideable.riders();
 	}
 
 	@Override
 	public Rider fetchRider(final int which)
 	{
-		return rideable.fetchRider(which);
+		return (rideable == null) ? null : rideable.fetchRider(which);
 	}
 
 	@Override
@@ -112,19 +112,19 @@ public class StdRideableWrapper extends StdMobWrapper implements MOB, Rideable, 
 	@Override
 	public boolean amRiding(final Rider mob)
 	{
-		return rideable.amRiding(mob);
+		return (rideable == null) ? false : rideable.amRiding(mob);
 	}
 
 	@Override
 	public String stateString(final Rider R)
 	{
-		return rideable.stateString(R);
+		return (rideable == null) ? "" : rideable.stateString(R);
 	}
 
 	@Override
 	public String getStateString()
 	{
-		return rideable.getStateString();
+		return (rideable == null) ? "" : rideable.getStateString();
 	}
 
 	@Override
@@ -135,13 +135,13 @@ public class StdRideableWrapper extends StdMobWrapper implements MOB, Rideable, 
 	@Override
 	public String rideString(final Rider R)
 	{
-		return rideable.rideString(R);
+		return (rideable == null) ? "" : rideable.rideString(R);
 	}
 
 	@Override
 	public String getRideString()
 	{
-		return rideable.getRideString();
+		return (rideable == null) ? "" : rideable.getRideString();
 	}
 
 	@Override
@@ -152,13 +152,13 @@ public class StdRideableWrapper extends StdMobWrapper implements MOB, Rideable, 
 	@Override
 	public String putString(final Rider R)
 	{
-		return rideable.putString(R);
+		return (rideable == null) ? "" : rideable.putString(R);
 	}
 
 	@Override
 	public String getPutString()
 	{
-		return rideable.getPutString();
+		return (rideable == null) ? "" : rideable.getPutString();
 	}
 
 	@Override
@@ -169,13 +169,13 @@ public class StdRideableWrapper extends StdMobWrapper implements MOB, Rideable, 
 	@Override
 	public String stateStringSubject(final Rider R)
 	{
-		return rideable.stateStringSubject(R);
+		return (rideable == null) ? "" : rideable.stateStringSubject(R);
 	}
 
 	@Override
 	public String getStateStringSubject()
 	{
-		return rideable.getStateStringSubject();
+		return (rideable == null) ? "" : rideable.getStateStringSubject();
 	}
 
 	@Override
@@ -186,19 +186,19 @@ public class StdRideableWrapper extends StdMobWrapper implements MOB, Rideable, 
 	@Override
 	public boolean mobileRideBasis()
 	{
-		return rideable.mobileRideBasis();
+		return (rideable == null) ? false : rideable.mobileRideBasis();
 	}
 
 	@Override
 	public String mountString(final int commandType, final Rider R)
 	{
-		return rideable.mountString(commandType, R);
+		return (rideable == null) ? "" : rideable.mountString(commandType, R);
 	}
 
 	@Override
 	public String getMountString()
 	{
-		return rideable.getMountString();
+		return (rideable == null) ? "" : rideable.getMountString();
 	}
 
 	@Override
@@ -209,13 +209,13 @@ public class StdRideableWrapper extends StdMobWrapper implements MOB, Rideable, 
 	@Override
 	public String dismountString(final Rider R)
 	{
-		return rideable.dismountString(R);
+		return (rideable == null) ? "" : rideable.dismountString(R);
 	}
 
 	@Override
 	public String getDismountString()
 	{
-		return rideable.getDismountString();
+		return (rideable == null) ? "" : rideable.getDismountString();
 	}
 
 	@Override
@@ -226,6 +226,6 @@ public class StdRideableWrapper extends StdMobWrapper implements MOB, Rideable, 
 	@Override
 	public Set<MOB> getRideBuddies(final Set<MOB> list)
 	{
-		return rideable.getRideBuddies(list);
+		return (rideable == null) ? list : rideable.getRideBuddies(list);
 	}
 }

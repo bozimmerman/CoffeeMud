@@ -80,25 +80,25 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public String displayText(final MOB viewerMob)
 	{
-		return item.displayText(viewerMob);
+		return (item == null) ? "" : item.displayText(viewerMob);
 	}
 
 	@Override
 	public String name(final MOB viewerMob)
 	{
-		return item.name(viewerMob);
+		return (item == null) ? "" :item.name(viewerMob);
 	}
 
 	@Override
 	public String description(final MOB viewerMob)
 	{
-		return item.description(viewerMob);
+		return (item == null) ? "" :item.description(viewerMob);
 	}
 
 	@Override
 	public String Name()
 	{
-		return item.name();
+		return (item == null) ? "" :item.name();
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public String displayText()
 	{
-		return item.displayText();
+		return (item == null) ? "" :item.displayText();
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public String description()
 	{
-		return item.description();
+		return (item == null) ? "" :item.description();
 	}
 
 	@Override
@@ -132,13 +132,13 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public String image()
 	{
-		return item.image();
+		return (item == null) ? "" :item.image();
 	}
 
 	@Override
 	public String rawImage()
 	{
-		return item.rawImage();
+		return (item == null) ? "" : item.rawImage();
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public String miscTextFormat()
 	{
-		return item.miscTextFormat();
+		return (item == null) ? "" : item.miscTextFormat();
 	}
 
 	@Override
@@ -178,7 +178,7 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public long expirationDate()
 	{
-		return item.expirationDate();
+		return (item == null) ? 0 : item.expirationDate();
 	}
 
 	@Override
@@ -189,13 +189,13 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public int maxRange()
 	{
-		return item.maxRange();
+		return (item == null) ? 0 : item.maxRange();
 	}
 
 	@Override
 	public int minRange()
 	{
-		return item.minRange();
+		return (item == null) ? 0 : item.minRange();
 	}
 
 	@Override
@@ -207,13 +207,13 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public String name()
 	{
-		return item.name();
+		return (item == null) ? "" : item.name();
 	}
 
 	@Override
 	public int getTickStatus()
 	{
-		return item.getTickStatus();
+		return (item == null) ? 0 : item.getTickStatus();
 	}
 
 	@Override
@@ -489,7 +489,7 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public String databaseID()
 	{
-		return item.databaseID();
+		return (item == null) ? "" : item.databaseID();
 	}
 
 	@Override
@@ -506,25 +506,25 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public boolean amWearingAt(final long wornCode)
 	{
-		return item.amWearingAt(wornCode);
+		return (item == null) ? false : item.amWearingAt(wornCode);
 	}
 
 	@Override
 	public boolean fitsOn(final long wornCode)
 	{
-		return item.fitsOn(wornCode);
+		return (item == null) ? false : item.fitsOn(wornCode);
 	}
 
 	@Override
 	public long whereCantWear(final MOB mob)
 	{
-		return item.whereCantWear(mob);
+		return (item == null) ? 0 : item.whereCantWear(mob);
 	}
 
 	@Override
 	public boolean canWear(final MOB mob, final long wornCode)
 	{
-		return item.canWear(mob, wornCode);
+		return (item == null) ? false : item.canWear(mob, wornCode);
 	}
 
 	@Override
@@ -563,7 +563,7 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public long rawWornCode()
 	{
-		return item.rawWornCode();
+		return (item == null) ? 0 : item.rawWornCode();
 	}
 
 	@Override
@@ -574,7 +574,7 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public long rawProperLocationBitmap()
 	{
-		return item.rawProperLocationBitmap();
+		return (item == null) ? 0 : item.rawProperLocationBitmap();
 	}
 
 	@Override
@@ -585,7 +585,7 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public boolean rawLogicalAnd()
 	{
-		return item.rawLogicalAnd();
+		return (item == null) ? false : item.rawLogicalAnd();
 	}
 
 	@Override
@@ -596,19 +596,19 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public boolean compareProperLocations(final Item toThis)
 	{
-		return item.compareProperLocations(toThis);
+		return (item == null) ? false : item.compareProperLocations(toThis);
 	}
 
 	@Override
 	public String readableText()
 	{
-		return item.readableText();
+		return (item == null) ? "" : item.readableText();
 	}
 
 	@Override
 	public boolean isReadable()
 	{
-		return item.isReadable();
+		return (item == null) ? false : item.isReadable();
 	}
 
 	@Override
@@ -648,19 +648,19 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public int numberOfItems()
 	{
-		return item.numberOfItems();
+		return (item == null) ? 0 : item.numberOfItems();
 	}
 
 	@Override
 	public String secretIdentity()
 	{
-		return item.secretIdentity();
+		return (item == null) ? "" : item.secretIdentity();
 	}
 
 	@Override
 	public String rawSecretIdentity()
 	{
-		return item.rawSecretIdentity();
+		return (item == null) ? "" : item.rawSecretIdentity();
 	}
 
 	@Override
@@ -671,13 +671,13 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public boolean subjectToWearAndTear()
 	{
-		return item.subjectToWearAndTear();
+		return (item == null) ? false : item.subjectToWearAndTear();
 	}
 
 	@Override
 	public int usesRemaining()
 	{
-		return item.usesRemaining();
+		return (item == null) ? 0 : item.usesRemaining();
 	}
 
 	@Override
@@ -693,13 +693,13 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public int value()
 	{
-		return item.value();
+		return (item == null) ? 0 : item.value();
 	}
 
 	@Override
 	public int baseGoldValue()
 	{
-		return item.baseGoldValue();
+		return (item == null) ? 0 : item.baseGoldValue();
 	}
 
 	@Override
@@ -710,7 +710,7 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public int material()
 	{
-		return item.material();
+		return (item == null) ? 0 : item.material();
 	}
 
 	@Override
@@ -721,7 +721,7 @@ public class StdItemWrapper implements Item, CMObjectWrapper
 	@Override
 	public int recursiveWeight()
 	{
-		return item.recursiveWeight();
+		return (item == null) ? 0 : item.recursiveWeight();
 	}
 
 	@Override
