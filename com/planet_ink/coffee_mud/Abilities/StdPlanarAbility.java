@@ -687,7 +687,10 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 					planeArea.addNonUninvokableEffect((Ability)O);
 				else
 				if(O instanceof Behavior)
-					planeArea.addBehavior((Behavior)O);
+				{
+					if(planeArea.fetchBehavior(O.ID())==null)
+						planeArea.addBehavior((Behavior)O);
+				}
 			}
 		}
 	}
@@ -715,25 +718,22 @@ public class StdPlanarAbility extends StdAbility implements PlanarAbility
 			{
 				for(final Pair<String,String> p : affectList)
 				{
-					if(planeArea.fetchBehavior(p.first)==null)
+					final Behavior B=CMClass.getBehavior(p.first);
+					if(B==null)
 					{
-						final Behavior B=CMClass.getBehavior(p.first);
-						if(B==null)
-						{
-							final Ability A=CMClass.getAbility(p.first);
-							if(A==null)
-								Log.errOut("Spell_Planeshift","Unknown behavior : "+p.first);
-							else
-							{
-								A.setMiscText(p.second);
-								aeffectbehavs.add(A);
-							}
-						}
+						final Ability A=CMClass.getAbility(p.first);
+						if(A==null)
+							Log.errOut("Spell_Planeshift","Unknown behavior : "+p.first);
 						else
 						{
-							B.setParms(p.second);
-							aeffectbehavs.add(B);
+							A.setMiscText(p.second);
+							aeffectbehavs.add(A);
 						}
+					}
+					else
+					{
+						B.setParms(p.second);
+						aeffectbehavs.add(B);
 					}
 				}
 			}

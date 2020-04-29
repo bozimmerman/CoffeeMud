@@ -54,6 +54,12 @@ public class StdContainerWrapper extends StdItemWrapper implements Item, Contain
 	}
 
 	@Override
+	public CMObject newInstance()
+	{
+		return new StdContainerWrapper();
+	}
+
+	@Override
 	public boolean isOpen()
 	{
 		return (container == null) ? false : container.isOpen();

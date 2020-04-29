@@ -54,6 +54,12 @@ public class StdRideableWrapper extends StdContainerWrapper implements Item, Con
 	}
 
 	@Override
+	public CMObject newInstance()
+	{
+		return new StdRideableWrapper();
+	}
+
+	@Override
 	public boolean isMobileRideBasis()
 	{
 		return (rideable == null) ? false : rideable.isMobileRideBasis();

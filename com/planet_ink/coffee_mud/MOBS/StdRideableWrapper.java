@@ -54,6 +54,12 @@ public class StdRideableWrapper extends StdMobWrapper implements MOB, Rideable, 
 	}
 
 	@Override
+	public CMObject newInstance()
+	{
+		return new StdRideableWrapper();
+	}
+
+	@Override
 	public boolean isMobileRideBasis()
 	{
 		return (rideable == null) ? false : rideable.isMobileRideBasis();

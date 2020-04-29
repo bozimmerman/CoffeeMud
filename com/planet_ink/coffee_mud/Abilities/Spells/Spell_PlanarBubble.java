@@ -117,7 +117,7 @@ public class Spell_PlanarBubble extends Spell
 			return;
 		final Room room=(Room)affected;
 		if(canBeUninvoked())
-			room.showHappens(CMMsg.MSG_OK_VISUAL, L("The fundamental nature of this place changes..."));
+			room.showHappens(CMMsg.MSG_OK_VISUAL, L("The nature of this place returns to normal."));
 		final Room R = room();
 		if(R!=null)
 			totallyClearRoom(R);
@@ -140,7 +140,7 @@ public class Spell_PlanarBubble extends Spell
 				oldAtmo = ((Room)affected).getAtmosphereCode();
 				final PlanarAbility planeA=(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
 				final Room target=(Room)affected;
-				newRoom=CMLib.map().getRoom(text());
+				newRoom=CMClass.getLocale(target.ID());
 				newRoom.setDisplayText(target.displayText());
 				newRoom.setDescription(target.description());
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
@@ -288,12 +288,16 @@ public class Spell_PlanarBubble extends Spell
 							if(I.container()!=null)
 							{
 								final Item wrapI = (Item)map.get(Integer.valueOf(I.hashCode()));
-								wrapI.setContainer((Container)map.get(Integer.valueOf(I.container().hashCode())));
+								final CMObject container = map.get(Integer.valueOf(I.container().hashCode()));
+								if(container instanceof Container)
+									wrapI.setContainer((Container)container);
 							}
 							if(I.riding()!=null)
 							{
 								final Item wrapI = (Item)map.get(Integer.valueOf(I.hashCode()));
-								wrapI.setRiding((Rideable)map.get(Integer.valueOf(I.riding().hashCode())));
+								final CMObject rideable = map.get(Integer.valueOf(I.riding().hashCode()));
+								if(rideable instanceof Rideable)
+									wrapI.setRiding((Rideable)rideable);
 							}
 						}
 						for(final Enumeration<MOB> m=baseRoom.inhabitants();m.hasMoreElements();)
@@ -302,7 +306,9 @@ public class Spell_PlanarBubble extends Spell
 							if(M.riding()!=null)
 							{
 								final MOB wrapM = (MOB)map.get(Integer.valueOf(M.hashCode()));
-								wrapM.setRiding((Rideable)map.get(Integer.valueOf(M.riding().hashCode())));
+								final CMObject rideable = map.get(Integer.valueOf(M.riding().hashCode()));
+								if(rideable instanceof Rideable)
+									wrapM.setRiding((Rideable)rideable);
 							}
 						}
 						contentHash = currentHash;
@@ -347,9 +353,16 @@ public class Spell_PlanarBubble extends Spell
 		if((commands.size()==0)
 		&&((mob==null)||(mob.isMonster())))
 			commands.add(planeA.getAllPlaneKeys().get(CMLib.dice().roll(1, planeA.getAllPlaneKeys().size(), -1)));
+		final String planeName = CMParms.combine(commands,0);
 		if(commands.size()==0)
 		{
 			mob.tell(L("You need to specify which plane to create a bubble of."));
+			mob.tell(L("Known planes: @x1",planeA.listOfPlanes()+L("Prime Material")));
+			return false;
+		}
+		if(!planeA.getAllPlaneKeys().contains(planeName.toUpperCase()))
+		{
+			mob.tell(L("'@x1' is not a plane name.",planeName));
 			mob.tell(L("Known planes: @x1",planeA.listOfPlanes()+L("Prime Material")));
 			return false;
 		}
@@ -366,18 +379,18 @@ public class Spell_PlanarBubble extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The appearance of this place changes..."));
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The fundamental nature of this place changes..."));
+				final Spell_PlanarBubble A;
 				if(CMLib.law().doesOwnThisLand(mob,mob.location()))
-				{
-					final Spell_PlanarBubble A=(Spell_PlanarBubble)maliciousAffect(mob, target, asLevel, 0, -1);
-					if(A!=null)
-					{
-						A.newRoom=null;
-						A.room();
-					}
-				}
+					A=(Spell_PlanarBubble)maliciousAffect(mob, target, asLevel, 0, -1);
 				else
-					beneficialAffect(mob,mob.location(),asLevel,3);
+					A=(Spell_PlanarBubble)beneficialAffect(mob, target, asLevel, 3);
+				if(A!=null)
+				{
+					A.planeName = planeName;
+					A.newRoom=null;
+					A.room();
+				}
 			}
 		}
 		else

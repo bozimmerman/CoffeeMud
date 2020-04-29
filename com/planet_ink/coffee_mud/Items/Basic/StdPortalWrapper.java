@@ -54,6 +54,12 @@ public class StdPortalWrapper extends StdRideableWrapper implements Item, Contai
 	}
 
 	@Override
+	public CMObject newInstance()
+	{
+		return new StdPortalWrapper();
+	}
+
+	@Override
 	public short exitUsage(final short change)
 	{
 		return (exit == null) ? 0 : exit.exitUsage(change);
