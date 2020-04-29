@@ -1136,20 +1136,8 @@ public class CraftingSkill extends GatheringSkill
 				if(V.size()>0)
 				{
 					final String item=V.get(RCP_FINALNAME);
-					if(((replacePercent(item,"").toUpperCase()+" ").startsWith(recipeName.toUpperCase())))
-						matches.add(V);
-				}
-			}
-		}
-		if(matches.size()==0)
-		{
-			for(int r=0;r<recipes.size();r++)
-			{
-				final List<String> V=recipes.get(r);
-				if(V.size()>0)
-				{
-					final String item=V.get(RCP_FINALNAME);
-					if(((" "+replacePercent(item,"").toUpperCase()+" ").indexOf(" "+recipeName.toUpperCase()+" ")>=0))
+					if((((replacePercent(item,"").toUpperCase()+" ").startsWith(recipeName.toUpperCase())))
+					||((" "+replacePercent(item,"").toUpperCase()+" ").indexOf(" "+recipeName.toUpperCase()+" ")>=0))
 						matches.add(V);
 				}
 			}
