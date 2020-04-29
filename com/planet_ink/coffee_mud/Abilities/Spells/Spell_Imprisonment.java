@@ -100,6 +100,78 @@ public class Spell_Imprisonment extends Spell
 	}
 
 	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if((affected instanceof MOB)
+		&&(((MOB)affected).isMonster()))
+		{
+			final MOB mob=(MOB)affected;
+			if(msg.source().getVictim()==mob)
+				msg.source().setVictim(null);
+			if(mob.isInCombat())
+			{
+				final MOB victim=mob.getVictim();
+				if(victim!=null)
+					victim.makePeace(true);
+				mob.makePeace(true);
+			}
+			mob.recoverMaxState();
+			mob.resetToMaxState();
+			mob.curState().setHunger(1000);
+			mob.curState().setThirst(1000);
+			mob.recoverCharStats();
+			mob.recoverPhyStats();
+
+			// when this spell is on a MOBs Affected list,
+			// it should consistantly prevent the mob
+			// from trying to do ANYTHING except sleep
+			if(msg.amISource(mob))
+			{
+				if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+				&&(msg.sourceMajor()>0))
+				{
+					mob.tell(L("Statues can't do that."));
+					return false;
+				}
+			}
+		}
+		if(!super.okMessage(myHost,msg))
+			return false;
+
+		if(affected instanceof MOB)
+		{
+			final MOB mob=(MOB)affected;
+			if(msg.source().getVictim()==affected)
+				msg.source().setVictim(null);
+			if(mob.isInCombat())
+			{
+				final MOB victim=mob.getVictim();
+				if(victim!=null)
+					victim.makePeace(true);
+				mob.makePeace(true);
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+	{
+		super.affectPhyStats(affected,affectableStats);
+		if((affected instanceof MOB)
+		&&(((MOB)affected).isMonster()))
+		{
+			//affectableStats.setReplacementName("a statue of "+affected.name());
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_HEAR);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SMELL);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
+		}
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -226,32 +298,45 @@ public class Spell_Imprisonment extends Spell
 					if(biggestDiffPlane!=null)
 					{
 						final Vector<String> V=new XVector<String>(biggestDiffPlane);
-						A.invoke(target, V, target, true, asLevel);
-						if(biggestDiffPlane.equalsIgnoreCase(CMLib.flags().getPlaneOfExistence(target)))
+						target.location().show(target,null,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> being drawn into @x1.",biggestDiffPlane));
+						if(target.isMonster())
 						{
 							final Spell_Imprisonment aP = (Spell_Imprisonment)super.maliciousAffect(mob, target, asLevel, 0, -1);
 							if(aP != null)
 							{
+								target.location().show(target,null,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> fade(s) away."));
 								aP.prevRoom = R;
-								final Area planeA=CMLib.map().areaLocation(target);
-								if((planeA!=null)
-								&&(planeA.numEffects()>0))
+							}
+						}
+						else
+						{
+							A.invoke(target, V, target, true, asLevel);
+							if(biggestDiffPlane.equalsIgnoreCase(CMLib.flags().getPlaneOfExistence(target)))
+							{
+								final Spell_Imprisonment aP = (Spell_Imprisonment)super.maliciousAffect(mob, target, asLevel, 0, -1);
+								if(aP != null)
 								{
-									for(final Enumeration<Ability> a=planeA.effects();a.hasMoreElements();)
+									aP.prevRoom = R;
+									final Area planeA=CMLib.map().areaLocation(target);
+									if((planeA!=null)
+									&&(planeA.numEffects()>0))
 									{
-										final Ability eA=a.nextElement();
-										if(eA instanceof PlanarAbility)
+										for(final Enumeration<Ability> a=planeA.effects();a.hasMoreElements();)
 										{
-											final int tickDowns = CMath.s_int(eA.getStat("TICKDOWN"));
-											if((tickDowns > 0)&&(tickDowns < CMath.s_int(aP.getStat("TICKDOWN"))))
-												eA.setStat("TICKDOWN", aP.getStat("TICKDOWN"));
+											final Ability eA=a.nextElement();
+											if(eA instanceof PlanarAbility)
+											{
+												final int tickDowns = CMath.s_int(eA.getStat("TICKDOWN"));
+												if((tickDowns > 0)&&(tickDowns < CMath.s_int(aP.getStat("TICKDOWN"))))
+													eA.setStat("TICKDOWN", aP.getStat("TICKDOWN"));
+											}
 										}
 									}
 								}
 							}
+							else
+								return maliciousFizzle(mob,target,L("<S-NAME> swipe(s) <S-HIS-HER> hands at <T-NAMESELF>, but the spell fades."));
 						}
-						else
-							return maliciousFizzle(mob,target,L("<S-NAME> swipe(s) <S-HIS-HER> hands at <T-NAMESELF>, but the spell fades."));
 					}
 					else
 						return maliciousFizzle(mob,target,L("<S-NAME> swipe(s) <S-HIS-HER> hands at <T-NAMESELF>, but the spell fades."));
