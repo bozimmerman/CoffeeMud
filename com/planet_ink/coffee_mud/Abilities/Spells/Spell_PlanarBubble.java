@@ -139,14 +139,14 @@ public class Spell_PlanarBubble extends Spell
 			{
 				oldAtmo = ((Room)affected).getAtmosphereCode();
 				final PlanarAbility planeA=(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
-				final Room target=(Room)affected;
-				newRoom=CMClass.getLocale(target.ID());
-				newRoom.setDisplayText(target.displayText());
-				newRoom.setDescription(target.description());
+				final Room baseRoom=(Room)affected;
+				newRoom=CMClass.getLocale(baseRoom.ID());
+				newRoom.setDisplayText(baseRoom.displayText());
+				newRoom.setDescription(baseRoom.description());
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
-					newRoom.rawDoors()[d]=target.rawDoors()[d];
-					newRoom.setRawExit(d, target.getRawExit(d));
+					newRoom.rawDoors()[d]=baseRoom.rawDoors()[d];
+					newRoom.setRawExit(d, baseRoom.getRawExit(d));
 				}
 				planeA.setPlanarName(planeName);
 				planeA.doPlanarRoomColoring(newRoom);
@@ -154,13 +154,13 @@ public class Spell_PlanarBubble extends Spell
 				if((atmosphere!=null)&&(atmosphere.length()>0))
 				{
 					final int atmo=RawMaterial.CODES.FIND_IgnoreCase(atmosphere);
-					newRoom.setAtmosphere(atmo);
+					baseRoom.setAtmosphere(atmo);
 				}
 				for(final CMObject O : planeA.getAreaEffectsBehavs())
 				{
 					if(O instanceof Ability)
 					{
-						((Ability)O).setAffectedOne(target.getArea());
+						((Ability)O).setAffectedOne(baseRoom.getArea());
 						aeffects.add((Ability)O);
 					}
 					else
@@ -366,6 +366,22 @@ public class Spell_PlanarBubble extends Spell
 			mob.tell(L("Known planes: @x1",planeA.listOfPlanes()+L("Prime Material")));
 			return false;
 		}
+
+		final Set<MOB> grpMembers = mob.getGroupMembers(new HashSet<MOB>());
+		final Room R=mob.location();
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		{
+			final MOB M=m.nextElement();
+			if((M!=null)
+			&&(M!=mob)
+			&&(!grpMembers.contains(M))
+			&&(!mob.mayIFight(M)))
+			{
+				mob.tell(L("This powerful magic can not be invoked around @x1.",M.Name()));
+				return false;
+			}
+		}
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
