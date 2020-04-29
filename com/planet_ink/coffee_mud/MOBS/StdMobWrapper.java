@@ -283,7 +283,7 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -1359,12 +1359,13 @@ public class StdMobWrapper implements MOB, CMObjectWrapper
 	@Override
 	public Room location()
 	{
-		return (mob == null) ? null : mob.location();
+		return (mob == null) ? null : location;
 	}
 
 	@Override
 	public void setLocation(final Room newRoom)
 	{
+		location=newRoom;
 	}
 
 	@Override
