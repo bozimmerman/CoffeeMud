@@ -459,7 +459,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(final Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if(A!=null)
+			if((A!=null)
+			&&(!A.ID().equals("ExtraData")))
 				affects.add(A);
 		}
 		for(final Ability A : affects)
