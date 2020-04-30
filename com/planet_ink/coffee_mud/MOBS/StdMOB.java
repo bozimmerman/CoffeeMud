@@ -98,7 +98,6 @@ public class StdMOB implements MOB
 	private long				expirationDate	= 0;
 	private int					manaConsumeCter = CMLib.dice().roll(1, 10, 0);
 	private volatile double		freeActions		= 0.0;
-	private volatile boolean	fallOffLock		= false;
 
 	// the core state values
 	public CharState			curState		= (CharState) CMClass.getCommon("DefaultCharState");
@@ -3922,13 +3921,8 @@ public class StdMOB implements MOB
 					{
 					}
 
-					if(riding() != null)
-					{
-						if(CMLib.map().roomLocation(riding()) != R)
-							fallOffLock = CMLib.tracking().doFallenOffCheck(this, riding(), fallOffLock);
-						else
-							fallOffLock = false;
-					}
+					if((riding() != null)&&(CMLib.map().roomLocation(riding()) != R))
+						CMLib.tracking().doFallenOffCheck(this);
 
 					if ((!isMonster) && (soulMate() == null) && (ageMinutes >= 0))
 					{

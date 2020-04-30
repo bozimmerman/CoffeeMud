@@ -1219,43 +1219,65 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			CMLib.commands().postLook(M, true);
 	}
 
-	@Override
-	public boolean doFallenOffCheck(final MOB mob, final Rideable rideable, final boolean prevFallLock)
+	private class RideFallChecker implements Runnable
 	{
-		if(mob==null)
-			return false;
-		if(rideable==null)
-			return false;
-		CMLib.s_sleep(99);
-		final Rideable ride;
-		synchronized(rideable)
+
+		private final MOB mob;
+		private volatile int count=0;
+
+		public RideFallChecker(final MOB mob)
 		{
-			ride=rideable;
+			this.mob=mob;
 		}
-		MOB M;
-		synchronized(mob)
+
+		@Override
+		public void run()
 		{
-			M=mob;
-		}
-		final WorldMap map=CMLib.map();
-		if(map.roomLocation(ride) != map.roomLocation(M))
-		{
-			if(!prevFallLock)
+			final MOB M;
+			synchronized(mob)
 			{
-				if(map.areaLocation(ride) == map.areaLocation(M))
-					return true;
-				final Room R=map.roomLocation(M);
+				M=mob;
+			}
+			final WorldMap map=CMLib.map();
+			final Rideable ride=M.riding();
+			if(ride!=null)
+			{
+				final Room R=M.location();
 				if(R!=null)
 				{
-					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					if(map.roomLocation(ride) != map.roomLocation(M))
 					{
-						if(map.roomLocation(ride)==R.getRoomInDir(d))
-							return true;
+						if((map.areaLocation(ride) != map.areaLocation(M))
+						&&(count>1))
+							M.setRiding(null);
+						else
+						if(++count>=20)
+							M.setRiding(null);
+						else
+						{
+							// keep checking
+							CMLib.threads().scheduleRunnable(this, 99);
+							return;
+						}
 					}
 				}
 			}
-			mob.setRiding(null);
 		}
+
+		@Override
+		public int hashCode()
+		{
+			return mob.hashCode();
+		}
+	}
+
+	@Override
+	public boolean doFallenOffCheck(final MOB mob)
+	{
+		if(mob==null)
+			return false;
+		final RideFallChecker checker = new RideFallChecker(mob);
+		CMLib.threads().scheduleRunnable(checker, 99);
 		return false;
 	}
 
