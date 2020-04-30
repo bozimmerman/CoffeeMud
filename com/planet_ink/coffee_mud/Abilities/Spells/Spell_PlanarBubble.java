@@ -224,7 +224,7 @@ public class Spell_PlanarBubble extends Spell
 				try
 				{
 					final Room baseRoom=(Room)affected;
-					long currentHash = 0;
+					long currentHash = msg.source().hashCode();
 					final Room R=room();
 					for(final Enumeration<Item> r=baseRoom.items();r.hasMoreElements();)
 					{
@@ -273,6 +273,8 @@ public class Spell_PlanarBubble extends Spell
 						for(final Enumeration<MOB> m=baseRoom.inhabitants();m.hasMoreElements();)
 						{
 							final MOB M=m.nextElement();
+							if(M == msg.source())
+								continue;
 							final MOB wrapM;
 							if(M instanceof Rideable)
 								wrapM=CMClass.getMOB("StdRideableWrapper");
