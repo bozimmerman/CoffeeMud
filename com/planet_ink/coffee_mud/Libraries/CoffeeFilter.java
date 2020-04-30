@@ -370,7 +370,15 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				final ColorState currColor=S.getCurrentColor();
 				if((lastColor.foregroundCode()==currColor.foregroundCode())
 				&&(lastColor.backgroundCode()==currColor.backgroundCode()))
-					lastColor=normalColor;
+				{
+					if(c=='?')
+						lastColor=normalColor;
+					else
+					{
+						str.delete(index, index+2);
+						return index-1;
+					}
+				}
 				final String[] clookup = S.getColorCodes();
 				String escapeSequence;
 				if(lastColor.foregroundCode() < 256)
