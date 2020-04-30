@@ -1226,11 +1226,19 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			return false;
 		if((rideable==null)||(R==null))
 			return true;
-		for(int i=0;i<7;i++)
+		final Room rideableR = CMLib.map().roomLocation(rideable);
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
-			if ((rideable == null) || (CMLib.map().roomLocation(rideable) == R))
-				return false;
-			CMLib.s_sleep(99);
+			final Room R2=R.getRoomInDir(d);
+			if((R2!=null)&&(R2==rideableR))
+			{
+				for(int i=0;i<7;i++)
+				{
+					if((mob.riding()==null)||(CMLib.map().roomLocation(rideable) == R))
+						return false;
+					CMLib.s_sleep(99);
+				}
+			}
 		}
 		return true;
 	}
