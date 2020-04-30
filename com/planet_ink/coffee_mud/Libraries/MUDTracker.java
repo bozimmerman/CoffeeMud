@@ -1219,8 +1219,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			CMLib.commands().postLook(M, true);
 	}
 
-	@Override
-	public boolean hasReallyFallenOff(final MOB mob, final Rideable rideable, final Room R)
+	protected boolean hasReallyFallenOff(final MOB mob, final Rideable rideable, final Room R)
 	{
 		if(mob==null)
 			return false;
