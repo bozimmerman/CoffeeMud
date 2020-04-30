@@ -110,8 +110,8 @@ public class Transfer extends At
 					V.add((Item)E);
 			}
 			if((searchName.length()>0)
-			&&(!cmd.equals("here"))
-			&&(!cmd.equals(".")))
+			&&(!cmd.toString().equals("here"))
+			&&(!cmd.toString().equals(".")))
 			{
 				for(int i=0;i<curRoom.numItems();i++)
 				{
