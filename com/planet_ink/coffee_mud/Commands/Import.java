@@ -6584,16 +6584,16 @@ public class Import extends StdCommand
 								dirCode = Directions.DOWN;
 								break;
 							case 6:
-								dirCode = Directions.NORTHWEST;
-								break;
-							case 7:
 								dirCode = Directions.NORTHEAST;
 								break;
+							case 7:
+								dirCode = Directions.NORTHWEST;
+								break;
 							case 8:
-								dirCode = Directions.SOUTHWEST;
+								dirCode = Directions.SOUTHEAST;
 								break;
 							case 9:
-								dirCode = Directions.SOUTHEAST;
+								dirCode = Directions.SOUTHWEST;
 								break;
 							case 10:
 								dirCode = Directions.GATE;
