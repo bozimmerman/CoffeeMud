@@ -1219,6 +1219,22 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			CMLib.commands().postLook(M, true);
 	}
 
+	@Override
+	public boolean hasReallyFallenOff(final MOB mob, final Rideable rideable, final Room R)
+	{
+		if(mob==null)
+			return false;
+		if((rideable==null)||(R==null))
+			return true;
+		for(int i=0;i<7;i++)
+		{
+			if ((rideable == null) || (CMLib.map().roomLocation(rideable) == R))
+				return false;
+			CMLib.s_sleep(99);
+		}
+		return true;
+	}
+
 	public void ridersBehind(final List<Rider> riders, final Room sourceRoom, final Room destRoom, final int directionCode, final boolean flee, final boolean running)
 	{
 		if(riders!=null)
@@ -1419,15 +1435,16 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 		final CMMsg enterMsg;
 		final CMMsg leaveMsg;
-		if((mob.riding()!=null)
-		&&(mob.riding().mobileRideBasis()))
+		final Rideable ride=mob.riding();
+		if((ride!=null)
+		&&(ride.mobileRideBasis()))
 		{
-			final String enterStr=L("<S-NAME> @x1 @x2 in @x3.",mob.riding().rideString(mob),mob.riding().name(),otherDirectionPhrase);
+			final String enterStr=L("<S-NAME> @x1 @x2 in @x3.",ride.rideString(mob),ride.name(),otherDirectionPhrase);
 			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,enterStr);
 			if(flee)
-				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,L("You flee @x1.",directionName),leaveCode,null,leaveCode,L("<S-NAME> flee(s) with @x1 @x2.",mob.riding().name(),directionName));
+				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,L("You flee @x1.",directionName),leaveCode,null,leaveCode,L("<S-NAME> flee(s) with @x1 @x2.",ride.name(),directionName));
 			else
-				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,null,leaveCode,null,leaveCode,L("<S-NAME> @x1 @x2 @x3.",mob.riding().rideString(mob),mob.riding().name(),directionName));
+				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,null,leaveCode,null,leaveCode,L("<S-NAME> @x1 @x2 @x3.",ride.rideString(mob),ride.name(),directionName));
 		}
 		else
 		{
@@ -1473,9 +1490,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if(!mob.okMessage(mob,enterMsg)&&(!gotoAllowed))
 			return false;
 
-		if(mob.riding()!=null)
+		if(ride!=null)
 		{
-			if((!mob.riding().okMessage(mob,enterMsg))&&(!gotoAllowed))
+			if((!ride.okMessage(mob,enterMsg))&&(!gotoAllowed))
 				return false;
 		}
 		else
