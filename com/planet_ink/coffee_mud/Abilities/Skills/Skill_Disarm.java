@@ -155,7 +155,7 @@ public class Skill_Disarm extends StdSkill
 		   &&((hisWeapon.fitsOn(Wearable.WORN_WIELD))
 			  ||hisWeapon.fitsOn(Wearable.WORN_WIELD|Wearable.WORN_HELD)))
 		{
-			if(mob.location().show(mob,victim,this,CMMsg.MSG_NOISYMOVEMENT,null))
+			if(mob.location().show(mob,victim,this,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,null))
 			{
 				final CMMsg msg=CMClass.getMsg(victim,hisWeapon,null,CMMsg.MSG_DROP,null);
 				if(mob.location().okMessage(mob,msg))
