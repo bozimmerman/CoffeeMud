@@ -64,6 +64,7 @@ public interface TrackingLibrary extends CMLibrary
 	public void forceRecall(final MOB mob, boolean includeFollowers);
 	public void forceEntry(MOB M, Room toHere, boolean andFollowers, boolean forceLook, String msg);
 	public void walkForced(MOB M, Room fromHere, Room toHere, boolean andFollowers, boolean forceLook, String msg);
+	public boolean doFallenOffCheck(final MOB mob, Rideable rideable, final boolean prevFallLock);
 	public int findExitDir(MOB mob, Room R, String desc);
 	public int findRoomDir(MOB mob, Room R);
 	public Room getNearestValidIDRoom(final Room R);

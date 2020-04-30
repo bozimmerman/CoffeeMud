@@ -3922,16 +3922,12 @@ public class StdMOB implements MOB
 					{
 					}
 
-					if (riding() != null)
+					if(riding() != null)
 					{
-						if (CMLib.map().roomLocation(riding()) != R)
-						{
-							if(fallOffLock)
-								setRiding(null);
-							fallOffLock=true;
-						}
+						if(CMLib.map().roomLocation(riding()) != R)
+							fallOffLock = CMLib.tracking().doFallenOffCheck(this, riding(), fallOffLock);
 						else
-							fallOffLock=false;
+							fallOffLock = false;
 					}
 
 					if ((!isMonster) && (soulMate() == null) && (ageMinutes >= 0))

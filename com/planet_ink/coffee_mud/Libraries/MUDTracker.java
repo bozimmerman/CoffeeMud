@@ -1219,28 +1219,44 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			CMLib.commands().postLook(M, true);
 	}
 
-	protected boolean hasReallyFallenOff(final MOB mob, final Rideable rideable, final Room R)
+	@Override
+	public boolean doFallenOffCheck(final MOB mob, final Rideable rideable, final boolean prevFallLock)
 	{
 		if(mob==null)
 			return false;
-		if((rideable==null)||(R==null))
-			return true;
-		final WorldMap map=CMLib.map();
-		final Room rideableR = CMLib.map().roomLocation(rideable);
-		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		if(rideable==null)
+			return false;
+		CMLib.s_sleep(99);
+		final Rideable ride;
+		synchronized(rideable)
 		{
-			final Room R2=R.getRoomInDir(d);
-			if((R2!=null)&&(R2==rideableR))
+			ride=rideable;
+		}
+		MOB M;
+		synchronized(mob)
+		{
+			M=mob;
+		}
+		final WorldMap map=CMLib.map();
+		if(map.roomLocation(ride) != map.roomLocation(M))
+		{
+			if(!prevFallLock)
 			{
-				for(int i=0;i<20;i++)
+				if(map.areaLocation(ride) == map.areaLocation(M))
+					return true;
+				final Room R=map.roomLocation(M);
+				if(R!=null)
 				{
-					if((mob.riding()==null)||(map.roomLocation(rideable) == R))
-						return false;
-					CMLib.s_sleep(99);
+					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+					{
+						if(map.roomLocation(ride)==R.getRoomInDir(d))
+							return true;
+					}
 				}
 			}
+			mob.setRiding(null);
 		}
-		return true;
+		return false;
 	}
 
 	public void ridersBehind(final List<Rider> riders, final Room sourceRoom, final Room destRoom, final int directionCode, final boolean flee, final boolean running)
