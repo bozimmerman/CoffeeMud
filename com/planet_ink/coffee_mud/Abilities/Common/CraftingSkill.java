@@ -723,7 +723,7 @@ public class CraftingSkill extends GatheringSkill
 		data[0][FOUND_AMT]=req1Required;
 		if((req2Required>0)&&(req2Required>data[1][FOUND_AMT]))
 		{
-			String req2MatName=RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase();
+			String req2MatName=RawMaterial.CODES.NAME(data[1][FOUND_CODE]).toLowerCase();
 			if((firstOther != null)&&(firstOther.getSubType().length()>0))
 				req2MatName=firstOther.getSubType().toLowerCase();
 			if(req2Required>1)
