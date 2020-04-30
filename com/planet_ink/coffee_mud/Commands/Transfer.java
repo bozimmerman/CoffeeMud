@@ -60,6 +60,7 @@ public class Transfer extends At
 		String searchName=commands.get(0);
 		final Room curRoom=mob.location();
 		final Vector<Physical> V=new Vector<Physical>();
+		final StringBuffer cmd = new StringBuffer(CMParms.combine(commands,1));
 		boolean allFlag=false;
 		if(searchName.equalsIgnoreCase("ALL"))
 		{
@@ -108,8 +109,9 @@ public class Transfer extends At
 				if(E instanceof Item)
 					V.add((Item)E);
 			}
-			else
-			if(searchName.length()>0)
+			if((searchName.length()>0)
+			&&(!cmd.equals("here"))
+			&&(!cmd.equals(".")))
 			{
 				for(int i=0;i<curRoom.numItems();i++)
 				{
@@ -170,6 +172,12 @@ public class Transfer extends At
 			if(!allFlag)
 			{
 				final MOB M=CMLib.sessions().findPlayerOnline(searchName,true);
+				if(M!=null)
+					V.add(M);
+			}
+			if(V.size()==0)
+			{
+				final MOB M=mob.location().fetchInhabitant(searchName);
 				if(M!=null)
 					V.add(M);
 			}
@@ -324,7 +332,6 @@ public class Transfer extends At
 		}
 
 		boolean inventoryFlag=false;
-		final StringBuffer cmd = new StringBuffer(CMParms.combine(commands,1));
 		if(cmd.toString().equalsIgnoreCase("inventory"))
 		{
 			room=mob.location();
