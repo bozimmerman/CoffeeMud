@@ -2218,6 +2218,12 @@ public class CMClass extends ClassLoader
 		}
 		loadObjectListToObj(v,defaultPath,requestedPathList,ancestor);
 		v.sort();
+		for(int i=1;i<v.size();i++)
+			if((v.get(i) instanceof CMObject)
+			&&(((CMObject)v.get(i)).ID().compareToIgnoreCase(((CMObject)v.get(i-1)).ID())<=0))
+			{
+				Log.errOut("Sort failure @ "+((CMObject)v.get(i)).ID()+"/"+((CMObject)v.get(i-1)).ID());
+			}
 		return v;
 	}
 
