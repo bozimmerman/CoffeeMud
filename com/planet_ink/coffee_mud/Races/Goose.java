@@ -37,7 +37,7 @@ public class Goose extends WaterFowl
 	@Override
 	public String ID()
 	{
-		return "Duck";
+		return "Goose";
 	}
 
 	private final static String localizedStaticName = CMLib.lang().L("Duck");

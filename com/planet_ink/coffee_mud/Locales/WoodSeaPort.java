@@ -37,7 +37,7 @@ public class WoodSeaPort extends WoodRoom
 	@Override
 	public String ID()
 	{
-		return "WoodenSeaPort";
+		return "WoodSeaPort";
 	}
 
 	public WoodSeaPort()

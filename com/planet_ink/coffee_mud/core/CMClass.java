@@ -2391,6 +2391,9 @@ public class CMClass extends ClassLoader
 					final int x=itemName.lastIndexOf('.');
 					if(x>=0)
 						itemName=itemName.substring(x+1);
+					if((O instanceof Environmental)
+					&&(!((CMObject)O).ID().equals(itemName)))
+						Log.errOut("CMClass","Possible class ID misnaming ID="+((CMObject)O).ID()+", but class name="+itemName);
 					if(collection instanceof Map)
 					{
 						final Map<String,Object> H=(Map<String,Object>)collection;

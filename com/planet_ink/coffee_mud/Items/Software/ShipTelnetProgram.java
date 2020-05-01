@@ -42,7 +42,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	@Override
 	public String ID()
 	{
-		return "StdShipTelnetProgram";
+		return "ShipTelnetProgram";
 	}
 
 	protected Socket				sock				= null;

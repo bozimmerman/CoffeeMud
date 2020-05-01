@@ -37,7 +37,7 @@ public class FaerieDragon extends StdRace
 	@Override
 	public String ID()
 	{
-		return "Faerie Dragon";
+		return "FaerieDragon";
 	}
 
 	private final static String localizedStaticName = CMLib.lang().L("Faerie Dragon");

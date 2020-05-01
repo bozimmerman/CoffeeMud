@@ -38,6 +38,12 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class StdGrapples extends StdPortal
 {
+	@Override
+	public String ID()
+	{
+		return "StdGrapples";
+	}
+
 	public StdGrapples()
 	{
 		super();

@@ -39,7 +39,7 @@ public class GenClanArmor extends StdClanArmor
 	@Override
 	public String ID()
 	{
-		return "GenClanItem";
+		return "GenClanArmor";
 	}
 
 	protected String	readableText	= "";

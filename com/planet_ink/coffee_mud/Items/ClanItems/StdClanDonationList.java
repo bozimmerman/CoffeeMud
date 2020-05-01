@@ -38,6 +38,12 @@ public class StdClanDonationList extends StdClanItem
 {
 	private Item lastItem=null;
 
+	@Override
+	public String ID()
+	{
+		return "StdClanDonationList";
+	}
+
 	public StdClanDonationList()
 	{
 		super();
