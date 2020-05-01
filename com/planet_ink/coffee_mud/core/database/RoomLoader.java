@@ -1100,7 +1100,9 @@ public class RoomLoader
 				if(newItem==null)
 				{
 					Log.errOut("Room","Couldn't find item '"+itemID+"' for room "+roomID);
-					CMClass.getItem(itemID);
+					for(final Enumeration<Item> i = CMClass.basicItems();i.hasMoreElements();)
+						Log.errOut(i.nextElement().ID());
+					System.exit(-1);
 				}
 				else
 				{
