@@ -2217,6 +2217,23 @@ public class CMClass extends ClassLoader
 			x=requestedPathList.indexOf(';');
 		}
 		loadObjectListToObj(v,defaultPath,requestedPathList,ancestor);
+		if((v.size()>0)&&(v.get(0) instanceof CMObject))
+		{
+			v.setComparator(new Comparator<Object>()
+			{
+				@Override
+				public int compare(final Object o1, final Object o2)
+				{
+					if(o1 == null)
+						return o2==null?0:-1;
+					if(o2 == null)
+						return 1;
+					if((o1 instanceof CMObject)&&(o2 instanceof CMObject))
+						return ((CMObject)o1).ID().compareTo(((CMObject)o2).ID());
+					return o1.toString().compareTo(o2.toString());
+				}
+			});
+		}
 		v.sort();
 		for(int i=1;i<v.size();i++)
 			if((v.get(i) instanceof CMObject)

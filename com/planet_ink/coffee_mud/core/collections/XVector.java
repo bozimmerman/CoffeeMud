@@ -183,32 +183,41 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
+	public void setComparator(final Comparator<T> comparator)
+	{
+		this.comparator = comparator;
+	}
+
+	protected final Comparator<T> anyComparator = new Comparator<T>()
+	{
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@Override
+		public int compare(final T arg0, final T arg1)
+		{
+			if (arg0 == null)
+			{
+				if (arg1 == null)
+					return 0;
+				return -1;
+			}
+			else
+			if (arg1 == null)
+			{
+				return 1;
+			}
+			else
+			if (arg0 instanceof Comparable)
+				return ((Comparable) arg0).compareTo(arg1);
+			else
+				return arg0.toString().compareTo(arg1.toString());
+		}
+
+	};
+
+	protected Comparator<T> comparator = anyComparator;
+
 	public synchronized void sort()
 	{
-		Collections.sort(this, new Comparator<T>()
-		{
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			@Override
-			public int compare(final T arg0, final T arg1)
-			{
-				if (arg0 == null)
-				{
-					if (arg1 == null)
-						return 0;
-					return -1;
-				}
-				else
-				if (arg1 == null)
-				{
-					return 1;
-				}
-				else
-				if (arg0 instanceof Comparable)
-					return ((Comparable) arg0).compareTo(arg1);
-				else
-					return arg0.toString().compareTo(arg1.toString());
-			}
-
-		});
+		Collections.sort(this, comparator);
 	}
 }
