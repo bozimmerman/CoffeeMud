@@ -11075,9 +11075,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				for(int i=0;i<progs.length;i++)
 				{
 					if(trigger.equalsIgnoreCase(progs[i]))
-						triggerCode=i;
+						triggerCode=i+1;
 				}
-				if(triggerCode<0)
+				if(triggerCode<=0)
 					logError(scripted,"MPNOTRIGGER","RunTime",trigger+" is not a valid trigger name.");
 				else
 				if(!CMath.isInteger(time.trim()))
