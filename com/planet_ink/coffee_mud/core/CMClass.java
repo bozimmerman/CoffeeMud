@@ -2217,29 +2217,28 @@ public class CMClass extends ClassLoader
 			x=requestedPathList.indexOf(';');
 		}
 		loadObjectListToObj(v,defaultPath,requestedPathList,ancestor);
-		if((v.size()>0)&&(v.get(0) instanceof CMObject))
+		Collections.sort(v,new Comparator<Object>()
 		{
-			v.setComparator(new Comparator<Object>()
+			@SuppressWarnings("unchecked")
+			@Override
+			public int compare(final Object o1, final Object o2)
 			{
-				@Override
-				public int compare(final Object o1, final Object o2)
-				{
-					if(o1 == null)
-						return o2==null?0:-1;
-					if(o2 == null)
-						return 1;
-					if((o1 instanceof CMObject)&&(o2 instanceof CMObject))
-						return ((CMObject)o1).ID().compareTo(((CMObject)o2).ID());
-					return o1.toString().compareTo(o2.toString());
-				}
-			});
-		}
-		v.sort();
+				if(o1 == null)
+					return o2==null?0:-1;
+				if(o2 == null)
+					return 1;
+				if((o1 instanceof CMObject)&&(o2 instanceof CMObject))
+					return ((CMObject)o1).ID().compareToIgnoreCase(((CMObject)o2).ID());
+				if (o1 instanceof Comparable)
+					return ((Comparable) o1).compareTo(o2);
+				return o1.toString().compareToIgnoreCase(o2.toString());
+			}
+		});
 		for(int i=1;i<v.size();i++)
 		{
 			if((v.get(i) instanceof CMObject)
 			&&(((CMObject)v.get(i)).ID().compareToIgnoreCase(((CMObject)v.get(i-1)).ID())<=0))
-				Log.errOut("Sort failure @ "+((CMObject)v.get(i)).ID()+"/"+((CMObject)v.get(i-1)).ID());
+				Log.errOut("Sort failure @ "+((CMObject)v.get(i-1)).ID()+"/"+((CMObject)v.get(i)).ID());
 		}
 		return v;
 	}
