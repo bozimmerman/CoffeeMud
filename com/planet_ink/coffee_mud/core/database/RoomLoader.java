@@ -1093,7 +1093,11 @@ public class RoomLoader
 				final String itemID=DBConnections.getRes(R,"CMITID");
 				final Item newItem=CMClass.getItem(itemID);
 				if(newItem==null)
+				{
 					Log.errOut("Room","Couldn't find item '"+itemID+"' for room "+roomID);
+					for(final Enumeration<Item> i=CMClass.basicItems();i.hasMoreElements();)
+						Log.errOut(i.nextElement().ID());
+				}
 				else
 				{
 					newItem.setDatabaseID(itemNum);
