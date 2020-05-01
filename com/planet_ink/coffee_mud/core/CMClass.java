@@ -2097,7 +2097,7 @@ public class CMClass extends ClassLoader
 				else
 				if(o2 == null)
 					return 1;
-				return o1.ID().compareTo(o2.ID());
+				return o1.ID().compareToIgnoreCase(o2.ID());
 			}
 		});
 	}
@@ -2219,19 +2219,10 @@ public class CMClass extends ClassLoader
 		loadObjectListToObj(v,defaultPath,requestedPathList,ancestor);
 		Collections.sort(v,new Comparator<Object>()
 		{
-			@SuppressWarnings("unchecked")
 			@Override
 			public int compare(final Object o1, final Object o2)
 			{
-				if(o1 == null)
-					return o2==null?0:-1;
-				if(o2 == null)
-					return 1;
-				if((o1 instanceof CMObject)&&(o2 instanceof CMObject))
-					return ((CMObject)o1).ID().compareToIgnoreCase(((CMObject)o2).ID());
-				if (o1 instanceof Comparable)
-					return ((Comparable) o1).compareTo(o2);
-				return o1.toString().compareToIgnoreCase(o2.toString());
+				return classID(o1).compareToIgnoreCase(classID(o2));
 			}
 		});
 		for(int i=1;i<v.size();i++)
