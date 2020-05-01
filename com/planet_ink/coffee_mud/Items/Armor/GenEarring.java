@@ -183,8 +183,9 @@ public class GenEarring extends GenThinArmor implements BodyToken
 				}
 			}
 		}
-		return canWearComplete(mob, wearWhere);
+		return super.canWearComplete(mob, wearWhere);
 	}
+
 	@Override
 	public void recoverPhyStats()
 	{
