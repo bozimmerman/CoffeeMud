@@ -202,10 +202,10 @@ public class AreaScriptData extends AreaScriptNext
 			Resources.removeResource(entry.instanceKey);
 
 		if(parms.containsKey("ISCUSTOM") && (entry != null))
-			str.append(entry.key.equalsIgnoreCase("Custom")+", ");
+			str.append(entry.key.toLowerCase().startsWith("custom")+", ");
 
 		if(parms.containsKey("ISFILE") && (entry != null))
-			str.append(!entry.key.equalsIgnoreCase("Custom")+", ");
+			str.append(!entry.key.toLowerCase().startsWith("Custom")+", ");
 
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))
