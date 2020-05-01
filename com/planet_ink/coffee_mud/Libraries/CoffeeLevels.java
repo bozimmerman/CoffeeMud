@@ -1249,6 +1249,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 							for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 							{
 								final MOB M=m.nextElement();
+								if(targetM != null)
+								{
+									targetM.basePhyStats().setLevel(M.phyStats().level());
+									targetM.phyStats().setLevel(M.phyStats().level());
+								}
 								posted = (postExperience(M, targetM, null, amount, false)>0) && posted;
 							}
 						}
