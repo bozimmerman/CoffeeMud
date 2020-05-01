@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerStats.TellMsg;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -75,6 +76,7 @@ public class Tell extends StdCommand
 		   &&(mob.playerStats()!=null))
 		{
 			final java.util.List<PlayerStats.TellMsg> V=mob.playerStats().getTellStack();
+			final long now=System.currentTimeMillis();
 			if((V.size()==0)
 			||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_AS))
 			||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_POSSESSED)))
@@ -90,7 +92,18 @@ public class Tell extends StdCommand
 					if(S!=null)
 						S.snoopSuspension(1);
 					for(int i=V.size()-num;i<V.size();i++)
-						mob.tell("^t"+V.get(i).message()+"^N^.");
+					{
+						final TellMsg T=V.get(i);
+						long elapsedTime=now-T.time();
+						elapsedTime=Math.round(elapsedTime/1000L)*1000L;
+						if(elapsedTime<0)
+						{
+							Log.errOut("Channel","Wierd elapsed time: now="+now+", then="+T.time());
+							elapsedTime=0;
+						}
+						final String timeAgo = "^.^N ("+CMLib.time().date2SmartEllapsedTime(elapsedTime,false)+" ago)";
+						mob.tell("^t"+T.message()+timeAgo);
+					}
 				}
 				finally
 				{
