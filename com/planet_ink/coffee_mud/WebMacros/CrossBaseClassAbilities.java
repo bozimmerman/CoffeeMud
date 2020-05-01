@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -73,7 +74,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 					Log.errOut("CrossBase!","Ability not found?! : "+mapping.abilityID());
 				else
 				if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
-				&&(!CMLib.ableMapper().getSecretSkill(C.ID(), false, A.ID())))
+				&&(CMLib.ableMapper().getSecretSkill(C.ID(), false, A.ID()))==SecretFlag.PUBLIC)
 					ct++;
 			}
 			buf.append(Integer.toString(ct));
@@ -94,7 +95,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 				final Ability A=a.nextElement();
 				if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
 				&&(!CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
-				&&(!CMLib.ableMapper().getSecretSkill(A.ID())))
+				&&(CMLib.ableMapper().getSecretSkill(A.ID())==SecretFlag.PUBLIC))
 					ct++;
 			}
 			buf.append(Integer.toString(ct));
@@ -126,7 +127,8 @@ public class CrossBaseClassAbilities extends StdWebMacro
 					{
 						final Ability A=a.nextElement();
 						final int level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());
-						if((level>=0)&&(!CMLib.ableMapper().getSecretSkill(className,false,A.ID())))
+						if((level>=0)
+						&&(CMLib.ableMapper().getSecretSkill(className,false,A.ID())==SecretFlag.PUBLIC))
 						{
 							final int dex=abilities.indexOf(A.ID());
 							if(dex<0)

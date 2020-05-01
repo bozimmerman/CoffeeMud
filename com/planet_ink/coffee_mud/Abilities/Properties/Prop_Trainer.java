@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -169,16 +170,22 @@ public class Prop_Trainer extends Prop_StatTrainer
 					{
 						Ability A=a.nextElement();
 						if((A!=null)
-						&&(CMLib.ableMapper().qualifiesByLevel(mob,A)&&(!CMLib.ableMapper().getSecretSkill(className,true,A.ID())))
+						&&(CMLib.ableMapper().qualifiesByLevel(mob,A))
 						&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
 						&&(!myAbles.containsKey(A.ID())))
 						{
-							A=(Ability)A.copyOf();
-							A.setSavable(false);
-							A.setProficiency(100);
-							A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
-							myAbles.put(A.ID(),A);
-							mob.addAbility(A);
+							final SecretFlag secret = CMLib.ableMapper().getSecretSkill(className,true,A.ID());
+							if((secret!=SecretFlag.SECRET)
+							&&((secret!=SecretFlag.MASKED)
+								||(CMLib.masking().maskCheck(CMLib.ableMapper().getExtraMask(className, true, A.ID()), mob, true))))
+							{
+								A=(Ability)A.copyOf();
+								A.setSavable(false);
+								A.setProficiency(100);
+								A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
+								myAbles.put(A.ID(),A);
+								mob.addAbility(A);
+							}
 						}
 					}
 				}

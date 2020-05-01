@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor.CMEval;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary.ListStringer;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
@@ -344,7 +345,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					if((fieldDisplayStr2!=null)&&(fieldDisplayStr2.length()>0))
 					{
-						String val=mob.session().prompt("\n\r"+fieldDisplayStr2+": ");
+						final String val=mob.session().prompt("\n\r"+fieldDisplayStr2+": ");
 						newName=newName+prefix2+val+suffix2;
 					}
 					curSet.add(newName);
@@ -7972,7 +7973,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			aMAP.originalSkillPreReqList("");
 			aMAP.extraMask("");
 			aMAP.autoGain(false);
-			aMAP.isSecret(false);
+			aMAP.secretFlag(SecretFlag.PUBLIC);
 		}
 		else
 		{
@@ -7995,7 +7996,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		aMAP.defaultProficiency(CMath.s_int(mob.session().prompt(L("Enter the (default) proficiency level (@x1): ",""+aMAP.defaultProficiency()),aMAP.defaultProficiency()+"")));
 		aMAP.maxProficiency(CMath.s_int(mob.session().prompt(L("Enter the (maximum) proficiency level (@x1): ",""+aMAP.maxProficiency()),aMAP.maxProficiency()+"")));
 		aMAP.autoGain(mob.session().confirm(L("Is this skill automatically gained@x1?",(aMAP.autoGain()?"(Y/n)":"(y/N)")),""+aMAP.autoGain()));
-		aMAP.isSecret(mob.session().confirm(L("Is this skill secret @x1?",(aMAP.isSecret()?"(Y/n)":"(y/N)")),""+aMAP.isSecret()));
+		aMAP.secretFlag(SecretFlag.startsWithIgnoreCase(
+				mob.session().choose(L("Is this skill P)ublic, S)ecret, or M)asked @x1?",
+						(aMAP.secretFlag()==SecretFlag.PUBLIC?"(P/s/m)":aMAP.secretFlag()==SecretFlag.SECRET?"(p/S/m)":"(p/s/M)")),
+						"PSM",""+aMAP.secretFlag().name().charAt(0))
+				)
+		);
 		aMAP.defaultParm(mob.session().prompt(L("Enter any properties (@x1)\n\r: ",aMAP.defaultParm()),aMAP.defaultParm()));
 		String s="?";
 		while(s.equalsIgnoreCase("?"))
@@ -8047,7 +8053,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					aMAP.autoGain(CMath.s_bool(E.getStat("GETCABLEGAIN"+v)));
 					aMAP.defaultProficiency(CMath.s_int(E.getStat("GETCABLEPROF"+v)));
 					aMAP.qualLevel(CMath.s_int(E.getStat("GETCABLELVL"+v)));
-					aMAP.isSecret(CMath.s_bool(E.getStat("GETCABLESECR"+v)));
+					SecretFlag secretFlag = (SecretFlag)CMath.s_valueOf(SecretFlag.class, E.getStat("GETCABLESECR"+v));
+					if(secretFlag == null)
+						secretFlag = CMath.s_bool(E.getStat("GETCABLESECR"+v))?SecretFlag.SECRET:SecretFlag.PUBLIC;
+					aMAP.secretFlag(secretFlag);
 					aMAP.maxProficiency(CMath.s_int(E.getStat("GETCABLEMAXP"+v)));
 					aMAP.defaultParm(E.getStat("GETCABLEPARM"+v));
 					aMAP.originalSkillPreReqList(E.getStat("GETCABLEPREQ"+v));
@@ -8091,7 +8100,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 									   +CMStrings.padRight(""+aMAP.abilityID(),25)+" "
 									   +CMStrings.padRight(""+aMAP.defaultProficiency(),5)+" "
 									   +CMStrings.padRight(""+aMAP.autoGain(),5)+" "
-									   +CMStrings.padRight(""+aMAP.isSecret(),6)+" "
+									   +CMStrings.padRight(""+aMAP.secretFlag().name().substring(0,6),6)+" "
 									   +CMStrings.padRight(""+aMAP.defaultParm(),7)+" "
 									   +CMStrings.padRight(""+aMAP.originalSkillPreReqList(),7)+" "
 									   +CMStrings.padRight(""+aMAP.extraMask(),6)+"\n\r"
@@ -8177,7 +8186,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							E.setStat("GETCABLELVL"+dex,lvl.toString());
 							E.setStat("GETCABLEGAIN"+dex,""+aMAP.autoGain());
 							E.setStat("GETCABLEPROF"+dex,""+aMAP.defaultProficiency());
-							E.setStat("GETCABLESECR"+dex,""+aMAP.isSecret());
+							E.setStat("GETCABLESECR"+dex,""+aMAP.secretFlag().name());
 							E.setStat("GETCABLEPARM"+dex,""+aMAP.defaultParm());
 							E.setStat("GETCABLEPREQ"+dex,aMAP.originalSkillPreReqList());
 							E.setStat("GETCABLEMASK"+dex,aMAP.extraMask());
@@ -11412,7 +11421,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final Map<String,AbilityMapper.AbilityMapping> subMap=map.get(eachOrAll.toUpperCase().trim());
 		AbilityMapper.AbilityMapping mapped = subMap.get(me.ID().toUpperCase());
 		if(mapped==null)
-			mapped=CMLib.ableMapper().makeAbilityMapping(me.ID(),1,me.ID(),0,100,"",true,false, true,new Vector<String>(),"",null);
+			mapped=CMLib.ableMapper().makeAbilityMapping(me.ID(),1,me.ID(),0,100,"",true,SecretFlag.PUBLIC, true,new Vector<String>(),"",null);
 		boolean ok=false;
 		while(!ok)
 		{
@@ -11442,8 +11451,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				ok=true;
 			}
 		}
-		return CMLib.ableMapper().makeAbilityMapping(mapped.abilityID(), mapped.qualLevel(), mapped.abilityID(), mapped.defaultProficiency(), 100, "", mapped.autoGain(), false, true,
-				CMParms.parseSpaces(mapped.originalSkillPreReqList().trim(), true), mapped.extraMask(), null);
+		return CMLib.ableMapper().makeAbilityMapping(mapped.abilityID(), mapped.qualLevel(), mapped.abilityID(), mapped.defaultProficiency(), 100, "",
+													 mapped.autoGain(), SecretFlag.PUBLIC, true, CMParms.parseSpaces(mapped.originalSkillPreReqList().trim(), true),
+													 mapped.extraMask(), null);
 	}
 
 	@Override

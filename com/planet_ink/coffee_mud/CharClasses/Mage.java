@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -332,7 +333,7 @@ public class Mage extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_FakeWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Blink",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Polymorph",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Youth",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Youth",0,"",false,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Irritation",false);
 		// level 16
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_ChainLightening",false);
@@ -406,20 +407,20 @@ public class Mage extends StdCharClass
 		if(!ID().equals("Transmuter"))
 		{
 			CMLib.ableMapper().addCharAbilityMapping(ID(),26,"Spell_Imprisonment", ID().equals("Conjurer")?25:0, "", false,
-													 true, null, "+PLANE \"-Prime Material\"");
+													 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 		}
 
 		if(!ID().equals("Conjurer"))
 		{
 			CMLib.ableMapper().addCharAbilityMapping(ID(),29,"Spell_Planarmorph", ID().equals("Transmuter")?25:0, "", false,
-													 true, null, "+PLANE \"-Prime Material\"");
+													 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 		}
 
 		// level 30
 		if(ID().equals(baseClass()))
 			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Spellbinding",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),31,"Spell_PlanarBlock", 0, "", false, true, null, "+PLANE \"-Prime Material\"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),31,"Spell_PlanarBlock", 0, "", false, SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 	}
 
 	@Override
@@ -475,7 +476,7 @@ public class Mage extends StdCharClass
 			final Ability A=a.nextElement();
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==level)
 			&&((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=25)
-			&&(!CMLib.ableMapper().getSecretSkill(ID(),true,A.ID()))
+			&&(CMLib.ableMapper().getSecretSkill(ID(),true,A.ID())!=SecretFlag.SECRET)
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)))
 			{

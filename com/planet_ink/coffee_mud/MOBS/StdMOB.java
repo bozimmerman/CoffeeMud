@@ -3771,6 +3771,8 @@ public class StdMOB implements MOB
 				}
 				if ((R != null) && (A != null))
 				{
+					final CMFlagLibrary flag=CMLib.flags();
+
 					// handle variable equipment!
 					if ((lastTickedTime < 0)
 					&& isMonster && R.getMobility()
@@ -3799,7 +3801,7 @@ public class StdMOB implements MOB
 					{
 						if (commandQueSize() == 0)
 							setActions(actions() - Math.floor(actions()));
-						setActions(actions() + (CMLib.flags().isSitting(this) ? phyStats().speed() / 2.0 : phyStats().speed()));
+						setActions(actions() + (flag.isSitting(this) ? phyStats().speed() / 2.0 : phyStats().speed()));
 					}
 
 					if ((--recoverTickCter) <= 0)
@@ -3810,9 +3812,9 @@ public class StdMOB implements MOB
 					if (!isMonster)
 						CMLib.combat().expendEnergy(this, false);
 
-					if(!CMLib.flags().isGolem(this))
+					if(!flag.isGolem(this))
 					{
-						if (!CMLib.flags().canBreathe(this))
+						if (!flag.canBreathe(this))
 						{
 							final MOB killerM = CMLib.combat().getBreatheKiller(this); //R.show(this, this, CMMsg.MSG_OK_VISUAL,
 							CMLib.combat().postDamage(killerM, this, this,
@@ -3821,20 +3823,28 @@ public class StdMOB implements MOB
 													L("^Z<T-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10));
 						}
 						else
-						if(!CMLib.flags().canBreatheHere(this,R))
+						if(!flag.canBreatheHere(this,R))
 						{
 							final int atmo=R.getAtmosphere();
 							if((atmo&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 							{
 								final MOB killerM = CMLib.combat().getBreatheKiller(this); //R.show(this, this, CMMsg.MSG_OK_VISUAL, );
+								final String msgStr;
+								if(!flag.isSeeable(this))
+									msgStr=null;
+								else
+									msgStr=L("^Z<T-NAME> <T-IS-ARE> drowning in @x1!^.^?",RawMaterial.CODES.NAME(atmo).toLowerCase()) + CMLib.protocol().msp("choke.wav", 10);
 								CMLib.combat().postDamage(killerM, this, this,
 														(int) Math.round(CMath.mul(Math.random(), basePhyStats().level() + 2)),
 														CMMsg.MASK_ALWAYS | CMMsg.TYP_WATER, -1,
-														L("^Z<T-NAME> <T-IS-ARE> drowning in @x1!^.^?",RawMaterial.CODES.NAME(atmo).toLowerCase()) + CMLib.protocol().msp("choke.wav", 10));
+														msgStr);
 							}
 							else
 							{
 								final String msgStr;
+								if(!flag.isSeeable(this))
+									msgStr=null;
+								else
 								if(atmo == 0)
 									msgStr=L("^Z<T-NAME> can't breathe!^.^?") + CMLib.protocol().msp("choke.wav", 10);
 								else

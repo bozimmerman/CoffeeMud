@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -365,7 +366,7 @@ public class Charlatan extends StdCharClass
 				if((CMLib.ableMapper().qualifyingLevel(mob,A)<=0)
 				&&(lql<25)
 				&&(lql>0)
-				&&(!CMLib.ableMapper().getSecretSkill(A.ID()))
+				&&(CMLib.ableMapper().getSecretSkill(A.ID())==SecretFlag.PUBLIC)
 				&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
 				&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
 				&&(!CMLib.ableMapper().qualifiesOnlyByClan(mob, A))

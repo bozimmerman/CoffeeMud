@@ -1131,7 +1131,7 @@ public class StdCharClass implements CharClass
 			CR.setStat("GETCABLELVL"+i,Integer.toString(able.qualLevel()));
 			CR.setStat("GETCABLEPROF"+i,Integer.toString(able.defaultProficiency()));
 			CR.setStat("GETCABLEGAIN"+i,Boolean.toString(able.autoGain()));
-			CR.setStat("GETCABLESECR"+i,Boolean.toString(able.isSecret()));
+			CR.setStat("GETCABLESECR"+i,able.secretFlag().name());
 			CR.setStat("GETCABLEPARM"+i,able.defaultParm());
 			CR.setStat("GETCABLEPREQ"+i,able.originalSkillPreReqList());
 			CR.setStat("GETCABLEMASK"+i,able.extraMask()==null?"":able.extraMask());

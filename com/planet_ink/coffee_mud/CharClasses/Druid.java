@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -163,7 +164,7 @@ public class Druid extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SummonFood",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_Moonbeam",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_RestoreMana",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_RestoreMana",0,"",false,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Chant_SenseLife",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Chant_Tangle",false);
@@ -317,7 +318,7 @@ public class Druid extends StdCharClass
 			final Ability A=a.nextElement();
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==level)
 			&&((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<=25)
-			&&(!CMLib.ableMapper().getSecretSkill(ID(),true,A.ID()))
+			&&(CMLib.ableMapper().getSecretSkill(ID(),true,A.ID())==SecretFlag.PUBLIC)
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID()))
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)))
 			{

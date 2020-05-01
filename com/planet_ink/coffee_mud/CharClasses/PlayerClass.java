@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -217,7 +218,7 @@ public class PlayerClass extends StdCharClass
 								level=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 							if(level<0)
 								level=0;
-							CMLib.ableMapper().addCharAbilityMapping(ID(), 0, ID, 0, defaultParam, false, false, reqSet, "");
+							CMLib.ableMapper().addCharAbilityMapping(ID(), 0, ID, 0, defaultParam, false, SecretFlag.PUBLIC, reqSet, "");
 						}
 					}
 					if(curSet.size()>0)

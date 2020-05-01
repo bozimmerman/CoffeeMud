@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -79,8 +80,14 @@ public class WillQualify  extends Skills
 			for (final Enumeration<AbilityMapper.AbilityMapping> a = emur; a.hasMoreElements(); )
 			{
 				final AbilityMapper.AbilityMapping cimable=a.nextElement();
-				if((cimable.qualLevel() ==l)&&(!cimable.isSecret()))
+				if(cimable.qualLevel() == l)
 				{
+					if(cimable.secretFlag()==SecretFlag.SECRET)
+						continue;
+					if((cimable.secretFlag()==SecretFlag.MASKED)
+					&&(!CMLib.masking().maskCheck(cimable.extraMask(), ableM, true)))
+						continue;
+
 					final Ability A=CMClass.getAbility(cimable.abilityID());
 					if((A!=null)
 					&&((types.size()==0)

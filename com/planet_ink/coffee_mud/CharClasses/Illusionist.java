@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -75,7 +76,7 @@ public class Illusionist extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Spell_MinorImage",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Spell_LesserImage",25,true,new XVector<String>("Spell_MinorImage(75)"));
-		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_Torture",0,"",false,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_Torture",0,"",false,SecretFlag.SECRET);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_InvisibilitySphere",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_FeignInvisibility",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_DisguiseSelf",25,true);

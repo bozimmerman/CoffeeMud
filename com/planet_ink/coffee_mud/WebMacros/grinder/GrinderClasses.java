@@ -295,7 +295,7 @@ public class GrinderClasses
 			C.setStat("GETCABLELVL"+i, (String)DV.elementAt(i,2));
 			C.setStat("GETCABLEPROF"+i, (String)DV.elementAt(i,3));
 			C.setStat("GETCABLEGAIN"+i, ((String)DV.elementAt(i,4)).equalsIgnoreCase("on")?"false":"true");
-			C.setStat("GETCABLESECR"+i, ((String)DV.elementAt(i,5)).equalsIgnoreCase("on")?"true":"false");
+			C.setStat("GETCABLESECR"+i, (String)DV.elementAt(i,5));
 			if(DV.elementAt(i,6) instanceof String)
 				C.setStat("GETCABLEPARM"+i, (String)DV.elementAt(i,6));
 			if(DV.elementAt(i,7) instanceof String)

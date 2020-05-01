@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -307,7 +308,7 @@ public class Oracle extends Cleric
 							if((lql<25)
 							&&(lql>0))
 							{
-								if((!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID()))
+								if((CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID())==SecretFlag.PUBLIC)
 								&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
 								&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
 								&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))

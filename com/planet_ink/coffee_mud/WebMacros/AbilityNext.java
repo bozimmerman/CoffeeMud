@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -155,7 +156,7 @@ public class AbilityNext extends StdWebMacro
 					||(!CMParms.contains(normalAcodes, A.classificationCode()&Ability.ALL_ACODES))))
 					okToShow=false;
 				else
-				if(CMLib.ableMapper().getSecretSkill(className,false,A.ID()))
+				if(CMLib.ableMapper().getSecretSkill(className,false,A.ID())!=SecretFlag.PUBLIC)
 					okToShow=false;
 				else
 				if((flags>0)&&((A.flags()&flags)!=flags))
@@ -176,7 +177,7 @@ public class AbilityNext extends StdWebMacro
 					||(!CMParms.contains(normalAcodes, A.classificationCode()&Ability.ALL_ACODES))))
 					okToShow=false;
 				else
-				if(CMLib.ableMapper().getAllSecretSkill(A.ID()))
+				if(CMLib.ableMapper().getAllSecretSkill(A.ID())!=SecretFlag.PUBLIC)
 					okToShow=false;
 				else
 				if((flags>0)&&((A.flags()&flags)!=flags))

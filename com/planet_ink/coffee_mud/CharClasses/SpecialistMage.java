@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -78,7 +79,7 @@ public class SpecialistMage extends Mage
 				&&(level>0)
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 				{
-					final boolean secret=CMLib.ableMapper().getSecretSkill(ID(),true,A.ID());
+					final SecretFlag secret=CMLib.ableMapper().getSecretSkill(ID(),true,A.ID());
 					final String extraMask=CMLib.ableMapper().getExtraMask(ID(),true,A.ID());
 					if((A.classificationCode()&Ability.ALL_DOMAINS)==opposed())
 					{
@@ -88,7 +89,7 @@ public class SpecialistMage extends Mage
 							CMLib.ableMapper().delCharAbilityMapping(ID(),A.ID());
 					}
 					else
-					if((A.classificationCode()&Ability.ALL_DOMAINS)==domain()&&(!secret)&&(extraMask.length()==0))
+					if((A.classificationCode()&Ability.ALL_DOMAINS)==domain()&&(secret==SecretFlag.PUBLIC)&&(extraMask.length()==0))
 						CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),25,true);
 					else
 						CMLib.ableMapper().addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret,null,extraMask);

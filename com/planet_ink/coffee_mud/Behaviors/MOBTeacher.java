@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -95,15 +96,37 @@ public class MOBTeacher extends CombatAbilities
 		final boolean stdCharClass=mob.charStats().getCurrentClass().ID().equals("StdCharClass");
 		final String className=mob.charStats().getCurrentClass().ID();
 		Ability A=null;
+		final AbilityMapper ableMap = CMLib.ableMapper();
 		for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();
-			if((A!=null)
-			&&((stdCharClass&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)&&(!(A instanceof ArchonOnly)))
-				||(CMLib.ableMapper().qualifiesByLevel(mob,A)&&(!CMLib.ableMapper().getSecretSkill(className,true,A.ID()))))
-			&&((!noCommon)||((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL))
-			&&((!stdCharClass)||(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))))
-				addAbility(mob,A,pct,myAbles);
+			if(A==null)
+				continue;
+			if((noCommon)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
+				continue;
+			if(stdCharClass)
+			{
+				if(!ableMap.availableToTheme(A.ID(),Area.THEME_FANTASY,true))
+					continue;
+				if((ableMap.lowestQualifyingLevel(A.ID())<0)
+				||(A instanceof ArchonOnly))
+					continue;
+				final SecretFlag secret = ableMap.getSecretSkill(A.ID());
+				if(secret != SecretFlag.PUBLIC)
+					continue;
+			}
+			else
+			{
+				if(!ableMap.qualifiesByLevel(mob, A))
+					continue;
+				final SecretFlag secret = ableMap.getSecretSkill(className,true,A.ID());
+				if((secret==SecretFlag.SECRET)
+				||((secret==SecretFlag.MASKED)
+					&&(!CMLib.masking().maskCheck(CMLib.ableMapper().getExtraMask(className, true, A.ID()), mob, true))))
+					continue;
+			}
+			addAbility(mob,A,pct,myAbles);
 		}
 		for(final ClanGovernment G : CMLib.clans().getStockGovernments())
 		{

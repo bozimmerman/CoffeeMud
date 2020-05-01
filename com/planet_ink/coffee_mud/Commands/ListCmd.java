@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AbilityAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AmountAward;
@@ -2095,7 +2096,7 @@ public class ListCmd extends StdCommand
 					final Ability A=a.nextElement();
 					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 					&&(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>=0)
-					&&(CMLib.ableMapper().getSecretSkill(C.ID(),false,A.ID())))
+					&&(CMLib.ableMapper().getSecretSkill(C.ID(),false,A.ID())!=SecretFlag.PUBLIC))
 						langStr.append("[["+A.ID()+"|"+A.name()+"]] ");
 				}
 				final String helpEOL=CMStrings.getEOL(help.toString(),"\n\r");
@@ -2128,7 +2129,8 @@ public class ListCmd extends StdCommand
 					for (final Enumeration<AbilityMapper.AbilityMapping> a = CMLib.ableMapper().getClassAbles(C.ID(),true); a.hasMoreElements(); )
 					{
 						final AbilityMapper.AbilityMapping cimable=a.nextElement();
-						if((cimable.qualLevel() ==l)&&(!cimable.isSecret()))
+						if((cimable.qualLevel() ==l)
+						&&(cimable.secretFlag()==SecretFlag.PUBLIC))
 						{
 							final Ability A=CMClass.getAbility(cimable.abilityID());
 							if((A!=null)

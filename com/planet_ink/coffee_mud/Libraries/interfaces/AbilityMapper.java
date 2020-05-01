@@ -173,6 +173,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, boolean)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, boolean, List, String)
+	 * @see AbilityMapper.SecretFlag
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
 	 * @param abilityID the Ability ID()
@@ -183,7 +184,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
-												String defaultParam, boolean autoGain, boolean secret);
+												String defaultParam, boolean autoGain, SecretFlag secret);
 
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
@@ -193,6 +194,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, boolean)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, int, String, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper.SecretFlag
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
 	 * @param abilityID the Ability ID()
@@ -205,7 +207,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
-												String defaultParam, boolean autoGain, boolean secret,
+												String defaultParam, boolean autoGain, SecretFlag secret,
 												List<String> preReqSkillsList, String extraMask);
 
 	/**
@@ -216,6 +218,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, boolean, List, String)
 	 * @see AbilityMapper#addDynaAbilityMapping(String, int, String, int, String, boolean, boolean, String)
+	 * @see AbilityMapper.SecretFlag
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
 	 * @param abilityID the Ability ID()
@@ -230,7 +233,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
-												int maxProficiency, String defaultParam, boolean autoGain, boolean secret,
+												int maxProficiency, String defaultParam, boolean autoGain, SecretFlag secret,
 												List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
 
 	/**
@@ -238,6 +241,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @see AbilityMapping
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#newAbilityMapping()
+	 * @see AbilityMapper.SecretFlag
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
 	 * @param abilityID the Ability ID()
@@ -252,8 +256,9 @@ public interface AbilityMapper extends CMLibrary
 	 * @param costOverrides overrides of the CMProps-based cost formulas for gaining this skill
 	 * @return the finished AbilityMapping
 	 */
-	public AbilityMapping makeAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, int maxProficiency, String defaultParam, boolean autoGain,
-			 boolean secret, boolean isAllQualified, List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
+	public AbilityMapping makeAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, int maxProficiency,
+											 String defaultParam, boolean autoGain, SecretFlag secret, boolean isAllQualified,
+											 List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
 
 	/**
 	 * Creates a new, blank ability mapping object
@@ -273,6 +278,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharAbilityMapping(String, String)
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, int, String, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper.SecretFlag
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
 	 * @param abilityID the Ability ID()
@@ -284,7 +290,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addDynaAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency,
-									  String defaultParam, boolean autoGain, boolean secret, String extraMask);
+									  String defaultParam, boolean autoGain, SecretFlag secret, String extraMask);
 
 	/**
 	 * Removes the specified mapping between charclass, race, or whatever, and an Ability, by String ability ID.
@@ -292,6 +298,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
 	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, int, String, boolean, boolean, List, String, Integer[])
 	 * @see AbilityMapper#delCharMappings(String)
+	 * @see AbilityMapper.SecretFlag
 	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
 	 * @param abilityID the Ability ID()
 	 * @return the mapping removed
@@ -805,24 +812,27 @@ public interface AbilityMapper extends CMLibrary
 	 * Returns whether the given ability, for the given charclass, race, or clan
 	 * government ID, and optionally checking the All Qualifies list, is a
 	 * secret skill, or whether it can be seen and known about.
+	 * @see AbilityMapper.SecretFlag
 	 * @param ID the charclass, race, or clan ID()
 	 * @param checkAll true to check the All Qualifies list, or false not to
 	 * @param abilityID the ability ID() to check
 	 * @return true if its secret, false otherwise
 	 */
-	public boolean getSecretSkill(String ID, boolean checkAll, String abilityID);
+	public SecretFlag getSecretSkill(String ID, boolean checkAll, String abilityID);
 
 	/**
 	 * Returns whether the given Ability ID() is both mapped on the All Qualifies
 	 * list AND is a secret skill.
+	 * @see AbilityMapper.SecretFlag
 	 * @param abilityID the ability ID() to check
 	 * @return true if its secret, false otherwise
 	 */
-	public boolean getAllSecretSkill(String abilityID);
+	public SecretFlag getAllSecretSkill(String abilityID);
 
 	/**
 	 * Returns whether the given ability ID() represents a skill that is secret to
 	 * the given mob, by whatever class, race, or clan they qualify for it by.
+	 * @see AbilityMapper.SecretFlag
 	 * @param mob the mob to check
 	 * @param abilityID the ability ID() to check
 	 * @return true if the ability is secret for this mob, false otherwise
@@ -832,10 +842,11 @@ public interface AbilityMapper extends CMLibrary
 	/**
 	 * Returns whether the given Ability ID() is secret in every mapping (race, class,
 	 * govt clan id, all qualifies) or not.
+	 * @see AbilityMapper.SecretFlag
 	 * @param abilityID the ability ID() to check
 	 * @return true if its secret everywhere, false otherwise
 	 */
-	public boolean getSecretSkill(String abilityID);
+	public SecretFlag getSecretSkill(String abilityID);
 
 	/**
 	 * Returns any mapping-based overrides to the standard system white
@@ -1188,7 +1199,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @see AbilityMapper.AbilityMapping#isSecret(boolean)
 		 * @return whether this skill is secret and unseen
 		 */
-		public boolean				isSecret();
+		public SecretFlag				secretFlag();
 
 		/**
 		 * Sets whether this skill is secret and unseen even when
@@ -1197,7 +1208,7 @@ public interface AbilityMapper extends CMLibrary
 		 * @param newValue whether this skill is secret and unseen
 		 * @return this
 		 */
-		public AbilityMapping		isSecret(boolean newValue);
+		public AbilityMapping		secretFlag(SecretFlag newValue);
 
 		/**
 		 * Gets whether this skill is qualified for identically
@@ -1337,6 +1348,32 @@ public interface AbilityMapper extends CMLibrary
 		 * @return a copy of this mapping.  It's a deep copy.
 		 */
 		public AbilityMapping		copyOf();
+
+		/**
+		 * Adds the final ability mapping
+		 */
+		public void add();
+	}
+
+	/**
+	 * The secret flag type for an ability mapping.
+	 *
+	 * @author BZ
+	 *
+	 */
+	public enum SecretFlag
+	{
+		SECRET,  /* means it is totally secret, all the time */
+		PUBLIC, /* means it is totally public, all the time */
+		MASKED /* means it is totally secret, until masking requirements are met, in which case it no longer is */
+		;
+		public static SecretFlag startsWithIgnoreCase(final String c)
+		{
+			for(final SecretFlag f : SecretFlag.values())
+				if(f.name().startsWith(c.toUpperCase()))
+					return f;
+			return PUBLIC;
+		}
 	}
 
 	/**

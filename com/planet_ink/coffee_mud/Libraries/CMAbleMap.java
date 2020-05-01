@@ -69,7 +69,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final String abilityID,
 												final boolean autoGain)
 	{
-		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,new Vector<String>(),"");
+		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,SecretFlag.PUBLIC,new Vector<String>(),"");
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final boolean autoGain,
 												final String extraMasks)
 	{
-		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,new Vector<String>(),extraMasks);
+		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,SecretFlag.PUBLIC,new Vector<String>(),extraMasks);
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final boolean autoGain,
 												final List<String> skillPreReqs)
 	{
-		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,skillPreReqs,"");
+		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,SecretFlag.PUBLIC,skillPreReqs,"");
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final List<String> skillPreReqs,
 												final String extraMasks)
 	{
-		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,false,skillPreReqs,extraMasks);
+		return addCharAbilityMapping(ID,qualLevel,abilityID,0,100,"",autoGain,SecretFlag.PUBLIC,skillPreReqs,extraMasks);
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final String defParm,
 												final boolean autoGain)
 	{
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defParm,autoGain,false,new Vector<String>(),"");
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defParm,autoGain,SecretFlag.PUBLIC,new Vector<String>(),"");
 	}
 
 	public AbilityMapping addCharAbilityMapping(final String ID,
@@ -122,7 +122,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final boolean autoGain,
 												final String extraMasks)
 	{
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defParm,autoGain,false,new Vector<String>(),extraMasks);
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defParm,autoGain,SecretFlag.PUBLIC,new Vector<String>(),extraMasks);
 	}
 
 	@Override
@@ -132,7 +132,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final int defaultProficiency,
 												final boolean autoGain)
 	{
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,new Vector<String>(),"");
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,SecretFlag.PUBLIC,new Vector<String>(),"");
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final boolean autoGain,
 												final List<String> skillPreReqs)
 	{
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,skillPreReqs,"");
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,SecretFlag.PUBLIC,skillPreReqs,"");
 	}
 
 	public AbilityMapping addCharAbilityMapping(final String ID,
@@ -153,7 +153,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final boolean autoGain,
 												final String extraMasks)
 	{
-		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,new Vector<String>(),extraMasks);
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,SecretFlag.PUBLIC,new Vector<String>(),extraMasks);
 	}
 
 	@Override
@@ -227,7 +227,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final int defaultProficiency,
 												final String defaultParam,
 												final boolean autoGain,
-												final boolean secret)
+												final SecretFlag secret)
 	{
 		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,new Vector<String>(),"");
 	}
@@ -238,7 +238,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final int defaultProficiency,
 												final String defaultParam,
 												final boolean autoGain,
-												final boolean secret,
+												final SecretFlag secret,
 												final String extraMasks)
 	{
 		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,defaultParam,autoGain,secret,new Vector<String>(),extraMasks);
@@ -251,7 +251,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final int defaultProficiency,
 												final String defaultParam,
 												final boolean autoGain,
-												final boolean secret,
+												final SecretFlag secret,
 												final List<String> preReqSkillsList,
 												final String extraMask)
 	{
@@ -265,7 +265,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final int maxProficiency,
 												final String defaultParam,
 												final boolean autoGain,
-												final boolean secret)
+												final SecretFlag secret)
 	{
 		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector<String>(),"");
 	}
@@ -277,7 +277,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final int maxProficiency,
 												final String defaultParam,
 												final boolean autoGain,
-												final boolean secret,
+												final SecretFlag secret,
 												final String extraMasks)
 	{
 		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector<String>(),extraMasks);
@@ -290,7 +290,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 									  final int defaultProficiency,
 									  final String defaultParam,
 									  final boolean autoGain,
-									  final boolean secret,
+									  final SecretFlag secret,
 									  final String extraMask)
 	{
 		delCharAbilityMapping(ID,abilityID);
@@ -314,7 +314,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final int maxProficiency,
 												final String defaultParam,
 												final boolean autoGain,
-												final boolean secret,
+												final SecretFlag secret,
 												final List<String> preReqSkillsList,
 												final String extraMask)
 	{
@@ -476,7 +476,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 												final int maxProficiency,
 												final String defaultParam,
 												final boolean autoGain,
-												final boolean secret,
+												final SecretFlag secret,
 												final List<String> preReqSkillsList,
 												final String extraMask,
 												final Integer[] costOverrides)
@@ -509,7 +509,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			private int					defaultProficiency		= 0;
 			private int					maxProficiency			= 100;
 			private String				defaultParm				= "";
-			private boolean				isSecret				= false;
+			private SecretFlag			isSecret				= SecretFlag.PUBLIC;
 			private boolean				isAllQualified			= false;
 			private DVector				skillPreReqs			= new DVector(2);
 			private String				extraMask				= "";
@@ -610,13 +610,13 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			}
 
 			@Override
-			public boolean isSecret()
+			public SecretFlag secretFlag()
 			{
 				return isSecret;
 			}
 
 			@Override
-			public AbilityMapping isSecret(final boolean newValue)
+			public AbilityMapping secretFlag(final SecretFlag newValue)
 			{
 				isSecret = newValue;
 				return this;
@@ -731,6 +731,14 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				}
 				return map;
 			}
+
+			@Override
+			public void add()
+			{
+				final List<String> unfixedPreReqs=CMParms.parseCommas(this.originalSkillPreReqList(), true);
+				makeAbilityMapping(ID, qualLevel, abilityID, defaultProficiency, maxProficiency, defaultParm, autoGain, isSecret,
+									isAllQualified, unfixedPreReqs, extraMask,costOverrides);
+			}
 		};
 	}
 
@@ -742,7 +750,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 											 final int maxProficiency,
 											 final String defaultParam,
 											 final boolean autoGain,
-											 final boolean secret,
+											 final SecretFlag secret,
 											 final boolean isAllQualified,
 											 final List<String> preReqSkillsList,
 											 final String extraMask,
@@ -756,7 +764,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		.maxProficiency(maxProficiency)
 		.defaultParm(defaultParam ==null ? "" : defaultParam)
 		.autoGain(autoGain)
-		.isSecret(secret)
+		.secretFlag(secret)
 		.isAllQualified(isAllQualified)
 		.extraMask(extraMask == null ? "" : extraMask)
 		.costOverrides(costOverrides)
@@ -1904,35 +1912,36 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	}
 
 	@Override
-	public boolean getSecretSkill(final String ID, final boolean checkAll, final String abilityID)
+	public SecretFlag getSecretSkill(final String ID, final boolean checkAll, final String abilityID)
 	{
-		boolean secretFound=false;
+		SecretFlag secretFound=SecretFlag.PUBLIC;
 		if(completeAbleMap.containsKey(ID))
 		{
 			final Map<String,AbilityMapping> ableMap=completeAbleMap.get(ID);
 			if(ableMap.containsKey(abilityID))
 			{
-				if(!ableMap.get(abilityID).isSecret())
-					return false;
-				secretFound=true;
+				final SecretFlag found=ableMap.get(abilityID).secretFlag();
+				if(found==SecretFlag.PUBLIC)
+					return SecretFlag.PUBLIC;
+				secretFound=found;
 			}
 		}
 		if(checkAll)
 		{
 			final AbilityMapping AB=getAllAbleMap(abilityID);
 			if(AB!=null)
-				return AB.isSecret();
+				return AB.secretFlag();
 		}
 		return secretFound;
 	}
 
 	@Override
-	public boolean getAllSecretSkill(final String abilityID)
+	public SecretFlag getAllSecretSkill(final String abilityID)
 	{
 		final AbilityMapping AB=getAllAbleMap(abilityID);
 		if(AB!=null)
-			return AB.isSecret();
-		return false;
+			return AB.secretFlag();
+		return SecretFlag.PUBLIC;
 	}
 
 	public final List<AbilityMapping> getAllAbilityMappings(final MOB mob, final String abilityID)
@@ -1976,24 +1985,43 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 	@Override
 	public boolean getSecretSkill(final MOB mob, final String abilityID)
 	{
-		boolean secretFound=false;
+		SecretFlag secretFound=SecretFlag.PUBLIC;
+		String extraMask="";
 		final AbilityMapping personalMap = getPersonalMapping(mob, abilityID);
 		if(personalMap != null)
-			return personalMap.isSecret();
-		final List<AbilityMapping> mappings=getAllAbilityMappings(mob,abilityID);
-		for (final AbilityMapping ableMap : mappings)
 		{
-			if(!ableMap.isSecret())
-				return false;
-			secretFound=true;
+			secretFound=personalMap.secretFlag();
+			extraMask=personalMap.extraMask();
 		}
-		return secretFound;
+		else
+		{
+			final List<AbilityMapping> mappings=getAllAbilityMappings(mob,abilityID);
+			for (final AbilityMapping ableMap : mappings)
+			{
+				final SecretFlag found=ableMap.secretFlag();
+				if(found==SecretFlag.PUBLIC)
+					return false;
+				secretFound=found;
+				extraMask=ableMap.extraMask();
+			}
+		}
+		switch(secretFound)
+		{
+		case PUBLIC:
+			return false;
+		case SECRET:
+			return true;
+		case MASKED:
+			return !CMLib.masking().maskCheck(extraMask, mob, true);
+		default:
+			return false;
+		}
 	}
 
 	@Override
-	public boolean getSecretSkill(final String abilityID)
+	public SecretFlag getSecretSkill(final String abilityID)
 	{
-		boolean secretFound=false;
+		SecretFlag secretFound=SecretFlag.PUBLIC;
 		for(final Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
 		{
 			final String charClass=e.nextElement().ID();
@@ -2002,9 +2030,10 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(charClass);
 				if(ableMap.containsKey(abilityID))
 				{
-					if(!ableMap.get(abilityID).isSecret())
-						return false;
-					secretFound=true;
+					final SecretFlag found=ableMap.get(abilityID).secretFlag();
+					if(found==SecretFlag.PUBLIC)
+						return SecretFlag.PUBLIC;
+					secretFound=found;
 				}
 			}
 		}
@@ -2016,15 +2045,16 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(ID);
 				if(ableMap.containsKey(abilityID))
 				{
-					if(!ableMap.get(abilityID).isSecret())
-						return false;
-					secretFound=true;
+					final SecretFlag found=ableMap.get(abilityID).secretFlag();
+					if(found==SecretFlag.PUBLIC)
+						return SecretFlag.PUBLIC;
+					secretFound=found;
 				}
 			}
 		}
 		final AbilityMapping AB=getAllAbleMap(abilityID);
 		if(AB!=null)
-			return AB.isSecret();
+			return AB.secretFlag();
 		return secretFound;
 	}
 
@@ -2272,7 +2302,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			}
 		}
 		return
-			makeAbilityMapping(abilityID,qualLevel,abilityID,CMath.s_int(prof.toString().trim()),100,"",autogain,false,
+			makeAbilityMapping(abilityID,qualLevel,abilityID,CMath.s_int(prof.toString().trim()),100,"",autogain,SecretFlag.PUBLIC,
 					true,CMParms.parseSpaces(preReqs.toString().trim(), true), mask.toString().trim(),null);
 	}
 
@@ -2527,7 +2557,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			if((!C.ID().equalsIgnoreCase("Archon"))
 			&&(lvl>=0)
 			&&(C.availabilityCode()!=0)
-			&&(!getSecretSkill(C.ID(),true,A.ID())))
+			&&(getSecretSkill(C.ID(),true,A.ID())==SecretFlag.PUBLIC))
 			{
 				if(!sortedByLevel.containsKey(Integer.valueOf(lvl)))
 					sortedByLevel.put(Integer.valueOf(lvl),new int[1]);

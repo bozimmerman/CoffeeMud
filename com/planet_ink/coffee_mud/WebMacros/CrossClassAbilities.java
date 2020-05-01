@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -84,7 +85,8 @@ public class CrossClassAbilities extends StdWebMacro
 					if(CMProps.isTheme(C.availabilityCode()))
 					{
 						final int qual=CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID());
-						if((qual>=0)&&(!CMLib.ableMapper().getSecretSkill(C.ID(),false,A.ID())))
+						if((qual>=0)
+						&&(CMLib.ableMapper().getSecretSkill(C.ID(),false,A.ID())==SecretFlag.PUBLIC))
 						{
 							buf.append("<TD>"+qual+"</TD>");
 							if((cnum==sortByClassNum)&&(!rowsFavoring.contains(buf)))

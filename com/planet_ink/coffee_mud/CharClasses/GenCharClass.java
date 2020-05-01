@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.SecretFlag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -607,7 +608,7 @@ public class GenCharClass extends StdCharClass
 				str.append("<CALEVEL>"+ables.elementAt(r).qualLevel()+"</CALEVEL>");
 				str.append("<CAPROFF>"+ables.elementAt(r).defaultProficiency()+"</CAPROFF>");
 				str.append("<CAAGAIN>"+ables.elementAt(r).autoGain()+"</CAAGAIN>");
-				str.append("<CASECR>"+ables.elementAt(r).isSecret()+"</CASECR>");
+				str.append("<CASECR>"+ables.elementAt(r).secretFlag().name()+"</CASECR>");
 				str.append("<CAPARM>"+ables.elementAt(r).defaultParm()+"</CAPARM>");
 				str.append("<CAPREQ>"+ables.elementAt(r).originalSkillPreReqList()+"</CAPREQ>");
 				str.append("<CAMASK>"+ables.elementAt(r).extraMask()+"</CAMASK>");
@@ -860,6 +861,9 @@ public class GenCharClass extends StdCharClass
 				String maxProff=iblk.getValFromPieces("CAMAXP");
 				if((maxProff==null)||(maxProff.trim().length()==0))
 					maxProff="100";
+				SecretFlag secretFlag = (SecretFlag)CMath.s_valueOf(SecretFlag.class, iblk.getValFromPieces("CASECR"));
+				if(secretFlag == null)
+					secretFlag = iblk.getBoolFromPieces("CASECR")?SecretFlag.SECRET:SecretFlag.PUBLIC;
 				CMLib.ableMapper().addCharAbilityMapping(ID(),
 									 iblk.getIntFromPieces("CALEVEL"),
 									 iblk.getValFromPieces("CACLASS"),
@@ -867,7 +871,7 @@ public class GenCharClass extends StdCharClass
 									 CMath.s_int(maxProff),
 									 iblk.getValFromPieces("CAPARM"),
 									 iblk.getBoolFromPieces("CAAGAIN"),
-									 iblk.getBoolFromPieces("CASECR"),
+									 secretFlag,
 									 CMParms.parseCommas(iblk.getValFromPieces("CAPREQ"),true),
 									 iblk.getValFromPieces("CAMASK"),
 									 null);
@@ -971,7 +975,7 @@ public class GenCharClass extends StdCharClass
 			newMAP.qualLevel(CMLib.ableMapper().getQualifyingLevel(ID(),false,AID));
 			newMAP.defaultProficiency(CMLib.ableMapper().getDefaultProficiency(ID(),false,AID));
 			newMAP.autoGain(CMLib.ableMapper().getDefaultGain(ID(),false,AID));
-			newMAP.isSecret(CMLib.ableMapper().getSecretSkill(ID(),false,AID));
+			newMAP.secretFlag(CMLib.ableMapper().getSecretSkill(ID(),false,AID));
 			newMAP.defaultParm(CMLib.ableMapper().getDefaultParm(ID(),false,AID));
 			newMAP.originalSkillPreReqList(CMLib.ableMapper().getPreReqStrings(ID(),false,AID));
 			newMAP.extraMask(CMLib.ableMapper().getExtraMask(ID(),false,AID));
@@ -1071,7 +1075,7 @@ public class GenCharClass extends StdCharClass
 		case 28:
 			return Boolean.toString(getAbleSet().elementAt(num).autoGain());
 		case 29:
-			return Boolean.toString(getAbleSet().elementAt(num).isSecret());
+			return getAbleSet().elementAt(num).secretFlag().name();
 		case 30:
 			return getAbleSet().elementAt(num).defaultParm();
 		case 31:
@@ -1267,6 +1271,10 @@ public class GenCharClass extends StdCharClass
 			CMLib.ableMapper().delCharMappings(ID());
 			break;
 		case 25:
+		{
+			SecretFlag secFlg = (SecretFlag)CMath.s_valueOf(SecretFlag.class, tempables[4]);
+			if(secFlg == null)
+				secFlg=CMath.s_bool(tempables[4])?SecretFlag.SECRET:SecretFlag.PUBLIC;
 			CMLib.ableMapper().addCharAbilityMapping(ID(),
 													 CMath.s_int(tempables[1]),
 													 val,
@@ -1274,11 +1282,12 @@ public class GenCharClass extends StdCharClass
 													 CMath.s_int(tempables[8]),
 													 tempables[5],
 													 CMath.s_bool(tempables[3]),
-													 CMath.s_bool(tempables[4]),
+													 secFlg,
 													 CMParms.parseCommas(tempables[6],true),
 													 tempables[7],
 													 null);
 			break;
+		}
 		case 26:
 			tempables[1] = val;
 			break;
