@@ -265,7 +265,12 @@ public class CharClassData extends StdWebMacro
 		str.append("<TR><TD WIDTH=100% COLSPAN=5>"+sfont+"Pre-Reqs list: "+efont+"<INPUT TYPE=TEXT NAME=CABPRE"+(theclasses.size()+1)+" VALUE=\"\" SIZE=50 MAXLENGTH=255></TD></TR>");
 		str.append("<TR><TD WIDTH=100% COLSPAN=5>"+sfont+"Status: "+efont+"<SELECT NAME=CABSCR"+(theclasses.size()+1)+">");
 		for(final SecretFlag f : SecretFlag.values())
-			str.append("<OPTION VALUE=\""+f.name()+"\">"+f.name());
+		{
+			if(f==SecretFlag.PUBLIC)
+				str.append("<OPTION SELECTED VALUE=\""+f.name()+"\">"+f.name());
+			else
+				str.append("<OPTION VALUE=\""+f.name()+"\">"+f.name());
+		}
 		str.append("</TD></TR>");
 		str.append("</TABLE>");
 		return str;
