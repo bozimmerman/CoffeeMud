@@ -1846,6 +1846,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					V.addAll(CMClass.armor());
 					V.addAll(CMClass.miscMagic());
 					V.addAll(CMClass.clanItems());
+					for(int i=V.size()-1;i<=0;i--)
+					{
+						if(V.get(i) instanceof CMObjectWrapper)
+							V.remove(i);
+					}
 					createChoices(V);
 				}
 
@@ -1958,6 +1963,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						I=e.next();
 						if(I.isGeneric() || I.ID().equalsIgnoreCase("StdDeckOfCards"))
 							V2.add(I);
+					}
+					for(int i=V.size()-1;i<=0;i--)
+					{
+						if(V.get(i) instanceof CMObjectWrapper)
+							V.remove(i);
 					}
 					createChoices(V2);
 				}

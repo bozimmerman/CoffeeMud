@@ -1178,7 +1178,8 @@ public class CMClass extends ClassLoader
 			final Item I=i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
 			&&((!NonStandard)||(I.isGeneric()))
-			&&((!NonGeneric)||(!I.isGeneric())))
+			&&((!NonGeneric)||(!I.isGeneric()))
+			&&(!(I instanceof CMObjectWrapper)))
 				V.addElement(CMClass.classID(I));
 		}
 		return V;
