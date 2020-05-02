@@ -6374,6 +6374,15 @@ public class Import extends StdCommand
 						case 12:
 							R = changeRoomClass(R, "FrozenMountains");
 							break;
+						case 13:
+							R = changeRoomClass(R, "CaveRoom");
+							break;
+						case 14:
+							R = changeRoomClass(R, "CaveRoom"); // Lava Room?
+							break;
+						case 15:
+							R = changeRoomClass(R, "Swamp");
+							break;
 						}
 					}
 					else
