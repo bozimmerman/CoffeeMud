@@ -6429,6 +6429,15 @@ public class Import extends StdCommand
 						case 12:
 							R = changeRoomClass(R, "FrozenMountains");
 							break;
+						case 13:
+							R = changeRoomClass(R, "CaveRoom");
+							break;
+						case 14:
+							R = changeRoomClass(R, "CaveRoom"); // Lava Room?
+							break;
+						case 15:
+							R = changeRoomClass(R, "Swamp");
+							break;
 						}
 					}
 					else
@@ -6474,6 +6483,15 @@ public class Import extends StdCommand
 						case 12:
 							R = changeRoomClass(R, "IceRoom");
 							break;
+						case 13:
+							R = changeRoomClass(R, "CaveRoom");
+							break;
+						case 14:
+							R = changeRoomClass(R, "CaveRoom"); // Lava Room?
+							break;
+						case 15:
+							R = changeRoomClass(R, "Swamp");
+							break;
 						}
 						switch(sectorType)
 						{
@@ -6486,6 +6504,9 @@ public class Import extends StdCommand
 						case 10:
 						case 11:
 						case 12:
+						case 13:
+						case 14:
+						case 15:
 							if((R.displayText().toUpperCase().indexOf("CAVE")>=0)
 							||(R.description().toUpperCase().indexOf("CAVE")>=0))
 								R=changeRoomClass(R,"CaveRoom");
