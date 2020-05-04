@@ -392,9 +392,11 @@ public class Spell_Planarmorph extends Spell
 				{
 					//mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",CMLib.english().startWithAorAn(R.name())));
 					final Ability cA = beneficialAffect(mob,target,asLevel,0);
-					success = cA != null;
-					if(success)
+					if(cA != null)
+					{
+						success = true;
 						cA.setMiscText(planeName);
+					}
 					target.recoverCharStats();
 					CMLib.utensils().confirmWearability(target);
 				}

@@ -353,7 +353,7 @@ public class Spell_PlanarBubble extends Spell
 		final PlanarAbility planeA=(PlanarAbility)CMClass.getAbility("StdPlanarAbility");
 
 		if((commands.size()==0)
-		&&((mob==null)||(mob.isMonster())))
+		&&(mob.isMonster()))
 			commands.add(planeA.getAllPlaneKeys().get(CMLib.dice().roll(1, planeA.getAllPlaneKeys().size(), -1)));
 		final String planeName = CMParms.combine(commands,0);
 		if(commands.size()==0)
