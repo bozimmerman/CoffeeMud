@@ -410,6 +410,11 @@ public class Mage extends StdCharClass
 													 SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 		}
 
+		if(!ID().equals("Illusionist"))
+		{
+			CMLib.ableMapper().addCharAbilityMapping(ID(),27,"Spell_PlanarTimer", 0, "", false, SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
+		}
+
 		if(!ID().equals("Conjurer"))
 		{
 			CMLib.ableMapper().addCharAbilityMapping(ID(),29,"Spell_Planarmorph", ID().equals("Transmuter")?25:0, "", false,
@@ -421,6 +426,10 @@ public class Mage extends StdCharClass
 			CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Spell_Spellbinding",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),31,"Spell_PlanarBlock", 0, "", false, SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
+
+		// level 35
+		if(ID().equals(baseClass()))
+			CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Spell_PlanarExtension", 0, "", false, SecretFlag.MASKED, null, "+PLANE \"-Prime Material\"");
 	}
 
 	@Override
