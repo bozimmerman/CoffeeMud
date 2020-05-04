@@ -80,6 +80,21 @@ public class CoffeeIOPipe
 				return b;
 			}
 		}
+		
+		public int peek() throws IOException
+		{
+			if(closed)
+				throw new IOException("Input stream closed.");
+			synchronized(buffer)
+			{
+				if(readDex.get() == writeDex.get())
+					return -1;
+				final int b=buffer[readDex.getAndIncrement()];
+				if(readDex.get() >= buffer.length)
+					readDex.set(0);
+				return b;
+			}
+		}
 
 		@Override
 		public int available() throws IOException
