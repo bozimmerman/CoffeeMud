@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import com.jcraft.jzlib.*;
+import com.planet_ink.coffee_mud.core.CMProps;
 import com.planet_ink.siplet.applet.Siplet;
 import com.planet_ink.siplet.applet.Siplet.MSPStatus;
 import com.planet_ink.siplet.support.MiniJSON.JSONObject;
@@ -480,7 +481,7 @@ public class TelnetFilter
 	public static final char[]	mccppattern	= { IAC_, IAC_SB, MCCP_COMPRESS2, IAC_, IAC_SE };
 	public int					patDex		= 0;
 
-	public void TelnetRead(final StringBuffer buf, final InputStream rawin, final BufferedReader in[]) throws InterruptedIOException, IOException
+	public void TelnetRead(final StringBuffer buf, final InputStream rawin, final Reader in[]) throws InterruptedIOException, IOException
 	{
 		final char c = (char) in[0].read();
 		if (mccppattern[patDex] == c)
@@ -493,7 +494,7 @@ public class TelnetFilter
 				final ZInputStream zIn = new ZInputStream(rawin);
 				if (debugTelnetCodes)
 					System.out.println("MCCP compression started");
-				in[0] = new BufferedReader(new InputStreamReader(zIn));
+				in[0] = new IACReader(zIn, CMProps.getVar(CMProps.Str.CHARSETINPUT));
 				patDex = 0;
 			}
 			return;
@@ -510,7 +511,7 @@ public class TelnetFilter
 			throw new java.io.InterruptedIOException("ARGH!");
 	}
 
-	public int TelenetFilter(final StringBuffer buf, final DataOutputStream response, final InputStream rawin, final BufferedReader[] in) throws IOException
+	public int TelenetFilter(final StringBuffer buf, final DataOutputStream response, final InputStream rawin, final Reader[] in) throws IOException
 	{
 		int i = 0;
 		while (i < buf.length())

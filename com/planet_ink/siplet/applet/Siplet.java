@@ -1,5 +1,6 @@
 package com.planet_ink.siplet.applet;
 import com.planet_ink.coffee_mud.core.CMLib;
+import com.planet_ink.coffee_mud.core.CMProps;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.siplet.support.*;
 import com.jcraft.jzlib.*;
@@ -37,10 +38,10 @@ public class Siplet
 	protected int				lastPort	= 23;
 	protected Socket			sock		= null;
 	protected InputStream		rawin		= null;
-	protected BufferedReader[]	in;
+	protected Reader[]			in			= new Reader[1];
 	protected DataOutputStream	out;
 	protected boolean			connected	= false;
-	protected TelnetFilter		Telnet		= new TelnetFilter(this);
+	protected TelnetFilter		telnetFilter		= new TelnetFilter(this);
 
 	protected StringBuffer		buffer;
 	protected int				sillyCounter= 0;
@@ -54,9 +55,9 @@ public class Siplet
 
 	public void setFeatures(final boolean mxp, final MSPStatus msp, final boolean mccp)
 	{
-		Telnet.setNeverMCCPSupport(!mccp);
-		Telnet.setNeverMXPSupport(!mxp);
-		Telnet.setNeverMSPSupport(msp);
+		telnetFilter.setNeverMCCPSupport(!mccp);
+		telnetFilter.setNeverMXPSupport(!mxp);
+		telnetFilter.setNeverMSPSupport(msp);
 	}
 
 	public void init()
@@ -124,11 +125,10 @@ public class Siplet
 				System.out.println("connecting to " + url + ":" + port + " ");
 			sock = new Socket(InetAddress.getByName(url), port);
 			Thread.sleep(100);
-			rawin = sock.getInputStream();
-			in = new BufferedReader[1];
-			in[0] = new BufferedReader(new InputStreamReader(sock.getInputStream(), "iso-8859-1"));
+			rawin=sock.getInputStream();
+			in[0] = new IACReader(rawin, CMProps.getVar(CMProps.Str.CHARSETINPUT));
 			out = new DataOutputStream(sock.getOutputStream());
-			Telnet = new TelnetFilter(this);
+			telnetFilter = new TelnetFilter(this);
 			connected=true;
 		}
 		catch(final Exception e)
@@ -143,7 +143,7 @@ public class Siplet
 	{
 		try
 		{
-			return this.in[0] != null && (this.in[0].ready() || this.rawin.available() > 0);
+			return this.in[0] != null && (this.in[0].ready());
 		}
 		catch (final Exception e)
 		{
@@ -167,10 +167,9 @@ public class Siplet
 				System.out.println("internal connect to " + url + ":" + port + " ");
 			this.sock=sock;
 			rawin=sock.getInputStream();
-			in=new BufferedReader[1];
-			in[0]=new BufferedReader(new InputStreamReader(sock.getInputStream(),"iso-8859-1"),65536);
-			out=new DataOutputStream(sock.getOutputStream());
-			Telnet=new TelnetFilter(this);
+			in[0] = new IACReader(rawin, CMProps.getVar(CMProps.Str.CHARSETINPUT));
+			out = new DataOutputStream(sock.getOutputStream());
+			telnetFilter=new TelnetFilter(this);
 			connected=true;
 		}
 		catch(final Exception e)
@@ -241,7 +240,7 @@ public class Siplet
 				}
 				else
 				{
-					final byte[] bytes=Telnet.peruseInput(data);
+					final byte[] bytes=telnetFilter.peruseInput(data);
 					if(bytes!=null)
 					{
 						boolean success = false;
@@ -280,29 +279,29 @@ public class Siplet
 	}
 	public String getJScriptCommands()
 	{
-		return Telnet.getEnquedJScript();
+		return telnetFilter.getEnquedJScript();
 	}
 
 	public String getURLData()
 	{
 		synchronized(buf)
 		{
-			final String s=Telnet.getEnquedResponses();
+			final String s=telnetFilter.getEnquedResponses();
 			if (s.length() > 0)
 				sendData(s);
 			final StringBuilder data=new StringBuilder("");
-			if(Telnet.MSDPsupport())
-				data.append(Telnet.getMsdpHtml());
-			if(Telnet.GMCPsupport())
-				data.append(Telnet.getGmcpHtml());
-			int endAt=Telnet.HTMLFilter(buf);
+			if(telnetFilter.MSDPsupport())
+				data.append(telnetFilter.getMsdpHtml());
+			if(telnetFilter.GMCPsupport())
+				data.append(telnetFilter.getGmcpHtml());
+			int endAt=telnetFilter.HTMLFilter(buf);
 			if (buf.length() == 0)
 				return data.toString();
 			if (endAt < 0)
 				endAt = buf.length();
 			if (endAt == 0)
 				return data.toString();
-			if (Telnet.isUIonHold())
+			if (telnetFilter.isUIonHold())
 				return data.toString();
 			if(endAt<buf.length())
 			{
@@ -358,7 +357,7 @@ public class Siplet
 					{
 						try
 						{
-							Telnet.TelnetRead(buf,rawin,in);
+							telnetFilter.TelnetRead(buf,rawin,in);
 							last=System.currentTimeMillis();
 						}
 						catch(final java.io.InterruptedIOException e)
@@ -398,7 +397,7 @@ public class Siplet
 			}
 			else
 			if(buf.length()>0)
-				Telnet.TelenetFilter(buf,out,rawin,in);
+				telnetFilter.TelenetFilter(buf,out,rawin,in);
 
 		}
 		catch(final Exception e)
