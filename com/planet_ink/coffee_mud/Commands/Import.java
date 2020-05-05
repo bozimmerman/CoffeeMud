@@ -1007,7 +1007,7 @@ public class Import extends StdCommand
 					else
 					if(!noPrompt)
 					{
-						if(!mob.session().confirm(L("Custom Race '@x1' found which would override your standard race.  Import anyway (Y/n)?",R.ID()),"Y"))
+						if(!mob.session().confirm(L("Custom Race '@x1' found which would override your standard race.  Import this custom race anyway (Y/n)?",R.ID()),"Y"))
 							continue;
 					}
 					CMClass.addRace(R);
@@ -1040,7 +1040,7 @@ public class Import extends StdCommand
 					else
 					if(!noPrompt)
 					{
-						if(!mob.session().confirm(L("Custom Char Class '@x1' found which would override your standard class.  Import anyway (Y/n)?",C.ID()),"Y"))
+						if(!mob.session().confirm(L("Custom Char Class '@x1' found which would override your standard class.  Import this custom class anyway (Y/n)?",C.ID()),"Y"))
 							continue;
 					}
 					CMClass.addCharClass(C);
@@ -1073,7 +1073,7 @@ public class Import extends StdCommand
 					else
 					if(!noPrompt)
 					{
-						if(!mob.session().confirm(L("Custom Ability '@x1' found which would override your standard Ability.  Import anyway (Y/n)?",A.ID()),"Y"))
+						if(!mob.session().confirm(L("Custom Ability '@x1' found which would override your standard Ability.  Import custom ability anyway (Y/n)?",A.ID()),"Y"))
 							continue;
 					}
 					CMClass.delClass(CMObjectType.ABILITY, A2);
@@ -1105,7 +1105,7 @@ public class Import extends StdCommand
 					else
 					if(!noPrompt)
 					{
-						if(!mob.session().confirm(L("Custom Manufacturer '@x1' found which would override your existing one.  Import anyway (Y/n)?",M.name()),"Y"))
+						if(!mob.session().confirm(L("Custom Manufacturer '@x1' found which would override your existing one.  Import custom manufacturer anyway (Y/n)?",M.name()),"Y"))
 							continue;
 					}
 					eM.setXml(M.getXml());
